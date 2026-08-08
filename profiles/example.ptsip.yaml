@@ -1,0 +1,26 @@
+ptsip:
+  version: "0.1.0-draft"
+
+boundaries:
+  product:
+    roots:
+      - "product/app"
+      - "product/sdk"
+
+  toolchain:
+    roots:
+      - "toolchain/sdk"
+      - "toolchain/automation"
+
+  neutral_contract:
+    roots:
+      - "contracts"
+
+policies:
+  product_to_toolchain_runtime_dependency: "deny"
+  toolchain_in_product_package: "deny"
+  independent_build_resolution: "required"
+  shared_executable_cross_boundary: "exception_required"
+  neutral_contract_sharing: "allow"
+
+exceptions: []
