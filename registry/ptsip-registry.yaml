@@ -2,8 +2,9 @@ ptsip_registry:
   specification:
     name: "Product–Toolchain SDK Isolation Policy"
     acronym: "PTSIP"
-    version: "0.1.0-draft"
+    version: "0.2.0-draft"
     status: "draft"
+    canonical_source: "https://github.com/kwaksinwoo01/ptsip-spec"
 
   classifications:
     - id: PRODUCT
@@ -12,6 +13,14 @@ ptsip_registry:
       meaning: "Development-toolchain-owned SDK or SDK-like executable/library component."
     - id: NEUTRAL_CONTRACT
       meaning: "Non-owning declarative contract artifact consumable by both planes."
+
+  concepts:
+    - id: CONSUMER_REPOSITORY
+      meaning: "Repository inspected, piloted, validated, or governed using PTSIP."
+    - id: EXTERNAL_PTSIP_TOOLING
+      meaning: "PTSIP tooling operated outside the Consumer Repository project-owned source tree by default."
+    - id: SPECIFICATION_BINDING
+      meaning: "Association between a project PTSIP declaration and its canonical specification source/version."
 
   principles:
     - id: PTSIP-CORE-001
@@ -51,6 +60,12 @@ ptsip_registry:
     - id: PTSIP-CNT-001
       title: "Contract-first cross-boundary reuse"
       severity: warning
+    - id: PTSIP-INT-001
+      title: "Consumer Repository Non-Intrusion"
+      severity: error
+    - id: PTSIP-SPC-001
+      title: "Specification Binding"
+      severity: error
     - id: PTSIP-EXC-001
       title: "Explicit exceptions"
       severity: error
