@@ -7,9 +7,25 @@
   "properties": {
     "ptsip": {
       "type": "object",
-      "required": ["version"],
+      "required": ["version", "specification"],
       "properties": {
-        "version": {"type": "string"}
+        "version": {"type": "string", "const": "0.2.0-draft"},
+        "specification": {
+          "type": "object",
+          "required": ["source"],
+          "properties": {
+            "source": {
+              "type": "string",
+              "const": "https://github.com/kwaksinwoo01/ptsip-spec"
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional immutable commit SHA or release identifier used to bind validation to an exact specification snapshot."
+            }
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     },

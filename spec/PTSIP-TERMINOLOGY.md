@@ -1,6 +1,6 @@
 # PTSIP Terminology
 
-This document is the canonical human-readable terminology registry for PTSIP 0.1.0-draft.
+This document is the canonical human-readable terminology registry for PTSIP 0.2.0-draft.
 
 ## Product SDK
 
@@ -21,6 +21,22 @@ The architectural ownership domain containing Toolchain SDKs and development-onl
 ## Neutral Contract Artifact
 
 A non-owning declarative contract consumable by both planes, such as schemas, IDLs, registries, immutable manifests, or conformance vectors. It is not a shared executable SDK.
+
+## Consumer Repository
+
+A repository being inspected, piloted, validated, or governed using PTSIP. PTSIP does not own the Consumer Repository's documentation hierarchy, tooling hierarchy, package layout, or other repository conventions.
+
+## External PTSIP Tooling
+
+A PTSIP implementation installed or executed outside the Consumer Repository's project-owned source tree for inspection, pilot analysis, validation, or reporting. External PTSIP Tooling is outside the Consumer Repository's Product/Toolchain classification scope unless the project intentionally vendors, embeds, packages, or takes lifecycle ownership of it.
+
+## Consumer Repository Non-Intrusion
+
+The property that PTSIP tooling can operate without requiring PTSIP-specific documentation, tooling, cache, report, or directory hierarchies inside the Consumer Repository, and without modifying repository content by default.
+
+## Specification Binding
+
+A machine-readable association between a Consumer Repository's PTSIP declaration and the canonical PTSIP specification source and version used to interpret that declaration. An immutable revision may additionally be recorded for reproducibility.
 
 ## Boundary
 
@@ -52,7 +68,7 @@ A documented, governed deviation from a normative PTSIP rule.
 
 ## PTSIP Project Profile
 
-A machine-readable declaration of how one repository or project maps its paths and policies to PTSIP.
+A machine-readable declaration of how one repository or project maps its paths and policies to PTSIP. A profile is required for Enforced Conformance but is not required merely to run read-only inspection or pilot tooling.
 
 ## Conformance
 

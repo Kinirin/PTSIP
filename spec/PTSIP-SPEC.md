@@ -2,20 +2,20 @@
 
 **Name:** Product–Toolchain SDK Isolation Policy  
 **Acronym:** PTSIP  
-**Version:** 0.1.0-draft  
+**Version:** 0.2.0-draft  
 **Status:** Draft normative specification
 
 ## 1. Scope
 
 PTSIP defines how a software project classifies, builds, packages, depends on, releases, validates, and evolves SDKs that belong either to the product or to the development toolchain.
 
-PTSIP governs **architectural ownership and lifecycle**, not programming language, build system, repository topology, package manager, or deployment platform.
+PTSIP governs **architectural ownership and lifecycle**, not programming language, build system, repository topology, package manager, deployment platform, documentation layout, or development-tool directory layout.
 
 A project MAY use one repository or multiple repositories. A project MAY use one programming language or several. These choices do not change PTSIP conformance provided the required boundaries are preserved.
 
 ## 2. Core model
 
-PTSIP defines two primary planes.
+PTSIP defines two primary planes and one shared contract category.
 
 ### 2.1 Product SDK Plane
 
@@ -39,6 +39,12 @@ Examples include:
 - generated immutable manifests.
 
 A Neutral Contract Artifact MUST NOT become a hidden shared runtime implementation.
+
+### 2.4 External PTSIP Tooling
+
+External PTSIP Tooling is an implementation used to inspect, pilot, validate, or report on a Consumer Repository without becoming part of that repository's Product or project-owned Toolchain implementation.
+
+A package installed in an isolated Python environment, user-level package environment, CI tool image, or equivalent external development environment is outside the Consumer Repository classification scope unless the project intentionally vendors, embeds, packages, or takes lifecycle ownership of that tooling.
 
 ## 3. Foundational principle
 
@@ -118,6 +124,24 @@ A generic name does not create neutral architectural ownership.
 
 When Product and Toolchain need the same semantic definition, projects SHOULD prefer a Neutral Contract Artifact over a shared executable implementation.
 
+### PTSIP-INT-001 — Consumer Repository Non-Intrusion
+
+External PTSIP Tooling MUST NOT require a Consumer Repository to create or adopt PTSIP-specific documentation directories, tooling directories, cache directories, report directories, or equivalent repository hierarchy solely so the tooling can operate.
+
+Inspection and pilot operations MUST be read-only with respect to the Consumer Repository by default.
+
+Any operation that writes or modifies Consumer Repository content MUST require an explicit user action or explicit write-enabled mode.
+
+Tool-owned cache, pilot state, and generated reports SHOULD be stored outside the Consumer Repository by default. A project MAY voluntarily commit a PTSIP profile, report, or other PTSIP artifact according to its own repository conventions.
+
+### PTSIP-SPC-001 — Specification Binding
+
+A machine-readable PTSIP Project Profile used for automated conformance MUST identify the PTSIP specification version and canonical specification source that govern the profile.
+
+A validator or conformance report SHOULD record the exact immutable specification revision used for evaluation when one is available.
+
+An implementation MUST NOT silently evaluate a project against a different normative specification version than the version declared by the project profile.
+
 ### PTSIP-EXC-001 — Explicit exceptions
 
 Any intentional violation of a MUST or MUST NOT rule MUST be recorded as a PTSIP exception decision.
@@ -157,6 +181,13 @@ A Neutral Contract Artifact MAY be consumed by both:
 
 The contract MUST remain declarative or otherwise non-owning with respect to executable lifecycle.
 
+External PTSIP Tooling observes the Consumer Repository from outside its project-owned dependency graph unless explicitly vendored or adopted by the project:
+
+```text
+External PTSIP Tooling  --->  Consumer Repository
+         inspect / pilot / validate
+```
+
 ## 6. Reuse policy
 
 PTSIP does not require intentional code duplication. It requires that reuse be subordinate to boundary ownership.
@@ -177,35 +208,31 @@ Risky strategies include:
 
 ## 7. Repository topology
 
-PTSIP does not require a monorepo or multirepo. It requires visible boundaries.
+PTSIP does not require a monorepo or multirepo and does not prescribe `docs/`, `tools/`, `.ptsip/`, or any other PTSIP-specific directory.
 
-A recommended monorepo topology is:
+The following is an illustrative topology only:
 
 ```text
 repo/
 ├─ product/
-│  ├─ app/
-│  └─ sdk/
 ├─ toolchain/
-│  ├─ validation/
-│  ├─ migration/
-│  ├─ build/
-│  └─ test/
 ├─ contracts/
-├─ ptsip.yaml
-└─ docs/
+└─ optional-project-profile
 ```
 
-The directory layout alone is not sufficient for conformance; dependency and packaging behavior MUST agree with the declared boundary.
+A project's existing directory conventions remain project-owned. Directory layout alone is not sufficient for conformance; dependency and packaging behavior MUST agree with the declared boundary.
 
 ## 8. Project profile
 
-A conforming automated implementation SHOULD provide a machine-readable `ptsip.yaml` or equivalent profile containing:
+A project MAY operate PTSIP inspection or pilot tooling without adding a PTSIP profile to the repository.
 
-- PTSIP version;
+A project claiming **PTSIP Enforced Conformance** MUST provide a machine-readable PTSIP Project Profile or equivalent declaration containing at least:
+
+- PTSIP specification version;
+- canonical specification source;
 - Product roots;
 - Toolchain roots;
-- Neutral Contract roots;
+- Neutral Contract roots when applicable;
 - dependency policy;
 - packaging policy;
 - build-environment policy;
@@ -213,11 +240,15 @@ A conforming automated implementation SHOULD provide a machine-readable `ptsip.y
 
 The reference profile format is defined by `schemas/ptsip-profile.schema.json`.
 
+The profile's physical location is not an architectural boundary. Implementations MAY use a conventional `ptsip.yaml` at the repository root, an explicit user-supplied path, or an equivalent project configuration mechanism.
+
 ## 9. Enforcement
 
 A PTSIP validator SHOULD be capable of checking at least:
 
-- directory classification;
+- project profile validity when a profile is supplied;
+- specification binding;
+- directory/component classification;
 - dependency edges;
 - shipped artifact contents;
 - build manifest separation;
@@ -233,6 +264,8 @@ PTSIP-DEP-001 ERROR
 product/sdk/schema.py imports toolchain/validation/common.py
 ```
 
+External PTSIP Tooling implementing inspection or pilot analysis MUST preserve the read-only default required by `PTSIP-INT-001`.
+
 ## 10. Non-goals
 
 PTSIP does not prescribe:
@@ -244,7 +277,10 @@ PTSIP does not prescribe:
 - source repository count;
 - coding style;
 - test framework;
-- CI provider.
+- CI provider;
+- documentation hierarchy;
+- development-tool directory hierarchy;
+- installation of PTSIP tooling inside the Consumer Repository.
 
 PTSIP also does not claim that every shared dependency is harmful. It governs **project-owned SDK responsibility boundaries**.
 

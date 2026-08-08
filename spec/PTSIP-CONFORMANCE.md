@@ -1,6 +1,6 @@
 # PTSIP Conformance
 
-**Version:** 0.1.0-draft
+**Version:** 0.2.0-draft
 
 PTSIP conformance is defined so that a human reviewer or automated agent can make a reproducible claim about a project.
 
@@ -15,13 +15,17 @@ A project is **PTSIP Core Conformant** when it satisfies all applicable normativ
 - packaging isolation;
 - independently resolvable build environments;
 - lifecycle ownership separation;
+- Consumer Repository Non-Intrusion for external PTSIP tooling;
 - explicit exception governance.
+
+A project does not need to add PTSIP-specific documentation or tooling directories merely to claim Core Conformance.
 
 ### 1.2 PTSIP Enforced Conformant
 
 A project is **PTSIP Enforced Conformant** when it is Core Conformant and additionally provides:
 
-- a machine-readable PTSIP project profile;
+- a machine-readable PTSIP Project Profile or equivalent declaration;
+- a Specification Binding identifying canonical source and specification version;
 - automated dependency-boundary validation;
 - product artifact inspection or an equivalent packaging check;
 - diagnostics that report PTSIP rule IDs;
@@ -31,9 +35,11 @@ A project is **PTSIP Enforced Conformant** when it is Core Conformant and additi
 
 A conformance claim SHOULD identify:
 
+- PTSIP canonical specification source;
 - PTSIP specification version;
+- exact immutable specification revision when available;
 - project commit or release;
-- project profile path;
+- project profile path or configuration source for Enforced Conformance;
 - validation result;
 - active exceptions.
 
@@ -41,9 +47,11 @@ Example:
 
 ```text
 PTSIP Conformance: Enforced
-Specification: 0.1.0
+Specification source: https://github.com/kwaksinwoo01/ptsip-spec
+Specification version: 0.2.0-draft
+Specification revision: <commit-or-release>
 Project revision: <commit>
-Profile: /ptsip.yaml
+Profile: <project-defined location>
 Active exceptions: none
 ```
 
@@ -53,11 +61,21 @@ A project with an unresolved violation of a mandatory rule MUST NOT claim strict
 
 A project MAY state `PTSIP-adopting` or `PTSIP-transitioning` while remediation is in progress.
 
-## 4. Validator independence
+## 4. External validator independence
 
-The PTSIP validator belongs to the Toolchain plane. A Product build MUST NOT require the validator at runtime.
+An external PTSIP validator is architecture-governance tooling and is not part of the Consumer Repository's Product or project-owned Toolchain plane merely because it is installed in a developer virtual environment, user-level tool environment, CI image, or equivalent external environment.
 
-## 5. False-positive handling
+If a project vendors or takes lifecycle ownership of the validator, that copy becomes subject to normal PTSIP classification.
+
+A Product build MUST NOT require a PTSIP validator at runtime.
+
+## 5. Non-intrusion evidence
+
+For external PTSIP tooling, inspection and pilot validation SHOULD demonstrate that the Consumer Repository was not modified unless the user explicitly selected a write-enabled operation.
+
+Tool-owned caches and pilot reports SHOULD be placed outside the Consumer Repository by default.
+
+## 6. False-positive handling
 
 A validator suppression MUST NOT silently disable a rule.
 
