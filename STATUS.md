@@ -6,11 +6,10 @@
 - Public standard status: None; project-defined specification
 - Validator implementation: Not yet implemented
 - First external conformance implementation: Not yet recorded
-- Reuse license: Pending owner decision before stable public release
+- Reuse license: Apache License 2.0
 
 ## Release blockers for 1.0
 
-- select public reuse license;
 - exercise the project profile in at least one real repository;
 - implement and test automated validator rules;
 - validate agent contract against real coding-agent tasks;
