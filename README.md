@@ -2,7 +2,8 @@
 
 **Status:** Draft Specification 0.1.0  
 **Canonical repository name:** `ptsip-spec`  
-**Specification family:** Software architecture / SDK governance / development toolchain isolation
+**Specification family:** Software architecture / SDK governance / development toolchain isolation  
+**License:** Apache License 2.0
 
 PTSIP (Product–Toolchain SDK Isolation Policy) is a project-defined architecture policy for managing Software Development Kits (SDKs) according to their **purpose, packaging responsibility, dependency boundary, build environment, and lifecycle**.
 
@@ -42,6 +43,7 @@ PTSIP makes the opposite trade-off: **lifecycle and responsibility boundaries ar
 - [`schemas/ptsip-profile.schema.json`](schemas/ptsip-profile.schema.json) — project-profile schema.
 - [`profiles/example.ptsip.yaml`](profiles/example.ptsip.yaml) — example project profile.
 - [`decisions/ADR-0001-establish-ptsip.md`](decisions/ADR-0001-establish-ptsip.md) — initial architecture decision record.
+- [`LICENSE`](LICENSE) — Apache License 2.0 terms for this repository.
 
 ## Normative language
 
@@ -71,6 +73,6 @@ Bazel reference: https://bazel.build/reference/be/platforms-and-toolchains
 
 PTSIP 0.1.0 is a **draft project-defined specification**, not an ISO, IEEE, IETF, CNCF, or other external industry standard. The public specification is intended to make the term reproducible: a person or coding agent should be able to read the specification, apply it to a repository, and independently determine whether the repository conforms.
 
-## License status
+## License
 
-A reuse license has not yet been selected for the first public release. Until a license is explicitly added, publication alone does not grant broad reuse rights. License selection is therefore a release-blocking governance item for the first stable public release.
+This repository, including the PTSIP specification documents and future software tooling contributed here unless explicitly stated otherwise, is licensed under the **Apache License, Version 2.0**. See [`LICENSE`](LICENSE).
