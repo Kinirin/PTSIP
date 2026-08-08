@@ -1,6 +1,6 @@
 # PTSIP Governance
 
-**Version:** 0.1.0-draft
+**Version:** 0.2.0-draft
 
 ## 1. Purpose
 
@@ -8,9 +8,9 @@ This document governs changes to the PTSIP specification itself and exceptions m
 
 ## 2. Canonical source
 
-The public `ptsip-spec` repository is intended to be the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, and conformance definitions.
+The public repository `https://github.com/kwaksinwoo01/ptsip-spec` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, and conformance definitions.
 
-Copies, blog posts, examples, and agent prompts are informative unless explicitly synchronized to a tagged PTSIP version.
+Copies, blog posts, examples, agent prompts, and tooling snapshots are informative unless explicitly bound to a PTSIP specification version. Tooling SHOULD additionally record an immutable specification revision when practical.
 
 ## 3. Versioning
 
@@ -63,7 +63,15 @@ Permanent exceptions SHOULD be treated as evidence that either:
 1. the project is not strictly conformant, or
 2. the specification may require a future extension/profile.
 
-## 8. Stability policy
+## 8. Tooling relationship
+
+The PTSIP specification and an implementation of PTSIP tooling have independent release lifecycles.
+
+A PTSIP tooling implementation MUST identify which specification version it supports and MUST NOT present its own implementation behavior as a normative PTSIP rule unless that behavior is grounded in the canonical specification.
+
+External tooling SHOULD preserve Consumer Repository Non-Intrusion and SHOULD keep tool-owned state outside the Consumer Repository by default.
+
+## 9. Stability policy
 
 The 0.x series is experimental. Terminology and schemas may change.
 
@@ -73,9 +81,11 @@ A 1.0 release SHOULD NOT occur until:
 - at least one real repository has adopted the profile;
 - conformance checks have been exercised;
 - agent instructions have been tested against real change tasks;
-- public licensing has been selected.
+- reference tooling or equivalent enforcement has been exercised.
 
-## 9. Non-claim policy
+The repository is licensed under Apache License 2.0.
+
+## 10. Non-claim policy
 
 Specification changes MUST NOT present PTSIP as an externally standardized industry term unless an external standards body actually adopts it.
 
