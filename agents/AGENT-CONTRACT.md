@@ -1,6 +1,6 @@
 # PTSIP Coding-Agent Contract
 
-This is the concise operational contract for coding agents working in a PTSIP-governed repository.
+This is the concise operational contract for coding agents working with a PTSIP-governed Consumer Repository.
 
 ## Mandatory agent behavior
 
@@ -12,8 +12,16 @@ This is the concise operational contract for coding agents working in a PTSIP-go
 6. **Preserve independent build contexts.** Do not solve missing Product dependencies by installing or importing from the Toolchain environment, or vice versa.
 7. **Preserve lifecycle independence.** A Toolchain-only refactor should not force Product compatibility constraints unless a Product-facing artifact changes.
 8. **Never treat `common`, `shared`, `core`, or `utils` as ownerless.** Every such module must have explicit PTSIP ownership.
-9. **Read the project profile.** Repository-specific PTSIP paths and exceptions override assumptions about directory names.
-10. **Escalate boundary exceptions.** If a requested change requires violating a PTSIP MUST/MUST NOT rule, do not silently implement the violation. Create or request an architecture decision/exception record.
+9. **Respect repository ownership.** Do not create PTSIP-specific `docs/`, `tools/`, `.ptsip/`, cache, or report directories solely to operate PTSIP tooling.
+10. **Read the project profile when one exists.** Repository-specific PTSIP paths and exceptions override assumptions about directory names.
+11. **Resolve the bound specification.** For automated conformance, use the specification source/version declared by the project profile or by the PTSIP tooling build; do not silently substitute a different normative version.
+12. **Escalate boundary exceptions.** If a requested change requires violating a PTSIP MUST/MUST NOT rule, do not silently implement the violation. Create or request an architecture decision/exception record.
+
+## Read-only default for pilot and inspection
+
+When operating as an external PTSIP inspection, pilot, or validation agent, treat the Consumer Repository as read-only unless the user explicitly authorizes a repository mutation.
+
+Tool-owned caches and generated pilot reports belong outside the Consumer Repository by default. If the user requests a report inside the repository, use the location the user specifies or the repository's own established convention rather than inventing a PTSIP directory hierarchy.
 
 ## Required pre-change questions
 
@@ -30,7 +38,7 @@ Before a boundary-affecting change, answer:
 
 After a boundary-affecting change:
 
-- validate the declared PTSIP profile;
+- validate the declared PTSIP profile when one exists;
 - inspect cross-plane dependency edges;
 - verify Product packaging excludes Toolchain-only artifacts;
 - report any PTSIP rule IDs affected by the change.
@@ -39,10 +47,10 @@ After a boundary-affecting change:
 
 The canonical order is:
 
-1. `spec/PTSIP-SPEC.md`
-2. repository-specific `ptsip.yaml`
-3. approved PTSIP exception/ADR records
-4. this Agent Contract
-5. informal examples
+1. the bound canonical `PTSIP-SPEC.md` version;
+2. repository-specific PTSIP Project Profile, when present;
+3. approved PTSIP exception/ADR records;
+4. this Agent Contract from the same specification release;
+5. informal examples.
 
-If two sources conflict, use the higher-priority source and report the conflict.
+If the canonical specification is not stored locally, resolve it through the project's Specification Binding or the installed PTSIP tooling metadata. If two sources conflict, use the higher-priority source and report the conflict.
