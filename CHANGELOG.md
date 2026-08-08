@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- adopted Apache License 2.0 for the PTSIP specification repository and future tooling unless explicitly stated otherwise.
+
 ## 0.1.0-draft — 2026-08-07
 
 Initial public-specification draft package:
