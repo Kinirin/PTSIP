@@ -14,13 +14,28 @@ Copies, blog posts, examples, agent prompts, and tooling snapshots are informati
 
 ## 3. Versioning
 
-PTSIP uses semantic-version-like specification versioning:
+PTSIP uses semantic-version-like specification versioning for stable specification releases:
 
 - **MAJOR** — incompatible change to normative meaning or conformance.
 - **MINOR** — backward-compatible addition of rules, profiles, or capabilities.
 - **PATCH** — clarification, editorial correction, or non-semantic repair.
 
 Draft suffixes MAY be used before stable publication.
+
+### 3.1 Draft-family revisions
+
+A draft label such as `0.2.0-draft` identifies a **draft specification family**, not an immutable normative snapshot. While that family remains explicitly draft/experimental, its text, schemas, and conformance model MAY evolve without changing the family label.
+
+Every machine-evaluated use of a mutable draft family SHOULD bind an immutable repository revision. When an exact revision is recorded, that revision is the authoritative identity of the normative snapshot within the draft family.
+
+A tooling implementation that embeds or evaluates a draft specification MUST identify both:
+
+- the draft family label; and
+- the exact immutable specification revision it implements or was validated against.
+
+A tooling release version is independent from the specification family label. For example, PTSIP Specification `0.2.0-draft` MAY be implemented by PTSIP Tool `0.2.0`.
+
+Once a specification snapshot is declared stable or tagged as a stable specification release, subsequent normative additions or incompatible changes MUST follow the MAJOR/MINOR/PATCH policy above rather than silently changing that stable version.
 
 ## 4. Rule identity
 
@@ -40,6 +55,8 @@ Every specification change SHOULD be classified as:
 - `NORMATIVE_BREAKING`
 - `SCHEMA_CHANGE`
 - `CONFORMANCE_CHANGE`
+
+Draft-family evolution MUST still record its change category and immutable revision even when the draft family label is retained.
 
 ## 6. Decision records
 
@@ -65,9 +82,9 @@ Permanent exceptions SHOULD be treated as evidence that either:
 
 ## 8. Tooling relationship
 
-The PTSIP specification and an implementation of PTSIP tooling have independent release lifecycles.
+The PTSIP specification and an implementation of PTSIP tooling have independent release lifecycles and independent version numbers.
 
-A PTSIP tooling implementation MUST identify which specification version it supports and MUST NOT present its own implementation behavior as a normative PTSIP rule unless that behavior is grounded in the canonical specification.
+A PTSIP tooling implementation MUST identify which specification family and immutable revision it supports and MUST NOT present its own implementation behavior as a normative PTSIP rule unless that behavior is grounded in the bound canonical specification revision.
 
 External tooling SHOULD preserve Consumer Repository Non-Intrusion and SHOULD keep tool-owned state outside the Consumer Repository by default.
 
