@@ -41,6 +41,94 @@ def _line_number(source: str, offset: int) -> int:
     return source.count("\n", 0, offset) + 1
 
 
+def _skip_quoted(source: str, index: int, quote: str) -> int:
+    index += 1
+    while index < len(source):
+        char = source[index]
+        if char == "\\":
+            index += 2
+            continue
+        index += 1
+        if char == quote:
+            break
+    return index
+
+
+def _scan_template_expression(source: str, start: int, ranges: list[tuple[int, int]]) -> int:
+    depth = 1
+    index = start
+    while index < len(source):
+        char = source[index]
+        following = source[index + 1] if index + 1 < len(source) else ""
+        if char == "/" and following == "/":
+            newline = source.find("\n", index + 2)
+            index = len(source) if newline < 0 else newline + 1
+            continue
+        if char == "/" and following == "*":
+            close = source.find("*/", index + 2)
+            index = len(source) if close < 0 else close + 2
+            continue
+        if char in {"'", '"'}:
+            index = _skip_quoted(source, index, char)
+            continue
+        if char == "`":
+            index = _scan_template(source, index, ranges)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index
+        index += 1
+    return len(source)
+
+
+def _scan_template(source: str, start: int, ranges: list[tuple[int, int]]) -> int:
+    index = start + 1
+    while index < len(source):
+        char = source[index]
+        following = source[index + 1] if index + 1 < len(source) else ""
+        if char == "\\":
+            index += 2
+            continue
+        if char == "`":
+            return index + 1
+        if char == "$" and following == "{":
+            expression_start = index + 2
+            expression_end = _scan_template_expression(source, expression_start, ranges)
+            ranges.append((expression_start, expression_end))
+            index = expression_end + 1 if expression_end < len(source) else len(source)
+            continue
+        index += 1
+    return len(source)
+
+
+def _template_expression_ranges(source: str) -> tuple[tuple[int, int], ...]:
+    ranges: list[tuple[int, int]] = []
+    base_mask = code_positions(source, backtick_strings=False)
+    index = 0
+    while index < len(source):
+        if source[index] == "`" and base_mask[index]:
+            index = _scan_template(source, index, ranges)
+        else:
+            index += 1
+    return tuple(sorted(set(ranges)))
+
+
+def _javascript_code_positions(source: str) -> tuple[bool, ...]:
+    # Backtick template text is string data, but `${ ... }` is executable
+    # JavaScript/TypeScript. Start with template literals masked and restore only
+    # their interpolation expression code so dependency calls cannot disappear.
+    mask = list(code_positions(source, backtick_strings=True))
+    for start, end in _template_expression_ranges(source):
+        local = code_positions(source[start:end], backtick_strings=True)
+        for offset, is_code in enumerate(local):
+            if is_code:
+                mask[start + offset] = True
+    return tuple(mask)
+
+
 def _read_package(path: Path, rel: str) -> tuple[NpmPackage | None, str | None]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8-sig"))
@@ -182,7 +270,7 @@ def source_edges(
     except (OSError, UnicodeError) as exc:
         return [], [str(exc)]
     nearest = _nearest_package(rel, by_path)
-    mask = code_positions(source, backtick_strings=True)
+    mask = _javascript_code_positions(source)
     edges: list[DependencyEdge] = []
     seen: set[tuple[int, str, EdgeType]] = set()
 
