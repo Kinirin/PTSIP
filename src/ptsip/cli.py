@@ -64,6 +64,11 @@ def _parser() -> argparse.ArgumentParser:
     )
     p_conform.add_argument("path", nargs="?", default=".")
     p_conform.add_argument("--profile", help="Explicit project-profile path")
+    p_conform.add_argument(
+        "--artifact-evidence",
+        action="append",
+        help="Explicit ptsip-artifact-evidence/v1 JSON/YAML input; repeatable and read-only",
+    )
     p_conform.add_argument("--json", action="store_true")
 
     p_clarify = sub.add_parser(
@@ -128,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
             _emit(result.as_dict(), args.json)
             return 0 if result.valid else 3
         if args.command == "conform":
-            result = evaluate_conformance(args.path, args.profile)
+            result = evaluate_conformance(args.path, args.profile, args.artifact_evidence)
             _emit(result.report, args.json)
             if result.outcome == "CONFORMANT":
                 return 0
