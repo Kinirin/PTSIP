@@ -14,6 +14,7 @@ Initial alpha reference-tooling implementation:
 - added `ptsip validate` for an existing PTSIP project profile;
 - embedded the PTSIP 0.2.0-draft profile schema and registry snapshot;
 - bound the tool to specification revision `cb4164a803678a0364ce037af4addbad1d7ecc7d`;
+- updated the canonical tool/specification source after the repository rename to `kwaksinwoo01/ptsip`;
 - added Python 3.11–3.13 CI tests;
 - added PyPI Trusted Publishing workflow gated to `tool-v*` releases.
 

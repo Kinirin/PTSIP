@@ -2,7 +2,7 @@
 
 - Specification: `0.2.0-draft`
 - Maturity: Experimental
-- Canonical repository: `kwaksinwoo01/ptsip-spec`
+- Canonical repository: `kwaksinwoo01/ptsip`
 - Public standard status: None; project-defined specification
 - External tooling model: Defined
 - Reference Python tooling: `0.1.0a1` integrated in this canonical repository
@@ -34,9 +34,9 @@ Implemented:
 - `ptsip validate` for existing project profiles;
 - embedded PTSIP 0.2.0-draft schema/registry snapshot;
 - automated tests and Tool-specific GitHub Actions workflows;
-- integration into the canonical `kwaksinwoo01/ptsip-spec` repository.
+- integration into the canonical `kwaksinwoo01/ptsip` repository.
 
 Pending before public `pip install ptsip`:
 
-- configure the PyPI Trusted Publisher for repository `kwaksinwoo01/ptsip-spec` and workflow `tooling-release.yml`;
+- configure the PyPI Trusted Publisher for repository `kwaksinwoo01/ptsip` and workflow `tooling-release.yml`;
 - publish the first `tool-v0.1.0a1` release.

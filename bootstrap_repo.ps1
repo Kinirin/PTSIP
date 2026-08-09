@@ -1,8 +1,8 @@
 ﻿# Requires: GitHub CLI (gh), authenticated with `gh auth login`
-# Purpose: one-time creation and publication of the canonical PTSIP specification repository.
+# Purpose: one-time creation and publication of the canonical PTSIP repository.
 $ErrorActionPreference = 'Stop'
 
-$Repo = 'kwaksinwoo01/ptsip-spec'
+$Repo = 'kwaksinwoo01/ptsip'
 
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
     throw 'GitHub CLI (gh) is not installed or not on PATH.'
@@ -20,11 +20,11 @@ if (-not (Test-Path '.git')) {
 git add .
 git diff --cached --quiet
 if ($LASTEXITCODE -eq 1) {
-    git commit -m 'docs: establish PTSIP 0.1.0 draft specification'
+    git commit -m 'docs: establish PTSIP draft specification'
     if ($LASTEXITCODE -ne 0) { throw 'Initial git commit failed.' }
 }
 elseif ($LASTEXITCODE -ne 0) {
     throw 'Unable to inspect staged git changes.'
 }
 
-gh repo create $Repo --public --source . --remote origin --push --description 'PTSIP — Product–Toolchain SDK Isolation Policy specification, governance, conformance, registry, and agent contract.'
+gh repo create $Repo --public --source . --remote origin --push --description 'PTSIP — Product–Toolchain SDK Isolation Policy specification and reference tooling.'

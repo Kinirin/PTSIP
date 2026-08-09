@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/kwaksinwoo01/ptsip-spec/main/schemas/ptsip-profile.schema.json",
+  "$id": "https://raw.githubusercontent.com/kwaksinwoo01/ptsip/main/schemas/ptsip-profile.schema.json",
   "title": "PTSIP Project Profile",
   "type": "object",
   "required": ["ptsip", "boundaries", "policies"],
@@ -14,7 +14,7 @@
           "type": "object",
           "required": ["source"],
           "properties": {
-            "source": {"type": "string", "const": "https://github.com/kwaksinwoo01/ptsip-spec"},
+            "source": {"type": "string", "const": "https://github.com/kwaksinwoo01/ptsip"},
             "revision": {"type": "string", "minLength": 1, "description": "Optional immutable commit SHA or release identifier used to bind validation to an exact specification snapshot."}
           },
           "additionalProperties": false

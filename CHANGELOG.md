@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- renamed the canonical repository from `kwaksinwoo01/ptsip-spec` to `kwaksinwoo01/ptsip`;
+- updated canonical Specification Binding metadata, profile schema identity, registry source, examples, and governance references to the new repository URL;
+- preserved the existing PTSIP 0.2.0-draft normative semantics and immutable specification revision identity.
+
 ## 0.2.0-draft — 2026-08-09
 
 - defined Consumer Repository and External PTSIP Tooling;

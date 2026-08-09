@@ -14,7 +14,7 @@ from ptsip.validation.profile import validate_profile
 def test_spec_identity():
     spec = current_spec_identity()
     assert spec.version == "0.2.0-draft"
-    assert spec.source == "https://github.com/kwaksinwoo01/ptsip-spec"
+    assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
     assert spec.revision == "cb4164a803678a0364ce037af4addbad1d7ecc7d"
 
 
@@ -51,7 +51,7 @@ def test_validate_profile(tmp_path: Path):
     repo.mkdir()
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip-spec\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"devtools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"devtools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
