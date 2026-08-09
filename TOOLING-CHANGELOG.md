@@ -114,7 +114,7 @@ Initial alpha reference-tooling release:
 - added installable Python distribution named `ptsip`;
 - added `ptsip --version` and `ptsip spec`;
 - added `ptsip doctor` for local environment checks;
-- added read-only repository inventory;
+- added read-only `ptsip inspect` repository inventory;
 - added read-only `ptsip pilot` with external default state/report storage;
 - added `ptsip validate` for an existing PTSIP project profile;
 - embedded the PTSIP 0.2.0-draft profile schema and registry snapshot;
