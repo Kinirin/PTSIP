@@ -8,6 +8,7 @@ from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
 from .clarification.render import render_console
 from .clarification.transports.github_issue import publish as publish_github_issues
+from .conformance import evaluate_conformance
 from .constants import TOOL_VERSION
 from .doctor import doctor
 from .inspection.components import discover_component_candidates
@@ -56,6 +57,14 @@ def _parser() -> argparse.ArgumentParser:
     p_validate.add_argument("path", nargs="?", default=".")
     p_validate.add_argument("--profile", help="Explicit project-profile path")
     p_validate.add_argument("--json", action="store_true")
+
+    p_conform = sub.add_parser(
+        "conform",
+        help="Evaluate Enforced PTSIP conformance from declared architecture and observed evidence",
+    )
+    p_conform.add_argument("path", nargs="?", default=".")
+    p_conform.add_argument("--profile", help="Explicit project-profile path")
+    p_conform.add_argument("--json", action="store_true")
 
     p_clarify = sub.add_parser(
         "clarify",
@@ -118,6 +127,14 @@ def main(argv: list[str] | None = None) -> int:
             result = validate_profile(repo.root, args.profile)
             _emit(result.as_dict(), args.json)
             return 0 if result.valid else 3
+        if args.command == "conform":
+            result = evaluate_conformance(args.path, args.profile)
+            _emit(result.report, args.json)
+            if result.outcome == "CONFORMANT":
+                return 0
+            if result.outcome == "NON_CONFORMANT":
+                return 5
+            return 6
         if args.command == "clarify":
             if args.repo and args.publish != "github-issue":
                 raise ValueError("--repo requires --publish github-issue")
