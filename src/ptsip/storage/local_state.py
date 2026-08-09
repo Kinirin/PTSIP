@@ -26,3 +26,7 @@ def repository_fingerprint(repository_root: str | Path) -> str:
 
 def pilot_directory(repository_root: str | Path) -> Path:
     return ptsip_home() / "pilots" / repository_fingerprint(repository_root)
+
+
+def clarification_directory(repository_root: str | Path) -> Path:
+    return ptsip_home() / "clarifications" / repository_fingerprint(repository_root)
