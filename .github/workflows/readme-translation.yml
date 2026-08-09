@@ -32,7 +32,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_MODELS_MODEL: ${{ vars.README_TRANSLATION_MODEL || 'openai/gpt-4o' }}
-        run: python tools/ai_interface_tool/readme_translation/sync_readme_ko.py
+        run: python .github/scripts/sync_readme_ko.py
 
       - name: Commit synchronized translation
         shell: bash
