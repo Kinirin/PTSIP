@@ -1,9 +1,14 @@
+<p align="right">
+  English | <a href="README.ko.md">한국어</a>
+</p>
+
 # PTSIP — Product–Toolchain SDK Isolation Policy
 
 **Status:** Draft Specification 0.2.0  
 **Canonical repository:** `https://github.com/kwaksinwoo01/ptsip`  
 **Specification family:** Software architecture / SDK governance / development toolchain isolation  
 **Reference Tool source:** `0.2.0`  
+**Tool 0.2.0 specification revision:** `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`  
 **Latest published Tool:** `0.1.0a1` until `tool-v0.2.0` is published  
 **License:** Apache License 2.0
 
@@ -28,7 +33,7 @@ Specification and Tool versions are independent.
 
 The current specification remains the experimental **`0.2.0-draft` family**. Because a draft family may evolve, an automated evaluation should also record the immutable Git revision that identifies the exact normative snapshot.
 
-The Reference Tool is independently moving to **`0.2.0`**. A Tool version does not imply a same-numbered stable Specification release.
+Reference Tool **`0.2.0`** is bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`. A Tool version does not imply a same-numbered stable Specification release.
 
 ## Consumer Repository non-intrusion
 
@@ -119,7 +124,8 @@ PTSIP makes the opposite trade-off: **lifecycle and responsibility boundaries ar
 ### Shared repository assets
 
 - [`LICENSE`](LICENSE) — Apache License 2.0 terms for this repository.
-- [`README.md`](README.md) — project overview and ownership map.
+- [`README.md`](README.md) — English project overview and ownership map.
+- [`README.ko.md`](README.ko.md) — Korean translation of the project overview.
 
 ## Normative language
 
