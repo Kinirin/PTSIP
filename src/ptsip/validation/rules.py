@@ -20,6 +20,18 @@ class RuleFinding:
         return asdict(self)
 
 
+@dataclass(frozen=True)
+class ProjectPolicyFinding:
+    policy_id: str
+    message: str
+    evidence_ids: tuple[str, ...]
+    source_component: str
+    target_component: str
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
 def _component_context(
     components: list[dict[str, object]],
     partition: ComponentPartition,
@@ -106,7 +118,7 @@ def evaluate_component_dependency_policy(
     components: list[dict[str, object]],
     partition: ComponentPartition,
     dependencies: DependencyScan,
-) -> list[RuleFinding]:
+) -> list[ProjectPolicyFinding]:
     if not isinstance(policy, dict):
         return []
 
@@ -123,7 +135,7 @@ def evaluate_component_dependency_policy(
         if isinstance(item, dict) and item.get("from") and item.get("to")
     }
 
-    findings: list[RuleFinding] = []
+    findings: list[ProjectPolicyFinding] = []
     for edge in dependencies.edges:
         if not edge.resolved_path:
             continue
@@ -140,13 +152,9 @@ def evaluate_component_dependency_policy(
         if permitted:
             continue
         findings.append(
-            RuleFinding(
-                rule_id="PTSIP-POL-001",
-                severity="ERROR",
-                message=(
-                    "Resolved cross-component dependency violates the declared project-specific component dependency policy. "
-                    "Project policy may strengthen universal PTSIP constraints and is enforced as part of this Enforced claim."
-                ),
+            ProjectPolicyFinding(
+                policy_id="component_dependency_policy",
+                message="Resolved cross-component dependency violates the declared project-specific component dependency policy.",
                 evidence_ids=(edge.evidence_id,),
                 source_component=source_component,
                 target_component=target_component,
