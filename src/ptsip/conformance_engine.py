@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import yaml
@@ -12,10 +13,18 @@ from .conformance import (
     _unassigned_coverage_gaps,
     evaluate_conformance as evaluate_base_conformance,
 )
+from .conformance_audit import audit_conformance_report
+from .inspection.dependencies import DependencyScan
 from .inspection.dependencies_030 import scan_dependency_edges
 from .lifecycle_evidence import evaluate_lifecycle_evidence
+from .model import EvidenceNodeScope, ResolutionStatus
 from .repository.discover import discover_repository
-from .repository.snapshot import repository_files
+from .review_evidence import (
+    evaluate_agent_decisions,
+    load_agent_decisions,
+    load_external_evidence,
+    merge_external_dependencies,
+)
 from .validation.components import partition_components
 from .validation.profile import find_profile, validate_profile
 from .validation.rules import evaluate_component_dependency_policy, evaluate_declared_dependency_boundaries
@@ -43,43 +52,84 @@ def _recalculate_outcome(report: dict[str, object]) -> None:
         report["outcome"] = "CONFORMANT"
 
 
-def _unsupported_language_gaps(root: Path, components: list[dict[str, object]], assignments: dict[str, str]) -> list[dict[str, object]]:
-    classifications = {
-        str(component.get("id")): str(component.get("classification"))
-        for component in components
-        if component.get("id") and component.get("classification")
-    }
-    _mode, paths, _errors = repository_files(root)
-    go_files = [path for path in paths if Path(path).suffix.lower() == ".go" and classifications.get(assignments.get(path)) in {"PRODUCT", "TOOLCHAIN"}]
-    cs_files = [path for path in paths if Path(path).suffix.lower() == ".cs" and classifications.get(assignments.get(path)) in {"PRODUCT", "TOOLCHAIN"}]
+def _externally_supplemented_native_ids(native: DependencyScan, external_edges: tuple) -> set[str]:
+    resolved_external = [
+        edge
+        for edge in external_edges
+        if edge.resolution in {ResolutionStatus.RESOLVED, ResolutionStatus.EXTERNAL}
+        and edge.target_scope != EvidenceNodeScope.UNRESOLVED_TARGET
+    ]
+    supplemented: set[str] = set()
+    for native_edge in native.edges:
+        if native_edge.resolution not in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
+            continue
+        if any(
+            external.source == native_edge.source
+            and external.target == native_edge.target
+            and external.edge_type == native_edge.edge_type
+            for external in resolved_external
+        ):
+            supplemented.add(native_edge.evidence_id)
+    return supplemented
+
+
+def _external_conflict_gaps(native: DependencyScan, external_edges: tuple) -> list[dict[str, object]]:
     gaps: list[dict[str, object]] = []
-    if go_files:
-        gaps.append(
-            {
-                "id": "language-coverage:go-source",
-                "blocking": True,
-                "rule_ids": ["PTSIP-DEP-001", "PTSIP-EVD-003"],
-                "evidence_ids": [f"unsupported:go:{path}" for path in go_files[:50]],
-                "message": f"{len(go_files)} classified Go source file(s) are present but Go source dependency analysis is not implemented in this Tool 0.3.0 tranche.",
-            }
-        )
-    if cs_files:
-        gaps.append(
-            {
-                "id": "language-coverage:dotnet-source",
-                "blocking": True,
-                "rule_ids": ["PTSIP-DEP-001", "PTSIP-EVD-003"],
-                "evidence_ids": [f"unsupported:dotnet-source:{path}" for path in cs_files[:50]],
-                "message": f"{len(cs_files)} classified C# source file(s) are present; .csproj ProjectReference evidence is supported but source-level .NET dependency coverage remains incomplete.",
-            }
-        )
+    for external in external_edges:
+        for observed in native.edges:
+            if observed.source != external.source or observed.target != external.target or observed.edge_type != external.edge_type:
+                continue
+            if observed.resolution in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
+                continue
+            contradictory_scope = observed.target_scope != external.target_scope
+            contradictory_path = (
+                observed.resolution == ResolutionStatus.RESOLVED
+                and external.resolution == ResolutionStatus.RESOLVED
+                and observed.resolved_path != external.resolved_path
+            )
+            if not (contradictory_scope or contradictory_path):
+                continue
+            gaps.append(
+                {
+                    "id": "external-evidence:conflict:" + hashlib.sha256((observed.evidence_id + external.evidence_id).encode()).hexdigest()[:16],
+                    "blocking": True,
+                    "rule_ids": ["PTSIP-EVD-002", "PTSIP-EVD-003", "PTSIP-EVD-004"],
+                    "evidence_ids": [observed.evidence_id, external.evidence_id],
+                    "message": "Imported external dependency evidence contradicts resolved native repository evidence and therefore cannot override it silently.",
+                }
+            )
     return gaps
+
+
+def _external_input_gaps(external_load) -> list[dict[str, object]]:
+    return [
+        {
+            "id": "external-evidence:invalid:" + hashlib.sha256((issue.source_path + issue.message).encode()).hexdigest()[:16],
+            "blocking": True,
+            "rule_ids": ["PTSIP-EVD-003", "PTSIP-EVD-004"],
+            "evidence_ids": [f"external-input:{issue.source_path}"],
+            "message": f"Explicit external evidence input is unusable for strict conformance: {issue.message}",
+        }
+        for issue in external_load.issues
+    ]
+
+
+def _coverage_without_supplemented(gaps: list[dict[str, object]], supplemented_ids: set[str]) -> list[dict[str, object]]:
+    result: list[dict[str, object]] = []
+    for gap in gaps:
+        evidence_ids = {str(item) for item in gap.get("evidence_ids", [])}
+        if str(gap.get("id", "")).startswith("dependency-target:") and evidence_ids & supplemented_ids:
+            continue
+        result.append(gap)
+    return result
 
 
 def evaluate_conformance(
     path: str | Path = ".",
     profile_path: str | Path | None = None,
     artifact_evidence_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
+    agent_decision_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
+    external_evidence_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
 ) -> ConformanceResult:
     base = evaluate_base_conformance(path, profile_path, artifact_evidence_paths)
     report = base.report
@@ -87,8 +137,12 @@ def evaluate_conformance(
     root = Path(repo.root).resolve()
     profile = find_profile(root, profile_path)
     validation = validate_profile(root, profile_path)
-    dependencies = scan_dependency_edges(root)
+
+    native_dependencies = scan_dependency_edges(root)
+    external_load = load_external_evidence(external_evidence_paths, repo)
+    dependencies = merge_external_dependencies(native_dependencies, external_load)
     report["dependencies"] = dependencies.as_dict()
+    report["external_evidence"] = external_load.as_dict()
 
     diagnostics = list(report.get("diagnostics", [])) if isinstance(report.get("diagnostics"), list) else []
     diagnostics = [
@@ -114,6 +168,9 @@ def evaluate_conformance(
         "build-resolution:",
         "lifecycle:",
         "language-coverage:",
+        "agent-decision:",
+        "external-evidence:",
+        "conformance-audit:",
     )
     blocking = [item for item in blocking if not (isinstance(item, dict) and str(item.get("id", "")).startswith(replace_prefixes))]
     non_blocking = [item for item in non_blocking if not (isinstance(item, dict) and str(item.get("id", "")).startswith(replace_prefixes))]
@@ -122,6 +179,14 @@ def evaluate_conformance(
     if not isinstance(evaluators, dict):
         evaluators = {}
         report["evaluators"] = evaluators
+    evaluators["external_evidence_import"] = {
+        "status": "NOT_APPLICABLE" if not external_evidence_paths else ("BLOCKED" if external_load.issues else "RAN"),
+        "reason": None if not external_load.issues else "EXTERNAL_EVIDENCE_INVALID_OR_STALE",
+        "document_count": len(external_load.documents),
+        "edge_count": len(external_load.edges),
+    }
+    blocking.extend(_external_input_gaps(external_load))
+    blocking.extend(_external_conflict_gaps(native_dependencies, external_load.edges))
 
     components: list[dict[str, object]] = []
     payload: dict[str, object] | None = None
@@ -132,12 +197,25 @@ def evaluate_conformance(
         if isinstance(declared, list):
             components = [item for item in declared if isinstance(item, dict)]
 
+    agent_load = load_agent_decisions(agent_decision_paths)
+    agent_report, agent_gaps = evaluate_agent_decisions(agent_load, components)
+    report["agent_decisions"] = agent_report
+    blocking.extend(agent_gaps)
+    evaluators["agent_decision_review"] = {
+        "status": "NOT_APPLICABLE" if not agent_decision_paths else ("BLOCKED" if agent_load.issues else "RAN"),
+        "reason": None if not agent_load.issues else "AGENT_DECISION_INPUT_INVALID",
+        "document_count": len(agent_load.documents),
+    }
+
     if components:
         partition = partition_components(root, components)
         boundary_findings = evaluate_declared_dependency_boundaries(components, partition, dependencies)
         diagnostics.extend(_finding_diagnostic(item, "declared-dependency-boundaries") for item in boundary_findings)
-        blocking.extend(item for item in _dependency_coverage_gaps(dependencies, components, partition) if item.get("blocking"))
-        non_blocking.extend(item for item in _dependency_coverage_gaps(dependencies, components, partition) if not item.get("blocking"))
+        dependency_gaps = _dependency_coverage_gaps(dependencies, components, partition)
+        supplemented = _externally_supplemented_native_ids(native_dependencies, external_load.edges)
+        dependency_gaps = _coverage_without_supplemented(dependency_gaps, supplemented)
+        blocking.extend(item for item in dependency_gaps if item.get("blocking"))
+        non_blocking.extend(item for item in dependency_gaps if not item.get("blocking"))
         ownership_gaps = _unassigned_coverage_gaps(partition)
         blocking.extend(item for item in ownership_gaps if item.get("blocking"))
         non_blocking.extend(item for item in ownership_gaps if not item.get("blocking"))
@@ -182,18 +260,9 @@ def evaluate_conformance(
         }
         blocking.extend(lifecycle.blocking_gaps)
         report["lifecycle"] = lifecycle.as_dict()
-
-        assignments = {item.path: item.component_id for item in partition.assignments}
-        blocking.extend(_unsupported_language_gaps(root, components, assignments))
     else:
-        evaluators["independent_build_resolution"] = {
-            "status": "BLOCKED",
-            "reason": "COMPONENT_DECLARATIONS_REQUIRED",
-        }
-        evaluators["lifecycle_independence"] = {
-            "status": "BLOCKED",
-            "reason": "COMPONENT_DECLARATIONS_REQUIRED",
-        }
+        evaluators["independent_build_resolution"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
+        evaluators["lifecycle_independence"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
         report["build_resolution"] = {
             "status": "BLOCKED",
             "reason": "COMPONENT_DECLARATIONS_REQUIRED",
@@ -212,4 +281,23 @@ def evaluate_conformance(
     coverage["blocking_gaps"] = blocking
     coverage["non_blocking_gaps"] = non_blocking
     _recalculate_outcome(report)
+
+    audit = audit_conformance_report(report)
+    report["audit"] = audit
+    evaluators["conformance_report_audit"] = {
+        "status": "RAN" if audit["status"] == "PASS" else "BLOCKED",
+        "reason": None if audit["status"] == "PASS" else "REPORT_CONTRACT_AUDIT_FAILED",
+        "problem_count": audit["problem_count"],
+    }
+    if audit["status"] != "PASS":
+        coverage["blocking_gaps"].append(
+            {
+                "id": "conformance-audit:report-contract",
+                "blocking": True,
+                "rule_ids": ["PTSIP-DIA-001", "PTSIP-EVD-003"],
+                "evidence_ids": ["conformance-audit:report-contract"],
+                "message": "Internal conformance report contract audit failed: " + "; ".join(str(item) for item in audit["problems"][:10]),
+            }
+        )
+        _recalculate_outcome(report)
     return ConformanceResult(report=report)
