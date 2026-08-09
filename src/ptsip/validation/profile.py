@@ -67,6 +67,27 @@ def _root_overlap_errors(payload: dict[str, object]) -> list[str]:
     return errors
 
 
+def _component_policy_errors(payload: dict[str, object], component_ids: set[str]) -> list[str]:
+    policy = payload.get("component_dependency_policy")
+    if not isinstance(policy, dict):
+        return []
+    errors: list[str] = []
+    for relation_kind in ("allow", "deny"):
+        relations = policy.get(relation_kind, [])
+        if not isinstance(relations, list):
+            continue
+        for index, relation in enumerate(relations):
+            if not isinstance(relation, dict):
+                continue
+            for endpoint in ("from", "to"):
+                value = relation.get(endpoint)
+                if isinstance(value, str) and value not in component_ids:
+                    errors.append(
+                        f"component_dependency_policy.{relation_kind}.{index}.{endpoint}: component {value!r} is not declared"
+                    )
+    return errors
+
+
 def validate_profile(repository_root: str | Path, explicit: str | Path | None = None) -> ValidationResult:
     repository_root = Path(repository_root).resolve()
     profile = find_profile(repository_root, explicit)
@@ -78,7 +99,7 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
             warnings=["Read-only inspection and pilot commands do not require a profile."],
         )
     try:
-        payload = yaml.safe_load(profile.read_text(encoding="utf-8"))
+        payload = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
     except Exception as exc:
         return ValidationResult(str(profile), False, [f"Unable to parse profile: {exc}"], [])
     if not isinstance(payload, dict):
@@ -100,8 +121,8 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
         if not revision:
             warnings.append("Specification binding has no immutable revision; reproducibility is weaker for a draft specification.")
         elif SPEC_REVISION != "UNRELEASED" and revision != SPEC_REVISION:
-            warnings.append(
-                f"Profile revision {revision!r} differs from tooling snapshot {SPEC_REVISION!r}."
+            errors.append(
+                f"Profile revision {revision!r} is not supported by tooling snapshot {SPEC_REVISION!r}."
             )
 
         errors.extend(_root_overlap_errors(payload))
@@ -112,6 +133,8 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
             duplicates = sorted({item for item in component_ids if component_ids.count(item) > 1})
             if duplicates:
                 errors.append(f"components: duplicate component ids: {', '.join(duplicates)}")
+            component_set = set(component_ids)
+            errors.extend(_component_policy_errors(payload, component_set))
             partition = partition_components(repository_root, [item for item in components if isinstance(item, dict)])
             details["component_partition"] = partition.as_dict()
             if partition.conflicts:
@@ -126,15 +149,6 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
                 warnings.append(
                     f"{len(partition.unassigned_files)} tracked file(s) are outside declared component selectors; this is not automatically a PTSIP violation."
                 )
-            component_set = set(component_ids)
-            for exception in payload.get("exceptions", []):
-                if not isinstance(exception, dict):
-                    continue
-                missing = sorted(set(exception.get("affected_components", [])) - component_set)
-                if missing:
-                    errors.append(
-                        f"exceptions.{exception.get('id', '<unknown>')}: affected component(s) are not declared: {', '.join(missing)}"
-                    )
         else:
             warnings.append(
                 "Profile uses boundary roots only. This shorthand cannot express nested/file-level component ownership; use components when precise partitioning is required."

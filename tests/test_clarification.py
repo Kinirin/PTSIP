@@ -12,6 +12,9 @@ from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
 
 
+SPEC_REVISION = "14a0c2f54bb486de6a109979224f998b04fd04a3"
+
+
 def _git(repo: Path, *args: str) -> None:
     subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -81,7 +84,7 @@ def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
 def test_declared_component_purpose_suppresses_question(tmp_path: Path):
     repo = _tool_repo(tmp_path)
     (repo / "ptsip.yaml").write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\ncomponents:\n  - id: generator\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: build_generation\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
+        f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: build_generation\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     _commit_all(repo)

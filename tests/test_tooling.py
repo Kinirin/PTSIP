@@ -32,10 +32,10 @@ def _commit_all(repo: Path) -> None:
 
 def test_spec_identity():
     spec = current_spec_identity()
-    assert spec.tool_version == "0.2.2"
+    assert spec.tool_version == "0.2.3"
     assert spec.version == "0.2.0-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
-    assert spec.revision
+    assert spec.revision == "14a0c2f54bb486de6a109979224f998b04fd04a3"
 
 
 def test_inventory_reports_parse_failures(tmp_path: Path):
@@ -90,6 +90,10 @@ def test_pilot_v2_writes_external_state_only(tmp_path: Path, monkeypatch):
         "NEUTRAL_CONTRACT",
     ]
     assert "UNKNOWN" in result.report["classification"]["decision_statuses"]
+    evaluator = result.report["evaluation"]["declared_dependency_boundaries"]
+    assert evaluator["status"] == "BLOCKED"
+    assert evaluator["reason"] == "NO_PROFILE"
+    assert evaluator["finding_count"] is None
 
 
 def test_component_profile_allows_specific_nested_override(tmp_path: Path):
@@ -101,7 +105,7 @@ def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"14a0c2f54bb486de6a109979224f998b04fd04a3\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
@@ -112,7 +116,7 @@ def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     assert owners["src/install/plugin_build.py"] == "plugin-builder"
 
 
-def test_exception_schema_requires_normative_fields(tmp_path: Path):
+def test_legacy_exception_waiver_is_rejected(tmp_path: Path):
     repo = tmp_path / "repo"
     _init_git(repo)
     (repo / "src").mkdir()
@@ -120,12 +124,12 @@ def test_exception_schema_requires_normative_fields(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions:\n  - id: EX-1\n    rule: PTSIP-DEP-001\n    reason: legacy\n""",
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
     assert not result.valid
-    assert any("affected_components" in error for error in result.errors)
+    assert any("exceptions" in error and "unexpected" in error.lower() for error in result.errors)
 
 
 def test_python_dependency_edge_is_preserved(tmp_path: Path):
@@ -141,6 +145,8 @@ def test_python_dependency_edge_is_preserved(tmp_path: Path):
     assert edge.resolved_path == "src/app.py"
     assert edge.edge_type.value == "IMPORTS"
     assert edge.phase.value == "UNKNOWN"
+    assert edge.target_scope.value == "PROJECT_COMPONENT"
+    assert edge.provenance.value == "OBSERVED"
 
 
 def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
@@ -152,4 +158,5 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["format"] == "ptsip-pilot-report/v2"
+    assert payload["tool"]["version"] == "0.2.3"
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
