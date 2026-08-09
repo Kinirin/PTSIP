@@ -74,6 +74,7 @@ ptsip inspect .
 ptsip pilot .
 ptsip validate .
 ptsip clarify .
+ptsip conform .
 ```
 
 For source development:
@@ -132,6 +133,44 @@ ptsip clarify . --publish github-issue --repo owner/repository
 
 GitHub publishing requires an authenticated `gh` CLI only for the explicit publish operation. Publication state used to prevent duplicate clarification Issues is stored under `PTSIP_HOME/clarifications`, outside the Consumer Repository. The clarification workflow does not collect Issue answers, interpret free-form replies, or automatically convert them into an architectural classification.
 
+## Enforced conformance evaluation
+
+`ptsip conform` combines the Project Profile with observed repository evidence and explicitly supplied artifact/review evidence. It reports only `CONFORMANT`, `NON_CONFORMANT`, or `INCOMPLETE`; `NOT_EVALUATED` remains an execution state used by workflows such as Pilot evidence collection.
+
+A basic machine-readable run is:
+
+```powershell
+ptsip conform . --artifact-evidence path/to/artifact-evidence.json --json
+```
+
+Explicit evidence inputs are repeatable and read-only:
+
+```powershell
+ptsip conform . `
+  --artifact-evidence product-artifact.json `
+  --agent-decision component-review.json `
+  --external-evidence validator-evidence.json `
+  --json
+```
+
+- `--artifact-evidence` accepts `ptsip-artifact-evidence/v1` and evaluates Product packaging without treating the artifact producer as the artifact owner.
+- `--agent-decision` accepts the bound `ptsip-agent-classification` decision contract. Agent decisions are review evidence and never silently overwrite the Project Profile.
+- `--external-evidence` accepts the Reference Tool `ptsip-external-evidence/v1` input envelope. The producer, Consumer Repository identity, exact repository revision, evidence provenance, and imported-file SHA-256 are preserved. Stale or contradictory evidence blocks a strict claim instead of overriding native evidence.
+
+The Tool collects dependency evidence from Python, JavaScript/TypeScript and npm, Go source/modules, .NET project/source metadata, and GitHub Actions local-script invocations. It also evaluates declared component manifests for independent build resolution and uses path-scoped release automation plus declared release/compatibility ownership as bounded lifecycle evidence.
+
+`CONFORMANT` is emitted only when applicable mandatory-rule evidence is sufficient for the supported evaluation scope and the final diagnostic/coverage contract audit passes. A definite mandatory violation produces `NON_CONFORMANT`; an unresolved target, invalid/stale evidence input, incomplete artifact evidence, ambiguous build/lifecycle evidence, or another gap capable of hiding a mandatory violation produces `INCOMPLETE`.
+
+CLI exit codes for `ptsip conform` are:
+
+| Exit code | Outcome |
+| --- | --- |
+| `0` | `CONFORMANT` |
+| `5` | `NON_CONFORMANT` |
+| `6` | `INCOMPLETE` |
+
+The Tool does not restructure the Consumer Repository, auto-approve architecture exceptions, or convert Human Clarification answers into classifications.
+
 ## Reference Tool
 
 The independently versioned Reference Tool is implemented under [`src/ptsip/`](src/ptsip/). The repository is shared with the Specification, but their release lifecycles remain separate.
@@ -141,12 +180,16 @@ The current tooling focuses on:
 - read-only repository inspection;
 - Pilot evidence collection;
 - repository snapshot and non-intrusion evidence;
-- component and dependency evidence;
+- component and multi-language dependency evidence;
 - deterministic human clarification for missing architectural intent;
 - project-profile validation;
-- constrained coding-agent classification decisions.
+- explicit Product Artifact evidence ingestion and packaging evaluation;
+- independent build-resolution and bounded lifecycle evidence evaluation;
+- constrained coding-agent decision ingestion as review evidence;
+- revision-bound external dependency evidence import with provenance;
+- deterministic Enforced Conformance evaluation and diagnostic/coverage auditing.
 
-Product artifact inspection and complete automated **Enforced Conformance** evaluation are not claimed unless explicitly documented by the applicable Specification and Tool release.
+Conformance is evidence-relative rather than detection-relative: unsupported, unresolved, contradictory, stale, or incomplete evidence that can conceal an applicable `MUST`/`MUST NOT` result prevents `CONFORMANT` even when no violation has been detected.
 
 Pilot state is stored outside the repository by default (`%LOCALAPPDATA%\PTSIP` on Windows and the platform-equivalent user state directory elsewhere). `PTSIP_HOME` can override that location.
 
@@ -158,7 +201,7 @@ Tool releases use the `tool-v*` tag/release namespace. Specification releases ma
 | --- | --- | --- |
 | Normative Specification | [`spec/`](spec/) | Architecture rules, terminology, governance, and conformance requirements. |
 | Machine-readable rules | [`registry/`](registry/) | Canonical terminology and rule registry. |
-| Schemas | [`schemas/`](schemas/) | Project profile and coding-agent decision schemas. |
+| Schemas | [`schemas/`](schemas/) | Project profile, diagnostics, artifact evidence, and coding-agent decision schemas. |
 | Reference architecture | [`reference/`](reference/) | Informative architecture guidance. |
 | Adoption guidance | [`adoption/`](adoption/) | Migration and adoption sequence. |
 | Agent contract | [`agents/`](agents/) | Concise rules for coding agents. |
