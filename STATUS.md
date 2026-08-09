@@ -7,9 +7,10 @@
 - External tooling model: Defined
 - Reference Python tooling: `0.1.0a1` integrated in this canonical repository
 - Reference Tool package name: `ptsip`
-- PyPI publication: Pending
+- PyPI publication: `0.1.0a1` published via Trusted Publishing
 - Tool CI: Passing on Python 3.11–3.13
 - Tool release namespace: `tool-v*`
+- First Tool release: `tool-v0.1.0a1`, published 2026-08-09
 - First external conformance implementation: Not yet recorded
 - Reuse license: Apache License 2.0
 
@@ -20,11 +21,11 @@
 - validate the Agent Contract against real coding-agent tasks;
 - stabilize rule and schema semantics;
 - publish tagged specification releases;
-- publish and exercise reference tooling through its independent release lifecycle.
+- exercise the published reference tooling against at least one real Consumer Repository.
 
 ## Reference Tool 0.1.0a1 status
 
-Implemented:
+Published:
 
 - package/build metadata for PyPI distribution `ptsip`;
 - `ptsip --version` and `ptsip spec`;
@@ -34,9 +35,10 @@ Implemented:
 - `ptsip validate` for existing project profiles;
 - embedded PTSIP 0.2.0-draft schema/registry snapshot;
 - automated tests and Tool-specific GitHub Actions workflows;
-- integration into the canonical `kwaksinwoo01/ptsip` repository.
+- integration into the canonical `kwaksinwoo01/ptsip` repository;
+- PyPI Trusted Publisher binding for `kwaksinwoo01/ptsip` / `tooling-release.yml` / `pypi`;
+- first prerelease `tool-v0.1.0a1` published successfully through the `tooling-release` workflow.
 
-Pending before public `pip install ptsip`:
+Next validation step:
 
-- configure the PyPI Trusted Publisher for repository `kwaksinwoo01/ptsip` and workflow `tooling-release.yml`;
-- publish the first `tool-v0.1.0a1` release.
+- install `ptsip==0.1.0a1` in a clean environment and exercise it against the first real PTSIP Pilot Repository.
