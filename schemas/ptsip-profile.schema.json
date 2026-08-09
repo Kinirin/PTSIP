@@ -3,20 +3,49 @@
   "$id": "https://raw.githubusercontent.com/kwaksinwoo01/ptsip/main/schemas/ptsip-profile.schema.json",
   "title": "PTSIP Project Profile",
   "type": "object",
-  "required": ["ptsip", "policies"],
-  "anyOf": [
-    {"required": ["boundaries"]},
-    {"required": ["components"]}
+  "required": [
+    "ptsip",
+    "policies"
+  ],
+  "oneOf": [
+    {
+      "required": [
+        "boundaries"
+      ],
+      "not": {
+        "required": [
+          "components"
+        ]
+      }
+    },
+    {
+      "required": [
+        "components"
+      ],
+      "not": {
+        "required": [
+          "boundaries"
+        ]
+      }
+    }
   ],
   "properties": {
     "ptsip": {
       "type": "object",
-      "required": ["version", "specification"],
+      "required": [
+        "version",
+        "specification"
+      ],
       "properties": {
-        "version": {"type": "string", "const": "0.2.0-draft"},
+        "version": {
+          "type": "string",
+          "const": "0.2.0-draft"
+        },
         "specification": {
           "type": "object",
-          "required": ["source"],
+          "required": [
+            "source"
+          ],
           "properties": {
             "source": {
               "type": "string",
@@ -25,7 +54,7 @@
             "revision": {
               "type": "string",
               "minLength": 1,
-              "description": "Optional immutable commit SHA or release identifier used to bind validation to an exact specification snapshot."
+              "description": "Optional for generic profile validation; required by Enforced Conformance when evaluating a mutable draft family."
             }
           },
           "additionalProperties": false
@@ -35,18 +64,32 @@
     },
     "boundaries": {
       "type": "object",
-      "required": ["product", "toolchain"],
+      "required": [
+        "product",
+        "toolchain"
+      ],
       "properties": {
-        "product": {"$ref": "#/$defs/rootSet"},
-        "toolchain": {"$ref": "#/$defs/rootSet"},
-        "neutral_contract": {"$ref": "#/$defs/rootSet"}
+        "product": {
+          "$ref": "#/$defs/rootSet"
+        },
+        "toolchain": {
+          "$ref": "#/$defs/rootSet"
+        },
+        "neutral_contract": {
+          "$ref": "#/$defs/rootSet"
+        }
       },
       "additionalProperties": false
     },
     "components": {
       "type": "array",
       "minItems": 1,
-      "items": {"$ref": "#/$defs/component"}
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "component_dependency_policy": {
+      "$ref": "#/$defs/componentDependencyPolicy"
     },
     "policies": {
       "type": "object",
@@ -56,32 +99,56 @@
         "independent_build_resolution"
       ],
       "properties": {
-        "product_to_toolchain_runtime_dependency": {"const": "deny"},
-        "toolchain_in_product_package": {"const": "deny"},
-        "independent_build_resolution": {"const": "required"},
+        "product_to_toolchain_runtime_dependency": {
+          "const": "deny"
+        },
+        "toolchain_in_product_package": {
+          "const": "deny"
+        },
+        "independent_build_resolution": {
+          "const": "required"
+        },
         "shared_executable_cross_boundary": {
-          "enum": ["deny", "exception_required"]
+          "const": "deny"
         },
         "neutral_contract_sharing": {
-          "enum": ["allow", "deny"]
+          "enum": [
+            "allow",
+            "deny"
+          ]
         }
       },
       "additionalProperties": false
-    },
-    "exceptions": {
-      "type": "array",
-      "items": {"$ref": "#/$defs/exception"}
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "component_dependency_policy"
+        ]
+      },
+      "then": {
+        "required": [
+          "components"
+        ]
+      }
+    }
+  ],
   "$defs": {
     "rootSet": {
       "type": "object",
-      "required": ["roots"],
+      "required": [
+        "roots"
+      ],
       "properties": {
         "roots": {
           "type": "array",
           "minItems": 1,
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         }
       },
@@ -89,84 +156,152 @@
     },
     "component": {
       "type": "object",
-      "required": ["id", "classification", "include", "purpose"],
+      "required": [
+        "id",
+        "classification",
+        "include",
+        "purpose"
+      ],
       "properties": {
-        "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
         "classification": {
-          "enum": ["PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"]
+          "enum": [
+            "PRODUCT",
+            "TOOLCHAIN",
+            "NEUTRAL_CONTRACT"
+          ]
         },
         "include": {
           "type": "array",
           "minItems": 1,
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "exclude": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
-        "purpose": {"type": "string", "minLength": 1},
-        "shipped": {"type": "boolean"},
-        "executable": {"type": "boolean"},
-        "release_owner": {"type": "string", "minLength": 1},
-        "compatibility_owner": {"type": "string", "minLength": 1},
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shipped": {
+          "type": "boolean"
+        },
+        "executable": {
+          "type": "boolean"
+        },
+        "release_owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compatibility_owner": {
+          "type": "string",
+          "minLength": 1
+        },
         "manifests": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "consumers": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "analysis_inputs": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         }
       },
       "allOf": [
         {
           "if": {
-            "properties": {"classification": {"const": "NEUTRAL_CONTRACT"}},
-            "required": ["classification"]
+            "properties": {
+              "classification": {
+                "const": "NEUTRAL_CONTRACT"
+              }
+            },
+            "required": [
+              "classification"
+            ]
           },
           "then": {
-            "required": ["executable"],
-            "properties": {"executable": {"const": false}}
+            "required": [
+              "executable"
+            ],
+            "properties": {
+              "executable": {
+                "const": false
+              }
+            }
           }
         }
       ],
       "additionalProperties": false
     },
-    "exception": {
+    "componentDependencyPolicy": {
       "type": "object",
       "required": [
-        "id",
-        "rule",
-        "reason",
-        "affected_components",
-        "coupling",
-        "owner",
-        "review_condition",
-        "decision"
+        "default"
       ],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "rule": {"type": "string", "pattern": "^PTSIP-[A-Z]+-[0-9]{3}$"},
-        "reason": {"type": "string", "minLength": 1},
-        "affected_components": {
-          "type": "array",
-          "minItems": 1,
-          "items": {"type": "string", "minLength": 1},
-          "uniqueItems": true
+        "default": {
+          "enum": [
+            "allow",
+            "deny"
+          ]
         },
-        "coupling": {"type": "string", "minLength": 1},
-        "owner": {"type": "string", "minLength": 1},
-        "review_condition": {"type": "string", "minLength": 1},
-        "decision": {"type": "string", "minLength": 1}
+        "allow": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentDependencyRelation"
+          }
+        },
+        "deny": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentDependencyRelation"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "componentDependencyRelation": {
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "additionalProperties": false
     }

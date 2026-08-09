@@ -35,6 +35,8 @@ A tooling implementation that embeds or evaluates a draft specification MUST ide
 
 A tooling release version is independent from the specification family label. For example, PTSIP Specification `0.2.0-draft` MAY be implemented by PTSIP Tool `0.2.0`.
 
+A newer normative snapshot inside the same draft family does not retroactively change the semantics implemented by an already published Tool release. That Tool remains bound to its declared immutable revision until a later Tool release explicitly binds the newer snapshot.
+
 Once a specification snapshot is declared stable or tagged as a stable specification release, subsequent normative additions or incompatible changes MUST follow the MAJOR/MINOR/PATCH policy above rather than silently changing that stable version.
 
 ## 4. Rule identity
@@ -58,6 +60,8 @@ Every specification change SHOULD be classified as:
 
 Draft-family evolution MUST still record its change category and immutable revision even when the draft family label is retained.
 
+A draft-family PR that changes normative text, schema, registry vocabulary, or conformance semantics SHOULD update all affected canonical assets together so the merge revision is internally coherent.
+
 ## 6. Decision records
 
 A normative architecture change SHOULD have an ADR or equivalent decision record describing:
@@ -69,16 +73,19 @@ A normative architecture change SHOULD have an ADR or equivalent decision record
 - compatibility impact;
 - affected rule IDs.
 
-## 7. Project exceptions
+Pilot-driven changes SHOULD identify which conclusions are general specification evidence versus Consumer Repository-specific findings or Tool implementation gaps.
 
-Projects MAY record exceptions, but exceptions do not erase the original rule.
+## 7. Violations and remediation
 
-An exception MUST identify the exact violated rule and MUST be reviewable.
+PTSIP does not define a waiver mechanism that authorizes violation of a PTSIP `MUST` or `MUST NOT` rule.
 
-Permanent exceptions SHOULD be treated as evidence that either:
+Projects MAY use their own governance systems to record architectural debt, approval history, ownership, target state, review conditions, or migration work. Those records remain project governance metadata; they MUST NOT change the PTSIP conformance result produced from the applicable rule and evidence.
 
-1. the project is not strictly conformant, or
-2. the specification may require a future extension/profile.
+A confirmed mandatory-rule violation remains `NON_CONFORMANT` until the architecture is remediated and reevaluated.
+
+`PTSIP-EXC-001` is retired/superseded for the new immutable snapshot. Earlier exception records remain historical evidence interpreted under the immutable specification revision that defined that rule.
+
+Repository-specific optional policy may define stricter local constraints and local governance, but local approval MUST NOT weaken or waive universal PTSIP mandatory rules.
 
 ## 8. Tooling relationship
 
@@ -88,6 +95,8 @@ A PTSIP tooling implementation MUST identify which specification family and immu
 
 External tooling SHOULD preserve Consumer Repository Non-Intrusion and SHOULD keep tool-owned state outside the Consumer Repository by default.
 
+Tool adapter coverage does not define specification scope. Missing implementation support for a language, package manager, or artifact format is a Tool/evidence coverage condition unless the normative specification itself lacks the required adapter-independent semantics.
+
 ## 9. Stability policy
 
 The 0.x series is experimental. Terminology and schemas may change.
@@ -95,8 +104,10 @@ The 0.x series is experimental. Terminology and schemas may change.
 A 1.0 release SHOULD NOT occur until:
 
 - core rule meanings are stable;
+- multiple materially different real repositories have exercised the model;
 - at least one real repository has adopted the profile;
-- conformance checks have been exercised;
+- conformance checks have been exercised with rule-relative evidence coverage;
+- Product Artifact packaging checks have been exercised;
 - agent instructions have been tested against real change tasks;
 - reference tooling or equivalent enforcement has been exercised.
 

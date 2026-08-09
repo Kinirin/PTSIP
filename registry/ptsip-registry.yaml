@@ -9,11 +9,11 @@ ptsip_registry:
 
   classifications:
     - id: PRODUCT
-      meaning: "Product-owned SDK or SDK-like executable/library component."
+      meaning: "Product-owned SDK, executable, library, component, or Product Artifact."
     - id: TOOLCHAIN
-      meaning: "Development-toolchain-owned SDK or SDK-like executable/library component."
+      meaning: "Development-toolchain-owned SDK, executable, library, or component."
     - id: NEUTRAL_CONTRACT
-      meaning: "Non-owning declarative contract artifact consumable by both planes."
+      meaning: "Non-owning declarative contract artifact without hidden executable lifecycle ownership."
 
   decision_statuses:
     - id: RESOLVED
@@ -25,17 +25,95 @@ ptsip_registry:
     - id: INCOMPLETE
       meaning: "Required evidence or analysis coverage is incomplete."
 
+  conformance_outcomes:
+    - id: CONFORMANT
+      meaning: "Applicable mandatory evidence is sufficient and no applicable PTSIP MUST/MUST NOT violation is established."
+    - id: NON_CONFORMANT
+      meaning: "Sufficient evidence establishes at least one applicable MUST/MUST NOT violation."
+    - id: INCOMPLETE
+      meaning: "Blocking evidence, ownership, adapter, artifact, or snapshot gaps prevent a conformant conclusion and no definite violation has already settled the result."
+
+  evidence_provenance:
+    - id: DECLARED
+      meaning: "Present in project/profile/manifest/configuration declaration."
+    - id: OBSERVED
+      meaning: "Directly observed from repository, artifact, runtime, or static evidence."
+    - id: INFERRED
+      meaning: "Derived from bounded reasoning and explicitly marked as inferred."
+
+  evidence_node_scopes:
+    - id: PROJECT_COMPONENT
+      meaning: "Target is a project-owned PTSIP Component."
+    - id: EXTERNAL_DEPENDENCY
+      meaning: "Target is separately governed and outside project-owned PTSIP classification scope."
+    - id: PLATFORM
+      meaning: "Target is language/platform/operating-system infrastructure outside project-owned PTSIP classification scope."
+    - id: UNRESOLVED_TARGET
+      meaning: "Target identity is not sufficiently resolved."
+
+  edge_types:
+    - id: IMPORTS
+      meaning: "Code names/imports another module or package namespace."
+    - id: LINKS
+      meaning: "Build/link metadata links one compiled/project component to another."
+    - id: LOADS
+      meaning: "A component dynamically loads another module, plugin, library, or artifact."
+    - id: INVOKES
+      meaning: "A component or automation executes another component/process/script."
+    - id: READS
+      meaning: "A component consumes another source/data/artifact as data rather than executable reuse."
+    - id: GENERATES
+      meaning: "A component produces generated source, metadata, contract, or artifact from an input."
+    - id: PACKAGES
+      meaning: "A component or packaging process places content into an artifact."
+    - id: TESTS
+      meaning: "A test component/evaluator exercises another component."
+    - id: PUBLISHES
+      meaning: "A component or release process publishes/distributes an artifact or release record."
+
+  lifecycle_phases:
+    - id: RUNTIME
+      meaning: "Required or exercised as part of shipped Product/runtime execution."
+    - id: BUILD
+      meaning: "Required to compile, generate, assemble, or create build outputs."
+    - id: TEST
+      meaning: "Required to execute tests or test-only validation."
+    - id: RELEASE
+      meaning: "Required for versioning, packaging, publishing, deployment, or release orchestration."
+    - id: INSPECTION
+      meaning: "Used to inspect, analyze, validate, audit, or migrate another component."
+
   concepts:
     - id: CONSUMER_REPOSITORY
       meaning: "Repository inspected, piloted, validated, or governed using PTSIP."
     - id: EXTERNAL_PTSIP_TOOLING
       meaning: "PTSIP tooling operated outside the Consumer Repository project-owned source tree by default."
     - id: SPECIFICATION_BINDING
-      meaning: "Association between a project PTSIP declaration and its canonical specification family/version plus immutable revision when required."
+      meaning: "Association between a project PTSIP declaration and canonical specification family/version plus immutable revision when required."
     - id: PTSIP_COMPONENT
       meaning: "Architectural unit to which PTSIP ownership is assigned."
     - id: EVIDENCE_SNAPSHOT
       meaning: "Observed repository state to which automated PTSIP evidence is bound."
+    - id: PRODUCT_ARTIFACT
+      meaning: "Product-owned deployable/distributable/installable/loadable output whose producer may be Toolchain-owned."
+    - id: ARTIFACT_PRODUCER
+      meaning: "Component/process that generates, packages, assembles, or publishes an artifact."
+    - id: BLOCKING_EVIDENCE_GAP
+      meaning: "Evidence gap capable of hiding whether an applicable mandatory PTSIP rule is satisfied."
+    - id: PROFILE_VALIDATION
+      meaning: "Validation of project declaration structure/semantics without asserting repository conformance."
+    - id: CONFORMANCE_EVALUATION
+      meaning: "Evaluation combining declaration and observed evidence against PTSIP rules."
+    - id: PTSIP_DIAGNOSTIC
+      meaning: "Versioned finding instance that references a stable PTSIP rule ID and evidence."
+    - id: PROJECT_COMPONENT_DEPENDENCY_POLICY
+      meaning: "Optional project-specific stricter component dependency constraints that cannot weaken universal PTSIP rules."
+
+  interoperability_formats:
+    - id: ptsip-diagnostic/v1
+      schema: "schemas/ptsip-diagnostic.schema.json"
+    - id: ptsip-artifact-evidence/v1
+      schema: "schemas/ptsip-artifact-evidence.schema.json"
 
   principles:
     - id: PTSIP-CORE-001
@@ -44,6 +122,9 @@ ptsip_registry:
   rules:
     - id: PTSIP-CLS-001
       title: "Mandatory classification"
+      severity: error
+    - id: PTSIP-CLS-002
+      title: "Coherent component boundary"
       severity: error
     - id: PTSIP-DEP-001
       title: "Product-to-Toolchain runtime dependency prohibition"
@@ -56,6 +137,9 @@ ptsip_registry:
       severity: warning
     - id: PTSIP-PKG-001
       title: "Packaging isolation"
+      severity: error
+    - id: PTSIP-ART-001
+      title: "Artifact ownership and derivation evidence"
       severity: error
     - id: PTSIP-BLD-001
       title: "Independently resolvable build environments"
@@ -87,6 +171,19 @@ ptsip_registry:
     - id: PTSIP-EVD-002
       title: "Declaration and observation are distinct"
       severity: error
+    - id: PTSIP-EVD-003
+      title: "Applicable evidence coverage"
+      severity: error
+    - id: PTSIP-EVD-004
+      title: "Evidence provenance and dependency semantics"
+      severity: error
+    - id: PTSIP-DIA-001
+      title: "Stable diagnostic identity"
+      severity: error
+    - id: PTSIP-POL-001
+      title: "Project-specific policy may strengthen but not weaken PTSIP"
+      severity: error
+  retired_rules:
     - id: PTSIP-EXC-001
       title: "Explicit exceptions"
-      severity: error
+      reason: "Superseded: mandatory-rule violations are NON_CONFORMANT until remediated; PTSIP defines no waiver path."
