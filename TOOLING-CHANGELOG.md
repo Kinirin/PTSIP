@@ -2,6 +2,24 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
+## 0.3.0 — In development
+
+Conformance-capability migration from the source-only Tool 0.2.3 baseline:
+
+- adds `ptsip conform` with `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE` outcomes and distinct CLI exit codes;
+- emits deterministic `ptsip-diagnostic/v1`-shaped diagnostics with instance identity separate from PTSIP rule identity;
+- evaluates rule-relative blocking coverage instead of treating empty findings as conformance;
+- accepts explicit read-only `ptsip-artifact-evidence/v1` inputs and evaluates Product packaging isolation without conflating artifact producer and artifact owner;
+- adds an independent build-resolution evaluator over explicitly declared component manifests, supporting Python, npm, .NET project, and Go module manifest evidence while blocking ambiguous cross-plane shared-manifest evidence;
+- adds lifecycle evidence evaluation that requires declared release/compatibility ownership and positive path-scoped release evidence, while treating workflow triggers alone as insufficient proof of lifecycle coupling or independence;
+- adds deterministic JavaScript/TypeScript source dependency evidence for static imports, CommonJS `require`, and dynamic `import()`/`require()` uncertainty;
+- adds npm manifest evidence for runtime/build dependency declarations and local package-to-package resolution;
+- routes `inspect`, `pilot`, `clarify`, and `conform` through the Tool 0.3.0 composite dependency evidence graph;
+- keeps project-specific component dependency policy findings separate from universal PTSIP diagnostics, consistent with `PTSIP-POL-001`;
+- retains Tool 0.2.2 Human Clarification's deterministic, zero-LLM semantics and Tool 0.2.3 evidence-correctness behavior as regression boundaries.
+
+Remaining 0.3.0 work before release readiness includes Go source dependency analysis, source-level .NET coverage, agent-decision ingestion, external evidence import/provenance, final coverage/diagnostic audit, documentation, and release verification.
+
 ## 0.2.3 — Source-only migration, not published
 
 Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revision `14a0c2f54bb486de6a109979224f998b04fd04a3`:
@@ -15,7 +33,7 @@ Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revisi
 - resolves GitHub Actions local scripts from effective workflow/job/step `working-directory`;
 - stops converting arbitrary GitHub Actions `run:` commands into unresolved local-script invocation edges;
 - reports declared dependency evaluator state as `RAN` or `BLOCKED` so `findings: []` cannot imply an evaluator ran when it did not;
-- synchronizes embedded profile schema and registry resources to the Tool-bound immutable Specification revision;
+- synchronizes embedded profile schema and registry resources to the Tool-bound immutable Specification snapshot;
 - aligns Project Profile validation with `boundaries XOR components`, retired PTSIP waiver semantics, exact revision binding, and project component-policy references;
 - retains Tool 0.2.2 deterministic Human Clarification behavior as a regression boundary;
 - intentionally does not add `ptsip conform`, Product Artifact adapters, JS/TS/npm/Go adapters, stable diagnostic emission, agent-decision ingestion, or external evidence import.
