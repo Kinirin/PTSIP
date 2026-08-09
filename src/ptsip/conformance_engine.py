@@ -65,7 +65,11 @@ def _externally_supplemented_native_ids(native: DependencyScan, external_edges: 
     ]
     supplemented: set[str] = set()
     for native_edge in native.edges:
-        if native_edge.resolution not in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
+        # A DYNAMIC edge has no concrete target identity by definition.  An
+        # imported document that repeats the sentinel target cannot turn that
+        # uncertainty into evidence of absence, so only native UNRESOLVED edges
+        # are eligible for strict external supplementation.
+        if native_edge.resolution != ResolutionStatus.UNRESOLVED:
             continue
         if any(
             external.source == native_edge.source
