@@ -35,3 +35,4 @@ jobs:
       - run: python -m pytest -q
       - run: ptsip --version
       - run: ptsip spec
+      - run: ptsip conform --help
