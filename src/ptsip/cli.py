@@ -6,9 +6,12 @@ import sys
 
 from .constants import TOOL_VERSION
 from .doctor import doctor
+from .inspection.components import discover_component_candidates
+from .inspection.dependencies import scan_dependency_edges
 from .inspection.inventory import collect_inventory
 from .pilot.runner import run_pilot
 from .repository.discover import discover_repository
+from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .validation.profile import validate_profile
 
@@ -36,7 +39,7 @@ def _parser() -> argparse.ArgumentParser:
     p_doctor.add_argument("path", nargs="?", default=".")
     p_doctor.add_argument("--json", action="store_true")
 
-    p_inspect = sub.add_parser("inspect", help="Read-only repository inventory")
+    p_inspect = sub.add_parser("inspect", help="Read-only repository evidence collection")
     p_inspect.add_argument("path", nargs="?", default=".")
     p_inspect.add_argument("--json", action="store_true")
 
@@ -64,18 +67,37 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if result["python_ok"] and result["target_exists"] else 2
         if args.command == "inspect":
             repo = discover_repository(args.path)
+            before = capture_snapshot(repo.root)
             inventory = collect_inventory(repo.root)
+            dependencies = scan_dependency_edges(repo.root)
+            candidates = discover_component_candidates(repo.root, inventory, dependencies)
+            after = capture_snapshot(repo.root)
+            comparison = compare_snapshots(before, after)
             payload = {
                 "repository": repo.as_dict(),
+                "snapshot": {
+                    "before": before.as_dict(),
+                    "after": after.as_dict(),
+                    "comparison": comparison.as_dict(),
+                },
+                "non_intrusion": {
+                    "status": "VERIFIED_NO_OBSERVED_CHANGE" if comparison.stable else "CHANGE_OBSERVED_DURING_ANALYSIS",
+                    "analysis_read_only_by_design": True,
+                },
                 "inventory": inventory.as_dict(),
-                "consumer_repository_modified": False,
+                "components": {
+                    "status": "CANDIDATES_ONLY",
+                    "candidates": [candidate.as_dict() for candidate in candidates],
+                },
+                "dependencies": dependencies.as_dict(),
             }
             _emit(payload, args.json)
-            return 0
+            return 0 if comparison.stable else 4
         if args.command == "pilot":
             result = run_pilot(args.path, args.report)
             _emit({**result.report, "report_path": str(result.report_path)}, args.json)
-            return 0
+            stable = bool(result.report["snapshot"]["comparison"]["stable"])
+            return 0 if stable else 4
         if args.command == "validate":
             repo = discover_repository(args.path)
             result = validate_profile(repo.root, args.profile)

@@ -1,10 +1,26 @@
 # Changelog
 
-## Unreleased
+## Unreleased — 0.2.0-draft family evolution
+
+- defined the `0.2.0-draft` label as a mutable draft family whose exact normative snapshot is identified by immutable Git revision;
+- clarified that PTSIP Specification and Reference Tool use independent version numbers;
+- defined PTSIP Component as the architectural classification unit;
+- preserved exactly three architecture classifications and separated unresolved decision statuses (`UNKNOWN`, `CONFLICT`, `INCOMPLETE`);
+- added component declarations to the reference project profile while retaining boundary roots as shorthand;
+- defined deterministic nested-selector precedence and equal-specificity conflict handling;
+- added `PTSIP-EVD-001` Evidence Snapshot Integrity;
+- added `PTSIP-EVD-002` Declaration and Observation Are Distinct;
+- aligned the exception schema with all fields already required by `PTSIP-EXC-001`;
+- added schema-constrained coding-agent classification decisions;
+- updated conformance requirements for stable snapshot evidence and visible coverage gaps;
+- added ADR-0003 documenting the first Pilot-driven evidence-v2 migration;
+- corrected the Conformance example canonical source after the repository rename.
+
+Repository identity maintenance in this draft family:
 
 - renamed the canonical repository from `kwaksinwoo01/ptsip-spec` to `kwaksinwoo01/ptsip`;
 - updated canonical Specification Binding metadata, profile schema identity, registry source, examples, and governance references to the new repository URL;
-- preserved the existing PTSIP 0.2.0-draft normative semantics and immutable specification revision identity.
+- preserved immutable historical specification revisions across the repository rename.
 
 ## 0.2.0-draft — 2026-08-09
 
