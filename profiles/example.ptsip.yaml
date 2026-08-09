@@ -2,21 +2,66 @@ ptsip:
   version: "0.2.0-draft"
   specification:
     source: "https://github.com/kwaksinwoo01/ptsip"
+    # Pin an immutable revision for reproducible automated evaluation.
+    # revision: "<commit-sha-or-release>"
 
-boundaries:
-  product:
-    roots:
-      - "product/app"
-      - "product/sdk"
+components:
+  - id: product-runtime
+    classification: PRODUCT
+    include:
+      - "product/app/**"
+    purpose: product_runtime
+    shipped: true
+    executable: true
+    release_owner: product
+    compatibility_owner: product
 
-  toolchain:
-    roots:
-      - "toolchain/sdk"
-      - "toolchain/automation"
+  - id: product-sdk
+    classification: PRODUCT
+    include:
+      - "product/sdk/**"
+    purpose: shipped_product_sdk
+    shipped: true
+    executable: true
+    release_owner: product
+    compatibility_owner: product
 
-  neutral_contract:
-    roots:
-      - "contracts"
+  - id: toolchain-sdk
+    classification: TOOLCHAIN
+    include:
+      - "toolchain/sdk/**"
+    purpose: development_validation_and_generation
+    shipped: false
+    executable: true
+    release_owner: toolchain
+    compatibility_owner: toolchain
+    analysis_inputs:
+      - "product/**"
+      - "contracts/**"
+
+  - id: toolchain-automation
+    classification: TOOLCHAIN
+    include:
+      - "toolchain/automation/**"
+    purpose: build_and_release_automation
+    shipped: false
+    executable: true
+    release_owner: toolchain
+    compatibility_owner: toolchain
+
+  - id: shared-contracts
+    classification: NEUTRAL_CONTRACT
+    include:
+      - "contracts/**"
+    purpose: cross_plane_declarative_contracts
+    shipped: true
+    executable: false
+    release_owner: contract
+    compatibility_owner: contract
+    consumers:
+      - product-runtime
+      - product-sdk
+      - toolchain-sdk
 
 policies:
   product_to_toolchain_runtime_dependency: "deny"
