@@ -13,7 +13,7 @@ def test_tool_030_package_and_runtime_versions_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     assert payload["project"]["version"] == "0.3.0"
     assert TOOL_VERSION == "0.3.0"
-    assert SPEC_REVISION == "14a0c2f54bb486de6a109979224f998b04fd04a3"
+    assert SPEC_REVISION == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
 
 
 def test_release_workflow_derives_tool_tag_from_package_version() -> None:
