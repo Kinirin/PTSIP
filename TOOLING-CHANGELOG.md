@@ -2,9 +2,9 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
-## 0.1.0a1 — Unreleased
+## 0.1.0a1 — 2026-08-09
 
-Initial alpha reference-tooling implementation:
+Initial alpha reference-tooling release:
 
 - added installable Python distribution named `ptsip`;
 - added `ptsip --version` and `ptsip spec`;
@@ -16,7 +16,9 @@ Initial alpha reference-tooling implementation:
 - bound the tool to specification revision `cb4164a803678a0364ce037af4addbad1d7ecc7d`;
 - updated the canonical tool/specification source after the repository rename to `kwaksinwoo01/ptsip`;
 - added Python 3.11–3.13 CI tests;
-- added PyPI Trusted Publishing workflow gated to `tool-v*` releases.
+- added PyPI Trusted Publishing workflow gated to `tool-v*` releases;
+- added release-tag/package-version verification and `twine check` before publication;
+- published prerelease `tool-v0.1.0a1` through GitHub Actions and PyPI Trusted Publishing.
 
 ### Deliberate non-goals for 0.1
 

@@ -29,10 +29,10 @@ A project may voluntarily provide a machine-readable profile for enforced confor
 
 This canonical repository also contains the independently versioned **PTSIP Reference Tool** under `src/ptsip/`. The repository is shared; the Specification and Tool release lifecycles are not.
 
-The Python distribution name and CLI command are both `ptsip`:
+The Python distribution name and CLI command are both `ptsip`. The first alpha release `0.1.0a1` is published through PyPI Trusted Publishing:
 
 ```powershell
-pip install ptsip
+pip install ptsip==0.1.0a1
 ptsip --version
 ptsip spec
 ptsip doctor .
@@ -41,7 +41,9 @@ ptsip pilot .
 ptsip validate .
 ```
 
-PyPI publication is not yet complete for `0.1.0a1`; source development can use:
+Because `0.1.0a1` is a prerelease, `pip install --pre ptsip` may also be used when selecting the latest prerelease explicitly.
+
+Source development can use:
 
 ```powershell
 pip install -e ".[dev]"
