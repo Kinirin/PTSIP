@@ -76,6 +76,7 @@ ptsip doctor .
 ptsip inspect .
 ptsip pilot .
 ptsip validate .
+ptsip clarify .
 ```
 
 소스 개발 환경에서는 다음을 사용합니다.
@@ -106,6 +107,34 @@ PTSIP는 도입하는 저장소에 PTSIP 전용 `docs/`, `tools/`, `.ptsip/`, �
 
 프로젝트는 강제 적합성 검사를 위해 기계 판독 가능한 프로필을 자발적으로 제공할 수 있지만, 프로필의 위치는 필수 저장소 토폴로지가 아니라 프로젝트/구성의 관심사로 유지됩니다.
 
+## 추측성 추론 없는 사용자 확인
+
+PTSIP가 컴포넌트 후보를 탐지했지만 Consumer Repository에 안전한 분류에 필요한 아키텍처 목적이 충분히 선언되어 있지 않다면, `ptsip clarify`는 추측성 추론을 확대하지 않고 부족한 사실에서 멈춰 프로젝트 소유자에게 확인을 요청할 수 있습니다.
+
+확인 요청 생성은 결정론적으로 동작합니다. 저장소 evidence, 고정된 completeness 규칙, 고정된 질문 템플릿만 사용하며 **LLM 또는 model API를 호출하지 않습니다.** JSON 출력에는 `llm_calls: 0`과 `speculative_classification: false`가 명시됩니다.
+
+확인 인터페이스는 영어와 한국어 질문만 지원합니다. 언어 선택 순서는 `--lang en|ko`, `PTSIP_LANG`, 운영체제 locale이며, 지원되는 언어를 결정할 수 없으면 영어를 사용합니다.
+
+```powershell
+ptsip clarify . --lang ko
+ptsip clarify . --json
+ptsip clarify . --component tools
+```
+
+Clarification은 기본적으로 읽기 전용입니다. 해결되지 않은 질문을 Consumer Repository의 GitHub Issue로 명시적으로 게시하려면 다음을 사용합니다.
+
+```powershell
+ptsip clarify . --publish github-issue
+```
+
+PTSIP는 검사 중인 Git 저장소의 `origin`을 읽고 GitHub HTTPS 또는 SSH remote인 경우 기본 `owner/repository`를 결정합니다. 필요한 경우 명시적으로 재정의할 수 있습니다.
+
+```powershell
+ptsip clarify . --publish github-issue --repo owner/repository
+```
+
+GitHub 게시 기능은 명시적으로 publish를 요청한 경우에만 인증된 `gh` CLI를 필요로 합니다. 중복 clarification Issue 생성을 방지하는 게시 상태는 Consumer Repository 밖의 `PTSIP_HOME/clarifications`에 저장됩니다. Clarification workflow는 Issue 답변을 수집하거나 자유 서술 답변을 해석하거나 이를 자동으로 아키텍처 분류로 변환하지 않습니다.
+
 ## Reference Tool
 
 독립적으로 버전이 관리되는 Reference Tool은 [`src/ptsip/`](src/ptsip/)에 구현되어 있습니다. Specification과 저장소는 공유하지만 릴리스 생명주기는 분리됩니다.
@@ -116,6 +145,7 @@ PTSIP는 도입하는 저장소에 PTSIP 전용 `docs/`, `tools/`, `.ptsip/`, �
 - Pilot evidence 수집
 - 저장소 snapshot 및 비침투 evidence
 - component 및 dependency evidence
+- 누락된 아키텍처 목적에 대한 결정론적 사용자 확인
 - 프로젝트 프로필 검증
 - 제한된 코딩 에이전트 분류 decision
 
