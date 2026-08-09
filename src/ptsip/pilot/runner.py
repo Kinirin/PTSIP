@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
+import yaml
+
 from ..inspection.components import discover_component_candidates
 from ..inspection.dependencies import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
@@ -13,7 +15,9 @@ from ..repository.discover import discover_repository
 from ..repository.snapshot import capture_snapshot, compare_snapshots
 from ..spec_identity import current_spec_identity
 from ..storage.local_state import pilot_directory
+from ..validation.components import partition_components
 from ..validation.profile import find_profile, validate_profile
+from ..validation.rules import evaluate_declared_dependency_boundaries
 
 
 @dataclass(frozen=True)
@@ -40,7 +44,23 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
     component_candidates = discover_component_candidates(root, inventory, dependencies)
 
     profile_path = find_profile(root)
-    profile_result = validate_profile(root).as_dict() if profile_path else None
+    profile_validation = validate_profile(root) if profile_path else None
+    profile_result = profile_validation.as_dict() if profile_validation else None
+    declared_partition: dict[str, object] | None = None
+    findings: list[dict[str, object]] = []
+
+    if profile_path and profile_validation and profile_validation.valid:
+        profile_payload = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+        components = profile_payload.get("components") if isinstance(profile_payload, dict) else None
+        if isinstance(components, list):
+            partition = partition_components(root, [item for item in components if isinstance(item, dict)])
+            declared_partition = partition.as_dict()
+            findings = [
+                item.as_dict()
+                for item in evaluate_declared_dependency_boundaries(
+                    [item for item in components if isinstance(item, dict)], partition, dependencies
+                )
+            ]
 
     after = capture_snapshot(root)
     comparison = compare_snapshots(before, after)
@@ -93,9 +113,10 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
         },
         "inventory": inventory.as_dict(),
         "components": {
-            "status": "CANDIDATES_ONLY",
-            "classification_asserted": False,
+            "status": "DECLARED_AND_CANDIDATES" if declared_partition else "CANDIDATES_ONLY",
+            "classification_asserted": bool(declared_partition),
             "candidates": [candidate.as_dict() for candidate in component_candidates],
+            "declared_partition": declared_partition,
         },
         "dependencies": dependencies.as_dict(),
         "artifacts": {
@@ -103,16 +124,16 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
             "note": "Tool 0.2.0 does not build or inspect product artifacts automatically.",
         },
         "classification": {
-            "status": "EVIDENCE_ONLY",
+            "status": "DECLARATION_AVAILABLE" if declared_partition else "EVIDENCE_ONLY",
             "allowed_classifications": [item.value for item in Classification],
             "decision_statuses": [item.value for item in DecisionStatus],
             "note": "UNKNOWN is a decision status, not a fourth PTSIP architecture classification.",
         },
         "profile": profile_result,
-        "findings": [],
+        "findings": findings,
         "conformance": {
             "status": "NOT_EVALUATED",
-            "reason": "Component ownership decisions, dependency phase coverage, and product artifact inspection are not yet sufficient for a strict conformance claim.",
+            "reason": "Dependency phase coverage and product artifact inspection are not yet sufficient for a strict conformance claim.",
         },
     }
 
