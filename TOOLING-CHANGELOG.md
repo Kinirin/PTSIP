@@ -2,6 +2,26 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
+## 0.2.3 — Unreleased
+
+Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revision `14a0c2f54bb486de6a109979224f998b04fd04a3`:
+
+- uses Python source encoding detection so UTF-8 BOM and valid source encoding declarations do not become false read failures;
+- resolves relative Python imports deterministically when repository package evidence identifies the target;
+- adds evidence-node scope values `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET` without expanding the three PTSIP architectural classifications;
+- records dependency provenance independently from target scope;
+- represents dynamic Python import relationships as `LOADS` and retains `DYNAMIC` resolution when the target identity is not statically known;
+- recognizes direct declared Python dependencies as external evidence when declaration/import naming matches deterministically;
+- resolves GitHub Actions local scripts from effective workflow/job/step `working-directory`;
+- stops converting arbitrary GitHub Actions `run:` commands into unresolved local-script invocation edges;
+- reports declared dependency evaluator state as `RAN` or `BLOCKED` so `findings: []` cannot imply an evaluator ran when it did not;
+- synchronizes embedded profile schema and registry resources to the Tool-bound immutable Specification revision;
+- aligns Project Profile validation with `boundaries XOR components`, retired PTSIP waiver semantics, exact revision binding, and project component-policy references;
+- retains Tool 0.2.2 deterministic Human Clarification behavior as a regression boundary;
+- intentionally does not add `ptsip conform`, Product Artifact adapters, JS/TS/npm/Go adapters, stable diagnostic emission, agent-decision ingestion, or external evidence import.
+
+Tool 0.2.3 remains an evidence/validation implementation and does not claim complete automated PTSIP Conformance Evaluation.
+
 ## 0.2.2 — Unreleased
 
 Deterministic human clarification support for missing architectural intent:
