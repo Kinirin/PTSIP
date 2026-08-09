@@ -12,6 +12,7 @@ def doctor(path: str | Path = ".") -> dict[str, object]:
     current_minor = (sys.version_info.major, sys.version_info.minor)
     metadata_supported = current_minor >= (3, 11)
     ci_verified = (3, 11) <= current_minor <= (3, 14)
+    github_cli = shutil.which("gh")
     return {
         "python": sys.version.split()[0],
         "python_ok": metadata_supported,
@@ -24,6 +25,8 @@ def doctor(path: str | Path = ".") -> dict[str, object]:
             else "Package metadata allows this interpreter, but this minor version is outside the current CI matrix."
         ),
         "git": shutil.which("git"),
+        "github_cli": github_cli,
+        "github_issue_publish_available": github_cli is not None,
         "target": str(target),
         "target_exists": target.exists(),
         "ptsip_home": str(ptsip_home()),
