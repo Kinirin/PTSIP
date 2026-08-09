@@ -54,7 +54,6 @@ def _gap(gap_id: str, message: str, rule_ids: tuple[str, ...]) -> dict[str, obje
 def _workflow_on(payload: dict[str, object]) -> object:
     if "on" in payload:
         return payload.get("on")
-    # PyYAML may parse the YAML 1.1 key `on` as boolean True.
     return payload.get(True)
 
 
@@ -87,7 +86,7 @@ def _release_like(path: str, payload: dict[str, object]) -> bool:
     elif isinstance(trigger, dict):
         tokens.extend(str(item).lower() for item in trigger.keys())
     text = " ".join(tokens)
-    return any(word in text for word in ("release", "publish", "deploy", "distribution", "package"))
+    return any(word in text for word in ("release", "publish", "deploy", "distribution", "twine upload", "npm publish"))
 
 
 def _trigger_paths(payload: dict[str, object]) -> tuple[str, ...]:
@@ -105,13 +104,18 @@ def _trigger_paths(payload: dict[str, object]) -> tuple[str, ...]:
     return tuple(dict.fromkeys(collected))
 
 
+def _normalize_pattern(pattern: str) -> str:
+    normalized = pattern.replace("\\", "/")
+    while normalized.startswith("./"):
+        normalized = normalized[2:]
+    return normalized
+
+
 def _path_matches(path: str, pattern: str) -> bool:
-    normalized = pattern.replace("\\", "/").lstrip("./")
+    normalized = _normalize_pattern(pattern)
     candidate = path.replace("\\", "/")
     if fnmatch.fnmatchcase(candidate, normalized):
         return True
-    # Common GitHub path patterns use **; fnmatch handles most cases but this
-    # prefix fallback makes `dir/**` deterministic for existing tracked paths.
     if normalized.endswith("/**"):
         return candidate.startswith(normalized[:-3].rstrip("/") + "/")
     return False
@@ -127,8 +131,13 @@ def _scope_from_paths(
     scope: set[str] = set()
     matched = False
     positive_patterns = [item for item in trigger_paths if not item.startswith("!")]
+    negative_patterns = [item[1:] for item in trigger_paths if item.startswith("!") and len(item) > 1]
+    if not positive_patterns:
+        return (), False
     for path, component_id in owners.items():
-        if any(_path_matches(path, pattern) for pattern in positive_patterns):
+        positive = any(_path_matches(path, pattern) for pattern in positive_patterns)
+        excluded = any(_path_matches(path, pattern) for pattern in negative_patterns)
+        if positive and not excluded:
             matched = True
             classification = classifications.get(component_id)
             if classification in {"PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"}:
