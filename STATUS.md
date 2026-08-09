@@ -1,10 +1,11 @@
 # PTSIP Status
 
 - Specification family: `0.2.0-draft`
-- Latest canonical normative snapshot: `14a0c2f54bb486de6a109979224f998b04fd04a3`
+- Latest canonical normative snapshot: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Current Tool/package source version on `main`: `0.2.3`
+- Tool 0.2.3 historical bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
 - Current Tool 0.3.0 migration branch source version: `0.3.0`
-- Tool 0.3.0 bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
+- Tool 0.3.0 bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/ptsip`
@@ -12,7 +13,7 @@
 - Reference Tool package name: `ptsip`
 - Latest verified PyPI publication: `0.2.0`
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Tool 0.3.0 publication status: release-readiness verified; not yet published/tagged; PR review/merge remains pending
+- Tool 0.3.0 publication status: code review gate passed; post-rebind release-readiness verification pending; not yet merged/published/tagged
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -72,7 +73,7 @@ The current Tool 0.3.0 migration branch implements:
 
 Tool 0.3.0 deliberately preserves uncertainty. Invalid or stale review evidence, contradictory evidence, unresolved Product dependency targets, incomplete Product Artifact evidence, ambiguous build/lifecycle evidence, unstable snapshots, or internal diagnostic-contract failures block `CONFORMANT` rather than being silently ignored.
 
-Release-readiness verification completed in GitHub Actions run `31328764175`: Python 3.11, 3.12, 3.13, and 3.14 each passed the full pytest suite plus `ptsip --version`, `ptsip spec`, and `ptsip conform --help`; the package job verified the expected `tool-v0.3.0` tag mapping, built wheel/sdist distributions, passed `twine check`, installed the built wheel, and passed the same Tool identity/CLI smoke checks. The temporary verification workflow was removed after the run. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
+The earlier release-readiness run `31328764175` passed Python 3.11–3.14 plus package build/twine/wheel smoke before the final merge-gate remediation and Specification rebind. A final post-rebind release-readiness run is required before Tool 0.3.0 can be merged for release preparation. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
 
 ## Release blockers for PTSIP Specification 1.0
 
