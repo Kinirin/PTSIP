@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
-from ptsip.cli import main
+from ptsip.cli import _configure_console_encoding, main
 from ptsip.inspection.dependencies import scan_dependency_edges
 from ptsip.inspection.inventory import collect_inventory
 from ptsip.pilot.runner import run_pilot
@@ -32,10 +33,27 @@ def _commit_all(repo: Path) -> None:
 
 def test_spec_identity():
     spec = current_spec_identity()
-    assert spec.tool_version == "0.2.3"
+    assert spec.tool_version == "0.3.0"
     assert spec.version == "0.2.0-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
-    assert spec.revision == "14a0c2f54bb486de6a109979224f998b04fd04a3"
+    assert spec.revision == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+
+
+def test_console_encoding_fallback_preserves_unencodable_text(monkeypatch) -> None:
+    class Stream:
+        def __init__(self) -> None:
+            self.errors = "strict"
+
+        def reconfigure(self, *, errors: str) -> None:
+            self.errors = errors
+
+    stream = Stream()
+    error_stream = Stream()
+    monkeypatch.setattr(sys, "stdout", stream)
+    monkeypatch.setattr(sys, "stderr", error_stream)
+    _configure_console_encoding()
+    assert stream.errors == "backslashreplace"
+    assert error_stream.errors == "backslashreplace"
 
 
 def test_inventory_reports_parse_failures(tmp_path: Path):
@@ -105,7 +123,7 @@ def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"14a0c2f54bb486de6a109979224f998b04fd04a3\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
@@ -158,5 +176,5 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["format"] == "ptsip-pilot-report/v2"
-    assert payload["tool"]["version"] == "0.2.3"
+    assert payload["tool"]["version"] == "0.3.0"
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"

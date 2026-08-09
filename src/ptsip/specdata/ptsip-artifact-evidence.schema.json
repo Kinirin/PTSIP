@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/kwaksinwoo01/ptsip/main/schemas/ptsip-artifact-evidence.schema.json",
+  "title": "PTSIP Artifact Evidence v1",
+  "type": "object",
+  "required": [
+    "format",
+    "artifact_id",
+    "classification",
+    "producer_component",
+    "artifact_type",
+    "shipping_scope",
+    "contents",
+    "provenance"
+  ],
+  "properties": {
+    "format": {"const": "ptsip-artifact-evidence/v1"},
+    "artifact_id": {"type": "string", "minLength": 1},
+    "classification": {
+      "enum": ["PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"]
+    },
+    "producer_component": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "artifact_type": {"type": "string", "minLength": 1},
+    "shipping_scope": {"type": "string", "minLength": 1},
+    "contents": {
+      "type": "object",
+      "required": ["paths", "components", "complete"],
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "components": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "complete": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "derivation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["relation", "source"],
+        "properties": {
+          "relation": {"enum": ["GENERATES", "PACKAGES", "PUBLISHES"]},
+          "source": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "enum": ["DECLARED", "OBSERVED", "INFERRED"]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

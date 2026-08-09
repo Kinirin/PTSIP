@@ -8,16 +8,24 @@ from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
 from .clarification.render import render_console
 from .clarification.transports.github_issue import publish as publish_github_issues
+from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
 from .doctor import doctor
 from .inspection.components import discover_component_candidates
-from .inspection.dependencies import scan_dependency_edges
+from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
 from .pilot.runner import run_pilot
 from .repository.discover import discover_repository
 from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .validation.profile import validate_profile
+
+
+def _configure_console_encoding() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(errors="backslashreplace")
 
 
 def _emit(payload: object, as_json: bool) -> None:
@@ -57,6 +65,29 @@ def _parser() -> argparse.ArgumentParser:
     p_validate.add_argument("--profile", help="Explicit project-profile path")
     p_validate.add_argument("--json", action="store_true")
 
+    p_conform = sub.add_parser(
+        "conform",
+        help="Evaluate Enforced PTSIP conformance from declared architecture and observed evidence",
+    )
+    p_conform.add_argument("path", nargs="?", default=".")
+    p_conform.add_argument("--profile", help="Explicit project-profile path")
+    p_conform.add_argument(
+        "--artifact-evidence",
+        action="append",
+        help="Explicit ptsip-artifact-evidence/v1 JSON/YAML input; repeatable and read-only",
+    )
+    p_conform.add_argument(
+        "--agent-decision",
+        action="append",
+        help="Explicit ptsip-agent-classification decision input; repeatable review evidence that never overrides the profile",
+    )
+    p_conform.add_argument(
+        "--external-evidence",
+        action="append",
+        help="Explicit ptsip-external-evidence/v1 JSON/YAML dependency evidence; repeatable and subject/revision checked",
+    )
+    p_conform.add_argument("--json", action="store_true")
+
     p_clarify = sub.add_parser(
         "clarify",
         help="Generate deterministic human clarification requests instead of speculatively inferring missing architectural intent",
@@ -71,6 +102,7 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _configure_console_encoding()
     args = _parser().parse_args(argv)
     try:
         if args.command == "spec":
@@ -118,6 +150,20 @@ def main(argv: list[str] | None = None) -> int:
             result = validate_profile(repo.root, args.profile)
             _emit(result.as_dict(), args.json)
             return 0 if result.valid else 3
+        if args.command == "conform":
+            result = evaluate_conformance(
+                args.path,
+                args.profile,
+                args.artifact_evidence,
+                args.agent_decision,
+                args.external_evidence,
+            )
+            _emit(result.report, args.json)
+            if result.outcome == "CONFORMANT":
+                return 0
+            if result.outcome == "NON_CONFORMANT":
+                return 5
+            return 6
         if args.command == "clarify":
             if args.repo and args.publish != "github-issue":
                 raise ValueError("--repo requires --publish github-issue")

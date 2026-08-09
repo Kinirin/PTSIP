@@ -1,9 +1,11 @@
 # PTSIP Status
 
 - Specification family: `0.2.0-draft`
-- Latest canonical normative snapshot: `14a0c2f54bb486de6a109979224f998b04fd04a3`
+- Latest canonical normative snapshot: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Current Tool/package source version on `main`: `0.2.3`
-- Tool 0.2.3 bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
+- Tool 0.2.3 historical bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
+- Current Tool 0.3.0 migration branch source version: `0.3.0`
+- Tool 0.3.0 bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/ptsip`
@@ -11,16 +13,17 @@
 - Reference Tool package name: `ptsip`
 - Latest verified PyPI publication: `0.2.0`
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Next Tool release target: `0.3.0`
-- Tool CI target: Python 3.11–3.14
+- Tool 0.3.0 publication status: code review and post-rebind release-readiness verified; not yet published/tagged; PR merge remains pending
+- Supported Python metadata: Python 3.11–3.14
+- Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
 - Reuse license: Apache License 2.0
 
-## Tool 0.2.3 evidence-correctness state
+## Tool 0.2.3 evidence-correctness baseline
 
 Tool 0.2.3 implements the low-risk correctness work defined after the two-Pilot normative snapshot while preserving the deterministic Human Clarification capability introduced in Tool 0.2.2.
 
-Implemented in this migration:
+Implemented in that source-only migration:
 
 - Python source decoding through Python encoding detection so UTF-8 BOM and valid source encoding declarations do not become false read failures;
 - deterministic relative-import resolution when package/repository evidence identifies the target;
@@ -34,13 +37,11 @@ Implemented in this migration:
 - embedded profile schema and registry synchronized to the Tool-bound immutable Specification snapshot;
 - Project Profile validation aligned with `boundaries XOR components`, retired mandatory-rule waiver semantics, exact bound revision checks, and component-policy reference validation.
 
-Tool 0.2.3 still does **not** claim complete automated PTSIP Conformance Evaluation. `ptsip pilot` remains evidence collection plus bounded rule findings, and `conformance.status` remains `NOT_EVALUATED` until rule-relative coverage and Product Artifact evaluation are implemented.
-
-Tool 0.2.3 is intentionally not released to PyPI. It is the source baseline for the immediate Tool 0.3.0 migration.
+Tool 0.2.3 is intentionally not released to PyPI. It is the source baseline for Tool 0.3.0.
 
 ## Human Clarification regression boundary
 
-The following Tool 0.2.2 behavior remains required and is regression-tested:
+The following Tool 0.2.2 behavior remains required and regression-tested:
 
 - `ptsip clarify`;
 - deterministic clarification with zero LLM/model API calls;
@@ -53,18 +54,26 @@ The following Tool 0.2.2 behavior remains required and is regression-tested:
 
 ## Tool 0.3.0 — conformance capability expansion
 
-Planned capability work starts immediately from the Tool 0.2.3 source baseline:
+The current Tool 0.3.0 migration branch implements:
 
-- JavaScript/TypeScript source dependency adapter;
-- npm manifest adapter;
-- Product Artifact evidence adapters;
-- stable diagnostic emission using `ptsip-diagnostic/v1`;
-- rule-relative evidence coverage evaluation;
-- `ptsip conform`;
-- agent-decision ingestion;
-- external evidence import;
-- extended .NET analysis;
-- Go adapter.
+- `ptsip conform` with `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE` outcomes plus distinct exit codes;
+- stable deterministic `ptsip-diagnostic/v1`-shaped diagnostics and final diagnostic/coverage contract audit;
+- rule-relative evidence coverage gates;
+- explicit `ptsip-artifact-evidence/v1` ingestion and Product packaging-isolation evaluation;
+- independent build-resolution evaluation from declared component manifests;
+- bounded lifecycle/release and compatibility ownership evidence;
+- JavaScript/TypeScript source and npm manifest adapters;
+- Go source/module dependency evidence;
+- `.csproj` plus source-level .NET namespace dependency evidence;
+- project-specific component dependency policy findings separated from universal PTSIP diagnostics;
+- constrained agent-decision ingestion as review evidence that cannot overwrite profile declarations;
+- revision-bound external dependency evidence import with producer/subject/provenance and imported-file SHA-256 preservation;
+- one composite dependency evidence graph used by `inspect`, `pilot`, `clarify`, and `conform`;
+- `ptsip pilot` remaining `NOT_EVALUATED` for conformance while `ptsip conform` owns strict outcome evaluation.
+
+Tool 0.3.0 deliberately preserves uncertainty. Invalid or stale review evidence, contradictory evidence, unresolved Product dependency targets, incomplete Product Artifact evidence, ambiguous build/lifecycle evidence, unstable snapshots, or internal diagnostic-contract failures block `CONFORMANT` rather than being silently ignored.
+
+Final post-rebind release-readiness verification completed in GitHub Actions run `31334084470`: Python 3.11, 3.12, 3.13, and 3.14 each passed the full pytest suite plus Tool identity, exact Specification revision, and `ptsip conform --help` checks; the Python 3.14 package job verified `tool-v0.3.0` version mapping, built wheel/sdist distributions, passed `twine check`, installed the built wheel, and passed built-wheel Tool identity/spec/conform smoke checks. The temporary verification workflow was removed after the successful run. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
 
 ## Release blockers for PTSIP Specification 1.0
 
@@ -73,4 +82,4 @@ Planned capability work starts immediately from the Tool 0.2.3 source baseline:
 - validate the constrained Agent Contract and deterministic Human Clarification against real ownership questions;
 - exercise rule-relative evidence coverage and Product Artifact evidence;
 - publish tagged stable specification releases;
-- exercise a later Reference Tool release against real Consumer Repositories with component declarations, artifact evidence, and repeatable conformance evaluation.
+- exercise Tool 0.3.0 or later against real Consumer Repositories with component declarations, artifact evidence, review/import evidence, and repeatable conformance evaluation.

@@ -20,17 +20,37 @@ class RuleFinding:
         return asdict(self)
 
 
-def evaluate_declared_dependency_boundaries(
+@dataclass(frozen=True)
+class ProjectPolicyFinding:
+    policy_id: str
+    message: str
+    evidence_ids: tuple[str, ...]
+    source_component: str
+    target_component: str
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+def _component_context(
     components: list[dict[str, object]],
     partition: ComponentPartition,
-    dependencies: DependencyScan,
-) -> list[RuleFinding]:
+) -> tuple[dict[str, str], dict[str, str]]:
     classifications = {
         str(component.get("id")): str(component.get("classification"))
         for component in components
         if component.get("id") and component.get("classification")
     }
     owners = {assignment.path: assignment.component_id for assignment in partition.assignments}
+    return classifications, owners
+
+
+def evaluate_declared_dependency_boundaries(
+    components: list[dict[str, object]],
+    partition: ComponentPartition,
+    dependencies: DependencyScan,
+) -> list[RuleFinding]:
+    classifications, owners = _component_context(components, partition)
     findings: list[RuleFinding] = []
 
     for edge in dependencies.edges:
@@ -90,4 +110,54 @@ def evaluate_declared_dependency_boundaries(
                 )
             )
 
+    return findings
+
+
+def evaluate_component_dependency_policy(
+    policy: dict[str, object] | None,
+    components: list[dict[str, object]],
+    partition: ComponentPartition,
+    dependencies: DependencyScan,
+) -> list[ProjectPolicyFinding]:
+    if not isinstance(policy, dict):
+        return []
+
+    _classifications, owners = _component_context(components, partition)
+    default = str(policy.get("default", "allow"))
+    allowed = {
+        (str(item.get("from")), str(item.get("to")))
+        for item in policy.get("allow", [])
+        if isinstance(item, dict) and item.get("from") and item.get("to")
+    }
+    denied = {
+        (str(item.get("from")), str(item.get("to")))
+        for item in policy.get("deny", [])
+        if isinstance(item, dict) and item.get("from") and item.get("to")
+    }
+
+    findings: list[ProjectPolicyFinding] = []
+    for edge in dependencies.edges:
+        if not edge.resolved_path:
+            continue
+        source_component = owners.get(edge.source)
+        target_component = owners.get(edge.resolved_path)
+        if not source_component or not target_component or source_component == target_component:
+            continue
+        pair = (source_component, target_component)
+        permitted = pair in allowed if default == "deny" else pair not in denied
+        if pair in denied:
+            permitted = False
+        if pair in allowed:
+            permitted = True
+        if permitted:
+            continue
+        findings.append(
+            ProjectPolicyFinding(
+                policy_id="component_dependency_policy",
+                message="Resolved cross-component dependency violates the declared project-specific component dependency policy.",
+                evidence_ids=(edge.evidence_id,),
+                source_component=source_component,
+                target_component=target_component,
+            )
+        )
     return findings

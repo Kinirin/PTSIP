@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 from ..inspection.components import ComponentCandidate, discover_component_candidates
-from ..inspection.dependencies import scan_dependency_edges
+from ..inspection.dependencies_030 import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
 from ..repository.discover import RepositoryInfo, discover_repository
 from ..repository.snapshot import RepositorySnapshot, SnapshotComparison, capture_snapshot, compare_snapshots

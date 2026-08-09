@@ -2,20 +2,54 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
+## 0.3.0 — Release candidate source, not yet published
+
+Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound to PTSIP Specification `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`:
+
+- adds `ptsip conform` with `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE` outcomes and distinct CLI exit codes;
+- emits deterministic `ptsip-diagnostic/v1`-shaped diagnostics with instance identity separate from PTSIP rule identity;
+- evaluates rule-relative blocking coverage instead of treating empty findings as conformance;
+- accepts explicit read-only `ptsip-artifact-evidence/v1` inputs and evaluates Product packaging isolation without conflating artifact producer and artifact owner;
+- binds artifact evidence through a Tool-level sidecar carrying the imported document SHA-256 and exact Consumer Repository revision/tracked-content identity, without extending the canonical artifact schema;
+- adds an independent build-resolution evaluator over explicitly declared component manifests, supporting Python, npm, .NET project, and Go module manifest evidence while blocking ambiguous cross-plane shared-manifest evidence;
+- adds lifecycle evidence evaluation that requires declared release/compatibility ownership and positive path-scoped release evidence, while treating workflow triggers alone as insufficient proof of lifecycle coupling or independence;
+- adds deterministic JavaScript/TypeScript source dependency evidence for static imports, CommonJS `require`, and dynamic `import()`/`require()` uncertainty;
+- adds npm manifest evidence for runtime/build dependency declarations and local package-to-package resolution;
+- adds Go source import evidence with local-module, standard-library/platform, and external-module scope resolution;
+- adds source-level .NET `using` evidence that resolves local project identity only when corroborated by `.csproj` `ProjectReference` metadata; namespace-only matches remain uncertain and deterministic `PackageReference` matches remain external evidence;
+- routes `inspect`, `pilot`, `clarify`, and `conform` through one Tool 0.3.0 composite dependency evidence graph;
+- keeps `ptsip pilot` at `conformance.status=NOT_EVALUATED`; strict outcomes are produced only by `ptsip conform`;
+- evaluates optional project-specific component dependency policy separately from universal PTSIP diagnostics, consistent with `PTSIP-POL-001`;
+- ingests bound-schema agent classification decisions as review evidence without allowing them to overwrite Project Profile declarations;
+- accepts explicit `ptsip-external-evidence/v1` dependency evidence only when producer metadata and Consumer Repository identity/revision can be verified, preserving input SHA-256 and canonical provenance;
+- permits trusted external evidence to supplement native unresolved evidence, but blocks contradictory resolved external/native evidence instead of silently overriding either source;
+- prevents inferred external evidence from clearing native uncertainty, validates resolution/scope semantics, and blocks contradictory resolved external/native evidence instead of silently overriding either source;
+- wraps the complete Tool 0.3.0 evidence/evaluator/audit pipeline in the final repository snapshot interval;
+- blocks unsupported mandatory-relevant source ecosystems, ambiguous release-like workflows, and ownership-incompatible build manifests while leaving ordinary documentation and non-release global CI rule-relative;
+- uses comment/string-aware lexical scanning for Go, JavaScript/TypeScript, and C# source dependency statements;
+- preserves native `DYNAMIC` dependency uncertainty instead of allowing sentinel-only external evidence to clear it;
+- recognizes executable dependency expressions inside JavaScript/TypeScript template-literal `${...}` interpolation regions;
+- performs a final conformance-report audit against the embedded diagnostic schema, active rule registry, applicability/evidence sufficiency, coverage-gap identity, and evaluator-state contract before allowing `CONFORMANT`;
+- retains Tool 0.2.2 Human Clarification's deterministic, zero-LLM semantics and Tool 0.2.3 evidence-correctness behavior as regression boundaries.
+
+Final post-rebind release-readiness verification completed in GitHub Actions run `31334084470`: Python 3.11–3.14 all passed the complete pytest/CLI/exact-Spec-binding suite, and the Python 3.14 package job verified the expected `tool-v0.3.0` mapping, built wheel/sdist artifacts, passed `twine check`, installed the built wheel, and re-ran Tool identity/spec/conformance CLI smoke checks. The temporary verification workflow was removed after the successful run.
+
+The Tool 0.3.0 source remains untagged and unpublished pending PR merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
+
 ## 0.2.3 — Source-only migration, not published
 
 Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revision `14a0c2f54bb486de6a109979224f998b04fd04a3`:
 
 - uses Python source encoding detection so UTF-8 BOM and valid source encoding declarations do not become false read failures;
-- resolves relative Python imports deterministically when repository package evidence identifies the target;
+- resolves relative Python imports deterministically when package/repository evidence identifies the target;
 - adds evidence-node scope values `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET` without expanding the three PTSIP architectural classifications;
 - records dependency provenance independently from target scope;
-- represents dynamic Python import relationships as `LOADS` and retains `DYNAMIC` resolution when the target identity is not statically known;
+- represents dynamic Python imports as `LOADS`, retaining `DYNAMIC` resolution when the target is not statically known;
 - recognizes direct declared Python dependencies as external evidence when declaration/import naming matches deterministically;
 - resolves GitHub Actions local scripts from effective workflow/job/step `working-directory`;
 - stops converting arbitrary GitHub Actions `run:` commands into unresolved local-script invocation edges;
 - reports declared dependency evaluator state as `RAN` or `BLOCKED` so `findings: []` cannot imply an evaluator ran when it did not;
-- synchronizes embedded profile schema and registry resources to the Tool-bound immutable Specification revision;
+- synchronizes embedded profile schema and registry resources to the Tool-bound immutable Specification snapshot;
 - aligns Project Profile validation with `boundaries XOR components`, retired PTSIP waiver semantics, exact revision binding, and project component-policy references;
 - retains Tool 0.2.2 deterministic Human Clarification behavior as a regression boundary;
 - intentionally does not add `ptsip conform`, Product Artifact adapters, JS/TS/npm/Go adapters, stable diagnostic emission, agent-decision ingestion, or external evidence import.
