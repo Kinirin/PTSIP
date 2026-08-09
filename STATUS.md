@@ -12,7 +12,7 @@
 - Reference Tool package name: `ptsip`
 - Latest verified PyPI publication: `0.2.0`
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Tool 0.3.0 publication status: not yet published/tagged; release candidate implementation is under review
+- Tool 0.3.0 publication status: release-readiness verified; not yet published/tagged; PR review/merge remains pending
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -72,7 +72,7 @@ The current Tool 0.3.0 migration branch implements:
 
 Tool 0.3.0 deliberately preserves uncertainty. Invalid or stale review evidence, contradictory evidence, unresolved Product dependency targets, incomplete Product Artifact evidence, ambiguous build/lifecycle evidence, unstable snapshots, or internal diagnostic-contract failures block `CONFORMANT` rather than being silently ignored.
 
-The migration branch has passed full Python 3.14 pytest/CLI smoke verification. Final release-readiness work verifies supported Python versions, package build/twine checks, documentation consistency, and release-tag/version wiring before the PR is considered ready to merge. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
+Release-readiness verification completed in GitHub Actions run `31328764175`: Python 3.11, 3.12, 3.13, and 3.14 each passed the full pytest suite plus `ptsip --version`, `ptsip spec`, and `ptsip conform --help`; the package job verified the expected `tool-v0.3.0` tag mapping, built wheel/sdist distributions, passed `twine check`, installed the built wheel, and passed the same Tool identity/CLI smoke checks. The temporary verification workflow was removed after the run. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
 
 ## Release blockers for PTSIP Specification 1.0
 
