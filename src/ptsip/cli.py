@@ -69,6 +69,16 @@ def _parser() -> argparse.ArgumentParser:
         action="append",
         help="Explicit ptsip-artifact-evidence/v1 JSON/YAML input; repeatable and read-only",
     )
+    p_conform.add_argument(
+        "--agent-decision",
+        action="append",
+        help="Explicit ptsip-agent-classification decision input; repeatable review evidence that never overrides the profile",
+    )
+    p_conform.add_argument(
+        "--external-evidence",
+        action="append",
+        help="Explicit ptsip-external-evidence/v1 JSON/YAML dependency evidence; repeatable and subject/revision checked",
+    )
     p_conform.add_argument("--json", action="store_true")
 
     p_clarify = sub.add_parser(
@@ -133,7 +143,13 @@ def main(argv: list[str] | None = None) -> int:
             _emit(result.as_dict(), args.json)
             return 0 if result.valid else 3
         if args.command == "conform":
-            result = evaluate_conformance(args.path, args.profile, args.artifact_evidence)
+            result = evaluate_conformance(
+                args.path,
+                args.profile,
+                args.artifact_evidence,
+                args.agent_decision,
+                args.external_evidence,
+            )
             _emit(result.report, args.json)
             if result.outcome == "CONFORMANT":
                 return 0
