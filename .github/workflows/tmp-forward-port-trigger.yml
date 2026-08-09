@@ -1,0 +1,73 @@
+name: Temporary normative forward-port trigger
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Execute staged migration script
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/tmp-forward-port-normative-migration.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY\n", start)
+          code = textwrap.dedent(workflow[start:end])
+          code = code.replace(
+              'r"## 8\\. False-positive handling\\n.*?(?=\\n## 9\\.)"',
+              'r"## \\d+\\. False-positive handling\\n.*?(?=\\n## \\d+\\.|\\Z)"',
+          )
+          exec(compile(code, 'forward-port-migration', 'exec'), {})
+          PY
+
+      - name: Install and test
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+          python -m pytest -q
+          ptsip --version
+          ptsip spec
+
+      - name: Verify Tool 0.2.2 clarification remains intact
+        shell: bash
+        run: |
+          test "$(python - <<'PY'
+          from ptsip.constants import TOOL_VERSION, SPEC_REVISION
+          print(f"{TOOL_VERSION} {SPEC_REVISION}")
+          PY
+          )" = "0.2.2 895e12d27230af2bb99ad17a96e8df8ef41bc3e0"
+          grep -q "p_clarify" src/ptsip/cli.py
+          grep -q "clarification_directory" src/ptsip/storage/local_state.py
+          grep -q "remote" src/ptsip/repository/discover.py
+
+      - name: Commit migration result and remove temporary workflows
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/tmp-forward-port-normative-migration.yml
+          git rm .github/workflows/tmp-forward-port-trigger.yml
+          git add -A
+          git commit -m "spec: align forward-port with remediation-only conformance"
+          git push origin HEAD:migration/forward-port-0.2.0-draft-on-0.2.2
