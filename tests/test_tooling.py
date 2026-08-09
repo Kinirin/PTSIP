@@ -36,7 +36,7 @@ def test_spec_identity():
     assert spec.tool_version == "0.3.0"
     assert spec.version == "0.2.0-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
-    assert spec.revision == "14a0c2f54bb486de6a109979224f998b04fd04a3"
+    assert spec.revision == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
 
 
 def test_console_encoding_fallback_preserves_unencodable_text(monkeypatch) -> None:
@@ -123,7 +123,7 @@ def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"14a0c2f54bb486de6a109979224f998b04fd04a3\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
