@@ -144,6 +144,8 @@ Important repository files and automation:
 - [`TOOLING-CHANGELOG.md`](TOOLING-CHANGELOG.md) — Tool change history;
 - [`.github/workflows/tooling-test.yml`](.github/workflows/tooling-test.yml) — Tool CI;
 - [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml) — PyPI Trusted Publishing for `tool-v*` releases;
+- [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml) — automatic Korean README synchronization;
+- [`tools/ai_interface_tool/readme_translation/sync_readme_ko.py`](tools/ai_interface_tool/readme_translation/sync_readme_ko.py) — reusable translation and structural-validation helper;
 - [`README.md`](README.md) — canonical English project overview;
 - [`README.ko.md`](README.ko.md) — automatically synchronized Korean translation.
 
@@ -151,7 +153,11 @@ Important repository files and automation:
 
 `README.md` is the canonical project overview. `README.ko.md` is a translated view and should not become an independently maintained source of project facts.
 
-When the English README changes, the repository's README translation workflow regenerates the Korean README automatically. This avoids manual translation work and reduces the risk of the two documents drifting apart.
+When the English README changes on `main`, [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml) regenerates the Korean README and commits the result. The workflow calls GitHub Models with the repository-provided `GITHUB_TOKEN`, so a separate model API secret is not required.
+
+Before writing the translation, the reusable helper checks Markdown heading structure, fenced code blocks, link destinations, normative keywords, and suspicious output length. A structurally unsafe model response fails the workflow instead of overwriting `README.ko.md`.
+
+This avoids routine manual translation work while reducing the risk of the two documents drifting apart.
 
 ## Normative language
 
