@@ -1,0 +1,39 @@
+ptsip_registry:
+  specification:
+    name: "Product–Toolchain SDK Isolation Policy"
+    acronym: "PTSIP"
+    version: "0.2.0-draft"
+    status: "draft"
+    canonical_source: "https://github.com/kwaksinwoo01/ptsip-spec"
+  classifications:
+    - id: PRODUCT
+      meaning: "Product-owned SDK or SDK-like executable/library component."
+    - id: TOOLCHAIN
+      meaning: "Development-toolchain-owned SDK or SDK-like executable/library component."
+    - id: NEUTRAL_CONTRACT
+      meaning: "Non-owning declarative contract artifact consumable by both planes."
+  concepts:
+    - id: CONSUMER_REPOSITORY
+      meaning: "Repository inspected, piloted, validated, or governed using PTSIP."
+    - id: EXTERNAL_PTSIP_TOOLING
+      meaning: "PTSIP tooling operated outside the Consumer Repository project-owned source tree by default."
+    - id: SPECIFICATION_BINDING
+      meaning: "Association between a project PTSIP declaration and its canonical specification source/version."
+  principles:
+    - id: PTSIP-CORE-001
+      name: "Purpose Before Reuse"
+  rules:
+    - {id: PTSIP-CLS-001, title: "Mandatory classification", severity: error}
+    - {id: PTSIP-DEP-001, title: "Product-to-Toolchain runtime dependency prohibition", severity: error}
+    - {id: PTSIP-DEP-002, title: "Toolchain inspection is permitted", severity: info}
+    - {id: PTSIP-DEP-003, title: "Cross-boundary executable sharing denied by default", severity: warning}
+    - {id: PTSIP-PKG-001, title: "Packaging isolation", severity: error}
+    - {id: PTSIP-BLD-001, title: "Independently resolvable build environments", severity: error}
+    - {id: PTSIP-BLD-002, title: "Independent buildability", severity: error}
+    - {id: PTSIP-LCY-001, title: "Lifecycle independence", severity: error}
+    - {id: PTSIP-LCY-002, title: "Compatibility ownership", severity: warning}
+    - {id: PTSIP-CMN-001, title: "No unclassified common package", severity: error}
+    - {id: PTSIP-CNT-001, title: "Contract-first cross-boundary reuse", severity: warning}
+    - {id: PTSIP-INT-001, title: "Consumer Repository Non-Intrusion", severity: error}
+    - {id: PTSIP-SPC-001, title: "Specification Binding", severity: error}
+    - {id: PTSIP-EXC-001, title: "Explicit exceptions", severity: error}

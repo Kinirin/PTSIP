@@ -3,6 +3,7 @@
 **Status:** Draft Specification 0.2.0  
 **Canonical repository:** `https://github.com/kwaksinwoo01/ptsip-spec`  
 **Specification family:** Software architecture / SDK governance / development toolchain isolation  
+**Reference Tool:** `0.1.0a1`  
 **License:** Apache License 2.0
 
 PTSIP (Product–Toolchain SDK Isolation Policy) is a project-defined architecture policy for managing Software Development Kits (SDKs) according to their **purpose, packaging responsibility, dependency boundary, build environment, and lifecycle**.
@@ -24,6 +25,32 @@ PTSIP does not require adopting repositories to create PTSIP-specific `docs/`, `
 
 A project may voluntarily provide a machine-readable profile for enforced conformance, but the profile location remains a project/configuration concern rather than a required repository topology.
 
+## Reference Tool
+
+This canonical repository also contains the independently versioned **PTSIP Reference Tool** under `src/ptsip/`. The repository is shared; the Specification and Tool release lifecycles are not.
+
+The Python distribution name and CLI command are both `ptsip`:
+
+```powershell
+pip install ptsip
+ptsip --version
+ptsip spec
+ptsip doctor .
+ptsip inspect .
+ptsip pilot .
+ptsip validate .
+```
+
+PyPI publication is not yet complete for `0.1.0a1`; source development can use:
+
+```powershell
+pip install -e ".[dev]"
+```
+
+`inspect` and `pilot` do not modify the Consumer Repository. Pilot state is stored outside the repository by default (`%LOCALAPPDATA%\PTSIP` on Windows and the platform-equivalent user state directory elsewhere). `PTSIP_HOME` can override that location.
+
+Tool releases use the `tool-v*` tag/release namespace. Specification releases may use a separate `spec-v*` namespace, so both lifecycles can remain independently governed inside one Git repository.
+
 ## Why PTSIP exists
 
 In large or long-lived codebases, a validator, schema helper, generator, migration module, or common utility can gradually become shared by both product runtime code and development tooling. That often creates hidden coupling:
@@ -38,19 +65,34 @@ PTSIP makes the opposite trade-off: **lifecycle and responsibility boundaries ar
 
 ## Repository map
 
+### Specification ownership
+
 - [`spec/PTSIP-SPEC.md`](spec/PTSIP-SPEC.md) — normative architecture specification.
 - [`spec/PTSIP-TERMINOLOGY.md`](spec/PTSIP-TERMINOLOGY.md) — canonical terms and meanings.
 - [`spec/PTSIP-GOVERNANCE.md`](spec/PTSIP-GOVERNANCE.md) — specification change and exception governance.
 - [`spec/PTSIP-CONFORMANCE.md`](spec/PTSIP-CONFORMANCE.md) — requirements for claiming PTSIP conformance.
+- [`registry/ptsip-registry.yaml`](registry/ptsip-registry.yaml) — machine-readable terminology and rule registry.
+- [`schemas/ptsip-profile.schema.json`](schemas/ptsip-profile.schema.json) — project-profile schema.
 - [`reference/REFERENCE-ARCHITECTURE.md`](reference/REFERENCE-ARCHITECTURE.md) — informative reference architecture.
 - [`adoption/ADOPTION-GUIDE.md`](adoption/ADOPTION-GUIDE.md) — migration/adoption sequence.
 - [`agents/AGENT-CONTRACT.md`](agents/AGENT-CONTRACT.md) — concise rules for coding agents.
-- [`registry/ptsip-registry.yaml`](registry/ptsip-registry.yaml) — machine-readable terminology and rule registry.
-- [`schemas/ptsip-profile.schema.json`](schemas/ptsip-profile.schema.json) — project-profile schema.
 - [`profiles/example.ptsip.yaml`](profiles/example.ptsip.yaml) — example project profile.
-- [`decisions/ADR-0001-establish-ptsip.md`](decisions/ADR-0001-establish-ptsip.md) — initial architecture decision record.
-- [`decisions/ADR-0002-external-tooling-non-intrusion.md`](decisions/ADR-0002-external-tooling-non-intrusion.md) — external tooling/non-intrusion decision.
+- [`decisions/`](decisions/) — specification architecture decision records.
+- [`CHANGELOG.md`](CHANGELOG.md) — Specification change history.
+
+### Reference Tool ownership
+
+- [`src/ptsip/`](src/ptsip/) — installable Python Reference Tool implementation.
+- [`tests/`](tests/) — Reference Tool tests.
+- [`pyproject.toml`](pyproject.toml) — PyPI distribution/build metadata for `ptsip`.
+- [`.github/workflows/tooling-test.yml`](.github/workflows/tooling-test.yml) — Python 3.11–3.13 Tool CI.
+- [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml) — `tool-v*` PyPI Trusted Publishing workflow.
+- [`TOOLING-CHANGELOG.md`](TOOLING-CHANGELOG.md) — independently versioned Tool change history.
+
+### Shared repository assets
+
 - [`LICENSE`](LICENSE) — Apache License 2.0 terms for this repository.
+- [`README.md`](README.md) — project overview and ownership map.
 
 ## Normative language
 
@@ -76,6 +118,8 @@ PTSIP is related to, but not identical with:
 
 PTSIP 0.2.0-draft is a **draft project-defined specification**, not an ISO, IEEE, IETF, CNCF, or other external industry standard. The public specification is intended to make the term reproducible: a person, coding agent, or external validator should be able to identify the governing specification and independently evaluate a repository against it.
 
+The Reference Tool `0.1.0a1` is an alpha implementation intended for read-only inspection, Pilot evidence collection, and project-profile validation. It does not yet claim complete automated PTSIP conformance enforcement.
+
 ## License
 
-This specification repository is licensed under the **Apache License, Version 2.0**. See [`LICENSE`](LICENSE).
+This repository, including the PTSIP specification and Reference Tool unless explicitly stated otherwise, is licensed under the **Apache License, Version 2.0**. See [`LICENSE`](LICENSE).
