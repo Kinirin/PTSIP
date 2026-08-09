@@ -1,0 +1,303 @@
+name: Temporary normative forward-port migration
+
+on:
+  push:
+    branches:
+      - migration/forward-port-0.2.0-draft-on-0.2.2
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Apply forward-port policy corrections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          from pathlib import Path
+
+          def read(path: str) -> str:
+              return Path(path).read_text(encoding="utf-8")
+
+          def write(path: str, text: str) -> None:
+              Path(path).write_text(text, encoding="utf-8")
+
+          def replace_required(path: str, old: str, new: str, count: int = -1) -> None:
+              text = read(path)
+              if old not in text:
+                  raise SystemExit(f"expected text not found in {path}: {old[:120]!r}")
+              write(path, text.replace(old, new, count))
+
+          def sub_required(path: str, pattern: str, replacement: str, flags: int = re.S) -> None:
+              text = read(path)
+              updated, n = re.subn(pattern, replacement, text, flags=flags)
+              if n != 1:
+                  raise SystemExit(f"expected one regex match in {path}, got {n}: {pattern}")
+              write(path, updated)
+
+          # Canonical profile: one ownership mode, no mandatory-rule waiver surface.
+          profile_path = Path("schemas/ptsip-profile.schema.json")
+          profile = json.loads(profile_path.read_text(encoding="utf-8"))
+          profile["properties"].pop("exceptions", None)
+          profile["$defs"].pop("exception", None)
+          profile["properties"]["policies"]["properties"]["shared_executable_cross_boundary"] = {"const": "deny"}
+          profile_path.write_text(json.dumps(profile, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          replace_required(
+              "profiles/example.ptsip.yaml",
+              '  shared_executable_cross_boundary: "exception_required"',
+              '  shared_executable_cross_boundary: "deny"',
+          )
+          replace_required("profiles/example.ptsip.yaml", "\nexceptions: []\n", "\n")
+
+          # Core specification: retire the old exception rule and make remediation the only path back to conformance.
+          sub_required(
+              "spec/PTSIP-SPEC.md",
+              r"### PTSIP-EXC-001 — Explicit exceptions\n.*?\n## 5\. Dependency direction and evidence vocabulary",
+              """### Mandatory-rule violations require remediation\n\nPTSIP does not define a waiver or approved-exception mechanism that can authorize a violation of a PTSIP `MUST` or `MUST NOT` rule.\n\nWhen sufficient evidence establishes a mandatory-rule violation, the evaluated state is `NON_CONFORMANT` until the violating architecture is remediated and reevaluated. Remediation MAY include dependency removal, component splitting, ownership correction, contract extraction, packaging isolation, lifecycle separation, or another change that actually satisfies the applicable rule.\n\nA project MAY track deviations, debt, approvals, or migration plans in its own governance system, but such records are not PTSIP conformance inputs and MUST NOT change a `NON_CONFORMANT` result into `CONFORMANT`.\n\n`PTSIP-EXC-001` existed in earlier immutable `0.2.0-draft` snapshots. It is retired/superseded in this snapshot; historical records remain interpretable only under the immutable specification revision that defined them.\n\n## 5. Dependency direction and evidence vocabulary""",
+          )
+          spec = read("spec/PTSIP-SPEC.md")
+          spec = spec.replace("- approved exceptions;\n", "")
+          spec = spec.replace("exception structure", "remediation-state structure")
+          write("spec/PTSIP-SPEC.md", spec)
+
+          # Conformance: deterministic three-outcome model, with no waiver branch.
+          conf = read("spec/PTSIP-CONFORMANCE.md")
+          conf = conf.replace("- explicit exception governance.\n", "- remediation of established mandatory-rule violations before a conformant claim.\n")
+          conf = conf.replace("- exception structure;\n", "")
+          conf = conf.replace("- active exception records;\n", "")
+          conf = conf.replace("- active exceptions;\n", "")
+          conf = conf.replace("- no active PTSIP normative exception blocks strict conformance.\n", "")
+          conf = conf.replace("Active PTSIP normative exceptions: none\n", "")
+          conf = conf.replace("active PTSIP normative exception", "mandatory-rule waiver")
+          write("spec/PTSIP-CONFORMANCE.md", conf)
+          sub_required(
+              "spec/PTSIP-CONFORMANCE.md",
+              r"## 6\. Active violations, exceptions, and unresolved decisions\n.*?\n## 7\.",
+              """## 6. Active violations, remediation, and unresolved decisions\n\nWhen sufficient evidence establishes a violation of an applicable PTSIP `MUST` or `MUST NOT` rule, the conformance outcome is `NON_CONFORMANT`.\n\nPTSIP does not define a mandatory-rule waiver that changes this result. A repository may track architectural debt or migration approval in an external governance system, but that record does not erase the observed violation and is not an input that can produce `CONFORMANT`.\n\nThe path back to conformance is remediation of the violating architecture followed by reevaluation on a stable evidence snapshot.\n\nA project MAY describe itself as `PTSIP-adopting` or `PTSIP-transitioning` while remediation is in progress, but adoption/transition state is not a conformance outcome.\n\nA component decision status of `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` is not itself a fourth classification. Such unresolved status is blocking when it can conceal the result of an applicable mandatory PTSIP boundary.\n\n## 7.""",
+          )
+          # False-positive handling: a real violation cannot be suppressed into conformance.
+          sub_required(
+              "spec/PTSIP-CONFORMANCE.md",
+              r"## 8\. False-positive handling\n.*?(?=\n## 9\.)",
+              """## 8. False-positive handling\n\nA validator suppression MUST NOT silently disable a PTSIP rule.\n\nA suppression MAY be used only when review establishes that the reported evidence is a false positive and therefore does not actually establish the referenced rule violation. The suppression record SHOULD identify the evidence and rationale.\n\nA real architecture violation MUST NOT be relabeled as a false positive or suppression; it remains `NON_CONFORMANT` until remediated.\n""",
+          )
+
+          # Governance: projects may track debt externally, but PTSIP itself defines no waiver path.
+          sub_required(
+              "spec/PTSIP-GOVERNANCE.md",
+              r"## 7\. Project exceptions\n.*?\n## 8\. Tooling relationship",
+              """## 7. Violations and remediation\n\nPTSIP does not define a waiver mechanism that authorizes violation of a PTSIP `MUST` or `MUST NOT` rule.\n\nProjects MAY use their own governance systems to record architectural debt, approval history, ownership, target state, review conditions, or migration work. Those records remain project governance metadata; they MUST NOT change the PTSIP conformance result produced from the applicable rule and evidence.\n\nA confirmed mandatory-rule violation remains `NON_CONFORMANT` until the architecture is remediated and reevaluated.\n\n`PTSIP-EXC-001` is retired/superseded for the new immutable snapshot. Earlier exception records remain historical evidence interpreted under the immutable specification revision that defined that rule.\n\nRepository-specific optional policy may define stricter local constraints and local governance, but local approval MUST NOT weaken or waive universal PTSIP mandatory rules.\n\n## 8. Tooling relationship""",
+          )
+
+          # ADR-0004: replace the provisional exception model with the approved remediation model.
+          sub_required(
+              "decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.md",
+              r"### 6\. Active PTSIP normative exceptions block strict PTSIP conformance\n.*?\n### 7\.",
+              """### 6. Mandatory-rule violations require remediation; PTSIP defines no waiver\n\nA PTSIP `MUST`/`MUST NOT` violation is an architecture result, not an approval workflow branch. Once sufficient evidence establishes the violation, conformance is `NON_CONFORMANT` until the architecture is changed to satisfy the rule and reevaluated.\n\nPTSIP therefore does not define an approved-exception or waiver mechanism that can transform an active mandatory-rule violation into conformance. Projects remain free to track debt, approvals, owners, review conditions, and target migrations in repository- or organization-specific governance, but those records are outside the PTSIP conformance decision.\n\nThe earlier `PTSIP-EXC-001` rule is retired/superseded in the new immutable snapshot rather than silently repurposed. Historical snapshots that contained it remain immutable and interpretable by revision.\n\n### 7.""",
+          )
+          adr = read("decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.md")
+          adr = adr.replace("evidence coverage, exceptions, and PTSIP rules", "evidence coverage and PTSIP rules")
+          adr = adr.replace(
+              "- `CONFORMANT` — applicable evidence is sufficient, no applicable mandatory violation is established, and no active PTSIP normative exception blocks the claim;",
+              "- `CONFORMANT` — applicable evidence is sufficient and no applicable mandatory violation is established;",
+          )
+          adr = adr.replace("- Strict conformance has unambiguous exception semantics.\n", "- Mandatory-rule violations have one deterministic conformance path: `NON_CONFORMANT` until remediated.\n")
+          adr = adr.replace(
+              "- Existing experimental profiles that relied on active normative exceptions preserving strict conformance must change their claim semantics.\n",
+              "- Existing experimental profiles that declare PTSIP exceptions must migrate to remediation-oriented profiles without waiver semantics.\n",
+          )
+          write("decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.md", adr)
+
+          # Adoption guide: replace exception review with remediation review.
+          adoption = read("adoption/ADOPTION-GUIDE.md")
+          adoption = adoption.replace("- exception fields;\n", "")
+          adoption = adoption.replace("project profile or exception governance", "project profile or determine conformance")
+          adoption = adoption.replace("!= exception\n", "")
+          adoption = adoption.replace("coverage, exceptions, and deterministic PTSIP rules", "coverage and deterministic PTSIP rules")
+          write("adoption/ADOPTION-GUIDE.md", adoption)
+          sub_required(
+              "adoption/ADOPTION-GUIDE.md",
+              r"## Phase 10 — Exception review\n.*?\n## Phase 11 — Conformance Evaluation",
+              """## Phase 10 — Remediation review\n\nFor every established PTSIP `MUST`/`MUST NOT` violation, define the concrete architecture change required to satisfy the rule. Typical remediation includes dependency removal, ownership correction, component splitting, Neutral Contract extraction, packaging exclusion, build-environment separation, or lifecycle separation.\n\nRepository- or organization-specific governance MAY track owner, target state, review condition, and migration progress, but these records do not waive the PTSIP rule or change the current `NON_CONFORMANT` result.\n\nAfter remediation, rerun evidence collection and conformance evaluation against a stable snapshot.\n\n## Phase 11 — Conformance Evaluation""",
+          )
+          adoption = read("adoption/ADOPTION-GUIDE.md")
+          adoption = re.sub(
+              r"\nA project with active PTSIP normative exceptions may report.*?strict PTSIP conformance\.\n",
+              "\nA project undergoing remediation may describe itself as `PTSIP-adopting` or `PTSIP-transitioning`, but those adoption labels do not replace the current conformance outcome.\n",
+              adoption,
+              flags=re.S,
+          )
+          write("adoption/ADOPTION-GUIDE.md", adoption)
+
+          # Agent contract: humans can clarify intent, but neither agents nor approvals waive rules.
+          agent = read("agents/AGENT-CONTRACT.md")
+          agent = agent.replace("repository-specific declarations and exceptions override assumptions about directory names", "repository-specific declarations override assumptions about directory names")
+          agent = agent.replace("approved PTSIP exception/ADR records", "project architecture decision records")
+          agent = agent.replace("exception structure", "remediation metadata structure")
+          agent = agent.replace("artifact, lifecycle, coverage, exception, and other evidence", "artifact, lifecycle, coverage, and other evidence")
+          agent = agent.replace("no blocking mandatory violation/active PTSIP normative exception exists", "no blocking mandatory violation exists")
+          agent = agent.replace("An exception documents an active deviation but does not erase the violated PTSIP rule.", "Architecture decision records may explain intent or migration history, but they do not waive PTSIP mandatory rules.")
+          agent = agent.replace(
+              "Create or request an architecture decision/exception record. An approved active PTSIP normative exception still blocks strict PTSIP conformance while the violation remains active.",
+              "Report the expected PTSIP violation and propose a compliant remediation/migration path. Do not create a waiver that changes the conformance result.",
+          )
+          write("agents/AGENT-CONTRACT.md", agent)
+
+          # Terminology: explicitly define absence of a PTSIP waiver surface.
+          sub_required(
+              "spec/PTSIP-TERMINOLOGY.md",
+              r"## PTSIP exception\n.*?(?=\n## PTSIP Project Profile)",
+              """## PTSIP mandatory-rule waiver\n\nPTSIP does not define a waiver that authorizes violation of a PTSIP `MUST`/`MUST NOT` rule. Project governance may record debt or migration approval, but a confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated. `PTSIP-EXC-001` is a historical rule from earlier immutable draft snapshots and is retired/superseded in the new snapshot.\n\n""",
+          )
+          term = read("spec/PTSIP-TERMINOLOGY.md")
+          term = term.replace("artifact, lifecycle, coverage, exception, and other evidence", "artifact, lifecycle, coverage, and other evidence")
+          write("spec/PTSIP-TERMINOLOGY.md", term)
+
+          # Registry: only active rules participate in new-snapshot conformance.
+          registry = read("registry/ptsip-registry.yaml")
+          registry = registry.replace(
+              'meaning: "Applicable mandatory evidence is sufficient and no blocking PTSIP violation or active normative exception exists."',
+              'meaning: "Applicable mandatory evidence is sufficient and no applicable PTSIP MUST/MUST NOT violation is established."',
+          )
+          registry = registry.replace(
+              '    - id: PTSIP-EXC-001\n      title: "Explicit exceptions"\n      severity: error\n',
+              '  retired_rules:\n    - id: PTSIP-EXC-001\n      title: "Explicit exceptions"\n      reason: "Superseded: mandatory-rule violations are NON_CONFORMANT until remediated; PTSIP defines no waiver path."\n',
+          )
+          write("registry/ptsip-registry.yaml", registry)
+
+          # Canonical spec-asset tests: legacy exception field must now be rejected.
+          tests = read("tests/test_spec_assets.py")
+          tests = tests.replace('        "exceptions": [],\n', '')
+          tests = re.sub(
+              r"def test_profile_exception_requires_machine_readable_conformance_effect\(\) -> None:\n.*?(?=\ndef test_diagnostic_schema_distinguishes_rule_and_finding_identity)",
+              """def test_profile_schema_rejects_legacy_exception_waiver() -> None:\n    schema = _json(\"schemas/ptsip-profile.schema.json\")\n    profile = _minimal_profile()\n    profile[\"exceptions\"] = []\n    with pytest.raises(Exception):\n        Draft202012Validator(schema).validate(profile)\n\n\ndef test_retired_exception_rule_is_not_active() -> None:\n    registry = _yaml(\"registry/ptsip-registry.yaml\")[\"ptsip_registry\"]\n    active = {item[\"id\"] for item in registry[\"rules\"]}\n    retired = {item[\"id\"] for item in registry.get(\"retired_rules\", [])}\n    assert \"PTSIP-EXC-001\" not in active\n    assert \"PTSIP-EXC-001\" in retired\n\n\n""",
+              tests,
+              flags=re.S,
+          )
+          write("tests/test_spec_assets.py", tests)
+
+          # Changelog records the approved policy correction and Tool 0.2.2 preservation.
+          changelog = read("CHANGELOG.md")
+          changelog = re.sub(
+              r"- changed active PTSIP normative exception semantics.*?\n- expanded exception schema requirements.*?\n",
+              "- retired/superseded `PTSIP-EXC-001`; an established `MUST`/`MUST NOT` violation is `NON_CONFORMANT` until remediated and reevaluated;\n- removed the canonical reference-profile waiver surface (`exceptions` and `exception_required`) so project governance records cannot alter PTSIP conformance;\n",
+              changelog,
+              flags=re.S,
+          )
+          changelog = changelog.replace(
+              "- intentionally left published Tool `0.2.0` embedded normative resources unchanged because Tool `0.2.0` remains bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`.",
+              "- intentionally left Tool `0.2.2` source and embedded normative resources unchanged because Tool `0.2.2` remains bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`.",
+          )
+          write("CHANGELOG.md", changelog)
+
+          # Current status is Tool 0.2.2; the next correctness work package is 0.2.3.
+          Path("STATUS.md").write_text("""# PTSIP Status\n\n- Specification family: `0.2.0-draft`\n- Current Tool/package source version on `main`: `0.2.2`\n- Tool 0.2.2 bound specification revision: `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`\n- Specification identity model: draft family + immutable Git revision\n- Maturity: Experimental\n- Canonical repository: `kwaksinwoo01/ptsip`\n- External tooling model: Defined\n- Reference Tool package name: `ptsip`\n- Latest verified PyPI publication in this migration context: `0.2.0`\n- Tool CI target: Python 3.11–3.14\n- Tool release namespace: `tool-v*`\n- Reuse license: Apache License 2.0\n\n## Tool 0.2.2 state\n\nTool 0.2.2 preserves the evidence-v2 behavior of Tool 0.2.0 and adds deterministic Human Clarification:\n\n- `ptsip clarify`;\n- deterministic clarification with zero LLM/model API calls;\n- English/Korean fixed questions via `--lang` / `PTSIP_LANG`;\n- Consumer Repository GitHub identity from Git `origin`;\n- explicit `--publish github-issue` with `--repo owner/repository` override;\n- duplicate-publication state under external `PTSIP_HOME/clarifications`;\n- read-only clarification analysis unless publication is explicitly requested;\n- no Issue-answer collection, free-form interpretation, or automatic classification.\n\nThis capability does not change PTSIP architectural classifications, DecisionStatus values, or normative Specification semantics. Tool 0.2.2 remains bound to the immutable specification revision above.\n\n## Next normative snapshot work\n\nThe next immutable snapshot remains inside the `0.2.0-draft` family and is driven by the turbo-system and Simple Connection Consumer Pilots. Primary design areas are:\n\n- rule-relative evidence completeness;\n- Product Artifact owner/producer/contents/derivation semantics;\n- deterministic `CONFORMANT` / `NON_CONFORMANT` / `INCOMPLETE` evaluation;\n- mandatory-rule remediation rather than PTSIP waiver/exception semantics;\n- coherent component split criteria;\n- typed edge/lifecycle-phase/provenance semantics;\n- Profile Validation versus Conformance Evaluation separation;\n- stable diagnostic identity;\n- optional project-specific component dependency constraints that may strengthen but not weaken universal PTSIP rules.\n\nThe normative snapshot does not retroactively change Tool 0.2.2. A later Tool release must explicitly bind the newer immutable revision it implements.\n\n## Tool roadmap after the normative snapshot\n\n### Tool 0.2.3 — evidence correctness\n\nForward-port the work previously planned as Tool 0.2.1:\n\n- Python BOM-aware decoding;\n- deterministic relative-import resolution where evidence permits it;\n- project/external/platform/unresolved node-scope distinction;\n- GitHub Actions working-directory and false-positive handling;\n- explicit evaluator-run/evaluator-blocked reporting;\n- regression coverage proving Tool 0.2.2 Human Clarification remains deterministic and intact.\n\n### Tool 0.3.0 — conformance capability expansion\n\nPlanned capability work includes JavaScript/TypeScript and npm adapters, artifact evidence adapters, stable diagnostics, rule-relative coverage evaluation, `conform`, agent-decision ingestion, external evidence import, extended .NET analysis, and Go coverage.\n\n## Release blockers for PTSIP Specification 1.0\n\n- stabilize core rule and profile semantics through multiple real Pilots;\n- exercise automated validator rules against real dependency and packaging boundaries;\n- validate the constrained Agent Contract and deterministic Human Clarification against real ownership questions;\n- exercise rule-relative evidence coverage and Product Artifact evidence;\n- publish tagged stable specification releases;\n- exercise a later Reference Tool release against real Consumer Repositories with component declarations, artifact evidence, and repeatable conformance evaluation.\n""", encoding="utf-8")
+
+          tooling = read("TOOLING-CHANGELOG.md")
+          tooling = tooling.replace("Tool 0.2.1/0.3.0", "Tool 0.2.3/0.3.0")
+          tooling = tooling.replace("## 0.2.0 — Unreleased", "## 0.2.0 — 2026-08-09")
+          tooling = tooling.replace("Evidence-v2 migration driven", "Evidence-v2 release driven")
+          tooling = tooling.replace(
+              "- aligned the exception profile schema with every field required by `PTSIP-EXC-001`;",
+              "- aligned the profile schema with the Tool 0.2.0 bound specification revision;",
+          )
+          tooling = tooling.replace(
+              "- changed package summary punctuation to ASCII-safe text for legacy Windows console compatibility.",
+              "- changed package summary punctuation to ASCII-safe text for legacy Windows console compatibility;\n- published `tool-v0.2.0` through GitHub Actions and PyPI Trusted Publishing;\n- verified public installation with `pip install ptsip==0.2.0`.",
+          )
+          tooling = tooling.replace(
+              "- Tool 0.2.0 does not claim complete automated Enforced Conformance evaluation.",
+              "- Tool 0.2.0 does not claim complete automated Enforced Conformance evaluation;\n- Tool 0.2.0 remains bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0` even when the `0.2.0-draft` family evolves to a newer immutable snapshot.",
+          )
+          write("TOOLING-CHANGELOG.md", tooling)
+
+          # Planning document: preserve work scope but move the old 0.2.1 correctness package to 0.2.3.
+          plan_path = "planning/PTSIP-0.2.0-DRAFT-NEXT-NORMATIVE-SNAPSHOT-PLAN.md"
+          plan = read(plan_path)
+          plan = plan.replace("**Current Tool 0.2.0 normative baseline:**", "**Current Tool 0.2.2 normative baseline:**")
+          plan = plan.replace("Tool 0.2.1 correctness candidates", "Tool 0.2.3 correctness candidates")
+          plan = plan.replace("Tool `0.2.1`", "Tool `0.2.3`")
+          plan = plan.replace("Tool 0.2.1", "Tool 0.2.3")
+          plan = plan.replace("Transition state, exception state, and conformance state are distinct concepts.", "Transition/migration metadata and conformance state are distinct concepts; PTSIP does not define a mandatory-rule waiver that changes conformance.")
+          plan = plan.replace("Transition ≠ Exception ≠ Conformance", "Current architecture ≠ Target architecture ≠ Conformance")
+          plan = re.sub(
+              r"### 4\.3 Exception semantics and strict-conformance effect — P0\n.*?\n### 4\.4",
+              """### 4.3 Mandatory violations and remediation semantics — P0\n\nPilot review initially exposed inconsistency between exception text and machine-readable schema. The subsequent governance decision is simpler: PTSIP does not define a waiver path for mandatory-rule violations.\n\nThe next snapshot must establish:\n\n- sufficient evidence of a `MUST`/`MUST NOT` violation -> `NON_CONFORMANT`;\n- project governance records do not alter that result;\n- remediation/migration changes the architecture, after which evaluation is rerun;\n- historical `PTSIP-EXC-001` remains interpretable only under earlier immutable revisions and is retired/superseded in the new snapshot.\n\n### 4.4""",
+              plan,
+              flags=re.S,
+          )
+          plan = plan.replace(
+              "10. How do exception category/scope/authority/expiry semantics alter or block strict conformance?",
+              "10. How are remediation/migration records kept separate from conformance, and how is retired `PTSIP-EXC-001` represented without a waiver path?",
+          )
+          plan = plan.replace(
+              "The normative snapshot migration MUST NOT silently change the meaning of already published Tool `0.2.0`. Tool `0.2.0` remains bound to:",
+              "The normative snapshot migration MUST NOT silently change the meaning of current Tool `0.2.2`. Tool `0.2.2` remains bound to:",
+          )
+          write(plan_path, plan)
+
+          # Sanity guards before tests.
+          active_spec = read("spec/PTSIP-SPEC.md")
+          if "### PTSIP-EXC-001" in active_spec or "blocks_strict_ptsip" in active_spec:
+              raise SystemExit("active specification still contains old exception rule semantics")
+          if '"exceptions"' in read("schemas/ptsip-profile.schema.json"):
+              raise SystemExit("canonical profile schema still exposes exceptions")
+          if "exception_required" in read("schemas/ptsip-profile.schema.json") or "exception_required" in read("profiles/example.ptsip.yaml"):
+              raise SystemExit("canonical profile still exposes exception_required")
+          if 'id: PTSIP-EXC-001\n      title: "Explicit exceptions"\n      severity:' in read("registry/ptsip-registry.yaml"):
+              raise SystemExit("PTSIP-EXC-001 is still active in registry")
+          PY
+
+      - name: Install and test
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+          python -m pytest -q
+          ptsip --version
+          ptsip spec
+
+      - name: Verify Tool 0.2.2 clarification remains intact
+        shell: bash
+        run: |
+          test "$(python - <<'PY'
+          from ptsip.constants import TOOL_VERSION, SPEC_REVISION
+          print(f"{TOOL_VERSION} {SPEC_REVISION}")
+          PY
+          )" = "0.2.2 895e12d27230af2bb99ad17a96e8df8ef41bc3e0"
+          grep -q "p_clarify" src/ptsip/cli.py
+          grep -q "clarification_directory" src/ptsip/storage/local_state.py
+          grep -q "remote" src/ptsip/repository/discover.py
+
+      - name: Commit migration result and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/tmp-forward-port-normative-migration.yml
+          git add CHANGELOG.md STATUS.md TOOLING-CHANGELOG.md \
+            adoption/ADOPTION-GUIDE.md agents/AGENT-CONTRACT.md \
+            decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.md \
+            planning/PTSIP-0.2.0-DRAFT-NEXT-NORMATIVE-SNAPSHOT-PLAN.md \
+            profiles/example.ptsip.yaml registry/ptsip-registry.yaml \
+            schemas/ptsip-profile.schema.json spec/PTSIP-CONFORMANCE.md \
+            spec/PTSIP-GOVERNANCE.md spec/PTSIP-SPEC.md spec/PTSIP-TERMINOLOGY.md \
+            tests/test_spec_assets.py
+          git commit -m "spec: align forward-port with remediation-only conformance"
+          git push origin HEAD:migration/forward-port-0.2.0-draft-on-0.2.2
