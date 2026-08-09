@@ -13,7 +13,7 @@
 - Reference Tool package name: `ptsip`
 - Latest verified PyPI publication: `0.2.0`
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Tool 0.3.0 publication status: code review gate passed; post-rebind release-readiness verification pending; not yet merged/published/tagged
+- Tool 0.3.0 publication status: code review gate passed; post-rebind release-readiness verification pending; not yet published/tagged; PR merge remains pending
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
