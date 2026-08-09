@@ -35,7 +35,7 @@ jobs:
           code = textwrap.dedent(workflow[start:end])
           code = code.replace(
               'r"## 8\\. False-positive handling\\n.*?(?=\\n## 9\\.)"',
-              'r"## \\d+\\. False-positive handling\\n.*?(?=\\n## \\d+\\.)"',
+              'r"## \\d+\\. False-positive handling\\n.*?(?=\\n## \\d+\\.|\\Z)"',
           )
           exec(compile(code, 'forward-port-migration', 'exec'), {})
           PY
