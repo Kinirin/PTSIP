@@ -1,68 +1,155 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from ptsip.cli import main
+from ptsip.inspection.dependencies import scan_dependency_edges
 from ptsip.inspection.inventory import collect_inventory
 from ptsip.pilot.runner import run_pilot
 from ptsip.repository.discover import discover_repository
+from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
 from ptsip.spec_identity import current_spec_identity
 from ptsip.validation.profile import validate_profile
 
 
+def _git(repo: Path, *args: str) -> None:
+    subprocess.run(["git", "-C", str(repo), *args], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+def _init_git(repo: Path) -> None:
+    repo.mkdir(parents=True, exist_ok=True)
+    _git(repo, "init")
+    _git(repo, "config", "user.email", "ptsip-test@example.invalid")
+    _git(repo, "config", "user.name", "PTSIP Test")
+
+
+def _commit_all(repo: Path) -> None:
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "fixture")
+
+
 def test_spec_identity():
     spec = current_spec_identity()
+    assert spec.tool_version == "0.2.0"
     assert spec.version == "0.2.0-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
-    assert spec.revision == "cb4164a803678a0364ce037af4addbad1d7ecc7d"
+    assert spec.revision
 
 
-def test_inspection_is_read_only(tmp_path: Path):
+def test_inventory_reports_parse_failures(tmp_path: Path):
     repo = tmp_path / "repo"
-    repo.mkdir()
-    (repo / "app.py").write_text("import json\n", encoding="utf-8")
-    before = sorted(p.relative_to(repo).as_posix() for p in repo.rglob("*"))
-    info = discover_repository(repo)
-    inv = collect_inventory(info.root)
-    after = sorted(p.relative_to(repo).as_posix() for p in repo.rglob("*"))
-    assert inv.python_modules == 1
-    assert before == after
+    _init_git(repo)
+    (repo / "good.py").write_text("import json\n", encoding="utf-8")
+    (repo / "bad.py").write_text("def broken(:\n", encoding="utf-8")
+    _commit_all(repo)
+    inv = collect_inventory(repo)
+    assert inv.scan_mode == "git-tracked"
+    assert inv.python_modules == 2
+    assert inv.python_imports == 1
+    assert any(issue.category == "PYTHON_PARSE_ERROR" for issue in inv.scan_issues)
+    assert not inv.coverage_complete
 
 
-def test_pilot_writes_external_state_only(tmp_path: Path, monkeypatch):
+def test_snapshot_detects_repository_change(tmp_path: Path):
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    target = repo / "app.py"
+    target.write_text("x = 1\n", encoding="utf-8")
+    _commit_all(repo)
+    before = capture_snapshot(repo)
+    target.write_text("x = 2\n", encoding="utf-8")
+    after = capture_snapshot(repo)
+    comparison = compare_snapshots(before, after)
+    assert not comparison.stable
+    assert comparison.status == "INVALIDATED"
+    assert any("tracked file content" in reason or "working-tree" in reason for reason in comparison.reasons)
+
+
+def test_pilot_v2_writes_external_state_only(tmp_path: Path, monkeypatch):
     repo = tmp_path / "repo"
     state = tmp_path / "state"
-    repo.mkdir()
+    _init_git(repo)
     (repo / "src").mkdir()
     (repo / "src" / "x.py").write_text("x = 1\n", encoding="utf-8")
+    _commit_all(repo)
     monkeypatch.setenv("PTSIP_HOME", str(state))
-    before = sorted(p.relative_to(repo).as_posix() for p in repo.rglob("*"))
+    before = capture_snapshot(repo)
     result = run_pilot(repo)
-    after = sorted(p.relative_to(repo).as_posix() for p in repo.rglob("*"))
-    assert before == after
+    after = capture_snapshot(repo)
+    assert result.report["format"] == "ptsip-pilot-report/v2"
     assert result.report_path.is_file()
     assert state in result.report_path.parents
-    assert result.report["consumer_repository_modified"] is False
+    assert result.report["snapshot"]["comparison"]["stable"] is True
+    assert result.report["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
+    assert compare_snapshots(before, after).stable
+    assert result.report["classification"]["allowed_classifications"] == [
+        "PRODUCT",
+        "TOOLCHAIN",
+        "NEUTRAL_CONTRACT",
+    ]
+    assert "UNKNOWN" in result.report["classification"]["decision_statuses"]
 
 
-def test_validate_profile(tmp_path: Path):
+def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     repo = tmp_path / "repo"
-    repo.mkdir()
+    _init_git(repo)
+    (repo / "src" / "install").mkdir(parents=True)
+    (repo / "src" / "app.py").write_text("x = 1\n", encoding="utf-8")
+    (repo / "src" / "install" / "plugin_build.py").write_text("x = 1\n", encoding="utf-8")
+    _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"devtools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
-    assert result.valid
-    assert any("immutable revision" in warning for warning in result.warnings)
+    assert result.valid, result.errors
+    partition = result.details["component_partition"]
+    owners = {item["path"]: item["component_id"] for item in partition["assignments"]}
+    assert owners["src/app.py"] == "product-runtime"
+    assert owners["src/install/plugin_build.py"] == "plugin-builder"
+
+
+def test_exception_schema_requires_normative_fields(tmp_path: Path):
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "src").mkdir()
+    (repo / "src" / "app.py").write_text("x = 1\n", encoding="utf-8")
+    _commit_all(repo)
+    profile = repo / "ptsip.yaml"
+    profile.write_text(
+        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions:\n  - id: EX-1\n    rule: PTSIP-DEP-001\n    reason: legacy\n""",
+        encoding="utf-8",
+    )
+    result = validate_profile(repo)
+    assert not result.valid
+    assert any("affected_components" in error for error in result.errors)
+
+
+def test_python_dependency_edge_is_preserved(tmp_path: Path):
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "src").mkdir()
+    (repo / "tools").mkdir()
+    (repo / "src" / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (repo / "tools" / "check.py").write_text("import app\n", encoding="utf-8")
+    _commit_all(repo)
+    scan = scan_dependency_edges(repo)
+    edge = next(item for item in scan.edges if item.source == "tools/check.py" and item.target == "app")
+    assert edge.resolved_path == "src/app.py"
+    assert edge.edge_type.value == "IMPORTS"
+    assert edge.phase.value == "UNKNOWN"
 
 
 def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
     repo = tmp_path / "repo"
-    repo.mkdir()
+    _init_git(repo)
+    (repo / "app.py").write_text("x = 1\n", encoding="utf-8")
+    _commit_all(repo)
     monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
-    assert payload["consumer_repository_modified"] is False
+    assert payload["format"] == "ptsip-pilot-report/v2"
+    assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
