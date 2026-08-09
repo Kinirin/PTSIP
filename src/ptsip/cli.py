@@ -4,6 +4,10 @@ import argparse
 import json
 import sys
 
+from .clarification.generator import analyze_clarifications
+from .clarification.i18n import resolve_language
+from .clarification.render import render_console
+from .clarification.transports.github_issue import publish as publish_github_issues
 from .constants import TOOL_VERSION
 from .doctor import doctor
 from .inspection.components import discover_component_candidates
@@ -52,6 +56,17 @@ def _parser() -> argparse.ArgumentParser:
     p_validate.add_argument("path", nargs="?", default=".")
     p_validate.add_argument("--profile", help="Explicit project-profile path")
     p_validate.add_argument("--json", action="store_true")
+
+    p_clarify = sub.add_parser(
+        "clarify",
+        help="Generate deterministic human clarification requests instead of speculatively inferring missing architectural intent",
+    )
+    p_clarify.add_argument("path", nargs="?", default=".")
+    p_clarify.add_argument("--json", action="store_true")
+    p_clarify.add_argument("--lang", choices=("en", "ko"), help="Question language; otherwise PTSIP_LANG, OS locale, then English")
+    p_clarify.add_argument("--component", action="append", help="Limit clarification to a detected component candidate ID; repeatable")
+    p_clarify.add_argument("--publish", choices=("github-issue",), help="Explicitly publish clarification requests to an external transport")
+    p_clarify.add_argument("--repo", help="Override the detected GitHub origin using owner/repository; requires --publish github-issue")
     return parser
 
 
@@ -103,7 +118,36 @@ def main(argv: list[str] | None = None) -> int:
             result = validate_profile(repo.root, args.profile)
             _emit(result.as_dict(), args.json)
             return 0 if result.valid else 3
-    except (FileNotFoundError, PermissionError, OSError) as exc:
+        if args.command == "clarify":
+            if args.repo and args.publish != "github-issue":
+                raise ValueError("--repo requires --publish github-issue")
+            language = resolve_language(args.lang)
+            analysis = analyze_clarifications(args.path, args.component)
+            payload = analysis.as_dict(language)
+            publications = ()
+            if args.publish == "github-issue":
+                if not analysis.comparison.stable:
+                    raise RuntimeError("Repository state changed during clarification analysis; refusing to publish questions from invalidated evidence.")
+                publications = publish_github_issues(
+                    repository_root=analysis.repository.root,
+                    remote=analysis.repository.remote,
+                    repository_revision=analysis.repository.commit,
+                    requests=analysis.requests,
+                    language=language,
+                    repo_override=args.repo,
+                )
+                payload["publication"] = {
+                    "transport": "github-issue",
+                    "results": [item.as_dict() for item in publications],
+                }
+            if args.json:
+                _emit(payload, True)
+            else:
+                print(render_console(analysis.requests, language))
+                for item in publications:
+                    print(f"github_issue[{item.status}]: {item.issue_url}")
+            return 0 if analysis.comparison.stable else 4
+    except (FileNotFoundError, PermissionError, OSError, RuntimeError, ValueError) as exc:
         print(f"PTSIP error: {exc}", file=sys.stderr)
         return 2
     return 2
