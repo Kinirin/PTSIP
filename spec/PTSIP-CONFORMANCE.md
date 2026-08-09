@@ -52,7 +52,8 @@ It may validate:
 - component IDs;
 - ownership declaration mode;
 - selector conflicts;
-- referenced component existence; and
+- referenced component existence;
+- exception structure; and
 - project-specific dependency-policy consistency.
 
 A valid profile is **not** proof that repository dependencies, artifacts, build behavior, or lifecycle behavior conform to the declaration or to PTSIP.
@@ -66,7 +67,8 @@ Conformance Evaluation combines, as applicable:
 - dependency evidence;
 - artifact/packaging evidence;
 - lifecycle/release evidence;
-- evidence coverage; and
+- evidence coverage;
+- active exception records; and
 - deterministic PTSIP rule evaluation.
 
 A tool MAY expose separate operations such as `validate` and `conform`. Those command names are informative; the semantic separation is normative.
@@ -260,7 +262,7 @@ A change observed during analysis does not by itself prove that PTSIP caused the
 
 Tool-owned caches and pilot reports SHOULD be placed outside the Consumer Repository by default. A user-selected output path inside the repository is an explicit write and SHOULD be reported as such rather than described as non-intrusive.
 
-## 14. False-positive handling
+## 8. False-positive handling
 
 A validator suppression MUST NOT silently disable a PTSIP rule.
 
