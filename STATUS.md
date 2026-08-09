@@ -3,6 +3,7 @@
 - Specification family: `0.2.0-draft`
 - Current Tool/package source version on `main`: `0.2.2`
 - Tool 0.2.2 bound specification revision: `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`
+- Normative forward-port baseline before this snapshot: `main@3aa5c0b0c91841b2a5eabba4aff1335703b832b1`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/ptsip`
