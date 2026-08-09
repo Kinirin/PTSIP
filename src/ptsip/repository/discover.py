@@ -4,6 +4,8 @@ import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from .remote import RepositoryRemote, parse_remote
+
 
 @dataclass(frozen=True)
 class RepositoryInfo:
@@ -13,6 +15,7 @@ class RepositoryInfo:
     commit: str | None
     branch: str | None
     dirty: bool | None
+    remote: RepositoryRemote | None
 
     def as_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -45,12 +48,15 @@ def discover_repository(path: str | Path = ".") -> RepositoryInfo:
             commit=None,
             branch=None,
             dirty=None,
+            remote=None,
         )
 
     root = Path(root_text).resolve()
     _, commit = _git(root, "rev-parse", "HEAD")
     branch_code, branch = _git(root, "branch", "--show-current")
     status_code, status = _git(root, "status", "--porcelain")
+    remote_code, remote_url = _git(root, "remote", "get-url", "origin")
+    remote = parse_remote("origin", remote_url) if remote_code == 0 and remote_url else None
     return RepositoryInfo(
         requested_path=str(requested),
         root=str(root),
@@ -58,4 +64,5 @@ def discover_repository(path: str | Path = ".") -> RepositoryInfo:
         commit=commit or None,
         branch=(branch if branch_code == 0 and branch else None),
         dirty=(bool(status) if status_code == 0 else None),
+        remote=remote,
     )
