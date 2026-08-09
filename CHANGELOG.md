@@ -20,11 +20,11 @@ Pilot-driven specification evolution based on materially different Consumer Repo
 - added `PTSIP-POL-001` so project-specific component dependency policies may strengthen but never weaken universal PTSIP rules;
 - extended the reference profile with optional same-plane/cross-component dependency constraints using `default`, `allow`, and `deny` relationships;
 - changed reference profile ownership declarations to exactly one mode: `boundaries` XOR `components`;
-- changed active PTSIP normative exception semantics so approved active `MUST`/`MUST NOT` deviations block strict Core/Enforced PTSIP conformance while the violation remains active;
-- expanded exception schema requirements with category, scope, approval authority, and machine-readable `blocks_strict_ptsip` conformance effect;
+- retired/superseded `PTSIP-EXC-001`; an established `MUST`/`MUST NOT` violation is `NON_CONFORMANT` until remediated and reevaluated;
+- removed the canonical reference-profile waiver surface (`exceptions` and `exception_required`) so project governance records cannot alter PTSIP conformance;
 - added ADR-0004 documenting the two-Pilot normative decisions;
 - synchronized Terminology, Registry, Agent Contract, Reference Architecture, and Adoption Guide with the new evidence/artifact/conformance semantics;
-- intentionally left published Tool `0.2.0` embedded normative resources unchanged because Tool `0.2.0` remains bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`.
+- intentionally left Tool `0.2.2` source and embedded normative resources unchanged because Tool `0.2.2` remains bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`.
 
 Change categories: `CLARIFICATION`, `NORMATIVE_ADDITION`, `SCHEMA_CHANGE`, `CONFORMANCE_CHANGE`, and limited `NORMATIVE_BREAKING` within the explicitly experimental draft family.
 

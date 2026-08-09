@@ -140,9 +140,10 @@ An evidence gap that can conceal whether an applicable PTSIP `MUST` or `MUST NOT
 
 A reported evidence gap that cannot materially affect the result of the applicable mandatory PTSIP rules being evaluated.
 
-## PTSIP exception
+## PTSIP mandatory-rule waiver
 
-A documented, governed deviation from a normative PTSIP rule. An exception does not erase the violated rule. An active exception to a PTSIP `MUST`/`MUST NOT` rule blocks strict Core/Enforced PTSIP conformance while the violation remains active.
+PTSIP does not define a waiver that authorizes violation of a PTSIP `MUST`/`MUST NOT` rule. Project governance may record debt or migration approval, but a confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated. `PTSIP-EXC-001` is a historical rule from earlier immutable draft snapshots and is retired/superseded in the new snapshot.
+
 
 ## PTSIP Project Profile
 
@@ -158,7 +159,7 @@ The operation that checks whether a PTSIP Project Profile or equivalent declarat
 
 ## Conformance Evaluation
 
-The operation that combines applicable declarations with observed dependency, artifact, lifecycle, coverage, exception, and other evidence to evaluate PTSIP rules.
+The operation that combines applicable declarations with observed dependency, artifact, lifecycle, coverage, and other evidence to evaluate PTSIP rules.
 
 ## Conformance outcome
 

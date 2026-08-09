@@ -280,27 +280,15 @@ Such project-specific policy MUST NOT authorize behavior prohibited by a univers
 
 Project-specific policy is not automatically a universal PTSIP architecture requirement merely because it is represented in a PTSIP Project Profile.
 
-### PTSIP-EXC-001 — Explicit exceptions
+### Mandatory-rule violations require remediation
 
-Any intentional violation of a MUST or MUST NOT rule MUST be recorded as a PTSIP exception decision.
+PTSIP does not define a waiver or approved-exception mechanism that can authorize a violation of a PTSIP `MUST` or `MUST NOT` rule.
 
-The exception record MUST identify:
+When sufficient evidence establishes a mandatory-rule violation, the evaluated state is `NON_CONFORMANT` until the violating architecture is remediated and reevaluated. Remediation MAY include dependency removal, component splitting, ownership correction, contract extraction, packaging isolation, lifecycle separation, or another change that actually satisfies the applicable rule.
 
-- violated rule ID;
-- reason;
-- affected components;
-- coupling introduced;
-- scope/category;
-- owner and approval authority;
-- review or expiry condition;
-- remediation or permanent-acceptance decision; and
-- conformance effect.
+A project MAY track deviations, debt, approvals, or migration plans in its own governance system, but such records are not PTSIP conformance inputs and MUST NOT change a `NON_CONFORMANT` result into `CONFORMANT`.
 
-An exception records and governs a violation; it does not erase the violated rule.
-
-An active exception to a PTSIP `MUST` or `MUST NOT` rule MUST block a strict PTSIP Core Conformant or Enforced Conformant claim while that violation remains active. The machine-readable conformance effect for such an exception is `blocks_strict_ptsip`.
-
-A project with approved deviations MAY describe itself as adopting/transitioning or report evaluation results with approved exceptions, but MUST NOT represent the active normative violation as strict PTSIP conformance.
+`PTSIP-EXC-001` existed in earlier immutable `0.2.0-draft` snapshots. It is retired/superseded in this snapshot; historical records remain interpretable only under the immutable specification revision that defined them.
 
 ## 5. Dependency direction and evidence vocabulary
 
@@ -470,7 +458,7 @@ Profile Validation determines whether a project declaration is syntactically and
 - component ID validity;
 - selector conflicts;
 - referenced component existence;
-- exception structure; and
+- remediation-state structure; and
 - optional project-policy consistency.
 
 A valid profile is not proof of repository conformance.

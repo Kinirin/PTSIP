@@ -18,7 +18,7 @@ A project is **PTSIP Core Conformant** when it satisfies all applicable normativ
 - lifecycle ownership separation;
 - evidence obligations required to support the claim;
 - Consumer Repository Non-Intrusion for external PTSIP tooling; and
-- explicit exception governance.
+- remediation of established mandatory-rule violations before a conformant claim.
 
 A project does not need to add PTSIP-specific documentation or tooling directories merely to claim Core Conformance.
 
@@ -83,7 +83,6 @@ A completed PTSIP conformance evaluation has one of these outcomes:
 
 - evidence is sufficient for the applicable mandatory rule set;
 - no applicable `MUST`/`MUST NOT` violation is established; and
-- no active PTSIP normative exception blocks strict conformance.
 
 An empty finding list alone is insufficient to produce `CONFORMANT`.
 
@@ -121,7 +120,6 @@ A conformance claim SHOULD identify:
 - conformance outcome;
 - project profile path or configuration source for Enforced Conformance;
 - validation/evaluation result;
-- active exceptions;
 - evidence snapshot status;
 - blocking and non-blocking evidence gaps; and
 - diagnostic/evidence format version when automated tooling is used.
@@ -140,7 +138,6 @@ Project revision: <commit>
 Profile: <project-defined location>
 Evidence snapshot: STABLE
 Blocking coverage gaps: none
-Active PTSIP normative exceptions: none
 ```
 
 ## 5. Evidence sufficiency and coverage
@@ -161,17 +158,15 @@ A validator SHOULD report inaccessible files, parser failures, unresolved dynami
 
 Unresolved evidence MUST NOT be silently converted into an absence-of-violation claim.
 
-## 6. Active violations, exceptions, and unresolved decisions
+## 6. Active violations, remediation, and unresolved decisions
 
-A project with an established active violation of a mandatory PTSIP rule is `NON_CONFORMANT` for strict PTSIP Core/Enforced purposes.
+When sufficient evidence establishes a violation of an applicable PTSIP `MUST` or `MUST NOT` rule, the conformance outcome is `NON_CONFORMANT`.
 
-An exception records and governs the deviation; it does not erase the underlying violation.
+PTSIP does not define a mandatory-rule waiver that changes this result. A repository may track architectural debt or migration approval in an external governance system, but that record does not erase the observed violation and is not an input that can produce `CONFORMANT`.
 
-An active exception to a PTSIP `MUST` or `MUST NOT` rule has machine-readable conformance effect `blocks_strict_ptsip` and MUST block `Core Conformant` and `Enforced Conformant` claims while the violation remains active.
+The path back to conformance is remediation of the violating architecture followed by reevaluation on a stable evidence snapshot.
 
-A project MAY report an approved exception, and MAY describe itself as `PTSIP-adopting` or `PTSIP-transitioning` during remediation, but it MUST NOT represent the active normative deviation as strict PTSIP conformance.
-
-A project-specific optional component dependency policy may define stricter constraints than PTSIP. A violation or exception of that project-specific policy does not automatically imply violation of universal PTSIP unless an applicable PTSIP rule is also violated.
+A project MAY describe itself as `PTSIP-adopting` or `PTSIP-transitioning` while remediation is in progress, but adoption/transition state is not a conformance outcome.
 
 A component decision status of `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` is not itself a fourth classification. Such unresolved status is blocking when it can conceal the result of an applicable mandatory PTSIP boundary.
 
@@ -267,13 +262,10 @@ A change observed during analysis does not by itself prove that PTSIP caused the
 
 Tool-owned caches and pilot reports SHOULD be placed outside the Consumer Repository by default. A user-selected output path inside the repository is an explicit write and SHOULD be reported as such rather than described as non-intrusive.
 
-## 14. False-positive handling
+## 8. False-positive handling
 
 A validator suppression MUST NOT silently disable a PTSIP rule.
 
-Suppressions SHOULD reference either:
+A suppression MAY be used only when review establishes that the reported evidence is a false positive and therefore does not actually establish the referenced rule violation. The suppression record SHOULD identify the evidence and rationale.
 
-- an explicitly documented false-positive classification with evidence; or
-- a PTSIP exception record when the behavior is an intentional normative deviation.
-
-A false-positive classification and an architecture exception are different: the former states that the evidence does not actually establish the rule violation, while the latter accepts a real violation under governance.
+A real architecture violation MUST NOT be relabeled as a false positive or suppression; it remains `NON_CONFORMANT` until remediated.

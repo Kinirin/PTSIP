@@ -103,23 +103,19 @@ Artifact evidence used for packaging conformance identifies, as applicable:
 - shipping/distribution scope; and
 - evidence provenance.
 
-### 6. Active PTSIP normative exceptions block strict PTSIP conformance
+### 6. Mandatory-rule violations require remediation; PTSIP defines no waiver
 
-An exception documents and governs an intentional deviation; it does not erase the violated rule.
+A PTSIP `MUST`/`MUST NOT` violation is an architecture result, not an approval workflow branch. Once sufficient evidence establishes the violation, conformance is `NON_CONFORMANT` until the architecture is changed to satisfy the rule and reevaluated.
 
-An active exception to a PTSIP `MUST` or `MUST NOT` rule blocks a strict `Core Conformant` or `Enforced Conformant` claim while the violation remains active.
+PTSIP therefore does not define an approved-exception or waiver mechanism that can transform an active mandatory-rule violation into conformance. Projects remain free to track debt, approvals, owners, review conditions, and target migrations in repository- or organization-specific governance, but those records are outside the PTSIP conformance decision.
 
-Exception `category`, `scope`, `approval_authority`, and machine-readable conformance effect are added so governance is reproducible. For PTSIP normative violations the conformance effect is `blocks_strict_ptsip`.
-
-Projects MAY still record approved exceptions and describe themselves as adopting/transitioning, or report evaluation results with approved deviations. This is not the same as strict PTSIP conformance.
-
-A repository-specific optional policy may define its own exception semantics, but such policy cannot weaken universal PTSIP rules.
+The earlier `PTSIP-EXC-001` rule is retired/superseded in the new immutable snapshot rather than silently repurposed. Historical snapshots that contained it remain immutable and interpretable by revision.
 
 ### 7. Separate Profile Validation from Conformance Evaluation
 
 **Profile Validation** determines whether a declaration is syntactically and semantically well-formed: schema validity, component IDs, selector conflicts, references, policy declarations, and binding syntax.
 
-**Conformance Evaluation** combines the valid declaration when required with observed evidence, artifact evidence, lifecycle evidence, evidence coverage, exceptions, and PTSIP rules.
+**Conformance Evaluation** combines the valid declaration when required with observed evidence, artifact evidence, lifecycle evidence, evidence coverage and PTSIP rules.
 
 Implementations MAY expose separate operations such as `validate` and `conform`; command names are not normative.
 
@@ -127,7 +123,7 @@ Implementations MAY expose separate operations such as `validate` and `conform`;
 
 An evaluation outcome is one of:
 
-- `CONFORMANT` — applicable evidence is sufficient, no applicable mandatory violation is established, and no active PTSIP normative exception blocks the claim;
+- `CONFORMANT` — applicable evidence is sufficient and no applicable mandatory violation is established;
 - `NON_CONFORMANT` — sufficient evidence establishes at least one applicable `MUST`/`MUST NOT` violation;
 - `INCOMPLETE` — no definite violation is sufficient to settle the result, but blocking evidence, unresolved ownership, unsupported relevant analysis, or unstable snapshot prevents a conformance claim.
 
@@ -191,12 +187,12 @@ Canonical specification/schema assets may advance in this PR while Tool 0.2.0 em
 - Profile syntax validation no longer masquerades as repository conformance.
 - Same-plane project policy is expressible without turning PTSIP into a generic mandatory dependency-topology language.
 - Diagnostics can be consumed consistently by CI, coding agents, and external reporters.
-- Strict conformance has unambiguous exception semantics.
+- Mandatory-rule violations have one deterministic conformance path: `NON_CONFORMANT` until remediated.
 
 ### Costs
 
 - The profile schema becomes stricter by making `boundaries` and `components` mutually exclusive.
-- Existing experimental profiles that relied on active normative exceptions preserving strict conformance must change their claim semantics.
+- Existing experimental profiles that declare PTSIP exceptions must migrate to remediation-oriented profiles without waiver semantics.
 - Conformance implementations must model coverage per applicable rule rather than rely on simple pass/fail or global percentages.
 - Artifact and diagnostic contracts add interoperability surface that future Tool versions must implement carefully.
 

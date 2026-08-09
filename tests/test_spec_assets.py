@@ -88,7 +88,6 @@ def _minimal_profile() -> dict[str, object]:
             "toolchain_in_product_package": "deny",
             "independent_build_resolution": "required",
         },
-        "exceptions": [],
     }
 
 
@@ -141,26 +140,21 @@ def test_component_dependency_policy_requires_component_mode() -> None:
         Draft202012Validator(schema).validate(profile)
 
 
-def test_profile_exception_requires_machine_readable_conformance_effect() -> None:
+def test_profile_schema_rejects_legacy_exception_waiver() -> None:
     schema = _json("schemas/ptsip-profile.schema.json")
     profile = _minimal_profile()
-    profile["exceptions"] = [
-        {
-            "id": "EX-1",
-            "rule": "PTSIP-DEP-001",
-            "reason": "legacy dependency",
-            "affected_components": ["product", "toolchain"],
-            "coupling": "product runtime depends on a toolchain implementation",
-            "category": "legacy-boundary",
-            "scope": "product -> toolchain runtime",
-            "owner": "architecture",
-            "approval_authority": "architecture-owner",
-            "review_condition": "remove before strict conformance claim",
-            "decision": "remediate",
-            "conformance_effect": "blocks_strict_ptsip",
-        }
-    ]
-    Draft202012Validator(schema).validate(profile)
+    profile["exceptions"] = []
+    with pytest.raises(Exception):
+        Draft202012Validator(schema).validate(profile)
+
+
+def test_retired_exception_rule_is_not_active() -> None:
+    registry = _yaml("registry/ptsip-registry.yaml")["ptsip_registry"]
+    active = {item["id"] for item in registry["rules"]}
+    retired = {item["id"] for item in registry.get("retired_rules", [])}
+    assert "PTSIP-EXC-001" not in active
+    assert "PTSIP-EXC-001" in retired
+
 
 
 def test_diagnostic_schema_distinguishes_rule_and_finding_identity() -> None:

@@ -75,20 +75,17 @@ A normative architecture change SHOULD have an ADR or equivalent decision record
 
 Pilot-driven changes SHOULD identify which conclusions are general specification evidence versus Consumer Repository-specific findings or Tool implementation gaps.
 
-## 7. Project exceptions
+## 7. Violations and remediation
 
-Projects MAY record exceptions, but exceptions do not erase the original rule.
+PTSIP does not define a waiver mechanism that authorizes violation of a PTSIP `MUST` or `MUST NOT` rule.
 
-An exception MUST identify the exact violated rule and MUST be reviewable.
+Projects MAY use their own governance systems to record architectural debt, approval history, ownership, target state, review conditions, or migration work. Those records remain project governance metadata; they MUST NOT change the PTSIP conformance result produced from the applicable rule and evidence.
 
-An active exception to a PTSIP `MUST` or `MUST NOT` rule blocks strict PTSIP Core/Enforced Conformance while the violation remains active. Approval records governance of the deviation; approval does not transform the deviation into compliance.
+A confirmed mandatory-rule violation remains `NON_CONFORMANT` until the architecture is remediated and reevaluated.
 
-Permanent exceptions SHOULD be treated as evidence that either:
+`PTSIP-EXC-001` is retired/superseded for the new immutable snapshot. Earlier exception records remain historical evidence interpreted under the immutable specification revision that defined that rule.
 
-1. the project is not strictly conformant, or
-2. the specification may require a future extension/profile.
-
-Repository-specific optional policy may define stricter constraints and may govern its own local exceptions, but a local exception MUST NOT weaken or waive universal PTSIP mandatory rules.
+Repository-specific optional policy may define stricter local constraints and local governance, but local approval MUST NOT weaken or waive universal PTSIP mandatory rules.
 
 ## 8. Tooling relationship
 

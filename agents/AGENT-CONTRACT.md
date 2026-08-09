@@ -17,7 +17,7 @@ This is the concise operational contract for coding agents working with a PTSIP-
 11. **Respect repository ownership.** Do not create PTSIP-specific `docs/`, `tools/`, `.ptsip/`, cache, or report directories solely to operate PTSIP tooling.
 12. **Read the project profile when one exists.** Repository-specific declarations and exceptions override assumptions about directory names, but a profile declaration is not proof of conformance.
 13. **Resolve the bound specification.** For automated conformance, use the specification source/version/revision declared by the project profile or by the PTSIP tooling build; do not silently substitute a different normative snapshot.
-14. **Escalate boundary exceptions.** If a requested change requires violating a PTSIP `MUST`/`MUST NOT` rule, do not silently implement the violation. Create or request an architecture decision/exception record. An approved active PTSIP normative exception still blocks strict PTSIP conformance while the violation remains active.
+14. **Escalate boundary exceptions.** If a requested change requires violating a PTSIP `MUST`/`MUST NOT` rule, do not silently implement the violation. Report the expected PTSIP violation and propose a compliant remediation/migration path. Do not create a waiver that changes the conformance result.
 15. **Preserve uncertainty.** `UNKNOWN`, `CONFLICT`, and `INCOMPLETE` are decision statuses, not PTSIP classifications. Do not force a classification when evidence is insufficient.
 16. **Preserve evidence provenance.** Keep `DECLARED`, `OBSERVED`, and `INFERRED` evidence distinguishable. Do not present inference as observation.
 17. **Do not override observed evidence.** If profile declarations, dependency evidence, packaging evidence, lifecycle evidence, imported evidence, or agent reasoning conflict, report the conflict rather than choosing whichever source makes the repository appear conformant.
@@ -58,7 +58,7 @@ When reviewing dependency or artifact evidence:
 
 When contributing to a conformance evaluation, use these outcomes only:
 
-- `CONFORMANT` — applicable evidence is sufficient and no blocking mandatory violation/active PTSIP normative exception exists;
+- `CONFORMANT` — applicable evidence is sufficient and no blocking mandatory violation exists;
 - `NON_CONFORMANT` — sufficient evidence establishes an applicable `MUST`/`MUST NOT` violation;
 - `INCOMPLETE` — blocking evidence or unresolved ownership prevents a conformant conclusion and no definite violation has already settled the result.
 
@@ -68,9 +68,9 @@ When contributing to a conformance evaluation, use these outcomes only:
 
 Do not confuse a valid Project Profile with a conformant repository.
 
-**Profile Validation** checks declaration quality: schema, IDs, selectors, references, binding syntax, exception structure, and optional project-policy consistency.
+**Profile Validation** checks declaration quality: schema, IDs, selectors, references, binding syntax, remediation metadata structure, and optional project-policy consistency.
 
-**Conformance Evaluation** combines declaration with observed dependency, artifact, lifecycle, coverage, exception, and other evidence against PTSIP rules.
+**Conformance Evaluation** combines declaration with observed dependency, artifact, lifecycle, coverage, and other evidence against PTSIP rules.
 
 If a profile uses the reference ownership model, it uses either boundary-root shorthand or component declarations, not both simultaneously.
 
@@ -123,8 +123,8 @@ The canonical order is:
 2. repository-specific PTSIP Project Profile, when present, as the project's declaration;
 3. observed repository/dependency/artifact evidence;
 4. imported external evidence with explicit provenance;
-5. approved PTSIP exception/ADR records;
+5. project architecture decision records;
 6. this Agent Contract from the same specification revision;
 7. informal examples.
 
-A profile declaration has authority over intended ownership but does not override contradictory observed evidence when evaluating conformance. An exception documents an active deviation but does not erase the violated PTSIP rule. If sources conflict, preserve and report the conflict rather than silently rewriting either source.
+A profile declaration has authority over intended ownership but does not override contradictory observed evidence when evaluating conformance. Architecture decision records may explain intent or migration history, but they do not waive PTSIP mandatory rules. If sources conflict, preserve and report the conflict rather than silently rewriting either source.

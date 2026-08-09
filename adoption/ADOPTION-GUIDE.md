@@ -70,7 +70,7 @@ External libraries, standard-library/platform nodes, and unresolved dependency t
 
 An unresolved decision that affects a boundary relevant to a mandatory rule is a blocking gap and should block structural migration or conformance conclusions that depend on that ownership decision.
 
-A coding agent may propose a schema-constrained decision with evidence IDs, but it does not automatically approve the project profile or exception governance.
+A coding agent may propose a schema-constrained decision with evidence IDs, but it does not automatically approve the project profile or determine conformance.
 
 Neutral Contract classification is not determined by a fixed number of current consumers. Evaluate non-executable/non-owning contract semantics and lifecycle ownership.
 
@@ -135,7 +135,6 @@ If the repository uses explicit transition planning, keep these concepts separat
 ```text
 current observed architecture
 != target architecture
-!= exception
 != conformance result
 ```
 
@@ -170,17 +169,17 @@ Source-path declarations alone are not sufficient evidence for `PTSIP-PKG-001` w
 
 The reference evidence shape is `ptsip-artifact-evidence/v1`.
 
-## Phase 10 — Exception review
+## Phase 10 — Remediation review
 
-Record every intentional PTSIP `MUST`/`MUST NOT` violation as an explicit exception with rule ID, affected components, coupling, category/scope, ownership/approval authority, review/expiry condition, decision, and conformance effect.
+For every established PTSIP `MUST`/`MUST NOT` violation, define the concrete architecture change required to satisfy the rule. Typical remediation includes dependency removal, ownership correction, component splitting, Neutral Contract extraction, packaging exclusion, build-environment separation, or lifecycle separation.
 
-An approved active PTSIP normative exception does not erase the violation. While the violation remains active, strict Core/Enforced PTSIP conformance is blocked.
+Repository- or organization-specific governance MAY track owner, target state, review condition, and migration progress, but these records do not waive the PTSIP rule or change the current `NON_CONFORMANT` result.
 
-Project-specific stricter dependency policy may have separate local governance, but local policy exceptions cannot waive universal PTSIP rules.
+After remediation, rerun evidence collection and conformance evaluation against a stable snapshot.
 
 ## Phase 11 — Conformance Evaluation
 
-Conformance Evaluation combines declaration, observed dependencies, Product Artifact evidence, lifecycle evidence, coverage, exceptions, and deterministic PTSIP rules.
+Conformance Evaluation combines declaration, observed dependencies, Product Artifact evidence, lifecycle evidence, coverage and deterministic PTSIP rules.
 
 The completed evaluation uses:
 
@@ -248,7 +247,7 @@ A Toolchain-only change triggering a shared Product workflow is not automaticall
 
 Only after stable, sufficient evidence exists should the project claim `PTSIP Core Conformant` or `PTSIP Enforced Conformant`.
 
-A project with active PTSIP normative exceptions may report those approved deviations and may describe itself as `PTSIP-adopting` or `PTSIP-transitioning`, but it must not call the active violation strict PTSIP conformance.
+A project undergoing remediation may describe itself as `PTSIP-adopting` or `PTSIP-transitioning`, but those adoption labels do not replace the current conformance outcome.
 
 ## Migration principle
 

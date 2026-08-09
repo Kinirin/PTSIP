@@ -67,7 +67,6 @@ policies:
   product_to_toolchain_runtime_dependency: "deny"
   toolchain_in_product_package: "deny"
   independent_build_resolution: "required"
-  shared_executable_cross_boundary: "exception_required"
+  shared_executable_cross_boundary: "deny"
   neutral_contract_sharing: "allow"
 
-exceptions: []

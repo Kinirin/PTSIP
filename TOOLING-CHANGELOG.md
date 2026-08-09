@@ -16,11 +16,11 @@ Deterministic human clarification support for missing architectural intent:
 - stores GitHub clarification publication state under `PTSIP_HOME/clarifications` outside the Consumer Repository to prevent duplicate issue creation;
 - does not collect, interpret, or automatically classify from Issue answers in Tool 0.2.2;
 - retains the existing `0.2.0-draft` Specification family and immutable Specification revision; this Tool capability does not change normative PTSIP semantics or schemas;
-- keeps the separately planned pilot-driven Tool 0.2.1/0.3.0 work independent from this release.
+- keeps the separately planned pilot-driven Tool 0.2.3/0.3.0 work independent from this release.
 
-## 0.2.0 — Unreleased
+## 0.2.0 — 2026-08-09
 
-Evidence-v2 migration driven by the first real Consumer Repository Pilot:
+Evidence-v2 release driven by the first real Consumer Repository Pilot:
 
 - moved the Reference Tool version independently to `0.2.0` while retaining PTSIP Specification family `0.2.0-draft`;
 - bound Tool 0.2.0 to immutable PTSIP Specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`;
@@ -32,12 +32,14 @@ Evidence-v2 migration driven by the first real Consumer Repository Pilot:
 - added component candidates without auto-assigning architectural ownership;
 - added typed dependency evidence for Python imports, `.csproj` `ProjectReference`, and GitHub Actions local-script invocation;
 - added component-aware profile validation with deterministic selector specificity and conflict detection;
-- aligned the exception profile schema with every field required by `PTSIP-EXC-001`;
+- aligned the profile schema with the Tool 0.2.0 bound specification revision;
 - added constrained coding-agent classification schema with exactly three PTSIP classifications and separate decision statuses;
 - added initial deterministic declaration-to-dependency findings without claiming complete conformance;
 - distinguishes Python package-metadata support from CI-verified interpreter versions;
 - expanded CI verification to Python 3.11–3.14;
-- changed package summary punctuation to ASCII-safe text for legacy Windows console compatibility.
+- changed package summary punctuation to ASCII-safe text for legacy Windows console compatibility;
+- published `tool-v0.2.0` through GitHub Actions and PyPI Trusted Publishing;
+- verified public installation with `pip install ptsip==0.2.0`.
 
 Known limitations retained intentionally in Tool 0.2.0:
 
@@ -46,7 +48,8 @@ Known limitations retained intentionally in Tool 0.2.0:
 - JavaScript/TypeScript and Go dependency adapters are not implemented yet;
 - dynamic/relative import resolution is preserved as unresolved evidence when it cannot be resolved deterministically;
 - component candidates are evidence for human/agent review, not automatic PTSIP ownership decisions;
-- Tool 0.2.0 does not claim complete automated Enforced Conformance evaluation.
+- Tool 0.2.0 does not claim complete automated Enforced Conformance evaluation;
+- Tool 0.2.0 remains bound to specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0` even when the `0.2.0-draft` family evolves to a newer immutable snapshot.
 
 ## 0.1.0a1 — 2026-08-09
 

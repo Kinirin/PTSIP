@@ -2,7 +2,7 @@
 
 > **Status:** Planning / non-normative  
 > **Specification family:** `0.2.0-draft`  
-> **Current Tool 0.2.0 normative baseline:** `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`  
+> **Current Tool 0.2.2 normative baseline:** `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`  
 > **Next normative snapshot revision:** To be assigned by the merge commit that changes the normative specification assets  
 > **Purpose:** Define the migration sequence and decision boundaries before changing normative PTSIP semantics.
 
@@ -34,7 +34,7 @@ The draft family label is not the immutable normative identity. The exact merge 
 
 The Reference Tool remains independently versioned.
 
-The normative snapshot migration MUST NOT silently change the meaning of already published Tool `0.2.0`. Tool `0.2.0` remains bound to:
+The normative snapshot migration MUST NOT silently change the meaning of current Tool `0.2.2`. Tool `0.2.2` remains bound to:
 
 ```text
 Specification family: 0.2.0-draft
@@ -55,7 +55,7 @@ The next snapshot MUST preserve the following architectural constraints unless a
 3. External, platform, standard-library, and unresolved dependency targets MUST NOT be turned into additional PTSIP architecture classifications. They belong to evidence-graph scope/type semantics.
 4. A Project Profile is a declaration of intended architecture; it is not conformance truth.
 5. Observed evidence MUST NOT be overwritten by declarations, agent output, transition metadata, or imported external evidence.
-6. Transition state, exception state, and conformance state are distinct concepts.
+6. Transition/migration metadata and conformance state are distinct concepts; PTSIP does not define a mandatory-rule waiver that changes conformance.
 7. External validator output is analysis input with provenance; it is not automatically trusted PTSIP conformance fact.
 8. Project-specific policy MAY be stricter than the universal PTSIP minimum, but repository-specific governance MUST NOT become mandatory PTSIP core semantics.
 9. Purpose and lifecycle ownership continue to precede code reuse.
@@ -108,22 +108,16 @@ TOOLCHAIN build component
 
 without reclassifying the Toolchain producer as Product or the Product artifact as Toolchain.
 
-### 4.3 Exception semantics and strict-conformance effect — P0
+### 4.3 Mandatory violations and remediation semantics — P0
 
-The current specification permits strict-conformance semantics to depend on whether a conformance profile allows an exception category, while the current profile schema cannot express the corresponding category/effect model.
+Pilot review initially exposed inconsistency between exception text and machine-readable schema. The subsequent governance decision is simpler: PTSIP does not define a waiver path for mandatory-rule violations.
 
-The next snapshot must align normative text and machine-readable representation for at least:
+The next snapshot must establish:
 
-- violated rule ID;
-- affected components;
-- scope;
-- category/type;
-- owner/approval authority;
-- review/expiry condition;
-- remediation or permanent-acceptance decision;
-- explicit effect on strict conformance.
-
-Exception handling must not silently erase the underlying violated rule.
+- sufficient evidence of a `MUST`/`MUST NOT` violation -> `NON_CONFORMANT`;
+- project governance records do not alter that result;
+- remediation/migration changes the architecture, after which evaluation is rerun;
+- historical `PTSIP-EXC-001` remains interpretable only under earlier immutable revisions and is retired/superseded in the new snapshot.
 
 ### 4.4 Mandatory component split criterion — P1
 
@@ -218,7 +212,7 @@ Initial profile semantics should remain small. Edge type and phase constraints m
 
 The following are valid Tool roadmap items but MUST NOT be mistaken for new PTSIP architectural obligations merely because a Pilot requested them:
 
-### Tool 0.2.1 correctness candidates
+### Tool 0.2.3 correctness candidates
 
 - Python BOM-aware source decoding;
 - deterministic relative-import resolution where repository evidence permits it;
@@ -256,7 +250,7 @@ Migration metadata is useful for describing `current` and `target` architecture,
 The design must preserve:
 
 ```text
-Transition ≠ Exception ≠ Conformance
+Current architecture ≠ Target architecture ≠ Conformance
 ```
 
 Transition metadata belongs primarily to adoption/migration planning unless a later ADR establishes normative semantics.
@@ -316,7 +310,7 @@ The next snapshot design is not complete until these questions have explicit ans
 7. What exact criteria distinguish Toolchain inspection of Product implementation from prohibited or risky executable implementation reuse?
 8. What is the relationship between workflow trigger, actual artifact change, version change, publication, and lifecycle coupling?
 9. What are the minimum neutrality criteria for `NEUTRAL_CONTRACT` without requiring an arbitrary number of current consumers?
-10. How do exception category/scope/authority/expiry semantics alter or block strict conformance?
+10. How are remediation/migration records kept separate from conformance, and how is retired `PTSIP-EXC-001` represented without a waiver path?
 11. Must a profile choose exactly one ownership declaration mode (`boundaries` XOR `components`), or is a deterministic combined model justified?
 12. What information is required in a stable diagnostic contract?
 13. How are stricter project-local component dependency constraints represented without expanding PTSIP into a generic dependency-policy language?
@@ -370,7 +364,7 @@ Create one design/ADR-driven PR that resolves the normative questions above and 
 
 No Tool feature implementation is mixed into this PR except unavoidable embedded normative resource synchronization needed to preserve repository consistency; published Tool 0.2.0 remains bound to its existing revision.
 
-### Phase 2 — Tool 0.2.1 evidence correctness
+### Phase 2 — Tool 0.2.3 evidence correctness
 
 Implement low-risk correctness improvements that make existing evidence collection more accurate without pretending to deliver the full new conformance pipeline.
 
@@ -400,4 +394,4 @@ This plan does not:
 
 Phase 1 is complete when the normative design PR is merged and its merge SHA is recorded as the new exact normative identity for the `0.2.0-draft` family.
 
-Only after that identity exists should Tool `0.2.1` or Tool `0.3.0` be bound to and implemented against the new snapshot.
+Only after that identity exists should Tool `0.2.3` or Tool `0.3.0` be bound to and implemented against the new snapshot.

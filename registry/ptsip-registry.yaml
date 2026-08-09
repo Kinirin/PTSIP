@@ -27,7 +27,7 @@ ptsip_registry:
 
   conformance_outcomes:
     - id: CONFORMANT
-      meaning: "Applicable mandatory evidence is sufficient and no blocking PTSIP violation or active normative exception exists."
+      meaning: "Applicable mandatory evidence is sufficient and no applicable PTSIP MUST/MUST NOT violation is established."
     - id: NON_CONFORMANT
       meaning: "Sufficient evidence establishes at least one applicable MUST/MUST NOT violation."
     - id: INCOMPLETE
@@ -183,6 +183,7 @@ ptsip_registry:
     - id: PTSIP-POL-001
       title: "Project-specific policy may strengthen but not weaken PTSIP"
       severity: error
+  retired_rules:
     - id: PTSIP-EXC-001
       title: "Explicit exceptions"
-      severity: error
+      reason: "Superseded: mandatory-rule violations are NON_CONFORMANT until remediated; PTSIP defines no waiver path."
