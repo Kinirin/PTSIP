@@ -147,6 +147,8 @@ Tool 릴리스는 `tool-v*` 태그/릴리스 네임스페이스를 사용합니�
 - [`TOOLING-CHANGELOG.md`](TOOLING-CHANGELOG.md) — Tool 변경 이력
 - [`.github/workflows/tooling-test.yml`](.github/workflows/tooling-test.yml) — Tool CI
 - [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml) — `tool-v*` 릴리스를 위한 PyPI Trusted Publishing
+- [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml) — 한국어 README 자동 동기화
+- [`tools/ai_interface_tool/readme_translation/sync_readme_ko.py`](tools/ai_interface_tool/readme_translation/sync_readme_ko.py) — 재사용 가능한 번역 및 구조 검증 도우미
 - [`README.md`](README.md) — 정식 영문 프로젝트 개요
 - [`README.ko.md`](README.ko.md) — 자동으로 동기화되는 한국어 번역본
 
@@ -154,7 +156,11 @@ Tool 릴리스는 `tool-v*` 태그/릴리스 네임스페이스를 사용합니�
 
 `README.md`가 정식 프로젝트 개요입니다. `README.ko.md`는 번역된 뷰이며 프로젝트 사실을 독립적으로 관리하는 별도 원본이 되어서는 안 됩니다.
 
-영문 README가 변경되면 저장소의 README 번역 워크플로가 한국어 README를 자동으로 다시 생성합니다. 이를 통해 수동 번역 작업을 없애고 두 문서의 내용이 서로 어긋나는 위험을 줄입니다.
+`main`의 영문 README가 변경되면 [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml)이 한국어 README를 다시 생성하고 결과를 커밋합니다. 워크플로는 저장소에서 제공하는 `GITHUB_TOKEN`으로 GitHub Models를 호출하므로 별도의 모델 API secret을 저장할 필요가 없습니다.
+
+번역본을 쓰기 전에 재사용 가능한 helper가 Markdown heading 구조, fenced code block, link destination, 규범 키워드와 비정상적인 출력 길이를 검사합니다. 모델 응답의 구조가 안전하지 않으면 `README.ko.md`를 덮어쓰지 않고 워크플로를 실패시킵니다.
+
+이를 통해 일상적인 수동 번역 작업을 없애면서 두 문서의 내용이 서로 어긋나는 위험을 줄입니다.
 
 ## 규범적 언어
 
