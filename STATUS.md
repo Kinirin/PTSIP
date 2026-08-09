@@ -13,7 +13,7 @@
 - Reference Tool package name: `ptsip`
 - Latest verified PyPI publication: `0.2.0`
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Tool 0.3.0 publication status: code review gate passed; post-rebind release-readiness verification pending; not yet published/tagged; PR merge remains pending
+- Tool 0.3.0 publication status: code review and post-rebind release-readiness verified; not yet published/tagged; PR merge remains pending
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -73,7 +73,7 @@ The current Tool 0.3.0 migration branch implements:
 
 Tool 0.3.0 deliberately preserves uncertainty. Invalid or stale review evidence, contradictory evidence, unresolved Product dependency targets, incomplete Product Artifact evidence, ambiguous build/lifecycle evidence, unstable snapshots, or internal diagnostic-contract failures block `CONFORMANT` rather than being silently ignored.
 
-The earlier release-readiness run `31328764175` passed Python 3.11–3.14 plus package build/twine/wheel smoke before the final merge-gate remediation and Specification rebind. A final post-rebind release-readiness run is required before Tool 0.3.0 can be merged for release preparation. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
+Final post-rebind release-readiness verification completed in GitHub Actions run `31334084470`: Python 3.11, 3.12, 3.13, and 3.14 each passed the full pytest suite plus Tool identity, exact Specification revision, and `ptsip conform --help` checks; the Python 3.14 package job verified `tool-v0.3.0` version mapping, built wheel/sdist distributions, passed `twine check`, installed the built wheel, and passed built-wheel Tool identity/spec/conform smoke checks. The temporary verification workflow was removed after the successful run. No Tool 0.3.0 tag, GitHub Release, or PyPI publication has been created yet.
 
 ## Release blockers for PTSIP Specification 1.0
 
