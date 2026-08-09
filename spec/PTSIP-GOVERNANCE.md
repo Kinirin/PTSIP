@@ -8,7 +8,7 @@ This document governs changes to the PTSIP specification itself and exceptions m
 
 ## 2. Canonical source
 
-The public repository `https://github.com/kwaksinwoo01/ptsip-spec` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, and conformance definitions.
+The public repository `https://github.com/kwaksinwoo01/ptsip` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, conformance definitions, and the Reference Tool source maintained by this project.
 
 Copies, blog posts, examples, agent prompts, and tooling snapshots are informative unless explicitly bound to a PTSIP specification version. Tooling SHOULD additionally record an immutable specification revision when practical.
 
