@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/kwaksinwoo01/ptsip/main/schemas/ptsip-agent-classification.schema.json",
+  "title": "PTSIP Agent Classification Decision",
+  "type": "object",
+  "required": [
+    "component_id",
+    "status",
+    "classification",
+    "origin",
+    "confidence",
+    "evidence_ids",
+    "rationale",
+    "counter_evidence"
+  ],
+  "properties": {
+    "component_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["RESOLVED", "UNKNOWN", "CONFLICT", "INCOMPLETE"]},
+    "classification": {
+      "type": ["string", "null"],
+      "enum": ["PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT", null]
+    },
+    "origin": {"enum": ["PROFILE", "AGENT", "INFERRED"]},
+    "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "rationale": {"type": "string", "minLength": 1},
+    "counter_evidence": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "RESOLVED"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "classification": {"enum": ["PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "evidence_ids": {"minItems": 1}
+        }
+      },
+      "else": {
+        "properties": {"classification": {"type": "null"}}
+      }
+    },
+    {
+      "if": {"properties": {"origin": {"const": "AGENT"}}, "required": ["origin"]},
+      "then": {"properties": {"evidence_ids": {"minItems": 1}}}
+    }
+  ],
+  "additionalProperties": false
+}
