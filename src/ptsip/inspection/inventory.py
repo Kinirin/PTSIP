@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import tokenize
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -61,8 +62,9 @@ def _relative(path: str) -> str:
 
 def _count_imports(path: Path) -> tuple[int, ScanIssue | None]:
     try:
-        source = path.read_text(encoding="utf-8", errors="strict")
-    except (OSError, UnicodeError) as exc:
+        with tokenize.open(path) as handle:
+            source = handle.read()
+    except (OSError, UnicodeError, SyntaxError) as exc:
         return 0, ScanIssue("READ_ERROR", path.as_posix(), str(exc))
     try:
         tree = ast.parse(source, filename=str(path))
