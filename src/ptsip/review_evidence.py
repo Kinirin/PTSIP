@@ -18,6 +18,7 @@ from .model import (
     ResolutionStatus,
 )
 from .repository.discover import RepositoryInfo
+from .repository.snapshot import repository_files
 
 
 @dataclass(frozen=True)
@@ -246,6 +247,10 @@ def load_external_evidence(
     edges: list[DependencyEdge] = []
     issues: list[EvidenceInputIssue] = []
     root = Path(repository.root).resolve()
+    _mode, tracked_paths, tracked_errors = repository_files(root)
+    tracked = set(tracked_paths)
+    for error in tracked_errors:
+        issues.append(EvidenceInputIssue(repository.root, f"Unable to establish tracked source identity: {error}"))
     expected_repositories = {repository.root}
     if repository.remote and repository.remote.repository:
         expected_repositories.add(repository.remote.repository)
@@ -310,7 +315,8 @@ def load_external_evidence(
 
             source_candidate = (root / str(source)).resolve()
             try:
-                source_inside = source_candidate.is_relative_to(root) and source_candidate.is_file()
+                source_relative = source_candidate.relative_to(root).as_posix()
+                source_inside = source_candidate.is_file() and source_relative in tracked
             except (OSError, ValueError):
                 source_inside = False
             if not source_inside:
@@ -332,8 +338,18 @@ def load_external_evidence(
                     issues.append(EvidenceInputIssue(source_path, f"evidence[{index}].resolved_path does not resolve to a repository file"))
                     continue
                 normalized_resolved = target_candidate.relative_to(root).as_posix()
-            if resolution == ResolutionStatus.RESOLVED and (scope != EvidenceNodeScope.PROJECT_COMPONENT or normalized_resolved is None):
-                issues.append(EvidenceInputIssue(source_path, f"evidence[{index}] RESOLVED project evidence requires PROJECT_COMPONENT target_scope and resolved_path"))
+            semantic_error: str | None = None
+            if resolution == ResolutionStatus.RESOLVED:
+                if scope != EvidenceNodeScope.PROJECT_COMPONENT or normalized_resolved is None:
+                    semantic_error = "RESOLVED evidence requires PROJECT_COMPONENT target_scope and resolved_path"
+            elif resolution == ResolutionStatus.EXTERNAL:
+                if scope not in {EvidenceNodeScope.EXTERNAL_DEPENDENCY, EvidenceNodeScope.PLATFORM} or normalized_resolved is not None:
+                    semantic_error = "EXTERNAL evidence requires EXTERNAL_DEPENDENCY/PLATFORM target_scope and no resolved_path"
+            elif resolution in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
+                if scope != EvidenceNodeScope.UNRESOLVED_TARGET or normalized_resolved is not None:
+                    semantic_error = f"{resolution.value} evidence requires UNRESOLVED_TARGET target_scope and no resolved_path"
+            if semantic_error is not None:
+                issues.append(EvidenceInputIssue(source_path, f"evidence[{index}] {semantic_error}"))
                 continue
 
             edges.append(
@@ -374,7 +390,7 @@ def load_external_evidence(
 def merge_external_dependencies(native: DependencyScan, external: ExternalEvidenceLoad) -> DependencyScan:
     edges = {edge.evidence_id: edge for edge in native.edges}
     for edge in external.edges:
-        if edge.evidence_id not in edges:
+        if edge.provenance == EvidenceProvenance.OBSERVED and edge.evidence_id not in edges:
             edges[edge.evidence_id] = edge
     issues = list(native.issues)
     adapters = set(native.adapters)

@@ -10,19 +10,24 @@ Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound
 - emits deterministic `ptsip-diagnostic/v1`-shaped diagnostics with instance identity separate from PTSIP rule identity;
 - evaluates rule-relative blocking coverage instead of treating empty findings as conformance;
 - accepts explicit read-only `ptsip-artifact-evidence/v1` inputs and evaluates Product packaging isolation without conflating artifact producer and artifact owner;
+- binds artifact evidence through a Tool-level sidecar carrying the imported document SHA-256 and exact Consumer Repository revision/tracked-content identity, without extending the canonical artifact schema;
 - adds an independent build-resolution evaluator over explicitly declared component manifests, supporting Python, npm, .NET project, and Go module manifest evidence while blocking ambiguous cross-plane shared-manifest evidence;
 - adds lifecycle evidence evaluation that requires declared release/compatibility ownership and positive path-scoped release evidence, while treating workflow triggers alone as insufficient proof of lifecycle coupling or independence;
 - adds deterministic JavaScript/TypeScript source dependency evidence for static imports, CommonJS `require`, and dynamic `import()`/`require()` uncertainty;
 - adds npm manifest evidence for runtime/build dependency declarations and local package-to-package resolution;
 - adds Go source import evidence with local-module, standard-library/platform, and external-module scope resolution;
-- adds source-level .NET `using` evidence correlated with local project namespaces and deterministic `PackageReference` matches while retaining `.csproj` `ProjectReference` evidence;
+- adds source-level .NET `using` evidence that resolves local project identity only when corroborated by `.csproj` `ProjectReference` metadata; namespace-only matches remain uncertain and deterministic `PackageReference` matches remain external evidence;
 - routes `inspect`, `pilot`, `clarify`, and `conform` through one Tool 0.3.0 composite dependency evidence graph;
 - keeps `ptsip pilot` at `conformance.status=NOT_EVALUATED`; strict outcomes are produced only by `ptsip conform`;
 - evaluates optional project-specific component dependency policy separately from universal PTSIP diagnostics, consistent with `PTSIP-POL-001`;
 - ingests bound-schema agent classification decisions as review evidence without allowing them to overwrite Project Profile declarations;
 - accepts explicit `ptsip-external-evidence/v1` dependency evidence only when producer metadata and Consumer Repository identity/revision can be verified, preserving input SHA-256 and canonical provenance;
 - permits trusted external evidence to supplement native unresolved evidence, but blocks contradictory resolved external/native evidence instead of silently overriding either source;
-- performs a final conformance-report audit against the embedded diagnostic schema, active rule registry, coverage-gap identity, and evaluator-state contract before allowing `CONFORMANT`;
+- prevents inferred external evidence from clearing native uncertainty, validates resolution/scope semantics, and blocks contradictory resolved external/native evidence instead of silently overriding either source;
+- wraps the complete Tool 0.3.0 evidence/evaluator/audit pipeline in the final repository snapshot interval;
+- blocks unsupported mandatory-relevant source ecosystems, ambiguous release-like workflows, and ownership-incompatible build manifests while leaving ordinary documentation and non-release global CI rule-relative;
+- uses comment/string-aware lexical scanning for Go, JavaScript/TypeScript, and C# source dependency statements;
+- performs a final conformance-report audit against the embedded diagnostic schema, active rule registry, applicability/evidence sufficiency, coverage-gap identity, and evaluator-state contract before allowing `CONFORMANT`;
 - retains Tool 0.2.2 Human Clarification's deterministic, zero-LLM semantics and Tool 0.2.3 evidence-correctness behavior as regression boundaries.
 
 Release-readiness verification completed in GitHub Actions run `31328764175`: Python 3.11–3.14 all passed the complete pytest/CLI smoke suite, and the package job verified the expected `tool-v0.3.0` mapping, built wheel/sdist artifacts, passed `twine check`, installed the built wheel, and re-ran Tool identity/conformance CLI smoke checks. The temporary verification workflow was removed after use.

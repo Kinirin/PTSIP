@@ -12,6 +12,7 @@ from ..model import (
     EvidenceProvenance,
     ResolutionStatus,
 )
+from .lexing import code_positions, comments_removed, keyword_is_code
 
 
 _MODULE_RE = re.compile(r"^\s*module\s+(\S+)\s*$")
@@ -62,25 +63,34 @@ def discover_go_modules(root: Path, paths: list[str]) -> tuple[list[GoModule], l
 def _imports(source: str) -> list[tuple[int, str]]:
     found: list[tuple[int, str]] = []
     in_block = False
-    for line_no, raw in enumerate(source.splitlines(), start=1):
-        line = raw.split("//", 1)[0].strip()
+    mask = code_positions(source, backtick_strings=True)
+    sanitized = comments_removed(source, backtick_strings=True)
+    offset = 0
+    for line_no, raw in enumerate(sanitized.splitlines(keepends=True), start=1):
+        line = raw.strip()
         if not line:
+            offset += len(raw)
             continue
         if not in_block:
             match = _SINGLE_IMPORT_RE.match(line)
-            if match:
+            leading = len(raw) - len(raw.lstrip())
+            if match and keyword_is_code(source, mask, offset + leading, offset + len(raw), "import"):
                 found.append((line_no, match.group(2)))
+                offset += len(raw)
                 continue
-            if re.match(r"^import\s*\(\s*$", line):
+            if re.match(r"^import\s*\(\s*$", line) and keyword_is_code(source, mask, offset + leading, offset + len(raw), "import"):
                 in_block = True
+                offset += len(raw)
                 continue
         else:
             if line.startswith(")"):
                 in_block = False
+                offset += len(raw)
                 continue
             match = _BLOCK_IMPORT_RE.match(line)
             if match:
                 found.append((line_no, match.group(2)))
+        offset += len(raw)
     return found
 
 

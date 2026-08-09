@@ -7,9 +7,7 @@ from .dependencies import DependencyScan, DependencyScanIssue, scan_dependency_e
 from .dotnet import discover_dotnet_projects, source_edges as dotnet_source_edges
 from .go import discover_go_modules, source_edges as go_source_edges
 from .javascript import discover_npm_packages, manifest_edges, source_edges
-
-
-_JS_TS_SUFFIXES = {".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts"}
+from .source_adapters import JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES
 
 
 def scan_dependency_edges(root: str | Path) -> DependencyScan:
@@ -47,7 +45,7 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
 
     for rel in paths:
         suffix = Path(rel).suffix.lower()
-        if suffix in _JS_TS_SUFFIXES:
+        if suffix in JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES:
             adapters.add("javascript-typescript")
             found, found_issues = source_edges(root, rel, by_path, by_name)
             edges.extend(found)

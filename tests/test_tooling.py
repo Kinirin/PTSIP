@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
-from ptsip.cli import main
+from ptsip.cli import _configure_console_encoding, main
 from ptsip.inspection.dependencies import scan_dependency_edges
 from ptsip.inspection.inventory import collect_inventory
 from ptsip.pilot.runner import run_pilot
@@ -36,6 +37,23 @@ def test_spec_identity():
     assert spec.version == "0.2.0-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
     assert spec.revision == "14a0c2f54bb486de6a109979224f998b04fd04a3"
+
+
+def test_console_encoding_fallback_preserves_unencodable_text(monkeypatch) -> None:
+    class Stream:
+        def __init__(self) -> None:
+            self.errors = "strict"
+
+        def reconfigure(self, *, errors: str) -> None:
+            self.errors = errors
+
+    stream = Stream()
+    error_stream = Stream()
+    monkeypatch.setattr(sys, "stdout", stream)
+    monkeypatch.setattr(sys, "stderr", error_stream)
+    _configure_console_encoding()
+    assert stream.errors == "backslashreplace"
+    assert error_stream.errors == "backslashreplace"
 
 
 def test_inventory_reports_parse_failures(tmp_path: Path):

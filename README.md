@@ -153,11 +153,11 @@ ptsip conform . `
   --json
 ```
 
-- `--artifact-evidence` accepts `ptsip-artifact-evidence/v1` and evaluates Product packaging without treating the artifact producer as the artifact owner.
+- `--artifact-evidence` accepts `ptsip-artifact-evidence/v1` and evaluates Product packaging without treating the artifact producer as the artifact owner. Strict use also requires a Tool-level, non-normative `<artifact-path>.binding.json` sidecar with format `ptsip-artifact-evidence-binding/v1`, the artifact SHA-256, and a `subject` containing the exact Consumer Repository identity, revision, and tracked-content fingerprint. Missing, stale, or mismatched binding remains `INCOMPLETE`; the canonical artifact evidence schema is unchanged.
 - `--agent-decision` accepts the bound `ptsip-agent-classification` decision contract. Agent decisions are review evidence and never silently overwrite the Project Profile.
 - `--external-evidence` accepts the Reference Tool `ptsip-external-evidence/v1` input envelope. The producer, Consumer Repository identity, exact repository revision, evidence provenance, and imported-file SHA-256 are preserved. Stale or contradictory evidence blocks a strict claim instead of overriding native evidence.
 
-The Tool collects dependency evidence from Python, JavaScript/TypeScript and npm, Go source/modules, .NET project/source metadata, and GitHub Actions local-script invocations. It also evaluates declared component manifests for independent build resolution and uses path-scoped release automation plus declared release/compatibility ownership as bounded lifecycle evidence.
+The Tool collects dependency evidence from Python, JavaScript/TypeScript and npm, Go source/modules, .NET project/source metadata, and GitHub Actions local-script invocations. Unsupported executable source in Product/Toolchain ownership is a blocking coverage gap, while documentation and ordinary non-source files are not blocked merely by extension. It also evaluates ownership-compatible declared component manifests for independent build resolution and uses path-scoped release automation plus declared release/compatibility ownership as bounded lifecycle evidence.
 
 `CONFORMANT` is emitted only when applicable mandatory-rule evidence is sufficient for the supported evaluation scope and the final diagnostic/coverage contract audit passes. A definite mandatory violation produces `NON_CONFORMANT`; an unresolved target, invalid/stale evidence input, incomplete artifact evidence, ambiguous build/lifecycle evidence, or another gap capable of hiding a mandatory violation produces `INCOMPLETE`.
 

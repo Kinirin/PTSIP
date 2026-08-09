@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from .validation.components import ComponentPartition, partition_components
+
 
 _REQUIREMENT_NAME_RE = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)")
 
@@ -198,8 +200,17 @@ def _normalize_manifest_path(raw: str) -> str:
 def evaluate_independent_build_resolution(
     repository_root: str | Path,
     components: list[dict[str, object]],
+    partition: ComponentPartition | None = None,
 ) -> BuildResolutionResult:
     root = Path(repository_root).resolve()
+    partition = partition or partition_components(root, components)
+    owners = {assignment.path: assignment.component_id for assignment in partition.assignments}
+    classifications = {
+        str(component.get("id")): str(component.get("classification"))
+        for component in components
+        if component.get("id") and component.get("classification")
+    }
+    conflicted_paths = {conflict.path for conflict in partition.conflicts}
     manifests: list[ManifestEvidence] = []
     gaps: list[dict[str, object]] = []
     manifest_users: dict[str, list[tuple[str, str]]] = {}
@@ -236,20 +247,34 @@ def evaluate_independent_build_resolution(
             if not inside or not candidate.is_file():
                 gaps.append(_gap(component_id, f"Declared manifest {raw!r} does not resolve to a repository file.", f"manifest-unresolved:{normalized}"))
                 continue
+            relative_path = candidate.relative_to(root).as_posix()
+            manifest_owner = owners.get(relative_path)
+            ownership_issue: str | None = None
+            if relative_path in conflicted_paths:
+                ownership_issue = "manifest ownership is conflicted across component selectors"
+            elif manifest_owner is None:
+                ownership_issue = "manifest is outside declared component ownership"
+            elif manifest_owner != component_id:
+                owner_plane = classifications.get(manifest_owner, "UNKNOWN")
+                ownership_issue = (
+                    f"manifest is owned by component {manifest_owner!r} ({owner_plane}), not declaring component "
+                    f"{component_id!r} ({classification})"
+                )
             kind, dependencies, issue = _parse_manifest(candidate)
+            combined_issue = "; ".join(item for item in (ownership_issue, issue) if item) or None
             evidence = ManifestEvidence(
                 component_id=component_id,
                 classification=classification,
-                path=candidate.relative_to(root).as_posix(),
+                path=relative_path,
                 kind=kind,
                 direct_dependencies=dependencies,
-                complete=issue is None,
-                issue=issue,
+                complete=combined_issue is None,
+                issue=combined_issue,
             )
             manifests.append(evidence)
             manifest_users.setdefault(evidence.path, []).append((component_id, classification))
-            if issue is not None:
-                gaps.append(_gap(component_id, f"Manifest {evidence.path!r} is not completely resolvable: {issue}", f"manifest-incomplete:{evidence.path}"))
+            if combined_issue is not None:
+                gaps.append(_gap(component_id, f"Manifest {evidence.path!r} is not usable as independent build evidence: {combined_issue}", f"manifest-incomplete:{evidence.path}"))
             else:
                 usable += 1
         if usable == 0 and manifest_paths:

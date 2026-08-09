@@ -13,9 +13,11 @@ from ..model import (
     EvidenceProvenance,
     ResolutionStatus,
 )
+from .lexing import code_positions, keyword_is_code
+from .source_adapters import JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES
 
 
-_JS_EXTENSIONS = (".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts")
+_JS_EXTENSIONS = tuple(sorted(JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES))
 _STATIC_IMPORT_RE = re.compile(
     r"(?:^|[;\n])\s*(?:import\s+(?:[^;\n]*?\s+from\s+)?|export\s+[^;\n]*?\s+from\s+)[\"']([^\"']+)[\"']",
     re.MULTILINE,
@@ -180,6 +182,7 @@ def source_edges(
     except (OSError, UnicodeError) as exc:
         return [], [str(exc)]
     nearest = _nearest_package(rel, by_path)
+    mask = code_positions(source, backtick_strings=True)
     edges: list[DependencyEdge] = []
     seen: set[tuple[int, str, EdgeType]] = set()
 
@@ -193,6 +196,8 @@ def source_edges(
     literal_dynamic_offsets: set[int] = set()
     for pattern, edge_type in patterns:
         for match in pattern.finditer(source):
+            if not keyword_is_code(source, mask, match.start(), match.end(), "import", "export", "require"):
+                continue
             specifier = match.group(1)
             line = _line_number(source, match.start())
             key = (line, specifier, edge_type)
@@ -200,9 +205,9 @@ def source_edges(
                 continue
             seen.add(key)
             if pattern is _REQUIRE_LITERAL_RE:
-                literal_require_offsets.add(match.start())
+                literal_require_offsets.add(source.find("require", match.start(), match.end()))
             if pattern is _DYNAMIC_IMPORT_LITERAL_RE:
-                literal_dynamic_offsets.add(match.start())
+                literal_dynamic_offsets.add(source.find("import", match.start(), match.end()))
             resolution, scope, resolved, note, phase = _target_state(root, rel, specifier, by_name, nearest)
             edges.append(
                 DependencyEdge(
@@ -226,7 +231,9 @@ def source_edges(
         (_DYNAMIC_IMPORT_CALL_RE, literal_dynamic_offsets, "import"),
     ):
         for match in pattern.finditer(source):
-            if any(abs(match.start() - offset) < 64 for offset in literal_offsets):
+            if not mask[match.start()]:
+                continue
+            if match.start() in literal_offsets:
                 continue
             line = _line_number(source, match.start())
             edges.append(

@@ -224,6 +224,16 @@ def evaluate_lifecycle_evidence(
         )
     for item in ambiguous:
         observations.append(f"{item.path}: {item.reason or 'Release-like workflow spans more than one architectural classification; this is not by itself a lifecycle violation.'}")
+        gaps.append(
+            _gap(
+                f"ambiguous-release-workflow:{item.path}",
+                (
+                    f"Release-like workflow {item.path!r} cannot be attributed to exactly one architectural plane. "
+                    "Its trigger is not itself a violation, but lifecycle independence is not sufficiently evidenced."
+                ),
+                ("PTSIP-LCY-001", "PTSIP-EVD-003"),
+            )
+        )
 
     if product_scoped:
         observations.append("Observed Product-only release workflow scope: " + ", ".join(item.path for item in product_scoped))

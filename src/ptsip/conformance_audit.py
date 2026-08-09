@@ -6,6 +6,8 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
+from .constants import SPEC_REVISION
+
 
 _ALLOWED_EVALUATOR_STATES = {"RAN", "BLOCKED", "NOT_APPLICABLE"}
 
@@ -99,13 +101,37 @@ def audit_conformance_report(report: dict[str, object]) -> dict[str, object]:
         required = {
             "declared_dependency_boundaries",
             "product_artifact_boundary",
+            "artifact_snapshot_binding",
             "independent_build_resolution",
             "lifecycle_independence",
+            "profile_validation",
+            "source_language_coverage",
+            "specification_revision_binding",
+            "snapshot_integrity",
         }
         for evaluator_id in sorted(required):
             state = evaluators.get(evaluator_id)
             if not isinstance(state, dict) or state.get("status") != "RAN":
                 problems.append(f"CONFORMANT report requires evaluator {evaluator_id!r} to have status RAN")
+        snapshot = report.get("snapshot", {})
+        comparison = snapshot.get("comparison", {}) if isinstance(snapshot, dict) else {}
+        if not isinstance(comparison, dict) or comparison.get("stable") is not True:
+            problems.append("CONFORMANT report requires a stable complete-evaluation snapshot")
+        profile = report.get("profile", {})
+        if not isinstance(profile, dict) or profile.get("valid") is not True:
+            problems.append("CONFORMANT report requires a valid Project Profile")
+        specification = report.get("specification", {})
+        if not isinstance(specification, dict) or specification.get("revision") != SPEC_REVISION:
+            problems.append("CONFORMANT report requires the exact supported mutable-draft specification revision")
+        applicability = coverage.get("applicability", {}) if isinstance(coverage, dict) else {}
+        if not isinstance(applicability, dict) or not applicability:
+            problems.append("CONFORMANT report requires applicability and evidence-sufficiency accounting")
+        else:
+            for area, state in applicability.items():
+                if not isinstance(state, dict):
+                    problems.append(f"coverage applicability {area!r} is not an object")
+                elif state.get("applicable") is True and state.get("status") != "SUFFICIENT":
+                    problems.append(f"CONFORMANT report has insufficient applicable coverage for {area!r}")
 
     return {
         "status": "PASS" if not problems else "FAIL",

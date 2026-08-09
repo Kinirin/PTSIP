@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 from pathlib import Path
 
 from ptsip.conformance_engine import evaluate_conformance
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
+from ptsip.repository.snapshot import capture_snapshot
 
 
 SPEC_REVISION = "14a0c2f54bb486de6a109979224f998b04fd04a3"
@@ -91,6 +93,24 @@ def _artifact(path: Path, product_path: str) -> None:
                 "derivation": [{"relation": "GENERATES", "source": "tools"}],
                 "provenance": "OBSERVED",
                 "evidence_ids": ["artifact:remaining:product-dist"],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
+def _bind_artifact(path: Path, repo: Path, revision: str | None = None) -> None:
+    revision = revision or _git(repo, "rev-parse", "HEAD")
+    Path(str(path) + ".binding.json").write_text(
+        json.dumps(
+            {
+                "format": "ptsip-artifact-evidence-binding/v1",
+                "artifact_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "subject": {
+                    "repository": str(repo.resolve()),
+                    "revision": revision,
+                    "tracked_content_sha256": capture_snapshot(repo).tracked_content_fingerprint,
+                },
             }
         ),
         encoding="utf-8",
@@ -222,6 +242,7 @@ def test_trusted_external_evidence_can_resolve_native_target_uncertainty(tmp_pat
     artifact = _python_clean(repo)
     (repo / "product" / "app.py").write_text("import vendor_module\nVALUE = 1\n", encoding="utf-8")
     revision = _commit(repo)
+    _bind_artifact(artifact, repo, revision)
     external = tmp_path / "external.json"
     external.write_text(
         json.dumps(
@@ -258,7 +279,8 @@ def test_clean_supported_report_passes_contract_audit(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init(repo)
     artifact = _python_clean(repo)
-    _commit(repo)
+    revision = _commit(repo)
+    _bind_artifact(artifact, repo, revision)
 
     result = evaluate_conformance(repo, artifact_evidence_paths=[artifact])
     assert result.outcome == "CONFORMANT"

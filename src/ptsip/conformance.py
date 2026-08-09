@@ -9,9 +9,14 @@ import yaml
 from .artifact_evidence import ArtifactEvidenceLoad, load_artifact_evidence
 from .constants import TOOL_VERSION
 from .inspection.dependencies import DependencyScan, scan_dependency_edges
+from .inspection.source_adapters import (
+    SUPPORTED_SOURCE_SUFFIXES,
+    is_supported_manifest,
+    is_unsupported_mandatory_source,
+)
 from .model import ResolutionStatus
 from .repository.discover import discover_repository
-from .repository.snapshot import capture_snapshot, compare_snapshots
+from .repository.snapshot import RepositorySnapshot, capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .validation.components import ComponentPartition, partition_components
 from .validation.profile import find_profile, validate_profile
@@ -161,12 +166,10 @@ def _dependency_coverage_gaps(
 
 
 def _unassigned_coverage_gaps(partition: ComponentPartition) -> list[dict[str, object]]:
-    relevant_names = {"pyproject.toml", "package.json", "go.mod"}
-    relevant_suffixes = {".py", ".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx", ".csproj", ".go"}
     relevant = [
         path
         for path in partition.unassigned_files
-        if Path(path).name in relevant_names or Path(path).suffix.lower() in relevant_suffixes
+        if Path(path).suffix.lower() in SUPPORTED_SOURCE_SUFFIXES or is_supported_manifest(path)
     ]
     if not relevant:
         return []
@@ -177,6 +180,33 @@ def _unassigned_coverage_gaps(partition: ComponentPartition) -> list[dict[str, o
             message=f"{len(relevant)} tracked source/manifest file(s) are outside declared component ownership and may conceal a mandatory boundary.",
             rule_ids=("PTSIP-CLS-001", "PTSIP-EVD-003"),
             evidence_ids=evidence,
+            blocking=True,
+        )
+    ]
+
+
+def _unsupported_source_coverage_gaps(
+    partition: ComponentPartition,
+    components: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    classifications = _classifications(components)
+    unsupported = sorted(
+        assignment.path
+        for assignment in partition.assignments
+        if classifications.get(assignment.component_id) in {"PRODUCT", "TOOLCHAIN"}
+        and is_unsupported_mandatory_source(assignment.path)
+    )
+    if not unsupported:
+        return []
+    return [
+        _coverage_gap(
+            gap_id="language-coverage:unsupported-mandatory-source",
+            message=(
+                f"{len(unsupported)} Product/Toolchain-owned executable source file(s) use unsupported dependency ecosystems; "
+                "mandatory dependency-boundary evidence is incomplete."
+            ),
+            rule_ids=("PTSIP-DEP-001", "PTSIP-EVD-003"),
+            evidence_ids=tuple(f"unsupported-source:{path}" for path in unsupported[:50]),
             blocking=True,
         )
     ]
@@ -306,14 +336,17 @@ def evaluate_conformance(
     path: str | Path = ".",
     profile_path: str | Path | None = None,
     artifact_evidence_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
+    *,
+    _snapshot_before: RepositorySnapshot | None = None,
+    _finalize_snapshot: bool = True,
 ) -> ConformanceResult:
     repo = discover_repository(path)
     root = Path(repo.root).resolve()
-    before = capture_snapshot(root)
+    before = _snapshot_before or capture_snapshot(root)
     profile = find_profile(root, profile_path)
     profile_validation = validate_profile(root, profile_path)
     dependencies = scan_dependency_edges(root)
-    artifact_load = load_artifact_evidence(artifact_evidence_paths)
+    artifact_load = load_artifact_evidence(artifact_evidence_paths, repo)
 
     diagnostics: list[dict[str, object]] = []
     project_policy_findings: list[dict[str, object]] = []
@@ -373,6 +406,14 @@ def evaluate_conformance(
             diagnostics.extend(_finding_diagnostic(item, "declared-dependency-boundaries") for item in boundary_findings)
             coverage_gaps.extend(_dependency_coverage_gaps(dependencies, components, partition))
             coverage_gaps.extend(_unassigned_coverage_gaps(partition))
+            unsupported_gaps = _unsupported_source_coverage_gaps(partition, components)
+            coverage_gaps.extend(unsupported_gaps)
+            evaluators["source_language_coverage"] = {
+                "status": "BLOCKED" if unsupported_gaps else "RAN",
+                "reason": "UNSUPPORTED_MANDATORY_SOURCE" if unsupported_gaps else None,
+                "supported_suffixes": sorted(SUPPORTED_SOURCE_SUFFIXES),
+                "unsupported_source_count": len(unsupported_gaps[0]["evidence_ids"]) if unsupported_gaps else 0,
+            }
             evaluators["declared_dependency_boundaries"] = {
                 "status": "RAN",
                 "reason": None,
@@ -393,6 +434,10 @@ def evaluate_conformance(
                 "finding_count": len(policy_results),
             }
         else:
+            evaluators["source_language_coverage"] = {
+                "status": "BLOCKED",
+                "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+            }
             evaluators["declared_dependency_boundaries"] = {
                 "status": "BLOCKED",
                 "reason": "COMPONENT_DECLARATIONS_REQUIRED",
@@ -427,9 +472,9 @@ def evaluate_conformance(
     )
     evaluators["independent_build_resolution"] = {"status": "BLOCKED", "reason": "EVALUATOR_NOT_IMPLEMENTED"}
 
-    after = capture_snapshot(root)
-    comparison = compare_snapshots(before, after)
-    if not comparison.stable:
+    after = capture_snapshot(root) if _finalize_snapshot else None
+    comparison = compare_snapshots(before, after) if after is not None else None
+    if comparison is not None and not comparison.stable:
         coverage_gaps.append(
             _coverage_gap(
                 gap_id="snapshot:invalidated",
@@ -465,8 +510,8 @@ def evaluate_conformance(
         "outcome": outcome,
         "snapshot": {
             "before": before.as_dict(),
-            "after": after.as_dict(),
-            "comparison": comparison.as_dict(),
+            "after": after.as_dict() if after is not None else None,
+            "comparison": comparison.as_dict() if comparison is not None else {"status": "PENDING", "stable": False, "reasons": []},
         },
         "profile": profile_validation.as_dict(),
         "dependencies": dependencies.as_dict(),

@@ -11,14 +11,17 @@ from .conformance import (
     _dependency_coverage_gaps,
     _finding_diagnostic,
     _unassigned_coverage_gaps,
+    _unsupported_source_coverage_gaps,
     evaluate_conformance as evaluate_base_conformance,
 )
 from .conformance_audit import audit_conformance_report
 from .inspection.dependencies import DependencyScan
 from .inspection.dependencies_030 import scan_dependency_edges
+from .inspection.source_adapters import SUPPORTED_SOURCE_SUFFIXES
 from .lifecycle_evidence import evaluate_lifecycle_evidence
-from .model import EvidenceNodeScope, ResolutionStatus
+from .model import DependencyPhase, EvidenceNodeScope, EvidenceProvenance, ResolutionStatus
 from .repository.discover import discover_repository
+from .repository.snapshot import capture_snapshot, compare_snapshots
 from .review_evidence import (
     evaluate_agent_decisions,
     load_agent_decisions,
@@ -58,6 +61,7 @@ def _externally_supplemented_native_ids(native: DependencyScan, external_edges: 
         for edge in external_edges
         if edge.resolution in {ResolutionStatus.RESOLVED, ResolutionStatus.EXTERNAL}
         and edge.target_scope != EvidenceNodeScope.UNRESOLVED_TARGET
+        and edge.provenance == EvidenceProvenance.OBSERVED
     ]
     supplemented: set[str] = set()
     for native_edge in native.edges:
@@ -67,6 +71,7 @@ def _externally_supplemented_native_ids(native: DependencyScan, external_edges: 
             external.source == native_edge.source
             and external.target == native_edge.target
             and external.edge_type == native_edge.edge_type
+            and (external.phase == native_edge.phase or native_edge.phase == DependencyPhase.UNKNOWN)
             for external in resolved_external
         ):
             supplemented.add(native_edge.evidence_id)
@@ -77,7 +82,12 @@ def _external_conflict_gaps(native: DependencyScan, external_edges: tuple) -> li
     gaps: list[dict[str, object]] = []
     for external in external_edges:
         for observed in native.edges:
-            if observed.source != external.source or observed.target != external.target or observed.edge_type != external.edge_type:
+            if (
+                observed.source != external.source
+                or observed.target != external.target
+                or observed.edge_type != external.edge_type
+                or (observed.phase != external.phase and observed.phase != DependencyPhase.UNKNOWN)
+            ):
                 continue
             if observed.resolution in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
                 continue
@@ -131,10 +141,17 @@ def evaluate_conformance(
     agent_decision_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
     external_evidence_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
 ) -> ConformanceResult:
-    base = evaluate_base_conformance(path, profile_path, artifact_evidence_paths)
-    report = base.report
     repo = discover_repository(path)
     root = Path(repo.root).resolve()
+    final_before = capture_snapshot(root)
+    base = evaluate_base_conformance(
+        path,
+        profile_path,
+        artifact_evidence_paths,
+        _snapshot_before=final_before,
+        _finalize_snapshot=False,
+    )
+    report = base.report
     profile = find_profile(root, profile_path)
     validation = validate_profile(root, profile_path)
 
@@ -219,6 +236,14 @@ def evaluate_conformance(
         ownership_gaps = _unassigned_coverage_gaps(partition)
         blocking.extend(item for item in ownership_gaps if item.get("blocking"))
         non_blocking.extend(item for item in ownership_gaps if not item.get("blocking"))
+        language_gaps = _unsupported_source_coverage_gaps(partition, components)
+        blocking.extend(language_gaps)
+        evaluators["source_language_coverage"] = {
+            "status": "BLOCKED" if language_gaps else "RAN",
+            "reason": "UNSUPPORTED_MANDATORY_SOURCE" if language_gaps else None,
+            "supported_suffixes": sorted(SUPPORTED_SOURCE_SUFFIXES),
+            "unsupported_source_count": sum(len(item.get("evidence_ids", [])) for item in language_gaps),
+        }
         evaluators["declared_dependency_boundaries"] = {
             "status": "RAN",
             "reason": None,
@@ -243,7 +268,7 @@ def evaluate_conformance(
             "finding_count": len(policy_results),
         }
 
-        build = evaluate_independent_build_resolution(root, components)
+        build = evaluate_independent_build_resolution(root, components, partition)
         evaluators["independent_build_resolution"] = {
             "status": build.status,
             "reason": build.reason,
@@ -261,6 +286,7 @@ def evaluate_conformance(
         blocking.extend(lifecycle.blocking_gaps)
         report["lifecycle"] = lifecycle.as_dict()
     else:
+        evaluators["source_language_coverage"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
         evaluators["independent_build_resolution"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
         evaluators["lifecycle_independence"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
         report["build_resolution"] = {
@@ -280,6 +306,69 @@ def evaluate_conformance(
     report["diagnostics"] = diagnostics
     coverage["blocking_gaps"] = blocking
     coverage["non_blocking_gaps"] = non_blocking
+    profile_report = report.get("profile", {})
+    profile_valid = isinstance(profile_report, dict) and profile_report.get("valid") is True
+    specification = report.get("specification", {})
+    spec_bound = isinstance(specification, dict) and bool(specification.get("revision"))
+    artifact_documents = report.get("artifacts", {}).get("documents", []) if isinstance(report.get("artifacts"), dict) else []
+    artifact_bound = bool(artifact_documents) and all(
+        isinstance(item, dict) and item.get("binding_valid") is True for item in artifact_documents
+    )
+    evaluators["profile_validation"] = {
+        "status": "RAN" if profile_valid else "BLOCKED",
+        "reason": None if profile_valid else "PROFILE_INVALID",
+    }
+    evaluators["specification_revision_binding"] = {
+        "status": "RAN" if profile_valid and spec_bound else "BLOCKED",
+        "reason": None if profile_valid and spec_bound else "IMMUTABLE_SPECIFICATION_BINDING_REQUIRED",
+    }
+    evaluators["artifact_snapshot_binding"] = {
+        "status": "RAN" if artifact_bound else "BLOCKED",
+        "reason": None if artifact_bound else "ARTIFACT_REVISION_BINDING_REQUIRED",
+        "document_count": len(artifact_documents),
+    }
+    coverage["applicability"] = {
+        "profile_and_specification": {"applicable": True, "status": "SUFFICIENT" if profile_valid and spec_bound else "INSUFFICIENT"},
+        "dependency_boundaries": {"applicable": True, "status": "SUFFICIENT" if evaluators.get("declared_dependency_boundaries", {}).get("status") == "RAN" else "INSUFFICIENT"},
+        "source_language_coverage": {"applicable": True, "status": "SUFFICIENT" if evaluators["source_language_coverage"]["status"] == "RAN" else "INSUFFICIENT"},
+        "product_artifact_boundary": {"applicable": True, "status": "SUFFICIENT" if evaluators.get("product_artifact_boundary", {}).get("status") == "RAN" and artifact_bound else "INSUFFICIENT"},
+        "independent_build_resolution": {"applicable": True, "status": "SUFFICIENT" if evaluators.get("independent_build_resolution", {}).get("status") == "RAN" else "INSUFFICIENT"},
+        "lifecycle_independence": {"applicable": True, "status": "SUFFICIENT" if evaluators.get("lifecycle_independence", {}).get("status") == "RAN" else "INSUFFICIENT"},
+    }
+    _recalculate_outcome(report)
+
+    # Run the semantic audit inside the observation envelope before the final
+    # repository snapshot.  A final pure report audit below validates the
+    # snapshot result itself without collecting additional repository evidence.
+    audit_conformance_report(report)
+    final_after = capture_snapshot(root)
+    final_comparison = compare_snapshots(final_before, final_after)
+    report["snapshot"] = {
+        "before": final_before.as_dict(),
+        "after": final_after.as_dict(),
+        "comparison": final_comparison.as_dict(),
+    }
+    if not final_comparison.stable and not any(
+        isinstance(item, dict) and item.get("id") == "snapshot:invalidated"
+        for item in coverage["blocking_gaps"]
+    ):
+        coverage["blocking_gaps"].append(
+            {
+                "id": "snapshot:invalidated",
+                "blocking": True,
+                "rule_ids": ["PTSIP-EVD-001", "PTSIP-EVD-003"],
+                "evidence_ids": ["snapshot:comparison"],
+                "message": "Repository evidence changed or was incomplete during the complete enforced conformance evaluation.",
+            }
+        )
+    evaluators["snapshot_integrity"] = {
+        "status": "RAN" if final_comparison.stable else "BLOCKED",
+        "reason": None if final_comparison.stable else "EVALUATION_SNAPSHOT_INVALIDATED",
+    }
+    coverage["applicability"]["snapshot_integrity"] = {
+        "applicable": True,
+        "status": "SUFFICIENT" if final_comparison.stable else "INSUFFICIENT",
+    }
     _recalculate_outcome(report)
 
     audit = audit_conformance_report(report)
