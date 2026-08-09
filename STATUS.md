@@ -2,14 +2,14 @@
 
 - Specification family: `0.2.0-draft`
 - Latest canonical normative snapshot: `14a0c2f54bb486de6a109979224f998b04fd04a3`
-- Current Tool/package source version on this migration branch: `0.2.3`
+- Current Tool/package source version on `main`: `0.2.3`
 - Tool 0.2.3 bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/ptsip`
 - External tooling model: Defined
 - Reference Tool package name: `ptsip`
-- Latest verified PyPI publication in this migration context: `0.2.0`
+- Latest verified PyPI publication: `0.2.0`
 - Tool CI target: Python 3.11–3.14
 - Tool release namespace: `tool-v*`
 - Reuse license: Apache License 2.0
