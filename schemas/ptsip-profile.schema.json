@@ -4,9 +4,15 @@
   "title": "PTSIP Project Profile",
   "type": "object",
   "required": ["ptsip", "policies"],
-  "anyOf": [
-    {"required": ["boundaries"]},
-    {"required": ["components"]}
+  "oneOf": [
+    {
+      "required": ["boundaries"],
+      "not": {"required": ["components"]}
+    },
+    {
+      "required": ["components"],
+      "not": {"required": ["boundaries"]}
+    }
   ],
   "properties": {
     "ptsip": {
@@ -25,7 +31,7 @@
             "revision": {
               "type": "string",
               "minLength": 1,
-              "description": "Optional immutable commit SHA or release identifier used to bind validation to an exact specification snapshot."
+              "description": "Optional for generic profile validation; required by Enforced Conformance when evaluating a mutable draft family."
             }
           },
           "additionalProperties": false
@@ -47,6 +53,9 @@
       "type": "array",
       "minItems": 1,
       "items": {"$ref": "#/$defs/component"}
+    },
+    "component_dependency_policy": {
+      "$ref": "#/$defs/componentDependencyPolicy"
     },
     "policies": {
       "type": "object",
@@ -73,6 +82,12 @@
       "items": {"$ref": "#/$defs/exception"}
     }
   },
+  "allOf": [
+    {
+      "if": {"required": ["component_dependency_policy"]},
+      "then": {"required": ["components"]}
+    }
+  ],
   "$defs": {
     "rootSet": {
       "type": "object",
@@ -141,6 +156,31 @@
       ],
       "additionalProperties": false
     },
+    "componentDependencyPolicy": {
+      "type": "object",
+      "required": ["default"],
+      "properties": {
+        "default": {"enum": ["allow", "deny"]},
+        "allow": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/componentDependencyRelation"}
+        },
+        "deny": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/componentDependencyRelation"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "componentDependencyRelation": {
+      "type": "object",
+      "required": ["from", "to"],
+      "properties": {
+        "from": {"type": "string", "minLength": 1},
+        "to": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
     "exception": {
       "type": "object",
       "required": [
@@ -149,9 +189,13 @@
         "reason",
         "affected_components",
         "coupling",
+        "category",
+        "scope",
         "owner",
+        "approval_authority",
         "review_condition",
-        "decision"
+        "decision",
+        "conformance_effect"
       ],
       "properties": {
         "id": {"type": "string", "minLength": 1},
@@ -164,9 +208,16 @@
           "uniqueItems": true
         },
         "coupling": {"type": "string", "minLength": 1},
+        "category": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "scope": {"type": "string", "minLength": 1},
         "owner": {"type": "string", "minLength": 1},
+        "approval_authority": {"type": "string", "minLength": 1},
         "review_condition": {"type": "string", "minLength": 1},
-        "decision": {"type": "string", "minLength": 1}
+        "decision": {"type": "string", "minLength": 1},
+        "conformance_effect": {"const": "blocks_strict_ptsip"}
       },
       "additionalProperties": false
     }
