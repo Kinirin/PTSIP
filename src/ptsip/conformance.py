@@ -316,6 +316,7 @@ def evaluate_conformance(
     artifact_load = load_artifact_evidence(artifact_evidence_paths)
 
     diagnostics: list[dict[str, object]] = []
+    project_policy_findings: list[dict[str, object]] = []
     coverage_gaps: list[dict[str, object]] = []
     evaluators: dict[str, dict[str, object]] = {}
     partition: ComponentPartition | None = None
@@ -379,17 +380,17 @@ def evaluate_conformance(
             }
 
             component_policy = payload.get("component_dependency_policy") if payload is not None else None
-            policy_findings = evaluate_component_dependency_policy(
+            policy_results = evaluate_component_dependency_policy(
                 component_policy if isinstance(component_policy, dict) else None,
                 components,
                 partition,
                 dependencies,
             )
-            diagnostics.extend(_finding_diagnostic(item, "component-dependency-policy") for item in policy_findings)
+            project_policy_findings.extend(item.as_dict() for item in policy_results)
             evaluators["component_dependency_policy"] = {
                 "status": "RAN" if isinstance(component_policy, dict) else "NOT_APPLICABLE",
                 "reason": None,
-                "finding_count": len(policy_findings),
+                "finding_count": len(policy_results),
             }
         else:
             evaluators["declared_dependency_boundaries"] = {
@@ -470,6 +471,11 @@ def evaluate_conformance(
         "profile": profile_validation.as_dict(),
         "dependencies": dependencies.as_dict(),
         "artifacts": artifact_load.as_dict(),
+        "project_policy": {
+            "findings": project_policy_findings,
+            "finding_count": len(project_policy_findings),
+            "affects_ptsip_outcome": False,
+        },
         "evaluators": evaluators,
         "coverage": {
             "blocking_gaps": [item for item in coverage_gaps if item["blocking"]],
