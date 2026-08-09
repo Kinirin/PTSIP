@@ -6,6 +6,7 @@ from pathlib import Path
 
 import yaml
 
+from .artifact_evidence import ArtifactEvidenceLoad, load_artifact_evidence
 from .constants import TOOL_VERSION
 from .inspection.dependencies import DependencyScan, scan_dependency_edges
 from .model import ResolutionStatus
@@ -14,7 +15,11 @@ from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .validation.components import ComponentPartition, partition_components
 from .validation.profile import find_profile, validate_profile
-from .validation.rules import RuleFinding, evaluate_declared_dependency_boundaries
+from .validation.rules import (
+    RuleFinding,
+    evaluate_component_dependency_policy,
+    evaluate_declared_dependency_boundaries,
+)
 
 
 @dataclass(frozen=True)
@@ -92,7 +97,7 @@ def _owners(partition: ComponentPartition) -> dict[str, str]:
     return {assignment.path: assignment.component_id for assignment in partition.assignments}
 
 
-def _finding_diagnostic(finding: RuleFinding) -> dict[str, object]:
+def _finding_diagnostic(finding: RuleFinding, evaluator_id: str) -> dict[str, object]:
     if finding.severity != "REVIEW":
         outcome_effect = "NON_CONFORMANT"
         severity = "ERROR"
@@ -110,7 +115,7 @@ def _finding_diagnostic(finding: RuleFinding) -> dict[str, object]:
         message=finding.message,
         source_component=finding.source_component,
         target_component=finding.target_component,
-        evaluator_id="declared-dependency-boundaries",
+        evaluator_id=evaluator_id,
     )
 
 
@@ -177,19 +182,145 @@ def _unassigned_coverage_gaps(partition: ComponentPartition) -> list[dict[str, o
     ]
 
 
-def evaluate_conformance(path: str | Path = ".", profile_path: str | Path | None = None) -> ConformanceResult:
+def _artifact_evidence_ids(payload: dict[str, object]) -> tuple[str, ...]:
+    evidence_ids = payload.get("evidence_ids")
+    if isinstance(evidence_ids, list) and evidence_ids:
+        return tuple(str(item) for item in evidence_ids)
+    return (f"artifact:{payload.get('artifact_id', 'unknown')}",)
+
+
+def _evaluate_artifacts(
+    artifact_load: ArtifactEvidenceLoad,
+    components: list[dict[str, object]],
+    partition: ComponentPartition | None,
+) -> tuple[list[dict[str, object]], list[dict[str, object]], dict[str, object]]:
+    diagnostics: list[dict[str, object]] = []
+    gaps: list[dict[str, object]] = []
+    classifications = _classifications(components)
+    owners = _owners(partition) if partition is not None else {}
+
+    for issue in artifact_load.issues:
+        gaps.append(
+            _coverage_gap(
+                gap_id=f"artifact-evidence:invalid:{hashlib.sha256((issue.source_path + issue.message).encode()).hexdigest()[:12]}",
+                message=f"Artifact evidence input is invalid: {issue.message}",
+                rule_ids=("PTSIP-ART-001", "PTSIP-EVD-003"),
+                evidence_ids=(f"artifact-input:{issue.source_path}",),
+                blocking=True,
+            )
+        )
+
+    product_documents = [item for item in artifact_load.documents if item.payload.get("classification") == "PRODUCT"]
+    if not product_documents:
+        gaps.append(
+            _coverage_gap(
+                gap_id="artifact-evidence:product-missing",
+                message="No valid PRODUCT artifact evidence was supplied for packaging-isolation evaluation.",
+                rule_ids=("PTSIP-PKG-001", "PTSIP-ART-001", "PTSIP-EVD-003"),
+                evidence_ids=("artifact-evidence:product-missing",),
+                blocking=True,
+            )
+        )
+
+    for document in product_documents:
+        payload = document.payload
+        artifact_id = str(payload["artifact_id"])
+        evidence_ids = _artifact_evidence_ids(payload)
+        contents = payload.get("contents")
+        if not isinstance(contents, dict):
+            continue
+
+        if contents.get("complete") is not True:
+            gaps.append(
+                _coverage_gap(
+                    gap_id=f"artifact-evidence:{artifact_id}:contents-incomplete",
+                    message="Product Artifact content evidence is explicitly incomplete.",
+                    rule_ids=("PTSIP-PKG-001", "PTSIP-ART-001", "PTSIP-EVD-003"),
+                    evidence_ids=evidence_ids,
+                    blocking=True,
+                )
+            )
+
+        producer = payload.get("producer_component")
+        if producer is not None and str(producer) not in classifications:
+            gaps.append(
+                _coverage_gap(
+                    gap_id=f"artifact-evidence:{artifact_id}:unknown-producer",
+                    message=f"Artifact producer component {producer!r} is not declared in the Project Profile.",
+                    rule_ids=("PTSIP-ART-001", "PTSIP-EVD-003"),
+                    evidence_ids=evidence_ids,
+                    blocking=True,
+                )
+            )
+
+        content_components = [str(item) for item in contents.get("components", []) if isinstance(item, str)]
+        unknown_components = sorted({item for item in content_components if item not in classifications})
+        if unknown_components:
+            gaps.append(
+                _coverage_gap(
+                    gap_id=f"artifact-evidence:{artifact_id}:unknown-components",
+                    message="Artifact contents reference undeclared component(s): " + ", ".join(unknown_components),
+                    rule_ids=("PTSIP-ART-001", "PTSIP-EVD-003"),
+                    evidence_ids=evidence_ids,
+                    blocking=True,
+                )
+            )
+
+        toolchain_components = {item for item in content_components if classifications.get(item) == "TOOLCHAIN"}
+        for path in contents.get("paths", []):
+            if isinstance(path, str):
+                owner = owners.get(path)
+                if owner and classifications.get(owner) == "TOOLCHAIN":
+                    toolchain_components.add(owner)
+        if toolchain_components:
+            diagnostics.append(
+                _diagnostic(
+                    rule_id="PTSIP-PKG-001",
+                    outcome_effect="NON_CONFORMANT",
+                    severity="ERROR",
+                    evidence_ids=evidence_ids,
+                    message=(
+                        f"PRODUCT artifact {artifact_id!r} contains TOOLCHAIN-owned implementation component(s): "
+                        + ", ".join(sorted(toolchain_components))
+                        + ". The artifact producer identity does not waive Product packaging isolation."
+                    ),
+                    evaluator_id="product-artifact-boundary",
+                )
+            )
+
+    if artifact_load.documents:
+        status = "RAN"
+        reason = None
+    else:
+        status = "BLOCKED"
+        reason = "NO_VALID_ARTIFACT_EVIDENCE"
+    return diagnostics, gaps, {
+        "status": status,
+        "reason": reason,
+        "artifact_count": len(artifact_load.documents),
+        "product_artifact_count": len(product_documents),
+    }
+
+
+def evaluate_conformance(
+    path: str | Path = ".",
+    profile_path: str | Path | None = None,
+    artifact_evidence_paths: list[str | Path] | tuple[str | Path, ...] | None = None,
+) -> ConformanceResult:
     repo = discover_repository(path)
     root = Path(repo.root).resolve()
     before = capture_snapshot(root)
     profile = find_profile(root, profile_path)
     profile_validation = validate_profile(root, profile_path)
     dependencies = scan_dependency_edges(root)
+    artifact_load = load_artifact_evidence(artifact_evidence_paths)
 
     diagnostics: list[dict[str, object]] = []
     coverage_gaps: list[dict[str, object]] = []
     evaluators: dict[str, dict[str, object]] = {}
     partition: ComponentPartition | None = None
     components: list[dict[str, object]] = []
+    payload: dict[str, object] | None = None
 
     if profile is None:
         coverage_gaps.append(
@@ -202,6 +333,7 @@ def evaluate_conformance(path: str | Path = ".", profile_path: str | Path | None
             )
         )
         evaluators["declared_dependency_boundaries"] = {"status": "BLOCKED", "reason": "NO_PROFILE"}
+        evaluators["component_dependency_policy"] = {"status": "BLOCKED", "reason": "NO_PROFILE"}
     elif not profile_validation.valid:
         coverage_gaps.append(
             _coverage_gap(
@@ -213,9 +345,11 @@ def evaluate_conformance(path: str | Path = ".", profile_path: str | Path | None
             )
         )
         evaluators["declared_dependency_boundaries"] = {"status": "BLOCKED", "reason": "INVALID_PROFILE"}
+        evaluators["component_dependency_policy"] = {"status": "BLOCKED", "reason": "INVALID_PROFILE"}
     else:
-        payload = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
-        if isinstance(payload, dict):
+        loaded = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
+        payload = loaded if isinstance(loaded, dict) else None
+        if payload is not None:
             binding = payload.get("ptsip", {}).get("specification", {}) if isinstance(payload.get("ptsip"), dict) else {}
             revision = binding.get("revision") if isinstance(binding, dict) else None
             if not revision:
@@ -234,18 +368,36 @@ def evaluate_conformance(path: str | Path = ".", profile_path: str | Path | None
 
         if components:
             partition = partition_components(root, components)
-            findings = evaluate_declared_dependency_boundaries(components, partition, dependencies)
-            diagnostics.extend(_finding_diagnostic(item) for item in findings)
+            boundary_findings = evaluate_declared_dependency_boundaries(components, partition, dependencies)
+            diagnostics.extend(_finding_diagnostic(item, "declared-dependency-boundaries") for item in boundary_findings)
             coverage_gaps.extend(_dependency_coverage_gaps(dependencies, components, partition))
             coverage_gaps.extend(_unassigned_coverage_gaps(partition))
             evaluators["declared_dependency_boundaries"] = {
                 "status": "RAN",
                 "reason": None,
-                "finding_count": len(findings),
+                "finding_count": len(boundary_findings),
+            }
+
+            component_policy = payload.get("component_dependency_policy") if payload is not None else None
+            policy_findings = evaluate_component_dependency_policy(
+                component_policy if isinstance(component_policy, dict) else None,
+                components,
+                partition,
+                dependencies,
+            )
+            diagnostics.extend(_finding_diagnostic(item, "component-dependency-policy") for item in policy_findings)
+            evaluators["component_dependency_policy"] = {
+                "status": "RAN" if isinstance(component_policy, dict) else "NOT_APPLICABLE",
+                "reason": None,
+                "finding_count": len(policy_findings),
             }
         else:
             evaluators["declared_dependency_boundaries"] = {
                 "status": "BLOCKED",
+                "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+            }
+            evaluators["component_dependency_policy"] = {
+                "status": "NOT_APPLICABLE",
                 "reason": "COMPONENT_DECLARATIONS_REQUIRED",
             }
             coverage_gaps.append(
@@ -258,16 +410,10 @@ def evaluate_conformance(path: str | Path = ".", profile_path: str | Path | None
                 )
             )
 
-    coverage_gaps.append(
-        _coverage_gap(
-            gap_id="artifact-evidence:not-inspected",
-            message="Product Artifact contents have not been inspected by this conformance tranche.",
-            rule_ids=("PTSIP-PKG-001", "PTSIP-ART-001", "PTSIP-EVD-003"),
-            evidence_ids=("artifact-evidence:not-inspected",),
-            blocking=True,
-        )
-    )
-    evaluators["product_artifact_boundary"] = {"status": "BLOCKED", "reason": "ARTIFACT_ADAPTER_NOT_IMPLEMENTED"}
+    artifact_diagnostics, artifact_gaps, artifact_evaluator = _evaluate_artifacts(artifact_load, components, partition)
+    diagnostics.extend(artifact_diagnostics)
+    coverage_gaps.extend(artifact_gaps)
+    evaluators["product_artifact_boundary"] = artifact_evaluator
 
     coverage_gaps.append(
         _coverage_gap(
@@ -323,6 +469,7 @@ def evaluate_conformance(path: str | Path = ".", profile_path: str | Path | None
         },
         "profile": profile_validation.as_dict(),
         "dependencies": dependencies.as_dict(),
+        "artifacts": artifact_load.as_dict(),
         "evaluators": evaluators,
         "coverage": {
             "blocking_gaps": [item for item in coverage_gaps if item["blocking"]],
