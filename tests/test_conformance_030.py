@@ -8,6 +8,7 @@ from jsonschema import Draft202012Validator
 
 from ptsip.cli import main
 from ptsip.conformance import evaluate_conformance
+from ptsip.validation.profile import validate_profile
 
 
 SPEC_REVISION = "14a0c2f54bb486de6a109979224f998b04fd04a3"
@@ -29,13 +30,48 @@ def _commit_all(repo: Path) -> None:
     _git(repo, "commit", "-m", "fixture")
 
 
-def _write_profile(repo: Path, product_import: str | None = None, tool_import: str | None = None) -> None:
+def _write_profile(
+    repo: Path,
+    product_import: str | None = None,
+    tool_import: str | None = None,
+    component_policy: str = "",
+) -> None:
     (repo / "product").mkdir(exist_ok=True)
     (repo / "tools").mkdir(exist_ok=True)
     (repo / "product" / "app.py").write_text((product_import or "") + "VALUE = 1\n", encoding="utf-8")
     (repo / "tools" / "check.py").write_text((tool_import or "") + "VALUE = 2\n", encoding="utf-8")
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: development_tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: development_tooling\n{component_policy}policies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        encoding="utf-8",
+    )
+
+
+def _write_artifact(
+    path: Path,
+    *,
+    producer: str | None = "tools",
+    components: list[str] | None = None,
+    complete: bool = True,
+) -> None:
+    path.write_text(
+        json.dumps(
+            {
+                "format": "ptsip-artifact-evidence/v1",
+                "artifact_id": "product-dist",
+                "classification": "PRODUCT",
+                "producer_component": producer,
+                "artifact_type": "test-bundle",
+                "shipping_scope": "product-distribution",
+                "contents": {
+                    "paths": ["product/app.py"],
+                    "components": components if components is not None else ["product"],
+                    "complete": complete,
+                },
+                "derivation": [{"relation": "GENERATES", "source": "tools"}],
+                "provenance": "OBSERVED",
+                "evidence_ids": ["artifact:test:product-dist"],
+            }
+        ),
         encoding="utf-8",
     )
 
@@ -53,7 +89,7 @@ def test_conform_without_profile_is_incomplete(tmp_path: Path) -> None:
     assert result.report["evaluators"]["declared_dependency_boundaries"]["status"] == "BLOCKED"
     gap_ids = {item["id"] for item in result.report["coverage"]["blocking_gaps"]}
     assert "profile:missing" in gap_ids
-    assert "artifact-evidence:not-inspected" in gap_ids
+    assert "artifact-evidence:product-missing" in gap_ids
     assert "build-resolution:coverage" in gap_ids
 
 
@@ -86,6 +122,110 @@ def test_toolchain_to_product_review_is_nonblocking_diagnostic(tmp_path: Path) -
     diagnostic = next(item for item in result.report["diagnostics"] if item["rule_id"] == "PTSIP-DEP-002")
     assert diagnostic["outcome_effect"] == "NONE"
     assert diagnostic["severity"] == "INFO"
+
+
+def test_toolchain_producer_does_not_make_product_artifact_nonconformant(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    _write_profile(repo)
+    artifact = tmp_path / "artifact.json"
+    _write_artifact(artifact, producer="tools", components=["product"])
+    _commit_all(repo)
+
+    result = evaluate_conformance(repo, artifact_evidence_paths=[artifact])
+    assert not any(item["rule_id"] == "PTSIP-PKG-001" for item in result.report["diagnostics"])
+    assert result.report["evaluators"]["product_artifact_boundary"]["status"] == "RAN"
+    assert result.outcome == "INCOMPLETE"  # build-resolution evaluator is intentionally still blocked
+
+
+def test_product_artifact_with_toolchain_content_is_nonconformant(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    _write_profile(repo)
+    artifact = tmp_path / "artifact.json"
+    _write_artifact(artifact, producer="tools", components=["product", "tools"])
+    _commit_all(repo)
+
+    result = evaluate_conformance(repo, artifact_evidence_paths=[artifact])
+    assert result.outcome == "NON_CONFORMANT"
+    diagnostic = next(item for item in result.report["diagnostics"] if item["rule_id"] == "PTSIP-PKG-001")
+    assert diagnostic["outcome_effect"] == "NON_CONFORMANT"
+    assert diagnostic["evidence_ids"] == ["artifact:test:product-dist"]
+
+
+def test_incomplete_product_artifact_blocks_conformance(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    _write_profile(repo)
+    artifact = tmp_path / "artifact.json"
+    _write_artifact(artifact, complete=False)
+    _commit_all(repo)
+
+    result = evaluate_conformance(repo, artifact_evidence_paths=[artifact])
+    gap_ids = {item["id"] for item in result.report["coverage"]["blocking_gaps"]}
+    assert "artifact-evidence:product-dist:contents-incomplete" in gap_ids
+
+
+def test_component_dependency_policy_deny_is_enforced(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    _write_profile(
+        repo,
+        tool_import="import product.app\n",
+        component_policy=(
+            "component_dependency_policy:\n"
+            "  default: allow\n"
+            "  deny:\n"
+            "    - from: tools\n"
+            "      to: product\n"
+        ),
+    )
+    _commit_all(repo)
+
+    result = evaluate_conformance(repo)
+    diagnostic = next(item for item in result.report["diagnostics"] if item["rule_id"] == "PTSIP-POL-001")
+    assert diagnostic["outcome_effect"] == "NON_CONFORMANT"
+    assert diagnostic["source_component"] == "tools"
+    assert diagnostic["target_component"] == "product"
+    assert result.outcome == "NON_CONFORMANT"
+
+
+def test_component_dependency_policy_allow_deny_conflict_is_invalid_profile(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    _write_profile(
+        repo,
+        component_policy=(
+            "component_dependency_policy:\n"
+            "  default: deny\n"
+            "  allow:\n"
+            "    - from: tools\n"
+            "      to: product\n"
+            "  deny:\n"
+            "    - from: tools\n"
+            "      to: product\n"
+        ),
+    )
+    _commit_all(repo)
+
+    result = validate_profile(repo)
+    assert not result.valid
+    assert any("appears in both allow and deny" in error for error in result.errors)
+
+
+def test_cli_conform_accepts_repeatable_artifact_evidence(tmp_path: Path, capsys) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    _write_profile(repo)
+    artifact = tmp_path / "artifact.json"
+    _write_artifact(artifact)
+    _commit_all(repo)
+
+    assert main(["conform", str(repo), "--artifact-evidence", str(artifact), "--json"]) == 6
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["outcome"] == "INCOMPLETE"
+    assert payload["artifacts"]["document_count"] == 1
+    assert payload["evaluators"]["product_artifact_boundary"]["status"] == "RAN"
 
 
 def test_cli_conform_uses_distinct_incomplete_exit_code(tmp_path: Path, capsys) -> None:
