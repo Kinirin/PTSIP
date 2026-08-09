@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import re
+import shlex
 import sys
 import tokenize
 import tomllib
@@ -21,8 +22,12 @@ from ..model import (
 )
 from ..repository.snapshot import repository_files
 
-_SCRIPT_RE = re.compile(r"(?P<path>[A-Za-z0-9_./\\-]+\.(?:py|ps1|sh|bash|bat|cmd))")
 _REQUIREMENT_NAME_RE = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)")
+_SCRIPT_SUFFIXES = {".py", ".ps1", ".sh", ".bash", ".bat", ".cmd"}
+_PYTHON_RUNNERS = {"python", "python3", "python.exe", "python3.exe", "py", "py.exe"}
+_POWERSHELL_RUNNERS = {"pwsh", "pwsh.exe", "powershell", "powershell.exe"}
+_SHELL_RUNNERS = {"bash", "sh"}
+_CMD_RUNNERS = {"cmd", "cmd.exe"}
 
 
 @dataclass(frozen=True)
@@ -55,8 +60,9 @@ def _normalize_dependency_name(value: str) -> str:
     return re.sub(r"[-.]", "_", value.strip().lower())
 
 
-def _declared_python_dependencies(root: Path) -> set[str]:
+def _declared_python_dependencies(root: Path) -> tuple[set[str], list[DependencyScanIssue]]:
     names: set[str] = set()
+    issues: list[DependencyScanIssue] = []
     pyproject = root / "pyproject.toml"
     if pyproject.is_file():
         try:
@@ -76,13 +82,15 @@ def _declared_python_dependencies(root: Path) -> set[str]:
                         match = _REQUIREMENT_NAME_RE.match(item)
                         if match:
                             names.add(_normalize_dependency_name(match.group(1)))
-        except (OSError, UnicodeError, tomllib.TOMLDecodeError):
-            pass
+        except (OSError, UnicodeError, tomllib.TOMLDecodeError) as exc:
+            issues.append(DependencyScanIssue("python-declarations", "pyproject.toml", str(exc)))
 
     for requirements in sorted(root.glob("requirements*.txt")) + sorted(root.glob("requirements*.in")):
+        rel = requirements.relative_to(root).as_posix()
         try:
             lines = requirements.read_text(encoding="utf-8-sig").splitlines()
-        except (OSError, UnicodeError):
+        except (OSError, UnicodeError) as exc:
+            issues.append(DependencyScanIssue("python-declarations", rel, str(exc)))
             continue
         for line in lines:
             stripped = line.strip()
@@ -91,7 +99,7 @@ def _declared_python_dependencies(root: Path) -> set[str]:
             match = _REQUIREMENT_NAME_RE.match(stripped)
             if match:
                 names.add(_normalize_dependency_name(match.group(1)))
-    return names
+    return names, issues
 
 
 def _resolve_module(root: Path, module: str) -> str | None:
@@ -166,7 +174,6 @@ def _python_edges(
     declared_dependencies: set[str],
 ) -> tuple[list[DependencyEdge], list[DependencyScanIssue]]:
     path = root / rel
-    issues: list[DependencyScanIssue] = []
     try:
         with tokenize.open(path) as handle:
             source = handle.read()
@@ -258,7 +265,7 @@ def _python_edges(
                     note=note,
                 )
             )
-    return edges, issues
+    return edges, []
 
 
 def _csproj_edges(root: Path, rel: str) -> tuple[list[DependencyEdge], list[DependencyScanIssue]]:
@@ -322,6 +329,80 @@ def _working_directory(payload: dict[str, object], job: dict[str, object], step:
     return "."
 
 
+def _clean_shell_token(value: str) -> str:
+    return value.strip().strip("'\"")
+
+
+def _is_script_token(value: str) -> bool:
+    return Path(_clean_shell_token(value)).suffix.lower() in _SCRIPT_SUFFIXES
+
+
+def _script_targets_from_command(command: str) -> list[str]:
+    targets: list[str] = []
+    for line in command.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        for segment in re.split(r"\s*(?:&&|\|\||;)\s*", stripped):
+            if not segment:
+                continue
+            try:
+                tokens = [_clean_shell_token(item) for item in shlex.split(segment, posix=False)]
+            except ValueError:
+                tokens = [_clean_shell_token(item) for item in segment.split()]
+            tokens = [item for item in tokens if item]
+            while tokens and "=" in tokens[0] and not _is_script_token(tokens[0]):
+                tokens.pop(0)
+            if not tokens:
+                continue
+
+            first = tokens[0]
+            executable = Path(first).name.lower()
+            candidate: str | None = None
+
+            if _is_script_token(first):
+                candidate = first
+            elif executable in _PYTHON_RUNNERS:
+                for token in tokens[1:]:
+                    if token in {"-c", "-m"}:
+                        break
+                    if token.startswith("-"):
+                        continue
+                    if Path(token).suffix.lower() == ".py":
+                        candidate = token
+                    break
+            elif executable in _POWERSHELL_RUNNERS:
+                for index, token in enumerate(tokens[1:], start=1):
+                    if token.lower() in {"-file", "/file"} and index + 1 < len(tokens):
+                        value = tokens[index + 1]
+                        if Path(value).suffix.lower() == ".ps1":
+                            candidate = value
+                        break
+                    if Path(token).suffix.lower() == ".ps1":
+                        candidate = token
+                        break
+            elif executable in _SHELL_RUNNERS:
+                for token in tokens[1:]:
+                    if token.startswith("-"):
+                        continue
+                    if Path(token).suffix.lower() in {".sh", ".bash"}:
+                        candidate = token
+                    break
+            elif executable in _CMD_RUNNERS:
+                for token in tokens[1:]:
+                    if token.lower() in {"/c", "/k"}:
+                        continue
+                    if Path(token).suffix.lower() in {".bat", ".cmd"}:
+                        candidate = token
+                    break
+
+            if candidate:
+                normalized = candidate.replace("\\", "/")
+                if normalized not in targets:
+                    targets.append(normalized)
+    return targets
+
+
 def _resolve_workflow_script(root: Path, working_directory: str, raw_target: str) -> str | None:
     target_path = Path(raw_target)
     if target_path.is_absolute():
@@ -362,8 +443,7 @@ def _workflow_edges(root: Path, rel: str) -> tuple[list[DependencyEdge], list[De
                 continue
             command = step["run"]
             working_directory = _working_directory(payload, job, step)
-            for match in _SCRIPT_RE.finditer(command):
-                raw_target = match.group("path").replace("\\", "/")
+            for raw_target in _script_targets_from_command(command):
                 if raw_target.startswith("/"):
                     continue
                 resolved = _resolve_workflow_script(root, working_directory, raw_target)
@@ -383,7 +463,7 @@ def _workflow_edges(root: Path, rel: str) -> tuple[list[DependencyEdge], list[De
                         resolved_path=resolved,
                         adapter="github-actions",
                         working_directory=working_directory,
-                        note=None if resolved else "Explicit local-script reference could not be resolved from its effective working-directory",
+                        note=None if resolved else "Explicit local-script invocation could not be resolved from its effective working-directory",
                     )
                 )
     return edges, []
@@ -395,7 +475,8 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
     edges: list[DependencyEdge] = []
     issues = [DependencyScanIssue("repository", "<repository>", item) for item in discovery_errors]
     adapters: set[str] = set()
-    declared_python_dependencies = _declared_python_dependencies(root)
+    declared_python_dependencies, declaration_issues = _declared_python_dependencies(root)
+    issues.extend(declaration_issues)
     for rel in paths:
         suffix = Path(rel).suffix.lower()
         if suffix == ".py":
