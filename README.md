@@ -1,7 +1,7 @@
 # PTSIP — Product–Toolchain SDK Isolation Policy
 
 **Status:** Draft Specification 0.2.0  
-**Canonical repository:** `https://github.com/kwaksinwoo01/ptsip-spec`  
+**Canonical repository:** `https://github.com/kwaksinwoo01/ptsip`  
 **Specification family:** Software architecture / SDK governance / development toolchain isolation  
 **Reference Tool:** `0.1.0a1`  
 **License:** Apache License 2.0
