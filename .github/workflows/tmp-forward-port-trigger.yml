@@ -33,6 +33,10 @@ jobs:
           start = workflow.index(marker) + len(marker)
           end = workflow.index("\n          PY\n", start)
           code = textwrap.dedent(workflow[start:end])
+          code = code.replace(
+              'r"## 8\\. False-positive handling\\n.*?(?=\\n## 9\\.)"',
+              'r"## \\d+\\. False-positive handling\\n.*?(?=\\n## \\d+\\.)"',
+          )
           exec(compile(code, 'forward-port-migration', 'exec'), {})
           PY
 
