@@ -24,6 +24,15 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
 
 
+def test_routine_ci_keeps_conform_cli_smoke() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(encoding="utf-8")
+    assert 'python-version: "3.14"' in workflow
+    assert "python -m pytest -q" in workflow
+    assert "ptsip --version" in workflow
+    assert "ptsip spec" in workflow
+    assert "ptsip conform --help" in workflow
+
+
 def test_release_package_contains_bound_machine_readable_contracts() -> None:
     specdata = ROOT / "src" / "ptsip" / "specdata"
     assert (specdata / "ptsip-profile.schema.json").is_file()
