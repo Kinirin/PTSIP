@@ -73,6 +73,7 @@ ptsip doctor .
 ptsip inspect .
 ptsip pilot .
 ptsip validate .
+ptsip clarify .
 ```
 
 For source development:
@@ -103,6 +104,34 @@ External PTSIP inspection and Pilot tooling is read-only against the Consumer Re
 
 A project may voluntarily provide a machine-readable profile for enforced conformance, but the profile location remains a project/configuration concern rather than a required repository topology.
 
+## Human clarification without speculative inference
+
+When PTSIP detects a component candidate but the Consumer Repository does not declare enough architectural intent to classify it safely, `ptsip clarify` can stop at the missing facts and ask the project owner instead of expanding speculative inference.
+
+Clarification generation is deterministic: it uses repository evidence, fixed completeness rules, and fixed question templates. It does **not** call an LLM or model API, and JSON output explicitly reports `llm_calls: 0` and `speculative_classification: false`.
+
+Tool 0.2.2 supports English and Korean clarification prompts only. Language selection follows `--lang en|ko`, then `PTSIP_LANG`, then the operating-system locale, with English as the fallback.
+
+```powershell
+ptsip clarify . --lang ko
+ptsip clarify . --json
+ptsip clarify . --component tools
+```
+
+Clarification is read-only by default. To explicitly publish unresolved questions as GitHub Issues in the Consumer Repository:
+
+```powershell
+ptsip clarify . --publish github-issue
+```
+
+PTSIP reads the inspected Git repository's `origin` and, for GitHub HTTPS or SSH remotes, derives the default `owner/repository`. An explicit override is available when needed:
+
+```powershell
+ptsip clarify . --publish github-issue --repo owner/repository
+```
+
+GitHub publishing requires an authenticated `gh` CLI only for the explicit publish operation. Publication state used to prevent duplicate clarification Issues is stored under `PTSIP_HOME/clarifications`, outside the Consumer Repository. Tool 0.2.2 does not collect Issue answers, interpret free-form replies, or automatically convert them into an architectural classification.
+
 ## Reference Tool
 
 The independently versioned Reference Tool is implemented under [`src/ptsip/`](src/ptsip/). The repository is shared with the Specification, but their release lifecycles remain separate.
@@ -113,6 +142,7 @@ The current tooling focuses on:
 - Pilot evidence collection;
 - repository snapshot and non-intrusion evidence;
 - component and dependency evidence;
+- deterministic human clarification for missing architectural intent;
 - project-profile validation;
 - constrained coding-agent classification decisions.
 
