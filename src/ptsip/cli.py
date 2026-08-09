@@ -8,11 +8,11 @@ from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
 from .clarification.render import render_console
 from .clarification.transports.github_issue import publish as publish_github_issues
-from .conformance import evaluate_conformance
+from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
 from .doctor import doctor
 from .inspection.components import discover_component_candidates
-from .inspection.dependencies import scan_dependency_edges
+from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
 from .pilot.runner import run_pilot
 from .repository.discover import discover_repository
