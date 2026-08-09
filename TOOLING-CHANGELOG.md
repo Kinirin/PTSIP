@@ -7,6 +7,7 @@ This changelog tracks the independently versioned PTSIP Reference Tool. Specific
 Evidence-v2 migration driven by the first real Consumer Repository Pilot:
 
 - moved the Reference Tool version independently to `0.2.0` while retaining PTSIP Specification family `0.2.0-draft`;
+- bound Tool 0.2.0 to immutable PTSIP Specification revision `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`;
 - added `ptsip-pilot-report/v2`;
 - added before/after repository snapshot evidence using HEAD, Git status including ignored entries, and tracked-content fingerprints;
 - invalidates inspection/pilot evidence when repository state changes during collection;
