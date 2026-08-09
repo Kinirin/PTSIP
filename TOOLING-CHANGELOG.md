@@ -2,7 +2,7 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
-## 0.2.3 — Unreleased
+## 0.2.3 — Source-only migration, not published
 
 Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revision `14a0c2f54bb486de6a109979224f998b04fd04a3`:
 
@@ -21,6 +21,8 @@ Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revisi
 - intentionally does not add `ptsip conform`, Product Artifact adapters, JS/TS/npm/Go adapters, stable diagnostic emission, agent-decision ingestion, or external evidence import.
 
 Tool 0.2.3 remains an evidence/validation implementation and does not claim complete automated PTSIP Conformance Evaluation.
+
+Tool 0.2.3 is intentionally not published to PyPI and receives no `tool-v0.2.3` release/tag. Its source migration becomes the implementation baseline for Tool 0.3.0.
 
 ## 0.2.2 — Unreleased
 

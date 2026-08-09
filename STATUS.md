@@ -10,6 +10,8 @@
 - External tooling model: Defined
 - Reference Tool package name: `ptsip`
 - Latest verified PyPI publication: `0.2.0`
+- Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
+- Next Tool release target: `0.3.0`
 - Tool CI target: Python 3.11–3.14
 - Tool release namespace: `tool-v*`
 - Reuse license: Apache License 2.0
@@ -34,6 +36,8 @@ Implemented in this migration:
 
 Tool 0.2.3 still does **not** claim complete automated PTSIP Conformance Evaluation. `ptsip pilot` remains evidence collection plus bounded rule findings, and `conformance.status` remains `NOT_EVALUATED` until rule-relative coverage and Product Artifact evaluation are implemented.
 
+Tool 0.2.3 is intentionally not released to PyPI. It is the source baseline for the immediate Tool 0.3.0 migration.
+
 ## Human Clarification regression boundary
 
 The following Tool 0.2.2 behavior remains required and is regression-tested:
@@ -49,7 +53,7 @@ The following Tool 0.2.2 behavior remains required and is regression-tested:
 
 ## Tool 0.3.0 — conformance capability expansion
 
-Planned capability work remains separate from this correctness release:
+Planned capability work starts immediately from the Tool 0.2.3 source baseline:
 
 - JavaScript/TypeScript source dependency adapter;
 - npm manifest adapter;
