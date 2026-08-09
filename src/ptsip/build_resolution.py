@@ -188,6 +188,13 @@ def _gap(component_id: str, message: str, evidence_id: str) -> dict[str, object]
     }
 
 
+def _normalize_manifest_path(raw: str) -> str:
+    normalized = raw.replace("\\", "/")
+    while normalized.startswith("./"):
+        normalized = normalized[2:]
+    return normalized
+
+
 def evaluate_independent_build_resolution(
     repository_root: str | Path,
     components: list[dict[str, object]],
@@ -220,7 +227,7 @@ def evaluate_independent_build_resolution(
 
         usable = 0
         for raw in manifest_paths:
-            normalized = raw.replace("\\", "/").lstrip("./")
+            normalized = _normalize_manifest_path(raw)
             candidate = (root / normalized).resolve()
             try:
                 inside = candidate.is_relative_to(root)
