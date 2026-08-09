@@ -2,6 +2,22 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
+## 0.2.2 — Unreleased
+
+Deterministic human clarification support for missing architectural intent:
+
+- added `ptsip clarify` to stop at missing intent instead of expanding speculative classification inference;
+- clarification analysis uses deterministic repository evidence and fixed completeness rules only, and reports `llm_calls: 0` in machine-readable output;
+- added fixed English (`en`) and Korean (`ko`) question templates without model-based translation;
+- language selection follows explicit `--lang`, then `PTSIP_LANG`, then the operating-system locale, with English as the fallback;
+- added Git `origin` discovery and deterministic GitHub HTTPS/SSH normalization to `owner/repository`;
+- added explicit `--publish github-issue` transport, with optional `--repo owner/repository` override;
+- GitHub publishing requires the external `gh` CLI only when publishing is explicitly requested; ordinary clarification remains read-only and network-free;
+- stores GitHub clarification publication state under `PTSIP_HOME/clarifications` outside the Consumer Repository to prevent duplicate issue creation;
+- does not collect, interpret, or automatically classify from Issue answers in Tool 0.2.2;
+- retains the existing `0.2.0-draft` Specification family and immutable Specification revision; this Tool capability does not change normative PTSIP semantics or schemas;
+- keeps the separately planned pilot-driven Tool 0.2.1/0.3.0 work independent from this release.
+
 ## 0.2.0 — Unreleased
 
 Evidence-v2 migration driven by the first real Consumer Repository Pilot:
