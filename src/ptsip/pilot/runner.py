@@ -48,19 +48,44 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
     profile_result = profile_validation.as_dict() if profile_validation else None
     declared_partition: dict[str, object] | None = None
     findings: list[dict[str, object]] = []
+    evaluator: dict[str, object]
 
-    if profile_path and profile_validation and profile_validation.valid:
-        profile_payload = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+    if not profile_path:
+        evaluator = {
+            "status": "BLOCKED",
+            "reason": "NO_PROFILE",
+            "finding_count": None,
+            "dependency_evidence_coverage_complete": dependencies.as_dict()["coverage_complete"],
+        }
+    elif not profile_validation or not profile_validation.valid:
+        evaluator = {
+            "status": "BLOCKED",
+            "reason": "PROFILE_INVALID",
+            "finding_count": None,
+            "dependency_evidence_coverage_complete": dependencies.as_dict()["coverage_complete"],
+        }
+    else:
+        profile_payload = yaml.safe_load(profile_path.read_text(encoding="utf-8-sig"))
         components = profile_payload.get("components") if isinstance(profile_payload, dict) else None
         if isinstance(components, list):
-            partition = partition_components(root, [item for item in components if isinstance(item, dict)])
+            typed_components = [item for item in components if isinstance(item, dict)]
+            partition = partition_components(root, typed_components)
             declared_partition = partition.as_dict()
-            findings = [
-                item.as_dict()
-                for item in evaluate_declared_dependency_boundaries(
-                    [item for item in components if isinstance(item, dict)], partition, dependencies
-                )
-            ]
+            evaluated = evaluate_declared_dependency_boundaries(typed_components, partition, dependencies)
+            findings = [item.as_dict() for item in evaluated]
+            evaluator = {
+                "status": "RAN",
+                "reason": None,
+                "finding_count": len(findings),
+                "dependency_evidence_coverage_complete": dependencies.as_dict()["coverage_complete"],
+            }
+        else:
+            evaluator = {
+                "status": "BLOCKED",
+                "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+                "finding_count": None,
+                "dependency_evidence_coverage_complete": dependencies.as_dict()["coverage_complete"],
+            }
 
     after = capture_snapshot(root)
     comparison = compare_snapshots(before, after)
@@ -121,7 +146,7 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
         "dependencies": dependencies.as_dict(),
         "artifacts": {
             "status": "NOT_INSPECTED",
-            "note": "Tool 0.2.0 does not build or inspect product artifacts automatically.",
+            "note": "Tool 0.2.3 does not build or inspect Product artifacts automatically.",
         },
         "classification": {
             "status": "DECLARATION_AVAILABLE" if declared_partition else "EVIDENCE_ONLY",
@@ -130,10 +155,13 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
             "note": "UNKNOWN is a decision status, not a fourth PTSIP architecture classification.",
         },
         "profile": profile_result,
+        "evaluation": {
+            "declared_dependency_boundaries": evaluator,
+        },
         "findings": findings,
         "conformance": {
             "status": "NOT_EVALUATED",
-            "reason": "Dependency phase coverage and product artifact inspection are not yet sufficient for a strict conformance claim.",
+            "reason": "Tool 0.2.3 improves evidence correctness but does not implement rule-relative coverage and Product Artifact evaluation required for a strict conformance result.",
         },
     }
 
