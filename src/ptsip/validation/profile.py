@@ -72,6 +72,7 @@ def _component_policy_errors(payload: dict[str, object], component_ids: set[str]
     if not isinstance(policy, dict):
         return []
     errors: list[str] = []
+    pairs_by_kind: dict[str, set[tuple[str, str]]] = {"allow": set(), "deny": set()}
     for relation_kind in ("allow", "deny"):
         relations = policy.get(relation_kind, [])
         if not isinstance(relations, list):
@@ -79,12 +80,26 @@ def _component_policy_errors(payload: dict[str, object], component_ids: set[str]
         for index, relation in enumerate(relations):
             if not isinstance(relation, dict):
                 continue
-            for endpoint in ("from", "to"):
-                value = relation.get(endpoint)
+            source = relation.get("from")
+            target = relation.get("to")
+            for endpoint, value in (("from", source), ("to", target)):
                 if isinstance(value, str) and value not in component_ids:
                     errors.append(
                         f"component_dependency_policy.{relation_kind}.{index}.{endpoint}: component {value!r} is not declared"
                     )
+            if isinstance(source, str) and isinstance(target, str):
+                pair = (source, target)
+                if pair in pairs_by_kind[relation_kind]:
+                    errors.append(
+                        f"component_dependency_policy.{relation_kind}: duplicate relation {source!r} -> {target!r}"
+                    )
+                pairs_by_kind[relation_kind].add(pair)
+
+    conflicting = sorted(pairs_by_kind["allow"] & pairs_by_kind["deny"])
+    for source, target in conflicting:
+        errors.append(
+            f"component_dependency_policy: relation {source!r} -> {target!r} appears in both allow and deny"
+        )
     return errors
 
 
