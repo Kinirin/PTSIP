@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 
 from ..inspection.components import discover_component_candidates
-from ..inspection.dependencies import scan_dependency_edges
+from ..inspection.dependencies_030 import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
 from ..model import Classification, DecisionStatus
 from ..repository.discover import discover_repository
@@ -146,7 +146,7 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
         "dependencies": dependencies.as_dict(),
         "artifacts": {
             "status": "NOT_INSPECTED",
-            "note": "Tool 0.2.3 does not build or inspect Product artifacts automatically.",
+            "note": "ptsip pilot does not consume Product Artifact evidence; use ptsip conform with explicit artifact evidence for strict packaging evaluation.",
         },
         "classification": {
             "status": "DECLARATION_AVAILABLE" if declared_partition else "EVIDENCE_ONLY",
@@ -161,7 +161,7 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
         "findings": findings,
         "conformance": {
             "status": "NOT_EVALUATED",
-            "reason": "Tool 0.2.3 improves evidence correctness but does not implement rule-relative coverage and Product Artifact evaluation required for a strict conformance result.",
+            "reason": "ptsip pilot remains evidence collection plus bounded findings; strict rule-relative conformance evaluation is performed by ptsip conform.",
         },
     }
 
