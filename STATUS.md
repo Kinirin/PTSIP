@@ -1,9 +1,9 @@
 # PTSIP Status
 
 - Specification family: `0.2.0-draft`
-- Current Tool/package source version on `main`: `0.2.2`
-- Tool 0.2.2 bound specification revision: `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`
-- Normative forward-port baseline before this snapshot: `main@3aa5c0b0c91841b2a5eabba4aff1335703b832b1`
+- Latest canonical normative snapshot: `14a0c2f54bb486de6a109979224f998b04fd04a3`
+- Current Tool/package source version on this migration branch: `0.2.3`
+- Tool 0.2.3 bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/ptsip`
@@ -14,9 +14,29 @@
 - Tool release namespace: `tool-v*`
 - Reuse license: Apache License 2.0
 
-## Tool 0.2.2 state
+## Tool 0.2.3 evidence-correctness state
 
-Tool 0.2.2 preserves the evidence-v2 behavior of Tool 0.2.0 and adds deterministic Human Clarification:
+Tool 0.2.3 implements the low-risk correctness work defined after the two-Pilot normative snapshot while preserving the deterministic Human Clarification capability introduced in Tool 0.2.2.
+
+Implemented in this migration:
+
+- Python source decoding through Python encoding detection so UTF-8 BOM and valid source encoding declarations do not become false read failures;
+- deterministic relative-import resolution when package/repository evidence identifies the target;
+- dependency evidence-node scope separated from architectural classification using `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET`;
+- dependency provenance recorded separately from target scope;
+- dynamic Python imports represented as `LOADS`, retaining `DYNAMIC` resolution when the target is not statically known;
+- deterministic external-dependency recognition from direct Python dependency declarations where package/import naming evidence matches;
+- GitHub Actions local-script resolution from the effective workflow/job/step `working-directory`;
+- arbitrary `run:` commands without local-script evidence no longer become synthetic unresolved `INVOKES` edges;
+- declared dependency evaluator state reports `RAN` versus `BLOCKED` with a reason and does not use an empty finding list to imply that evaluation ran;
+- embedded profile schema and registry synchronized to the Tool-bound immutable Specification snapshot;
+- Project Profile validation aligned with `boundaries XOR components`, retired mandatory-rule waiver semantics, exact bound revision checks, and component-policy reference validation.
+
+Tool 0.2.3 still does **not** claim complete automated PTSIP Conformance Evaluation. `ptsip pilot` remains evidence collection plus bounded rule findings, and `conformance.status` remains `NOT_EVALUATED` until rule-relative coverage and Product Artifact evaluation are implemented.
+
+## Human Clarification regression boundary
+
+The following Tool 0.2.2 behavior remains required and is regression-tested:
 
 - `ptsip clarify`;
 - deterministic clarification with zero LLM/model API calls;
@@ -27,40 +47,20 @@ Tool 0.2.2 preserves the evidence-v2 behavior of Tool 0.2.0 and adds determinist
 - read-only clarification analysis unless publication is explicitly requested;
 - no Issue-answer collection, free-form interpretation, or automatic classification.
 
-This capability does not change PTSIP architectural classifications, DecisionStatus values, or normative Specification semantics. Tool 0.2.2 remains bound to the immutable specification revision above.
+## Tool 0.3.0 — conformance capability expansion
 
-## Next normative snapshot work
+Planned capability work remains separate from this correctness release:
 
-The next immutable snapshot remains inside the `0.2.0-draft` family and is driven by the turbo-system and Simple Connection Consumer Pilots. Primary design areas are:
-
-- rule-relative evidence completeness;
-- Product Artifact owner/producer/contents/derivation semantics;
-- deterministic `CONFORMANT` / `NON_CONFORMANT` / `INCOMPLETE` evaluation;
-- mandatory-rule remediation rather than PTSIP waiver/exception semantics;
-- coherent component split criteria;
-- typed edge/lifecycle-phase/provenance semantics;
-- Profile Validation versus Conformance Evaluation separation;
-- stable diagnostic identity;
-- optional project-specific component dependency constraints that may strengthen but not weaken universal PTSIP rules.
-
-The normative snapshot does not retroactively change Tool 0.2.2. A later Tool release must explicitly bind the newer immutable revision it implements.
-
-## Tool roadmap after the normative snapshot
-
-### Tool 0.2.3 — evidence correctness
-
-Forward-port the work previously planned as Tool 0.2.1:
-
-- Python BOM-aware decoding;
-- deterministic relative-import resolution where evidence permits it;
-- project/external/platform/unresolved node-scope distinction;
-- GitHub Actions working-directory and false-positive handling;
-- explicit evaluator-run/evaluator-blocked reporting;
-- regression coverage proving Tool 0.2.2 Human Clarification remains deterministic and intact.
-
-### Tool 0.3.0 — conformance capability expansion
-
-Planned capability work includes JavaScript/TypeScript and npm adapters, artifact evidence adapters, stable diagnostics, rule-relative coverage evaluation, `conform`, agent-decision ingestion, external evidence import, extended .NET analysis, and Go coverage.
+- JavaScript/TypeScript source dependency adapter;
+- npm manifest adapter;
+- Product Artifact evidence adapters;
+- stable diagnostic emission using `ptsip-diagnostic/v1`;
+- rule-relative evidence coverage evaluation;
+- `ptsip conform`;
+- agent-decision ingestion;
+- external evidence import;
+- extended .NET analysis;
+- Go adapter.
 
 ## Release blockers for PTSIP Specification 1.0
 
