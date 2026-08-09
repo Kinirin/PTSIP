@@ -93,11 +93,19 @@ def _owners(partition: ComponentPartition) -> dict[str, str]:
 
 
 def _finding_diagnostic(finding: RuleFinding) -> dict[str, object]:
-    incomplete = finding.severity == "REVIEW"
+    if finding.severity != "REVIEW":
+        outcome_effect = "NON_CONFORMANT"
+        severity = "ERROR"
+    elif finding.rule_id in {"PTSIP-DEP-001", "PTSIP-BLD-002"}:
+        outcome_effect = "INCOMPLETE"
+        severity = "WARNING"
+    else:
+        outcome_effect = "NONE"
+        severity = "INFO"
     return _diagnostic(
         rule_id=finding.rule_id,
-        outcome_effect="INCOMPLETE" if incomplete else "NON_CONFORMANT",
-        severity="WARNING" if incomplete else "ERROR",
+        outcome_effect=outcome_effect,
+        severity=severity,
         evidence_ids=finding.evidence_ids,
         message=finding.message,
         source_component=finding.source_component,
