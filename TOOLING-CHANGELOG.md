@@ -4,7 +4,7 @@ This changelog tracks the independently versioned PTSIP Reference Tool. Specific
 
 ## 0.3.0 — Release candidate source, not yet published
 
-Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound to PTSIP Specification `0.2.0-draft` revision `14a0c2f54bb486de6a109979224f998b04fd04a3`:
+Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound to PTSIP Specification `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`:
 
 - adds `ptsip conform` with `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE` outcomes and distinct CLI exit codes;
 - emits deterministic `ptsip-diagnostic/v1`-shaped diagnostics with instance identity separate from PTSIP rule identity;
@@ -27,12 +27,14 @@ Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound
 - wraps the complete Tool 0.3.0 evidence/evaluator/audit pipeline in the final repository snapshot interval;
 - blocks unsupported mandatory-relevant source ecosystems, ambiguous release-like workflows, and ownership-incompatible build manifests while leaving ordinary documentation and non-release global CI rule-relative;
 - uses comment/string-aware lexical scanning for Go, JavaScript/TypeScript, and C# source dependency statements;
+- preserves native `DYNAMIC` dependency uncertainty instead of allowing sentinel-only external evidence to clear it;
+- recognizes executable dependency expressions inside JavaScript/TypeScript template-literal `${...}` interpolation regions;
 - performs a final conformance-report audit against the embedded diagnostic schema, active rule registry, applicability/evidence sufficiency, coverage-gap identity, and evaluator-state contract before allowing `CONFORMANT`;
 - retains Tool 0.2.2 Human Clarification's deterministic, zero-LLM semantics and Tool 0.2.3 evidence-correctness behavior as regression boundaries.
 
-Release-readiness verification completed in GitHub Actions run `31328764175`: Python 3.11–3.14 all passed the complete pytest/CLI smoke suite, and the package job verified the expected `tool-v0.3.0` mapping, built wheel/sdist artifacts, passed `twine check`, installed the built wheel, and re-ran Tool identity/conformance CLI smoke checks. The temporary verification workflow was removed after use.
+Earlier release-readiness verification in GitHub Actions run `31328764175` passed Python 3.11–3.14 and package build/twine/wheel smoke before the final merge-gate remediation and Specification rebind. Final post-rebind release-readiness verification is required before release preparation.
 
-The Tool 0.3.0 source remains untagged and unpublished pending PR review/merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
+The Tool 0.3.0 source remains untagged and unpublished pending final verification and PR merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
 
 ## 0.2.3 — Source-only migration, not published
 
