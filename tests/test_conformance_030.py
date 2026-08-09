@@ -135,7 +135,7 @@ def test_toolchain_producer_does_not_make_product_artifact_nonconformant(tmp_pat
     result = evaluate_conformance(repo, artifact_evidence_paths=[artifact])
     assert not any(item["rule_id"] == "PTSIP-PKG-001" for item in result.report["diagnostics"])
     assert result.report["evaluators"]["product_artifact_boundary"]["status"] == "RAN"
-    assert result.outcome == "INCOMPLETE"  # build-resolution evaluator is intentionally still blocked
+    assert result.outcome == "INCOMPLETE"
 
 
 def test_product_artifact_with_toolchain_content_is_nonconformant(tmp_path: Path) -> None:
@@ -166,7 +166,7 @@ def test_incomplete_product_artifact_blocks_conformance(tmp_path: Path) -> None:
     assert "artifact-evidence:product-dist:contents-incomplete" in gap_ids
 
 
-def test_component_dependency_policy_deny_is_enforced(tmp_path: Path) -> None:
+def test_component_dependency_policy_violation_is_reported_separately(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     _write_profile(
@@ -183,11 +183,13 @@ def test_component_dependency_policy_deny_is_enforced(tmp_path: Path) -> None:
     _commit_all(repo)
 
     result = evaluate_conformance(repo)
-    diagnostic = next(item for item in result.report["diagnostics"] if item["rule_id"] == "PTSIP-POL-001")
-    assert diagnostic["outcome_effect"] == "NON_CONFORMANT"
-    assert diagnostic["source_component"] == "tools"
-    assert diagnostic["target_component"] == "product"
-    assert result.outcome == "NON_CONFORMANT"
+    assert result.report["project_policy"]["finding_count"] == 1
+    finding = result.report["project_policy"]["findings"][0]
+    assert finding["source_component"] == "tools"
+    assert finding["target_component"] == "product"
+    assert result.report["project_policy"]["affects_ptsip_outcome"] is False
+    assert not any(item["rule_id"] == "PTSIP-POL-001" for item in result.report["diagnostics"])
+    assert result.outcome == "INCOMPLETE"
 
 
 def test_component_dependency_policy_allow_deny_conflict_is_invalid_profile(tmp_path: Path) -> None:
