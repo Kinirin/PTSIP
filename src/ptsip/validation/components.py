@@ -6,8 +6,6 @@ from pathlib import Path
 
 from ..repository.snapshot import repository_files
 
-_GLOB_META = re.compile(r"[*?[]")
-
 
 @dataclass(frozen=True)
 class ComponentAssignment:
@@ -57,6 +55,10 @@ def _normalize(pattern: str) -> str:
     return text.strip("/")
 
 
+def _has_glob(pattern: str) -> bool:
+    return any(char in pattern for char in "*?[")
+
+
 def _glob_regex(pattern: str) -> re.Pattern[str]:
     pattern = _normalize(pattern)
     out = ["^"]
@@ -91,14 +93,14 @@ def _glob_regex(pattern: str) -> re.Pattern[str]:
 def _matches(path: str, pattern: str) -> bool:
     normalized = _normalize(path)
     selector = _normalize(pattern)
-    if not _GLOB_META.search(selector):
+    if not _has_glob(selector):
         return normalized == selector
     return bool(_glob_regex(selector).match(normalized))
 
 
 def _specificity(pattern: str) -> tuple[int, int, int, int]:
     normalized = _normalize(pattern)
-    exact = 1 if not _GLOB_META.search(normalized) else 0
+    exact = 1 if not _has_glob(normalized) else 0
     literal = len(re.sub(r"[*?\[\]]", "", normalized))
     depth = normalized.count("/")
     wildcards = normalized.count("*") + normalized.count("?") + normalized.count("[")
