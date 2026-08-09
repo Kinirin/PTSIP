@@ -26,6 +26,7 @@ class DecisionOrigin(StrEnum):
 class EdgeType(StrEnum):
     IMPORTS = "IMPORTS"
     LINKS = "LINKS"
+    LOADS = "LOADS"
     INVOKES = "INVOKES"
     READS = "READS"
     GENERATES = "GENERATES"
@@ -45,8 +46,22 @@ class DependencyPhase(StrEnum):
 
 class ResolutionStatus(StrEnum):
     RESOLVED = "RESOLVED"
+    EXTERNAL = "EXTERNAL"
     UNRESOLVED = "UNRESOLVED"
     DYNAMIC = "DYNAMIC"
+
+
+class EvidenceNodeScope(StrEnum):
+    PROJECT_COMPONENT = "PROJECT_COMPONENT"
+    EXTERNAL_DEPENDENCY = "EXTERNAL_DEPENDENCY"
+    PLATFORM = "PLATFORM"
+    UNRESOLVED_TARGET = "UNRESOLVED_TARGET"
+
+
+class EvidenceProvenance(StrEnum):
+    DECLARED = "DECLARED"
+    OBSERVED = "OBSERVED"
+    INFERRED = "INFERRED"
 
 
 @dataclass(frozen=True)
@@ -72,9 +87,12 @@ class DependencyEdge:
     edge_type: EdgeType
     phase: DependencyPhase
     resolution: ResolutionStatus
+    target_scope: EvidenceNodeScope
+    provenance: EvidenceProvenance = EvidenceProvenance.OBSERVED
     line: int | None = None
     resolved_path: str | None = None
     adapter: str = "unknown"
+    working_directory: str | None = None
     note: str | None = None
 
     def as_dict(self) -> dict[str, object]:
@@ -82,4 +100,6 @@ class DependencyEdge:
         payload["edge_type"] = self.edge_type.value
         payload["phase"] = self.phase.value
         payload["resolution"] = self.resolution.value
+        payload["target_scope"] = self.target_scope.value
+        payload["provenance"] = self.provenance.value
         return payload
