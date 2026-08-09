@@ -40,6 +40,8 @@ Examples include:
 
 A Neutral Contract Artifact MUST NOT become a hidden shared runtime implementation.
 
+Neutrality is determined by contract semantics and lifecycle ownership, not by directory name or by a fixed minimum number of current consumers. A contract does not cease to be eligible for `NEUTRAL_CONTRACT` merely because only one plane is observed consuming it at a particular repository revision. Conversely, a Product-owned schema MUST NOT be reclassified as neutral merely because a Toolchain component could theoretically read it.
+
 ### 2.4 External PTSIP Tooling
 
 External PTSIP Tooling is an implementation used to inspect, pilot, validate, or report on a Consumer Repository without becoming part of that repository's Product or project-owned Toolchain implementation.
@@ -57,6 +59,36 @@ The only PTSIP architectural classifications are:
 - `NEUTRAL_CONTRACT`
 
 Inspection or agent tooling MAY use decision statuses such as `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` while evidence is insufficient. Such statuses describe the state of a decision and MUST NOT be represented as additional architectural classifications or planes.
+
+### 2.6 Evidence graph scope
+
+Dependency and artifact evidence may reference targets that are not project-owned PTSIP Components. Evidence tooling MAY identify node scope/type such as:
+
+- `PROJECT_COMPONENT`;
+- `EXTERNAL_DEPENDENCY`;
+- `PLATFORM`; or
+- `UNRESOLVED_TARGET`.
+
+These values describe evidence-graph scope and MUST NOT be treated as additional PTSIP architectural classifications.
+
+A separately governed third-party dependency, language standard library, operating-system API, hosted platform, or unresolved target is not required to be classified as Product or Toolchain merely because a project-owned component depends on it.
+
+### 2.7 Product Artifact
+
+A **Product Artifact** is a deployable, distributable, installable, loadable, or otherwise Product-owned output whose lifecycle responsibility belongs to the Product plane. Examples may include installers, application bundles, plugin archives, service bundles, containers, packages, or other release outputs.
+
+The component that produces an artifact and the architectural owner of the artifact are separate concepts. A Toolchain component MAY produce a Product Artifact.
+
+Artifact evidence used for PTSIP conformance SHOULD identify, when applicable:
+
+- artifact identity;
+- architectural owner/classification;
+- producer component;
+- format/type;
+- contained component/path evidence;
+- derivation or generation relationship;
+- shipping/distribution scope; and
+- evidence provenance.
 
 ## 3. Foundational principle
 
@@ -82,6 +114,21 @@ Classification MUST be made at a component granularity capable of representing t
 
 Ambiguous ownership MAY be represented as an unresolved decision status during inspection or migration, but it MUST be resolved before the component is introduced as a shared dependency or before strict conformance is claimed.
 
+### PTSIP-CLS-002 — Coherent component boundary
+
+A declared PTSIP Component MUST be narrow enough that one architectural classification, primary purpose, and lifecycle ownership statement can coherently describe the component.
+
+A broad component MUST be split into separate components, or an explicit architecture decision MUST justify keeping it unified, when material evidence would otherwise require contradictory ownership conclusions because of differences such as:
+
+- whether contained material is shipped with the Product;
+- executable purpose;
+- release ownership;
+- compatibility ownership;
+- build or manifest ownership; or
+- Product versus Toolchain lifecycle responsibility.
+
+This rule does not require one directory, package, or manifest per component. Physical co-location is permitted when the declared component boundaries still represent the real architectural ownership.
+
 ### PTSIP-DEP-001 — Product-to-Toolchain runtime dependency prohibition
 
 A Product SDK MUST NOT import, link, load, vendor, or otherwise depend on a Toolchain SDK as a runtime or shipped dependency.
@@ -94,6 +141,10 @@ This permission does not convert a Toolchain SDK into a Product dependency.
 
 A Toolchain-to-Product executable dependency is not automatically permitted merely because its direction is Toolchain-to-Product. Its purpose and dependency phase MUST still be consistent with the declared ownership and lifecycle boundary.
 
+A Toolchain executable dependency on Product implementation MAY be acceptable when the Product implementation is an explicit analysis, build, test, generation, migration, or packaging input and the dependency does not create Product-to-Toolchain runtime/package coupling.
+
+Importing or linking Product runtime implementation solely as a convenient shared executable implementation, without a bounded Toolchain analysis/build/test purpose, SHOULD be treated as cross-boundary executable sharing under `PTSIP-DEP-003` and SHOULD require explicit architectural justification.
+
 ### PTSIP-DEP-003 — Cross-boundary executable sharing is denied by default
 
 A shared executable package used directly by both Product and Toolchain planes SHOULD NOT be introduced unless an explicit architecture decision demonstrates that the package has a lifecycle independent of both planes and does not create release coupling.
@@ -103,6 +154,16 @@ If this condition cannot be demonstrated, separate implementations or a Neutral 
 ### PTSIP-PKG-001 — Packaging isolation
 
 Toolchain SDK code and Toolchain-only dependencies MUST NOT be included in the product's deployable or distributable artifact unless the component has been reclassified through governance as Product-owned.
+
+The classification of an artifact producer does not determine the classification of the artifact it produces. A Toolchain producer MAY generate or package a Product Artifact, but the resulting Product Artifact MUST still satisfy packaging isolation.
+
+### PTSIP-ART-001 — Artifact ownership and derivation evidence
+
+Artifact ownership MUST be evaluated independently from producer ownership.
+
+Automated evidence used to claim compliance with `PTSIP-PKG-001` MUST identify enough artifact-content or equivalent packaging evidence to determine whether Toolchain-owned implementation or Toolchain-only dependencies are included in a Product Artifact.
+
+When an artifact is generated, packaged, or assembled by another component, the producer and derivation relationship SHOULD be preserved as evidence rather than inferred from the output path or producer classification alone.
 
 ### PTSIP-BLD-001 — Independently resolvable build environments
 
@@ -123,6 +184,8 @@ A Toolchain build MAY require Product source or Product contract artifacts as an
 Product SDK and Toolchain SDK versioning and release decisions MUST be independently governable.
 
 A Toolchain-only change SHOULD NOT force a Product release unless the change produces or modifies a Product artifact that is itself release-relevant.
+
+A CI/workflow trigger caused by a Toolchain-only change is not by itself proof of a lifecycle violation. Lifecycle coupling SHOULD be evaluated from whether the Toolchain-only change requires or causes a Product artifact change, Product version/release decision, Product publication, or Product compatibility obligation when no release-relevant Product artifact changed.
 
 ### PTSIP-LCY-002 — Compatibility ownership
 
@@ -174,6 +237,49 @@ An automated validator MUST distinguish declared ownership from observed evidenc
 
 Agent or heuristic classifications MAY assist review, but they MUST NOT silently override an explicit project declaration or convert unresolved evidence into a conformance fact.
 
+### PTSIP-EVD-003 — Applicable evidence coverage
+
+A strict PTSIP conformance claim MUST NOT be derived solely from an absence of detected violations.
+
+An evidence gap is **blocking** when the gap can conceal whether an applicable PTSIP `MUST` or `MUST NOT` requirement is satisfied. If no definite violation has already established non-conformance, a blocking gap MUST produce an incomplete/indeterminate conformance result rather than a conformant result.
+
+An evidence gap MAY be reported as non-blocking when it cannot materially affect the applicable mandatory rule set being evaluated.
+
+PTSIP does not define a universal unresolved-count or global coverage-percentage threshold. Coverage sufficiency is evaluated against the applicable rule and evidence scope.
+
+### PTSIP-EVD-004 — Evidence provenance and dependency semantics
+
+Automated dependency evidence used for conformance MUST preserve enough information to distinguish:
+
+- relationship type;
+- lifecycle phase or phases when known;
+- resolution state;
+- evidence provenance;
+- source and target identity when resolvable; and
+- unresolved uncertainty.
+
+Canonical provenance values are:
+
+- `DECLARED` — present in a manifest, profile, or configuration declaration;
+- `OBSERVED` — directly observed from repository, artifact, runtime, or static evidence;
+- `INFERRED` — derived from bounded deterministic or review reasoning and explicitly identified as inferred.
+
+Unknown, dynamic, unresolved, or multi-phase relationships MUST NOT be forced into a single guessed phase or target to make conformance evaluation possible.
+
+### PTSIP-DIA-001 — Stable diagnostic identity
+
+Automated PTSIP conformance diagnostics MUST distinguish a unique diagnostic/finding instance identity from the stable PTSIP rule ID that the finding concerns.
+
+A single rule MAY produce multiple diagnostic instances. Diagnostics SHOULD preserve evidence references, evaluator/provenance information, source/target component information when applicable, severity, and a human-readable message sufficient for review.
+
+### PTSIP-POL-001 — Project-specific policy may strengthen but not weaken PTSIP
+
+A project MAY declare stricter component-to-component dependency constraints, including constraints between components in the same PTSIP plane.
+
+Such project-specific policy MUST NOT authorize behavior prohibited by a universal PTSIP `MUST` or `MUST NOT` rule.
+
+Project-specific policy is not automatically a universal PTSIP architecture requirement merely because it is represented in a PTSIP Project Profile.
+
 ### PTSIP-EXC-001 — Explicit exceptions
 
 Any intentional violation of a MUST or MUST NOT rule MUST be recorded as a PTSIP exception decision.
@@ -184,13 +290,19 @@ The exception record MUST identify:
 - reason;
 - affected components;
 - coupling introduced;
-- owner;
+- scope/category;
+- owner and approval authority;
 - review or expiry condition;
-- remediation or permanent-acceptance decision.
+- remediation or permanent-acceptance decision; and
+- conformance effect.
 
-A project with an active violation MAY NOT claim strict PTSIP conformance unless the conformance profile explicitly allows that category of exception.
+An exception records and governs a violation; it does not erase the violated rule.
 
-## 5. Dependency direction
+An active exception to a PTSIP `MUST` or `MUST NOT` rule MUST block a strict PTSIP Core Conformant or Enforced Conformant claim while that violation remains active. The machine-readable conformance effect for such an exception is `blocks_strict_ptsip`.
+
+A project with approved deviations MAY describe itself as adopting/transitioning or report evaluation results with approved exceptions, but MUST NOT represent the active normative violation as strict PTSIP conformance.
+
+## 5. Dependency direction and evidence vocabulary
 
 The default allowed information flow is:
 
@@ -220,7 +332,44 @@ External PTSIP Tooling  --->  Consumer Repository
          inspect / pilot / validate
 ```
 
-Dependency evidence SHOULD preserve both relationship type and lifecycle phase when they can be determined. Examples include `IMPORTS`, `LINKS`, `INVOKES`, `READS`, `GENERATES`, `PACKAGES`, `TESTS`, and `PUBLISHES`, with phases such as `RUNTIME`, `BUILD`, `TEST`, `RELEASE`, and `INSPECTION`. Unknown phase or dynamic resolution MUST remain explicitly unresolved rather than being guessed into a conformance result.
+### 5.1 Relationship types
+
+PTSIP defines the following adapter-independent relationship vocabulary for evidence. A real relationship MAY have more than one type when independently supported by evidence.
+
+- `IMPORTS` — source code or runtime/build code names and imports another module/package namespace;
+- `LINKS` — build/link metadata directly links one compiled/project component to another;
+- `LOADS` — a component loads another module, plugin, library, or artifact dynamically;
+- `INVOKES` — a component or automation executes another component/process/script;
+- `READS` — a component consumes another component's source/data/artifact as data without treating it as executable reuse;
+- `GENERATES` — a component produces generated source, metadata, contract, or artifact from an input;
+- `PACKAGES` — a component or packaging process places content into an artifact;
+- `TESTS` — a test component/evaluator exercises another component;
+- `PUBLISHES` — a component or release process publishes/distributes an artifact or release record.
+
+Relationship type alone does not determine whether an edge is allowed; classification, lifecycle phase, artifact scope, and applicable rules remain relevant.
+
+### 5.2 Lifecycle phases
+
+Canonical lifecycle phases are:
+
+- `RUNTIME` — required or exercised as part of shipped Product/runtime execution;
+- `BUILD` — required to compile, generate, assemble, or otherwise create build outputs;
+- `TEST` — required to execute tests or test-only validation;
+- `RELEASE` — required for versioning, packaging, publishing, deployment, or release orchestration;
+- `INSPECTION` — used to inspect, analyze, validate, audit, or migrate another component as development evidence/input.
+
+One relationship MAY have multiple phases. If the phase cannot be established from evidence, it remains unresolved/unknown.
+
+### 5.3 Resolution state
+
+Evidence SHOULD distinguish at least:
+
+- resolved project target;
+- external/platform target;
+- unresolved target; and
+- dynamic target whose concrete identity is not statically known.
+
+An unresolved target MUST NOT be interpreted as evidence that no prohibited dependency exists.
 
 ## 6. Reuse policy
 
@@ -237,7 +386,7 @@ Risky strategies include:
 
 1. a project-local executable `shared` package imported by both planes;
 2. Toolchain validation code imported into Product runtime for convenience;
-3. Product runtime libraries imported into Toolchain solely to avoid defining a stable contract;
+3. Product runtime libraries imported into Toolchain solely to avoid defining a stable contract or bounded analysis input;
 4. one dependency lock/environment whose accidental transitive state makes both planes build.
 
 ## 7. Repository topology
@@ -264,6 +413,7 @@ A project claiming **PTSIP Enforced Conformance** MUST provide a machine-readabl
 
 - PTSIP specification version;
 - canonical specification source;
+- immutable specification revision when evaluating a mutable draft family;
 - Product and Toolchain ownership declarations;
 - Neutral Contract ownership declarations when applicable;
 - dependency policy;
@@ -271,10 +421,12 @@ A project claiming **PTSIP Enforced Conformance** MUST provide a machine-readabl
 - build-environment policy;
 - approved exceptions.
 
-The reference profile supports two declaration forms:
+The reference profile supports two ownership-declaration forms:
 
-1. **boundary-root shorthand** for repositories where ownership is uniform by root; and
+1. **boundary-root shorthand** for repositories where ownership is uniform by root; or
 2. **component declarations** for nested, mixed, file-level, or lifecycle-specific ownership.
+
+A reference profile MUST use exactly one ownership-declaration form. `boundaries` and `components` MUST NOT be supplied together.
 
 A component declaration identifies a stable component ID, one of the three PTSIP classifications, one or more include selectors, a purpose, and optional lifecycle/packaging metadata such as shipped state, executable state, manifests, release owner, compatibility owner, consumers, and analysis inputs.
 
@@ -289,33 +441,77 @@ A file not matched by a component declaration is not automatically a PTSIP viola
 
 The profile is a **declaration of intended ownership**, not evidence that the declared boundary is actually respected. Automated validation compares declaration with observed dependency, build, packaging, and lifecycle evidence.
 
+### 8.1 Optional project component dependency policy
+
+A profile MAY declare stricter component-to-component dependency constraints.
+
+The reference policy model supports:
+
+- `default: allow | deny`;
+- explicit `allow` relationships; and
+- explicit `deny` relationships.
+
+Each relationship refers to declared component IDs. An identical component relationship MUST NOT be present in both `allow` and `deny`.
+
+An explicit project allow MUST NOT override a universal PTSIP prohibition such as `PTSIP-DEP-001` or `PTSIP-PKG-001`.
+
 The reference profile format is defined by `schemas/ptsip-profile.schema.json`.
 
 The profile's physical location is not an architectural boundary. Implementations MAY use a conventional `ptsip.yaml` at the repository root, an explicit user-supplied path, or an equivalent project configuration mechanism.
 
-## 9. Enforcement
+## 9. Validation, enforcement, and diagnostics
+
+### 9.1 Profile Validation
+
+Profile Validation determines whether a project declaration is syntactically and semantically well-formed. It may include:
+
+- schema validity;
+- specification binding syntax;
+- component ID validity;
+- selector conflicts;
+- referenced component existence;
+- exception structure; and
+- optional project-policy consistency.
+
+A valid profile is not proof of repository conformance.
+
+### 9.2 Conformance Evaluation
+
+Conformance Evaluation combines applicable declaration, observed repository evidence, dependency evidence, artifact/packaging evidence, lifecycle evidence, exceptions, evidence coverage, and deterministic PTSIP rule evaluation.
+
+Implementations MAY expose separate commands or APIs for Profile Validation and Conformance Evaluation. Command names are not normative.
 
 A PTSIP validator SHOULD be capable of checking at least:
 
 - project profile validity when a profile is supplied;
-- specification binding, including immutable revision for draft evaluation when available;
+- specification binding, including immutable revision for mutable-draft Enforced Conformance;
 - component classification and selector conflicts;
 - dependency edges with unresolved/dynamic evidence preserved;
-- shipped artifact contents;
+- shipped artifact contents or equivalent packaging evidence;
 - build manifest separation;
 - undeclared cross-plane imports;
 - active exception records;
+- evidence coverage sufficient for applicable mandatory rules;
 - evidence snapshot integrity;
 - observable non-intrusion evidence for external inspection/pilot operations.
 
-The validator SHOULD report rule IDs in diagnostics.
+### 9.3 Conformance outcomes
 
-Example:
+A completed PTSIP conformance evaluation reports one of:
 
-```text
-PTSIP-DEP-001 ERROR
-product/sdk/schema.py imports toolchain/validation/common.py
-```
+- `CONFORMANT` — applicable evidence is sufficient, no applicable mandatory violation is established, and no active PTSIP normative exception blocks the claim;
+- `NON_CONFORMANT` — sufficient evidence establishes at least one applicable `MUST`/`MUST NOT` violation;
+- `INCOMPLETE` — no definite violation is sufficient to settle the result, but blocking evidence gaps, unresolved classification, unsupported relevant analysis, unstable snapshot, or equivalent uncertainty prevents a conformance claim.
+
+A tooling state such as `NOT_EVALUATED` MAY indicate that evaluation was not attempted or could not start, but it is not a PTSIP conformance outcome.
+
+When a definite mandatory violation is established, the result remains `NON_CONFORMANT` even if additional unrelated coverage gaps also exist. Those gaps SHOULD still be reported.
+
+### 9.4 Diagnostics
+
+Automated diagnostics SHOULD use a versioned machine-readable contract such as `ptsip-diagnostic/v1` and MUST distinguish diagnostic instance identity from normative rule identity.
+
+The canonical reference schema is `schemas/ptsip-diagnostic.schema.json`.
 
 External PTSIP Tooling implementing inspection or pilot analysis MUST preserve the read-only default required by `PTSIP-INT-001`.
 
@@ -338,6 +534,8 @@ PTSIP does not prescribe:
 - installation of PTSIP tooling inside the Consumer Repository.
 
 PTSIP also does not claim that every shared dependency is harmful. It governs **project-owned SDK responsibility boundaries**.
+
+PTSIP does not make a repository-specific same-plane dependency topology a universal requirement. A project may choose stricter optional component policy without changing the universal PTSIP minimum.
 
 ## 11. Status and novelty statement
 
