@@ -4,6 +4,7 @@ ptsip_registry:
     acronym: "PTSIP"
     version: "0.2.0-draft"
     status: "draft"
+    revision_policy: "draft-family-plus-immutable-revision"
     canonical_source: "https://github.com/kwaksinwoo01/ptsip"
 
   classifications:
@@ -14,13 +15,27 @@ ptsip_registry:
     - id: NEUTRAL_CONTRACT
       meaning: "Non-owning declarative contract artifact consumable by both planes."
 
+  decision_statuses:
+    - id: RESOLVED
+      meaning: "Ownership decision is resolved to one PTSIP classification."
+    - id: UNKNOWN
+      meaning: "Evidence is insufficient to resolve ownership."
+    - id: CONFLICT
+      meaning: "Material evidence or declarations conflict."
+    - id: INCOMPLETE
+      meaning: "Required evidence or analysis coverage is incomplete."
+
   concepts:
     - id: CONSUMER_REPOSITORY
       meaning: "Repository inspected, piloted, validated, or governed using PTSIP."
     - id: EXTERNAL_PTSIP_TOOLING
       meaning: "PTSIP tooling operated outside the Consumer Repository project-owned source tree by default."
     - id: SPECIFICATION_BINDING
-      meaning: "Association between a project PTSIP declaration and its canonical specification source/version."
+      meaning: "Association between a project PTSIP declaration and its canonical specification family/version plus immutable revision when required."
+    - id: PTSIP_COMPONENT
+      meaning: "Architectural unit to which PTSIP ownership is assigned."
+    - id: EVIDENCE_SNAPSHOT
+      meaning: "Observed repository state to which automated PTSIP evidence is bound."
 
   principles:
     - id: PTSIP-CORE-001
@@ -65,6 +80,12 @@ ptsip_registry:
       severity: error
     - id: PTSIP-SPC-001
       title: "Specification Binding"
+      severity: error
+    - id: PTSIP-EVD-001
+      title: "Evidence snapshot integrity"
+      severity: error
+    - id: PTSIP-EVD-002
+      title: "Declaration and observation are distinct"
       severity: error
     - id: PTSIP-EXC-001
       title: "Explicit exceptions"
