@@ -1,6 +1,7 @@
 # PTSIP Status
 
 - Specification family: `0.2.0-draft`
+- Current Tool 0.2.0 bound specification revision: `895e12d27230af2bb99ad17a96e8df8ef41bc3e0`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/ptsip`
@@ -9,7 +10,7 @@
 - Reference Python tooling source: `0.2.0`
 - Reference Tool package name: `ptsip`
 - Latest PyPI publication: `0.1.0a1` via Trusted Publishing
-- Tool 0.2.0 publication: Pending migration merge, immutable specification binding, and release
+- Tool 0.2.0 publication: Pending `tool-v0.2.0` release only
 - Tool CI target: Python 3.11–3.14
 - Tool release namespace: `tool-v*`
 - First Tool release: `tool-v0.1.0a1`, published 2026-08-09
@@ -33,6 +34,8 @@ Tool 0.2.0 migration addresses the highest-priority gaps:
 - exception schema alignment;
 - constrained agent classification decisions;
 - Python 3.14 added to the CI verification target.
+
+The source migration is merged and Tool 0.2.0 is bound to the immutable migrated specification revision above. The remaining Tool release action is publication of `tool-v0.2.0` through the existing Trusted Publishing workflow.
 
 ## Remaining blockers for full Enforced Conformance tooling
 
