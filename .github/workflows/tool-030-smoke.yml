@@ -1,0 +1,29 @@
+name: tool-030-smoke
+
+on:
+  push:
+    branches:
+      - migration/tool-0.3.0-conformance
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tool-030-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q
+      - run: ptsip --version
+      - run: ptsip spec
+      - run: ptsip conform --help
