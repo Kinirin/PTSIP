@@ -25,7 +25,9 @@ Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound
 - performs a final conformance-report audit against the embedded diagnostic schema, active rule registry, coverage-gap identity, and evaluator-state contract before allowing `CONFORMANT`;
 - retains Tool 0.2.2 Human Clarification's deterministic, zero-LLM semantics and Tool 0.2.3 evidence-correctness behavior as regression boundaries.
 
-The Tool 0.3.0 source is not yet tagged or published. Release readiness requires supported-Python verification, package build and `twine check`, release-tag/package-version wiring verification, documentation review, and final PR review before `tool-v0.3.0` publication.
+Release-readiness verification completed in GitHub Actions run `31328764175`: Python 3.11–3.14 all passed the complete pytest/CLI smoke suite, and the package job verified the expected `tool-v0.3.0` mapping, built wheel/sdist artifacts, passed `twine check`, installed the built wheel, and re-ran Tool identity/conformance CLI smoke checks. The temporary verification workflow was removed after use.
+
+The Tool 0.3.0 source remains untagged and unpublished pending PR review/merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
 
 ## 0.2.3 — Source-only migration, not published
 
@@ -35,13 +37,13 @@ Evidence-correctness migration bound to PTSIP Specification `0.2.0-draft` revisi
 - resolves relative Python imports deterministically when package/repository evidence identifies the target;
 - adds evidence-node scope values `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET` without expanding the three PTSIP architectural classifications;
 - records dependency provenance independently from target scope;
-- represents dynamic Python import relationships as `LOADS` and retains `DYNAMIC` resolution when the target identity is not statically known;
+- represents dynamic Python imports as `LOADS`, retaining `DYNAMIC` resolution when the target is not statically known;
 - recognizes direct declared Python dependencies as external evidence when declaration/import naming matches deterministically;
 - resolves GitHub Actions local scripts from effective workflow/job/step `working-directory`;
 - stops converting arbitrary GitHub Actions `run:` commands into unresolved local-script invocation edges;
 - reports declared dependency evaluator state as `RAN` or `BLOCKED` so `findings: []` cannot imply an evaluator ran when it did not;
 - synchronizes embedded profile schema and registry resources to the Tool-bound immutable Specification snapshot;
-- aligns Project Profile validation with `boundaries XOR components`, retired mandatory-rule waiver semantics, exact revision binding, and project component-policy references;
+- aligns Project Profile validation with `boundaries XOR components`, retired PTSIP waiver semantics, exact revision binding, and project component-policy references;
 - retains Tool 0.2.2 deterministic Human Clarification behavior as a regression boundary;
 - intentionally does not add `ptsip conform`, Product Artifact adapters, JS/TS/npm/Go adapters, stable diagnostic emission, agent-decision ingestion, or external evidence import.
 
