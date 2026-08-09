@@ -83,6 +83,19 @@ def test_python_target_scope_distinguishes_external_and_unresolved(tmp_path: Pat
     assert by_target["mystery_package"].resolution.value == "UNRESOLVED"
 
 
+def test_python_declaration_parse_failure_is_evidence_issue(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "pyproject.toml").write_text("[project\nname = broken\n", encoding="utf-8")
+    (repo / "app.py").write_text("import requests\n", encoding="utf-8")
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    assert not scan.as_dict()["coverage_complete"]
+    issue = next(item for item in scan.issues if item.adapter == "python-declarations")
+    assert issue.path == "pyproject.toml"
+
+
 def test_dynamic_python_import_uses_loads_and_unresolved_scope(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
@@ -103,7 +116,7 @@ def test_github_actions_resolves_scripts_from_effective_working_directory(tmp_pa
     (repo / "tools").mkdir()
     (repo / "tools" / "check.py").write_text("print('ok')\n", encoding="utf-8")
     (repo / ".github" / "workflows" / "test.yml").write_text(
-        """name: test\non: [push]\ndefaults:\n  run:\n    working-directory: tools\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: python check.py\n      - run: echo not-a-local-file.py\n      - run: python ./missing.py\n""",
+        """name: test\non: [push]\ndefaults:\n  run:\n    working-directory: tools\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: python check.py\n      - run: echo ./not-invoked.py\n      - run: python ./missing.py\n""",
         encoding="utf-8",
     )
     _commit_all(repo)
@@ -114,7 +127,7 @@ def test_github_actions_resolves_scripts_from_effective_working_directory(tmp_pa
     resolved = next(edge for edge in workflow_edges if edge.target == "check.py")
     assert resolved.working_directory == "tools"
     assert resolved.provenance.value == "DECLARED"
-    assert not any(edge.target == "not-a-local-file.py" for edge in workflow_edges)
+    assert not any(edge.target == "./not-invoked.py" for edge in workflow_edges)
     missing = next(edge for edge in workflow_edges if edge.target == "./missing.py")
     assert missing.resolution.value == "UNRESOLVED"
     assert missing.target_scope.value == "UNRESOLVED_TARGET"
