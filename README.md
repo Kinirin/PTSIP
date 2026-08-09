@@ -110,7 +110,7 @@ When PTSIP detects a component candidate but the Consumer Repository does not de
 
 Clarification generation is deterministic: it uses repository evidence, fixed completeness rules, and fixed question templates. It does **not** call an LLM or model API, and JSON output explicitly reports `llm_calls: 0` and `speculative_classification: false`.
 
-Tool 0.2.2 supports English and Korean clarification prompts only. Language selection follows `--lang en|ko`, then `PTSIP_LANG`, then the operating-system locale, with English as the fallback.
+The clarification interface supports English and Korean prompts only. Language selection follows `--lang en|ko`, then `PTSIP_LANG`, then the operating-system locale, with English as the fallback.
 
 ```powershell
 ptsip clarify . --lang ko
@@ -130,7 +130,7 @@ PTSIP reads the inspected Git repository's `origin` and, for GitHub HTTPS or SSH
 ptsip clarify . --publish github-issue --repo owner/repository
 ```
 
-GitHub publishing requires an authenticated `gh` CLI only for the explicit publish operation. Publication state used to prevent duplicate clarification Issues is stored under `PTSIP_HOME/clarifications`, outside the Consumer Repository. Tool 0.2.2 does not collect Issue answers, interpret free-form replies, or automatically convert them into an architectural classification.
+GitHub publishing requires an authenticated `gh` CLI only for the explicit publish operation. Publication state used to prevent duplicate clarification Issues is stored under `PTSIP_HOME/clarifications`, outside the Consumer Repository. The clarification workflow does not collect Issue answers, interpret free-form replies, or automatically convert them into an architectural classification.
 
 ## Reference Tool
 
