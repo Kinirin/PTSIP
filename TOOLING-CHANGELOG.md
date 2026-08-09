@@ -32,9 +32,9 @@ Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound
 - performs a final conformance-report audit against the embedded diagnostic schema, active rule registry, applicability/evidence sufficiency, coverage-gap identity, and evaluator-state contract before allowing `CONFORMANT`;
 - retains Tool 0.2.2 Human Clarification's deterministic, zero-LLM semantics and Tool 0.2.3 evidence-correctness behavior as regression boundaries.
 
-Earlier release-readiness verification in GitHub Actions run `31328764175` passed Python 3.11–3.14 and package build/twine/wheel smoke before the final merge-gate remediation and Specification rebind. Final post-rebind release-readiness verification is required before release preparation.
+Final post-rebind release-readiness verification completed in GitHub Actions run `31334084470`: Python 3.11–3.14 all passed the complete pytest/CLI/exact-Spec-binding suite, and the Python 3.14 package job verified the expected `tool-v0.3.0` mapping, built wheel/sdist artifacts, passed `twine check`, installed the built wheel, and re-ran Tool identity/spec/conformance CLI smoke checks. The temporary verification workflow was removed after the successful run.
 
-The Tool 0.3.0 source remains untagged and unpublished pending final verification and PR merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
+The Tool 0.3.0 source remains untagged and unpublished pending PR merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
 
 ## 0.2.3 — Source-only migration, not published
 
@@ -114,7 +114,7 @@ Initial alpha reference-tooling release:
 - added installable Python distribution named `ptsip`;
 - added `ptsip --version` and `ptsip spec`;
 - added `ptsip doctor` for local environment checks;
-- added read-only `ptsip inspect` repository inventory;
+- added read-only repository inventory;
 - added read-only `ptsip pilot` with external default state/report storage;
 - added `ptsip validate` for an existing PTSIP project profile;
 - embedded the PTSIP 0.2.0-draft profile schema and registry snapshot;
