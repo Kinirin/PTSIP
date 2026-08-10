@@ -8,7 +8,12 @@ from .app.client import ControlPlaneClient
 from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
 from .clarification.render import render_console, render_issue
-from .clarification.resolution import DecisionAnswer, apply_local_profile, validate_answer
+from .clarification.resolution import (
+    DecisionAnswer,
+    prepare_local_profile,
+    validate_answer,
+    write_prepared_local_profile,
+)
 from .clarification.transports.github_issue import publish as publish_github_issues
 from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
@@ -275,8 +280,10 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "resolve":
             repo = discover_repository(args.path)
-            if not repo.commit:
-                raise RuntimeError("ptsip resolve requires a Git repository commit")
+            if not repo.commit or not repo.branch:
+                raise RuntimeError("ptsip resolve requires a checked-out Git branch and commit")
+            if not repo.remote or repo.remote.provider != "github" or not repo.remote.repository:
+                raise RuntimeError("ptsip resolve requires a GitHub origin matching the decision control plane")
             answer = DecisionAnswer(
                 classification=args.classification,
                 purpose=args.purpose.strip(),
@@ -289,7 +296,66 @@ def main(argv: list[str] | None = None) -> int:
             if not validation.valid:
                 _emit({"status": "CONFLICT", "validation": validation.as_dict()}, args.json)
                 return 8
+
             client = ControlPlaneClient(args.control_plane)
+            lookup = client.decision({"decision_id": args.decision})
+            decision = lookup.get("decision")
+            if not isinstance(decision, dict):
+                raise RuntimeError("Control plane returned no decision record")
+            if str(decision.get("repository", "")) != repo.remote.repository:
+                raise RuntimeError("Decision repository does not match the local GitHub origin")
+            if str(decision.get("branch", "")) != repo.branch:
+                raise RuntimeError("Decision branch does not match the checked-out local branch; run ptsip gate first")
+            if str(decision.get("subject_revision", "")) != repo.commit:
+                _emit(
+                    {
+                        "status": "STALE_REQUIRES_GATE",
+                        "message": "Decision target revision differs from the active repository. Run ptsip gate for the affected component before retrying the same authoritative decision.",
+                        "decision": decision,
+                    },
+                    args.json,
+                )
+                return 8
+
+            existing_status = str(decision.get("status", ""))
+            stored_answer = decision.get("answer")
+            application_status = str(decision.get("application_status", ""))
+            if existing_status == "RESOLVED":
+                if stored_answer != answer.as_dict():
+                    _emit(
+                        {
+                            "status": "ALREADY_RESOLVED",
+                            "accepted": False,
+                            "message": "The authoritative decision already exists with different facts; this later answer cannot replace it.",
+                            "decision": decision,
+                        },
+                        args.json,
+                    )
+                    return 9
+                if application_status in {"APPLIED", "LOCAL_APPLIED"}:
+                    _emit({"status": "ALREADY_APPLIED", "decision": decision}, args.json)
+                    return 0
+            elif existing_status != "PENDING":
+                _emit({"status": existing_status or "DECISION_ERROR", "decision": decision}, args.json)
+                return 8
+
+            request = decision.get("request")
+            if not isinstance(request, dict):
+                raise RuntimeError("Decision record has no request payload")
+            include = request.get("include")
+            component_id = str(decision.get("component_id", ""))
+            if not isinstance(include, list) or not component_id:
+                raise RuntimeError("Decision request has no component include selectors")
+
+            # Full local profile validation happens before the central CAS. A
+            # profile-conflicting answer therefore cannot become the first
+            # authoritative resolution merely because validation happened late.
+            try:
+                prepared = prepare_local_profile(repo.root, component_id, [str(item) for item in include], answer)
+            except (ValueError, RuntimeError) as exc:
+                _emit({"status": "CONFLICT", "message": str(exc), "decision": decision}, args.json)
+                return 8
+
             response = client.resolve(
                 {
                     "decision_id": args.decision,
@@ -300,30 +366,30 @@ def main(argv: list[str] | None = None) -> int:
             if response.get("status") != "RESOLVED" or not response.get("accepted"):
                 _emit(response, args.json)
                 return 9
-            decision = response.get("decision")
-            if not isinstance(decision, dict):
-                raise RuntimeError("Control plane returned no decision record")
-            if str(decision.get("subject_revision")) != repo.commit:
-                application = client.application({"decision_id": args.decision, "status": "STALE"})
-                _emit({"status": "STALE", "decision": decision, "application": application}, args.json)
+            resolved = response.get("decision")
+            if not isinstance(resolved, dict):
+                raise RuntimeError("Control plane returned no resolved decision record")
+            if str(resolved.get("subject_revision", "")) != repo.commit:
+                client.application({"decision_id": args.decision, "status": "STALE"})
+                _emit({"status": "STALE_REQUIRES_GATE", "decision": resolved}, args.json)
                 return 8
-            request = decision.get("request")
-            if not isinstance(request, dict):
-                raise RuntimeError("Decision record has no request payload")
-            include = request.get("include")
-            component_id = str(decision.get("component_id", ""))
-            if not isinstance(include, list) or not component_id:
-                raise RuntimeError("Decision request has no component include selectors")
+
             try:
-                profile = apply_local_profile(repo.root, component_id, [str(item) for item in include], answer)
+                profile = write_prepared_local_profile(prepared)
             except Exception:
                 client.application({"decision_id": args.decision, "status": "FAILED"})
                 raise
-            application = client.application({"decision_id": args.decision, "status": "LOCAL_APPLIED"})
+            application = client.application(
+                {
+                    "decision_id": args.decision,
+                    "status": "LOCAL_APPLIED",
+                    "applied_revision": repo.commit,
+                }
+            )
             _emit(
                 {
                     "status": "RESOLVED",
-                    "decision": decision,
+                    "decision": resolved,
                     "profile_path": str(profile),
                     "application": application,
                 },
