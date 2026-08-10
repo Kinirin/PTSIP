@@ -52,7 +52,7 @@ PTSIP requires Python 3.11 or newer.
 Install the latest published Reference Tool from PyPI:
 
 ```powershell
-pip install ptsip
+pip install PTSIP
 ```
 
 For a project dependency, prefer a **minimum compatible version** over an exact release pin unless reproducibility requires exact pinning. For example, a project that requires the 0.2+ interface can declare:
