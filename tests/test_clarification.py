@@ -100,6 +100,21 @@ def test_declared_component_purpose_suppresses_question(tmp_path: Path):
     assert analysis.status == "NO_CLARIFICATION_REQUIRED"
 
 
+def test_partial_declared_component_targets_declared_component_id(tmp_path: Path):
+    repo = _tool_repo(tmp_path)
+    (repo / "ptsip.yaml").write_text(
+        f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        encoding="utf-8",
+    )
+    _commit_all(repo)
+    analysis = analyze_clarifications(repo, ["tools"])
+    assert len(analysis.requests) == 1
+    request = analysis.requests[0]
+    assert request.component_id == "generator-sdk"
+    assert request.include == ("tools/**",)
+    assert request.missing_fields == ("purpose",)
+
+
 def test_cli_uses_korean_fixed_template(tmp_path: Path, monkeypatch, capsys):
     repo = _tool_repo(tmp_path)
     monkeypatch.setenv("PTSIP_LANG", "ko")
