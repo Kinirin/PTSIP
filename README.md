@@ -258,8 +258,7 @@ Tool releases use the `tool-v*` tag/release namespace. Specification releases ma
 Important repository files and automation:
 
 - [`pyproject.toml`](pyproject.toml) — Python package/build metadata;
-- [`CHANGELOG.md`](CHANGELOG.md) — Specification change history;
-- [`TOOLING-CHANGELOG.md`](TOOLING-CHANGELOG.md) — Tool change history;
+- [`releasenote/`](releasenote/) — versioned Reference Tool and Specification release/history notes;
 - [`.github/workflows/tooling-test.yml`](.github/workflows/tooling-test.yml) — Tool CI;
 - [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml) — PyPI Trusted Publishing for `tool-v*` releases;
 - [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml) — automatic Korean README synchronization;
