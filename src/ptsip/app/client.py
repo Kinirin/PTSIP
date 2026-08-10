@@ -43,6 +43,9 @@ class ControlPlaneClient:
     def gate(self, payload: dict[str, Any]) -> dict[str, Any]:
         return self._post("/v1/gate", payload)
 
+    def decision(self, payload: dict[str, Any]) -> dict[str, Any]:
+        return self._post("/v1/decision", payload)
+
     def resolve(self, payload: dict[str, Any]) -> dict[str, Any]:
         return self._post("/v1/resolve", payload)
 
