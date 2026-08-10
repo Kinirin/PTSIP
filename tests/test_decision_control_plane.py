@@ -11,8 +11,14 @@ class FakeGitHub:
     def __init__(self):
         self.created: list[tuple[str, str]] = []
         self.closed: list[int] = []
+        self.opened: list[int] = []
         self.comments: list[tuple[int, str]] = []
         self.file_content: str | None = None
+        self.installation_lookups = 0
+
+    def repository_installation(self, repository: str) -> int:
+        self.installation_lookups += 1
+        return 99
 
     def create_issue(self, repository: str, installation_id: int, title: str, body: str):
         from ptsip.app.github_client import GitHubIssue
@@ -26,6 +32,8 @@ class FakeGitHub:
     def update_issue_state(self, repository: str, installation_id: int, issue_number: int, state: str) -> None:
         if state == "closed":
             self.closed.append(issue_number)
+        elif state == "open":
+            self.opened.append(issue_number)
 
     def permission(self, repository: str, installation_id: int, username: str) -> str:
         return "write"
@@ -216,16 +224,18 @@ def test_active_gate_rebinds_retryable_resolution_without_changing_winner(tmp_pa
     assert contradictory.answer == answer
 
 
-def test_gate_creates_one_issue_and_reuses_it(tmp_path: Path):
+def test_gate_recovers_installation_and_reopens_existing_pending_issue(tmp_path: Path):
     store = DecisionStore(tmp_path / "state.sqlite3")
-    store.set_installation("example/product", 99)
     github = FakeGitHub()
     service = DecisionService(store, github)  # type: ignore[arg-type]
     first = service.gate(_gate_payload())
     second = service.gate(_gate_payload())
     assert first["status"] == "DECISION_REQUIRED"
     assert second["status"] == "DECISION_REQUIRED"
+    assert github.installation_lookups == 1
+    assert store.installation_for("example/product") == 99
     assert len(github.created) == 1
+    assert github.opened == [11]
 
 
 def test_issue_profile_conflict_does_not_win_authoritative_cas(tmp_path: Path):
