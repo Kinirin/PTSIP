@@ -133,6 +133,7 @@ class DecisionStore:
         request = payload["request"]
         if not isinstance(request, dict):
             raise ValueError("request must be an object")
+        request_json = json.dumps(request, ensure_ascii=False)
         stale: list[DecisionRecord] = []
         with self._lock, self._connect() as conn:
             conn.execute("BEGIN IMMEDIATE")
@@ -150,7 +151,17 @@ class DecisionStore:
             conn.execute(
                 "INSERT OR IGNORE INTO decisions(id, repository, branch, subject_revision, component_id, request_json) "
                 "VALUES (?, ?, ?, ?, ?, ?)",
-                (decision_id, repository, branch, revision, component_id, json.dumps(request, ensure_ascii=False)),
+                (decision_id, repository, branch, revision, component_id, request_json),
+            )
+            # A gate call is an active-agent observation, not a timer. When the
+            # same semantic decision (same ID/component/selectors) is still
+            # pending or needs application retry, rebind its target snapshot to
+            # the revision the agent is actually working on. The human answer,
+            # resolution source and first-winner identity are never changed.
+            conn.execute(
+                "UPDATE decisions SET branch=?, subject_revision=?, request_json=?, updated_at=CURRENT_TIMESTAMP "
+                "WHERE id=? AND (status='PENDING' OR (status='RESOLVED' AND application_status IN ('NOT_APPLIED','FAILED','STALE')))",
+                (branch, revision, request_json, decision_id),
             )
             row = conn.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
             assert row is not None
@@ -187,18 +198,28 @@ class DecisionStore:
         source: str,
         actor: str,
     ) -> tuple[DecisionRecord, bool]:
+        answer_json = json.dumps(answer, ensure_ascii=False)
         with self._lock, self._connect() as conn:
             conn.execute("BEGIN IMMEDIATE")
             changed = conn.execute(
                 "UPDATE decisions SET status='RESOLVED', answer_json=?, resolution_source=?, resolved_by=?, "
                 "updated_at=CURRENT_TIMESTAMP WHERE id=? AND status='PENDING'",
-                (json.dumps(answer, ensure_ascii=False), source, actor, decision_id),
+                (answer_json, source, actor, decision_id),
             ).rowcount
             row = conn.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
+            if row is None:
+                conn.rollback()
+                raise KeyError(decision_id)
+            retry_allowed = False
+            if not changed and source == "AGENT_CHAT":
+                existing_answer = json.loads(str(row["answer_json"])) if row["answer_json"] else None
+                retry_allowed = (
+                    str(row["status"]) == "RESOLVED"
+                    and str(row["application_status"]) in {"NOT_APPLIED", "FAILED", "STALE"}
+                    and existing_answer == answer
+                )
             conn.commit()
-        if row is None:
-            raise KeyError(decision_id)
-        return self._record(row), bool(changed)
+        return self._record(row), bool(changed or retry_allowed)
 
     def mark_application(self, decision_id: str, status: str, applied_revision: str | None = None) -> DecisionRecord:
         with self._lock, self._connect() as conn:
