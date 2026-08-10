@@ -45,11 +45,11 @@ def test_release_package_contains_bound_machine_readable_contracts() -> None:
 def test_documentation_exposes_conformance_and_decision_gate_without_claiming_publication() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     status = (ROOT / "STATUS.md").read_text(encoding="utf-8")
-    changelog = (ROOT / "TOOLING-CHANGELOG.md").read_text(encoding="utf-8")
+    release_note = (ROOT / "releasenote" / "0.3.1.md").read_text(encoding="utf-8")
     assert "ptsip conform ." in readme
     assert "--agent-decision" in readme
     assert "--external-evidence" in readme
     assert "ptsip gate" in readme
     assert "ptsip resolve" in readme
     assert "Tool 0.3.1" in status
-    assert "0.3.1" in changelog
+    assert "0.3.1" in release_note
