@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
@@ -16,6 +17,13 @@ DEFAULT_POLICIES: dict[str, str] = {
     "toolchain_in_product_package": "deny",
     "independent_build_resolution": "required",
 }
+
+
+@dataclass(frozen=True)
+class PreparedLocalProfile:
+    path: Path
+    content: str
+    expected_source: str | None
 
 
 def _base_profile() -> dict[str, object]:
@@ -133,15 +141,16 @@ def load_profile_text(text: str | None) -> dict[str, object] | None:
     return payload
 
 
-def apply_local_profile(
+def prepare_local_profile(
     repository_root: str | Path,
     component_id: str,
     include: tuple[str, ...] | list[str],
     answer: DecisionAnswer,
-) -> Path:
+) -> PreparedLocalProfile:
     root = Path(repository_root).resolve()
     profile = root / "ptsip.yaml"
-    existing = load_profile_text(profile.read_text(encoding="utf-8-sig")) if profile.is_file() else None
+    expected_source = profile.read_text(encoding="utf-8-sig") if profile.is_file() else None
+    existing = load_profile_text(expected_source)
     projected = project_payload(existing, component_id, include, answer)
     content = dump_payload(projected)
 
@@ -152,8 +161,38 @@ def apply_local_profile(
         result = validate_profile(root, temp)
         if not result.valid:
             raise ValueError("Projected PTSIP profile is invalid: " + "; ".join(result.errors))
-        temp.replace(profile)
     finally:
         if temp.exists():
             temp.unlink()
-    return profile
+    return PreparedLocalProfile(profile, content, expected_source)
+
+
+def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
+    current_source = prepared.path.read_text(encoding="utf-8-sig") if prepared.path.is_file() else None
+    if current_source != prepared.expected_source:
+        raise RuntimeError("ptsip.yaml changed after decision projection validation; refusing to overwrite concurrent changes")
+    with tempfile.NamedTemporaryFile(
+        "w",
+        suffix=".yaml",
+        dir=prepared.path.parent,
+        delete=False,
+        encoding="utf-8",
+        newline="\n",
+    ) as handle:
+        temp = Path(handle.name)
+        handle.write(prepared.content)
+    try:
+        temp.replace(prepared.path)
+    finally:
+        if temp.exists():
+            temp.unlink()
+    return prepared.path
+
+
+def apply_local_profile(
+    repository_root: str | Path,
+    component_id: str,
+    include: tuple[str, ...] | list[str],
+    answer: DecisionAnswer,
+) -> Path:
+    return write_prepared_local_profile(prepare_local_profile(repository_root, component_id, include, answer))
