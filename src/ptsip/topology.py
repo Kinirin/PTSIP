@@ -60,7 +60,6 @@ _BUILD_NAMES = {
     "makefile",
     "cmakelists.txt",
     "dockerfile",
-    "gradle.build",
     "build.gradle",
     "build.gradle.kts",
     "pom.xml",
@@ -105,7 +104,6 @@ class TopologyMigrationPlan:
     ownership_mode: str
     classification_before: dict[str, str]
     classification_after: dict[str, str]
-    classification_preserved: bool
     source_files: tuple[str, ...]
     profile_changes: tuple[ProfileChange, ...]
     reference_impacts: tuple[ReferenceImpact, ...]
@@ -122,6 +120,9 @@ class TopologyMigrationPlan:
         }
         for item in self.reference_impacts:
             impacts.setdefault(item.category, []).append(item.as_dict())
+        manual_count = sum(
+            1 for item in self.reference_impacts if item.category != "PROFILE"
+        )
         return {
             "repository_root": self.repository_root,
             "profile_path": self.profile_path,
@@ -135,14 +136,12 @@ class TopologyMigrationPlan:
             "classification": {
                 "before": self.classification_before,
                 "after": self.classification_after,
-                "preserved": self.classification_preserved,
+                "preserved": self.classification_before == self.classification_after,
             },
             "source_files": list(self.source_files),
             "profile_changes": [item.as_dict() for item in self.profile_changes],
             "reference_impacts": impacts,
-            "manual_reference_updates_required": sum(
-                1 for item in self.reference_impacts if item.category != "PROFILE"
-            ),
+            "manual_reference_updates_required": manual_count,
             "automatic_actions": [
                 "move repository root",
                 "rewrite project-profile path declarations",
@@ -168,8 +167,46 @@ def _normalize_root(value: str) -> str:
     return path.as_posix()
 
 
+def _normalize_selector(value: str) -> str:
+    text = value.replace("\\", "/").strip()
+    while text.startswith("./"):
+        text = text[2:]
+    return text.strip("/")
+
+
 def _inside(root: str, candidate: str) -> bool:
     return candidate == root or candidate.startswith(root + "/")
+
+
+def _within_repository(root: Path, candidate: Path) -> bool:
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
+def _check_topology_path(root: Path, relative: str, *, must_exist: bool) -> Path:
+    candidate = root / relative
+    if must_exist:
+        if not candidate.exists():
+            raise FileNotFoundError(f"Topology source root does not exist: {candidate}")
+        if candidate.is_symlink():
+            raise ValueError("Topology source root must not be a symbolic link")
+        if not candidate.is_dir():
+            raise ValueError("Topology source root must be a directory")
+        if not _within_repository(root, candidate.resolve()):
+            raise ValueError("Topology source root resolves outside the repository")
+        return candidate
+
+    if candidate.exists():
+        raise FileExistsError(f"Topology target root already exists: {candidate}")
+    existing_parent = candidate.parent
+    while not existing_parent.exists() and existing_parent != root:
+        existing_parent = existing_parent.parent
+    if not existing_parent.exists() or not _within_repository(root, existing_parent.resolve()):
+        raise ValueError("Topology target root would resolve outside the repository")
+    return candidate
 
 
 def _rewrite_reference(value: str, old: str, new: str) -> str:
@@ -241,13 +278,16 @@ def _rewrite_profile(
             raise ValueError(f"Component {component_id!r} is not declared in the selected profile")
         includes = selected.get("include", [])
         if not isinstance(includes, list) or not any(
-            _inside(old, str(item).replace("\\", "/").lstrip("./")) for item in includes
+            _inside(old, _normalize_selector(str(item))) for item in includes
         ):
             raise ValueError(
                 f"Component {component_id!r} has no include selector rooted at {old!r}"
             )
         classification = str(selected.get("classification", ""))
 
+        # Rewrite every component path declaration beneath the moved root. This
+        # preserves nested component ownership instead of collapsing it into the
+        # explicitly selected parent component.
         for index, item in enumerate(components):
             if not isinstance(item, dict):
                 continue
@@ -268,7 +308,10 @@ def _rewrite_profile(
                             after=after,
                         )
                     )
-        if not any(change.location.startswith(f"components[{selected_index}].include[") for change in changes):
+        if not any(
+            change.location.startswith(f"components[{selected_index}].include[")
+            for change in changes
+        ):
             raise ValueError(
                 f"Component {component_id!r} does not expose a rewritable root selector for {old!r}"
             )
@@ -284,7 +327,7 @@ def _rewrite_profile(
         if not isinstance(roots, list):
             continue
         for index, raw in enumerate(roots):
-            if str(raw).replace("\\", "/").strip("/") == old:
+            if _normalize_selector(str(raw)) == old:
                 owners.append((str(plane), index))
     if len(owners) != 1:
         raise ValueError(
@@ -323,28 +366,39 @@ def _reference_category(path: str, line: str) -> str:
     suffix = PurePosixPath(normalized).suffix.casefold()
     if lower_path.startswith(".github/workflows/"):
         return "CI"
-    if name in _BUILD_NAMES or suffix in {".csproj", ".fsproj", ".vbproj", ".sln", ".props", ".targets"}:
+    if name in _BUILD_NAMES or suffix in {
+        ".csproj",
+        ".fsproj",
+        ".vbproj",
+        ".sln",
+        ".props",
+        ".targets",
+    }:
         return "BUILD"
     if lower_path.startswith("docs/") or suffix in _DOC_SUFFIXES:
         return "DOCUMENTATION"
     if suffix in _SOURCE_SUFFIXES:
         lowered_line = line.casefold()
-        if any(token in lowered_line for token in ("import ", "from ", "require(", "include", "load", "source")):
+        if any(
+            token in lowered_line
+            for token in ("import ", "from ", "require(", "include", "load", "source")
+        ):
             return "IMPORT"
     return "OTHER"
 
 
 def _scan_references(root: Path, profile: Path, old: str) -> list[ReferenceImpact]:
-    _mode, paths, _errors = repository_files(root)
+    _mode, paths, errors = repository_files(root)
+    if errors:
+        raise RuntimeError("Repository reference scan is incomplete: " + "; ".join(errors))
     results: list[ReferenceImpact] = []
     profile_resolved = profile.resolve()
     for rel in paths:
         path = root / rel
         try:
-            if path.resolve() == profile_resolved:
-                category_override = "PROFILE"
-            else:
-                category_override = None
+            if path.is_symlink():
+                continue
+            category_override = "PROFILE" if path.resolve() == profile_resolved else None
             data = path.read_bytes()
         except OSError:
             continue
@@ -383,21 +437,18 @@ def plan_topology_migration(
     if _inside(old, new) or _inside(new, old):
         raise ValueError("Topology source and target roots must not contain one another")
 
-    source = root / old
-    target = root / new
-    if not source.exists():
-        raise FileNotFoundError(f"Topology source root does not exist: {source}")
-    if target.exists():
-        raise FileExistsError(f"Topology target root already exists: {target}")
+    source = _check_topology_path(root, old, must_exist=True)
+    _check_topology_path(root, new, must_exist=False)
 
     profile = find_profile(root, profile_path)
     if profile is None:
         raise FileNotFoundError("No PTSIP project profile found for topology migration")
-    try:
-        profile.relative_to(source)
-    except ValueError:
-        pass
-    else:
+    profile = profile.resolve()
+    if not _within_repository(root, profile):
+        raise ValueError("Topology migration requires the selected profile to be inside the repository")
+    if profile.is_symlink():
+        raise ValueError("Topology migration does not rewrite a symbolic-link profile")
+    if _within_repository(source.resolve(), profile):
         raise ValueError("The selected PTSIP profile cannot be located inside the root being moved")
 
     validation = validate_profile(root, profile)
@@ -421,7 +472,11 @@ def plan_topology_migration(
     _mode, repository_paths, scan_errors = repository_files(root)
     if scan_errors:
         raise RuntimeError("Repository file scan is incomplete: " + "; ".join(scan_errors))
-    source_files = tuple(path for path in repository_paths if _inside(old, path.replace("\\", "/")))
+    source_files = tuple(
+        path for path in repository_paths if _inside(old, path.replace("\\", "/"))
+    )
+    if not source_files:
+        raise ValueError("Topology source root contains no repository files to migrate")
     references = _scan_references(root, profile, old)
     projected_text = yaml.safe_dump(projected, sort_keys=False, allow_unicode=True)
     return TopologyMigrationPlan(
@@ -434,7 +489,6 @@ def plan_topology_migration(
         ownership_mode=ownership_mode,
         classification_before=before,
         classification_after=after,
-        classification_preserved=True,
         source_files=source_files,
         profile_changes=tuple(changes),
         reference_impacts=tuple(references),
@@ -473,6 +527,27 @@ def _atomic_write(path: Path, content: str) -> None:
             temp.unlink()
 
 
+def _rollback_git(
+    root: Path,
+    profile: Path,
+    from_root: str,
+    to_root: str,
+    moved: bool,
+) -> list[str]:
+    errors: list[str] = []
+    try:
+        profile_rel = profile.relative_to(root).as_posix()
+        _git(root, "reset", "--quiet", "HEAD", "--", profile_rel)
+    except Exception as exc:
+        errors.append(f"profile index reset failed: {exc}")
+    if moved:
+        try:
+            _git(root, "mv", "--", to_root, from_root)
+        except Exception as exc:
+            errors.append(f"root rollback failed: {exc}")
+    return errors
+
+
 def apply_topology_migration(plan: TopologyMigrationPlan) -> dict[str, object]:
     root = Path(plan.repository_root)
     profile = Path(plan.profile_path)
@@ -494,6 +569,9 @@ def apply_topology_migration(plan: TopologyMigrationPlan) -> dict[str, object]:
             move_method = "filesystem-move"
         moved = True
 
+        # Full validation is intentionally deferred until the move has happened:
+        # component selectors now point at the target path and repository_files()
+        # can observe that target (including the Git index after git mv).
         with tempfile.NamedTemporaryFile(
             "w",
             suffix=".yaml",
@@ -516,8 +594,8 @@ def apply_topology_migration(plan: TopologyMigrationPlan) -> dict[str, object]:
 
         _atomic_write(profile, plan.projected_profile)
         final_payload = _load_profile(profile)
-        _mode, final_classification = _classification_snapshot(final_payload)
-        if final_classification != plan.classification_before:
+        final_mode, final_classification = _classification_snapshot(final_payload)
+        if final_mode != plan.ownership_mode or final_classification != plan.classification_before:
             raise RuntimeError("Applied topology migration changed architecture classification")
         final_validation = validate_profile(root, profile)
         if not final_validation.valid:
@@ -543,22 +621,35 @@ def apply_topology_migration(plan: TopologyMigrationPlan) -> dict[str, object]:
             }
         )
         return payload
-    except Exception:
-        if profile.exists() and profile.read_text(encoding="utf-8-sig") != original_profile:
-            _atomic_write(profile, original_profile)
-        if moved:
+    except Exception as exc:
+        rollback_errors: list[str] = []
+        try:
+            if profile.exists() and profile.read_text(encoding="utf-8-sig") != original_profile:
+                _atomic_write(profile, original_profile)
+        except Exception as rollback_exc:
+            rollback_errors.append(f"profile content restore failed: {rollback_exc}")
+
+        if repo.is_git:
+            rollback_errors.extend(
+                _rollback_git(root, profile, plan.from_root, plan.to_root, moved)
+            )
+        elif moved:
             try:
-                if repo.is_git:
-                    _git(root, "mv", "--", plan.to_root, plan.from_root)
-                elif target.exists():
+                if target.exists():
                     shutil.move(str(target), str(source))
-            except Exception:
-                pass
+            except Exception as rollback_exc:
+                rollback_errors.append(f"root rollback failed: {rollback_exc}")
+
         if created_parent:
             try:
                 os.removedirs(target.parent)
             except OSError:
                 pass
+        if rollback_errors:
+            raise RuntimeError(
+                "Topology migration failed and rollback was incomplete: "
+                + "; ".join(rollback_errors)
+            ) from exc
         raise
 
 
