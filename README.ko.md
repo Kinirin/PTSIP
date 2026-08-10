@@ -173,8 +173,7 @@ Tool 릴리스는 `tool-v*` 태그/릴리스 네임스페이스를 사용합니�
 중요 저장소 파일과 자동화는 다음과 같습니다.
 
 - [`pyproject.toml`](pyproject.toml) — Python 패키지/빌드 메타데이터
-- [`CHANGELOG.md`](CHANGELOG.md) — Specification 변경 이력
-- [`TOOLING-CHANGELOG.md`](TOOLING-CHANGELOG.md) — Tool 변경 이력
+- [`releasenote/`](releasenote/) — 버전별 Reference Tool 및 Specification 릴리스/이력 노트
 - [`.github/workflows/tooling-test.yml`](.github/workflows/tooling-test.yml) — Tool CI
 - [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml) — `tool-v*` 릴리스를 위한 PyPI Trusted Publishing
 - [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml) — 한국어 README 자동 동기화
