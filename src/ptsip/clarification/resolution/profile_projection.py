@@ -41,6 +41,17 @@ def _boundary_root(selector: str) -> str:
     return normalized
 
 
+def _set_missing_or_require_equal(component: dict[str, object], key: str, expected: object) -> None:
+    if key not in component or component[key] in (None, ""):
+        component[key] = expected
+        return
+    if component[key] != expected:
+        raise ValueError(
+            f"Existing component {component.get('id')!r} declares {key}={component[key]!r}, "
+            f"which conflicts with the resolved decision value {expected!r}"
+        )
+
+
 def project_payload(
     existing: dict[str, object] | None,
     component_id: str,
@@ -83,16 +94,20 @@ def project_payload(
             component = item
             break
     if component is None:
-        component = {"id": component_id}
+        component = {"id": component_id, "include": [str(item) for item in include]}
         components.append(component)
+    elif "include" not in component:
+        component["include"] = [str(item) for item in include]
 
-    component["classification"] = answer.classification
-    component["include"] = [str(item) for item in include]
-    component["purpose"] = answer.purpose
-    component["shipped"] = answer.shipped
-    component["executable"] = answer.executable
-    component["release_owner"] = answer.lifecycle_owner
-    component["compatibility_owner"] = answer.lifecycle_owner
+    # Clarification fills missing declaration facts. It must not silently
+    # reclassify or rewrite facts the profile already declares. Existing
+    # include selectors are preserved so resolving one detected candidate does
+    # not accidentally narrow a broader project-owned component boundary.
+    _set_missing_or_require_equal(component, "classification", answer.classification)
+    _set_missing_or_require_equal(component, "purpose", answer.purpose)
+    _set_missing_or_require_equal(component, "shipped", answer.shipped)
+    _set_missing_or_require_equal(component, "executable", answer.executable)
+    _set_missing_or_require_equal(component, "release_owner", answer.lifecycle_owner)
     return payload
 
 
