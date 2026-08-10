@@ -13,6 +13,8 @@ from .github_client import GitHubAppClient
 from .service import DecisionService
 from .store import DecisionStore
 
+MAX_REQUEST_BYTES = 1024 * 1024
+
 
 class _Handler(BaseHTTPRequestHandler):
     server_version = "PTSIPControlPlane/0.3.1"
@@ -39,6 +41,8 @@ class _Handler(BaseHTTPRequestHandler):
 
     def _body(self) -> bytes:
         length = int(self.headers.get("Content-Length", "0"))
+        if length < 0 or length > MAX_REQUEST_BYTES:
+            raise ValueError("request body is too large")
         return self.rfile.read(length)
 
     def _authorized(self) -> bool:
@@ -52,8 +56,8 @@ class _Handler(BaseHTTPRequestHandler):
         self._json(404, {"error": "not found"})
 
     def do_POST(self) -> None:
-        raw = self._body()
         try:
+            raw = self._body()
             if self.path == "/github/webhook":
                 signature = self.headers.get("X-Hub-Signature-256", "")
                 expected = "sha256=" + hmac.new(self.webhook_secret, raw, hashlib.sha256).hexdigest()
@@ -77,6 +81,8 @@ class _Handler(BaseHTTPRequestHandler):
                 raise ValueError("request body must be an object")
             if self.path == "/v1/gate":
                 self._json(200, self.service.gate(payload))
+            elif self.path == "/v1/decision":
+                self._json(200, self.service.decision(payload))
             elif self.path == "/v1/resolve":
                 self._json(200, self.service.resolve_agent(payload))
             elif self.path == "/v1/application":
