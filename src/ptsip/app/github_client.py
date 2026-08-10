@@ -81,6 +81,20 @@ class GitHubAppClient:
             raise GitHubAPIError("GitHub API returned a non-object response")
         return parsed
 
+    def repository_installation(self, repository: str) -> int:
+        if repository.count("/") != 1:
+            raise GitHubAPIError("repository must use owner/repository form")
+        owner, repo = repository.split("/", 1)
+        payload = self._request(
+            "GET",
+            f"/repos/{urllib.parse.quote(owner)}/{urllib.parse.quote(repo)}/installation",
+            self._app_jwt(),
+        )
+        installation_id = payload.get("id")
+        if not isinstance(installation_id, int):
+            raise GitHubAPIError("GitHub did not return a repository installation id")
+        return installation_id
+
     def installation_token(self, installation_id: int) -> str:
         cached = self._tokens.get(installation_id)
         now = time.time()
