@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import subprocess
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from ptsip.clarification.resolution import (
     prepare_local_profile,
     write_prepared_local_profile,
 )
+from ptsip.cli import main
 from ptsip.topology import migrate_topology
 
 
@@ -50,6 +52,28 @@ def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str
                 "release_owner": "DEVELOPMENT_TOOLING",
             }
         ],
+        "policies": {
+            "product_to_toolchain_runtime_dependency": "deny",
+            "toolchain_in_product_package": "deny",
+            "independent_build_resolution": "required",
+        },
+    }
+    return yaml.safe_dump(payload, sort_keys=False)
+
+
+def _boundary_profile() -> str:
+    payload = {
+        "ptsip": {
+            "version": "0.2.0-draft",
+            "specification": {
+                "source": "https://github.com/kwaksinwoo01/ptsip",
+                "revision": SPEC_REVISION,
+            },
+        },
+        "boundaries": {
+            "product": {"roots": ["product"]},
+            "toolchain": {"roots": ["old"]},
+        },
         "policies": {
             "product_to_toolchain_runtime_dependency": "deny",
             "toolchain_in_product_package": "deny",
@@ -124,10 +148,38 @@ def test_topology_dry_run_reports_impacts_without_mutation(tmp_path: Path):
     assert result["profile_changes"][0]["before"] == "old/**"
     assert result["profile_changes"][0]["after"] == "sdk/tooling/**"
     assert result["reference_impacts"]["BUILD"]
+    assert result["automatic_reference_rewrite"] is False
     assert (root / "old" / "main.py").is_file()
     assert not (root / "sdk" / "tooling").exists()
     assert "old/**" in profile.read_text(encoding="utf-8")
     assert _run(root, "git", "status", "--porcelain") == ""
+
+
+def test_topology_cli_uses_explicit_profile_path(tmp_path: Path, capsys):
+    root, profile = _git_repo(tmp_path)
+
+    assert (
+        main(
+            [
+                "topology",
+                str(root),
+                "--profile",
+                str(profile),
+                "--component",
+                "sdk-tools",
+                "--from",
+                "old",
+                "--to",
+                "sdk/tooling",
+                "--json",
+            ]
+        )
+        == 0
+    )
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["status"] == "PLAN"
+    assert payload["profile_path"] == str(profile.resolve())
+    assert payload["classification"]["preserved"] is True
 
 
 def test_topology_apply_moves_root_and_preserves_classification(tmp_path: Path):
@@ -159,6 +211,35 @@ def test_topology_apply_moves_root_and_preserves_classification(tmp_path: Path):
     assert "sdk/tooling/main.py" in staged
 
 
+def test_topology_boundary_profile_preserves_plane_classification(tmp_path: Path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    (root / "product").mkdir()
+    (root / "product" / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (root / "old").mkdir()
+    (root / "old" / "tool.py").write_text("VALUE = 2\n", encoding="utf-8")
+    profile = root / "ptsip.yaml"
+    profile.write_text(_boundary_profile(), encoding="utf-8")
+    _run(root, "git", "init")
+    _run(root, "git", "config", "user.email", "ptsip@example.invalid")
+    _run(root, "git", "config", "user.name", "PTSIP Test")
+    _run(root, "git", "add", ".")
+    _run(root, "git", "commit", "-m", "fixture")
+
+    result = migrate_topology(root, profile, "old", "devtools", apply=False)
+
+    assert result["migration"]["ownership_mode"] == "boundaries"
+    assert result["migration"]["classification"] == "TOOLCHAIN"
+    assert result["classification"]["preserved"] is True
+    assert result["profile_changes"] == [
+        {
+            "location": "boundaries.toolchain.roots[0]",
+            "before": "old",
+            "after": "devtools",
+        }
+    ]
+
+
 def test_topology_apply_requires_clean_git_state(tmp_path: Path):
     root, profile = _git_repo(tmp_path)
     (root / "old" / "main.py").write_text("print('changed')\n", encoding="utf-8")
@@ -187,3 +268,16 @@ def test_topology_rejects_classification_ambiguous_component_selection(tmp_path:
         assert "--component is required" in str(exc)
     else:
         raise AssertionError("component ownership migration must identify its component")
+
+
+def test_topology_requires_profile_inside_repository(tmp_path: Path):
+    root, _profile_path = _git_repo(tmp_path)
+    outside = tmp_path / "outside.ptsip.yaml"
+    outside.write_text(_profile(), encoding="utf-8")
+
+    try:
+        migrate_topology(root, outside, "old", "sdk/tooling", "sdk-tools", apply=False)
+    except ValueError as exc:
+        assert "profile to be inside the repository" in str(exc)
+    else:
+        raise AssertionError("topology migration must not rewrite an external profile")
