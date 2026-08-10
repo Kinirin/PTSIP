@@ -1,11 +1,8 @@
 name: tooling-verify-032
 
 on:
-  push:
-    branches:
-      - migration/tool-0.3.2-topology
-    paths:
-      - .github/workflows/tooling-verify-032.yml
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
