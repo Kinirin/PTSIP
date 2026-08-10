@@ -21,6 +21,14 @@ def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
     )
 
 
+def _workflow_status(record: DecisionRecord) -> str:
+    if record.status == "PENDING":
+        return "DECISION_REQUIRED"
+    if record.status == "RESOLVED" and record.application_status not in {"APPLIED", "LOCAL_APPLIED"}:
+        return "RESOLVED_APPLICATION_REQUIRED"
+    return record.status
+
+
 class DecisionService:
     def __init__(self, store: DecisionStore, github: GitHubAppClient):
         self.store = store
@@ -57,13 +65,16 @@ class DecisionService:
                 str(issue.get("body", "")),
             )
             record = self.store.attach_issue(record.id, created.number, created.url)
-        if record.status == "PENDING":
-            status = "DECISION_REQUIRED"
-        elif record.status == "RESOLVED" and record.application_status not in {"APPLIED", "LOCAL_APPLIED"}:
-            status = "RESOLVED_APPLICATION_REQUIRED"
-        else:
-            status = record.status
-        return {"status": status, "decision": record.as_dict()}
+        return {"status": _workflow_status(record), "decision": record.as_dict()}
+
+    def decision(self, payload: dict[str, Any]) -> dict[str, object]:
+        decision_id = str(payload.get("decision_id", ""))
+        if not decision_id:
+            raise ValueError("decision_id is required")
+        record = self.store.get(decision_id)
+        if record is None:
+            raise KeyError(decision_id)
+        return {"status": _workflow_status(record), "decision": record.as_dict()}
 
     def resolve_agent(self, payload: dict[str, Any]) -> dict[str, object]:
         decision_id = str(payload.get("decision_id", ""))
@@ -86,10 +97,19 @@ class DecisionService:
     def application(self, payload: dict[str, Any]) -> dict[str, object]:
         decision_id = str(payload.get("decision_id", ""))
         status = str(payload.get("status", ""))
-        if status not in {"LOCAL_APPLIED", "APPLIED", "FAILED", "STALE"}:
-            raise ValueError("unsupported application status")
-        record = self.store.mark_application(decision_id, status, str(payload.get("applied_revision") or "") or None)
-        if status in {"LOCAL_APPLIED", "APPLIED"} and record.issue_number:
+        if status not in {"LOCAL_APPLIED", "FAILED", "STALE"}:
+            raise ValueError("unsupported agent application status")
+        existing = self.store.get(decision_id)
+        if existing is None:
+            raise KeyError(decision_id)
+        if existing.status != "RESOLVED":
+            raise ValueError("application state can be changed only for a resolved decision")
+        record = self.store.mark_application(
+            decision_id,
+            status,
+            str(payload.get("applied_revision") or "") or None,
+        )
+        if status == "LOCAL_APPLIED" and record.issue_number:
             installation = self.store.installation_for(record.repository)
             if installation is not None:
                 try:
@@ -97,7 +117,7 @@ class DecisionService:
                         record.repository,
                         installation,
                         record.issue_number,
-                        f"PTSIP decision `{record.id}` was resolved via `{record.resolution_source}` and applied. Late replies are ignored.",
+                        f"PTSIP decision `{record.id}` was resolved via `{record.resolution_source}` and applied by the active coding-agent workflow. Late replies are ignored.",
                     )
                     self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
                 except GitHubAPIError:
@@ -143,7 +163,11 @@ class DecisionService:
         installation = self.store.installation_for(full_name)
         if installation is None:
             return {"status": "IGNORED_NO_INSTALLATION"}
-        if self.github.permission(full_name, installation, username) not in WRITE_PERMISSIONS:
+        try:
+            permission = self.github.permission(full_name, installation, username)
+        except GitHubAPIError:
+            permission = "none"
+        if permission not in WRITE_PERMISSIONS:
             return {"status": "IGNORED_UNAUTHORIZED"}
         try:
             answer = parse_answer(body)
@@ -159,11 +183,26 @@ class DecisionService:
                 + "\n- ".join(validation.errors),
             )
             return {"status": "CONFLICT", "validation": validation.as_dict()}
+
+        # Validate the answer against the profile at the exact gate snapshot
+        # before it is allowed to win the authoritative compare-and-set.
+        try:
+            projected_content = self._prepare_remote_projection(record, installation, answer)
+        except ValueError as exc:
+            self.github.add_issue_comment(
+                full_name,
+                installation,
+                issue_number,
+                "PTSIP could not accept this decision because it conflicts with the declared/projected profile:\n\n- "
+                + str(exc),
+            )
+            return {"status": "CONFLICT", "error": str(exc)}
+
         resolved, accepted = self.store.resolve(record.id, answer.as_dict(), "GITHUB_ISSUE", username)
         if not accepted:
             return {"status": "IGNORED_TERMINAL_DECISION", "decision": resolved.as_dict()}
         try:
-            self._apply_remote(resolved, installation, answer)
+            self._apply_remote(resolved, installation, projected_content)
         except Exception as exc:
             self.store.mark_application(record.id, "FAILED")
             try:
@@ -172,7 +211,7 @@ class DecisionService:
                     installation,
                     issue_number,
                     "PTSIP accepted this decision but could not apply the profile automatically. "
-                    f"A coding agent must reconcile the resolved decision: `{exc}`",
+                    f"A coding agent must reconcile the already resolved decision: `{exc}`",
                 )
                 self.github.update_issue_state(record.repository, installation, issue_number, "closed")
             except GitHubAPIError:
@@ -181,20 +220,12 @@ class DecisionService:
         assert final is not None
         return {"status": "RESOLVED", "decision": final.as_dict()}
 
-    def _apply_remote(self, record: DecisionRecord, installation: int, answer: DecisionAnswer) -> None:
-        current = self.github.branch_head(record.repository, installation, record.branch)
-        if current != record.subject_revision:
-            self.store.mark_application(record.id, "STALE")
-            if record.issue_number:
-                self.github.add_issue_comment(
-                    record.repository,
-                    installation,
-                    record.issue_number,
-                    "The decision was accepted, but the target branch changed after this clarification was created. "
-                    "PTSIP did not modify the profile. A coding agent must re-run the gate against the current revision.",
-                )
-                self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
-            return
+    def _prepare_remote_projection(
+        self,
+        record: DecisionRecord,
+        installation: int,
+        answer: DecisionAnswer,
+    ) -> str:
         existing_text = self.github.file_text(record.repository, installation, "ptsip.yaml", record.subject_revision)
         existing = load_profile_text(existing_text)
         include = record.request.get("include", [])
@@ -204,14 +235,29 @@ class DecisionService:
         projected_errors = validate_projected_payload(projected)
         if projected_errors:
             raise ValueError("Projected PTSIP profile is invalid: " + "; ".join(projected_errors))
-        content = dump_payload(projected)
+        return dump_payload(projected)
+
+    def _apply_remote(self, record: DecisionRecord, installation: int, projected_content: str) -> None:
+        current = self.github.branch_head(record.repository, installation, record.branch)
+        if current != record.subject_revision:
+            self.store.mark_application(record.id, "STALE")
+            if record.issue_number:
+                self.github.add_issue_comment(
+                    record.repository,
+                    installation,
+                    record.issue_number,
+                    "The decision was accepted, but the target branch changed after the last active decision gate. "
+                    "PTSIP did not modify the profile. A coding agent must re-run the gate against the current revision and can reconcile the already authoritative answer without asking the user to decide again.",
+                )
+                self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
+            return
         commit_sha = self.github.commit_file_at_parent(
             record.repository,
             installation,
             record.branch,
             record.subject_revision,
             "ptsip.yaml",
-            content,
+            projected_content,
             f"ptsip: apply decision {record.id}",
         )
         self.store.mark_application(record.id, "APPLIED", commit_sha)
