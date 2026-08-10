@@ -14,6 +14,7 @@
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
 - Tool 0.3.0 publication status: conformance-capability source merged; not yet published/tagged
 - Tool 0.3.1 source target: on-demand coding-agent decision gate plus GitHub App/Webhook decision control plane
+- Tool 0.3.1 pre-merge verification: GitHub Actions run `31354690223`, Python 3.11/3.14, 106 tests passed on Python 3.14, CLI smoke checks passed, and wheel/sdist build passed
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -92,6 +93,8 @@ Tool 0.3.1 adds a Tool-level, non-normative orchestration layer for unresolved h
 - Issue-originated profile writes are bound to the exact recorded branch revision and use a non-force Git ref update so stale decisions are not silently applied;
 - the GitHub Issue is an asynchronous interaction surface; the control-plane decision state is authoritative for workflow state, while `ptsip.yaml` remains the architecture declaration;
 - the existing explicit `ptsip clarify --publish github-issue` path remains available as a manual/offline fallback.
+
+Pre-merge Tool 0.3.1 verification completed in GitHub Actions run `31354690223`: Python 3.11 and 3.14 both passed the complete pytest suite and Tool/new-CLI smoke checks; Python 3.14 reported `106 passed` and successfully built `ptsip-0.3.1` wheel and sdist artifacts. The temporary verification workflow was removed after the successful run.
 
 See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the Tool-level workflow contract.
 
