@@ -39,12 +39,12 @@ class FakeGitHub:
         return "def456"
 
 
-def _gate_payload() -> dict[str, object]:
+def _gate_payload(revision: str = "abc123") -> dict[str, object]:
     return {
         "id": "clr-test",
         "repository": "example/product",
         "branch": "main",
-        "subject_revision": "abc123",
+        "subject_revision": revision,
         "component_id": "tools",
         "request": {
             "id": "clr-test",
@@ -114,6 +114,33 @@ def test_store_first_valid_resolution_wins(tmp_path: Path):
     assert not accepted_second
     assert second.answer == first.answer
     assert second.resolution_source == "AGENT_CHAT"
+
+
+def test_active_gate_rebinds_retryable_resolution_without_changing_winner(tmp_path: Path):
+    store = DecisionStore(tmp_path / "state.sqlite3")
+    record, _ = store.gate(_gate_payload())
+    answer = _answer().as_dict()
+    resolved, accepted = store.resolve(record.id, answer, "GITHUB_ISSUE", "owner")
+    assert accepted
+    assert resolved.resolution_source == "GITHUB_ISSUE"
+    store.mark_application(record.id, "STALE")
+
+    rebound, _ = store.gate(_gate_payload("new456"))
+    assert rebound.status == "RESOLVED"
+    assert rebound.subject_revision == "new456"
+    assert rebound.answer == answer
+    assert rebound.resolution_source == "GITHUB_ISSUE"
+
+    retried, retry_accepted = store.resolve(record.id, answer, "AGENT_CHAT", "agent")
+    assert retry_accepted
+    assert retried.answer == answer
+    assert retried.resolution_source == "GITHUB_ISSUE"
+
+    contradictory, contradictory_accepted = store.resolve(
+        record.id, _answer("PRODUCT").as_dict(), "AGENT_CHAT", "agent"
+    )
+    assert not contradictory_accepted
+    assert contradictory.answer == answer
 
 
 def test_gate_creates_one_issue_and_reuses_it(tmp_path: Path):
