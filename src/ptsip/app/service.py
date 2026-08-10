@@ -34,14 +34,20 @@ class DecisionService:
         self.store = store
         self.github = github
 
+    def _installation_for(self, repository: str) -> int:
+        installation = self.store.installation_for(repository)
+        if installation is not None:
+            return installation
+        installation = self.github.repository_installation(repository)
+        self.store.set_installation(repository, installation)
+        return installation
+
     def gate(self, payload: dict[str, Any]) -> dict[str, object]:
         for key in ("id", "repository", "branch", "subject_revision", "component_id", "request", "issue"):
             if key not in payload:
                 raise ValueError(f"gate payload missing {key}")
         record, stale = self.store.gate(payload)
-        installation = self.store.installation_for(record.repository)
-        if installation is None:
-            raise RuntimeError(f"PTSIP GitHub App installation is not registered for {record.repository}")
+        installation = self._installation_for(record.repository)
         for old in stale:
             if old.issue_number:
                 try:
@@ -65,6 +71,14 @@ class DecisionService:
                 str(issue.get("body", "")),
             )
             record = self.store.attach_issue(record.id, created.number, created.url)
+        elif record.status == "PENDING" and record.issue_number is not None:
+            # Issue open/closed state is only a UI surface. A manual close must
+            # not resolve the authoritative PENDING decision. Reopen it only
+            # when an active coding-agent gate actually needs the decision.
+            try:
+                self.github.update_issue_state(record.repository, installation, record.issue_number, "open")
+            except GitHubAPIError:
+                pass
         return {"status": _workflow_status(record), "decision": record.as_dict()}
 
     def decision(self, payload: dict[str, Any]) -> dict[str, object]:
@@ -110,18 +124,17 @@ class DecisionService:
             str(payload.get("applied_revision") or "") or None,
         )
         if status == "LOCAL_APPLIED" and record.issue_number:
-            installation = self.store.installation_for(record.repository)
-            if installation is not None:
-                try:
-                    self.github.add_issue_comment(
-                        record.repository,
-                        installation,
-                        record.issue_number,
-                        f"PTSIP decision `{record.id}` was resolved via `{record.resolution_source}` and applied by the active coding-agent workflow. Late replies are ignored.",
-                    )
-                    self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
-                except GitHubAPIError:
-                    pass
+            try:
+                installation = self._installation_for(record.repository)
+                self.github.add_issue_comment(
+                    record.repository,
+                    installation,
+                    record.issue_number,
+                    f"PTSIP decision `{record.id}` was resolved via `{record.resolution_source}` and applied by the active coding-agent workflow. Late replies are ignored.",
+                )
+                self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
+            except GitHubAPIError:
+                pass
         return {"status": status, "decision": record.as_dict()}
 
     def register_installation_event(self, payload: dict[str, Any]) -> None:
@@ -160,8 +173,9 @@ class DecisionService:
             return {"status": "IGNORED_NOT_PTSIP"}
         if record.status != "PENDING":
             return {"status": "IGNORED_TERMINAL_DECISION", "decision": record.as_dict()}
-        installation = self.store.installation_for(full_name)
-        if installation is None:
+        try:
+            installation = self._installation_for(full_name)
+        except GitHubAPIError:
             return {"status": "IGNORED_NO_INSTALLATION"}
         try:
             permission = self.github.permission(full_name, installation, username)
