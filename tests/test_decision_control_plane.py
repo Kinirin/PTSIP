@@ -12,6 +12,7 @@ class FakeGitHub:
         self.created: list[tuple[str, str]] = []
         self.closed: list[int] = []
         self.comments: list[tuple[int, str]] = []
+        self.file_content: str | None = None
 
     def create_issue(self, repository: str, installation_id: int, title: str, body: str):
         from ptsip.app.github_client import GitHubIssue
@@ -33,7 +34,7 @@ class FakeGitHub:
         return "abc123"
 
     def file_text(self, repository: str, installation_id: int, path: str, ref: str) -> str | None:
-        return None
+        return self.file_content
 
     def commit_file_at_parent(self, *args, **kwargs) -> str:
         return "def456"
@@ -69,6 +70,38 @@ def _answer(classification: str = "TOOLCHAIN") -> DecisionAnswer:
         lifecycle_owner="DEVELOPMENT_TOOLING" if classification == "TOOLCHAIN" else "PRODUCT",
         executable=True,
     )
+
+
+def _issue_payload(classification: str = "PRODUCT") -> dict[str, object]:
+    if classification == "PRODUCT":
+        purpose = "Product component"
+        shipped = "YES"
+        runtime = "YES"
+        lifecycle = "PRODUCT"
+    else:
+        purpose = "Repository migration tooling"
+        shipped = "NO"
+        runtime = "NO"
+        lifecycle = "DEVELOPMENT_TOOLING"
+    return {
+        "action": "created",
+        "installation": {"id": 99},
+        "repository": {"full_name": "example/product"},
+        "issue": {"number": 11},
+        "comment": {
+            "body": f"""```yaml
+format: ptsip-clarification-answer/v1
+decision:
+  classification: {classification}
+  purpose: {purpose}
+  shipped: {shipped}
+  runtime_required: {runtime}
+  lifecycle_owner: {lifecycle}
+  executable: YES
+```"""
+        },
+        "sender": {"login": "owner"},
+    }
 
 
 def test_structured_answer_parser_and_validation():
@@ -195,6 +228,35 @@ def test_gate_creates_one_issue_and_reuses_it(tmp_path: Path):
     assert len(github.created) == 1
 
 
+def test_issue_profile_conflict_does_not_win_authoritative_cas(tmp_path: Path):
+    store = DecisionStore(tmp_path / "state.sqlite3")
+    store.set_installation("example/product", 99)
+    github = FakeGitHub()
+    github.file_content = """ptsip:
+  version: 0.2.0-draft
+  specification:
+    source: https://github.com/kwaksinwoo01/ptsip
+    revision: a877b2f66a7f94c1b844c979e1b08fb08a9a8e45
+components:
+  - id: tools
+    classification: PRODUCT
+    include: [\"tools/**\"]
+    purpose: Existing product component
+policies:
+  product_to_toolchain_runtime_dependency: deny
+  toolchain_in_product_package: deny
+  independent_build_resolution: required
+"""
+    service = DecisionService(store, github)  # type: ignore[arg-type]
+    service.gate(_gate_payload())
+    result = service.issue_comment(_issue_payload("TOOLCHAIN"))
+    assert result["status"] == "CONFLICT"
+    record = store.get("clr-test")
+    assert record is not None
+    assert record.status == "PENDING"
+    assert record.answer is None
+
+
 def test_late_issue_reply_is_ignored_after_agent_resolution(tmp_path: Path):
     store = DecisionStore(tmp_path / "state.sqlite3")
     store.set_installation("example/product", 99)
@@ -207,27 +269,7 @@ def test_late_issue_reply_is_ignored_after_agent_resolution(tmp_path: Path):
         {"decision_id": decision["id"], "answer": _answer().as_dict(), "actor": "agent"}
     )
     assert resolved["status"] == "RESOLVED"
-    result = service.issue_comment(
-        {
-            "action": "created",
-            "installation": {"id": 99},
-            "repository": {"full_name": "example/product"},
-            "issue": {"number": 11},
-            "comment": {
-                "body": """```yaml
-format: ptsip-clarification-answer/v1
-decision:
-  classification: PRODUCT
-  purpose: Product component
-  shipped: YES
-  runtime_required: YES
-  lifecycle_owner: PRODUCT
-  executable: YES
-```"""
-            },
-            "sender": {"login": "owner"},
-        }
-    )
+    result = service.issue_comment(_issue_payload("PRODUCT"))
     assert result["status"] == "IGNORED_TERMINAL_DECISION"
     final = store.get(str(decision["id"]))
     assert final is not None
