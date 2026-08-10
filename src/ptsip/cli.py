@@ -4,9 +4,11 @@ import argparse
 import json
 import sys
 
+from .app.client import ControlPlaneClient
 from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
-from .clarification.render import render_console
+from .clarification.render import render_console, render_issue
+from .clarification.resolution import DecisionAnswer, apply_local_profile, validate_answer
 from .clarification.transports.github_issue import publish as publish_github_issues
 from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
@@ -37,6 +39,10 @@ def _emit(payload: object, as_json: bool) -> None:
             print(f"{key}: {value}")
     else:
         print(payload)
+
+
+def _yes_no(value: str) -> bool:
+    return value.casefold() == "yes"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -96,8 +102,38 @@ def _parser() -> argparse.ArgumentParser:
     p_clarify.add_argument("--json", action="store_true")
     p_clarify.add_argument("--lang", choices=("en", "ko"), help="Question language; otherwise PTSIP_LANG, OS locale, then English")
     p_clarify.add_argument("--component", action="append", help="Limit clarification to a detected component candidate ID; repeatable")
-    p_clarify.add_argument("--publish", choices=("github-issue",), help="Explicitly publish clarification requests to an external transport")
+    p_clarify.add_argument("--publish", choices=("github-issue",), help="Manual/offline fallback: explicitly publish clarification requests")
     p_clarify.add_argument("--repo", help="Override the detected GitHub origin using owner/repository; requires --publish github-issue")
+
+    p_gate = sub.add_parser(
+        "gate",
+        help="Poll/register architecture decisions only when an active coding-agent task requires them",
+    )
+    p_gate.add_argument("path", nargs="?", default=".")
+    p_gate.add_argument("--component", action="append", help="Limit the gate to a detected component candidate ID; repeatable")
+    p_gate.add_argument("--lang", choices=("en", "ko"), help="Issue language; otherwise PTSIP_LANG, OS locale, then English")
+    p_gate.add_argument("--control-plane", help="PTSIP control-plane base URL; otherwise PTSIP_CONTROL_PLANE_URL")
+    p_gate.add_argument("--json", action="store_true")
+
+    p_resolve = sub.add_parser(
+        "resolve",
+        help="Explicitly resolve a pending PTSIP decision from an active user/coding-agent session and apply the profile locally",
+    )
+    p_resolve.add_argument("path", nargs="?", default=".")
+    p_resolve.add_argument("--decision", required=True, help="Decision/clarification ID returned by ptsip gate")
+    p_resolve.add_argument("--classification", required=True, choices=("PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"))
+    p_resolve.add_argument("--purpose", required=True)
+    p_resolve.add_argument("--shipped", required=True, choices=("yes", "no"))
+    p_resolve.add_argument("--runtime-required", required=True, choices=("yes", "no"))
+    p_resolve.add_argument(
+        "--lifecycle-owner",
+        required=True,
+        choices=("PRODUCT", "DEVELOPMENT_TOOLING", "INDEPENDENT"),
+    )
+    p_resolve.add_argument("--executable", required=True, choices=("yes", "no"))
+    p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")
+    p_resolve.add_argument("--control-plane", help="PTSIP control-plane base URL; otherwise PTSIP_CONTROL_PLANE_URL")
+    p_resolve.add_argument("--json", action="store_true")
     return parser
 
 
@@ -193,6 +229,107 @@ def main(argv: list[str] | None = None) -> int:
                 for item in publications:
                     print(f"github_issue[{item.status}]: {item.issue_url}")
             return 0 if analysis.comparison.stable else 4
+        if args.command == "gate":
+            language = resolve_language(args.lang)
+            analysis = analyze_clarifications(args.path, args.component)
+            if not analysis.comparison.stable:
+                raise RuntimeError("Repository state changed during decision-gate analysis; retry against a stable snapshot.")
+            repo = analysis.repository
+            if not analysis.requests:
+                payload = {"status": "NO_DECISION_REQUIRED", "repository": repo.as_dict(), "decisions": []}
+                _emit(payload, args.json)
+                return 0
+            if not repo.remote or repo.remote.provider != "github" or not repo.remote.repository:
+                raise RuntimeError("ptsip gate requires a GitHub origin for the decision control plane")
+            if not repo.commit or not repo.branch:
+                raise RuntimeError("ptsip gate requires a checked-out Git branch and commit")
+            client = ControlPlaneClient(args.control_plane)
+            decisions: list[dict[str, object]] = []
+            blocked = False
+            errored = False
+            for request in analysis.requests:
+                title, body = render_issue(request, language, repo.commit)
+                response = client.gate(
+                    {
+                        "id": request.id,
+                        "repository": repo.remote.repository,
+                        "branch": repo.branch,
+                        "subject_revision": repo.commit,
+                        "component_id": request.component_id,
+                        "request": request.as_dict(),
+                        "issue": {"title": title, "body": body},
+                    }
+                )
+                decisions.append(response)
+                status = str(response.get("status", ""))
+                if status == "DECISION_REQUIRED":
+                    blocked = True
+                elif status in {"STALE", "CONFLICT", "INVALID", "RESOLVED_APPLICATION_REQUIRED"}:
+                    errored = True
+            status = "DECISION_REQUIRED" if blocked else ("DECISION_ERROR" if errored else "RESOLVED")
+            _emit({"status": status, "repository": repo.as_dict(), "decisions": decisions}, args.json)
+            if blocked:
+                return 7
+            if errored:
+                return 8
+            return 0
+        if args.command == "resolve":
+            repo = discover_repository(args.path)
+            if not repo.commit:
+                raise RuntimeError("ptsip resolve requires a Git repository commit")
+            answer = DecisionAnswer(
+                classification=args.classification,
+                purpose=args.purpose.strip(),
+                shipped=_yes_no(args.shipped),
+                runtime_required=_yes_no(args.runtime_required),
+                lifecycle_owner=args.lifecycle_owner,
+                executable=_yes_no(args.executable),
+            )
+            validation = validate_answer(answer)
+            if not validation.valid:
+                _emit({"status": "CONFLICT", "validation": validation.as_dict()}, args.json)
+                return 8
+            client = ControlPlaneClient(args.control_plane)
+            response = client.resolve(
+                {
+                    "decision_id": args.decision,
+                    "answer": answer.as_dict(),
+                    "actor": args.actor,
+                }
+            )
+            if response.get("status") != "RESOLVED" or not response.get("accepted"):
+                _emit(response, args.json)
+                return 9
+            decision = response.get("decision")
+            if not isinstance(decision, dict):
+                raise RuntimeError("Control plane returned no decision record")
+            if str(decision.get("subject_revision")) != repo.commit:
+                application = client.application({"decision_id": args.decision, "status": "STALE"})
+                _emit({"status": "STALE", "decision": decision, "application": application}, args.json)
+                return 8
+            request = decision.get("request")
+            if not isinstance(request, dict):
+                raise RuntimeError("Decision record has no request payload")
+            include = request.get("include")
+            component_id = str(decision.get("component_id", ""))
+            if not isinstance(include, list) or not component_id:
+                raise RuntimeError("Decision request has no component include selectors")
+            try:
+                profile = apply_local_profile(repo.root, component_id, [str(item) for item in include], answer)
+            except Exception:
+                client.application({"decision_id": args.decision, "status": "FAILED"})
+                raise
+            application = client.application({"decision_id": args.decision, "status": "LOCAL_APPLIED"})
+            _emit(
+                {
+                    "status": "RESOLVED",
+                    "decision": decision,
+                    "profile_path": str(profile),
+                    "application": application,
+                },
+                args.json,
+            )
+            return 0
     except (FileNotFoundError, PermissionError, OSError, RuntimeError, ValueError) as exc:
         print(f"PTSIP error: {exc}", file=sys.stderr)
         return 2
