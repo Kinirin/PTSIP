@@ -1,0 +1,164 @@
+name: prepare-tool-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Reference Tool version from pyproject.toml (for example 0.3.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prepare-tool-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main with full history
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Resolve and verify release identity
+        id: release
+        shell: bash
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          PACKAGE_VERSION="$(python - <<'PY'
+          import tomllib
+          with open("pyproject.toml", "rb") as handle:
+              print(tomllib.load(handle)["project"]["version"])
+          PY
+          )"
+
+          if [ "${REQUESTED_VERSION}" != "${PACKAGE_VERSION}" ]; then
+            echo "Requested version ${REQUESTED_VERSION} does not match pyproject.toml version ${PACKAGE_VERSION}."
+            exit 1
+          fi
+
+          TAG="tool-v${PACKAGE_VERSION}"
+          NOTE="releasenote/${PACKAGE_VERSION}.md"
+
+          git fetch --force --tags origin
+          if git show-ref --verify --quiet "refs/tags/${TAG}"; then
+            echo "Tag ${TAG} already exists. Tagged release notes are immutable."
+            exit 1
+          fi
+
+          echo "version=${PACKAGE_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "note=${NOTE}" >> "$GITHUB_OUTPUT"
+
+      - name: Install release tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+          python -m pip install "git-cliff==2.13.1"
+
+      - name: Verify Tool before release preparation
+        run: |
+          python -m pytest -q
+          ptsip --version
+          ptsip spec
+          ptsip conform --help
+
+      - name: Generate versioned release note
+        shell: bash
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          NOTE: ${{ steps.release.outputs.note }}
+        run: |
+          set -euo pipefail
+          mkdir -p releasenote
+
+          git cliff \
+            --config cliff.toml \
+            --unreleased \
+            --tag "${TAG}" \
+            --no-exec \
+            --include-path "src/ptsip/**" \
+            --include-path "tests/**" \
+            --include-path "pyproject.toml" \
+            --include-path ".github/workflows/tooling-test.yml" \
+            --include-path ".github/workflows/tooling-release.yml" \
+            --include-path ".github/workflows/release.yml" \
+            --include-path "reference/DECISION-CONTROL-PLANE.md" \
+            --include-path "cliff.toml" \
+            --include-path "releasenote/**" \
+            --output "${NOTE}"
+
+          if [ ! -s "${NOTE}" ]; then
+            echo "Generated release note is empty: ${NOTE}"
+            exit 1
+          fi
+
+          if ! grep -q '^## ' "${NOTE}"; then
+            echo "Generated release note contains no categorized Tool changes."
+            exit 1
+          fi
+
+      - name: Commit release note to main
+        id: commit
+        shell: bash
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+          NOTE: ${{ steps.release.outputs.note }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$(git status --porcelain -- "${NOTE}")" ]; then
+            echo "Release note is already up to date."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add "${NOTE}"
+            git diff --cached --check -- "${NOTE}"
+            git commit -m "docs: prepare Tool ${VERSION} release note"
+            git push origin HEAD:main
+          fi
+
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # Creating the draft with GITHUB_TOKEN auto-creates the tag but does not fan out
+      # tag-push workflows. The Tool test/smoke gate therefore runs above in this job.
+      # Publishing the draft manually emits release:published and preserves the existing
+      # tooling-release.yml PyPI Trusted Publishing boundary.
+      - name: Create draft GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.release.outputs.version }}
+          TAG: ${{ steps.release.outputs.tag }}
+          NOTE: ${{ steps.release.outputs.note }}
+          TARGET_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+
+          EXTRA_ARGS=()
+          if [[ "${VERSION}" =~ [A-Za-z] ]]; then
+            EXTRA_ARGS+=(--prerelease)
+          fi
+
+          gh release create "${TAG}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --draft \
+            --target "${TARGET_SHA}" \
+            --title "PTSIP Tool ${VERSION}" \
+            --notes-file "${NOTE}" \
+            "${EXTRA_ARGS[@]}"

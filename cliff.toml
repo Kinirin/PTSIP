@@ -1,0 +1,42 @@
+[changelog]
+header = ""
+body = """
+# PTSIP Reference Tool {{ version | trim_start_matches(pat="tool-v") }} Release Notes
+
+{% for entry in commits | commit_groups(groups=commit_parsers_groups) %}
+## {{ entry.group | striptags | trim }}
+{% for commit in entry.commits %}
+- {{ commit.message | trim | upper_first }}
+{% endfor %}
+{% endfor %}
+"""
+footer = ""
+trim = true
+render_always = true
+
+[git]
+conventional_commits = false
+filter_unconventional = false
+require_conventional = false
+filter_commits = false
+fail_on_unmatched_commit = false
+protect_breaking_commits = true
+tag_pattern = "^tool-v[0-9].*"
+topo_order = true
+topo_order_commits = true
+sort_commits = "oldest"
+
+commit_parsers = [
+  { message = "^feat(?:\\(|:)", group = "Features" },
+  { message = "^fix(?:\\(|:)", group = "Fixes" },
+  { message = "^perf(?:\\(|:)", group = "Performance" },
+  { message = "^refactor(?:\\(|:)", group = "Refactoring" },
+  { message = "^docs?(?:\\(|:)", group = "Documentation" },
+  { message = "^tests?(?:\\(|:)", group = "Tests" },
+  { message = "^ci(?:\\(|:)", group = "CI / Release" },
+  { message = "^build(?:\\(|:)", group = "Build / Packaging" },
+  { message = "^chore(?:\\(|:)", group = "Maintenance" },
+  { message = "^spec(?:\\(|:)", skip = true },
+  { message = "^Merge ", skip = true },
+  { message = ".*", group = "Other Changes" },
+]
