@@ -53,8 +53,12 @@ def build_requests(
     requests: list[ClarificationRequest] = []
     for candidate in candidates:
         covering = _covering_components(candidate, declared_components)
+        target_component_id = candidate.id
         if len(covering) == 1:
             declared = covering[0]
+            declared_id = str(declared.get("id", "")).strip()
+            if declared_id:
+                target_component_id = declared_id
             missing_required = tuple(
                 field
                 for field in ("classification", "purpose")
@@ -73,6 +77,8 @@ def build_requests(
                 + "\0"
                 + candidate.id
                 + "\0"
+                + target_component_id
+                + "\0"
                 + selector_identity
                 + "\0"
                 + ",".join(missing_fields)
@@ -81,7 +87,7 @@ def build_requests(
         requests.append(
             ClarificationRequest(
                 id=f"clr-{digest}",
-                component_id=candidate.id,
+                component_id=target_component_id,
                 include=tuple(candidate.include),
                 anchors=tuple(candidate.anchors),
                 evidence_ids=tuple(candidate.evidence_ids),
