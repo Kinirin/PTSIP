@@ -21,16 +21,16 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
         for option in item.get("options", []):
             lines.append(f"   - `{option['value']}` — {option['label']}")
         questions.append("\n".join(lines))
-    reply_lines: list[str] = []
-    for field in request.missing_fields:
-        if field == "purpose":
-            reply_lines.append('purpose: "<short description>"')
-        elif field == "shipped":
-            reply_lines.append("shipped: YES|NO|CONDITIONAL|UNKNOWN")
-        elif field == "runtime_required":
-            reply_lines.append("runtime_required: YES|NO|UNKNOWN")
-        elif field == "lifecycle_owner":
-            reply_lines.append("lifecycle_owner: PRODUCT|DEVELOPMENT_TOOLING|INDEPENDENT|UNKNOWN")
+    reply_lines = [
+        "format: ptsip-clarification-answer/v1",
+        "decision:",
+        "  classification: PRODUCT|TOOLCHAIN|NEUTRAL_CONTRACT",
+        '  purpose: "<short description>"',
+        "  shipped: YES|NO",
+        "  runtime_required: YES|NO",
+        "  lifecycle_owner: PRODUCT|DEVELOPMENT_TOOLING|INDEPENDENT",
+        "  executable: YES|NO",
+    ]
     revision = repository_revision or "UNKNOWN"
     body = f"""{text(language, 'intro')}
 
@@ -56,6 +56,8 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
 ```yaml
 {chr(10).join(reply_lines)}
 ```
+
+A coding agent may also resolve this decision in an active user chat. The first valid resolution wins; after the decision is resolved, late Issue replies are ignored.
 
 <!-- ptsip-clarification-id: {request.id} -->
 """

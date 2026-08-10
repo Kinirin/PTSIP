@@ -74,6 +74,8 @@ ptsip inspect .
 ptsip pilot .
 ptsip validate .
 ptsip clarify .
+ptsip gate .
+ptsip resolve --help
 ptsip conform .
 ```
 
@@ -119,7 +121,7 @@ ptsip clarify . --json
 ptsip clarify . --component tools
 ```
 
-Clarification is read-only by default. To explicitly publish unresolved questions as GitHub Issues in the Consumer Repository:
+Clarification is read-only by default. The older explicit Issue publisher remains available as a manual/offline fallback:
 
 ```powershell
 ptsip clarify . --publish github-issue
@@ -131,7 +133,48 @@ PTSIP reads the inspected Git repository's `origin` and, for GitHub HTTPS or SSH
 ptsip clarify . --publish github-issue --repo owner/repository
 ```
 
-GitHub publishing requires an authenticated `gh` CLI only for the explicit publish operation. Publication state used to prevent duplicate clarification Issues is stored under `PTSIP_HOME/clarifications`, outside the Consumer Repository. The clarification workflow does not collect Issue answers, interpret free-form replies, or automatically convert them into an architectural classification.
+The manual publisher requires an authenticated `gh` CLI only for the explicit publish operation. Its duplicate-publication state is stored under `PTSIP_HOME/clarifications`, outside the Consumer Repository. Free-form Issue replies are not interpreted by an LLM.
+
+## Coding-agent decision gate
+
+Tool 0.3.1 adds an **on-demand** human architecture-decision workflow for coding-agent sessions. It does not run a reminder timer or scheduled poll. A coding agent calls `ptsip gate` only when its current boundary-sensitive task actually needs a decision that the repository does not yet declare.
+
+```powershell
+ptsip gate . --component tools --json
+```
+
+When the decision is unresolved, the configured PTSIP decision control plane creates or reuses a GitHub clarification Issue and `ptsip gate` reports `DECISION_REQUIRED`. The coding agent should stop only the affected work and ask the user to decide. If no active coding-agent task needs the decision, PTSIP does not remind the user.
+
+The user can resolve the pending decision through either channel:
+
+- **Active coding-agent chat:** the coding agent records the user's explicit facts with the write-enabled `ptsip resolve` command.
+- **GitHub Issue:** the GitHub App accepts the fixed `ptsip-clarification-answer/v1` YAML structure from an authorized repository writer through an `issue_comment` webhook.
+
+Example chat-originated resolution:
+
+```powershell
+ptsip resolve . `
+  --decision clr-example `
+  --classification TOOLCHAIN `
+  --purpose "Repository migration tooling" `
+  --shipped no `
+  --runtime-required no `
+  --lifecycle-owner DEVELOPMENT_TOOLING `
+  --executable yes
+```
+
+The control plane uses compare-and-set semantics: **the first valid resolution wins**. After a decision is resolved, a later contradictory chat or Issue answer cannot replace it. When chat resolution is successfully projected into `ptsip.yaml`, the linked Issue is completed; later replies are ignored.
+
+Issue-originated profile application is bound to the recorded repository revision and uses a non-force Git ref update. If the branch has changed, PTSIP preserves the already accepted human decision but does not silently apply it to the changed snapshot; the active coding agent must reconcile that resolved decision against the current repository state.
+
+The GitHub Issue is an asynchronous interaction surface. The decision-control-plane store is authoritative for workflow state, while `ptsip.yaml` remains the Consumer Repository's architecture declaration. See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the Tool-level workflow and reference service contract.
+
+The GitHub App runtime is optional for ordinary local PTSIP use:
+
+```powershell
+pip install "ptsip[github-app]"
+ptsip-app --help
+```
 
 ## Enforced conformance evaluation
 
@@ -169,7 +212,7 @@ CLI exit codes for `ptsip conform` are:
 | `5` | `NON_CONFORMANT` |
 | `6` | `INCOMPLETE` |
 
-The Tool does not restructure the Consumer Repository, auto-approve architecture exceptions, or convert Human Clarification answers into classifications.
+The Tool does not restructure the Consumer Repository or auto-approve architecture exceptions. Tool 0.3.1 may write a Project Profile only through an explicit user-authorized resolution workflow or an authorized structured GitHub Issue decision; conformance evaluation still treats the resulting profile as a declaration that must be checked against observed evidence.
 
 ## Reference Tool
 
@@ -182,6 +225,8 @@ The current tooling focuses on:
 - repository snapshot and non-intrusion evidence;
 - component and multi-language dependency evidence;
 - deterministic human clarification for missing architectural intent;
+- on-demand coding-agent decision gating and explicit human resolution;
+- optional GitHub App/Webhook decision synchronization without scheduled reminders;
 - project-profile validation;
 - explicit Product Artifact evidence ingestion and packaging evaluation;
 - independent build-resolution and bounded lifecycle evidence evaluation;

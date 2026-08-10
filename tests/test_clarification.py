@@ -73,7 +73,14 @@ def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
     assert analysis.status == "CLARIFICATION_REQUIRED"
     request = next(item for item in analysis.requests if item.component_id == "tools")
     assert request.status.value == "INCOMPLETE"
-    assert request.missing_fields == ("purpose", "shipped", "runtime_required", "lifecycle_owner")
+    assert request.missing_fields == (
+        "classification",
+        "purpose",
+        "shipped",
+        "runtime_required",
+        "lifecycle_owner",
+        "executable",
+    )
     payload = analysis.as_dict("en")
     assert payload["inference"]["mode"] == "DETERMINISTIC_RULES_ONLY"
     assert payload["inference"]["llm_calls"] == 0
@@ -93,6 +100,21 @@ def test_declared_component_purpose_suppresses_question(tmp_path: Path):
     assert analysis.status == "NO_CLARIFICATION_REQUIRED"
 
 
+def test_partial_declared_component_targets_declared_component_id(tmp_path: Path):
+    repo = _tool_repo(tmp_path)
+    (repo / "ptsip.yaml").write_text(
+        f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        encoding="utf-8",
+    )
+    _commit_all(repo)
+    analysis = analyze_clarifications(repo, ["tools"])
+    assert len(analysis.requests) == 1
+    request = analysis.requests[0]
+    assert request.component_id == "generator-sdk"
+    assert request.include == ("tools/**",)
+    assert request.missing_fields == ("purpose",)
+
+
 def test_cli_uses_korean_fixed_template(tmp_path: Path, monkeypatch, capsys):
     repo = _tool_repo(tmp_path)
     monkeypatch.setenv("PTSIP_LANG", "ko")
@@ -100,7 +122,9 @@ def test_cli_uses_korean_fixed_template(tmp_path: Path, monkeypatch, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["language"] == "ko"
     assert payload["inference"]["llm_calls"] == 0
-    assert payload["requests"][0]["questions"][0]["prompt"] == "이 컴포넌트를 만든 주된 목적은 무엇입니까?"
+    questions = {item["field"]: item["prompt"] for item in payload["requests"][0]["questions"]}
+    assert questions["classification"] == "이 컴포넌트의 PTSIP 아키텍처 분류는 무엇입니까?"
+    assert questions["purpose"] == "이 컴포넌트를 만든 주된 목적은 무엇입니까?"
 
 
 def test_github_publish_uses_origin_and_deduplicates_outside_repo(tmp_path: Path, monkeypatch):
@@ -123,6 +147,7 @@ def test_github_publish_uses_origin_and_deduplicates_outside_repo(tmp_path: Path
         assert args[args.index("--body-file") + 1] == "-"
         assert input_text is not None
         assert "PTSIP does not call an LLM" in input_text
+        assert "ptsip-clarification-answer/v1" in input_text
         return subprocess.CompletedProcess(args, 0, stdout="https://github.com/example/product/issues/123\n", stderr="")
 
     monkeypatch.setattr(github_issue, "_run_gh", fake_run)

@@ -23,6 +23,25 @@ This is the concise operational contract for coding agents working with a PTSIP-
 17. **Do not override observed evidence.** If profile declarations, dependency evidence, packaging evidence, lifecycle evidence, imported evidence, or agent reasoning conflict, report the conflict rather than choosing whichever source makes the repository appear conformant.
 18. **Do not equate zero findings with conformance.** If a missing adapter, unresolved target, artifact gap, unstable snapshot, or other evidence gap can conceal an applicable mandatory-rule violation, treat the evaluation as `INCOMPLETE` unless a definite violation already establishes `NON_CONFORMANT`.
 19. **Do not let project-local policy weaken PTSIP.** A project may define stricter same-plane component dependency constraints, but an explicit project allow does not authorize behavior prohibited by universal PTSIP rules.
+20. **Poll unresolved human decisions only when the active task needs them.** For a boundary-sensitive operation that cannot proceed safely without a missing ownership decision, call the PTSIP decision gate. If the gate returns `DECISION_REQUIRED`, stop only the affected work, surface the linked clarification Issue to the user, and accept an explicit user decision either in the active chat or through that Issue. Do not invent the answer, do not poll on a timer, and do not remind the user when no active task is blocked by that decision.
+
+## Agent-driven decision gate
+
+Tool 0.3.1 defines an on-demand decision workflow for coding agents. The GitHub App is an asynchronous decision transport and state synchronizer; it is not a reminder scheduler.
+
+When an active task reaches a component whose architecture decision is required:
+
+1. run `ptsip gate` for the affected component;
+2. continue immediately when the gate reports no decision is required or the authoritative decision is already resolved and applied;
+3. when the gate reports `DECISION_REQUIRED`, stop the affected boundary-sensitive work and tell the user which decision/Issue blocks progress;
+4. the user may answer in the current coding-agent chat or in the GitHub Issue;
+5. for a chat answer, invoke explicit `ptsip resolve` with the user's selected classification and factual answers; this is a user-authorized write-enabled operation and may update `ptsip.yaml`;
+6. for an Issue answer, the GitHub App accepts only the structured PTSIP answer contract from an authorized repository writer and applies it only while the decision is still pending;
+7. the first valid resolution wins. A late chat or Issue answer MUST NOT replace an already resolved decision;
+8. once a decision has been resolved outside the Issue, the Issue is completed/closed and later replies are ignored;
+9. if the target revision changed before an Issue resolution could be applied, treat the application as stale and re-run the gate against the current repository revision rather than applying an old answer to a new snapshot.
+
+The decision control plane stores workflow state. The Project Profile remains the repository's architectural declaration. A decision transport or database record does not itself prove conformance.
 
 ## Constrained classification decisions
 
@@ -41,7 +60,7 @@ A resolved decision contains:
 
 When ownership cannot be responsibly resolved, use `status: UNKNOWN`, `CONFLICT`, or `INCOMPLETE` and `classification: null`. Do not invent a fourth classification.
 
-A coding agent decision is review evidence. It MUST NOT silently mutate the project profile, approve an exception, or declare conformance unless a separate user-authorized workflow performs those actions.
+A coding agent decision is review evidence. It MUST NOT silently mutate the project profile, approve an exception, or declare conformance unless a separate user-authorized workflow performs those actions. `ptsip resolve` is such an explicit user-authorized workflow only when the user has supplied the architecture decision being recorded; the agent must not manufacture that decision from its own review evidence.
 
 A current consumer count is evidence, not a definition of Neutral Contract status. Do not reject or grant `NEUTRAL_CONTRACT` solely because one or both planes are or are not currently observed consuming it; evaluate non-executable contract semantics and lifecycle ownership.
 
