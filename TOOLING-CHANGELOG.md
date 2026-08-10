@@ -2,6 +2,32 @@
 
 This changelog tracks the independently versioned PTSIP Reference Tool. Specification changes remain in [`CHANGELOG.md`](CHANGELOG.md).
 
+## 0.3.1 — Decision-control-plane source, not yet published
+
+Coding-agent decision workflow release bound to the same PTSIP Specification `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45` used by Tool 0.3.0. This is a Tool-level orchestration change; it does not add a PTSIP classification or change normative Specification semantics.
+
+- bumps the Reference Tool/package source version to `0.3.1` while retaining the exact Tool 0.3.x Specification binding;
+- adds `ptsip gate` for **on-demand** coding-agent polling only when the active boundary-sensitive task actually needs a missing human architecture decision;
+- deliberately adds no timer, scheduled reminder, background polling, or overdue-notification worker;
+- adds explicit user-authorized `ptsip resolve` so a coding agent can record a decision supplied by the user in the active chat and safely project it into `ptsip.yaml`;
+- expands deterministic clarification questions to include classification, purpose, shipping, runtime role, lifecycle owner, and executable/non-executable role for undeclared component candidates;
+- defines the fixed `ptsip-clarification-answer/v1` YAML answer contract and continues to avoid LLM interpretation of free-form Issue replies;
+- adds deterministic answer consistency checks for Product, Toolchain, and Neutral Contract decisions;
+- adds a reference GitHub App decision control plane with an HTTP agent API, webhook receiver, SQLite workflow store, GitHub App installation authentication, Issue management, and repository-write support;
+- verifies GitHub webhook payloads with `X-Hub-Signature-256` HMAC SHA-256 before accepting Issue events;
+- accepts Issue decisions only from repository users with `write`, `maintain`, or `admin` permission;
+- stores authoritative workflow state separately from the Consumer Repository declaration and uses compare-and-set semantics so the **first valid resolution wins**;
+- ignores late chat or Issue answers after a decision is terminal, preventing a completed Issue from overwriting a decision already made in a coding-agent chat;
+- closes/completes the linked Issue after an accepted decision is successfully applied through the chat or Issue path;
+- binds Issue-originated profile application to the recorded branch revision and updates the branch through an exact-parent, non-force Git ref change so stale decisions are not silently written to a changed branch;
+- validates chat-originated projected profiles through the existing Project Profile validator before replacing local `ptsip.yaml`;
+- keeps `ptsip clarify --publish github-issue` as a manual/offline fallback rather than the primary coding-agent workflow;
+- adds the optional `github-app` package extra and `ptsip-app` reference-service entry point so ordinary local Tool installations do not need GitHub App cryptographic dependencies;
+- updates the coding-agent operational contract and adds [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) as the Tool-level workflow reference;
+- retains Tool 0.3.0 conformance semantics, evidence coverage, diagnostic contracts, and multi-language evidence adapters as regression boundaries.
+
+Tool 0.3.1 source is under pre-release verification. No `tool-v0.3.1` GitHub Release or PyPI publication has been created.
+
 ## 0.3.0 — Release candidate source, not yet published
 
 Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound to PTSIP Specification `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`:
@@ -34,7 +60,7 @@ Conformance-capability migration from the source-only Tool 0.2.3 baseline, bound
 
 Final post-rebind release-readiness verification completed in GitHub Actions run `31334084470`: Python 3.11–3.14 all passed the complete pytest/CLI/exact-Spec-binding suite, and the Python 3.14 package job verified the expected `tool-v0.3.0` mapping, built wheel/sdist artifacts, passed `twine check`, installed the built wheel, and re-ran Tool identity/spec/conformance CLI smoke checks. The temporary verification workflow was removed after the successful run.
 
-The Tool 0.3.0 source remains untagged and unpublished pending PR merge. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
+The Tool 0.3.0 source was merged to `main` but remains untagged and unpublished. No `tool-v0.3.0` GitHub Release or PyPI publication has been created.
 
 ## 0.2.3 — Source-only migration, not published
 
