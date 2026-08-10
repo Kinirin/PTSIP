@@ -9,10 +9,10 @@ from ptsip.constants import SPEC_REVISION, TOOL_VERSION
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_tool_031_package_and_runtime_versions_match() -> None:
+def test_tool_032_package_and_runtime_versions_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.1"
-    assert TOOL_VERSION == "0.3.1"
+    assert payload["project"]["version"] == "0.3.2"
+    assert TOOL_VERSION == "0.3.2"
     assert SPEC_REVISION == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
 
 
@@ -42,14 +42,16 @@ def test_release_package_contains_bound_machine_readable_contracts() -> None:
     assert (specdata / "ptsip-diagnostic.schema.json").is_file()
 
 
-def test_documentation_exposes_conformance_and_decision_gate_without_claiming_publication() -> None:
+def test_documentation_exposes_conformance_decision_gate_and_topology() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     status = (ROOT / "STATUS.md").read_text(encoding="utf-8")
-    release_note = (ROOT / "releasenote" / "0.3.1.md").read_text(encoding="utf-8")
+    release_note = (ROOT / "releasenote" / "0.3.2.md").read_text(encoding="utf-8")
     assert "ptsip conform ." in readme
     assert "--agent-decision" in readme
     assert "--external-evidence" in readme
     assert "ptsip gate" in readme
     assert "ptsip resolve" in readme
-    assert "Tool 0.3.1" in status
-    assert "0.3.1" in release_note
+    assert "Tool 0.3.2" in status
+    assert "ptsip topology" in status
+    assert "resolve --profile" in status
+    assert "0.3.2" in release_note

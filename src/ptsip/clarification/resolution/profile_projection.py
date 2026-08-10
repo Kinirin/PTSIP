@@ -141,20 +141,37 @@ def load_profile_text(text: str | None) -> dict[str, object] | None:
     return payload
 
 
+def _local_profile_path(repository_root: Path, explicit: str | Path | None) -> Path:
+    if explicit is None:
+        return repository_root / "ptsip.yaml"
+    profile = Path(explicit).expanduser().resolve()
+    if not profile.parent.is_dir():
+        raise FileNotFoundError(f"PTSIP profile parent directory does not exist: {profile.parent}")
+    return profile
+
+
 def prepare_local_profile(
     repository_root: str | Path,
     component_id: str,
     include: tuple[str, ...] | list[str],
     answer: DecisionAnswer,
+    profile_path: str | Path | None = None,
 ) -> PreparedLocalProfile:
     root = Path(repository_root).resolve()
-    profile = root / "ptsip.yaml"
+    profile = _local_profile_path(root, profile_path)
     expected_source = profile.read_text(encoding="utf-8-sig") if profile.is_file() else None
     existing = load_profile_text(expected_source)
     projected = project_payload(existing, component_id, include, answer)
     content = dump_payload(projected)
 
-    with tempfile.NamedTemporaryFile("w", suffix=".yaml", dir=root, delete=False, encoding="utf-8", newline="\n") as handle:
+    with tempfile.NamedTemporaryFile(
+        "w",
+        suffix=".yaml",
+        dir=profile.parent,
+        delete=False,
+        encoding="utf-8",
+        newline="\n",
+    ) as handle:
         temp = Path(handle.name)
         handle.write(content)
     try:
@@ -170,7 +187,9 @@ def prepare_local_profile(
 def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
     current_source = prepared.path.read_text(encoding="utf-8-sig") if prepared.path.is_file() else None
     if current_source != prepared.expected_source:
-        raise RuntimeError("ptsip.yaml changed after decision projection validation; refusing to overwrite concurrent changes")
+        raise RuntimeError(
+            f"{prepared.path} changed after decision projection validation; refusing to overwrite concurrent changes"
+        )
     with tempfile.NamedTemporaryFile(
         "w",
         suffix=".yaml",
@@ -194,5 +213,8 @@ def apply_local_profile(
     component_id: str,
     include: tuple[str, ...] | list[str],
     answer: DecisionAnswer,
+    profile_path: str | Path | None = None,
 ) -> Path:
-    return write_prepared_local_profile(prepare_local_profile(repository_root, component_id, include, answer))
+    return write_prepared_local_profile(
+        prepare_local_profile(repository_root, component_id, include, answer, profile_path)
+    )
