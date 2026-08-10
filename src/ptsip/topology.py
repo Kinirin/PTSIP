@@ -10,6 +10,8 @@ from pathlib import Path, PurePosixPath
 import yaml
 
 from .clarification.resolution import validate_projected_payload
+from .inspection.dependencies_030 import scan_dependency_edges
+from .model import EdgeType
 from .repository.discover import discover_repository
 from .repository.snapshot import repository_files
 from .validation.profile import find_profile, validate_profile
@@ -70,13 +72,19 @@ _CLASSIFICATION_BY_BOUNDARY = {
     "toolchain": "TOOLCHAIN",
     "neutral_contract": "NEUTRAL_CONTRACT",
 }
+_DEPENDENCY_REFERENCE_TYPES = {
+    EdgeType.IMPORTS,
+    EdgeType.LINKS,
+    EdgeType.LOADS,
+    EdgeType.INVOKES,
+}
 
 
 @dataclass(frozen=True)
 class ReferenceImpact:
     category: str
     path: str
-    line: int
+    line: int | None
     text: str
 
     def as_dict(self) -> dict[str, object]:
@@ -107,6 +115,8 @@ class TopologyMigrationPlan:
     source_files: tuple[str, ...]
     profile_changes: tuple[ProfileChange, ...]
     reference_impacts: tuple[ReferenceImpact, ...]
+    dependency_scan_issues: tuple[tuple[str, str, str], ...]
+    dependency_edge_count: int
     projected_profile: str
 
     def as_dict(self) -> dict[str, object]:
@@ -123,6 +133,10 @@ class TopologyMigrationPlan:
         manual_count = sum(
             1 for item in self.reference_impacts if item.category != "PROFILE"
         )
+        issues = [
+            {"adapter": adapter, "path": path, "message": message}
+            for adapter, path, message in self.dependency_scan_issues
+        ]
         return {
             "repository_root": self.repository_root,
             "profile_path": self.profile_path,
@@ -141,7 +155,14 @@ class TopologyMigrationPlan:
             "source_files": list(self.source_files),
             "profile_changes": [item.as_dict() for item in self.profile_changes],
             "reference_impacts": impacts,
+            "reference_analysis": {
+                "dependency_edge_count": self.dependency_edge_count,
+                "dependency_scan_issue_count": len(issues),
+                "dependency_scan_issues": issues,
+                "dependency_scan_complete": not issues,
+            },
             "manual_reference_updates_required": manual_count,
+            "reference_review_required": bool(manual_count or issues),
             "automatic_actions": [
                 "move repository root",
                 "rewrite project-profile path declarations",
@@ -286,8 +307,8 @@ def _rewrite_profile(
         classification = str(selected.get("classification", ""))
 
         # Rewrite every component path declaration beneath the moved root. This
-        # preserves nested component ownership instead of collapsing it into the
-        # explicitly selected parent component.
+        # preserves nested ownership instead of collapsing it into the selected
+        # parent component.
         for index, item in enumerate(components):
             if not isinstance(item, dict):
                 continue
@@ -387,7 +408,7 @@ def _reference_category(path: str, line: str) -> str:
     return "OTHER"
 
 
-def _scan_references(root: Path, profile: Path, old: str) -> list[ReferenceImpact]:
+def _text_reference_impacts(root: Path, profile: Path, old: str) -> list[ReferenceImpact]:
     _mode, paths, errors = repository_files(root)
     if errors:
         raise RuntimeError("Repository reference scan is incomplete: " + "; ".join(errors))
@@ -422,6 +443,49 @@ def _scan_references(root: Path, profile: Path, old: str) -> list[ReferenceImpac
     return results
 
 
+def _dependency_reference_impacts(
+    root: Path,
+    old: str,
+) -> tuple[list[ReferenceImpact], tuple[tuple[str, str, str], ...], int]:
+    scan = scan_dependency_edges(root)
+    impacts: list[ReferenceImpact] = []
+    for edge in scan.edges:
+        source = edge.source.replace("\\", "/")
+        resolved = edge.resolved_path.replace("\\", "/") if edge.resolved_path else None
+        if not _inside(old, source) and not (resolved and _inside(old, resolved)):
+            continue
+        source_category = _reference_category(source, "")
+        if source_category in {"CI", "BUILD"}:
+            category = source_category
+        elif edge.edge_type in _DEPENDENCY_REFERENCE_TYPES:
+            category = "IMPORT"
+        else:
+            category = "OTHER"
+        target_note = f" -> {resolved}" if resolved else ""
+        impacts.append(
+            ReferenceImpact(
+                category=category,
+                path=edge.source,
+                line=edge.line,
+                text=f"{edge.edge_type.value} {edge.target}{target_note}",
+            )
+        )
+    issues = tuple((item.adapter, item.path, item.message) for item in scan.issues)
+    return impacts, issues, len(scan.edges)
+
+
+def _merge_impacts(*groups: list[ReferenceImpact]) -> list[ReferenceImpact]:
+    unique: dict[tuple[str, str, int | None, str], ReferenceImpact] = {}
+    for group in groups:
+        for item in group:
+            key = (item.category, item.path, item.line, item.text)
+            unique[key] = item
+    return sorted(
+        unique.values(),
+        key=lambda item: (item.category, item.path, item.line or 0, item.text),
+    )
+
+
 def plan_topology_migration(
     repository_root: str | Path,
     profile_path: str | Path | None,
@@ -440,14 +504,14 @@ def plan_topology_migration(
     source = _check_topology_path(root, old, must_exist=True)
     _check_topology_path(root, new, must_exist=False)
 
-    profile = find_profile(root, profile_path)
-    if profile is None:
+    selected_profile = find_profile(root, profile_path)
+    if selected_profile is None:
         raise FileNotFoundError("No PTSIP project profile found for topology migration")
-    profile = profile.resolve()
+    if selected_profile.is_symlink():
+        raise ValueError("Topology migration does not rewrite a symbolic-link profile")
+    profile = selected_profile.resolve()
     if not _within_repository(root, profile):
         raise ValueError("Topology migration requires the selected profile to be inside the repository")
-    if profile.is_symlink():
-        raise ValueError("Topology migration does not rewrite a symbolic-link profile")
     if _within_repository(source.resolve(), profile):
         raise ValueError("The selected PTSIP profile cannot be located inside the root being moved")
 
@@ -477,7 +541,12 @@ def plan_topology_migration(
     )
     if not source_files:
         raise ValueError("Topology source root contains no repository files to migrate")
-    references = _scan_references(root, profile, old)
+
+    dependency_impacts, dependency_issues, dependency_edge_count = _dependency_reference_impacts(
+        root, old
+    )
+    text_impacts = _text_reference_impacts(root, profile, old)
+    references = _merge_impacts(dependency_impacts, text_impacts)
     projected_text = yaml.safe_dump(projected, sort_keys=False, allow_unicode=True)
     return TopologyMigrationPlan(
         repository_root=str(root),
@@ -492,6 +561,8 @@ def plan_topology_migration(
         source_files=source_files,
         profile_changes=tuple(changes),
         reference_impacts=tuple(references),
+        dependency_scan_issues=dependency_issues,
+        dependency_edge_count=dependency_edge_count,
         projected_profile=projected_text,
     )
 
@@ -611,7 +682,7 @@ def apply_topology_migration(plan: TopologyMigrationPlan) -> dict[str, object]:
             {
                 "status": (
                     "APPLIED_WITH_REFERENCE_REVIEW"
-                    if payload["manual_reference_updates_required"]
+                    if payload["reference_review_required"]
                     else "APPLIED"
                 ),
                 "applied": True,
