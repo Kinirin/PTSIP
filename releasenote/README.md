@@ -34,8 +34,9 @@ Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
 | `0.2.0` | Published | [`0.2.0.md`](0.2.0.md) |
 | `0.2.2` | Historical source version, not published | [`0.2.2.md`](0.2.2.md) |
 | `0.2.3` | Source-only migration, intentionally not published | [`0.2.3.md`](0.2.3.md) |
-| `0.3.0` | Source merged, not published/tagged | [`0.3.0.md`](0.3.0.md) |
-| `0.3.1` | Current source version, not yet published/tagged | [`0.3.1.md`](0.3.1.md) |
+| `0.3.0` | Published | [`0.3.0.md`](0.3.0.md) |
+| `0.3.1` | Published | [`0.3.1.md`](0.3.1.md) |
+| `0.3.2` | Migration source, not yet merged/published/tagged | [`0.3.2.md`](0.3.2.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
