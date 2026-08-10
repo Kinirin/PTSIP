@@ -100,7 +100,6 @@ jobs:
             --include-path ".github/workflows/release.yml" \
             --include-path "reference/DECISION-CONTROL-PLANE.md" \
             --include-path "cliff.toml" \
-            --include-path "releasenote/**" \
             --output "${NOTE}"
 
           if [ ! -s "${NOTE}" ]; then
