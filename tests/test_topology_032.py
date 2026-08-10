@@ -149,10 +149,56 @@ def test_topology_dry_run_reports_impacts_without_mutation(tmp_path: Path):
     assert result["profile_changes"][0]["after"] == "sdk/tooling/**"
     assert result["reference_impacts"]["BUILD"]
     assert result["automatic_reference_rewrite"] is False
+    assert result["reference_analysis"]["dependency_scan_complete"] is True
     assert (root / "old" / "main.py").is_file()
     assert not (root / "sdk" / "tooling").exists()
     assert "old/**" in profile.read_text(encoding="utf-8")
     assert _run(root, "git", "status", "--porcelain") == ""
+
+
+def test_topology_dependency_edges_find_import_without_root_literal(tmp_path: Path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    (root / "src" / "sdk").mkdir(parents=True)
+    (root / "src" / "sdk" / "__init__.py").write_text("", encoding="utf-8")
+    (root / "src" / "sdk" / "main.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (root / "consumer.py").write_text("import sdk.main\n", encoding="utf-8")
+    payload = yaml.safe_load(_profile("src/sdk/**"))
+    payload["components"].append(
+        {
+            "id": "consumer",
+            "classification": "PRODUCT",
+            "include": ["consumer.py"],
+            "purpose": "Product consumer",
+            "shipped": True,
+            "executable": True,
+            "release_owner": "PRODUCT",
+        }
+    )
+    profile = root / "ptsip.yaml"
+    profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    _run(root, "git", "init")
+    _run(root, "git", "config", "user.email", "ptsip@example.invalid")
+    _run(root, "git", "config", "user.name", "PTSIP Test")
+    _run(root, "git", "add", ".")
+    _run(root, "git", "commit", "-m", "fixture")
+
+    result = migrate_topology(
+        root,
+        profile,
+        "src/sdk",
+        "src/tooling/sdk",
+        "sdk-tools",
+        apply=False,
+    )
+
+    imports = result["reference_impacts"]["IMPORT"]
+    assert any(
+        item["path"] == "consumer.py"
+        and "IMPORTS sdk.main -> src/sdk/main.py" in item["text"]
+        for item in imports
+    )
+    assert result["reference_analysis"]["dependency_edge_count"] >= 1
 
 
 def test_topology_cli_uses_explicit_profile_path(tmp_path: Path, capsys):
