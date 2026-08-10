@@ -4,7 +4,7 @@ from pathlib import Path
 
 from ptsip.app.service import DecisionService
 from ptsip.app.store import DecisionStore
-from ptsip.clarification.resolution import DecisionAnswer, parse_answer, validate_answer
+from ptsip.clarification.resolution import DecisionAnswer, parse_answer, project_payload, validate_answer
 
 
 class FakeGitHub:
@@ -100,6 +100,46 @@ def test_toolchain_runtime_answer_is_conflict():
     result = validate_answer(answer)
     assert not result.valid
     assert result.status == "CONFLICT"
+
+
+def test_profile_projection_preserves_existing_boundary_and_rejects_conflicting_fact():
+    existing = {
+        "ptsip": {
+            "version": "0.2.0-draft",
+            "specification": {
+                "source": "https://github.com/kwaksinwoo01/ptsip",
+                "revision": "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45",
+            },
+        },
+        "components": [
+            {
+                "id": "generator-sdk",
+                "classification": "TOOLCHAIN",
+                "include": ["tools/**", "scripts/generate.py"],
+                "shipped": False,
+            }
+        ],
+        "policies": {
+            "product_to_toolchain_runtime_dependency": "deny",
+            "toolchain_in_product_package": "deny",
+            "independent_build_resolution": "required",
+        },
+    }
+    answer = _answer()
+    projected = project_payload(existing, "generator-sdk", ["tools/**"], answer)
+    component = projected["components"][0]
+    assert component["include"] == ["tools/**", "scripts/generate.py"]
+    assert component["purpose"] == answer.purpose
+    assert component["release_owner"] == "DEVELOPMENT_TOOLING"
+    assert "compatibility_owner" not in component
+
+    conflicting = _answer("PRODUCT")
+    try:
+        project_payload(existing, "generator-sdk", ["tools/**"], conflicting)
+    except ValueError as exc:
+        assert "conflicts with the resolved decision" in str(exc)
+    else:
+        raise AssertionError("existing declaration conflict must be rejected")
 
 
 def test_store_first_valid_resolution_wins(tmp_path: Path):
