@@ -32,6 +32,27 @@ jobs:
           fi
       - run: python -m pip install --upgrade pip build twine
       - run: python -m build
+      - name: Verify wheel and sdist exclude tests
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path, PurePosixPath
+          import tarfile
+          import zipfile
+
+          wheel = next(Path("dist").glob("*.whl"))
+          sdist = next(Path("dist").glob("*.tar.gz"))
+
+          with zipfile.ZipFile(wheel) as archive:
+              wheel_tests = [name for name in archive.namelist() if "tests" in PurePosixPath(name).parts]
+          if wheel_tests:
+              raise SystemExit(f"wheel contains tests/: {wheel_tests}")
+
+          with tarfile.open(sdist, "r:gz") as archive:
+              sdist_tests = [member.name for member in archive.getmembers() if "tests" in PurePosixPath(member.name).parts]
+          if sdist_tests:
+              raise SystemExit(f"sdist contains tests/: {sdist_tests}")
+          PY
       - run: python -m twine check dist/*
       - uses: actions/upload-artifact@v4
         with:
