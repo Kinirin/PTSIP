@@ -1,0 +1,212 @@
+from __future__ import annotations
+
+import json
+import sqlite3
+import threading
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+
+@dataclass(frozen=True)
+class DecisionRecord:
+    id: str
+    repository: str
+    branch: str
+    subject_revision: str
+    component_id: str
+    request: dict[str, object]
+    status: str
+    answer: dict[str, object] | None
+    resolution_source: str | None
+    resolved_by: str | None
+    application_status: str
+    applied_revision: str | None
+    issue_number: int | None
+    issue_url: str | None
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "id": self.id,
+            "repository": self.repository,
+            "branch": self.branch,
+            "subject_revision": self.subject_revision,
+            "component_id": self.component_id,
+            "request": self.request,
+            "status": self.status,
+            "answer": self.answer,
+            "resolution_source": self.resolution_source,
+            "resolved_by": self.resolved_by,
+            "application_status": self.application_status,
+            "applied_revision": self.applied_revision,
+            "issue_number": self.issue_number,
+            "issue_url": self.issue_url,
+        }
+
+
+class DecisionStore:
+    def __init__(self, path: str | Path):
+        self.path = Path(path).expanduser().resolve()
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._lock = threading.RLock()
+        self._init()
+
+    def _connect(self) -> sqlite3.Connection:
+        conn = sqlite3.connect(self.path, timeout=30)
+        conn.row_factory = sqlite3.Row
+        return conn
+
+    def _init(self) -> None:
+        with self._connect() as conn:
+            conn.executescript(
+                """
+                PRAGMA journal_mode=WAL;
+                CREATE TABLE IF NOT EXISTS installations (
+                    repository TEXT PRIMARY KEY,
+                    installation_id INTEGER NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS decisions (
+                    id TEXT PRIMARY KEY,
+                    repository TEXT NOT NULL,
+                    branch TEXT NOT NULL,
+                    subject_revision TEXT NOT NULL,
+                    component_id TEXT NOT NULL,
+                    request_json TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'PENDING',
+                    answer_json TEXT,
+                    resolution_source TEXT,
+                    resolved_by TEXT,
+                    application_status TEXT NOT NULL DEFAULT 'NOT_APPLIED',
+                    applied_revision TEXT,
+                    issue_number INTEGER,
+                    issue_url TEXT,
+                    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                );
+                CREATE INDEX IF NOT EXISTS idx_decision_issue
+                    ON decisions(repository, issue_number);
+                CREATE INDEX IF NOT EXISTS idx_decision_component
+                    ON decisions(repository, component_id, status);
+                """
+            )
+
+    @staticmethod
+    def _record(row: sqlite3.Row) -> DecisionRecord:
+        return DecisionRecord(
+            id=str(row["id"]),
+            repository=str(row["repository"]),
+            branch=str(row["branch"]),
+            subject_revision=str(row["subject_revision"]),
+            component_id=str(row["component_id"]),
+            request=json.loads(str(row["request_json"])),
+            status=str(row["status"]),
+            answer=json.loads(str(row["answer_json"])) if row["answer_json"] else None,
+            resolution_source=str(row["resolution_source"]) if row["resolution_source"] else None,
+            resolved_by=str(row["resolved_by"]) if row["resolved_by"] else None,
+            application_status=str(row["application_status"]),
+            applied_revision=str(row["applied_revision"]) if row["applied_revision"] else None,
+            issue_number=int(row["issue_number"]) if row["issue_number"] is not None else None,
+            issue_url=str(row["issue_url"]) if row["issue_url"] else None,
+        )
+
+    def set_installation(self, repository: str, installation_id: int) -> None:
+        with self._lock, self._connect() as conn:
+            conn.execute(
+                "INSERT INTO installations(repository, installation_id) VALUES (?, ?) "
+                "ON CONFLICT(repository) DO UPDATE SET installation_id=excluded.installation_id",
+                (repository, installation_id),
+            )
+
+    def installation_for(self, repository: str) -> int | None:
+        with self._connect() as conn:
+            row = conn.execute(
+                "SELECT installation_id FROM installations WHERE repository=?", (repository,)
+            ).fetchone()
+        return int(row[0]) if row else None
+
+    def gate(self, payload: dict[str, Any]) -> tuple[DecisionRecord, tuple[DecisionRecord, ...]]:
+        decision_id = str(payload["id"])
+        repository = str(payload["repository"])
+        branch = str(payload["branch"])
+        revision = str(payload["subject_revision"])
+        component_id = str(payload["component_id"])
+        request = payload["request"]
+        if not isinstance(request, dict):
+            raise ValueError("request must be an object")
+        stale: list[DecisionRecord] = []
+        with self._lock, self._connect() as conn:
+            conn.execute("BEGIN IMMEDIATE")
+            rows = conn.execute(
+                "SELECT * FROM decisions WHERE repository=? AND component_id=? AND status='PENDING' AND id<>?",
+                (repository, component_id, decision_id),
+            ).fetchall()
+            for row in rows:
+                stale.append(self._record(row))
+            conn.execute(
+                "UPDATE decisions SET status='STALE', updated_at=CURRENT_TIMESTAMP "
+                "WHERE repository=? AND component_id=? AND status='PENDING' AND id<>?",
+                (repository, component_id, decision_id),
+            )
+            conn.execute(
+                "INSERT OR IGNORE INTO decisions(id, repository, branch, subject_revision, component_id, request_json) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (decision_id, repository, branch, revision, component_id, json.dumps(request, ensure_ascii=False)),
+            )
+            row = conn.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
+            assert row is not None
+            conn.commit()
+        return self._record(row), tuple(stale)
+
+    def get(self, decision_id: str) -> DecisionRecord | None:
+        with self._connect() as conn:
+            row = conn.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
+        return self._record(row) if row else None
+
+    def by_issue(self, repository: str, issue_number: int) -> DecisionRecord | None:
+        with self._connect() as conn:
+            row = conn.execute(
+                "SELECT * FROM decisions WHERE repository=? AND issue_number=? ORDER BY created_at DESC LIMIT 1",
+                (repository, issue_number),
+            ).fetchone()
+        return self._record(row) if row else None
+
+    def attach_issue(self, decision_id: str, issue_number: int, issue_url: str) -> DecisionRecord:
+        with self._lock, self._connect() as conn:
+            conn.execute(
+                "UPDATE decisions SET issue_number=?, issue_url=?, updated_at=CURRENT_TIMESTAMP WHERE id=?",
+                (issue_number, issue_url, decision_id),
+            )
+        record = self.get(decision_id)
+        assert record is not None
+        return record
+
+    def resolve(
+        self,
+        decision_id: str,
+        answer: dict[str, object],
+        source: str,
+        actor: str,
+    ) -> tuple[DecisionRecord, bool]:
+        with self._lock, self._connect() as conn:
+            conn.execute("BEGIN IMMEDIATE")
+            changed = conn.execute(
+                "UPDATE decisions SET status='RESOLVED', answer_json=?, resolution_source=?, resolved_by=?, "
+                "updated_at=CURRENT_TIMESTAMP WHERE id=? AND status='PENDING'",
+                (json.dumps(answer, ensure_ascii=False), source, actor, decision_id),
+            ).rowcount
+            row = conn.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
+            conn.commit()
+        if row is None:
+            raise KeyError(decision_id)
+        return self._record(row), bool(changed)
+
+    def mark_application(self, decision_id: str, status: str, applied_revision: str | None = None) -> DecisionRecord:
+        with self._lock, self._connect() as conn:
+            conn.execute(
+                "UPDATE decisions SET application_status=?, applied_revision=?, updated_at=CURRENT_TIMESTAMP WHERE id=?",
+                (status, applied_revision, decision_id),
+            )
+        record = self.get(decision_id)
+        if record is None:
+            raise KeyError(decision_id)
+        return record
