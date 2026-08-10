@@ -13,20 +13,25 @@ Coding-agent decision workflow release bound to the same PTSIP Specification `0.
 - expands deterministic clarification questions to include classification, purpose, shipping, runtime role, lifecycle owner, and executable/non-executable role for undeclared component candidates;
 - defines the fixed `ptsip-clarification-answer/v1` YAML answer contract and continues to avoid LLM interpretation of free-form Issue replies;
 - adds deterministic answer consistency checks for Product, Toolchain, and Neutral Contract decisions;
+- validates profile projection before allowing either chat or Issue answers to win the authoritative compare-and-set, so a profile-conflicting answer cannot consume the first-valid-resolution slot;
+- preserves an existing component ID, selectors, and already-declared facts when clarification fills a partial declaration instead of silently narrowing/reclassifying it;
 - adds a reference GitHub App decision control plane with an HTTP agent API, webhook receiver, SQLite workflow store, GitHub App installation authentication, Issue management, and repository-write support;
 - verifies GitHub webhook payloads with `X-Hub-Signature-256` HMAC SHA-256 before accepting Issue events;
-- accepts Issue decisions only from repository users with `write`, `maintain`, or `admin` permission;
+- accepts Issue decisions only from repository users with write-level authority accepted by the reference service;
 - stores authoritative workflow state separately from the Consumer Repository declaration and uses compare-and-set semantics so the **first valid resolution wins**;
 - ignores late chat or Issue answers after a decision is terminal, preventing a completed Issue from overwriting a decision already made in a coding-agent chat;
 - closes/completes the linked Issue after an accepted decision is successfully applied through the chat or Issue path;
+- reopens a manually closed still-pending Issue only when a later active coding-agent gate actually needs that decision;
+- recovers a missing repository-to-GitHub-App installation mapping on demand from the GitHub App API, rather than depending on a background reconciliation worker;
 - binds Issue-originated profile application to the recorded branch revision and updates the branch through an exact-parent, non-force Git ref change so stale decisions are not silently written to a changed branch;
-- validates chat-originated projected profiles through the existing Project Profile validator before replacing local `ptsip.yaml`;
+- lets an active gate rebind only the application target of an already authoritative but stale/failed decision, allowing the exact stored answer to be retried without asking the user to decide again;
+- validates chat-originated projected profiles through the existing Project Profile validator before central resolution and before replacing local `ptsip.yaml`;
 - keeps `ptsip clarify --publish github-issue` as a manual/offline fallback rather than the primary coding-agent workflow;
 - adds the optional `github-app` package extra and `ptsip-app` reference-service entry point so ordinary local Tool installations do not need GitHub App cryptographic dependencies;
 - updates the coding-agent operational contract and adds [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) as the Tool-level workflow reference;
 - retains Tool 0.3.0 conformance semantics, evidence coverage, diagnostic contracts, and multi-language evidence adapters as regression boundaries.
 
-Tool 0.3.1 source is under pre-release verification. No `tool-v0.3.1` GitHub Release or PyPI publication has been created.
+Pre-merge Tool 0.3.1 verification completed in GitHub Actions run `31354690223`: Python 3.11 and Python 3.14 both passed the complete pytest suite and the Tool/new-CLI smoke checks; the Python 3.14 job reported `106 passed` and successfully built `ptsip-0.3.1` wheel and sdist artifacts. The temporary verification workflow was removed after the successful run. No `tool-v0.3.1` GitHub Release or PyPI publication has been created.
 
 ## 0.3.0 — Release candidate source, not yet published
 
