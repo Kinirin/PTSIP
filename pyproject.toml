@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ptsip"
-version = "0.3.0"
+version = "0.3.1"
 description = "Reference development tooling for the Product-Toolchain SDK Isolation Policy"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -37,6 +37,7 @@ Issues = "https://github.com/kwaksinwoo01/ptsip/issues"
 
 [project.scripts]
 ptsip = "ptsip.cli:main"
+ptsip-app = "ptsip.app.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -45,6 +46,9 @@ where = ["src"]
 ptsip = ["specdata/*.json", "specdata/*.yaml"]
 
 [project.optional-dependencies]
+github-app = [
+  "PyJWT[crypto]>=2.10,<3",
+]
 dev = [
   "build>=1.2,<2",
   "pytest>=8,<9",
