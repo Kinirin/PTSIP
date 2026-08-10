@@ -33,7 +33,7 @@ def _commit_all(repo: Path) -> None:
 
 def test_spec_identity():
     spec = current_spec_identity()
-    assert spec.tool_version == "0.3.0"
+    assert spec.tool_version == "0.3.1"
     assert spec.version == "0.2.0-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
     assert spec.revision == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
@@ -176,5 +176,5 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["format"] == "ptsip-pilot-report/v2"
-    assert payload["tool"]["version"] == "0.3.0"
+    assert payload["tool"]["version"] == "0.3.1"
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
