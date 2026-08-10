@@ -2,19 +2,20 @@
 
 - Specification family: `0.2.0-draft`
 - Latest canonical normative snapshot: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
-- Current Tool/package source version: `0.3.1`
+- Current Tool/package source version: `0.3.2`
 - Tool 0.2.3 historical bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
 - Tool 0.3.x bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
-- Canonical repository: `kwaksinwoo01/ptsip`
+- Canonical repository: `kwaksinwoo01/PTSIP`
 - External tooling model: Defined
-- Reference Tool package name: `ptsip`
-- Latest verified PyPI publication: `0.2.0`
+- Reference Tool package name: `PTSIP`
+- Latest verified PyPI publication: `0.3.1`
 - Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Tool 0.3.0 publication status: conformance-capability source merged; not yet published/tagged
-- Tool 0.3.1 source target: on-demand coding-agent decision gate plus GitHub App/Webhook decision control plane
-- Tool 0.3.1 pre-merge verification: GitHub Actions run `31354690223`, Python 3.11/3.14, 106 tests passed on Python 3.14, CLI smoke checks passed, and wheel/sdist build passed
+- Tool 0.3.0 publication status: published to PyPI
+- Tool 0.3.1 publication status: published as `tool-v0.3.1` and available from PyPI
+- Tool 0.3.2 source target: classification-preserving topology migration plus explicit `resolve --profile`
+- Tool 0.3.2 publication status: migration source only; not yet merged/published/tagged
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -50,7 +51,7 @@ The following Tool 0.2.2 behavior remains required and regression-tested:
 - Consumer Repository GitHub identity from Git `origin`;
 - explicit `--publish github-issue` with `--repo owner/repository` override as a manual/offline fallback;
 - duplicate-publication state under external `PTSIP_HOME/clarifications` for that manual transport;
-- read-only clarification analysis unless publication or an explicit Tool 0.3.1 resolution operation is requested.
+- read-only clarification analysis unless publication or an explicit Tool 0.3.1+ resolution operation is requested.
 
 Tool 0.3.1 extends this boundary with structured Issue answers and explicit user-authorized chat resolution. Free-form Issue prose is still not interpreted by an LLM.
 
@@ -89,14 +90,30 @@ Tool 0.3.1 adds a Tool-level, non-normative orchestration layer for unresolved h
 - late Issue/chat answers never replace an already resolved decision;
 - Issue answers require repository write/maintain/admin authority and the fixed `ptsip-clarification-answer/v1` structure;
 - fixed deterministic resolution rules reject contradictory Product/Toolchain/Neutral Contract facts instead of interpreting prose;
-- chat-originated profile writes validate a temporary projected profile before replacing `ptsip.yaml`;
-- Issue-originated profile writes are bound to the exact recorded branch revision and use a non-force Git ref update so stale decisions are not silently applied;
-- the GitHub Issue is an asynchronous interaction surface; the control-plane decision state is authoritative for workflow state, while `ptsip.yaml` remains the architecture declaration;
+- chat-originated profile writes validate a temporary projected profile before replacing the selected local profile;
+- Issue-originated profile writes remain bound to the exact recorded branch revision and use a non-force Git ref update so stale decisions are not silently applied;
+- the GitHub Issue is an asynchronous interaction surface; the control-plane decision state is authoritative for workflow state, while the Project Profile remains the architecture declaration;
 - the existing explicit `ptsip clarify --publish github-issue` path remains available as a manual/offline fallback.
 
 Pre-merge Tool 0.3.1 verification completed in GitHub Actions run `31354690223`: Python 3.11 and 3.14 both passed the complete pytest suite and Tool/new-CLI smoke checks; Python 3.14 reported `106 passed` and successfully built `ptsip-0.3.1` wheel and sdist artifacts. The temporary verification workflow was removed after the successful run.
 
 See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the Tool-level workflow contract.
+
+## Tool 0.3.2 — topology migration and profile-path symmetry
+
+Tool 0.3.2 migration source adds Tool-level refactoring support without changing normative PTSIP classification or conformance semantics:
+
+- `ptsip topology` produces a dry-run plan by default and requires explicit `--apply` for repository changes;
+- component-root moves rewrite path declarations while preserving every declared architecture classification;
+- component-based profiles require `--component`, preventing root selection from becoming an implicit ownership decision;
+- profile/import/build/CI/documentation references to the old root are reported by impact category;
+- non-profile references are not blindly rewritten; the apply result reports any remaining review work;
+- Git-backed apply requires a clean working tree/index and uses `git mv` so tracked evidence follows the new root;
+- the projected profile is validated after the move before the migration is accepted;
+- `ptsip resolve --profile <path>` respects project-owned profile placement and leaves repository-root `ptsip.yaml` as the default only when no explicit path is supplied;
+- the bound Specification remains `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
+
+See [`releasenote/0.3.2.md`](releasenote/0.3.2.md) for the migration-source scope.
 
 ## Release blockers for PTSIP Specification 1.0
 
@@ -105,4 +122,4 @@ See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md)
 - validate the constrained Agent Contract and deterministic Human Clarification against real ownership questions;
 - exercise rule-relative evidence coverage and Product Artifact evidence;
 - publish tagged stable specification releases;
-- exercise Tool 0.3.1 or later against real Consumer Repositories with component declarations, artifact evidence, review/import evidence, on-demand human decision gates, and repeatable conformance evaluation.
+- exercise Tool 0.3.1 or later against real Consumer Repositories with component declarations, artifact evidence, review/import evidence, on-demand human decision gates, topology migrations, and repeatable conformance evaluation.
