@@ -15,6 +15,7 @@
 - Tool 0.3.0 publication status: published to PyPI
 - Tool 0.3.1 publication status: published as `tool-v0.3.1` and available from PyPI
 - Tool 0.3.2 source target: classification-preserving topology migration plus explicit `resolve --profile`
+- Tool 0.3.2 verification: GitHub Actions run `31365614038`, Python 3.14, `115 passed`, CLI/package checks successful
 - Tool 0.3.2 publication status: migration source only; not yet merged/published/tagged
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
@@ -106,12 +107,15 @@ Tool 0.3.2 migration source adds Tool-level refactoring support without changing
 - `ptsip topology` produces a dry-run plan by default and requires explicit `--apply` for repository changes;
 - component-root moves rewrite path declarations while preserving every declared architecture classification;
 - component-based profiles require `--component`, preventing root selection from becoming an implicit ownership decision;
-- profile/import/build/CI/documentation references to the old root are reported by impact category;
+- tracked path-text references are combined with observed PTSIP dependency edges so imports/links/loads/invocations can be reported even when source text does not contain the literal old repository path;
+- profile/import/build/CI/documentation references are reported by impact category, and dependency-adapter scan issues are surfaced for review instead of being hidden;
 - non-profile references are not blindly rewritten; the apply result reports any remaining review work;
 - Git-backed apply requires a clean working tree/index and uses `git mv` so tracked evidence follows the new root;
 - the projected profile is validated after the move before the migration is accepted;
 - `ptsip resolve --profile <path>` respects project-owned profile placement and leaves repository-root `ptsip.yaml` as the default only when no explicit path is supplied;
 - the bound Specification remains `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
+
+Final pre-merge verification completed in GitHub Actions run `31365614038`: Python 3.14 passed the complete suite with `115 passed`, Tool/spec/new-CLI smoke checks succeeded, and both `ptsip-0.3.2` wheel and sdist passed `twine check`. The temporary verification workflow was removed after the successful run.
 
 See [`releasenote/0.3.2.md`](releasenote/0.3.2.md) for the migration-source scope.
 
