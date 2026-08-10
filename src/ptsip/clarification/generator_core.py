@@ -53,12 +53,30 @@ def build_requests(
     requests: list[ClarificationRequest] = []
     for candidate in candidates:
         covering = _covering_components(candidate, declared_components)
-        if len(covering) == 1 and str(covering[0].get("purpose", "")).strip():
-            continue
-        missing_fields = ("purpose",) if len(covering) == 1 else FIELD_ORDER
+        if len(covering) == 1:
+            declared = covering[0]
+            missing_required = tuple(
+                field
+                for field in ("classification", "purpose")
+                if not str(declared.get(field, "")).strip()
+            )
+            if not missing_required:
+                continue
+            missing_fields = missing_required
+        else:
+            missing_fields = FIELD_ORDER
         reasons = tuple(REASON_BY_FIELD[field] for field in missing_fields)
+        selector_identity = ",".join(sorted(_normalize_selector(item) for item in candidate.include))
         digest = hashlib.sha256(
-            (repository_identity + "\0" + candidate.id + "\0" + ",".join(missing_fields)).encode("utf-8")
+            (
+                repository_identity
+                + "\0"
+                + candidate.id
+                + "\0"
+                + selector_identity
+                + "\0"
+                + ",".join(missing_fields)
+            ).encode("utf-8")
         ).hexdigest()[:16]
         requests.append(
             ClarificationRequest(
