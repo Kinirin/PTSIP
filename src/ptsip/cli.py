@@ -25,6 +25,7 @@ from .pilot.runner import run_pilot
 from .repository.discover import discover_repository
 from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
+from .topology import migrate_topology
 from .validation.profile import validate_profile
 
 
@@ -125,6 +126,7 @@ def _parser() -> argparse.ArgumentParser:
         help="Explicitly resolve a pending PTSIP decision from an active user/coding-agent session and apply the profile locally",
     )
     p_resolve.add_argument("path", nargs="?", default=".")
+    p_resolve.add_argument("--profile", help="Explicit project-profile path; defaults to repository-root ptsip.yaml")
     p_resolve.add_argument("--decision", required=True, help="Decision/clarification ID returned by ptsip gate")
     p_resolve.add_argument("--classification", required=True, choices=("PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"))
     p_resolve.add_argument("--purpose", required=True)
@@ -139,6 +141,18 @@ def _parser() -> argparse.ArgumentParser:
     p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")
     p_resolve.add_argument("--control-plane", help="PTSIP control-plane base URL; otherwise PTSIP_CONTROL_PLANE_URL")
     p_resolve.add_argument("--json", action="store_true")
+
+    p_topology = sub.add_parser(
+        "topology",
+        help="Plan or explicitly apply a repository component-root migration without changing architecture classification",
+    )
+    p_topology.add_argument("path", nargs="?", default=".")
+    p_topology.add_argument("--profile", help="Explicit project-profile path")
+    p_topology.add_argument("--component", help="Component ID; required for component-based profiles")
+    p_topology.add_argument("--from", dest="from_root", required=True, help="Existing repository-relative component root")
+    p_topology.add_argument("--to", dest="to_root", required=True, help="Target repository-relative component root")
+    p_topology.add_argument("--apply", action="store_true", help="Apply the reviewed migration plan; default is dry-run")
+    p_topology.add_argument("--json", action="store_true")
     return parser
 
 
@@ -205,6 +219,18 @@ def main(argv: list[str] | None = None) -> int:
             if result.outcome == "NON_CONFORMANT":
                 return 5
             return 6
+        if args.command == "topology":
+            repo = discover_repository(args.path)
+            result = migrate_topology(
+                repo.root,
+                args.profile,
+                args.from_root,
+                args.to_root,
+                args.component,
+                apply=args.apply,
+            )
+            _emit(result, args.json)
+            return 0
         if args.command == "clarify":
             if args.repo and args.publish != "github-issue":
                 raise ValueError("--repo requires --publish github-issue")
@@ -351,7 +377,13 @@ def main(argv: list[str] | None = None) -> int:
             # profile-conflicting answer therefore cannot become the first
             # authoritative resolution merely because validation happened late.
             try:
-                prepared = prepare_local_profile(repo.root, component_id, [str(item) for item in include], answer)
+                prepared = prepare_local_profile(
+                    repo.root,
+                    component_id,
+                    [str(item) for item in include],
+                    answer,
+                    args.profile,
+                )
             except (ValueError, RuntimeError) as exc:
                 _emit({"status": "CONFLICT", "message": str(exc), "decision": decision}, args.json)
                 return 8
