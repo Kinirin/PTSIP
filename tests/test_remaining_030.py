@@ -10,7 +10,7 @@ from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.repository.snapshot import capture_snapshot
 
 
-SPEC_REVISION = "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -49,7 +49,7 @@ def _workflow(repo: Path, name: str, scope: str) -> None:
 def _profile(repo: Path, product_manifest: str, tool_manifest: str) -> None:
     (repo / "ptsip.yaml").write_text(
         f"""ptsip:
-  version: "0.2.0-draft"
+  version: "0.3.4-draft"
   specification:
     source: "https://github.com/kwaksinwoo01/ptsip"
     revision: "{SPEC_REVISION}"
