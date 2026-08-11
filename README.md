@@ -75,11 +75,9 @@ The **PTSIP Specification** and **PTSIP Reference Tool** are independently versi
 - `ptsip spec` reports the exact Specification family + immutable revision bound to that Tool;
 - `spec/`, `schemas/`, and `registry/` contain canonical Specification assets;
 - `src/ptsip/specdata/` contains matching embedded resources used by the Tool;
-- GitHub Releases publish Tool and Specification design/release records.
+- GitHub Releases publish Tool and Specification release/design records.
 
-The `spec-v0.3.4-draft` GitHub Release introduced the Explicit Project Adoption + Distributed Authority Consistency design. The active exact normative identity is not the family label alone; it is `0.3.4-draft` plus the immutable migration revision reported by the bound Tool/profile.
-
-A Tool version number matching a Specification family number does not imply identity by itself.
+The existing `spec-v0.3.4-draft` GitHub Release records the pre-activation design proposal. The active exact normative identity is the later coherent migration snapshot `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5` once that snapshot is merged into canonical history. A Tool version number matching a Specification family number does not imply identity by itself.
 
 ## Consumer Repository non-intrusion
 
