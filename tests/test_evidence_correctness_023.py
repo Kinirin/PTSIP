@@ -12,7 +12,7 @@ from ptsip.inspection.inventory import collect_inventory
 from ptsip.pilot.runner import run_pilot
 
 
-SPEC_REVISION = "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -141,7 +141,7 @@ def test_dependency_evaluator_reports_ran_instead_of_inferring_from_empty_findin
     (repo / "product" / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
     (repo / "tools" / "check.py").write_text("VALUE = 2\n", encoding="utf-8")
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: development_tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: development_tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     _commit_all(repo)
