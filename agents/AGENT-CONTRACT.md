@@ -1,149 +1,260 @@
 # PTSIP Coding-Agent Contract
 
-This is the concise operational contract for coding agents working with a PTSIP-governed Consumer Repository.
+**Specification family:** `0.3.4-draft`
 
-## Mandatory agent behavior
+This is the concise operational contract for coding agents working with a PTSIP-governed Consumer Repository. The exact governing snapshot is the immutable revision bound by the installed Tool or the Consumer Repository profile.
+
+## 1. Mandatory agent behavior
 
 1. **Classify before modifying.** Before adding or relocating an SDK/package/module, determine whether it is `PRODUCT`, `TOOLCHAIN`, or `NEUTRAL_CONTRACT`.
 2. **Purpose before reuse.** Do not create cross-plane sharing merely to remove duplicate code.
-3. **No Product -> Toolchain runtime dependency.** Product code must not import/link/load Toolchain SDK code as a shipped dependency.
-4. **Do not package Toolchain code with Product.** Development-only validators, migration tools, generators, build helpers, and their dependencies stay outside Product artifacts.
-5. **Separate artifact owner from producer.** A Toolchain component may generate/package a Product Artifact. Do not classify the output by the producer's classification alone; inspect the artifact ownership, contents, derivation, and shipping scope.
-6. **Prefer contract sharing.** When both planes need the same semantics, prefer schemas, registries, IDLs, test vectors, or generated contracts over a shared executable project-local SDK.
-7. **Preserve independent build contexts.** Do not solve missing Product dependencies by installing or importing from the Toolchain environment, or vice versa.
-8. **Preserve lifecycle independence.** A Toolchain-only refactor should not force Product compatibility/version/publication obligations unless a Product-facing artifact changes. A workflow trigger alone is not proof of release coupling.
-9. **Never treat `common`, `shared`, `core`, or `utils` as ownerless.** Every such project-owned module must have explicit PTSIP ownership.
-10. **Do not invent extra architecture classifications.** External libraries, standard-library/platform targets, and unresolved dependency targets use evidence-node scope/type, not a fourth PTSIP plane.
-11. **Respect repository ownership.** Do not create PTSIP-specific `docs/`, `tools/`, `.ptsip/`, cache, or report directories solely to operate PTSIP tooling.
-12. **Read the project profile when one exists.** Repository-specific declarations and exceptions override assumptions about directory names, but a profile declaration is not proof of conformance.
-13. **Resolve the bound specification.** For automated conformance, use the specification source/version/revision declared by the project profile or by the PTSIP tooling build; do not silently substitute a different normative snapshot.
-14. **Escalate boundary exceptions.** If a requested change requires violating a PTSIP `MUST`/`MUST NOT` rule, do not silently implement the violation. Report the expected PTSIP violation and propose a compliant remediation/migration path. Do not create a waiver that changes the conformance result.
-15. **Preserve uncertainty.** `UNKNOWN`, `CONFLICT`, and `INCOMPLETE` are decision statuses, not PTSIP classifications. Do not force a classification when evidence is insufficient.
+3. **No Product -> Toolchain runtime dependency.** Product code must not import, link, load, vendor, or otherwise require Toolchain implementation at Product runtime or as a shipped dependency.
+4. **Do not package Toolchain implementation with Product.** Development-only validators, migration tools, generators, build helpers, and Toolchain-only dependencies stay outside Product artifacts.
+5. **Separate artifact owner from producer.** A Toolchain component may generate/package a Product Artifact. Inspect artifact ownership, contents, derivation, and shipping scope rather than classifying the output from the producer alone.
+6. **Prefer contract sharing.** When both planes need the same semantics, prefer schemas, registries, IDLs, test vectors, generated immutable contracts, or separate generated implementations over one shared executable project-local SDK.
+7. **Preserve independent build contexts.** Do not solve missing Product dependencies by importing from the Toolchain environment, or vice versa.
+8. **Preserve lifecycle independence.** A Toolchain-only change should not force Product compatibility/version/publication obligations unless a Product-facing artifact or Product obligation actually changes. A workflow trigger alone is not proof of release coupling.
+9. **Never treat `common`, `shared`, `core`, or `utils` as ownerless.** Every project-owned component remains subject to explicit PTSIP ownership.
+10. **Do not invent extra architecture classifications.** External libraries, platform targets, and unresolved dependency targets are evidence-node scope/type, not a fourth PTSIP plane.
+11. **Respect Consumer Repository ownership.** Do not create PTSIP-specific documentation, tooling, cache, report, or hidden directories solely so external PTSIP tooling can operate.
+12. **Read the selected Project Profile when one exists.** A Project Profile is project-owned architecture declaration state. It is not proof of conformance and it does not become globally fresh merely because it is complete locally.
+13. **Resolve the bound Specification.** Use the exact source/family/revision declared by the Tool or profile. Do not silently substitute a different normative snapshot.
+14. **Do not create waivers for mandatory violations.** If requested work would violate a PTSIP `MUST`/`MUST NOT`, report the rule and propose remediation. A project migration/debt record does not convert `NON_CONFORMANT` into `CONFORMANT`.
+15. **Preserve uncertainty.** `UNKNOWN`, `CONFLICT`, and `INCOMPLETE` are decision/evaluation states, not architecture classifications.
 16. **Preserve evidence provenance.** Keep `DECLARED`, `OBSERVED`, and `INFERRED` evidence distinguishable. Do not present inference as observation.
-17. **Do not override observed evidence.** If profile declarations, dependency evidence, packaging evidence, lifecycle evidence, imported evidence, or agent reasoning conflict, report the conflict rather than choosing whichever source makes the repository appear conformant.
-18. **Do not equate zero findings with conformance.** If a missing adapter, unresolved target, artifact gap, unstable snapshot, or other evidence gap can conceal an applicable mandatory-rule violation, treat the evaluation as `INCOMPLETE` unless a definite violation already establishes `NON_CONFORMANT`.
-19. **Do not let project-local policy weaken PTSIP.** A project may define stricter same-plane component dependency constraints, but an explicit project allow does not authorize behavior prohibited by universal PTSIP rules.
-20. **Poll unresolved human decisions only when the active task needs them.** For a boundary-sensitive operation that cannot proceed safely without a missing ownership decision, call the PTSIP decision gate. If the gate returns `DECISION_REQUIRED`, stop only the affected work, surface the linked clarification Issue to the user, and accept an explicit user decision either in the active chat or through that Issue. Do not invent the answer, do not poll on a timer, and do not remind the user when no active task is blocked by that decision.
+17. **Do not override contradictory evidence.** Report contradictions among profile declarations, dependency evidence, artifact evidence, lifecycle evidence, imported evidence, and agent review.
+18. **Do not equate zero findings with conformance.** A blocking evidence gap produces `INCOMPLETE` unless a definite mandatory violation already establishes `NON_CONFORMANT`.
+19. **Do not let project-local policy weaken universal PTSIP.** Project policy may be stricter, never weaker.
+20. **Do not invent architecture intent.** Candidate discovery, directory naming, heuristics, or agent confidence do not authorize a project-owner classification decision.
 
-## Agent-driven decision gate
+## 2. Durable explicit adoption facts
 
-Tool 0.3.1 defines an on-demand decision workflow for coding agents. The GitHub App is an asynchronous decision transport and state synchronizer; it is not a reminder scheduler.
+When an explicit adoption/resolution workflow records a component architecture decision, preserve the structured fact set losslessly when those facts are supplied:
 
-When an active task reaches a component whose architecture decision is required:
+- `classification`;
+- `purpose`;
+- `shipped`;
+- `runtime_required`;
+- `lifecycle_owner`;
+- `executable`.
 
-1. run `ptsip gate` for the affected component;
-2. continue immediately when the gate reports no decision is required or the authoritative decision is already resolved and applied;
-3. when the gate reports `DECISION_REQUIRED`, stop the affected boundary-sensitive work and tell the user which decision/Issue blocks progress;
-4. the user may answer in the current coding-agent chat or in the GitHub Issue;
-5. for a chat answer, invoke explicit `ptsip resolve` with the user's selected classification and factual answers; this is a user-authorized write-enabled operation and may update `ptsip.yaml`;
-6. for an Issue answer, the GitHub App accepts only the structured PTSIP answer contract from an authorized repository writer and applies it only while the decision is still pending;
-7. the first valid resolution wins. A late chat or Issue answer MUST NOT replace an already resolved decision;
-8. once a decision has been resolved outside the Issue, the Issue is completed/closed and later replies are ignored;
-9. if the target revision changed before an Issue resolution could be applied, treat the application as stale and re-run the gate against the current repository revision rather than applying an old answer to a new snapshot.
+Canonical `lifecycle_owner` values are:
 
-The decision control plane stores workflow state. The Project Profile remains the repository's architectural declaration. A decision transport or database record does not itself prove conformance.
+- `PRODUCT`;
+- `DEVELOPMENT_TOOLING`;
+- `INDEPENDENT`.
 
-## Constrained classification decisions
+Required relationships include:
 
-When acting as a PTSIP classification agent, return only one component decision at a time using the structure defined by `schemas/ptsip-agent-classification.schema.json`.
+- `PRODUCT` requires `lifecycle_owner: PRODUCT`;
+- `TOOLCHAIN` requires `lifecycle_owner: DEVELOPMENT_TOOLING`;
+- `TOOLCHAIN` must not be `shipped: true`;
+- `TOOLCHAIN` must not be `runtime_required: true`;
+- `NEUTRAL_CONTRACT` must be non-executable;
+- `NEUTRAL_CONTRACT`, when lifecycle ownership is represented, requires `lifecycle_owner: INDEPENDENT`.
 
-A resolved decision contains:
+`release_owner` and `compatibility_owner` are separate project metadata and must not be used as lossy aliases for canonical `lifecycle_owner`.
+
+Boundary-root shorthand can remain useful for simple declarations, but it cannot represent the complete adoption fact set. A write-enabled adoption/resolution workflow must not silently discard those facts merely to preserve shorthand. It should require component declarations or another lossless representation before mutation.
+
+## 3. Decision Authority and Project Profile are different
+
+When distributed coordination is selected, keep these responsibilities distinct:
+
+```text
+Decision Authority
+    -> which explicit architecture answer won for a coordinated decision
+
+Project Profile
+    -> which architecture declaration is represented by this repository revision/worktree
+
+Observed evidence
+    -> what the repository/artifacts actually do
+
+Conformance Evaluation
+    -> whether declaration + observed evidence satisfy applicable PTSIP rules
+```
+
+A Decision Authority does not replace `ptsip.yaml`, and a resolved authority winner does not prove conformance.
+
+Local Tool-owned state such as SQLite is not a repository-global authority merely because every environment runs the same Tool. Do not Git-share local SQLite state.
+
+## 4. Distributed decision gate
+
+When an active task reaches an architecture-sensitive boundary and distributed coordination is selected:
+
+1. determine the stable coordination domain and normalized component scope;
+2. read the relevant current authority state before relying on local declaration freshness;
+3. do not create authority history merely to check whether authority state exists;
+4. if no local declaration and no authority decision exist, create/reuse a pending decision only when the active task actually requires one;
+5. if a valid remote winner exists and the local declaration is missing, validate and safely project the winner locally;
+6. if local and remote declarations are semantically equivalent, report a resolved/consistent result without rewriting merely equivalent profile formatting;
+7. if local and remote declarations conflict, stop the affected operation with an explicit authority/profile conflict and do not overwrite either side silently;
+8. if repository/profile state changed after evidence or projection preparation, refuse stale application and re-analyze;
+9. if required authority freshness or safe mutation cannot be established, fail closed rather than creating an isolated Local winner.
+
+A complete local Project Profile is not sufficient reason to skip the relevant distributed authority read.
+
+Semantic equivalence is based on architecture meaning, not YAML key order, whitespace, or Tool-generated formatting.
+
+## 5. First-valid-resolution-wins
+
+For one distributed decision identity:
+
+- the first valid accepted resolution wins;
+- a later contradictory resolution must not replace it;
+- writes must use ordered conditional mutation such as CAS, transaction, consensus, or an equivalent stale-writer-safe mechanism;
+- a stale writer must reread current authority after conditional-write failure;
+- if the same-scope winner is already resolved, accept that winner rather than retrying a contradictory answer;
+- independent decisions for different scopes may retry/rebase safely when backend semantics permit it.
+
+A coding agent may execute an explicit user decision. It must not manufacture the first answer itself.
+
+## 6. Global decision state is not local projection state
+
+Do not conflate repository/domain-wide decision state with clone/worktree-local application state.
+
+```text
+GLOBAL DECISION STATE
+    PENDING
+    RESOLVED
+
+LOCAL PROJECTION/APPLICATION STATE
+    missing
+    equivalent / consistent
+    locally applied
+    stale
+    failed
+```
+
+A global `RESOLVED` state means one architecture answer won. It does not mean every clone has applied that declaration.
+
+A clone-local application receipt cannot redefine, replace, or reopen the global winner.
+
+## 7. Action-time synchronization
+
+PTSIP does not require continuous background polling. A coding agent should consult distributed authority at the operation boundary where authoritative coordinated architecture state matters.
+
+Do not poll on a timer merely because a decision exists. Do not create reminders when no active task depends on the decision.
+
+If a gate returns `DECISION_REQUIRED`, stop only the affected boundary-sensitive work and ask the user for the missing explicit architecture facts.
+
+## 8. Explicit resolution
+
+When the user supplies the architecture decision in the active chat or another authorized structured interface:
+
+1. record the explicit facts without inference;
+2. validate the answer against the bound Specification;
+3. resolve the stable distributed decision identity when distributed coordination is selected;
+4. preserve the accepted first winner;
+5. reconcile the accepted winner into the selected local Project Profile only after freshness and concurrent-content checks;
+6. never overwrite a conflicting pre-existing local declaration silently.
+
+A stale Issue/chat answer must not be applied to a changed repository/profile snapshot without re-analysis.
+
+## 9. Constrained classification review
+
+When acting only as a classification-review agent, return one component decision using `schemas/ptsip-agent-classification.schema.json`.
+
+A resolved review decision contains:
 
 - `component_id`;
 - `status: RESOLVED`;
-- exactly one classification from `PRODUCT`, `TOOLCHAIN`, `NEUTRAL_CONTRACT`;
-- `origin`;
-- confidence in the range 0..1;
-- one or more evidence IDs;
+- exactly one of `PRODUCT`, `TOOLCHAIN`, `NEUTRAL_CONTRACT`;
+- origin/confidence;
+- evidence IDs;
 - rationale;
 - counter-evidence.
 
-When ownership cannot be responsibly resolved, use `status: UNKNOWN`, `CONFLICT`, or `INCOMPLETE` and `classification: null`. Do not invent a fourth classification.
+When ownership cannot be responsibly resolved, use `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` with no architecture classification.
 
-A coding agent decision is review evidence. It MUST NOT silently mutate the project profile, approve an exception, or declare conformance unless a separate user-authorized workflow performs those actions. `ptsip resolve` is such an explicit user-authorized workflow only when the user has supplied the architecture decision being recorded; the agent must not manufacture that decision from its own review evidence.
+Agent review evidence must not silently mutate the Project Profile or Decision Authority. Mutation requires a separate explicit adoption/resolution workflow authorized by the project owner/user.
 
-A current consumer count is evidence, not a definition of Neutral Contract status. Do not reject or grant `NEUTRAL_CONTRACT` solely because one or both planes are or are not currently observed consuming it; evaluate non-executable contract semantics and lifecycle ownership.
+## 10. Evidence and conformance behavior
 
-## Evidence and conformance behavior
+Preserve dependency relationship type where supported:
 
-When reviewing dependency or artifact evidence:
+- `IMPORTS`, `LINKS`, `LOADS`, `INVOKES`, `READS`, `GENERATES`, `PACKAGES`, `TESTS`, `PUBLISHES`.
 
-- preserve relationship type such as `IMPORTS`, `LINKS`, `LOADS`, `INVOKES`, `READS`, `GENERATES`, `PACKAGES`, `TESTS`, or `PUBLISHES`;
-- preserve lifecycle phase such as `RUNTIME`, `BUILD`, `TEST`, `RELEASE`, or `INSPECTION` when evidence supports it;
-- preserve multiple phases when applicable;
-- leave unknown phase/target unresolved rather than guessing;
-- distinguish `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET` evidence scope from PTSIP architectural classification;
-- distinguish Product Artifact owner/classification from the Toolchain/Product component that produced it.
+Preserve lifecycle phases when supported:
 
-When contributing to a conformance evaluation, use these outcomes only:
+- `RUNTIME`, `BUILD`, `TEST`, `RELEASE`, `INSPECTION`.
 
-- `CONFORMANT` — applicable evidence is sufficient and no blocking mandatory violation exists;
-- `NON_CONFORMANT` — sufficient evidence establishes an applicable `MUST`/`MUST NOT` violation;
-- `INCOMPLETE` — blocking evidence or unresolved ownership prevents a conformant conclusion and no definite violation has already settled the result.
+Preserve evidence scope:
 
-`NOT_EVALUATED` is an execution state, not a conformance outcome.
+- `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, `UNRESOLVED_TARGET`.
 
-## Profile Validation versus Conformance Evaluation
+For completed Consumer Repository Conformance Evaluation, use only:
 
-Do not confuse a valid Project Profile with a conformant repository.
+- `CONFORMANT`;
+- `NON_CONFORMANT`;
+- `INCOMPLETE`.
 
-**Profile Validation** checks declaration quality: schema, IDs, selectors, references, binding syntax, remediation metadata structure, and optional project-policy consistency.
+`NOT_EVALUATED` may be a Tool execution state but is not a conformance outcome.
 
-**Conformance Evaluation** combines declaration with observed dependency, artifact, lifecycle, coverage, and other evidence against PTSIP rules.
+Distributed-coordination implementation rules (`PTSIP-AUT-*`) govern a backend/tool claiming distributed authority semantics. They are not additional Consumer Repository architecture planes and do not mean a repository becomes non-conformant merely because it does not use distributed coordination.
 
-If a profile uses the reference ownership model, it uses either boundary-root shorthand or component declarations, not both simultaneously.
+## 11. Profile Validation versus Conformance Evaluation
 
-## Read-only default for pilot and inspection
+**Profile Validation** checks declaration structure and semantics: schema, IDs, selectors, binding syntax, project policy, and represented architecture facts.
 
-When operating as an external PTSIP inspection, pilot, or validation agent, treat the Consumer Repository as read-only unless the user explicitly authorizes a repository mutation.
+**Authority reconciliation** checks whether the local declaration is consistent with the relevant coordinated winner when distributed coordination is selected.
 
-Tool-owned caches and generated pilot reports belong outside the Consumer Repository by default. If the user requests a report inside the repository, use the location the user specifies or the repository's own established convention rather than inventing a PTSIP directory hierarchy.
+**Conformance Evaluation** combines the declaration with observed dependency, artifact, lifecycle, snapshot, and coverage evidence against PTSIP rules.
 
-If repository HEAD or observable tracked state changes during evidence collection, mark the evidence snapshot invalidated and rerun or ask for investigation. Do not combine evidence from different revisions into one stable conformance claim.
+These operations must not be collapsed into one another.
 
-## External evidence
+## 12. Read-only default and snapshot integrity
 
-External validator output may be used as PTSIP analysis input when its producer, subject repository/revision, scope, and integrity/provenance are known.
+External inspection/pilot behavior is read-only by default. Tool-owned caches, reports, local decision databases, and operational state belong outside the Consumer Repository unless the user explicitly chooses a repository path.
 
-External evidence MUST NOT silently override contradictory native observed evidence, project declaration, or applicable PTSIP rules. Repository-specific governance systems remain repository-owned unless PTSIP explicitly adopts a general interoperable evidence contract.
+If repository HEAD or observed tracked content changes during evidence collection or before a prepared profile write, mark the operation stale and re-run. Do not combine evidence from different revisions into a stable conformance claim.
 
-## Required pre-change questions
+## 13. External evidence
 
-Before a boundary-affecting change, answer:
+External validator output may be used when producer, subject repository/revision, scope, and provenance/integrity are known.
 
-- What is the component's purpose?
-- Which plane owns its release lifecycle?
+External evidence must not silently override contradictory native observed evidence, project declaration, Decision Authority state, or applicable PTSIP rules.
+
+## 14. Required pre-change questions
+
+Before a boundary-affecting change, establish:
+
+- What is the component's primary purpose?
+- Which lifecycle owns it?
 - Is it shipped with the Product?
-- Is the declared component boundary coherent, or does the change introduce a split trigger?
-- Which direction do new dependency edges point?
-- What relationship type and lifecycle phase does each relevant edge serve?
-- Is the target a project-owned component, external dependency, platform target, or unresolved target?
+- Is Product runtime dependent on it?
+- Is it executable or a neutral contract?
+- Is the declared component boundary coherent?
+- Which dependency direction, relationship type, and lifecycle phase are introduced?
+- Is the target project-owned, external, platform, or unresolved?
 - Can shared semantics be represented as a Neutral Contract Artifact?
-- Does the change introduce Product/Toolchain release coupling?
-- Does a Toolchain producer generate a Product Artifact, and if so what evidence describes the artifact contents and derivation?
+- Does the active coordination mode require an authority freshness check before proceeding?
 
-## Required post-change checks
+## 15. Required post-change checks
 
 After a boundary-affecting change:
 
-- validate the declared PTSIP profile when one exists;
+- validate the selected Project Profile;
+- when distributed coordination is selected, account for relevant current authority state;
 - inspect cross-plane and project-specific constrained dependency edges;
-- verify Product packaging excludes Toolchain-only artifacts;
+- verify Product packaging excludes Toolchain-only implementation;
 - distinguish artifact owner from producer;
-- report blocking and non-blocking unresolved evidence/coverage gaps;
-- report any PTSIP rule IDs affected by the change;
+- report blocking/non-blocking evidence gaps;
+- report affected PTSIP rule IDs;
 - do not declare `CONFORMANT` unless applicable mandatory evidence is sufficient.
 
-## Instruction priority
+## 16. Instruction priority
 
-The canonical order is:
+Use this order:
 
-1. the bound canonical `PTSIP-SPEC.md` draft family and immutable revision;
-2. repository-specific PTSIP Project Profile, when present, as the project's declaration;
-3. observed repository/dependency/artifact evidence;
-4. imported external evidence with explicit provenance;
-5. project architecture decision records;
-6. this Agent Contract from the same specification revision;
-7. informal examples.
+1. bound canonical `PTSIP-SPEC.md` family + immutable revision;
+2. relevant Decision Authority winner for coordinated unresolved/resolved architecture decisions when distributed coordination is selected;
+3. repository-specific Project Profile as durable project declaration;
+4. observed repository/dependency/artifact evidence;
+5. imported external evidence with provenance;
+6. project architecture decision records/history;
+7. this Agent Contract from the same Specification revision;
+8. informal examples.
 
-A profile declaration has authority over intended ownership but does not override contradictory observed evidence when evaluating conformance. Architecture decision records may explain intent or migration history, but they do not waive PTSIP mandatory rules. If sources conflict, preserve and report the conflict rather than silently rewriting either source.
+This ordering does not make Decision Authority a conformance oracle. Authority governs which explicit architecture answer won; observed evidence still governs what the repository actually does, and conformance still requires deterministic evaluation against the bound Specification.
