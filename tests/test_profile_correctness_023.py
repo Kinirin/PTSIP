@@ -6,7 +6,7 @@ from pathlib import Path
 from ptsip.validation.profile import validate_profile
 
 
-SPEC_REVISION = "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -27,7 +27,7 @@ def _init_repo(repo: Path) -> None:
 
 
 def _profile(revision: str, policy: str = "") -> str:
-    return f"""ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{revision}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: tooling\n{policy}policies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n"""
+    return f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{revision}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: tooling\n{policy}policies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n"""
 
 
 def test_explicit_profile_revision_must_match_tool_binding(tmp_path: Path) -> None:
