@@ -90,7 +90,7 @@ pip install -e ".[dev]"
 
 The **PTSIP Specification** and the **PTSIP Reference Tool** have independent release lifecycles. A Tool version does not imply a Specification release with the same version number.
 
-This README intentionally does **not** duplicate the current Tool version, latest published release number, or immutable Specification revision. Those values have authoritative sources:
+This README intentionally does **not** duplicate the current Tool version, latest published Tool release number, or immutable active Specification revision. Those values have authoritative sources:
 
 - [`pyproject.toml`](pyproject.toml) — Tool source version and package metadata;
 - [GitHub Releases](https://github.com/kwaksinwoo01/ptsip/releases) — published Tool and Specification releases;
@@ -98,7 +98,9 @@ This README intentionally does **not** duplicate the current Tool version, lates
 - `ptsip spec` — Specification identity bound to the installed Tool;
 - [`spec/`](spec/) and [`registry/ptsip-registry.yaml`](registry/ptsip-registry.yaml) — canonical Specification content and machine-readable identity.
 
-This keeps the project overview readable and prevents routine release work from requiring README version edits.
+The published `spec-v0.3.4-draft` GitHub Release records the proposed **Explicit Project Adoption + Distributed Authority Consistency** design. It is a design release, not an automatic active Tool binding. The active normative baseline remains whatever exact immutable revision an installed Tool reports through `ptsip spec` until a coherent Specification migration and explicit Tool rebind occur.
+
+This separation keeps the project overview readable and prevents a Specification design release from silently changing already published Tool semantics.
 
 ## Consumer Repository non-intrusion
 
@@ -108,7 +110,7 @@ External PTSIP inspection and Pilot tooling is read-only against the Consumer Re
 
 The default project-owned architecture declaration is repository-root `ptsip.yaml`. It is intended to be committed with the Consumer Repository rather than placed in `.gitignore`. An explicit `--profile <path>` remains available for projects that own the profile elsewhere.
 
-Local workflow state such as `control-plane.sqlite3` remains under `PTSIP_HOME` and is **not** a portable architecture source of truth. It should not be committed or shared through Git. GitHub-coordinated repositories instead use a dedicated remote Git ref for unresolved decision coordination; the normal worktree still receives the durable architecture declaration through `ptsip.yaml`.
+Local workflow state such as `control-plane.sqlite3` remains under `PTSIP_HOME` and is **not** a portable architecture source of truth. It should not be committed or shared through Git. GitHub-coordinated repositories instead use a dedicated remote Git ref for unresolved/resolved decision coordination; the normal worktree still receives the durable architecture declaration through `ptsip.yaml`.
 
 ## Explicit project adoption
 
@@ -143,7 +145,7 @@ ptsip adopt . `
   --json
 ```
 
-For a non-GitHub repository, adoption is local and does not require a DecisionStore record. For a GitHub repository, `--apply` coordinates the architecture decision through the repository's PTSIP GitHub authority before changing the local profile, so another clone can observe the winner even before the first clone commits and pushes `ptsip.yaml`.
+For a non-GitHub repository, adoption is local and does not require a distributed Decision Authority. For a GitHub repository, a new shared architecture decision is coordinated through the repository's PTSIP GitHub authority before local mutation. If a valid local declaration already exists and no distributed decision exists for that scope, PTSIP does not fabricate remote decision history solely for bookkeeping.
 
 `adopt`, `resolve`, `validate`, `conform`, `clarify`, and `gate` all accept the same explicit `--profile` location where applicable.
 
@@ -178,7 +180,7 @@ The manual publisher requires an authenticated `gh` CLI only for the explicit pu
 
 ## Coding-agent decision gate
 
-The Reference Tool provides an **on-demand** human architecture-decision workflow for coding-agent sessions. It does not run a reminder timer or continuous background poll. A coding agent calls `ptsip gate` only when its current boundary-sensitive task actually needs a decision that the selected Project Profile does not yet declare.
+The Reference Tool provides an **on-demand** human architecture-decision workflow for coding-agent sessions. It does not run a reminder timer or continuous background poll. A coding agent calls `ptsip gate` when its current boundary-sensitive task needs authoritative architecture state. In distributed mode, this includes checking whether an apparently complete local Project Profile is stale relative to an existing repository-global winner.
 
 ```powershell
 ptsip gate . --component tools --json
@@ -194,9 +196,26 @@ Decision coordination is selected as follows:
 
 GitHub coordination stores unresolved/resolved decision records under the dedicated `refs/heads/ptsip-policy` authority ref. Mutations are serialized with non-force Git ref compare-and-swap semantics. A stale writer cannot overwrite a newer authority HEAD, and the global decision key is based on repository identity plus normalized component include scope rather than one clone's local clarification ID.
 
-Cloud environments may authenticate GitHub coordination with `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer machines may use an authenticated `gh` CLI. The credential must be able to write repository contents/refs. If GitHub coordination is selected but unavailable, PTSIP fails the new architecture-decision operation instead of silently falling back to a separate Local DecisionStore and creating split-brain authority.
+A read-only authority lookup does not create `refs/heads/ptsip-policy` or fabricate a pending decision merely to prove that no distributed decision exists.
 
-When the GitHub authority already contains a resolved winner but the current clone has not yet received the corresponding `ptsip.yaml` update, `ptsip gate` reconciles that authoritative answer into the selected local profile. This is action-time synchronization: agents do not need continuous polling, but stale clones cannot create a second winner for the same component scope.
+Cloud environments may authenticate GitHub coordination with `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer machines may use an authenticated `gh` CLI. The credential must provide the repository permissions required by the operation. If GitHub coordination is selected but required authority freshness or mutation cannot be established, PTSIP fails the coordinated operation instead of silently falling back to a separate Local DecisionStore and creating split-brain authority.
+
+### Authority freshness and reconciliation
+
+For the relevant component scope, GitHub-coordinated `ptsip gate` compares the current local Project Profile with the current distributed authority state before returning a coordination-sensitive result.
+
+| Local Project Profile | GitHub authority | Result |
+| --- | --- | --- |
+| declaration absent | no decision | create/reuse `DECISION_REQUIRED` state only when the active task actually needs a decision |
+| declaration absent | resolved winner | validate and safely project the winner into the selected local profile |
+| declaration present | no authority decision | use the project declaration and return without fabricating authority history |
+| declaration present and semantically equivalent | resolved equivalent winner | return a resolved/consistent result without rewriting equivalent profile content |
+| declaration present and semantically conflicting | resolved different winner | return `AUTHORITY_PROFILE_CONFLICT`; do not silently overwrite/reclassify the Project Profile |
+| repository/profile changed during reconciliation | any authority state | refuse stale application and require re-analysis |
+
+Semantic equivalence is based on architecture meaning, not YAML formatting, key ordering, whitespace, or Tool-generated formatting.
+
+This is **action-time synchronization**: agents do not need continuous polling, but stale clones cannot create a second winner for the same component scope.
 
 When a decision is unresolved, `ptsip gate` reports `DECISION_REQUIRED`. The coding agent should stop only the affected work and ask the user to decide. The active coding-agent chat can then record the explicit facts with `ptsip resolve`.
 
@@ -215,6 +234,8 @@ ptsip resolve . `
 
 The first valid resolution wins within the selected authority. A later contradictory answer cannot replace it. `ptsip.yaml` remains the project-owned architecture declaration; the GitHub authority or Local DecisionStore records workflow/decision state needed to coordinate how an undeclared architecture fact was resolved.
 
+Global decision state and clone-local application state are separate. A global `RESOLVED` decision means one architecture answer won; it does not imply that every clone has already written the declaration locally. Local projection/application reporting cannot change which answer won.
+
 The older hosted GitHub App / webhook Control Plane remains available through explicit `--control-plane <URL>` selection. Its GitHub Issue interface can still accept the fixed `ptsip-clarification-answer/v1` structure from an authorized repository writer. See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the Tool-level workflow and authority contract.
 
 The GitHub App runtime is optional:
@@ -227,6 +248,8 @@ ptsip-app --help
 ## Enforced conformance evaluation
 
 `ptsip conform` combines the Project Profile with observed repository evidence and explicitly supplied artifact/review evidence. It reports only `CONFORMANT`, `NON_CONFORMANT`, or `INCOMPLETE`; `NOT_EVALUATED` remains an execution state used by workflows such as Pilot evidence collection.
+
+A Decision Authority is architecture-decision coordination state, not a conformance oracle. A resolved distributed winner does not prove that dependencies, Product Artifacts, build behavior, or lifecycle behavior satisfy PTSIP.
 
 A basic machine-readable run is:
 
@@ -276,7 +299,12 @@ The current tooling focuses on:
 - explicit project-owner adoption with dry-run/application guards;
 - on-demand coding-agent decision gating and explicit human resolution;
 - GitHub-coordinated first-winner authority for multi-environment agents;
-- embedded Local DecisionStore coordination for local-only repositories;
+- gate-time authority freshness even when a local declaration is complete;
+- deterministic missing/equivalent/conflicting authority/Profile reconciliation;
+- explicit `AUTHORITY_PROFILE_CONFLICT` without silent profile overwrite;
+- fail-closed distributed coordination without implicit Local DecisionStore fallback;
+- global decision state separated from clone-local projection/application state;
+- embedded Local DecisionStore coordination for intentionally local-only repositories;
 - optional hosted GitHub App/Webhook decision synchronization without scheduled reminders;
 - project-profile validation;
 - explicit Product Artifact evidence ingestion and packaging evaluation;
@@ -289,7 +317,7 @@ Conformance is evidence-relative rather than detection-relative: unsupported, un
 
 Pilot and local decision state is stored outside the repository by default (`%LOCALAPPDATA%\PTSIP` on Windows and the platform-equivalent user state directory elsewhere). `PTSIP_HOME` can override that location. The GitHub-coordinated authority is a dedicated remote Git ref, not a worktree SQLite file.
 
-Tool releases use the `tool-v*` tag/release namespace. Specification releases may use a separate `spec-v*` namespace.
+Tool releases use the `tool-v*` tag/release namespace. Specification releases use the separate `spec-v*` namespace.
 
 ## Repository map
 
@@ -310,6 +338,7 @@ Important repository files and automation:
 
 - [`pyproject.toml`](pyproject.toml) — Python package/build metadata;
 - [`releasenote/`](releasenote/) — versioned Reference Tool and Specification release/history notes;
+- [`releasenote/spec-0.3.4-draft.md`](releasenote/spec-0.3.4-draft.md) — published `0.3.4-draft` design record and activation boundary;
 - [`.github/workflows/tooling-test.yml`](.github/workflows/tooling-test.yml) — Tool CI;
 - [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml) — PyPI Trusted Publishing for `tool-v*` releases;
 - [`.github/workflows/readme-translation.yml`](.github/workflows/readme-translation.yml) — automatic Korean README synchronization;
