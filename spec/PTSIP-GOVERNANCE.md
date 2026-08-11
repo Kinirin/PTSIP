@@ -1,123 +1,112 @@
 # PTSIP Governance
 
-**Version:** 0.2.0-draft
+**Version:** 0.3.4-draft
 
 ## 1. Purpose
 
-This document governs changes to the PTSIP specification itself and exceptions made by projects adopting PTSIP.
+This document governs changes to the PTSIP Specification itself, immutable draft-snapshot identity, rule/schema evolution, and project remediation/governance records related to PTSIP adoption.
 
 ## 2. Canonical source
 
-The public repository `https://github.com/kwaksinwoo01/ptsip` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, conformance definitions, and the Reference Tool source maintained by this project.
+The public repository `https://github.com/kwaksinwoo01/ptsip` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, conformance definitions, agent contract, ADRs, and Reference Tool source maintained by this project.
 
-Copies, blog posts, examples, agent prompts, and tooling snapshots are informative unless explicitly bound to a PTSIP specification version. Tooling SHOULD additionally record an immutable specification revision when practical.
+Copies, blog posts, examples, prompts, and tooling snapshots are informative unless explicitly bound to a PTSIP Specification family and immutable revision.
 
 ## 3. Versioning
 
-PTSIP uses semantic-version-like specification versioning for stable specification releases:
+PTSIP uses semantic-version-like Specification versioning for stable releases:
 
-- **MAJOR** — incompatible change to normative meaning or conformance.
-- **MINOR** — backward-compatible addition of rules, profiles, or capabilities.
-- **PATCH** — clarification, editorial correction, or non-semantic repair.
+- **MAJOR** — incompatible change to normative meaning or conformance;
+- **MINOR** — backward-compatible addition of rules/profiles/capabilities;
+- **PATCH** — clarification/editorial/non-semantic repair.
 
 Draft suffixes MAY be used before stable publication.
 
-### 3.1 Draft-family revisions
+### 3.1 Draft-family identity
 
-A draft label such as `0.2.0-draft` identifies a **draft specification family**, not an immutable normative snapshot. While that family remains explicitly draft/experimental, its text, schemas, and conformance model MAY evolve without changing the family label.
+A label such as `0.3.4-draft` identifies a mutable draft family, not a unique immutable snapshot.
 
-Every machine-evaluated use of a mutable draft family SHOULD bind an immutable repository revision. When an exact revision is recorded, that revision is the authoritative identity of the normative snapshot within the draft family.
+Every machine-evaluated use of a mutable draft SHOULD bind an immutable Git revision. For Enforced Conformance and Reference Tool binding, the immutable revision is required.
 
-A tooling implementation that embeds or evaluates a draft specification MUST identify both:
+A Reference Tool implementing a mutable draft MUST identify both:
 
-- the draft family label; and
-- the exact immutable specification revision it implements or was validated against.
+- draft family; and
+- exact immutable revision implemented.
 
-A tooling release version is independent from the specification family label. For example, PTSIP Specification `0.2.0-draft` MAY be implemented by PTSIP Tool `0.2.0`.
+Tool versioning remains independent from Specification family versioning.
 
-A newer normative snapshot inside the same draft family does not retroactively change the semantics implemented by an already published Tool release. That Tool remains bound to its declared immutable revision until a later Tool release explicitly binds the newer snapshot.
+### 3.2 Coherent normative migration
 
-Once a specification snapshot is declared stable or tagged as a stable specification release, subsequent normative additions or incompatible changes MUST follow the MAJOR/MINOR/PATCH policy above rather than silently changing that stable version.
+A draft-family migration that changes normative text, schema, registry semantics, agent behavior, or embedded Specification resources SHOULD update all affected canonical assets coherently before an immutable normative snapshot is selected.
+
+The immutable snapshot commit does not need to contain a literal self-SHA. A subsequent Tool binding commit MAY point backward to that already-created snapshot. This is the preferred pattern when the Tool stores a literal `SPEC_REVISION` constant.
 
 ## 4. Rule identity
 
-Normative rules have stable IDs such as `PTSIP-DEP-001`.
+Normative rules use stable IDs such as `PTSIP-DEP-001`, `PTSIP-ADP-001`, and `PTSIP-AUT-001`.
 
-A published rule ID MUST NOT be silently reused for a different semantic obligation.
-
-If a rule's meaning changes incompatibly, governance SHOULD introduce a new rule or a new major specification version.
+A published rule ID MUST NOT be silently reused for incompatible meaning. Incompatible semantics SHOULD receive a new rule ID or a new major Specification version.
 
 ## 5. Change categories
 
-Every specification change SHOULD be classified as:
+Specification changes SHOULD be classified as one or more of:
 
-- `EDITORIAL`
-- `CLARIFICATION`
-- `NORMATIVE_ADDITION`
-- `NORMATIVE_BREAKING`
-- `SCHEMA_CHANGE`
-- `CONFORMANCE_CHANGE`
+- `EDITORIAL`;
+- `CLARIFICATION`;
+- `NORMATIVE_ADDITION`;
+- `NORMATIVE_BREAKING`;
+- `SCHEMA_CHANGE`;
+- `CONFORMANCE_CHANGE`.
 
-Draft-family evolution MUST still record its change category and immutable revision even when the draft family label is retained.
-
-A draft-family PR that changes normative text, schema, registry vocabulary, or conformance semantics SHOULD update all affected canonical assets together so the merge revision is internally coherent.
+Draft-family evolution still records change category and immutable revision even when the family label remains unchanged.
 
 ## 6. Decision records
 
-A normative architecture change SHOULD have an ADR or equivalent decision record describing:
+A normative architecture change SHOULD have an ADR or equivalent record describing problem, alternatives, decision, consequences, compatibility impact, and affected rule IDs.
 
-- problem;
-- alternatives;
-- decision;
-- consequences;
-- compatibility impact;
-- affected rule IDs.
-
-Pilot-driven changes SHOULD identify which conclusions are general specification evidence versus Consumer Repository-specific findings or Tool implementation gaps.
+Implementation evidence MUST be distinguished from normative Specification semantics. A Tool behavior becomes normative only when the bound canonical Specification says so.
 
 ## 7. Violations and remediation
 
-PTSIP does not define a waiver mechanism that authorizes violation of a PTSIP `MUST` or `MUST NOT` rule.
+PTSIP defines no waiver mechanism authorizing violation of a PTSIP `MUST`/`MUST NOT` rule.
 
-Projects MAY use their own governance systems to record architectural debt, approval history, ownership, target state, review conditions, or migration work. Those records remain project governance metadata; they MUST NOT change the PTSIP conformance result produced from the applicable rule and evidence.
+Projects MAY track architectural debt, approval history, ownership, target state, review conditions, or migration work in their own governance systems. Those records MUST NOT change the PTSIP conformance result produced from applicable rules and evidence.
 
-A confirmed mandatory-rule violation remains `NON_CONFORMANT` until the architecture is remediated and reevaluated.
+A confirmed mandatory-rule violation remains `NON_CONFORMANT` until remediated and reevaluated.
 
-`PTSIP-EXC-001` is retired/superseded for the new immutable snapshot. Earlier exception records remain historical evidence interpreted under the immutable specification revision that defined that rule.
+`PTSIP-EXC-001` is retired; historical exception records remain interpretable only under the immutable snapshot that defined that rule.
 
-Repository-specific optional policy may define stricter local constraints and local governance, but local approval MUST NOT weaken or waive universal PTSIP mandatory rules.
+## 8. Distributed coordination governance
 
-## 8. Tooling relationship
+Distributed Decision Authority is an implementation capability governed by `PTSIP-AUT-*` rules. It does not create a new Consumer Repository architecture classification.
 
-The PTSIP specification and an implementation of PTSIP tooling have independent release lifecycles and independent version numbers.
+A backend-specific storage format (for example Git refs or a hosted database) is not universal PTSIP semantics unless separately standardized as an interoperability contract.
 
-A PTSIP tooling implementation MUST identify which specification family and immutable revision it supports and MUST NOT present its own implementation behavior as a normative PTSIP rule unless that behavior is grounded in the bound canonical specification revision.
+A distributed backend claiming PTSIP conformance MUST document its coordination domain, stable decision identity, ordered state/conditional mutation model, authority freshness behavior, reconciliation behavior, and fail-closed semantics.
 
-External tooling SHOULD preserve Consumer Repository Non-Intrusion and SHOULD keep tool-owned state outside the Consumer Repository by default.
+## 9. Tooling relationship
 
-Tool adapter coverage does not define specification scope. Missing implementation support for a language, package manager, or artifact format is a Tool/evidence coverage condition unless the normative specification itself lacks the required adapter-independent semantics.
+Specification and Tool releases have independent lifecycles.
 
-## 9. Stability policy
+A PTSIP Tool MUST identify the family/revision it supports and MUST NOT present implementation-only behavior as normative unless grounded in that bound revision.
 
-The 0.x series is experimental. Terminology and schemas may change.
+External Tooling SHOULD preserve Consumer Repository Non-Intrusion and keep Tool-owned state outside the Consumer Repository by default.
 
-A 1.0 release SHOULD NOT occur until:
+Missing adapter coverage is a Tool/evidence-coverage condition unless the Specification itself lacks the required adapter-independent semantics.
 
-- core rule meanings are stable;
-- multiple materially different real repositories have exercised the model;
-- at least one real repository has adopted the profile;
-- conformance checks have been exercised with rule-relative evidence coverage;
-- Product Artifact packaging checks have been exercised;
-- agent instructions have been tested against real change tasks;
-- reference tooling or equivalent enforcement has been exercised.
+## 10. Stability policy
 
-The repository is licensed under Apache License 2.0.
+The 0.x series is experimental. Terminology and schemas may change through explicit coherent migrations.
 
-## 10. Non-claim policy
+A 1.0 release SHOULD NOT occur until core rule meaning is stable, multiple materially different repositories have exercised the model, Project Profile adoption has been tested, rule-relative conformance has been exercised, Product Artifact checks have been validated, agent behavior has been tested on real change tasks, and distributed/local coordination semantics have enough operational evidence.
+
+## 11. Non-claim policy
 
 Specification changes MUST NOT present PTSIP as an externally standardized industry term unless an external standards body actually adopts it.
 
 Documentation SHOULD distinguish:
 
-- the project-defined name and rule set;
+- the project-defined PTSIP name/rule set; and
 - the pre-existing software-engineering concepts that influenced it.
+
+The repository is licensed under Apache License 2.0.
