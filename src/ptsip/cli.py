@@ -24,7 +24,7 @@ from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
 from .pilot.runner import run_pilot
-from .repository.discover import discover_repository
+from .repository.discover import RepositoryInfo, discover_repository
 from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .storage.local_state import repository_fingerprint
@@ -58,15 +58,16 @@ def _remote_control_plane_requested(explicit_url: str | None) -> bool:
     return bool(explicit_url or os.environ.get("PTSIP_CONTROL_PLANE_URL"))
 
 
-def _decision_repository(repo: object) -> str:
-    remote = getattr(repo, "remote", None)
-    if remote and getattr(remote, "provider", None) == "github" and getattr(remote, "repository", None):
-        return str(remote.repository)
-    root = getattr(repo, "root")
-    return f"local:{repository_fingerprint(root)}"
+def _decision_repository(repo: RepositoryInfo) -> str:
+    if repo.remote and repo.remote.provider == "github" and repo.remote.repository:
+        return repo.remote.repository
+    return f"local:{repository_fingerprint(repo.root)}"
 
 
-def _decision_client(repository_root: object, explicit_url: str | None):
+def _decision_client(
+    repository_root: str,
+    explicit_url: str | None,
+) -> ControlPlaneClient | LocalControlPlaneClient:
     if _remote_control_plane_requested(explicit_url):
         return ControlPlaneClient(explicit_url)
     return LocalControlPlaneClient(repository_root)
