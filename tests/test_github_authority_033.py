@@ -200,6 +200,7 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     assert adopted["status"] == "ADOPTED"
     assert adopted["backend"] == "GITHUB"
     assert adopted["authority"]["decision"]["answer"]["classification"] == "TOOLCHAIN"
+    assert adopted["authority"]["decision"]["answer"]["runtime_required"] is False
     assert (repo_a / "ptsip.yaml").is_file()
     assert not (repo_b / "ptsip.yaml").exists()
 
@@ -212,5 +213,5 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     profile = yaml.safe_load((repo_b / "ptsip.yaml").read_text(encoding="utf-8"))
     component = next(item for item in profile["components"] if item["id"] == "tools")
     assert component["classification"] == "TOOLCHAIN"
-    assert component["runtime_required"] is False
+    assert "runtime_required" not in component
     assert not decision_store_path(repo_b).exists()
