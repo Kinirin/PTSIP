@@ -61,12 +61,16 @@ class ClarificationAnalysis:
         }
 
 
-def _declared_components(root: Path) -> tuple[list[dict[str, object]], str | None, str | None]:
-    profile = find_profile(root)
+def declared_components(
+    root: str | Path,
+    explicit_profile: str | Path | None = None,
+) -> tuple[list[dict[str, object]], str | None, str | None]:
+    root = Path(root).resolve()
+    profile = find_profile(root, explicit_profile)
     if profile is None:
         return [], None, None
     try:
-        payload = yaml.safe_load(profile.read_text(encoding="utf-8"))
+        payload = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
     except Exception as exc:
         return [], str(profile), str(exc)
     if not isinstance(payload, dict):
@@ -81,6 +85,7 @@ def _declared_components(root: Path) -> tuple[list[dict[str, object]], str | Non
 def analyze_clarifications(
     path: str | Path = ".",
     component_ids: list[str] | tuple[str, ...] | None = None,
+    profile_path: str | Path | None = None,
 ) -> ClarificationAnalysis:
     repo = discover_repository(path)
     root = Path(repo.root).resolve()
@@ -99,7 +104,7 @@ def analyze_clarifications(
     else:
         candidates = all_candidates
 
-    declared, profile_path, profile_error = _declared_components(root)
+    declared, resolved_profile_path, profile_error = declared_components(root, profile_path)
     identity = (
         repo.remote.repository
         if repo.remote and repo.remote.provider == "github" and repo.remote.repository
@@ -115,6 +120,6 @@ def analyze_clarifications(
         comparison=comparison,
         candidate_ids=candidate_ids,
         requests=requests,
-        profile_path=profile_path,
+        profile_path=resolved_profile_path,
         profile_parse_error=profile_error,
     )
