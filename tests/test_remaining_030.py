@@ -10,7 +10,7 @@ from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.repository.snapshot import capture_snapshot
 
 
-SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
+SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
 
 
 def _git(repo: Path, *args: str) -> str:
