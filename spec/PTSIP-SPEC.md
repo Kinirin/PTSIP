@@ -5,6 +5,8 @@
 **Version:** 0.2.0-draft  
 **Status:** Draft normative specification
 
+> **0.3.4-draft alignment note:** `spec-v0.3.4-draft` is a published proposed Specification design record. The active normative version of this file remains `0.2.0-draft` until a coherent migration updates all affected normative documents, schemas, registry data, agent contracts, embedded resources, and binding identity at one immutable revision. Section 12 records the published candidate distributed-authority contract without silently activating it.
+
 ## 1. Scope
 
 PTSIP defines how a software project classifies, builds, packages, depends on, releases, validates, and evolves SDKs that belong either to the product or to the development toolchain.
@@ -328,7 +330,7 @@ PTSIP defines the following adapter-independent relationship vocabulary for evid
 - `LINKS` — build/link metadata directly links one compiled/project component to another;
 - `LOADS` — a component loads another module, plugin, library, or artifact dynamically;
 - `INVOKES` — a component or automation executes another component/process/script;
-- `READS` — a component consumes another component's source/data/artifact as data without treating it as executable reuse;
+- `READS` — a component consumes another component's source/data/artifact as data without treatinging it as executable reuse;
 - `GENERATES` — a component produces generated source, metadata, contract, or artifact from an input;
 - `PACKAGES` — a component or packaging process places content into an artifact;
 - `TESTS` — a test component/evaluator exercises another component;
@@ -406,8 +408,8 @@ A project claiming **PTSIP Enforced Conformance** MUST provide a machine-readabl
 - Neutral Contract ownership declarations when applicable;
 - dependency policy;
 - packaging policy;
-- build-environment policy;
-- approved exceptions.
+- build-environment policy; and
+- any project-specific transition/remediation metadata the project chooses to record, without treating that metadata as a waiver of universal PTSIP rules.
 
 The reference profile supports two ownership-declaration forms:
 
@@ -465,7 +467,7 @@ A valid profile is not proof of repository conformance.
 
 ### 9.2 Conformance Evaluation
 
-Conformance Evaluation combines applicable declaration, observed repository evidence, dependency evidence, artifact/packaging evidence, lifecycle evidence, exceptions, evidence coverage, and deterministic PTSIP rule evaluation.
+Conformance Evaluation combines applicable declaration, observed repository evidence, dependency evidence, artifact/packaging evidence, lifecycle evidence, evidence coverage, and deterministic PTSIP rule evaluation.
 
 Implementations MAY expose separate commands or APIs for Profile Validation and Conformance Evaluation. Command names are not normative.
 
@@ -478,7 +480,6 @@ A PTSIP validator SHOULD be capable of checking at least:
 - shipped artifact contents or equivalent packaging evidence;
 - build manifest separation;
 - undeclared cross-plane imports;
-- active exception records;
 - evidence coverage sufficient for applicable mandatory rules;
 - evidence snapshot integrity;
 - observable non-intrusion evidence for external inspection/pilot operations.
@@ -487,7 +488,7 @@ A PTSIP validator SHOULD be capable of checking at least:
 
 A completed PTSIP conformance evaluation reports one of:
 
-- `CONFORMANT` — applicable evidence is sufficient, no applicable mandatory violation is established, and no active PTSIP normative exception blocks the claim;
+- `CONFORMANT` — applicable evidence is sufficient, no applicable mandatory violation is established, and no blocking uncertainty remains;
 - `NON_CONFORMANT` — sufficient evidence establishes at least one applicable `MUST`/`MUST NOT` violation;
 - `INCOMPLETE` — no definite violation is sufficient to settle the result, but blocking evidence gaps, unresolved classification, unsupported relevant analysis, unstable snapshot, or equivalent uncertainty prevents a conformance claim.
 
@@ -530,3 +531,133 @@ PTSIP does not make a repository-specific same-plane dependency topology a unive
 PTSIP is a project-defined architecture policy. The acronym and exact rule set in this specification are defined by this project.
 
 PTSIP does **not** claim invention of the underlying ideas of host/target separation, build-time/runtime separation, toolchain isolation, dependency isolation, or independent lifecycle management. Its contribution is the explicit combination of these ideas into an SDK-oriented governance and conformance model.
+
+## 12. Proposed 0.3.4-draft distributed authority model
+
+This section records candidate requirements published in the `spec-v0.3.4-draft` design release. **They are not requirements of the active `0.2.0-draft` baseline until the coherent `0.3.4-draft` migration is completed and assigned an immutable normative revision.**
+
+The proposed model introduces a third state role without introducing a fourth architecture classification:
+
+```text
+PTSIP Specification
+    -> normative architecture and conformance contract
+
+Consumer Repository Project Profile
+    -> durable project-owned architecture declaration
+
+Decision Authority
+    -> coordination state for unresolved/resolved architecture decisions
+```
+
+`PRODUCT`, `TOOLCHAIN`, and `NEUTRAL_CONTRACT` remain the only architecture classifications.
+
+### 12.1 Explicit Project Adoption
+
+Candidate scope discovered from repository evidence identifies what may need a declaration. It is not architecture authority.
+
+The proposed adoption model requires project-owner architecture intent to be explicit and requires validation before mutation. A Tool or coding agent must not assign ownership solely from directory names, package names, repository conventions, or unconstrained model inference.
+
+A safe adoption transaction validates candidate identity, evidence freshness, explicit architecture facts, projected Project Profile validity, existing declaration conflicts, and concurrent profile modification before durable mutation.
+
+### 12.2 Decision Authority and coordination domain
+
+A **Decision Authority** coordinates unresolved and resolved architecture decisions within a defined **coordination domain**. It does not replace the Project Profile and does not determine conformance.
+
+A distributed coordination domain must identify the same architecture decision consistently across participating environments. The distributed decision identity is derived from stable coordination-domain identity plus deterministic normalized component scope rather than clone-local clarification IDs, temporary profile incompleteness, or local database identity.
+
+### 12.3 Ordered authority state and first-valid-resolution-wins
+
+A distributed authority exposes an ordered revision or equivalent conditional-write token sufficient to distinguish the state a participant read from later state.
+
+For one distributed decision identity, the proposed contract is first-valid-resolution-wins: a later contradictory answer cannot silently replace an accepted winner.
+
+Distributed mutations use compare-and-swap, transaction, consensus, or equivalent atomic conditional semantics. A stale writer is rejected, rereads current authority state, and accepts an already resolved same-scope winner rather than retrying a contradictory answer as though the decision were still pending.
+
+Independent decisions for different scopes may safely retry/rebase and both progress.
+
+### 12.4 Authority freshness and non-mutating observation
+
+Write serialization alone is insufficient. At a distributed architecture-sensitive operation boundary, the proposed contract requires the implementation to account for relevant current authority state before treating a local declaration as sufficient for that coordinated scope.
+
+A complete local declaration does not automatically prove that no newer distributed winner exists.
+
+Read-only authority observation should not fabricate history. Checking for absence of authority state does not itself create a pending decision, authority branch/ref, database row, or equivalent record merely to prove that no prior decision exists.
+
+### 12.5 Project Profile reconciliation
+
+The proposed distributed model distinguishes at least these states:
+
+| Local Project Profile | Distributed Authority | Candidate required semantics |
+| --- | --- | --- |
+| declaration absent | no decision | create/reuse pending state only when the active operation requires a decision |
+| declaration absent | resolved winner | validate and safely project/reconcile the winner locally |
+| declaration present | no authority decision | use the project declaration and do not fabricate decision history solely for bookkeeping |
+| declaration present and semantically equivalent | resolved equivalent winner | report consistency/resolution without rewriting merely equivalent profile text |
+| declaration present and semantically conflicting | resolved different winner | expose an explicit authority/profile conflict and do not silently overwrite either side |
+| local repository/profile changed during reconciliation | any remote state | refuse stale application and require re-analysis |
+
+Semantic equivalence is based on normalized architecture meaning rather than YAML formatting, key order, insignificant whitespace, or Tool-generated versus manually formatted equivalent content.
+
+### 12.6 Global decision state and local projection state
+
+The proposed contract separates global decision state from clone-local application/projection state.
+
+```text
+GLOBAL DECISION STATE
+    PENDING / RESOLVED
+
+LOCAL PROJECTION STATE
+    not projected / equivalent / locally applied / stale / failed
+```
+
+A global `RESOLVED` state identifies the winning architecture answer. It does not imply that every clone has already written that answer into its Project Profile.
+
+A local projection receipt cannot redefine which architecture answer won.
+
+### 12.7 Fail-closed distributed coordination and action-time synchronization
+
+When distributed coordination is selected for an architecture-sensitive operation and required authority freshness or mutation cannot be established, the proposed contract fails the affected coordinated operation rather than silently creating a separate local winner.
+
+Failure may include authentication, authorization, network, malformed authority state, incompatible ownership/manifest state, unsafe conditional mutation, or inability to establish required freshness.
+
+Continuous polling is not required. A conforming implementation may use **action-time synchronization**, consulting the relevant authority at the boundary where current work actually depends on authoritative coordinated state.
+
+### 12.8 Decision Authority is not Conformance Evaluation
+
+Decision coordination and conformance remain distinct:
+
+```text
+Decision Authority
+    -> which explicit architecture answer won
+
+Project Profile
+    -> which architecture declaration is represented locally
+
+Conformance Evaluation
+    -> whether declaration + observed evidence satisfy PTSIP rules
+```
+
+A resolved authority decision is not proof of dependency, packaging, build, lifecycle, or evidence conformance. An unresolved authority/profile conflict relevant to an Enforced Conformance declaration must be reconciled before that scope can support an unambiguous conformant claim under the future draft.
+
+### 12.9 Durable architecture-fact migration
+
+The `0.3.4-draft` design carries forward the adoption representation gap identified in `0.3.3-draft` for structured facts including:
+
+- `classification`;
+- `purpose`;
+- `shipped`;
+- `runtime_required`;
+- `lifecycle_owner`; and
+- `executable`.
+
+If those facts remain required for normative decision/adoption validation, the coherent `0.3.4-draft` migration must preserve them losslessly in durable Project Profile semantics or define an unambiguous normative mapping to existing fields.
+
+In particular, the final migration must define explicit absence/migration semantics rather than silently treating an absent `runtime_required` value as `false` where strict evaluation depends on it.
+
+### 12.10 Reference GitHub authority profile
+
+Reference Tool `0.3.4` demonstrates one implementation using a dedicated GitHub authority ref, stable repository/component-scope decision identity, non-force Git ref conditional mutation, read-only absence lookup, explicit conflict reporting, fail-closed coordination, and clone-local projection receipts.
+
+GitHub, `refs/heads/ptsip-policy`, `authority.json`, `gdec-*` identifiers, and GitHub REST APIs are reference implementation/interoperability details. They are not universal PTSIP requirements unless separately standardized.
+
+A different backend may satisfy the proposed distributed-authority contract if it provides equivalent stable identity, ordered state, conditional mutation, freshness, reconciliation, global/local state separation, and fail-closed semantics.
