@@ -7,7 +7,7 @@
 - Current Tool/package source version: `0.3.4`
 - Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - `spec-v0.3.4-draft`: published GitHub Specification design release
-- `0.3.4-draft` coherent normative freeze revision prepared in PR `#26`: `afba3531e23d96c21b7216e49614b839158ca7d5`
+- Final `0.3.4-draft` coherent normative freeze revision in PR `#26`: `afba3531e23d96c21b7216e49614b839158ca7d5`
 - Tool `0.3.4` source binding prepared in PR `#26`: `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5`
 - Activation/rebind verification: pending PR `#26` merge CI
 - Latest verified PyPI publication: `PTSIP==0.3.1`
@@ -63,6 +63,9 @@ The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` contains the coh
 - `spec/PTSIP-TERMINOLOGY.md`
 - `spec/PTSIP-GOVERNANCE.md`
 - `schemas/ptsip-profile.schema.json`
+- `schemas/ptsip-artifact-evidence.schema.json`
+- `schemas/ptsip-agent-classification.schema.json`
+- `schemas/ptsip-diagnostic.schema.json`
 - `registry/ptsip-registry.yaml`
 - `agents/AGENT-CONTRACT.md`
 - `adoption/ADOPTION-GUIDE.md`
