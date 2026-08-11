@@ -12,11 +12,11 @@ class ControlPlaneError(RuntimeError):
 
 
 class ControlPlaneClient:
-    def __init__(self, base_url: str | None = None, token: str | None = None):
-        self.base_url = (base_url or os.environ.get("PTSIP_CONTROL_PLANE_URL") or "").rstrip("/")
+    def __init__(self, base_url: str, token: str | None = None):
+        self.base_url = base_url.rstrip("/")
         self.token = token or os.environ.get("PTSIP_CONTROL_PLANE_TOKEN")
         if not self.base_url:
-            raise ControlPlaneError("PTSIP control plane URL is not configured; use --control-plane or PTSIP_CONTROL_PLANE_URL")
+            raise ControlPlaneError("PTSIP control plane URL is not configured; use --control-plane")
         if not self.token:
             raise ControlPlaneError("PTSIP_CONTROL_PLANE_TOKEN is required")
 
