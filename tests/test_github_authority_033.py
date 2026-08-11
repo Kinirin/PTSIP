@@ -5,10 +5,17 @@ import json
 import subprocess
 from pathlib import Path
 
+import pytest
 import yaml
 
 import ptsip.cli as cli_module
-from ptsip.app.github_authority import AuthorityConflict, GithubControlPlaneClient
+from ptsip.app.github_authority import (
+    AuthorityConflict,
+    CoordinationUnavailable,
+    GitHubAuthorityStore,
+    GithubControlPlaneClient,
+    answer_from_mapping,
+)
 from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
 
@@ -40,6 +47,23 @@ class MemoryAuthority:
         self.head = f"h{self.counter}"
         self.documents[path] = copy.deepcopy(payload)
         return self.head
+
+
+class NonPtsipBranchApi:
+    def request(
+        self,
+        method: str,
+        path: str,
+        payload: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        del payload
+        if method == "GET" and path.endswith("git/ref/heads/ptsip-policy"):
+            return {"object": {"sha": "existing-head"}}
+        if method == "GET" and path.endswith("git/commits/existing-head"):
+            return {"tree": {"sha": "existing-tree"}}
+        if method == "GET" and path.endswith("git/trees/existing-tree?recursive=1"):
+            return {"tree": []}
+        raise AssertionError(f"unexpected API request: {method} {path}")
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -87,6 +111,26 @@ def _toolchain_adopt_args(repo: Path) -> list[str]:
         "--apply",
         "--json",
     ]
+
+
+def test_existing_non_ptsip_authority_branch_is_refused() -> None:
+    store = GitHubAuthorityStore("example/project", api=NonPtsipBranchApi())  # type: ignore[arg-type]
+    with pytest.raises(CoordinationUnavailable, match="not a PTSIP authority"):
+        store.ensure_head()
+
+
+def test_authority_answer_requires_real_booleans() -> None:
+    with pytest.raises(ValueError, match="shipped must be a boolean"):
+        answer_from_mapping(
+            {
+                "classification": "TOOLCHAIN",
+                "purpose": "Repository-local generation tooling",
+                "shipped": "false",
+                "runtime_required": False,
+                "lifecycle_owner": "DEVELOPMENT_TOOLING",
+                "executable": True,
+            }
+        )
 
 
 def test_github_authority_uses_component_scope_not_local_clarification_id() -> None:
