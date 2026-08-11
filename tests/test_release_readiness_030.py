@@ -40,20 +40,26 @@ def test_routine_ci_verifies_test_build_and_installed_wheel_boundary() -> None:
 
 def test_release_package_contains_bound_machine_readable_contracts() -> None:
     specdata = ROOT / "src" / "ptsip" / "specdata"
-    assert (specdata / "ptsip-profile.schema.json").is_file()
-    assert (specdata / "ptsip-registry.yaml").is_file()
-    assert (specdata / "ptsip-artifact-evidence.schema.json").is_file()
-    assert (specdata / "ptsip-agent-classification.schema.json").is_file()
-    assert (specdata / "ptsip-diagnostic.schema.json").is_file()
+    for name in (
+        "ptsip-profile.schema.json",
+        "ptsip-registry.yaml",
+        "ptsip-artifact-evidence.schema.json",
+        "ptsip-agent-classification.schema.json",
+        "ptsip-diagnostic.schema.json",
+    ):
+        assert (specdata / name).is_file()
 
 
-def test_canonical_and_embedded_034_profile_and_registry_are_identical() -> None:
-    assert (ROOT / "schemas" / "ptsip-profile.schema.json").read_bytes() == (
-        ROOT / "src" / "ptsip" / "specdata" / "ptsip-profile.schema.json"
-    ).read_bytes()
-    assert (ROOT / "registry" / "ptsip-registry.yaml").read_bytes() == (
-        ROOT / "src" / "ptsip" / "specdata" / "ptsip-registry.yaml"
-    ).read_bytes()
+def test_canonical_and_embedded_machine_readable_contracts_are_identical() -> None:
+    pairs = (
+        ("schemas/ptsip-profile.schema.json", "src/ptsip/specdata/ptsip-profile.schema.json"),
+        ("registry/ptsip-registry.yaml", "src/ptsip/specdata/ptsip-registry.yaml"),
+        ("schemas/ptsip-artifact-evidence.schema.json", "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"),
+        ("schemas/ptsip-agent-classification.schema.json", "src/ptsip/specdata/ptsip-agent-classification.schema.json"),
+        ("schemas/ptsip-diagnostic.schema.json", "src/ptsip/specdata/ptsip-diagnostic.schema.json"),
+    )
+    for canonical, embedded in pairs:
+        assert (ROOT / canonical).read_bytes() == (ROOT / embedded).read_bytes(), canonical
 
 
 def test_documentation_records_034_authority_and_activation_contract() -> None:
