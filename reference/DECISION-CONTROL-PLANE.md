@@ -1,76 +1,240 @@
-# PTSIP Tool 0.3.1 Decision Control Plane
+# PTSIP Tool 0.3.3 Decision Authority and Control Plane
 
-This document describes the Tool-level decision workflow added in PTSIP Tool 0.3.1. It does not change the PTSIP Specification version or add a new architectural classification.
+This document describes the Tool-level decision workflow used when a coding-agent task reaches a boundary-sensitive operation and the Consumer Repository does not yet declare enough architectural intent. It does not change the bound PTSIP Specification version or add an architecture classification.
 
-## Purpose
+## Core ownership model
 
-The decision control plane exists for coding-agent sessions that reach a boundary-sensitive operation and cannot safely continue because the Consumer Repository does not declare enough architectural intent.
-
-The workflow is deliberately **on demand**:
-
-- no timer polls unresolved Issues;
-- no scheduler reminds users about old decisions;
-- no reminder is emitted when the user is not actively using a coding agent;
-- a coding agent polls only when its current operation actually depends on the missing decision.
-
-## Roles
-
-- **Coding agent** — invokes the decision gate when the active task needs an unresolved architecture decision and reports the blocker to the user.
-- **PTSIP CLI/agent client** — provides `ptsip gate` and explicit `ptsip resolve` operations.
-- **PTSIP GitHub App** — creates/deduplicates clarification Issues, receives Issue comment webhooks, verifies decision authority, applies Issue-originated decisions, and closes completed Issues.
-- **Decision control plane store** — records authoritative workflow state and enforces compare-and-set resolution.
-- **Project Profile** — remains the repository's architecture declaration.
-- **GitHub Issue** — is an asynchronous decision UI, not the authoritative state itself.
-
-## Decision lifecycle
+PTSIP keeps three kinds of state separate:
 
 ```text
-PENDING
-   |\
-   | \-- explicit user decision in coding-agent chat
-   |        -> RESOLVED (source=AGENT_CHAT)
-   |
-   \---- authorized structured GitHub Issue answer
-            -> RESOLVED (source=GITHUB_ISSUE)
+Specification-owned rules
+    -> packaged PTSIP Specification / registry
 
-RESOLVED
-   -> profile application
-      -> APPLIED / LOCAL_APPLIED
-      -> FAILED / STALE
+Project-owned architecture
+    -> Consumer Repository ptsip.yaml
+
+Tool-owned decision workflow state
+    -> Local DecisionStore, GitHub authority ref, or hosted Control Plane
 ```
 
-The first **valid** resolution wins. Validity includes both the fixed answer invariants and compatibility with the applicable Project Profile projection. Profile-conflicting answers do not consume the `PENDING -> RESOLVED` transition.
+`ptsip.yaml` is the durable architecture declaration for a repository revision. It is intended to be committed with the Consumer Repository and should not be placed in `.gitignore` merely because PTSIP generated it.
 
-The store performs the authoritative transition under compare-and-set semantics. A later contradictory answer receives `ALREADY_RESOLVED` / `IGNORED_TERMINAL_DECISION` and cannot replace the decision.
+`control-plane.sqlite3` is operational state. Local SQLite files are not a portable architecture source of truth and must not be shared through Git.
 
-When the candidate selector identity changes, Tool 0.3.1 generates a new clarification identity. A newer active gate marks an older still-pending semantic request stale.
+## Why Tool 0.3.3 adds GitHub coordination
 
-## Coding-agent polling
+A repository may be used concurrently by local IDE agents, cloud agents, CI agents, or multiple clones. Separate Local DecisionStores cannot coordinate a still-`PENDING` decision across those environments.
 
-A coding agent does not continuously poll PTSIP. It calls:
+Continuous `ptsip.yaml` polling is not sufficient for correctness because a valid decision may exist before the profile change is committed/pushed/fetched. Tool 0.3.3 therefore treats synchronization as an **authority problem**, not as a real-time worktree-file synchronization problem.
+
+For GitHub repositories, unresolved architecture decisions are coordinated through a dedicated Git ref:
+
+```text
+refs/heads/ptsip-policy
+```
+
+The authority ref is not the normal source branch and does not contain a shared SQLite database. It contains small JSON decision records and is mutated with non-force Git ref compare-and-swap behavior.
+
+## Backend selection
+
+`ptsip gate` and `ptsip resolve` select decision coordination as follows:
+
+```text
+explicit --control-plane <URL>
+    -> hosted HTTP Control Plane
+
+else explicit --coordination local
+    -> Local DecisionStore
+
+else explicit --coordination github
+    -> GitHub-coordinated authority (GitHub origin required)
+
+else GitHub origin exists
+    -> GitHub-coordinated authority
+
+else
+    -> Local DecisionStore
+```
+
+`--control-plane` and `--coordination` are mutually exclusive.
+
+`ptsip adopt --apply` uses project-owner adoption semantics. On a non-GitHub repository it does not create a Local DecisionStore record. On a GitHub repository it first establishes/reuses the GitHub authority winner for the component scope, then applies the project-owned profile.
+
+## Local DecisionStore
+
+The local backend stores decision workflow state under the platform PTSIP state directory. On Windows the default is equivalent to:
+
+```text
+%LOCALAPPDATA%\PTSIP\decisions\<repository-fingerprint>\control-plane.sqlite3
+```
+
+`PTSIP_HOME` may override the PTSIP state root.
+
+The Local DecisionStore is appropriate for local-only or explicitly local coordination. Its compare-and-set rules enforce first-valid-resolution-wins within that store. It is intentionally not Git-tracked or synchronized between machines.
+
+A GitHub repository may explicitly opt into this isolated behavior with:
+
+```powershell
+ptsip gate . --coordination local --json
+```
+
+That opt-in is useful for deliberately isolated experimentation; it is not distributed coordination.
+
+## GitHub-coordinated authority
+
+### Authority identity
+
+Each GitHub repository uses one authority ref by default:
+
+```text
+refs/heads/ptsip-policy
+```
+
+The ref is bootstrapped automatically when the first write-enabled GitHub-coordinated decision operation needs it.
+
+The root authority commit contains `authority.json`. Decision records are stored as:
+
+```text
+decisions/<global-decision-id>.json
+```
+
+### Global decision key
+
+Local clarification IDs include local completeness facts and may differ when two clones have temporarily different Project Profile state. Using those IDs as the global lock key would recreate a coordination gap.
+
+The GitHub authority therefore derives a `gdec-*` ID from:
+
+- GitHub `owner/repository` identity; and
+- normalized discovered component include selectors.
+
+A different local clarification ID, branch name, or local missing-field set does not create a second authority winner for the same component scope.
+
+### Compare-and-swap mutation
+
+A mutation follows this sequence:
+
+```text
+1. read authority HEAD A
+2. read current decision state from A
+3. construct a new tree
+4. create commit B whose parent is A
+5. update refs/heads/ptsip-policy from A to B with force=false
+```
+
+If another environment changes the authority HEAD after step 1, the non-force ref update is rejected. PTSIP rereads the winner rather than overwriting it.
+
+For the same component scope:
+
+```text
+Agent A reads A -> TOOLCHAIN
+Agent B reads A -> PRODUCT
+
+Agent A wins A -> B
+Agent B stale write is rejected
+Agent B rereads B
+-> ALREADY_RESOLVED (TOOLCHAIN)
+```
+
+This promotes first-valid-resolution-wins from one local SQLite database to repository-global GitHub coordination.
+
+### Authentication
+
+Cloud/automation environments may provide:
+
+```text
+GH_TOKEN
+or
+GITHUB_TOKEN
+```
+
+Interactive developer environments may instead use an authenticated `gh` CLI.
+
+The credential must have sufficient repository contents/ref write authority for the `ptsip-policy` ref. GitHub coordination does not silently fall back to Local DecisionStore if authentication, permission, or network access fails.
+
+### Fail-closed behavior
+
+When a GitHub repository is using GitHub coordination and the authority is unavailable:
+
+```text
+existing committed ptsip.yaml
+    -> still readable
+
+new/change architecture decision
+    -> blocked with coordination error
+```
+
+PTSIP must not create a separate local winner simply because GitHub is temporarily unreachable. That would create split-brain authority.
+
+## Action-time synchronization
+
+PTSIP does not continuously poll the authority ref.
+
+A coding agent calls:
 
 ```powershell
 ptsip gate . --component <candidate-id> --json
 ```
 
-only when its active boundary-sensitive task needs that component's ownership decision.
+when its current task depends on the component boundary.
 
-Outcomes:
+If the selected Project Profile already declares sufficient intent, the gate returns `NO_DECISION_REQUIRED` without contacting the decision backend.
 
-- `NO_DECISION_REQUIRED` — repository declaration is already sufficient;
-- `RESOLVED` — authoritative decision is available and applied;
-- `DECISION_REQUIRED` — the affected work must stop until the user resolves the decision;
-- `DECISION_ERROR` — the decision exists but application is stale/failed/conflicting and must be reconciled.
+If the local profile is missing the decision but the GitHub authority already contains a resolved winner, the gate applies that authoritative answer to the selected local profile and returns a resolved result. This allows a stale clone to converge before another environment's `ptsip.yaml` commit has propagated.
 
-`DECISION_REQUIRED` uses exit code `7`. Decision/application errors use exit code `8`.
+This is **action-time synchronization**, not background polling.
 
-If the same semantic decision was already resolved but its profile application became `STALE` or `FAILED`, a later **active** gate rebinds only the application target snapshot to the coding agent's current branch revision. The human answer and original winning source remain unchanged. The agent may then retry the exact same authoritative answer without asking the user to decide again. A different answer still cannot replace it.
+## Decision lifecycle
 
-GitHub Issue open/closed state is not authoritative. If a user manually closes a still-pending Issue, PTSIP does not treat that as a decision. The next active gate that actually needs the decision reopens the Issue; there is no timer-driven reopen or reminder.
+The conceptual lifecycle remains:
 
-## Chat resolution
+```text
+PENDING
+   -> explicit valid human/project-owner answer
+   -> RESOLVED
+   -> local profile application
+```
 
-A user may decide directly in the active coding-agent conversation. The agent records only the user's explicit decision through:
+The first valid authoritative resolution wins. A later contradictory answer cannot replace it.
+
+For GitHub coordination, profile application status is clone-local. One clone may have projected the decision while another has not, so the global authority does not pretend that one `application_status` describes every worktree.
+
+For the Local and hosted backends, their existing application bookkeeping remains backend-specific.
+
+## Explicit project adoption
+
+`ptsip adopt` is distinct from coding-agent `resolve` semantics.
+
+```powershell
+ptsip adopt . `
+  --component tools `
+  --classification TOOLCHAIN `
+  --purpose "Repository-local generation tooling" `
+  --shipped no `
+  --runtime-required no `
+  --lifecycle-owner DEVELOPMENT_TOOLING `
+  --executable yes `
+  --json
+```
+
+The default is a dry-run. It performs candidate discovery, answer validation, profile projection, stale-evidence checks, and full profile validation without writing the Consumer Repository or bootstrapping the GitHub authority.
+
+Application requires `--apply`.
+
+For GitHub repositories the application ordering is:
+
+```text
+candidate/evidence validation
+    -> GitHub authority gate
+    -> global first-winner resolution/reuse
+    -> local prepared-profile write
+    -> profile validation
+```
+
+A different existing GitHub winner returns `ALREADY_RESOLVED`; the local profile is not overwritten with the losing answer.
+
+## Coding-agent resolution
+
+When `ptsip gate` returns `DECISION_REQUIRED`, an active coding-agent session records only the user's explicit facts:
 
 ```powershell
 ptsip resolve . `
@@ -83,104 +247,67 @@ ptsip resolve . `
   --executable yes
 ```
 
-`ptsip resolve` is an explicit write-enabled command. Its ordering is intentionally transactional:
+Answer consistency is deterministic. Free-form architecture inference is not performed by the decision backend.
 
-1. fetch the authoritative decision record;
-2. require the local GitHub origin, branch, and revision to match the active decision target;
-3. validate the fixed answer invariants;
-4. project the answer into the local profile and run the full existing Project Profile validator **without mutating the repository**;
-5. only after that validation succeeds, attempt the central compare-and-set;
-6. if this answer won (or is the exact stored answer being retried after a stale/failed application), atomically write the prevalidated profile;
-7. report `LOCAL_APPLIED` to the control plane and complete the linked Issue.
+Local/hosted decisions retain their existing branch/revision application protections. GitHub-coordinated decision authority is repository-global; a resolved `gdec-*` winner can therefore be reconciled by another branch/clone, while local profile projection still refuses conflicting existing project declarations and concurrent profile changes.
 
-The local write also checks that `ptsip.yaml` did not change between prevalidation and replacement. If another valid answer won the central race, the local profile is not modified.
+## Result semantics
 
-## GitHub Issue resolution
+The gate exposes the existing high-level states:
 
-Clarification Issues request the fixed `ptsip-clarification-answer/v1` structure:
+- `NO_DECISION_REQUIRED` — selected profile is already sufficient;
+- `RESOLVED` — the needed decision is authoritative and available/applied for the active operation;
+- `DECISION_REQUIRED` — the affected work must stop until a human/project owner supplies the decision;
+- `DECISION_ERROR` — authority/application reconciliation failed or conflicted.
 
-```yaml
-format: ptsip-clarification-answer/v1
-decision:
-  classification: TOOLCHAIN
-  purpose: Repository migration tooling
-  shipped: NO
-  runtime_required: NO
-  lifecycle_owner: DEVELOPMENT_TOOLING
-  executable: YES
-```
+`DECISION_REQUIRED` uses exit code `7`. Decision/application errors use exit code `8`.
 
-Issue comments are accepted only when:
+Adoption uses `ptsip-adoption/v1` with statuses including:
 
-- the decision is still pending;
-- the comment parses as the fixed structured contract;
-- the user has repository write-level authority accepted by the reference service;
-- the answer passes deterministic consistency validation;
-- the answer can be projected against the Project Profile at the exact recorded gate revision without conflicting with an existing declaration.
+- `ADOPTION_PLAN`;
+- `ADOPTED`;
+- `ALREADY_DECLARED`;
+- `CONFLICT`;
+- `UNKNOWN_COMPONENT`;
+- `STALE_EVIDENCE`;
+- `ALREADY_RESOLVED` when another GitHub-coordinated architecture answer already won.
 
-Free-form prose is not interpreted by an LLM.
+## Hosted HTTP Control Plane
 
-The App validates the profile projection **before** attempting the central compare-and-set. After an Issue answer wins, the App applies the already validated `ptsip.yaml` content against the exact recorded branch revision. The write uses Git data objects and a non-force ref update so a concurrent branch move cannot silently receive a stale decision.
-
-If the branch changed after the last active gate, application becomes `STALE`; the accepted human decision remains authoritative, the Issue is completed, and the next coding-agent gate can rebind that same decision to the current snapshot for application without reopening the architecture question.
-
-## Late Issue answers
-
-If a coding-agent chat already resolved the decision, the Issue is closed after local profile application is reported. Any later Issue comment is ignored because the authoritative decision is no longer `PENDING`.
-
-Likewise, an Issue answer that wins first prevents a later contradictory chat answer from changing the decision. GitHub Issue open/closed state is a UI state only and cannot replace the control-plane decision state.
-
-## Control plane service
-
-Tool 0.3.1 includes the reference service entry point:
+The GitHub App-backed service introduced in Tool 0.3.1 remains available as an explicit hosted backend. It is no longer selected implicitly.
 
 ```powershell
 pip install "ptsip[github-app]"
 ptsip-app --host 127.0.0.1 --port 8080 --db ptsip-control-plane.sqlite3
 ```
 
-Required environment:
-
-```text
-PTSIP_CONTROL_PLANE_TOKEN
-PTSIP_GITHUB_WEBHOOK_SECRET
-PTSIP_GITHUB_APP_ID
-PTSIP_GITHUB_PRIVATE_KEY or PTSIP_GITHUB_PRIVATE_KEY_PATH
-```
-
-Remote coding-agent clients select this legacy service only by passing an explicit base URL:
+Remote clients select it only with:
 
 ```powershell
 ptsip gate . --control-plane https://control-plane.example --json
 ```
 
-The bearer token remains configured separately through `PTSIP_CONTROL_PLANE_TOKEN`.
+The bearer token remains configured through `PTSIP_CONTROL_PLANE_TOKEN`.
 
-The reference service exposes:
+The hosted service exposes:
 
-- `POST /v1/gate` — register/poll an on-demand decision and create/reopen the Issue if needed;
-- `POST /v1/decision` — fetch the authoritative decision before local profile prevalidation;
-- `POST /v1/resolve` — compare-and-set an explicit chat decision or retry the exact authoritative answer after a stale/failed application;
-- `POST /v1/application` — record coding-agent application state (`LOCAL_APPLIED`, `FAILED`, or `STALE`);
-- `POST /github/webhook` — GitHub App webhook receiver with `X-Hub-Signature-256` verification;
-- `GET /healthz` — health check.
+- `POST /v1/gate`;
+- `POST /v1/decision`;
+- `POST /v1/resolve`;
+- `POST /v1/application`;
+- `POST /github/webhook`;
+- `GET /healthz`.
 
-Agent API requests use the configured bearer token. Request bodies are bounded by the reference server. The reference SQLite store is Tool-owned service state. It is not a replacement for the Consumer Repository's `ptsip.yaml` declaration.
+Its GitHub Issue interface remains an optional asynchronous human UI. GitHub Issue open/closed state is not itself authoritative decision state.
 
-## Installation discovery
+## Non-goals
 
-Installation/repository webhook events are used to cache GitHub App installation IDs when available. The cache is not authoritative: if a gate needs a repository whose installation mapping is absent (for example after deploying the service with a fresh database while the App is already installed), the reference service resolves the repository installation on demand with GitHub App JWT authentication and stores the recovered mapping.
+Tool 0.3.3 GitHub coordination does not:
 
-This recovery is triggered by an active request; it is not background polling.
-
-## GitHub App permissions/events
-
-The reference workflow should be deployed with the minimum GitHub App repository permissions required by the enabled operations:
-
-- **Issues: write** — create, comment on, reopen, and close clarification Issues;
-- **Contents: write** — read `ptsip.yaml` and create an exact-parent Git commit/ref update for Issue-originated profile application;
-- **Metadata: read** — inspect a comment author's repository permission before accepting an Issue decision.
-
-The App receives `issue_comment` webhooks for asynchronous answers. Installation/repository events are useful for proactively caching installation mappings but are not required for correctness because active requests can recover the repository installation on demand.
-
-No scheduled reconciliation or reminder worker is part of Tool 0.3.1.
+- put SQLite files in the Consumer Repository;
+- require `.PTSIP/` or `.ptsip/` worktree directories;
+- continuously poll GitHub;
+- infer `PRODUCT`, `TOOLCHAIN`, or `NEUTRAL_CONTRACT` from directory names;
+- make the coding agent the architecture authority;
+- replace `ptsip.yaml` as the project architecture declaration;
+- change the bound PTSIP Specification revision.
