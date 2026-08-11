@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 
 from .app.client import ControlPlaneClient
+from .app.local_client import LocalControlPlaneClient
 from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
 from .clarification.render import render_console, render_issue
@@ -25,6 +27,7 @@ from .pilot.runner import run_pilot
 from .repository.discover import discover_repository
 from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
+from .storage.local_state import repository_fingerprint
 from .topology import migrate_topology
 from .validation.profile import validate_profile
 
@@ -49,6 +52,24 @@ def _emit(payload: object, as_json: bool) -> None:
 
 def _yes_no(value: str) -> bool:
     return value.casefold() == "yes"
+
+
+def _remote_control_plane_requested(explicit_url: str | None) -> bool:
+    return bool(explicit_url or os.environ.get("PTSIP_CONTROL_PLANE_URL"))
+
+
+def _decision_repository(repo: object) -> str:
+    remote = getattr(repo, "remote", None)
+    if remote and getattr(remote, "provider", None) == "github" and getattr(remote, "repository", None):
+        return str(remote.repository)
+    root = getattr(repo, "root")
+    return f"local:{repository_fingerprint(root)}"
+
+
+def _decision_client(repository_root: object, explicit_url: str | None):
+    if _remote_control_plane_requested(explicit_url):
+        return ControlPlaneClient(explicit_url)
+    return LocalControlPlaneClient(repository_root)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -118,7 +139,10 @@ def _parser() -> argparse.ArgumentParser:
     p_gate.add_argument("path", nargs="?", default=".")
     p_gate.add_argument("--component", action="append", help="Limit the gate to a detected component candidate ID; repeatable")
     p_gate.add_argument("--lang", choices=("en", "ko"), help="Issue language; otherwise PTSIP_LANG, OS locale, then English")
-    p_gate.add_argument("--control-plane", help="PTSIP control-plane base URL; otherwise PTSIP_CONTROL_PLANE_URL")
+    p_gate.add_argument(
+        "--control-plane",
+        help="Optional remote PTSIP control-plane base URL; default is the embedded local control plane. PTSIP_CONTROL_PLANE_URL also selects remote mode.",
+    )
     p_gate.add_argument("--json", action="store_true")
 
     p_resolve = sub.add_parser(
@@ -139,7 +163,10 @@ def _parser() -> argparse.ArgumentParser:
     )
     p_resolve.add_argument("--executable", required=True, choices=("yes", "no"))
     p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")
-    p_resolve.add_argument("--control-plane", help="PTSIP control-plane base URL; otherwise PTSIP_CONTROL_PLANE_URL")
+    p_resolve.add_argument(
+        "--control-plane",
+        help="Optional remote PTSIP control-plane base URL; default is the embedded local control plane. PTSIP_CONTROL_PLANE_URL also selects remote mode.",
+    )
     p_resolve.add_argument("--json", action="store_true")
 
     p_topology = sub.add_parser(
@@ -266,15 +293,23 @@ def main(argv: list[str] | None = None) -> int:
             if not analysis.comparison.stable:
                 raise RuntimeError("Repository state changed during decision-gate analysis; retry against a stable snapshot.")
             repo = analysis.repository
+            remote_mode = _remote_control_plane_requested(args.control_plane)
+            backend = "REMOTE" if remote_mode else "LOCAL"
             if not analysis.requests:
-                payload = {"status": "NO_DECISION_REQUIRED", "repository": repo.as_dict(), "decisions": []}
+                payload = {
+                    "status": "NO_DECISION_REQUIRED",
+                    "backend": backend,
+                    "repository": repo.as_dict(),
+                    "decisions": [],
+                }
                 _emit(payload, args.json)
                 return 0
-            if not repo.remote or repo.remote.provider != "github" or not repo.remote.repository:
-                raise RuntimeError("ptsip gate requires a GitHub origin for the decision control plane")
             if not repo.commit or not repo.branch:
                 raise RuntimeError("ptsip gate requires a checked-out Git branch and commit")
-            client = ControlPlaneClient(args.control_plane)
+            if remote_mode and (not repo.remote or repo.remote.provider != "github" or not repo.remote.repository):
+                raise RuntimeError("remote ptsip gate requires a GitHub origin matching the decision control plane")
+            client = _decision_client(repo.root, args.control_plane)
+            decision_repository = _decision_repository(repo)
             decisions: list[dict[str, object]] = []
             blocked = False
             errored = False
@@ -283,7 +318,7 @@ def main(argv: list[str] | None = None) -> int:
                 response = client.gate(
                     {
                         "id": request.id,
-                        "repository": repo.remote.repository,
+                        "repository": decision_repository,
                         "branch": repo.branch,
                         "subject_revision": repo.commit,
                         "component_id": request.component_id,
@@ -298,7 +333,15 @@ def main(argv: list[str] | None = None) -> int:
                 elif status in {"STALE", "CONFLICT", "INVALID", "RESOLVED_APPLICATION_REQUIRED"}:
                     errored = True
             status = "DECISION_REQUIRED" if blocked else ("DECISION_ERROR" if errored else "RESOLVED")
-            _emit({"status": status, "repository": repo.as_dict(), "decisions": decisions}, args.json)
+            _emit(
+                {
+                    "status": status,
+                    "backend": backend,
+                    "repository": repo.as_dict(),
+                    "decisions": decisions,
+                },
+                args.json,
+            )
             if blocked:
                 return 7
             if errored:
@@ -308,8 +351,9 @@ def main(argv: list[str] | None = None) -> int:
             repo = discover_repository(args.path)
             if not repo.commit or not repo.branch:
                 raise RuntimeError("ptsip resolve requires a checked-out Git branch and commit")
-            if not repo.remote or repo.remote.provider != "github" or not repo.remote.repository:
-                raise RuntimeError("ptsip resolve requires a GitHub origin matching the decision control plane")
+            remote_mode = _remote_control_plane_requested(args.control_plane)
+            if remote_mode and (not repo.remote or repo.remote.provider != "github" or not repo.remote.repository):
+                raise RuntimeError("remote ptsip resolve requires a GitHub origin matching the decision control plane")
             answer = DecisionAnswer(
                 classification=args.classification,
                 purpose=args.purpose.strip(),
@@ -323,13 +367,13 @@ def main(argv: list[str] | None = None) -> int:
                 _emit({"status": "CONFLICT", "validation": validation.as_dict()}, args.json)
                 return 8
 
-            client = ControlPlaneClient(args.control_plane)
+            client = _decision_client(repo.root, args.control_plane)
             lookup = client.decision({"decision_id": args.decision})
             decision = lookup.get("decision")
             if not isinstance(decision, dict):
-                raise RuntimeError("Control plane returned no decision record")
-            if str(decision.get("repository", "")) != repo.remote.repository:
-                raise RuntimeError("Decision repository does not match the local GitHub origin")
+                raise RuntimeError("Decision backend returned no decision record")
+            if str(decision.get("repository", "")) != _decision_repository(repo):
+                raise RuntimeError("Decision repository does not match the active local repository identity")
             if str(decision.get("branch", "")) != repo.branch:
                 raise RuntimeError("Decision branch does not match the checked-out local branch; run ptsip gate first")
             if str(decision.get("subject_revision", "")) != repo.commit:
@@ -373,9 +417,9 @@ def main(argv: list[str] | None = None) -> int:
             if not isinstance(include, list) or not component_id:
                 raise RuntimeError("Decision request has no component include selectors")
 
-            # Full local profile validation happens before the central CAS. A
-            # profile-conflicting answer therefore cannot become the first
-            # authoritative resolution merely because validation happened late.
+            # Full local profile validation happens before either local or remote
+            # compare-and-set. A profile-conflicting answer therefore cannot win
+            # merely because validation happened after decision registration.
             try:
                 prepared = prepare_local_profile(
                     repo.root,
@@ -400,7 +444,7 @@ def main(argv: list[str] | None = None) -> int:
                 return 9
             resolved = response.get("decision")
             if not isinstance(resolved, dict):
-                raise RuntimeError("Control plane returned no resolved decision record")
+                raise RuntimeError("Decision backend returned no resolved decision record")
             if str(resolved.get("subject_revision", "")) != repo.commit:
                 client.application({"decision_id": args.decision, "status": "STALE"})
                 _emit({"status": "STALE_REQUIRES_GATE", "decision": resolved}, args.json)
@@ -421,6 +465,7 @@ def main(argv: list[str] | None = None) -> int:
             _emit(
                 {
                     "status": "RESOLVED",
+                    "backend": "REMOTE" if remote_mode else "LOCAL",
                     "decision": resolved,
                     "profile_path": str(profile),
                     "application": application,
@@ -428,7 +473,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.json,
             )
             return 0
-    except (FileNotFoundError, PermissionError, OSError, RuntimeError, ValueError) as exc:
+    except (FileNotFoundError, KeyError, PermissionError, OSError, RuntimeError, ValueError) as exc:
         print(f"PTSIP error: {exc}", file=sys.stderr)
         return 2
     return 2
