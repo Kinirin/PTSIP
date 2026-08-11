@@ -9,10 +9,10 @@ from ptsip.constants import SPEC_REVISION, TOOL_VERSION
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_tool_033_package_and_runtime_versions_match() -> None:
+def test_tool_034_package_and_runtime_versions_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.3"
-    assert TOOL_VERSION == "0.3.3"
+    assert payload["project"]["version"] == "0.3.4"
+    assert TOOL_VERSION == "0.3.4"
     assert SPEC_REVISION == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
 
 
@@ -24,10 +24,13 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
 
 
-def test_routine_ci_keeps_conform_cli_smoke() -> None:
+def test_routine_ci_verifies_test_build_and_installed_wheel_boundary() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(encoding="utf-8")
     assert 'python-version: "3.14"' in workflow
     assert "python -m pytest -q" in workflow
+    assert "python -m build" in workflow
+    assert "python -m twine check dist/*" in workflow
+    assert "--force-reinstall --no-deps dist/*.whl" in workflow
     assert "ptsip --version" in workflow
     assert "ptsip spec" in workflow
     assert "ptsip conform --help" in workflow
@@ -42,18 +45,20 @@ def test_release_package_contains_bound_machine_readable_contracts() -> None:
     assert (specdata / "ptsip-diagnostic.schema.json").is_file()
 
 
-def test_documentation_exposes_adoption_coordination_and_conformance() -> None:
+def test_documentation_exposes_034_authority_consistency_and_conformance() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     status = (ROOT / "STATUS.md").read_text(encoding="utf-8")
-    release_note = (ROOT / "releasenote" / "0.3.3.md").read_text(encoding="utf-8")
+    release_note = (ROOT / "releasenote" / "0.3.4.md").read_text(encoding="utf-8")
     assert "ptsip adopt" in readme
     assert "ptsip gate" in readme
     assert "ptsip resolve" in readme
     assert "ptsip conform ." in readme
     assert "--coordination github" in readme
     assert "refs/heads/ptsip-policy" in readme
-    assert "Tool 0.3.3" in status
+    assert "AUTHORITY_PROFILE_CONFLICT" in readme
+    assert "Tool 0.3.4" in status
     assert "GitHub-coordinated" in status
     assert "ptsip adopt" in status
-    assert "0.3.3" in release_note
+    assert "0.3.4" in release_note
+    assert "AUTHORITY_PROFILE_CONFLICT" in release_note
     assert "refs/heads/ptsip-policy" in release_note
