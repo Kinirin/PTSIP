@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import copy
+import hashlib
 import json
 import re
 import shutil
@@ -56,6 +57,26 @@ def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
         lifecycle_owner=str(payload["lifecycle_owner"]),
         executable=bool(payload["executable"]),
     )
+
+
+def _normalize_selector(value: object) -> str:
+    text = str(value).replace("\\", "/").strip()
+    while text.startswith("./"):
+        text = text[2:]
+    return text.strip("/")
+
+
+def _global_decision_id(repository: str, request: dict[str, object]) -> str:
+    include = request.get("include")
+    if not isinstance(include, list):
+        include = list(include) if isinstance(include, tuple) else []
+    selectors = sorted({normalized for item in include if (normalized := _normalize_selector(item))})
+    if not selectors:
+        raise ValueError("GitHub-coordinated decision request requires include selectors")
+    digest = hashlib.sha256(
+        (repository + "\0" + "\0".join(selectors)).encode("utf-8")
+    ).hexdigest()[:20]
+    return f"gdec-{digest}"
 
 
 class GhApi:
@@ -315,9 +336,12 @@ class GithubControlPlaneClient:
         for key in ("id", "repository", "branch", "subject_revision", "component_id", "request"):
             if key not in payload:
                 raise ValueError(f"gate payload missing {key}")
-        decision_id = str(payload["id"])
         if str(payload["repository"]) != self.repository:
             raise ValueError("gate repository does not match GitHub authority repository")
+        raw_request = payload["request"]
+        if not isinstance(raw_request, dict):
+            raise ValueError("gate request must be an object")
+        decision_id = _global_decision_id(self.repository, raw_request)
         path = self._decision_path(decision_id)
 
         for _attempt in range(5):
@@ -340,11 +364,12 @@ class GithubControlPlaneClient:
             now = _utc_now()
             record: dict[str, object] = {
                 "id": decision_id,
+                "clarification_id": str(payload["id"]),
                 "repository": self.repository,
                 "branch": str(payload["branch"]),
                 "subject_revision": str(payload["subject_revision"]),
                 "component_id": str(payload["component_id"]),
-                "request": copy.deepcopy(payload["request"]),
+                "request": copy.deepcopy(raw_request),
                 "status": "PENDING",
                 "answer": None,
                 "resolution_source": None,
