@@ -148,12 +148,13 @@ PTSIP_GITHUB_APP_ID
 PTSIP_GITHUB_PRIVATE_KEY or PTSIP_GITHUB_PRIVATE_KEY_PATH
 ```
 
-Coding-agent clients configure:
+Remote coding-agent clients select this legacy service only by passing an explicit base URL:
 
-```text
-PTSIP_CONTROL_PLANE_URL
-PTSIP_CONTROL_PLANE_TOKEN
+```powershell
+ptsip gate . --control-plane https://control-plane.example --json
 ```
+
+The bearer token remains configured separately through `PTSIP_CONTROL_PLANE_TOKEN`.
 
 The reference service exposes:
 
