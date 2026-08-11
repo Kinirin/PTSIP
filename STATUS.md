@@ -20,6 +20,8 @@
 
 The `0.3.4-draft` freeze becomes the canonical active draft snapshot only when PR `#26` is merged while preserving the freeze commit in history. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
 
+The existing `spec-v0.3.4-draft` tag remains the earlier public design-release checkpoint. It is not moved to the later normative freeze revision; immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
+
 ## Specification 0.3.4-draft activation scope
 
 The migration combines the accepted Explicit Project Adoption design with Distributed Authority Consistency while preserving exactly three architecture classifications:
@@ -54,7 +56,7 @@ New stable Specification rules are:
 
 ## Coherent migration assets
 
-PR `#26` aligns:
+The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` contains the coherent normative/machine-readable migration state, including:
 
 - `spec/PTSIP-SPEC.md`
 - `spec/PTSIP-CONFORMANCE.md`
@@ -68,8 +70,9 @@ PR `#26` aligns:
 - `profiles/example.ptsip.yaml`
 - `decisions/ADR-0005-activate-spec-0.3.4-draft.md`
 - `src/ptsip/specdata/*` packaged machine-readable contracts
-- Tool profile-projection behavior and binding constants
-- regression fixtures for the new Specification identity and lossless fact representation
+- Tool profile-projection behavior required for lossless structured facts
+
+PR `#26` then adds the Tool binding and regression fixtures that point back to that immutable snapshot.
 
 All five canonical/embedded machine-readable pairs are required to be byte-identical by release-readiness tests:
 
