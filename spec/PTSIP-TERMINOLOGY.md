@@ -1,6 +1,8 @@
 # PTSIP Terminology
 
-This document is the canonical human-readable terminology registry for PTSIP 0.2.0-draft.
+This document is the canonical human-readable terminology registry for the currently active PTSIP `0.2.0-draft` normative baseline.
+
+> **0.3.4-draft alignment note:** the terms in **Candidate 0.3.4-draft distributed-authority terminology** below are published design terminology from `spec-v0.3.4-draft`. They are not an active normative binding until a coherent Specification migration updates all affected normative, schema, registry, agent-contract, and embedded Tool assets at one immutable revision.
 
 ## PTSIP Component
 
@@ -106,7 +108,88 @@ A machine-readable association between a Consumer Repository's PTSIP declaration
 
 ## Draft family
 
-A version label such as `0.2.0-draft` that identifies an experimental specification family whose exact normative snapshot is identified by immutable repository revision until a stable specification release is declared.
+A version label such as `0.2.0-draft` or proposed `0.3.4-draft` that identifies an experimental specification family whose exact normative snapshot is identified by immutable repository revision until a stable specification release is declared.
+
+A GitHub Specification Release or draft-family label does not by itself activate a new Tool binding. Activation requires an explicitly recorded coherent normative snapshot and, for a Tool, an explicit binding to that snapshot.
+
+## Candidate 0.3.4-draft distributed-authority terminology
+
+The following terms describe the published `spec-v0.3.4-draft` design. They are candidate normative terminology until the coherent `0.3.4-draft` migration is completed.
+
+### Explicit Project Adoption
+
+The controlled process by which a Consumer Repository establishes or extends a durable Project Profile from discovered component scope plus explicit project-owner architecture facts. Candidate discovery identifies **what scope needs a declaration**; it does not determine `PRODUCT`, `TOOLCHAIN`, or `NEUTRAL_CONTRACT` ownership by itself.
+
+### Decision Authority
+
+The authority used to coordinate unresolved and resolved architecture decisions for a defined coordination domain.
+
+A Decision Authority determines which explicit architecture answer won for a coordinated decision. It does **not** replace the Project Profile, and it is not observed conformance truth.
+
+### Coordination domain
+
+The scope within which one distributed architecture-decision identity has one authoritative winner. Repository identity is normally part of the domain for repository-scoped coordination.
+
+### Distributed decision identity
+
+A deterministic identity for the same architectural component scope across participating clones and environments. It is derived from stable coordination-domain identity plus normalized architecture/component scope rather than clone-local clarification IDs, temporary missing-field state, local database IDs, or incidental process identifiers.
+
+### Authority revision
+
+An ordered state token that lets a participant distinguish the authority state it read from a later authority state and perform a safe conditional mutation. Examples include an immutable Git commit/ref revision, transaction version, ETag/generation, or consensus-log index.
+
+### First-valid-resolution-wins
+
+The distributed coordination rule that the first valid accepted resolution for one distributed decision identity becomes the winner. A later contradictory resolution cannot silently replace that winner. Implementations use compare-and-swap, transaction, consensus, or equivalent conditional mutation to reject stale overwrites.
+
+### Authority freshness
+
+The property that an architecture-sensitive operation using distributed coordination accounts for the relevant current Decision Authority state before returning a result that assumes a local declaration is sufficient for that coordinated scope.
+
+A complete local Project Profile declaration is not, by itself, proof that no newer distributed winner exists.
+
+### Read-only authority observation
+
+A non-mutating check for existing authority state. Absence checking should not fabricate a pending decision, authority branch, database row, or other decision history merely to prove that no prior distributed decision exists.
+
+### Authority/Profile reconciliation
+
+The deterministic comparison and, where safe, convergence process between a selected local Project Profile declaration and a relevant Decision Authority state.
+
+Candidate `0.3.4-draft` semantics distinguish at least:
+
+- local declaration absent + no authority decision;
+- local declaration absent + resolved winner;
+- local declaration present + no authority decision;
+- local declaration semantically equivalent + resolved equivalent winner;
+- local declaration conflicting + resolved different winner; and
+- local repository/profile mutation during reconciliation.
+
+### Semantic equivalence
+
+Equivalence of architecture meaning independent of incidental serialization differences such as YAML formatting, key order, insignificant whitespace, or Tool-generated versus manually formatted equivalent content.
+
+### Authority/Profile conflict
+
+A state where a resolved distributed winner and an existing local Project Profile declaration express different architecture meaning for the same coordinated scope.
+
+The candidate `0.3.4-draft` contract requires explicit conflict reporting and forbids silent automatic overwrite or reclassification of the existing Project Profile.
+
+### Global decision state
+
+The Decision Authority state describing whether a coordinated decision is unresolved or resolved, for example `PENDING` or `RESOLVED`. Global resolution identifies the winning architecture answer; it does not prove that every clone has written that answer into its Project Profile.
+
+### Local projection state
+
+Clone-, worktree-, or revision-local state describing whether an authoritative winner has been reconciled/applied locally, is already semantically consistent, is stale, or failed to apply. Local projection state cannot alter which global architecture answer won.
+
+### Action-time synchronization
+
+Synchronization with the selected Decision Authority at an architecture-sensitive operation boundary rather than through continuous background polling. Correctness does not require every clone to continuously poll or immediately receive another clone's `ptsip.yaml` commit.
+
+### Fail-closed distributed coordination
+
+The property that a selected distributed authority does not silently degrade to an isolated local authority when required freshness or mutation cannot be established. Authentication, permission, network, malformed authority state, unsafe conditional mutation, or equivalent coordination failure stops the affected coordinated architecture operation rather than creating a second independent winner.
 
 ## Boundary
 
@@ -144,10 +227,11 @@ A reported evidence gap that cannot materially affect the result of the applicab
 
 PTSIP does not define a waiver that authorizes violation of a PTSIP `MUST`/`MUST NOT` rule. Project governance may record debt or migration approval, but a confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated. `PTSIP-EXC-001` is a historical rule from earlier immutable draft snapshots and is retired/superseded in the new snapshot.
 
-
 ## PTSIP Project Profile
 
 A machine-readable declaration of intended component/path ownership and policies for one repository or project. A reference profile uses exactly one ownership-declaration form: boundary roots for uniform ownership or component declarations for precise nested ownership. The profile is declaration, not proof of conformance. It is required for Enforced Conformance but is not required merely to run read-only inspection or pilot tooling.
+
+Under the proposed `0.3.4-draft` model, the Project Profile remains the durable project-owned architecture declaration even when a separate Decision Authority is used to coordinate unresolved architecture decisions.
 
 ## Project component dependency policy
 
@@ -160,6 +244,8 @@ The operation that checks whether a PTSIP Project Profile or equivalent declarat
 ## Conformance Evaluation
 
 The operation that combines applicable declarations with observed dependency, artifact, lifecycle, coverage, and other evidence to evaluate PTSIP rules.
+
+Decision Authority state is architecture-decision coordination state; it does not replace observed evidence or deterministic conformance-rule evaluation.
 
 ## Conformance outcome
 
