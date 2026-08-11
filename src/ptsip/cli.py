@@ -6,7 +6,8 @@ import sys
 
 from .adoption import apply_adoption, prepare_adoption
 from .app.client import ControlPlaneClient
-from .app.github_authority import GithubControlPlaneClient
+from .app.github_authority import CoordinationUnavailable, GithubControlPlaneClient
+from .app.github_reconciliation import run_github_gate
 from .app.local_client import LocalControlPlaneClient
 from .clarification.generator import analyze_clarifications
 from .clarification.i18n import resolve_language
@@ -420,16 +421,22 @@ def main(argv: list[str] | None = None) -> int:
                         "status": "INCOMPLETE",
                     }
                 )
-                gated = client.gate(
-                    {
-                        "id": preparation.request.id if preparation.request is not None else f"adopt-{candidate.id}",
-                        "repository": repository,
-                        "branch": repo.branch,
-                        "subject_revision": repo.commit,
-                        "component_id": preparation.request.component_id if preparation.request is not None else candidate.id,
-                        "request": request_payload,
-                    }
-                )
+                gate_payload = {
+                    "id": preparation.request.id if preparation.request is not None else f"adopt-{candidate.id}",
+                    "repository": repository,
+                    "branch": repo.branch,
+                    "subject_revision": repo.commit,
+                    "component_id": preparation.request.component_id if preparation.request is not None else candidate.id,
+                    "request": request_payload,
+                }
+                if preparation.status == "ALREADY_DECLARED":
+                    gated = client.peek({"repository": repository, "request": request_payload})
+                    if gated.get("status") == "NO_AUTHORITY_DECISION":
+                        _emit(payload, args.json)
+                        return 0
+                else:
+                    gated = client.gate(gate_payload)
+
                 decision = gated.get("decision")
                 if not isinstance(decision, dict):
                     raise RuntimeError("GitHub authority returned no adoption decision record")
@@ -494,6 +501,19 @@ def main(argv: list[str] | None = None) -> int:
                 raise RuntimeError("Repository state changed during decision-gate analysis; retry against a stable snapshot.")
             repo = analysis.repository
             backend = _decision_backend(repo, args.control_plane, args.coordination)
+
+            if backend == "GITHUB":
+                backend, client = _decision_client(repo, args.control_plane, args.coordination)
+                payload, exit_code = run_github_gate(
+                    analysis,
+                    client,  # type: ignore[arg-type]
+                    args.component,
+                    args.profile,
+                    language,
+                )
+                _emit(payload, args.json)
+                return exit_code
+
             if not analysis.requests:
                 payload = {
                     "status": "NO_DECISION_REQUIRED",
@@ -722,6 +742,12 @@ def main(argv: list[str] | None = None) -> int:
                 args.json,
             )
             return 0
+    except CoordinationUnavailable as exc:
+        if getattr(args, "json", False):
+            _emit({"status": "COORDINATION_UNAVAILABLE", "message": str(exc)}, True)
+        else:
+            print(f"PTSIP coordination error: {exc}", file=sys.stderr)
+        return 8
     except (FileNotFoundError, KeyError, PermissionError, OSError, RuntimeError, ValueError) as exc:
         print(f"PTSIP error: {exc}", file=sys.stderr)
         return 2
