@@ -51,15 +51,33 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
-    return DecisionAnswer(
-        classification=str(payload["classification"]),
-        purpose=str(payload["purpose"]),
-        shipped=bool(payload["shipped"]),
-        runtime_required=bool(payload["runtime_required"]),
-        lifecycle_owner=str(payload["lifecycle_owner"]),
-        executable=bool(payload["executable"]),
+def _required_string(payload: dict[str, object], key: str) -> str:
+    value = payload.get(key)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"Authoritative decision field {key} must be a non-empty string")
+    return value
+
+
+def _required_bool(payload: dict[str, object], key: str) -> bool:
+    value = payload.get(key)
+    if not isinstance(value, bool):
+        raise ValueError(f"Authoritative decision field {key} must be a boolean")
+    return value
+
+
+def answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
+    answer = DecisionAnswer(
+        classification=_required_string(payload, "classification"),
+        purpose=_required_string(payload, "purpose"),
+        shipped=_required_bool(payload, "shipped"),
+        runtime_required=_required_bool(payload, "runtime_required"),
+        lifecycle_owner=_required_string(payload, "lifecycle_owner"),
+        executable=_required_bool(payload, "executable"),
     )
+    validation = validate_answer(answer)
+    if not validation.valid:
+        raise ValueError("Authoritative decision answer is invalid: " + "; ".join(validation.errors))
+    return answer
 
 
 def _normalize_selector(value: object) -> str:
@@ -83,12 +101,7 @@ def _global_decision_id(repository: str, request: dict[str, object]) -> str:
 
 
 class GhApi:
-    """Small GitHub API adapter.
-
-    Cloud agents can authenticate with GH_TOKEN/GITHUB_TOKEN without requiring
-    another executable. Interactive developer machines may fall back to an
-    existing authenticated GitHub CLI installation.
-    """
+    """Small GitHub API adapter for interactive and cloud environments."""
 
     def __init__(self) -> None:
         self._ready = False
@@ -254,11 +267,10 @@ class GitHubAuthorityStore:
         return sha
 
     def _create_commit(self, tree: str, message: str, parents: list[str]) -> str:
-        response = self.api.request(
-            "POST",
-            f"repos/{self.repository}/git/commits",
-            {"message": message, "tree": tree, "parents": parents},
-        )
+        request: dict[str, object] = {"message": message, "tree": tree}
+        if parents:
+            request["parents"] = parents
+        response = self.api.request("POST", f"repos/{self.repository}/git/commits", request)
         sha = str(response.get("sha", ""))
         if not sha:
             raise CoordinationUnavailable("GitHub commit creation returned no SHA")
@@ -270,6 +282,51 @@ class GitHubAuthorityStore:
         if not isinstance(tree, dict) or not tree.get("sha"):
             raise CoordinationUnavailable("GitHub authority commit returned no tree SHA")
         return str(tree["sha"])
+
+    def _read_document_at_head(self, head: str, path: str) -> dict[str, object] | None:
+        tree_sha = self._tree_for_commit(head)
+        tree = self.api.request(
+            "GET",
+            f"repos/{self.repository}/git/trees/{tree_sha}?recursive=1",
+        )
+        items = tree.get("tree")
+        if not isinstance(items, list):
+            raise CoordinationUnavailable("GitHub authority tree returned no entries")
+        blob_sha = ""
+        for item in items:
+            if isinstance(item, dict) and item.get("path") == path and item.get("type") == "blob":
+                blob_sha = str(item.get("sha", ""))
+                break
+        if not blob_sha:
+            return None
+        blob = self.api.request("GET", f"repos/{self.repository}/git/blobs/{blob_sha}")
+        encoded = str(blob.get("content", "")).replace("\n", "")
+        if not encoded:
+            raise CoordinationUnavailable(f"GitHub authority blob {path} has no content")
+        try:
+            text = base64.b64decode(encoded, validate=True).decode("utf-8")
+            document = json.loads(text)
+        except (ValueError, UnicodeError, json.JSONDecodeError) as exc:
+            raise CoordinationUnavailable(f"GitHub authority document {path} is invalid: {exc}") from exc
+        if not isinstance(document, dict):
+            raise CoordinationUnavailable(f"GitHub authority document {path} is not an object")
+        return document
+
+    def _validate_authority_head(self, head: str) -> None:
+        manifest = self._read_document_at_head(head, "authority.json")
+        if manifest is None:
+            raise CoordinationUnavailable(
+                f"GitHub ref {self.ref} already exists but is not a PTSIP authority; refusing to modify it"
+            )
+        expected = {
+            "format": AUTHORITY_FORMAT,
+            "repository": self.repository,
+            "ref": self.ref,
+        }
+        if any(manifest.get(key) != value for key, value in expected.items()):
+            raise CoordinationUnavailable(
+                f"GitHub ref {self.ref} has an incompatible authority manifest; refusing to modify it"
+            )
 
     def _bootstrap(self) -> str:
         manifest = {
@@ -294,42 +351,20 @@ class GitHubAuthorityStore:
                 raise CoordinationUnavailable(f"Unable to initialize PTSIP authority ref: {exc}") from exc
             head = self._head_or_none()
             if head:
+                self._validate_authority_head(head)
                 return head
             raise AuthorityConflict("PTSIP authority bootstrap raced but no winning ref is visible") from exc
 
     def ensure_head(self) -> str:
         head = self._head_or_none()
-        return head if head is not None else self._bootstrap()
+        if head is None:
+            return self._bootstrap()
+        self._validate_authority_head(head)
+        return head
 
     def read_json(self, path: str) -> tuple[str, dict[str, object] | None]:
         head = self.ensure_head()
-        tree_sha = self._tree_for_commit(head)
-        tree = self.api.request(
-            "GET",
-            f"repos/{self.repository}/git/trees/{tree_sha}?recursive=1",
-        )
-        items = tree.get("tree")
-        if not isinstance(items, list):
-            raise CoordinationUnavailable("GitHub authority tree returned no entries")
-        blob_sha = ""
-        for item in items:
-            if isinstance(item, dict) and item.get("path") == path and item.get("type") == "blob":
-                blob_sha = str(item.get("sha", ""))
-                break
-        if not blob_sha:
-            return head, None
-        blob = self.api.request("GET", f"repos/{self.repository}/git/blobs/{blob_sha}")
-        encoded = str(blob.get("content", "")).replace("\n", "")
-        if not encoded:
-            raise CoordinationUnavailable(f"GitHub authority blob {path} has no content")
-        try:
-            text = base64.b64decode(encoded).decode("utf-8")
-            document = json.loads(text)
-        except (ValueError, UnicodeError, json.JSONDecodeError) as exc:
-            raise CoordinationUnavailable(f"GitHub authority document {path} is invalid: {exc}") from exc
-        if not isinstance(document, dict):
-            raise CoordinationUnavailable(f"GitHub authority document {path} is not an object")
-        return head, document
+        return head, self._read_document_at_head(head, path)
 
     def write_json(
         self,
@@ -475,14 +510,8 @@ class GithubControlPlaneClient:
         raw_answer = payload.get("answer")
         if not decision_id or not isinstance(raw_answer, dict):
             raise ValueError("decision_id and answer are required")
-        answer = _answer_from_mapping(raw_answer)
+        answer = answer_from_mapping(raw_answer)
         validation = validate_answer(answer)
-        if not validation.valid:
-            return {
-                "backend": "GITHUB",
-                "status": "CONFLICT",
-                "validation": validation.as_dict(),
-            }
         source = str(payload.get("source") or "AGENT_CHAT")
         if source not in {"AGENT_CHAT", "PROJECT_ADOPTION"}:
             raise ValueError("unsupported GitHub authority resolution source")
