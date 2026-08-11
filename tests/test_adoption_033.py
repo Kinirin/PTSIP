@@ -6,6 +6,8 @@ from pathlib import Path
 
 import yaml
 
+from ptsip.adoption import apply_adoption, prepare_adoption
+from ptsip.clarification.resolution import DecisionAnswer
 from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
 
@@ -33,24 +35,49 @@ def _repo(tmp_path: Path) -> Path:
     return repo
 
 
-def _adopt_args(repo: Path, *, apply: bool = False, profile: Path | None = None) -> list[str]:
+def _adopt_args(
+    repo: Path,
+    *,
+    apply: bool = False,
+    profile: Path | None = None,
+    classification: str = "TOOLCHAIN",
+) -> list[str]:
+    if classification == "PRODUCT":
+        purpose = "Product runtime component"
+        shipped = "yes"
+        runtime_required = "yes"
+        lifecycle_owner = "PRODUCT"
+        executable = "yes"
+    elif classification == "NEUTRAL_CONTRACT":
+        purpose = "Shared declarative contract"
+        shipped = "no"
+        runtime_required = "no"
+        lifecycle_owner = "INDEPENDENT"
+        executable = "no"
+    else:
+        purpose = "Repository-local generation tooling"
+        shipped = "no"
+        runtime_required = "no"
+        lifecycle_owner = "DEVELOPMENT_TOOLING"
+        executable = "yes"
+
     args = [
         "adopt",
         str(repo),
         "--component",
         "tools",
         "--classification",
-        "TOOLCHAIN",
+        classification,
         "--purpose",
-        "Repository-local generation tooling",
+        purpose,
         "--shipped",
-        "no",
+        shipped,
         "--runtime-required",
-        "no",
+        runtime_required,
         "--lifecycle-owner",
-        "DEVELOPMENT_TOOLING",
+        lifecycle_owner,
         "--executable",
-        "yes",
+        executable,
         "--coordination",
         "local",
         "--json",
@@ -102,6 +129,85 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
     assert main(_adopt_args(repo, apply=True)) == 0
     repeated = json.loads(capsys.readouterr().out)
     assert repeated["status"] == "ALREADY_DECLARED"
+
+
+def test_adopt_does_not_classify_from_tools_directory_name(tmp_path: Path, capsys) -> None:
+    product_repo = _repo(tmp_path / "product")
+    assert main(_adopt_args(product_repo, apply=True, classification="PRODUCT")) == 0
+    product_result = json.loads(capsys.readouterr().out)
+    assert product_result["status"] == "ADOPTED"
+    product_profile = yaml.safe_load((product_repo / "ptsip.yaml").read_text(encoding="utf-8"))
+    assert product_profile["components"][0]["classification"] == "PRODUCT"
+    assert product_result["declaration"]["runtime_required"] is True
+
+    neutral_repo = _repo(tmp_path / "neutral")
+    assert main(_adopt_args(neutral_repo, apply=True, classification="NEUTRAL_CONTRACT")) == 0
+    neutral_result = json.loads(capsys.readouterr().out)
+    assert neutral_result["status"] == "ADOPTED"
+    neutral_profile = yaml.safe_load((neutral_repo / "ptsip.yaml").read_text(encoding="utf-8"))
+    component = neutral_profile["components"][0]
+    assert component["classification"] == "NEUTRAL_CONTRACT"
+    assert component["executable"] is False
+    assert component["release_owner"] == "INDEPENDENT"
+
+
+def test_adopt_extends_existing_covering_component_without_creating_duplicate(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    repo = _repo(tmp_path)
+    profile = repo / "ptsip.yaml"
+    profile.write_text(
+        """ptsip:\n  version: 0.2.0-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: Repository-local generation tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        encoding="utf-8",
+    )
+
+    assert main(_adopt_args(repo, apply=True)) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["status"] == "ADOPTED"
+    document = yaml.safe_load(profile.read_text(encoding="utf-8"))
+    assert [item["id"] for item in document["components"]] == ["generator-sdk"]
+    component = document["components"][0]
+    assert component["classification"] == "TOOLCHAIN"
+    assert component["shipped"] is False
+    assert component["executable"] is True
+    assert component["release_owner"] == "DEVELOPMENT_TOOLING"
+
+
+def test_existing_conflicting_declaration_is_not_overwritten(tmp_path: Path, capsys) -> None:
+    repo = _repo(tmp_path)
+    profile = repo / "ptsip.yaml"
+    profile.write_text(
+        """ptsip:\n  version: 0.2.0-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\ncomponents:\n  - id: tools\n    classification: PRODUCT\n    include: [\"tools/**\"]\n    purpose: Existing product component\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        encoding="utf-8",
+    )
+    before = profile.read_text(encoding="utf-8")
+
+    assert main(_adopt_args(repo, apply=True)) == 8
+    result = json.loads(capsys.readouterr().out)
+    assert result["status"] == "CONFLICT"
+    assert profile.read_text(encoding="utf-8") == before
+
+
+def test_adoption_application_refuses_stale_repository_evidence(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    answer = DecisionAnswer(
+        classification="TOOLCHAIN",
+        purpose="Repository-local generation tooling",
+        shipped=False,
+        runtime_required=False,
+        lifecycle_owner="DEVELOPMENT_TOOLING",
+        executable=True,
+    )
+    preparation = prepare_adoption(repo, "tools", answer)
+    assert preparation.status == "ADOPTION_PLAN"
+
+    (repo / "tools" / "generate.py").write_text("print('changed')\n", encoding="utf-8")
+    status, profile_path, message = apply_adoption(preparation)
+    assert status == "STALE_EVIDENCE"
+    assert profile_path is not None
+    assert message is not None
+    assert not (repo / "ptsip.yaml").exists()
 
 
 def test_adopt_explicit_profile_is_seen_by_clarify_and_gate(
