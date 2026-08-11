@@ -62,7 +62,7 @@ def _adopt_args(repo: Path, *, apply: bool = False, profile: Path | None = None)
     return args
 
 
-def test_adopt_is_dry_run_by_default_and_apply_persists_full_declaration(
+def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
     tmp_path: Path,
     monkeypatch,
     capsys,
@@ -84,6 +84,7 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_full_declaration(
     assert main(_adopt_args(repo, apply=True)) == 0
     adopted = json.loads(capsys.readouterr().out)
     assert adopted["status"] == "ADOPTED"
+    assert adopted["declaration"]["runtime_required"] is False
     profile = repo / "ptsip.yaml"
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
     component = next(item for item in document["components"] if item["id"] == "tools")
@@ -93,7 +94,6 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_full_declaration(
         "classification": "TOOLCHAIN",
         "purpose": "Repository-local generation tooling",
         "shipped": False,
-        "runtime_required": False,
         "executable": True,
         "release_owner": "DEVELOPMENT_TOOLING",
     }
@@ -149,8 +149,8 @@ def test_invalid_or_unknown_adoption_never_writes_profile(tmp_path: Path, capsys
     repo = _repo(tmp_path)
 
     invalid = _adopt_args(repo, apply=True)
-    purpose_index = invalid.index("--runtime-required") + 1
-    invalid[purpose_index] = "yes"
+    runtime_index = invalid.index("--runtime-required") + 1
+    invalid[runtime_index] = "yes"
     assert main(invalid) == 8
     conflict = json.loads(capsys.readouterr().out)
     assert conflict["status"] == "CONFLICT"
