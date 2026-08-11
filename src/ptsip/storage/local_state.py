@@ -30,3 +30,11 @@ def pilot_directory(repository_root: str | Path) -> Path:
 
 def clarification_directory(repository_root: str | Path) -> Path:
     return ptsip_home() / "clarifications" / repository_fingerprint(repository_root)
+
+
+def decision_directory(repository_root: str | Path) -> Path:
+    return ptsip_home() / "decisions" / repository_fingerprint(repository_root)
+
+
+def decision_store_path(repository_root: str | Path) -> Path:
+    return decision_directory(repository_root) / "control-plane.sqlite3"
