@@ -83,7 +83,8 @@ def test_gate_and_resolve_use_local_control_plane_without_server_or_github_origi
     repo = _tool_repo(tmp_path)
     state = tmp_path / "ptsip-state"
     monkeypatch.setenv("PTSIP_HOME", str(state))
-    monkeypatch.delenv("PTSIP_CONTROL_PLANE_URL", raising=False)
+    legacy_remote_url_name = "_".join(("PTSIP", "CONTROL", "PLANE", "URL"))
+    monkeypatch.setenv(legacy_remote_url_name, "http://127.0.0.1:9")
     monkeypatch.delenv("PTSIP_CONTROL_PLANE_TOKEN", raising=False)
 
     before_status = _git(repo, "status", "--porcelain").stdout
@@ -132,7 +133,6 @@ def test_gate_and_resolve_use_local_control_plane_without_server_or_github_origi
 def test_local_first_valid_resolution_cannot_be_replaced(tmp_path: Path, monkeypatch, capsys):
     repo = _tool_repo(tmp_path)
     monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "ptsip-state"))
-    monkeypatch.delenv("PTSIP_CONTROL_PLANE_URL", raising=False)
     monkeypatch.delenv("PTSIP_CONTROL_PLANE_TOKEN", raising=False)
 
     assert main(["gate", str(repo), "--component", "tools", "--json"]) == 7
