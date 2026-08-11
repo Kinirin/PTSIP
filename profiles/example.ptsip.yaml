@@ -1,9 +1,9 @@
 ptsip:
-  version: "0.2.0-draft"
+  version: "0.3.4-draft"
   specification:
     source: "https://github.com/kwaksinwoo01/ptsip"
-    # Pin an immutable revision for reproducible automated evaluation.
-    # revision: "<commit-sha-or-release>"
+    # Pin the exact immutable 0.3.4-draft snapshot used for reproducible Enforced Conformance.
+    # revision: "<immutable-specification-commit-sha>"
 
 components:
   - id: product-runtime
@@ -12,6 +12,8 @@ components:
       - "product/app/**"
     purpose: product_runtime
     shipped: true
+    runtime_required: true
+    lifecycle_owner: PRODUCT
     executable: true
     release_owner: product
     compatibility_owner: product
@@ -22,6 +24,8 @@ components:
       - "product/sdk/**"
     purpose: shipped_product_sdk
     shipped: true
+    runtime_required: false
+    lifecycle_owner: PRODUCT
     executable: true
     release_owner: product
     compatibility_owner: product
@@ -32,6 +36,8 @@ components:
       - "toolchain/sdk/**"
     purpose: development_validation_and_generation
     shipped: false
+    runtime_required: false
+    lifecycle_owner: DEVELOPMENT_TOOLING
     executable: true
     release_owner: toolchain
     compatibility_owner: toolchain
@@ -45,6 +51,8 @@ components:
       - "toolchain/automation/**"
     purpose: build_and_release_automation
     shipped: false
+    runtime_required: false
+    lifecycle_owner: DEVELOPMENT_TOOLING
     executable: true
     release_owner: toolchain
     compatibility_owner: toolchain
@@ -55,6 +63,8 @@ components:
       - "contracts/**"
     purpose: cross_plane_declarative_contracts
     shipped: true
+    runtime_required: false
+    lifecycle_owner: INDEPENDENT
     executable: false
     release_owner: contract
     compatibility_owner: contract
@@ -69,4 +79,3 @@ policies:
   independent_build_resolution: "required"
   shared_executable_cross_boundary: "deny"
   neutral_contract_sharing: "allow"
-
