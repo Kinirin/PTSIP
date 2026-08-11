@@ -6,9 +6,18 @@
 **Implementation evidence:** PTSIP Reference Tool `0.3.4`  
 **Tool implementation merge:** `555c528593f700a348d8da84545a62ce61291cae`  
 **Tool verification completion before rebind:** `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f`  
+**Normative freeze revision:** `afba3531e23d96c21b7216e49614b839158ca7d5`  
 **Identity model:** draft family label + immutable Git revision
 
-The `spec-v0.3.4-draft` GitHub Release originally published the design record for Explicit Project Adoption plus Distributed Authority Consistency. The tag/release remains historical design provenance; the exact active normative identity is the immutable coherent-migration revision that contains the canonical Specification, schema, registry, agent contract, ADR, and matching embedded resources.
+The existing `spec-v0.3.4-draft` tag/GitHub Release is the earlier public design-release checkpoint and remains immutable historical provenance. It is not moved to the later activation snapshot.
+
+The exact active normative identity of this mutable draft family is:
+
+```text
+0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5
+```
+
+The freeze becomes canonical when PR `#26` is merged while preserving that commit in repository history.
 
 Because a Git commit cannot safely contain its own literal SHA, the immutable normative migration commit is created first. A following Tool binding commit records that already-existing revision as `SPEC_REVISION`.
 
@@ -103,7 +112,7 @@ The coherent migration assigns:
 
 ## 6. Coherent migration assets
 
-The activation migration aligns at one repository state:
+The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` aligns:
 
 - `spec/PTSIP-SPEC.md`;
 - `spec/PTSIP-CONFORMANCE.md`;
@@ -136,7 +145,7 @@ The artifact, agent-classification, and diagnostic contract semantics themselves
 
 Reference Tool `0.3.4` was originally implemented and verified while bound to `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
 
-The Tool may claim `0.3.4-draft` only after its binding constants point to the immutable freeze revision produced by this coherent migration and the complete regression/build verification succeeds again with the new embedded resources and lossless profile projection.
+The Tool binding commit in PR `#26` points to `afba3531e23d96c21b7216e49614b839158ca7d5`. The complete regression/build verification must succeed again under that binding before Tool `0.3.4` returns to verified-publication-candidate status.
 
 ## 8. Compatibility
 
