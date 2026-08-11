@@ -1,10 +1,12 @@
 # PTSIP Status
 
-- Specification family: `0.2.0-draft`
+- Active Specification family: `0.2.0-draft`
 - Latest canonical normative snapshot: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
+- Proposed Specification family design record: `0.3.3-draft` (not yet an active Tool binding)
 - Current Tool/package source version: `0.3.3`
 - Tool 0.2.3 historical bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
-- Tool 0.3.x bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
+- Current Tool 0.3.3 bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
+- Tool 0.3.4 Specification binding: to be recorded explicitly; no proposed Specification family is adopted automatically
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/PTSIP`
@@ -16,8 +18,11 @@
 - Tool 0.3.1 publication status: published as `tool-v0.3.1` and available from PyPI
 - Tool 0.3.2 source status: merged source baseline; not published/tagged
 - Tool 0.3.2 verification: GitHub Actions run `31365614038`, Python 3.14, `115 passed`, CLI/package checks successful
-- Tool 0.3.3 source target: explicit `ptsip adopt`, profile-path symmetry, Local DecisionStore continuity, and GitHub-coordinated multi-environment decision authority
-- Tool 0.3.3 publication status: migration source only; not published/tagged
+- Tool 0.3.3 completed scope: explicit `ptsip adopt`, profile-path symmetry, deterministic validation/profile-projection reuse, and Local DecisionStore continuity
+- Tool 0.3.3 source note: early GitHub-coordinated authority code is a precursor/prototype for Tool 0.3.4, not a completed 0.3.3 release contract
+- Tool 0.3.3 publication policy: permanently source-only; never create `tool-v0.3.3`, a GitHub Release, or PyPI `0.3.3`
+- Tool 0.3.4 source target: complete GitHub-coordinated repository-global authority freshness, reconciliation, conflict, application-state, and distributed consistency semantics
+- Tool 0.3.4 publication position: next Tool version eligible to become a tagged/GitHub/PyPI publication candidate after acceptance and explicit release approval
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -120,33 +125,57 @@ Final pre-merge verification completed in GitHub Actions run `31365614038`: Pyth
 
 See [`releasenote/0.3.2.md`](releasenote/0.3.2.md) for the migration-source scope.
 
-## Tool 0.3.3 — explicit adoption and multi-environment authority
+## Tool 0.3.3 — explicit adoption source-only migration
 
-Tool 0.3.3 migration source extends the Tool orchestration layer while keeping the same immutable Specification binding.
+Tool `0.3.3` completes the explicit project-adoption workstream while remaining bound to the active immutable `0.2.0-draft` Specification revision.
 
-Implemented source scope:
+Completed Tool `0.3.3` scope:
 
 - new `ptsip adopt` command with deterministic candidate selection, explicit architecture facts, read-only dry-run by default, explicit `--apply`, stale-evidence protection, profile prevalidation, concurrent-profile protection, and post-write validation;
 - adoption reuses `DecisionAnswer`, `validate_answer()`, and the existing profile projection/write path instead of adding a second classification model;
 - `ptsip clarify --profile` and `ptsip gate --profile` complete explicit profile-location symmetry with `adopt`, `resolve`, `validate`, and `conform`;
-- non-GitHub repositories retain the embedded Local DecisionStore for active coding-agent decision gates;
-- GitHub repositories use a GitHub-coordinated authority by default for unresolved architecture decisions, with explicit `--coordination local|github` overrides and the hosted HTTP `--control-plane` override retained;
-- the GitHub authority is an automatically bootstrapped `refs/heads/ptsip-policy` Git ref containing JSON authority/decision records, not a shared SQLite database;
-- GitHub authority writes use exact-parent commits and non-force ref updates so stale writers cannot replace a newer authority HEAD;
-- global decision IDs are derived from repository identity plus normalized component include scope, avoiding separate winners when clones temporarily generate different local clarification IDs;
-- resolved GitHub authority decisions can be reconciled into a stale clone's selected `ptsip.yaml` at `ptsip gate` time, without continuous background polling;
-- GitHub coordination accepts `GH_TOKEN`/`GITHUB_TOKEN` for cloud environments or authenticated `gh` CLI credentials for interactive use;
-- selected GitHub coordination fails closed if network/auth/permissions are unavailable instead of silently creating a separate Local DecisionStore winner;
-- an existing non-PTSIP `ptsip-policy` branch is refused unless its authority manifest matches the PTSIP authority format/repository/ref identity;
+- Local DecisionStore continuity for local-only/explicit local coding-agent decision workflows;
+- explicit hosted HTTP Control Plane compatibility remains available;
 - local `control-plane.sqlite3` remains outside the Consumer Repository and is not Git-shared;
 - repository-root `ptsip.yaml` remains the default project-owned declaration and is intended to be committed, not ignored;
-- the `runtime_required` decision fact is retained in decision authority data but is not added to the bound Project Profile schema, preserving the immutable Specification revision contract.
+- the `runtime_required` decision fact is not silently added to the bound predecessor Project Profile schema.
 
-Tool 0.3.3 does not change the three PTSIP classifications, conformance outcomes, universal rule semantics, or the bound Specification revision. Global `gate --json` exception-envelope redesign and aggregate gate-precondition diagnostics remain separate follow-up work.
+The `0.3.3` source tree also contains an early GitHub-coordinated authority prototype from a subsequently withdrawn Tool `0.3.3` scope amendment. The prototype includes CAS/write-side and basic stale-missing-profile behavior, but its full repository-global contract is **not** considered completed Tool `0.3.3` behavior.
 
-Final Tool 0.3.3 release-boundary verification is recorded after the migration branch passes its final Python 3.14 test/package job. No release tag, GitHub Release, or PyPI publication is implied by the source migration.
+The unresolved authority-consistency work is explicitly moved to Tool `0.3.4`, including:
 
-See [`releasenote/0.3.3.md`](releasenote/0.3.3.md) and [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md).
+- read-side authority freshness when a local declaration already exists;
+- equivalent/conflicting local-versus-remote reconciliation semantics;
+- stable machine-readable authority/profile conflict states;
+- final global-decision versus clone-local application-state semantics;
+- complete distributed multi-clone verification.
+
+Pre-merge Tool `0.3.3` source verification completed in GitHub Actions run `31465581071` on Python 3.14 with `128 passed`, CLI/package checks, build, and `twine check` success.
+
+Tool `0.3.3` is permanently source-only. The project will never create `tool-v0.3.3`, a GitHub Release for Tool `0.3.3`, or PyPI `PTSIP==0.3.3`.
+
+See [`planning/PTSIP-TOOL-0.3.3-EXPLICIT-PROJECT-ADOPTION-PLAN.md`](planning/PTSIP-TOOL-0.3.3-EXPLICIT-PROJECT-ADOPTION-PLAN.md) and [`releasenote/0.3.3.md`](releasenote/0.3.3.md).
+
+## Tool 0.3.4 — GitHub-coordinated distributed authority completion
+
+Tool `0.3.4` is the independent workstream that completes the GitHub-coordinated repository-global authority contract begun experimentally in the `0.3.3` source tree.
+
+The approved planning target includes:
+
+- authority reads at relevant architecture-sensitive gate boundaries even when a local Project Profile already contains a declaration;
+- deterministic missing/equivalent/conflicting local-versus-remote reconciliation behavior;
+- explicit conflict semantics with no silent Project Profile overwrite;
+- preserved global first-winner CAS semantics;
+- fail-closed distributed coordination without Local fallback winners;
+- separation of global decision resolution from clone-local Project Profile application state;
+- coordinated `adopt`, `gate`, and `resolve` behavior;
+- complete multi-clone regression and release-readiness verification.
+
+Tool `0.3.4` must not silently bind itself to the separately proposed Specification `0.3.3-draft` family. Its final Specification binding requires an explicit, coherent Tool/Specification decision.
+
+Tool `0.3.4` is the next Tool version eligible for a `tool-v0.3.4` tag, GitHub Release, and PyPI publication, but no publication is implied until its acceptance criteria and explicit release decision are complete.
+
+See [`planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md`](planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md).
 
 ## Release blockers for PTSIP Specification 1.0
 
@@ -155,4 +184,4 @@ See [`releasenote/0.3.3.md`](releasenote/0.3.3.md) and [`reference/DECISION-CONT
 - validate the constrained Agent Contract and deterministic Human Clarification against real ownership questions;
 - exercise rule-relative evidence coverage and Product Artifact evidence;
 - publish tagged stable specification releases;
-- exercise Tool 0.3.1 or later against real Consumer Repositories with component declarations, artifact evidence, review/import evidence, on-demand human decision gates, topology migrations, multi-environment decision coordination, and repeatable conformance evaluation.
+- exercise Tool 0.3.1 or later against real Consumer Repositories with component declarations, artifact evidence, review/import evidence, on-demand human decision gates, topology migrations, distributed decision coordination, and repeatable conformance evaluation.
