@@ -7,6 +7,9 @@ from ptsip.app.store import DecisionStore
 from ptsip.clarification.resolution import DecisionAnswer, parse_answer, project_payload, validate_answer
 
 
+SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
+
+
 class FakeGitHub:
     def __init__(self):
         self.created: list[tuple[str, str]] = []
@@ -143,13 +146,13 @@ def test_toolchain_runtime_answer_is_conflict():
     assert result.status == "CONFLICT"
 
 
-def test_profile_projection_preserves_existing_boundary_and_rejects_conflicting_fact():
+def test_profile_projection_preserves_existing_boundary_and_structured_facts_and_rejects_conflict():
     existing = {
         "ptsip": {
-            "version": "0.2.0-draft",
+            "version": "0.3.4-draft",
             "specification": {
                 "source": "https://github.com/kwaksinwoo01/ptsip",
-                "revision": "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45",
+                "revision": SPEC_REVISION,
             },
         },
         "components": [
@@ -171,7 +174,10 @@ def test_profile_projection_preserves_existing_boundary_and_rejects_conflicting_
     component = projected["components"][0]
     assert component["include"] == ["tools/**", "scripts/generate.py"]
     assert component["purpose"] == answer.purpose
-    assert component["release_owner"] == "DEVELOPMENT_TOOLING"
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
+    assert component["executable"] is True
+    assert "release_owner" not in component
     assert "compatibility_owner" not in component
 
     conflicting = _answer("PRODUCT")
@@ -242,11 +248,11 @@ def test_issue_profile_conflict_does_not_win_authoritative_cas(tmp_path: Path):
     store = DecisionStore(tmp_path / "state.sqlite3")
     store.set_installation("example/product", 99)
     github = FakeGitHub()
-    github.file_content = """ptsip:
-  version: 0.2.0-draft
+    github.file_content = f"""ptsip:
+  version: 0.3.4-draft
   specification:
     source: https://github.com/kwaksinwoo01/ptsip
-    revision: a877b2f66a7f94c1b844c979e1b08fb08a9a8e45
+    revision: {SPEC_REVISION}
 components:
   - id: tools
     classification: PRODUCT
