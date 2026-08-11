@@ -7,7 +7,7 @@ from ptsip.constants import SPEC_REVISION, SPEC_VERSION, TOOL_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
+EXPECTED_SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
 
 
 def test_tool_034_package_runtime_and_spec_binding_match() -> None:
