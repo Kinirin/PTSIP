@@ -32,6 +32,7 @@ def test_canonical_json_schemas_are_valid_draft_2020_12() -> None:
 
 def test_registry_preserves_exactly_three_architecture_classifications() -> None:
     registry = _yaml("registry/ptsip-registry.yaml")["ptsip_registry"]
+    assert registry["specification"]["version"] == "0.3.4-draft"
     assert [item["id"] for item in registry["classifications"]] == [
         "PRODUCT",
         "TOOLCHAIN",
@@ -42,9 +43,9 @@ def test_registry_preserves_exactly_three_architecture_classifications() -> None
     assert not (node_scopes & {"PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"})
 
 
-def test_registry_contains_new_pilot_driven_rule_ids() -> None:
+def test_registry_contains_adoption_and_distributed_authority_rule_ids() -> None:
     registry = _yaml("registry/ptsip-registry.yaml")["ptsip_registry"]
-    rules = {item["id"] for item in registry["rules"]}
+    rules = {item["id"]: item for item in registry["rules"]}
     assert {
         "PTSIP-CLS-002",
         "PTSIP-ART-001",
@@ -52,7 +53,17 @@ def test_registry_contains_new_pilot_driven_rule_ids() -> None:
         "PTSIP-EVD-004",
         "PTSIP-DIA-001",
         "PTSIP-POL-001",
-    } <= rules
+        "PTSIP-ADP-001",
+        "PTSIP-AUT-001",
+        "PTSIP-AUT-002",
+        "PTSIP-AUT-003",
+        "PTSIP-AUT-004",
+        "PTSIP-AUT-005",
+        "PTSIP-AUT-006",
+        "PTSIP-AUT-007",
+    } <= set(rules)
+    assert rules["PTSIP-ADP-001"]["applies_to"] == "implementation"
+    assert rules["PTSIP-AUT-001"]["applies_to"] == "distributed_coordination_implementation"
 
 
 def test_every_registry_rule_id_has_a_normative_spec_heading() -> None:
@@ -66,7 +77,7 @@ def test_every_registry_rule_id_has_a_normative_spec_heading() -> None:
 def _minimal_profile() -> dict[str, object]:
     return {
         "ptsip": {
-            "version": "0.2.0-draft",
+            "version": "0.3.4-draft",
             "specification": {"source": "https://github.com/kwaksinwoo01/ptsip"},
         },
         "components": [
@@ -107,6 +118,35 @@ def test_profile_schema_accepts_component_mode_and_optional_component_policy() -
     Draft202012Validator(schema).validate(profile)
 
 
+def test_profile_schema_accepts_lossless_structured_adoption_facts() -> None:
+    schema = _json("schemas/ptsip-profile.schema.json")
+    profile = _minimal_profile()
+    tool = profile["components"][1]
+    tool.update(
+        {
+            "shipped": False,
+            "runtime_required": False,
+            "lifecycle_owner": "DEVELOPMENT_TOOLING",
+            "executable": True,
+        }
+    )
+    Draft202012Validator(schema).validate(profile)
+
+
+def test_profile_schema_rejects_toolchain_runtime_required_true() -> None:
+    schema = _json("schemas/ptsip-profile.schema.json")
+    profile = _minimal_profile()
+    profile["components"][1].update(
+        {
+            "runtime_required": True,
+            "lifecycle_owner": "DEVELOPMENT_TOOLING",
+            "executable": True,
+        }
+    )
+    with pytest.raises(Exception):
+        Draft202012Validator(schema).validate(profile)
+
+
 def test_profile_schema_rejects_boundaries_and_components_together() -> None:
     schema = _json("schemas/ptsip-profile.schema.json")
     profile = _minimal_profile()
@@ -122,7 +162,7 @@ def test_component_dependency_policy_requires_component_mode() -> None:
     schema = _json("schemas/ptsip-profile.schema.json")
     profile = {
         "ptsip": {
-            "version": "0.2.0-draft",
+            "version": "0.3.4-draft",
             "specification": {"source": "https://github.com/kwaksinwoo01/ptsip"},
         },
         "boundaries": {
@@ -154,7 +194,6 @@ def test_retired_exception_rule_is_not_active() -> None:
     retired = {item["id"] for item in registry.get("retired_rules", [])}
     assert "PTSIP-EXC-001" not in active
     assert "PTSIP-EXC-001" in retired
-
 
 
 def test_diagnostic_schema_distinguishes_rule_and_finding_identity() -> None:
