@@ -15,7 +15,7 @@ from ptsip.spec_identity import current_spec_identity
 from ptsip.validation.profile import validate_profile
 
 
-SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
+SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
 
 
 def _git(repo: Path, *args: str) -> None:
