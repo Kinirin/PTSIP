@@ -6,7 +6,7 @@
 - Maturity: Experimental
 - Current Tool/package source version: `0.3.4`
 - Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
-- `spec-v0.3.4-draft`: published GitHub Specification design release
+- `spec-v0.3.4-draft`: published GitHub Specification **design-release checkpoint**; tag remains unchanged
 - Final `0.3.4-draft` coherent normative freeze revision in PR `#26`: `afba3531e23d96c21b7216e49614b839158ca7d5`
 - Tool `0.3.4` source binding prepared in PR `#26`: `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5`
 - Activation/rebind verification: pending PR `#26` merge CI
@@ -20,7 +20,7 @@
 
 The `0.3.4-draft` freeze becomes the canonical active draft snapshot only when PR `#26` is merged while preserving the freeze commit in history. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
 
-The existing `spec-v0.3.4-draft` tag remains the earlier public design-release checkpoint. It is not moved to the later normative freeze revision; immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
+The existing `spec-v0.3.4-draft` tag is not moved to the later normative freeze revision. Immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
 
 ## Specification 0.3.4-draft activation scope
 
