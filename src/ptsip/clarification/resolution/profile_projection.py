@@ -40,15 +40,6 @@ def _base_profile() -> dict[str, object]:
     }
 
 
-def _boundary_root(selector: str) -> str:
-    normalized = selector.replace("\\", "/").strip().strip("/")
-    if normalized.endswith("/**"):
-        normalized = normalized[:-3].rstrip("/")
-    if not normalized or any(char in normalized for char in "*?[]"):
-        raise ValueError(f"Boundary profile cannot safely represent selector {selector!r}")
-    return normalized
-
-
 def _set_missing_or_require_equal(component: dict[str, object], key: str, expected: object) -> None:
     if key not in component or component[key] in (None, ""):
         component[key] = expected
@@ -71,25 +62,11 @@ def project_payload(
         raise ValueError("PTSIP profile root must be a mapping")
 
     if "boundaries" in payload and "components" not in payload:
-        boundaries = payload.get("boundaries")
-        if not isinstance(boundaries, dict):
-            raise ValueError("boundaries must be a mapping")
-        key = {
-            "PRODUCT": "product",
-            "TOOLCHAIN": "toolchain",
-            "NEUTRAL_CONTRACT": "neutral_contract",
-        }[answer.classification]
-        target = boundaries.setdefault(key, {"roots": []})
-        if not isinstance(target, dict):
-            raise ValueError(f"boundaries.{key} must be a mapping")
-        roots = target.setdefault("roots", [])
-        if not isinstance(roots, list):
-            raise ValueError(f"boundaries.{key}.roots must be a list")
-        for selector in include:
-            root = _boundary_root(str(selector))
-            if root not in roots:
-                roots.append(root)
-        return payload
+        raise ValueError(
+            "Explicit adoption/resolution requires component declarations under PTSIP 0.3.4-draft so purpose, "
+            "shipped, runtime_required, lifecycle_owner, and executable facts are preserved losslessly; "
+            "migrate boundary-root shorthand to components before applying this decision"
+        )
 
     components = payload.setdefault("components", [])
     if not isinstance(components, list):
@@ -107,15 +84,17 @@ def project_payload(
     elif "include" not in component:
         component["include"] = [str(item) for item in include]
 
-    # Clarification fills missing declaration facts. It must not silently
-    # reclassify or rewrite facts the profile already declares. Existing
-    # include selectors are preserved so resolving one detected candidate does
-    # not accidentally narrow a broader project-owned component boundary.
+    # Explicit adoption/resolution fills missing architecture facts but never
+    # silently reclassifies or rewrites a conflicting project declaration.
+    # The 0.3.4-draft profile stores the complete DecisionAnswer fact set
+    # losslessly. release_owner/compatibility_owner remain separate optional
+    # project metadata and are not aliases for canonical lifecycle_owner.
     _set_missing_or_require_equal(component, "classification", answer.classification)
     _set_missing_or_require_equal(component, "purpose", answer.purpose)
     _set_missing_or_require_equal(component, "shipped", answer.shipped)
+    _set_missing_or_require_equal(component, "runtime_required", answer.runtime_required)
+    _set_missing_or_require_equal(component, "lifecycle_owner", answer.lifecycle_owner)
     _set_missing_or_require_equal(component, "executable", answer.executable)
-    _set_missing_or_require_equal(component, "release_owner", answer.lifecycle_owner)
     return payload
 
 
