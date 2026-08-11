@@ -8,7 +8,7 @@
 **Tool verification completion before rebind:** `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f`  
 **Identity model:** draft family label + immutable Git revision
 
-The `spec-v0.3.4-draft` GitHub Release originally published the design record for Explicit Project Adoption plus Distributed Authority Consistency. The tag/release is historical design provenance; the exact active normative identity is the immutable coherent-migration revision that contains the canonical Specification, schema, registry, agent contract, ADR, and embedded resources.
+The `spec-v0.3.4-draft` GitHub Release originally published the design record for Explicit Project Adoption plus Distributed Authority Consistency. The tag/release remains historical design provenance; the exact active normative identity is the immutable coherent-migration revision that contains the canonical Specification, schema, registry, agent contract, ADR, and matching embedded resources.
 
 Because a Git commit cannot safely contain its own literal SHA, the immutable normative migration commit is created first. A following Tool binding commit records that already-existing revision as `SPEC_REVISION`.
 
@@ -110,22 +110,33 @@ The activation migration aligns at one repository state:
 - `spec/PTSIP-TERMINOLOGY.md`;
 - `spec/PTSIP-GOVERNANCE.md`;
 - `schemas/ptsip-profile.schema.json`;
+- `schemas/ptsip-artifact-evidence.schema.json`;
+- `schemas/ptsip-agent-classification.schema.json`;
+- `schemas/ptsip-diagnostic.schema.json`;
 - `registry/ptsip-registry.yaml`;
 - `agents/AGENT-CONTRACT.md`;
 - `adoption/ADOPTION-GUIDE.md`;
 - `reference/REFERENCE-ARCHITECTURE.md`;
-- `src/ptsip/specdata/ptsip-profile.schema.json`;
-- `src/ptsip/specdata/ptsip-registry.yaml`;
+- `profiles/example.ptsip.yaml`;
 - `decisions/ADR-0005-activate-spec-0.3.4-draft.md`;
-- Reference Tool profile projection behavior required to preserve new durable facts.
+- Reference Tool profile projection behavior required to preserve new durable facts; and
+- all packaged `src/ptsip/specdata/*` counterparts used by the Tool.
 
-Canonical and embedded profile schema copies are byte-identical in the migration state. Canonical and embedded registry copies are likewise byte-identical.
+At the freeze state, every packaged canonical/embedded machine-readable pair is byte-identical:
+
+- profile schema;
+- registry;
+- artifact-evidence schema;
+- agent-classification schema;
+- diagnostic schema.
+
+The artifact, agent-classification, and diagnostic contract semantics themselves did not require a 0.3.4 format revision; their packaged copies were normalized to the canonical source so one bound Tool cannot carry divergent Specification bytes.
 
 ## 7. Tool binding boundary
 
 Reference Tool `0.3.4` was originally implemented and verified while bound to `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
 
-The Tool may claim `0.3.4-draft` only after its binding constants point to the immutable coherent-migration revision and the complete regression/build verification succeeds again with the new embedded resources and lossless profile projection.
+The Tool may claim `0.3.4-draft` only after its binding constants point to the immutable freeze revision produced by this coherent migration and the complete regression/build verification succeeds again with the new embedded resources and lossless profile projection.
 
 ## 8. Compatibility
 
