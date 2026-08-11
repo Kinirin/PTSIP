@@ -38,6 +38,8 @@ class AuthorityStore(Protocol):
 
     def read_json(self, path: str) -> tuple[str, dict[str, object] | None]: ...
 
+    def read_json_if_exists(self, path: str) -> tuple[str | None, dict[str, object] | None]: ...
+
     def write_json(
         self,
         path: str,
@@ -169,7 +171,7 @@ class GhApi:
                 "Authorization": f"Bearer {self._token}",
                 "X-GitHub-Api-Version": "2022-11-28",
                 "Content-Type": "application/json",
-                "User-Agent": "ptsip-github-authority/0.3.3",
+                "User-Agent": "ptsip-github-authority/0.3.4",
             },
         )
         try:
@@ -366,6 +368,14 @@ class GitHubAuthorityStore:
         head = self.ensure_head()
         return head, self._read_document_at_head(head, path)
 
+    def read_json_if_exists(self, path: str) -> tuple[str | None, dict[str, object] | None]:
+        """Read authority state without bootstrapping a missing authority ref."""
+        head = self._head_or_none()
+        if head is None:
+            return None, None
+        self._validate_authority_head(head)
+        return head, self._read_document_at_head(head, path)
+
     def write_json(
         self,
         path: str,
@@ -425,6 +435,44 @@ class GithubControlPlaneClient:
             raise ValueError("Invalid decision ID for GitHub authority")
         return f"decisions/{decision_id}.json"
 
+    def peek(self, payload: dict[str, Any]) -> dict[str, object]:
+        """Read an existing scope decision without creating authority state."""
+        if str(payload.get("repository", "")) != self.repository:
+            raise ValueError("peek repository does not match GitHub authority repository")
+        raw_request = payload.get("request")
+        if not isinstance(raw_request, dict):
+            raise ValueError("peek request must be an object")
+        decision_id = _global_decision_id(self.repository, raw_request)
+        path = self._decision_path(decision_id)
+        reader = getattr(self.store, "read_json_if_exists", None)
+        if callable(reader):
+            head, existing = reader(path)
+        else:
+            head, existing = self.store.read_json(path)
+        if existing is None:
+            return {
+                "backend": "GITHUB",
+                "status": "NO_AUTHORITY_DECISION",
+                "authority_revision": head,
+                "decision_id": decision_id,
+                "decision": None,
+            }
+        if str(existing.get("repository", "")) != self.repository:
+            return {
+                "backend": "GITHUB",
+                "status": "CONFLICT",
+                "authority_revision": head,
+                "decision_id": decision_id,
+                "decision": existing,
+            }
+        return {
+            "backend": "GITHUB",
+            "status": _workflow_status(existing),
+            "authority_revision": head,
+            "decision_id": decision_id,
+            "decision": existing,
+        }
+
     def gate(self, payload: dict[str, Any]) -> dict[str, object]:
         for key in ("id", "repository", "branch", "subject_revision", "component_id", "request"):
             if key not in payload:
@@ -467,8 +515,6 @@ class GithubControlPlaneClient:
                 "answer": None,
                 "resolution_source": None,
                 "resolved_by": None,
-                "application_status": "NOT_APPLIED",
-                "applied_revision": None,
                 "issue_number": None,
                 "issue_url": None,
                 "created_at": now,
@@ -576,6 +622,7 @@ class GithubControlPlaneClient:
             raise ValueError("unsupported agent application status")
         return {
             "backend": "GITHUB",
+            "scope": "LOCAL_PROJECTION",
             "status": status,
             "decision_id": decision_id,
             "applied_revision": str(payload.get("applied_revision") or "") or None,

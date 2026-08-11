@@ -1,0 +1,328 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Iterable
+
+from ..clarification.generator import ClarificationAnalysis, declared_components
+from ..clarification.generator_core import covering_components
+from ..clarification.model import ClarificationRequest
+from ..clarification.render import render_issue
+from ..clarification.resolution import (
+    load_profile_text,
+    prepare_local_profile,
+    write_prepared_local_profile,
+)
+from ..inspection.components import ComponentCandidate, discover_component_candidates
+from ..inspection.dependencies_030 import scan_dependency_edges
+from ..inspection.inventory import collect_inventory
+from ..repository.snapshot import capture_snapshot, compare_snapshots
+from .github_authority import CoordinationUnavailable, GithubControlPlaneClient, answer_from_mapping
+
+
+def _normalize_selector(value: object) -> str:
+    text = str(value).replace("\\", "/").strip()
+    while text.startswith("./"):
+        text = text[2:]
+    return text.strip("/")
+
+
+def _scope_key(include: Iterable[object]) -> tuple[str, ...]:
+    return tuple(sorted({_normalize_selector(item) for item in include if _normalize_selector(item)}))
+
+
+def _request_by_scope(analysis: ClarificationAnalysis) -> dict[tuple[str, ...], ClarificationRequest]:
+    return {_scope_key(request.include): request for request in analysis.requests}
+
+
+def _candidate_payload(candidate: ComponentCandidate) -> dict[str, object]:
+    return {
+        "component_id": candidate.id,
+        "include": list(candidate.include),
+        "anchors": list(candidate.anchors),
+        "evidence_ids": list(candidate.evidence_ids),
+        "missing_fields": [],
+        "reason_codes": [],
+        "status": "DECLARED",
+    }
+
+
+def _selected_candidates(
+    analysis: ClarificationAnalysis,
+    component_ids: list[str] | tuple[str, ...] | None,
+) -> tuple[list[ComponentCandidate], object]:
+    root = Path(analysis.repository.root).resolve()
+    if not compare_snapshots(analysis.after, capture_snapshot(root)).stable:
+        raise RuntimeError("Repository changed before GitHub authority freshness analysis")
+
+    inventory = collect_inventory(root)
+    dependencies = scan_dependency_edges(root)
+    candidates = discover_component_candidates(root, inventory, dependencies)
+    after = capture_snapshot(root)
+    if not compare_snapshots(analysis.after, after).stable:
+        raise RuntimeError("Repository changed while resolving GitHub authority component scope")
+
+    selected = set(component_ids or ())
+    if selected:
+        candidates = [candidate for candidate in candidates if candidate.id in selected]
+    return candidates, after
+
+
+def _local_component_id(
+    candidate: ComponentCandidate,
+    declared: list[dict[str, object]],
+) -> str:
+    covering = covering_components(candidate, declared)
+    if len(covering) == 1:
+        declared_id = str(covering[0].get("id", "")).strip()
+        if declared_id:
+            return declared_id
+    return candidate.id
+
+
+def _profile_needs_projection(expected_source: str | None, projected_source: str) -> bool:
+    return load_profile_text(expected_source) != load_profile_text(projected_source)
+
+
+def run_github_gate(
+    analysis: ClarificationAnalysis,
+    client: GithubControlPlaneClient,
+    component_ids: list[str] | tuple[str, ...] | None,
+    profile_path: str | Path | None,
+    language: str,
+) -> tuple[dict[str, object], int]:
+    """Run the Tool 0.3.4 GitHub-coordinated gate contract.
+
+    GitHub authority is checked for every relevant discovered component scope,
+    including scopes whose local Project Profile declaration is already
+    complete. Read-only authority inspection never creates a pending decision.
+    """
+
+    repo = analysis.repository
+    if not repo.commit or not repo.branch:
+        raise RuntimeError("ptsip gate requires a checked-out Git branch and commit")
+    if not repo.remote or repo.remote.provider != "github" or not repo.remote.repository:
+        raise RuntimeError("GitHub coordinated gate requires a GitHub repository identity")
+
+    try:
+        candidates, baseline = _selected_candidates(analysis, component_ids)
+        declared, _, profile_error = declared_components(repo.root, profile_path)
+        if profile_error:
+            return (
+                {
+                    "status": "AUTHORITY_PROFILE_CONFLICT",
+                    "backend": "GITHUB",
+                    "repository": repo.as_dict(),
+                    "message": f"Selected Project Profile cannot be compared with GitHub authority: {profile_error}",
+                    "decisions": [],
+                },
+                8,
+            )
+
+        requests = _request_by_scope(analysis)
+        decisions: list[dict[str, object]] = []
+        blocked = False
+        errored = False
+        authority_profile_conflict = False
+        saw_resolved = False
+
+        for candidate in candidates:
+            request = requests.get(_scope_key(candidate.include))
+            request_payload = request.as_dict() if request is not None else _candidate_payload(candidate)
+            peeked = client.peek(
+                {
+                    "repository": repo.remote.repository,
+                    "request": request_payload,
+                }
+            )
+            status = str(peeked.get("status", ""))
+
+            if status == "NO_AUTHORITY_DECISION":
+                if request is None:
+                    decisions.append(
+                        {
+                            **peeked,
+                            "status": "NO_DECISION_REQUIRED",
+                            "component_id": _local_component_id(candidate, declared),
+                            "reconciliation": {"status": "LOCAL_DECLARATION_ONLY"},
+                        }
+                    )
+                    continue
+                title, body = render_issue(request, language, repo.commit)
+                response = client.gate(
+                    {
+                        "id": request.id,
+                        "repository": repo.remote.repository,
+                        "branch": repo.branch,
+                        "subject_revision": repo.commit,
+                        "component_id": request.component_id,
+                        "request": request.as_dict(),
+                        "issue": {"title": title, "body": body},
+                    }
+                )
+                status = str(response.get("status", ""))
+                decisions.append(response)
+                if status == "DECISION_REQUIRED":
+                    blocked = True
+                elif status not in {"RESOLVED", "RESOLVED_APPLICATION_REQUIRED"}:
+                    errored = True
+                continue
+
+            if status == "DECISION_REQUIRED":
+                decisions.append(peeked)
+                blocked = True
+                continue
+
+            if status != "RESOLVED_APPLICATION_REQUIRED":
+                decisions.append(peeked)
+                errored = True
+                continue
+
+            decision = peeked.get("decision")
+            if not isinstance(decision, dict) or not isinstance(decision.get("answer"), dict):
+                decisions.append(
+                    {
+                        **peeked,
+                        "status": "DECISION_ERROR",
+                        "message": "Resolved GitHub authority record has no valid answer.",
+                    }
+                )
+                errored = True
+                continue
+
+            if not compare_snapshots(baseline, capture_snapshot(repo.root)).stable:
+                return (
+                    {
+                        "status": "STALE_EVIDENCE",
+                        "backend": "GITHUB",
+                        "repository": repo.as_dict(),
+                        "message": "Repository changed before authoritative profile reconciliation.",
+                        "decisions": decisions,
+                    },
+                    8,
+                )
+
+            answer = answer_from_mapping(decision["answer"])
+            local_component_id = _local_component_id(candidate, declared)
+            try:
+                prepared = prepare_local_profile(
+                    repo.root,
+                    local_component_id,
+                    list(candidate.include),
+                    answer,
+                    profile_path,
+                )
+            except (FileNotFoundError, OSError, RuntimeError, ValueError) as exc:
+                decisions.append(
+                    {
+                        **peeked,
+                        "status": "AUTHORITY_PROFILE_CONFLICT",
+                        "message": str(exc),
+                        "reconciliation": {
+                            "status": "CONFLICT",
+                            "component_id": local_component_id,
+                        },
+                    }
+                )
+                authority_profile_conflict = True
+                continue
+
+            if not _profile_needs_projection(prepared.expected_source, prepared.content):
+                decisions.append(
+                    {
+                        **peeked,
+                        "status": "RESOLVED",
+                        "reconciliation": {
+                            "status": "CONSISTENT",
+                            "component_id": local_component_id,
+                            "profile_path": str(prepared.path),
+                        },
+                    }
+                )
+                saw_resolved = True
+                continue
+
+            if not compare_snapshots(baseline, capture_snapshot(repo.root)).stable:
+                return (
+                    {
+                        "status": "STALE_EVIDENCE",
+                        "backend": "GITHUB",
+                        "repository": repo.as_dict(),
+                        "message": "Repository changed after profile projection validation.",
+                        "decisions": decisions,
+                    },
+                    8,
+                )
+
+            try:
+                profile = write_prepared_local_profile(prepared)
+            except (FileNotFoundError, OSError, RuntimeError, ValueError) as exc:
+                return (
+                    {
+                        "status": "STALE_EVIDENCE",
+                        "backend": "GITHUB",
+                        "repository": repo.as_dict(),
+                        "message": str(exc),
+                        "decisions": decisions,
+                    },
+                    8,
+                )
+
+            application = client.application(
+                {
+                    "decision_id": str(decision.get("id", "")),
+                    "status": "LOCAL_APPLIED",
+                    "applied_revision": repo.commit,
+                }
+            )
+            decisions.append(
+                {
+                    **peeked,
+                    "status": "RESOLVED",
+                    "reconciliation": {
+                        "status": "LOCAL_APPLIED",
+                        "component_id": local_component_id,
+                        "profile_path": str(profile),
+                        "application": application,
+                    },
+                }
+            )
+            saw_resolved = True
+            baseline = capture_snapshot(repo.root)
+            declared, _, _ = declared_components(repo.root, profile_path)
+
+        if authority_profile_conflict:
+            overall = "AUTHORITY_PROFILE_CONFLICT"
+            exit_code = 8
+        elif blocked:
+            overall = "DECISION_REQUIRED"
+            exit_code = 7
+        elif errored:
+            overall = "DECISION_ERROR"
+            exit_code = 8
+        elif saw_resolved:
+            overall = "RESOLVED"
+            exit_code = 0
+        else:
+            overall = "NO_DECISION_REQUIRED"
+            exit_code = 0
+
+        return (
+            {
+                "status": overall,
+                "backend": "GITHUB",
+                "repository": repo.as_dict(),
+                "decisions": decisions,
+            },
+            exit_code,
+        )
+    except CoordinationUnavailable as exc:
+        return (
+            {
+                "status": "COORDINATION_UNAVAILABLE",
+                "backend": "GITHUB",
+                "repository": repo.as_dict(),
+                "message": str(exc),
+                "decisions": [],
+            },
+            8,
+        )
