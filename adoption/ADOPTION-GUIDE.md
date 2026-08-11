@@ -37,7 +37,7 @@ Identify architectural component candidates using evidence such as:
 - test/tool roots;
 - artifact producers.
 
-Directory names are hints, not ownership decisions.
+Directory names are hints, not ownership decisions. A directory called `tools`, `scripts`, or `build` may be a useful candidate anchor, but PTSIP does not classify it as `TOOLCHAIN` from its name alone. Likewise, a differently named directory may still be discovered through manifests, invocation edges, CI evidence, or other structural evidence.
 
 For each candidate record:
 
@@ -91,9 +91,11 @@ Do not assume every Toolchain -> Product edge is allowed. Distinguish bounded in
 
 Do not guess phase or target merely to increase automation coverage.
 
-## Phase 5 — Boundary declaration
+## Phase 5 — Boundary declaration and explicit adoption
 
 Create or update the project-owned PTSIP profile only when the project wants a persistent declaration.
+
+The default Project Profile is repository-root `ptsip.yaml`. It is project-owned architecture state and is intended to be committed with the Consumer Repository. Do not add it to `.gitignore` merely because the Reference Tool generated it. Projects that own the declaration elsewhere may consistently select an explicit path with `--profile`.
 
 Use exactly one reference ownership-declaration mode:
 
@@ -107,6 +109,61 @@ A component profile records intended ownership. It does not prove that the depen
 When selectors overlap, exact/more-specific ownership wins. Equal-specificity ownership conflicts must be resolved explicitly.
 
 A project may optionally declare stricter component-to-component dependency constraints, including same-plane constraints. These project-specific policies may strengthen but cannot weaken universal PTSIP rules.
+
+### `ptsip adopt`
+
+Tool 0.3.3 provides an explicit project-owner adoption command. It reuses discovered candidate scope but requires the architecture facts to be supplied explicitly:
+
+```powershell
+ptsip adopt . `
+  --component tools `
+  --classification TOOLCHAIN `
+  --purpose "Repository-local generation tooling" `
+  --shipped no `
+  --runtime-required no `
+  --lifecycle-owner DEVELOPMENT_TOOLING `
+  --executable yes `
+  --json
+```
+
+The default is a dry-run. It validates the candidate, decision facts, repository snapshot, profile projection, and schema without changing the Consumer Repository. Apply only after review:
+
+```powershell
+ptsip adopt . `
+  --component tools `
+  --classification TOOLCHAIN `
+  --purpose "Repository-local generation tooling" `
+  --shipped no `
+  --runtime-required no `
+  --lifecycle-owner DEVELOPMENT_TOOLING `
+  --executable yes `
+  --apply `
+  --json
+```
+
+`ptsip adopt` does not invent architecture intent and does not create a second classification algorithm. It reuses the same deterministic `DecisionAnswer` validation and Project Profile projection used by the decision workflow.
+
+### Multi-environment decision coordination
+
+A local SQLite DecisionStore is intentionally not Git-shared. It is suitable for local-only coordination, but two different clones cannot use separate SQLite files as a global first-winner lock.
+
+For a repository with a GitHub origin, Tool 0.3.3 therefore coordinates unresolved decisions through a dedicated remote authority ref by default:
+
+```text
+refs/heads/ptsip-policy
+```
+
+The ref is bootstrapped automatically by the first write-enabled coordinated operation. It stores JSON authority/decision records, not `control-plane.sqlite3`.
+
+GitHub authority mutations use exact-parent commits and non-force ref updates. A stale environment cannot overwrite a newer authority HEAD. The global decision key is derived from repository identity and normalized component include scope so temporarily different local clarification IDs do not create separate winners for the same component boundary.
+
+PTSIP uses **action-time synchronization**, not continuous polling. A coding agent calls `ptsip gate` when its active task depends on a boundary. If the local profile is stale but the GitHub authority already has a resolved decision, the gate reconciles that winner into the selected local profile.
+
+If GitHub coordination is selected but unavailable because of network, authentication, or permissions, a new architecture decision fails closed. PTSIP does not silently fall back to a separate Local DecisionStore, because that would reintroduce split-brain authority.
+
+Cloud environments may use `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer environments may use an authenticated `gh` CLI. The credential must have enough repository write authority to update the PTSIP authority ref.
+
+A non-GitHub repository continues to use the embedded Local DecisionStore for coding-agent gates. A GitHub repository can deliberately opt into isolated local coordination with `--coordination local`, but that is not distributed coordination.
 
 ## Phase 6 — Profile Validation
 
