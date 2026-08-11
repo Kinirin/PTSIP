@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .clarification.generator import declared_components
-from .clarification.generator_core import build_requests
+from .clarification.generator_core import build_requests, covering_components
 from .clarification.model import ClarificationRequest
 from .clarification.resolution import (
     DecisionAnswer,
@@ -145,7 +145,14 @@ def prepare_adoption(
         )
     requests = build_requests(_repository_identity(repo), [candidate], declared)
     request = requests[0] if requests else None
-    target_component_id = request.component_id if request is not None else candidate.id
+    covering = covering_components(candidate, declared)
+    target_component_id = candidate.id
+    if len(covering) == 1:
+        declared_id = str(covering[0].get("id", "")).strip()
+        if declared_id:
+            target_component_id = declared_id
+    elif request is not None:
+        target_component_id = request.component_id
 
     try:
         prepared = prepare_local_profile(
