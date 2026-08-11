@@ -15,7 +15,7 @@ from ptsip.cli import main
 from ptsip.topology import migrate_topology
 
 
-SPEC_REVISION = "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
 
 
 def _run(root: Path, *args: str) -> str:
@@ -33,9 +33,10 @@ def _run(root: Path, *args: str) -> str:
 
 
 def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str:
+    lifecycle_owner = "DEVELOPMENT_TOOLING" if classification == "TOOLCHAIN" else "PRODUCT"
     payload = {
         "ptsip": {
-            "version": "0.2.0-draft",
+            "version": "0.3.4-draft",
             "specification": {
                 "source": "https://github.com/kwaksinwoo01/ptsip",
                 "revision": SPEC_REVISION,
@@ -48,8 +49,9 @@ def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str
                 "include": [selector],
                 "purpose": "Repository SDK tooling",
                 "shipped": False,
+                "runtime_required": False,
+                "lifecycle_owner": lifecycle_owner,
                 "executable": True,
-                "release_owner": "DEVELOPMENT_TOOLING",
             }
         ],
         "policies": {
@@ -64,7 +66,7 @@ def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str
 def _boundary_profile() -> str:
     payload = {
         "ptsip": {
-            "version": "0.2.0-draft",
+            "version": "0.3.4-draft",
             "specification": {
                 "source": "https://github.com/kwaksinwoo01/ptsip",
                 "revision": SPEC_REVISION,
@@ -126,20 +128,16 @@ def test_resolution_projection_respects_explicit_profile_path(tmp_path: Path):
     assert profile.is_file()
     assert not (root / "ptsip.yaml").exists()
     payload = yaml.safe_load(profile.read_text(encoding="utf-8"))
-    assert payload["components"][0]["classification"] == "TOOLCHAIN"
+    component = payload["components"][0]
+    assert component["classification"] == "TOOLCHAIN"
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
 
 
 def test_topology_dry_run_reports_impacts_without_mutation(tmp_path: Path):
     root, profile = _git_repo(tmp_path)
 
-    result = migrate_topology(
-        root,
-        profile,
-        "old",
-        "sdk/tooling",
-        "sdk-tools",
-        apply=False,
-    )
+    result = migrate_topology(root, profile, "old", "sdk/tooling", "sdk-tools", apply=False)
 
     assert result["status"] == "PLAN"
     assert result["applied"] is False
@@ -171,8 +169,9 @@ def test_topology_dependency_edges_find_import_without_root_literal(tmp_path: Pa
             "include": ["consumer.py"],
             "purpose": "Product consumer",
             "shipped": True,
+            "runtime_required": True,
+            "lifecycle_owner": "PRODUCT",
             "executable": True,
-            "release_owner": "PRODUCT",
         }
     )
     profile = root / "ptsip.yaml"
@@ -183,19 +182,11 @@ def test_topology_dependency_edges_find_import_without_root_literal(tmp_path: Pa
     _run(root, "git", "add", ".")
     _run(root, "git", "commit", "-m", "fixture")
 
-    result = migrate_topology(
-        root,
-        profile,
-        "src/sdk",
-        "src/tooling/sdk",
-        "sdk-tools",
-        apply=False,
-    )
+    result = migrate_topology(root, profile, "src/sdk", "src/tooling/sdk", "sdk-tools", apply=False)
 
     imports = result["reference_impacts"]["IMPORT"]
     assert any(
-        item["path"] == "consumer.py"
-        and "IMPORTS sdk.main -> src/sdk/main.py" in item["text"]
+        item["path"] == "consumer.py" and "IMPORTS sdk.main -> src/sdk/main.py" in item["text"]
         for item in imports
     )
     assert result["reference_analysis"]["dependency_edge_count"] >= 1
@@ -234,14 +225,7 @@ def test_topology_apply_moves_root_and_preserves_classification(tmp_path: Path):
     _run(root, "git", "add", "pyproject.toml")
     _run(root, "git", "commit", "-m", "remove reference")
 
-    result = migrate_topology(
-        root,
-        profile,
-        "old",
-        "sdk/tooling",
-        "sdk-tools",
-        apply=True,
-    )
+    result = migrate_topology(root, profile, "old", "sdk/tooling", "sdk-tools", apply=True)
 
     assert result["status"] == "APPLIED"
     assert result["move_method"] == "git-mv"
@@ -252,6 +236,8 @@ def test_topology_apply_moves_root_and_preserves_classification(tmp_path: Path):
     component = payload["components"][0]
     assert component["classification"] == "TOOLCHAIN"
     assert component["include"] == ["sdk/tooling/**"]
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
     staged = _run(root, "git", "diff", "--cached", "--name-status")
     assert "docs/sdk/simple-connection.ptsip.yaml" in staged
     assert "sdk/tooling/main.py" in staged
@@ -278,11 +264,7 @@ def test_topology_boundary_profile_preserves_plane_classification(tmp_path: Path
     assert result["migration"]["classification"] == "TOOLCHAIN"
     assert result["classification"]["preserved"] is True
     assert result["profile_changes"] == [
-        {
-            "location": "boundaries.toolchain.roots[0]",
-            "before": "old",
-            "after": "devtools",
-        }
+        {"location": "boundaries.toolchain.roots[0]", "before": "old", "after": "devtools"}
     ]
 
 
@@ -291,14 +273,7 @@ def test_topology_apply_requires_clean_git_state(tmp_path: Path):
     (root / "old" / "main.py").write_text("print('changed')\n", encoding="utf-8")
 
     try:
-        migrate_topology(
-            root,
-            profile,
-            "old",
-            "sdk/tooling",
-            "sdk-tools",
-            apply=True,
-        )
+        migrate_topology(root, profile, "old", "sdk/tooling", "sdk-tools", apply=True)
     except RuntimeError as exc:
         assert "clean Git working tree" in str(exc)
     else:
