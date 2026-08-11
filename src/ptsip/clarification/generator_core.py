@@ -32,7 +32,7 @@ def _selector_covers(declared: str, candidate: str) -> bool:
     return False
 
 
-def _covering_components(candidate: CandidateLike, components: list[dict[str, object]]) -> list[dict[str, object]]:
+def covering_components(candidate: CandidateLike, components: list[dict[str, object]]) -> list[dict[str, object]]:
     found: list[dict[str, object]] = []
     for component in components:
         selectors = [str(item) for item in component.get("include", [])]
@@ -52,7 +52,7 @@ def build_requests(
 ) -> tuple[ClarificationRequest, ...]:
     requests: list[ClarificationRequest] = []
     for candidate in candidates:
-        covering = _covering_components(candidate, declared_components)
+        covering = covering_components(candidate, declared_components)
         target_component_id = candidate.id
         if len(covering) == 1:
             declared = covering[0]
