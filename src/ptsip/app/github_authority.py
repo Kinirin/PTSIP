@@ -4,9 +4,12 @@ import base64
 import copy
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from typing import Any, Protocol
 
@@ -80,8 +83,21 @@ def _global_decision_id(repository: str, request: dict[str, object]) -> str:
 
 
 class GhApi:
+    """Small GitHub API adapter.
+
+    Cloud agents can authenticate with GH_TOKEN/GITHUB_TOKEN without requiring
+    another executable. Interactive developer machines may fall back to an
+    existing authenticated GitHub CLI installation.
+    """
+
     def __init__(self) -> None:
         self._ready = False
+        self._token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+        self._api_url = (
+            os.environ.get("PTSIP_GITHUB_API_URL")
+            or os.environ.get("GITHUB_API_URL")
+            or "https://api.github.com"
+        ).rstrip("/")
 
     @staticmethod
     def _run(args: list[str], input_text: str | None = None) -> subprocess.CompletedProcess[str]:
@@ -97,16 +113,64 @@ class GhApi:
     def ensure_ready(self) -> None:
         if self._ready:
             return
+        if self._token:
+            self._ready = True
+            return
         if shutil.which("gh") is None:
             raise CoordinationUnavailable(
-                "GitHub-coordinated PTSIP authority requires the GitHub CLI 'gh'. "
-                "Install gh and authenticate it, or explicitly use --coordination local."
+                "GitHub-coordinated PTSIP authority requires GH_TOKEN/GITHUB_TOKEN "
+                "or an authenticated GitHub CLI. No local fallback is performed."
             )
         auth = self._run(["auth", "status", "--hostname", "github.com"])
         if auth.returncode != 0:
             detail = auth.stderr.strip() or auth.stdout.strip() or "authentication failed"
             raise CoordinationUnavailable(f"GitHub CLI authentication is not ready: {detail}")
         self._ready = True
+
+    @staticmethod
+    def _parse_response(text: str, path: str) -> dict[str, object]:
+        if not text.strip():
+            return {}
+        try:
+            parsed = json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise CoordinationUnavailable(f"GitHub API returned invalid JSON for {path}: {exc}") from exc
+        if not isinstance(parsed, dict):
+            raise CoordinationUnavailable(f"GitHub API returned a non-object response for {path}")
+        return parsed
+
+    def _token_request(
+        self,
+        method: str,
+        path: str,
+        payload: dict[str, object] | None,
+    ) -> dict[str, object]:
+        assert self._token is not None
+        data = json.dumps(payload, ensure_ascii=False).encode("utf-8") if payload is not None else None
+        request = urllib.request.Request(
+            self._api_url + "/" + path.lstrip("/"),
+            data=data,
+            method=method.upper(),
+            headers={
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {self._token}",
+                "X-GitHub-Api-Version": "2022-11-28",
+                "Content-Type": "application/json",
+                "User-Agent": "ptsip-github-authority/0.3.3",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                text = response.read().decode("utf-8")
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise GitHubApiError(
+                f"GitHub API {method.upper()} {path} failed: HTTP {exc.code}: {detail}",
+                exc.code,
+            ) from exc
+        except urllib.error.URLError as exc:
+            raise CoordinationUnavailable(f"GitHub coordination request failed for {path}: {exc}") from exc
+        return self._parse_response(text, path)
 
     def request(
         self,
@@ -115,6 +179,9 @@ class GhApi:
         payload: dict[str, object] | None = None,
     ) -> dict[str, object]:
         self.ensure_ready()
+        if self._token:
+            return self._token_request(method, path, payload)
+
         args = ["api", path, "--method", method.upper()]
         input_text = None
         if payload is not None:
@@ -126,16 +193,7 @@ class GhApi:
             match = re.search(r"HTTP\s+(\d{3})", detail, flags=re.IGNORECASE)
             status = int(match.group(1)) if match else None
             raise GitHubApiError(detail, status)
-        text = completed.stdout.strip()
-        if not text:
-            return {}
-        try:
-            parsed = json.loads(text)
-        except json.JSONDecodeError as exc:
-            raise CoordinationUnavailable(f"GitHub API returned invalid JSON for {path}: {exc}") from exc
-        if not isinstance(parsed, dict):
-            raise CoordinationUnavailable(f"GitHub API returned a non-object response for {path}")
-        return parsed
+        return self._parse_response(completed.stdout, path)
 
 
 class GitHubAuthorityStore:
