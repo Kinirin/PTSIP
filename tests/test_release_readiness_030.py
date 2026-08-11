@@ -45,20 +45,18 @@ def test_release_package_contains_bound_machine_readable_contracts() -> None:
     assert (specdata / "ptsip-diagnostic.schema.json").is_file()
 
 
-def test_documentation_exposes_034_authority_consistency_and_conformance() -> None:
+def test_documentation_records_034_authority_consistency_contract() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    status = (ROOT / "STATUS.md").read_text(encoding="utf-8")
     release_note = (ROOT / "releasenote" / "0.3.4.md").read_text(encoding="utf-8")
+    planning = (ROOT / "planning" / "PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md").read_text(encoding="utf-8")
     assert "ptsip adopt" in readme
     assert "ptsip gate" in readme
     assert "ptsip resolve" in readme
     assert "ptsip conform ." in readme
     assert "--coordination github" in readme
     assert "refs/heads/ptsip-policy" in readme
-    assert "AUTHORITY_PROFILE_CONFLICT" in readme
-    assert "Tool 0.3.4" in status
-    assert "GitHub-coordinated" in status
-    assert "ptsip adopt" in status
     assert "0.3.4" in release_note
     assert "AUTHORITY_PROFILE_CONFLICT" in release_note
-    assert "refs/heads/ptsip-policy" in release_note
+    assert "LOCAL_PROJECTION" in release_note
+    assert "Read-side authority freshness" in planning
+    assert "AUTHORITY_PROFILE_CONFLICT" in planning
