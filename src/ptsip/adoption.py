@@ -6,7 +6,13 @@ from pathlib import Path
 from .clarification.generator import declared_components
 from .clarification.generator_core import build_requests
 from .clarification.model import ClarificationRequest
-from .clarification.resolution import DecisionAnswer, PreparedLocalProfile, prepare_local_profile, validate_answer, write_prepared_local_profile
+from .clarification.resolution import (
+    DecisionAnswer,
+    PreparedLocalProfile,
+    prepare_local_profile,
+    validate_answer,
+    write_prepared_local_profile,
+)
 from .inspection.components import ComponentCandidate, discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
@@ -43,7 +49,8 @@ class AdoptionPreparation:
             "declaration": self.answer.as_dict(),
             "profile": {
                 "path": profile_path,
-                "projected_valid": self.prepared is not None and self.status in {"ADOPTION_PLAN", "ALREADY_DECLARED"},
+                "projected_valid": self.prepared is not None
+                and self.status in {"ADOPTION_PLAN", "ALREADY_DECLARED"},
             },
             "snapshot": {
                 "before": self.before.as_dict(),
@@ -138,11 +145,12 @@ def prepare_adoption(
         )
     requests = build_requests(_repository_identity(repo), [candidate], declared)
     request = requests[0] if requests else None
+    target_component_id = request.component_id if request is not None else candidate.id
 
     try:
         prepared = prepare_local_profile(
             root,
-            candidate.id,
+            target_component_id,
             list(candidate.include),
             answer,
             profile_path,
@@ -197,7 +205,11 @@ def apply_adoption(preparation: AdoptionPreparation) -> tuple[str, str | None, s
     current = capture_snapshot(preparation.repository.root)
     stale = compare_snapshots(preparation.after, current)
     if not stale.stable:
-        return "STALE_EVIDENCE", str(preparation.prepared.path), "Repository evidence changed before adoption application."
+        return (
+            "STALE_EVIDENCE",
+            str(preparation.prepared.path),
+            "Repository evidence changed before adoption application.",
+        )
 
     profile = write_prepared_local_profile(preparation.prepared)
     result = validate_profile(preparation.repository.root, profile)
