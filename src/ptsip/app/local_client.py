@@ -56,7 +56,7 @@ class LocalControlPlaneClient:
             raise ValueError("decision_id is required")
         record = self.store.get(decision_id)
         if record is None:
-            raise KeyError(decision_id)
+            raise RuntimeError(f"Local decision does not exist: {decision_id}")
         return {
             "backend": "LOCAL",
             "status": _workflow_status(record),
@@ -77,7 +77,10 @@ class LocalControlPlaneClient:
                 "validation": validation.as_dict(),
             }
         actor = str(payload.get("actor") or "coding-agent-session")
-        record, accepted = self.store.resolve(decision_id, answer.as_dict(), "AGENT_CHAT", actor)
+        try:
+            record, accepted = self.store.resolve(decision_id, answer.as_dict(), "AGENT_CHAT", actor)
+        except KeyError as exc:
+            raise RuntimeError(f"Local decision does not exist: {decision_id}") from exc
         return {
             "backend": "LOCAL",
             "status": "RESOLVED" if accepted else "ALREADY_RESOLVED",
@@ -93,7 +96,7 @@ class LocalControlPlaneClient:
             raise ValueError("unsupported agent application status")
         existing = self.store.get(decision_id)
         if existing is None:
-            raise KeyError(decision_id)
+            raise RuntimeError(f"Local decision does not exist: {decision_id}")
         if existing.status != "RESOLVED":
             raise ValueError("application state can be changed only for a resolved decision")
         record = self.store.mark_application(
