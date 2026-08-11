@@ -1,8 +1,10 @@
 # PTSIP Tool 0.3.3 — GitHub-Coordinated Authority Scope Amendment
 
+> **Status:** APPROVED / COMPLETED  
 > **Approved:** 2026-08-11  
 > **Depends on:** Local DecisionStore implementation from the Tool 0.3.3 workstream  
 > **Target Tool version:** `0.3.3`  
+> **Completed migration merge:** `2ab93a63a78391c64f3f715d415314e5f28e2d98`  
 > **Bound Specification:** `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 
 ## 1. Why this amendment exists
@@ -162,7 +164,7 @@ If durable Project Profile representation of that fact becomes normative, it req
 
 ## 10. Completion boundary
 
-This amendment is complete when:
+This amendment is complete because the merged Tool 0.3.3 source satisfies the approved completion conditions:
 
 1. GitHub authority bootstrap and manifest ownership are guarded;
 2. global component-scope decision identity is deterministic;
@@ -172,5 +174,13 @@ This amendment is complete when:
 6. `ptsip adopt` dry-run/apply and explicit profile handling work end-to-end;
 7. existing Local and hosted HTTP backend behavior remains available through explicit selection rules;
 8. Tool/package identity is `0.3.3` while Specification identity remains unchanged;
-9. complete pytest, CLI smoke, package build, and `twine check` pass before merging to `main`;
-10. no tag, GitHub Release, or PyPI publication is created by the migration merge itself.
+9. complete pytest, CLI smoke, package build, and `twine check` passed before merge;
+10. no tag, GitHub Release, or PyPI publication was created by the migration merge itself.
+
+The migration was merged to `main` as:
+
+```text
+2ab93a63a78391c64f3f715d415314e5f28e2d98
+```
+
+For current implemented behavior, `releasenote/0.3.3.md`, `reference/DECISION-CONTROL-PLANE.md`, `adoption/ADOPTION-GUIDE.md`, and the current `main` source are the implementation record.
