@@ -2,7 +2,9 @@
 
 **Version:** 0.2.0-draft
 
-PTSIP conformance is defined so that a human reviewer or automated implementation can make a reproducible claim about a project without confusing declaration validity, evidence collection, or absence of detected findings with actual conformance.
+> **0.3.4-draft alignment note:** `spec-v0.3.4-draft` is a published proposed Specification design record. This document remains part of the active `0.2.0-draft` normative baseline until a coherent migration updates all affected normative and machine-readable assets at one immutable revision. Section 15 records the proposed distributed-authority/conformance separation without silently activating that draft.
+
+PTSIP conformance is defined so that a human reviewer or automated implementation can make a reproducible claim about a project without confusing declaration validity, evidence collection, decision coordination, or absence of detected findings with actual conformance.
 
 ## 1. Conformance levels
 
@@ -81,6 +83,7 @@ A completed PTSIP conformance evaluation has one of these outcomes:
 
 - evidence is sufficient for the applicable mandatory rule set;
 - no applicable `MUST`/`MUST NOT` violation is established; and
+- no blocking uncertainty remains that could conceal an applicable mandatory-rule result.
 
 An empty finding list alone is insufficient to produce `CONFORMANT`.
 
@@ -267,3 +270,49 @@ A validator suppression MUST NOT silently disable a PTSIP rule.
 A suppression MAY be used only when review establishes that the reported evidence is a false positive and therefore does not actually establish the referenced rule violation. The suppression record SHOULD identify the evidence and rationale.
 
 A real architecture violation MUST NOT be relabeled as a false positive or suppression; it remains `NON_CONFORMANT` until remediated.
+
+## 15. Proposed 0.3.4-draft Decision Authority alignment
+
+This section records the `spec-v0.3.4-draft` design relationship between distributed architecture-decision coordination and conformance. It is **not active 0.2.0-draft normative text** until the coherent `0.3.4-draft` migration is completed.
+
+The proposed model keeps these responsibilities separate:
+
+```text
+Decision Authority
+    -> which explicit architecture answer won for a coordinated scope
+
+Project Profile
+    -> durable project-owned architecture declaration for a repository/worktree
+
+Conformance Evaluation
+    -> declaration + observed evidence + artifacts + coverage + normative rules
+```
+
+A Decision Authority is therefore not a conformance oracle. A globally resolved architecture decision does not establish that repository dependencies, Product Artifacts, build behavior, or lifecycle behavior conform to PTSIP.
+
+For an Enforced Conformance evaluation claiming a future `0.3.4-draft` binding, the selected Project Profile must provide one unambiguous declaration for the evaluated scope. If a relevant distributed authority winner and local declaration are in unresolved semantic conflict, the declaration basis is not stable enough for a strict conformant claim. The conflict must be explicitly reconciled before that scope can support `CONFORMANT`.
+
+The proposed distributed coordination model distinguishes:
+
+- **authority freshness** from evidence freshness;
+- **global decision resolution** from clone-local Project Profile projection;
+- **authority/profile semantic conflict** from declaration-versus-observed-evidence conflict; and
+- **coordination failure** from a PTSIP architecture-rule violation.
+
+These distinctions matter because their remedies differ:
+
+```text
+authority/profile conflict
+    -> explicit architecture-declaration reconciliation
+
+coordination unavailable
+    -> fail the affected coordinated decision operation; do not create a second local winner
+
+declaration vs observed architecture violation
+    -> conformance remediation under the applicable PTSIP rule
+
+blocking evidence gap
+    -> collect sufficient evidence or remain INCOMPLETE
+```
+
+A future `0.3.4-draft` conformance claim must identify the immutable Specification revision that actually contains the coherent normative migration. The `spec-v0.3.4-draft` design release by itself is not that binding revision.
