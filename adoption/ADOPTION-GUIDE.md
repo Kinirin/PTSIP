@@ -2,6 +2,8 @@
 
 This guide describes a controlled migration from an unclassified repository to PTSIP.
 
+> **Specification status note:** the active normative baseline remains `0.2.0-draft` until a coherent normative migration activates a later immutable snapshot. The published `spec-v0.3.4-draft` release records the proposed Explicit Project Adoption and Distributed Authority Consistency model. Reference Tool `0.3.4` provides implementation evidence for that design while remaining bound to the active `0.2.0-draft` revision.
+
 ## Phase 0 — Stable baseline
 
 Record the Consumer Repository revision before interpreting architecture evidence.
@@ -112,7 +114,7 @@ A project may optionally declare stricter component-to-component dependency cons
 
 ### `ptsip adopt`
 
-Tool 0.3.3 provides an explicit project-owner adoption command. It reuses discovered candidate scope but requires the architecture facts to be supplied explicitly:
+Reference Tool `0.3.4` retains the explicit project-owner adoption workflow introduced in Tool `0.3.3`. It reuses discovered candidate scope but requires the architecture facts to be supplied explicitly:
 
 ```powershell
 ptsip adopt . `
@@ -141,29 +143,60 @@ ptsip adopt . `
   --json
 ```
 
-`ptsip adopt` does not invent architecture intent and does not create a second classification algorithm. It reuses the same deterministic `DecisionAnswer` validation and Project Profile projection used by the decision workflow.
+`ptsip adopt` does not invent architecture intent and does not create a second classification algorithm. It reuses the same deterministic architecture-answer validation and Project Profile projection used by the decision workflow.
+
+The Tool currently collects structured facts such as `runtime_required` and `lifecycle_owner` for deterministic decision/adoption validation. Under the active `0.2.0-draft` binding, Tool-owned workflow state does not silently widen the Project Profile schema. The published `0.3.4-draft` design proposes a future lossless durable representation for any such facts that remain normatively required; that representation is not active until the coherent schema migration is completed.
 
 ### Multi-environment decision coordination
 
-A local SQLite DecisionStore is intentionally not Git-shared. It is suitable for local-only coordination, but two different clones cannot use separate SQLite files as a global first-winner lock.
+A local SQLite DecisionStore is intentionally not Git-shared. It is suitable for local-only coordination, but two different clones cannot use separate SQLite files as a repository-global first-winner lock.
 
-For a repository with a GitHub origin, Tool 0.3.3 therefore coordinates unresolved decisions through a dedicated remote authority ref by default:
+For a repository with a GitHub origin, Tool `0.3.4` coordinates relevant architecture decisions through a dedicated remote authority ref by default:
 
 ```text
 refs/heads/ptsip-policy
 ```
 
-The ref is bootstrapped automatically by the first write-enabled coordinated operation. It stores JSON authority/decision records, not `control-plane.sqlite3`.
+The ref is bootstrapped only by a write-enabled coordinated operation. A read-only authority check does not create the ref or fabricate a pending decision merely to prove that no authority history exists. The authority stores JSON authority/decision records, not `control-plane.sqlite3`.
 
 GitHub authority mutations use exact-parent commits and non-force ref updates. A stale environment cannot overwrite a newer authority HEAD. The global decision key is derived from repository identity and normalized component include scope so temporarily different local clarification IDs do not create separate winners for the same component boundary.
 
-PTSIP uses **action-time synchronization**, not continuous polling. A coding agent calls `ptsip gate` when its active task depends on a boundary. If the local profile is stale but the GitHub authority already has a resolved decision, the gate reconciles that winner into the selected local profile.
+PTSIP uses **action-time synchronization**, not continuous polling. A coding agent calls `ptsip gate` when the active task reaches a boundary where authoritative coordinated architecture state matters. In GitHub-coordinated mode, a complete local declaration does not by itself allow the gate to skip the relevant authority freshness check.
 
-If GitHub coordination is selected but unavailable because of network, authentication, or permissions, a new architecture decision fails closed. PTSIP does not silently fall back to a separate Local DecisionStore, because that would reintroduce split-brain authority.
+The required reconciliation behavior is:
 
-Cloud environments may use `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer environments may use an authenticated `gh` CLI. The credential must have enough repository write authority to update the PTSIP authority ref.
+| Local Project Profile | GitHub authority | Tool 0.3.4 behavior |
+| --- | --- | --- |
+| declaration absent | no decision | create/reuse a pending decision only when the active gate actually needs one |
+| declaration absent | resolved winner | validate and safely project the winner into the selected local profile |
+| declaration present | no authority decision | use the project declaration; do not fabricate remote decision history solely for bookkeeping |
+| declaration present and semantically equivalent | resolved equivalent winner | return a consistent/resolved result without rewriting equivalent profile content |
+| declaration present and semantically conflicting | resolved different winner | return `AUTHORITY_PROFILE_CONFLICT`; do not silently overwrite or reclassify the profile |
+| local repository/profile changes during reconciliation | any authority state | refuse stale application and require re-analysis |
 
-A non-GitHub repository continues to use the embedded Local DecisionStore for coding-agent gates. A GitHub repository can deliberately opt into isolated local coordination with `--coordination local`, but that is not distributed coordination.
+Semantic equivalence is based on architecture meaning, not YAML formatting, key ordering, or other incidental serialization differences.
+
+If GitHub coordination is selected but unavailable because of network, authentication, permissions, malformed authority state, or inability to establish required freshness, the affected coordinated architecture operation fails closed with a coordination error such as `COORDINATION_UNAVAILABLE`. PTSIP does not silently fall back to a separate Local DecisionStore, because that would reintroduce split-brain authority.
+
+Cloud environments may use `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer environments may use an authenticated `gh` CLI. The credential must have enough repository write authority for write-enabled authority operations.
+
+A non-GitHub repository continues to use the embedded Local DecisionStore for coding-agent gates. A GitHub repository can deliberately opt into isolated local coordination with `--coordination local`, but that is intentionally not repository-global distributed coordination. An explicit hosted Control Plane may be selected with `--control-plane <URL>`.
+
+### Global decision state is not local application state
+
+Keep these two states separate during adoption and reconciliation:
+
+```text
+GLOBAL DECISION STATE
+    PENDING / RESOLVED
+
+LOCAL PROJECTION STATE
+    missing / equivalent / locally applied / stale / failed
+```
+
+A globally `RESOLVED` decision means one architecture answer won within the coordination domain. It does not mean every clone has already written that answer into its local Project Profile.
+
+Tool `0.3.4` therefore treats clone-local projection/application reporting separately from the global winner. A local projection receipt cannot change which architecture answer won and must not be interpreted as proof that every worktree is synchronized.
 
 ## Phase 6 — Profile Validation
 
@@ -180,6 +213,8 @@ Profile Validation may check:
 - optional project-policy consistency.
 
 A successful Profile Validation result does **not** mean the repository is conformant.
+
+Under distributed coordination, Profile Validation also remains distinct from authority reconciliation. A structurally valid local profile can still be stale relative to a repository-global authority winner; conversely, a resolved Decision Authority record is not proof that observed repository behavior conforms to the declaration.
 
 ## Phase 7 — Structural migration
 
@@ -238,6 +273,8 @@ After remediation, rerun evidence collection and conformance evaluation against 
 
 Conformance Evaluation combines declaration, observed dependencies, Product Artifact evidence, lifecycle evidence, coverage and deterministic PTSIP rules.
 
+Decision Authority state is architecture-decision coordination state. It does not replace the Project Profile, observed evidence, artifact evidence, or deterministic conformance evaluation.
+
 The completed evaluation uses:
 
 - `CONFORMANT`;
@@ -257,9 +294,9 @@ Blocking evidence gap?
     no  -> eligible for CONFORMANT when all other requirements are satisfied
 ```
 
-A successful read-only Pilot or empty finding list is not by itself a conformance result.
+A successful read-only Pilot, resolved distributed decision, or empty finding list is not by itself a conformance result.
 
-For Enforced Conformance against a mutable draft family, bind the exact immutable PTSIP specification revision.
+For Enforced Conformance against a mutable draft family, bind the exact immutable PTSIP specification revision. The `spec-v0.3.4-draft` design release is not by itself an active binding revision; a future claim against `0.3.4-draft` must use the immutable revision produced by the completed coherent normative migration.
 
 ## Phase 12 — Stable diagnostics and repeatable enforcement
 
@@ -308,4 +345,4 @@ A project undergoing remediation may describe itself as `PTSIP-adopting` or `PTS
 
 ## Migration principle
 
-PTSIP migration should optimize for **ownership correctness, evidence integrity, artifact truth, and future independent evolution**, not for minimizing the number of files changed in the first migration or maximizing automatic classification/coverage percentages.
+PTSIP migration should optimize for **ownership correctness, evidence integrity, artifact truth, authority consistency, and future independent evolution**, not for minimizing the number of files changed in the first migration or maximizing automatic classification/coverage percentages.
