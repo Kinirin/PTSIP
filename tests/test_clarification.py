@@ -12,7 +12,7 @@ from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
 
 
-SPEC_REVISION = "ccee8cd5e26e92d31a2b93a86157c03d9b796b2c"
+SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
 
 
 def _git(repo: Path, *args: str) -> None:
