@@ -114,6 +114,7 @@ def project_payload(
     _set_missing_or_require_equal(component, "classification", answer.classification)
     _set_missing_or_require_equal(component, "purpose", answer.purpose)
     _set_missing_or_require_equal(component, "shipped", answer.shipped)
+    _set_missing_or_require_equal(component, "runtime_required", answer.runtime_required)
     _set_missing_or_require_equal(component, "executable", answer.executable)
     _set_missing_or_require_equal(component, "release_owner", answer.lifecycle_owner)
     return payload
