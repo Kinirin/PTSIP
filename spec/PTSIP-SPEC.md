@@ -330,7 +330,7 @@ PTSIP defines the following adapter-independent relationship vocabulary for evid
 - `LINKS` — build/link metadata directly links one compiled/project component to another;
 - `LOADS` — a component loads another module, plugin, library, or artifact dynamically;
 - `INVOKES` — a component or automation executes another component/process/script;
-- `READS` — a component consumes another component's source/data/artifact as data without treatinging it as executable reuse;
+- `READS` — a component consumes another component's source/data/artifact as data without treating it as executable reuse;
 - `GENERATES` — a component produces generated source, metadata, contract, or artifact from an input;
 - `PACKAGES` — a component or packaging process places content into an artifact;
 - `TESTS` — a test component/evaluator exercises another component;
