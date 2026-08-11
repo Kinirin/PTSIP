@@ -1,20 +1,20 @@
 name: tool-033-verify
 
 on:
-  push:
+  pull_request:
     branches:
-      - tool-0.3.3-github-authority
+      - main
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: read
 
 concurrency:
-  group: tool-033-verify
+  group: tool-033-verify-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   test:
-    if: contains(github.event.head_commit.message, '[verify-033]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +23,16 @@ jobs:
           python-version: "3.14"
           cache: pip
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install -e ".[dev]"
+      - run: python -m pip install -e ".[dev]" "twine>=5,<7"
+      - run: python -m compileall -q src
       - run: python -m pytest -q
+      - run: test "$(ptsip --version)" = "PTSIP Tool 0.3.3"
+      - run: ptsip spec --json
       - run: ptsip adopt --help
+      - run: ptsip clarify --help
       - run: ptsip gate --help
       - run: ptsip resolve --help
+      - run: ptsip validate --help
+      - run: ptsip conform --help
+      - run: python -m build
+      - run: python -m twine check dist/*
