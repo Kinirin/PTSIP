@@ -3,10 +3,9 @@
 - Active Specification family: `0.2.0-draft`
 - Latest canonical normative snapshot: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Proposed Specification family design record: `0.3.3-draft` (not yet an active Tool binding)
-- Current Tool/package source version: `0.3.3`
+- Current Tool/package source version: `0.3.4`
 - Tool 0.2.3 historical bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
-- Current Tool 0.3.3 bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
-- Tool 0.3.4 Specification binding: to be recorded explicitly; no proposed Specification family is adopted automatically
+- Current Tool 0.3.4 bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - Specification identity model: draft family + immutable Git revision
 - Maturity: Experimental
 - Canonical repository: `kwaksinwoo01/PTSIP`
@@ -19,10 +18,12 @@
 - Tool 0.3.2 source status: merged source baseline; not published/tagged
 - Tool 0.3.2 verification: GitHub Actions run `31365614038`, Python 3.14, `115 passed`, CLI/package checks successful
 - Tool 0.3.3 completed scope: explicit `ptsip adopt`, profile-path symmetry, deterministic validation/profile-projection reuse, and Local DecisionStore continuity
-- Tool 0.3.3 source note: early GitHub-coordinated authority code is a precursor/prototype for Tool 0.3.4, not a completed 0.3.3 release contract
 - Tool 0.3.3 publication policy: permanently source-only; never create `tool-v0.3.3`, a GitHub Release, or PyPI `0.3.3`
-- Tool 0.3.4 source target: complete GitHub-coordinated repository-global authority freshness, reconciliation, conflict, application-state, and distributed consistency semantics
-- Tool 0.3.4 publication position: next Tool version eligible to become a tagged/GitHub/PyPI publication candidate after acceptance and explicit release approval
+- Tool 0.3.4 completed scope: GitHub-coordinated repository-global authority freshness, reconciliation, conflict semantics, clone-local application receipts, and fail-closed distributed consistency
+- Tool 0.3.4 implementation merge: `555c528593f700a348d8da84545a62ce61291cae` (PR `#24`)
+- Tool 0.3.4 verification completion: `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f` (PR `#25`)
+- Tool 0.3.4 verification: GitHub Actions run `31471025526`, Python 3.14.6, `134 passed`, build/twine/installed-wheel checks successful
+- Tool 0.3.4 publication status: verified publication candidate; no tag, GitHub Release, or PyPI `0.3.4` publication created
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
 - Tool release namespace: `tool-v*`
@@ -142,13 +143,7 @@ Completed Tool `0.3.3` scope:
 
 The `0.3.3` source tree also contains an early GitHub-coordinated authority prototype from a subsequently withdrawn Tool `0.3.3` scope amendment. The prototype includes CAS/write-side and basic stale-missing-profile behavior, but its full repository-global contract is **not** considered completed Tool `0.3.3` behavior.
 
-The unresolved authority-consistency work is explicitly moved to Tool `0.3.4`, including:
-
-- read-side authority freshness when a local declaration already exists;
-- equivalent/conflicting local-versus-remote reconciliation semantics;
-- stable machine-readable authority/profile conflict states;
-- final global-decision versus clone-local application-state semantics;
-- complete distributed multi-clone verification.
+The authority-consistency work moved to Tool `0.3.4` and is now completed there.
 
 Pre-merge Tool `0.3.3` source verification completed in GitHub Actions run `31465581071` on Python 3.14 with `128 passed`, CLI/package checks, build, and `twine check` success.
 
@@ -158,24 +153,40 @@ See [`planning/PTSIP-TOOL-0.3.3-EXPLICIT-PROJECT-ADOPTION-PLAN.md`](planning/PTS
 
 ## Tool 0.3.4 — GitHub-coordinated distributed authority completion
 
-Tool `0.3.4` is the independent workstream that completes the GitHub-coordinated repository-global authority contract begun experimentally in the `0.3.3` source tree.
+Tool `0.3.4` completes the GitHub-coordinated repository-global authority contract begun experimentally in the `0.3.3` source tree.
 
-The approved planning target includes:
+Completed behavior includes:
 
-- authority reads at relevant architecture-sensitive gate boundaries even when a local Project Profile already contains a declaration;
-- deterministic missing/equivalent/conflicting local-versus-remote reconciliation behavior;
-- explicit conflict semantics with no silent Project Profile overwrite;
-- preserved global first-winner CAS semantics;
-- fail-closed distributed coordination without Local fallback winners;
-- separation of global decision resolution from clone-local Project Profile application state;
-- coordinated `adopt`, `gate`, and `resolve` behavior;
-- complete multi-clone regression and release-readiness verification.
+- authority freshness checks at relevant `ptsip gate` boundaries even when the local Project Profile already contains a complete declaration;
+- read-only authority lookup that does not bootstrap `refs/heads/ptsip-policy` or fabricate decision history merely to observe absence;
+- deterministic local/remote reconciliation:
+  - local missing + remote winner -> safe validated local projection;
+  - local equivalent + remote winner -> `RESOLVED` / `CONSISTENT` without rewrite;
+  - local conflicting + remote winner -> `AUTHORITY_PROFILE_CONFLICT` without silent overwrite;
+  - complete local declaration + no remote record -> `NO_DECISION_REQUIRED` without fabricated authority state;
+- preserved global `gdec-*` identity based on repository identity plus normalized include scope;
+- preserved non-force Git ref CAS and first-valid-resolution-wins;
+- selected GitHub coordination fails closed and does not silently create a Local winner;
+- global decision resolution is separate from clone-local application receipts reported with `scope = LOCAL_PROJECTION`;
+- coordinated `adopt`, `gate`, and `resolve` behavior while preserving explicit Local and hosted backends;
+- Tool/package source identity `0.3.4` while remaining bound to `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
 
-Tool `0.3.4` must not silently bind itself to the separately proposed Specification `0.3.3-draft` family. Its final Specification binding requires an explicit, coherent Tool/Specification decision.
+Implementation merged in PR `#24` as `555c528593f700a348d8da84545a62ce61291cae`.
 
-Tool `0.3.4` is the next Tool version eligible for a `tool-v0.3.4` tag, GitHub Release, and PyPI publication, but no publication is implied until its acceptance criteria and explicit release decision are complete.
+A first merged verification run found only three stale tests that still expected Tool `0.3.3`; those expectations were corrected in PR `#25` as `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f`.
 
-See [`planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md`](planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md).
+Final release-boundary verification completed in GitHub Actions run `31471025526` on Python `3.14.6`:
+
+- complete pytest suite: `134 passed`;
+- Tool identity and exact Specification binding: successful;
+- CLI smoke: successful;
+- wheel/sdist build: successful;
+- `twine check`: successful;
+- built-wheel reinstall and installed-wheel Tool/spec/CLI smoke: successful.
+
+Tool `0.3.4` is now a verified publication candidate. No `tool-v0.3.4` tag, GitHub Release, or PyPI `0.3.4` publication has been created; publication remains a separate explicit release decision.
+
+See [`planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md`](planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md) and [`releasenote/0.3.4.md`](releasenote/0.3.4.md).
 
 ## Release blockers for PTSIP Specification 1.0
 
