@@ -72,6 +72,7 @@ ptsip spec
 ptsip doctor .
 ptsip inspect .
 ptsip pilot .
+ptsip adopt --help
 ptsip validate .
 ptsip clarify .
 ptsip gate .
@@ -103,9 +104,48 @@ This keeps the project overview readable and prevents routine release work from 
 
 PTSIP does not require adopting repositories to create PTSIP-specific `docs/`, `tools/`, `.ptsip/`, cache, or report directories.
 
-External PTSIP inspection and Pilot tooling is read-only against the Consumer Repository by default. Tool-owned state should remain outside that repository unless the user explicitly chooses otherwise.
+External PTSIP inspection and Pilot tooling is read-only against the Consumer Repository by default. Tool-owned local state should remain outside that repository unless the user explicitly chooses otherwise.
 
-A project may voluntarily provide a machine-readable profile for enforced conformance, but the profile location remains a project/configuration concern rather than a required repository topology.
+The default project-owned architecture declaration is repository-root `ptsip.yaml`. It is intended to be committed with the Consumer Repository rather than placed in `.gitignore`. An explicit `--profile <path>` remains available for projects that own the profile elsewhere.
+
+Local workflow state such as `control-plane.sqlite3` remains under `PTSIP_HOME` and is **not** a portable architecture source of truth. It should not be committed or shared through Git. GitHub-coordinated repositories instead use a dedicated remote Git ref for unresolved decision coordination; the normal worktree still receives the durable architecture declaration through `ptsip.yaml`.
+
+## Explicit project adoption
+
+`ptsip adopt` is the project-owner entry point for turning a discovered component candidate into an explicit PTSIP architecture declaration. PTSIP discovers candidate scope from repository evidence; the project owner supplies the architecture intent. Directory names such as `tools/` are never sufficient to auto-classify a component as `TOOLCHAIN`.
+
+The command is a dry-run by default:
+
+```powershell
+ptsip adopt . `
+  --component tools `
+  --classification TOOLCHAIN `
+  --purpose "Repository-local generation tooling" `
+  --shipped no `
+  --runtime-required no `
+  --lifecycle-owner DEVELOPMENT_TOOLING `
+  --executable yes `
+  --json
+```
+
+Apply only after reviewing the plan:
+
+```powershell
+ptsip adopt . `
+  --component tools `
+  --classification TOOLCHAIN `
+  --purpose "Repository-local generation tooling" `
+  --shipped no `
+  --runtime-required no `
+  --lifecycle-owner DEVELOPMENT_TOOLING `
+  --executable yes `
+  --apply `
+  --json
+```
+
+For a non-GitHub repository, adoption is local and does not require a DecisionStore record. For a GitHub repository, `--apply` coordinates the architecture decision through the repository's PTSIP GitHub authority before changing the local profile, so another clone can observe the winner even before the first clone commits and pushes `ptsip.yaml`.
+
+`adopt`, `resolve`, `validate`, `conform`, `clarify`, and `gate` all accept the same explicit `--profile` location where applicable.
 
 ## Human clarification without speculative inference
 
@@ -119,6 +159,7 @@ The clarification interface supports English and Korean prompts only. Language s
 ptsip clarify . --lang ko
 ptsip clarify . --json
 ptsip clarify . --component tools
+ptsip clarify . --component tools --profile config/ptsip.yaml
 ```
 
 Clarification is read-only by default. The older explicit Issue publisher remains available as a manual/offline fallback:
@@ -137,24 +178,33 @@ The manual publisher requires an authenticated `gh` CLI only for the explicit pu
 
 ## Coding-agent decision gate
 
-Tool 0.3.1 adds an **on-demand** human architecture-decision workflow for coding-agent sessions. It does not run a reminder timer or scheduled poll. A coding agent calls `ptsip gate` only when its current boundary-sensitive task actually needs a decision that the repository does not yet declare.
+The Reference Tool provides an **on-demand** human architecture-decision workflow for coding-agent sessions. It does not run a reminder timer or continuous background poll. A coding agent calls `ptsip gate` only when its current boundary-sensitive task actually needs a decision that the selected Project Profile does not yet declare.
 
 ```powershell
 ptsip gate . --component tools --json
 ```
 
-When the decision is unresolved, the configured PTSIP decision control plane creates or reuses a GitHub clarification Issue and `ptsip gate` reports `DECISION_REQUIRED`. The coding agent should stop only the affected work and ask the user to decide. If no active coding-agent task needs the decision, PTSIP does not remind the user.
+Decision coordination is selected as follows:
 
-The user can resolve the pending decision through either channel:
+- GitHub origin detected: use the GitHub-coordinated authority by default;
+- no GitHub origin: use the embedded Local DecisionStore under `PTSIP_HOME`;
+- `--coordination local`: explicitly use local-only coordination;
+- `--coordination github`: explicitly require GitHub coordination;
+- `--control-plane <URL>`: explicitly use the hosted HTTP Control Plane instead of either built-in mode.
 
-- **Active coding-agent chat:** the coding agent records the user's explicit facts with the write-enabled `ptsip resolve` command.
-- **GitHub Issue:** the GitHub App accepts the fixed `ptsip-clarification-answer/v1` YAML structure from an authorized repository writer through an `issue_comment` webhook.
+GitHub coordination stores unresolved/resolved decision records under the dedicated `refs/heads/ptsip-policy` authority ref. Mutations are serialized with non-force Git ref compare-and-swap semantics. A stale writer cannot overwrite a newer authority HEAD, and the global decision key is based on repository identity plus normalized component include scope rather than one clone's local clarification ID.
 
-Example chat-originated resolution:
+Cloud environments may authenticate GitHub coordination with `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer machines may use an authenticated `gh` CLI. The credential must be able to write repository contents/refs. If GitHub coordination is selected but unavailable, PTSIP fails the new architecture-decision operation instead of silently falling back to a separate Local DecisionStore and creating split-brain authority.
+
+When the GitHub authority already contains a resolved winner but the current clone has not yet received the corresponding `ptsip.yaml` update, `ptsip gate` reconciles that authoritative answer into the selected local profile. This is action-time synchronization: agents do not need continuous polling, but stale clones cannot create a second winner for the same component scope.
+
+When a decision is unresolved, `ptsip gate` reports `DECISION_REQUIRED`. The coding agent should stop only the affected work and ask the user to decide. The active coding-agent chat can then record the explicit facts with `ptsip resolve`.
+
+Example resolution:
 
 ```powershell
 ptsip resolve . `
-  --decision clr-example `
+  --decision gdec-example `
   --classification TOOLCHAIN `
   --purpose "Repository migration tooling" `
   --shipped no `
@@ -163,13 +213,11 @@ ptsip resolve . `
   --executable yes
 ```
 
-The control plane uses compare-and-set semantics: **the first valid resolution wins**. After a decision is resolved, a later contradictory chat or Issue answer cannot replace it. When chat resolution is successfully projected into `ptsip.yaml`, the linked Issue is completed; later replies are ignored.
+The first valid resolution wins within the selected authority. A later contradictory answer cannot replace it. `ptsip.yaml` remains the project-owned architecture declaration; the GitHub authority or Local DecisionStore records workflow/decision state needed to coordinate how an undeclared architecture fact was resolved.
 
-Issue-originated profile application is bound to the recorded repository revision and uses a non-force Git ref update. If the branch has changed, PTSIP preserves the already accepted human decision but does not silently apply it to the changed snapshot; the active coding agent must reconcile that resolved decision against the current repository state.
+The older hosted GitHub App / webhook Control Plane remains available through explicit `--control-plane <URL>` selection. Its GitHub Issue interface can still accept the fixed `ptsip-clarification-answer/v1` structure from an authorized repository writer. See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the Tool-level workflow and authority contract.
 
-The GitHub Issue is an asynchronous interaction surface. The decision-control-plane store is authoritative for workflow state, while `ptsip.yaml` remains the Consumer Repository's architecture declaration. See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the Tool-level workflow and reference service contract.
-
-The GitHub App runtime is optional for ordinary local PTSIP use:
+The GitHub App runtime is optional:
 
 ```powershell
 pip install "ptsip[github-app]"
@@ -212,7 +260,7 @@ CLI exit codes for `ptsip conform` are:
 | `5` | `NON_CONFORMANT` |
 | `6` | `INCOMPLETE` |
 
-The Tool does not restructure the Consumer Repository or auto-approve architecture exceptions. Tool 0.3.1 may write a Project Profile only through an explicit user-authorized resolution workflow or an authorized structured GitHub Issue decision; conformance evaluation still treats the resulting profile as a declaration that must be checked against observed evidence.
+The Tool does not restructure the Consumer Repository or auto-approve architecture exceptions. A Project Profile is written only through an explicit project-owner adoption or user-authorized resolution workflow; conformance evaluation treats the resulting profile as a declaration that must be checked against observed evidence.
 
 ## Reference Tool
 
@@ -225,8 +273,11 @@ The current tooling focuses on:
 - repository snapshot and non-intrusion evidence;
 - component and multi-language dependency evidence;
 - deterministic human clarification for missing architectural intent;
+- explicit project-owner adoption with dry-run/application guards;
 - on-demand coding-agent decision gating and explicit human resolution;
-- optional GitHub App/Webhook decision synchronization without scheduled reminders;
+- GitHub-coordinated first-winner authority for multi-environment agents;
+- embedded Local DecisionStore coordination for local-only repositories;
+- optional hosted GitHub App/Webhook decision synchronization without scheduled reminders;
 - project-profile validation;
 - explicit Product Artifact evidence ingestion and packaging evaluation;
 - independent build-resolution and bounded lifecycle evidence evaluation;
@@ -236,7 +287,7 @@ The current tooling focuses on:
 
 Conformance is evidence-relative rather than detection-relative: unsupported, unresolved, contradictory, stale, or incomplete evidence that can conceal an applicable `MUST`/`MUST NOT` result prevents `CONFORMANT` even when no violation has been detected.
 
-Pilot state is stored outside the repository by default (`%LOCALAPPDATA%\PTSIP` on Windows and the platform-equivalent user state directory elsewhere). `PTSIP_HOME` can override that location.
+Pilot and local decision state is stored outside the repository by default (`%LOCALAPPDATA%\PTSIP` on Windows and the platform-equivalent user state directory elsewhere). `PTSIP_HOME` can override that location. The GitHub-coordinated authority is a dedicated remote Git ref, not a worktree SQLite file.
 
 Tool releases use the `tool-v*` tag/release namespace. Specification releases may use a separate `spec-v*` namespace.
 
@@ -249,7 +300,7 @@ Tool releases use the `tool-v*` tag/release namespace. Specification releases ma
 | Schemas | [`schemas/`](schemas/) | Project profile, diagnostics, artifact evidence, and coding-agent decision schemas. |
 | Reference architecture | [`reference/`](reference/) | Informative architecture guidance. |
 | Adoption guidance | [`adoption/`](adoption/) | Migration and adoption sequence. |
-| Agent contract | [`agents/`](agents/) | Concise rules for coding agents. |
+| Agent contract | [`agents/AGENT-CONTRACT.md`](agents/AGENT-CONTRACT.md) | Concise rules for coding agents. |
 | Example profiles | [`profiles/`](profiles/) | Example PTSIP project profiles. |
 | Architecture decisions | [`decisions/`](decisions/) | Specification decision records. |
 | Reference Tool | [`src/ptsip/`](src/ptsip/) | Installable Python implementation. |
