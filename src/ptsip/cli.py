@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 
 from .app.client import ControlPlaneClient
@@ -55,7 +54,7 @@ def _yes_no(value: str) -> bool:
 
 
 def _remote_control_plane_requested(explicit_url: str | None) -> bool:
-    return bool(explicit_url or os.environ.get("PTSIP_CONTROL_PLANE_URL"))
+    return bool(explicit_url)
 
 
 def _decision_repository(repo: RepositoryInfo) -> str:
@@ -68,7 +67,7 @@ def _decision_client(
     repository_root: str,
     explicit_url: str | None,
 ) -> ControlPlaneClient | LocalControlPlaneClient:
-    if _remote_control_plane_requested(explicit_url):
+    if explicit_url:
         return ControlPlaneClient(explicit_url)
     return LocalControlPlaneClient(repository_root)
 
@@ -142,7 +141,7 @@ def _parser() -> argparse.ArgumentParser:
     p_gate.add_argument("--lang", choices=("en", "ko"), help="Issue language; otherwise PTSIP_LANG, OS locale, then English")
     p_gate.add_argument(
         "--control-plane",
-        help="Optional remote PTSIP control-plane base URL; default is the embedded local control plane. PTSIP_CONTROL_PLANE_URL also selects remote mode.",
+        help="Optional remote PTSIP control-plane base URL; default is the embedded local control plane.",
     )
     p_gate.add_argument("--json", action="store_true")
 
@@ -166,7 +165,7 @@ def _parser() -> argparse.ArgumentParser:
     p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")
     p_resolve.add_argument(
         "--control-plane",
-        help="Optional remote PTSIP control-plane base URL; default is the embedded local control plane. PTSIP_CONTROL_PLANE_URL also selects remote mode.",
+        help="Optional remote PTSIP control-plane base URL; default is the embedded local control plane.",
     )
     p_resolve.add_argument("--json", action="store_true")
 
