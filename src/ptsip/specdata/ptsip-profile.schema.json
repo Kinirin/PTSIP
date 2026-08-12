@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/kwaksinwoo01/ptsip/main/schemas/ptsip-profile.schema.json",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile.schema.json",
   "title": "PTSIP Project Profile",
   "type": "object",
   "required": ["ptsip", "policies"],
@@ -18,7 +18,7 @@
           "type": "object",
           "required": ["source"],
           "properties": {
-            "source": {"type": "string", "const": "https://github.com/kwaksinwoo01/ptsip"},
+            "source": {"type": "string", "const": "https://github.com/Kinirin/PTSIP"},
             "revision": {
               "type": "string",
               "minLength": 1,
