@@ -123,7 +123,9 @@ def test_gate_and_resolve_use_local_control_plane_without_server_or_github_origi
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
     component = next(item for item in document["components"] if item["id"] == "tools")
     assert component["classification"] == "TOOLCHAIN"
-    assert component["release_owner"] == "DEVELOPMENT_TOOLING"
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
+    assert "release_owner" not in component
 
     assert main(["validate", str(repo), "--profile", str(profile), "--json"]) == 0
     validation_payload = json.loads(capsys.readouterr().out)
