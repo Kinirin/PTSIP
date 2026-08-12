@@ -2,7 +2,7 @@
 # Purpose: one-time creation and publication of the canonical PTSIP repository.
 $ErrorActionPreference = 'Stop'
 
-$Repo = 'kwaksinwoo01/ptsip'
+$Repo = 'Kinirin/PTSIP'
 
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
     throw 'GitHub CLI (gh) is not installed or not on PATH.'

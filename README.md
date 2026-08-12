@@ -6,7 +6,7 @@
 
 **Status:** Draft project-defined specification  
 **Specification family:** `0.3.4-draft`  
-**Normative snapshot prepared in PR #26:** `afba3531e23d96c21b7216e49614b839158ca7d5`  
+**Active normative snapshot:** `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`<br>
 **License:** Apache License 2.0
 
 PTSIP is an architecture policy for keeping Product SDK responsibility separate from development Toolchain SDK responsibility while preserving explicit contracts, reproducible conformance, and multi-environment architecture-decision consistency.
@@ -78,7 +78,7 @@ The **PTSIP Specification** and **PTSIP Reference Tool** are independently versi
 - `src/ptsip/specdata/` contains matching embedded resources used by the Tool;
 - GitHub Releases publish Tool and Specification release/design records.
 
-The existing `spec-v0.3.4-draft` GitHub Release records the pre-activation design proposal. It remains an immutable historical checkpoint and is not moved. The coherent normative snapshot prepared for activation/rebind is `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5`; it becomes canonical when PR `#26` is merged while preserving that commit in history.
+The existing `spec-v0.3.4-draft` GitHub Release records the earlier design proposal. It remains an immutable historical checkpoint and is not moved. The active repository-identity-migration snapshot is `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`.
 
 A Tool version number matching a Specification family number does not imply identity by itself.
 

@@ -2,14 +2,15 @@
 
 ## Current migration state
 
-- Canonical repository: `kwaksinwoo01/PTSIP`
+- Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
 - Current Tool/package source version: `0.3.4`
 - Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - `spec-v0.3.4-draft`: published GitHub Specification **design-release checkpoint**; tag remains unchanged
-- Final `0.3.4-draft` coherent normative freeze revision in PR `#26`: `afba3531e23d96c21b7216e49614b839158ca7d5`
-- Tool `0.3.4` source binding prepared in PR `#26`: `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5`
-- Activation/rebind verification: pending PR `#26` merge CI
+- Final `0.3.4-draft` repository-identity-migration revision: `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Tool `0.3.4` source binding: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Repository identity migration: **COMPLETE**
+- Implementation: **COMPLETED**
 - Latest verified PyPI publication: `PTSIP==0.3.1`
 - Tool `0.3.4` publication: **not published**; no `tool-v0.3.4`, GitHub Tool Release, or PyPI `0.3.4`
 - Supported Python metadata: Python 3.11–3.14
@@ -18,7 +19,7 @@
 - Specification release/design namespace: `spec-v*`
 - License: Apache License 2.0
 
-The `0.3.4-draft` freeze becomes the canonical active draft snapshot only when PR `#26` is merged while preserving the freeze commit in history. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
+The `0.3.4-draft` repository-identity-migration freeze is the canonical active draft snapshot. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
 
 The existing `spec-v0.3.4-draft` tag is not moved to the later normative freeze revision. Immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
 
@@ -56,7 +57,7 @@ New stable Specification rules are:
 
 ## Coherent migration assets
 
-The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` contains the coherent normative/machine-readable migration state, including:
+The immutable freeze `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e` contains the coherent normative/machine-readable migration state, including:
 
 - `spec/PTSIP-SPEC.md`
 - `spec/PTSIP-CONFORMANCE.md`
@@ -75,7 +76,7 @@ The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` contains the coh
 - `src/ptsip/specdata/*` packaged machine-readable contracts
 - Tool profile-projection behavior required for lossless structured facts
 
-PR `#26` then adds the Tool binding and regression fixtures that point back to that immutable snapshot.
+The following Tool release-readiness commit adds the Tool binding and regression fixtures that point back to that immutable snapshot.
 
 All five canonical/embedded machine-readable pairs are required to be byte-identical by release-readiness tests:
 
@@ -114,15 +115,15 @@ GitHub Actions run `31471025526` on Python `3.14.6` verified the original Tool `
 - wheel/sdist `twine check` passed
 - installed-wheel smoke passed
 
-That run remains valid evidence for the distributed-authority implementation, but it is **not** the final verification for the new `0.3.4-draft @ afba3531...` binding.
+That run remains valid evidence for the distributed-authority implementation, but it predates the repository identity migration and is **not** final release evidence.
 
-### Post-rebind verification
+### Repository-identity-migration verification
 
-Pending PR `#26` merge CI. Required checks are:
+Final local and hosted verification is pending for this release-readiness commit. Required checks are:
 
 - complete pytest suite;
 - `PTSIP Tool 0.3.4` identity;
-- exact `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5` binding;
+- exact `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e` binding;
 - canonical/embedded machine-readable contract equality;
 - package build;
 - wheel/sdist `twine check`;
@@ -134,6 +135,6 @@ Pending PR `#26` merge CI. Required checks are:
 - Tool `0.3.1`: published as `tool-v0.3.1` / PyPI
 - Tool `0.3.2`: source-only migration
 - Tool `0.3.3`: permanently source-only; never tag, GitHub Release, or PyPI
-- Tool `0.3.4`: distributed-authority implementation complete; Specification rebind in PR `#26`; publication remains a separate explicit decision
+- Tool `0.3.4`: implementation completed; repository identity migration complete; publication pending
 
 No Tool publication is implied by Specification activation or by successful CI.

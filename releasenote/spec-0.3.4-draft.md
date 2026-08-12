@@ -6,7 +6,7 @@
 **Implementation evidence:** PTSIP Reference Tool `0.3.4`  
 **Tool implementation merge:** `555c528593f700a348d8da84545a62ce61291cae`  
 **Tool verification completion before rebind:** `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f`  
-**Normative freeze revision:** `afba3531e23d96c21b7216e49614b839158ca7d5`  
+**Normative freeze revision:** `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`<br>
 **Identity model:** draft family label + immutable Git revision
 
 The existing `spec-v0.3.4-draft` tag/GitHub Release is the earlier public design-release checkpoint and remains immutable historical provenance. It is not moved to the later activation snapshot.
@@ -14,10 +14,10 @@ The existing `spec-v0.3.4-draft` tag/GitHub Release is the earlier public design
 The exact active normative identity of this mutable draft family is:
 
 ```text
-0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5
+0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
 ```
 
-The freeze becomes canonical when PR `#26` is merged while preserving that commit in repository history.
+The repository-identity-migration freeze is canonical while preserving the earlier freeze commit in repository history.
 
 Because a Git commit cannot safely contain its own literal SHA, the immutable normative migration commit is created first. A following Tool binding commit records that already-existing revision as `SPEC_REVISION`.
 
@@ -112,7 +112,7 @@ The coherent migration assigns:
 
 ## 6. Coherent migration assets
 
-The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` aligns:
+The immutable freeze `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e` aligns:
 
 - `spec/PTSIP-SPEC.md`;
 - `spec/PTSIP-CONFORMANCE.md`;
@@ -145,7 +145,7 @@ The artifact, agent-classification, and diagnostic contract semantics themselves
 
 Reference Tool `0.3.4` was originally implemented and verified while bound to `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
 
-The Tool binding commit in PR `#26` points to `afba3531e23d96c21b7216e49614b839158ca7d5`. The complete regression/build verification must succeed again under that binding before Tool `0.3.4` returns to verified-publication-candidate status.
+The following Tool binding commit points to `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`. The complete regression/build verification must succeed under that binding before Tool `0.3.4` is published.
 
 ## 8. Compatibility
 

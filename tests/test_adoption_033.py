@@ -12,7 +12,7 @@ from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
 
 
-SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -169,7 +169,7 @@ def test_adopt_extends_existing_covering_component_without_creating_duplicate(
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: Repository-local generation tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/Kinirin/PTSIP\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: Repository-local generation tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
 
@@ -191,7 +191,7 @@ def test_existing_conflicting_declaration_is_not_overwritten(tmp_path: Path, cap
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: tools\n    classification: PRODUCT\n    include: [\"tools/**\"]\n    purpose: Existing product component\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/Kinirin/PTSIP\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: tools\n    classification: PRODUCT\n    include: [\"tools/**\"]\n    purpose: Existing product component\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     before = profile.read_text(encoding="utf-8")
@@ -209,7 +209,7 @@ def test_structured_adoption_refuses_boundary_shorthand_without_lossless_fact_re
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: {SPEC_REVISION}\nboundaries:\n  product:\n    roots: [\"product\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/Kinirin/PTSIP\n    revision: {SPEC_REVISION}\nboundaries:\n  product:\n    roots: [\"product\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     before = profile.read_text(encoding="utf-8")

@@ -78,7 +78,7 @@ def _minimal_profile() -> dict[str, object]:
     return {
         "ptsip": {
             "version": "0.3.4-draft",
-            "specification": {"source": "https://github.com/kwaksinwoo01/ptsip"},
+            "specification": {"source": "https://github.com/Kinirin/PTSIP"},
         },
         "components": [
             {
@@ -163,7 +163,7 @@ def test_component_dependency_policy_requires_component_mode() -> None:
     profile = {
         "ptsip": {
             "version": "0.3.4-draft",
-            "specification": {"source": "https://github.com/kwaksinwoo01/ptsip"},
+            "specification": {"source": "https://github.com/Kinirin/PTSIP"},
         },
         "boundaries": {
             "product": {"roots": ["product"]},

@@ -37,6 +37,8 @@ Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
 | `0.3.0` | Published | [`0.3.0.md`](0.3.0.md) |
 | `0.3.1` | Published | [`0.3.1.md`](0.3.1.md) |
 | `0.3.2` | Migration source, not yet merged/published/tagged | [`0.3.2.md`](0.3.2.md) |
+| `0.3.3` | Permanent source-only implementation version | [`0.3.3.md`](0.3.3.md) |
+| `0.3.4` | Release preparation; publication pending | [`0.3.4.md`](0.3.4.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
@@ -45,9 +47,10 @@ Versions that never represented a real PTSIP Tool source/release state are not f
 | Family | State | Document |
 | --- | --- | --- |
 | `0.1.0-draft` | Historical initial public draft | [`spec-0.1.0-draft.md`](spec-0.1.0-draft.md) |
-| `0.2.0-draft` | Current experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
+| `0.2.0-draft` | Historical experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
+| `0.3.4-draft` | Current active draft family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
 
-The `0.2.0-draft` family label is mutable; its exact normative identity is the immutable Git revision recorded by the relevant Tool, release, or evaluation.
+Draft family labels are mutable; their exact normative identity is the immutable Git revision recorded by the relevant Tool, release, or evaluation.
 
 ## Tool release policy
 

@@ -11,7 +11,10 @@ requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [
-  { name = "kwaksinwoo01" }
+  { name = "Kinirin" }
+]
+maintainers = [
+  { name = "Kinirin" }
 ]
 keywords = ["architecture", "sdk", "toolchain", "governance", "validation", "ptsip"]
 classifiers = [
@@ -31,9 +34,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kwaksinwoo01/ptsip"
-Specification = "https://github.com/kwaksinwoo01/ptsip"
-Issues = "https://github.com/kwaksinwoo01/ptsip/issues"
+Homepage = "https://github.com/Kinirin/PTSIP"
+Specification = "https://github.com/Kinirin/PTSIP"
+Issues = "https://github.com/Kinirin/PTSIP/issues"
 
 [project.scripts]
 ptsip = "ptsip.cli:main"

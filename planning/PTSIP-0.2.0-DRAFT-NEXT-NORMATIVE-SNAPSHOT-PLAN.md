@@ -20,7 +20,7 @@ This plan uses two Consumer Pilot evidence sources:
    - Result: evidence collection succeeded; strict conformance remained undetermined because coverage, artifact, phase, and ownership evidence were incomplete.
 
 2. **Simple Connection Pilot feedback** — a JavaScript/TypeScript-, Node.js-, Electron-, SDK-, and Toolchain-oriented repository with explicit component-to-component dependency policy and repository-local governance tooling.
-   - Repository: `kwaksinwoo01/Simple-Connection`.
+   - Repository: `Kinirin/Simple-Connection`.
    - The supplied Pilot feedback did not bind the analysis to an exact repository revision; this plan therefore records the feedback as a design input rather than pretending the current repository HEAD is the Pilot snapshot.
    - Important repository-specific governance such as `AGENTS.md`, `MEMORY.md`, `document_hub.md`, `General_ledger.json`, and the repository's own Governance Validator remain outside PTSIP ownership.
 

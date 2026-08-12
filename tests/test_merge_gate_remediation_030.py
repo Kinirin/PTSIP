@@ -16,7 +16,7 @@ from ptsip.repository.snapshot import capture_snapshot
 from ptsip.validation.components import partition_components
 
 
-SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -70,7 +70,7 @@ def _profile(repo: Path, components: list[dict[str, object]]) -> None:
         "ptsip:",
         '  version: "0.3.4-draft"',
         "  specification:",
-        '    source: "https://github.com/kwaksinwoo01/ptsip"',
+        '    source: "https://github.com/Kinirin/PTSIP"',
         f'    revision: "{SPEC_REVISION}"',
         "components:",
     ]

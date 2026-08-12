@@ -65,7 +65,7 @@ The `0.2.0-draft` label is a mutable draft family. The exact normative meaning o
 
 ## Repository identity maintenance
 
-During this draft family the canonical repository was renamed from `kwaksinwoo01/ptsip-spec` to `kwaksinwoo01/ptsip`.
+During this draft family the canonical repository moved from an earlier repository location to a unified Tool and Specification repository.
 
 - updated canonical Specification Binding metadata, profile schema identity, registry source, examples, and governance references to the new repository URL;
 - preserved immutable historical Specification revisions across the repository rename;

@@ -7,7 +7,7 @@ from ptsip.app.store import DecisionStore
 from ptsip.clarification.resolution import DecisionAnswer, parse_answer, project_payload, validate_answer
 
 
-SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 class FakeGitHub:
@@ -151,7 +151,7 @@ def test_profile_projection_preserves_existing_boundary_and_structured_facts_and
         "ptsip": {
             "version": "0.3.4-draft",
             "specification": {
-                "source": "https://github.com/kwaksinwoo01/ptsip",
+                "source": "https://github.com/Kinirin/PTSIP",
                 "revision": SPEC_REVISION,
             },
         },
@@ -251,7 +251,7 @@ def test_issue_profile_conflict_does_not_win_authoritative_cas(tmp_path: Path):
     github.file_content = f"""ptsip:
   version: 0.3.4-draft
   specification:
-    source: https://github.com/kwaksinwoo01/ptsip
+    source: https://github.com/Kinirin/PTSIP
     revision: {SPEC_REVISION}
 components:
   - id: tools

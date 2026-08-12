@@ -12,7 +12,7 @@ from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
 
 
-SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -91,7 +91,7 @@ def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
 def test_declared_component_purpose_suppresses_question(tmp_path: Path):
     repo = _tool_repo(tmp_path)
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: build_generation\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: build_generation\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     _commit_all(repo)
@@ -103,7 +103,7 @@ def test_declared_component_purpose_suppresses_question(tmp_path: Path):
 def test_partial_declared_component_targets_declared_component_id(tmp_path: Path):
     repo = _tool_repo(tmp_path)
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     _commit_all(repo)

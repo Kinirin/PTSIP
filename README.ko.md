@@ -92,7 +92,7 @@ pip install -e ".[dev]"
 이 README는 현재 Tool 버전, 최신 공개 릴리스 번호 또는 immutable Specification revision을 의도적으로 중복 표기하지 않습니다. 해당 값에는 다음과 같은 권위 있는 출처가 있습니다.
 
 - [`pyproject.toml`](pyproject.toml) — Tool 소스 버전 및 패키지 메타데이터
-- [GitHub Releases](https://github.com/kwaksinwoo01/ptsip/releases) — 공개된 Tool 및 Specification 릴리스
+- [GitHub Releases](https://github.com/Kinirin/PTSIP/releases) — 공개된 Tool 및 Specification 릴리스
 - `ptsip --version` — 설치된 Tool 버전
 - `ptsip spec` — 설치된 Tool에 바인딩된 Specification identity
 - [`spec/`](spec/) 및 [`registry/ptsip-registry.yaml`](registry/ptsip-registry.yaml) — 정식 Specification 내용과 기계 판독 가능한 identity

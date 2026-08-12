@@ -15,7 +15,7 @@ from ptsip.cli import main
 from ptsip.topology import migrate_topology
 
 
-SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _run(root: Path, *args: str) -> str:
@@ -38,7 +38,7 @@ def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str
         "ptsip": {
             "version": "0.3.4-draft",
             "specification": {
-                "source": "https://github.com/kwaksinwoo01/ptsip",
+                "source": "https://github.com/Kinirin/PTSIP",
                 "revision": SPEC_REVISION,
             },
         },
@@ -68,7 +68,7 @@ def _boundary_profile() -> str:
         "ptsip": {
             "version": "0.3.4-draft",
             "specification": {
-                "source": "https://github.com/kwaksinwoo01/ptsip",
+                "source": "https://github.com/Kinirin/PTSIP",
                 "revision": SPEC_REVISION,
             },
         },
