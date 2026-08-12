@@ -13,7 +13,7 @@ from ptsip.validation.components import partition_components
 from ptsip.repository.snapshot import capture_snapshot
 
 
-SPEC_REVISION = "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -78,7 +78,7 @@ def _python_profile(repo: Path, *, lifecycle: bool = True) -> list[dict[str, obj
 def _write_profile(repo: Path, components: list[dict[str, object]]) -> None:
     lines = [
         "ptsip:",
-        '  version: "0.2.0-draft"',
+        '  version: "0.3.4-draft"',
         "  specification:",
         '    source: "https://github.com/kwaksinwoo01/ptsip"',
         f'    revision: "{SPEC_REVISION}"',

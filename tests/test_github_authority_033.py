@@ -257,5 +257,6 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     profile = yaml.safe_load((repo_b / "ptsip.yaml").read_text(encoding="utf-8"))
     component = next(item for item in profile["components"] if item["id"] == "tools")
     assert component["classification"] == "TOOLCHAIN"
-    assert "runtime_required" not in component
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
     assert not decision_store_path(repo_b).exists()
