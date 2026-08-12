@@ -12,6 +12,9 @@ from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
 
 
+SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+
+
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -114,6 +117,8 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
     assert adopted["declaration"]["runtime_required"] is False
     profile = repo / "ptsip.yaml"
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
+    assert document["ptsip"]["version"] == "0.3.4-draft"
+    assert document["ptsip"]["specification"]["revision"] == SPEC_REVISION
     component = next(item for item in document["components"] if item["id"] == "tools")
     assert component == {
         "id": "tools",
@@ -121,9 +126,11 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
         "classification": "TOOLCHAIN",
         "purpose": "Repository-local generation tooling",
         "shipped": False,
+        "runtime_required": False,
+        "lifecycle_owner": "DEVELOPMENT_TOOLING",
         "executable": True,
-        "release_owner": "DEVELOPMENT_TOOLING",
     }
+    assert "release_owner" not in component
     assert not decision_store_path(repo).exists()
 
     assert main(_adopt_args(repo, apply=True)) == 0
@@ -137,8 +144,10 @@ def test_adopt_does_not_classify_from_tools_directory_name(tmp_path: Path, capsy
     product_result = json.loads(capsys.readouterr().out)
     assert product_result["status"] == "ADOPTED"
     product_profile = yaml.safe_load((product_repo / "ptsip.yaml").read_text(encoding="utf-8"))
-    assert product_profile["components"][0]["classification"] == "PRODUCT"
-    assert product_result["declaration"]["runtime_required"] is True
+    component = product_profile["components"][0]
+    assert component["classification"] == "PRODUCT"
+    assert component["runtime_required"] is True
+    assert component["lifecycle_owner"] == "PRODUCT"
 
     neutral_repo = _repo(tmp_path / "neutral")
     assert main(_adopt_args(neutral_repo, apply=True, classification="NEUTRAL_CONTRACT")) == 0
@@ -148,7 +157,9 @@ def test_adopt_does_not_classify_from_tools_directory_name(tmp_path: Path, capsy
     component = neutral_profile["components"][0]
     assert component["classification"] == "NEUTRAL_CONTRACT"
     assert component["executable"] is False
-    assert component["release_owner"] == "INDEPENDENT"
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "INDEPENDENT"
+    assert "release_owner" not in component
 
 
 def test_adopt_extends_existing_covering_component_without_creating_duplicate(
@@ -158,7 +169,7 @@ def test_adopt_extends_existing_covering_component_without_creating_duplicate(
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: 0.2.0-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: Repository-local generation tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: Repository-local generation tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
 
@@ -170,15 +181,17 @@ def test_adopt_extends_existing_covering_component_without_creating_duplicate(
     component = document["components"][0]
     assert component["classification"] == "TOOLCHAIN"
     assert component["shipped"] is False
+    assert component["runtime_required"] is False
+    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
     assert component["executable"] is True
-    assert component["release_owner"] == "DEVELOPMENT_TOOLING"
+    assert "release_owner" not in component
 
 
 def test_existing_conflicting_declaration_is_not_overwritten(tmp_path: Path, capsys) -> None:
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: 0.2.0-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\ncomponents:\n  - id: tools\n    classification: PRODUCT\n    include: [\"tools/**\"]\n    purpose: Existing product component\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: tools\n    classification: PRODUCT\n    include: [\"tools/**\"]\n    purpose: Existing product component\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     before = profile.read_text(encoding="utf-8")
@@ -186,6 +199,24 @@ def test_existing_conflicting_declaration_is_not_overwritten(tmp_path: Path, cap
     assert main(_adopt_args(repo, apply=True)) == 8
     result = json.loads(capsys.readouterr().out)
     assert result["status"] == "CONFLICT"
+    assert profile.read_text(encoding="utf-8") == before
+
+
+def test_structured_adoption_refuses_boundary_shorthand_without_lossless_fact_representation(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    repo = _repo(tmp_path)
+    profile = repo / "ptsip.yaml"
+    profile.write_text(
+        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/kwaksinwoo01/ptsip\n    revision: {SPEC_REVISION}\nboundaries:\n  product:\n    roots: [\"product\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        encoding="utf-8",
+    )
+    before = profile.read_text(encoding="utf-8")
+
+    assert main(_adopt_args(repo, apply=True)) == 8
+    result = json.loads(capsys.readouterr().out)
+    assert result["status"] in {"CONFLICT", "DECISION_ERROR"}
     assert profile.read_text(encoding="utf-8") == before
 
 

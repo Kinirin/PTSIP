@@ -1,269 +1,228 @@
 # PTSIP Conformance
 
-**Version:** 0.2.0-draft
+**Version:** 0.3.4-draft
 
-PTSIP conformance is defined so that a human reviewer or automated implementation can make a reproducible claim about a project without confusing declaration validity, evidence collection, or absence of detected findings with actual conformance.
+PTSIP conformance distinguishes Consumer Repository architecture conformance from PTSIP implementation capability requirements. A Decision Authority may coordinate architecture decisions, but it does not itself prove that a Consumer Repository conforms.
 
-## 1. Conformance levels
+## 1. Consumer Repository conformance levels
 
 ### 1.1 PTSIP Core Conformant
 
-A project is **PTSIP Core Conformant** when it satisfies all applicable normative `MUST`/`MUST NOT` requirements in `PTSIP-SPEC.md`, including:
+A project is **PTSIP Core Conformant** when it satisfies all applicable Consumer Repository `MUST`/`MUST NOT` requirements in `PTSIP-SPEC.md`, including classification, coherent boundaries, Product-to-Toolchain runtime isolation, packaging isolation, independently resolvable build environments, lifecycle independence, and other applicable universal rules.
 
-- SDK/component classification;
-- coherent component boundaries;
-- Product-to-Toolchain runtime dependency prohibition;
-- packaging isolation;
-- independently resolvable build environments;
-- lifecycle ownership separation;
-- evidence obligations required to support the claim;
-- Consumer Repository Non-Intrusion for external PTSIP tooling; and
-- remediation of established mandatory-rule violations before a conformant claim.
-
-A project does not need to add PTSIP-specific documentation or tooling directories merely to claim Core Conformance.
-
-Core Conformance MAY be established through a reproducible human review, automated tooling, or a combination, but the evidence used for the claim must be sufficient for the applicable mandatory rules.
+A project does not need to use distributed decision coordination merely to be Core Conformant.
 
 ### 1.2 PTSIP Enforced Conformant
 
-A project is **PTSIP Enforced Conformant** when it is Core Conformant and additionally provides:
+A project is **PTSIP Enforced Conformant** when it is Core Conformant and additionally provides enough machine-readable declaration and reproducible evidence for automated enforcement, including:
 
-- a machine-readable PTSIP Project Profile or equivalent declaration;
-- a Specification Binding identifying canonical source, draft family/version, and immutable specification revision when the specification is mutable;
-- automated dependency-boundary validation;
-- product artifact inspection or an equivalent packaging check sufficient for `PTSIP-PKG-001` / `PTSIP-ART-001`;
-- stable machine-readable diagnostics that report PTSIP rule IDs and evidence references;
+- a PTSIP Project Profile or equivalent declaration;
+- canonical Specification source/family and exact immutable revision for a mutable draft;
+- automated dependency-boundary evaluation;
+- Product Artifact evidence when required by `PTSIP-PKG-001` / `PTSIP-ART-001`;
+- stable diagnostics with PTSIP rule IDs and evidence references;
 - stable evidence tied to one repository snapshot;
-- rule-relative evidence coverage sufficient for the mandatory rules being claimed; and
+- rule-relative evidence coverage sufficient for applicable mandatory rules; and
 - CI or equivalent repeatable validation.
 
-## 2. Profile Validation is not Conformance Evaluation
+## 2. Profile Validation, authority reconciliation, and Conformance Evaluation
 
-A PTSIP implementation SHOULD distinguish these operations explicitly.
+These operations are distinct.
 
 ### 2.1 Profile Validation
 
-Profile Validation asks whether the project declaration is structurally and semantically well-formed.
+Profile Validation asks whether the selected declaration is structurally and semantically valid. It may check schema structure, specification binding, component IDs, selector conflicts, lifecycle facts, referenced components, and project-specific dependency policy.
 
-It may validate:
+A valid profile is not proof that observed dependencies, artifacts, build behavior, or lifecycle behavior conform.
 
-- JSON/YAML schema structure;
-- specification-binding syntax;
-- component IDs;
-- ownership declaration mode;
-- selector conflicts;
-- referenced component existence; and
-- project-specific dependency-policy consistency.
+### 2.2 Authority reconciliation
 
-A valid profile is **not** proof that repository dependencies, artifacts, build behavior, or lifecycle behavior conform to the declaration or to PTSIP.
+When distributed coordination is selected, authority reconciliation determines whether the relevant local Project Profile declaration is consistent with current coordinated authority state.
 
-### 2.2 Conformance Evaluation
+A local profile may be structurally valid but stale relative to a resolved distributed winner. Conversely, a resolved distributed winner may be perfectly synchronized with the profile while the repository remains architecturally non-conformant.
+
+Authority reconciliation therefore MUST NOT be treated as Conformance Evaluation.
+
+### 2.3 Conformance Evaluation
 
 Conformance Evaluation combines, as applicable:
 
-- the validated project declaration;
+- validated project declaration;
 - observed repository evidence;
 - dependency evidence;
-- artifact/packaging evidence;
-- lifecycle/release evidence;
-- evidence coverage; and
-- deterministic PTSIP rule evaluation.
-
-A tool MAY expose separate operations such as `validate` and `conform`. Those command names are informative; the semantic separation is normative.
+- Product Artifact evidence;
+- build/lifecycle evidence;
+- evidence coverage;
+- snapshot integrity; and
+- deterministic Consumer Repository PTSIP rules.
 
 ## 3. Conformance outcomes
 
-A completed PTSIP conformance evaluation has one of these outcomes:
+A completed Consumer Repository Conformance Evaluation has exactly one of these outcomes:
 
 ### 3.1 `CONFORMANT`
 
-`CONFORMANT` means:
+`CONFORMANT` means evidence is sufficient for the applicable mandatory rule set, no applicable mandatory violation is established, and no blocking uncertainty remains.
 
-- evidence is sufficient for the applicable mandatory rule set;
-- no applicable `MUST`/`MUST NOT` violation is established; and
-
-An empty finding list alone is insufficient to produce `CONFORMANT`.
+An empty finding list alone is insufficient.
 
 ### 3.2 `NON_CONFORMANT`
 
 `NON_CONFORMANT` means sufficient evidence establishes at least one applicable PTSIP `MUST`/`MUST NOT` violation.
 
-A definite mandatory violation is sufficient to establish `NON_CONFORMANT` even if additional unrelated evidence gaps also exist. Those gaps remain reportable and may limit additional conclusions, but they do not erase the established violation.
+A definite mandatory violation settles the result even if unrelated evidence gaps also exist. Those gaps remain reportable but do not erase the violation.
 
 ### 3.3 `INCOMPLETE`
 
-`INCOMPLETE` means no definite violation is sufficient to settle the result, but one or more blocking conditions prevent a conformant result, including for example:
+`INCOMPLETE` means no definite violation has already settled the result, but one or more blocking conditions prevent a conformant conclusion. Examples include:
 
-- evidence gaps that can conceal an applicable mandatory-rule violation;
-- unresolved `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` component ownership relevant to a mandatory boundary;
-- unsupported language/build/package analysis that affects an applicable rule;
+- evidence gaps capable of hiding an applicable violation;
+- unresolved `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` ownership relevant to a mandatory boundary;
+- unsupported relevant language/build/package analysis;
 - unresolved dynamic dependency relevant to a mandatory rule;
-- required Product Artifact evidence not inspected;
-- unstable/mixed repository snapshot; or
-- missing required Enforced Conformance declaration/binding evidence.
+- missing required Product Artifact evidence;
+- unstable/mixed repository snapshot;
+- missing required Enforced Conformance binding; or
+- missing durable component facts when a mandatory rule cannot be evaluated without them.
 
 ### 3.4 `NOT_EVALUATED`
 
-`NOT_EVALUATED` MAY be used by tooling to indicate that conformance evaluation was not attempted or could not start. It is an execution/evaluation state, not a PTSIP conformance outcome.
+`NOT_EVALUATED` MAY be used as a Tool execution state when evaluation was not attempted or could not start. It is not a PTSIP conformance outcome.
 
 ## 4. Required claim identity
 
-A conformance claim SHOULD identify:
+A reproducible conformance claim SHOULD identify:
 
-- PTSIP canonical specification source;
-- PTSIP specification version/family;
-- exact immutable specification revision;
-- project commit or release;
-- conformance level (`Core` or `Enforced`);
+- canonical PTSIP Specification source;
+- Specification family/version;
+- exact immutable Specification revision;
+- project commit/release;
+- conformance level;
 - conformance outcome;
-- project profile path or configuration source for Enforced Conformance;
-- validation/evaluation result;
+- selected Project Profile path/configuration source;
+- validation/evaluation status;
 - evidence snapshot status;
-- blocking and non-blocking evidence gaps; and
-- diagnostic/evidence format version when automated tooling is used.
+- blocking/non-blocking evidence gaps; and
+- diagnostic/evidence format versions where applicable.
 
-For Enforced Conformance against a mutable draft family, the exact immutable specification revision is required even when the generic Project Profile schema permits a profile to exist without one.
-
-Example:
-
-```text
-PTSIP Conformance Level: Enforced
-PTSIP Conformance Outcome: CONFORMANT
-Specification source: https://github.com/kwaksinwoo01/ptsip
-Specification version: 0.2.0-draft
-Specification revision: <commit-or-release>
-Project revision: <commit>
-Profile: <project-defined location>
-Evidence snapshot: STABLE
-Blocking coverage gaps: none
-```
+For Enforced Conformance against `0.3.4-draft`, the immutable Specification revision is required.
 
 ## 5. Evidence sufficiency and coverage
 
-Evidence coverage is **rule-relative**, not a universal percentage.
+Evidence coverage is rule-relative, not a universal percentage.
 
-A coverage gap is **blocking** when it can conceal whether an applicable mandatory PTSIP rule is satisfied. Blocking coverage prevents `CONFORMANT` and produces `INCOMPLETE` unless a definite violation already establishes `NON_CONFORMANT`.
+A gap is **blocking** when it can conceal whether an applicable mandatory PTSIP rule is satisfied. A blocking gap prevents `CONFORMANT` unless a definite violation already establishes `NON_CONFORMANT`.
 
-A coverage gap is **non-blocking** when it cannot materially change the result for the applicable mandatory rule set.
+A gap is **non-blocking** when it cannot materially change the result for the applicable mandatory rule set.
 
-Examples:
+Unresolved evidence MUST NOT be converted into absence-of-violation proof.
 
-- inability to resolve a Product runtime dynamic import target may block a `PTSIP-DEP-001` conclusion;
-- lack of a parser for unrelated documentation does not by itself block dependency conformance;
-- lack of Product Artifact content evidence blocks a strict packaging-isolation conclusion when `PTSIP-PKG-001` applies.
+## 6. Durable Project Profile facts
 
-A validator SHOULD report inaccessible files, parser failures, unresolved dynamic dependencies, unsupported languages/adapters, artifact-inspection gaps, and other evidence gaps together with whether each gap is blocking and which rule(s) it may affect.
+`0.3.4-draft` defines canonical component-level representation for these explicit adoption facts:
 
-Unresolved evidence MUST NOT be silently converted into an absence-of-violation claim.
+- `classification`;
+- `purpose`;
+- `shipped`;
+- `runtime_required`;
+- `lifecycle_owner`;
+- `executable`.
 
-## 6. Active violations, remediation, and unresolved decisions
+A manually authored profile may omit optional facts when they are not needed for the claim, but if a missing fact prevents evaluation of an applicable mandatory rule, the result cannot be `CONFORMANT` on that evidence alone.
 
-When sufficient evidence establishes a violation of an applicable PTSIP `MUST` or `MUST NOT` rule, the conformance outcome is `NON_CONFORMANT`.
+A write-enabled structured adoption/resolution workflow must preserve supplied facts losslessly under `PTSIP-ADP-001`. Failure of a Tool to preserve those facts is an implementation-conformance problem, not proof of Consumer Repository non-conformance.
 
-PTSIP does not define a mandatory-rule waiver that changes this result. A repository may track architectural debt or migration approval in an external governance system, but that record does not erase the observed violation and is not an input that can produce `CONFORMANT`.
-
-The path back to conformance is remediation of the violating architecture followed by reevaluation on a stable evidence snapshot.
-
-A project MAY describe itself as `PTSIP-adopting` or `PTSIP-transitioning` while remediation is in progress, but adoption/transition state is not a conformance outcome.
-
-A component decision status of `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` is not itself a fourth classification. Such unresolved status is blocking when it can conceal the result of an applicable mandatory PTSIP boundary.
+Boundary-root shorthand may remain structurally valid, but its lower fact precision may make a strict claim `INCOMPLETE` when rule evaluation needs facts the shorthand cannot represent.
 
 ## 7. Declaration versus observed evidence
 
-A Project Profile records intended ownership and policy. It does not prove that dependencies, artifacts, or build behavior comply with the declaration.
+A Project Profile records intended architecture. It does not prove observed repository behavior.
 
-Automated conformance evidence SHOULD distinguish:
+Automated evaluation SHOULD distinguish:
 
-- declared component ownership/policy (`DECLARED` evidence);
-- direct repository/artifact/runtime facts (`OBSERVED` evidence);
-- bounded derived conclusions (`INFERRED` evidence);
-- agent or heuristic candidate decisions; and
-- deterministic rule findings.
+- declared ownership/policy (`DECLARED`);
+- direct repository/artifact/runtime facts (`OBSERVED`);
+- bounded derived conclusions (`INFERRED`);
+- agent/review decisions; and
+- deterministic findings.
 
-A contradiction between declaration and observed behavior MUST NOT be hidden by treating the declaration as authoritative proof of compliance.
-
-Imported external evidence is analysis input. Unless a future specification explicitly grants authority to a specific evidence source, imported evidence MUST NOT silently override contradictory native observed evidence or project declaration.
+A contradiction between declaration and observation MUST NOT be hidden by treating the declaration as proof of compliance.
 
 ## 8. Product Artifact evidence
 
-A packaging-isolation conclusion must distinguish:
+Packaging-isolation evaluation must distinguish artifact owner, artifact producer, contained components/paths or equivalent content evidence, derivation relationship, and shipping scope.
 
-- artifact architectural owner;
-- artifact producer;
-- contained components/paths or equivalent content evidence;
-- derivation/generation relationship; and
-- shipping/distribution scope.
+A Toolchain producer creating a Product Artifact is not itself a violation. The relevant question is whether the Product Artifact contains Toolchain-owned implementation or Toolchain-only dependencies contrary to `PTSIP-PKG-001`.
 
-A Toolchain producer creating a Product Artifact is not itself a violation. The relevant question is whether the resulting Product Artifact contains Toolchain-owned implementation or Toolchain-only dependencies contrary to `PTSIP-PKG-001`.
-
-If Product Artifact evidence is required for the claim but no equivalent packaging/content evidence is available, the packaging conclusion is `INCOMPLETE`, not conformant by absence of detected inclusion.
+If required artifact-content evidence is unavailable, the packaging conclusion is `INCOMPLETE`, not conformant by absence of a detected inclusion.
 
 ## 9. Lifecycle evidence
 
-A workflow or CI trigger is evidence of automation behavior, not by itself proof of Product release coupling.
+A workflow/CI trigger is evidence of automation behavior, not by itself proof of Product release coupling.
 
-Lifecycle evaluation SHOULD distinguish at least:
+Lifecycle evaluation SHOULD distinguish:
 
-- pipeline/workflow trigger;
-- Product artifact modification;
+- workflow trigger;
+- Product Artifact modification;
 - Product version/release decision;
 - Product publication/deployment; and
 - Product compatibility obligation.
 
-A Toolchain-only change that triggers a Product workflow but does not require or cause release-relevant Product changes is not automatically a `PTSIP-LCY-001` violation.
-
 ## 10. Dependency evidence and external nodes
 
-Automated dependency evidence SHOULD preserve relationship type, lifecycle phase(s), resolution state, provenance, and evidence-graph scope.
+Dependency evidence SHOULD preserve relationship type, lifecycle phase(s), resolution state, provenance, and evidence-node scope.
 
-External libraries, standard-library modules, platforms, and unresolved targets are evidence nodes and are not additional PTSIP architectural classifications.
+External libraries, standard-library modules, platforms, and unresolved targets are evidence nodes, not PTSIP architecture classifications.
 
-A project-owned target must not be mislabeled external merely to avoid PTSIP ownership or boundary evaluation.
+A project-owned target MUST NOT be mislabeled external merely to avoid PTSIP evaluation.
 
 ## 11. Stable diagnostics
 
-Automated conformance diagnostics SHOULD conform to the versioned reference contract `ptsip-diagnostic/v1` defined by `schemas/ptsip-diagnostic.schema.json`.
+Automated diagnostics SHOULD conform to `ptsip-diagnostic/v1` and MUST distinguish diagnostic instance ID from stable PTSIP rule ID.
 
-A diagnostic MUST distinguish:
+One rule may produce multiple diagnostic instances. Diagnostics SHOULD include outcome effect, severity, component endpoints where relevant, evidence IDs, message, and evaluator/provenance metadata.
 
-- unique diagnostic instance ID; and
-- stable PTSIP rule ID.
+## 12. Mandatory violations and remediation
 
-One PTSIP rule may produce multiple diagnostic instances.
+PTSIP defines no mandatory-rule waiver that changes a real violation into conformance.
 
-Diagnostics SHOULD include:
+A confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated. A project MAY describe itself as `PTSIP-adopting` or `PTSIP-transitioning`, but those labels do not replace the current conformance outcome.
 
-- outcome effect;
-- severity;
-- source and target component when applicable;
-- evidence IDs;
-- message; and
-- evaluator/provenance metadata.
+## 13. External validator independence and non-intrusion
 
-An empty diagnostic collection MUST NOT be interpreted as conformance when evaluation was blocked or coverage was incomplete.
+An external PTSIP validator is architecture-governance tooling and is not part of the Consumer Repository Product/Toolchain planes merely because it is installed in a developer environment or CI image.
 
-## 12. External validator independence
+If the project vendors/takes lifecycle ownership of the validator, that copy becomes subject to normal PTSIP classification.
 
-An external PTSIP validator is architecture-governance tooling and is not part of the Consumer Repository's Product or project-owned Toolchain plane merely because it is installed in a developer virtual environment, user-level tool environment, CI image, or equivalent external environment.
+External inspection/Pilot tooling SHOULD compare observable repository state before/after analysis and SHOULD place Tool-owned state outside the Consumer Repository by default.
 
-If a project vendors or takes lifecycle ownership of the validator, that copy becomes subject to normal PTSIP classification.
+## 14. Distributed coordination implementation conformance
 
-A Product build MUST NOT require a PTSIP validator at runtime.
+`PTSIP-AUT-001` through `PTSIP-AUT-007` are requirements on a PTSIP implementation that claims distributed coordination semantics. They do not add Consumer Repository architecture requirements when distributed coordination is not used.
 
-## 13. Non-intrusion evidence
+A distributed implementation conforms to this capability only when it satisfies at least:
 
-For external PTSIP tooling, inspection and pilot validation SHOULD compare observable repository state before and after analysis rather than emit a constant assertion.
+- Decision Authority remains distinct from Project Profile;
+- stable coordination-domain/decision identity;
+- first-valid-resolution-wins with ordered conditional mutation;
+- authority freshness at coordination-sensitive boundaries;
+- non-mutating absence observation where supported;
+- deterministic missing/equivalent/conflicting reconciliation;
+- no silent overwrite of conflicting local declaration;
+- stale application refusal;
+- fail-closed behavior rather than isolated Local fallback; and
+- separation of global decision state from clone-local projection/application state.
 
-At minimum, a tool SHOULD identify which observation methods were used. Examples include repository revision, Git status/index state, tracked-content fingerprints, and untracked/ignored state.
+A failure of these requirements is an implementation capability failure. It does not by itself mean the Consumer Repository violates Product/Toolchain architecture rules.
 
-A change observed during analysis does not by itself prove that PTSIP caused the change. The report SHOULD mark the evidence unstable or indeterminate and require rerun or investigation.
+## 15. Authority conflict and Consumer Repository claims
 
-Tool-owned caches and pilot reports SHOULD be placed outside the Consumer Repository by default. A user-selected output path inside the repository is an explicit write and SHOULD be reported as such rather than described as non-intrusive.
+An `AUTHORITY_PROFILE_CONFLICT`-equivalent state means distributed authority and the selected local declaration disagree about architecture intent for the same coordinated scope.
 
-## 14. False-positive handling
+While that conflict is unresolved, an architecture-sensitive operation requiring one unambiguous declaration MUST stop. A strict Enforced Conformance run that depends on the conflicted declaration cannot claim `CONFORMANT` until the declaration basis is unambiguous.
 
-A validator suppression MUST NOT silently disable a PTSIP rule.
+This does not authorize the Tool to choose either side silently. Explicit reconciliation is required.
 
-A suppression MAY be used only when review establishes that the reported evidence is a false positive and therefore does not actually establish the referenced rule violation. The suppression record SHOULD identify the evidence and rationale.
+## 16. False-positive handling
 
-A real architecture violation MUST NOT be relabeled as a false positive or suppression; it remains `NON_CONFORMANT` until remediated.
+A validator suppression MUST NOT silently disable a PTSIP rule. A suppression MAY document evidence established as false positive; a real architecture violation remains `NON_CONFORMANT` until remediated.

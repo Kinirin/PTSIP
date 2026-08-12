@@ -3,17 +3,19 @@ from __future__ import annotations
 import tomllib
 from pathlib import Path
 
-from ptsip.constants import SPEC_REVISION, TOOL_VERSION
+from ptsip.constants import SPEC_REVISION, SPEC_VERSION, TOOL_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
 
 
-def test_tool_034_package_and_runtime_versions_match() -> None:
+def test_tool_034_package_runtime_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     assert payload["project"]["version"] == "0.3.4"
     assert TOOL_VERSION == "0.3.4"
-    assert SPEC_REVISION == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+    assert SPEC_VERSION == "0.3.4-draft"
+    assert SPEC_REVISION == EXPECTED_SPEC_REVISION
 
 
 def test_release_workflow_derives_tool_tag_from_package_version() -> None:
@@ -38,25 +40,39 @@ def test_routine_ci_verifies_test_build_and_installed_wheel_boundary() -> None:
 
 def test_release_package_contains_bound_machine_readable_contracts() -> None:
     specdata = ROOT / "src" / "ptsip" / "specdata"
-    assert (specdata / "ptsip-profile.schema.json").is_file()
-    assert (specdata / "ptsip-registry.yaml").is_file()
-    assert (specdata / "ptsip-artifact-evidence.schema.json").is_file()
-    assert (specdata / "ptsip-agent-classification.schema.json").is_file()
-    assert (specdata / "ptsip-diagnostic.schema.json").is_file()
+    for name in (
+        "ptsip-profile.schema.json",
+        "ptsip-registry.yaml",
+        "ptsip-artifact-evidence.schema.json",
+        "ptsip-agent-classification.schema.json",
+        "ptsip-diagnostic.schema.json",
+    ):
+        assert (specdata / name).is_file()
 
 
-def test_documentation_records_034_authority_consistency_contract() -> None:
+def test_canonical_and_embedded_machine_readable_contracts_are_identical() -> None:
+    pairs = (
+        ("schemas/ptsip-profile.schema.json", "src/ptsip/specdata/ptsip-profile.schema.json"),
+        ("registry/ptsip-registry.yaml", "src/ptsip/specdata/ptsip-registry.yaml"),
+        ("schemas/ptsip-artifact-evidence.schema.json", "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"),
+        ("schemas/ptsip-agent-classification.schema.json", "src/ptsip/specdata/ptsip-agent-classification.schema.json"),
+        ("schemas/ptsip-diagnostic.schema.json", "src/ptsip/specdata/ptsip-diagnostic.schema.json"),
+    )
+    for canonical, embedded in pairs:
+        assert (ROOT / canonical).read_bytes() == (ROOT / embedded).read_bytes(), canonical
+
+
+def test_documentation_records_034_authority_and_activation_contract() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    release_note = (ROOT / "releasenote" / "0.3.4.md").read_text(encoding="utf-8")
-    planning = (ROOT / "planning" / "PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md").read_text(encoding="utf-8")
-    assert "ptsip adopt" in readme
-    assert "ptsip gate" in readme
-    assert "ptsip resolve" in readme
-    assert "ptsip conform ." in readme
-    assert "--coordination github" in readme
-    assert "refs/heads/ptsip-policy" in readme
-    assert "0.3.4" in release_note
-    assert "AUTHORITY_PROFILE_CONFLICT" in release_note
-    assert "LOCAL_PROJECTION" in release_note
-    assert "Read-side authority freshness" in planning
-    assert "AUTHORITY_PROFILE_CONFLICT" in planning
+    spec = (ROOT / "spec" / "PTSIP-SPEC.md").read_text(encoding="utf-8")
+    adr = (ROOT / "decisions" / "ADR-0005-activate-spec-0.3.4-draft.md").read_text(encoding="utf-8")
+    release_note = (ROOT / "releasenote" / "spec-0.3.4-draft.md").read_text(encoding="utf-8")
+    assert "0.3.4-draft" in readme
+    assert "runtime_required" in readme
+    assert "lifecycle_owner" in readme
+    assert "AUTHORITY" in readme.upper()
+    assert "PTSIP-ADP-001" in spec
+    assert "PTSIP-AUT-001" in spec
+    assert "PTSIP-AUT-007" in spec
+    assert "first valid" in adr.lower()
+    assert "Active draft family" in release_note

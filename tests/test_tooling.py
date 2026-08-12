@@ -15,6 +15,9 @@ from ptsip.spec_identity import current_spec_identity
 from ptsip.validation.profile import validate_profile
 
 
+SPEC_REVISION = "afba3531e23d96c21b7216e49614b839158ca7d5"
+
+
 def _git(repo: Path, *args: str) -> None:
     subprocess.run(["git", "-C", str(repo), *args], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -34,9 +37,9 @@ def _commit_all(repo: Path) -> None:
 def test_spec_identity():
     spec = current_spec_identity()
     assert spec.tool_version == "0.3.4"
-    assert spec.version == "0.2.0-draft"
+    assert spec.version == "0.3.4-draft"
     assert spec.source == "https://github.com/kwaksinwoo01/ptsip"
-    assert spec.revision == "a877b2f66a7f94c1b844c979e1b08fb08a9a8e45"
+    assert spec.revision == SPEC_REVISION
 
 
 def test_console_encoding_fallback_preserves_unencodable_text(monkeypatch) -> None:
@@ -123,7 +126,7 @@ def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"a877b2f66a7f94c1b844c979e1b08fb08a9a8e45\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
@@ -142,7 +145,7 @@ def test_legacy_exception_waiver_is_rejected(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.2.0-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
+        """ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/kwaksinwoo01/ptsip\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)

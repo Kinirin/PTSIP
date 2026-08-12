@@ -2,7 +2,7 @@ ptsip_registry:
   specification:
     name: "Product–Toolchain SDK Isolation Policy"
     acronym: "PTSIP"
-    version: "0.2.0-draft"
+    version: "0.3.4-draft"
     status: "draft"
     revision_policy: "draft-family-plus-immutable-revision"
     canonical_source: "https://github.com/kwaksinwoo01/ptsip"
@@ -25,13 +25,27 @@ ptsip_registry:
     - id: INCOMPLETE
       meaning: "Required evidence or analysis coverage is incomplete."
 
+  authority_states:
+    - id: PENDING
+      meaning: "A coordinated architecture decision exists but has no accepted winner yet."
+    - id: RESOLVED
+      meaning: "One valid architecture answer is the accepted winner for the distributed decision identity."
+
   conformance_outcomes:
     - id: CONFORMANT
       meaning: "Applicable mandatory evidence is sufficient and no applicable PTSIP MUST/MUST NOT violation is established."
     - id: NON_CONFORMANT
       meaning: "Sufficient evidence establishes at least one applicable MUST/MUST NOT violation."
     - id: INCOMPLETE
-      meaning: "Blocking evidence, ownership, adapter, artifact, or snapshot gaps prevent a conformant conclusion and no definite violation has already settled the result."
+      meaning: "Blocking evidence, ownership, adapter, artifact, snapshot, or declaration-consistency gaps prevent a conformant conclusion and no definite violation has already settled the result."
+
+  lifecycle_owners:
+    - id: PRODUCT
+      meaning: "Versioning, compatibility, release, deprecation, and consumer-impact responsibility belongs to the Product lifecycle."
+    - id: DEVELOPMENT_TOOLING
+      meaning: "Lifecycle responsibility belongs to development tooling and is independently governable from Product runtime/release obligations."
+    - id: INDEPENDENT
+      meaning: "Lifecycle responsibility is intentionally independent of both Product and Toolchain executable ownership."
 
   evidence_provenance:
     - id: DECLARED
@@ -83,6 +97,20 @@ ptsip_registry:
     - id: INSPECTION
       meaning: "Used to inspect, analyze, validate, audit, or migrate another component."
 
+  project_profile_facts:
+    - id: classification
+      meaning: "Resolved PTSIP architecture classification."
+    - id: purpose
+      meaning: "Explicit project-owner statement of why the component exists."
+    - id: shipped
+      meaning: "Whether the component is included in Product distribution scope."
+    - id: runtime_required
+      meaning: "Whether Product runtime operation requires the component."
+    - id: lifecycle_owner
+      meaning: "Canonical lifecycle ownership: PRODUCT, DEVELOPMENT_TOOLING, or INDEPENDENT."
+    - id: executable
+      meaning: "Whether the component is executable implementation rather than a non-executable contract."
+
   concepts:
     - id: CONSUMER_REPOSITORY
       meaning: "Repository inspected, piloted, validated, or governed using PTSIP."
@@ -108,12 +136,30 @@ ptsip_registry:
       meaning: "Versioned finding instance that references a stable PTSIP rule ID and evidence."
     - id: PROJECT_COMPONENT_DEPENDENCY_POLICY
       meaning: "Optional project-specific stricter component dependency constraints that cannot weaken universal PTSIP rules."
+    - id: DECISION_AUTHORITY
+      meaning: "Coordination authority that records which explicit architecture answer won for a distributed decision identity; it does not replace the Project Profile."
+    - id: COORDINATION_DOMAIN
+      meaning: "Scope within which one distributed architecture decision identity has one authoritative winner."
+    - id: AUTHORITY_REVISION
+      meaning: "Ordered conditional-write/read token that distinguishes one authority state from a later state."
+    - id: AUTHORITY_FRESHNESS
+      meaning: "Requirement to account for relevant current distributed authority state before a coordination-sensitive result relies on local declaration state."
+    - id: AUTHORITY_PROFILE_RECONCILIATION
+      meaning: "Deterministic comparison and safe handling of local Project Profile declaration versus distributed authority state."
+    - id: GLOBAL_DECISION_STATE
+      meaning: "Repository/domain-wide coordinated decision state such as PENDING or RESOLVED."
+    - id: LOCAL_PROJECTION
+      meaning: "Clone/worktree-local application or consistency state for a resolved architecture declaration; it cannot change the global winner."
+    - id: ACTION_TIME_SYNCHRONIZATION
+      meaning: "Authority synchronization performed at architecture-sensitive operation boundaries rather than through continuous polling."
 
   interoperability_formats:
     - id: ptsip-diagnostic/v1
       schema: "schemas/ptsip-diagnostic.schema.json"
     - id: ptsip-artifact-evidence/v1
       schema: "schemas/ptsip-artifact-evidence.schema.json"
+    - id: ptsip-project-profile
+      schema: "schemas/ptsip-profile.schema.json"
 
   principles:
     - id: PTSIP-CORE-001
@@ -123,66 +169,120 @@ ptsip_registry:
     - id: PTSIP-CLS-001
       title: "Mandatory classification"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-CLS-002
       title: "Coherent component boundary"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-DEP-001
       title: "Product-to-Toolchain runtime dependency prohibition"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-DEP-002
       title: "Toolchain inspection is permitted"
       severity: info
+      applies_to: consumer_repository
     - id: PTSIP-DEP-003
       title: "Cross-boundary executable sharing denied by default"
       severity: warning
+      applies_to: consumer_repository
     - id: PTSIP-PKG-001
       title: "Packaging isolation"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-ART-001
       title: "Artifact ownership and derivation evidence"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-BLD-001
       title: "Independently resolvable build environments"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-BLD-002
       title: "Independent buildability"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-LCY-001
       title: "Lifecycle independence"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-LCY-002
       title: "Compatibility ownership"
       severity: warning
+      applies_to: consumer_repository
     - id: PTSIP-CMN-001
       title: "No unclassified common package"
       severity: error
+      applies_to: consumer_repository
     - id: PTSIP-CNT-001
       title: "Contract-first cross-boundary reuse"
       severity: warning
+      applies_to: consumer_repository
     - id: PTSIP-INT-001
       title: "Consumer Repository Non-Intrusion"
       severity: error
+      applies_to: implementation
     - id: PTSIP-SPC-001
       title: "Specification Binding"
       severity: error
+      applies_to: implementation
     - id: PTSIP-EVD-001
       title: "Evidence snapshot integrity"
       severity: error
+      applies_to: implementation
     - id: PTSIP-EVD-002
       title: "Declaration and observation are distinct"
       severity: error
+      applies_to: implementation
     - id: PTSIP-EVD-003
       title: "Applicable evidence coverage"
       severity: error
+      applies_to: implementation
     - id: PTSIP-EVD-004
       title: "Evidence provenance and dependency semantics"
       severity: error
+      applies_to: implementation
     - id: PTSIP-DIA-001
       title: "Stable diagnostic identity"
       severity: error
+      applies_to: implementation
     - id: PTSIP-POL-001
       title: "Project-specific policy may strengthen but not weaken PTSIP"
       severity: error
+      applies_to: consumer_repository
+    - id: PTSIP-ADP-001
+      title: "Explicit project adoption preserves architecture intent losslessly"
+      severity: error
+      applies_to: implementation
+    - id: PTSIP-AUT-001
+      title: "Decision Authority and Project Profile responsibilities are distinct"
+      severity: error
+      applies_to: distributed_coordination_implementation
+    - id: PTSIP-AUT-002
+      title: "Stable distributed decision identity"
+      severity: error
+      applies_to: distributed_coordination_implementation
+    - id: PTSIP-AUT-003
+      title: "First valid resolution wins through ordered conditional mutation"
+      severity: error
+      applies_to: distributed_coordination_implementation
+    - id: PTSIP-AUT-004
+      title: "Authority freshness at architecture-sensitive boundaries"
+      severity: error
+      applies_to: distributed_coordination_implementation
+    - id: PTSIP-AUT-005
+      title: "Safe authority/profile reconciliation"
+      severity: error
+      applies_to: distributed_coordination_implementation
+    - id: PTSIP-AUT-006
+      title: "Fail-closed distributed coordination"
+      severity: error
+      applies_to: distributed_coordination_implementation
+    - id: PTSIP-AUT-007
+      title: "Global decision state is distinct from local projection state"
+      severity: error
+      applies_to: distributed_coordination_implementation
+
   retired_rules:
     - id: PTSIP-EXC-001
       title: "Explicit exceptions"

@@ -1,76 +1,123 @@
 # PTSIP Terminology
 
-This document is the canonical human-readable terminology registry for PTSIP 0.2.0-draft.
+This document is the canonical human-readable terminology registry for PTSIP `0.3.4-draft`. The exact draft snapshot is identified by immutable Git revision.
 
 ## PTSIP Component
 
-The architectural unit to which PTSIP ownership is assigned. A component may be a package, module group, executable, generated artifact group, single build/release script, protocol bundle, or another project-defined unit whose purpose and lifecycle can be evaluated coherently.
-
-A component boundary is coherent only when one classification, primary purpose, and lifecycle ownership statement can describe it without hiding contradictory ownership responsibilities.
+The coherent architectural unit to which PTSIP ownership is assigned. A component may be a package, module group, executable, generated artifact group, script, protocol bundle, or another project-defined unit whose purpose and lifecycle can be evaluated coherently.
 
 ## Product SDK
 
-An SDK or SDK-like package whose primary lifecycle ownership belongs to the software product and whose code or artifacts may be consumed by, embedded in, or distributed with the product.
+A Product-owned SDK or SDK-like component whose lifecycle responsibility belongs to the Product and whose code/artifacts may be consumed by, embedded in, or distributed with the Product.
 
 ## Toolchain SDK
 
-An SDK or SDK-like package whose primary lifecycle ownership belongs to software development activities such as validation, migration, generation, build, testing, release preparation, inspection, or repository automation.
+A development-tooling-owned SDK or SDK-like component used for validation, migration, generation, build, test, release preparation, inspection, repository automation, or related development activities.
 
 ## Product SDK Plane
 
-The architectural ownership domain containing Product SDKs and their product-facing dependencies.
+The architectural ownership domain containing Product-owned components and Product-facing dependencies.
 
 ## Toolchain SDK Plane
 
-The architectural ownership domain containing Toolchain SDKs and development-only dependencies.
+The architectural ownership domain containing development-tooling-owned components and Toolchain-only dependencies.
 
 ## Neutral Contract Artifact
 
-A non-owning declarative contract that may be consumed by both planes, such as schemas, IDLs, registries, immutable manifests, or conformance vectors. It is not a shared executable SDK.
-
-Neutrality is determined by non-executable/non-owning contract semantics and lifecycle independence, not by a fixed number of currently observed consumers.
+A deliberately non-executable, non-owning declarative contract that may be consumed by both planes without collapsing Product and Toolchain executable ownership. Neutrality depends on contract semantics and lifecycle independence, not current consumer count.
 
 ## Classification
 
-The resolved architectural ownership of a PTSIP Component. The only PTSIP classifications are `PRODUCT`, `TOOLCHAIN`, and `NEUTRAL_CONTRACT`.
+The resolved PTSIP architectural ownership of a component. The only classifications are `PRODUCT`, `TOOLCHAIN`, and `NEUTRAL_CONTRACT`.
 
 ## Decision status
 
-The state of an ownership decision during inspection or migration. Reference statuses include `RESOLVED`, `UNKNOWN`, `CONFLICT`, and `INCOMPLETE`. A decision status is not an architectural plane or classification.
+The state of an architecture/ownership decision during inspection or migration. Examples include `RESOLVED`, `UNKNOWN`, `CONFLICT`, and `INCOMPLETE`. A decision status is not a PTSIP classification.
 
 ## Consumer Repository
 
-A repository being inspected, piloted, validated, or governed using PTSIP. PTSIP does not own the Consumer Repository's documentation hierarchy, tooling hierarchy, package layout, or other repository conventions.
+A repository being inspected, adopted, validated, coordinated, or governed using PTSIP. PTSIP does not own the repository's directory or documentation conventions.
 
 ## External PTSIP Tooling
 
-A PTSIP implementation installed or executed outside the Consumer Repository's project-owned source tree for inspection, pilot analysis, validation, or reporting. External PTSIP Tooling is outside the Consumer Repository's Product/Toolchain classification scope unless the project intentionally vendors, embeds, packages, or takes lifecycle ownership of it.
+PTSIP implementation operated outside the Consumer Repository project-owned source tree. It is outside repository Product/Toolchain classification scope unless intentionally vendored or adopted by the project.
 
 ## Consumer Repository Non-Intrusion
 
-The property that PTSIP tooling can operate without requiring PTSIP-specific documentation, tooling, cache, report, or directory hierarchies inside the Consumer Repository, and without modifying repository content by default.
+The property that external PTSIP tooling can operate without requiring PTSIP-specific repository directories or default repository mutation. Tool-owned operational state should remain outside the Consumer Repository unless the user explicitly chooses otherwise.
+
+## PTSIP Project Profile
+
+A project-owned machine-readable declaration of intended architecture ownership and policy. It is durable declaration state, not observed conformance truth.
+
+The reference profile uses either boundary-root shorthand or component declarations, not both simultaneously.
+
+## Project Profile fact
+
+A durable structured architecture fact represented for a component. `0.3.4-draft` recognizes the explicit adoption fact set:
+
+- `classification`;
+- `purpose`;
+- `shipped`;
+- `runtime_required`;
+- `lifecycle_owner`;
+- `executable`.
+
+## Runtime required
+
+The boolean architecture fact `runtime_required`, indicating whether Product runtime operation requires the component. A Toolchain component cannot be Product-runtime-required.
+
+## Lifecycle ownership
+
+Responsibility for versioning, compatibility, release, deprecation, and consumer impact of a component.
+
+Canonical `lifecycle_owner` values are:
+
+- `PRODUCT`;
+- `DEVELOPMENT_TOOLING`;
+- `INDEPENDENT`.
+
+`lifecycle_owner` is distinct from optional project metadata such as `release_owner` and `compatibility_owner`.
+
+## Product Artifact
+
+A Product-owned deployable, distributable, installable, loadable, or otherwise release-relevant output. Artifact ownership is independent from producer ownership.
+
+## Artifact producer
+
+The component/process that generates, assembles, packages, or publishes an artifact. A Toolchain producer may create a Product Artifact.
+
+## Artifact derivation
+
+Evidence describing how an artifact was generated, packaged, or published from source components or other artifacts.
+
+## Specification Binding
+
+The association between a PTSIP declaration/Tool and the canonical Specification source, draft family/version, and immutable revision used to interpret it.
+
+## Draft family
+
+A mutable family label such as `0.3.4-draft`. The label names the evolving family; an immutable Git revision identifies an exact normative snapshot.
 
 ## Evidence snapshot
 
-The observable Consumer Repository state to which one automated evidence set is bound. For Git repositories this normally includes an immutable commit/HEAD identity and sufficient working-tree observations to detect a mixed or changed snapshot during collection.
+The observable Consumer Repository state to which one automated evidence set is bound. For Git repositories this normally includes immutable revision identity and enough tracked-state information to detect instability during collection.
 
 ## Evidence node scope
 
-The scope/type of a dependency or artifact evidence node, distinct from architectural classification. Reference scopes include `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET`.
-
-External/platform/unresolved node scope MUST NOT be represented as an additional PTSIP architectural classification.
+Dependency/artifact graph scope distinct from PTSIP classification. Reference scopes include `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET`.
 
 ## Observed evidence
 
-Repository facts collected directly from files, manifests, dependency relationships, build/release definitions, artifacts, runtime behavior, or static analysis. Observed evidence is distinct from a project's declared intended ownership.
+Repository/artifact/runtime/static-analysis facts collected directly from observable state.
 
 ## Declared evidence
 
-Evidence that a project, manifest, profile, or configuration explicitly declares a relationship, ownership intent, dependency, artifact, or policy. Declared evidence is a declaration, not proof that observed behavior agrees with it.
+Facts explicitly declared by a profile, manifest, or configuration. Declaration is not proof that observed behavior agrees.
 
 ## Inferred evidence
 
-A bounded conclusion derived from declared/observed evidence by deterministic logic, human review, or constrained agent reasoning and explicitly marked as inferred. Inferred evidence MUST NOT be presented as directly observed fact.
+A bounded conclusion derived from evidence by deterministic logic, human review, or constrained agent reasoning and explicitly marked as inferred.
 
 ## Evidence provenance
 
@@ -78,99 +125,128 @@ The origin category attached to evidence. Canonical values are `DECLARED`, `OBSE
 
 ## Dependency relationship type
 
-The architectural/evidence relationship represented by an edge. Canonical relationship types are `IMPORTS`, `LINKS`, `LOADS`, `INVOKES`, `READS`, `GENERATES`, `PACKAGES`, `TESTS`, and `PUBLISHES`.
-
-A relationship may have more than one type when distinct evidence supports more than one semantic relationship.
+The semantic relationship represented by an evidence edge. Canonical values are `IMPORTS`, `LINKS`, `LOADS`, `INVOKES`, `READS`, `GENERATES`, `PACKAGES`, `TESTS`, and `PUBLISHES`.
 
 ## Lifecycle phase
 
-The lifecycle context in which a dependency/evidence relationship is relevant. Canonical phases are `RUNTIME`, `BUILD`, `TEST`, `RELEASE`, and `INSPECTION`. A relationship may apply to multiple phases. Unknown phase remains unresolved rather than guessed.
-
-## Product Artifact
-
-A deployable, distributable, installable, loadable, or otherwise Product-owned output whose lifecycle responsibility belongs to the Product plane, such as an installer, application bundle, plugin archive, service bundle, container, or package.
-
-Product Artifact classification is determined independently from the classification of the component that produced it.
-
-## Artifact producer
-
-The component or process that generates, assembles, packages, or publishes an artifact. A Toolchain component may be the producer of a Product Artifact without becoming Product-owned.
-
-## Artifact derivation
-
-Evidence describing how an artifact was generated, packaged, or published from source components or other artifacts. Reference relations include `GENERATES`, `PACKAGES`, and `PUBLISHES`.
-
-## Specification Binding
-
-A machine-readable association between a Consumer Repository's PTSIP declaration and the canonical PTSIP specification source and version/family used to interpret that declaration. For a mutable draft family, an immutable revision should additionally be recorded for reproducibility and is required for Enforced Conformance.
-
-## Draft family
-
-A version label such as `0.2.0-draft` that identifies an experimental specification family whose exact normative snapshot is identified by immutable repository revision until a stable specification release is declared.
+The lifecycle context of a dependency/evidence relationship. Canonical phases are `RUNTIME`, `BUILD`, `TEST`, `RELEASE`, and `INSPECTION`. Unknown phase remains unresolved rather than guessed.
 
 ## Boundary
 
-The set of dependency, packaging, build, and lifecycle constraints separating Product and Toolchain planes.
+The dependency, packaging, build, and lifecycle constraints separating Product and Toolchain ownership.
 
 ## Isolation
 
 The property that one plane can evolve, resolve dependencies, and be governed without accidentally acquiring the other plane's runtime or release obligations.
 
-## Lifecycle ownership
-
-Responsibility for versioning, compatibility, release, deprecation, and consumer impact of a component.
-
 ## Packaging ownership
 
-Responsibility for deciding whether a component is included in a Product Artifact or other distributable output.
+Responsibility for deciding whether a component belongs in a Product Artifact or other distributable output.
 
 ## Build environment
 
-The declared dependency and execution context needed to resolve and build a plane. PTSIP does not require a particular environment technology.
+The dependency and execution context needed to resolve/build a plane. PTSIP does not require a particular environment technology.
 
 ## Cross-boundary dependency
 
-A dependency edge from a component in one PTSIP plane to a component in another plane.
+A dependency relationship from a component in one PTSIP plane to a component in another plane.
 
 ## Blocking evidence gap
 
-An evidence gap that can conceal whether an applicable PTSIP `MUST` or `MUST NOT` rule is satisfied. A blocking evidence gap prevents a conformant outcome unless a definite violation already establishes `NON_CONFORMANT`.
+An evidence gap capable of concealing whether an applicable PTSIP `MUST`/`MUST NOT` is satisfied. It prevents `CONFORMANT` unless a definite violation already establishes `NON_CONFORMANT`.
 
 ## Non-blocking evidence gap
 
-A reported evidence gap that cannot materially affect the result of the applicable mandatory PTSIP rules being evaluated.
-
-## PTSIP mandatory-rule waiver
-
-PTSIP does not define a waiver that authorizes violation of a PTSIP `MUST`/`MUST NOT` rule. Project governance may record debt or migration approval, but a confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated. `PTSIP-EXC-001` is a historical rule from earlier immutable draft snapshots and is retired/superseded in the new snapshot.
-
-
-## PTSIP Project Profile
-
-A machine-readable declaration of intended component/path ownership and policies for one repository or project. A reference profile uses exactly one ownership-declaration form: boundary roots for uniform ownership or component declarations for precise nested ownership. The profile is declaration, not proof of conformance. It is required for Enforced Conformance but is not required merely to run read-only inspection or pilot tooling.
+An evidence gap that cannot materially change the applicable mandatory-rule result.
 
 ## Project component dependency policy
 
-An optional repository-specific policy declaring stricter component-to-component dependency constraints, including constraints within one PTSIP plane. Such policy may strengthen but MUST NOT weaken universal PTSIP requirements.
+Optional repository-specific dependency constraints that may strengthen but never weaken universal PTSIP requirements.
 
 ## Profile Validation
 
-The operation that checks whether a PTSIP Project Profile or equivalent declaration is structurally and semantically valid. Profile Validation does not determine whether the repository conforms to PTSIP.
+Validation of Project Profile structure/semantics. It does not determine repository conformance.
 
 ## Conformance Evaluation
 
-The operation that combines applicable declarations with observed dependency, artifact, lifecycle, coverage, and other evidence to evaluate PTSIP rules.
+Deterministic evaluation combining declaration with observed dependency, artifact, lifecycle, snapshot, and coverage evidence against Consumer Repository PTSIP rules.
 
 ## Conformance outcome
 
-The result of a completed PTSIP Conformance Evaluation. Canonical outcomes are `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE`.
-
-`NOT_EVALUATED` may be used as a tooling state but is not a conformance outcome.
+The result of a completed Consumer Repository Conformance Evaluation. Canonical outcomes are `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE`. `NOT_EVALUATED` may be a Tool execution state but is not a conformance outcome.
 
 ## PTSIP diagnostic
 
-A machine-readable finding produced by PTSIP evaluation. A diagnostic has its own unique instance identity and references the stable PTSIP rule ID it concerns. One rule may produce multiple diagnostic instances.
+A machine-readable finding instance that references a stable PTSIP rule ID and supporting evidence. Diagnostic instance identity and rule identity are different.
+
+## Decision Authority
+
+The authority used to coordinate unresolved/resolved explicit architecture decisions for a defined coordination domain.
+
+A Decision Authority records **which explicit architecture answer won**. It does not replace the Project Profile and does not prove conformance.
+
+## Coordination domain
+
+The scope within which one distributed architecture decision identity has one authoritative winner. Repository identity is normally part of repository-scoped coordination.
+
+## Distributed decision identity
+
+A deterministic identity for one coordinated architecture decision derived from stable coordination-domain identity plus normalized architecture/component scope. It must not depend solely on clone-local temporary IDs or missing-field state.
+
+## Authority revision
+
+An ordered state token that lets participants distinguish one authority state from a later state and perform safe conditional mutation. Examples include Git commit/ref revision, transaction version, ETag/generation, or consensus log index.
+
+## First-valid-resolution-wins
+
+The distributed coordination rule that the first valid accepted resolution for one decision identity is the winner and later contradictory answers cannot silently replace it.
+
+## Authority freshness
+
+The requirement that a distributed coordination-sensitive operation account for relevant current authority state before relying on local Project Profile state as authoritative for the coordinated scope.
+
+A complete local declaration does not by itself prove freshness.
+
+## Read-only authority observation
+
+A non-mutating lookup used to determine whether relevant authority state exists. Absence checking should not fabricate a pending decision or create history merely to prove absence.
+
+## Authority/Profile reconciliation
+
+Deterministic comparison and safe handling of local Project Profile declaration versus distributed authority state.
+
+Required semantic distinctions include missing/no-decision, missing/resolved, present/no-authority, present/equivalent, present/conflicting, and stale-during-reconciliation states.
+
+## Semantic equivalence
+
+Equality of architecture meaning independent from incidental serialization differences such as YAML key order, whitespace, or Tool-generated formatting.
+
+## Authority/Profile conflict
+
+A state where a resolved distributed winner and an existing local Project Profile declaration disagree semantically for the same coordinated scope. The implementation must not silently overwrite either side.
+
+Reference Tool `0.3.4` exposes this state as `AUTHORITY_PROFILE_CONFLICT`; the exact token is an interoperability detail unless separately standardized.
+
+## Global decision state
+
+Coordination-domain-wide decision state such as `PENDING` or `RESOLVED`.
+
+## Local projection
+
+Clone/worktree-local application/consistency state for a resolved architecture declaration. Local projection may be missing, consistent, locally applied, stale, or failed. It cannot change the global winner.
+
+## Action-time synchronization
+
+Synchronization performed when an active architecture-sensitive operation reaches a boundary where current authority matters. Continuous background polling is not required.
+
+## Fail-closed distributed coordination
+
+The rule that a selected distributed coordination operation must stop explicitly when required authority freshness or safe mutation cannot be established, rather than silently creating an isolated Local winner.
+
+## PTSIP mandatory-rule waiver
+
+PTSIP defines no waiver that authorizes a real `MUST`/`MUST NOT` violation. Project governance may record debt or migration approval, but confirmed violation remains `NON_CONFORMANT` until remediated.
 
 ## Conformance
 
-A claim that a project satisfies a defined PTSIP conformance level and outcome according to `PTSIP-CONFORMANCE.md`.
+A reproducible claim that a project satisfies a defined PTSIP conformance level/outcome under one exact bound Specification revision and evidence snapshot.

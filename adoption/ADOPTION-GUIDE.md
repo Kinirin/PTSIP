@@ -1,118 +1,81 @@
 # PTSIP Adoption Guide
 
-This guide describes a controlled migration from an unclassified repository to PTSIP.
+This guide describes controlled migration to PTSIP `0.3.4-draft`. The exact governing snapshot is the immutable Specification revision bound by the Tool/profile.
 
 ## Phase 0 — Stable baseline
 
-Record the Consumer Repository revision before interpreting architecture evidence.
-
-For automated Pilot evidence, rerun the analysis if HEAD or observed tracked state changes during collection. Do not mix evidence from different revisions into one conformance claim.
+Record the Consumer Repository revision and relevant tracked-state fingerprint before interpreting architecture evidence. If repository state changes during collection or before a prepared profile write, re-analyze rather than mixing snapshots.
 
 ## Phase 1 — Inventory and evidence coverage
 
-Inventory project-owned SDKs, packages, validators, migration tools, generators, build helpers, shared/common modules, manifests, relevant schemas/contracts, build/release automation, and known Product artifacts.
+Inventory project-owned SDKs, packages, validators, migration tools, generators, build helpers, shared/common modules, manifests, contracts, build/release automation, and known Product artifacts.
 
-Do not move code yet.
+Do not move code yet. Record inaccessible paths, parser failures, unsupported dependency forms, unresolved dynamic behavior, uninspected artifacts, and unsupported adapters.
 
-Record inaccessible paths, parser failures, unsupported dependency forms, unresolved dynamic behavior, uninspected artifacts, and unsupported language/build/package adapters rather than silently treating them as absent.
-
-For every evidence gap, ask whether it can conceal the result of an applicable mandatory PTSIP rule:
-
-```text
-can hide mandatory-rule result -> blocking gap
-cannot affect mandatory-rule result -> non-blocking gap
-```
-
-Do not use a global unresolved-count or arbitrary coverage-percentage threshold as a substitute for rule-relative evidence sufficiency.
+A gap is blocking when it can hide the result of an applicable mandatory PTSIP rule. Do not use a global unresolved-count or arbitrary coverage percentage as a substitute for rule-relative sufficiency.
 
 ## Phase 2 — Component discovery
 
-Identify architectural component candidates using evidence such as:
+Discover component candidates from evidence such as manifests, release/build anchors, CI-invoked scripts, SDK/plugin projects, schema/protocol bundles, and artifact producers.
 
-- package/build manifests;
-- independent release/build anchors;
-- CI-invoked scripts;
-- plugin or SDK project files;
-- schema/protocol bundles;
-- test/tool roots;
-- artifact producers.
+Directory names such as `tools/`, `scripts/`, or `build/` are hints, not architecture authority.
 
-Directory names are hints, not ownership decisions. A directory called `tools`, `scripts`, or `build` may be a useful candidate anchor, but PTSIP does not classify it as `TOOLCHAIN` from its name alone. Likewise, a differently named directory may still be discovered through manifests, invocation edges, CI evidence, or other structural evidence.
+For each candidate record enough facts to support review, including purpose, consumers, shipping scope, executable/declarative nature, manifests, release/compatibility responsibility, evidence IDs, and counter-evidence.
 
-For each candidate record:
+Split broad candidates when one classification/purpose/lifecycle statement cannot coherently describe the whole scope.
 
-- primary purpose;
-- consumers;
-- shipped/not shipped;
-- executable/declarative nature;
-- dependency manifest;
-- release owner;
-- compatibility owner;
-- evidence IDs and counter-evidence.
+## Phase 3 — Explicit architecture decision
 
-If one broad candidate contains materially different shipped state, executable purpose, release owner, compatibility owner, or Product/Toolchain lifecycle responsibility, split it into coherent ownership candidates rather than hiding the difference behind one root classification.
+Resolve each in-scope project-owned component to exactly one classification:
 
-## Phase 3 — Classification decision
+- `PRODUCT`;
+- `TOOLCHAIN`;
+- `NEUTRAL_CONTRACT`.
 
-Resolve each in-scope project-owned component to exactly one architecture classification:
+During investigation preserve `UNKNOWN`, `CONFLICT`, and `INCOMPLETE` as decision states rather than inventing another classification.
 
-- `PRODUCT`
-- `TOOLCHAIN`
-- `NEUTRAL_CONTRACT`
+The project owner/user supplies architecture intent. A coding agent may surface evidence and ask for a decision but must not manufacture missing intent.
 
-During investigation, use decision status rather than inventing another class:
+## Phase 4 — Durable adoption facts
 
-- `UNKNOWN` — insufficient evidence;
-- `CONFLICT` — material evidence/declarations disagree;
-- `INCOMPLETE` — required analysis coverage is missing.
+`0.3.4-draft` defines this explicit component fact set for structured adoption/resolution:
 
-External libraries, standard-library/platform nodes, and unresolved dependency targets are evidence-node scope, not extra PTSIP classifications.
+- `classification`;
+- `purpose`;
+- `shipped`;
+- `runtime_required`;
+- `lifecycle_owner`;
+- `executable`.
 
-An unresolved decision that affects a boundary relevant to a mandatory rule is a blocking gap and should block structural migration or conformance conclusions that depend on that ownership decision.
+Canonical lifecycle owners are `PRODUCT`, `DEVELOPMENT_TOOLING`, and `INDEPENDENT`.
 
-A coding agent may propose a schema-constrained decision with evidence IDs, but it does not automatically approve the project profile or determine conformance.
+Required relationships include:
 
-Neutral Contract classification is not determined by a fixed number of current consumers. Evaluate non-executable/non-owning contract semantics and lifecycle ownership.
+- `PRODUCT` -> `lifecycle_owner: PRODUCT`;
+- `TOOLCHAIN` -> `lifecycle_owner: DEVELOPMENT_TOOLING`;
+- `TOOLCHAIN` -> `shipped: false`;
+- `TOOLCHAIN` -> `runtime_required: false`;
+- `NEUTRAL_CONTRACT` -> `executable: false`;
+- `NEUTRAL_CONTRACT` -> `lifecycle_owner: INDEPENDENT` when lifecycle ownership is represented.
 
-## Phase 4 — Dependency audit
+`release_owner` and `compatibility_owner` remain separate optional project metadata; they do not substitute for canonical `lifecycle_owner`.
 
-Construct typed dependency evidence and identify:
+## Phase 5 — Project Profile declaration
 
-- Product -> Toolchain edges;
-- relationship type (`IMPORTS`, `LINKS`, `LOADS`, `INVOKES`, `READS`, `GENERATES`, `PACKAGES`, `TESTS`, `PUBLISHES`);
-- lifecycle phase when known (`RUNTIME`, `BUILD`, `TEST`, `RELEASE`, `INSPECTION`);
-- evidence provenance (`DECLARED`, `OBSERVED`, `INFERRED`);
-- project/external/platform/unresolved target scope;
-- unresolved/dynamic edges;
-- shared executable packages used by both planes;
-- common modules with no explicit owner.
+The default profile is repository-root `ptsip.yaml`, although a project may consistently select another explicit path.
 
-Do not assume every Toolchain -> Product edge is allowed. Distinguish bounded inspection/build/test/analysis inputs from executable implementation reuse.
+The reference schema supports either:
 
-Do not guess phase or target merely to increase automation coverage.
+- `boundaries` for uniform-root shorthand; or
+- `components` for precise nested/mixed/file-level ownership.
 
-## Phase 5 — Boundary declaration and explicit adoption
+Do not combine both modes in one profile.
 
-Create or update the project-owned PTSIP profile only when the project wants a persistent declaration.
+Boundary shorthand may remain structurally valid, but it cannot preserve the full structured adoption fact set. A write-enabled adoption/resolution workflow must not silently discard supplied facts. Migrate to component declarations before structured mutation when lossless representation is required.
 
-The default Project Profile is repository-root `ptsip.yaml`. It is project-owned architecture state and is intended to be committed with the Consumer Repository. Do not add it to `.gitignore` merely because the Reference Tool generated it. Projects that own the declaration elsewhere may consistently select an explicit path with `--profile`.
+## Phase 6 — `ptsip adopt`
 
-Use exactly one reference ownership-declaration mode:
-
-- `boundaries` when root ownership is uniform; or
-- `components` when nested/mixed/file-level boundaries exist.
-
-Do not combine the two reference ownership modes in one profile.
-
-A component profile records intended ownership. It does not prove that the dependency graph or Product artifacts obey the declaration.
-
-When selectors overlap, exact/more-specific ownership wins. Equal-specificity ownership conflicts must be resolved explicitly.
-
-A project may optionally declare stricter component-to-component dependency constraints, including same-plane constraints. These project-specific policies may strengthen but cannot weaken universal PTSIP rules.
-
-### `ptsip adopt`
-
-Tool 0.3.3 provides an explicit project-owner adoption command. It reuses discovered candidate scope but requires the architecture facts to be supplied explicitly:
+`ptsip adopt` is dry-run by default. It uses discovered candidate scope but requires explicit architecture facts.
 
 ```powershell
 ptsip adopt . `
@@ -126,7 +89,7 @@ ptsip adopt . `
   --json
 ```
 
-The default is a dry-run. It validates the candidate, decision facts, repository snapshot, profile projection, and schema without changing the Consumer Repository. Apply only after review:
+Review the plan, then apply explicitly:
 
 ```powershell
 ptsip adopt . `
@@ -141,171 +104,107 @@ ptsip adopt . `
   --json
 ```
 
-`ptsip adopt` does not invent architecture intent and does not create a second classification algorithm. It reuses the same deterministic `DecisionAnswer` validation and Project Profile projection used by the decision workflow.
+The Tool must preserve the complete supplied fact set in component declarations. It must not map `lifecycle_owner` into `release_owner` or drop `runtime_required`.
 
-### Multi-environment decision coordination
+Prepared mutation must be refused if the repository/profile changed after validation.
 
-A local SQLite DecisionStore is intentionally not Git-shared. It is suitable for local-only coordination, but two different clones cannot use separate SQLite files as a global first-winner lock.
+## Phase 7 — Multi-environment decision coordination
 
-For a repository with a GitHub origin, Tool 0.3.3 therefore coordinates unresolved decisions through a dedicated remote authority ref by default:
+Local SQLite is intentionally local-only and must not be Git-shared as repository-global authority.
+
+For GitHub-coordinated repositories, Reference Tool `0.3.4` uses a dedicated remote authority ref:
 
 ```text
 refs/heads/ptsip-policy
 ```
 
-The ref is bootstrapped automatically by the first write-enabled coordinated operation. It stores JSON authority/decision records, not `control-plane.sqlite3`.
+That representation is a Reference Tool backend detail. The Specification-level requirements are backend-neutral.
 
-GitHub authority mutations use exact-parent commits and non-force ref updates. A stale environment cannot overwrite a newer authority HEAD. The global decision key is derived from repository identity and normalized component include scope so temporarily different local clarification IDs do not create separate winners for the same component boundary.
+A read-only authority check must not fabricate a pending decision merely to prove no decision exists.
 
-PTSIP uses **action-time synchronization**, not continuous polling. A coding agent calls `ptsip gate` when its active task depends on a boundary. If the local profile is stale but the GitHub authority already has a resolved decision, the gate reconciles that winner into the selected local profile.
+Distributed writes must preserve first-valid-resolution-wins with conditional mutation so a stale writer cannot replace a newer winner.
 
-If GitHub coordination is selected but unavailable because of network, authentication, or permissions, a new architecture decision fails closed. PTSIP does not silently fall back to a separate Local DecisionStore, because that would reintroduce split-brain authority.
+## Phase 8 — Authority freshness and reconciliation
 
-Cloud environments may use `GH_TOKEN` or `GITHUB_TOKEN`; interactive developer environments may use an authenticated `gh` CLI. The credential must have enough repository write authority to update the PTSIP authority ref.
+PTSIP uses action-time synchronization, not continuous polling. When an architecture-sensitive operation uses distributed coordination, a complete local profile does not permit skipping the relevant authority check.
 
-A non-GitHub repository continues to use the embedded Local DecisionStore for coding-agent gates. A GitHub repository can deliberately opt into isolated local coordination with `--coordination local`, but that is not distributed coordination.
+Required reconciliation semantics are:
 
-## Phase 6 — Profile Validation
+| Local Project Profile | Distributed Authority | Required behavior |
+| --- | --- | --- |
+| declaration absent | no decision | create/reuse pending state only when the active operation actually requires a decision |
+| declaration absent | resolved winner | validate and safely project/reconcile the winner locally |
+| declaration present | no authority decision | use the project declaration; do not fabricate authority history solely for bookkeeping |
+| declaration present + semantically equivalent | resolved equivalent winner | report consistency/resolution without rewriting equivalent profile text |
+| declaration present + semantically conflicting | resolved different winner | expose an explicit authority/profile conflict and do not silently overwrite either side |
+| repository/profile changed during reconciliation | any authority state | refuse stale application and re-analyze |
 
-Validate the declaration itself before using it for automated Enforced Conformance.
+Semantic equivalence is architecture meaning, not YAML formatting, key order, whitespace, or Tool-generated serialization.
 
-Profile Validation may check:
+If distributed coordination is selected but required freshness/safe mutation cannot be established, fail closed. Do not silently fall back to an isolated Local winner.
 
-- schema structure;
-- specification-binding syntax;
-- component IDs;
-- selector conflicts;
-- referenced components;
-- exception fields; and
-- optional project-policy consistency.
+## Phase 9 — Global decision state versus local projection
 
-A successful Profile Validation result does **not** mean the repository is conformant.
-
-## Phase 7 — Structural migration
-
-Move or repackage components only after ownership decisions and dependency evidence are sufficiently stable.
-
-Do not treat renaming alone as architectural migration. A directory move is incomplete if dependency and packaging behavior remain coupled.
-
-If the repository uses explicit transition planning, keep these concepts separate:
+Keep these states separate:
 
 ```text
-current observed architecture
-!= target architecture
-!= conformance result
+GLOBAL DECISION STATE
+    PENDING / RESOLVED
+
+LOCAL PROJECTION STATE
+    missing / consistent / locally applied / stale / failed
 ```
 
-A migration target does not rewrite current observed conformance.
+A global `RESOLVED` decision does not imply every clone has already written the declaration locally. A local application receipt cannot change the accepted winner.
 
-## Phase 8 — Build isolation
+## Phase 10 — Profile Validation
 
-Make Product and Toolchain dependencies independently resolvable.
+Validate the declaration before using it for Enforced Conformance.
 
-Verify that a clean Product build does not need Toolchain-only packages.
+Profile Validation checks schema/binding/component/policy semantics. It does not prove the repository conforms.
 
-If Toolchain build/test/inspection uses Product implementation as an input, record the purpose and lifecycle phase instead of treating Toolchain -> Product direction as automatically allowed.
+A boundary-root profile can be valid yet insufficient for strict evaluation when mandatory rule evaluation requires facts that shorthand does not carry.
 
-## Phase 9 — Product Artifact evidence
+## Phase 11 — Dependency and build audit
 
-Identify the Product Artifact separately from the component that produced it.
+Construct typed dependency evidence and identify Product -> Toolchain edges, relationship types, lifecycle phases, provenance, external/platform/unresolved targets, shared executable packages, and undeclared ownership.
 
-For each artifact relevant to `PTSIP-PKG-001`, collect enough evidence to describe:
+Make Product and Toolchain dependencies independently resolvable. A clean Product build must not require Toolchain-only packages merely because one developer environment contains them.
 
-- artifact identity;
-- Product/Toolchain/Neutral ownership when applicable;
-- producer component;
-- artifact type/format;
-- shipping scope;
-- contained paths/components or equivalent package manifest;
-- derivation (`GENERATES`, `PACKAGES`, `PUBLISHES`); and
-- evidence provenance.
+## Phase 12 — Product Artifact evidence
 
-A Toolchain build component may validly produce a Product Artifact. What matters for packaging isolation is the resulting artifact contents, not the producer's classification alone.
+Identify Product Artifact owner separately from producer.
 
-Source-path declarations alone are not sufficient evidence for `PTSIP-PKG-001` when actual Product artifact contents can differ from source topology.
+Collect artifact identity, owner/classification, producer, format, shipping scope, contents or equivalent package manifest, derivation relationships, and provenance.
 
-The reference evidence shape is `ptsip-artifact-evidence/v1`.
+A Toolchain producer may validly produce a Product Artifact. Product packaging conformance depends on the resulting contents, not producer classification alone.
 
-## Phase 10 — Remediation review
+## Phase 13 — Structural remediation
 
-For every established PTSIP `MUST`/`MUST NOT` violation, define the concrete architecture change required to satisfy the rule. Typical remediation includes dependency removal, ownership correction, component splitting, Neutral Contract extraction, packaging exclusion, build-environment separation, or lifecycle separation.
+For each established mandatory violation, define the architecture change that actually satisfies the rule: remove dependency, split component, correct ownership, extract Neutral Contract, isolate packaging/build, or separate lifecycle responsibility.
 
-Repository- or organization-specific governance MAY track owner, target state, review condition, and migration progress, but these records do not waive the PTSIP rule or change the current `NON_CONFORMANT` result.
+Migration/debt approval does not waive a real violation.
 
-After remediation, rerun evidence collection and conformance evaluation against a stable snapshot.
+## Phase 14 — Conformance Evaluation
 
-## Phase 11 — Conformance Evaluation
+Conformance Evaluation combines declaration, observed dependencies, Product Artifact evidence, lifecycle/build evidence, snapshot integrity, coverage, and deterministic PTSIP rules.
 
-Conformance Evaluation combines declaration, observed dependencies, Product Artifact evidence, lifecycle evidence, coverage and deterministic PTSIP rules.
-
-The completed evaluation uses:
+Completed outcomes are only:
 
 - `CONFORMANT`;
-- `NON_CONFORMANT`; or
+- `NON_CONFORMANT`;
 - `INCOMPLETE`.
 
-Decision sequence:
+Decision Authority is not a conformance oracle. A synchronized authority/profile pair can still describe a non-conformant repository.
 
-```text
-Definite applicable mandatory violation?
-    yes -> NON_CONFORMANT
-    no
-     |
-     v
-Blocking evidence gap?
-    yes -> INCOMPLETE
-    no  -> eligible for CONFORMANT when all other requirements are satisfied
-```
+For Enforced Conformance against `0.3.4-draft`, bind the exact immutable Specification revision.
 
-A successful read-only Pilot or empty finding list is not by itself a conformance result.
+## Phase 15 — Stable diagnostics and repeatability
 
-For Enforced Conformance against a mutable draft family, bind the exact immutable PTSIP specification revision.
+Automated checks should emit stable diagnostics that distinguish diagnostic instance ID from rule ID and preserve evidence IDs, outcome effect, severity, component endpoints where applicable, message, and evaluator/provenance information.
 
-## Phase 12 — Stable diagnostics and repeatable enforcement
-
-Automated checks should emit stable diagnostics that distinguish:
-
-- diagnostic instance ID;
-- PTSIP rule ID;
-- outcome effect;
-- severity;
-- source/target component where applicable;
-- evidence IDs;
-- message; and
-- evaluator/provenance information.
-
-The reference diagnostic contract is `ptsip-diagnostic/v1`.
-
-CI, developer tooling, coding agents, and external reports should consume the same diagnostic semantics rather than parse ad-hoc human messages.
-
-## Phase 13 — External evidence integration (optional)
-
-A project may use external repository-specific validators for security, license, governance, or other concerns.
-
-PTSIP does not need to reimplement those validators merely to use their results as analysis input.
-
-Imported evidence should carry provenance such as producer/version, subject repository/revision, scope, generation time, claims, and integrity information.
-
-External evidence is input to PTSIP evaluation; it does not automatically override contradictory native observed evidence or universal PTSIP rules.
-
-## Phase 14 — Lifecycle review
-
-Distinguish these lifecycle events:
-
-- workflow/pipeline trigger;
-- Product artifact change;
-- Product version/release decision;
-- Product publication/deployment; and
-- Product compatibility obligation.
-
-A Toolchain-only change triggering a shared Product workflow is not automatically a lifecycle violation. The relevant question is whether it forces Product lifecycle obligations without a release-relevant Product change.
-
-## Phase 15 — Conformance claim
-
-Only after stable, sufficient evidence exists should the project claim `PTSIP Core Conformant` or `PTSIP Enforced Conformant`.
-
-A project undergoing remediation may describe itself as `PTSIP-adopting` or `PTSIP-transitioning`, but those adoption labels do not replace the current conformance outcome.
+Rerun evaluation after remediation against a stable snapshot.
 
 ## Migration principle
 
-PTSIP migration should optimize for **ownership correctness, evidence integrity, artifact truth, and future independent evolution**, not for minimizing the number of files changed in the first migration or maximizing automatic classification/coverage percentages.
+Optimize for **ownership correctness, durable architecture intent, distributed decision consistency, evidence integrity, artifact truth, and independent lifecycle evolution** rather than minimizing the number of files changed or maximizing automatic classification.

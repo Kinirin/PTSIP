@@ -1,198 +1,139 @@
 # PTSIP Status
 
-- Active Specification family: `0.2.0-draft`
-- Latest canonical normative snapshot: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
-- Proposed Specification family design record: `0.3.3-draft` (not yet an active Tool binding)
-- Current Tool/package source version: `0.3.4`
-- Tool 0.2.3 historical bound specification revision: `14a0c2f54bb486de6a109979224f998b04fd04a3`
-- Current Tool 0.3.4 bound specification revision: `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
-- Specification identity model: draft family + immutable Git revision
-- Maturity: Experimental
+## Current migration state
+
 - Canonical repository: `kwaksinwoo01/PTSIP`
-- External tooling model: Defined
-- Reference Tool package name: `PTSIP`
-- Latest verified PyPI publication: `0.3.1`
-- Tool 0.2.3 publication policy: source-only migration; intentionally not published/tagged
-- Tool 0.3.0 publication status: published to PyPI
-- Tool 0.3.1 publication status: published as `tool-v0.3.1` and available from PyPI
-- Tool 0.3.2 source status: merged source baseline; not published/tagged
-- Tool 0.3.2 verification: GitHub Actions run `31365614038`, Python 3.14, `115 passed`, CLI/package checks successful
-- Tool 0.3.3 completed scope: explicit `ptsip adopt`, profile-path symmetry, deterministic validation/profile-projection reuse, and Local DecisionStore continuity
-- Tool 0.3.3 publication policy: permanently source-only; never create `tool-v0.3.3`, a GitHub Release, or PyPI `0.3.3`
-- Tool 0.3.4 completed scope: GitHub-coordinated repository-global authority freshness, reconciliation, conflict semantics, clone-local application receipts, and fail-closed distributed consistency
-- Tool 0.3.4 implementation merge: `555c528593f700a348d8da84545a62ce61291cae` (PR `#24`)
-- Tool 0.3.4 verification completion: `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f` (PR `#25`)
-- Tool 0.3.4 verification: GitHub Actions run `31471025526`, Python 3.14.6, `134 passed`, build/twine/installed-wheel checks successful
-- Tool 0.3.4 publication status: verified publication candidate; no tag, GitHub Release, or PyPI `0.3.4` publication created
+- Maturity: Experimental
+- Current Tool/package source version: `0.3.4`
+- Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
+- `spec-v0.3.4-draft`: published GitHub Specification **design-release checkpoint**; tag remains unchanged
+- Final `0.3.4-draft` coherent normative freeze revision in PR `#26`: `afba3531e23d96c21b7216e49614b839158ca7d5`
+- Tool `0.3.4` source binding prepared in PR `#26`: `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5`
+- Activation/rebind verification: pending PR `#26` merge CI
+- Latest verified PyPI publication: `PTSIP==0.3.1`
+- Tool `0.3.4` publication: **not published**; no `tool-v0.3.4`, GitHub Tool Release, or PyPI `0.3.4`
 - Supported Python metadata: Python 3.11–3.14
-- Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage; release-readiness compatibility is verified separately before publication
+- Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage
 - Tool release namespace: `tool-v*`
-- Reuse license: Apache License 2.0
+- Specification release/design namespace: `spec-v*`
+- License: Apache License 2.0
 
-## Tool 0.2.3 evidence-correctness baseline
+The `0.3.4-draft` freeze becomes the canonical active draft snapshot only when PR `#26` is merged while preserving the freeze commit in history. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
 
-Tool 0.2.3 implements the low-risk correctness work defined after the two-Pilot normative snapshot while preserving the deterministic Human Clarification capability introduced in Tool 0.2.2.
+The existing `spec-v0.3.4-draft` tag is not moved to the later normative freeze revision. Immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
 
-Implemented in that source-only migration:
+## Specification 0.3.4-draft activation scope
 
-- Python source decoding through Python encoding detection so UTF-8 BOM and valid source encoding declarations do not become false read failures;
-- deterministic relative-import resolution when package/repository evidence identifies the target;
-- dependency evidence-node scope separated from architectural classification using `PROJECT_COMPONENT`, `EXTERNAL_DEPENDENCY`, `PLATFORM`, and `UNRESOLVED_TARGET`;
-- dependency provenance recorded separately from target scope;
-- dynamic Python imports represented as `LOADS`, retaining `DYNAMIC` resolution when the target is not statically known;
-- deterministic external-dependency recognition from direct Python dependency declarations where package/import naming evidence matches;
-- GitHub Actions local-script resolution from the effective workflow/job/step `working-directory`;
-- arbitrary `run:` commands without local-script evidence no longer become synthetic unresolved `INVOKES` edges;
-- declared dependency evaluator state reports `RAN` versus `BLOCKED` with a reason and does not use an empty finding list to imply that evaluation ran;
-- embedded profile schema and registry synchronized to the Tool-bound immutable Specification snapshot;
-- Project Profile validation aligned with `boundaries XOR components`, retired mandatory-rule waiver semantics, exact bound revision checks, and component-policy reference validation.
+The migration combines the accepted Explicit Project Adoption design with Distributed Authority Consistency while preserving exactly three architecture classifications:
 
-Tool 0.2.3 is intentionally not released to PyPI. It is the source baseline for Tool 0.3.0.
+- `PRODUCT`
+- `TOOLCHAIN`
+- `NEUTRAL_CONTRACT`
 
-## Human Clarification regression boundary
+The new durable structured adoption fact set is:
 
-The following Tool 0.2.2 behavior remains required and regression-tested:
+- `classification`
+- `purpose`
+- `shipped`
+- `runtime_required`
+- `lifecycle_owner`
+- `executable`
 
-- `ptsip clarify`;
-- deterministic clarification with zero LLM/model API calls;
-- English/Korean fixed questions via `--lang` / `PTSIP_LANG`;
-- Consumer Repository GitHub identity from Git `origin`;
-- explicit `--publish github-issue` with `--repo owner/repository` override as a manual/offline fallback;
-- duplicate-publication state under external `PTSIP_HOME/clarifications` for that manual transport;
-- read-only clarification analysis unless publication or an explicit Tool 0.3.1+ resolution/adoption operation is requested.
+Canonical lifecycle owners are `PRODUCT`, `DEVELOPMENT_TOOLING`, and `INDEPENDENT`. `release_owner` and `compatibility_owner` remain separate optional project metadata and are not aliases for canonical lifecycle ownership.
 
-Tool 0.3.1 extends this boundary with structured Issue answers and explicit user-authorized chat resolution. Free-form Issue prose is still not interpreted by an LLM. Tool 0.3.3 additionally makes explicit profile selection symmetric across clarification/gate and declaration workflows.
+New stable Specification rules are:
 
-## Tool 0.3.0 — conformance capability expansion
+- `PTSIP-ADP-001` — lossless explicit project adoption
+- `PTSIP-AUT-001` — Decision Authority / Project Profile responsibility separation
+- `PTSIP-AUT-002` — stable distributed decision identity
+- `PTSIP-AUT-003` — first-valid-resolution-wins with ordered conditional mutation
+- `PTSIP-AUT-004` — authority freshness
+- `PTSIP-AUT-005` — safe authority/profile reconciliation
+- `PTSIP-AUT-006` — fail-closed distributed coordination
+- `PTSIP-AUT-007` — global decision state / local projection separation
 
-Tool 0.3.0 implements:
+`PTSIP-AUT-*` applies to implementations claiming distributed coordination capability. It does not create a fourth Consumer Repository architecture plane.
 
-- `ptsip conform` with `CONFORMANT`, `NON_CONFORMANT`, and `INCOMPLETE` outcomes plus distinct exit codes;
-- stable deterministic `ptsip-diagnostic/v1`-shaped diagnostics and final diagnostic/coverage contract audit;
-- rule-relative evidence coverage gates;
-- explicit `ptsip-artifact-evidence/v1` ingestion and Product packaging-isolation evaluation;
-- independent build-resolution evaluation from declared component manifests;
-- bounded lifecycle/release and compatibility ownership evidence;
-- JavaScript/TypeScript source and npm manifest adapters;
-- Go source/module dependency evidence;
-- `.csproj` plus source-level .NET namespace dependency evidence;
-- project-specific component dependency policy findings separated from universal PTSIP diagnostics;
-- constrained agent-decision ingestion as review evidence that cannot overwrite profile declarations;
-- revision-bound external dependency evidence import with producer/subject/provenance and imported-file SHA-256 preservation;
-- one composite dependency evidence graph used by `inspect`, `pilot`, `clarify`, and `conform`;
-- `ptsip pilot` remaining `NOT_EVALUATED` for conformance while `ptsip conform` owns strict outcome evaluation.
+## Coherent migration assets
 
-Tool 0.3.0 deliberately preserves uncertainty. Invalid or stale review evidence, contradictory evidence, unresolved Product dependency targets, incomplete Product Artifact evidence, ambiguous build/lifecycle evidence, unstable snapshots, or internal diagnostic-contract failures block `CONFORMANT` rather than being silently ignored.
+The immutable freeze `afba3531e23d96c21b7216e49614b839158ca7d5` contains the coherent normative/machine-readable migration state, including:
 
-Final post-rebind release-readiness verification completed in GitHub Actions run `31334084470`: Python 3.11, 3.12, 3.13, and 3.14 each passed the full pytest suite plus Tool identity, exact Specification revision, and `ptsip conform --help` checks; the Python 3.14 package job verified `tool-v0.3.0` version mapping, built wheel/sdist distributions, passed `twine check`, installed the built wheel, and passed built-wheel Tool identity/spec/conform smoke checks.
+- `spec/PTSIP-SPEC.md`
+- `spec/PTSIP-CONFORMANCE.md`
+- `spec/PTSIP-TERMINOLOGY.md`
+- `spec/PTSIP-GOVERNANCE.md`
+- `schemas/ptsip-profile.schema.json`
+- `schemas/ptsip-artifact-evidence.schema.json`
+- `schemas/ptsip-agent-classification.schema.json`
+- `schemas/ptsip-diagnostic.schema.json`
+- `registry/ptsip-registry.yaml`
+- `agents/AGENT-CONTRACT.md`
+- `adoption/ADOPTION-GUIDE.md`
+- `reference/REFERENCE-ARCHITECTURE.md`
+- `profiles/example.ptsip.yaml`
+- `decisions/ADR-0005-activate-spec-0.3.4-draft.md`
+- `src/ptsip/specdata/*` packaged machine-readable contracts
+- Tool profile-projection behavior required for lossless structured facts
 
-## Tool 0.3.1 — coding-agent decision control plane
+PR `#26` then adds the Tool binding and regression fixtures that point back to that immutable snapshot.
 
-Tool 0.3.1 adds a Tool-level, non-normative orchestration layer for unresolved human architecture decisions without changing the bound PTSIP Specification snapshot:
+All five canonical/embedded machine-readable pairs are required to be byte-identical by release-readiness tests:
 
-- `ptsip gate` is invoked only when an active coding-agent task needs a missing component decision;
-- no timer, scheduled reminder, or background polling is part of the workflow;
-- unresolved gates can use a GitHub clarification Issue through a GitHub App-backed hosted control plane;
-- a user may resolve the decision in the active coding-agent chat through explicit `ptsip resolve` or asynchronously through a structured GitHub Issue answer;
-- the authoritative store uses compare-and-set semantics so the first valid resolution wins;
-- late Issue/chat answers never replace an already resolved decision;
-- Issue answers require repository write/maintain/admin authority and the fixed `ptsip-clarification-answer/v1` structure;
-- fixed deterministic resolution rules reject contradictory Product/Toolchain/Neutral Contract facts instead of interpreting prose;
-- chat-originated profile writes validate a temporary projected profile before replacing the selected local profile;
-- Issue-originated profile writes remain bound to the exact recorded branch revision and use a non-force Git ref update so stale decisions are not silently applied;
-- the Project Profile remains the architecture declaration;
-- the existing explicit `ptsip clarify --publish github-issue` path remains available as a manual/offline fallback.
+1. Project Profile schema
+2. registry
+3. artifact-evidence schema
+4. agent-classification schema
+5. diagnostic schema
 
-Pre-merge Tool 0.3.1 verification completed in GitHub Actions run `31354690223`: Python 3.11 and 3.14 both passed the complete pytest suite and Tool/new-CLI smoke checks; Python 3.14 reported `106 passed` and successfully built `ptsip-0.3.1` wheel and sdist artifacts.
+## Tool 0.3.4 distributed-authority implementation
 
-See [`reference/DECISION-CONTROL-PLANE.md`](reference/DECISION-CONTROL-PLANE.md) for the current Tool-level workflow contract.
+Tool `0.3.4` already completed the distributed-authority behavior in PR `#24` (`555c528593f700a348d8da84545a62ce61291cae`) with the test identity follow-up in PR `#25` (`8cd0ddf16dc9b56f27f694138a37caae1c49bb4f`).
 
-## Tool 0.3.2 — topology migration and profile-path symmetry baseline
+Implemented behavior includes:
 
-Tool 0.3.2 source adds Tool-level refactoring support without changing normative PTSIP classification or conformance semantics:
+- authority freshness even when local Project Profile declaration is complete;
+- read-only authority absence lookup without fabricated history;
+- first-valid-resolution-wins with non-force Git-ref CAS;
+- deterministic missing/equivalent/conflicting reconciliation;
+- `AUTHORITY_PROFILE_CONFLICT` without silent overwrite;
+- stale repository/profile refusal;
+- fail-closed `COORDINATION_UNAVAILABLE` instead of implicit Local DecisionStore fallback;
+- global decision state separate from clone-local `LOCAL_PROJECTION` application state;
+- action-time synchronization rather than continuous polling.
 
-- `ptsip topology` produces a dry-run plan by default and requires explicit `--apply` for repository changes;
-- component-root moves rewrite path declarations while preserving every declared architecture classification;
-- component-based profiles require `--component`, preventing root selection from becoming an implicit ownership decision;
-- tracked path-text references are combined with observed PTSIP dependency edges so imports/links/loads/invocations can be reported even when source text does not contain the literal old repository path;
-- profile/import/build/CI/documentation references are reported by impact category, and dependency-adapter scan issues are surfaced for review instead of being hidden;
-- non-profile references are not blindly rewritten; the apply result reports any remaining review work;
-- Git-backed apply requires a clean working tree/index and uses `git mv` so tracked evidence follows the new root;
-- the projected profile is validated after the move before the migration is accepted;
-- `ptsip resolve --profile <path>` respects project-owned profile placement and leaves repository-root `ptsip.yaml` as the default only when no explicit path is supplied;
-- the bound Specification remains `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
+## Verification history
 
-Final pre-merge verification completed in GitHub Actions run `31365614038`: Python 3.14 passed the complete suite with `115 passed`, Tool/spec/new-CLI smoke checks succeeded, and both `ptsip-0.3.2` wheel and sdist passed `twine check`.
+### Tool 0.3.4 pre-rebind verification
 
-See [`releasenote/0.3.2.md`](releasenote/0.3.2.md) for the migration-source scope.
+GitHub Actions run `31471025526` on Python `3.14.6` verified the original Tool `0.3.4` source while it was still bound to `0.2.0-draft @ a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`:
 
-## Tool 0.3.3 — explicit adoption source-only migration
+- `134 passed`
+- Tool identity smoke passed
+- exact then-current Specification binding passed
+- build passed
+- wheel/sdist `twine check` passed
+- installed-wheel smoke passed
 
-Tool `0.3.3` completes the explicit project-adoption workstream while remaining bound to the active immutable `0.2.0-draft` Specification revision.
+That run remains valid evidence for the distributed-authority implementation, but it is **not** the final verification for the new `0.3.4-draft @ afba3531...` binding.
 
-Completed Tool `0.3.3` scope:
+### Post-rebind verification
 
-- new `ptsip adopt` command with deterministic candidate selection, explicit architecture facts, read-only dry-run by default, explicit `--apply`, stale-evidence protection, profile prevalidation, concurrent-profile protection, and post-write validation;
-- adoption reuses `DecisionAnswer`, `validate_answer()`, and the existing profile projection/write path instead of adding a second classification model;
-- `ptsip clarify --profile` and `ptsip gate --profile` complete explicit profile-location symmetry with `adopt`, `resolve`, `validate`, and `conform`;
-- Local DecisionStore continuity for local-only/explicit local coding-agent decision workflows;
-- explicit hosted HTTP Control Plane compatibility remains available;
-- local `control-plane.sqlite3` remains outside the Consumer Repository and is not Git-shared;
-- repository-root `ptsip.yaml` remains the default project-owned declaration and is intended to be committed, not ignored;
-- the `runtime_required` decision fact is not silently added to the bound predecessor Project Profile schema.
+Pending PR `#26` merge CI. Required checks are:
 
-The `0.3.3` source tree also contains an early GitHub-coordinated authority prototype from a subsequently withdrawn Tool `0.3.3` scope amendment. The prototype includes CAS/write-side and basic stale-missing-profile behavior, but its full repository-global contract is **not** considered completed Tool `0.3.3` behavior.
+- complete pytest suite;
+- `PTSIP Tool 0.3.4` identity;
+- exact `0.3.4-draft @ afba3531e23d96c21b7216e49614b839158ca7d5` binding;
+- canonical/embedded machine-readable contract equality;
+- package build;
+- wheel/sdist `twine check`;
+- built-wheel reinstall and Tool/spec/CLI smoke checks.
 
-The authority-consistency work moved to Tool `0.3.4` and is now completed there.
+## Tool lineage and publication policy
 
-Pre-merge Tool `0.3.3` source verification completed in GitHub Actions run `31465581071` on Python 3.14 with `128 passed`, CLI/package checks, build, and `twine check` success.
+- Tool `0.3.0`: published
+- Tool `0.3.1`: published as `tool-v0.3.1` / PyPI
+- Tool `0.3.2`: source-only migration
+- Tool `0.3.3`: permanently source-only; never tag, GitHub Release, or PyPI
+- Tool `0.3.4`: distributed-authority implementation complete; Specification rebind in PR `#26`; publication remains a separate explicit decision
 
-Tool `0.3.3` is permanently source-only. The project will never create `tool-v0.3.3`, a GitHub Release for Tool `0.3.3`, or PyPI `PTSIP==0.3.3`.
-
-See [`planning/PTSIP-TOOL-0.3.3-EXPLICIT-PROJECT-ADOPTION-PLAN.md`](planning/PTSIP-TOOL-0.3.3-EXPLICIT-PROJECT-ADOPTION-PLAN.md) and [`releasenote/0.3.3.md`](releasenote/0.3.3.md).
-
-## Tool 0.3.4 — GitHub-coordinated distributed authority completion
-
-Tool `0.3.4` completes the GitHub-coordinated repository-global authority contract begun experimentally in the `0.3.3` source tree.
-
-Completed behavior includes:
-
-- authority freshness checks at relevant `ptsip gate` boundaries even when the local Project Profile already contains a complete declaration;
-- read-only authority lookup that does not bootstrap `refs/heads/ptsip-policy` or fabricate decision history merely to observe absence;
-- deterministic local/remote reconciliation:
-  - local missing + remote winner -> safe validated local projection;
-  - local equivalent + remote winner -> `RESOLVED` / `CONSISTENT` without rewrite;
-  - local conflicting + remote winner -> `AUTHORITY_PROFILE_CONFLICT` without silent overwrite;
-  - complete local declaration + no remote record -> `NO_DECISION_REQUIRED` without fabricated authority state;
-- preserved global `gdec-*` identity based on repository identity plus normalized include scope;
-- preserved non-force Git ref CAS and first-valid-resolution-wins;
-- selected GitHub coordination fails closed and does not silently create a Local winner;
-- global decision resolution is separate from clone-local application receipts reported with `scope = LOCAL_PROJECTION`;
-- coordinated `adopt`, `gate`, and `resolve` behavior while preserving explicit Local and hosted backends;
-- Tool/package source identity `0.3.4` while remaining bound to `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`.
-
-Implementation merged in PR `#24` as `555c528593f700a348d8da84545a62ce61291cae`.
-
-A first merged verification run found only three stale tests that still expected Tool `0.3.3`; those expectations were corrected in PR `#25` as `8cd0ddf16dc9b56f27f694138a37caae1c49bb4f`.
-
-Final release-boundary verification completed in GitHub Actions run `31471025526` on Python `3.14.6`:
-
-- complete pytest suite: `134 passed`;
-- Tool identity and exact Specification binding: successful;
-- CLI smoke: successful;
-- wheel/sdist build: successful;
-- `twine check`: successful;
-- built-wheel reinstall and installed-wheel Tool/spec/CLI smoke: successful.
-
-Tool `0.3.4` is now a verified publication candidate. No `tool-v0.3.4` tag, GitHub Release, or PyPI `0.3.4` publication has been created; publication remains a separate explicit release decision.
-
-See [`planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md`](planning/PTSIP-TOOL-0.3.4-GITHUB-COORDINATED-AUTHORITY-PLAN.md) and [`releasenote/0.3.4.md`](releasenote/0.3.4.md).
-
-## Release blockers for PTSIP Specification 1.0
-
-- stabilize core rule and profile semantics through multiple real Pilots;
-- exercise automated validator rules against real dependency and packaging boundaries;
-- validate the constrained Agent Contract and deterministic Human Clarification against real ownership questions;
-- exercise rule-relative evidence coverage and Product Artifact evidence;
-- publish tagged stable specification releases;
-- exercise Tool 0.3.1 or later against real Consumer Repositories with component declarations, artifact evidence, review/import evidence, on-demand human decision gates, topology migrations, distributed decision coordination, and repeatable conformance evaluation.
+No Tool publication is implied by Specification activation or by successful CI.
