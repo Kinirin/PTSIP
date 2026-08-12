@@ -41,8 +41,16 @@ Shared semantics should prefer a Neutral Contract over one project-local executa
 
 PTSIP requires Python 3.11 or newer.
 
+For a new installation:
+
 ```powershell
-pip install PTSIP
+python -m pip install PTSIP
+```
+
+To upgrade an existing installation to the latest available release:
+
+```powershell
+python -m pip install --upgrade PTSIP
 ```
 
 Common commands:
