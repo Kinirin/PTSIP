@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from vpms.model import VerificationPurpose
-from vpms.registry import (
+from vpms.domain.model import VerificationPurpose
+from vpms.domain.registry import (
     RegistryDiagnosticCode,
     RegistryReferenceIndex,
     load_registry,

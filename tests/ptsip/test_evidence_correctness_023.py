@@ -156,7 +156,7 @@ def test_dependency_evaluator_reports_ran_instead_of_inferring_from_empty_findin
 
 
 def test_embedded_profile_schema_and_registry_match_bound_snapshot_assets() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     canonical_schema = json.loads((root / "schemas/ptsip-profile.schema.json").read_text(encoding="utf-8"))
     embedded_schema = json.loads(files("ptsip").joinpath("specdata/ptsip-profile.schema.json").read_text(encoding="utf-8"))
     assert embedded_schema == canonical_schema

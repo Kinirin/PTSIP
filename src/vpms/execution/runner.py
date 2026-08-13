@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Protocol
 
-from .model import VerificationCase, VerificationOutcome, VerificationResult
+from ..domain.model import VerificationCase, VerificationOutcome, VerificationResult
 
 
 RUNNER_CONTRACT_ERROR = "VPMS-RUN-CONTRACT-ERROR"

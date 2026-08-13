@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from vpms.model import (
+from vpms.domain.model import (
     FormulaRef,
     PolicyRef,
     RunnerRef,
@@ -16,12 +16,15 @@ from vpms.model import (
     VerificationOutcome,
     VerificationPurpose,
 )
-from vpms.runner import (
+from vpms.execution.runner import (
     RUNNER_CONTRACT_ERROR,
     RUNNER_EXECUTION_ERROR,
     RunnerExecution,
     run_case,
 )
+
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 def _case() -> VerificationCase:
@@ -119,7 +122,7 @@ def test_invalid_executor_return_becomes_contract_error() -> None:
 
 
 def test_runner_has_no_ptsip_or_framework_dependency() -> None:
-    source = Path(__file__).parents[1] / "src" / "vpms" / "runner.py"
+    source = _REPO_ROOT / "src" / "vpms" / "execution" / "runner.py"
     tree = ast.parse(source.read_text(encoding="utf-8"))
 
     imports: set[str] = set()

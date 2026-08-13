@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
-from vpms.model import (
+from vpms.domain.model import (
     FormulaRef,
     PolicyRef,
     RunnerRef,

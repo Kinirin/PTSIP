@@ -6,7 +6,7 @@ from typing import Mapping
 
 import yaml
 
-from .model import TargetRef
+from ..domain.model import TargetRef
 
 
 class PtsipMetadataError(ValueError):

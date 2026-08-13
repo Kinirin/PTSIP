@@ -6,7 +6,7 @@ from pathlib import Path
 from ptsip.constants import SPEC_REVISION, SPEC_VERSION, TOOL_VERSION
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 EXPECTED_SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 

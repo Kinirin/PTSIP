@@ -9,7 +9,7 @@ from pathlib import Path
 import vpms
 
 
-_REPO_ROOT = Path(__file__).resolve().parents[1]
+_REPO_ROOT = Path(__file__).resolve().parents[3]
 _SRC_ROOT = _REPO_ROOT / "src"
 _PTSIP_ROOT = _SRC_ROOT / "ptsip"
 

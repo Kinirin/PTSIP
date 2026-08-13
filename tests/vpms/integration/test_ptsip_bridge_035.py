@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from vpms.model import (
+from vpms.domain.model import (
     FormulaRef,
     PolicyRef,
     RunnerRef,
@@ -15,12 +15,15 @@ from vpms.model import (
     VerificationCase,
     VerificationPurpose,
 )
-from vpms.ptsip_bridge import (
+from vpms.integration.ptsip_bridge import (
     PtsipMetadataError,
     PtsipTargetMetadata,
     load_ptsip_metadata,
     resolve_target_metadata,
 )
+
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 def _write_profile(tmp_path: Path, content: str) -> Path:
@@ -137,7 +140,7 @@ components:
 
 
 def test_bridge_has_no_ptsip_runtime_import_or_write_api() -> None:
-    bridge_path = Path(__file__).parents[1] / "src" / "vpms" / "ptsip_bridge.py"
+    bridge_path = _REPO_ROOT / "src" / "vpms" / "integration" / "ptsip_bridge.py"
     tree = ast.parse(bridge_path.read_text(encoding="utf-8"))
     imports = []
 
