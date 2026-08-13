@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Protocol
+from typing import Mapping, Protocol
 
 from ..domain.model import VerificationCase, VerificationOutcome, VerificationResult
+from ..domain.registry import Registry
+from ..domain.selector import SelectionScope, select_cases
 
 
 RUNNER_CONTRACT_ERROR = "VPMS-RUN-CONTRACT-ERROR"
@@ -66,4 +68,35 @@ def run_case(case: VerificationCase, executor: CaseExecutor) -> VerificationResu
         outcome=execution.outcome,
         diagnostics=execution.diagnostics,
         failure_detail=execution.failure_detail,
+    )
+
+
+def run_selected_cases(
+    registry: Registry,
+    *,
+    scope: SelectionScope,
+    executors: Mapping[str, CaseExecutor],
+) -> tuple[VerificationResult, ...]:
+    """Select explicit-purpose cases and execute them through registered runner adapters."""
+
+    selected = select_cases(registry, scope=scope)
+    missing_runners = tuple(
+        sorted(
+            {
+                case.runner.ref
+                for case in selected
+                if case.runner.ref not in executors
+            }
+        )
+    )
+    if missing_runners:
+        raise ValueError(
+            "Missing executor registration for runner(s): "
+            + ", ".join(missing_runners)
+            + "."
+        )
+
+    return tuple(
+        run_case(case, executors[case.runner.ref])
+        for case in selected
     )
