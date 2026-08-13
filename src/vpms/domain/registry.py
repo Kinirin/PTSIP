@@ -15,6 +15,68 @@ from .model import (
 )
 
 
+def _is_identifier(value: object) -> bool:
+    return isinstance(value, str) and bool(value) and value.strip() == value
+
+
+@dataclass(frozen=True)
+class RegisteredFormula:
+    """Purpose-neutral Formula identity registered for Verification Case reuse."""
+
+    id: str
+
+    def __post_init__(self) -> None:
+        if not _is_identifier(self.id):
+            raise ValueError("Formula id must be a non-empty, unpadded string.")
+
+    def as_dict(self) -> dict[str, str]:
+        return {"id": self.id}
+
+
+@dataclass(frozen=True)
+class FormulaRegistry:
+    """Immutable registry of reusable Formula identities."""
+
+    formulas: tuple[RegisteredFormula, ...] = ()
+
+    def __post_init__(self) -> None:
+        identities = [formula.id for formula in self.formulas]
+        if len(set(identities)) != len(identities):
+            duplicate = next(
+                identity for identity in identities if identities.count(identity) > 1
+            )
+            raise ValueError(f"Duplicate Formula id: {duplicate}.")
+        object.__setattr__(
+            self,
+            "formulas",
+            tuple(sorted(self.formulas, key=lambda formula: formula.id)),
+        )
+
+    @property
+    def identities(self) -> tuple[str, ...]:
+        return tuple(formula.id for formula in self.formulas)
+
+    def get_formula(self, formula_id: str) -> RegisteredFormula | None:
+        for formula in self.formulas:
+            if formula.id == formula_id:
+                return formula
+        return None
+
+    def as_dict(self) -> dict[str, object]:
+        return {"formulas": [formula.as_dict() for formula in self.formulas]}
+
+
+def register_formulas(formula_ids: object) -> FormulaRegistry:
+    """Register purpose-neutral Formula identities without Case-owned state."""
+
+    if not isinstance(formula_ids, (list, tuple)):
+        raise ValueError("Formula registrations must be a list or tuple of ids.")
+
+    return FormulaRegistry(
+        formulas=tuple(RegisteredFormula(id=formula_id) for formula_id in formula_ids)
+    )
+
+
 class RegistryDiagnosticCode(StrEnum):
     MALFORMED_DEFINITIONS = "MALFORMED_DEFINITIONS"
     MALFORMED_CASE = "MALFORMED_CASE"
@@ -64,6 +126,20 @@ class RegistryReferenceIndex:
             values = getattr(self, field_name)
             object.__setattr__(self, field_name, tuple(sorted(set(values))))
 
+    def with_registered_formulas(
+        self,
+        formulas: FormulaRegistry,
+    ) -> RegistryReferenceIndex:
+        """Bind explicit Formula registrations into the reference-resolution index."""
+
+        return RegistryReferenceIndex(
+            targets=self.targets,
+            formulas=formulas.identities,
+            variables=self.variables,
+            policies=self.policies,
+            runners=self.runners,
+        )
+
 
 @dataclass(frozen=True)
 class Registry:
@@ -112,10 +188,6 @@ def _diagnostic_sort_key(diagnostic: RegistryDiagnostic) -> tuple[str, str, str,
         diagnostic.reference_kind or "",
         diagnostic.reference or "",
     )
-
-
-def _is_identifier(value: object) -> bool:
-    return isinstance(value, str) and bool(value) and value.strip() == value
 
 
 def _available(references: RegistryReferenceIndex, kind: str) -> frozenset[str]:
