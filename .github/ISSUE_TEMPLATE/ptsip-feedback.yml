@@ -1,0 +1,87 @@
+name: PTSIP Feedback
+description: Report one PTSIP issue or improvement using the standard feedback format.
+title: "[Feedback] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only when you want to send feedback about PTSIP.
+        Keep one core issue or improvement per submission, separate observed facts from proposals, and do not present unverified assumptions as facts.
+
+  - type: input
+    id: ptsip-version
+    attributes:
+      label: PTSIP used version
+      description: Enter the PTSIP version used when the issue or improvement was observed.
+      placeholder: e.g. 0.3.4
+    validations:
+      required: true
+
+  - type: input
+    id: user-nickname
+    attributes:
+      label: User nickname
+      description: Enter the nickname you want to use for this feedback.
+    validations:
+      required: true
+
+  - type: input
+    id: user-email
+    attributes:
+      label: User email
+      description: Optional. Provide only if you want to be contacted. Do not infer or discover an email automatically.
+      placeholder: optional
+    validations:
+      required: false
+
+  - type: textarea
+    id: issue-improvement
+    attributes:
+      label: Needed feature or improvement
+      description: Describe the single issue, needed feature, or improvement in 400 characters or fewer.
+      placeholder: Describe the core issue or improvement only.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: Explain why this change is needed or what problem it would improve.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Development environment
+      description: Briefly identify the main development environment or coding-agent/tool context.
+      placeholder: e.g. VS Code + coding agent, local terminal, CI
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: e.g. Windows 11, Ubuntu 24.04, macOS 15
+    validations:
+      required: true
+
+  - type: input
+    id: coding-language
+    attributes:
+      label: Coding language
+      description: Enter the primary language relevant to this feedback.
+      placeholder: e.g. Python, TypeScript, Rust
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Optional. Suggest a solution only if you have one; keep it separate from the observed problem.
+      placeholder: optional
+    validations:
+      required: false
