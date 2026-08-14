@@ -20,7 +20,7 @@ from vpms.execution.runner import run_selected_cases
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-SHARED_FORMULA_ID = "pytest.node-exit-zero"
+SHARED_FORMULA_ID = "command.exit-zero"
 FULL_REPOSITORY_PYTEST_ARGV = (sys.executable, "-m", "pytest", "-q", "tests")
 
 _CASES = [
@@ -30,7 +30,7 @@ _CASES = [
         "target": "ptsip-distribution",
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.product.canonical-contracts",
-        "policy": "product.pytest-pass",
+        "policy": "distribution.contract-integrity",
         "runner": "pytest.product.canonical-contracts",
     },
     {
@@ -39,7 +39,7 @@ _CASES = [
         "target": "ptsip-distribution",
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.product.package-contracts",
-        "policy": "product.pytest-pass",
+        "policy": "distribution.package-integrity",
         "runner": "pytest.product.package-contracts",
     },
     {
@@ -48,7 +48,7 @@ _CASES = [
         "target": "repository-release-automation",
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.toolchain.release-workflow",
-        "policy": "toolchain.pytest-pass",
+        "policy": "release.workflow-integrity",
         "runner": "pytest.toolchain.release-workflow",
     },
     {
@@ -57,7 +57,7 @@ _CASES = [
         "target": "repository-release-automation",
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.toolchain.routine-ci",
-        "policy": "toolchain.pytest-pass",
+        "policy": "ci.verification-boundary",
         "runner": "pytest.toolchain.routine-ci",
     },
 ]
@@ -87,7 +87,7 @@ def repository_registry() -> Registry:
     references = RegistryReferenceIndex(
         targets=("ptsip-distribution", "repository-release-automation"),
         variables=tuple(case["variables"] for case in _CASES),
-        policies=("product.pytest-pass", "toolchain.pytest-pass"),
+        policies=tuple(case["policy"] for case in _CASES),
         runners=tuple(RUNNER_NODEIDS),
     ).with_registered_formulas(formulas)
     loaded = load_registry(_CASES, references=references)
@@ -154,16 +154,17 @@ def test_repository_registry_registers_real_mixed_module_cases_by_purpose() -> N
         VerificationPurpose.TOOLCHAIN,
     }
     assert {case.formula.ref for case in registry.cases} == {SHARED_FORMULA_ID}
-    assert {
-        case.policy.ref
+    assert {case.id: case.policy.ref for case in registry.cases} == {
+        "ptsip.product.canonical-contracts": "distribution.contract-integrity",
+        "ptsip.product.package-contracts": "distribution.package-integrity",
+        "ptsip.toolchain.release-workflow": "release.workflow-integrity",
+        "ptsip.toolchain.routine-ci": "ci.verification-boundary",
+    }
+    assert all(
+        not case.policy.ref.startswith(("product.", "toolchain."))
+        and "pytest" not in case.policy.ref
         for case in registry.cases
-        if case.purpose is VerificationPurpose.PRODUCT
-    } == {"product.pytest-pass"}
-    assert {
-        case.policy.ref
-        for case in registry.cases
-        if case.purpose is VerificationPurpose.TOOLCHAIN
-    } == {"toolchain.pytest-pass"}
+    )
     assert {nodeid.split("::", 1)[0] for nodeid in RUNNER_NODEIDS.values()} == {
         "tests/ptsip/test_release_readiness_030.py"
     }
