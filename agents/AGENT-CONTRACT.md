@@ -258,3 +258,63 @@ Use this order:
 8. informal examples.
 
 This ordering does not make Decision Authority a conformance oracle. Authority governs which explicit architecture answer won; observed evidence still governs what the repository actually does, and conformance still requires deterministic evaluation against the bound Specification.
+
+## 17. VPMS verification-purpose obligations
+
+VPMS (`Verification Purpose Management System`) is an optional sibling subsystem. It governs why verification exists and how purpose-bound Verification Cases are selected and executed; it does not replace PTSIP architecture classification, Decision Authority, or Conformance Evaluation.
+
+When an agent creates, modifies, reuses, selects, or executes VPMS verification, follow these rules:
+
+1. **Determine verification purpose first.** Identify the responsibility whose correctness would be lost if the verification disappeared or failed, then record exactly `PRODUCT` or `TOOLCHAIN` in the Verification Case.
+2. **Do not infer purpose from physical placement or mechanism.** A `tests/` path, directory name, filename, framework, file extension, compilation status, package inclusion, or runner command may be evidence but is not purpose authority.
+3. **Prefer validated VPMS metadata over heuristics.** Once Verification Cases are registered, use `VerificationCase.purpose` as the selection authority. `PRODUCT`, `TOOLCHAIN`, and `FULL` are explicit selection scopes; `FULL` is not a third verification purpose.
+4. **Keep PTSIP classification and VPMS purpose separate.** A verifier may be PTSIP `TOOLCHAIN` while its VPMS purpose is `PRODUCT`. Do not convert VPMS purpose into a PTSIP component classification or the reverse.
+5. **Preserve Verification Case identity.** Purpose, target, Formula, Variables, Policy, Runner, and result identity remain distinct even when cases share implementation.
+6. **Reuse Formula only when it is genuinely purpose-neutral.** Cross-purpose Formula reuse is allowed only when the verification rule remains meaningful without knowing whether PRODUCT or TOOLCHAIN consumes it.
+7. **Do not silently merge or normalize Policy.** Shared Formula or Runner implementation does not authorize Product and Toolchain obligations to share Policy. Treat Policy changes as governed expectation/contract changes, not ordinary fixture cleanup.
+8. **Never edit Policy merely to make a failing verification pass.** If a governed expectation is wrong, surface the proposed Policy change and its reason explicitly instead of repairing the expected value silently.
+9. **Keep Policy names responsibility-oriented.** Do not duplicate Case purpose or execution framework in Policy identifiers merely for convenience. The repository examples `distribution.contract-integrity`, `distribution.package-integrity`, `release.workflow-integrity`, and `ci.verification-boundary` demonstrate this separation; they are not mandatory global names.
+10. **Preserve purpose during selective execution.** PRODUCT selection must not pull in TOOLCHAIN-purpose cases and TOOLCHAIN selection must not pull in PRODUCT-purpose cases merely because cases share a Formula, Runner mechanism, source module, or physical directory.
+11. **Surface ambiguity instead of guessing.** Missing, malformed, unknown, or unresolved VPMS definition state must remain explicit. Do not manufacture a purpose or reference to make Registry loading succeed.
+12. **Do not create PTSIP authority history for VPMS purpose ambiguity.** A VPMS purpose decision is not a PTSIP architecture-classification decision and ordinary VPMS execution must not create or resolve PTSIP Decision Authority records.
+13. **Do not reorganize the repository solely to encode purpose.** Reference layouts such as `tests/formula`, `tests/product`, and `tests/toolchain` are optional organization. A mixed physical test module may contain independent PRODUCT-purpose and TOOLCHAIN-purpose Verification Cases.
+14. **Keep VPMS results separate from PTSIP conformance.** `PASS`, `FAIL`, `ERROR`, and `SKIPPED` are VPMS execution outcomes. They must not be reported as `CONFORMANT`, `NON_CONFORMANT`, or `INCOMPLETE` without a separate PTSIP Conformance Evaluation.
+
+### 17.1 Registry diagnostics are authoritative validation evidence
+
+The implemented Registry emits deterministic machine-readable diagnostics with format:
+
+```text
+vpms-registry-diagnostic/v1
+```
+
+Current diagnostic codes are:
+
+```text
+MALFORMED_DEFINITIONS
+MALFORMED_CASE
+MISSING_FIELD
+UNKNOWN_FIELD
+INVALID_FIELD
+UNKNOWN_PURPOSE
+DUPLICATE_CASE_ID
+UNRESOLVED_REFERENCE
+```
+
+When Registry loading returns diagnostics, preserve the diagnostic `code`, `location`, `message`, and any supplied `case_id`, `reference_kind`, or `reference`. Do not replace these with path-based guesses or silently rewrite definitions to suppress the diagnostic.
+
+In particular:
+
+- `UNKNOWN_PURPOSE` requires an explicit supported purpose rather than inference from path/framework;
+- `UNRESOLVED_REFERENCE` requires the missing target/Formula/Variables/Policy/Runner reference to be resolved explicitly rather than fabricated;
+- `DUPLICATE_CASE_ID` requires distinct Case identity rather than silent overwrite or merge.
+
+### 17.2 Selection and execution boundaries
+
+Selection operates on validated Registry Cases and explicit `SelectionScope`. The agent must not discover files and bypass Registry purpose metadata merely to approximate PRODUCT or TOOLCHAIN selection.
+
+Runner execution preserves the selected Case's identity, purpose, and target in `VerificationResult`. Runner diagnostics such as `VPMS-RUN-CONTRACT-ERROR` and `VPMS-RUN-EXECUTION-ERROR` describe VPMS execution failure; they are not PTSIP classification or conformance decisions.
+
+If a selected Case references a Runner without an executor registration, surface the missing registration before execution rather than substituting another Runner silently.
+
+VPMS consumption of PTSIP target metadata remains read-oriented. Ordinary VPMS selection or execution must not rewrite `ptsip.yaml`, mutate PTSIP classification, or alter Decision Authority state.
