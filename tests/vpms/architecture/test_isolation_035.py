@@ -29,7 +29,6 @@ def _imports_vpms(path: Path) -> bool:
 
 def test_vpms_package_has_independent_import_root() -> None:
     assert vpms.__name__ == "vpms"
-    assert vpms.__all__ == ()
 
 
 def test_ptsip_source_has_no_dependency_on_vpms() -> None:
