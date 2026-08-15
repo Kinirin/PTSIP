@@ -44,6 +44,7 @@ ptsip-app = "ptsip.app.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["ptsip*", "vpms*"]
 
 [tool.setuptools.package-data]
 ptsip = ["specdata/*.json", "specdata/*.yaml"]
