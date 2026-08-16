@@ -4,22 +4,24 @@
 
 - Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
-- Current Tool/package source version: `0.3.4`
+- Current Tool/package source version: `0.3.5`
+- Tool `0.3.5` source identity: VPMS implementation, documentation, packaging, and public Python surface stabilized; final WU-18 regression/build/installed-wheel verification pending
 - Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - `spec-v0.3.4-draft`: published GitHub Specification **design-release checkpoint**; tag remains unchanged
 - Final `0.3.4-draft` repository-identity-migration revision: `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
-- Tool `0.3.4` source binding: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Tool `0.3.5` Specification binding: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Repository identity migration: **COMPLETE**
-- Implementation: **COMPLETED**
+- Tool `0.3.5` implementation state: **IDENTITY STABILIZED; FINAL VERIFICATION PENDING**
 - Latest verified PyPI publication: `PTSIP==0.3.1`
 - Tool `0.3.4` publication: **not published**; no `tool-v0.3.4`, GitHub Tool Release, or PyPI `0.3.4`
+- Tool `0.3.5` publication: **not published**; source identity does not imply release readiness or publication
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage
 - Tool release namespace: `tool-v*`
 - Specification release/design namespace: `spec-v*`
 - License: Apache License 2.0
 
-The `0.3.4-draft` repository-identity-migration freeze is the canonical active draft snapshot. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
+The `0.3.4-draft` repository-identity-migration freeze remains the canonical active Specification snapshot. Tool `0.3.5` changes Tool behavior by introducing VPMS while intentionally retaining that Specification binding; a Tool-version change does not imply a Specification-version change.
 
 The existing `spec-v0.3.4-draft` tag is not moved to the later normative freeze revision. Immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
 
@@ -136,5 +138,6 @@ Final local and hosted verification is pending for this release-readiness commit
 - Tool `0.3.2`: source-only migration
 - Tool `0.3.3`: permanently source-only; never tag, GitHub Release, or PyPI
 - Tool `0.3.4`: implementation completed; repository identity migration complete; publication pending
+- Tool `0.3.5`: VPMS source identity stabilized; final WU-18 verification and explicit release preparation remain pending
 
-No Tool publication is implied by Specification activation or by successful CI.
+No Tool publication is implied by Specification activation, source-version stabilization, or successful CI.
