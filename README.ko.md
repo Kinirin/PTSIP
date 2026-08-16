@@ -52,10 +52,16 @@ PTSIP는 host/target 분리, build-time/runtime 분리, 툴체인 격리 또는 
 
 PTSIP는 Python 3.11 이상이 필요합니다.
 
-PyPI에서 최신 공개 Reference Tool을 설치합니다.
+신규 설치:
 
 ```powershell
-pip install ptsip
+python -m pip install PTSIP
+```
+
+기존 설치를 최신 공개 릴리스로 업데이트:
+
+```powershell
+python -m pip install --upgrade PTSIP
 ```
 
 프로젝트 의존성에서는 재현성을 위해 정확한 버전 고정이 필요한 경우가 아니라면 **최소 호환 버전**을 사용하는 것을 권장합니다. 예를 들어 프로젝트가 0.2+ 인터페이스를 필요로 한다면 다음처럼 선언할 수 있습니다.
