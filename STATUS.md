@@ -5,16 +5,16 @@
 - Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
 - Current Tool/package source version: `0.3.5`
-- Tool `0.3.5` source identity: VPMS implementation, documentation, packaging, and public Python surface stabilized; final WU-18 regression/build/installed-wheel verification pending
+- Tool `0.3.5` source identity: VPMS implementation, documentation, packaging, and public Python surface stabilized and implementation-completion verification passed
 - Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - `spec-v0.3.4-draft`: published GitHub Specification **design-release checkpoint**; tag remains unchanged
 - Final `0.3.4-draft` repository-identity-migration revision: `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Tool `0.3.5` Specification binding: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Repository identity migration: **COMPLETE**
-- Tool `0.3.5` implementation state: **IDENTITY STABILIZED; FINAL VERIFICATION PENDING**
+- Tool `0.3.5` implementation state: **COMPLETED AND VERIFIED**
 - Latest verified PyPI publication: `PTSIP==0.3.1`
 - Tool `0.3.4` publication: **not published**; no `tool-v0.3.4`, GitHub Tool Release, or PyPI `0.3.4`
-- Tool `0.3.5` publication: **not published**; source identity does not imply release readiness or publication
+- Tool `0.3.5` publication: **not published**; implementation completion does not imply release preparation or publication
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage
 - Tool release namespace: `tool-v*`
@@ -121,15 +121,27 @@ That run remains valid evidence for the distributed-authority implementation, bu
 
 ### Repository-identity-migration verification
 
-Final local and hosted verification is pending for this release-readiness commit. Required checks are:
+Final local and hosted verification was not used as a Tool `0.3.4` publication boundary because Tool `0.3.4` was not published. Its behavior and immutable Specification binding are carried forward into Tool `0.3.5`, whose implementation-completion verification below exercises the current full regression and distribution boundary.
 
-- complete pytest suite;
-- `PTSIP Tool 0.3.4` identity;
-- exact `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e` binding;
-- canonical/embedded machine-readable contract equality;
-- package build;
-- wheel/sdist `twine check`;
-- built-wheel reinstall and Tool/spec/CLI smoke checks.
+### Tool 0.3.5 implementation-completion verification
+
+GitHub Actions `tooling-test` run `31930110185` (job `95123510309`) verified the Tool `0.3.5` implementation on Python `3.14.7`. The one-off verification branch contained the same product, test, and packaging blobs as `tool-0.3.5-vpms`; its only intentional extra surface was the temporary workflow trigger and final-gate smoke steps.
+
+Verified results:
+
+- full repository pytest: `240 passed in 10.25s`;
+- source/editable identity: distribution metadata, `TOOL_VERSION`, and `ptsip.__version__` all `0.3.5`;
+- Specification identity remains `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`;
+- `ptsip --version` -> `PTSIP Tool 0.3.5`;
+- `ptsip spec` reports `tool_version: 0.3.5` while retaining the `0.3.4-draft` Specification identity;
+- `ptsip conform --help` passes before and after wheel installation;
+- `python -m build` produced `ptsip-0.3.5.tar.gz` and `ptsip-0.3.5-py3-none-any.whl`;
+- `python -m twine check dist/*` passed for both artifacts;
+- sdist and wheel contain all current `vpms`, `vpms.domain`, `vpms.execution`, `vpms.execution.adapters`, and `vpms.integration` Python files;
+- built wheel was force-reinstalled successfully;
+- installed-wheel smoke verified `vpms` imports from `site-packages`, PRODUCT/TOOLCHAIN purpose identities remain available, and Tool/Specification identity remains correct.
+
+This is implementation-completion evidence, not publication. `releasenote/0.3.5.md`, a Tool tag, GitHub Release, and PyPI upload remain deferred to explicit release preparation. `WU-19` installation/upgrade guidance must also be complete before branch merge.
 
 ## Tool lineage and publication policy
 
@@ -137,7 +149,7 @@ Final local and hosted verification is pending for this release-readiness commit
 - Tool `0.3.1`: published as `tool-v0.3.1` / PyPI
 - Tool `0.3.2`: source-only migration
 - Tool `0.3.3`: permanently source-only; never tag, GitHub Release, or PyPI
-- Tool `0.3.4`: implementation completed; repository identity migration complete; publication pending
-- Tool `0.3.5`: VPMS source identity stabilized; final WU-18 verification and explicit release preparation remain pending
+- Tool `0.3.4`: implementation completed; repository identity migration complete; not published
+- Tool `0.3.5`: VPMS implementation completed and WU-18 implementation-completion verification passed; explicit release preparation/publication remain pending
 
 No Tool publication is implied by Specification activation, source-version stabilization, or successful CI.
