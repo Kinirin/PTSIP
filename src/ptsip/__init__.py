@@ -1,3 +1,5 @@
 """PTSIP reference development tooling."""
 
-__version__ = "0.2.0"
+from .constants import TOOL_VERSION
+
+__version__ = TOOL_VERSION
