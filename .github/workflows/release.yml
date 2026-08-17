@@ -93,14 +93,28 @@ jobs:
             --tag "${TAG}" \
             --no-exec \
             --include-path "src/ptsip/**" \
+            --include-path "src/vpms/**" \
             --include-path "tests/**" \
             --include-path "pyproject.toml" \
+            --include-path "ptsip.yaml" \
             --include-path ".github/workflows/tooling-test.yml" \
             --include-path ".github/workflows/tooling-release.yml" \
             --include-path ".github/workflows/release.yml" \
             --include-path "reference/DECISION-CONTROL-PLANE.md" \
             --include-path "cliff.toml" \
             --output "${NOTE}"
+
+          # git-cliff templates may leave multiple trailing newlines. Normalize the
+          # generated note to exactly one final newline so git diff --check remains
+          # a meaningful release gate instead of failing on formatter whitespace.
+          python - "${NOTE}" <<'PY'
+          from pathlib import Path
+          import sys
+
+          note = Path(sys.argv[1])
+          text = note.read_text(encoding="utf-8")
+          note.write_text(text.rstrip() + "\n", encoding="utf-8")
+          PY
 
           if [ ! -s "${NOTE}" ]; then
             echo "Generated release note is empty: ${NOTE}"
