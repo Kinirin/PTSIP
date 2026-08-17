@@ -38,7 +38,8 @@ Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
 | `0.3.1` | Published | [`0.3.1.md`](0.3.1.md) |
 | `0.3.2` | Migration source, not yet merged/published/tagged | [`0.3.2.md`](0.3.2.md) |
 | `0.3.3` | Permanent source-only implementation version | [`0.3.3.md`](0.3.3.md) |
-| `0.3.4` | Release preparation; publication pending | [`0.3.4.md`](0.3.4.md) |
+| `0.3.4` | Published GitHub Tool release; stale pre-publication repository note removed | GitHub Release history |
+| `0.3.5` | Release draft prepared; publication pending | [`0.3.5.md`](0.3.5.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
@@ -54,15 +55,15 @@ Draft family labels are mutable; their exact normative identity is the immutable
 
 ## Tool release policy
 
-- generate the final Tool release note from Git history with `git-cliff` and `cliff.toml` when a Tool release is intentionally prepared;
 - use `.github/workflows/release.yml` only for explicit release preparation, never on ordinary pushes;
 - require the requested version to match `pyproject.toml`;
 - run the Tool test/CLI smoke gate before creating a release draft;
 - allow a source/unreleased version document to exist before release so important migration history is not hidden in a monolithic changelog;
-- when release preparation begins, `git-cliff` may regenerate `releasenote/<version>.md` from the final Git history;
-- commit the final `releasenote/<version>.md` to `main` before the release tag is created;
-- use the same Markdown file as the GitHub Release body;
-- treat the version document as immutable once its `tool-v<version>` tag exists;
+- `git-cliff` may generate the first release-note draft from final Git history, but generated commit lists are a starting point rather than a substitute for explaining architectural or user-visible changes;
+- review and, when necessary, rewrite the generated draft before publication so newly introduced subsystems, compatibility boundaries, migration meaning, and verification evidence are described explicitly;
+- commit the final `releasenote/<version>.md` to `main` before the release tag is published;
+- use the same reviewed Markdown file as the GitHub Release body;
+- treat the version document as immutable once its `tool-v<version>` tag is published;
 - publish the prepared GitHub draft manually so the existing `tooling-release.yml` Trusted Publishing workflow can publish to PyPI.
 
 ## Specification note policy
