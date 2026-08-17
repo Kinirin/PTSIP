@@ -3,9 +3,9 @@ header = ""
 body = """
 # PTSIP Reference Tool {{ version | trim_start_matches(pat="tool-v") }} Release Notes
 
-{% for entry in commits | commit_groups(groups=commit_parsers_groups) %}
-## {{ entry.group | striptags | trim }}
-{% for commit in entry.commits %}
+{% for group, commits in commits | group_by(attribute="group") %}
+## {{ group | striptags | trim }}
+{% for commit in commits %}
 - {{ commit.message | trim | upper_first }}
 {% endfor %}
 {% endfor %}
