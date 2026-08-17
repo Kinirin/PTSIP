@@ -205,6 +205,200 @@ Automated checks should emit stable diagnostics that distinguish diagnostic inst
 
 Rerun evaluation after remediation against a stable snapshot.
 
+## Optional VPMS adoption — verification purpose management
+
+VPMS (`Verification Purpose Management System`) is optional. A Consumer Repository can adopt PTSIP without adopting VPMS, and PTSIP classification, conformance, adoption, authority, gate, and resolution behavior must remain usable when VPMS is absent or disabled.
+
+PTSIP and VPMS answer different questions:
+
+```text
+PTSIP
+    What is this component?
+
+VPMS
+    Why does this verification exist?
+```
+
+VPMS does not add another PTSIP Plane or architecture classification. The initial verification-purpose set is exactly:
+
+```text
+PRODUCT
+TOOLCHAIN
+```
+
+### Determine verification purpose before reuse or execution
+
+Choose the VPMS purpose from the responsibility whose correctness would be lost if the verification disappeared or failed. Useful questions are:
+
+```text
+Why was this verification created?
+What changed that requires this verification?
+If this verification disappears, whose correctness can no longer be established?
+Does failure indicate a Product behavior defect or a Toolchain/development-process defect?
+```
+
+A path such as `tests/product/`, a framework such as pytest, file extension, compilation boundary, or package inclusion may be evidence, but none is sufficient as the sole purpose authority.
+
+Compilation and package inclusion are therefore useful signals in some repositories, not universal Product-purpose rules.
+
+### Keep PTSIP classification and VPMS purpose separate
+
+Verification implementation ownership and verification purpose are different axes. A verifier may be development-time tooling and therefore PTSIP `TOOLCHAIN` while protecting Product correctness:
+
+```text
+verification implementation
+    PTSIP classification = TOOLCHAIN
+
+verification obligation
+    VPMS purpose = PRODUCT
+```
+
+Another PTSIP `TOOLCHAIN` verifier may have VPMS purpose `TOOLCHAIN` when it protects repository automation or development-tool correctness.
+
+Do not copy the verifier implementation's PTSIP classification into VPMS purpose merely because the names overlap.
+
+### Model the purpose-bound execution unit as a Verification Case
+
+VPMS uses a `Verification Case`, not a source test file, as the smallest purpose-bound execution unit. A case binds these separate identities:
+
+```text
+Purpose
+Target
+Formula
+Variables
+Policy
+Runner
+```
+
+Their responsibilities are:
+
+```text
+Formula   = purpose-neutral verification rule or invariant
+Variables = mutable verification inputs or case data
+Policy    = the intentionally governed expectation or contract
+Case      = purpose + target + formula + variables + policy + runner binding
+Runner    = how the selected case is executed
+```
+
+This separation matters even when all fields currently point to one test implementation.
+
+### Reuse Formula without collapsing purpose or Policy
+
+Formula is the default cross-purpose reuse boundary. A Formula may be shared by PRODUCT-purpose and TOOLCHAIN-purpose cases when the rule remains meaningful without knowing which purpose consumes it.
+
+Formula reuse does not merge Case purpose, Variables, Policy, target, or result identity. Cross-purpose Policy reuse is not assumed merely to remove duplication because Policy carries governed intent.
+
+A useful Formula test is:
+
+> Would this verification logic still make sense if all Product and Toolchain names were removed from the repository context?
+
+If not, the information probably belongs in Case configuration, Variables, Policy, or purpose-specific execution logic rather than the Formula.
+
+### Name semantics by responsibility, not by duplicated purpose or framework
+
+Do not encode the same purpose twice by using Policy names such as `product.*` or `toolchain.*` merely because the Case already declares `purpose`. Likewise, avoid putting a test framework name into Policy when the framework is only an execution mechanism.
+
+The PTSIP repository self-adoption demonstrates this separation with one purpose-neutral Formula:
+
+```text
+command.exit-zero
+```
+
+and responsibility-oriented Policy examples:
+
+```text
+distribution.contract-integrity
+distribution.package-integrity
+release.workflow-integrity
+ci.verification-boundary
+```
+
+Those identifiers are repository examples, not required VPMS global names. Their purpose is to show the separation of concerns:
+
+```text
+Purpose   -> why verification exists
+Formula   -> how success is evaluated
+Policy    -> what governed responsibility is protected
+Runner    -> how the verification implementation is invoked
+```
+
+A pytest node may therefore appear in Runner/Variables binding while Policy remains independent of pytest.
+
+### Adopt incrementally; do not reorganize tests merely to classify them
+
+A Consumer Repository does not need to move every existing test before VPMS adoption. Start by inventorying the correctness responsibility of existing verification and register representative Cases at the smallest level where purpose is unambiguous.
+
+One physical test module may legitimately contain both PRODUCT-purpose and TOOLCHAIN-purpose cases. In that situation classify the individual Cases rather than forcing the whole file into one purpose.
+
+A repository may optionally choose a structured layout such as:
+
+```text
+tests/
+├─ formula/
+├─ product/
+│  ├─ variables/
+│  ├─ policy/
+│  └─ cases/
+└─ toolchain/
+   ├─ variables/
+   ├─ policy/
+   └─ cases/
+```
+
+This is reference organization only. `tests/product`, `tests/toolchain`, or any other directory name is not VPMS purpose authority, and adopting VPMS does not require this layout.
+
+### Select verification by explicit purpose metadata
+
+Purpose-selective execution operates on validated `VerificationCase.purpose`, not test paths. The implemented selection scopes are:
+
+```text
+PRODUCT
+    -> PRODUCT-purpose Cases only
+
+TOOLCHAIN
+    -> TOOLCHAIN-purpose Cases only
+
+FULL
+    -> both purpose sets
+```
+
+`FULL` is an execution scope, not a third verification purpose.
+
+Sharing one Formula does not force PRODUCT and TOOLCHAIN cases to execute together. This allows a repository to run the verification relevant to a change while retaining an explicit full-verification path for broader regression or release work.
+
+### Keep Runner framework-neutral
+
+VPMS execution is not defined around pytest. The implemented runner contract accepts a Case executor and normalizes Case-level outcomes, while the initial generic command adapter executes an explicit argv command. pytest node commands are one repository integration of that generic boundary, not the VPMS execution model itself.
+
+This section intentionally does not define a VPMS CLI command surface. Command names must be documented only after a public/CLI surface is separately implemented and verified.
+
+### Preserve the PTSIP boundary
+
+When VPMS consumes PTSIP target metadata, the relationship is read-oriented and one-way:
+
+```text
+PTSIP stable target data
+        |
+        v
+       VPMS
+```
+
+Ordinary VPMS execution must not modify Project Profile classification or Decision Authority state. VPMS purpose also must not be interpreted as the PTSIP classification of the verifier implementation.
+
+Finally, VPMS execution results and PTSIP conformance outcomes remain separate claims:
+
+```text
+VPMS PRODUCT verification PASS
+    !=
+PTSIP CONFORMANT
+
+PTSIP CONFORMANT
+    !=
+Product functional verification PASS
+```
+
+Use VPMS to manage verification purpose and execution scope; use PTSIP to evaluate architecture ownership and conformance.
+
 ## Migration principle
 
 Optimize for **ownership correctness, durable architecture intent, distributed decision consistency, evidence integrity, artifact truth, and independent lifecycle evolution** rather than minimizing the number of files changed or maximizing automatic classification.

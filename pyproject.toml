@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PTSIP"
-version = "0.3.4"
+version = "0.3.5"
 description = "Reference development tooling for the Product-Toolchain SDK Isolation Policy"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -44,6 +44,7 @@ ptsip-app = "ptsip.app.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["ptsip*", "vpms*"]
 
 [tool.setuptools.package-data]
 ptsip = ["specdata/*.json", "specdata/*.yaml"]
@@ -55,4 +56,5 @@ github-app = [
 dev = [
   "build>=1.2,<2",
   "pytest>=8,<9",
+  "setuptools>=77",
 ]

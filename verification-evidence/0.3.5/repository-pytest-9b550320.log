@@ -1,0 +1,14 @@
+........................................................................ [ 32%]
+........................................................................ [ 64%]
+........................................................................ [ 96%]
+.........                                                                [100%]
+225 passed in 220.79s (0:03:40)
+Exception ignored in atexit callback <function cleanup_numbered_dir at 0x000001C6EBF0E610>:
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Roaming\Python\Python314\site-packages\_pytest\pathlib.py", line 374, in cleanup_numbered_dir
+    cleanup_dead_symlinks(root)
+  File "C:\Users\user\AppData\Roaming\Python\Python314\site-packages\_pytest\pathlib.py", line 360, in cleanup_dead_symlinks
+    left_dir.unlink()
+  File "C:\Program Files\Python314\Lib\pathlib\__init__.py", line 1042, in unlink
+    os.unlink(self)
+PermissionError: [WinError 5] 액세스가 거부되었습니다: 'C:\\Users\\Public\\Documents\\ESTsoft\\CreatorTemp\\pytest-of-user\\pytest-current'

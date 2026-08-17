@@ -4,22 +4,24 @@
 
 - Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
-- Current Tool/package source version: `0.3.4`
+- Current Tool/package source version: `0.3.5`
+- Tool `0.3.5` source identity: VPMS implementation, documentation, packaging, and public Python surface stabilized; repository self-profile hardening is now part of the 0.3.5 branch before merge/release
 - Previous active Specification baseline on `main`: `0.2.0-draft` revision `a877b2f66a7f94c1b844c979e1b08fb08a9a8e45`
 - `spec-v0.3.4-draft`: published GitHub Specification **design-release checkpoint**; tag remains unchanged
 - Final `0.3.4-draft` repository-identity-migration revision: `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
-- Tool `0.3.4` source binding: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Tool `0.3.5` Specification binding: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Repository identity migration: **COMPLETE**
-- Implementation: **COMPLETED**
+- Tool `0.3.5` implementation state: **SELF-PROFILE HARDENING IN PROGRESS; POST-HARDENING FINAL VERIFICATION PENDING**
 - Latest verified PyPI publication: `PTSIP==0.3.1`
 - Tool `0.3.4` publication: **not published**; no `tool-v0.3.4`, GitHub Tool Release, or PyPI `0.3.4`
+- Tool `0.3.5` publication: **not published**; source identity and earlier implementation verification do not imply release readiness after the self-profile extension
 - Supported Python metadata: Python 3.11–3.14
 - Routine hosted Tool CI: Python 3.14 to conserve GitHub Actions usage
 - Tool release namespace: `tool-v*`
 - Specification release/design namespace: `spec-v*`
 - License: Apache License 2.0
 
-The `0.3.4-draft` repository-identity-migration freeze is the canonical active draft snapshot. The Tool binding commit intentionally follows the freeze commit and points backward to it; a Git commit cannot contain a literal self-reference to its own SHA.
+The `0.3.4-draft` repository-identity-migration freeze remains the canonical active Specification snapshot. Tool `0.3.5` changes Tool behavior by introducing VPMS while intentionally retaining that Specification binding; a Tool-version change does not imply a Specification-version change.
 
 The existing `spec-v0.3.4-draft` tag is not moved to the later normative freeze revision. Immutable tag provenance and active mutable-draft snapshot identity are separate concepts.
 
@@ -119,15 +121,45 @@ That run remains valid evidence for the distributed-authority implementation, bu
 
 ### Repository-identity-migration verification
 
-Final local and hosted verification is pending for this release-readiness commit. Required checks are:
+Final local and hosted verification was not used as a Tool `0.3.4` publication boundary because Tool `0.3.4` was not published. Its behavior and immutable Specification binding are carried forward into Tool `0.3.5`.
 
-- complete pytest suite;
-- `PTSIP Tool 0.3.4` identity;
-- exact `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e` binding;
-- canonical/embedded machine-readable contract equality;
-- package build;
-- wheel/sdist `twine check`;
-- built-wheel reinstall and Tool/spec/CLI smoke checks.
+### Tool 0.3.5 pre-self-profile implementation-completion checkpoint
+
+GitHub Actions `tooling-test` run `31930110185` (job `95123510309`) verified the Tool `0.3.5` implementation on Python `3.14.7` before the repository self-profile hardening was added. The one-off verification branch contained the same product, test, and packaging blobs as the then-current `tool-0.3.5-vpms`; its only intentional extra surface was the temporary workflow trigger and final-gate smoke steps.
+
+Verified results at that checkpoint:
+
+- full repository pytest: `240 passed in 10.25s`;
+- source/editable identity: distribution metadata, `TOOL_VERSION`, and `ptsip.__version__` all `0.3.5`;
+- Specification identity remains `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`;
+- `ptsip --version` -> `PTSIP Tool 0.3.5`;
+- `ptsip spec` reports `tool_version: 0.3.5` while retaining the `0.3.4-draft` Specification identity;
+- `ptsip conform --help` passes before and after wheel installation;
+- `python -m build` produced `ptsip-0.3.5.tar.gz` and `ptsip-0.3.5-py3-none-any.whl`;
+- `python -m twine check dist/*` passed for both artifacts;
+- sdist and wheel contain all current `vpms`, `vpms.domain`, `vpms.execution`, `vpms.execution.adapters`, and `vpms.integration` Python files;
+- built wheel was force-reinstalled successfully;
+- installed-wheel smoke verified `vpms` imports from `site-packages`, PRODUCT/TOOLCHAIN purpose identities remain available, and Tool/Specification identity remains correct.
+
+This remains valid historical evidence for the code and distribution boundary it tested, but it is no longer the final verification of the latest branch HEAD because the 0.3.5 branch has been extended with repository self-profile hardening.
+
+### Tool 0.3.5 repository self-profile hardening
+
+Coding-agent evaluation at branch commit `c560f977e06e526389b68cdc8d48398046103455` found that the PTSIP repository itself had no root `ptsip.yaml`. As a result, repository inspection could discover candidates but PTSIP had no project-owned responsibility declaration for its own implementation, verification, release automation, and specification contracts.
+
+The 0.3.5 branch therefore continues without merge and now includes:
+
+- repository self-profile commit `eee53f609af4437d63554383d61addccccf89737`;
+- `ptsip.yaml` bound to `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`;
+- explicit PRODUCT ownership for `ptsip-core`, `vpms`, `ptsip-distribution`, and product documentation;
+- explicit NEUTRAL_CONTRACT ownership for embedded/canonical Specification contracts, governance contracts, and the repository architecture declaration;
+- explicit TOOLCHAIN ownership for repository verification, release automation, CI/documentation automation, and repository maintenance;
+- regression-test commit `78080449a2234600391b34169ad2f3ce9a021d4e` adding `tests/ptsip/test_repository_self_profile_035.py`;
+- VPMS self-adoption target IDs `ptsip-distribution` and `repository-release-automation` now resolve against actual PTSIP component metadata.
+
+Static exact-blob checks confirmed the committed `ptsip.yaml` blob and the locally reconstructed content both hash to `88dfceaca3815c745236434b9adfe30219a5b6ee`. Schema-semantic constraints and the five candidate selectors observed during the coding-agent evaluation were checked for unique declared coverage. The container cannot resolve `github.com`, so exact-checkout pytest/CLI verification remains pending on a local execution environment rather than being replaced by an unnecessary hosted Actions run.
+
+A post-self-profile final verification must supersede the earlier WU-18 checkpoint before branch merge or release preparation.
 
 ## Tool lineage and publication policy
 
@@ -135,6 +167,7 @@ Final local and hosted verification is pending for this release-readiness commit
 - Tool `0.3.1`: published as `tool-v0.3.1` / PyPI
 - Tool `0.3.2`: source-only migration
 - Tool `0.3.3`: permanently source-only; never tag, GitHub Release, or PyPI
-- Tool `0.3.4`: implementation completed; repository identity migration complete; publication pending
+- Tool `0.3.4`: implementation completed; repository identity migration complete; not published
+- Tool `0.3.5`: VPMS implementation and earlier WU-18 checkpoint completed; repository self-profile hardening is now in progress and requires a post-hardening final verification before merge/release preparation
 
-No Tool publication is implied by Specification activation or by successful CI.
+No Tool publication is implied by Specification activation, source-version stabilization, or a superseded verification checkpoint.

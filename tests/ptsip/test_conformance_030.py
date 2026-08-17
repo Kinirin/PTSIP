@@ -85,7 +85,7 @@ def test_conform_without_profile_is_incomplete(tmp_path: Path) -> None:
     result = evaluate_conformance(repo)
     assert result.outcome == "INCOMPLETE"
     assert result.report["format"] == "ptsip-conformance-report/v1"
-    assert result.report["tool"]["version"] == "0.3.4"
+    assert result.report["tool"]["version"] == "0.3.5"
     assert result.report["evaluators"]["declared_dependency_boundaries"]["status"] == "BLOCKED"
     gap_ids = {item["id"] for item in result.report["coverage"]["blocking_gaps"]}
     assert "profile:missing" in gap_ids
@@ -107,7 +107,7 @@ def test_product_to_toolchain_unknown_phase_is_blocking_diagnostic(tmp_path: Pat
     assert diagnostic["target_component"] == "tools"
 
     schema = json.loads(
-        (Path(__file__).resolve().parents[1] / "schemas" / "ptsip-diagnostic.schema.json").read_text(encoding="utf-8")
+        (Path(__file__).resolve().parents[2] / "schemas" / "ptsip-diagnostic.schema.json").read_text(encoding="utf-8")
     )
     Draft202012Validator(schema).validate(diagnostic)
 

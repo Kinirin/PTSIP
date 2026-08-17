@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 TOOL_NAME = "PTSIP Tool"
-TOOL_VERSION = "0.3.4"
+TOOL_VERSION = "0.3.5"
 SPEC_NAME = "Product–Toolchain SDK Isolation Policy"
 SPEC_ACRONYM = "PTSIP"
 SPEC_VERSION = "0.3.4-draft"

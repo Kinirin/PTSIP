@@ -9,7 +9,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def _json(path: str) -> dict[str, object]:

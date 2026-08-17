@@ -1,0 +1,45 @@
+{
+  "schema": "ptsip-verification-evidence/v1",
+  "kind": "repository-pytest-attestation",
+  "repository": "Kinirin/PTSIP",
+  "branch": "tool-0.3.5-vpms",
+  "tested_commit": "9b550320261b66bb2250ac1818ce5c199e3f4b0d",
+  "command": "python -m pytest -q tests",
+  "environment": {
+    "python": "3.14.6",
+    "pytest": "8.4.2",
+    "repository_src_preferred_on_pythonpath": true,
+    "pytest_plugin_autoload": true,
+    "bytecode_writes_disabled": true,
+    "pytest_cache_writes_disabled": true
+  },
+  "result": {
+    "passed": 225,
+    "failed": 0,
+    "skipped": 0,
+    "other_test_outcomes": 0,
+    "exit_code": 0,
+    "duration_seconds": 220.79
+  },
+  "working_tree": {
+    "before_test": "clean",
+    "after_test": "clean"
+  },
+  "diagnostics": [
+    {
+      "classification": "local-environment-test-infrastructure",
+      "fatal": false,
+      "summary": "WinError 5 occurred during pytest exit-time cleanup of the local pytest-current temporary-directory reparse point.",
+      "affected_test_outcome": false,
+      "affected_exit_code": false
+    }
+  ],
+  "evidence_scope": {
+    "repository_full_pytest_regression": true,
+    "wu_completion_claim": false,
+    "release_readiness_claim": false,
+    "build_verification": false,
+    "wheel_verification": false,
+    "installed_wheel_verification": false
+  }
+}
