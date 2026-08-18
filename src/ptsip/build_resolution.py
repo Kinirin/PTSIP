@@ -11,6 +11,12 @@ from .validation.components import ComponentPartition, partition_components
 
 
 _REQUIREMENT_NAME_RE = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)")
+_EXECUTABLE_LIFECYCLE_CLASSES = {
+    "PRODUCT",
+    "DEVELOPMENT_TOOLING",
+    "DELIVERY",
+    "OPERATIONS",
+}
 
 
 @dataclass(frozen=True)
@@ -216,10 +222,13 @@ def evaluate_independent_build_resolution(
     manifest_users: dict[str, list[tuple[str, str]]] = {}
 
     relevant_components = [
-        item for item in components if str(item.get("classification")) in {"PRODUCT", "TOOLCHAIN"}
+        item
+        for item in components
+        if str(item.get("classification")) in _EXECUTABLE_LIFECYCLE_CLASSES
+        and item.get("executable") is not False
     ]
     if not relevant_components:
-        return BuildResolutionResult("BLOCKED", "NO_PRODUCT_OR_TOOLCHAIN_COMPONENTS", (), (_gap("<profile>", "No PRODUCT or TOOLCHAIN components are available for build-resolution evaluation.", "no-components"),))
+        return BuildResolutionResult("RAN", None, (), ())
 
     for component in relevant_components:
         component_id = str(component.get("id", ""))
@@ -230,7 +239,10 @@ def evaluate_independent_build_resolution(
             gaps.append(
                 _gap(
                     component_id,
-                    "Component does not declare a dependency/build manifest, so its direct dependency set cannot be determined independently.",
+                    (
+                        f"Executable {classification} component does not declare a dependency/build manifest, "
+                        "so its direct dependency set cannot be determined independently by this evaluator."
+                    ),
                     "manifest-missing",
                 )
             )
@@ -281,15 +293,20 @@ def evaluate_independent_build_resolution(
             gaps.append(_gap(component_id, "No declared manifest produced a complete direct-dependency set.", "no-complete-manifest"))
 
     for path, users in sorted(manifest_users.items()):
-        planes = {classification for _, classification in users}
-        if len(planes) <= 1:
+        lifecycles = {classification for _, classification in users}
+        if len(lifecycles) <= 1:
             continue
         components_text = ", ".join(sorted(component_id for component_id, _ in users))
+        lifecycle_text = ", ".join(sorted(lifecycles))
         gaps.append(
             _gap(
                 components_text.replace(", ", "+"),
-                f"The same manifest {path!r} is declared by PRODUCT and TOOLCHAIN components ({components_text}); this evidence does not prove independently determinable direct dependency sets.",
-                f"shared-cross-plane-manifest:{path}",
+                (
+                    f"The same manifest {path!r} is declared by components across multiple primary lifecycles "
+                    f"({lifecycle_text}): {components_text}. This evidence does not by itself prove independently "
+                    "determinable direct dependency sets."
+                ),
+                f"shared-cross-lifecycle-manifest:{path}",
             )
         )
 
