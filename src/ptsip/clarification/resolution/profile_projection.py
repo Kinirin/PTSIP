@@ -9,12 +9,12 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from ...constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ...validation.profile import _root_overlap_errors, _schema, validate_profile
+from ...validation.profile import _schema, validate_profile
 from .model import DecisionAnswer
 
 DEFAULT_POLICIES: dict[str, str] = {
-    "product_to_toolchain_runtime_dependency": "deny",
-    "toolchain_in_product_package": "deny",
+    "product_to_nonproduct_runtime_dependency": "deny",
+    "nonproduct_in_product_package": "deny",
     "independent_build_resolution": "required",
 }
 
@@ -35,6 +35,7 @@ def _base_profile() -> dict[str, object]:
                 "revision": SPEC_REVISION,
             },
         },
+        "responsibility_map": {"mode": "explicit"},
         "components": [],
         "policies": dict(DEFAULT_POLICIES),
     }
@@ -61,17 +62,22 @@ def project_payload(
     if not isinstance(payload, dict):
         raise ValueError("PTSIP profile root must be a mapping")
 
-    if "boundaries" in payload and "components" not in payload:
+    if "boundaries" in payload:
         raise ValueError(
-            "Explicit adoption/resolution requires component declarations under PTSIP 0.3.4-draft so purpose, "
-            "shipped, runtime_required, lifecycle_owner, and executable facts are preserved losslessly; "
-            "migrate boundary-root shorthand to components before applying this decision"
+            "Canonical Tool 0.3.6 adoption requires Responsibility Map v2 component declarations. "
+            "Legacy boundary-root profiles must be handled by the Tool 0.3.5 migration path."
+        )
+
+    map_meta = payload.setdefault("responsibility_map", {"mode": "explicit"})
+    if not isinstance(map_meta, dict) or map_meta.get("mode") != "explicit":
+        raise ValueError(
+            "Direct local adoption currently projects only explicit Responsibility Maps; "
+            "template/hybrid projection requires the template materialization path."
         )
 
     components = payload.setdefault("components", [])
     if not isinstance(components, list):
         raise ValueError("components must be a list")
-    payload.pop("boundaries", None)
 
     component: dict[str, object] | None = None
     for item in components:
@@ -84,27 +90,26 @@ def project_payload(
     elif "include" not in component:
         component["include"] = [str(item) for item in include]
 
-    # Explicit adoption/resolution fills missing architecture facts but never
-    # silently reclassifies or rewrites a conflicting project declaration.
-    # The 0.3.4-draft profile stores the complete DecisionAnswer fact set
-    # losslessly. release_owner/compatibility_owner remain separate optional
-    # project metadata and are not aliases for canonical lifecycle_owner.
+    # Canonical 0.3.6 persists classification as the sole lifecycle-ownership
+    # authority. DecisionAnswer.lifecycle_owner is validated as a compatibility
+    # input but is deliberately not serialized into the new Project Profile.
     _set_missing_or_require_equal(component, "classification", answer.classification)
     _set_missing_or_require_equal(component, "purpose", answer.purpose)
     _set_missing_or_require_equal(component, "shipped", answer.shipped)
     _set_missing_or_require_equal(component, "runtime_required", answer.runtime_required)
-    _set_missing_or_require_equal(component, "lifecycle_owner", answer.lifecycle_owner)
     _set_missing_or_require_equal(component, "executable", answer.executable)
+    component.pop("lifecycle_owner", None)
     return payload
 
 
 def validate_projected_payload(payload: dict[str, object]) -> tuple[str, ...]:
-    errors = [
+    return tuple(
         f"{'.'.join(str(part) for part in item.absolute_path) or '<root>'}: {item.message}"
-        for item in sorted(Draft202012Validator(_schema()).iter_errors(payload), key=lambda value: list(value.absolute_path))
-    ]
-    errors.extend(_root_overlap_errors(payload))
-    return tuple(errors)
+        for item in sorted(
+            Draft202012Validator(_schema()).iter_errors(payload),
+            key=lambda value: list(value.absolute_path),
+        )
+    )
 
 
 def dump_payload(payload: dict[str, object]) -> str:
