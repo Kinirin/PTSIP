@@ -1,0 +1,100 @@
+# PTSIP Repository Working Memory
+
+This file is durable repository-operational context for maintainers and coding agents. It is **not** a normative Specification and must not replace `ptsip.yaml`, `spec/`, schemas, registry data, or ADRs.
+
+## Current published baseline
+
+- Canonical repository: `Kinirin/PTSIP`
+- Current published Tool: `0.3.5`
+- Current Tool tag: `tool-v0.3.5`
+- Tool `0.3.5` release commit: `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1`
+- Current bound Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Tool `0.3.5` is the first published Tool release containing VPMS.
+- Tool `0.3.5` intentionally retained the existing explicit repository Responsibility Map instead of introducing a generalized map schema.
+
+## Next Tool direction: 0.3.6
+
+Tool `0.3.6` is planned as a compatibility-focused Responsibility Map generalization release.
+
+Required behavior:
+
+1. keep current explicit Responsibility Maps valid;
+2. add optional supported Responsibility Map templates;
+3. allow repositories to choose a built-in template, keep a fully custom map, or use a template plus explicit overrides;
+4. provide preview-first, loss-preserving migration;
+5. support either template-backed output or a fully materialized explicit migrated map;
+6. never infer template choice or responsibility purpose from paths alone;
+7. make VPMS visible in the new normative Specification.
+
+The detailed plan is `planning/0.3.6.md`.
+
+## Specification release rule
+
+From Tool `0.3.6` onward, a Tool release is not allowed to reuse an older draft Specification family merely because the Tool code is otherwise ready.
+
+Release preparation must require:
+
+```text
+Tool X.Y.Z
+    ->
+Specification X.Y.Z-draft
+    ->
+immutable SPEC_REVISION
+```
+
+The root `ptsip.yaml`, Tool constants, canonical Specification files, and `releasenote/spec-<family>.md` must agree. Release automation must fail closed when this contract is incomplete.
+
+## PTSIP / VPMS boundary
+
+PTSIP answers:
+
+```text
+What is this component?
+```
+
+VPMS answers:
+
+```text
+Why does this verification exist?
+```
+
+VPMS verification purposes are currently `PRODUCT` and `TOOLCHAIN`.
+
+The PTSIP classification of verifier implementation code and the VPMS purpose of a Verification Case are separate axes. PTSIP core must not depend on VPMS. VPMS PASS is not PTSIP CONFORMANT.
+
+## Coding-agent read order
+
+Before repository changes, read:
+
+1. `AGENTS.md`
+2. this `MEMORY.md`
+3. `ptsip.yaml`
+4. `src/ptsip/constants.py`
+5. the bound Specification under `spec/`
+6. the active version plan under `planning/`
+
+Re-read the remote branch HEAD immediately before writes. Do not rely on a previously observed SHA when another maintainer may have committed.
+
+## Workflow resource policy
+
+GitHub-hosted Actions usage is constrained.
+
+Full repository verification is to use only `.github/workflows/tooling-test.yml` after it is converted to manual self-hosted operation for Tool `0.3.6` work.
+
+Expected runner name:
+
+```text
+DESKTOP-5HCCQIR
+```
+
+Operational rule:
+
+**Before dispatching the self-hosted workflow, tell the user that the runner will be used and wait for explicit confirmation that the host and PowerShell environment are ready.**
+
+Do not automatically dispatch the self-hosted test workflow from push, pull request, tag, release, or schedule events.
+
+Release preparation and PyPI Trusted Publishing may remain on GitHub-hosted runners because they are lightweight release-boundary operations. Once the self-hosted gate is active, they must rely on successful self-hosted verification for the exact source SHA instead of repeating the full test suite.
+
+## Release-note discipline
+
+Generated `git-cliff` output is a starting draft, not the final architectural explanation. New subsystems, policy changes, migrations, compatibility boundaries, and verification evidence must be reviewed and explained in human-written release notes before publication.
