@@ -36,6 +36,8 @@ The first `0.3.6-draft` normative baseline containing both updated Specification
 
 This revision is the WU-00 baseline snapshot. The development Tool/runtime/profile/schema is not yet fully activated to that family merely because the normative baseline exists. Later work units must update schema, implementation, embedded specdata, Tool constants, repository self-adoption, and final release binding consistently.
 
+WU-01 lifecycle boundary determination is now frozen in the active `0.3.6-draft` Specification and `decisions/ADR-0007-primary-lifecycle-boundary-determination.md`. The next sequential ontology-dependent work unit is WU-02 (role + typed relationships + associated artifacts).
+
 ## Tool 0.3.6 lifecycle model
 
 Tool `0.3.6` defines PTSIP `classification` as **primary lifecycle ownership**.
@@ -59,6 +61,35 @@ Interpretation:
 - `NEUTRAL_CONTRACT` — deliberately non-executable, non-owning, lifecycle-independent contract responsibility.
 
 Artifact kind does not decide classification. Tests may be `PRODUCT` or `DEVELOPMENT_TOOLING` depending on ownership. Technology names such as FastAPI, Cloudflare Workers, GitHub Actions, Docker, Terraform, Python, PowerShell, Markdown, or YAML are evidence context rather than architecture authority.
+
+## WU-01 boundary determination rules
+
+Lifecycle classification is determined from the **governing lifecycle obligation**: why the responsibility must exist/change/remain compatible/execute/retire.
+
+The required reasoning order is:
+
+```text
+project-owned scope
+    -> coherent responsibility boundary
+    -> evidence + provenance
+    -> NEUTRAL_CONTRACT qualification test
+    -> governing owning lifecycle
+    -> mixed-lifecycle split test
+    -> one classification / split / unresolved
+    -> project-owner confirmation for inferred migration
+```
+
+Important frozen boundaries:
+
+- Product-specific tests may be `PRODUCT`; reusable test SDK/framework/harness infrastructure may be `DEVELOPMENT_TOOLING`. The test target or VPMS purpose does not directly decide PTSIP ownership.
+- Development/local/intermediate build support is normally `DEVELOPMENT_TOOLING`; authoritative release-unit assembly/signing/packaging for handoff is normally `DELIVERY`.
+- `DELIVERY` ends at the semantic **delivery handoff** where the selected release reaches/is accepted by its destination and ordinary operation begins.
+- ongoing deployed-state health/recovery/reconciliation/maintenance responsibility after handoff is `OPERATIONS`.
+- `NEUTRAL_CONTRACT` requires all three semantics: non-executable architectural role, non-owning responsibility, and lifecycle-independent governance.
+- a mixed component must not be classified by majority of files/jobs/steps or confidence score. If independently governable lifecycle responsibilities are separable, propose a split; if not safely resolvable, remain unresolved.
+- subordinate activities from another phase do not force a split when they exist only to complete one coherent lifecycle obligation and introduce no independent lifecycle governance.
+
+Normative rule IDs are `PTSIP-CLS-004` through `PTSIP-CLS-011`.
 
 ## Tool 0.3.5 compatibility boundary
 
@@ -134,11 +165,11 @@ Follow `planning/0.3.6.md`.
 Current sequence begins:
 
 ```text
-WU-00  0.3.6-draft normative baseline
+WU-00  0.3.6-draft normative baseline        COMPLETE
     ->
-WU-01  lifecycle ontology/boundary rules
+WU-01  lifecycle ontology/boundary rules      COMPLETE
     ->
-WU-02  role + typed relationships + associated artifacts
+WU-02  role + typed relationships + associated artifacts   NEXT
     ->
 WU-03  canonical Responsibility Map v2 schema
 ```
@@ -220,7 +251,7 @@ Operational rules:
 - For release-candidate verification, `tooling-test.yml` also requires the exact full `source_sha`.
 - A successful release-candidate run records `self-hosted/release-verification` for the exact checked-out SHA.
 - `release.yml` requires the same SHA, requires it still to be `origin/main`, and creates the draft release without committing or pushing anything.
-- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure that runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
+- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure the runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
 
 ### Minimal GitHub-hosted exception
 
