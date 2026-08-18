@@ -4,43 +4,34 @@ These instructions apply to coding agents working anywhere in this repository.
 
 ## Required context before work
 
-Read these files before planning or modifying code:
+Read, in order:
 
 1. `MEMORY.md`
 2. `ptsip.yaml`
 3. `src/ptsip/constants.py`
 4. applicable Specification files under `spec/`
 5. `planning/0.3.6.md`
-6. the sub-document for the currently ACTIVE sub-stage, if one exists
+6. only the currently ACTIVE sub-stage document under `planning/0.3.6/`
 
-For Responsibility Map work also read:
-
-- `spec/PTSIP-RESPONSIBILITY-MAP.md`;
-- `decisions/ADR-0007-primary-lifecycle-boundary-determination.md`;
-- `decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md`;
-- `decisions/ADR-0009-responsibility-map-declaration-authority.md` when template/materialization authority is relevant.
-
-`MEMORY.md`, `AGENTS.md`, and planning documents are operational guidance. Normative claims come from the applicable Specification revision and project-owned machine-readable contracts.
-
-The published Tool remains `0.3.5` until an explicit release boundary. Development on `tool-0.3.6-lifecycle-ownership` uses Tool `0.3.6` and the bound `0.3.6-draft` Specification snapshot recorded in constants/root profile.
+`MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
 ## Repository-state discipline
 
 - Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
 - Preserve maintainer commits and never force-update `main`.
-- Do not claim a test, build, release, tag, workflow, or publication succeeded unless evidence for the exact relevant SHA was observed.
-- Do not create/finalize the Tool release note early; finalize `releasenote/X.Y.Z.md` at the explicit release boundary before exact release-candidate SHA verification.
-- Published tags/version documents are immutable historical evidence.
+- Do not claim tests, builds, releases, tags, or publication succeeded without evidence for the exact relevant SHA.
+- Do not create future WU-04 sub-stage documents before their entry gate is reached.
+- Do not finalize the Tool release note before the explicit release boundary.
 
-## PTSIP lifecycle reasoning
+## Tool 0.3.6 lifecycle reasoning
 
-Tool `0.3.6` classification answers:
+PTSIP classification answers:
 
 ```text
-Which lifecycle primarily owns this coherent project responsibility?
+Who primarily owns this project responsibility across its lifecycle?
 ```
 
-Canonical classifications are exactly:
+Canonical Tool `0.3.6` classifications are exactly:
 
 ```text
 PRODUCT
@@ -50,38 +41,40 @@ OPERATIONS
 NEUTRAL_CONTRACT
 ```
 
-Rules:
+`TOOLCHAIN` is historical Tool `0.3.5` migration input only and MUST NOT be emitted or preserved as a canonical Tool `0.3.6` alias.
 
-- classification is primary lifecycle ownership, not file type, path, framework, language, workflow provider, executable status, compilation behavior, activity verb, or test status;
-- Product-owned tests may be `PRODUCT`;
-- reusable verification/test-SDK infrastructure may be `DEVELOPMENT_TOOLING`;
-- release/publication/deployment-to-destination responsibility may be `DELIVERY`;
-- post-handoff production health/recovery/maintenance may be `OPERATIONS`;
-- `NEUTRAL_CONTRACT` requires non-executable, non-owning, lifecycle-independent contract semantics;
-- mixed independently governable lifecycle responsibilities require split/redesign or unresolved clarification rather than majority classification;
-- technology names are evidence context, not classification authority.
+Classification is determined from governing lifecycle obligation, not file type, path, framework, language, executable status, workflow provider, compilation behavior, test status, majority of files/jobs/steps, runtime duration, or confidence score.
 
-`TOOLCHAIN` is canonical Tool `0.3.5` input vocabulary only. Tool `0.3.6` may understand it through the legacy migration path but must not emit it as a canonical classification or alias.
+Important boundaries:
 
-## Classification, roles, relationships, artifacts, and VPMS
+- Product-owned tests may be `PRODUCT`.
+- Reusable verification/test SDK/framework/harness infrastructure may be `DEVELOPMENT_TOOLING`.
+- Development/intermediate build support is normally `DEVELOPMENT_TOOLING`.
+- Authoritative release-unit assembly/signing/packaging/publication/deployment-to-destination is normally `DELIVERY`.
+- `DELIVERY` ends at delivery handoff; ongoing health/recovery/reconciliation/maintenance is `OPERATIONS`.
+- `NEUTRAL_CONTRACT` requires non-executable, non-owning, lifecycle-independent contract responsibility.
+- Material mixed-lifecycle responsibilities should split when independently governable; do not choose a majority lifecycle.
+- Material unresolved ownership fails closed.
 
-Keep these axes separate:
+## Responsibility Map axes
+
+Keep these distinct:
 
 ```text
 classification
     = primary lifecycle ownership
 
 roles
-    = coarse responsibility characteristics within a lifecycle
+    = coarse responsibility characteristics
 
 relationships
-    = project-owned typed directed semantic edges
+    = project-owned typed directed semantics
 
-associated artifact
-    = non-component support surface subordinate to one classified anchor
+source_mode / derived origin
+    = declaration authority provenance
 
 VPMS Verification Purpose
-    = what a Verification Case protects/verifies
+    = what verification protects/verifies
 ```
 
 Canonical roles:
@@ -95,15 +88,9 @@ DOCUMENTATION
 GOVERNANCE
 ```
 
-Do not manufacture composite role tokens. Multiple applicable characteristics are multiple role values.
+Roles are optional, multi-valued, non-classifying, and must not be replaced by composite tokens.
 
-Canonical Responsibility Map relationship direction is always:
-
-```text
-source --TYPE--> target
-```
-
-Canonical relationship types:
+Canonical project-declared relationship types:
 
 ```text
 IMPORTS
@@ -123,24 +110,31 @@ SPECIFIES
 GOVERNS
 ```
 
-Do not invent generic escape-hatch relations such as `PRODUCES`, `SUPPORTS`, `USES`, or `DEPENDS_ON` where canonical semantics apply.
+Direction is always `source --TYPE--> target`.
 
-Evidence `TESTS` may support a project-owned `VERIFIES` proposal but must not silently become that declaration. Typed relationships do not grant permission or waive dependency/conformance rules.
+Observed evidence, project-declared relationship, and dependency policy remain separate. Evidence `TESTS` may support `VERIFIES` but must not silently create a project declaration.
 
-Associated artifacts:
+## Associated artifacts
 
-- have stable ID, selectors, purpose, and exactly one anchor component;
-- have no classification or component roles;
-- do not inherit anchor classification;
-- must be non-executable in their architectural role and lack independently governable lifecycle/release/compatibility responsibility;
-- require at least one typed relationship connecting them to the anchor;
-- share one endpoint namespace with components;
-- must be promoted/re-evaluated as components when independent responsibility emerges;
-- must be evaluated for `NEUTRAL_CONTRACT` when independently governed non-executable/non-owning lifecycle-independent contract semantics emerge.
+An associated artifact is a project-owned non-component support surface subordinate to exactly one classified anchor component.
 
-## Responsibility Map declaration authority
+Rules:
 
-Tool `0.3.6` source modes are:
+- stable map identity;
+- explicit selectors and purpose;
+- exactly one anchor component;
+- no classification or component roles of its own;
+- no anchor-classification inheritance;
+- non-executable architectural role;
+- no independently governable lifecycle/release/compatibility responsibility;
+- at least one typed relationship connecting it to its anchor;
+- component IDs and associated-artifact IDs share one map-wide endpoint namespace.
+
+Promote/re-evaluate as a component when independent lifecycle responsibility emerges. Independently governed non-executable/non-owning lifecycle-independent contract semantics require `NEUTRAL_CONTRACT` evaluation.
+
+## Declaration authority and materialization
+
+Responsibility Map source modes are:
 
 ```text
 explicit
@@ -148,9 +142,7 @@ template
 hybrid
 ```
 
-`source_mode` is **declaration-source/authority provenance**, not lifecycle ownership.
-
-The responsibility boundaries frozen by ADR-0009 and `PTSIP-RMAP-013` through `PTSIP-RMAP-016` are:
+ADR-0009 and `PTSIP-RMAP-013` through `PTSIP-RMAP-016` freeze the authority boundary:
 
 ```text
 classification
@@ -166,12 +158,12 @@ materializer
 Authority rules:
 
 - `explicit`: project owns the complete declaration;
-- `template`: project owns explicit adoption of exact template `id + immutable revision`; selected revision supplies adopted declaration content;
-- `hybrid`: project owns exact selection plus stable-ID replacements, extensions, and removals; unchanged template entities retain template origin;
-- project replacement/extension/removal outranks selected template declaration;
-- Tool `0.3.6` hybrid replacement is whole-entity by stable ID, not implicit field-level inheritance.
+- `template`: project explicitly adopts exact template `id + immutable revision`; that revision supplies adopted declaration content;
+- `hybrid`: project owns exact template selection plus stable-ID whole-entity replacement, extension, and removal decisions;
+- project replacement/extension/removal outranks selected immutable template declaration;
+- template selection MUST NOT be inferred from repository evidence, language, framework, manifest, package manager, path, or confidence.
 
-Derived runtime/review origin vocabulary may include:
+Derived runtime/review origin vocabulary:
 
 ```text
 PROJECT_EXPLICIT
@@ -181,50 +173,19 @@ PROJECT_EXTENSION
 PROJECT_REMOVAL
 ```
 
-This provenance is not lifecycle classification and need not be persisted in canonical `ptsip.yaml`.
+This provenance is not lifecycle classification and is not required canonical profile serialization.
 
-The materializer MUST NOT auto-select templates, infer missing architecture, change classification, fabricate responsibilities, silently repair/delete dangling relations, cascade project removals, resolve conflicts by confidence/path heuristics, or mutate source declarations merely to produce a valid map.
+The materializer MUST NOT infer architecture, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve semantic conflicts by heuristics, or mutate source declarations merely to obtain a valid map.
 
-All three modes resolve to one Canonical Effective Responsibility Map for downstream consumers while retaining source declaration and template identity separately.
+## Active WU-04 stage
 
-## VPMS boundary
-
-PTSIP and VPMS remain independent.
-
-Current VPMS Verification Purpose vocabulary remains:
-
-```text
-PRODUCT
-TOOLCHAIN
-```
-
-VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. Do not rename it merely because PTSIP lifecycle ontology changed.
-
-PTSIP core must not acquire a VPMS dependency. VPMS may consume stable PTSIP metadata through a narrow read-only boundary after PTSIP resolves the effective map. VPMS must not implement template-selection/materialization authority itself.
-
-VPMS PASS does not imply PTSIP CONFORMANT and PTSIP CONFORMANT does not imply VPMS PASS.
-
-## Tool 0.3.6 staged development sequencing
-
-Follow `planning/0.3.6.md` exactly.
-
-Current release work-unit state:
-
-```text
-WU-00  normative 0.3.6 baseline                         COMPLETE
-WU-01  lifecycle boundary rules                         COMPLETE
-WU-02  roles/relationships/associated artifacts         COMPLETE
-WU-03  canonical Responsibility Map v2 activation       COMPLETE
-WU-04  template/materialization/effective-map pipeline  IN PROGRESS
-```
-
-Current WU-04 sub-stage state:
+Current ordered state:
 
 ```text
 WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            NEXT / NOT ENTERED
+WU-04D  ResolvedProfile + digest + provenance            ACTIVE
 WU-04E  validation consumes effective map                LOCKED
 WU-04F  conformance consumes effective map               LOCKED
 WU-04G  clarification/adoption read integration          LOCKED
@@ -232,79 +193,100 @@ WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-### Sub-document entry rule
-
-Future WU-04 sub-documents MUST NOT be created in advance.
-
-To enter the next stage:
+Active stage document:
 
 ```text
-complete current stage gate
-    -> fresh-read branch HEAD
-    -> verify predecessor remains complete
-    -> create only the next stage sub-document
-    -> record exact entry baseline
-    -> mark that stage ACTIVE
-    -> perform only that stage scope
+planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
 ```
 
-At present **WU-04D has not been entered and no WU-04D sub-document should exist**. Do not implement `ResolvedProfile`, digest/provenance integration, validation consumption, conformance consumption, clarification integration, or VPMS integration out of sequence.
-
-WU-04C's completed record is:
+WU-04D entry baseline:
 
 ```text
-planning/0.3.6/WU-04C-declaration-authority-effective-map.md
+d8713ac4e684852f3e6cf67a68165f82ae0b80aa
 ```
+
+WU-04D scope is limited to:
+
+- source-preserving `ResolvedProfile`;
+- deterministic Canonical Effective Responsibility Map digest;
+- derived entity/removal provenance;
+- focused materialization tests.
+
+Do **not** migrate validation, conformance, clarification/adoption, or VPMS consumers to the resolved view during WU-04D. Those remain WU-04E through WU-04H.
+
+Future sub-stage documents are created only after predecessor completion and a fresh branch-HEAD read. WU-04E and later sub-documents must not be created early.
 
 ## Migration boundary
 
-Tool `0.3.5` compatibility means understand and migrate, not retain obsolete ontology in the canonical schema.
+Tool `0.3.5` compatibility means understand and migrate, not retain obsolete ontology in canonical Tool `0.3.6` state.
 
-Migration must be preview-first, evidence-backed, and loss-preserving. Candidate discovery/migration analysis may propose lifecycle mappings, component splits, roles, relationships, associated artifacts, and templates but are not project architecture authority.
+Migration is preview-first, evidence-backed, loss-preserving, and project-owner-confirmed. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` mapping is prohibited.
 
-Never silently replace a project-owned map. If the target representation cannot preserve confirmed facts losslessly, report and stop.
+Legacy `lifecycle_owner`, `consumers`, `analysis_inputs`, old boundary roots, and untyped dependency-policy entries are migration evidence, not automatic canonical relationships or ownership facts.
 
-Legacy `consumers`, `analysis_inputs`, `lifecycle_owner`, old boundaries, and untyped dependency-policy entries are migration evidence; do not blindly translate them into canonical relationships/ownership.
+If confirmed architecture cannot be represented losslessly, stop and report the conflict.
 
-## Mandatory Specification release contract
+## PTSIP / VPMS boundary
+
+PTSIP lifecycle classification and VPMS Verification Purpose are independent.
+
+Current VPMS Verification Purpose remains:
+
+```text
+PRODUCT
+TOOLCHAIN
+```
+
+VPMS `TOOLCHAIN` is VPMS vocabulary, not Tool `0.3.6` PTSIP classification. Do not rename VPMS vocabulary as an accidental ontology migration.
+
+PTSIP core MUST NOT depend on VPMS. VPMS may consume a narrow read-only effective PTSIP view only after WU-04H is entered. VPMS PASS does not imply PTSIP CONFORMANT and vice versa.
+
+## Specification binding
 
 For Tool `X.Y.Z`:
 
 ```text
-SPEC_VERSION = X.Y.Z-draft
+Tool X.Y.Z
+    -> Specification X.Y.Z-draft
+    -> immutable SPEC_REVISION
 ```
 
-Release preparation requires an immutable `SPEC_REVISION`, matching root `ptsip.yaml` binding, required canonical Specification files at that revision, and `releasenote/spec-X.Y.Z-draft.md`.
+Current Tool `0.3.6` development binding:
 
-Do not bypass or weaken `.github/scripts/verify_release_contract.py` to make a release pass. Fix missing/inconsistent Specification work.
+```text
+SPEC_VERSION  = 0.3.6-draft
+SPEC_REVISION = 82abd09360df09a95fbbfb516855fa9ffb49f050
+```
 
-The current Tool `0.3.6` development binding is recorded in `src/ptsip/constants.py` and root `ptsip.yaml`. Move `SPEC_REVISION` only when normative Specification assets change, not for ordinary implementation/test commits.
+WU-04D implements semantics already permitted/frozen by WU-04C. Do not move `SPEC_REVISION` merely because implementation/tests change. If a genuinely new normative rule is required, freeze the Specification first and then choose a new immutable snapshot.
 
-### Exact merge-to-release sequence
+Do not weaken `.github/scripts/verify_release_contract.py` to make a release pass.
+
+## Exact release gate
+
+At Tool release boundary:
 
 ```text
 merged main + reviewed releasenote/X.Y.Z.md
     -> exact immutable main SHA
-    -> Tool/Specification/binding contract
+    -> Tool / Specification / SPEC_REVISION contract
     -> tooling-test.yml
          host_ready=true
          release_candidate=true
          source_sha=<exact SHA>
-    -> self-hosted/release-verification on same SHA
-    -> release.yml
-         host_ready=true
-         source_sha=<same exact SHA>
-    -> draft release targets same SHA without mutating main
+    -> self-hosted/release-verification on exact SHA
+    -> release.yml with same SHA
+    -> draft release without main mutation
     -> publish reviewed draft
-    -> tooling-release.yml self-hosted distribution build
+    -> tooling-release.yml self-hosted build
     -> minimal GitHub-hosted GNU/Linux PyPI Trusted Publishing only
 ```
 
-`release.yml` must fail if the candidate is no longer current `origin/main` HEAD. No repository mutation is inserted between exact-SHA verification and draft-release creation.
+No repository mutation may occur between successful exact-SHA release verification and draft release creation.
 
-## Self-hosted verification and Actions cost boundary
+## Self-hosted workflow policy
 
-Approved runner:
+Approved Windows self-hosted runner:
 
 ```text
 DESKTOP-5HCCQIR
@@ -312,15 +294,10 @@ DESKTOP-5HCCQIR
 
 Before dispatching `tooling-test.yml` or `release.yml`:
 
-1. tell the user this self-hosted runner will be used;
-2. wait for explicit confirmation host and PowerShell environment are ready;
+1. tell the user `DESKTOP-5HCCQIR` will be used;
+2. wait for explicit confirmation that the host and PowerShell environment are ready;
 3. only then dispatch with `host_ready=true`.
 
-Do not automatically dispatch self-hosted verification merely because a test is convenient.
+Do not automatically dispatch self-hosted workflows merely because a test would be useful.
 
-- `tooling-test.yml`: manual self-hosted full verification/exact-SHA candidate status.
-- `release.yml`: manual self-hosted release preparation.
-- `tooling-release.yml` build: self-hosted Windows distribution build/verification.
-- GitHub-hosted exception: minimal GNU/Linux PyPI Trusted Publishing that only downloads already verified distributions and publishes them.
-
-Do not add GitHub-hosted push/PR/schedule full-suite matrices or move tests, compilation, packaging, release preparation, or other avoidable compute into the publish exception without explicit maintainer approval.
+`tooling-release.yml` build/distribution verification also runs on the approved Windows runner. The narrow GNU/Linux PyPI Trusted Publishing job is the only current GitHub-hosted compute exception; do not move tests, compilation, package building, or release preparation into it.
