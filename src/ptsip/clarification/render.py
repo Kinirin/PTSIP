@@ -24,11 +24,11 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
     reply_lines = [
         "format: ptsip-clarification-answer/v1",
         "decision:",
-        "  classification: PRODUCT|TOOLCHAIN|NEUTRAL_CONTRACT",
+        "  classification: PRODUCT|DEVELOPMENT_TOOLING|DELIVERY|OPERATIONS|NEUTRAL_CONTRACT",
         '  purpose: "<short description>"',
         "  shipped: YES|NO",
         "  runtime_required: YES|NO",
-        "  lifecycle_owner: PRODUCT|DEVELOPMENT_TOOLING|INDEPENDENT",
+        "  lifecycle_owner: PRODUCT|DEVELOPMENT_TOOLING|DELIVERY|OPERATIONS|INDEPENDENT",
         "  executable: YES|NO",
     ]
     revision = repository_revision or "UNKNOWN"
@@ -56,6 +56,8 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
 ```yaml
 {chr(10).join(reply_lines)}
 ```
+
+`lifecycle_owner` is a transitional decision compatibility field in Tool `0.3.6`; canonical Project Profile ownership is written only as `classification` after the answer is validated.
 
 A coding agent may also resolve this decision in an active user chat. The first valid resolution wins; after the decision is resolved, late Issue replies are ignored.
 
