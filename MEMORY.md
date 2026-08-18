@@ -8,25 +8,142 @@ This file is durable repository-operational context for maintainers and coding a
 - Current published Tool: `0.3.5`
 - Current Tool tag: `tool-v0.3.5`
 - Tool `0.3.5` release commit: `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1`
-- Current bound Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Published Tool `0.3.5` bound Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Tool `0.3.5` is the first published Tool release containing VPMS.
-- Tool `0.3.5` intentionally retained the existing explicit repository Responsibility Map instead of introducing a generalized map schema.
+- Tool `0.3.5` uses canonical PTSIP classifications `PRODUCT | TOOLCHAIN | NEUTRAL_CONTRACT`.
 
-## Next Tool direction: 0.3.6
+Do not rewrite the historical meaning of the published `0.3.5` release. Tool `0.3.6` migration support must understand it as legacy input.
 
-Tool `0.3.6` is planned as a compatibility-focused Responsibility Map generalization release.
+## Active Tool 0.3.6 development
 
-Required behavior:
+Development branch:
 
-1. keep current explicit Responsibility Maps valid;
-2. add optional supported Responsibility Map templates;
-3. allow repositories to choose a built-in template, keep a fully custom map, or use a template plus explicit overrides;
-4. provide preview-first, loss-preserving migration;
-5. support either template-backed output or a fully materialized explicit migrated map;
-6. never infer template choice or responsibility purpose from paths alone;
-7. make VPMS visible in the new normative Specification.
+```text
+tool-0.3.6-lifecycle-ownership
+```
 
-The detailed plan is `planning/0.3.6.md`.
+Active plan:
+
+```text
+planning/0.3.6.md
+```
+
+The first `0.3.6-draft` normative baseline containing both updated Specification body and terminology exists at immutable revision:
+
+```text
+654e41d49600fc091f9a6cb6b1c60bbc7da4e301
+```
+
+This revision is the WU-00 baseline snapshot. The development Tool/runtime/profile/schema is not yet fully activated to that family merely because the normative baseline exists. Later work units must update schema, implementation, embedded specdata, Tool constants, repository self-adoption, and final release binding consistently.
+
+## Tool 0.3.6 lifecycle model
+
+Tool `0.3.6` defines PTSIP `classification` as **primary lifecycle ownership**.
+
+Canonical classifications:
+
+```text
+PRODUCT
+DEVELOPMENT_TOOLING
+DELIVERY
+OPERATIONS
+NEUTRAL_CONTRACT
+```
+
+Interpretation:
+
+- `PRODUCT` — Product runtime, user-facing behavior, Product distribution content, runtime SDK responsibility, and Product-owned quality/verification responsibility.
+- `DEVELOPMENT_TOOLING` — reusable development support, verification infrastructure/test SDKs, generators, migration tooling, lint/static analysis, developer CLI/build/repository tooling.
+- `DELIVERY` — release, package/container publication, signing, promotion, distribution, and deployment-to-destination responsibility.
+- `OPERATIONS` — post-deployment production health, ongoing infrastructure state, backup/recovery, incident/maintenance and operational automation.
+- `NEUTRAL_CONTRACT` — deliberately non-executable, non-owning, lifecycle-independent contract responsibility.
+
+Artifact kind does not decide classification. Tests may be `PRODUCT` or `DEVELOPMENT_TOOLING` depending on ownership. Technology names such as FastAPI, Cloudflare Workers, GitHub Actions, Docker, Terraform, Python, PowerShell, Markdown, or YAML are evidence context rather than architecture authority.
+
+## Tool 0.3.5 compatibility boundary
+
+Tool `0.3.6` must understand valid Tool `0.3.5` profiles through a legacy reader and assisted migration path.
+
+Compatibility means:
+
+```text
+understand old profile
+    -> collect evidence
+    -> propose lifecycle/role/relationship/boundary migration
+    -> project owner confirms
+    -> write canonical 0.3.6 map safely
+```
+
+Compatibility does **not** mean retaining `TOOLCHAIN` as a canonical alias in the new schema.
+
+A legacy `TOOLCHAIN` component must not be blindly renamed to `DEVELOPMENT_TOOLING`. It may map to `PRODUCT`, `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, a component split, or unresolved clarification depending on evidence and project-owner confirmation.
+
+Legacy `PRODUCT` and `NEUTRAL_CONTRACT` may often carry forward, but discovery may still expose split/reclassification proposals when old coarse boundaries hid different lifecycle responsibilities.
+
+## Responsibility Map v2 direction
+
+Tool `0.3.6` Responsibility Map v2 separates these axes:
+
+```text
+classification
+    = primary lifecycle ownership
+
+role
+    = responsibility performed inside that lifecycle
+
+relationship
+    = typed semantic relationship to another responsibility/artifact
+
+VPMS Verification Purpose
+    = what a Verification Case protects/verifies
+```
+
+Supported conceptual Responsibility Map modes:
+
+```text
+explicit
+template
+hybrid (template + repository overrides)
+```
+
+Template selection remains explicit. Candidate discovery, migration analysis, confidence, role inference, typed-relationship inference, and component-split detection are evidence/proposals, not project architecture authority.
+
+Responsibility Map v2 must also represent project-owned associated documentation/authority/support artifacts without requiring them to become independent components merely to express `DOCUMENTS`/`SPECIFIES`/`GOVERNS`-type semantics. Associated artifacts must not become a classification escape hatch.
+
+The exact canonical role/relationship vocabulary and schema representation are WU-02/WU-03 work and are not frozen solely by examples in planning documents.
+
+## VPMS boundary
+
+PTSIP answers lifecycle ownership. VPMS answers verification purpose.
+
+Tool `0.3.5` VPMS verification purposes currently use:
+
+```text
+PRODUCT
+TOOLCHAIN
+```
+
+That `TOOLCHAIN` token is VPMS vocabulary, not a Tool `0.3.6` PTSIP lifecycle classification. Do not rename VPMS purpose vocabulary merely as an accidental side effect of PTSIP ontology migration.
+
+PTSIP core must not depend on VPMS. VPMS may consume stable PTSIP metadata through a narrow read-only boundary. VPMS PASS is not PTSIP CONFORMANT, and PTSIP CONFORMANT is not functional verification PASS.
+
+## Tool 0.3.6 work-unit order
+
+Follow `planning/0.3.6.md`.
+
+Current sequence begins:
+
+```text
+WU-00  0.3.6-draft normative baseline
+    ->
+WU-01  lifecycle ontology/boundary rules
+    ->
+WU-02  role + typed relationships + associated artifacts
+    ->
+WU-03  canonical Responsibility Map v2 schema
+```
+
+Evidence/candidate-discovery work then feeds the legacy-reader and migration analyzer. Do not implement final migration writes before the target ontology/schema is stable enough to preserve project intent losslessly.
 
 ## Specification release rule
 
@@ -42,7 +159,9 @@ Specification X.Y.Z-draft
 immutable SPEC_REVISION
 ```
 
-The root `ptsip.yaml`, Tool constants, canonical Specification files, and `releasenote/spec-<family>.md` must agree. `.github/scripts/verify_release_contract.py` is the fail-closed release gate used by release preparation and the PyPI build boundary.
+The root `ptsip.yaml`, Tool constants, canonical Specification files, embedded specdata, and release-contract evidence must agree at the release boundary.
+
+`.github/scripts/verify_release_contract.py` is the fail-closed release gate used by release preparation and the PyPI build boundary. Do not weaken it to accommodate incomplete Specification work.
 
 ### Exact merge-to-release Specification gate
 
@@ -71,24 +190,6 @@ A missing or inconsistent Specification is a blocking release defect. Do not def
 
 The exact-SHA invariant is deliberate: no release-note commit, generated file, or other repository mutation may be inserted between successful release-candidate verification and creation of the draft release.
 
-## PTSIP / VPMS boundary
-
-PTSIP answers:
-
-```text
-What is this component?
-```
-
-VPMS answers:
-
-```text
-Why does this verification exist?
-```
-
-VPMS verification purposes are currently `PRODUCT` and `TOOLCHAIN`.
-
-The PTSIP classification of verifier implementation code and the VPMS purpose of a Verification Case are separate axes. PTSIP core must not depend on VPMS. VPMS PASS is not PTSIP CONFORMANT.
-
 ## Coding-agent read order
 
 Before repository changes, read:
@@ -97,8 +198,8 @@ Before repository changes, read:
 2. this `MEMORY.md`
 3. `ptsip.yaml`
 4. `src/ptsip/constants.py`
-5. the bound Specification under `spec/`
-6. the active version plan under `planning/`
+5. applicable Specification under `spec/`
+6. active version plan under `planning/`
 
 Re-read the remote branch HEAD immediately before writes. Do not rely on a previously observed SHA when another maintainer may have committed.
 
@@ -119,11 +220,11 @@ Operational rules:
 - For release-candidate verification, `tooling-test.yml` also requires the exact full `source_sha`.
 - A successful release-candidate run records `self-hosted/release-verification` for the exact checked-out SHA.
 - `release.yml` requires the same SHA, requires it still to be `origin/main`, and creates the draft release without committing or pushing anything.
-- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure the runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
+- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure that runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
 
 ### Minimal GitHub-hosted exception
 
-The `tooling-release.yml` PyPI `publish` job remains on GitHub-hosted GNU/Linux only because `pypa/gh-action-pypi-publish` is a Docker-based action and therefore cannot execute on the approved Windows self-hosted runner.
+The `tooling-release.yml` PyPI `publish` job remains on GitHub-hosted GNU/Linux only because `pypa/gh-action-pypi-publish` is Docker-based and therefore cannot execute on the approved Windows self-hosted runner.
 
 That job may only:
 
