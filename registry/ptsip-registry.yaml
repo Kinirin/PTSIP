@@ -1,23 +1,73 @@
 ptsip_registry:
   specification:
-    name: "Product–Toolchain SDK Isolation Policy"
+    name: "Primary Lifecycle Ownership and Responsibility Isolation Policy"
     acronym: "PTSIP"
-    version: "0.3.4-draft"
+    version: "0.3.6-draft"
     status: "draft"
     revision_policy: "draft-family-plus-immutable-revision"
     canonical_source: "https://github.com/Kinirin/PTSIP"
 
   classifications:
     - id: PRODUCT
-      meaning: "Product-owned SDK, executable, library, component, or Product Artifact."
-    - id: TOOLCHAIN
-      meaning: "Development-toolchain-owned SDK, executable, library, or component."
+      meaning: "Responsibility primarily owned by the Product lifecycle, including Product runtime, distribution content, compatibility, and Product-owned verification."
+    - id: DEVELOPMENT_TOOLING
+      meaning: "Responsibility primarily owned by the development lifecycle for authoring, inspection, validation, transformation, migration, generation, analysis, or reusable development support."
+    - id: DELIVERY
+      meaning: "Responsibility primarily owned by release, publication, promotion, distribution, or deployment-to-destination lifecycle work."
+    - id: OPERATIONS
+      meaning: "Responsibility primarily owned by post-delivery operation, health, recovery, maintenance, reconciliation, and production-state management."
     - id: NEUTRAL_CONTRACT
-      meaning: "Non-owning declarative contract artifact without hidden executable lifecycle ownership."
+      meaning: "Deliberately non-executable, non-owning contract responsibility with lifecycle governance independent from Product, Development Tooling, Delivery, and Operations."
+
+  responsibility_roles:
+    - id: IMPLEMENTATION
+      meaning: "Component directly realizes its declared responsibility through implementation logic."
+    - id: VERIFICATION
+      meaning: "Component checks, tests, audits, validates, or establishes correctness/conformance/acceptance."
+    - id: AUTOMATION
+      meaning: "Component automates or orchestrates repeatable lifecycle work."
+    - id: CONFIGURATION
+      meaning: "Component responsibility is independently governable configuration or state declaration."
+    - id: DOCUMENTATION
+      meaning: "Component responsibility is independently governable descriptive or explanatory documentation."
+    - id: GOVERNANCE
+      meaning: "Component responsibility is independently governable project authority, policy, architecture governance, or lifecycle decision control."
+
+  responsibility_relationship_types:
+    - id: IMPORTS
+      meaning: "Source imports target implementation, module, or package semantics."
+    - id: LINKS
+      meaning: "Source links target as build/link implementation dependency."
+    - id: LOADS
+      meaning: "Source dynamically loads target implementation or artifact."
+    - id: INVOKES
+      meaning: "Source executes or triggers target responsibility or process."
+    - id: READS
+      meaning: "Source consumes target as data, configuration, contract, or other non-executable input."
+    - id: GENERATES
+      meaning: "Source derives generated source, data, metadata, configuration, or artifact from or for target."
+    - id: BUILDS
+      meaning: "Source materializes or assembles a build output or build unit for target."
+    - id: PACKAGES
+      meaning: "Source includes or assembles target content into a package or distribution boundary."
+    - id: PUBLISHES
+      meaning: "Source publishes or distributes a release target associated with target responsibility."
+    - id: DEPLOYS
+      meaning: "Source places or activates a release target associated with target at a destination environment."
+    - id: VERIFIES
+      meaning: "Source establishes correctness, conformance, acceptance, compatibility, or policy satisfaction of target."
+    - id: MANAGES
+      meaning: "Source performs ongoing post-delivery-handoff operational management of target or deployed state."
+    - id: DOCUMENTS
+      meaning: "Source provides descriptive or explanatory information about target."
+    - id: SPECIFIES
+      meaning: "Source defines normative technical semantics, required contract meaning, or authoritative interface/behavior expectations for target."
+    - id: GOVERNS
+      meaning: "Source carries project authority, lifecycle policy, decision control, or governance rules over target."
 
   decision_statuses:
     - id: RESOLVED
-      meaning: "Ownership decision is resolved to one PTSIP classification."
+      meaning: "Ownership decision is resolved to one canonical PTSIP classification."
     - id: UNKNOWN
       meaning: "Evidence is insufficient to resolve ownership."
     - id: CONFLICT
@@ -38,14 +88,6 @@ ptsip_registry:
       meaning: "Sufficient evidence establishes at least one applicable MUST/MUST NOT violation."
     - id: INCOMPLETE
       meaning: "Blocking evidence, ownership, adapter, artifact, snapshot, or declaration-consistency gaps prevent a conformant conclusion and no definite violation has already settled the result."
-
-  lifecycle_owners:
-    - id: PRODUCT
-      meaning: "Versioning, compatibility, release, deprecation, and consumer-impact responsibility belongs to the Product lifecycle."
-    - id: DEVELOPMENT_TOOLING
-      meaning: "Lifecycle responsibility belongs to development tooling and is independently governable from Product runtime/release obligations."
-    - id: INDEPENDENT
-      meaning: "Lifecycle responsibility is intentionally independent of both Product and Toolchain executable ownership."
 
   evidence_provenance:
     - id: DECLARED
@@ -93,23 +135,35 @@ ptsip_registry:
     - id: TEST
       meaning: "Required to execute tests or test-only validation."
     - id: RELEASE
-      meaning: "Required for versioning, packaging, publishing, deployment, or release orchestration."
+      meaning: "Required for release preparation, packaging, publishing, promotion, distribution, or deployment."
     - id: INSPECTION
       meaning: "Used to inspect, analyze, validate, audit, or migrate another component."
 
   project_profile_facts:
     - id: classification
-      meaning: "Resolved PTSIP architecture classification."
+      meaning: "Canonical primary lifecycle ownership: PRODUCT, DEVELOPMENT_TOOLING, DELIVERY, OPERATIONS, or NEUTRAL_CONTRACT."
+    - id: roles
+      meaning: "Optional closed set of coarse responsibility characteristics inside the component lifecycle."
     - id: purpose
       meaning: "Explicit project-owner statement of why the component exists."
     - id: shipped
       meaning: "Whether the component is included in Product distribution scope."
     - id: runtime_required
-      meaning: "Whether Product runtime operation requires the component."
-    - id: lifecycle_owner
-      meaning: "Canonical lifecycle ownership: PRODUCT, DEVELOPMENT_TOOLING, or INDEPENDENT."
+      meaning: "Whether Product runtime operation requires this component as implementation."
     - id: executable
-      meaning: "Whether the component is executable implementation rather than a non-executable contract."
+      meaning: "Whether the component is executable implementation rather than a non-executable contract/support surface."
+    - id: associated_artifacts
+      meaning: "Project-owned non-component support surfaces subordinate to exactly one classified anchor component."
+    - id: relationships
+      meaning: "Project-owned typed directed semantic edges between declared Responsibility Map endpoints."
+
+  responsibility_map_modes:
+    - id: explicit
+      meaning: "Repository directly declares the complete canonical Responsibility Map."
+    - id: template
+      meaning: "Repository explicitly selects one versioned/revision-bound supported template."
+    - id: hybrid
+      meaning: "Repository explicitly selects a template and supplies ID-addressed project-owned overrides/extensions/removals."
 
   concepts:
     - id: CONSUMER_REPOSITORY
@@ -119,13 +173,23 @@ ptsip_registry:
     - id: SPECIFICATION_BINDING
       meaning: "Association between a project PTSIP declaration and canonical specification family/version plus immutable revision when required."
     - id: PTSIP_COMPONENT
-      meaning: "Architectural unit to which PTSIP ownership is assigned."
+      meaning: "Coherent architectural unit to which one canonical primary lifecycle classification applies."
+    - id: ASSOCIATED_ARTIFACT
+      meaning: "Project-owned non-component support surface subordinate to exactly one classified anchor component and lacking independent lifecycle ownership."
+    - id: RESPONSIBILITY_RELATIONSHIP
+      meaning: "Project-owned typed directed semantic edge between declared component/associated-artifact endpoints."
+    - id: GOVERNING_LIFECYCLE_OBLIGATION
+      meaning: "Lifecycle-specific reason a coherent responsibility must exist, change, remain compatible, execute, or be retired."
+    - id: DELIVERY_HANDOFF
+      meaning: "Semantic boundary where a selected release target reaches/is accepted by its destination and ongoing operational responsibility begins."
+    - id: MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY
+      meaning: "Boundary defect where one classification would hide independently governable lifecycle responsibility and therefore requires split/redesign or unresolved clarification."
     - id: EVIDENCE_SNAPSHOT
       meaning: "Observed repository state to which automated PTSIP evidence is bound."
     - id: PRODUCT_ARTIFACT
-      meaning: "Product-owned deployable/distributable/installable/loadable output whose producer may be Toolchain-owned."
+      meaning: "Product-owned deployable/distributable/installable/loadable output whose producer may belong to another lifecycle."
     - id: ARTIFACT_PRODUCER
-      meaning: "Component/process that generates, packages, assembles, or publishes an artifact."
+      meaning: "Component/process that generates, builds, packages, assembles, publishes, or deploys an artifact."
     - id: BLOCKING_EVIDENCE_GAP
       meaning: "Evidence gap capable of hiding whether an applicable mandatory PTSIP rule is satisfied."
     - id: PROFILE_VALIDATION
@@ -164,124 +228,73 @@ ptsip_registry:
   principles:
     - id: PTSIP-CORE-001
       name: "Purpose Before Reuse"
+    - id: PTSIP-CORE-002
+      name: "Classification, role, relationship, and verification purpose are distinct axes"
 
   rules:
-    - id: PTSIP-CLS-001
-      title: "Mandatory classification"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-CLS-002
-      title: "Coherent component boundary"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-DEP-001
-      title: "Product-to-Toolchain runtime dependency prohibition"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-DEP-002
-      title: "Toolchain inspection is permitted"
-      severity: info
-      applies_to: consumer_repository
-    - id: PTSIP-DEP-003
-      title: "Cross-boundary executable sharing denied by default"
-      severity: warning
-      applies_to: consumer_repository
-    - id: PTSIP-PKG-001
-      title: "Packaging isolation"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-ART-001
-      title: "Artifact ownership and derivation evidence"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-BLD-001
-      title: "Independently resolvable build environments"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-BLD-002
-      title: "Independent buildability"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-LCY-001
-      title: "Lifecycle independence"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-LCY-002
-      title: "Compatibility ownership"
-      severity: warning
-      applies_to: consumer_repository
-    - id: PTSIP-CMN-001
-      title: "No unclassified common package"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-CNT-001
-      title: "Contract-first cross-boundary reuse"
-      severity: warning
-      applies_to: consumer_repository
-    - id: PTSIP-INT-001
-      title: "Consumer Repository Non-Intrusion"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-SPC-001
-      title: "Specification Binding"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-EVD-001
-      title: "Evidence snapshot integrity"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-EVD-002
-      title: "Declaration and observation are distinct"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-EVD-003
-      title: "Applicable evidence coverage"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-EVD-004
-      title: "Evidence provenance and dependency semantics"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-DIA-001
-      title: "Stable diagnostic identity"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-POL-001
-      title: "Project-specific policy may strengthen but not weaken PTSIP"
-      severity: error
-      applies_to: consumer_repository
-    - id: PTSIP-ADP-001
-      title: "Explicit project adoption preserves architecture intent losslessly"
-      severity: error
-      applies_to: implementation
-    - id: PTSIP-AUT-001
-      title: "Decision Authority and Project Profile responsibilities are distinct"
-      severity: error
-      applies_to: distributed_coordination_implementation
-    - id: PTSIP-AUT-002
-      title: "Stable distributed decision identity"
-      severity: error
-      applies_to: distributed_coordination_implementation
-    - id: PTSIP-AUT-003
-      title: "First valid resolution wins through ordered conditional mutation"
-      severity: error
-      applies_to: distributed_coordination_implementation
-    - id: PTSIP-AUT-004
-      title: "Authority freshness at architecture-sensitive boundaries"
-      severity: error
-      applies_to: distributed_coordination_implementation
-    - id: PTSIP-AUT-005
-      title: "Safe authority/profile reconciliation"
-      severity: error
-      applies_to: distributed_coordination_implementation
-    - id: PTSIP-AUT-006
-      title: "Fail-closed distributed coordination"
-      severity: error
-      applies_to: distributed_coordination_implementation
-    - id: PTSIP-AUT-007
-      title: "Global decision state is distinct from local projection state"
-      severity: error
-      applies_to: distributed_coordination_implementation
+    - {id: PTSIP-CLS-001, title: "Mandatory classification", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-002, title: "Coherent component boundary", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-003, title: "Artifact kind is not classification authority", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-004, title: "Governing lifecycle obligation", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-005, title: "Ordered lifecycle determination procedure", severity: info, applies_to: implementation}
+    - {id: PTSIP-CLS-006, title: "Product versus Development Tooling boundary", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-007, title: "Development build versus Delivery build boundary", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-008, title: "Delivery versus Operations handoff boundary", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-009, title: "Neutral Contract qualification", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-010, title: "Material mixed-lifecycle responsibility and split rule", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CLS-011, title: "Ambiguity and fail-closed classification proposals", severity: error, applies_to: implementation}
+    - {id: PTSIP-DEP-001, title: "Product runtime isolation from non-Product implementation", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-DEP-002, title: "Bounded lifecycle inspection and transformation are permitted", severity: info, applies_to: consumer_repository}
+    - {id: PTSIP-DEP-003, title: "Cross-lifecycle executable sharing denied by default", severity: warning, applies_to: consumer_repository}
+    - {id: PTSIP-PKG-001, title: "Product packaging isolation", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-ART-001, title: "Artifact ownership and derivation evidence", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-BLD-001, title: "Independently resolvable lifecycle environments", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-BLD-002, title: "Product buildability", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-LCY-001, title: "Lifecycle independence", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-LCY-002, title: "Compatibility ownership", severity: warning, applies_to: consumer_repository}
+    - {id: PTSIP-CMN-001, title: "No unclassified common package", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-CNT-001, title: "Contract-first cross-lifecycle reuse", severity: warning, applies_to: consumer_repository}
+    - {id: PTSIP-POL-001, title: "Project policy may strengthen but not weaken PTSIP", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-001, title: "Project-owned responsibility declaration", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-002, title: "Role and typed relationship preservation", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-003, title: "Associated artifacts", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-004, title: "Roles are optional, multi-valued, and non-classifying", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-005, title: "Canonical role vocabulary", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-006, title: "Directed typed relationship semantics", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-007, title: "Canonical project-declared relationship vocabulary", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-008, title: "Project declaration, evidence, and policy are separate", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-009, title: "Associated artifact eligibility", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-010, title: "Anchor and identity semantics", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-011, title: "Promotion and reclassification boundary", severity: error, applies_to: consumer_repository}
+    - {id: PTSIP-RMAP-012, title: "Legacy fields are evidence, not automatic typed-edge mappings", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-001, title: "Legacy profile readability without legacy ontology preservation", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-002, title: "Evidence-driven migration proposals", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-003, title: "Project-owner confirmation", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-INT-001, title: "Consumer Repository Non-Intrusion", severity: error, applies_to: implementation}
+    - {id: PTSIP-SPC-001, title: "Specification Binding", severity: error, applies_to: implementation}
+    - {id: PTSIP-EVD-001, title: "Evidence snapshot integrity", severity: error, applies_to: implementation}
+    - {id: PTSIP-EVD-002, title: "Declaration and observation are distinct", severity: error, applies_to: implementation}
+    - {id: PTSIP-EVD-003, title: "Applicable evidence coverage", severity: error, applies_to: implementation}
+    - {id: PTSIP-EVD-004, title: "Evidence provenance and relationship semantics", severity: error, applies_to: implementation}
+    - {id: PTSIP-EVD-005, title: "Candidate discovery is evidence acquisition", severity: error, applies_to: implementation}
+    - {id: PTSIP-DIA-001, title: "Stable diagnostic identity", severity: error, applies_to: implementation}
+    - {id: PTSIP-ADP-001, title: "Explicit project adoption preserves architecture intent losslessly", severity: error, applies_to: implementation}
+    - {id: PTSIP-AUT-001, title: "Decision Authority and Project Profile responsibilities are distinct", severity: error, applies_to: distributed_coordination_implementation}
+    - {id: PTSIP-AUT-002, title: "Stable distributed decision identity", severity: error, applies_to: distributed_coordination_implementation}
+    - {id: PTSIP-AUT-003, title: "First valid resolution wins through ordered conditional mutation", severity: error, applies_to: distributed_coordination_implementation}
+    - {id: PTSIP-AUT-004, title: "Authority freshness at architecture-sensitive boundaries", severity: error, applies_to: distributed_coordination_implementation}
+    - {id: PTSIP-AUT-005, title: "Safe authority/profile reconciliation", severity: error, applies_to: distributed_coordination_implementation}
+    - {id: PTSIP-AUT-006, title: "Fail-closed distributed coordination", severity: error, applies_to: distributed_coordination_implementation}
+    - {id: PTSIP-AUT-007, title: "Global decision state is distinct from local projection state", severity: error, applies_to: distributed_coordination_implementation}
+
+  retired_classifications:
+    - id: TOOLCHAIN
+      last_canonical_tool: "0.3.5"
+      meaning: "Legacy Tool 0.3.5 classification understood only as migration input; it is not a canonical Tool 0.3.6 classification alias."
+
+  retired_profile_facts:
+    - id: lifecycle_owner
+      reason: "Canonical Tool 0.3.6 primary lifecycle ownership is expressed by classification itself; legacy readers may preserve this field only as migration evidence."
 
   retired_rules:
     - id: PTSIP-EXC-001
