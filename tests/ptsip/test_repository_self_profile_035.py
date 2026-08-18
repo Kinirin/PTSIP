@@ -11,7 +11,7 @@ from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PROFILE_PATH = REPO_ROOT / "ptsip.yaml"
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _profile() -> dict[str, object]:
@@ -31,16 +31,25 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None
     partition = result.details["component_partition"]
     assert isinstance(partition, dict)
     assert partition["conflict_count"] == 0
-    assert partition["unassigned_count"] == 0
     assert partition["unmatched_selectors"] == []
+
+    artifact_partition = result.details["associated_artifact_partition"]
+    assert isinstance(artifact_partition, dict)
+    assert artifact_partition["conflict_count"] == 0
+    assert artifact_partition["unmatched_selectors"] == []
+
+    map_coverage = result.details["responsibility_map_coverage"]
+    assert isinstance(map_coverage, dict)
+    assert map_coverage["unassigned_count"] == 0
 
     payload = _profile()
     ptsip = payload["ptsip"]
     assert isinstance(ptsip, dict)
     specification = ptsip["specification"]
     assert isinstance(specification, dict)
-    assert ptsip["version"] == "0.3.4-draft"
+    assert ptsip["version"] == "0.3.6-draft"
     assert specification["revision"] == SPEC_REVISION
+    assert payload["responsibility_map"] == {"mode": "explicit"}
 
 
 def test_repository_self_profile_resolves_all_discovered_candidates() -> None:
@@ -64,12 +73,22 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert classifications["ptsip-core"] == "PRODUCT"
     assert classifications["vpms"] == "PRODUCT"
     assert classifications["ptsip-distribution"] == "PRODUCT"
+    assert classifications["ptsip-package-assembly"] == "DELIVERY"
     assert classifications["ptsip-embedded-contracts"] == "NEUTRAL_CONTRACT"
     assert classifications["ptsip-canonical-contracts"] == "NEUTRAL_CONTRACT"
-    assert classifications["repository-architecture"] == "NEUTRAL_CONTRACT"
-    assert classifications["repository-verification"] == "TOOLCHAIN"
-    assert classifications["repository-release-automation"] == "TOOLCHAIN"
-    assert classifications["repository-ci"] == "TOOLCHAIN"
+    assert classifications["repository-architecture"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-verification"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-release-automation"] == "DELIVERY"
+    assert classifications["repository-ci"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-maintenance"] == "DEVELOPMENT_TOOLING"
+
+    payload = _profile()
+    artifacts = {
+        item["id"]: item
+        for item in payload.get("associated_artifacts", [])
+        if isinstance(item, dict) and item.get("id")
+    }
+    assert artifacts["ptsip-governance-support"]["anchor"] == "ptsip-canonical-contracts"
 
 
 def test_vpms_self_adoption_targets_resolve_against_repository_self_profile() -> None:
@@ -81,4 +100,4 @@ def test_vpms_self_adoption_targets_resolve_against_repository_self_profile() ->
     assert distribution is not None
     assert distribution.classification == "PRODUCT"
     assert release_automation is not None
-    assert release_automation.classification == "TOOLCHAIN"
+    assert release_automation.classification == "DELIVERY"
