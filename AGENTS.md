@@ -9,10 +9,12 @@ Read these files before planning or modifying code:
 1. `MEMORY.md`
 2. `ptsip.yaml`
 3. `src/ptsip/constants.py`
-4. the Specification files under `spec/` for the bound `SPEC_VERSION` / `SPEC_REVISION`
+4. the Specification files under `spec/` for the active development/bound Specification family
 5. the active Tool plan under `planning/`
 
-`MEMORY.md` is repository-operational context only. Normative claims come from the bound Specification and project-owned machine-readable contracts.
+`MEMORY.md` is repository-operational context only. Normative claims come from the applicable Specification revision and project-owned machine-readable contracts.
+
+During Tool `0.3.6` development, the active development branch is expected to follow `planning/0.3.6.md` and the `0.3.6-draft` Specification baseline established on that branch. The published Tool remains `0.3.5` until an explicit release boundary is reached.
 
 ## Repository-state discipline
 
@@ -22,25 +24,75 @@ Read these files before planning or modifying code:
 - Do not create a Tool release note early; finalize and commit it at the explicit release boundary before the exact release-candidate SHA is verified.
 - Once a Tool tag is published, treat the tagged version document as immutable historical evidence.
 
-## PTSIP and VPMS reasoning
+## PTSIP lifecycle reasoning
 
-PTSIP asks:
+For Tool `0.3.6`, PTSIP classification answers:
 
 ```text
-What is this component?
+Who primarily owns this project responsibility across its lifecycle?
 ```
 
-VPMS asks:
+Canonical Tool `0.3.6` lifecycle classifications are:
 
 ```text
-Why does this verification exist?
+PRODUCT
+DEVELOPMENT_TOOLING
+DELIVERY
+OPERATIONS
+NEUTRAL_CONTRACT
 ```
 
 Rules:
 
-- never infer PTSIP classification or VPMS verification purpose solely from path, filename, framework, language, or package location;
-- keep PTSIP component classification and VPMS Verification Purpose as separate axes;
-- current VPMS purposes are `PRODUCT` and `TOOLCHAIN`;
+- classification is primary lifecycle ownership, not file type, framework, language, directory, executable status, compilation behavior, workflow provider, or test status;
+- `tests/**` must never be automatically mapped to one lifecycle classification solely because it is a test path;
+- Product-owned tests may be `PRODUCT`;
+- reusable verification/test SDK infrastructure may be `DEVELOPMENT_TOOLING`;
+- release/publication/deployment responsibility may be `DELIVERY`;
+- post-deployment maintenance/health/recovery responsibility may be `OPERATIONS`;
+- `NEUTRAL_CONTRACT` remains non-executable, non-owning, and lifecycle-independent;
+- technology names such as FastAPI, Cloudflare Workers, GitHub Actions, Docker, Terraform, Python, PowerShell, Markdown, or YAML are evidence context, not classification authority;
+- if one legacy component contains materially different lifecycle responsibilities, propose a component split instead of forcing one classification.
+
+`TOOLCHAIN` is a canonical Tool `0.3.5` classification only. Tool `0.3.6` may read it as legacy migration input but must not emit or preserve it as a canonical new-schema alias.
+
+## Classification, role, relationship, and VPMS
+
+Keep these axes separate:
+
+```text
+classification
+    = primary lifecycle ownership
+
+role
+    = responsibility performed inside that lifecycle
+
+relationship
+    = typed semantic relationship to another responsibility/artifact
+
+VPMS Verification Purpose
+    = what a Verification Case protects/verifies
+```
+
+Do not create a new lifecycle classification merely to encode an internal role.
+
+Responsibility Map v2 must be able to preserve typed relationships and project-owned associated documentation/authority/support artifacts without using associated artifacts as a classification escape hatch.
+
+## PTSIP and VPMS boundary
+
+PTSIP and VPMS remain independent subsystems.
+
+VPMS asks:
+
+```text
+Why does this verification exist / what does it protect?
+```
+
+Rules:
+
+- PTSIP lifecycle classification and VPMS Verification Purpose are separate axes;
+- Tool `0.3.5` VPMS purposes currently use `PRODUCT` and `TOOLCHAIN`; that VPMS token is not a Tool `0.3.6` PTSIP lifecycle classification;
+- do not rename VPMS purpose vocabulary merely as an accidental side effect of PTSIP lifecycle migration;
 - preserve Verification Case identity and Purpose when reusing Formula logic;
 - do not merge Product and Toolchain Policy merely because Formula implementation is shared;
 - PTSIP core must not acquire a VPMS runtime dependency;
@@ -48,7 +100,7 @@ Rules:
 
 ## Tool 0.3.6 Responsibility Map direction
 
-Tool `0.3.6` must preserve current explicit Responsibility Maps and add optional generalization.
+Tool `0.3.6` introduces Responsibility Map v2 around the five primary lifecycle classifications.
 
 Supported conceptual modes are:
 
@@ -58,11 +110,23 @@ template
 hybrid (template + repository overrides)
 ```
 
-A migration must be preview-first and loss-preserving. Never silently replace a project-owned map. If a selected template cannot represent existing facts losslessly, report the conflict and stop.
+The Tool must understand valid Tool `0.3.5` profiles as legacy migration inputs. Compatibility means **understand and migrate**, not **keep obsolete ontology in the canonical new schema**.
 
-Repository-owned explicit declarations outrank template defaults. Template selection must be explicit; never guess a template from repository layout.
+Migration must be preview-first and loss-preserving. Candidate discovery and migration analysis may collect evidence and propose lifecycle mappings, component splits, roles, typed relationships, and associated artifacts, but they are not architecture authority.
 
-See `planning/0.3.6.md` for the current implementation plan.
+Never silently replace a project-owned map. If the target representation cannot preserve confirmed architecture facts losslessly, report the conflict and stop.
+
+Repository-owned explicit declarations outrank template defaults. Template selection must be explicit; never guess a template from repository layout, framework, language, package manager, or discovery confidence.
+
+See `planning/0.3.6.md` for sequencing and completion gates.
+
+## Tool 0.3.6 development sequencing
+
+Follow the work-unit dependency order in `planning/0.3.6.md`.
+
+The `0.3.6-draft` normative baseline must exist before implementation semantics are frozen. Ontology/boundary rules precede role/relationship schema work; schema work precedes templates; evidence/discovery precedes legacy migration automation.
+
+Do not skip directly to migration code while lifecycle boundaries, relationship semantics, or the canonical target schema are unresolved.
 
 ## Mandatory Specification work for releases
 
@@ -77,6 +141,8 @@ SPEC_VERSION = X.Y.Z-draft
 and requires an immutable `SPEC_REVISION`, matching root `ptsip.yaml` binding, canonical Specification files at that revision, and `releasenote/spec-X.Y.Z-draft.md`.
 
 Do not bypass or weaken `.github/scripts/verify_release_contract.py` to make a release pass. Fix the missing or inconsistent Specification work instead.
+
+During development, do not prematurely rewrite the published Tool `0.3.5` binding merely to make the development branch look released. Tool/version/profile activation must occur in the planned implementation sequence and be internally consistent.
 
 ### Exact merge-to-release gate sequence
 
