@@ -12,7 +12,7 @@ from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
 
 
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -38,32 +38,56 @@ def _repo(tmp_path: Path) -> Path:
     return repo
 
 
+def _facts(classification: str) -> tuple[str, str, str, str, str]:
+    if classification == "PRODUCT":
+        return (
+            "Product runtime component",
+            "yes",
+            "yes",
+            "PRODUCT",
+            "yes",
+        )
+    if classification == "NEUTRAL_CONTRACT":
+        return (
+            "Shared declarative contract",
+            "no",
+            "no",
+            "INDEPENDENT",
+            "no",
+        )
+    if classification == "DELIVERY":
+        return (
+            "Release delivery automation",
+            "no",
+            "no",
+            "DELIVERY",
+            "yes",
+        )
+    if classification == "OPERATIONS":
+        return (
+            "Production maintenance automation",
+            "no",
+            "no",
+            "OPERATIONS",
+            "yes",
+        )
+    return (
+        "Repository-local generation tooling",
+        "no",
+        "no",
+        "DEVELOPMENT_TOOLING",
+        "yes",
+    )
+
+
 def _adopt_args(
     repo: Path,
     *,
     apply: bool = False,
     profile: Path | None = None,
-    classification: str = "TOOLCHAIN",
+    classification: str = "DEVELOPMENT_TOOLING",
 ) -> list[str]:
-    if classification == "PRODUCT":
-        purpose = "Product runtime component"
-        shipped = "yes"
-        runtime_required = "yes"
-        lifecycle_owner = "PRODUCT"
-        executable = "yes"
-    elif classification == "NEUTRAL_CONTRACT":
-        purpose = "Shared declarative contract"
-        shipped = "no"
-        runtime_required = "no"
-        lifecycle_owner = "INDEPENDENT"
-        executable = "no"
-    else:
-        purpose = "Repository-local generation tooling"
-        shipped = "no"
-        runtime_required = "no"
-        lifecycle_owner = "DEVELOPMENT_TOOLING"
-        executable = "yes"
-
+    purpose, shipped, runtime_required, lifecycle_owner, executable = _facts(classification)
     args = [
         "adopt",
         str(repo),
@@ -92,7 +116,26 @@ def _adopt_args(
     return args
 
 
-def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
+def _profile_header() -> str:
+    return f"""ptsip:
+  version: 0.3.6-draft
+  specification:
+    source: https://github.com/Kinirin/PTSIP
+    revision: {SPEC_REVISION}
+responsibility_map:
+  mode: explicit
+"""
+
+
+def _policies() -> str:
+    return """policies:
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
+  independent_build_resolution: required
+"""
+
+
+def test_adopt_is_dry_run_by_default_and_apply_persists_canonical_036_declaration(
     tmp_path: Path,
     monkeypatch,
     capsys,
@@ -114,23 +157,22 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
     assert main(_adopt_args(repo, apply=True)) == 0
     adopted = json.loads(capsys.readouterr().out)
     assert adopted["status"] == "ADOPTED"
-    assert adopted["declaration"]["runtime_required"] is False
     profile = repo / "ptsip.yaml"
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
-    assert document["ptsip"]["version"] == "0.3.4-draft"
+    assert document["ptsip"]["version"] == "0.3.6-draft"
     assert document["ptsip"]["specification"]["revision"] == SPEC_REVISION
+    assert document["responsibility_map"] == {"mode": "explicit"}
     component = next(item for item in document["components"] if item["id"] == "tools")
     assert component == {
         "id": "tools",
         "include": ["tools/**"],
-        "classification": "TOOLCHAIN",
+        "classification": "DEVELOPMENT_TOOLING",
         "purpose": "Repository-local generation tooling",
         "shipped": False,
         "runtime_required": False,
-        "lifecycle_owner": "DEVELOPMENT_TOOLING",
         "executable": True,
     }
-    assert "release_owner" not in component
+    assert "lifecycle_owner" not in component
     assert not decision_store_path(repo).exists()
 
     assert main(_adopt_args(repo, apply=True)) == 0
@@ -139,27 +181,21 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_bound_declaration(
 
 
 def test_adopt_does_not_classify_from_tools_directory_name(tmp_path: Path, capsys) -> None:
-    product_repo = _repo(tmp_path / "product")
-    assert main(_adopt_args(product_repo, apply=True, classification="PRODUCT")) == 0
-    product_result = json.loads(capsys.readouterr().out)
-    assert product_result["status"] == "ADOPTED"
-    product_profile = yaml.safe_load((product_repo / "ptsip.yaml").read_text(encoding="utf-8"))
-    component = product_profile["components"][0]
-    assert component["classification"] == "PRODUCT"
-    assert component["runtime_required"] is True
-    assert component["lifecycle_owner"] == "PRODUCT"
-
-    neutral_repo = _repo(tmp_path / "neutral")
-    assert main(_adopt_args(neutral_repo, apply=True, classification="NEUTRAL_CONTRACT")) == 0
-    neutral_result = json.loads(capsys.readouterr().out)
-    assert neutral_result["status"] == "ADOPTED"
-    neutral_profile = yaml.safe_load((neutral_repo / "ptsip.yaml").read_text(encoding="utf-8"))
-    component = neutral_profile["components"][0]
-    assert component["classification"] == "NEUTRAL_CONTRACT"
-    assert component["executable"] is False
-    assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "INDEPENDENT"
-    assert "release_owner" not in component
+    for classification in (
+        "PRODUCT",
+        "DEVELOPMENT_TOOLING",
+        "DELIVERY",
+        "OPERATIONS",
+        "NEUTRAL_CONTRACT",
+    ):
+        repo = _repo(tmp_path / classification.lower())
+        assert main(_adopt_args(repo, apply=True, classification=classification)) == 0
+        result = json.loads(capsys.readouterr().out)
+        assert result["status"] == "ADOPTED"
+        profile = yaml.safe_load((repo / "ptsip.yaml").read_text(encoding="utf-8"))
+        component = profile["components"][0]
+        assert component["classification"] == classification
+        assert "lifecycle_owner" not in component
 
 
 def test_adopt_extends_existing_covering_component_without_creating_duplicate(
@@ -169,7 +205,14 @@ def test_adopt_extends_existing_covering_component_without_creating_duplicate(
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/Kinirin/PTSIP\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: Repository-local generation tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        _profile_header()
+        + """components:
+  - id: generator-sdk
+    classification: DEVELOPMENT_TOOLING
+    include: ["tools/**"]
+    purpose: Repository-local generation tooling
+"""
+        + _policies(),
         encoding="utf-8",
     )
 
@@ -179,19 +222,25 @@ def test_adopt_extends_existing_covering_component_without_creating_duplicate(
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
     assert [item["id"] for item in document["components"]] == ["generator-sdk"]
     component = document["components"][0]
-    assert component["classification"] == "TOOLCHAIN"
+    assert component["classification"] == "DEVELOPMENT_TOOLING"
     assert component["shipped"] is False
     assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
     assert component["executable"] is True
-    assert "release_owner" not in component
+    assert "lifecycle_owner" not in component
 
 
 def test_existing_conflicting_declaration_is_not_overwritten(tmp_path: Path, capsys) -> None:
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/Kinirin/PTSIP\n    revision: {SPEC_REVISION}\ncomponents:\n  - id: tools\n    classification: PRODUCT\n    include: [\"tools/**\"]\n    purpose: Existing product component\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        _profile_header()
+        + """components:
+  - id: tools
+    classification: PRODUCT
+    include: ["tools/**"]
+    purpose: Existing product component
+"""
+        + _policies(),
         encoding="utf-8",
     )
     before = profile.read_text(encoding="utf-8")
@@ -202,14 +251,28 @@ def test_existing_conflicting_declaration_is_not_overwritten(tmp_path: Path, cap
     assert profile.read_text(encoding="utf-8") == before
 
 
-def test_structured_adoption_refuses_boundary_shorthand_without_lossless_fact_representation(
+def test_direct_adoption_refuses_legacy_boundary_profile_and_leaves_it_unchanged(
     tmp_path: Path,
     capsys,
 ) -> None:
     repo = _repo(tmp_path)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: 0.3.4-draft\n  specification:\n    source: https://github.com/Kinirin/PTSIP\n    revision: {SPEC_REVISION}\nboundaries:\n  product:\n    roots: [\"product\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:
+  version: 0.3.4-draft
+  specification:
+    source: https://github.com/Kinirin/PTSIP
+    revision: b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
+boundaries:
+  product:
+    roots: ["product"]
+  toolchain:
+    roots: ["tools"]
+policies:
+  product_to_toolchain_runtime_dependency: deny
+  toolchain_in_product_package: deny
+  independent_build_resolution: required
+""",
         encoding="utf-8",
     )
     before = profile.read_text(encoding="utf-8")
@@ -223,7 +286,7 @@ def test_structured_adoption_refuses_boundary_shorthand_without_lossless_fact_re
 def test_adoption_application_refuses_stale_repository_evidence(tmp_path: Path) -> None:
     repo = _repo(tmp_path)
     answer = DecisionAnswer(
-        classification="TOOLCHAIN",
+        classification="DEVELOPMENT_TOOLING",
         purpose="Repository-local generation tooling",
         shipped=False,
         runtime_required=False,
