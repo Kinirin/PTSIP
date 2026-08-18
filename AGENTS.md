@@ -16,6 +16,8 @@ Read these files before planning or modifying code:
 
 During Tool `0.3.6` development, the active development branch is expected to follow `planning/0.3.6.md` and the `0.3.6-draft` Specification baseline established on that branch. The published Tool remains `0.3.5` until an explicit release boundary is reached.
 
+For Responsibility Map v2 work, also read `spec/PTSIP-RESPONSIBILITY-MAP.md` and the accepted WU-02 decision record before schema or migration changes.
+
 ## Repository-state discipline
 
 - Re-read the remote branch HEAD immediately before any write, merge, release preparation, or evidence claim.
@@ -56,7 +58,7 @@ Rules:
 
 `TOOLCHAIN` is a canonical Tool `0.3.5` classification only. Tool `0.3.6` may read it as legacy migration input but must not emit or preserve it as a canonical new-schema alias.
 
-## Classification, role, relationship, and VPMS
+## Classification, roles, relationships, associated artifacts, and VPMS
 
 Keep these axes separate:
 
@@ -64,19 +66,90 @@ Keep these axes separate:
 classification
     = primary lifecycle ownership
 
-role
-    = responsibility performed inside that lifecycle
+roles
+    = coarse responsibility characteristics inside that lifecycle
 
-relationship
-    = typed semantic relationship to another responsibility/artifact
+relationships
+    = typed directed semantics to another declared endpoint
 
 VPMS Verification Purpose
     = what a Verification Case protects/verifies
 ```
 
-Do not create a new lifecycle classification merely to encode an internal role.
+### Canonical Tool 0.3.6 roles
 
-Responsibility Map v2 must be able to preserve typed relationships and project-owned associated documentation/authority/support artifacts without using associated artifacts as a classification escape hatch.
+Component roles are optional and multi-valued. The frozen canonical role vocabulary is:
+
+```text
+IMPLEMENTATION
+VERIFICATION
+AUTOMATION
+CONFIGURATION
+DOCUMENTATION
+GOVERNANCE
+```
+
+Rules:
+
+- do not create a new lifecycle classification merely to encode an internal role;
+- do not create composite role tokens such as `VERIFICATION_AUTOMATION`, `SDK_IMPLEMENTATION`, or `BUILD_RELEASE_AUTOMATION`;
+- represent multiple applicable roles as multiple role values;
+- use `purpose` and typed relationships for the more specific semantics;
+- a role does not determine classification;
+- a role does not automatically create a relationship or identify a relationship target.
+
+### Canonical Tool 0.3.6 Responsibility Map relationships
+
+Relationships use stable direction:
+
+```text
+source --TYPE--> target
+```
+
+Canonical project-declared relationship types are:
+
+```text
+IMPORTS
+LINKS
+LOADS
+INVOKES
+READS
+GENERATES
+BUILDS
+PACKAGES
+PUBLISHES
+DEPLOYS
+VERIFIES
+MANAGES
+DOCUMENTS
+SPECIFIES
+GOVERNS
+```
+
+Do not invent generic escape-hatch relations such as `PRODUCES`, `SUPPORTS`, `USES`, or `DEPENDS_ON` when the canonical vocabulary can express the actual semantics.
+
+`TESTS` remains an evidence relationship token. A `TESTS` evidence edge may support a `VERIFIES` proposal, but evidence must not silently become project-owned Responsibility Map declaration.
+
+Typed relationships declare architecture semantics. They do not grant permission, do not replace dependency policy, and do not waive PTSIP mandatory rules.
+
+### Associated artifacts
+
+An associated artifact is an unclassified non-component support surface subordinate to exactly one classified anchor component.
+
+Rules:
+
+- it has stable identity, selectors/scope, purpose, and exactly one anchor component;
+- it has no PTSIP classification of its own and no component roles of its own;
+- it does not inherit the anchor's classification;
+- it must be non-executable in its architectural role and must not have independently governable lifecycle/release/compatibility responsibility;
+- it must participate in at least one typed relationship connecting it to its anchor;
+- component and associated-artifact IDs must be unambiguous in one map-wide endpoint namespace;
+- when support material becomes independently governable, executable, independently released/compatible, or independently cross-lifecycle authoritative, it must be promoted/re-evaluated as a component;
+- independently governed non-executable/non-owning cross-lifecycle contract semantics require `NEUTRAL_CONTRACT` evaluation.
+
+Project-owned documentation/authority may therefore `DOCUMENTS`, `SPECIFIES`, or `GOVERNS` an anchor component without being misrepresented as implementation or automatically forced into `NEUTRAL_CONTRACT`.
+
+The exact JSON/YAML layout is WU-03 work. Do not reopen the frozen WU-02 semantic model merely for serialization convenience.
 
 ## PTSIP and VPMS boundary
 
@@ -118,15 +191,26 @@ Never silently replace a project-owned map. If the target representation cannot 
 
 Repository-owned explicit declarations outrank template defaults. Template selection must be explicit; never guess a template from repository layout, framework, language, package manager, or discovery confidence.
 
-See `planning/0.3.6.md` for sequencing and completion gates.
+Legacy `consumers`, `analysis_inputs`, and untyped dependency-policy entries are evidence for migration; they must not be blindly translated into typed relationships.
+
+See `planning/0.3.6.md`, `spec/PTSIP-RESPONSIBILITY-MAP.md`, and ADR-0008 for the current implementation constraints.
 
 ## Tool 0.3.6 development sequencing
 
 Follow the work-unit dependency order in `planning/0.3.6.md`.
 
+The current ontology-dependent sequence is:
+
+```text
+WU-00  normative 0.3.6 baseline        COMPLETE
+WU-01  lifecycle boundary rules        COMPLETE
+WU-02  role/relationship/artifact model COMPLETE
+WU-03  canonical Responsibility Map v2 schema NEXT
+```
+
 The `0.3.6-draft` normative baseline must exist before implementation semantics are frozen. Ontology/boundary rules precede role/relationship schema work; schema work precedes templates; evidence/discovery precedes legacy migration automation.
 
-Do not skip directly to migration code while lifecycle boundaries, relationship semantics, or the canonical target schema are unresolved.
+Do not skip directly to migration code while the canonical target schema is unresolved. WU-03 may choose serialization details but must preserve the WU-02 role vocabulary, relationship meanings/direction, one-anchor associated-artifact semantics, endpoint identity rules, and promotion boundary.
 
 ## Mandatory Specification work for releases
 
