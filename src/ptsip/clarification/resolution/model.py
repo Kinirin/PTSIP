@@ -2,8 +2,24 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-CLASSIFICATIONS = ("PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT")
-LIFECYCLE_OWNERS = ("PRODUCT", "DEVELOPMENT_TOOLING", "INDEPENDENT")
+CLASSIFICATIONS = (
+    "PRODUCT",
+    "DEVELOPMENT_TOOLING",
+    "DELIVERY",
+    "OPERATIONS",
+    "NEUTRAL_CONTRACT",
+)
+
+# DecisionAnswer keeps lifecycle_owner as an input/migration compatibility fact
+# until WU-07/WU-10 retire legacy adoption surfaces. Canonical 0.3.6 Project
+# Profiles do not persist lifecycle_owner; classification is the ownership authority.
+LIFECYCLE_OWNERS = (
+    "PRODUCT",
+    "DEVELOPMENT_TOOLING",
+    "DELIVERY",
+    "OPERATIONS",
+    "INDEPENDENT",
+)
 
 
 @dataclass(frozen=True)
