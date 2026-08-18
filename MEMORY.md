@@ -32,7 +32,7 @@ The detailed plan is `planning/0.3.6.md`.
 
 From Tool `0.3.6` onward, a Tool release is not allowed to reuse an older draft Specification family merely because the Tool code is otherwise ready.
 
-Release preparation must require:
+Release preparation requires:
 
 ```text
 Tool X.Y.Z
@@ -42,7 +42,7 @@ Specification X.Y.Z-draft
 immutable SPEC_REVISION
 ```
 
-The root `ptsip.yaml`, Tool constants, canonical Specification files, and `releasenote/spec-<family>.md` must agree. Release automation must fail closed when this contract is incomplete.
+The root `ptsip.yaml`, Tool constants, canonical Specification files, and `releasenote/spec-<family>.md` must agree. `.github/scripts/verify_release_contract.py` is the fail-closed release gate used by release preparation and the PyPI build boundary.
 
 ## PTSIP / VPMS boundary
 
@@ -79,7 +79,7 @@ Re-read the remote branch HEAD immediately before writes. Do not rely on a previ
 
 GitHub-hosted Actions usage is constrained.
 
-Full repository verification is to use only `.github/workflows/tooling-test.yml` after it is converted to manual self-hosted operation for Tool `0.3.6` work.
+Full repository verification uses only `.github/workflows/tooling-test.yml`, which is manual and self-hosted.
 
 Expected runner name:
 
@@ -91,9 +91,11 @@ Operational rule:
 
 **Before dispatching the self-hosted workflow, tell the user that the runner will be used and wait for explicit confirmation that the host and PowerShell environment are ready.**
 
-Do not automatically dispatch the self-hosted test workflow from push, pull request, tag, release, or schedule events.
+The workflow requires `host_ready=true`, checks `RUNNER_NAME == DESKTOP-5HCCQIR`, and has no push, pull-request, tag, release, or schedule trigger.
 
-Release preparation and PyPI Trusted Publishing may remain on GitHub-hosted runners because they are lightweight release-boundary operations. Once the self-hosted gate is active, they must rely on successful self-hosted verification for the exact source SHA instead of repeating the full test suite.
+For release-candidate verification, dispatch it with `release_candidate=true`. A successful run records `self-hosted/release-verification` for the exact source SHA.
+
+`release.yml` remains GitHub-hosted only for lightweight release preparation/orchestration and requires that exact self-hosted status instead of repeating full pytest. `tooling-release.yml` remains GitHub-hosted for distribution build checks and the PyPI Trusted Publishing boundary.
 
 ## Release-note discipline
 
