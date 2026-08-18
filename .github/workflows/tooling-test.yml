@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       host_ready:
-        description: "Confirm DESKTOP-5HCCQIR is online and its PowerShell environment is ready"
+        description: "Confirm DESKTOP-UBK6CEG is online and its PowerShell environment is ready"
         required: true
         type: boolean
         default: false
@@ -39,8 +39,8 @@ jobs:
           if ($env:HOST_READY -ne "true") {
             throw "Self-hosted verification requires host_ready=true after the maintainer confirms the host and PowerShell environment are ready."
           }
-          if ($env:RUNNER_NAME -ne "DESKTOP-5HCCQIR") {
-            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-5HCCQIR."
+          if ($env:RUNNER_NAME -ne "DESKTOP-UBK6CEG") {
+            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-UBK6CEG."
           }
           Write-Host "Using approved self-hosted runner: $env:RUNNER_NAME"
 
@@ -144,7 +144,7 @@ jobs:
           $body = @{
             state = "success"
             context = "self-hosted/release-verification"
-            description = "DESKTOP-5HCCQIR verified the exact Tool release candidate"
+            description = "DESKTOP-UBK6CEG verified the exact Tool release candidate"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
 
