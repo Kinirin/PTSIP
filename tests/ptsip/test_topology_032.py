@@ -15,7 +15,8 @@ from ptsip.cli import main
 from ptsip.topology import migrate_topology
 
 
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
+LEGACY_SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _run(root: Path, *args: str) -> str:
@@ -32,16 +33,16 @@ def _run(root: Path, *args: str) -> str:
     return proc.stdout.strip()
 
 
-def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str:
-    lifecycle_owner = "DEVELOPMENT_TOOLING" if classification == "TOOLCHAIN" else "PRODUCT"
+def _profile(selector: str = "old/**", classification: str = "DEVELOPMENT_TOOLING") -> str:
     payload = {
         "ptsip": {
-            "version": "0.3.4-draft",
+            "version": "0.3.6-draft",
             "specification": {
                 "source": "https://github.com/Kinirin/PTSIP",
                 "revision": SPEC_REVISION,
             },
         },
+        "responsibility_map": {"mode": "explicit"},
         "components": [
             {
                 "id": "sdk-tools",
@@ -50,26 +51,25 @@ def _profile(selector: str = "old/**", classification: str = "TOOLCHAIN") -> str
                 "purpose": "Repository SDK tooling",
                 "shipped": False,
                 "runtime_required": False,
-                "lifecycle_owner": lifecycle_owner,
                 "executable": True,
             }
         ],
         "policies": {
-            "product_to_toolchain_runtime_dependency": "deny",
-            "toolchain_in_product_package": "deny",
+            "product_to_nonproduct_runtime_dependency": "deny",
+            "nonproduct_in_product_package": "deny",
             "independent_build_resolution": "required",
         },
     }
     return yaml.safe_dump(payload, sort_keys=False)
 
 
-def _boundary_profile() -> str:
+def _legacy_boundary_profile() -> str:
     payload = {
         "ptsip": {
             "version": "0.3.4-draft",
             "specification": {
                 "source": "https://github.com/Kinirin/PTSIP",
-                "revision": SPEC_REVISION,
+                "revision": LEGACY_SPEC_REVISION,
             },
         },
         "boundaries": {
@@ -113,7 +113,7 @@ def test_resolution_projection_respects_explicit_profile_path(tmp_path: Path):
     profile = root / "docs" / "sdk" / "project.ptsip.yaml"
     profile.parent.mkdir(parents=True)
     answer = DecisionAnswer(
-        classification="TOOLCHAIN",
+        classification="DEVELOPMENT_TOOLING",
         purpose="Repository migration tooling",
         shipped=False,
         runtime_required=False,
@@ -129,9 +129,9 @@ def test_resolution_projection_respects_explicit_profile_path(tmp_path: Path):
     assert not (root / "ptsip.yaml").exists()
     payload = yaml.safe_load(profile.read_text(encoding="utf-8"))
     component = payload["components"][0]
-    assert component["classification"] == "TOOLCHAIN"
+    assert component["classification"] == "DEVELOPMENT_TOOLING"
     assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in component
 
 
 def test_topology_dry_run_reports_impacts_without_mutation(tmp_path: Path):
@@ -142,7 +142,7 @@ def test_topology_dry_run_reports_impacts_without_mutation(tmp_path: Path):
     assert result["status"] == "PLAN"
     assert result["applied"] is False
     assert result["classification"]["preserved"] is True
-    assert result["migration"]["classification"] == "TOOLCHAIN"
+    assert result["migration"]["classification"] == "DEVELOPMENT_TOOLING"
     assert result["profile_changes"][0]["before"] == "old/**"
     assert result["profile_changes"][0]["after"] == "sdk/tooling/**"
     assert result["reference_impacts"]["BUILD"]
@@ -170,7 +170,6 @@ def test_topology_dependency_edges_find_import_without_root_literal(tmp_path: Pa
             "purpose": "Product consumer",
             "shipped": True,
             "runtime_required": True,
-            "lifecycle_owner": "PRODUCT",
             "executable": True,
         }
     )
@@ -234,16 +233,16 @@ def test_topology_apply_moves_root_and_preserves_classification(tmp_path: Path):
     assert (root / "sdk" / "tooling" / "main.py").is_file()
     payload = yaml.safe_load(profile.read_text(encoding="utf-8"))
     component = payload["components"][0]
-    assert component["classification"] == "TOOLCHAIN"
+    assert component["classification"] == "DEVELOPMENT_TOOLING"
     assert component["include"] == ["sdk/tooling/**"]
     assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in component
     staged = _run(root, "git", "diff", "--cached", "--name-status")
     assert "docs/sdk/simple-connection.ptsip.yaml" in staged
     assert "sdk/tooling/main.py" in staged
 
 
-def test_topology_boundary_profile_preserves_plane_classification(tmp_path: Path):
+def test_topology_legacy_boundary_profile_preserves_historical_plane_classification(tmp_path: Path):
     root = tmp_path / "repo"
     root.mkdir()
     (root / "product").mkdir()
@@ -251,7 +250,7 @@ def test_topology_boundary_profile_preserves_plane_classification(tmp_path: Path
     (root / "old").mkdir()
     (root / "old" / "tool.py").write_text("VALUE = 2\n", encoding="utf-8")
     profile = root / "ptsip.yaml"
-    profile.write_text(_boundary_profile(), encoding="utf-8")
+    profile.write_text(_legacy_boundary_profile(), encoding="utf-8")
     _run(root, "git", "init")
     _run(root, "git", "config", "user.email", "ptsip@example.invalid")
     _run(root, "git", "config", "user.name", "PTSIP Test")
