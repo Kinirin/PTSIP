@@ -4,12 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Reference Tool version from pyproject.toml (for example 0.3.1)"
+        description: "Reference Tool version from pyproject.toml (for example 0.3.6)"
         required: true
         type: string
 
 permissions:
   contents: write
+  statuses: read
 
 concurrency:
   group: prepare-tool-release
@@ -54,6 +55,7 @@ jobs:
 
           TAG="tool-v${PACKAGE_VERSION}"
           NOTE="releasenote/${PACKAGE_VERSION}.md"
+          SOURCE_SHA="$(git rev-parse HEAD)"
 
           git fetch --force --tags origin
           if git show-ref --verify --quiet "refs/tags/${TAG}"; then
@@ -64,6 +66,26 @@ jobs:
           echo "version=${PACKAGE_VERSION}" >> "$GITHUB_OUTPUT"
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
           echo "note=${NOTE}" >> "$GITHUB_OUTPUT"
+          echo "source_sha=${SOURCE_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Require exact self-hosted release verification
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+
+          STATE="$(
+            gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}/status" \
+              --jq '[.statuses[] | select(.context == "self-hosted/release-verification")][0].state // ""'
+          )"
+
+          if [ "${STATE}" != "success" ]; then
+            echo "No successful self-hosted/release-verification status exists for ${SOURCE_SHA}."
+            echo "Before release preparation, notify the maintainer, confirm DESKTOP-5HCCQIR and PowerShell are ready, then run tooling-test.yml with host_ready=true and release_candidate=true."
+            exit 1
+          fi
 
       - name: Install release tooling
         run: |
@@ -74,9 +96,8 @@ jobs:
       - name: Verify required Specification release contract
         run: python .github/scripts/verify_release_contract.py
 
-      - name: Verify Tool before release preparation
+      - name: Verify Tool identity before release preparation
         run: |
-          python -m pytest -q
           ptsip --version
           ptsip spec
           ptsip conform --help
@@ -100,6 +121,9 @@ jobs:
             --include-path "tests/**" \
             --include-path "pyproject.toml" \
             --include-path "ptsip.yaml" \
+            --include-path "AGENTS.md" \
+            --include-path "MEMORY.md" \
+            --include-path ".github/scripts/**" \
             --include-path ".github/workflows/tooling-test.yml" \
             --include-path ".github/workflows/tooling-release.yml" \
             --include-path ".github/workflows/release.yml" \
@@ -107,9 +131,6 @@ jobs:
             --include-path "cliff.toml" \
             --output "${NOTE}"
 
-          # git-cliff templates may leave multiple trailing newlines. Normalize the
-          # generated note to exactly one final newline so git diff --check remains
-          # a meaningful release gate instead of failing on formatter whitespace.
           python - "${NOTE}" <<'PY'
           from pathlib import Path
           import sys
@@ -151,10 +172,9 @@ jobs:
 
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      # Creating the draft with GITHUB_TOKEN auto-creates the tag but does not fan out
-      # tag-push workflows. The Tool test/smoke gate therefore runs above in this job.
-      # Publishing the draft manually emits release:published and preserves the existing
-      # tooling-release.yml PyPI Trusted Publishing boundary.
+      # The expensive regression/build smoke is performed once by tooling-test.yml on
+      # the exact pre-release source SHA. This workflow only performs lightweight
+      # release orchestration and creates the reviewed draft release.
       - name: Create draft GitHub Release
         shell: bash
         env:
