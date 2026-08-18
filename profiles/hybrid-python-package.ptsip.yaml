@@ -1,0 +1,37 @@
+ptsip:
+  version: "0.3.6-draft"
+  specification:
+    source: "https://github.com/Kinirin/PTSIP"
+
+responsibility_map:
+  mode: hybrid
+  template:
+    id: python-package-library
+    revision: "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+  overrides:
+    components:
+      - id: package
+        classification: PRODUCT
+        roles:
+          - IMPLEMENTATION
+        include:
+          - "lib/**"
+        purpose: custom_python_package_layout
+        shipped: true
+        runtime_required: true
+        executable: true
+      - id: package-tests
+        classification: PRODUCT
+        roles:
+          - VERIFICATION
+        include:
+          - "qa/**"
+        purpose: custom_product_owned_verification_layout
+        shipped: false
+        runtime_required: false
+        executable: true
+
+policies:
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
+  independent_build_resolution: required
