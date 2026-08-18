@@ -9,10 +9,15 @@ on:
         type: boolean
         default: false
       release_candidate:
-        description: "Enforce the Tool/Specification release contract and record release verification for this SHA"
+        description: "Enforce the Tool/Specification release contract and record release verification for this exact SHA"
         required: true
         type: boolean
         default: false
+      source_sha:
+        description: "Exact 40-character commit SHA to verify; required when release_candidate=true"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -39,11 +44,37 @@ jobs:
           }
           Write-Host "Using approved self-hosted runner: $env:RUNNER_NAME"
 
-      - name: Checkout selected ref with full history
+      - name: Checkout exact selected source
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.source_sha != '' && inputs.source_sha || github.sha }}
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Verify exact source identity
+        id: source
+        shell: powershell
+        env:
+          RELEASE_CANDIDATE: ${{ inputs.release_candidate }}
+          REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          $actualSha = (git rev-parse HEAD).Trim()
+
+          if ($env:REQUESTED_SOURCE_SHA) {
+            if ($env:REQUESTED_SOURCE_SHA -notmatch '^[0-9a-f]{40}$') {
+              throw "source_sha must be a full 40-character lowercase Git commit SHA."
+            }
+            if ($actualSha -ne $env:REQUESTED_SOURCE_SHA) {
+              throw "Checked out SHA $actualSha does not match requested source_sha $env:REQUESTED_SOURCE_SHA."
+            }
+          }
+
+          if ($env:RELEASE_CANDIDATE -eq "true" -and -not $env:REQUESTED_SOURCE_SHA) {
+            throw "release_candidate=true requires an explicit source_sha so the release verification status is bound to one immutable commit."
+          }
+
+          "verified_sha=$actualSha" >> $env:GITHUB_OUTPUT
+          Write-Host "Verification source SHA: $actualSha"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -103,6 +134,7 @@ jobs:
         shell: powershell
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
         run: |
           $headers = @{
             Authorization = "Bearer $env:GITHUB_TOKEN"
@@ -112,12 +144,13 @@ jobs:
           $body = @{
             state = "success"
             context = "self-hosted/release-verification"
-            description = "DESKTOP-5HCCQIR verified the Tool release candidate"
+            description = "DESKTOP-5HCCQIR verified the exact Tool release candidate"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
+
           Invoke-RestMethod `
             -Method Post `
-            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:GITHUB_SHA" `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
             -Headers $headers `
             -ContentType "application/json" `
             -Body $body

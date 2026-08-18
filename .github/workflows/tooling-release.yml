@@ -7,39 +7,65 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: tooling-release-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
 jobs:
   build:
     if: startsWith(github.event.release.tag_name, 'tool-v')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
     steps:
-      - uses: actions/checkout@v4
+      - name: Verify approved self-hosted runner identity
+        shell: powershell
+        run: |
+          if ($env:RUNNER_NAME -ne "DESKTOP-5HCCQIR") {
+            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-5HCCQIR."
+          }
+          Write-Host "Building release distributions on approved self-hosted runner: $env:RUNNER_NAME"
+
+      - name: Checkout published Tool tag with full history
+        uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.release.tag_name }}
           fetch-depth: 0
           fetch-tags: true
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-      - run: python -m pip install --upgrade pip build twine "PyYAML>=6.0,<7"
+
+      - name: Install distribution tooling
+        shell: powershell
+        run: python -m pip install --upgrade pip build twine "PyYAML>=6.0,<7"
+
       - name: Verify release tag matches package version and Specification contract
-        shell: bash
+        shell: powershell
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
-          PACKAGE_VERSION="$(python - <<'PY'
-          import tomllib
-          with open('pyproject.toml', 'rb') as f:
-              print(tomllib.load(f)['project']['version'])
-          PY
-          )"
-          EXPECTED_TAG="tool-v${PACKAGE_VERSION}"
-          if [ "${GITHUB_REF_NAME}" != "${EXPECTED_TAG}" ]; then
-            echo "Release tag ${GITHUB_REF_NAME} does not match package version ${PACKAGE_VERSION}. Expected ${EXPECTED_TAG}."
-            exit 1
-          fi
+          $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
+          $expectedTag = "tool-v$packageVersion"
+          if ($env:RELEASE_TAG -ne $expectedTag) {
+            throw "Release tag $env:RELEASE_TAG does not match package version $packageVersion. Expected $expectedTag."
+          }
+
+          $headTag = (git tag --points-at HEAD | Where-Object { $_ -eq $env:RELEASE_TAG } | Select-Object -First 1)
+          if (-not $headTag) {
+            throw "Checked out commit is not pointed to by release tag $env:RELEASE_TAG."
+          }
+
           python .github/scripts/verify_release_contract.py
-      - run: python -m build
+
+      - name: Build distributions
+        shell: powershell
+        run: python -m build
+
       - name: Verify wheel and sdist exclude tests
-        shell: bash
+        shell: powershell
         run: |
-          python - <<'PY'
+          @'
           from pathlib import Path, PurePosixPath
           import tarfile
           import zipfile
@@ -48,17 +74,33 @@ jobs:
           sdist = next(Path("dist").glob("*.tar.gz"))
 
           with zipfile.ZipFile(wheel) as archive:
-              wheel_tests = [name for name in archive.namelist() if "tests" in PurePosixPath(name).parts]
+              wheel_tests = [
+                  name for name in archive.namelist()
+                  if "tests" in PurePosixPath(name).parts
+              ]
           if wheel_tests:
               raise SystemExit(f"wheel contains tests/: {wheel_tests}")
 
           with tarfile.open(sdist, "r:gz") as archive:
-              sdist_tests = [member.name for member in archive.getmembers() if "tests" in PurePosixPath(member.name).parts]
+              sdist_tests = [
+                  member.name for member in archive.getmembers()
+                  if "tests" in PurePosixPath(member.name).parts
+              ]
           if sdist_tests:
               raise SystemExit(f"sdist contains tests/: {sdist_tests}")
-          PY
-      - run: python -m twine check dist/*
-      - uses: actions/upload-artifact@v4
+          '@ | python -
+
+      - name: Verify distribution metadata
+        shell: powershell
+        run: |
+          $distFiles = Get-ChildItem -Path dist -File | ForEach-Object { $_.FullName }
+          if (-not $distFiles) {
+            throw "No distributions were produced under dist/."
+          }
+          python -m twine check $distFiles
+
+      - name: Upload verified distributions
+        uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
@@ -69,10 +111,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
+      contents: read
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download self-hosted verified distributions
+        uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
-      - uses: pypa/gh-action-pypi-publish@release/v1
+
+      # pypa/gh-action-pypi-publish is Docker-based and requires GNU/Linux.
+      # Keep only this narrow Trusted Publishing boundary on GitHub-hosted Linux.
+      - name: Publish to PyPI with Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1

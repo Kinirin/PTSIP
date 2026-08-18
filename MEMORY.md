@@ -44,23 +44,32 @@ immutable SPEC_REVISION
 
 The root `ptsip.yaml`, Tool constants, canonical Specification files, and `releasenote/spec-<family>.md` must agree. `.github/scripts/verify_release_contract.py` is the fail-closed release gate used by release preparation and the PyPI build boundary.
 
-### Merge-to-release Specification gate
+### Exact merge-to-release Specification gate
 
-Normal development merges may continue before a Tool becomes a release candidate. However, once a merged `main` SHA is proposed for Tool `X.Y.Z` release, that exact SHA must satisfy the complete Specification contract before release preparation may proceed.
+Normal development merges may continue before a Tool becomes a release candidate. At the explicit release boundary, finalize and commit the reviewed `releasenote/X.Y.Z.md` first. The resulting final `main` commit becomes the only SHA eligible for release-candidate verification.
 
 Required sequence:
 
 ```text
 feature/development branches
         -> merge to main
-        -> exact merged main SHA
+        -> finalize and commit releasenote/X.Y.Z.md
+        -> exact final main SHA
         -> Tool X.Y.Z / Specification X.Y.Z-draft / immutable SPEC_REVISION check
-        -> self-hosted release-candidate verification for that exact SHA
-        -> release.yml
-        -> tooling-release.yml re-check at the PyPI boundary
+        -> tooling-test.yml on self-hosted Windows
+             release_candidate=true
+             source_sha=<exact SHA>
+        -> self-hosted/release-verification on that exact SHA
+        -> release.yml on self-hosted Windows with the same source_sha
+        -> draft release targets the same SHA and does not mutate main
+        -> publish reviewed draft
+        -> tooling-release.yml self-hosted build on the published tag
+        -> minimal GNU/Linux Trusted Publishing boundary
 ```
 
 A missing or inconsistent Specification is a blocking release defect. Do not defer Specification creation, binding, release-note work, or `SPEC_REVISION` correction until after the Tool release.
+
+The exact-SHA invariant is deliberate: no release-note commit, generated file, or other repository mutation may be inserted between successful release-candidate verification and creation of the draft release.
 
 ## PTSIP / VPMS boundary
 
@@ -95,32 +104,45 @@ Re-read the remote branch HEAD immediately before writes. Do not rely on a previ
 
 ## Workflow resource policy
 
-GitHub-hosted Actions usage is constrained.
+GitHub-hosted Actions usage is constrained. Self-hosted execution is the default for repository verification, release preparation, and distribution building.
 
-Full repository verification uses only `.github/workflows/tooling-test.yml`, which is manual and self-hosted.
-
-Expected runner name:
+Approved Windows self-hosted runner:
 
 ```text
 DESKTOP-5HCCQIR
 ```
 
-Operational rule:
+Operational rules:
 
-**Before dispatching the self-hosted workflow, tell the user that the runner will be used and wait for explicit confirmation that the host and PowerShell environment are ready.**
+- Before dispatching `tooling-test.yml` or `release.yml`, tell the user that the self-hosted runner will be used and wait for explicit confirmation that the host and PowerShell environment are ready.
+- Both manual workflows require `host_ready=true` and check `RUNNER_NAME == DESKTOP-5HCCQIR`.
+- For release-candidate verification, `tooling-test.yml` also requires the exact full `source_sha`.
+- A successful release-candidate run records `self-hosted/release-verification` for the exact checked-out SHA.
+- `release.yml` requires the same SHA, requires it still to be `origin/main`, and creates the draft release without committing or pushing anything.
+- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure the runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
 
-The workflow requires `host_ready=true`, checks `RUNNER_NAME == DESKTOP-5HCCQIR`, and has no push, pull-request, tag, release, or schedule trigger.
+### Minimal GitHub-hosted exception
 
-For release-candidate verification, dispatch it with `release_candidate=true`. A successful run records `self-hosted/release-verification` for the exact source SHA.
+The `tooling-release.yml` PyPI `publish` job remains on GitHub-hosted GNU/Linux only because `pypa/gh-action-pypi-publish` is a Docker-based action and therefore cannot execute on the approved Windows self-hosted runner.
 
-`release.yml` remains GitHub-hosted only for lightweight release preparation/orchestration and requires that exact self-hosted status instead of repeating full pytest. `tooling-release.yml` remains GitHub-hosted for distribution build checks and the PyPI Trusted Publishing boundary.
+That job may only:
+
+```text
+download already verified distributions
+        ->
+perform PyPI Trusted Publishing
+```
+
+It must not absorb regression tests, package building, release preparation, or other avoidable compute.
 
 ### Default runner rule
 
-New repository verification, regression, build-smoke, or equivalent compute-heavy workflows **must default to self-hosted execution**. Do not introduce GitHub-hosted push/PR/schedule test matrices or duplicate full-suite workflows merely for convenience.
+New repository verification, regression, release preparation, build-smoke, or equivalent compute-heavy workflows **must default to self-hosted execution**. Do not introduce GitHub-hosted push/PR/schedule test matrices or duplicate full-suite workflows merely for convenience.
 
-A GitHub-hosted runner is an exception that requires an explicit maintainer decision and must remain limited to a lightweight or platform-bound boundary such as release orchestration or Trusted Publishing. Existing `release.yml` and `tooling-release.yml` are the current approved exceptions; they must not absorb the full regression suite.
+A GitHub-hosted runner is an exception requiring an explicit maintainer decision. The current approved exception is only the narrow GNU/Linux PyPI Trusted Publishing job described above.
 
 ## Release-note discipline
 
 Generated `git-cliff` output is a starting draft, not the final architectural explanation. New subsystems, policy changes, migrations, compatibility boundaries, and verification evidence must be reviewed and explained in human-written release notes before publication.
+
+For Tool releases, the reviewed `releasenote/X.Y.Z.md` must be committed before the final release-candidate SHA is sent through self-hosted verification.

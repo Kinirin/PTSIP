@@ -4,9 +4,18 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Reference Tool version from pyproject.toml (for example 0.3.6)"
+        description: "Tool version from pyproject.toml (for example 0.3.6)"
         required: true
         type: string
+      source_sha:
+        description: "Exact release-candidate SHA already verified by tooling-test.yml"
+        required: true
+        type: string
+      host_ready:
+        description: "Confirm DESKTOP-5HCCQIR is online and its PowerShell environment is ready"
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,12 +27,29 @@ concurrency:
 
 jobs:
   prepare:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
     steps:
-      - name: Checkout main with full history
+      - name: Verify self-hosted authorization and runner identity
+        shell: powershell
+        env:
+          HOST_READY: ${{ inputs.host_ready }}
+          REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          if ($env:HOST_READY -ne "true") {
+            throw "Release preparation requires host_ready=true after the maintainer confirms the host and PowerShell environment are ready."
+          }
+          if ($env:RUNNER_NAME -ne "DESKTOP-5HCCQIR") {
+            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-5HCCQIR."
+          }
+          if ($env:REQUESTED_SOURCE_SHA -notmatch '^[0-9a-f]{40}$') {
+            throw "source_sha must be a full 40-character lowercase Git commit SHA."
+          }
+          Write-Host "Using approved self-hosted runner: $env:RUNNER_NAME"
+
+      - name: Checkout exact release candidate
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ inputs.source_sha }}
           fetch-depth: 0
           fetch-tags: true
 
@@ -31,170 +57,150 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-          cache: pip
 
-      - name: Resolve and verify release identity
+      - name: Resolve and verify immutable release identity
         id: release
-        shell: bash
+        shell: powershell
         env:
           REQUESTED_VERSION: ${{ inputs.version }}
+          REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
         run: |
-          set -euo pipefail
+          $sourceSha = (git rev-parse HEAD).Trim()
+          if ($sourceSha -ne $env:REQUESTED_SOURCE_SHA) {
+            throw "Checked out SHA $sourceSha does not match requested release-candidate SHA $env:REQUESTED_SOURCE_SHA."
+          }
 
-          PACKAGE_VERSION="$(python - <<'PY'
-          import tomllib
-          with open("pyproject.toml", "rb") as handle:
-              print(tomllib.load(handle)["project"]["version"])
-          PY
-          )"
+          git fetch --force --tags origin "refs/heads/main:refs/remotes/origin/main"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to refresh origin/main and release tags."
+          }
 
-          if [ "${REQUESTED_VERSION}" != "${PACKAGE_VERSION}" ]; then
-            echo "Requested version ${REQUESTED_VERSION} does not match pyproject.toml version ${PACKAGE_VERSION}."
-            exit 1
-          fi
+          $mainSha = (git rev-parse origin/main).Trim()
+          if ($mainSha -ne $sourceSha) {
+            throw "Release candidate $sourceSha is no longer the current origin/main HEAD ($mainSha). Verify the new main HEAD before releasing."
+          }
 
-          TAG="tool-v${PACKAGE_VERSION}"
-          NOTE="releasenote/${PACKAGE_VERSION}.md"
-          SOURCE_SHA="$(git rev-parse HEAD)"
+          $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
+          if ($env:REQUESTED_VERSION -ne $packageVersion) {
+            throw "Requested version $env:REQUESTED_VERSION does not match pyproject.toml version $packageVersion."
+          }
 
-          git fetch --force --tags origin
-          if git show-ref --verify --quiet "refs/tags/${TAG}"; then
-            echo "Tag ${TAG} already exists. Tagged release notes are immutable."
-            exit 1
-          fi
+          $tag = "tool-v$packageVersion"
+          $note = "releasenote/$packageVersion.md"
 
-          echo "version=${PACKAGE_VERSION}" >> "$GITHUB_OUTPUT"
-          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
-          echo "note=${NOTE}" >> "$GITHUB_OUTPUT"
-          echo "source_sha=${SOURCE_SHA}" >> "$GITHUB_OUTPUT"
+          git show-ref --verify --quiet "refs/tags/$tag"
+          if ($LASTEXITCODE -eq 0) {
+            throw "Tag $tag already exists. Tagged release notes are immutable."
+          }
+          if ($LASTEXITCODE -ne 1) {
+            throw "Unable to determine whether tag $tag already exists."
+          }
+
+          if (-not (Test-Path -LiteralPath $note -PathType Leaf)) {
+            throw "Missing reviewed Tool release note $note. Finalize and commit the release note before release-candidate verification."
+          }
+          if ((Get-Item -LiteralPath $note).Length -eq 0) {
+            throw "Tool release note is empty: $note"
+          }
+          if (-not (Select-String -LiteralPath $note -Pattern '^## ' -Quiet)) {
+            throw "Tool release note contains no categorized Tool changes: $note"
+          }
+
+          "version=$packageVersion" >> $env:GITHUB_OUTPUT
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "note=$note" >> $env:GITHUB_OUTPUT
+          "source_sha=$sourceSha" >> $env:GITHUB_OUTPUT
 
       - name: Require exact self-hosted release verification
-        shell: bash
+        shell: powershell
         env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
         run: |
-          set -euo pipefail
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
 
-          STATE="$(
-            gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}/status" \
-              --jq '[.statuses[] | select(.context == "self-hosted/release-verification")][0].state // ""'
-          )"
+          $combined = Invoke-RestMethod `
+            -Method Get `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/commits/$env:SOURCE_SHA/status" `
+            -Headers $headers
 
-          if [ "${STATE}" != "success" ]; then
-            echo "No successful self-hosted/release-verification status exists for ${SOURCE_SHA}."
-            echo "Before release preparation, notify the maintainer, confirm DESKTOP-5HCCQIR and PowerShell are ready, then run tooling-test.yml with host_ready=true and release_candidate=true."
-            exit 1
-          fi
+          $status = $combined.statuses |
+            Where-Object { $_.context -eq "self-hosted/release-verification" } |
+            Select-Object -First 1
 
-      - name: Install release tooling
+          if (-not $status -or $status.state -ne "success") {
+            throw "No successful self-hosted/release-verification status exists for exact release-candidate SHA $env:SOURCE_SHA."
+          }
+
+          Write-Host "Exact self-hosted verification confirmed for $env:SOURCE_SHA"
+
+      - name: Install release verification tooling
+        shell: powershell
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
-          python -m pip install "git-cliff==2.13.1"
 
       - name: Verify required Specification release contract
+        shell: powershell
         run: python .github/scripts/verify_release_contract.py
 
       - name: Verify Tool identity before release preparation
+        shell: powershell
         run: |
           ptsip --version
           ptsip spec
           ptsip conform --help
 
-      - name: Generate versioned release note
-        shell: bash
+      - name: Reconfirm candidate remains current main
+        shell: powershell
         env:
-          TAG: ${{ steps.release.outputs.tag }}
-          NOTE: ${{ steps.release.outputs.note }}
+          SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
         run: |
-          set -euo pipefail
-          mkdir -p releasenote
+          git fetch --force origin "refs/heads/main:refs/remotes/origin/main"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to refresh origin/main before draft release creation."
+          }
+          $mainSha = (git rev-parse origin/main).Trim()
+          if ($mainSha -ne $env:SOURCE_SHA) {
+            throw "origin/main moved to $mainSha after release verification. Re-run release-candidate verification for the new SHA."
+          }
 
-          git cliff \
-            --config cliff.toml \
-            --unreleased \
-            --tag "${TAG}" \
-            --no-exec \
-            --include-path "src/ptsip/**" \
-            --include-path "src/vpms/**" \
-            --include-path "tests/**" \
-            --include-path "pyproject.toml" \
-            --include-path "ptsip.yaml" \
-            --include-path "AGENTS.md" \
-            --include-path "MEMORY.md" \
-            --include-path ".github/scripts/**" \
-            --include-path ".github/workflows/tooling-test.yml" \
-            --include-path ".github/workflows/tooling-release.yml" \
-            --include-path ".github/workflows/release.yml" \
-            --include-path "reference/DECISION-CONTROL-PLANE.md" \
-            --include-path "cliff.toml" \
-            --output "${NOTE}"
-
-          python - "${NOTE}" <<'PY'
-          from pathlib import Path
-          import sys
-
-          note = Path(sys.argv[1])
-          text = note.read_text(encoding="utf-8")
-          note.write_text(text.rstrip() + "\n", encoding="utf-8")
-          PY
-
-          if [ ! -s "${NOTE}" ]; then
-            echo "Generated release note is empty: ${NOTE}"
-            exit 1
-          fi
-
-          if ! grep -q '^## ' "${NOTE}"; then
-            echo "Generated release note contains no categorized Tool changes."
-            exit 1
-          fi
-
-      - name: Commit release note to main
-        id: commit
-        shell: bash
+      - name: Create draft GitHub Release for exact verified SHA
+        shell: powershell
         env:
-          VERSION: ${{ steps.release.outputs.version }}
-          NOTE: ${{ steps.release.outputs.note }}
-        run: |
-          set -euo pipefail
-
-          if [ -z "$(git status --porcelain -- "${NOTE}")" ]; then
-            echo "Release note is already up to date."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add "${NOTE}"
-            git diff --cached --check -- "${NOTE}"
-            git commit -m "docs: prepare Tool ${VERSION} release note"
-            git push origin HEAD:main
-          fi
-
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-      # The expensive regression/build smoke is performed once by tooling-test.yml on
-      # the exact pre-release source SHA. This workflow only performs lightweight
-      # release orchestration and creates the reviewed draft release.
-      - name: Create draft GitHub Release
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.release.outputs.version }}
           TAG: ${{ steps.release.outputs.tag }}
           NOTE: ${{ steps.release.outputs.note }}
-          TARGET_SHA: ${{ steps.commit.outputs.sha }}
+          SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
         run: |
-          set -euo pipefail
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
 
-          EXTRA_ARGS=()
-          if [[ "${VERSION}" =~ [A-Za-z] ]]; then
-            EXTRA_ARGS+=(--prerelease)
-          fi
+          $notePath = (Resolve-Path -LiteralPath $env:NOTE).Path
+          $noteBody = [System.IO.File]::ReadAllText($notePath)
+          $payload = @{
+            tag_name = $env:TAG
+            target_commitish = $env:SOURCE_SHA
+            name = "PTSIP Tool $env:VERSION"
+            body = $noteBody
+            draft = $true
+            prerelease = ($env:VERSION -match '[A-Za-z]')
+          } | ConvertTo-Json -Depth 4
 
-          gh release create "${TAG}" \
-            --repo "${GITHUB_REPOSITORY}" \
-            --draft \
-            --target "${TARGET_SHA}" \
-            --title "PTSIP Tool ${VERSION}" \
-            --notes-file "${NOTE}" \
-            "${EXTRA_ARGS[@]}"
+          $release = Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/releases" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $payload
+
+          Write-Host "Draft release created for exact SHA $env:SOURCE_SHA"
+          Write-Host "Release URL: $($release.html_url)"
