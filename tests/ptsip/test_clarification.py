@@ -12,7 +12,7 @@ from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
 
 
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -43,6 +43,14 @@ def _tool_repo(tmp_path: Path) -> Path:
     (repo / "tools" / "generate.py").write_text("print('generate')\n", encoding="utf-8")
     _commit_all(repo)
     return repo
+
+
+def _profile_header() -> str:
+    return f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\n"""
+
+
+def _policies() -> str:
+    return """policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n"""
 
 
 def test_github_remote_parser_supports_https_and_ssh():
@@ -91,7 +99,9 @@ def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
 def test_declared_component_purpose_suppresses_question(tmp_path: Path):
     repo = _tool_repo(tmp_path)
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: build_generation\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        _profile_header()
+        + """components:\n  - id: generator\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: build_generation\n"""
+        + _policies(),
         encoding="utf-8",
     )
     _commit_all(repo)
@@ -103,7 +113,9 @@ def test_declared_component_purpose_suppresses_question(tmp_path: Path):
 def test_partial_declared_component_targets_declared_component_id(tmp_path: Path):
     repo = _tool_repo(tmp_path)
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: generator-sdk\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        _profile_header()
+        + """components:\n  - id: generator-sdk\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n"""
+        + _policies(),
         encoding="utf-8",
     )
     _commit_all(repo)
@@ -115,6 +127,23 @@ def test_partial_declared_component_targets_declared_component_id(tmp_path: Path
     assert request.missing_fields == ("purpose",)
 
 
+def test_associated_artifact_scope_does_not_reopen_component_clarification(tmp_path: Path):
+    repo = _tool_repo(tmp_path)
+    (repo / "ptsip.yaml").write_text(
+        _profile_header()
+        + """components:\n  - id: sdk\n    classification: DEVELOPMENT_TOOLING\n    include: [\"sdk/**\"]\n    purpose: reusable_sdk\nassociated_artifacts:\n  - id: sdk-support\n    anchor: sdk\n    include: [\"tools/**\"]\n    purpose: sdk_owned_support_surface\nrelationships:\n  - id: support-documents-sdk\n    from: sdk-support\n    to: sdk\n    type: DOCUMENTS\n"""
+        + _policies(),
+        encoding="utf-8",
+    )
+    (repo / "sdk").mkdir()
+    (repo / "sdk" / "core.py").write_text("VALUE = 1\n", encoding="utf-8")
+    _commit_all(repo)
+
+    analysis = analyze_clarifications(repo, ["tools"])
+    assert analysis.requests == ()
+    assert analysis.status == "NO_CLARIFICATION_REQUIRED"
+
+
 def test_cli_uses_korean_fixed_template(tmp_path: Path, monkeypatch, capsys):
     repo = _tool_repo(tmp_path)
     monkeypatch.setenv("PTSIP_LANG", "ko")
@@ -123,7 +152,7 @@ def test_cli_uses_korean_fixed_template(tmp_path: Path, monkeypatch, capsys):
     assert payload["language"] == "ko"
     assert payload["inference"]["llm_calls"] == 0
     questions = {item["field"]: item["prompt"] for item in payload["requests"][0]["questions"]}
-    assert questions["classification"] == "이 컴포넌트의 PTSIP 아키텍처 분류는 무엇입니까?"
+    assert questions["classification"] == "이 PTSIP 컴포넌트의 primary lifecycle ownership은 무엇입니까?"
     assert questions["purpose"] == "이 컴포넌트를 만든 주된 목적은 무엇입니까?"
 
 
@@ -148,6 +177,9 @@ def test_github_publish_uses_origin_and_deduplicates_outside_repo(tmp_path: Path
         assert input_text is not None
         assert "PTSIP does not call an LLM" in input_text
         assert "ptsip-clarification-answer/v1" in input_text
+        assert "DEVELOPMENT_TOOLING" in input_text
+        assert "DELIVERY" in input_text
+        assert "OPERATIONS" in input_text
         return subprocess.CompletedProcess(args, 0, stdout="https://github.com/example/product/issues/123\n", stderr="")
 
     monkeypatch.setattr(github_issue, "_run_gh", fake_run)
