@@ -4,10 +4,43 @@ import copy
 import hashlib
 import json
 from dataclasses import dataclass
+from types import MappingProxyType
 from typing import Mapping
 
 
 CATALOG_FORMAT = "ptsip-responsibility-template-catalog/v1"
+
+PROJECT_EXPLICIT = "PROJECT_EXPLICIT"
+TEMPLATE = "TEMPLATE"
+PROJECT_OVERRIDE = "PROJECT_OVERRIDE"
+PROJECT_EXTENSION = "PROJECT_EXTENSION"
+PROJECT_REMOVAL = "PROJECT_REMOVAL"
+
+_PROVENANCE_VALUES = frozenset(
+    {
+        PROJECT_EXPLICIT,
+        TEMPLATE,
+        PROJECT_OVERRIDE,
+        PROJECT_EXTENSION,
+        PROJECT_REMOVAL,
+    }
+)
+_STABLE_ID_COLLECTIONS = ("components", "associated_artifacts", "relationships")
+_SET_VALUED_FIELDS = frozenset(
+    {
+        "roles",
+        "include",
+        "exclude",
+        "manifests",
+        "consumers",
+        "analysis_inputs",
+    }
+)
+_OPTIONAL_SET_FIELDS_BY_COLLECTION = {
+    "components": ("roles", "exclude", "manifests", "consumers", "analysis_inputs"),
+    "associated_artifacts": ("exclude",),
+    "relationships": (),
+}
 
 
 class TemplateMaterializationError(ValueError):
@@ -31,11 +64,82 @@ class TemplateDefinition:
 
 
 @dataclass(frozen=True)
-class MaterializedProfile:
-    payload: dict[str, object]
+class ResolutionProvenance:
+    """Derived declaration origin metadata for one resolved profile.
+
+    Provenance is explanatory runtime metadata. It is not lifecycle ownership,
+    evidence provenance, or canonical Project Profile state.
+    """
+
+    components: Mapping[str, str]
+    associated_artifacts: Mapping[str, str]
+    relationships: Mapping[str, str]
+    removals: Mapping[str, tuple[str, ...]]
+
+    def __post_init__(self) -> None:
+        component_origins = dict(self.components)
+        artifact_origins = dict(self.associated_artifacts)
+        relationship_origins = dict(self.relationships)
+        removal_rows = {key: tuple(value) for key, value in dict(self.removals).items()}
+
+        for label, origins in (
+            ("component", component_origins),
+            ("associated-artifact", artifact_origins),
+            ("relationship", relationship_origins),
+        ):
+            invalid = sorted(set(origins.values()) - _PROVENANCE_VALUES)
+            if invalid:
+                raise TemplateMaterializationError(
+                    f"Unknown {label} provenance value(s): {', '.join(invalid)}."
+                )
+
+        invalid_removal_groups = sorted(set(removal_rows) - set(_STABLE_ID_COLLECTIONS))
+        if invalid_removal_groups:
+            raise TemplateMaterializationError(
+                "Unknown removal provenance collection(s): "
+                + ", ".join(invalid_removal_groups)
+                + "."
+            )
+
+        object.__setattr__(self, "components", MappingProxyType(component_origins))
+        object.__setattr__(self, "associated_artifacts", MappingProxyType(artifact_origins))
+        object.__setattr__(self, "relationships", MappingProxyType(relationship_origins))
+        object.__setattr__(self, "removals", MappingProxyType(removal_rows))
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "components": dict(self.components),
+            "associated_artifacts": dict(self.associated_artifacts),
+            "relationships": dict(self.relationships),
+            "removals": {key: list(value) for key, value in self.removals.items()},
+        }
+
+
+@dataclass(frozen=True)
+class ResolvedProfile:
+    """Source-preserving runtime view of one resolved Responsibility Map."""
+
+    source_payload: dict[str, object]
+    effective_payload: dict[str, object]
     source_mode: str
     template_id: str | None
     template_revision: str | None
+    effective_map_digest: str
+    provenance: ResolutionProvenance
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "source_payload", copy.deepcopy(self.source_payload))
+        object.__setattr__(self, "effective_payload", copy.deepcopy(self.effective_payload))
+
+    @property
+    def payload(self) -> dict[str, object]:
+        """Current internal compatibility accessor for the effective payload.
+
+        New resolved-view consumers should use ``effective_payload`` explicitly.
+        The original project declaration is always available as ``source_payload``.
+        """
+
+        return self.effective_payload
 
     @property
     def template_bound(self) -> bool:
@@ -50,6 +154,7 @@ class MaterializedProfile:
                 if self.template_bound
                 else None
             ),
+            "effective_map_digest": self.effective_map_digest,
         }
 
 
@@ -63,6 +168,158 @@ def calculate_template_revision(map_payload: Mapping[str, object]) -> str:
 
     encoded = json.dumps(
         map_payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
+def _canonical_json_sort_key(value: object) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def _normalize_generic(value: object, *, field_name: str | None = None) -> object:
+    if isinstance(value, Mapping):
+        normalized: dict[str, object] = {}
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise TemplateMaterializationError(
+                    "Effective-map digest requires string mapping keys."
+                )
+            normalized[key] = _normalize_generic(item, field_name=key)
+        return normalized
+    if isinstance(value, list):
+        normalized_items = [_normalize_generic(item) for item in value]
+        if field_name in _SET_VALUED_FIELDS:
+            return sorted(normalized_items, key=_canonical_json_sort_key)
+        return normalized_items
+    if isinstance(value, tuple):
+        normalized_items = [_normalize_generic(item) for item in value]
+        if field_name in _SET_VALUED_FIELDS:
+            return sorted(normalized_items, key=_canonical_json_sort_key)
+        return normalized_items
+    return value
+
+
+def _normalize_stable_id_collection(
+    value: object,
+    *,
+    collection_name: str,
+) -> list[dict[str, object]]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise TemplateMaterializationError(
+            f"Effective-map {collection_name} must be a list for digest calculation."
+        )
+
+    normalized: list[dict[str, object]] = []
+    seen: set[str] = set()
+    for item in value:
+        if not isinstance(item, Mapping):
+            raise TemplateMaterializationError(
+                f"Effective-map {collection_name} entries must be mappings for digest calculation."
+            )
+        item_id = item.get("id")
+        if not isinstance(item_id, str) or not item_id:
+            raise TemplateMaterializationError(
+                f"Effective-map {collection_name} entry requires a non-empty id for digest calculation."
+            )
+        if item_id in seen:
+            raise TemplateMaterializationError(
+                f"Effective-map {collection_name} IDs are not unique: {item_id}."
+            )
+        seen.add(item_id)
+
+        row = copy.deepcopy(dict(item))
+        for field in _OPTIONAL_SET_FIELDS_BY_COLLECTION[collection_name]:
+            row.setdefault(field, [])
+        normalized_row = _normalize_generic(row)
+        if not isinstance(normalized_row, dict):
+            raise AssertionError("Normalized stable-ID entry must remain a mapping.")
+        normalized.append(normalized_row)
+
+    normalized.sort(key=lambda row: str(row["id"]))
+    return normalized
+
+
+def _normalize_dependency_policy(value: object) -> dict[str, object]:
+    if not isinstance(value, Mapping):
+        raise TemplateMaterializationError(
+            "Effective-map component_dependency_policy must be a mapping for digest calculation."
+        )
+
+    policy = copy.deepcopy(dict(value))
+    for key in ("allow", "deny"):
+        raw_relations = policy.get(key, [])
+        if not isinstance(raw_relations, list):
+            raise TemplateMaterializationError(
+                f"component_dependency_policy.{key} must be a list for digest calculation."
+            )
+        relations: list[dict[str, object]] = []
+        for relation in raw_relations:
+            if not isinstance(relation, Mapping):
+                raise TemplateMaterializationError(
+                    f"component_dependency_policy.{key} entries must be mappings."
+                )
+            source = relation.get("from")
+            target = relation.get("to")
+            if not isinstance(source, str) or not source or not isinstance(target, str) or not target:
+                raise TemplateMaterializationError(
+                    f"component_dependency_policy.{key} entries require non-empty from/to IDs."
+                )
+            normalized_relation = _normalize_generic(copy.deepcopy(dict(relation)))
+            if not isinstance(normalized_relation, dict):
+                raise AssertionError("Normalized dependency-policy relation must remain a mapping.")
+            relations.append(normalized_relation)
+        relations.sort(key=lambda item: (str(item["from"]), str(item["to"])))
+        policy[key] = relations
+
+    normalized_policy = _normalize_generic(policy)
+    if not isinstance(normalized_policy, dict):
+        raise AssertionError("Normalized dependency policy must remain a mapping.")
+    return normalized_policy
+
+
+def effective_map_semantics(payload: Mapping[str, object]) -> dict[str, object]:
+    """Return the canonical semantic object used for effective-map identity.
+
+    Source mode, template identity, Specification binding, provenance, and
+    serialization-only details are intentionally excluded.
+    """
+
+    semantic: dict[str, object] = {
+        "components": _normalize_stable_id_collection(
+            payload.get("components"), collection_name="components"
+        ),
+        "associated_artifacts": _normalize_stable_id_collection(
+            payload.get("associated_artifacts"), collection_name="associated_artifacts"
+        ),
+        "relationships": _normalize_stable_id_collection(
+            payload.get("relationships"), collection_name="relationships"
+        ),
+    }
+
+    if "component_dependency_policy" in payload:
+        semantic["component_dependency_policy"] = _normalize_dependency_policy(
+            payload["component_dependency_policy"]
+        )
+
+    policies = payload.get("policies")
+    if not isinstance(policies, Mapping):
+        raise TemplateMaterializationError(
+            "Effective-map policies must be a mapping for digest calculation."
+        )
+    semantic["policies"] = _normalize_generic(copy.deepcopy(dict(policies)))
+    return semantic
+
+
+def calculate_effective_map_digest(payload: Mapping[str, object]) -> str:
+    """Return deterministic SHA-256 identity for effective architecture semantics."""
+
+    encoded = json.dumps(
+        effective_map_semantics(payload),
         sort_keys=True,
         separators=(",", ":"),
         ensure_ascii=False,
@@ -271,20 +528,44 @@ def _id(value: object, label: str) -> str:
     return item_id
 
 
+def _mapping_items(value: object, *, label: str) -> list[dict[str, object]]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise TemplateMaterializationError(f"{label} collection must be a list.")
+    items: list[dict[str, object]] = []
+    for item in value:
+        if not isinstance(item, Mapping):
+            raise TemplateMaterializationError(f"{label} entry must be a mapping.")
+        items.append(copy.deepcopy(dict(item)))
+    return items
+
+
+def _removal_ids(value: object, *, label: str) -> list[str]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise TemplateMaterializationError(f"{label} removals must be a list.")
+    removals: list[str] = []
+    for item in value:
+        if not isinstance(item, str) or not item:
+            raise TemplateMaterializationError(f"{label} removal IDs must be non-empty strings.")
+        removals.append(item)
+    if len(removals) != len(set(removals)):
+        raise TemplateMaterializationError(f"{label} removal IDs are not unique.")
+    return removals
+
+
 def _merge_id_collection(
     base: object,
     replacements: object,
     removals: object,
     *,
     label: str,
-) -> list[dict[str, object]]:
-    base_items = [copy.deepcopy(dict(item)) for item in base or [] if isinstance(item, Mapping)]
-    replacement_items = [
-        copy.deepcopy(dict(item))
-        for item in replacements or []
-        if isinstance(item, Mapping)
-    ]
-    removal_ids = [str(item) for item in removals or [] if isinstance(item, str)]
+) -> tuple[list[dict[str, object]], dict[str, str], tuple[str, ...]]:
+    base_items = _mapping_items(base, label=f"Template {label}")
+    replacement_items = _mapping_items(replacements, label=f"Override {label}")
+    removal_ids = _removal_ids(removals, label=label)
 
     base_ids = [_id(item, label) for item in base_items]
     if len(base_ids) != len(set(base_ids)):
@@ -309,24 +590,61 @@ def _merge_id_collection(
         _id(item, f"override {label}"): item for item in replacement_items
     }
     result: list[dict[str, object]] = []
+    origins: dict[str, str] = {}
     for item in base_items:
         item_id = _id(item, label)
         if item_id in removal_ids:
             continue
-        result.append(copy.deepcopy(replacement_by_id.pop(item_id, item)))
+        replacement = replacement_by_id.pop(item_id, None)
+        if replacement is not None:
+            result.append(copy.deepcopy(replacement))
+            origins[item_id] = PROJECT_OVERRIDE
+        else:
+            result.append(copy.deepcopy(item))
+            origins[item_id] = TEMPLATE
 
     for item in replacement_items:
         item_id = _id(item, f"override {label}")
         if item_id in replacement_by_id:
             result.append(copy.deepcopy(item))
+            origins[item_id] = PROJECT_EXTENSION
             replacement_by_id.pop(item_id, None)
-    return result
+
+    return result, origins, tuple(sorted(removal_ids))
 
 
-def materialize_profile(payload: Mapping[str, object]) -> MaterializedProfile:
-    """Resolve explicit/template/hybrid input into one deterministic explicit map.
+def _origin_map(value: object, *, label: str, origin: str) -> dict[str, str]:
+    items = _mapping_items(value, label=label)
+    ids = [_id(item, label) for item in items]
+    if len(ids) != len(set(ids)):
+        raise TemplateMaterializationError(f"{label} IDs are not unique.")
+    return {item_id: origin for item_id in ids}
 
-    Materialization is read-only: the source payload is never mutated. Hybrid
+
+def _resolved_profile(
+    *,
+    source_payload: dict[str, object],
+    effective_payload: dict[str, object],
+    source_mode: str,
+    template_id: str | None,
+    template_revision: str | None,
+    provenance: ResolutionProvenance,
+) -> ResolvedProfile:
+    return ResolvedProfile(
+        source_payload=source_payload,
+        effective_payload=effective_payload,
+        source_mode=source_mode,
+        template_id=template_id,
+        template_revision=template_revision,
+        effective_map_digest=calculate_effective_map_digest(effective_payload),
+        provenance=provenance,
+    )
+
+
+def materialize_profile(payload: Mapping[str, object]) -> ResolvedProfile:
+    """Resolve explicit/template/hybrid input into one source-preserving view.
+
+    Materialization is read-only: the caller payload is never mutated. Hybrid
     overrides replace matching stable IDs in place, remove only known template
     IDs, and append genuinely new project-owned IDs in declaration order.
     """
@@ -338,11 +656,32 @@ def materialize_profile(payload: Mapping[str, object]) -> MaterializedProfile:
 
     mode = map_meta.get("mode")
     if mode == "explicit":
-        return MaterializedProfile(
-            payload=source,
+        effective = copy.deepcopy(source)
+        provenance = ResolutionProvenance(
+            components=_origin_map(
+                effective.get("components"), label="component", origin=PROJECT_EXPLICIT
+            ),
+            associated_artifacts=_origin_map(
+                effective.get("associated_artifacts"),
+                label="associated-artifact",
+                origin=PROJECT_EXPLICIT,
+            ),
+            relationships=_origin_map(
+                effective.get("relationships"), label="relationship", origin=PROJECT_EXPLICIT
+            ),
+            removals={
+                "components": (),
+                "associated_artifacts": (),
+                "relationships": (),
+            },
+        )
+        return _resolved_profile(
+            source_payload=source,
+            effective_payload=effective,
             source_mode="explicit",
             template_id=None,
             template_revision=None,
+            provenance=provenance,
         )
     if mode not in {"template", "hybrid"}:
         raise TemplateMaterializationError(f"Unsupported Responsibility Map mode: {mode!r}.")
@@ -353,40 +692,76 @@ def materialize_profile(payload: Mapping[str, object]) -> MaterializedProfile:
     definition = resolve_template(template_ref)
     effective_map = copy.deepcopy(definition.map_payload)
 
+    component_origins = _origin_map(
+        effective_map.get("components"), label="component", origin=TEMPLATE
+    )
+    artifact_origins = _origin_map(
+        effective_map.get("associated_artifacts"), label="associated-artifact", origin=TEMPLATE
+    )
+    relationship_origins = _origin_map(
+        effective_map.get("relationships"), label="relationship", origin=TEMPLATE
+    )
+    removal_provenance: dict[str, tuple[str, ...]] = {
+        "components": (),
+        "associated_artifacts": (),
+        "relationships": (),
+    }
+
     if mode == "hybrid":
         overrides = map_meta.get("overrides")
         if not isinstance(overrides, Mapping):
             raise TemplateMaterializationError("Hybrid map requires an overrides mapping.")
 
-        effective_map["components"] = _merge_id_collection(
+        components, component_origins, component_removals = _merge_id_collection(
             effective_map.get("components", []),
             overrides.get("components", []),
             overrides.get("remove_component_ids", []),
             label="component",
         )
-        effective_map["associated_artifacts"] = _merge_id_collection(
+        artifacts, artifact_origins, artifact_removals = _merge_id_collection(
             effective_map.get("associated_artifacts", []),
             overrides.get("associated_artifacts", []),
             overrides.get("remove_associated_artifact_ids", []),
             label="associated-artifact",
         )
-        effective_map["relationships"] = _merge_id_collection(
+        relationships, relationship_origins, relationship_removals = _merge_id_collection(
             effective_map.get("relationships", []),
             overrides.get("relationships", []),
             overrides.get("remove_relationship_ids", []),
             label="relationship",
         )
+        effective_map["components"] = components
+        effective_map["associated_artifacts"] = artifacts
+        effective_map["relationships"] = relationships
+        removal_provenance = {
+            "components": component_removals,
+            "associated_artifacts": artifact_removals,
+            "relationships": relationship_removals,
+        }
 
-    materialized = source
-    for key in ("components", "associated_artifacts", "relationships", "component_dependency_policy"):
-        materialized.pop(key, None)
+    effective = copy.deepcopy(source)
+    for key in (
+        "components",
+        "associated_artifacts",
+        "relationships",
+        "component_dependency_policy",
+    ):
+        effective.pop(key, None)
         if key in effective_map:
-            materialized[key] = copy.deepcopy(effective_map[key])
-    materialized["responsibility_map"] = {"mode": "explicit"}
+            effective[key] = copy.deepcopy(effective_map[key])
+    effective["responsibility_map"] = {"mode": "explicit"}
 
-    return MaterializedProfile(
-        payload=materialized,
+    provenance = ResolutionProvenance(
+        components=component_origins,
+        associated_artifacts=artifact_origins,
+        relationships=relationship_origins,
+        removals=removal_provenance,
+    )
+    return _resolved_profile(
+        source_payload=source,
+        effective_payload=effective,
         source_mode=str(mode),
         template_id=definition.id,
         template_revision=definition.revision,
+        provenance=provenance,
     )
