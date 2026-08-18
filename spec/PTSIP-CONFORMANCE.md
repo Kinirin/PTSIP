@@ -1,6 +1,6 @@
 # PTSIP Conformance
 
-**Version:** 0.3.4-draft
+**Version:** 0.3.6-draft
 
 PTSIP conformance distinguishes Consumer Repository architecture conformance from PTSIP implementation capability requirements. A Decision Authority may coordinate architecture decisions, but it does not itself prove that a Consumer Repository conforms.
 
@@ -8,7 +8,7 @@ PTSIP conformance distinguishes Consumer Repository architecture conformance fro
 
 ### 1.1 PTSIP Core Conformant
 
-A project is **PTSIP Core Conformant** when it satisfies all applicable Consumer Repository `MUST`/`MUST NOT` requirements in `PTSIP-SPEC.md`, including classification, coherent boundaries, Product-to-Toolchain runtime isolation, packaging isolation, independently resolvable build environments, lifecycle independence, and other applicable universal rules.
+A project is **PTSIP Core Conformant** when it satisfies all applicable Consumer Repository `MUST`/`MUST NOT` requirements in `PTSIP-SPEC.md` and its normative companion specifications, including primary lifecycle classification, coherent responsibility boundaries, Product runtime isolation from non-Product implementation, Product packaging isolation, independently resolvable lifecycle environments, lifecycle independence, Responsibility Map requirements, and other applicable universal rules.
 
 A project does not need to use distributed decision coordination merely to be Core Conformant.
 
@@ -16,7 +16,7 @@ A project does not need to use distributed decision coordination merely to be Co
 
 A project is **PTSIP Enforced Conformant** when it is Core Conformant and additionally provides enough machine-readable declaration and reproducible evidence for automated enforcement, including:
 
-- a PTSIP Project Profile or equivalent declaration;
+- a PTSIP Project Profile or equivalent materialized declaration;
 - canonical Specification source/family and exact immutable revision for a mutable draft;
 - automated dependency-boundary evaluation;
 - Product Artifact evidence when required by `PTSIP-PKG-001` / `PTSIP-ART-001`;
@@ -25,15 +25,17 @@ A project is **PTSIP Enforced Conformant** when it is Core Conformant and additi
 - rule-relative evidence coverage sufficient for applicable mandatory rules; and
 - CI or equivalent repeatable validation.
 
+A template or hybrid Project Profile may be structurally valid before materialization. A component-level Enforced Conformance evaluator that requires concrete component endpoints MUST materialize the exact version-bound template plus overrides before making a component-level claim.
+
 ## 2. Profile Validation, authority reconciliation, and Conformance Evaluation
 
 These operations are distinct.
 
 ### 2.1 Profile Validation
 
-Profile Validation asks whether the selected declaration is structurally and semantically valid. It may check schema structure, specification binding, component IDs, selector conflicts, lifecycle facts, referenced components, and project-specific dependency policy.
+Profile Validation asks whether the selected declaration is structurally and semantically valid. It may check schema structure, Specification binding, Responsibility Map mode/template identity, component/associated-artifact/relationship IDs, selector conflicts, primary lifecycle facts, typed relationship endpoints, anchor semantics, and project-specific dependency policy.
 
-A valid profile is not proof that observed dependencies, artifacts, build behavior, or lifecycle behavior conform.
+A valid profile is not proof that observed dependencies, artifacts, build behavior, delivery/operations behavior, or lifecycle behavior conform.
 
 ### 2.2 Authority reconciliation
 
@@ -47,11 +49,11 @@ Authority reconciliation therefore MUST NOT be treated as Conformance Evaluation
 
 Conformance Evaluation combines, as applicable:
 
-- validated project declaration;
+- validated/materialized project declaration;
 - observed repository evidence;
 - dependency evidence;
 - Product Artifact evidence;
-- build/lifecycle evidence;
+- build/delivery/operations/lifecycle evidence;
 - evidence coverage;
 - snapshot integrity; and
 - deterministic Consumer Repository PTSIP rules.
@@ -81,9 +83,10 @@ A definite mandatory violation settles the result even if unrelated evidence gap
 - unsupported relevant language/build/package analysis;
 - unresolved dynamic dependency relevant to a mandatory rule;
 - missing required Product Artifact evidence;
+- unmaterialized template/hybrid responsibility data required by an evaluator;
 - unstable/mixed repository snapshot;
 - missing required Enforced Conformance binding; or
-- missing durable component facts when a mandatory rule cannot be evaluated without them.
+- missing durable responsibility facts when a mandatory rule cannot be evaluated without them.
 
 ### 3.4 `NOT_EVALUATED`
 
@@ -100,12 +103,13 @@ A reproducible conformance claim SHOULD identify:
 - conformance level;
 - conformance outcome;
 - selected Project Profile path/configuration source;
+- Responsibility Map mode and materialized template revision where applicable;
 - validation/evaluation status;
 - evidence snapshot status;
 - blocking/non-blocking evidence gaps; and
 - diagnostic/evidence format versions where applicable.
 
-For Enforced Conformance against `0.3.4-draft`, the immutable Specification revision is required.
+For Enforced Conformance against `0.3.6-draft`, the immutable Specification revision is required.
 
 ## 5. Evidence sufficiency and coverage
 
@@ -119,20 +123,24 @@ Unresolved evidence MUST NOT be converted into absence-of-violation proof.
 
 ## 6. Durable Project Profile facts
 
-`0.3.4-draft` defines canonical component-level representation for these explicit adoption facts:
+`0.3.6-draft` defines canonical component-level representation around these explicit responsibility facts:
 
-- `classification`;
+- `classification` as primary lifecycle ownership;
+- optional `roles`;
 - `purpose`;
-- `shipped`;
-- `runtime_required`;
-- `lifecycle_owner`;
-- `executable`.
+- `shipped` when applicable;
+- `runtime_required` when applicable;
+- `executable` when applicable;
+- associated-artifact declarations when subordinate project-owned support surfaces are represented; and
+- typed relationship declarations when project-owned semantic edges are represented.
+
+A separate `lifecycle_owner` field is not a second canonical ownership authority in Tool `0.3.6`; legacy readers may preserve an old lifecycle-owner fact only as migration evidence while producing a canonical classification proposal.
 
 A manually authored profile may omit optional facts when they are not needed for the claim, but if a missing fact prevents evaluation of an applicable mandatory rule, the result cannot be `CONFORMANT` on that evidence alone.
 
 A write-enabled structured adoption/resolution workflow must preserve supplied facts losslessly under `PTSIP-ADP-001`. Failure of a Tool to preserve those facts is an implementation-conformance problem, not proof of Consumer Repository non-conformance.
 
-Boundary-root shorthand may remain structurally valid, but its lower fact precision may make a strict claim `INCOMPLETE` when rule evaluation needs facts the shorthand cannot represent.
+Legacy Tool `0.3.5` boundary/root or old component declarations may be accepted by a legacy reader as migration input. They are not silently treated as canonical Tool `0.3.6` Responsibility Maps.
 
 ## 7. Declaration versus observed evidence
 
@@ -140,33 +148,39 @@ A Project Profile records intended architecture. It does not prove observed repo
 
 Automated evaluation SHOULD distinguish:
 
-- declared ownership/policy (`DECLARED`);
+- project-owned Responsibility Map declaration/policy (`DECLARED`);
 - direct repository/artifact/runtime facts (`OBSERVED`);
 - bounded derived conclusions (`INFERRED`);
-- agent/review decisions; and
+- agent/review proposals and decisions; and
 - deterministic findings.
 
 A contradiction between declaration and observation MUST NOT be hidden by treating the declaration as proof of compliance.
+
+A typed Responsibility Map relationship is project architecture declaration, not proof that the observed repository contains the corresponding interaction. Likewise, an observed evidence edge does not become a project-owned relationship without project authority.
 
 ## 8. Product Artifact evidence
 
 Packaging-isolation evaluation must distinguish artifact owner, artifact producer, contained components/paths or equivalent content evidence, derivation relationship, and shipping scope.
 
-A Toolchain producer creating a Product Artifact is not itself a violation. The relevant question is whether the Product Artifact contains Toolchain-owned implementation or Toolchain-only dependencies contrary to `PTSIP-PKG-001`.
+A `DEVELOPMENT_TOOLING`, `DELIVERY`, or `OPERATIONS` producer creating or handling a Product Artifact is not itself a violation. The relevant question is whether the Product Artifact contains non-Product implementation or lifecycle-only dependencies contrary to `PTSIP-PKG-001`.
+
+A valid `NEUTRAL_CONTRACT` may be included or consumed where applicable without becoming non-Product executable implementation.
 
 If required artifact-content evidence is unavailable, the packaging conclusion is `INCOMPLETE`, not conformant by absence of a detected inclusion.
 
 ## 9. Lifecycle evidence
 
-A workflow/CI trigger is evidence of automation behavior, not by itself proof of Product release coupling.
+A workflow/CI trigger is evidence of automation behavior, not by itself proof of one primary lifecycle ownership.
 
 Lifecycle evaluation SHOULD distinguish:
 
-- workflow trigger;
+- development/verification obligation;
+- authoritative release-unit creation;
 - Product Artifact modification;
 - Product version/release decision;
-- Product publication/deployment; and
-- Product compatibility obligation.
+- publication/promotion/deployment and delivery handoff;
+- ongoing post-handoff operational responsibility; and
+- compatibility obligation.
 
 ## 10. Dependency evidence and external nodes
 
@@ -190,9 +204,9 @@ A confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated.
 
 ## 13. External validator independence and non-intrusion
 
-An external PTSIP validator is architecture-governance tooling and is not part of the Consumer Repository Product/Toolchain planes merely because it is installed in a developer environment or CI image.
+An external PTSIP validator is architecture-governance tooling and is not a Consumer Repository lifecycle component merely because it is installed in a developer environment or CI image.
 
-If the project vendors/takes lifecycle ownership of the validator, that copy becomes subject to normal PTSIP classification.
+If the project vendors/takes lifecycle ownership of the validator, that project-owned copy becomes subject to normal PTSIP classification.
 
 External inspection/Pilot tooling SHOULD compare observable repository state before/after analysis and SHOULD place Tool-owned state outside the Consumer Repository by default.
 
@@ -213,7 +227,7 @@ A distributed implementation conforms to this capability only when it satisfies 
 - fail-closed behavior rather than isolated Local fallback; and
 - separation of global decision state from clone-local projection/application state.
 
-A failure of these requirements is an implementation capability failure. It does not by itself mean the Consumer Repository violates Product/Toolchain architecture rules.
+A failure of these requirements is an implementation capability failure. It does not by itself mean the Consumer Repository violates lifecycle ownership architecture rules.
 
 ## 15. Authority conflict and Consumer Repository claims
 
