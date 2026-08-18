@@ -139,6 +139,139 @@ A project MUST NOT be declared compliant/non-compliant or be automatically migra
 
 Product-owned tests and Development-Tooling-owned tests are both valid patterns. PTSIP MUST NOT force one repository/testing style merely to satisfy classification.
 
+### PTSIP-CLS-004 — Governing lifecycle obligation
+
+Primary lifecycle ownership MUST be determined from the **governing lifecycle obligation** of a coherent responsibility: the lifecycle-specific reason that responsibility must exist, change, remain compatible, execute, or be retired.
+
+Classification MUST NOT be selected by majority of files, lines, workflow jobs, runtime duration, invocation frequency, confidence score, or whichever lifecycle phase appears most often.
+
+Relevant determination questions include:
+
+```text
+Why does this responsibility exist?
+Which lifecycle obligation fails if it disappears?
+What type of change normally requires it to change?
+Who owns its compatibility consequences?
+When is it normally invoked or enforced?
+Does its obligation end when a release reaches its destination?
+Does its obligation continue after deployment as ongoing service management?
+Can it evolve independently from another responsibility currently grouped with it?
+```
+
+### PTSIP-CLS-005 — Ordered lifecycle determination procedure
+
+A conforming adoption/migration analysis SHOULD apply lifecycle determination in this order:
+
+1. establish that the candidate is in-scope project-owned responsibility;
+2. identify a coherent responsibility boundary before assigning ownership;
+3. collect declared/observed/inferred lifecycle evidence with provenance;
+4. test whether the responsibility satisfies all `NEUTRAL_CONTRACT` semantics;
+5. otherwise determine whether the governing owning lifecycle is Product, Development Tooling, Delivery, or Operations;
+6. test whether materially independent lifecycle responsibilities have been collapsed into one candidate;
+7. propose one classification, a component split, or unresolved clarification;
+8. preserve project-owner authority for inferred/migrated architecture decisions.
+
+A Tool MAY optimize how it collects evidence, but MUST NOT replace this semantic procedure with filename/framework/path inference.
+
+### PTSIP-CLS-006 — Product versus Development Tooling boundary
+
+A responsibility is a `PRODUCT` candidate when its governing obligation is Product runtime/user behavior, Product distribution content, Product compatibility, runtime SDK responsibility, or Product-owned quality/verification.
+
+A responsibility is a `DEVELOPMENT_TOOLING` candidate when its governing obligation is developer authoring, inspection, validation, transformation, migration, generation, static analysis, reusable verification infrastructure, repository transformation, development-environment support, or non-delivery development build support.
+
+A test target does not determine test implementation ownership. In particular:
+
+- a Product-specific test whose lifecycle is owned with Product behavior/compatibility MAY be `PRODUCT`;
+- a reusable test SDK, framework, harness, generic verification engine, or repository-wide reusable validation mechanism MAY be `DEVELOPMENT_TOOLING` even when it verifies Product behavior;
+- current consumer count alone MUST NOT convert reusable Development Tooling into Product ownership.
+
+VPMS Verification Purpose remains a separate axis and MUST NOT be used as a direct alias for PTSIP classification.
+
+### PTSIP-CLS-007 — Development build versus Delivery build boundary
+
+The activity name `build` MUST NOT determine classification.
+
+Build responsibility is normally `DEVELOPMENT_TOOLING` when its governing obligation is coding, local compilation, inspection, testing, or creation of non-release intermediate outputs.
+
+Build responsibility is normally `DELIVERY` when its governing obligation is to materialize, assemble, sign, verify for handoff, package, or otherwise prepare an authoritative release/distribution/deployment unit as part of carrying that target to a destination.
+
+The Product Artifact created by such a process MAY remain `PRODUCT` even when the producing mechanism is `DELIVERY`. Artifact ownership and producer ownership are distinct.
+
+### PTSIP-CLS-008 — Delivery versus Operations handoff boundary
+
+`DELIVERY` governs transition of a release target through release, publication, promotion, distribution, or deployment to a destination.
+
+`OPERATIONS` governs ongoing management of already deployed state after ordinary operation begins.
+
+The **delivery handoff** is the semantic boundary where the selected release target has reached/been accepted by its intended destination and ongoing operational responsibility begins.
+
+When both classifications appear plausible:
+
+```text
+Does the primary obligation end when the selected release reaches/activates at its destination?
+    yes -> DELIVERY candidate
+
+Does the primary obligation persist because deployed state must remain healthy/recoverable/maintained?
+    yes -> OPERATIONS candidate
+```
+
+Technology does not decide the result. Terraform, GitHub Actions, shell/PowerShell automation, containers, or another mechanism MAY belong to either lifecycle depending on governing obligation.
+
+Rollback is likewise not universally classified by name: release-channel rollback/promotion MAY be `DELIVERY`; incident-recovery responsibility owned by ongoing production operation MAY be `OPERATIONS`.
+
+### PTSIP-CLS-009 — Neutral Contract qualification
+
+`NEUTRAL_CONTRACT` MUST NOT be used as a default bucket for non-executable, declarative, documentation-like, or shared files.
+
+A `NEUTRAL_CONTRACT` candidate MUST satisfy all of these conditions:
+
+1. non-executable in its architectural role;
+2. non-owning with respect to Product, Development Tooling, Delivery, and Operations implementation responsibility;
+3. lifecycle/compatibility governance meaningfully independent from the consuming lifecycles.
+
+Markdown/YAML form, a `docs/`/`schemas/`/`contracts/` path, multiple consumers, no executable bit, or a name containing `contract` are insufficient by themselves.
+
+Project-owned documentation or authority material that evolves with and governs one component's lifecycle is not neutral merely because it is non-executable. Such material MAY instead require associated-artifact/typed-relationship representation under Responsibility Map v2.
+
+### PTSIP-CLS-010 — Material mixed-lifecycle responsibility and split rule
+
+A component has a material mixed-lifecycle problem when one classification cannot describe its lifecycle truth without hiding an independently governable responsibility.
+
+Strong evidence for a required split/redesign includes one or more of:
+
+- different lifecycle triggers for change or execution;
+- different release, compatibility, permission, secret, or environment obligations;
+- independently evolving dependency environments;
+- different failure meanings or operational owners;
+- one responsibility can change, release, deploy, or operate independently of another;
+- one portion remains useful after another lifecycle responsibility is removed;
+- migration evidence maps substantial portions of one legacy component to different governing lifecycle obligations.
+
+Physical co-location, multiple workflow steps, or several activity verbs do not by themselves require a split. A component MAY contain subordinate activities from another phase when those activities exist solely to complete one coherent primary lifecycle obligation and introduce no independently governable lifecycle responsibility.
+
+A workflow that combines independently governable development verification, release delivery, and ongoing operational responsibility SHOULD be split or explicitly redesigned rather than classified by whichever phase has more jobs or longer runtime.
+
+### PTSIP-CLS-011 — Ambiguity and fail-closed classification proposals
+
+Tooling MAY propose a classification when available evidence coherently supports one lifecycle, and MAY attach confidence for review. Confidence MUST NOT become architecture authority.
+
+When material evidence supports conflicting lifecycle ownership:
+
+```text
+coherent single lifecycle
+    -> propose one classification
+
+material separable lifecycles
+    -> propose component split
+
+material but not safely resolvable
+    -> remain unresolved / require clarification
+```
+
+A Tool MUST NOT select an arbitrary lifecycle merely to complete migration, validation, or profile generation.
+
+The rationale for `PTSIP-CLS-004` through `PTSIP-CLS-011` is recorded in `decisions/ADR-0007-primary-lifecycle-boundary-determination.md`.
+
 ### PTSIP-DEP-001 — Product runtime isolation from non-Product implementation
 
 A Product component MUST NOT import, link, load, vendor, or otherwise depend on `DEVELOPMENT_TOOLING`, `DELIVERY`, or `OPERATIONS` implementation as a Product runtime or shipped implementation dependency.
