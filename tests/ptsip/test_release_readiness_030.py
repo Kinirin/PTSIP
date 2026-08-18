@@ -7,14 +7,14 @@ from ptsip.constants import SPEC_REVISION, SPEC_VERSION, TOOL_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPECTED_SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+EXPECTED_SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
-def test_tool_035_package_runtime_and_spec_binding_match() -> None:
+def test_tool_036_package_runtime_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.5"
-    assert TOOL_VERSION == "0.3.5"
-    assert SPEC_VERSION == "0.3.4-draft"
+    assert payload["project"]["version"] == "0.3.6"
+    assert TOOL_VERSION == "0.3.6"
+    assert SPEC_VERSION == "0.3.6-draft"
     assert SPEC_REVISION == EXPECTED_SPEC_REVISION
 
 
@@ -62,17 +62,23 @@ def test_canonical_and_embedded_machine_readable_contracts_are_identical() -> No
         assert (ROOT / canonical).read_bytes() == (ROOT / embedded).read_bytes(), canonical
 
 
-def test_documentation_records_034_authority_and_activation_contract() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+def test_release_contract_requires_full_036_normative_family() -> None:
+    release_contract = (ROOT / ".github" / "scripts" / "verify_release_contract.py").read_text(encoding="utf-8")
+    for path in (
+        "spec/PTSIP-SPEC.md",
+        "spec/PTSIP-CONFORMANCE.md",
+        "spec/PTSIP-TERMINOLOGY.md",
+        "spec/PTSIP-GOVERNANCE.md",
+        "spec/PTSIP-RESPONSIBILITY-MAP.md",
+    ):
+        assert path in release_contract
+
     spec = (ROOT / "spec" / "PTSIP-SPEC.md").read_text(encoding="utf-8")
-    adr = (ROOT / "decisions" / "ADR-0005-activate-spec-0.3.4-draft.md").read_text(encoding="utf-8")
-    release_note = (ROOT / "releasenote" / "spec-0.3.4-draft.md").read_text(encoding="utf-8")
-    assert "0.3.4-draft" in readme
-    assert "runtime_required" in readme
-    assert "lifecycle_owner" in readme
-    assert "AUTHORITY" in readme.upper()
-    assert "PTSIP-ADP-001" in spec
-    assert "PTSIP-AUT-001" in spec
-    assert "PTSIP-AUT-007" in spec
-    assert "first valid" in adr.lower()
-    assert "Active draft family" in release_note
+    map_spec = (ROOT / "spec" / "PTSIP-RESPONSIBILITY-MAP.md").read_text(encoding="utf-8")
+    spec_note = (ROOT / "releasenote" / "spec-0.3.6-draft.md").read_text(encoding="utf-8")
+    assert "0.3.6-draft" in spec
+    assert "DEVELOPMENT_TOOLING" in spec
+    assert "DELIVERY" in spec
+    assert "OPERATIONS" in spec
+    assert "PTSIP-RMAP-012" in map_spec
+    assert EXPECTED_SPEC_REVISION in spec_note
