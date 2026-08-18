@@ -309,10 +309,8 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
         mode = map_meta.get("mode") if isinstance(map_meta, dict) else None
         components = payload.get("components")
         if mode == "explicit" and isinstance(components, list):
-            partition = partition_components(
-                repository_root,
-                [item for item in components if isinstance(item, dict)],
-            )
+            component_items = [item for item in components if isinstance(item, dict)]
+            partition = partition_components(repository_root, component_items)
             details["component_partition"] = partition.as_dict()
             if partition.conflicts:
                 errors.append(
@@ -327,9 +325,46 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
                 warnings.append(
                     f"Component partition scan was incomplete: {len(partition.scan_errors)} repository scan error(s)."
                 )
-            if partition.unassigned_files:
+
+            artifact_items = [
+                item
+                for item in payload.get("associated_artifacts", [])
+                if isinstance(item, dict)
+            ] if isinstance(payload.get("associated_artifacts", []), list) else []
+            artifact_paths: set[str] = set()
+            if artifact_items:
+                artifact_partition = partition_components(repository_root, artifact_items)
+                details["associated_artifact_partition"] = artifact_partition.as_dict()
+                if artifact_partition.conflicts:
+                    errors.append(
+                        "associated_artifacts: "
+                        f"{len(artifact_partition.conflicts)} tracked path(s) have equal-specificity scope conflicts"
+                    )
+                if artifact_partition.unmatched_selectors:
+                    errors.append(
+                        "associated_artifacts: include selector(s) matched no tracked files: "
+                        + ", ".join(artifact_partition.unmatched_selectors[:20])
+                    )
+                artifact_paths = {item.path for item in artifact_partition.assignments}
+
+            component_paths = {item.path for item in partition.assignments}
+            overlapping_scope = sorted(component_paths & artifact_paths)
+            if overlapping_scope:
+                errors.append(
+                    "responsibility_map: tracked path(s) cannot simultaneously be classified component content "
+                    "and associated-artifact content: " + ", ".join(overlapping_scope[:20])
+                )
+
+            map_unassigned = sorted(set(partition.unassigned_files) - artifact_paths)
+            details["responsibility_map_coverage"] = {
+                "component_path_count": len(component_paths),
+                "associated_artifact_path_count": len(artifact_paths),
+                "unassigned_files": map_unassigned,
+                "unassigned_count": len(map_unassigned),
+            }
+            if map_unassigned:
                 warnings.append(
-                    f"{len(partition.unassigned_files)} tracked file(s) are outside declared component selectors; "
+                    f"{len(map_unassigned)} tracked file(s) are outside declared component and associated-artifact selectors; "
                     "this is not automatically a PTSIP violation."
                 )
         elif mode in {"template", "hybrid"}:
