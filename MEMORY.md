@@ -36,7 +36,16 @@ The first `0.3.6-draft` normative baseline containing both updated Specification
 
 This revision is the WU-00 baseline snapshot. The development Tool/runtime/profile/schema is not yet fully activated to that family merely because the normative baseline exists. Later work units must update schema, implementation, embedded specdata, Tool constants, repository self-adoption, and final release binding consistently.
 
-WU-01 lifecycle boundary determination is now frozen in the active `0.3.6-draft` Specification and `decisions/ADR-0007-primary-lifecycle-boundary-determination.md`. The next sequential ontology-dependent work unit is WU-02 (role + typed relationships + associated artifacts).
+WU-01 lifecycle boundary determination is frozen in the active `0.3.6-draft` Specification and `decisions/ADR-0007-primary-lifecycle-boundary-determination.md`.
+
+WU-02 role/typed-relationship/associated-artifact semantics are frozen in:
+
+```text
+spec/PTSIP-RESPONSIBILITY-MAP.md
+decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md
+```
+
+The next sequential ontology-dependent work unit is WU-03 (canonical Responsibility Map v2 JSON Schema/mode/identity/override representation).
 
 ## Tool 0.3.6 lifecycle model
 
@@ -91,6 +100,97 @@ Important frozen boundaries:
 
 Normative rule IDs are `PTSIP-CLS-004` through `PTSIP-CLS-011`.
 
+## WU-02 Responsibility Map semantic model
+
+Responsibility Map v2 keeps these axes separate:
+
+```text
+classification
+    = primary lifecycle ownership
+
+roles
+    = coarse responsibility characteristics inside that lifecycle
+
+relationships
+    = typed directed semantics between declared endpoints
+
+VPMS Verification Purpose
+    = what a Verification Case protects/verifies
+```
+
+### Canonical component roles
+
+Roles are optional and multi-valued. Canonical Tool `0.3.6` roles are:
+
+```text
+IMPLEMENTATION
+VERIFICATION
+AUTOMATION
+CONFIGURATION
+DOCUMENTATION
+GOVERNANCE
+```
+
+Do not create composite role names such as `VERIFICATION_AUTOMATION`, `SDK_IMPLEMENTATION`, or `BUILD_RELEASE_AUTOMATION`. Use multiple roles plus `purpose` plus typed relationships.
+
+A role does not determine classification and does not create a relationship automatically.
+
+### Canonical project-declared relationship vocabulary
+
+Responsibility Map v2 typed relationships use stable direction:
+
+```text
+source --TYPE--> target
+```
+
+Canonical Tool `0.3.6` project-declared types are:
+
+```text
+IMPORTS
+LINKS
+LOADS
+INVOKES
+READS
+GENERATES
+BUILDS
+PACKAGES
+PUBLISHES
+DEPLOYS
+VERIFIES
+MANAGES
+DOCUMENTS
+SPECIFIES
+GOVERNS
+```
+
+`PRODUCES`, `SUPPORTS`, `USES`, and generic `DEPENDS_ON` are intentionally not canonical escape-hatch relationships.
+
+`TESTS` remains an evidence relationship token. Responsibility Map uses broader `VERIFIES`; evidence may support a proposal but does not silently become project declaration.
+
+Typed relationships declare architecture meaning. They do not grant policy permission and do not waive universal PTSIP rules.
+
+### Associated artifacts
+
+An associated artifact is an unclassified non-component support surface subordinate to exactly one classified anchor component.
+
+Frozen requirements:
+
+- stable map identity;
+- explicit scope/selectors and purpose;
+- exactly one anchor component;
+- no PTSIP classification of its own;
+- no component roles of its own;
+- non-executable architectural role;
+- no independently governable primary lifecycle/release/compatibility responsibility;
+- at least one typed relationship connecting it to its anchor;
+- map-wide endpoint IDs must be unambiguous across components and associated artifacts.
+
+Associated artifacts do **not** inherit anchor classification. If support material gains independent lifecycle responsibility, it must be promoted/re-evaluated as a component. Independently governed cross-lifecycle non-executable contract semantics require `NEUTRAL_CONTRACT` evaluation.
+
+Project-owned SDK documentation/authority may therefore be an associated artifact that `SPECIFIES`/`GOVERNS` a Development Tooling SDK without being declared as Development Tooling implementation or Neutral Contract.
+
+The exact JSON/YAML nesting and references are WU-03 work; the role vocabulary, typed relationship semantics, one-anchor rule, endpoint identity rule, and promotion boundary are already frozen.
+
 ## Tool 0.3.5 compatibility boundary
 
 Tool `0.3.6` must understand valid Tool `0.3.5` profiles through a legacy reader and assisted migration path.
@@ -111,25 +211,11 @@ A legacy `TOOLCHAIN` component must not be blindly renamed to `DEVELOPMENT_TOOLI
 
 Legacy `PRODUCT` and `NEUTRAL_CONTRACT` may often carry forward, but discovery may still expose split/reclassification proposals when old coarse boundaries hid different lifecycle responsibilities.
 
+Legacy `consumers`, `analysis_inputs`, and untyped dependency-policy edges are migration evidence, not automatic mappings to typed Responsibility Map relationships.
+
 ## Responsibility Map v2 direction
 
-Tool `0.3.6` Responsibility Map v2 separates these axes:
-
-```text
-classification
-    = primary lifecycle ownership
-
-role
-    = responsibility performed inside that lifecycle
-
-relationship
-    = typed semantic relationship to another responsibility/artifact
-
-VPMS Verification Purpose
-    = what a Verification Case protects/verifies
-```
-
-Supported conceptual Responsibility Map modes:
+Tool `0.3.6` Responsibility Map v2 supports these conceptual modes:
 
 ```text
 explicit
@@ -137,11 +223,9 @@ template
 hybrid (template + repository overrides)
 ```
 
-Template selection remains explicit. Candidate discovery, migration analysis, confidence, role inference, typed-relationship inference, and component-split detection are evidence/proposals, not project architecture authority.
+Template selection remains explicit. Candidate discovery, migration analysis, confidence, role inference, typed-relationship inference, associated-artifact inference, and component-split detection are evidence/proposals, not project architecture authority.
 
-Responsibility Map v2 must also represent project-owned associated documentation/authority/support artifacts without requiring them to become independent components merely to express `DOCUMENTS`/`SPECIFIES`/`GOVERNS`-type semantics. Associated artifacts must not become a classification escape hatch.
-
-The exact canonical role/relationship vocabulary and schema representation are WU-02/WU-03 work and are not frozen solely by examples in planning documents.
+The exact canonical role/relationship semantics are now frozen by WU-02. WU-03 must implement those semantics in schema form without reopening them for serialization convenience.
 
 ## VPMS boundary
 
@@ -169,9 +253,9 @@ WU-00  0.3.6-draft normative baseline        COMPLETE
     ->
 WU-01  lifecycle ontology/boundary rules      COMPLETE
     ->
-WU-02  role + typed relationships + associated artifacts   NEXT
+WU-02  role + typed relationships + associated artifacts   COMPLETE
     ->
-WU-03  canonical Responsibility Map v2 schema
+WU-03  canonical Responsibility Map v2 schema             NEXT
 ```
 
 Evidence/candidate-discovery work then feeds the legacy-reader and migration analyzer. Do not implement final migration writes before the target ontology/schema is stable enough to preserve project intent losslessly.
@@ -251,7 +335,7 @@ Operational rules:
 - For release-candidate verification, `tooling-test.yml` also requires the exact full `source_sha`.
 - A successful release-candidate run records `self-hosted/release-verification` for the exact checked-out SHA.
 - `release.yml` requires the same SHA, requires it still to be `origin/main`, and creates the draft release without committing or pushing anything.
-- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure the runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
+- `tooling-release.yml` uses the self-hosted Windows runner for its build job. Before publishing a draft Tool release, ensure that runner is online; if it is offline, the build should wait rather than fall back to GitHub-hosted compute.
 
 ### Minimal GitHub-hosted exception
 
