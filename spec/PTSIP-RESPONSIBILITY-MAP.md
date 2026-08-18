@@ -2,13 +2,13 @@
 
 **Specification family:** `0.3.6-draft`  
 **Status:** Active normative companion specification  
-**Scope:** Component roles, typed responsibility relationships, and associated artifacts
+**Scope:** Component roles, typed responsibility relationships, associated artifacts, declaration authority, and materialization
 
 This document is part of the canonical PTSIP `0.3.6-draft` Specification family. It refines the Responsibility Map requirements introduced by `PTSIP-RMAP-001` through `PTSIP-RMAP-003` in `PTSIP-SPEC.md`.
 
 It does not weaken or override universal PTSIP lifecycle, dependency, packaging, conformance, migration, or authority rules. Where an implementation cannot satisfy both this document and another mandatory PTSIP rule, the architecture is not made valid merely by using Responsibility Map metadata.
 
-The design rationale is recorded in `decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md`.
+The design rationale is recorded in `decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md` and `decisions/ADR-0009-responsibility-map-declaration-authority.md`.
 
 ## 1. Semantic axes
 
@@ -231,7 +231,7 @@ A component ID and associated-artifact ID MUST NOT collide.
 
 A relationship endpoint MUST resolve to one declared component or one declared associated artifact.
 
-The exact serialization of the anchor relationship is deferred to the Responsibility Map v2 JSON Schema, but the one-anchor semantic is mandatory.
+The exact serialization of the anchor relationship is defined by the Responsibility Map v2 JSON Schema; the one-anchor semantic is mandatory.
 
 ### PTSIP-RMAP-011 — Promotion and reclassification boundary
 
@@ -313,7 +313,7 @@ relationships:
     type: PUBLISHES
 ```
 
-The exact YAML property layout remains illustrative until WU-03 freezes `schemas/ptsip-profile.schema.json`. The role vocabulary, relationship meanings, relationship direction, one-anchor semantics, and promotion rules in this document are normative.
+The role vocabulary, relationship meanings, relationship direction, one-anchor semantics, and promotion rules in this document are normative.
 
 ## 8. Migration
 
@@ -333,7 +333,7 @@ Migration tooling SHOULD combine legacy declaration with observed/inferred repos
 
 If a confirmed legacy fact cannot be represented without semantic loss, migration MUST stop rather than dropping it or replacing it with a generic relationship.
 
-## 9. WU-03 schema obligations
+## 9. Responsibility Map v2 schema obligations
 
 The Responsibility Map v2 schema MUST support the frozen semantics in this document, including:
 
@@ -345,6 +345,83 @@ The Responsibility Map v2 schema MUST support the frozen semantics in this docum
 - the canonical Tool `0.3.6` relationship vocabulary;
 - clear separation between actual/intended relationships and dependency policy;
 - no canonical `TOOLCHAIN` classification alias;
-- lossless preservation of confirmed migration facts.
+- lossless preservation of confirmed migration facts;
+- explicit, template, and hybrid declaration modes with exact template identity where a template is selected.
 
-The schema MAY choose nesting, references, collection names, optional metadata, and serialization details provided those choices preserve all mandatory semantics above.
+## 10. Declaration authority and materialization
+
+### PTSIP-RMAP-013 — Declaration source does not alter lifecycle ownership
+
+Responsibility Map declaration source and PTSIP lifecycle classification are independent semantic axes.
+
+`source_mode` identifies how the project declaration is sourced:
+
+```text
+explicit
+template
+hybrid
+```
+
+It MUST NOT be interpreted as a lifecycle classification, responsibility role, relationship type, VPMS Verification Purpose, evidence provenance value, or substitute for `classification`.
+
+A component's canonical lifecycle ownership MUST have the same meaning regardless of whether that component declaration originated from an explicit profile, an explicitly selected template revision, or a hybrid project override.
+
+### PTSIP-RMAP-014 — Exact template selection is project-owned architecture authority
+
+Template selection MUST be an explicit project-owned architecture decision.
+
+A template-backed declaration MUST identify an exact supported template identity using stable template ID plus immutable/versioned revision.
+
+The Tool MUST NOT select or change the selected template solely from repository path, language, framework, manifest, package manager, workflow provider, candidate confidence, or other discovery evidence.
+
+For `template` mode, the project owns the decision to adopt the exact selected template revision, and that immutable revision supplies the adopted declaration content.
+
+For `hybrid` mode, the project owns both exact template selection and its explicit stable-ID replacement, extension, and removal decisions.
+
+A later template revision MUST NOT silently change the Canonical Effective Responsibility Map of a project still bound to an earlier revision.
+
+### PTSIP-RMAP-015 — Hybrid precedence is stable-ID whole-entity authority
+
+Tool `0.3.6` hybrid materialization MUST apply project-owned stable-ID declarations over the selected immutable template declaration.
+
+Precedence is:
+
+```text
+project replacement / extension / removal
+    > selected immutable template declaration
+```
+
+For a template entity replaced by the same project-owned stable ID, the project declaration owns the entire resulting entity. Tool `0.3.6` MUST NOT perform implicit field-level inheritance that fragments declaration authority inside that entity.
+
+A project-owned new stable ID is an extension. A project-owned removal is an explicit decision not to include the selected template entity in the effective map.
+
+Materialization MAY expose derived review provenance such as `PROJECT_EXPLICIT`, `TEMPLATE`, `PROJECT_OVERRIDE`, `PROJECT_EXTENSION`, and `PROJECT_REMOVAL`, but that provenance MUST remain distinct from lifecycle classification and need not be persisted into the canonical Project Profile.
+
+### PTSIP-RMAP-016 — Materialization is deterministic and non-authoritative
+
+The materializer MUST resolve an already-declared `explicit`, `template`, or `hybrid` source into one **Canonical Effective Responsibility Map** without acquiring architecture authority.
+
+The Canonical Effective Responsibility Map is the common downstream semantic representation of:
+
+- components;
+- associated artifacts;
+- typed relationships;
+- applicable component dependency policy; and
+- project policies.
+
+The original source declaration and exact template identity, where applicable, MUST remain distinguishable from the derived effective view.
+
+The materializer MUST NOT:
+
+- infer missing architecture;
+- auto-select a template;
+- change lifecycle classification to make validation pass;
+- fabricate components, artifacts, roles, or relationships;
+- silently repair or delete dangling relationships;
+- silently cascade removals into additional project architecture changes;
+- resolve project/template semantic conflicts using confidence or path heuristics;
+- mutate the source profile merely to obtain a valid effective map.
+
+If materialization produces an invalid effective endpoint, anchor, identity, selector, or other canonical Responsibility Map condition, the operation MUST fail closed and report the inconsistency for project-owner action.
+
+Implementations MAY calculate a deterministic semantic digest of the Canonical Effective Responsibility Map for reproducibility, comparison, stale-state detection, or migration preview. Such a digest MUST NOT replace declaration provenance or become architecture authority.
