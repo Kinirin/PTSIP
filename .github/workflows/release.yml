@@ -71,6 +71,9 @@ jobs:
           python -m pip install -e ".[dev]"
           python -m pip install "git-cliff==2.13.1"
 
+      - name: Verify required Specification release contract
+        run: python .github/scripts/verify_release_contract.py
+
       - name: Verify Tool before release preparation
         run: |
           python -m pytest -q
