@@ -15,7 +15,7 @@ from ptsip.spec_identity import current_spec_identity
 from ptsip.validation.profile import validate_profile
 
 
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -36,8 +36,8 @@ def _commit_all(repo: Path) -> None:
 
 def test_spec_identity():
     spec = current_spec_identity()
-    assert spec.tool_version == "0.3.5"
-    assert spec.version == "0.3.4-draft"
+    assert spec.tool_version == "0.3.6"
+    assert spec.version == "0.3.6-draft"
     assert spec.source == "https://github.com/Kinirin/PTSIP"
     assert spec.revision == SPEC_REVISION
 
@@ -107,7 +107,9 @@ def test_pilot_v2_writes_external_state_only(tmp_path: Path, monkeypatch):
     assert compare_snapshots(before, after).stable
     assert result.report["classification"]["allowed_classifications"] == [
         "PRODUCT",
-        "TOOLCHAIN",
+        "DEVELOPMENT_TOOLING",
+        "DELIVERY",
+        "OPERATIONS",
         "NEUTRAL_CONTRACT",
     ]
     assert "UNKNOWN" in result.report["classification"]["decision_statuses"]
@@ -126,7 +128,7 @@ def test_component_profile_allows_specific_nested_override(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: TOOLCHAIN\n    include: [\"src/install/plugin_build.py\"]\n    purpose: build_and_release\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\n  - id: plugin-builder\n    classification: DELIVERY\n    include: [\"src/install/plugin_build.py\"]\n    purpose: authoritative_release_build\n    shipped: false\n    runtime_required: false\npolicies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
@@ -145,7 +147,7 @@ def test_legacy_exception_waiver_is_rejected(tmp_path: Path):
     _commit_all(repo)
     profile = repo / "ptsip.yaml"
     profile.write_text(
-        """ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\nboundaries:\n  product:\n    roots: [\"src\"]\n  toolchain:\n    roots: [\"tools\"]\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
+        f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product-runtime\n    classification: PRODUCT\n    include: [\"src/**\"]\n    purpose: product_runtime\npolicies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\nexceptions: []\n""",
         encoding="utf-8",
     )
     result = validate_profile(repo)
@@ -179,5 +181,5 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["format"] == "ptsip-pilot-report/v2"
-    assert payload["tool"]["version"] == "0.3.5"
+    assert payload["tool"]["version"] == "0.3.6"
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
