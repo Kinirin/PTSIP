@@ -18,7 +18,7 @@
     "status": {"enum": ["RESOLVED", "UNKNOWN", "CONFLICT", "INCOMPLETE"]},
     "classification": {
       "type": ["string", "null"],
-      "enum": ["PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT", null]
+      "enum": ["PRODUCT", "DEVELOPMENT_TOOLING", "DELIVERY", "OPERATIONS", "NEUTRAL_CONTRACT", null]
     },
     "origin": {"enum": ["PROFILE", "AGENT", "INFERRED"]},
     "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
@@ -39,7 +39,7 @@
       "if": {"properties": {"status": {"const": "RESOLVED"}}, "required": ["status"]},
       "then": {
         "properties": {
-          "classification": {"enum": ["PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"]},
+          "classification": {"enum": ["PRODUCT", "DEVELOPMENT_TOOLING", "DELIVERY", "OPERATIONS", "NEUTRAL_CONTRACT"]},
           "confidence": {"type": "number", "minimum": 0, "maximum": 1},
           "evidence_ids": {"minItems": 1}
         }
