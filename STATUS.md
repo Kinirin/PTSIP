@@ -1,6 +1,6 @@
 # PTSIP Status
 
-## Current release state
+## Current published release
 
 - Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
@@ -9,102 +9,149 @@
 - Tool `0.3.5` release commit: `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1`
 - Tool `0.3.5` GitHub Release: **PUBLISHED** on 2026-08-17
 - Tool `0.3.5` PyPI publication: **COMPLETE** through Trusted Publishing
-- Tool release workflow: `tooling-release` run `32011194245` — **SUCCESS**
-- Release-preparation workflow: `prepare-tool-release` run `32007134610` — **SUCCESS**
-- Bound Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
+- Bound published Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Supported Python metadata: Python 3.11–3.14
-- Routine hosted Tool CI: Python 3.14
 - Tool release namespace: `tool-v*`
 - Specification release/design namespace: `spec-v*`
 - License: Apache License 2.0
 
-Tool `0.3.5` is the first published PTSIP Tool release that includes **VPMS — Verification Purpose Management System**. VPMS is an independent sibling subsystem that manages why verification exists, while PTSIP continues to govern what repository components are and how Product, Toolchain, and Neutral Contract responsibilities are separated.
+Tool `0.3.5` remains the published compatibility baseline and retains its historical PTSIP classifications:
 
-The defining boundary remains:
+```text
+PRODUCT
+TOOLCHAIN
+NEUTRAL_CONTRACT
+```
+
+Tool `0.3.5` is also the first published Tool containing VPMS. Current VPMS Verification Purpose vocabulary remains `PRODUCT | TOOLCHAIN`; that VPMS `TOOLCHAIN` token is independent from the Tool `0.3.6` PTSIP lifecycle ontology.
+
+## Active Tool 0.3.6 development
+
+Development branch:
+
+```text
+tool-0.3.6-lifecycle-ownership
+```
+
+Development package/runtime identity on that branch is now `0.3.6`. This does **not** mean Tool `0.3.6` has been published.
+
+Active Specification family:
+
+```text
+0.3.6-draft
+```
+
+Current bound immutable WU-03 Specification snapshot:
+
+```text
+12e2ccd15634ecb3d0a4195b0f61ac3f620e7540
+```
+
+### Work-unit progress
+
+```text
+WU-00  0.3.6-draft normative baseline                    COMPLETE
+WU-01  lifecycle ontology/boundary rules                  COMPLETE
+WU-02  roles + typed relationships + associated artifacts COMPLETE
+WU-03  canonical Responsibility Map v2 activation         COMPLETE
+WU-04  template catalog + deterministic materialization   NEXT
+```
+
+WU-03 activates the canonical five-classification lifecycle model:
+
+```text
+PRODUCT
+DEVELOPMENT_TOOLING
+DELIVERY
+OPERATIONS
+NEUTRAL_CONTRACT
+```
+
+`TOOLCHAIN` is not a canonical Tool `0.3.6` classification alias. It remains readable only as historical/migration input once the WU-07 legacy reader is implemented.
+
+Responsibility Map v2 now has canonical schema/runtime support for:
+
+- explicit/template/hybrid declaration modes;
+- optional multi-valued closed component roles;
+- typed directed responsibility relationships;
+- associated artifacts subordinate to exactly one classified anchor;
+- map-wide component/associated-artifact endpoint identity;
+- lifecycle-neutral canonical policy keys; and
+- fail-closed template/hybrid behavior until exact template materialization is available.
+
+The root repository profile structurally self-adopts Responsibility Map v2. Release automation is represented as `DELIVERY`; repository verification/CI/maintenance are represented as `DEVELOPMENT_TOOLING`; specification governance support uses associated-artifact semantics where independent component ownership is not required.
+
+### WU-03 implementation boundary
+
+Canonical activation has been applied across:
+
+- `schemas/` profile, agent-classification, and artifact-evidence contracts;
+- `registry/ptsip-registry.yaml`;
+- embedded `src/ptsip/specdata/**` contract copies;
+- `src/ptsip/**` lifecycle models, profile validation, dependency/build/lifecycle/conformance evaluation, adoption/projection, CLI, and clarification behavior;
+- `ptsip.yaml` repository self-profile;
+- narrow `src/vpms/` PTSIP metadata bridge behavior without renaming VPMS purposes;
+- Tool version/constants and immutable Specification binding;
+- the release Specification contract; and
+- current regression contracts directly affected by Responsibility Map v2 activation.
+
+Full self-hosted repository regression has **not** been claimed for WU-03. It remains part of WU-12/release-candidate verification.
+
+## Compatibility direction
+
+Tool `0.3.6` compatibility with Tool `0.3.5` means assisted migration, not preservation of obsolete ontology in the new canonical schema:
+
+```text
+Tool 0.3.5 profile
+    -> legacy reader
+    -> repository evidence
+    -> lifecycle/role/relationship/split proposals
+    -> project-owner confirmation
+    -> canonical Tool 0.3.6 Responsibility Map
+```
+
+A legacy `TOOLCHAIN` responsibility may become `PRODUCT`, `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, a component split, or unresolved clarification. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` translation is prohibited.
+
+## VPMS boundary
+
+PTSIP and VPMS remain sibling concerns:
 
 ```text
 PTSIP
-    What is this component?
+    Who owns this project responsibility across its lifecycle?
 
 VPMS
-    Why does this verification exist?
+    Why does this verification exist / what does it protect?
 ```
 
-VPMS is not a fourth PTSIP Plane, and a passing VPMS Verification Case is not a PTSIP conformance result.
+A PTSIP `DEVELOPMENT_TOOLING` verifier may still carry VPMS Verification Purpose `PRODUCT`. PTSIP classification must not be inferred from VPMS purpose and VPMS purpose must not be renamed merely because PTSIP classification changed.
 
-## Tool 0.3.5 delivered state
+## Verification and publication evidence for published Tool 0.3.5
 
-Tool `0.3.5` includes:
-
-- independent `src/vpms/` package ownership alongside `src/ptsip/`;
-- explicit verification purposes `PRODUCT` and `TOOLCHAIN`;
-- Verification Case, Formula, Variables, Policy, Target, and Runner semantics;
-- Formula reuse without purpose collapse;
-- purpose-based selection and framework-neutral command execution;
-- a narrow read-only PTSIP metadata bridge;
-- no `ptsip -> vpms` runtime dependency;
-- no VPMS CLI in this release;
-- representative repository self-adoption for Product and Toolchain verification purposes;
-- root `ptsip.yaml` repository self-profile bound to the active `0.3.4-draft` revision;
-- packaging configuration that includes both `ptsip*` and `vpms*` in distributions.
-
-The repository self-profile is a project-owned responsibility declaration, not conformance proof. It is intentionally strict enough to detect tracked files that are outside all declared component selectors.
-
-## Verification and publication evidence
-
-### Repository regression after self-profile correction
-
-The final maintainer-local full regression after assigning `.github/ISSUE_TEMPLATE/**` to repository maintenance completed successfully:
+The final maintainer-local Tool `0.3.5` repository regression after self-profile correction completed successfully:
 
 ```text
 python -m pytest -q
 244 passed in 571.90s
 ```
 
-The self-profile regression remained strict; the test was not weakened to ignore unassigned tracked files.
+Earlier Tool `0.3.5` package-boundary verification also established successful wheel/sdist build, `twine check`, installed-wheel smoke, VPMS package inclusion, Tool identity `0.3.5`, and Specification identity `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`.
 
-### Package and installed-wheel verification
+Tool `0.3.5` release preparation and publication are historical evidence only and must not be represented as Tool `0.3.6` verification.
 
-Earlier Tool `0.3.5` implementation-completion evidence from GitHub Actions run `31930110185` established:
+## Current workflow resource policy
 
-- `240 passed in 10.25s` on Python 3.14.7 at the pre-self-profile package-verification checkpoint;
-- Tool identity `0.3.5`;
-- Specification identity `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`;
-- successful wheel and sdist build;
-- successful `twine check`;
-- VPMS package files present in both distributions;
-- built-wheel reinstall and installed import smoke PASS;
-- no unintended VPMS CLI surface.
-
-That checkpoint predates the repository self-profile extension, so it is retained as package-boundary evidence rather than misreported as the final repository regression.
-
-### Release preparation and publication
-
-Release preparation run `32007134610` completed successfully and created the versioned release-note commit and GitHub Release draft after the Tool test/CLI gate passed.
-
-The reviewed Tool `0.3.5` release note was then finalized at commit:
+Repository verification, release preparation, and distribution build compute default to the approved self-hosted Windows runner:
 
 ```text
-79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1
+DESKTOP-5HCCQIR
 ```
 
-Publishing `tool-v0.3.5` triggered `tooling-release` run `32011194245`. Both jobs completed successfully:
+`tooling-test.yml` and `release.yml` are manually dispatched and require explicit host readiness. Release-candidate verification is bound to the exact candidate SHA.
 
-- `build` — package version/tag match, distribution build, package-content checks, `twine check`, artifact upload;
-- `publish` — artifact download and `pypa/gh-action-pypi-publish@release/v1` Trusted Publishing.
+`tooling-release.yml` performs its build/distribution verification on the self-hosted Windows runner. The narrow GitHub-hosted GNU/Linux PyPI Trusted Publishing job is the only current hosted-compute exception because the publishing action is Docker-based; it must not absorb tests, compilation, release preparation, or package building.
 
-This is the canonical Tool `0.3.5` publication boundary.
-
-## Specification state
-
-Tool `0.3.5` intentionally remains bound to:
-
-```text
-Specification family:   0.3.4-draft
-Specification revision: b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
-```
-
-The existing `spec-v0.3.4-draft` design-release tag is not moved. Tool-version progression and Specification-version progression remain independent.
+No Tool `0.3.6` release verification or publication is claimed until the required self-hosted exact-SHA gates have actually completed.
 
 ## Tool lineage
 
@@ -114,5 +161,6 @@ The existing `spec-v0.3.4-draft` design-release tag is not moved. Tool-version p
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
+- Tool `0.3.6`: **active development; Responsibility Map v2 canonical activation complete through WU-03**
 
-Completed Tool `0.3.5` planning documents are removed from the active `planning/` directory after publication. Their history remains available through Git history and the immutable `tool-v0.3.5` release point. Current next-version planning is consolidated under `planning/0.3.6.md`, including the Responsibility Map v2 work and the previously separate candidate-discovery improvement scope.
+Current next-version work remains consolidated under `planning/0.3.6.md`. Do not create a separate Tool `0.4.0` plan unless an independently consequential scope emerges beyond the current `0.3.6` contract.
