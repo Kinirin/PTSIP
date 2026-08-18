@@ -76,11 +76,11 @@ SPEC_VERSION = X.Y.Z-draft
 
 and requires an immutable `SPEC_REVISION`, matching root `ptsip.yaml` binding, canonical Specification files at that revision, and `releasenote/spec-X.Y.Z-draft.md`.
 
-Do not bypass or weaken the future release-contract gate to make a release pass. Fix the missing or inconsistent Specification work instead.
+Do not bypass or weaken `.github/scripts/verify_release_contract.py` to make a release pass. Fix the missing or inconsistent Specification work instead.
 
 ## Self-hosted verification
 
-Full tests for Tool `0.3.6` work are to run through `.github/workflows/tooling-test.yml` after it is converted to manual self-hosted operation.
+Full tests run through the single manual `.github/workflows/tooling-test.yml` workflow on the self-hosted Windows runner.
 
 Expected runner:
 
@@ -88,21 +88,21 @@ Expected runner:
 DESKTOP-5HCCQIR
 ```
 
-The self-hosted workflow is **manual only**.
-
 Before dispatching it:
 
 1. tell the user that the self-hosted runner will be used;
 2. wait for explicit confirmation that the host and PowerShell environment are ready;
-3. dispatch only after that confirmation and explicit host-ready acknowledgement.
+3. dispatch only after that confirmation with `host_ready=true`.
+
+The workflow checks `RUNNER_NAME == DESKTOP-5HCCQIR` and has no automatic push, pull-request, tag, release, or schedule trigger.
 
 Never dispatch the self-hosted workflow automatically or merely because a test would be convenient. Do not substitute repeated GitHub-hosted full-suite runs when the self-hosted verification path is available.
 
-For a release candidate, the self-hosted run must verify one exact source SHA. Release preparation must require that evidence before creating the Tool release draft.
+For a release candidate, run the workflow with `release_candidate=true`. A successful run records `self-hosted/release-verification` for the exact source SHA. `release.yml` requires that status before it can create the Tool release draft.
 
 ## GitHub Actions cost boundary
 
-- `tooling-test.yml`: must become the single manual self-hosted full-verification workflow before 0.3.6 verification begins.
-- `release.yml`: keep as lightweight release preparation/orchestration and remove duplicate full-suite testing once the self-hosted gate is active.
-- `tooling-release.yml`: keep as the release-triggered build and PyPI Trusted Publishing boundary.
+- `tooling-test.yml`: single manual self-hosted full-verification workflow.
+- `release.yml`: lightweight GitHub-hosted release preparation/orchestration; no duplicate full pytest run.
+- `tooling-release.yml`: release-triggered GitHub-hosted distribution build checks and PyPI Trusted Publishing boundary.
 - Avoid adding additional automatic test workflows without an explicit maintainer decision.
