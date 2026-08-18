@@ -1,12 +1,17 @@
 ptsip:
-  version: "0.3.4-draft"
+  version: "0.3.6-draft"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
-    revision: "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+    revision: "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
+
+responsibility_map:
+  mode: explicit
 
 components:
   - id: ptsip-core
     classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
     include:
       - "src/ptsip/*.py"
       - "src/ptsip/app/**"
@@ -19,35 +24,48 @@ components:
     purpose: distributed_ptsip_reference_tool
     shipped: true
     runtime_required: true
-    lifecycle_owner: PRODUCT
     executable: true
     release_owner: tool
     compatibility_owner: tool
 
   - id: vpms
     classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
     include:
       - "src/vpms/**"
     purpose: distributed_verification_purpose_management_library
     shipped: true
     runtime_required: false
-    lifecycle_owner: PRODUCT
     executable: true
     release_owner: tool
     compatibility_owner: tool
 
   - id: ptsip-distribution
     classification: PRODUCT
+    roles:
+      - CONFIGURATION
     include:
       - "pyproject.toml"
-      - "MANIFEST.in"
-    purpose: product_distribution_identity_and_package_definition
+    purpose: product_distribution_identity_runtime_metadata_and_package_contract
     shipped: true
     runtime_required: false
-    lifecycle_owner: PRODUCT
     executable: false
     release_owner: tool
     compatibility_owner: tool
+
+  - id: ptsip-package-assembly
+    classification: DELIVERY
+    roles:
+      - CONFIGURATION
+    include:
+      - "MANIFEST.in"
+    purpose: release_distribution_content_assembly_configuration
+    shipped: false
+    runtime_required: false
+    executable: false
+    release_owner: delivery
+    compatibility_owner: delivery
 
   - id: ptsip-embedded-contracts
     classification: NEUTRAL_CONTRACT
@@ -56,12 +74,9 @@ components:
     purpose: tool_embedded_machine_readable_specification_contracts
     shipped: true
     runtime_required: true
-    lifecycle_owner: INDEPENDENT
     executable: false
     release_owner: specification
     compatibility_owner: specification
-    consumers:
-      - ptsip-core
 
   - id: ptsip-canonical-contracts
     classification: NEUTRAL_CONTRACT
@@ -72,52 +87,29 @@ components:
     purpose: canonical_ptsip_specification_and_machine_readable_contracts
     shipped: false
     runtime_required: false
-    lifecycle_owner: INDEPENDENT
     executable: false
     release_owner: specification
     compatibility_owner: specification
-    consumers:
-      - ptsip-core
-      - repository-verification
-
-  - id: ptsip-governance-contracts
-    classification: NEUTRAL_CONTRACT
-    include:
-      - "adoption/**"
-      - "agents/**"
-      - "decisions/**"
-      - "reference/**"
-    purpose: architecture_governance_adoption_and_agent_contracts
-    shipped: false
-    runtime_required: false
-    lifecycle_owner: INDEPENDENT
-    executable: false
-    release_owner: specification
-    compatibility_owner: specification
-    consumers:
-      - ptsip-core
-      - vpms
-      - repository-verification
 
   - id: repository-architecture
-    classification: NEUTRAL_CONTRACT
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - CONFIGURATION
+      - GOVERNANCE
     include:
       - "ptsip.yaml"
       - "profiles/**"
     purpose: repository_architecture_declaration_and_profile_examples
     shipped: false
     runtime_required: false
-    lifecycle_owner: INDEPENDENT
     executable: false
     release_owner: architecture
     compatibility_owner: architecture
-    consumers:
-      - ptsip-core
-      - vpms
-      - repository-verification
 
   - id: product-documentation
     classification: PRODUCT
+    roles:
+      - DOCUMENTATION
     include:
       - "README.md"
       - "README.ko.md"
@@ -126,22 +118,22 @@ components:
     purpose: product_distribution_documentation_and_release_history
     shipped: true
     runtime_required: false
-    lifecycle_owner: PRODUCT
     executable: false
     release_owner: tool
     compatibility_owner: tool
 
   - id: repository-verification
-    classification: TOOLCHAIN
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
     include:
       - "tests/**"
     purpose: repository_verification_and_regression
     shipped: false
     runtime_required: false
-    lifecycle_owner: DEVELOPMENT_TOOLING
     executable: true
-    release_owner: toolchain
-    compatibility_owner: toolchain
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
     analysis_inputs:
       - "src/**"
       - "spec/**"
@@ -150,36 +142,44 @@ components:
       - "ptsip.yaml"
 
   - id: repository-release-automation
-    classification: TOOLCHAIN
+    classification: DELIVERY
+    roles:
+      - AUTOMATION
+      - VERIFICATION
     include:
       - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
-    purpose: tool_release_tagging_and_publication_automation
+      - ".github/scripts/verify_release_contract.py"
+    purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false
     runtime_required: false
-    lifecycle_owner: DEVELOPMENT_TOOLING
     executable: true
-    release_owner: toolchain
-    compatibility_owner: toolchain
+    release_owner: delivery
+    compatibility_owner: delivery
     analysis_inputs:
       - "pyproject.toml"
       - "src/ptsip/**"
       - "src/vpms/**"
+      - "spec/**"
+      - "schemas/**"
+      - "registry/**"
       - "releasenote/**"
 
   - id: repository-ci
-    classification: TOOLCHAIN
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
+      - AUTOMATION
     include:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
-      - ".github/scripts/**"
-    purpose: continuous_integration_and_documentation_automation
+      - ".github/scripts/sync_readme_ko.py"
+    purpose: development_verification_and_documentation_automation
     shipped: false
     runtime_required: false
-    lifecycle_owner: DEVELOPMENT_TOOLING
     executable: true
-    release_owner: toolchain
-    compatibility_owner: toolchain
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
     analysis_inputs:
       - "tests/**"
       - "src/**"
@@ -187,7 +187,12 @@ components:
       - "README.ko.md"
 
   - id: repository-maintenance
-    classification: TOOLCHAIN
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - AUTOMATION
+      - CONFIGURATION
+      - DOCUMENTATION
+      - GOVERNANCE
     include:
       - ".gitignore"
       - ".github/ISSUE_TEMPLATE/**"
@@ -202,14 +207,84 @@ components:
     purpose: development_planning_evidence_and_repository_maintenance
     shipped: false
     runtime_required: false
-    lifecycle_owner: DEVELOPMENT_TOOLING
     executable: true
-    release_owner: toolchain
-    compatibility_owner: toolchain
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+
+associated_artifacts:
+  - id: ptsip-governance-support
+    anchor: ptsip-canonical-contracts
+    include:
+      - "adoption/**"
+      - "agents/**"
+      - "decisions/**"
+      - "reference/**"
+    purpose: specification_governance_adoption_agent_and_architecture_support
+
+relationships:
+  - id: core-reads-embedded-contracts
+    from: ptsip-core
+    to: ptsip-embedded-contracts
+    type: READS
+
+  - id: canonical-specifies-core
+    from: ptsip-canonical-contracts
+    to: ptsip-core
+    type: SPECIFIES
+
+  - id: canonical-specifies-vpms
+    from: ptsip-canonical-contracts
+    to: vpms
+    type: SPECIFIES
+
+  - id: governance-support-governs-canonical
+    from: ptsip-governance-support
+    to: ptsip-canonical-contracts
+    type: GOVERNS
+
+  - id: governance-support-documents-canonical
+    from: ptsip-governance-support
+    to: ptsip-canonical-contracts
+    type: DOCUMENTS
+
+  - id: repository-verification-verifies-core
+    from: repository-verification
+    to: ptsip-core
+    type: VERIFIES
+
+  - id: repository-verification-verifies-vpms
+    from: repository-verification
+    to: vpms
+    type: VERIFIES
+
+  - id: repository-verification-verifies-contracts
+    from: repository-verification
+    to: ptsip-canonical-contracts
+    type: VERIFIES
+
+  - id: package-assembly-packages-distribution
+    from: ptsip-package-assembly
+    to: ptsip-distribution
+    type: PACKAGES
+
+  - id: release-builds-distribution
+    from: repository-release-automation
+    to: ptsip-distribution
+    type: BUILDS
+
+  - id: release-packages-distribution
+    from: repository-release-automation
+    to: ptsip-distribution
+    type: PACKAGES
+
+  - id: release-publishes-distribution
+    from: repository-release-automation
+    to: ptsip-distribution
+    type: PUBLISHES
 
 policies:
-  product_to_toolchain_runtime_dependency: deny
-  toolchain_in_product_package: deny
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
   independent_build_resolution: required
-  shared_executable_cross_boundary: deny
+  shared_executable_cross_lifecycle: deny
   neutral_contract_sharing: allow
