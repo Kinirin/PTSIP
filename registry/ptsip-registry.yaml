@@ -156,14 +156,16 @@ ptsip_registry:
       meaning: "Project-owned non-component support surfaces subordinate to exactly one classified anchor component."
     - id: relationships
       meaning: "Project-owned typed directed semantic edges between declared Responsibility Map endpoints."
+    - id: source_mode
+      meaning: "Responsibility Map declaration source mode: explicit, template, or hybrid; it is not lifecycle ownership."
 
   responsibility_map_modes:
     - id: explicit
-      meaning: "Repository directly declares the complete canonical Responsibility Map."
+      meaning: "Repository/project directly owns the complete canonical Responsibility Map declaration."
     - id: template
-      meaning: "Repository explicitly selects one versioned/revision-bound supported template."
+      meaning: "Project explicitly adopts one exact versioned/revision-bound supported template; the selected immutable revision supplies the adopted declaration content."
     - id: hybrid
-      meaning: "Repository explicitly selects a template and supplies ID-addressed project-owned overrides/extensions/removals."
+      meaning: "Project explicitly selects an exact template and owns stable-ID replacements, extensions, and removals over unchanged template declarations."
 
   concepts:
     - id: CONSUMER_REPOSITORY
@@ -178,6 +180,16 @@ ptsip_registry:
       meaning: "Project-owned non-component support surface subordinate to exactly one classified anchor component and lacking independent lifecycle ownership."
     - id: RESPONSIBILITY_RELATIONSHIP
       meaning: "Project-owned typed directed semantic edge between declared component/associated-artifact endpoints."
+    - id: DECLARATION_SOURCE_MODE
+      meaning: "Whether a Responsibility Map source declaration is explicit, template-backed, or hybrid; orthogonal to lifecycle classification."
+    - id: DECLARATION_AUTHORITY_PROVENANCE
+      meaning: "Derived explanation of whether an effective declaration entity came from project explicit declaration, selected template, project override, project extension, or project removal decision."
+    - id: CANONICAL_EFFECTIVE_RESPONSIBILITY_MAP
+      meaning: "Deterministically materialized common semantic Responsibility Map consumed downstream regardless of explicit/template/hybrid source mode."
+    - id: RESPONSIBILITY_MAP_MATERIALIZATION
+      meaning: "Non-authoritative deterministic resolution of source declaration plus exact template and project override decisions into the Canonical Effective Responsibility Map."
+    - id: EFFECTIVE_MAP_DIGEST
+      meaning: "Deterministic semantic digest of a Canonical Effective Responsibility Map used for reproducibility/comparison, not architecture authority."
     - id: GOVERNING_LIFECYCLE_OBLIGATION
       meaning: "Lifecycle-specific reason a coherent responsibility must exist, change, remain compatible, execute, or be retired."
     - id: DELIVERY_HANDOFF
@@ -267,6 +279,10 @@ ptsip_registry:
     - {id: PTSIP-RMAP-010, title: "Anchor and identity semantics", severity: error, applies_to: consumer_repository}
     - {id: PTSIP-RMAP-011, title: "Promotion and reclassification boundary", severity: error, applies_to: consumer_repository}
     - {id: PTSIP-RMAP-012, title: "Legacy fields are evidence, not automatic typed-edge mappings", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-RMAP-013, title: "Declaration source does not alter lifecycle ownership", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-014, title: "Exact template selection is project-owned architecture authority", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-015, title: "Hybrid precedence is stable-ID whole-entity authority", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-016, title: "Materialization is deterministic and non-authoritative", severity: error, applies_to: implementation}
     - {id: PTSIP-MIG-001, title: "Legacy profile readability without legacy ontology preservation", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-MIG-002, title: "Evidence-driven migration proposals", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-MIG-003, title: "Project-owner confirmation", severity: error, applies_to: migration_implementation}
