@@ -1,6 +1,6 @@
 # PTSIP Governance
 
-**Version:** 0.3.4-draft
+**Version:** 0.3.6-draft
 
 ## 1. Purpose
 
@@ -8,7 +8,7 @@ This document governs changes to the PTSIP Specification itself, immutable draft
 
 ## 2. Canonical source
 
-The public repository `https://github.com/Kinirin/PTSIP` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, conformance definitions, agent contract, ADRs, and Reference Tool source maintained by this project.
+The public repository `https://github.com/Kinirin/PTSIP` is the canonical source for PTSIP terminology, normative rules, registry IDs, schemas, conformance definitions, normative companion specifications, agent contract, ADRs, and Reference Tool source maintained by this project.
 
 Copies, blog posts, examples, prompts, and tooling snapshots are informative unless explicitly bound to a PTSIP Specification family and immutable revision.
 
@@ -24,7 +24,7 @@ Draft suffixes MAY be used before stable publication.
 
 ### 3.1 Draft-family identity
 
-A label such as `0.3.4-draft` identifies a mutable draft family, not a unique immutable snapshot.
+A label such as `0.3.6-draft` identifies a mutable draft family, not a unique immutable snapshot.
 
 Every machine-evaluated use of a mutable draft SHOULD bind an immutable Git revision. For Enforced Conformance and Reference Tool binding, the immutable revision is required.
 
@@ -37,13 +37,15 @@ Tool versioning remains independent from Specification family versioning.
 
 ### 3.2 Coherent normative migration
 
-A draft-family migration that changes normative text, schema, registry semantics, agent behavior, or embedded Specification resources SHOULD update all affected canonical assets coherently before an immutable normative snapshot is selected.
+A draft-family migration that changes normative text, companion specifications, schema, registry semantics, agent behavior, or embedded Specification resources SHOULD update all affected canonical assets coherently before an immutable normative snapshot is selected.
 
 The immutable snapshot commit does not need to contain a literal self-SHA. A subsequent Tool binding commit MAY point backward to that already-created snapshot. This is the preferred pattern when the Tool stores a literal `SPEC_REVISION` constant.
 
+For `0.3.6-draft`, `spec/PTSIP-RESPONSIBILITY-MAP.md` is part of the normative Specification family and MUST be present at the bound immutable revision together with the other required canonical Specification documents.
+
 ## 4. Rule identity
 
-Normative rules use stable IDs such as `PTSIP-DEP-001`, `PTSIP-ADP-001`, and `PTSIP-AUT-001`.
+Normative rules use stable IDs such as `PTSIP-DEP-001`, `PTSIP-RMAP-004`, `PTSIP-ADP-001`, and `PTSIP-AUT-001`.
 
 A published rule ID MUST NOT be silently reused for incompatible meaning. Incompatible semantics SHOULD receive a new rule ID or a new major Specification version.
 
@@ -92,13 +94,13 @@ A PTSIP Tool MUST identify the family/revision it supports and MUST NOT present 
 
 External Tooling SHOULD preserve Consumer Repository Non-Intrusion and keep Tool-owned state outside the Consumer Repository by default.
 
-Missing adapter coverage is a Tool/evidence-coverage condition unless the Specification itself lacks the required adapter-independent semantics.
+Missing adapter, template-materialization, or evidence coverage is a Tool/evidence-coverage condition unless the Specification itself lacks the required adapter-independent semantics.
 
 ## 10. Stability policy
 
-The 0.x series is experimental. Terminology and schemas may change through explicit coherent migrations.
+The 0.x series is experimental. Terminology, classification ontology, Responsibility Map schema, and migration behavior may change through explicit coherent migrations.
 
-A 1.0 release SHOULD NOT occur until core rule meaning is stable, multiple materially different repositories have exercised the model, Project Profile adoption has been tested, rule-relative conformance has been exercised, Product Artifact checks have been validated, agent behavior has been tested on real change tasks, and distributed/local coordination semantics have enough operational evidence.
+A 1.0 release SHOULD NOT occur until core rule meaning is stable, multiple materially different repositories have exercised the lifecycle-ownership model, Project Profile adoption/migration has been tested, rule-relative conformance has been exercised, Product Artifact checks have been validated, agent behavior has been tested on real change tasks, and distributed/local coordination semantics have enough operational evidence.
 
 ## 11. Non-claim policy
 
