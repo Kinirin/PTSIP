@@ -45,6 +45,10 @@ def load_ptsip_metadata(profile_path: str | Path) -> PtsipMetadataSnapshot:
 
     This bridge intentionally does not perform PTSIP conformance validation and
     exposes no write path into the project profile or Decision Authority.
+
+    Tool 0.3.6 template/hybrid profiles must be materialized by the PTSIP layer
+    before VPMS consumes component metadata. Returning an empty target set for an
+    unmaterialized template would incorrectly hide valid project components.
     """
 
     path = Path(profile_path)
@@ -55,6 +59,14 @@ def load_ptsip_metadata(profile_path: str | Path) -> PtsipMetadataSnapshot:
 
     if not isinstance(payload, Mapping):
         raise PtsipMetadataError("PTSIP project profile root must be a mapping.")
+
+    responsibility_map = payload.get("responsibility_map")
+    if isinstance(responsibility_map, Mapping):
+        mode = responsibility_map.get("mode")
+        if mode in {"template", "hybrid"}:
+            raise PtsipMetadataError(
+                "PTSIP template/hybrid Responsibility Map must be materialized before VPMS metadata consumption."
+            )
 
     raw_components = payload.get("components")
     if raw_components is None:
