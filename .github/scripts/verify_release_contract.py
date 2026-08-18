@@ -16,6 +16,7 @@ REQUIRED_SPEC_PATHS = (
     "spec/PTSIP-CONFORMANCE.md",
     "spec/PTSIP-TERMINOLOGY.md",
     "spec/PTSIP-GOVERNANCE.md",
+    "spec/PTSIP-RESPONSIBILITY-MAP.md",
 )
 
 
