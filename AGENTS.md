@@ -78,6 +78,27 @@ and requires an immutable `SPEC_REVISION`, matching root `ptsip.yaml` binding, c
 
 Do not bypass or weaken `.github/scripts/verify_release_contract.py` to make a release pass. Fix the missing or inconsistent Specification work instead.
 
+### Merge-to-release gate sequence
+
+A normal development merge is not automatically a release candidate. When a merged `main` SHA is selected as the Tool `X.Y.Z` release candidate, agents must enforce this sequence:
+
+```text
+merged main SHA
+    -> Tool X.Y.Z
+    -> Specification X.Y.Z-draft
+    -> immutable SPEC_REVISION
+    -> tooling-test.yml with release_candidate=true on that exact SHA
+    -> release.yml
+    -> tooling-release.yml re-check before PyPI publication
+```
+
+Rules:
+
+1. re-read remote `main` and identify the exact merged SHA before release-candidate verification;
+2. do not run release preparation if the Specification family, binding, release note, or immutable revision is missing or inconsistent;
+3. the self-hosted release-candidate status must belong to the exact SHA used for release preparation;
+4. never treat “we will fix the Specification after release” as an acceptable workaround.
+
 ## Self-hosted verification
 
 Full tests run through the single manual `.github/workflows/tooling-test.yml` workflow on the self-hosted Windows runner.
@@ -105,4 +126,6 @@ For a release candidate, run the workflow with `release_candidate=true`. A succe
 - `tooling-test.yml`: single manual self-hosted full-verification workflow.
 - `release.yml`: lightweight GitHub-hosted release preparation/orchestration; no duplicate full pytest run.
 - `tooling-release.yml`: release-triggered GitHub-hosted distribution build checks and PyPI Trusted Publishing boundary.
-- Avoid adding additional automatic test workflows without an explicit maintainer decision.
+- New verification, regression, build-smoke, or equivalent compute-heavy workflows must default to self-hosted execution.
+- Do not add GitHub-hosted push/PR/schedule test matrices or duplicate full-suite workflows without an explicit maintainer decision.
+- A GitHub-hosted runner is an exception, not the default. Keep approved exceptions lightweight or platform-bound and do not move the full regression suite into them.

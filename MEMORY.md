@@ -44,6 +44,24 @@ immutable SPEC_REVISION
 
 The root `ptsip.yaml`, Tool constants, canonical Specification files, and `releasenote/spec-<family>.md` must agree. `.github/scripts/verify_release_contract.py` is the fail-closed release gate used by release preparation and the PyPI build boundary.
 
+### Merge-to-release Specification gate
+
+Normal development merges may continue before a Tool becomes a release candidate. However, once a merged `main` SHA is proposed for Tool `X.Y.Z` release, that exact SHA must satisfy the complete Specification contract before release preparation may proceed.
+
+Required sequence:
+
+```text
+feature/development branches
+        -> merge to main
+        -> exact merged main SHA
+        -> Tool X.Y.Z / Specification X.Y.Z-draft / immutable SPEC_REVISION check
+        -> self-hosted release-candidate verification for that exact SHA
+        -> release.yml
+        -> tooling-release.yml re-check at the PyPI boundary
+```
+
+A missing or inconsistent Specification is a blocking release defect. Do not defer Specification creation, binding, release-note work, or `SPEC_REVISION` correction until after the Tool release.
+
 ## PTSIP / VPMS boundary
 
 PTSIP answers:
@@ -96,6 +114,12 @@ The workflow requires `host_ready=true`, checks `RUNNER_NAME == DESKTOP-5HCCQIR`
 For release-candidate verification, dispatch it with `release_candidate=true`. A successful run records `self-hosted/release-verification` for the exact source SHA.
 
 `release.yml` remains GitHub-hosted only for lightweight release preparation/orchestration and requires that exact self-hosted status instead of repeating full pytest. `tooling-release.yml` remains GitHub-hosted for distribution build checks and the PyPI Trusted Publishing boundary.
+
+### Default runner rule
+
+New repository verification, regression, build-smoke, or equivalent compute-heavy workflows **must default to self-hosted execution**. Do not introduce GitHub-hosted push/PR/schedule test matrices or duplicate full-suite workflows merely for convenience.
+
+A GitHub-hosted runner is an exception that requires an explicit maintainer decision and must remain limited to a lightweight or platform-bound boundary such as release orchestration or Trusted Publishing. Existing `release.yml` and `tooling-release.yml` are the current approved exceptions; they must not absorb the full regression suite.
 
 ## Release-note discipline
 
