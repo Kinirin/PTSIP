@@ -18,6 +18,7 @@ from .clarification.resolution import (
     validate_answer,
     write_prepared_local_profile,
 )
+from .clarification.resolution.model import CLASSIFICATIONS, LIFECYCLE_OWNERS
 from .clarification.transports.github_issue import publish as publish_github_issues
 from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
@@ -194,14 +195,15 @@ def _parser() -> argparse.ArgumentParser:
     p_adopt.add_argument("path", nargs="?", default=".")
     p_adopt.add_argument("--profile", help="Explicit project-profile path; defaults to repository-root ptsip.yaml")
     p_adopt.add_argument("--component", required=True, help="Detected component candidate ID")
-    p_adopt.add_argument("--classification", required=True, choices=("PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"))
+    p_adopt.add_argument("--classification", required=True, choices=CLASSIFICATIONS)
     p_adopt.add_argument("--purpose", required=True)
     p_adopt.add_argument("--shipped", required=True, choices=("yes", "no"))
     p_adopt.add_argument("--runtime-required", required=True, choices=("yes", "no"))
     p_adopt.add_argument(
         "--lifecycle-owner",
         required=True,
-        choices=("PRODUCT", "DEVELOPMENT_TOOLING", "INDEPENDENT"),
+        choices=LIFECYCLE_OWNERS,
+        help="Transitional compatibility fact; canonical Tool 0.3.6 profiles persist classification as lifecycle authority.",
     )
     p_adopt.add_argument("--executable", required=True, choices=("yes", "no"))
     p_adopt.add_argument(
@@ -239,14 +241,15 @@ def _parser() -> argparse.ArgumentParser:
     p_resolve.add_argument("path", nargs="?", default=".")
     p_resolve.add_argument("--profile", help="Explicit project-profile path; defaults to repository-root ptsip.yaml")
     p_resolve.add_argument("--decision", required=True, help="Decision ID returned by ptsip gate")
-    p_resolve.add_argument("--classification", required=True, choices=("PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"))
+    p_resolve.add_argument("--classification", required=True, choices=CLASSIFICATIONS)
     p_resolve.add_argument("--purpose", required=True)
     p_resolve.add_argument("--shipped", required=True, choices=("yes", "no"))
     p_resolve.add_argument("--runtime-required", required=True, choices=("yes", "no"))
     p_resolve.add_argument(
         "--lifecycle-owner",
         required=True,
-        choices=("PRODUCT", "DEVELOPMENT_TOOLING", "INDEPENDENT"),
+        choices=LIFECYCLE_OWNERS,
+        help="Transitional compatibility fact; canonical Tool 0.3.6 profiles persist classification as lifecycle authority.",
     )
     p_resolve.add_argument("--executable", required=True, choices=("yes", "no"))
     p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")
