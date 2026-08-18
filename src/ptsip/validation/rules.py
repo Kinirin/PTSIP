@@ -7,6 +7,13 @@ from ..model import DependencyPhase
 from .components import ComponentPartition
 
 
+NON_PRODUCT_IMPLEMENTATION_CLASSES = {
+    "DEVELOPMENT_TOOLING",
+    "DELIVERY",
+    "OPERATIONS",
+}
+
+
 @dataclass(frozen=True)
 class RuleFinding:
     rule_id: str
@@ -63,13 +70,16 @@ def evaluate_declared_dependency_boundaries(
         source_class = classifications.get(source_component)
         target_class = classifications.get(target_component)
 
-        if source_class == "PRODUCT" and target_class == "TOOLCHAIN":
+        if source_class == "PRODUCT" and target_class in NON_PRODUCT_IMPLEMENTATION_CLASSES:
             if edge.phase == DependencyPhase.RUNTIME:
                 findings.append(
                     RuleFinding(
                         rule_id="PTSIP-DEP-001",
                         severity="ERROR",
-                        message="Declared PRODUCT component has a resolved runtime dependency on declared TOOLCHAIN component.",
+                        message=(
+                            "Declared PRODUCT component has a resolved runtime dependency on "
+                            f"declared {target_class} implementation."
+                        ),
                         evidence_ids=(edge.evidence_id,),
                         source_component=source_component,
                         target_component=target_component,
@@ -80,7 +90,10 @@ def evaluate_declared_dependency_boundaries(
                     RuleFinding(
                         rule_id="PTSIP-BLD-002",
                         severity="ERROR",
-                        message="Declared PRODUCT component build invokes/depends on declared TOOLCHAIN component.",
+                        message=(
+                            "Declared PRODUCT component build invokes/depends on declared "
+                            f"{target_class} implementation."
+                        ),
                         evidence_ids=(edge.evidence_id,),
                         source_component=source_component,
                         target_component=target_component,
@@ -91,19 +104,29 @@ def evaluate_declared_dependency_boundaries(
                     RuleFinding(
                         rule_id="PTSIP-DEP-001",
                         severity="REVIEW",
-                        message="Resolved PRODUCT-to-TOOLCHAIN edge has unknown lifecycle phase; do not treat it as absence of violation.",
+                        message=(
+                            f"Resolved PRODUCT-to-{target_class} edge has unknown lifecycle phase; "
+                            "do not treat it as absence of violation."
+                        ),
                         evidence_ids=(edge.evidence_id,),
                         source_component=source_component,
                         target_component=target_component,
                     )
                 )
 
-        if source_class == "TOOLCHAIN" and target_class == "PRODUCT" and edge.phase == DependencyPhase.UNKNOWN:
+        if (
+            source_class in NON_PRODUCT_IMPLEMENTATION_CLASSES
+            and target_class == "PRODUCT"
+            and edge.phase == DependencyPhase.UNKNOWN
+        ):
             findings.append(
                 RuleFinding(
                     rule_id="PTSIP-DEP-002",
                     severity="REVIEW",
-                    message="Resolved TOOLCHAIN-to-PRODUCT edge requires purpose/phase review; direction alone does not prove that it is inspection-only.",
+                    message=(
+                        f"Resolved {source_class}-to-PRODUCT edge requires purpose/phase review; "
+                        "direction alone does not prove that it is bounded lifecycle work."
+                    ),
                     evidence_ids=(edge.evidence_id,),
                     source_component=source_component,
                     target_component=target_component,
