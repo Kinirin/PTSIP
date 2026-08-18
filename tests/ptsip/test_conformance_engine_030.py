@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import subprocess
 from pathlib import Path
 
@@ -9,15 +9,20 @@ from ptsip.build_resolution import evaluate_independent_build_resolution
 from ptsip.conformance_engine import evaluate_conformance
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.lifecycle_evidence import evaluate_lifecycle_evidence
-from ptsip.validation.components import partition_components
 from ptsip.repository.snapshot import capture_snapshot
+from ptsip.validation.components import partition_components
 
 
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _git(repo: Path, *args: str) -> None:
-    subprocess.run(["git", "-C", str(repo), *args], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
 
 
 def _init_git(repo: Path) -> None:
@@ -59,13 +64,15 @@ def _python_profile(repo: Path, *, lifecycle: bool = True) -> list[dict[str, obj
             "include": ["product/**"],
             "purpose": "product_runtime",
             "manifests": ["product/requirements.txt"],
+            "executable": True,
         },
         {
             "id": "tools",
-            "classification": "TOOLCHAIN",
+            "classification": "DEVELOPMENT_TOOLING",
             "include": ["tools/**"],
             "purpose": "development_tooling",
             "manifests": ["tools/requirements.txt"],
+            "executable": True,
         },
     ]
     if lifecycle:
@@ -78,10 +85,12 @@ def _python_profile(repo: Path, *, lifecycle: bool = True) -> list[dict[str, obj
 def _write_profile(repo: Path, components: list[dict[str, object]]) -> None:
     lines = [
         "ptsip:",
-        '  version: "0.3.4-draft"',
+        '  version: "0.3.6-draft"',
         "  specification:",
         '    source: "https://github.com/Kinirin/PTSIP"',
         f'    revision: "{SPEC_REVISION}"',
+        "responsibility_map:",
+        "  mode: explicit",
         "components:",
     ]
     for component in components:
@@ -94,6 +103,8 @@ def _write_profile(repo: Path, components: list[dict[str, object]]) -> None:
                 f"    purpose: {component['purpose']}",
             ]
         )
+        if "executable" in component:
+            lines.append(f"    executable: {'true' if component['executable'] else 'false'}")
         manifests = component.get("manifests", [])
         if manifests:
             lines.append("    manifests:")
@@ -105,8 +116,8 @@ def _write_profile(repo: Path, components: list[dict[str, object]]) -> None:
     lines.extend(
         [
             "policies:",
-            "  product_to_toolchain_runtime_dependency: deny",
-            "  toolchain_in_product_package: deny",
+            "  product_to_nonproduct_runtime_dependency: deny",
+            "  nonproduct_in_product_package: deny",
             "  independent_build_resolution: required",
         ]
     )
@@ -123,7 +134,11 @@ def _artifact(path: Path, product_path: str = "product/app.py") -> None:
                 "producer_component": "tools",
                 "artifact_type": "fixture",
                 "shipping_scope": "product-distribution",
-                "contents": {"paths": [product_path], "components": ["product"], "complete": True},
+                "contents": {
+                    "paths": [product_path],
+                    "components": ["product"],
+                    "complete": True,
+                },
                 "derivation": [{"relation": "GENERATES", "source": "tools"}],
                 "provenance": "OBSERVED",
                 "evidence_ids": ["artifact:fixture:product-dist"],
@@ -162,7 +177,7 @@ def test_supported_clean_fixture_can_reach_conformant(tmp_path: Path) -> None:
     components = _python_profile(repo)
     _write_profile(repo, components)
     _release_workflow(repo, "product-release.yml", "product/**")
-    _release_workflow(repo, "toolchain-release.yml", "tools/**")
+    _release_workflow(repo, "development-release.yml", "tools/**")
     artifact = tmp_path / "artifact.json"
     _artifact(artifact)
     _commit_all(repo)
@@ -175,7 +190,7 @@ def test_supported_clean_fixture_can_reach_conformant(tmp_path: Path) -> None:
     assert result.report["coverage"]["blocking_gaps"] == []
 
 
-def test_cross_plane_shared_manifest_blocks_build_resolution(tmp_path: Path) -> None:
+def test_cross_lifecycle_shared_manifest_blocks_build_resolution(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     components = _python_profile(repo)
@@ -186,10 +201,10 @@ def test_cross_plane_shared_manifest_blocks_build_resolution(tmp_path: Path) -> 
 
     result = evaluate_independent_build_resolution(repo, components)
     assert result.status == "BLOCKED"
-    assert any("shared-cross-plane-manifest" in item["id"] for item in result.blocking_gaps)
+    assert any("shared-cross-lifecycle-manifest" in item["id"] for item in result.blocking_gaps)
 
 
-def test_global_release_trigger_is_not_treated_as_lifecycle_proof_or_violation(tmp_path: Path) -> None:
+def test_global_release_trigger_is_evidence_not_lifecycle_authority(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     components = _python_profile(repo)
@@ -199,9 +214,9 @@ def test_global_release_trigger_is_not_treated_as_lifecycle_proof_or_violation(t
 
     partition = partition_components(repo, components)
     lifecycle = evaluate_lifecycle_evidence(repo, components, partition)
-    assert lifecycle.status == "BLOCKED"
-    assert any(item["id"] == "lifecycle:product-release-evidence" for item in lifecycle.blocking_gaps)
-    assert not any("violation" in item.lower() for item in lifecycle.observations)
+    assert lifecycle.status == "RAN"
+    assert lifecycle.blocking_gaps == ()
+    assert any("not a classification failure" in item for item in lifecycle.observations)
 
 
 def _npm_fixture(repo: Path, product_source: str) -> tuple[list[dict[str, object]], Path]:
@@ -226,49 +241,66 @@ def _npm_fixture(repo: Path, product_source: str) -> tuple[list[dict[str, object
             "manifests": ["product/package.json"],
             "release_owner": "product-release",
             "compatibility_owner": "product-compat",
+            "executable": True,
         },
         {
             "id": "tools",
-            "classification": "TOOLCHAIN",
+            "classification": "DEVELOPMENT_TOOLING",
             "include": ["tools/**"],
             "purpose": "development_tooling",
             "manifests": ["tools/package.json"],
             "release_owner": "tools-release",
             "compatibility_owner": "tools-compat",
+            "executable": True,
         },
     ]
     _write_profile(repo, components)
     _release_workflow(repo, "product-release.yml", "product/**")
-    _release_workflow(repo, "toolchain-release.yml", "tools/**")
+    _release_workflow(repo, "development-release.yml", "tools/**")
     artifact = repo.parent / "npm-artifact.json"
     _artifact(artifact, "product/index.ts")
     return components, artifact
 
 
-def test_npm_local_product_to_toolchain_dependency_is_nonconformant(tmp_path: Path) -> None:
+def test_npm_local_product_to_development_tooling_dependency_is_nonconformant(
+    tmp_path: Path,
+) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
-    _components, artifact = _npm_fixture(repo, 'import { tool } from "@fixture/tools";\nconsole.log(tool);\n')
+    _components, artifact = _npm_fixture(
+        repo,
+        'import { tool } from "@fixture/tools";\nconsole.log(tool);\n',
+    )
     _commit_all(repo)
 
     scan = scan_dependency_edges(repo)
     assert "javascript-typescript" in scan.adapters
     assert "npm-manifest" in scan.adapters
-    edge = next(item for item in scan.edges if item.evidence_id == "npm-manifest:product/package.json:dependencies:@fixture/tools")
+    edge = next(
+        item
+        for item in scan.edges
+        if item.evidence_id == "npm-manifest:product/package.json:dependencies:@fixture/tools"
+    )
     assert edge.resolved_path == "tools/package.json"
     assert edge.phase.value == "RUNTIME"
 
     result = evaluate_conformance(repo, artifact_evidence_paths=[artifact])
     assert result.outcome == "NON_CONFORMANT"
-    assert any(item["rule_id"] == "PTSIP-DEP-001" and item["outcome_effect"] == "NON_CONFORMANT" for item in result.report["diagnostics"])
+    assert any(
+        item["rule_id"] == "PTSIP-DEP-001"
+        and item["outcome_effect"] == "NON_CONFORMANT"
+        for item in result.report["diagnostics"]
+    )
 
 
 def test_dynamic_javascript_import_blocks_product_dependency_conclusion(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     components, artifact = _npm_fixture(repo, "const target = process.env.TARGET;\nimport(target);\n")
-    # Remove the declared local dependency so only the dynamic source edge remains.
-    (repo / "product" / "package.json").write_text(json.dumps({"name": "@fixture/product"}), encoding="utf-8")
+    (repo / "product" / "package.json").write_text(
+        json.dumps({"name": "@fixture/product"}),
+        encoding="utf-8",
+    )
     _write_profile(repo, components)
     _commit_all(repo)
 
