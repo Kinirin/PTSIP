@@ -4,26 +4,15 @@
 
 - Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
-- Current published Tool/package version: **`0.3.5`**
-- Current Tool release tag: **`tool-v0.3.5`**
-- Tool `0.3.5` release commit: `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1`
-- Tool `0.3.5` GitHub Release: **PUBLISHED** on 2026-08-17
-- Tool `0.3.5` PyPI publication: **COMPLETE** through Trusted Publishing
+- Published Tool/package version: **`0.3.5`**
+- Published tag: **`tool-v0.3.5`**
+- Release commit: `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1`
+- GitHub Release: **PUBLISHED** on 2026-08-17
+- PyPI publication: **COMPLETE** through Trusted Publishing
 - Bound published Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
-- Supported Python metadata: Python 3.11–3.14
-- Tool release namespace: `tool-v*`
-- Specification release/design namespace: `spec-v*`
-- License: Apache License 2.0
+- Historical Tool `0.3.5` classifications: `PRODUCT | TOOLCHAIN | NEUTRAL_CONTRACT`
 
-Tool `0.3.5` remains the published compatibility baseline and retains its historical PTSIP classifications:
-
-```text
-PRODUCT
-TOOLCHAIN
-NEUTRAL_CONTRACT
-```
-
-Tool `0.3.5` is also the first published Tool containing VPMS. Current VPMS Verification Purpose vocabulary remains `PRODUCT | TOOLCHAIN`; that VPMS `TOOLCHAIN` token is independent from the Tool `0.3.6` PTSIP lifecycle ontology.
+Tool `0.3.5` remains the published compatibility baseline. Its historical PTSIP semantics must not be rewritten by Tool `0.3.6` development.
 
 ## Active Tool 0.3.6 development
 
@@ -33,21 +22,15 @@ Development branch:
 tool-0.3.6-lifecycle-ownership
 ```
 
-Development package/runtime identity on that branch is `0.3.6`. This does **not** mean Tool `0.3.6` has been published.
+Development Tool identity is `0.3.6`; Tool `0.3.6` is **not published**.
 
-Active Specification family:
-
-```text
-0.3.6-draft
-```
-
-Current bound immutable WU-04C Specification snapshot:
+Current bound Specification:
 
 ```text
-82abd09360df09a95fbbfb516855fa9ffb49f050
+0.3.6-draft @ 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-The earlier WU-03 activation snapshot was `12e2ccd15634ecb3d0a4195b0f61ac3f620e7540`. The binding advanced because WU-04C changed normative declaration-authority/materialization semantics.
+The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D is implementing those frozen semantics; no new Specification revision is selected merely for runtime/test changes.
 
 ### Work-unit progress
 
@@ -65,7 +48,7 @@ WU-04 staged progress:
 WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            NEXT / NOT ENTERED
+WU-04D  ResolvedProfile + digest + provenance            ACTIVE
 WU-04E  validation consumes effective map                LOCKED
 WU-04F  conformance consumes effective map               LOCKED
 WU-04G  clarification/adoption read integration          LOCKED
@@ -73,17 +56,23 @@ WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-The only WU-04 sub-document created so far is the completed WU-04C record:
+WU-04D exact entry baseline:
 
 ```text
-planning/0.3.6/WU-04C-declaration-authority-effective-map.md
+d8713ac4e684852f3e6cf67a68165f82ae0b80aa
 ```
 
-There is intentionally no WU-04D sub-document yet. Future sub-documents are created only when the preceding stage gate is complete and that next stage is actually entered after a fresh branch-HEAD read.
+Active stage document:
+
+```text
+planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
+```
+
+WU-04E and later sub-documents must not be created until WU-04D is completed and the next stage is explicitly entered after a fresh branch-HEAD read.
 
 ## Tool 0.3.6 canonical lifecycle model
 
-Canonical classifications are:
+Canonical classifications are exactly:
 
 ```text
 PRODUCT
@@ -93,21 +82,13 @@ OPERATIONS
 NEUTRAL_CONTRACT
 ```
 
-`TOOLCHAIN` is not a canonical Tool `0.3.6` classification alias. It remains historical/migration input for the planned legacy reader.
+`TOOLCHAIN` is not a Tool `0.3.6` PTSIP classification alias. It remains historical/migration input for the planned legacy reader.
 
-Responsibility Map v2 supports:
+Classification is primary lifecycle ownership and remains distinct from component roles, typed relationships, associated artifacts, declaration source, materialization provenance, and VPMS Verification Purpose.
 
-- explicit/template/hybrid declaration modes;
-- optional multi-valued closed component roles;
-- typed directed responsibility relationships;
-- associated artifacts subordinate to exactly one classified anchor;
-- map-wide component/associated-artifact endpoint identity;
-- lifecycle-neutral canonical policy keys; and
-- exact revision-bound template references.
+## WU-04 declaration/materialization authority
 
-## WU-04 declaration authority boundary
-
-WU-04C freezes these separate responsibilities:
+Frozen responsibility boundary:
 
 ```text
 classification
@@ -120,7 +101,7 @@ materializer
     = deterministic non-authoritative resolution
 ```
 
-`source_mode` values are:
+Responsibility Map source modes:
 
 ```text
 explicit
@@ -128,55 +109,67 @@ template
 hybrid
 ```
 
-They are not lifecycle classifications.
+Template selection is explicit and exact-revision-bound. Hybrid project replacement/extension/removal outranks the selected immutable template declaration, using stable-ID whole-entity authority rather than implicit field-level inheritance.
 
-Authority semantics:
-
-- `explicit`: project owns the complete declaration;
-- `template`: project explicitly adopts one exact template ID + immutable revision;
-- `hybrid`: project owns exact template selection plus stable-ID replacements/extensions/removals;
-- unchanged template declarations retain template origin;
-- project replacement/extension/removal outranks selected template declaration;
-- hybrid replacement is whole-entity by stable ID, not implicit field-level inheritance.
-
-The materializer must not infer missing architecture, auto-select templates, rewrite lifecycle classifications, fabricate responsibilities, silently repair/delete dangling relationships, cascade project removals, or mutate the source declaration merely to produce a valid map.
-
-All source modes resolve to one **Canonical Effective Responsibility Map** for downstream semantic consumers while source declaration and template identity remain separately inspectable.
-
-Normative rules are `PTSIP-RMAP-013` through `PTSIP-RMAP-016`, with the architecture decision recorded in `ADR-0009`.
-
-## WU-04 catalog/materializer baseline
-
-Initial templates:
+Derived runtime/review origin vocabulary:
 
 ```text
-python-package-library
-python-cli-application
-mixed-product-development-delivery
+PROJECT_EXPLICIT
+TEMPLATE
+PROJECT_OVERRIDE
+PROJECT_EXTENSION
+PROJECT_REMOVAL
 ```
 
-Template revision is an immutable SHA-256 over canonical JSON of template semantic map content.
+The materializer must not infer missing architecture, auto-select templates, rewrite lifecycle classifications, fabricate responsibilities, silently repair dangling relationships, cascade project removals, or mutate source declarations merely to produce a valid effective map.
 
-First WU-04 catalog/materializer implementation commit:
+## WU-04D active implementation boundary
+
+WU-04D introduces one source-preserving resolved view:
 
 ```text
-5be7623fa1b750a1c11e349fd7f00073233d9595
+source declaration
+      |
+      v
+deterministic materialization
+      |
+      v
+ResolvedProfile
+      +--> source_payload
+      +--> effective_payload
+      +--> source_mode + exact template identity
+      +--> effective_map_digest
+      +--> derived entity/removal provenance
 ```
 
-WU-04D will introduce the common `ResolvedProfile` abstraction, deterministic effective-map digest, and derived declaration provenance. It has not been entered yet.
+Current implementation work is centered in:
+
+```text
+src/ptsip/validation/templates.py
+```
+
+Focused regression contracts are in:
+
+```text
+tests/ptsip/test_template_materialization_036.py
+```
+
+The effective-map digest represents effective architecture semantics rather than source mechanism. It excludes Specification binding, source mode, template identity, and materialization provenance, while normalizing stable-ID collections and known set-valued fields deterministically.
+
+WU-04D remains **ACTIVE**. Validation, conformance, clarification/adoption, and VPMS consumer integration have not been entered and belong to WU-04E through WU-04H.
 
 ## Repository self-profile
 
-Root `ptsip.yaml` structurally self-adopts Responsibility Map v2.
+Root `ptsip.yaml` structurally self-adopts Responsibility Map v2:
 
 - release automation: `DELIVERY`;
 - repository verification/CI/maintenance: `DEVELOPMENT_TOOLING`;
-- canonical contracts: `NEUTRAL_CONTRACT` where lifecycle-independent contract semantics hold;
-- subordinate specification governance support: associated artifact where separate component ownership is unnecessary.
+- canonical lifecycle-independent contracts: `NEUTRAL_CONTRACT` where applicable;
+- subordinate specification governance support: associated-artifact semantics where independent component ownership is unnecessary.
 
-## Compatibility direction
+## Tool 0.3.5 compatibility direction
 
-Tool `0.3.6` compatibility with Tool `0.3.5` means assisted migration, not preservation of obsolete ontology in the canonical schema:
+Tool `0.3.6` compatibility means assisted migration, not preservation of obsolete ontology:
 
 ```text
 Tool 0.3.5 profile
@@ -187,56 +180,45 @@ Tool 0.3.5 profile
     -> canonical Tool 0.3.6 Responsibility Map
 ```
 
-A legacy `TOOLCHAIN` responsibility may become `PRODUCT`, `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, a split, or unresolved clarification. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` translation is prohibited.
+Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` translation is prohibited.
 
 ## VPMS boundary
 
-PTSIP and VPMS remain sibling concerns:
+PTSIP and VPMS remain independent concerns. Current VPMS Verification Purpose vocabulary remains:
 
 ```text
-PTSIP
-    Which lifecycle owns this project responsibility?
-
-VPMS
-    Why does this verification exist / what does it protect?
+PRODUCT
+TOOLCHAIN
 ```
 
-A PTSIP `DEVELOPMENT_TOOLING` verifier may still carry VPMS Verification Purpose `PRODUCT`. VPMS purpose must not be renamed merely because PTSIP lifecycle classification changed.
+VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. VPMS effective-map read integration is reserved for WU-04H.
 
-PTSIP core must not depend on VPMS. During WU-04H, PTSIP resolves the effective map first and VPMS consumes only narrow read-only effective component metadata.
+## Tool 0.3.6 verification status
 
-## Verification status for Tool 0.3.6 development
+Focused WU-04D regression cases have been added, but **no test execution success is claimed yet**.
 
-Full self-hosted repository regression has **not** been claimed for WU-04. No self-hosted workflow was dispatched as part of WU-04A/B/C.
+No self-hosted workflow has been dispatched for WU-04D. Full repository regression/package verification remains a later WU-12/release-candidate responsibility unless a maintainer explicitly requests earlier self-hosted verification.
 
-Full regression/package verification remains part of WU-12 and exact release-candidate verification.
-
-## Verification and publication evidence for published Tool 0.3.5
-
-Historical final Tool `0.3.5` maintainer-local repository regression:
+Historical Tool `0.3.5` maintainer-local regression remains:
 
 ```text
 python -m pytest -q
 244 passed in 571.90s
 ```
 
-Earlier Tool `0.3.5` package-boundary verification also established successful wheel/sdist build, `twine check`, installed-wheel smoke, VPMS package inclusion, Tool identity `0.3.5`, and Specification identity `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`.
+That is historical Tool `0.3.5` evidence only and must not be represented as Tool `0.3.6` verification.
 
-Tool `0.3.5` verification/publication is historical evidence only and must not be represented as Tool `0.3.6` verification.
+## Workflow resource policy
 
-## Current workflow resource policy
-
-Repository verification, release preparation, and distribution build compute default to the approved self-hosted Windows runner:
+Approved Windows self-hosted runner:
 
 ```text
 DESKTOP-5HCCQIR
 ```
 
-`tooling-test.yml` and `release.yml` are manually dispatched and require explicit host readiness. Release-candidate verification is bound to the exact candidate SHA.
+Before dispatching `tooling-test.yml` or `release.yml`, the maintainer must be told that this runner will be used and must explicitly confirm that the host and PowerShell environment are ready.
 
-`tooling-release.yml` performs build/distribution verification on self-hosted Windows. The narrow GitHub-hosted GNU/Linux PyPI Trusted Publishing job is the only current hosted-compute exception because the publishing action is Docker-based; it must not absorb tests, compilation, release preparation, or package building.
-
-No Tool `0.3.6` release verification or publication is claimed until the required self-hosted exact-SHA gates have actually completed.
+The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHub-hosted compute exception. It must not absorb tests, compilation, package building, or release preparation.
 
 ## Tool lineage
 
@@ -246,6 +228,6 @@ No Tool `0.3.6` release verification or publication is claimed until the require
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04C complete, WU-04D next/not entered**
+- Tool `0.3.6`: **active development; WU-04D ACTIVE**
 
-Current next-version work remains consolidated under `planning/0.3.6.md`. Do not create a separate Tool `0.4.0` plan unless an independently consequential scope emerges beyond the current `0.3.6` contract.
+Current next-version work remains consolidated under `planning/0.3.6.md`.
