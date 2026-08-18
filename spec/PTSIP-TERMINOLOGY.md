@@ -24,6 +24,32 @@ For `0.3.6-draft`, `classification` is the canonical representation of primary l
 
 A separate legacy `lifecycle_owner` field may be consumed by migration tooling as historical metadata, but it must not create a second competing ownership authority or contradict canonical `classification` semantics.
 
+## Governing lifecycle obligation
+
+The lifecycle-specific reason a coherent project-owned responsibility must exist, change, remain compatible, execute, or be retired.
+
+PTSIP lifecycle determination uses the governing lifecycle obligation rather than the most common file type, workflow phase, activity verb, technology, invocation frequency, or confidence score.
+
+## Delivery handoff
+
+The semantic boundary where a selected release target has reached or been accepted by its intended publication/deployment destination and ordinary ongoing operation begins.
+
+Responsibilities whose primary obligation ends at this boundary are `DELIVERY` candidates. Responsibilities whose primary obligation continues after this boundary to maintain deployed state are `OPERATIONS` candidates.
+
+## Material mixed-lifecycle responsibility
+
+A component state in which one classification cannot describe lifecycle truth without hiding an independently governable responsibility.
+
+Material mixed-lifecycle evidence can include different lifecycle triggers, release/compatibility/permission/environment obligations, independently evolving dependencies, distinct failure meanings/owners, or independently changeable release/deploy/operate behavior.
+
+When material responsibilities are separable, PTSIP prefers a component-split proposal over forcing one classification.
+
+## Subordinate lifecycle activity
+
+An activity from another lifecycle phase that exists only to complete one coherent primary lifecycle obligation and does not introduce independently governable lifecycle ownership, release, compatibility, permission, environment, or dependency obligations.
+
+Subordinate activity does not by itself require a component split.
+
 ## `PRODUCT`
 
 Primary lifecycle ownership for Product runtime, user-facing behavior, Product distribution content, runtime SDK responsibility, and Product-specific quality or verification responsibility.
@@ -46,7 +72,7 @@ Typical responsibilities include release workflows, package publication, contain
 
 Primary lifecycle ownership for post-deployment operation: maintaining availability, recoverability, production state, infrastructure health, backup/recovery, incident response support, and ongoing production maintenance.
 
-The Delivery/Operations distinction is based on primary lifecycle purpose, not technology.
+The Delivery/Operations distinction is based on primary lifecycle purpose and the delivery handoff, not technology.
 
 ## `NEUTRAL_CONTRACT`
 
@@ -73,6 +99,12 @@ A component may be a package, module group, executable, generated artifact group
 The declared scope that keeps one component's primary lifecycle ownership and purpose coherent.
 
 If one old component contains materially different Product, Development Tooling, Delivery, Operations, or independent-contract responsibilities, migration may require a component-split proposal rather than a classification rename.
+
+## Component-split decision
+
+The lifecycle-boundary result used when one candidate contains multiple materially independent lifecycle responsibilities that can be represented separately.
+
+The decision test is whether independently governable lifecycle responsibility exists, not whether several activity verbs or workflow steps appear in one file.
 
 ## Responsibility role
 
@@ -107,6 +139,18 @@ The directory name `tests/` does not force `DEVELOPMENT_TOOLING` ownership.
 Verification implementation, test SDK/framework, or shared verification mechanism whose primary ownership belongs to the development lifecycle rather than to one Product's own lifecycle.
 
 It is typically a `DEVELOPMENT_TOOLING` responsibility, even when it verifies `PRODUCT` behavior.
+
+## Development build
+
+Build responsibility whose governing obligation is coding, local compilation, inspection, testing, or creation of non-release intermediate outputs.
+
+It is normally a `DEVELOPMENT_TOOLING` candidate.
+
+## Delivery build
+
+Build responsibility whose governing obligation is to materialize, assemble, sign, verify for handoff, package, or otherwise prepare an authoritative release/distribution/deployment unit for delivery to a destination.
+
+It is normally a `DELIVERY` candidate. The resulting Product Artifact may remain `PRODUCT`-owned.
 
 ## Artifact-kind neutrality rule
 
