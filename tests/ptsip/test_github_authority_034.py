@@ -95,14 +95,14 @@ def _repo(tmp_path: Path, name: str) -> Path:
     return repo
 
 
-def _toolchain_args(repo: Path, *extra: str) -> list[str]:
+def _development_tooling_args(repo: Path, *extra: str) -> list[str]:
     return [
         "adopt",
         str(repo),
         "--component",
         "tools",
         "--classification",
-        "TOOLCHAIN",
+        "DEVELOPMENT_TOOLING",
         "--purpose",
         "Repository-local generation tooling",
         "--shipped",
@@ -171,9 +171,9 @@ def test_complete_equivalent_local_profile_still_checks_authority(
     shared = MemoryAuthority()
     _install_shared_client(monkeypatch, shared)
 
-    assert main(_toolchain_args(repo_a)) == 0
+    assert main(_development_tooling_args(repo_a)) == 0
     capsys.readouterr()
-    assert main(_toolchain_args(repo_b, "--coordination", "local")) == 0
+    assert main(_development_tooling_args(repo_b, "--coordination", "local")) == 0
     capsys.readouterr()
 
     before = (repo_b / "ptsip.yaml").read_text(encoding="utf-8")
@@ -196,7 +196,7 @@ def test_complete_conflicting_local_profile_returns_explicit_conflict_without_ov
     shared = MemoryAuthority()
     _install_shared_client(monkeypatch, shared)
 
-    assert main(_toolchain_args(repo_a)) == 0
+    assert main(_development_tooling_args(repo_a)) == 0
     capsys.readouterr()
     assert main(_product_args(repo_b, "--coordination", "local")) == 0
     capsys.readouterr()
@@ -222,7 +222,7 @@ def test_complete_local_declaration_without_remote_record_does_not_fabricate_aut
     shared = MemoryAuthority()
     _install_shared_client(monkeypatch, shared)
 
-    assert main(_toolchain_args(repo, "--coordination", "local")) == 0
+    assert main(_development_tooling_args(repo, "--coordination", "local")) == 0
     capsys.readouterr()
     assert shared.documents == {}
 
