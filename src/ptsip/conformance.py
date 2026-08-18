@@ -21,6 +21,7 @@ from .spec_identity import current_spec_identity
 from .validation.components import ComponentPartition, partition_components
 from .validation.profile import find_profile, validate_profile
 from .validation.rules import (
+    NON_PRODUCT_IMPLEMENTATION_CLASSES,
     RuleFinding,
     evaluate_component_dependency_policy,
     evaluate_declared_dependency_boundaries,
@@ -156,7 +157,10 @@ def _dependency_coverage_gaps(
         gaps.append(
             _coverage_gap(
                 gap_id=f"dependency-target:{edge.evidence_id}",
-                message="A Product-owned dependency target is unresolved/dynamic and could conceal a prohibited Product-to-Toolchain dependency.",
+                message=(
+                    "A Product-owned dependency target is unresolved/dynamic and could conceal a prohibited "
+                    "Product-to-non-Product implementation dependency."
+                ),
                 rule_ids=("PTSIP-DEP-001", "PTSIP-EVD-003"),
                 evidence_ids=(edge.evidence_id,),
                 blocking=True,
@@ -177,7 +181,10 @@ def _unassigned_coverage_gaps(partition: ComponentPartition) -> list[dict[str, o
     return [
         _coverage_gap(
             gap_id="component-ownership:unassigned-relevant-files",
-            message=f"{len(relevant)} tracked source/manifest file(s) are outside declared component ownership and may conceal a mandatory boundary.",
+            message=(
+                f"{len(relevant)} tracked source/manifest file(s) are outside declared component ownership "
+                "and may conceal a mandatory boundary."
+            ),
             rule_ids=("PTSIP-CLS-001", "PTSIP-EVD-003"),
             evidence_ids=evidence,
             blocking=True,
@@ -193,7 +200,7 @@ def _unsupported_source_coverage_gaps(
     unsupported = sorted(
         assignment.path
         for assignment in partition.assignments
-        if classifications.get(assignment.component_id) in {"PRODUCT", "TOOLCHAIN"}
+        if classifications.get(assignment.component_id) in {"PRODUCT", *NON_PRODUCT_IMPLEMENTATION_CLASSES}
         and is_unsupported_mandatory_source(assignment.path)
     )
     if not unsupported:
@@ -202,7 +209,7 @@ def _unsupported_source_coverage_gaps(
         _coverage_gap(
             gap_id="language-coverage:unsupported-mandatory-source",
             message=(
-                f"{len(unsupported)} Product/Toolchain-owned executable source file(s) use unsupported dependency ecosystems; "
+                f"{len(unsupported)} lifecycle-owned executable source file(s) use unsupported dependency ecosystems; "
                 "mandatory dependency-boundary evidence is incomplete."
             ),
             rule_ids=("PTSIP-DEP-001", "PTSIP-EVD-003"),
@@ -232,7 +239,10 @@ def _evaluate_artifacts(
     for issue in artifact_load.issues:
         gaps.append(
             _coverage_gap(
-                gap_id=f"artifact-evidence:invalid:{hashlib.sha256((issue.source_path + issue.message).encode()).hexdigest()[:12]}",
+                gap_id=(
+                    "artifact-evidence:invalid:"
+                    + hashlib.sha256((issue.source_path + issue.message).encode()).hexdigest()[:12]
+                ),
                 message=f"Artifact evidence input is invalid: {issue.message}",
                 rule_ids=("PTSIP-ART-001", "PTSIP-EVD-003"),
                 evidence_ids=(f"artifact-input:{issue.source_path}",),
@@ -240,7 +250,9 @@ def _evaluate_artifacts(
             )
         )
 
-    product_documents = [item for item in artifact_load.documents if item.payload.get("classification") == "PRODUCT"]
+    product_documents = [
+        item for item in artifact_load.documents if item.payload.get("classification") == "PRODUCT"
+    ]
     if not product_documents:
         gaps.append(
             _coverage_gap(
@@ -283,7 +295,9 @@ def _evaluate_artifacts(
                 )
             )
 
-        content_components = [str(item) for item in contents.get("components", []) if isinstance(item, str)]
+        content_components = [
+            str(item) for item in contents.get("components", []) if isinstance(item, str)
+        ]
         unknown_components = sorted({item for item in content_components if item not in classifications})
         if unknown_components:
             gaps.append(
@@ -296,13 +310,17 @@ def _evaluate_artifacts(
                 )
             )
 
-        toolchain_components = {item for item in content_components if classifications.get(item) == "TOOLCHAIN"}
+        nonproduct_components = {
+            item
+            for item in content_components
+            if classifications.get(item) in NON_PRODUCT_IMPLEMENTATION_CLASSES
+        }
         for path in contents.get("paths", []):
             if isinstance(path, str):
                 owner = owners.get(path)
-                if owner and classifications.get(owner) == "TOOLCHAIN":
-                    toolchain_components.add(owner)
-        if toolchain_components:
+                if owner and classifications.get(owner) in NON_PRODUCT_IMPLEMENTATION_CLASSES:
+                    nonproduct_components.add(owner)
+        if nonproduct_components:
             diagnostics.append(
                 _diagnostic(
                     rule_id="PTSIP-PKG-001",
@@ -310,8 +328,8 @@ def _evaluate_artifacts(
                     severity="ERROR",
                     evidence_ids=evidence_ids,
                     message=(
-                        f"PRODUCT artifact {artifact_id!r} contains TOOLCHAIN-owned implementation component(s): "
-                        + ", ".join(sorted(toolchain_components))
+                        f"PRODUCT artifact {artifact_id!r} contains non-Product implementation component(s): "
+                        + ", ".join(sorted(nonproduct_components))
                         + ". The artifact producer identity does not waive Product packaging isolation."
                     ),
                     evaluator_id="product-artifact-boundary",
@@ -372,7 +390,9 @@ def evaluate_conformance(
         coverage_gaps.append(
             _coverage_gap(
                 gap_id="profile:invalid",
-                message="Project Profile validation failed, so declared ownership cannot support Enforced Conformance.",
+                message=(
+                    "Project Profile validation failed, so declared ownership cannot support Enforced Conformance."
+                ),
                 rule_ids=("PTSIP-SPC-001", "PTSIP-EVD-003"),
                 evidence_ids=("profile:invalid",),
                 blocking=True,
@@ -384,13 +404,16 @@ def evaluate_conformance(
         loaded = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
         payload = loaded if isinstance(loaded, dict) else None
         if payload is not None:
-            binding = payload.get("ptsip", {}).get("specification", {}) if isinstance(payload.get("ptsip"), dict) else {}
+            ptsip_meta = payload.get("ptsip")
+            binding = ptsip_meta.get("specification", {}) if isinstance(ptsip_meta, dict) else {}
             revision = binding.get("revision") if isinstance(binding, dict) else None
             if not revision:
                 coverage_gaps.append(
                     _coverage_gap(
                         gap_id="profile:missing-immutable-revision",
-                        message="Enforced Conformance against a mutable draft requires an immutable Specification revision.",
+                        message=(
+                            "Enforced Conformance against a mutable draft requires an immutable Specification revision."
+                        ),
                         rule_ids=("PTSIP-SPC-001", "PTSIP-EVD-003"),
                         evidence_ids=("profile:specification:revision:missing",),
                         blocking=True,
@@ -402,8 +425,13 @@ def evaluate_conformance(
 
         if components:
             partition = partition_components(root, components)
-            boundary_findings = evaluate_declared_dependency_boundaries(components, partition, dependencies)
-            diagnostics.extend(_finding_diagnostic(item, "declared-dependency-boundaries") for item in boundary_findings)
+            boundary_findings = evaluate_declared_dependency_boundaries(
+                components, partition, dependencies
+            )
+            diagnostics.extend(
+                _finding_diagnostic(item, "declared-dependency-boundaries")
+                for item in boundary_findings
+            )
             coverage_gaps.extend(_dependency_coverage_gaps(dependencies, components, partition))
             coverage_gaps.extend(_unassigned_coverage_gaps(partition))
             unsupported_gaps = _unsupported_source_coverage_gaps(partition, components)
@@ -412,7 +440,9 @@ def evaluate_conformance(
                 "status": "BLOCKED" if unsupported_gaps else "RAN",
                 "reason": "UNSUPPORTED_MANDATORY_SOURCE" if unsupported_gaps else None,
                 "supported_suffixes": sorted(SUPPORTED_SOURCE_SUFFIXES),
-                "unsupported_source_count": len(unsupported_gaps[0]["evidence_ids"]) if unsupported_gaps else 0,
+                "unsupported_source_count": (
+                    len(unsupported_gaps[0]["evidence_ids"]) if unsupported_gaps else 0
+                ),
             }
             evaluators["declared_dependency_boundaries"] = {
                 "status": "RAN",
@@ -436,27 +466,32 @@ def evaluate_conformance(
         else:
             evaluators["source_language_coverage"] = {
                 "status": "BLOCKED",
-                "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+                "reason": "MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED",
             }
             evaluators["declared_dependency_boundaries"] = {
                 "status": "BLOCKED",
-                "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+                "reason": "MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED",
             }
             evaluators["component_dependency_policy"] = {
                 "status": "NOT_APPLICABLE",
-                "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+                "reason": "MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED",
             }
             coverage_gaps.append(
                 _coverage_gap(
-                    gap_id="ownership:boundary-shorthand",
-                    message="This Tool 0.3.0 conformance evaluator requires explicit components for dependency-to-component attribution; boundary-root shorthand remains valid profile syntax but is insufficient for this evaluator.",
-                    rule_ids=("PTSIP-CLS-001", "PTSIP-EVD-003"),
-                    evidence_ids=("profile:boundaries",),
+                    gap_id="ownership:materialization-required",
+                    message=(
+                        "Component-level conformance evaluation requires a materialized Responsibility Map. "
+                        "Template/hybrid declarations must be resolved through the version-bound template catalog first."
+                    ),
+                    rule_ids=("PTSIP-RMAP-001", "PTSIP-EVD-003"),
+                    evidence_ids=("profile:responsibility_map",),
                     blocking=True,
                 )
             )
 
-    artifact_diagnostics, artifact_gaps, artifact_evaluator = _evaluate_artifacts(artifact_load, components, partition)
+    artifact_diagnostics, artifact_gaps, artifact_evaluator = _evaluate_artifacts(
+        artifact_load, components, partition
+    )
     diagnostics.extend(artifact_diagnostics)
     coverage_gaps.extend(artifact_gaps)
     evaluators["product_artifact_boundary"] = artifact_evaluator
@@ -470,7 +505,10 @@ def evaluate_conformance(
             blocking=True,
         )
     )
-    evaluators["independent_build_resolution"] = {"status": "BLOCKED", "reason": "EVALUATOR_NOT_IMPLEMENTED"}
+    evaluators["independent_build_resolution"] = {
+        "status": "BLOCKED",
+        "reason": "EVALUATOR_NOT_IMPLEMENTED",
+    }
 
     after = capture_snapshot(root) if _finalize_snapshot else None
     comparison = compare_snapshots(before, after) if after is not None else None
@@ -485,8 +523,12 @@ def evaluate_conformance(
             )
         )
 
-    non_conformant = any(item.get("outcome_effect") == "NON_CONFORMANT" for item in diagnostics)
-    incomplete_diagnostic = any(item.get("outcome_effect") == "INCOMPLETE" for item in diagnostics)
+    non_conformant = any(
+        item.get("outcome_effect") == "NON_CONFORMANT" for item in diagnostics
+    )
+    incomplete_diagnostic = any(
+        item.get("outcome_effect") == "INCOMPLETE" for item in diagnostics
+    )
     blocking_gap = any(bool(item.get("blocking")) for item in coverage_gaps)
     if non_conformant:
         outcome = "NON_CONFORMANT"
@@ -511,7 +553,11 @@ def evaluate_conformance(
         "snapshot": {
             "before": before.as_dict(),
             "after": after.as_dict() if after is not None else None,
-            "comparison": comparison.as_dict() if comparison is not None else {"status": "PENDING", "stable": False, "reasons": []},
+            "comparison": (
+                comparison.as_dict()
+                if comparison is not None
+                else {"status": "PENDING", "stable": False, "reasons": []}
+            ),
         },
         "profile": profile_validation.as_dict(),
         "dependencies": dependencies.as_dict(),
