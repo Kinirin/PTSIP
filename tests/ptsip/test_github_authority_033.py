@@ -90,14 +90,14 @@ def _repo(tmp_path: Path, name: str = "repo") -> Path:
     return repo
 
 
-def _toolchain_adopt_args(repo: Path) -> list[str]:
+def _development_tooling_adopt_args(repo: Path) -> list[str]:
     return [
         "adopt",
         str(repo),
         "--component",
         "tools",
         "--classification",
-        "TOOLCHAIN",
+        "DEVELOPMENT_TOOLING",
         "--purpose",
         "Repository-local generation tooling",
         "--shipped",
@@ -123,7 +123,7 @@ def test_authority_answer_requires_real_booleans() -> None:
     with pytest.raises(ValueError, match="shipped must be a boolean"):
         answer_from_mapping(
             {
-                "classification": "TOOLCHAIN",
+                "classification": "DEVELOPMENT_TOOLING",
                 "purpose": "Repository-local generation tooling",
                 "shipped": "false",
                 "runtime_required": False,
@@ -181,7 +181,7 @@ def test_github_authority_uses_component_scope_not_local_clarification_id() -> N
         {
             "decision_id": str(decision_a["id"]),
             "answer": {
-                "classification": "TOOLCHAIN",
+                "classification": "DEVELOPMENT_TOOLING",
                 "purpose": "Repository-local generation tooling",
                 "shipped": False,
                 "runtime_required": False,
@@ -212,7 +212,7 @@ def test_github_authority_uses_component_scope_not_local_clarification_id() -> N
     assert rejected["accepted"] is False
     winner = rejected["decision"]
     assert isinstance(winner, dict)
-    assert winner["answer"]["classification"] == "TOOLCHAIN"
+    assert winner["answer"]["classification"] == "DEVELOPMENT_TOOLING"
 
 
 def test_github_adoption_winner_reconciles_into_stale_clone(
@@ -239,11 +239,11 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     monkeypatch.setattr(cli_module, "GithubControlPlaneClient", github_client)
     monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
 
-    assert main(_toolchain_adopt_args(repo_a)) == 0
+    assert main(_development_tooling_adopt_args(repo_a)) == 0
     adopted = json.loads(capsys.readouterr().out)
     assert adopted["status"] == "ADOPTED"
     assert adopted["backend"] == "GITHUB"
-    assert adopted["authority"]["decision"]["answer"]["classification"] == "TOOLCHAIN"
+    assert adopted["authority"]["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
     assert adopted["authority"]["decision"]["answer"]["runtime_required"] is False
     assert (repo_a / "ptsip.yaml").is_file()
     assert not (repo_b / "ptsip.yaml").exists()
@@ -256,7 +256,7 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
 
     profile = yaml.safe_load((repo_b / "ptsip.yaml").read_text(encoding="utf-8"))
     component = next(item for item in profile["components"] if item["id"] == "tools")
-    assert component["classification"] == "TOOLCHAIN"
+    assert component["classification"] == "DEVELOPMENT_TOOLING"
     assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in component
     assert not decision_store_path(repo_b).exists()
