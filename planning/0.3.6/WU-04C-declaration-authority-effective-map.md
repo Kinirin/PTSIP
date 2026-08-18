@@ -1,10 +1,12 @@
 # WU-04C — Declaration Authority, `source_mode`, and Canonical Effective Map Boundary
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04A catalog identity + WU-04B materializer core  
-> **Entry baseline:** `5be7623fa1b750a1c11e349fd7f00073233d9595`
+> **Entry baseline:** `5be7623fa1b750a1c11e349fd7f00073233d9595`  
+> **Accepted decision:** `decisions/ADR-0009-responsibility-map-declaration-authority.md`  
+> **Bound normative snapshot after WU-04C:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
 
 ## 1. Purpose
 
@@ -103,7 +105,7 @@ Project
 
 The project owns the decision to adopt the exact template identity.
 
-The selected template revision owns the default declaration content that the project explicitly adopted.
+The selected template revision supplies the default declaration content that the project explicitly adopted.
 
 Template selection MUST NOT be inferred from repository shape, language, framework, manifest, package manager, candidate confidence, or naming conventions.
 
@@ -247,55 +249,81 @@ Examples:
 
 The Tool MUST report the inconsistency. It MUST NOT silently delete or rewrite related entities merely to produce a valid map.
 
-## 9. WU-04 implementation order from this point
+## 9. Frozen normative implementation contract
 
-WU-04C is the only active sub-stage.
-
-The next stages remain locked until the preceding completion gate is satisfied:
+WU-04C promoted the approved authority boundary into the canonical `0.3.6-draft` Responsibility Map companion as:
 
 ```text
-WU-04C  declaration authority + source_mode boundary        ACTIVE
-   |
-   v
-WU-04D  ResolvedProfile + digest + provenance               LOCKED
-   |
-   v
-WU-04E  validation consumes effective map                   LOCKED
-   |
-   v
-WU-04F  conformance consumes effective map                  LOCKED
-   |
-   v
-WU-04G  clarification/adoption read paths consume view      LOCKED
-   |
-   v
-WU-04H  VPMS narrow read-only bridge consumes view          LOCKED
-   |
-   v
-WU-04I  regression + WU-04 completion                       LOCKED
+PTSIP-RMAP-013
+    Declaration source does not alter lifecycle ownership
+
+PTSIP-RMAP-014
+    Exact template selection is project-owned architecture authority
+
+PTSIP-RMAP-015
+    Hybrid precedence is stable-ID whole-entity authority
+
+PTSIP-RMAP-016
+    Materialization is deterministic and non-authoritative
 ```
 
-Future sub-stage documents MUST NOT be created before their stage is entered.
+The canonical and embedded registry copies were aligned to those rules and to the declaration-source/effective-map concepts.
 
-When the prior gate is complete, the next stage is entered by:
+The immutable Specification snapshot selected after the WU-04C normative change is:
 
-1. freshly reading the development branch HEAD;
-2. recording the predecessor completion state;
-3. creating that stage's sub-document;
-4. marking only that stage ACTIVE;
-5. performing only the work within that stage's declared boundary.
+```text
+82abd09360df09a95fbbfb516855fa9ffb49f050
+```
 
-## 10. WU-04C completion gate
+Tool constants and root `ptsip.yaml` are bound to this snapshot after the snapshot commit, preserving the rule that an immutable normative revision is selected first and consumers bind to it afterward.
 
-WU-04C is complete only when:
+## 10. WU-04 stage transition
 
-- the approved three-boundary model is recorded as an accepted architecture decision;
-- `source_mode` is explicitly defined as declaration source, not lifecycle ownership;
-- exact template selection is project-owned authority;
+WU-04C is complete. WU-04D is the next stage but has **not been entered yet**.
+
+```text
+WU-04A  template catalog identity                         COMPLETE
+   |
+WU-04B  deterministic materializer core                  COMPLETE
+   |
+WU-04C  declaration authority + source_mode boundary     COMPLETE
+   |
+WU-04D  ResolvedProfile + digest + provenance            NEXT / NOT ENTERED
+   |
+WU-04E  validation consumes effective map                LOCKED
+   |
+WU-04F  conformance consumes effective map               LOCKED
+   |
+WU-04G  clarification/adoption read paths consume view   LOCKED
+   |
+WU-04H  VPMS narrow read-only bridge consumes view       LOCKED
+   |
+WU-04I  regression + WU-04 completion                    LOCKED
+```
+
+No WU-04D sub-document exists yet by design.
+
+When WU-04D is actually entered, the required sequence is:
+
+1. freshly read the development branch HEAD;
+2. verify WU-04C remains complete and the bound Specification is coherent;
+3. create the WU-04D sub-document with that exact entry baseline;
+4. mark WU-04D ACTIVE;
+5. only then implement the `ResolvedProfile`, digest, and derived provenance boundary.
+
+## 11. Completion record
+
+WU-04C completion conditions are satisfied:
+
+- the approved three-boundary model is recorded in accepted `ADR-0009`;
+- `source_mode` is explicitly declaration source, not lifecycle ownership;
+- exact template selection is project-owned architecture authority;
 - hybrid whole-entity replacement/add/remove precedence is frozen;
 - materialization is explicitly non-authoritative and fail-closed;
 - Canonical Effective Responsibility Map semantics are fixed for downstream consumers;
-- the applicable normative Specification/registry are updated before WU-04D implementation proceeds;
-- no future WU-04 sub-stage is entered early.
+- `PTSIP-RMAP-013` through `PTSIP-RMAP-016` are normative;
+- canonical and embedded registry contracts are aligned;
+- a new immutable Specification snapshot was selected and the Tool/root profile binding was advanced to it;
+- no future WU-04 sub-stage document was created early.
 
-Until those conditions are met, WU-04D remains locked.
+WU-04C completion does not claim full repository regression execution. Full regression remains subject to the approved self-hosted verification boundary.
