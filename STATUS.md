@@ -115,4 +115,4 @@ The existing `spec-v0.3.4-draft` design-release tag is not moved. Tool-version p
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
 
-Completed Tool `0.3.5` planning documents are removed from the active `planning/` directory after publication. Their history remains available through Git history and the immutable `tool-v0.3.5` release point; current future planning remains under `planning/0.4.0.md`.
+Completed Tool `0.3.5` planning documents are removed from the active `planning/` directory after publication. Their history remains available through Git history and the immutable `tool-v0.3.5` release point. Current next-version planning is consolidated under `planning/0.3.6.md`, including the Responsibility Map v2 work and the previously separate candidate-discovery improvement scope.
