@@ -10,6 +10,15 @@ from .repository.snapshot import repository_files
 from .validation.components import ComponentPartition
 
 
+_CANONICAL_CLASSIFICATIONS = {
+    "PRODUCT",
+    "DEVELOPMENT_TOOLING",
+    "DELIVERY",
+    "OPERATIONS",
+    "NEUTRAL_CONTRACT",
+}
+
+
 @dataclass(frozen=True)
 class ReleaseWorkflowEvidence:
     path: str
@@ -86,7 +95,17 @@ def _release_like(path: str, payload: dict[str, object]) -> bool:
     elif isinstance(trigger, dict):
         tokens.extend(str(item).lower() for item in trigger.keys())
     text = " ".join(tokens)
-    return any(word in text for word in ("release", "publish", "deploy", "distribution", "twine upload", "npm publish"))
+    return any(
+        word in text
+        for word in (
+            "release",
+            "publish",
+            "deploy",
+            "distribution",
+            "twine upload",
+            "npm publish",
+        )
+    )
 
 
 def _trigger_paths(payload: dict[str, object]) -> tuple[str, ...]:
@@ -140,7 +159,7 @@ def _scope_from_paths(
         if positive and not excluded:
             matched = True
             classification = classifications.get(component_id)
-            if classification in {"PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"}:
+            if classification in _CANONICAL_CLASSIFICATIONS:
                 scope.add(classification)
     return tuple(sorted(scope)), matched
 
@@ -160,21 +179,45 @@ def evaluate_lifecycle_evidence(
     gaps: list[dict[str, object]] = []
     observations: list[str] = []
 
-    relevant = [item for item in components if str(item.get("classification")) in {"PRODUCT", "TOOLCHAIN"}]
-    for field, rule_id in (("release_owner", "PTSIP-LCY-001"), ("compatibility_owner", "PTSIP-LCY-002")):
-        missing = [str(item.get("id")) for item in relevant if not isinstance(item.get(field), str) or not str(item.get(field)).strip()]
+    relevant = [
+        item
+        for item in components
+        if str(item.get("classification")) in _CANONICAL_CLASSIFICATIONS
+    ]
+
+    # Enforced lifecycle-independence evaluation needs explicit ownership facts.
+    # These are evidence metadata, not a second classification authority.
+    for field, rule_id in (
+        ("release_owner", "PTSIP-LCY-001"),
+        ("compatibility_owner", "PTSIP-LCY-002"),
+    ):
+        missing = [
+            str(item.get("id"))
+            for item in relevant
+            if not isinstance(item.get(field), str) or not str(item.get(field)).strip()
+        ]
         if missing:
             gaps.append(
                 _gap(
                     f"{field}-missing",
-                    f"Lifecycle evidence is missing {field} for component(s): {', '.join(sorted(missing))}.",
+                    (
+                        f"Lifecycle evidence is missing {field} for component(s): "
+                        f"{', '.join(sorted(missing))}. The field is not required for generic profile "
+                        "validity, but this strict lifecycle evaluator cannot establish governability without it."
+                    ),
                     (rule_id, "PTSIP-EVD-003"),
                 )
             )
 
     _mode, paths, discovery_errors = repository_files(root)
     for index, error in enumerate(discovery_errors):
-        gaps.append(_gap(f"repository-scan-{index}", f"Lifecycle workflow discovery was incomplete: {error}", ("PTSIP-LCY-001", "PTSIP-EVD-003")))
+        gaps.append(
+            _gap(
+                f"repository-scan-{index}",
+                f"Lifecycle workflow discovery was incomplete: {error}",
+                ("PTSIP-LCY-001", "PTSIP-EVD-003"),
+            )
+        )
 
     workflows: list[ReleaseWorkflowEvidence] = []
     for rel in paths:
@@ -184,62 +227,84 @@ def evaluate_lifecycle_evidence(
         try:
             payload = yaml.safe_load((root / rel).read_text(encoding="utf-8-sig")) or {}
         except (OSError, UnicodeError, yaml.YAMLError) as exc:
-            gaps.append(_gap(f"workflow-parse:{rel}", f"Unable to parse lifecycle workflow {rel!r}: {exc}", ("PTSIP-LCY-001", "PTSIP-EVD-003")))
+            gaps.append(
+                _gap(
+                    f"workflow-parse:{rel}",
+                    f"Unable to parse lifecycle workflow {rel!r}: {exc}",
+                    ("PTSIP-LCY-001", "PTSIP-EVD-003"),
+                )
+            )
             continue
         if not isinstance(payload, dict):
-            gaps.append(_gap(f"workflow-shape:{rel}", f"Lifecycle workflow {rel!r} root is not a mapping.", ("PTSIP-LCY-001", "PTSIP-EVD-003")))
+            gaps.append(
+                _gap(
+                    f"workflow-shape:{rel}",
+                    f"Lifecycle workflow {rel!r} root is not a mapping.",
+                    ("PTSIP-LCY-001", "PTSIP-EVD-003"),
+                )
+            )
             continue
         if not _release_like(rel, payload):
             continue
+
         trigger_paths = _trigger_paths(payload)
         scope, complete = _scope_from_paths(trigger_paths, owners, classifications)
-        reason = None
+        owner_component = owners.get(rel)
+        owner_classification = classifications.get(owner_component) if owner_component else None
+        reason: str | None = None
         if not trigger_paths:
-            reason = "Release-like workflow has no positive path scope; trigger alone cannot establish Product/Toolchain release independence."
+            reason = (
+                "Release-like workflow has no positive path scope. This is not a classification failure: "
+                "workflow triggers are evidence, not lifecycle authority."
+            )
         elif not complete:
-            reason = "Release-like workflow path filters did not resolve to tracked component ownership."
-        workflows.append(ReleaseWorkflowEvidence(rel, True, trigger_paths, scope, complete, reason))
+            reason = (
+                "Release-like workflow path filters did not resolve completely to tracked component ownership. "
+                "Do not infer lifecycle ownership from the trigger alone."
+            )
 
-    product_scoped = [item for item in workflows if item.scope_complete and item.scoped_classifications == ("PRODUCT",)]
-    toolchain_scoped = [item for item in workflows if item.scope_complete and item.scoped_classifications == ("TOOLCHAIN",)]
-    ambiguous = [item for item in workflows if not item.scope_complete or len(item.scoped_classifications) != 1]
-
-    has_product = any(str(item.get("classification")) == "PRODUCT" for item in relevant)
-    has_toolchain = any(str(item.get("classification")) == "TOOLCHAIN" for item in relevant)
-    if has_product and not product_scoped:
-        gaps.append(
-            _gap(
-                "product-release-evidence",
-                "No release-like workflow provides positive Product-only path-scoped evidence. Workflow triggers alone are insufficient to prove lifecycle independence.",
-                ("PTSIP-LCY-001", "PTSIP-EVD-003"),
-            )
-        )
-    if has_toolchain and not toolchain_scoped:
-        gaps.append(
-            _gap(
-                "toolchain-release-evidence",
-                "No release-like workflow provides positive Toolchain-only path-scoped evidence. Workflow triggers alone are insufficient to prove lifecycle independence.",
-                ("PTSIP-LCY-001", "PTSIP-EVD-003"),
-            )
-        )
-    for item in ambiguous:
-        observations.append(f"{item.path}: {item.reason or 'Release-like workflow spans more than one architectural classification; this is not by itself a lifecycle violation.'}")
-        gaps.append(
-            _gap(
-                f"ambiguous-release-workflow:{item.path}",
-                (
-                    f"Release-like workflow {item.path!r} cannot be attributed to exactly one architectural plane. "
-                    "Its trigger is not itself a violation, but lifecycle independence is not sufficiently evidenced."
-                ),
-                ("PTSIP-LCY-001", "PTSIP-EVD-003"),
-            )
+        workflows.append(
+            ReleaseWorkflowEvidence(rel, True, trigger_paths, scope, complete, reason)
         )
 
-    if product_scoped:
-        observations.append("Observed Product-only release workflow scope: " + ", ".join(item.path for item in product_scoped))
-    if toolchain_scoped:
-        observations.append("Observed Toolchain-only release workflow scope: " + ", ".join(item.path for item in toolchain_scoped))
+        if owner_classification == "DELIVERY":
+            observations.append(
+                f"{rel}: release-like workflow is declared under DELIVERY; trigger scope={scope or ('UNSCOPED',)}."
+            )
+        elif owner_classification is not None:
+            observations.append(
+                f"{rel}: release-like workflow is declared under {owner_classification}. The activity name does not override "
+                "its governing lifecycle obligation; review only if repository evidence contradicts the declaration."
+            )
+        else:
+            observations.append(
+                f"{rel}: release-like workflow has no resolved component owner; trigger/workflow naming is insufficient "
+                "to assign DELIVERY automatically."
+            )
+        if reason:
+            observations.append(f"{rel}: {reason}")
+
+    delivery_components = sorted(
+        str(item.get("id"))
+        for item in relevant
+        if str(item.get("classification")) == "DELIVERY"
+    )
+    operations_components = sorted(
+        str(item.get("id"))
+        for item in relevant
+        if str(item.get("classification")) == "OPERATIONS"
+    )
+    if delivery_components:
+        observations.append("Declared DELIVERY responsibility: " + ", ".join(delivery_components))
+    if operations_components:
+        observations.append("Declared OPERATIONS responsibility: " + ", ".join(operations_components))
 
     status = "RAN" if not gaps else "BLOCKED"
     reason = None if not gaps else "LIFECYCLE_EVIDENCE_INCOMPLETE"
-    return LifecycleEvaluationResult(status, reason, tuple(workflows), tuple(gaps), tuple(observations))
+    return LifecycleEvaluationResult(
+        status,
+        reason,
+        tuple(workflows),
+        tuple(gaps),
+        tuple(observations),
+    )
