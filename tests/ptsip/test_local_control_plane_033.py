@@ -33,15 +33,19 @@ def _tool_repo(tmp_path: Path) -> Path:
     return repo
 
 
-def _resolve_args(repo: Path, decision_id: str, classification: str = "TOOLCHAIN") -> list[str]:
-    if classification == "TOOLCHAIN":
+def _resolve_args(
+    repo: Path,
+    decision_id: str,
+    classification: str = "DEVELOPMENT_TOOLING",
+) -> list[str]:
+    if classification == "DEVELOPMENT_TOOLING":
         return [
             "resolve",
             str(repo),
             "--decision",
             decision_id,
             "--classification",
-            "TOOLCHAIN",
+            "DEVELOPMENT_TOOLING",
             "--purpose",
             "Repository-local generation tooling",
             "--shipped",
@@ -121,10 +125,11 @@ def test_gate_and_resolve_use_local_control_plane_without_server_or_github_origi
     profile = repo / "ptsip.yaml"
     assert profile.is_file()
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
+    assert document["responsibility_map"] == {"mode": "explicit"}
     component = next(item for item in document["components"] if item["id"] == "tools")
-    assert component["classification"] == "TOOLCHAIN"
+    assert component["classification"] == "DEVELOPMENT_TOOLING"
     assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in component
     assert "release_owner" not in component
 
     assert main(["validate", str(repo), "--profile", str(profile), "--json"]) == 0
@@ -141,11 +146,11 @@ def test_local_first_valid_resolution_cannot_be_replaced(tmp_path: Path, monkeyp
     gate_payload = json.loads(capsys.readouterr().out)
     decision_id = str(gate_payload["decisions"][0]["decision"]["id"])
 
-    assert main(_resolve_args(repo, decision_id, "TOOLCHAIN")) == 0
+    assert main(_resolve_args(repo, decision_id, "DEVELOPMENT_TOOLING")) == 0
     capsys.readouterr()
 
     assert main(_resolve_args(repo, decision_id, "PRODUCT")) == 9
     later_payload = json.loads(capsys.readouterr().out)
     assert later_payload["status"] == "ALREADY_RESOLVED"
     assert later_payload["accepted"] is False
-    assert later_payload["decision"]["answer"]["classification"] == "TOOLCHAIN"
+    assert later_payload["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
