@@ -6,8 +6,37 @@ from enum import StrEnum
 
 class Classification(StrEnum):
     PRODUCT = "PRODUCT"
-    TOOLCHAIN = "TOOLCHAIN"
+    DEVELOPMENT_TOOLING = "DEVELOPMENT_TOOLING"
+    DELIVERY = "DELIVERY"
+    OPERATIONS = "OPERATIONS"
     NEUTRAL_CONTRACT = "NEUTRAL_CONTRACT"
+
+
+class ResponsibilityRole(StrEnum):
+    IMPLEMENTATION = "IMPLEMENTATION"
+    VERIFICATION = "VERIFICATION"
+    AUTOMATION = "AUTOMATION"
+    CONFIGURATION = "CONFIGURATION"
+    DOCUMENTATION = "DOCUMENTATION"
+    GOVERNANCE = "GOVERNANCE"
+
+
+class ResponsibilityRelationshipType(StrEnum):
+    IMPORTS = "IMPORTS"
+    LINKS = "LINKS"
+    LOADS = "LOADS"
+    INVOKES = "INVOKES"
+    READS = "READS"
+    GENERATES = "GENERATES"
+    BUILDS = "BUILDS"
+    PACKAGES = "PACKAGES"
+    PUBLISHES = "PUBLISHES"
+    DEPLOYS = "DEPLOYS"
+    VERIFIES = "VERIFIES"
+    MANAGES = "MANAGES"
+    DOCUMENTS = "DOCUMENTS"
+    SPECIFIES = "SPECIFIES"
+    GOVERNS = "GOVERNS"
 
 
 class DecisionStatus(StrEnum):
@@ -23,6 +52,9 @@ class DecisionOrigin(StrEnum):
     INFERRED = "INFERRED"
 
 
+# Evidence-edge vocabulary is intentionally distinct from project-owned
+# Responsibility Map relationship vocabulary. TESTS remains an evidence term;
+# a project-owned declaration uses VERIFIES after architecture confirmation.
 class EdgeType(StrEnum):
     IMPORTS = "IMPORTS"
     LINKS = "LINKS"
@@ -62,6 +94,34 @@ class EvidenceProvenance(StrEnum):
     DECLARED = "DECLARED"
     OBSERVED = "OBSERVED"
     INFERRED = "INFERRED"
+
+
+@dataclass(frozen=True)
+class AssociatedArtifact:
+    id: str
+    anchor: str
+    include: tuple[str, ...]
+    purpose: str
+    exclude: tuple[str, ...] = ()
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class ResponsibilityRelationship:
+    id: str
+    source: str
+    target: str
+    relationship_type: ResponsibilityRelationshipType
+
+    def as_dict(self) -> dict[str, object]:
+        payload = asdict(self)
+        payload["type"] = self.relationship_type.value
+        payload["from"] = payload.pop("source")
+        payload["to"] = payload.pop("target")
+        payload.pop("relationship_type", None)
+        return payload
 
 
 @dataclass(frozen=True)
