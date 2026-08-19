@@ -64,6 +64,55 @@ def clone_repo(source: Path, destination: Path, *, remote_url: str | None = None
     return destination
 
 
+def canonical_v2_answer(
+    *,
+    classification: str = "DEVELOPMENT_TOOLING",
+    purpose: str = "Repository-local generation tooling",
+    shipped: bool = False,
+    runtime_required: bool = False,
+    executable: bool = True,
+) -> dict[str, object]:
+    """Return the exact canonical ptsip-clarification-answer/v2 decision shape."""
+    return {
+        "classification": classification,
+        "purpose": purpose,
+        "shipped": shipped,
+        "runtime_required": runtime_required,
+        "executable": executable,
+    }
+
+
+def legacy_v1_answer(
+    *,
+    classification: str = "DEVELOPMENT_TOOLING",
+    purpose: str = "Repository-local generation tooling",
+    shipped: bool = False,
+    runtime_required: bool = False,
+    lifecycle_owner: str = "DEVELOPMENT_TOOLING",
+    executable: bool = True,
+) -> dict[str, object]:
+    """Return historical v1 input only for explicit compatibility tests."""
+    return {
+        "classification": classification,
+        "purpose": purpose,
+        "shipped": shipped,
+        "runtime_required": runtime_required,
+        "lifecycle_owner": lifecycle_owner,
+        "executable": executable,
+    }
+
+
+def clarification_answer_text(
+    decision: dict[str, object],
+    *,
+    format_name: str = "ptsip-clarification-answer/v2",
+) -> str:
+    return yaml.safe_dump(
+        {"format": format_name, "decision": copy.deepcopy(decision)},
+        sort_keys=False,
+    )
+
+
 def policy_payload() -> dict[str, object]:
     return {
         "product_to_nonproduct_runtime_dependency": "deny",
