@@ -60,35 +60,52 @@ def _normalize_dependency_name(value: str) -> str:
     return re.sub(r"[-.]", "_", value.strip().lower())
 
 
-def _declared_python_dependencies(root: Path) -> tuple[set[str], list[DependencyScanIssue]]:
-    names: set[str] = set()
-    issues: list[DependencyScanIssue] = []
-    pyproject = root / "pyproject.toml"
-    if pyproject.is_file():
-        try:
-            payload = tomllib.loads(pyproject.read_text(encoding="utf-8-sig"))
-            project = payload.get("project", {}) if isinstance(payload, dict) else {}
-            if isinstance(project, dict):
-                groups: list[object] = [project.get("dependencies", [])]
-                optional = project.get("optional-dependencies", {})
-                if isinstance(optional, dict):
-                    groups.extend(optional.values())
-                for group in groups:
-                    if not isinstance(group, list):
-                        continue
-                    for item in group:
-                        if not isinstance(item, str):
-                            continue
-                        match = _REQUIREMENT_NAME_RE.match(item)
-                        if match:
-                            names.add(_normalize_dependency_name(match.group(1)))
-        except (OSError, UnicodeError, tomllib.TOMLDecodeError) as exc:
-            issues.append(DependencyScanIssue("python-declarations", "pyproject.toml", str(exc)))
+def _manifest_directory(rel: str) -> str:
+    parent = Path(rel).parent.as_posix()
+    return "." if parent in {"", "."} else parent
 
-    for requirements in sorted(root.glob("requirements*.txt")) + sorted(root.glob("requirements*.in")):
-        rel = requirements.relative_to(root).as_posix()
+
+def _declared_python_dependencies(
+    root: Path,
+    paths: list[str],
+) -> tuple[dict[str, set[str]], list[DependencyScanIssue]]:
+    by_directory: dict[str, set[str]] = {}
+    issues: list[DependencyScanIssue] = []
+
+    for rel in paths:
+        candidate = Path(rel)
+        name = candidate.name.lower()
+        is_pyproject = name == "pyproject.toml"
+        is_requirements = name.startswith("requirements") and candidate.suffix.lower() in {".txt", ".in"}
+        if not is_pyproject and not is_requirements:
+            continue
+
+        names = by_directory.setdefault(_manifest_directory(rel), set())
+        path = root / rel
+        if is_pyproject:
+            try:
+                payload = tomllib.loads(path.read_text(encoding="utf-8-sig"))
+                project = payload.get("project", {}) if isinstance(payload, dict) else {}
+                if isinstance(project, dict):
+                    groups: list[object] = [project.get("dependencies", [])]
+                    optional = project.get("optional-dependencies", {})
+                    if isinstance(optional, dict):
+                        groups.extend(optional.values())
+                    for group in groups:
+                        if not isinstance(group, list):
+                            continue
+                        for item in group:
+                            if not isinstance(item, str):
+                                continue
+                            match = _REQUIREMENT_NAME_RE.match(item)
+                            if match:
+                                names.add(_normalize_dependency_name(match.group(1)))
+            except (OSError, UnicodeError, tomllib.TOMLDecodeError) as exc:
+                issues.append(DependencyScanIssue("python-declarations", rel, str(exc)))
+            continue
+
         try:
-            lines = requirements.read_text(encoding="utf-8-sig").splitlines()
+            lines = path.read_text(encoding="utf-8-sig").splitlines()
         except (OSError, UnicodeError) as exc:
             issues.append(DependencyScanIssue("python-declarations", rel, str(exc)))
             continue
@@ -99,7 +116,24 @@ def _declared_python_dependencies(root: Path) -> tuple[set[str], list[Dependency
             match = _REQUIREMENT_NAME_RE.match(stripped)
             if match:
                 names.add(_normalize_dependency_name(match.group(1)))
-    return names, issues
+    return by_directory, issues
+
+
+def _python_dependencies_for_source(
+    rel: str,
+    declarations: dict[str, set[str]],
+) -> set[str]:
+    names: set[str] = set()
+    current = Path(rel).parent
+    while True:
+        key = current.as_posix()
+        if key in {"", "."}:
+            key = "."
+        names.update(declarations.get(key, set()))
+        if key == ".":
+            break
+        current = current.parent
+    return names
 
 
 def _resolve_module(root: Path, module: str) -> str | None:
@@ -475,12 +509,16 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
     edges: list[DependencyEdge] = []
     issues = [DependencyScanIssue("repository", "<repository>", item) for item in discovery_errors]
     adapters: set[str] = set()
-    declared_python_dependencies, declaration_issues = _declared_python_dependencies(root)
+    declared_python_dependencies, declaration_issues = _declared_python_dependencies(root, paths)
     issues.extend(declaration_issues)
     for rel in paths:
         suffix = Path(rel).suffix.lower()
         if suffix == ".py":
-            found, found_issues = _python_edges(root, rel, declared_python_dependencies)
+            found, found_issues = _python_edges(
+                root,
+                rel,
+                _python_dependencies_for_source(rel, declared_python_dependencies),
+            )
             adapters.add("python")
         elif suffix == ".csproj":
             found, found_issues = _csproj_edges(root, rel)
