@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import fnmatch
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -8,6 +9,10 @@ import yaml
 
 from .repository.snapshot import repository_files
 from .validation.components import ComponentPartition
+
+
+_NPM_PREFIX_RE = re.compile(r"\bnpm(?:\.cmd)?\s+--prefix\s+(?:[\"']([^\"']+)[\"']|([^\s;|&]+))", re.IGNORECASE)
+_NPM_COMMAND_RE = re.compile(r"\bnpm(?:\.cmd)?\b", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -128,6 +133,13 @@ def _normalize_pattern(pattern: str) -> str:
     return normalized
 
 
+def _normalize_repository_path(value: str) -> str:
+    normalized = value.strip().strip("\"'").replace("\\", "/")
+    while normalized.startswith("./"):
+        normalized = normalized[2:]
+    return normalized.rstrip("/")
+
+
 def _path_matches(path: str, pattern: str) -> bool:
     normalized = _normalize_pattern(pattern)
     candidate = path.replace("\\", "/")
@@ -160,6 +172,85 @@ def _scope_from_paths(
             if classification in {"PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"}:
                 scope.add(classification)
     return tuple(sorted(scope)), matched
+
+
+def _scope_from_owned_paths(
+    subject_paths: tuple[str, ...],
+    owners: dict[str, str],
+    classifications: dict[str, str],
+) -> tuple[tuple[str, ...], bool]:
+    scope: set[str] = set()
+    matched = False
+    for path in subject_paths:
+        owner = owners.get(path)
+        classification = classifications.get(owner) if owner else None
+        if classification in {"PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"}:
+            matched = True
+            scope.add(str(classification))
+    return tuple(sorted(scope)), matched
+
+
+def _job_working_directory(job: dict[str, object]) -> str:
+    defaults = job.get("defaults")
+    if not isinstance(defaults, dict):
+        return ""
+    run_defaults = defaults.get("run")
+    if not isinstance(run_defaults, dict):
+        return ""
+    value = run_defaults.get("working-directory")
+    return _normalize_repository_path(value) if isinstance(value, str) and value.strip() else ""
+
+
+def _manual_release_subject_paths(
+    payload: dict[str, object],
+    owners: dict[str, str],
+) -> tuple[str, ...]:
+    candidates: list[str] = []
+    jobs = payload.get("jobs")
+    if not isinstance(jobs, dict):
+        return ()
+
+    def add_candidate(value: str) -> None:
+        normalized = _normalize_repository_path(value)
+        if normalized and normalized in owners and normalized not in candidates:
+            candidates.append(normalized)
+
+    for job in jobs.values():
+        if not isinstance(job, dict):
+            continue
+        job_working_directory = _job_working_directory(job)
+        steps = job.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for step in steps:
+            if not isinstance(step, dict):
+                continue
+
+            with_payload = step.get("with")
+            if isinstance(with_payload, dict):
+                cache_path = with_payload.get("cache-dependency-path")
+                if isinstance(cache_path, str):
+                    for line in cache_path.splitlines():
+                        if line.strip():
+                            add_candidate(line)
+
+            command = step.get("run")
+            if not isinstance(command, str):
+                continue
+            step_working_directory = step.get("working-directory")
+            working_directory = (
+                _normalize_repository_path(step_working_directory)
+                if isinstance(step_working_directory, str) and step_working_directory.strip()
+                else job_working_directory
+            )
+            for match in _NPM_PREFIX_RE.finditer(command):
+                prefix = _normalize_repository_path(match.group(1) or match.group(2) or "")
+                if prefix:
+                    add_candidate(f"{prefix}/package.json")
+            if working_directory and _NPM_COMMAND_RE.search(command) and not _NPM_PREFIX_RE.search(command):
+                add_candidate(f"{working_directory}/package.json")
+
+    return tuple(candidates)
 
 
 def _artifact_scope_for_manual_workflow(
@@ -266,16 +357,30 @@ def evaluate_lifecycle_evidence(
         reason: str | None = None
 
         if not complete and not trigger_paths and manual_only:
-            artifact_scope, artifact_complete, artifact_reason = _artifact_scope_for_manual_workflow(
-                owners.get(rel),
-                artifact_documents,
-            )
-            scope = artifact_scope
-            complete = artifact_complete
-            scope_source = "artifact-evidence" if artifact_complete else None
-            reason = None if artifact_complete else artifact_reason
-            if artifact_complete and artifact_reason:
-                observations.append(f"{rel}: {artifact_reason}")
+            subject_paths = _manual_release_subject_paths(payload, owners)
+            subject_scope, subject_matched = _scope_from_owned_paths(subject_paths, owners, classifications)
+            if subject_matched and len(subject_scope) == 1:
+                scope = subject_scope
+                complete = True
+                scope_source = "manual-subject-paths"
+                observations.append(
+                    f"{rel}: manual release subject scope resolved from tracked manifest/dependency paths: "
+                    + ", ".join(subject_paths)
+                )
+            elif subject_matched:
+                scope = subject_scope
+                reason = "Manual release subject paths span more than one architectural classification."
+            else:
+                artifact_scope, artifact_complete, artifact_reason = _artifact_scope_for_manual_workflow(
+                    owners.get(rel),
+                    artifact_documents,
+                )
+                scope = artifact_scope
+                complete = artifact_complete
+                scope_source = "artifact-evidence" if artifact_complete else None
+                reason = None if artifact_complete else artifact_reason
+                if artifact_complete and artifact_reason:
+                    observations.append(f"{rel}: {artifact_reason}")
         elif not trigger_paths:
             reason = "Release-like workflow has no positive path scope; trigger alone cannot establish Product/Toolchain release independence."
         elif not complete:
@@ -312,7 +417,7 @@ def evaluate_lifecycle_evidence(
         gaps.append(
             _gap(
                 "product-release-evidence",
-                "No release-like workflow provides Product-only lifecycle evidence from positive path scope or revision-bound observed Product artifact evidence.",
+                "No release-like workflow provides Product-only lifecycle evidence from positive path scope, tracked manual release subjects, or revision-bound observed Product artifact evidence.",
                 ("PTSIP-LCY-001", "PTSIP-EVD-003"),
             )
         )
