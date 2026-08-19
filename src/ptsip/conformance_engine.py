@@ -3,8 +3,6 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
-import yaml
-
 from .build_resolution import evaluate_independent_build_resolution
 from .conformance import (
     ConformanceResult,
@@ -29,7 +27,7 @@ from .review_evidence import (
     merge_external_dependencies,
 )
 from .validation.components import partition_components
-from .validation.profile import find_profile, validate_profile
+from .validation.profile import validate_profile
 from .validation.rules import evaluate_component_dependency_policy, evaluate_declared_dependency_boundaries
 
 
@@ -156,7 +154,6 @@ def evaluate_conformance(
         _finalize_snapshot=False,
     )
     report = base.report
-    profile = find_profile(root, profile_path)
     validation = validate_profile(root, profile_path)
 
     native_dependencies = scan_dependency_edges(root)
@@ -211,10 +208,10 @@ def evaluate_conformance(
 
     components: list[dict[str, object]] = []
     payload: dict[str, object] | None = None
-    if profile is not None and validation.valid:
-        loaded = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
-        payload = loaded if isinstance(loaded, dict) else None
-        declared = payload.get("components") if payload is not None else None
+    resolved = validation.resolved_profile if validation.valid else None
+    if resolved is not None:
+        payload = resolved.effective_payload
+        declared = payload.get("components")
         if isinstance(declared, list):
             components = [item for item in declared if isinstance(item, dict)]
 
@@ -290,18 +287,18 @@ def evaluate_conformance(
         blocking.extend(lifecycle.blocking_gaps)
         report["lifecycle"] = lifecycle.as_dict()
     else:
-        evaluators["source_language_coverage"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
-        evaluators["independent_build_resolution"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
-        evaluators["lifecycle_independence"] = {"status": "BLOCKED", "reason": "COMPONENT_DECLARATIONS_REQUIRED"}
+        evaluators["source_language_coverage"] = {"status": "BLOCKED", "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED"}
+        evaluators["independent_build_resolution"] = {"status": "BLOCKED", "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED"}
+        evaluators["lifecycle_independence"] = {"status": "BLOCKED", "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED"}
         report["build_resolution"] = {
             "status": "BLOCKED",
-            "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+            "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED",
             "manifests": [],
             "blocking_gaps": [],
         }
         report["lifecycle"] = {
             "status": "BLOCKED",
-            "reason": "COMPONENT_DECLARATIONS_REQUIRED",
+            "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED",
             "workflows": [],
             "blocking_gaps": [],
             "observations": [],
