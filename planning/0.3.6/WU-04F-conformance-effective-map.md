@@ -1,11 +1,13 @@
 # WU-04F — Enforced Conformance Consumes the Effective Responsibility Map
 
-> **Status:** IMPLEMENTATION COMPLETE — combined WU-04E/F exact-SHA verification pending  
+> **Status:** COMPLETE — exact-SHA verified in combined WU-04E/F run  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04E — profile validation consumes the effective Responsibility Map  
 > **Entry baseline:** `5d52e452ce48de4d0e0d8251d906c1e0f15f82c2`  
 > **Implementation completion baseline:** `991cecb58be1c6bfb063131ed04721015318e17f`  
+> **Verification source SHA:** `48b75e699a592703e4e03a8462131e4932103677`  
+> **Verification run/job:** `32240740753 / 96030499443`  
 > **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
 
 ## 1. Purpose
@@ -94,7 +96,7 @@ src/ptsip/conformance_engine.py
 
 The complete engine no longer performs a second raw-profile architecture read after invoking base conformance.
 
-It now uses effective components/policy for:
+It uses effective components/policy for:
 
 - declared dependency boundaries;
 - source-language coverage;
@@ -125,7 +127,7 @@ Equivalent explicit/template/hybrid declarations are expected to produce equival
 
 WU-04F updated canonical conformance fixtures that were still generating Tool `0.3.4/0.3.5` profile state while claiming to test current conformance behavior.
 
-Current-tool conformance fixtures now use:
+Current-tool conformance fixtures use:
 
 ```text
 ptsip.version: 0.3.6-draft
@@ -151,7 +153,7 @@ Historical or intentionally conflicting inputs remain historical where the test 
 
 ## 8. Focused tests
 
-New focused contract:
+Focused contract:
 
 ```text
 tests/ptsip/test_conformance_effective_map_036.py
@@ -173,7 +175,37 @@ tests/ptsip/test_profile_validation_036.py
 
 Repository search after the implementation found no remaining `materialization-required`, `MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED`, or `yaml.safe_load` raw-profile path in the conformance integration targets.
 
-## 9. Out of scope
+## 9. Combined exact-SHA verification
+
+Final verification was shared with WU-04E as authorized by the master plan.
+
+```text
+workflow run: 32240740753
+job:          96030499443
+source SHA:   48b75e699a592703e4e03a8462131e4932103677
+Python:       3.14.3
+pytest:       260 passed / 13 failed
+```
+
+The workflow confirmed exact checkout of `48b75e699a592703e4e03a8462131e4932103677` and ran the full repository pytest collection. `tests/ptsip/test_conformance_effective_map_036.py` did not appear in the exhaustive 13-failure summary, so the WU-04F focused contract passed at the exact verification SHA. The same is true for WU-04E's `test_profile_validation_036.py`.
+
+The remaining 13 failures were reviewed:
+
+```text
+3  decision/clarification-control expectations still using historical TOOLCHAIN/lifecycle_owner
+1  pilot/evidence fixture still using a pre-0.3.6 Project Profile
+1  lifecycle-evidence regression expectation contradicting the current authority rule
+1  agent-decision conflict expectation belonging to later decision integration
+7  topology/legacy-profile migration fixtures still bound to old revision/schema semantics
+```
+
+The lifecycle-evidence failure does not demonstrate an effective-map conformance regression. Current `evaluate_lifecycle_evidence()` explicitly treats release-like workflow naming/trigger scope as evidence rather than lifecycle authority; an unscoped release-like workflow is recorded as an observation and does not itself create a classification failure. The old test expected the opposite behavior.
+
+None of the 13 failures show that conformance re-read source-mode architecture, failed to consume `effective_payload`, or mishandled template/hybrid component identity. They belong to WU-04G or later integration/migration/regression work.
+
+The repository-wide workflow still concluded failure, so no `self-hosted/tooling-test` success commit status was recorded for the SHA and Tool `0.3.6` is not globally regression-clean. This does not invalidate the stage-scoped E/F completion gate previously authorized by the master plan.
+
+## 10. Out of scope
 
 WU-04F does not migrate:
 
@@ -184,19 +216,19 @@ WU-04F does not migrate:
 - Tool `0.3.5` legacy reader — WU-07;
 - broad cross-mode downstream closure — WU-04I.
 
-Accordingly, stale tests whose purpose belongs to clarification/decision projection, pilot/adoption, topology migration, or legacy profile interpretation may still fail in the shared repository run without invalidating WU-04F by themselves. They must be classified against their owning future stage rather than silently weakened.
+Stale tests whose purpose belongs to clarification/decision projection, pilot/adoption, topology migration, or legacy profile interpretation remain future-stage debt rather than being weakened merely to make this stage green.
 
-## 10. Combined WU-04E/F verification gate
+## 11. Completion gate
 
-Per `planning/0.3.6.md`, this stage shares one exact-SHA self-hosted verification run with the final WU-04E implementation.
+WU-04F is COMPLETE because:
 
-The implementation gate is complete. Before WU-04G can be entered:
+- conformance consumes `ValidationResult.resolved_profile.effective_payload`;
+- base and complete conformance no longer re-read raw source architecture;
+- source-mode/materialization-specific conformance branches are removed;
+- template/hybrid component and artifact identities reach the same evaluators as explicit mode;
+- equivalent explicit/template effective maps produce equivalent architecture-dependent focused results;
+- invalid materialization remains fail-closed;
+- the final focused contract passed at exact SHA `48b75e699a592703e4e03a8462131e4932103677` in run `32240740753`;
+- remaining repository failures were classified and do not invalidate the E/F effective-map boundary.
 
-- one self-hosted `tooling-test.yml` run must be dispatched from the exact final E/F branch SHA;
-- `tests/ptsip/test_profile_validation_036.py` must pass in that run;
-- `tests/ptsip/test_conformance_effective_map_036.py` must pass in that run;
-- current-tool conformance regression fixtures migrated in WU-04F must be reviewed for pass/fail behavior;
-- any remaining repository failures must be classified and shown not to invalidate E/F completion;
-- if the shared run exposes an E regression, E is reopened;
-- if it exposes an F regression, F reopens/remains incomplete;
-- WU-04G remains locked until this shared verification result is reviewed.
+WU-04G may be entered only in a later session after a fresh branch-HEAD read and creation of its own stage document. It has not been entered by this completion record.
