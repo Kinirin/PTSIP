@@ -10,7 +10,7 @@ from jsonschema import Draft202012Validator
 
 from ..constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from .components import partition_components
-from .templates import TemplateMaterializationError, materialize_profile
+from .templates import ResolvedProfile, TemplateMaterializationError, materialize_profile
 
 
 @dataclass(frozen=True)
@@ -20,6 +20,7 @@ class ValidationResult:
     errors: list[str]
     warnings: list[str]
     details: dict[str, object] | None = None
+    resolved_profile: ResolvedProfile | None = None
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -421,4 +422,11 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
                 details=details,
             )
 
-    return ValidationResult(str(profile), not errors, errors, warnings, details or None)
+    return ValidationResult(
+        str(profile),
+        not errors,
+        errors,
+        warnings,
+        details or None,
+        resolved,
+    )
