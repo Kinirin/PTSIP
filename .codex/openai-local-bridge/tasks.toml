@@ -11,3 +11,12 @@ cwd = "."
 access = "read"
 timeout_seconds = 60
 max_output_bytes = 262144
+
+[[task]]
+id = "wu04g-g1-files"
+executable = "py"
+args = ["-3.14", ".github/scripts/wu04g_track_tests.py", "G1", "--mode", "files"]
+cwd = "."
+access = "read"
+timeout_seconds = 900
+max_output_bytes = 15000000
