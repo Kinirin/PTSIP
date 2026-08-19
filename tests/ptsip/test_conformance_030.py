@@ -8,10 +8,8 @@ from jsonschema import Draft202012Validator
 
 from ptsip.cli import main
 from ptsip.conformance import evaluate_conformance
+from ptsip.constants import SPEC_REVISION
 from ptsip.validation.profile import validate_profile
-
-
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -41,7 +39,7 @@ def _write_profile(
     (repo / "product" / "app.py").write_text((product_import or "") + "VALUE = 1\n", encoding="utf-8")
     (repo / "tools" / "check.py").write_text((tool_import or "") + "VALUE = 2\n", encoding="utf-8")
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: development_tooling\n{component_policy}policies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: development_tooling\n{component_policy}policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
 
@@ -85,7 +83,7 @@ def test_conform_without_profile_is_incomplete(tmp_path: Path) -> None:
     result = evaluate_conformance(repo)
     assert result.outcome == "INCOMPLETE"
     assert result.report["format"] == "ptsip-conformance-report/v1"
-    assert result.report["tool"]["version"] == "0.3.5"
+    assert result.report["tool"]["version"] == "0.3.6"
     assert result.report["evaluators"]["declared_dependency_boundaries"]["status"] == "BLOCKED"
     gap_ids = {item["id"] for item in result.report["coverage"]["blocking_gaps"]}
     assert "profile:missing" in gap_ids
@@ -93,7 +91,7 @@ def test_conform_without_profile_is_incomplete(tmp_path: Path) -> None:
     assert "build-resolution:coverage" in gap_ids
 
 
-def test_product_to_toolchain_unknown_phase_is_blocking_diagnostic(tmp_path: Path) -> None:
+def test_product_to_development_tooling_unknown_phase_is_blocking_diagnostic(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     _write_profile(repo, product_import="import tools.check\n")
@@ -112,7 +110,7 @@ def test_product_to_toolchain_unknown_phase_is_blocking_diagnostic(tmp_path: Pat
     Draft202012Validator(schema).validate(diagnostic)
 
 
-def test_toolchain_to_product_review_is_nonblocking_diagnostic(tmp_path: Path) -> None:
+def test_development_tooling_to_product_review_is_nonblocking_diagnostic(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     _write_profile(repo, tool_import="import product.app\n")
@@ -124,7 +122,7 @@ def test_toolchain_to_product_review_is_nonblocking_diagnostic(tmp_path: Path) -
     assert diagnostic["severity"] == "INFO"
 
 
-def test_toolchain_producer_does_not_make_product_artifact_nonconformant(tmp_path: Path) -> None:
+def test_development_tooling_producer_does_not_make_product_artifact_nonconformant(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     _write_profile(repo)
@@ -138,7 +136,7 @@ def test_toolchain_producer_does_not_make_product_artifact_nonconformant(tmp_pat
     assert result.outcome == "INCOMPLETE"
 
 
-def test_product_artifact_with_toolchain_content_is_nonconformant(tmp_path: Path) -> None:
+def test_product_artifact_with_development_tooling_content_is_nonconformant(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
     _write_profile(repo)
