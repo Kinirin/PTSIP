@@ -15,6 +15,7 @@ from ..model import (
 )
 from .lexing import code_positions, keyword_is_code
 from .source_adapters import JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES
+from .typescript_config import resolve_typescript_path_alias
 
 
 _JS_EXTENSIONS = tuple(sorted(JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES))
@@ -243,6 +244,21 @@ def _target_state(
         if resolved:
             return ResolutionStatus.RESOLVED, EvidenceNodeScope.PROJECT_COMPONENT, resolved, None, phase
         return ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, None, "Relative JavaScript/TypeScript import target could not be resolved", phase
+
+    if specifier.startswith("node:"):
+        return (
+            ResolutionStatus.EXTERNAL,
+            EvidenceNodeScope.PLATFORM,
+            None,
+            "Target uses the Node.js built-in module namespace",
+            phase,
+        )
+
+    alias = resolve_typescript_path_alias(root, source_rel, specifier)
+    if alias.matched:
+        if alias.resolved_path is not None:
+            return ResolutionStatus.RESOLVED, EvidenceNodeScope.PROJECT_COMPONENT, alias.resolved_path, alias.note, phase
+        return ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, None, alias.note, phase
 
     package_name = _bare_package_name(specifier)
     local = by_name.get(package_name)
