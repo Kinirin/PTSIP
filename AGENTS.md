@@ -181,8 +181,8 @@ Current ordered state:
 WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            ACTIVE
-WU-04E  validation consumes effective map                LOCKED
+WU-04D  ResolvedProfile + digest + provenance            COMPLETE
+WU-04E  validation consumes effective map                ACTIVE
 WU-04F  conformance consumes effective map               LOCKED
 WU-04G  clarification/adoption read integration          LOCKED
 WU-04H  VPMS narrow read-only integration                LOCKED
@@ -192,24 +192,26 @@ WU-04I  regression + WU-04 completion                    LOCKED
 Active stage document:
 
 ```text
-planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
+planning/0.3.6/WU-04E-validation-effective-map.md
 ```
 
-WU-04D entry baseline:
+WU-04E entry baseline:
 
 ```text
-d8713ac4e684852f3e6cf67a68165f82ae0b80aa
+2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
 ```
 
-WU-04D scope is limited to:
+WU-04E scope is limited to:
 
-- source-preserving `ResolvedProfile`;
-- deterministic Canonical Effective Responsibility Map digest;
-- derived entity/removal provenance;
-- focused materialization tests.
+- source schema and Tool/Specification binding validation before materialization;
+- fail-closed conversion of materialization defects into profile validation errors;
+- common semantic Responsibility Map validation over `ResolvedProfile.effective_payload`;
+- common component/associated-artifact selector partition and coverage over the effective map;
+- resolution identity/provenance details needed to explain validation results;
+- focused validation tests for explicit/template/hybrid behavior.
 
-Do **not** migrate validation, conformance, clarification/adoption, or VPMS consumers to the resolved view during WU-04D. Those remain WU-04E through WU-04H.
-Future sub-stage documents are created only after predecessor completion and a fresh branch-HEAD read.
+Do **not** migrate conformance, clarification/adoption, or VPMS consumers during WU-04E. Those remain WU-04F through WU-04H.
+Do not create the WU-04F sub-document until WU-04E completion gate is satisfied and a fresh branch-HEAD read is recorded.
 
 ## Migration boundary
 
@@ -248,7 +250,7 @@ SPEC_VERSION  = 0.3.6-draft
 SPEC_REVISION = 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-WU-04D implements semantics already permitted/frozen by WU-04C. Do not move `SPEC_REVISION` merely because implementation/tests change. If a genuinely new normative rule is required, freeze the Specification first and then choose a new immutable snapshot.
+WU-04E consumes semantics already frozen by WU-04C and materialized by WU-04D. Do not move `SPEC_REVISION` merely because implementation/tests change. If a genuinely new normative rule is required, freeze the Specification first and then choose a new immutable snapshot.
 Do not weaken `.github/scripts/verify_release_contract.py` to make a release pass.
 
 ## Exact release gate
