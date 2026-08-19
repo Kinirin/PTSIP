@@ -27,7 +27,7 @@ Master plan:
 planning/0.3.6.md
 ```
 
-Current verification tranche:
+Verified WU-04 stages:
 
 ```text
 planning/0.3.6/WU-04E-validation-effective-map.md
@@ -41,7 +41,13 @@ WU-04E  2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
 WU-04F  5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
 ```
 
-Both E and F implementation gates are complete. They intentionally share one exact-SHA self-hosted verification run. WU-04G remains locked until that run is reviewed.
+Combined verification source SHA:
+
+```text
+48b75e699a592703e4e03a8462131e4932103677
+```
+
+WU-04E and WU-04F are COMPLETE and exact-SHA verified. WU-04G is next but has not been entered and has no sub-document yet.
 
 Published PyPI Tool remains `0.3.5`; the development branch Tool identity is `0.3.6`.
 
@@ -151,7 +157,7 @@ PROJECT_REMOVAL
 
 The materializer MUST NOT infer architecture, auto-select templates, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve conflicts by heuristics, or mutate source declarations merely to produce a valid effective map.
 
-Current E/F pipeline:
+Verified E/F pipeline:
 
 ```text
 source ptsip.yaml
@@ -176,9 +182,9 @@ WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
-WU-04F  conformance consumes effective map               IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
-WU-04G  clarification/adoption read integration          LOCKED
+WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
+WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
+WU-04G  clarification/adoption read integration          NEXT / NOT ENTERED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
@@ -207,9 +213,9 @@ Historical/intentionally conflicting input remains historical where the test pur
 GitHub Actions run:
 
 ```text
-run 32227306170
-job 95989558038
-source SHA 33e26cebd845970c6e52fb0a9194a272f0e50228
+run 32240740753
+job 96030499443
+source SHA 48b75e699a592703e4e03a8462131e4932103677
 ```
 
 Observed execution facts:
@@ -218,18 +224,30 @@ Observed execution facts:
 self-hosted runner scheduling       PASS
 exact SHA checkout                  PASS
 exact source identity               PASS
-host Python 3.14 preparation        PASS
+host Python 3.14.3 preparation      PASS
 isolated .venv creation             PASS
 verification tooling installation   PASS
 complete pytest execution           RAN
-result                              230 passed / 37 failed
+result                              260 passed / 13 failed
 ```
 
-At that SHA, the initial five tests in `tests/ptsip/test_profile_validation_036.py` did not appear in the failure summary. That run therefore provided useful WU-04E evidence, but it predates the final E completion cases, the resolved-profile handoff, all WU-04F runtime integration, F focused tests, and canonicalized conformance fixtures.
+`tests/ptsip/test_profile_validation_036.py` and `tests/ptsip/test_conformance_effective_map_036.py` did not appear in the exhaustive 13-failure summary, so both focused E/F contracts passed at the exact verification SHA.
 
-Do not claim the final E/F tranche is verified yet. The next self-hosted `tooling-test.yml` run must target the exact current branch SHA after all E/F implementation and operational-context commits.
+Remaining failures were classified as:
 
-If that shared run exposes an E regression, reopen E. If it exposes an F regression, reopen/continue F. Failures belonging to clarification/adoption, pilot, topology, VPMS, or legacy migration must be classified against their owning future stage rather than weakening E/F contracts. Do not enter WU-04G before this review.
+```text
+3  decision/clarification-control historical expectations
+1  pilot/evidence fixture using pre-0.3.6 profile state
+1  stale lifecycle-evidence expectation for an unscoped release workflow
+1  agent-decision conflict expectation for later decision integration
+7  topology/legacy-profile migration fixtures
+```
+
+The lifecycle-evidence failure is a stale test expectation, not an E/F regression. Current lifecycle evaluation treats release-like workflow names/triggers as evidence rather than lifecycle authority; an unscoped release-like workflow is observed but is not itself a classification failure.
+
+The overall workflow concluded failure, so no `self-hosted/tooling-test` success status was recorded for `48b75e6...`. Do not claim full Tool `0.3.6` regression success or release readiness from this run. The evidence only closes the stage-scoped WU-04E/F gate.
+
+WU-04G may be entered only in a later session after a fresh branch-HEAD read and creation of its own stage document with that exact entry SHA.
 
 ## PTSIP / VPMS boundary
 
@@ -268,7 +286,7 @@ tooling-test.yml
     checkout exact github.sha
     host Python 3.14 + isolated .venv
     full regression/build/smoke
-    -> self-hosted/tooling-test status on exact SHA
+    -> self-hosted/tooling-test status on exact SHA only after complete workflow success
 
 release.yml
     manual workflow_dispatch from main; no custom inputs
@@ -307,5 +325,5 @@ WU-13  final Specification/release boundary               PLANNED
 
 ## Repository write discipline
 
-Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and the sub-stage document(s) named by the current verification/implementation tranche.
+Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and the sub-stage document named by the current implementation stage.
 Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
