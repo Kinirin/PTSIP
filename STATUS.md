@@ -24,13 +24,15 @@ tool-0.3.6-lifecycle-ownership
 
 Development Tool identity is `0.3.6`; Tool `0.3.6` is **not published**.
 
-Current bound Specification:
+Current bound Specification at WU-04G entry:
 
 ```text
 0.3.6-draft @ 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D implemented those frozen semantics. WU-04E/F consume them in validation/conformance and do not independently move the Specification revision.
+The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D implemented those frozen semantics. WU-04E/F consume them in validation/conformance and are exact-SHA verified.
+
+WU-04G is now ACTIVE. Its accepted automatic `template -> hybrid` decision/application behavior introduces one new normative accepted-decision authority rule. The existing `82abd093...` remains the entry binding until WU-04G G0 freezes that rule and selects a new immutable Specification revision. No replacement revision has been selected yet.
 
 ### Work-unit progress
 
@@ -51,22 +53,81 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption read integration          NEXT / NOT ENTERED
+WU-04G  clarification/adoption integration               ACTIVE
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Verified E/F documents and entry baselines:
+Active WU-04G document:
 
 ```text
-WU-04E  planning/0.3.6/WU-04E-validation-effective-map.md
-        entry 2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
-
-WU-04F  planning/0.3.6/WU-04F-conformance-effective-map.md
-        entry 5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
+planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
+entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
 ```
 
-WU-04G is the next stage but has not been entered. Its stage document must not be created until a later session begins with a fresh branch-HEAD read.
+The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical review context and no longer the implementation authority.
+
+## WU-04G accepted scope
+
+The maintainer accepted:
+
+```text
+D1-B  ResolvedProfile.effective_payload as clarification/adoption read authority
+D2-B  fail closed, then continue with deterministic remediation/retry information
+D3-B  associated-artifact coverage suppresses duplicate component questions
+D4-B  canonical shared selector/candidate coverage primitive
+D5-B  create ptsip-clarification-answer/v2 and remove lifecycle_owner from new canonical answers
+D6-B  accepted decisions may convert template -> hybrid when needed
+D7-C  perform eligible hybrid conversion/application automatically
+D8-B  carry exact selected profile path through decision protocol and remote CAS
+D9-B  bounded optimization/migration of WU-04G-owned tests only
+```
+
+### G0 normative precondition
+
+Before runtime code can depend on D6-B/D7-C, the canonical/embedded Specification and registry must define that an **accepted project-owned clarification/adoption decision** authorizes the exact project extension/replacement and, when required to represent that decision, `template -> hybrid` source-mode transition.
+
+This does **not** grant architecture authority to discovery or materialization. Repository evidence finds candidates only. Materialization remains deterministic reproduction only. The safe-apply layer may encode the accepted project decision and must retain exact template ID/revision and write only the minimum project-owned delta.
+
+### Effective read and failure recovery
+
+WU-04G will use only valid `ValidationResult.resolved_profile.effective_payload` for clarification/adoption coverage. Invalid/unresolvable profiles do not fall back to raw source.
+
+D2-B is extended so failure does not become a dead-end:
+
+```text
+resolution failure
+    -> block architecture-dependent clarification/adoption
+    -> expose validation/materialization errors + failure stage + exact profile path
+    -> expose non-authoritative remediation/retry information
+    -> project/source correction
+    -> fresh repository/profile snapshot
+    -> re-run validation
+    -> resume only when a valid ResolvedProfile exists
+```
+
+No partial failed effective map may become authority.
+
+### Answer-v2 and write behavior
+
+New canonical decision format is `ptsip-clarification-answer/v2` and omits `lifecycle_owner`. Existing v1 data may be read only through an explicit compatibility/migration path for already-persisted decisions; it must not restore canonical `TOOLCHAIN` or silently translate it.
+
+For accepted project decisions:
+
+- explicit profiles use canonical explicit safe apply;
+- template profiles may become hybrid while preserving exact selected template ID/revision;
+- hybrid profiles preserve unrelated overrides/removals;
+- only the accepted project delta may be written;
+- materialize-to-explicit writeback is prohibited;
+- conflicts remain fail-closed and must not partially mutate source.
+
+### Exact profile-path control plane
+
+The normalized repository-relative selected profile path must flow through gate creation, persisted decision state, subject revision, remote file read, projection validation, stale check, and CAS write. A non-root selected profile must never silently become root `ptsip.yaml`.
+
+### G-owned test migration/optimization
+
+WU-04G may optimize/migrate only tests it directly owns or changes. It may consolidate duplicated immutable setup and parameterize equivalent semantic variants, but must preserve mutable CAS/snapshot/stale-state isolation, record replacement coverage for migrated historical tests, avoid repository-wide test restructuring/xdist/workflow changes, and retain full exact-SHA repository regression as the final authority.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -107,18 +168,15 @@ WU-04E:
 - converts materialization defects into fail-closed validation errors;
 - validates effective Responsibility Map semantics and selector coverage for all modes;
 - retains `resolved_profile` as an in-process downstream handoff while omitting it from serialized `as_dict()` output;
-- has focused coverage in `tests/ptsip/test_profile_validation_036.py`, including dangling effective endpoint/anchor and dependency-policy conflicts.
+- has focused coverage in `tests/ptsip/test_profile_validation_036.py`.
 
 WU-04F:
 
 - removes raw YAML architecture reload from `src/ptsip/conformance.py` and `src/ptsip/conformance_engine.py`;
 - consumes effective components and `component_dependency_policy` from `ValidationResult.resolved_profile.effective_payload`;
-- removes the old `ownership:materialization-required` / `MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED` branch;
+- removes the old materialization-required branch;
 - applies effective components to dependency, artifact, project-policy, language, build, lifecycle, and agent-decision comparison paths;
-- has focused explicit/template/hybrid consumption coverage in `tests/ptsip/test_conformance_effective_map_036.py`;
-- updates current-tool conformance fixtures to canonical `0.3.6-draft`, current `SPEC_REVISION`, `DEVELOPMENT_TOOLING`, Responsibility Map v2, and current policy keys.
-
-Repository search after implementation found no remaining raw `yaml.safe_load` or materialization-required branch in the two conformance integration targets.
+- has focused explicit/template/hybrid consumption coverage in `tests/ptsip/test_conformance_effective_map_036.py`.
 
 ## Verification status
 
@@ -151,7 +209,7 @@ tests/ptsip/test_profile_validation_036.py
 tests/ptsip/test_conformance_effective_map_036.py
 ```
 
-Therefore the focused WU-04E and WU-04F contracts passed at exact source SHA `48b75e699a592703e4e03a8462131e4932103677`, and both stages are COMPLETE / exact-SHA verified.
+Therefore WU-04E/F are COMPLETE / exact-SHA verified.
 
 The 13 remaining failures were classified as:
 
@@ -163,14 +221,14 @@ The 13 remaining failures were classified as:
 7  topology/legacy-profile migration fixtures
 ```
 
-The lifecycle-evidence failure is not an E/F regression. Current lifecycle evaluation explicitly treats workflow naming/trigger scope as evidence rather than lifecycle authority; an unscoped release-like workflow is observed but does not itself create a classification failure.
+WU-04G may migrate only the decision/clarification failures/tests within its accepted scope. The lifecycle-evidence failure is not an E/F regression.
 
-The workflow still concluded failure because of those 13 later-stage regressions. Consequently:
+The workflow still concluded failure. Consequently:
 
 - no `self-hosted/tooling-test` success status was recorded for `48b75e6...`;
 - Tool `0.3.6` is **not** globally regression-clean;
 - release/build/smoke steps after pytest were skipped;
-- this run is stage-completion evidence for WU-04E/F only, not release-readiness evidence.
+- this evidence closes E/F only and does not establish release readiness.
 
 ## Repository self-profile
 
@@ -194,7 +252,7 @@ Tool 0.3.5 profile
     -> canonical Tool 0.3.6 Responsibility Map
 ```
 
-Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` translation is prohibited.
+Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` translation is prohibited. WU-04G's v1 decision compatibility is a narrow decision-protocol migration and does not enter the WU-07 legacy architecture reader.
 
 ## VPMS boundary
 
@@ -258,6 +316,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04E/F COMPLETE, WU-04G next/not entered**
+- Tool `0.3.6`: **active development; WU-04G ACTIVE**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
