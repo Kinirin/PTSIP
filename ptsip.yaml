@@ -2,7 +2,7 @@ ptsip:
   version: "0.3.6-draft"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
-    revision: "82abd09360df09a95fbbfb516855fa9ffb49f050"
+    revision: "d6995ed232e845b88d8235b851e80ab54b7804ea"
 
 responsibility_map:
   mode: explicit
@@ -174,6 +174,9 @@ components:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
       - ".github/scripts/sync_readme_ko.py"
+      - ".github/scripts/wu04g_guard.py"
+      - ".github/scripts/wu04g_track_tests.py"
+      - ".codex/openai-local-bridge/tasks.toml"
     purpose: development_verification_and_documentation_automation
     shipped: false
     runtime_required: false
