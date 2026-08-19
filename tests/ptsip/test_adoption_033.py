@@ -127,6 +127,9 @@ def test_adopt_template_profile_converts_to_hybrid_with_minimal_project_delta(
     tmp_path: Path, capsys,
 ) -> None:
     repo = _repo(tmp_path)
+    write_text(repo, "src/package.py", "VALUE = 1\n")
+    write_text(repo, "tests/test_package.py", "def test_value(): assert True\n")
+    commit_all(repo, "template fixture coverage")
     profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
     before = yaml.safe_load(profile.read_text(encoding="utf-8"))
     template_identity = dict(before["responsibility_map"]["template"])
