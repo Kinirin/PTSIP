@@ -32,7 +32,7 @@ Current bound Specification:
 
 WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is next and has not yet been entered.
+WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is next and has not yet been entered.
 
 ### Work-unit progress
 
@@ -53,7 +53,7 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 NEXT
+WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 NEXT
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
@@ -177,9 +177,43 @@ capability_url_exposed:         false
 
 An earlier files-mode run `97def58217ec44fb8b1725ef7299d693` produced `41 passed / 1 failed`; the sole failure was the frozen historical `test_topology_legacy_boundary_profile_preserves_historical_plane_classification` contract. Because `test_topology_032.py` is a mixed file whose topology semantics are explicitly outside G2 ownership, that test was preserved unchanged and the G2 selector now runs only its G2-owned `DecisionAnswer`/projection node. This does not erase or resolve the legacy topology debt; the later all-G/full regression remains authoritative for it.
 
-G3 hybrid safe apply is now the next WU-04G track. It has not yet been entered.
+### G3 verified hybrid safe apply
 
-For later accepted project decisions:
+G3 is VERIFIED. Accepted project decisions now preserve the explicit projection baseline and may encode only the exact accepted project-owned delta for template/hybrid source. A template source changes to hybrid only when that decision requires a new declaration; the exact selected template ID/revision is preserved. Existing hybrid unrelated overrides/removals remain intact, materialize-to-explicit writeback is prohibited, conflicts fail closed without partial mutation, and semantic no-op decisions do not alter source.
+
+Focused G3 coverage is in `TestG3HybridSafeApply`, and the participating G3 files include `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned explicit projection node from mixed `test_topology_032.py`. The topology migration behavior in that mixed file remains semantically frozen.
+
+Maintainer-provided OpenAI Local Bridge G3 verification on final implementation SHA `cf663949bb7005616574db62a2d850bbc1d80bce`:
+
+```text
+wu04g-scope
+run_id:                         fc9a315beafd485a88fa6d69772cc18a
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+
+wu04g-g3-files
+run_id:                         7993c2bb283b481e9775ea7a08ad45b2
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+An earlier G3 files-mode run `38988b39ba70466396697c350e214af7` produced `21 passed / 1 failed`. The sole failure was not a production safe-apply defect: the newly added template-adoption integration fixture selected `python-package-library` while omitting tracked `src/**` and `tests/**` files required by that template, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned files at `cf663949...`; production safe-apply code was unchanged. Final scope and files-mode verification then passed.
+
+G4 exact profile-path control plane is now the next WU-04G track. It has not yet been entered.
+
+For accepted project decisions:
 
 - explicit profiles use canonical explicit safe apply;
 - template profiles may become hybrid while preserving exact selected template ID/revision;
@@ -219,6 +253,9 @@ wu04g-g1-files
 
 wu04g-g2-files
     .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G2 --mode files
+
+wu04g-g3-files
+    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G3 --mode files
 ```
 
 Repository-local Bridge evidence inspection is available through:
@@ -248,7 +285,7 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`, respectively, all with exit code 0 and `remote_task_execution_verified=true`.
+The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`. G3 final scope and files-mode tasks completed successfully in runs `fc9a315beafd485a88fa6d69772cc18a` and `7993c2bb283b481e9775ea7a08ad45b2`. All cited successful stage-gate runs completed with exit code 0 and `remote_task_execution_verified=true`.
 
 These Bridge results establish repository/task discovery and actual read-only remote process execution for the corresponding WU-04G stage gates. They do not establish complete repository regression or release readiness.
 
@@ -439,6 +476,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G ACTIVE — G2 VERIFIED / G3 NEXT**
+- Tool `0.3.6`: **active development; WU-04G ACTIVE — G3 VERIFIED / G4 NEXT**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
