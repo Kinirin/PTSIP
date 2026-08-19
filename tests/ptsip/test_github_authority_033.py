@@ -18,6 +18,7 @@ from ptsip.app.github_authority import (
 )
 from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
+from _wu04g_support import canonical_v2_answer
 
 
 class MemoryAuthority:
@@ -104,8 +105,6 @@ def _development_tooling_adopt_args(repo: Path) -> list[str]:
         "no",
         "--runtime-required",
         "no",
-        "--lifecycle-owner",
-        "DEVELOPMENT_TOOLING",
         "--executable",
         "yes",
         "--apply",
@@ -120,17 +119,10 @@ def test_existing_non_ptsip_authority_branch_is_refused() -> None:
 
 
 def test_authority_answer_requires_real_booleans() -> None:
+    payload = canonical_v2_answer()
+    payload["shipped"] = "false"
     with pytest.raises(ValueError, match="shipped must be a boolean"):
-        answer_from_mapping(
-            {
-                "classification": "DEVELOPMENT_TOOLING",
-                "purpose": "Repository-local generation tooling",
-                "shipped": "false",
-                "runtime_required": False,
-                "lifecycle_owner": "DEVELOPMENT_TOOLING",
-                "executable": True,
-            }
-        )
+        answer_from_mapping(payload)
 
 
 def test_github_authority_uses_component_scope_not_local_clarification_id() -> None:
@@ -180,31 +172,25 @@ def test_github_authority_uses_component_scope_not_local_clarification_id() -> N
     accepted = first.resolve(
         {
             "decision_id": str(decision_a["id"]),
-            "answer": {
-                "classification": "DEVELOPMENT_TOOLING",
-                "purpose": "Repository-local generation tooling",
-                "shipped": False,
-                "runtime_required": False,
-                "lifecycle_owner": "DEVELOPMENT_TOOLING",
-                "executable": True,
-            },
+            "answer": canonical_v2_answer(),
             "actor": "owner-a",
         }
     )
     assert accepted["status"] == "RESOLVED"
     assert accepted["accepted"] is True
+    accepted_record = accepted["decision"]
+    assert isinstance(accepted_record, dict)
+    assert "lifecycle_owner" not in accepted_record["answer"]
 
     rejected = second.resolve(
         {
             "decision_id": str(decision_b["id"]),
-            "answer": {
-                "classification": "PRODUCT",
-                "purpose": "Product runtime component",
-                "shipped": True,
-                "runtime_required": True,
-                "lifecycle_owner": "PRODUCT",
-                "executable": True,
-            },
+            "answer": canonical_v2_answer(
+                classification="PRODUCT",
+                purpose="Product runtime component",
+                shipped=True,
+                runtime_required=True,
+            ),
             "actor": "owner-b",
         }
     )
@@ -213,6 +199,7 @@ def test_github_authority_uses_component_scope_not_local_clarification_id() -> N
     winner = rejected["decision"]
     assert isinstance(winner, dict)
     assert winner["answer"]["classification"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in winner["answer"]
 
 
 def test_github_adoption_winner_reconciles_into_stale_clone(
@@ -245,6 +232,7 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     assert adopted["backend"] == "GITHUB"
     assert adopted["authority"]["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
     assert adopted["authority"]["decision"]["answer"]["runtime_required"] is False
+    assert "lifecycle_owner" not in adopted["authority"]["decision"]["answer"]
     assert (repo_a / "ptsip.yaml").is_file()
     assert not (repo_b / "ptsip.yaml").exists()
 
