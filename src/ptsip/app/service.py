@@ -98,9 +98,6 @@ class DecisionService:
             )
             record = self.store.attach_issue(record.id, created.number, created.url)
         elif record.status == "PENDING" and record.issue_number is not None:
-            # Issue open/closed state is only a UI surface. A manual close must
-            # not resolve the authoritative PENDING decision. Reopen it only
-            # when an active coding-agent gate actually needs the decision.
             try:
                 self.github.update_issue_state(record.repository, installation, record.issue_number, "open")
             except GitHubAPIError:
@@ -240,8 +237,6 @@ class DecisionService:
             )
             return {"status": "CONFLICT", "validation": validation.as_dict()}
 
-        # Validate the answer against the profile at the exact gate snapshot
-        # before it is allowed to win the authoritative compare-and-set.
         try:
             projected_content = self._prepare_remote_projection(record, installation, answer)
         except ValueError as exc:
@@ -282,7 +277,12 @@ class DecisionService:
         installation: int,
         answer: DecisionAnswer,
     ) -> str:
-        existing_text = self.github.file_text(record.repository, installation, "ptsip.yaml", record.subject_revision)
+        existing_text = self.github.file_text(
+            record.repository,
+            installation,
+            record.profile_path,
+            record.subject_revision,
+        )
         existing = load_profile_text(existing_text)
         include = record.request.get("include", [])
         if not isinstance(include, list):
@@ -293,35 +293,45 @@ class DecisionService:
             raise ValueError("Projected PTSIP profile is invalid: " + "; ".join(projected_errors))
         return dump_payload(projected)
 
+    def _mark_remote_stale(self, record: DecisionRecord, installation: int) -> None:
+        self.store.mark_application(record.id, "STALE")
+        if record.issue_number:
+            self.github.add_issue_comment(
+                record.repository,
+                installation,
+                record.issue_number,
+                "The decision was accepted, but the target branch changed after the last active decision gate. "
+                f"PTSIP did not modify `{record.profile_path}`. A coding agent must re-run the gate against the current revision and can reconcile the already authoritative answer without asking the user to decide again.",
+            )
+            self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
+
     def _apply_remote(self, record: DecisionRecord, installation: int, projected_content: str) -> None:
         current = self.github.branch_head(record.repository, installation, record.branch)
         if current != record.subject_revision:
-            self.store.mark_application(record.id, "STALE")
-            if record.issue_number:
-                self.github.add_issue_comment(
-                    record.repository,
-                    installation,
-                    record.issue_number,
-                    "The decision was accepted, but the target branch changed after the last active decision gate. "
-                    "PTSIP did not modify the profile. A coding agent must re-run the gate against the current revision and can reconcile the already authoritative answer without asking the user to decide again.",
-                )
-                self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
+            self._mark_remote_stale(record, installation)
             return
-        commit_sha = self.github.commit_file_at_parent(
-            record.repository,
-            installation,
-            record.branch,
-            record.subject_revision,
-            "ptsip.yaml",
-            projected_content,
-            f"ptsip: apply decision {record.id}",
-        )
+        try:
+            commit_sha = self.github.commit_file_at_parent(
+                record.repository,
+                installation,
+                record.branch,
+                record.subject_revision,
+                record.profile_path,
+                projected_content,
+                f"ptsip: apply decision {record.id}",
+            )
+        except GitHubAPIError:
+            refreshed = self.github.branch_head(record.repository, installation, record.branch)
+            if refreshed != record.subject_revision:
+                self._mark_remote_stale(record, installation)
+                return
+            raise
         self.store.mark_application(record.id, "APPLIED", commit_sha)
         if record.issue_number:
             self.github.add_issue_comment(
                 record.repository,
                 installation,
                 record.issue_number,
-                f"PTSIP applied decision `{record.id}` in commit `{commit_sha}`. Late replies are ignored.",
+                f"PTSIP applied decision `{record.id}` to `{record.profile_path}` in commit `{commit_sha}`. Late replies are ignored.",
             )
             self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
