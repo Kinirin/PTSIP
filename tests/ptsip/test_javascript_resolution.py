@@ -3,8 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from ptsip.inspection.dependencies import DependencyScan
 from ptsip.inspection.javascript import discover_npm_packages, source_edges
 from ptsip.model import EvidenceNodeScope, ResolutionStatus
+from ptsip.validation.components import ComponentAssignment, ComponentPartition
+from ptsip.validation.rules import evaluate_declared_dependency_boundaries
 
 
 def _edge(root: Path, source_rel: str, target: str):
@@ -199,3 +202,43 @@ def test_declared_npm_dependency_behavior_is_unchanged(tmp_path: Path) -> None:
 
     assert edge.resolution == ResolutionStatus.EXTERNAL
     assert edge.target_scope == EvidenceNodeScope.EXTERNAL_DEPENDENCY
+
+
+def test_alias_cross_component_edge_reaches_boundary_evaluator(tmp_path: Path) -> None:
+    (tmp_path / "tsconfig.json").write_text(
+        json.dumps({"compilerOptions": {"paths": {"@tools/*": ["./tools/*"]}}}),
+        encoding="utf-8",
+    )
+    product = tmp_path / "product" / "main.ts"
+    tool = tmp_path / "tools" / "check.ts"
+    product.parent.mkdir(parents=True)
+    tool.parent.mkdir(parents=True)
+    product.write_text('import { check } from "@tools/check";\n', encoding="utf-8")
+    tool.write_text("export const check = 1;\n", encoding="utf-8")
+
+    edge = _edge(tmp_path, "product/main.ts", "@tools/check")
+    partition = ComponentPartition(
+        assignments=(
+            ComponentAssignment("product/main.ts", "product", "product/**"),
+            ComponentAssignment("tools/check.ts", "tools", "tools/**"),
+        ),
+        conflicts=(),
+        unmatched_selectors=(),
+        unassigned_files=("tsconfig.json",),
+        scan_errors=(),
+    )
+    scan = DependencyScan(edges=(edge,), issues=(), adapters=("javascript-typescript",))
+    findings = evaluate_declared_dependency_boundaries(
+        [
+            {"id": "product", "classification": "PRODUCT"},
+            {"id": "tools", "classification": "TOOLCHAIN"},
+        ],
+        partition,
+        scan,
+    )
+
+    assert len(findings) == 1
+    assert findings[0].rule_id == "PTSIP-DEP-001"
+    assert findings[0].severity == "REVIEW"
+    assert findings[0].source_component == "product"
+    assert findings[0].target_component == "tools"
