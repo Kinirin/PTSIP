@@ -24,15 +24,15 @@ tool-0.3.6-lifecycle-ownership
 
 Development Tool identity is `0.3.6`; Tool `0.3.6` is **not published**.
 
-Current bound Specification at WU-04G entry:
+Current bound Specification:
 
 ```text
-0.3.6-draft @ 82abd09360df09a95fbbfb516855fa9ffb49f050
+0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
 
-The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D implemented those frozen semantics. WU-04E/F consume them in validation/conformance and are exact-SHA verified.
+WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G is now ACTIVE. Its accepted automatic `template -> hybrid` decision/application behavior introduces one new normative accepted-decision authority rule. The existing `82abd093...` remains the entry binding until WU-04G G0 freezes that rule and selects a new immutable Specification revision. No replacement revision has been selected yet.
+WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is next and has not yet been entered.
 
 ### Work-unit progress
 
@@ -53,7 +53,7 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE
+WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 NEXT
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
@@ -63,6 +63,7 @@ Active WU-04G document:
 ```text
 planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
 entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
+current normative revision d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
 
 The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical review context and no longer the implementation authority.
@@ -83,36 +84,58 @@ D8-B  carry exact selected profile path through decision protocol and remote CAS
 D9-B  bounded optimization/migration of WU-04G-owned tests only
 ```
 
-### G0 normative precondition
+### G0 normative result
 
-Before runtime code can depend on D6-B/D7-C, the canonical/embedded Specification and registry must define that an **accepted project-owned clarification/adoption decision** authorizes the exact project extension/replacement and, when required to represent that decision, `template -> hybrid` source-mode transition.
+G0 is COMPLETE. The canonical/embedded Specification and registry define that an **accepted project-owned clarification/adoption decision** authorizes only the exact project extension/replacement and, when required to represent that decision, `template -> hybrid` source-mode transition.
 
 This does **not** grant architecture authority to discovery or materialization. Repository evidence finds candidates only. Materialization remains deterministic reproduction only. The safe-apply layer may encode the accepted project decision and must retain exact template ID/revision and write only the minimum project-owned delta.
 
-### Effective read and failure recovery
+### G1 verified effective read and selector coverage
 
-WU-04G will use only valid `ValidationResult.resolved_profile.effective_payload` for clarification/adoption coverage. Invalid/unresolvable profiles do not fall back to raw source.
-
-D2-B is extended so failure does not become a dead-end:
+G1 clarification/adoption read authority is:
 
 ```text
-resolution failure
-    -> block architecture-dependent clarification/adoption
-    -> expose validation/materialization errors + failure stage + exact profile path
-    -> expose non-authoritative remediation/retry information
-    -> project/source correction
-    -> fresh repository/profile snapshot
-    -> re-run validation
-    -> resume only when a valid ResolvedProfile exists
+selected profile
+    -> validate_profile()
+    -> ValidationResult.resolved_profile
+    -> ResolvedProfile.effective_payload
 ```
 
-No partial failed effective map may become authority.
+Clarification no longer treats raw YAML as a second architecture interpretation. Effective component and associated-artifact coverage use the shared validation/selector coverage primitive, including ambiguity review rather than ownership guessing. Partial-declaration coverage remains a distinct valid-profile contract rather than relying on schema-invalid raw source.
+
+The G1 participating existing files are:
+
+```text
+tests/ptsip/test_clarification.py
+tests/ptsip/test_adoption_033.py
+tests/ptsip/test_repository_self_profile_035.py
+```
+
+Shared stateless support is in `tests/ptsip/_wu04g_support.py`, and focused G1 coverage is in `TestG1EffectiveReadCoverage` within `tests/ptsip/test_clarification_adoption_effective_map_036.py`.
+
+Maintainer-provided OpenAI Local Bridge G1 verification:
+
+```text
+repository_id:                  Kinirin/PTSIP
+task_id:                        wu04g-g1-files
+run_id:                         fa46e93a3d7545b7bf793e3df21263c0
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+Therefore G1 files-mode verification is PASS. This does not replace the final G5 exact-SHA complete repository regression.
 
 ### Answer-v2 and write behavior
 
-New canonical decision format is `ptsip-clarification-answer/v2` and omits `lifecycle_owner`. Existing v1 data may be read only through an explicit compatibility/migration path for already-persisted decisions; it must not restore canonical `TOOLCHAIN` or silently translate it.
+G2 is NEXT and not yet entered. Its canonical decision target remains `ptsip-clarification-answer/v2`, omitting `lifecycle_owner`. Existing v1 data may be read only through an explicit compatibility/migration path for already-persisted decisions; it must not restore canonical `TOOLCHAIN` or silently translate it.
 
-For accepted project decisions:
+For later accepted project decisions:
 
 - explicit profiles use canonical explicit safe apply;
 - template profiles may become hybrid while preserving exact selected template ID/revision;
@@ -136,15 +159,21 @@ Repository-local task registry:
 ```text
 .codex/openai-local-bridge/tasks.toml
 repository_id: Kinirin/PTSIP
-task_id:       wu04g-precheck
-executable:    py
-args:          -3.14 .github/scripts/wu04g_guard.py precheck
-access:        read
+```
+
+Current read-only tasks include:
+
+```text
+wu04g-precheck
+    py -3.14 .github/scripts/wu04g_guard.py precheck
+
+wu04g-g1-files
+    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G1 --mode files
 ```
 
 The previous full-suite Bridge task was replaced because the active WU-04G branch is intentionally not yet globally regression-clean and complete repository regression is reserved for the post-G5 exact-SHA gate.
 
-Maintainer-provided remote E2E result on 2026-08-19:
+Maintainer-provided remote E2E precheck result on 2026-08-19:
 
 ```text
 passed:                         true
@@ -161,9 +190,9 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-This establishes that OpenAI Local Bridge discovered the PTSIP repository and registered task, accepted the read-only remote execution request, launched the repository-defined `wu04g-precheck` process, produced run/log evidence, and completed that task with exit code 0.
+The G1 files-mode task also completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0` with exit code 0 and `remote_task_execution_verified=true`.
 
-This Bridge E2E result is **connection/task-execution evidence only**. It does not mark WU-04G G1-G5 complete, does not replace track-specific guard/test commands, and does not establish complete repository regression or release readiness.
+These Bridge results establish repository/task discovery and actual read-only remote process execution. They do not establish complete repository regression or release readiness.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -352,6 +381,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G ACTIVE**
+- Tool `0.3.6`: **active development; WU-04G ACTIVE — G1 VERIFIED**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
