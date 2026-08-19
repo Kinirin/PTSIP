@@ -54,7 +54,10 @@ FILE_TRACKS = {
         "tests/ptsip/test_local_control_plane_033.py",
         "tests/ptsip/test_github_authority_033.py",
         "tests/ptsip/test_github_authority_034.py",
-        "tests/ptsip/test_topology_032.py",
+        # G4 owns the exact selected profile-path/projection contract in this
+        # mixed file. Historical topology migration semantics remain frozen and
+        # stay visible to later all-G/full-regression review.
+        "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
     "G5": EXISTING_G_SCOPE,
 }
