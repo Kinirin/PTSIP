@@ -1,10 +1,11 @@
 # WU-04E — Profile Validation Consumes the Effective Responsibility Map
 
-> **Status:** ACTIVE  
+> **Status:** IMPLEMENTATION COMPLETE — combined WU-04E/F exact-SHA verification pending  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04D — `ResolvedProfile`, effective-map digest, and derived provenance  
 > **Entry baseline:** `2f0c7db2d20fb6d88ab5c4ab10707f50d486351f`  
+> **Implementation completion baseline:** `b27938288aea712c52db5ee29c5c2f5a092cb325`  
 > **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
 
 ## 1. Purpose
@@ -116,9 +117,7 @@ Unassigned tracked files remain a warning rather than an automatic PTSIP violati
 
 ## 7. Validation details / resolution identity
 
-When materialization succeeds, `ValidationResult.details` should expose a stable resolution summary so later WU-04 consumers do not need to re-derive source-mode identity merely to explain validation results.
-
-Minimum detail:
+When materialization succeeds, `ValidationResult.details` exposes a stable serializable resolution summary:
 
 ```text
 resolution:
@@ -128,9 +127,11 @@ resolution:
   effective_map_digest
 ```
 
-Derived provenance may also be exposed as explanatory details if it remains clearly non-authoritative.
+Derived provenance is also exposed as explanatory details while remaining clearly non-authoritative.
 
-The validation result must not replace or mutate the source profile with the effective payload.
+For downstream in-process consumers, `ValidationResult.resolved_profile` retains the already materialized `ResolvedProfile` runtime object. This field is intentionally omitted from `ValidationResult.as_dict()` so public validation reports continue to expose only serializable validation details rather than duplicating the effective payload.
+
+The validation result does not replace or mutate the source profile with the effective payload.
 
 ## 8. Existing implementation transition
 
@@ -140,7 +141,7 @@ Primary implementation target:
 src/ptsip/validation/profile.py
 ```
 
-Current behavior to remove:
+Removed behavior:
 
 ```text
 template/hybrid
@@ -149,7 +150,7 @@ template/hybrid
     -> skip component-level validation
 ```
 
-Target behavior:
+Implemented behavior:
 
 ```text
 explicit/template/hybrid
@@ -157,27 +158,28 @@ explicit/template/hybrid
     -> materialize_profile()
     -> common effective semantic validation
     -> common effective selector validation
+    -> retain ResolvedProfile for downstream in-process consumption
 ```
 
-The existing `_responsibility_map_errors()` logic should be reused/refactored rather than duplicated into separate template/hybrid validators. Source-only hybrid declaration mechanics may remain a separate pre-materialization check where needed.
+The existing semantic validation logic is shared over the explicit-form effective map. Source-only hybrid declaration mechanics remain a separate pre-materialization check.
 
 ## 9. Focused regression scope
 
-WU-04E focused tests must prove at least:
+WU-04E focused tests cover:
 
-- valid template profile is fully validated against its effective components;
-- valid hybrid profile is fully validated against override/extension/removal result;
+- valid template profile fully validated against effective components;
+- valid hybrid profile fully validated against override/removal result;
 - template/hybrid no longer emit the old “materialization required” warning;
-- unknown template/revision becomes a validation error;
+- unknown template revision becomes a validation error;
 - dangling effective relationship endpoint fails validation;
 - dangling effective associated-artifact anchor fails validation;
-- effective component dependency policy conflict fails validation;
+- effective component dependency policy allow/deny conflict fails validation;
 - effective selectors participate in repository partition/coverage details;
-- explicit/template declarations with the same effective map have equivalent semantic validation results;
+- explicit/template declarations with the same effective map have equivalent digest and partition results;
 - validation details expose source mode, exact template identity where applicable, and effective-map digest;
 - caller/source profile remains unchanged.
 
-Existing explicit-mode validation behavior must remain covered.
+The exact-SHA run `32227306170` at source SHA `33e26cebd845970c6e52fb0a9194a272f0e50228` executed the first WU-04E focused tranche without any `test_profile_validation_036.py` failure and produced `230 passed / 37 failed` repository-wide. The additional completion cases and downstream runtime handoff added after that run are intentionally deferred to the shared WU-04E/F exact-SHA verification run authorized in the master plan.
 
 ## 10. Out of scope
 
@@ -189,11 +191,11 @@ WU-04E does **not** migrate:
 - broad cross-mode downstream regression closure — WU-04I;
 - Tool `0.3.5` legacy profile reading/migration — WU-07 and later.
 
-Do not make conformance pass by teaching it template semantics directly during this stage. Conformance must consume the resolved/effective validation surface in WU-04F.
+Conformance must consume the resolved/effective validation surface in WU-04F rather than teaching itself separate template/hybrid semantics.
 
 ## 11. Completion gate
 
-WU-04E is complete only when:
+WU-04E implementation gate is satisfied because:
 
 - source schema and Specification binding are checked before materialization;
 - materialization failures are surfaced as fail-closed validation errors;
@@ -201,6 +203,7 @@ WU-04E is complete only when:
 - all source modes receive common effective selector/coverage validation;
 - the old template/hybrid “materialization required” warning is removed;
 - validation details expose deterministic resolution identity;
-- focused validation tests cover explicit/template/hybrid behavior and failure cases;
-- WU-04F conformance integration has not been entered early;
-- WU-04F sub-document does not exist before this gate is complete.
+- the in-process validation result retains the resolved profile for the next consumer stage;
+- focused validation tests cover explicit/template/hybrid behavior and required failure cases.
+
+Per the maintainer-directed combined verification tranche recorded in `planning/0.3.6.md`, exact-SHA verification of the final WU-04E implementation is deferred and shared with WU-04F. WU-04E is not to be described as exact-SHA verified until that shared run succeeds. If the shared run reports an E regression, this stage reopens before WU-04G can be entered.
