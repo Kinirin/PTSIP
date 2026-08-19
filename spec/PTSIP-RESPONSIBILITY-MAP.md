@@ -2,7 +2,7 @@
 
 **Specification family:** `0.3.6-draft`  
 **Status:** Active normative companion specification  
-**Scope:** Component roles, typed responsibility relationships, associated artifacts, declaration authority, and materialization
+**Scope:** Component roles, typed responsibility relationships, associated artifacts, declaration authority, materialization, and accepted-decision safe apply
 
 This document is part of the canonical PTSIP `0.3.6-draft` Specification family. It refines the Responsibility Map requirements introduced by `PTSIP-RMAP-001` through `PTSIP-RMAP-003` in `PTSIP-SPEC.md`.
 
@@ -425,3 +425,26 @@ The materializer MUST NOT:
 If materialization produces an invalid effective endpoint, anchor, identity, selector, or other canonical Responsibility Map condition, the operation MUST fail closed and report the inconsistency for project-owner action.
 
 Implementations MAY calculate a deterministic semantic digest of the Canonical Effective Responsibility Map for reproducibility, comparison, stale-state detection, or migration preview. Such a digest MUST NOT replace declaration provenance or become architecture authority.
+
+### PTSIP-RMAP-017 — Accepted project decisions authorize only the exact safe-apply declaration delta
+
+An accepted clarification/adoption decision produced through an authorized project decision process MAY act as project-owned declaration authority only for the exact architecture facts accepted by that decision.
+
+Repository discovery, candidate identity, selector/path heuristics, confidence, observed evidence, or materialization MUST NOT independently authorize that declaration change or any source-mode transition.
+
+When the selected source mode is `template` and the accepted decision cannot be represented without a project-owned declaration, a Tool MAY change the source mode to `hybrid` only as the representation of that accepted project decision. The Tool MUST preserve the exact selected template ID and immutable revision and MUST encode only the minimum stable-ID project extension or replacement required by the accepted decision.
+
+For an existing `hybrid` source, safe apply MUST preserve unrelated project overrides and removals and MUST change only the exact project-owned declaration covered by the accepted decision.
+
+Safe apply MUST NOT:
+
+- materialize the whole Canonical Effective Responsibility Map back into project-owned `explicit` source;
+- copy template-owned entities into project overrides merely because they exist in the effective map;
+- select or change a template ID or revision without a separate project-owned architecture decision;
+- infer unrelated components, associated artifacts, relationships, overrides, or removals;
+- silently overwrite a conflicting existing project declaration;
+- partially mutate the source when the accepted change cannot be represented losslessly.
+
+If a conflict, stale declaration, invalid target state, or other condition prevents lossless representation of the accepted decision, the operation MUST fail closed without source mutation and report the conflict for project-owner action.
+
+This safe-apply authority belongs to the accepted project decision and the mutation layer that encodes it. It does not transfer architecture authority to the materializer, which remains deterministic and non-authoritative under `PTSIP-RMAP-016`.
