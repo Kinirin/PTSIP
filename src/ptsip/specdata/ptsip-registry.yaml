@@ -214,6 +214,8 @@ ptsip_registry:
       meaning: "Optional project-specific stricter component dependency constraints that cannot weaken universal PTSIP rules."
     - id: DECISION_AUTHORITY
       meaning: "Coordination authority that records which explicit architecture answer won for a distributed decision identity; it does not replace the Project Profile."
+    - id: ACCEPTED_PROJECT_DECISION_DECLARATION_AUTHORITY
+      meaning: "An accepted authorized project clarification/adoption decision may authorize only the exact project-owned declaration delta needed to encode that accepted decision, including a template-to-hybrid transition when required; discovery and materialization remain non-authoritative."
     - id: COORDINATION_DOMAIN
       meaning: "Scope within which one distributed architecture decision identity has one authoritative winner."
     - id: AUTHORITY_REVISION
@@ -283,6 +285,7 @@ ptsip_registry:
     - {id: PTSIP-RMAP-014, title: "Exact template selection is project-owned architecture authority", severity: error, applies_to: implementation}
     - {id: PTSIP-RMAP-015, title: "Hybrid precedence is stable-ID whole-entity authority", severity: error, applies_to: implementation}
     - {id: PTSIP-RMAP-016, title: "Materialization is deterministic and non-authoritative", severity: error, applies_to: implementation}
+    - {id: PTSIP-RMAP-017, title: "Accepted project decisions authorize only the exact safe-apply declaration delta", severity: error, applies_to: implementation}
     - {id: PTSIP-MIG-001, title: "Legacy profile readability without legacy ontology preservation", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-MIG-002, title: "Evidence-driven migration proposals", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-MIG-003, title: "Project-owner confirmation", severity: error, applies_to: migration_implementation}
