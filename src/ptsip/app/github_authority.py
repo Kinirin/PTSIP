@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from typing import Any, Protocol
 
 from ..clarification.resolution import DecisionAnswer, validate_answer
+from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS
 
 AUTHORITY_BRANCH = "ptsip-policy"
 AUTHORITY_FORMAT = "ptsip-github-authority/v1"
@@ -68,12 +69,22 @@ def _required_bool(payload: dict[str, object], key: str) -> bool:
 
 
 def answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
+    actual = set(payload)
+    expected = set(CANONICAL_ANSWER_FIELDS)
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
+        details: list[str] = []
+        if missing:
+            details.append("missing: " + ", ".join(missing))
+        if extra:
+            details.append("unexpected: " + ", ".join(extra))
+        raise ValueError("canonical v2 authoritative answer fields are invalid (" + "; ".join(details) + ")")
     answer = DecisionAnswer(
-        classification=_required_string(payload, "classification"),
-        purpose=_required_string(payload, "purpose"),
+        classification=_required_string(payload, "classification").strip().upper(),
+        purpose=_required_string(payload, "purpose").strip(),
         shipped=_required_bool(payload, "shipped"),
         runtime_required=_required_bool(payload, "runtime_required"),
-        lifecycle_owner=_required_string(payload, "lifecycle_owner"),
         executable=_required_bool(payload, "executable"),
     )
     validation = validate_answer(answer)
