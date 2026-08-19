@@ -47,3 +47,12 @@ cwd = "."
 access = "read"
 timeout_seconds = 900
 max_output_bytes = 15000000
+
+[[task]]
+id = "wu04g-g4-files"
+executable = ".venv/Scripts/python.exe"
+args = [".github/scripts/wu04g_track_tests.py", "G4", "--mode", "files"]
+cwd = "."
+access = "read"
+timeout_seconds = 900
+max_output_bytes = 15000000
