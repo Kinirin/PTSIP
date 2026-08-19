@@ -43,6 +43,38 @@ def test_unknown_bare_package_remains_unresolved(tmp_path: Path) -> None:
     assert edge.target_scope == EvidenceNodeScope.UNRESOLVED_TARGET
 
 
+def test_runtime_js_specifier_resolves_typescript_source(tmp_path: Path) -> None:
+    source = tmp_path / "src" / "main.ts"
+    target = tmp_path / "src" / "reconciliation-control-plane.ts"
+    source.parent.mkdir(parents=True)
+    source.write_text(
+        'const module = await import("./reconciliation-control-plane.js");\n',
+        encoding="utf-8",
+    )
+    target.write_text("export const value = 1;\n", encoding="utf-8")
+
+    edge = _edge(tmp_path, "src/main.ts", "./reconciliation-control-plane.js")
+
+    assert edge.resolution == ResolutionStatus.RESOLVED
+    assert edge.target_scope == EvidenceNodeScope.PROJECT_COMPONENT
+    assert edge.resolved_path == "src/reconciliation-control-plane.ts"
+
+
+def test_existing_runtime_js_file_precedes_typescript_source_substitution(tmp_path: Path) -> None:
+    source = tmp_path / "src" / "main.ts"
+    javascript_target = tmp_path / "src" / "dependency.js"
+    typescript_target = tmp_path / "src" / "dependency.ts"
+    source.parent.mkdir(parents=True)
+    source.write_text('import value from "./dependency.js";\n', encoding="utf-8")
+    javascript_target.write_text("export default 'js';\n", encoding="utf-8")
+    typescript_target.write_text("export default 'ts';\n", encoding="utf-8")
+
+    edge = _edge(tmp_path, "src/main.ts", "./dependency.js")
+
+    assert edge.resolution == ResolutionStatus.RESOLVED
+    assert edge.resolved_path == "src/dependency.js"
+
+
 def test_tsconfig_wildcard_path_alias_resolves_repository_target(tmp_path: Path) -> None:
     (tmp_path / "tsconfig.json").write_text(
         """{
