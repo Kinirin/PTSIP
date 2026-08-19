@@ -27,17 +27,21 @@ Master plan:
 planning/0.3.6.md
 ```
 
-Active sub-stage:
+Current verification tranche:
 
 ```text
 planning/0.3.6/WU-04E-validation-effective-map.md
+planning/0.3.6/WU-04F-conformance-effective-map.md
 ```
 
-WU-04E exact entry baseline:
+Entry baselines:
 
 ```text
-2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
+WU-04E  2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
+WU-04F  5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
 ```
+
+Both E and F implementation gates are complete. They intentionally share one exact-SHA self-hosted verification run. WU-04G remains locked until that run is reviewed.
 
 Published PyPI Tool remains `0.3.5`; the development branch Tool identity is `0.3.6`.
 
@@ -56,7 +60,7 @@ Specification 0.3.6-draft
 SPEC_REVISION 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-WU-04C added normative `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implemented those frozen materialization semantics and completed without a Specification revision move. WU-04E consumes that resolved view in validation and likewise does not independently justify moving `SPEC_REVISION`.
+WU-04C froze `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implemented the frozen materialization semantics. WU-04E/F consume those semantics in validation and conformance and do not independently justify moving `SPEC_REVISION`.
 
 Decision records:
 
@@ -112,7 +116,7 @@ GOVERNS
 
 Associated artifacts are project-owned non-component support surfaces subordinate to exactly one classified anchor component. They have no classification or component roles and cannot hide independently governable lifecycle responsibility.
 
-## WU-04 authority model
+## WU-04 authority and runtime pipeline
 
 Responsibility Map source modes:
 
@@ -147,6 +151,24 @@ PROJECT_REMOVAL
 
 The materializer MUST NOT infer architecture, auto-select templates, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve conflicts by heuristics, or mutate source declarations merely to produce a valid effective map.
 
+Current E/F pipeline:
+
+```text
+source ptsip.yaml
+    -> validate_profile()
+        -> source schema + Tool/Specification binding
+        -> materialize_profile()
+        -> effective semantic/selector validation
+        -> ValidationResult.resolved_profile
+    -> ResolvedProfile.effective_payload
+        -> base conformance
+        -> complete conformance engine
+```
+
+`ValidationResult.resolved_profile` is an in-process handoff and is deliberately omitted from `ValidationResult.as_dict()`. Public reports expose serializable resolution identity/provenance details rather than duplicating the full effective payload.
+
+Conformance must not reload raw YAML architecture, implement template/hybrid semantics, or restore a `materialization-required` branch.
+
 ## WU-04 stage state
 
 ```text
@@ -154,66 +176,40 @@ WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                ACTIVE
-WU-04F  conformance consumes effective map               LOCKED
+WU-04E  validation consumes effective map                IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
+WU-04F  conformance consumes effective map               IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
 WU-04G  clarification/adoption read integration          LOCKED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-WU-04D completion record:
-
-```text
-planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
-completion baseline 6b1aa963b11681242088527c5723ad5cd57b4ea1
-```
-
-WU-04E owns this validation pipeline:
-
-```text
-source ptsip.yaml
-    -> source schema validation
-    -> Tool/Specification binding validation
-    -> source declaration mechanics
-    -> materialize_profile()
-    -> ResolvedProfile.effective_payload
-    -> common semantic Responsibility Map validation
-    -> common component/artifact selector partition + coverage
-    -> resolution identity/provenance details
-```
-
-Primary implementation target:
-
-```text
-src/ptsip/validation/profile.py
-```
-
-Focused regression target:
+Focused E/F regression targets:
 
 ```text
 tests/ptsip/test_profile_validation_036.py
+tests/ptsip/test_conformance_effective_map_036.py
 ```
 
-Current WU-04E implementation already:
+WU-04F also aligned current-tool conformance fixtures in:
 
-- imports and calls `materialize_profile()` after source schema/binding checks;
-- converts `TemplateMaterializationError` into fail-closed profile validation errors;
-- validates effective explicit-form schema and Responsibility Map semantics for all source modes;
-- applies component/associated-artifact partition and coverage to effective components/artifacts;
-- exposes `resolution` identity and `resolution_provenance` in validation details;
-- removes the old template/hybrid “materialization layer required” bypass path;
-- adds focused template/hybrid/equivalence/fail-closed tests.
+```text
+tests/ptsip/test_profile_correctness_023.py
+tests/ptsip/test_conformance_030.py
+tests/ptsip/test_conformance_engine_030.py
+tests/ptsip/test_merge_gate_remediation_030.py
+tests/ptsip/test_remaining_030.py
+```
 
-These WU-04E changes are **not yet self-hosted verified**. Do not claim WU-04E complete or enter WU-04F until focused validation behavior is verified and the WU-04E completion gate is explicitly closed.
+Historical/intentionally conflicting input remains historical where the test purpose requires it; e.g. an agent decision may still claim `TOOLCHAIN` to verify that it cannot override canonical project declaration.
 
-## Latest available self-hosted regression evidence before WU-04E implementation
+## Latest self-hosted regression evidence
 
 GitHub Actions run:
 
 ```text
-run 32218181598
-job 95963505443
-source SHA bf62202507ee7b83d72cefb5cf01243675ffd062
+run 32227306170
+job 95989558038
+source SHA 33e26cebd845970c6e52fb0a9194a272f0e50228
 ```
 
 Observed execution facts:
@@ -226,14 +222,14 @@ host Python 3.14 preparation        PASS
 isolated .venv creation             PASS
 verification tooling installation   PASS
 complete pytest execution           RAN
-result                              219 passed / 43 failed
+result                              230 passed / 37 failed
 ```
 
-The earlier `actions/setup-python` infrastructure failure is resolved by using host Python through `py -3.14` and a per-run `.venv`.
+At that SHA, the initial five tests in `tests/ptsip/test_profile_validation_036.py` did not appear in the failure summary. That run therefore provided useful WU-04E evidence, but it predates the final E completion cases, the resolved-profile handoff, all WU-04F runtime integration, F focused tests, and canonicalized conformance fixtures.
 
-The 43 failures included stale earlier-version expectations and later-stage effective-map consumer gaps. `tests/ptsip/test_template_materialization_036.py` did not appear in the failure summary. After that run, stale Spec-revision and VPMS nodeid test expectations were aligned with the current WU-04C snapshot/workflow contract, then WU-04D was closed and WU-04E implementation began.
+Do not claim the final E/F tranche is verified yet. The next self-hosted `tooling-test.yml` run must target the exact current branch SHA after all E/F implementation and operational-context commits.
 
-Do not claim full Tool `0.3.6` regression success. The current WU-04E branch state has no exact-SHA self-hosted result yet.
+If that shared run exposes an E regression, reopen E. If it exposes an F regression, reopen/continue F. Failures belonging to clarification/adoption, pilot, topology, VPMS, or legacy migration must be classified against their owning future stage rather than weakening E/F contracts. Do not enter WU-04G before this review.
 
 ## PTSIP / VPMS boundary
 
@@ -311,5 +307,5 @@ WU-13  final Specification/release boundary               PLANNED
 
 ## Repository write discipline
 
-Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and the current ACTIVE sub-stage document.
+Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and the sub-stage document(s) named by the current verification/implementation tranche.
 Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
