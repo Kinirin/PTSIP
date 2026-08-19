@@ -27,27 +27,14 @@ Master plan:
 planning/0.3.6.md
 ```
 
-Verified WU-04 stages:
+Active stage:
 
 ```text
-planning/0.3.6/WU-04E-validation-effective-map.md
-planning/0.3.6/WU-04F-conformance-effective-map.md
+planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
+entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
 ```
 
-Entry baselines:
-
-```text
-WU-04E  2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
-WU-04F  5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
-```
-
-Combined verification source SHA:
-
-```text
-48b75e699a592703e4e03a8462131e4932103677
-```
-
-WU-04E and WU-04F are COMPLETE and exact-SHA verified. WU-04G is next but has not been entered and has no sub-document yet.
+The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical decision-analysis context. The official WU-04G document owns implementation after the maintainer selected D1-B through D9-B/C options.
 
 Published PyPI Tool remains `0.3.5`; the development branch Tool identity is `0.3.6`.
 
@@ -59,14 +46,16 @@ WU-03 canonical activation:  12e2ccd15634ecb3d0a4195b0f61ac3f620e7540
 WU-04C authority snapshot:   82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-Current Tool/root-profile binding:
+Current Tool/root-profile binding at WU-04G entry:
 
 ```text
 Specification 0.3.6-draft
 SPEC_REVISION 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-WU-04C froze `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implemented the frozen materialization semantics. WU-04E/F consume those semantics in validation and conformance and do not independently justify moving `SPEC_REVISION`.
+WU-04C froze `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implemented the frozen materialization semantics. WU-04E/F consume those semantics in validation and conformance.
+
+WU-04G accepted D6-B/D7-C adds a genuine normative authority rule: an accepted project-owned clarification/adoption decision may authorize the exact hybrid project extension/replacement and, when required to represent that accepted decision, a `template -> hybrid` source-mode transition. Therefore G0 must freeze this rule in canonical/embedded Specification/registry data and select a new immutable `SPEC_REVISION` before runtime implementation depends on automatic conversion. Do not invent or predeclare the future SHA.
 
 Decision records:
 
@@ -132,7 +121,7 @@ template
 hybrid
 ```
 
-Frozen boundary:
+Frozen base boundary:
 
 ```text
 classification
@@ -171,9 +160,64 @@ source ptsip.yaml
         -> complete conformance engine
 ```
 
-`ValidationResult.resolved_profile` is an in-process handoff and is deliberately omitted from `ValidationResult.as_dict()`. Public reports expose serializable resolution identity/provenance details rather than duplicating the full effective payload.
+`ValidationResult.resolved_profile` is an in-process handoff and is deliberately omitted from `ValidationResult.as_dict()`.
 
-Conformance must not reload raw YAML architecture, implement template/hybrid semantics, or restore a `materialization-required` branch.
+## WU-04G accepted decision package
+
+```text
+D1-B  ResolvedProfile.effective_payload is clarification/adoption read authority
+D2-B  invalid/unresolvable profiles fail closed, then expose deterministic remediation/retry work
+D3-B  effective associated-artifact coverage suppresses duplicate component questions
+D4-B  selector/candidate coverage uses one shared canonical primitive
+D5-B  create ptsip-clarification-answer/v2 and remove lifecycle_owner from new canonical answers
+D6-B  accepted decisions may extend hybrid and convert template -> hybrid when required
+D7-C  eligible accepted decisions automatically perform that conversion/application
+D8-B  exact selected profile path travels through complete decision protocol and remote CAS
+D9-B  optimize/migrate only WU-04G-owned tests with coverage-preservation proof
+```
+
+### D2 recovery extension
+
+Fail closed does not end with a dead-end error. The expected G behavior is:
+
+```text
+profile resolution failure
+    -> stop architecture-dependent clarification/adoption
+    -> preserve validation/materialization errors + failure stage + exact profile path
+    -> provide non-authoritative remediation/retry information
+    -> project/source is corrected
+    -> take fresh repository/profile snapshot
+    -> re-run validate_profile()
+    -> resume only after a valid ResolvedProfile exists
+```
+
+No raw-profile fallback, partial effective-map reuse, inferred architecture, or silent repair is allowed.
+
+### D5 answer-v2 migration
+
+New canonical answers use `ptsip-clarification-answer/v2` with:
+
+```text
+classification
+purpose
+shipped
+runtime_required
+executable
+```
+
+`lifecycle_owner` is removed from new canonical decisions and Tool 0.3.6 Project Profile serialization. Existing v1 data may be handled only through explicit compatibility/migration logic for already-persisted decisions; v1 facts cannot restore `TOOLCHAIN` as canonical authority or silently map it to `DEVELOPMENT_TOOLING`.
+
+### D6/D7 safe-apply authority
+
+Automatic `template -> hybrid` is allowed only because an accepted project decision authorizes the exact project-owned change. Repository evidence merely discovers candidates; the materializer merely resolves declarations. Safe apply must retain exact template ID/revision and write only the minimum accepted project delta. It must not materialize the full effective map to explicit form or introduce unrelated overrides/removals.
+
+### D8 path identity
+
+The normalized repository-relative selected profile path must persist through gate creation, decision storage, resolution context, subject revision, remote file read, stale check, projection validation, and CAS write. Never silently substitute root `ptsip.yaml` for a non-root selected profile.
+
+### D9 bounded test migration
+
+Only G-owned/touched tests may be optimized/migrated. Collect duration evidence first; consolidate only duplicated immutable setup/semantically equivalent variants; keep mutable CAS/snapshot/stale-state isolation; record replacement coverage for any merged/removed historical test; do not change xdist/workflow execution; final authority remains exact-SHA complete repository regression.
 
 ## WU-04 stage state
 
@@ -184,29 +228,14 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption read integration          NEXT / NOT ENTERED
+WU-04G  clarification/adoption integration               ACTIVE
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Focused E/F regression targets:
+WU-04G implementation order is G0 normative freeze, then effective-read/selector integration, answer-v2 migration, hybrid safe apply, exact profile-path control plane, recovery/test integration. Parallel work may begin only after shared normative meaning is fixed and file ownership is partitioned.
 
-```text
-tests/ptsip/test_profile_validation_036.py
-tests/ptsip/test_conformance_effective_map_036.py
-```
-
-WU-04F also aligned current-tool conformance fixtures in:
-
-```text
-tests/ptsip/test_profile_correctness_023.py
-tests/ptsip/test_conformance_030.py
-tests/ptsip/test_conformance_engine_030.py
-tests/ptsip/test_merge_gate_remediation_030.py
-tests/ptsip/test_remaining_030.py
-```
-
-Historical/intentionally conflicting input remains historical where the test purpose requires it; e.g. an agent decision may still claim `TOOLCHAIN` to verify that it cannot override canonical project declaration.
+WU-04H must not be entered or pre-created before the WU-04G completion gate is reviewed.
 
 ## Latest self-hosted regression evidence
 
@@ -243,11 +272,7 @@ Remaining failures were classified as:
 7  topology/legacy-profile migration fixtures
 ```
 
-The lifecycle-evidence failure is a stale test expectation, not an E/F regression. Current lifecycle evaluation treats release-like workflow names/triggers as evidence rather than lifecycle authority; an unscoped release-like workflow is observed but is not itself a classification failure.
-
-The overall workflow concluded failure, so no `self-hosted/tooling-test` success status was recorded for `48b75e6...`. Do not claim full Tool `0.3.6` regression success or release readiness from this run. The evidence only closes the stage-scoped WU-04E/F gate.
-
-WU-04G may be entered only in a later session after a fresh branch-HEAD read and creation of its own stage document with that exact entry SHA.
+WU-04G may migrate only the decision/clarification tests that fall within its accepted scope. The overall workflow concluded failure, so no `self-hosted/tooling-test` success status was recorded for `48b75e6...`. Do not claim full Tool `0.3.6` regression success or release readiness from this run.
 
 ## PTSIP / VPMS boundary
 
@@ -325,5 +350,5 @@ WU-13  final Specification/release boundary               PLANNED
 
 ## Repository write discipline
 
-Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and the sub-stage document named by the current implementation stage.
+Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and `planning/0.3.6/WU-04G-clarification-adoption-effective-map.md` while G is active.
 Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
