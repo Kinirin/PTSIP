@@ -49,14 +49,14 @@ WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
-WU-04F  conformance consumes effective map               IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
-WU-04G  clarification/adoption read integration          LOCKED
+WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
+WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
+WU-04G  clarification/adoption read integration          NEXT / NOT ENTERED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Current verification documents and entry baselines:
+Verified E/F documents and entry baselines:
 
 ```text
 WU-04E  planning/0.3.6/WU-04E-validation-effective-map.md
@@ -66,7 +66,7 @@ WU-04F  planning/0.3.6/WU-04F-conformance-effective-map.md
         entry 5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
 ```
 
-The maintainer explicitly authorized one exact-SHA self-hosted run to verify final WU-04E and WU-04F together. WU-04G must not be entered before that result is reviewed.
+WU-04G is the next stage but has not been entered. Its stage document must not be created until a later session begins with a fresh branch-HEAD read.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -84,9 +84,9 @@ NEUTRAL_CONTRACT
 
 Classification is primary lifecycle ownership and remains distinct from component roles, typed relationships, associated artifacts, declaration source, materialization provenance, and VPMS Verification Purpose.
 
-## WU-04E/F implementation boundary
+## WU-04E/F verified implementation boundary
 
-Implemented runtime flow:
+Verified runtime flow:
 
 ```text
 source ptsip.yaml
@@ -101,7 +101,7 @@ source ptsip.yaml
         -> complete conformance engine
 ```
 
-WU-04E now:
+WU-04E:
 
 - materializes explicit/template/hybrid only after source validation;
 - converts materialization defects into fail-closed validation errors;
@@ -109,7 +109,7 @@ WU-04E now:
 - retains `resolved_profile` as an in-process downstream handoff while omitting it from serialized `as_dict()` output;
 - has focused coverage in `tests/ptsip/test_profile_validation_036.py`, including dangling effective endpoint/anchor and dependency-policy conflicts.
 
-WU-04F now:
+WU-04F:
 
 - removes raw YAML architecture reload from `src/ptsip/conformance.py` and `src/ptsip/conformance_engine.py`;
 - consumes effective components and `component_dependency_policy` from `ValidationResult.resolved_profile.effective_payload`;
@@ -122,16 +122,17 @@ Repository search after implementation found no remaining raw `yaml.safe_load` o
 
 ## Verification status
 
-Latest completed self-hosted run predating the final E/F tranche:
+Combined WU-04E/F self-hosted verification:
 
 ```text
-run 32227306170
-job 95989558038
-source SHA 33e26cebd845970c6e52fb0a9194a272f0e50228
-result 230 passed / 37 failed
+run        32240740753
+job        96030499443
+source SHA 48b75e699a592703e4e03a8462131e4932103677
+Python     3.14.3
+result     260 passed / 13 failed
 ```
 
-Infrastructure status:
+Infrastructure/execution status:
 
 ```text
 self-hosted Windows scheduling       PASS
@@ -143,18 +144,33 @@ verification tooling installation    PASS
 complete pytest execution            RAN
 ```
 
-At that SHA, the initial WU-04E focused test file did not appear in the failure summary. However, that run predates the final E completion cases/runtime handoff and all WU-04F implementation/tests/fixture updates.
+The exhaustive failure summary did not contain either:
 
-Therefore the final E/F tranche is **NOT YET exact-SHA verified**. The next `tooling-test.yml` run must use the exact current branch SHA after all E/F implementation and status commits.
+```text
+tests/ptsip/test_profile_validation_036.py
+tests/ptsip/test_conformance_effective_map_036.py
+```
 
-Interpret the next run as follows:
+Therefore the focused WU-04E and WU-04F contracts passed at exact source SHA `48b75e699a592703e4e03a8462131e4932103677`, and both stages are COMPLETE / exact-SHA verified.
 
-- E focused failure -> reopen WU-04E;
-- F focused/current conformance regression failure -> reopen/continue WU-04F;
-- clarification/adoption, pilot, topology, VPMS, or legacy-migration-only failure -> classify against its future owning stage; do not weaken E/F contracts automatically;
-- do not enter WU-04G until the shared result is reviewed.
+The 13 remaining failures were classified as:
 
-Do not claim full Tool `0.3.6` regression success unless the full run actually passes.
+```text
+3  decision/clarification-control historical expectations
+1  pilot/evidence fixture using pre-0.3.6 profile state
+1  stale lifecycle-evidence expectation for an unscoped release workflow
+1  agent-decision conflict expectation for later decision integration
+7  topology/legacy-profile migration fixtures
+```
+
+The lifecycle-evidence failure is not an E/F regression. Current lifecycle evaluation explicitly treats workflow naming/trigger scope as evidence rather than lifecycle authority; an unscoped release-like workflow is observed but does not itself create a classification failure.
+
+The workflow still concluded failure because of those 13 later-stage regressions. Consequently:
+
+- no `self-hosted/tooling-test` success status was recorded for `48b75e6...`;
+- Tool `0.3.6` is **not** globally regression-clean;
+- release/build/smoke steps after pytest were skipped;
+- this run is stage-completion evidence for WU-04E/F only, not release-readiness evidence.
 
 ## Repository self-profile
 
@@ -214,7 +230,7 @@ tooling-test.yml
     workflow_dispatch with no custom inputs
     -> selected ref's exact github.sha
     -> self-hosted regression/build/smoke
-    -> self-hosted/tooling-test status on exact SHA
+    -> self-hosted/tooling-test status on exact SHA only after complete workflow success
 
 release.yml
     workflow_dispatch from main with no custom inputs
@@ -242,6 +258,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04E/F shared verification pending**
+- Tool `0.3.6`: **active development; WU-04E/F COMPLETE, WU-04G next/not entered**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
