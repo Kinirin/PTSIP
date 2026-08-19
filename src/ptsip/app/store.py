@@ -9,6 +9,7 @@ from typing import Any
 
 from ..clarification.resolution import LegacyDecisionAnswerV1, canonicalize_legacy_answer
 from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS, LEGACY_V1_ANSWER_FIELDS
+from ..repository.profile_path import normalize_profile_path
 
 
 @dataclass(frozen=True)
@@ -17,6 +18,7 @@ class DecisionRecord:
     repository: str
     branch: str
     subject_revision: str
+    profile_path: str
     component_id: str
     request: dict[str, object]
     status: str
@@ -34,6 +36,7 @@ class DecisionRecord:
             "repository": self.repository,
             "branch": self.branch,
             "subject_revision": self.subject_revision,
+            "profile_path": self.profile_path,
             "component_id": self.component_id,
             "request": self.request,
             "status": self.status,
@@ -109,6 +112,7 @@ class DecisionStore:
                     repository TEXT NOT NULL,
                     branch TEXT NOT NULL,
                     subject_revision TEXT NOT NULL,
+                    profile_path TEXT NOT NULL DEFAULT 'ptsip.yaml',
                     component_id TEXT NOT NULL,
                     request_json TEXT NOT NULL,
                     status TEXT NOT NULL DEFAULT 'PENDING',
@@ -128,6 +132,11 @@ class DecisionStore:
                     ON decisions(repository, component_id, status);
                 """
             )
+            columns = {str(row[1]) for row in conn.execute("PRAGMA table_info(decisions)").fetchall()}
+            if "profile_path" not in columns:
+                conn.execute(
+                    "ALTER TABLE decisions ADD COLUMN profile_path TEXT NOT NULL DEFAULT 'ptsip.yaml'"
+                )
 
     @staticmethod
     def _record(row: sqlite3.Row) -> DecisionRecord:
@@ -136,6 +145,7 @@ class DecisionStore:
             repository=str(row["repository"]),
             branch=str(row["branch"]),
             subject_revision=str(row["subject_revision"]),
+            profile_path=normalize_profile_path(row["profile_path"]),
             component_id=str(row["component_id"]),
             request=json.loads(str(row["request_json"])),
             status=str(row["status"]),
@@ -168,6 +178,7 @@ class DecisionStore:
         repository = str(payload["repository"])
         branch = str(payload["branch"])
         revision = str(payload["subject_revision"])
+        profile_path = normalize_profile_path(payload.get("profile_path"))
         component_id = str(payload["component_id"])
         request = payload["request"]
         if not isinstance(request, dict):
@@ -188,19 +199,19 @@ class DecisionStore:
                 (repository, component_id, decision_id),
             )
             conn.execute(
-                "INSERT OR IGNORE INTO decisions(id, repository, branch, subject_revision, component_id, request_json) "
-                "VALUES (?, ?, ?, ?, ?, ?)",
-                (decision_id, repository, branch, revision, component_id, request_json),
+                "INSERT OR IGNORE INTO decisions(id, repository, branch, subject_revision, profile_path, component_id, request_json) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (decision_id, repository, branch, revision, profile_path, component_id, request_json),
             )
             # A gate call is an active-agent observation, not a timer. When the
-            # same semantic decision (same ID/component/selectors) is still
-            # pending or needs application retry, rebind its target snapshot to
-            # the revision the agent is actually working on. The human answer,
-            # resolution source and first-winner identity are never changed.
+            # same semantic decision is still pending or needs application retry,
+            # rebind its exact branch/revision/profile target to the snapshot the
+            # agent is actually working on. The human answer and first winner are
+            # never changed by this rebind.
             conn.execute(
-                "UPDATE decisions SET branch=?, subject_revision=?, request_json=?, updated_at=CURRENT_TIMESTAMP "
+                "UPDATE decisions SET branch=?, subject_revision=?, profile_path=?, request_json=?, updated_at=CURRENT_TIMESTAMP "
                 "WHERE id=? AND (status='PENDING' OR (status='RESOLVED' AND application_status IN ('NOT_APPLIED','FAILED','STALE')))",
-                (branch, revision, request_json, decision_id),
+                (branch, revision, profile_path, request_json, decision_id),
             )
             row = conn.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
             assert row is not None
