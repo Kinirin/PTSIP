@@ -12,7 +12,7 @@ from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
 
 
-SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
+SPEC_REVISION = "82abd09360df09a95fbbfb516855fa9ffb49f050"
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
