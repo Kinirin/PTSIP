@@ -10,7 +10,7 @@ from ptsip.clarification.resolution import DecisionAnswer
 from ptsip.cli import main
 from ptsip.constants import SPEC_REVISION
 from ptsip.storage.local_state import decision_store_path
-from tests.ptsip._wu04g_support import commit_all, git, init_git_repo, write_text
+from _wu04g_support import commit_all, git, init_git_repo, write_text
 
 
 def _repo(tmp_path: Path) -> Path:
