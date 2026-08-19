@@ -52,8 +52,6 @@ def _resolve_args(
             "no",
             "--runtime-required",
             "no",
-            "--lifecycle-owner",
-            "DEVELOPMENT_TOOLING",
             "--executable",
             "yes",
             "--json",
@@ -71,8 +69,6 @@ def _resolve_args(
         "yes",
         "--runtime-required",
         "yes",
-        "--lifecycle-owner",
-        "PRODUCT",
         "--executable",
         "yes",
         "--json",
@@ -121,6 +117,9 @@ def test_gate_and_resolve_use_local_control_plane_without_server_or_github_origi
     assert resolved_payload["backend"] == "LOCAL"
     assert resolved_payload["application"]["backend"] == "LOCAL"
     assert resolved_payload["application"]["status"] == "LOCAL_APPLIED"
+    stored_answer = resolved_payload["decision"]["answer"]
+    assert stored_answer["classification"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in stored_answer
 
     profile = repo / "ptsip.yaml"
     assert profile.is_file()
@@ -154,3 +153,4 @@ def test_local_first_valid_resolution_cannot_be_replaced(tmp_path: Path, monkeyp
     assert later_payload["status"] == "ALREADY_RESOLVED"
     assert later_payload["accepted"] is False
     assert later_payload["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in later_payload["decision"]["answer"]
