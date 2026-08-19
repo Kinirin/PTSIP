@@ -109,8 +109,6 @@ def _development_tooling_args(repo: Path, *extra: str) -> list[str]:
         "no",
         "--runtime-required",
         "no",
-        "--lifecycle-owner",
-        "DEVELOPMENT_TOOLING",
         "--executable",
         "yes",
         "--apply",
@@ -133,8 +131,6 @@ def _product_args(repo: Path, *extra: str) -> list[str]:
         "yes",
         "--runtime-required",
         "yes",
-        "--lifecycle-owner",
-        "PRODUCT",
         "--executable",
         "yes",
         "--apply",
@@ -183,6 +179,7 @@ def test_complete_equivalent_local_profile_still_checks_authority(
     assert gated["status"] == "RESOLVED"
     assert gated["backend"] == "GITHUB"
     assert gated["decisions"][0]["reconciliation"]["status"] == "CONSISTENT"
+    assert "lifecycle_owner" not in gated["decisions"][0]["decision"]["answer"]
     assert (repo_b / "ptsip.yaml").read_text(encoding="utf-8") == before
 
 
