@@ -4,10 +4,10 @@ schema_version = 1
 id = "Kinirin/PTSIP"
 
 [[task]]
-id = "repository-tests"
-executable = ".venv/Scripts/python.exe"
-args = ["-m", "pytest", "-q"]
+id = "wu04g-precheck"
+executable = "py"
+args = ["-3.14", ".github/scripts/wu04g_guard.py", "precheck"]
 cwd = "."
 access = "read"
-timeout_seconds = 900
-max_output_bytes = 15000000
+timeout_seconds = 60
+max_output_bytes = 262144
