@@ -615,3 +615,141 @@ D8  Remote profile path: root-only for now / carry exact selected profile path
 ```
 
 No decision in this checklist is considered accepted merely because a provisional recommendation appears in this review. The official WU-04G document must record the maintainer-selected package and its exact entry baseline.
+
+## 19. Decision D9 — How should WU-04G begin incremental test-work optimization without weakening verification?
+
+The current repository regression cost is not treated as evidence that validation/conformance coverage should be rolled back. Increased automation can legitimately increase verification work. The optimization target for WU-04G is therefore **duplicated execution cost and test-structure debt**, not semantic coverage.
+
+The exact-SHA self-hosted run already recorded in this review remains the comparison baseline:
+
+```text
+workflow run: 32240740753
+job:          96030499443
+source SHA:   48b75e699a592703e4e03a8462131e4932103677
+pytest:       260 passed / 13 failed
+wall time:    431.81s (0:07:11)
+```
+
+This timing is a diagnostic baseline, not a target that permits deleting or weakening contracts.
+
+### Option D9-A — Do no test-work optimization in WU-04G
+
+Behavior:
+
+- add only the new WU-04G focused tests;
+- leave historical clarification/adoption/decision fixtures and duplicated setup unchanged;
+- defer all test organization and execution-cost work.
+
+Advantages:
+
+- smallest implementation surface;
+- lowest immediate refactor risk.
+
+Cost:
+
+- known duplicate repository/Git/profile fixture work continues to accumulate;
+- WU-04G adds another test file without beginning the planned role-based migration;
+- future cleanup becomes larger and harder to attribute to one functional stage.
+
+**Assessment:** safe but misses the opportunity for bounded incremental migration.
+
+### Option D9-B — Bounded incremental optimization of tests directly owned by WU-04G
+
+WU-04G may optimize only tests that are already being changed because of clarification/adoption effective-map integration or stale decision expectations directly owned by the stage.
+
+Primary candidate surfaces:
+
+```text
+tests/ptsip/test_adoption_033.py
+tests/ptsip/test_decision_control_plane.py
+existing clarification-focused tests directly touched by G
+tests/ptsip/test_clarification_adoption_effective_map_036.py  # new G contract
+```
+
+Allowed optimization work:
+
+- consolidate duplicated immutable repository/profile/artifact fixture construction where the same semantic setup is repeated;
+- parameterize input variants that exercise the same semantic contract;
+- share expensive immutable setup or computed results only when test independence is preserved;
+- keep independent assertions as independent tests even when their immutable result fixture is shared;
+- migrate stale WU-04G-owned historical expectations to the canonical Tool 0.3.6 model while recording their replacement coverage;
+- organize newly created WU-04G tests by clarification/adoption/decision responsibility rather than adding unrelated historical-version grouping debt;
+- extract narrowly scoped reusable test helpers when doing so removes duplicate Git/profile construction without creating a repository-wide fixture framework.
+
+Required safety boundaries:
+
+- no distinct semantic contract may be removed merely to improve runtime;
+- no production behavior may be weakened or bypassed to make tests faster;
+- mutation, stale-state, CAS, snapshot, dirty-repository, revision-binding, and first-valid-resolution tests keep isolated mutable state when isolation is part of the contract;
+- an assertion that looks textually duplicated is not considered redundant when it proves a different failure cause or architecture contract;
+- WU-04G must not migrate unrelated topology, VPMS, pilot/evidence, or repository-wide regression files;
+- no repository-wide `tests/` directory migration in this stage;
+- no `pytest-xdist`, worker-count, or `.github/workflows/tooling-test.yml` change as part of D9-B;
+- the authoritative final regression remains the complete repository regression, not a reduced changed-file subset.
+
+Verification method:
+
+```text
+1. capture focused/runtime diagnostics without changing semantics
+   python -m pytest -q --durations=30 --durations-min=0.05
+
+2. implement only G-owned fixture/test consolidation justified by the diagnostics
+
+3. run WU-04G focused contracts
+
+4. prove migrated historical tests retain a traceable replacement contract
+
+5. run complete repository regression on the exact stage SHA
+```
+
+Runtime improvement is evidence of successful optimization but is **not** by itself a completion gate. The completion gate is preserved semantic coverage with no new unrelated regressions and no weakening of fail-closed behavior.
+
+**Provisional recommendation:** **D9-B**.
+
+### Option D9-C — Repository-wide test restructuring during WU-04G
+
+Possible work would include moving the complete suite into role-based `unit/`, `contracts/`, `integration/`, and `regression/` trees, centralizing all fixtures, and optimizing unrelated historical test families.
+
+Advantages:
+
+- cleaner end-state sooner.
+
+Risks:
+
+- converts WU-04G into a large migration stage;
+- makes failures harder to attribute between effective-map integration and test infrastructure changes;
+- can delay WU-04G and subsequent WU-04H entry;
+- creates unnecessary merge/conflict surface across unrelated tests.
+
+**Assessment:** defer. Role-based organization should be adopted incrementally as touched tests are created or migrated by their owning work unit.
+
+### D9-B acceptance criteria
+
+If D9-B is selected, the official WU-04G stage document should record all of the following:
+
+1. exact pre-change timing/slow-test evidence used to justify each optimization candidate;
+2. the small list of G-owned test files/helpers permitted to change;
+3. a mapping from any removed/merged historical test to the surviving parameterized or replacement contract;
+4. confirmation that mutable-state/CAS/snapshot/stale-evidence isolation was not shared away;
+5. focused WU-04G test result;
+6. exact-SHA full repository regression result and classification of any remaining known failures;
+7. before/after duration evidence as an optimization observation, not as a reason to weaken coverage.
+
+### D9 extension to the maintainer decision package
+
+This section extends the checklist in Section 18. The next session should also decide:
+
+```text
+D9  Test-work optimization:
+    A  no optimization during G
+    B  bounded G-owned incremental optimization with coverage-preservation proof
+    C  repository-wide test restructuring during G
+```
+
+If the provisional package is accepted, add:
+
+```text
+D9  B  optimize only G-owned duplicated test execution/setup while preserving complete semantic coverage
+```
+
+The official WU-04G stage document must treat D9 as a scope decision alongside D1-D8. Choosing D9-B does **not** authorize a repository-wide test migration and does **not** change the exact-SHA full-regression gate.
