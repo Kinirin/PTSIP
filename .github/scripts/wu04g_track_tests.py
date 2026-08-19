@@ -42,7 +42,11 @@ FILE_TRACKS = {
     "G3": (
         "tests/ptsip/test_adoption_033.py",
         "tests/ptsip/test_decision_control_plane.py",
-        "tests/ptsip/test_topology_032.py",
+        # G3 owns projection/safe-apply behavior but not historical topology
+        # migration semantics.  Keep the explicit projection helper contract in
+        # this track while the known legacy boundaries/TOOLCHAIN test remains
+        # available to later all-G/full regression review.
+        "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
     "G4": (
         "tests/ptsip/test_adoption_033.py",
