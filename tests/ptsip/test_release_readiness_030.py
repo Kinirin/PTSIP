@@ -20,19 +20,23 @@ def test_tool_035_package_runtime_and_spec_binding_match() -> None:
 
 def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-release.yml").read_text(encoding="utf-8")
-    assert "EXPECTED_TAG=\"tool-v${PACKAGE_VERSION}\"" in workflow
+    assert 'runs-on: [self-hosted, Windows, X64]' in workflow
+    assert 'DESKTOP-5HCCQIR' in workflow
+    assert '$expectedTag = "tool-v$packageVersion"' in workflow
     assert "python -m build" in workflow
-    assert "python -m twine check dist/*" in workflow
+    assert "python -m twine check $distFiles" in workflow
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
 
 
 def test_routine_ci_verifies_test_build_and_installed_wheel_boundary() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(encoding="utf-8")
+    assert 'runs-on: [self-hosted, Windows, X64]' in workflow
+    assert 'DESKTOP-5HCCQIR' in workflow
     assert 'python-version: "3.14"' in workflow
     assert "python -m pytest -q" in workflow
     assert "python -m build" in workflow
-    assert "python -m twine check dist/*" in workflow
-    assert "--force-reinstall --no-deps dist/*.whl" in workflow
+    assert "python -m twine check $distFiles" in workflow
+    assert 'python -m pip install --force-reinstall --no-deps "$($wheel.FullName)"' in workflow
     assert "ptsip --version" in workflow
     assert "ptsip spec" in workflow
     assert "ptsip conform --help" in workflow
