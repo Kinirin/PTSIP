@@ -1,12 +1,50 @@
 # WU-04G — Clarification / Adoption Effective-Map Integration and Decision-Protocol Upgrade
 
-> **Status:** ACTIVE — maintainer decisions D1-B through D9-B accepted; implementation not yet started  
+> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 next and not yet entered  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04F — conformance consumes the effective Responsibility Map  
 > **Entry baseline:** `52a455115d191123504c2fd690ffe499caf0ff6a`  
 > **Pre-entry review:** `planning/0.3.6/pre-entry-WU-04G-decision-review.md`  
-> **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
+> **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`  
+> **Current WU-04G normative Specification snapshot:** `d6995ed232e845b88d8235b851e80ab54b7804ea`
+
+## 0. Current execution state
+
+```text
+G0  normative accepted-decision authority freeze   COMPLETE
+G1  effective read + selector coverage             VERIFIED
+G2  clarification-answer/v2                        NEXT / NOT ENTERED
+G3  hybrid safe apply                              LOCKED BEHIND G2
+G4  exact profile-path control plane               LOCKED BEHIND G3
+G5  recovery + integration + migration audit       LOCKED BEHIND G4
+```
+
+G0 froze the accepted-decision authority rule as `PTSIP-RMAP-017` and selected immutable Specification revision:
+
+```text
+d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+Tool constants and the repository root profile are bound to that revision.
+
+G1 implementation and file migration were verified through the repository-native WU-04G track runner. The maintainer-provided OpenAI Local Bridge E2E execution produced:
+
+```text
+repository_id:                  Kinirin/PTSIP
+task_id:                        wu04g-g1-files
+run_id:                         fa46e93a3d7545b7bf793e3df21263c0
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+The same track had previously exposed one test-fixture migration omission for a non-root profile parent directory; that fixture was corrected before the passing run. The passing Bridge run is the G1 files-mode verification evidence. It is not the final exact-SHA complete repository regression, which remains reserved for G5.
 
 ## 1. Accepted maintainer decision package
 
@@ -65,6 +103,8 @@ materializer
 Discovery, path heuristics, confidence, candidate identity, or the materializer itself MUST NOT trigger a source-mode conversion.
 
 ## 3. G0 — normative authority freeze before runtime implementation
+
+**Execution status: COMPLETE.** `PTSIP-RMAP-017` is frozen and Tool/root binding uses immutable revision `d6995ed232e845b88d8235b851e80ab54b7804ea`.
 
 D6-B and D7-C add a new normative meaning that is not explicitly frozen by the current `PTSIP-RMAP-013` through `PTSIP-RMAP-016`: an accepted project decision may authorize a source-mode transition and project-owned hybrid extension.
 
@@ -242,7 +282,7 @@ WU-04C  COMPLETE
 WU-04D  COMPLETE
 WU-04E  COMPLETE / VERIFIED
 WU-04F  COMPLETE / VERIFIED
-WU-04G  ACTIVE
+WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 NEXT
 WU-04H  LOCKED
 WU-04I  LOCKED
 ```
@@ -543,6 +583,8 @@ Test migration rule:
 - do not use the revision change as a reason to repair completed A-F tests.
 
 ### G1 — effective read + selector coverage + file migration
+
+**Execution status: VERIFIED.** The production changes, participating file migrations, and `TestG1EffectiveReadCoverage` passed the `wu04g-g1-files` Bridge task with exit code 0 in run `fa46e93a3d7545b7bf793e3df21263c0`.
 
 Production targets:
 
@@ -885,6 +927,25 @@ After each track:
 3. record newly replaced/merged tests in the ledger;
 4. record any timing observation relevant to the migrated files;
 5. do not wait until G5 to discover whether the migration preserved coverage.
+
+### G1 verification ledger
+
+```text
+test_clarification.py::test_declared_component_purpose_suppresses_question
+    -> structurally migrated onto shared stateless WU-04G builders
+    -> semantic replacement destination: TestG1EffectiveReadCoverage::test_equivalent_component_coverage_suppresses_clarification[explicit]
+    -> focused/files verification: PASS via wu04g-g1-files run fa46e93a3d7545b7bf793e3df21263c0
+
+test_clarification.py::test_associated_artifact_scope_does_not_reopen_component_clarification
+    -> structurally migrated onto shared stateless WU-04G builders
+    -> semantic replacement destination: TestG1EffectiveReadCoverage::test_effective_associated_artifact_suppresses_component_question
+    -> focused/files verification: PASS via same run
+
+historical partial-declaration raw-profile expectation
+    -> replaced with valid-profile narrower-selector coverage contract
+    -> semantic reason: D1-B/D2-B forbid schema-invalid raw source from acting as architecture authority
+    -> focused/files verification: PASS via same run
+```
 
 The final G5 evidence must contain:
 
