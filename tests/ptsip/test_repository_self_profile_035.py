@@ -5,13 +5,13 @@ from pathlib import Path
 import yaml
 
 from ptsip.clarification.generator import analyze_clarifications
+from ptsip.constants import SPEC_REVISION
 from ptsip.validation.profile import validate_profile
 from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PROFILE_PATH = REPO_ROOT / "ptsip.yaml"
-SPEC_REVISION = "82abd09360df09a95fbbfb516855fa9ffb49f050"
 
 
 def _profile() -> dict[str, object]:
@@ -65,10 +65,7 @@ def test_repository_self_profile_resolves_all_discovered_candidates() -> None:
 
 def test_repository_self_profile_declares_expected_responsibility_axes() -> None:
     metadata = load_ptsip_metadata(PROFILE_PATH)
-    classifications = {
-        target.component_id: target.classification
-        for target in metadata.targets
-    }
+    classifications = {target.component_id: target.classification for target in metadata.targets}
 
     assert classifications["ptsip-core"] == "PRODUCT"
     assert classifications["vpms"] == "PRODUCT"
