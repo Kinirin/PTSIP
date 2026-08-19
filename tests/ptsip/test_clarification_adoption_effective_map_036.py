@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+import yaml
 
 from ptsip.app.store import DecisionStore
 from ptsip.clarification.generator import analyze_clarifications
@@ -10,13 +11,17 @@ from ptsip.clarification.generator_core import build_requests
 from ptsip.clarification.model import ClarificationRequest
 from ptsip.clarification.render import render_issue
 from ptsip.clarification.resolution import (
+    DecisionAnswer,
     canonicalize_legacy_answer,
     parse_answer,
     parse_legacy_answer,
+    prepare_local_profile,
+    project_payload,
     validate_answer,
 )
 from ptsip.inspection.components import ComponentCandidate
 from ptsip.validation.components import AMBIGUOUS, resolve_candidate_coverage
+from ptsip.validation.templates import materialize_profile
 from _wu04g_support import (
     associated_artifact_payload,
     canonical_v2_answer,
@@ -89,6 +94,11 @@ def _write_mode_profile(repo: Path, mode: str) -> None:
     else:  # pragma: no cover - test helper invariant
         raise AssertionError(mode)
     write_profile(repo / "ptsip.yaml", payload)
+
+
+def _g3_answer(**overrides: object) -> DecisionAnswer:
+    payload = canonical_v2_answer(**overrides)
+    return DecisionAnswer(**payload)
 
 
 class TestG1EffectiveReadCoverage:
@@ -330,7 +340,108 @@ class TestG2DecisionProtocolV2:
 
 
 class TestG3HybridSafeApply:
-    """Reserved namespace; G3 has not been entered."""
+    def test_explicit_apply_remains_canonical_baseline(self) -> None:
+        source = explicit_profile_payload([])
+        projected = project_payload(source, "tools", ["tools/**"], _g3_answer())
+
+        assert source["components"] == []
+        assert projected["responsibility_map"] == {"mode": "explicit"}
+        assert projected["components"] == [component_payload(
+            "tools",
+            ["tools/**"],
+            purpose="Repository-local generation tooling",
+        )]
+
+    def test_template_decision_converts_to_hybrid_preserving_template_identity(self) -> None:
+        source = template_profile_payload()
+        template_identity = dict(source["responsibility_map"]["template"])
+
+        projected = project_payload(source, "tools", ["tools/**"], _g3_answer())
+        map_meta = projected["responsibility_map"]
+
+        assert map_meta["mode"] == "hybrid"
+        assert map_meta["template"] == template_identity
+        assert [item["id"] for item in map_meta["overrides"]["components"]] == ["tools"]
+        assert "components" not in projected
+
+    def test_template_to_hybrid_writes_only_accepted_project_delta(self) -> None:
+        source = template_profile_payload()
+
+        projected = project_payload(source, "tools", ["tools/**"], _g3_answer())
+        overrides = projected["responsibility_map"]["overrides"]
+
+        assert overrides == {
+            "components": [
+                component_payload(
+                    "tools",
+                    ["tools/**"],
+                    purpose="Repository-local generation tooling",
+                )
+            ]
+        }
+        assert set(projected) == {"ptsip", "responsibility_map", "policies"}
+        resolved = materialize_profile(projected)
+        assert [item["id"] for item in resolved.effective_payload["components"]] == [
+            "package",
+            "package-tests",
+            "tools",
+        ]
+
+    def test_existing_hybrid_decision_preserves_unrelated_overrides_and_removals(self) -> None:
+        existing_override = component_payload(
+            "package-tests",
+            ["testing/**"],
+            classification="PRODUCT",
+            purpose="product_owned_package_verification",
+            shipped=False,
+            runtime_required=False,
+            executable=True,
+            roles=["VERIFICATION"],
+        )
+        source = hybrid_profile_payload(
+            {
+                "components": [existing_override],
+                "remove_relationship_ids": ["package-tests-verify-package"],
+            }
+        )
+
+        projected = project_payload(source, "tools", ["tools/**"], _g3_answer())
+        overrides = projected["responsibility_map"]["overrides"]
+
+        assert overrides["remove_relationship_ids"] == ["package-tests-verify-package"]
+        assert overrides["components"][0] == existing_override
+        assert overrides["components"][1]["id"] == "tools"
+        assert source["responsibility_map"]["overrides"]["components"] == [existing_override]
+
+    def test_existing_project_declaration_conflict_fails_without_partial_write(self) -> None:
+        conflicting = component_payload(
+            "tools",
+            ["tools/**"],
+            classification="PRODUCT",
+            purpose="existing_product_component",
+            shipped=True,
+            runtime_required=True,
+            executable=True,
+        )
+        source = hybrid_profile_payload({"components": [conflicting]})
+        before = yaml.safe_dump(source, sort_keys=True)
+
+        with pytest.raises(ValueError, match="conflicts with the resolved decision"):
+            project_payload(source, "tools", ["tools/**"], _g3_answer())
+
+        assert yaml.safe_dump(source, sort_keys=True) == before
+
+    def test_invalid_decision_never_mutates_profile(self, tmp_path: Path) -> None:
+        repo = _package_repo(tmp_path)
+        profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
+        before = profile.read_text(encoding="utf-8")
+        invalid = _g3_answer(classification="TOOLCHAIN")
+
+        with pytest.raises(ValueError, match="Projected PTSIP profile is invalid"):
+            prepare_local_profile(repo, "tools", ["tools/**"], invalid, profile)
+
+        assert profile.read_text(encoding="utf-8") == before
+        assert yaml.safe_load(before)["responsibility_map"]["mode"] == "template"
 
 
 class TestG4ProfilePathControlPlane:
