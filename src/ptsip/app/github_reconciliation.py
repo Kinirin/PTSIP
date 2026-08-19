@@ -8,15 +8,20 @@ from ..clarification.generator_core import covering_components
 from ..clarification.model import ClarificationRequest
 from ..clarification.render import render_issue
 from ..clarification.resolution import (
+    DecisionAnswer,
+    LegacyDecisionAnswerV1,
+    canonicalize_legacy_answer,
     load_profile_text,
     prepare_local_profile,
+    validate_answer,
     write_prepared_local_profile,
 )
+from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS, LEGACY_V1_ANSWER_FIELDS
 from ..inspection.components import ComponentCandidate, discover_component_candidates
 from ..inspection.dependencies_030 import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
 from ..repository.snapshot import capture_snapshot, compare_snapshots
-from .github_authority import CoordinationUnavailable, GithubControlPlaneClient, answer_from_mapping
+from .github_authority import CoordinationUnavailable, GithubControlPlaneClient
 
 
 def _normalize_selector(value: object) -> str:
@@ -81,6 +86,49 @@ def _local_component_id(
 
 def _profile_needs_projection(expected_source: str | None, projected_source: str) -> bool:
     return load_profile_text(expected_source) != load_profile_text(projected_source)
+
+
+def _required_string(payload: dict[str, object], key: str) -> str:
+    value = payload.get(key)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"Persisted authority answer field {key} must be a non-empty string")
+    return value.strip()
+
+
+def _required_bool(payload: dict[str, object], key: str) -> bool:
+    value = payload.get(key)
+    if not isinstance(value, bool):
+        raise ValueError(f"Persisted authority answer field {key} must be a boolean")
+    return value
+
+
+def _stored_answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
+    """Read v2 authority answers and the explicit persisted-v1 compatibility shape."""
+
+    actual = set(payload)
+    if actual == set(CANONICAL_ANSWER_FIELDS):
+        answer = DecisionAnswer(
+            classification=_required_string(payload, "classification").upper(),
+            purpose=_required_string(payload, "purpose"),
+            shipped=_required_bool(payload, "shipped"),
+            runtime_required=_required_bool(payload, "runtime_required"),
+            executable=_required_bool(payload, "executable"),
+        )
+        validation = validate_answer(answer)
+        if not validation.valid:
+            raise ValueError("Persisted authority answer is invalid: " + "; ".join(validation.errors))
+        return answer
+    if actual == set(LEGACY_V1_ANSWER_FIELDS):
+        legacy = LegacyDecisionAnswerV1(
+            classification=_required_string(payload, "classification").upper(),
+            purpose=_required_string(payload, "purpose"),
+            shipped=_required_bool(payload, "shipped"),
+            runtime_required=_required_bool(payload, "runtime_required"),
+            lifecycle_owner=_required_string(payload, "lifecycle_owner").upper(),
+            executable=_required_bool(payload, "executable"),
+        )
+        return canonicalize_legacy_answer(legacy)
+    raise ValueError("Persisted authority answer has neither canonical v2 nor exact legacy v1 shape")
 
 
 def run_github_gate(
@@ -201,7 +249,18 @@ def run_github_gate(
                     8,
                 )
 
-            answer = answer_from_mapping(decision["answer"])
+            try:
+                answer = _stored_answer_from_mapping(decision["answer"])
+            except ValueError as exc:
+                decisions.append(
+                    {
+                        **peeked,
+                        "status": "DECISION_ERROR",
+                        "message": str(exc),
+                    }
+                )
+                errored = True
+                continue
             local_component_id = _local_component_id(candidate, declared)
             try:
                 prepared = prepare_local_profile(
