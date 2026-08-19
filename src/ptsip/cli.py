@@ -14,11 +14,18 @@ from .clarification.i18n import resolve_language
 from .clarification.render import render_console, render_issue
 from .clarification.resolution import (
     DecisionAnswer,
+    LegacyDecisionAnswerV1,
+    canonicalize_legacy_answer,
     prepare_local_profile,
     validate_answer,
     write_prepared_local_profile,
 )
-from .clarification.resolution.model import CLASSIFICATIONS, LIFECYCLE_OWNERS
+from .clarification.resolution.model import (
+    CANONICAL_ANSWER_FIELDS,
+    CLASSIFICATIONS,
+    LEGACY_LIFECYCLE_OWNERS,
+    LEGACY_V1_ANSWER_FIELDS,
+)
 from .clarification.transports.github_issue import publish as publish_github_issues
 from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
@@ -35,6 +42,14 @@ from .topology import migrate_topology
 from .validation.profile import validate_profile
 
 DecisionClient = ControlPlaneClient | LocalControlPlaneClient | GithubControlPlaneClient
+
+_LEGACY_OWNER_BY_CLASSIFICATION = {
+    "PRODUCT": "PRODUCT",
+    "DEVELOPMENT_TOOLING": "DEVELOPMENT_TOOLING",
+    "DELIVERY": "DELIVERY",
+    "OPERATIONS": "OPERATIONS",
+    "NEUTRAL_CONTRACT": "INDEPENDENT",
+}
 
 
 def _configure_console_encoding() -> None:
@@ -112,19 +127,78 @@ def _decision_client(
     return backend, LocalControlPlaneClient(repo.root)
 
 
+def _required_bool(payload: dict[str, object], field: str) -> bool:
+    value = payload.get(field)
+    if not isinstance(value, bool):
+        raise ValueError(f"Authoritative decision field {field} must be a boolean")
+    return value
+
+
+def _required_string(payload: dict[str, object], field: str) -> str:
+    value = payload.get(field)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"Authoritative decision field {field} must be a non-empty string")
+    return value.strip()
+
+
 def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
-    answer = DecisionAnswer(
-        classification=str(payload.get("classification", "")),
-        purpose=str(payload.get("purpose", "")),
-        shipped=bool(payload.get("shipped")),
-        runtime_required=bool(payload.get("runtime_required")),
-        lifecycle_owner=str(payload.get("lifecycle_owner", "")),
-        executable=bool(payload.get("executable")),
-    )
-    validation = validate_answer(answer)
-    if not validation.valid:
-        raise ValueError("Authoritative decision answer is invalid: " + "; ".join(validation.errors))
-    return answer
+    """Read canonical v2, or explicitly migrate an already-persisted v1 answer."""
+
+    actual = set(payload)
+    if actual == set(CANONICAL_ANSWER_FIELDS):
+        answer = DecisionAnswer(
+            classification=_required_string(payload, "classification").upper(),
+            purpose=_required_string(payload, "purpose"),
+            shipped=_required_bool(payload, "shipped"),
+            runtime_required=_required_bool(payload, "runtime_required"),
+            executable=_required_bool(payload, "executable"),
+        )
+        validation = validate_answer(answer)
+        if not validation.valid:
+            raise ValueError("Authoritative decision answer is invalid: " + "; ".join(validation.errors))
+        return answer
+
+    if actual == set(LEGACY_V1_ANSWER_FIELDS):
+        legacy = LegacyDecisionAnswerV1(
+            classification=_required_string(payload, "classification").upper(),
+            purpose=_required_string(payload, "purpose"),
+            shipped=_required_bool(payload, "shipped"),
+            runtime_required=_required_bool(payload, "runtime_required"),
+            lifecycle_owner=_required_string(payload, "lifecycle_owner").upper(),
+            executable=_required_bool(payload, "executable"),
+        )
+        return canonicalize_legacy_answer(legacy)
+
+    missing = sorted(set(CANONICAL_ANSWER_FIELDS) - actual)
+    extra = sorted(actual - set(CANONICAL_ANSWER_FIELDS))
+    details: list[str] = []
+    if missing:
+        details.append("missing: " + ", ".join(missing))
+    if extra:
+        details.append("unexpected: " + ", ".join(extra))
+    raise ValueError("Authoritative decision answer shape is unsupported (" + "; ".join(details) + ")")
+
+
+def _answer_mapping_matches(payload: object, answer: DecisionAnswer) -> bool:
+    if not isinstance(payload, dict):
+        return False
+    try:
+        return _answer_from_mapping(payload).as_dict() == answer.as_dict()
+    except ValueError:
+        return False
+
+
+def _validate_legacy_owner_arg(classification: str, lifecycle_owner: str | None) -> None:
+    """Accept the retired CLI flag only as a checked compatibility input."""
+
+    if lifecycle_owner is None:
+        return
+    expected = _LEGACY_OWNER_BY_CLASSIFICATION[classification]
+    if lifecycle_owner != expected:
+        raise ValueError(
+            f"Deprecated --lifecycle-owner {lifecycle_owner!r} conflicts with canonical "
+            f"classification {classification!r}; expected {expected!r}"
+        )
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -201,9 +275,8 @@ def _parser() -> argparse.ArgumentParser:
     p_adopt.add_argument("--runtime-required", required=True, choices=("yes", "no"))
     p_adopt.add_argument(
         "--lifecycle-owner",
-        required=True,
-        choices=LIFECYCLE_OWNERS,
-        help="Transitional compatibility fact; canonical Tool 0.3.6 profiles persist classification as lifecycle authority.",
+        choices=LEGACY_LIFECYCLE_OWNERS,
+        help="Deprecated v1 compatibility input; omitted from canonical Tool 0.3.6 decisions and profiles.",
     )
     p_adopt.add_argument("--executable", required=True, choices=("yes", "no"))
     p_adopt.add_argument(
@@ -247,9 +320,8 @@ def _parser() -> argparse.ArgumentParser:
     p_resolve.add_argument("--runtime-required", required=True, choices=("yes", "no"))
     p_resolve.add_argument(
         "--lifecycle-owner",
-        required=True,
-        choices=LIFECYCLE_OWNERS,
-        help="Transitional compatibility fact; canonical Tool 0.3.6 profiles persist classification as lifecycle authority.",
+        choices=LEGACY_LIFECYCLE_OWNERS,
+        help="Deprecated v1 compatibility input; omitted from canonical Tool 0.3.6 decisions and profiles.",
     )
     p_resolve.add_argument("--executable", required=True, choices=("yes", "no"))
     p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")
@@ -383,12 +455,12 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"github_issue[{item.status}]: {item.issue_url}")
             return 0 if analysis.comparison.stable else 4
         if args.command == "adopt":
+            _validate_legacy_owner_arg(args.classification, args.lifecycle_owner)
             answer = DecisionAnswer(
                 classification=args.classification,
                 purpose=args.purpose.strip(),
                 shipped=_yes_no(args.shipped),
                 runtime_required=_yes_no(args.runtime_required),
-                lifecycle_owner=args.lifecycle_owner,
                 executable=_yes_no(args.executable),
             )
             preparation = prepare_adoption(args.path, args.component, answer, args.profile)
@@ -460,7 +532,7 @@ def main(argv: list[str] | None = None) -> int:
                     if not isinstance(resolved_decision, dict):
                         raise RuntimeError("GitHub authority returned no resolved adoption decision")
                     if resolved_response.get("status") == "ALREADY_RESOLVED":
-                        if resolved_decision.get("answer") != answer.as_dict():
+                        if not _answer_mapping_matches(resolved_decision.get("answer"), answer):
                             payload["status"] = "ALREADY_RESOLVED"
                             payload["message"] = "A different authoritative architecture decision won the GitHub coordination race."
                             payload["authority"] = resolved_response
@@ -473,7 +545,7 @@ def main(argv: list[str] | None = None) -> int:
                         return 8
                     authority = resolved_response
                 elif gate_status == "RESOLVED_APPLICATION_REQUIRED":
-                    if decision.get("answer") != answer.as_dict():
+                    if not _answer_mapping_matches(decision.get("answer"), answer):
                         payload["status"] = "ALREADY_RESOLVED"
                         payload["message"] = "GitHub authority already contains a different architecture decision for this component scope."
                         payload["authority"] = gated
@@ -615,12 +687,12 @@ def main(argv: list[str] | None = None) -> int:
             if not repo.commit or not repo.branch:
                 raise RuntimeError("ptsip resolve requires a checked-out Git branch and commit")
             backend, client = _decision_client(repo, args.control_plane, args.coordination)
+            _validate_legacy_owner_arg(args.classification, args.lifecycle_owner)
             answer = DecisionAnswer(
                 classification=args.classification,
                 purpose=args.purpose.strip(),
                 shipped=_yes_no(args.shipped),
                 runtime_required=_yes_no(args.runtime_required),
-                lifecycle_owner=args.lifecycle_owner,
                 executable=_yes_no(args.executable),
             )
             validation = validate_answer(answer)
@@ -653,7 +725,7 @@ def main(argv: list[str] | None = None) -> int:
             application_status = str(decision.get("application_status", ""))
             already_resolved_same = False
             if existing_status == "RESOLVED":
-                if stored_answer != answer.as_dict():
+                if not _answer_mapping_matches(stored_answer, answer):
                     _emit(
                         {
                             "status": "ALREADY_RESOLVED",
@@ -704,7 +776,7 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 resolved_raw = response.get("decision")
                 if response.get("status") == "ALREADY_RESOLVED" and isinstance(resolved_raw, dict):
-                    if resolved_raw.get("answer") == answer.as_dict() and backend == "GITHUB":
+                    if _answer_mapping_matches(resolved_raw.get("answer"), answer) and backend == "GITHUB":
                         resolved = resolved_raw
                     else:
                         _emit(response, args.json)
