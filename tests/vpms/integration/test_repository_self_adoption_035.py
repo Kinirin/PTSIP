@@ -77,7 +77,7 @@ RUNNER_NODEIDS = {
     ),
     "pytest.toolchain.routine-ci": (
         "tests/ptsip/test_release_readiness_030.py::"
-        "test_routine_ci_verifies_test_build_and_installed_wheel_boundary"
+        "test_routine_ci_derives_exact_sha_and_uses_self_hosted_python"
     ),
 }
 
