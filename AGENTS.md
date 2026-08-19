@@ -173,7 +173,7 @@ PROJECT_REMOVAL
 This provenance is not lifecycle classification and is not required canonical profile serialization.
 The materializer MUST NOT infer architecture, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve semantic conflicts by heuristics, or mutate source declarations merely to obtain a valid map.
 
-## Current WU-04 verification tranche
+## Current WU-04 stage
 
 Current ordered state:
 
@@ -182,34 +182,33 @@ WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
-WU-04F  conformance consumes effective map               IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
-WU-04G  clarification/adoption read integration          LOCKED
+WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
+WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
+WU-04G  clarification/adoption read integration          NEXT / NOT ENTERED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Combined verification documents:
+Verified E/F documents:
 
 ```text
 planning/0.3.6/WU-04E-validation-effective-map.md
 planning/0.3.6/WU-04F-conformance-effective-map.md
 ```
 
-Entry baselines:
+Combined exact-SHA evidence:
 
 ```text
-WU-04E  2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
-WU-04F  5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
+workflow run  32240740753
+job           96030499443
+source SHA    48b75e699a592703e4e03a8462131e4932103677
+Python        3.14.3
+pytest        260 passed / 13 failed
 ```
 
-The maintainer explicitly authorized one exact-SHA self-hosted `tooling-test.yml` run to verify the final E/F tranche together. Until that run is reviewed:
+Both focused contracts passed at that SHA because neither `test_profile_validation_036.py` nor `test_conformance_effective_map_036.py` appears in the exhaustive 13-failure summary. The remaining failures are later-stage debt in clarification/decision, pilot/evidence, topology/legacy migration, plus one stale lifecycle-evidence expectation. The repository-wide workflow still failed, so do not claim global Tool regression success or a `self-hosted/tooling-test` success status for that SHA.
 
-- do not call WU-04E or WU-04F exact-SHA verified;
-- do not create or enter WU-04G;
-- if the run exposes an E regression, reopen E;
-- if the run exposes an F regression, reopen/continue F;
-- failures owned by clarification/adoption, pilot, topology, VPMS, or legacy migration must be classified rather than weakening E/F contracts.
+WU-04G is **not entered yet**. Do not create its sub-document or modify clarification/adoption consumers until a later session starts with a fresh branch-HEAD read and the master plan records the WU-04G entry baseline.
 
 WU-04E validation owns source validation -> materialization -> common effective semantic/selector validation and retains `ValidationResult.resolved_profile` as an in-process handoff.
 WU-04F conformance consumes `validation.resolved_profile.effective_payload`; conformance must not reload raw YAML architecture, implement template/hybrid resolution, or restore a materialization-required branch.
