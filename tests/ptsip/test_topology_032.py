@@ -12,10 +12,10 @@ from ptsip.clarification.resolution import (
     write_prepared_local_profile,
 )
 from ptsip.cli import main
+from ptsip.constants import SPEC_REVISION
 from ptsip.topology import migrate_topology
 
 
-SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 LEGACY_SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
@@ -117,7 +117,6 @@ def test_resolution_projection_respects_explicit_profile_path(tmp_path: Path):
         purpose="Repository migration tooling",
         shipped=False,
         runtime_required=False,
-        lifecycle_owner="DEVELOPMENT_TOOLING",
         executable=True,
     )
 
