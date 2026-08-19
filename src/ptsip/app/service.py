@@ -2,8 +2,17 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..clarification.resolution import dump_payload, load_profile_text, parse_answer, project_payload, validate_answer, validate_projected_payload
-from ..clarification.resolution.model import DecisionAnswer
+from ..clarification.resolution import (
+    canonicalize_legacy_answer,
+    dump_payload,
+    load_profile_text,
+    parse_answer,
+    parse_legacy_answer,
+    project_payload,
+    validate_answer,
+    validate_projected_payload,
+)
+from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS, DecisionAnswer
 from .github_client import GitHubAppClient, GitHubAPIError
 from .store import DecisionRecord, DecisionStore
 
@@ -11,12 +20,29 @@ WRITE_PERMISSIONS = {"admin", "maintain", "write"}
 
 
 def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
+    actual = set(payload)
+    expected = set(CANONICAL_ANSWER_FIELDS)
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
+        details: list[str] = []
+        if missing:
+            details.append("missing: " + ", ".join(missing))
+        if extra:
+            details.append("unexpected: " + ", ".join(extra))
+        raise ValueError("canonical v2 answer fields are invalid (" + "; ".join(details) + ")")
+    if not isinstance(payload["classification"], str) or not str(payload["classification"]).strip():
+        raise ValueError("classification must be a non-empty string")
+    if not isinstance(payload["purpose"], str) or not str(payload["purpose"]).strip():
+        raise ValueError("purpose must be a non-empty string")
+    for field in ("shipped", "runtime_required", "executable"):
+        if not isinstance(payload[field], bool):
+            raise ValueError(f"{field} must be a boolean")
     return DecisionAnswer(
-        classification=str(payload["classification"]),
-        purpose=str(payload["purpose"]),
+        classification=str(payload["classification"]).strip().upper(),
+        purpose=str(payload["purpose"]).strip(),
         shipped=bool(payload["shipped"]),
         runtime_required=bool(payload["runtime_required"]),
-        lifecycle_owner=str(payload["lifecycle_owner"]),
         executable=bool(payload["executable"]),
     )
 
@@ -183,10 +209,26 @@ class DecisionService:
             permission = "none"
         if permission not in WRITE_PERMISSIONS:
             return {"status": "IGNORED_UNAUTHORIZED"}
+
         try:
             answer = parse_answer(body)
-        except ValueError as exc:
-            return {"status": "IGNORED_UNSTRUCTURED", "error": str(exc)}
+        except ValueError as v2_error:
+            try:
+                legacy = parse_legacy_answer(body)
+            except ValueError:
+                return {"status": "IGNORED_UNSTRUCTURED", "error": str(v2_error)}
+            try:
+                answer = canonicalize_legacy_answer(legacy)
+            except ValueError as exc:
+                self.github.add_issue_comment(
+                    full_name,
+                    installation,
+                    issue_number,
+                    "PTSIP could not accept this legacy v1 decision because it conflicts with the fixed compatibility rules:\n\n- "
+                    + str(exc),
+                )
+                return {"status": "CONFLICT", "error": str(exc)}
+
         validation = validate_answer(answer)
         if not validation.valid:
             self.github.add_issue_comment(
