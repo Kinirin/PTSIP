@@ -8,9 +8,7 @@ from ptsip.clarification.generator import analyze_clarifications
 from ptsip.clarification.generator_core import build_requests
 from ptsip.inspection.components import ComponentCandidate
 from ptsip.validation.components import AMBIGUOUS, resolve_candidate_coverage
-from tests.ptsip._wu04g_support import (
-    PYTHON_PACKAGE_TEMPLATE_ID,
-    PYTHON_PACKAGE_TEMPLATE_REVISION,
+from _wu04g_support import (
     associated_artifact_payload,
     commit_all,
     component_payload,
