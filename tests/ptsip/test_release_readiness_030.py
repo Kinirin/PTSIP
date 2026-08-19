@@ -7,7 +7,7 @@ from ptsip.constants import SPEC_REVISION, SPEC_VERSION, TOOL_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPECTED_SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
+EXPECTED_SPEC_REVISION = "82abd09360df09a95fbbfb516855fa9ffb49f050"
 
 
 def test_tool_036_package_runtime_and_spec_binding_match() -> None:
@@ -20,22 +20,41 @@ def test_tool_036_package_runtime_and_spec_binding_match() -> None:
 
 def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-release.yml").read_text(encoding="utf-8")
-    assert "EXPECTED_TAG=\"tool-v${PACKAGE_VERSION}\"" in workflow
+    assert '$expectedTag = "tool-v$packageVersion"' in workflow
+    assert "py -3.14" in workflow
+    assert "actions/setup-python@" not in workflow
     assert "python -m build" in workflow
-    assert "python -m twine check dist/*" in workflow
+    assert "python -m twine check $distFiles" in workflow
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
 
 
-def test_routine_ci_verifies_test_build_and_installed_wheel_boundary() -> None:
+def test_routine_ci_derives_exact_sha_and_uses_self_hosted_python() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(encoding="utf-8")
-    assert 'python-version: "3.14"' in workflow
+    assert "workflow_dispatch:" in workflow
+    assert "inputs:" not in workflow
+    assert "ref: ${{ github.sha }}" in workflow
+    assert "py -3.14" in workflow
+    assert "actions/setup-python@" not in workflow
     assert "python -m pytest -q" in workflow
     assert "python -m build" in workflow
-    assert "python -m twine check dist/*" in workflow
-    assert "--force-reinstall --no-deps dist/*.whl" in workflow
+    assert "python -m twine check $distFiles" in workflow
+    assert "--force-reinstall --no-deps" in workflow
+    assert 'context = "self-hosted/tooling-test"' in workflow
     assert "ptsip --version" in workflow
     assert "ptsip spec" in workflow
     assert "ptsip conform --help" in workflow
+
+
+def test_release_preparation_derives_identity_without_manual_inputs() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+    assert "workflow_dispatch:" in workflow
+    assert "inputs:" not in workflow
+    assert "ref: ${{ github.sha }}" in workflow
+    assert 'DISPATCHED_REF: ${{ github.ref }}' in workflow
+    assert 'refs/heads/main' in workflow
+    assert 'self-hosted/tooling-test' in workflow
+    assert "py -3.14" in workflow
+    assert "actions/setup-python@" not in workflow
 
 
 def test_release_package_contains_bound_machine_readable_contracts() -> None:
