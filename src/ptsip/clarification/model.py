@@ -5,13 +5,12 @@ from dataclasses import asdict, dataclass
 from ..model import DecisionStatus
 
 
-FIELD_ORDER = ("classification", "purpose", "shipped", "runtime_required", "lifecycle_owner", "executable")
+FIELD_ORDER = ("classification", "purpose", "shipped", "runtime_required", "executable")
 REASON_BY_FIELD = {
     "classification": "MISSING_CLASSIFICATION",
     "purpose": "MISSING_PURPOSE",
     "shipped": "MISSING_PACKAGING_RESPONSIBILITY",
     "runtime_required": "MISSING_RUNTIME_ROLE",
-    "lifecycle_owner": "MISSING_LIFECYCLE_OWNER",
     "executable": "MISSING_EXECUTABLE_ROLE",
 }
 
