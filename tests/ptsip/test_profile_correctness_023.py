@@ -3,10 +3,8 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
+from ptsip.constants import SPEC_REVISION
 from ptsip.validation.profile import validate_profile
-
-
-SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _git(repo: Path, *args: str) -> None:
