@@ -7,6 +7,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..clarification.resolution import LegacyDecisionAnswerV1, canonicalize_legacy_answer
+from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS, LEGACY_V1_ANSWER_FIELDS
+
 
 @dataclass(frozen=True)
 class DecisionRecord:
@@ -42,6 +45,42 @@ class DecisionRecord:
             "issue_number": self.issue_number,
             "issue_url": self.issue_url,
         }
+
+
+def _canonical_answer_for_compare(payload: object) -> dict[str, object] | None:
+    """Normalize only known persisted answer shapes for retry comparison.
+
+    Existing v1 rows are not rewritten. They are interpreted through the
+    explicit compatibility model only long enough to compare with a new v2
+    answer. Invalid/unknown historical shapes cannot authorize a retry.
+    """
+
+    if not isinstance(payload, dict):
+        return None
+    if set(payload) == set(CANONICAL_ANSWER_FIELDS):
+        return payload
+    if set(payload) != set(LEGACY_V1_ANSWER_FIELDS):
+        return None
+    try:
+        classification = payload["classification"]
+        purpose = payload["purpose"]
+        lifecycle_owner = payload["lifecycle_owner"]
+        if not all(isinstance(value, str) and value.strip() for value in (classification, purpose, lifecycle_owner)):
+            return None
+        for field in ("shipped", "runtime_required", "executable"):
+            if not isinstance(payload[field], bool):
+                return None
+        legacy = LegacyDecisionAnswerV1(
+            classification=classification.strip().upper(),
+            purpose=purpose.strip(),
+            shipped=payload["shipped"],
+            runtime_required=payload["runtime_required"],
+            lifecycle_owner=lifecycle_owner.strip().upper(),
+            executable=payload["executable"],
+        )
+        return canonicalize_legacy_answer(legacy).as_dict()
+    except (KeyError, ValueError):
+        return None
 
 
 class DecisionStore:
@@ -216,7 +255,7 @@ class DecisionStore:
                 retry_allowed = (
                     str(row["status"]) == "RESOLVED"
                     and str(row["application_status"]) in {"NOT_APPLIED", "FAILED", "STALE"}
-                    and existing_answer == answer
+                    and _canonical_answer_for_compare(existing_answer) == answer
                 )
             conn.commit()
         return self._record(row), bool(changed or retry_allowed)
