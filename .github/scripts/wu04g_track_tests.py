@@ -96,8 +96,20 @@ def main() -> int:
     parser.add_argument("--durations", type=int, default=0, help="show N slowest tests")
     parser.add_argument("--durations-min", type=float, default=0.05)
     parser.add_argument("--list", action="store_true", help="print pytest command without running it")
-    parser.add_argument("pytest_args", nargs=argparse.REMAINDER, help="extra pytest args after --")
-    args = parser.parse_args()
+
+    # Keep runner options and pytest options in separate parsing domains.  The
+    # previous argparse.REMAINDER positional consumed runner options such as
+    # `--mode files` after the track name and accidentally forwarded them to
+    # pytest.  Extra pytest arguments are accepted only after an explicit `--`.
+    argv = sys.argv[1:]
+    if "--" in argv:
+        separator = argv.index("--")
+        runner_argv = argv[:separator]
+        pytest_args = argv[separator + 1 :]
+    else:
+        runner_argv = argv
+        pytest_args = []
+    args = parser.parse_args(runner_argv)
 
     mode = "files" if args.track == "baseline" else args.mode
     targets = _targets(args.track, mode)
@@ -115,9 +127,7 @@ def main() -> int:
     command = [sys.executable, "-m", "pytest", "-q", *targets]
     if durations > 0:
         command.extend([f"--durations={durations}", f"--durations-min={args.durations_min}"])
-    if args.pytest_args:
-        extras = args.pytest_args[1:] if args.pytest_args[0] == "--" else args.pytest_args
-        command.extend(extras)
+    command.extend(pytest_args)
 
     print("WU-04G pytest command:")
     print(" ".join(command))
