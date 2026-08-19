@@ -1,6 +1,6 @@
 # WU-04G — Clarification / Adoption Effective-Map Integration and Decision-Protocol Upgrade
 
-> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 next and not yet entered  
+> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 VERIFIED; G4 next and not yet entered  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04F — conformance consumes the effective Responsibility Map  
@@ -15,8 +15,8 @@
 G0  normative accepted-decision authority freeze   COMPLETE
 G1  effective read + selector coverage             VERIFIED
 G2  clarification-answer/v2                        VERIFIED
-G3  hybrid safe apply                              NEXT / NOT ENTERED
-G4  exact profile-path control plane               LOCKED BEHIND G3
+G3  hybrid safe apply                              VERIFIED
+G4  exact profile-path control plane               NEXT / NOT ENTERED
 G5  recovery + integration + migration audit       LOCKED BEHIND G4
 ```
 
@@ -73,6 +73,34 @@ capability_url_exposed:         false
 ```
 
 An earlier G2 run, `97def58217ec44fb8b1725ef7299d693`, reached pytest and reported `41 passed / 1 failed`; the sole failure was `test_topology_legacy_boundary_profile_preserves_historical_plane_classification`, a known legacy `0.3.4 boundaries/TOOLCHAIN` topology contract. Section 10 explicitly freezes topology semantics in this mixed file, so the test was neither repaired nor xfailed. The G2 files-mode selector was narrowed to the G2-owned `DecisionAnswer`/projection node while the legacy topology test remains available to later all-G and complete-regression gates.
+
+G3 projection and accepted-decision hybrid safe apply were verified on final implementation SHA `cf663949bb7005616574db62a2d850bbc1d80bce`. The maintainer-provided OpenAI Local Bridge verification produced:
+
+```text
+wu04g-scope
+run_id:                         fc9a315beafd485a88fa6d69772cc18a
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+
+wu04g-g3-files
+run_id:                         7993c2bb283b481e9775ea7a08ad45b2
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+An earlier G3 files-mode run, `38988b39ba70466396697c350e214af7`, reached pytest at SHA `84d663dfbbfd5ae15a4d4c4cecea607066d291f2` and reported `21 passed / 1 failed`. The sole failure was the new template-adoption integration fixture: it selected the immutable `python-package-library` template without tracked `src/**` and `tests/**` files, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned `src/package.py` and `tests/test_package.py`; production safe-apply code was unchanged. Final scope and files-mode verification then passed on `cf663949...`. This closes G3 only and does not claim complete repository regression-cleanliness.
 
 ## 1. Accepted maintainer decision package
 
@@ -310,7 +338,7 @@ WU-04C  COMPLETE
 WU-04D  COMPLETE
 WU-04E  COMPLETE / VERIFIED
 WU-04F  COMPLETE / VERIFIED
-WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 NEXT
+WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 NEXT
 WU-04H  LOCKED
 WU-04I  LOCKED
 ```
@@ -696,6 +724,8 @@ The five fully G2-owned participating files plus the G2-owned `test_resolution_p
 
 ### G3 — projection + automatic hybrid conversion + file migration
 
+**Execution status: VERIFIED.** Accepted project decisions now project through the explicit baseline or, when a new source declaration is required, through a minimal template/hybrid safe-apply delta. Template identity is preserved exactly, unrelated hybrid overrides/removals remain unchanged, materialize-to-explicit writeback is prohibited, existing project declaration conflicts fail closed, and no-op decisions do not mutate template/hybrid source. Scope run `fc9a315beafd485a88fa6d69772cc18a` and G3 files run `7993c2bb283b481e9775ea7a08ad45b2` both completed with exit code 0 on final implementation SHA `cf663949bb7005616574db62a2d850bbc1d80bce`.
+
 Production targets:
 
 ```text
@@ -729,7 +759,7 @@ Required work:
 7. every mutation test creates fresh repository/profile state; no module-scoped apply fixture;
 8. `test_topology_032.py` may adopt the shared projection/profile builders, but its topology migration outcomes are not changed under G3.
 
-G3 focused tests and all three participating files must pass their G-owned semantics before G4 starts.
+The new focused G3 class, `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned projection node from mixed `test_topology_032.py` passed `wu04g-g3-files`. The earlier run `38988b39ba70466396697c350e214af7` failed only because the new template-adoption fixture did not satisfy the selected template's tracked selector preconditions; the fixture was corrected without changing production safe-apply semantics. G4 may now be entered.
 
 ### G4 — exact profile-path control plane + file migration
 
@@ -1006,6 +1036,45 @@ legacy topology contract test_topology_legacy_boundary_profile_preserves_histori
 ```
 
 The G2 scope guard passed in run `c57d0fd7adab45c39739685a6fca581d` before the successful G2 files-mode run.
+
+### G3 verification ledger
+
+```text
+explicit projection/adoption baseline
+    -> preserved as canonical explicit safe-apply behavior
+    -> destination: TestG3HybridSafeApply::test_explicit_apply_remains_canonical_baseline
+    -> focused/files verification: PASS via wu04g-g3-files run 7993c2bb283b481e9775ea7a08ad45b2
+
+template accepted-decision projection
+    -> adds template->hybrid safe-apply path only when accepted project delta is required
+    -> preserves exact template id/revision and writes only responsibility_map.overrides.components delta
+    -> destinations:
+       TestG3HybridSafeApply::test_template_decision_converts_to_hybrid_preserving_template_identity
+       TestG3HybridSafeApply::test_template_to_hybrid_writes_only_accepted_project_delta
+    -> focused/files verification: PASS via same run
+
+existing hybrid project state
+    -> preserves unrelated overrides/removals; conflicting project declarations fail closed without partial mutation
+    -> destinations:
+       TestG3HybridSafeApply::test_existing_hybrid_decision_preserves_unrelated_overrides_and_removals
+       TestG3HybridSafeApply::test_existing_project_declaration_conflict_fails_without_partial_write
+       TestG3HybridSafeApply::test_invalid_decision_never_mutates_profile
+    -> focused/files verification: PASS via same run
+
+test_adoption_033.py template CLI integration
+    -> canonical v2 decision input; deprecated lifecycle_owner test input removed
+    -> verifies persisted template->hybrid minimal project delta through adoption apply
+    -> initial run 38988b39ba70466396697c350e214af7 failed only because the new fixture omitted tracked src/** and tests/** files required by the selected template
+    -> fixture corrected at cf663949bb7005616574db62a2d850bbc1d80bce without production change
+    -> focused/files verification: PASS via same final run
+
+test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
+    -> preserved as the G3-owned explicit projection helper node in the mixed topology file
+    -> topology migration semantics remain frozen
+    -> focused/files verification: PASS via same run
+```
+
+The final G3 scope guard passed in run `fc9a315beafd485a88fa6d69772cc18a` before the successful G3 files-mode run. G4 is now the next permitted implementation track.
 
 The final G5 evidence must contain:
 
