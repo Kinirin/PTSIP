@@ -1,18 +1,20 @@
 # WU-04E — Profile Validation Consumes the Effective Responsibility Map
 
-> **Status:** IMPLEMENTATION COMPLETE — combined WU-04E/F exact-SHA verification pending  
+> **Status:** COMPLETE — exact-SHA verified in combined WU-04E/F run  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04D — `ResolvedProfile`, effective-map digest, and derived provenance  
 > **Entry baseline:** `2f0c7db2d20fb6d88ab5c4ab10707f50d486351f`  
 > **Implementation completion baseline:** `b27938288aea712c52db5ee29c5c2f5a092cb325`  
+> **Verification source SHA:** `48b75e699a592703e4e03a8462131e4932103677`  
+> **Verification run/job:** `32240740753 / 96030499443`  
 > **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
 
 ## 1. Purpose
 
 WU-04E moves Project Profile validation from source-mode-specific partial behavior onto the Canonical Effective Responsibility Map produced by WU-04D.
 
-The required validation pipeline is:
+The implemented validation pipeline is:
 
 ```text
 source ptsip.yaml
@@ -26,7 +28,7 @@ source ptsip.yaml
     -> return validation details including resolution identity
 ```
 
-Template and hybrid declarations must no longer stop after structural validation with a warning that component-level validation requires a later materialization layer.
+Template and hybrid declarations no longer stop after structural validation with a warning that component-level validation requires a later materialization layer.
 
 ## 2. Validation authority boundary
 
@@ -46,9 +48,7 @@ Validation MUST NOT:
 
 ## 3. Source validation before materialization
 
-Before materialization, validation must continue to reject malformed source declarations.
-
-This includes:
+Before materialization, validation rejects malformed source declarations, including:
 
 - YAML/JSON document parse failures;
 - canonical schema failures;
@@ -76,11 +76,11 @@ replace and remove same stable ID
 malformed stable-ID collection
 ```
 
-Validation must fail closed and report the materialization defect as a profile error.
+Validation fails closed and reports the materialization defect as a profile error.
 
 ## 5. Effective-map semantic validation
 
-After successful materialization, semantic Responsibility Map validation must operate on `ResolvedProfile.effective_payload` for all three source modes.
+After successful materialization, semantic Responsibility Map validation operates on `ResolvedProfile.effective_payload` for all three source modes.
 
 The same effective rules therefore apply to explicit, template, and hybrid declarations:
 
@@ -96,13 +96,13 @@ The same effective rules therefore apply to explicit, template, and hybrid decla
 - duplicate allow/deny policy relations rejected;
 - same allow/deny relation conflict rejected.
 
-A source mode must not change the semantic validity of an otherwise identical effective map.
+A source mode does not change the semantic validity of an otherwise identical effective map.
 
 ## 6. Effective selector validation
 
-Repository partitioning and selector checks must use effective components and associated artifacts, not only top-level source `components`.
+Repository partitioning and selector checks use effective components and associated artifacts, not only top-level source `components`.
 
-Therefore template/hybrid profiles must receive the same checks currently available to explicit profiles:
+Template/hybrid profiles therefore receive the same checks available to explicit profiles:
 
 - component selector partition;
 - equal-specificity component ownership conflicts;
@@ -161,7 +161,7 @@ explicit/template/hybrid
     -> retain ResolvedProfile for downstream in-process consumption
 ```
 
-The existing semantic validation logic is shared over the explicit-form effective map. Source-only hybrid declaration mechanics remain a separate pre-materialization check.
+The semantic validation logic is shared over the explicit-form effective map. Source-only hybrid declaration mechanics remain a separate pre-materialization check.
 
 ## 9. Focused regression scope
 
@@ -179,9 +179,27 @@ WU-04E focused tests cover:
 - validation details expose source mode, exact template identity where applicable, and effective-map digest;
 - caller/source profile remains unchanged.
 
-The exact-SHA run `32227306170` at source SHA `33e26cebd845970c6e52fb0a9194a272f0e50228` executed the first WU-04E focused tranche without any `test_profile_validation_036.py` failure and produced `230 passed / 37 failed` repository-wide. The additional completion cases and downstream runtime handoff added after that run are intentionally deferred to the shared WU-04E/F exact-SHA verification run authorized in the master plan.
+The earlier exact-SHA run `32227306170` at source SHA `33e26cebd845970c6e52fb0a9194a272f0e50228` executed the first focused tranche without a `test_profile_validation_036.py` failure and produced `230 passed / 37 failed` repository-wide.
 
-## 10. Out of scope
+## 10. Combined exact-SHA verification
+
+Final verification was shared with WU-04F as authorized by the master plan.
+
+```text
+workflow run: 32240740753
+job:          96030499443
+source SHA:   48b75e699a592703e4e03a8462131e4932103677
+Python:       3.14.3
+pytest:       260 passed / 13 failed
+```
+
+The workflow confirmed exact checkout of the verification SHA and completed the full pytest collection. `tests/ptsip/test_profile_validation_036.py` did not appear in the exhaustive 13-failure summary, so the WU-04E focused validation contract passed at the exact verification SHA.
+
+The remaining failures were reviewed and belong to later/out-of-scope surfaces: clarification/decision control, pilot/evidence fixtures, a stale lifecycle-evidence expectation, and topology/legacy-profile migration fixtures. None demonstrated a regression in WU-04E materialization or effective-map validation.
+
+The repository-wide workflow still concluded failure because those 13 later-stage regressions remain. Therefore this WU is exact-SHA verified and complete, but the Tool as a whole is not regression-clean and no `self-hosted/tooling-test` success status was recorded for the SHA.
+
+## 11. Out of scope
 
 WU-04E does **not** migrate:
 
@@ -191,11 +209,11 @@ WU-04E does **not** migrate:
 - broad cross-mode downstream regression closure — WU-04I;
 - Tool `0.3.5` legacy profile reading/migration — WU-07 and later.
 
-Conformance must consume the resolved/effective validation surface in WU-04F rather than teaching itself separate template/hybrid semantics.
+Conformance consumes the resolved/effective validation surface in WU-04F rather than implementing separate template/hybrid semantics.
 
-## 11. Completion gate
+## 12. Completion gate
 
-WU-04E implementation gate is satisfied because:
+WU-04E is COMPLETE because:
 
 - source schema and Specification binding are checked before materialization;
 - materialization failures are surfaced as fail-closed validation errors;
@@ -204,6 +222,5 @@ WU-04E implementation gate is satisfied because:
 - the old template/hybrid “materialization required” warning is removed;
 - validation details expose deterministic resolution identity;
 - the in-process validation result retains the resolved profile for the next consumer stage;
-- focused validation tests cover explicit/template/hybrid behavior and required failure cases.
-
-Per the maintainer-directed combined verification tranche recorded in `planning/0.3.6.md`, exact-SHA verification of the final WU-04E implementation is deferred and shared with WU-04F. WU-04E is not to be described as exact-SHA verified until that shared run succeeds. If the shared run reports an E regression, this stage reopens before WU-04G can be entered.
+- focused validation tests cover explicit/template/hybrid behavior and required failure cases;
+- the final focused contract passed at exact SHA `48b75e699a592703e4e03a8462131e4932103677` in run `32240740753`.
