@@ -30,13 +30,13 @@ planning/0.3.6.md
 Active sub-stage:
 
 ```text
-planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
+planning/0.3.6/WU-04E-validation-effective-map.md
 ```
 
-WU-04D exact entry baseline:
+WU-04E exact entry baseline:
 
 ```text
-d8713ac4e684852f3e6cf67a68165f82ae0b80aa
+2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
 ```
 
 Published PyPI Tool remains `0.3.5`; the development branch Tool identity is `0.3.6`.
@@ -56,7 +56,7 @@ Specification 0.3.6-draft
 SPEC_REVISION 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-WU-04C added normative `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implements those frozen semantics and does not by itself justify moving `SPEC_REVISION`.
+WU-04C added normative `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implemented those frozen materialization semantics and completed without a Specification revision move. WU-04E consumes that resolved view in validation and likewise does not independently justify moving `SPEC_REVISION`.
 
 Decision records:
 
@@ -153,53 +153,67 @@ The materializer MUST NOT infer architecture, auto-select templates, change clas
 WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            ACTIVE
-WU-04E  validation consumes effective map                LOCKED
+WU-04D  ResolvedProfile + digest + provenance            COMPLETE
+WU-04E  validation consumes effective map                ACTIVE
 WU-04F  conformance consumes effective map               LOCKED
 WU-04G  clarification/adoption read integration          LOCKED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-WU-04D owns only:
+WU-04D completion record:
 
 ```text
-source declaration
-      |
-      v
-deterministic materialization
-      |
-      v
-ResolvedProfile
-      +--> source_payload
-      +--> effective_payload
-      +--> source_mode + exact template identity
-      +--> effective_map_digest
-      +--> derived entity/removal provenance
+planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
+completion baseline 6b1aa963b11681242088527c5723ad5cd57b4ea1
+```
+
+WU-04E owns this validation pipeline:
+
+```text
+source ptsip.yaml
+    -> source schema validation
+    -> Tool/Specification binding validation
+    -> source declaration mechanics
+    -> materialize_profile()
+    -> ResolvedProfile.effective_payload
+    -> common semantic Responsibility Map validation
+    -> common component/artifact selector partition + coverage
+    -> resolution identity/provenance details
 ```
 
 Primary implementation target:
 
 ```text
-src/ptsip/validation/templates.py
+src/ptsip/validation/profile.py
 ```
 
 Focused regression target:
 
 ```text
-tests/ptsip/test_template_materialization_036.py
+tests/ptsip/test_profile_validation_036.py
 ```
 
-Do not migrate validation, conformance, clarification/adoption, or VPMS consumers during WU-04D. Those integrations belong to WU-04E through WU-04H. Future sub-stage documents MUST NOT be created before their entry gate.
+Current WU-04E implementation already:
 
-## Verification evidence from self-hosted run #231
+- imports and calls `materialize_profile()` after source schema/binding checks;
+- converts `TemplateMaterializationError` into fail-closed profile validation errors;
+- validates effective explicit-form schema and Responsibility Map semantics for all source modes;
+- applies component/associated-artifact partition and coverage to effective components/artifacts;
+- exposes `resolution` identity and `resolution_provenance` in validation details;
+- removes the old template/hybrid “materialization layer required” bypass path;
+- adds focused template/hybrid/equivalence/fail-closed tests.
+
+These WU-04E changes are **not yet self-hosted verified**. Do not claim WU-04E complete or enter WU-04F until focused validation behavior is verified and the WU-04E completion gate is explicitly closed.
+
+## Latest available self-hosted regression evidence before WU-04E implementation
 
 GitHub Actions run:
 
 ```text
-run 32211081862
-job 95943730594
-source SHA 613b7aa887cb4c0aefade5b0095a5e2448bf9cd5
+run 32218181598
+job 95963505443
+source SHA bf62202507ee7b83d72cefb5cf01243675ffd062
 ```
 
 Observed execution facts:
@@ -212,14 +226,14 @@ host Python 3.14 preparation        PASS
 isolated .venv creation             PASS
 verification tooling installation   PASS
 complete pytest execution           RAN
-result                              216 passed / 45 failed
+result                              219 passed / 43 failed
 ```
 
 The earlier `actions/setup-python` infrastructure failure is resolved by using host Python through `py -3.14` and a per-run `.venv`.
 
-The 45 failures are not one WU-04D materializer failure. Major groups include stale tests still bound to WU-03 Spec revision `12e2ccd...`, historical `TOOLCHAIN`/`lifecycle_owner` expectations, and conformance/adoption/topology behavior that belongs to later WU-04 integration stages. `tests/ptsip/test_template_materialization_036.py` did not appear in the failure list of this full run.
+The 43 failures included stale earlier-version expectations and later-stage effective-map consumer gaps. `tests/ptsip/test_template_materialization_036.py` did not appear in the failure summary. After that run, stale Spec-revision and VPMS nodeid test expectations were aligned with the current WU-04C snapshot/workflow contract, then WU-04D was closed and WU-04E implementation began.
 
-Do not claim full Tool `0.3.6` regression success. WU-04D remains ACTIVE.
+Do not claim full Tool `0.3.6` regression success. The current WU-04E branch state has no exact-SHA self-hosted result yet.
 
 ## PTSIP / VPMS boundary
 
