@@ -20,6 +20,7 @@ from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS, LEGACY_V1_
 from ..inspection.components import ComponentCandidate, discover_component_candidates
 from ..inspection.dependencies_030 import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
+from ..repository.profile_path import normalize_profile_path, profile_path_on_disk, selected_profile_path
 from ..repository.snapshot import capture_snapshot, compare_snapshots
 from .github_authority import CoordinationUnavailable, GithubControlPlaneClient
 
@@ -138,12 +139,7 @@ def run_github_gate(
     profile_path: str | Path | None,
     language: str,
 ) -> tuple[dict[str, object], int]:
-    """Run the Tool 0.3.4 GitHub-coordinated gate contract.
-
-    GitHub authority is checked for every relevant discovered component scope,
-    including scopes whose local Project Profile declaration is already
-    complete. Read-only authority inspection never creates a pending decision.
-    """
+    """Run GitHub-coordinated gate/reconciliation against one exact profile path."""
 
     repo = analysis.repository
     if not repo.commit or not repo.branch:
@@ -152,14 +148,17 @@ def run_github_gate(
         raise RuntimeError("GitHub coordinated gate requires a GitHub repository identity")
 
     try:
+        selected_profile = selected_profile_path(repo.root, profile_path)
+        selected_profile_file = profile_path_on_disk(repo.root, selected_profile)
         candidates, baseline = _selected_candidates(analysis, component_ids)
-        declared, _, profile_error = declared_components(repo.root, profile_path)
+        declared, _, profile_error = declared_components(repo.root, selected_profile_file)
         if profile_error:
             return (
                 {
                     "status": "AUTHORITY_PROFILE_CONFLICT",
                     "backend": "GITHUB",
                     "repository": repo.as_dict(),
+                    "profile_path": selected_profile,
                     "message": f"Selected Project Profile cannot be compared with GitHub authority: {profile_error}",
                     "decisions": [],
                 },
@@ -180,6 +179,7 @@ def run_github_gate(
                 {
                     "repository": repo.remote.repository,
                     "request": request_payload,
+                    "profile_path": selected_profile,
                 }
             )
             status = str(peeked.get("status", ""))
@@ -191,6 +191,7 @@ def run_github_gate(
                             **peeked,
                             "status": "NO_DECISION_REQUIRED",
                             "component_id": _local_component_id(candidate, declared),
+                            "profile_path": selected_profile,
                             "reconciliation": {"status": "LOCAL_DECLARATION_ONLY"},
                         }
                     )
@@ -202,6 +203,7 @@ def run_github_gate(
                         "repository": repo.remote.repository,
                         "branch": repo.branch,
                         "subject_revision": repo.commit,
+                        "profile_path": selected_profile,
                         "component_id": request.component_id,
                         "request": request.as_dict(),
                         "issue": {"title": title, "body": body},
@@ -236,6 +238,16 @@ def run_github_gate(
                 )
                 errored = True
                 continue
+            if normalize_profile_path(decision.get("profile_path")) != selected_profile:
+                decisions.append(
+                    {
+                        **peeked,
+                        "status": "AUTHORITY_PROFILE_CONFLICT",
+                        "message": "Resolved GitHub authority decision targets a different Project Profile path.",
+                    }
+                )
+                authority_profile_conflict = True
+                continue
 
             if not compare_snapshots(baseline, capture_snapshot(repo.root)).stable:
                 return (
@@ -243,6 +255,7 @@ def run_github_gate(
                         "status": "STALE_EVIDENCE",
                         "backend": "GITHUB",
                         "repository": repo.as_dict(),
+                        "profile_path": selected_profile,
                         "message": "Repository changed before authoritative profile reconciliation.",
                         "decisions": decisions,
                     },
@@ -268,7 +281,7 @@ def run_github_gate(
                     local_component_id,
                     list(candidate.include),
                     answer,
-                    profile_path,
+                    selected_profile_file,
                 )
             except (FileNotFoundError, OSError, RuntimeError, ValueError) as exc:
                 decisions.append(
@@ -279,6 +292,7 @@ def run_github_gate(
                         "reconciliation": {
                             "status": "CONFLICT",
                             "component_id": local_component_id,
+                            "profile_path": selected_profile,
                         },
                     }
                 )
@@ -293,7 +307,7 @@ def run_github_gate(
                         "reconciliation": {
                             "status": "CONSISTENT",
                             "component_id": local_component_id,
-                            "profile_path": str(prepared.path),
+                            "profile_path": selected_profile,
                         },
                     }
                 )
@@ -306,6 +320,7 @@ def run_github_gate(
                         "status": "STALE_EVIDENCE",
                         "backend": "GITHUB",
                         "repository": repo.as_dict(),
+                        "profile_path": selected_profile,
                         "message": "Repository changed after profile projection validation.",
                         "decisions": decisions,
                     },
@@ -320,6 +335,7 @@ def run_github_gate(
                         "status": "STALE_EVIDENCE",
                         "backend": "GITHUB",
                         "repository": repo.as_dict(),
+                        "profile_path": selected_profile,
                         "message": str(exc),
                         "decisions": decisions,
                     },
@@ -330,6 +346,7 @@ def run_github_gate(
                 {
                     "decision_id": str(decision.get("id", "")),
                     "status": "LOCAL_APPLIED",
+                    "profile_path": selected_profile,
                     "applied_revision": repo.commit,
                 }
             )
@@ -340,14 +357,14 @@ def run_github_gate(
                     "reconciliation": {
                         "status": "LOCAL_APPLIED",
                         "component_id": local_component_id,
-                        "profile_path": str(profile),
+                        "profile_path": selected_profile,
                         "application": application,
                     },
                 }
             )
             saw_resolved = True
             baseline = capture_snapshot(repo.root)
-            declared, _, _ = declared_components(repo.root, profile_path)
+            declared, _, _ = declared_components(repo.root, selected_profile_file)
 
         if authority_profile_conflict:
             overall = "AUTHORITY_PROFILE_CONFLICT"
@@ -370,6 +387,7 @@ def run_github_gate(
                 "status": overall,
                 "backend": "GITHUB",
                 "repository": repo.as_dict(),
+                "profile_path": selected_profile,
                 "decisions": decisions,
             },
             exit_code,
