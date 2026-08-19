@@ -61,7 +61,6 @@ def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
         "purpose",
         "shipped",
         "runtime_required",
-        "lifecycle_owner",
         "executable",
     )
     payload = analysis.as_dict("en")
@@ -180,7 +179,9 @@ def test_github_publish_uses_origin_and_deduplicates_outside_repo(tmp_path: Path
         assert args[args.index("--body-file") + 1] == "-"
         assert input_text is not None
         assert "PTSIP does not call an LLM" in input_text
-        assert "ptsip-clarification-answer/v1" in input_text
+        assert "ptsip-clarification-answer/v2" in input_text
+        structured = input_text.split("```yaml", 1)[1].split("```", 1)[0]
+        assert "lifecycle_owner" not in structured
         assert "DEVELOPMENT_TOOLING" in input_text
         assert "DELIVERY" in input_text
         assert "OPERATIONS" in input_text
