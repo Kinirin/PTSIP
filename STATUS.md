@@ -30,7 +30,7 @@ Current bound Specification:
 0.3.6-draft @ 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D implements those frozen semantics; runtime/test/workflow changes do not independently move the Specification revision.
+The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D implemented those frozen semantics and is complete. WU-04E consumes the resulting effective map in profile validation; runtime/test changes do not independently move the Specification revision.
 
 ### Work-unit progress
 
@@ -48,27 +48,27 @@ WU-04 staged progress:
 WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            ACTIVE
-WU-04E  validation consumes effective map                LOCKED
+WU-04D  ResolvedProfile + digest + provenance            COMPLETE
+WU-04E  validation consumes effective map                ACTIVE
 WU-04F  conformance consumes effective map               LOCKED
 WU-04G  clarification/adoption read integration          LOCKED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-WU-04D exact entry baseline:
+WU-04E exact entry baseline:
 
 ```text
-d8713ac4e684852f3e6cf67a68165f82ae0b80aa
+2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
 ```
 
 Active stage document:
 
 ```text
-planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
+planning/0.3.6/WU-04E-validation-effective-map.md
 ```
 
-WU-04E and later sub-documents must not be created until WU-04D is completed and the next stage is explicitly entered after a fresh branch-HEAD read.
+WU-04F and later sub-documents must not be created until WU-04E is completed and the next stage is explicitly entered after a fresh branch-HEAD read.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -86,50 +86,58 @@ NEUTRAL_CONTRACT
 
 Classification is primary lifecycle ownership and remains distinct from component roles, typed relationships, associated artifacts, declaration source, materialization provenance, and VPMS Verification Purpose.
 
-## WU-04D active implementation boundary
+## WU-04E active implementation boundary
 
-WU-04D introduces one source-preserving resolved view:
+WU-04E validation pipeline is:
 
 ```text
-source declaration
-      |
-      v
-deterministic materialization
-      |
-      v
-ResolvedProfile
-      +--> source_payload
-      +--> effective_payload
-      +--> source_mode + exact template identity
-      +--> effective_map_digest
-      +--> derived entity/removal provenance
+source ptsip.yaml
+    -> canonical source schema
+    -> Tool / Specification binding
+    -> source declaration mechanics
+    -> materialize_profile()
+    -> ResolvedProfile.effective_payload
+    -> common semantic Responsibility Map validation
+    -> common component/artifact selector partition + coverage
+    -> resolution identity/provenance details
 ```
 
-Current implementation work is centered in:
+Current implementation changes are centered in:
 
 ```text
-src/ptsip/validation/templates.py
+src/ptsip/validation/profile.py
 ```
 
 Focused regression contracts are in:
 
 ```text
-tests/ptsip/test_template_materialization_036.py
+tests/ptsip/test_profile_validation_036.py
 ```
 
-The effective-map digest represents effective architecture semantics rather than source mechanism. It excludes Specification binding, source mode, template identity, and materialization provenance, while normalizing stable-ID collections and known set-valued fields deterministically.
+The implementation now:
 
-WU-04D remains **ACTIVE**. Validation, conformance, clarification/adoption, and VPMS consumer integration have not been entered and belong to WU-04E through WU-04H.
+- materializes explicit/template/hybrid profiles only after source schema and binding checks;
+- reports `TemplateMaterializationError` as fail-closed profile validation errors;
+- validates the materialized explicit-form effective payload with the canonical schema and common semantic rules;
+- applies component/associated-artifact partition and coverage to the effective map for all source modes;
+- exposes `resolution` identity and `resolution_provenance` in `ValidationResult.details`;
+- removes the prior template/hybrid path that only emitted a “materialization layer required” warning;
+- adds focused validation tests for template, hybrid override/removal, unknown revision, dangling effective endpoint, and explicit/template equivalence.
+
+WU-04E remains **ACTIVE**. These changes have not yet been verified by an exact-SHA self-hosted run. Conformance, clarification/adoption, and VPMS consumer integration remain WU-04F through WU-04H.
 
 ## Tool 0.3.6 verification status
 
-Self-hosted workflow run `32211081862` / job `95943730594` executed source SHA:
+Latest available full self-hosted regression evidence before WU-04E implementation:
 
 ```text
-613b7aa887cb4c0aefade5b0095a5e2448bf9cd5
+run 32218181598
+job 95963505443
+source SHA bf62202507ee7b83d72cefb5cf01243675ffd062
+result 219 passed / 43 failed
 ```
 
-Observed execution evidence:
+Infrastructure status in that run:
 
 ```text
 self-hosted Windows scheduling       PASS
@@ -139,21 +147,13 @@ host Python 3.14 selection           PASS
 isolated per-run .venv creation      PASS
 verification tooling installation    PASS
 complete pytest execution            RAN
-result                               216 passed / 45 failed
 ```
 
-The previous `actions/setup-python` installation failure is resolved. The self-hosted runner successfully used host Python 3.14 through `py -3.14` and created an isolated verification environment.
+The previous `actions/setup-python` installation failure is resolved. The workflow uses host Python 3.14 through `py -3.14` and an isolated per-run virtual environment.
 
-The full Tool `0.3.6` regression is **NOT passing**. The 45 failures include several known stale-contract groups:
+After that run, stale current-Spec and VPMS workflow-test expectations were aligned, WU-04D was closed, and WU-04E implementation began. Therefore the current branch state does **not** yet have an exact-SHA test result.
 
-- tests pinned to the earlier WU-03 Specification snapshot `12e2ccd15634ecb3d0a4195b0f61ac3f620e7540` instead of current `82abd09360df09a95fbbfb516855fa9ffb49f050`;
-- historical `TOOLCHAIN`, `lifecycle_owner`, and Tool `0.3.5` expectations that are not canonical Tool `0.3.6` output;
-- conformance/adoption/topology fixtures whose old source profile expectations now fail before later WU-04 effective-map integrations are entered;
-- a workflow test that expected `actions/setup-python`, subsequently updated to the host-Python contract.
-
-`tests/ptsip/test_template_materialization_036.py` did not appear in the failure list of that complete run. This is evidence that the run did not report failures from that focused file; it is not a claim that the full Tool regression passed.
-
-Do not repeat a full self-hosted regression solely to re-prove the workflow infrastructure while these known repository failures remain. Resolve the applicable WU-aligned failures first.
+Do not claim full Tool `0.3.6` regression success and do not mark WU-04E complete until the new validation behavior has been verified.
 
 ## Repository self-profile
 
@@ -242,6 +242,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04D ACTIVE**
+- Tool `0.3.6`: **active development; WU-04E ACTIVE**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
