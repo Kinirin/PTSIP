@@ -4,17 +4,29 @@ from pathlib import Path
 
 import pytest
 
+from ptsip.app.store import DecisionStore
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.clarification.generator_core import build_requests
+from ptsip.clarification.model import ClarificationRequest
+from ptsip.clarification.render import render_issue
+from ptsip.clarification.resolution import (
+    canonicalize_legacy_answer,
+    parse_answer,
+    parse_legacy_answer,
+    validate_answer,
+)
 from ptsip.inspection.components import ComponentCandidate
 from ptsip.validation.components import AMBIGUOUS, resolve_candidate_coverage
 from _wu04g_support import (
     associated_artifact_payload,
+    canonical_v2_answer,
+    clarification_answer_text,
     commit_all,
     component_payload,
     explicit_profile_payload,
     hybrid_profile_payload,
     init_git_repo,
+    legacy_v1_answer,
     template_profile_payload,
     write_profile,
     write_text,
@@ -211,7 +223,110 @@ class TestG1EffectiveReadCoverage:
 
 
 class TestG2DecisionProtocolV2:
-    """Reserved namespace; G2 has not been entered."""
+    def test_v2_parser_accepts_canonical_answer_without_lifecycle_owner(self) -> None:
+        payload = canonical_v2_answer()
+        answer = parse_answer(clarification_answer_text(payload))
+
+        assert answer.as_dict() == payload
+        assert "lifecycle_owner" not in answer.as_dict()
+        assert validate_answer(answer).valid
+
+    def test_v2_rejects_lifecycle_owner_field_when_contract_requires_exact_v2_shape(self) -> None:
+        payload = legacy_v1_answer()
+        text = clarification_answer_text(payload, format_name="ptsip-clarification-answer/v2")
+
+        with pytest.raises(ValueError, match="unexpected: lifecycle_owner"):
+            parse_answer(text)
+
+    def test_v2_rejects_toolchain_classification(self) -> None:
+        payload = canonical_v2_answer(classification="TOOLCHAIN")
+        answer = parse_answer(clarification_answer_text(payload))
+
+        validation = validate_answer(answer)
+        assert validation.valid is False
+        assert validation.status == "CONFLICT"
+        assert any("classification must be" in error for error in validation.errors)
+
+    def test_v1_reader_is_explicit_compatibility_only(self) -> None:
+        text = clarification_answer_text(
+            legacy_v1_answer(),
+            format_name="ptsip-clarification-answer/v1",
+        )
+
+        with pytest.raises(ValueError):
+            parse_answer(text)
+        legacy = parse_legacy_answer(text)
+        canonical = canonicalize_legacy_answer(legacy)
+        assert canonical.as_dict() == canonical_v2_answer()
+        assert "lifecycle_owner" not in canonical.as_dict()
+
+    def test_v1_toolchain_is_not_auto_translated(self) -> None:
+        text = clarification_answer_text(
+            legacy_v1_answer(
+                classification="TOOLCHAIN",
+                lifecycle_owner="DEVELOPMENT_TOOLING",
+            ),
+            format_name="ptsip-clarification-answer/v1",
+        )
+        legacy = parse_legacy_answer(text)
+
+        assert legacy.to_canonical().classification == "TOOLCHAIN"
+        with pytest.raises(ValueError, match="classification must be"):
+            canonicalize_legacy_answer(legacy)
+
+    def test_new_rendered_clarification_uses_v2(self) -> None:
+        request = ClarificationRequest(
+            id="clr-test",
+            component_id="tools",
+            include=("tools/**",),
+            anchors=("top-level-tool-root",),
+            evidence_ids=("root:tools",),
+            missing_fields=("classification", "purpose", "shipped", "runtime_required", "executable"),
+            reason_codes=(
+                "MISSING_CLASSIFICATION",
+                "MISSING_PURPOSE",
+                "MISSING_PACKAGING_RESPONSIBILITY",
+                "MISSING_RUNTIME_ROLE",
+                "MISSING_EXECUTABLE_ROLE",
+            ),
+        )
+
+        _title, body = render_issue(request, "en", "abc123")
+
+        assert "ptsip-clarification-answer/v2" in body
+        structured = body.split("```yaml", 1)[1].split("```", 1)[0]
+        assert "lifecycle_owner" not in structured
+        assert "TOOLCHAIN" not in structured
+
+    def test_new_stored_decision_uses_v2_semantics(self, tmp_path: Path) -> None:
+        store = DecisionStore(tmp_path / "decision.sqlite3")
+        request = {
+            "component_id": "tools",
+            "include": ["tools/**"],
+            "anchors": ["top-level-tool-root"],
+            "evidence_ids": ["root:tools"],
+            "missing_fields": ["classification"],
+            "reason_codes": ["MISSING_CLASSIFICATION"],
+            "status": "INCOMPLETE",
+        }
+        record, _stale = store.gate(
+            {
+                "id": "clr-test",
+                "repository": "local:test",
+                "branch": "main",
+                "subject_revision": "abc123",
+                "component_id": "tools",
+                "request": request,
+            }
+        )
+        payload = canonical_v2_answer()
+
+        resolved, accepted = store.resolve(record.id, payload, "AGENT_CHAT", "tester")
+
+        assert accepted is True
+        assert resolved.answer == payload
+        assert set(resolved.answer or {}) == set(payload)
+        assert "lifecycle_owner" not in (resolved.answer or {})
 
 
 class TestG3HybridSafeApply:
