@@ -11,7 +11,7 @@ from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PROFILE_PATH = REPO_ROOT / "ptsip.yaml"
-SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
+SPEC_REVISION = "82abd09360df09a95fbbfb516855fa9ffb49f050"
 
 
 def _profile() -> dict[str, object]:
