@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import subprocess
 from pathlib import Path
 
 from ptsip.conformance_engine import evaluate_conformance
+from ptsip.constants import SPEC_REVISION
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.repository.snapshot import capture_snapshot
-
-
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -49,10 +47,12 @@ def _workflow(repo: Path, name: str, scope: str) -> None:
 def _profile(repo: Path, product_manifest: str, tool_manifest: str) -> None:
     (repo / "ptsip.yaml").write_text(
         f"""ptsip:
-  version: "0.3.4-draft"
+  version: "0.3.6-draft"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
     revision: "{SPEC_REVISION}"
+responsibility_map:
+  mode: explicit
 components:
   - id: product
     classification: PRODUCT
@@ -62,21 +62,21 @@ components:
     release_owner: product-release
     compatibility_owner: product-compat
   - id: tools
-    classification: TOOLCHAIN
+    classification: DEVELOPMENT_TOOLING
     include: ["tools/**"]
     purpose: development_tooling
     manifests: ["{tool_manifest}"]
-    release_owner: toolchain-release
-    compatibility_owner: toolchain-compat
+    release_owner: development-tooling-release
+    compatibility_owner: development-tooling-compat
 policies:
-  product_to_toolchain_runtime_dependency: deny
-  toolchain_in_product_package: deny
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
   independent_build_resolution: required
 """,
         encoding="utf-8",
     )
     _workflow(repo, "product-release.yml", "product/**")
-    _workflow(repo, "toolchain-release.yml", "tools/**")
+    _workflow(repo, "development-tooling-release.yml", "tools/**")
 
 
 def _artifact(path: Path, product_path: str) -> None:
@@ -130,7 +130,7 @@ def _python_clean(repo: Path) -> Path:
     return artifact
 
 
-def test_go_source_product_to_toolchain_is_nonconformant(tmp_path: Path) -> None:
+def test_go_source_product_to_development_tooling_is_nonconformant(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init(repo)
     (repo / "product").mkdir()
