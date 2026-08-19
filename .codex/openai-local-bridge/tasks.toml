@@ -13,6 +13,15 @@ timeout_seconds = 60
 max_output_bytes = 262144
 
 [[task]]
+id = "wu04g-scope"
+executable = "py"
+args = ["-3.14", ".github/scripts/wu04g_guard.py", "scope"]
+cwd = "."
+access = "read"
+timeout_seconds = 60
+max_output_bytes = 262144
+
+[[task]]
 id = "wu04g-g1-files"
 executable = ".venv/Scripts/python.exe"
 args = [".github/scripts/wu04g_track_tests.py", "G1", "--mode", "files"]
