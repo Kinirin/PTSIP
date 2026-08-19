@@ -17,6 +17,8 @@ class ReleaseWorkflowEvidence:
     trigger_paths: tuple[str, ...]
     scoped_classifications: tuple[str, ...]
     scope_complete: bool
+    scope_source: str | None = None
+    manual_only: bool = False
     reason: str | None = None
 
     def as_dict(self) -> dict[str, object]:
@@ -55,6 +57,21 @@ def _workflow_on(payload: dict[str, object]) -> object:
     if "on" in payload:
         return payload.get("on")
     return payload.get(True)
+
+
+def _trigger_events(payload: dict[str, object]) -> tuple[str, ...]:
+    trigger = _workflow_on(payload)
+    if isinstance(trigger, str):
+        return (trigger,)
+    if isinstance(trigger, list):
+        return tuple(dict.fromkeys(str(item) for item in trigger))
+    if isinstance(trigger, dict):
+        return tuple(dict.fromkeys(str(item) for item in trigger.keys()))
+    return ()
+
+
+def _manual_dispatch_only(payload: dict[str, object]) -> bool:
+    return set(_trigger_events(payload)) == {"workflow_dispatch"}
 
 
 def _release_like(path: str, payload: dict[str, object]) -> bool:
@@ -145,10 +162,60 @@ def _scope_from_paths(
     return tuple(sorted(scope)), matched
 
 
+def _artifact_scope_for_manual_workflow(
+    workflow_owner: str | None,
+    artifact_documents: list[dict[str, object]] | tuple[dict[str, object], ...] | None,
+) -> tuple[tuple[str, ...], bool, str | None]:
+    if not workflow_owner:
+        return (), False, "Manual release workflow is not assigned to a declared producer component."
+
+    classifications: set[str] = set()
+    artifact_ids: list[str] = []
+    for document in artifact_documents or ():
+        if not isinstance(document, dict) or document.get("binding_valid") is not True:
+            continue
+        payload = document.get("payload")
+        if not isinstance(payload, dict):
+            continue
+        if payload.get("producer_component") != workflow_owner:
+            continue
+        if payload.get("provenance") != "OBSERVED":
+            continue
+        contents = payload.get("contents")
+        if not isinstance(contents, dict) or contents.get("complete") is not True:
+            continue
+        classification = payload.get("classification")
+        if classification not in {"PRODUCT", "TOOLCHAIN", "NEUTRAL_CONTRACT"}:
+            continue
+        classifications.add(str(classification))
+        artifact_ids.append(str(payload.get("artifact_id", "unknown")))
+
+    if not classifications:
+        return (
+            (),
+            False,
+            "Manual release workflow has no revision-bound OBSERVED complete artifact evidence produced by its owning component.",
+        )
+    if len(classifications) != 1:
+        return (
+            tuple(sorted(classifications)),
+            False,
+            "Manual release workflow producer is correlated to artifact evidence from more than one architectural classification.",
+        )
+    classification = next(iter(classifications))
+    return (
+        (classification,),
+        True,
+        "Manual workflow scope is established by revision-bound OBSERVED complete artifact evidence: "
+        + ", ".join(sorted(set(artifact_ids))),
+    )
+
+
 def evaluate_lifecycle_evidence(
     repository_root: str | Path,
     components: list[dict[str, object]],
     partition: ComponentPartition,
+    artifact_documents: list[dict[str, object]] | tuple[dict[str, object], ...] | None = None,
 ) -> LifecycleEvaluationResult:
     root = Path(repository_root).resolve()
     owners = {assignment.path: assignment.component_id for assignment in partition.assignments}
@@ -191,37 +258,77 @@ def evaluate_lifecycle_evidence(
             continue
         if not _release_like(rel, payload):
             continue
+
         trigger_paths = _trigger_paths(payload)
+        manual_only = _manual_dispatch_only(payload)
         scope, complete = _scope_from_paths(trigger_paths, owners, classifications)
-        reason = None
-        if not trigger_paths:
+        scope_source: str | None = "trigger-paths" if complete else None
+        reason: str | None = None
+
+        if not complete and not trigger_paths and manual_only:
+            artifact_scope, artifact_complete, artifact_reason = _artifact_scope_for_manual_workflow(
+                owners.get(rel),
+                artifact_documents,
+            )
+            scope = artifact_scope
+            complete = artifact_complete
+            scope_source = "artifact-evidence" if artifact_complete else None
+            reason = None if artifact_complete else artifact_reason
+            if artifact_complete and artifact_reason:
+                observations.append(f"{rel}: {artifact_reason}")
+        elif not trigger_paths:
             reason = "Release-like workflow has no positive path scope; trigger alone cannot establish Product/Toolchain release independence."
         elif not complete:
             reason = "Release-like workflow path filters did not resolve to tracked component ownership."
-        workflows.append(ReleaseWorkflowEvidence(rel, True, trigger_paths, scope, complete, reason))
+
+        workflows.append(
+            ReleaseWorkflowEvidence(
+                path=rel,
+                release_like=True,
+                trigger_paths=trigger_paths,
+                scoped_classifications=scope,
+                scope_complete=complete,
+                scope_source=scope_source,
+                manual_only=manual_only,
+                reason=reason,
+            )
+        )
 
     product_scoped = [item for item in workflows if item.scope_complete and item.scoped_classifications == ("PRODUCT",)]
     toolchain_scoped = [item for item in workflows if item.scope_complete and item.scoped_classifications == ("TOOLCHAIN",)]
     ambiguous = [item for item in workflows if not item.scope_complete or len(item.scoped_classifications) != 1]
 
-    has_product = any(str(item.get("classification")) == "PRODUCT" for item in relevant)
+    product_release_required = any(
+        str(item.get("classification")) == "PRODUCT" and item.get("shipped") is not False
+        for item in relevant
+    )
+    toolchain_release_required = any(
+        str(item.get("classification")) == "TOOLCHAIN" and item.get("shipped") is not False
+        for item in relevant
+    )
     has_toolchain = any(str(item.get("classification")) == "TOOLCHAIN" for item in relevant)
-    if has_product and not product_scoped:
+
+    if product_release_required and not product_scoped:
         gaps.append(
             _gap(
                 "product-release-evidence",
-                "No release-like workflow provides positive Product-only path-scoped evidence. Workflow triggers alone are insufficient to prove lifecycle independence.",
+                "No release-like workflow provides Product-only lifecycle evidence from positive path scope or revision-bound observed Product artifact evidence.",
                 ("PTSIP-LCY-001", "PTSIP-EVD-003"),
             )
         )
-    if has_toolchain and not toolchain_scoped:
+    if toolchain_release_required and not toolchain_scoped:
         gaps.append(
             _gap(
                 "toolchain-release-evidence",
-                "No release-like workflow provides positive Toolchain-only path-scoped evidence. Workflow triggers alone are insufficient to prove lifecycle independence.",
+                "No release-like workflow provides Toolchain-only lifecycle evidence for a Toolchain component whose shipped state is not explicitly false.",
                 ("PTSIP-LCY-001", "PTSIP-EVD-003"),
             )
         )
+    elif has_toolchain and not toolchain_scoped:
+        observations.append(
+            "No Toolchain-only release workflow was required because all declared Toolchain components explicitly set shipped=false."
+        )
+
     for item in ambiguous:
         observations.append(f"{item.path}: {item.reason or 'Release-like workflow spans more than one architectural classification; this is not by itself a lifecycle violation.'}")
         gaps.append(
