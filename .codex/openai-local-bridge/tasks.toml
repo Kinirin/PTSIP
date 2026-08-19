@@ -1,0 +1,13 @@
+schema_version = 1
+
+[repository]
+id = "Kinirin/PTSIP"
+
+[[task]]
+id = "repository-tests"
+executable = ".venv/Scripts/python.exe"
+args = ["-m", "pytest", "-q"]
+cwd = "."
+access = "read"
+timeout_seconds = 900
+max_output_bytes = 15000000
