@@ -83,6 +83,43 @@ def test_python_target_scope_distinguishes_external_and_unresolved(tmp_path: Pat
     assert by_target["mystery_package"].resolution.value == "UNRESOLVED"
 
 
+def test_nested_python_requirements_apply_only_to_source_subtree(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    localization = repo / "program-sdk" / "sctool-sdk" / "localization"
+    sibling = repo / "other"
+    localization.mkdir(parents=True)
+    sibling.mkdir()
+    (localization / "requirements.txt").write_text("argostranslate\n", encoding="utf-8")
+    (localization / "adapter.py").write_text(
+        "import argostranslate.translate as argos_translate\n",
+        encoding="utf-8",
+    )
+    (sibling / "app.py").write_text(
+        "import argostranslate.translate as argos_translate\n",
+        encoding="utf-8",
+    )
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    local_edge = next(
+        item
+        for item in scan.edges
+        if item.source == "program-sdk/sctool-sdk/localization/adapter.py"
+        and item.target == "argostranslate.translate"
+    )
+    sibling_edge = next(
+        item
+        for item in scan.edges
+        if item.source == "other/app.py" and item.target == "argostranslate.translate"
+    )
+
+    assert local_edge.target_scope.value == "EXTERNAL_DEPENDENCY"
+    assert local_edge.resolution.value == "EXTERNAL"
+    assert sibling_edge.target_scope.value == "UNRESOLVED_TARGET"
+    assert sibling_edge.resolution.value == "UNRESOLVED"
+
+
 def test_python_declaration_parse_failure_is_evidence_issue(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     _init_git(repo)
