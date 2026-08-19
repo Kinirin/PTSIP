@@ -10,10 +10,24 @@ CLASSIFICATIONS = (
     "NEUTRAL_CONTRACT",
 )
 
-# DecisionAnswer keeps lifecycle_owner as an input/migration compatibility fact
-# until WU-07/WU-10 retire legacy adoption surfaces. Canonical 0.3.6 Project
-# Profiles do not persist lifecycle_owner; classification is the ownership authority.
-LIFECYCLE_OWNERS = (
+CANONICAL_ANSWER_FIELDS = (
+    "classification",
+    "purpose",
+    "shipped",
+    "runtime_required",
+    "executable",
+)
+
+LEGACY_V1_ANSWER_FIELDS = (
+    "classification",
+    "purpose",
+    "shipped",
+    "runtime_required",
+    "lifecycle_owner",
+    "executable",
+)
+
+LEGACY_LIFECYCLE_OWNERS = (
     "PRODUCT",
     "DEVELOPMENT_TOOLING",
     "DELIVERY",
@@ -24,6 +38,22 @@ LIFECYCLE_OWNERS = (
 
 @dataclass(frozen=True)
 class DecisionAnswer:
+    """Canonical ptsip-clarification-answer/v2 decision facts."""
+
+    classification: str
+    purpose: str
+    shipped: bool
+    runtime_required: bool
+    executable: bool
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class LegacyDecisionAnswerV1:
+    """Explicit compatibility shape for persisted/received v1 decisions only."""
+
     classification: str
     purpose: str
     shipped: bool
@@ -33,6 +63,17 @@ class DecisionAnswer:
 
     def as_dict(self) -> dict[str, object]:
         return asdict(self)
+
+    def to_canonical(self) -> DecisionAnswer:
+        # Preserve classification exactly. In particular, legacy TOOLCHAIN is
+        # never translated to DEVELOPMENT_TOOLING by this compatibility step.
+        return DecisionAnswer(
+            classification=self.classification,
+            purpose=self.purpose,
+            shipped=self.shipped,
+            runtime_required=self.runtime_required,
+            executable=self.executable,
+        )
 
 
 @dataclass(frozen=True)
