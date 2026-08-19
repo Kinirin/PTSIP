@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from ..clarification.resolution import DecisionAnswer, validate_answer
+from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS
 from ..storage.local_state import decision_store_path
 from .store import DecisionRecord, DecisionStore
 
@@ -17,12 +18,29 @@ def _workflow_status(record: DecisionRecord) -> str:
 
 
 def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
+    actual = set(payload)
+    expected = set(CANONICAL_ANSWER_FIELDS)
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
+        details: list[str] = []
+        if missing:
+            details.append("missing: " + ", ".join(missing))
+        if extra:
+            details.append("unexpected: " + ", ".join(extra))
+        raise ValueError("canonical v2 answer fields are invalid (" + "; ".join(details) + ")")
+    if not isinstance(payload["classification"], str) or not str(payload["classification"]).strip():
+        raise ValueError("classification must be a non-empty string")
+    if not isinstance(payload["purpose"], str) or not str(payload["purpose"]).strip():
+        raise ValueError("purpose must be a non-empty string")
+    for field in ("shipped", "runtime_required", "executable"):
+        if not isinstance(payload[field], bool):
+            raise ValueError(f"{field} must be a boolean")
     return DecisionAnswer(
-        classification=str(payload["classification"]),
-        purpose=str(payload["purpose"]),
+        classification=str(payload["classification"]).strip().upper(),
+        purpose=str(payload["purpose"]).strip(),
         shipped=bool(payload["shipped"]),
         runtime_required=bool(payload["runtime_required"]),
-        lifecycle_owner=str(payload["lifecycle_owner"]),
         executable=bool(payload["executable"]),
     )
 
