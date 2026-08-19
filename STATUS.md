@@ -129,6 +129,42 @@ The normalized repository-relative selected profile path must flow through gate 
 
 WU-04G may optimize/migrate only tests it directly owns or changes. It may consolidate duplicated immutable setup and parameterize equivalent semantic variants, but must preserve mutable CAS/snapshot/stale-state isolation, record replacement coverage for migrated historical tests, avoid repository-wide test restructuring/xdist/workflow changes, and retain full exact-SHA repository regression as the final authority.
 
+## OpenAI Local Bridge integration
+
+Repository-local task registry:
+
+```text
+.codex/openai-local-bridge/tasks.toml
+repository_id: Kinirin/PTSIP
+task_id:       wu04g-precheck
+executable:    py
+args:          -3.14 .github/scripts/wu04g_guard.py precheck
+access:        read
+```
+
+The previous full-suite Bridge task was replaced because the active WU-04G branch is intentionally not yet globally regression-clean and complete repository regression is reserved for the post-G5 exact-SHA gate.
+
+Maintainer-provided remote E2E result on 2026-08-19:
+
+```text
+passed:                         true
+repository_id:                  Kinirin/PTSIP
+task_id:                        wu04g-precheck
+run_id:                         a4441c401c994cf6bc09ec539a56ffa7
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+This establishes that OpenAI Local Bridge discovered the PTSIP repository and registered task, accepted the read-only remote execution request, launched the repository-defined `wu04g-precheck` process, produced run/log evidence, and completed that task with exit code 0.
+
+This Bridge E2E result is **connection/task-execution evidence only**. It does not mark WU-04G G1-G5 complete, does not replace track-specific guard/test commands, and does not establish complete repository regression or release readiness.
+
 ## Tool 0.3.6 canonical lifecycle model
 
 Canonical classifications are exactly:
