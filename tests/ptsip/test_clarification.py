@@ -10,7 +10,7 @@ from ptsip.cli import main
 from ptsip.repository.discover import discover_repository
 from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
-from tests.ptsip._wu04g_support import (
+from _wu04g_support import (
     commit_all,
     component_payload,
     explicit_profile_payload,
