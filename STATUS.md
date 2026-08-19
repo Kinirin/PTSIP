@@ -32,7 +32,7 @@ Current bound Specification:
 
 WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is next and has not yet been entered.
+WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is next and has not yet been entered.
 
 ### Work-unit progress
 
@@ -53,7 +53,7 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 NEXT
+WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 NEXT
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
@@ -131,9 +131,53 @@ capability_url_exposed:         false
 
 Therefore G1 files-mode verification is PASS. This does not replace the final G5 exact-SHA complete repository regression.
 
-### Answer-v2 and write behavior
+### G2 verified answer-v2 decision protocol
 
-G2 is NEXT and not yet entered. Its canonical decision target remains `ptsip-clarification-answer/v2`, omitting `lifecycle_owner`. Existing v1 data may be read only through an explicit compatibility/migration path for already-persisted decisions; it must not restore canonical `TOOLCHAIN` or silently translate it.
+G2 is VERIFIED. New canonical decisions use:
+
+```text
+ptsip-clarification-answer/v2
+
+classification
+purpose
+shipped
+runtime_required
+executable
+```
+
+`lifecycle_owner` is absent from canonical `DecisionAnswer`, new rendered clarification replies, new local/GitHub resolution payloads, and newly stored canonical answers. Existing v1 data is accepted only through an explicit compatibility reader/canonicalization boundary. Legacy `TOOLCHAIN` is not restored as a Tool 0.3.6 classification and is never silently translated to `DEVELOPMENT_TOOLING`.
+
+G2 preserves first-valid-resolution, retry comparison, store isolation, and GitHub authority semantics. Persisted v1 answers may be normalized to canonical v2 only for read-time semantic comparison; the Tool does not implicitly rewrite historical persisted data merely by reading it.
+
+Maintainer-provided OpenAI Local Bridge G2 verification:
+
+```text
+wu04g-scope
+run_id:                         c57d0fd7adab45c39739685a6fca581d
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+
+wu04g-g2-files
+run_id:                         95f081cc5f2140cea719afea67a33b2a
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+An earlier files-mode run `97def58217ec44fb8b1725ef7299d693` produced `41 passed / 1 failed`; the sole failure was the frozen historical `test_topology_legacy_boundary_profile_preserves_historical_plane_classification` contract. Because `test_topology_032.py` is a mixed file whose topology semantics are explicitly outside G2 ownership, that test was preserved unchanged and the G2 selector now runs only its G2-owned `DecisionAnswer`/projection node. This does not erase or resolve the legacy topology debt; the later all-G/full regression remains authoritative for it.
+
+G3 hybrid safe apply is now the next WU-04G track. It has not yet been entered.
 
 For later accepted project decisions:
 
@@ -167,9 +211,23 @@ Current read-only tasks include:
 wu04g-precheck
     py -3.14 .github/scripts/wu04g_guard.py precheck
 
+wu04g-scope
+    py -3.14 .github/scripts/wu04g_guard.py scope
+
 wu04g-g1-files
     .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G1 --mode files
+
+wu04g-g2-files
+    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G2 --mode files
 ```
+
+Repository-local Bridge evidence inspection is available through:
+
+```text
+.github/scripts/wu04g_bridge_log.ps1
+```
+
+This helper reads already-recorded Bridge run evidence under `%LOCALAPPDATA%\OpenAI_Local_Bridge\runs` and does not create a new task run.
 
 The previous full-suite Bridge task was replaced because the active WU-04G branch is intentionally not yet globally regression-clean and complete repository regression is reserved for the post-G5 exact-SHA gate.
 
@@ -190,9 +248,9 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-The G1 files-mode task also completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0` with exit code 0 and `remote_task_execution_verified=true`.
+The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`, respectively, all with exit code 0 and `remote_task_execution_verified=true`.
 
-These Bridge results establish repository/task discovery and actual read-only remote process execution. They do not establish complete repository regression or release readiness.
+These Bridge results establish repository/task discovery and actual read-only remote process execution for the corresponding WU-04G stage gates. They do not establish complete repository regression or release readiness.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -381,6 +439,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G ACTIVE — G1 VERIFIED**
+- Tool `0.3.6`: **active development; WU-04G ACTIVE — G2 VERIFIED / G3 NEXT**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
