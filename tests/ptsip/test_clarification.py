@@ -10,47 +10,22 @@ from ptsip.cli import main
 from ptsip.repository.discover import discover_repository
 from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
-
-
-SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
-
-
-def _git(repo: Path, *args: str) -> None:
-    subprocess.run(
-        ["git", "-C", str(repo), *args],
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-
-
-def _init_git(repo: Path) -> None:
-    repo.mkdir(parents=True, exist_ok=True)
-    _git(repo, "init")
-    _git(repo, "config", "user.email", "ptsip-test@example.invalid")
-    _git(repo, "config", "user.name", "PTSIP Test")
-
-
-def _commit_all(repo: Path) -> None:
-    _git(repo, "add", ".")
-    _git(repo, "commit", "-m", "fixture")
+from tests.ptsip._wu04g_support import (
+    commit_all,
+    component_payload,
+    explicit_profile_payload,
+    git,
+    init_git_repo,
+    write_profile,
+    write_text,
+)
 
 
 def _tool_repo(tmp_path: Path) -> Path:
-    repo = tmp_path / "repo"
-    _init_git(repo)
-    (repo / "tools").mkdir()
-    (repo / "tools" / "generate.py").write_text("print('generate')\n", encoding="utf-8")
-    _commit_all(repo)
+    repo = init_git_repo(tmp_path / "repo")
+    write_text(repo, "tools/generate.py", "print('generate')\n")
+    commit_all(repo)
     return repo
-
-
-def _profile_header() -> str:
-    return f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\n"""
-
-
-def _policies() -> str:
-    return """policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n"""
 
 
 def test_github_remote_parser_supports_https_and_ssh():
@@ -66,7 +41,7 @@ def test_github_remote_parser_supports_https_and_ssh():
 
 def test_repository_discovery_includes_origin(tmp_path: Path):
     repo = _tool_repo(tmp_path)
-    _git(repo, "remote", "add", "origin", "git@github.com:example/product.git")
+    git(repo, "remote", "add", "origin", "git@github.com:example/product.git")
     info = discover_repository(repo)
     assert info.remote is not None
     assert info.remote.provider == "github"
@@ -98,46 +73,75 @@ def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
 
 def test_declared_component_purpose_suppresses_question(tmp_path: Path):
     repo = _tool_repo(tmp_path)
-    (repo / "ptsip.yaml").write_text(
-        _profile_header()
-        + """components:\n  - id: generator\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: build_generation\n"""
-        + _policies(),
-        encoding="utf-8",
+    write_profile(
+        repo / "ptsip.yaml",
+        explicit_profile_payload(
+            [
+                component_payload(
+                    "generator",
+                    ["tools/**"],
+                    purpose="build_generation",
+                )
+            ]
+        ),
     )
-    _commit_all(repo)
+    commit_all(repo)
     analysis = analyze_clarifications(repo, ["tools"])
     assert analysis.requests == ()
     assert analysis.status == "NO_CLARIFICATION_REQUIRED"
 
 
-def test_partial_declared_component_targets_declared_component_id(tmp_path: Path):
+def test_partial_declared_scope_does_not_claim_broader_candidate(tmp_path: Path):
     repo = _tool_repo(tmp_path)
-    (repo / "ptsip.yaml").write_text(
-        _profile_header()
-        + """components:\n  - id: generator-sdk\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n"""
-        + _policies(),
-        encoding="utf-8",
+    write_text(repo, "tools/generated/config.py", "VALUE = 1\n")
+    write_profile(
+        repo / "ptsip.yaml",
+        explicit_profile_payload(
+            [
+                component_payload(
+                    "generator-sdk",
+                    ["tools/generated/**"],
+                    purpose="generated_tool_support",
+                )
+            ]
+        ),
     )
-    _commit_all(repo)
+    commit_all(repo)
+
     analysis = analyze_clarifications(repo, ["tools"])
+    assert analysis.status == "CLARIFICATION_REQUIRED"
     assert len(analysis.requests) == 1
     request = analysis.requests[0]
-    assert request.component_id == "generator-sdk"
+    assert request.component_id == "tools"
     assert request.include == ("tools/**",)
-    assert request.missing_fields == ("purpose",)
 
 
 def test_associated_artifact_scope_does_not_reopen_component_clarification(tmp_path: Path):
     repo = _tool_repo(tmp_path)
-    (repo / "ptsip.yaml").write_text(
-        _profile_header()
-        + """components:\n  - id: sdk\n    classification: DEVELOPMENT_TOOLING\n    include: [\"sdk/**\"]\n    purpose: reusable_sdk\nassociated_artifacts:\n  - id: sdk-support\n    anchor: sdk\n    include: [\"tools/**\"]\n    purpose: sdk_owned_support_surface\nrelationships:\n  - id: support-documents-sdk\n    from: sdk-support\n    to: sdk\n    type: DOCUMENTS\n"""
-        + _policies(),
-        encoding="utf-8",
+    write_text(repo, "sdk/core.py", "VALUE = 1\n")
+    write_profile(
+        repo / "ptsip.yaml",
+        explicit_profile_payload(
+            [component_payload("sdk", ["sdk/**"], purpose="reusable_sdk")],
+            associated_artifacts=[
+                {
+                    "id": "sdk-support",
+                    "anchor": "sdk",
+                    "include": ["tools/**"],
+                    "purpose": "sdk_owned_support_surface",
+                }
+            ],
+            relationships=[
+                {
+                    "id": "support-documents-sdk",
+                    "from": "sdk-support",
+                    "to": "sdk",
+                    "type": "DOCUMENTS",
+                }
+            ],
+        ),
     )
-    (repo / "sdk").mkdir()
-    (repo / "sdk" / "core.py").write_text("VALUE = 1\n", encoding="utf-8")
-    _commit_all(repo)
+    commit_all(repo)
 
     analysis = analyze_clarifications(repo, ["tools"])
     assert analysis.requests == ()
@@ -160,7 +164,7 @@ def test_github_publish_uses_origin_and_deduplicates_outside_repo(tmp_path: Path
     repo = _tool_repo(tmp_path)
     state = tmp_path / "state"
     monkeypatch.setenv("PTSIP_HOME", str(state))
-    _git(repo, "remote", "add", "origin", "https://github.com/example/product.git")
+    git(repo, "remote", "add", "origin", "https://github.com/example/product.git")
     analysis = analyze_clarifications(repo, ["tools"])
     before = capture_snapshot(repo)
     calls: list[tuple[list[str], str | None]] = []
