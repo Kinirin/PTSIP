@@ -32,7 +32,12 @@ FILE_TRACKS = {
         "tests/ptsip/test_local_control_plane_033.py",
         "tests/ptsip/test_github_authority_033.py",
         "tests/ptsip/test_github_authority_034.py",
-        "tests/ptsip/test_topology_032.py",
+        # test_topology_032.py is a mixed historical file.  G2 changed only
+        # the canonical DecisionAnswer/projection contract below.  The legacy
+        # 0.3.4 boundaries/TOOLCHAIN topology test is a known non-G semantic
+        # contract and must remain frozen rather than being repaired or xfailed
+        # merely to make the G2 decision-protocol gate green.
+        "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
     "G3": (
         "tests/ptsip/test_adoption_033.py",
@@ -91,7 +96,7 @@ def main() -> int:
         "--mode",
         choices=("focused", "files", "all-g"),
         default="focused",
-        help="new focused class only, participating whole files, or complete G migration set",
+        help="new focused class only, participating track targets, or complete G migration set",
     )
     parser.add_argument("--durations", type=int, default=0, help="show N slowest tests")
     parser.add_argument("--durations-min", type=float, default=0.05)
