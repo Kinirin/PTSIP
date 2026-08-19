@@ -1,17 +1,18 @@
 # WU-04F — Enforced Conformance Consumes the Effective Responsibility Map
 
-> **Status:** ACTIVE  
+> **Status:** IMPLEMENTATION COMPLETE — combined WU-04E/F exact-SHA verification pending  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04E — profile validation consumes the effective Responsibility Map  
 > **Entry baseline:** `5d52e452ce48de4d0e0d8251d906c1e0f15f82c2`  
+> **Implementation completion baseline:** `991cecb58be1c6bfb063131ed04721015318e17f`  
 > **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
 
 ## 1. Purpose
 
 WU-04F removes the remaining source-mode/raw-profile dependency from Enforced Conformance.
 
-The target pipeline is:
+The implemented pipeline is:
 
 ```text
 source ptsip.yaml
@@ -21,7 +22,7 @@ source ptsip.yaml
     -> conformance evaluators
 ```
 
-Conformance must not interpret template/hybrid declarations itself. It consumes the already validated effective Responsibility Map produced by the validation/materialization boundary.
+Conformance no longer interprets template/hybrid declarations itself. It consumes the already validated effective Responsibility Map produced by the validation/materialization boundary.
 
 ## 2. Consumer authority boundary
 
@@ -55,7 +56,7 @@ ValidationResult.resolved_profile
 
 This field is deliberately not emitted by `ValidationResult.as_dict()`. Public validation/conformance reports continue to expose serializable `details.resolution` and provenance summaries without duplicating the full effective payload.
 
-For valid profiles, WU-04F consumers must use:
+For valid profiles, WU-04F consumers use:
 
 ```text
 validation.resolved_profile.effective_payload
@@ -71,16 +72,17 @@ Primary target:
 src/ptsip/conformance.py
 ```
 
-Required changes:
+Implemented changes:
 
-- remove raw YAML reload after successful profile validation;
-- obtain components from the resolved effective payload;
-- obtain `component_dependency_policy` from the resolved effective payload;
-- run partition/dependency/artifact/language checks against effective components;
-- preserve immutable Specification revision enforcement;
-- remove the template/hybrid `ownership:materialization-required` blocking gap;
-- remove `MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED` evaluator reasons;
-- fail closed if a profile is reported valid but no resolved runtime view is available.
+- removed raw YAML reload after successful profile validation;
+- components come from the resolved effective payload;
+- `component_dependency_policy` comes from the resolved effective payload;
+- partition/dependency/artifact/language checks run against effective components;
+- immutable Specification revision enforcement reads the preserved source binding;
+- removed the template/hybrid `ownership:materialization-required` blocking gap;
+- removed `MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED` evaluator reasons;
+- added fail-closed `profile:resolution-unavailable` handling if validation is ever valid without a resolved runtime object;
+- added defensive `profile:effective-components-missing` handling for impossible/invalid effective component absence.
 
 ## 5. Complete conformance engine integration
 
@@ -90,9 +92,9 @@ Secondary target:
 src/ptsip/conformance_engine.py
 ```
 
-The complete engine currently re-reads the source profile independently after invoking base conformance. WU-04F must remove that second raw-profile architecture read.
+The complete engine no longer performs a second raw-profile architecture read after invoking base conformance.
 
-The complete engine must use effective components/policy for:
+It now uses effective components/policy for:
 
 - declared dependency boundaries;
 - source-language coverage;
@@ -107,23 +109,23 @@ This does not move clarification/decision-writing semantics into WU-04F. It only
 
 ## 6. Report behavior
 
-The conformance report should continue to include:
+The conformance report continues to include:
 
 ```text
 profile: ValidationResult.as_dict()
 ```
 
-which already carries serializable resolution details when materialization succeeds.
+which carries serializable resolution details when materialization succeeds.
 
-No new public report field is required merely to expose the full effective payload.
+No public report field exposes the entire effective payload merely for convenience. The effective runtime object remains an in-process handoff.
 
-Equivalent explicit/template/hybrid declarations should produce equivalent architecture-dependent conformance behavior, except for explanatory source-mode/template identity already present under profile validation details.
+Equivalent explicit/template/hybrid declarations are expected to produce equivalent architecture-dependent conformance behavior, except for explanatory source-mode/template identity already present under profile validation details.
 
 ## 7. Regression transition
 
-WU-04F updates canonical conformance fixtures that still generate Tool `0.3.4/0.3.5` profile state while claiming to test current conformance behavior.
+WU-04F updated canonical conformance fixtures that were still generating Tool `0.3.4/0.3.5` profile state while claiming to test current conformance behavior.
 
-Canonical current-tool fixtures must use:
+Current-tool conformance fixtures now use:
 
 ```text
 ptsip.version: 0.3.6-draft
@@ -135,20 +137,41 @@ independent_build_resolution
 current SPEC_REVISION
 ```
 
-Historical/legacy fixtures remain historical only where the test explicitly exercises legacy rejection or future migration behavior. They must not be silently accepted by canonical conformance.
+Updated current-tool regression surfaces include:
+
+```text
+tests/ptsip/test_profile_correctness_023.py
+tests/ptsip/test_conformance_030.py
+tests/ptsip/test_conformance_engine_030.py
+tests/ptsip/test_merge_gate_remediation_030.py
+tests/ptsip/test_remaining_030.py
+```
+
+Historical or intentionally conflicting inputs remain historical where the test actually exercises rejection/review behavior. For example, an agent decision that claims `TOOLCHAIN` may remain as conflicting evidence; canonical Project Profiles themselves do not emit that class.
 
 ## 8. Focused tests
 
-WU-04F should establish at least:
+New focused contract:
 
-- explicit conformance continues to use canonical effective components;
-- template profile reaches dependency/artifact/build/lifecycle evaluators without a materialization-required gap;
-- hybrid profile uses overridden/extended/removed effective components;
-- effective component dependency policy is evaluated for template/hybrid where present;
-- artifact evidence component IDs are matched against effective component IDs;
-- explicit/template profiles with equivalent effective architecture yield equivalent architecture-dependent conformance results;
-- the source declaration remains unchanged;
-- invalid/materialization-failed profiles remain fail-closed and do not reach architecture evaluators.
+```text
+tests/ptsip/test_conformance_effective_map_036.py
+```
+
+It covers:
+
+- template profiles reach conformance evaluators without a source-mode/materialization branch;
+- hybrid override/removal results are the component identities consumed by conformance;
+- effective artifact producer/component identity is recognized;
+- explicit/template equivalent effective maps produce equivalent architecture-dependent base conformance results;
+- invalid template bindings remain fail-closed before architecture evaluation.
+
+WU-04E focused validation coverage remains in:
+
+```text
+tests/ptsip/test_profile_validation_036.py
+```
+
+Repository search after the implementation found no remaining `materialization-required`, `MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED`, or `yaml.safe_load` raw-profile path in the conformance integration targets.
 
 ## 9. Out of scope
 
@@ -156,21 +179,24 @@ WU-04F does not migrate:
 
 - clarification answer parsing or projection writes — WU-04G;
 - adoption read/write flows — WU-04G;
-- topology migration semantics unless required only to consume current validation output — later integration/migration work;
+- topology migration semantics — later integration/migration work;
 - VPMS — WU-04H;
 - Tool `0.3.5` legacy reader — WU-07;
 - broad cross-mode downstream closure — WU-04I.
+
+Accordingly, stale tests whose purpose belongs to clarification/decision projection, pilot/adoption, topology migration, or legacy profile interpretation may still fail in the shared repository run without invalidating WU-04F by themselves. They must be classified against their owning future stage rather than silently weakened.
 
 ## 10. Combined WU-04E/F verification gate
 
 Per `planning/0.3.6.md`, this stage shares one exact-SHA self-hosted verification run with the final WU-04E implementation.
 
-Before WU-04G can be entered:
+The implementation gate is complete. Before WU-04G can be entered:
 
-- WU-04F implementation changes and focused tests are complete;
-- one self-hosted `tooling-test.yml` run is dispatched from the exact final E/F branch SHA;
-- WU-04E focused validation tests pass in that run;
-- WU-04F focused conformance tests pass in that run;
-- any remaining repository failures are classified and shown not to invalidate E/F completion;
+- one self-hosted `tooling-test.yml` run must be dispatched from the exact final E/F branch SHA;
+- `tests/ptsip/test_profile_validation_036.py` must pass in that run;
+- `tests/ptsip/test_conformance_effective_map_036.py` must pass in that run;
+- current-tool conformance regression fixtures migrated in WU-04F must be reviewed for pass/fail behavior;
+- any remaining repository failures must be classified and shown not to invalidate E/F completion;
 - if the shared run exposes an E regression, E is reopened;
-- if it exposes an F regression, F remains ACTIVE.
+- if it exposes an F regression, F reopens/remains incomplete;
+- WU-04G remains locked until this shared verification result is reviewed.
