@@ -15,6 +15,7 @@ from typing import Any, Protocol
 
 from ..clarification.resolution import DecisionAnswer, validate_answer
 from ..clarification.resolution.model import CANONICAL_ANSWER_FIELDS
+from ..repository.profile_path import DEFAULT_PROFILE_PATH, normalize_profile_path
 
 AUTHORITY_BRANCH = "ptsip-policy"
 AUTHORITY_FORMAT = "ptsip-github-authority/v1"
@@ -100,17 +101,27 @@ def _normalize_selector(value: object) -> str:
     return text.strip("/")
 
 
-def _global_decision_id(repository: str, request: dict[str, object]) -> str:
+def _global_decision_id(
+    repository: str,
+    request: dict[str, object],
+    profile_path: object | None = None,
+) -> str:
     include = request.get("include")
     if not isinstance(include, list):
         include = list(include) if isinstance(include, tuple) else []
     selectors = sorted({normalized for item in include if (normalized := _normalize_selector(item))})
     if not selectors:
         raise ValueError("GitHub-coordinated decision request requires include selectors")
-    digest = hashlib.sha256(
-        (repository + "\0" + "\0".join(selectors)).encode("utf-8")
-    ).hexdigest()[:20]
+    normalized_profile = normalize_profile_path(profile_path)
+    identity = repository + "\0" + "\0".join(selectors)
+    if normalized_profile != DEFAULT_PROFILE_PATH:
+        identity += "\0profile\0" + normalized_profile
+    digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:20]
     return f"gdec-{digest}"
+
+
+def _record_profile_path(record: dict[str, object]) -> str:
+    return normalize_profile_path(record.get("profile_path"))
 
 
 class GhApi:
@@ -453,7 +464,8 @@ class GithubControlPlaneClient:
         raw_request = payload.get("request")
         if not isinstance(raw_request, dict):
             raise ValueError("peek request must be an object")
-        decision_id = _global_decision_id(self.repository, raw_request)
+        profile_path = normalize_profile_path(payload.get("profile_path"))
+        decision_id = _global_decision_id(self.repository, raw_request, profile_path)
         path = self._decision_path(decision_id)
         reader = getattr(self.store, "read_json_if_exists", None)
         if callable(reader):
@@ -468,7 +480,7 @@ class GithubControlPlaneClient:
                 "decision_id": decision_id,
                 "decision": None,
             }
-        if str(existing.get("repository", "")) != self.repository:
+        if str(existing.get("repository", "")) != self.repository or _record_profile_path(existing) != profile_path:
             return {
                 "backend": "GITHUB",
                 "status": "CONFLICT",
@@ -493,13 +505,14 @@ class GithubControlPlaneClient:
         raw_request = payload["request"]
         if not isinstance(raw_request, dict):
             raise ValueError("gate request must be an object")
-        decision_id = _global_decision_id(self.repository, raw_request)
+        profile_path = normalize_profile_path(payload.get("profile_path"))
+        decision_id = _global_decision_id(self.repository, raw_request, profile_path)
         path = self._decision_path(decision_id)
 
         for _attempt in range(5):
             head, existing = self.store.read_json(path)
             if existing is not None:
-                if str(existing.get("repository", "")) != self.repository:
+                if str(existing.get("repository", "")) != self.repository or _record_profile_path(existing) != profile_path:
                     return {
                         "backend": "GITHUB",
                         "status": "CONFLICT",
@@ -520,6 +533,7 @@ class GithubControlPlaneClient:
                 "repository": self.repository,
                 "branch": str(payload["branch"]),
                 "subject_revision": str(payload["subject_revision"]),
+                "profile_path": profile_path,
                 "component_id": str(payload["component_id"]),
                 "request": copy.deepcopy(raw_request),
                 "status": "PENDING",
@@ -631,10 +645,12 @@ class GithubControlPlaneClient:
             raise ValueError("decision_id is required")
         if status not in {"LOCAL_APPLIED", "FAILED", "STALE"}:
             raise ValueError("unsupported agent application status")
+        profile_path = payload.get("profile_path")
         return {
             "backend": "GITHUB",
             "scope": "LOCAL_PROJECTION",
             "status": status,
             "decision_id": decision_id,
+            "profile_path": normalize_profile_path(profile_path) if profile_path is not None else None,
             "applied_revision": str(payload.get("applied_revision") or "") or None,
         }
