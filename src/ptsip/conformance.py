@@ -4,8 +4,6 @@ import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 
-import yaml
-
 from .artifact_evidence import ArtifactEvidenceLoad, load_artifact_evidence
 from .constants import TOOL_VERSION
 from .inspection.dependencies import DependencyScan, scan_dependency_edges
@@ -401,12 +399,36 @@ def evaluate_conformance(
         evaluators["declared_dependency_boundaries"] = {"status": "BLOCKED", "reason": "INVALID_PROFILE"}
         evaluators["component_dependency_policy"] = {"status": "BLOCKED", "reason": "INVALID_PROFILE"}
     else:
-        loaded = yaml.safe_load(profile.read_text(encoding="utf-8-sig"))
-        payload = loaded if isinstance(loaded, dict) else None
-        if payload is not None:
-            ptsip_meta = payload.get("ptsip")
-            binding = ptsip_meta.get("specification", {}) if isinstance(ptsip_meta, dict) else {}
-            revision = binding.get("revision") if isinstance(binding, dict) else None
+        resolved = profile_validation.resolved_profile
+        if resolved is None:
+            coverage_gaps.append(
+                _coverage_gap(
+                    gap_id="profile:resolution-unavailable",
+                    message=(
+                        "Project Profile validation succeeded without a resolved Responsibility Map runtime view."
+                    ),
+                    rule_ids=("PTSIP-RMAP-001", "PTSIP-EVD-003"),
+                    evidence_ids=("profile:resolution-unavailable",),
+                    blocking=True,
+                )
+            )
+            evaluators["declared_dependency_boundaries"] = {
+                "status": "BLOCKED",
+                "reason": "RESOLVED_PROFILE_REQUIRED",
+            }
+            evaluators["component_dependency_policy"] = {
+                "status": "BLOCKED",
+                "reason": "RESOLVED_PROFILE_REQUIRED",
+            }
+        else:
+            payload = resolved.effective_payload
+            source_ptsip = resolved.source_payload.get("ptsip")
+            source_binding = (
+                source_ptsip.get("specification", {})
+                if isinstance(source_ptsip, dict)
+                else {}
+            )
+            revision = source_binding.get("revision") if isinstance(source_binding, dict) else None
             if not revision:
                 coverage_gaps.append(
                     _coverage_gap(
@@ -419,75 +441,73 @@ def evaluate_conformance(
                         blocking=True,
                     )
                 )
+
             declared = payload.get("components")
             if isinstance(declared, list):
                 components = [item for item in declared if isinstance(item, dict)]
 
-        if components:
-            partition = partition_components(root, components)
-            boundary_findings = evaluate_declared_dependency_boundaries(
-                components, partition, dependencies
-            )
-            diagnostics.extend(
-                _finding_diagnostic(item, "declared-dependency-boundaries")
-                for item in boundary_findings
-            )
-            coverage_gaps.extend(_dependency_coverage_gaps(dependencies, components, partition))
-            coverage_gaps.extend(_unassigned_coverage_gaps(partition))
-            unsupported_gaps = _unsupported_source_coverage_gaps(partition, components)
-            coverage_gaps.extend(unsupported_gaps)
-            evaluators["source_language_coverage"] = {
-                "status": "BLOCKED" if unsupported_gaps else "RAN",
-                "reason": "UNSUPPORTED_MANDATORY_SOURCE" if unsupported_gaps else None,
-                "supported_suffixes": sorted(SUPPORTED_SOURCE_SUFFIXES),
-                "unsupported_source_count": (
-                    len(unsupported_gaps[0]["evidence_ids"]) if unsupported_gaps else 0
-                ),
-            }
-            evaluators["declared_dependency_boundaries"] = {
-                "status": "RAN",
-                "reason": None,
-                "finding_count": len(boundary_findings),
-            }
-
-            component_policy = payload.get("component_dependency_policy") if payload is not None else None
-            policy_results = evaluate_component_dependency_policy(
-                component_policy if isinstance(component_policy, dict) else None,
-                components,
-                partition,
-                dependencies,
-            )
-            project_policy_findings.extend(item.as_dict() for item in policy_results)
-            evaluators["component_dependency_policy"] = {
-                "status": "RAN" if isinstance(component_policy, dict) else "NOT_APPLICABLE",
-                "reason": None,
-                "finding_count": len(policy_results),
-            }
-        else:
-            evaluators["source_language_coverage"] = {
-                "status": "BLOCKED",
-                "reason": "MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED",
-            }
-            evaluators["declared_dependency_boundaries"] = {
-                "status": "BLOCKED",
-                "reason": "MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED",
-            }
-            evaluators["component_dependency_policy"] = {
-                "status": "NOT_APPLICABLE",
-                "reason": "MATERIALIZED_COMPONENT_DECLARATIONS_REQUIRED",
-            }
-            coverage_gaps.append(
-                _coverage_gap(
-                    gap_id="ownership:materialization-required",
-                    message=(
-                        "Component-level conformance evaluation requires a materialized Responsibility Map. "
-                        "Template/hybrid declarations must be resolved through the version-bound template catalog first."
-                    ),
-                    rule_ids=("PTSIP-RMAP-001", "PTSIP-EVD-003"),
-                    evidence_ids=("profile:responsibility_map",),
-                    blocking=True,
+            if components:
+                partition = partition_components(root, components)
+                boundary_findings = evaluate_declared_dependency_boundaries(
+                    components, partition, dependencies
                 )
-            )
+                diagnostics.extend(
+                    _finding_diagnostic(item, "declared-dependency-boundaries")
+                    for item in boundary_findings
+                )
+                coverage_gaps.extend(_dependency_coverage_gaps(dependencies, components, partition))
+                coverage_gaps.extend(_unassigned_coverage_gaps(partition))
+                unsupported_gaps = _unsupported_source_coverage_gaps(partition, components)
+                coverage_gaps.extend(unsupported_gaps)
+                evaluators["source_language_coverage"] = {
+                    "status": "BLOCKED" if unsupported_gaps else "RAN",
+                    "reason": "UNSUPPORTED_MANDATORY_SOURCE" if unsupported_gaps else None,
+                    "supported_suffixes": sorted(SUPPORTED_SOURCE_SUFFIXES),
+                    "unsupported_source_count": (
+                        len(unsupported_gaps[0]["evidence_ids"]) if unsupported_gaps else 0
+                    ),
+                }
+                evaluators["declared_dependency_boundaries"] = {
+                    "status": "RAN",
+                    "reason": None,
+                    "finding_count": len(boundary_findings),
+                }
+
+                component_policy = payload.get("component_dependency_policy")
+                policy_results = evaluate_component_dependency_policy(
+                    component_policy if isinstance(component_policy, dict) else None,
+                    components,
+                    partition,
+                    dependencies,
+                )
+                project_policy_findings.extend(item.as_dict() for item in policy_results)
+                evaluators["component_dependency_policy"] = {
+                    "status": "RAN" if isinstance(component_policy, dict) else "NOT_APPLICABLE",
+                    "reason": None,
+                    "finding_count": len(policy_results),
+                }
+            else:
+                coverage_gaps.append(
+                    _coverage_gap(
+                        gap_id="profile:effective-components-missing",
+                        message="Validated effective Responsibility Map contains no component declarations.",
+                        rule_ids=("PTSIP-RMAP-001", "PTSIP-EVD-003"),
+                        evidence_ids=("profile:effective-components-missing",),
+                        blocking=True,
+                    )
+                )
+                evaluators["source_language_coverage"] = {
+                    "status": "BLOCKED",
+                    "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED",
+                }
+                evaluators["declared_dependency_boundaries"] = {
+                    "status": "BLOCKED",
+                    "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED",
+                }
+                evaluators["component_dependency_policy"] = {
+                    "status": "BLOCKED",
+                    "reason": "EFFECTIVE_COMPONENT_DECLARATIONS_REQUIRED",
+                }
 
     artifact_diagnostics, artifact_gaps, artifact_evaluator = _evaluate_artifacts(
         artifact_load, components, partition
