@@ -156,7 +156,7 @@ def _project_template_backed(
                 f"Existing hybrid project declaration removes component {component_id!r}; "
                 "the accepted decision cannot silently reverse that project-owned removal"
             )
-        project_components = overrides.setdefault("components", [])
+        project_components = overrides.get("components", [])
         project_component = _find_component(
             project_components,
             component_id,
@@ -174,9 +174,9 @@ def _project_template_backed(
         raise ValueError(f"Unsupported Responsibility Map mode: {mode!r}")
 
     # If the immutable template already represents the accepted canonical
-    # decision, source mode must remain unchanged.  This prevents an automatic
-    # template -> hybrid transition when no project-owned declaration delta is
-    # actually required.
+    # decision, source mode must remain unchanged.  This prevents automatic
+    # template -> hybrid conversion and also avoids adding empty override
+    # collections to an existing hybrid source when no project delta is needed.
     if effective_component is not None and _decision_matches(effective_component, answer):
         return payload
 
@@ -189,6 +189,11 @@ def _project_template_backed(
         map_meta["overrides"] = overrides
         project_components = []
         overrides["components"] = project_components
+    else:
+        assert isinstance(overrides, dict)
+        if "components" not in overrides:
+            project_components = []
+            overrides["components"] = project_components
 
     assert isinstance(overrides, dict)
     assert isinstance(project_components, list)
