@@ -19,6 +19,12 @@ from .typescript_config import resolve_typescript_path_alias
 
 
 _JS_EXTENSIONS = tuple(sorted(JAVASCRIPT_TYPESCRIPT_SOURCE_SUFFIXES))
+_RUNTIME_TO_SOURCE_EXTENSIONS: dict[str, tuple[str, ...]] = {
+    ".js": (".ts", ".tsx"),
+    ".jsx": (".tsx",),
+    ".mjs": (".mts",),
+    ".cjs": (".cts",),
+}
 _STATIC_IMPORT_RE = re.compile(
     r"(?:^|[;\n])\s*(?:import\s+(?:[^;\n]*?\s+from\s+)?|export\s+[^;\n]*?\s+from\s+)[\"']([^\"']+)[\"']",
     re.MULTILINE,
@@ -208,13 +214,15 @@ def _resolve_relative(root: Path, source_rel: str, specifier: str) -> str | None
         return None
 
     candidates: list[Path] = []
-    if target.suffix.lower() in _JS_EXTENSIONS and target.is_file():
-        candidates.append(target)
-    elif target.is_file():
+    if target.is_file():
         candidates.append(target)
     else:
-        candidates.extend(Path(str(target) + extension) for extension in _JS_EXTENSIONS)
-        candidates.extend(target / f"index{extension}" for extension in _JS_EXTENSIONS)
+        runtime_sources = _RUNTIME_TO_SOURCE_EXTENSIONS.get(target.suffix.lower())
+        if runtime_sources is not None:
+            candidates.extend(target.with_suffix(extension) for extension in runtime_sources)
+        elif not target.suffix:
+            candidates.extend(Path(str(target) + extension) for extension in _JS_EXTENSIONS)
+            candidates.extend(target / f"index{extension}" for extension in _JS_EXTENSIONS)
     for candidate in candidates:
         if candidate.is_file():
             try:
