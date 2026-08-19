@@ -11,7 +11,7 @@ Read, in order:
 3. `src/ptsip/constants.py`
 4. applicable Specification files under `spec/`
 5. `planning/0.3.6.md`
-6. only the currently ACTIVE sub-stage document under `planning/0.3.6/`
+6. the WU-04 sub-stage document(s) identified by the master plan for the current implementation/verification tranche
 
 `MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
@@ -173,7 +173,7 @@ PROJECT_REMOVAL
 This provenance is not lifecycle classification and is not required canonical profile serialization.
 The materializer MUST NOT infer architecture, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve semantic conflicts by heuristics, or mutate source declarations merely to obtain a valid map.
 
-## Active WU-04 stage
+## Current WU-04 verification tranche
 
 Current ordered state:
 
@@ -182,36 +182,37 @@ WU-04A  template catalog identity                         COMPLETE
 WU-04B  deterministic materializer core                  COMPLETE
 WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                ACTIVE
-WU-04F  conformance consumes effective map               LOCKED
+WU-04E  validation consumes effective map                IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
+WU-04F  conformance consumes effective map               IMPLEMENTATION COMPLETE / SHARED VERIFICATION PENDING
 WU-04G  clarification/adoption read integration          LOCKED
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Active stage document:
+Combined verification documents:
 
 ```text
 planning/0.3.6/WU-04E-validation-effective-map.md
+planning/0.3.6/WU-04F-conformance-effective-map.md
 ```
 
-WU-04E entry baseline:
+Entry baselines:
 
 ```text
-2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
+WU-04E  2f0c7db2d20fb6d88ab5c4ab10707f50d486351f
+WU-04F  5d52e452ce48de4d0e0d8251d906c1e0f15f82c2
 ```
 
-WU-04E scope is limited to:
+The maintainer explicitly authorized one exact-SHA self-hosted `tooling-test.yml` run to verify the final E/F tranche together. Until that run is reviewed:
 
-- source schema and Tool/Specification binding validation before materialization;
-- fail-closed conversion of materialization defects into profile validation errors;
-- common semantic Responsibility Map validation over `ResolvedProfile.effective_payload`;
-- common component/associated-artifact selector partition and coverage over the effective map;
-- resolution identity/provenance details needed to explain validation results;
-- focused validation tests for explicit/template/hybrid behavior.
+- do not call WU-04E or WU-04F exact-SHA verified;
+- do not create or enter WU-04G;
+- if the run exposes an E regression, reopen E;
+- if the run exposes an F regression, reopen/continue F;
+- failures owned by clarification/adoption, pilot, topology, VPMS, or legacy migration must be classified rather than weakening E/F contracts.
 
-Do **not** migrate conformance, clarification/adoption, or VPMS consumers during WU-04E. Those remain WU-04F through WU-04H.
-Do not create the WU-04F sub-document until WU-04E completion gate is satisfied and a fresh branch-HEAD read is recorded.
+WU-04E validation owns source validation -> materialization -> common effective semantic/selector validation and retains `ValidationResult.resolved_profile` as an in-process handoff.
+WU-04F conformance consumes `validation.resolved_profile.effective_payload`; conformance must not reload raw YAML architecture, implement template/hybrid resolution, or restore a materialization-required branch.
 
 ## Migration boundary
 
@@ -250,7 +251,7 @@ SPEC_VERSION  = 0.3.6-draft
 SPEC_REVISION = 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-WU-04E consumes semantics already frozen by WU-04C and materialized by WU-04D. Do not move `SPEC_REVISION` merely because implementation/tests change. If a genuinely new normative rule is required, freeze the Specification first and then choose a new immutable snapshot.
+WU-04E/F consume semantics already frozen by WU-04C and materialized by WU-04D. Do not move `SPEC_REVISION` merely because implementation/tests change. If a genuinely new normative rule is required, freeze the Specification first and then choose a new immutable snapshot.
 Do not weaken `.github/scripts/verify_release_contract.py` to make a release pass.
 
 ## Exact release gate
