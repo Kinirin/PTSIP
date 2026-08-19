@@ -16,14 +16,6 @@ jobs:
     if: startsWith(github.event.release.tag_name, 'tool-v')
     runs-on: [self-hosted, Windows, X64]
     steps:
-      - name: Verify approved self-hosted runner identity
-        shell: powershell
-        run: |
-          if ($env:RUNNER_NAME -ne "DESKTOP-5HCCQIR") {
-            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-5HCCQIR."
-          }
-          Write-Host "Building release distributions on approved self-hosted runner: $env:RUNNER_NAME"
-
       - name: Checkout published Tool tag with full history
         uses: actions/checkout@v4
         with:
@@ -31,10 +23,44 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
+      - name: Prepare self-hosted Python 3.14
+        shell: powershell
+        run: |
+          $launcher = Get-Command py -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
+          }
+
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
+          }
+
+          & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
+          if ($LASTEXITCODE -ne 0) {
+            throw "The selected host interpreter is not Python 3.14."
+          }
+
+          if (Test-Path -LiteralPath ".venv") {
+            Remove-Item -LiteralPath ".venv" -Recurse -Force
+          }
+
+          & $python -m venv .venv
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create the isolated release-build virtual environment."
+          }
+
+          $venvRoot = (Resolve-Path -LiteralPath ".venv").Path
+          $venvScripts = Join-Path $venvRoot "Scripts"
+          $venvPython = Join-Path $venvScripts "python.exe"
+          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
+            throw "Release-build virtual environment did not produce .venv\\Scripts\\python.exe."
+          }
+
+          & $venvPython --version
+          "VIRTUAL_ENV=$venvRoot" >> $env:GITHUB_ENV
+          $venvScripts >> $env:GITHUB_PATH
+          Write-Host "Using host Python 3.14 via isolated environment: $venvPython"
 
       - name: Install distribution tooling
         shell: powershell
