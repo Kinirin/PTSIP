@@ -237,6 +237,43 @@ WU-04G implementation order is G0 normative freeze, then effective-read/selector
 
 WU-04H must not be entered or pre-created before the WU-04G completion gate is reviewed.
 
+## OpenAI Local Bridge operational evidence
+
+Canonical registry:
+
+```text
+.codex/openai-local-bridge/tasks.toml
+```
+
+Current Bridge task selected by the PTSIP repository policy:
+
+```text
+repository_id   Kinirin/PTSIP
+task_id         wu04g-precheck
+executable      py
+args            -3.14 .github/scripts/wu04g_guard.py precheck
+cwd             .
+access          read
+```
+
+The task is deliberately the existing WU-04G repository-native precheck rather than the currently known-red complete pytest suite. It is a Bridge connectivity/task-execution probe only and does not replace G1-G5 focused verification or the post-G5 exact-SHA complete repository regression.
+
+Maintainer-reported remote E2E success on 2026-08-19:
+
+```text
+run_id                         a4441c401c994cf6bc09ec539a56ffa7
+status                         completed
+exit_code                      0
+failure_kind                   null
+protocol_version               2025-11-25
+remote_task_execution_verified true
+log_available                  true
+log_truncated                  false
+capability_url_exposed         false
+```
+
+This proves Bridge repository discovery + task discovery + read-only remote execution + run evidence/log retrieval for `wu04g-precheck`. Do not interpret it as WU-04G implementation completion, full regression success, or release readiness.
+
 ## Latest self-hosted regression evidence
 
 GitHub Actions run:
