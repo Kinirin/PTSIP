@@ -30,7 +30,7 @@ Current bound Specification:
 0.3.6-draft @ 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D is implementing those frozen semantics; no new Specification revision is selected merely for runtime/test changes.
+The WU-04C snapshot added normative declaration-authority/materialization semantics (`PTSIP-RMAP-013` through `PTSIP-RMAP-016`). WU-04D implements those frozen semantics; runtime/test/workflow changes do not independently move the Specification revision.
 
 ### Work-unit progress
 
@@ -86,43 +86,6 @@ NEUTRAL_CONTRACT
 
 Classification is primary lifecycle ownership and remains distinct from component roles, typed relationships, associated artifacts, declaration source, materialization provenance, and VPMS Verification Purpose.
 
-## WU-04 declaration/materialization authority
-
-Frozen responsibility boundary:
-
-```text
-classification
-    = primary lifecycle ownership
-
-source_mode / derived entity origin
-    = declaration authority provenance
-
-materializer
-    = deterministic non-authoritative resolution
-```
-
-Responsibility Map source modes:
-
-```text
-explicit
-template
-hybrid
-```
-
-Template selection is explicit and exact-revision-bound. Hybrid project replacement/extension/removal outranks the selected immutable template declaration, using stable-ID whole-entity authority rather than implicit field-level inheritance.
-
-Derived runtime/review origin vocabulary:
-
-```text
-PROJECT_EXPLICIT
-TEMPLATE
-PROJECT_OVERRIDE
-PROJECT_EXTENSION
-PROJECT_REMOVAL
-```
-
-The materializer must not infer missing architecture, auto-select templates, rewrite lifecycle classifications, fabricate responsibilities, silently repair dangling relationships, cascade project removals, or mutate source declarations merely to produce a valid effective map.
-
 ## WU-04D active implementation boundary
 
 WU-04D introduces one source-preserving resolved view:
@@ -157,6 +120,40 @@ tests/ptsip/test_template_materialization_036.py
 The effective-map digest represents effective architecture semantics rather than source mechanism. It excludes Specification binding, source mode, template identity, and materialization provenance, while normalizing stable-ID collections and known set-valued fields deterministically.
 
 WU-04D remains **ACTIVE**. Validation, conformance, clarification/adoption, and VPMS consumer integration have not been entered and belong to WU-04E through WU-04H.
+
+## Tool 0.3.6 verification status
+
+Self-hosted workflow run `32211081862` / job `95943730594` executed source SHA:
+
+```text
+613b7aa887cb4c0aefade5b0095a5e2448bf9cd5
+```
+
+Observed execution evidence:
+
+```text
+self-hosted Windows scheduling       PASS
+exact SHA checkout                   PASS
+exact source identity                PASS
+host Python 3.14 selection           PASS
+isolated per-run .venv creation      PASS
+verification tooling installation    PASS
+complete pytest execution            RAN
+result                               216 passed / 45 failed
+```
+
+The previous `actions/setup-python` installation failure is resolved. The self-hosted runner successfully used host Python 3.14 through `py -3.14` and created an isolated verification environment.
+
+The full Tool `0.3.6` regression is **NOT passing**. The 45 failures include several known stale-contract groups:
+
+- tests pinned to the earlier WU-03 Specification snapshot `12e2ccd15634ecb3d0a4195b0f61ac3f620e7540` instead of current `82abd09360df09a95fbbfb516855fa9ffb49f050`;
+- historical `TOOLCHAIN`, `lifecycle_owner`, and Tool `0.3.5` expectations that are not canonical Tool `0.3.6` output;
+- conformance/adoption/topology fixtures whose old source profile expectations now fail before later WU-04 effective-map integrations are entered;
+- a workflow test that expected `actions/setup-python`, subsequently updated to the host-Python contract.
+
+`tests/ptsip/test_template_materialization_036.py` did not appear in the failure list of that complete run. This is evidence that the run did not report failures from that focused file; it is not a claim that the full Tool regression passed.
+
+Do not repeat a full self-hosted regression solely to re-prove the workflow infrastructure while these known repository failures remain. Resolve the applicable WU-aligned failures first.
 
 ## Repository self-profile
 
@@ -193,30 +190,47 @@ TOOLCHAIN
 
 VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. VPMS effective-map read integration is reserved for WU-04H.
 
-## Tool 0.3.6 verification status
+## GitHub Actions resource policy
 
-Focused WU-04D regression cases have been added, but **no test execution success is claimed yet**.
+Self-hosted execution is **capability-bound, not machine-name-bound**.
 
-No self-hosted workflow has been dispatched for WU-04D. Full repository regression/package verification remains a later WU-12/release-candidate responsibility unless a maintainer explicitly requests earlier self-hosted verification.
-
-Historical Tool `0.3.5` maintainer-local regression remains:
+Eligible Tool build/test runners must satisfy:
 
 ```text
-python -m pytest -q
-244 passed in 571.90s
+self-hosted
+Windows
+X64
+PowerShell
+Python 3.14 available through `py -3.14`
 ```
 
-That is historical Tool `0.3.5` evidence only and must not be represented as Tool `0.3.6` verification.
+Do not hard-code `DESKTOP-*` computer names into workflows or operational instructions.
+If a matching runner is offline, GitHub Actions may remain queued until one becomes available; no `host_ready` checkbox is required.
 
-## Workflow resource policy
-
-Approved Windows self-hosted runner:
+Current manual verification flow:
 
 ```text
-DESKTOP-5HCCQIR
+tooling-test.yml
+    workflow_dispatch with no custom inputs
+    -> selected ref's exact github.sha
+    -> self-hosted regression/build/smoke
+    -> self-hosted/tooling-test status on exact SHA
+
+release.yml
+    workflow_dispatch from main with no custom inputs
+    -> derive exact github.sha and package version
+    -> require current origin/main == dispatched SHA
+    -> require self-hosted/tooling-test success on exact SHA
+    -> verify release contract
+    -> create draft release for the same SHA
+
+tooling-release.yml
+    release published event
+    -> self-hosted Windows distribution build/verification
+    -> minimal GitHub-hosted GNU/Linux Trusted Publishing only
 ```
 
-Before dispatching `tooling-test.yml` or `release.yml`, the maintainer must be told that this runner will be used and must explicitly confirm that the host and PowerShell environment are ready.
+Manual `host_ready`, `source_sha`, `version`, and `release_candidate` inputs are not part of the current pipeline.
 
 The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHub-hosted compute exception. It must not absorb tests, compilation, package building, or release preparation.
 
