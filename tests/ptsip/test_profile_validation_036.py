@@ -100,9 +100,7 @@ def test_hybrid_validation_uses_override_and_removal_effective_map(tmp_path: Pat
     definition = template_catalog()[0]
     repo = _repo(tmp_path, {"lib/package.py": "VALUE = 1\n"})
     payload = _base("hybrid", definition.id, definition.revision)
-    responsibility_map = payload["responsibility_map"]
-    assert isinstance(responsibility_map, dict)
-    responsibility_map["overrides"] = {
+    payload["responsibility_map"]["overrides"] = {
         "components": [
             {
                 "id": "package",
@@ -152,9 +150,7 @@ def test_hybrid_removal_that_leaves_dangling_effective_relationship_fails(tmp_pa
     definition = template_catalog()[0]
     repo = _repo(tmp_path, {"src/package.py": "VALUE = 1\n"})
     payload = _base("hybrid", definition.id, definition.revision)
-    responsibility_map = payload["responsibility_map"]
-    assert isinstance(responsibility_map, dict)
-    responsibility_map["overrides"] = {
+    payload["responsibility_map"]["overrides"] = {
         "remove_component_ids": ["package-tests"],
     }
     _write_profile(repo, payload)
@@ -168,6 +164,83 @@ def test_hybrid_removal_that_leaves_dangling_effective_relationship_fails(tmp_pa
     )
     assert result.details is not None
     assert result.details["resolution"]["source_mode"] == "hybrid"
+
+
+def test_effective_associated_artifact_anchor_must_reference_component(tmp_path: Path) -> None:
+    repo = _repo(
+        tmp_path,
+        {
+            "product/app.py": "VALUE = 1\n",
+            "docs/note.md": "note\n",
+        },
+    )
+    payload = _base("explicit")
+    payload["components"] = [
+        {
+            "id": "product",
+            "classification": "PRODUCT",
+            "include": ["product/**"],
+            "purpose": "product_runtime",
+        }
+    ]
+    payload["associated_artifacts"] = [
+        {
+            "id": "product-docs",
+            "anchor": "missing-product",
+            "include": ["docs/**"],
+            "purpose": "subordinate_product_documentation",
+        }
+    ]
+    payload["relationships"] = [
+        {
+            "id": "docs-document-product",
+            "from": "product-docs",
+            "to": "product",
+            "type": "DOCUMENTS",
+        }
+    ]
+    _write_profile(repo, payload)
+
+    result = validate_profile(repo)
+
+    assert not result.valid
+    assert any("anchor 'missing-product' is not a declared component" in error for error in result.errors)
+
+
+def test_effective_component_dependency_policy_allow_deny_conflict_fails(tmp_path: Path) -> None:
+    repo = _repo(
+        tmp_path,
+        {
+            "product/app.py": "VALUE = 1\n",
+            "tools/check.py": "VALUE = 2\n",
+        },
+    )
+    payload = _base("explicit")
+    payload["components"] = [
+        {
+            "id": "product",
+            "classification": "PRODUCT",
+            "include": ["product/**"],
+            "purpose": "product_runtime",
+        },
+        {
+            "id": "tools",
+            "classification": "DEVELOPMENT_TOOLING",
+            "include": ["tools/**"],
+            "purpose": "development_tooling",
+        },
+    ]
+    payload["component_dependency_policy"] = {
+        "default": "deny",
+        "allow": [{"from": "tools", "to": "product"}],
+        "deny": [{"from": "tools", "to": "product"}],
+    }
+    _write_profile(repo, payload)
+
+    result = validate_profile(repo)
+
+    assert not result.valid
+    assert any("appears in both allow and deny" in error for error in result.errors)
 
 
 def test_equal_explicit_and_template_maps_share_validation_digest_and_partition(tmp_path: Path) -> None:
