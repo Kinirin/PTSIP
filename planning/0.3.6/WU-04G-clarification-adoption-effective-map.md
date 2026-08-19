@@ -1,6 +1,6 @@
 # WU-04G — Clarification / Adoption Effective-Map Integration and Decision-Protocol Upgrade
 
-> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 next and not yet entered  
+> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 next and not yet entered  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04F — conformance consumes the effective Responsibility Map  
@@ -14,8 +14,8 @@
 ```text
 G0  normative accepted-decision authority freeze   COMPLETE
 G1  effective read + selector coverage             VERIFIED
-G2  clarification-answer/v2                        NEXT / NOT ENTERED
-G3  hybrid safe apply                              LOCKED BEHIND G2
+G2  clarification-answer/v2                        VERIFIED
+G3  hybrid safe apply                              NEXT / NOT ENTERED
 G4  exact profile-path control plane               LOCKED BEHIND G3
 G5  recovery + integration + migration audit       LOCKED BEHIND G4
 ```
@@ -45,6 +45,34 @@ capability_url_exposed:         false
 ```
 
 The same track had previously exposed one test-fixture migration omission for a non-root profile parent directory; that fixture was corrected before the passing run. The passing Bridge run is the G1 files-mode verification evidence. It is not the final exact-SHA complete repository regression, which remains reserved for G5.
+
+G2 implementation and migration were verified after isolating a frozen non-G topology contract from the G2 track selector. The maintainer-provided OpenAI Local Bridge verification produced:
+
+```text
+wu04g-scope
+run_id:                         c57d0fd7adab45c39739685a6fca581d
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+
+wu04g-g2-files
+run_id:                         95f081cc5f2140cea719afea67a33b2a
+status:                         completed
+exit_code:                      0
+failure_kind:                   null
+protocol_version:               2025-11-25
+remote_task_execution_verified: true
+log_available:                  true
+log_truncated:                  false
+capability_url_exposed:         false
+```
+
+An earlier G2 run, `97def58217ec44fb8b1725ef7299d693`, reached pytest and reported `41 passed / 1 failed`; the sole failure was `test_topology_legacy_boundary_profile_preserves_historical_plane_classification`, a known legacy `0.3.4 boundaries/TOOLCHAIN` topology contract. Section 10 explicitly freezes topology semantics in this mixed file, so the test was neither repaired nor xfailed. The G2 files-mode selector was narrowed to the G2-owned `DecisionAnswer`/projection node while the legacy topology test remains available to later all-G and complete-regression gates.
 
 ## 1. Accepted maintainer decision package
 
@@ -94,7 +122,7 @@ maintainer / authorized project decision
 
 Tool safe-apply layer
     -> may encode that accepted decision as a hybrid project extension/replacement
-    -> may change source mode template -> hybrid when required to represent the accepted decision
+    -> may change source mode template -> hybrid only to represent the accepted decision
 
 materializer
     -> only reproduces the resulting declaration deterministically
@@ -282,7 +310,7 @@ WU-04C  COMPLETE
 WU-04D  COMPLETE
 WU-04E  COMPLETE / VERIFIED
 WU-04F  COMPLETE / VERIFIED
-WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 NEXT
+WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 NEXT
 WU-04H  LOCKED
 WU-04I  LOCKED
 ```
@@ -623,6 +651,8 @@ G1 focused tests and the three migrated files must pass their G-owned expectatio
 
 ### G2 — clarification-answer/v2 + file migration
 
+**Execution status: VERIFIED.** Canonical v2 answer, explicit v1 compatibility boundary, canonical `TOOLCHAIN` rejection, v2 render/store/CLI/local/GitHub surfaces, and the G2 migration targets passed the repository-native G2 gate after preserving the mixed topology file's frozen non-G semantics. Scope run `c57d0fd7adab45c39739685a6fca581d` and files run `95f081cc5f2140cea719afea67a33b2a` both completed with exit code 0.
+
 Production targets:
 
 ```text
@@ -662,7 +692,7 @@ Required work:
 6. preserve store/authority/first-valid-resolution semantics and state isolation;
 7. topology-specific semantic tests remain frozen even though their shared DecisionAnswer/projection helpers may migrate.
 
-G2 focused tests and all six participating migrated files must pass their G-owned interfaces before G3 starts.
+The five fully G2-owned participating files plus the G2-owned `test_resolution_projection_respects_explicit_profile_path` node from the mixed topology file, together with `TestG2DecisionProtocolV2`, passed `wu04g-g2-files`. The unrelated legacy topology contract remains intentionally outside this stage gate and is not considered resolved.
 
 ### G3 — projection + automatic hybrid conversion + file migration
 
@@ -946,6 +976,36 @@ historical partial-declaration raw-profile expectation
     -> semantic reason: D1-B/D2-B forbid schema-invalid raw source from acting as architecture authority
     -> focused/files verification: PASS via same run
 ```
+
+### G2 verification ledger
+
+```text
+test_decision_control_plane.py::test_structured_answer_parser_and_validation
+    -> split/replaced by canonical v2 parser + explicit v1 compatibility contracts
+    -> destinations:
+       TestG2DecisionProtocolV2::test_v2_parser_accepts_canonical_answer_without_lifecycle_owner
+       TestG2DecisionProtocolV2::test_v1_reader_is_explicit_compatibility_only
+    -> focused/files verification: PASS via wu04g-g2-files run 95f081cc5f2140cea719afea67a33b2a
+
+test_decision_control_plane.py::test_toolchain_runtime_answer_is_conflict
+    -> split/replaced by canonical TOOLCHAIN rejection + no-auto-translation legacy contract
+    -> destinations:
+       TestG2DecisionProtocolV2::test_v2_rejects_toolchain_classification
+       TestG2DecisionProtocolV2::test_v1_toolchain_is_not_auto_translated
+    -> focused/files verification: PASS via same run
+
+test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
+    -> preserved as the G2-owned DecisionAnswer/projection interface in the mixed topology file
+    -> topology migration outcomes remain semantically frozen
+    -> focused/files verification: PASS via same run
+
+legacy topology contract test_topology_legacy_boundary_profile_preserves_historical_plane_classification
+    -> preserved unchanged; not a G2 semantic contract
+    -> earlier mixed-file run 97def58217ec44fb8b1725ef7299d693 exposed it as the sole failure after 41 passes
+    -> excluded only from the G2 track selector; remains visible to later all-G/full regression
+```
+
+The G2 scope guard passed in run `c57d0fd7adab45c39739685a6fca581d` before the successful G2 files-mode run.
 
 The final G5 evidence must contain:
 
