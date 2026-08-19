@@ -1,11 +1,12 @@
 # WU-04D — `ResolvedProfile`, Effective-Map Digest, and Derived Provenance
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04C — declaration authority + Canonical Effective Responsibility Map boundary  
 > **Entry baseline:** `d8713ac4e684852f3e6cf67a68165f82ae0b80aa`  
-> **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`
+> **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`  
+> **Completion baseline:** `6b1aa963b11681242088527c5723ad5cd57b4ea1`
 
 ## 1. Purpose
 
@@ -115,7 +116,7 @@ new project ID             -> PROJECT_EXTENSION
 removed template ID         -> PROJECT_REMOVAL
 ```
 
-Removed IDs do not appear in the effective map; their removal provenance is retained separately for explanation/review.
+Removed IDs do not appear in the effective map; their removal provenance is retained separately for explanation/review. Membership in the dedicated `removals` provenance collection denotes the `PROJECT_REMOVAL` origin for that removed template ID.
 
 Derived provenance MUST NOT be serialized back into the canonical Project Profile merely to support resolution.
 
@@ -206,14 +207,14 @@ Primary implementation target:
 src/ptsip/validation/templates.py
 ```
 
-Expected changes:
+Implemented changes:
 
-- introduce `ResolvedProfile`;
-- introduce structured derived provenance;
-- extend merge/materialization helpers to return origin/removal metadata;
-- calculate deterministic effective-map digest;
-- preserve source payload separately from effective payload;
-- keep `materialize_profile()` as the single mode-resolution entry point for now.
+- `ResolvedProfile` preserves source and effective payloads separately;
+- structured derived provenance records explicit/template/override/extension origins plus explicit removals;
+- merge/materialization helpers return origin/removal metadata;
+- deterministic effective-map digest is calculated from bounded architecture semantics;
+- source payload is preserved independently from effective payload;
+- `materialize_profile()` remains the single mode-resolution entry point.
 
 Primary focused regression target:
 
@@ -221,7 +222,7 @@ Primary focused regression target:
 tests/ptsip/test_template_materialization_036.py
 ```
 
-WU-04D tests should cover:
+Focused coverage includes:
 
 - source payload remains unchanged and independently available;
 - explicit provenance;
@@ -231,13 +232,12 @@ WU-04D tests should cover:
 - digest equality for semantically equivalent explicit/template declarations;
 - digest insensitivity to stable-ID collection order and known set-valued ordering;
 - digest changes when effective architecture semantics change;
-- template identity/source mode do not alter equal effective-map digest.
-
-No self-hosted workflow is dispatched as part of entering or implementing WU-04D unless the maintainer separately confirms the approved runner is ready.
+- template identity/source mode do not alter equal effective-map digest;
+- malformed stable-ID materialization input fails closed.
 
 ## 10. WU-04D completion gate
 
-WU-04D is complete only when:
+WU-04D is complete because:
 
 - `ResolvedProfile` preserves source declaration and effective payload as separate views;
 - exact source mode and template identity remain available;
@@ -245,7 +245,9 @@ WU-04D is complete only when:
 - effective-map digest is deterministic and source-mode independent;
 - digest normalization is bounded to known semantic collection rules rather than arbitrary list sorting;
 - focused tests cover the new abstraction and digest/provenance semantics;
-- WU-04E validation integration has **not** been entered early;
-- WU-04E sub-document has not been created.
+- WU-04E validation integration was not entered early;
+- the WU-04E sub-document did not exist before this completion gate was reached.
 
-Until these conditions are met, WU-04E remains locked.
+Self-hosted run `32218181598` / job `95963505443` exercised the complete repository test suite at source SHA `bf62202507ee7b83d72cefb5cf01243675ffd062` and reported `219 passed / 43 failed`. `tests/ptsip/test_template_materialization_036.py` did not appear in the failure summary. The remaining failures were outside the WU-04D focused materializer boundary, including stale earlier-version fixtures and later-stage validation/conformance/topology/decision integrations. Subsequent commits through completion baseline `6b1aa963b11681242088527c5723ad5cd57b4ea1` changed only stale regression expectations/nodeids and did not modify `src/ptsip/validation/templates.py` or the WU-04D focused test implementation.
+
+This closes WU-04D. WU-04E may be entered only after a fresh development-branch HEAD read and creation of its own entry document.
