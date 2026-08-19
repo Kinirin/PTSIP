@@ -10,6 +10,7 @@ from jsonschema import Draft202012Validator
 
 from ...constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ...validation.profile import _schema, validate_profile
+from ...validation.templates import materialize_profile
 from .model import DecisionAnswer
 
 DEFAULT_POLICIES: dict[str, str] = {
@@ -17,6 +18,14 @@ DEFAULT_POLICIES: dict[str, str] = {
     "nonproduct_in_product_package": "deny",
     "independent_build_resolution": "required",
 }
+
+_DECISION_FIELDS = (
+    "classification",
+    "purpose",
+    "shipped",
+    "runtime_required",
+    "executable",
+)
 
 
 @dataclass(frozen=True)
@@ -52,6 +61,153 @@ def _set_missing_or_require_equal(component: dict[str, object], key: str, expect
         )
 
 
+def _decision_value(answer: DecisionAnswer, key: str) -> object:
+    return getattr(answer, key)
+
+
+def _apply_answer(
+    component: dict[str, object],
+    answer: DecisionAnswer,
+    *,
+    require_existing_equal: bool,
+) -> None:
+    for key in _DECISION_FIELDS:
+        expected = _decision_value(answer, key)
+        if require_existing_equal:
+            _set_missing_or_require_equal(component, key, expected)
+        else:
+            component[key] = expected
+    component.pop("lifecycle_owner", None)
+
+
+def _decision_matches(component: dict[str, object], answer: DecisionAnswer) -> bool:
+    return all(component.get(key) == _decision_value(answer, key) for key in _DECISION_FIELDS)
+
+
+def _find_component(items: object, component_id: str, *, label: str) -> dict[str, object] | None:
+    if not isinstance(items, list):
+        raise ValueError(f"{label} must be a list")
+    for item in items:
+        if isinstance(item, dict) and str(item.get("id")) == component_id:
+            return item
+    return None
+
+
+def _new_component(
+    component_id: str,
+    include: tuple[str, ...] | list[str],
+    answer: DecisionAnswer,
+) -> dict[str, object]:
+    component: dict[str, object] = {
+        "id": component_id,
+        "include": [str(item) for item in include],
+    }
+    _apply_answer(component, answer, require_existing_equal=False)
+    return component
+
+
+def _project_explicit(
+    payload: dict[str, object],
+    component_id: str,
+    include: tuple[str, ...] | list[str],
+    answer: DecisionAnswer,
+) -> dict[str, object]:
+    components = payload.setdefault("components", [])
+    component = _find_component(components, component_id, label="components")
+    if component is None:
+        assert isinstance(components, list)
+        components.append(_new_component(component_id, include, answer))
+        return payload
+
+    if "include" not in component:
+        component["include"] = [str(item) for item in include]
+    _apply_answer(component, answer, require_existing_equal=True)
+    return payload
+
+
+def _project_template_backed(
+    payload: dict[str, object],
+    map_meta: dict[str, object],
+    component_id: str,
+    include: tuple[str, ...] | list[str],
+    answer: DecisionAnswer,
+) -> dict[str, object]:
+    # Materialization is read-only and is used here only to understand the
+    # currently selected immutable template/hybrid declaration.  It does not
+    # authorize a write or select architecture from repository evidence.
+    resolved = materialize_profile(payload)
+    effective_components = resolved.effective_payload.get("components", [])
+    effective_component = _find_component(
+        effective_components,
+        component_id,
+        label="effective components",
+    )
+
+    mode = map_meta.get("mode")
+    if mode == "hybrid":
+        overrides = map_meta.get("overrides")
+        if not isinstance(overrides, dict):
+            raise ValueError("Hybrid Responsibility Map requires an overrides mapping")
+        removal_ids = overrides.get("remove_component_ids", [])
+        if not isinstance(removal_ids, list):
+            raise ValueError("remove_component_ids must be a list")
+        if component_id in removal_ids:
+            raise ValueError(
+                f"Existing hybrid project declaration removes component {component_id!r}; "
+                "the accepted decision cannot silently reverse that project-owned removal"
+            )
+        project_components = overrides.setdefault("components", [])
+        project_component = _find_component(
+            project_components,
+            component_id,
+            label="responsibility_map.overrides.components",
+        )
+        if project_component is not None:
+            if "include" not in project_component:
+                project_component["include"] = [str(item) for item in include]
+            _apply_answer(project_component, answer, require_existing_equal=True)
+            return payload
+    elif mode == "template":
+        overrides = None
+        project_components = None
+    else:  # pragma: no cover - caller guards the supported source modes
+        raise ValueError(f"Unsupported Responsibility Map mode: {mode!r}")
+
+    # If the immutable template already represents the accepted canonical
+    # decision, source mode must remain unchanged.  This prevents an automatic
+    # template -> hybrid transition when no project-owned declaration delta is
+    # actually required.
+    if effective_component is not None and _decision_matches(effective_component, answer):
+        return payload
+
+    if mode == "template":
+        template_ref = map_meta.get("template")
+        if not isinstance(template_ref, dict):
+            raise ValueError("Template Responsibility Map requires an immutable template reference")
+        map_meta["mode"] = "hybrid"
+        overrides = {}
+        map_meta["overrides"] = overrides
+        project_components = []
+        overrides["components"] = project_components
+
+    assert isinstance(overrides, dict)
+    assert isinstance(project_components, list)
+
+    if effective_component is None:
+        project_components.append(_new_component(component_id, include, answer))
+        return payload
+
+    # A differing accepted decision may replace one template-owned stable-ID
+    # entity.  Preserve all template fields not covered by the decision (for
+    # example roles/selectors) and change only the five canonical decision
+    # fields.  This is a lossless whole-entity representation of the accepted
+    # delta, not materialize-to-explicit writeback.
+    replacement = copy.deepcopy(effective_component)
+    _apply_answer(replacement, answer, require_existing_equal=False)
+    project_components.append(replacement)
+    return payload
+
+
 def project_payload(
     existing: dict[str, object] | None,
     component_id: str,
@@ -69,37 +225,15 @@ def project_payload(
         )
 
     map_meta = payload.setdefault("responsibility_map", {"mode": "explicit"})
-    if not isinstance(map_meta, dict) or map_meta.get("mode") != "explicit":
-        raise ValueError(
-            "Direct local adoption currently projects only explicit Responsibility Maps; "
-            "template/hybrid projection requires the template materialization path."
-        )
+    if not isinstance(map_meta, dict):
+        raise ValueError("responsibility_map must be a mapping")
 
-    components = payload.setdefault("components", [])
-    if not isinstance(components, list):
-        raise ValueError("components must be a list")
-
-    component: dict[str, object] | None = None
-    for item in components:
-        if isinstance(item, dict) and str(item.get("id")) == component_id:
-            component = item
-            break
-    if component is None:
-        component = {"id": component_id, "include": [str(item) for item in include]}
-        components.append(component)
-    elif "include" not in component:
-        component["include"] = [str(item) for item in include]
-
-    # Canonical 0.3.6 persists classification as the sole lifecycle-ownership
-    # authority. DecisionAnswer.lifecycle_owner is validated as a compatibility
-    # input but is deliberately not serialized into the new Project Profile.
-    _set_missing_or_require_equal(component, "classification", answer.classification)
-    _set_missing_or_require_equal(component, "purpose", answer.purpose)
-    _set_missing_or_require_equal(component, "shipped", answer.shipped)
-    _set_missing_or_require_equal(component, "runtime_required", answer.runtime_required)
-    _set_missing_or_require_equal(component, "executable", answer.executable)
-    component.pop("lifecycle_owner", None)
-    return payload
+    mode = map_meta.get("mode")
+    if mode == "explicit":
+        return _project_explicit(payload, component_id, include, answer)
+    if mode in {"template", "hybrid"}:
+        return _project_template_backed(payload, map_meta, component_id, include, answer)
+    raise ValueError(f"Unsupported Responsibility Map mode: {mode!r}")
 
 
 def validate_projected_payload(payload: dict[str, object]) -> tuple[str, ...]:
