@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
 import yaml
 
+from ptsip.app.github_client import GitHubAPIError
+from ptsip.app.service import DecisionService
 from ptsip.app.store import DecisionStore
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.clarification.generator_core import build_requests
@@ -19,6 +22,7 @@ from ptsip.clarification.resolution import (
     project_payload,
     validate_answer,
 )
+from ptsip.cli import main
 from ptsip.inspection.components import ComponentCandidate
 from ptsip.validation.components import AMBIGUOUS, resolve_candidate_coverage
 from ptsip.validation.templates import materialize_profile
@@ -99,6 +103,103 @@ def _write_mode_profile(repo: Path, mode: str) -> None:
 def _g3_answer(**overrides: object) -> DecisionAnswer:
     payload = canonical_v2_answer(**overrides)
     return DecisionAnswer(**payload)
+
+
+def _g4_repository(tmp_path: Path) -> Path:
+    repo = init_git_repo(tmp_path / "repo")
+    write_text(repo, "tools/generate.py", "print('generate')\n")
+    (repo / "config").mkdir(parents=True, exist_ok=True)
+    commit_all(repo)
+    return repo
+
+
+def _g4_resolve_args(repo: Path, decision_id: str, *extra: str) -> list[str]:
+    return [
+        "resolve",
+        str(repo),
+        "--decision",
+        decision_id,
+        "--classification",
+        "DEVELOPMENT_TOOLING",
+        "--purpose",
+        "Repository-local generation tooling",
+        "--shipped",
+        "no",
+        "--runtime-required",
+        "no",
+        "--executable",
+        "yes",
+        "--coordination",
+        "local",
+        "--json",
+        *extra,
+    ]
+
+
+def _g4_gate_payload(profile_path: str, revision: str = "abc123") -> dict[str, object]:
+    return {
+        "id": "clr-g4",
+        "repository": "example/product",
+        "branch": "main",
+        "subject_revision": revision,
+        "profile_path": profile_path,
+        "component_id": "tools",
+        "request": {
+            "component_id": "tools",
+            "include": ["tools/**"],
+            "anchors": ["top-level-tool-root"],
+            "evidence_ids": ["root:tools"],
+            "missing_fields": ["classification"],
+            "reason_codes": ["MISSING_CLASSIFICATION"],
+            "status": "INCOMPLETE",
+        },
+    }
+
+
+class _G4GitHub:
+    def __init__(
+        self,
+        *,
+        branch_heads: list[str] | None = None,
+        fail_commit: bool = False,
+    ) -> None:
+        self.branch_heads = list(branch_heads or ["abc123"])
+        self.fail_commit = fail_commit
+        self.read_paths: list[tuple[str, str]] = []
+        self.write_paths: list[str] = []
+
+    def file_text(self, repository: str, installation_id: int, path: str, ref: str) -> str | None:
+        del repository, installation_id
+        self.read_paths.append((path, ref))
+        return None
+
+    def branch_head(self, repository: str, installation_id: int, branch: str) -> str:
+        del repository, installation_id, branch
+        if len(self.branch_heads) > 1:
+            return self.branch_heads.pop(0)
+        return self.branch_heads[0]
+
+    def commit_file_at_parent(
+        self,
+        repository: str,
+        installation_id: int,
+        branch: str,
+        parent_sha: str,
+        path: str,
+        content: str,
+        message: str,
+    ) -> str:
+        del repository, installation_id, branch, parent_sha, content, message
+        self.write_paths.append(path)
+        if self.fail_commit:
+            raise GitHubAPIError("simulated branch-head race")
+        return "def456"
+
+    def add_issue_comment(self, *args: object, **kwargs: object) -> None:
+        del args, kwargs
+
+    def update_issue_state(self, *args: object, **kwargs: object) -> None:
+        del args, kwargs
 
 
 class TestG1EffectiveReadCoverage:
@@ -445,7 +546,147 @@ class TestG3HybridSafeApply:
 
 
 class TestG4ProfilePathControlPlane:
-    """Reserved namespace; G4 has not been entered."""
+    def test_non_root_profile_path_is_projection_target(self, tmp_path: Path) -> None:
+        repo = _g4_repository(tmp_path)
+        target = repo / "config" / "ptsip.yaml"
+
+        prepared = prepare_local_profile(
+            repo,
+            "tools",
+            ["tools/**"],
+            _g3_answer(purpose="Repository-local generation tooling"),
+            target,
+        )
+
+        assert prepared.path == target.resolve()
+        assert prepared.expected_source is None
+        assert not (repo / "ptsip.yaml").exists()
+
+    def test_non_root_profile_path_survives_local_gate_and_reconciliation(
+        self, tmp_path: Path, monkeypatch, capsys
+    ) -> None:
+        repo = _g4_repository(tmp_path)
+        monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+
+        assert main([
+            "gate", str(repo), "--component", "tools", "--profile", "config/ptsip.yaml",
+            "--coordination", "local", "--json",
+        ]) == 7
+        gated = json.loads(capsys.readouterr().out)
+        decision = gated["decisions"][0]["decision"]
+        assert decision["profile_path"] == "config/ptsip.yaml"
+
+        assert main(_g4_resolve_args(repo, str(decision["id"]))) == 0
+        resolved = json.loads(capsys.readouterr().out)
+        assert resolved["selected_profile_path"] == "config/ptsip.yaml"
+        assert (repo / "config" / "ptsip.yaml").is_file()
+        assert not (repo / "ptsip.yaml").exists()
+
+    def test_selected_profile_path_is_persisted_with_decision(self, tmp_path: Path) -> None:
+        database = tmp_path / "decision.sqlite3"
+        store = DecisionStore(database)
+
+        record, _ = store.gate(_g4_gate_payload("./config\\ptsip.yaml"))
+        reopened = DecisionStore(database).get(record.id)
+
+        assert record.profile_path == "config/ptsip.yaml"
+        assert reopened is not None
+        assert reopened.profile_path == "config/ptsip.yaml"
+        assert reopened.as_dict()["profile_path"] == "config/ptsip.yaml"
+
+    def test_selected_profile_path_survives_retry_and_rebind(self, tmp_path: Path) -> None:
+        store = DecisionStore(tmp_path / "decision.sqlite3")
+        record, _ = store.gate(_g4_gate_payload("config/ptsip.yaml"))
+        answer = canonical_v2_answer(purpose="Repository-local generation tooling")
+        resolved, accepted = store.resolve(record.id, answer, "AGENT_CHAT", "tester")
+        assert accepted is True
+        store.mark_application(record.id, "STALE")
+
+        rebound, _ = store.gate(_g4_gate_payload("config/ptsip.yaml", "new456"))
+
+        assert rebound.id == resolved.id
+        assert rebound.subject_revision == "new456"
+        assert rebound.profile_path == "config/ptsip.yaml"
+        assert rebound.answer == answer
+
+    def test_remote_cas_reads_and_writes_exact_selected_profile_path(self, tmp_path: Path) -> None:
+        store = DecisionStore(tmp_path / "decision.sqlite3")
+        record, _ = store.gate(_g4_gate_payload("config/ptsip.yaml"))
+        answer = _g3_answer(purpose="Repository-local generation tooling")
+        record, accepted = store.resolve(record.id, answer.as_dict(), "AGENT_CHAT", "tester")
+        assert accepted is True
+        github = _G4GitHub(branch_heads=["abc123"])
+        service = DecisionService(store, github)  # type: ignore[arg-type]
+
+        projected = service._prepare_remote_projection(record, 99, answer)
+        service._apply_remote(record, 99, projected)
+        final = store.get(record.id)
+
+        assert github.read_paths == [("config/ptsip.yaml", "abc123")]
+        assert github.write_paths == ["config/ptsip.yaml"]
+        assert final is not None
+        assert final.application_status == "APPLIED"
+        assert final.applied_revision == "def456"
+
+    def test_changed_profile_path_does_not_apply_old_decision(
+        self, tmp_path: Path, monkeypatch, capsys
+    ) -> None:
+        repo = _g4_repository(tmp_path)
+        (repo / "other").mkdir()
+        monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+
+        assert main([
+            "gate", str(repo), "--component", "tools", "--profile", "config/ptsip.yaml",
+            "--coordination", "local", "--json",
+        ]) == 7
+        gated = json.loads(capsys.readouterr().out)
+        decision_id = str(gated["decisions"][0]["decision"]["id"])
+
+        assert main(_g4_resolve_args(repo, decision_id, "--profile", "other/ptsip.yaml")) == 8
+        rejected = json.loads(capsys.readouterr().out)
+
+        assert rejected["status"] == "PROFILE_PATH_MISMATCH"
+        assert rejected["decision_profile_path"] == "config/ptsip.yaml"
+        assert rejected["requested_profile_path"] == "other/ptsip.yaml"
+        assert not (repo / "config" / "ptsip.yaml").exists()
+        assert not (repo / "other" / "ptsip.yaml").exists()
+        assert not (repo / "ptsip.yaml").exists()
+
+    def test_stale_revision_does_not_apply_to_selected_profile(self, tmp_path: Path) -> None:
+        store = DecisionStore(tmp_path / "decision.sqlite3")
+        record, _ = store.gate(_g4_gate_payload("config/ptsip.yaml"))
+        answer = _g3_answer(purpose="Repository-local generation tooling")
+        record, accepted = store.resolve(record.id, answer.as_dict(), "AGENT_CHAT", "tester")
+        assert accepted is True
+        github = _G4GitHub(branch_heads=["new456"])
+        service = DecisionService(store, github)  # type: ignore[arg-type]
+
+        service._apply_remote(record, 99, "projected")
+        final = store.get(record.id)
+
+        assert github.write_paths == []
+        assert final is not None
+        assert final.application_status == "STALE"
+        assert final.applied_revision is None
+        assert final.profile_path == "config/ptsip.yaml"
+
+    def test_branch_head_conflict_does_not_apply_selected_profile(self, tmp_path: Path) -> None:
+        store = DecisionStore(tmp_path / "decision.sqlite3")
+        record, _ = store.gate(_g4_gate_payload("config/ptsip.yaml"))
+        answer = _g3_answer(purpose="Repository-local generation tooling")
+        record, accepted = store.resolve(record.id, answer.as_dict(), "AGENT_CHAT", "tester")
+        assert accepted is True
+        github = _G4GitHub(branch_heads=["abc123", "new456"], fail_commit=True)
+        service = DecisionService(store, github)  # type: ignore[arg-type]
+
+        service._apply_remote(record, 99, "projected")
+        final = store.get(record.id)
+
+        assert github.write_paths == ["config/ptsip.yaml"]
+        assert final is not None
+        assert final.application_status == "STALE"
+        assert final.applied_revision is None
+        assert final.profile_path == "config/ptsip.yaml"
 
 
 class TestG5RecoveryAndIntegration:
