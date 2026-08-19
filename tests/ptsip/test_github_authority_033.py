@@ -166,6 +166,7 @@ def test_github_authority_uses_component_scope_not_local_clarification_id() -> N
     assert isinstance(decision_a, dict)
     assert isinstance(decision_b, dict)
     assert decision_a["id"] == decision_b["id"]
+    assert decision_a["profile_path"] == "ptsip.yaml"
     assert str(decision_a["id"]).startswith("gdec-")
     assert len(store.documents) == 1
 
@@ -202,6 +203,39 @@ def test_github_authority_uses_component_scope_not_local_clarification_id() -> N
     assert "lifecycle_owner" not in winner["answer"]
 
 
+def test_github_authority_profile_path_is_part_of_scope_identity() -> None:
+    store = MemoryAuthority()
+    client = GithubControlPlaneClient("example/project", store=store)
+    request = {
+        "component_id": "tools",
+        "include": ["tools/**"],
+        "missing_fields": ["classification"],
+    }
+    common = {
+        "repository": "example/project",
+        "branch": "main",
+        "subject_revision": "a" * 40,
+        "component_id": "tools",
+        "request": request,
+    }
+
+    root = client.gate({**common, "id": "clr-root", "profile_path": "ptsip.yaml"})
+    nested = client.gate(
+        {**common, "id": "clr-nested", "profile_path": ".\\config\\ptsip.yaml"}
+    )
+    default_root = client.peek({"repository": "example/project", "request": request})
+
+    root_record = root["decision"]
+    nested_record = nested["decision"]
+    assert isinstance(root_record, dict)
+    assert isinstance(nested_record, dict)
+    assert root_record["profile_path"] == "ptsip.yaml"
+    assert nested_record["profile_path"] == "config/ptsip.yaml"
+    assert root_record["id"] != nested_record["id"]
+    assert default_root["decision_id"] == root_record["id"]
+    assert len(store.documents) == 2
+
+
 def test_github_adoption_winner_reconciles_into_stale_clone(
     tmp_path: Path,
     monkeypatch,
@@ -232,6 +266,7 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     assert adopted["backend"] == "GITHUB"
     assert adopted["authority"]["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
     assert adopted["authority"]["decision"]["answer"]["runtime_required"] is False
+    assert adopted["authority"]["decision"]["profile_path"] == "ptsip.yaml"
     assert "lifecycle_owner" not in adopted["authority"]["decision"]["answer"]
     assert (repo_a / "ptsip.yaml").is_file()
     assert not (repo_b / "ptsip.yaml").exists()
@@ -240,6 +275,7 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     gated = json.loads(capsys.readouterr().out)
     assert gated["status"] == "RESOLVED"
     assert gated["backend"] == "GITHUB"
+    assert gated["profile_path"] == "ptsip.yaml"
     assert gated["decisions"][0]["reconciliation"]["status"] == "LOCAL_APPLIED"
 
     profile = yaml.safe_load((repo_b / "ptsip.yaml").read_text(encoding="utf-8"))
