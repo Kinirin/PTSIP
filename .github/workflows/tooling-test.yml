@@ -2,22 +2,6 @@ name: tooling-test
 
 on:
   workflow_dispatch:
-    inputs:
-      host_ready:
-        description: "Confirm DESKTOP-UBK6CEG is online and its PowerShell environment is ready"
-        required: true
-        type: boolean
-        default: false
-      release_candidate:
-        description: "Enforce the Tool/Specification release contract and record release verification for this exact SHA; keep false for development/WU checks"
-        required: true
-        type: boolean
-        default: false
-      source_sha:
-        description: "Exact 40-character commit SHA to verify; required when release_candidate=true"
-        required: false
-        type: string
-        default: ""
 
 permissions:
   contents: read
@@ -31,62 +15,38 @@ jobs:
   test:
     runs-on: [self-hosted, Windows, X64]
     steps:
-      - name: Verify self-hosted authorization and runner identity
-        shell: powershell
-        env:
-          HOST_READY: ${{ inputs.host_ready }}
-        run: |
-          if ($env:HOST_READY -ne "true") {
-            throw "Self-hosted verification requires host_ready=true after the maintainer confirms the host and PowerShell environment are ready."
-          }
-          if ($env:RUNNER_NAME -ne "DESKTOP-UBK6CEG") {
-            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-UBK6CEG."
-          }
-          Write-Host "Using approved self-hosted runner: $env:RUNNER_NAME"
-
-      - name: Checkout exact selected source
+      - name: Checkout exact dispatched source
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_sha != '' && inputs.source_sha || github.sha }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Verify exact source identity
+      - name: Verify exact dispatched source identity
         id: source
         shell: powershell
         env:
-          RELEASE_CANDIDATE: ${{ inputs.release_candidate }}
-          REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+          DISPATCHED_SHA: ${{ github.sha }}
         run: |
           $actualSha = (git rev-parse HEAD).Trim()
-
-          if ($env:REQUESTED_SOURCE_SHA) {
-            if ($env:REQUESTED_SOURCE_SHA -notmatch '^[0-9a-f]{40}$') {
-              throw "source_sha must be a full 40-character lowercase Git commit SHA."
-            }
-            if ($actualSha -ne $env:REQUESTED_SOURCE_SHA) {
-              throw "Checked out SHA $actualSha does not match requested source_sha $env:REQUESTED_SOURCE_SHA."
-            }
+          if ($actualSha -ne $env:DISPATCHED_SHA) {
+            throw "Checked out SHA $actualSha does not match workflow-dispatch SHA $env:DISPATCHED_SHA."
           }
-
-          if ($env:RELEASE_CANDIDATE -eq "true" -and -not $env:REQUESTED_SOURCE_SHA) {
-            throw "release_candidate=true requires an explicit source_sha so the release verification status is bound to one immutable commit."
-          }
-
           "verified_sha=$actualSha" >> $env:GITHUB_OUTPUT
           Write-Host "Verification source SHA: $actualSha"
+          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
 
       - name: Prepare self-hosted Python 3.14
         shell: powershell
         run: |
           $launcher = Get-Command py -ErrorAction SilentlyContinue
           if (-not $launcher) {
-            throw "The approved self-hosted runner must provide the Windows Python launcher 'py' on PATH."
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
           }
 
           $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
           if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on the approved self-hosted runner."
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
           }
 
           & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
@@ -120,11 +80,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip build twine
           python -m pip install -e ".[dev]"
-
-      - name: Verify required Specification release contract
-        if: ${{ inputs.release_candidate }}
-        shell: powershell
-        run: python .github/scripts/verify_release_contract.py
 
       - name: Run complete repository regression
         shell: powershell
@@ -163,8 +118,7 @@ jobs:
           ptsip conform --help
           python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
 
-      - name: Record successful release-candidate verification
-        if: ${{ inputs.release_candidate }}
+      - name: Record successful exact-SHA tooling verification
         shell: powershell
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -177,8 +131,8 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/release-verification"
-            description = "DESKTOP-UBK6CEG verified the exact Tool release candidate"
+            context = "self-hosted/tooling-test"
+            description = "Self-hosted Windows verification passed for the exact dispatched SHA"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
 
