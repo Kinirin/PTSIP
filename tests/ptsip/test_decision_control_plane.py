@@ -4,10 +4,9 @@ from pathlib import Path
 
 from ptsip.app.service import DecisionService
 from ptsip.app.store import DecisionStore
-from ptsip.clarification.resolution import DecisionAnswer, parse_answer, project_payload, validate_answer
-
-
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+from ptsip.clarification.resolution import DecisionAnswer, project_payload
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from _wu04g_support import canonical_v2_answer, clarification_answer_text
 
 
 class FakeGitHub:
@@ -64,7 +63,7 @@ def _gate_payload(revision: str = "abc123") -> dict[str, object]:
             "include": ["tools/**"],
             "anchors": ["tools/generate.py"],
             "evidence_ids": [],
-            "missing_fields": ["classification", "purpose", "shipped", "runtime_required", "lifecycle_owner", "executable"],
+            "missing_fields": ["classification", "purpose", "shipped", "runtime_required", "executable"],
             "reason_codes": [],
             "status": "INCOMPLETE",
         },
@@ -72,100 +71,59 @@ def _gate_payload(revision: str = "abc123") -> dict[str, object]:
     }
 
 
-def _answer(classification: str = "TOOLCHAIN") -> DecisionAnswer:
-    return DecisionAnswer(
+def _answer(classification: str = "DEVELOPMENT_TOOLING") -> DecisionAnswer:
+    payload = canonical_v2_answer(
         classification=classification,
-        purpose="Repository migration tooling",
-        shipped=False,
-        runtime_required=False,
-        lifecycle_owner="DEVELOPMENT_TOOLING" if classification == "TOOLCHAIN" else "PRODUCT",
+        purpose="Repository migration tooling" if classification != "PRODUCT" else "Product component",
+        shipped=classification == "PRODUCT",
+        runtime_required=classification == "PRODUCT",
         executable=True,
     )
+    return DecisionAnswer(**payload)
 
 
 def _issue_payload(classification: str = "PRODUCT") -> dict[str, object]:
-    if classification == "PRODUCT":
-        purpose = "Product component"
-        shipped = "YES"
-        runtime = "YES"
-        lifecycle = "PRODUCT"
-    else:
-        purpose = "Repository migration tooling"
-        shipped = "NO"
-        runtime = "NO"
-        lifecycle = "DEVELOPMENT_TOOLING"
+    answer = canonical_v2_answer(
+        classification=classification,
+        purpose="Product component" if classification == "PRODUCT" else "Repository migration tooling",
+        shipped=classification == "PRODUCT",
+        runtime_required=classification == "PRODUCT",
+        executable=True,
+    )
     return {
         "action": "created",
         "installation": {"id": 99},
         "repository": {"full_name": "example/product"},
         "issue": {"number": 11},
-        "comment": {
-            "body": f"""```yaml
-format: ptsip-clarification-answer/v1
-decision:
-  classification: {classification}
-  purpose: {purpose}
-  shipped: {shipped}
-  runtime_required: {runtime}
-  lifecycle_owner: {lifecycle}
-  executable: YES
-```"""
-        },
+        "comment": {"body": "```yaml\n" + clarification_answer_text(answer) + "```"},
         "sender": {"login": "owner"},
     }
-
-
-def test_structured_answer_parser_and_validation():
-    answer = parse_answer(
-        """```yaml
-format: ptsip-clarification-answer/v1
-decision:
-  classification: TOOLCHAIN
-  purpose: Repository migration tooling
-  shipped: NO
-  runtime_required: NO
-  lifecycle_owner: DEVELOPMENT_TOOLING
-  executable: YES
-```"""
-    )
-    assert answer.classification == "TOOLCHAIN"
-    assert validate_answer(answer).valid
-
-
-def test_toolchain_runtime_answer_is_conflict():
-    answer = DecisionAnswer(
-        classification="TOOLCHAIN",
-        purpose="Migration tooling",
-        shipped=False,
-        runtime_required=True,
-        lifecycle_owner="DEVELOPMENT_TOOLING",
-        executable=True,
-    )
-    result = validate_answer(answer)
-    assert not result.valid
-    assert result.status == "CONFLICT"
 
 
 def test_profile_projection_preserves_existing_boundary_and_structured_facts_and_rejects_conflict():
     existing = {
         "ptsip": {
-            "version": "0.3.4-draft",
+            "version": SPEC_VERSION,
             "specification": {
-                "source": "https://github.com/Kinirin/PTSIP",
+                "source": SPEC_SOURCE,
                 "revision": SPEC_REVISION,
             },
         },
+        "responsibility_map": {"mode": "explicit"},
         "components": [
             {
                 "id": "generator-sdk",
-                "classification": "TOOLCHAIN",
+                "classification": "DEVELOPMENT_TOOLING",
                 "include": ["tools/**", "scripts/generate.py"],
+                "purpose": "Repository migration tooling",
                 "shipped": False,
+                "runtime_required": False,
+                "executable": True,
             }
         ],
         "policies": {
-            "product_to_toolchain_runtime_dependency": "deny",
-            "toolchain_in_product_package": "deny",
+            "product_to_nonproduct_runtime_dependency": "deny",
+            "nonproduct_in_product_package": "deny",
             "independent_build_resolution": "required",
         },
     }
@@ -175,8 +133,8 @@ def test_profile_projection_preserves_existing_boundary_and_structured_facts_and
     assert component["include"] == ["tools/**", "scripts/generate.py"]
     assert component["purpose"] == answer.purpose
     assert component["runtime_required"] is False
-    assert component["lifecycle_owner"] == "DEVELOPMENT_TOOLING"
     assert component["executable"] is True
+    assert "lifecycle_owner" not in component
     assert "release_owner" not in component
     assert "compatibility_owner" not in component
 
@@ -196,6 +154,7 @@ def test_store_first_valid_resolution_wins(tmp_path: Path):
     first, accepted = store.resolve(record.id, _answer().as_dict(), "AGENT_CHAT", "agent")
     assert accepted
     assert first.answer is not None
+    assert "lifecycle_owner" not in first.answer
     second_answer = _answer("PRODUCT").as_dict()
     second, accepted_second = store.resolve(record.id, second_answer, "GITHUB_ISSUE", "owner")
     assert not accepted_second
@@ -249,23 +208,28 @@ def test_issue_profile_conflict_does_not_win_authoritative_cas(tmp_path: Path):
     store.set_installation("example/product", 99)
     github = FakeGitHub()
     github.file_content = f"""ptsip:
-  version: 0.3.4-draft
+  version: {SPEC_VERSION}
   specification:
-    source: https://github.com/Kinirin/PTSIP
+    source: {SPEC_SOURCE}
     revision: {SPEC_REVISION}
+responsibility_map:
+  mode: explicit
 components:
   - id: tools
     classification: PRODUCT
     include: [\"tools/**\"]
     purpose: Existing product component
+    shipped: true
+    runtime_required: true
+    executable: true
 policies:
-  product_to_toolchain_runtime_dependency: deny
-  toolchain_in_product_package: deny
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
   independent_build_resolution: required
 """
     service = DecisionService(store, github)  # type: ignore[arg-type]
     service.gate(_gate_payload())
-    result = service.issue_comment(_issue_payload("TOOLCHAIN"))
+    result = service.issue_comment(_issue_payload("DEVELOPMENT_TOOLING"))
     assert result["status"] == "CONFLICT"
     record = store.get("clr-test")
     assert record is not None
@@ -290,4 +254,5 @@ def test_late_issue_reply_is_ignored_after_agent_resolution(tmp_path: Path):
     final = store.get(str(decision["id"]))
     assert final is not None
     assert final.answer is not None
-    assert final.answer["classification"] == "TOOLCHAIN"
+    assert final.answer["classification"] == "DEVELOPMENT_TOOLING"
+    assert "lifecycle_owner" not in final.answer
