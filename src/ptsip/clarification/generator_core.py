@@ -3,6 +3,12 @@ from __future__ import annotations
 import hashlib
 from typing import Iterable, Protocol
 
+from ..validation.components import (
+    AMBIGUOUS,
+    COMPONENT_COVERED,
+    normalize_selector,
+    resolve_candidate_coverage,
+)
 from .model import FIELD_ORDER, REASON_BY_FIELD, ClarificationRequest
 
 
@@ -13,36 +19,19 @@ class CandidateLike(Protocol):
     evidence_ids: tuple[str, ...]
 
 
-def _normalize_selector(value: str) -> str:
-    text = value.replace("\\", "/").strip()
-    while text.startswith("./"):
-        text = text[2:]
-    return text.strip("/")
-
-
-def _selector_covers(declared: str, candidate: str) -> bool:
-    declared = _normalize_selector(declared)
-    candidate = _normalize_selector(candidate)
-    if declared == candidate:
-        return True
-    if declared.endswith("/**"):
-        base = declared[:-3].rstrip("/")
-        candidate_base = candidate[:-3].rstrip("/") if candidate.endswith("/**") else candidate
-        return candidate_base == base or candidate_base.startswith(base + "/")
-    return False
-
-
 def covering_components(candidate: CandidateLike, components: list[dict[str, object]]) -> list[dict[str, object]]:
-    found: list[dict[str, object]] = []
-    for component in components:
-        selectors = [str(item) for item in component.get("include", [])]
-        if any(
-            _selector_covers(selector, candidate_selector)
-            for selector in selectors
-            for candidate_selector in candidate.include
-        ):
-            found.append(component)
-    return found
+    """Return canonical best component coverage for compatibility callers.
+
+    Selector interpretation is owned by ``ptsip.validation.components``.  This
+    wrapper preserves the historical caller shape without maintaining a second
+    clarification-specific selector dialect.
+    """
+
+    coverage = resolve_candidate_coverage(candidate, components)
+    if coverage.status not in {COMPONENT_COVERED, AMBIGUOUS}:
+        return []
+    owner_ids = set(coverage.owner_ids)
+    return [item for item in components if str(item.get("id", "")) in owner_ids]
 
 
 def build_requests(
@@ -70,7 +59,7 @@ def build_requests(
         else:
             missing_fields = FIELD_ORDER
         reasons = tuple(REASON_BY_FIELD[field] for field in missing_fields)
-        selector_identity = ",".join(sorted(_normalize_selector(item) for item in candidate.include))
+        selector_identity = ",".join(sorted(normalize_selector(item) for item in candidate.include))
         digest = hashlib.sha256(
             (
                 repository_identity
