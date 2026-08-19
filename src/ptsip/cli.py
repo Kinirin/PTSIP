@@ -35,6 +35,12 @@ from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
 from .pilot.runner import run_pilot
 from .repository.discover import RepositoryInfo, discover_repository
+from .repository.profile_path import (
+    bind_decision_id,
+    normalize_profile_path,
+    profile_path_on_disk,
+    selected_profile_path,
+)
 from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .storage.local_state import repository_fingerprint
@@ -312,7 +318,7 @@ def _parser() -> argparse.ArgumentParser:
         help="Explicitly resolve a pending PTSIP decision from an active user/coding-agent session and apply the profile locally",
     )
     p_resolve.add_argument("path", nargs="?", default=".")
-    p_resolve.add_argument("--profile", help="Explicit project-profile path; defaults to repository-root ptsip.yaml")
+    p_resolve.add_argument("--profile", help="Explicit project-profile path; defaults to the profile path stored by ptsip gate")
     p_resolve.add_argument("--decision", required=True, help="Decision ID returned by ptsip gate")
     p_resolve.add_argument("--classification", required=True, choices=CLASSIFICATIONS)
     p_resolve.add_argument("--purpose", required=True)
@@ -463,9 +469,13 @@ def main(argv: list[str] | None = None) -> int:
                 runtime_required=_yes_no(args.runtime_required),
                 executable=_yes_no(args.executable),
             )
-            preparation = prepare_adoption(args.path, args.component, answer, args.profile)
+            adopt_repo = discover_repository(args.path)
+            selected_adopt_profile = selected_profile_path(adopt_repo.root, args.profile)
+            selected_adopt_file = profile_path_on_disk(adopt_repo.root, selected_adopt_profile)
+            preparation = prepare_adoption(args.path, args.component, answer, selected_adopt_file)
             backend = _coordination_backend(preparation.repository, args.coordination)
             payload = preparation.as_dict(apply=args.apply, backend=backend)
+            payload["selected_profile_path"] = selected_adopt_profile
             if preparation.status not in {"ADOPTION_PLAN", "ALREADY_DECLARED"}:
                 _emit(payload, args.json)
                 return 8
@@ -501,11 +511,18 @@ def main(argv: list[str] | None = None) -> int:
                     "repository": repository,
                     "branch": repo.branch,
                     "subject_revision": repo.commit,
+                    "profile_path": selected_adopt_profile,
                     "component_id": preparation.request.component_id if preparation.request is not None else candidate.id,
                     "request": request_payload,
                 }
                 if preparation.status == "ALREADY_DECLARED":
-                    gated = client.peek({"repository": repository, "request": request_payload})
+                    gated = client.peek(
+                        {
+                            "repository": repository,
+                            "request": request_payload,
+                            "profile_path": selected_adopt_profile,
+                        }
+                    )
                     if gated.get("status") == "NO_AUTHORITY_DECISION":
                         _emit(payload, args.json)
                         return 0
@@ -571,7 +588,10 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if status in {"ADOPTED", "ALREADY_DECLARED"} else 8
         if args.command == "gate":
             language = resolve_language(args.lang)
-            analysis = analyze_clarifications(args.path, args.component, args.profile)
+            gate_repo = discover_repository(args.path)
+            selected_gate_profile = selected_profile_path(gate_repo.root, args.profile)
+            selected_gate_file = profile_path_on_disk(gate_repo.root, selected_gate_profile)
+            analysis = analyze_clarifications(args.path, args.component, selected_gate_file)
             if not analysis.comparison.stable:
                 raise RuntimeError("Repository state changed during decision-gate analysis; retry against a stable snapshot.")
             repo = analysis.repository
@@ -583,7 +603,7 @@ def main(argv: list[str] | None = None) -> int:
                     analysis,
                     client,  # type: ignore[arg-type]
                     args.component,
-                    args.profile,
+                    selected_gate_file,
                     language,
                 )
                 _emit(payload, args.json)
@@ -594,6 +614,7 @@ def main(argv: list[str] | None = None) -> int:
                     "status": "NO_DECISION_REQUIRED",
                     "backend": backend,
                     "repository": repo.as_dict(),
+                    "profile_path": selected_gate_profile,
                     "decisions": [],
                 }
                 _emit(payload, args.json)
@@ -610,10 +631,11 @@ def main(argv: list[str] | None = None) -> int:
                 title, body = render_issue(request, language, repo.commit)
                 response = client.gate(
                     {
-                        "id": request.id,
+                        "id": bind_decision_id(request.id, selected_gate_profile),
                         "repository": decision_repository,
                         "branch": repo.branch,
                         "subject_revision": repo.commit,
+                        "profile_path": selected_gate_profile,
                         "component_id": request.component_id,
                         "request": request.as_dict(),
                         "issue": {"title": title, "body": body},
@@ -638,13 +660,14 @@ def main(argv: list[str] | None = None) -> int:
                                     request.component_id,
                                     list(request.include),
                                     answer,
-                                    args.profile,
+                                    selected_gate_file,
                                 )
                                 profile = write_prepared_local_profile(prepared)
                                 application = client.application(
                                     {
                                         "decision_id": str(decision.get("id", "")),
                                         "status": "LOCAL_APPLIED",
+                                        "profile_path": selected_gate_profile,
                                         "applied_revision": repo.commit,
                                     }
                                 )
@@ -653,7 +676,7 @@ def main(argv: list[str] | None = None) -> int:
                                     "status": "RESOLVED",
                                     "reconciliation": {
                                         "status": "LOCAL_APPLIED",
-                                        "profile_path": str(profile),
+                                        "profile_path": selected_gate_profile,
                                         "application": application,
                                     },
                                 }
@@ -673,6 +696,7 @@ def main(argv: list[str] | None = None) -> int:
                     "status": overall,
                     "backend": backend,
                     "repository": repo.as_dict(),
+                    "profile_path": selected_gate_profile,
                     "decisions": decisions,
                 },
                 args.json,
@@ -706,6 +730,24 @@ def main(argv: list[str] | None = None) -> int:
                 raise RuntimeError("Decision backend returned no decision record")
             if str(decision.get("repository", "")) != _decision_repository(repo):
                 raise RuntimeError("Decision repository does not match the active local repository identity")
+
+            stored_profile = normalize_profile_path(decision.get("profile_path"))
+            if args.profile is not None:
+                requested_profile = selected_profile_path(repo.root, args.profile)
+                if requested_profile != stored_profile:
+                    _emit(
+                        {
+                            "status": "PROFILE_PATH_MISMATCH",
+                            "message": "The selected Project Profile differs from the profile bound to this decision. Run ptsip gate for the selected profile before applying a decision there.",
+                            "decision": decision,
+                            "requested_profile_path": requested_profile,
+                            "decision_profile_path": stored_profile,
+                        },
+                        args.json,
+                    )
+                    return 8
+            selected_resolve_file = profile_path_on_disk(repo.root, stored_profile)
+
             if backend != "GITHUB":
                 if str(decision.get("branch", "")) != repo.branch:
                     raise RuntimeError("Decision branch does not match the checked-out local branch; run ptsip gate first")
@@ -758,7 +800,7 @@ def main(argv: list[str] | None = None) -> int:
                     component_id,
                     [str(item) for item in include],
                     answer,
-                    args.profile,
+                    selected_resolve_file,
                 )
             except (ValueError, RuntimeError) as exc:
                 _emit({"status": "CONFLICT", "message": str(exc), "decision": decision}, args.json)
@@ -790,19 +832,32 @@ def main(argv: list[str] | None = None) -> int:
                     resolved = resolved_raw
 
             if backend != "GITHUB" and str(resolved.get("subject_revision", "")) != repo.commit:
-                client.application({"decision_id": args.decision, "status": "STALE"})
+                client.application(
+                    {
+                        "decision_id": args.decision,
+                        "status": "STALE",
+                        "profile_path": stored_profile,
+                    }
+                )
                 _emit({"status": "STALE_REQUIRES_GATE", "decision": resolved}, args.json)
                 return 8
 
             try:
                 profile = write_prepared_local_profile(prepared)
             except Exception:
-                client.application({"decision_id": args.decision, "status": "FAILED"})
+                client.application(
+                    {
+                        "decision_id": args.decision,
+                        "status": "FAILED",
+                        "profile_path": stored_profile,
+                    }
+                )
                 raise
             application = client.application(
                 {
                     "decision_id": args.decision,
                     "status": "LOCAL_APPLIED",
+                    "profile_path": stored_profile,
                     "applied_revision": repo.commit,
                 }
             )
@@ -812,6 +867,7 @@ def main(argv: list[str] | None = None) -> int:
                     "backend": backend,
                     "decision": resolved,
                     "profile_path": str(profile),
+                    "selected_profile_path": stored_profile,
                     "application": application,
                 },
                 args.json,
