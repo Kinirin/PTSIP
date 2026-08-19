@@ -222,6 +222,7 @@ def test_adopt_explicit_profile_is_seen_by_clarify_and_gate(tmp_path: Path, monk
     repo = _repo(tmp_path)
     monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
     profile = repo / "config" / "ptsip.yaml"
+    profile.parent.mkdir(parents=True, exist_ok=True)
 
     assert main(_adopt_args(repo, apply=True, profile=profile)) == 0
     capsys.readouterr()
