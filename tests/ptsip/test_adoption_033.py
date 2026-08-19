@@ -10,7 +10,15 @@ from ptsip.clarification.resolution import DecisionAnswer
 from ptsip.cli import main
 from ptsip.constants import SPEC_REVISION
 from ptsip.storage.local_state import decision_store_path
-from _wu04g_support import commit_all, git, init_git_repo, write_text
+from _wu04g_support import (
+    canonical_v2_answer,
+    commit_all,
+    git,
+    init_git_repo,
+    template_profile_payload,
+    write_profile,
+    write_text,
+)
 
 
 def _repo(tmp_path: Path) -> Path:
@@ -20,16 +28,16 @@ def _repo(tmp_path: Path) -> Path:
     return repo
 
 
-def _facts(classification: str) -> tuple[str, str, str, str, str]:
+def _facts(classification: str) -> tuple[str, str, str, str]:
     if classification == "PRODUCT":
-        return ("Product runtime component", "yes", "yes", "PRODUCT", "yes")
+        return ("Product runtime component", "yes", "yes", "yes")
     if classification == "NEUTRAL_CONTRACT":
-        return ("Shared declarative contract", "no", "no", "INDEPENDENT", "no")
+        return ("Shared declarative contract", "no", "no", "no")
     if classification == "DELIVERY":
-        return ("Release delivery automation", "no", "no", "DELIVERY", "yes")
+        return ("Release delivery automation", "no", "no", "yes")
     if classification == "OPERATIONS":
-        return ("Production maintenance automation", "no", "no", "OPERATIONS", "yes")
-    return ("Repository-local generation tooling", "no", "no", "DEVELOPMENT_TOOLING", "yes")
+        return ("Production maintenance automation", "no", "no", "yes")
+    return ("Repository-local generation tooling", "no", "no", "yes")
 
 
 def _adopt_args(
@@ -39,14 +47,13 @@ def _adopt_args(
     profile: Path | None = None,
     classification: str = "DEVELOPMENT_TOOLING",
 ) -> list[str]:
-    purpose, shipped, runtime_required, lifecycle_owner, executable = _facts(classification)
+    purpose, shipped, runtime_required, executable = _facts(classification)
     args = [
         "adopt", str(repo), "--component", "tools",
         "--classification", classification,
         "--purpose", purpose,
         "--shipped", shipped,
         "--runtime-required", runtime_required,
-        "--lifecycle-owner", lifecycle_owner,
         "--executable", executable,
         "--coordination", "local",
         "--json",
@@ -114,6 +121,38 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_canonical_036_declaratio
     assert main(_adopt_args(repo, apply=True)) == 0
     repeated = json.loads(capsys.readouterr().out)
     assert repeated["status"] == "ALREADY_DECLARED"
+
+
+def test_adopt_template_profile_converts_to_hybrid_with_minimal_project_delta(
+    tmp_path: Path, capsys,
+) -> None:
+    repo = _repo(tmp_path)
+    profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
+    before = yaml.safe_load(profile.read_text(encoding="utf-8"))
+    template_identity = dict(before["responsibility_map"]["template"])
+
+    assert main(_adopt_args(repo, apply=True)) == 0
+    result = json.loads(capsys.readouterr().out)
+
+    assert result["status"] == "ADOPTED"
+    document = yaml.safe_load(profile.read_text(encoding="utf-8"))
+    map_meta = document["responsibility_map"]
+    assert map_meta["mode"] == "hybrid"
+    assert map_meta["template"] == template_identity
+    assert map_meta["overrides"] == {
+        "components": [
+            {
+                "id": "tools",
+                "include": ["tools/**"],
+                "classification": "DEVELOPMENT_TOOLING",
+                "purpose": "Repository-local generation tooling",
+                "shipped": False,
+                "runtime_required": False,
+                "executable": True,
+            }
+        ]
+    }
+    assert "components" not in document
 
 
 def test_adopt_does_not_classify_from_tools_directory_name(tmp_path: Path, capsys) -> None:
@@ -205,8 +244,9 @@ policies:
 def test_adoption_application_refuses_stale_repository_evidence(tmp_path: Path) -> None:
     repo = _repo(tmp_path)
     answer = DecisionAnswer(
-        classification="DEVELOPMENT_TOOLING", purpose="Repository-local generation tooling",
-        shipped=False, runtime_required=False, lifecycle_owner="DEVELOPMENT_TOOLING", executable=True,
+        **canonical_v2_answer(
+            purpose="Repository-local generation tooling",
+        )
     )
     preparation = prepare_adoption(repo, "tools", answer)
     assert preparation.status == "ADOPTION_PLAN"
