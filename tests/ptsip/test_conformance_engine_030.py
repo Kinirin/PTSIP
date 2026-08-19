@@ -7,13 +7,11 @@ from pathlib import Path
 
 from ptsip.build_resolution import evaluate_independent_build_resolution
 from ptsip.conformance_engine import evaluate_conformance
+from ptsip.constants import SPEC_REVISION
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.lifecycle_evidence import evaluate_lifecycle_evidence
 from ptsip.repository.snapshot import capture_snapshot
 from ptsip.validation.components import partition_components
-
-
-SPEC_REVISION = "12e2ccd15634ecb3d0a4195b0f61ac3f620e7540"
 
 
 def _git(repo: Path, *args: str) -> None:
