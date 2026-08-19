@@ -2,20 +2,6 @@ name: prepare-tool-release
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Tool version from pyproject.toml (for example 0.3.6)"
-        required: true
-        type: string
-      source_sha:
-        description: "Exact release-candidate SHA already verified by tooling-test.yml"
-        required: true
-        type: string
-      host_ready:
-        description: "Confirm DESKTOP-5HCCQIR is online and its PowerShell environment is ready"
-        required: true
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -29,45 +15,66 @@ jobs:
   prepare:
     runs-on: [self-hosted, Windows, X64]
     steps:
-      - name: Verify self-hosted authorization and runner identity
-        shell: powershell
-        env:
-          HOST_READY: ${{ inputs.host_ready }}
-          REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
-        run: |
-          if ($env:HOST_READY -ne "true") {
-            throw "Release preparation requires host_ready=true after the maintainer confirms the host and PowerShell environment are ready."
-          }
-          if ($env:RUNNER_NAME -ne "DESKTOP-5HCCQIR") {
-            throw "Unexpected self-hosted runner '$env:RUNNER_NAME'. Expected DESKTOP-5HCCQIR."
-          }
-          if ($env:REQUESTED_SOURCE_SHA -notmatch '^[0-9a-f]{40}$') {
-            throw "source_sha must be a full 40-character lowercase Git commit SHA."
-          }
-          Write-Host "Using approved self-hosted runner: $env:RUNNER_NAME"
-
-      - name: Checkout exact release candidate
+      - name: Checkout exact dispatched main source
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_sha }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
+      - name: Prepare self-hosted Python 3.14
+        shell: powershell
+        run: |
+          $launcher = Get-Command py -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
+          }
+
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
+          }
+
+          & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
+          if ($LASTEXITCODE -ne 0) {
+            throw "The selected host interpreter is not Python 3.14."
+          }
+
+          if (Test-Path -LiteralPath ".venv") {
+            Remove-Item -LiteralPath ".venv" -Recurse -Force
+          }
+
+          & $python -m venv .venv
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create the isolated release virtual environment."
+          }
+
+          $venvRoot = (Resolve-Path -LiteralPath ".venv").Path
+          $venvScripts = Join-Path $venvRoot "Scripts"
+          $venvPython = Join-Path $venvScripts "python.exe"
+          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
+            throw "Release virtual environment did not produce .venv\\Scripts\\python.exe."
+          }
+
+          & $venvPython --version
+          "VIRTUAL_ENV=$venvRoot" >> $env:GITHUB_ENV
+          $venvScripts >> $env:GITHUB_PATH
+          Write-Host "Using host Python 3.14 via isolated environment: $venvPython"
 
       - name: Resolve and verify immutable release identity
         id: release
         shell: powershell
         env:
-          REQUESTED_VERSION: ${{ inputs.version }}
-          REQUESTED_SOURCE_SHA: ${{ inputs.source_sha }}
+          DISPATCHED_SHA: ${{ github.sha }}
+          DISPATCHED_REF: ${{ github.ref }}
         run: |
+          if ($env:DISPATCHED_REF -ne "refs/heads/main") {
+            throw "Release preparation must be dispatched from main. Selected ref: $env:DISPATCHED_REF"
+          }
+
           $sourceSha = (git rev-parse HEAD).Trim()
-          if ($sourceSha -ne $env:REQUESTED_SOURCE_SHA) {
-            throw "Checked out SHA $sourceSha does not match requested release-candidate SHA $env:REQUESTED_SOURCE_SHA."
+          if ($sourceSha -ne $env:DISPATCHED_SHA) {
+            throw "Checked out SHA $sourceSha does not match workflow-dispatch SHA $env:DISPATCHED_SHA."
           }
 
           git fetch --force --tags origin "refs/heads/main:refs/remotes/origin/main"
@@ -77,14 +84,10 @@ jobs:
 
           $mainSha = (git rev-parse origin/main).Trim()
           if ($mainSha -ne $sourceSha) {
-            throw "Release candidate $sourceSha is no longer the current origin/main HEAD ($mainSha). Verify the new main HEAD before releasing."
+            throw "Release candidate $sourceSha is no longer the current origin/main HEAD ($mainSha). Run tooling-test for the new main HEAD before releasing."
           }
 
           $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
-          if ($env:REQUESTED_VERSION -ne $packageVersion) {
-            throw "Requested version $env:REQUESTED_VERSION does not match pyproject.toml version $packageVersion."
-          }
-
           $tag = "tool-v$packageVersion"
           $note = "releasenote/$packageVersion.md"
 
@@ -97,7 +100,7 @@ jobs:
           }
 
           if (-not (Test-Path -LiteralPath $note -PathType Leaf)) {
-            throw "Missing reviewed Tool release note $note. Finalize and commit the release note before release-candidate verification."
+            throw "Missing reviewed Tool release note $note. Finalize and commit the release note before release preparation."
           }
           if ((Get-Item -LiteralPath $note).Length -eq 0) {
             throw "Tool release note is empty: $note"
@@ -111,7 +114,7 @@ jobs:
           "note=$note" >> $env:GITHUB_OUTPUT
           "source_sha=$sourceSha" >> $env:GITHUB_OUTPUT
 
-      - name: Require exact self-hosted release verification
+      - name: Require exact self-hosted tooling verification
         shell: powershell
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -129,14 +132,14 @@ jobs:
             -Headers $headers
 
           $status = $combined.statuses |
-            Where-Object { $_.context -eq "self-hosted/release-verification" } |
+            Where-Object { $_.context -eq "self-hosted/tooling-test" } |
             Select-Object -First 1
 
           if (-not $status -or $status.state -ne "success") {
-            throw "No successful self-hosted/release-verification status exists for exact release-candidate SHA $env:SOURCE_SHA."
+            throw "No successful self-hosted/tooling-test status exists for exact release-candidate SHA $env:SOURCE_SHA."
           }
 
-          Write-Host "Exact self-hosted verification confirmed for $env:SOURCE_SHA"
+          Write-Host "Exact self-hosted tooling verification confirmed for $env:SOURCE_SHA"
 
       - name: Install release verification tooling
         shell: powershell
@@ -166,7 +169,7 @@ jobs:
           }
           $mainSha = (git rev-parse origin/main).Trim()
           if ($mainSha -ne $env:SOURCE_SHA) {
-            throw "origin/main moved to $mainSha after release verification. Re-run release-candidate verification for the new SHA."
+            throw "origin/main moved to $mainSha after tooling verification. Re-run tooling-test for the new SHA."
           }
 
       - name: Create draft GitHub Release for exact verified SHA
