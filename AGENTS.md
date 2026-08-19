@@ -184,19 +184,64 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption read integration          NEXT / NOT ENTERED
+WU-04G  clarification/adoption integration               ACTIVE
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Verified E/F documents:
+Active WU-04G document:
 
 ```text
-planning/0.3.6/WU-04E-validation-effective-map.md
-planning/0.3.6/WU-04F-conformance-effective-map.md
+planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
+entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
 ```
 
-Combined exact-SHA evidence:
+Accepted maintainer package:
+
+```text
+D1-B  read validated ResolvedProfile.effective_payload
+D2-B  fail closed, then expose deterministic remediation/retry work
+D3-B  associated-artifact coverage suppresses duplicate component questions
+D4-B  shared canonical selector/candidate coverage primitive
+D5-B  clarification-answer/v2; remove lifecycle_owner from new canonical decisions
+D6-B  accepted decision may require template -> hybrid safe apply
+D7-C  perform eligible hybrid conversion/application automatically
+D8-B  exact selected profile path through gate/store/stale-check/remote CAS
+D9-B  bounded optimization/migration of G-owned tests only
+```
+
+WU-04G starts with **G0 normative freeze**. D6-B/D7-C must not be implemented as materializer/discovery inference. First freeze a Specification/registry rule that an accepted project-owned clarification/adoption decision authorizes the exact project extension/replacement and, when required to represent it, `template -> hybrid` source-mode transition. Retain the exact selected template ID/revision. Never materialize the whole effective map back to explicit source.
+
+Until G0 selects a new immutable Specification snapshot, the bound entry snapshot remains:
+
+```text
+82abd09360df09a95fbbfb516855fa9ffb49f050
+```
+
+Do not invent the future revision SHA. Once the normative rule is committed, select the immutable revision first, then update Tool/root binding.
+
+WU-04G read behavior:
+
+- clarification/adoption architecture coverage uses only a valid `ValidationResult.resolved_profile.effective_payload`;
+- invalid/unresolvable profile state fails closed with machine-readable recovery/retry information and no raw-profile authority fallback;
+- effective associated-artifact selectors suppress duplicate component clarification;
+- canonical selector semantics are shared with the validation/selector layer;
+- ambiguous coverage never guesses ownership.
+
+WU-04G decision/write behavior:
+
+- new canonical answer format is `ptsip-clarification-answer/v2` with `classification`, `purpose`, `shipped`, `runtime_required`, and `executable`;
+- `lifecycle_owner` is not part of new canonical decisions or Tool 0.3.6 Project Profile serialization;
+- v1 may be read only through an explicit compatibility/migration path for already-persisted decision data; it must not restore `TOOLCHAIN` authority;
+- an accepted project decision can be encoded as the minimum project-owned hybrid delta;
+- a template source may become hybrid only because that accepted decision authorizes the source change;
+- preserve unrelated hybrid overrides/removals and the exact template revision;
+- conflicts remain fail-closed; never partially mutate source;
+- exact repository-relative selected profile path must survive the complete local/remote decision protocol and CAS.
+
+WU-04G test optimization is bounded to G-owned/touched tests. Do not restructure the whole suite, change xdist/worker/workflow behavior, share away mutable CAS/snapshot/stale-state isolation, or replace final full regression with a reduced subset.
+
+Verified E/F evidence remains:
 
 ```text
 workflow run  32240740753
@@ -206,12 +251,9 @@ Python        3.14.3
 pytest        260 passed / 13 failed
 ```
 
-Both focused contracts passed at that SHA because neither `test_profile_validation_036.py` nor `test_conformance_effective_map_036.py` appears in the exhaustive 13-failure summary. The remaining failures are later-stage debt in clarification/decision, pilot/evidence, topology/legacy migration, plus one stale lifecycle-evidence expectation. The repository-wide workflow still failed, so do not claim global Tool regression success or a `self-hosted/tooling-test` success status for that SHA.
+The repository-wide workflow still failed, so do not claim global Tool regression success or a `self-hosted/tooling-test` success status for that SHA.
 
-WU-04G is **not entered yet**. Do not create its sub-document or modify clarification/adoption consumers until a later session starts with a fresh branch-HEAD read and the master plan records the WU-04G entry baseline.
-
-WU-04E validation owns source validation -> materialization -> common effective semantic/selector validation and retains `ValidationResult.resolved_profile` as an in-process handoff.
-WU-04F conformance consumes `validation.resolved_profile.effective_payload`; conformance must not reload raw YAML architecture, implement template/hybrid resolution, or restore a materialization-required branch.
+WU-04H must not be entered or pre-created before WU-04G completion is reviewed.
 
 ## Migration boundary
 
@@ -219,6 +261,8 @@ Tool `0.3.5` compatibility means understand and migrate, not retain obsolete ont
 Migration is preview-first, evidence-backed, loss-preserving, and project-owner-confirmed. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` mapping is prohibited.
 Legacy `lifecycle_owner`, `consumers`, `analysis_inputs`, old boundary roots, and untyped dependency-policy entries are migration evidence, not automatic canonical relationships or ownership facts.
 If confirmed architecture cannot be represented losslessly, stop and report the conflict.
+
+WU-04G may migrate `clarification-answer/v1` data only as required for the accepted answer-v2 protocol transition. This does not enter the WU-07 Tool `0.3.5` architecture migration reader.
 
 ## PTSIP / VPMS boundary
 
@@ -243,14 +287,14 @@ Tool X.Y.Z
     -> immutable SPEC_REVISION
 ```
 
-Current Tool `0.3.6` development binding:
+Current Tool `0.3.6` development binding at WU-04G entry:
 
 ```text
 SPEC_VERSION  = 0.3.6-draft
 SPEC_REVISION = 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-WU-04E/F consume semantics already frozen by WU-04C and materialized by WU-04D. Do not move `SPEC_REVISION` merely because implementation/tests change. If a genuinely new normative rule is required, freeze the Specification first and then choose a new immutable snapshot.
+WU-04G D6-B/D7-C requires one genuine normative accepted-decision authority rule. Freeze that Specification/registry change first, select the new immutable snapshot, then update constants/root binding. Do not move `SPEC_REVISION` for answer-v2, selector refactoring, test optimization, or other implementation-only changes.
 Do not weaken `.github/scripts/verify_release_contract.py` to make a release pass.
 
 ## Exact release gate
