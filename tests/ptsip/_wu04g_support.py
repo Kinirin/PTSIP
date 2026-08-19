@@ -1,7 +1,16 @@
 from __future__ import annotations
 
+import copy
 import subprocess
 from pathlib import Path
+
+import yaml
+
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+
+
+PYTHON_PACKAGE_TEMPLATE_ID = "python-package-library"
+PYTHON_PACKAGE_TEMPLATE_REVISION = "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
 
 
 def git(repo: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -53,3 +62,118 @@ def clone_repo(source: Path, destination: Path, *, remote_url: str | None = None
     if remote_url is not None:
         git(destination, "remote", "set-url", "origin", remote_url)
     return destination
+
+
+def policy_payload() -> dict[str, object]:
+    return {
+        "product_to_nonproduct_runtime_dependency": "deny",
+        "nonproduct_in_product_package": "deny",
+        "independent_build_resolution": "required",
+    }
+
+
+def component_payload(
+    component_id: str,
+    include: list[str],
+    *,
+    classification: str = "DEVELOPMENT_TOOLING",
+    purpose: str = "test_component",
+    shipped: bool = False,
+    runtime_required: bool = False,
+    executable: bool = True,
+    roles: list[str] | None = None,
+    exclude: list[str] | None = None,
+) -> dict[str, object]:
+    result: dict[str, object] = {
+        "id": component_id,
+        "classification": classification,
+        "include": list(include),
+        "purpose": purpose,
+        "shipped": shipped,
+        "runtime_required": runtime_required,
+        "executable": executable,
+    }
+    if roles:
+        result["roles"] = list(roles)
+    if exclude:
+        result["exclude"] = list(exclude)
+    return result
+
+
+def associated_artifact_payload(
+    artifact_id: str,
+    anchor: str,
+    include: list[str],
+    *,
+    purpose: str = "test_associated_artifact",
+    exclude: list[str] | None = None,
+) -> dict[str, object]:
+    result: dict[str, object] = {
+        "id": artifact_id,
+        "anchor": anchor,
+        "include": list(include),
+        "purpose": purpose,
+    }
+    if exclude:
+        result["exclude"] = list(exclude)
+    return result
+
+
+def _profile_base() -> dict[str, object]:
+    return {
+        "ptsip": {
+            "version": SPEC_VERSION,
+            "specification": {"source": SPEC_SOURCE, "revision": SPEC_REVISION},
+        },
+        "policies": policy_payload(),
+    }
+
+
+def explicit_profile_payload(
+    components: list[dict[str, object]],
+    *,
+    associated_artifacts: list[dict[str, object]] | None = None,
+    relationships: list[dict[str, object]] | None = None,
+) -> dict[str, object]:
+    payload = _profile_base()
+    payload["responsibility_map"] = {"mode": "explicit"}
+    payload["components"] = copy.deepcopy(components)
+    if associated_artifacts:
+        payload["associated_artifacts"] = copy.deepcopy(associated_artifacts)
+    if relationships:
+        payload["relationships"] = copy.deepcopy(relationships)
+    return payload
+
+
+def template_profile_payload(
+    *,
+    template_id: str = PYTHON_PACKAGE_TEMPLATE_ID,
+    template_revision: str = PYTHON_PACKAGE_TEMPLATE_REVISION,
+) -> dict[str, object]:
+    payload = _profile_base()
+    payload["responsibility_map"] = {
+        "mode": "template",
+        "template": {"id": template_id, "revision": template_revision},
+    }
+    return payload
+
+
+def hybrid_profile_payload(
+    overrides: dict[str, object],
+    *,
+    template_id: str = PYTHON_PACKAGE_TEMPLATE_ID,
+    template_revision: str = PYTHON_PACKAGE_TEMPLATE_REVISION,
+) -> dict[str, object]:
+    payload = _profile_base()
+    payload["responsibility_map"] = {
+        "mode": "hybrid",
+        "template": {"id": template_id, "revision": template_revision},
+        "overrides": copy.deepcopy(overrides),
+    }
+    return payload
+
+
+def write_profile(path: Path, payload: dict[str, object]) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    return path
