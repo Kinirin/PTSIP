@@ -22,13 +22,12 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
             lines.append(f"   - `{option['value']}` — {option['label']}")
         questions.append("\n".join(lines))
     reply_lines = [
-        "format: ptsip-clarification-answer/v1",
+        "format: ptsip-clarification-answer/v2",
         "decision:",
         "  classification: PRODUCT|DEVELOPMENT_TOOLING|DELIVERY|OPERATIONS|NEUTRAL_CONTRACT",
         '  purpose: "<short description>"',
         "  shipped: YES|NO",
         "  runtime_required: YES|NO",
-        "  lifecycle_owner: PRODUCT|DEVELOPMENT_TOOLING|DELIVERY|OPERATIONS|INDEPENDENT",
         "  executable: YES|NO",
     ]
     revision = repository_revision or "UNKNOWN"
@@ -57,7 +56,7 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
 {chr(10).join(reply_lines)}
 ```
 
-`lifecycle_owner` is a transitional decision compatibility field in Tool `0.3.6`; canonical Project Profile ownership is written only as `classification` after the answer is validated.
+Tool `0.3.6` uses `classification` as the canonical lifecycle-ownership decision. Historical `ptsip-clarification-answer/v1` replies are compatibility input only and are never emitted by new clarification requests.
 
 A coding agent may also resolve this decision in an active user chat. The first valid resolution wins; after the decision is resolved, late Issue replies are ignored.
 
