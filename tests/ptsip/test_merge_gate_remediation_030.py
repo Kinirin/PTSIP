@@ -10,13 +10,11 @@ import pytest
 import ptsip.conformance_engine as engine
 from ptsip.build_resolution import evaluate_independent_build_resolution
 from ptsip.conformance_engine import evaluate_conformance
+from ptsip.constants import SPEC_REVISION
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.lifecycle_evidence import evaluate_lifecycle_evidence
 from ptsip.repository.snapshot import capture_snapshot
 from ptsip.validation.components import partition_components
-
-
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -55,7 +53,7 @@ def _components() -> list[dict[str, object]]:
         },
         {
             "id": "tools",
-            "classification": "TOOLCHAIN",
+            "classification": "DEVELOPMENT_TOOLING",
             "include": ["tools/**"],
             "purpose": "development_tooling",
             "manifests": ["tools/requirements.txt"],
@@ -68,10 +66,12 @@ def _components() -> list[dict[str, object]]:
 def _profile(repo: Path, components: list[dict[str, object]]) -> None:
     lines = [
         "ptsip:",
-        '  version: "0.3.4-draft"',
+        '  version: "0.3.6-draft"',
         "  specification:",
         '    source: "https://github.com/Kinirin/PTSIP"',
         f'    revision: "{SPEC_REVISION}"',
+        "responsibility_map:",
+        "  mode: explicit",
         "components:",
     ]
     for component in components:
@@ -91,8 +91,8 @@ def _profile(repo: Path, components: list[dict[str, object]]) -> None:
     lines.extend(
         [
             "policies:",
-            "  product_to_toolchain_runtime_dependency: deny",
-            "  toolchain_in_product_package: deny",
+            "  product_to_nonproduct_runtime_dependency: deny",
+            "  nonproduct_in_product_package: deny",
             "  independent_build_resolution: required",
         ]
     )
