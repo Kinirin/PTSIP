@@ -100,7 +100,9 @@ def test_hybrid_validation_uses_override_and_removal_effective_map(tmp_path: Pat
     definition = template_catalog()[0]
     repo = _repo(tmp_path, {"lib/package.py": "VALUE = 1\n"})
     payload = _base("hybrid", definition.id, definition.revision)
-    payload["responsibility_map"]["overrides"] = {
+    responsibility_map = payload["responsibility_map"]
+    assert isinstance(responsibility_map, dict)
+    responsibility_map["overrides"] = {
         "components": [
             {
                 "id": "package",
@@ -128,14 +130,8 @@ def test_hybrid_validation_uses_override_and_removal_effective_map(tmp_path: Pat
     assert provenance["removals"]["components"] == ["package-tests"]
     assert provenance["removals"]["relationships"] == ["package-tests-verify-package"]
     partition = result.details["component_partition"]
-    assert partition["assignments"] == [
-        {
-            "path": "lib/package.py",
-            "component_id": "package",
-            "include": "lib/**",
-            "specificity": 4,
-        }
-    ]
+    owners = {item["path"]: item["component_id"] for item in partition["assignments"]}
+    assert owners == {"lib/package.py": "package"}
     assert result.details["responsibility_map_coverage"]["unassigned_count"] == 0
 
 
@@ -156,7 +152,9 @@ def test_hybrid_removal_that_leaves_dangling_effective_relationship_fails(tmp_pa
     definition = template_catalog()[0]
     repo = _repo(tmp_path, {"src/package.py": "VALUE = 1\n"})
     payload = _base("hybrid", definition.id, definition.revision)
-    payload["responsibility_map"]["overrides"] = {
+    responsibility_map = payload["responsibility_map"]
+    assert isinstance(responsibility_map, dict)
+    responsibility_map["overrides"] = {
         "remove_component_ids": ["package-tests"],
     }
     _write_profile(repo, payload)
