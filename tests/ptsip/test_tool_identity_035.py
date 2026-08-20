@@ -16,15 +16,15 @@ def test_tool_035_distribution_and_runtime_identity_match() -> None:
     with (_ROOT / "pyproject.toml").open("rb") as handle:
         project = tomllib.load(handle)["project"]
 
-    assert project["version"] == "0.3.5"
-    assert TOOL_VERSION == "0.3.5"
+    assert project["version"] == "0.3.5.post1"
+    assert TOOL_VERSION == "0.3.5.post1"
     assert ptsip.__version__ == TOOL_VERSION
 
 
 def test_tool_035_preserves_specification_binding() -> None:
     identity = current_spec_identity()
 
-    assert identity.tool_version == "0.3.5"
+    assert identity.tool_version == "0.3.5.post1"
     assert SPEC_VERSION == "0.3.4-draft"
     assert SPEC_REVISION == _EXPECTED_SPEC_REVISION
     assert identity.version == SPEC_VERSION
