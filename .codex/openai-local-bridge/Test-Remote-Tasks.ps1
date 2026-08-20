@@ -92,7 +92,7 @@ try {
     throw "Remote transport status returned invalid JSON."
 }
 if ($statusExitCode -ne 0 -or $remoteStatus.active -ne $true -or $remoteStatus.public_reachable -ne $true) {
-    throw (
+    $healthMessage = (
         "Remote transport is not healthy: active={0}, gateway_running={1}, tunnel_running={2}, " +
         "local_gateway_reachable={3}, public_reachable={4}. " +
         "Use .\.codex\openai-local-bridge\OpenAI-Local-Bridge-Remote.ps1 start-quick from an Administrator PowerShell session."
@@ -103,6 +103,7 @@ if ($statusExitCode -ne 0 -or $remoteStatus.active -ne $true -or $remoteStatus.p
         $remoteStatus.local_gateway_reachable,
         $remoteStatus.public_reachable
     )
+    throw $healthMessage
 }
 $mcpUri = [string]$remoteStatus.public_mcp_url
 if ([string]::IsNullOrWhiteSpace($mcpUri)) {
