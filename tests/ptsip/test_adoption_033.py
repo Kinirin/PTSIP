@@ -6,6 +6,7 @@ from pathlib import Path
 import yaml
 
 from ptsip.adoption import apply_adoption, prepare_adoption
+from ptsip.clarification.generator import analyze_clarifications
 from ptsip.clarification.resolution import DecisionAnswer
 from ptsip.cli import main
 from ptsip.constants import SPEC_REVISION
@@ -13,6 +14,8 @@ from ptsip.storage.local_state import decision_store_path
 from _wu04g_support import (
     canonical_v2_answer,
     commit_all,
+    component_payload,
+    explicit_profile_payload,
     git,
     init_git_repo,
     template_profile_payload,
@@ -303,3 +306,81 @@ def test_invalid_or_unknown_adoption_never_writes_profile(tmp_path: Path, capsys
     missing = json.loads(capsys.readouterr().out)
     assert missing["status"] == "UNKNOWN_COMPONENT"
     assert not (repo / "ptsip.yaml").exists()
+
+
+def test_g5_invalid_profile_reports_non_authoritative_recovery_and_blocks_questions(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    profile = repo / "ptsip.yaml"
+    profile.write_text("ptsip: [invalid\n", encoding="utf-8")
+
+    analysis = analyze_clarifications(repo, ["tools"])
+    payload = analysis.as_dict("en")
+    recovery = payload["profile"]["recovery"]
+
+    assert analysis.status == "PROFILE_INVALID"
+    assert analysis.requests == ()
+    assert payload["profile"]["failure_stage"] == "PARSE"
+    assert recovery["status"] == "PROJECT_CORRECTION_REQUIRED"
+    assert recovery["authoritative"] is False
+    assert recovery["raw_profile_fallback"] is False
+    assert recovery["reuse_partial_effective_state"] is False
+    assert recovery["retry_requires_fresh_repository_snapshot"] is True
+
+
+def test_g5_corrected_profile_retry_uses_fresh_effective_profile(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    profile = repo / "ptsip.yaml"
+    profile.write_text("ptsip: [invalid\n", encoding="utf-8")
+
+    first = analyze_clarifications(repo, ["tools"])
+    assert first.status == "PROFILE_INVALID"
+
+    write_profile(
+        profile,
+        explicit_profile_payload(
+            [
+                component_payload(
+                    "tools",
+                    ["tools/**"],
+                    purpose="Repository-local generation tooling",
+                )
+            ]
+        ),
+    )
+    second = analyze_clarifications(repo, ["tools"])
+
+    assert second.status == "NO_CLARIFICATION_REQUIRED"
+    assert second.requests == ()
+    assert second.profile_parse_error is None
+    assert second.profile_failure_stage is None
+    assert second.profile_recovery is None
+
+
+def test_g5_repeated_gate_does_not_reopen_applied_architecture(tmp_path: Path, monkeypatch, capsys) -> None:
+    repo = _repo(tmp_path)
+    monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+
+    assert main([
+        "gate", str(repo), "--component", "tools", "--coordination", "local", "--json",
+    ]) == 7
+    first = json.loads(capsys.readouterr().out)
+    decision_id = str(first["decisions"][0]["decision"]["id"])
+
+    assert main([
+        "resolve", str(repo), "--decision", decision_id,
+        "--classification", "DEVELOPMENT_TOOLING",
+        "--purpose", "Repository-local generation tooling",
+        "--shipped", "no",
+        "--runtime-required", "no",
+        "--executable", "yes",
+        "--coordination", "local",
+        "--json",
+    ]) == 0
+    capsys.readouterr()
+
+    assert main([
+        "gate", str(repo), "--component", "tools", "--coordination", "local", "--json",
+    ]) == 0
+    repeated = json.loads(capsys.readouterr().out)
+    assert repeated["status"] == "NO_DECISION_REQUIRED"
+    assert repeated["decisions"] == []
