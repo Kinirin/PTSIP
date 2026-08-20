@@ -8,6 +8,7 @@ from jsonschema import Draft202012Validator
 
 from ptsip.cli import main
 from ptsip.conformance import evaluate_conformance
+from ptsip.constants import TOOL_VERSION
 from ptsip.validation.profile import validate_profile
 
 
@@ -85,7 +86,7 @@ def test_conform_without_profile_is_incomplete(tmp_path: Path) -> None:
     result = evaluate_conformance(repo)
     assert result.outcome == "INCOMPLETE"
     assert result.report["format"] == "ptsip-conformance-report/v1"
-    assert result.report["tool"]["version"] == "0.3.5"
+    assert result.report["tool"]["version"] == TOOL_VERSION
     assert result.report["evaluators"]["declared_dependency_boundaries"]["status"] == "BLOCKED"
     gap_ids = {item["id"] for item in result.report["coverage"]["blocking_gaps"]}
     assert "profile:missing" in gap_ids
