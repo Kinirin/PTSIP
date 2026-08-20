@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import runpy
 import tomllib
 from pathlib import Path
 
@@ -16,6 +17,17 @@ def test_tool_035_package_runtime_and_spec_binding_match() -> None:
     assert TOOL_VERSION == "0.3.5.post1"
     assert SPEC_VERSION == "0.3.4-draft"
     assert SPEC_REVISION == EXPECTED_SPEC_REVISION
+
+
+def test_035_maintenance_keeps_034_spec_binding_but_036_requires_new_family() -> None:
+    contract = runpy.run_path(str(ROOT / ".github" / "scripts" / "verify_release_contract.py"))
+    expected = contract["_expected_spec_version_for_tool"]
+
+    assert expected("0.3.5") == "0.3.4-draft"
+    assert expected("0.3.5.post1") == "0.3.4-draft"
+    assert expected("0.3.5.post2") == "0.3.4-draft"
+    assert expected("0.3.6") == "0.3.6-draft"
+    assert expected("0.4.0") == "0.4.0-draft"
 
 
 def test_release_workflow_derives_tool_tag_from_package_version() -> None:
