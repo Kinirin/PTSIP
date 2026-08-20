@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from ptsip.cli import _configure_console_encoding, main
+from ptsip.constants import TOOL_VERSION
 from ptsip.inspection.dependencies import scan_dependency_edges
 from ptsip.inspection.inventory import collect_inventory
 from ptsip.pilot.runner import run_pilot
@@ -36,7 +37,7 @@ def _commit_all(repo: Path) -> None:
 
 def test_spec_identity():
     spec = current_spec_identity()
-    assert spec.tool_version == "0.3.5"
+    assert spec.tool_version == TOOL_VERSION
     assert spec.version == "0.3.4-draft"
     assert spec.source == "https://github.com/Kinirin/PTSIP"
     assert spec.revision == SPEC_REVISION
@@ -179,5 +180,5 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys):
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["format"] == "ptsip-pilot-report/v2"
-    assert payload["tool"]["version"] == "0.3.5"
+    assert payload["tool"]["version"] == TOOL_VERSION
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"

@@ -189,6 +189,7 @@ components:
   - id: repository-maintenance
     classification: TOOLCHAIN
     include:
+      - ".codex/openai-local-bridge/**"
       - ".gitignore"
       - ".github/ISSUE_TEMPLATE/**"
       - "AGENTS.md"
