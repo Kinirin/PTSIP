@@ -1,6 +1,6 @@
 # WU-04G — Clarification / Adoption Effective-Map Integration and Decision-Protocol Upgrade
 
-> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 VERIFIED; G4 next and not yet entered  
+> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 VERIFIED; G4 VERIFIED; G5 next and not yet entered  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04F — conformance consumes the effective Responsibility Map  
@@ -16,8 +16,8 @@ G0  normative accepted-decision authority freeze   COMPLETE
 G1  effective read + selector coverage             VERIFIED
 G2  clarification-answer/v2                        VERIFIED
 G3  hybrid safe apply                              VERIFIED
-G4  exact profile-path control plane               NEXT / NOT ENTERED
-G5  recovery + integration + migration audit       LOCKED BEHIND G4
+G4  exact profile-path control plane               VERIFIED
+G5  recovery + integration + migration audit       NEXT / NOT ENTERED
 ```
 
 G0 froze the accepted-decision authority rule as `PTSIP-RMAP-017` and selected immutable Specification revision:
@@ -101,6 +101,33 @@ capability_url_exposed:         false
 ```
 
 An earlier G3 files-mode run, `38988b39ba70466396697c350e214af7`, reached pytest at SHA `84d663dfbbfd5ae15a4d4c4cecea607066d291f2` and reported `21 passed / 1 failed`. The sole failure was the new template-adoption integration fixture: it selected the immutable `python-package-library` template without tracked `src/**` and `tests/**` files, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned `src/package.py` and `tests/test_package.py`; production safe-apply code was unchanged. Final scope and files-mode verification then passed on `cf663949...`. This closes G3 only and does not claim complete repository regression-cleanliness.
+
+G4 exact profile-path control-plane implementation was completed at production/test implementation SHA `471baba7656dbbb25d1a976d53bc20193b731def`. Repository-local Bridge invocation hardening then advanced the verification snapshot without changing G4 production semantics. The maintainer directly executed the repository-native scope guard and G4 files-mode runner at verification HEAD:
+
+```text
+c7f8060514a4814e5e6ccd9fd75280b2f931d54d
+```
+
+Direct verification produced:
+
+```text
+wu04g_guard.py scope
+Scope base:    52a455115d191123504c2fd690ffe499caf0ff6a
+Changed files: 44
+Changed tests: 10
+result:        PASS
+
+wu04g_track_tests.py G4 --mode files
+pytest:        37 passed
+wall time:     79.23s (0:01:19)
+result:        PASS
+```
+
+The selected profile path is now canonical repository-relative decision identity across local and hosted control-plane state. It is persisted with decisions, preserved across retry/rebind, used for exact local/remote projection targets and GitHub file reads/writes, included in non-root GitHub authority identity, and guarded against wrong-path resolution. Hosted stale/CAS races fail closed without applying the selected profile.
+
+After pytest had already reported `37 passed`, Windows emitted an ignored pytest temporary-directory cleanup callback `PermissionError` for `%TEMP%\pytest-of-rhkrt\pytest-current`. This was post-test cleanup noise rather than a test failure and did not alter the G4 semantic result. OpenAI Local Bridge transport/acceptance instability encountered before the direct run is not G4 product evidence and is not a prerequisite for G5 entry; repository-native guards/runners are the stage gate.
+
+This closes G4 only. It does not claim complete repository regression-cleanliness; G5 owns recovery integration, all-G migration audit, and the final exact-SHA self-hosted complete repository regression.
 
 ## 1. Accepted maintainer decision package
 
@@ -338,7 +365,7 @@ WU-04C  COMPLETE
 WU-04D  COMPLETE
 WU-04E  COMPLETE / VERIFIED
 WU-04F  COMPLETE / VERIFIED
-WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 NEXT
+WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 VERIFIED / G5 NEXT
 WU-04H  LOCKED
 WU-04I  LOCKED
 ```
@@ -759,9 +786,11 @@ Required work:
 7. every mutation test creates fresh repository/profile state; no module-scoped apply fixture;
 8. `test_topology_032.py` may adopt the shared projection/profile builders, but its topology migration outcomes are not changed under G3.
 
-The new focused G3 class, `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned projection node from mixed `test_topology_032.py` passed `wu04g-g3-files`. The earlier run `38988b39ba70466396697c350e214af7` failed only because the new template-adoption fixture did not satisfy the selected template's tracked selector preconditions; the fixture was corrected without changing production safe-apply semantics. G4 may now be entered.
+The new focused G3 class, `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned projection node from mixed `test_topology_032.py` passed `wu04g-g3-files`. The earlier run `38988b39ba70466396697c350e214af7` failed only because the new template-adoption fixture did not satisfy the selected template's tracked selector preconditions; the fixture was corrected without changing production safe-apply semantics. G4 subsequently entered and is now verified.
 
 ### G4 — exact profile-path control plane + file migration
+
+**Execution status: VERIFIED.** G4 production/test implementation completed at `471baba7656dbbb25d1a976d53bc20193b731def`. After repository-local verification-entrypoint hardening, the maintainer directly verified the complete G4 files-mode scope at HEAD `c7f8060514a4814e5e6ccd9fd75280b2f931d54d`: `wu04g_guard.py scope` passed with 44 changed files / 10 changed tests and `wu04g_track_tests.py G4 --mode files` reported `37 passed in 79.23s`.
 
 Production targets:
 
@@ -771,6 +800,7 @@ src/ptsip/app/store.py
 src/ptsip/app/local_client.py
 src/ptsip/app/github_authority.py / reconciliation surfaces as required
 gate/CLI payload construction and GitHub CAS surfaces
+src/ptsip/repository/profile_path.py
 ```
 
 Whole-file G migration targets participating in G4:
@@ -791,18 +821,24 @@ tests/ptsip/test_clarification_adoption_effective_map_036.py::TestG4ProfilePathC
 tests/ptsip/_wu04g_support.py
 ```
 
-Required work:
+Verified behavior:
 
-1. assert the normalized repository-relative selected profile path at every boundary that actually carries it: gate, store, retry/rebind, file read, projection, stale check, CAS;
-2. preserve non-root profile behavior locally and remotely;
-3. keep wrong-path, stale-revision, branch-head/CAS, first-valid-resolution, and declaration-conflict cases separate;
-4. every stateful control-plane test gets isolated repository/store/authority state;
-5. migrate repeated authority/control-plane payload builders, not mutable authority history;
-6. topology file may migrate the explicit profile-path/projection test and helpers, but topology migration semantics remain unchanged.
+1. normalized repository-relative selected profile path is carried through gate, store, retry/rebind, file read, projection, stale check, and CAS;
+2. non-root profiles remain exact local and remote projection/write targets;
+3. persisted decisions retain their selected path and historical missing-path records map only to root `ptsip.yaml` compatibility;
+4. retry/rebind preserves the selected path while updating the expected revision;
+5. root GitHub authority identity remains backward-compatible while non-root authority identity includes the canonical path;
+6. a changed profile path cannot apply an old decision and returns `PROFILE_PATH_MISMATCH` locally;
+7. stale subject revision and branch-head/CAS races fail closed with no selected-profile mutation;
+8. stateful repository/store/authority/CAS cases remain isolated and the mixed topology file's non-G semantics remain frozen.
 
-G4 focused tests and all six participating files must pass their G-owned contracts before G5 starts.
+The G4 files-mode pytest set includes the six participating existing files, the one G4-owned projection node from mixed topology, and `TestG4ProfilePathControlPlane`. All 37 selected tests passed. The post-pytest Windows temporary-directory cleanup warning for `pytest-current` is not a semantic test failure and is tracked separately from G4 product verification.
+
+G5 recovery/integration and final migration audit is now the next permitted WU-04G track.
 
 ### G5 — recovery + cross-track integration + final migration audit
+
+**Execution status: NEXT / NOT ENTERED.**
 
 Production responsibility:
 
@@ -1074,7 +1110,51 @@ test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
     -> focused/files verification: PASS via same run
 ```
 
-The final G3 scope guard passed in run `fc9a315beafd485a88fa6d69772cc18a` before the successful G3 files-mode run. G4 is now the next permitted implementation track.
+The final G3 scope guard passed in run `fc9a315beafd485a88fa6d69772cc18a` before the successful G3 files-mode run.
+
+### G4 verification ledger
+
+```text
+canonical selected profile-path identity
+    -> added repository-relative normalization and repository containment checks
+    -> root ptsip.yaml retains historical decision identity; non-root paths are deterministically path-bound
+    -> destination: src/ptsip/repository/profile_path.py
+    -> verification: PASS at c7f8060514a4814e5e6ccd9fd75280b2f931d54d
+
+DecisionStore selected profile persistence
+    -> profile_path persisted in DecisionRecord/SQLite with historical root default
+    -> retry/rebind updates subject revision while preserving canonical selected path and accepted answer semantics
+    -> destinations:
+       TestG4ProfilePathControlPlane::test_selected_profile_path_is_persisted_with_decision
+       TestG4ProfilePathControlPlane::test_selected_profile_path_survives_retry_and_rebind
+    -> verification: PASS in 37-test G4 files-mode run
+
+local selected-profile reconciliation
+    -> gate and resolve carry the exact selected path; resolve without --profile reuses persisted decision path
+    -> a different supplied profile fails with PROFILE_PATH_MISMATCH and no source mutation
+    -> destinations:
+       TestG4ProfilePathControlPlane::test_non_root_profile_path_survives_local_gate_and_reconciliation
+       TestG4ProfilePathControlPlane::test_changed_profile_path_does_not_apply_old_decision
+    -> verification: PASS in same run
+
+hosted GitHub authority + remote CAS
+    -> non-root authority identity includes canonical profile path while root identity remains compatible
+    -> remote projection reads/writes the exact selected profile path
+    -> stale subject revision and branch-head CAS race both fail closed without selected-profile write
+    -> destinations:
+       TestG4ProfilePathControlPlane::test_remote_cas_reads_and_writes_exact_selected_profile_path
+       TestG4ProfilePathControlPlane::test_stale_revision_does_not_apply_to_selected_profile
+       TestG4ProfilePathControlPlane::test_branch_head_conflict_does_not_apply_selected_profile
+       test_github_authority_033.py::test_github_authority_profile_path_is_part_of_scope_identity
+    -> verification: PASS in same run
+
+test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
+    -> preserved as the G4-owned projection/path node in the mixed topology file
+    -> historical topology migration semantics remain frozen and outside G4 files-mode selection
+    -> verification: PASS in same run
+```
+
+The maintainer directly ran `wu04g_guard.py scope` and the G4 files-mode track on verification HEAD `c7f8060514a4814e5e6ccd9fd75280b2f931d54d`. Scope passed and pytest reported `37 passed in 79.23s`. G4 is VERIFIED; G5 is the next permitted track.
 
 The final G5 evidence must contain:
 
