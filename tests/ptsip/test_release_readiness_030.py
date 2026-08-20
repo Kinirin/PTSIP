@@ -12,8 +12,8 @@ EXPECTED_SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 def test_tool_035_package_runtime_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.5"
-    assert TOOL_VERSION == "0.3.5"
+    assert payload["project"]["version"] == "0.3.5.post1"
+    assert TOOL_VERSION == "0.3.5.post1"
     assert SPEC_VERSION == "0.3.4-draft"
     assert SPEC_REVISION == EXPECTED_SPEC_REVISION
 
