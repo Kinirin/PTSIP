@@ -100,11 +100,6 @@ class ClarificationAnalysis:
         }
 
 
-def _selected_profile_candidate(root: Path, explicit_profile: str | Path) -> Path:
-    raw = Path(explicit_profile).expanduser()
-    return raw.resolve() if raw.is_absolute() else (root / raw).resolve()
-
-
 def _validation_failure_stage(validation: ValidationResult) -> str:
     errors = validation.errors
     if any(error.startswith("Unable to parse profile:") or error.startswith("<root>: profile must be") for error in errors):
@@ -162,20 +157,18 @@ def _declared_profile_scopes(
     present profile must pass canonical validation/materialization and provide a
     ``ResolvedProfile`` before clarification/adoption may consume architecture.
 
-    G5 recovery state is diagnostic only: it identifies where validation failed,
-    exposes the exact selected profile path, and requires a fresh retry after the
-    project corrects its own source. It never repairs architecture or falls back
-    to partial/raw declarations.
+    G5 recovery state is diagnostic only for an existing invalid profile: it
+    identifies where validation failed, exposes the exact selected profile path,
+    and requires a fresh retry after the project corrects its own source. A
+    missing profile remains the normal pre-adoption state and must not be treated
+    as invalid architecture. Recovery never repairs architecture or falls back to
+    partial/raw declarations.
     """
 
     root = Path(root).resolve()
     profile = find_profile(root, explicit_profile)
     if profile is None:
-        if explicit_profile is None:
-            return [], [], None, None, None, None
-        selected = str(_selected_profile_candidate(root, explicit_profile))
-        message = "Selected PTSIP project profile was not found."
-        return [], [], selected, message, "PROFILE_DISCOVERY", _recovery(selected, "PROFILE_DISCOVERY")
+        return [], [], None, None, None, None
 
     validation = validate_profile(root, profile)
     if not validation.valid:
