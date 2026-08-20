@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
+SRC = ROOT / "src"
 FOCUSED = "tests/ptsip/test_clarification_adoption_effective_map_036.py"
 
 EXISTING_G_SCOPE = (
@@ -96,6 +98,15 @@ def _validate_targets(track: str, targets: tuple[str, ...]) -> list[str]:
     return errors
 
 
+def _checkout_environment() -> dict[str, str]:
+    """Make WU-04G tests import the active checkout, never a stale installed PTSIP."""
+
+    env = os.environ.copy()
+    existing = env.get("PYTHONPATH", "").strip()
+    env["PYTHONPATH"] = str(SRC) if not existing else os.pathsep.join((str(SRC), existing))
+    return env
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run an exact WU-04G pytest track set")
     parser.add_argument("track", choices=("baseline", "G1", "G2", "G3", "G4", "G5"))
@@ -143,10 +154,11 @@ def main() -> int:
 
     print("WU-04G pytest command:")
     print(" ".join(command))
+    print(f"WU-04G checkout source: {SRC}")
     if args.list:
         return 0
 
-    result = subprocess.run(command, cwd=ROOT, check=False)
+    result = subprocess.run(command, cwd=ROOT, check=False, env=_checkout_environment())
     return result.returncode
 
 
