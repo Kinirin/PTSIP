@@ -32,7 +32,7 @@ Current bound Specification:
 
 WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is next and has not yet been entered.
+WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is next and has not yet been entered.
 
 ### Work-unit progress
 
@@ -53,7 +53,7 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 NEXT
+WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 VERIFIED / G5 NEXT
 WU-04H  VPMS narrow read-only integration                LOCKED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
@@ -211,7 +211,40 @@ capability_url_exposed:         false
 
 An earlier G3 files-mode run `38988b39ba70466396697c350e214af7` produced `21 passed / 1 failed`. The sole failure was not a production safe-apply defect: the newly added template-adoption integration fixture selected `python-package-library` while omitting tracked `src/**` and `tests/**` files required by that template, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned files at `cf663949...`; production safe-apply code was unchanged. Final scope and files-mode verification then passed.
 
-G4 exact profile-path control plane is now the next WU-04G track. It has not yet been entered.
+### G4 verified exact profile-path control plane
+
+G4 is VERIFIED. Production/test implementation completed at:
+
+```text
+471baba7656dbbb25d1a976d53bc20193b731def
+```
+
+Repository-local Bridge invocation hardening then advanced the branch without changing G4 production semantics. Direct repository-native verification was performed at:
+
+```text
+c7f8060514a4814e5e6ccd9fd75280b2f931d54d
+```
+
+Verification result:
+
+```text
+wu04g_guard.py scope
+    PASS
+    scope base:    52a455115d191123504c2fd690ffe499caf0ff6a
+    changed files: 44
+    changed tests: 10
+
+wu04g_track_tests.py G4 --mode files
+    37 passed in 79.23s (0:01:19)
+```
+
+The exact selected profile path is now a normalized repository-relative control-plane identity. It is persisted with decisions, preserved across retry/rebind, used for exact local and hosted file projection/read/write, and included in non-root GitHub authority identity. Historical root `ptsip.yaml` identity remains compatible. A resolve attempt against a different path fails with `PROFILE_PATH_MISMATCH`; stale subject revisions and branch-head/CAS races fail closed without applying the selected profile.
+
+Focused G4 coverage remains separated across non-root projection, local reconciliation, persistence, retry/rebind, exact hosted read/write, wrong-path protection, stale revision, and branch-head race contracts. The mixed topology file contributes only its G4-owned explicit path/projection node; historical topology semantics remain frozen.
+
+After pytest had already reported `37 passed`, Windows emitted an ignored pytest temporary-directory cleanup callback `PermissionError` for `%TEMP%\pytest-of-rhkrt\pytest-current`. This is post-test environment cleanup noise and not a G4 product/test failure.
+
+G5 recovery + cross-track integration + final migration audit is now the next WU-04G track and has not yet been entered.
 
 For accepted project decisions:
 
@@ -224,7 +257,7 @@ For accepted project decisions:
 
 ### Exact profile-path control plane
 
-The normalized repository-relative selected profile path must flow through gate creation, persisted decision state, subject revision, remote file read, projection validation, stale check, and CAS write. A non-root selected profile must never silently become root `ptsip.yaml`.
+The normalized repository-relative selected profile path flows through gate creation, persisted decision state, subject revision, remote file read, projection validation, stale check, and CAS write. A non-root selected profile never silently becomes root `ptsip.yaml`.
 
 ### G-owned test migration/optimization
 
@@ -256,6 +289,9 @@ wu04g-g2-files
 
 wu04g-g3-files
     .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G3 --mode files
+
+wu04g-g4-files
+    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G4 --mode files
 ```
 
 Repository-local Bridge evidence inspection is available through:
@@ -285,9 +321,9 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`. G3 final scope and files-mode tasks completed successfully in runs `fc9a315beafd485a88fa6d69772cc18a` and `7993c2bb283b481e9775ea7a08ad45b2`. All cited successful stage-gate runs completed with exit code 0 and `remote_task_execution_verified=true`.
+The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`. G3 final scope and files-mode tasks completed successfully in runs `fc9a315beafd485a88fa6d69772cc18a` and `7993c2bb283b481e9775ea7a08ad45b2`. All cited successful historical Bridge stage-gate runs completed with exit code 0 and `remote_task_execution_verified=true`.
 
-These Bridge results establish repository/task discovery and actual read-only remote process execution for the corresponding WU-04G stage gates. They do not establish complete repository regression or release readiness.
+G4 was verified directly with the same checked-in repository-native commands because Bridge transport/acceptance instability was a development-tooling problem rather than a PTSIP semantic prerequisite. For WU-04G intermediate stages, the checked-in guard/track command executed against a recorded HEAD is authoritative; Bridge is an optional transport for those read tasks. This does not weaken G5: the final exact-SHA self-hosted complete repository regression remains mandatory.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -476,6 +512,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G ACTIVE — G3 VERIFIED / G4 NEXT**
+- Tool `0.3.6`: **active development; WU-04G ACTIVE — G4 VERIFIED / G5 NEXT**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
