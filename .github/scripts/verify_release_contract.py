@@ -30,6 +30,16 @@ def _git(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def _expected_spec_version_for_tool(package_version: str) -> str:
+    # Tool 0.3.5 was published before the one-Tool-version/one-Spec-family
+    # release rule became mandatory.  Maintenance post-releases on that
+    # already-published Tool line preserve the immutable 0.3.4-draft binding.
+    # Tool 0.3.6 and later continue to require an aligned new draft family.
+    if re.fullmatch(r"0\.3\.5(?:\.post[1-9][0-9]*)?", package_version):
+        return "0.3.4-draft"
+    return f"{package_version}-draft"
+
+
 def main() -> int:
     errors: list[str] = []
 
@@ -41,7 +51,7 @@ def main() -> int:
     spec_revision = str(constants["SPEC_REVISION"])
     spec_source = str(constants["SPEC_SOURCE"])
 
-    expected_spec_version = f"{package_version}-draft"
+    expected_spec_version = _expected_spec_version_for_tool(package_version)
     if spec_version != expected_spec_version:
         errors.append(
             f"SPEC_VERSION is {spec_version!r}; Tool {package_version} requires "
