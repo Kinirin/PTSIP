@@ -32,7 +32,7 @@ Current bound Specification:
 
 WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G remains ACTIVE. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is next and has not yet been entered.
+WU-04G is **COMPLETE / EXACT-SHA VERIFIED**. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is COMPLETE / EXACT-SHA VERIFIED. WU-04H is next and has not been entered; WU-04I remains locked.
 
 ### Work-unit progress
 
@@ -53,17 +53,19 @@ WU-04C  declaration authority/source_mode boundary       COMPLETE
 WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 VERIFIED / G5 NEXT
-WU-04H  VPMS narrow read-only integration                LOCKED
+WU-04G  clarification/adoption integration               COMPLETE / EXACT-SHA VERIFIED
+WU-04H  VPMS narrow read-only integration                NEXT / NOT ENTERED
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
-Active WU-04G document:
+WU-04G records:
 
 ```text
 planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
-entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
-current normative revision d6995ed232e845b88d8235b851e80ab54b7804ea
+planning/0.3.6/WU-04G-G5-verification-closure.md
+entry baseline:          52a455115d191123504c2fd690ffe499caf0ff6a
+normative revision:      d6995ed232e845b88d8235b851e80ab54b7804ea
+exact-SHA verification:  3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
 ```
 
 The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical review context and no longer the implementation authority.
@@ -129,7 +131,7 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-Therefore G1 files-mode verification is PASS. This does not replace the final G5 exact-SHA complete repository regression.
+Therefore G1 files-mode verification is PASS. This was an intermediate stage gate and did not replace G5's final exact-SHA complete repository regression.
 
 ### G2 verified answer-v2 decision protocol
 
@@ -175,11 +177,11 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-An earlier files-mode run `97def58217ec44fb8b1725ef7299d693` produced `41 passed / 1 failed`; the sole failure was the frozen historical `test_topology_legacy_boundary_profile_preserves_historical_plane_classification` contract. Because `test_topology_032.py` is a mixed file whose topology semantics are explicitly outside G2 ownership, that test was preserved unchanged and the G2 selector now runs only its G2-owned `DecisionAnswer`/projection node. This does not erase or resolve the legacy topology debt; the later all-G/full regression remains authoritative for it.
+An earlier files-mode run `97def58217ec44fb8b1725ef7299d693` produced `41 passed / 1 failed`; the sole failure was the frozen historical `test_topology_legacy_boundary_profile_preserves_historical_plane_classification` contract. Because `test_topology_032.py` is a mixed file whose topology semantics are explicitly outside G2 ownership, that test was preserved unchanged and the G2 selector runs only its G2-owned `DecisionAnswer`/projection node. This does not erase or resolve the legacy topology debt; it remained visible in the final full regression.
 
 ### G3 verified hybrid safe apply
 
-G3 is VERIFIED. Accepted project decisions now preserve the explicit projection baseline and may encode only the exact accepted project-owned delta for template/hybrid source. A template source changes to hybrid only when that decision requires a new declaration; the exact selected template ID/revision is preserved. Existing hybrid unrelated overrides/removals remain intact, materialize-to-explicit writeback is prohibited, conflicts fail closed without partial mutation, and semantic no-op decisions do not alter source.
+G3 is VERIFIED. Accepted project decisions preserve the explicit projection baseline and may encode only the exact accepted project-owned delta for template/hybrid source. A template source changes to hybrid only when that decision requires a new declaration; the exact selected template ID/revision is preserved. Existing hybrid unrelated overrides/removals remain intact, materialize-to-explicit writeback is prohibited, conflicts fail closed without partial mutation, and semantic no-op decisions do not alter source.
 
 Focused G3 coverage is in `TestG3HybridSafeApply`, and the participating G3 files include `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned explicit projection node from mixed `test_topology_032.py`. The topology migration behavior in that mixed file remains semantically frozen.
 
@@ -244,7 +246,64 @@ Focused G4 coverage remains separated across non-root projection, local reconcil
 
 After pytest had already reported `37 passed`, Windows emitted an ignored pytest temporary-directory cleanup callback `PermissionError` for `%TEMP%\pytest-of-rhkrt\pytest-current`. This is post-test environment cleanup noise and not a G4 product/test failure.
 
-G5 recovery + cross-track integration + final migration audit is now the next WU-04G track and has not yet been entered.
+### G5 exact-SHA verification and WU-04G closure
+
+G5 is COMPLETE / EXACT-SHA VERIFIED.
+
+The fixed focused class passed all six required recovery/integration contracts:
+
+```text
+TestG5RecoveryAndIntegration
+6 passed in 14.92s
+```
+
+Before the six final focused contracts were added, the G1-G4/G5 integration baseline reported:
+
+```text
+73 passed in 124.29s (0:02:04)
+```
+
+The final candidate at exact SHA:
+
+```text
+3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+```
+
+passed the complete repository-native WU-04G internal gate:
+
+```text
+wu04g_guard.py all
+    PASS
+    working tree: clean
+    changed tests: 10, all authoritative WU-04G files
+
+wu04g_track_tests.py G5 --mode all-g
+    79 passed in 128.50s (0:02:08)
+```
+
+The exact-SHA self-hosted complete repository regression was GitHub Actions `tooling-test` run `32454141405`, job `96688080410`:
+
+```text
+source SHA:   3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+runner:       self-hosted Windows X64
+Python:       3.14.6
+pytest:       303 passed / 8 failed
+wall time:    295.61s (0:04:55)
+```
+
+The workflow checked out and explicitly verified the exact dispatched SHA. The `Run complete repository regression` step concluded failure because of the eight remaining tests; all later Tool/Specification/profile verification, distribution build, wheel smoke, and success-status steps were skipped. There is therefore no `self-hosted/tooling-test` success status for this SHA and no repository-wide release-readiness claim.
+
+All eight failures were classified and none is a WU-04G focused/selected contract failure:
+
+```text
+1  frozen legacy topology / 0.3.4 boundaries+TOOLCHAIN contract
+3  excluded/deferred evidence / merge-gate / historical agent-conformance expectations
+4  stale or out-of-scope Specification-binding fixture expectations
+```
+
+Detailed classification is recorded in `planning/0.3.6/WU-04G-G5-verification-closure.md`.
+
+Because the WU-04G completion gate requires the exact-SHA self-hosted full regression to be reviewed and its remaining failures classified—not global zero-failure cleanliness—WU-04G is closed as COMPLETE / EXACT-SHA VERIFIED. The stage-scoped label does not convert the failed repository-wide workflow into a success.
 
 For accepted project decisions:
 
@@ -261,7 +320,7 @@ The normalized repository-relative selected profile path flows through gate crea
 
 ### G-owned test migration/optimization
 
-WU-04G may optimize/migrate only tests it directly owns or changes. It may consolidate duplicated immutable setup and parameterize equivalent semantic variants, but must preserve mutable CAS/snapshot/stale-state isolation, record replacement coverage for migrated historical tests, avoid repository-wide test restructuring/xdist/workflow changes, and retain full exact-SHA repository regression as the final authority.
+WU-04G migrated only its authorized participating test set. The final scope guard reported the eight pre-authorized existing G files plus the focused/support pair and no `tests/vpms/**` migration. Mutable CAS/snapshot/stale-state isolation remains function-scoped where required. The historical topology contract was preserved unchanged rather than rewritten for a green stage gate.
 
 ## OpenAI Local Bridge integration
 
@@ -302,8 +361,6 @@ Repository-local Bridge evidence inspection is available through:
 
 This helper reads already-recorded Bridge run evidence under `%LOCALAPPDATA%\OpenAI_Local_Bridge\runs` and does not create a new task run.
 
-The previous full-suite Bridge task was replaced because the active WU-04G branch is intentionally not yet globally regression-clean and complete repository regression is reserved for the post-G5 exact-SHA gate.
-
 Maintainer-provided remote E2E precheck result on 2026-08-19:
 
 ```text
@@ -323,7 +380,7 @@ capability_url_exposed:         false
 
 The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`. G3 final scope and files-mode tasks completed successfully in runs `fc9a315beafd485a88fa6d69772cc18a` and `7993c2bb283b481e9775ea7a08ad45b2`. All cited successful historical Bridge stage-gate runs completed with exit code 0 and `remote_task_execution_verified=true`.
 
-G4 was verified directly with the same checked-in repository-native commands because Bridge transport/acceptance instability was a development-tooling problem rather than a PTSIP semantic prerequisite. For WU-04G intermediate stages, the checked-in guard/track command executed against a recorded HEAD is authoritative; Bridge is an optional transport for those read tasks. This does not weaken G5: the final exact-SHA self-hosted complete repository regression remains mandatory.
+G4 and G5 intermediate stage verification used the same checked-in repository-native commands directly because Bridge transport/acceptance health is a development-tooling concern rather than a PTSIP semantic prerequisite. G5's final exact-SHA authority came from the self-hosted GitHub Actions full regression, not from Bridge.
 
 ## Tool 0.3.6 canonical lifecycle model
 
@@ -386,7 +443,17 @@ Python     3.14.3
 result     260 passed / 13 failed
 ```
 
-Infrastructure/execution status:
+WU-04G final self-hosted verification:
+
+```text
+run        32454141405
+job        96688080410
+source SHA 3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+Python     3.14.6
+result     303 passed / 8 failed
+```
+
+Infrastructure/execution status for WU-04G final run:
 
 ```text
 self-hosted Windows scheduling       PASS
@@ -395,36 +462,23 @@ exact source identity                PASS
 host Python 3.14 selection           PASS
 isolated per-run .venv creation      PASS
 verification tooling installation    PASS
-complete pytest execution            RAN
+complete pytest execution            RAN / 303 passed / 8 failed
+repository-wide workflow conclusion  FAILURE
+post-pytest build/smoke               SKIPPED
+self-hosted/tooling-test status      NOT RECORDED
 ```
 
-The exhaustive failure summary did not contain either:
+WU-04G is COMPLETE / exact-SHA verified because its own G1-G5 stage contracts passed and the exact-SHA full regression was reviewed with every remaining failure classified. This is deliberately narrower than a successful repository-wide tooling-test status.
+
+The eight remaining failures are:
 
 ```text
-tests/ptsip/test_profile_validation_036.py
-tests/ptsip/test_conformance_effective_map_036.py
+1  frozen legacy topology contract
+3  excluded/deferred evidence/merge-gate/agent-conformance expectations
+4  stale/out-of-scope Specification-binding expectations
 ```
 
-Therefore WU-04E/F are COMPLETE / exact-SHA verified.
-
-The 13 remaining failures were classified as:
-
-```text
-3  decision/clarification-control historical expectations
-1  pilot/evidence fixture using pre-0.3.6 profile state
-1  stale lifecycle-evidence expectation for an unscoped release workflow
-1  agent-decision conflict expectation for later decision integration
-7  topology/legacy-profile migration fixtures
-```
-
-WU-04G may migrate only the decision/clarification failures/tests within its accepted scope. The lifecycle-evidence failure is not an E/F regression.
-
-The workflow still concluded failure. Consequently:
-
-- no `self-hosted/tooling-test` success status was recorded for `48b75e6...`;
-- Tool `0.3.6` is **not** globally regression-clean;
-- release/build/smoke steps after pytest were skipped;
-- this evidence closes E/F only and does not establish release readiness.
+Tool `0.3.6` is therefore still **not** globally regression-clean and is not release-ready.
 
 ## Repository self-profile
 
@@ -434,6 +488,8 @@ Root `ptsip.yaml` structurally self-adopts Responsibility Map v2:
 - repository verification/CI/maintenance: `DEVELOPMENT_TOOLING`;
 - canonical lifecycle-independent contracts: `NEUTRAL_CONTRACT` where applicable;
 - subordinate specification governance support: associated-artifact semantics where independent component ownership is unnecessary.
+
+The maintainer-added `setup_dev.bat` is classified under `repository-maintenance / DEVELOPMENT_TOOLING`, matching the existing local repository setup/maintenance responsibility rather than weakening self-profile completeness assertions.
 
 ## Tool 0.3.5 compatibility direction
 
@@ -512,6 +568,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G ACTIVE — G4 VERIFIED / G5 NEXT**
+- Tool `0.3.6`: **active development; WU-04G COMPLETE / EXACT-SHA VERIFIED; WU-04H NEXT / NOT ENTERED**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
