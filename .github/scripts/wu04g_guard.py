@@ -45,6 +45,8 @@ def _git(*args: str) -> subprocess.CompletedProcess[str]:
         ["git", *args],
         cwd=ROOT,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
