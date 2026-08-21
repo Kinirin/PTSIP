@@ -1,13 +1,15 @@
 # WU-04G — Clarification / Adoption Effective-Map Integration and Decision-Protocol Upgrade
 
-> **Status:** ACTIVE — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 VERIFIED; G4 VERIFIED; G5 next and not yet entered  
+> **Status:** COMPLETE / EXACT-SHA VERIFIED — G0 COMPLETE; G1 VERIFIED; G2 VERIFIED; G3 VERIFIED; G4 VERIFIED; G5 COMPLETE / EXACT-SHA VERIFIED  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04F — conformance consumes the effective Responsibility Map  
 > **Entry baseline:** `52a455115d191123504c2fd690ffe499caf0ff6a`  
 > **Pre-entry review:** `planning/0.3.6/pre-entry-WU-04G-decision-review.md`  
 > **Bound Specification snapshot at entry:** `82abd09360df09a95fbbfb516855fa9ffb49f050`  
-> **Current WU-04G normative Specification snapshot:** `d6995ed232e845b88d8235b851e80ab54b7804ea`
+> **Current WU-04G normative Specification snapshot:** `d6995ed232e845b88d8235b851e80ab54b7804ea`  
+> **Exact-SHA verification snapshot:** `3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667`  
+> **G5 closure evidence:** `planning/0.3.6/WU-04G-G5-verification-closure.md`
 
 ## 0. Current execution state
 
@@ -17,7 +19,7 @@ G1  effective read + selector coverage             VERIFIED
 G2  clarification-answer/v2                        VERIFIED
 G3  hybrid safe apply                              VERIFIED
 G4  exact profile-path control plane               VERIFIED
-G5  recovery + integration + migration audit       NEXT / NOT ENTERED
+G5  recovery + integration + migration audit       COMPLETE / EXACT-SHA VERIFIED
 ```
 
 G0 froze the accepted-decision authority rule as `PTSIP-RMAP-017` and selected immutable Specification revision:
@@ -44,7 +46,7 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-The same track had previously exposed one test-fixture migration omission for a non-root profile parent directory; that fixture was corrected before the passing run. The passing Bridge run is the G1 files-mode verification evidence. It is not the final exact-SHA complete repository regression, which remains reserved for G5.
+The same track had previously exposed one test-fixture migration omission for a non-root profile parent directory; that fixture was corrected before the passing run. The passing Bridge run is the G1 files-mode verification evidence. It is not the final exact-SHA complete repository regression, which was completed in G5.
 
 G2 implementation and migration were verified after isolating a frozen non-G topology contract from the G2 track selector. The maintainer-provided OpenAI Local Bridge verification produced:
 
@@ -72,7 +74,7 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-An earlier G2 run, `97def58217ec44fb8b1725ef7299d693`, reached pytest and reported `41 passed / 1 failed`; the sole failure was `test_topology_legacy_boundary_profile_preserves_historical_plane_classification`, a known legacy `0.3.4 boundaries/TOOLCHAIN` topology contract. Section 10 explicitly freezes topology semantics in this mixed file, so the test was neither repaired nor xfailed. The G2 files-mode selector was narrowed to the G2-owned `DecisionAnswer`/projection node while the legacy topology test remains available to later all-G and complete-regression gates.
+An earlier G2 run, `97def58217ec44fb8b1725ef7299d693`, reached pytest and reported `41 passed / 1 failed`; the sole failure was `test_topology_legacy_boundary_profile_preserves_historical_plane_classification`, a known legacy `0.3.4 boundaries/TOOLCHAIN` topology contract. Section 10 explicitly freezes topology semantics in this mixed file, so the test was neither repaired nor xfailed. The G2 files-mode selector was narrowed to the G2-owned `DecisionAnswer`/projection node while the legacy topology test remained available to later all-G and complete-regression gates. It reappeared in the final full regression and was classified as frozen non-G legacy debt.
 
 G3 projection and accepted-decision hybrid safe apply were verified on final implementation SHA `cf663949bb7005616574db62a2d850bbc1d80bce`. The maintainer-provided OpenAI Local Bridge verification produced:
 
@@ -100,7 +102,7 @@ log_truncated:                  false
 capability_url_exposed:         false
 ```
 
-An earlier G3 files-mode run, `38988b39ba70466396697c350e214af7`, reached pytest at SHA `84d663dfbbfd5ae15a4d4c4cecea607066d291f2` and reported `21 passed / 1 failed`. The sole failure was the new template-adoption integration fixture: it selected the immutable `python-package-library` template without tracked `src/**` and `tests/**` files, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned `src/package.py` and `tests/test_package.py`; production safe-apply code was unchanged. Final scope and files-mode verification then passed on `cf663949...`. This closes G3 only and does not claim complete repository regression-cleanliness.
+An earlier G3 files-mode run, `38988b39ba70466396697c350e214af7`, reached pytest at SHA `84d663dfbbfd5ae15a4d4c4cecea607066d291f2` and reported `21 passed / 1 failed`. The sole failure was the new template-adoption integration fixture: it selected the immutable `python-package-library` template without tracked `src/**` and `tests/**` files, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned `src/package.py` and `tests/test_package.py`; production safe-apply code was unchanged. Final scope and files-mode verification then passed on `cf663949...`.
 
 G4 exact profile-path control-plane implementation was completed at production/test implementation SHA `471baba7656dbbb25d1a976d53bc20193b731def`. Repository-local Bridge invocation hardening then advanced the verification snapshot without changing G4 production semantics. The maintainer directly executed the repository-native scope guard and G4 files-mode runner at verification HEAD:
 
@@ -127,7 +129,11 @@ The selected profile path is now canonical repository-relative decision identity
 
 After pytest had already reported `37 passed`, Windows emitted an ignored pytest temporary-directory cleanup callback `PermissionError` for `%TEMP%\pytest-of-rhkrt\pytest-current`. This was post-test cleanup noise rather than a test failure and did not alter the G4 semantic result. OpenAI Local Bridge transport/acceptance instability encountered before the direct run is not G4 product evidence and is not a prerequisite for G5 entry; repository-native guards/runners are the stage gate.
 
-This closes G4 only. It does not claim complete repository regression-cleanliness; G5 owns recovery integration, all-G migration audit, and the final exact-SHA self-hosted complete repository regression.
+G5 completed D2-B recovery/retry integration and the final WU-04G migration audit. `TestG5RecoveryAndIntegration` passed all six fixed contracts (`6 passed in 14.92s`). The final repository-native G1-G5 gate at exact candidate SHA `3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667` passed `wu04g_guard.py all` with a clean working tree and reported `79 passed in 128.50s` for `wu04g_track_tests.py G5 --mode all-g`.
+
+The required exact-SHA self-hosted complete repository regression was then run by GitHub Actions `tooling-test` run `32454141405`, job `96688080410`, on self-hosted Windows X64 / Python 3.14.6. The workflow checked out and verified the exact same SHA before running the complete repository pytest suite. Result: `303 passed / 8 failed in 295.61s`. All eight failures were reviewed and classified; none is a G1-G5 focused/selected WU-04G contract failure. Because the full repository pytest step failed, later Tool/Specification/profile verification, build/twine, wheel smoke, and `self-hosted/tooling-test` success-status recording were skipped. WU-04G exact-SHA verification is therefore stage-scoped and does not assert repository-wide regression cleanliness or release readiness.
+
+This completes the WU-04G completion gate. WU-04H is now the next permitted stage but remains not entered and has no stage document yet. WU-04I remains locked.
 
 ## 1. Accepted maintainer decision package
 
@@ -145,11 +151,11 @@ D8-B  exact selected profile path travels through the complete decision protocol
 D9-B  optimize/migrate WU-04G-participating test files with coverage-preservation proof
 ```
 
-This package intentionally expands WU-04G beyond the provisional read-only recommendation. The expansion is accepted and must be implemented without weakening the authority boundaries frozen by WU-04C.
+This package intentionally expands WU-04G beyond the provisional read-only recommendation. The expansion is accepted and was implemented without weakening the authority boundaries frozen by WU-04C.
 
 ## 2. Non-negotiable authority boundary
 
-WU-04G must preserve all of the following:
+WU-04G preserves all of the following:
 
 - `classification` remains canonical lifecycle ownership;
 - canonical PTSIP Tool 0.3.6 never restores `TOOLCHAIN` as a classification alias;
@@ -206,7 +212,7 @@ Runtime implementation that depends on D6-B/D7-C MUST NOT precede this freeze.
 
 ## 4. D1-B — effective-map read authority
 
-Clarification/adoption coverage must use:
+Clarification/adoption coverage uses:
 
 ```text
 selected profile
@@ -221,9 +227,9 @@ Raw source remains available for source identity, provenance, projection, and sa
 
 ## 5. D2-B — fail closed plus recovery workflow
 
-If parse/schema/binding/materialization/effective semantic/selector validation cannot produce a valid `ResolvedProfile`, clarification/adoption must not fall back to raw source or manufacture candidate questions.
+If parse/schema/binding/materialization/effective semantic/selector validation cannot produce a valid `ResolvedProfile`, clarification/adoption does not fall back to raw source or manufacture candidate questions.
 
-The failure path is extended beyond a terminal error:
+The implemented failure path is:
 
 ```text
 profile resolution failure
@@ -237,17 +243,15 @@ profile resolution failure
     -> resume clarification/adoption only after a valid ResolvedProfile exists
 ```
 
-The remediation surface may explain required corrections but MUST NOT infer architecture or silently repair declarations. Partial effective state from a failed attempt must not be reused as authority on retry.
-
-Public status names may be finalized during implementation, but failure and recovery state must be machine-readable enough for local CLI and remote control-plane callers to continue deterministically after the project fixes the profile.
+A missing profile remains a normal pre-adoption state and may proceed to clarification/adoption. An existing invalid/unresolvable profile fails closed with `PROJECT_CORRECTION_REQUIRED`. The remediation surface explains required corrections but does not infer architecture or silently repair declarations. Partial effective state from a failed attempt is not reused as authority on retry.
 
 ## 6. D3-B / D4-B — associated-artifact suppression and canonical selector coverage
 
 Effective associated-artifact coverage suppresses duplicate component clarification for the same declared support scope. This does not permanently prevent later explicit promotion/re-evaluation if independent lifecycle responsibility emerges.
 
-Clarification-local selector interpretation must be replaced by/reduced to a shared canonical candidate-coverage primitive owned by the validation/selector layer.
+Clarification-local selector interpretation is replaced by/reduced to a shared canonical candidate-coverage primitive owned by the validation/selector layer.
 
-Required semantic result shape should distinguish at least:
+The semantic result shape distinguishes at least:
 
 ```text
 covered by one component
@@ -256,7 +260,7 @@ uncovered
 ambiguous/conflicting
 ```
 
-Ambiguity must fail/review rather than guess ownership. The shared primitive must preserve include/exclude/specificity semantics used by canonical validation rather than creating a second selector dialect.
+Ambiguity fails/reviews rather than guesses ownership. The shared primitive preserves include/exclude/specificity semantics used by canonical validation rather than creating a second selector dialect.
 
 ## 7. D5-B — clarification answer v2
 
@@ -278,14 +282,14 @@ executable
 
 `lifecycle_owner` is removed from the canonical answer contract and is not serialized into canonical Tool 0.3.6 profiles.
 
-Required migration behavior:
+Implemented migration behavior:
 
 - newly generated clarification requests/answers use v2;
 - new canonical decision storage uses v2 semantics;
 - existing v1 data may be read only through an explicit compatibility/migration path where needed for already-persisted decisions;
-- v1 `lifecycle_owner` must never override canonical `classification`;
+- v1 `lifecycle_owner` never overrides canonical `classification`;
 - legacy PTSIP `TOOLCHAIN` remains migration input only and is not automatically translated to `DEVELOPMENT_TOOLING`;
-- replacement tests must prove the v1-to-v2 migration boundary rather than silently deleting historical coverage.
+- replacement tests prove the v1-to-v2 migration boundary rather than silently deleting historical coverage.
 
 WU-04G owns this decision-protocol migration because the maintainer explicitly selected D5-B.
 
@@ -324,13 +328,13 @@ The Tool must not:
 - overwrite a conflicting existing project declaration silently;
 - repair invalid downstream relationships heuristically.
 
-A conflict that prevents lossless safe apply remains fail-closed and must report the conflict.
+A conflict that prevents lossless safe apply remains fail-closed and reports the conflict.
 
 ## 9. D8-B — exact profile path through decision protocol and CAS
 
-The selected Project Profile path becomes part of the decision/control-plane identity.
+The selected Project Profile path is part of the decision/control-plane identity.
 
-It must flow through:
+It flows through:
 
 ```text
 clarification/gate creation
@@ -348,9 +352,9 @@ Rules:
 - store a normalized repository-relative profile path;
 - reject paths outside the repository;
 - do not silently substitute root `ptsip.yaml` when a different profile was selected;
-- stale/retry logic must preserve the selected path;
+- stale/retry logic preserves the selected path;
 - a changed selected profile path requires a new/rebound gate rather than applying an old decision to a different file;
-- local and remote application semantics should converge on the same path identity.
+- local and remote application semantics converge on the same path identity.
 
 ## 10. D9-B — track-owned incremental test migration/optimization
 
@@ -365,25 +369,25 @@ WU-04C  COMPLETE
 WU-04D  COMPLETE
 WU-04E  COMPLETE / VERIFIED
 WU-04F  COMPLETE / VERIFIED
-WU-04G  ACTIVE — G0 COMPLETE / G1 VERIFIED / G2 VERIFIED / G3 VERIFIED / G4 VERIFIED / G5 NEXT
-WU-04H  LOCKED
+WU-04G  COMPLETE / EXACT-SHA VERIFIED
+WU-04H  NEXT / NOT ENTERED
 WU-04I  LOCKED
 ```
 
 Rules:
 
-1. WU-04H- and WU-04I-owned test migration is forbidden while those stages are LOCKED. Their migration happens only when the owning stage is entered.
+1. WU-04H- and WU-04I-owned test migration was forbidden while those stages were LOCKED. WU-04H may now be entered only through the normal fresh-HEAD/sub-document process; WU-04I remains locked.
 2. Tests owned only by already completed WU-04A through WU-04F are not retroactively migrated inside G; their historical migration is deferred to a later dedicated pass.
 3. **File-level participation overrides historical filename/version ownership for G:** if a current test file contains one or more contracts that directly exercise WU-04G behavior, the entire file enters the WU-04G structural migration scope.
-4. Entering the whole file into structural migration scope does **not** transfer semantic ownership of unrelated contracts. Non-G contracts inside that file must remain behaviorally equivalent unless their own stage is active.
+4. Entering the whole file into structural migration scope does **not** transfer semantic ownership of unrelated contracts. Non-G contracts inside that file remain behaviorally equivalent unless their own stage is active.
 5. A mixed file may therefore be reorganized, deduplicated, and moved onto shared stateless builders as one file, while H/I, VPMS, topology, old conformance, or other non-G assertions inside it remain semantically frozen.
-6. New H/I behavior, H/I test files, VPMS effective-map behavior, or WU-04I final-regression contracts must not be pre-created in G.
+6. New H/I behavior, H/I test files, VPMS effective-map behavior, or WU-04I final-regression contracts were not pre-created in G.
 
 The intended long-term effect is deliberately front-loaded: early active stages may own several mixed historical files; later stages should inherit fewer unmigrated files as shared test infrastructure becomes cleaner.
 
 ### 10.2 Migration is distributed across G1-G5, not deferred to G5
 
-WU-04G migration must happen with the functional track that causes the semantic/API change:
+WU-04G migration happened with the functional track that caused the semantic/API change:
 
 ```text
 G1  effective read / selector coverage
@@ -404,15 +408,9 @@ G5  recovery + cross-track integration
     -> no catch-all historical cleanup
 ```
 
-Each track must leave its own focused tests green before the next functional track begins. This is required so failures can be attributed to the functional change that caused the migration rather than to a late bulk refactor.
+Each track left its own focused tests green before the next functional track began so failures could be attributed to the functional change that caused the migration rather than to a late bulk refactor.
 
-Before the first optimization, capture a diagnostic baseline without weakening coverage:
-
-```text
-python -m pytest -q --durations=30 --durations-min=0.05
-```
-
-The previous exact-SHA run remains a historical comparison point only:
+Before the first optimization, the historical exact-SHA run remained a comparison point:
 
 ```text
 workflow run: 32240740753
@@ -422,13 +420,19 @@ pytest:       260 passed / 13 failed
 wall time:    431.81s (0:07:11)
 ```
 
+G5 duration diagnostics:
+
+```text
+pre-final G1-G4/G5 integration baseline: 73 passed in 124.29s
+final G1-G5 all-G gate:                  79 passed in 128.50s
+exact-SHA full repository regression:   303 passed / 8 failed in 295.61s
+```
+
 Runtime reduction is evidence of useful optimization, never permission to delete semantic coverage.
 
 ### 10.3 Authoritative file-level WU-04G migration set
 
-The implementation agent may trust this list and does not need to perform another repository-wide ownership analysis before starting G.
-
-The following existing files are in **whole-file structural migration scope** because at least one current contract directly exercises clarification/adoption/decision-protocol/profile-projection/profile-path behavior owned by WU-04G:
+The following existing files were in **whole-file structural migration scope** because at least one current contract directly exercised clarification/adoption/decision-protocol/profile-projection/profile-path behavior owned by WU-04G:
 
 ```text
 tests/ptsip/test_clarification.py
@@ -448,7 +452,7 @@ tests/ptsip/test_clarification_adoption_effective_map_036.py
 tests/ptsip/_wu04g_support.py
 ```
 
-No additional WU-04G `test_*_036.py` file or new test directory should be created unless this stage document is amended.
+The final G5 guard reported exactly these ten changed test files relative to the WU-04G entry baseline. No additional WU-04G `test_*_036.py` file or new test directory was created.
 
 #### File responsibility map
 
@@ -463,13 +467,13 @@ No additional WU-04G `test_*_036.py` file or new test directory should be create
 | `test_repository_self_profile_035.py` | G1 | yes | clarification contract may change for G; VPMS/self-profile contracts remain semantically frozen |
 | `test_topology_032.py` | G2, G3, G4 | yes | projection/path helpers may migrate; topology migration behavior remains semantically frozen |
 
-`test_repository_self_profile_035.py` is intentionally included even though it also contains VPMS-facing assertions: it directly calls `analyze_clarifications()` for repository self-coverage. Structural migration is allowed for the file, but WU-04H semantics must not be added or altered.
+`test_repository_self_profile_035.py` is intentionally included even though it also contains VPMS-facing assertions: it directly calls `analyze_clarifications()` for repository self-coverage. Structural migration was allowed for the file, but WU-04H semantics were not added or altered.
 
-`test_topology_032.py` is intentionally included because it directly exercises `DecisionAnswer`, local profile projection, and explicit non-root profile path behavior. The file may be structurally migrated to the G test infrastructure, but topology-specific migration outcomes are not to be redesigned or repaired under WU-04G.
+`test_topology_032.py` is intentionally included because it directly exercises `DecisionAnswer`, local profile projection, and explicit non-root profile path behavior. The file was structurally migrated to the G test infrastructure where appropriate, but topology-specific migration outcomes were not redesigned or repaired under WU-04G.
 
 ### 10.4 Files excluded from WU-04G migration
 
-The following are explicitly outside G structural migration even if a G production change makes them fail indirectly:
+The following were explicitly outside G structural migration even if a G production change made them fail indirectly:
 
 ```text
 # completed E/F and conformance/evidence families — defer historical migration
@@ -482,26 +486,17 @@ tests/ptsip/test_merge_gate_remediation_030.py
 tests/ptsip/test_profile_validation_036.py
 tests/ptsip/test_remaining_030.py
 
-# H/VPMS remains locked; no G migration
+# H/VPMS remained locked during G; no G migration
 tests/vpms/**
 ```
 
-Do not rewrite an excluded test merely because it fails after a G change. First classify whether the failure is:
-
-```text
-G production regression
-mechanical interface incompatibility
-pre-existing known debt
-later-stage semantic expectation
-```
-
-If a genuinely required edit falls outside the authoritative G set, amend this document before touching the test.
+Excluded-test failures were classified rather than rewritten under D9-B. The final full regression exposed `test_evidence_correctness_023.py`, `test_merge_gate_remediation_030.py`, and `test_remaining_030.py` failures plus non-G stale binding expectations; none was used as authorization for a catch-all G5 cleanup.
 
 ### 10.5 Whole-file migration meaning
 
-For the eight existing files in Section 10.3, the agent is authorized to clean the entire file rather than only the G-specific function.
+For the eight existing files in Section 10.3, the agent was authorized to clean the entire file rather than only the G-specific function.
 
-Allowed whole-file structural migration includes:
+Allowed whole-file structural migration included:
 
 - replace repeated Git init/config/commit helper implementations with one stateless helper/factory;
 - replace repeated v2 answer/gate/profile payload construction with shared immutable builders;
@@ -513,7 +508,7 @@ Allowed whole-file structural migration includes:
 - split one historical test into clearer replacement contracts where v2 or profile-path semantics require it;
 - merge historical tests only under the replacement rule in Section 10.7.
 
-Whole-file migration does **not** authorize:
+Whole-file migration did **not** authorize:
 
 - changing unrelated topology/VPMS/conformance semantics;
 - making a locked H/I behavior pass by implementing it early;
@@ -523,7 +518,7 @@ Whole-file migration does **not** authorize:
 
 ### 10.6 Required sharing policy
 
-The implementation agent should follow this policy directly rather than conducting another general fixture-architecture investigation.
+The implementation followed this policy directly rather than conducting another general fixture-architecture investigation.
 
 #### SAFE TO SHARE
 
@@ -546,7 +541,7 @@ Shared definitions used by two or more G-scope files belong in:
 tests/ptsip/_wu04g_support.py
 ```
 
-The support module must not become a generic repository-wide test framework in WU-04G.
+The support module did not become a generic repository-wide test framework in WU-04G.
 
 #### CONDITIONALLY SHAREABLE
 
@@ -568,7 +563,7 @@ Required conditions:
 4. the fixture is test-owned (`tmp_path_factory` or equivalent), never the developer working repository;
 5. when any condition is uncertain, use isolated function-scoped state.
 
-Recommended use: G1 explicit/template/hybrid **read-only effective-coverage** fixtures and repeated assertions over one immutable resolved/clarification result.
+G5 verification confirmed mutable store/authority/CAS/profile mutation cases remain function-scoped/fresh where required.
 
 #### MUST NOT BE SHARED ACROSS SEMANTICALLY INDEPENDENT TESTS
 
@@ -615,7 +610,7 @@ invalid/unresolvable profile
 
 ### 10.8 Pre-authorized migration ledger entries
 
-The following mappings are already decided and should not require rediscovery by the implementation agent:
+The following mappings were decided before implementation and were preserved:
 
 ```text
 test_clarification.py::test_declared_component_purpose_suppresses_question
@@ -637,21 +632,19 @@ test_decision_control_plane.py::test_toolchain_runtime_answer_is_conflict
        + TestG2DecisionProtocolV2::test_v1_toolchain_is_not_auto_translated
 
 test_adoption_033.py::test_adopt_explicit_profile_is_seen_by_clarify_and_gate
-    -> may be replaced only after all old assertions map into
+    -> preserved while its profile-path semantics are additionally covered by
     -> TestG4ProfilePathControlPlane::test_non_root_profile_path_survives_local_gate_and_reconciliation
 
 test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
-    -> may be replaced only after all projection/path assertions map into
+    -> preserved as the G-owned mixed-file projection node and additionally covered by
     -> TestG4ProfilePathControlPlane::test_non_root_profile_path_is_projection_target
 
 test_repository_self_profile_035.py::test_repository_self_profile_resolves_all_discovered_candidates
-    -> preserve or move structurally within the same file;
-    -> it remains the repository dogfood clarification read contract and is not replaced by a synthetic fixture
+    -> preserved;
+    -> remains the repository dogfood clarification read contract and is not replaced by a synthetic fixture
 ```
 
-All other tests in the eight-file G set default to **preserve**, though their helper/fixture structure may be migrated file-wide.
-
-During implementation, append any additional merge/split mapping to the WU-04G migration ledger before deleting the old test.
+No additional historical semantic contract was deleted in G5. Temporary G5 recovery coverage added to `test_adoption_033.py` remained additive while the fixed six-contract `TestG5RecoveryAndIntegration` class became the canonical focused G5 surface.
 
 ## 11. Implementation tracks with mandatory file migration
 
@@ -692,7 +685,7 @@ tests/ptsip/test_clarification_adoption_effective_map_036.py::TestG1EffectiveRea
 tests/ptsip/_wu04g_support.py
 ```
 
-Required work:
+Required work completed:
 
 1. introduce/reuse the canonical selector coverage primitive;
 2. make explicit/template/hybrid equivalent coverage one parametrized contract;
@@ -701,8 +694,6 @@ Required work:
 5. move repeated immutable profile/component builders in the three whole-file targets to `_wu04g_support.py` where useful;
 6. for repository self-profile tests, preserve VPMS-facing assertions unchanged while allowing file-wide helper cleanup;
 7. use conditional shared read-only fixtures only under Section 10.6.
-
-G1 focused tests and the three migrated files must pass their G-owned expectations before G2 starts.
 
 ### G2 — clarification-answer/v2 + file migration
 
@@ -737,17 +728,15 @@ tests/ptsip/test_clarification_adoption_effective_map_036.py::TestG2DecisionProt
 tests/ptsip/_wu04g_support.py
 ```
 
-Required work:
+Required work completed:
 
-1. canonical new answers become v2 and omit `lifecycle_owner`;
-2. keep one explicit v1 compatibility reader boundary rather than preserving v1 as canonical;
-3. replace old canonical `TOOLCHAIN` success expectations with canonical rejection + legacy migration-only tests;
-4. update CLI/render/GitHub/local-control payload expectations consistently;
-5. migrate repeated v1/v2 answer/request builders out of the whole-file set;
-6. preserve store/authority/first-valid-resolution semantics and state isolation;
-7. topology-specific semantic tests remain frozen even though their shared DecisionAnswer/projection helpers may migrate.
-
-The five fully G2-owned participating files plus the G2-owned `test_resolution_projection_respects_explicit_profile_path` node from the mixed topology file, together with `TestG2DecisionProtocolV2`, passed `wu04g-g2-files`. The unrelated legacy topology contract remains intentionally outside this stage gate and is not considered resolved.
+1. canonical new answers became v2 and omit `lifecycle_owner`;
+2. one explicit v1 compatibility reader boundary remains rather than preserving v1 as canonical;
+3. old canonical `TOOLCHAIN` success expectations were replaced with canonical rejection + legacy migration-only tests;
+4. CLI/render/GitHub/local-control payload expectations use consistent v2 semantics;
+5. repeated v1/v2 answer/request builders were migrated where useful;
+6. store/authority/first-valid-resolution semantics and state isolation were preserved;
+7. topology-specific semantic tests remained frozen even though their shared DecisionAnswer/projection helpers participated structurally.
 
 ### G3 — projection + automatic hybrid conversion + file migration
 
@@ -775,7 +764,7 @@ tests/ptsip/test_clarification_adoption_effective_map_036.py::TestG3HybridSafeAp
 tests/ptsip/_wu04g_support.py
 ```
 
-Required work:
+Required work completed:
 
 1. preserve explicit adoption as the baseline path;
 2. add isolated template->hybrid and existing-hybrid safe-apply cases;
@@ -784,9 +773,7 @@ Required work:
 5. keep unrelated overrides/removals unchanged;
 6. keep source conflict/no-write/atomicity cases independent;
 7. every mutation test creates fresh repository/profile state; no module-scoped apply fixture;
-8. `test_topology_032.py` may adopt the shared projection/profile builders, but its topology migration outcomes are not changed under G3.
-
-The new focused G3 class, `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned projection node from mixed `test_topology_032.py` passed `wu04g-g3-files`. The earlier run `38988b39ba70466396697c350e214af7` failed only because the new template-adoption fixture did not satisfy the selected template's tracked selector preconditions; the fixture was corrected without changing production safe-apply semantics. G4 subsequently entered and is now verified.
+8. `test_topology_032.py` adopted shared projection/profile builders where useful without changing topology migration outcomes.
 
 ### G4 — exact profile-path control plane + file migration
 
@@ -832,58 +819,80 @@ Verified behavior:
 7. stale subject revision and branch-head/CAS races fail closed with no selected-profile mutation;
 8. stateful repository/store/authority/CAS cases remain isolated and the mixed topology file's non-G semantics remain frozen.
 
-The G4 files-mode pytest set includes the six participating existing files, the one G4-owned projection node from mixed topology, and `TestG4ProfilePathControlPlane`. All 37 selected tests passed. The post-pytest Windows temporary-directory cleanup warning for `pytest-current` is not a semantic test failure and is tracked separately from G4 product verification.
-
-G5 recovery/integration and final migration audit is now the next permitted WU-04G track.
+The G4 files-mode pytest set included the six participating existing files, the one G4-owned projection node from mixed topology, and `TestG4ProfilePathControlPlane`. All 37 selected tests passed. The post-pytest Windows temporary-directory cleanup warning for `pytest-current` is not a semantic test failure and is tracked separately from G4 product verification.
 
 ### G5 — recovery + cross-track integration + final migration audit
 
-**Execution status: NEXT / NOT ENTERED.**
+**Execution status: COMPLETE / EXACT-SHA VERIFIED.**
 
-Production responsibility:
+Production responsibility completed:
 
-- finish D2 post-failure recovery/retry behavior;
-- integrate G1-G4 without introducing a second architecture interpretation.
+- D2 post-failure recovery/retry behavior;
+- G1-G4 integration without introducing a second architecture interpretation.
 
-Whole-file G migration targets participating in G5:
+Whole-file G migration target participating in G5:
 
 ```text
 tests/ptsip/test_adoption_033.py   # invalid/no-write/retry edge where directly required
 ```
 
-Primary new focused structure:
+Primary focused structure:
 
 ```text
 tests/ptsip/test_clarification_adoption_effective_map_036.py::TestG5RecoveryAndIntegration
 ```
 
-G5 is not a general cleanup stage. Required work:
+G5 completion evidence:
 
-1. add invalid-profile recovery and fresh-retry integration coverage;
-2. rerun all G1-G4 focused classes;
-3. audit the complete eight-file migration ledger;
-4. verify every removed/split/merged historical test has a named replacement;
-5. verify all non-G semantic contracts in mixed files remained equivalent;
-6. verify H/I and `tests/vpms/**` remain unentered/unmodified for migration purposes;
-7. run duration diagnostics again and record before/after observations;
-8. run one exact-SHA self-hosted complete repository regression and classify every remaining failure.
+```text
+focused G5:
+    6 passed in 14.92s
 
-G5 must not reopen G1-G4 files for opportunistic performance cleanup unless a missing migration-ledger obligation is discovered.
+pre-final G1-G4/G5 integration baseline:
+    73 passed in 124.29s
+
+final exact candidate SHA:
+    3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+
+wu04g_guard.py all:
+    PASS
+    working tree clean
+    changed tests: 10, all in authoritative WU-04G set
+
+wu04g_track_tests.py G5 --mode all-g:
+    79 passed in 128.50s
+```
+
+Exact-SHA self-hosted complete repository regression:
+
+```text
+workflow run: 32454141405
+job:          96688080410
+source SHA:   3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+runner:       self-hosted Windows X64
+Python:       3.14.6
+pytest:       303 passed / 8 failed
+wall time:    295.61s (0:04:55)
+```
+
+All eight remaining failures were classified. None was a focused/selected WU-04G contract failure. Detailed evidence and classification are recorded in `planning/0.3.6/WU-04G-G5-verification-closure.md`.
+
+The complete repository workflow conclusion was `failure`; post-pytest Tool/Specification/profile verification, build/twine, wheel smoke, and `self-hosted/tooling-test` status recording were skipped. G5 exact-SHA verification therefore closes WU-04G only and does not establish repository-wide regression cleanliness or release readiness.
 
 ## 12. Fixed structure of the new WU-04G focused tests
 
-Create exactly:
+Created exactly:
 
 ```text
 tests/ptsip/test_clarification_adoption_effective_map_036.py
 tests/ptsip/_wu04g_support.py
 ```
 
-Do not create a new WU-04G test directory. Pytest classes are namespaces only and must not hold mutable class-level state.
+No new WU-04G test directory was created. Pytest classes are namespaces only and hold no mutable class-level state.
 
 ### 12.1 `test_clarification_adoption_effective_map_036.py`
 
-Required class structure:
+Implemented class structure:
 
 ```python
 class TestG1EffectiveReadCoverage:
@@ -922,8 +931,6 @@ test_effective_associated_artifact_suppresses_component_question
 test_selector_ambiguity_fails_review_instead_of_guessing
 ```
 
-Prefer one parametrized implementation for the three equivalent-mode cases. Immutable read-only fixtures may be shared according to Section 10.6.
-
 #### `TestG2DecisionProtocolV2`
 
 ```text
@@ -935,8 +942,6 @@ test_v1_toolchain_is_not_auto_translated
 test_new_rendered_clarification_uses_v2
 test_new_stored_decision_uses_v2_semantics
 ```
-
-These tests should be pure/parser/store tests where possible; do not create Git repositories for answer validation that does not require repository semantics.
 
 #### `TestG3HybridSafeApply`
 
@@ -964,7 +969,7 @@ test_stale_revision_does_not_apply_to_selected_profile
 test_branch_head_conflict_does_not_apply_selected_profile
 ```
 
-Do not merge the last four failure contracts into one generic conflict test.
+The last four failure contracts remain independent rather than merged into one generic conflict test.
 
 #### `TestG5RecoveryAndIntegration`
 
@@ -977,36 +982,15 @@ test_read_only_clarification_does_not_mutate_source_profile
 test_cross_track_template_decision_becomes_effective_and_is_not_reasked
 ```
 
+All six passed in the focused G5 verification run.
+
 ### 12.2 `_wu04g_support.py`
 
-This file is stateless support code only. Preferred contents:
-
-```text
-init_fresh_git_repo(path, *, remote=None)
-commit_all(repo, message="fixture")
-canonical_v2_answer(...)
-legacy_v1_answer(...)
-clarification_request_payload(...)
-gate_payload(..., profile_path=...)
-component_payload(...)
-associated_artifact_payload(...)
-explicit_profile_payload(...)
-template_profile_payload(...)
-hybrid_profile_payload(...)
-write_profile(path, payload)
-```
-
-Rules:
-
-- helpers may create fresh state supplied by the calling test;
-- helpers must not cache a mutable repository/store/authority globally;
-- no module singleton `DecisionStore`, `MemoryAuthority`, `FakeGitHub`, or accepted decision;
-- no automatic architecture inference inside fixtures;
-- helper defaults must use canonical Tool 0.3.6 vocabulary.
+This file is stateless support code only. It contains WU-04G-scoped fresh-repository/profile and canonical payload helpers. It does not cache mutable repository/store/authority state globally and does not infer architecture.
 
 ## 13. Focused regression and migration evidence contract
 
-WU-04G maintains a migration ledger throughout G1-G5:
+WU-04G maintained a migration ledger throughout G1-G5:
 
 ```text
 old test
@@ -1015,14 +999,6 @@ old test
     -> semantic reason
     -> focused verification result
 ```
-
-After each track:
-
-1. run the new focused class for that track;
-2. run the existing whole-file migration targets participating in that track;
-3. record newly replaced/merged tests in the ledger;
-4. record any timing observation relevant to the migrated files;
-5. do not wait until G5 to discover whether the migration preserved coverage.
 
 ### G1 verification ledger
 
@@ -1068,7 +1044,7 @@ test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
 legacy topology contract test_topology_legacy_boundary_profile_preserves_historical_plane_classification
     -> preserved unchanged; not a G2 semantic contract
     -> earlier mixed-file run 97def58217ec44fb8b1725ef7299d693 exposed it as the sole failure after 41 passes
-    -> excluded only from the G2 track selector; remains visible to later all-G/full regression
+    -> final exact-SHA full regression exposed the same contract again; classified as frozen non-G legacy debt
 ```
 
 The G2 scope guard passed in run `c57d0fd7adab45c39739685a6fca581d` before the successful G2 files-mode run.
@@ -1154,21 +1130,71 @@ test_topology_032.py::test_resolution_projection_respects_explicit_profile_path
     -> verification: PASS in same run
 ```
 
-The maintainer directly ran `wu04g_guard.py scope` and the G4 files-mode track on verification HEAD `c7f8060514a4814e5e6ccd9fd75280b2f931d54d`. Scope passed and pytest reported `37 passed in 79.23s`. G4 is VERIFIED; G5 is the next permitted track.
+### G5 verification ledger
 
-The final G5 evidence must contain:
+```text
+invalid existing profile fail-closed recovery
+    -> added structured recovery state without treating a missing profile as invalid
+    -> destinations:
+       TestG5RecoveryAndIntegration::test_invalid_profile_blocks_clarification_without_raw_fallback
+       TestG5RecoveryAndIntegration::test_invalid_profile_exposes_selected_path_and_recovery_information
+    -> focused verification: 6/6 G5 contracts PASS
 
-- before/after duration diagnostics;
-- number/list of existing G-scope files migrated;
-- migration ledger for every removed/split/merged test;
-- confirmation that mutable-state isolation rules were preserved;
-- confirmation that non-G semantics in mixed files were not altered;
-- focused G1-G5 pass result;
-- exact-SHA full repository regression result and classification of remaining failures.
+fresh retry after project correction
+    -> failed attempt cannot reuse partial effective state
+    -> destination: TestG5RecoveryAndIntegration::test_corrected_profile_retry_uses_fresh_resolved_profile
+    -> focused verification: PASS
+
+already-effective architecture
+    -> repeated gate does not reopen an applied decision
+    -> destination: TestG5RecoveryAndIntegration::test_repeated_gate_does_not_reopen_effectively_declared_architecture
+    -> focused verification: PASS
+
+read-only clarification
+    -> source profile remains byte-for-byte unmodified by analysis
+    -> destination: TestG5RecoveryAndIntegration::test_read_only_clarification_does_not_mutate_source_profile
+    -> focused verification: PASS
+
+cross-track template decision integration
+    -> accepted decision becomes minimal hybrid project delta and effective coverage suppresses re-questioning
+    -> destination: TestG5RecoveryAndIntegration::test_cross_track_template_decision_becomes_effective_and_is_not_reasked
+    -> focused verification: PASS
+```
+
+Final migration/audit evidence:
+
+```text
+G5 focused:                    6 passed in 14.92s
+G1-G5 all-G:                   79 passed in 128.50s
+scope guard:                   PASS
+working tree:                  clean
+changed tests from entry base: 10, exactly authoritative G set + focused/support
+H/I or tests/vpms migration:   none
+```
+
+Exact-SHA full repository regression and failure classification:
+
+```text
+run:        32454141405
+job:        96688080410
+source SHA: 3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+pytest:     303 passed / 8 failed in 295.61s
+```
+
+Failure classes:
+
+```text
+1  frozen legacy topology / 0.3.4 boundaries+TOOLCHAIN contract
+3  excluded/deferred evidence / merge-gate / historical agent-conformance expectations
+4  stale or out-of-scope Specification-binding fixture expectations
+0  WU-04G focused/selected contract failures
+```
+
+The repository-wide workflow conclusion remained failure and no `self-hosted/tooling-test` success status was recorded. Full per-test classification is in `planning/0.3.6/WU-04G-G5-verification-closure.md`.
 
 ## 14. Completion gate
 
-WU-04G is complete only when:
+WU-04G completion gate was reviewed against exact-SHA evidence `3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667` and is satisfied because:
 
 - G0 normative accepted-decision authority is frozen and the Tool binds to the resulting immutable Specification snapshot;
 - clarification/adoption reads use only validated effective architecture;
@@ -1178,16 +1204,27 @@ WU-04G is complete only when:
 - required v1 compatibility/migration handling is explicit and tested;
 - accepted template/hybrid decisions apply as minimal project-owned hybrid changes without materialize-to-explicit writeback;
 - exact selected profile path is preserved through local/remote decision state and CAS;
-- all eight existing G-participating test files have undergone the file-level migration allowed by Section 10, with non-G semantics preserved;
+- all eight existing G-participating test files underwent the file-level migration allowed by Section 10, with non-G semantics preserved;
 - the new focused file follows the fixed G1-G5 class structure in Section 12;
 - the G1-G5 migration ledger is complete;
 - focused WU-04G tests pass;
-- one exact-SHA self-hosted complete repository regression is reviewed and remaining failures are classified;
-- WU-04H remains locked until this gate is reviewed.
+- one exact-SHA self-hosted complete repository regression was reviewed and all remaining failures were classified;
+- WU-04H remained unentered throughout G and is only now eligible to become the next stage through the normal entry process.
+
+Therefore:
+
+```text
+G5     COMPLETE / EXACT-SHA VERIFIED
+WU-04G COMPLETE / EXACT-SHA VERIFIED
+WU-04H NEXT / NOT ENTERED
+WU-04I LOCKED
+```
+
+This stage-scoped exact-SHA verification must not be confused with repository-wide `tooling-test` success. Run `32454141405` concluded failure because eight classified non-G/deferred/historical tests remain; build/wheel smoke and success-status recording were skipped.
 
 ## 15. Out of scope and locked/deferred migration
 
-WU-04G does not authorize:
+WU-04G did not authorize or perform:
 
 - WU-04H VPMS effective-map implementation or its stage-owned test migration;
 - WU-04I final WU-04 regression-stage implementation or its stage-owned test migration;
@@ -1202,4 +1239,4 @@ WU-04G does not authorize:
 - pytest-xdist/worker-count/workflow optimization;
 - replacing the final full regression with a reduced changed-file suite.
 
-WU-04H MUST NOT be entered or pre-created before WU-04G completion is reviewed.
+WU-04H may now be entered only by freshly reading the development branch HEAD, creating its stage document at that exact entry baseline, marking H ACTIVE, and then beginning H-owned implementation. WU-04I remains locked until H completes.
