@@ -512,3 +512,78 @@ def test_effective_metadata_consumption_does_not_mutate_decision_authority(
     assert target_after.classification == "DEVELOPMENT_TOOLING"
     assert authority_after is not None
     assert authority_after.as_dict() == authority_before
+
+
+def test_legacy_raw_bridge_preserves_toolchain_without_translation(tmp_path: Path) -> None:
+    profile = tmp_path / "ptsip.yaml"
+    profile.write_text(
+        """
+components:
+  - id: verifier-sdk
+    classification: TOOLCHAIN
+""".strip(),
+        encoding="utf-8",
+    )
+    before = profile.read_bytes()
+
+    snapshot = load_ptsip_metadata(profile)
+    target = snapshot.get_target("verifier-sdk")
+
+    assert target is not None
+    assert target.classification == "TOOLCHAIN"
+    assert target.classification != "DEVELOPMENT_TOOLING"
+    assert profile.read_bytes() == before
+
+
+def test_canonical_036_path_does_not_repair_legacy_toolchain_profile(
+    tmp_path: Path,
+) -> None:
+    repo = _repo(tmp_path)
+    payload = _base_profile("explicit")
+    payload["components"] = [
+        {
+            "id": "package",
+            "classification": "TOOLCHAIN",
+            "include": ["src/**"],
+            "purpose": "legacy tooling classification",
+        }
+    ]
+    profile = repo / "ptsip.yaml"
+    profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    before = profile.read_bytes()
+
+    validation = validate_profile(repo)
+
+    assert not validation.valid
+    assert validation.resolved_profile is None
+    with pytest.raises(PtsipMetadataError, match="resolved effective Responsibility Map is required"):
+        metadata_from_effective_map(None)
+    assert profile.read_bytes() == before
+
+
+def test_legacy_boundaries_profile_remains_outside_canonical_036_handoff(
+    tmp_path: Path,
+) -> None:
+    repo = _repo(tmp_path)
+    profile = repo / "ptsip.yaml"
+    profile.write_text(
+        """
+ptsip:
+  version: 0.3.4-draft
+boundaries:
+  PRODUCT:
+    roots: [src]
+  TOOLCHAIN:
+    roots: [tests]
+""".strip(),
+        encoding="utf-8",
+    )
+    before = profile.read_bytes()
+
+    validation = validate_profile(repo)
+    compatibility_snapshot = load_ptsip_metadata(profile)
+
+    assert not validation.valid
+    assert validation.resolved_profile is None
+    assert compatibility_snapshot.targets == ()
+    assert profile.read_bytes() == before
