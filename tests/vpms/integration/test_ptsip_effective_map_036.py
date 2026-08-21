@@ -340,6 +340,31 @@ def test_hybrid_effective_map_projects_effective_override_metadata(tmp_path: Pat
     assert projected.classification == "OPERATIONS"
 
 
+def test_hybrid_removal_is_absent_from_vpms_target_metadata(tmp_path: Path) -> None:
+    definition = template_catalog()[0]
+    repo = _repo(tmp_path)
+    _git(repo, "rm", "tests/test_package.py")
+    _git(repo, "commit", "-m", "remove test fixture for hybrid removal")
+
+    hybrid_payload = _base_profile(
+        "hybrid",
+        template_id=definition.id,
+        revision=definition.revision,
+    )
+    responsibility_map = hybrid_payload["responsibility_map"]
+    assert isinstance(responsibility_map, dict)
+    responsibility_map["overrides"] = {
+        "remove_component_ids": ["package-tests"],
+        "remove_relationship_ids": ["package-tests-verify-package"],
+    }
+
+    snapshot, source_mode = _resolved_snapshot(repo, hybrid_payload)
+
+    assert source_mode == "hybrid"
+    assert snapshot.get_target("package") is not None
+    assert snapshot.get_target("package-tests") is None
+
+
 def test_invalid_profile_produces_no_vpms_metadata_snapshot(tmp_path: Path) -> None:
     definition = template_catalog()[0]
     repo = _repo(tmp_path)
