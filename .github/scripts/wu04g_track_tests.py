@@ -22,6 +22,22 @@ EXISTING_G_SCOPE = (
     "tests/ptsip/test_topology_032.py",
 )
 
+G5_FILE_SCOPE = (
+    "tests/ptsip/test_clarification.py",
+    "tests/ptsip/test_adoption_033.py",
+    "tests/ptsip/test_decision_control_plane.py",
+    "tests/ptsip/test_local_control_plane_033.py",
+    "tests/ptsip/test_github_authority_033.py",
+    "tests/ptsip/test_github_authority_034.py",
+    "tests/ptsip/test_repository_self_profile_035.py",
+    # test_topology_032.py is mixed historical/G-owned scope. The legacy
+    # boundaries/TOOLCHAIN migration contract is deliberately frozen and remains
+    # visible only to the final complete-repository regression. G5 files-mode
+    # re-runs the G-owned explicit profile-path projection contract instead of
+    # mutating or xfail-ing the historical contract to make this stage green.
+    "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
+)
+
 FILE_TRACKS = {
     "G1": (
         "tests/ptsip/test_clarification.py",
@@ -34,8 +50,8 @@ FILE_TRACKS = {
         "tests/ptsip/test_local_control_plane_033.py",
         "tests/ptsip/test_github_authority_033.py",
         "tests/ptsip/test_github_authority_034.py",
-        # test_topology_032.py is a mixed historical file.  G2 changed only
-        # the canonical DecisionAnswer/projection contract below.  The legacy
+        # test_topology_032.py is a mixed historical file. G2 changed only
+        # the canonical DecisionAnswer/projection contract below. The legacy
         # 0.3.4 boundaries/TOOLCHAIN topology test is a known non-G semantic
         # contract and must remain frozen rather than being repaired or xfailed
         # merely to make the G2 decision-protocol gate green.
@@ -45,7 +61,7 @@ FILE_TRACKS = {
         "tests/ptsip/test_adoption_033.py",
         "tests/ptsip/test_decision_control_plane.py",
         # G3 owns projection/safe-apply behavior but not historical topology
-        # migration semantics.  Keep the explicit projection helper contract in
+        # migration semantics. Keep the explicit projection helper contract in
         # this track while the known legacy boundaries/TOOLCHAIN test remains
         # available to later all-G/full regression review.
         "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
@@ -61,7 +77,7 @@ FILE_TRACKS = {
         # stay visible to later all-G/full-regression review.
         "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
-    "G5": EXISTING_G_SCOPE,
+    "G5": G5_FILE_SCOPE,
 }
 
 FOCUSED_CLASSES = {
@@ -77,14 +93,29 @@ def _path_part(node_id: str) -> str:
     return node_id.split("::", 1)[0]
 
 
+def _focused_target(track: str) -> str:
+    return f"{FOCUSED}::{FOCUSED_CLASSES[track]}"
+
+
+def _g5_focused_targets() -> tuple[str, ...]:
+    return tuple(_focused_target(track) for track in ("G1", "G2", "G3", "G4", "G5"))
+
+
 def _targets(track: str, mode: str) -> tuple[str, ...]:
     if track == "baseline":
         return EXISTING_G_SCOPE
-    focused = (f"{FOCUSED}::{FOCUSED_CLASSES[track]}",)
+    focused = (_focused_target(track),)
     if mode == "focused":
         return focused
     if mode == "files":
+        if track == "G5":
+            # G5 is the integration stage: re-run all G1-G4 focused contracts
+            # together with G5 while keeping mixed historical non-G topology
+            # semantics outside this stage gate.
+            return (*FILE_TRACKS[track], *_g5_focused_targets())
         return (*FILE_TRACKS[track], *focused)
+    if track == "G5":
+        return (*FILE_TRACKS[track], FOCUSED)
     return (*EXISTING_G_SCOPE, FOCUSED)
 
 
@@ -120,10 +151,10 @@ def main() -> int:
     parser.add_argument("--durations-min", type=float, default=0.05)
     parser.add_argument("--list", action="store_true", help="print pytest command without running it")
 
-    # Keep runner options and pytest options in separate parsing domains.  The
+    # Keep runner options and pytest options in separate parsing domains. The
     # previous argparse.REMAINDER positional consumed runner options such as
     # `--mode files` after the track name and accidentally forwarded them to
-    # pytest.  Extra pytest arguments are accepted only after an explicit `--`.
+    # pytest. Extra pytest arguments are accepted only after an explicit `--`.
     argv = sys.argv[1:]
     if "--" in argv:
         separator = argv.index("--")
