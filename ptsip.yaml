@@ -216,6 +216,36 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
 
+  - id: product-app
+    classification: PRODUCT
+    shipped: true
+    runtime_required: true
+
+  - id: product-install
+    classification: PRODUCT
+    shipped: true
+    runtime_required: false
+
+  - id: product-plugin
+    classification: PRODUCT
+    shipped: true
+    runtime_required: true
+
+  - id: product-verification
+    classification: PRODUCT
+    shipped: false
+    runtime_required: false
+
+  - id: tools-ai-interface
+    classification: PRODUCT
+    shipped: false
+    runtime_required: false
+
+  - id: tools-user-interface
+    classification: PRODUCT
+    shipped: false
+    runtime_required: false
+
 associated_artifacts:
   - id: ptsip-governance-support
     anchor: ptsip-canonical-contracts
