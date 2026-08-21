@@ -56,3 +56,45 @@ def test_vpms_effective_map_bridge_does_not_import_ptsip_runtime() -> None:
             imports.append(node.module)
 
     assert not any(name == "ptsip" or name.startswith("ptsip.") for name in imports)
+
+
+def test_effective_map_projection_exposes_only_narrow_vpms_metadata_contract() -> None:
+    snapshot = metadata_from_effective_map(
+        {
+            "components": [
+                {
+                    "id": "verifier-sdk",
+                    "classification": "DEVELOPMENT_TOOLING",
+                    "purpose": "ignored",
+                    "roles": ["VERIFICATION", "AUTOMATION"],
+                    "include": ["src/vpms/**"],
+                    "shipped": False,
+                    "runtime_required": False,
+                    "executable": True,
+                    "release_owner": "ignored-owner",
+                    "compatibility_owner": "ignored-compatibility",
+                }
+            ],
+            "associated_artifacts": [
+                {
+                    "id": "vpms-docs",
+                    "anchor": "verifier-sdk",
+                    "include": ["docs/**"],
+                    "purpose": "ignored",
+                }
+            ],
+            "relationships": [],
+            "component_dependency_policy": {"default": "deny"},
+            "policies": {"ignored": True},
+        }
+    )
+
+    assert snapshot.as_dict() == {
+        "targets": [
+            {
+                "component_id": "verifier-sdk",
+                "classification": "DEVELOPMENT_TOOLING",
+            }
+        ]
+    }
+    assert set(snapshot.as_dict()["targets"][0]) == {"component_id", "classification"}
