@@ -690,4 +690,128 @@ class TestG4ProfilePathControlPlane:
 
 
 class TestG5RecoveryAndIntegration:
-    """Reserved namespace; G5 has not been entered."""
+    def test_invalid_profile_blocks_clarification_without_raw_fallback(self, tmp_path: Path) -> None:
+        repo = _g4_repository(tmp_path)
+        profile = repo / "ptsip.yaml"
+        profile.write_text("ptsip: [invalid\n", encoding="utf-8")
+
+        analysis = analyze_clarifications(repo, ["tools"])
+        payload = analysis.as_dict("en")
+        recovery = payload["profile"]["recovery"]
+
+        assert analysis.status == "PROFILE_INVALID"
+        assert analysis.requests == ()
+        assert analysis.profile_parse_error is not None
+        assert recovery["raw_profile_fallback"] is False
+        assert recovery["reuse_partial_effective_state"] is False
+
+    def test_invalid_profile_exposes_selected_path_and_recovery_information(self, tmp_path: Path) -> None:
+        repo = _g4_repository(tmp_path)
+        profile = repo / "config" / "ptsip.yaml"
+        profile.write_text("ptsip: [invalid\n", encoding="utf-8")
+
+        analysis = analyze_clarifications(repo, ["tools"], profile)
+        payload = analysis.as_dict("en")
+        recovery = payload["profile"]["recovery"]
+
+        assert payload["profile"]["path"] == str(profile.resolve())
+        assert payload["profile"]["failure_stage"] == "PARSE"
+        assert recovery["status"] == "PROJECT_CORRECTION_REQUIRED"
+        assert recovery["authoritative"] is False
+        assert recovery["selected_profile_path"] == str(profile.resolve())
+        assert recovery["retry_requires_fresh_repository_snapshot"] is True
+        assert [item["id"] for item in recovery["actions"]] == [
+            "correct_project_profile",
+            "retry_clarification",
+        ]
+
+    def test_corrected_profile_retry_uses_fresh_resolved_profile(self, tmp_path: Path) -> None:
+        repo = _g4_repository(tmp_path)
+        profile = repo / "ptsip.yaml"
+        profile.write_text("ptsip: [invalid\n", encoding="utf-8")
+
+        first = analyze_clarifications(repo, ["tools"])
+        assert first.status == "PROFILE_INVALID"
+
+        write_profile(
+            profile,
+            explicit_profile_payload(
+                [
+                    component_payload(
+                        "tools",
+                        ["tools/**"],
+                        purpose="Repository-local generation tooling",
+                    )
+                ]
+            ),
+        )
+        second = analyze_clarifications(repo, ["tools"])
+
+        assert second.status == "NO_CLARIFICATION_REQUIRED"
+        assert second.requests == ()
+        assert second.profile_parse_error is None
+        assert second.profile_failure_stage is None
+        assert second.profile_recovery is None
+
+    def test_repeated_gate_does_not_reopen_effectively_declared_architecture(
+        self, tmp_path: Path, monkeypatch, capsys
+    ) -> None:
+        repo = _g4_repository(tmp_path)
+        monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+
+        assert main([
+            "gate", str(repo), "--component", "tools", "--coordination", "local", "--json",
+        ]) == 7
+        first = json.loads(capsys.readouterr().out)
+        decision_id = str(first["decisions"][0]["decision"]["id"])
+
+        assert main(_g4_resolve_args(repo, decision_id)) == 0
+        capsys.readouterr()
+
+        assert main([
+            "gate", str(repo), "--component", "tools", "--coordination", "local", "--json",
+        ]) == 0
+        repeated = json.loads(capsys.readouterr().out)
+        assert repeated["status"] == "NO_DECISION_REQUIRED"
+        assert repeated["decisions"] == []
+
+    def test_read_only_clarification_does_not_mutate_source_profile(self, tmp_path: Path) -> None:
+        repo = _package_repo(tmp_path)
+        profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
+        commit_all(repo)
+        before = profile.read_text(encoding="utf-8")
+
+        analysis = analyze_clarifications(repo, ["tests"])
+
+        assert analysis.status == "NO_CLARIFICATION_REQUIRED"
+        assert profile.read_text(encoding="utf-8") == before
+        assert yaml.safe_load(before)["responsibility_map"]["mode"] == "template"
+
+    def test_cross_track_template_decision_becomes_effective_and_is_not_reasked(
+        self, tmp_path: Path, monkeypatch, capsys
+    ) -> None:
+        repo = init_git_repo(tmp_path / "repo")
+        write_text(repo, "src/package.py", "VALUE = 1\n")
+        write_text(repo, "tests/test_package.py", "def test_value(): assert True\n")
+        write_text(repo, "tools/generate.py", "print('generate')\n")
+        profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
+        commit_all(repo)
+        monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+
+        assert main([
+            "gate", str(repo), "--component", "tools", "--coordination", "local", "--json",
+        ]) == 7
+        gated = json.loads(capsys.readouterr().out)
+        decision_id = str(gated["decisions"][0]["decision"]["id"])
+
+        assert main(_g4_resolve_args(repo, decision_id)) == 0
+        capsys.readouterr()
+
+        source = yaml.safe_load(profile.read_text(encoding="utf-8"))
+        assert source["responsibility_map"]["mode"] == "hybrid"
+        effective = materialize_profile(source).effective_payload
+        assert "tools" in [item["id"] for item in effective["components"]]
+
+        repeated = analyze_clarifications(repo, ["tools"])
+        assert repeated.status == "NO_CLARIFICATION_REQUIRED"
+        assert repeated.requests == ()
