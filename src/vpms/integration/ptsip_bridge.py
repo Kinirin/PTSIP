@@ -40,15 +40,79 @@ def _is_identifier(value: object) -> bool:
     return isinstance(value, str) and bool(value) and value.strip() == value
 
 
+def _metadata_from_payload(
+    payload: object,
+    *,
+    source_label: str,
+) -> PtsipMetadataSnapshot:
+    if not isinstance(payload, Mapping):
+        raise PtsipMetadataError(f"{source_label} root must be a mapping.")
+
+    raw_components = payload.get("components")
+    if raw_components is None:
+        return PtsipMetadataSnapshot(targets=())
+    if not isinstance(raw_components, list):
+        raise PtsipMetadataError(f"{source_label} components must be a list.")
+
+    targets: list[PtsipTargetMetadata] = []
+    seen: set[str] = set()
+    for index, raw_component in enumerate(raw_components):
+        if not isinstance(raw_component, Mapping):
+            raise PtsipMetadataError(
+                f"{source_label} component at index {index} must be a mapping."
+            )
+
+        component_id = raw_component.get("id")
+        classification = raw_component.get("classification")
+        if not _is_identifier(component_id):
+            raise PtsipMetadataError(
+                f"{source_label} component at index {index} has an invalid id."
+            )
+        if not _is_identifier(classification):
+            raise PtsipMetadataError(
+                f"{source_label} component {component_id!r} has an invalid classification."
+            )
+        if component_id in seen:
+            raise PtsipMetadataError(f"Duplicate PTSIP component id: {component_id}.")
+
+        seen.add(component_id)
+        targets.append(
+            PtsipTargetMetadata(
+                component_id=component_id,
+                classification=classification,
+            )
+        )
+
+    targets.sort(key=lambda target: target.component_id)
+    return PtsipMetadataSnapshot(targets=tuple(targets))
+
+
+def metadata_from_effective_map(effective_payload: object) -> PtsipMetadataSnapshot:
+    """Project canonical Tool 0.3.6 VPMS metadata from a resolved effective map.
+
+    The caller is responsible for obtaining this payload from the validated PTSIP
+    ``ResolvedProfile.effective_payload`` handoff. VPMS only projects the narrow
+    read-only target metadata it owns; it does not read a profile file, interpret
+    declaration mode, materialize templates, or perform PTSIP validation here.
+    """
+
+    return _metadata_from_payload(
+        effective_payload,
+        source_label="PTSIP effective Responsibility Map",
+    )
+
+
 def load_ptsip_metadata(profile_path: str | Path) -> PtsipMetadataSnapshot:
-    """Read the minimal stable component metadata VPMS consumes from a PTSIP profile.
+    """Read the historical raw-profile metadata boundary used before Tool 0.3.6.
 
-    This bridge intentionally does not perform PTSIP conformance validation and
-    exposes no write path into the project profile or Decision Authority.
+    This compatibility bridge intentionally does not perform PTSIP conformance
+    validation and exposes no write path into the project profile or Decision
+    Authority. Tool 0.3.6 canonical consumption uses
+    :func:`metadata_from_effective_map` after the PTSIP layer has produced a
+    validated ``ResolvedProfile.effective_payload``.
 
-    Tool 0.3.6 template/hybrid profiles must be materialized by the PTSIP layer
-    before VPMS consumes component metadata. Returning an empty target set for an
-    unmaterialized template would incorrectly hide valid project components.
+    Template/hybrid source profiles remain rejected here so this compatibility
+    reader cannot become a second materializer or architecture authority.
     """
 
     path = Path(profile_path)
@@ -68,41 +132,7 @@ def load_ptsip_metadata(profile_path: str | Path) -> PtsipMetadataSnapshot:
                 "PTSIP template/hybrid Responsibility Map must be materialized before VPMS metadata consumption."
             )
 
-    raw_components = payload.get("components")
-    if raw_components is None:
-        return PtsipMetadataSnapshot(targets=())
-    if not isinstance(raw_components, list):
-        raise PtsipMetadataError("PTSIP project profile components must be a list.")
-
-    targets: list[PtsipTargetMetadata] = []
-    seen: set[str] = set()
-    for index, raw_component in enumerate(raw_components):
-        if not isinstance(raw_component, Mapping):
-            raise PtsipMetadataError(f"PTSIP component at index {index} must be a mapping.")
-
-        component_id = raw_component.get("id")
-        classification = raw_component.get("classification")
-        if not _is_identifier(component_id):
-            raise PtsipMetadataError(
-                f"PTSIP component at index {index} has an invalid id."
-            )
-        if not _is_identifier(classification):
-            raise PtsipMetadataError(
-                f"PTSIP component {component_id!r} has an invalid classification."
-            )
-        if component_id in seen:
-            raise PtsipMetadataError(f"Duplicate PTSIP component id: {component_id}.")
-
-        seen.add(component_id)
-        targets.append(
-            PtsipTargetMetadata(
-                component_id=component_id,
-                classification=classification,
-            )
-        )
-
-    targets.sort(key=lambda target: target.component_id)
-    return PtsipMetadataSnapshot(targets=tuple(targets))
+    return _metadata_from_payload(payload, source_label="PTSIP project profile")
 
 
 def resolve_target_metadata(
