@@ -32,7 +32,7 @@ Current bound Specification:
 
 WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G is **COMPLETE / EXACT-SHA VERIFIED**. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is COMPLETE / EXACT-SHA VERIFIED. WU-04H is next and has not been entered; WU-04I remains locked.
+WU-04G is **COMPLETE / EXACT-SHA VERIFIED**. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is COMPLETE / EXACT-SHA VERIFIED. WU-04H is **ACTIVE** from entry baseline `ab05051ee9fd5f10a4ca3aa17020ad314ee82722` under `planning/0.3.6/WU-04H-vpms-effective-map-integration.md`; WU-04I remains locked.
 
 ### Work-unit progress
 
@@ -54,7 +54,7 @@ WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
 WU-04G  clarification/adoption integration               COMPLETE / EXACT-SHA VERIFIED
-WU-04H  VPMS narrow read-only integration                NEXT / NOT ENTERED
+WU-04H  VPMS narrow read-only integration                ACTIVE
 WU-04I  regression + WU-04 completion                    LOCKED
 ```
 
@@ -66,6 +66,15 @@ planning/0.3.6/WU-04G-G5-verification-closure.md
 entry baseline:          52a455115d191123504c2fd690ffe499caf0ff6a
 normative revision:      d6995ed232e845b88d8235b851e80ab54b7804ea
 exact-SHA verification:  3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+```
+
+WU-04H active record:
+
+```text
+planning/0.3.6/WU-04H-vpms-effective-map-integration.md
+entry baseline:          ab05051ee9fd5f10a4ca3aa17020ad314ee82722
+status:                  ACTIVE
+successor:               WU-04I LOCKED
 ```
 
 The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical review context and no longer the implementation authority.
@@ -515,7 +524,7 @@ PRODUCT
 TOOLCHAIN
 ```
 
-VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. VPMS effective-map read integration is reserved for WU-04H.
+VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. WU-04H is ACTIVE and owns the narrow read-only Effective Responsibility Map projection into VPMS; VPMS does not gain template/hybrid interpretation, PTSIP classification authority, conformance authority, or profile/Decision Authority write access.
 
 ## GitHub Actions resource policy
 
@@ -568,6 +577,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G COMPLETE / EXACT-SHA VERIFIED; WU-04H NEXT / NOT ENTERED**
+- Tool `0.3.6`: **active development; WU-04G COMPLETE / EXACT-SHA VERIFIED; WU-04H ACTIVE; WU-04I LOCKED**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
