@@ -5,12 +5,19 @@ import copy
 import subprocess
 from pathlib import Path
 
+import pytest
 import yaml
 
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.validation.profile import validate_profile
 from ptsip.validation.templates import template_catalog
-from vpms.integration.ptsip_bridge import PtsipMetadataSnapshot, metadata_from_effective_map
+from vpms.integration import ptsip_bridge
+from vpms.integration.ptsip_bridge import (
+    PtsipMetadataError,
+    PtsipMetadataSnapshot,
+    load_ptsip_metadata,
+    metadata_from_effective_map,
+)
 
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -243,3 +250,84 @@ def test_hybrid_effective_map_projects_effective_override_metadata(tmp_path: Pat
     projected = hybrid_snapshot.get_target("package-tests")
     assert projected is not None
     assert projected.classification == "OPERATIONS"
+
+
+def test_invalid_profile_produces_no_vpms_metadata_snapshot(tmp_path: Path) -> None:
+    definition = template_catalog()[0]
+    repo = _repo(tmp_path)
+    payload = _base_profile(
+        "template",
+        template_id=definition.id,
+        revision="sha256:" + "0" * 64,
+    )
+    profile = repo / "ptsip.yaml"
+    profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+
+    validation = validate_profile(repo)
+
+    assert not validation.valid
+    assert validation.resolved_profile is None
+    effective_payload = (
+        validation.resolved_profile.effective_payload
+        if validation.resolved_profile is not None
+        else None
+    )
+    with pytest.raises(
+        PtsipMetadataError,
+        match="resolved effective Responsibility Map is required",
+    ):
+        metadata_from_effective_map(effective_payload)
+
+
+def test_vpms_metadata_projection_does_not_fallback_to_raw_profile(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo = _repo(tmp_path)
+    payload = _base_profile("explicit")
+    payload["components"] = [
+        {
+            "id": "package",
+            "classification": "PRODUCT",
+            "include": ["src/**"],
+            "purpose": "product package",
+            "unexpected_contract_field": True,
+        }
+    ]
+    profile = repo / "ptsip.yaml"
+    profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+
+    validation = validate_profile(repo)
+    assert not validation.valid
+    assert validation.resolved_profile is None
+
+    legacy_snapshot = load_ptsip_metadata(profile)
+    assert legacy_snapshot.get_target("package") is not None
+
+    fallback_calls: list[Path] = []
+
+    def _forbidden_raw_fallback(profile_path: str | Path) -> PtsipMetadataSnapshot:
+        fallback_calls.append(Path(profile_path))
+        return legacy_snapshot
+
+    monkeypatch.setattr(ptsip_bridge, "load_ptsip_metadata", _forbidden_raw_fallback)
+
+    with pytest.raises(
+        PtsipMetadataError,
+        match="does not fall back to a raw project profile",
+    ):
+        ptsip_bridge.metadata_from_effective_map(None)
+
+    assert fallback_calls == []
+
+
+def test_invalid_effective_map_does_not_return_partial_target_list() -> None:
+    with pytest.raises(PtsipMetadataError, match="component at index 1 must be a mapping"):
+        metadata_from_effective_map(
+            {
+                "components": [
+                    {"id": "valid-product", "classification": "PRODUCT"},
+                    "invalid-partial-row",
+                ]
+            }
+        )
