@@ -158,7 +158,11 @@ def test_bridge_has_no_ptsip_runtime_import_or_write_api() -> None:
     ]
 
     assert not any(name == "ptsip" or name.startswith("ptsip.") for name in imports)
-    assert public_functions == ["load_ptsip_metadata", "resolve_target_metadata"]
+    assert public_functions == [
+        "metadata_from_effective_map",
+        "load_ptsip_metadata",
+        "resolve_target_metadata",
+    ]
 
 
 @pytest.mark.parametrize(
