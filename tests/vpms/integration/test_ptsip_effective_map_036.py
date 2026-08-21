@@ -3,20 +3,34 @@ from __future__ import annotations
 import ast
 import copy
 import subprocess
+from dataclasses import FrozenInstanceError
 from pathlib import Path
 
 import pytest
 import yaml
 
+from ptsip.app.store import DecisionStore
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.validation.profile import validate_profile
 from ptsip.validation.templates import template_catalog
+from vpms.domain.model import (
+    FormulaRef,
+    PolicyRef,
+    RunnerRef,
+    TargetRef,
+    VariablesRef,
+    VerificationCase,
+    VerificationOutcome,
+    VerificationPurpose,
+)
+from vpms.execution.runner import RunnerExecution, run_case
 from vpms.integration import ptsip_bridge
 from vpms.integration.ptsip_bridge import (
     PtsipMetadataError,
     PtsipMetadataSnapshot,
     load_ptsip_metadata,
     metadata_from_effective_map,
+    resolve_target_metadata,
 )
 
 
@@ -26,6 +40,11 @@ _POLICIES = {
     "nonproduct_in_product_package": "deny",
     "independent_build_resolution": "required",
 }
+
+
+class _PassExecutor:
+    def execute(self, case: VerificationCase) -> RunnerExecution:
+        return RunnerExecution(outcome=VerificationOutcome.PASS)
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -77,6 +96,41 @@ def _base_profile(
         "responsibility_map": responsibility_map,
         "policies": copy.deepcopy(_POLICIES),
     }
+
+
+def _verification_case(
+    *,
+    component_id: str,
+    purpose: VerificationPurpose,
+) -> VerificationCase:
+    return VerificationCase(
+        id=f"h.vpms.{component_id}",
+        purpose=purpose,
+        target=TargetRef(component_id=component_id),
+        formula=FormulaRef(ref="h.formula"),
+        variables=VariablesRef(ref="h.variables"),
+        policy=PolicyRef(ref="h.policy"),
+        runner=RunnerRef(ref="in-memory.pass"),
+    )
+
+
+def _seed_authority(store: DecisionStore, *, component_id: str) -> dict[str, object]:
+    record, stale = store.gate(
+        {
+            "id": "clr-vpms-h7",
+            "repository": "example/project",
+            "branch": "main",
+            "subject_revision": "abc123",
+            "component_id": component_id,
+            "request": {
+                "id": "clr-vpms-h7",
+                "component_id": component_id,
+                "status": "INCOMPLETE",
+            },
+        }
+    )
+    assert stale == ()
+    return record.as_dict()
 
 
 def _resolved_snapshot(
@@ -183,6 +237,40 @@ def test_effective_map_projection_exposes_only_narrow_vpms_metadata_contract() -
         ]
     }
     assert set(snapshot.as_dict()["targets"][0]) == {"component_id", "classification"}
+
+
+@pytest.mark.parametrize(
+    ("classification", "purpose"),
+    [
+        ("DEVELOPMENT_TOOLING", VerificationPurpose.PRODUCT),
+        ("PRODUCT", VerificationPurpose.TOOLCHAIN),
+    ],
+)
+def test_ptsip_classification_does_not_determine_vpms_verification_purpose(
+    classification: str,
+    purpose: VerificationPurpose,
+) -> None:
+    snapshot = metadata_from_effective_map(
+        {
+            "components": [
+                {
+                    "id": "verifier-sdk",
+                    "classification": classification,
+                }
+            ]
+        }
+    )
+    case = _verification_case(component_id="verifier-sdk", purpose=purpose)
+
+    metadata = resolve_target_metadata(case.target, snapshot)
+
+    assert metadata is not None
+    assert metadata.classification == classification
+    assert case.purpose is purpose
+    assert set(VerificationPurpose) == {
+        VerificationPurpose.PRODUCT,
+        VerificationPurpose.TOOLCHAIN,
+    }
 
 
 def test_template_effective_map_projects_same_vpms_target_metadata(tmp_path: Path) -> None:
@@ -331,3 +419,96 @@ def test_invalid_effective_map_does_not_return_partial_target_list() -> None:
                 ]
             }
         )
+
+
+def test_effective_metadata_consumption_does_not_mutate_ptsip_source(
+    tmp_path: Path,
+) -> None:
+    definition = template_catalog()[0]
+    repo = _repo(tmp_path)
+    payload = _base_profile(
+        "template",
+        template_id=definition.id,
+        revision=definition.revision,
+    )
+    profile = repo / "ptsip.yaml"
+    profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    profile_before = profile.read_bytes()
+
+    validation = validate_profile(repo)
+    assert validation.valid, validation.errors
+    assert validation.resolved_profile is not None
+    resolved = validation.resolved_profile
+
+    selected_profile_path_before = validation.profile_path
+    source_mode_before = resolved.source_mode
+    template_identity_before = (resolved.template_id, resolved.template_revision)
+    source_payload_before = copy.deepcopy(resolved.source_payload)
+    effective_payload_before = copy.deepcopy(resolved.effective_payload)
+
+    snapshot = metadata_from_effective_map(resolved.effective_payload)
+    target_before = resolve_target_metadata(TargetRef(component_id="package"), snapshot)
+    assert target_before is not None
+    classification_before = target_before.classification
+
+    result = run_case(
+        _verification_case(
+            component_id="package",
+            purpose=VerificationPurpose.PRODUCT,
+        ),
+        _PassExecutor(),
+    )
+
+    target_after = resolve_target_metadata(TargetRef(component_id="package"), snapshot)
+    assert result.outcome is VerificationOutcome.PASS
+    assert profile.read_bytes() == profile_before
+    assert validation.profile_path == selected_profile_path_before
+    assert resolved.source_mode == source_mode_before == "template"
+    assert (resolved.template_id, resolved.template_revision) == template_identity_before
+    assert resolved.source_payload == source_payload_before
+    assert resolved.effective_payload == effective_payload_before
+    assert target_after == target_before
+    assert target_after is not None
+    assert target_after.classification == classification_before
+
+    with pytest.raises(FrozenInstanceError):
+        snapshot.targets[0].classification = "OPERATIONS"  # type: ignore[misc]
+
+
+def test_effective_metadata_consumption_does_not_mutate_decision_authority(
+    tmp_path: Path,
+) -> None:
+    snapshot = metadata_from_effective_map(
+        {
+            "components": [
+                {
+                    "id": "verifier-sdk",
+                    "classification": "DEVELOPMENT_TOOLING",
+                }
+            ]
+        }
+    )
+    target_before = resolve_target_metadata(TargetRef(component_id="verifier-sdk"), snapshot)
+    assert target_before is not None
+
+    store = DecisionStore(tmp_path / "authority.sqlite3")
+    authority_before = _seed_authority(store, component_id="verifier-sdk")
+
+    result = run_case(
+        _verification_case(
+            component_id="verifier-sdk",
+            purpose=VerificationPurpose.PRODUCT,
+        ),
+        _PassExecutor(),
+    )
+
+    authority_after = store.get("clr-vpms-h7")
+    target_after = resolve_target_metadata(TargetRef(component_id="verifier-sdk"), snapshot)
+
+    assert result.outcome is VerificationOutcome.PASS
+    assert result.purpose is VerificationPurpose.PRODUCT
+    assert target_after == target_before
+    assert target_after is not None
+    assert target_after.classification == "DEVELOPMENT_TOOLING"
+    assert authority_after is not None
+    assert authority_after.as_dict() == authority_before
