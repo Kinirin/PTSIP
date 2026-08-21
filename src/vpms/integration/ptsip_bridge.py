@@ -94,7 +94,16 @@ def metadata_from_effective_map(effective_payload: object) -> PtsipMetadataSnaps
     ``ResolvedProfile.effective_payload`` handoff. VPMS only projects the narrow
     read-only target metadata it owns; it does not read a profile file, interpret
     declaration mode, materialize templates, or perform PTSIP validation here.
+
+    A missing resolved handoff fails closed. Canonical Tool 0.3.6 consumption
+    never falls back to the historical raw-profile reader.
     """
+
+    if effective_payload is None:
+        raise PtsipMetadataError(
+            "Validated PTSIP resolved effective Responsibility Map is required; "
+            "canonical VPMS metadata does not fall back to a raw project profile."
+        )
 
     return _metadata_from_payload(
         effective_payload,
