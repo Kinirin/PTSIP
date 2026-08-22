@@ -50,8 +50,8 @@ WU-01  lifecycle ontology/boundary rules                  COMPLETE
 WU-02  roles + typed relationships + associated artifacts COMPLETE
 WU-03  canonical Responsibility Map v2 activation         COMPLETE
 WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
-WU-05  repository dogfood / self-evaluation               ACTIVE
-WU-06  full regression / package verification             PLANNED
+WU-05  repository dogfood / self-evaluation               COMPLETE / DOGFOOD REVIEWED
+WU-06  full regression / package verification             PLANNED / LOCKED
 WU-07  final Specification freeze / release preparation   PLANNED
 ```
 
@@ -61,13 +61,19 @@ WU-05 exact entry baseline:
 c87e597409592f0794a5d404d621b6f73dd00cc6
 ```
 
-WU-05 execution authority:
+WU-05 exact dogfood verification snapshot:
+
+```text
+5010fa81ebd104eb329f29217d4c5fecec51cacb
+```
+
+WU-05 execution/closure authority:
 
 ```text
 planning/0.3.6/WU-05-repository-dogfood-self-evaluation.md
 ```
 
-WU-05 was entered only after WU-04 completion and a fresh branch-HEAD read. WU-06 remains locked until WU-05 completion and a new entry review.
+WU-06 remains locked until all WU-05 closure records are committed and a fresh branch-HEAD entry review establishes WU-06's own exact entry baseline.
 
 ## WU-04 completion authority
 
@@ -129,11 +135,9 @@ remaining repository regression failures: 0
 
 The WU-04 closure documentation commits occur after `eadb07f...`; they record the verified result and do not replace that exact implementation verification authority.
 
-## WU-05 repository dogfood boundary
+## WU-05 repository dogfood completion
 
-WU-05 treats the PTSIP repository as a real Tool `0.3.6` consumer.
-
-Required dogfood surfaces include:
+WU-05 treated the PTSIP repository as a real Tool `0.3.6` consumer and exercised:
 
 ```text
 Tool / Specification identity
@@ -146,22 +150,85 @@ Tool / Specification identity
     -> finding ownership classification
 ```
 
-Repository declaration remains architecture authority. Discovery, paths, workflow names, and confidence may provide evidence but do not override project-owned lifecycle ownership.
+Repository declaration remained architecture authority throughout. Discovery, paths, workflow names, and confidence remained evidence only and did not override project-owned lifecycle ownership.
 
-WU-05 must not implement the deferred Tool `0.3.6.1` migration system or enter WU-06/WU-07 release work early.
-
-Dogfood findings must be classified as one of:
+Exact reviewed dogfood snapshot:
 
 ```text
-A. repository declaration defect
-B. Tool 0.3.6 implementation defect
-C. test/fixture/documentation drift
-D. deferred Tool 0.3.6.1 migration/discovery concern
-E. WU-06/WU-07 release-closure concern
-F. genuine normative Specification defect
+5010fa81ebd104eb329f29217d4c5fecec51cacb
 ```
 
-Only WU-05-owned defects are corrected in this stage. A genuine normative defect requires explicit Specification review before moving `SPEC_REVISION`.
+Dogfood evidence summary:
+
+```text
+validate                                PASS
+valid                                   true
+errors                                  []
+warnings                                []
+source_mode                             explicit
+materialized                            true
+component selector conflicts            0
+associated-artifact conflicts           0
+scan_errors                             []
+responsibility_map_coverage.unassigned  0
+Effective Map digest                    sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
+
+conform                                 ENFORCED / INCOMPLETE / REVIEWED
+definite architecture violations        0
+blocking evidence gaps                  20
+conformance audit                       PASS
+conformance snapshot                    STABLE
+
+clarify                                 NO_CLARIFICATION_REQUIRED
+clarification_count                     0
+llm_calls                               0
+speculative_classification              false
+clarification snapshot                  STABLE
+
+local gate                              NO_DECISION_REQUIRED
+backend                                 LOCAL
+decisions                               []
+
+post-gate git diff -- ptsip.yaml         clean / no output
+post-gate git status --short             clean / no output
+```
+
+Final finding ownership classification:
+
+```text
+A. repository declaration defect                  NONE
+B. Tool 0.3.6 implementation defect               NONE CONFIRMED
+C. test/fixture/documentation drift               NONE IDENTIFIED
+D. Tool 0.3.6.1 migration/discovery concern       NONE ENTERED
+E. WU-06/WU-07 release-closure concern            Product Artifact evidence / exact artifact binding
+F. genuine normative Specification defect         NONE
+```
+
+Two observations initially considered possible Tool implementation defects were reviewed and retained as fail-closed evidence limitations instead:
+
+```text
+OBS-01  PyYAML -> yaml and PyJWT -> jwt distribution/import-name mismatches remain unresolved by native dependency evidence.
+        The Tool does not turn that uncertainty into a false architecture violation; strict conformance remains INCOMPLETE.
+
+OBS-02  independent-build evaluation requires component-declared, component-owned manifest evidence and deliberately blocks shared cross-lifecycle manifest evidence.
+        `manifests` remains optional in the canonical profile schema; insufficient evidence therefore keeps strict conformance INCOMPLETE rather than making the profile invalid or the repository NON_CONFORMANT.
+```
+
+No WU-05 source/profile correction was required. No Tool `0.3.6.1` migration work was entered. The bound Specification remains:
+
+```text
+0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+Therefore:
+
+```text
+WU-05 COMPLETE / DOGFOOD REVIEWED
+exact repository-consumer verification authority:
+5010fa81ebd104eb329f29217d4c5fecec51cacb
+```
+
+Closure-documentation commits after `5010fa81...` record the reviewed result and do not replace the exact dogfood verification authority.
 
 ## Canonical Responsibility Map / Effective Map boundary
 
@@ -196,7 +263,7 @@ Classification, component role, typed relationship, declaration/materialization 
 
 Root `ptsip.yaml` self-adopts Responsibility Map v2.
 
-The WU-04 exact-SHA workflow verified the predecessor state as:
+WU-05 independently reconfirmed the self-profile as:
 
 ```text
 valid: true
@@ -207,13 +274,13 @@ materialized: true
 responsibility_map_coverage.unassigned_count: 0
 ```
 
-The predecessor Effective Responsibility Map digest was:
+The WU-05 Effective Responsibility Map digest remained:
 
 ```text
 sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
 ```
 
-WU-05 must independently review the repository as a consumer; WU-04 predecessor evidence does not by itself complete dogfood.
+This WU-05 evidence supersedes reliance on WU-04 predecessor dogfood for repository-consumer review, while WU-04 remains the exact implementation regression authority for its own stage.
 
 ## VPMS boundary
 
@@ -288,11 +355,15 @@ tooling-release.yml
 
 ```text
 WU-04 COMPLETE
-    -> WU-05 ACTIVE: repository dogfood / self-evaluation
-    -> WU-06 full regression / package / distribution verification
+    -> WU-05 COMPLETE / DOGFOOD REVIEWED
+    -> fresh branch-HEAD read
+    -> create WU-06 stage document with exact entry baseline
+    -> WU-06 ACTIVE: full regression / package / distribution verification
     -> WU-07 final Specification freeze / release preparation
     -> Tool 0.3.6 release
 ```
+
+WU-06 is not active yet.
 
 ## Tool lineage
 
@@ -302,6 +373,6 @@ WU-04 COMPLETE
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 ACTIVE at entry baseline `c87e597...`**
+- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 COMPLETE / DOGFOOD REVIEWED at exact snapshot `5010fa81...`; WU-06 PLANNED / LOCKED**
 
 Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
