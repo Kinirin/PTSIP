@@ -7,12 +7,10 @@ from pathlib import Path
 
 import yaml
 
+from ptsip.constants import SPEC_REVISION
 from ptsip.inspection.dependencies import scan_dependency_edges
 from ptsip.inspection.inventory import collect_inventory
 from ptsip.pilot.runner import run_pilot
-
-
-SPEC_REVISION = "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -141,7 +139,7 @@ def test_dependency_evaluator_reports_ran_instead_of_inferring_from_empty_findin
     (repo / "product" / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
     (repo / "tools" / "check.py").write_text("VALUE = 2\n", encoding="utf-8")
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.4-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: TOOLCHAIN\n    include: [\"tools/**\"]\n    purpose: development_tooling\npolicies:\n  product_to_toolchain_runtime_dependency: deny\n  toolchain_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: development_tooling\npolicies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
     _commit_all(repo)
