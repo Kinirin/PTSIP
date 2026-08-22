@@ -32,7 +32,7 @@ Current bound Specification:
 
 WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
 
-WU-04G is **COMPLETE / EXACT-SHA VERIFIED**. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is COMPLETE / EXACT-SHA VERIFIED. WU-04H is **ACTIVE** from entry baseline `ab05051ee9fd5f10a4ca3aa17020ad314ee82722` under `planning/0.3.6/WU-04H-vpms-effective-map-integration.md`; WU-04I remains locked.
+WU-04G is **COMPLETE / EXACT-SHA VERIFIED**. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is COMPLETE / EXACT-SHA VERIFIED. WU-04H is **COMPLETE / VERIFIED** at completion snapshot `9fac22d31333346dbe56a12dee890df1229d560b` under `planning/0.3.6/WU-04H-vpms-effective-map-integration.md`; WU-04I is NEXT / NOT ENTERED.
 
 ### Work-unit progress
 
@@ -54,8 +54,8 @@ WU-04D  ResolvedProfile + digest + provenance            COMPLETE
 WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
 WU-04G  clarification/adoption integration               COMPLETE / EXACT-SHA VERIFIED
-WU-04H  VPMS narrow read-only integration                ACTIVE
-WU-04I  regression + WU-04 completion                    LOCKED
+WU-04H  VPMS narrow read-only integration                COMPLETE / VERIFIED
+WU-04I  regression + WU-04 completion                    NEXT / NOT ENTERED
 ```
 
 WU-04G records:
@@ -68,14 +68,20 @@ normative revision:      d6995ed232e845b88d8235b851e80ab54b7804ea
 exact-SHA verification:  3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
 ```
 
-WU-04H active record:
+WU-04H completion record:
 
 ```text
 planning/0.3.6/WU-04H-vpms-effective-map-integration.md
 entry baseline:          ab05051ee9fd5f10a4ca3aa17020ad314ee82722
-status:                  ACTIVE
-successor:               WU-04I LOCKED
+completion snapshot:     9fac22d31333346dbe56a12dee890df1229d560b
+status:                  COMPLETE / VERIFIED
+H focused:               35 passed / exit=0
+VPMS integration:        41 passed / exit=0
+repository self-profile: 4 passed / exit=0
+successor:               WU-04I NEXT / NOT ENTERED
 ```
+
+The first two final H pytest invocations emitted ignored Windows temporary-directory cleanup `PermissionError` callbacks for `%TEMP%\pytest-of-rhkrt\pytest-current` after all selected tests had passed; both processes returned exit code `0`. This is post-test cleanup noise, not an H semantic/test failure.
 
 The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical review context and no longer the implementation authority.
 
@@ -479,7 +485,19 @@ self-hosted/tooling-test status      NOT RECORDED
 
 WU-04G is COMPLETE / exact-SHA verified because its own G1-G5 stage contracts passed and the exact-SHA full regression was reviewed with every remaining failure classified. This is deliberately narrower than a successful repository-wide tooling-test status.
 
-The eight remaining failures are:
+WU-04H final repository-local verification:
+
+```text
+source SHA    9fac22d31333346dbe56a12dee890df1229d560b
+H focused     35 passed / exit=0
+VPMS family   41 passed / exit=0
+self-profile  4 passed / exit=0
+status        COMPLETE / VERIFIED
+```
+
+The first two H invocations emitted ignored pytest Windows temporary-directory cleanup callbacks only after the selected tests had passed; the recorded process exit codes were `0`. WU-04H verification is stage-scoped and does not replace WU-04I final WU-04-wide regression or establish Tool `0.3.6` release readiness.
+
+The eight remaining failures from the earlier WU-04G exact-SHA complete repository regression are:
 
 ```text
 1  frozen legacy topology contract
@@ -524,7 +542,7 @@ PRODUCT
 TOOLCHAIN
 ```
 
-VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. WU-04H is ACTIVE and owns the narrow read-only Effective Responsibility Map projection into VPMS; VPMS does not gain template/hybrid interpretation, PTSIP classification authority, conformance authority, or profile/Decision Authority write access.
+VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. WU-04H is COMPLETE / VERIFIED at `9fac22d31333346dbe56a12dee890df1229d560b`; canonical VPMS consumption is a narrow read-only projection of validated `ResolvedProfile.effective_payload`, preserves package isolation and Decision Authority/profile immutability, and does not implement template/hybrid semantics or Tool `0.3.5` migration. WU-04I is NEXT / NOT ENTERED.
 
 ## GitHub Actions resource policy
 
@@ -577,6 +595,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G COMPLETE / EXACT-SHA VERIFIED; WU-04H ACTIVE; WU-04I LOCKED**
+- Tool `0.3.6`: **active development; WU-04G COMPLETE / EXACT-SHA VERIFIED; WU-04H COMPLETE / VERIFIED; WU-04I NEXT / NOT ENTERED**
 
 Current next-version work remains consolidated under `planning/0.3.6.md`.
