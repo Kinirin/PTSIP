@@ -12,7 +12,7 @@
 - Bound published Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Historical Tool `0.3.5` classifications: `PRODUCT | TOOLCHAIN | NEUTRAL_CONTRACT`
 
-Tool `0.3.5` remains the published compatibility baseline. Its historical PTSIP semantics must not be rewritten by Tool `0.3.6` development.
+Tool `0.3.5` remains the published compatibility baseline. Its historical PTSIP semantics are not rewritten by Tool `0.3.6` development.
 
 ## Active Tool 0.3.6 development
 
@@ -30,21 +30,36 @@ Current bound Specification:
 0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
 
-WU-04G G0 froze `PTSIP-RMAP-017`, which defines accepted project-owned clarification/adoption decisions as authority for the exact safe-apply declaration delta and permits `template -> hybrid` only to represent that accepted decision while preserving the selected immutable template identity. Tool constants and the repository root profile are bound to this immutable Specification revision.
+Canonical Tool `0.3.6` classifications are exactly:
 
-WU-04G is **COMPLETE / EXACT-SHA VERIFIED**. G1 effective read + selector coverage is VERIFIED; G2 clarification-answer/v2 is VERIFIED; G3 hybrid safe apply is VERIFIED; G4 exact profile-path control plane is VERIFIED; G5 recovery + integration + migration audit is COMPLETE / EXACT-SHA VERIFIED. WU-04H is **COMPLETE / VERIFIED** at completion snapshot `9fac22d31333346dbe56a12dee890df1229d560b` under `planning/0.3.6/WU-04H-vpms-effective-map-integration.md`; WU-04I is NEXT / NOT ENTERED.
+```text
+PRODUCT
+DEVELOPMENT_TOOLING
+DELIVERY
+OPERATIONS
+NEUTRAL_CONTRACT
+```
 
-### Work-unit progress
+`TOOLCHAIN` is not a canonical Tool `0.3.6` PTSIP classification alias.
+
+## Current work-unit state
 
 ```text
 WU-00  0.3.6-draft normative baseline                    COMPLETE
 WU-01  lifecycle ontology/boundary rules                  COMPLETE
 WU-02  roles + typed relationships + associated artifacts COMPLETE
 WU-03  canonical Responsibility Map v2 activation         COMPLETE
-WU-04  template/materialization/effective-map pipeline    IN PROGRESS
+WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
+WU-05  repository dogfood / self-evaluation               NEXT / ENTRY REVIEW PENDING
+WU-06  full regression / package verification             PLANNED
+WU-07  final Specification freeze / release preparation   PLANNED
 ```
 
-WU-04 staged progress:
+WU-05 is not ACTIVE yet. It requires a fresh branch-HEAD read, predecessor completion review, and an exact entry baseline.
+
+## WU-04 completion
+
+WU-04 staged status:
 
 ```text
 WU-04A  template catalog identity                         COMPLETE
@@ -55,498 +70,195 @@ WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VE
 WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
 WU-04G  clarification/adoption integration               COMPLETE / EXACT-SHA VERIFIED
 WU-04H  VPMS narrow read-only integration                COMPLETE / VERIFIED
-WU-04I  regression + WU-04 completion                    NEXT / NOT ENTERED
+WU-04I  final regression + WU-04 completion              COMPLETE / EXACT-SHA VERIFIED
 ```
 
-WU-04G records:
+Primary records:
 
 ```text
+planning/0.3.6/WU-04C-declaration-authority-effective-map.md
+planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
+planning/0.3.6/WU-04E-validation-effective-map.md
+planning/0.3.6/WU-04F-conformance-effective-map.md
 planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
 planning/0.3.6/WU-04G-G5-verification-closure.md
-entry baseline:          52a455115d191123504c2fd690ffe499caf0ff6a
-normative revision:      d6995ed232e845b88d8235b851e80ab54b7804ea
-exact-SHA verification:  3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
-```
-
-WU-04H completion record:
-
-```text
 planning/0.3.6/WU-04H-vpms-effective-map-integration.md
-entry baseline:          ab05051ee9fd5f10a4ca3aa17020ad314ee82722
-completion snapshot:     9fac22d31333346dbe56a12dee890df1229d560b
-status:                  COMPLETE / VERIFIED
-H focused:               35 passed / exit=0
-VPMS integration:        41 passed / exit=0
-repository self-profile: 4 passed / exit=0
-successor:               WU-04I NEXT / NOT ENTERED
+planning/0.3.6/WU-04I-final-regression-wu04-completion.md
 ```
 
-The first two final H pytest invocations emitted ignored Windows temporary-directory cleanup `PermissionError` callbacks for `%TEMP%\pytest-of-rhkrt\pytest-current` after all selected tests had passed; both processes returned exit code `0`. This is post-test cleanup noise, not an H semantic/test failure.
+### WU-04G checkpoint
 
-The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical review context and no longer the implementation authority.
-
-## WU-04G accepted scope
-
-The maintainer accepted:
-
-```text
-D1-B  ResolvedProfile.effective_payload as clarification/adoption read authority
-D2-B  fail closed, then continue with deterministic remediation/retry information
-D3-B  associated-artifact coverage suppresses duplicate component questions
-D4-B  canonical shared selector/candidate coverage primitive
-D5-B  create ptsip-clarification-answer/v2 and remove lifecycle_owner from new canonical answers
-D6-B  accepted decisions may convert template -> hybrid when needed
-D7-C  perform eligible hybrid conversion/application automatically
-D8-B  carry exact selected profile path through decision protocol and remote CAS
-D9-B  bounded optimization/migration of WU-04G-owned tests only
-```
-
-### G0 normative result
-
-G0 is COMPLETE. The canonical/embedded Specification and registry define that an **accepted project-owned clarification/adoption decision** authorizes only the exact project extension/replacement and, when required to represent that decision, `template -> hybrid` source-mode transition.
-
-This does **not** grant architecture authority to discovery or materialization. Repository evidence finds candidates only. Materialization remains deterministic reproduction only. The safe-apply layer may encode the accepted project decision and must retain exact template ID/revision and write only the minimum project-owned delta.
-
-### G1 verified effective read and selector coverage
-
-G1 clarification/adoption read authority is:
-
-```text
-selected profile
-    -> validate_profile()
-    -> ValidationResult.resolved_profile
-    -> ResolvedProfile.effective_payload
-```
-
-Clarification no longer treats raw YAML as a second architecture interpretation. Effective component and associated-artifact coverage use the shared validation/selector coverage primitive, including ambiguity review rather than ownership guessing. Partial-declaration coverage remains a distinct valid-profile contract rather than relying on schema-invalid raw source.
-
-The G1 participating existing files are:
-
-```text
-tests/ptsip/test_clarification.py
-tests/ptsip/test_adoption_033.py
-tests/ptsip/test_repository_self_profile_035.py
-```
-
-Shared stateless support is in `tests/ptsip/_wu04g_support.py`, and focused G1 coverage is in `TestG1EffectiveReadCoverage` within `tests/ptsip/test_clarification_adoption_effective_map_036.py`.
-
-Maintainer-provided OpenAI Local Bridge G1 verification:
-
-```text
-repository_id:                  Kinirin/PTSIP
-task_id:                        wu04g-g1-files
-run_id:                         fa46e93a3d7545b7bf793e3df21263c0
-status:                         completed
-exit_code:                      0
-failure_kind:                   null
-protocol_version:               2025-11-25
-remote_task_execution_verified: true
-log_available:                  true
-log_truncated:                  false
-capability_url_exposed:         false
-```
-
-Therefore G1 files-mode verification is PASS. This was an intermediate stage gate and did not replace G5's final exact-SHA complete repository regression.
-
-### G2 verified answer-v2 decision protocol
-
-G2 is VERIFIED. New canonical decisions use:
-
-```text
-ptsip-clarification-answer/v2
-
-classification
-purpose
-shipped
-runtime_required
-executable
-```
-
-`lifecycle_owner` is absent from canonical `DecisionAnswer`, new rendered clarification replies, new local/GitHub resolution payloads, and newly stored canonical answers. Existing v1 data is accepted only through an explicit compatibility reader/canonicalization boundary. Legacy `TOOLCHAIN` is not restored as a Tool 0.3.6 classification and is never silently translated to `DEVELOPMENT_TOOLING`.
-
-G2 preserves first-valid-resolution, retry comparison, store isolation, and GitHub authority semantics. Persisted v1 answers may be normalized to canonical v2 only for read-time semantic comparison; the Tool does not implicitly rewrite historical persisted data merely by reading it.
-
-Maintainer-provided OpenAI Local Bridge G2 verification:
-
-```text
-wu04g-scope
-run_id:                         c57d0fd7adab45c39739685a6fca581d
-status:                         completed
-exit_code:                      0
-failure_kind:                   null
-protocol_version:               2025-11-25
-remote_task_execution_verified: true
-log_available:                  true
-log_truncated:                  false
-capability_url_exposed:         false
-
-wu04g-g2-files
-run_id:                         95f081cc5f2140cea719afea67a33b2a
-status:                         completed
-exit_code:                      0
-failure_kind:                   null
-protocol_version:               2025-11-25
-remote_task_execution_verified: true
-log_available:                  true
-log_truncated:                  false
-capability_url_exposed:         false
-```
-
-An earlier files-mode run `97def58217ec44fb8b1725ef7299d693` produced `41 passed / 1 failed`; the sole failure was the frozen historical `test_topology_legacy_boundary_profile_preserves_historical_plane_classification` contract. Because `test_topology_032.py` is a mixed file whose topology semantics are explicitly outside G2 ownership, that test was preserved unchanged and the G2 selector runs only its G2-owned `DecisionAnswer`/projection node. This does not erase or resolve the legacy topology debt; it remained visible in the final full regression.
-
-### G3 verified hybrid safe apply
-
-G3 is VERIFIED. Accepted project decisions preserve the explicit projection baseline and may encode only the exact accepted project-owned delta for template/hybrid source. A template source changes to hybrid only when that decision requires a new declaration; the exact selected template ID/revision is preserved. Existing hybrid unrelated overrides/removals remain intact, materialize-to-explicit writeback is prohibited, conflicts fail closed without partial mutation, and semantic no-op decisions do not alter source.
-
-Focused G3 coverage is in `TestG3HybridSafeApply`, and the participating G3 files include `test_adoption_033.py`, `test_decision_control_plane.py`, and the G3-owned explicit projection node from mixed `test_topology_032.py`. The topology migration behavior in that mixed file remains semantically frozen.
-
-Maintainer-provided OpenAI Local Bridge G3 verification on final implementation SHA `cf663949bb7005616574db62a2d850bbc1d80bce`:
-
-```text
-wu04g-scope
-run_id:                         fc9a315beafd485a88fa6d69772cc18a
-status:                         completed
-exit_code:                      0
-failure_kind:                   null
-protocol_version:               2025-11-25
-remote_task_execution_verified: true
-log_available:                  true
-log_truncated:                  false
-capability_url_exposed:         false
-
-wu04g-g3-files
-run_id:                         7993c2bb283b481e9775ea7a08ad45b2
-status:                         completed
-exit_code:                      0
-failure_kind:                   null
-protocol_version:               2025-11-25
-remote_task_execution_verified: true
-log_available:                  true
-log_truncated:                  false
-capability_url_exposed:         false
-```
-
-An earlier G3 files-mode run `38988b39ba70466396697c350e214af7` produced `21 passed / 1 failed`. The sole failure was not a production safe-apply defect: the newly added template-adoption integration fixture selected `python-package-library` while omitting tracked `src/**` and `tests/**` files required by that template, so existing profile validation correctly failed closed before projection. The fixture was corrected by adding tracked template-owned files at `cf663949...`; production safe-apply code was unchanged. Final scope and files-mode verification then passed.
-
-### G4 verified exact profile-path control plane
-
-G4 is VERIFIED. Production/test implementation completed at:
-
-```text
-471baba7656dbbb25d1a976d53bc20193b731def
-```
-
-Repository-local Bridge invocation hardening then advanced the branch without changing G4 production semantics. Direct repository-native verification was performed at:
-
-```text
-c7f8060514a4814e5e6ccd9fd75280b2f931d54d
-```
-
-Verification result:
-
-```text
-wu04g_guard.py scope
-    PASS
-    scope base:    52a455115d191123504c2fd690ffe499caf0ff6a
-    changed files: 44
-    changed tests: 10
-
-wu04g_track_tests.py G4 --mode files
-    37 passed in 79.23s (0:01:19)
-```
-
-The exact selected profile path is now a normalized repository-relative control-plane identity. It is persisted with decisions, preserved across retry/rebind, used for exact local and hosted file projection/read/write, and included in non-root GitHub authority identity. Historical root `ptsip.yaml` identity remains compatible. A resolve attempt against a different path fails with `PROFILE_PATH_MISMATCH`; stale subject revisions and branch-head/CAS races fail closed without applying the selected profile.
-
-Focused G4 coverage remains separated across non-root projection, local reconciliation, persistence, retry/rebind, exact hosted read/write, wrong-path protection, stale revision, and branch-head race contracts. The mixed topology file contributes only its G4-owned explicit path/projection node; historical topology semantics remain frozen.
-
-After pytest had already reported `37 passed`, Windows emitted an ignored pytest temporary-directory cleanup callback `PermissionError` for `%TEMP%\pytest-of-rhkrt\pytest-current`. This is post-test environment cleanup noise and not a G4 product/test failure.
-
-### G5 exact-SHA verification and WU-04G closure
-
-G5 is COMPLETE / EXACT-SHA VERIFIED.
-
-The fixed focused class passed all six required recovery/integration contracts:
-
-```text
-TestG5RecoveryAndIntegration
-6 passed in 14.92s
-```
-
-Before the six final focused contracts were added, the G1-G4/G5 integration baseline reported:
-
-```text
-73 passed in 124.29s (0:02:04)
-```
-
-The final candidate at exact SHA:
+WU-04G's earlier exact-SHA full regression at:
 
 ```text
 3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
 ```
 
-passed the complete repository-native WU-04G internal gate:
+reported:
 
 ```text
-wu04g_guard.py all
-    PASS
-    working tree: clean
-    changed tests: 10, all authoritative WU-04G files
-
-wu04g_track_tests.py G5 --mode all-g
-    79 passed in 128.50s (0:02:08)
+303 passed / 8 failed
 ```
 
-The exact-SHA self-hosted complete repository regression was GitHub Actions `tooling-test` run `32454141405`, job `96688080410`:
+That run was correctly recorded as a failed repository-wide workflow while WU-04G itself was stage-complete after its own G contracts passed and all eight failures were classified.
+
+WU-04I subsequently reviewed and remediated all eight failures as stale/current-contract regression expectations without changing production architecture semantics. The remediation snapshot was:
 
 ```text
-source SHA:   3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
+5f7bfdce120650db30d247a686d50a93f91bb3e4
+```
+
+### Final WU-04 exact-SHA verification
+
+Final implementation verification authority:
+
+```text
+source SHA:   eadb07f78f9690ca0180bfbba194c5c9602e1838
+workflow:     tooling-test
+run:          32588090216
+job:          97067421324
 runner:       self-hosted Windows X64
 Python:       3.14.6
-pytest:       303 passed / 8 failed
-wall time:    295.61s (0:04:55)
+pytest:       327 passed / 0 failed
+wall time:    259.67s (0:04:19)
+job result:   success
+commit status: self-hosted/tooling-test = success
 ```
 
-The workflow checked out and explicitly verified the exact dispatched SHA. The `Run complete repository regression` step concluded failure because of the eight remaining tests; all later Tool/Specification/profile verification, distribution build, wheel smoke, and success-status steps were skipped. There is therefore no `self-hosted/tooling-test` success status for this SHA and no repository-wide release-readiness claim.
+The workflow explicitly checked out `eadb07f...` and verified `git rev-parse HEAD` against the dispatched SHA before execution.
 
-All eight failures were classified and none is a WU-04G focused/selected contract failure:
+Post-regression verification also passed:
 
 ```text
-1  frozen legacy topology / 0.3.4 boundaries+TOOLCHAIN contract
-3  excluded/deferred evidence / merge-gate / historical agent-conformance expectations
-4  stale or out-of-scope Specification-binding fixture expectations
+PTSIP Tool identity                 0.3.6
+Specification family               0.3.6-draft
+SPEC_REVISION                       d6995ed232e845b88d8235b851e80ab54b7804ea
+repository profile valid            true
+repository profile warnings         []
+responsibility-map unassigned_count 0
+clarification status                NO_CLARIFICATION_REQUIRED
+clarification snapshot              STABLE
+local gate status                   NO_DECISION_REQUIRED
+sdist build                          PASS
+wheel build                          PASS
+twine check                          PASS
+built-wheel reinstall smoke          PASS
+VPMS compatibility smoke             PASS
 ```
 
-Detailed classification is recorded in `planning/0.3.6/WU-04G-G5-verification-closure.md`.
-
-Because the WU-04G completion gate requires the exact-SHA self-hosted full regression to be reviewed and its remaining failures classified—not global zero-failure cleanliness—WU-04G is closed as COMPLETE / EXACT-SHA VERIFIED. The stage-scoped label does not convert the failed repository-wide workflow into a success.
-
-For accepted project decisions:
-
-- explicit profiles use canonical explicit safe apply;
-- template profiles may become hybrid while preserving exact selected template ID/revision;
-- hybrid profiles preserve unrelated overrides/removals;
-- only the accepted project delta may be written;
-- materialize-to-explicit writeback is prohibited;
-- conflicts remain fail-closed and must not partially mutate source.
-
-### Exact profile-path control plane
-
-The normalized repository-relative selected profile path flows through gate creation, persisted decision state, subject revision, remote file read, projection validation, stale check, and CAS write. A non-root selected profile never silently becomes root `ptsip.yaml`.
-
-### G-owned test migration/optimization
-
-WU-04G migrated only its authorized participating test set. The final scope guard reported the eight pre-authorized existing G files plus the focused/support pair and no `tests/vpms/**` migration. Mutable CAS/snapshot/stale-state isolation remains function-scoped where required. The historical topology contract was preserved unchanged rather than rewritten for a green stage gate.
-
-## OpenAI Local Bridge integration
-
-Repository-local task registry:
+The successful workflow recorded:
 
 ```text
-.codex/openai-local-bridge/tasks.toml
-repository_id: Kinirin/PTSIP
+context:     self-hosted/tooling-test
+state:       success
+description: Self-hosted Windows verification passed for the exact dispatched SHA
+target:      https://github.com/Kinirin/PTSIP/actions/runs/32588090216
 ```
 
-Current read-only tasks include:
+Therefore:
 
 ```text
-wu04g-precheck
-    py -3.14 .github/scripts/wu04g_guard.py precheck
-
-wu04g-scope
-    py -3.14 .github/scripts/wu04g_guard.py scope
-
-wu04g-g1-files
-    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G1 --mode files
-
-wu04g-g2-files
-    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G2 --mode files
-
-wu04g-g3-files
-    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G3 --mode files
-
-wu04g-g4-files
-    .venv/Scripts/python.exe .github/scripts/wu04g_track_tests.py G4 --mode files
+WU-04I COMPLETE / EXACT-SHA VERIFIED
+WU-04  COMPLETE
+remaining repository regression failures: 0
 ```
 
-Repository-local Bridge evidence inspection is available through:
+The documentation commits that record this closure occur after `eadb07f...`; they are closure records and do not replace that exact implementation verification authority.
+
+## Canonical Responsibility Map / Effective Map boundary
+
+Tool `0.3.6` supports project-owned source declarations in:
 
 ```text
-.github/scripts/wu04g_bridge_log.ps1
+explicit
+template
+hybrid
 ```
 
-This helper reads already-recorded Bridge run evidence under `%LOCALAPPDATA%\OpenAI_Local_Bridge\runs` and does not create a new task run.
+Template selection is explicit and immutable-revision-bound. Materialization is deterministic and non-authoritative.
 
-Maintainer-provided remote E2E precheck result on 2026-08-19:
+Canonical downstream flow is:
 
 ```text
-passed:                         true
-repository_id:                  Kinirin/PTSIP
-task_id:                        wu04g-precheck
-run_id:                         a4441c401c994cf6bc09ec539a56ffa7
-status:                         completed
-exit_code:                      0
-failure_kind:                   null
-protocol_version:               2025-11-25
-remote_task_execution_verified: true
-log_available:                  true
-log_truncated:                  false
-capability_url_exposed:         false
+source declaration
+    -> validate source declaration/binding
+    -> deterministic materialization
+    -> validated ResolvedProfile
+    -> Canonical Effective Responsibility Map
+        -> validation/conformance
+        -> clarification/adoption
+        -> narrow VPMS read-only projection
 ```
 
-The G1 files-mode task completed successfully in run `fa46e93a3d7545b7bf793e3df21263c0`. G2 scope and files-mode tasks completed successfully in runs `c57d0fd7adab45c39739685a6fca581d` and `95f081cc5f2140cea719afea67a33b2a`. G3 final scope and files-mode tasks completed successfully in runs `fc9a315beafd485a88fa6d69772cc18a` and `7993c2bb283b481e9775ea7a08ad45b2`. All cited successful historical Bridge stage-gate runs completed with exit code 0 and `remote_task_execution_verified=true`.
+Repository evidence, path/layout convention, workflow naming, template materialization, and confidence do not become architecture authority.
 
-G4 and G5 intermediate stage verification used the same checked-in repository-native commands directly because Bridge transport/acceptance health is a development-tooling concern rather than a PTSIP semantic prerequisite. G5's final exact-SHA authority came from the self-hosted GitHub Actions full regression, not from Bridge.
-
-## Tool 0.3.6 canonical lifecycle model
-
-Canonical classifications are exactly:
-
-```text
-PRODUCT
-DEVELOPMENT_TOOLING
-DELIVERY
-OPERATIONS
-NEUTRAL_CONTRACT
-```
-
-`TOOLCHAIN` is not a Tool `0.3.6` PTSIP classification alias. It remains historical/migration input for the planned legacy reader.
-
-Classification is primary lifecycle ownership and remains distinct from component roles, typed relationships, associated artifacts, declaration source, materialization provenance, and VPMS Verification Purpose.
-
-## WU-04E/F verified implementation boundary
-
-Verified runtime flow:
-
-```text
-source ptsip.yaml
-    -> validate_profile()
-        -> source schema + Tool/Specification binding
-        -> source declaration mechanics
-        -> materialize_profile()
-        -> effective schema/semantic/selector validation
-        -> ValidationResult.resolved_profile
-    -> ResolvedProfile.effective_payload
-        -> base conformance
-        -> complete conformance engine
-```
-
-WU-04E:
-
-- materializes explicit/template/hybrid only after source validation;
-- converts materialization defects into fail-closed validation errors;
-- validates effective Responsibility Map semantics and selector coverage for all modes;
-- retains `resolved_profile` as an in-process downstream handoff while omitting it from serialized `as_dict()` output;
-- has focused coverage in `tests/ptsip/test_profile_validation_036.py`.
-
-WU-04F:
-
-- removes raw YAML architecture reload from `src/ptsip/conformance.py` and `src/ptsip/conformance_engine.py`;
-- consumes effective components and `component_dependency_policy` from `ValidationResult.resolved_profile.effective_payload`;
-- removes the old materialization-required branch;
-- applies effective components to dependency, artifact, project-policy, language, build, lifecycle, and agent-decision comparison paths;
-- has focused explicit/template/hybrid consumption coverage in `tests/ptsip/test_conformance_effective_map_036.py`.
-
-## Verification status
-
-Combined WU-04E/F self-hosted verification:
-
-```text
-run        32240740753
-job        96030499443
-source SHA 48b75e699a592703e4e03a8462131e4932103677
-Python     3.14.3
-result     260 passed / 13 failed
-```
-
-WU-04G final self-hosted verification:
-
-```text
-run        32454141405
-job        96688080410
-source SHA 3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
-Python     3.14.6
-result     303 passed / 8 failed
-```
-
-Infrastructure/execution status for WU-04G final run:
-
-```text
-self-hosted Windows scheduling       PASS
-exact SHA checkout                   PASS
-exact source identity                PASS
-host Python 3.14 selection           PASS
-isolated per-run .venv creation      PASS
-verification tooling installation    PASS
-complete pytest execution            RAN / 303 passed / 8 failed
-repository-wide workflow conclusion  FAILURE
-post-pytest build/smoke               SKIPPED
-self-hosted/tooling-test status      NOT RECORDED
-```
-
-WU-04G is COMPLETE / exact-SHA verified because its own G1-G5 stage contracts passed and the exact-SHA full regression was reviewed with every remaining failure classified. This is deliberately narrower than a successful repository-wide tooling-test status.
-
-WU-04H final repository-local verification:
-
-```text
-source SHA    9fac22d31333346dbe56a12dee890df1229d560b
-H focused     35 passed / exit=0
-VPMS family   41 passed / exit=0
-self-profile  4 passed / exit=0
-status        COMPLETE / VERIFIED
-```
-
-The first two H invocations emitted ignored pytest Windows temporary-directory cleanup callbacks only after the selected tests had passed; the recorded process exit codes were `0`. WU-04H verification is stage-scoped and does not replace WU-04I final WU-04-wide regression or establish Tool `0.3.6` release readiness.
-
-The eight remaining failures from the earlier WU-04G exact-SHA complete repository regression are:
-
-```text
-1  frozen legacy topology contract
-3  excluded/deferred evidence/merge-gate/agent-conformance expectations
-4  stale/out-of-scope Specification-binding expectations
-```
-
-Tool `0.3.6` is therefore still **not** globally regression-clean and is not release-ready.
+Classification, component role, typed relationship, declaration/materialization provenance, and VPMS Verification Purpose remain separate axes.
 
 ## Repository self-profile
 
-Root `ptsip.yaml` structurally self-adopts Responsibility Map v2:
+Root `ptsip.yaml` self-adopts Responsibility Map v2.
+
+The final WU-04 exact-SHA workflow verified:
+
+```text
+valid: true
+errors: []
+warnings: []
+source_mode: explicit
+materialized: true
+responsibility_map_coverage.unassigned_count: 0
+```
+
+The final Effective Responsibility Map digest at the verified SHA was:
+
+```text
+sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
+```
+
+Repository responsibilities include:
 
 - release automation: `DELIVERY`;
 - repository verification/CI/maintenance: `DEVELOPMENT_TOOLING`;
 - canonical lifecycle-independent contracts: `NEUTRAL_CONTRACT` where applicable;
 - subordinate specification governance support: associated-artifact semantics where independent component ownership is unnecessary.
 
-The maintainer-added `setup_dev.bat` is classified under `repository-maintenance / DEVELOPMENT_TOOLING`, matching the existing local repository setup/maintenance responsibility rather than weakening self-profile completeness assertions.
-
-## Tool 0.3.5 compatibility direction
-
-Tool `0.3.6` compatibility means assisted migration, not preservation of obsolete ontology:
-
-```text
-Tool 0.3.5 profile
-    -> legacy reader
-    -> repository evidence
-    -> lifecycle/role/relationship/split/artifact proposals
-    -> project-owner confirmation
-    -> canonical Tool 0.3.6 Responsibility Map
-```
-
-Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` translation is prohibited. WU-04G's v1 decision compatibility is a narrow decision-protocol migration and does not enter the WU-07 legacy architecture reader.
-
 ## VPMS boundary
 
-PTSIP and VPMS remain independent concerns. Current VPMS Verification Purpose vocabulary remains:
+PTSIP lifecycle classification and VPMS Verification Purpose remain independent.
+
+Current VPMS purpose compatibility vocabulary remains:
 
 ```text
 PRODUCT
 TOOLCHAIN
 ```
 
-VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification. PTSIP core must not depend on VPMS. WU-04H is COMPLETE / VERIFIED at `9fac22d31333346dbe56a12dee890df1229d560b`; canonical VPMS consumption is a narrow read-only projection of validated `ResolvedProfile.effective_payload`, preserves package isolation and Decision Authority/profile immutability, and does not implement template/hybrid semantics or Tool `0.3.5` migration. WU-04I is NEXT / NOT ENTERED.
+VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification.
+
+PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of validated effective PTSIP metadata and does not own template/hybrid semantics, PTSIP classification authority, or Tool `0.3.5` migration.
+
+WU-04H's focused VPMS isolation/integration evidence and WU-04I's final full regression both passed.
+
+## Tool 0.3.5 migration continuation
+
+Evidence-backed Tool `0.3.5 -> 0.3.6` architecture migration is not a Tool `0.3.6` release prerequisite.
+
+The continuation is owned by Tool `0.3.6.1`:
+
+```text
+planning/0.3.6.1.md
+planning/0.3.6.1/WU-01-candidate-discovery-evidence-expansion.md
+planning/0.3.6.1/WU-02-evidence-provenance-normalization.md
+planning/0.3.6.1/WU-03-tool-035-legacy-reader.md
+planning/0.3.6.1/WU-04-lifecycle-migration-analyzer.md
+planning/0.3.6.1/WU-05-target-proposals.md
+```
+
+Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` migration remains prohibited. Legacy responsibility must be re-evaluated against actual lifecycle ownership and explicit project authority.
 
 ## GitHub Actions resource policy
 
-Self-hosted execution is **capability-bound, not machine-name-bound**.
+Self-hosted execution is capability-bound, not machine-name-bound.
 
 Eligible Tool build/test runners must satisfy:
 
@@ -558,9 +270,9 @@ PowerShell
 Python 3.14 available through `py -3.14`
 ```
 
-Do not hard-code `DESKTOP-*` computer names into workflows or operational instructions. If a matching runner is offline, GitHub Actions may remain queued until one becomes available; no `host_ready` checkbox is required.
+Do not hard-code a `DESKTOP-*` machine name into workflow policy.
 
-Current manual verification flow:
+Current verification/release path:
 
 ```text
 tooling-test.yml
@@ -585,7 +297,21 @@ tooling-release.yml
 
 Manual `host_ready`, `source_sha`, `version`, and `release_candidate` inputs are not part of the current pipeline.
 
-The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHub-hosted compute exception.
+The narrow GNU/Linux PyPI Trusted Publishing job remains the approved GitHub-hosted compute exception.
+
+## Next stage
+
+Current release sequence is:
+
+```text
+WU-04 COMPLETE
+    -> WU-05 repository dogfood / self-evaluation
+    -> WU-06 full regression / package / distribution verification
+    -> WU-07 final Specification freeze / release preparation
+    -> Tool 0.3.6 release
+```
+
+WU-05 has **not** been entered by the WU-04 closure commits. Its entry requires a fresh branch-HEAD read and an explicitly recorded entry baseline.
 
 ## Tool lineage
 
@@ -595,6 +321,6 @@ The narrow GNU/Linux PyPI Trusted Publishing job remains the only approved GitHu
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04G COMPLETE / EXACT-SHA VERIFIED; WU-04H COMPLETE / VERIFIED; WU-04I NEXT / NOT ENTERED**
+- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 NEXT / ENTRY REVIEW PENDING**
 
-Current next-version work remains consolidated under `planning/0.3.6.md`.
+Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
