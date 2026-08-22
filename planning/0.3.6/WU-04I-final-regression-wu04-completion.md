@@ -1,12 +1,14 @@
 # WU-04I — Final Regression and WU-04 Completion
 
-> **Status:** ACTIVE  
+> **Status:** ACTIVE — VERIFICATION CANDIDATE PREPARED / EXACT-SHA EXECUTION PENDING  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04H — COMPLETE / VERIFIED  
 > **Entry baseline:** `713dee236def879e00dadca894add98d65ffb754`  
 > **WU-04H completion snapshot:** `9fac22d31333346dbe56a12dee890df1229d560b`  
 > **Bound Specification:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
+> **Regression-remediation snapshot:** `5f7bfdce120650db30d247a686d50a93f91bb3e4`  
+> **Exact-SHA verification:** PENDING  
 > **Successor:** WU-05 — repository dogfood / self-evaluation; locked until WU-04I completion
 
 ## 0. Purpose
@@ -191,5 +193,93 @@ Recommended order:
 6. repeat exact-SHA regression as required
 7. record completion snapshot and close WU-04
 ```
+
+## 9. Regression candidate preparation
+
+WU-04G's exact-SHA full regression at `3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667` reported:
+
+```text
+303 passed / 8 failed
+```
+
+WU-04I reviewed all eight failures against the current Tool `0.3.6` architecture rather than treating the historical expectations as automatically authoritative.
+
+The remediation snapshot is:
+
+```text
+5f7bfdce120650db30d247a686d50a93f91bb3e4
+```
+
+No production implementation or canonical architecture rule was changed by this remediation tranche. The changes are bounded to regression fixtures/expectations and the `0.3.6-draft` release-note binding record.
+
+### I-R1 — Specification-binding fixtures
+
+Four failures were caused by fixtures still expecting the earlier WU-04C-bound revision `82abd09360df09a95fbbfb516855fa9ffb49f050` after WU-04G G0 had normatively advanced Tool `0.3.6` to:
+
+```text
+d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+Updated surfaces:
+
+```text
+tests/ptsip/test_release_readiness_030.py
+tests/ptsip/test_tool_identity_035.py
+tests/ptsip/test_tooling.py
+releasenote/spec-0.3.6-draft.md
+```
+
+The release note now records the WU-03 and WU-04C snapshots as earlier checkpoints and records `d6995ed...` as the current bound snapshot selected by the WU-04G G0 `PTSIP-RMAP-017` normative addition.
+
+### I-R2 — Agent classification conflict fixture
+
+The historical conflict fixture supplied `TOOLCHAIN` as the agent classification. Tool `0.3.6` correctly rejects that token at the current agent-classification schema boundary, so the fixture never reached the declaration-conflict behavior it intended to test.
+
+The fixture now uses canonical `DEVELOPMENT_TOOLING` against a declared `PRODUCT` component. This preserves the actual contract under test:
+
+```text
+valid conflicting agent review evidence
+    -> blocking declaration-conflict evidence
+    -> affects_declared_classification = false
+    -> Project Profile remains authoritative
+```
+
+### I-R3 — Evidence evaluator fixture
+
+The historical evidence test constructed an obsolete `0.3.4-draft` / `TOOLCHAIN` profile and therefore failed current profile validation before reaching the evaluator behavior named by the test.
+
+The fixture was migrated to a canonical `0.3.6-draft` explicit Responsibility Map using `DEVELOPMENT_TOOLING` and the current policy keys. The test still checks its original semantic contract: an evaluator that actually ran with zero findings reports `RAN`, rather than inferring execution state from an empty finding list.
+
+### I-R4 — Unscoped release workflow expectation
+
+The previous test expected an unscoped release-like GitHub workflow to block lifecycle evaluation automatically. That contradicts the current Tool `0.3.6` evidence-authority boundary: workflow names and trigger scope are evidence, not lifecycle classification authority.
+
+The migrated test now requires the workflow to remain observable and reviewable while verifying that lack of a positive path scope alone does not create an architecture failure.
+
+### I-R5 — Legacy topology boundary fixture
+
+The remaining historical topology test expected Tool `0.3.6` topology migration to accept an obsolete `0.3.4-draft` `boundaries.product/toolchain` profile and preserve `TOOLCHAIN` semantics.
+
+That behavior is no longer a Tool `0.3.6` canonical contract. The dedicated Tool `0.3.5` legacy-reader and assisted migration system has moved to Tool `0.3.6.1`.
+
+The Tool `0.3.6` test now freezes the correct current boundary:
+
+```text
+legacy boundary profile
+    -> canonical 0.3.6 topology validation rejects it
+    -> fail closed
+    -> source profile remains unchanged
+    -> repository root is not moved
+```
+
+This does not implement the deferred `0.3.6.1` legacy reader.
+
+## 10. Exact-SHA verification still required
+
+The remediation review above is not execution evidence.
+
+WU-04I remains ACTIVE until a current exact-SHA verification run establishes I1-I5, including the complete repository regression and repository self-profile result. No success result is inferred from the fact that all eight previously observed failures have been remediated in source.
+
+After the exact-SHA run, record its run/job identity, Python/runtime identity, focused/full results, self-profile result, any remaining failure classification, and the final completion snapshot here before changing WU-04I to COMPLETE.
 
 WU-04I is ACTIVE from the entry baseline above. Tool `0.3.6.1` roadmap documents may exist for planning visibility, but they do not authorize migration implementation before Tool `0.3.6` release. Tool `0.3.6` WU-05 and later release-closure stages likewise remain locked until this completion gate is satisfied.
