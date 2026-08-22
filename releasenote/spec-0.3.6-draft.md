@@ -5,16 +5,22 @@
 The Tool `0.3.6` development line currently binds the `0.3.6-draft` Specification family to the immutable snapshot:
 
 ```text
+d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+Earlier normative checkpoints in this development line were:
+
+```text
+WU-03 canonical activation
+12e2ccd15634ecb3d0a4195b0f61ac3f620e7540
+
+WU-04C declaration-authority/materialization boundary
 82abd09360df09a95fbbfb516855fa9ffb49f050
 ```
 
-The earlier WU-03 canonical-activation snapshot was:
+The binding first moved for WU-04C because that stage added new normative Responsibility Map declaration-authority and materialization rules. It moved again at WU-04G G0 because accepted project-owned clarification/adoption decisions required the additional normative safe-apply authority rule frozen as `PTSIP-RMAP-017`.
 
-```text
-12e2ccd15634ecb3d0a4195b0f61ac3f620e7540
-```
-
-The binding moved because WU-04C added new normative Responsibility Map declaration-authority and materialization rules. It did not move merely because later implementation code existed.
+The binding does not move merely because implementation code, tests, planning documents, or regression-closure records change.
 
 ## Normative changes
 
@@ -97,11 +103,29 @@ Tool `0.3.6` uses whole-entity stable-ID replacement rather than implicit field-
 
 These requirements are normative in `PTSIP-RMAP-013` through `PTSIP-RMAP-016` and are recorded architecturally by `ADR-0009`.
 
+### WU-04G accepted-decision safe-apply authority
+
+WU-04G G0 adds `PTSIP-RMAP-017`.
+
+An **accepted project-owned clarification/adoption decision** may authorize only the exact project-owned declaration delta needed to represent that decision. When an immutable template declaration cannot represent that accepted decision without a project delta, the safe-apply layer may perform the source transition:
+
+```text
+template -> hybrid
+```
+
+while preserving the exact selected template ID and revision and writing only the minimum accepted project-owned override/extension/replacement.
+
+Repository discovery, evidence collection, candidate generation, and deterministic materialization remain non-authoritative and cannot trigger that transition by themselves.
+
+This normative addition is the reason the current Tool `0.3.6` binding is `d6995ed232e845b88d8235b851e80ab54b7804ea`.
+
 ## Compatibility boundary
 
-Tool `0.3.6` compatibility with Tool `0.3.5` means understanding valid legacy profiles through a dedicated migration path and producing evidence-backed proposals. It does not mean accepting obsolete ontology as canonical new-schema state.
+Tool `0.3.6` does not treat obsolete Tool `0.3.5` ontology as canonical Tool `0.3.6` state.
 
-Legacy `TOOLCHAIN` must be re-evaluated for `PRODUCT`, `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, component split, associated-artifact representation, typed relationships, or unresolved clarification as supported by evidence and project-owner confirmation.
+The evidence-driven Tool `0.3.5 -> 0.3.6` migration system has been moved out of the Tool `0.3.6` release gate and continues as Tool `0.3.6.1` planning. Historical `TOOLCHAIN` input therefore remains migration input rather than an accepted canonical alias.
+
+Legacy `TOOLCHAIN` must eventually be re-evaluated for `PRODUCT`, `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, component split, associated-artifact representation, typed relationships, or unresolved clarification as supported by evidence and project-owner confirmation.
 
 ## VPMS boundary
 
