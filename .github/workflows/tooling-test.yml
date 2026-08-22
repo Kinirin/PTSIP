@@ -174,50 +174,53 @@ jobs:
             throw "Built wheel does not expose the ptsip-app console entry point."
           }
 
-          $sourcePaths = New-Object 'System.Collections.Generic.HashSet[string]'
-          $components = New-Object 'System.Collections.Generic.HashSet[string]'
+          $sourcePaths = @()
+          $components = @()
           $sawDistributionMetadata = $false
           $sawLicense = $false
 
           foreach ($path in $wheelPaths) {
             if ($path -like 'ptsip/specdata/*') {
-              $null = $sourcePaths.Add("src/$path")
-              $null = $components.Add('ptsip-embedded-contracts')
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-embedded-contracts'
               continue
             }
             if ($path -like 'ptsip/*') {
-              $null = $sourcePaths.Add("src/$path")
-              $null = $components.Add('ptsip-core')
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-core'
               continue
             }
             if ($path -like 'vpms/*') {
-              $null = $sourcePaths.Add("src/$path")
-              $null = $components.Add('vpms')
+              $sourcePaths += "src/$path"
+              $components += 'vpms'
               continue
             }
             if ($path -match '^[^/]+\.dist-info/licenses/LICENSE$') {
-              $null = $sourcePaths.Add('LICENSE')
-              $null = $components.Add('product-documentation')
-              $null = $components.Add('ptsip-distribution')
+              $sourcePaths += 'LICENSE'
+              $components += 'product-documentation'
+              $components += 'ptsip-distribution'
               $sawDistributionMetadata = $true
               $sawLicense = $true
               continue
             }
             if ($path -match '^[^/]+\.dist-info/') {
-              $null = $components.Add('ptsip-distribution')
+              $components += 'ptsip-distribution'
               $sawDistributionMetadata = $true
               continue
             }
             throw "Unrecognized wheel content outside the declared Product package boundary: $path"
           }
 
-          if (-not $components.Contains('ptsip-core')) {
+          $sourcePaths = @($sourcePaths | Sort-Object -Unique)
+          $components = @($components | Sort-Object -Unique)
+
+          if ($components -notcontains 'ptsip-core') {
             throw "Built wheel does not contain the ptsip-core Product implementation."
           }
-          if (-not $components.Contains('vpms')) {
+          if ($components -notcontains 'vpms') {
             throw "Built wheel does not contain the vpms Product package."
           }
-          if (-not $components.Contains('ptsip-embedded-contracts')) {
+          if ($components -notcontains 'ptsip-embedded-contracts') {
             throw "Built wheel does not contain embedded PTSIP contract assets."
           }
           if (-not $sawDistributionMetadata) {
@@ -243,8 +246,8 @@ jobs:
             artifact_type = 'python-wheel'
             shipping_scope = 'product-distribution'
             contents = [ordered]@{
-              paths = @($sourcePaths | Sort-Object)
-              components = @($components | Sort-Object)
+              paths = $sourcePaths
+              components = $components
               complete = $true
             }
             derivation = @(
