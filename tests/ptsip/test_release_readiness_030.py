@@ -38,6 +38,13 @@ def test_routine_ci_derives_exact_sha_and_uses_self_hosted_python() -> None:
     assert "python -m pytest -q" in workflow
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
+    assert "Verify Product Artifact evidence and exact snapshot binding" in workflow
+    assert "ptsip-artifact-evidence/v1" in workflow
+    assert "ptsip-artifact-evidence-binding/v1" in workflow
+    assert "--artifact-evidence" in workflow
+    assert "artifact_snapshot_binding" in workflow
+    assert "wheel-sha256:" in workflow
+    assert "PTSIP-PKG-001" in workflow
     assert "--force-reinstall --no-deps" in workflow
     assert 'context = "self-hosted/tooling-test"' in workflow
     assert "ptsip --version" in workflow
