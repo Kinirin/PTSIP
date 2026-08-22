@@ -241,7 +241,7 @@ def test_topology_apply_moves_root_and_preserves_classification(tmp_path: Path):
     assert "sdk/tooling/main.py" in staged
 
 
-def test_topology_legacy_boundary_profile_preserves_historical_plane_classification(tmp_path: Path):
+def test_topology_legacy_boundary_profile_is_rejected_by_canonical_036_topology(tmp_path: Path):
     root = tmp_path / "repo"
     root.mkdir()
     (root / "product").mkdir()
@@ -249,21 +249,27 @@ def test_topology_legacy_boundary_profile_preserves_historical_plane_classificat
     (root / "old").mkdir()
     (root / "old" / "tool.py").write_text("VALUE = 2\n", encoding="utf-8")
     profile = root / "ptsip.yaml"
-    profile.write_text(_legacy_boundary_profile(), encoding="utf-8")
+    legacy_profile = _legacy_boundary_profile()
+    profile.write_text(legacy_profile, encoding="utf-8")
     _run(root, "git", "init")
     _run(root, "git", "config", "user.email", "ptsip@example.invalid")
     _run(root, "git", "config", "user.name", "PTSIP Test")
     _run(root, "git", "add", ".")
     _run(root, "git", "commit", "-m", "fixture")
 
-    result = migrate_topology(root, profile, "old", "devtools", apply=False)
+    try:
+        migrate_topology(root, profile, "old", "devtools", apply=False)
+    except ValueError as exc:
+        message = str(exc)
+        assert "Current PTSIP profile is invalid" in message
+        assert "responsibility_map" in message
+        assert "0.3.6-draft" in message
+    else:
+        raise AssertionError("canonical Tool 0.3.6 topology must reject a legacy boundary profile")
 
-    assert result["migration"]["ownership_mode"] == "boundaries"
-    assert result["migration"]["classification"] == "TOOLCHAIN"
-    assert result["classification"]["preserved"] is True
-    assert result["profile_changes"] == [
-        {"location": "boundaries.toolchain.roots[0]", "before": "old", "after": "devtools"}
-    ]
+    assert profile.read_text(encoding="utf-8") == legacy_profile
+    assert (root / "old" / "tool.py").is_file()
+    assert not (root / "devtools").exists()
 
 
 def test_topology_apply_requires_clean_git_state(tmp_path: Path):
