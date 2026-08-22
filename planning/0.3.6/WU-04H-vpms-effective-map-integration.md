@@ -1,13 +1,14 @@
 # WU-04H — VPMS Narrow Read-Only Effective-Map Integration
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / VERIFIED  
 > **Parent work unit:** WU-04 — template catalog + deterministic materialization + effective-map consumers  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-04G — COMPLETE / EXACT-SHA VERIFIED  
 > **Entry baseline:** `ab05051ee9fd5f10a4ca3aa17020ad314ee82722`  
+> **Completion snapshot:** `9fac22d31333346dbe56a12dee890df1229d560b`  
 > **WU-04G verification snapshot:** `3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667`  
 > **Bound Specification:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
-> **Successor:** WU-04I — final regression + WU-04 completion, LOCKED until WU-04H completion review
+> **Successor:** WU-04I — final regression + WU-04 completion, NEXT / NOT ENTERED
 
 ## 0. Purpose
 
@@ -604,6 +605,36 @@ WU-04H COMPLETE
     -> create WU-04I document
     -> enter WU-04I
 ```
+
+### Completion record
+
+WU-04H completion was reviewed against exact implementation snapshot:
+
+```text
+9fac22d31333346dbe56a12dee890df1229d560b
+```
+
+Maintainer-provided repository-local verification on that exact SHA completed with all three process exit codes equal to `0`:
+
+```text
+H focused verification
+    35 passed in 5.29s
+    exit=0
+
+VPMS integration + architecture isolation
+    41 passed in 4.78s
+    exit=0
+
+Repository self-profile verification
+    4 passed in 2.70s
+    exit=0
+```
+
+The first two pytest invocations emitted a Windows `%TEMP%\pytest-of-rhkrt\pytest-current` cleanup `PermissionError` from an ignored `atexit` callback after pytest had already reported all selected tests passed. Because both processes returned exit code `0`, this is classified as post-test temporary-directory cleanup noise rather than an H semantic/test failure.
+
+Completion review confirms H1-B through H8-B, including explicit/template/hybrid equivalence, effective hybrid override/removal behavior, fail-closed unresolved handoff, no canonical raw fallback, package isolation, classification/purpose independence, read-only PTSIP/Decision Authority behavior, and preservation of Tool 0.3.5 compatibility boundaries. No WU-04I implementation or test migration was entered before this H completion review.
+
+WU-04H is therefore **COMPLETE / VERIFIED** at snapshot `9fac22d31333346dbe56a12dee890df1229d560b`. This stage-scoped verification does not claim Tool 0.3.6 release readiness or replace WU-04I final WU-04-wide regression.
 
 ## 14. Explicitly out of scope
 
