@@ -231,14 +231,19 @@ def test_scoped_release_workflows_are_sufficient(tmp_path: Path) -> None:
     assert result.status == "RAN"
 
 
-def test_ambiguous_release_workflow_blocks_lifecycle_coverage(tmp_path: Path) -> None:
+def test_unscoped_release_workflow_is_observation_not_lifecycle_authority(tmp_path: Path) -> None:
     repo, _artifact_path, _revision = _clean_repo(tmp_path)
     _workflow(repo, "global-release.yml", paths=None)
     _commit(repo)
     components = _components()
     result = evaluate_lifecycle_evidence(repo, components, partition_components(repo, components))
-    assert result.status == "BLOCKED"
-    assert any("ambiguous-release-workflow" in item["id"] for item in result.blocking_gaps)
+    assert result.status == "RAN"
+    assert not result.blocking_gaps
+    workflow = next(item for item in result.workflows if item.path.endswith("global-release.yml"))
+    assert workflow.trigger_paths == ()
+    assert workflow.scope_complete is False
+    assert workflow.reason is not None
+    assert "not a classification failure" in workflow.reason
 
 
 def test_global_non_release_ci_is_not_lifecycle_blocker(tmp_path: Path) -> None:
