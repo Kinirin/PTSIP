@@ -195,7 +195,7 @@ def test_agent_decision_conflict_never_overrides_profile(tmp_path: Path) -> None
             {
                 "component_id": "product",
                 "status": "RESOLVED",
-                "classification": "TOOLCHAIN",
+                "classification": "DEVELOPMENT_TOOLING",
                 "origin": "AGENT",
                 "confidence": 0.9,
                 "evidence_ids": ["agent:evidence:1"],
