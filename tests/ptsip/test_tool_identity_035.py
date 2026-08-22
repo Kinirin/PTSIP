@@ -9,7 +9,7 @@ from ptsip.spec_identity import current_spec_identity
 
 
 _ROOT = Path(__file__).resolve().parents[2]
-_EXPECTED_SPEC_REVISION = "82abd09360df09a95fbbfb516855fa9ffb49f050"
+_EXPECTED_SPEC_REVISION = "d6995ed232e845b88d8235b851e80ab54b7804ea"
 
 
 def test_tool_036_distribution_and_runtime_identity_match() -> None:
