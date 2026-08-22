@@ -45,6 +45,8 @@ def test_routine_ci_derives_exact_sha_and_uses_self_hosted_python() -> None:
     assert "artifact_snapshot_binding" in workflow
     assert "wheel-sha256:" in workflow
     assert "PTSIP-PKG-001" in workflow
+    assert "$conformExit -notin @(0, 6)" in workflow
+    assert 'Write-Host "Artifact-aware conformance outcome: $($report.outcome)"\n          exit 0' in workflow
     assert "--force-reinstall --no-deps" in workflow
     assert 'context = "self-hosted/tooling-test"' in workflow
     assert "ptsip --version" in workflow
