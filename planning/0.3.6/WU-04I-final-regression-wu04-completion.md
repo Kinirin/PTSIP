@@ -7,7 +7,7 @@
 > **Entry baseline:** `713dee236def879e00dadca894add98d65ffb754`  
 > **WU-04H completion snapshot:** `9fac22d31333346dbe56a12dee890df1229d560b`  
 > **Bound Specification:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
-> **Successor:** WU-05 — candidate-discovery evidence expansion; locked until WU-04I completion
+> **Successor:** WU-05 — repository dogfood / self-evaluation; locked until WU-04I completion
 
 ## 0. Purpose
 
@@ -28,6 +28,8 @@ template catalog identity
 
 WU-04I MUST NOT introduce a new architecture model. Its job is to prove that the completed WU-04 pipeline behaves coherently across explicit, template, and hybrid declaration modes and to classify any remaining repository-wide failures before WU-04 is marked complete.
 
+The evidence-driven Tool `0.3.5` migration roadmap has been moved out of Tool `0.3.6` to Tool `0.3.6.1`; it is not part of WU-04I or the Tool `0.3.6` release gate.
+
 ## 1. Entry authority
 
 WU-04H completed at exact implementation verification snapshot:
@@ -44,7 +46,7 @@ VPMS integration + architecture isolation       41 passed / exit=0
 repository self-profile                         4 passed / exit=0
 ```
 
-WU-04I enters from development branch HEAD:
+WU-04I entered from development branch HEAD:
 
 ```text
 713dee236def879e00dadca894add98d65ffb754
@@ -69,21 +71,28 @@ WU-04I owns final WU-04 integration/regression verification for:
 
 ## 3. Non-goals
 
-WU-04I does not authorize implementation of later roadmap work:
+WU-04I does not authorize Tool `0.3.6.1` migration-continuation implementation:
 
 ```text
-WU-05 candidate-discovery evidence expansion
-WU-06 evidence/provenance normalization redesign
-WU-07 Tool 0.3.5 legacy reader
-WU-08 lifecycle migration analyzer
-WU-09 migration target proposals
-WU-10 migration preview/confirmation/safe apply
-WU-11 repository dogfood redesign
-WU-12 release/package verification work
-WU-13 final Specification freeze/release execution
+0.3.6.1 WU-01 candidate-discovery evidence expansion
+0.3.6.1 WU-02 evidence/provenance normalization
+0.3.6.1 WU-03 Tool 0.3.5 legacy reader
+0.3.6.1 WU-04 lifecycle migration analyzer
+0.3.6.1 WU-05 migration target proposals
+0.3.6.1 WU-06 migration preview/confirmation/safe apply
 ```
 
-It also does not authorize a broad rewrite of frozen Tool 0.3.5 compatibility tests simply to obtain a green repository-wide suite.
+Those plans live under `planning/0.3.6.1.md` and `planning/0.3.6.1/`.
+
+WU-04I also does not enter later Tool `0.3.6` release-closure work early:
+
+```text
+WU-05 repository dogfood / self-evaluation
+WU-06 full regression / package verification
+WU-07 final Specification freeze / release preparation
+```
+
+It does not authorize a broad rewrite of frozen Tool `0.3.5` compatibility tests simply to obtain a green repository-wide suite.
 
 ## 4. Required verification layers
 
@@ -93,7 +102,7 @@ Run the focused and participating test families for WU-04D through WU-04H. The e
 
 ### I2 — declaration-mode equivalence matrix
 
-Verify representative explicit, template, and hybrid profiles across the downstream consumers that depend on effective architecture.
+Verify representative explicit, template, and hybrid profiles across downstream consumers that depend on effective architecture.
 
 Required invariants include:
 
@@ -118,7 +127,7 @@ The repository's own `ptsip.yaml` must validate cleanly under the current Tool 0
 
 Run the complete repository test suite at an exact candidate SHA. Zero failures is preferred, but any remaining failure must be exhaustively classified by responsibility and must not be hidden by narrowing the test command.
 
-WU-04 completion may be accepted only when remaining failures, if any, are demonstrated to belong to later roadmap or frozen historical compatibility responsibility rather than an unresolved WU-04 contract.
+WU-04 completion may be accepted only when remaining failures, if any, are demonstrated to belong outside WU-04 responsibility rather than an unresolved WU-04 contract.
 
 ## 5. Verification evidence discipline
 
@@ -164,7 +173,7 @@ After this gate:
 ```text
 WU-04 COMPLETE
     -> fresh branch HEAD
-    -> WU-05 entry review
+    -> WU-05 repository-dogfood entry review
     -> assign WU-05 exact entry baseline
     -> WU-05 ACTIVE
 ```
@@ -183,4 +192,4 @@ Recommended order:
 7. record completion snapshot and close WU-04
 ```
 
-WU-04I is ACTIVE from the entry baseline above. WU-05 and later planning documents may exist for roadmap visibility, but they do not authorize implementation before this completion gate is satisfied.
+WU-04I is ACTIVE from the entry baseline above. Tool `0.3.6.1` roadmap documents may exist for planning visibility, but they do not authorize migration implementation before Tool `0.3.6` release. Tool `0.3.6` WU-05 and later release-closure stages likewise remain locked until this completion gate is satisfied.
