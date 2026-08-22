@@ -50,14 +50,26 @@ WU-01  lifecycle ontology/boundary rules                  COMPLETE
 WU-02  roles + typed relationships + associated artifacts COMPLETE
 WU-03  canonical Responsibility Map v2 activation         COMPLETE
 WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
-WU-05  repository dogfood / self-evaluation               NEXT / ENTRY REVIEW PENDING
+WU-05  repository dogfood / self-evaluation               ACTIVE
 WU-06  full regression / package verification             PLANNED
 WU-07  final Specification freeze / release preparation   PLANNED
 ```
 
-WU-05 is not ACTIVE yet. It requires a fresh branch-HEAD read, predecessor completion review, and an exact entry baseline.
+WU-05 exact entry baseline:
 
-## WU-04 completion
+```text
+c87e597409592f0794a5d404d621b6f73dd00cc6
+```
+
+WU-05 execution authority:
+
+```text
+planning/0.3.6/WU-05-repository-dogfood-self-evaluation.md
+```
+
+WU-05 was entered only after WU-04 completion and a fresh branch-HEAD read. WU-06 remains locked until WU-05 completion and a new entry review.
+
+## WU-04 completion authority
 
 WU-04 staged status:
 
@@ -73,44 +85,7 @@ WU-04H  VPMS narrow read-only integration                COMPLETE / VERIFIED
 WU-04I  final regression + WU-04 completion              COMPLETE / EXACT-SHA VERIFIED
 ```
 
-Primary records:
-
-```text
-planning/0.3.6/WU-04C-declaration-authority-effective-map.md
-planning/0.3.6/WU-04D-resolved-profile-digest-provenance.md
-planning/0.3.6/WU-04E-validation-effective-map.md
-planning/0.3.6/WU-04F-conformance-effective-map.md
-planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
-planning/0.3.6/WU-04G-G5-verification-closure.md
-planning/0.3.6/WU-04H-vpms-effective-map-integration.md
-planning/0.3.6/WU-04I-final-regression-wu04-completion.md
-```
-
-### WU-04G checkpoint
-
-WU-04G's earlier exact-SHA full regression at:
-
-```text
-3ee6bb1d8ecff3bbd6b2e63f50e4c9cde3fcd667
-```
-
-reported:
-
-```text
-303 passed / 8 failed
-```
-
-That run was correctly recorded as a failed repository-wide workflow while WU-04G itself was stage-complete after its own G contracts passed and all eight failures were classified.
-
-WU-04I subsequently reviewed and remediated all eight failures as stale/current-contract regression expectations without changing production architecture semantics. The remediation snapshot was:
-
-```text
-5f7bfdce120650db30d247a686d50a93f91bb3e4
-```
-
-### Final WU-04 exact-SHA verification
-
-Final implementation verification authority:
+Final WU-04 implementation verification authority:
 
 ```text
 source SHA:   eadb07f78f9690ca0180bfbba194c5c9602e1838
@@ -124,8 +99,6 @@ wall time:    259.67s (0:04:19)
 job result:   success
 commit status: self-hosted/tooling-test = success
 ```
-
-The workflow explicitly checked out `eadb07f...` and verified `git rev-parse HEAD` against the dispatched SHA before execution.
 
 Post-regression verification also passed:
 
@@ -146,15 +119,6 @@ built-wheel reinstall smoke          PASS
 VPMS compatibility smoke             PASS
 ```
 
-The successful workflow recorded:
-
-```text
-context:     self-hosted/tooling-test
-state:       success
-description: Self-hosted Windows verification passed for the exact dispatched SHA
-target:      https://github.com/Kinirin/PTSIP/actions/runs/32588090216
-```
-
 Therefore:
 
 ```text
@@ -163,7 +127,41 @@ WU-04  COMPLETE
 remaining repository regression failures: 0
 ```
 
-The documentation commits that record this closure occur after `eadb07f...`; they are closure records and do not replace that exact implementation verification authority.
+The WU-04 closure documentation commits occur after `eadb07f...`; they record the verified result and do not replace that exact implementation verification authority.
+
+## WU-05 repository dogfood boundary
+
+WU-05 treats the PTSIP repository as a real Tool `0.3.6` consumer.
+
+Required dogfood surfaces include:
+
+```text
+Tool / Specification identity
+    -> root ptsip.yaml validation
+    -> Effective Responsibility Map / coverage review
+    -> ptsip conform . --json
+    -> ptsip clarify . --json
+    -> ptsip gate . --coordination local --json
+    -> read-only stability / non-mutation review
+    -> finding ownership classification
+```
+
+Repository declaration remains architecture authority. Discovery, paths, workflow names, and confidence may provide evidence but do not override project-owned lifecycle ownership.
+
+WU-05 must not implement the deferred Tool `0.3.6.1` migration system or enter WU-06/WU-07 release work early.
+
+Dogfood findings must be classified as one of:
+
+```text
+A. repository declaration defect
+B. Tool 0.3.6 implementation defect
+C. test/fixture/documentation drift
+D. deferred Tool 0.3.6.1 migration/discovery concern
+E. WU-06/WU-07 release-closure concern
+F. genuine normative Specification defect
+```
+
+Only WU-05-owned defects are corrected in this stage. A genuine normative defect requires explicit Specification review before moving `SPEC_REVISION`.
 
 ## Canonical Responsibility Map / Effective Map boundary
 
@@ -198,7 +196,7 @@ Classification, component role, typed relationship, declaration/materialization 
 
 Root `ptsip.yaml` self-adopts Responsibility Map v2.
 
-The final WU-04 exact-SHA workflow verified:
+The WU-04 exact-SHA workflow verified the predecessor state as:
 
 ```text
 valid: true
@@ -209,18 +207,13 @@ materialized: true
 responsibility_map_coverage.unassigned_count: 0
 ```
 
-The final Effective Responsibility Map digest at the verified SHA was:
+The predecessor Effective Responsibility Map digest was:
 
 ```text
 sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
 ```
 
-Repository responsibilities include:
-
-- release automation: `DELIVERY`;
-- repository verification/CI/maintenance: `DEVELOPMENT_TOOLING`;
-- canonical lifecycle-independent contracts: `NEUTRAL_CONTRACT` where applicable;
-- subordinate specification governance support: associated-artifact semantics where independent component ownership is unnecessary.
+WU-05 must independently review the repository as a consumer; WU-04 predecessor evidence does not by itself complete dogfood.
 
 ## VPMS boundary
 
@@ -237,8 +230,6 @@ VPMS `TOOLCHAIN` is VPMS vocabulary, not a Tool `0.3.6` PTSIP classification.
 
 PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of validated effective PTSIP metadata and does not own template/hybrid semantics, PTSIP classification authority, or Tool `0.3.5` migration.
 
-WU-04H's focused VPMS isolation/integration evidence and WU-04I's final full regression both passed.
-
 ## Tool 0.3.5 migration continuation
 
 Evidence-backed Tool `0.3.5 -> 0.3.6` architecture migration is not a Tool `0.3.6` release prerequisite.
@@ -254,7 +245,7 @@ planning/0.3.6.1/WU-04-lifecycle-migration-analyzer.md
 planning/0.3.6.1/WU-05-target-proposals.md
 ```
 
-Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` migration remains prohibited. Legacy responsibility must be re-evaluated against actual lifecycle ownership and explicit project authority.
+Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` migration remains prohibited.
 
 ## GitHub Actions resource policy
 
@@ -270,9 +261,7 @@ PowerShell
 Python 3.14 available through `py -3.14`
 ```
 
-Do not hard-code a `DESKTOP-*` machine name into workflow policy.
-
-Current verification/release path:
+Current verification/release path remains:
 
 ```text
 tooling-test.yml
@@ -295,23 +284,15 @@ tooling-release.yml
     -> minimal GitHub-hosted GNU/Linux Trusted Publishing only
 ```
 
-Manual `host_ready`, `source_sha`, `version`, and `release_candidate` inputs are not part of the current pipeline.
-
-The narrow GNU/Linux PyPI Trusted Publishing job remains the approved GitHub-hosted compute exception.
-
-## Next stage
-
-Current release sequence is:
+## Next stage sequence
 
 ```text
 WU-04 COMPLETE
-    -> WU-05 repository dogfood / self-evaluation
+    -> WU-05 ACTIVE: repository dogfood / self-evaluation
     -> WU-06 full regression / package / distribution verification
     -> WU-07 final Specification freeze / release preparation
     -> Tool 0.3.6 release
 ```
-
-WU-05 has **not** been entered by the WU-04 closure commits. Its entry requires a fresh branch-HEAD read and an explicitly recorded entry baseline.
 
 ## Tool lineage
 
@@ -321,6 +302,6 @@ WU-05 has **not** been entered by the WU-04 closure commits. Its entry requires 
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 NEXT / ENTRY REVIEW PENDING**
+- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 ACTIVE at entry baseline `c87e597...`**
 
 Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
