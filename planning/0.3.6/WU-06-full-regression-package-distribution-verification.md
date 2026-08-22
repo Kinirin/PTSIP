@@ -1,11 +1,12 @@
 # WU-06 — Full Regression / Package / Distribution Verification
 
-> **Status:** ENTRY DOCUMENT CREATED — activation pending release-level/status propagation  
+> **Status:** ACTIVE — exact entry baseline established and release-level/status propagation authorized  
 > **Parent release:** Tool `0.3.6` — Primary Lifecycle Ownership Foundation  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-05 — COMPLETE / DOGFOOD REVIEWED  
 > **WU-05 exact dogfood verification snapshot:** `5010fa81ebd104eb329f29217d4c5fecec51cacb`  
 > **WU-06 exact entry baseline:** `bdd77ef3f026a83bb0fd0099144aebea1de55365`  
+> **WU-06 entry-document commit:** `59224b9df25db34f4af58e48eaeac0b1db8bf187`  
 > **Bound Specification:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
 > **Successor:** WU-07 — final Specification freeze / release preparation; locked until WU-06 completion
 
@@ -47,6 +48,14 @@ bdd77ef3f026a83bb0fd0099144aebea1de55365
 ```
 
 That SHA is the exact WU-06 entry baseline. This stage document is a descendant planning record and does not replace the entry baseline.
+
+The initial detailed stage document was committed at:
+
+```text
+59224b9df25db34f4af58e48eaeac0b1db8bf187
+```
+
+Release-level and status propagation are descendant activation records; neither changes the exact entry baseline.
 
 ## 2. WU-05 handoff owned by WU-06
 
@@ -450,7 +459,7 @@ WU-06 COMPLETE / EXACT-SHA VERIFIED
 
 ## 15. Initial execution sequence
 
-Once release-level/status activation is propagated, execute in this order:
+Execute in this order:
 
 ```text
 1. confirm WU-06 exact entry baseline and current branch descendant
@@ -470,4 +479,4 @@ Once release-level/status activation is propagated, execute in this order:
 15. record WU-06 completion evidence
 ```
 
-This document fixes the WU-06 exact entry baseline at `bdd77ef3f026a83bb0fd0099144aebea1de55365`. The stage is not represented as ACTIVE at the release/status level until `planning/0.3.6.md` and `STATUS.md` are explicitly propagated.
+This document fixes the WU-06 exact entry baseline at `bdd77ef3f026a83bb0fd0099144aebea1de55365`. WU-06 is ACTIVE. Activation-propagation commits are descendant planning/status records and do not replace the exact entry baseline.
