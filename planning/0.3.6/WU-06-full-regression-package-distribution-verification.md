@@ -1,14 +1,15 @@
 # WU-06 — Full Regression / Package / Distribution Verification
 
-> **Status:** ACTIVE — exact entry baseline established and release-level/status propagation authorized  
+> **Status:** EXACT-SHA VERIFIED — technical verification complete; release-level/status closure propagation pending  
 > **Parent release:** Tool `0.3.6` — Primary Lifecycle Ownership Foundation  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-05 — COMPLETE / DOGFOOD REVIEWED  
 > **WU-05 exact dogfood verification snapshot:** `5010fa81ebd104eb329f29217d4c5fecec51cacb`  
 > **WU-06 exact entry baseline:** `bdd77ef3f026a83bb0fd0099144aebea1de55365`  
 > **WU-06 entry-document commit:** `59224b9df25db34f4af58e48eaeac0b1db8bf187`  
+> **WU-06 exact verification candidate:** `a94c50130a694dba937708403520417719aec1e1`  
 > **Bound Specification:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
-> **Successor:** WU-07 — final Specification freeze / release preparation; locked until WU-06 completion
+> **Successor:** WU-07 — final Specification freeze / release preparation; locked until WU-06 completion propagation
 
 ## 0. Purpose
 
@@ -479,4 +480,249 @@ Execute in this order:
 15. record WU-06 completion evidence
 ```
 
-This document fixes the WU-06 exact entry baseline at `bdd77ef3f026a83bb0fd0099144aebea1de55365`. WU-06 is ACTIVE. Activation-propagation commits are descendant planning/status records and do not replace the exact entry baseline.
+## 16. Executed verification and exact-SHA evidence
+
+### 16.1 Candidate evolution and classified corrections
+
+WU-06 first established that the existing release-verification workflow did not yet generate the Product Artifact evidence and exact snapshot binding handed off by WU-05. The required verification path was added to the existing `.github/workflows/tooling-test.yml`; no parallel workflow was created and no architecture declaration or Specification revision was changed.
+
+The verification-workflow correction sequence was:
+
+```text
+8ab04b0bd5945cebb6de06a4640e56119720a003
+ci: verify WU-06 artifact evidence
+
+8a2d35d8cfb1b33e9e26be1feb7da115ab15517d
+test: require WU-06 artifact verification
+
+b57e7c054762819736f1e6ba19f22ee7c1509249
+ci: inspect built wheel contract
+
+3f3108820248d3bd62bc6c7d69eb3b341f86d6b8
+ci: harden WU-06 PowerShell artifact check
+```
+
+The first exact-SHA execution against `3f3108820248d3bd62bc6c7d69eb3b341f86d6b8` demonstrated that Product Artifact evidence itself passed, but the workflow step inherited `ptsip conform` exit code `6` (`INCOMPLETE`) through PowerShell `$LASTEXITCODE` after the accepted result had already been reviewed. GitHub therefore marked the step failed even though the WU-06 artifact assertions had passed.
+
+That failure was classified as:
+
+```text
+D. workflow / exact-SHA evidence defect
+```
+
+It was not a Product implementation defect, package violation, repository declaration defect, or normative Specification defect.
+
+The narrow correction sequence was:
+
+```text
+45636cb109fe89111b82e6e8ebad6b95410a2681
+ci: normalize accepted conformance exit
+
+a94c50130a694dba937708403520417719aec1e1
+test: pin accepted conformance exit handling
+```
+
+After an accepted conformance exit of `0` or `6`, the artifact-verification step now terminates successfully only after all WU-06 artifact assertions pass. The regression test pins that behavior.
+
+### 16.2 Final exact verification authority
+
+Final WU-06 technical verification was performed against:
+
+```text
+verification SHA: a94c50130a694dba937708403520417719aec1e1
+workflow:         tooling-test
+run ID:           32598727026
+job ID:           97093629017
+event:            workflow_dispatch
+run conclusion:   success
+```
+
+The workflow checked out the exact dispatched SHA and independently printed the same verified source SHA.
+
+Observed execution environment:
+
+```text
+runner class:     self-hosted / Windows / X64
+runner observed:  DESKTOP-5HCCQIR
+Python:           3.14.6
+```
+
+The observed machine name is evidence only; workflow authority remains capability-bound to `[self-hosted, Windows, X64]`.
+
+### 16.3 Complete repository regression
+
+The exact candidate completed the full repository suite:
+
+```text
+327 passed in 257.31s
+failures: 0
+pytest exit: success
+```
+
+This includes the release-readiness checks that require Tool/package/Specification identity and canonical/embedded machine-readable contract equality.
+
+### 16.4 Tool / package / Specification identity
+
+The verified candidate reported:
+
+```text
+package version:       0.3.6
+PTSIP Tool:            0.3.6
+Specification:         0.3.6-draft
+SPEC_REVISION:         d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+No WU-06 correction moved the normative Specification binding.
+
+### 16.5 Repository self-profile / Effective Map
+
+The exact candidate reported:
+
+```text
+valid:                              true
+errors:                             []
+warnings:                           []
+source_mode:                        explicit
+materialized:                       true
+template:                           null
+Effective Map digest:               sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
+responsibility_map unassigned:      0
+component_path_count:               194
+associated_artifact_path_count:     13
+```
+
+All architecture-declaration provenance remained project-owned. The new verification changes were already covered by the existing repository selectors and did not require `ptsip.yaml` surgery.
+
+Clarification and local decision gating also remained stable:
+
+```text
+clarify:             NO_CLARIFICATION_REQUIRED
+inference mode:      DETERMINISTIC_RULES_ONLY
+llm_calls:           0
+snapshot comparison: STABLE
+repository dirty:    false
+
+local gate:          NO_DECISION_REQUIRED
+backend:             LOCAL
+decisions:           []
+```
+
+### 16.6 Distribution construction and metadata
+
+The exact candidate built both declared Python distribution forms:
+
+```text
+ptsip-0.3.6.tar.gz
+ptsip-0.3.6-py3-none-any.whl
+```
+
+`twine check` passed for both artifacts.
+
+The wheel verification additionally required and observed:
+
+```text
+Name: PTSIP
+Version: 0.3.6
+ptsip     = ptsip.cli:main
+ptsip-app = ptsip.app.server:main
+```
+
+The wheel contained the required `ptsip` implementation, `vpms` package, embedded `ptsip/specdata` machine-readable contracts, distribution metadata, and declared LICENSE. Unrecognized wheel content outside the declared Product package boundary would have failed the run; no such failure occurred.
+
+### 16.7 Product Artifact evidence and exact snapshot binding
+
+The verified wheel SHA-256 was:
+
+```text
+b5ed0a7fca13181af9a0e1bc92dc9cceb382fe96a762fbf0504216e923880726
+```
+
+The workflow generated `ptsip-artifact-evidence/v1` for that observed wheel content and a `ptsip-artifact-evidence-binding/v1` sidecar bound to:
+
+```text
+repository:            Kinirin/PTSIP
+revision:              a94c50130a694dba937708403520417719aec1e1
+tracked-content SHA:   exact candidate snapshot fingerprint
+artifact evidence SHA: evidence-document SHA-256
+```
+
+Artifact-aware conformance then established all WU-06 release-closure assertions:
+
+```text
+product_artifact_boundary.status = RAN
+artifact_snapshot_binding.status = RAN
+artifact document binding_valid  = true
+artifact-evidence:* blocking gaps = 0
+PTSIP-PKG-001 NON_CONFORMANT      = 0
+```
+
+The workflow emitted:
+
+```text
+WU-06 Product Artifact evidence passed
+Artifact-aware conformance outcome: INCOMPLETE
+```
+
+Therefore the Product Artifact evidence and artifact snapshot-binding gaps handed off from WU-05 are resolved for the exact WU-06 candidate.
+
+The remaining overall `INCOMPLETE` outcome is not treated as Product Artifact failure or `NON_CONFORMANT`. It remains consistent with the previously reviewed fail-closed evidence limitations such as native dependency resolution and independent-build evidence sufficiency. WU-06 does not rewrite project architecture or weaken fail-closed evaluation to force the overall outcome to `CONFORMANT`.
+
+### 16.8 Installed-wheel and VPMS smoke
+
+After build/evidence verification, the exact wheel was force-reinstalled with `--no-deps`. The installed distribution then successfully exposed:
+
+```text
+PTSIP Tool 0.3.6
+Specification 0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
+ptsip conform --help
+```
+
+The packaged VPMS compatibility smoke also passed, including its existing `PRODUCT` and compatibility `TOOLCHAIN` purpose vocabulary. That VPMS compatibility vocabulary remains independent from PTSIP lifecycle classification authority.
+
+### 16.9 Exact commit status
+
+The final workflow step recorded this status directly on the verified candidate SHA:
+
+```text
+SHA:         a94c50130a694dba937708403520417719aec1e1
+context:     self-hosted/tooling-test
+state:       success
+description: Self-hosted Windows verification passed for the exact dispatched SHA
+target:      workflow run 32598727026
+```
+
+A subsequent commit-status read independently confirmed the same `self-hosted/tooling-test = success` result for `a94c50130a694dba937708403520417719aec1e1`.
+
+### 16.10 WU-06 technical completion assessment
+
+Against the technical verification surfaces owned by this stage:
+
+```text
+exact source identity                 PASS
+complete repository regression        PASS — 327 passed
+Tool/package/Specification identity   PASS
+repository self-profile               PASS
+Effective Map coverage                PASS — unassigned_count=0
+canonical/embedded contracts          PASS
+sdist + wheel build                   PASS
+twine metadata validation             PASS
+distribution-content boundary         PASS
+Product Artifact evidence             PASS
+exact artifact snapshot binding       PASS
+PTSIP-PKG-001 definite violations     0
+wheel force reinstall                 PASS
+installed CLI/Specification smoke     PASS
+VPMS compatibility smoke              PASS
+self-hosted/tooling-test exact status PASS
+normative Specification movement      NONE
+Tool 0.3.6.1 migration entry          NONE
+WU-07 release work entry              NONE
+```
+
+No unresolved WU-06-owned technical defect is known after the successful exact-SHA run.
+
+This document therefore records **WU-06 technical verification as EXACT-SHA VERIFIED** at `a94c50130a694dba937708403520417719aec1e1`.
+
+The stage's own completion gate also requires the same closure evidence to be propagated to `planning/0.3.6.md` and `STATUS.md`. Those files are outside the authorization scope of this documentation update. Until that propagation is separately authorized and completed, the top-level WU-06 state remains **closure propagation pending** rather than declaring administrative `COMPLETE` from this document alone.
+
+This document fixes the WU-06 exact entry baseline at `bdd77ef3f026a83bb0fd0099144aebea1de55365`. The exact technical verification authority is `a94c50130a694dba937708403520417719aec1e1`; this descendant documentation commit records that evidence and does not replace it.
