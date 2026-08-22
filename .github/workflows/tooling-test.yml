@@ -122,9 +122,37 @@ jobs:
             $wheelPaths = @(
               $archive.Entries |
                 Where-Object { -not [string]::IsNullOrWhiteSpace($_.Name) } |
-                ForEach-Object { $_.FullName.Replace('\\', '/') } |
+                ForEach-Object { $_.FullName } |
                 Sort-Object -Unique
             )
+
+            $metadataEntry = $archive.Entries |
+              Where-Object { $_.FullName -match '^[^/]+\.dist-info/METADATA$' } |
+              Select-Object -First 1
+            if (-not $metadataEntry) {
+              throw "Built wheel has no .dist-info/METADATA entry."
+            }
+            $metadataReader = New-Object System.IO.StreamReader($metadataEntry.Open())
+            try {
+              $metadataText = $metadataReader.ReadToEnd()
+            }
+            finally {
+              $metadataReader.Dispose()
+            }
+
+            $entryPointsEntry = $archive.Entries |
+              Where-Object { $_.FullName -match '^[^/]+\.dist-info/entry_points\.txt$' } |
+              Select-Object -First 1
+            if (-not $entryPointsEntry) {
+              throw "Built wheel has no .dist-info/entry_points.txt entry."
+            }
+            $entryPointsReader = New-Object System.IO.StreamReader($entryPointsEntry.Open())
+            try {
+              $entryPointsText = $entryPointsReader.ReadToEnd()
+            }
+            finally {
+              $entryPointsReader.Dispose()
+            }
           }
           finally {
             $archive.Dispose()
@@ -133,10 +161,23 @@ jobs:
           if (-not $wheelPaths) {
             throw "Built wheel contains no file entries."
           }
+          if ($metadataText -notmatch '(?m)^Name:\s*PTSIP\s*$') {
+            throw "Built wheel metadata does not report Name: PTSIP."
+          }
+          if ($metadataText -notmatch '(?m)^Version:\s*0\.3\.6\s*$') {
+            throw "Built wheel metadata does not report Version: 0.3.6."
+          }
+          if ($entryPointsText -notmatch '(?m)^ptsip\s*=\s*ptsip\.cli:main\s*$') {
+            throw "Built wheel does not expose the ptsip console entry point."
+          }
+          if ($entryPointsText -notmatch '(?m)^ptsip-app\s*=\s*ptsip\.app\.server:main\s*$') {
+            throw "Built wheel does not expose the ptsip-app console entry point."
+          }
 
           $sourcePaths = New-Object 'System.Collections.Generic.HashSet[string]'
           $components = New-Object 'System.Collections.Generic.HashSet[string]'
           $sawDistributionMetadata = $false
+          $sawLicense = $false
 
           foreach ($path in $wheelPaths) {
             if ($path -like 'ptsip/specdata/*') {
@@ -159,6 +200,7 @@ jobs:
               $null = $components.Add('product-documentation')
               $null = $components.Add('ptsip-distribution')
               $sawDistributionMetadata = $true
+              $sawLicense = $true
               continue
             }
             if ($path -match '^[^/]+\.dist-info/') {
@@ -180,6 +222,9 @@ jobs:
           }
           if (-not $sawDistributionMetadata) {
             throw "Built wheel does not contain distribution metadata."
+          }
+          if (-not $sawLicense) {
+            throw "Built wheel does not contain the declared LICENSE file."
           }
 
           $wheelHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $wheel.FullName).Hash.ToLowerInvariant()
