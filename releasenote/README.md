@@ -40,7 +40,7 @@ Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
 | `0.3.3` | Permanent source-only implementation version | [`0.3.3.md`](0.3.3.md) |
 | `0.3.4` | Published historical Tool release; stale pre-publication repository note removed | GitHub Release history |
 | `0.3.5` | **Published; first VPMS-capable Tool release** | [`0.3.5.md`](0.3.5.md) |
-| `0.3.6` | **Release candidate; WU-07 release preparation in progress** | [`0.3.6.md`](0.3.6.md) |
+| `0.3.6` | **Pre-publication release candidate; not yet published** | [`0.3.6.md`](0.3.6.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
