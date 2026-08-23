@@ -14,7 +14,7 @@
 
 Tool `0.3.5` remains the published compatibility baseline. Its historical PTSIP semantics are not rewritten by Tool `0.3.6` development.
 
-## Active Tool 0.3.6 development
+## Tool 0.3.6 development closure
 
 Development branch:
 
@@ -24,7 +24,9 @@ tool-0.3.6-lifecycle-ownership
 
 Development Tool identity is `0.3.6`; Tool `0.3.6` is **not published**.
 
-Current bound Specification:
+Tool `0.3.6` development work units are complete. The next boundary is a separate exact-main release handoff.
+
+Final bound Specification:
 
 ```text
 0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
@@ -52,7 +54,7 @@ WU-03  canonical Responsibility Map v2 activation         COMPLETE
 WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
 WU-05  repository dogfood / self-evaluation               COMPLETE / DOGFOOD REVIEWED
 WU-06  full regression / package/distribution verification COMPLETE / EXACT-SHA VERIFIED
-WU-07  final Specification freeze / release preparation   ACTIVE — Strategy B
+WU-07  final Specification freeze / release preparation   COMPLETE / EXACT-SHA VERIFIED
 ```
 
 WU-05 exact entry baseline:
@@ -121,13 +123,25 @@ WU-07 selected strategy:
 B — Release Contract Strengthening
 ```
 
-WU-07 execution authority:
+WU-07 exact verification authority:
+
+```text
+452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+```
+
+WU-07 verification run/job:
+
+```text
+32640319047 / 97196299107
+```
+
+WU-07 execution/closure authority:
 
 ```text
 planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md
 ```
 
-WU-06 entry/activation/closure records do not replace WU-06 exact verification authority `a94c501...`. WU-07 descendant implementation/status records do not replace exact WU-07 entry baseline `8b2c0819...`.
+WU-06 entry/activation/closure records do not replace WU-06 exact verification authority `a94c501...`. WU-07 entry, activation, implementation, and closure-documentation descendants do not replace exact WU-07 entry baseline `8b2c0819...` or exact verification authority `452d0f8...`.
 
 ## WU-04 completion authority
 
@@ -348,9 +362,9 @@ a94c50130a694dba937708403520417719aec1e1
 
 Closure documentation after `a94c501...` records this result and does not replace the exact source verification authority.
 
-## WU-07 active release-contract boundary
+## WU-07 completion authority
 
-WU-07 starts from exact entry baseline:
+WU-07 started from exact entry baseline:
 
 ```text
 8b2c0819e10b58902a780a094a0f52c603c39fba
@@ -368,25 +382,94 @@ Selected strategy:
 B — Release Contract Strengthening
 ```
 
-Initial final-Specification audit result:
+Final Specification audit result:
 
 ```text
-genuine normative Specification defect     NONE FOUND
+genuine normative Specification defect     NONE
 bound Specification family                  0.3.6-draft
 SPEC_REVISION                               d6995ed232e845b88d8235b851e80ab54b7804ea
-revision movement                            NONE AUTHORIZED
+revision movement                            NONE
 release-bound normative assets              15
 ```
 
-WU-07 strengthens the release contract while preserving the existing release architecture. Current work includes exact Git-blob equality between release-bound normative assets at `HEAD` and `SPEC_REVISION`, canonical/embedded machine-readable equality, reviewed `releasenote/0.3.6.md`, release-note index consistency, bounded `MEMORY.md` / `AGENTS.md` current-state cleanup, publication-wheel Product Artifact evidence, exact tagged-snapshot binding, and regression tests for these requirements.
+WU-07 strengthened the release contract while preserving the existing release architecture. It added exact Git-blob equality between release-bound normative assets at `HEAD` and `SPEC_REVISION`, canonical/embedded machine-readable equality, reviewed `releasenote/0.3.6.md`, release-note index consistency, bounded `MEMORY.md` / `AGENTS.md` current-state cleanup, publication-wheel Product Artifact evidence, exact tagged-snapshot binding, and regression tests for these requirements.
 
-`release.yml` retains its existing exact-main contract: main-only dispatch, exact `${{ github.sha }}` checkout, current `origin/main` freshness checks before and after verification, exact `self-hosted/tooling-test` success requirement, release-contract verification, and same-SHA draft release target. No WU-07 defect requiring a semantic change to this workflow has been identified so far.
+`release.yml` retained its existing exact-main contract: main-only dispatch, exact `${{ github.sha }}` checkout, current `origin/main` freshness checks before and after verification, exact `self-hosted/tooling-test` success requirement, release-contract verification, and same-SHA draft release target. No WU-07 defect required a semantic change to this workflow.
 
 `tooling-release.yml` remains release-published-triggered and self-hosted for build/verification. Its publication build now verifies the actual newly built wheel's Product Artifact contents/evidence and exact tagged source binding before uploading the distributions used by the narrow GNU/Linux PyPI Trusted Publishing boundary.
 
-WU-07 does not enter Tool `0.3.6.1` migration work and does not implement Strategy C Build Once / release-attestation architecture.
+Final exact verification was completed on:
 
-WU-07 is **ACTIVE**. It is not complete until the final WU-07 candidate passes the complete self-hosted exact-SHA `tooling-test` gate and completion evidence is recorded.
+```text
+452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+```
+
+Exact verification evidence:
+
+```text
+workflow                              tooling-test
+run/job                               32640319047 / 97196299107
+runner                                self-hosted Windows X64
+Python                                3.14.6
+complete repository pytest            331 passed / 0 failed / 267.80s
+Tool                                  0.3.6
+Specification                         0.3.6-draft
+SPEC_REVISION                         d6995ed232e845b88d8235b851e80ab54b7804ea
+repository profile                    valid=true / errors=[] / warnings=[]
+source_mode                           explicit
+materialized                          true
+Effective Map digest                  sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
+responsibility_map_coverage           unassigned_count=0
+clarify                               NO_CLARIFICATION_REQUIRED / STABLE
+local gate                            NO_DECISION_REQUIRED / LOCAL
+sdist                                 PASS
+wheel                                 PASS
+twine check                           PASS
+Product Artifact evidence             PASS
+artifact exact-snapshot binding       PASS
+artifact PTSIP-PKG-001 violations     0
+artifact-aware conform                INCOMPLETE / reviewed
+built-wheel force reinstall           PASS
+installed Tool/Specification smoke    PASS
+VPMS compatibility smoke              PASS
+self-hosted/tooling-test               success
+```
+
+The Product Artifact wheel verified in the WU-07 exact run had SHA-256:
+
+```text
+b4c04d9aa78276d7d5d470f02d6ae52aef54c92b2ec7c4fa1fab6e85b0ab4644
+```
+
+The artifact-aware `INCOMPLETE` result does not represent a release failure. The successful workflow required Product Artifact boundary and snapshot-binding evaluators to run, valid exact binding, zero artifact-evidence blocking gaps, and zero definite `PTSIP-PKG-001` violations.
+
+Final WU-07 finding ownership:
+
+```text
+A. normative Specification defect                         NONE
+B. Specification-binding/content-freeze guard defect      CORRECTED / VERIFIED
+C. Tool release-note defect                               CORRECTED / VERIFIED
+D. operational current-state documentation drift          CORRECTED / VERIFIED
+E. release workflow exact-SHA contract defect             NONE
+F. publication artifact verification defect               CORRECTED / CONTRACT VERIFIED
+G. release-readiness test/fixture defect                  CORRECTED / VERIFIED
+H. package/distribution defect discovered at final gate   NONE
+I. Tool 0.3.6 implementation regression                   NONE
+J. Strategy-C release-infrastructure improvement          DEFERRED / NOT REQUIRED
+K. Tool 0.3.6.1 migration concern                         DEFERRED / OUT OF SCOPE
+```
+
+Therefore:
+
+```text
+WU-07 COMPLETE / EXACT-SHA VERIFIED
+exact verification authority:
+452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+```
+
+Closure documentation after `452d0f8...` records this result and does not replace the exact source verification authority.
+
+WU-07 did not enter Tool `0.3.6.1` migration work and did not implement Strategy C Build Once / release-attestation architecture.
 
 ## Canonical Responsibility Map / Effective Map boundary
 
@@ -421,7 +504,7 @@ Classification, component role, typed relationship, declaration/materialization 
 
 Root `ptsip.yaml` self-adopts Responsibility Map v2.
 
-WU-06 independently reconfirmed the self-profile as:
+WU-07 final exact verification reconfirmed the self-profile as:
 
 ```text
 valid: true
@@ -438,7 +521,7 @@ The Effective Responsibility Map digest remains:
 sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
 ```
 
-WU-07 changes remain inside existing `repository-release-automation`, `repository-verification`, `repository-maintenance`, and `product-documentation` selectors; no project-owned Responsibility Map change has been required so far.
+WU-07 changes remained inside existing `repository-release-automation`, `repository-verification`, `repository-maintenance`, and `product-documentation` selectors; no project-owned Responsibility Map change was required.
 
 ## VPMS boundary
 
@@ -520,11 +603,12 @@ tooling-release.yml
 WU-04 COMPLETE
     -> WU-05 COMPLETE / DOGFOOD REVIEWED
     -> WU-06 COMPLETE / EXACT-SHA VERIFIED
-    -> WU-07 ACTIVE — Strategy B: final Specification freeze / release-contract strengthening
-    -> WU-07 final exact-SHA verification
+    -> WU-07 COMPLETE / EXACT-SHA VERIFIED
     -> exact-main release handoff
     -> Tool 0.3.6 release
 ```
+
+The development-branch verification authority `452d0f8...` is not transferable to a different resulting `main` SHA. The main handoff must independently verify the exact merged `main` commit before release preparation.
 
 ## Tool lineage
 
@@ -534,6 +618,6 @@ WU-04 COMPLETE
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 COMPLETE / DOGFOOD REVIEWED; WU-06 COMPLETE / EXACT-SHA VERIFIED at `a94c501...`; WU-07 ACTIVE from exact entry baseline `8b2c0819...` under Strategy B**
+- Tool `0.3.6`: **development complete; WU-07 COMPLETE / EXACT-SHA VERIFIED at `452d0f8...`; exact-main release handoff pending; not yet published**
 
 Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
