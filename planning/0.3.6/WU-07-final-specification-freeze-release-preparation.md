@@ -1,6 +1,6 @@
 # WU-07 — Final Specification Freeze / Release Contract Strengthening / Release Preparation
 
-> **Status:** ACTIVE — Strategy B release-contract strengthening implemented; final exact-SHA verification pending  
+> **Status:** COMPLETE / EXACT-SHA VERIFIED — development-branch release closure complete  
 > **Parent release:** Tool `0.3.6` — Primary Lifecycle Ownership Foundation  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-06 — COMPLETE / EXACT-SHA VERIFIED  
@@ -8,7 +8,9 @@
 > **WU-06 verification run/job:** `32598727026 / 97093629017`  
 > **WU-07 exact entry baseline:** `8b2c0819e10b58902a780a094a0f52c603c39fba`  
 > **WU-07 entry-document commit:** `0e438e7544ebbfee1f1692086d31d9d6f539d297`  
-> **Bound Specification at entry/current:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
+> **WU-07 exact verification authority:** `452d0f8b0c78bdebb180ceb2b9994485f59eb43a`  
+> **WU-07 verification run/job:** `32640319047 / 97196299107`  
+> **Bound Specification at entry/final:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
 > **Maintainer-selected strategy:** **B — Release Contract Strengthening**  
 > **Release successor:** Tool `0.3.6` main-branch release preparation / publication boundary
 
@@ -641,7 +643,7 @@ B — Release Contract Strengthening
 
 WU-06 remains `COMPLETE / EXACT-SHA VERIFIED` with technical verification authority `a94c50130a694dba937708403520417719aec1e1`.
 
-WU-07 activation has now been propagated to `planning/0.3.6.md` and `STATUS.md`. Descendant activation and implementation records do not replace the exact WU-07 entry baseline.
+WU-07 activation has now been propagated to `planning/0.3.6.md` and `STATUS.md`. Descendant activation, implementation, and closure-documentation records do not replace the exact WU-07 entry baseline or exact verification authority.
 
 ## 17. Executed audit and implementation progress
 
@@ -655,7 +657,7 @@ Classification:
 A. normative Specification defect: NONE FOUND
 ```
 
-Final freeze decision at this stage:
+Final freeze decision:
 
 ```text
 Specification: 0.3.6-draft
@@ -820,7 +822,7 @@ No semantic change to `release.yml` was required. Its existing manual main-only 
 
 ### 17.8 Responsibility Map / architecture impact
 
-No WU-07 implementation so far has required changes to:
+No WU-07 implementation required changes to:
 
 ```text
 ptsip.yaml
@@ -833,22 +835,84 @@ canonical Specification assets
 SPEC_REVISION
 ```
 
-Changed paths are already covered by existing project-owned selectors for release automation, verification, maintenance/planning, and Product documentation.
+Changed paths remained covered by existing project-owned selectors for release automation, verification, maintenance/planning, and Product documentation.
 
-### 17.9 Remaining gate
+### 17.9 Final exact-SHA verification evidence
 
-Repository execution evidence has not yet been generated for the post-WU-07 implementation candidate. Therefore this document does **not** claim focused tests, full pytest, package build, or final exact-SHA self-hosted verification have passed after these changes.
-
-The next authority-producing action is:
+The final development candidate was verified by `tooling-test.yml` on exact SHA:
 
 ```text
-fresh final development candidate SHA
-    -> tooling-test.yml workflow_dispatch on that exact SHA
-    -> complete repository pytest
-    -> Tool/package/Specification/self-profile checks
-    -> distribution/Product Artifact checks
-    -> exact self-hosted/tooling-test status
-    -> review run/job evidence
+WU-07 exact verification SHA:        452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+workflow run/job:                     32640319047 / 97196299107
+workflow conclusion:                  success
+Python:                               3.14.6
+complete repository pytest:           331 passed / 0 failed / 267.80s
+Tool:                                 0.3.6
+Specification:                        0.3.6-draft
+SPEC_REVISION:                        d6995ed232e845b88d8235b851e80ab54b7804ea
+repository profile:                   valid=true / errors=[] / warnings=[]
+source_mode:                          explicit
+materialized:                         true
+Effective Map digest:                 sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
+responsibility_map_coverage:          unassigned_count=0
+clarify:                              NO_CLARIFICATION_REQUIRED / STABLE
+local gate:                           NO_DECISION_REQUIRED / LOCAL
+sdist + wheel build:                  PASS
+twine check:                          PASS
+Product Artifact evidence:            PASS
+artifact exact-snapshot binding:      PASS
+artifact PTSIP-PKG-001 violations:    0
+artifact-aware conform:               INCOMPLETE / reviewed
+built-wheel force reinstall:          PASS
+installed Tool/Specification smoke:   PASS
+VPMS compatibility smoke:             PASS
+self-hosted/tooling-test:             success
 ```
 
-WU-07 remains ACTIVE until that final exact-SHA gate succeeds and completion evidence is recorded.
+The wheel produced in this exact verification run had SHA-256:
+
+```text
+b4c04d9aa78276d7d5d470f02d6ae52aef54c92b2ec7c4fa1fab6e85b0ab4644
+```
+
+The artifact-aware conformance outcome remained `INCOMPLETE`, which is expected under the previously reviewed evidence-sufficiency model. The verification step required successful Product Artifact boundary and artifact snapshot-binding evaluators, valid binding, zero artifact-evidence blocking gaps, and zero definite `PTSIP-PKG-001` violations before it could pass.
+
+The workflow then wrote exact commit status:
+
+```text
+context: self-hosted/tooling-test
+state: success
+target: https://github.com/Kinirin/PTSIP/actions/runs/32640319047
+```
+
+No H-class package/distribution defect or I-class Tool implementation regression was established by the final verification.
+
+### 17.10 Final finding classification and completion
+
+Final WU-07 ownership classification:
+
+```text
+A. normative Specification defect                         NONE
+B. Specification-binding/content-freeze guard defect      CORRECTED / VERIFIED
+C. Tool release-note defect                               CORRECTED / VERIFIED
+D. operational current-state documentation drift          CORRECTED / VERIFIED
+E. release workflow exact-SHA contract defect             NONE
+F. publication artifact verification defect               CORRECTED / CONTRACT VERIFIED
+G. release-readiness test/fixture defect                  CORRECTED / VERIFIED
+H. package/distribution defect discovered at final gate   NONE
+I. Tool 0.3.6 implementation regression                   NONE
+J. Strategy-C release-infrastructure improvement          DEFERRED / NOT REQUIRED
+K. Tool 0.3.6.1 migration concern                         DEFERRED / OUT OF SCOPE
+```
+
+Therefore the WU-07 development-branch completion gate is satisfied:
+
+```text
+WU-07 COMPLETE / EXACT-SHA VERIFIED
+exact verification authority:
+452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+```
+
+This closure commit and later release-level/status documentation commits are descendants written after successful verification. They record the result and MUST NOT replace `452d0f8...` as the exact WU-07 verification authority.
+
+The next authorized boundary is a **separate exact-main release handoff**. Tool `0.3.6` remains unpublished until the approved state is merged to `main`, the exact resulting `main` SHA receives its own successful `self-hosted/tooling-test` status, and `release.yml` creates the draft release from that same current `main` SHA.
