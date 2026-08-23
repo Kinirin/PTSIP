@@ -1,404 +1,483 @@
-# PTSIP Adoption Guide
+# PTSIP Tool 0.3.6 Adoption Guide
 
-This guide describes controlled migration to PTSIP `0.3.4-draft`. The exact governing snapshot is the immutable Specification revision bound by the Tool/profile.
+This guide describes controlled adoption of PTSIP Tool `0.3.6` and Specification family `0.3.6-draft`. The exact governing snapshot is the immutable Specification revision bound by the installed Tool or Consumer Repository profile.
 
-## Phase 0 — Stable baseline
+Current Tool `0.3.6` binding:
 
-Record the Consumer Repository revision and relevant tracked-state fingerprint before interpreting architecture evidence. If repository state changes during collection or before a prepared profile write, re-analyze rather than mixing snapshots.
+```text
+Specification 0.3.6-draft
+SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+```
 
-## Phase 1 — Inventory and evidence coverage
+Tool `0.3.6` establishes the canonical Primary Lifecycle Ownership model and Responsibility Map v2. Evidence-driven assisted migration from Tool `0.3.5` declarations is intentionally deferred to Tool `0.3.6.1`; this guide does not pretend that migration is automatic.
 
-Inventory project-owned SDKs, packages, validators, migration tools, generators, build helpers, shared/common modules, manifests, contracts, build/release automation, and known Product artifacts.
+## Phase 0 — Stable repository snapshot
 
-Do not move code yet. Record inaccessible paths, parser failures, unsupported dependency forms, unresolved dynamic behavior, uninspected artifacts, and unsupported adapters.
+Before interpreting architecture evidence, record the Consumer Repository revision and relevant tracked-state fingerprint.
 
-A gap is blocking when it can hide the result of an applicable mandatory PTSIP rule. Do not use a global unresolved-count or arbitrary coverage percentage as a substitute for rule-relative sufficiency.
+If repository state changes during evidence collection or before an authorized profile write, stop and re-analyze rather than mixing snapshots.
 
-## Phase 2 — Component discovery
+PTSIP treats exact repository state as part of evidence integrity. A stale prepared mutation must fail closed.
 
-Discover component candidates from evidence such as manifests, release/build anchors, CI-invoked scripts, SDK/plugin projects, schema/protocol bundles, and artifact producers.
+## Phase 1 — Identify coherent project responsibilities
 
-Directory names such as `tools/`, `scripts/`, or `build/` are hints, not architecture authority.
+Inventory project-owned responsibilities such as:
 
-For each candidate record enough facts to support review, including purpose, consumers, shipping scope, executable/declarative nature, manifests, release/compatibility responsibility, evidence IDs, and counter-evidence.
+```text
+Product runtime/library code
+reusable development tooling
+verification frameworks and test SDKs
+release/package/publication automation
+post-deployment operational automation
+contracts and schemas
+associated documentation/governance artifacts
+Product distributions and other release artifacts
+```
 
-Split broad candidates when one classification/purpose/lifecycle statement cannot coherently describe the whole scope.
+Do not classify from path names alone. `src/`, `tests/`, `tools/`, `.github/workflows/`, `deploy/`, and `ops/` are evidence context, not architecture authority.
 
-## Phase 3 — Explicit architecture decision
+Split broad candidates when one lifecycle ownership statement cannot coherently describe the whole scope.
 
-Resolve each in-scope project-owned component to exactly one classification:
+## Phase 2 — Determine primary lifecycle ownership
 
-- `PRODUCT`;
-- `TOOLCHAIN`;
-- `NEUTRAL_CONTRACT`.
+Resolve each in-scope project-owned component to exactly one canonical Tool `0.3.6` classification:
 
-During investigation preserve `UNKNOWN`, `CONFLICT`, and `INCOMPLETE` as decision states rather than inventing another classification.
+```text
+PRODUCT
+DEVELOPMENT_TOOLING
+DELIVERY
+OPERATIONS
+NEUTRAL_CONTRACT
+```
 
-The project owner/user supplies architecture intent. A coding agent may surface evidence and ask for a decision but must not manufacture missing intent.
+Use the governing lifecycle obligation:
 
-## Phase 4 — Durable adoption facts
+- `PRODUCT` — Product functionality, Product-owned verification, or other responsibility primarily owned by the Product lifecycle;
+- `DEVELOPMENT_TOOLING` — development-time creation, inspection, validation, transformation, generation, migration, analysis, reusable verification infrastructure, or local/intermediate development support;
+- `DELIVERY` — release-unit assembly, signing, packaging, publication, promotion, distribution, or deployment until delivery handoff;
+- `OPERATIONS` — ongoing health, recovery, maintenance, reconciliation, or operation after delivery handoff;
+- `NEUTRAL_CONTRACT` — deliberately non-executable, non-owning, lifecycle-independent contract responsibility.
 
-`0.3.4-draft` defines this explicit component fact set for structured adoption/resolution:
+`UNKNOWN`, `CONFLICT`, and `INCOMPLETE` are decision/evaluation states, not classifications.
 
-- `classification`;
-- `purpose`;
-- `shipped`;
-- `runtime_required`;
-- `lifecycle_owner`;
-- `executable`.
+If mixed lifecycle responsibilities are independently governable, split them rather than choosing the majority of files, jobs, steps, duration, or confidence.
 
-Canonical lifecycle owners are `PRODUCT`, `DEVELOPMENT_TOOLING`, and `INDEPENDENT`.
+## Phase 3 — Keep architecture axes separate
 
-Required relationships include:
+Responsibility Map v2 separates:
 
-- `PRODUCT` -> `lifecycle_owner: PRODUCT`;
-- `TOOLCHAIN` -> `lifecycle_owner: DEVELOPMENT_TOOLING`;
-- `TOOLCHAIN` -> `shipped: false`;
-- `TOOLCHAIN` -> `runtime_required: false`;
-- `NEUTRAL_CONTRACT` -> `executable: false`;
-- `NEUTRAL_CONTRACT` -> `lifecycle_owner: INDEPENDENT` when lifecycle ownership is represented.
+```text
+classification
+    = primary lifecycle ownership
 
-`release_owner` and `compatibility_owner` remain separate optional project metadata; they do not substitute for canonical `lifecycle_owner`.
+roles
+    = coarse responsibility characteristics
 
-## Phase 5 — Project Profile declaration
+relationships
+    = typed project-owned semantic edges
 
-The default profile is repository-root `ptsip.yaml`, although a project may consistently select another explicit path.
+source/derived provenance
+    = declaration/materialization origin
 
-The reference schema supports either:
+VPMS Verification Purpose
+    = why verification exists and what it protects
+```
 
-- `boundaries` for uniform-root shorthand; or
-- `components` for precise nested/mixed/file-level ownership.
+Canonical roles are:
 
-Do not combine both modes in one profile.
+```text
+IMPLEMENTATION
+VERIFICATION
+AUTOMATION
+CONFIGURATION
+DOCUMENTATION
+GOVERNANCE
+```
 
-Boundary shorthand may remain structurally valid, but it cannot preserve the full structured adoption fact set. A write-enabled adoption/resolution workflow must not silently discard supplied facts. Migrate to component declarations before structured mutation when lossless representation is required.
+Canonical project-declared relationships are:
 
-## Phase 6 — `ptsip adopt`
+```text
+IMPORTS
+LINKS
+LOADS
+INVOKES
+READS
+GENERATES
+BUILDS
+PACKAGES
+PUBLISHES
+DEPLOYS
+VERIFIES
+MANAGES
+DOCUMENTS
+SPECIFIES
+GOVERNS
+```
 
-`ptsip adopt` is dry-run by default. It uses discovered candidate scope but requires explicit architecture facts.
+A relationship is not a substitute for classification. Observed evidence may support a relationship proposal but must not silently become project-owned declaration authority.
+
+## Phase 4 — Choose a Responsibility Map source mode
+
+Tool `0.3.6` supports three canonical source modes:
+
+### Explicit
+
+The repository directly declares the complete Responsibility Map.
+
+```yaml
+responsibility_map:
+  mode: explicit
+```
+
+### Template
+
+The repository explicitly selects an immutable revision-bound template.
+
+```yaml
+responsibility_map:
+  mode: template
+  template:
+    id: python-package-library
+    revision: "sha256:..."
+```
+
+### Hybrid
+
+The repository selects a template and records project-owned overrides, extensions, or removals.
+
+```yaml
+responsibility_map:
+  mode: hybrid
+  template:
+    id: python-package-library
+    revision: "sha256:..."
+  overrides:
+    components:
+      - id: product
+        # project-owned replacement facts
+```
+
+The current template catalog includes:
+
+```text
+python-package-library
+python-cli-application
+mixed-product-development-delivery
+```
+
+Template selection is explicit. Do not auto-select a template from layout, framework, language, manifests, or similarity confidence.
+
+## Phase 5 — Materialize the Effective Responsibility Map
+
+All source modes resolve through deterministic materialization:
+
+```text
+Source Project Profile
+    -> validate source declaration and binding
+    -> deterministic materialization
+    -> ResolvedProfile
+    -> Canonical Effective Responsibility Map
+```
+
+The Source Project Profile remains architecture authority.
+
+The materializer must not:
+
+- infer lifecycle ownership;
+- choose a template;
+- repair invalid architecture;
+- invent missing project intent;
+- silently rewrite the source declaration.
+
+Downstream validation, conformance, clarification/adoption, and narrow VPMS integration consume the validated resolved map rather than each reinterpreting raw YAML independently.
+
+## Phase 6 — Preserve declaration provenance
+
+Effective architecture may retain declaration provenance such as:
+
+```text
+PROJECT_EXPLICIT
+TEMPLATE
+PROJECT_OVERRIDE
+PROJECT_EXTENSION
+PROJECT_REMOVAL
+```
+
+This provenance describes where effective architecture came from. It is distinct from evidence provenance and does not replace project authority.
+
+Evidence provenance remains:
+
+```text
+DECLARED
+OBSERVED
+INFERRED
+```
+
+Keep these concepts separate.
+
+## Phase 7 — Explicit adoption facts
+
+Canonical Tool `0.3.6` uses `classification` itself as primary lifecycle ownership authority. Do not introduce a second canonical `lifecycle_owner` field that competes with it.
+
+When an explicit adoption/resolution workflow records structured facts, preserve the applicable project decision losslessly, including facts such as:
+
+```text
+classification
+roles
+purpose
+shipped
+runtime_required
+executable
+associated artifacts
+typed relationships
+explicit release/compatibility metadata
+```
+
+Canonical Tool `0.3.6` clarification/adoption answers use the v2 fact model centered on:
+
+```text
+classification
+purpose
+shipped
+runtime_required
+executable
+```
+
+Legacy Tool `0.3.5` facts such as `TOOLCHAIN`, `lifecycle_owner`, old boundary roots, consumers, analysis inputs, and untyped dependency edges are migration evidence only.
+
+## Phase 8 — Use `ptsip adopt` safely
+
+`ptsip adopt` is dry-run by default.
+
+Example development-tooling decision:
 
 ```powershell
 ptsip adopt . `
   --component tools `
-  --classification TOOLCHAIN `
+  --classification DEVELOPMENT_TOOLING `
   --purpose "Repository-local generation tooling" `
   --shipped no `
   --runtime-required no `
-  --lifecycle-owner DEVELOPMENT_TOOLING `
   --executable yes `
   --json
 ```
 
-Review the plan, then apply explicitly:
+Review the planned declaration change, then apply explicitly:
 
 ```powershell
 ptsip adopt . `
   --component tools `
-  --classification TOOLCHAIN `
+  --classification DEVELOPMENT_TOOLING `
   --purpose "Repository-local generation tooling" `
   --shipped no `
   --runtime-required no `
-  --lifecycle-owner DEVELOPMENT_TOOLING `
   --executable yes `
   --apply `
   --json
 ```
 
-The Tool must preserve the complete supplied fact set in component declarations. It must not map `lifecycle_owner` into `release_owner` or drop `runtime_required`.
+If the selected profile or repository snapshot changes after analysis, prepared mutation must be rejected and recomputed.
 
-Prepared mutation must be refused if the repository/profile changed after validation.
+## Phase 9 — Decision Authority is not Project Profile
 
-## Phase 7 — Multi-environment decision coordination
+Keep these responsibilities separate:
 
-Local SQLite is intentionally local-only and must not be Git-shared as repository-global authority.
+```text
+Specification
+    -> normative rules
 
-For GitHub-coordinated repositories, Reference Tool `0.3.4` uses a dedicated remote authority ref:
+Decision Authority
+    -> which explicit coordinated architecture answer won
+
+Project Profile / Responsibility Map
+    -> durable project-owned architecture declaration
+
+Observed evidence
+    -> what repository/artifacts actually do
+
+Conformance Evaluation
+    -> deterministic rule evaluation
+```
+
+A resolved Decision Authority winner does not automatically mean every clone has applied the declaration and does not prove conformance.
+
+Local SQLite state is Tool-owned operational state, not portable repository-global authority.
+
+## Phase 10 — Multi-environment decision coordination
+
+For GitHub-coordinated repositories, the Reference Tool uses a dedicated authority ref:
 
 ```text
 refs/heads/ptsip-policy
 ```
 
-That representation is a Reference Tool backend detail. The Specification-level requirements are backend-neutral.
+The Git representation is a Tool backend detail; the important semantics are backend-neutral:
+
+- stable coordination domain and component scope identity;
+- first-valid-resolution-wins;
+- stale-writer-safe conditional mutation/CAS;
+- current authority reads at sensitive boundaries;
+- deterministic reconciliation;
+- fail-closed behavior;
+- global decision state separated from clone-local projection state.
 
 A read-only authority check must not fabricate a pending decision merely to prove no decision exists.
 
-Distributed writes must preserve first-valid-resolution-wins with conditional mutation so a stale writer cannot replace a newer winner.
+If distributed freshness or safe mutation cannot be established, do not silently fall back to an isolated local winner.
 
-## Phase 8 — Authority freshness and reconciliation
+## Phase 11 — Reconcile local declaration and distributed authority
 
-PTSIP uses action-time synchronization, not continuous polling. When an architecture-sensitive operation uses distributed coordination, a complete local profile does not permit skipping the relevant authority check.
-
-Required reconciliation semantics are:
+Use semantic architecture meaning rather than YAML formatting.
 
 | Local Project Profile | Distributed Authority | Required behavior |
 | --- | --- | --- |
-| declaration absent | no decision | create/reuse pending state only when the active operation actually requires a decision |
+| declaration absent | no decision | create/reuse pending only when the active operation really requires a decision |
 | declaration absent | resolved winner | validate and safely project/reconcile the winner locally |
-| declaration present | no authority decision | use the project declaration; do not fabricate authority history solely for bookkeeping |
-| declaration present + semantically equivalent | resolved equivalent winner | report consistency/resolution without rewriting equivalent profile text |
-| declaration present + semantically conflicting | resolved different winner | expose an explicit authority/profile conflict and do not silently overwrite either side |
-| repository/profile changed during reconciliation | any authority state | refuse stale application and re-analyze |
+| declaration present | no decision | use the project declaration; do not fabricate authority history solely for bookkeeping |
+| declaration present + equivalent | resolved equivalent winner | report consistency without rewriting equivalent formatting |
+| declaration present + conflicting | resolved different winner | expose conflict and do not silently overwrite either side |
+| repository/profile changed | any authority state | refuse stale application and re-analyze |
 
-Semantic equivalence is architecture meaning, not YAML formatting, key order, whitespace, or Tool-generated serialization.
-
-If distributed coordination is selected but required freshness/safe mutation cannot be established, fail closed. Do not silently fall back to an isolated Local winner.
-
-## Phase 9 — Global decision state versus local projection
-
-Keep these states separate:
+Global state and local projection remain separate:
 
 ```text
-GLOBAL DECISION STATE
+GLOBAL
     PENDING / RESOLVED
 
-LOCAL PROJECTION STATE
+LOCAL
     missing / consistent / locally applied / stale / failed
 ```
 
-A global `RESOLVED` decision does not imply every clone has already written the declaration locally. A local application receipt cannot change the accepted winner.
+PTSIP uses action-time synchronization rather than continuous background polling.
 
-## Phase 10 — Profile Validation
+## Phase 12 — Profile Validation
 
-Validate the declaration before using it for Enforced Conformance.
+Validate the selected/materialized Project Profile before using it for downstream evaluation.
 
-Profile Validation checks schema/binding/component/policy semantics. It does not prove the repository conforms.
+Profile Validation checks declaration structure and semantics: schema, binding, source mode, selectors, component/associated-artifact identity, relationship endpoints, template binding, and project policy.
 
-A boundary-root profile can be valid yet insufficient for strict evaluation when mandatory rule evaluation requires facts that shorthand does not carry.
+Profile Validation does not prove conformance.
 
-## Phase 11 — Dependency and build audit
+## Phase 13 — Dependency and lifecycle evidence
 
-Construct typed dependency evidence and identify Product -> Toolchain edges, relationship types, lifecycle phases, provenance, external/platform/unresolved targets, shared executable packages, and undeclared ownership.
+Collect typed repository evidence with provenance. Identify cross-lifecycle edges, external/platform/unresolved targets, build/release behavior, runtime requirements, and coverage gaps.
 
-Make Product and Toolchain dependencies independently resolvable. A clean Product build must not require Toolchain-only packages merely because one developer environment contains them.
+Evidence is not authority. A Tool may infer that an edge exists, but it must not use that observation to silently rewrite project-owned lifecycle ownership.
 
-## Phase 12 — Product Artifact evidence
+Make lifecycle environments independently resolvable. Product runtime/build requirements must not depend on Development Tooling, Delivery, or Operations implementation merely because one developer environment contains everything.
 
-Identify Product Artifact owner separately from producer.
+## Phase 14 — Product Artifact evidence
 
-Collect artifact identity, owner/classification, producer, format, shipping scope, contents or equivalent package manifest, derivation relationships, and provenance.
+Artifact owner and producer are separate.
 
-A Toolchain producer may validly produce a Product Artifact. Product packaging conformance depends on the resulting contents, not producer classification alone.
+A `DEVELOPMENT_TOOLING` or `DELIVERY` component may validly build/package/publish a `PRODUCT` artifact. Product packaging conformance depends on the resulting artifact contents and declared Product boundary, not producer classification alone.
 
-## Phase 13 — Structural remediation
+For release-relevant evaluation collect:
 
-For each established mandatory violation, define the architecture change that actually satisfies the rule: remove dependency, split component, correct ownership, extract Neutral Contract, isolate packaging/build, or separate lifecycle responsibility.
+```text
+artifact identity/type
+classification
+producer component
+shipping scope
+actual included paths/components
+complete-content assertion
+provenance
+derivation
+exact repository/snapshot binding
+```
 
-Migration/debt approval does not waive a real violation.
+Tool `0.3.6` supports `ptsip-artifact-evidence/v1` plus exact snapshot binding. Actual distribution inspection is stronger evidence than packaging configuration alone.
 
-## Phase 14 — Conformance Evaluation
+Definite non-Product implementation leakage into a Product distribution is governed by `PTSIP-PKG-001`.
 
-Conformance Evaluation combines declaration, observed dependencies, Product Artifact evidence, lifecycle/build evidence, snapshot integrity, coverage, and deterministic PTSIP rules.
+## Phase 15 — Conformance Evaluation
+
+Conformance combines project declaration with observed dependency, artifact, lifecycle, snapshot, and coverage evidence against applicable PTSIP rules.
 
 Completed outcomes are only:
 
-- `CONFORMANT`;
-- `NON_CONFORMANT`;
-- `INCOMPLETE`.
+```text
+CONFORMANT
+NON_CONFORMANT
+INCOMPLETE
+```
+
+A zero-finding report does not prove `CONFORMANT` when a blocking evidence gap can hide an applicable mandatory rule.
 
 Decision Authority is not a conformance oracle. A synchronized authority/profile pair can still describe a non-conformant repository.
 
-For Enforced Conformance against `0.3.4-draft`, bind the exact immutable Specification revision.
+## Phase 16 — Structural remediation
 
-## Phase 15 — Stable diagnostics and repeatability
+For an established mandatory violation, change the architecture that causes the violation rather than weakening the rule.
 
-Automated checks should emit stable diagnostics that distinguish diagnostic instance ID from rule ID and preserve evidence IDs, outcome effect, severity, component endpoints where applicable, message, and evaluator/provenance information.
+Possible remediation patterns include:
 
-Rerun evaluation after remediation against a stable snapshot.
+- remove a forbidden dependency;
+- split mixed lifecycle responsibilities;
+- correct explicit project-owned classification;
+- extract a valid `NEUTRAL_CONTRACT`;
+- isolate Product packaging from non-Product implementation;
+- separate development, delivery, and operations environments;
+- fix stale or incomplete explicit relationships/associated-artifact anchors.
 
-## Optional VPMS adoption — verification purpose management
+Migration/debt acknowledgement does not waive a real violation.
 
-VPMS (`Verification Purpose Management System`) is optional. A Consumer Repository can adopt PTSIP without adopting VPMS, and PTSIP classification, conformance, adoption, authority, gate, and resolution behavior must remain usable when VPMS is absent or disabled.
+## Phase 17 — Tool 0.3.5 migration boundary
 
-PTSIP and VPMS answer different questions:
+Do not blindly transform Tool `0.3.5`:
 
 ```text
-PTSIP
-    What is this component?
-
-VPMS
-    Why does this verification exist?
+TOOLCHAIN -> DEVELOPMENT_TOOLING
 ```
 
-VPMS does not add another PTSIP Plane or architecture classification. The initial verification-purpose set is exactly:
+The legacy category may contain multiple Tool `0.3.6` lifecycle responsibilities.
+
+Tool `0.3.6.1` owns the assisted migration continuation:
+
+```text
+facts
+    -> candidate discovery
+    -> normalized evidence + provenance
+    -> Tool 0.3.5 legacy reader
+    -> migration analysis
+    -> target proposals
+    -> owner preview / confirmation
+    -> safe apply
+```
+
+Until that work is entered and implemented, migrate manually through explicit project decisions using Tool `0.3.6` canonical concepts.
+
+## Optional VPMS adoption
+
+VPMS is optional. PTSIP classification, conformance, adoption, authority, and decision behavior must remain usable when VPMS is absent.
+
+PTSIP asks:
+
+```text
+Who owns this project responsibility across its lifecycle?
+```
+
+VPMS asks:
+
+```text
+Why does this Verification Case exist, and what does it protect?
+```
+
+The two axes remain independent. The current VPMS compatibility purpose set may remain:
 
 ```text
 PRODUCT
 TOOLCHAIN
 ```
 
-### Determine verification purpose before reuse or execution
+VPMS `TOOLCHAIN` is not a canonical Tool `0.3.6` PTSIP classification.
 
-Choose the VPMS purpose from the responsibility whose correctness would be lost if the verification disappeared or failed. Useful questions are:
+A reusable verification implementation may be PTSIP `DEVELOPMENT_TOOLING` while a Verification Case has VPMS purpose `PRODUCT`.
 
-```text
-Why was this verification created?
-What changed that requires this verification?
-If this verification disappears, whose correctness can no longer be established?
-Does failure indicate a Product behavior defect or a Toolchain/development-process defect?
-```
+Use VPMS purpose metadata to select verification; do not derive purpose solely from file paths or test frameworks.
 
-A path such as `tests/product/`, a framework such as pytest, file extension, compilation boundary, or package inclusion may be evidence, but none is sufficient as the sole purpose authority.
-
-Compilation and package inclusion are therefore useful signals in some repositories, not universal Product-purpose rules.
-
-### Keep PTSIP classification and VPMS purpose separate
-
-Verification implementation ownership and verification purpose are different axes. A verifier may be development-time tooling and therefore PTSIP `TOOLCHAIN` while protecting Product correctness:
-
-```text
-verification implementation
-    PTSIP classification = TOOLCHAIN
-
-verification obligation
-    VPMS purpose = PRODUCT
-```
-
-Another PTSIP `TOOLCHAIN` verifier may have VPMS purpose `TOOLCHAIN` when it protects repository automation or development-tool correctness.
-
-Do not copy the verifier implementation's PTSIP classification into VPMS purpose merely because the names overlap.
-
-### Model the purpose-bound execution unit as a Verification Case
-
-VPMS uses a `Verification Case`, not a source test file, as the smallest purpose-bound execution unit. A case binds these separate identities:
-
-```text
-Purpose
-Target
-Formula
-Variables
-Policy
-Runner
-```
-
-Their responsibilities are:
-
-```text
-Formula   = purpose-neutral verification rule or invariant
-Variables = mutable verification inputs or case data
-Policy    = the intentionally governed expectation or contract
-Case      = purpose + target + formula + variables + policy + runner binding
-Runner    = how the selected case is executed
-```
-
-This separation matters even when all fields currently point to one test implementation.
-
-### Reuse Formula without collapsing purpose or Policy
-
-Formula is the default cross-purpose reuse boundary. A Formula may be shared by PRODUCT-purpose and TOOLCHAIN-purpose cases when the rule remains meaningful without knowing which purpose consumes it.
-
-Formula reuse does not merge Case purpose, Variables, Policy, target, or result identity. Cross-purpose Policy reuse is not assumed merely to remove duplication because Policy carries governed intent.
-
-A useful Formula test is:
-
-> Would this verification logic still make sense if all Product and Toolchain names were removed from the repository context?
-
-If not, the information probably belongs in Case configuration, Variables, Policy, or purpose-specific execution logic rather than the Formula.
-
-### Name semantics by responsibility, not by duplicated purpose or framework
-
-Do not encode the same purpose twice by using Policy names such as `product.*` or `toolchain.*` merely because the Case already declares `purpose`. Likewise, avoid putting a test framework name into Policy when the framework is only an execution mechanism.
-
-The PTSIP repository self-adoption demonstrates this separation with one purpose-neutral Formula:
-
-```text
-command.exit-zero
-```
-
-and responsibility-oriented Policy examples:
-
-```text
-distribution.contract-integrity
-distribution.package-integrity
-release.workflow-integrity
-ci.verification-boundary
-```
-
-Those identifiers are repository examples, not required VPMS global names. Their purpose is to show the separation of concerns:
-
-```text
-Purpose   -> why verification exists
-Formula   -> how success is evaluated
-Policy    -> what governed responsibility is protected
-Runner    -> how the verification implementation is invoked
-```
-
-A pytest node may therefore appear in Runner/Variables binding while Policy remains independent of pytest.
-
-### Adopt incrementally; do not reorganize tests merely to classify them
-
-A Consumer Repository does not need to move every existing test before VPMS adoption. Start by inventorying the correctness responsibility of existing verification and register representative Cases at the smallest level where purpose is unambiguous.
-
-One physical test module may legitimately contain both PRODUCT-purpose and TOOLCHAIN-purpose cases. In that situation classify the individual Cases rather than forcing the whole file into one purpose.
-
-A repository may optionally choose a structured layout such as:
-
-```text
-tests/
-├─ formula/
-├─ product/
-│  ├─ variables/
-│  ├─ policy/
-│  └─ cases/
-└─ toolchain/
-   ├─ variables/
-   ├─ policy/
-   └─ cases/
-```
-
-This is reference organization only. `tests/product`, `tests/toolchain`, or any other directory name is not VPMS purpose authority, and adopting VPMS does not require this layout.
-
-### Select verification by explicit purpose metadata
-
-Purpose-selective execution operates on validated `VerificationCase.purpose`, not test paths. The implemented selection scopes are:
-
-```text
-PRODUCT
-    -> PRODUCT-purpose Cases only
-
-TOOLCHAIN
-    -> TOOLCHAIN-purpose Cases only
-
-FULL
-    -> both purpose sets
-```
-
-`FULL` is an execution scope, not a third verification purpose.
-
-Sharing one Formula does not force PRODUCT and TOOLCHAIN cases to execute together. This allows a repository to run the verification relevant to a change while retaining an explicit full-verification path for broader regression or release work.
-
-### Keep Runner framework-neutral
-
-VPMS execution is not defined around pytest. The implemented runner contract accepts a Case executor and normalizes Case-level outcomes, while the initial generic command adapter executes an explicit argv command. pytest node commands are one repository integration of that generic boundary, not the VPMS execution model itself.
-
-This section intentionally does not define a VPMS CLI command surface. Command names must be documented only after a public/CLI surface is separately implemented and verified.
-
-### Preserve the PTSIP boundary
-
-When VPMS consumes PTSIP target metadata, the relationship is read-oriented and one-way:
-
-```text
-PTSIP stable target data
-        |
-        v
-       VPMS
-```
-
-Ordinary VPMS execution must not modify Project Profile classification or Decision Authority state. VPMS purpose also must not be interpreted as the PTSIP classification of the verifier implementation.
-
-Finally, VPMS execution results and PTSIP conformance outcomes remain separate claims:
-
-```text
-VPMS PRODUCT verification PASS
-    !=
-PTSIP CONFORMANT
-
-PTSIP CONFORMANT
-    !=
-Product functional verification PASS
-```
-
-Use VPMS to manage verification purpose and execution scope; use PTSIP to evaluate architecture ownership and conformance.
+VPMS PASS != PTSIP CONFORMANT. PTSIP CONFORMANT != functional verification PASS.
 
 ## Migration principle
 
-Optimize for **ownership correctness, durable architecture intent, distributed decision consistency, evidence integrity, artifact truth, and independent lifecycle evolution** rather than minimizing the number of files changed or maximizing automatic classification.
+Optimize for **ownership correctness, durable project intent, lifecycle separation, decision consistency, evidence integrity, artifact truth, and independent lifecycle evolution** rather than minimizing the number of changed files or maximizing automatic classification.
