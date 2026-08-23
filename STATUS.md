@@ -52,7 +52,7 @@ WU-03  canonical Responsibility Map v2 activation         COMPLETE
 WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
 WU-05  repository dogfood / self-evaluation               COMPLETE / DOGFOOD REVIEWED
 WU-06  full regression / package/distribution verification COMPLETE / EXACT-SHA VERIFIED
-WU-07  final Specification freeze / release preparation   PLANNED / LOCKED
+WU-07  final Specification freeze / release preparation   ACTIVE — Strategy B
 ```
 
 WU-05 exact entry baseline:
@@ -103,7 +103,31 @@ WU-06 execution/closure authority:
 planning/0.3.6/WU-06-full-regression-package-distribution-verification.md
 ```
 
-The entry-document, activation, and closure-documentation commits are descendants of the exact entry baseline and do not replace the exact verification authority. WU-07 remains locked pending maintainer strategy selection and its own fresh WU-07 entry review.
+WU-07 exact entry baseline:
+
+```text
+8b2c0819e10b58902a780a094a0f52c603c39fba
+```
+
+WU-07 detailed stage document was initially created at:
+
+```text
+0e438e7544ebbfee1f1692086d31d9d6f539d297
+```
+
+WU-07 selected strategy:
+
+```text
+B — Release Contract Strengthening
+```
+
+WU-07 execution authority:
+
+```text
+planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md
+```
+
+WU-06 entry/activation/closure records do not replace WU-06 exact verification authority `a94c501...`. WU-07 descendant implementation/status records do not replace exact WU-07 entry baseline `8b2c0819...`.
 
 ## WU-04 completion authority
 
@@ -324,7 +348,45 @@ a94c50130a694dba937708403520417719aec1e1
 
 Closure documentation after `a94c501...` records this result and does not replace the exact source verification authority.
 
-WU-07 is not yet active. No WU-07 stage document is created by this closure.
+## WU-07 active release-contract boundary
+
+WU-07 starts from exact entry baseline:
+
+```text
+8b2c0819e10b58902a780a094a0f52c603c39fba
+```
+
+with detailed stage-document commit:
+
+```text
+0e438e7544ebbfee1f1692086d31d9d6f539d297
+```
+
+Selected strategy:
+
+```text
+B — Release Contract Strengthening
+```
+
+Initial final-Specification audit result:
+
+```text
+genuine normative Specification defect     NONE FOUND
+bound Specification family                  0.3.6-draft
+SPEC_REVISION                               d6995ed232e845b88d8235b851e80ab54b7804ea
+revision movement                            NONE AUTHORIZED
+release-bound normative assets              15
+```
+
+WU-07 strengthens the release contract while preserving the existing release architecture. Current work includes exact Git-blob equality between release-bound normative assets at `HEAD` and `SPEC_REVISION`, canonical/embedded machine-readable equality, reviewed `releasenote/0.3.6.md`, release-note index consistency, bounded `MEMORY.md` / `AGENTS.md` current-state cleanup, publication-wheel Product Artifact evidence, exact tagged-snapshot binding, and regression tests for these requirements.
+
+`release.yml` retains its existing exact-main contract: main-only dispatch, exact `${{ github.sha }}` checkout, current `origin/main` freshness checks before and after verification, exact `self-hosted/tooling-test` success requirement, release-contract verification, and same-SHA draft release target. No WU-07 defect requiring a semantic change to this workflow has been identified so far.
+
+`tooling-release.yml` remains release-published-triggered and self-hosted for build/verification. Its publication build now verifies the actual newly built wheel's Product Artifact contents/evidence and exact tagged source binding before uploading the distributions used by the narrow GNU/Linux PyPI Trusted Publishing boundary.
+
+WU-07 does not enter Tool `0.3.6.1` migration work and does not implement Strategy C Build Once / release-attestation architecture.
+
+WU-07 is **ACTIVE**. It is not complete until the final WU-07 candidate passes the complete self-hosted exact-SHA `tooling-test` gate and completion evidence is recorded.
 
 ## Canonical Responsibility Map / Effective Map boundary
 
@@ -376,6 +438,8 @@ The Effective Responsibility Map digest remains:
 sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
 ```
 
+WU-07 changes remain inside existing `repository-release-automation`, `repository-verification`, `repository-maintenance`, and `product-documentation` selectors; no project-owned Responsibility Map change has been required so far.
+
 ## VPMS boundary
 
 PTSIP lifecycle classification and VPMS Verification Purpose remain independent.
@@ -422,7 +486,7 @@ PowerShell
 Python 3.14 available through `py -3.14`
 ```
 
-Current verification/release path remains:
+Current verification/release path is:
 
 ```text
 tooling-test.yml
@@ -437,12 +501,16 @@ release.yml
     -> derive exact github.sha and package version
     -> require current origin/main == dispatched SHA
     -> require self-hosted/tooling-test success on exact SHA
-    -> verify release contract
+    -> verify exact Tool / Specification / bound-content / release-document contract
+    -> reconfirm current origin/main
     -> create draft release for the same SHA
 
 tooling-release.yml
     release published event
-    -> self-hosted Windows distribution build/verification
+    -> self-hosted Windows distribution build
+    -> verify actual publication Product Artifact evidence + exact tagged-snapshot binding
+    -> verify distribution metadata
+    -> upload only verified distributions
     -> minimal GitHub-hosted GNU/Linux Trusted Publishing only
 ```
 
@@ -452,11 +520,11 @@ tooling-release.yml
 WU-04 COMPLETE
     -> WU-05 COMPLETE / DOGFOOD REVIEWED
     -> WU-06 COMPLETE / EXACT-SHA VERIFIED
-    -> WU-07 PLANNED / LOCKED: final Specification freeze / release preparation
+    -> WU-07 ACTIVE — Strategy B: final Specification freeze / release-contract strengthening
+    -> WU-07 final exact-SHA verification
+    -> exact-main release handoff
     -> Tool 0.3.6 release
 ```
-
-WU-07 remains locked until its release-preparation strategy is selected and a fresh branch-HEAD entry review establishes its exact entry baseline.
 
 ## Tool lineage
 
@@ -466,6 +534,6 @@ WU-07 remains locked until its release-preparation strategy is selected and a fr
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 COMPLETE / DOGFOOD REVIEWED; WU-06 COMPLETE / EXACT-SHA VERIFIED at `a94c501...`; WU-07 PLANNED / LOCKED**
+- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 COMPLETE / DOGFOOD REVIEWED; WU-06 COMPLETE / EXACT-SHA VERIFIED at `a94c501...`; WU-07 ACTIVE from exact entry baseline `8b2c0819...` under Strategy B**
 
 Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
