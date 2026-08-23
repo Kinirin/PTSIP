@@ -1,6 +1,6 @@
 # WU-06 — Full Regression / Package / Distribution Verification
 
-> **Status:** EXACT-SHA VERIFIED — technical verification complete; release-level/status closure propagation pending  
+> **Status:** COMPLETE / EXACT-SHA VERIFIED  
 > **Parent release:** Tool `0.3.6` — Primary Lifecycle Ownership Foundation  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-05 — COMPLETE / DOGFOOD REVIEWED  
@@ -9,7 +9,7 @@
 > **WU-06 entry-document commit:** `59224b9df25db34f4af58e48eaeac0b1db8bf187`  
 > **WU-06 exact verification candidate:** `a94c50130a694dba937708403520417719aec1e1`  
 > **Bound Specification:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
-> **Successor:** WU-07 — final Specification freeze / release preparation; locked until WU-06 completion propagation
+> **Successor:** WU-07 — final Specification freeze / release preparation; PLANNED / LOCKED pending maintainer strategy selection and fresh entry review
 
 ## 0. Purpose
 
@@ -693,7 +693,7 @@ target:      workflow run 32598727026
 
 A subsequent commit-status read independently confirmed the same `self-hosted/tooling-test = success` result for `a94c50130a694dba937708403520417719aec1e1`.
 
-### 16.10 WU-06 technical completion assessment
+### 16.10 WU-06 completion assessment
 
 Against the technical verification surfaces owned by this stage:
 
@@ -721,8 +721,10 @@ WU-07 release work entry              NONE
 
 No unresolved WU-06-owned technical defect is known after the successful exact-SHA run.
 
-This document therefore records **WU-06 technical verification as EXACT-SHA VERIFIED** at `a94c50130a694dba937708403520417719aec1e1`.
+Closure evidence has now also been propagated to `planning/0.3.6.md` and `STATUS.md`. Therefore the WU-06 completion gate is satisfied and this stage is **COMPLETE / EXACT-SHA VERIFIED**.
 
-The stage's own completion gate also requires the same closure evidence to be propagated to `planning/0.3.6.md` and `STATUS.md`. Those files are outside the authorization scope of this documentation update. Until that propagation is separately authorized and completed, the top-level WU-06 state remains **closure propagation pending** rather than declaring administrative `COMPLETE` from this document alone.
+The exact technical verification authority remains `a94c50130a694dba937708403520417719aec1e1`. The release-level/status/detail closure commits are descendant documentation records and do not replace that exact source verification authority.
 
-This document fixes the WU-06 exact entry baseline at `bdd77ef3f026a83bb0fd0099144aebea1de55365`. The exact technical verification authority is `a94c50130a694dba937708403520417719aec1e1`; this descendant documentation commit records that evidence and does not replace it.
+WU-07 remains **PLANNED / LOCKED** and has not been entered. Its detailed stage document is intentionally deferred until the maintainer selects the WU-07 strategy, after which a fresh branch HEAD must establish the WU-07 exact entry baseline.
+
+This document fixes the WU-06 exact entry baseline at `bdd77ef3f026a83bb0fd0099144aebea1de55365` and closes WU-06 without entering WU-07.
