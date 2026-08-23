@@ -40,6 +40,7 @@ Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
 | `0.3.3` | Permanent source-only implementation version | [`0.3.3.md`](0.3.3.md) |
 | `0.3.4` | Published historical Tool release; stale pre-publication repository note removed | GitHub Release history |
 | `0.3.5` | **Published; first VPMS-capable Tool release** | [`0.3.5.md`](0.3.5.md) |
+| `0.3.6` | **Release candidate; WU-07 release preparation in progress** | [`0.3.6.md`](0.3.6.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
@@ -49,13 +50,25 @@ Versions that never represented a real PTSIP Tool source/release state are not f
 
 The tagged `releasenote/0.3.5.md` was finalized immediately before publication and its status header therefore records the draft/publication boundary as it existed at that immutable release commit. The version document is not rewritten after publication merely to change an operational status line. Current publication state is recorded in this index and `STATUS.md`.
 
+### Tool 0.3.6 pre-publication note
+
+Tool `0.3.6` remains unpublished while WU-07 performs final Specification freeze and release-contract strengthening. Its current release note is a reviewed pre-publication source document and is not a published release record until the exact-main release gate completes and `tool-v0.3.6` is actually published.
+
+Current development binding:
+
+```text
+Specification 0.3.6-draft
+SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
 ## Specification history
 
 | Family | State | Document |
 | --- | --- | --- |
 | `0.1.0-draft` | Historical initial public draft | [`spec-0.1.0-draft.md`](spec-0.1.0-draft.md) |
 | `0.2.0-draft` | Historical experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
-| `0.3.4-draft` | Current active draft family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
+| `0.3.4-draft` | Published Tool `0.3.5` baseline family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
+| `0.3.6-draft` | **Current active Tool `0.3.6` development family** | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
 
 Draft family labels are mutable; their exact normative identity is the immutable Git revision recorded by the relevant Tool, release, or evaluation.
 
