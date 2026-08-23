@@ -1,325 +1,405 @@
-# PTSIP Reference Architecture
+# PTSIP Tool 0.3.6 Reference Architecture
 
-This document is **informative**. Normative requirements are in `spec/PTSIP-SPEC.md` under the bound immutable `0.3.4-draft` revision.
+This document is **informative**. Normative requirements come from the Tool-bound Specification `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea` and its canonical machine-readable assets.
 
-## 1. Product / Toolchain / Contract topology
+## 1. Primary lifecycle topology
 
-Illustrative only:
+Tool `0.3.6` uses exactly five canonical lifecycle classifications:
+
+```text
+PRODUCT
+DEVELOPMENT_TOOLING
+DELIVERY
+OPERATIONS
+NEUTRAL_CONTRACT
+```
+
+An illustrative repository might contain:
 
 ```text
 repository/
-├─ product/
-├─ toolchain/
-└─ contracts/
+├─ product/                     PRODUCT
+├─ devtools/                    DEVELOPMENT_TOOLING
+├─ release/                     DELIVERY
+├─ operations/                  OPERATIONS
+└─ contracts/                   NEUTRAL_CONTRACT
 ```
 
-PTSIP does not require these names. Mixed/nested ownership is valid when component declarations express the real boundary.
+PTSIP does **not** require those names or that layout. Mixed and nested ownership is valid when the project-owned Responsibility Map expresses the real boundary.
+
+For example:
 
 ```text
 src/
 ├─ app/                         PRODUCT
-├─ plugin/contracts/v1/         NEUTRAL_CONTRACT
-├─ install/plugin_build.py      TOOLCHAIN
-└─ test/                        TOOLCHAIN or unresolved until decided
+├─ verification/shared/         DEVELOPMENT_TOOLING
+├─ publish/                     DELIVERY
+├─ ops/reconcile/               OPERATIONS
+└─ protocol/schema/             NEUTRAL_CONTRACT
 ```
 
-Directory naming is evidence, not architecture authority.
+Path names, languages, frameworks, compilation boundaries, workflow providers, and executable status are evidence context, not lifecycle authority.
 
-## 2. External PTSIP Tooling
+`TOOLCHAIN` is a historical Tool `0.3.5` classification only. It is not a Tool `0.3.6` alias. Legacy Toolchain responsibilities must be evaluated against the actual Tool `0.3.6` lifecycle model rather than blindly renamed.
+
+## 2. Responsibility Map v2
+
+Tool `0.3.6` keeps lifecycle ownership separate from other architecture axes:
+
+```text
+classification
+    = primary lifecycle ownership
+
+roles
+    = coarse responsibility characteristics
+
+relationships
+    = typed project-owned directed semantics
+
+source/derived provenance
+    = declaration/materialization origin
+
+VPMS Verification Purpose
+    = why verification exists and what it protects
+```
+
+Canonical roles:
+
+```text
+IMPLEMENTATION
+VERIFICATION
+AUTOMATION
+CONFIGURATION
+DOCUMENTATION
+GOVERNANCE
+```
+
+Canonical project-owned relationship types:
+
+```text
+IMPORTS
+LINKS
+LOADS
+INVOKES
+READS
+GENERATES
+BUILDS
+PACKAGES
+PUBLISHES
+DEPLOYS
+VERIFIES
+MANAGES
+DOCUMENTS
+SPECIFIES
+GOVERNS
+```
+
+Relationship semantics do not change endpoint classification. A `DELIVERY --BUILDS--> PRODUCT` relationship means Delivery builds a Product responsibility/artifact; it does not make the Delivery implementation Product.
+
+## 3. Project-owned source declaration
+
+The default project-owned architecture declaration is repository-root:
+
+```text
+ptsip.yaml
+```
+
+A Consumer Repository may consistently use another explicit path through `--profile`.
+
+Tool-owned local operational state such as caches, reports, and SQLite decision stores belongs outside the Consumer Repository unless the user explicitly chooses a repository path.
+
+The Source Project Profile remains project-owned architecture authority.
+
+## 4. Explicit, template, and hybrid modes
+
+Canonical source modes are:
+
+```text
+explicit
+    project declares the complete map directly
+
+template
+    project explicitly selects one immutable revision-bound template
+
+hybrid
+    project explicitly selects a template and adds project-owned
+    overrides, extensions, or removals
+```
+
+Template selection is never inferred from path layout, language, framework, manifest type, or confidence.
+
+Initial Tool `0.3.6` template examples include:
+
+```text
+python-package-library
+python-cli-application
+mixed-product-development-delivery
+```
+
+A template is a reusable declaration starting point, not an architecture oracle.
+
+## 5. Canonical Effective Responsibility Map
+
+All source modes resolve through deterministic, non-authoritative materialization:
+
+```text
+Source Project Profile
+        |
+        v
+source validation / exact template binding
+        |
+        v
+deterministic materialization
+        |
+        v
+ResolvedProfile
+        |
+        v
+Canonical Effective Responsibility Map
+        |
+        +--> validation / conformance
+        +--> clarification / adoption
+        +--> narrow VPMS read-only projection
+```
+
+Materialization may resolve explicitly authorized template/hybrid declarations. It may not infer lifecycle ownership, choose a template, repair invalid architecture, or silently rewrite project-owned source state.
+
+Effective architecture can retain declaration provenance such as:
+
+```text
+PROJECT_EXPLICIT
+TEMPLATE
+PROJECT_OVERRIDE
+PROJECT_EXTENSION
+PROJECT_REMOVAL
+```
+
+That provenance is not evidence confidence and does not replace project authority.
+
+## 6. Associated artifacts
+
+An associated artifact is a project-owned non-component support surface subordinate to exactly one classified anchor component.
+
+Examples may include documentation, governance records, or configuration that do not carry independently governable executable/lifecycle responsibility.
+
+Associated artifacts are not a classification escape hatch. If a surface gains independently governed executable, release, compatibility, Delivery, Operations, or neutral-contract responsibility, evaluate it as a component instead.
+
+## 7. Product runtime and package boundary
+
+Product code and Product distributions must not depend on non-Product lifecycle implementation merely because a shared development environment contains it.
+
+Typical forbidden direction at Product runtime/shipping scope:
+
+```text
+PRODUCT
+   |
+   +---- runtime/import/package requirement ----> DEVELOPMENT_TOOLING
+   +---- runtime/import/package requirement ----> DELIVERY
+   +---- runtime/import/package requirement ----> OPERATIONS
+```
+
+A valid shared `NEUTRAL_CONTRACT` may cross lifecycle boundaries when it satisfies the non-executable, non-owning, independently governed contract requirements.
+
+## 8. Artifact owner and producer are separate
+
+A Product Artifact may be created by a non-Product producer:
+
+```text
+DEVELOPMENT_TOOLING / DELIVERY producer
+                |
+              BUILDS
+                |
+                v
+          Product Artifact
+```
+
+Artifact classification follows artifact ownership and shipping responsibility, not producer classification alone.
+
+Tool `0.3.6` release verification therefore inspects actual built distribution contents and can bind `ptsip-artifact-evidence/v1` to the exact repository snapshot with an adjacent artifact-evidence binding.
+
+Definite non-Product implementation leakage into a Product distribution remains a `PTSIP-PKG-001` concern.
+
+## 9. External PTSIP Tool topology
 
 Preferred operational topology:
 
 ```text
-External development environment
+External development / verification environment
 │
 ├─ PTSIP Tool installation
-├─ cache / pilot / local DecisionStore
+├─ Tool-owned cache/report/local decision state
 │
-└──────────── read / explicit authorized write ────────────>
-                         Consumer Repository
-                         └─ ptsip.yaml (project-owned declaration)
+└──────── read / explicit authorized write ────────>
+                    Consumer Repository
+                    └─ ptsip.yaml
 ```
 
-Tool-owned local SQLite remains outside the Consumer Repository and is not Git-shared.
+Inspection and Pilot operations are read-only by default. Consumer Repositories do not need a Tool-owned `.ptsip/` directory merely to use PTSIP.
 
-## 3. Distributed decision topology
+## 10. Specification / Decision Authority / Project Profile
 
-When repository-global coordination is selected, keep three concepts separate:
+Keep these distinct:
 
 ```text
 PTSIP Specification
     -> normative rules and semantics
 
 Decision Authority
-    -> which explicit architecture answer won
+    -> which explicit coordinated architecture answer won
 
 Consumer Repository Project Profile
-    -> durable architecture declaration for this repository revision/worktree
-```
+    -> durable project-owned declaration for this repository revision/worktree
 
-Observed repository/artifact evidence is a fourth **evidence source**, not another authority plane:
-
-```text
 Observed evidence
-    -> what the repository actually does
+    -> what repository/artifacts actually do
+
+Conformance Evaluation
+    -> whether declaration + evidence satisfy applicable rules
 ```
 
-Conformance Evaluation combines declaration + observed evidence against the bound Specification. A Decision Authority does not prove conformance.
+Decision Authority is not a conformance oracle. A valid authority winner may still describe architecture that is non-conformant with observed evidence.
 
-## 4. Reference Tool GitHub authority profile
+## 11. GitHub-coordinated authority profile
 
-Reference Tool `0.3.4` demonstrates repository-distributed authority using:
+The Reference Tool supports distributed decision coordination through:
 
 ```text
 refs/heads/ptsip-policy
-
-  authority.json
-  decisions/<global-decision-id>.json
 ```
 
-This GitHub storage shape is an implementation profile, not a universal PTSIP requirement.
+The GitHub storage representation is a Tool backend detail, not a universal Specification requirement.
 
-The important architecture properties are:
+Important properties are:
 
-- stable coordination-domain + normalized component-scope identity;
-- ordered authority revision;
-- non-force compare-and-swap style mutation;
+- stable coordination-domain and normalized component-scope identity;
 - first-valid-resolution-wins;
+- ordered stale-writer-safe conditional mutation;
 - read-side authority freshness;
 - deterministic reconciliation;
 - fail-closed behavior;
-- global/local state separation.
+- separation of global decision state from local projection/application state.
 
-Another backend may conform with a database transaction, ETag/generation, consensus log, or equivalent mechanism.
+Another backend may provide equivalent guarantees using transactions, ETag/generation checks, consensus logs, or other ordered conditional mutation mechanisms.
 
-## 5. Authority freshness
+## 12. Authority freshness
 
-Write serialization is not enough. Before a distributed coordination-sensitive result relies on local declaration state, the implementation must account for relevant current authority state.
+Write serialization is not enough. Before a distributed coordination-sensitive result relies on local declaration state, the Tool must account for relevant current authority state.
 
 ```text
-analyze local repository/profile
+analyze repository/profile
         |
         v
 resolve coordination domain + scope
         |
         v
-read relevant authority state
+read current authority
         |
         v
 compare authority vs local declaration
         |
         v
-return/reconcile/fail explicitly
+consistent / reconcile / conflict / fail closed
 ```
 
-A complete local profile can still be stale.
+A complete local profile can still be stale relative to coordinated authority.
 
-## 6. Read-only absence observation
+PTSIP uses action-time synchronization, not continuous background polling.
 
-A check for existing authority should not create history merely to prove history is absent.
+## 13. Global and local states
 
-Reference Tool GitHub coordination therefore supports a read-only lookup that does not create `refs/heads/ptsip-policy` when the ref does not exist.
-
-```text
-peek authority
-    |
-    +-- no ref / no decision -> absence result, no mutation
-    |
-    +-- pending/resolved     -> return current authority state
-```
-
-## 7. Reconciliation matrix
-
-```text
-Local declaration absent + no authority
-    -> pending only if the active operation actually needs a decision
-
-Local declaration absent + resolved authority
-    -> validate and safely project winner locally
-
-Local declaration present + no authority
-    -> use project declaration; do not fabricate history
-
-Local declaration equivalent + resolved authority
-    -> consistent/resolved; no formatting rewrite required
-
-Local declaration conflicting + resolved authority
-    -> explicit authority/profile conflict; no silent overwrite
-
-Repository/profile changes during reconciliation
-    -> stale; refuse prepared application
-```
-
-Semantic equivalence is architecture meaning, not YAML key order or whitespace.
-
-## 8. Global versus local state
+Do not conflate authority state with clone-local projection state.
 
 ```text
 GLOBAL AUTHORITY
     PENDING
     RESOLVED
 
-LOCAL WORKTREE
-    declaration missing
-    declaration consistent
-    locally projected
+LOCAL CLONE / WORKTREE
+    missing
+    consistent
+    locally applied
     stale
     failed
 ```
 
-A globally resolved winner does not mean every clone is already synchronized.
+A global `RESOLVED` winner does not imply every clone has already written the corresponding declaration. A local receipt cannot redefine the global winner.
 
-A clone-local application receipt cannot alter the global winner.
+## 14. Conformance topology
 
-## 9. Fail-closed coordination
-
-When distributed coordination is selected, these failures must not silently create an isolated Local winner:
-
-- authentication/permission failure;
-- network unavailability;
-- malformed authority state;
-- incompatible authority ownership/manifest state;
-- conditional-write failure that cannot be reconciled safely;
-- inability to establish required read freshness.
-
-Fail closed at the affected architecture-sensitive operation.
-
-## 10. Action-time synchronization
-
-Continuous polling is not required.
+Conformance consumes the validated Effective Responsibility Map plus relevant observed evidence:
 
 ```text
-coding-agent task
-      |
-      v
-architecture-sensitive boundary reached?
-      |
-      +-- no  -> continue unrelated work
-      |
-      +-- yes -> gate / authority freshness / reconciliation
+project-owned declaration
+        |
+        v
+Effective Responsibility Map
+        |
+        +--------+
+        |        |
+        v        v
+ dependency   artifact/lifecycle/snapshot evidence
+        |        |
+        +---+----+
+            |
+            v
+     deterministic PTSIP rules
+            |
+            v
+CONFORMANT / NON_CONFORMANT / INCOMPLETE
 ```
 
-This keeps ordinary work independent from background polling while preventing stale clones from creating contradictory second winners.
+A valid Project Profile does not prove conformance. A zero-finding result does not prove conformance when blocking evidence gaps can hide an applicable mandatory rule.
 
-## 11. Durable component declaration
+## 15. VPMS integration boundary
 
-For structured adoption/resolution, the component model can preserve:
-
-```yaml
-components:
-  - id: plugin-builder
-    classification: TOOLCHAIN
-    include: ["src/install/plugin_build.py"]
-    purpose: build_and_release
-    shipped: false
-    runtime_required: false
-    lifecycle_owner: DEVELOPMENT_TOOLING
-    executable: true
-```
-
-Canonical lifecycle ownership is distinct from project-specific release/compatibility metadata.
-
-Boundary-root shorthand remains useful for simple ownership maps, but it cannot represent the complete structured fact set. A write workflow should require component declarations rather than dropping facts.
-
-## 12. Dependency evidence model
+PTSIP and VPMS answer different questions:
 
 ```text
-contracts
- /     \
-v       v
-Product   Toolchain
+PTSIP
+    Who owns this responsibility across its lifecycle?
 
-Product -X-> Toolchain runtime/shipped dependency
+VPMS
+    Why does this Verification Case exist, and what does it protect?
 ```
 
-Canonical relationship vocabulary:
+The PTSIP core must not depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved PTSIP metadata.
+
+Current VPMS compatibility vocabulary may retain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a Tool `0.3.6` PTSIP classification.
+
+A verification implementation may therefore be PTSIP `DEVELOPMENT_TOOLING` while a VPMS case has purpose `PRODUCT`.
+
+## 16. Tool 0.3.6 release architecture
+
+Tool `0.3.6` development closure is complete. Release architecture remains exact-SHA based:
 
 ```text
-IMPORTS LINKS LOADS INVOKES READS GENERATES PACKAGES TESTS PUBLISHES
+approved release candidate -> main
+    -> self-hosted tooling-test on exact main SHA
+    -> exact status success
+    -> release.yml verifies current main + bound Specification/content contract
+    -> draft GitHub Release targets the same SHA
+    -> maintainer publishes draft
+    -> tooling-release.yml builds/verifies actual publication distributions
+    -> PyPI Trusted Publishing
 ```
 
-Canonical lifecycle phases:
+The publication build remains self-hosted for distribution construction/verification. The narrow GNU/Linux Trusted Publishing boundary may remain GitHub-hosted.
+
+Strategy C-style build-once/attestation redesign was deliberately not required for Tool `0.3.6`.
+
+## 17. Tool 0.3.6.1 migration continuation
+
+Tool `0.3.6` establishes the canonical lifecycle architecture. Assisted Tool `0.3.5 -> 0.3.6` migration continues under Tool `0.3.6.1`:
 
 ```text
-RUNTIME BUILD TEST RELEASE INSPECTION
+facts
+    -> candidate discovery
+    -> normalized evidence/provenance
+    -> legacy Tool 0.3.5 reader
+    -> migration analysis
+    -> proposals
+    -> owner preview/confirmation
+    -> safe apply
 ```
 
-Canonical provenance:
-
-```text
-DECLARED OBSERVED INFERRED
-```
-
-Unknown target/phase stays unresolved rather than guessed.
-
-## 13. Separate build contexts
-
-A strong implementation maintains independently resolvable Product and Toolchain dependency contexts.
-
-```text
-Product build context
-  -> Product dependencies
-
-Toolchain build context
-  -> Toolchain dependencies + explicitly declared Product analysis/build inputs
-```
-
-The goal is lifecycle/dependency isolation, not directory aesthetics.
-
-## 14. Shared semantics without shared executable ownership
-
-```text
-contract/schema
-   /      \
-  v        v
-Product   Toolchain
-adapter   validator
-```
-
-Shared semantic source is compatible with independently owned executable implementations.
-
-## 15. Product Artifact model
-
-```text
-Toolchain builder
-      |
-      | GENERATES / PACKAGES
-      v
-Product Artifact
-```
-
-Producer ownership does not decide artifact ownership. Inspect resulting artifact contents for Toolchain implementation/dependencies.
-
-## 16. Validation / authority / conformance pipeline
-
-```text
-Project Profile ----------+
-                          |
-Decision Authority -------+--> declaration consistency / coordination
-                          |
-Observed evidence --------+--> deterministic PTSIP rule evaluator
-                          |
-Coverage/snapshot --------+
-                          |
-                          v
-       CONFORMANT | NON_CONFORMANT | INCOMPLETE
-```
-
-The Decision Authority branch contributes architecture-decision consistency, not observed compliance truth.
-
-## 17. Recommended pre-change questions
-
-Before a boundary-affecting change ask:
-
-1. Why does the component exist?
-2. Which lifecycle owns it?
-3. Is it shipped with Product?
-4. Is Product runtime dependent on it?
-5. Is it executable or a Neutral Contract?
-6. Is the component boundary coherent?
-7. What dependency relationship and lifecycle phase are introduced?
-8. Does distributed coordination require an authority freshness check now?
-9. Would local/remote declarations be missing, equivalent, or conflicting?
-10. Can shared semantics be expressed without shared executable ownership?
-
-Purpose remains the first question.
+Evidence, inference, and proposals remain non-authoritative until a project owner accepts an explicit architecture decision.
