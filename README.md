@@ -4,37 +4,35 @@
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-**Status:** Draft project-defined specification / Tool `0.3.6` development in progress  
-**Tool version:** `0.3.6`  
+**Status:** Tool `0.3.6` development complete — pre-publication release candidate  
+**Tool/package version:** `0.3.6`  
 **Specification family:** `0.3.6-draft`  
-**Active normative snapshot:** `d6995ed232e845b88d8235b851e80ab54b7804ea`  
+**Bound immutable Specification revision:** `d6995ed232e845b88d8235b851e80ab54b7804ea`  
 **License:** Apache License 2.0
 
-PTSIP is an architecture policy for separating project-owned responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment architecture-decision consistency.
+PTSIP is a project-defined architecture policy for separating project responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment decision consistency.
 
-> **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before considering code sharing.
+> **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
 
-> **Development status:** Tool `0.3.6` is still under development. This README describes the `0.3.6` foundations already implemented on this branch. Evidence-driven candidate discovery and assisted Tool `0.3.5` migration are still being developed and are not presented as completed release capabilities.
+Tool `0.3.6` development is complete on the release-candidate line. The remaining boundary is release operations: merge the approved state to `main`, verify that exact `main` SHA on the self-hosted gate, then prepare and publish the release from the same source identity. The latest PyPI package remains Tool `0.3.5` until Tool `0.3.6` is actually published.
 
-## Architecture model
+## Primary lifecycle ownership
 
-Tool `0.3.6` evolves PTSIP from the earlier Product/Toolchain-centered model into a **primary lifecycle ownership model**.
-
-The canonical lifecycle classifications are:
+Canonical Tool `0.3.6` classifications are exactly:
 
 | Classification | Meaning |
 | --- | --- |
-| `PRODUCT` | Responsibility owned directly by the Product lifecycle. |
-| `DEVELOPMENT_TOOLING` | Development-lifecycle responsibility used to create, inspect, validate, transform, generate, migrate, analyze, test, or otherwise support development work. |
-| `DELIVERY` | Responsibility for carrying a release target through release preparation, publication, promotion, distribution, or deployment to its destination. |
-| `OPERATIONS` | Ongoing post-deployment responsibility for keeping deployed systems healthy, recoverable, maintained, and operational. |
-| `NEUTRAL_CONTRACT` | Deliberately non-executable, non-owning contract responsibility with independent lifecycle ownership. |
+| `PRODUCT` | Responsibility primarily owned by the Product lifecycle. |
+| `DEVELOPMENT_TOOLING` | Development-lifecycle responsibility used to create, inspect, validate, transform, generate, migrate, analyze, test, or otherwise support development. |
+| `DELIVERY` | Responsibility for release preparation, packaging, publication, promotion, distribution, or deployment to the delivery destination. |
+| `OPERATIONS` | Ongoing post-delivery responsibility for health, recovery, reconciliation, maintenance, and operation. |
+| `NEUTRAL_CONTRACT` | Deliberately non-executable, non-owning contract responsibility with lifecycle-independent governance. |
 
-`UNKNOWN`, `CONFLICT`, `INCOMPLETE`, `PENDING`, confidence values, and migration states are workflow/evaluation states, not additional architecture classifications.
+`UNKNOWN`, `CONFLICT`, `INCOMPLETE`, `PENDING`, confidence values, and migration states are workflow/evaluation states, not additional classifications.
 
-### From Tool 0.3.5 to Tool 0.3.6
+### Tool 0.3.5 compatibility boundary
 
-Tool `0.3.5` used:
+Tool `0.3.5` historically used:
 
 ```text
 PRODUCT
@@ -42,263 +40,49 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.6` uses:
+Tool `0.3.6` uses the five-classification model above. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a Tool `0.3.6` alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
+
+Evidence-driven assisted migration from Tool `0.3.5` declarations is intentionally deferred to Tool `0.3.6.1`; it is not claimed as a Tool `0.3.6` release capability.
+
+## Classification is not path or technology
+
+Classification follows the governing lifecycle obligation, not filename, directory, language, framework, executable status, workflow provider, compilation behavior, runtime duration, test status, or confidence score.
+
+Examples:
 
 ```text
-PRODUCT
-DEVELOPMENT_TOOLING
-DELIVERY
-OPERATIONS
-NEUTRAL_CONTRACT
+Product-specific verification responsibility       -> PRODUCT
+Reusable verification framework / test SDK         -> DEVELOPMENT_TOOLING
+Product runtime implementation                      -> PRODUCT
+Release-unit assembly / publication automation      -> DELIVERY
+Post-deployment health or recovery automation       -> OPERATIONS
+Independent non-executable shared contract          -> NEUTRAL_CONTRACT
 ```
 
-The transition is intentionally asymmetric:
+Paths such as `tests/`, `tools/`, `deploy/`, `ops/`, or `.github/workflows/` are evidence context only. They do not become architecture authority.
 
-```text
-PRODUCT
-    -> PRODUCT
-       canonical name retained
+## Responsibility Map v2
 
-TOOLCHAIN
-    -> DEVELOPMENT_TOOLING
-       canonical Tool 0.3.6 development-tooling name
-
-       or, when the former component actually contains
-       a different lifecycle responsibility:
-
-       -> DELIVERY
-       -> OPERATIONS
-       -> another appropriate lifecycle ownership
-
-NEUTRAL_CONTRACT
-    -> NEUTRAL_CONTRACT
-       when independent-contract semantics still hold
-```
-
-`TOOLCHAIN` is therefore a **Tool `0.3.5` legacy classification**, not a canonical Tool `0.3.6` classification or compatibility alias.
-
-`DEVELOPMENT_TOOLING` carries the core development-tool responsibility previously represented by `TOOLCHAIN`, while `DELIVERY` and `OPERATIONS` allow responsibilities that were previously grouped too broadly under Toolchain to be represented by their actual lifecycle ownership.
-
-## Classification is about lifecycle ownership
-
-Classification is not determined by filename, directory, language, framework, executable status, compilation behavior, workflow provider, or artifact kind.
-
-For example:
-
-```text
-Product-specific tests
-    -> PRODUCT
-
-Reusable test SDK / verification infrastructure
-    -> DEVELOPMENT_TOOLING
-
-Product runtime implementation
-    -> PRODUCT
-
-Release / publication automation
-    -> DELIVERY
-
-Post-deployment maintenance automation
-    -> OPERATIONS
-```
-
-A path such as:
-
-```text
-tests/
-src/
-tools/
-deploy/
-ops/
-.github/workflows/
-```
-
-is evidence context, not architecture authority.
-
-FastAPI, Cloudflare Workers, GitHub Actions, Docker, Terraform, Python, PowerShell, Markdown, YAML, and other technologies likewise do not have universal PTSIP classifications.
-
-## Governing lifecycle responsibility
-
-PTSIP asks which lifecycle obligation primarily explains why a responsibility exists.
-
-Typical questions include:
-
-```text
-Why does this responsibility exist?
-
-Which lifecycle obligation fails if it disappears?
-
-What kind of change normally requires it to change?
-
-Who owns its compatibility consequences?
-
-Does its responsibility end when a release reaches its destination?
-
-Or does it continue after deployment as ongoing operational responsibility?
-```
-
-The goal is not to classify individual technologies.
-
-The goal is to identify a coherent project-owned responsibility and its primary lifecycle owner.
-
-## Classification, role, relationship, and Verification Purpose
-
-Tool `0.3.6` keeps several architecture concepts separate:
+Tool `0.3.6` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
 
 ```text
 classification
     = primary lifecycle ownership
 
-role
-    = responsibility performed inside that lifecycle
+roles
+    = coarse responsibility characteristics
 
-relationship
-    = typed semantic relationship to another responsibility/artifact
+relationships
+    = project-owned typed directed semantics
+
+source/derived provenance
+    = where declaration/materialized architecture came from
 
 VPMS Verification Purpose
-    = what a Verification Case protects or verifies
+    = why verification exists and what it protects
 ```
 
-For example, both of these are valid:
-
-```text
-PRODUCT
-    role = VERIFICATION
-
-DEVELOPMENT_TOOLING
-    role = VERIFICATION
-```
-
-A Product-owned test can therefore remain `PRODUCT`, while a reusable verification framework can be `DEVELOPMENT_TOOLING`.
-
-The fact that both perform verification does not collapse their lifecycle ownership.
-
-## Responsibility Map v2
-
-Tool `0.3.6` introduces **Responsibility Map v2** as the project-owned architecture declaration model.
-
-It can represent:
-
-- lifecycle-owned components;
-- responsibility roles;
-- typed component relationships;
-- associated artifacts;
-- component dependency policy;
-- Product packaging/runtime policy;
-- explicit, template-backed, and hybrid architecture declarations.
-
-### Explicit mode
-
-The repository directly declares its complete Responsibility Map.
-
-```yaml
-responsibility_map:
-  mode: explicit
-```
-
-### Template mode
-
-The repository explicitly selects an immutable, revision-bound Responsibility Map template.
-
-```yaml
-responsibility_map:
-  mode: template
-  template:
-    id: python-package-library
-    revision: "sha256:..."
-```
-
-### Hybrid mode
-
-The repository selects a template and adds project-owned overrides, extensions, or removals.
-
-```yaml
-responsibility_map:
-  mode: hybrid
-  template:
-    id: python-package-library
-    revision: "sha256:..."
-  overrides:
-    components:
-      - ...
-```
-
-Template selection is explicit.
-
-PTSIP does not automatically choose a template from directory names, framework detection, or discovery confidence.
-
-## Initial Responsibility Map templates
-
-The current Tool `0.3.6` template catalog includes:
-
-```text
-python-package-library
-python-cli-application
-mixed-product-development-delivery
-```
-
-Template identities are revision-bound.
-
-Changing template semantics requires a different immutable template revision rather than silently changing the meaning of an already selected template.
-
-Templates provide useful starting declarations.
-
-They do not prescribe one mandatory repository layout.
-
-## Source declaration and Effective Responsibility Map
-
-Tool `0.3.6` distinguishes the repository's original declaration from the architecture resolved for downstream evaluation.
-
-```text
-Source Project Profile
-        |
-        v
-explicit / template / hybrid
-        |
-        v
-deterministic materialization
-        |
-        v
-Effective Responsibility Map
-```
-
-The **Source Project Profile** remains the project-owned declaration.
-
-The **Effective Responsibility Map** is the deterministic resolved architecture consumed by validation and downstream operations.
-
-Materialization does not become architecture authority.
-
-It must not independently:
-
-- select a template;
-- infer lifecycle ownership;
-- repair architecture;
-- create components from repository heuristics;
-- silently rewrite the project's source declaration.
-
-For hybrid declarations, explicit project-owned overrides take precedence over the selected immutable template within the defined override boundary.
-
-## Effective Map identity and provenance
-
-Tool `0.3.6` maintains deterministic Effective Map identity so equivalent resolved architecture can be recognized independently from incidental formatting differences.
-
-The resolved view also retains origin information such as whether an effective responsibility came from:
-
-```text
-PROJECT_EXPLICIT
-TEMPLATE
-PROJECT_OVERRIDE
-PROJECT_EXTENSION
-PROJECT_REMOVAL
-```
-
-This is **declaration-resolution provenance**.
-
-It describes where Effective Map architecture came from and is distinct from repository evidence provenance used by discovery and migration analysis.
-
-## Roles
-
-The current schema supports a deliberately small role vocabulary:
+Canonical roles are:
 
 ```text
 IMPLEMENTATION
@@ -309,13 +93,7 @@ DOCUMENTATION
 GOVERNANCE
 ```
 
-Roles describe responsibility performed within a lifecycle.
-
-They do not create additional lifecycle classifications.
-
-## Typed relationships
-
-Responsibility Map v2 can explicitly describe project-owned semantic relationships such as:
+Canonical typed relationships are:
 
 ```text
 IMPORTS
@@ -335,62 +113,86 @@ SPECIFIES
 GOVERNS
 ```
 
-For example:
+An associated artifact is a project-owned non-component support surface subordinate to one classified anchor component. It must not be used to hide independently governable executable or lifecycle responsibility.
+
+## Explicit, template, and hybrid declarations
+
+Canonical source modes are:
 
 ```text
-Development verification
-        |
-      VERIFIES
-        |
-        v
-     Product
+explicit
+    repository directly declares the complete map
 
-Delivery automation
-        |
-      BUILDS
-        |
-        v
-     Product
+template
+    repository explicitly selects one immutable revision-bound template
 
-Delivery automation
-        |
-     PUBLISHES
-        |
-        v
-     Product
+hybrid
+    repository explicitly selects a template and adds project-owned
+    overrides, extensions, or removals
 ```
 
-Relationship semantics and lifecycle ownership remain separate.
+The initial template catalog contains:
 
-A `DELIVERY` component publishing a Product Artifact does not become `PRODUCT` merely because it produces or publishes that artifact.
+```text
+python-package-library
+python-cli-application
+mixed-product-development-delivery
+```
 
-## Associated artifacts
+Template selection is explicit. PTSIP does not automatically select a template from repository layout, language, framework detection, manifests, or confidence.
 
-Responsibility Map v2 supports **associated artifacts** for project-owned documentation, governance, configuration, or support artifacts that belong with an architectural responsibility but do not independently require another lifecycle-owned component.
+## Source declaration and Effective Responsibility Map
 
-Associated artifacts are not a classification escape hatch.
+All source modes resolve through deterministic, non-authoritative materialization:
 
-An artifact still requires component evaluation when it has independently owned executable, compatibility, release, or lifecycle responsibility.
+```text
+Source Project Profile
+        |
+        v
+explicit / template / hybrid
+        |
+        v
+deterministic materialization
+        |
+        v
+Canonical Effective Responsibility Map
+        |
+        +--> validation / conformance
+        +--> clarification / adoption
+        +--> narrow VPMS read-only projection
+```
+
+The Source Project Profile remains project-owned architecture authority. Materialization must not select templates, infer ownership, repair invalid architecture, or silently rewrite the source declaration.
+
+The resolved view retains declaration provenance such as:
+
+```text
+PROJECT_EXPLICIT
+TEMPLATE
+PROJECT_OVERRIDE
+PROJECT_EXTENSION
+PROJECT_REMOVAL
+```
+
+and has deterministic digest identity for reproducibility. Neither provenance nor digest becomes a replacement architecture authority.
 
 ## Install and use
 
 PTSIP requires Python 3.11 or newer.
 
-For a new installation of the latest published release:
+Install the latest **published** release:
 
 ```powershell
 python -m pip install PTSIP
 ```
 
-To upgrade an existing installation to the latest published release:
+Upgrade to the latest **published** release:
 
 ```powershell
 python -m pip install --upgrade PTSIP
 ```
 
-The latest published package may differ from this in-development Tool `0.3.6` branch until Tool `0.3.6` is released.
-
-For source development:
+Until Tool `0.3.6` is published, those commands may still install Tool `0.3.5` from PyPI. For source development on this release-candidate line:
 
 ```powershell
 python -m pip install -e ".[dev]"
@@ -412,68 +214,13 @@ ptsip resolve --help
 ptsip conform .
 ```
 
-## Specification and Tool lifecycle
+The default project-owned profile is repository-root `ptsip.yaml`; projects may consistently use another explicit path through `--profile`.
 
-The **PTSIP Specification** and **PTSIP Reference Tool** are independently versioned.
+## Adoption and decision authority
 
-- `pyproject.toml` owns Tool/package source version;
-- `ptsip --version` reports the installed Tool version;
-- `ptsip spec` reports the exact Specification family and immutable revision bound to that Tool;
-- `spec/`, `schemas/`, and `registry/` contain canonical Specification assets;
-- `src/ptsip/specdata/` contains matching resources embedded in the Tool;
-- GitHub Releases publish Tool and Specification release/design records.
+Repository evidence is not architecture authority. Candidate discovery, path names, templates, heuristics, and agent confidence can support review but cannot manufacture project intent.
 
-This branch currently identifies itself as:
-
-```text
-PTSIP Tool
-    0.3.6
-
-Specification
-    0.3.6-draft
-    @ d6995ed232e845b88d8235b851e80ab54b7804ea
-```
-
-A Tool version number matching a Specification family number does not imply identity by itself.
-
-## Consumer Repository non-intrusion
-
-PTSIP does not require adopting repositories to create PTSIP-specific:
-
-```text
-docs/
-tools/
-.ptsip/
-cache/
-report/
-hidden state directories
-```
-
-merely to use PTSIP.
-
-External inspection and Pilot operations are read-only by default.
-
-Tool-owned operational state belongs outside the Consumer Repository unless the user explicitly chooses a repository path.
-
-The default project-owned architecture declaration remains:
-
-```text
-ptsip.yaml
-```
-
-at repository root.
-
-Projects may consistently select another profile path with `--profile`.
-
-Local operational state such as `control-plane.sqlite3` is not portable project architecture authority and must not be treated as Git-shared global decision state.
-
-## Explicit project adoption
-
-Candidate discovery is evidence, not architecture authority.
-
-The project owner supplies architecture intent.
-
-Canonical Tool `0.3.6` clarification/adoption decisions use:
+Canonical Tool `0.3.6` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
 
 ```text
 classification
@@ -483,11 +230,9 @@ runtime_required
 executable
 ```
 
-`lifecycle_owner` is no longer a separate canonical Tool `0.3.6` decision field.
+The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.6` ownership authority.
 
-It may still be accepted by some CLI paths as a deprecated compatibility input for legacy decision data, but new Tool `0.3.6` architecture state is represented by canonical `classification`.
-
-Example development-tooling adoption dry-run:
+Example dry-run:
 
 ```powershell
 ptsip adopt . `
@@ -500,7 +245,7 @@ ptsip adopt . `
   --json
 ```
 
-Apply only after reviewing the plan:
+Apply only after reviewing the planned declaration change:
 
 ```powershell
 ptsip adopt . `
@@ -514,137 +259,67 @@ ptsip adopt . `
   --json
 ```
 
-Dry-run remains non-mutating.
+Prepared writes must reject stale repository/profile state.
 
-Prepared writes must still reject stale repository/profile state rather than applying an architecture decision to changed content.
-
-## VPMS — Verification Purpose Management System
-
-PTSIP and VPMS answer different questions.
-
-PTSIP asks:
-
-```text
-Who primarily owns this project responsibility
-across its lifecycle?
-```
-
-VPMS asks:
-
-```text
-Why does this Verification Case exist,
-and what does it protect?
-```
-
-A Verification Case separates concerns such as:
-
-```text
-Formula
-Variables
-Policy
-Target
-Runner
-```
-
-PTSIP lifecycle classification and VPMS Verification Purpose are separate axes.
-
-PTSIP core does not depend on VPMS.
-
-VPMS may consume stable PTSIP architecture metadata through a narrow read-only integration boundary.
-
-VPMS PASS does not imply PTSIP `CONFORMANT`.
-
-PTSIP `CONFORMANT` does not imply functional verification PASS.
-
-## Decision Authority
-
-PTSIP distinguishes:
+PTSIP distinguishes four things that must not be collapsed:
 
 ```text
 Specification
-    -> normative architecture / conformance / coordination rules
+    -> normative rules
 
 Decision Authority
-    -> which explicit architecture answer won
+    -> which explicit coordinated architecture answer won
 
 Project Profile / Responsibility Map
-    -> durable project-owned architecture declaration
+    -> durable project-owned declaration
 
 Observed evidence
-    -> what repository/artifacts actually do
+    -> what the repository and artifacts actually do
 ```
 
-A Decision Authority is not a conformance oracle and does not replace the Project Profile.
+A Decision Authority does not replace `ptsip.yaml` and does not prove conformance.
 
-## GitHub-coordinated Reference Tool profile
+## Distributed decision coordination
 
-The Reference Tool supports distributed architecture-decision coordination through a dedicated Git ref:
+The Reference Tool supports repository-distributed decision coordination through:
 
 ```text
 refs/heads/ptsip-policy
 ```
 
-GitHub is a Reference Tool backend, not a universal Specification dependency.
+GitHub is a Tool backend, not a universal Specification dependency. The coordination model preserves stable decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation, authority freshness, deterministic reconciliation, fail-closed behavior, and separation of global decision state from clone-local application state.
 
-The coordination semantics include:
+PTSIP uses action-time synchronization rather than continuous background polling.
 
-- stable coordination-domain + component-scope decision identity;
-- first-valid-resolution-wins;
-- conditional mutation / stale-writer protection;
-- authority freshness at architecture-sensitive boundaries;
-- deterministic reconciliation;
-- fail-closed distributed behavior;
-- separation of global decision state from clone-local application state.
+## Product Artifact boundary
 
-## Coding-agent decision gate
+Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLING` or `DELIVERY` component may validly build a `PRODUCT` artifact, but the resulting artifact must still satisfy the Product package boundary.
 
-```powershell
-ptsip gate . --component tools --json
-```
+Tool `0.3.6` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
 
-In distributed mode, a complete local declaration does not automatically bypass relevant authority checks.
+## VPMS — Verification Purpose Management System
 
-The local declaration and current coordinated winner are reconciled semantically.
-
-Equivalent architecture does not require rewriting YAML merely because key ordering or formatting differs.
-
-A conflicting authority winner must not silently overwrite a conflicting local project declaration.
-
-If required distributed authority freshness cannot be established, the affected coordinated operation fails closed instead of silently creating an isolated local winner.
-
-## Global decision state versus local projection
-
-PTSIP keeps global authority state distinct from clone-local application state.
+PTSIP and VPMS answer different questions:
 
 ```text
-GLOBAL AUTHORITY
+PTSIP
+    Who owns this responsibility across its lifecycle?
 
-PENDING
-RESOLVED
-
-
-LOCAL CLONE / WORKTREE
-
-missing
-consistent
-locally applied
-stale
-failed
+VPMS
+    Why does this Verification Case exist, and what does it protect?
 ```
 
-A global `RESOLVED` state does not mean every clone has already applied the declaration.
+PTSIP classification and VPMS Verification Purpose remain separate axes. PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved PTSIP metadata.
 
-A clone-local application receipt cannot change which architecture answer won.
+The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.6` PTSIP classification.
 
-PTSIP uses **action-time synchronization** rather than requiring continuous background polling.
+VPMS verification PASS does not imply PTSIP `CONFORMANT`, and PTSIP `CONFORMANT` does not imply functional verification PASS.
 
-## Enforced conformance
+## Conformance
 
-`ptsip conform` evaluates declared architecture and observed evidence against applicable PTSIP rules.
+`ptsip conform` evaluates declared architecture and observed evidence against applicable PTSIP rules after source declarations are resolved to the Effective Responsibility Map.
 
-Tool `0.3.6` resolves explicit, template, and hybrid source declarations into the Effective Responsibility Map before downstream conformance logic evaluates architecture ownership.
-
-Completed Consumer Repository outcomes are:
+Completed outcomes are:
 
 | Exit code | Outcome |
 | --- | --- |
@@ -652,152 +327,69 @@ Completed Consumer Repository outcomes are:
 | `5` | `NON_CONFORMANT` |
 | `6` | `INCOMPLETE` |
 
-A valid Project Profile does not prove conformance.
+A valid profile does not prove conformance. Missing evidence that could hide an applicable mandatory rule remains fail-closed as `INCOMPLETE`; the Tool does not force an uncertain repository green.
 
-A resolved Decision Authority winner does not prove conformance.
+## Tool and Specification lifecycle
 
-A zero-finding scan does not prove conformance when blocking evidence gaps remain.
+The PTSIP Tool and PTSIP Specification are independently versioned.
 
-Enforced Conformance against a mutable draft must bind the exact immutable Specification revision.
+- `pyproject.toml` owns Tool/package source version;
+- `ptsip --version` reports installed Tool version;
+- `ptsip spec` reports the exact Specification family and immutable revision bound to the Tool;
+- `spec/`, `schemas/`, and `registry/` contain canonical Specification assets;
+- `src/ptsip/specdata/` contains matching embedded machine-readable assets.
 
-## Tool 0.3.6 implemented foundation
-
-The current development branch already establishes major Tool `0.3.6` foundations including:
-
-- `PRODUCT` retained as the canonical Product lifecycle classification;
-- canonical `TOOLCHAIN` replaced by `DEVELOPMENT_TOOLING`;
-- new `DELIVERY` lifecycle classification;
-- new `OPERATIONS` lifecycle classification;
-- preserved `NEUTRAL_CONTRACT` classification;
-- primary lifecycle ownership semantics;
-- Responsibility Map v2;
-- explicit, template, and hybrid declaration modes;
-- immutable template identities;
-- roles;
-- typed responsibility relationships;
-- associated artifacts;
-- Source Profile versus Effective Responsibility Map separation;
-- deterministic Effective Map identity;
-- declaration-resolution provenance;
-- Effective Map-aware profile validation;
-- Effective Map-aware conformance;
-- Effective Map-aware clarification/adoption;
-- safe template-to-hybrid project extension when explicitly authorized;
-- Effective Map integration boundary for VPMS;
-- distributed Decision Authority and reconciliation adapted to Tool `0.3.6` architecture semantics.
-
-## Tool 0.3.6 work still in development
-
-The following areas remain development work and are not claimed here as completed Tool `0.3.6` release capabilities:
+Tool `0.3.6` is bound to:
 
 ```text
-evidence/provenance model stabilization
-        |
-        v
-stronger candidate and boundary discovery
-        |
-        v
-Tool 0.3.5 legacy migration analysis
-        |
-        v
-migration proposal / preview
-        |
-        v
-safe confirmed migration application
+Specification 0.3.6-draft
+SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
 
-In particular, Tool `0.3.6` migration must not be implemented as a blind:
+A new immutable revision is required only for a genuine normative change. Release workflow, test, planning, status, or documentation-only changes do not move `SPEC_REVISION` by themselves.
+
+## Tool 0.3.6 verification and release state
+
+Development-branch WU-00 through WU-07 are complete. Final WU-07 exact-SHA verification authority is:
 
 ```text
-TOOLCHAIN -> DEVELOPMENT_TOOLING
+source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+workflow run/job: 32640319047 / 97196299107
+runner:           self-hosted Windows X64
+Python:           3.14.6
+pytest:           331 passed / 0 failed
+Specification:    0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
+profile coverage: unassigned_count=0
+build/twine:      PASS
+Product Artifact: PASS / exact snapshot binding
+PTSIP-PKG-001:    0 definite violations
+wheel smoke/VPMS: PASS
+commit status:    self-hosted/tooling-test = success
 ```
 
-text replacement.
+Documentation commits after that successful run record closure and do not replace the exact verification authority.
 
-`DEVELOPMENT_TOOLING` is the canonical successor for actual development-tooling ownership, but a legacy `TOOLCHAIN` component may contain responsibilities that must instead be separated into `DELIVERY`, `OPERATIONS`, `PRODUCT`, or another coherent architecture boundary.
-
-Migration analysis therefore remains evidence-driven and project-owner controlled.
-
-## Reference Tool focus
-
-The Tool `0.3.6` direction includes:
-
-- read-only repository inspection and Pilot evidence;
-- primary lifecycle ownership classification;
-- Responsibility Map v2 validation and resolution;
-- explicit/template/hybrid architecture declarations;
-- typed responsibility relationships and associated artifacts;
-- deterministic clarification for missing architecture intent;
-- explicit project-owner adoption;
-- on-demand architecture-decision gating and resolution;
-- GitHub-coordinated first-winner authority for multi-environment agents;
-- gate-time authority freshness and reconciliation;
-- fail-closed distributed coordination;
-- local-only DecisionStore mode when intentionally selected;
-- Product Artifact evidence ingestion;
-- evidence-relative Enforced Conformance;
-- stable diagnostics;
-- VPMS Verification Purpose separation.
-
-Stronger evidence-driven lifecycle discovery and assisted Tool `0.3.5` migration remain under development.
-
-## Repository map
-
-| Area | Location | Purpose |
-| --- | --- | --- |
-| Normative Specification | [`spec/`](spec/) | Lifecycle ownership, architecture, terminology, Responsibility Map, and conformance rules. |
-| Responsibility Map | [`spec/PTSIP-RESPONSIBILITY-MAP.md`](spec/PTSIP-RESPONSIBILITY-MAP.md) | Responsibility Map v2 declaration/materialization semantics. |
-| Machine-readable registry | [`registry/`](registry/) | Canonical terms, rule IDs, and metadata. |
-| Schemas | [`schemas/`](schemas/) | Project Profile and interoperability schemas. |
-| Agent contract | [`agents/AGENT-CONTRACT.md`](agents/AGENT-CONTRACT.md) | Coding-agent operational contract. |
-| Adoption guide | [`adoption/ADOPTION-GUIDE.md`](adoption/ADOPTION-GUIDE.md) | Controlled project-adoption sequence. |
-| Reference architecture | [`reference/REFERENCE-ARCHITECTURE.md`](reference/REFERENCE-ARCHITECTURE.md) | Informative architecture guidance. |
-| ADRs | [`decisions/`](decisions/) | Architecture decisions. |
-| Embedded Specification data | [`src/ptsip/specdata/`](src/ptsip/specdata/) | Tool-packaged schema/registry resources. |
-| Reference Tool | [`src/ptsip/`](src/ptsip/) | Installable Python PTSIP implementation. |
-| VPMS | [`src/vpms/`](src/vpms/) | Verification Purpose Management implementation. |
-| Tests | [`tests/`](tests/) | Tool, contract, integration, and VPMS verification. |
-| Release notes | [`releasenote/`](releasenote/) | Tool/Specification release and draft history. |
-| Development plan | [`planning/0.3.6.md`](planning/0.3.6.md) | Tool `0.3.6` Work Unit plan and development sequence. |
-
-## Key Specification documents
-
-- [`spec/PTSIP-SPEC.md`](spec/PTSIP-SPEC.md)
-- [`spec/PTSIP-RESPONSIBILITY-MAP.md`](spec/PTSIP-RESPONSIBILITY-MAP.md)
-- [`spec/PTSIP-CONFORMANCE.md`](spec/PTSIP-CONFORMANCE.md)
-- [`spec/PTSIP-TERMINOLOGY.md`](spec/PTSIP-TERMINOLOGY.md)
-- [`schemas/ptsip-profile.schema.json`](schemas/ptsip-profile.schema.json)
-- [`registry/ptsip-registry.yaml`](registry/ptsip-registry.yaml)
-- [`decisions/ADR-0007-primary-lifecycle-boundary-determination.md`](decisions/ADR-0007-primary-lifecycle-boundary-determination.md)
-- [`decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md`](decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md)
-- [`decisions/ADR-0009-responsibility-map-declaration-authority.md`](decisions/ADR-0009-responsibility-map-declaration-authority.md)
-
-## Release namespaces
-
-Tool releases use:
+The remaining release boundary is:
 
 ```text
-tool-v*
+approved 0.3.6 state -> main
+    -> read exact main SHA
+    -> tooling-test.yml on that exact main SHA
+    -> require self-hosted/tooling-test success
+    -> release.yml from the same current main SHA
+    -> exact Tool / Specification / release-document contract verification
+    -> draft GitHub Release targeting the same SHA
+    -> maintainer publishes reviewed draft
+    -> tooling-release.yml verifies distributions from the published tag
+    -> PyPI Trusted Publishing
 ```
 
-Specification releases and design records use:
+See [`STATUS.md`](STATUS.md), [`planning/0.3.6.md`](planning/0.3.6.md), and [`releasenote/0.3.6.md`](releasenote/0.3.6.md) for the release evidence and handoff state.
 
-```text
-spec-v*
-```
+## Consumer Repository non-intrusion
 
-The exact normative identity of a mutable draft remains its immutable Specification revision, not the tag or family string alone.
+PTSIP does not require Consumer Repositories to create PTSIP-specific `.ptsip/`, cache, report, or hidden state directories merely to use the Tool. External inspection and Pilot operations are read-only by default. Tool-owned local state belongs outside the Consumer Repository unless a repository path is explicitly chosen.
 
-## Maturity
+## Project status
 
-PTSIP is a draft project-defined architecture policy.
-
-It is not an ISO, IEEE, IETF, CNCF, or other external industry standard.
-
-Tool `0.3.6` remains under active development.
-
-## License
-
-This repository, including the PTSIP Specification and Reference Tool unless explicitly stated otherwise, is licensed under the Apache License, Version 2.0.
-
-See [`LICENSE`](LICENSE).
+PTSIP remains experimental. Tool `0.3.6` is development-complete but not yet published at the time of this release-candidate documentation update. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).
