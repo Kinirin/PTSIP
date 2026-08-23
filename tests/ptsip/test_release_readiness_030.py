@@ -149,6 +149,16 @@ def test_release_documents_record_current_tool_and_spec_binding() -> None:
     assert "| `0.3.6-draft` |" in release_index
 
 
+def test_operational_context_tracks_wu07_not_retired_wu04g_state() -> None:
+    stale_active_marker = "WU-04G  clarification/adoption integration               ACTIVE"
+    for path in ("MEMORY.md", "AGENTS.md"):
+        text = (ROOT / path).read_text(encoding="utf-8")
+        assert "WU-07" in text, path
+        assert "Release Contract Strengthening" in text, path
+        assert EXPECTED_SPEC_REVISION in text, path
+        assert stale_active_marker not in text, path
+
+
 def test_release_contract_accepts_current_exact_bound_assets() -> None:
     namespace = _release_contract_namespace()
     bound_paths = namespace["RELEASE_BOUND_SPEC_PATHS"]
