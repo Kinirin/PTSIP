@@ -64,7 +64,7 @@ jobs:
 
       - name: Install distribution tooling
         shell: powershell
-        run: python -m pip install --upgrade pip build twine "PyYAML>=6.0,<7"
+        run: python -m pip install --upgrade pip build twine "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
 
       - name: Verify release tag matches package version and Specification contract
         shell: powershell
@@ -87,6 +87,222 @@ jobs:
       - name: Build distributions
         shell: powershell
         run: python -m build
+
+      - name: Verify publication Product Artifact evidence and exact snapshot binding
+        shell: powershell
+        env:
+          REPOSITORY_ID: ${{ github.repository }}
+        run: |
+          $verifiedSha = (git rev-parse HEAD).Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $verifiedSha) {
+            throw "Unable to resolve the exact published-tag source SHA."
+          }
+
+          $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
+          if (-not $wheel) {
+            throw "No wheel was produced under dist/."
+          }
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($wheel.FullName)
+          try {
+            $wheelPaths = @(
+              $archive.Entries |
+                Where-Object { -not [string]::IsNullOrWhiteSpace($_.Name) } |
+                ForEach-Object { $_.FullName } |
+                Sort-Object -Unique
+            )
+
+            $metadataEntry = $archive.Entries |
+              Where-Object { $_.FullName -match '^[^/]+\.dist-info/METADATA$' } |
+              Select-Object -First 1
+            if (-not $metadataEntry) {
+              throw "Built wheel has no .dist-info/METADATA entry."
+            }
+            $metadataReader = New-Object System.IO.StreamReader($metadataEntry.Open())
+            try {
+              $metadataText = $metadataReader.ReadToEnd()
+            }
+            finally {
+              $metadataReader.Dispose()
+            }
+
+            $entryPointsEntry = $archive.Entries |
+              Where-Object { $_.FullName -match '^[^/]+\.dist-info/entry_points\.txt$' } |
+              Select-Object -First 1
+            if (-not $entryPointsEntry) {
+              throw "Built wheel has no .dist-info/entry_points.txt entry."
+            }
+            $entryPointsReader = New-Object System.IO.StreamReader($entryPointsEntry.Open())
+            try {
+              $entryPointsText = $entryPointsReader.ReadToEnd()
+            }
+            finally {
+              $entryPointsReader.Dispose()
+            }
+          }
+          finally {
+            $archive.Dispose()
+          }
+
+          if (-not $wheelPaths) {
+            throw "Built wheel contains no file entries."
+          }
+          if ($metadataText -notmatch '(?m)^Name:\s*PTSIP\s*$') {
+            throw "Built wheel metadata does not report Name: PTSIP."
+          }
+          if ($metadataText -notmatch '(?m)^Version:\s*0\.3\.6\s*$') {
+            throw "Built wheel metadata does not report Version: 0.3.6."
+          }
+          if ($entryPointsText -notmatch '(?m)^ptsip\s*=\s*ptsip\.cli:main\s*$') {
+            throw "Built wheel does not expose the ptsip console entry point."
+          }
+          if ($entryPointsText -notmatch '(?m)^ptsip-app\s*=\s*ptsip\.app\.server:main\s*$') {
+            throw "Built wheel does not expose the ptsip-app console entry point."
+          }
+
+          $sourcePaths = @()
+          $components = @()
+          $sawDistributionMetadata = $false
+          $sawLicense = $false
+
+          foreach ($path in $wheelPaths) {
+            if ($path -like 'ptsip/specdata/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-core'
+              continue
+            }
+            if ($path -like 'vpms/*') {
+              $sourcePaths += "src/$path"
+              $components += 'vpms'
+              continue
+            }
+            if ($path -match '^[^/]+\.dist-info/licenses/LICENSE$') {
+              $sourcePaths += 'LICENSE'
+              $components += 'product-documentation'
+              $components += 'ptsip-distribution'
+              $sawDistributionMetadata = $true
+              $sawLicense = $true
+              continue
+            }
+            if ($path -match '^[^/]+\.dist-info/') {
+              $components += 'ptsip-distribution'
+              $sawDistributionMetadata = $true
+              continue
+            }
+            throw "Unrecognized wheel content outside the declared Product package boundary: $path"
+          }
+
+          $sourcePaths = @($sourcePaths | Sort-Object -Unique)
+          $components = @($components | Sort-Object -Unique)
+
+          if ($components -notcontains 'ptsip-core') {
+            throw "Built wheel does not contain the ptsip-core Product implementation."
+          }
+          if ($components -notcontains 'vpms') {
+            throw "Built wheel does not contain the vpms Product package."
+          }
+          if ($components -notcontains 'ptsip-embedded-contracts') {
+            throw "Built wheel does not contain embedded PTSIP contract assets."
+          }
+          if (-not $sawDistributionMetadata) {
+            throw "Built wheel does not contain distribution metadata."
+          }
+          if (-not $sawLicense) {
+            throw "Built wheel does not contain the declared LICENSE file."
+          }
+
+          python -m pip install --force-reinstall --no-deps "$($wheel.FullName)"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Unable to install the actual publication wheel for artifact-aware verification."
+          }
+
+          $wheelHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $wheel.FullName).Hash.ToLowerInvariant()
+          $trackedFingerprint = (& python -c "from ptsip.repository.snapshot import capture_snapshot; print(capture_snapshot('.').tracked_content_fingerprint)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $trackedFingerprint) {
+            throw "Unable to capture the exact tracked-content fingerprint for publication artifact binding."
+          }
+
+          $evidencePath = Join-Path $env:RUNNER_TEMP 'release-wheel-artifact-evidence.json'
+          $bindingPath = "$evidencePath.binding.json"
+          $evidence = [ordered]@{
+            format = 'ptsip-artifact-evidence/v1'
+            artifact_id = "ptsip-wheel-$($wheelHash.Substring(0, 16))"
+            classification = 'PRODUCT'
+            producer_component = 'repository-release-automation'
+            artifact_type = 'python-wheel'
+            shipping_scope = 'product-distribution'
+            contents = [ordered]@{
+              paths = $sourcePaths
+              components = $components
+              complete = $true
+            }
+            derivation = @(
+              [ordered]@{
+                relation = 'BUILDS'
+                source = 'repository-release-automation'
+              }
+            )
+            provenance = 'OBSERVED'
+            evidence_ids = @("wheel-sha256:$wheelHash")
+          }
+          $evidence | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $evidencePath -Encoding UTF8
+
+          $evidenceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $evidencePath).Hash.ToLowerInvariant()
+          $binding = [ordered]@{
+            format = 'ptsip-artifact-evidence-binding/v1'
+            artifact_sha256 = $evidenceHash
+            subject = [ordered]@{
+              repository = $env:REPOSITORY_ID
+              revision = $verifiedSha
+              tracked_content_sha256 = $trackedFingerprint
+            }
+          }
+          $binding | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $bindingPath -Encoding UTF8
+
+          $conformOutput = & ptsip conform . --artifact-evidence $evidencePath --json
+          $conformExit = $LASTEXITCODE
+          if ($conformExit -notin @(0, 6)) {
+            throw "Publication artifact-aware conformance failed with unexpected exit code $conformExit."
+          }
+
+          $report = (($conformOutput -join "`n") | ConvertFrom-Json)
+          if ($report.evaluators.product_artifact_boundary.status -ne 'RAN') {
+            throw "Product Artifact boundary evaluator did not run for the publication wheel."
+          }
+          if ($report.evaluators.artifact_snapshot_binding.status -ne 'RAN') {
+            throw "Artifact snapshot binding evaluator did not run successfully for the publication wheel."
+          }
+
+          $artifactDocuments = @($report.artifacts.documents)
+          if ($artifactDocuments.Count -ne 1 -or $artifactDocuments[0].binding_valid -ne $true) {
+            throw "Publication artifact evidence was not imported with a valid exact-snapshot binding."
+          }
+
+          $artifactGaps = @(
+            $report.coverage.blocking_gaps |
+              Where-Object { $_.id -like 'artifact-evidence:*' }
+          )
+          if ($artifactGaps.Count -ne 0) {
+            throw "Publication conformance retained blocking artifact-evidence gaps: $($artifactGaps.id -join ', ')"
+          }
+
+          $packageViolations = @(
+            $report.diagnostics |
+              Where-Object { $_.rule_id -eq 'PTSIP-PKG-001' -and $_.outcome_effect -eq 'NON_CONFORMANT' }
+          )
+          if ($packageViolations.Count -ne 0) {
+            throw "Publication Product Artifact violates PTSIP-PKG-001."
+          }
+
+          Write-Host "Publication Product Artifact evidence passed for wheel SHA-256 $wheelHash"
+          Write-Host "Publication artifact-aware conformance outcome: $($report.outcome)"
+          exit 0
 
       - name: Verify wheel and sdist exclude tests
         shell: powershell
