@@ -1,13 +1,14 @@
 # WU-07 — Final Specification Freeze / Release Contract Strengthening / Release Preparation
 
-> **Status:** ENTRY DOCUMENT CREATED — activation propagation pending  
+> **Status:** ACTIVE — Strategy B release-contract strengthening implemented; final exact-SHA verification pending  
 > **Parent release:** Tool `0.3.6` — Primary Lifecycle Ownership Foundation  
 > **Entry branch:** `tool-0.3.6-lifecycle-ownership`  
 > **Entry predecessor:** WU-06 — COMPLETE / EXACT-SHA VERIFIED  
 > **WU-06 exact verification authority:** `a94c50130a694dba937708403520417719aec1e1`  
 > **WU-06 verification run/job:** `32598727026 / 97093629017`  
 > **WU-07 exact entry baseline:** `8b2c0819e10b58902a780a094a0f52c603c39fba`  
-> **Bound Specification at entry:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
+> **WU-07 entry-document commit:** `0e438e7544ebbfee1f1692086d31d9d6f539d297`  
+> **Bound Specification at entry/current:** `0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea`  
 > **Maintainer-selected strategy:** **B — Release Contract Strengthening**  
 > **Release successor:** Tool `0.3.6` main-branch release preparation / publication boundary
 
@@ -640,4 +641,214 @@ B — Release Contract Strengthening
 
 WU-06 remains `COMPLETE / EXACT-SHA VERIFIED` with technical verification authority `a94c50130a694dba937708403520417719aec1e1`.
 
-WU-07 detailed planning now exists, but release-level/status activation propagation is intentionally left for a separate state transition. This entry-document commit is a descendant planning record and does not replace the exact entry baseline.
+WU-07 activation has now been propagated to `planning/0.3.6.md` and `STATUS.md`. Descendant activation and implementation records do not replace the exact WU-07 entry baseline.
+
+## 17. Executed audit and implementation progress
+
+### 17.1 Final Specification audit
+
+WU-07 compared the bound immutable revision against the release-entry/current development line and found no established modification to the canonical `spec/`, `schemas/`, or `registry/` normative assets requiring a new normative snapshot.
+
+Classification:
+
+```text
+A. normative Specification defect: NONE FOUND
+```
+
+Final freeze decision at this stage:
+
+```text
+Specification: 0.3.6-draft
+SPEC_REVISION: d6995ed232e845b88d8235b851e80ab54b7804ea
+revision movement: NONE
+```
+
+The release-bound asset set was explicitly enumerated as 15 Git objects:
+
+```text
+5 canonical Specification Markdown documents
+5 canonical machine-readable schema/registry assets
+5 embedded package copies of those machine-readable assets
+```
+
+At audit time the applicable bound machine-readable assets were blob-identical to their `d6995ed...` counterparts and canonical/embedded pairs were coherent.
+
+### 17.2 Specification content-freeze guard
+
+Finding classification:
+
+```text
+B. Specification-binding / content-freeze guard defect
+```
+
+Corrections:
+
+```text
+2862b9547fcb62292619aa8c189a4cacc9e5d62e
+release: bind specification content to exact revision
+
+1978b374d3a88001c38537b39efa943cb6d75e67
+release: verify release-note consistency
+```
+
+`verify_release_contract.py` now uses Git object identity to prove that every release-bound asset exists both at `SPEC_REVISION` and release `HEAD` and that `HEAD:path` equals `SPEC_REVISION:path`. Git blob identity is used rather than checkout byte comparison so the guard is not weakened by platform line-ending behavior.
+
+Canonical/embedded machine-readable pairs are also compared independently at release `HEAD`.
+
+The contract additionally requires stable Tool/Specification release-document facts: a non-empty categorized Tool release note with exact Tool/Specification binding, an exact-bound Specification note, and Tool/Specification markers in the release-note index.
+
+### 17.3 Tool release note and release-note index
+
+Finding classifications:
+
+```text
+C. Tool release-note defect
+D. operational current-state documentation drift
+```
+
+Corrections include:
+
+```text
+ae2e7e2dee7b5a14fc44592553e46a26ee13e9d9
+docs: add Tool 0.3.6 release note
+
+63e8286f401bb62e61374aae6d69ca9987327800
+docs: update 0.3.6 release-note index
+
+32f9f3a155c17466b1bfd97fa82918fe619e30c5
+docs: stabilize Tool 0.3.6 pre-publication note
+
+6bc4d5ccd901242b91f7945e1f92e48980ae1d22
+docs: stabilize 0.3.6 release-note index state
+```
+
+`releasenote/0.3.6.md` is now a curated pre-publication release record covering the five-classification model, Responsibility Map v2, explicit/template/hybrid materialization, effective-map consumption, clarification/adoption, VPMS boundary, dogfood and WU-06 exact verification, Product Artifact evidence, release-contract strengthening, and Tool `0.3.6.1` migration continuation.
+
+Its state wording is deliberately stable across final verification: **pre-publication release candidate — not yet published**. Publication state is finalized only at the actual release boundary.
+
+### 17.4 Operational current-state cleanup
+
+Finding classification:
+
+```text
+D. operational current-state documentation drift
+```
+
+Corrections:
+
+```text
+46c1238bb43a04d1b4bd044bed0d27a94549603e
+docs: refresh coding-agent WU-07 context
+
+9e3f304adb70ae52e03e7d262ec26caac57af51c
+docs: refresh WU-07 working memory
+```
+
+`AGENTS.md` and `MEMORY.md` no longer direct coding agents to treat WU-04G as the active stage or `82abd...` as the current Tool binding. Current operational context identifies WU-07 Strategy B and `d6995ed...` while preserving the canonical lifecycle/materialization/decision/VPMS/release policies and published Tool `0.3.5` history.
+
+### 17.5 Publication Product Artifact verification
+
+Finding classification:
+
+```text
+F. publication artifact verification defect
+```
+
+Correction:
+
+```text
+122754053d65b77ded02b4d25b833701c7343789
+release: verify publication product artifact boundary
+```
+
+The published-tag build in `tooling-release.yml` now verifies the newly built publication wheel before it is uploaded for PyPI publishing. The step checks exact tagged source identity, package metadata, entry points, expected Product package content, embedded contracts, LICENSE, and fail-closed unexpected wheel content.
+
+It force-installs the actual publication wheel, generates `ptsip-artifact-evidence/v1`, binds the evidence to the exact tagged repository snapshot using `ptsip-artifact-evidence-binding/v1`, runs artifact-aware conformance, requires `product_artifact_boundary` and `artifact_snapshot_binding` to run, requires valid binding, rejects artifact-evidence blocking gaps, and requires zero definite `PTSIP-PKG-001` Product-package violations.
+
+The existing release architecture is preserved; Strategy C Build Once/attestation redesign was not entered.
+
+### 17.6 Release-readiness regression contracts
+
+Finding classification:
+
+```text
+G. release-readiness test/fixture defect
+```
+
+Corrections:
+
+```text
+6704371850789961d6b75b55e1c318faf463d365
+test: pin WU-07 specification content freeze
+
+2ed5caec790bcb110192bfcaa8acd734ff315954
+test: require publication artifact verification
+
+f709570ca69f909830b4495953dd7b06da515341
+test: pin Tool 0.3.6 release documents
+
+86fbb77e8ae60c3f72ca24c7033328b0a7afd24e
+test: reject stale WU-04G release context
+
+220ab34f2de9fb76607f2c9847aab0c4ad2857ee
+test: pin exact main release preparation gate
+```
+
+The focused release-readiness contract now pins:
+
+```text
+15 release-bound Specification assets
+exact bound asset equality PASS path
+simulated bound-content drift FAIL path
+canonical/embedded equality
+Tool 0.3.6 release-note exact binding markers
+release-note index Tool/Specification markers
+WU-07 operational-context markers and retired WU-04G ACTIVE marker rejection
+publication Product Artifact evidence/binding requirements
+release.yml exact main freshness + same-SHA draft release invariants
+```
+
+### 17.7 Release workflow exact-SHA review
+
+Classification:
+
+```text
+E. release workflow exact-SHA contract defect: NONE FOUND
+```
+
+No semantic change to `release.yml` was required. Its existing manual main-only dispatch, exact `${{ github.sha }}` checkout, first `origin/main` freshness check, exact `self-hosted/tooling-test` status requirement, release-contract invocation, second freshness check, and same-SHA draft release target remain the release-preparation authority.
+
+### 17.8 Responsibility Map / architecture impact
+
+No WU-07 implementation so far has required changes to:
+
+```text
+ptsip.yaml
+canonical lifecycle classifications
+Responsibility Map v2 semantics
+production Tool architecture
+VPMS vocabulary
+Tool 0.3.6.1 migration implementation
+canonical Specification assets
+SPEC_REVISION
+```
+
+Changed paths are already covered by existing project-owned selectors for release automation, verification, maintenance/planning, and Product documentation.
+
+### 17.9 Remaining gate
+
+Repository execution evidence has not yet been generated for the post-WU-07 implementation candidate. Therefore this document does **not** claim focused tests, full pytest, package build, or final exact-SHA self-hosted verification have passed after these changes.
+
+The next authority-producing action is:
+
+```text
+fresh final development candidate SHA
+    -> tooling-test.yml workflow_dispatch on that exact SHA
+    -> complete repository pytest
+    -> Tool/package/Specification/self-profile checks
+    -> distribution/Product Artifact checks
+    -> exact self-hosted/tooling-test status
+    -> review run/job evidence
+```
+
+WU-07 remains ACTIVE until that final exact-SHA gate succeeds and completion evidence is recorded.
