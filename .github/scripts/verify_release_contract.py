@@ -18,6 +18,28 @@ REQUIRED_SPEC_PATHS = (
     "spec/PTSIP-GOVERNANCE.md",
     "spec/PTSIP-RESPONSIBILITY-MAP.md",
 )
+CANONICAL_MACHINE_READABLE_PATHS = (
+    "schemas/ptsip-profile.schema.json",
+    "schemas/ptsip-artifact-evidence.schema.json",
+    "schemas/ptsip-agent-classification.schema.json",
+    "schemas/ptsip-diagnostic.schema.json",
+    "registry/ptsip-registry.yaml",
+)
+EMBEDDED_MACHINE_READABLE_PATHS = (
+    "src/ptsip/specdata/ptsip-profile.schema.json",
+    "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
+    "src/ptsip/specdata/ptsip-agent-classification.schema.json",
+    "src/ptsip/specdata/ptsip-diagnostic.schema.json",
+    "src/ptsip/specdata/ptsip-registry.yaml",
+)
+RELEASE_BOUND_SPEC_PATHS = (
+    *REQUIRED_SPEC_PATHS,
+    *CANONICAL_MACHINE_READABLE_PATHS,
+    *EMBEDDED_MACHINE_READABLE_PATHS,
+)
+CANONICAL_EMBEDDED_PAIRS = tuple(
+    zip(CANONICAL_MACHINE_READABLE_PATHS, EMBEDDED_MACHINE_READABLE_PATHS)
+)
 
 
 def _git(*args: str) -> subprocess.CompletedProcess[str]:
@@ -29,6 +51,14 @@ def _git(*args: str) -> subprocess.CompletedProcess[str]:
         stderr=subprocess.PIPE,
         check=False,
     )
+
+
+def _git_object_id(revision: str, path: str) -> str | None:
+    result = _git("rev-parse", "--verify", f"{revision}:{path}")
+    if result.returncode != 0:
+        return None
+    object_id = result.stdout.strip()
+    return object_id or None
 
 
 def main() -> int:
@@ -64,10 +94,17 @@ def main() -> int:
         errors.append("ptsip.yaml specification.source does not match SPEC_SOURCE.")
 
     spec_note = ROOT / "releasenote" / f"spec-{spec_version}.md"
-    if not spec_note.is_file() or not spec_note.read_text(encoding="utf-8").strip():
-        errors.append(
-            f"Missing or empty Specification release note: {spec_note.relative_to(ROOT)}"
-        )
+    spec_note_text = ""
+    if not spec_note.is_file():
+        errors.append(f"Missing Specification release note: {spec_note.relative_to(ROOT)}")
+    else:
+        spec_note_text = spec_note.read_text(encoding="utf-8")
+        if not spec_note_text.strip():
+            errors.append(f"Empty Specification release note: {spec_note.relative_to(ROOT)}")
+        elif spec_revision not in spec_note_text:
+            errors.append(
+                "Specification release note does not record the exact bound SPEC_REVISION."
+            )
 
     if re.fullmatch(r"[0-9a-f]{40}", spec_revision):
         revision_check = _git("rev-parse", "--verify", f"{spec_revision}^{{commit}}")
@@ -80,11 +117,36 @@ def main() -> int:
                     f"SPEC_REVISION {spec_revision} is not an ancestor of release source HEAD."
                 )
 
-            for path in REQUIRED_SPEC_PATHS:
-                path_check = _git("cat-file", "-e", f"{spec_revision}:{path}")
-                if path_check.returncode != 0:
+            for path in RELEASE_BOUND_SPEC_PATHS:
+                bound_object = _git_object_id(spec_revision, path)
+                if bound_object is None:
                     errors.append(
-                        f"Canonical Specification path {path!r} is absent at SPEC_REVISION."
+                        f"Release-bound Specification asset {path!r} is absent at SPEC_REVISION."
+                    )
+                    continue
+
+                head_object = _git_object_id("HEAD", path)
+                if head_object is None:
+                    errors.append(
+                        f"Release-bound Specification asset {path!r} is absent from release source HEAD."
+                    )
+                    continue
+
+                if head_object != bound_object:
+                    errors.append(
+                        f"Release-bound Specification asset {path!r} differs from SPEC_REVISION "
+                        f"{spec_revision}."
+                    )
+
+            for canonical, embedded in CANONICAL_EMBEDDED_PAIRS:
+                canonical_object = _git_object_id("HEAD", canonical)
+                embedded_object = _git_object_id("HEAD", embedded)
+                if canonical_object is None or embedded_object is None:
+                    continue
+                if canonical_object != embedded_object:
+                    errors.append(
+                        f"Embedded Specification asset {embedded!r} differs from canonical "
+                        f"asset {canonical!r} at release source HEAD."
                     )
 
     if errors:
@@ -98,6 +160,7 @@ def main() -> int:
     print(f"Specification: {spec_version}")
     print(f"Specification revision: {spec_revision}")
     print(f"Specification note: releasenote/spec-{spec_version}.md")
+    print(f"Release-bound Specification assets: {len(RELEASE_BOUND_SPEC_PATHS)}")
     return 0
 
 
