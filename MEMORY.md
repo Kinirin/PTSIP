@@ -11,9 +11,9 @@ This file is durable repository-operational context for maintainers and coding a
 - Published bound Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
 - Historical Tool `0.3.5` classifications: `PRODUCT | TOOLCHAIN | NEUTRAL_CONTRACT`
 
-Do not rewrite Tool `0.3.5` history. Tool `0.3.6` compatibility is assisted migration, not preservation of obsolete ontology in canonical state.
+Do not rewrite Tool `0.3.5` history. Tool `0.3.6` compatibility means understand/migrate obsolete state, not preserve obsolete ontology as canonical Tool `0.3.6` authority.
 
-## Active Tool 0.3.6 development
+## Active Tool 0.3.6 release closure
 
 Development branch:
 
@@ -30,34 +30,51 @@ planning/0.3.6.md
 Active stage:
 
 ```text
-planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
-entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
+planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md
+strategy B — Release Contract Strengthening
+exact entry baseline 8b2c0819e10b58902a780a094a0f52c603c39fba
 ```
 
-The earlier `planning/0.3.6/pre-entry-WU-04G-decision-review.md` is historical decision-analysis context. The official WU-04G document owns implementation after the maintainer selected D1-B through D9-B/C options.
+Current ordered state:
 
-Published PyPI Tool remains `0.3.5`; the development branch Tool identity is `0.3.6`.
+```text
+WU-00  0.3.6-draft normative baseline                     COMPLETE
+WU-01  lifecycle ontology/boundary rules                   COMPLETE
+WU-02  roles + typed relationships + associated artifacts  COMPLETE
+WU-03  canonical Responsibility Map v2 activation          COMPLETE
+WU-04  template/materialization/effective-map pipeline     COMPLETE / EXACT-SHA VERIFIED
+WU-05  repository dogfood / self-evaluation                COMPLETE / DOGFOOD REVIEWED
+WU-06  full regression/package/distribution verification   COMPLETE / EXACT-SHA VERIFIED
+WU-07  final Specification freeze/release preparation      ACTIVE
+```
 
-## Specification snapshots
+Published PyPI Tool remains `0.3.5`; the development branch Tool identity is `0.3.6` until the exact-main release pipeline publishes Tool `0.3.6`.
+
+Historical WU-04G/H/I documents remain implementation/evidence history. They do not override the current WU-07 plan, current Specification binding, or later exact-SHA verification evidence.
+
+## Current Specification binding
+
+Current Tool/root-profile release-candidate binding:
+
+```text
+Specification 0.3.6-draft
+SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+Important historical checkpoints include:
 
 ```text
 WU-00 baseline:              654e41d49600fc091f9a6cb6b1c60bbc7da4e301
 WU-03 canonical activation:  12e2ccd15634ecb3d0a4195b0f61ac3f620e7540
 WU-04C authority snapshot:   82abd09360df09a95fbbfb516855fa9ffb49f050
+current bound snapshot:      d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
 
-Current Tool/root-profile binding at WU-04G entry:
+The final WU-07 audit found no pre-established genuine normative defect and therefore retains `d6995ed...` unless later evidence proves an actual normative correction is necessary. Release workflow/test/documentation changes MUST NOT move `SPEC_REVISION` by themselves.
 
-```text
-Specification 0.3.6-draft
-SPEC_REVISION 82abd09360df09a95fbbfb516855fa9ffb49f050
-```
+WU-07 release-contract strengthening binds the release-source normative asset set to the exact immutable revision. Current release-bound assets include the five canonical Specification Markdown documents, canonical machine-readable schemas/registry, and their embedded package copies. Canonical/embedded equality and bound-revision equality are separate required properties.
 
-WU-04C froze `PTSIP-RMAP-013` through `PTSIP-RMAP-016`. WU-04D implemented the frozen materialization semantics. WU-04E/F consume those semantics in validation and conformance.
-
-WU-04G accepted D6-B/D7-C adds a genuine normative authority rule: an accepted project-owned clarification/adoption decision may authorize the exact hybrid project extension/replacement and, when required to represent that accepted decision, a `template -> hybrid` source-mode transition. Therefore G0 must freeze this rule in canonical/embedded Specification/registry data and select a new immutable `SPEC_REVISION` before runtime implementation depends on automatic conversion. Do not invent or predeclare the future SHA.
-
-Decision records:
+Decision records remain:
 
 - `ADR-0007` — primary lifecycle boundary determination;
 - `ADR-0008` — roles, typed relationships, associated artifacts;
@@ -111,7 +128,7 @@ GOVERNS
 
 Associated artifacts are project-owned non-component support surfaces subordinate to exactly one classified anchor component. They have no classification or component roles and cannot hide independently governable lifecycle responsibility.
 
-## WU-04 authority and runtime pipeline
+## Responsibility Map declaration and effective-map boundary
 
 Responsibility Map source modes:
 
@@ -121,7 +138,7 @@ template
 hybrid
 ```
 
-Frozen base boundary:
+Authority boundary:
 
 ```text
 classification
@@ -146,54 +163,22 @@ PROJECT_REMOVAL
 
 The materializer MUST NOT infer architecture, auto-select templates, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve conflicts by heuristics, or mutate source declarations merely to produce a valid effective map.
 
-Verified E/F pipeline:
+Canonical downstream flow is:
 
 ```text
-source ptsip.yaml
-    -> validate_profile()
-        -> source schema + Tool/Specification binding
-        -> materialize_profile()
-        -> effective semantic/selector validation
-        -> ValidationResult.resolved_profile
-    -> ResolvedProfile.effective_payload
-        -> base conformance
-        -> complete conformance engine
+source declaration
+    -> validate source/binding
+    -> deterministic materialization
+    -> validated ResolvedProfile
+    -> Canonical Effective Responsibility Map
+        -> validation / conformance
+        -> clarification / adoption
+        -> narrow VPMS read-only projection
 ```
 
-`ValidationResult.resolved_profile` is an in-process handoff and is deliberately omitted from `ValidationResult.as_dict()`.
+An accepted project-owned clarification/adoption decision may authorize only the minimum project delta needed to represent that accepted decision. Where required, the accepted decision may authorize `template -> hybrid` while retaining the exact selected template ID/revision. Repository discovery and deterministic materialization remain non-authoritative.
 
-## WU-04G accepted decision package
-
-```text
-D1-B  ResolvedProfile.effective_payload is clarification/adoption read authority
-D2-B  invalid/unresolvable profiles fail closed, then expose deterministic remediation/retry work
-D3-B  effective associated-artifact coverage suppresses duplicate component questions
-D4-B  selector/candidate coverage uses one shared canonical primitive
-D5-B  create ptsip-clarification-answer/v2 and remove lifecycle_owner from new canonical answers
-D6-B  accepted decisions may extend hybrid and convert template -> hybrid when required
-D7-C  eligible accepted decisions automatically perform that conversion/application
-D8-B  exact selected profile path travels through complete decision protocol and remote CAS
-D9-B  optimize/migrate only WU-04G-owned tests with coverage-preservation proof
-```
-
-### D2 recovery extension
-
-Fail closed does not end with a dead-end error. The expected G behavior is:
-
-```text
-profile resolution failure
-    -> stop architecture-dependent clarification/adoption
-    -> preserve validation/materialization errors + failure stage + exact profile path
-    -> provide non-authoritative remediation/retry information
-    -> project/source is corrected
-    -> take fresh repository/profile snapshot
-    -> re-run validate_profile()
-    -> resume only after a valid ResolvedProfile exists
-```
-
-No raw-profile fallback, partial effective-map reuse, inferred architecture, or silent repair is allowed.
-
-### D5 answer-v2 migration
+## Clarification / decision boundary
 
 New canonical answers use `ptsip-clarification-answer/v2` with:
 
@@ -205,115 +190,106 @@ runtime_required
 executable
 ```
 
-`lifecycle_owner` is removed from new canonical decisions and Tool 0.3.6 Project Profile serialization. Existing v1 data may be handled only through explicit compatibility/migration logic for already-persisted decisions; v1 facts cannot restore `TOOLCHAIN` as canonical authority or silently map it to `DEVELOPMENT_TOOLING`.
+`lifecycle_owner` is removed from new Tool `0.3.6` canonical decisions and Project Profile serialization. Historical v1 data may be handled only through explicit compatibility logic and cannot restore `TOOLCHAIN` authority.
 
-### D6/D7 safe-apply authority
+Exact repository-relative selected profile path identity persists through gate creation, decision storage, resolution context, subject revision, remote read, stale check, projection validation, and CAS write. Never silently substitute root `ptsip.yaml` for an explicitly selected non-root profile.
 
-Automatic `template -> hybrid` is allowed only because an accepted project decision authorizes the exact project-owned change. Repository evidence merely discovers candidates; the materializer merely resolves declarations. Safe apply must retain exact template ID/revision and write only the minimum accepted project delta. It must not materialize the full effective map to explicit form or introduce unrelated overrides/removals.
+Dedicated distributed decision authority remains distinct from project architecture declaration and observed evidence. Evidence is not authority; materialization is not authority; accepted project-owned decisions authorize only their exact permitted write delta.
 
-### D8 path identity
+## WU-04 / WU-05 / WU-06 completion evidence
 
-The normalized repository-relative selected profile path must persist through gate creation, decision storage, resolution context, subject revision, remote file read, stale check, projection validation, and CAS write. Never silently substitute root `ptsip.yaml` for a non-root selected profile.
-
-### D9 bounded test migration
-
-Only G-owned/touched tests may be optimized/migrated. Collect duration evidence first; consolidate only duplicated immutable setup/semantically equivalent variants; keep mutable CAS/snapshot/stale-state isolation; record replacement coverage for any merged/removed historical test; do not change xdist/workflow execution; final authority remains exact-SHA complete repository regression.
-
-## WU-04 stage state
+WU-04 architecture-foundation completion is backed by exact-SHA verification authority:
 
 ```text
-WU-04A  template catalog identity                         COMPLETE
-WU-04B  deterministic materializer core                  COMPLETE
-WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
-WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE
-WU-04H  VPMS narrow read-only integration                LOCKED
-WU-04I  regression + WU-04 completion                    LOCKED
+source SHA                    eadb07f78f9690ca0180bfbba194c5c9602e1838
+workflow run/job              32588090216 / 97067421324
+Python                        3.14.6
+pytest                        327 passed / 0 failed
+self-hosted/tooling-test      success
 ```
 
-WU-04G implementation order is G0 normative freeze, then effective-read/selector integration, answer-v2 migration, hybrid safe apply, exact profile-path control plane, recovery/test integration. Parallel work may begin only after shared normative meaning is fixed and file ownership is partitioned.
-
-WU-04H must not be entered or pre-created before the WU-04G completion gate is reviewed.
-
-## OpenAI Local Bridge operational evidence
-
-Canonical registry:
+WU-05 repository dogfood exact review authority:
 
 ```text
-.codex/openai-local-bridge/tasks.toml
+5010fa81ebd104eb329f29217d4c5fecec51cacb
 ```
 
-Current Bridge task selected by the PTSIP repository policy:
+Reviewed WU-05 result included valid self-profile, `unassigned_count=0`, stable clarification/local gate, no confirmed Tool `0.3.6` implementation defect, and no normative Specification defect. Strict conformance remained fail-closed `INCOMPLETE`; it was not forced to a false `CONFORMANT` result.
+
+WU-06 exact verification authority:
 
 ```text
-repository_id   Kinirin/PTSIP
-task_id         wu04g-precheck
-executable      py
-args            -3.14 .github/scripts/wu04g_guard.py precheck
-cwd             .
-access          read
+entry baseline                  bdd77ef3f026a83bb0fd0099144aebea1de55365
+verification SHA                a94c50130a694dba937708403520417719aec1e1
+workflow run/job                32598727026 / 97093629017
+runner                          self-hosted Windows X64
+Python                          3.14.6
+pytest                          327 passed / 0 failed / 257.31s
+Tool                            0.3.6
+Specification                   0.3.6-draft
+SPEC_REVISION                   d6995ed232e845b88d8235b851e80ab54b7804ea
+self-profile                    valid / errors=[] / warnings=[] / unassigned_count=0
+sdist + wheel                   PASS
+twine                           PASS
+Product Artifact evidence       PASS
+artifact snapshot binding       PASS
+PTSIP-PKG-001 definite failures 0
+wheel reinstall / CLI smoke     PASS
+VPMS compatibility smoke        PASS
+self-hosted/tooling-test        success
 ```
 
-The task is deliberately the existing WU-04G repository-native precheck rather than the currently known-red complete pytest suite. It is a Bridge connectivity/task-execution probe only and does not replace G1-G5 focused verification or the post-G5 exact-SHA complete repository regression.
+WU-06's Product Artifact evidence closes the release-verification handoff from WU-05. Remaining artifact-aware `INCOMPLETE` is not a Product Artifact failure and does not justify weakening fail-closed behavior.
 
-Maintainer-reported remote E2E success on 2026-08-19:
+## WU-07 Strategy B release contract
+
+WU-07 strengthens the existing release architecture rather than redesigning it around Build Once / publish-identical-bits attestation.
+
+Current WU-07 work owns:
 
 ```text
-run_id                         a4441c401c994cf6bc09ec539a56ffa7
-status                         completed
-exit_code                      0
-failure_kind                   null
-protocol_version               2025-11-25
-remote_task_execution_verified true
-log_available                  true
-log_truncated                  false
-capability_url_exposed         false
+final Specification audit and freeze decision
+exact bound-revision content verification
+Tool 0.3.6 release-note closure
+release-note/index consistency
+stale operational current-state cleanup
+publication Product Artifact verification
+focused release-readiness tests
+full repository regression
+final exact-SHA self-hosted verification
+main-branch release handoff preparation
 ```
 
-This proves Bridge repository discovery + task discovery + read-only remote execution + run evidence/log retrieval for `wu04g-precheck`. Do not interpret it as WU-04G implementation completion, full regression success, or release readiness.
+Current implementation direction:
 
-## Latest self-hosted regression evidence
+- `.github/scripts/verify_release_contract.py` fails closed when a release-bound normative asset at `HEAD` differs from the exact `SPEC_REVISION` Git blob;
+- canonical/embedded machine-readable contract copies must match;
+- `releasenote/0.3.6.md`, Specification release note, and release-note index must carry stable current Tool/Specification markers;
+- `.github/workflows/tooling-release.yml` rebuilds distributions from the published tag on self-hosted Windows and verifies the actual publication wheel's metadata/content, Product Artifact evidence, exact tagged snapshot binding, and zero definite `PTSIP-PKG-001` Product-package violations before PyPI upload;
+- Strategy C release-infrastructure redesign remains deferred.
 
-GitHub Actions run:
+Do not claim WU-07 complete until the final development candidate receives successful exact-SHA `self-hosted/tooling-test` status and completion evidence is recorded.
+
+## Tool 0.3.5 migration continuation
+
+Evidence-backed Tool `0.3.5 -> 0.3.6` architecture migration is not a Tool `0.3.6` release prerequisite.
+
+The continuation is owned by Tool `0.3.6.1`:
 
 ```text
-run 32240740753
-job 96030499443
-source SHA 48b75e699a592703e4e03a8462131e4932103677
+planning/0.3.6.1.md
+planning/0.3.6.1/WU-01-candidate-discovery-evidence-expansion.md
+planning/0.3.6.1/WU-02-evidence-provenance-normalization.md
+planning/0.3.6.1/WU-03-tool-035-legacy-reader.md
+planning/0.3.6.1/WU-04-lifecycle-migration-analyzer.md
+planning/0.3.6.1/WU-05-target-proposals.md
 ```
 
-Observed execution facts:
-
-```text
-self-hosted runner scheduling       PASS
-exact SHA checkout                  PASS
-exact source identity               PASS
-host Python 3.14.3 preparation      PASS
-isolated .venv creation             PASS
-verification tooling installation   PASS
-complete pytest execution           RAN
-result                              260 passed / 13 failed
-```
-
-`tests/ptsip/test_profile_validation_036.py` and `tests/ptsip/test_conformance_effective_map_036.py` did not appear in the exhaustive 13-failure summary, so both focused E/F contracts passed at the exact verification SHA.
-
-Remaining failures were classified as:
-
-```text
-3  decision/clarification-control historical expectations
-1  pilot/evidence fixture using pre-0.3.6 profile state
-1  stale lifecycle-evidence expectation for an unscoped release workflow
-1  agent-decision conflict expectation for later decision integration
-7  topology/legacy-profile migration fixtures
-```
-
-WU-04G may migrate only the decision/clarification tests that fall within its accepted scope. The overall workflow concluded failure, so no `self-hosted/tooling-test` success status was recorded for `48b75e6...`. Do not claim full Tool `0.3.6` regression success or release readiness from this run.
+The later preview/confirmation/safe-apply stage remains Tool `0.3.6.1` work. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` migration remains prohibited.
 
 ## PTSIP / VPMS boundary
 
-PTSIP classification and VPMS Verification Purpose remain independent.
+PTSIP classification and VPMS Verification Purpose are independent.
 Current VPMS purposes remain:
 
 ```text
@@ -321,71 +297,48 @@ PRODUCT
 TOOLCHAIN
 ```
 
-VPMS `TOOLCHAIN` is VPMS vocabulary, not Tool `0.3.6` PTSIP classification. PTSIP core MUST NOT depend on VPMS. VPMS effective-map read integration is reserved for WU-04H.
+VPMS `TOOLCHAIN` is VPMS vocabulary, not Tool `0.3.6` PTSIP classification. PTSIP core MUST NOT depend on VPMS. VPMS consumes a narrow read-only projection of already-resolved effective PTSIP metadata and does not own PTSIP classification, template/hybrid semantics, or migration authority.
 
-## GitHub Actions resource policy
+## Exact release gate
 
-Self-hosted workflows are capability-bound, not machine-name-bound.
-Eligible build/test hosts must satisfy:
+At the Tool release boundary:
+
+```text
+approved Tool 0.3.6 state merged to main
+    -> read fresh exact main HEAD
+    -> dispatch tooling-test.yml from main
+    -> exact github.sha checkout
+    -> self-hosted Windows + Python 3.14 full regression/build/smoke
+    -> Product Artifact evidence + exact snapshot binding
+    -> self-hosted/tooling-test success on that exact main SHA
+    -> no repository mutation after exact verification
+    -> dispatch release.yml from the same current main SHA
+    -> require origin/main == dispatched SHA
+    -> verify Tool / Specification / exact bound content / release documents
+    -> create draft GitHub Release targeting the same SHA
+    -> maintainer reviews and publishes draft
+    -> tooling-release.yml checks out published tag
+    -> self-hosted publication distribution build/verification
+    -> publication Product Artifact evidence + exact tagged-snapshot binding
+    -> minimal GitHub-hosted GNU/Linux PyPI Trusted Publishing only
+```
+
+No manual `source_sha`, `version`, `release_candidate`, or `host_ready` workflow inputs are part of this pipeline.
+
+Self-hosted execution is capability-bound:
 
 ```text
 self-hosted
 Windows
 X64
 PowerShell
-Python 3.14 available through `py -3.14`
+Python 3.14 via py -3.14
 ```
 
-Do not hard-code `DESKTOP-*` names into workflows or operational instructions.
-Do not add `host_ready` inputs: an unavailable matching runner naturally leaves the Actions job queued.
-Do not require maintainers to type exact SHAs into workflow inputs when the workflow can pin and verify `${{ github.sha }}` itself.
-
-Current pipeline:
-
-```text
-tooling-test.yml
-    manual workflow_dispatch; no custom inputs
-    checkout exact github.sha
-    host Python 3.14 + isolated .venv
-    full regression/build/smoke
-    -> self-hosted/tooling-test status on exact SHA only after complete workflow success
-
-release.yml
-    manual workflow_dispatch from main; no custom inputs
-    derives github.sha and package version
-    requires current origin/main == dispatched SHA
-    requires self-hosted/tooling-test success on exact SHA
-    verifies release contract
-    creates draft release for same SHA
-
-tooling-release.yml
-    release: published
-    self-hosted Windows distribution build/verification
-    minimal ubuntu-latest Trusted Publishing only
-```
-
-The narrow GNU/Linux PyPI Trusted Publishing job is the only approved GitHub-hosted compute exception.
-
-## Overall Tool 0.3.6 order
-
-```text
-WU-00  0.3.6-draft normative baseline                    COMPLETE
-WU-01  lifecycle ontology/boundary rules                  COMPLETE
-WU-02  roles + typed relationships + associated artifacts COMPLETE
-WU-03  canonical Responsibility Map v2 activation         COMPLETE
-WU-04  templates/materialization/effective-map pipeline   IN PROGRESS
-WU-05  candidate-discovery evidence expansion             PLANNED
-WU-06  evidence/provenance normalization                  PLANNED
-WU-07  Tool 0.3.5 legacy reader                           PLANNED
-WU-08  lifecycle migration analyzer                       PLANNED
-WU-09  target architecture proposals                      PLANNED
-WU-10  preview/confirm/safe apply                          PLANNED
-WU-11  repository dogfood                                 PLANNED
-WU-12  full regression/package verification               PLANNED
-WU-13  final Specification/release boundary               PLANNED
-```
+Never hard-code a runner machine name. The narrow GNU/Linux PyPI Trusted Publishing job remains the approved GitHub-hosted compute exception.
 
 ## Repository write discipline
 
-Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable Specification, `planning/0.3.6.md`, and `planning/0.3.6/WU-04G-clarification-adoption-effective-map.md` while G is active.
-Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
+Before repository changes, read `AGENTS.md`, this `MEMORY.md`, `ptsip.yaml`, `src/ptsip/constants.py`, applicable bound Specification, `planning/0.3.6.md`, and the active WU-07 stage document.
+
+Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim. Preserve exact entry and verification SHAs as historical authority; descendant planning/status commits record evidence but do not replace the exact verified source SHA.
