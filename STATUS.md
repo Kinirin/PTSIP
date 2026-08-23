@@ -51,8 +51,8 @@ WU-02  roles + typed relationships + associated artifacts COMPLETE
 WU-03  canonical Responsibility Map v2 activation         COMPLETE
 WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
 WU-05  repository dogfood / self-evaluation               COMPLETE / DOGFOOD REVIEWED
-WU-06  full regression / package/distribution verification ACTIVE
-WU-07  final Specification freeze / release preparation   PLANNED
+WU-06  full regression / package/distribution verification COMPLETE / EXACT-SHA VERIFIED
+WU-07  final Specification freeze / release preparation   PLANNED / LOCKED
 ```
 
 WU-05 exact entry baseline:
@@ -85,13 +85,25 @@ WU-06 detailed stage document was initially created at:
 59224b9df25db34f4af58e48eaeac0b1db8bf187
 ```
 
-WU-06 execution authority:
+WU-06 exact verification authority:
+
+```text
+a94c50130a694dba937708403520417719aec1e1
+```
+
+WU-06 verification run/job:
+
+```text
+32598727026 / 97093629017
+```
+
+WU-06 execution/closure authority:
 
 ```text
 planning/0.3.6/WU-06-full-regression-package-distribution-verification.md
 ```
 
-The entry-document and activation commits are descendants of the exact entry baseline and do not replace it. WU-07 remains locked until WU-06 completion and a fresh WU-07 entry review.
+The entry-document, activation, and closure-documentation commits are descendants of the exact entry baseline and do not replace the exact verification authority. WU-07 remains locked pending maintainer strategy selection and its own fresh WU-07 entry review.
 
 ## WU-04 completion authority
 
@@ -248,43 +260,71 @@ exact repository-consumer verification authority:
 
 Closure-documentation commits after `5010fa81...` record the reviewed result and do not replace the exact dogfood verification authority.
 
-## WU-06 active verification boundary
+## WU-06 completion authority
 
-WU-06 is now the only active Tool `0.3.6` work unit.
-
-It starts from exact entry baseline:
+WU-06 started from exact entry baseline:
 
 ```text
 bdd77ef3f026a83bb0fd0099144aebea1de55365
 ```
 
-and owns release-candidate verification of:
+and completed release-candidate verification on exact source SHA:
 
 ```text
-exact candidate source identity
-complete repository pytest
-Tool / package / Specification identity
-repository self-profile / Effective Map validation
-canonical / embedded contract coherence
-sdist + wheel construction
-actual distribution-content review
-Product Artifact evidence
-exact artifact / repository snapshot binding
-release-relevant conformance review
-twine check
-built-wheel force reinstall
-installed CLI / Specification smoke
-VPMS compatibility smoke
-self-hosted exact-SHA tooling-test status
+a94c50130a694dba937708403520417719aec1e1
 ```
 
-The key WU-05 handoff is Product Artifact evidence / exact artifact binding. WU-06 must establish this from actual built distributions rather than manufacture evidence merely to force conformance green.
+Exact verification evidence:
 
-The two WU-05 observations concerning Python distribution/import-name mismatches and independent-build manifest evidence are not pre-classified as WU-06 defects. Any failure must be classified before modification.
+```text
+workflow                              tooling-test
+run/job                               32598727026 / 97093629017
+runner                                self-hosted Windows X64
+Python                                3.14.6
+complete repository pytest            327 passed / 0 failed / 257.31s
+Tool                                  0.3.6
+Specification                         0.3.6-draft
+SPEC_REVISION                         d6995ed232e845b88d8235b851e80ab54b7804ea
+repository profile                    valid=true / errors=[] / warnings=[]
+source_mode                           explicit
+materialized                          true
+responsibility_map_coverage           unassigned_count=0
+clarify                               NO_CLARIFICATION_REQUIRED / STABLE
+local gate                            NO_DECISION_REQUIRED / LOCAL
+sdist                                 PASS
+wheel                                 PASS
+twine check                           PASS
+Product Artifact evidence             PASS
+artifact exact-snapshot binding       PASS
+artifact PTSIP-PKG-001 violations     0
+artifact-aware conform                INCOMPLETE / reviewed
+built-wheel force reinstall           PASS
+installed Tool/Specification smoke    PASS
+VPMS compatibility smoke              PASS
+self-hosted/tooling-test               success
+```
 
-WU-06 does not enter Tool `0.3.6.1` migration work, final Specification freeze, release tagging, GitHub Release publication, PyPI publication, or WU-07 work.
+The Product Artifact wheel verified in the exact run had SHA-256:
 
-Final WU-06 authority will require a fresh successful `self-hosted/tooling-test` result on the exact final WU-06 verification candidate SHA. WU-04 exact-SHA success remains predecessor evidence only.
+```text
+b5ed0a7fca13181af9a0e1bc92dc9cceb382fe96a762fbf0504216e923880726
+```
+
+WU-05's Product Artifact / exact artifact-binding handoff is therefore closed. The remaining artifact-aware `INCOMPLETE` outcome does not represent a Product Artifact failure: artifact-evidence blocking gaps were cleared and no definite `PTSIP-PKG-001` violation remained. Previously reviewed Python distribution/import-name and independent-build manifest evidence limitations remain fail-closed evidence sufficiency observations.
+
+WU-06 found and corrected a release-verification workflow defect while establishing Product Artifact evidence. The failed precursor run did not replace authority; after the narrow correction, exact candidate `a94c501...` passed the full workflow and received `self-hosted/tooling-test = success`.
+
+Therefore:
+
+```text
+WU-06 COMPLETE / EXACT-SHA VERIFIED
+exact verification authority:
+a94c50130a694dba937708403520417719aec1e1
+```
+
+Closure documentation after `a94c501...` records this result and does not replace the exact source verification authority.
+
+WU-07 is not yet active. No WU-07 stage document is created by this closure.
 
 ## Canonical Responsibility Map / Effective Map boundary
 
@@ -319,7 +359,7 @@ Classification, component role, typed relationship, declaration/materialization 
 
 Root `ptsip.yaml` self-adopts Responsibility Map v2.
 
-WU-05 independently reconfirmed the self-profile as:
+WU-06 independently reconfirmed the self-profile as:
 
 ```text
 valid: true
@@ -330,13 +370,11 @@ materialized: true
 responsibility_map_coverage.unassigned_count: 0
 ```
 
-The WU-05 Effective Responsibility Map digest remained:
+The Effective Responsibility Map digest remains:
 
 ```text
 sha256:c009d4fb98daa8a3dc0fd2dfbdd974b467cf107c8c1e7814e460059f4c0c4a01
 ```
-
-WU-06 must reconfirm this contract on its final verification candidate if any relevant tracked structure changes; predecessor evidence does not replace final-stage verification.
 
 ## VPMS boundary
 
@@ -391,6 +429,7 @@ tooling-test.yml
     workflow_dispatch with no custom inputs
     -> selected ref's exact github.sha
     -> self-hosted regression/build/smoke
+    -> Product Artifact evidence + exact snapshot binding
     -> self-hosted/tooling-test status on exact SHA only after complete workflow success
 
 release.yml
@@ -412,12 +451,12 @@ tooling-release.yml
 ```text
 WU-04 COMPLETE
     -> WU-05 COMPLETE / DOGFOOD REVIEWED
-    -> WU-06 ACTIVE: full regression / package / distribution verification
-    -> WU-07 final Specification freeze / release preparation
+    -> WU-06 COMPLETE / EXACT-SHA VERIFIED
+    -> WU-07 PLANNED / LOCKED: final Specification freeze / release preparation
     -> Tool 0.3.6 release
 ```
 
-WU-07 remains locked until WU-06 completes and receives its own fresh branch-HEAD entry review.
+WU-07 remains locked until its release-preparation strategy is selected and a fresh branch-HEAD entry review establishes its exact entry baseline.
 
 ## Tool lineage
 
@@ -427,6 +466,6 @@ WU-07 remains locked until WU-06 completes and receives its own fresh branch-HEA
 - Tool `0.3.3`: permanently source-only
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
-- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 COMPLETE / DOGFOOD REVIEWED; WU-06 ACTIVE from exact entry baseline `bdd77ef3...`**
+- Tool `0.3.6`: **active development; WU-04 COMPLETE / EXACT-SHA VERIFIED; WU-05 COMPLETE / DOGFOOD REVIEWED; WU-06 COMPLETE / EXACT-SHA VERIFIED at `a94c501...`; WU-07 PLANNED / LOCKED**
 
 Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
