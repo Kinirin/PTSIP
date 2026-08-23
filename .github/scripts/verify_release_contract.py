@@ -106,6 +106,42 @@ def main() -> int:
                 "Specification release note does not record the exact bound SPEC_REVISION."
             )
 
+    tool_note = ROOT / "releasenote" / f"{package_version}.md"
+    tool_note_text = ""
+    if not tool_note.is_file():
+        errors.append(f"Missing Tool release note: {tool_note.relative_to(ROOT)}")
+    else:
+        tool_note_text = tool_note.read_text(encoding="utf-8")
+        if not tool_note_text.strip():
+            errors.append(f"Empty Tool release note: {tool_note.relative_to(ROOT)}")
+        else:
+            if not re.search(r"(?m)^##\s+\S", tool_note_text):
+                errors.append(
+                    f"Tool release note has no categorized sections: {tool_note.relative_to(ROOT)}"
+                )
+            if package_version not in tool_note_text:
+                errors.append("Tool release note does not record the package version.")
+            if spec_version not in tool_note_text or spec_revision not in tool_note_text:
+                errors.append(
+                    "Tool release note does not record the exact Tool/Specification release binding."
+                )
+
+    release_index = ROOT / "releasenote" / "README.md"
+    if not release_index.is_file():
+        errors.append("Missing release-note index: releasenote/README.md")
+    else:
+        release_index_text = release_index.read_text(encoding="utf-8")
+        tool_index_marker = f"| `{package_version}` |"
+        spec_index_marker = f"| `{spec_version}` |"
+        if tool_index_marker not in release_index_text:
+            errors.append(
+                f"Release-note index does not recognize Tool {package_version}."
+            )
+        if spec_index_marker not in release_index_text:
+            errors.append(
+                f"Release-note index does not recognize Specification {spec_version}."
+            )
+
     if re.fullmatch(r"[0-9a-f]{40}", spec_revision):
         revision_check = _git("rev-parse", "--verify", f"{spec_revision}^{{commit}}")
         if revision_check.returncode != 0:
@@ -159,6 +195,7 @@ def main() -> int:
     print(f"Tool version: {package_version}")
     print(f"Specification: {spec_version}")
     print(f"Specification revision: {spec_revision}")
+    print(f"Tool note: releasenote/{package_version}.md")
     print(f"Specification note: releasenote/spec-{spec_version}.md")
     print(f"Release-bound Specification assets: {len(RELEASE_BOUND_SPEC_PATHS)}")
     return 0
