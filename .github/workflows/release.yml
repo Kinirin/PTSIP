@@ -92,12 +92,15 @@ jobs:
           $note = "releasenote/$packageVersion.md"
 
           git show-ref --verify --quiet "refs/tags/$tag"
-          if ($LASTEXITCODE -eq 0) {
+          $tagLookupExit = $LASTEXITCODE
+          if ($tagLookupExit -eq 0) {
             throw "Tag $tag already exists. Tagged release notes are immutable."
           }
-          if ($LASTEXITCODE -ne 1) {
+          if ($tagLookupExit -ne 1) {
             throw "Unable to determine whether tag $tag already exists."
           }
+          # Exit 1 means the release tag does not exist, which is the expected pre-release state.
+          $global:LASTEXITCODE = 0
 
           if (-not (Test-Path -LiteralPath $note -PathType Leaf)) {
             throw "Missing reviewed Tool release note $note. Finalize and commit the release note before release preparation."
