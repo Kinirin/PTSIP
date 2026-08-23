@@ -11,7 +11,7 @@ Read, in order:
 3. `src/ptsip/constants.py`
 4. applicable Specification files under `spec/`
 5. `planning/0.3.6.md`
-6. the WU-04 sub-stage document(s) identified by the master plan for the current implementation/verification tranche
+6. `planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md` while Tool `0.3.6` release closure is active
 
 `MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
@@ -20,8 +20,33 @@ Read, in order:
 - Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
 - Preserve maintainer commits and never force-update `main`.
 - Do not claim tests, builds, releases, tags, or publication succeeded without evidence for the exact relevant SHA.
-- Do not create future WU-04 sub-stage documents before their entry gate is reached.
-- Do not finalize the Tool release note before the explicit release boundary.
+- Enter or create future work-unit implementation only after its predecessor completion and exact entry gate are established.
+- Tool release notes may be curated during the explicit release-preparation stage, but MUST NOT be described as published until the exact release boundary succeeds.
+
+## Current Tool 0.3.6 stage
+
+Current ordered state:
+
+```text
+WU-00  0.3.6-draft normative baseline                    COMPLETE
+WU-01  lifecycle ontology/boundary rules                  COMPLETE
+WU-02  roles + typed relationships + associated artifacts COMPLETE
+WU-03  canonical Responsibility Map v2 activation         COMPLETE
+WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
+WU-05  repository dogfood / self-evaluation               COMPLETE / DOGFOOD REVIEWED
+WU-06  full regression / package/distribution verification COMPLETE / EXACT-SHA VERIFIED
+WU-07  final Specification freeze / release preparation   ACTIVE
+```
+
+Current WU-07 authority:
+
+```text
+planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md
+strategy B — Release Contract Strengthening
+entry baseline 8b2c0819e10b58902a780a094a0f52c603c39fba
+```
+
+WU-04G/H/I implementation is historical completed context. Do not treat their former entry baselines, active-state instructions, or predecessor verification failures as current release authority.
 
 ## Tool 0.3.6 lifecycle reasoning
 
@@ -139,7 +164,7 @@ template
 hybrid
 ```
 
-ADR-0009 and `PTSIP-RMAP-013` through `PTSIP-RMAP-016` freeze the authority boundary:
+ADR-0009 and `PTSIP-RMAP-013` through `PTSIP-RMAP-016` freeze the base authority boundary. `PTSIP-RMAP-017` freezes accepted-decision safe-apply authority.
 
 ```text
 classification
@@ -158,7 +183,9 @@ Authority rules:
 - `template`: project explicitly adopts exact template `id + immutable revision`; that revision supplies adopted declaration content;
 - `hybrid`: project owns exact template selection plus stable-ID whole-entity replacement, extension, and removal decisions;
 - project replacement/extension/removal outranks selected immutable template declaration;
-- template selection MUST NOT be inferred from repository evidence, language, framework, manifest, package manager, path, or confidence.
+- template selection MUST NOT be inferred from repository evidence, language, framework, manifest, package manager, path, or confidence;
+- an accepted project-owned clarification/adoption decision may authorize only the minimum project declaration delta needed to represent that accepted decision;
+- a `template -> hybrid` transition is allowed only when such an accepted decision requires it, while retaining the exact selected template ID/revision.
 
 Derived runtime/review origin vocabulary:
 
@@ -173,87 +200,23 @@ PROJECT_REMOVAL
 This provenance is not lifecycle classification and is not required canonical profile serialization.
 The materializer MUST NOT infer architecture, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve semantic conflicts by heuristics, or mutate source declarations merely to obtain a valid map.
 
-## Current WU-04 stage
+## Clarification / adoption authority
 
-Current ordered state:
+Clarification and adoption consume a valid `ResolvedProfile.effective_payload`. Invalid/unresolvable profile state fails closed and exposes deterministic remediation/retry information without falling back to raw-profile architecture authority.
 
-```text
-WU-04A  template catalog identity                         COMPLETE
-WU-04B  deterministic materializer core                  COMPLETE
-WU-04C  declaration authority/source_mode boundary       COMPLETE
-WU-04D  ResolvedProfile + digest + provenance            COMPLETE
-WU-04E  validation consumes effective map                COMPLETE / EXACT-SHA VERIFIED
-WU-04F  conformance consumes effective map               COMPLETE / EXACT-SHA VERIFIED
-WU-04G  clarification/adoption integration               ACTIVE
-WU-04H  VPMS narrow read-only integration                LOCKED
-WU-04I  regression + WU-04 completion                    LOCKED
-```
-
-Active WU-04G document:
+New canonical answers use `ptsip-clarification-answer/v2` with:
 
 ```text
-planning/0.3.6/WU-04G-clarification-adoption-effective-map.md
-entry baseline 52a455115d191123504c2fd690ffe499caf0ff6a
+classification
+purpose
+shipped
+runtime_required
+executable
 ```
 
-Accepted maintainer package:
+`lifecycle_owner` is not part of new canonical Tool `0.3.6` decisions or Project Profile serialization. Historical v1 data may be handled only through explicit compatibility logic and cannot restore `TOOLCHAIN` as canonical authority.
 
-```text
-D1-B  read validated ResolvedProfile.effective_payload
-D2-B  fail closed, then expose deterministic remediation/retry work
-D3-B  associated-artifact coverage suppresses duplicate component questions
-D4-B  shared canonical selector/candidate coverage primitive
-D5-B  clarification-answer/v2; remove lifecycle_owner from new canonical decisions
-D6-B  accepted decision may require template -> hybrid safe apply
-D7-C  perform eligible hybrid conversion/application automatically
-D8-B  exact selected profile path through gate/store/stale-check/remote CAS
-D9-B  bounded optimization/migration of G-owned tests only
-```
-
-WU-04G starts with **G0 normative freeze**. D6-B/D7-C must not be implemented as materializer/discovery inference. First freeze a Specification/registry rule that an accepted project-owned clarification/adoption decision authorizes the exact project extension/replacement and, when required to represent it, `template -> hybrid` source-mode transition. Retain the exact selected template ID/revision. Never materialize the whole effective map back to explicit source.
-
-Until G0 selects a new immutable Specification snapshot, the bound entry snapshot remains:
-
-```text
-82abd09360df09a95fbbfb516855fa9ffb49f050
-```
-
-Do not invent the future revision SHA. Once the normative rule is committed, select the immutable revision first, then update Tool/root binding.
-
-WU-04G read behavior:
-
-- clarification/adoption architecture coverage uses only a valid `ValidationResult.resolved_profile.effective_payload`;
-- invalid/unresolvable profile state fails closed with machine-readable recovery/retry information and no raw-profile authority fallback;
-- effective associated-artifact selectors suppress duplicate component clarification;
-- canonical selector semantics are shared with the validation/selector layer;
-- ambiguous coverage never guesses ownership.
-
-WU-04G decision/write behavior:
-
-- new canonical answer format is `ptsip-clarification-answer/v2` with `classification`, `purpose`, `shipped`, `runtime_required`, and `executable`;
-- `lifecycle_owner` is not part of new canonical decisions or Tool 0.3.6 Project Profile serialization;
-- v1 may be read only through an explicit compatibility/migration path for already-persisted decision data; it must not restore `TOOLCHAIN` authority;
-- an accepted project decision can be encoded as the minimum project-owned hybrid delta;
-- a template source may become hybrid only because that accepted decision authorizes the source change;
-- preserve unrelated hybrid overrides/removals and the exact template revision;
-- conflicts remain fail-closed; never partially mutate source;
-- exact repository-relative selected profile path must survive the complete local/remote decision protocol and CAS.
-
-WU-04G test optimization is bounded to G-owned/touched tests. Do not restructure the whole suite, change xdist/worker/workflow behavior, share away mutable CAS/snapshot/stale-state isolation, or replace final full regression with a reduced subset.
-
-Verified E/F evidence remains:
-
-```text
-workflow run  32240740753
-job           96030499443
-source SHA    48b75e699a592703e4e03a8462131e4932103677
-Python        3.14.3
-pytest        260 passed / 13 failed
-```
-
-The repository-wide workflow still failed, so do not claim global Tool regression success or a `self-hosted/tooling-test` success status for that SHA.
-
-WU-04H must not be entered or pre-created before WU-04G completion is reviewed.
+Exact repository-relative selected profile path identity must survive gate creation, decision storage, resolution context, subject revision, remote file read, stale check, projection validation, and CAS write. Never silently substitute root `ptsip.yaml` for a selected non-root profile.
 
 ## Migration boundary
 
@@ -262,7 +225,7 @@ Migration is preview-first, evidence-backed, loss-preserving, and project-owner-
 Legacy `lifecycle_owner`, `consumers`, `analysis_inputs`, old boundary roots, and untyped dependency-policy entries are migration evidence, not automatic canonical relationships or ownership facts.
 If confirmed architecture cannot be represented losslessly, stop and report the conflict.
 
-WU-04G may migrate `clarification-answer/v1` data only as required for the accepted answer-v2 protocol transition. This does not enter the WU-07 Tool `0.3.5` architecture migration reader.
+Evidence-driven Tool `0.3.5 -> 0.3.6` migration implementation belongs to Tool `0.3.6.1`; WU-07 MUST NOT enter that implementation work.
 
 ## PTSIP / VPMS boundary
 
@@ -275,7 +238,7 @@ TOOLCHAIN
 ```
 
 VPMS `TOOLCHAIN` is VPMS vocabulary, not Tool `0.3.6` PTSIP classification. Do not rename VPMS vocabulary as an accidental ontology migration.
-PTSIP core MUST NOT depend on VPMS. VPMS may consume a narrow read-only effective PTSIP view only after WU-04H is entered. VPMS PASS does not imply PTSIP CONFORMANT and vice versa.
+PTSIP core MUST NOT depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved effective PTSIP metadata and does not own PTSIP classification, template/hybrid semantics, or migration authority. VPMS PASS does not imply PTSIP CONFORMANT and vice versa.
 
 ## Specification binding
 
@@ -287,15 +250,16 @@ Tool X.Y.Z
     -> immutable SPEC_REVISION
 ```
 
-Current Tool `0.3.6` development binding at WU-04G entry:
+Current Tool `0.3.6` release-candidate binding is:
 
 ```text
 SPEC_VERSION  = 0.3.6-draft
-SPEC_REVISION = 82abd09360df09a95fbbfb516855fa9ffb49f050
+SPEC_REVISION = d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
 
-WU-04G D6-B/D7-C requires one genuine normative accepted-decision authority rule. Freeze that Specification/registry change first, select the new immutable snapshot, then update constants/root binding. Do not move `SPEC_REVISION` for answer-v2, selector refactoring, test optimization, or other implementation-only changes.
-Do not weaken `.github/scripts/verify_release_contract.py` to make a release pass.
+WU-07 final audit begins from this binding. Do not move `SPEC_REVISION` for release-note changes, workflow hardening, tests, planning/status updates, or operational-document cleanup. A new revision requires a separately established genuine normative defect.
+
+`.github/scripts/verify_release_contract.py` MUST remain fail-closed. Release-bound normative source and machine-readable assets must match the exact bound revision; canonical/embedded machine-readable copies must remain coherent.
 
 ## Exact release gate
 
@@ -315,6 +279,7 @@ merged main + reviewed releasenote/X.Y.Z.md
     -> create draft release targeting the same SHA without mutating main
     -> publish reviewed draft
     -> tooling-release.yml self-hosted distribution build
+    -> publication Product Artifact evidence + exact tagged-snapshot binding
     -> minimal GitHub-hosted GNU/Linux PyPI Trusted Publishing only
 ```
 
