@@ -26,6 +26,14 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "actions/setup-python@" not in workflow
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
+    assert "Verify publication Product Artifact evidence and exact snapshot binding" in workflow
+    assert "ptsip-artifact-evidence/v1" in workflow
+    assert "ptsip-artifact-evidence-binding/v1" in workflow
+    assert "producer_component = 'repository-release-automation'" in workflow
+    assert "artifact_snapshot_binding" in workflow
+    assert "PTSIP-PKG-001" in workflow
+    assert "$conformExit -notin @(0, 6)" in workflow
+    assert "--force-reinstall --no-deps" in workflow
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
 
 
