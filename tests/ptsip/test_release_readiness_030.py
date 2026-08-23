@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import runpy
 import tomllib
 from pathlib import Path
 
@@ -90,6 +91,10 @@ def test_canonical_and_embedded_machine_readable_contracts_are_identical() -> No
         assert (ROOT / canonical).read_bytes() == (ROOT / embedded).read_bytes(), canonical
 
 
+def _release_contract_namespace() -> dict[str, object]:
+    return runpy.run_path(str(ROOT / ".github" / "scripts" / "verify_release_contract.py"))
+
+
 def test_release_contract_requires_full_036_normative_family() -> None:
     release_contract = (ROOT / ".github" / "scripts" / "verify_release_contract.py").read_text(encoding="utf-8")
     for path in (
@@ -98,8 +103,21 @@ def test_release_contract_requires_full_036_normative_family() -> None:
         "spec/PTSIP-TERMINOLOGY.md",
         "spec/PTSIP-GOVERNANCE.md",
         "spec/PTSIP-RESPONSIBILITY-MAP.md",
+        "schemas/ptsip-profile.schema.json",
+        "schemas/ptsip-artifact-evidence.schema.json",
+        "schemas/ptsip-agent-classification.schema.json",
+        "schemas/ptsip-diagnostic.schema.json",
+        "registry/ptsip-registry.yaml",
+        "src/ptsip/specdata/ptsip-profile.schema.json",
+        "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
+        "src/ptsip/specdata/ptsip-agent-classification.schema.json",
+        "src/ptsip/specdata/ptsip-diagnostic.schema.json",
+        "src/ptsip/specdata/ptsip-registry.yaml",
     ):
         assert path in release_contract
+
+    assert 'head_object != bound_object' in release_contract
+    assert 'canonical_object != embedded_object' in release_contract
 
     spec = (ROOT / "spec" / "PTSIP-SPEC.md").read_text(encoding="utf-8")
     map_spec = (ROOT / "spec" / "PTSIP-RESPONSIBILITY-MAP.md").read_text(encoding="utf-8")
@@ -110,3 +128,29 @@ def test_release_contract_requires_full_036_normative_family() -> None:
     assert "OPERATIONS" in spec
     assert "PTSIP-RMAP-012" in map_spec
     assert EXPECTED_SPEC_REVISION in spec_note
+
+
+def test_release_contract_accepts_current_exact_bound_assets() -> None:
+    namespace = _release_contract_namespace()
+    bound_paths = namespace["RELEASE_BOUND_SPEC_PATHS"]
+    assert isinstance(bound_paths, tuple)
+    assert len(bound_paths) == 15
+    main = namespace["main"]
+    assert callable(main)
+    assert main() == 0
+
+
+def test_release_contract_rejects_bound_asset_blob_drift() -> None:
+    namespace = _release_contract_namespace()
+    main = namespace["main"]
+    assert callable(main)
+    globals_dict = main.__globals__
+    original_object_id = globals_dict["_git_object_id"]
+
+    def fake_object_id(revision: str, path: str) -> str | None:
+        if path == "spec/PTSIP-SPEC.md":
+            return "head-drift" if revision == "HEAD" else "bound-object"
+        return original_object_id(revision, path)
+
+    globals_dict["_git_object_id"] = fake_object_id
+    assert main() == 1
