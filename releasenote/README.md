@@ -40,7 +40,7 @@ Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
 | `0.3.3` | Permanent source-only implementation version | [`0.3.3.md`](0.3.3.md) |
 | `0.3.4` | Published historical Tool release; stale pre-publication repository note removed | GitHub Release history |
 | `0.3.5` | **Published; first VPMS-capable Tool release** | [`0.3.5.md`](0.3.5.md) |
-| `0.3.6` | **Pre-publication release candidate; not yet published** | [`0.3.6.md`](0.3.6.md) |
+| `0.3.6` | **Development complete; pre-publication release candidate** | [`0.3.6.md`](0.3.6.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
@@ -52,14 +52,29 @@ The tagged `releasenote/0.3.5.md` was finalized immediately before publication a
 
 ### Tool 0.3.6 pre-publication note
 
-Tool `0.3.6` remains unpublished while WU-07 performs final Specification freeze and release-contract strengthening. Its current release note is a reviewed pre-publication source document and is not a published release record until the exact-main release gate completes and `tool-v0.3.6` is actually published.
+Tool `0.3.6` development work is complete. WU-00 through WU-07 are closed, and WU-07 completed **Strategy B — Release Contract Strengthening**. The reviewed Tool release note remains a pre-publication source document until the exact-main release and publication boundary succeeds.
 
-Current development binding:
+Current binding:
 
 ```text
 Specification 0.3.6-draft
 SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
 ```
+
+Final development-branch exact verification authority:
+
+```text
+source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+workflow run/job: 32640319047 / 97196299107
+Python:           3.14.6
+pytest:           331 passed / 0 failed
+profile coverage: unassigned_count=0
+Product Artifact: PASS / exact snapshot binding
+PTSIP-PKG-001:    0 definite violations
+status:           self-hosted/tooling-test = success
+```
+
+Documentation descendants after that run record closure and do not replace the exact verification authority.
 
 ## Specification history
 
@@ -68,7 +83,7 @@ SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
 | `0.1.0-draft` | Historical initial public draft | [`spec-0.1.0-draft.md`](spec-0.1.0-draft.md) |
 | `0.2.0-draft` | Historical experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
 | `0.3.4-draft` | Published Tool `0.3.5` baseline family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
-| `0.3.6-draft` | **Current active Tool `0.3.6` development family** | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
+| `0.3.6-draft` | **Current Tool `0.3.6` bound release-candidate family** | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
 
 Draft family labels are mutable; their exact normative identity is the immutable Git revision recorded by the relevant Tool, release, or evaluation.
 
@@ -89,6 +104,8 @@ Draft family labels are mutable; their exact normative identity is the immutable
 ## Completed planning retention
 
 After a Tool version is published and its durable release note exists, completed version-specific planning files may be removed from the active `planning/` directory. Their implementation history remains recoverable from Git history and the corresponding immutable release point. Active future planning remains in `planning/`.
+
+Tool `0.3.6.1` planning remains future migration work and is not Tool `0.3.6` release content.
 
 ## Specification note policy
 
