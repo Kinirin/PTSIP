@@ -138,6 +138,17 @@ def test_release_contract_requires_full_036_normative_family() -> None:
     assert EXPECTED_SPEC_REVISION in spec_note
 
 
+def test_release_documents_record_current_tool_and_spec_binding() -> None:
+    tool_note = (ROOT / "releasenote" / "0.3.6.md").read_text(encoding="utf-8")
+    release_index = (ROOT / "releasenote" / "README.md").read_text(encoding="utf-8")
+    assert "0.3.6" in tool_note
+    assert "0.3.6-draft" in tool_note
+    assert EXPECTED_SPEC_REVISION in tool_note
+    assert "\n## " in tool_note
+    assert "| `0.3.6` |" in release_index
+    assert "| `0.3.6-draft` |" in release_index
+
+
 def test_release_contract_accepts_current_exact_bound_assets() -> None:
     namespace = _release_contract_namespace()
     bound_paths = namespace["RELEASE_BOUND_SPEC_PATHS"]
