@@ -11,42 +11,86 @@ Read, in order:
 3. `src/ptsip/constants.py`
 4. applicable Specification files under `spec/`
 5. `planning/0.3.6.md`
-6. `planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md` while Tool `0.3.6` release closure is active
+6. `planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md` when reviewing Tool `0.3.6` release closure or exact-main handoff
 
 `MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
 ## Repository-state discipline
 
-- Re-read the remote target branch HEAD immediately before **every GitHub write**, merge, release preparation, or evidence claim.
+- Re-read the remote target branch HEAD immediately before every GitHub write, merge, release preparation, or exact-SHA evidence claim.
 - Preserve maintainer commits and never force-update `main`.
 - Do not claim tests, builds, releases, tags, or publication succeeded without evidence for the exact relevant SHA.
-- Enter or create future work-unit implementation only after its predecessor completion and exact entry gate are established.
-- Tool release notes may be curated during the explicit release-preparation stage, but MUST NOT be described as published until the exact release boundary succeeds.
+- Documentation descendants after a successful verification run record results; they do not replace the exact source verification authority.
+- Do not enter future Tool `0.3.6.1` implementation merely because its planning documents exist.
+- Historical release notes, ADRs, and completed WU evidence are not rewritten to make current-version wording uniform.
 
-## Current Tool 0.3.6 stage
+## Tool 0.3.6 completion state
 
-Current ordered state:
-
-```text
-WU-00  0.3.6-draft normative baseline                    COMPLETE
-WU-01  lifecycle ontology/boundary rules                  COMPLETE
-WU-02  roles + typed relationships + associated artifacts COMPLETE
-WU-03  canonical Responsibility Map v2 activation         COMPLETE
-WU-04  template/materialization/effective-map pipeline    COMPLETE / EXACT-SHA VERIFIED
-WU-05  repository dogfood / self-evaluation               COMPLETE / DOGFOOD REVIEWED
-WU-06  full regression / package/distribution verification COMPLETE / EXACT-SHA VERIFIED
-WU-07  final Specification freeze / release preparation   ACTIVE
-```
-
-Current WU-07 authority:
+Tool `0.3.6` development work is complete. Current ordered state:
 
 ```text
-planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md
-strategy B — Release Contract Strengthening
-entry baseline 8b2c0819e10b58902a780a094a0f52c603c39fba
+WU-00  0.3.6-draft normative baseline                     COMPLETE
+WU-01  lifecycle ontology/boundary rules                   COMPLETE
+WU-02  roles + typed relationships + associated artifacts  COMPLETE
+WU-03  canonical Responsibility Map v2 activation          COMPLETE
+WU-04  template/materialization/effective-map pipeline     COMPLETE / EXACT-SHA VERIFIED
+WU-05  repository dogfood / self-evaluation                COMPLETE / DOGFOOD REVIEWED
+WU-06  full regression/package/distribution verification   COMPLETE / EXACT-SHA VERIFIED
+WU-07  final Specification freeze/release preparation      COMPLETE / EXACT-SHA VERIFIED
 ```
 
-WU-04G/H/I implementation is historical completed context. Do not treat their former entry baselines, active-state instructions, or predecessor verification failures as current release authority.
+WU-07 used **Strategy B — Release Contract Strengthening**.
+
+Exact WU-07 verification authority:
+
+```text
+source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+workflow run/job: 32640319047 / 97196299107
+Python:           3.14.6
+pytest:           331 passed / 0 failed
+Specification:    0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
+profile coverage: unassigned_count=0
+Product Artifact: PASS / exact snapshot binding
+PTSIP-PKG-001:    0 definite violations
+wheel/VPMS smoke: PASS
+commit status:    self-hosted/tooling-test = success
+```
+
+The exact WU-07 entry baseline remains:
+
+```text
+8b2c0819e10b58902a780a094a0f52c603c39fba
+```
+
+The completion/verification authority is the later exact candidate `452d0f8...`; closure/documentation commits after it do not replace that verification authority.
+
+The next release boundary is exact-main handoff:
+
+```text
+approved Tool 0.3.6 state -> main
+    -> fresh exact main SHA
+    -> tooling-test.yml on that exact SHA
+    -> require self-hosted/tooling-test success
+    -> release.yml from the same current main SHA
+    -> release contract PASS
+    -> draft GitHub Release targeting the same SHA
+    -> maintainer publication
+    -> tooling-release.yml publication build/verification
+    -> PyPI Trusted Publishing
+```
+
+Do not describe Tool `0.3.6` as published until that publication boundary actually succeeds.
+
+## Current Specification binding
+
+Tool `0.3.6` is bound to:
+
+```text
+Specification 0.3.6-draft
+SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+```
+
+A new immutable Specification revision is required only for a genuine normative change. Workflow, test, planning, status, release-note, or other documentation-only changes do not move `SPEC_REVISION` by themselves.
 
 ## Tool 0.3.6 lifecycle reasoning
 
@@ -66,22 +110,22 @@ OPERATIONS
 NEUTRAL_CONTRACT
 ```
 
-`TOOLCHAIN` is historical Tool `0.3.5` migration input only and MUST NOT be emitted or preserved as a canonical Tool `0.3.6` alias.
+`TOOLCHAIN` is historical Tool `0.3.5` migration input only. It must not be emitted or preserved as a canonical Tool `0.3.6` alias.
 
 Classification is determined from governing lifecycle obligation, not file type, path, framework, language, executable status, workflow provider, compilation behavior, test status, majority of files/jobs/steps, runtime duration, invocation frequency, or confidence score.
 
 Important boundaries:
 
-- Product-owned tests may be `PRODUCT`.
+- Product-specific verification may be `PRODUCT`.
 - Reusable verification/test SDK/framework/harness infrastructure may be `DEVELOPMENT_TOOLING`.
-- Development/intermediate build support is normally `DEVELOPMENT_TOOLING`.
+- Local/intermediate development build support is normally `DEVELOPMENT_TOOLING`.
 - Authoritative release-unit assembly/signing/packaging/publication/deployment-to-destination is normally `DELIVERY`.
 - `DELIVERY` ends at delivery handoff; ongoing health/recovery/reconciliation/maintenance is `OPERATIONS`.
 - `NEUTRAL_CONTRACT` requires non-executable, non-owning, lifecycle-independent contract responsibility.
 - Material mixed-lifecycle responsibilities should split when independently governable; do not choose a majority lifecycle.
 - Material unresolved ownership fails closed.
 
-## Responsibility Map axes
+## Responsibility Map v2 axes
 
 Keep these distinct:
 
@@ -96,7 +140,7 @@ relationships
     = project-owned typed directed semantics
 
 source_mode / derived origin
-    = declaration authority provenance
+    = declaration/materialization provenance
 
 VPMS Verification Purpose
     = what verification protects/verifies
@@ -133,30 +177,11 @@ SPECIFIES
 GOVERNS
 ```
 
-Direction is always `source --TYPE--> target`.
-Observed evidence, project-declared relationship, and dependency policy remain separate. Evidence `TESTS` may support `VERIFIES` but must not silently create a project declaration.
+Do not derive project-owned relationships automatically from observed evidence. Evidence can support a proposal; explicit project declaration remains authority.
 
-## Associated artifacts
+## Responsibility Map declaration modes
 
-An associated artifact is a project-owned non-component support surface subordinate to exactly one classified anchor component.
-
-Rules:
-
-- stable map identity;
-- explicit selectors and purpose;
-- exactly one anchor component;
-- no classification or component roles of its own;
-- no anchor-classification inheritance;
-- non-executable architectural role;
-- no independently governable lifecycle/release/compatibility responsibility;
-- at least one typed relationship connecting it to its anchor;
-- component IDs and associated-artifact IDs share one map-wide endpoint namespace.
-
-Promote/re-evaluate as a component when independent lifecycle responsibility emerges. Independently governed non-executable/non-owning lifecycle-independent contract semantics require `NEUTRAL_CONTRACT` evaluation.
-
-## Declaration authority and materialization
-
-Responsibility Map source modes are:
+Canonical source modes are:
 
 ```text
 explicit
@@ -164,145 +189,122 @@ template
 hybrid
 ```
 
-ADR-0009 and `PTSIP-RMAP-013` through `PTSIP-RMAP-016` freeze the base authority boundary. `PTSIP-RMAP-017` freezes accepted-decision safe-apply authority.
+Template selection is explicit and immutable-revision-bound. Never select a template from repository layout, language, framework, manifest presence, or confidence.
+
+Materialization is deterministic and non-authoritative. It must not infer lifecycle ownership, repair architecture, create project intent, or silently rewrite the Source Project Profile.
+
+All source modes resolve to a validated Canonical Effective Responsibility Map for downstream Tool behavior. Preserve source declaration and materialized provenance separately.
+
+## Adoption and migration discipline
+
+Canonical Tool `0.3.6` Project Profiles use `classification` as primary lifecycle ownership authority. A second canonical `lifecycle_owner` field must not compete with it.
+
+When explicit adoption/resolution records architecture facts, preserve applicable facts such as:
 
 ```text
 classification
-    = lifecycle responsibility
-
-source_mode / derived entity origin
-    = declaration authority provenance
-
-materializer
-    = deterministic non-authoritative resolution
-```
-
-Authority rules:
-
-- `explicit`: project owns the complete declaration;
-- `template`: project explicitly adopts exact template `id + immutable revision`; that revision supplies adopted declaration content;
-- `hybrid`: project owns exact template selection plus stable-ID whole-entity replacement, extension, and removal decisions;
-- project replacement/extension/removal outranks selected immutable template declaration;
-- template selection MUST NOT be inferred from repository evidence, language, framework, manifest, package manager, path, or confidence;
-- an accepted project-owned clarification/adoption decision may authorize only the minimum project declaration delta needed to represent that accepted decision;
-- a `template -> hybrid` transition is allowed only when such an accepted decision requires it, while retaining the exact selected template ID/revision.
-
-Derived runtime/review origin vocabulary:
-
-```text
-PROJECT_EXPLICIT
-TEMPLATE
-PROJECT_OVERRIDE
-PROJECT_EXTENSION
-PROJECT_REMOVAL
-```
-
-This provenance is not lifecycle classification and is not required canonical profile serialization.
-The materializer MUST NOT infer architecture, change classifications, fabricate responsibilities, silently repair dangling relationships, cascade removals, resolve semantic conflicts by heuristics, or mutate source declarations merely to obtain a valid map.
-
-## Clarification / adoption authority
-
-Clarification and adoption consume a valid `ResolvedProfile.effective_payload`. Invalid/unresolvable profile state fails closed and exposes deterministic remediation/retry information without falling back to raw-profile architecture authority.
-
-New canonical answers use `ptsip-clarification-answer/v2` with:
-
-```text
-classification
+roles
 purpose
 shipped
 runtime_required
 executable
+associated artifacts
+typed relationships
+explicit release/compatibility metadata
 ```
 
-`lifecycle_owner` is not part of new canonical Tool `0.3.6` decisions or Project Profile serialization. Historical v1 data may be handled only through explicit compatibility logic and cannot restore `TOOLCHAIN` as canonical authority.
+Legacy Tool `0.3.5` `TOOLCHAIN`, `lifecycle_owner`, old boundary roots, consumers, analysis inputs, or untyped policy edges are migration evidence only. Do not blindly convert them into Tool `0.3.6` authority.
 
-Exact repository-relative selected profile path identity must survive gate creation, decision storage, resolution context, subject revision, remote file read, stale check, projection validation, and CAS write. Never silently substitute root `ptsip.yaml` for a selected non-root profile.
+Evidence-backed Tool `0.3.5 -> 0.3.6` assisted migration is owned by Tool `0.3.6.1`. Tool `0.3.6` release closure does not authorize implementing that continuation.
 
-## Migration boundary
+## Decision Authority / Project Profile / evidence
 
-Tool `0.3.5` compatibility means understand and migrate, not retain obsolete ontology in canonical Tool `0.3.6` state.
-Migration is preview-first, evidence-backed, loss-preserving, and project-owner-confirmed. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` mapping is prohibited.
-Legacy `lifecycle_owner`, `consumers`, `analysis_inputs`, old boundary roots, and untyped dependency-policy entries are migration evidence, not automatic canonical relationships or ownership facts.
-If confirmed architecture cannot be represented losslessly, stop and report the conflict.
-
-Evidence-driven Tool `0.3.5 -> 0.3.6` migration implementation belongs to Tool `0.3.6.1`; WU-07 MUST NOT enter that implementation work.
-
-## PTSIP / VPMS boundary
-
-PTSIP lifecycle classification and VPMS Verification Purpose are independent.
-Current VPMS Verification Purpose remains:
+Keep these responsibilities separate:
 
 ```text
-PRODUCT
-TOOLCHAIN
+Specification
+    -> normative rules
+
+Decision Authority
+    -> which explicit coordinated architecture answer won
+
+Project Profile / Responsibility Map
+    -> durable project-owned architecture declaration
+
+Observed evidence
+    -> what repository/artifacts actually do
+
+Conformance Evaluation
+    -> whether declaration + evidence satisfy applicable rules
 ```
 
-VPMS `TOOLCHAIN` is VPMS vocabulary, not Tool `0.3.6` PTSIP classification. Do not rename VPMS vocabulary as an accidental ontology migration.
-PTSIP core MUST NOT depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved effective PTSIP metadata and does not own PTSIP classification, template/hybrid semantics, or migration authority. VPMS PASS does not imply PTSIP CONFORMANT and vice versa.
+A Decision Authority does not replace `ptsip.yaml` and does not prove conformance.
 
-## Specification binding
-
-For Tool `X.Y.Z`:
+For GitHub coordination, the Reference Tool uses:
 
 ```text
-Tool X.Y.Z
-    -> Specification X.Y.Z-draft
-    -> immutable SPEC_REVISION
+refs/heads/ptsip-policy
 ```
 
-Current Tool `0.3.6` release-candidate binding is:
+Preserve stable decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation, read-side authority freshness, deterministic reconciliation, fail-closed behavior, and global/local state separation.
+
+A complete local declaration is not sufficient reason to skip relevant distributed authority reads. Semantic equivalence is architecture meaning, not YAML formatting.
+
+## Read-only default and mutation safety
+
+Inspection and Pilot behavior are read-only by default. Tool-owned caches, reports, and local decision databases stay outside the Consumer Repository unless explicitly directed otherwise.
+
+Prepared profile writes must reject stale repository/profile state. Do not combine evidence from different revisions into one stable claim.
+
+## Product Artifact boundary
+
+Artifact owner and producer are different concepts. Development Tooling or Delivery may build a Product Artifact, but Product distribution contents still have to satisfy the Product lifecycle boundary.
+
+Release verification must inspect actual built artifacts, not packaging configuration as proof. Preserve snapshot-bound Product Artifact evidence and fail closed on definite `PTSIP-PKG-001` violations.
+
+## VPMS boundary
+
+PTSIP asks who owns a responsibility across its lifecycle. VPMS asks why a Verification Case exists and what it protects.
+
+PTSIP classification and VPMS Verification Purpose remain independent. PTSIP core must not depend on VPMS. VPMS consumes only a narrow read-only projection of validated effective PTSIP metadata.
+
+Current VPMS compatibility vocabulary may retain `PRODUCT | TOOLCHAIN`; VPMS `TOOLCHAIN` is not a Tool `0.3.6` PTSIP classification.
+
+VPMS PASS != PTSIP CONFORMANT, and PTSIP CONFORMANT != functional verification PASS.
+
+## Conformance behavior
+
+Completed Consumer Repository outcomes are only:
 
 ```text
-SPEC_VERSION  = 0.3.6-draft
-SPEC_REVISION = d6995ed232e845b88d8235b851e80ab54b7804ea
+CONFORMANT
+NON_CONFORMANT
+INCOMPLETE
 ```
 
-WU-07 final audit begins from this binding. Do not move `SPEC_REVISION` for release-note changes, workflow hardening, tests, planning/status updates, or operational-document cleanup. A new revision requires a separately established genuine normative defect.
+Do not equate zero findings with conformance. Blocking evidence gaps remain `INCOMPLETE` unless a definite mandatory violation already establishes `NON_CONFORMANT`.
 
-`.github/scripts/verify_release_contract.py` MUST remain fail-closed. Release-bound normative source and machine-readable assets must match the exact bound revision; canonical/embedded machine-readable copies must remain coherent.
+Do not let project-local policy weaken universal PTSIP requirements.
 
-## Exact release gate
+## Release and CI resource policy
 
-At Tool release boundary:
+Primary regression/release verification uses capability-bound self-hosted Windows X64 execution with PowerShell and Python 3.14 available through `py -3.14`.
 
-```text
-merged main + reviewed releasenote/X.Y.Z.md
-    -> dispatch tooling-test.yml from main
-    -> workflow pins checkout to github.sha
-    -> self-hosted Windows + Python 3.14 full regression/build/smoke
-    -> self-hosted/tooling-test status on that exact SHA
-    -> dispatch release.yml from main
-    -> release.yml derives github.sha + package version automatically
-    -> require current origin/main == dispatched SHA
-    -> require self-hosted/tooling-test success on that SHA
-    -> verify Tool / Specification / SPEC_REVISION release contract
-    -> create draft release targeting the same SHA without mutating main
-    -> publish reviewed draft
-    -> tooling-release.yml self-hosted distribution build
-    -> publication Product Artifact evidence + exact tagged-snapshot binding
-    -> minimal GitHub-hosted GNU/Linux PyPI Trusted Publishing only
-```
+Do not hard-code a machine name. Preserve the existing exact-SHA checkout/status model. The narrow GNU/Linux PyPI Trusted Publishing job may remain the GitHub-hosted exception.
 
-No manual `source_sha`, `version`, `release_candidate`, or `host_ready` workflow inputs are part of this pipeline.
-No repository mutation may occur between successful exact-SHA tooling verification and draft release creation.
+Do not create a parallel workflow where an existing release/test workflow can be narrowly maintained.
 
-## Self-hosted workflow policy
+## Instruction priority
 
-Self-hosted verification is capability-bound, not machine-name-bound.
-Eligible build/test runners must satisfy:
+Use this order:
 
-```text
-self-hosted
-Windows
-X64
-PowerShell
-Python 3.14 available through `py -3.14`
-```
+1. bound canonical Specification and normative companion assets from the same immutable revision;
+2. relevant Decision Authority winner when distributed coordination applies;
+3. repository Project Profile / Responsibility Map;
+4. observed repository/dependency/artifact evidence;
+5. imported external evidence with provenance;
+6. project ADR/history;
+7. this repository-operational contract;
+8. informal examples.
 
-Do not hard-code a Windows computer name such as `DESKTOP-*` into workflow logic or operational instructions. If a matching runner is offline, GitHub Actions may remain queued until one becomes available; do not add a `host_ready` checkbox merely to duplicate that scheduler state.
-
-`tooling-test.yml` and `release.yml` are manual workflows. The maintainer selects the target branch/ref in GitHub Actions; the workflow derives the immutable execution SHA from `github.sha` and validates it after checkout.
-
-`tooling-release.yml` build/distribution verification also runs on self-hosted Windows and uses the host-provided Python 3.14 interpreter through an isolated per-run virtual environment.
-
-The narrow GNU/Linux PyPI Trusted Publishing job is the only current GitHub-hosted compute exception; do not move tests, compilation, package building, or release preparation into it.
+This priority does not make Decision Authority a conformance oracle. Authority governs which explicit answer won; observed evidence still governs what the repository actually does.
