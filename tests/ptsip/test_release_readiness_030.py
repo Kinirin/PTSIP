@@ -71,6 +71,10 @@ def test_release_preparation_derives_identity_without_manual_inputs() -> None:
     assert 'DISPATCHED_REF: ${{ github.ref }}' in workflow
     assert 'refs/heads/main' in workflow
     assert 'self-hosted/tooling-test' in workflow
+    assert "Reconfirm candidate remains current main" in workflow
+    assert 'target_commitish = $env:SOURCE_SHA' in workflow
+    assert 'draft = $true' in workflow
+    assert 'origin/main moved to $mainSha after tooling verification' in workflow
     assert "py -3.14" in workflow
     assert "actions/setup-python@" not in workflow
 
