@@ -18,7 +18,6 @@ from ..repository.profile_transition import (
 from ..repository.snapshot import repository_files
 from ..validation.components import AMBIGUOUS, CandidateCoverage, normalize_selector, resolve_candidate_coverage
 from .dependencies import DependencyScan
-from .dependencies_030 import scan_dependency_edges
 from .inventory import Inventory, collect_inventory
 
 _SCRIPT_SUFFIXES = {".py", ".ps1", ".sh", ".bash", ".bat", ".cmd"}
@@ -282,7 +281,8 @@ def build_candidate_evidence(
         path: str | None = None,
         detail: str | None = None,
     ) -> None:
-        normalized = tuple(sorted({normalize_selector(str(item)) for item in selectors if normalize_selector(str(item))}))
+        cleaned = {normalize_selector(str(item)) for item in selectors}
+        normalized = tuple(sorted(item for item in cleaned if item))
         if not normalized:
             return
         observations = raw.setdefault(normalized, {})
@@ -375,10 +375,7 @@ def build_candidate_evidence(
                 path=rel,
                 detail="Tracked contract asset is embedded under a specdata package scope.",
             )
-        if (
-            rel.startswith(".github/scripts/")
-            or (len(path.parts) == 1 and path.suffix.lower() in _SCRIPT_SUFFIXES)
-        ):
+        if rel.startswith(".github/scripts/") or (len(path.parts) == 1 and path.suffix.lower() in _SCRIPT_SUFFIXES):
             add(
                 (rel,),
                 kind="MAINTENANCE_SCRIPT",
@@ -436,7 +433,10 @@ def build_candidate_evidence(
     for selectors, observations_by_key in sorted(raw.items(), key=lambda item: item[0]):
         observations = tuple(
             observations_by_key[key]
-            for key in sorted(observations_by_key, key=lambda item: tuple("" if value is None else str(value) for value in item))
+            for key in sorted(
+                observations_by_key,
+                key=lambda item: tuple("" if value is None else str(value) for value in item),
+            )
         )
         coverage = resolve_candidate_coverage(selectors, components, associated_artifacts)
         candidates.append(
@@ -455,6 +455,8 @@ def discover_candidate_evidence(
     repository_root: str | Path,
     *,
     source_profile_path: str | Path | None = None,
+    inventory: Inventory | None = None,
+    dependencies: DependencyScan | None = None,
 ) -> CandidateDiscoveryResult:
     root = Path(repository_root).expanduser().resolve()
     transition = discover_profile_transition(root)
@@ -476,22 +478,28 @@ def discover_candidate_evidence(
         return CandidateDiscoveryResult((), (source_issue,) if source_issue else (), None, state)
 
     components, associated_artifacts, declaration_issues = _source_declarations(root, source)
-    inventory = collect_inventory(root)
-    dependencies = scan_dependency_edges(root)
+    observed_inventory = inventory if inventory is not None else collect_inventory(root)
+    if dependencies is None:
+        from .dependencies_030 import scan_dependency_edges
+
+        observed_dependencies = scan_dependency_edges(root)
+    else:
+        observed_dependencies = dependencies
+
     issues: list[CandidateDiscoveryIssue] = list(declaration_issues)
     issues.extend(
         CandidateDiscoveryIssue(item.category, item.message, item.path, "inventory")
-        for item in inventory.scan_issues
+        for item in observed_inventory.scan_issues
     )
     issues.extend(
         CandidateDiscoveryIssue("DEPENDENCY_SCAN_ISSUE", item.message, item.path, item.adapter)
-        for item in dependencies.issues
+        for item in observed_dependencies.issues
     )
 
     candidates = build_candidate_evidence(
         root,
-        inventory=inventory,
-        dependencies=dependencies,
+        inventory=observed_inventory,
+        dependencies=observed_dependencies,
         state=state,
         source=source,
         components=components,
