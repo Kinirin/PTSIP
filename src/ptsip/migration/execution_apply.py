@@ -74,41 +74,56 @@ def _find_list_entity(rows: object, entity_id: str) -> tuple[list[object], int |
     return values, found[0][0], canonical_semantics(found[0][1])
 
 
+def _validate_list_delta_identity(delta: TargetDelta, value: object | None, *, label: str) -> None:
+    if value is None:
+        return
+    if not isinstance(value, Mapping):
+        raise ExecutionStateError(f"{delta.change_kind.value} delta {delta.id} requires a mapping {label}-state.")
+    if value.get("id") != delta.entity_id:
+        raise ExecutionStateError(
+            f"{delta.change_kind.value} delta {delta.id} {label}-state stable ID does not match {delta.entity_id!r}."
+        )
+
+
 def _apply_delta(payload: dict[str, object], delta: TargetDelta) -> None:
     before = canonical_semantics(delta.before_value())
     after = canonical_semantics(delta.after_value())
     if delta.entity_kind in _ENTITY_COLLECTION:
+        _validate_list_delta_identity(delta, before, label="before")
+        _validate_list_delta_identity(delta, after, label="after")
         key = _ENTITY_COLLECTION[delta.entity_kind]
         rows, index, existing = _find_list_entity(payload.get(key), delta.entity_id)
         if delta.change_kind == DeltaChangeKind.ADD:
+            if after is None:
+                raise ExecutionStateError(f"ADD delta {delta.id} requires an after-state.")
             if existing is not None:
                 if existing == after:
                     return
                 raise ExecutionStateError(f"ADD delta {delta.id} conflicts with existing target entity.")
-            if not isinstance(after, Mapping):
-                raise ExecutionStateError(f"ADD delta {delta.id} requires a mapping after-state.")
             rows.append(copy.deepcopy(dict(after)))
         elif delta.change_kind == DeltaChangeKind.REMOVE:
             if existing is None:
                 return
-            if before is not None and existing != before:
+            if before is None:
+                raise ExecutionStateError(f"REMOVE delta {delta.id} requires an exact before-state.")
+            if existing != before:
                 raise ExecutionStateError(f"REMOVE delta {delta.id} before-state is stale.")
             assert index is not None
             rows.pop(index)
         else:
+            if after is None:
+                raise ExecutionStateError(f"REPLACE delta {delta.id} requires an after-state.")
             if existing == after:
                 return
             if existing is None:
                 if before is not None:
                     raise ExecutionStateError(f"REPLACE delta {delta.id} expected an existing entity.")
-                if not isinstance(after, Mapping):
-                    raise ExecutionStateError(f"REPLACE delta {delta.id} requires a mapping after-state.")
                 rows.append(copy.deepcopy(dict(after)))
             else:
-                if before is not None and existing != before:
+                if before is None:
+                    raise ExecutionStateError(f"REPLACE delta {delta.id} requires an exact before-state for an existing entity.")
+                if existing != before:
                     raise ExecutionStateError(f"REPLACE delta {delta.id} before-state is stale.")
-                if not isinstance(after, Mapping):
-                    raise ExecutionStateError(f"REPLACE delta {delta.id} requires a mapping after-state.")
                 assert index is not None
                 rows[index] = copy.deepcopy(dict(after))
         payload[key] = rows
@@ -119,8 +134,14 @@ def _apply_delta(payload: dict[str, object], delta: TargetDelta) -> None:
         if delta.entity_kind == TargetEntityKind.COMPONENT_DEPENDENCY_POLICY
         else "policies"
     )
+    if delta.entity_id != key:
+        raise ExecutionStateError(
+            f"Singleton delta {delta.id} stable ID must be {key!r}, got {delta.entity_id!r}."
+        )
     existing = canonical_semantics(payload.get(key)) if key in payload else None
     if delta.change_kind == DeltaChangeKind.ADD:
+        if after is None:
+            raise ExecutionStateError(f"ADD delta {delta.id} requires an after-state.")
         if existing is not None and existing != after:
             raise ExecutionStateError(f"ADD delta {delta.id} conflicts with existing singleton target state.")
         if existing is None:
@@ -128,14 +149,24 @@ def _apply_delta(payload: dict[str, object], delta: TargetDelta) -> None:
     elif delta.change_kind == DeltaChangeKind.REMOVE:
         if existing is None:
             return
-        if before is not None and existing != before:
+        if before is None:
+            raise ExecutionStateError(f"REMOVE delta {delta.id} requires an exact before-state.")
+        if existing != before:
             raise ExecutionStateError(f"REMOVE delta {delta.id} before-state is stale.")
         payload.pop(key, None)
     else:
+        if after is None:
+            raise ExecutionStateError(f"REPLACE delta {delta.id} requires an after-state.")
         if existing == after:
             return
-        if before is not None and existing != before:
-            raise ExecutionStateError(f"REPLACE delta {delta.id} before-state is stale.")
+        if existing is None:
+            if before is not None:
+                raise ExecutionStateError(f"REPLACE delta {delta.id} expected an existing singleton target state.")
+        else:
+            if before is None:
+                raise ExecutionStateError(f"REPLACE delta {delta.id} requires an exact before-state for existing target state.")
+            if existing != before:
+                raise ExecutionStateError(f"REPLACE delta {delta.id} before-state is stale.")
         payload[key] = copy.deepcopy(after)
 
 
