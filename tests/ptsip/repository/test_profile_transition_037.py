@@ -171,3 +171,20 @@ def test_transition_snapshot_detects_profile_content_change(tmp_path: Path) -> N
     diagnostics = validate_transition_snapshot(tmp_path, result.state)
     assert [item.code for item in diagnostics] == ["STALE_TRANSITION_SNAPSHOT"]
     assert "ptsip_0.3.7.yaml: profile content changed" in diagnostics[0].message
+
+
+def test_transition_snapshot_is_bound_to_repository_root(tmp_path: Path) -> None:
+    source = tmp_path / "source"
+    other = tmp_path / "other"
+    source.mkdir()
+    other.mkdir()
+    _write_profile(source, "ptsip.yaml", "0.3.6-draft")
+    _write_profile(other, "ptsip.yaml", "0.3.6-draft")
+    result = discover_profile_transition(source)
+    assert result.valid is True
+    assert result.state is not None
+
+    diagnostics = validate_transition_snapshot(other, result.state)
+
+    assert [item.code for item in diagnostics] == ["STALE_TRANSITION_SNAPSHOT"]
+    assert "repository root changed" in diagnostics[0].message
