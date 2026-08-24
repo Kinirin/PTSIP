@@ -1,9 +1,10 @@
 # WU-03 — Evidence/Provenance Normalization
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-02 — candidate-discovery evidence expansion  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Roadmap predecessor:** WU-02 — candidate-discovery evidence expansion (`COMPLETE / FOCUSED TEST VERIFIED`)  
+> **WU-03 exact entry baseline:** `ded216a91edd01aeff02864749708d226fa84724`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-04 — source-draft compatibility readers
 
 ## 0. Purpose
@@ -108,4 +109,6 @@ WU-03 is complete when normalized evidence is deterministic, provenance-preservi
 
 ## 8. Entry discipline
 
-Pre-created roadmap document only. Assign the real entry SHA and change to `ACTIVE` only after WU-02 completion review.
+WU-03 entered automatically under the project owner's standing successor-entry authorization after WU-02 completion was recorded and exact `dev/0.3.7` HEAD `ded216a91edd01aeff02864749708d226fa84724` was freshly revalidated.
+
+This ACTIVE state authorizes WU-03 implementation only. It does not authorize WU-04 implementation, Required/Removal/Async categorization, Temporary PTSIP Profile mutation, Final Point delta application, or bypass of any project-owner decision gate.
