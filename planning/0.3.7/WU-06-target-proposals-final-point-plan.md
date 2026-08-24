@@ -1,9 +1,10 @@
 # WU-06 — Target Proposals and Final PTSIP Point Plan
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-05 — migration analyzer and obligation evaluation  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Roadmap predecessor:** WU-05 — migration analyzer and obligation evaluation (`COMPLETE / FOCUSED TEST VERIFIED`)  
+> **WU-06 exact entry baseline:** `d21b499495465e637cc64a528d9b40afedb314ff`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-07 — safe sequential apply and promotion
 
 ## 0. Purpose
@@ -144,4 +145,6 @@ WU-06 is complete only when:
 
 ## 9. Entry discipline
 
-Pre-created roadmap document only. Actual entry requires WU-05 completion and a fresh exact branch HEAD.
+WU-06 entered automatically under the project owner's standing successor-entry authorization after WU-05 completion was recorded and exact `dev/0.3.7` HEAD `d21b499495465e637cc64a528d9b40afedb314ff` was freshly revalidated.
+
+This ACTIVE state authorizes WU-06 implementation only. It does not authorize owner acceptance of target proposals, WU-07 mutation, source deletion, Final Point mutation, or canonical promotion.
