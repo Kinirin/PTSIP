@@ -1,9 +1,10 @@
 # WU-02 — Candidate-Discovery Evidence Expansion
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-01 — draft profile transition state model  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Roadmap predecessor:** WU-01 — draft profile transition state model (`COMPLETE / FOCUSED TEST VERIFIED`)  
+> **WU-02 exact entry baseline:** `6d364055532c592e8c6f778f5a145148e7f7e29a`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-03 — evidence/provenance normalization
 
 ## 0. Purpose
@@ -118,4 +119,19 @@ WU-02 is complete only when:
 
 ## 8. Entry discipline
 
-Pre-created roadmap document only. Assign the real entry SHA and change to `ACTIVE` only after WU-01 completion review.
+WU-02 entered on exact `dev/0.3.7` baseline `6d364055532c592e8c6f778f5a145148e7f7e29a` after WU-01 completion was recorded and the branch HEAD was freshly revalidated.
+
+This ACTIVE state authorizes WU-02 implementation only. It does not authorize WU-03 implementation, lifecycle migration writes, Temporary PTSIP Profile promotion, or bypass of any project-owner decision gate.
+
+## 9. Successor auto-entry authorization
+
+The project owner has approved automatic successor-WU entry for the remainder of Tool `0.3.7` work.
+
+After an active WU reaches its documented completion gate, the next WU MAY be changed from `PRE-CREATED / LOCKED` to `ACTIVE` without a separate approval message, provided that:
+
+1. the predecessor completion is recorded;
+2. a fresh exact `dev/0.3.7` HEAD is captured for the successor entry baseline;
+3. no unresolved project-owner decision, architecture conflict, or explicit confirmation gate blocks entry;
+4. only the successor entry state is automated — implementation beyond that WU's approved scope is not implicitly authorized by this rule.
+
+If any blocking decision or conflict remains, the successor MUST stay locked until it is resolved.
