@@ -1,9 +1,10 @@
 # WU-05 — Migration Analyzer and Source-Specific Obligation Evaluation
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-04 — source-draft compatibility readers  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Roadmap predecessor:** WU-04 — source-draft compatibility readers (`COMPLETE / FOCUSED TEST VERIFIED`)  
+> **WU-05 exact entry baseline:** `be04ac2733870aaf890ccd6bbfad1b4de174f321`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-06 — target proposals and Final Point plan
 
 ## 0. Purpose
@@ -159,4 +160,6 @@ WU-05 is complete only when:
 
 ## 10. Entry discipline
 
-Pre-created roadmap document only. Actual entry requires WU-04 completion plus a fresh exact branch HEAD.
+WU-05 entered automatically under the project owner's standing successor-entry authorization after WU-04 completion was recorded and exact `dev/0.3.7` HEAD `be04ac2733870aaf890ccd6bbfad1b4de174f321` was freshly revalidated.
+
+This ACTIVE state authorizes WU-05 implementation only. It does not authorize WU-06 implementation, owner-intent decisions for ambiguous lifecycle cases, target-delta construction, Temporary Profile mutation, Final Point mutation, or profile promotion.
