@@ -1,12 +1,14 @@
 # WU-01 — Draft Profile Transition State Model
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / FOCUSED TEST VERIFIED  
 > **Target Tool:** `0.3.7`  
 > **Roadmap predecessor:** Tool `0.3.6` release + ADR-0010 acceptance  
 > **Branch baseline:** `1aaa6868fe9b423b1fa536404115820cc4736ac4`  
 > **WU-01 exact entry baseline:** `ebc2f7d03a18e740f81826a0fff543f4aebfbb93`  
 > **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
-> **Successor:** WU-02 — candidate-discovery evidence expansion
+> **WU-01 implementation content SHA:** `db513a7bb8f5e081a538293d8396086f2540c43d`  
+> **Focused verification:** `12 passed / 0 failed` on the WU-01 focused suite  
+> **Successor:** WU-02 — candidate-discovery evidence expansion (`PRE-CREATED / LOCKED`)
 
 ## 0. Purpose
 
@@ -194,4 +196,89 @@ WU-01 is complete only when:
 
 WU-01 entered on exact `dev/0.3.7` baseline `ebc2f7d03a18e740f81826a0fff543f4aebfbb93` after establishment of the `0.3.7-draft` Specification family at immutable revision `b648d9e026f502b14481ba2d0606d9acc88a31fc`.
 
-This ACTIVE state authorizes WU-01 implementation only. It does not authorize WU-02 entry, architecture migration, canonical `ptsip.yaml` replacement, or Final Point promotion.
+WU-01 completion does not authorize WU-02 entry, architecture migration, canonical `ptsip.yaml` replacement, or Final Point promotion. WU-02 remains locked until a separate explicit entry transition records a fresh branch SHA.
+
+## 12. WU-01A~E execution record
+
+### WU-01A — COMPLETE
+
+Inventory confirmed that the existing repository already has two reusable primitives required by this WU:
+
+- `src/ptsip/repository/profile_path.py` provides repository-relative path normalization, selected-profile identity, on-disk containment, and decision-ID path binding;
+- `src/ptsip/repository/snapshot.py` provides Git/worktree observation, status fingerprinting, tracked-content fingerprinting, and snapshot comparison.
+
+Existing validation/CLI/adoption behavior was intentionally not rewritten. WU-01 introduces a narrow sibling transition-state module so current Tool `0.3.6` profile selection and validation behavior remain stable.
+
+### WU-01B — COMPLETE
+
+Added:
+
+```text
+src/ptsip/repository/profile_transition.py
+```
+
+The module provides immutable draft-version/profile-generation identities, structured diagnostics, repository-root temporary-profile discovery, canonical profile discovery, filename/internal-version matching, immutable revision capture, duplicate semantic target detection, and fail-closed malformed-state handling.
+
+### WU-01C — COMPLETE
+
+The resolver now exposes deterministic states:
+
+```text
+IDLE       canonical only; no target generation exists
+SIMPLE     one temporary target; canonical is the only migration source
+SEQUENTIAL multiple temporary generations; highest target is Final Point
+```
+
+For Sequential Work, temporary sources are ordered by descending semantic version below the Final Point and canonical `ptsip.yaml` is appended last. Non-monotonic targets, duplicate semantic targets, and an ambiguous highest target fail closed.
+
+### WU-01D — COMPLETE
+
+`TransitionSnapshot` reuses the existing `RepositorySnapshot` and additionally binds:
+
+- resolved repository root;
+- canonical and temporary profile paths;
+- each profile's declared draft version;
+- each profile's immutable Specification revision;
+- each profile's SHA-256 content identity.
+
+`validate_transition_snapshot()` rejects repository-root changes, repository snapshot changes, missing profile files, and profile-content changes through `STALE_TRANSITION_SNAPSHOT`. This closes the untracked-temporary-file gap where Git status alone could remain unchanged while an existing untracked profile's bytes change.
+
+### WU-01E — COMPLETE
+
+Added the focused role-scoped test file:
+
+```text
+tests/ptsip/repository/test_profile_transition_037.py
+```
+
+Covered scenarios:
+
+- canonical-only `IDLE` discovery;
+- simple transition;
+- multi-generation Sequential Work ordering;
+- filename/internal-version mismatch;
+- invalid similarly named temporary file;
+- missing version/revision;
+- duplicate semantic target identity and ambiguous Final Point;
+- non-monotonic target;
+- missing canonical profile;
+- malformed YAML;
+- stale profile content;
+- repository-root mismatch.
+
+Focused verification result:
+
+```text
+Python 3.13.5
+12 passed / 0 failed
+```
+
+The focused suite was executed in an isolated local harness using the same WU-01 module/test content and the existing `profile_path`/`snapshot` contracts. This is intentionally recorded as focused verification, not as GitHub Actions exact-SHA release verification. Full self-hosted `tooling-test.yml` exact-SHA regression remains the WU-08 release-readiness gate.
+
+## 13. Completion conclusion
+
+WU-01A through WU-01E are complete. The implementation is read-only with respect to architecture declaration and does not create, delete, rename, or promote a PTSIP profile.
+
+The canonical root `ptsip.yaml` therefore remains the existing `0.3.6-draft` source. No `ptsip_0.3.7.yaml` is created by WU-01 itself.
+
+WU-02 remains `PRE-CREATED / LOCKED` and is not entered by this completion record.
