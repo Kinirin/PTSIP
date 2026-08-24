@@ -1,9 +1,10 @@
 # WU-04 — Source-Draft Compatibility Readers
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-03 — evidence/provenance normalization  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Roadmap predecessor:** WU-03 — evidence/provenance normalization (`COMPLETE / FOCUSED TEST VERIFIED`)  
+> **WU-04 exact entry baseline:** `84946457f31156e47c15454498711afa526cf19d`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-05 — migration analyzer and obligation evaluation
 
 ## 0. Purpose
@@ -99,4 +100,6 @@ WU-04 is complete when supported source profiles can be read deterministically a
 
 ## 7. Entry discipline
 
-Pre-created planning document only. Actual entry requires WU-03 completion plus a fresh branch HEAD recorded here.
+WU-04 entered automatically under the project owner's standing successor-entry authorization after WU-03 completion was recorded and exact `dev/0.3.7` HEAD `84946457f31156e47c15454498711afa526cf19d` was freshly revalidated.
+
+This ACTIVE state authorizes WU-04 implementation only. It does not authorize WU-05 implementation, Required/Removal/Async categorization, Temporary PTSIP Profile mutation, Final Point delta application, or bypass of any project-owner decision gate.
