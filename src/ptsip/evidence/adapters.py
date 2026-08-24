@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable
 
 from ..artifact_evidence import ArtifactEvidenceLoad
 from ..inspection.candidate_evidence import CandidateDiscoveryResult
@@ -15,6 +14,7 @@ from .contract import (
     EvidenceEvaluationContext,
     EvidenceNormalizationIssue,
     SourceGenerationBinding,
+    canonical_json,
 )
 from .normalization import EvidenceFact, build_evaluation_context, normalize_facts
 
@@ -95,7 +95,7 @@ def candidate_facts(result: CandidateDiscoveryResult) -> tuple[list[EvidenceFact
                         "selectors": list(candidate.include),
                         "path": observation.path,
                     },
-                    value={"detail": observation.detail},
+                    value=True,
                     provenance=_provenance(observation.provenance),
                     adapter=observation.adapter,
                     evidence_id=observation.evidence_id,
@@ -129,36 +129,44 @@ def candidate_facts(result: CandidateDiscoveryResult) -> tuple[list[EvidenceFact
     )
 
 
+def _edge_fact(
+    edge,
+    *,
+    source_path: str | None = None,
+    document_sha256: str | None = None,
+    producer_id: str | None = None,
+) -> EvidenceFact:
+    return EvidenceFact(
+        subject=f"path:{edge.source}",
+        predicate="dependency",
+        qualifiers={
+            "target": edge.target,
+            "relationship_type": edge.edge_type.value,
+            "phase": edge.phase.value,
+        },
+        value={
+            "resolution": edge.resolution.value,
+            "target_scope": edge.target_scope.value,
+            "resolved_path": edge.resolved_path,
+            "working_directory": edge.working_directory,
+        },
+        provenance=_provenance(edge.provenance),
+        adapter=edge.adapter,
+        evidence_id=edge.evidence_id,
+        source_path=source_path or edge.source,
+        line=edge.line,
+        document_sha256=document_sha256,
+        producer_id=producer_id,
+        detail=edge.note,
+    )
+
+
 def dependency_facts(
     scan: DependencyScan,
     *,
     channel_id: str = "dependency-evidence",
 ) -> tuple[list[EvidenceFact], EvidenceChannel, list[EvidenceNormalizationIssue]]:
-    facts: list[EvidenceFact] = []
-    for edge in scan.edges:
-        facts.append(
-            EvidenceFact(
-                subject=f"path:{edge.source}",
-                predicate="dependency",
-                qualifiers={
-                    "target": edge.target,
-                    "relationship_type": edge.edge_type.value,
-                    "phase": edge.phase.value,
-                },
-                value={
-                    "resolution": edge.resolution.value,
-                    "target_scope": edge.target_scope.value,
-                    "resolved_path": edge.resolved_path,
-                    "working_directory": edge.working_directory,
-                },
-                provenance=_provenance(edge.provenance),
-                adapter=edge.adapter,
-                evidence_id=edge.evidence_id,
-                source_path=edge.source,
-                line=edge.line,
-                detail=edge.note,
-            )
-        )
+    facts = [_edge_fact(edge) for edge in scan.edges]
     issues = [
         EvidenceNormalizationIssue(
             code="DEPENDENCY_INPUT_ISSUE",
@@ -181,19 +189,43 @@ def dependency_facts(
     )
 
 
+def _external_origin(edge) -> tuple[str | None, str | None, str | None]:
+    note = edge.note
+    if not isinstance(note, str) or not note.startswith("Imported from "):
+        producer = edge.adapter.removeprefix("external:") if edge.adapter.startswith("external:") else None
+        return None, None, producer
+    imported, separator, remainder = note.partition("; producer=")
+    if not separator:
+        return None, None, None
+    source_path = imported.removeprefix("Imported from ")
+    producer_text, separator, digest_text = remainder.partition("; document_sha256=")
+    producer_id = producer_text.split("@", 1)[0] or None
+    document_sha256 = digest_text if separator and digest_text else None
+    return source_path or None, document_sha256, producer_id
+
+
 def external_dependency_facts(
     loaded: ExternalEvidenceLoad,
 ) -> tuple[list[EvidenceFact], EvidenceChannel, list[EvidenceNormalizationIssue]]:
-    scan = DependencyScan(edges=loaded.edges, issues=(), adapters=tuple(sorted({item.adapter for item in loaded.edges})))
-    facts, _unused, issues = dependency_facts(scan, channel_id="external-dependency-evidence")
-    issues.extend(
+    facts: list[EvidenceFact] = []
+    for edge in loaded.edges:
+        source_path, digest, producer_id = _external_origin(edge)
+        facts.append(
+            _edge_fact(
+                edge,
+                source_path=source_path,
+                document_sha256=digest,
+                producer_id=producer_id,
+            )
+        )
+    issues = [
         EvidenceNormalizationIssue(
             code="EXTERNAL_EVIDENCE_INPUT_ISSUE",
             message=item.message,
             channel="external-dependency-evidence",
         )
         for item in loaded.issues
-    )
+    ]
     return (
         facts,
         _channel(
@@ -205,6 +237,24 @@ def external_dependency_facts(
         ),
         issues,
     )
+
+
+def _artifact_contents(value: object) -> object:
+    if not isinstance(value, dict):
+        return value
+    normalized = dict(value)
+    for key in ("paths", "components"):
+        items = normalized.get(key)
+        if isinstance(items, list):
+            normalized[key] = sorted({str(item) for item in items})
+    return normalized
+
+
+def _artifact_derivation(value: object) -> object:
+    if not isinstance(value, list):
+        return value
+    normalized = [dict(item) if isinstance(item, dict) else item for item in value]
+    return sorted(normalized, key=canonical_json)
 
 
 def artifact_facts(
@@ -227,8 +277,8 @@ def artifact_facts(
             ("artifact.producer_component", payload.get("producer_component")),
             ("artifact.type", payload.get("artifact_type")),
             ("artifact.shipping_scope", payload.get("shipping_scope")),
-            ("artifact.contents", payload.get("contents")),
-            ("artifact.derivation", payload.get("derivation", [])),
+            ("artifact.contents", _artifact_contents(payload.get("contents"))),
+            ("artifact.derivation", _artifact_derivation(payload.get("derivation", []))),
         ):
             facts.append(
                 EvidenceFact(
@@ -280,6 +330,13 @@ def agent_decision_facts(
     for document in loaded.documents:
         payload = document.payload
         component_id = str(payload.get("component_id", "<unknown>"))
+        review_detail = {
+            "confidence": payload.get("confidence"),
+            "rationale": payload.get("rationale"),
+            "counter_evidence": sorted(
+                str(item) for item in payload.get("counter_evidence", []) if isinstance(item, str)
+            ),
+        }
         facts.append(
             EvidenceFact(
                 subject=f"component:{component_id}",
@@ -287,9 +344,6 @@ def agent_decision_facts(
                 value={
                     "status": payload.get("status"),
                     "classification": payload.get("classification"),
-                    "confidence": payload.get("confidence"),
-                    "rationale": payload.get("rationale"),
-                    "counter_evidence": payload.get("counter_evidence", []),
                 },
                 provenance=EvidenceProvenance.INFERRED.value,
                 adapter="agent-decision",
@@ -297,7 +351,10 @@ def agent_decision_facts(
                 source_path=document.source_path,
                 document_sha256=document.source_sha256,
                 basis_ids=tuple(str(item) for item in payload.get("evidence_ids", []) if isinstance(item, str)),
-                detail="Agent classification is review evidence only and does not override the Project Profile.",
+                detail=(
+                    "Agent classification is review evidence only and does not override the Project Profile; "
+                    f"review_metadata={canonical_json(review_detail)}"
+                ),
             )
         )
     issues = [
