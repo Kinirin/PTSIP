@@ -68,11 +68,13 @@ class ProfileGenerationIdentity:
 
 @dataclass(frozen=True)
 class TransitionSnapshot:
+    repository_root: str
     repository: RepositorySnapshot
     profiles: tuple[ProfileGenerationIdentity, ...]
 
     def as_dict(self) -> dict[str, object]:
         return {
+            "repository_root": self.repository_root,
             "repository": self.repository.as_dict(),
             "profiles": [item.as_dict() for item in self.profiles],
         }
@@ -134,8 +136,11 @@ def _read_profile_identity(
     temporary: bool,
 ) -> tuple[ProfileGenerationIdentity | None, list[TransitionDiagnostic]]:
     normalized = normalize_profile_path(relative_path)
-    path = profile_path_on_disk(repository_root, normalized)
     diagnostics: list[TransitionDiagnostic] = []
+    try:
+        path = profile_path_on_disk(repository_root, normalized)
+    except ValueError as exc:
+        return None, [_diagnostic("PROFILE_PATH_ERROR", str(exc), normalized)]
 
     try:
         raw = path.read_bytes()
@@ -322,6 +327,7 @@ def discover_profile_transition(repository_root: str | Path) -> ProfileTransitio
 
     profile_snapshots = (canonical,) + ordered_temporaries
     snapshot = TransitionSnapshot(
+        repository_root=str(root),
         repository=capture_snapshot(root),
         profiles=profile_snapshots,
     )
@@ -344,6 +350,8 @@ def validate_transition_snapshot(
 ) -> tuple[TransitionDiagnostic, ...]:
     root = Path(repository_root).expanduser().resolve()
     reasons: list[str] = []
+    if str(root) != state.snapshot.repository_root:
+        reasons.append("repository root changed")
     repository_comparison = compare_snapshots(state.snapshot.repository, capture_snapshot(root))
     reasons.extend(repository_comparison.reasons)
 
