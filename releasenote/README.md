@@ -83,7 +83,8 @@ Documentation descendants after that run record closure and do not replace the e
 | `0.1.0-draft` | Historical initial public draft | [`spec-0.1.0-draft.md`](spec-0.1.0-draft.md) |
 | `0.2.0-draft` | Historical experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
 | `0.3.4-draft` | Published Tool `0.3.5` baseline family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
-| `0.3.6-draft` | **Current Tool `0.3.6` bound release-candidate family** | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
+| `0.3.6-draft` | Tool `0.3.6` bound release-candidate family | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
+| `0.3.7-draft` | **Active Tool `0.3.7` development family; immutable activation snapshot `b648d9e026f502b14481ba2d0606d9acc88a31fc`** | [`spec-0.3.7-draft.md`](spec-0.3.7-draft.md) |
 
 Draft family labels are mutable; their exact normative identity is the immutable Git revision recorded by the relevant Tool, release, or evaluation.
 
@@ -105,7 +106,7 @@ Draft family labels are mutable; their exact normative identity is the immutable
 
 After a Tool version is published and its durable release note exists, completed version-specific planning files may be removed from the active `planning/` directory. Their implementation history remains recoverable from Git history and the corresponding immutable release point. Active future planning remains in `planning/`.
 
-Tool `0.3.6.1` planning remains future migration work and is not Tool `0.3.6` release content.
+Tool `0.3.6.1` planning is cancelled. Active migration development planning is now Tool `0.3.7` under `planning/0.3.7.md` and `planning/0.3.7/*`.
 
 ## Specification note policy
 
