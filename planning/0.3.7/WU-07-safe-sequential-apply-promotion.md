@@ -1,9 +1,10 @@
 # WU-07 — Preview, Confirmation, Safe Sequential Apply, and Canonical Promotion
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-06 — target proposals and Final Point plan  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Roadmap predecessor:** WU-06 — target proposals and Final Point plan (`COMPLETE / FOCUSED TEST VERIFIED`)  
+> **WU-07 exact entry baseline:** `c69f93eb19c6b7e227faaf6c9d38b563658f3b6a`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-08 — dogfood, regression, package and release readiness
 
 ## 0. Purpose
@@ -180,4 +181,6 @@ WU-07 is complete only when the full ordered mutation path is deterministic, sna
 
 ## 12. Entry discipline
 
-Pre-created roadmap document only. Actual entry requires WU-06 completion and a fresh exact branch HEAD.
+WU-07 entered automatically under the project owner's standing successor-entry authorization after WU-06 completion was recorded and exact `dev/0.3.7` HEAD `c69f93eb19c6b7e227faaf6c9d38b563658f3b6a` was freshly revalidated.
+
+This ACTIVE state authorizes WU-07 implementation only. It does **not** authorize applying any concrete target delta, creating/modifying the Final Point, deleting a source profile, replacing canonical `ptsip.yaml`, or bypassing project-owner confirmation for architecture-changing decisions.
