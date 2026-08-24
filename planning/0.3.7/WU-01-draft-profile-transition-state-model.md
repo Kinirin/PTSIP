@@ -1,10 +1,11 @@
 # WU-01 — Draft Profile Transition State Model
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
 > **Roadmap predecessor:** Tool `0.3.6` release + ADR-0010 acceptance  
 > **Branch baseline:** `1aaa6868fe9b423b1fa536404115820cc4736ac4`  
-> **Entry baseline:** not assigned; capture fresh `dev/0.3.7` HEAD on actual entry  
+> **WU-01 exact entry baseline:** `ebc2f7d03a18e740f81826a0fff543f4aebfbb93`  
+> **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Successor:** WU-02 — candidate-discovery evidence expansion
 
 ## 0. Purpose
@@ -191,4 +192,6 @@ WU-01 is complete only when:
 
 ## 11. Entry discipline
 
-This document is planning authority only. Actual WU-01 entry requires an established `0.3.7-draft` Specification family/revision and a fresh exact `dev/0.3.7` entry SHA recorded here.
+WU-01 entered on exact `dev/0.3.7` baseline `ebc2f7d03a18e740f81826a0fff543f4aebfbb93` after establishment of the `0.3.7-draft` Specification family at immutable revision `b648d9e026f502b14481ba2d0606d9acc88a31fc`.
+
+This ACTIVE state authorizes WU-01 implementation only. It does not authorize WU-02 entry, architecture migration, canonical `ptsip.yaml` replacement, or Final Point promotion.
