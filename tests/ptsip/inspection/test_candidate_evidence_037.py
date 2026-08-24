@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 
 import yaml
 
@@ -8,7 +9,32 @@ from ptsip.inspection.candidate_evidence import (
     discover_candidate_evidence,
     validate_candidate_discovery_context,
 )
+from ptsip.model import DependencyPhase, EdgeType, EvidenceProvenance
 from ptsip.validation.components import AMBIGUOUS, COMPONENT_COVERED, UNCOVERED
+
+
+def _dependencies(*edges):
+    return SimpleNamespace(edges=tuple(edges), issues=())
+
+
+def _edge(
+    *,
+    evidence_id: str,
+    source: str,
+    resolved_path: str | None,
+    adapter: str = "github-actions",
+    phase: DependencyPhase = DependencyPhase.TEST,
+    edge_type: EdgeType = EdgeType.INVOKES,
+):
+    return SimpleNamespace(
+        evidence_id=evidence_id,
+        source=source,
+        resolved_path=resolved_path,
+        adapter=adapter,
+        phase=phase,
+        edge_type=edge_type,
+        provenance=EvidenceProvenance.OBSERVED,
+    )
 
 
 def _write_profile(
@@ -59,6 +85,14 @@ def _base_repository(root: Path, *, components: list[dict[str, object]] | None =
     )
 
 
+def _discover(root: Path, *, source_profile_path: str | None = None, edges=()):
+    return discover_candidate_evidence(
+        root,
+        source_profile_path=source_profile_path,
+        dependencies=_dependencies(*edges),
+    )
+
+
 def _candidate_by_include(result, selector: str):
     return next(item for item in result.candidates if item.include == (selector,))
 
@@ -66,8 +100,8 @@ def _candidate_by_include(result, selector: str):
 def test_positive_discovery_uses_shared_coverage_and_stable_candidate_ids(tmp_path: Path) -> None:
     _base_repository(tmp_path)
 
-    first = discover_candidate_evidence(tmp_path)
-    second = discover_candidate_evidence(tmp_path)
+    first = _discover(tmp_path)
+    second = _discover(tmp_path)
 
     assert first.complete is True
     assert second.complete is True
@@ -86,7 +120,7 @@ def test_positive_discovery_uses_shared_coverage_and_stable_candidate_ids(tmp_pa
 def test_duplicate_observations_converge_on_one_candidate_identity(tmp_path: Path) -> None:
     _base_repository(tmp_path)
 
-    result = discover_candidate_evidence(tmp_path)
+    result = _discover(tmp_path)
 
     pyproject = _candidate_by_include(result, "pyproject.toml")
     kinds = {item.kind for item in pyproject.observations}
@@ -101,7 +135,7 @@ def test_ambiguous_declared_coverage_stays_explicit_instead_of_guessing(tmp_path
     ]
     _base_repository(tmp_path, components=components)
 
-    result = discover_candidate_evidence(tmp_path)
+    result = _discover(tmp_path)
 
     candidate = _candidate_by_include(result, "tests/**")
     assert candidate.coverage.status == AMBIGUOUS
@@ -112,7 +146,7 @@ def test_ambiguous_declared_coverage_stays_explicit_instead_of_guessing(tmp_path
 def test_uncovered_candidate_remains_evidence_without_automatic_classification(tmp_path: Path) -> None:
     _base_repository(tmp_path, components=[{"id": "product", "include": ["src/pkg/**"]}])
 
-    result = discover_candidate_evidence(tmp_path)
+    result = _discover(tmp_path)
 
     candidate = _candidate_by_include(result, "tests/**")
     payload = candidate.as_dict()
@@ -125,31 +159,52 @@ def test_uncovered_candidate_remains_evidence_without_automatic_classification(t
 
 def test_ci_invoked_script_and_maintenance_signal_merge_without_ownership_guess(tmp_path: Path) -> None:
     _base_repository(tmp_path)
-    (tmp_path / ".github/workflows").mkdir(parents=True)
     (tmp_path / ".github/scripts").mkdir(parents=True)
     (tmp_path / ".github/scripts/check.py").write_text("print('ok')\n", encoding="utf-8")
-    (tmp_path / ".github/workflows/test.yml").write_text(
-        yaml.safe_dump(
-            {
-                "name": "test",
-                "jobs": {
-                    "test": {
-                        "runs-on": "ubuntu-latest",
-                        "steps": [{"run": "python .github/scripts/check.py"}],
-                    }
-                },
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
+    edge = _edge(
+        evidence_id="github-actions:.github/workflows/test.yml:check",
+        source=".github/workflows/test.yml",
+        resolved_path=".github/scripts/check.py",
     )
 
-    result = discover_candidate_evidence(tmp_path)
+    result = _discover(tmp_path, edges=(edge,))
 
     candidate = _candidate_by_include(result, ".github/scripts/check.py")
     kinds = {item.kind for item in candidate.observations}
-    assert {"CI_INVOKED_SCRIPT", "MAINTENANCE_SCRIPT"} <= kinds
+    assert {"CI_INVOKED_SCRIPT", "MAINTENANCE_SCRIPT", "DEPENDENCY_BOUNDARY"} <= kinds
     assert candidate.coverage.status == UNCOVERED
+
+
+def test_release_phase_and_cross_root_dependency_are_descriptive_only(tmp_path: Path) -> None:
+    _base_repository(tmp_path)
+    (tmp_path / ".github/workflows").mkdir(parents=True)
+    (tmp_path / ".github/workflows/release.yml").write_text("name: release\n", encoding="utf-8")
+    edge = _edge(
+        evidence_id="release-edge",
+        source=".github/workflows/release.yml",
+        resolved_path="src/pkg/__init__.py",
+        phase=DependencyPhase.RELEASE,
+    )
+
+    result = _discover(tmp_path, edges=(edge,))
+
+    source = _candidate_by_include(result, ".github/workflows/release.yml")
+    target = _candidate_by_include(result, "src/pkg/__init__.py")
+    assert "RELEASE_ACTIVITY_SOURCE" in {item.kind for item in source.observations}
+    assert {"RELEASE_ACTIVITY_TARGET", "DEPENDENCY_BOUNDARY"} <= {item.kind for item in target.observations}
+    assert source.as_dict()["authority"] == "EVIDENCE_ONLY"
+    assert target.as_dict()["authority"] == "EVIDENCE_ONLY"
+
+
+def test_embedded_contract_copy_is_observed_as_its_own_scope(tmp_path: Path) -> None:
+    _base_repository(tmp_path)
+    (tmp_path / "src/pkg/specdata").mkdir()
+    (tmp_path / "src/pkg/specdata/profile.schema.json").write_text("{}\n", encoding="utf-8")
+
+    result = _discover(tmp_path)
+
+    candidate = _candidate_by_include(result, "src/pkg/specdata/**")
+    assert "EMBEDDED_CONTRACT_COPY" in {item.kind for item in candidate.observations}
 
 
 def test_multi_generation_evaluation_reuses_candidate_identity_but_not_source_context(tmp_path: Path) -> None:
@@ -170,8 +225,8 @@ def test_multi_generation_evaluation_reuses_candidate_identity_but_not_source_co
         components=canonical_payload["components"],
     )
 
-    newer_source = discover_candidate_evidence(tmp_path, source_profile_path="ptsip_0.3.7.yaml")
-    canonical_source = discover_candidate_evidence(tmp_path, source_profile_path="ptsip.yaml")
+    newer_source = _discover(tmp_path, source_profile_path="ptsip_0.3.7.yaml")
+    canonical_source = _discover(tmp_path, source_profile_path="ptsip.yaml")
 
     assert newer_source.complete is True
     assert canonical_source.complete is True
@@ -193,7 +248,7 @@ def test_final_point_cannot_be_selected_as_source_generation(tmp_path: Path) -> 
         components=canonical_payload["components"],
     )
 
-    result = discover_candidate_evidence(tmp_path, source_profile_path="ptsip_0.3.7.yaml")
+    result = _discover(tmp_path, source_profile_path="ptsip_0.3.7.yaml")
 
     assert result.complete is False
     assert result.candidates == ()
@@ -202,7 +257,7 @@ def test_final_point_cannot_be_selected_as_source_generation(tmp_path: Path) -> 
 
 def test_discovery_context_detects_repository_change_after_collection(tmp_path: Path) -> None:
     _base_repository(tmp_path)
-    result = discover_candidate_evidence(tmp_path)
+    result = _discover(tmp_path)
     assert result.complete is True
     assert validate_candidate_discovery_context(tmp_path, result) == ()
 
