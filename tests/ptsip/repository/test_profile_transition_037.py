@@ -188,3 +188,13 @@ def test_transition_snapshot_is_bound_to_repository_root(tmp_path: Path) -> None
 
     assert [item.code for item in diagnostics] == ["STALE_TRANSITION_SNAPSHOT"]
     assert "repository root changed" in diagnostics[0].message
+
+
+def test_invalid_profile_yaml_fails_closed(tmp_path: Path) -> None:
+    (tmp_path / "ptsip.yaml").write_text("ptsip: [\n", encoding="utf-8")
+
+    result = discover_profile_transition(tmp_path)
+
+    assert result.valid is False
+    assert result.state is None
+    assert "INVALID_PROFILE_YAML" in _codes(result)
