@@ -134,6 +134,17 @@ def _current_snapshot_matches_analysis(analysis: MigrationAnalysis, snapshot) ->
     )
 
 
+def _generation_matches(left, right) -> bool:
+    return (
+        left.profile_path == right.profile_path
+        and left.declared_version == right.declared_version
+        and left.specification_revision == right.specification_revision
+        and left.specification_source == right.specification_source
+        and left.content_sha256 == right.content_sha256
+        and left.temporary == right.temporary
+    )
+
+
 def bind_execution_plan(
     repository_root: str | Path,
     plan: FinalPointConvergencePlan,
@@ -172,8 +183,15 @@ def bind_execution_plan(
             )
         if proposal_set.analysis_digest != step.analysis_digest:
             raise ExecutionStateError(f"Proposal analysis binding mismatch for {step.source_path}.")
-        if proposal_set.source_generation.profile_path != step.source_path:
-            raise ExecutionStateError(f"Proposal source identity mismatch for {step.source_path}.")
+        if not _generation_matches(proposal_set.source_generation, analysis.source_generation):
+            raise ExecutionStateError(f"Proposal source generation mismatch for {step.source_path}.")
+        for bundle in proposal_set.accepted:
+            if bundle.analysis_digest != step.analysis_digest or not _generation_matches(
+                bundle.source_generation, analysis.source_generation
+            ):
+                raise ExecutionStateError(
+                    f"Accepted bundle {bundle.proposal_id} lost its exact source/analysis binding."
+                )
         accepted_ids = tuple(sorted(item.proposal_id for item in proposal_set.accepted))
         if accepted_ids != tuple(sorted(step.accepted_bundle_ids)):
             raise ExecutionStateError(f"Accepted bundle set changed after WU-06 planning for {step.source_path}.")
@@ -342,7 +360,7 @@ def inspect_recovery(
         reasons.append(str(exc))
 
     final_path = profile_path_on_disk(root, bound.plan.final_point.path)
-    if latest.phase == ExecutionPhase.PROMOTED or latest.phase == ExecutionPhase.POST_PROMOTION_VERIFIED:
+    if latest.phase in {ExecutionPhase.PROMOTED, ExecutionPhase.POST_PROMOTION_VERIFIED}:
         canonical = profile_path_on_disk(root, DEFAULT_PROFILE_PATH)
         if latest.final_point_after_sha256 and (
             not canonical.is_file() or _sha256_file(canonical) != latest.final_point_after_sha256
@@ -350,9 +368,19 @@ def inspect_recovery(
             reasons.append("canonical content does not match promoted checkpoint")
         if final_path.exists():
             reasons.append("Final Point unexpectedly exists after promoted checkpoint")
-    elif latest.final_point_after_sha256:
-        if not final_path.is_file() or _sha256_file(final_path) != latest.final_point_after_sha256:
-            reasons.append("Final Point content does not match latest checkpoint")
+    else:
+        expected_final_sha: str | None = None
+        for row in reversed(rows):
+            if row.final_point_after_sha256:
+                expected_final_sha = row.final_point_after_sha256
+                break
+        if expected_final_sha is None:
+            expected_final_sha = bound.plan.final_point.content_sha256
+        if expected_final_sha is None:
+            if final_path.exists():
+                reasons.append("planned Final Point exists without a persisted mutation checkpoint")
+        elif not final_path.is_file() or _sha256_file(final_path) != expected_final_sha:
+            reasons.append("Final Point content does not match latest persisted checkpoint state")
 
     removed_sources = [row.source_path for row in rows if row.phase == ExecutionPhase.SOURCE_REMOVED and row.source_path]
     for source_path in removed_sources:
