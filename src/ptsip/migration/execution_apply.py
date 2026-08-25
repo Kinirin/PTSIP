@@ -350,18 +350,18 @@ def _validate_projected_final_state(root: Path, state: CompletedSourceStep | Asy
     verified = _completed_verified(state)
     final_path = profile_path_on_disk(root, verified.authorized.bound.plan.final_point.path)
     current_sha = _current_final_sha(state)
-    if not final_path.is_file() or _sha256_file(final_path) != current_final_sha:
+    if not final_path.is_file() or _sha256_file(final_path) != current_sha:
         raise ExecutionStateError("Final Point changed after source completion.")
     payload = _load_yaml(final_path)
     snapshot = final_point_state_from_mapping(
         payload,
         path=verified.authorized.bound.plan.final_point.path,
-        content_sha256=current_final_sha,
+        content_sha256=current_sha,
     )
     step_plan = verified.authorized.bound.plan.source_steps[verified.source_index]
     if snapshot.semantic_digest != step_plan.projected_final_state_digest:
         raise ExecutionStateError("Actual Final Point semantics do not match WU-06 projected state for this source.")
-    return current_final_sha
+    return current_sha
 
 
 def finalize_source(
