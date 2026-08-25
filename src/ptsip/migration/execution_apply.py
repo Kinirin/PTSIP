@@ -55,6 +55,27 @@ def _validate_target_identity(payload: Mapping[str, object], verified: VerifiedS
     if version != final.draft_version or revision != final.specification_revision:
         raise ExecutionStateError("Final Point payload does not match the WU-06 target draft/revision identity.")
 
+    responsibility_map = payload.get("responsibility_map")
+    if not isinstance(responsibility_map, Mapping) or responsibility_map.get("mode") != "explicit":
+        raise ExecutionStateError(
+            "WU-07 target apply currently supports explicit Responsibility Map targets only."
+        )
+    if any(key in responsibility_map for key in ("template", "overrides", "removals")):
+        raise ExecutionStateError(
+            "Explicit WU-07 target payload must not carry template/hybrid declaration-authority fields."
+        )
+
+
+def _validate_planned_seed_payload(payload: Mapping[str, object], verified: VerifiedSourceStep) -> None:
+    snapshot = final_point_state_from_mapping(
+        payload,
+        path=verified.authorized.bound.plan.final_point.path,
+    )
+    if snapshot.entities:
+        raise ExecutionStateError(
+            "Planned Final Point seed must not contain target entities that were not accumulated by WU-06 accepted deltas."
+        )
+
 
 def _find_list_entity(rows: object, entity_id: str) -> tuple[list[object], int | None, object | None]:
     if rows is None:
@@ -194,13 +215,16 @@ def _apply_delta_batch(
     *,
     seed_payload: Mapping[str, object] | None = None,
 ) -> tuple[str, dict[str, object]]:
-    if path.exists():
+    planned_creation = not path.exists()
+    if not planned_creation:
         payload = _load_yaml(path)
     else:
         if seed_payload is None:
             raise ExecutionStateError("Planned Final Point creation requires an explicit target-draft seed payload.")
         payload = copy.deepcopy(dict(seed_payload))
     _validate_target_identity(payload, verified)
+    if planned_creation:
+        _validate_planned_seed_payload(payload, verified)
     for delta in deltas:
         _apply_delta(payload, delta)
     final_point_state_from_mapping(payload, path=verified.authorized.bound.plan.final_point.path)
@@ -326,18 +350,18 @@ def _validate_projected_final_state(root: Path, state: CompletedSourceStep | Asy
     verified = _completed_verified(state)
     final_path = profile_path_on_disk(root, verified.authorized.bound.plan.final_point.path)
     current_sha = _current_final_sha(state)
-    if not final_path.is_file() or _sha256_file(final_path) != current_sha:
+    if not final_path.is_file() or _sha256_file(final_path) != current_final_sha:
         raise ExecutionStateError("Final Point changed after source completion.")
     payload = _load_yaml(final_path)
     snapshot = final_point_state_from_mapping(
         payload,
         path=verified.authorized.bound.plan.final_point.path,
-        content_sha256=current_sha,
+        content_sha256=current_final_sha,
     )
     step_plan = verified.authorized.bound.plan.source_steps[verified.source_index]
     if snapshot.semantic_digest != step_plan.projected_final_state_digest:
         raise ExecutionStateError("Actual Final Point semantics do not match WU-06 projected state for this source.")
-    return current_sha
+    return current_final_sha
 
 
 def finalize_source(
