@@ -250,6 +250,8 @@ def reanalyze_source(
     )
     if proof.source_path != applied.verified.source.source_path:
         raise ExecutionStateError("Post-apply completion proof is bound to another source.")
+    if proof.analysis_digest != applied.verified.source.analysis_digest:
+        raise ExecutionStateError("Post-apply completion proof analysis digest does not match the bound source analysis.")
     ledger.append(
         phase=ExecutionPhase.SOURCE_REANALYZED,
         source_path=proof.source_path,
