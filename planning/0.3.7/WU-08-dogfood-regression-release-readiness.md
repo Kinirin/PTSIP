@@ -1,11 +1,12 @@
 # WU-08 — Repository Self-Analysis, Fixture Regression, Package, and Release Readiness
 
-> **Status:** PRE-CREATED / LOCKED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Roadmap predecessor:** WU-07 — fixture-verified safe sequential apply and canonical promotion capability  
+> **Roadmap predecessor:** WU-07 — fixture-verified safe sequential apply and canonical promotion capability (`COMPLETE / FOCUSED TEST VERIFIED`)  
 > **Repository self-adoption boundary:** ADR-0017 — Tool Version and Project Profile Contract Independence  
 > **Verification boundary:** real PTSIP Project Profiles remain read-only; migration mutation/promotion regression runs only in controlled fixtures  
-> **Entry baseline:** not assigned; capture fresh branch HEAD on actual entry  
+> **Exact entry baseline:** `874fa80a508f5901647d6d2df132a95f0eadda49`  
+> **Inherited verification evidence:** workflow run `32825710974` at `68b29308e8531f93267acc2aec585f6e751021f1` produced `437 passed / 1 failed`; the sole failure is the repository self-profile warning regression described in Section 13  
 > **Successor:** release handoff only after exact-SHA verification and Specification freeze
 
 ## 0. Purpose
@@ -312,9 +313,36 @@ WU-08 is complete only when:
 - documentation/schema/spec assets are synchronized where actually required;
 - final Tool `0.3.7` immutable Specification binding is frozen for release.
 
-## 13. Entry discipline
+## 13. Entry state and inherited regression
 
-Pre-created roadmap document only. Actual entry requires WU-07 completion and a fresh exact branch HEAD.
+WU-08 entered automatically under the project owner's standing successor-entry authorization after WU-07 was documented `COMPLETE / FOCUSED TEST VERIFIED` and exact `dev/0.3.7` HEAD `874fa80a508f5901647d6d2df132a95f0eadda49` was freshly revalidated.
+
+This ACTIVE state is entry only. It does not by itself authorize release, Specification freeze, profile migration, or unrelated architecture changes.
+
+The first known WU-08 regression is inherited from owner-dispatched `tooling-test` workflow run `32825710974`, which verified exact source SHA `68b29308e8531f93267acc2aec585f6e751021f1` and ran the complete pytest suite:
+
+```text
+437 passed
+1 failed
+```
+
+The sole failure was:
+
+```text
+tests/ptsip/test_repository_self_profile_035.py::
+test_repository_self_profile_is_valid_complete_and_revision_pinned
+```
+
+because repository validation returned:
+
+```text
+18 tracked file(s) are outside declared component and associated-artifact selectors;
+this is not automatically a PTSIP violation.
+```
+
+This failure must be analyzed under the WU-08 repository self-analysis/full-regression boundary. It must not be hidden by weakening the test or by version-bumping the Project Profile merely to make Tool `0.3.7` green. The correct resolution must determine whether the new tracked files require declared coverage, whether the warning assertion is stale relative to current intended semantics, or whether another repository-contract surface owns the discrepancy.
+
+## 14. Entry discipline
 
 WU-08 verification evidence must record the exact source SHA it verifies; later documentation-only commits must not silently replace that verification authority.
 
