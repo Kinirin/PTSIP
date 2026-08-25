@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=../schemas/ptsip-adr-template.schema.json
+schema_version: ptsip-adr-template/v1
+
+output:
+  format: markdown
+  filename_pattern: "^ADR-[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*\\.md$"
+
+metadata:
+  status: required
+  date: required
+  decision: required
+  topic_id: required
+  applies_to: optional
+
+relationships:
+  supersedes:
+    status: optional
+    requires_scope: true
+    requires_changed_semantics: true
+    requires_preserved_semantics: true
+  amends:
+    status: optional
+    requires_scope: true
+  extends:
+    status: optional
+    requires_scope: false
+  depends_on:
+    status: optional
+    requires_scope: false
+
+sections:
+  context:
+    heading: Context
+    status: required
+  decision:
+    heading: Decision
+    status: required
+  consequences:
+    heading: Consequences
+    status: required
+    subsections:
+      positive:
+        heading: Positive
+        status: required
+      tradeoffs:
+        heading: Tradeoffs
+        status: required
+  rejected_alternatives:
+    heading: Rejected Alternatives
+    status: required
+  affected_rules_assets:
+    heading: Affected Rules / Assets
+    status: optional
+  implementation_sequencing:
+    heading: Implementation Sequencing
+    status: optional
+
+constraints:
+  rejected_alternatives:
+    required: true
+    allow_explicit_no_material_alternative: true
+  replacement_decision:
+    self_contained: true
+    describe_changed_semantics: true
+    describe_preserved_semantics: true
+  historical_records:
+    retrospective_reformatting_allowed: false
