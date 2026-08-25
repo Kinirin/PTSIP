@@ -10,6 +10,7 @@ from ptsip.migration import (
     AsynchronousWorkTarget,
     EvidenceCorrelation,
     MigrationAnalysis,
+    RemovalMigrationElement,
     RequiredWorkElement,
     SourceMigrationCompletion,
     TargetCompatibility,
@@ -119,6 +120,20 @@ def required(
     )
 
 
+def removal(
+    removal_id: str = "removal:retired.py",
+    *,
+    declaration_id: str = "retired",
+) -> RemovalMigrationElement:
+    return RemovalMigrationElement(
+        id=removal_id,
+        source_declaration_id=declaration_id,
+        source_classification="PRODUCT",
+        selector="retired/**",
+        rationale="fixture source declaration is retired",
+    )
+
+
 def async_target(target_id: str = "async:docs/readme.md", *, path: str = "docs/readme.md") -> AsynchronousWorkTarget:
     return AsynchronousWorkTarget(target_id, path, EvidenceCorrelation((), (), ()))
 
@@ -128,6 +143,7 @@ def analysis(
     root: Path,
     *,
     required_items: tuple[RequiredWorkElement, ...] = (),
+    removal_items: tuple[RemovalMigrationElement, ...] = (),
     async_items: tuple[AsynchronousWorkTarget, ...] = (),
 ) -> MigrationAnalysis:
     snapshot = capture_snapshot(root)
@@ -139,7 +155,7 @@ def analysis(
         repository_status_fingerprint=snapshot.status_fingerprint,
         repository_content_fingerprint=snapshot.tracked_content_fingerprint,
         required=required_items,
-        removals=(),
+        removals=removal_items,
         async_targets=async_items,
         ambiguous=(),
         lifecycle_findings=(),
@@ -149,7 +165,7 @@ def analysis(
             required_total=len(required_items),
             required_resolved=resolved,
             required_unresolved=len(required_items) - resolved,
-            removal_count=0,
+            removal_count=len(removal_items),
             async_count=len(async_items),
         ),
     )
