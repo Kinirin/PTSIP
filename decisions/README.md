@@ -12,13 +12,13 @@ decisions/
 │   ADR governance: how ADRs are operated
 ├─ INDEX.yaml
 │   navigation registry: what topic exists, which ADR is current, and where it is
-├─ ADR-TEMPLATE.md
-│   authoring contract for new ADRs
+├─ ADR-TEMPLATE.yaml
+│   machine-readable authoring contract for new ADRs
 └─ ADR-NNNN-*.md
     historical decision records: what was decided and why at that time
 ```
 
-These responsibilities MUST remain separate. `README.md`, `INDEX.yaml`, and `ADR-TEMPLATE.md` are mutable current governance/navigation files. They are not historical ADR records and are not subject to the rule that Accepted ADRs remain unchanged merely to match newer terminology or templates.
+These responsibilities MUST remain separate. `README.md`, `INDEX.yaml`, and `ADR-TEMPLATE.yaml` are mutable current governance/navigation files. They are not historical ADR records and are not subject to the rule that Accepted ADRs remain unchanged merely to match newer terminology or templates.
 
 ## Historical ADR records
 
@@ -92,9 +92,13 @@ When an accepted ADR changes which ADR is current for an indexed topic, the same
 
 ## Template evolution
 
-`ADR-TEMPLATE.md` defines the current format for newly created ADRs.
+`ADR-TEMPLATE.yaml` is the machine-readable authoring contract for newly created Markdown ADR records.
 
 The template is updated in place as ADR governance evolves. A template change applies prospectively and MUST NOT trigger bulk rewriting of earlier Accepted ADRs.
+
+`ADR-TEMPLATE.yaml` is validated by `schemas/ptsip-adr-template.schema.json`. The YAML file carries a language-server schema association for editor-side validation, and repository tests validate both the JSON Schema itself and the template instance.
+
+The schema validates the authoring contract. It does not convert historical `ADR-NNNN-*.md` records into YAML and does not make historical ADR prose subject to retrospective schema migration.
 
 ## Authority boundary
 
