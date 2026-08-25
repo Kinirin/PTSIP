@@ -49,6 +49,12 @@ New records use monotonically increasing four-digit IDs and a concise kebab-case
 ADR-NNNN-short-decision-title.md
 ```
 
+For newly created ADRs, the filename slug SHOULD identify the specific architecture decision represented by that record. A slug that only repeats a generic version, work-unit, release, or activation event SHOULD be avoided when a clearer architecture-decision name is available.
+
+This naming guidance applies prospectively to newly created ADRs. It does not require renaming existing Accepted ADR files merely to match the newer convention.
+
+The ADR filename slug is not the stable architecture topic identity. The filename identifies the specific decision record; stable current-topic identity is owned by `INDEX.yaml`.
+
 The greatest ADR number MUST NOT be interpreted as the current policy for every topic. ADR numbers identify records; current-topic routing is owned by `INDEX.yaml`.
 
 ## Decision relationships
