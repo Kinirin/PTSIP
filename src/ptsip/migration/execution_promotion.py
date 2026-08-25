@@ -100,6 +100,17 @@ def promote_canonical(
         raise ExecutionStateError("Repository changed outside controlled paths after PROMOTION_READY.")
     os.replace(final_path, canonical_path)
     canonical_after = _sha256_file(canonical_path)
+    if canonical_after != ready.final_point_sha256:
+        ledger.append(
+            phase=ExecutionPhase.RECOVERY_REQUIRED,
+            source_path=DEFAULT_PROFILE_PATH,
+            source_sha256=ready.canonical_before_sha256,
+            final_point_before_sha256=ready.final_point_sha256,
+            final_point_after_sha256=canonical_after,
+            decision_ids=verified.source.decision_ids,
+            payload={"reason": "promoted canonical bytes differ from PROMOTION_READY Final Point"},
+        )
+        raise ExecutionStateError("Promoted canonical bytes differ from the PROMOTION_READY Final Point.")
     promoted = PromotedState(ready, canonical_after)
     ledger.append(
         phase=ExecutionPhase.PROMOTED,
@@ -124,10 +135,32 @@ def verify_post_promotion(
     canonical_path = profile_path_on_disk(root, DEFAULT_PROFILE_PATH)
     final_path = profile_path_on_disk(root, bound.plan.final_point.path)
     reasons: list[str] = []
-    if not canonical_path.is_file() or _sha256_file(canonical_path) != promoted.canonical_after_sha256:
+    canonical_sha: str | None = None
+    if not canonical_path.is_file():
         reasons.append("promoted canonical content changed or disappeared")
+    else:
+        canonical_sha = _sha256_file(canonical_path)
+        if canonical_sha != promoted.canonical_after_sha256:
+            reasons.append("promoted canonical content changed or disappeared")
+        else:
+            try:
+                canonical_payload = _load_yaml(canonical_path)
+                canonical_state = final_point_state_from_mapping(
+                    canonical_payload,
+                    path=DEFAULT_PROFILE_PATH,
+                    content_sha256=canonical_sha,
+                )
+                if canonical_state.semantic_digest != bound.plan.projected_final_state_digest:
+                    reasons.append("promoted canonical semantics differ from WU-06 global projected target state")
+            except (ExecutionStateError, ValueError) as exc:
+                reasons.append(f"unable to validate promoted canonical semantics: {exc}")
     if final_path.exists():
         reasons.append("Final Point path still exists after promotion")
+    try:
+        if not _guard_matches(root, bound):
+            reasons.append("repository changed outside controlled profile paths during promotion")
+    except ExecutionStateError as exc:
+        reasons.append(str(exc))
     discovery = discover_profile_transition(root)
     if not discovery.valid or discovery.state is None:
         reasons.append("transition rediscovery is invalid after promotion")
