@@ -360,7 +360,8 @@ def inspect_recovery(
         reasons.append(str(exc))
 
     final_path = profile_path_on_disk(root, bound.plan.final_point.path)
-    if latest.phase in {ExecutionPhase.PROMOTED, ExecutionPhase.POST_PROMOTION_VERIFIED}:
+    promoted_phases = {ExecutionPhase.PROMOTED, ExecutionPhase.POST_PROMOTION_VERIFIED}
+    if latest.phase in promoted_phases:
         canonical = profile_path_on_disk(root, DEFAULT_PROFILE_PATH)
         if latest.final_point_after_sha256 and (
             not canonical.is_file() or _sha256_file(canonical) != latest.final_point_after_sha256
@@ -383,9 +384,21 @@ def inspect_recovery(
             reasons.append("Final Point content does not match latest persisted checkpoint state")
 
     removed_sources = [row.source_path for row in rows if row.phase == ExecutionPhase.SOURCE_REMOVED and row.source_path]
-    for source_path in removed_sources:
-        if profile_path_on_disk(root, source_path).exists():
-            reasons.append(f"source reappeared after removal checkpoint: {source_path}")
+    removed_source_set = set(removed_sources)
+    for source in bound.sources:
+        source_path = profile_path_on_disk(root, source.source_path)
+        if source.source_path in removed_source_set:
+            if source_path.exists():
+                reasons.append(f"source reappeared after removal checkpoint: {source.source_path}")
+            continue
+        if normalize_profile_path(source.source_path) == DEFAULT_PROFILE_PATH and latest.phase in promoted_phases:
+            continue
+        if not source_path.is_file():
+            reasons.append(f"source disappeared without removal checkpoint: {source.source_path}")
+            continue
+        if _sha256_file(source_path) != source.source_content_sha256:
+            reasons.append(f"source content does not match bound identity: {source.source_path}")
+
     next_index = len(removed_sources)
     if latest.phase in {
         ExecutionPhase.CANONICAL_SOURCE_COMPLETE,
