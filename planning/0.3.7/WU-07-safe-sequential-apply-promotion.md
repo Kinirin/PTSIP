@@ -1,12 +1,14 @@
 # WU-07 — Preview, Confirmation, Safe Sequential Apply, and Canonical Promotion
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / FOCUSED TEST VERIFIED  
 > **Target Tool:** `0.3.7`  
 > **Roadmap predecessor:** WU-06 — target proposals and Final Point plan (`COMPLETE / FOCUSED TEST VERIFIED`)  
 > **WU-07 exact entry baseline:** `c69f93eb19c6b7e227faaf6c9d38b563658f3b6a`  
 > **Bound Specification at entry:** `0.3.7-draft @ b648d9e026f502b14481ba2d0606d9acc88a31fc`  
 > **Repository self-adoption boundary:** ADR-0017 — Tool Version and Project Profile Contract Independence  
 > **Focused verification boundary:** PTSIP repository Project Profiles remain read-only; mutation/promotion verification uses controlled fixture repositories  
+> **Focused verification exact SHA:** `68b29308e8531f93267acc2aec585f6e751021f1`  
+> **Verification workflow run:** `32825710974` (`tooling-test`, workflow-dispatch; overall run failed only on the repository self-profile regression described in Section 14)  
 > **Successor:** WU-08 — repository self-analysis, regression, package and release readiness
 
 ## 0. Purpose
@@ -259,6 +261,53 @@ Completion does **not** require creating, applying, deleting, or promoting `ptsi
 
 WU-07 entered automatically under the project owner's standing successor-entry authorization after WU-06 completion was recorded and exact `dev/0.3.7` HEAD `c69f93eb19c6b7e227faaf6c9d38b563658f3b6a` was freshly revalidated.
 
-This ACTIVE state authorizes WU-07 implementation only. It does **not** authorize applying any concrete target delta to the PTSIP repository, creating/modifying a repository Final Point, deleting a repository source profile, replacing repository canonical `ptsip.yaml`, or bypassing project-owner confirmation for architecture-changing decisions.
+This entry authorized WU-07 implementation only. It did **not** authorize applying any concrete target delta to the PTSIP repository, creating/modifying a repository Final Point, deleting a repository source profile, replacing repository canonical `ptsip.yaml`, or bypassing project-owner confirmation for architecture-changing decisions.
 
 ADR-0017 additionally freezes the Tool `0.3.7` repository-specific boundary: no `ptsip_0.3.7.yaml` is created solely for this Tool release.
+
+## 14. Closure and focused-verification evidence
+
+WU-07 implementation and fixture-focused verification are closed against exact source SHA:
+
+```text
+68b29308e8531f93267acc2aec585f6e751021f1
+```
+
+The owner-dispatched self-hosted `tooling-test` workflow run `32825710974` checked out and verified that exact SHA before running the complete repository pytest suite.
+
+Observed pytest result:
+
+```text
+437 passed
+1 failed
+```
+
+The sole failure was:
+
+```text
+tests/ptsip/test_repository_self_profile_035.py::
+test_repository_self_profile_is_valid_complete_and_revision_pinned
+```
+
+and was caused by the repository self-profile validator returning one warning:
+
+```text
+18 tracked file(s) are outside declared component and associated-artifact selectors;
+this is not automatically a PTSIP violation.
+```
+
+No WU-07 migration execution, fixture apply/deletion/promotion, stale-state, CAS, Async, source-order, ledger-integrity, or recovery test failed. Therefore the WU-07 focused fixture scenarios are verified as passing at the exact SHA above.
+
+The overall `tooling-test` run is **not** represented as successful: it correctly remains failed because the repository-wide self-profile regression is unresolved. That regression belongs to WU-08 repository self-analysis/full-regression closure and must be resolved there before release readiness can be claimed.
+
+Repository Project Profile immutability was also rechecked after implementation:
+
+```text
+ptsip.yaml                                      = 0.3.6-draft
+profiles/example.ptsip.yaml                     = 0.3.6-draft
+profiles/hybrid-python-package.ptsip.yaml       = 0.3.6-draft
+profiles/template-python-package.ptsip.yaml     = 0.3.6-draft
+ptsip_0.3.7.yaml                                = absent
+```
+
+WU-07 is therefore `COMPLETE / FOCUSED TEST VERIFIED`. Full repository regression, package/distribution verification, exact-SHA workflow success, and release readiness remain WU-08 responsibilities.
