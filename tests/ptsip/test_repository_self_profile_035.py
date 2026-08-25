@@ -68,6 +68,9 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     classifications = {target.component_id: target.classification for target in metadata.targets}
 
     assert classifications["ptsip-core"] == "PRODUCT"
+    assert classifications["ptsip-evidence"] == "PRODUCT"
+    assert classifications["ptsip-source-compat"] == "PRODUCT"
+    assert classifications["ptsip-migration"] == "PRODUCT"
     assert classifications["vpms"] == "PRODUCT"
     assert classifications["ptsip-distribution"] == "PRODUCT"
     assert classifications["ptsip-package-assembly"] == "DELIVERY"
@@ -86,6 +89,51 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         if isinstance(item, dict) and item.get("id")
     }
     assert artifacts["ptsip-governance-support"]["anchor"] == "ptsip-canonical-contracts"
+
+
+def test_repository_self_profile_keeps_migration_subsystems_as_explicit_product_components() -> None:
+    payload = _profile()
+    components = {
+        item["id"]: item
+        for item in payload.get("components", [])
+        if isinstance(item, dict) and item.get("id")
+    }
+
+    assert "src/ptsip/**" not in components["ptsip-core"]["include"]
+    assert components["ptsip-evidence"]["include"] == ["src/ptsip/evidence/**"]
+    assert components["ptsip-source-compat"]["include"] == ["src/ptsip/source_compat/**"]
+    assert components["ptsip-migration"]["include"] == ["src/ptsip/migration/**"]
+
+    for component_id in ("ptsip-evidence", "ptsip-source-compat", "ptsip-migration"):
+        component = components[component_id]
+        assert component["classification"] == "PRODUCT"
+        assert component["roles"] == ["IMPLEMENTATION"]
+        assert component["shipped"] is True
+        assert component["runtime_required"] is False
+        assert component["executable"] is False
+        assert component["release_owner"] == "tool"
+        assert component["compatibility_owner"] == "tool"
+
+    relationships = {
+        (item.get("from"), item.get("to"), item.get("type"))
+        for item in payload.get("relationships", [])
+        if isinstance(item, dict)
+    }
+    expected = {
+        ("ptsip-evidence", "ptsip-core", "IMPORTS"),
+        ("ptsip-source-compat", "ptsip-core", "IMPORTS"),
+        ("ptsip-source-compat", "ptsip-embedded-contracts", "READS"),
+        ("ptsip-migration", "ptsip-core", "IMPORTS"),
+        ("ptsip-migration", "ptsip-evidence", "IMPORTS"),
+        ("ptsip-migration", "ptsip-source-compat", "IMPORTS"),
+        ("ptsip-canonical-contracts", "ptsip-evidence", "SPECIFIES"),
+        ("ptsip-canonical-contracts", "ptsip-source-compat", "SPECIFIES"),
+        ("ptsip-canonical-contracts", "ptsip-migration", "SPECIFIES"),
+        ("repository-verification", "ptsip-evidence", "VERIFIES"),
+        ("repository-verification", "ptsip-source-compat", "VERIFIES"),
+        ("repository-verification", "ptsip-migration", "VERIFIES"),
+    }
+    assert expected <= relationships
 
 
 def test_vpms_self_adoption_targets_resolve_against_repository_self_profile() -> None:
