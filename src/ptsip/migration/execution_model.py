@@ -110,6 +110,8 @@ class BoundExecutionPlan:
             "sources": [item.as_dict() for item in self.sources],
             "mutation_guard": self.mutation_guard.as_dict(),
             "final_point": self.plan.final_point.as_dict(),
+            "execution_preview": self.plan.preview.as_dict(),
+            "projected_final_state_digest": self.plan.projected_final_state_digest,
         }
 
 
