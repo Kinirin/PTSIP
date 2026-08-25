@@ -4,6 +4,17 @@ schema_version: ptsip-adr-template/v1
 output:
   format: markdown
   filename_pattern: "^ADR-[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*\\.md$"
+  filename_semantics:
+    identity: decision_record
+    require_specific_architecture_decision_name: true
+    avoid_generic_event_only_slug_when_semantic_name_available: true
+    generic_event_categories:
+      - version
+      - work_unit
+      - release
+      - activation
+    stable_topic_identity_owner: decisions/INDEX.yaml
+    applies_prospectively: true
 
 metadata:
   status: required
