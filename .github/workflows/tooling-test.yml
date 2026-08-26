@@ -185,6 +185,21 @@ jobs:
               $components += 'ptsip-embedded-contracts'
               continue
             }
+            if ($path -like 'ptsip/evidence/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-evidence'
+              continue
+            }
+            if ($path -like 'ptsip/source_compat/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-source-compat'
+              continue
+            }
+            if ($path -like 'ptsip/migration/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-migration'
+              continue
+            }
             if ($path -like 'ptsip/*') {
               $sourcePaths += "src/$path"
               $components += 'ptsip-core'
@@ -216,6 +231,15 @@ jobs:
 
           if ($components -notcontains 'ptsip-core') {
             throw "Built wheel does not contain the ptsip-core Product implementation."
+          }
+          if ($components -notcontains 'ptsip-evidence') {
+            throw "Built wheel does not contain the ptsip-evidence Product component."
+          }
+          if ($components -notcontains 'ptsip-source-compat') {
+            throw "Built wheel does not contain the ptsip-source-compat Product component."
+          }
+          if ($components -notcontains 'ptsip-migration') {
+            throw "Built wheel does not contain the ptsip-migration Product component."
           }
           if ($components -notcontains 'vpms') {
             throw "Built wheel does not contain the vpms Product package."
