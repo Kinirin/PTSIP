@@ -9,7 +9,11 @@
       "type": "object",
       "required": ["version", "specification"],
       "properties": {
-        "version": {"type": "string", "const": "0.3.6-draft"},
+        "version": {
+          "type": "string",
+          "enum": ["0.3.6-draft", "pp.1.01"],
+          "description": "Supported Project Profile contract identities. ADR-0021 defines 0.3.6-draft -> pp.1.01 as an IDENTITY_ONLY bridge with unchanged profile contract semantics."
+        },
         "specification": {
           "type": "object",
           "required": ["source"],
