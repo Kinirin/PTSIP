@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile.schema.json",
-  "title": "PTSIP Project Profile",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.01.schema.json",
+  "title": "PTSIP Project Profile pp.1.01",
   "type": "object",
   "required": ["ptsip", "responsibility_map", "policies"],
   "properties": {
@@ -9,7 +9,11 @@
       "type": "object",
       "required": ["version", "specification"],
       "properties": {
-        "version": {"type": "string", "const": "0.3.6-draft"},
+        "version": {
+          "type": "string",
+          "const": "pp.1.01",
+          "description": "Canonical Project Profile contract identity. ADR-0021 defines the transition from 0.3.6-draft to pp.1.01 as IDENTITY_ONLY with unchanged profile contract semantics."
+        },
         "specification": {
           "type": "object",
           "required": ["source"],

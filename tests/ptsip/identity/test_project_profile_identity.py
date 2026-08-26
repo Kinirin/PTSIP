@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 
@@ -69,7 +70,7 @@ def test_tool_pp_and_instance_revision_are_independent_types() -> None:
 def test_tool_037_support_is_operation_specific() -> None:
     current = project_profile_support("0.3.7", PP_1_01)
     assert current is not None
-    assert current.schema_resource == "ptsip-profile.schema.json"
+    assert current.schema_resource == "ptsip-profile-pp-1.01.schema.json"
     assert current.supports(ProjectProfileOperation.IDENTIFY)
     assert current.supports(ProjectProfileOperation.VALIDATE)
     assert current.supports(ProjectProfileOperation.ANALYZE)
@@ -113,19 +114,56 @@ def test_spec_identity_exposes_tool_spec_and_pp_as_separate_axes() -> None:
     assert identity.version != identity.project_profile_contract_version
 
 
-def test_public_and_embedded_profile_schemas_are_identical_and_accept_identity_bridge() -> None:
-    public_path = ROOT / "schemas" / "ptsip-profile.schema.json"
-    embedded_path = ROOT / "src" / "ptsip" / "specdata" / "ptsip-profile.schema.json"
-    public_schema = json.loads(public_path.read_text(encoding="utf-8"))
-    embedded_schema = json.loads(embedded_path.read_text(encoding="utf-8"))
+def test_legacy_and_pp_schemas_are_separate_canonical_embedded_pairs() -> None:
+    legacy_public = json.loads(
+        (ROOT / "schemas" / "ptsip-profile.schema.json").read_text(encoding="utf-8")
+    )
+    legacy_embedded = json.loads(
+        (ROOT / "src" / "ptsip" / "specdata" / "ptsip-profile.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    pp_public = json.loads(
+        (ROOT / "schemas" / "ptsip-profile-pp-1.01.schema.json").read_text(encoding="utf-8")
+    )
+    pp_embedded = json.loads(
+        (
+            ROOT
+            / "src"
+            / "ptsip"
+            / "specdata"
+            / "ptsip-profile-pp-1.01.schema.json"
+        ).read_text(encoding="utf-8")
+    )
 
-    assert public_schema == embedded_schema
-    version_contract = public_schema["properties"]["ptsip"]["properties"]["version"]
-    assert version_contract["enum"] == ["0.3.6-draft", "pp.1.01"]
+    assert legacy_public == legacy_embedded
+    assert pp_public == pp_embedded
+    assert legacy_public["properties"]["ptsip"]["properties"]["version"]["const"] == "0.3.6-draft"
+    assert pp_public["properties"]["ptsip"]["properties"]["version"]["const"] == "pp.1.01"
+
+
+def test_pp_1_01_schema_is_identity_only_structural_peer_of_legacy_schema() -> None:
+    legacy = json.loads((ROOT / "schemas" / "ptsip-profile.schema.json").read_text(encoding="utf-8"))
+    current = json.loads(
+        (ROOT / "schemas" / "ptsip-profile-pp-1.01.schema.json").read_text(encoding="utf-8")
+    )
+
+    legacy_normalized = copy.deepcopy(legacy)
+    current_normalized = copy.deepcopy(current)
+    for schema in (legacy_normalized, current_normalized):
+        schema.pop("$id", None)
+        schema.pop("title", None)
+        version_contract = schema["properties"]["ptsip"]["properties"]["version"]
+        version_contract.clear()
+        version_contract.update({"type": "string"})
+
+    assert legacy_normalized == current_normalized
 
 
 def test_maintained_examples_use_pp_1_01_without_structural_redesign() -> None:
-    schema = json.loads((ROOT / "schemas" / "ptsip-profile.schema.json").read_text(encoding="utf-8"))
+    schema = json.loads(
+        (ROOT / "schemas" / "ptsip-profile-pp-1.01.schema.json").read_text(encoding="utf-8")
+    )
     validator = Draft202012Validator(schema)
 
     for relative_path in (

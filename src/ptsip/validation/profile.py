@@ -38,13 +38,32 @@ class ValidationResult:
         }
 
 
-def _schema() -> dict[str, object]:
-    schema_path = files("ptsip").joinpath("specdata/ptsip-profile.schema.json")
+def _schema_resource(payload: dict[str, object]) -> str:
+    ptsip = payload.get("ptsip")
+    declared = ptsip.get("version") if isinstance(ptsip, dict) else None
+    if declared == SPEC_VERSION:
+        return "ptsip-profile.schema.json"
+    if isinstance(declared, str) and declared.startswith("pp."):
+        try:
+            version = ProjectProfileVersion.parse(declared, require_canonical=True)
+            support = require_current_project_profile_support(
+                version,
+                ProjectProfileOperation.VALIDATE,
+            )
+        except ProjectProfileIdentityError:
+            return "ptsip-profile.schema.json"
+        if support.schema_resource:
+            return support.schema_resource
+    return "ptsip-profile.schema.json"
+
+
+def _schema(payload: dict[str, object]) -> dict[str, object]:
+    schema_path = files("ptsip").joinpath("specdata", _schema_resource(payload))
     return json.loads(schema_path.read_text(encoding="utf-8"))
 
 
 def _schema_errors(payload: dict[str, object], *, prefix: str = "") -> list[str]:
-    validator = Draft202012Validator(_schema())
+    validator = Draft202012Validator(_schema(payload))
     result: list[str] = []
     for err in sorted(validator.iter_errors(payload), key=lambda item: list(item.absolute_path)):
         path = ".".join(str(part) for part in err.absolute_path) or "<root>"
@@ -395,6 +414,7 @@ def _profile_contract_identity_errors(
         "declared": declared,
         "canonical": version.canonical,
         "compatibility_tool_target": support.tool_version,
+        "schema_resource": support.schema_resource,
     }
     return []
 

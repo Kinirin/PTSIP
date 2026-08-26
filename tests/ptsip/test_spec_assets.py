@@ -23,6 +23,7 @@ def _yaml(path: str) -> dict[str, object]:
 def test_canonical_json_schemas_are_valid_draft_2020_12() -> None:
     for path in (
         "schemas/ptsip-profile.schema.json",
+        "schemas/ptsip-profile-pp-1.01.schema.json",
         "schemas/ptsip-agent-classification.schema.json",
         "schemas/ptsip-diagnostic.schema.json",
         "schemas/ptsip-artifact-evidence.schema.json",
@@ -115,7 +116,7 @@ def _minimal_profile() -> dict[str, object]:
 
 
 def test_example_profile_validates_against_canonical_schema() -> None:
-    schema = _json("schemas/ptsip-profile.schema.json")
+    schema = _json("schemas/ptsip-profile-pp-1.01.schema.json")
     profile = _yaml("profiles/example.ptsip.yaml")
     Draft202012Validator(schema).validate(profile)
 

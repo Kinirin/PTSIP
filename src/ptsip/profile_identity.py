@@ -179,7 +179,7 @@ _TOOL_PP_SUPPORT: dict[tuple[str, ProjectProfileVersion], ProjectProfileSupport]
                 ProjectProfileOperation.CREATE_TARGET,
             }
         ),
-        schema_resource="ptsip-profile.schema.json",
+        schema_resource="ptsip-profile-pp-1.01.schema.json",
     ),
 }
 
