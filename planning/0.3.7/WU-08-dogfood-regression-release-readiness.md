@@ -1,10 +1,11 @@
 # WU-08 — Repository Self-Analysis and Package Baseline
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / VERIFIED  
 > **Target Tool:** `0.3.7`  
 > **Predecessor:** WU-07 — Safe Sequential Apply and Promotion (`COMPLETE / FOCUSED TEST VERIFIED`)  
 > **Architecture authorities:** ADR-0017, ADR-0018, ADR-0019, ADR-0020  
 > **Exact entry baseline:** `874fa80a508f5901647d6d2df132a95f0eadda49`  
+> **Exact verification authority:** `56dd7399d2003892a2b0c02b23b5eb1aef63f527` via `tooling-test` run `32932963963`  
 > **Successor:** WU-09 — Independent Project Profile Identity Core
 
 ## 0. Purpose
@@ -76,7 +77,7 @@ WU-08 MUST NOT:
 - mechanically relabel public example profiles;
 - execute real-repository canonical profile promotion.
 
-The real repository may be analyzed read-only while mutation/deletion/promotion behavior remains verified through controlled fixtures.
+The exact WU-08 verification run confirmed the repository remained clean and read-only during clarification/gate checks. The before/after tracked-content fingerprint remained identical and the repository snapshot status was `STABLE`.
 
 ## 3. Inherited WU-07 migration verification
 
@@ -101,7 +102,7 @@ produced:
 
 The sole failure was not a WU-07 migration-executor failure. It was the WU-08 repository self-profile coverage regression.
 
-WU-08 may rely on the WU-07 focused migration evidence as predecessor evidence, while later PP-identity integration must be reverified in WU-10.
+WU-08 relies on the WU-07 focused migration evidence as predecessor evidence. Later PP-identity integration must be reverified in WU-10.
 
 ## 4. Repository self-profile regression
 
@@ -136,24 +137,46 @@ This keeps future unclassified `src/ptsip/<new-subsystem>/` roots visible as arc
 
 ## 5. Verified self-profile resolution
 
-Workflow run:
-
-```text
-32923347579
-```
-
-verified exact SHA:
+Workflow run `32923347579` first verified exact SHA:
 
 ```text
 fc1f479d34cb9531180bdf111bfe0695ba0fc48b
 ```
 
-and produced:
+with:
 
 ```text
 439 passed
 0 failed
 repository validation warnings: []
+responsibility_map_coverage.unassigned_count: 0
+self-hosted/tooling-test: success
+```
+
+WU-08 final baseline verification then revalidated the expanded documentation/architecture state and package ownership workflow at exact SHA:
+
+```text
+56dd7399d2003892a2b0c02b23b5eb1aef63f527
+```
+
+through owner-dispatched `tooling-test` run:
+
+```text
+32932963963
+```
+
+with:
+
+```text
+439 passed in 337.30s
+0 failed
+repository validation valid: true
+repository validation errors: []
+repository validation warnings: []
+component conflicts: []
+component unmatched selectors: []
+associated-artifact conflicts: []
+associated-artifact unmatched selectors: []
 responsibility_map_coverage.unassigned_count: 0
 self-hosted/tooling-test: success
 ```
@@ -164,13 +187,13 @@ Therefore the inherited 18-file repository self-profile blocker is:
 CLOSED / VERIFIED
 ```
 
-This run remains exact-SHA evidence for the repository baseline it verified. It is not final Tool `0.3.7` release-readiness authority because later WU-09/WU-10/WU-11 work changes the integrated source state.
+The component-only partition lists governance-support files as component-unassigned, while the associated-artifact partition owns those same files. The combined `responsibility_map_coverage` is the governing completeness result and reports zero unassigned tracked files.
 
 ## 6. Package artifact ownership baseline
 
 ADR-0018 split three shipped product subsystems from `ptsip-core`, so wheel artifact evidence must preserve the same ownership.
 
-The workflow classification order is now required to distinguish:
+The verified workflow classification order is:
 
 ```text
 ptsip/specdata/*       -> ptsip-embedded-contracts
@@ -187,11 +210,24 @@ The workflow synchronization was implemented in commit:
 4329e48127003151a6f256320da236943e674911
 ```
 
-The specific subsystem branches must precede the generic `ptsip/*` fallback so shipped subsystem files are not collapsed back into `ptsip-core`.
+The specific subsystem branches precede the generic `ptsip/*` fallback, and the workflow explicitly requires all three ADR-0018 Product components to be present in built-wheel artifact evidence.
 
-The workflow must also require the three ADR-0018 Product components to appear in the built wheel artifact evidence.
+Exact-SHA run `32932963963` verified this updated logic at `56dd7399d2003892a2b0c02b23b5eb1aef63f527`. The Product Artifact evidence step completed successfully, including exact-snapshot binding, with wheel SHA-256:
 
-A later exact-SHA run must verify this workflow change before WU-08 completion.
+```text
+b6f118d4bd5f4810b13ad81c8161a7a2d1d7c83b556a3218cbcaa78f11ce1a38
+```
+
+The artifact-aware conformance outcome was `INCOMPLETE`, which is an accepted workflow outcome under the existing evidence contract when the product-artifact evaluator and exact-snapshot binding run successfully, the binding is valid, no `artifact-evidence:*` blocking gap remains, and no `PTSIP-PKG-001` non-conformance exists. This result is not represented as full conformance success.
+
+Package build also produced and passed `twine check` for:
+
+```text
+ptsip-0.3.6-py3-none-any.whl
+ptsip-0.3.6.tar.gz
+```
+
+The built wheel was force-reinstalled and its public CLI surfaces and VPMS smoke contract passed. Tool/package identity remains `0.3.6` at this WU boundary by design; final Tool `0.3.7` release identity belongs to WU-11.
 
 ## 7. Project Profile version architecture decision
 
@@ -213,7 +249,7 @@ pp.<major>.<minor>
 
 WU-08 does not implement this grammar in the runtime/schema/transition engine. That work is intentionally delegated to WU-09.
 
-Historical Tool-numbered Project Profile labels remain actual historical source identities until WU-10 provides explicit compatibility mappings. WU-08 must not rewrite history by pretending old files were originally published as `pp.*` versions.
+Historical Tool-numbered Project Profile labels remain actual historical source identities until WU-10 provides explicit compatibility mappings. WU-08 does not rewrite history by pretending old files were originally published as `pp.*` versions.
 
 ## 8. Responsibility-segmented successor sequence
 
@@ -246,7 +282,7 @@ Long-term maintainability remains mandatory through:
 
 ## 9. WU-08 non-goals
 
-WU-08 MUST NOT implement or claim completion of:
+WU-08 does not implement or claim completion of:
 
 - `pp.<major>.<minor>` parser/serializer;
 - Tool-to-PP machine-readable compatibility registry;
@@ -258,21 +294,35 @@ WU-08 MUST NOT implement or claim completion of:
 - final Tool `0.3.7` Specification freeze;
 - final release-readiness workflow authority.
 
-Finding a defect in one of those future areas should be recorded for its owning successor WU rather than patched into WU-08 without changing responsibility ownership.
+Finding a defect in one of those future areas belongs to its owning successor WU rather than WU-08.
 
 ## 10. Completion gate
 
-WU-08 is complete only when:
+WU-08 completion gate is satisfied:
 
-- the inherited 18-file self-profile blocker remains closed;
-- real repository validation remains complete with no unassigned tracked-file ownership;
-- ADR-0018 component ownership remains explicit and non-overlapping;
-- the wheel artifact-evidence workflow attributes `evidence`, `source_compat`, and `migration` to their separate PRODUCT components;
-- an exact-SHA workflow run verifies the artifact-evidence ownership update;
-- existing controlled migration fixtures remain a valid predecessor baseline;
+- inherited 18-file self-profile blocker remains closed;
+- real repository validation is complete with combined unassigned tracked-file ownership equal to zero;
+- ADR-0018 component ownership is explicit and non-overlapping;
+- wheel artifact evidence attributes `evidence`, `source_compat`, and `migration` to their separate PRODUCT components;
+- exact-SHA workflow run `32932963963` verifies the artifact-evidence ownership update at `56dd7399d2003892a2b0c02b23b5eb1aef63f527`;
+- controlled migration fixtures remain valid predecessor evidence from WU-07 and the full WU-08 regression remains green;
 - ADR-0019 independent PP architecture is recorded without prematurely activating `pp.1.01`;
 - ADR-0020 responsibility-separated WU sequence is recorded;
 - actual repository Project Profiles remain free from unauthorized Tool-number-driven migration;
 - no final Tool release-readiness claim is made.
 
-When WU-08 is documented complete and the exact `dev/0.3.7` HEAD is freshly validated, WU-09 may automatically enter `ACTIVE` under the standing successor-entry authorization. Automatic entry is state only and does not itself authorize WU-09 implementation.
+WU-08 is therefore:
+
+```text
+COMPLETE / VERIFIED
+verification authority: 56dd7399d2003892a2b0c02b23b5eb1aef63f527
+workflow run: 32932963963
+```
+
+This closure-documentation commit occurs after the verified SHA and does not replace that exact-SHA verification authority.
+
+## 11. Successor entry boundary
+
+Under the standing successor-entry authorization, WU-09 may enter `ACTIVE` after this completion record is committed and the resulting exact `dev/0.3.7` HEAD is freshly validated.
+
+Automatic successor entry changes entry state only. It does not authorize WU-09 architecture choices beyond ADR-0019/ADR-0020 or authorize implementation outside the WU-09 plan.
