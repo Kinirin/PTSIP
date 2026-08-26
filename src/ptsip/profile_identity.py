@@ -151,24 +151,25 @@ class ProjectProfileSupport:
 PP_0_00 = ProjectProfileVersion(0, 0)
 PP_1_01 = ProjectProfileVersion(1, 1)
 CURRENT_PROJECT_PROFILE_VERSION = PP_1_01.canonical
+PP_COMPATIBILITY_TARGET_TOOL_VERSION = "0.3.7"
 
 
-# This registry is intentionally operation-specific.  It does not map historical
+# This registry is intentionally operation-specific. It does not map historical
 # Tool-numbered labels to PP generations; that semantic bridge belongs to WU-10.
 _TOOL_PP_SUPPORT: dict[tuple[str, ProjectProfileVersion], ProjectProfileSupport] = {
     (
-        "0.3.7",
+        PP_COMPATIBILITY_TARGET_TOOL_VERSION,
         PP_0_00,
     ): ProjectProfileSupport(
-        tool_version="0.3.7",
+        tool_version=PP_COMPATIBILITY_TARGET_TOOL_VERSION,
         contract=PP_0_00,
         operations=frozenset({ProjectProfileOperation.IDENTIFY}),
     ),
     (
-        "0.3.7",
+        PP_COMPATIBILITY_TARGET_TOOL_VERSION,
         PP_1_01,
     ): ProjectProfileSupport(
-        tool_version="0.3.7",
+        tool_version=PP_COMPATIBILITY_TARGET_TOOL_VERSION,
         contract=PP_1_01,
         operations=frozenset(
             {
@@ -178,7 +179,7 @@ _TOOL_PP_SUPPORT: dict[tuple[str, ProjectProfileVersion], ProjectProfileSupport]
                 ProjectProfileOperation.CREATE_TARGET,
             }
         ),
-        schema_resource="ptsip-profile-pp-1.01.schema.json",
+        schema_resource="ptsip-profile.schema.json",
     ),
 }
 
@@ -213,3 +214,16 @@ def require_project_profile_support(
             version.canonical,
         )
     return support
+
+
+def require_current_project_profile_support(
+    contract: ProjectProfileVersion | str,
+    operation: ProjectProfileOperation,
+) -> ProjectProfileSupport:
+    """Validate PP support against the target Tool release without changing advertised Tool identity."""
+
+    return require_project_profile_support(
+        PP_COMPATIBILITY_TARGET_TOOL_VERSION,
+        contract,
+        operation,
+    )
