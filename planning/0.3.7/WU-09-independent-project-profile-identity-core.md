@@ -1,9 +1,11 @@
 # WU-09 — Independent Project Profile Identity Core
 
-> **Status:** PLANNED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Predecessor:** WU-08 — Repository Self-Analysis and Package Baseline  
+> **Predecessor:** WU-08 — Repository Self-Analysis and Package Baseline (`COMPLETE / VERIFIED`)  
 > **Architecture authorities:** ADR-0017, ADR-0019, ADR-0020  
+> **Exact entry baseline:** `173483ac06a052f388581464364f5f65033f5587`  
+> **Predecessor verification authority:** `56dd7399d2003892a2b0c02b23b5eb1aef63f527` via `tooling-test` run `32932963963`  
 > **Successor:** WU-10 — Project Profile Compatibility, Migration, and Adoption
 
 ## 0. Purpose
@@ -24,6 +26,8 @@ Project Profile Contract Version
 Project Profile Instance Revision
     immutable revision/content identity of one concrete declaration
 ```
+
+Entry into WU-09 is state only under the standing successor-entry authorization. It does not by itself authorize implementation choices beyond the accepted ADR-0019/ADR-0020 boundaries.
 
 ## 1. Project Profile version grammar
 
