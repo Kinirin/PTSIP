@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 
 from .constants import SPEC_ACRONYM, SPEC_NAME, SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
+from .profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 
 
 @dataclass(frozen=True)
@@ -13,6 +14,7 @@ class SpecIdentity:
     source: str = SPEC_SOURCE
     revision: str = SPEC_REVISION
     tool_version: str = TOOL_VERSION
+    project_profile_contract_version: str = CURRENT_PROJECT_PROFILE_VERSION
 
     def as_dict(self) -> dict[str, str]:
         return asdict(self)
