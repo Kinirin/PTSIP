@@ -245,7 +245,7 @@ def validate_projected_payload(payload: dict[str, object]) -> tuple[str, ...]:
     return tuple(
         f"{'.'.join(str(part) for part in item.absolute_path) or '<root>'}: {item.message}"
         for item in sorted(
-            Draft202012Validator(_schema()).iter_errors(payload),
+            Draft202012Validator(_schema(payload)).iter_errors(payload),
             key=lambda value: list(value.absolute_path),
         )
     )
