@@ -26,6 +26,7 @@ def _write(root: Path, name: str, payload: dict[str, object]) -> None:
 
 
 def _profile_034(*, classification: str = "PRODUCT") -> dict[str, object]:
+    is_toolchain = classification == "TOOLCHAIN"
     return {
         "ptsip": {
             "version": "0.3.4-draft",
@@ -40,9 +41,9 @@ def _profile_034(*, classification: str = "PRODUCT") -> dict[str, object]:
                 "classification": classification,
                 "include": ["src/**"],
                 "purpose": "runtime",
-                "shipped": True,
-                "runtime_required": True,
-                "lifecycle_owner": "PRODUCT",
+                "shipped": not is_toolchain,
+                "runtime_required": not is_toolchain,
+                "lifecycle_owner": "DEVELOPMENT_TOOLING" if is_toolchain else "PRODUCT",
                 "executable": False,
                 "analysis_inputs": [],
             }
