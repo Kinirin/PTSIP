@@ -1,9 +1,11 @@
 # WU-10 — Project Profile Compatibility, Migration, and Adoption
 
-> **Status:** PLANNED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Predecessor:** WU-09 — Independent Project Profile Identity Core  
+> **Predecessor:** WU-09 — Independent Project Profile Identity Core (`COMPLETE / VERIFIED`)  
 > **Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021  
+> **Exact entry baseline:** `f31b317af91a7b5aea83aa16aef289cca81d289d`  
+> **Predecessor verification authority:** `565a28fa1789206d3168408c906524f647f85d24` via `tooling-test` run `33031350756`  
 > **Successor:** WU-11 — Tool 0.3.7 Final Regression, Specification Freeze, and Release Readiness
 
 ## 0. Purpose
@@ -11,6 +13,8 @@
 Integrate the independent Project Profile identity layer from WU-09 with historical source compatibility, migration analysis, controlled transition execution, and explicitly authorized adoption.
 
 WU-10 owns semantic compatibility, historical identity bridging, migration continuity, and adoption. It does not own Tool package release identity or final release readiness.
+
+WU-10 entered ACTIVE state under the standing successor-entry rule after WU-09 closure. This entry state does not by itself authorize implementation beyond the accepted architecture and WU-10 boundaries.
 
 ## 1. Historical generation mapping
 
