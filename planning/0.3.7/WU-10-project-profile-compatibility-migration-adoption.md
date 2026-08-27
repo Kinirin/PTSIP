@@ -1,11 +1,12 @@
 # WU-10 — Project Profile Compatibility, Migration, and Adoption
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / VERIFIED  
 > **Target Tool:** `0.3.7`  
 > **Predecessor:** WU-09 — Independent Project Profile Identity Core (`COMPLETE / VERIFIED`)  
 > **Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022  
 > **Exact entry baseline:** `f31b317af91a7b5aea83aa16aef289cca81d289d`  
 > **Predecessor verification authority:** `565a28fa1789206d3168408c906524f647f85d24` via `tooling-test` run `33031350756`  
+> **Exact verification authority:** `9a9159685a4f5de103d79e9d1c38bdbbada25d4c` via `tooling-test` run `33081718965`, job `98550433277`  
 > **Successor:** WU-11 — Tool 0.3.7 Final Regression, Specification Freeze, and Release Readiness
 
 ## 0. Purpose
@@ -28,7 +29,7 @@ validated target profile
 
 Intermediate Project Profile generations may provide compatibility/history knowledge, but they are not mandatory execution hops and are not materialized merely to replay version history.
 
-WU-10 entered ACTIVE state under the standing successor-entry rule after WU-09 closure. This entry state does not by itself authorize implementation beyond the accepted architecture and WU-10 boundaries.
+WU-10 entered ACTIVE state under the standing successor-entry rule after WU-09 closure. That entry state did not by itself authorize implementation beyond the accepted architecture and WU-10 boundaries. WU-10 is now closed only by the exact-SHA evidence recorded in section 16.
 
 ## 1. Historical generation mapping
 
@@ -403,3 +404,33 @@ WU-10 is complete only when:
 - focused compatibility/migration tests pass at an exact source SHA.
 
 Completion of WU-10 authorizes automatic entry state into WU-11 under the standing successor-entry rule, but does not authorize WU-11 implementation or release by itself.
+
+## 16. Completion evidence
+
+WU-10 closed against the exact implementation/documentation source SHA:
+
+```text
+exact verification authority: 9a9159685a4f5de103d79e9d1c38bdbbada25d4c
+workflow: tooling-test
+run: 33081718965
+job: 98550433277
+runner: self-hosted / DESKTOP-5HCCQIR
+full regression: 482 passed / 0 failed
+repository validation warnings: []
+responsibility_map_coverage.unassigned_count: 0
+self-hosted/tooling-test status: success
+```
+
+The final closure authority includes the WU-10 execution-integration fixes that were added after the earlier successful run at `d4d15024dae88c0746a7683798ea2e502e722d89`:
+
+- PP-aware guarded execution/promotion for direct convergence;
+- exact normalization of an existing `ptsip_0.3.6.yaml` legacy target alias into the logical `pp.1.01` Final Point without duplicate-target creation;
+- end-to-end controlled fixture coverage from historical source analysis and direct planning through the existing WU-07 binding, semantic CAS, checkpoint ledger, atomic promotion, recovery inspection, and PP-aware post-promotion verification;
+- future-shaped one-hop planning evidence proving that a later canonical PP target does not imply mandatory intermediate PP traversal;
+- user-facing `pp.1.01` release-note disclosure of ADR-0022 direct latest-target convergence.
+
+The exact-SHA run also passed Tool/Specification/repository-profile verification, distribution build and `twine` checks, Product Artifact evidence with exact snapshot binding, installed-wheel smoke, and successful exact-SHA status recording. The built wheel contained the WU-10 direct-execution implementation and PP schema/specdata surfaces.
+
+WU-10 did **not** change the real repository Project Profile as an adoption side effect. At closure, root `ptsip.yaml` remains the historical `0.3.6-draft` declaration with immutable Specification revision `d6995ed232e845b88d8235b851e80ab54b7804ea`; Tool/runtime remains `0.3.6` pending WU-11; and the supported canonical Project Profile contract is exposed independently as `pp.1.01`.
+
+Accordingly, every WU-10 completion gate is satisfied at the exact verification authority above. WU-11 may enter `ACTIVE` state under the standing successor-entry rule; that state transition does not authorize WU-11 implementation or release.
