@@ -1,9 +1,11 @@
 # WU-11 — Tool 0.3.7 Final Regression, Specification Freeze, and Release Readiness
 
-> **Status:** PLANNED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Predecessor:** WU-10 — Project Profile Compatibility, Migration, and Adoption  
+> **Predecessor:** WU-10 — Project Profile Compatibility, Migration, and Adoption (`COMPLETE / VERIFIED`)  
 > **Architecture authorities:** ADR-0017, ADR-0019, ADR-0020  
+> **Exact entry baseline:** `d7a19de22721b546c62809984b67c2ba1c723e7d`  
+> **Predecessor verification authority:** `9a9159685a4f5de103d79e9d1c38bdbbada25d4c` via `tooling-test` run `33081718965`, job `98550433277`  
 > **Release role:** final integration and release-readiness authority
 
 ## 0. Purpose
@@ -11,6 +13,8 @@
 Perform the final Tool `0.3.7` integration and release-readiness verification only after the independent PP identity layer and PP migration/compatibility layers are complete.
 
 WU-11 is deliberately downstream of WU-09/WU-10 so its exact-SHA evidence represents the final integrated code and contract state rather than an earlier baseline.
+
+WU-11 entered `ACTIVE` state automatically under the standing successor-entry rule after WU-10 was documented `COMPLETE / VERIFIED`. This status change is an entry-state transition only; it does not by itself authorize WU-11 implementation, Specification freeze, release handoff, or release execution.
 
 ## 1. Final Tool identity
 
