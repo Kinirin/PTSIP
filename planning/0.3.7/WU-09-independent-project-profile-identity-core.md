@@ -1,11 +1,12 @@
 # WU-09 — Independent Project Profile Identity Core
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / VERIFIED  
 > **Target Tool:** `0.3.7`  
 > **Predecessor:** WU-08 — Repository Self-Analysis and Package Baseline (`COMPLETE / VERIFIED`)  
 > **Architecture authorities:** ADR-0017, ADR-0019, ADR-0020, ADR-0021  
 > **Exact entry baseline:** `173483ac06a052f388581464364f5f65033f5587`  
 > **Predecessor verification authority:** `56dd7399d2003892a2b0c02b23b5eb1aef63f527` via `tooling-test` run `32932963963`  
+> **WU-09 verification authority:** `565a28fa1789206d3168408c906524f647f85d24` via `tooling-test` run `33031350756`  
 > **Successor:** WU-10 — Project Profile Compatibility, Migration, and Adoption
 
 ## 0. Purpose
@@ -249,3 +250,41 @@ WU-09 is complete only when:
 - no real repository Project Profile migration is performed.
 
 Completion of WU-09 authorizes automatic entry state into WU-10 under the standing successor-entry rule, but does not authorize WU-10 implementation by itself.
+
+## 14. Completion evidence
+
+WU-09 completed against exact implementation/source SHA:
+
+```text
+565a28fa1789206d3168408c906524f647f85d24
+```
+
+Owner-dispatched self-hosted verification:
+
+```text
+tooling-test run: 33031350756
+job: 98384360650
+runner: DESKTOP-5HCCQIR
+Python: 3.14.7
+full regression: 453 passed / 0 failed
+self-hosted/tooling-test status: success
+```
+
+Verified identity behavior:
+
+```text
+Tool identity:                  0.3.6
+Specification family:          0.3.6-draft
+Specification revision:        d6995ed232e845b88d8235b851e80ab54b7804ea
+Project Profile contract axis: pp.1.01
+```
+
+The real repository canonical `ptsip.yaml` remained on its historical declared identity `0.3.6-draft`. Validation reported `kind: HISTORICAL_LABEL` and `canonical_pp_mapping: null`; WU-09 therefore did not silently relabel or migrate the repository profile.
+
+Repository validation completed with `errors: []`, `warnings: []`, and combined Responsibility Map coverage `unassigned_count: 0`. The maintained example profiles use `pp.1.01` through the dedicated PP schema without semantic redesign.
+
+The immutable `0.3.6-draft` release-bound schema remained unchanged, while `pp.1.01` is represented through the separate public/embedded `ptsip-profile-pp-1.01.schema.json` contract. Distribution build, Twine validation, wheel reinstall, and public-surface smoke checks all passed, and the PP schema was present in the built wheel.
+
+The package-evidence step also passed Product Artifact evidence and exact-snapshot binding with no artifact-evidence blocking gap and no `PTSIP-PKG-001` non-conformance. Its artifact-aware conformance outcome remained `INCOMPLETE`, which is accepted by the existing package-evidence workflow contract and is not represented as full conformance success.
+
+This completion-documentation commit is not a replacement verification authority. The verified implementation authority remains exact SHA `565a28fa1789206d3168408c906524f647f85d24` and workflow run `33031350756`.
