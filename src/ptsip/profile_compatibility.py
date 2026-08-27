@@ -81,6 +81,7 @@ _HISTORICAL_BRIDGES: dict[tuple[str, str], HistoricalProjectProfileBridge] = {
         target_contract=PP_1_01,
         transition_kind=ProjectProfileTransitionKind.SEMANTIC_MIGRATION,
         source_family="TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+        legacy_target_filename="ptsip_0.3.6.yaml",
     ),
     (
         "0.3.6-draft",
