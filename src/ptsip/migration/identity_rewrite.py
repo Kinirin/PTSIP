@@ -353,7 +353,7 @@ def execute_identity_rewrite(
     )
 
     _atomic_write(path, after_raw)
-    validation = validate_profile(root, plan.source_path)
+    validation = validate_profile(root, path)
     if not validation.valid:
         try:
             _atomic_write(path, before_raw)
