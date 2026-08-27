@@ -1,15 +1,15 @@
-# PTSIP Draft Profile Transition Specification
+# PTSIP Project Profile Transition Specification
 
 **Specification family:** `0.3.7-draft`  
-**Status:** Active normative companion  
-**Parent semantics:** Tool `0.3.6` primary lifecycle ownership and Responsibility Map v2 remain unchanged except where this companion adds draft-profile transition requirements.  
-**Architectural decision:** `decisions/ADR-0010-versioned-draft-profile-transition.md`
+**Status:** Active normative companion / WU-11 freeze candidate  
+**Base lifecycle semantics:** the mature `0.3.6-draft` primary lifecycle ownership and Responsibility Map v2 rules remain in force except where this companion adds Project Profile identity, compatibility, migration, and transition requirements.  
+**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022
 
 ## 1. Purpose
 
-This companion specifies how a Consumer Repository transitions a canonical `ptsip.yaml` from one PTSIP draft family to another without destroying the prior declaration before migration obligations are evaluated and completed.
+This companion specifies how PTSIP identifies, reads, analyzes, migrates, and safely transitions Project Profiles without coupling Project Profile contract identity to the PTSIP Tool package version.
 
-The purpose is not to introduce a new lifecycle classification. The canonical PTSIP classifications remain:
+The canonical lifecycle classifications remain exactly:
 
 ```text
 PRODUCT
@@ -19,261 +19,428 @@ OPERATIONS
 NEUTRAL_CONTRACT
 ```
 
-The transition model exists because a Project Profile is revision-bound architecture declaration. A change such as:
+This companion does not add a lifecycle classification and does not change the governing classification semantics established by the base `0.3.6-draft` Specification family.
+
+The Project Profile transition model exists because a Project Profile is a revision-bound architecture declaration. A source profile must remain interpretable while migration obligations are analyzed, owner decisions are preserved, target state is prepared, and final writes are validated.
+
+## 2. Independent identity axes
+
+PTSIP treats the following identities as distinct:
 
 ```text
-0.3.4-draft -> 0.3.6-draft
+PTSIP Tool Version
+Project Profile Contract Version
+Project Profile Instance Revision
+PTSIP Specification family + immutable revision
 ```
 
-can require re-evaluation of classifications, relationships, associated artifacts, selectors, or other architecture declarations. Rewriting the same physical `ptsip.yaml` in place can destroy the stable source needed to establish what must be migrated.
+The following implication is invalid:
 
-## 2. Canonical profile identity
+```text
+Tool 0.3.7
+    => Project Profile 0.3.7-draft
+```
 
-The active canonical Project Profile remains:
+Likewise, a Project Profile contract transition does not automatically authorize a Tool release, and a Tool release does not automatically authorize a repository Project Profile write.
+
+### 2.1 Project Profile contract identity
+
+Current-generation Project Profile contracts use the independent namespace:
+
+```text
+pp.<major>.<minor>
+```
+
+Canonical serialization uses a two-digit minor segment. For Tool `0.3.7`, the current supported canonical Project Profile target is:
+
+```text
+pp.1.01
+```
+
+The corresponding current-generation temporary-profile filename token is:
+
+```text
+pp1.01
+```
+
+and the current-generation temporary target path is:
+
+```text
+ptsip_pp1.01.yaml
+```
+
+The canonical adopted Project Profile path remains:
 
 ```text
 ptsip.yaml
 ```
 
-The canonical file represents the architecture declaration currently adopted by the repository/worktree under its declared PTSIP draft family and immutable specification revision.
+### 2.2 Project Profile instance revision
 
-A canonical profile MUST NOT be treated as version-neutral merely because its filename is stable.
+A Project Profile Contract Version identifies contract semantics. It does not identify one concrete repository declaration instance.
 
-At minimum, the profile draft identity includes:
+One concrete profile instance has its own immutable content/revision identity. Tool Version, Project Profile Contract Version, Project Profile Instance Revision, and Specification revision MUST NOT be collapsed into one version field or inferred from one another.
 
-```yaml
-ptsip:
-  version: "<major>.<minor>.<micro>-draft"
-  specification:
-    revision: "<immutable revision>"
-```
+## 3. Historical source compatibility
 
-## 3. Temporary PTSIP Profile File
+Historical Tool-numbered Project Profile labels remain historical facts. A conforming implementation MUST NOT rewrite history by claiming they were originally published under the `pp.*` namespace.
 
-When a newer draft must be prepared while an older canonical `ptsip.yaml` remains the migration source, the target working profile uses:
+Tool `0.3.7` recognizes the following revision-bound historical source families for direct convergence:
 
 ```text
-ptsip_<major>.<minor>.<micro>.yaml
+0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
+    compatibility generation: pp.0.00
+    current target:           pp.1.01
+    transition:               SEMANTIC_MIGRATION
+
+0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
+    compatibility generation: pp.1.01
+    current target:           pp.1.01
+    transition:               IDENTITY_ONLY
 ```
 
-This file is canonically called a **Temporary PTSIP Profile File**.
+Compatibility-generation identity is interpretation metadata. It is not a mandatory intermediate repository state.
 
-Example:
+A historical source is supported only when its declared family and immutable Specification revision match an explicit compatibility authority. Unsupported or ambiguous source identity MUST fail closed.
+
+Historical `TOOLCHAIN` semantics remain historical source semantics. A compatibility reader MUST NOT automatically convert `TOOLCHAIN` to `DEVELOPMENT_TOOLING` merely because the current PTSIP lifecycle vocabulary contains `DEVELOPMENT_TOOLING`.
+
+## 4. `0.3.6-draft -> pp.1.01` identity-only bridge
+
+ADR-0021 defines:
 
 ```text
-ptsip.yaml             # source: 0.3.4-draft
-ptsip_0.3.6.yaml       # target working profile: 0.3.6-draft
+0.3.6-draft
+    ↓ IDENTITY_ONLY
+pp.1.01
 ```
 
-The filename omits the `-draft` suffix. The internal version MUST match the filename semantic version plus `-draft` exactly.
+For this bridge, the Project Profile contract-content delta is zero:
+
+```text
+components delta:               NONE
+relationships delta:            NONE
+associated_artifacts delta:     NONE
+policies delta:                 NONE
+Responsibility Map delta:       NONE
+lifecycle classification delta: NONE
+```
+
+Therefore an otherwise valid `0.3.6-draft` Project Profile MUST NOT require lifecycle redesign, component reclassification, relationship redesign, policy redesign, or a synthetic semantic migration merely because its canonical Project Profile identity becomes `pp.1.01`.
+
+Post-write identity/schema validation remains mandatory.
+
+When canonical `ptsip.yaml` is the supported `0.3.6-draft` source and no independent semantic change is required, the identity transition is performed in place:
+
+```text
+ptsip.yaml
+ptsip.version: 0.3.6-draft
+        ↓
+ptsip.yaml
+ptsip.version: pp.1.01
+```
+
+No temporary Project Profile is required solely for this identity-only rewrite.
+
+## 5. Direct latest-target convergence
+
+Project Profile migration is **source-to-current-target convergence**, not mandatory historical-version traversal.
+
+A conforming implementation answers:
+
+```text
+What does the actual supported source mean,
+and what must change for it to satisfy the current canonical PP target?
+```
+
+It MUST NOT require:
+
+```text
+source -> every historical intermediate -> current target
+```
+
+merely because intermediate Project Profile generations existed.
+
+Conceptually:
+
+```text
+actual supported source
+        ↓ source-family compatibility reader
+normalized source semantics
+        ↓ direct reconciliation
+current canonical PP target selected by explicit Tool/PP compatibility authority
+        ↓ authorized execution
+validated target profile
+```
+
+Intermediate generations MAY contribute compatibility/history knowledge. They MUST NOT become mandatory execution hops or be materialized merely to replay version history.
+
+For Tool `0.3.7`, the selected current target is `pp.1.01`. A future Tool may select a later canonical target through explicit compatibility authority without requiring repositories to materialize every intervening PP generation.
+
+Target selection MUST NOT be inferred solely from numeric ordering when more than one target contract is intentionally supported.
+
+## 6. Temporary Project Profile targets and continuity aliases
+
+A temporary target is required only when the migration semantics actually require a separate working target while the source remains authoritative.
+
+The current-generation temporary path for `pp.1.01` is:
+
+```text
+ptsip_pp1.01.yaml
+```
+
+Historical migration continuity is preserved where an explicit compatibility bridge declares a legacy physical path equivalent to the current logical target.
+
+For Tool `0.3.7`, an existing:
 
 ```text
 ptsip_0.3.6.yaml
-    <-> ptsip.version == 0.3.6-draft
 ```
 
-A filename/internal-version mismatch MUST fail closed.
+may continue as the physical target for logical Project Profile `pp.1.01` when the applicable source bridge explicitly authorizes that equivalence. Its physical filename is continuity state, not independent target-contract authority.
 
-There MUST be at most one Temporary PTSIP Profile File for one target semantic version. Two logical candidates for the same target identity, such as two competing `ptsip_0.3.7.yaml` states, MUST NOT be merged or selected implicitly.
+If no authorized legacy target already exists, a new current target MUST use the current PP identity rather than fabricate an obsolete Tool-numbered intermediate:
 
-## 4. Source-specific migration-control categories
+```text
+ptsip_pp1.01.yaml
+```
 
-For every migration source profile, PTSIP evaluates the current repository snapshot again. Migration-control categories belong to that source evaluation only and are not inherited from another profile generation.
+A conforming Tool MUST NOT create `ptsip_0.3.7.yaml` merely because the Tool package version is `0.3.7`.
 
-### 4.1 PTSIP Required Work Element (`PTSIP 필수작업요소`)
+## 7. Equivalent-target ambiguity
 
-A **PTSIP Required Work Element** is a file or document represented by the source draft's active classified/domain structure that still exists validly in the current repository and therefore remains a mandatory migration obligation for that source.
+If multiple physical paths represent the same logical current PP target, tooling MUST fail closed rather than select one implicitly.
 
-A source migration is not complete until every Required Work Element has been represented, transformed, or explicitly resolved into target semantics.
+For the accepted `0.3.6-draft -> pp.1.01` continuity bridge, simultaneous existence of:
 
-### 4.2 PTSIP Removal Migration Element (`PTSIP 제거이전요소`)
+```text
+ptsip_0.3.6.yaml
+ptsip_pp1.01.yaml
+```
 
-A **PTSIP Removal Migration Element** is an element mentioned by the source draft that is no longer validly active in the current repository because it was removed, retired, or otherwise ceased to be a current migration obligation.
+is an equivalent-target collision and MUST produce the stable diagnostic:
 
-It MUST NOT be copied merely for preservation. There is no preservation obligation. Handling or preserving such an element does not contribute to source-migration completion.
+```text
+DUPLICATE_EQUIVALENT_TARGET
+```
 
-### 4.3 PTSIP Asynchronous Work Target (`PTSIP 비동기작업대상`)
+Repository-state correction or explicit authority is required before migration continues.
 
-A **PTSIP Asynchronous Work Target** is a repository file or document that was not part of the source draft's active migration obligation, including material that was not directly classified or otherwise included by the source profile.
+Unrecognized temporary Project Profile files that imply synthetic intermediate traversal MUST also fail closed during direct-convergence discovery.
 
-It MAY be added to the target profile when the project owner requests it, but Required Work Elements SHOULD be completed first. Asynchronous Work Targets do not contribute to completion of the source migration and MUST NOT substitute for unresolved Required Work Elements.
+## 8. Source-specific migration-control categories
 
-## 5. Completion semantics
+For every semantic migration source, PTSIP evaluates the current repository snapshot again. Migration-control categories belong to that source evaluation only and are not inherited from another profile generation.
+
+### 8.1 PTSIP Required Work Element (`PTSIP 필수작업요소`)
+
+A **PTSIP Required Work Element** is an element represented by the source profile's active architecture that still validly exists in the current repository and therefore must be handled before that source migration can complete.
+
+Required Work Elements determine source-migration completion.
+
+### 8.2 PTSIP Removal Migration Element (`PTSIP 제거이전요소`)
+
+A **PTSIP Removal Migration Element** is represented by the source but no longer validly active in the current repository.
+
+It has no preservation obligation and contributes no migration-completion credit.
+
+### 8.3 PTSIP Asynchronous Work Target (`PTSIP 비동기작업대상`)
+
+A **PTSIP Asynchronous Work Target** is repository material not directly part of the source profile's active migration obligation.
+
+It MAY be added when separately authorized, but it does not contribute to source-migration completion and MUST NOT substitute for unresolved Required Work Elements.
+
+## 9. Normative migration rules
 
 ### PTSIP-MIG-004 — Versioned target coexistence
 
-When the canonical `ptsip.yaml` is bound to an older draft and migration to a newer draft requires re-evaluation, a conforming write workflow MUST preserve the canonical source while preparing the target through the target version's Temporary PTSIP Profile File.
+When genuine semantic migration requires a separate target while the canonical source must remain stable, the target MAY coexist through the selected target contract's authorized temporary path.
 
-The canonical source MUST NOT be destructively rewritten solely to change `ptsip.version` or `ptsip.specification.revision` before migration completion has been established.
+Target path identity MUST come from Project Profile compatibility authority, not Tool package version symmetry.
+
+An identity-only canonical rewrite does not require a temporary target merely to reuse the semantic migration state machine.
 
 ### PTSIP-MIG-005 — Source-specific obligation evaluation
 
-Every source profile migration MUST independently evaluate the current repository snapshot and determine its Required Work Elements, Removal Migration Elements, and Asynchronous Work Targets.
+Every semantic source migration MUST independently evaluate the current repository snapshot and determine Required Work Elements, Removal Migration Elements, and Asynchronous Work Targets.
 
-A prior profile generation's category decisions MUST NOT be inherited as authority for a later source evaluation.
+A prior source generation's category decisions MUST NOT be inherited as authority.
 
 ### PTSIP-MIG-006 — Required Work completion gate
 
-A source migration is complete only when every PTSIP Required Work Element for that source has been handled in the target state under the target draft semantics.
+A semantic source migration is complete only when every Required Work Element for that source has been represented, transformed, or explicitly resolved into the accepted current-target state.
 
-A migration workflow MUST NOT declare completion because optional work was performed, because the target profile validates structurally, or because some high-confidence classifications were produced while Required Work Elements remain unresolved.
+Structural target validation, optional work, or high-confidence inference MUST NOT substitute for unresolved Required Work.
 
 ### PTSIP-MIG-007 — Removal elements do not carry forward
 
-PTSIP Removal Migration Elements MUST NOT be migrated merely to preserve obsolete source declarations. Their omission is not migration loss and their handling does not increase completion credit.
+Removal Migration Elements MUST NOT be migrated merely to preserve obsolete source declarations. Their omission is not migration loss and their handling does not increase completion credit.
 
 ### PTSIP-MIG-008 — Asynchronous work is non-blocking and non-crediting
 
-PTSIP Asynchronous Work Targets are not immediate migration obligations. They MAY be added after Required Work Elements are complete when explicitly requested or otherwise authorized by the project owner.
+Asynchronous Work Targets are not immediate source-migration obligations. They MAY be handled after Required Work when separately authorized, but they do not increase completion and MUST NOT mask unresolved Required Work.
 
-Adding them does not increase source-migration completion and MUST NOT mask incomplete Required Work Elements.
+### PTSIP-MIG-009 — Direct current-target convergence
 
-## 6. PTSIP Draft Sequential Work
+A supported historical source MUST reconcile directly against the current canonical PP target selected by explicit Tool/PP compatibility authority.
 
-When more than one newer draft target exists or becomes necessary before earlier migration work has completed, the repository is in **PTSIP Draft Sequential Work**.
+Completed or historical intermediate Project Profile generations MUST NOT be required as migration hops. No synthetic intermediate profile may be created solely for version traversal.
 
-The highest selected target draft is the **Final PTSIP Point File**.
+### PTSIP-MIG-010 — Completed source retirement
 
-Example:
+After a temporary source has completed its source-specific semantic migration into the current target and post-apply checks establish completion, that source MAY be removed according to the accepted execution plan.
 
-```text
-ptsip.yaml          = 0.3.4-draft
-ptsip_0.3.6.yaml    = 0.3.6-draft
-ptsip_0.3.7.yaml    = 0.3.7-draft
-ptsip_0.4.0.yaml    = 0.4.0-draft  # Final PTSIP Point File
-```
-
-The existence of multiple relevant draft generations does not require every possible intermediate Temporary PTSIP Profile File to exist physically. Sequential Work is determined by the migration state and target generations that actually exist or are required.
-
-### PTSIP-MIG-009 — Final Point direct convergence
-
-Once a Final PTSIP Point File is selected, still-incomplete source generations MUST converge directly into that Final Point. A source MUST NOT be routed through a Temporary PTSIP Profile File that has already completed and been removed.
-
-The strongly recommended processing order is the incomplete Temporary PTSIP Profile File closest to the Final Point first, continuing toward older temporary sources, with the canonical `ptsip.yaml` migrated last.
-
-For the example above:
-
-```text
-0.3.7 temporary -> 0.4.0 Final Point -> delete completed 0.3.7 temporary
-0.3.6 temporary -> 0.4.0 Final Point -> delete completed 0.3.6 temporary
-canonical ptsip.yaml -> 0.4.0 Final Point
-```
-
-The recommendation exists to reduce repeated classification and migration judgments, avoid revisiting already-decided intermediate semantics, and reduce the risk that repeated evaluation reverses or inconsistently reinterprets prior judgments.
-
-### PTSIP-MIG-010 — Completed intermediate source removal
-
-After one Temporary PTSIP Profile File has completed its source-specific migration into the Final Point and post-apply checks establish that completion, that source Temporary PTSIP Profile File SHOULD be removed from the active repository state.
-
-Later sources MUST NOT migrate into or through that removed intermediate generation.
+Later sources MUST NOT be routed through the removed intermediate state.
 
 ### PTSIP-MIG-011 — No migration-category inheritance
 
-Required Work Element, Removal Migration Element, and Asynchronous Work Target classifications are local to one source evaluation.
+Required Work, Removal Migration, and Asynchronous Work categories are local to one source evaluation. They MUST NOT be copied into another source evaluation as architecture authority.
 
-They MUST NOT be inherited, copied, or preserved as authoritative category metadata when another profile generation is evaluated. Each source is evaluated anew against the current repository snapshot and the target draft semantics.
+### PTSIP-MIG-012 — Current-target state accumulation
 
-### PTSIP-MIG-012 — Final Point target-state accumulation
+Declarations already accepted into the current target are target state, not inherited source-category metadata.
 
-Declarations already accepted into the Final PTSIP Point File are target state. They are not inherited source-category metadata.
+Semantically equivalent later proposals SHOULD preserve existing accepted target state without unnecessary rewrite.
 
-When a later source proposes a target delta semantically equivalent to existing Final Point state, tooling SHOULD preserve the existing target state without unnecessary rewrite.
+Material conflict with accepted target state MUST fail closed or require explicit project-owner resolution. File recency, source age, numeric version order, confidence, or migration order MUST NOT silently choose a winner.
 
-When a later source conflicts materially with already accepted Final Point state, tooling MUST fail closed or obtain explicit project-owner resolution. It MUST NOT silently choose the newest source, oldest source, largest source, or highest-confidence proposal.
+### PTSIP-MIG-013 — Guarded canonical promotion
 
-## 7. Canonical promotion
+For genuine semantic migration using a separate target, canonical promotion MAY occur only after required source obligations are complete and the selected current target passes required validation and consistency checks.
 
-### PTSIP-MIG-013 — Guarded Final Point promotion
+Promotion MUST preserve accepted target semantics and MUST NOT become an implicit architecture rewrite.
 
-The canonical `ptsip.yaml` is migrated last in Sequential Work.
+When the accepted bridge is `IDENTITY_ONLY`, an in-place canonical identity rewrite MAY be used instead of synthetic target creation/promotion, subject to the same freshness and post-write validation requirements.
 
-After all source-specific Required Work Elements are complete and the Final Point passes required target-profile validation and migration consistency checks, the old canonical profile is removed and the Final PTSIP Point File is promoted to the canonical filename:
+### PTSIP-MIG-014 — Snapshot, binding, and stale-state safety
 
-```text
-remove old ptsip.yaml
-rename ptsip_<final-major>.<final-minor>.<final-micro>.yaml -> ptsip.yaml
-```
+Migration discovery, analysis, accepted plan, apply operations, source deletion, identity rewrite, and promotion MUST be bound to sufficiently exact repository/profile state.
 
-Promotion MUST preserve the Final Point content semantically. Promotion itself MUST NOT trigger a fresh implicit architecture rewrite.
+If a relevant source profile, target profile, accepted delta, or repository state changes after analysis but before mutation, the operation MUST fail closed or re-analyze the changed state before mutation.
 
-A workflow MUST NOT delete the old canonical source before it has sufficient evidence that the Final Point is valid, complete for required source obligations, and safe to promote.
+Semantic compare-and-swap or equivalent stale-writer protection MUST preserve the exact accepted mutation boundary.
 
-### PTSIP-MIG-014 — Snapshot and stale-state safety
+### PTSIP-MIG-015 — Processing order is governance, not compatibility preservation
 
-Migration analysis, completion decisions, apply operations, source deletion, and canonical promotion MUST be bound to sufficiently exact repository/profile state.
+When several active source states require convergence to one current target, tooling SHOULD process them in an order that minimizes repeated analysis and conflicting architecture judgments, while preserving source-specific completion and canonical-last safety where applicable.
 
-If a relevant source profile, target profile, or repository state changes after analysis but before apply/promotion, the operation MUST fail closed or re-analyze the changed state before mutation.
+The ordering recommendation MUST NOT be interpreted as a requirement to preserve obsolete intermediate versions or traverse historical Project Profile generations sequentially.
 
-No migration workflow may use a stale completion judgment merely because a prior version of the file validated successfully.
+## 10. Analyzer, planner, and executor boundaries
 
-### PTSIP-MIG-015 — Final Point ordering is preferred governance, not compatibility preservation
-
-PTSIP Draft Sequential Work SHOULD use the Final-Point-nearest-first order described by `PTSIP-MIG-009` and SHOULD process the canonical `ptsip.yaml` last.
-
-The reason is governance correctness and efficiency, not preservation of obsolete compatibility. Implementations MUST NOT retain an intermediate profile merely because older tooling might depend on it when that intermediate profile has completed its migration and is no longer an active source obligation.
-
-If a project intentionally departs from the recommended order, tooling SHOULD surface that the departure can cause duplicate re-analysis and repeated architecture judgments. Mandatory source-specific completion, direct Final Point convergence, conflict safety, and guarded canonical promotion still apply.
-
-## 8. Evidence and authority boundary
-
-This transition model does not convert evidence into architecture authority.
+The migration pipeline remains responsibility-segmented:
 
 ```text
-repository observation
-    -> evidence
-    -> source-specific migration analysis
-    -> target proposal
-    -> project-owner decision/authorized state
-    -> safe apply
+historical source reader
+        ↓
+normalized source semantics
+        ↓
+current target semantics
+        ↓
+source-specific migration analysis
+        ↓
+ProposalBundle
+AcceptedDeltaBundle
+UnresolvedBundle
+        ↓
+deterministic direct-convergence plan
+        ↓
+exact snapshot/binding validation
+        ↓
+authorized apply / identity rewrite / promotion
 ```
 
-Evidence, path conventions, confidence scores, repository topology, or historical classification alone MUST NOT authorize a target architecture rewrite.
+Evidence is not architecture authority. Proposal is not accepted delta. Accepted delta is not repository adoption authority. Execution MUST mutate only the accepted semantic or identity delta bound to the exact execution state.
 
-A Temporary PTSIP Profile File is working target architecture state; its filename does not itself authorize its declarations.
+Identity-only transitions MUST NOT manufacture semantic obligations merely to pass through analyzer/planner/executor stages designed for semantic migration.
 
-## 9. Relationship to distributed Decision Authority
+## 11. Interruption, recovery, and promotion safety
 
-Distributed Decision Authority and draft-profile migration solve different problems.
+Execution that performs semantic mutation MUST preserve typed state, append-only checkpoint evidence, exact source/target/repository bindings, Required-before-Async semantics, source completion before deletion, fail-closed recovery, and guarded final promotion.
 
-Decision Authority coordinates which explicit architecture answer won for a decision identity. Draft-profile transition controls how one revision-bound Project Profile generation is transformed into another.
+Recovery MUST NOT infer success from partial filesystem state alone. It must reconcile the exact bound checkpoint/ledger state with current repository/profile content.
 
-A resolved distributed winner MAY be an input to a migration target proposal or accepted target state, but it does not waive Required Work completion, target validation, stale-state protection, or Final Point conflict handling.
+An interrupted identity-only rewrite likewise requires post-write validation and must not silently continue from stale pre-write assumptions.
 
-## 10. Tooling obligations
+## 12. Adoption authority
 
-A conforming Tool `0.3.7` implementation that automates draft-profile migration SHOULD provide machine-checkable state for at least:
+Migration capability and real-project adoption are separate authorities.
 
-- canonical source draft identity;
-- Temporary PTSIP Profile File identities;
-- selected Final PTSIP Point File;
-- source-specific Required Work Element completion;
-- source-specific Removal Migration Elements;
-- source-specific Asynchronous Work Targets;
-- migration order;
-- stale/conflicting state;
-- promotion readiness.
+Tool `0.3.7` supporting `pp.1.01` does not by itself authorize mutation of a repository's canonical `ptsip.yaml`.
 
-The implementation MAY choose internal data structures and CLI surfaces freely, but it MUST preserve the normative semantics above.
+A write-enabled adoption or migration requires the applicable exact source state, accepted architecture/identity delta, required owner authorization, stale-state checks, and post-write validation.
 
-## 11. Non-goals
+The `0.3.6-draft -> pp.1.01` identity equivalence removes unnecessary semantic reclassification work. It does not remove write authorization.
+
+## 13. User-visible disclosure requirements
+
+A conforming Tool/release record that advertises `pp.1.01` support MUST distinguish:
+
+```text
+Tool version
+Specification family + immutable revision
+current Project Profile contract target
+supported historical Project Profile source families
+Project Profile instance/repository adoption state
+```
+
+User-facing transition documentation MUST state that the `0.3.6-draft -> pp.1.01` bridge is `IDENTITY_ONLY` and introduces no required changes solely to:
+
+```text
+components
+relationships
+associated_artifacts
+policies
+Responsibility Map semantics
+lifecycle classifications
+```
+
+User-facing documentation MUST also state that supported historical/intermediate Project Profile generations may inform compatibility analysis but are not mandatory user-visible migration steps.
+
+## 14. Fail-closed requirements
+
+A conforming implementation MUST fail closed for at least:
+
+- unsupported historical source family/revision;
+- malformed or unsupported current PP identity;
+- unsupported target selection;
+- ambiguous target selection;
+- duplicate equivalent target paths;
+- synthetic/unrecognized intermediate target state;
+- historical vocabulary with no deterministic current mapping;
+- lifecycle reclassification requiring owner decision;
+- stale source/target/repository snapshot;
+- semantic CAS/binding mismatch;
+- invalid post-write target;
+- unsafe interruption/recovery state.
+
+The Tool MUST NOT guess merely to complete migration or release preparation.
+
+## 15. Non-goals
 
 This companion does not:
 
 - add a sixth PTSIP lifecycle classification;
+- collapse Tool Version and Project Profile Contract Version;
 - make filenames architecture authority;
-- require every historical intermediate draft to have a physical file;
-- require Asynchronous Work Targets to be completed before promotion;
-- preserve removed source declarations for backward compatibility;
+- require every historical Project Profile generation to have a physical file;
+- require mandatory intermediate-version traversal;
 - permit blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` migration;
-- permit Final Point conflicts to be resolved by confidence or file recency;
+- make migration capability equivalent to repository adoption authority;
+- permit target conflict resolution by file recency, version order, or confidence;
 - require continuous background migration or polling.
 
-## 12. Normative lineage
+## 16. Normative lineage
 
-The architecture rationale is recorded by:
+Architecture rationale and responsibility boundaries are recorded by:
 
 ```text
 decisions/ADR-0010-versioned-draft-profile-transition.md
+decisions/ADR-0017-*.md
+decisions/ADR-0019-*.md
+decisions/ADR-0020-*.md
+decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md
+decisions/ADR-0022-*.md
 ```
 
 Tool `0.3.7` planning consumes this companion through:
@@ -283,4 +450,4 @@ planning/0.3.7.md
 planning/0.3.7/*
 ```
 
-The immutable Git revision containing this normative companion is the revision to which the `0.3.7-draft` activation record binds.
+The immutable Git revision selected during WU-11 Specification freeze is the normative `0.3.7-draft` revision to which the final Tool release binds.
