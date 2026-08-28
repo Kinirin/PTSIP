@@ -56,7 +56,7 @@ def render_issue(request: ClarificationRequest, language: str, repository_revisi
 {chr(10).join(reply_lines)}
 ```
 
-Tool `0.3.6` uses `classification` as the canonical lifecycle-ownership decision. Historical `ptsip-clarification-answer/v1` replies are compatibility input only and are never emitted by new clarification requests.
+Tool `0.3.7` uses `classification` as the canonical lifecycle-ownership decision. Historical `ptsip-clarification-answer/v1` replies are compatibility input only and are never emitted by new clarification requests.
 
 A coding agent may also resolve this decision in an active user chat. The first valid resolution wins; after the decision is resolved, late Issue replies are ignored.
 

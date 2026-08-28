@@ -24,14 +24,14 @@ def test_specification_binding_round_trips_exact_identity() -> None:
         {
             "family": "0.3.7-draft",
             "source": SPECIFICATION_SOURCE,
-            "revision": "555af435a4bb68140c2c869efa34d12c624d51a4",
+            "revision": SPECIFICATION_037.revision,
         }
     )
 
     assert binding.as_dict() == {
         "family": "0.3.7-draft",
         "source": SPECIFICATION_SOURCE,
-        "revision": "555af435a4bb68140c2c869efa34d12c624d51a4",
+        "revision": SPECIFICATION_037.revision,
     }
 
 

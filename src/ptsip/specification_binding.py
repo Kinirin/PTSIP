@@ -14,9 +14,8 @@ SPECIFICATION_SOURCE = "https://github.com/Kinirin/PTSIP"
 SPECIFICATION_036_FAMILY = "0.3.6-draft"
 SPECIFICATION_036_REVISION = "d6995ed232e845b88d8235b851e80ab54b7804ea"
 SPECIFICATION_037_FAMILY = "0.3.7-draft"
-# WU-11 transition baseline. WU-12 replaces this with the final immutable
-# normative snapshot after its schema/binding contract is complete.
-SPECIFICATION_037_REVISION = "555af435a4bb68140c2c869efa34d12c624d51a4"
+# Final WU-12 immutable normative Specification snapshot.
+SPECIFICATION_037_REVISION = "3c47816770d194ae42f98faedc911d980db0e62a"
 
 
 class SpecificationBindingError(ValueError):

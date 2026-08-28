@@ -301,7 +301,7 @@ def _parser() -> argparse.ArgumentParser:
     p_adopt.add_argument(
         "--lifecycle-owner",
         choices=LEGACY_LIFECYCLE_OWNERS,
-        help="Deprecated v1 compatibility input; omitted from canonical Tool 0.3.6 decisions and profiles.",
+        help="Deprecated v1 compatibility input; omitted from canonical Tool 0.3.7 decisions and profiles.",
     )
     p_adopt.add_argument("--executable", required=True, choices=("yes", "no"))
     p_adopt.add_argument(
@@ -346,7 +346,7 @@ def _parser() -> argparse.ArgumentParser:
     p_resolve.add_argument(
         "--lifecycle-owner",
         choices=LEGACY_LIFECYCLE_OWNERS,
-        help="Deprecated v1 compatibility input; omitted from canonical Tool 0.3.6 decisions and profiles.",
+        help="Deprecated v1 compatibility input; omitted from canonical Tool 0.3.7 decisions and profiles.",
     )
     p_resolve.add_argument("--executable", required=True, choices=("yes", "no"))
     p_resolve.add_argument("--actor", default="coding-agent-session", help="Audit actor label; no free-form inference is performed")

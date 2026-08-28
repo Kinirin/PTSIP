@@ -5,7 +5,8 @@ from pathlib import Path
 import yaml
 
 from ptsip.clarification.generator import analyze_clarifications
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import validate_profile
 from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
@@ -47,7 +48,9 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None
     assert isinstance(ptsip, dict)
     specification = ptsip["specification"]
     assert isinstance(specification, dict)
-    assert ptsip["version"] == "0.3.6-draft"
+    assert ptsip["version"] == CURRENT_PROJECT_PROFILE_VERSION
+    assert specification["family"] == SPEC_VERSION
+    assert specification["source"] == SPEC_SOURCE
     assert specification["revision"] == SPEC_REVISION
     assert payload["responsibility_map"] == {"mode": "explicit"}
 
