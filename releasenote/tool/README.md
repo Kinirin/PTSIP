@@ -9,3 +9,7 @@ releasenote/tool/<tool-version>.md
 ```
 
 Historical flat Tool release-note paths remain in place under `releasenote/` and are not bulk-moved.
+
+| Version | State | Document |
+| --- | --- | --- |
+| `0.3.7` | Release candidate; exact-SHA verification and publication pending | [`0.3.7.md`](0.3.7.md) |

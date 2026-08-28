@@ -1,8 +1,9 @@
 # Project Profile pp.1.01
 
-> **State:** WU-10 compatibility / migration implementation
-> **Authority:** ADR-0019, ADR-0021, ADR-0022
+> **State:** Current Tool 0.3.7 contract / PTSIP repository adopted
+> **Authority:** ADR-0019, ADR-0021, ADR-0022, ADR-0023
 > **Tool target:** 0.3.7
+> **Current Specification binding:** `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`
 
 ## What pp.1.01 means
 
@@ -16,6 +17,24 @@ Project Profile Contract Version example: pp.1.01
 Project Profile Instance Revision immutable identity of one concrete declaration
 ```
 
+## Explicit Specification binding
+
+`pp.1.01` identifies Project Profile contract semantics; it does not imply a
+Specification family or revision. Current profiles declare the independent
+binding explicitly:
+
+```yaml
+ptsip:
+  version: "pp.1.01"
+  specification:
+    family: "0.3.7-draft"
+    source: "https://github.com/Kinirin/PTSIP"
+    revision: "3c47816770d194ae42f98faedc911d980db0e62a"
+```
+
+The exact supported revision is Tool Specification-capability authority, not a
+SHA hard-coded into the reusable PP schema.
+
 ## Important compatibility notice for 0.3.6-draft users
 
 For the ADR-0021 bridge, historical Project Profile identity `0.3.6-draft` and canonical Project Profile identity `pp.1.01` have the same Project Profile contract semantics.
@@ -26,7 +45,7 @@ The transition is classified as:
 IDENTITY_ONLY
 ```
 
-There is no contract-content delta solely because of this identity change:
+There is no architecture-semantics delta solely because of this identity change:
 
 ```text
 components:                unchanged
@@ -40,6 +59,10 @@ lifecycle classifications: unchanged
 An otherwise valid `0.3.6-draft` Project Profile does **not** need lifecycle redesign, component reclassification, or a fresh architecture review merely because the canonical identity becomes `pp.1.01`.
 
 Post-rewrite identity/schema validation is still required. `IDENTITY_ONLY` does not mean validation is skipped.
+
+The current schema also requires explicit Specification family metadata. The
+identity-only rewrite adds `family: 0.3.6-draft` while preserving the historical
+source and revision; that binding normalization is not lifecycle redesign.
 
 ## Historical identity remains historical
 
@@ -108,4 +131,7 @@ WU-09 established typed PP identity, parser/serializer behavior, filename tokens
 
 WU-10 owns historical compatibility interpretation, direct current-target analysis/planning, legacy target continuity, guarded identity rewrite, PP-aware semantic execution/promotion, and adoption authority boundaries.
 
-Final Tool `0.3.7` package identity, Specification freeze, and release-readiness handoff remain WU-11 responsibilities.
+WU-12 owns final Tool `0.3.7` package identity, the immutable Specification
+freeze, PTSIP root adoption, release-contract synchronization, and final
+release-readiness evidence. The repository is adopted to `pp.1.01`, but WU-12 is
+not `COMPLETE` until a fresh exact-SHA workflow satisfies the completion gate.

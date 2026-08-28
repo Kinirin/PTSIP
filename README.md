@@ -4,21 +4,22 @@
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-**Status:** Tool `0.3.6` development complete — pre-publication release candidate  
-**Tool/package version:** `0.3.6`  
-**Specification family:** `0.3.6-draft`  
-**Bound immutable Specification revision:** `d6995ed232e845b88d8235b851e80ab54b7804ea`  
+**Status:** Tool `0.3.7` WU-12 implementation integrated — exact-SHA verification pending<br>
+**Tool/package version:** `0.3.7`<br>
+**Project Profile contract:** `pp.1.01`<br>
+**Specification family:** `0.3.7-draft`<br>
+**Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
 **License:** Apache License 2.0
 
 PTSIP is a project-defined architecture policy for separating project responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment decision consistency.
 
 > **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
 
-Tool `0.3.6` development is complete on the release-candidate line. The remaining boundary is release operations: merge the approved state to `main`, verify that exact `main` SHA on the self-hosted gate, then prepare and publish the release from the same source identity. The latest PyPI package remains Tool `0.3.5` until Tool `0.3.6` is actually published.
+Tool `0.3.7` now carries the WU-12 implementation and frozen Specification binding on `dev/0.3.7`. It is not yet verified or published: a fresh self-hosted workflow must pass for the final exact source SHA before release preparation. The latest published PyPI package remains Tool `0.3.5` until a later publication boundary succeeds.
 
 ## Primary lifecycle ownership
 
-Canonical Tool `0.3.6` classifications are exactly:
+Canonical Tool `0.3.7` classifications remain exactly:
 
 | Classification | Meaning |
 | --- | --- |
@@ -40,9 +41,9 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.6` uses the five-classification model above. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a Tool `0.3.6` alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
+Tool `0.3.7` preserves the five-classification model established by Tool `0.3.6`. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a current canonical alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
 
-Evidence-driven assisted migration from Tool `0.3.5` declarations is intentionally deferred to Tool `0.3.6.1`; it is not claimed as a Tool `0.3.6` release capability.
+Tool `0.3.7` provides evidence-bound direct current-target migration for explicitly supported historical sources. Migration capability remains separate from repository adoption authority and never turns inference into project intent.
 
 ## Classification is not path or technology
 
@@ -63,7 +64,7 @@ Paths such as `tests/`, `tools/`, `deploy/`, `ops/`, or `.github/workflows/` are
 
 ## Responsibility Map v2
 
-Tool `0.3.6` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
+Tool `0.3.7` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
 
 ```text
 classification
@@ -192,7 +193,7 @@ Upgrade to the latest **published** release:
 python -m pip install --upgrade PTSIP
 ```
 
-Until Tool `0.3.6` is published, those commands may still install Tool `0.3.5` from PyPI. For source development on this release-candidate line:
+Until Tool `0.3.7` is published, those commands may still install Tool `0.3.5` from PyPI. For source development on this release-candidate line:
 
 ```powershell
 python -m pip install -e ".[dev]"
@@ -220,7 +221,7 @@ The default project-owned profile is repository-root `ptsip.yaml`; projects may 
 
 Repository evidence is not architecture authority. Candidate discovery, path names, templates, heuristics, and agent confidence can support review but cannot manufacture project intent.
 
-Canonical Tool `0.3.6` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
+Canonical Tool `0.3.7` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
 
 ```text
 classification
@@ -230,7 +231,7 @@ runtime_required
 executable
 ```
 
-The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.6` ownership authority.
+The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.7` ownership authority.
 
 Example dry-run:
 
@@ -295,7 +296,7 @@ PTSIP uses action-time synchronization rather than continuous background polling
 
 Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLING` or `DELIVERY` component may validly build a `PRODUCT` artifact, but the resulting artifact must still satisfy the Product package boundary.
 
-Tool `0.3.6` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
+Tool `0.3.7` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
 
 ## VPMS — Verification Purpose Management System
 
@@ -311,7 +312,7 @@ VPMS
 
 PTSIP classification and VPMS Verification Purpose remain separate axes. PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved PTSIP metadata.
 
-The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.6` PTSIP classification.
+The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.7` PTSIP classification.
 
 VPMS verification PASS does not imply PTSIP `CONFORMANT`, and PTSIP `CONFORMANT` does not imply functional verification PASS.
 
@@ -339,52 +340,44 @@ The PTSIP Tool and PTSIP Specification are independently versioned.
 - `spec/`, `schemas/`, and `registry/` contain canonical Specification assets;
 - `src/ptsip/specdata/` contains matching embedded machine-readable assets.
 
-Tool `0.3.6` is bound to:
+Tool `0.3.7` is bound to independent PP and Specification identities:
 
 ```text
-Specification 0.3.6-draft
-SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+Project Profile pp.1.01
+Specification 0.3.7-draft
+SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
 ```
 
 A new immutable revision is required only for a genuine normative change. Release workflow, test, planning, status, or documentation-only changes do not move `SPEC_REVISION` by themselves.
 
-## Tool 0.3.6 verification and release state
+## Tool 0.3.7 verification and release state
 
-Development-branch WU-00 through WU-07 are complete. Final WU-07 exact-SHA verification authority is:
+The WU-12 implementation and immutable Specification freeze are present locally, but WU-12 is not `COMPLETE` or `VERIFIED`. The required final exact-SHA `tooling-test` run has not occurred for this source state.
 
 ```text
-source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
-workflow run/job: 32640319047 / 97196299107
-runner:           self-hosted Windows X64
-Python:           3.14.6
-pytest:           331 passed / 0 failed
-Specification:    0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
-profile coverage: unassigned_count=0
-build/twine:      PASS
-Product Artifact: PASS / exact snapshot binding
-PTSIP-PKG-001:    0 definite violations
-wheel smoke/VPMS: PASS
-commit status:    self-hosted/tooling-test = success
+Tool:              0.3.7
+Project Profile:   pp.1.01
+Specification:     0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a
+exact source SHA:  pending final integration commit
+tooling-test:      NOT RUN for the final exact SHA
+publication:       NOT RUN
 ```
 
-Documentation commits after that successful run record closure and do not replace the exact verification authority.
+Earlier Tool `0.3.6` workflow evidence remains historical evidence for its own SHA and does not verify Tool `0.3.7`.
 
 The remaining release boundary is:
 
 ```text
-approved 0.3.6 state -> main
-    -> read exact main SHA
-    -> tooling-test.yml on that exact main SHA
+final dev/0.3.7 exact SHA
+    -> tooling-test.yml on that exact SHA
     -> require self-hosted/tooling-test success
-    -> release.yml from the same current main SHA
-    -> exact Tool / Specification / release-document contract verification
-    -> draft GitHub Release targeting the same SHA
-    -> maintainer publishes reviewed draft
-    -> tooling-release.yml verifies distributions from the published tag
-    -> PyPI Trusted Publishing
+    -> full regression, independent identity, distribution, artifact, and wheel smoke PASS
+    -> later exact-main release handoff
+    -> release.yml and reviewed draft publication from the same source identity
+    -> tooling-release.yml publication verification and PyPI Trusted Publishing
 ```
 
-See [`STATUS.md`](STATUS.md), [`planning/0.3.6.md`](planning/0.3.6.md), and [`releasenote/0.3.6.md`](releasenote/0.3.6.md) for the release evidence and handoff state.
+See [`STATUS.md`](STATUS.md), [`planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`](planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md), and [`releasenote/tool/0.3.7.md`](releasenote/tool/0.3.7.md) for the current implementation and handoff boundary.
 
 ## Consumer Repository non-intrusion
 
@@ -392,4 +385,4 @@ PTSIP does not require Consumer Repositories to create PTSIP-specific `.ptsip/`,
 
 ## Project status
 
-PTSIP remains experimental. Tool `0.3.6` is development-complete but not yet published at the time of this release-candidate documentation update. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).
+PTSIP remains experimental. Tool `0.3.7` is an unverified, unpublished release candidate until the final exact-SHA completion gate succeeds. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).

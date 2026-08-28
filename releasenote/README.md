@@ -42,7 +42,7 @@ Namespace indexes:
 
 | Contract | State | Document |
 | --- | --- | --- |
-| `pp.1.01` | **WU-09 identity implementation / pre-adoption** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| `pp.1.01` | **Current Tool 0.3.7 contract / PTSIP repository adopted** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 
 ### `0.3.6-draft -> pp.1.01` compatibility notice
 
@@ -52,11 +52,19 @@ ADR-0021 classifies the transition from historical Project Profile identity `0.3
 IDENTITY_ONLY
 ```
 
-For this bridge there is no Project Profile contract-content delta in `components`, `relationships`, `associated_artifacts`, `policies`, Responsibility Map semantics, or lifecycle classifications.
+For this bridge there is no Project Profile architecture-semantics delta in `components`, `relationships`, `associated_artifacts`, `policies`, Responsibility Map semantics, or lifecycle classifications. Current serialization also materializes the explicit historical Specification family while preserving source/revision.
 
 An otherwise valid `0.3.6-draft` Project Profile does not require architecture redesign or lifecycle reclassification merely because the canonical Project Profile contract identity becomes `pp.1.01`. Post-rewrite identity/schema validation is still required. See [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) for the user-facing migration-continuity notice.
 
 Historical `0.3.6-draft` records remain historical facts; they are not rewritten as though they were originally published under the `pp.*` namespace.
+
+## Current new-generation release records
+
+| Authority | Identity | State | Document |
+| --- | --- | --- | --- |
+| Tool | `0.3.7` | Release candidate; exact-SHA verification and publication pending | [`tool/0.3.7.md`](tool/0.3.7.md) |
+| Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 
 ## Historical Reference Tool history
 
@@ -120,7 +128,7 @@ The following Specification records retain their original flat `spec-<family>.md
 | `0.2.0-draft` | Historical experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
 | `0.3.4-draft` | Published Tool `0.3.5` baseline family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
 | `0.3.6-draft` | Tool `0.3.6` bound release-candidate family | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
-| `0.3.7-draft` | **Active Tool `0.3.7` development family; immutable activation snapshot `b648d9e026f502b14481ba2d0606d9acc88a31fc`** | [`spec-0.3.7-draft.md`](spec-0.3.7-draft.md) |
+| `0.3.7-draft` | Historical initial activation snapshot `b648d9e026f502b14481ba2d0606d9acc88a31fc`; final WU-12 freeze is recorded in the namespaced note | [`spec-0.3.7-draft.md`](spec-0.3.7-draft.md) |
 
 The existing `spec-0.3.7-draft.md` remains at its historical flat path. Future Specification-note records use the `specification/` namespace; ADR-0021 does not require retroactive relocation.
 

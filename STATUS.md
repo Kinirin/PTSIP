@@ -14,6 +14,38 @@
 
 Tool `0.3.5` remains the published compatibility baseline. Its historical PTSIP semantics are not rewritten by Tool `0.3.6` development.
 
+## Tool 0.3.7 WU-12 release-readiness implementation
+
+Development branch:
+
+```text
+dev/0.3.7
+```
+
+Current integrated identities:
+
+```text
+Tool:                  0.3.7
+Project Profile:       pp.1.01
+Specification family: 0.3.7-draft
+Specification source: https://github.com/Kinirin/PTSIP
+Specification revision: 3c47816770d194ae42f98faedc911d980db0e62a
+```
+
+The Specification revision is the dedicated WU-12 normative freeze commit. The
+repository root has adopted `pp.1.01` with that explicit binding without changing
+its lifecycle classifications or Responsibility Map semantics.
+
+WU-12 implementation includes typed Specification binding/capability composition,
+direct current-target migration compatibility, command-faithful validation
+capture, independent release-contract identities, namespaced release notes, and
+Tool/package `0.3.7` surfaces.
+
+This is not a completion or verification claim. The final exact source SHA has
+not yet received the required fresh self-hosted `tooling-test` result. Release
+preparation, GitHub Release publication, `tooling-release`, and PyPI publication
+have not been run for Tool `0.3.7`.
+
 ## Tool 0.3.6 development closure
 
 Development branch:
@@ -44,7 +76,7 @@ NEUTRAL_CONTRACT
 
 `TOOLCHAIN` is not a canonical Tool `0.3.6` PTSIP classification alias.
 
-## Current work-unit state
+## Tool 0.3.6 work-unit state
 
 ```text
 WU-00  0.3.6-draft normative baseline                    COMPLETE
@@ -600,15 +632,16 @@ tooling-release.yml
 ## Next stage sequence
 
 ```text
-WU-04 COMPLETE
-    -> WU-05 COMPLETE / DOGFOOD REVIEWED
-    -> WU-06 COMPLETE / EXACT-SHA VERIFIED
-    -> WU-07 COMPLETE / EXACT-SHA VERIFIED
-    -> exact-main release handoff
-    -> Tool 0.3.6 release
+Tool 0.3.7 WU-12 implementation integrated locally
+    -> select final exact dev/0.3.7 SHA
+    -> fresh self-hosted tooling-test on that exact SHA
+    -> full regression / identity / distribution / artifact / wheel smoke PASS
+    -> record exact-SHA status success
+    -> WU-12 completion and later exact-main release handoff
+    -> Tool 0.3.7 publication boundary
 ```
 
-The development-branch verification authority `452d0f8...` is not transferable to a different resulting `main` SHA. The main handoff must independently verify the exact merged `main` commit before release preparation.
+Earlier Tool `0.3.6` verification authority `452d0f8...` is not transferable to Tool `0.3.7` or to a different resulting `main` SHA. Each release handoff must independently verify its exact source commit before release preparation.
 
 ## Tool lineage
 
@@ -619,5 +652,6 @@ The development-branch verification authority `452d0f8...` is not transferable t
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
 - Tool `0.3.6`: **development complete; WU-07 COMPLETE / EXACT-SHA VERIFIED at `452d0f8...`; exact-main release handoff pending; not yet published**
+- Tool `0.3.7`: **WU-12 implementation integrated; final exact-SHA workflow and publication pending; not yet verified or published**
 
-Current Tool `0.3.6` release planning authority is `planning/0.3.6.md`.
+Current Tool `0.3.7` release-readiness authority is `planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`.
