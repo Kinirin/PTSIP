@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Mapping
 
 from ..profile_compatibility import require_direct_historical_transition
 from ..repository.profile_convergence import (
     DirectConvergenceMode,
+    DirectConvergenceState,
     discover_direct_profile_convergence,
 )
 from ..repository.profile_path import DEFAULT_PROFILE_PATH, profile_path_on_disk
@@ -21,7 +23,24 @@ from .execution_model import (
 )
 from .identity_rewrite import IdentityRewriteError, IdentityRewritePlan
 from .planner import final_point_state_from_mapping
-from ..repository.profile_convergence import DirectConvergenceState
+
+
+def _direct_plan_profile_contract(bound) -> str:
+    final_point = bound.plan.final_point
+    value = getattr(final_point, "profile_contract", None)
+    if not isinstance(value, str) or not value:
+        raise ExecutionStateError(
+            "Direct PP execution requires a PP-native direct-convergence plan identity."
+        )
+    return value
+
+
+def _payload_profile_contract(payload: Mapping[str, object]) -> str:
+    ptsip = payload.get("ptsip")
+    value = ptsip.get("version") if isinstance(ptsip, Mapping) else None
+    if not isinstance(value, str) or not value:
+        raise ExecutionStateError("Project Profile payload has no contract identity.")
+    return value
 
 
 def build_legacy_target_identity_rewrite_plan(
@@ -74,6 +93,7 @@ def build_legacy_target_identity_rewrite_plan(
 def _require_direct_pre_promotion_state(root: Path, canonical: CanonicalSourceComplete) -> None:
     verified = _completed_verified(canonical.completed)
     bound = verified.authorized.bound
+    profile_contract = _direct_plan_profile_contract(bound)
     discovery = discover_direct_profile_convergence(root)
     if not discovery.valid or discovery.state is None:
         detail = "; ".join(
@@ -90,7 +110,7 @@ def _require_direct_pre_promotion_state(root: Path, canonical: CanonicalSourceCo
         )
     if state.source.path != DEFAULT_PROFILE_PATH:
         raise ExecutionStateError("Direct PP promotion source is not the canonical ptsip.yaml.")
-    if state.target_contract.canonical != bound.plan.final_point.draft_version:
+    if state.target_contract.canonical != profile_contract:
         raise ExecutionStateError("Direct PP target contract no longer matches the bound WU-06 plan.")
     if state.target_path != bound.plan.final_point.path or state.target is None:
         raise ExecutionStateError("Direct PP Final Point selection no longer matches the bound WU-06 plan.")
@@ -108,6 +128,7 @@ def prepare_direct_promotion(
     root = Path(repository_root).expanduser().resolve()
     verified = _completed_verified(canonical.completed)
     bound = verified.authorized.bound
+    profile_contract = _direct_plan_profile_contract(bound)
     if verified.source.source_path != DEFAULT_PROFILE_PATH:
         raise ExecutionStateError("Direct PP promotion requires completed canonical source state.")
     if verified.source_index != len(bound.sources) - 1:
@@ -135,7 +156,7 @@ def prepare_direct_promotion(
     if final_state.semantic_digest != bound.plan.projected_final_state_digest:
         raise ExecutionStateError("Direct Final Point does not match the WU-06 projected target state.")
     if (
-        final_state.draft_version != bound.plan.final_point.draft_version
+        _payload_profile_contract(payload) != profile_contract
         or final_state.specification_revision != bound.plan.final_point.specification_revision
     ):
         raise ExecutionStateError("Direct Final Point target identity changed before promotion.")
@@ -154,6 +175,7 @@ def prepare_direct_promotion(
         payload={
             "projected_final_state_digest": final_state.semantic_digest,
             "transition_model": "DIRECT_LATEST_TARGET_CONVERGENCE",
+            "profile_contract": profile_contract,
         },
     )
     ready = PromotionReadyState(canonical, final_sha, canonical_sha)
@@ -163,7 +185,7 @@ def prepare_direct_promotion(
         source_sha256=canonical_sha,
         final_point_after_sha256=final_sha,
         decision_ids=verified.source.decision_ids,
-        payload={"atomic_replace": True, "intermediate_profiles": []},
+        payload={"atomic_replace": True, "intermediate_profiles": [], "profile_contract": profile_contract},
     )
     return ready
 
@@ -178,6 +200,7 @@ def verify_direct_post_promotion(
     root = Path(repository_root).expanduser().resolve()
     verified = _completed_verified(promoted.ready.canonical.completed)
     bound = verified.authorized.bound
+    profile_contract = _direct_plan_profile_contract(bound)
     canonical_path = profile_path_on_disk(root, DEFAULT_PROFILE_PATH)
     final_path = profile_path_on_disk(root, bound.plan.final_point.path)
     reasons: list[str] = []
@@ -201,7 +224,7 @@ def verify_direct_post_promotion(
                     reasons.append(
                         "promoted canonical semantics differ from WU-06 projected direct target state"
                     )
-                if canonical_state.draft_version != bound.plan.final_point.draft_version:
+                if _payload_profile_contract(canonical_payload) != profile_contract:
                     reasons.append("promoted canonical PP identity differs from bound direct target")
                 if canonical_state.specification_revision != bound.plan.final_point.specification_revision:
                     reasons.append("promoted canonical Specification revision differs from bound direct target")
@@ -229,7 +252,7 @@ def verify_direct_post_promotion(
         state = discovery.state
         if state.mode is not DirectConvergenceMode.CURRENT:
             reasons.append("post-promotion repository is not at CURRENT canonical PP state")
-        if state.source.declared_version != bound.plan.final_point.draft_version:
+        if state.source.declared_version != profile_contract:
             reasons.append("canonical PP contract does not match promoted Final Point")
         if state.source.specification_revision != bound.plan.final_point.specification_revision:
             reasons.append("canonical Specification revision does not match promoted Final Point")
@@ -241,7 +264,11 @@ def verify_direct_post_promotion(
             phase=ExecutionPhase.RECOVERY_REQUIRED,
             source_path=DEFAULT_PROFILE_PATH,
             final_point_after_sha256=promoted.canonical_after_sha256,
-            payload={"reasons": reasons, "transition_model": "DIRECT_LATEST_TARGET_CONVERGENCE"},
+            payload={
+                "reasons": reasons,
+                "transition_model": "DIRECT_LATEST_TARGET_CONVERGENCE",
+                "profile_contract": profile_contract,
+            },
         )
         return RecoveryRequiredState(
             bound.plan_digest,
@@ -255,6 +282,10 @@ def verify_direct_post_promotion(
         phase=ExecutionPhase.POST_PROMOTION_VERIFIED,
         source_path=DEFAULT_PROFILE_PATH,
         final_point_after_sha256=promoted.canonical_after_sha256,
-        payload={"transition_valid": True, "transition_model": "DIRECT_LATEST_TARGET_CONVERGENCE"},
+        payload={
+            "transition_valid": True,
+            "transition_model": "DIRECT_LATEST_TARGET_CONVERGENCE",
+            "profile_contract": profile_contract,
+        },
     )
     return result
