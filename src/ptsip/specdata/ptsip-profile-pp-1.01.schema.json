@@ -16,13 +16,22 @@
         },
         "specification": {
           "type": "object",
-          "required": ["source"],
+          "required": ["family", "source", "revision"],
           "properties": {
-            "source": {"type": "string", "const": "https://github.com/Kinirin/PTSIP"},
-            "revision": {
+            "family": {
               "type": "string",
               "minLength": 1,
-              "description": "Optional for generic profile validation; required by Enforced Conformance when evaluating a mutable draft family."
+              "description": "Explicit Specification family identity. Project Profile identity does not imply this value."
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Absolute Specification source identity; Tool support is evaluated independently through Specification capability authority."
+            },
+            "revision": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$",
+              "description": "Immutable Specification revision. Tool support is evaluated independently from the Project Profile contract identity."
             }
           },
           "additionalProperties": false
