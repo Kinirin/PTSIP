@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from .direct_convergence import DirectConvergenceAnalysis
 from .planner import (
     DeletionGate,
     ExecutionPreview,
     FinalPointConvergencePlan,
     FinalPointKind,
-    FinalPointReference,
+    FinalPointReference as LegacyFinalPointReference,
     FinalPointStateSnapshot,
     PlanningIssue,
     ReconciliationResult,
@@ -17,6 +19,27 @@ from .planner import (
 )
 from .proposal import SourceProposalSet, semantic_digest
 from ..repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState
+
+
+@dataclass(frozen=True)
+class DirectFinalPointReference(LegacyFinalPointReference):
+    """PP-native view of the shared Final Point reference.
+
+    The WU-01~07 sequential implementation historically named this identity
+    ``draft_version``.  Direct latest-target convergence uses an independent
+    Project Profile contract such as ``pp.1.01``; its serialized/current API
+    therefore exposes ``profile_contract`` instead of leaking the historical
+    Tool-numbered draft vocabulary.
+    """
+
+    @property
+    def profile_contract(self) -> str:
+        return self.draft_version
+
+    def as_dict(self) -> dict[str, object]:
+        payload = super().as_dict()
+        payload["profile_contract"] = payload.pop("draft_version")
+        return payload
 
 
 def _source_matches(state: DirectConvergenceState, analysis) -> bool:
@@ -36,7 +59,7 @@ def _logical_final_point(
     *,
     target_specification_revision: str,
     final_point_state: FinalPointStateSnapshot | None,
-) -> tuple[FinalPointReference, FinalPointStateSnapshot, list[PlanningIssue]]:
+) -> tuple[DirectFinalPointReference, FinalPointStateSnapshot, list[PlanningIssue]]:
     issues: list[PlanningIssue] = []
     revision = target_specification_revision.strip()
     if not revision:
@@ -50,7 +73,7 @@ def _logical_final_point(
         )
 
     if state.target is None:
-        final_ref = FinalPointReference(
+        final_ref = DirectFinalPointReference(
             FinalPointKind.PLANNED,
             state.target_path,
             state.target_contract.canonical,
@@ -74,7 +97,7 @@ def _logical_final_point(
         )
         return final_ref, working, issues
 
-    final_ref = FinalPointReference(
+    final_ref = DirectFinalPointReference(
         FinalPointKind.EXISTING,
         state.target.path,
         state.target_contract.canonical,
