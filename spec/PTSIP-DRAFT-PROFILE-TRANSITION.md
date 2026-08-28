@@ -1,9 +1,9 @@
 # PTSIP Project Profile Transition Specification
 
 **Specification family:** `0.3.7-draft`  
-**Status:** Active normative companion / WU-11 freeze candidate  
+**Status:** Active normative companion / WU-12 final freeze<br>
 **Base lifecycle semantics:** the mature `0.3.6-draft` primary lifecycle ownership and Responsibility Map v2 rules remain in force except where this companion adds Project Profile identity, compatibility, migration, and transition requirements.  
-**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022
+**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022, ADR-0023
 
 ## 1. Purpose
 
@@ -81,6 +81,27 @@ A Project Profile Contract Version identifies contract semantics. It does not id
 
 One concrete profile instance has its own immutable content/revision identity. Tool Version, Project Profile Contract Version, Project Profile Instance Revision, and Specification revision MUST NOT be collapsed into one version field or inferred from one another.
 
+### 2.3 Explicit Specification binding and capability authority
+
+A canonical current-generation Project Profile MUST declare its Specification binding independently from its Project Profile contract identity:
+
+```yaml
+ptsip:
+  version: "pp.1.01"
+  specification:
+    family: "0.3.7-draft"
+    source: "https://github.com/Kinirin/PTSIP"
+    revision: "<immutable-specification-revision>"
+```
+
+`ptsip.version` identifies the Project Profile contract. It MUST NOT be interpreted as an implicit Specification family or revision.
+
+An implementation MUST evaluate Project Profile capability and Specification capability as independent operation-aware authorities. At minimum, implementations that expose the corresponding behavior MUST distinguish `IDENTIFY`, `VALIDATE`, `ANALYZE`, `CONFORM`, and `CREATE_TARGET` support rather than assuming that support for one identity or operation authorizes every other identity or operation.
+
+Generic Project Profile validation MUST validate the declared Project Profile contract and `SpecificationBinding` independently. It MUST NOT require the declared Specification revision to equal one global Tool `SPEC_REVISION`, and it MUST NOT use a historical migration bridge as generic Specification capability authority. Unsupported or malformed family/source/revision bindings fail closed.
+
+Historical compatibility authority remains revision-bound migration interpretation. A supported Specification binding does not authorize migration or repository adoption, and an available migration bridge does not authorize a current Specification binding.
+
 ## 3. Historical source compatibility
 
 Historical Tool-numbered Project Profile labels remain historical facts. A conforming implementation MUST NOT rewrite history by claiming they were originally published under the `pp.*` namespace.
@@ -115,7 +136,7 @@ ADR-0021 defines:
 pp.1.01
 ```
 
-For this bridge, the Project Profile contract-content delta is zero:
+For this bridge, the Project Profile architecture-semantics delta is zero:
 
 ```text
 components delta:               NONE
@@ -125,6 +146,29 @@ policies delta:                 NONE
 Responsibility Map delta:       NONE
 lifecycle classification delta: NONE
 ```
+
+The serialization transition still makes identity explicit. It changes `ptsip.version` to `pp.1.01` and materializes the historical Specification family alongside the already bound source and revision:
+
+```yaml
+ptsip:
+  version: "0.3.6-draft"
+  specification:
+    source: "https://github.com/Kinirin/PTSIP"
+    revision: "d6995ed232e845b88d8235b851e80ab54b7804ea"
+```
+
+becomes:
+
+```yaml
+ptsip:
+  version: "pp.1.01"
+  specification:
+    family: "0.3.6-draft"
+    source: "https://github.com/Kinirin/PTSIP"
+    revision: "d6995ed232e845b88d8235b851e80ab54b7804ea"
+```
+
+The source and revision remain unchanged. Adding the explicit family is identity/binding normalization, not a Responsibility Map semantic migration.
 
 Therefore an otherwise valid `0.3.6-draft` Project Profile MUST NOT require lifecycle redesign, component reclassification, relationship redesign, policy redesign, or a synthetic semantic migration merely because its canonical Project Profile identity becomes `pp.1.01`.
 
@@ -370,7 +414,7 @@ Tool `0.3.7` supporting `pp.1.01` does not by itself authorize mutation of a rep
 
 A write-enabled adoption or migration requires the applicable exact source state, accepted architecture/identity delta, required owner authorization, stale-state checks, and post-write validation.
 
-The `0.3.6-draft -> pp.1.01` identity equivalence removes unnecessary semantic reclassification work. It does not remove write authorization.
+The `0.3.6-draft -> pp.1.01` identity equivalence removes unnecessary semantic reclassification work. It does not remove write authorization or independently authorize rebinding the adopted profile to another Specification family/revision.
 
 ## 13. User-visible disclosure requirements
 
@@ -403,6 +447,8 @@ A conforming implementation MUST fail closed for at least:
 
 - unsupported historical source family/revision;
 - malformed or unsupported current PP identity;
+- malformed or unsupported Specification family/source/revision binding;
+- unsupported Project Profile or Specification operation capability;
 - unsupported target selection;
 - ambiguous target selection;
 - duplicate equivalent target paths;
@@ -441,6 +487,7 @@ decisions/ADR-0019-*.md
 decisions/ADR-0020-*.md
 decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md
 decisions/ADR-0022-*.md
+decisions/ADR-0023-typed-specification-binding-and-capability-registries.md
 ```
 
 Tool `0.3.7` planning consumes this companion through:
@@ -450,4 +497,4 @@ planning/0.3.7.md
 planning/0.3.7/*
 ```
 
-The immutable Git revision selected during WU-11 Specification freeze is the normative `0.3.7-draft` revision to which the final Tool release binds.
+The immutable Git revision selected by the WU-12 final Specification freeze is the normative `0.3.7-draft` revision to which the final Tool release binds. The binding is recorded after the freeze so the normative commit never contains a self-referential SHA.
