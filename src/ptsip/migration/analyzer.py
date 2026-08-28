@@ -11,6 +11,7 @@ from ..evidence.contract import (
     NormalizedEvidenceSet,
 )
 from ..model import Classification, ResponsibilityRelationshipType
+from ..profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ..repository.profile_path import normalize_profile_path, profile_path_on_disk
 from ..repository.snapshot import capture_snapshot, compare_snapshots, repository_files
 from ..source_compat.model import (
@@ -72,8 +73,14 @@ class _TargetOwner:
 
 
 def default_target_semantics() -> TargetSemantics:
+    """Return semantics for the current canonical Project Profile target.
+
+    The target identity comes from the independent PP capability namespace.  It
+    must not be derived from the Tool version or Specification family label.
+    """
+
     return TargetSemantics(
-        draft_version="0.3.7-draft",
+        draft_version=CURRENT_PROJECT_PROFILE_VERSION,
         classifications=tuple(item.value for item in Classification),
         relationship_types=tuple(item.value for item in ResponsibilityRelationshipType),
     )
@@ -87,13 +94,13 @@ def target_state_from_mapping(payload: dict[str, object]) -> TargetArchitectureS
     specification = ptsip.get("specification")
     revision = specification.get("revision") if isinstance(specification, dict) else None
     if not isinstance(version, str) or not isinstance(revision, str) or not revision:
-        raise ValueError("Target state requires draft version and immutable specification revision.")
+        raise ValueError("Target state requires Project Profile contract identity and immutable specification revision.")
 
     responsibility_map = payload.get("responsibility_map")
     if not isinstance(responsibility_map, dict) or responsibility_map.get("mode") != "explicit":
         raise ValueError(
             "WU-05 target-state mapping accepts explicit target state only; "
-            "template/hybrid target materialization belongs to the target-draft runtime boundary."
+            "template/hybrid target materialization belongs to the target-contract runtime boundary."
         )
 
     components = tuple(
@@ -544,7 +551,7 @@ def _target_compatibility(
         LifecycleFindingKind.TARGET_REVIEW_REQUIRED,
         source_classification,
         target_classification,
-        "Lifecycle compatibility cannot be proven under the target draft vocabulary.",
+        "Lifecycle compatibility cannot be proven under the target Project Profile vocabulary.",
     )
 
 
