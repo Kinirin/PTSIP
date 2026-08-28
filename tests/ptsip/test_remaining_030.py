@@ -6,8 +6,9 @@ import subprocess
 from pathlib import Path
 
 from ptsip.conformance_engine import evaluate_conformance
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.repository.snapshot import capture_snapshot
 
 
@@ -47,9 +48,10 @@ def _workflow(repo: Path, name: str, scope: str) -> None:
 def _profile(repo: Path, product_manifest: str, tool_manifest: str) -> None:
     (repo / "ptsip.yaml").write_text(
         f"""ptsip:
-  version: "0.3.6-draft"
+  version: "{CURRENT_PROJECT_PROFILE_VERSION}"
   specification:
-    source: "https://github.com/Kinirin/PTSIP"
+    family: "{SPEC_VERSION}"
+    source: "{SPEC_SOURCE}"
     revision: "{SPEC_REVISION}"
 responsibility_map:
   mode: explicit

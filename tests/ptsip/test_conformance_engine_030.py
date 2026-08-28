@@ -7,7 +7,8 @@ from pathlib import Path
 
 from ptsip.build_resolution import evaluate_independent_build_resolution
 from ptsip.conformance_engine import evaluate_conformance
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.lifecycle_evidence import evaluate_lifecycle_evidence
 from ptsip.repository.snapshot import capture_snapshot
@@ -83,9 +84,10 @@ def _python_profile(repo: Path, *, lifecycle: bool = True) -> list[dict[str, obj
 def _write_profile(repo: Path, components: list[dict[str, object]]) -> None:
     lines = [
         "ptsip:",
-        '  version: "0.3.6-draft"',
+        f'  version: "{CURRENT_PROJECT_PROFILE_VERSION}"',
         "  specification:",
-        '    source: "https://github.com/Kinirin/PTSIP"',
+        f'    family: "{SPEC_VERSION}"',
+        f'    source: "{SPEC_SOURCE}"',
         f'    revision: "{SPEC_REVISION}"',
         "responsibility_map:",
         "  mode: explicit",

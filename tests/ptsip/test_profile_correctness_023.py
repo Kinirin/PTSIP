@@ -3,7 +3,8 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import validate_profile
 
 
@@ -25,7 +26,7 @@ def _init_repo(repo: Path) -> None:
 
 
 def _profile(revision: str, policy: str = "") -> str:
-    return f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{revision}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: tooling\n{policy}policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n"""
+    return f"""ptsip:\n  version: \"{CURRENT_PROJECT_PROFILE_VERSION}\"\n  specification:\n    family: \"{SPEC_VERSION}\"\n    source: \"{SPEC_SOURCE}\"\n    revision: \"{revision}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: tooling\n{policy}policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n"""
 
 
 def test_explicit_profile_revision_must_match_tool_binding(tmp_path: Path) -> None:
@@ -34,7 +35,7 @@ def test_explicit_profile_revision_must_match_tool_binding(tmp_path: Path) -> No
     (repo / "ptsip.yaml").write_text(_profile("895e12d27230af2bb99ad17a96e8df8ef41bc3e0"), encoding="utf-8")
     result = validate_profile(repo)
     assert not result.valid
-    assert any("not supported by tooling snapshot" in item for item in result.errors)
+    assert any("[SPEC_BINDING_UNSUPPORTED]" in item for item in result.errors)
 
 
 def test_component_dependency_policy_references_declared_components(tmp_path: Path) -> None:
