@@ -81,6 +81,10 @@ jobs:
           python -m pip install --upgrade pip build twine
           python -m pip install -e ".[dev]"
 
+      - name: Verify Tool, PP, and Specification release contract
+        shell: powershell
+        run: python .github/scripts/verify_release_contract.py
+
       - name: Run complete repository regression
         shell: powershell
         run: python -m pytest -q
@@ -104,6 +108,38 @@ jobs:
             throw "No distributions were produced under dist/."
           }
           python -m twine check $distFiles
+
+      - name: Verify wheel and sdist embedded contracts
+        shell: powershell
+        run: |
+          @'
+          from pathlib import Path
+          import tarfile
+          import zipfile
+
+          required = (
+              "ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+              "ptsip/specdata/ptsip-normalized-evidence.schema.json",
+              "ptsip/specdata/ptsip-registry.yaml",
+          )
+          wheel = next(Path("dist").glob("*.whl"))
+          sdist = next(Path("dist").glob("*.tar.gz"))
+
+          with zipfile.ZipFile(wheel) as archive:
+              wheel_names = set(archive.namelist())
+          missing_wheel = [name for name in required if name not in wheel_names]
+          if missing_wheel:
+              raise SystemExit(f"wheel is missing embedded contracts: {missing_wheel}")
+
+          with tarfile.open(sdist, "r:gz") as archive:
+              sdist_names = {member.name for member in archive.getmembers()}
+          missing_sdist = [
+              name for name in required
+              if not any(path.endswith(f"/src/{name}") for path in sdist_names)
+          ]
+          if missing_sdist:
+              raise SystemExit(f"sdist is missing embedded contracts: {missing_sdist}")
+          '@ | python -
 
       - name: Verify Product Artifact evidence and exact snapshot binding
         shell: powershell
@@ -164,8 +200,8 @@ jobs:
           if ($metadataText -notmatch '(?m)^Name:\s*PTSIP\s*$') {
             throw "Built wheel metadata does not report Name: PTSIP."
           }
-          if ($metadataText -notmatch '(?m)^Version:\s*0\.3\.6\s*$') {
-            throw "Built wheel metadata does not report Version: 0.3.6."
+          if ($metadataText -notmatch '(?m)^Version:\s*0\.3\.7\s*$') {
+            throw "Built wheel metadata does not report Version: 0.3.7."
           }
           if ($entryPointsText -notmatch '(?m)^ptsip\s*=\s*ptsip\.cli:main\s*$') {
             throw "Built wheel does not expose the ptsip console entry point."

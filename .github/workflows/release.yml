@@ -89,7 +89,7 @@ jobs:
 
           $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
           $tag = "tool-v$packageVersion"
-          $note = "releasenote/$packageVersion.md"
+          $note = "releasenote/tool/$packageVersion.md"
 
           git show-ref --verify --quiet "refs/tags/$tag"
           $tagLookupExit = $LASTEXITCODE

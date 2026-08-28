@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-import runpy
 import subprocess
 import sys
 import tomllib
@@ -17,19 +16,24 @@ REQUIRED_SPEC_PATHS = (
     "spec/PTSIP-TERMINOLOGY.md",
     "spec/PTSIP-GOVERNANCE.md",
     "spec/PTSIP-RESPONSIBILITY-MAP.md",
+    "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
 )
 CANONICAL_MACHINE_READABLE_PATHS = (
     "schemas/ptsip-profile.schema.json",
+    "schemas/ptsip-profile-pp-1.01.schema.json",
     "schemas/ptsip-artifact-evidence.schema.json",
     "schemas/ptsip-agent-classification.schema.json",
     "schemas/ptsip-diagnostic.schema.json",
+    "schemas/ptsip-normalized-evidence.schema.json",
     "registry/ptsip-registry.yaml",
 )
 EMBEDDED_MACHINE_READABLE_PATHS = (
     "src/ptsip/specdata/ptsip-profile.schema.json",
+    "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
     "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
     "src/ptsip/specdata/ptsip-agent-classification.schema.json",
     "src/ptsip/specdata/ptsip-diagnostic.schema.json",
+    "src/ptsip/specdata/ptsip-normalized-evidence.schema.json",
     "src/ptsip/specdata/ptsip-registry.yaml",
 )
 RELEASE_BOUND_SPEC_PATHS = (
@@ -67,17 +71,45 @@ def main() -> int:
     with (ROOT / "pyproject.toml").open("rb") as handle:
         package_version = str(tomllib.load(handle)["project"]["version"])
 
-    constants = runpy.run_path(str(ROOT / "src/ptsip/constants.py"))
-    spec_version = str(constants["SPEC_VERSION"])
-    spec_revision = str(constants["SPEC_REVISION"])
-    spec_source = str(constants["SPEC_SOURCE"])
+    source_root = str(ROOT / "src")
+    if source_root not in sys.path:
+        sys.path.insert(0, source_root)
 
-    expected_spec_version = f"{package_version}-draft"
-    if spec_version != expected_spec_version:
+    from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
+    from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+    from ptsip.spec_identity import current_spec_identity
+    from ptsip.specification_binding import current_target_specification_binding
+
+    tool_version = TOOL_VERSION
+    pp_version = CURRENT_PROJECT_PROFILE_VERSION
+    spec_version = SPEC_VERSION
+    spec_revision = SPEC_REVISION
+    spec_source = SPEC_SOURCE
+    current_binding = current_target_specification_binding()
+    runtime_identity = current_spec_identity()
+
+    if package_version != tool_version:
         errors.append(
-            f"SPEC_VERSION is {spec_version!r}; Tool {package_version} requires "
-            f"{expected_spec_version!r}."
+            f"Package version {package_version!r} does not match Tool runtime {tool_version!r}."
         )
+    if pp_version != "pp.1.01":
+        errors.append(f"Current Project Profile contract is {pp_version!r}; expected 'pp.1.01'.")
+    if (
+        current_binding.family != spec_version
+        or current_binding.source != spec_source
+        or current_binding.revision != spec_revision
+    ):
+        errors.append(
+            "Current Specification capability binding does not match Tool constants."
+        )
+    if (
+        runtime_identity.tool_version != tool_version
+        or runtime_identity.project_profile_contract_version != pp_version
+        or runtime_identity.version != spec_version
+        or runtime_identity.source != spec_source
+        or runtime_identity.revision != spec_revision
+    ):
+        errors.append("Runtime spec identity does not expose the independent release identities.")
 
     if not re.fullmatch(r"[0-9a-f]{40}", spec_revision):
         errors.append("SPEC_REVISION must be a full 40-character lowercase Git commit SHA.")
@@ -86,14 +118,32 @@ def main() -> int:
     profile_ptsip = profile.get("ptsip", {})
     profile_spec = profile_ptsip.get("specification", {})
 
-    if profile_ptsip.get("version") != spec_version:
-        errors.append("ptsip.yaml ptsip.version does not match SPEC_VERSION.")
+    if profile_ptsip.get("version") != pp_version:
+        errors.append("ptsip.yaml ptsip.version does not match the current PP contract.")
+    if profile_spec.get("family") != spec_version:
+        errors.append("ptsip.yaml specification.family does not match SPEC_VERSION.")
     if profile_spec.get("revision") != spec_revision:
         errors.append("ptsip.yaml specification.revision does not match SPEC_REVISION.")
     if profile_spec.get("source") != spec_source:
         errors.append("ptsip.yaml specification.source does not match SPEC_SOURCE.")
 
-    spec_note = ROOT / "releasenote" / f"spec-{spec_version}.md"
+    maintained_profiles = (
+        "profiles/example.ptsip.yaml",
+        "profiles/hybrid-python-package.ptsip.yaml",
+        "profiles/template-python-package.ptsip.yaml",
+    )
+    for relative_path in maintained_profiles:
+        maintained = yaml.safe_load((ROOT / relative_path).read_text(encoding="utf-8"))
+        maintained_ptsip = maintained.get("ptsip", {})
+        maintained_spec = maintained_ptsip.get("specification", {})
+        if maintained_ptsip.get("version") != pp_version or maintained_spec != {
+            "family": spec_version,
+            "source": spec_source,
+            "revision": spec_revision,
+        }:
+            errors.append(f"Maintained profile {relative_path!r} has a stale release binding.")
+
+    spec_note = ROOT / "releasenote" / "specification" / f"{spec_version}.md"
     spec_note_text = ""
     if not spec_note.is_file():
         errors.append(f"Missing Specification release note: {spec_note.relative_to(ROOT)}")
@@ -106,7 +156,7 @@ def main() -> int:
                 "Specification release note does not record the exact bound SPEC_REVISION."
             )
 
-    tool_note = ROOT / "releasenote" / f"{package_version}.md"
+    tool_note = ROOT / "releasenote" / "tool" / f"{package_version}.md"
     tool_note_text = ""
     if not tool_note.is_file():
         errors.append(f"Missing Tool release note: {tool_note.relative_to(ROOT)}")
@@ -121,21 +171,38 @@ def main() -> int:
                 )
             if package_version not in tool_note_text:
                 errors.append("Tool release note does not record the package version.")
-            if spec_version not in tool_note_text or spec_revision not in tool_note_text:
+            if (
+                pp_version not in tool_note_text
+                or spec_version not in tool_note_text
+                or spec_revision not in tool_note_text
+            ):
                 errors.append(
-                    "Tool release note does not record the exact Tool/Specification release binding."
+                    "Tool release note does not record the exact Tool/PP/Specification binding."
                 )
+
+    pp_note = ROOT / "releasenote" / "project-profile" / f"{pp_version}.md"
+    if not pp_note.is_file():
+        errors.append(f"Missing Project Profile release note: {pp_note.relative_to(ROOT)}")
+    else:
+        pp_note_text = pp_note.read_text(encoding="utf-8")
+        if pp_version not in pp_note_text or spec_revision not in pp_note_text:
+            errors.append("Project Profile release note does not record the current binding.")
 
     release_index = ROOT / "releasenote" / "README.md"
     if not release_index.is_file():
         errors.append("Missing release-note index: releasenote/README.md")
     else:
         release_index_text = release_index.read_text(encoding="utf-8")
-        tool_index_marker = f"| `{package_version}` |"
-        spec_index_marker = f"| `{spec_version}` |"
+        tool_index_marker = f"tool/{package_version}.md"
+        pp_index_marker = f"project-profile/{pp_version}.md"
+        spec_index_marker = f"specification/{spec_version}.md"
         if tool_index_marker not in release_index_text:
             errors.append(
                 f"Release-note index does not recognize Tool {package_version}."
+            )
+        if pp_index_marker not in release_index_text:
+            errors.append(
+                f"Release-note index does not recognize Project Profile {pp_version}."
             )
         if spec_index_marker not in release_index_text:
             errors.append(
@@ -192,11 +259,13 @@ def main() -> int:
         return 1
 
     print("PTSIP release Specification contract: PASS")
-    print(f"Tool version: {package_version}")
-    print(f"Specification: {spec_version}")
+    print(f"Tool version: {tool_version}")
+    print(f"Project Profile: {pp_version}")
+    print(f"Specification family: {spec_version}")
     print(f"Specification revision: {spec_revision}")
-    print(f"Tool note: releasenote/{package_version}.md")
-    print(f"Specification note: releasenote/spec-{spec_version}.md")
+    print(f"Tool note: releasenote/tool/{package_version}.md")
+    print(f"Project Profile note: releasenote/project-profile/{pp_version}.md")
+    print(f"Specification note: releasenote/specification/{spec_version}.md")
     print(f"Release-bound Specification assets: {len(RELEASE_BOUND_SPEC_PATHS)}")
     return 0
 
