@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from pathlib import Path
 
 from .adoption import apply_adoption, prepare_adoption
 from .app.client import ControlPlaneClient
@@ -46,6 +47,7 @@ from .spec_identity import current_spec_identity
 from .storage.local_state import repository_fingerprint
 from .topology import migrate_topology
 from .validation.profile import validate_profile
+from .validation_capture import ValidationCaptureError, capture_validation_command
 
 DecisionClient = ControlPlaneClient | LocalControlPlaneClient | GithubControlPlaneClient
 
@@ -74,6 +76,23 @@ def _emit(payload: object, as_json: bool) -> None:
             print(f"{key}: {value}")
     else:
         print(payload)
+
+
+def _validation_capture_command(argv: list[str]) -> list[str] | None:
+    """Return the exact child argv for the dedicated capture prefix."""
+
+    if argv[:2] != ["validation", "capture"]:
+        return None
+    if len(argv) < 3 or argv[2] != "--":
+        raise ValidationCaptureError(
+            "Usage: ptsip validation capture -- <command> [args...]"
+        )
+    command = argv[3:]
+    if not command:
+        raise ValidationCaptureError(
+            "Validation capture requires an exact command after '--'."
+        )
+    return command
 
 
 def _yes_no(value: str) -> bool:
@@ -358,7 +377,18 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     _configure_console_encoding()
-    args = _parser().parse_args(argv)
+    raw_argv = list(sys.argv[1:] if argv is None else argv)
+    try:
+        capture_command = _validation_capture_command(raw_argv)
+        if capture_command is not None:
+            result = capture_validation_command(Path.cwd(), capture_command)
+            _emit(result.as_dict(), False)
+            return result.exit_code
+    except (ValidationCaptureError, OSError) as exc:
+        print(f"PTSIP validation capture error: {exc}", file=sys.stderr)
+        return 2
+
+    args = _parser().parse_args(raw_argv)
     try:
         if args.command == "spec":
             _emit(current_spec_identity().as_dict(), args.json)

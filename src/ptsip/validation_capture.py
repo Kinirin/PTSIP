@@ -34,12 +34,15 @@ class ValidationCaptureResult:
 
 
 def _git(root: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess[bytes]:
-    return subprocess.run(
-        ["git", "-C", str(root), *args],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=check,
-    )
+    try:
+        return subprocess.run(
+            ["git", "-C", str(root), *args],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=check,
+        )
+    except OSError as exc:
+        raise ValidationCaptureError(f"Unable to execute Git: {exc}") from exc
 
 
 def _require_repository_root(root: Path) -> None:
@@ -94,18 +97,23 @@ def capture_validation_command(
     captured = _timestamp(now)
     token = _timestamp_token(captured)
     log_dir = root / "docs" / "ptsip" / "validation"
-    log_dir.mkdir(parents=True, exist_ok=True)
     log_path = log_dir / f"{token}.log"
     if log_path.exists():
         raise ValidationCaptureError(f"Validation log collision at {log_path}.")
 
-    completed = subprocess.run(
-        executable_command,
-        cwd=root,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
-    )
+    try:
+        completed = subprocess.run(
+            executable_command,
+            cwd=root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            shell=False,
+            check=False,
+        )
+    except OSError as exc:
+        raise ValidationCaptureError(
+            f"Unable to execute validation command {original_command[0]!r}: {exc}"
+        ) from exc
     output = completed.stdout.decode("utf-8", errors="backslashreplace")
     display_command = _display_command(original_command)
     header = (
@@ -114,7 +122,13 @@ def capture_validation_command(
         f"exit_code: {completed.returncode}\n"
         "--- output ---\n"
     )
-    log_path.write_text(header + output, encoding="utf-8", newline="\n")
+    try:
+        log_dir.mkdir(parents=True, exist_ok=True)
+        log_path.write_text(header + output, encoding="utf-8", newline="\n")
+    except OSError as exc:
+        raise ValidationCaptureError(
+            f"Unable to persist validation log at {log_path}: {exc}"
+        ) from exc
 
     relative = log_path.relative_to(root).as_posix()
     add = _git(root, "add", "--", relative, check=False)
@@ -138,7 +152,12 @@ def capture_validation_command(
             "Unable to commit validation log: " + commit.stderr.decode("utf-8", errors="replace").strip()
         )
 
-    head = _git(root, "rev-parse", "HEAD")
+    head = _git(root, "rev-parse", "HEAD", check=False)
+    if head.returncode != 0:
+        raise ValidationCaptureError(
+            "Unable to read validation-log commit identity: "
+            + head.stderr.decode("utf-8", errors="replace").strip()
+        )
     commit_sha = head.stdout.decode("ascii", errors="strict").strip()
     return ValidationCaptureResult(
         captured_at=captured.isoformat(timespec="microseconds"),
