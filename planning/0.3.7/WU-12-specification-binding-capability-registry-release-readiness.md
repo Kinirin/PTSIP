@@ -1,10 +1,12 @@
 # WU-12 — Typed Specification Binding, Capability Registries, Repository Adoption, and Final Release Readiness
 
-> **Status:** PLANNED  
+> **Status:** ACTIVE  
 > **Target Tool:** `0.3.7`  
-> **Predecessor:** WU-11 — PP-aware Specification / release-surface preparation  
+> **Predecessor:** WU-11 — PP-aware Specification / release-surface preparation (`COMPLETE / HANDOFF VERIFIED`)  
 > **Architecture authority:** ADR-0023  
-> **Entry rule:** may enter ACTIVE only after WU-11 completion is recorded and a fresh exact `dev/0.3.7` HEAD is captured  
+> **Exact entry baseline:** `328f4f163c36df746a28d5e7d2d77ebd58cb3b99`  
+> **Predecessor normative baseline:** `555af435a4bb68140c2c869efa34d12c624d51a4`  
+> **Predecessor implementation verification authority:** `9a9159685a4f5de103d79e9d1c38bdbbada25d4c` via `tooling-test` run `33081718965`, job `98550433277`  
 > **Release role:** final Tool `0.3.7` integration and release-readiness authority
 
 ## 0. Purpose
@@ -12,6 +14,8 @@
 Complete the long-term-maintainability Specification-binding architecture selected by the project owner without turning WU-10 historical migration bridges into a generic validation bottleneck.
 
 WU-12 separates Tool, Project Profile, Specification, and Project Profile instance identities all the way through runtime validation, repository adoption, release verification, and final exact-SHA evidence.
+
+WU-12 entered `ACTIVE` under the standing successor-entry rule after WU-11 was recorded `COMPLETE / HANDOFF VERIFIED`. This entry state authorizes execution of the already accepted ADR-0023 implementation scope; it does not by itself authorize final publication before the WU-12 completion gate succeeds.
 
 The target shape is:
 
