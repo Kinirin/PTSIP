@@ -1,8 +1,9 @@
 ptsip:
-  version: "0.3.6-draft"
+  version: "pp.1.01"
   specification:
+    family: "0.3.7-draft"
     source: "https://github.com/Kinirin/PTSIP"
-    revision: "d6995ed232e845b88d8235b851e80ab54b7804ea"
+    revision: "3c47816770d194ae42f98faedc911d980db0e62a"
 
 responsibility_map:
   mode: explicit
@@ -25,6 +26,45 @@ components:
     shipped: true
     runtime_required: true
     executable: true
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: ptsip-evidence
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/ptsip/evidence/**"
+    purpose: normalized_evidence_contract_and_adapter_runtime
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: ptsip-source-compat
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/ptsip/source_compat/**"
+    purpose: revision_bound_source_profile_compatibility_runtime
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: ptsip-migration
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/ptsip/migration/**"
+    purpose: deterministic_profile_migration_planning_execution_and_recovery_runtime
+    shipped: true
+    runtime_required: false
+    executable: false
     release_owner: tool
     compatibility_owner: tool
 
@@ -208,6 +248,7 @@ components:
       - "setup_dev.bat"
       - "cliff.toml"
       - "planning/**"
+      - "docs/ptsip/validation/**"
       - "verification-evidence/**"
     purpose: development_planning_evidence_and_repository_maintenance
     shipped: false
@@ -232,9 +273,54 @@ relationships:
     to: ptsip-embedded-contracts
     type: READS
 
+  - id: evidence-imports-core
+    from: ptsip-evidence
+    to: ptsip-core
+    type: IMPORTS
+
+  - id: source-compat-imports-core
+    from: ptsip-source-compat
+    to: ptsip-core
+    type: IMPORTS
+
+  - id: source-compat-reads-embedded-contracts
+    from: ptsip-source-compat
+    to: ptsip-embedded-contracts
+    type: READS
+
+  - id: migration-imports-core
+    from: ptsip-migration
+    to: ptsip-core
+    type: IMPORTS
+
+  - id: migration-imports-evidence
+    from: ptsip-migration
+    to: ptsip-evidence
+    type: IMPORTS
+
+  - id: migration-imports-source-compat
+    from: ptsip-migration
+    to: ptsip-source-compat
+    type: IMPORTS
+
   - id: canonical-specifies-core
     from: ptsip-canonical-contracts
     to: ptsip-core
+    type: SPECIFIES
+
+  - id: canonical-specifies-evidence
+    from: ptsip-canonical-contracts
+    to: ptsip-evidence
+    type: SPECIFIES
+
+  - id: canonical-specifies-source-compat
+    from: ptsip-canonical-contracts
+    to: ptsip-source-compat
+    type: SPECIFIES
+
+  - id: canonical-specifies-migration
+    from: ptsip-canonical-contracts
+    to: ptsip-migration
     type: SPECIFIES
 
   - id: canonical-specifies-vpms
@@ -255,6 +341,21 @@ relationships:
   - id: repository-verification-verifies-core
     from: repository-verification
     to: ptsip-core
+    type: VERIFIES
+
+  - id: repository-verification-verifies-evidence
+    from: repository-verification
+    to: ptsip-evidence
+    type: VERIFIES
+
+  - id: repository-verification-verifies-source-compat
+    from: repository-verification
+    to: ptsip-source-compat
+    type: VERIFIES
+
+  - id: repository-verification-verifies-migration
+    from: repository-verification
+    to: ptsip-migration
     type: VERIFIES
 
   - id: repository-verification-verifies-vpms

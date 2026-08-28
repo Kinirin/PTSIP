@@ -2,7 +2,7 @@ ptsip_registry:
   specification:
     name: "Primary Lifecycle Ownership and Responsibility Isolation Policy"
     acronym: "PTSIP"
-    version: "0.3.6-draft"
+    version: "0.3.7-draft"
     status: "draft"
     revision_policy: "draft-family-plus-immutable-revision"
     canonical_source: "https://github.com/Kinirin/PTSIP"
@@ -173,7 +173,7 @@ ptsip_registry:
     - id: EXTERNAL_PTSIP_TOOLING
       meaning: "PTSIP tooling operated outside the Consumer Repository project-owned source tree by default."
     - id: SPECIFICATION_BINDING
-      meaning: "Association between a project PTSIP declaration and canonical specification family/version plus immutable revision when required."
+      meaning: "Explicit family, canonical source, and immutable revision associated with a PTSIP declaration independently from Project Profile contract identity."
     - id: PTSIP_COMPONENT
       meaning: "Coherent architectural unit to which one canonical primary lifecycle classification applies."
     - id: ASSOCIATED_ARTIFACT
@@ -289,6 +289,18 @@ ptsip_registry:
     - {id: PTSIP-MIG-001, title: "Legacy profile readability without legacy ontology preservation", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-MIG-002, title: "Evidence-driven migration proposals", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-MIG-003, title: "Project-owner confirmation", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-004, title: "Versioned target coexistence", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-005, title: "Source-specific obligation evaluation", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-006, title: "Required Work completion gate", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-007, title: "Removal elements do not carry forward", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-008, title: "Asynchronous work is non-blocking and non-crediting", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-009, title: "Direct current-target convergence", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-010, title: "Completed source retirement", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-011, title: "No migration-category inheritance", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-012, title: "Current-target state accumulation", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-013, title: "Guarded canonical promotion", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-014, title: "Snapshot, binding, and stale-state safety", severity: error, applies_to: migration_implementation}
+    - {id: PTSIP-MIG-015, title: "Processing order is governance, not compatibility preservation", severity: error, applies_to: migration_implementation}
     - {id: PTSIP-INT-001, title: "Consumer Repository Non-Intrusion", severity: error, applies_to: implementation}
     - {id: PTSIP-SPC-001, title: "Specification Binding", severity: error, applies_to: implementation}
     - {id: PTSIP-EVD-001, title: "Evidence snapshot integrity", severity: error, applies_to: implementation}

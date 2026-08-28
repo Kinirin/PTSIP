@@ -8,7 +8,8 @@ from jsonschema import Draft202012Validator
 
 from ptsip.cli import main
 from ptsip.conformance import evaluate_conformance
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import validate_profile
 
 
@@ -39,7 +40,7 @@ def _write_profile(
     (repo / "product" / "app.py").write_text((product_import or "") + "VALUE = 1\n", encoding="utf-8")
     (repo / "tools" / "check.py").write_text((tool_import or "") + "VALUE = 2\n", encoding="utf-8")
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"0.3.6-draft\"\n  specification:\n    source: \"https://github.com/Kinirin/PTSIP\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: development_tooling\n{component_policy}policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n""",
+        f"""ptsip:\n  version: \"{CURRENT_PROJECT_PROFILE_VERSION}\"\n  specification:\n    family: \"{SPEC_VERSION}\"\n    source: \"{SPEC_SOURCE}\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: development_tooling\n{component_policy}policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n""",
         encoding="utf-8",
     )
 
@@ -83,7 +84,7 @@ def test_conform_without_profile_is_incomplete(tmp_path: Path) -> None:
     result = evaluate_conformance(repo)
     assert result.outcome == "INCOMPLETE"
     assert result.report["format"] == "ptsip-conformance-report/v1"
-    assert result.report["tool"]["version"] == "0.3.6"
+    assert result.report["tool"]["version"] == TOOL_VERSION
     assert result.report["evaluators"]["declared_dependency_boundaries"]["status"] == "BLOCKED"
     gap_ids = {item["id"] for item in result.report["coverage"]["blocking_gaps"]}
     assert "profile:missing" in gap_ids

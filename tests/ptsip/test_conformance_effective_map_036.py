@@ -9,6 +9,7 @@ import yaml
 
 from ptsip.conformance import evaluate_conformance
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.templates import template_catalog
 
 
@@ -50,8 +51,12 @@ def _profile(mode: str, template_id: str | None = None, revision: str | None = N
         responsibility_map["template"] = {"id": template_id, "revision": revision}
     return {
         "ptsip": {
-            "version": SPEC_VERSION,
-            "specification": {"source": SPEC_SOURCE, "revision": SPEC_REVISION},
+            "version": CURRENT_PROJECT_PROFILE_VERSION,
+            "specification": {
+                "family": SPEC_VERSION,
+                "source": SPEC_SOURCE,
+                "revision": SPEC_REVISION,
+            },
         },
         "responsibility_map": responsibility_map,
         "policies": copy.deepcopy(POLICIES),

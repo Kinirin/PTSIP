@@ -23,6 +23,7 @@ def _yaml(path: str) -> dict[str, object]:
 def test_canonical_json_schemas_are_valid_draft_2020_12() -> None:
     for path in (
         "schemas/ptsip-profile.schema.json",
+        "schemas/ptsip-profile-pp-1.01.schema.json",
         "schemas/ptsip-agent-classification.schema.json",
         "schemas/ptsip-diagnostic.schema.json",
         "schemas/ptsip-artifact-evidence.schema.json",
@@ -32,7 +33,7 @@ def test_canonical_json_schemas_are_valid_draft_2020_12() -> None:
 
 def test_registry_preserves_exactly_five_canonical_lifecycle_classifications() -> None:
     registry = _yaml("registry/ptsip-registry.yaml")["ptsip_registry"]
-    assert registry["specification"]["version"] == "0.3.6-draft"
+    assert registry["specification"]["version"] == "0.3.7-draft"
     assert [item["id"] for item in registry["classifications"]] == [
         "PRODUCT",
         "DEVELOPMENT_TOOLING",
@@ -57,6 +58,8 @@ def test_registry_contains_lifecycle_map_migration_and_authority_rule_ids() -> N
         "PTSIP-RMAP-012",
         "PTSIP-MIG-001",
         "PTSIP-MIG-003",
+        "PTSIP-MIG-004",
+        "PTSIP-MIG-015",
         "PTSIP-EVD-005",
         "PTSIP-DIA-001",
         "PTSIP-POL-001",
@@ -76,6 +79,7 @@ def test_every_registry_rule_id_has_a_normative_spec_heading() -> None:
         for path in (
             "spec/PTSIP-SPEC.md",
             "spec/PTSIP-RESPONSIBILITY-MAP.md",
+            "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
         )
     )
     headings = set(re.findall(r"^###\s+(PTSIP-[A-Z]+-\d{3})\b", spec_text, flags=re.MULTILINE))
@@ -115,7 +119,7 @@ def _minimal_profile() -> dict[str, object]:
 
 
 def test_example_profile_validates_against_canonical_schema() -> None:
-    schema = _json("schemas/ptsip-profile.schema.json")
+    schema = _json("schemas/ptsip-profile-pp-1.01.schema.json")
     profile = _yaml("profiles/example.ptsip.yaml")
     Draft202012Validator(schema).validate(profile)
 

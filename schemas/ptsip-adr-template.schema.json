@@ -1,0 +1,423 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-adr-template.schema.json",
+  "title": "PTSIP ADR Authoring Contract v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "output",
+    "metadata",
+    "relationships",
+    "sections",
+    "constraints"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-adr-template/v1"
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "format",
+        "filename_pattern",
+        "filename_semantics"
+      ],
+      "properties": {
+        "format": {
+          "const": "markdown"
+        },
+        "filename_pattern": {
+          "const": "^ADR-[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*\\.md$"
+        },
+        "filename_semantics": {
+          "type": "object",
+          "required": [
+            "identity",
+            "require_specific_architecture_decision_name",
+            "avoid_generic_event_only_slug_when_semantic_name_available",
+            "generic_event_categories",
+            "stable_topic_identity_owner",
+            "applies_prospectively"
+          ],
+          "properties": {
+            "identity": {
+              "const": "decision_record"
+            },
+            "require_specific_architecture_decision_name": {
+              "const": true
+            },
+            "avoid_generic_event_only_slug_when_semantic_name_available": {
+              "const": true
+            },
+            "generic_event_categories": {
+              "const": [
+                "version",
+                "work_unit",
+                "release",
+                "activation"
+              ]
+            },
+            "stable_topic_identity_owner": {
+              "const": "decisions/INDEX.yaml"
+            },
+            "applies_prospectively": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "status",
+        "date",
+        "decision",
+        "topic_id",
+        "applies_to"
+      ],
+      "properties": {
+        "status": {
+          "const": "required"
+        },
+        "date": {
+          "const": "required"
+        },
+        "decision": {
+          "const": "required"
+        },
+        "topic_id": {
+          "const": "required"
+        },
+        "applies_to": {
+          "const": "optional"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relationships": {
+      "type": "object",
+      "required": [
+        "supersedes",
+        "amends",
+        "extends",
+        "depends_on"
+      ],
+      "properties": {
+        "supersedes": {
+          "type": "object",
+          "required": [
+            "status",
+            "requires_scope",
+            "requires_changed_semantics",
+            "requires_preserved_semantics"
+          ],
+          "properties": {
+            "status": {
+              "const": "optional"
+            },
+            "requires_scope": {
+              "const": true
+            },
+            "requires_changed_semantics": {
+              "const": true
+            },
+            "requires_preserved_semantics": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "amends": {
+          "type": "object",
+          "required": [
+            "status",
+            "requires_scope"
+          ],
+          "properties": {
+            "status": {
+              "const": "optional"
+            },
+            "requires_scope": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "extends": {
+          "type": "object",
+          "required": [
+            "status",
+            "requires_scope"
+          ],
+          "properties": {
+            "status": {
+              "const": "optional"
+            },
+            "requires_scope": {
+              "const": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "depends_on": {
+          "type": "object",
+          "required": [
+            "status",
+            "requires_scope"
+          ],
+          "properties": {
+            "status": {
+              "const": "optional"
+            },
+            "requires_scope": {
+              "const": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "sections": {
+      "type": "object",
+      "required": [
+        "context",
+        "decision",
+        "consequences",
+        "rejected_alternatives",
+        "affected_rules_assets",
+        "implementation_sequencing"
+      ],
+      "properties": {
+        "context": {
+          "$ref": "#/$defs/requiredSection"
+        },
+        "decision": {
+          "$ref": "#/$defs/requiredSection"
+        },
+        "consequences": {
+          "type": "object",
+          "required": [
+            "heading",
+            "status",
+            "subsections"
+          ],
+          "properties": {
+            "heading": {
+              "const": "Consequences"
+            },
+            "status": {
+              "const": "required"
+            },
+            "subsections": {
+              "type": "object",
+              "required": [
+                "positive",
+                "tradeoffs"
+              ],
+              "properties": {
+                "positive": {
+                  "type": "object",
+                  "required": [
+                    "heading",
+                    "status"
+                  ],
+                  "properties": {
+                    "heading": {
+                      "const": "Positive"
+                    },
+                    "status": {
+                      "const": "required"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "tradeoffs": {
+                  "type": "object",
+                  "required": [
+                    "heading",
+                    "status"
+                  ],
+                  "properties": {
+                    "heading": {
+                      "const": "Tradeoffs"
+                    },
+                    "status": {
+                      "const": "required"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "rejected_alternatives": {
+          "type": "object",
+          "required": [
+            "heading",
+            "status"
+          ],
+          "properties": {
+            "heading": {
+              "const": "Rejected Alternatives"
+            },
+            "status": {
+              "const": "required"
+            }
+          },
+          "additionalProperties": false
+        },
+        "affected_rules_assets": {
+          "type": "object",
+          "required": [
+            "heading",
+            "status"
+          ],
+          "properties": {
+            "heading": {
+              "const": "Affected Rules / Assets"
+            },
+            "status": {
+              "const": "optional"
+            }
+          },
+          "additionalProperties": false
+        },
+        "implementation_sequencing": {
+          "type": "object",
+          "required": [
+            "heading",
+            "status"
+          ],
+          "properties": {
+            "heading": {
+              "const": "Implementation Sequencing"
+            },
+            "status": {
+              "const": "optional"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "required": [
+        "rejected_alternatives",
+        "replacement_decision",
+        "historical_records"
+      ],
+      "properties": {
+        "rejected_alternatives": {
+          "type": "object",
+          "required": [
+            "required",
+            "allow_explicit_no_material_alternative"
+          ],
+          "properties": {
+            "required": {
+              "const": true
+            },
+            "allow_explicit_no_material_alternative": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "replacement_decision": {
+          "type": "object",
+          "required": [
+            "self_contained",
+            "describe_changed_semantics",
+            "describe_preserved_semantics"
+          ],
+          "properties": {
+            "self_contained": {
+              "const": true
+            },
+            "describe_changed_semantics": {
+              "const": true
+            },
+            "describe_preserved_semantics": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "historical_records": {
+          "type": "object",
+          "required": [
+            "retrospective_reformatting_allowed"
+          ],
+          "properties": {
+            "retrospective_reformatting_allowed": {
+              "const": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "requiredSection": {
+      "type": "object",
+      "required": [
+        "heading",
+        "status"
+      ],
+      "properties": {
+        "heading": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "required"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "sections": {
+          "properties": {
+            "context": {
+              "properties": {
+                "heading": {
+                  "const": "Context"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "sections": {
+          "properties": {
+            "decision": {
+              "properties": {
+                "heading": {
+                  "const": "Decision"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -9,7 +9,8 @@ from ptsip.adoption import apply_adoption, prepare_adoption
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.clarification.resolution import DecisionAnswer
 from ptsip.cli import main
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.storage.local_state import decision_store_path
 from _wu04g_support import (
     canonical_v2_answer,
@@ -70,9 +71,10 @@ def _adopt_args(
 
 def _profile_header() -> str:
     return f"""ptsip:
-  version: 0.3.6-draft
+  version: {CURRENT_PROJECT_PROFILE_VERSION}
   specification:
-    source: https://github.com/Kinirin/PTSIP
+    family: {SPEC_VERSION}
+    source: {SPEC_SOURCE}
     revision: {SPEC_REVISION}
 responsibility_map:
   mode: explicit
@@ -87,7 +89,7 @@ def _policies() -> str:
 """
 
 
-def test_adopt_is_dry_run_by_default_and_apply_persists_canonical_036_declaration(
+def test_adopt_is_dry_run_by_default_and_apply_persists_current_declaration(
     tmp_path: Path, monkeypatch, capsys,
 ) -> None:
     repo = _repo(tmp_path)
@@ -109,7 +111,9 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_canonical_036_declaratio
     assert adopted["status"] == "ADOPTED"
     profile = repo / "ptsip.yaml"
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
-    assert document["ptsip"]["version"] == "0.3.6-draft"
+    assert document["ptsip"]["version"] == CURRENT_PROJECT_PROFILE_VERSION
+    assert document["ptsip"]["specification"]["family"] == SPEC_VERSION
+    assert document["ptsip"]["specification"]["source"] == SPEC_SOURCE
     assert document["ptsip"]["specification"]["revision"] == SPEC_REVISION
     assert document["responsibility_map"] == {"mode": "explicit"}
     component = next(item for item in document["components"] if item["id"] == "tools")

@@ -1,0 +1,82 @@
+schema_version: ptsip-adr-index/v1
+
+topics:
+  consumer_repository_non_intrusion:
+    title: Consumer Repository Non-Intrusion
+    current_adr: ADR-0002
+    path: decisions/ADR-0002-external-tooling-non-intrusion.md
+
+  specification_reference_tool_versioning:
+    title: Specification and Reference Tool Independent Versioning
+    current_adr: ADR-0003
+    path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.md
+
+  evidence_artifact_conformance_semantics:
+    title: Evidence, Product Artifact, and Conformance Semantics
+    current_adr: ADR-0004
+    path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.md
+
+  distributed_decision_authority:
+    title: Distributed Decision Authority and Coordination
+    current_adr: ADR-0005
+    path: decisions/ADR-0005-activate-spec-0.3.4-draft.md
+
+  verification_purpose_management:
+    title: Verification Purpose Management
+    current_adr: ADR-0006
+    path: decisions/ADR-0006-establish-vpms-verification-purpose-management.md
+
+  primary_lifecycle_boundary:
+    title: Primary Lifecycle Boundary Determination
+    current_adr: ADR-0007
+    path: decisions/ADR-0007-primary-lifecycle-boundary-determination.md
+
+  responsibility_roles_relationships_associated_artifacts:
+    title: Responsibility Roles, Relationships, and Associated Artifacts
+    current_adr: ADR-0008
+    path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md
+
+  responsibility_map_declaration_authority:
+    title: Responsibility Map Declaration Authority and Materialization Boundary
+    current_adr: ADR-0009
+    path: decisions/ADR-0009-responsibility-map-declaration-authority.md
+
+  draft_profile_transition:
+    title: Versioned Draft Profile Transition and Sequential Work
+    current_adr: ADR-0010
+    path: decisions/ADR-0010-versioned-draft-profile-transition.md
+
+  tool_0_3_7_normative_draft_activation:
+    title: PTSIP Specification 0.3.7-draft Activation
+    current_adr: ADR-0011
+    path: decisions/ADR-0011-activate-spec-0.3.7-draft.md
+
+  normalized_evidence_contract:
+    title: Universal Normalized Evidence Contract
+    current_adr: ADR-0012
+    path: decisions/ADR-0012-universal-normalized-evidence-contract.md
+
+  source_profile_compatibility_model:
+    title: Common Source Model with Family-Specific Semantics
+    current_adr: ADR-0013
+    path: decisions/ADR-0013-common-source-model-family-specific-semantics.md
+
+  migration_analysis_pipeline:
+    title: Strongly Typed Staged Migration Analyzer
+    current_adr: ADR-0014
+    path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.md
+
+  target_reconciliation_planning:
+    title: Semantic Delta Bundle and Deterministic Reconciliation Planner
+    current_adr: ADR-0015
+    path: decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.md
+
+  migration_apply_state_machine:
+    title: Strongly Typed Migration State Machine and Append-Only Checkpoint Ledger
+    current_adr: ADR-0016
+    path: decisions/ADR-0016-strongly-typed-migration-state-machine-checkpoint-ledger.md
+
+  tool_profile_contract_independence:
+    title: Tool Version and Project Profile Contract Independence
+    current_adr: ADR-0017
+    path: decisions/ADR-0017-tool-version-profile-contract-independence.md

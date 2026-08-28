@@ -7,21 +7,22 @@
 
 > 이 문서는 정식 원본인 [`README.md`](README.md)를 기준으로 생성되는 한국어 번역본입니다. 프로젝트 사실이나 의미가 상충할 경우 영문 원본을 기준으로 합니다.
 
-**상태:** Tool `0.3.6` 개발 완료 — 공개 전 릴리스 후보  
-**Tool/패키지 버전:** `0.3.6`  
-**Specification 패밀리:** `0.3.6-draft`  
-**바인딩된 불변 Specification 리비전:** `d6995ed232e845b88d8235b851e80ab54b7804ea`  
+**상태:** Tool `0.3.7` WU-12 구현 통합 — exact-SHA 검증 대기<br>
+**Tool/패키지 버전:** `0.3.7`<br>
+**Project Profile 계약:** `pp.1.01`<br>
+**Specification 패밀리:** `0.3.7-draft`<br>
+**바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
 **라이선스:** Apache License 2.0
 
 PTSIP는 프로젝트 책임을 **주요 생명주기 소유권(primary lifecycle ownership)**에 따라 분리하면서 명시적 아키텍처 의도, 생명주기 격리, 재현 가능한 적합성, 검증 목적 분리, 여러 환경 간 의사결정 일관성을 보존하기 위한 프로젝트 정의 아키텍처 정책입니다.
 
 > **재사용보다 목적이 우선합니다.** 코드 공유를 최적화하기 전에 하나의 일관된 책임이 왜 존재하고 어느 생명주기가 그것을 소유하는지를 먼저 판단합니다.
 
-Tool `0.3.6` 개발 작업은 릴리스 후보 라인에서 완료되었습니다. 남은 경계는 릴리스 운영입니다. 승인된 상태를 `main`에 병합한 다음 정확한 `main` SHA를 self-hosted 검증 게이트에서 확인하고, 같은 소스 정체성으로 릴리스를 준비하고 공개해야 합니다. Tool `0.3.6`이 실제 공개되기 전까지 PyPI의 최신 공개 패키지는 Tool `0.3.5`일 수 있습니다.
+Tool `0.3.7`은 현재 `dev/0.3.7`에서 WU-12 구현과 동결된 Specification binding을 포함합니다. 아직 검증되거나 공개되지 않았으며, 릴리스 준비 전에 최종 정확한 source SHA에 대해 새로운 self-hosted workflow가 통과해야 합니다. 이후 공개 경계가 성공할 때까지 PyPI의 최신 공개 패키지는 Tool `0.3.5`입니다.
 
 ## 주요 생명주기 소유권
 
-Tool `0.3.6`의 정식 분류는 정확히 다음 다섯 가지입니다.
+Tool `0.3.7`의 정식 분류는 계속해서 정확히 다음 다섯 가지입니다.
 
 | 분류 | 의미 |
 | --- | --- |
@@ -43,9 +44,9 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.6`은 위의 다섯 분류 모델을 사용합니다. 따라서 `TOOLCHAIN`은 **Tool `0.3.5` 레거시 입력**이며 Tool `0.3.6`의 별칭이 아닙니다. 기존 Toolchain 책임은 실제 생명주기 소유권에 따라 `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`로 이동하거나 분리가 필요할 수 있습니다. 일괄적인 `TOOLCHAIN -> DEVELOPMENT_TOOLING` 치환은 금지됩니다.
+Tool `0.3.7`은 Tool `0.3.6`에서 확립된 다섯 분류 모델을 유지합니다. 따라서 `TOOLCHAIN`은 **Tool `0.3.5` 레거시 입력**이며 현재 정식 별칭이 아닙니다. 기존 Toolchain 책임은 실제 생명주기 소유권에 따라 `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`로 이동하거나 분리가 필요할 수 있습니다. 일괄적인 `TOOLCHAIN -> DEVELOPMENT_TOOLING` 치환은 금지됩니다.
 
-Tool `0.3.5` 선언에서 출발하는 증거 기반 보조 마이그레이션은 의도적으로 Tool `0.3.6.1`로 이관되었습니다. Tool `0.3.6`의 공개 기능으로 주장하지 않습니다.
+Tool `0.3.7`은 명시적으로 지원되는 historical source를 위한 증거 기반 direct current-target migration을 제공합니다. Migration capability는 repository adoption authority와 분리되며 inference를 project intent로 바꾸지 않습니다.
 
 ## 분류는 경로나 기술이 아닙니다
 
@@ -66,7 +67,7 @@ Product 런타임 구현                        -> PRODUCT
 
 ## Responsibility Map v2
 
-Tool `0.3.6`은 Responsibility Map v2를 프로젝트 소유 아키텍처 선언 모델로 사용하며 다음 축을 서로 분리합니다.
+Tool `0.3.7`은 Responsibility Map v2를 프로젝트 소유 아키텍처 선언 모델로 사용하며 다음 축을 서로 분리합니다.
 
 ```text
 classification
@@ -192,7 +193,7 @@ python -m pip install PTSIP
 python -m pip install --upgrade PTSIP
 ```
 
-Tool `0.3.6`이 공개되기 전에는 이 명령이 PyPI의 Tool `0.3.5`를 설치할 수 있습니다. 현재 릴리스 후보 소스 개발은 다음과 같이 설치합니다.
+Tool `0.3.7`이 공개되기 전에는 이 명령이 PyPI의 Tool `0.3.5`를 설치할 수 있습니다. 현재 릴리스 후보 소스 개발은 다음과 같이 설치합니다.
 
 ```powershell
 python -m pip install -e ".[dev]"
@@ -220,7 +221,7 @@ ptsip conform .
 
 저장소 증거는 아키텍처 권한이 아닙니다. Candidate discovery, 경로명, 템플릿, heuristic, agent confidence는 검토를 지원할 수 있지만 프로젝트 의도를 만들어낼 수 없습니다.
 
-Tool `0.3.6`에서는 `classification` 자체가 주요 생명주기 소유권 권한입니다. 새로운 정식 결정은 다음과 같은 사실을 사용합니다.
+Tool `0.3.7`에서는 `classification` 자체가 주요 생명주기 소유권 권한입니다. 새로운 정식 결정은 다음과 같은 사실을 사용합니다.
 
 ```text
 classification
@@ -230,7 +231,7 @@ runtime_required
 executable
 ```
 
-역사적 `lifecycle_owner`는 레거시 마이그레이션 증거이며 Tool `0.3.6`의 두 번째 소유권 권한이 아닙니다.
+역사적 `lifecycle_owner`는 레거시 마이그레이션 증거이며 Tool `0.3.7`의 두 번째 소유권 권한이 아닙니다.
 
 Dry-run 예시:
 
@@ -295,7 +296,7 @@ PTSIP는 지속적인 background polling이 아니라 action-time synchronizatio
 
 Artifact 소유권은 producer 소유권과 독립적입니다. `DEVELOPMENT_TOOLING` 또는 `DELIVERY` component가 `PRODUCT` artifact를 만들 수 있지만 결과 artifact는 Product package 경계를 만족해야 합니다.
 
-Tool `0.3.6`은 snapshot-bound Product Artifact evidence를 지원합니다. 릴리스 검증은 패키징 설정을 증거로 간주하지 않고 실제 빌드된 distribution 내용을 확인하며, `PTSIP-PKG-001`에 따른 확정적인 non-Product 구현 유입을 거부합니다.
+Tool `0.3.7`은 snapshot-bound Product Artifact evidence를 지원합니다. 릴리스 검증은 패키징 설정을 증거로 간주하지 않고 실제 빌드된 distribution 내용을 확인하며, `PTSIP-PKG-001`에 따른 확정적인 non-Product 구현 유입을 거부합니다.
 
 ## VPMS — Verification Purpose Management System
 
@@ -311,7 +312,7 @@ VPMS
 
 PTSIP classification과 VPMS Verification Purpose는 별개의 축입니다. PTSIP core는 VPMS에 의존하지 않으며 VPMS는 이미 해석된 PTSIP metadata의 좁은 read-only projection만 소비합니다.
 
-현재 VPMS 호환성 vocabulary에는 `PRODUCT | TOOLCHAIN`이 남아 있을 수 있습니다. VPMS의 `TOOLCHAIN`은 Tool `0.3.6`의 PTSIP 정식 분류가 아닙니다.
+현재 VPMS 호환성 vocabulary에는 `PRODUCT | TOOLCHAIN`이 남아 있을 수 있습니다. VPMS의 `TOOLCHAIN`은 Tool `0.3.7`의 PTSIP 정식 분류가 아닙니다.
 
 VPMS PASS는 PTSIP `CONFORMANT`를 의미하지 않고, PTSIP `CONFORMANT` 역시 기능 검증 PASS를 의미하지 않습니다.
 
@@ -339,52 +340,44 @@ PTSIP Tool과 PTSIP Specification은 독립적으로 버전 관리됩니다.
 - `spec/`, `schemas/`, `registry/`는 canonical Specification asset입니다.
 - `src/ptsip/specdata/`는 Tool에 포함된 동일한 machine-readable asset입니다.
 
-Tool `0.3.6`의 바인딩은 다음과 같습니다.
+Tool `0.3.7`은 독립적인 PP 및 Specification 정체성에 바인딩됩니다.
 
 ```text
-Specification 0.3.6-draft
-SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+Project Profile pp.1.01
+Specification 0.3.7-draft
+SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
 ```
 
 새 immutable revision은 실제 normative change가 있을 때만 필요합니다. release workflow, test, planning, status, documentation-only 변경만으로 `SPEC_REVISION`을 이동하지 않습니다.
 
-## Tool 0.3.6 검증 및 릴리스 상태
+## Tool 0.3.7 검증 및 릴리스 상태
 
-개발 브랜치 WU-00부터 WU-07까지 모두 완료되었습니다. 최종 WU-07 exact-SHA verification authority는 다음과 같습니다.
+WU-12 구현과 불변 Specification freeze는 로컬 소스에 반영되었지만 WU-12는 아직 `COMPLETE` 또는 `VERIFIED`가 아닙니다. 이 source state의 최종 exact-SHA `tooling-test`는 실행되지 않았습니다.
 
 ```text
-source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
-workflow run/job: 32640319047 / 97196299107
-runner:           self-hosted Windows X64
-Python:           3.14.6
-pytest:           331 passed / 0 failed
-Specification:    0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
-profile coverage: unassigned_count=0
-build/twine:      PASS
-Product Artifact: PASS / exact snapshot binding
-PTSIP-PKG-001:    0 definite violations
-wheel smoke/VPMS: PASS
-commit status:    self-hosted/tooling-test = success
+Tool:              0.3.7
+Project Profile:   pp.1.01
+Specification:     0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a
+exact source SHA:  최종 통합 commit 대기
+tooling-test:      최종 exact SHA에서 NOT RUN
+publication:       NOT RUN
 ```
 
-성공한 검증 이후 문서 commit들은 closure 결과를 기록할 뿐 exact verification authority를 대체하지 않습니다.
+과거 Tool `0.3.6` workflow evidence는 해당 SHA의 역사적 증거이며 Tool `0.3.7`을 검증하지 않습니다.
 
 남은 릴리스 경계는 다음과 같습니다.
 
 ```text
-승인된 0.3.6 상태 -> main
-    -> 정확한 main SHA 확인
-    -> 해당 SHA에서 tooling-test.yml 실행
+최종 dev/0.3.7 exact SHA
+    -> 해당 exact SHA에서 tooling-test.yml 실행
     -> self-hosted/tooling-test success 요구
-    -> 같은 current main SHA에서 release.yml 실행
-    -> 정확한 Tool / Specification / release-document contract 검증
-    -> 같은 SHA를 대상으로 draft GitHub Release 생성
-    -> maintainer가 검토한 draft 공개
-    -> tooling-release.yml이 published tag에서 distribution 검증
-    -> PyPI Trusted Publishing
+    -> full regression, 독립 identity, distribution, artifact, wheel smoke PASS
+    -> 이후 exact-main release handoff
+    -> 같은 source identity에서 release.yml 및 검토된 draft 공개
+    -> tooling-release.yml publication 검증 및 PyPI Trusted Publishing
 ```
 
-릴리스 증거와 handoff 상태는 [`STATUS.md`](STATUS.md), [`planning/0.3.6.md`](planning/0.3.6.md), [`releasenote/0.3.6.md`](releasenote/0.3.6.md)를 참고하십시오.
+현재 구현과 handoff 경계는 [`STATUS.md`](STATUS.md), [`planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`](planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md), [`releasenote/tool/0.3.7.md`](releasenote/tool/0.3.7.md)를 참고하십시오.
 
 ## Consumer Repository 비침투 원칙
 
@@ -392,4 +385,4 @@ PTSIP는 Consumer Repository가 Tool 사용만을 위해 PTSIP 전용 `.ptsip/`,
 
 ## 프로젝트 상태
 
-PTSIP는 여전히 experimental입니다. 이 문서 업데이트 시점에서 Tool `0.3.6`은 개발 완료 상태이지만 아직 공개되지 않았습니다. 과거 Tool release와 Specification 기록은 [`releasenote/`](releasenote/)에 보존됩니다.
+PTSIP는 여전히 experimental입니다. Tool `0.3.7`은 최종 exact-SHA completion gate가 성공하기 전까지 미검증·미공개 release candidate입니다. 과거 Tool release와 Specification 기록은 [`releasenote/`](releasenote/)에 보존됩니다.

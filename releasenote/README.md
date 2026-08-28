@@ -1,32 +1,74 @@
 # PTSIP Release Notes
 
-This directory is the canonical repository history for both the independently versioned **PTSIP Reference Tool** and **PTSIP Specification**.
-
-Root-level `CHANGELOG.md` and `TOOLING-CHANGELOG.md` are no longer maintained. Version history is written directly here so each version or Specification family has an explicit document instead of accumulating unrelated histories into large changelog files.
-
-## Naming
-
-### Reference Tool
-
-Tool records use the package version directly:
+This directory is the canonical repository history for three independently versioned authorities:
 
 ```text
-releasenote/<version>.md
+PTSIP Reference Tool
+Project Profile Contract
+PTSIP Specification family / immutable revision
 ```
 
-Examples: `0.2.0.md`, `0.3.1.md`.
+Root-level `CHANGELOG.md` and `TOOLING-CHANGELOG.md` are no longer maintained. Version history is written here so each authority has an explicit record instead of accumulating unrelated histories into large changelog files.
 
-### Specification
+## Namespace policy
 
-Specification records are prefixed because Specification and Tool versions are independent:
+ADR-0021 adopts a forward-looking namespace split while preserving historical release-note paths.
+
+New-generation records use:
 
 ```text
-releasenote/spec-<family>.md
+releasenote/tool/<tool-version>.md
+releasenote/project-profile/<pp-contract-version>.md
+releasenote/specification/<spec-family>.md
 ```
 
-Examples: `spec-0.1.0-draft.md`, `spec-0.2.0-draft.md`.
+Examples:
 
-## Reference Tool history
+```text
+releasenote/tool/0.3.7.md
+releasenote/project-profile/pp.1.01.md
+releasenote/specification/0.3.7-draft.md
+```
+
+Published or historical flat files already stored directly under `releasenote/` remain in place. They are not bulk-moved merely to make the directory visually uniform or to rewrite old identity conventions.
+
+Namespace indexes:
+
+- [`tool/README.md`](tool/README.md)
+- [`project-profile/README.md`](project-profile/README.md)
+- [`specification/README.md`](specification/README.md)
+
+## Project Profile contract history
+
+| Contract | State | Document |
+| --- | --- | --- |
+| `pp.1.01` | **Current Tool 0.3.7 contract / PTSIP repository adopted** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+
+### `0.3.6-draft -> pp.1.01` compatibility notice
+
+ADR-0021 classifies the transition from historical Project Profile identity `0.3.6-draft` to `pp.1.01` as:
+
+```text
+IDENTITY_ONLY
+```
+
+For this bridge there is no Project Profile architecture-semantics delta in `components`, `relationships`, `associated_artifacts`, `policies`, Responsibility Map semantics, or lifecycle classifications. Current serialization also materializes the explicit historical Specification family while preserving source/revision.
+
+An otherwise valid `0.3.6-draft` Project Profile does not require architecture redesign or lifecycle reclassification merely because the canonical Project Profile contract identity becomes `pp.1.01`. Post-rewrite identity/schema validation is still required. See [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) for the user-facing migration-continuity notice.
+
+Historical `0.3.6-draft` records remain historical facts; they are not rewritten as though they were originally published under the `pp.*` namespace.
+
+## Current new-generation release records
+
+| Authority | Identity | State | Document |
+| --- | --- | --- | --- |
+| Tool | `0.3.7` | Release candidate; exact-SHA verification and publication pending | [`tool/0.3.7.md`](tool/0.3.7.md) |
+| Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
+
+## Historical Reference Tool history
+
+The following Tool records retain their original flat paths.
 
 | Version | State | Document |
 | --- | --- | --- |
@@ -76,37 +118,59 @@ status:           self-hosted/tooling-test = success
 
 Documentation descendants after that run record closure and do not replace the exact verification authority.
 
-## Specification history
+## Historical Specification history
+
+The following Specification records retain their original flat `spec-<family>.md` paths.
 
 | Family | State | Document |
 | --- | --- | --- |
 | `0.1.0-draft` | Historical initial public draft | [`spec-0.1.0-draft.md`](spec-0.1.0-draft.md) |
 | `0.2.0-draft` | Historical experimental draft family | [`spec-0.2.0-draft.md`](spec-0.2.0-draft.md) |
 | `0.3.4-draft` | Published Tool `0.3.5` baseline family | [`spec-0.3.4-draft.md`](spec-0.3.4-draft.md) |
-| `0.3.6-draft` | **Current Tool `0.3.6` bound release-candidate family** | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
+| `0.3.6-draft` | Tool `0.3.6` bound release-candidate family | [`spec-0.3.6-draft.md`](spec-0.3.6-draft.md) |
+| `0.3.7-draft` | Historical initial activation snapshot `b648d9e026f502b14481ba2d0606d9acc88a31fc`; final WU-12 freeze is recorded in the namespaced note | [`spec-0.3.7-draft.md`](spec-0.3.7-draft.md) |
 
-Draft family labels are mutable; their exact normative identity is the immutable Git revision recorded by the relevant Tool, release, or evaluation.
+The existing `spec-0.3.7-draft.md` remains at its historical flat path. Future Specification-note records use the `specification/` namespace; ADR-0021 does not require retroactive relocation.
+
+Draft family labels are not the immutable normative identity by themselves; exact normative claims are bound to the immutable Git revision recorded by the relevant Tool, release, or evaluation.
 
 ## Tool release policy
 
 - use `.github/workflows/release.yml` only for explicit release preparation, never on ordinary pushes;
 - require the requested version to match `pyproject.toml`;
 - run the Tool test/CLI smoke gate before creating a release draft;
+- use `releasenote/tool/<version>.md` for new-generation Tool release records;
 - allow a source/unreleased version document to exist before release so important migration history is not hidden in a monolithic changelog;
 - `git-cliff` may generate the first release-note draft from final Git history, but generated commit lists are a starting point rather than a substitute for explaining architectural or user-visible changes;
 - review and, when necessary, rewrite the generated draft before publication so newly introduced subsystems, compatibility boundaries, migration meaning, and verification evidence are described explicitly;
-- commit the final `releasenote/<version>.md` to `main` before the release tag is published;
+- commit the final new-generation Tool release note to `main` before the release tag is published;
 - use the same reviewed Markdown file as the GitHub Release body at the publication boundary;
 - treat the tagged version document as immutable once its `tool-v<version>` release is published;
 - record post-publication operational status corrections in `releasenote/README.md` and `STATUS.md` rather than rewriting the tagged version document;
 - publish the prepared GitHub draft manually so the existing `tooling-release.yml` Trusted Publishing workflow can publish to PyPI.
 
+## Project Profile note policy
+
+Project Profile contract notes use `releasenote/project-profile/<pp-version>.md` for new-generation records.
+
+A PP note must distinguish:
+
+```text
+contract semantic change
+identity-only transition
+one project's instance revision
+```
+
+and must not imply that a Tool package version bump authorizes PP migration. Identity-only bridges must state explicitly whether users need semantic architecture review.
+
 ## Completed planning retention
 
 After a Tool version is published and its durable release note exists, completed version-specific planning files may be removed from the active `planning/` directory. Their implementation history remains recoverable from Git history and the corresponding immutable release point. Active future planning remains in `planning/`.
 
-Tool `0.3.6.1` planning remains future migration work and is not Tool `0.3.6` release content.
+Tool `0.3.6.1` planning is cancelled. Active migration development planning is now Tool `0.3.7` under `planning/0.3.7.md` and `planning/0.3.7/*`.
 
 ## Specification note policy
 
-Specification notes are curated directly because Specification commits are deliberately excluded from Tool `git-cliff` output. Update the applicable `spec-<family>.md` document whenever the normative draft family evolves, and bind exact normative claims to immutable Git revisions rather than relying on the family label alone.
+New-generation Specification notes use `releasenote/specification/<family>.md`. Historical flat `spec-<family>.md` records remain where they are.
+
+Specification notes are curated directly because Specification commits are deliberately excluded from Tool `git-cliff` output. Update the applicable Specification note whenever the normative draft family evolves, and bind exact normative claims to immutable Git revisions rather than relying on the family label alone.

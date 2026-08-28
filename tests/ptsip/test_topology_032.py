@@ -12,7 +12,8 @@ from ptsip.clarification.resolution import (
     write_prepared_local_profile,
 )
 from ptsip.cli import main
-from ptsip.constants import SPEC_REVISION
+from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.topology import migrate_topology
 
 
@@ -36,9 +37,10 @@ def _run(root: Path, *args: str) -> str:
 def _profile(selector: str = "old/**", classification: str = "DEVELOPMENT_TOOLING") -> str:
     payload = {
         "ptsip": {
-            "version": "0.3.6-draft",
+            "version": CURRENT_PROJECT_PROFILE_VERSION,
             "specification": {
-                "source": "https://github.com/Kinirin/PTSIP",
+                "family": SPEC_VERSION,
+                "source": SPEC_SOURCE,
                 "revision": SPEC_REVISION,
             },
         },

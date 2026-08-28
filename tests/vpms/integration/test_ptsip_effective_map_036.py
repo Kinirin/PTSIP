@@ -11,6 +11,7 @@ import yaml
 
 from ptsip.app.store import DecisionStore
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import validate_profile
 from ptsip.validation.templates import template_catalog
 from vpms.domain.model import (
@@ -87,8 +88,9 @@ def _base_profile(
         responsibility_map["template"] = {"id": template_id, "revision": revision}
     return {
         "ptsip": {
-            "version": SPEC_VERSION,
+            "version": CURRENT_PROJECT_PROFILE_VERSION,
             "specification": {
+                "family": SPEC_VERSION,
                 "source": SPEC_SOURCE,
                 "revision": SPEC_REVISION,
             },

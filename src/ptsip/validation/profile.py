@@ -8,8 +8,15 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
-from ..constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ..profile_identity import (
+    ProjectProfileIdentityError,
+    ProjectProfileOperation,
+    ProjectProfileVersion,
+    require_current_project_profile_support,
+)
+from ..specification_binding import SPECIFICATION_036_FAMILY
 from .components import partition_components
+from .specification import specification_binding_errors
 from .templates import ResolvedProfile, TemplateMaterializationError, materialize_profile
 
 
@@ -32,13 +39,32 @@ class ValidationResult:
         }
 
 
-def _schema() -> dict[str, object]:
-    schema_path = files("ptsip").joinpath("specdata/ptsip-profile.schema.json")
+def _schema_resource(payload: dict[str, object]) -> str:
+    ptsip = payload.get("ptsip")
+    declared = ptsip.get("version") if isinstance(ptsip, dict) else None
+    if declared == SPECIFICATION_036_FAMILY:
+        return "ptsip-profile.schema.json"
+    if isinstance(declared, str) and declared.startswith("pp."):
+        try:
+            version = ProjectProfileVersion.parse(declared, require_canonical=True)
+            support = require_current_project_profile_support(
+                version,
+                ProjectProfileOperation.VALIDATE,
+            )
+        except ProjectProfileIdentityError:
+            return "ptsip-profile.schema.json"
+        if support.schema_resource:
+            return support.schema_resource
+    return "ptsip-profile.schema.json"
+
+
+def _schema(payload: dict[str, object]) -> dict[str, object]:
+    schema_path = files("ptsip").joinpath("specdata", _schema_resource(payload))
     return json.loads(schema_path.read_text(encoding="utf-8"))
 
 
 def _schema_errors(payload: dict[str, object], *, prefix: str = "") -> list[str]:
-    validator = Draft202012Validator(_schema())
+    validator = Draft202012Validator(_schema(payload))
     result: list[str] = []
     for err in sorted(validator.iter_errors(payload), key=lambda item: list(item.absolute_path)):
         path = ".".join(str(part) for part in err.absolute_path) or "<root>"
@@ -361,6 +387,39 @@ def _effective_partition_details(
         )
 
 
+def _profile_contract_identity_errors(
+    payload: dict[str, object],
+    *,
+    details: dict[str, object],
+) -> list[str]:
+    ptsip = payload.get("ptsip")
+    if not isinstance(ptsip, dict):
+        return []
+    declared = ptsip.get("version")
+    if declared == SPECIFICATION_036_FAMILY:
+        details["project_profile_contract_identity"] = {
+            "kind": "HISTORICAL_LABEL",
+            "declared": SPECIFICATION_036_FAMILY,
+            "canonical_pp_mapping": None,
+        }
+        return []
+    if not isinstance(declared, str) or not declared.startswith("pp."):
+        return []
+    try:
+        version = ProjectProfileVersion.parse(declared, require_canonical=True)
+        support = require_current_project_profile_support(version, ProjectProfileOperation.VALIDATE)
+    except ProjectProfileIdentityError as exc:
+        return [f"ptsip.version [{exc.code}]: {exc}"]
+    details["project_profile_contract_identity"] = {
+        "kind": "PP_CONTRACT",
+        "declared": declared,
+        "canonical": version.canonical,
+        "compatibility_tool_target": support.tool_version,
+        "schema_resource": support.schema_resource,
+    }
+    return []
+
+
 def validate_profile(repository_root: str | Path, explicit: str | Path | None = None) -> ValidationResult:
     repository_root = Path(repository_root).resolve()
     profile = find_profile(repository_root, explicit)
@@ -378,24 +437,13 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
     if not isinstance(payload, dict):
         return ValidationResult(str(profile), False, ["<root>: profile must be a mapping"], [])
 
-    errors = _schema_errors(payload)
     warnings: list[str] = []
     details: dict[str, object] = {}
+    errors = _profile_contract_identity_errors(payload, details=details)
+    errors.extend(_schema_errors(payload))
 
     if not errors:
-        binding = payload["ptsip"]["specification"]
-        if binding["source"] != SPEC_SOURCE or payload["ptsip"]["version"] != SPEC_VERSION:
-            errors.append("Profile specification binding is not supported by this tooling build.")
-        revision = binding.get("revision")
-        if not revision:
-            warnings.append(
-                "Specification binding has no immutable revision; reproducibility is weaker for a draft specification."
-            )
-        elif SPEC_REVISION != "UNRELEASED" and revision != SPEC_REVISION:
-            errors.append(
-                f"Profile revision {revision!r} is not supported by tooling snapshot {SPEC_REVISION!r}."
-            )
-
+        errors.extend(specification_binding_errors(payload, details=details))
         errors.extend(_source_responsibility_map_errors(payload))
 
     resolved = None

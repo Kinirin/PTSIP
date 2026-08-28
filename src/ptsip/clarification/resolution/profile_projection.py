@@ -9,6 +9,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from ...constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from ...profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ...validation.profile import _schema, validate_profile
 from ...validation.templates import materialize_profile
 from .model import DecisionAnswer
@@ -38,8 +39,9 @@ class PreparedLocalProfile:
 def _base_profile() -> dict[str, object]:
     return {
         "ptsip": {
-            "version": SPEC_VERSION,
+            "version": CURRENT_PROJECT_PROFILE_VERSION,
             "specification": {
+                "family": SPEC_VERSION,
                 "source": SPEC_SOURCE,
                 "revision": SPEC_REVISION,
             },
@@ -225,7 +227,7 @@ def project_payload(
 
     if "boundaries" in payload:
         raise ValueError(
-            "Canonical Tool 0.3.6 adoption requires Responsibility Map v2 component declarations. "
+            "Canonical Tool 0.3.7 adoption requires Responsibility Map v2 component declarations. "
             "Legacy boundary-root profiles must be handled by the Tool 0.3.5 migration path."
         )
 
@@ -245,7 +247,7 @@ def validate_projected_payload(payload: dict[str, object]) -> tuple[str, ...]:
     return tuple(
         f"{'.'.join(str(part) for part in item.absolute_path) or '<root>'}: {item.message}"
         for item in sorted(
-            Draft202012Validator(_schema()).iter_errors(payload),
+            Draft202012Validator(_schema(payload)).iter_errors(payload),
             key=lambda value: list(value.absolute_path),
         )
     )
