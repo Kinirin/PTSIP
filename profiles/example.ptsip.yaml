@@ -1,10 +1,9 @@
 ptsip:
   version: "pp.1.01"
   specification:
+    family: "0.3.7-draft"
     source: "https://github.com/Kinirin/PTSIP"
-    # Pin an exact immutable Specification revision for reproducible Enforced Conformance.
-    # The Project Profile contract identity (pp.1.01) is independent from this Specification revision.
-    # revision: "<immutable-specification-commit-sha>"
+    revision: "555af435a4bb68140c2c869efa34d12c624d51a4"
 
 responsibility_map:
   mode: explicit
