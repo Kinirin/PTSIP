@@ -146,7 +146,9 @@ def test_planned_direct_final_point_skips_all_intermediate_versions(tmp_path: Pa
 
     assert plan.final_point.kind is FinalPointKind.PLANNED
     assert plan.final_point.path == "ptsip_pp1.01.yaml"
-    assert plan.final_point.draft_version == "pp.1.01"
+    assert plan.final_point.profile_contract == "pp.1.01"
+    assert "profile_contract" in plan.final_point.as_dict()
+    assert "draft_version" not in plan.final_point.as_dict()
     assert plan.preview.ordered_sources == ("ptsip.yaml",)
     assert plan.source_steps[0].next_source_path is None
     assert "ptsip_0.3.6.yaml" not in plan.preview.ordered_sources
@@ -186,7 +188,7 @@ def test_existing_legacy_target_is_one_logical_pp_final_point(tmp_path: Path) ->
     assert not plan.issues
     assert plan.final_point.kind is FinalPointKind.EXISTING
     assert plan.final_point.path == "ptsip_0.3.6.yaml"
-    assert plan.final_point.draft_version == "pp.1.01"
+    assert plan.final_point.profile_contract == "pp.1.01"
     assert plan.preview.ordered_sources == ("ptsip.yaml",)
     assert plan.source_steps[0].next_source_path is None
     assert plan.preview.ready_for_wu07
