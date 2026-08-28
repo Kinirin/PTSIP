@@ -35,6 +35,7 @@ class IdentityRewritePlan:
     source_sha256: str
     source_declared_version: str
     target_contract: str
+    specification_family: str
     specification_revision: str
     repository_snapshot: RepositorySnapshot
 
@@ -45,6 +46,7 @@ class IdentityRewritePlan:
             "source_sha256": self.source_sha256,
             "source_declared_version": self.source_declared_version,
             "target_contract": self.target_contract,
+            "specification_family": self.specification_family,
             "specification_revision": self.specification_revision,
             "repository_snapshot": self.repository_snapshot.as_dict(),
         }
@@ -86,6 +88,7 @@ class IdentityRewriteResult:
     after_sha256: str
     source_declared_version: str
     target_contract: str
+    specification_family: str
     specification_revision: str
     validation_warnings: tuple[str, ...]
 
@@ -96,6 +99,7 @@ class IdentityRewriteResult:
             "after_sha256": self.after_sha256,
             "source_declared_version": self.source_declared_version,
             "target_contract": self.target_contract,
+            "specification_family": self.specification_family,
             "specification_revision": self.specification_revision,
             "validation_warnings": list(self.validation_warnings),
         }
@@ -122,6 +126,7 @@ def build_identity_rewrite_plan(state: DirectConvergenceState) -> IdentityRewrit
         source_sha256=state.source.content_sha256,
         source_declared_version=state.source.declared_version,
         target_contract=state.target_contract.canonical,
+        specification_family=state.source.declared_version,
         specification_revision=state.source.specification_revision,
         repository_snapshot=state.snapshot,
     )
@@ -173,6 +178,7 @@ def _rewrite_version_text(
     *,
     source_version: str,
     target_version: str,
+    specification_family: str,
 ) -> str:
     lines = text.splitlines(keepends=True)
     ptsip_index: int | None = None
@@ -239,6 +245,56 @@ def _rewrite_version_text(
         )
 
     lines[index] = f"{match.group('prefix')}{replacement}{match.group('suffix')}{eol}"
+
+    specification_rows = [
+        item
+        for item in block
+        if item[1] == child_indent
+        and re.fullmatch(r"\s*specification\s*:\s*(?:#.*)?", item[2])
+    ]
+    if len(specification_rows) != 1:
+        raise IdentityRewriteError(
+            "PP_IDENTITY_REWRITE_SERIALIZATION_UNSUPPORTED",
+            "Expected exactly one direct ptsip.specification mapping line.",
+        )
+    specification_index, _indent, _body, specification_eol = specification_rows[0]
+    specification_end = min(
+        (
+            item[0]
+            for item in block
+            if item[0] > specification_index and item[1] == child_indent
+        ),
+        default=len(lines),
+    )
+    nested_rows = [
+        item
+        for item in block
+        if specification_index < item[0] < specification_end and item[1] > child_indent
+    ]
+    if not nested_rows:
+        raise IdentityRewriteError(
+            "PP_IDENTITY_REWRITE_SERIALIZATION_UNSUPPORTED",
+            "The ptsip.specification mapping has no serializable child fields.",
+        )
+    nested_indent = min(item[1] for item in nested_rows)
+    family_rows = [
+        item
+        for item in nested_rows
+        if item[1] == nested_indent and re.match(r"\s*family\s*:", item[2])
+    ]
+    if family_rows:
+        raise IdentityRewriteError(
+            "PP_IDENTITY_REWRITE_SOURCE_MISMATCH",
+            "Historical identity rewrite source must not already declare ptsip.specification.family.",
+        )
+    line_ending = specification_eol or next(
+        (item[3] for item in nested_rows if item[3]),
+        "\n",
+    )
+    lines.insert(
+        specification_index + 1,
+        f"{' ' * nested_indent}family: {specification_family}{line_ending}",
+    )
     return "".join(lines)
 
 
@@ -247,6 +303,7 @@ def _rewrite_version_bytes(
     *,
     source_version: str,
     target_version: str,
+    specification_family: str,
 ) -> bytes:
     has_bom = raw.startswith(codecs.BOM_UTF8)
     try:
@@ -260,6 +317,7 @@ def _rewrite_version_bytes(
         text,
         source_version=source_version,
         target_version=target_version,
+        specification_family=specification_family,
     ).encode("utf-8")
     return codecs.BOM_UTF8 + rewritten if has_bom else rewritten
 
@@ -270,6 +328,7 @@ def _assert_identity_only_semantics(
     *,
     source_version: str,
     target_version: str,
+    specification_family: str,
 ) -> None:
     try:
         before = yaml.safe_load(before_raw.decode("utf-8-sig"))
@@ -292,10 +351,17 @@ def _assert_identity_only_semantics(
             "Parsed source identity differs from the authorized identity rewrite plan.",
         )
     ptsip["version"] = target_version
+    specification = ptsip.get("specification")
+    if not isinstance(specification, dict) or "family" in specification:
+        raise IdentityRewriteError(
+            "PP_IDENTITY_REWRITE_SOURCE_MISMATCH",
+            "Historical identity rewrite source must have a mapping specification binding without family.",
+        )
+    specification["family"] = specification_family
     if after != expected:
         raise IdentityRewriteError(
             "PP_IDENTITY_REWRITE_SEMANTIC_DRIFT",
-            "Identity-only rewrite changed Project Profile semantics beyond ptsip.version.",
+            "Identity-only rewrite changed Project Profile semantics beyond explicit contract identity binding.",
         )
 
 
@@ -344,12 +410,14 @@ def execute_identity_rewrite(
         before_raw,
         source_version=plan.source_declared_version,
         target_version=plan.target_contract,
+        specification_family=plan.specification_family,
     )
     _assert_identity_only_semantics(
         before_raw,
         after_raw,
         source_version=plan.source_declared_version,
         target_version=plan.target_contract,
+        specification_family=plan.specification_family,
     )
 
     _atomic_write(path, after_raw)
@@ -380,6 +448,7 @@ def execute_identity_rewrite(
         after_sha256=hashlib.sha256(final_raw).hexdigest(),
         source_declared_version=plan.source_declared_version,
         target_contract=plan.target_contract,
+        specification_family=plan.specification_family,
         specification_revision=plan.specification_revision,
         validation_warnings=tuple(validation.warnings),
     )

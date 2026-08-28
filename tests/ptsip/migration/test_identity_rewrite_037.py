@@ -73,10 +73,32 @@ def test_identity_rewrite_changes_only_contract_identity_and_validates(tmp_path:
     result = execute_identity_rewrite(tmp_path, plan, authorization)
 
     after = profile.read_bytes()
-    assert after == before.replace(b"version: 0.3.6-draft", b"version: pp.1.01", 1)
+    expected = before.replace(b"version: 0.3.6-draft", b"version: pp.1.01", 1)
+    line_ending = b"\r\n" if b"\r\n" in before else b"\n"
+    expected = expected.replace(
+        b"  specification:" + line_ending,
+        b"  specification:" + line_ending + b"    family: 0.3.6-draft" + line_ending,
+        1,
+    )
+    assert after == expected
     assert result.source_declared_version == "0.3.6-draft"
     assert result.target_contract == "pp.1.01"
+    assert result.specification_family == "0.3.6-draft"
     assert result.before_sha256 != result.after_sha256
+    rewritten = yaml.safe_load(after)
+    assert rewritten["ptsip"]["specification"] == {
+        "family": "0.3.6-draft",
+        "source": "https://github.com/Kinirin/PTSIP",
+        "revision": V036_REVISION,
+    }
+    for key in (
+        "responsibility_map",
+        "components",
+        "associated_artifacts",
+        "relationships",
+        "policies",
+    ):
+        assert rewritten[key] == _payload()[key]
     validation = validate_profile(tmp_path)
     assert validation.valid
 

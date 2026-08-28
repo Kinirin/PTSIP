@@ -153,11 +153,19 @@ def test_pp_1_01_schema_is_identity_only_structural_peer_of_legacy_schema() -> N
     for schema in (legacy_normalized, current_normalized):
         schema.pop("$id", None)
         schema.pop("title", None)
-        version_contract = schema["properties"]["ptsip"]["properties"]["version"]
-        version_contract.clear()
-        version_contract.update({"type": "string"})
+        schema["properties"].pop("ptsip")
 
     assert legacy_normalized == current_normalized
+    legacy_binding = legacy["properties"]["ptsip"]["properties"]
+    current_binding = current["properties"]["ptsip"]["properties"]
+    assert legacy_binding["version"]["const"] == "0.3.6-draft"
+    assert legacy_binding["specification"]["required"] == ["source"]
+    assert current_binding["version"]["const"] == "pp.1.01"
+    assert current_binding["specification"]["required"] == [
+        "family",
+        "source",
+        "revision",
+    ]
 
 
 def test_maintained_examples_use_pp_1_01_without_structural_redesign() -> None:

@@ -65,6 +65,7 @@ def build_legacy_target_identity_rewrite_plan(
         source_sha256=target.content_sha256,
         source_declared_version=target.declared_version,
         target_contract=state.target_contract.canonical,
+        specification_family=target.declared_version,
         specification_revision=target.specification_revision,
         repository_snapshot=state.snapshot,
     )
