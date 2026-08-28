@@ -15,6 +15,8 @@ Complete the long-term-maintainability Specification-binding architecture select
 
 WU-12 separates Tool, Project Profile, Specification, and Project Profile instance identities all the way through runtime validation, repository adoption, release verification, and final exact-SHA evidence.
 
+WU-12 also adds a command-faithful validation-log capture surface for AI coding-agent workflows. The purpose is to eliminate manual copying of oversized validation stdout while preserving what was actually executed without inventing additional validation steps.
+
 WU-12 entered `ACTIVE` under the standing successor-entry rule after WU-11 was recorded `COMPLETE / HANDOFF VERIFIED`. This entry state authorizes execution of the already accepted ADR-0023 implementation scope; it does not by itself authorize final publication before the WU-12 completion gate succeeds.
 
 The target shape is:
@@ -32,6 +34,9 @@ Project Profile pp.1.01
 
 historical migration bridge
     └─ used only when historical migration interpretation is actually required
+
+validation command actually requested
+    └─ command-faithful timestamped repository log
 ```
 
 ## 1. Typed Specification binding
@@ -257,7 +262,124 @@ ptsip-embedded-contracts
 vpms
 ```
 
-## 11. Focused tests
+## 11. Command-faithful validation log capture for AI coding agents
+
+Add a lightweight validation-output capture command whose responsibility is **evidence preservation**, not validation-step invention.
+
+The command surface is conceptually:
+
+```text
+ptsip validation capture -- <exact command and arguments>
+```
+
+For example:
+
+```text
+ptsip validation capture -- npm run sdk:planes:doctor
+```
+
+The exact final CLI tokenization may follow the existing CLI framework, but the authority rule is fixed: PTSIP executes and captures only the command explicitly supplied for that capture invocation.
+
+PTSIP MUST NOT maintain a fixed implicit list such as:
+
+```yaml
+validation:
+  doctor: "npm run sdk:planes:doctor"
+  validate: "npm run sdk:planes:validate"
+  conform: "npm run sdk:planes:conform"
+```
+
+and MUST NOT infer that `validate` or `conform` were executed merely because `doctor` was executed.
+
+If the only requested command is:
+
+```text
+npm run sdk:planes:doctor
+```
+
+then the evidence must describe only that command. No additional validation command is synthesized, scheduled, represented as completed, or represented as missing by PTSIP.
+
+A portable implementation cannot recover the stdout/stderr of an arbitrary shell command after that command has already finished. Therefore the supported capture path must own the exact command execution, or use an explicitly supplied stream/command integration that preserves equivalent authority. It MUST NOT scrape shell history and pretend that history proves captured output.
+
+### 11.1 Repository log location
+
+Captured output is stored under:
+
+```text
+docs/ptsip/validation/
+```
+
+Each capture creates a new timestamped `.log` file. Existing logs are not overwritten or removed by default.
+
+Filename identity uses date/time only, not Tool version, PP version, Specification version, or release version. Example shape:
+
+```text
+docs/ptsip/validation/20260828T111700123+0900.log
+```
+
+The exact timestamp serialization must be filesystem-safe on supported platforms and sufficiently precise to avoid normal capture collisions.
+
+Version-based filename partitioning is intentionally rejected because it would introduce a separate version-audit obligation for validation logs.
+
+### 11.2 Minimal log metadata
+
+Do not create or require `summary.md`.
+
+Do not require a separate presentation document merely to explain the log set.
+
+Each log itself should contain only the minimal provenance required to understand the captured execution before the raw combined output, such as:
+
+```text
+captured_at: <date-time>
+command: <exact executed command>
+exit_code: <child process exit code>
+--- output ---
+<combined stdout/stderr>
+```
+
+The exact format may be machine-readable enough for agents, but WU-12 must avoid adding a heavy summary/template contract that creates its own maintenance and validation burden.
+
+The primary freshness signal is repository change itself: a newly added validation log means a capture occurred. The timestamp in the file name/log is the secondary confirmation of when that capture occurred.
+
+### 11.3 Exit behavior
+
+The complete stdout and stderr of the supplied command must be persisted even when the supplied command fails.
+
+PTSIP should keep terminal output concise and point to the generated log rather than replaying the entire captured stream by default.
+
+After evidence persistence and local commit handling complete, the capture command should preserve the supplied command's exit status so automation does not turn a failed validation into a false success.
+
+### 11.4 Local automatic commit, no automatic push
+
+A successful evidence-write path automatically prepares a local Git commit for the newly created validation log.
+
+The capture feature MUST:
+
+- commit only the newly generated validation evidence path;
+- never use broad staging such as `git add .`;
+- preserve unrelated worktree and index changes;
+- never push automatically;
+- leave the local commit reversible by the user before any explicit push;
+- report commit failure without deleting the generated log.
+
+A suitable deterministic commit-message family may be used, but the message MUST NOT imply a validation type that was not present in the exact executed command.
+
+The auto-commit is evidence bookkeeping, not publication authority. Push remains an explicit separate user action.
+
+### 11.5 Non-goals of capture
+
+The capture feature must not:
+
+- define a mandatory `doctor -> validate -> conform` workflow;
+- infer missing validation stages from command names;
+- claim that commands not executed were executed;
+- overwrite or prune prior logs as part of ordinary capture;
+- partition log filenames by Tool/PP/Specification version;
+- create a required `summary.md`;
+- push commits automatically;
+- give captured logs architecture, migration, adoption, or release authority by themselves.
+
+## 12. Focused tests
 
 Add/organize focused tests for at least:
 
@@ -272,11 +394,18 @@ Add/organize focused tests for at least:
 - canonical pp.1.01 schema requires/accepts explicit family as selected by the final contract;
 - immutable legacy schemas remain unchanged;
 - root PTSIP adoption is identity/binding-safe and semantically stable;
-- release contract reports Tool / PP / Specification identities independently.
+- release contract reports Tool / PP / Specification identities independently;
+- validation capture executes only the exact supplied command and does not synthesize `doctor`, `validate`, or `conform` neighbors;
+- arbitrary command stdout/stderr is captured into one new timestamped log;
+- capture of a failing command still persists the log and preserves the child exit code;
+- repeated captures create new timestamped logs without overwriting/removing prior evidence;
+- validation log filenames contain date/time identity but no Tool/PP/Specification version identity;
+- validation capture does not require `summary.md`;
+- auto-commit includes only the newly generated validation log, preserves unrelated worktree/index state, and does not push.
 
 Touched/new tests should continue the gradual purpose/role-based test organization rather than trigger a wholesale test migration.
 
-## 12. Full regression and distribution verification
+## 13. Full regression and distribution verification
 
 Run the complete repository regression against the exact final WU-12 source SHA.
 
@@ -285,6 +414,7 @@ At minimum verify:
 - WU-09 PP identity tests;
 - WU-10 direct-convergence / execution / recovery tests;
 - WU-12 binding/capability tests;
+- WU-12 validation-capture tests;
 - repository root profile validation with zero unexpected coverage gaps;
 - CLI `ptsip --version` and `ptsip spec` identities;
 - package build/twine;
@@ -293,13 +423,15 @@ At minimum verify:
 - no tests or local migration ledgers/checkpoints packaged;
 - VPMS boundary remains unchanged unless separately authorized.
 
-## 13. Exact-SHA release-readiness gate
+## 14. Exact-SHA release-readiness gate
 
 The final self-hosted workflow must verify the exact dispatched SHA and record success only after all required tests, release-contract checks, build/artifact validation, and installed-wheel smoke pass.
 
 Earlier WU-11 or WU-10 runs remain evidence for their own SHAs but cannot substitute for final WU-12 evidence.
 
-## 14. Non-goals
+Validation-capture commits are ordinary repository history and do not replace the final exact-SHA workflow authority.
+
+## 15. Non-goals
 
 WU-12 must not:
 
@@ -309,9 +441,12 @@ WU-12 must not:
 - create automatic migration authority from registry presence;
 - require a Cartesian Tool × PP × Specification table where independent capability composition is sufficient;
 - retroactively rewrite historical release/schema identities;
+- turn validation capture into a fixed validation workflow registry;
+- infer execution of validation commands that were not actually supplied;
+- automatically push validation-log commits;
 - publish Tool `0.3.7` before final exact-SHA evidence is complete.
 
-## 15. Completion gate
+## 16. Completion gate
 
 WU-12 is complete only when:
 
@@ -320,9 +455,14 @@ WU-12 is complete only when:
 - PP and Specification capabilities are independently composed;
 - historical migration bridge is no longer generic validation authority;
 - current PP schema/specdata and maintained examples are synchronized;
+- command-faithful validation capture persists exact supplied command output under `docs/ptsip/validation/` without inventing additional validation stages;
+- validation logs use timestamp identity rather than version identity and ordinary capture does not overwrite/remove earlier logs;
+- capture of failed validation commands still produces evidence and preserves the child exit code;
+- validation capture creates no required `summary.md`;
+- validation-log auto-commit is path-scoped and local-only, with no automatic push;
 - PTSIP root is validly adopted to `pp.1.01` with explicit `0.3.7-draft` binding;
 - final immutable WU-12 Specification revision is selected and Tool `0.3.7` binds it;
-- generic validation, historical migration, and release verification all pass their focused suites;
+- generic validation, historical migration, validation capture, and release verification all pass their focused suites;
 - complete regression passes at the exact final SHA;
 - package/distribution/artifact/smoke verification passes;
 - final self-hosted exact-SHA workflow succeeds;
