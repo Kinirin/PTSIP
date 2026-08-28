@@ -24,6 +24,7 @@ from ptsip.migration import (
     TargetCompatibility,
     TargetComponent,
     analyze_source_migration,
+    default_target_semantics,
     target_state_from_mapping,
 )
 from ptsip.repository.snapshot import capture_snapshot
@@ -40,6 +41,9 @@ from ptsip.source_compat.model import (
     V036SourceSemantics,
     freeze_json,
 )
+
+
+CURRENT_PP_TARGET = "pp.1.01"
 
 
 def _repo(tmp_path: Path, files: dict[str, str]) -> Path:
@@ -128,6 +132,10 @@ def _v036(
     )
 
 
+def test_default_target_semantics_use_current_pp_contract_not_spec_family() -> None:
+    assert default_target_semantics().draft_version == CURRENT_PP_TARGET
+
+
 def test_obligation_taxonomy_separates_required_removal_and_async(tmp_path: Path) -> None:
     root = _repo(tmp_path, {"src/a.py": "a", "extra.txt": "x"})
     profile = _v036(root, (_component("core", "PRODUCT", ("src/**", "gone/**")),))
@@ -162,7 +170,7 @@ def test_historical_toolchain_never_auto_maps_to_development_tooling(tmp_path: P
         raw_payload=freeze_json({}),
     )
     target = TargetArchitectureState(
-        "0.3.7-draft",
+        CURRENT_PP_TARGET,
         "target-revision",
         (TargetComponent("tools", "DEVELOPMENT_TOOLING", ("tools/**",)),),
     )
@@ -177,7 +185,7 @@ def test_exact_target_semantics_resolve_required_element(tmp_path: Path) -> None
     root = _repo(tmp_path, {"src/a.py": "a"})
     profile = _v036(root, (_component("core", "PRODUCT", ("src/**",)),))
     target = TargetArchitectureState(
-        "0.3.7-draft",
+        CURRENT_PP_TARGET,
         "target-revision",
         (TargetComponent("core", "PRODUCT", ("src/**",)),),
     )
@@ -192,7 +200,7 @@ def test_semantically_compatible_target_id_can_resolve_required_element(tmp_path
     root = _repo(tmp_path, {"src/a.py": "a"})
     profile = _v036(root, (_component("core", "PRODUCT", ("src/**",)),))
     target = TargetArchitectureState(
-        "0.3.7-draft",
+        CURRENT_PP_TARGET,
         "target-revision",
         (TargetComponent("renamed", "PRODUCT", ("src/**",)),),
     )
@@ -206,7 +214,7 @@ def test_lifecycle_difference_is_conflict_not_silent_conversion(tmp_path: Path) 
     root = _repo(tmp_path, {"src/a.py": "a"})
     profile = _v036(root, (_component("core", "PRODUCT", ("src/**",)),))
     target = TargetArchitectureState(
-        "0.3.7-draft",
+        CURRENT_PP_TARGET,
         "target-revision",
         (TargetComponent("core", "DELIVERY", ("src/**",)),),
     )
@@ -297,7 +305,7 @@ def test_missing_source_relationship_is_reviewable_finding(tmp_path: Path) -> No
     )
     profile = _v036(root, (_component("core", "PRODUCT", ("src/**",)),), relationships=(relationship,))
     target = TargetArchitectureState(
-        "0.3.7-draft",
+        CURRENT_PP_TARGET,
         "target-revision",
         (TargetComponent("core", "PRODUCT", ("src/**",)),),
     )
@@ -370,7 +378,7 @@ def test_source_binding_change_after_wu04_invalidates_analysis(tmp_path: Path) -
 def test_target_mapping_reader_accepts_explicit_only() -> None:
     explicit = target_state_from_mapping(
         {
-            "ptsip": {"version": "0.3.7-draft", "specification": {"revision": "target-revision"}},
+            "ptsip": {"version": CURRENT_PP_TARGET, "specification": {"revision": "target-revision"}},
             "responsibility_map": {"mode": "explicit"},
             "components": [{"id": "core", "classification": "PRODUCT", "include": ["src/**"]}],
         }
@@ -380,7 +388,7 @@ def test_target_mapping_reader_accepts_explicit_only() -> None:
     with pytest.raises(ValueError, match="explicit target state only"):
         target_state_from_mapping(
             {
-                "ptsip": {"version": "0.3.7-draft", "specification": {"revision": "target-revision"}},
+                "ptsip": {"version": CURRENT_PP_TARGET, "specification": {"revision": "target-revision"}},
                 "responsibility_map": {"mode": "hybrid"},
             }
         )
