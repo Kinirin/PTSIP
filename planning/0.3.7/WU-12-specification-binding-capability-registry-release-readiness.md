@@ -1,13 +1,15 @@
 # WU-12 — Typed Specification Binding, Capability Registries, Repository Adoption, and Final Release Readiness
 
-> **Status:** ACTIVE  
+> **Status:** COMPLETE / VERIFIED  
 > **Target Tool:** `0.3.7`  
 > **Predecessor:** WU-11 — PP-aware Specification / release-surface preparation (`COMPLETE / HANDOFF VERIFIED`)  
 > **Architecture authority:** ADR-0023  
 > **Exact entry baseline:** `328f4f163c36df746a28d5e7d2d77ebd58cb3b99`  
 > **Predecessor normative baseline:** `555af435a4bb68140c2c869efa34d12c624d51a4`  
 > **Predecessor implementation verification authority:** `9a9159685a4f5de103d79e9d1c38bdbbada25d4c` via `tooling-test` run `33081718965`, job `98550433277`  
-> **Release role:** final Tool `0.3.7` integration and release-readiness authority
+> **Final Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`  
+> **Exact implementation verification authority:** `81f8657fe3522632b5bd0bcf1626e6888a51a1a6` via `tooling-test` run `33147876414`, job `98772842757`  
+> **Release role:** Tool `0.3.7` release handoff ready; publication remains a separate explicit action
 
 ## 0. Purpose
 
@@ -17,9 +19,9 @@ WU-12 separates Tool, Project Profile, Specification, and Project Profile instan
 
 WU-12 also adds a command-faithful validation-log capture surface for AI coding-agent workflows. The purpose is to eliminate manual copying of oversized validation stdout while preserving what was actually executed without inventing additional validation steps.
 
-WU-12 entered `ACTIVE` under the standing successor-entry rule after WU-11 was recorded `COMPLETE / HANDOFF VERIFIED`. This entry state authorizes execution of the already accepted ADR-0023 implementation scope; it does not by itself authorize final publication before the WU-12 completion gate succeeds.
+WU-12 entered `ACTIVE` under the standing successor-entry rule after WU-11 was recorded `COMPLETE / HANDOFF VERIFIED`. This entry state authorized execution of the already accepted ADR-0023 implementation scope; final publication remains outside WU-12 completion and requires a separate explicit release action.
 
-The target shape is:
+The completed shape is:
 
 ```text
 Tool 0.3.7
@@ -211,7 +213,13 @@ Tool 0.3.7 SPEC_REVISION binding
 root pp.1.01 + 0.3.7-draft adoption
 ```
 
-The final release `SPEC_REVISION` must point to that immutable WU-12 snapshot.
+The final release `SPEC_REVISION` points to:
+
+```text
+3c47816770d194ae42f98faedc911d980db0e62a
+```
+
+The normative freeze commit is separate from later Tool/root/profile binding commits, avoiding self-referential Specification identity.
 
 ## 9. Release-contract verifier
 
@@ -266,7 +274,7 @@ vpms
 
 Add a lightweight validation-output capture command whose responsibility is **evidence preservation**, not validation-step invention.
 
-The command surface is conceptually:
+The command surface is:
 
 ```text
 ptsip validation capture -- <exact command and arguments>
@@ -278,7 +286,7 @@ For example:
 ptsip validation capture -- npm run sdk:planes:doctor
 ```
 
-The exact final CLI tokenization may follow the existing CLI framework, but the authority rule is fixed: PTSIP executes and captures only the command explicitly supplied for that capture invocation.
+The authority rule is fixed: PTSIP executes and captures only the command explicitly supplied for that capture invocation.
 
 PTSIP MUST NOT maintain a fixed implicit list such as:
 
@@ -299,7 +307,7 @@ npm run sdk:planes:doctor
 
 then the evidence must describe only that command. No additional validation command is synthesized, scheduled, represented as completed, or represented as missing by PTSIP.
 
-A portable implementation cannot recover the stdout/stderr of an arbitrary shell command after that command has already finished. Therefore the supported capture path must own the exact command execution, or use an explicitly supplied stream/command integration that preserves equivalent authority. It MUST NOT scrape shell history and pretend that history proves captured output.
+A portable implementation cannot recover the stdout/stderr of an arbitrary shell command after that command has already finished. Therefore the supported capture path owns the exact command execution. It MUST NOT scrape shell history and pretend that history proves captured output.
 
 ### 11.1 Repository log location
 
@@ -327,7 +335,7 @@ Do not create or require `summary.md`.
 
 Do not require a separate presentation document merely to explain the log set.
 
-Each log itself should contain only the minimal provenance required to understand the captured execution before the raw combined output, such as:
+Each log itself contains only the minimal provenance required to understand the captured execution before the raw combined output, such as:
 
 ```text
 captured_at: <date-time>
@@ -337,17 +345,15 @@ exit_code: <child process exit code>
 <combined stdout/stderr>
 ```
 
-The exact format may be machine-readable enough for agents, but WU-12 must avoid adding a heavy summary/template contract that creates its own maintenance and validation burden.
-
 The primary freshness signal is repository change itself: a newly added validation log means a capture occurred. The timestamp in the file name/log is the secondary confirmation of when that capture occurred.
 
 ### 11.3 Exit behavior
 
 The complete stdout and stderr of the supplied command must be persisted even when the supplied command fails.
 
-PTSIP should keep terminal output concise and point to the generated log rather than replaying the entire captured stream by default.
+PTSIP keeps terminal output concise and points to the generated log rather than replaying the entire captured stream by default.
 
-After evidence persistence and local commit handling complete, the capture command should preserve the supplied command's exit status so automation does not turn a failed validation into a false success.
+After evidence persistence and local commit handling complete, the capture command preserves the supplied command's exit status so automation does not turn a failed validation into a false success.
 
 ### 11.4 Local automatic commit, no automatic push
 
@@ -361,8 +367,6 @@ The capture feature MUST:
 - never push automatically;
 - leave the local commit reversible by the user before any explicit push;
 - report commit failure without deleting the generated log.
-
-A suitable deterministic commit-message family may be used, but the message MUST NOT imply a validation type that was not present in the exact executed command.
 
 The auto-commit is evidence bookkeeping, not publication authority. Push remains an explicit separate user action.
 
@@ -403,7 +407,7 @@ Add/organize focused tests for at least:
 - validation capture does not require `summary.md`;
 - auto-commit includes only the newly generated validation log, preserves unrelated worktree/index state, and does not push.
 
-Touched/new tests should continue the gradual purpose/role-based test organization rather than trigger a wholesale test migration.
+Touched/new tests continue the gradual purpose/role-based test organization rather than trigger a wholesale test migration.
 
 ## 13. Full regression and distribution verification
 
@@ -427,13 +431,23 @@ At minimum verify:
 
 The final self-hosted workflow must verify the exact dispatched SHA and record success only after all required tests, release-contract checks, build/artifact validation, and installed-wheel smoke pass.
 
-Earlier WU-11 or WU-10 runs remain evidence for their own SHAs but cannot substitute for final WU-12 evidence.
+Final authority:
+
+```text
+source SHA: 81f8657fe3522632b5bd0bcf1626e6888a51a1a6
+workflow:   tooling-test
+run:        33147876414
+job:        98772842757
+status:     self-hosted/tooling-test = success
+```
+
+Earlier WU-11 or WU-10 runs remain evidence for their own SHAs but do not substitute for this final WU-12 evidence.
 
 Validation-capture commits are ordinary repository history and do not replace the final exact-SHA workflow authority.
 
 ## 15. Non-goals
 
-WU-12 must not:
+WU-12 did not:
 
 - redesign PP version grammar;
 - invent new lifecycle classifications;
@@ -444,11 +458,11 @@ WU-12 must not:
 - turn validation capture into a fixed validation workflow registry;
 - infer execution of validation commands that were not actually supplied;
 - automatically push validation-log commits;
-- publish Tool `0.3.7` before final exact-SHA evidence is complete.
+- publish Tool `0.3.7` as part of WU-12 completion.
 
 ## 16. Completion gate
 
-WU-12 is complete only when:
+WU-12 is complete because:
 
 - typed SpecificationBinding exists and is used by canonical validation;
 - Specification capability registry is explicit, typed, and operation-aware;
@@ -461,10 +475,51 @@ WU-12 is complete only when:
 - validation capture creates no required `summary.md`;
 - validation-log auto-commit is path-scoped and local-only, with no automatic push;
 - PTSIP root is validly adopted to `pp.1.01` with explicit `0.3.7-draft` binding;
-- final immutable WU-12 Specification revision is selected and Tool `0.3.7` binds it;
-- generic validation, historical migration, validation capture, and release verification all pass their focused suites;
+- final immutable WU-12 Specification revision is `3c47816770d194ae42f98faedc911d980db0e62a` and Tool `0.3.7` binds it;
+- generic validation, historical migration, validation capture, and release verification pass their focused suites;
 - complete regression passes at the exact final SHA;
 - package/distribution/artifact/smoke verification passes;
 - final self-hosted exact-SHA workflow succeeds;
 - release documentation records Tool, PP, Specification, source SHA, and artifact identity independently;
 - final release handoff is ready without Tool/PP/Specification coupling.
+
+## 17. Completion evidence
+
+The final exact-SHA verification authority is:
+
+```text
+Tool:                    0.3.7
+Project Profile:         pp.1.01
+Specification family:   0.3.7-draft
+Specification revision: 3c47816770d194ae42f98faedc911d980db0e62a
+Source SHA:              81f8657fe3522632b5bd0bcf1626e6888a51a1a6
+Workflow run:            33147876414
+Workflow job:            98772842757
+Runner:                  DESKTOP-5HCCQIR / self-hosted Windows X64
+Python:                  3.14.7
+```
+
+Verified results:
+
+- release Specification contract: PASS; 20 release-bound Specification assets checked;
+- complete repository regression: `505 passed / 0 failed`;
+- root profile: `valid=true`, `errors=[]`, `warnings=[]`;
+- canonical PP identity: `pp.1.01`;
+- exact SpecificationBinding: `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`;
+- component selector conflicts: 0;
+- unmatched selectors: 0;
+- combined Responsibility Map coverage: `unassigned_count=0` (`275` component paths + `30` associated-artifact paths);
+- build: `ptsip-0.3.7-py3-none-any.whl` and `ptsip-0.3.7.tar.gz` produced successfully;
+- `twine check`: wheel PASS, sdist PASS;
+- embedded-contract verification: PASS;
+- Product Artifact exact-snapshot binding: PASS;
+- verified workflow wheel SHA-256: `af894a04fadb32806c3ed8a4e94d51277ef948f87408027c7992b86153695971`;
+- no blocking artifact-evidence gaps and no definite `PTSIP-PKG-001` violations were accepted by the artifact gate;
+- artifact-aware conformance reported `INCOMPLETE`, which is an allowed non-global outcome for this artifact-specific gate; the required artifact-boundary and exact-snapshot evaluators ran successfully and their binding checks passed;
+- built wheel reinstall: PASS;
+- installed `ptsip --version`: `PTSIP Tool 0.3.7`;
+- installed `ptsip spec`: Tool `0.3.7`, PP `pp.1.01`, Specification `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`;
+- VPMS smoke boundary: PASS;
+- commit status `self-hosted/tooling-test=success` recorded on exact SHA `81f8657fe3522632b5bd0bcf1626e6888a51a1a6`.
+
+This completion record is a documentation descendant of the verified implementation. It does not replace `81f8657fe3522632b5bd0bcf1626e6888a51a1a6` as the exact implementation verification authority, and it does not itself publish Tool `0.3.7`.
