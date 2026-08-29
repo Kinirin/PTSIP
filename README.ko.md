@@ -13,13 +13,13 @@
 **Specification 패밀리:** `0.3.7-draft`<br>
 **바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
 **인증:** Apache 라이센스 2.0<br>
-**현지화 문서:** `README.md` canonical입니다. Localized README 파일은 재생됩니다. `main` Self-hosted Argos 번역 워크플로우에 의해; 이 파일과 번역 충돌이, 이 파일 관리.
+**현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 충돌하면 이 파일을 기준으로 합니다.
 
-PTSIP 프로젝트 정의 아키텍처 정책입니다. **1 차적인 lifecycle 소유권** 명시적 아키텍처를 보존하는 동안, Lifecycle 고립, 재현성 준수, 검증 목적 분리 및 다중 환경 결정 일관성.
+PTSIP는 프로젝트 책임을 **주요 생명주기 소유권(primary lifecycle ownership)**에 따라 분리하면서 명시적 아키텍처 의도, 생명주기 격리, 재현 가능한 적합성, 검증 목적 분리, 여러 환경 간 의사결정 일관성을 보존하기 위한 프로젝트 정의 아키텍처 정책입니다.
 
 > **재사용보다 목적이 우선합니다.** 코드 공유를 최적화하기 전에 하나의 일관된 책임이 왜 존재하고 어느 생명주기가 그것을 소유하는지를 먼저 판단합니다.
 
-Tool `0.3.7` 이제 WU-12 구현 및 냉동을 수행 Specification 관련 제품 `main` 출시 후보로. WU-12 구현은 완료되지만 정확한 SHA 검증 후 저장소 변경은 릴리스 준비 전에 신선한 자체 호스팅 작업 흐름 패스가 필요합니다. 최근 게시된 PyPI 패키지는 남아 있습니다. Tool `0.3.5` 출판물 경계가 성공할 때까지.
+Tool `0.3.7`은 현재 `main`의 릴리스 후보에 WU-12 구현과 동결된 Specification binding을 포함합니다. WU-12 구현은 완료되었지만 exact-SHA 검증 이후 저장소가 변경되면 릴리스 준비 전에 새로운 self-hosted workflow 검증을 다시 통과해야 합니다. 공개 경계가 성공하기 전까지 PyPI의 최신 공개 패키지는 Tool `0.3.5`입니다.
 
 ## 주요 생명주기 소유권
 
@@ -144,11 +144,11 @@ python-cli-application
 mixed-product-development-delivery
 ```
 
-템플릿 선택은 명시되어 있습니다. PTSIP 저장소 레이아웃, 언어, 프레임 워크 감지, 표시, 또는 신뢰에서 템플릿을 자동으로 선택하지 않습니다.
+템플릿 선택은 명시적입니다. PTSIP는 저장소 레이아웃, 언어, 프레임워크 감지, manifest, confidence를 근거로 템플릿을 자동 선택하지 않습니다.
 
 ## Source declaration과 Effective Responsibility Map
 
-모든 근원 형태는 deterministic, non-authoritative materialization를 통해 해결합니다:
+모든 source mode는 결정적이며 비권위적인 materialization을 통해 하나의 Canonical Effective Responsibility Map으로 해석됩니다.
 
 ```text
 Source Project Profile
@@ -183,7 +183,7 @@ and has deterministic digest identity for reproducibility. Neither 입증 또는
 
 ## 설치 및 사용
 
-PTSIP Python 지원 3.11 또는 더 새로운.
+PTSIP는 Python 3.11 이상이 필요합니다.
 
 최신 **공개 릴리스** 설치:
 
@@ -266,7 +266,7 @@ ptsip adopt . `
 
 준비된 write는 저장소/프로필 상태가 바뀌면 stale로 거부되어야 합니다.
 
-PTSIP 붕괴되지 않은 4 가지를 구별합니다.
+PTSIP는 다음 네 가지를 분리합니다.
 
 ```text
 Specification
@@ -294,7 +294,7 @@ refs/heads/ptsip-policy
 
 GitHub은 Tool backend이며 보편적인 Specification 의존성이 아닙니다. 조정 모델은 안정적인 decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation, authority freshness, 결정적 reconciliation, fail-closed 동작, global decision state와 clone-local application state 분리를 보존합니다.
 
-PTSIP 지속적인 배경 오염 보다는 오히려 활동 시간 동기화를 이용합니다.
+PTSIP는 지속적인 background polling이 아니라 action-time synchronization을 사용합니다.
 
 ## Product Artifact 경계
 
@@ -304,7 +304,7 @@ Tool `0.3.7`은 snapshot-bound Product Artifact evidence를 지원합니다. 릴
 
 ## VPMS — Verification Purpose Management System
 
-PTSIP 그리고 VPMS 다른 질문에 대답:
+PTSIP와 VPMS는 서로 다른 질문에 답합니다.
 
 ```text
 PTSIP
@@ -314,11 +314,11 @@ VPMS
     Why does this Verification Case exist, and what does it protect?
 ```
 
-PTSIP 분류 및 VPMS 검증 목적은 별도의 axes를 유지합니다. PTSIP 핵심은 위에 달려 있지 않습니다 VPMS. VPMS 이미 해결 된 좁은 읽기 전용 투사만 소비 PTSIP 메타데이터
+PTSIP classification과 VPMS Verification Purpose는 별개의 축입니다. PTSIP core는 VPMS에 의존하지 않으며 VPMS는 이미 해석된 PTSIP metadata의 좁은 read-only projection만 소비합니다.
 
-현재 위치 VPMS 호환성 vocabulary는 아직도 포함될지도 모릅니다 `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` canonical는 아닙니다 Tool `0.3.7` PTSIP 분류.
+현재 VPMS 호환성 vocabulary에는 `PRODUCT | TOOLCHAIN`이 남아 있을 수 있습니다. VPMS의 `TOOLCHAIN`은 Tool `0.3.7`의 PTSIP 정식 분류가 아닙니다.
 
-VPMS 인증 PASS가 실패하지 않습니다. PTSIP `CONFORMANT`· PTSIP `CONFORMANT` 기능 검증 PASS가 아닙니다.
+VPMS PASS는 PTSIP `CONFORMANT`를 의미하지 않고, PTSIP `CONFORMANT` 역시 기능 검증 PASS를 의미하지 않습니다.
 
 ## Conformance
 
@@ -356,7 +356,7 @@ SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
 
 ## Tool 0.3.7 검증 및 릴리스 상태
 
-WU-12 구현 및 immutable Specification 냉동은 완료됩니다. 현재 위치 `main` 소스 상태는 신선한 정확한- 사이트맵 `tooling-test` 릴리즈 핸프오프 중에 만든 저장소 CI 인프라 변경 후.
+WU-12 구현과 불변 Specification freeze는 완료되었습니다. 릴리스 handoff 중 repository CI infrastructure가 변경되었으므로 현재 `main` source state는 새로운 exact-SHA `tooling-test` 검증이 필요합니다.
 
 ```text
 Tool:              0.3.7
@@ -367,7 +367,7 @@ tooling-test:      PENDING for the current exact main SHA
 publication:       NOT RUN
 ```
 
-초기 작업 흐름 증거는 자신의 SHA에 대한 역사적 증거를 유지하고 나중에 소스 상태를 확인하지 않습니다.
+이전 workflow evidence는 해당 SHA에 대한 역사적 증거로만 유지되며 이후 source state를 검증하지 않습니다.
 
 남은 릴리스 경계는 다음과 같습니다.
 
@@ -384,8 +384,8 @@ final main exact SHA
 
 ## Consumer Repository 비침투 원칙
 
-PTSIP 소비자 저장소가 생성되지 않습니다. PTSIP-특성 `.ptsip/`, 캐시, 보고, 또는 숨겨지은 국가 감독은 단지 사용하기 위하여 Tool. 외부 검사 및 Pilot 작업은 기본적으로 읽기 전용입니다. Tool- 소유한 지역 상태는 외부에 속합니다 Consumer Repository 저장소 경로가 명시되지 않는 한.
+PTSIP는 Consumer Repository가 Tool 사용만을 위해 PTSIP 전용 `.ptsip/`, cache, report, hidden state directory를 만들도록 요구하지 않습니다. External inspection과 Pilot은 기본적으로 read-only이며 Tool 소유 local state는 사용자가 저장소 경로를 명시적으로 선택하지 않는 한 Consumer Repository 밖에 둡니다.
 
 ## 프로젝트 상태
 
-PTSIP 실험을 한다. Tool `0.3.7` 현재 정확한 메인 완료 게이트가 성공할 때까지 공개되지 않은 릴리스 후보입니다. 이름 * Tool 출시 및 Specification 주의사항 [`releasenote/`](releasenote/).
+PTSIP는 여전히 experimental 단계입니다. 현재 exact-main completion gate가 성공하기 전까지 Tool `0.3.7`은 공개되지 않은 release candidate입니다. 과거 Tool release와 Specification 기록은 [`releasenote/`](releasenote/) 아래에 보존됩니다.
