@@ -57,6 +57,13 @@ TABLE_DIVIDER = re.compile(r"^\s*:?-{3,}:?\s*$")
 LIST_PREFIX = re.compile(r"^(\s*(?:[-+*]|\d+[.)])\s+)(.*)$")
 HEADING_PREFIX = re.compile(r"^(#{1,6}\s+)(.*)$")
 QUOTE_PREFIX = re.compile(r"^(>\s*)(.*)$")
+SEMANTIC_TOKEN = re.compile(
+    r"`+[^`\n]*`+"
+    r"|https?://[^\s<>)]+"
+    r"|\b[0-9a-f]{40,64}\b"
+    r"|\bv?\d+\.\d+(?:\.\d+)?(?:-[A-Za-z0-9.]+)?\b"
+    r"|\b[A-Z][A-Z0-9_-]{2,}\b"
+)
 
 
 class Translator(Protocol):
@@ -170,7 +177,8 @@ def split_blocks(text: str) -> list[str]:
 
 
 def block_type(block: str) -> str:
-    first = block.splitlines()[0].lstrip() if block.splitlines() else ""
+    lines = block.splitlines()
+    first = lines[0].lstrip() if lines else ""
     if FENCE.match(first):
         return "fence"
     if first.startswith("#"):
@@ -182,6 +190,36 @@ def block_type(block: str) -> str:
     if LIST_PREFIX.match(first):
         return "list"
     return "paragraph"
+
+
+def heading_level(block: str) -> int:
+    match = re.match(r"^(#{1,6})\s+", block)
+    return len(match.group(1)) if match else 0
+
+
+def link_targets(text: str) -> list[str]:
+    return [x.strip().split(" ", 1)[0] for x in re.findall(r"\]\(([^)]+)\)", text)]
+
+
+def semantic_tokens(block: str) -> tuple[str, ...]:
+    tokens = SEMANTIC_TOKEN.findall(block)
+    tokens.extend(term for term in PROPER_TERMS if term in block)
+    tokens.extend(f"link:{target}" for target in link_targets(block))
+    return tuple(tokens)
+
+
+def block_key(block: str) -> tuple[object, ...]:
+    kind = block_type(block)
+    lines = block.splitlines()
+    tokens = semantic_tokens(block)
+    if kind == "fence":
+        return (kind, block)
+    if kind == "heading":
+        return (kind, heading_level(block), tokens)
+    if kind == "table":
+        pipe_shape = tuple(line.count("|") for line in lines)
+        return (kind, len(lines), pipe_shape, tokens)
+    return (kind, len(lines), tokens)
 
 
 def git_text(ref: str, path: Path) -> str:
@@ -224,27 +262,43 @@ def aligned_baseline(
     ref: str,
     source_path: Path,
     target_path: Path,
-) -> tuple[list[str], list[str]]:
+) -> tuple[list[str], dict[int, str]]:
     source_blocks = split_blocks(strip_navigation(git_text(ref, source_path)))
     localized_blocks = split_blocks(strip_localized_prefix(git_text(ref, target_path)))
-    if len(source_blocks) != len(localized_blocks):
-        raise RuntimeError(
-            "Incremental translation baseline is not structurally aligned: "
-            f"{len(source_blocks)} source blocks != {len(localized_blocks)} localized blocks. "
-            "Refusing a full-document overwrite."
-        )
-    for index, (source_block, localized_block) in enumerate(
-        zip(source_blocks, localized_blocks, strict=True)
-    ):
-        source_type = block_type(source_block)
-        localized_type = block_type(localized_block)
-        if source_type != localized_type:
-            raise RuntimeError(
-                "Incremental translation baseline block types differ at "
-                f"index {index}: {source_type} != {localized_type}. "
-                "Refusing a full-document overwrite."
+    source_keys = [block_key(block) for block in source_blocks]
+    localized_keys = [block_key(block) for block in localized_blocks]
+
+    matcher = difflib.SequenceMatcher(a=source_keys, b=localized_keys, autojunk=False)
+    mapping: dict[int, str] = {}
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        if tag != "equal":
+            print(
+                "Translation-memory alignment gap: "
+                f"source[{i1}:{i2}] <-> localized[{j1}:{j2}] ({tag})."
             )
-    return source_blocks, localized_blocks
+            continue
+        for source_index, localized_index in zip(
+            range(i1, i2), range(j1, j2), strict=True
+        ):
+            mapping[source_index] = localized_blocks[localized_index]
+
+    if not mapping:
+        raise RuntimeError(
+            "No structurally aligned translation-memory blocks were found; "
+            "refusing a full-document overwrite."
+        )
+
+    coverage = len(mapping) / max(len(source_blocks), 1)
+    print(
+        f"Translation-memory baseline {ref}: aligned {len(mapping)}/"
+        f"{len(source_blocks)} source blocks ({coverage:.1%})."
+    )
+    if coverage < 0.70:
+        raise RuntimeError(
+            "Translation-memory structural coverage is below 70%; "
+            "refusing a mostly regenerated document."
+        )
+    return source_blocks, mapping
 
 
 def translate_natural(text: str, translator: Translator) -> str:
@@ -358,12 +412,12 @@ def incremental_body(
         translated = [translate_block(block, translator) for block in current_blocks]
         return "\n\n".join(translated), 0, len(translated)
 
-    baseline_source, baseline_localized = aligned_baseline(ref, source_path, target_path)
+    baseline_source, localized_by_index = aligned_baseline(
+        ref, source_path, target_path
+    )
     reusable: dict[str, deque[str]] = defaultdict(deque)
-    for source_block, localized_block in zip(
-        baseline_source, baseline_localized, strict=True
-    ):
-        reusable[source_block].append(localized_block)
+    for source_index, localized_block in localized_by_index.items():
+        reusable[baseline_source[source_index]].append(localized_block)
 
     output: list[str] = []
     reused = 0
@@ -376,9 +430,7 @@ def incremental_body(
             continue
 
         previous_source = baseline_source[index] if index < len(baseline_source) else None
-        previous_localized = (
-            baseline_localized[index] if index < len(baseline_localized) else None
-        )
+        previous_localized = localized_by_index.get(index)
         if (
             previous_source is not None
             and previous_localized is not None
@@ -401,8 +453,8 @@ def incremental_body(
         translated_count += 1
 
     print(
-        f"Incremental {target_code} translation baseline {ref}: "
-        f"reused {reused} blocks; updated {translated_count} blocks."
+        f"Incremental {target_code} translation: reused {reused} blocks; "
+        f"updated {translated_count} blocks."
     )
     return "\n\n".join(output), reused, translated_count
 
@@ -449,10 +501,6 @@ def fenced_blocks(text: str) -> list[str]:
 
 def heading_levels(text: str) -> list[int]:
     return [len(m.group(1)) for m in re.finditer(r"(?m)^(#{1,6})\s+", text)]
-
-
-def link_targets(text: str) -> list[str]:
-    return [x.strip().split(" ", 1)[0] for x in re.findall(r"\]\(([^)]+)\)", text)]
 
 
 def inline_code(text: str) -> list[str]:
