@@ -55,11 +55,12 @@ jobs:
             }
           }
 
-          $installedVersion = ""
-          $versionOutput = & $venvPython -c "import importlib.metadata; print(importlib.metadata.version('argostranslate'))" 2>$null
-          if ($LASTEXITCODE -eq 0 -and $versionOutput) {
-            $installedVersion = ($versionOutput | Select-Object -First 1).Trim()
+          $versionProbe = "import importlib.util, importlib.metadata; print(importlib.metadata.version('argostranslate') if importlib.util.find_spec('argostranslate') else '')"
+          $versionOutput = & $venvPython -c $versionProbe
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to inspect the persistent Argos virtual environment."
           }
+          $installedVersion = (($versionOutput | Select-Object -First 1) -as [string]).Trim()
 
           if ($installedVersion -ne "1.11.0") {
             & $venvPython -m pip install --upgrade pip
