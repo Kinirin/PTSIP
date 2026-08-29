@@ -1,0 +1,136 @@
+from __future__ import annotations
+
+import subprocess
+from pathlib import Path
+
+from ptsip.inspection.dependencies import scan_dependency_edges
+from ptsip.inspection.inventory import collect_inventory
+
+
+def _git(repo: Path, *args: str) -> None:
+    subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
+
+def _init_git(repo: Path) -> None:
+    repo.mkdir(parents=True, exist_ok=True)
+    _git(repo, "init")
+    _git(repo, "config", "user.email", "ptsip-test@example.invalid")
+    _git(repo, "config", "user.name", "PTSIP Test")
+
+
+def _commit_all(repo: Path) -> None:
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "fixture")
+
+
+def test_python_bom_is_decoded_for_inventory_and_dependencies(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "app.py").write_bytes(b"\xef\xbb\xbfimport json\n")
+    _commit_all(repo)
+
+    inventory = collect_inventory(repo)
+    assert inventory.python_imports == 1
+    assert not inventory.scan_issues
+
+    scan = scan_dependency_edges(repo)
+    edge = next(item for item in scan.edges if item.source == "app.py" and item.target == "json")
+    assert edge.target_scope.value == "PLATFORM"
+    assert edge.resolution.value == "EXTERNAL"
+
+
+def test_relative_python_import_resolves_from_package_evidence(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    package = repo / "pkg"
+    package.mkdir()
+    (package / "__init__.py").write_text("", encoding="utf-8")
+    (package / "a.py").write_text("from . import b\n", encoding="utf-8")
+    (package / "b.py").write_text("VALUE = 1\n", encoding="utf-8")
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    edge = next(item for item in scan.edges if item.source == "pkg/a.py")
+    assert edge.target == "pkg.b"
+    assert edge.resolved_path == "pkg/b.py"
+    assert edge.target_scope.value == "PROJECT_COMPONENT"
+    assert edge.resolution.value == "RESOLVED"
+
+
+def test_python_target_scope_distinguishes_external_and_unresolved(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "pyproject.toml").write_text(
+        """[project]\nname = \"fixture\"\nversion = \"0.0.0\"\ndependencies = [\"requests>=2\"]\n""",
+        encoding="utf-8",
+    )
+    (repo / "app.py").write_text("import requests\nimport mystery_package\n", encoding="utf-8")
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    by_target = {edge.target: edge for edge in scan.edges if edge.source == "app.py"}
+    assert by_target["requests"].target_scope.value == "EXTERNAL_DEPENDENCY"
+    assert by_target["requests"].resolution.value == "EXTERNAL"
+    assert by_target["mystery_package"].target_scope.value == "UNRESOLVED_TARGET"
+    assert by_target["mystery_package"].resolution.value == "UNRESOLVED"
+
+
+def test_python_declaration_parse_failure_is_evidence_issue(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "pyproject.toml").write_text("[project\nname = broken\n", encoding="utf-8")
+    (repo / "app.py").write_text("import requests\n", encoding="utf-8")
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    assert not scan.as_dict()["coverage_complete"]
+    issue = next(item for item in scan.issues if item.adapter == "python-declarations")
+    assert issue.path == "pyproject.toml"
+
+
+def test_dynamic_python_import_uses_loads_and_unresolved_scope(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / "app.py").write_text(
+        "import importlib\nname = 'x'\nimportlib.import_module(name)\n",
+        encoding="utf-8",
+    )
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    edge = next(item for item in scan.edges if item.target == "<dynamic-import>")
+    assert edge.edge_type.value == "LOADS"
+    assert edge.resolution.value == "DYNAMIC"
+    assert edge.target_scope.value == "UNRESOLVED_TARGET"
+
+
+def test_github_actions_resolves_scripts_from_effective_working_directory(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _init_git(repo)
+    (repo / ".github" / "workflows").mkdir(parents=True)
+    (repo / "tools").mkdir()
+    (repo / "tools" / "check.py").write_text("print('ok')\n", encoding="utf-8")
+    (repo / ".github" / "workflows" / "test.yml").write_text(
+        """name: test\non: [push]\ndefaults:\n  run:\n    working-directory: tools\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: python check.py\n      - run: echo ./not-invoked.py\n      - run: python ./missing.py\n""",
+        encoding="utf-8",
+    )
+    _commit_all(repo)
+
+    scan = scan_dependency_edges(repo)
+    workflow_edges = [edge for edge in scan.edges if edge.adapter == "github-actions"]
+    assert any(
+        edge.target == "check.py" and edge.resolved_path == "tools/check.py"
+        for edge in workflow_edges
+    )
+    resolved = next(edge for edge in workflow_edges if edge.target == "check.py")
+    assert resolved.working_directory == "tools"
+    assert resolved.provenance.value == "DECLARED"
+    assert not any(edge.target == "./not-invoked.py" for edge in workflow_edges)
+    missing = next(edge for edge in workflow_edges if edge.target == "./missing.py")
+    assert missing.resolution.value == "UNRESOLVED"
+    assert missing.target_scope.value == "UNRESOLVED_TARGET"
