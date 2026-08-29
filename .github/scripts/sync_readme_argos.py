@@ -49,14 +49,9 @@ PROTECTED = re.compile(
     r"|(https?://[^\s<>)]+)"
     r"|(\b[0-9a-f]{40,64}\b)"
     r"|(\bv?\d+\.\d+(?:\.\d+)?(?:-[A-Za-z0-9.]+)?\b)"
-    r"|(\*\*|__|~~)"
+    r"|(\*\*|__|~~|\*)"
     r"|\b(" + "|".join(re.escape(x) for x in (*NORMATIVE, *PROPER_TERMS)) + r")\b"
 )
-FENCE = re.compile(r"^\s*(```+|~~~+)")
-TABLE_DIVIDER = re.compile(r"^\s*:?-{3,}:?\s*$")
-LIST_PREFIX = re.compile(r"^(\s*(?:[-+*]|\d+[.)])\s+)(.*)$")
-HEADING_PREFIX = re.compile(r"^(#{1,6}\s+)(.*)$")
-QUOTE_PREFIX = re.compile(r"^(>\s*)(.*)$")
 SEMANTIC_TOKEN = re.compile(
     r"`+[^`\n]*`+"
     r"|https?://[^\s<>)]+"
@@ -64,6 +59,11 @@ SEMANTIC_TOKEN = re.compile(
     r"|\bv?\d+\.\d+(?:\.\d+)?(?:-[A-Za-z0-9.]+)?\b"
     r"|\b[A-Z][A-Z0-9_-]{2,}\b"
 )
+FENCE = re.compile(r"^\s*(```+|~~~+)")
+HEADING = re.compile(r"^(#{1,6}\s+)(.*)$")
+QUOTE = re.compile(r"^(>\s*)(.*)$")
+LIST_ITEM = re.compile(r"^(\s*(?:[-+*]|\d+[.)])\s+)(.*)$")
+TABLE_DIVIDER = re.compile(r"^\s*:?-{3,}:?\s*$")
 
 
 class Translator(Protocol):
@@ -77,13 +77,12 @@ class ArgosTranslator:
         from packaging.version import Version
 
         installed = package.get_installed_packages()
-        direct = any(
+        if not any(
             pkg.type == "translate"
             and pkg.from_code == source
             and pkg.to_code == target
             for pkg in installed
-        )
-        if not direct:
+        ):
             print(f"Installing Argos model {source}->{target}.")
             package.update_package_index()
             available = [
@@ -98,8 +97,7 @@ class ArgosTranslator:
                     f"No Argos Translate model is available for {source}->{target}."
                 )
             selected = max(
-                available,
-                key=lambda pkg: Version(pkg.package_version or "0"),
+                available, key=lambda pkg: Version(pkg.package_version or "0")
             )
             package.install_from_path(selected.download())
             print(
@@ -129,27 +127,11 @@ def strip_navigation(text: str) -> str:
     )
 
 
-def strip_localized_prefix(text: str) -> str:
-    text = text.lstrip("\ufeff")
-    text = re.sub(r"\A\s*<!--.*?-->\s*", "", text, count=1, flags=re.DOTALL)
-    text = strip_navigation(text)
-    blocks = split_blocks(text)
-    if (
-        len(blocks) >= 2
-        and blocks[0].startswith("# ")
-        and blocks[1].startswith(">")
-        and "README.md" in blocks[1]
-    ):
-        del blocks[1]
-    return "\n\n".join(blocks).rstrip() + "\n"
-
-
 def split_blocks(text: str) -> list[str]:
     blocks: list[str] = []
     current: list[str] = []
     in_fence = False
     fence_char = ""
-
     for line in text.replace("\r\n", "\n").split("\n"):
         fence = FENCE.match(line)
         if fence:
@@ -162,23 +144,33 @@ def split_blocks(text: str) -> list[str]:
                 fence_char = ""
             current.append(line)
             continue
-
         if not line.strip() and not in_fence:
             if current:
                 blocks.append("\n".join(current).rstrip())
                 current = []
             continue
-
         current.append(line)
-
     if current:
         blocks.append("\n".join(current).rstrip())
     return blocks
 
 
+def strip_localized_prefix(text: str) -> str:
+    text = text.lstrip("\ufeff")
+    text = re.sub(r"\A\s*<!--.*?-->\s*", "", text, count=1, flags=re.DOTALL)
+    blocks = split_blocks(strip_navigation(text))
+    if (
+        len(blocks) >= 2
+        and blocks[0].startswith("# ")
+        and blocks[1].startswith(">")
+        and "README.md" in blocks[1]
+    ):
+        del blocks[1]
+    return "\n\n".join(blocks).rstrip() + "\n"
+
+
 def block_type(block: str) -> str:
-    lines = block.splitlines()
-    first = lines[0].lstrip() if lines else ""
+    first = block.splitlines()[0].lstrip() if block.splitlines() else ""
     if FENCE.match(first):
         return "fence"
     if first.startswith("#"):
@@ -187,7 +179,7 @@ def block_type(block: str) -> str:
         return "table"
     if first.startswith(">"):
         return "quote"
-    if LIST_PREFIX.match(first):
+    if LIST_ITEM.match(first):
         return "list"
     return "paragraph"
 
@@ -198,14 +190,17 @@ def heading_level(block: str) -> int:
 
 
 def link_targets(text: str) -> list[str]:
-    return [x.strip().split(" ", 1)[0] for x in re.findall(r"\]\(([^)]+)\)", text)]
+    return [
+        value.strip().split(" ", 1)[0]
+        for value in re.findall(r"\]\(([^)]+)\)", text)
+    ]
 
 
 def semantic_tokens(block: str) -> tuple[str, ...]:
-    tokens = SEMANTIC_TOKEN.findall(block)
-    tokens.extend(term for term in PROPER_TERMS if term in block)
-    tokens.extend(f"link:{target}" for target in link_targets(block))
-    return tuple(tokens)
+    values = SEMANTIC_TOKEN.findall(block)
+    values.extend(term for term in PROPER_TERMS if term in block)
+    values.extend(f"link:{target}" for target in link_targets(block))
+    return tuple(values)
 
 
 def block_key(block: str) -> tuple[object, ...]:
@@ -217,13 +212,12 @@ def block_key(block: str) -> tuple[object, ...]:
     if kind == "heading":
         return (kind, heading_level(block), tokens)
     if kind == "table":
-        pipe_shape = tuple(line.count("|") for line in lines)
-        return (kind, len(lines), pipe_shape, tokens)
+        return (kind, len(lines), tuple(line.count("|") for line in lines), tokens)
     return (kind, len(lines), tokens)
 
 
 def git_text(ref: str, path: Path) -> str:
-    completed = subprocess.run(
+    result = subprocess.run(
         ["git", "show", f"{ref}:{path.as_posix()}"],
         check=False,
         stdout=subprocess.PIPE,
@@ -231,11 +225,11 @@ def git_text(ref: str, path: Path) -> str:
         text=True,
         encoding="utf-8",
     )
-    if completed.returncode != 0:
+    if result.returncode != 0:
         raise RuntimeError(
-            f"Unable to read {path} from baseline {ref}: {completed.stderr.strip()}"
+            f"Unable to read {path} from baseline {ref}: {result.stderr.strip()}"
         )
-    return completed.stdout.lstrip("\ufeff")
+    return result.stdout.lstrip("\ufeff")
 
 
 def baseline_ref(source_path: Path) -> str | None:
@@ -259,16 +253,15 @@ def baseline_ref(source_path: Path) -> str | None:
 
 
 def aligned_baseline(
-    ref: str,
-    source_path: Path,
-    target_path: Path,
+    ref: str, source_path: Path, target_path: Path
 ) -> tuple[list[str], dict[int, str]]:
     source_blocks = split_blocks(strip_navigation(git_text(ref, source_path)))
     localized_blocks = split_blocks(strip_localized_prefix(git_text(ref, target_path)))
-    source_keys = [block_key(block) for block in source_blocks]
-    localized_keys = [block_key(block) for block in localized_blocks]
-
-    matcher = difflib.SequenceMatcher(a=source_keys, b=localized_keys, autojunk=False)
+    matcher = difflib.SequenceMatcher(
+        a=[block_key(block) for block in source_blocks],
+        b=[block_key(block) for block in localized_blocks],
+        autojunk=False,
+    )
     mapping: dict[int, str] = {}
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
         if tag != "equal":
@@ -282,12 +275,6 @@ def aligned_baseline(
         ):
             mapping[source_index] = localized_blocks[localized_index]
 
-    if not mapping:
-        raise RuntimeError(
-            "No structurally aligned translation-memory blocks were found; "
-            "refusing a full-document overwrite."
-        )
-
     coverage = len(mapping) / max(len(source_blocks), 1)
     print(
         f"Translation-memory baseline {ref}: aligned {len(mapping)}/"
@@ -295,33 +282,36 @@ def aligned_baseline(
     )
     if coverage < 0.70:
         raise RuntimeError(
-            "Translation-memory structural coverage is below 70%; "
-            "refusing a mostly regenerated document."
+            "Translation-memory structural coverage is below 70%; refusing a "
+            "mostly regenerated document."
         )
     return source_blocks, mapping
+
+
+def translate_fragment(text: str, translator: Translator) -> str:
+    if not re.search(r"[A-Za-z]", text):
+        return text
+    leading = text[: len(text) - len(text.lstrip())]
+    trailing = text[len(text.rstrip()) :]
+    core = text.strip()
+    if not core:
+        return text
+    return leading + translator.translate(core).strip() + trailing
 
 
 def translate_natural(text: str, translator: Translator) -> str:
     if not re.search(r"[A-Za-z]", text):
         return text
-
-    saved: list[str] = []
-
-    def replace(match: re.Match[str]) -> str:
-        token = f"ZXQKEEP{len(saved):04d}QXZ"
-        saved.append(match.group(0))
-        return token
-
-    protected = PROTECTED.sub(replace, text)
-    translated = translator.translate(protected)
-    for index, original in enumerate(saved):
-        token = f"ZXQKEEP{index:04d}QXZ"
-        if token not in translated:
-            raise RuntimeError(
-                f"Argos changed protected placeholder {token}; refusing unsafe output."
-            )
-        translated = translated.replace(token, original)
-    return translated
+    output: list[str] = []
+    cursor = 0
+    for match in PROTECTED.finditer(text):
+        if match.start() > cursor:
+            output.append(translate_fragment(text[cursor : match.start()], translator))
+        output.append(match.group(0))
+        cursor = match.end()
+    if cursor < len(text):
+        output.append(translate_fragment(text[cursor:], translator))
+    return "".join(output)
 
 
 def translate_table_line(line: str, translator: Translator) -> str:
@@ -329,32 +319,29 @@ def translate_table_line(line: str, translator: Translator) -> str:
     cores = [cell.strip() for cell in cells[1:-1]]
     if cores and all(TABLE_DIVIDER.fullmatch(core) for core in cores):
         return line
-
-    out: list[str] = []
+    output: list[str] = []
     for cell in cells:
         leading = cell[: len(cell) - len(cell.lstrip())]
         trailing = cell[len(cell.rstrip()) :]
         core = cell.strip()
         if core:
             core = translate_natural(core, translator)
-        out.append(f"{leading}{core}{trailing}")
-    return "|".join(out)
+        output.append(leading + core + trailing)
+    return "|".join(output)
 
 
 def translate_line(line: str, translator: Translator) -> str:
-    if not line.strip():
+    if not line.strip() or FENCE.match(line):
         return line
-    if FENCE.match(line):
-        return line
-    heading = HEADING_PREFIX.match(line)
+    heading = HEADING.match(line)
     if heading:
         if heading.group(1) == "# ":
             return line
         return heading.group(1) + translate_natural(heading.group(2), translator)
-    quote = QUOTE_PREFIX.match(line)
+    quote = QUOTE.match(line)
     if quote:
         return quote.group(1) + translate_natural(quote.group(2), translator)
-    item = LIST_PREFIX.match(line)
+    item = LIST_ITEM.match(line)
     if item:
         return item.group(1) + translate_natural(item.group(2), translator)
     if line.strip().startswith("|") and line.strip().endswith("|"):
@@ -365,8 +352,7 @@ def translate_line(line: str, translator: Translator) -> str:
 
 
 def translate_block(block: str, translator: Translator) -> str:
-    kind = block_type(block)
-    if kind == "fence" or block.startswith("# "):
+    if block_type(block) == "fence" or block.startswith("# "):
         return block
     return "\n".join(translate_line(line, translator) for line in block.splitlines())
 
@@ -377,24 +363,20 @@ def translate_changed_block(
     previous_localized: str,
     translator: Translator,
 ) -> str:
-    if block_type(current) == "fence":
+    if block_type(current) == "fence" or current.startswith("# "):
         return current
-    if current.startswith("# "):
-        return current
-
-    old_source_lines = previous_source.splitlines()
-    old_localized_lines = previous_localized.splitlines()
+    old_source = previous_source.splitlines()
+    old_localized = previous_localized.splitlines()
     current_lines = current.splitlines()
-    if len(old_source_lines) != len(old_localized_lines):
+    if len(old_source) != len(old_localized):
         return translate_block(current, translator)
-
-    matcher = difflib.SequenceMatcher(a=old_source_lines, b=current_lines, autojunk=False)
     output: list[str] = []
-    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(
+        a=old_source, b=current_lines, autojunk=False
+    ).get_opcodes():
         if tag == "equal":
-            output.extend(old_localized_lines[i1:i2])
-            continue
-        if tag in {"replace", "insert"}:
+            output.extend(old_localized[i1:i2])
+        elif tag in {"replace", "insert"}:
             output.extend(translate_line(line, translator) for line in current_lines[j1:j2])
     return "\n".join(output)
 
@@ -405,27 +387,28 @@ def incremental_body(
     source_path: Path,
     target_path: Path,
     translator: Translator,
-) -> tuple[str, int, int]:
+) -> str:
     current_blocks = split_blocks(strip_navigation(source))
     ref = baseline_ref(source_path)
     if ref is None:
-        translated = [translate_block(block, translator) for block in current_blocks]
-        return "\n\n".join(translated), 0, len(translated)
+        return "\n\n".join(
+            translate_block(block, translator) for block in current_blocks
+        )
 
     baseline_source, localized_by_index = aligned_baseline(
         ref, source_path, target_path
     )
     reusable: dict[str, deque[str]] = defaultdict(deque)
-    for source_index, localized_block in localized_by_index.items():
-        reusable[baseline_source[source_index]].append(localized_block)
+    for index, localized in localized_by_index.items():
+        reusable[baseline_source[index]].append(localized)
 
     output: list[str] = []
     reused = 0
-    translated_count = 0
+    updated = 0
     for index, current in enumerate(current_blocks):
-        candidates = reusable.get(current)
-        if candidates:
-            output.append(candidates.popleft())
+        matches = reusable.get(current)
+        if matches:
+            output.append(matches.popleft())
             reused += 1
             continue
 
@@ -442,47 +425,38 @@ def incremental_body(
         ):
             output.append(
                 translate_changed_block(
-                    current,
-                    previous_source,
-                    previous_localized,
-                    translator,
+                    current, previous_source, previous_localized, translator
                 )
             )
         else:
             output.append(translate_block(current, translator))
-        translated_count += 1
+        updated += 1
 
     print(
         f"Incremental {target_code} translation: reused {reused} blocks; "
-        f"updated {translated_count} blocks."
+        f"updated {updated} blocks."
     )
-    return "\n\n".join(output), reused, translated_count
+    return "\n\n".join(output)
 
 
 def render(
     source: str,
-    target: str,
+    target_code: str,
     source_path: Path,
     target_path: Path,
     translator: Translator,
 ) -> str:
-    metadata = LANGUAGE_METADATA.get(target)
+    metadata = LANGUAGE_METADATA.get(target_code)
     if metadata is None:
-        raise RuntimeError(f"Unsupported localized README language: {target}")
-
-    body, _, _ = incremental_body(
-        source,
-        target,
-        source_path,
-        target_path,
-        translator,
+        raise RuntimeError(f"Unsupported localized README language: {target_code}")
+    body = incremental_body(
+        source, target_code, source_path, target_path, translator
     )
     blocks = split_blocks(body)
     if not blocks or not blocks[0].startswith("# "):
         raise RuntimeError("README.md must contain a top-level '# ' title.")
     title = blocks[0]
-    body_without_title = "\n\n".join(blocks[1:]).rstrip()
-
+    body = "\n\n".join(blocks[1:]).rstrip()
     nav = (
         '<p align="right">\n'
         '  <a href="README.md">English</a> | '
@@ -491,7 +465,7 @@ def render(
     )
     return (
         f"{GENERATED_COMMENT}\n{nav}\n\n{title}\n\n"
-        f"{metadata['notice']}\n\n{body_without_title}\n"
+        f"{metadata['notice']}\n\n{body}\n"
     )
 
 
@@ -500,37 +474,35 @@ def fenced_blocks(text: str) -> list[str]:
 
 
 def heading_levels(text: str) -> list[int]:
-    return [len(m.group(1)) for m in re.finditer(r"(?m)^(#{1,6})\s+", text)]
+    return [len(match.group(1)) for match in re.finditer(r"(?m)^(#{1,6})\s+", text)]
 
 
 def inline_code(text: str) -> list[str]:
     return re.findall(r"`+[^`\n]*`+", text)
 
 
-def validate(source: str, localized: str, target: str) -> None:
+def validate(source: str, localized: str, target_code: str) -> None:
     canonical = strip_navigation(source)
-    comparable_localized = strip_localized_prefix(localized)
-    if target == "ko" and not re.search(r"[가-힣]", localized):
+    localized_body = strip_localized_prefix(localized)
+    if target_code == "ko" and not re.search(r"[가-힣]", localized):
         raise RuntimeError("Translation validation failed: Korean text is missing.")
-    if heading_levels(canonical) != heading_levels(comparable_localized):
+    if heading_levels(canonical) != heading_levels(localized_body):
         raise RuntimeError("Translation validation failed: heading structure changed.")
-    if fenced_blocks(canonical) != fenced_blocks(comparable_localized):
+    if fenced_blocks(canonical) != fenced_blocks(localized_body):
         raise RuntimeError("Translation validation failed: fenced code blocks changed.")
 
-    missing_links = [x for x in link_targets(canonical) if x not in localized]
+    missing_links = [target for target in link_targets(canonical) if target not in localized]
     if missing_links:
         raise RuntimeError(
             "Translation validation failed: link targets disappeared: "
             + ", ".join(sorted(set(missing_links)))
         )
-
-    missing_code = [x for x in inline_code(canonical) if x not in localized]
+    missing_code = [token for token in inline_code(canonical) if token not in localized]
     if missing_code:
         raise RuntimeError(
             "Translation validation failed: inline code changed: "
             + ", ".join(sorted(set(missing_code))[:20])
         )
-
     for keyword in NORMATIVE:
         if re.search(rf"\b{re.escape(keyword)}\b", canonical) and keyword not in localized:
             raise RuntimeError(
@@ -557,14 +529,9 @@ def main() -> int:
     for target_code, target_path in args.target:
         translator = ArgosTranslator(SOURCE_LANGUAGE, target_code)
         localized = render(
-            source,
-            target_code,
-            args.source,
-            target_path,
-            translator,
+            source, target_code, args.source, target_path, translator
         )
         validate(source, localized, target_code)
-
         current = (
             target_path.read_text(encoding="utf-8") if target_path.exists() else None
         )
