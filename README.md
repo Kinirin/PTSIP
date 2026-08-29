@@ -9,13 +9,14 @@
 **Project Profile contract:** `pp.1.01`<br>
 **Specification family:** `0.3.7-draft`<br>
 **Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**License:** Apache License 2.0
+**License:** Apache License 2.0<br>
+**Localized documentation:** `README.md` is canonical. Localized README files are regenerated on `main` by the self-hosted Argos Translate workflow; if a translation conflicts with this file, this file governs.
 
 PTSIP is a project-defined architecture policy for separating project responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment decision consistency.
 
 > **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
 
-Tool `0.3.7` now carries the WU-12 implementation and frozen Specification binding on `dev/0.3.7`. It is not yet verified or published: a fresh self-hosted workflow must pass for the final exact source SHA before release preparation. The latest published PyPI package remains Tool `0.3.5` until a later publication boundary succeeds.
+Tool `0.3.7` now carries the WU-12 implementation and frozen Specification binding on `main` as the release candidate. The WU-12 implementation is complete, but any repository change after exact-SHA verification requires a fresh self-hosted workflow pass before release preparation. The latest published PyPI package remains Tool `0.3.5` until the publication boundary succeeds.
 
 ## Primary lifecycle ownership
 
@@ -352,27 +353,26 @@ A new immutable revision is required only for a genuine normative change. Releas
 
 ## Tool 0.3.7 verification and release state
 
-The WU-12 implementation and immutable Specification freeze are present locally, but WU-12 is not `COMPLETE` or `VERIFIED`. The required final exact-SHA `tooling-test` run has not occurred for this source state.
+The WU-12 implementation and immutable Specification freeze are complete. The current `main` source state requires a fresh exact-SHA `tooling-test` after the repository CI infrastructure changes made during release handoff.
 
 ```text
 Tool:              0.3.7
 Project Profile:   pp.1.01
 Specification:     0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a
-exact source SHA:  pending final integration commit
-tooling-test:      NOT RUN for the final exact SHA
+exact source SHA:  pending final post-CI main commit
+tooling-test:      PENDING for the current exact main SHA
 publication:       NOT RUN
 ```
 
-Earlier Tool `0.3.6` workflow evidence remains historical evidence for its own SHA and does not verify Tool `0.3.7`.
+Earlier workflow evidence remains historical evidence for its own SHA and does not verify a later source state.
 
 The remaining release boundary is:
 
 ```text
-final dev/0.3.7 exact SHA
+final main exact SHA
     -> tooling-test.yml on that exact SHA
     -> require self-hosted/tooling-test success
     -> full regression, independent identity, distribution, artifact, and wheel smoke PASS
-    -> later exact-main release handoff
     -> release.yml and reviewed draft publication from the same source identity
     -> tooling-release.yml publication verification and PyPI Trusted Publishing
 ```
@@ -385,4 +385,4 @@ PTSIP does not require Consumer Repositories to create PTSIP-specific `.ptsip/`,
 
 ## Project status
 
-PTSIP remains experimental. Tool `0.3.7` is an unverified, unpublished release candidate until the final exact-SHA completion gate succeeds. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).
+PTSIP remains experimental. Tool `0.3.7` is an unpublished release candidate until the current exact-main completion gate succeeds. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).
