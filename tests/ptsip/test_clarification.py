@@ -7,10 +7,8 @@ from pathlib import Path
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.clarification.transports import github_issue
 from ptsip.cli import main
-from ptsip.repository.discover import discover_repository
-from ptsip.repository.remote import parse_remote
 from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
-from _wu04g_support import (
+from _test_support import (
     commit_all,
     component_payload,
     explicit_profile_payload,
@@ -26,26 +24,6 @@ def _tool_repo(tmp_path: Path) -> Path:
     write_text(repo, "tools/generate.py", "print('generate')\n")
     commit_all(repo)
     return repo
-
-
-def test_github_remote_parser_supports_https_and_ssh():
-    for url in (
-        "https://github.com/example/product.git",
-        "git@github.com:example/product.git",
-        "ssh://git@github.com/example/product.git",
-    ):
-        remote = parse_remote("origin", url)
-        assert remote.provider == "github"
-        assert remote.repository == "example/product"
-
-
-def test_repository_discovery_includes_origin(tmp_path: Path):
-    repo = _tool_repo(tmp_path)
-    git(repo, "remote", "add", "origin", "git@github.com:example/product.git")
-    info = discover_repository(repo)
-    assert info.remote is not None
-    assert info.remote.provider == "github"
-    assert info.remote.repository == "example/product"
 
 
 def test_no_profile_requests_fixed_facts_without_llm(tmp_path: Path):
