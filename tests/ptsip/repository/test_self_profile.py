@@ -11,7 +11,7 @@ from ptsip.validation.profile import validate_profile
 from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 PROFILE_PATH = REPO_ROOT / "ptsip.yaml"
 
 
