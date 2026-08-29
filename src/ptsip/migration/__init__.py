@@ -114,6 +114,7 @@ from .planner import (
     ReconciliationResult,
     ReconciliationStatus,
     SourceConvergencePlan,
+    build_final_point_convergence_plan,
     derive_source_proposals,
     final_point_state_from_mapping,
     reconcile_delta,
@@ -129,6 +130,10 @@ from .proposal import (
     TargetEntityKind,
     UnresolvedBundle,
 )
+
+# ``build_final_point_convergence_plan`` is retained as the legacy sequential
+# migration compatibility surface. Current Project Profile convergence uses
+# ``build_direct_final_point_convergence_plan`` and PP contract authority.
 
 __all__ = [
     "AcceptedDeltaBundle",
@@ -215,6 +220,7 @@ __all__ = [
     "bind_execution_plan",
     "build_authorization_proof",
     "build_direct_final_point_convergence_plan",
+    "build_final_point_convergence_plan",
     "build_identity_rewrite_plan",
     "build_legacy_target_identity_rewrite_plan",
     "capture_mutation_guard",
