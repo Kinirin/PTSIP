@@ -131,10 +131,6 @@ from .proposal import (
     UnresolvedBundle,
 )
 
-# ``build_final_point_convergence_plan`` is retained as the legacy sequential
-# migration compatibility surface. Current Project Profile convergence uses
-# ``build_direct_final_point_convergence_plan`` and PP contract authority.
-
 __all__ = [
     "AcceptedDeltaBundle",
     "AmbiguousSourceElement",
@@ -220,7 +216,6 @@ __all__ = [
     "bind_execution_plan",
     "build_authorization_proof",
     "build_direct_final_point_convergence_plan",
-    "build_final_point_convergence_plan",
     "build_identity_rewrite_plan",
     "build_legacy_target_identity_rewrite_plan",
     "capture_mutation_guard",

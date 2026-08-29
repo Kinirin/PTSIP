@@ -30,6 +30,7 @@ from ptsip.migration import (
     authorize_execution,
     bind_execution_plan,
     build_authorization_proof,
+    build_final_point_convergence_plan,
     complete_source,
     derive_source_proposals,
     finalize_source,
@@ -40,7 +41,6 @@ from ptsip.migration import (
     verify_post_promotion,
     verify_source_preconditions,
 )
-from ptsip.migration.planner import build_final_point_convergence_plan
 from ptsip.repository.profile_transition import DraftVersion, ProfileGenerationIdentity, ProfileTransitionState
 from ptsip.repository.snapshot import capture_snapshot
 from ptsip.source_compat.model import SourceGenerationBinding
@@ -82,20 +82,16 @@ def _profile_payload(version: str, revision: str) -> dict[str, object]:
     return {
         "ptsip": {
             "version": version,
-            "specification": {"source": SPEC_SOURCE, "revision": revision},
+            "specification": {
+                "source": SPEC_SOURCE,
+                "revision": revision,
+            },
         },
         "responsibility_map": {"mode": "explicit"},
     }
 
 
-def _binding(
-    path: str,
-    version: str,
-    revision: str,
-    content_sha256: str,
-    *,
-    temporary: bool,
-) -> SourceGenerationBinding:
+def _binding(path: str, version: str, revision: str, content_sha256: str, *, temporary: bool) -> SourceGenerationBinding:
     return SourceGenerationBinding(
         profile_path=path,
         declared_version=version,
@@ -106,54 +102,48 @@ def _binding(
     )
 
 
-def _identity(source: SourceGenerationBinding) -> ProfileGenerationIdentity:
-    version = DraftVersion.from_draft_label(source.declared_version)
-    assert version is not None
+def _identity(binding: SourceGenerationBinding) -> ProfileGenerationIdentity:
+    parsed = DraftVersion.from_draft_label(binding.declared_version)
+    assert parsed is not None
     return ProfileGenerationIdentity(
-        path=source.profile_path,
-        version=version,
-        declared_version=source.declared_version,
-        specification_revision=source.specification_revision,
-        specification_source=source.specification_source,
-        content_sha256=source.content_sha256,
-        temporary=source.temporary,
+        path=binding.profile_path,
+        version=parsed,
+        declared_version=binding.declared_version,
+        specification_revision=binding.specification_revision,
+        specification_source=binding.specification_source,
+        content_sha256=binding.content_sha256,
+        temporary=binding.temporary,
     )
 
 
-def _required(
-    obligation_id: str = "required:src/a.py",
-    *,
-    path: str = "src/a.py",
-    declaration_id: str = "core",
-    resolved: bool = False,
-    target_status: TargetCompatibility = TargetCompatibility.NOT_EVALUATED,
-) -> RequiredWorkElement:
+def _required() -> RequiredWorkElement:
     return RequiredWorkElement(
-        id=obligation_id,
-        path=path,
-        source_declaration_id=declaration_id,
+        id="required:src/a.py",
+        path="src/a.py",
+        source_declaration_id="core",
         source_classification="PRODUCT",
         selector="src/**",
         evidence=EvidenceCorrelation((), (), ()),
-        target_status=target_status,
-        resolved=resolved,
+        target_status=TargetCompatibility.NOT_EVALUATED,
+        resolved=False,
     )
 
 
 def _analysis(
-    source: SourceGenerationBinding,
+    binding: SourceGenerationBinding,
     root: Path,
     *,
-    required_items: tuple[RequiredWorkElement, ...] = (),
+    required: tuple[RequiredWorkElement, ...],
 ) -> MigrationAnalysis:
     snapshot = capture_snapshot(root)
-    resolved = sum(item.resolved for item in required_items)
+    assert not snapshot.observation_errors
+    resolved = sum(item.resolved for item in required)
     return MigrationAnalysis(
-        source_generation=source,
+        source_generation=binding,
         repository_head=snapshot.head,
         repository_status_fingerprint=snapshot.status_fingerprint,
         repository_content_fingerprint=snapshot.tracked_content_fingerprint,
-        required=required_items,
+        required=required,
         removals=(),
         async_targets=(),
         ambiguous=(),
@@ -161,192 +151,111 @@ def _analysis(
         architecture_findings=(),
         issues=(),
         completion=SourceMigrationCompletion(
-            required_total=len(required_items),
+            required_total=len(required),
             required_resolved=resolved,
-            required_unresolved=len(required_items) - resolved,
+            required_unresolved=len(required) - resolved,
             removal_count=0,
             async_count=0,
         ),
     )
 
 
-def _accepted_delta(
-    source: SourceGenerationBinding,
-    analysis_digest: str,
-    *,
-    entity_id: str = "core",
-    decision_id: str = "decision:core",
-) -> AcceptedDeltaBundle:
-    delta = TargetDelta.build(
+def _component_add_delta() -> TargetDelta:
+    return TargetDelta.build(
         entity_kind=TargetEntityKind.COMPONENT,
-        entity_id=entity_id,
+        entity_id="core",
         change_kind=DeltaChangeKind.ADD,
         before=None,
         after={
-            "id": entity_id,
+            "id": "core",
             "classification": "PRODUCT",
             "include": ["src/**"],
-            "purpose": "runtime",
         },
+        obligation_ids=("required:src/a.py",),
     )
+
+
+def _accepted_set(analysis: MigrationAnalysis, *, decision_id: str = "ADR-fixture"):
     proposal = ProposalBundle.build(
-        source_generation=source,
-        analysis_digest=analysis_digest,
-        deltas=(delta,),
-        purpose=(ProposalPurpose.REQUIRED,),
-        rationale="fixture required delta",
+        source_generation=analysis.source_generation,
+        analysis_digest=analysis.deterministic_digest,
+        deltas=(_component_add_delta(),),
+        purpose=(ProposalPurpose.REQUIRED_MIGRATION,),
+        rationale="WU-07 fixture accepted migration delta",
     )
-    return AcceptedDeltaBundle.from_proposal(proposal, decision_id=decision_id)
+    accepted = AcceptedDeltaBundle.from_proposal(proposal, decision_id=decision_id)
+    return derive_source_proposals(analysis, accepted=(accepted,))
 
 
-def _build_fixture(tmp_path: Path):
-    root = tmp_path / "repo"
+def _simple_bound_fixture(root: Path):
     _init_git_repository(root)
     (root / "src").mkdir()
-    (root / "src/a.py").write_text("VALUE = 1\n", encoding="utf-8")
-    canonical_path = _write_yaml(root / "ptsip.yaml", _profile_payload("0.3.6-draft", "6" * 40))
+    (root / "src" / "a.py").write_text("VALUE = 1\n", encoding="utf-8")
+    canonical_path = root / "ptsip.yaml"
+    _write_yaml(canonical_path, _profile_payload("0.3.6-draft", "rev6"))
     _commit_fixture(root)
 
-    source = _binding(
-        "ptsip.yaml",
-        "0.3.6-draft",
-        "6" * 40,
-        _sha256(canonical_path),
-        temporary=False,
+    binding = _binding("ptsip.yaml", "0.3.6-draft", "rev6", _sha256(canonical_path), temporary=False)
+    analysis = _analysis(binding, root, required=(_required(),))
+    proposal_set = _accepted_set(analysis)
+    identity = _identity(binding)
+    transition = ProfileTransitionState(
+        mode="SIMPLE",
+        canonical_source=identity,
+        temporary_profiles=(),
+        final_point=None,
+        ordered_sources=(identity,),
+        snapshot=None,
     )
-    analysis = _analysis(source, root, required_items=(_required(),))
-    proposals = derive_source_proposals(analysis)
-    accepted = _accepted_delta(source, analysis.deterministic_digest)
-    proposals = proposals.__class__(
-        source_generation=proposals.source_generation,
-        analysis_digest=proposals.analysis_digest,
-        suggested=proposals.suggested,
-        accepted=(accepted,),
-        unresolved=proposals.unresolved,
-        no_change_obligation_ids=proposals.no_change_obligation_ids,
-        ignored_async_ids=proposals.ignored_async_ids,
-        issues=proposals.issues,
-    )
-    state = ProfileTransitionState(
-        canonical=_identity(source),
-        temporaries=(),
-        all_generations=(_identity(source),),
-        issues=(),
-    )
-    target_path = root / "ptsip_0.3.7.yaml"
-    target_payload = _profile_payload("0.3.7-draft", "7" * 40)
-    _write_yaml(target_path, target_payload)
-    final_source = _binding(
-        "ptsip_0.3.7.yaml",
-        "0.3.7-draft",
-        "7" * 40,
-        _sha256(target_path),
-        temporary=True,
-    )
-    state = ProfileTransitionState(
-        canonical=state.canonical,
-        temporaries=(_identity(final_source),),
-        all_generations=(state.canonical, _identity(final_source)),
-        issues=(),
-    )
-    final_point = target_payload
     plan = build_final_point_convergence_plan(
-        state,
+        transition,
+        (analysis,),
+        (proposal_set,),
+        target_draft_version="0.3.7-draft",
+        target_specification_revision="rev7",
+    )
+    assert plan.preview.ready_for_wu07
+    bound = bind_execution_plan(
+        root,
+        plan,
         {"ptsip.yaml": analysis},
-        {"ptsip.yaml": proposals},
-        final_point_payload=final_point,
-        final_point_path="ptsip_0.3.7.yaml",
+        {"ptsip.yaml": proposal_set},
     )
-    return root, source, analysis, proposals, plan
-
-
-def test_execution_requires_explicit_authorization_before_apply(tmp_path: Path) -> None:
-    root, _source, analysis, proposals, plan = _build_fixture(tmp_path)
-    bound = bind_execution_plan(root, plan, {"ptsip.yaml": analysis}, {"ptsip.yaml": proposals})
     ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
-
     proof = build_authorization_proof(
         bound,
-        decision_ids=("decision:core",),
-        authority_revision="owner:test",
+        decision_ids=("ADR-fixture",),
+        authority_revision="authority-rev-1",
     )
     authorized = authorize_execution(bound, proof, ledger)
+    return bound, authorized, ledger
+
+
+def _complete_proof(source_path: str, _final_sha: str, analysis_digest: str) -> SourceCompletionProof:
+    return SourceCompletionProof(
+        source_path=source_path,
+        analysis_digest=analysis_digest,
+        required_total=1,
+        required_unresolved=0,
+        target_valid=True,
+        evidence=("fixture-post-apply-analysis",),
+    )
+
+
+def test_fixture_simple_transition_runs_authorized_apply_and_guarded_promotion(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _bound, authorized, ledger = _simple_bound_fixture(root)
+
     verified = verify_source_preconditions(root, authorized, 0, ledger)
-    applied = apply_required_deltas(root, verified, ledger)
+    seed = _profile_payload("0.3.7-draft", "rev7")
+    seed["x-fixture-metadata"] = {"preserve": ["alpha", "beta"]}
+    applied = apply_required_deltas(root, verified, ledger, planned_final_point_seed=seed)
 
-    assert applied.applied_delta_ids
-    assert ledger.records[-1].phase is ExecutionPhase.FINAL_POINT_APPLIED
+    payload = yaml.safe_load((root / "ptsip_0.3.7.yaml").read_text(encoding="utf-8"))
+    assert payload["x-fixture-metadata"] == {"preserve": ["alpha", "beta"]}
+    assert payload["components"][0]["id"] == "core"
 
-
-def test_stale_repository_is_rejected_before_apply(tmp_path: Path) -> None:
-    root, _source, analysis, proposals, plan = _build_fixture(tmp_path)
-    bound = bind_execution_plan(root, plan, {"ptsip.yaml": analysis}, {"ptsip.yaml": proposals})
-    ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
-    proof = build_authorization_proof(
-        bound,
-        decision_ids=("decision:core",),
-        authority_revision="owner:test",
-    )
-    authorized = authorize_execution(bound, proof, ledger)
-
-    (root / "src/a.py").write_text("VALUE = 2\n", encoding="utf-8")
-
-    with pytest.raises(ExecutionStateError, match="Repository changed"):
-        verify_source_preconditions(root, authorized, 0, ledger)
-
-
-def test_complete_source_requires_completion_proof(tmp_path: Path) -> None:
-    root, _source, analysis, proposals, plan = _build_fixture(tmp_path)
-    bound = bind_execution_plan(root, plan, {"ptsip.yaml": analysis}, {"ptsip.yaml": proposals})
-    ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
-    proof = build_authorization_proof(
-        bound,
-        decision_ids=("decision:core",),
-        authority_revision="owner:test",
-    )
-    authorized = authorize_execution(bound, proof, ledger)
-    verified = verify_source_preconditions(root, authorized, 0, ledger)
-    applied = apply_required_deltas(root, verified, ledger)
-
-    def completion(source_path: str, _final_sha: str, analysis_digest: str) -> SourceCompletionProof:
-        return SourceCompletionProof(
-            source_path=source_path,
-            analysis_digest=analysis_digest,
-            required_total=1,
-            required_unresolved=0,
-            target_valid=True,
-            evidence=("fixture",),
-        )
-
-    reanalyzed = reanalyze_source(applied, completion, ledger)
-    completed = complete_source(reanalyzed, ledger)
-    assert completed.reanalyzed.proof.complete
-
-
-def test_promotion_requires_exact_final_state_and_preserves_audit(tmp_path: Path) -> None:
-    root, _source, analysis, proposals, plan = _build_fixture(tmp_path)
-    bound = bind_execution_plan(root, plan, {"ptsip.yaml": analysis}, {"ptsip.yaml": proposals})
-    ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
-    proof = build_authorization_proof(
-        bound,
-        decision_ids=("decision:core",),
-        authority_revision="owner:test",
-    )
-    authorized = authorize_execution(bound, proof, ledger)
-    verified = verify_source_preconditions(root, authorized, 0, ledger)
-    applied = apply_required_deltas(root, verified, ledger)
-
-    def completion(source_path: str, _final_sha: str, analysis_digest: str) -> SourceCompletionProof:
-        return SourceCompletionProof(
-            source_path=source_path,
-            analysis_digest=analysis_digest,
-            required_total=1,
-            required_unresolved=0,
-            target_valid=True,
-            evidence=("fixture",),
-        )
-
-    reanalyzed = reanalyze_source(applied, completion, ledger)
+    reanalyzed = reanalyze_source(applied, _complete_proof, ledger)
     completed = complete_source(reanalyzed, ledger)
     canonical_complete = finalize_source(root, completed, ledger)
     ready = prepare_promotion(root, canonical_complete, ledger)
@@ -355,42 +264,147 @@ def test_promotion_requires_exact_final_state_and_preserves_audit(tmp_path: Path
 
     assert isinstance(post, PostPromotionVerifiedState)
     assert not (root / "ptsip_0.3.7.yaml").exists()
-    canonical = yaml.safe_load((root / "ptsip.yaml").read_text(encoding="utf-8"))
-    assert canonical["ptsip"]["version"] == "0.3.7-draft"
-    assert ledger.verify_integrity()
+    canonical_payload = yaml.safe_load((root / "ptsip.yaml").read_text(encoding="utf-8"))
+    assert canonical_payload["ptsip"]["version"] == "0.3.7-draft"
+    assert canonical_payload["ptsip"]["specification"]["revision"] == "rev7"
+    assert [row.phase for row in ledger.read_all()][-1] == ExecutionPhase.POST_PROMOTION_VERIFIED
 
 
-def test_ledger_tampering_is_detected(tmp_path: Path) -> None:
-    root, _source, analysis, proposals, plan = _build_fixture(tmp_path)
-    bound = bind_execution_plan(root, plan, {"ptsip.yaml": analysis}, {"ptsip.yaml": proposals})
-    ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
-    proof = build_authorization_proof(
-        bound,
-        decision_ids=("decision:core",),
-        authority_revision="owner:test",
+def test_authorization_requires_exact_accepted_decision_set(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    bound, _authorized, _ledger = _simple_bound_fixture(root)
+
+    with pytest.raises(ExecutionStateError, match="exactly match"):
+        build_authorization_proof(
+            bound,
+            decision_ids=(),
+            authority_revision="authority-rev-1",
+        )
+
+
+def test_stale_source_blocks_precondition_verification(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _bound, authorized, ledger = _simple_bound_fixture(root)
+    (root / "ptsip.yaml").write_text((root / "ptsip.yaml").read_text(encoding="utf-8") + "\n", encoding="utf-8")
+
+    with pytest.raises(ExecutionStateError, match="Source profile changed"):
+        verify_source_preconditions(root, authorized, 0, ledger)
+
+
+def test_incomplete_required_work_blocks_source_completion(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _bound, authorized, ledger = _simple_bound_fixture(root)
+    verified = verify_source_preconditions(root, authorized, 0, ledger)
+    applied = apply_required_deltas(
+        root,
+        verified,
+        ledger,
+        planned_final_point_seed=_profile_payload("0.3.7-draft", "rev7"),
     )
-    authorize_execution(bound, proof, ledger)
 
-    first = ledger.path.read_text(encoding="utf-8")
-    payload = json.loads(first.splitlines()[0])
+    def incomplete(source_path: str, _final_sha: str, analysis_digest: str) -> SourceCompletionProof:
+        return SourceCompletionProof(source_path, analysis_digest, 1, 1, True, ("still-required",))
+
+    reanalyzed = reanalyze_source(applied, incomplete, ledger)
+    with pytest.raises(ExecutionStateError, match="Required Work Elements are not complete"):
+        complete_source(reanalyzed, ledger)
+    assert (root / "ptsip.yaml").exists()
+
+
+def test_post_apply_completion_proof_must_match_bound_analysis_digest(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _bound, authorized, ledger = _simple_bound_fixture(root)
+    verified = verify_source_preconditions(root, authorized, 0, ledger)
+    applied = apply_required_deltas(
+        root,
+        verified,
+        ledger,
+        planned_final_point_seed=_profile_payload("0.3.7-draft", "rev7"),
+    )
+
+    def wrong_analysis(source_path: str, _final_sha: str, _analysis_digest: str) -> SourceCompletionProof:
+        return SourceCompletionProof(source_path, "wrong-analysis-digest", 1, 0, True, ())
+
+    with pytest.raises(ExecutionStateError, match="analysis digest"):
+        reanalyze_source(applied, wrong_analysis, ledger)
+
+
+def test_recovery_rejects_uncheckpointed_planned_final_point(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    bound, _authorized, ledger = _simple_bound_fixture(root)
+    _write_yaml(root / "ptsip_0.3.7.yaml", _profile_payload("0.3.7-draft", "rev7"))
+
+    inspection = inspect_recovery(root, bound, ledger)
+    assert not inspection.safe_to_resume
+    assert any("without a persisted mutation checkpoint" in item for item in inspection.reasons)
+
+
+def test_checkpoint_ledger_detects_tampering(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _bound, _authorized, ledger = _simple_bound_fixture(root)
+    first = sorted(ledger.root.glob("*.json"))[0]
+    payload = json.loads(first.read_text(encoding="utf-8"))
     payload["payload"] = {"tampered": True}
-    ledger.path.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+    first.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
 
-    with pytest.raises(LedgerIntegrityError):
-        ledger.load()
+    with pytest.raises(LedgerIntegrityError, match="digest"):
+        ledger.read_all()
 
 
-def test_recovery_inspection_requires_safe_resume_boundary(tmp_path: Path) -> None:
-    root, _source, analysis, proposals, plan = _build_fixture(tmp_path)
-    bound = bind_execution_plan(root, plan, {"ptsip.yaml": analysis}, {"ptsip.yaml": proposals})
-    ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
-    proof = build_authorization_proof(
-        bound,
-        decision_ids=("decision:core",),
-        authority_revision="owner:test",
+def test_wrong_source_order_is_rejected_before_mutation(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _init_git_repository(root)
+    canonical_path = root / "ptsip.yaml"
+    temporary_path = root / "ptsip_0.3.6.yaml"
+    _write_yaml(canonical_path, _profile_payload("0.3.4-draft", "rev4"))
+    _write_yaml(temporary_path, _profile_payload("0.3.6-draft", "rev6"))
+    _commit_fixture(root)
+
+    canonical_binding = _binding("ptsip.yaml", "0.3.4-draft", "rev4", _sha256(canonical_path), temporary=False)
+    temporary_binding = _binding(
+        "ptsip_0.3.6.yaml",
+        "0.3.6-draft",
+        "rev6",
+        _sha256(temporary_path),
+        temporary=True,
     )
-    authorize_execution(bound, proof, ledger)
+    canonical_analysis = _analysis(canonical_binding, root, required=())
+    temporary_analysis = _analysis(temporary_binding, root, required=())
+    canonical_set = derive_source_proposals(canonical_analysis)
+    temporary_set = derive_source_proposals(temporary_analysis)
+    canonical_identity = _identity(canonical_binding)
+    temporary_identity = _identity(temporary_binding)
+    transition = ProfileTransitionState(
+        mode="SEQUENTIAL",
+        canonical_source=canonical_identity,
+        temporary_profiles=(temporary_identity,),
+        final_point=None,
+        ordered_sources=(temporary_identity, canonical_identity),
+        snapshot=None,
+    )
+    plan = build_final_point_convergence_plan(
+        transition,
+        (canonical_analysis, temporary_analysis),
+        (canonical_set, temporary_set),
+        target_draft_version="0.4.0-draft",
+        target_specification_revision="rev40",
+    )
+    assert plan.preview.ready_for_wu07
+    bound = bind_execution_plan(
+        root,
+        plan,
+        {
+            "ptsip.yaml": canonical_analysis,
+            "ptsip_0.3.6.yaml": temporary_analysis,
+        },
+        {
+            "ptsip.yaml": canonical_set,
+            "ptsip_0.3.6.yaml": temporary_set,
+        },
+    )
+    ledger = CheckpointLedger.for_repository(root, bound.plan_digest)
+    proof = build_authorization_proof(bound, decision_ids=(), authority_revision="authority-rev-1")
+    authorized = authorize_execution(bound, proof, ledger)
 
-    recovery = inspect_recovery(root, bound, ledger)
-    assert recovery.safe_to_resume
-    assert recovery.next_source_index == 0
+    with pytest.raises(ExecutionStateError, match="not the next source"):
+        verify_source_preconditions(root, authorized, 1, ledger)
