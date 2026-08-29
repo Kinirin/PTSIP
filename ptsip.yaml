@@ -212,11 +212,13 @@ components:
       - AUTOMATION
     include:
       - ".github/workflows/tooling-test.yml"
+      - ".github/workflows/readme-translation.yml"
+      - ".github/scripts/sync_readme_argos.py"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"
       - ".github/scripts/wu04g_bridge_log.ps1"
       - ".codex/openai-local-bridge/**"
-    purpose: development_verification_and_repository_automation
+    purpose: development_verification_repository_and_localization_automation
     shipped: false
     runtime_required: false
     executable: true
@@ -225,6 +227,8 @@ components:
     analysis_inputs:
       - "tests/**"
       - "src/**"
+      - "README.md"
+      - "README.ko.md"
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
