@@ -9,7 +9,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 def _json(path: str) -> dict[str, object]:
@@ -292,7 +292,7 @@ def test_artifact_evidence_schema_separates_product_owner_from_delivery_producer
         "artifact_id": "installer",
         "classification": "PRODUCT",
         "producer_component": "installer-builder",
-        "artifact_type": "installer",
+        "artifact_type": "fixture",
         "shipping_scope": "customer-distribution",
         "contents": {
             "paths": ["app/runtime.bin"],
