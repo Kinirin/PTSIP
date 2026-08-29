@@ -106,7 +106,7 @@ def test_product_to_development_tooling_unknown_phase_is_blocking_diagnostic(tmp
     assert diagnostic["target_component"] == "tools"
 
     schema = json.loads(
-        (Path(__file__).resolve().parents[2] / "schemas" / "ptsip-diagnostic.schema.json").read_text(encoding="utf-8")
+        (Path(__file__).resolve().parents[3] / "schemas" / "ptsip-diagnostic.schema.json").read_text(encoding="utf-8")
     )
     Draft202012Validator(schema).validate(diagnostic)
 
