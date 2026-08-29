@@ -1,0 +1,110 @@
+name: readme-translation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - README.md
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-translation-main
+  cancel-in-progress: true
+
+jobs:
+  sync-localized-readmes:
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Prepare persistent Argos runtime
+        shell: powershell
+        run: |
+          $launcher = Get-Command py -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
+          }
+
+          $hostPython = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $hostPython) {
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
+          }
+
+          $runtimeRoot = Join-Path $env:USERPROFILE ".ptsip\readme-translation"
+          $venvRoot = Join-Path $runtimeRoot "venv-py314"
+          $venvPython = Join-Path $venvRoot "Scripts\python.exe"
+          $modelRoot = Join-Path $runtimeRoot "argos-packages"
+
+          New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
+          New-Item -ItemType Directory -Force -Path $modelRoot | Out-Null
+
+          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
+            & $hostPython -m venv $venvRoot
+            if ($LASTEXITCODE -ne 0) {
+              throw "Failed to create persistent Argos virtual environment at $venvRoot."
+            }
+          }
+
+          $installedVersion = (& $venvPython -c "import importlib.metadata; print(importlib.metadata.version('argostranslate'))" 2>$null).Trim()
+          if ($LASTEXITCODE -ne 0 -or $installedVersion -ne "1.11.0") {
+            & $venvPython -m pip install --upgrade pip
+            if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip for Argos runtime." }
+            & $venvPython -m pip install --upgrade "argostranslate==1.11.0"
+            if ($LASTEXITCODE -ne 0) { throw "Failed to install argostranslate==1.11.0." }
+          }
+
+          & $venvPython -c "import argostranslate, importlib.metadata; print('Argos Translate ' + importlib.metadata.version('argostranslate'))"
+          if ($LASTEXITCODE -ne 0) { throw "Argos runtime verification failed." }
+
+          "ARGOS_PACKAGES_DIR=$modelRoot" >> $env:GITHUB_ENV
+          "ARGOS_DEVICE_TYPE=cpu" >> $env:GITHUB_ENV
+          "ARGOS_CHUNK_TYPE=MINISBD" >> $env:GITHUB_ENV
+          "TRANSLATION_PYTHON=$venvPython" >> $env:GITHUB_ENV
+
+      - name: Generate localized README files
+        shell: powershell
+        run: |
+          & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --source README.md --target "ko:README.ko.md"
+          if ($LASTEXITCODE -ne 0) {
+            throw "README translation or validation failed."
+          }
+
+      - name: Commit synchronized translations
+        shell: powershell
+        run: |
+          git diff --check
+          if ($LASTEXITCODE -ne 0) {
+            throw "Generated translation contains whitespace errors."
+          }
+
+          git add README.ko.md
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Localized README files are already synchronized."
+            exit 0
+          }
+
+          git fetch origin main
+          if ($LASTEXITCODE -ne 0) {
+            throw "Unable to refresh origin/main before committing translation."
+          }
+
+          $localSha = (git rev-parse HEAD).Trim()
+          $remoteSha = (git rev-parse origin/main).Trim()
+          if ($localSha -ne $remoteSha) {
+            throw "main moved from $localSha to $remoteSha while translation was running; rerun against the new main instead of overwriting newer work."
+          }
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: sync localized README via Argos"
+          git push origin HEAD:main
