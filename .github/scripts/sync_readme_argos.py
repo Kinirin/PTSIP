@@ -25,6 +25,35 @@ LANGUAGE_METADATA = {
         ),
     },
 }
+REVIEWED_TRANSLATIONS = {
+    "ko": {
+        "**Localized documentation:** `README.md` is canonical. Localized README files are regenerated on `main` by the self-hosted Argos Translate workflow; if a translation conflicts with this file, this file governs.": (
+            "**현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 "
+            "self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 "
+            "충돌하면 이 파일을 기준으로 합니다."
+        ),
+        "Tool `0.3.7` now carries the WU-12 implementation and frozen Specification binding on `main` as the release candidate. The WU-12 implementation is complete, but any repository change after exact-SHA verification requires a fresh self-hosted workflow pass before release preparation. The latest published PyPI package remains Tool `0.3.5` until the publication boundary succeeds.": (
+            "Tool `0.3.7`은 현재 `main`의 릴리스 후보에 WU-12 구현과 동결된 Specification binding을 "
+            "포함합니다. WU-12 구현은 완료되었지만 exact-SHA 검증 이후 저장소가 변경되면 릴리스 "
+            "준비 전에 새로운 self-hosted workflow 검증을 다시 통과해야 합니다. 공개 경계가 성공하기 "
+            "전까지 PyPI의 최신 공개 패키지는 Tool `0.3.5`입니다."
+        ),
+        "The WU-12 implementation and immutable Specification freeze are complete. The current `main` source state requires a fresh exact-SHA `tooling-test` after the repository CI infrastructure changes made during release handoff.": (
+            "WU-12 구현과 불변 Specification freeze는 완료되었습니다. 릴리스 handoff 중 repository CI "
+            "infrastructure가 변경되었으므로 현재 `main` source state는 새로운 exact-SHA "
+            "`tooling-test` 검증이 필요합니다."
+        ),
+        "Earlier workflow evidence remains historical evidence for its own SHA and does not verify a later source state.": (
+            "이전 workflow evidence는 해당 SHA에 대한 역사적 증거로만 유지되며 이후 source state를 "
+            "검증하지 않습니다."
+        ),
+        "PTSIP remains experimental. Tool `0.3.7` is an unpublished release candidate until the current exact-main completion gate succeeds. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).": (
+            "PTSIP는 여전히 experimental 단계입니다. 현재 exact-main completion gate가 성공하기 전까지 "
+            "Tool `0.3.7`은 공개되지 않은 release candidate입니다. 과거 Tool release와 Specification "
+            "기록은 [`releasenote/`](releasenote/) 아래에 보존됩니다."
+        ),
+    },
+}
 NORMATIVE = ("MUST NOT", "SHOULD NOT", "MUST", "SHOULD", "MAY")
 PROPER_TERMS = (
     "Primary Lifecycle Ownership and Responsibility Isolation Policy",
@@ -67,6 +96,8 @@ TABLE_DIVIDER = re.compile(r"^\s*:?-{3,}:?\s*$")
 
 
 class Translator(Protocol):
+    target: str
+
     def translate(self, text: str) -> str: ...
 
 
@@ -76,6 +107,7 @@ class ArgosTranslator:
         import argostranslate.translate as translate
         from packaging.version import Version
 
+        self.target = target
         installed = package.get_installed_packages()
         if not any(
             pkg.type == "translate"
@@ -216,6 +248,19 @@ def block_key(block: str) -> tuple[object, ...]:
     return (kind, len(lines), tokens)
 
 
+def compatible_blocks(source: str, localized: str) -> bool:
+    source_type = block_type(source)
+    if source_type != block_type(localized):
+        return False
+    if source_type == "fence":
+        return source == localized
+    if source_type == "heading":
+        return heading_level(source) == heading_level(localized)
+    if source_type == "table":
+        return len(source.splitlines()) == len(localized.splitlines())
+    return len(source.splitlines()) == len(localized.splitlines())
+
+
 def git_text(ref: str, path: Path) -> str:
     result = subprocess.run(
         ["git", "show", f"{ref}:{path.as_posix()}"],
@@ -264,16 +309,34 @@ def aligned_baseline(
     )
     mapping: dict[int, str] = {}
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-        if tag != "equal":
+        if tag == "equal":
+            for source_index, localized_index in zip(
+                range(i1, i2), range(j1, j2), strict=True
+            ):
+                mapping[source_index] = localized_blocks[localized_index]
+            continue
+
+        if tag == "replace" and (i2 - i1) == (j2 - j1):
+            accepted = 0
+            for source_index, localized_index in zip(
+                range(i1, i2), range(j1, j2), strict=True
+            ):
+                if compatible_blocks(
+                    source_blocks[source_index], localized_blocks[localized_index]
+                ):
+                    mapping[source_index] = localized_blocks[localized_index]
+                    accepted += 1
             print(
-                "Translation-memory alignment gap: "
-                f"source[{i1}:{i2}] <-> localized[{j1}:{j2}] ({tag})."
+                "Translation-memory positional recovery: "
+                f"source[{i1}:{i2}] <-> localized[{j1}:{j2}], "
+                f"accepted {accepted}/{i2 - i1}."
             )
             continue
-        for source_index, localized_index in zip(
-            range(i1, i2), range(j1, j2), strict=True
-        ):
-            mapping[source_index] = localized_blocks[localized_index]
+
+        print(
+            "Translation-memory alignment gap: "
+            f"source[{i1}:{i2}] <-> localized[{j1}:{j2}] ({tag})."
+        )
 
     coverage = len(mapping) / max(len(source_blocks), 1)
     print(
@@ -288,6 +351,10 @@ def aligned_baseline(
     return source_blocks, mapping
 
 
+def reviewed(text: str, translator: Translator) -> str | None:
+    return REVIEWED_TRANSLATIONS.get(translator.target, {}).get(text)
+
+
 def translate_fragment(text: str, translator: Translator) -> str:
     if not re.search(r"[A-Za-z]", text):
         return text
@@ -300,6 +367,9 @@ def translate_fragment(text: str, translator: Translator) -> str:
 
 
 def translate_natural(text: str, translator: Translator) -> str:
+    fixed = reviewed(text, translator)
+    if fixed is not None:
+        return fixed
     if not re.search(r"[A-Za-z]", text):
         return text
     output: list[str] = []
@@ -331,6 +401,9 @@ def translate_table_line(line: str, translator: Translator) -> str:
 
 
 def translate_line(line: str, translator: Translator) -> str:
+    fixed = reviewed(line, translator)
+    if fixed is not None:
+        return fixed
     if not line.strip() or FENCE.match(line):
         return line
     heading = HEADING.match(line)
@@ -352,6 +425,9 @@ def translate_line(line: str, translator: Translator) -> str:
 
 
 def translate_block(block: str, translator: Translator) -> str:
+    fixed = reviewed(block, translator)
+    if fixed is not None:
+        return fixed
     if block_type(block) == "fence" or block.startswith("# "):
         return block
     return "\n".join(translate_line(line, translator) for line in block.splitlines())
@@ -363,6 +439,9 @@ def translate_changed_block(
     previous_localized: str,
     translator: Translator,
 ) -> str:
+    fixed = reviewed(current, translator)
+    if fixed is not None:
+        return fixed
     if block_type(current) == "fence" or current.startswith("# "):
         return current
     old_source = previous_source.splitlines()
