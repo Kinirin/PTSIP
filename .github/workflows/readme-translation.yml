@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - README.md
+      - .github/workflows/readme-translation.yml
+      - .github/scripts/sync_readme_argos.py
   workflow_dispatch:
 
 permissions:
