@@ -26,7 +26,7 @@ from ptsip.cli import main
 from ptsip.inspection.components import ComponentCandidate
 from ptsip.validation.components import AMBIGUOUS, resolve_candidate_coverage
 from ptsip.validation.templates import materialize_profile
-from _wu04g_support import (
+from _test_support import (
     associated_artifact_payload,
     canonical_v2_answer,
     clarification_answer_text,
@@ -537,7 +537,6 @@ class TestG3HybridSafeApply:
         profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
         before = profile.read_text(encoding="utf-8")
         invalid = _g3_answer(classification="TOOLCHAIN")
-
         with pytest.raises(ValueError, match="Projected PTSIP profile is invalid"):
             prepare_local_profile(repo, "tools", ["tools/**"], invalid, profile)
 
