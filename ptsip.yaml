@@ -347,6 +347,26 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
 
+  - id: repository-test-mode-control-plane
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - IMPLEMENTATION
+      - VERIFICATION
+      - CONFIGURATION
+    include:
+      - ".github/test_modes.yaml"
+      - ".github/scripts/validate_test_modes.py"
+      - "tests/ptsip/test_modes/**"
+    purpose: test_mode_execution_contract_and_registry_validation
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+    analysis_inputs:
+      - "ptsip.yaml"
+      - "tests/**"
+
   - id: repository-release-automation
     classification: DELIVERY
     roles:
@@ -547,6 +567,11 @@ relationships:
     from: repository-architecture-verification
     to: ptsip-governance-support
     type: VERIFIES
+
+  - id: test-mode-control-plane-reads-architecture
+    from: repository-test-mode-control-plane
+    to: repository-architecture
+    type: READS
 
   - id: repository-release-verification-verifies-distribution
     from: repository-release-verification
