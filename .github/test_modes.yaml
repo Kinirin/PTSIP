@@ -6,4 +6,44 @@
 #   duplicated here.
 # - execution and watch paths are execution-selection data only.
 version: 1
-modes: []
+
+modes:
+  - id: ptsip-migration
+    component_ref: ptsip-migration-verification
+    execution:
+      pytest:
+        - tests/ptsip/migration
+    watch:
+      - src/ptsip/migration/**
+      - src/ptsip/evidence/**
+      - src/ptsip/source_compat/**
+      - tests/ptsip/migration/**
+
+  - id: ptsip-evidence
+    component_ref: ptsip-evidence-verification
+    execution:
+      pytest:
+        - tests/ptsip/evidence
+    watch:
+      - src/ptsip/evidence/**
+      - tests/ptsip/evidence/**
+
+  - id: ptsip-source-compat
+    component_ref: ptsip-source-compat-verification
+    execution:
+      pytest:
+        - tests/ptsip/source_compat
+    watch:
+      - src/ptsip/source_compat/**
+      - tests/ptsip/source_compat/**
+      - src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json
+      - src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json
+
+  - id: vpms
+    component_ref: vpms-verification
+    execution:
+      pytest:
+        - tests/vpms
+    watch:
+      - src/vpms/**
+      - tests/vpms/**
