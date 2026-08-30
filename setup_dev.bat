@@ -1,11 +1,9 @@
 @echo off
-:: UTF-8로 코드페이지 변경 (한글 깨짐 방지)
 chcp 65001 >nul
 setlocal
-title Turbo System Environment Setup (.venv)
 
 echo ======================================================
-echo 🚀 Turbo System 작업 환경 구성을 시작합니다.
+echo PTSIP 작업 환경 구성을 시작합니다.
 echo ======================================================
 
 :: 1. 파이썬 설치 확인
@@ -47,7 +45,6 @@ python -c "import fastapi; print(f'- FastAPI 버전: {fastapi.__version__}')"
 
 echo.
 echo ======================================================
-echo ✅ 모든 설정이 완료되었습니다! 
 echo 이제 ".venv" 환경에서 안전하게 개발하실 수 있습니다.
 echo ======================================================
 pause
