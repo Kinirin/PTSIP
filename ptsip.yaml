@@ -356,8 +356,9 @@ components:
     include:
       - ".github/test_modes.yaml"
       - ".github/scripts/validate_test_modes.py"
+      - ".github/scripts/resolve_test_modes.py"
       - "tests/ptsip/test_modes/**"
-    purpose: test_mode_execution_contract_and_registry_validation
+    purpose: test_mode_execution_contract_registry_validation_and_selection_resolution
     shipped: false
     runtime_required: false
     executable: true
