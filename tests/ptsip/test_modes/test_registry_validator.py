@@ -7,8 +7,16 @@ import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
 VALIDATOR_PATH = REPO_ROOT / ".github" / "scripts" / "validate_test_modes.py"
 VALIDATOR = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
+REPOSITORY_MODE_KEYS = {"id", "component_ref", "execution", "watch"}
+EXPECTED_REPOSITORY_COMPONENT_REFS = {
+    "ptsip-migration": "ptsip-migration-verification",
+    "ptsip-evidence": "ptsip-evidence-verification",
+    "ptsip-source-compat": "ptsip-source-compat-verification",
+    "vpms": "vpms-verification",
+}
 
 
 def _write_profile(root: Path) -> None:
@@ -74,13 +82,52 @@ def _validate(root: Path) -> list[str]:
     return VALIDATOR(root / ".github" / "test_modes.yaml", root / "ptsip.yaml", root)
 
 
+def _repository_registry() -> dict[str, object]:
+    payload = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8-sig"))
+    assert isinstance(payload, dict)
+    return payload
+
+
 def test_repository_test_mode_registry_v1_is_valid() -> None:
     errors = VALIDATOR(
-        REPO_ROOT / ".github" / "test_modes.yaml",
+        REGISTRY_PATH,
         REPO_ROOT / "ptsip.yaml",
         REPO_ROOT,
     )
     assert errors == []
+
+
+def test_repository_test_mode_registry_phase3_contract() -> None:
+    registry = _repository_registry()
+    assert registry.get("version") == 1
+
+    modes = registry.get("modes")
+    assert isinstance(modes, list)
+    assert all(isinstance(mode, dict) for mode in modes)
+
+    modes_by_id = {mode.get("id"): mode for mode in modes}
+    assert set(modes_by_id) == set(EXPECTED_REPOSITORY_COMPONENT_REFS)
+    assert {
+        mode_id: mode.get("component_ref")
+        for mode_id, mode in modes_by_id.items()
+    } == EXPECTED_REPOSITORY_COMPONENT_REFS
+
+    pytest_targets: list[str] = []
+    for mode in modes_by_id.values():
+        assert set(mode) == REPOSITORY_MODE_KEYS
+
+        execution = mode.get("execution")
+        assert isinstance(execution, dict)
+        targets = execution.get("pytest")
+        assert isinstance(targets, list) and targets
+        assert all(isinstance(target, str) and target for target in targets)
+        pytest_targets.extend(targets)
+
+        watch = mode.get("watch")
+        assert isinstance(watch, list) and watch
+        assert all(isinstance(pattern, str) and pattern for pattern in watch)
+
+    assert len(pytest_targets) == len(set(pytest_targets))
 
 
 def test_valid_mode_resolves_declared_verification_component(tmp_path: Path) -> None:
