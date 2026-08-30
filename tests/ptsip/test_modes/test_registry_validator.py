@@ -124,10 +124,26 @@ def test_missing_pytest_target_is_rejected(tmp_path: Path) -> None:
 def test_duplicate_mode_id_is_rejected(tmp_path: Path) -> None:
     _write_profile(tmp_path)
     (tmp_path / "tests" / "product").mkdir(parents=True)
-    _write_registry(tmp_path, [_valid_mode(), _valid_mode()])
+    first = _valid_mode()
+    second = _valid_mode()
+    second["execution"] = {"pytest": ["tests/product/other"]}
+    (tmp_path / "tests" / "product" / "other").mkdir(parents=True)
+    _write_registry(tmp_path, [first, second])
 
     errors = _validate(tmp_path)
     assert any("duplicate Test Mode id" in error for error in errors)
+
+
+def test_duplicate_pytest_target_across_modes_is_rejected(tmp_path: Path) -> None:
+    _write_profile(tmp_path)
+    (tmp_path / "tests" / "product").mkdir(parents=True)
+    first = _valid_mode()
+    second = _valid_mode()
+    second["id"] = "product-secondary"
+    _write_registry(tmp_path, [first, second])
+
+    errors = _validate(tmp_path)
+    assert any("duplicates pytest target" in error for error in errors)
 
 
 def test_registry_cannot_duplicate_architecture_authority(tmp_path: Path) -> None:
