@@ -315,19 +315,17 @@ def analyze_clarifications(
             coverage = resolve_candidate_coverage(candidate, declared, associated_artifacts)
             if coverage.status in {COMPONENT_COVERED, ASSOCIATED_ARTIFACT_COVERED}:
                 continue
-            if coverage.status == AMBIGUOUS and _candidate_scope_is_fully_partitioned(
+            if _candidate_scope_is_fully_partitioned(
                 root,
                 candidate,
                 declared,
                 associated_artifacts,
             ):
                 continue
-            # Ambiguous effective selector coverage must reopen review unless the
-            # validated Responsibility Map already proves complete path-level
-            # partitioning of this coarse discovery candidate. Uncovered
-            # candidates may still use the declared component set so canonical
-            # best-coverage semantics remain centralized in generator_core's
-            # compatibility wrapper.
+            # Selector-level uncovered/ambiguous results still reopen review when
+            # the validated Responsibility Map cannot prove complete path-level
+            # ownership of this coarse discovery candidate. No owner is inferred
+            # from repository layout or evidence.
             request_components = [] if coverage.status == AMBIGUOUS else declared
             requests_list.extend(build_requests(identity, [candidate], request_components))
 
