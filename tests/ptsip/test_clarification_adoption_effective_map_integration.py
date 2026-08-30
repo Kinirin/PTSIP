@@ -389,7 +389,7 @@ class TestG2DecisionProtocolV2:
         request = ClarificationRequest(
             id="clr-test",
             component_id="tools",
-            include=("tools/**",),
+            include=("tools/**"],
             anchors=("top-level-tool-root",),
             evidence_ids=("root:tools",),
             missing_fields=("classification", "purpose", "shipped", "runtime_required", "executable"),
@@ -537,6 +537,7 @@ class TestG3HybridSafeApply:
         profile = write_profile(repo / "ptsip.yaml", template_profile_payload())
         before = profile.read_text(encoding="utf-8")
         invalid = _g3_answer(classification="TOOLCHAIN")
+
         with pytest.raises(ValueError, match="Projected PTSIP profile is invalid"):
             prepare_local_profile(repo, "tools", ["tools/**"], invalid, profile)
 
