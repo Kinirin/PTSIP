@@ -44,13 +44,31 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
 
 
-def test_routine_ci_derives_exact_sha_and_uses_self_hosted_python() -> None:
+def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(encoding="utf-8")
     assert "workflow_dispatch:" in workflow
-    assert "inputs:" not in workflow
+    assert "inputs:" in workflow
+    assert "scope:" in workflow
+    assert "default: selective" in workflow
+    assert "mode:" in workflow
+    assert "ptsip-migration" in workflow
+    assert "ptsip-evidence" in workflow
+    assert "ptsip-source-compat" in workflow
+    assert "vpms" in workflow
     assert "ref: ${{ github.sha }}" in workflow
     assert "py -3.14" in workflow
     assert "actions/setup-python@" not in workflow
+    assert "Resolve and run selected Test Modes" in workflow
+    assert "resolve_test_modes.py manual --mode $env:TEST_MODE" in workflow
+    assert "& python -m pytest -q @targets" in workflow
+    assert (
+        "      - name: Resolve and run selected Test Modes\n"
+        "        if: ${{ inputs.scope == 'selective' }}"
+    ) in workflow
+    assert (
+        "      - name: Run complete repository regression\n"
+        "        if: ${{ inputs.scope == 'full' }}"
+    ) in workflow
     assert "python -m pytest -q" in workflow
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
@@ -67,6 +85,10 @@ def test_routine_ci_derives_exact_sha_and_uses_self_hosted_python() -> None:
     assert "$conformExit -notin @(0, 6)" in workflow
     assert 'Write-Host "Artifact-aware conformance outcome: $($report.outcome)"\n          exit 0' in workflow
     assert "--force-reinstall --no-deps" in workflow
+    assert (
+        "      - name: Record successful exact-SHA tooling verification\n"
+        "        if: ${{ inputs.scope == 'full' }}"
+    ) in workflow
     assert 'context = "self-hosted/tooling-test"' in workflow
     assert "ptsip --version" in workflow
     assert "ptsip spec" in workflow
