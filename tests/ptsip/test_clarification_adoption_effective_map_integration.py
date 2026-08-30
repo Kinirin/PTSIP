@@ -389,7 +389,7 @@ class TestG2DecisionProtocolV2:
         request = ClarificationRequest(
             id="clr-test",
             component_id="tools",
-            include=("tools/**"],
+            include=("tools/**",),
             anchors=("top-level-tool-root",),
             evidence_ids=("root:tools",),
             missing_fields=("classification", "purpose", "shipped", "runtime_required", "executable"),
