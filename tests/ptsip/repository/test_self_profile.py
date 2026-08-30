@@ -80,7 +80,17 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert classifications["ptsip-embedded-contracts"] == "NEUTRAL_CONTRACT"
     assert classifications["ptsip-canonical-contracts"] == "NEUTRAL_CONTRACT"
     assert classifications["repository-architecture"] == "DEVELOPMENT_TOOLING"
-    assert classifications["repository-verification"] == "DEVELOPMENT_TOOLING"
+
+    assert classifications["ptsip-core-verification"] == "PRODUCT"
+    assert classifications["ptsip-evidence-verification"] == "PRODUCT"
+    assert classifications["ptsip-source-compat-verification"] == "PRODUCT"
+    assert classifications["ptsip-migration-verification"] == "PRODUCT"
+    assert classifications["vpms-verification"] == "PRODUCT"
+    assert classifications["ptsip-contract-verification"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-architecture-verification"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-release-verification"] == "DELIVERY"
+    assert classifications["repository-verification-support"] == "DEVELOPMENT_TOOLING"
+
     assert classifications["repository-release-automation"] == "DELIVERY"
     assert classifications["repository-ci"] == "DEVELOPMENT_TOOLING"
     assert classifications["repository-maintenance"] == "DEVELOPMENT_TOOLING"
@@ -92,6 +102,14 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         if isinstance(item, dict) and item.get("id")
     }
     assert artifacts["ptsip-governance-support"]["anchor"] == "ptsip-canonical-contracts"
+
+    components = {
+        item["id"]: item
+        for item in payload.get("components", [])
+        if isinstance(item, dict) and item.get("id")
+    }
+    assert components["repository-ci"]["roles"] == ["AUTOMATION"]
+    assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]
 
 
 def test_repository_self_profile_keeps_migration_subsystems_as_explicit_product_components() -> None:
@@ -132,9 +150,35 @@ def test_repository_self_profile_keeps_migration_subsystems_as_explicit_product_
         ("ptsip-canonical-contracts", "ptsip-evidence", "SPECIFIES"),
         ("ptsip-canonical-contracts", "ptsip-source-compat", "SPECIFIES"),
         ("ptsip-canonical-contracts", "ptsip-migration", "SPECIFIES"),
-        ("repository-verification", "ptsip-evidence", "VERIFIES"),
-        ("repository-verification", "ptsip-source-compat", "VERIFIES"),
-        ("repository-verification", "ptsip-migration", "VERIFIES"),
+        ("ptsip-evidence-verification", "ptsip-evidence", "VERIFIES"),
+        ("ptsip-source-compat-verification", "ptsip-source-compat", "VERIFIES"),
+        ("ptsip-migration-verification", "ptsip-migration", "VERIFIES"),
+    }
+    assert expected <= relationships
+
+
+def test_repository_self_profile_declares_target_oriented_verification_relationships() -> None:
+    payload = _profile()
+    relationships = {
+        (item.get("from"), item.get("to"), item.get("type"))
+        for item in payload.get("relationships", [])
+        if isinstance(item, dict)
+    }
+
+    expected = {
+        ("ptsip-core-verification", "ptsip-core", "VERIFIES"),
+        ("ptsip-evidence-verification", "ptsip-evidence", "VERIFIES"),
+        ("ptsip-source-compat-verification", "ptsip-source-compat", "VERIFIES"),
+        ("ptsip-migration-verification", "ptsip-migration", "VERIFIES"),
+        ("vpms-verification", "vpms", "VERIFIES"),
+        ("ptsip-contract-verification", "ptsip-canonical-contracts", "VERIFIES"),
+        ("ptsip-contract-verification", "ptsip-embedded-contracts", "VERIFIES"),
+        ("repository-architecture-verification", "repository-architecture", "VERIFIES"),
+        ("repository-architecture-verification", "ptsip-governance-support", "VERIFIES"),
+        ("repository-release-verification", "ptsip-distribution", "VERIFIES"),
+        ("repository-release-verification", "repository-release-automation", "VERIFIES"),
+        ("repository-release-verification", "repository-ci", "VERIFIES"),
+        ("repository-release-verification", "ptsip-embedded-contracts", "VERIFIES"),
     }
     assert expected <= relationships
 
