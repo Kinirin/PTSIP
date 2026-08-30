@@ -90,6 +90,7 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert classifications["repository-architecture-verification"] == "DEVELOPMENT_TOOLING"
     assert classifications["repository-release-verification"] == "DELIVERY"
     assert classifications["repository-verification-support"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-test-mode-control-plane"] == "DEVELOPMENT_TOOLING"
 
     assert classifications["repository-release-automation"] == "DELIVERY"
     assert classifications["repository-ci"] == "DEVELOPMENT_TOOLING"
@@ -110,6 +111,11 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     }
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]
     assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]
+    assert components["repository-test-mode-control-plane"]["roles"] == [
+        "IMPLEMENTATION",
+        "VERIFICATION",
+        "CONFIGURATION",
+    ]
 
 
 def test_repository_self_profile_keeps_migration_subsystems_as_explicit_product_components() -> None:
@@ -181,6 +187,20 @@ def test_repository_self_profile_declares_target_oriented_verification_relations
         ("repository-release-verification", "ptsip-embedded-contracts", "VERIFIES"),
     }
     assert expected <= relationships
+
+
+def test_repository_test_mode_control_plane_reads_architecture_authority() -> None:
+    payload = _profile()
+    relationships = {
+        (item.get("from"), item.get("to"), item.get("type"))
+        for item in payload.get("relationships", [])
+        if isinstance(item, dict)
+    }
+    assert (
+        "repository-test-mode-control-plane",
+        "repository-architecture",
+        "READS",
+    ) in relationships
 
 
 def test_vpms_self_adoption_targets_resolve_against_repository_self_profile() -> None:
