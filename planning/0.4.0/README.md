@@ -19,6 +19,7 @@ No document in this directory becomes Specification authority or Project Profile
 
 | Document | Primary responsibility | Release relationship |
 | --- | --- | --- |
+| `Pre-WU-00A-release-boundary-classification.md` | approved release-dependency intake procedure and initial `CORE / OPTIONAL / DEFERRED` boundary | **approved release-boundary classification; prerequisite for Core Contract Freeze** |
 | `01-authority-and-remediation-domain.md` | Evidence/fact/constraint/authority/decision separation and typed remediation domain | core design reference |
 | `02-solution-space-and-planning.md` | candidate generation, elimination, cardinality, semantic planning, planner priorities | core design reference |
 | `03-operational-rule-registry.md` | Specification-to-executable-rule bridge and supported remediation-family model | core design reference |
@@ -31,11 +32,19 @@ No document in this directory becomes Specification authority or Project Profile
 
 ## Reading order
 
-The architecture can be read in this dependency order:
+The release/planning intake order is:
 
 ```text
 Top-level 0.4.0 direction
         ↓
+Pre-WU-00A release-boundary classification
+        ↓
+Core Contract Freeze / later approved WU decomposition
+```
+
+The architecture can be read in this dependency order:
+
+```text
 Authority/domain model
         ↓
 Operational rule contract
@@ -50,6 +59,8 @@ Verification
 ```
 
 This is an **architecture-reading order**, not a branch-completion order and not a release checklist. A topic can remain deferred if the approved 0.4.0 release boundary does not require it.
+
+`Pre-WU-00A-release-boundary-classification.md` is the controlling planning source for whether a responsibility is release-blocking. Topic documents continue to define the architecture of their subjects, but a planning topic, optional experiment, or sub-branch does not become core merely because it appears in those documents.
 
 ## Development branch model
 
@@ -98,8 +109,23 @@ WU responsibility boundary
 
 A core WU may be implemented directly on `dev/0.4.0` when that is the approved development path. A sub-branch is chosen only when isolation has practical value, especially for optional, experimental, deferred, or independently discardable work.
 
+No implementation WU should be created from an `UNCLASSIFIED` planning item. Release classification precedes WU decomposition.
+
 ## Planning rule
 
 When a sub-document and the top-level plan appear to differ, do not silently choose one. Treat the difference as planning drift that must be reconciled explicitly before implementation.
 
-Most importantly, do not infer release dependency from document layout or branch layout. Whether an item blocks Tool `0.4.0` is determined only by the explicitly approved 0.4.0 core/release boundary, not by the existence of a planning file or sub-branch.
+For release dependency specifically, the approved Pre-WU classification is the reconciliation source. Most importantly, do not infer release dependency from document layout or branch layout. Whether an item blocks Tool `0.4.0` is determined only by the explicitly approved 0.4.0 core/release boundary, not by the existence of a planning file or sub-branch.
+
+## Current planning gate
+
+```text
+Pre-WU-00A — Release Boundary Classification
+    = complete
+
+Next planning step
+    = Pre-WU-00B — Core Contract Freeze
+
+0.4.0 remediation implementation
+    = not yet authorized by this planning index
+```
