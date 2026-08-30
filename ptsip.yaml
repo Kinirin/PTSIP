@@ -162,24 +162,190 @@ components:
     release_owner: tool
     compatibility_owner: tool
 
-  - id: repository-verification
+  - id: ptsip-core-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/clarification/**"
+      - "tests/ptsip/cli/**"
+      - "tests/ptsip/conformance/**"
+      - "tests/ptsip/control_plane/**"
+      - "tests/ptsip/identity/**"
+      - "tests/ptsip/inspection/**"
+      - "tests/ptsip/integration/**"
+      - "tests/ptsip/pilot/**"
+      - "tests/ptsip/topology/**"
+      - "tests/ptsip/validation/**"
+      - "tests/ptsip/repository/test_profile_convergence_037.py"
+      - "tests/ptsip/repository/test_profile_transition_037.py"
+      - "tests/ptsip/repository/test_remote_discovery.py"
+      - "tests/ptsip/repository/test_snapshot_integrity.py"
+      - "tests/ptsip/test_adoption.py"
+      - "tests/ptsip/test_clarification.py"
+      - "tests/ptsip/test_merge_gate_followup_030.py"
+    purpose: product_owned_ptsip_core_behavior_and_integration_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/ptsip/*.py"
+      - "src/ptsip/app/**"
+      - "src/ptsip/clarification/**"
+      - "src/ptsip/inspection/**"
+      - "src/ptsip/pilot/**"
+      - "src/ptsip/repository/**"
+      - "src/ptsip/storage/**"
+      - "src/ptsip/validation/**"
+      - "ptsip.yaml"
+      - "profiles/**"
+
+  - id: ptsip-evidence-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/evidence/**"
+    purpose: product_owned_normalized_evidence_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/ptsip/evidence/**"
+      - "schemas/ptsip-normalized-evidence.schema.json"
+
+  - id: ptsip-source-compat-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/source_compat/**"
+    purpose: product_owned_source_compatibility_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/ptsip/source_compat/**"
+      - "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json"
+      - "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json"
+
+  - id: ptsip-migration-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/migration/**"
+    purpose: product_owned_migration_planning_execution_and_recovery_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/ptsip/migration/**"
+      - "src/ptsip/evidence/**"
+      - "src/ptsip/source_compat/**"
+
+  - id: vpms-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/vpms/**"
+    purpose: product_owned_vpms_behavior_architecture_and_ptsip_integration_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/vpms/**"
+      - "src/ptsip/**"
+      - "ptsip.yaml"
+
+  - id: ptsip-contract-verification
     classification: DEVELOPMENT_TOOLING
     roles:
       - VERIFICATION
     include:
-      - "tests/**"
-    purpose: repository_verification_and_regression
+      - "tests/ptsip/contracts/**"
+    purpose: canonical_and_embedded_contract_consistency_verification
     shipped: false
     runtime_required: false
     executable: true
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
-      - "src/**"
       - "spec/**"
       - "schemas/**"
       - "registry/**"
+      - "src/ptsip/specdata/**"
+
+  - id: repository-architecture-verification
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/repository/test_self_profile.py"
+      - "tests/ptsip/test_adr_governance_assets.py"
+    purpose: repository_profile_and_governance_asset_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: architecture
+    compatibility_owner: architecture
+    analysis_inputs:
       - "ptsip.yaml"
+      - "profiles/**"
+      - "adoption/**"
+      - "agents/**"
+      - "decisions/**"
+      - "reference/**"
+
+  - id: repository-release-verification
+    classification: DELIVERY
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/test_release_readiness_030.py"
+    purpose: release_identity_workflow_contract_and_distribution_readiness_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: delivery
+    compatibility_owner: delivery
+    analysis_inputs:
+      - "pyproject.toml"
+      - "MANIFEST.in"
+      - ".github/workflows/tooling-test.yml"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/tooling-release.yml"
+      - ".github/scripts/verify_release_contract.py"
+      - "src/ptsip/specdata/**"
+      - "spec/**"
+      - "schemas/**"
+      - "registry/**"
+      - "releasenote/**"
+
+  - id: repository-verification-support
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - CONFIGURATION
+    include:
+      - "tests/ptsip/_test_support.py"
+      - "tests/ptsip/conftest.py"
+    purpose: shared_test_fixture_and_collection_support
+    shipped: false
+    runtime_required: false
+    executable: false
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
 
   - id: repository-release-automation
     classification: DELIVERY
@@ -208,7 +374,6 @@ components:
   - id: repository-ci
     classification: DEVELOPMENT_TOOLING
     roles:
-      - VERIFICATION
       - AUTOMATION
     include:
       - ".github/workflows/tooling-test.yml"
@@ -218,7 +383,7 @@ components:
       - ".github/scripts/wu04g_track_tests.py"
       - ".github/scripts/wu04g_bridge_log.ps1"
       - ".codex/openai-local-bridge/**"
-    purpose: development_verification_repository_and_localization_automation
+    purpose: repository_verification_execution_and_localization_automation
     shipped: false
     runtime_required: false
     executable: true
@@ -338,34 +503,69 @@ relationships:
     to: ptsip-canonical-contracts
     type: DOCUMENTS
 
-  - id: repository-verification-verifies-core
-    from: repository-verification
+  - id: ptsip-core-verification-verifies-core
+    from: ptsip-core-verification
     to: ptsip-core
     type: VERIFIES
 
-  - id: repository-verification-verifies-evidence
-    from: repository-verification
+  - id: ptsip-evidence-verification-verifies-evidence
+    from: ptsip-evidence-verification
     to: ptsip-evidence
     type: VERIFIES
 
-  - id: repository-verification-verifies-source-compat
-    from: repository-verification
+  - id: ptsip-source-compat-verification-verifies-source-compat
+    from: ptsip-source-compat-verification
     to: ptsip-source-compat
     type: VERIFIES
 
-  - id: repository-verification-verifies-migration
-    from: repository-verification
+  - id: ptsip-migration-verification-verifies-migration
+    from: ptsip-migration-verification
     to: ptsip-migration
     type: VERIFIES
 
-  - id: repository-verification-verifies-vpms
-    from: repository-verification
+  - id: vpms-verification-verifies-vpms
+    from: vpms-verification
     to: vpms
     type: VERIFIES
 
-  - id: repository-verification-verifies-contracts
-    from: repository-verification
+  - id: ptsip-contract-verification-verifies-canonical-contracts
+    from: ptsip-contract-verification
     to: ptsip-canonical-contracts
+    type: VERIFIES
+
+  - id: ptsip-contract-verification-verifies-embedded-contracts
+    from: ptsip-contract-verification
+    to: ptsip-embedded-contracts
+    type: VERIFIES
+
+  - id: repository-architecture-verification-verifies-profile
+    from: repository-architecture-verification
+    to: repository-architecture
+    type: VERIFIES
+
+  - id: repository-architecture-verification-verifies-governance-support
+    from: repository-architecture-verification
+    to: ptsip-governance-support
+    type: VERIFIES
+
+  - id: repository-release-verification-verifies-distribution
+    from: repository-release-verification
+    to: ptsip-distribution
+    type: VERIFIES
+
+  - id: repository-release-verification-verifies-release-automation
+    from: repository-release-verification
+    to: repository-release-automation
+    type: VERIFIES
+
+  - id: repository-release-verification-verifies-ci
+    from: repository-release-verification
+    to: repository-ci
+    type: VERIFIES
+
+  - id: repository-release-verification-verifies-embedded-contracts
+    from: repository-release-verification
+    to: ptsip-embedded-contracts
     type: VERIFIES
 
   - id: package-assembly-packages-distribution
