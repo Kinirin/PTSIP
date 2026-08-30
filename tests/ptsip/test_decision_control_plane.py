@@ -7,7 +7,7 @@ from ptsip.app.store import DecisionStore
 from ptsip.clarification.resolution import DecisionAnswer, project_payload
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
-from _wu04g_support import canonical_v2_answer, clarification_answer_text
+from _test_support import canonical_v2_answer, clarification_answer_text
 
 
 class FakeGitHub:
