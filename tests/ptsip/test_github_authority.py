@@ -18,7 +18,7 @@ from ptsip.app.github_authority import (
 )
 from ptsip.cli import main
 from ptsip.storage.local_state import decision_store_path
-from _wu04g_support import canonical_v2_answer
+from _test_support import canonical_v2_answer
 
 
 class MemoryAuthority:
