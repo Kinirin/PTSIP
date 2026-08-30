@@ -77,7 +77,7 @@ RUNNER_NODEIDS = {
     ),
     "pytest.toolchain.routine-ci": (
         "tests/ptsip/test_release_readiness_030.py::"
-        "test_routine_ci_derives_exact_sha_and_uses_self_hosted_python"
+        "test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha"
     ),
 }
 
