@@ -103,6 +103,7 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
     errors.extend(component_errors)
 
     seen_ids: set[str] = set()
+    seen_pytest_targets: dict[str, str] = {}
     for position, mode in enumerate(modes):
         prefix = f"mode[{position}]"
         if not isinstance(mode, dict):
@@ -163,6 +164,15 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
                     path_errors = _validate_relative_posix_path(target, label=label, allow_glob=False)
                     errors.extend(path_errors)
                     if not path_errors and isinstance(target, str):
+                        owner = seen_pytest_targets.get(target)
+                        current_owner = mode_id if isinstance(mode_id, str) else prefix
+                        if owner is not None:
+                            errors.append(
+                                f"{label} duplicates pytest target {target!r} already owned by mode {owner!r}"
+                            )
+                        else:
+                            seen_pytest_targets[target] = current_owner
+
                         parts = PurePosixPath(target).parts
                         if not repo_root.joinpath(*parts).exists():
                             errors.append(f"{label} does not exist in the repository: {target}")
