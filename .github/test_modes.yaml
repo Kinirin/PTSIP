@@ -1,0 +1,9 @@
+# Repository-local Test Mode Registry v1.
+#
+# Authority firewall:
+# - component_ref MUST resolve to a VERIFICATION component in ptsip.yaml.
+# - classification, roles, purpose, and other architecture authority MUST NOT be
+#   duplicated here.
+# - execution and watch paths are execution-selection data only.
+version: 1
+modes: []
