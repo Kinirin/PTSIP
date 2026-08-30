@@ -7,12 +7,20 @@ from ..inspection.components import ComponentCandidate, discover_component_candi
 from ..inspection.dependencies_030 import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
 from ..repository.discover import RepositoryInfo, discover_repository
-from ..repository.snapshot import RepositorySnapshot, SnapshotComparison, capture_snapshot, compare_snapshots
+from ..repository.snapshot import (
+    RepositorySnapshot,
+    SnapshotComparison,
+    capture_snapshot,
+    compare_snapshots,
+    repository_files,
+)
 from ..validation.components import (
     AMBIGUOUS,
     ASSOCIATED_ARTIFACT_COVERED,
     COMPONENT_COVERED,
+    partition_components,
     resolve_candidate_coverage,
+    selector_matches_path,
 )
 from ..validation.profile import ValidationResult, find_profile, validate_profile
 from .generator_core import build_requests
@@ -216,6 +224,54 @@ def declared_components(
     return components, profile_path, error
 
 
+def _candidate_scope_is_fully_partitioned(
+    root: Path,
+    candidate: ComponentCandidate,
+    components: list[dict[str, object]],
+    associated_artifacts: list[dict[str, object]],
+) -> bool:
+    """Return True when current repository evidence is fully owned by declared scopes.
+
+    Discovery candidates are intentionally coarse evidence. A candidate such as
+    ``tests/**`` may legitimately span several explicitly declared Verification
+    components. That is not architecture ambiguity when every current tracked
+    path inside the candidate has exactly one owner in the validated effective
+    Responsibility Map.
+
+    This check never invents or chooses an owner. It only proves that existing
+    project authority already partitions the observed candidate scope completely.
+    """
+
+    _mode, paths, scan_errors = repository_files(root)
+    if scan_errors:
+        return False
+
+    candidate_paths = {
+        path
+        for path in paths
+        if any(selector_matches_path(path, selector) for selector in candidate.include)
+    }
+    if not candidate_paths:
+        return False
+
+    component_partition = partition_components(root, components)
+    if component_partition.scan_errors or component_partition.conflicts:
+        return False
+    component_paths = {item.path for item in component_partition.assignments}
+
+    artifact_paths: set[str] = set()
+    if associated_artifacts:
+        artifact_partition = partition_components(root, associated_artifacts)
+        if artifact_partition.scan_errors or artifact_partition.conflicts:
+            return False
+        artifact_paths = {item.path for item in artifact_partition.assignments}
+
+    if component_paths & artifact_paths:
+        return False
+
+    return candidate_paths <= (component_paths | artifact_paths)
+
+
 def analyze_clarifications(
     path: str | Path = ".",
     component_ids: list[str] | tuple[str, ...] | None = None,
@@ -259,10 +315,19 @@ def analyze_clarifications(
             coverage = resolve_candidate_coverage(candidate, declared, associated_artifacts)
             if coverage.status in {COMPONENT_COVERED, ASSOCIATED_ARTIFACT_COVERED}:
                 continue
-            # Ambiguous effective selector coverage must reopen review without
-            # guessing one existing owner. Uncovered candidates may still use
-            # the declared component set so canonical best-coverage semantics
-            # remain centralized in generator_core's compatibility wrapper.
+            if coverage.status == AMBIGUOUS and _candidate_scope_is_fully_partitioned(
+                root,
+                candidate,
+                declared,
+                associated_artifacts,
+            ):
+                continue
+            # Ambiguous effective selector coverage must reopen review unless the
+            # validated Responsibility Map already proves complete path-level
+            # partitioning of this coarse discovery candidate. Uncovered
+            # candidates may still use the declared component set so canonical
+            # best-coverage semantics remain centralized in generator_core's
+            # compatibility wrapper.
             request_components = [] if coverage.status == AMBIGUOUS else declared
             requests_list.extend(build_requests(identity, [candidate], request_components))
 
