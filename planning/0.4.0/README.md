@@ -4,7 +4,8 @@
 > **Integration branch:** `dev/0.4.0`  
 > **Integration-branch baseline:** `f2fbbb5175eafde0ff8a3b7c5e7ca31a8224189d`  
 > **Top-level plan:** `planning/0.4.0.md`  
-> **Release-boundary authority:** `Pre-WU-00A-release-boundary-classification.md`
+> **Release-boundary authority:** `Pre-WU-00A-release-boundary-classification.md`  
+> **Current planning gate:** `Pre-WU-00B-core-contract-freeze.md`
 
 ## 1. Directory responsibility
 
@@ -46,6 +47,7 @@ A file must never become CORE merely because it was accidentally placed in `plan
 | Document | Primary responsibility | Release relationship |
 | --- | --- | --- |
 | `Pre-WU-00A-release-boundary-classification.md` | approved release-dependency intake procedure and initial `CORE / OPTIONAL / DEFERRED` boundary | **completed prerequisite for Core Contract Freeze** |
+| `Pre-WU-00B-core-contract-freeze.md` | owner review and freeze of representative rules, ownership, typed contracts, authorization, Fresh Solve, release proof, verification, and WU decomposition | **ACTIVE / owner decision review; implementation remains unauthorized** |
 | `01-authority-and-remediation-domain.md` | Evidence/fact/constraint/authority/decision separation and typed remediation domain | CORE design reference |
 | `02-solution-space-and-planning.md` | candidate generation, elimination, cardinality, semantic planning, planner priorities | CORE design reference |
 | `03-operational-rule-registry.md` | Specification-to-executable-rule bridge and supported remediation-family model | CORE design reference |
@@ -54,7 +56,7 @@ A file must never become CORE merely because it was accidentally placed in `plan
 | `06-verification-and-test-mode-strategy.md` | release-blocking verification responsibility, Test Mode inheritance, selective CI, full exact-SHA qualification | CORE verification reference |
 | `07-development-branch-and-wu-strategy.md` | `dev/0.4.0` CORE integration path and isolation rules | CORE development-process reference |
 | `08-representative-rule-families.md` | deterministic / owner-intent / unsatisfiable / capability-gap representative release proof | CORE representative coverage planning |
-| `09-core-open-decisions-and-non-goals.md` | unresolved release-blocking contracts, inherited safety limits, CORE non-goals | CORE decision queue |
+| `09-core-open-decisions-and-non-goals.md` | unresolved release-blocking contracts, inherited safety limits, CORE non-goals | CORE decision queue consumed by Pre-WU-00B |
 
 Optional planning index:
 
@@ -167,9 +169,12 @@ Directory routing policy
     = CORE → planning/0.4.0
       OPTIONAL → planning/0.4.0-op
 
-Next CORE planning step
-    = Pre-WU-00B — Core Contract Freeze
+Pre-WU-00B — Core Contract Freeze
+    = ACTIVE / OWNER DECISION REVIEW
+    = D01–D08 pending approval
 
 0.4.0 remediation implementation
     = NOT YET AUTHORIZED
 ```
+
+Pre-WU-00B may be declared complete only after its eight decisions are owner-approved and the open-decision source is reconciled. Only then may release-blocking implementation WU documents be created.
