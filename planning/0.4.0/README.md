@@ -1,36 +1,68 @@
-# PTSIP Tool 0.4.0 — Planning Document Map
+# PTSIP Tool 0.4.0 — CORE Planning Map
 
-> **Status:** DRAFT / PLANNING INDEX  
+> **Status:** DRAFT / CORE PLANNING INDEX  
 > **Integration branch:** `dev/0.4.0`  
 > **Integration-branch baseline:** `f2fbbb5175eafde0ff8a3b7c5e7ca31a8224189d`  
-> **Top-level plan:** `planning/0.4.0.md`
+> **Top-level plan:** `planning/0.4.0.md`  
+> **Release-boundary authority:** `Pre-WU-00A-release-boundary-classification.md`
 
-## Purpose
+## 1. Directory responsibility
 
-`planning/0.4.0.md` remains the consolidated top-level plan. It records the complete direction discussed before implementation authorization, but it is not intended to carry every detailed architecture note, optional experiment, implementation boundary, and verification concern by itself.
+`planning/0.4.0/` is the planning namespace for work classified as:
 
-The documents in this directory split that planning material by topic so later work can refer to a narrow source instead of reconstructing intent from one 1,000+ line file or from chat history.
+```text
+CORE / RELEASE-BLOCKING
+```
 
-**Document separation does not create implementation dependency.** These files are parallel planning references, not a mandatory sequential session chain. The existence of a sub-document does not mean that its entire subject must be implemented before Tool `0.4.0` can be released.
+Session documents, Pre-WUs, WUs, contract freezes, and release-blocking design decisions belong here only after their responsibility has been classified through the approved Pre-WU-00A release-boundary procedure.
 
-No document in this directory becomes Specification authority or Project Profile architecture authority merely by existing. They are development planning records under the authority boundaries already defined by PTSIP.
+The parallel namespace is:
 
-## Document map
+```text
+planning/0.4.0-op/
+    = OPTIONAL / NON-BLOCKING planning and session documents
+```
+
+Deferred/out-of-release ideas may also be retained there as non-blocking planning context when useful, but they do not become 0.4.0 implementation work merely by being documented.
+
+The physical directory is a routing consequence of classification, not the authority that creates classification:
+
+```text
+UNCLASSIFIED
+    ↓
+Pre-WU-00A classification review
+    ↓
+CORE / RELEASE-BLOCKING
+    → planning/0.4.0/
+
+OPTIONAL / NON-BLOCKING
+    → planning/0.4.0-op/
+```
+
+A file must never become CORE merely because it was accidentally placed in `planning/0.4.0/`.
+
+## 2. Core document map
 
 | Document | Primary responsibility | Release relationship |
 | --- | --- | --- |
-| `Pre-WU-00A-release-boundary-classification.md` | approved release-dependency intake procedure and initial `CORE / OPTIONAL / DEFERRED` boundary | **approved release-boundary classification; prerequisite for Core Contract Freeze** |
-| `01-authority-and-remediation-domain.md` | Evidence/fact/constraint/authority/decision separation and typed remediation domain | core design reference |
-| `02-solution-space-and-planning.md` | candidate generation, elimination, cardinality, semantic planning, planner priorities | core design reference |
-| `03-operational-rule-registry.md` | Specification-to-executable-rule bridge and supported remediation-family model | core design reference |
-| `04-escalation-and-advisory.md` | Escalation Proof, owner-intent boundary, external facts, optional AI advisory | mixed: core escalation boundary + optional advisory |
-| `05-authority-gate-and-safe-apply.md` | mutation authorization, irreversibility, exact snapshot, stale-state rejection, apply/verify | core design reference |
-| `06-verification-and-test-mode-strategy.md` | verification responsibility, Test Modes, selective CI, full exact-SHA qualification | development/release verification reference |
-| `07-development-branch-and-wu-strategy.md` | `dev/0.4.0` core path and optional/deferred sub-branch policy | development process reference |
-| `08-representative-rule-families.md` | deterministic / owner-intent / unsatisfiable / capability-gap representative slices | representative coverage planning |
-| `09-experimental-non-goals-and-open-decisions.md` | experimental ideas, explicit non-goals, unresolved planning decisions | non-blocking unless explicitly promoted into core |
+| `Pre-WU-00A-release-boundary-classification.md` | approved release-dependency intake procedure and initial `CORE / OPTIONAL / DEFERRED` boundary | **completed prerequisite for Core Contract Freeze** |
+| `01-authority-and-remediation-domain.md` | Evidence/fact/constraint/authority/decision separation and typed remediation domain | CORE design reference |
+| `02-solution-space-and-planning.md` | candidate generation, elimination, cardinality, semantic planning, planner priorities | CORE design reference |
+| `03-operational-rule-registry.md` | Specification-to-executable-rule bridge and supported remediation-family model | CORE design reference |
+| `04-escalation-and-advisory.md` | CORE Escalation Proof, owner-intent and external-fact boundaries; optional provider work is routed to `0.4.0-op` | CORE boundary reference |
+| `05-authority-gate-and-safe-apply.md` | mutation authorization, irreversibility, exact snapshot, stale-state rejection, apply/verify | CORE design reference |
+| `06-verification-and-test-mode-strategy.md` | release-blocking verification responsibility, Test Mode inheritance, selective CI, full exact-SHA qualification | CORE verification reference |
+| `07-development-branch-and-wu-strategy.md` | `dev/0.4.0` CORE integration path and isolation rules | CORE development-process reference |
+| `08-representative-rule-families.md` | deterministic / owner-intent / unsatisfiable / capability-gap representative release proof | CORE representative coverage planning |
+| `09-core-open-decisions-and-non-goals.md` | unresolved release-blocking contracts, inherited safety limits, CORE non-goals | CORE decision queue |
 
-## Reading order
+Optional planning index:
+
+```text
+planning/0.4.0-op/README.md
+```
+
+## 3. Reading and planning order
 
 The release/planning intake order is:
 
@@ -39,7 +71,11 @@ Top-level 0.4.0 direction
         ↓
 Pre-WU-00A release-boundary classification
         ↓
-Core Contract Freeze / later approved WU decomposition
+Pre-WU-00B Core Contract Freeze
+        ↓
+approved CORE WU decomposition
+        ↓
+implementation
 ```
 
 The architecture can be read in this dependency order:
@@ -58,13 +94,11 @@ Safe physical execution
 Verification
 ```
 
-This is an **architecture-reading order**, not a branch-completion order and not a release checklist. A topic can remain deferred if the approved 0.4.0 release boundary does not require it.
+This is an architecture-reading order, not permission to start implementation before the applicable planning gate is approved.
 
-`Pre-WU-00A-release-boundary-classification.md` is the controlling planning source for whether a responsibility is release-blocking. Topic documents continue to define the architecture of their subjects, but a planning topic, optional experiment, or sub-branch does not become core merely because it appears in those documents.
+## 4. CORE integration-branch model
 
-## Development branch model
-
-The repository has one 0.4.0 integration branch:
+The repository has one 0.4.0 CORE integration branch:
 
 ```text
 main
@@ -72,60 +106,70 @@ main
 dev/0.4.0
 ```
 
-The default 0.4.0 implementation path is the integration branch itself:
+The default CORE implementation path is:
 
 ```text
 dev/0.4.0
   ↓
-approved core implementation
+approved CORE implementation
   ↓
 focused verification
   ↓
-release qualification
+meaningful checkpoint
+  ↓
+full exact-SHA release qualification
 ```
 
-Because the mandatory 0.4.0 core is already large, creating a sub-branch for every WU or every planning document is **not required**.
-
-Sub-branches are optional isolation surfaces for work that is useful to explore independently and may or may not be included in the `0.4.0` release, for example:
-
-```text
-dev/0.4.0
-  ├─ optional/<experimental-or-deferred-scope>
-  └─ optional/<non-blocking-extension>
-```
-
-A sub-branch may later be merged into `dev/0.4.0` if its scope is approved and ready. It may also remain unmerged, be deferred to a later version, or be abandoned without blocking `0.4.0` release.
-
-**No optional sub-branch is a release prerequisite merely because it exists.**
-
-## WU relationship
-
-WU decomposition is still useful for defining responsibility, authorization, and verification boundaries, but WU boundaries and Git branch boundaries are not required to be one-to-one.
+A WU responsibility boundary does not require a Git sub-branch:
 
 ```text
 WU responsibility boundary
     ≠ mandatory sub-branch
 ```
 
-A core WU may be implemented directly on `dev/0.4.0` when that is the approved development path. A sub-branch is chosen only when isolation has practical value, especially for optional, experimental, deferred, or independently discardable work.
+Optional experimentation may use isolated branches, but those branches and their session documents are governed from `planning/0.4.0-op/` and cannot become release prerequisites without explicit promotion.
 
-No implementation WU should be created from an `UNCLASSIFIED` planning item. Release classification precedes WU decomposition.
+## 5. Promotion firewall
 
-## Planning rule
+`OPTIONAL / NON-BLOCKING` work cannot silently enter this directory or the release dependency graph.
 
-When a sub-document and the top-level plan appear to differ, do not silently choose one. Treat the difference as planning drift that must be reconciled explicitly before implementation.
+Required promotion sequence:
 
-For release dependency specifically, the approved Pre-WU classification is the reconciliation source. Most importantly, do not infer release dependency from document layout or branch layout. Whether an item blocks Tool `0.4.0` is determined only by the explicitly approved 0.4.0 core/release boundary, not by the existence of a planning file or sub-branch.
+```text
+OPTIONAL
+    ↓
+Promotion Review
+    ↓
+prove which approved 0.4.0 objective / invariant / release proof fails without it
+    ↓
+project-owner approval
+    ↓
+reclassify as CORE
+    ↓
+create or move the controlling CORE planning document here
+```
 
-## Current planning gate
+Implementation already written, branch existence, usefulness, or successful experiments are not sufficient promotion reasons.
+
+## 6. Planning drift rule
+
+When a topic document, top-level plan, optional document, or implementation appears to conflict with the approved release boundary, do not silently choose one. Reconcile the conflict explicitly.
+
+For release dependency, Pre-WU-00A remains controlling unless a later explicit owner-approved classification decision supersedes it.
+
+## 7. Current planning gate
 
 ```text
 Pre-WU-00A — Release Boundary Classification
-    = complete
+    = COMPLETE
 
-Next planning step
+Directory routing policy
+    = CORE → planning/0.4.0
+      OPTIONAL → planning/0.4.0-op
+
+Next CORE planning step
     = Pre-WU-00B — Core Contract Freeze
 
 0.4.0 remediation implementation
-    = not yet authorized by this planning index
+    = NOT YET AUTHORIZED
 ```
