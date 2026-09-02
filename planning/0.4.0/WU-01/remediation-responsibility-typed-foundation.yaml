@@ -3,11 +3,11 @@ work_unit: WU-01
 document:
   id: WU-01-REMEDIATION-RESPONSIBILITY-TYPED-FOUNDATION
   type: WORK_PLAN
-  status: ACTIVE
+  status: COMPLETE
   approval:
     status: NOT_REQUIRED
     inherited_from: [WU-00B/D02, WU-00B/D03, WU-00B/D06, WU-00B/D08]
-  implementation_authorization: AUTHORIZED_WITHIN_WU_BOUNDARY
+  implementation_authorization: NOT_AUTHORIZED
 
 inputs:
   release_boundary: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
@@ -21,7 +21,7 @@ inputs:
   forbidden_generic_domain_source: src/ptsip/migration/execution_model.py
 
 ownership_delta:
-  planned: true
+  state: IMPLEMENTED
   implementation_component:
     id: ptsip-remediation
     classification: PRODUCT
@@ -135,11 +135,22 @@ verification_plan:
     reason: DURABLE_VERIFICATION_RESPONSIBILITY_IS_DECLARED_FIRST; TEST_MODE_REGISTRATION_IS_FROZEN_FOR_WU_05
   full_exact_sha_required_for_wu_completion: false
   reason: WU_01_IS_NOT_A_RELEASE_QUALIFICATION_BOUNDARY
+  result:
+    status: PASS
+    evidence_origin: OWNER_REPORTED_LOCAL_EXECUTION
+    source_context:
+      integration_branch: dev/0.4.0
+      remote_head_at_close: 5e97513fff77d1fc770c09e125eff94505bfdbc3
+    executions:
+      - {command: 'python -m pytest -q tests/ptsip/remediation', result: PASS, detail: '18 passed'}
+      - {command: 'ptsip validate .', result: PASS, detail: 'valid: True; errors: []; warnings: []'}
+      - {command: 'python -m pytest -q tests/ptsip/repository/test_self_profile.py', result: PASS, detail: '7 passed'}
 
 progress:
-  typed_domain_contracts: IMPLEMENTED
-  operational_rule_contract: IMPLEMENTED
-  focused_verification: PENDING
+  typed_domain_contracts: VERIFIED
+  operational_rule_contract: VERIFIED
+  focused_verification: PASS
+  project_profile_validation: PASS
 
 completion_conditions:
   - PTSIP_REMEDIATION_COMPONENT_DECLARED
@@ -151,3 +162,8 @@ completion_conditions:
   - AUTHORITY_FIREWALL_TESTS_PASS
   - PROJECT_PROFILE_VALIDATION_PASSES
   - NO_REPOSITORY_MUTATION_OR_SOLVER_BEHAVIOR_ADDED
+
+completion:
+  result: WU_01_COMPLETE
+  date: '2026-09-02'
+  next: WU-02

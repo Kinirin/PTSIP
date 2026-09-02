@@ -4,7 +4,7 @@ work_unit:
   kind: WORK_UNIT
   title: Remediation Responsibility + Typed Foundation
   classification: CORE/RELEASE-BLOCKING
-  status: ACTIVE
+  status: COMPLETE
   approval:
     status: NOT_REQUIRED
     authority: INHERITED_OWNER_APPROVAL
@@ -15,7 +15,7 @@ work_unit:
       - WU-00B/D08
   integration_branch: dev/0.4.0
   entry_baseline: 944eea27f7d95abb9ecebff26b75c0ef8bc06422
-  implementation_authorization: AUTHORIZED_WITHIN_WU_BOUNDARY
+  implementation_authorization: NOT_AUTHORIZED
   depends_on: [WU-00A, WU-00B]
   detail: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml
 
@@ -54,16 +54,17 @@ contract_bindings:
   - {id: W1-D05, source: WU-00B/D06, contract: FOCUSED_CONTRACT_VERIFICATION_AND_COMPLETION_BOUNDARY, status: INHERITED_APPROVED}
 
 progress:
-  project_profile_ownership: IMPLEMENTED
-  typed_domain_contracts: IMPLEMENTED
-  operational_rule_contract: IMPLEMENTED
-  authority_firewall_tests: IMPLEMENTED_PENDING_EXECUTION
-  coverage_gap_contract_tests: IMPLEMENTED_PENDING_EXECUTION
-  operational_rule_contract_tests: IMPLEMENTED_PENDING_EXECUTION
-  project_profile_validation: PENDING
-  focused_verification: PENDING
+  project_profile_ownership: VERIFIED
+  typed_domain_contracts: VERIFIED
+  operational_rule_contract: VERIFIED
+  authority_firewall_tests: PASS
+  coverage_gap_contract_tests: PASS
+  operational_rule_contract_tests: PASS
+  project_profile_validation: PASS
+  focused_verification: PASS
 
 completion_gate:
+  status: SATISFIED
   requires_all:
     - PROJECT_PROFILE_OWNS_NEW_IMPLEMENTATION_AND_VERIFICATION_PATHS
     - TYPED_FOUNDATION_IMPLEMENTED
@@ -72,4 +73,24 @@ completion_gate:
     - COVERAGE_GAP_CANDIDATE_AUTHORITY_SEPARATION_TESTS_PASS
     - PROJECT_PROFILE_VALIDATION_REMAINS_VALID
     - NO_SOLVER_OR_MUTATION_SEMANTICS_INTRODUCED
+  next: WU-02
+
+completion:
+  result: WU_01_COMPLETE
+  date: '2026-09-02'
+  evidence_origin: OWNER_REPORTED_LOCAL_EXECUTION
+  source_context:
+    integration_branch: dev/0.4.0
+    remote_head_at_close: 5e97513fff77d1fc770c09e125eff94505bfdbc3
+    full_exact_sha_release_qualification_required: false
+  focused_verification:
+    - command: python -m pytest -q tests/ptsip/remediation
+      result: PASS
+      detail: 18 passed
+    - command: ptsip validate .
+      result: PASS
+      detail: 'valid: True; errors: []; warnings: []'
+    - command: python -m pytest -q tests/ptsip/repository/test_self_profile.py
+      result: PASS
+      detail: 7 passed
   next: WU-02

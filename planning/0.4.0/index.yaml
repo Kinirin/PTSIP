@@ -4,7 +4,7 @@ release:
   integration_branch: dev/0.4.0
   classification: CORE/RELEASE-BLOCKING
   control_plane: planning/0.4.0/index.yaml
-  current_gate: WU-01/IMPLEMENTATION_ACTIVE
+  current_gate: WU-02/PLANNING_READY
 
 machine_document_policy:
   canonical_format: YAML
@@ -38,10 +38,10 @@ work_units:
     kind: WORK_UNIT
     path: planning/0.4.0/WU-01/WU-01.yaml
     detail: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml
-    status: ACTIVE
+    status: COMPLETE
     approval: NOT_REQUIRED
     approval_inherited_from: [WU-00B/D02, WU-00B/D03, WU-00B/D06, WU-00B/D08]
-    implementation_authorization: AUTHORIZED_WITHIN_WU_BOUNDARY
+    implementation_authorization: NOT_AUTHORIZED
     depends_on: [WU-00A, WU-00B]
   - {id: WU-02, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-01]}
   - {id: WU-03, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-02]}
