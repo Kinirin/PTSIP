@@ -1,0 +1,133 @@
+planning_contract: ptsip-planning/v1
+work_unit:
+  id: WU-00B
+  kind: PRE_WORK_UNIT
+  title: 0.4.0 Core Contract Freeze
+  classification: CORE/RELEASE-BLOCKING
+  status: COMPLETE
+  approval: {status: APPROVED, authority: PROJECT_OWNER, date: '2026-09-02'}
+  entry_baseline: 00df774bd0958316c1cfbc40bdbe0ba0209484c3
+  integration_branch: dev/0.4.0
+  implementation_authorization: NOT_AUTHORIZED
+  planning_authorization: CREATE_APPROVED_CORE_WU_DOCUMENTS
+  depends_on: [WU-00A]
+frozen_invariants:
+- Evidence != DerivedFact != NormativeConstraint != ProjectArchitectureAuthority
+- CoverageGap != RemediationCandidate != AcceptedArchitectureDecision
+- SemanticDeterminacy != MutationAuthorization
+- SemanticRemediationPlan != RepositoryChangePlan
+- BlockingDiagnostic != PermissionToMutate
+- UnsupportedRemediation == TOOL_CAPABILITY_GAP
+- SelectiveTestModeSuccess != FullReleaseQualification
+- HistoryConfidenceHeuristicAI != ArchitectureAuthority
+- CurrentSpecification+CurrentAuthority+CurrentRepositoryState == FreshSolveInput
+issue_evidence:
+- issue: 31
+  role: CONSUMER_DERIVED_ROUTING_AND_AUTHORITY_SAFETY_EVIDENCE
+  coverage_gap: component-ownership:unassigned-relevant-files
+  required_route: [CoverageGap, RemediationDispositionCandidate, SolutionSpace, ResolutionOutcome, AcceptedSemanticTargetOrEscalation, AuthorityGate, RepositoryChangePlan]
+  candidate_axis: [EXISTING_COMPONENT_CANDIDATE, ASSOCIATED_ARTIFACT_CANDIDATE, RELOCATION_CANDIDATE, REMOVAL_CANDIDATE, NEW_COMPONENT_CANDIDATE, DECISION_REQUIRED]
+  authoritative: false
+  forbidden_shortcuts: [UNASSIGNED_TO_AUTOMATIC_PROFILE_ASSIGNMENT, REMOVAL_CANDIDATE_TO_AUTOMATIC_DELETE, RELOCATION_CANDIDATE_TO_AUTOMATIC_DESTINATION_SELECTION, NEW_COMPONENT_CANDIDATE_TO_AUTOMATIC_PROJECT_INTENT]
+  public_surface: NOT_FROZEN_COMMAND_NAME; MUST_BE_AGENT_CONSUMABLE_AND_NON_AUTHORITATIVE
+approved_decisions:
+- {id: D01, choice: A, contract: PACKAGING_CENTERED_REPRESENTATIVE_RULES}
+- {id: D02, choice: A, contract: INDEPENDENT_PTSIP_REMEDIATION_RESPONSIBILITY}
+- {id: D03, choice: A, contract: EXPLICIT_SEMANTIC_TYPES_TWO_AXIS_AUTHORIZATION}
+- {id: D04, choice: A, contract: EXPLICIT_APPLY_CONSERVATIVE_AUTHORIZATION}
+- {id: D05, choice: A, contract: ALWAYS_FRESH_SOLVE_AFTER_INPUT_OR_DRIFT}
+- {id: D06, choice: A, contract: EXPLICIT_RELEASE_ACCEPTANCE_MATRIX_AND_COVERAGE_ROUTING}
+- {id: D07, choice: A, contract: ONE_REMEDIATION_VERIFICATION_RESPONSIBILITY_ONE_TEST_MODE}
+- {id: D08, choice: A, contract: VERTICAL_RESPONSIBILITY_WU_SEQUENCE}
+typed_contracts:
+  reuse: [NormalizedEvidence]
+  new_or_frozen: [CoverageGap, DerivedFact, NormativeConstraint, ProjectIntentAuthority, RemediationDispositionCandidate, SemanticCandidate, ResolutionOutcome, SemanticRemediationPlan, EscalationProof, MutationClass, AuthorizationDecision, RepositoryChangePlan, PostconditionResult]
+  required_separations:
+  - CoverageGap != RemediationDispositionCandidate
+  - RemediationDispositionCandidate != ProjectIntentAuthority
+  - DerivedFact != ProjectIntentAuthority
+  - SemanticCandidate != AcceptedArchitectureDecision
+  - ResolutionOutcome.DETERMINISTIC != AuthorizationDecision.AUTHORIZED
+  - MutationClass != AuthorizationDecision
+resolution_outcomes:
+  DETERMINISTIC: ONE_SEMANTIC_TARGET_REMAINS_AMONG_DECLARED_MODELED_LEGAL_FAMILIES; DOES_NOT_AUTHORIZE_MUTATION
+  OWNER_INTENT_REQUIRED: MULTIPLE_LEGAL_SEMANTIC_TARGETS_REMAIN_BECAUSE_CURRENT_PROJECT_AUTHORITY_DOES_NOT_DECIDE_CHOICE
+  EXTERNAL_FACT_REQUIRED: REQUIRED_TECHNICAL_OR_ENVIRONMENTAL_FACT_MISSING; ACQUIRE_AS_PROVENANCED_EVIDENCE
+  UNSATISFIABLE: NO_LEGAL_SEMANTIC_TARGET_REMAINS_UNDER_CURRENT_CONSTRAINTS_AND_AUTHORITY
+  TOOL_CAPABILITY_GAP: LEGAL_RESOLUTION_MAY_EXIST_BUT_REQUIRED_RULE_OR_REMEDIATION_FAMILY_IS_NOT_MODELED
+mutation_classes: [MECHANICAL_REVERSIBLE, STRUCTURAL_SEMANTIC_PRESERVING, ARCHITECTURE_SEMANTIC, DESTRUCTIVE]
+authorization_decisions: [AUTHORIZED, OWNER_CONFIRMATION_REQUIRED, NOT_AUTHORIZED]
+authorization_policy:
+  PLAN_OR_SOLVE: NO_MUTATION_AUTHORIZATION
+  MECHANICAL_REVERSIBLE: MAY_BE_AUTHORIZED_ONLY_BY_EXPLICIT_WRITE_OR_APPLY_INVOCATION_BOUND_TO_EXACT_PLAN_AND_SNAPSHOT
+  STRUCTURAL_SEMANTIC_PRESERVING: OWNER_CONFIRMATION_REQUIRED_BOUND_TO_EXACT_PLAN_DIGEST
+  ARCHITECTURE_SEMANTIC: PROJECT_INTENT_AUTHORITY_REQUIRED_PLUS_OWNER_CONFIRMATION_FOR_MUTATION
+  DESTRUCTIVE: EXPLICIT_SEMANTIC_AUTHORITY_PLUS_DESTRUCTIVE_CONFIRMATION_BOUND_TO_PLAN_AND_INVENTORY; NO_AUTOMATIC_FALLBACK
+  UNKNOWN_OR_UNSUPPORTED: NOT_AUTHORIZED
+  project_profile_authorization_field_required: false
+fresh_solve:
+  inputs: [CURRENT_SPECIFICATION, CURRENT_PROJECT_AUTHORITY, CURRENT_REPOSITORY_STATE]
+  suspend_on: [OWNER_INTENT_REQUIRED, EXTERNAL_FACT_REQUIRED]
+  resume_rule: MATERIALIZE_APPROPRIATE_INPUT_THEN_RECAPTURE_STATE_AND_RUN_FRESH_SOLVE_FROM_BEGINNING
+  stale_state_rule: PLANNED_PRESTATE_MISMATCH_REJECTS_PLAN_AND_REQUIRES_FRESH_SOLVE
+  resume_old_candidate_set: false
+ownership:
+  implementation_component: {id: ptsip-remediation, classification: PRODUCT, roles: [IMPLEMENTATION], include: [src/ptsip/remediation/**], purpose: GENERIC_AUTHORITY_AWARE_REMEDIATION_RUNTIME}
+  verification_component: {id: ptsip-remediation-verification, classification: PRODUCT, roles: [VERIFICATION], include: [tests/ptsip/remediation/**], purpose: PRODUCT_OWNED_GENERIC_REMEDIATION_VERIFICATION}
+  internal_layers: [domain, rules, solution, planning, authority, execution, verification]
+  internal_layers_are_separate_ptsip_components: false
+  generic_remediation_distinct_from_ptsip_migration: true
+representative_rules:
+- {outcome: DETERMINISTIC, rule_family: [PTSIP-PKG-001], proof: PRODUCT_ARTIFACT_EXCLUDES_EXPLICITLY_NON_PRODUCT_IMPLEMENTATION_WITHOUT_RECLASSIFYING_OWNERSHIP}
+- {outcome: OWNER_INTENT_REQUIRED, rule_family: [PTSIP-CLS-001, PTSIP-CLS-004, PTSIP-CLS-011], proof: ASK_ONLY_UNRESOLVED_GOVERNING_LIFECYCLE_INTENT_AFTER_DETERMINISTIC_REDUCTION}
+- {outcome: UNSATISFIABLE, rule_family: [PTSIP-DEP-001], proof: ZERO_LEGAL_SURVIVORS_WITHOUT_WEAKENING_RULE_OR_SELECTING_LEAST_BAD}
+- {outcome: TOOL_CAPABILITY_GAP, rule_family: [PTSIP-CLS-010], proof: SPLIT_OR_REDESIGN_REQUIRED_BUT_COMPLETE_GENERIC_SPLIT_TRANSFORM_NOT_CLAIMED}
+- {outcome: EXTERNAL_FACT_REQUIRED, rule_family: [PTSIP-ART-001], proof: MISSING_ARTIFACT_OR_DERIVATION_TRUTH_REQUESTED_AS_EVIDENCE_NOT_PROJECT_INTENT}
+release_acceptance_matrix:
+- {id: AUTHORITY_FIREWALL, required: true}
+- {id: COVERAGE_GAP_ROUTING, required: true}
+- {id: OPERATIONAL_RULE_BINDING, required: true}
+- {id: DETERMINISTIC_SOLVE, required: true}
+- {id: OWNER_INTENT, required: true}
+- {id: EXTERNAL_FACT, required: true}
+- {id: UNSATISFIABLE, required: true}
+- {id: CAPABILITY_GAP, required: true}
+- {id: AUTHORIZATION, required: true}
+- {id: SAFE_APPLY, required: true}
+- {id: FAIL_CLOSED_RECOVERY, required: true}
+- {id: POSTCONDITION, required: true}
+- {id: INHERIT_0_3_7, required: true}
+- {id: PROJECT_PROFILE_OWNERSHIP, required: true}
+- {id: REMEDIATION_TEST_MODE, required: true}
+- {id: FULL_REPOSITORY_REGRESSION, required: true}
+- {id: DISTRIBUTION_AND_PRODUCT_ARTIFACT, required: true}
+- {id: EXACT_SHA_SELF_HOSTED_QUALIFICATION, required: true}
+verification:
+  responsibility: ptsip-remediation-verification
+  test_mode: ptsip-remediation
+  pytest_target: tests/ptsip/remediation
+  registration_order: [DECLARE_DURABLE_VERIFICATION_RESPONSIBILITY, PROJECT_PROFILE_DECLARATION, COMPONENT_REF, TEST_MODE_REGISTRATION]
+  selective_success_is_release_authority: false
+reuse_map:
+- {path: src/ptsip/evidence/**, treatment: REUSE_AS_NORMALIZED_EVIDENCE_INPUT}
+- {path: src/ptsip/specification_binding.py, treatment: REUSE_FOR_EXACT_NORMATIVE_BINDING}
+- {path: src/ptsip/repository/snapshot.py, treatment: REUSE_OR_GENERALIZE_ONLY_IF_REQUIRED_AS_NEUTRAL_EXACT_STATE_PRIMITIVE}
+- {path: src/ptsip/source_compat/**, treatment: CONSUME_WHEN_RELEVANT}
+- {path: src/ptsip/migration/execution_model.py, treatment: DO_NOT_REUSE_AS_GENERIC_DOMAIN_MODEL}
+- {path: src/ptsip/migration/**, treatment: EXTRACT_OR_ADAPT_NEUTRAL_PRIMITIVES_ONLY}
+- {path: github-decision-authority, treatment: KEEP_DISTINCT_FROM_PROJECT_INTENT_AND_MUTATION_AUTHORIZATION}
+- {path: clarification-and-migration-candidate-concepts, treatment: REUSE_OR_ADAPT_ONLY_SEMANTICALLY_NEUTRAL_CAPABILITIES_FOR_ISSUE_31}
+wu_sequence:
+- {id: WU-01, responsibility: REMEDIATION_RESPONSIBILITY_TYPED_FOUNDATION}
+- {id: WU-02, responsibility: SOLUTION_SPACE_DETERMINISTIC_RULE_COVERAGE_ROUTING}
+- {id: WU-03, responsibility: ESCALATION_FRESH_SOLVE_BOUNDARIES}
+- {id: WU-04, responsibility: AUTHORITY_GATE_REPOSITORY_CHANGE_PLAN_SAFE_APPLY}
+- {id: WU-05, responsibility: BOUNDARY_OUTCOMES_REMEDIATION_VERIFICATION_CLOSURE}
+- {id: WU-06, responsibility: REPOSITORY_DOGFOOD_FULL_RELEASE_QUALIFICATION}
+non_goals: [UNIVERSAL_RULE_OPERATIONALIZATION, MANDATORY_AI_RUNTIME, AI_CONFIDENCE_HISTORY_EVIDENCE_OR_CANDIDATE_DISPOSITION_AS_PROJECT_INTENT, COVERAGE_GAP_AS_ACCEPTED_REMEDIATION_DECISION, TOOL_CONVENIENCE_FIELDS_IN_PROJECT_PROFILE, SECONDARY_POLICY_DSL, SELF_AUTHORIZED_SPEC_CHANGE, HISTORY_AS_CURRENT_AUTHORITY, MINIMAL_DIFF_OVER_ARCHITECTURE_CORRECTNESS, PHYSICAL_EDIT_ORDER_AS_OWNER_SEMANTIC_CHOICE, GLOBAL_UNIQUENESS_WITHOUT_CLOSED_MODEL, TOOL_CAPABILITY_GAP_AS_OWNER_AMBIGUITY, EXTERNAL_FACT_AS_OWNER_INTENT, WEAKEN_EXACT_SHA_FULL_QUALIFICATION, OPTIONAL_WORK_AS_RELEASE_PREREQUISITE]
+legacy_markdown_migration:
+  former_paths:
+  - {path: planning/0.4.0/Pre-WU-00B-core-contract-freeze.md, blob_sha: 9dcd28f76152fabecea6536938ee9fe0112c3fc5}
+  - {path: planning/0.4.0/09-core-open-decisions-and-non-goals.md, blob_sha: 4fdddcd670baa45b3847659c4b0ee438075239df}
+  state: REMOVED_AFTER_MACHINE_CONVERSION
+completion: {result: CORE_CONTRACT_FROZEN, next: WU-01}
