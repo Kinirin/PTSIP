@@ -11,12 +11,13 @@ work_unit:
     date: '2026-09-02'
   entry_baseline: 00df774bd0958316c1cfbc40bdbe0ba0209484c3
   integration_branch: dev/0.4.0
-  implementation_authorization: WU_DOCUMENT_CREATION_ONLY
+  implementation_authorization: NOT_AUTHORIZED
   source:
     path: planning/0.4.0/Pre-WU-00B-core-contract-freeze.md
     blob_sha: 9dcd28f76152fabecea6536938ee9fe0112c3fc5
   depends_on:
   - WU-00A
+  planning_authorization: CREATE_APPROVED_CORE_WU_DOCUMENTS
 frozen_invariants:
 - Evidence != DerivedFact != NormativeConstraint != ProjectArchitectureAuthority
 - CoverageGap != RemediationCandidate != AcceptedArchitectureDecision
