@@ -68,6 +68,19 @@ components:
     release_owner: tool
     compatibility_owner: tool
 
+  - id: ptsip-remediation
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/ptsip/remediation/**"
+    purpose: generic_authority_aware_remediation_runtime
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
   - id: vpms
     classification: PRODUCT
     roles:
@@ -251,6 +264,24 @@ components:
       - "src/ptsip/migration/**"
       - "src/ptsip/evidence/**"
       - "src/ptsip/source_compat/**"
+
+  - id: ptsip-remediation-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/remediation/**"
+    purpose: product_owned_generic_remediation_contract_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/ptsip/remediation/**"
+      - "src/ptsip/evidence/**"
+      - "src/ptsip/specification_binding.py"
+      - "ptsip.yaml"
 
   - id: vpms-verification
     classification: PRODUCT
@@ -489,6 +520,16 @@ relationships:
     to: ptsip-source-compat
     type: IMPORTS
 
+  - id: remediation-imports-core
+    from: ptsip-remediation
+    to: ptsip-core
+    type: IMPORTS
+
+  - id: remediation-imports-evidence
+    from: ptsip-remediation
+    to: ptsip-evidence
+    type: IMPORTS
+
   - id: canonical-specifies-core
     from: ptsip-canonical-contracts
     to: ptsip-core
@@ -507,6 +548,11 @@ relationships:
   - id: canonical-specifies-migration
     from: ptsip-canonical-contracts
     to: ptsip-migration
+    type: SPECIFIES
+
+  - id: canonical-specifies-remediation
+    from: ptsip-canonical-contracts
+    to: ptsip-remediation
     type: SPECIFIES
 
   - id: canonical-specifies-vpms
@@ -542,6 +588,11 @@ relationships:
   - id: ptsip-migration-verification-verifies-migration
     from: ptsip-migration-verification
     to: ptsip-migration
+    type: VERIFIES
+
+  - id: ptsip-remediation-verification-verifies-remediation
+    from: ptsip-remediation-verification
+    to: ptsip-remediation
     type: VERIFIES
 
   - id: vpms-verification-verifies-vpms

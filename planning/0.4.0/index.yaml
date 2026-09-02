@@ -4,72 +4,80 @@ release:
   integration_branch: dev/0.4.0
   classification: CORE/RELEASE-BLOCKING
   control_plane: planning/0.4.0/index.yaml
-  current_gate: WU-01/OWNER_APPROVAL_REQUIRED
+  current_gate: WU-01/IMPLEMENTATION_ACTIVE
+
 machine_document_policy:
   canonical_format: YAML
   natural_language_wu_documents: REMOVED
   natural_language_markdown_allowed_as_canonical_wu_state: false
   canonical_machine_documents:
-  - planning/0.4.0/index.yaml
-  - planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
-  - planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
-  - planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml
-  - planning/0.4.0/WU-*/WU-*.yaml
-  - planning/0.4.0/WU-*/*.yaml
+    - planning/0.4.0/index.yaml
+    - planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
+    - planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
+    - planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml
+    - planning/0.4.0/WU-*/WU-*.yaml
+    - planning/0.4.0/WU-*/*.yaml
   top_level_release_direction_outside_wu_namespace: planning/0.4.0.md
+
 authority:
   release_boundary: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
   core_contract_freeze: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
   supporting_core_design: planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml
   canonical_work_unit_state: planning/0.4.0/WU-*/WU-*.yaml
   precedence: [OWNER_APPROVED_WU_MACHINE_RECORD, OWNER_APPROVED_PRE_WU_MACHINE_RECORD, SUPPORTING_MACHINE_DESIGN_CONTRACT, TOP_LEVEL_RELEASE_DIRECTION]
+
 state_vocabulary:
   status: [DRAFT, ACTIVE, APPROVED, COMPLETE, BLOCKED, DEFERRED, NOT_CREATED]
   approval: [NOT_REQUIRED, PENDING, APPROVED, REJECTED]
   implementation_authorization: [NOT_AUTHORIZED, AUTHORIZED_WITHIN_WU_BOUNDARY]
+
 work_units:
-- {id: WU-00A, kind: PRE_WORK_UNIT, path: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml, status: COMPLETE, approval: APPROVED, implementation_authorization: NOT_AUTHORIZED, depends_on: []}
-- {id: WU-00B, kind: PRE_WORK_UNIT, path: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml, status: COMPLETE, approval: APPROVED, implementation_authorization: NOT_AUTHORIZED, depends_on: [WU-00A]}
-- id: WU-01
-  kind: WORK_UNIT
-  path: planning/0.4.0/WU-01/WU-01.yaml
-  detail: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml
-  status: DRAFT
-  approval: PENDING
-  implementation_authorization: NOT_AUTHORIZED
-  depends_on: [WU-00A, WU-00B]
-- {id: WU-02, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-01]}
-- {id: WU-03, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-02]}
-- {id: WU-04, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-03]}
-- {id: WU-05, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-04]}
-- {id: WU-06, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-05]}
+  - {id: WU-00A, kind: PRE_WORK_UNIT, path: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml, status: COMPLETE, approval: APPROVED, implementation_authorization: NOT_AUTHORIZED, depends_on: []}
+  - {id: WU-00B, kind: PRE_WORK_UNIT, path: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml, status: COMPLETE, approval: APPROVED, implementation_authorization: NOT_AUTHORIZED, depends_on: [WU-00A]}
+  - id: WU-01
+    kind: WORK_UNIT
+    path: planning/0.4.0/WU-01/WU-01.yaml
+    detail: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml
+    status: ACTIVE
+    approval: NOT_REQUIRED
+    approval_inherited_from: [WU-00B/D02, WU-00B/D03, WU-00B/D06, WU-00B/D08]
+    implementation_authorization: AUTHORIZED_WITHIN_WU_BOUNDARY
+    depends_on: [WU-00A, WU-00B]
+  - {id: WU-02, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-01]}
+  - {id: WU-03, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-02]}
+  - {id: WU-04, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-03]}
+  - {id: WU-05, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-04]}
+  - {id: WU-06, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-05]}
+
 machine_contracts:
-- {id: release-boundary, path: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml, authority: CANONICAL}
-- {id: core-contract-freeze, path: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml, authority: CANONICAL}
-- {id: core-design-contracts, path: planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml, authority: SUPPORTING_SUBORDINATE}
-- {id: wu-01-controller, path: planning/0.4.0/WU-01/WU-01.yaml, authority: CANONICAL_FOR_WU_01_STATE}
-- {id: wu-01-plan, path: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml, authority: CANONICAL_FOR_WU_01_SCOPE_AFTER_APPROVAL}
+  - {id: release-boundary, path: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml, authority: CANONICAL}
+  - {id: core-contract-freeze, path: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml, authority: CANONICAL}
+  - {id: core-design-contracts, path: planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml, authority: SUPPORTING_SUBORDINATE}
+  - {id: wu-01-controller, path: planning/0.4.0/WU-01/WU-01.yaml, authority: CANONICAL_FOR_WU_01_STATE}
+  - {id: wu-01-plan, path: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml, authority: CANONICAL_FOR_WU_01_SCOPE}
+
 legacy_markdown_migration:
   state: REMOVED_FROM_PLANNING_0_4_0_WU_NAMESPACE
   recoverability: GIT_HISTORY_AND_RECORDED_BLOB_SHA
   removed_paths:
-  - {path: planning/0.4.0/01-authority-and-remediation-domain.md, blob_sha: 7b246821f19629b906cab594062562c7f11e77f8}
-  - {path: planning/0.4.0/02-solution-space-and-planning.md, blob_sha: f4b4e9f86bf075312e34cc944ad49fd1305f7233}
-  - {path: planning/0.4.0/03-operational-rule-registry.md, blob_sha: d7e8adc7ad9c0f06764b4341840a9f0aa456df9e}
-  - {path: planning/0.4.0/04-escalation-and-advisory.md, blob_sha: 3cdf582a2ca7813a4322042841210c4ac765cbc1}
-  - {path: planning/0.4.0/05-authority-gate-and-safe-apply.md, blob_sha: 59684089e10ef0ea96380787ca40412f2d6c7494}
-  - {path: planning/0.4.0/06-verification-and-test-mode-strategy.md, blob_sha: 3d7631278ab896506463aa60f22e5763edcfc6de}
-  - {path: planning/0.4.0/07-development-branch-and-wu-strategy.md, blob_sha: ce15d631c1a89610fff4f9358b463512e3af1f79}
-  - {path: planning/0.4.0/08-representative-rule-families.md, blob_sha: 98ace9b257f735ab05d50946ccb4d00e85488a8b}
-  - {path: planning/0.4.0/09-core-open-decisions-and-non-goals.md, blob_sha: 4fdddcd670baa45b3847659c4b0ee438075239df}
-  - {path: planning/0.4.0/Pre-WU-00A-release-boundary-classification.md, blob_sha: a32c96b4855f1c2205e8f2959cf3e7b8d0721209}
-  - {path: planning/0.4.0/Pre-WU-00B-core-contract-freeze.md, blob_sha: 9dcd28f76152fabecea6536938ee9fe0112c3fc5}
-  - {path: planning/0.4.0/README.md, blob_sha: 8cd9d773b02eac24fa1db82b1edd91634c158c73}
+    - {path: planning/0.4.0/01-authority-and-remediation-domain.md, blob_sha: 7b246821f19629b906cab594062562c7f11e77f8}
+    - {path: planning/0.4.0/02-solution-space-and-planning.md, blob_sha: f4b4e9f86bf075312e34cc944ad49fd1305f7233}
+    - {path: planning/0.4.0/03-operational-rule-registry.md, blob_sha: d7e8adc7ad9c0f06764b4341840a9f0aa456df9e}
+    - {path: planning/0.4.0/04-escalation-and-advisory.md, blob_sha: 3cdf582a2ca7813a4322042841210c4ac765cbc1}
+    - {path: planning/0.4.0/05-authority-gate-and-safe-apply.md, blob_sha: 59684089e10ef0ea96380787ca40412f2d6c7494}
+    - {path: planning/0.4.0/06-verification-and-test-mode-strategy.md, blob_sha: 3d7631278ab896506463aa60f22e5763edcfc6de}
+    - {path: planning/0.4.0/07-development-branch-and-wu-strategy.md, blob_sha: ce15d631c1a89610fff4f9358b463512e3af1f79}
+    - {path: planning/0.4.0/08-representative-rule-families.md, blob_sha: 98ace9b257f735ab05d50946ccb4d00e85488a8b}
+    - {path: planning/0.4.0/09-core-open-decisions-and-non-goals.md, blob_sha: 4fdddcd670baa45b3847659c4b0ee438075239df}
+    - {path: planning/0.4.0/Pre-WU-00A-release-boundary-classification.md, blob_sha: a32c96b4855f1c2205e8f2959cf3e7b8d0721209}
+    - {path: planning/0.4.0/Pre-WU-00B-core-contract-freeze.md, blob_sha: 9dcd28f76152fabecea6536938ee9fe0112c3fc5}
+    - {path: planning/0.4.0/README.md, blob_sha: 8cd9d773b02eac24fa1db82b1edd91634c158c73}
+
 invariants:
-- UNCLASSIFIED != CORE
-- Evidence != DerivedFact != NormativeConstraint != ProjectArchitectureAuthority
-- CoverageGap != RemediationCandidate != AcceptedArchitectureDecision
-- SemanticDeterminacy != MutationAuthorization
-- SemanticRemediationPlan != RepositoryChangePlan
-- VerificationResponsibility != PhysicalTestLocation != CIExecutionMode
-- SelectiveTestModeSuccess != FullReleaseQualification
+  - UNCLASSIFIED != CORE
+  - Evidence != DerivedFact != NormativeConstraint != ProjectArchitectureAuthority
+  - CoverageGap != RemediationCandidate != AcceptedArchitectureDecision
+  - SemanticDeterminacy != MutationAuthorization
+  - SemanticRemediationPlan != RepositoryChangePlan
+  - VerificationResponsibility != PhysicalTestLocation != CIExecutionMode
+  - SelectiveTestModeSuccess != FullReleaseQualification
