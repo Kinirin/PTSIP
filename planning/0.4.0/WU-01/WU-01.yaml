@@ -54,12 +54,14 @@ contract_bindings:
   - {id: W1-D05, source: WU-00B/D06, contract: FOCUSED_CONTRACT_VERIFICATION_AND_COMPLETION_BOUNDARY, status: INHERITED_APPROVED}
 
 progress:
-  project_profile_ownership: IN_PROGRESS
-  typed_domain_contracts: IN_PROGRESS
-  operational_rule_contract: NOT_STARTED
-  authority_firewall_tests: IN_PROGRESS
-  coverage_gap_contract_tests: IN_PROGRESS
+  project_profile_ownership: IMPLEMENTED
+  typed_domain_contracts: IMPLEMENTED
+  operational_rule_contract: IMPLEMENTED
+  authority_firewall_tests: IMPLEMENTED_PENDING_EXECUTION
+  coverage_gap_contract_tests: IMPLEMENTED_PENDING_EXECUTION
+  operational_rule_contract_tests: IMPLEMENTED_PENDING_EXECUTION
   project_profile_validation: PENDING
+  focused_verification: PENDING
 
 completion_gate:
   requires_all:

@@ -19,6 +19,17 @@ from .domain import (
     SemanticCandidate,
     SemanticRemediationPlan,
 )
+from .rules import (
+    OperationalRule,
+    OperationalRuleBinding,
+    OperationalRuleCapabilityDeclaration,
+    OperationalRuleContractError,
+    OperationalRuleEvaluation,
+    RuleAutomationLevel,
+    RuleCapabilityState,
+    RuleEvaluationStatus,
+    RuleRequirementKind,
+)
 
 __all__ = [
     "AuthorizationDecision",
@@ -27,6 +38,11 @@ __all__ = [
     "EscalationProof",
     "MutationClass",
     "NormativeConstraint",
+    "OperationalRule",
+    "OperationalRuleBinding",
+    "OperationalRuleCapabilityDeclaration",
+    "OperationalRuleContractError",
+    "OperationalRuleEvaluation",
     "PostconditionResult",
     "ProjectIntentAuthority",
     "ProjectIntentSource",
@@ -36,6 +52,10 @@ __all__ = [
     "RemediationDispositionCandidate",
     "RepositoryChangePlan",
     "ResolutionOutcome",
+    "RuleAutomationLevel",
+    "RuleCapabilityState",
+    "RuleEvaluationStatus",
+    "RuleRequirementKind",
     "SemanticCandidate",
     "SemanticRemediationPlan",
 ]

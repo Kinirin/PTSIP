@@ -78,17 +78,43 @@ issue_31_foundation:
   public_routing_implementation: DEFER_TO_WU_02_WU_03_WU_05
 
 operational_rule_contract:
-  status: NOT_STARTED
+  status: IMPLEMENTED
   goal: EXPLICIT_EXECUTABLE_BRIDGE_FROM_BOUND_SPECIFICATION_RULE_TO_SUPPORTED_TOOL_CAPABILITY
+  module: src/ptsip/remediation/rules/contract.py
+  stable_bridge: rule_id
+  explicit_normative_binding: SpecificationBinding
+  protocol_methods: [applies, evaluate, propose_solutions, verify]
+  public_contracts:
+    - OperationalRule
+    - OperationalRuleBinding
+    - OperationalRuleCapabilityDeclaration
+    - OperationalRuleEvaluation
+    - RuleCapabilityState
+    - RuleRequirementKind
+    - RuleAutomationLevel
+    - RuleEvaluationStatus
+  capability_declaration:
+    authoritative: false
+    fields:
+      - supported_remediation_families
+      - candidate_generation
+      - postcondition_verification
+      - possible_requirements
+      - automation_level
+    requirement_kinds: [PROJECT_INTENT, EXTERNAL_FACT]
+    automation_levels: [EVALUATION_ONLY, SEMANTIC_REMEDIATION]
+    mutation_authorization_field: false
   minimum_responsibilities: [RULE_IDENTITY, APPLICABILITY, EVALUATION, DECLARED_MODELED_REMEDIATION_CAPABILITY, POSTCONDITION_VERIFICATION_CAPABILITY]
   forbidden: [INVENT_PROJECT_INTENT, EVIDENCE_TO_AUTHORITY_CONVERSION, TOOL_VERSION_TO_SPECIFICATION_SUPPORT_INFERENCE, AI_OR_CONFIDENCE_AS_ELIMINATION_AUTHORITY]
-  exact_python_protocol_shape: IMPLEMENTATION_DETAIL_NOT_FROZEN_BY_THIS_PLAN
+  forbidden_protocol_surfaces: [apply, authorize, create_authority]
+  exact_python_protocol_shape: IMPLEMENTED_WITHOUT_MUTATION_OR_AUTHORITY_CREATION_SURFACE
 
 implementation_shape:
   rule: CREATE_ONLY_DIRECTORIES_MODULES_THAT_HAVE_WU_01_RESPONSIBILITY; DO_NOT_PRECREATE_EMPTY_FUTURE_LAYER_TREES
   active_paths:
     - src/ptsip/remediation/__init__.py
     - src/ptsip/remediation/domain/**
+    - src/ptsip/remediation/rules/**
     - tests/ptsip/remediation/**
   future_layer_paths_not_required_in_current_slice:
     - src/ptsip/remediation/solution/**
@@ -102,9 +128,8 @@ verification_plan:
     - RESOLUTION_OUTCOME_ENUM_TESTS
     - AUTHORITY_FIREWALL_TESTS
     - COVERAGE_GAP_CONTRACT_TESTS
-    - PROJECT_PROFILE_VALIDATION
-  deferred_until_operational_rule_slice:
     - OPERATIONAL_RULE_CONTRACT_TESTS
+    - PROJECT_PROFILE_VALIDATION
   test_mode:
     register_new_mode: false
     reason: DURABLE_VERIFICATION_RESPONSIBILITY_IS_DECLARED_FIRST; TEST_MODE_REGISTRATION_IS_FROZEN_FOR_WU_05
@@ -112,8 +137,9 @@ verification_plan:
   reason: WU_01_IS_NOT_A_RELEASE_QUALIFICATION_BOUNDARY
 
 progress:
-  typed_domain_contracts: IN_PROGRESS
-  operational_rule_contract: NOT_STARTED
+  typed_domain_contracts: IMPLEMENTED
+  operational_rule_contract: IMPLEMENTED
+  focused_verification: PENDING
 
 completion_conditions:
   - PTSIP_REMEDIATION_COMPONENT_DECLARED
