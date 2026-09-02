@@ -1,24 +1,28 @@
-# 0.4.0 — CORE Open Decisions and Non-goals
+# 0.4.0 — CORE Decisions and Non-goals
 
-> **Status:** DRAFT / CORE DECISION QUEUE  
+> **Status:** RESOLVED / PRE-WU-00B FROZEN  
 > **Classification:** `CORE / RELEASE-BLOCKING`  
 > **Parent:** `planning/0.4.0.md`  
+> **Controlling freeze:** `planning/0.4.0/Pre-WU-00B-core-contract-freeze.md`  
 > **Optional planning:** `planning/0.4.0-op/`
 
 ## 1. Purpose
 
-This document contains only unresolved contracts, safety boundaries, and non-goals that affect the approved 0.4.0 CORE.
+This document now records the closed CORE decision queue for Tool `0.4.0`.
 
-Experimental, advisory-provider, workflow-convenience, history, and other non-blocking work belongs under `planning/0.4.0-op/` and must not be pulled into this CORE decision queue without an explicit Promotion Review.
+All release-blocking open decisions previously listed here were resolved by owner-approved Pre-WU-00B on 2026-09-02. The exact controlling contracts are in `Pre-WU-00B-core-contract-freeze.md`.
 
-## 2. CORE non-goals
+No item in `planning/0.4.0-op/` becomes CORE without the Pre-WU-00A Promotion Review procedure.
 
-The release-blocking remediation core does not require or authorize:
+## 2. Frozen CORE non-goals
 
-- operationalizing every PTSIP rule in Tool 0.4.0;
+Tool `0.4.0` does not require or authorize:
+
+- operationalizing every PTSIP rule;
 - making AI mandatory runtime infrastructure;
-- allowing AI, confidence, heuristics, history, or repository evidence to decide project architecture intent;
-- expanding `ptsip.yaml` with confidence, provider, remediation-history, or optimization fields merely for Tool convenience;
+- allowing AI, confidence, heuristics, history, repository evidence, or candidate dispositions to decide project architecture intent;
+- treating a coverage gap as an accepted remediation decision;
+- expanding `ptsip.yaml` with confidence, provider, remediation-history, optimization, or execution-authorization fields merely for Tool convenience;
 - creating a giant secondary policy DSL;
 - self-authorizing Specification changes;
 - using historical remediation choices as current authority;
@@ -27,12 +31,12 @@ The release-blocking remediation core does not require or authorize:
 - claiming global semantic uniqueness without a closed declared remediation-family model;
 - treating `TOOL_CAPABILITY_GAP` as owner ambiguity;
 - treating an externally knowable technical fact as owner intent;
-- weakening exact-SHA/full qualification semantics inherited before 0.4.0;
-- completing any OPTIONAL / NON-BLOCKING work before 0.4.0 can release.
+- weakening exact-SHA/full qualification semantics;
+- completing OPTIONAL / NON-BLOCKING work before 0.4.0 may release.
 
 ## 3. Required 0.3.7 inheritance
 
-0.4.0 must inherit rather than duplicate or weaken these established foundations:
+0.4.0 inherits rather than duplicates or weakens:
 
 ```text
 Tool Version independence
@@ -46,136 +50,96 @@ Safe apply / recovery behavior
 Architecture authority separation
 ```
 
-Generic remediation should reuse these contracts where semantically valid. Migration-specific state machines or assumptions must not be copied into generic remediation merely because they already exist.
+Generic remediation reuses neutral contracts where semantically valid and keeps migration-specific state machines separate.
 
-The Core Contract Freeze must identify reusable neutral primitives and migration-specific responsibilities explicitly.
-
-## 4. CORE open decisions for Pre-WU-00B
-
-The following decisions remain release-blocking planning work and must be resolved before implementation WUs are authorized.
-
-### Decision 1 — exact representative operational rule families
-
-Select the initial rule families that prove the 0.4.0 framework without implying universal Specification coverage.
-
-The selected set must exercise, at minimum, the approved representative outcome boundaries and must be small enough that the modeled remediation families can be stated honestly.
-
-### Decision 2 — package, module, and Project Profile ownership
-
-Fix the responsibility boundary for generic remediation code and verification.
-
-This includes deciding whether a durable independent `ptsip-remediation` Product responsibility is declared or whether another explicit ownership arrangement is used. New paths must not rely on accidental wildcard ownership.
-
-### Decision 3 — canonical typed state and diagnostics contracts
-
-Freeze the machine-readable shapes and canonical vocabulary for:
+## 4. Resolved Pre-WU-00B decisions
 
 ```text
-Evidence
-DerivedFact
-Normative Constraint
-Architecture Authority / Project Intent
-SemanticCandidate
-ResolutionOutcome
-SemanticRemediationPlan
-EscalationProof
-Mutation authorization
-RepositoryChangePlan
-Postcondition result
+D01 = A  Packaging-centered representative rules
+D02 = A  Independent ptsip-remediation Product responsibility
+D03 = A  Explicit semantic types + two-axis authorization
+D04 = A  Explicit-apply conservative mutation authorization
+D05 = A  Fresh Solve after owner intent, external fact, or stale-state drift
+D06 = A  Explicit release acceptance matrix
+D07 = A  One remediation verification responsibility + one Test Mode
+D08 = A  Vertical responsibility WU sequence
 ```
 
-The freeze must prevent evidence, external facts, architecture intent, and mutation permission from collapsing into one generic authority object.
+The exact machine-readable/semantic contracts are controlled by the Pre-WU-00B freeze document rather than duplicated here.
 
-### Decision 4 — authorization defaults and irreversibility classes
+## 5. Issue #31 reconciliation
 
-Define the exact authorization treatment for reversible mechanical changes, structural semantic-preserving changes, architecture-semantic changes, and destructive/irreversible changes.
+Issue #31 exposed a real consumer-facing gap around `component-ownership:unassigned-relevant-files`.
 
-Semantic determinacy must remain separate from permission to mutate.
-
-### Decision 5 — Fresh Solve resume lifecycle
-
-Freeze the lifecycle for owner-intent and external-fact suspension/resume:
+The frozen CORE invariant is:
 
 ```text
-Fresh Solve
-    ↓
-missing intent or fact
-    ↓
-materialize owner authority OR provenance-bound external evidence
-    ↓
-Fresh Solve again
-    ↓
-Authority Gate
+Coverage Gap
+    ≠ Remediation Candidate
+    ≠ Accepted Architecture Decision
 ```
 
-No supplied answer may bypass a fresh evaluation against current Specification, authority, and repository state.
+Therefore `UNASSIGNED` remains a coverage fact. Tool `0.4.0` must provide an agent-consumable, non-authoritative route through remediation disposition candidates and semantic resolution rather than encouraging automatic Project Profile assignment.
 
-### Decision 6 — exact release acceptance matrix
+The exact UX surface (`triage`, `clarify --from-gap`, structured `next_actions`, or equivalent) is an implementation choice as long as the authority boundary and release acceptance proof are satisfied.
 
-Define the release proof that permits Tool 0.4.0 to claim the generic remediation framework is complete enough for release.
-
-The matrix must cover the canonical outcome taxonomy, safe refusal, authorization, stale-state rejection, postcondition verification, inherited 0.3.7 contracts, package/distribution checks, and exact-SHA self-hosted qualification.
-
-### Decision 7 — CORE verification responsibility and Test Mode coverage
-
-Decide durable verification ownership before introducing any new Test Mode.
-
-Correct direction:
+## 6. Frozen ownership and verification direction
 
 ```text
-durable verification responsibility
-    ↓
-Project Profile declaration
-    ↓
-component_ref
-    ↓
-Test Mode when execution selection benefits from one
+ptsip-remediation
+    PRODUCT / IMPLEMENTATION
+    src/ptsip/remediation/**
+
+ptsip-remediation-verification
+    PRODUCT / VERIFICATION
+    tests/ptsip/remediation/**
+        ↓ component_ref
+Test Mode: ptsip-remediation
 ```
 
-Physical test directories and watch paths remain implementation/execution evidence, not architecture authority.
+Internal module layers do not automatically become independent PTSIP components or Test Modes.
 
-### Decision 8 — final CORE WU decomposition
+## 7. Frozen outcome and authorization separation
 
-After Decisions 1–7 are frozen, decompose the release-blocking work into narrow vertical slices with explicit completion and verification boundaries.
-
-Layer names from the consolidated plan are design responsibilities, not an automatically approved one-layer-per-WU schedule.
-
-## 5. Tool capability gap is a CORE safety result
-
-`TOOL_CAPABILITY_GAP` is not a failure to hide. It prevents partial operationalization from being mistaken for semantic determinacy.
-
-It does not automatically mean:
+Canonical semantic outcomes:
 
 ```text
-architecture ambiguous
-owner must decide
-repository unsatisfiable
+DETERMINISTIC
+OWNER_INTENT_REQUIRED
+EXTERNAL_FACT_REQUIRED
+UNSATISFIABLE
+TOOL_CAPABILITY_GAP
 ```
 
-It means the current Tool cannot complete the required modeled reasoning/remediation path with its declared capability.
-
-## 6. Project Profile surface stability
-
-Before adding a new `ptsip.yaml` field, the CORE design must answer:
+Mutation impact:
 
 ```text
-Does the project itself need to declare new truth, intent, or authority?
+MECHANICAL_REVERSIBLE
+STRUCTURAL_SEMANTIC_PRESERVING
+ARCHITECTURE_SEMANTIC
+DESTRUCTIVE
 ```
 
-If no, internal execution, optimization, provider, history, or Tool-capability state should remain outside Project Profile authority.
-
-## 7. Automation debt boundary
-
-0.4.0 should reduce repeated manual PTSIP reasoning by coding agents, but automation cannot cross authority boundaries.
-
-A deterministic supported rule should encode deterministic reasoning in executable Tool behavior. An unsupported semantic guess must remain an explicit gap or escalation instead of being hidden behind automation.
-
-## 8. Relationship to OPTIONAL planning
-
-Non-blocking work is tracked under:
+Mutation authorization:
 
 ```text
-planning/0.4.0-op/
+AUTHORIZED
+OWNER_CONFIRMATION_REQUIRED
+NOT_AUTHORIZED
 ```
 
-If an optional experiment reveals a missing CORE contract, the experiment itself does not become CORE automatically. The missing contract must be separately reviewed under Pre-WU-00A promotion rules and, if approved, represented by a controlling document in `planning/0.4.0/`.
+The impact and authorization axes remain separate.
+
+## 8. Next CORE planning boundary
+
+Pre-WU-00B is complete. The next action is not free-form implementation.
+
+```text
+create WU-01 planning document
+    ↓
+freeze exact WU-01 scope / entry baseline / non-goals / verification
+    ↓
+execute WU-01
+```
+
+The approved high-level WU sequence is WU-01 through WU-06 as defined by `Pre-WU-00B-core-contract-freeze.md`.
