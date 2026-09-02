@@ -1,0 +1,231 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+document:
+  id: WU-02-SOLUTION-SPACE-DETERMINISTIC-RULE-COVERAGE-ROUTING
+  type: WORK_PLAN
+  status: DRAFT
+  approval:
+    status: NOT_REQUIRED
+    inherited_from: [WU-00B/D01, WU-00B/D03, WU-00B/D06, WU-00B/D08]
+  implementation_authorization: NOT_AUTHORIZED
+
+inputs:
+  predecessor: planning/0.4.0/WU-01/WU-01.yaml
+  core_freeze: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
+  supporting_design: planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml
+  project_profile: ptsip.yaml
+  specification:
+    family: 0.3.7-draft
+    source: https://github.com/Kinirin/PTSIP
+    revision: 3c47816770d194ae42f98faedc911d980db0e62a
+    representative_rule: PTSIP-PKG-001
+  implemented_foundation:
+    - src/ptsip/remediation/domain/**
+    - src/ptsip/remediation/rules/contract.py
+    - src/ptsip/evidence/**
+    - src/ptsip/specification_binding.py
+  existing_rule_evidence_surfaces_to_review_for_reuse:
+    - src/ptsip/conformance.py
+    - src/ptsip/artifact_evidence.py
+  forbidden_generic_solver_source:
+    - src/ptsip/migration/execution_model.py
+
+solution_space_contract:
+  reasoning_target: LEGAL_SEMANTIC_TARGET_STATES_NOT_PLAUSIBLE_PHYSICAL_EDITS
+  pipeline:
+    - CANDIDATE_GENERATION
+    - NORMATIVE_ELIMINATION
+    - ARCHITECTURE_PRESERVATION
+    - SEMANTIC_EQUIVALENCE_OR_DOMINANCE_REDUCTION
+    - RANK_VALID_SURVIVORS
+  candidate_source_rule:
+    operational_rule_capability_required: true
+    undeclared_remediation_family_may_be_invented: false
+  elimination:
+    proof_required: true
+    valid_reasons:
+      - VIOLATES_NORMATIVE_CONSTRAINT
+      - CONFLICTS_WITH_EXPLICIT_CURRENT_AUTHORITY
+      - FAILS_REQUIRED_PRECONDITION
+      - BREAKS_REQUIRED_ARCHITECTURE_INVARIANT
+      - PROVABLY_SEMANTICALLY_EQUIVALENT_TO_RETAINED_CANDIDATE
+      - PROVABLY_DOMINATED_UNDER_MODELED_SEMANTIC_OBJECTIVE
+    forbidden_reasons:
+      - LOW_CONFIDENCE
+      - HIGH_IMPLEMENTATION_COST
+      - LARGE_DIFF
+      - AI_PREFERENCE
+      - HISTORY_PREFERENCE
+      - RANKING_SCORE_ONLY
+    required_record_semantics:
+      - CANDIDATE_ID
+      - ELIMINATION_REASON
+      - SUPPORTING_RULE_FACT_OR_AUTHORITY_REFERENCES
+      - MACHINE_INSPECTABLE_RATIONALE
+    exact_python_record_name: IMPLEMENTATION_DETAIL_NOT_FROZEN
+  ranking:
+    occurs_after_legal_reduction: true
+    factors: [REVERSIBILITY, BLAST_RADIUS, FUTURE_CONSISTENCY, IMPLEMENTATION_COST, ADVISORY_HEURISTICS]
+    can_eliminate_legal_candidate: false
+    can_create_authority: false
+  cardinality:
+    scope: DECLARED_MODELED_REMEDIATION_FAMILIES_ONLY
+    ZERO: UNSATISFIABLE
+    ONE: DETERMINISTIC
+    TWO_OR_MORE: OWNER_INTENT_REQUIRED
+    deterministic_means_mutation_authorized: false
+    zero_or_multiple_handoff:
+      classify_outcome_in_wu_02: true
+      produce_escalation_proof_in_wu_02: false
+      target_wu_for_escalation_proof: WU-03
+  result_inspectability:
+    required:
+      - GENERATED_CANDIDATES
+      - ELIMINATED_CANDIDATES_WITH_REASONS
+      - SURVIVING_CANDIDATES
+      - OUTCOME
+      - RANKING_IF_PRESENT
+    exact_python_result_shape: IMPLEMENTATION_DETAIL_NOT_FROZEN
+
+ptsip_pkg_001_deterministic_slice:
+  rule_id: PTSIP-PKG-001
+  normative_meaning:
+    product_artifact_must_exclude:
+      - DEVELOPMENT_TOOLING_IMPLEMENTATION
+      - DELIVERY_IMPLEMENTATION
+      - OPERATIONS_IMPLEMENTATION
+      - THEIR_LIFECYCLE_ONLY_DEPENDENCIES
+    ownership_change_requires_separate_valid_architecture_decision: true
+  proof_goal: PRODUCT_ARTIFACT_EXCLUDES_EXPLICITLY_NON_PRODUCT_IMPLEMENTATION_WITHOUT_RECLASSIFYING_OWNERSHIP
+  required_inputs:
+    - SUFFICIENT_PRODUCT_ARTIFACT_CONTENT_EVIDENCE
+    - CURRENT_PROJECT_PROFILE_CLASSIFICATION_AUTHORITY
+    - EXACT_SPECIFICATION_BINDING
+    - OPERATIONAL_RULE_BINDING
+  deterministic_fixture_boundary:
+    artifact_evidence_sufficiency_assumed_for_this_slice: true
+    missing_artifact_truth_boundary: DEFER_TO_EXTERNAL_FACT_OUTCOME_CLOSURE_IN_WU_05
+  semantic_candidate_family:
+    meaning: EXCLUDE_EXPLICIT_NON_PRODUCT_IMPLEMENTATION_FROM_PRODUCT_ARTIFACT_MEMBERSHIP
+    exact_public_family_identifier: NOT_FROZEN
+    may_change_component_classification: false
+    may_weaken_ptsip_pkg_001: false
+  semantic_target:
+    product_artifact_membership_contains_definite_non_product_implementation: false
+    project_profile_ownership_unchanged: true
+  output:
+    one_legal_survivor_yields: ResolutionOutcome.DETERMINISTIC
+    semantic_plan: SemanticRemediationPlan
+    repository_change_plan: FORBIDDEN_IN_WU_02
+    mutation_authorization: NONE
+
+coverage_gap_routing:
+  issue: 31
+  coverage_gap: component-ownership:unassigned-relevant-files
+  route_in_this_wu:
+    - CoverageGap
+    - RemediationDispositionCandidate
+    - SolutionSpace
+    - ResolutionOutcome
+  candidate_axis:
+    - EXISTING_COMPONENT_CANDIDATE
+    - ASSOCIATED_ARTIFACT_CANDIDATE
+    - RELOCATION_CANDIDATE
+    - REMOVAL_CANDIDATE
+    - NEW_COMPONENT_CANDIDATE
+    - DECISION_REQUIRED
+  candidate_authoritative: false
+  generation_inputs:
+    - COVERAGE_GAP
+    - NORMALIZED_EVIDENCE
+    - CURRENT_PROJECT_AUTHORITY_WHEN_AVAILABLE
+  reduction_may:
+    - REMOVE_CANDIDATE_PROVEN_ILLEGAL
+    - REMOVE_CANDIDATE_CONFLICTING_WITH_EXPLICIT_CURRENT_AUTHORITY
+    - COLLAPSE_PROVABLY_EQUIVALENT_CANDIDATES
+  reduction_may_not:
+    - ASSIGN_UNASSIGNED_PATH_TO_COMPONENT_WITHOUT_AUTHORITY
+    - DELETE_REMOVAL_CANDIDATE
+    - CHOOSE_RELOCATION_DESTINATION_WITHOUT_AUTHORITY
+    - INVENT_NEW_COMPONENT_PURPOSE_OR_CLASSIFICATION
+  deterministic_case:
+    permitted_only_when: EXACTLY_ONE_LEGAL_SEMANTIC_TARGET_REMAINS_BY_RULE_AND_EXISTING_AUTHORITY
+    mutation_authorized: false
+  unresolved_case:
+    outcome: OWNER_INTENT_REQUIRED
+    escalation_proof_and_owner_question: DEFER_TO_WU_03
+  public_cli_or_issue_automation: DEFERRED
+
+semantic_planning:
+  input: EXACTLY_ONE_LEGAL_SEMANTIC_TARGET
+  output: SemanticRemediationPlan
+  plan_represents: ACCEPTED_DETERMINISTIC_TARGET_SEMANTICS_WITH_REFERENCED_FACTS_RULES_AND_EXISTING_AUTHORITY
+  may_not_contain:
+    - PHYSICAL_FILE_OPERATION_ORDER
+    - REPOSITORY_WRITE_AUTHORIZATION
+    - DESTRUCTIVE_CONFIRMATION
+    - REDECIDED_PROJECT_INTENT
+  repository_change_plan: DEFER_TO_WU_04
+
+implementation_shape:
+  rule: CREATE_ONLY_MODULES_REQUIRED_BY_WU_02_RESPONSIBILITY
+  permitted_new_paths:
+    - src/ptsip/remediation/solution/**
+    - src/ptsip/remediation/rules/**
+    - tests/ptsip/remediation/**
+  project_profile_change_expected: false
+  reason: EXISTING_PTSIP_REMEDIATION_AND_VERIFICATION_SELECTORS_ALREADY_OWN_THESE_PATHS
+  empty_future_layer_directories_forbidden: true
+  test_mode_registration_in_this_wu: false
+
+verification_plan:
+  focused:
+    - SOLUTION_SPACE_CARDINALITY_TESTS
+    - ELIMINATION_PROOF_REASON_TESTS
+    - RANKING_NON_ELIMINATION_TESTS
+    - EXPLICIT_AUTHORITY_PRESERVATION_TESTS
+    - PTSIP_PKG_001_DETERMINISTIC_SLICE_TESTS
+    - COVERAGE_GAP_NON_AUTHORITY_ROUTING_TESTS
+    - DETERMINISTIC_SEMANTIC_PLAN_TESTS
+    - NO_MUTATION_AUTHORIZATION_SURFACE_TESTS
+    - EXISTING_REMEDIATION_CONTRACT_REGRESSION
+  pytest_target: tests/ptsip/remediation
+  project_profile_validation_if_profile_unchanged: OPTIONAL_SANITY_CHECK
+  new_test_mode: false
+  full_exact_sha_required_for_wu_completion: false
+  reason: WU_02_IS_NOT_A_RELEASE_QUALIFICATION_BOUNDARY
+
+later_wu_handoffs:
+  WU-03:
+    - ESCALATION_PROOF
+    - OWNER_QUESTION_MINIMIZATION
+    - EXTERNAL_FACT_VS_OWNER_INTENT_BOUNDARY_WORKFLOW
+    - FRESH_SOLVE_RESTART_BOUNDARY
+  WU-04:
+    - AUTHORITY_GATE
+    - MUTATION_CLASS_APPLICATION
+    - AUTHORIZATION_DECISION
+    - REPOSITORY_CHANGE_PLAN
+    - SAFE_APPLY
+  WU-05:
+    - BOUNDARY_OUTCOME_CLOSURE
+    - REMEDIATION_TEST_MODE_REGISTRATION
+    - POSTCONDITION_VERIFICATION_CLOSURE
+
+planning_review:
+  new_owner_policy_decisions_introduced: false
+  implementation_authorized_by_this_document: false
+  implementation_start_requires_explicit_user_request: true
+
+completion_conditions:
+  - SOLUTION_SPACE_PIPELINE_EXISTS_WITH_SEPARATE_ELIMINATION_AND_RANKING
+  - EVERY_ELIMINATION_HAS_MACHINE_INSPECTABLE_PROOF_REASON
+  - RANKING_NEVER_REMOVES_AN_OTHERWISE_LEGAL_CANDIDATE
+  - ZERO_ONE_TWO_PLUS_CARDINALITY_MAPS_TO_FROZEN_RESOLUTION_OUTCOMES
+  - PTSIP_PKG_001_HAS_A_COMPLETE_DETERMINISTIC_SEMANTIC_SLICE
+  - PTSIP_PKG_001_SLICE_DOES_NOT_RECLASSIFY_OWNERSHIP
+  - ISSUE_31_COVERAGE_GAP_PRODUCES_NON_AUTHORITATIVE_DISPOSITION_CANDIDATES
+  - DETERMINISTIC_TARGET_CAN_MATERIALIZE_SEMANTIC_REMEDIATION_PLAN
+  - SEMANTIC_REMEDIATION_PLAN_REMAINS_DISTINCT_FROM_REPOSITORY_CHANGE_PLAN
+  - NO_MUTATION_OR_OWNER_ESCALATION_EXECUTION_IS_ADDED
+  - FOCUSED_WU_02_VERIFICATION_PASSES
