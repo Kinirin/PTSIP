@@ -1,0 +1,133 @@
+planning_contract: ptsip-planning/v1
+release:
+  tool_version: 0.4.0
+  integration_branch: dev/0.4.0
+  classification: CORE/RELEASE-BLOCKING
+  control_plane: planning/0.4.0/index.yaml
+  current_gate: WU-01/OWNER_APPROVAL_REQUIRED
+authority:
+  release_boundary: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
+  core_contract_freeze: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
+  canonical_work_unit_state: planning/0.4.0/WU-*/WU-*.yaml
+  rule: YAML work-unit records are canonical for machine planning state; Markdown design documents are source/reference material
+    unless explicitly promoted by a later owner-approved machine record.
+state_vocabulary:
+  status:
+  - DRAFT
+  - ACTIVE
+  - APPROVED
+  - COMPLETE
+  - BLOCKED
+  - DEFERRED
+  approval:
+  - NOT_REQUIRED
+  - PENDING
+  - APPROVED
+  - REJECTED
+  implementation_authorization:
+  - NOT_AUTHORIZED
+  - AUTHORIZED_WITHIN_WU_BOUNDARY
+work_units:
+- id: WU-00A
+  kind: PRE_WORK_UNIT
+  path: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
+  status: COMPLETE
+  approval: APPROVED
+  implementation_authorization: NOT_AUTHORIZED
+  depends_on: []
+- id: WU-00B
+  kind: PRE_WORK_UNIT
+  path: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
+  status: COMPLETE
+  approval: APPROVED
+  implementation_authorization: NOT_AUTHORIZED
+  depends_on:
+  - WU-00A
+- id: WU-01
+  kind: WORK_UNIT
+  path: planning/0.4.0/WU-01/WU-01.yaml
+  detail: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml
+  status: DRAFT
+  approval: PENDING
+  implementation_authorization: NOT_AUTHORIZED
+  depends_on:
+  - WU-00A
+  - WU-00B
+- id: WU-02
+  kind: WORK_UNIT
+  status: NOT_CREATED
+  depends_on:
+  - WU-01
+- id: WU-03
+  kind: WORK_UNIT
+  status: NOT_CREATED
+  depends_on:
+  - WU-02
+- id: WU-04
+  kind: WORK_UNIT
+  status: NOT_CREATED
+  depends_on:
+  - WU-03
+- id: WU-05
+  kind: WORK_UNIT
+  status: NOT_CREATED
+  depends_on:
+  - WU-04
+- id: WU-06
+  kind: WORK_UNIT
+  status: NOT_CREATED
+  depends_on:
+  - WU-05
+design_sources:
+- id: authority-domain
+  path: planning/0.4.0/01-authority-and-remediation-domain.md
+  blob_sha: 7b246821f19629b906cab594062562c7f11e77f8
+  role: REFERENCE
+- id: solution-space
+  path: planning/0.4.0/02-solution-space-and-planning.md
+  blob_sha: f4b4e9f86bf075312e34cc944ad49fd1305f7233
+  role: REFERENCE
+- id: operational-rule-registry
+  path: planning/0.4.0/03-operational-rule-registry.md
+  blob_sha: d7e8adc7ad9c0f06764b4341840a9f0aa456df9e
+  role: REFERENCE
+- id: escalation-advisory
+  path: planning/0.4.0/04-escalation-and-advisory.md
+  blob_sha: 3cdf582a2ca7813a4322042841210c4ac765cbc1
+  role: REFERENCE
+- id: authority-gate-safe-apply
+  path: planning/0.4.0/05-authority-gate-and-safe-apply.md
+  blob_sha: 59684089e10ef0ea96380787ca40412f2d6c7494
+  role: REFERENCE
+- id: verification-test-mode
+  path: planning/0.4.0/06-verification-and-test-mode-strategy.md
+  blob_sha: 3d7631278ab896506463aa60f22e5763edcfc6de
+  role: REFERENCE
+- id: development-wu-strategy
+  path: planning/0.4.0/07-development-branch-and-wu-strategy.md
+  blob_sha: ce15d631c1a89610fff4f9358b463512e3af1f79
+  role: REFERENCE
+- id: representative-rules
+  path: planning/0.4.0/08-representative-rule-families.md
+  blob_sha: 98ace9b257f735ab05d50946ccb4d00e85488a8b
+  role: REFERENCE
+- id: resolved-open-decisions
+  path: planning/0.4.0/09-core-open-decisions-and-non-goals.md
+  blob_sha: 4fdddcd670baa45b3847659c4b0ee438075239df
+  role: REFERENCE
+- id: pre-wu-00a-markdown
+  path: planning/0.4.0/Pre-WU-00A-release-boundary-classification.md
+  blob_sha: a32c96b4855f1c2205e8f2959cf3e7b8d0721209
+  role: SOURCE_FOR_WU_00A
+- id: pre-wu-00b-markdown
+  path: planning/0.4.0/Pre-WU-00B-core-contract-freeze.md
+  blob_sha: 9dcd28f76152fabecea6536938ee9fe0112c3fc5
+  role: SOURCE_FOR_WU_00B
+invariants:
+- UNCLASSIFIED != CORE
+- Evidence != DerivedFact != NormativeConstraint != ProjectArchitectureAuthority
+- CoverageGap != RemediationCandidate != AcceptedArchitectureDecision
+- SemanticDeterminacy != MutationAuthorization
+- SemanticRemediationPlan != RepositoryChangePlan
+- VerificationResponsibility != PhysicalTestLocation != CIExecutionMode
+- SelectiveTestModeSuccess != FullReleaseQualification

@@ -1,0 +1,117 @@
+planning_contract: ptsip-planning/v1
+work_unit:
+  id: WU-00B
+  kind: PRE_WORK_UNIT
+  title: 0.4.0 Core Contract Freeze
+  classification: CORE/RELEASE-BLOCKING
+  status: COMPLETE
+  approval:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    date: '2026-09-02'
+  entry_baseline: 00df774bd0958316c1cfbc40bdbe0ba0209484c3
+  integration_branch: dev/0.4.0
+  implementation_authorization: WU_DOCUMENT_CREATION_ONLY
+  source:
+    path: planning/0.4.0/Pre-WU-00B-core-contract-freeze.md
+    blob_sha: 9dcd28f76152fabecea6536938ee9fe0112c3fc5
+  depends_on:
+  - WU-00A
+frozen_invariants:
+- Evidence != DerivedFact != NormativeConstraint != ProjectArchitectureAuthority
+- CoverageGap != RemediationCandidate != AcceptedArchitectureDecision
+- SemanticDeterminacy != MutationAuthorization
+- SemanticRemediationPlan != RepositoryChangePlan
+- BlockingDiagnostic != PermissionToMutate
+- UnsupportedRemediation == TOOL_CAPABILITY_GAP
+- SelectiveTestModeSuccess != FullReleaseQualification
+issue_evidence:
+- issue: 31
+  role: CONSUMER_DERIVED_ROUTING_AND_AUTHORITY_SAFETY_EVIDENCE
+  required_route:
+  - CoverageGap
+  - RemediationDispositionCandidate
+  - SolutionSpace
+  - ResolutionOutcome
+  - AuthorityGate
+  - RepositoryChangePlan
+  forbidden_shortcut: UNASSIGNED -> AUTOMATIC_PROFILE_ASSIGNMENT
+approved_decisions:
+- {id: D01, choice: A, contract: PACKAGING_CENTERED_REPRESENTATIVE_RULES}
+- {id: D02, choice: A, contract: INDEPENDENT_PTSIP_REMEDIATION_RESPONSIBILITY}
+- {id: D03, choice: A, contract: EXPLICIT_SEMANTIC_TYPES_TWO_AXIS_AUTHORIZATION}
+- {id: D04, choice: A, contract: EXPLICIT_APPLY_CONSERVATIVE_AUTHORIZATION}
+- {id: D05, choice: A, contract: ALWAYS_FRESH_SOLVE_AFTER_INPUT_OR_DRIFT}
+- {id: D06, choice: A, contract: EXPLICIT_RELEASE_ACCEPTANCE_MATRIX_AND_COVERAGE_ROUTING}
+- {id: D07, choice: A, contract: ONE_REMEDIATION_VERIFICATION_RESPONSIBILITY_ONE_TEST_MODE}
+- {id: D08, choice: A, contract: VERTICAL_RESPONSIBILITY_WU_SEQUENCE}
+resolution_outcomes:
+- DETERMINISTIC
+- OWNER_INTENT_REQUIRED
+- EXTERNAL_FACT_REQUIRED
+- UNSATISFIABLE
+- TOOL_CAPABILITY_GAP
+mutation_classes:
+- MECHANICAL_REVERSIBLE
+- STRUCTURAL_SEMANTIC_PRESERVING
+- ARCHITECTURE_SEMANTIC
+- DESTRUCTIVE
+authorization_decisions:
+- AUTHORIZED
+- OWNER_CONFIRMATION_REQUIRED
+- NOT_AUTHORIZED
+typed_contracts:
+- NormalizedEvidence
+- CoverageGap
+- DerivedFact
+- NormativeConstraint
+- ProjectIntentAuthority
+- RemediationDispositionCandidate
+- SemanticCandidate
+- ResolutionOutcome
+- SemanticRemediationPlan
+- EscalationProof
+- MutationClass
+- AuthorizationDecision
+- RepositoryChangePlan
+- PostconditionResult
+ownership:
+  implementation_component:
+    id: ptsip-remediation
+    classification: PRODUCT
+    roles: [IMPLEMENTATION]
+    include: [src/ptsip/remediation/**]
+  verification_component:
+    id: ptsip-remediation-verification
+    classification: PRODUCT
+    roles: [VERIFICATION]
+    include: [tests/ptsip/remediation/**]
+representative_rules:
+- outcome: DETERMINISTIC
+  rule_family: [PTSIP-PKG-001]
+- outcome: OWNER_INTENT_REQUIRED
+  rule_family: [PTSIP-CLS-001, PTSIP-CLS-004, PTSIP-CLS-011]
+- outcome: UNSATISFIABLE
+  rule_family: [PTSIP-DEP-001]
+- outcome: TOOL_CAPABILITY_GAP
+  rule_family: [PTSIP-CLS-010]
+- outcome: EXTERNAL_FACT_REQUIRED
+  rule_family: [PTSIP-ART-001]
+reuse_map:
+- {path: src/ptsip/evidence/**, treatment: REUSE}
+- {path: src/ptsip/specification_binding.py, treatment: REUSE}
+- {path: src/ptsip/repository/snapshot.py, treatment: REUSE_OR_GENERALIZE_ONLY_IF_REQUIRED}
+- {path: src/ptsip/source_compat/**, treatment: CONSUME_WHEN_RELEVANT}
+- {path: src/ptsip/migration/execution_model.py, treatment: DO_NOT_REUSE_AS_GENERIC_DOMAIN_MODEL}
+- {path: src/ptsip/migration/**, treatment: EXTRACT_OR_ADAPT_NEUTRAL_PRIMITIVES_ONLY}
+- {path: github-decision-authority, treatment: KEEP_DISTINCT_FROM_PROJECT_INTENT_AND_MUTATION_AUTHORIZATION}
+wu_sequence:
+- {id: WU-01, responsibility: REMEDIATION_RESPONSIBILITY_TYPED_FOUNDATION}
+- {id: WU-02, responsibility: SOLUTION_SPACE_DETERMINISTIC_RULE_COVERAGE_ROUTING}
+- {id: WU-03, responsibility: ESCALATION_FRESH_SOLVE_BOUNDARIES}
+- {id: WU-04, responsibility: AUTHORITY_GATE_REPOSITORY_CHANGE_PLAN_SAFE_APPLY}
+- {id: WU-05, responsibility: BOUNDARY_OUTCOMES_REMEDIATION_VERIFICATION_CLOSURE}
+- {id: WU-06, responsibility: REPOSITORY_DOGFOOD_FULL_RELEASE_QUALIFICATION}
+completion:
+  result: CORE_CONTRACT_FROZEN
+  next: WU-01

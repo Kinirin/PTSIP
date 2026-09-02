@@ -1,0 +1,145 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-01
+document:
+  id: WU-01-REMEDIATION-RESPONSIBILITY-TYPED-FOUNDATION
+  type: WORK_PLAN
+  status: DRAFT
+  approval: PENDING
+  implementation_authorization: NOT_AUTHORIZED
+inputs:
+  release_boundary: planning/0.4.0/WU-00/WU-00A-release-boundary-classification.yaml
+  core_freeze: planning/0.4.0/WU-00/WU-00B-core-contract-freeze.yaml
+  project_profile: ptsip.yaml
+  reuse_sources:
+  - src/ptsip/evidence/**
+  - src/ptsip/specification_binding.py
+  - src/ptsip/repository/snapshot.py
+  - src/ptsip/source_compat/**
+  forbidden_generic_domain_source: src/ptsip/migration/execution_model.py
+ownership_delta:
+  planned: true
+  implementation_component:
+    id: ptsip-remediation
+    classification: PRODUCT
+    roles: [IMPLEMENTATION]
+    include: [src/ptsip/remediation/**]
+    purpose_proposal: generic_authority_aware_remediation_runtime
+  verification_component:
+    id: ptsip-remediation-verification
+    classification: PRODUCT
+    roles: [VERIFICATION]
+    include: [tests/ptsip/remediation/**]
+    purpose_proposal: product_owned_generic_remediation_contract_verification
+  test_mode_registration_in_this_wu: false
+  test_mode_target_wu: WU-05
+typed_foundation:
+  reuse_without_parallel_authority_stack:
+  - NormalizedEvidence
+  contracts:
+  - CoverageGap
+  - DerivedFact
+  - NormativeConstraint
+  - ProjectIntentAuthority
+  - RemediationDispositionCandidate
+  - SemanticCandidate
+  - ResolutionOutcome
+  - SemanticRemediationPlan
+  - EscalationProof
+  - MutationClass
+  - AuthorizationDecision
+  - RepositoryChangePlan
+  - PostconditionResult
+  resolution_outcomes:
+  - DETERMINISTIC
+  - OWNER_INTENT_REQUIRED
+  - EXTERNAL_FACT_REQUIRED
+  - UNSATISFIABLE
+  - TOOL_CAPABILITY_GAP
+  mutation_classes:
+  - MECHANICAL_REVERSIBLE
+  - STRUCTURAL_SEMANTIC_PRESERVING
+  - ARCHITECTURE_SEMANTIC
+  - DESTRUCTIVE
+  authorization_decisions:
+  - AUTHORIZED
+  - OWNER_CONFIRMATION_REQUIRED
+  - NOT_AUTHORIZED
+  required_separations:
+  - CoverageGap != RemediationDispositionCandidate
+  - RemediationDispositionCandidate != ProjectIntentAuthority
+  - DerivedFact != ProjectIntentAuthority
+  - SemanticCandidate != AcceptedArchitectureDecision
+  - ResolutionOutcome.DETERMINISTIC != AuthorizationDecision.AUTHORIZED
+  - MutationClass != AuthorizationDecision
+issue_31_foundation:
+  scope: DOMAIN_AND_CONTRACT_FOUNDATION_ONLY
+  coverage_gap: component-ownership:unassigned-relevant-files
+  candidate_axis:
+  - EXISTING_COMPONENT_CANDIDATE
+  - ASSOCIATED_ARTIFACT_CANDIDATE
+  - RELOCATION_CANDIDATE
+  - REMOVAL_CANDIDATE
+  - NEW_COMPONENT_CANDIDATE
+  - DECISION_REQUIRED
+  authoritative: false
+  forbidden:
+  - UNASSIGNED_TO_AUTOMATIC_COMPONENT_ASSIGNMENT
+  - REMOVAL_CANDIDATE_TO_AUTOMATIC_DELETE
+  - RELOCATION_CANDIDATE_TO_AUTOMATIC_DESTINATION_SELECTION
+  - NEW_COMPONENT_CANDIDATE_TO_AUTOMATIC_PROJECT_INTENT
+  public_routing_implementation: DEFER_TO_WU_02_WU_03_WU_05
+operational_rule_contract:
+  goal: EXPLICIT_EXECUTABLE_BRIDGE_FROM_BOUND_SPECIFICATION_RULE_TO_SUPPORTED_TOOL_CAPABILITY
+  minimum_responsibilities:
+  - RULE_IDENTITY
+  - APPLICABILITY
+  - EVALUATION
+  - DECLARED_MODELED_REMEDIATION_CAPABILITY
+  - POSTCONDITION_VERIFICATION_CAPABILITY
+  forbidden:
+  - INVENT_PROJECT_INTENT
+  - EVIDENCE_TO_AUTHORITY_CONVERSION
+  - TOOL_VERSION_TO_SPECIFICATION_SUPPORT_INFERENCE
+  - AI_OR_CONFIDENCE_AS_ELIMINATION_AUTHORITY
+  exact_python_protocol_shape: IMPLEMENTATION_DETAIL_NOT_FROZEN_BY_THIS_PLAN
+implementation_shape:
+  rule: CREATE_ONLY_DIRECTORIES_MODULES_THAT_HAVE_WU_01_RESPONSIBILITY; DO_NOT_PRECREATE_EMPTY_FUTURE_LAYER_TREES
+  minimum_candidate_paths:
+  - src/ptsip/remediation/__init__.py
+  - tests/ptsip/remediation/**
+  future_layer_paths_not_required_in_wu_01:
+  - src/ptsip/remediation/solution/**
+  - src/ptsip/remediation/authority/**
+  - src/ptsip/remediation/execution/**
+  - src/ptsip/remediation/verification/**
+verification_plan:
+  focused:
+  - TYPED_DOMAIN_CONTRACT_TESTS
+  - RESOLUTION_OUTCOME_ENUM_TESTS
+  - OPERATIONAL_RULE_CONTRACT_TESTS
+  - AUTHORITY_FIREWALL_TESTS
+  - COVERAGE_GAP_CONTRACT_TESTS
+  - PROJECT_PROFILE_VALIDATION
+  test_mode:
+    register_new_mode: false
+    reason: DURABLE_VERIFICATION_RESPONSIBILITY_IS_DECLARED_FIRST; TEST_MODE_REGISTRATION_IS_FROZEN_FOR_WU_05
+  full_exact_sha_required_for_wu_completion: false
+  reason: WU_01_IS_NOT_A_RELEASE_QUALIFICATION_BOUNDARY
+completion_conditions:
+- PTSIP_REMEDIATION_COMPONENT_DECLARED
+- PTSIP_REMEDIATION_VERIFICATION_COMPONENT_DECLARED
+- ALL_NEW_WU_01_SOURCE_AND_TEST_PATHS_HAVE_EXPLICIT_PROJECT_PROFILE_OWNERSHIP
+- CANONICAL_TYPED_CONTRACTS_REQUIRED_BY_WU_01_EXIST
+- OPERATIONAL_RULE_FOUNDATION_EXISTS
+- ISSUE_31_GAP_CANDIDATE_AUTHORITY_SEPARATION_IS_ENCODED
+- AUTHORITY_FIREWALL_TESTS_PASS
+- PROJECT_PROFILE_VALIDATION_PASSES
+- NO_REPOSITORY_MUTATION_OR_SOLVER_BEHAVIOR_ADDED
+approval_required:
+  decisions:
+  - W1-D01
+  - W1-D02
+  - W1-D03
+  - W1-D04
+  - W1-D05
+  on_approval: SET_WU_01_STATUS_APPROVED_AND_IMPLEMENTATION_AUTHORIZATION_AUTHORIZED_WITHIN_WU_BOUNDARY

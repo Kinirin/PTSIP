@@ -1,0 +1,101 @@
+planning_contract: ptsip-planning/v1
+work_unit:
+  id: WU-00A
+  kind: PRE_WORK_UNIT
+  title: 0.4.0 Release Boundary Classification
+  classification: CORE/RELEASE-BLOCKING
+  status: COMPLETE
+  approval:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    date: '2026-08-31'
+  entry_baseline: 7a33e57b18a67a28eb30d7adc5bfc8a9b813a3f3
+  integration_branch: dev/0.4.0
+  implementation_authorization: NOT_AUTHORIZED
+  source:
+    path: planning/0.4.0/Pre-WU-00A-release-boundary-classification.md
+    blob_sha: a32c96b4855f1c2205e8f2959cf3e7b8d0721209
+classification_states:
+  initial: UNCLASSIFIED
+  allowed_after_review:
+  - CORE/RELEASE-BLOCKING
+  - OPTIONAL/NON-BLOCKING
+  - DEFERRED/OUT-OF-RELEASE
+classification_gates:
+- id: A
+  name: PRODUCT_OBJECTIVE_NECESSITY
+- id: B
+  name: ARCHITECTURAL_NECESSITY
+- id: C
+  name: RELEASE_PROOF_NECESSITY
+- id: D
+  name: DEFERRAL_SAFETY
+core_responsibilities:
+- {id: C01, name: TYPED_REMEDIATION_AUTHORITY_DOMAIN}
+- {id: C02, name: FRESH_SOLVE_CURRENT_STATE_BINDING}
+- {id: C03, name: OPERATIONAL_RULE_CONTRACT}
+- {id: C04, name: DECLARED_MODELED_REMEDIATION_CAPABILITY}
+- {id: C05, name: SOLUTION_SPACE_ENGINE}
+- {id: C06, name: ELIMINATION_RANKING_SEPARATION}
+- {id: C07, name: SEMANTIC_PHYSICAL_PLAN_SEPARATION}
+- {id: C08, name: CANONICAL_RESOLUTION_OUTCOMES}
+- {id: C09, name: ESCALATION_PROOF_OWNER_QUESTION_MINIMIZATION}
+- {id: C10, name: OWNER_INTENT_EXTERNAL_FACT_SEPARATION}
+- {id: C11, name: ADVISORY_NON_AUTHORITY}
+- {id: C12, name: AUTHORITY_GATE_BEFORE_MUTATION}
+- {id: C13, name: MUTATION_IMPACT_REVERSIBILITY_CLASSIFICATION}
+- {id: C14, name: REPOSITORY_CHANGE_PLAN}
+- {id: C15, name: EXACT_PRESTATE_STALE_REJECTION}
+- {id: C16, name: FAIL_CLOSED_SAFE_APPLY_RECOVERY}
+- {id: C17, name: POSTCONDITION_CONFORMANCE_VERIFICATION}
+- {id: C18, name: REPRESENTATIVE_END_TO_END_RULE_COVERAGE}
+- {id: C19, name: REQUIRED_OUTCOME_COVERAGE}
+- {id: C20, name: REMEDIATION_VERIFICATION_TEST_MODE_INTEGRATION}
+- {id: C21, name: FULL_EXACT_SHA_RELEASE_QUALIFICATION}
+- {id: C22, name: INHERIT_0_3_7_FOUNDATIONS}
+- {id: C23, name: PROJECT_PROFILE_SURFACE_STABILITY}
+optional_responsibilities:
+- {id: O01}
+- {id: O02}
+- {id: O03}
+- {id: O04}
+- {id: O05}
+- {id: O06}
+- {id: O07}
+- {id: O08}
+- {id: O09}
+- {id: O10}
+- {id: O11}
+deferred_responsibilities:
+- {id: D01}
+- {id: D02}
+- {id: D03}
+- {id: D04}
+- {id: D05}
+- {id: D06}
+- {id: D07}
+promotion:
+  from: OPTIONAL/NON-BLOCKING
+  to: CORE/RELEASE-BLOCKING
+  requires:
+  - BROKEN_APPROVED_OBJECTIVE_OR_INVARIANT_OR_RELEASE_PROOF
+  - COMPATIBILITY_REVIEW
+  - VERIFICATION_REVIEW
+  - PROJECT_OWNER_APPROVAL
+  insufficient_reasons:
+  - ALREADY_IMPLEMENTED
+  - HAS_BRANCH
+  - HAS_WU_NUMBER
+  - USEFUL
+  - REDUCES_FUTURE_EFFORT
+  - CLEANER_DESIGN
+  - AI_CAN_DO_IT
+invariants:
+- UNCLASSIFIED != CORE
+- IMPLEMENTATION_EXISTENCE != RELEASE_DEPENDENCY
+- EVIDENCE_OR_CONFIDENCE_OR_AI_OR_HISTORY != ARCHITECTURE_AUTHORITY
+- SEMANTIC_DETERMINACY != MUTATION_AUTHORIZATION
+- SELECTIVE_TEST_SUCCESS != FULL_RELEASE_QUALIFICATION
+completion:
+  result: RELEASE_BOUNDARY_FIXED
+  next: WU-00B
