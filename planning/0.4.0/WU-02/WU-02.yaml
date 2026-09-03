@@ -4,7 +4,7 @@ work_unit:
   kind: WORK_UNIT
   title: Solution Space + Deterministic Rule + Coverage Routing
   classification: CORE/RELEASE-BLOCKING
-  status: DRAFT
+  status: APPROVED
   approval:
     status: NOT_REQUIRED
     authority: INHERITED_OWNER_APPROVAL
@@ -92,7 +92,9 @@ authority_boundary:
     - AUTHORIZE_OR_APPLY_REPOSITORY_MUTATION
 
 plan_review:
-  status: REVISION_APPLIED_PENDING_FINAL_CONFIRMATION
+  status: APPROVED
+  authority: PROJECT_OWNER
+  date: '2026-09-03'
   owner_feedback:
     ptsip_pkg_001_direction: APPROVED_WITH_ROOT_CAUSE_STRUCTURAL_FOLLOWUP_REQUIRED
     issue_31_candidate_routing: APPROVED_WITH_AUTHORITY_AWARE_AUTOMATION_REQUIRED

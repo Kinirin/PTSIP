@@ -4,7 +4,7 @@ release:
   integration_branch: dev/0.4.0
   classification: CORE/RELEASE-BLOCKING
   control_plane: planning/0.4.0/index.yaml
-  current_gate: WU-02/PLAN_REVIEW
+  current_gate: WU-02/IMPLEMENTATION_AUTHORIZATION_PENDING
 
 machine_document_policy:
   canonical_format: YAML
@@ -47,9 +47,10 @@ work_units:
     kind: WORK_UNIT
     path: planning/0.4.0/WU-02/WU-02.yaml
     detail: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml
-    status: DRAFT
+    status: APPROVED
     approval: NOT_REQUIRED
     approval_inherited_from: [WU-00B/D01, WU-00B/D03, WU-00B/D06, WU-00B/D08]
+    plan_review: {status: APPROVED, authority: PROJECT_OWNER, date: '2026-09-03'}
     implementation_authorization: NOT_AUTHORIZED
     depends_on: [WU-01]
   - {id: WU-03, kind: WORK_UNIT, status: NOT_CREATED, depends_on: [WU-02]}
@@ -63,8 +64,8 @@ machine_contracts:
   - {id: core-design-contracts, path: planning/0.4.0/WU-00/WU-00-core-design-contracts.yaml, authority: SUPPORTING_SUBORDINATE}
   - {id: wu-01-controller, path: planning/0.4.0/WU-01/WU-01.yaml, authority: CANONICAL_FOR_WU_01_STATE}
   - {id: wu-01-plan, path: planning/0.4.0/WU-01/remediation-responsibility-typed-foundation.yaml, authority: CANONICAL_FOR_WU_01_SCOPE}
-  - {id: wu-02-controller, path: planning/0.4.0/WU-02/WU-02.yaml, authority: CANONICAL_FOR_WU_02_DRAFT_STATE}
-  - {id: wu-02-plan, path: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml, authority: CANONICAL_FOR_WU_02_DRAFT_SCOPE}
+  - {id: wu-02-controller, path: planning/0.4.0/WU-02/WU-02.yaml, authority: CANONICAL_FOR_WU_02_APPROVED_STATE}
+  - {id: wu-02-plan, path: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml, authority: CANONICAL_FOR_WU_02_APPROVED_SCOPE}
 
 legacy_markdown_migration:
   state: REMOVED_FROM_PLANNING_0_4_0_WU_NAMESPACE
