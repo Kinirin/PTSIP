@@ -19,6 +19,11 @@ inputs:
     source: https://github.com/Kinirin/PTSIP
     revision: 3c47816770d194ae42f98faedc911d980db0e62a
     representative_rule: PTSIP-PKG-001
+    structural_followup_rules: [PTSIP-CLS-002, PTSIP-CLS-010]
+  governance:
+    primary_lifecycle_boundary: decisions/ADR-0007-primary-lifecycle-boundary-determination.md
+    declaration_authority: decisions/ADR-0009-responsibility-map-declaration-authority.md
+    decision_index: decisions/INDEX.yaml
   implemented_foundation:
     - src/ptsip/remediation/domain/**
     - src/ptsip/remediation/rules/contract.py
@@ -41,6 +46,12 @@ solution_space_contract:
   candidate_source_rule:
     operational_rule_capability_required: true
     undeclared_remediation_family_may_be_invented: false
+  capability_boundary:
+    evaluation_position: BEFORE_FALSE_CARDINALITY_OR_OWNER_ESCALATION
+    required_legal_remediation_family_not_modeled: TOOL_CAPABILITY_GAP
+    recognized_current_authority_semantics_not_supported_by_tool: TOOL_CAPABILITY_GAP
+    unsupported_tool_capability_must_not_be_reported_as_owner_intent_required: true
+    unsupported_tool_capability_must_not_require_owner_to_restate_existing_policy: true
   elimination:
     proof_required: true
     valid_reasons:
@@ -74,6 +85,7 @@ solution_space_contract:
     ONE: DETERMINISTIC
     TWO_OR_MORE: OWNER_INTENT_REQUIRED
     deterministic_means_mutation_authorized: false
+    precondition: NO_REQUIRED_REMEDIATION_FAMILY_OR_CURRENT_AUTHORITY_INTERPRETATION_IS_OUTSIDE_MODELED_TOOL_CAPABILITY
     zero_or_multiple_handoff:
       classify_outcome_in_wu_02: true
       produce_escalation_proof_in_wu_02: false
@@ -85,7 +97,39 @@ solution_space_contract:
       - SURVIVING_CANDIDATES
       - OUTCOME
       - RANKING_IF_PRESENT
+      - CONSUMED_AUTHORITY_REFERENCES
+      - TOOL_CAPABILITY_GAP_REASON_IF_APPLICABLE
     exact_python_result_shape: IMPLEMENTATION_DETAIL_NOT_FROZEN
+
+authority_aware_automation:
+  objective: USE_EXISTING_PROJECT_DECISIONS_BEFORE_ASKING_OWNER_OR_CODING_AGENT_TO_RECONSTRUCT_INTENT
+  recognized_machine_decidable_sources:
+    - CANONICAL_EFFECTIVE_RESPONSIBILITY_MAP
+    - STRUCTURED_PROJECT_POLICIES
+    - ProjectIntentAuthority.PROJECT_PROFILE
+    - ProjectIntentAuthority.OWNER_DECISION
+    - ProjectIntentAuthority.GOVERNANCE_RECORD
+  current_profile_policy_example:
+    key: nonproduct_in_product_package
+    value: deny
+    role: CURRENT_PROJECT_POLICY_INPUT_NOT_NEW_TOOL_AUTHORITY
+  governance_record_rules:
+    must_be_recognized_as_current_project_governance: true
+    accepted_or_current_status_required_when_status_model_exists: true
+    source_ref_required: true
+    supported_semantics_may_be_consumed_automatically: true
+    arbitrary_repository_markdown_may_be_promoted_to_authority: false
+    natural_language_similarity_or_confidence_may_create_authority: false
+  candidate_reduction:
+    if_supported_current_authority_uniquely_decides: DETERMINISTIC_WITHOUT_OWNER_QUESTION
+    if_two_or_more_legal_targets_remain_because_authority_missing: OWNER_INTENT_REQUIRED
+    if_recognized_authority_exists_but_tool_cannot_operationalize_its_semantics: TOOL_CAPABILITY_GAP
+    if_required_external_truth_missing: EXTERNAL_FACT_REQUIRED
+    redundant_owner_question_when_supported_authority_already_decides: FORBIDDEN
+    coding_agent_reconstruction_of_supported_policy_semantics: FORBIDDEN
+  authority_precedence:
+    new_precedence_defined_by_wu_02: false
+    rule: CONSUME_EXISTING_GOVERNED_PRECEDENCE_AND_FAIL_CLOSED_ON_UNRESOLVED_AUTHORITY_CONFLICT
 
 ptsip_pkg_001_deterministic_slice:
   rule_id: PTSIP-PKG-001
@@ -105,14 +149,56 @@ ptsip_pkg_001_deterministic_slice:
   deterministic_fixture_boundary:
     artifact_evidence_sufficiency_assumed_for_this_slice: true
     missing_artifact_truth_boundary: DEFER_TO_EXTERNAL_FACT_OUTCOME_CLOSURE_IN_WU_05
-  semantic_candidate_family:
-    meaning: EXCLUDE_EXPLICIT_NON_PRODUCT_IMPLEMENTATION_FROM_PRODUCT_ARTIFACT_MEMBERSHIP
-    exact_public_family_identifier: NOT_FROZEN
-    may_change_component_classification: false
-    may_weaken_ptsip_pkg_001: false
-  semantic_target:
-    product_artifact_membership_contains_definite_non_product_implementation: false
-    project_profile_ownership_unchanged: true
+  immediate_packaging_containment:
+    semantic_candidate_family:
+      meaning: EXCLUDE_EXPLICIT_NON_PRODUCT_IMPLEMENTATION_FROM_PRODUCT_ARTIFACT_MEMBERSHIP
+      exact_public_family_identifier: NOT_FROZEN
+      may_change_component_classification: false
+      may_weaken_ptsip_pkg_001: false
+    semantic_target:
+      product_artifact_membership_contains_definite_non_product_implementation: false
+      project_profile_ownership_unchanged: true
+    complete_remediation_only_when: SOURCE_COMPONENT_BOUNDARY_IS_COHERENT_AND_NONPRODUCT_OR_NO_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY_IS_ESTABLISHED
+  root_cause_component_boundary_check:
+    required_after_definite_package_leakage: true
+    purpose: PREVENT_PACKAGE_EXCLUSION_FROM_HIDING_WRONG_OR_OVERBROAD_COMPONENT_BOUNDARIES
+    applicable_rules: [PTSIP-CLS-002, PTSIP-CLS-010]
+    governance_basis: ADR-0007
+    canonical_classifications:
+      - PRODUCT
+      - DEVELOPMENT_TOOLING
+      - DELIVERY
+      - OPERATIONS
+      - NEUTRAL_CONTRACT
+    legacy_toolchain_treatment:
+      TOOLCHAIN_is_current_canonical_classification: false
+      role: HISTORICAL_EVIDENCE_OF_POSSIBLE_COLLAPSED_LIFECYCLE_RESPONSIBILITIES
+      rule: DO_NOT_PRESERVE_LEGACY_TOOLCHAIN_LABEL_AS_A_REASON_TO_HIDE_MIXED_CURRENT_LIFECYCLE_RESPONSIBILITY
+    evidence_rules:
+      path_name_or_packaged_state_alone_determines_classification: false
+      confidence_alone_determines_classification_or_split: false
+      governing_lifecycle_obligation_and_material_independent_governance_required: true
+    cases:
+      coherent_nonproduct_component:
+        meaning: COMPONENT_BOUNDARY_REMAINS_VALID_AND_PACKAGE_MEMBERSHIP_IS_THE_DEFINITE_ERROR
+        packaging_only_deterministic_candidate_permitted: true
+      material_mixed_lifecycle_component:
+        meaning: ONE_COMPONENT_CLASSIFICATION_CANNOT_DESCRIBE_CURRENT_LIFECYCLE_TRUTH_WITHOUT_HIDING_INDEPENDENTLY_GOVERNABLE_RESPONSIBILITY
+        whole_component_exclusion_is_complete_remediation: false
+        structural_coverage_gap_required: true
+        structural_gap_semantics: COMPONENT_BOUNDARY_MIXES_MULTIPLE_CANONICAL_LIFECYCLE_RESPONSIBILITIES
+        exact_gap_code: IMPLEMENTATION_DETAIL_NOT_FROZEN
+        generic_split_transform_modeled_in_wu_02: false
+        required_outcome_when_split_family_is_needed_but_unmodeled: TOOL_CAPABILITY_GAP
+        required_followup: COMPONENT_SPLIT_OR_EXPLICIT_REDESIGN_CAPABILITY
+      unresolved_lifecycle_truth:
+        when: MULTIPLE_LEGAL_LIFECYCLE_OR_BOUNDARY_INTERPRETATIONS_REMAIN_AND_CURRENT_AUTHORITY_DOES_NOT_DECIDE
+        outcome: OWNER_INTENT_REQUIRED
+        owner_question_generation: DEFER_TO_WU_03
+      authority_decides_but_split_transform_unmodeled:
+        outcome: TOOL_CAPABILITY_GAP
+        owner_restatement_required: false
+    followup_invariant: PTSIP_PKG_001_CONTAINMENT_MAY_REMOVE_IMMEDIATE_ARTIFACT_VIOLATION_BUT_MUST_NOT_CLOSE_STRUCTURAL_REMEDIATION_WHEN_MIXED_LIFECYCLE_BOUNDARY_IS_ESTABLISHED
   output:
     one_legal_survivor_yields: ResolutionOutcome.DETERMINISTIC
     semantic_plan: SemanticRemediationPlan
@@ -139,21 +225,30 @@ coverage_gap_routing:
     - COVERAGE_GAP
     - NORMALIZED_EVIDENCE
     - CURRENT_PROJECT_AUTHORITY_WHEN_AVAILABLE
+    - STRUCTURED_PROJECT_POLICIES_WHEN_APPLICABLE
   reduction_may:
     - REMOVE_CANDIDATE_PROVEN_ILLEGAL
     - REMOVE_CANDIDATE_CONFLICTING_WITH_EXPLICIT_CURRENT_AUTHORITY
     - COLLAPSE_PROVABLY_EQUIVALENT_CANDIDATES
+    - SELECT_ONE_SEMANTIC_TARGET_WHEN_SUPPORTED_CURRENT_AUTHORITY_PROVES_ALL_OTHERS_INVALID
   reduction_may_not:
     - ASSIGN_UNASSIGNED_PATH_TO_COMPONENT_WITHOUT_AUTHORITY
     - DELETE_REMOVAL_CANDIDATE
     - CHOOSE_RELOCATION_DESTINATION_WITHOUT_AUTHORITY
     - INVENT_NEW_COMPONENT_PURPOSE_OR_CLASSIFICATION
+    - ASK_OWNER_OR_CODING_AGENT_TO_RESTATE_SUPPORTED_CURRENT_POLICY_ALREADY_AVAILABLE_TO_TOOL
   deterministic_case:
-    permitted_only_when: EXACTLY_ONE_LEGAL_SEMANTIC_TARGET_REMAINS_BY_RULE_AND_EXISTING_AUTHORITY
+    permitted_only_when: EXACTLY_ONE_LEGAL_SEMANTIC_TARGET_REMAINS_BY_RULE_AND_EXISTING_SUPPORTED_AUTHORITY
     mutation_authorized: false
   unresolved_case:
     outcome: OWNER_INTENT_REQUIRED
+    condition: TWO_OR_MORE_LEGAL_TARGETS_REMAIN_BECAUSE_CURRENT_PROJECT_INTENT_IS_GENUINELY_MISSING
     escalation_proof_and_owner_question: DEFER_TO_WU_03
+  unsupported_authority_case:
+    outcome: TOOL_CAPABILITY_GAP
+    condition: RECOGNIZED_CURRENT_AUTHORITY_EXISTS_BUT_TOOL_CANNOT_OPERATIONALIZE_THE_RELEVANT_SEMANTICS
+    owner_restatement_required: false
+    required_diagnostic: IDENTIFY_EXACT_AUTHORITY_SOURCE_AND_UNSUPPORTED_SEMANTIC_DIMENSION
   public_cli_or_issue_automation: DEFERRED
 
 semantic_planning:
@@ -181,10 +276,18 @@ implementation_shape:
 verification_plan:
   focused:
     - SOLUTION_SPACE_CARDINALITY_TESTS
+    - TOOL_CAPABILITY_GAP_PRECEDES_FALSE_OWNER_ESCALATION_TESTS
     - ELIMINATION_PROOF_REASON_TESTS
     - RANKING_NON_ELIMINATION_TESTS
     - EXPLICIT_AUTHORITY_PRESERVATION_TESTS
+    - STRUCTURED_PROJECT_POLICY_AUTO_REDUCTION_TESTS
+    - EXISTING_GOVERNANCE_AUTHORITY_NO_REDUNDANT_OWNER_QUESTION_TESTS
+    - RECOGNIZED_UNSUPPORTED_AUTHORITY_TO_TOOL_CAPABILITY_GAP_TESTS
     - PTSIP_PKG_001_DETERMINISTIC_SLICE_TESTS
+    - PTSIP_PKG_001_COHERENT_NONPRODUCT_PACKAGING_ONLY_REMEDIATION_TESTS
+    - PTSIP_PKG_001_MIXED_LIFECYCLE_ROOT_CAUSE_FOLLOWUP_TESTS
+    - PTSIP_PKG_001_WHOLE_COMPONENT_EXCLUSION_NOT_COMPLETE_WHEN_MIXED_TESTS
+    - LEGACY_TOOLCHAIN_NOT_CANONICAL_CLASSIFICATION_TESTS
     - COVERAGE_GAP_NON_AUTHORITY_ROUTING_TESTS
     - DETERMINISTIC_SEMANTIC_PLAN_TESTS
     - NO_MUTATION_AUTHORIZATION_SURFACE_TESTS
@@ -211,20 +314,32 @@ later_wu_handoffs:
     - BOUNDARY_OUTCOME_CLOSURE
     - REMEDIATION_TEST_MODE_REGISTRATION
     - POSTCONDITION_VERIFICATION_CLOSURE
+  boundaries_status: OWNER_REVIEW_APPROVED_UNCHANGED
 
 planning_review:
+  status: REVISION_APPLIED_PENDING_FINAL_CONFIRMATION
   new_owner_policy_decisions_introduced: false
   implementation_authorized_by_this_document: false
   implementation_start_requires_explicit_user_request: true
+  review_findings:
+    - PTSIP_PKG_001_IMMEDIATE_CONTAINMENT_APPROVED_BUT_STRUCTURAL_ROOT_CAUSE_FOLLOWUP_REQUIRED
+    - ISSUE_31_CANDIDATE_ROUTING_APPROVED_WITH_EXISTING_AUTHORITY_AWARE_AUTOMATION_REQUIRED
+    - WU_03_WU_04_WU_05_BOUNDARIES_APPROVED_UNCHANGED
 
 completion_conditions:
   - SOLUTION_SPACE_PIPELINE_EXISTS_WITH_SEPARATE_ELIMINATION_AND_RANKING
   - EVERY_ELIMINATION_HAS_MACHINE_INSPECTABLE_PROOF_REASON
   - RANKING_NEVER_REMOVES_AN_OTHERWISE_LEGAL_CANDIDATE
-  - ZERO_ONE_TWO_PLUS_CARDINALITY_MAPS_TO_FROZEN_RESOLUTION_OUTCOMES
-  - PTSIP_PKG_001_HAS_A_COMPLETE_DETERMINISTIC_SEMANTIC_SLICE
+  - REQUIRED_UNMODELED_REMEDIATION_OR_AUTHORITY_INTERPRETATION_ROUTES_TO_TOOL_CAPABILITY_GAP
+  - ZERO_ONE_TWO_PLUS_CARDINALITY_MAPS_TO_FROZEN_RESOLUTION_OUTCOMES_WHEN_MODEL_CAPABILITY_IS_COMPLETE_FOR_THE_CASE
+  - PTSIP_PKG_001_HAS_A_COMPLETE_DETERMINISTIC_SEMANTIC_SLICE_FOR_COHERENT_NONPRODUCT_PACKAGE_LEAKAGE
   - PTSIP_PKG_001_SLICE_DOES_NOT_RECLASSIFY_OWNERSHIP
+  - PTSIP_PKG_001_PACKAGE_CONTAINMENT_DOES_NOT_MASK_MATERIAL_MIXED_LIFECYCLE_COMPONENT_BOUNDARY
+  - MATERIAL_MIXED_LIFECYCLE_COMPONENT_PRODUCES_STRUCTURAL_FOLLOWUP_AND_IS_NOT_CLOSED_BY_WHOLE_COMPONENT_EXCLUSION
+  - LEGACY_TOOLCHAIN_IS_NOT_TREATED_AS_CURRENT_CANONICAL_CLASSIFICATION
   - ISSUE_31_COVERAGE_GAP_PRODUCES_NON_AUTHORITATIVE_DISPOSITION_CANDIDATES
+  - SUPPORTED_EXISTING_PROJECT_AUTHORITY_CAN_RESOLVE_WITHOUT_REDUNDANT_OWNER_OR_CODING_AGENT_QUESTION
+  - RECOGNIZED_BUT_UNSUPPORTED_AUTHORITY_SEMANTICS_PRODUCE_TOOL_CAPABILITY_GAP_NOT_OWNER_INTENT_REQUIRED
   - DETERMINISTIC_TARGET_CAN_MATERIALIZE_SEMANTIC_REMEDIATION_PLAN
   - SEMANTIC_REMEDIATION_PLAN_REMAINS_DISTINCT_FROM_REPOSITORY_CHANGE_PLAN
   - NO_MUTATION_OR_OWNER_ESCALATION_EXECUTION_IS_ADDED
