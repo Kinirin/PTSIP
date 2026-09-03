@@ -1,0 +1,200 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+document:
+  id: WU-02-AUTHORITY-CONTEXT-MACHINE-CONTRACT
+  type: WORK_UNIT_EXTENSION_CONTRACT
+  status: APPROVED
+  authority: PROJECT_OWNER
+  approval_date: '2026-09-03'
+  implementation_authorization: NOT_AUTHORIZED
+  purpose: RECORD_OWNER_APPROVED_P01_P02_AUTHORITY_BOUNDARY_AND_LANGUAGE_NEUTRAL_MACHINE_CONTRACT_DECISIONS
+
+relation:
+  parent: planning/0.4.0/WU-02/WU-02.yaml
+  work_plan: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml
+  scope: WU_02_EXTENSION
+  does_not_replace_parent_plan: true
+  does_not_authorize_implementation: true
+  next_review_topic: P03_GOVERNANCE_AND_EXISTING_AUTHORITY_MATERIALIZATION
+
+approved_decisions:
+  P01:
+    id: REMEDIATION_AUTHORITY_CONTEXT_SEPARATION
+    status: APPROVED
+    decision:
+      remediation_context_contains:
+        - NormalizedEvidenceSet
+        - SpecificationBinding
+      project_authority_is_separate_first_class_input: true
+      authority_context_type: RemediationAuthorityContext
+      solution_space_inputs:
+        - RemediationContext
+        - RemediationAuthorityContext
+    invariants:
+      - EVIDENCE_NE_PROJECT_AUTHORITY
+      - DERIVED_FACT_NE_PROJECT_AUTHORITY
+      - AUTHORITY_MUST_NOT_BE_SMUGGLED_THROUGH_EVIDENCE_OR_DERIVED_FACTS
+      - SOLUTION_SPACE_MUST_RECEIVE_CURRENT_PROJECT_AUTHORITY_THROUGH_A_DISTINCT_AUTHORITY_BOUNDARY
+
+  P02:
+    id: MACHINE_READABLE_PROJECT_AUTHORITY_WITH_OPAQUE_NATURAL_LANGUAGE_EXCLUDED_FROM_CORE_REASONING
+    status: APPROVED
+    decisions:
+      opaque_natural_language:
+        automatic_semantic_use: FORBIDDEN
+        applies_to:
+          - CANDIDATE_GENERATION
+          - CANDIDATE_ELIMINATION
+          - AUTOMATIC_CLASSIFICATION
+          - AUTHORITY_INTERPRETATION
+          - RESOLUTION_OUTCOME_SELECTION
+          - SEMANTIC_REMEDIATION_PLANNING
+          - MUTATION_AUTHORIZATION
+          - POSTCONDITION_SEMANTIC_JUDGMENT
+        intent_str_as_core_authority_semantics: FORBIDDEN
+        unsupported_semantics_fallback_to_ai_interpretation: FORBIDDEN
+        unsupported_semantics_outcome: TOOL_CAPABILITY_GAP
+
+      authority_and_explanation_separation:
+        remediation_authority_context_contains: ProjectAuthorityRecord[]
+        presentation_reporting_contains: AuthorityExplanation[]
+        project_authority_record_ne_authority_explanation: true
+        explanation_may_change_machine_decision: false
+        solution_space_dependency_on_authority_explanation: FORBIDDEN
+        resolution_outcome_dependency_on_authority_explanation: FORBIDDEN
+
+      project_authority_record:
+        required_sections:
+          - authority_id
+          - authority_contract
+          - authority_semantics
+          - authority_provenance
+          - subject_binding
+        authority_contract:
+          required_fields:
+            - authority_type
+            - schema_id
+            - schema_version
+        authority_semantics:
+          role: MACHINE_DECISION_SEMANTICS_ONLY
+          arbitrary_dict: FORBIDDEN
+          generic_payload: FORBIDDEN
+          opaque_natural_language_field: FORBIDDEN
+          unregistered_semantic_type: FORBIDDEN
+          exact_registered_schema_validation_required: true
+        authority_provenance:
+          required_fields:
+            - source_type
+            - source_ref
+            - source_revision
+        subject_binding:
+          role: MACHINE_READABLE_APPLICABILITY_SCOPE
+
+      authority_explanation:
+        layer: PRESENTATION_REPORTING_ONLY
+        fields:
+          - explanation_id
+          - authority_id
+          - explanation_type
+          - content
+          - locale
+        content_may_be_natural_language: true
+        explanation_type_may_affect_presentation_routing: true
+        explanation_type_may_affect_authority_strength_or_semantics: false
+        automatic_reasoning_input: FORBIDDEN
+
+      language_neutrality:
+        principle: PTSIP_MUST_REMAIN_CAPABLE_OF_SUPPORTING_ALL_REPOSITORY_LANGUAGES
+        canonical_authority_contract: LANGUAGE_NEUTRAL_MACHINE_SCHEMA
+        python_strong_type_role: CURRENT_IMPLEMENTATION_RUNTIME_SAFETY_ONLY
+        python_type_is_canonical_contract: false
+        target_repository_language_is_ptsip_implementation_language: false
+        language_specific_boundary: EVIDENCE_COLLECTION_ADAPTERS_WHEN_REQUIRED
+        language_neutral_boundary:
+          - NormalizedEvidenceSet
+          - REMEDIATION_AUTHORITY_CONTRACT
+          - SOLUTION_SPACE
+          - RESOLUTION_OUTCOME
+          - SEMANTIC_REMEDIATION_PLAN
+        unsupported_repository_language_analysis_capability: TOOL_CAPABILITY_GAP
+        ai_or_natural_language_fallback_for_missing_language_adapter: FORBIDDEN
+
+      authority_schema_registry:
+        required: true
+        role: TOOL_CAPABILITY_CATALOG_NOT_PROJECT_AUTHORITY
+        language_neutral: true
+        registry_entry_identity:
+          - authority_type
+          - stable_schema_id
+          - integer_schema_version
+        schema_identity_is_physical_file_path: false
+        published_schema_version_immutable: true
+        semantic_body_must_exactly_validate_against_resolved_schema: true
+        additional_unregistered_semantic_fields: FORBIDDEN
+        contract_resolution_order:
+          - VALIDATE_AUTHORITY_TYPE_REGISTRATION
+          - VALIDATE_SCHEMA_ID_REGISTRATION
+          - VALIDATE_SCHEMA_VERSION_SUPPORT
+          - VALIDATE_TYPE_SCHEMA_VERSION_REGISTERED_COMBINATION
+          - RESOLVE_EXACT_SCHEMA
+          - VALIDATE_AUTHORITY_SEMANTICS
+          - VALIDATE_AUTHORITY_PROVENANCE
+          - VALIDATE_SUBJECT_BINDING
+        interpretation_direction:
+          contract_identity_determines_semantics_interpretation: true
+          semantics_may_infer_or_repair_contract_identity: false
+        fail_closed:
+          guess_nearest_authority_type: FORBIDDEN
+          infer_schema_from_semantic_body: FORBIDDEN
+          automatically_repair_type_schema_mismatch: FORBIDDEN
+          natural_language_semantic_recovery: FORBIDDEN
+        failure_classification:
+          unsupported_authority_type:
+            diagnostic: UNSUPPORTED_AUTHORITY_TYPE
+            outcome: TOOL_CAPABILITY_GAP
+          contract_mismatch:
+            diagnostic: AUTHORITY_CONTRACT_MISMATCH
+            category: MALFORMED_AUTHORITY_RECORD
+          unsupported_schema_version:
+            diagnostic: UNSUPPORTED_AUTHORITY_SCHEMA_VERSION
+            outcome: TOOL_CAPABILITY_GAP
+          invalid_semantics:
+            diagnostic: AUTHORITY_SEMANTICS_INVALID
+            category: MALFORMED_AUTHORITY_RECORD
+          invalid_provenance:
+            diagnostic: AUTHORITY_PROVENANCE_INVALID
+            category: MALFORMED_AUTHORITY_RECORD
+          invalid_binding:
+            diagnostic: AUTHORITY_BINDING_INVALID
+            category: MALFORMED_AUTHORITY_RECORD
+
+invariants:
+  - OPAQUE_NATURAL_LANGUAGE_NE_MACHINE_SEMANTIC_AUTHORITY
+  - MACHINE_AUTHORITY_NE_HUMAN_EXPLANATION
+  - AUTHORITY_SCHEMA_REGISTRY_NE_PROJECT_AUTHORITY
+  - PYTHON_TYPE_NE_CANONICAL_MACHINE_CONTRACT
+  - TARGET_REPOSITORY_LANGUAGE_NE_PTSIP_IMPLEMENTATION_LANGUAGE
+  - LANGUAGE_SPECIFIC_EVIDENCE_COLLECTION_NE_LANGUAGE_NEUTRAL_REMEDIATION_SEMANTICS
+  - SCHEMA_IDENTITY_NE_PHYSICAL_FILE_PATH
+  - PUBLISHED_AUTHORITY_SCHEMA_VERSION_IS_IMMUTABLE
+  - CONTRACT_IDENTITY_DETERMINES_SEMANTIC_INTERPRETATION
+  - SEMANTIC_BODY_MUST_NOT_DETERMINE_CONTRACT_IDENTITY
+  - UNSUPPORTED_TOOL_CAPABILITY_NE_MISSING_OWNER_INTENT
+
+implementation_constraints:
+  implementation_in_this_document: FORBIDDEN_UNTIL_EXPLICIT_WU_02_IMPLEMENTATION_AUTHORIZATION
+  exact_python_class_names: NOT_FROZEN
+  exact_schema_serialization_format: NOT_FROZEN
+  exact_registry_physical_path: NOT_FROZEN
+  exact_initial_authority_type_set: NOT_FROZEN
+  universal_policy_dsl: FORBIDDEN
+  authority_semantic_extensions_require_explicit_registered_machine_contract: true
+
+review_progress:
+  P01: APPROVED
+  P02_NATURAL_LANGUAGE_BOUNDARY: APPROVED
+  P02_AUTHORITY_EXPLANATION_SEPARATION: APPROVED
+  P02_STRONG_MACHINE_SEMANTICS: APPROVED
+  P02_LANGUAGE_NEUTRAL_CANONICAL_SCHEMA: APPROVED
+  P02_SCHEMA_REGISTRY_AND_VERSIONING: APPROVED
+  P03: NOT_REVIEWED
