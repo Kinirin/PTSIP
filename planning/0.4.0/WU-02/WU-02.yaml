@@ -18,6 +18,8 @@ work_unit:
   implementation_authorization: NOT_AUTHORIZED
   depends_on: [WU-01]
   detail: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml
+  supplements:
+    - planning/0.4.0/WU-02/authority-context-machine-contract.yaml
 
 primary_responsibility: IMPLEMENT_SOLUTION_SPACE_DETERMINISTIC_RULE_AND_NON_AUTHORITATIVE_COVERAGE_ROUTING_WITHOUT_MUTATION_OR_ESCALATION_EXECUTION
 
