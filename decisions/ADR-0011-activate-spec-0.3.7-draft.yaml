@@ -1,0 +1,52 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0011
+  topic_id: tool_0_3_7_normative_draft_activation
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: SPECIFICATION_FAMILY_ACTIVATION
+  schema_id: ptsip.governance/specification-family-activation
+  schema_version: 1
+authority_semantics:
+  activated_family: 0.3.7-draft
+  immutable_normative_snapshot: b648d9e026f502b14481ba2d0606d9acc88a31fc
+  normative_companion: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+  preserved_classifications:
+  - PRODUCT
+  - DEVELOPMENT_TOOLING
+  - DELIVERY
+  - OPERATIONS
+  - NEUTRAL_CONTRACT
+  toolchain_is_current_ptsip_classification: false
+  profile_transition_rules:
+  - PTSIP-MIG-004
+  - PTSIP-MIG-005
+  - PTSIP-MIG-006
+  - PTSIP-MIG-007
+  - PTSIP-MIG-008
+  - PTSIP-MIG-009
+  - PTSIP-MIG-010
+  - PTSIP-MIG-011
+  - PTSIP-MIG-012
+  - PTSIP-MIG-013
+  - PTSIP-MIG-014
+  - PTSIP-MIG-015
+  activation_implies_repository_profile_mutation: false
+  tool_runtime_claims_full_implementation_by_activation: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+  - adr: ADR-0010
+    scope: PROFILE_TRANSITION_SEMANTICS
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.md
+  source_blob_sha: 6745196cc49e6c228fc18f616cce2a51dda3d35d
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

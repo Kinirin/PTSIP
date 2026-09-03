@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-governance-authority-registry.schema.json",
+  "title": "PTSIP Governance Authority Schema Registry v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_role",
+    "language_neutral",
+    "semantic_schema_document",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-governance-authority-registry/v1"
+    },
+    "registry_role": {
+      "const": "TOOL_CAPABILITY_CATALOG_NOT_PROJECT_AUTHORITY"
+    },
+    "language_neutral": {
+      "const": true
+    },
+    "semantic_schema_document": {
+      "const": "schemas/ptsip-governance-authority-semantics.schema.json"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "authority_type",
+          "schema_id",
+          "schema_version",
+          "schema_definition"
+        ],
+        "properties": {
+          "authority_type": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "schema_id": {
+            "type": "string",
+            "pattern": "^ptsip\\.governance/[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "schema_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_definition": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*_V[0-9]+$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

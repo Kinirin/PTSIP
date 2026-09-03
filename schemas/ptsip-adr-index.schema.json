@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-adr-index.schema.json",
+  "title": "PTSIP ADR Index v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "routing_role",
+    "record_format",
+    "topics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-adr-index/v2"
+    },
+    "routing_role": {
+      "const": "CURRENT_GOVERNANCE_RECORD_SELECTION"
+    },
+    "record_format": {
+      "const": "YAML_MACHINE_ADR"
+    },
+    "topics": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z0-9]+(?:_[a-z0-9]+)*$": {
+          "type": "object",
+          "required": [
+            "current_adr",
+            "path"
+          ],
+          "properties": {
+            "current_adr": {
+              "type": "string",
+              "pattern": "^ADR-[0-9]{4}$"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^decisions/ADR-[0-9]{4}-[a-z0-9.]+(?:-[a-z0-9.]+)*\\.yaml$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

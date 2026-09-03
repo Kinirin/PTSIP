@@ -1,0 +1,51 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0014
+  topic_id: migration_analysis_pipeline
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
+  schema_id: ptsip.governance/staged-migration-analysis-pipeline
+  schema_version: 1
+authority_semantics:
+  pipeline:
+  - SOURCE_COVERAGE_PROJECTION
+  - REPOSITORY_ELEMENT_RESOLUTION
+  - OBLIGATION_TAXONOMY
+  - LIFECYCLE_COMPATIBILITY
+  - NORMALIZED_EVIDENCE_CORRELATION
+  - ACCEPTED_TARGET_STATE_COMPATIBILITY
+  - SOURCE_MIGRATION_COMPLETION
+  stage_outputs: IMMUTABLE_TYPED
+  repository_resolution_types:
+  - EXISTING_SOURCE_ELEMENT
+  - REMOVED_SOURCE_ELEMENT
+  - UNCOVERED_REPOSITORY_ELEMENT
+  - AMBIGUOUS_SOURCE_ELEMENT
+  taxonomy_map:
+    EXISTING_SOURCE_ELEMENT: REQUIRED_WORK_ELEMENT
+    REMOVED_SOURCE_ELEMENT: REMOVAL_MIGRATION_ELEMENT
+    UNCOVERED_REPOSITORY_ELEMENT: ASYNCHRONOUS_WORK_TARGET
+    AMBIGUOUS_SOURCE_ELEMENT: NO_OBLIGATION_CATEGORY
+  lifecycle_compatibility_separate_from_obligation_category: true
+  evidence_authority: NON_AUTHORITATIVE
+  source_and_repository_freshness: FAIL_CLOSED
+  accepted_target_state_separate_typed_input: true
+  completion_equation: REQUIRED_UNRESOLVED_EQUALS_ZERO
+  removal_or_async_compensates_required: false
+  deterministic_digest: SHA256
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.md
+  source_blob_sha: 99a32f43f35cac4e9311fdd3f8f7d06936c1bdc3
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

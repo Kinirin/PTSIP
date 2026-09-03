@@ -1,0 +1,48 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0006
+  topic_id: verification_purpose_management
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: VPMS_VERIFICATION_PURPOSE_MANAGEMENT
+  schema_id: ptsip.governance/vpms-verification-purpose-management
+  schema_version: 1
+authority_semantics:
+  canonical_name: VPMS
+  expanded_identity: VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM
+  retired_working_name: TVFM
+  governing_question: WHY_VERIFICATION_EXISTS
+  is_ptsip_classification_plane: false
+  verification_purposes:
+  - PRODUCT
+  - TOOLCHAIN
+  verification_implementation_classification_separate_from_verification_purpose: true
+  smallest_execution_unit: VERIFICATION_CASE
+  case_bindings:
+  - PURPOSE
+  - TARGET
+  - FORMULA
+  - VARIABLES
+  - POLICY
+  - RUNNER
+  default_cross_purpose_reuse_boundary: FORMULA
+  cross_purpose_policy_reuse_assumed: false
+  source_subsystem: src/vpms
+  ptsip_core_may_depend_on_vpms: false
+  vpms_may_consume_stable_ptsip_contract: true
+  vpms_pass_equals_ptsip_conformant: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0006-establish-vpms-verification-purpose-management.md
+  source_blob_sha: d4b8181ebb53bb714a2cf791a446584c976037d6
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

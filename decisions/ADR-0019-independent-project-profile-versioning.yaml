@@ -1,0 +1,46 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0019
+  topic_id: project_profile_contract_versioning
+  status: ACCEPTED
+  date: '2026-08-26'
+authority_contract:
+  authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
+  schema_id: ptsip.governance/project-profile-version-namespace
+  schema_version: 1
+authority_semantics:
+  identity_axes:
+  - TOOL_VERSION
+  - PROJECT_PROFILE_CONTRACT_VERSION
+  - PROJECT_PROFILE_INSTANCE_REVISION
+  project_profile_namespace: pp.<major>.<minor>
+  canonical_minor_minimum_width: 2
+  semantic_versioning: false
+  major_trigger: GOVERNING_LIFECYCLE_CLASSIFICATION_SET_OR_SEMANTICS_CHANGE
+  minor_trigger: PROFILE_CONTRACT_STRUCTURE_OR_SEMANTICS_CHANGE_WITHIN_LIFECYCLE_GENERATION
+  project_instance_change_bumps_contract_version: false
+  legacy_generation_identity: pp.0.00
+  current_generation_identity: pp.1.01
+  fabricated_pp_1_00_history: false
+  tool_compatibility_inferred_from_numeric_equality: false
+  tool_operations_require_explicit_pp_capability:
+  - READ
+  - VALIDATE
+  - ANALYZE
+  - MIGRATE
+  - CREATE
+  acceptance_authorizes_immediate_profile_rewrite: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0019-independent-project-profile-versioning.md
+  source_blob_sha: cf600ba4113c01037c85f257ebdbbe05dc380f44
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

@@ -1,0 +1,39 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0022
+  topic_id: project_profile_direct_latest_target_convergence
+  status: ACCEPTED
+  date: '2026-08-27'
+authority_contract:
+  authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
+  schema_id: ptsip.governance/direct-latest-target-convergence
+  schema_version: 1
+authority_semantics:
+  migration_model: DIRECT_LATEST_TARGET_CONVERGENCE
+  mandatory_intermediate_version_traversal: false
+  source_boundary: SOURCE_SPECIFIC_COMPATIBILITY_READER
+  convergence_boundary: NORMALIZED_SOURCE_SEMANTICS
+  target_selection_authority: EXPLICIT_TOOL_PP_COMPATIBILITY
+  direct_convergence_allows_unrestricted_inference: false
+  ambiguous_historical_semantics: OWNER_DECISION_REQUIRED
+  transition_classes:
+  - IDENTITY_ONLY
+  - SEMANTIC_MIGRATION
+  new_migration_creates_only_selected_canonical_target: true
+  existing_authorized_legacy_target_continuity_preserved: true
+  universal_shortest_path_engine_required: false
+  n_by_m_handwritten_converter_matrix_required: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0022-normalized-source-direct-latest-target-convergence.md
+  source_blob_sha: da8907efc05db85b5944224f89ab6d2b9230c459
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

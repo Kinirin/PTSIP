@@ -1,0 +1,688 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-governance-authority-semantics.schema.json",
+  "title": "PTSIP Governance Authority Semantics Registry Definitions v1",
+  "$defs": {
+    "PTSIP_POLICY_IDENTITY_V1": {
+      "const": {
+        "canonical_term": "PTSIP",
+        "expanded_identity": "PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY",
+        "primary_principle": "PURPOSE_BEFORE_REUSE",
+        "classifies_by": [
+          "PURPOSE",
+          "LIFECYCLE_OWNERSHIP"
+        ],
+        "requires_product_toolchain_boundary": true,
+        "versioned_specification": true
+      }
+    },
+    "CONSUMER_REPOSITORY_NON_INTRUSION_V1": {
+      "const": {
+        "tooling_default_location": "EXTERNAL_TO_CONSUMER_REPOSITORY",
+        "consumer_repository_topology_owner": "CONSUMER_PROJECT",
+        "ptsip_specific_directory_hierarchy_required_for_tool_operation": false,
+        "inspection_default_mutation_mode": "READ_ONLY",
+        "tool_owned_cache_default_scope": "OUTSIDE_CONSUMER_REPOSITORY",
+        "persistent_profile_location_owned_by_project": true,
+        "specification_binding_required_for_automated_conformance": true,
+        "specification_release_lifecycle_independent_from_reference_tool": true
+      }
+    },
+    "SPECIFICATION_TOOL_VERSION_INDEPENDENCE_V1": {
+      "const": {
+        "specification_family": "0.2.0-draft",
+        "normative_snapshot_identity": "IMMUTABLE_GIT_REVISION",
+        "reference_tool_versioning": "INDEPENDENT",
+        "reference_tool_target": "0.2.0",
+        "pilot_report_contract": "ptsip-pilot-report/v2",
+        "architecture_classifications": [
+          "PRODUCT",
+          "TOOLCHAIN",
+          "NEUTRAL_CONTRACT"
+        ],
+        "unresolved_analysis_states": [
+          "UNKNOWN",
+          "CONFLICT",
+          "INCOMPLETE"
+        ],
+        "project_profile_is_intended_ownership_declaration": true,
+        "dependency_evidence_edges_typed": true,
+        "agent_output_schema_constrained": true,
+        "agent_decision_is_architecture_authority": false,
+        "snapshot_instability_invalidates_evidence_set": true
+      }
+    },
+    "EVIDENCE_ARTIFACT_CONFORMANCE_MODEL_V1": {
+      "const": {
+        "architecture_classifications": [
+          "PRODUCT",
+          "TOOLCHAIN",
+          "NEUTRAL_CONTRACT"
+        ],
+        "coherent_component_boundary_required": true,
+        "dependency_evidence_required_fields": [
+          "RELATIONSHIP_TYPE",
+          "LIFECYCLE_PHASE",
+          "RESOLUTION_STATE",
+          "PROVENANCE",
+          "SOURCE_TARGET_IDENTITY_WHEN_RESOLVABLE",
+          "UNCERTAINTY"
+        ],
+        "evidence_provenance": [
+          "DECLARED",
+          "OBSERVED",
+          "INFERRED"
+        ],
+        "evidence_sufficiency_scope": "RULE_RELATIVE",
+        "blocking_gap_without_definite_violation_outcome": "INCOMPLETE",
+        "definite_mandatory_violation_outcome": "NON_CONFORMANT",
+        "product_artifact_owner_independent_from_producer": true,
+        "mandatory_rule_waiver_changes_conformance": false,
+        "profile_validation_separate_from_conformance_evaluation": true,
+        "conformance_outcomes": [
+          "CONFORMANT",
+          "NON_CONFORMANT",
+          "INCOMPLETE"
+        ],
+        "ownership_declaration_modes_mutually_exclusive": [
+          "BOUNDARIES",
+          "COMPONENTS"
+        ],
+        "project_dependency_policy_may_be_stricter_than_universal_rules": true,
+        "stable_diagnostic_rule_identity_required": true,
+        "lifecycle_trigger_alone_proves_product_release_coupling": false,
+        "neutral_contract_consumer_count_determines_neutrality": false
+      }
+    },
+    "DISTRIBUTED_DECISION_AUTHORITY_V1": {
+      "const": {
+        "activated_specification_family": "0.3.4-draft",
+        "decision_authority_separate_from_project_profile": true,
+        "distributed_decision_identity": "STABLE",
+        "resolution_policy": "FIRST_VALID_RESOLUTION_WINS",
+        "conditional_mutation_required": true,
+        "architecture_sensitive_read_requires_current_authority_state": true,
+        "absence_observation_may_fabricate_history": false,
+        "authority_profile_conflict_silent_overwrite": false,
+        "distributed_coordination_failure_behavior": "FAIL_CLOSED",
+        "local_fallback_when_distributed_coordination_required": false,
+        "global_decision_state_separate_from_clone_local_projection": true,
+        "synchronization_mode": "ACTION_TIME",
+        "decision_authority_is_conformance_oracle": false
+      }
+    },
+    "VPMS_VERIFICATION_PURPOSE_MANAGEMENT_V1": {
+      "const": {
+        "canonical_name": "VPMS",
+        "expanded_identity": "VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM",
+        "retired_working_name": "TVFM",
+        "governing_question": "WHY_VERIFICATION_EXISTS",
+        "is_ptsip_classification_plane": false,
+        "verification_purposes": [
+          "PRODUCT",
+          "TOOLCHAIN"
+        ],
+        "verification_implementation_classification_separate_from_verification_purpose": true,
+        "smallest_execution_unit": "VERIFICATION_CASE",
+        "case_bindings": [
+          "PURPOSE",
+          "TARGET",
+          "FORMULA",
+          "VARIABLES",
+          "POLICY",
+          "RUNNER"
+        ],
+        "default_cross_purpose_reuse_boundary": "FORMULA",
+        "cross_purpose_policy_reuse_assumed": false,
+        "source_subsystem": "src/vpms",
+        "ptsip_core_may_depend_on_vpms": false,
+        "vpms_may_consume_stable_ptsip_contract": true,
+        "vpms_pass_equals_ptsip_conformant": false
+      }
+    },
+    "PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION_V1": {
+      "const": {
+        "canonical_classifications": [
+          "PRODUCT",
+          "DEVELOPMENT_TOOLING",
+          "DELIVERY",
+          "OPERATIONS",
+          "NEUTRAL_CONTRACT"
+        ],
+        "primary_owner_basis": "GOVERNING_LIFECYCLE_OBLIGATION",
+        "ordered_determination": [
+          "ESTABLISH_PROJECT_OWNED_SCOPE",
+          "IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY",
+          "COLLECT_LIFECYCLE_EVIDENCE",
+          "TEST_NEUTRAL_CONTRACT_QUALIFICATION",
+          "DETERMINE_GOVERNING_OWNING_LIFECYCLE",
+          "TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY",
+          "KEEP_SPLIT_OR_UNRESOLVED",
+          "PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE"
+        ],
+        "forbidden_shortcuts": [
+          "PATH_NAME",
+          "TECHNOLOGY_NAME",
+          "EXECUTABLE_STATUS",
+          "LINE_COUNT",
+          "JOB_COUNT",
+          "INVOCATION_FREQUENCY",
+          "CONFIDENCE_SCORE"
+        ],
+        "delivery_operations_boundary": "DELIVERY_HANDOFF",
+        "neutral_contract_conditions": [
+          "NON_EXECUTABLE_ROLE",
+          "NON_OWNING_IMPLEMENTATION",
+          "LIFECYCLE_COMPATIBILITY_INDEPENDENT"
+        ],
+        "material_mixed_lifecycle_requires_independently_governable_responsibilities": true,
+        "confidence_is_architecture_authority": false,
+        "unresolved_conflict_behavior": "FAIL_CLOSED"
+      }
+    },
+    "RESPONSIBILITY_MAP_SEMANTIC_AXES_V1": {
+      "const": {
+        "classification_axis": "PRIMARY_LIFECYCLE_OWNERSHIP",
+        "roles_axis": "COARSE_RESPONSIBILITY_CHARACTERISTICS",
+        "relationships_axis": "TYPED_DIRECTED_SEMANTICS",
+        "verification_purpose_axis": "VPMS",
+        "canonical_roles": [
+          "IMPLEMENTATION",
+          "VERIFICATION",
+          "AUTOMATION",
+          "CONFIGURATION",
+          "DOCUMENTATION",
+          "GOVERNANCE"
+        ],
+        "role_cardinality": "ZERO_OR_MORE",
+        "role_may_determine_classification": false,
+        "role_may_infer_relationship": false,
+        "relationship_endpoint_kinds": [
+          "COMPONENT",
+          "ASSOCIATED_ARTIFACT"
+        ],
+        "canonical_relationships": [
+          "IMPORTS",
+          "LINKS",
+          "LOADS",
+          "INVOKES",
+          "READS",
+          "GENERATES",
+          "BUILDS",
+          "PACKAGES",
+          "PUBLISHES",
+          "DEPLOYS",
+          "VERIFIES",
+          "MANAGES",
+          "DOCUMENTS",
+          "SPECIFIES",
+          "GOVERNS"
+        ],
+        "generic_escape_relationships_forbidden": [
+          "PRODUCES",
+          "SUPPORTS",
+          "USES",
+          "DEPENDS_ON"
+        ],
+        "declared_relationship_is_evidence_edge": false,
+        "typed_relationship_is_permission": false,
+        "associated_artifact_has_classification": false,
+        "associated_artifact_anchor_cardinality": "EXACTLY_ONE",
+        "component_and_associated_artifact_ids_share_namespace": true,
+        "unresolved_endpoint_may_be_fabricated": false
+      }
+    },
+    "RESPONSIBILITY_MAP_DECLARATION_AUTHORITY_V1": {
+      "const": {
+        "source_modes": [
+          "EXPLICIT",
+          "TEMPLATE",
+          "HYBRID"
+        ],
+        "source_mode_is_lifecycle_classification": false,
+        "explicit_mode_authority": "PROJECT_COMPLETE_DECLARATION",
+        "template_mode_authority": "PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION",
+        "template_selection_inference": "FORBIDDEN",
+        "hybrid_project_authority": [
+          "TEMPLATE_SELECTION",
+          "STABLE_ID_REPLACEMENTS",
+          "STABLE_ID_EXTENSIONS",
+          "STABLE_ID_REMOVALS"
+        ],
+        "hybrid_precedence": [
+          "PROJECT_OVERRIDE_EXTENSION_REMOVAL",
+          "SELECTED_IMMUTABLE_TEMPLATE_DECLARATION"
+        ],
+        "hybrid_override_granularity": "WHOLE_ENTITY_BY_STABLE_ID",
+        "field_level_patch_inheritance": "NOT_INTRODUCED",
+        "materializer_authority": "NON_AUTHORITATIVE",
+        "materializer_may_infer_missing_architecture": false,
+        "materializer_may_change_classification": false,
+        "materializer_may_silently_repair_conflicts": false,
+        "effective_map_collections": [
+          "COMPONENTS",
+          "ASSOCIATED_ARTIFACTS",
+          "TYPED_RELATIONSHIPS",
+          "COMPONENT_DEPENDENCY_POLICY",
+          "PROJECT_POLICIES"
+        ],
+        "effective_map_digest": "SHA256_CANONICAL_SEMANTIC_REPRESENTATION",
+        "invalid_effective_architecture": "FAIL_CLOSED"
+      }
+    },
+    "VERSIONED_DRAFT_PROFILE_TRANSITION_V1": {
+      "const": {
+        "canonical_profile_path": "ptsip.yaml",
+        "temporary_profile_pattern": "ptsip_<major>.<minor>.<micro>.yaml",
+        "temporary_profile_internal_version_match_required": true,
+        "one_temporary_profile_per_target_semantic_version": true,
+        "migration_categories": [
+          "REQUIRED_WORK_ELEMENT",
+          "REMOVAL_MIGRATION_ELEMENT",
+          "ASYNCHRONOUS_WORK_TARGET"
+        ],
+        "completion_basis": "REQUIRED_WORK_ELEMENTS_ONLY",
+        "removal_element_preservation_obligation": false,
+        "async_target_completion_credit": false,
+        "canonical_profile_replaced_before_source_completion": false,
+        "final_point_selection": "HIGHEST_SELECTED_TARGET_DRAFT",
+        "temporary_source_processing_order": "DESCENDING_DRAFT_VERSION_CLOSEST_TO_FINAL_POINT_FIRST",
+        "canonical_source_processing_order": "LAST",
+        "deleted_intermediate_may_be_migration_hop": false,
+        "source_category_inheritance": false,
+        "final_point_is_cumulative_target_state": true,
+        "version_and_revision_required_transition_inputs": true,
+        "stale_or_conflicting_transition": "FAIL_CLOSED"
+      }
+    },
+    "SPECIFICATION_FAMILY_ACTIVATION_V1": {
+      "const": {
+        "activated_family": "0.3.7-draft",
+        "immutable_normative_snapshot": "b648d9e026f502b14481ba2d0606d9acc88a31fc",
+        "normative_companion": "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
+        "preserved_classifications": [
+          "PRODUCT",
+          "DEVELOPMENT_TOOLING",
+          "DELIVERY",
+          "OPERATIONS",
+          "NEUTRAL_CONTRACT"
+        ],
+        "toolchain_is_current_ptsip_classification": false,
+        "profile_transition_rules": [
+          "PTSIP-MIG-004",
+          "PTSIP-MIG-005",
+          "PTSIP-MIG-006",
+          "PTSIP-MIG-007",
+          "PTSIP-MIG-008",
+          "PTSIP-MIG-009",
+          "PTSIP-MIG-010",
+          "PTSIP-MIG-011",
+          "PTSIP-MIG-012",
+          "PTSIP-MIG-013",
+          "PTSIP-MIG-014",
+          "PTSIP-MIG-015"
+        ],
+        "activation_implies_repository_profile_mutation": false,
+        "tool_runtime_claims_full_implementation_by_activation": false
+      }
+    },
+    "NORMALIZED_EVIDENCE_CONTRACT_V1": {
+      "const": {
+        "contract": "ptsip-normalized-evidence/v1",
+        "producer_neutral": true,
+        "authority": "EVIDENCE_ONLY",
+        "semantic_identity_separate_from_evaluation_identity": true,
+        "equivalent_values_preserve_all_origins": true,
+        "conflict_policy": "EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS",
+        "analysis_states": [
+          "EXPLICIT_ASSERTION",
+          "NO_MATCH",
+          "NOT_ANALYZED",
+          "FAILED"
+        ],
+        "absence_may_become_false_assertion": false,
+        "boundary_evidence_provenance": "INFERRED",
+        "boundary_evidence_authority": "EVIDENCE_ONLY",
+        "interchange_schema_paths": [
+          "schemas/ptsip-normalized-evidence.schema.json",
+          "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
+        ],
+        "producer_specific_interfaces_replaced": false
+      }
+    },
+    "SOURCE_PROFILE_COMPATIBILITY_MODEL_V1": {
+      "const": {
+        "compatibility_boundary": "src/ptsip/source_compat",
+        "operation_mode": "READ_ONLY",
+        "common_source_model_is_current_canonical_model": false,
+        "source_authority": "SOURCE_DECLARATION_ONLY",
+        "family_semantics": [
+          "V034_SOURCE_SEMANTICS",
+          "V036_SOURCE_SEMANTICS"
+        ],
+        "supported_source_bindings": [
+          {
+            "family": "0.3.4-draft",
+            "revision": "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"
+          },
+          {
+            "family": "0.3.6-draft",
+            "revision": "d6995ed232e845b88d8235b851e80ab54b7804ea"
+          }
+        ],
+        "known_family_unknown_revision": "UNSUPPORTED_SOURCE_REVISION",
+        "unknown_family": "UNSUPPORTED_SOURCE_FAMILY",
+        "historical_validation_uses_separate_schema_snapshots": true,
+        "canonical_validator_may_reinterpret_historical_source": false,
+        "toolchain_to_development_tooling_translation_in_reader": false,
+        "target_classification_assignment_in_reader": false
+      }
+    },
+    "STAGED_MIGRATION_ANALYSIS_PIPELINE_V1": {
+      "const": {
+        "pipeline": [
+          "SOURCE_COVERAGE_PROJECTION",
+          "REPOSITORY_ELEMENT_RESOLUTION",
+          "OBLIGATION_TAXONOMY",
+          "LIFECYCLE_COMPATIBILITY",
+          "NORMALIZED_EVIDENCE_CORRELATION",
+          "ACCEPTED_TARGET_STATE_COMPATIBILITY",
+          "SOURCE_MIGRATION_COMPLETION"
+        ],
+        "stage_outputs": "IMMUTABLE_TYPED",
+        "repository_resolution_types": [
+          "EXISTING_SOURCE_ELEMENT",
+          "REMOVED_SOURCE_ELEMENT",
+          "UNCOVERED_REPOSITORY_ELEMENT",
+          "AMBIGUOUS_SOURCE_ELEMENT"
+        ],
+        "taxonomy_map": {
+          "EXISTING_SOURCE_ELEMENT": "REQUIRED_WORK_ELEMENT",
+          "REMOVED_SOURCE_ELEMENT": "REMOVAL_MIGRATION_ELEMENT",
+          "UNCOVERED_REPOSITORY_ELEMENT": "ASYNCHRONOUS_WORK_TARGET",
+          "AMBIGUOUS_SOURCE_ELEMENT": "NO_OBLIGATION_CATEGORY"
+        },
+        "lifecycle_compatibility_separate_from_obligation_category": true,
+        "evidence_authority": "NON_AUTHORITATIVE",
+        "source_and_repository_freshness": "FAIL_CLOSED",
+        "accepted_target_state_separate_typed_input": true,
+        "completion_equation": "REQUIRED_UNRESOLVED_EQUALS_ZERO",
+        "removal_or_async_compensates_required": false,
+        "deterministic_digest": "SHA256"
+      }
+    },
+    "TARGET_DELTA_RECONCILIATION_PLANNER_V1": {
+      "const": {
+        "selected_architecture": "SEMANTIC_DELTA_BUNDLE_DETERMINISTIC_RECONCILIATION_PLANNER",
+        "target_delta_change_kinds": [
+          "ADD",
+          "REMOVE",
+          "REPLACE"
+        ],
+        "compound_split_merge_representation": "BUNDLE_OF_ATOMIC_DELTAS",
+        "semantic_identity": "DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES",
+        "bundle_authority_types": [
+          "PROPOSAL_BUNDLE",
+          "ACCEPTED_DELTA_BUNDLE",
+          "UNRESOLVED_BUNDLE"
+        ],
+        "proposal_is_executable": false,
+        "accepted_bundle_requires_project_decision_identity": true,
+        "proposal_purposes": [
+          "REQUIRED_MIGRATION",
+          "TARGET_VALIDITY",
+          "ASYNC_OPTIONAL",
+          "ADVISORY"
+        ],
+        "unresolved_required_work_auto_designed": false,
+        "final_point_states": [
+          "EXISTING",
+          "PLANNED"
+        ],
+        "reconciliation_statuses": [
+          "NO_CHANGE_REQUIRED",
+          "ADD_TARGET_DECLARATION",
+          "REPLACE_WITH_EXPLICIT_OWNER_DECISION",
+          "CONFLICT_REQUIRES_CONFIRMATION",
+          "UNRESOLVED"
+        ],
+        "accepted_delta_requires_exact_before_state": true,
+        "sequential_reconciliation_uses_in_memory_cumulative_target": true,
+        "async_after_required": true,
+        "source_deletion_is_wu06_permission": false
+      }
+    },
+    "MIGRATION_APPLY_STATE_MACHINE_V1": {
+      "const": {
+        "selected_architecture": "STRONGLY_TYPED_MIGRATION_STATE_MACHINE_APPEND_ONLY_CHECKPOINT_LEDGER",
+        "states": [
+          "PLAN_BOUND",
+          "AUTHORIZED",
+          "PRECONDITIONS_VERIFIED",
+          "FINAL_POINT_APPLIED",
+          "SOURCE_REANALYZED",
+          "SOURCE_COMPLETE",
+          "ASYNC_APPLIED",
+          "SOURCE_REMOVED",
+          "CANONICAL_SOURCE_COMPLETE",
+          "GLOBAL_VALIDATION",
+          "PROMOTION_READY",
+          "PROMOTED",
+          "POST_PROMOTION_VERIFIED",
+          "RECOVERY_REQUIRED"
+        ],
+        "plan_binding": "EXACT_WU06_PLAN_DIGEST",
+        "execution_input_authority": "ACCEPTED_DELTA_BUNDLE_ONLY",
+        "authorization_binds": [
+          "WU06_PLAN_DIGEST",
+          "PROJECT_DECISION_IDS",
+          "AUTHORITY_REVISION"
+        ],
+        "controlled_repository_mutation_scope": "PARTICIPATING_PROFILE_PATHS_ONLY",
+        "checkpoint_ledger": "APPEND_ONLY_DIGEST_CHAINED",
+        "per_source_final_point_write": "ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS",
+        "planned_final_point_requires_explicit_seed": true,
+        "source_deletion_requires_post_apply_completion_proof": true,
+        "async_state_separate_from_completion": true,
+        "canonical_source_processed_last": true,
+        "promotion_is_independent_state_boundary": true,
+        "promotion_success_requires_rediscovery": true,
+        "recovery_guessing": false
+      }
+    },
+    "TOOL_PROFILE_CONTRACT_INDEPENDENCE_V1": {
+      "const": {
+        "tool_version_independent_from_project_profile_version": true,
+        "tool_release_implies_profile_migration": false,
+        "tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption": false,
+        "existing_profile_examples_remain_0_3_6_draft_without_contract_change": true,
+        "migration_engine_remains_implemented": true,
+        "repository_dogfood_mode": "CONTROLLED_SELF_ANALYSIS",
+        "mutation_promotion_verification_scope": "ISOLATED_FIXTURE_REPOSITORIES",
+        "spec_0_3_7_draft_remains_tool_development_normative_family": true,
+        "superseded_scope": "REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY"
+      }
+    },
+    "MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP_V1": {
+      "const": {
+        "components": [
+          {
+            "id": "ptsip-evidence",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/evidence/**"
+          },
+          {
+            "id": "ptsip-source-compat",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/source_compat/**"
+          },
+          {
+            "id": "ptsip-migration",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/migration/**"
+          }
+        ],
+        "common_properties": {
+          "shipped": true,
+          "runtime_required": false,
+          "executable": false,
+          "release_owner": "tool",
+          "compatibility_owner": "tool"
+        },
+        "ptsip_core_selector_broadened_to_recursive_src_ptsip": false,
+        "relationships": [
+          "ptsip-evidence:IMPORTS:ptsip-core",
+          "ptsip-source-compat:IMPORTS:ptsip-core",
+          "ptsip-source-compat:READS:ptsip-embedded-contracts",
+          "ptsip-migration:IMPORTS:ptsip-core",
+          "ptsip-migration:IMPORTS:ptsip-evidence",
+          "ptsip-migration:IMPORTS:ptsip-source-compat"
+        ],
+        "project_profile_version_migration_authorized": false
+      }
+    },
+    "PROJECT_PROFILE_VERSION_NAMESPACE_V1": {
+      "const": {
+        "identity_axes": [
+          "TOOL_VERSION",
+          "PROJECT_PROFILE_CONTRACT_VERSION",
+          "PROJECT_PROFILE_INSTANCE_REVISION"
+        ],
+        "project_profile_namespace": "pp.<major>.<minor>",
+        "canonical_minor_minimum_width": 2,
+        "semantic_versioning": false,
+        "major_trigger": "GOVERNING_LIFECYCLE_CLASSIFICATION_SET_OR_SEMANTICS_CHANGE",
+        "minor_trigger": "PROFILE_CONTRACT_STRUCTURE_OR_SEMANTICS_CHANGE_WITHIN_LIFECYCLE_GENERATION",
+        "project_instance_change_bumps_contract_version": false,
+        "legacy_generation_identity": "pp.0.00",
+        "current_generation_identity": "pp.1.01",
+        "fabricated_pp_1_00_history": false,
+        "tool_compatibility_inferred_from_numeric_equality": false,
+        "tool_operations_require_explicit_pp_capability": [
+          "READ",
+          "VALIDATE",
+          "ANALYZE",
+          "MIGRATE",
+          "CREATE"
+        ],
+        "acceptance_authorizes_immediate_profile_rewrite": false
+      }
+    },
+    "PROJECT_PROFILE_TRANSITION_WU_SEQUENCE_V1": {
+      "const": {
+        "ordered_work_units": [
+          "WU-08",
+          "WU-09",
+          "WU-10",
+          "WU-11"
+        ],
+        "responsibilities": {
+          "WU-08": "REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE",
+          "WU-09": "INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE",
+          "WU-10": "PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION",
+          "WU-11": "FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS"
+        },
+        "maintainability_rules": [
+          "TYPED_BOUNDARIES",
+          "STABLE_OWNERSHIP",
+          "INDEPENDENT_VERIFICATION",
+          "FAIL_CLOSED_COMPATIBILITY",
+          "EXTENSIBLE_REGISTRIES",
+          "NO_TOOL_PP_COUPLING",
+          "NO_PREMATURE_ADOPTION"
+        ],
+        "architecture_acceptance_separate_from_identity_implementation": true,
+        "identity_implementation_separate_from_migration_capability": true,
+        "migration_capability_separate_from_repository_adoption": true,
+        "repository_adoption_separate_from_release_readiness": true
+      }
+    },
+    "PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE_V1": {
+      "const": {
+        "release_note_namespaces": [
+          "tool",
+          "project-profile",
+          "specification"
+        ],
+        "historical_flat_release_notes_bulk_moved": false,
+        "independent_history_axes": [
+          "TOOL_VERSION",
+          "PROJECT_PROFILE_CONTRACT_VERSION",
+          "SPECIFICATION_FAMILY_REVISION"
+        ],
+        "bridge_source": "0.3.6-draft",
+        "bridge_target": "pp.1.01",
+        "bridge_classification": "IDENTITY_ONLY",
+        "semantic_deltas": {
+          "components": "NONE",
+          "relationships": "NONE",
+          "associated_artifacts": "NONE",
+          "policies": "NONE",
+          "responsibility_map": "NONE",
+          "lifecycle_classification": "NONE"
+        },
+        "canonical_pp_identity": "pp.1.01",
+        "temporary_filename_token": "pp1.01",
+        "temporary_target_path": "ptsip_pp1.01.yaml",
+        "legacy_temporary_target_alias": "ptsip_0.3.6.yaml",
+        "canonical_0_3_6_to_pp_1_01_requires_temporary_target": false,
+        "equivalent_target_collision": "DUPLICATE_EQUIVALENT_TARGET"
+      }
+    },
+    "DIRECT_LATEST_TARGET_CONVERGENCE_V1": {
+      "const": {
+        "migration_model": "DIRECT_LATEST_TARGET_CONVERGENCE",
+        "mandatory_intermediate_version_traversal": false,
+        "source_boundary": "SOURCE_SPECIFIC_COMPATIBILITY_READER",
+        "convergence_boundary": "NORMALIZED_SOURCE_SEMANTICS",
+        "target_selection_authority": "EXPLICIT_TOOL_PP_COMPATIBILITY",
+        "direct_convergence_allows_unrestricted_inference": false,
+        "ambiguous_historical_semantics": "OWNER_DECISION_REQUIRED",
+        "transition_classes": [
+          "IDENTITY_ONLY",
+          "SEMANTIC_MIGRATION"
+        ],
+        "new_migration_creates_only_selected_canonical_target": true,
+        "existing_authorized_legacy_target_continuity_preserved": true,
+        "universal_shortest_path_engine_required": false,
+        "n_by_m_handwritten_converter_matrix_required": false
+      }
+    },
+    "SPECIFICATION_BINDING_CAPABILITY_REGISTRIES_V1": {
+      "const": {
+        "identity_axes": [
+          "TOOL_VERSION",
+          "PROJECT_PROFILE_CONTRACT_VERSION",
+          "SPECIFICATION_BINDING",
+          "PROJECT_PROFILE_INSTANCE_REVISION"
+        ],
+        "specification_binding_fields": [
+          "family",
+          "source",
+          "revision"
+        ],
+        "project_profile_version_is_implicit_specification_family": false,
+        "capability_authorities": [
+          "TOOL_TO_PROJECT_PROFILE",
+          "TOOL_TO_SPECIFICATION",
+          "HISTORICAL_MIGRATION_COMPATIBILITY"
+        ],
+        "cartesian_capability_registration_required": false,
+        "generic_validator_requires_profile_spec_revision_equal_global_tool_spec_revision": false,
+        "generic_validator_may_use_historical_migration_bridge_as_spec_capability": false,
+        "generic_validation_order": [
+          "VALIDATE_PP_CAPABILITY",
+          "VALIDATE_SPECIFICATION_CAPABILITY",
+          "VALIDATE_SCHEMA_AND_RESPONSIBILITY_MAP",
+          "APPLY_EXPLICIT_CROSS_CONTRACT_CONSTRAINTS"
+        ],
+        "historical_bridge_role": "MIGRATION_INTERPRETATION_ONLY",
+        "unsupported_or_malformed_binding": "FAIL_CLOSED",
+        "final_release_readiness_work_unit": "WU-12"
+      }
+    }
+  }
+}

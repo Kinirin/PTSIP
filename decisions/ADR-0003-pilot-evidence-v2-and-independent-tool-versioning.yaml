@@ -1,0 +1,43 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0003
+  topic_id: specification_reference_tool_versioning
+  status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  date: '2026-08-09'
+authority_contract:
+  authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+  schema_id: ptsip.governance/specification-tool-version-independence
+  schema_version: 1
+authority_semantics:
+  specification_family: 0.2.0-draft
+  normative_snapshot_identity: IMMUTABLE_GIT_REVISION
+  reference_tool_versioning: INDEPENDENT
+  reference_tool_target: '0.2.0'
+  pilot_report_contract: ptsip-pilot-report/v2
+  architecture_classifications:
+  - PRODUCT
+  - TOOLCHAIN
+  - NEUTRAL_CONTRACT
+  unresolved_analysis_states:
+  - UNKNOWN
+  - CONFLICT
+  - INCOMPLETE
+  project_profile_is_intended_ownership_declaration: true
+  dependency_evidence_edges_typed: true
+  agent_output_schema_constrained: true
+  agent_decision_is_architecture_authority: false
+  snapshot_instability_invalidates_evidence_set: true
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.md
+  source_blob_sha: f6b4870198443a7208e3274b08dd5b50bc9263ed
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

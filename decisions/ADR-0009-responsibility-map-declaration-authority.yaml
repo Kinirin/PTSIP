@@ -1,0 +1,59 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0009
+  topic_id: responsibility_map_declaration_authority
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
+  schema_id: ptsip.governance/responsibility-map-declaration-authority
+  schema_version: 1
+authority_semantics:
+  source_modes:
+  - EXPLICIT
+  - TEMPLATE
+  - HYBRID
+  source_mode_is_lifecycle_classification: false
+  explicit_mode_authority: PROJECT_COMPLETE_DECLARATION
+  template_mode_authority: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
+  template_selection_inference: FORBIDDEN
+  hybrid_project_authority:
+  - TEMPLATE_SELECTION
+  - STABLE_ID_REPLACEMENTS
+  - STABLE_ID_EXTENSIONS
+  - STABLE_ID_REMOVALS
+  hybrid_precedence:
+  - PROJECT_OVERRIDE_EXTENSION_REMOVAL
+  - SELECTED_IMMUTABLE_TEMPLATE_DECLARATION
+  hybrid_override_granularity: WHOLE_ENTITY_BY_STABLE_ID
+  field_level_patch_inheritance: NOT_INTRODUCED
+  materializer_authority: NON_AUTHORITATIVE
+  materializer_may_infer_missing_architecture: false
+  materializer_may_change_classification: false
+  materializer_may_silently_repair_conflicts: false
+  effective_map_collections:
+  - COMPONENTS
+  - ASSOCIATED_ARTIFACTS
+  - TYPED_RELATIONSHIPS
+  - COMPONENT_DEPENDENCY_POLICY
+  - PROJECT_POLICIES
+  effective_map_digest: SHA256_CANONICAL_SEMANTIC_REPRESENTATION
+  invalid_effective_architecture: FAIL_CLOSED
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+  - adr: ADR-0007
+    scope: PRIMARY_LIFECYCLE_ONTOLOGY
+  - adr: ADR-0008
+    scope: RESPONSIBILITY_MAP_SEMANTIC_AXES
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0009-responsibility-map-declaration-authority.md
+  source_blob_sha: 5c81465137a2005a06a0623921617745b87efa3c
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

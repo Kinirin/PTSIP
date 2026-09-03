@@ -1,0 +1,33 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0001
+  topic_id: ptsip_establishment
+  status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  date: '2026-08-07'
+authority_contract:
+  authority_type: PTSIP_POLICY_IDENTITY
+  schema_id: ptsip.governance/ptsip-policy-identity
+  schema_version: 1
+authority_semantics:
+  canonical_term: PTSIP
+  expanded_identity: PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY
+  primary_principle: PURPOSE_BEFORE_REUSE
+  classifies_by:
+  - PURPOSE
+  - LIFECYCLE_OWNERSHIP
+  requires_product_toolchain_boundary: true
+  versioned_specification: true
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0001-establish-ptsip.md
+  source_blob_sha: 298db119f607bf0a6f514bed89ba0abdf54e64e7
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

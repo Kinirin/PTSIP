@@ -1,0 +1,50 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0023
+  topic_id: specification_binding_capability_registries
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
+  schema_id: ptsip.governance/specification-binding-capability-registries
+  schema_version: 1
+authority_semantics:
+  identity_axes:
+  - TOOL_VERSION
+  - PROJECT_PROFILE_CONTRACT_VERSION
+  - SPECIFICATION_BINDING
+  - PROJECT_PROFILE_INSTANCE_REVISION
+  specification_binding_fields:
+  - family
+  - source
+  - revision
+  project_profile_version_is_implicit_specification_family: false
+  capability_authorities:
+  - TOOL_TO_PROJECT_PROFILE
+  - TOOL_TO_SPECIFICATION
+  - HISTORICAL_MIGRATION_COMPATIBILITY
+  cartesian_capability_registration_required: false
+  generic_validator_requires_profile_spec_revision_equal_global_tool_spec_revision: false
+  generic_validator_may_use_historical_migration_bridge_as_spec_capability: false
+  generic_validation_order:
+  - VALIDATE_PP_CAPABILITY
+  - VALIDATE_SPECIFICATION_CAPABILITY
+  - VALIDATE_SCHEMA_AND_RESPONSIBILITY_MAP
+  - APPLY_EXPLICIT_CROSS_CONTRACT_CONSTRAINTS
+  historical_bridge_role: MIGRATION_INTERPRETATION_ONLY
+  unsupported_or_malformed_binding: FAIL_CLOSED
+  final_release_readiness_work_unit: WU-12
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0023-typed-specification-binding-and-capability-registries.md
+  source_blob_sha: a4ecbf6bd65cdcf96548f04fa6850b64b7f9afbc
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

@@ -1,0 +1,43 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0012
+  topic_id: normalized_evidence_contract
+  status: ACCEPTED
+  date: '2026-08-24'
+authority_contract:
+  authority_type: NORMALIZED_EVIDENCE_CONTRACT
+  schema_id: ptsip.governance/normalized-evidence-contract
+  schema_version: 1
+authority_semantics:
+  contract: ptsip-normalized-evidence/v1
+  producer_neutral: true
+  authority: EVIDENCE_ONLY
+  semantic_identity_separate_from_evaluation_identity: true
+  equivalent_values_preserve_all_origins: true
+  conflict_policy: EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS
+  analysis_states:
+  - EXPLICIT_ASSERTION
+  - NO_MATCH
+  - NOT_ANALYZED
+  - FAILED
+  absence_may_become_false_assertion: false
+  boundary_evidence_provenance: INFERRED
+  boundary_evidence_authority: EVIDENCE_ONLY
+  interchange_schema_paths:
+  - schemas/ptsip-normalized-evidence.schema.json
+  - src/ptsip/specdata/ptsip-normalized-evidence.schema.json
+  producer_specific_interfaces_replaced: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0012-universal-normalized-evidence-contract.md
+  source_blob_sha: 990fc12ae16c13459f5bf9a6571c6e6dbefa41d6
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

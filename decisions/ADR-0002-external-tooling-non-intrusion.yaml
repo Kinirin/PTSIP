@@ -1,0 +1,33 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0002
+  topic_id: consumer_repository_non_intrusion
+  status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  date: '2026-08-09'
+authority_contract:
+  authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
+  schema_id: ptsip.governance/consumer-repository-non-intrusion
+  schema_version: 1
+authority_semantics:
+  tooling_default_location: EXTERNAL_TO_CONSUMER_REPOSITORY
+  consumer_repository_topology_owner: CONSUMER_PROJECT
+  ptsip_specific_directory_hierarchy_required_for_tool_operation: false
+  inspection_default_mutation_mode: READ_ONLY
+  tool_owned_cache_default_scope: OUTSIDE_CONSUMER_REPOSITORY
+  persistent_profile_location_owned_by_project: true
+  specification_binding_required_for_automated_conformance: true
+  specification_release_lifecycle_independent_from_reference_tool: true
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0002-external-tooling-non-intrusion.md
+  source_blob_sha: d82c1f47bfc582261035dfd179267a4cdc6fbee3
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

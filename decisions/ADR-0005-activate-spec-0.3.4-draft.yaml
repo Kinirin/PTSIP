@@ -1,0 +1,38 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0005
+  topic_id: distributed_decision_authority
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: DISTRIBUTED_DECISION_AUTHORITY
+  schema_id: ptsip.governance/distributed-decision-authority
+  schema_version: 1
+authority_semantics:
+  activated_specification_family: 0.3.4-draft
+  decision_authority_separate_from_project_profile: true
+  distributed_decision_identity: STABLE
+  resolution_policy: FIRST_VALID_RESOLUTION_WINS
+  conditional_mutation_required: true
+  architecture_sensitive_read_requires_current_authority_state: true
+  absence_observation_may_fabricate_history: false
+  authority_profile_conflict_silent_overwrite: false
+  distributed_coordination_failure_behavior: FAIL_CLOSED
+  local_fallback_when_distributed_coordination_required: false
+  global_decision_state_separate_from_clone_local_projection: true
+  synchronization_mode: ACTION_TIME
+  decision_authority_is_conformance_oracle: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.md
+  source_blob_sha: 437aa62163a007aa3512cb0a2c38a3537e35ec83
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

@@ -1,113 +1,87 @@
 # ADR Governance
 
-This directory stores Architecture Decision Records (ADRs) and the small set of governance/navigation files used to create and locate them.
+`decisions/` stores current machine-readable Architecture Decision Records and the small set of governance assets used to route and validate them.
 
-## Responsibility split
+## Canonical current form
 
-The `decisions/` directory has four distinct responsibilities:
+Current ADR authority is YAML only:
 
 ```text
 decisions/
 ├─ README.md
-│   ADR governance: how ADRs are operated
 ├─ INDEX.yaml
-│   navigation registry: what topic exists, which ADR is current, and where it is
 ├─ ADR-TEMPLATE.yaml
-│   machine-readable authoring contract for new ADRs
-└─ ADR-NNNN-*.md
-    historical decision records: what was decided and why at that time
+├─ AUTHORITY-SCHEMA-REGISTRY.yaml
+└─ ADR-NNNN-*.yaml
 ```
 
-These responsibilities MUST remain separate. `README.md`, `INDEX.yaml`, and `ADR-TEMPLATE.yaml` are mutable current governance/navigation files. They are not historical ADR records and are not subject to the rule that Accepted ADRs remain unchanged merely to match newer terminology or templates.
+`README.md` is a human operating guide. It is not an Architecture Decision Record and is not machine authority.
 
-## Historical ADR records
+Every `ADR-NNNN-*.yaml` contains exactly one `authority_contract` and exactly one `authority_semantics` object. One ADR therefore represents one Authority semantic. A record must resolve through `AUTHORITY-SCHEMA-REGISTRY.yaml` to one registered language-neutral schema definition before its semantics may be consumed automatically.
 
-An Accepted `ADR-NNNN-*.md` records the architecture decision as accepted at that time.
+## Natural-language boundary
 
-Accepted ADRs MUST NOT be rewritten only to:
+Opaque natural-language prose is forbidden inside `authority_semantics`.
 
-- adopt current-version terminology;
-- match a newer ADR template;
-- remove superseded reasoning;
-- make historical wording uniform with current documentation.
+Human rationale, commentary, tradeoffs, and explanatory text are not machine semantic authority. They may exist in a separate presentation/reporting surface or in Git history, but CORE automatic reasoning must not consume them to infer governance semantics.
 
-When a later decision changes an earlier one, create a new ADR and express the relationship explicitly. Do not erase the older decision history.
+The P03 migration removed the historical Markdown ADR files from the current tree. Each migrated YAML record contains `representation_migration.source_blob_sha`, which preserves the exact original Markdown blob identity in Git history without making historical prose a current automatic-reasoning input.
 
-Historical immutability MUST NOT force readers to traverse an entire supersession chain merely to determine current architecture. A replacing ADR should be self-contained for the scope it governs and should state which prior semantics it changes and which relevant semantics remain preserved.
+## Historical immutability
 
-## When an ADR is required
+The earlier rule prohibiting changes to Accepted ADRs was temporarily relaxed only for the P03 representation migration from Markdown prose to machine-readable YAML.
 
-Create or update the decision history when a material architecture decision is accepted, including decisions that establish, replace, amend, extend, or materially constrain an architecture boundary.
+That exception is consumed by this migration.
 
-Editorial changes, routine implementation details, test-only changes, release-note updates, and other changes that do not create a material architecture decision do not require a new ADR merely for documentation completeness.
-
-## ADR numbering and filenames
-
-New records use monotonically increasing four-digit IDs and a concise kebab-case slug:
+After migration:
 
 ```text
-ADR-NNNN-short-decision-title.md
+representation migration != semantic change
+accepted semantic change -> new governance decision
 ```
 
-For newly created ADRs, the filename slug SHOULD identify the specific architecture decision represented by that record. A slug that only repeats a generic version, work-unit, release, or activation event SHOULD be avoided when a clearer architecture-decision name is available.
+An Accepted ADR must not be silently weakened, strengthened, or reinterpreted in place. Material semantic change requires a new ADR and an explicit `supersedes`, `amends`, `extends`, or `depends_on` relationship where applicable.
 
-This naming guidance applies prospectively to newly created ADRs. It does not require renaming existing Accepted ADR files merely to match the newer convention.
+## Registry boundary
 
-The ADR filename slug is not the stable architecture topic identity. The filename identifies the specific decision record; stable current-topic identity is owned by `INDEX.yaml`.
+`AUTHORITY-SCHEMA-REGISTRY.yaml` is a Tool capability catalog. It is not Project Authority.
 
-The greatest ADR number MUST NOT be interpreted as the current policy for every topic. ADR numbers identify records; current-topic routing is owned by `INDEX.yaml`.
+It maps:
 
-## Decision relationships
+```text
+authority_type
++ stable schema_id
++ integer schema_version
+    -> exact machine semantic schema definition
+```
 
-Use explicit relationship vocabulary when a new ADR is connected to an earlier decision:
-
-- `Supersedes` — replaces the earlier decision for the stated scope.
-- `Amends` — changes only a stated part of an earlier decision.
-- `Extends` — adds new semantics while preserving the earlier decision.
-- `Depends on` — relies on an earlier decision that remains effective.
-
-For `Amends` and other partial relationships, state the affected scope clearly enough that readers can distinguish replaced semantics from preserved semantics.
-
-## Rejected Alternatives
-
-`Rejected Alternatives` is required for new ADRs created under this governance model.
-
-The section records materially plausible alternatives that were considered and why they were not selected. It exists to prevent maintainers and coding agents from repeatedly proposing an already-rejected architecture without understanding the earlier tradeoff.
-
-If no material alternative existed, state that explicitly rather than silently omitting the section.
+`schema_id` is logical identity, not a physical file path. Published schema versions are immutable. Semantic contents must never be used to guess or repair contract identity.
 
 ## Current-decision routing
 
-`INDEX.yaml` is the canonical navigation registry for current ADR discovery.
+`INDEX.yaml` owns stable current-topic routing.
 
-Its responsibility is intentionally narrow:
+It answers only:
 
 ```text
-What is this topic?
-        ↓
-Which ADR is current for it?
-        ↓
-Where is that ADR file?
+topic_id
+    -> current ADR ID
+    -> current YAML record path
 ```
 
-`INDEX.yaml` MUST NOT restate ADR rationale, Specification rules, implementation behavior, or historical lineage. Those responsibilities belong to the ADR record and applicable normative/implementation sources.
+The greatest ADR number is not implicitly current for every topic.
 
-Topic identity in `INDEX.yaml` uses stable machine-readable topic IDs. Human-readable titles may evolve without requiring the stable topic ID to change.
+## Authority separation
 
-When an accepted ADR changes which ADR is current for an indexed topic, the same architecture change MUST update `INDEX.yaml`. A stale current-ADR pointer is not acceptable.
+Governance ADR authority remains distinct from:
 
-## Template evolution
+```text
+Evidence
+Derived Fact
+Normative Specification
+Project Profile declaration
+Distributed Owner Decision
+Conformance result
+```
 
-`ADR-TEMPLATE.yaml` is the machine-readable authoring contract for newly created Markdown ADR records.
-
-The template is updated in place as ADR governance evolves. A template change applies prospectively and MUST NOT trigger bulk rewriting of earlier Accepted ADRs.
-
-`ADR-TEMPLATE.yaml` is validated by `schemas/ptsip-adr-template.schema.json`. The YAML file carries a language-server schema association for editor-side validation, and repository tests validate both the JSON Schema itself and the template instance.
-
-The schema validates the authoring contract. It does not convert historical `ADR-NNNN-*.md` records into YAML and does not make historical ADR prose subject to retrospective schema migration.
-
-## Authority boundary
-
-ADRs preserve decision rationale and architecture history. They do not replace the applicable bound Specification, project-owned architecture declarations, Decision Authority state, observed evidence, or conformance evaluation.
-
-When current normative behavior differs from historical ADR wording, the applicable current authority takes precedence; the historical ADR remains unchanged as history.
+A Governance Authority Projection may consume registered machine semantics in a later runtime implementation. Unsupported registered semantics must fail closed as Tool capability gaps rather than being reconstructed from natural-language history.

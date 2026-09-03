@@ -1,0 +1,57 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0015
+  topic_id: target_reconciliation_planning
+  status: ACCEPTED
+  date: '2026-08-24'
+authority_contract:
+  authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
+  schema_id: ptsip.governance/target-delta-reconciliation-planner
+  schema_version: 1
+authority_semantics:
+  selected_architecture: SEMANTIC_DELTA_BUNDLE_DETERMINISTIC_RECONCILIATION_PLANNER
+  target_delta_change_kinds:
+  - ADD
+  - REMOVE
+  - REPLACE
+  compound_split_merge_representation: BUNDLE_OF_ATOMIC_DELTAS
+  semantic_identity: DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES
+  bundle_authority_types:
+  - PROPOSAL_BUNDLE
+  - ACCEPTED_DELTA_BUNDLE
+  - UNRESOLVED_BUNDLE
+  proposal_is_executable: false
+  accepted_bundle_requires_project_decision_identity: true
+  proposal_purposes:
+  - REQUIRED_MIGRATION
+  - TARGET_VALIDITY
+  - ASYNC_OPTIONAL
+  - ADVISORY
+  unresolved_required_work_auto_designed: false
+  final_point_states:
+  - EXISTING
+  - PLANNED
+  reconciliation_statuses:
+  - NO_CHANGE_REQUIRED
+  - ADD_TARGET_DECLARATION
+  - REPLACE_WITH_EXPLICIT_OWNER_DECISION
+  - CONFLICT_REQUIRES_CONFIRMATION
+  - UNRESOLVED
+  accepted_delta_requires_exact_before_state: true
+  sequential_reconciliation_uses_in_memory_cumulative_target: true
+  async_after_required: true
+  source_deletion_is_wu06_permission: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.md
+  source_blob_sha: 5e81f7f5b653d5dffc3fa8741d0354fde379cf1b
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

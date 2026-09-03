@@ -1,0 +1,64 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+document:
+  id: WU-02-P03-MACHINE-READABLE-GOVERNANCE-MIGRATION
+  type: WORK_UNIT_EXTENSION_CONTRACT
+  status: ACTIVE
+  authority: PROJECT_OWNER
+  approval_date: '2026-09-04'
+  implementation_authorization: NOT_AUTHORIZED
+  governance_representation_migration: AUTHORIZED_BY_PROJECT_OWNER
+relation:
+  parent: planning/0.4.0/WU-02/WU-02.yaml
+  authority_contract: planning/0.4.0/WU-02/authority-context-machine-contract.yaml
+  scope: P03_GOVERNANCE_MACHINE_AUTHORITY
+  does_not_authorize_remediation_implementation: true
+approved_decisions:
+  canonical_adr_format: YAML_MACHINE_RECORD
+  markdown_adr_as_current_authority: FORBIDDEN
+  authority_semantic_cardinality_per_adr: EXACTLY_ONE
+  opaque_natural_language_in_authority_semantics: FORBIDDEN
+  human_explanation_authority: NONE
+  machine_semantics_registry_required: true
+  language_neutral_schema_required: true
+  representation_migration:
+    historical_accepted_adr_change_prohibition: TEMPORARILY_RELAXED_FOR_P03_REPRESENTATION_ONLY
+    semantic_change: FORBIDDEN
+    source_provenance: GIT_BLOB_SHA
+    source_prose_recopied_into_machine_semantics: false
+    post_migration_exception_status: CONSUMED
+    accepted_semantic_rewrite_after_migration: FORBIDDEN
+  execution_timing: IMMEDIATE_DURING_P03_REVIEW
+migration_scope:
+  adr_ids:
+  - ADR-0001
+  - ADR-0002
+  - ADR-0003
+  - ADR-0004
+  - ADR-0005
+  - ADR-0006
+  - ADR-0007
+  - ADR-0008
+  - ADR-0009
+  - ADR-0010
+  - ADR-0011
+  - ADR-0012
+  - ADR-0013
+  - ADR-0014
+  - ADR-0015
+  - ADR-0016
+  - ADR-0017
+  - ADR-0018
+  - ADR-0019
+  - ADR-0020
+  - ADR-0021
+  - ADR-0022
+  - ADR-0023
+  replace_markdown_records: true
+  update_index_to_machine_records: true
+  replace_adr_authoring_template: true
+  add_governance_authority_schema_registry: true
+  add_machine_validation_schemas: true
+  strengthen_governance_verification: true
+  preserve_original_prose_via_git_history: true
+remaining_p03_review: IN_PROGRESS

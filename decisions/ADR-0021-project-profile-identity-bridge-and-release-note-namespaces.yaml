@@ -1,0 +1,50 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0021
+  topic_id: project_profile_identity_bridge_release_note_namespaces
+  status: ACCEPTED
+  date: '2026-08-26'
+authority_contract:
+  authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+  schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
+  schema_version: 1
+authority_semantics:
+  release_note_namespaces:
+  - tool
+  - project-profile
+  - specification
+  historical_flat_release_notes_bulk_moved: false
+  independent_history_axes:
+  - TOOL_VERSION
+  - PROJECT_PROFILE_CONTRACT_VERSION
+  - SPECIFICATION_FAMILY_REVISION
+  bridge_source: 0.3.6-draft
+  bridge_target: pp.1.01
+  bridge_classification: IDENTITY_ONLY
+  semantic_deltas:
+    components: NONE
+    relationships: NONE
+    associated_artifacts: NONE
+    policies: NONE
+    responsibility_map: NONE
+    lifecycle_classification: NONE
+  canonical_pp_identity: pp.1.01
+  temporary_filename_token: pp1.01
+  temporary_target_path: ptsip_pp1.01.yaml
+  legacy_temporary_target_alias: ptsip_0.3.6.yaml
+  canonical_0_3_6_to_pp_1_01_requires_temporary_target: false
+  equivalent_target_collision: DUPLICATE_EQUIVALENT_TARGET
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md
+  source_blob_sha: 7ff356582ee5dc3711cfcccc3b823954edf9cc50
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

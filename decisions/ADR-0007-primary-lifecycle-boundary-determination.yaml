@@ -1,0 +1,57 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0007
+  topic_id: primary_lifecycle_boundary
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
+  schema_id: ptsip.governance/primary-lifecycle-boundary-determination
+  schema_version: 1
+authority_semantics:
+  canonical_classifications:
+  - PRODUCT
+  - DEVELOPMENT_TOOLING
+  - DELIVERY
+  - OPERATIONS
+  - NEUTRAL_CONTRACT
+  primary_owner_basis: GOVERNING_LIFECYCLE_OBLIGATION
+  ordered_determination:
+  - ESTABLISH_PROJECT_OWNED_SCOPE
+  - IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
+  - COLLECT_LIFECYCLE_EVIDENCE
+  - TEST_NEUTRAL_CONTRACT_QUALIFICATION
+  - DETERMINE_GOVERNING_OWNING_LIFECYCLE
+  - TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY
+  - KEEP_SPLIT_OR_UNRESOLVED
+  - PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
+  forbidden_shortcuts:
+  - PATH_NAME
+  - TECHNOLOGY_NAME
+  - EXECUTABLE_STATUS
+  - LINE_COUNT
+  - JOB_COUNT
+  - INVOCATION_FREQUENCY
+  - CONFIDENCE_SCORE
+  delivery_operations_boundary: DELIVERY_HANDOFF
+  neutral_contract_conditions:
+  - NON_EXECUTABLE_ROLE
+  - NON_OWNING_IMPLEMENTATION
+  - LIFECYCLE_COMPATIBILITY_INDEPENDENT
+  material_mixed_lifecycle_requires_independently_governable_responsibilities: true
+  confidence_is_architecture_authority: false
+  unresolved_conflict_behavior: FAIL_CLOSED
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0007-primary-lifecycle-boundary-determination.md
+  source_blob_sha: 9f5c9a32c52221b7a0b4216d2d5b72b91874d29b
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

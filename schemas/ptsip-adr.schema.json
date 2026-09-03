@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-adr.schema.json",
+  "title": "PTSIP Machine-Readable ADR Contract v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "decision",
+    "authority_contract",
+    "authority_semantics",
+    "subject_binding",
+    "relations",
+    "representation_migration"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-adr/v1"
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "id",
+        "topic_id",
+        "status",
+        "date"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ADR-[0-9]{4}$"
+        },
+        "topic_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "status": {
+          "enum": [
+            "ACCEPTED",
+            "ACCEPTED_FOR_DRAFT_SPECIFICATION",
+            "PROPOSED_FOR_NEXT_NORMATIVE_SNAPSHOT"
+          ]
+        },
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "authority_contract": {
+      "type": "object",
+      "required": [
+        "authority_type",
+        "schema_id",
+        "schema_version"
+      ],
+      "properties": {
+        "authority_type": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "schema_id": {
+          "type": "string",
+          "pattern": "^ptsip\\.governance/[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "authority_semantics": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "subject_binding": {
+      "type": "object",
+      "required": [
+        "authority_domain",
+        "repository"
+      ],
+      "properties": {
+        "authority_domain": {
+          "const": "PROJECT_GOVERNANCE"
+        },
+        "repository": {
+          "const": "Kinirin/PTSIP"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relations": {
+      "type": "object",
+      "required": [
+        "supersedes",
+        "amends",
+        "extends",
+        "depends_on"
+      ],
+      "properties": {
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "adr",
+              "scope"
+            ],
+            "properties": {
+              "adr": {
+                "type": "string",
+                "pattern": "^ADR-[0-9]{4}$"
+              },
+              "scope": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "uniqueItems": true
+        },
+        "amends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "adr",
+              "scope"
+            ],
+            "properties": {
+              "adr": {
+                "type": "string",
+                "pattern": "^ADR-[0-9]{4}$"
+              },
+              "scope": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "uniqueItems": true
+        },
+        "extends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "adr",
+              "scope"
+            ],
+            "properties": {
+              "adr": {
+                "type": "string",
+                "pattern": "^ADR-[0-9]{4}$"
+              },
+              "scope": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "uniqueItems": true
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "adr",
+              "scope"
+            ],
+            "properties": {
+              "adr": {
+                "type": "string",
+                "pattern": "^ADR-[0-9]{4}$"
+              },
+              "scope": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "representation_migration": {
+      "type": "object",
+      "required": [
+        "from_format",
+        "source_path",
+        "source_blob_sha",
+        "semantic_change",
+        "migration_reason"
+      ],
+      "properties": {
+        "from_format": {
+          "const": "MARKDOWN"
+        },
+        "source_path": {
+          "type": "string",
+          "pattern": "^decisions/ADR-[0-9]{4}-[a-z0-9.]+(?:-[a-z0-9.]+)*\\.md$"
+        },
+        "source_blob_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "semantic_change": {
+          "const": false
+        },
+        "migration_reason": {
+          "const": "P03_MACHINE_READABLE_GOVERNANCE"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

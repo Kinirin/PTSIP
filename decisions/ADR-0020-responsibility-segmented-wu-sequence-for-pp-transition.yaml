@@ -1,0 +1,47 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0020
+  topic_id: project_profile_transition_work_unit_sequence
+  status: ACCEPTED
+  date: '2026-08-26'
+authority_contract:
+  authority_type: PROJECT_PROFILE_TRANSITION_WU_SEQUENCE
+  schema_id: ptsip.governance/project-profile-transition-wu-sequence
+  schema_version: 1
+authority_semantics:
+  ordered_work_units:
+  - WU-08
+  - WU-09
+  - WU-10
+  - WU-11
+  responsibilities:
+    WU-08: REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE
+    WU-09: INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE
+    WU-10: PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION
+    WU-11: FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS
+  maintainability_rules:
+  - TYPED_BOUNDARIES
+  - STABLE_OWNERSHIP
+  - INDEPENDENT_VERIFICATION
+  - FAIL_CLOSED_COMPATIBILITY
+  - EXTENSIBLE_REGISTRIES
+  - NO_TOOL_PP_COUPLING
+  - NO_PREMATURE_ADOPTION
+  architecture_acceptance_separate_from_identity_implementation: true
+  identity_implementation_separate_from_migration_capability: true
+  migration_capability_separate_from_repository_adoption: true
+  repository_adoption_separate_from_release_readiness: true
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0020-responsibility-segmented-wu-sequence-for-pp-transition.md
+  source_blob_sha: aed250feb2eb87cac786a6e80695377bf66c3b4d
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

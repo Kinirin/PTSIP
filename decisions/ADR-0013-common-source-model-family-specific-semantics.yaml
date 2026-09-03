@@ -1,0 +1,43 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0013
+  topic_id: source_profile_compatibility_model
+  status: ACCEPTED
+  date: '2026-08-24'
+authority_contract:
+  authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
+  schema_id: ptsip.governance/source-profile-compatibility-model
+  schema_version: 1
+authority_semantics:
+  compatibility_boundary: src/ptsip/source_compat
+  operation_mode: READ_ONLY
+  common_source_model_is_current_canonical_model: false
+  source_authority: SOURCE_DECLARATION_ONLY
+  family_semantics:
+  - V034_SOURCE_SEMANTICS
+  - V036_SOURCE_SEMANTICS
+  supported_source_bindings:
+  - family: 0.3.4-draft
+    revision: b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
+  - family: 0.3.6-draft
+    revision: d6995ed232e845b88d8235b851e80ab54b7804ea
+  known_family_unknown_revision: UNSUPPORTED_SOURCE_REVISION
+  unknown_family: UNSUPPORTED_SOURCE_FAMILY
+  historical_validation_uses_separate_schema_snapshots: true
+  canonical_validator_may_reinterpret_historical_source: false
+  toolchain_to_development_tooling_translation_in_reader: false
+  target_classification_assignment_in_reader: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0013-common-source-model-family-specific-semantics.md
+  source_blob_sha: cd3ba84ea7109433bcf4367dac6f998a44df6451
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

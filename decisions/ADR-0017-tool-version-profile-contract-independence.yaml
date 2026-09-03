@@ -1,0 +1,36 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0017
+  topic_id: tool_profile_contract_independence
+  status: ACCEPTED
+  date: '2026-08-25'
+authority_contract:
+  authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+  schema_id: ptsip.governance/tool-profile-contract-independence
+  schema_version: 1
+authority_semantics:
+  tool_version_independent_from_project_profile_version: true
+  tool_release_implies_profile_migration: false
+  tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
+  existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
+  migration_engine_remains_implemented: true
+  repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
+  mutation_promotion_verification_scope: ISOLATED_FIXTURE_REPOSITORIES
+  spec_0_3_7_draft_remains_tool_development_normative_family: true
+  superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends:
+  - adr: ADR-0011
+    scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0017-tool-version-profile-contract-independence.md
+  source_blob_sha: 65fb370ac85fed5d44cef2dcd150ac5914febc20
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

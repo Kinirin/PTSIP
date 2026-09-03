@@ -1,0 +1,57 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0016
+  topic_id: migration_apply_state_machine
+  status: ACCEPTED
+  date: '2026-08-24'
+authority_contract:
+  authority_type: MIGRATION_APPLY_STATE_MACHINE
+  schema_id: ptsip.governance/migration-apply-state-machine
+  schema_version: 1
+authority_semantics:
+  selected_architecture: STRONGLY_TYPED_MIGRATION_STATE_MACHINE_APPEND_ONLY_CHECKPOINT_LEDGER
+  states:
+  - PLAN_BOUND
+  - AUTHORIZED
+  - PRECONDITIONS_VERIFIED
+  - FINAL_POINT_APPLIED
+  - SOURCE_REANALYZED
+  - SOURCE_COMPLETE
+  - ASYNC_APPLIED
+  - SOURCE_REMOVED
+  - CANONICAL_SOURCE_COMPLETE
+  - GLOBAL_VALIDATION
+  - PROMOTION_READY
+  - PROMOTED
+  - POST_PROMOTION_VERIFIED
+  - RECOVERY_REQUIRED
+  plan_binding: EXACT_WU06_PLAN_DIGEST
+  execution_input_authority: ACCEPTED_DELTA_BUNDLE_ONLY
+  authorization_binds:
+  - WU06_PLAN_DIGEST
+  - PROJECT_DECISION_IDS
+  - AUTHORITY_REVISION
+  controlled_repository_mutation_scope: PARTICIPATING_PROFILE_PATHS_ONLY
+  checkpoint_ledger: APPEND_ONLY_DIGEST_CHAINED
+  per_source_final_point_write: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
+  planned_final_point_requires_explicit_seed: true
+  source_deletion_requires_post_apply_completion_proof: true
+  async_state_separate_from_completion: true
+  canonical_source_processed_last: true
+  promotion_is_independent_state_boundary: true
+  promotion_success_requires_rediscovery: true
+  recovery_guessing: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0016-strongly-typed-migration-state-machine-checkpoint-ledger.md
+  source_blob_sha: d0a88da706f4f6350000cb9391217ec080ac61cf
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

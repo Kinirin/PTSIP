@@ -1,0 +1,53 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0018
+  topic_id: migration_subsystem_component_ownership
+  status: ACCEPTED
+  date: '2026-08-25'
+authority_contract:
+  authority_type: MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP
+  schema_id: ptsip.governance/migration-subsystem-component-ownership
+  schema_version: 1
+authority_semantics:
+  components:
+  - id: ptsip-evidence
+    classification: PRODUCT
+    role: IMPLEMENTATION
+    selector: src/ptsip/evidence/**
+  - id: ptsip-source-compat
+    classification: PRODUCT
+    role: IMPLEMENTATION
+    selector: src/ptsip/source_compat/**
+  - id: ptsip-migration
+    classification: PRODUCT
+    role: IMPLEMENTATION
+    selector: src/ptsip/migration/**
+  common_properties:
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+  ptsip_core_selector_broadened_to_recursive_src_ptsip: false
+  relationships:
+  - ptsip-evidence:IMPORTS:ptsip-core
+  - ptsip-source-compat:IMPORTS:ptsip-core
+  - ptsip-source-compat:READS:ptsip-embedded-contracts
+  - ptsip-migration:IMPORTS:ptsip-core
+  - ptsip-migration:IMPORTS:ptsip-evidence
+  - ptsip-migration:IMPORTS:ptsip-source-compat
+  project_profile_version_migration_authorized: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0018-separate-product-components-for-migration-subsystems.md
+  source_blob_sha: 9feded4433c9ec121680371c6c87765c62f5795b
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

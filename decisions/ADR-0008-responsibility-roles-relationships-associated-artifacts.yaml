@@ -1,0 +1,71 @@
+schema_version: ptsip-adr/v1
+decision:
+  id: ADR-0008
+  topic_id: responsibility_roles_relationships_associated_artifacts
+  status: ACCEPTED
+  date: null
+authority_contract:
+  authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
+  schema_id: ptsip.governance/responsibility-map-semantic-axes
+  schema_version: 1
+authority_semantics:
+  classification_axis: PRIMARY_LIFECYCLE_OWNERSHIP
+  roles_axis: COARSE_RESPONSIBILITY_CHARACTERISTICS
+  relationships_axis: TYPED_DIRECTED_SEMANTICS
+  verification_purpose_axis: VPMS
+  canonical_roles:
+  - IMPLEMENTATION
+  - VERIFICATION
+  - AUTOMATION
+  - CONFIGURATION
+  - DOCUMENTATION
+  - GOVERNANCE
+  role_cardinality: ZERO_OR_MORE
+  role_may_determine_classification: false
+  role_may_infer_relationship: false
+  relationship_endpoint_kinds:
+  - COMPONENT
+  - ASSOCIATED_ARTIFACT
+  canonical_relationships:
+  - IMPORTS
+  - LINKS
+  - LOADS
+  - INVOKES
+  - READS
+  - GENERATES
+  - BUILDS
+  - PACKAGES
+  - PUBLISHES
+  - DEPLOYS
+  - VERIFIES
+  - MANAGES
+  - DOCUMENTS
+  - SPECIFIES
+  - GOVERNS
+  generic_escape_relationships_forbidden:
+  - PRODUCES
+  - SUPPORTS
+  - USES
+  - DEPENDS_ON
+  declared_relationship_is_evidence_edge: false
+  typed_relationship_is_permission: false
+  associated_artifact_has_classification: false
+  associated_artifact_anchor_cardinality: EXACTLY_ONE
+  component_and_associated_artifact_ids_share_namespace: true
+  unresolved_endpoint_may_be_fabricated: false
+subject_binding:
+  authority_domain: PROJECT_GOVERNANCE
+  repository: Kinirin/PTSIP
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+  - adr: ADR-0007
+    scope: PRIMARY_LIFECYCLE_ONTOLOGY
+representation_migration:
+  from_format: MARKDOWN
+  source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.md
+  source_blob_sha: 4857d87aa39606d0236c95204c76565428be3e4a
+  semantic_change: false
+  migration_reason: P03_MACHINE_READABLE_GOVERNANCE

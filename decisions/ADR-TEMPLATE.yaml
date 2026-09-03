@@ -1,78 +1,32 @@
-# yaml-language-server: $schema=../schemas/ptsip-adr-template.schema.json
-schema_version: ptsip-adr-template/v1
-
+schema_version: ptsip-adr-template/v2
 output:
-  format: markdown
-  filename_pattern: "^ADR-[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*\\.md$"
-  filename_semantics:
-    identity: decision_record
-    require_specific_architecture_decision_name: true
-    avoid_generic_event_only_slug_when_semantic_name_available: true
-    generic_event_categories:
-      - version
-      - work_unit
-      - release
-      - activation
-    stable_topic_identity_owner: decisions/INDEX.yaml
-    applies_prospectively: true
-
-metadata:
-  status: required
-  date: required
-  decision: required
-  topic_id: required
-  applies_to: optional
-
+  format: yaml
+  filename_pattern: ^ADR-[0-9]{4}-[a-z0-9.]+(?:-[a-z0-9.]+)*\.yaml$
+  record_schema: schemas/ptsip-adr.schema.json
+  current_index: decisions/INDEX.yaml
+semantic_contract:
+  authority_semantic_cardinality: EXACTLY_ONE
+  authority_contract_required: true
+  authority_semantics_required: true
+  registered_language_neutral_schema_required: true
+  opaque_natural_language_in_authority_semantics: FORBIDDEN
+  arbitrary_unregistered_semantic_fields: FORBIDDEN
+  authority_schema_registry: decisions/AUTHORITY-SCHEMA-REGISTRY.yaml
+explanation_boundary:
+  human_explanation_is_machine_authority: false
+  human_explanation_location: SEPARATE_PRESENTATION_OR_GIT_HISTORY
+  core_reasoning_may_consume_explanation: false
+history_policy:
+  accepted_semantic_rewrite_without_new_governance_decision: FORBIDDEN
+  representation_migration_exception:
+    status: CONSUMED_BY_P03
+    source_format: MARKDOWN
+    target_format: YAML_MACHINE_RECORD
+    semantic_change_allowed: false
 relationships:
-  supersedes:
-    status: optional
-    requires_scope: true
-    requires_changed_semantics: true
-    requires_preserved_semantics: true
-  amends:
-    status: optional
-    requires_scope: true
-  extends:
-    status: optional
-    requires_scope: false
-  depends_on:
-    status: optional
-    requires_scope: false
-
-sections:
-  context:
-    heading: Context
-    status: required
-  decision:
-    heading: Decision
-    status: required
-  consequences:
-    heading: Consequences
-    status: required
-    subsections:
-      positive:
-        heading: Positive
-        status: required
-      tradeoffs:
-        heading: Tradeoffs
-        status: required
-  rejected_alternatives:
-    heading: Rejected Alternatives
-    status: required
-  affected_rules_assets:
-    heading: Affected Rules / Assets
-    status: optional
-  implementation_sequencing:
-    heading: Implementation Sequencing
-    status: optional
-
-constraints:
-  rejected_alternatives:
-    required: true
-    allow_explicit_no_material_alternative: true
-  replacement_decision:
-    self_contained: true
-    describe_changed_semantics: true
-    describe_preserved_semantics: true
-  historical_records:
-    retrospective_reformatting_allowed: false
+  supported:
+  - SUPERSEDES
+  - AMENDS
+  - EXTENDS
+  - DEPENDS_ON
+  scope_required: true
