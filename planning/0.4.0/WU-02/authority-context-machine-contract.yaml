@@ -15,6 +15,7 @@ relation:
   scope: WU_02_EXTENSION
   does_not_replace_parent_plan: true
   does_not_authorize_implementation: true
+  p03_governance_migration: planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
   next_review_topic: P03_GOVERNANCE_AND_EXISTING_AUTHORITY_MATERIALIZATION
 
 approved_decisions:
@@ -197,4 +198,4 @@ review_progress:
   P02_STRONG_MACHINE_SEMANTICS: APPROVED
   P02_LANGUAGE_NEUTRAL_CANONICAL_SCHEMA: APPROVED
   P02_SCHEMA_REGISTRY_AND_VERSIONING: APPROVED
-  P03: NOT_REVIEWED
+  P03: IN_PROGRESS
