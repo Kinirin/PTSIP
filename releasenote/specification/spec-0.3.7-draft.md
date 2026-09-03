@@ -11,13 +11,13 @@ b648d9e026f502b14481ba2d0606d9acc88a31fc
 Activation is recorded by:
 
 ```text
-decisions/ADR-0011-activate-spec-0.3.7-draft.md
+decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
 ```
 
 The architectural policy that led to this family is:
 
 ```text
-decisions/ADR-0010-versioned-draft-profile-transition.md
+decisions/ADR-0010-versioned-draft-profile-transition.yaml
 ```
 
 The primary new normative companion is:
