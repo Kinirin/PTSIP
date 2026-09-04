@@ -1,5 +1,6 @@
 planning_contract: ptsip-planning/v1
 work_unit: WU-02
+
 document:
   id: WU-02-P03-MACHINE-READABLE-GOVERNANCE-MIGRATION
   type: WORK_UNIT_EXTENSION_CONTRACT
@@ -8,11 +9,13 @@ document:
   approval_date: '2026-09-04'
   implementation_authorization: NOT_AUTHORIZED
   governance_representation_migration: AUTHORIZED_BY_PROJECT_OWNER
+
 relation:
   parent: planning/0.4.0/WU-02/WU-02.yaml
   authority_contract: planning/0.4.0/WU-02/authority-context-machine-contract.yaml
   scope: P03_GOVERNANCE_MACHINE_AUTHORITY
   does_not_authorize_remediation_implementation: true
+
 approved_decisions:
   canonical_adr_format: YAML_MACHINE_RECORD
   markdown_adr_as_current_authority: FORBIDDEN
@@ -21,6 +24,7 @@ approved_decisions:
   human_explanation_authority: NONE
   machine_semantics_registry_required: true
   language_neutral_schema_required: true
+
   representation_migration:
     historical_accepted_adr_change_prohibition: TEMPORARILY_RELAXED_FOR_P03_REPRESENTATION_ONLY
     semantic_change: FORBIDDEN
@@ -28,32 +32,283 @@ approved_decisions:
     source_prose_recopied_into_machine_semantics: false
     post_migration_exception_status: CONSUMED
     accepted_semantic_rewrite_after_migration: FORBIDDEN
+
+  P03_B_EXPLICIT_AUTHORITY_ROLE_AND_FRESH_ELIGIBILITY:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    approval_date: '2026-09-04'
+
+    purpose:
+      machine_readable_record_implies_project_authority: false
+      project_authority_requires_explicit_role_contract_and_current_eligibility: true
+      persistent_project_authority_promotion_state: FORBIDDEN
+      eligibility_is_current_state_derivation: true
+
+    machine_readable_boundary:
+      principle: MACHINE_READABLE_NE_PROJECT_AUTHORITY
+      examples_of_machine_readable_non_project_authority:
+        - WORK_UNIT_PLANNING_RECORD
+        - GOVERNANCE_CONTROL_RECORD
+        - TOOL_ARCHITECTURE_RECORD
+        - NORMATIVE_MACHINE_CONTRACT
+      adr_machine_readability_is_only_a_precondition_for_machine_consumption: true
+
+    authority_role_representation:
+      machine_role_code:
+        required: true
+        vocabulary: CLOSED_REGISTERED_VOCABULARY
+        opaque_natural_language: FORBIDDEN
+        automatic_reasoning_eligible: true
+      human_role_explanation:
+        allowed: true
+        responsibility: PRESENTATION_AND_HUMAN_UNDERSTANDING_ONLY
+        automatic_reasoning_eligible: false
+        may_change_authority_role: false
+        may_change_project_authority_eligibility: false
+      separation_invariant: MACHINE_ROLE_CODE_NE_HUMAN_ROLE_EXPLANATION
+      exact_initial_role_vocabulary: NOT_FROZEN
+      project_authority_projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+
+    current_selection_and_role_responsibility:
+      decisions_index:
+        responsibility: SELECT_CURRENT_GOVERNANCE_DECISION
+        determines_current_adr: true
+        determines_authority_role: false
+        expands_into_role_registry: false
+      adr_record:
+        responsibility: DECLARE_OR_BIND_ITS_AUTHORITY_ROLE
+        role_must_be_machine_readable: true
+      invariants:
+        - CURRENT_ADR_SELECTION_NE_AUTHORITY_ROLE
+        - AUTHORITY_ROLE_NE_SUBJECT_APPLICABILITY
+        - INDEX_MUST_NOT_INFER_ROLE_FROM_ADR_PROSE
+
+    subject_binding:
+      purpose: MACHINE_READABLE_APPLICABILITY_SCOPE
+      minimum_semantic_dimensions:
+        - authority_domain
+        - repository_binding
+        - subject_type
+        - subject_identity
+      repository_binding:
+        required: true
+        exact_repository_identity_mechanism: NOT_FROZEN
+      subject_type:
+        required: true
+        closed_registered_vocabulary_required: true
+      subject_identity:
+        required: true
+        exact_identifier_shape: NOT_FROZEN
+      authority_domain:
+        required: true
+        closed_registered_vocabulary_required: true
+      current_solve_requires_binding_match: true
+      subject_mismatch_result: NOT_APPLICABLE
+      repository_mismatch_result: NOT_APPLICABLE
+
+    authority_role_resolution:
+      role_and_resolution_state_are_separate: true
+      states:
+        DECLARED:
+          meaning: ROLE_EXISTS_IN_CURRENT_MACHINE_AUTHORITY
+          automatic_project_authority_eligibility_input: ALLOWED
+        DETERMINISTICALLY_DERIVED:
+          meaning: ROLE_IS_RESOLVED_BY_REGISTERED_MACHINE_RULE_OR_EXPLICIT_MACHINE_AUTHORITY
+          opaque_prose_inference: FORBIDDEN
+          ai_confidence_as_derivation: FORBIDDEN
+          automatic_project_authority_eligibility_input: ALLOWED
+        ADVISORY_CANDIDATE:
+          meaning: ROLE_IS_PROPOSED_BY_AI_OR_NON_AUTHORITATIVE_HEURISTIC
+          automatic_project_authority_eligibility_input: FORBIDDEN
+          may_be_presented_for_owner_review: true
+        UNRESOLVED:
+          meaning: NO_SUPPORTED_MACHINE_RESOLUTION_ESTABLISHES_THE_ROLE
+          automatic_project_authority_eligibility_input: FORBIDDEN
+          owner_discussion_may_be_required: true
+      exact_serialized_state_field_name: NOT_FROZEN
+
+    ai_boundary:
+      may:
+        - DISCOVER_EXISTING_EXPLICIT_MACHINE_ROLE_DECLARATION
+        - DISCOVER_EXISTING_MACHINE_AUTHORITY_REFERENCES
+        - PRESENT_ROLE_CANDIDATE_FOR_OWNER_REVIEW
+        - SUMMARIZE_AVAILABLE_MACHINE_EVIDENCE_AND_GAPS
+      may_not:
+        - CREATE_MACHINE_AUTHORITY_FROM_CONFIDENCE
+        - PROMOTE_ADVISORY_ROLE_TO_DECLARED_ROLE
+        - USE_OPAQUE_PROSE_AS_AUTOMATIC_ROLE_AUTHORITY
+        - TREAT_HIGH_CONFIDENCE_AS_PROJECT_AUTHORITY
+      distinction:
+        explicit_authority_discovery: ALLOWED
+        missing_authority_semantic_invention: FORBIDDEN
+      invariant: AI_ADVISORY_NE_AUTHORITY
+
+    current_project_authority_eligibility:
+      persistence: DERIVED_NOT_STORED_AS_PERMANENT_PROMOTION
+      evaluation_timing: EVERY_FRESH_SOLVE
+      required_current_inputs:
+        - CURRENT_DECISIONS_INDEX_SELECTION
+        - CURRENT_MACHINE_ADR
+        - CURRENT_AUTHORITY_ROLE_REGISTRY
+        - CURRENT_AUTHORITY_SCHEMA_REGISTRY
+        - CURRENT_TOOL_AUTHORITY_CAPABILITIES
+        - CURRENT_REPOSITORY_BINDING
+        - CURRENT_SOLVE_SUBJECT
+      eligibility_checks_in_order:
+        - CURRENT_ADR_IS_SELECTED
+        - AUTHORITY_ROLE_IS_RESOLVED
+        - AUTHORITY_ROLE_IS_PROJECT_AUTHORITY_ELIGIBLE
+        - AUTHORITY_CONTRACT_IS_VALID
+        - AUTHORITY_CONTRACT_LIFECYCLE_IS_CURRENTLY_USABLE
+        - TOOL_SUPPORT_IS_SUFFICIENT
+        - REPOSITORY_BINDING_MATCHES
+        - SUBJECT_BINDING_MATCHES
+        - CURRENT_APPLICABILITY_IS_APPLICABLE
+      eligible_result: CURRENTLY_ELIGIBLE_FOR_PROJECT_AUTHORITY_PROJECTION
+      ineligible_result: CURRENTLY_INELIGIBLE_FOR_PROJECT_AUTHORITY_PROJECTION
+      project_authority_record_materialization:
+        allowed_only_when_currently_eligible: true
+        historical_ineligibility_blocks_future_eligibility: false
+        historical_eligibility_guarantees_future_eligibility: false
+      fresh_solve_invariant: PROJECT_AUTHORITY_ELIGIBILITY_MUST_BE_REEVALUATED_FROM_CURRENT_STATE
+
+    authority_contract_state_axes:
+      validity:
+        states:
+          - VALID
+          - MALFORMED
+          - UNREGISTERED
+        responsibility: STRUCTURAL_AND_REGISTRATION_CORRECTNESS
+      lifecycle:
+        states:
+          - ACTIVE
+          - DEPRECATED
+          - SUPERSEDED
+          - RETIRED
+          - DRAFT
+        responsibility: CURRENT_CONTRACT_GOVERNANCE_LIFECYCLE
+      tool_support:
+        states:
+          - SUPPORTED
+          - KNOWN_NOT_IMPLEMENTED
+          - INTENTIONALLY_UNSUPPORTED
+        responsibility: CURRENT_TOOL_EXECUTABLE_SEMANTIC_CAPABILITY
+      applicability:
+        states:
+          - APPLICABLE
+          - NOT_APPLICABLE
+        responsibility: CURRENT_SOLVE_RELEVANCE
+      invariants:
+        - CONTRACT_VALIDITY_NE_CONTRACT_LIFECYCLE
+        - CONTRACT_LIFECYCLE_NE_TOOL_SUPPORT
+        - TOOL_SUPPORT_NE_CURRENT_APPLICABILITY
+        - CURRENT_APPLICABILITY_NE_PROJECT_AUTHORITY_ROLE
+
+    failure_and_outcome_boundaries:
+      valid_active_supported_applicable:
+        authority_eligibility: MAY_CONTINUE_TO_BINDING_AND_ROLE_CHECKS
+      valid_active_known_not_implemented:
+        authority_eligibility: INELIGIBLE_FOR_CURRENT_AUTOMATIC_CONSUMPTION
+        resolution_outcome: TOOL_CAPABILITY_GAP
+      malformed:
+        authority_eligibility: INELIGIBLE
+        diagnostic_category: MALFORMED_AUTHORITY_RECORD
+        resolution_outcome: NOT_TOOL_CAPABILITY_GAP
+      superseded_or_retired_current_reference:
+        authority_eligibility: INELIGIBLE
+        diagnostic_category: AUTHORITY_RECONCILIATION_OR_GOVERNANCE_CONSISTENCY
+        resolution_outcome: NOT_TOOL_CAPABILITY_GAP
+      not_applicable:
+        authority_eligibility: INELIGIBLE_FOR_CURRENT_SOLVE
+        diagnostic_category: NONE_REQUIRED
+        resolution_outcome: NOT_TOOL_CAPABILITY_GAP
+      advisory_candidate_role:
+        authority_eligibility: INELIGIBLE
+        owner_review_candidate: true
+        resolution_outcome_mapping: NOT_FROZEN
+      unresolved_role:
+        authority_eligibility: INELIGIBLE
+        owner_discussion_may_be_required: true
+        resolution_outcome_mapping: NOT_FROZEN
+      unregistered_contract:
+        authority_eligibility: INELIGIBLE
+        diagnostic: UNREGISTERED_AUTHORITY_CONTRACT
+        resolution_outcome_mapping: NOT_FROZEN
+      intentionally_unsupported_tool_capability:
+        authority_eligibility: INELIGIBLE
+        resolution_outcome_mapping: NOT_FROZEN
+
+    tool_capability_gap_narrow_definition:
+      required_conditions:
+        - AUTHORITY_CONTRACT_VALIDITY_IS_VALID
+        - AUTHORITY_CONTRACT_LIFECYCLE_IS_ACTIVE
+        - CURRENT_CASE_IS_APPLICABLE
+        - REQUIRED_MACHINE_SEMANTICS_ARE_KNOWN
+        - CURRENT_TOOL_IMPLEMENTATION_IS_KNOWN_NOT_IMPLEMENTED
+      forbidden_as_catch_all_for:
+        - MALFORMED_CONTRACT
+        - SUPERSEDED_CONTRACT
+        - RETIRED_CONTRACT
+        - NOT_APPLICABLE_CASE
+        - UNRESOLVED_AUTHORITY_ROLE
+        - ADVISORY_ONLY_ROLE
+      principle: TOOL_CAPABILITY_GAP_MEANS_KNOWN_VALID_ACTIVE_REQUIRED_CAPABILITY_IS_NOT_IMPLEMENTED
+
+    project_authority_projection:
+      source: CURRENT_MACHINE_GOVERNANCE_RECORD
+      direct_adr_to_project_authority_record: FORBIDDEN
+      requires_current_eligibility_evaluation: true
+      requires_supported_registered_semantics: true
+      requires_subject_binding_match: true
+      requires_repository_binding_match: true
+      consumes_human_explanation: false
+      output: ProjectAuthorityRecord
+      output_is_current_solve_view: true
+
+    approved_invariants:
+      - MACHINE_READABLE_NE_PROJECT_AUTHORITY
+      - AUTHORITY_ROLE_NE_ROLE_RESOLUTION_STATE
+      - AUTHORITY_ROLE_NE_TOOL_SUPPORT
+      - AUTHORITY_ROLE_NE_CURRENT_APPLICABILITY
+      - CURRENT_ADR_SELECTION_NE_AUTHORITY_ROLE
+      - MACHINE_ROLE_CODE_NE_HUMAN_ROLE_EXPLANATION
+      - AI_ADVISORY_NE_AUTHORITY
+      - HIGH_CONFIDENCE_NE_AUTHORITY
+      - PROJECT_AUTHORITY_ELIGIBILITY_IS_DERIVED_CURRENT_STATE
+      - HISTORICAL_INELIGIBILITY_MUST_NOT_BLOCK_FUTURE_ELIGIBILITY
+      - HISTORICAL_ELIGIBILITY_MUST_NOT_BYPASS_FRESH_REVALIDATION
+      - CONTRACT_VALIDITY_NE_CONTRACT_LIFECYCLE
+      - CONTRACT_LIFECYCLE_NE_TOOL_SUPPORT
+      - TOOL_SUPPORT_NE_CURRENT_APPLICABILITY
+      - TOOL_CAPABILITY_GAP_IS_NOT_A_GENERIC_AUTHORITY_FAILURE_BUCKET
+
   execution_timing: IMMEDIATE_DURING_P03_REVIEW
+
 migration_scope:
   adr_ids:
-  - ADR-0001
-  - ADR-0002
-  - ADR-0003
-  - ADR-0004
-  - ADR-0005
-  - ADR-0006
-  - ADR-0007
-  - ADR-0008
-  - ADR-0009
-  - ADR-0010
-  - ADR-0011
-  - ADR-0012
-  - ADR-0013
-  - ADR-0014
-  - ADR-0015
-  - ADR-0016
-  - ADR-0017
-  - ADR-0018
-  - ADR-0019
-  - ADR-0020
-  - ADR-0021
-  - ADR-0022
-  - ADR-0023
+    - ADR-0001
+    - ADR-0002
+    - ADR-0003
+    - ADR-0004
+    - ADR-0005
+    - ADR-0006
+    - ADR-0007
+    - ADR-0008
+    - ADR-0009
+    - ADR-0010
+    - ADR-0011
+    - ADR-0012
+    - ADR-0013
+    - ADR-0014
+    - ADR-0015
+    - ADR-0016
+    - ADR-0017
+    - ADR-0018
+    - ADR-0019
+    - ADR-0020
+    - ADR-0021
+    - ADR-0022
+    - ADR-0023
   replace_markdown_records: true
   update_index_to_machine_records: true
   replace_adr_authoring_template: true
@@ -61,4 +316,23 @@ migration_scope:
   add_machine_validation_schemas: true
   strengthen_governance_verification: true
   preserve_original_prose_via_git_history: true
+
+implementation_constraints:
+  remediation_runtime_implementation: FORBIDDEN_UNTIL_EXPLICIT_WU_02_IMPLEMENTATION_AUTHORIZATION
+  exact_authority_role_vocabulary: NOT_FROZEN
+  exact_subject_binding_schema: NOT_FROZEN
+  exact_repository_identity_mechanism: NOT_FROZEN
+  exact_role_registry_physical_path: NOT_FROZEN
+  unresolved_role_resolution_outcome_mapping: NOT_FROZEN
+  advisory_role_resolution_outcome_mapping: NOT_FROZEN
+  unregistered_contract_outcome_mapping: NOT_FROZEN
+  intentionally_unsupported_outcome_mapping: NOT_FROZEN
+
+review_progress:
+  P03_MACHINE_READABLE_ADR_MIGRATION: APPROVED_AND_APPLIED
+  P03_ONE_ADR_ONE_AUTHORITY_SEMANTIC: APPROVED_AND_APPLIED
+  P03_ADR_PATH_REFERENCE_NORMALIZATION: APPROVED_AND_APPLIED
+  P03_B_EXPLICIT_AUTHORITY_ROLE_AND_FRESH_ELIGIBILITY: APPROVED
+  P03: IN_PROGRESS
+
 remaining_p03_review: IN_PROGRESS
