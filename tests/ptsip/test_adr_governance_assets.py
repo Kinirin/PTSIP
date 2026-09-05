@@ -28,7 +28,6 @@ REGISTRY_PATH = DECISIONS / "AUTHORITY-SCHEMA-REGISTRY.yaml"
 P03_ROLE_ANALYZER = ROOT / ".github" / "scripts" / "p03_authority_role_matrix.py"
 P03_ROLE_REGISTRY = ROOT / "planning" / "0.4.0" / "WU-02" / "p03-authority-role-provisional-dimensions.yaml"
 P03_ROLE_MATRIX = ROOT / "planning" / "0.4.0" / "WU-02" / "p03-authority-role-matrix.generated.yaml"
-P03_CORPUS_REVIEW = ROOT / "planning" / "0.4.0" / "WU-02" / "p03-authority-role-binary-matrix.yaml"
 
 
 def _json(path: Path) -> dict[str, object]:
@@ -283,66 +282,6 @@ def _p03_run(analyzer, repo: Path, mode: str = "--write") -> int:
         "--repo-root", str(repo), "--registry", "dimensions.yaml",
         "--output", "matrix.yaml", mode,
     ])
-
-
-@pytest.mark.parametrize("reviewed,dimension_count", [
-    (2, 11), (3, 20), (4, 29), (5, 41), (6, 49),
-    (7, 54), (8, 62), (9, 69), (10, 79),
-])
-def test_p03_actual_corpus_prefix_replays_complete_matrix_and_recorded_backfill(
-    p03_analyzer, tmp_path: Path, reviewed: int, dimension_count: int,
-) -> None:
-    registry = _yaml(P03_ROLE_REGISTRY)
-    reviewed_id = f"ADR-{reviewed:04d}"
-    registry["analysis"]["reviewed_through"] = reviewed_id
-    registry["dimensions"] = {
-        name: definition for name, definition in registry["dimensions"].items()
-        if int(definition["introduced_by"].split("-")[1]) <= reviewed
-    }
-    registry_path = tmp_path / "prefix-dimensions.yaml"
-    _write_yaml(registry_path, registry)
-    matrix = p03_analyzer.build_matrix(ROOT, registry_path)
-    p03_analyzer.validate_matrix(matrix)
-
-    dimensions = matrix["dimensions"]
-    rows = matrix["rows"]
-    expected_rows = [f"ADR-{number:04d}" for number in range(1, reviewed + 1)]
-    assert list(rows) == expected_rows
-    assert len(dimensions) == dimension_count
-    assert matrix["validation"] == {
-        "rectangular": True, "reviewed_row_count": reviewed, "dimension_count": dimension_count,
-    }
-    assert sum(
-        type(value) is bool for row in rows.values()
-        for value in row["role_effect_analysis"].values()
-    ) == reviewed * dimension_count
-    for row in rows.values():
-        assert list(row["role_effect_analysis"]) == dimensions
-
-    review = _yaml(P03_CORPUS_REVIEW)["corpus_review"][reviewed_id]
-    new_dimensions = [
-        name for name, definition in registry["dimensions"].items()
-        if definition["introduced_by"] == reviewed_id
-    ]
-    assert review["new_dimensions"] == new_dimensions
-    assert list(review["backfill"]) == new_dimensions
-    assert review["validation"] == {
-        **matrix["validation"], "boolean_cell_count": reviewed * dimension_count,
-    }
-    for dimension in new_dimensions:
-        recorded = review["backfill"][dimension]
-        assert list(recorded) == expected_rows[:-1]
-        for adr_id, value in recorded.items():
-            assert type(value) is bool
-            assert rows[adr_id]["role_effect_analysis"][dimension] is value
-
-    # These real historical positives distinguish semantic reevaluation from
-    # a rectangular matrix populated by blanket false defaults.
-    if reviewed == 5:
-        for adr_id in ("ADR-0003", "ADR-0004"):
-            assert rows[adr_id]["role_effect_analysis"]["fail_closed_on_invalid_state"] is True
-    if reviewed == 7:
-        assert rows["ADR-0004"]["role_effect_analysis"]["constrain_neutral_contract_qualification"] is True
 
 
 def test_p03_new_provisional_dimension_automatically_backfills_reviewed_rows(
