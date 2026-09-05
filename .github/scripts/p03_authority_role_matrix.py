@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
 from typing import Any
 
 import yaml
+from jsonschema import Draft202012Validator, SchemaError, ValidationError
 
 
 REGISTRY_SCHEMA_VERSION = "ptsip-p03-authority-role-provisional-dimensions/v1"
@@ -45,6 +47,59 @@ def _load_yaml(path: Path, *, label: str) -> dict[str, Any]:
     return payload
 
 
+def _load_schema(path: Path) -> dict[str, Any]:
+    try:
+        schema = json.loads(path.read_text(encoding="utf-8-sig"))
+        Draft202012Validator.check_schema(schema)
+    except (json.JSONDecodeError, SchemaError) as exc:
+        raise AnalysisError(f"invalid machine schema {path}: {exc}") from exc
+    return schema
+
+
+def _validate_instance(payload: object, schema: dict[str, Any], *, label: str) -> None:
+    try:
+        Draft202012Validator(schema).validate(payload)
+    except ValidationError as exc:
+        location = ".".join(str(part) for part in exc.absolute_path) or "<root>"
+        raise AnalysisError(f"{label} invalid at {location}: {exc.message}") from exc
+
+
+def _load_authority_contracts(
+    repo_root: Path,
+) -> tuple[dict[tuple[str, str, int], dict[str, Any]], dict[str, list[object]]]:
+    registry = _load_yaml(
+        repo_root / "decisions/AUTHORITY-SCHEMA-REGISTRY.yaml", label="authority schema registry"
+    )
+    _validate_instance(
+        registry,
+        _load_schema(repo_root / "schemas/ptsip-governance-authority-registry.schema.json"),
+        label="authority schema registry",
+    )
+    schemas = _load_schema(repo_root / registry["semantic_schema_document"])
+    contracts: dict[tuple[str, str, int], dict[str, Any]] = {}
+    known_paths: dict[str, list[object]] = {}
+
+    def collect_paths(value: dict[str, Any], prefix: str) -> None:
+        for key, item in value.items():
+            path = f"{prefix}.{key}"
+            known_paths.setdefault(path, []).append(item)
+            if isinstance(item, dict):
+                collect_paths(item, path)
+
+    for entry in registry["entries"]:
+        identity = (entry["authority_type"], entry["schema_id"], entry["schema_version"])
+        if identity in contracts:
+            raise AnalysisError(f"duplicate authority contract identity: {identity}")
+        schema = schemas.get("$defs", {}).get(entry["schema_definition"])
+        if not isinstance(schema, dict) or not isinstance(schema.get("const"), dict):
+            raise AnalysisError(
+                f"authority contract {identity} requires an exact registered semantic object"
+            )
+        contracts[identity] = schema
+        collect_paths(schema["const"], "authority_semantics")
+    return contracts, known_paths
+
+
 def _adr_number(value: object, *, label: str) -> int:
     if not isinstance(value, str):
         raise AnalysisError(f"{label} must be an ADR id")
@@ -55,8 +110,8 @@ def _adr_number(value: object, *, label: str) -> int:
 
 
 def _resolve_path(record: dict[str, Any], path: object) -> object:
-    if not isinstance(path, str) or not path or path.startswith(".") or path.endswith("."):
-        raise AnalysisError(f"predicate path must be a canonical dotted string: {path!r}")
+    if not isinstance(path, str) or not path.startswith("authority_semantics.") or path.endswith("."):
+        raise AnalysisError(f"predicate path must be under authority_semantics: {path!r}")
     current: object = record
     for part in path.split("."):
         if not part:
@@ -65,6 +120,21 @@ def _resolve_path(record: dict[str, Any], path: object) -> object:
             return _MISSING
         current = current[part]
     return current
+
+
+def _strict_equal(actual: object, expected: object) -> bool:
+    # Python considers True == 1; machine semantics and binary analysis must not.
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(actual, dict):
+        return actual.keys() == expected.keys() and all(
+            _strict_equal(item, expected[key]) for key, item in actual.items()
+        )
+    if isinstance(actual, list):
+        return len(actual) == len(expected) and all(
+            _strict_equal(left, right) for left, right in zip(actual, expected)
+        )
+    return actual == expected
 
 
 def _is_non_empty(value: object) -> bool:
@@ -77,7 +147,9 @@ def _is_non_empty(value: object) -> bool:
     return True
 
 
-def _evaluate_condition(condition: dict[str, Any], record: dict[str, Any]) -> bool:
+def _evaluate_condition(
+    condition: dict[str, Any], record: dict[str, Any], known_paths: dict[str, list[object]]
+) -> bool:
     unknown = set(condition) - _CONDITION_KEYS
     if unknown:
         raise AnalysisError(f"predicate contains unsupported fields: {sorted(unknown)}")
@@ -85,10 +157,13 @@ def _evaluate_condition(condition: dict[str, Any], record: dict[str, Any]) -> bo
         raise AnalysisError("predicate requires path and operator")
 
     operator = condition["operator"]
-    if operator not in _ALLOWED_OPERATORS:
+    if not isinstance(operator, str) or operator not in _ALLOWED_OPERATORS:
         raise AnalysisError(f"unsupported predicate operator: {operator!r}")
 
     actual = _resolve_path(record, condition["path"])
+    if condition["path"] not in known_paths:
+        raise AnalysisError(f"predicate path is not registered: {condition['path']!r}")
+    samples = known_paths[condition["path"]]
 
     if operator == "PRESENT":
         if "value" in condition:
@@ -102,26 +177,53 @@ def _evaluate_condition(condition: dict[str, Any], record: dict[str, Any]) -> bo
     if "value" not in condition:
         raise AnalysisError(f"{operator} requires value")
     expected = condition["value"]
+    if operator == "CONTAINS_ALL" and (not isinstance(expected, list) or not expected):
+        raise AnalysisError("CONTAINS_ALL value must be a non-empty list")
+    if operator in {"EQUALS", "NOT_EQUALS"}:
+        if not any(type(expected) is type(sample) for sample in samples):
+            raise AnalysisError(f"{operator} value type does not match registered path")
+    elif operator == "CONTAINS":
+        if not any(
+            isinstance(sample, str) and isinstance(expected, str)
+            or isinstance(sample, list) and any(type(expected) is type(item) for item in sample)
+            for sample in samples
+        ):
+            raise AnalysisError("CONTAINS value or registered path has incompatible type")
+    elif operator == "CONTAINS_ALL":
+        if not any(isinstance(sample, list) for sample in samples) or not all(
+            any(
+                isinstance(sample, list) and any(type(item) is type(member) for member in sample)
+                for sample in samples
+            )
+            for item in expected
+        ):
+            raise AnalysisError("CONTAINS_ALL value or registered path has incompatible type")
 
     if operator == "EQUALS":
-        return actual is not _MISSING and actual == expected
+        return actual is not _MISSING and _strict_equal(actual, expected)
     if operator == "NOT_EQUALS":
-        return actual is not _MISSING and actual != expected
+        return actual is not _MISSING and not _strict_equal(actual, expected)
     if operator == "CONTAINS":
-        if actual is _MISSING or not isinstance(actual, (list, tuple, set, str)):
+        if actual is _MISSING:
             return False
-        return expected in actual
+        if isinstance(actual, str) and isinstance(expected, str):
+            return expected in actual
+        if isinstance(actual, list):
+            return any(_strict_equal(item, expected) for item in actual)
+        raise AnalysisError("CONTAINS encountered an incompatible semantic value")
     if operator == "CONTAINS_ALL":
-        if actual is _MISSING or not isinstance(actual, (list, tuple, set)):
+        if actual is _MISSING:
             return False
-        if not isinstance(expected, list):
-            raise AnalysisError("CONTAINS_ALL value must be a list")
-        return all(item in actual for item in expected)
+        if not isinstance(actual, list):
+            raise AnalysisError("CONTAINS_ALL encountered an incompatible semantic value")
+        return all(any(_strict_equal(item, member) for member in actual) for item in expected)
 
     raise AssertionError(operator)
 
 
-def _evaluate_expression(expression: object, record: dict[str, Any]) -> bool:
+def _evaluate_expression(
+    expression: object, record: dict[str, Any], known_paths: dict[str, list[object]]
+) -> bool:
     if not isinstance(expression, dict) or not expression:
         raise AnalysisError("dimension expression must be a non-empty mapping")
 
@@ -135,14 +237,14 @@ def _evaluate_expression(expression: object, record: dict[str, Any]) -> bool:
         if branch in {"all", "any"}:
             if not isinstance(value, list) or not value:
                 raise AnalysisError(f"{branch} expression must be a non-empty list")
-            results = [_evaluate_expression(item, record) for item in value]
+            results = [_evaluate_expression(item, record, known_paths) for item in value]
             return all(results) if branch == "all" else any(results)
-        return not _evaluate_expression(value, record)
+        return not _evaluate_expression(value, record, known_paths)
 
-    return _evaluate_condition(expression, record)
+    return _evaluate_condition(expression, record, known_paths)
 
 
-def _load_registry(path: Path) -> dict[str, Any]:
+def _load_registry(path: Path, known_paths: dict[str, list[object]]) -> dict[str, Any]:
     registry = _load_yaml(path, label="P03 provisional dimension registry")
     if registry.get("schema_version") != REGISTRY_SCHEMA_VERSION:
         raise AnalysisError(
@@ -189,8 +291,10 @@ def _load_registry(path: Path) -> dict[str, Any]:
             )
         if definition["status"] != "PROVISIONAL":
             raise AnalysisError(f"dimension {dimension_id} status must be PROVISIONAL")
-        _adr_number(definition["introduced_by"], label=f"{dimension_id}.introduced_by")
-        _evaluate_expression(definition["expression"], {})
+        introduced = _adr_number(definition["introduced_by"], label=f"{dimension_id}.introduced_by")
+        if not first <= introduced <= reviewed:
+            raise AnalysisError(f"{dimension_id}.introduced_by must be in the reviewed prefix")
+        _evaluate_expression(definition["expression"], {}, known_paths)
 
     return registry
 
@@ -222,11 +326,14 @@ def _reviewed_ids(analysis: dict[str, Any]) -> list[str]:
 
 
 def build_matrix(repo_root: Path, registry_path: Path) -> dict[str, Any]:
-    registry = _load_registry(registry_path)
+    contracts, known_paths = _load_authority_contracts(repo_root)
+    registry = _load_registry(registry_path, known_paths)
     analysis = registry["analysis"]
     index_path = repo_root / str(analysis["index_path"])
     index = _load_yaml(index_path, label="ADR INDEX")
+    _validate_instance(index, _load_schema(repo_root / "schemas/ptsip-adr-index.schema.json"), label="ADR INDEX")
     routes = _index_routes(index)
+    adr_schema = _load_schema(repo_root / "schemas/ptsip-adr.schema.json")
 
     dimensions: dict[str, dict[str, Any]] = registry["dimensions"]
     dimension_ids = list(dimensions)
@@ -238,14 +345,20 @@ def build_matrix(repo_root: Path, registry_path: Path) -> dict[str, Any]:
             raise AnalysisError(f"INDEX has no current route for reviewed ADR {adr_id}")
         record_path = repo_root / route_path
         record = _load_yaml(record_path, label=adr_id)
+        _validate_instance(record, adr_schema, label=adr_id)
         decision = record.get("decision")
         if not isinstance(decision, dict) or decision.get("id") != adr_id:
             raise AnalysisError(f"{route_path} does not contain decision.id {adr_id}")
+        contract = record["authority_contract"]
+        identity = (contract["authority_type"], contract["schema_id"], contract["schema_version"])
+        if identity not in contracts:
+            raise AnalysisError(f"{adr_id} has an unregistered authority contract: {identity}")
+        _validate_instance(record["authority_semantics"], contracts[identity], label=f"{adr_id} authority_semantics")
 
+        # Absence means false only after exact semantic validation proves that this
+        # ADR does not declare that registered effect. Invalid/unknown input aborts.
         effects = {
-            dimension_id: bool(
-                _evaluate_expression(definition["expression"], record)
-            )
+            dimension_id: _evaluate_expression(definition["expression"], record, known_paths)
             for dimension_id, definition in dimensions.items()
         }
         rows[adr_id] = {
@@ -260,6 +373,7 @@ def build_matrix(repo_root: Path, registry_path: Path) -> dict[str, Any]:
             if registry_path.is_relative_to(repo_root)
             else str(registry_path),
             "index_path": str(analysis["index_path"]),
+            "first_adr": analysis["first_adr"],
             "reviewed_through": analysis["reviewed_through"],
             "vocabulary_registration": False,
             "runtime_authority": "NONE",
@@ -284,12 +398,28 @@ def validate_matrix(payload: dict[str, Any]) -> None:
     rows = payload.get("rows")
     if not isinstance(dimensions, list) or not dimensions:
         raise AnalysisError("matrix dimensions must be a non-empty list")
-    if len(set(dimensions)) != len(dimensions):
-        raise AnalysisError("matrix dimensions must be unique")
     if not all(isinstance(item, str) and _DIMENSION_ID.fullmatch(item) for item in dimensions):
         raise AnalysisError("matrix dimensions contain an invalid id")
+    if len(set(dimensions)) != len(dimensions):
+        raise AnalysisError("matrix dimensions must be unique")
     if not isinstance(rows, dict) or not rows:
         raise AnalysisError("matrix rows must be a non-empty mapping")
+
+    source = payload.get("source")
+    if not isinstance(source, dict):
+        raise AnalysisError("matrix source must be a mapping")
+    if source.get("vocabulary_registration") is not False or source.get("runtime_authority") != "NONE":
+        raise AnalysisError("matrix source must remain provisional and non-authoritative")
+    first = _adr_number(source.get("first_adr"), label="matrix source.first_adr")
+    reviewed = _adr_number(source.get("reviewed_through"), label="matrix source.reviewed_through")
+    if first > reviewed:
+        raise AnalysisError("matrix reviewed range is invalid")
+    expected_rows = set(_reviewed_ids(source))
+    if set(rows) != expected_rows:
+        raise AnalysisError(
+            f"matrix reviewed rows are incomplete; missing={sorted(expected_rows - set(rows))} "
+            f"extra={sorted(set(rows) - expected_rows)}"
+        )
 
     expected = set(dimensions)
     for adr_id, row in rows.items():

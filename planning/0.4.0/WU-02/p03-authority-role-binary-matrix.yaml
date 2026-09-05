@@ -172,6 +172,749 @@ approved_decision:
 review_progress:
   ADR-0001: APPROVED_PROVISIONAL_BINARY_ANALYSIS
   P03_ANALYSIS_AUTOMATION: IMPLEMENTED
-  P03_ANALYSIS_AUTOMATION_VERIFICATION: TESTS_ADDED_EXECUTION_NOT_CONFIRMED_IN_CURRENT_TOOL_ENVIRONMENT
-  ADR-0002: AUTHORIZED_FOR_DECOMPOSITION_NOT_YET_RECORDED
+  P03_ANALYSIS_AUTOMATION_VERIFICATION: FOCUSED_PYTEST_PASSED
+  ADR-0002: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0003: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0004: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0005: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0006: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0007: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0008: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0009: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
+  ADR-0010: REVIEWED_PROVISIONAL_MACHINE_PREDICATES
   P03: IN_PROGRESS
+analysis_execution:
+  analysis_scope: ADR-0002_THROUGH_ADR-0010
+  reviewed_range: ADR-0001_THROUGH_ADR-0010
+  next_adr_reviewed: false
+  provisional_dimension_count: 79
+  boolean_cell_count: 790
+  completeness: COMPLETE_FOR_REVIEWED_ROWS_AND_CURRENT_PREDICATES
+  false_basis: REGISTERED_PREDICATE_NON_MATCH_AFTER_EXACT_SOURCE_SEMANTICS_VALIDATION
+  unknown_or_invalid_input: ABORT_WITHOUT_WRITING_MATRIX
+  authority_effect_coverage: PROVISIONAL_NOT_FINAL_ROLE_SCHEMA
+  non_effect_semantic_parameters:
+    ADR-0006:
+      source_subsystem: SUBJECT_LOCATOR_NOT_AN_AUTHORITY_EFFECT
+  stable_vocabulary_registration: false
+  runtime_authority: NONE
+analysis_verification:
+  python: 3.14.3
+  pytest: 8.4.2
+  runs:
+  - scope: tests/ptsip/test_adr_governance_assets.py -k 'p03 and not current_rectangular'
+    passed: 37
+    deselected: 12
+    exit_code: 0
+    phase: ISOLATED_ENGINE_BEFORE_PREFIX_REPLAY_TESTS
+  - scope:
+    - tests/ptsip/test_adr_governance_assets.py
+    - tests/ptsip/repository/test_self_profile.py
+    passed: 65
+    exit_code: 0
+  - scope:
+    - tests/ptsip/repository/test_self_profile.py
+    passed: 7
+    exit_code: 0
+    phase: AFTER_ANALYSIS_INPUT_DECLARATION_UPDATE
+  sequential_prefix_replay_cases: 9
+  final_matrix_check: PASS
+  backfill_cells: 371
+  backfill_true_cells: 3
+  backfill_false_cells: 368
+  unresolved_predicate_cells: []
+
+corpus_review:
+  ADR-0002:
+    new_dimensions:
+    - constrain_tool_state_location
+    - reserve_project_structure_authority
+    - forbid_tool_imposed_topology
+    - require_read_only_inspection
+    - require_explicit_specification_binding
+    - separate_specification_tool_lifecycles
+    reused_dimensions: []
+    backfill:
+      constrain_tool_state_location:
+        ADR-0001: false
+      reserve_project_structure_authority:
+        ADR-0001: false
+      forbid_tool_imposed_topology:
+        ADR-0001: false
+      require_read_only_inspection:
+        ADR-0001: false
+      require_explicit_specification_binding:
+        ADR-0001: false
+      separate_specification_tool_lifecycles:
+        ADR-0001: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 2
+      dimension_count: 11
+      boolean_cell_count: 22
+    refined_dimensions: []
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0003:
+    new_dimensions:
+    - bind_immutable_normative_snapshot
+    - select_versioned_contract_target
+    - define_classification_vocabulary
+    - preserve_unresolved_analysis_states
+    - reserve_project_declaration_authority
+    - require_typed_evidence_relationships
+    - constrain_machine_output_structure
+    - deny_derived_architecture_authority
+    - invalidate_stale_evidence
+    reused_dimensions:
+    - require_versioned_normative_contract
+    - require_explicit_specification_binding
+    - separate_specification_tool_lifecycles
+    backfill:
+      bind_immutable_normative_snapshot:
+        ADR-0001: false
+        ADR-0002: false
+      select_versioned_contract_target:
+        ADR-0001: false
+        ADR-0002: false
+      define_classification_vocabulary:
+        ADR-0001: false
+        ADR-0002: false
+      preserve_unresolved_analysis_states:
+        ADR-0001: false
+        ADR-0002: false
+      reserve_project_declaration_authority:
+        ADR-0001: false
+        ADR-0002: false
+      require_typed_evidence_relationships:
+        ADR-0001: false
+        ADR-0002: false
+      constrain_machine_output_structure:
+        ADR-0001: false
+        ADR-0002: false
+      deny_derived_architecture_authority:
+        ADR-0001: false
+        ADR-0002: false
+      invalidate_stale_evidence:
+        ADR-0001: false
+        ADR-0002: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 3
+      dimension_count: 20
+      boolean_cell_count: 60
+    refined_dimensions:
+    - separate_specification_tool_lifecycles
+    - require_versioned_normative_contract
+    - require_explicit_specification_binding
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0004:
+    new_dimensions:
+    - require_evidence_provenance
+    - define_conformance_decision_rule
+    - separate_artifact_ownership_from_production
+    - forbid_conformance_waivers
+    - separate_validation_from_conformance
+    - require_exclusive_declaration_modes
+    - permit_stricter_project_policy
+    - require_stable_rule_identity
+    - reject_architecture_proxy_inference
+    reused_dimensions:
+    - require_architectural_boundary
+    - define_classification_vocabulary
+    - preserve_unresolved_analysis_states
+    - require_typed_evidence_relationships
+    - constrain_machine_output_structure
+    backfill:
+      require_evidence_provenance:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      define_conformance_decision_rule:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      separate_artifact_ownership_from_production:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      forbid_conformance_waivers:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      separate_validation_from_conformance:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      require_exclusive_declaration_modes:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      permit_stricter_project_policy:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      require_stable_rule_identity:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+      reject_architecture_proxy_inference:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 4
+      dimension_count: 29
+      boolean_cell_count: 116
+    refined_dimensions:
+    - require_architectural_boundary
+    - require_typed_evidence_relationships
+    - constrain_machine_output_structure
+    - preserve_unresolved_analysis_states
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0005:
+    new_dimensions:
+    - activate_normative_family
+    - separate_decision_authority_from_profile
+    - require_stable_decision_identity
+    - select_resolution_winner
+    - require_conditional_mutation
+    - require_fresh_authority_reads
+    - forbid_fabricated_history
+    - forbid_silent_conflict_overwrite
+    - fail_closed_on_invalid_state
+    - separate_global_authority_from_local_projection
+    - synchronize_at_action_time
+    - separate_authority_from_conformance
+    reused_dimensions:
+    - require_versioned_normative_contract
+    backfill:
+      activate_normative_family:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      separate_decision_authority_from_profile:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      require_stable_decision_identity:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      select_resolution_winner:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      require_conditional_mutation:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      require_fresh_authority_reads:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      forbid_fabricated_history:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      forbid_silent_conflict_overwrite:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      fail_closed_on_invalid_state:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: true
+        ADR-0004: true
+      separate_global_authority_from_local_projection:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      synchronize_at_action_time:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+      separate_authority_from_conformance:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 5
+      dimension_count: 41
+      boolean_cell_count: 205
+    refined_dimensions:
+    - require_versioned_normative_contract
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0006:
+    new_dimensions:
+    - retire_previous_identity
+    - define_purpose_vocabulary
+    - separate_classification_from_verification_purpose
+    - define_execution_unit_contract
+    - constrain_cross_purpose_reuse
+    - constrain_dependency_direction
+    - permit_contract_consumption
+    - separate_verification_success_from_conformance
+    reused_dimensions:
+    - establish_canonical_identity
+    - require_architectural_boundary
+    backfill:
+      retire_previous_identity:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      define_purpose_vocabulary:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      separate_classification_from_verification_purpose:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      define_execution_unit_contract:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      constrain_cross_purpose_reuse:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      constrain_dependency_direction:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      permit_contract_consumption:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+      separate_verification_success_from_conformance:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 6
+      dimension_count: 49
+      boolean_cell_count: 294
+    refined_dimensions:
+    - establish_canonical_identity
+    - require_architectural_boundary
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0007:
+    new_dimensions:
+    - define_ordered_decision_process
+    - require_owner_confirmation
+    - define_lifecycle_handoff
+    - constrain_neutral_contract_qualification
+    - require_governable_responsibility_split
+    reused_dimensions:
+    - define_classification_basis
+    - require_architectural_boundary
+    - define_classification_vocabulary
+    - reserve_project_declaration_authority
+    - deny_derived_architecture_authority
+    - reject_architecture_proxy_inference
+    - fail_closed_on_invalid_state
+    backfill:
+      define_ordered_decision_process:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+      require_owner_confirmation:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+      define_lifecycle_handoff:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+      constrain_neutral_contract_qualification:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: true
+        ADR-0005: false
+        ADR-0006: false
+      require_governable_responsibility_split:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 7
+      dimension_count: 54
+      boolean_cell_count: 378
+    refined_dimensions:
+    - define_classification_basis
+    - define_classification_vocabulary
+    - require_architectural_boundary
+    - reserve_project_declaration_authority
+    - deny_derived_architecture_authority
+    - reject_architecture_proxy_inference
+    - fail_closed_on_invalid_state
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0008:
+    new_dimensions:
+    - define_responsibility_role_contract
+    - define_typed_relationship_contract
+    - forbid_relationship_inference
+    - separate_declared_relationships_from_evidence
+    - deny_relationship_permission_grant
+    - constrain_associated_artifact_ownership
+    - require_shared_identity_namespace
+    - forbid_fabricated_reference_targets
+    reused_dimensions:
+    - define_classification_basis
+    - deny_derived_architecture_authority
+    - reject_architecture_proxy_inference
+    - separate_classification_from_verification_purpose
+    backfill:
+      define_responsibility_role_contract:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      define_typed_relationship_contract:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      forbid_relationship_inference:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      separate_declared_relationships_from_evidence:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      deny_relationship_permission_grant:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      constrain_associated_artifact_ownership:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      require_shared_identity_namespace:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+      forbid_fabricated_reference_targets:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 8
+      dimension_count: 62
+      boolean_cell_count: 496
+    refined_dimensions:
+    - define_classification_basis
+    - reject_architecture_proxy_inference
+    - deny_derived_architecture_authority
+    - separate_classification_from_verification_purpose
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0009:
+    new_dimensions:
+    - define_source_declaration_modes
+    - require_explicit_template_selection
+    - define_declaration_precedence
+    - constrain_override_granularity
+    - forbid_derived_architecture_mutation
+    - define_effective_map_contract
+    - require_deterministic_semantic_digest
+    reused_dimensions:
+    - reserve_project_declaration_authority
+    - deny_derived_architecture_authority
+    - reject_architecture_proxy_inference
+    - forbid_silent_conflict_overwrite
+    - fail_closed_on_invalid_state
+    backfill:
+      define_source_declaration_modes:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+      require_explicit_template_selection:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+      define_declaration_precedence:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+      constrain_override_granularity:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+      forbid_derived_architecture_mutation:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+      define_effective_map_contract:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+      require_deterministic_semantic_digest:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 9
+      dimension_count: 69
+      boolean_cell_count: 621
+    refined_dimensions:
+    - reserve_project_declaration_authority
+    - reject_architecture_proxy_inference
+    - deny_derived_architecture_authority
+    - forbid_silent_conflict_overwrite
+    - fail_closed_on_invalid_state
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []
+  ADR-0010:
+    new_dimensions:
+    - constrain_profile_identity_and_cardinality
+    - define_migration_obligation_categories
+    - define_required_work_completion
+    - gate_canonical_replacement_on_completion
+    - select_final_transition_target
+    - order_transition_sources
+    - forbid_deleted_migration_hops
+    - forbid_source_category_inheritance
+    - require_cumulative_target_state
+    - require_version_revision_transition_inputs
+    reused_dimensions:
+    - fail_closed_on_invalid_state
+    - define_ordered_decision_process
+    backfill:
+      constrain_profile_identity_and_cardinality:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      define_migration_obligation_categories:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      define_required_work_completion:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      gate_canonical_replacement_on_completion:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      select_final_transition_target:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      order_transition_sources:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      forbid_deleted_migration_hops:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      forbid_source_category_inheritance:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      require_cumulative_target_state:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+      require_version_revision_transition_inputs:
+        ADR-0001: false
+        ADR-0002: false
+        ADR-0003: false
+        ADR-0004: false
+        ADR-0005: false
+        ADR-0006: false
+        ADR-0007: false
+        ADR-0008: false
+        ADR-0009: false
+    validation:
+      rectangular: true
+      reviewed_row_count: 10
+      dimension_count: 79
+      boolean_cell_count: 790
+    refined_dimensions:
+    - fail_closed_on_invalid_state
+    - define_ordered_decision_process
+    current_predicate_evaluation: COMPLETE
+    machine_role_vocabulary_coverage: NOT_FINALIZED
+    unresolved_predicate_cells: []

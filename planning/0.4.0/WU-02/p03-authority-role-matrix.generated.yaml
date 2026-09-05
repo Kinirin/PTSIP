@@ -2,15 +2,90 @@ schema_version: ptsip-p03-authority-role-matrix/v1
 source:
   dimension_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
   index_path: decisions/INDEX.yaml
-  reviewed_through: ADR-0001
+  first_adr: ADR-0001
+  reviewed_through: ADR-0010
   vocabulary_registration: false
   runtime_authority: NONE
 dimensions:
-  - establish_canonical_identity
-  - establish_decision_criterion_priority
-  - define_classification_basis
-  - require_architectural_boundary
-  - require_versioned_normative_contract
+- establish_canonical_identity
+- establish_decision_criterion_priority
+- define_classification_basis
+- require_architectural_boundary
+- require_versioned_normative_contract
+- constrain_tool_state_location
+- reserve_project_structure_authority
+- forbid_tool_imposed_topology
+- require_read_only_inspection
+- require_explicit_specification_binding
+- separate_specification_tool_lifecycles
+- bind_immutable_normative_snapshot
+- select_versioned_contract_target
+- define_classification_vocabulary
+- preserve_unresolved_analysis_states
+- reserve_project_declaration_authority
+- require_typed_evidence_relationships
+- constrain_machine_output_structure
+- deny_derived_architecture_authority
+- invalidate_stale_evidence
+- require_evidence_provenance
+- define_conformance_decision_rule
+- separate_artifact_ownership_from_production
+- forbid_conformance_waivers
+- separate_validation_from_conformance
+- require_exclusive_declaration_modes
+- permit_stricter_project_policy
+- require_stable_rule_identity
+- reject_architecture_proxy_inference
+- activate_normative_family
+- separate_decision_authority_from_profile
+- require_stable_decision_identity
+- select_resolution_winner
+- require_conditional_mutation
+- require_fresh_authority_reads
+- forbid_fabricated_history
+- forbid_silent_conflict_overwrite
+- fail_closed_on_invalid_state
+- separate_global_authority_from_local_projection
+- synchronize_at_action_time
+- separate_authority_from_conformance
+- retire_previous_identity
+- define_purpose_vocabulary
+- separate_classification_from_verification_purpose
+- define_execution_unit_contract
+- constrain_cross_purpose_reuse
+- constrain_dependency_direction
+- permit_contract_consumption
+- separate_verification_success_from_conformance
+- define_ordered_decision_process
+- require_owner_confirmation
+- define_lifecycle_handoff
+- constrain_neutral_contract_qualification
+- require_governable_responsibility_split
+- define_responsibility_role_contract
+- define_typed_relationship_contract
+- forbid_relationship_inference
+- separate_declared_relationships_from_evidence
+- deny_relationship_permission_grant
+- constrain_associated_artifact_ownership
+- require_shared_identity_namespace
+- forbid_fabricated_reference_targets
+- define_source_declaration_modes
+- require_explicit_template_selection
+- define_declaration_precedence
+- constrain_override_granularity
+- forbid_derived_architecture_mutation
+- define_effective_map_contract
+- require_deterministic_semantic_digest
+- constrain_profile_identity_and_cardinality
+- define_migration_obligation_categories
+- define_required_work_completion
+- gate_canonical_replacement_on_completion
+- select_final_transition_target
+- order_transition_sources
+- forbid_deleted_migration_hops
+- forbid_source_category_inheritance
+- require_cumulative_target_state
+- require_version_revision_transition_inputs
 rows:
   ADR-0001:
     source_path: decisions/ADR-0001-establish-ptsip.yaml
@@ -20,7 +95,819 @@ rows:
       define_classification_basis: true
       require_architectural_boundary: true
       require_versioned_normative_contract: true
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: false
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0002:
+    source_path: decisions/ADR-0002-external-tooling-non-intrusion.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: true
+      reserve_project_structure_authority: true
+      forbid_tool_imposed_topology: true
+      require_read_only_inspection: true
+      require_explicit_specification_binding: true
+      separate_specification_tool_lifecycles: true
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: false
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0003:
+    source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: true
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: true
+      separate_specification_tool_lifecycles: true
+      bind_immutable_normative_snapshot: true
+      select_versioned_contract_target: true
+      define_classification_vocabulary: true
+      preserve_unresolved_analysis_states: true
+      reserve_project_declaration_authority: true
+      require_typed_evidence_relationships: true
+      constrain_machine_output_structure: true
+      deny_derived_architecture_authority: true
+      invalidate_stale_evidence: true
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: true
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0004:
+    source_path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: true
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: true
+      preserve_unresolved_analysis_states: true
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: true
+      constrain_machine_output_structure: true
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: true
+      define_conformance_decision_rule: true
+      separate_artifact_ownership_from_production: true
+      forbid_conformance_waivers: true
+      separate_validation_from_conformance: true
+      require_exclusive_declaration_modes: true
+      permit_stricter_project_policy: true
+      require_stable_rule_identity: true
+      reject_architecture_proxy_inference: true
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: true
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: true
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0005:
+    source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: true
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: true
+      separate_decision_authority_from_profile: true
+      require_stable_decision_identity: true
+      select_resolution_winner: true
+      require_conditional_mutation: true
+      require_fresh_authority_reads: true
+      forbid_fabricated_history: true
+      forbid_silent_conflict_overwrite: true
+      fail_closed_on_invalid_state: true
+      separate_global_authority_from_local_projection: true
+      synchronize_at_action_time: true
+      separate_authority_from_conformance: true
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0006:
+    source_path: decisions/ADR-0006-establish-vpms-verification-purpose-management.yaml
+    role_effect_analysis:
+      establish_canonical_identity: true
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: true
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: false
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: true
+      define_purpose_vocabulary: true
+      separate_classification_from_verification_purpose: true
+      define_execution_unit_contract: true
+      constrain_cross_purpose_reuse: true
+      constrain_dependency_direction: true
+      permit_contract_consumption: true
+      separate_verification_success_from_conformance: true
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0007:
+    source_path: decisions/ADR-0007-primary-lifecycle-boundary-determination.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: true
+      require_architectural_boundary: true
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: true
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: true
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: true
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: true
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: true
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: true
+      require_owner_confirmation: true
+      define_lifecycle_handoff: true
+      constrain_neutral_contract_qualification: true
+      require_governable_responsibility_split: true
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0008:
+    source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: true
+      require_architectural_boundary: false
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: true
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: true
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: false
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: true
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: true
+      define_typed_relationship_contract: true
+      forbid_relationship_inference: true
+      separate_declared_relationships_from_evidence: true
+      deny_relationship_permission_grant: true
+      constrain_associated_artifact_ownership: true
+      require_shared_identity_namespace: true
+      forbid_fabricated_reference_targets: true
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0009:
+    source_path: decisions/ADR-0009-responsibility-map-declaration-authority.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: true
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: true
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: true
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: true
+      fail_closed_on_invalid_state: true
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: true
+      require_explicit_template_selection: true
+      define_declaration_precedence: true
+      constrain_override_granularity: true
+      forbid_derived_architecture_mutation: true
+      define_effective_map_contract: true
+      require_deterministic_semantic_digest: true
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+  ADR-0010:
+    source_path: decisions/ADR-0010-versioned-draft-profile-transition.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: true
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: true
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: true
+      define_migration_obligation_categories: true
+      define_required_work_completion: true
+      gate_canonical_replacement_on_completion: true
+      select_final_transition_target: true
+      order_transition_sources: true
+      forbid_deleted_migration_hops: true
+      forbid_source_category_inheritance: true
+      require_cumulative_target_state: true
+      require_version_revision_transition_inputs: true
 validation:
   rectangular: true
-  reviewed_row_count: 1
-  dimension_count: 5
+  reviewed_row_count: 10
+  dimension_count: 79

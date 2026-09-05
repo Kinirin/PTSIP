@@ -1,50 +1,788 @@
 schema_version: ptsip-p03-authority-role-provisional-dimensions/v1
-
 analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0001
+  reviewed_through: ADR-0010
   vocabulary_registration: false
   runtime_authority: NONE
-
 dimensions:
   establish_canonical_identity:
     status: PROVISIONAL
     introduced_by: ADR-0001
     expression:
-      all:
+      any:
+      - all:
         - path: authority_semantics.canonical_term
           operator: NON_EMPTY
         - path: authority_semantics.expanded_identity
           operator: NON_EMPTY
-
+      - all:
+        - path: authority_semantics.canonical_name
+          operator: NON_EMPTY
+        - path: authority_semantics.expanded_identity
+          operator: NON_EMPTY
   establish_decision_criterion_priority:
     status: PROVISIONAL
     introduced_by: ADR-0001
     expression:
       path: authority_semantics.primary_principle
       operator: NON_EMPTY
-
   define_classification_basis:
     status: PROVISIONAL
     introduced_by: ADR-0001
     expression:
-      path: authority_semantics.classifies_by
-      operator: NON_EMPTY
-
+      any:
+      - any:
+        - path: authority_semantics.classifies_by
+          operator: NON_EMPTY
+        - path: authority_semantics.primary_owner_basis
+          operator: EQUALS
+          value: GOVERNING_LIFECYCLE_OBLIGATION
+      - path: authority_semantics.classification_axis
+        operator: EQUALS
+        value: PRIMARY_LIFECYCLE_OWNERSHIP
   require_architectural_boundary:
     status: PROVISIONAL
     introduced_by: ADR-0001
     expression:
-      path: authority_semantics.requires_product_toolchain_boundary
-      operator: EQUALS
-      value: true
-
+      any:
+      - any:
+        - any:
+          - path: authority_semantics.requires_product_toolchain_boundary
+            operator: EQUALS
+            value: true
+          - path: authority_semantics.coherent_component_boundary_required
+            operator: EQUALS
+            value: true
+        - path: authority_semantics.ptsip_core_may_depend_on_vpms
+          operator: EQUALS
+          value: false
+      - path: authority_semantics.ordered_determination
+        operator: CONTAINS
+        value: IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
   require_versioned_normative_contract:
     status: PROVISIONAL
     introduced_by: ADR-0001
     expression:
-      path: authority_semantics.versioned_specification
+      any:
+      - any:
+        - path: authority_semantics.versioned_specification
+          operator: EQUALS
+          value: true
+        - all:
+          - path: authority_semantics.specification_family
+            operator: NON_EMPTY
+          - path: authority_semantics.normative_snapshot_identity
+            operator: NON_EMPTY
+      - path: authority_semantics.activated_specification_family
+        operator: NON_EMPTY
+  constrain_tool_state_location:
+    status: PROVISIONAL
+    introduced_by: ADR-0002
+    expression:
+      any:
+      - path: authority_semantics.tooling_default_location
+        operator: EQUALS
+        value: EXTERNAL_TO_CONSUMER_REPOSITORY
+      - path: authority_semantics.tool_owned_cache_default_scope
+        operator: EQUALS
+        value: OUTSIDE_CONSUMER_REPOSITORY
+  reserve_project_structure_authority:
+    status: PROVISIONAL
+    introduced_by: ADR-0002
+    expression:
+      any:
+      - path: authority_semantics.consumer_repository_topology_owner
+        operator: EQUALS
+        value: CONSUMER_PROJECT
+      - path: authority_semantics.persistent_profile_location_owned_by_project
+        operator: EQUALS
+        value: true
+  forbid_tool_imposed_topology:
+    status: PROVISIONAL
+    introduced_by: ADR-0002
+    expression:
+      path: authority_semantics.ptsip_specific_directory_hierarchy_required_for_tool_operation
+      operator: EQUALS
+      value: false
+  require_read_only_inspection:
+    status: PROVISIONAL
+    introduced_by: ADR-0002
+    expression:
+      path: authority_semantics.inspection_default_mutation_mode
+      operator: EQUALS
+      value: READ_ONLY
+  require_explicit_specification_binding:
+    status: PROVISIONAL
+    introduced_by: ADR-0002
+    expression:
+      any:
+      - path: authority_semantics.specification_binding_required_for_automated_conformance
+        operator: EQUALS
+        value: true
+      - all:
+        - path: authority_semantics.specification_family
+          operator: NON_EMPTY
+        - path: authority_semantics.normative_snapshot_identity
+          operator: EQUALS
+          value: IMMUTABLE_GIT_REVISION
+  separate_specification_tool_lifecycles:
+    status: PROVISIONAL
+    introduced_by: ADR-0002
+    expression:
+      any:
+      - path: authority_semantics.specification_release_lifecycle_independent_from_reference_tool
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.reference_tool_versioning
+        operator: EQUALS
+        value: INDEPENDENT
+  bind_immutable_normative_snapshot:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      path: authority_semantics.normative_snapshot_identity
+      operator: EQUALS
+      value: IMMUTABLE_GIT_REVISION
+  select_versioned_contract_target:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - path: authority_semantics.reference_tool_target
+        operator: NON_EMPTY
+      - path: authority_semantics.pilot_report_contract
+        operator: NON_EMPTY
+  define_classification_vocabulary:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - path: authority_semantics.architecture_classifications
+        operator: NON_EMPTY
+      - path: authority_semantics.canonical_classifications
+        operator: NON_EMPTY
+  preserve_unresolved_analysis_states:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - path: authority_semantics.unresolved_analysis_states
+        operator: NON_EMPTY
+      - path: authority_semantics.blocking_gap_without_definite_violation_outcome
+        operator: EQUALS
+        value: INCOMPLETE
+  reserve_project_declaration_authority:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - any:
+        - path: authority_semantics.project_profile_is_intended_ownership_declaration
+          operator: EQUALS
+          value: true
+        - path: authority_semantics.ordered_determination
+          operator: CONTAINS
+          value: PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
+      - any:
+        - path: authority_semantics.explicit_mode_authority
+          operator: EQUALS
+          value: PROJECT_COMPLETE_DECLARATION
+        - path: authority_semantics.hybrid_project_authority
+          operator: NON_EMPTY
+  require_typed_evidence_relationships:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - path: authority_semantics.dependency_evidence_edges_typed
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.dependency_evidence_required_fields
+        operator: CONTAINS
+        value: RELATIONSHIP_TYPE
+  constrain_machine_output_structure:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - path: authority_semantics.agent_output_schema_constrained
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.dependency_evidence_required_fields
+        operator: NON_EMPTY
+  deny_derived_architecture_authority:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      any:
+      - any:
+        - any:
+          - path: authority_semantics.agent_decision_is_architecture_authority
+            operator: EQUALS
+            value: false
+          - path: authority_semantics.confidence_is_architecture_authority
+            operator: EQUALS
+            value: false
+        - any:
+          - path: authority_semantics.role_may_determine_classification
+            operator: EQUALS
+            value: false
+          - path: authority_semantics.role_may_infer_relationship
+            operator: EQUALS
+            value: false
+      - any:
+        - path: authority_semantics.materializer_authority
+          operator: EQUALS
+          value: NON_AUTHORITATIVE
+        - path: authority_semantics.materializer_may_infer_missing_architecture
+          operator: EQUALS
+          value: false
+        - path: authority_semantics.template_selection_inference
+          operator: EQUALS
+          value: FORBIDDEN
+  invalidate_stale_evidence:
+    status: PROVISIONAL
+    introduced_by: ADR-0003
+    expression:
+      path: authority_semantics.snapshot_instability_invalidates_evidence_set
+      operator: EQUALS
+      value: true
+  require_evidence_provenance:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      all:
+      - path: authority_semantics.evidence_provenance
+        operator: NON_EMPTY
+      - path: authority_semantics.dependency_evidence_required_fields
+        operator: CONTAINS
+        value: PROVENANCE
+  define_conformance_decision_rule:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      all:
+      - path: authority_semantics.evidence_sufficiency_scope
+        operator: EQUALS
+        value: RULE_RELATIVE
+      - path: authority_semantics.blocking_gap_without_definite_violation_outcome
+        operator: EQUALS
+        value: INCOMPLETE
+      - path: authority_semantics.definite_mandatory_violation_outcome
+        operator: EQUALS
+        value: NON_CONFORMANT
+      - path: authority_semantics.conformance_outcomes
+        operator: NON_EMPTY
+  separate_artifact_ownership_from_production:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      path: authority_semantics.product_artifact_owner_independent_from_producer
+      operator: EQUALS
+      value: true
+  forbid_conformance_waivers:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      path: authority_semantics.mandatory_rule_waiver_changes_conformance
+      operator: EQUALS
+      value: false
+  separate_validation_from_conformance:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      path: authority_semantics.profile_validation_separate_from_conformance_evaluation
+      operator: EQUALS
+      value: true
+  require_exclusive_declaration_modes:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      path: authority_semantics.ownership_declaration_modes_mutually_exclusive
+      operator: NON_EMPTY
+  permit_stricter_project_policy:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      path: authority_semantics.project_dependency_policy_may_be_stricter_than_universal_rules
+      operator: EQUALS
+      value: true
+  require_stable_rule_identity:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      path: authority_semantics.stable_diagnostic_rule_identity_required
+      operator: EQUALS
+      value: true
+  reject_architecture_proxy_inference:
+    status: PROVISIONAL
+    introduced_by: ADR-0004
+    expression:
+      any:
+      - any:
+        - any:
+          - any:
+            - path: authority_semantics.lifecycle_trigger_alone_proves_product_release_coupling
+              operator: EQUALS
+              value: false
+            - path: authority_semantics.neutral_contract_consumer_count_determines_neutrality
+              operator: EQUALS
+              value: false
+          - path: authority_semantics.forbidden_shortcuts
+            operator: NON_EMPTY
+        - path: authority_semantics.role_may_determine_classification
+          operator: EQUALS
+          value: false
+      - path: authority_semantics.source_mode_is_lifecycle_classification
+        operator: EQUALS
+        value: false
+  activate_normative_family:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.activated_specification_family
+      operator: NON_EMPTY
+  separate_decision_authority_from_profile:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.decision_authority_separate_from_project_profile
+      operator: EQUALS
+      value: true
+  require_stable_decision_identity:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.distributed_decision_identity
+      operator: EQUALS
+      value: STABLE
+  select_resolution_winner:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.resolution_policy
+      operator: EQUALS
+      value: FIRST_VALID_RESOLUTION_WINS
+  require_conditional_mutation:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.conditional_mutation_required
+      operator: EQUALS
+      value: true
+  require_fresh_authority_reads:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.architecture_sensitive_read_requires_current_authority_state
+      operator: EQUALS
+      value: true
+  forbid_fabricated_history:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.absence_observation_may_fabricate_history
+      operator: EQUALS
+      value: false
+  forbid_silent_conflict_overwrite:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      any:
+      - path: authority_semantics.authority_profile_conflict_silent_overwrite
+        operator: EQUALS
+        value: false
+      - path: authority_semantics.materializer_may_silently_repair_conflicts
+        operator: EQUALS
+        value: false
+  fail_closed_on_invalid_state:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      any:
+      - any:
+        - any:
+          - any:
+            - path: authority_semantics.snapshot_instability_invalidates_evidence_set
+              operator: EQUALS
+              value: true
+            - path: authority_semantics.blocking_gap_without_definite_violation_outcome
+              operator: EQUALS
+              value: INCOMPLETE
+            - all:
+              - path: authority_semantics.distributed_coordination_failure_behavior
+                operator: EQUALS
+                value: FAIL_CLOSED
+              - path: authority_semantics.local_fallback_when_distributed_coordination_required
+                operator: EQUALS
+                value: false
+          - path: authority_semantics.unresolved_conflict_behavior
+            operator: EQUALS
+            value: FAIL_CLOSED
+        - path: authority_semantics.invalid_effective_architecture
+          operator: EQUALS
+          value: FAIL_CLOSED
+      - path: authority_semantics.stale_or_conflicting_transition
+        operator: EQUALS
+        value: FAIL_CLOSED
+  separate_global_authority_from_local_projection:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.global_decision_state_separate_from_clone_local_projection
+      operator: EQUALS
+      value: true
+  synchronize_at_action_time:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.synchronization_mode
+      operator: EQUALS
+      value: ACTION_TIME
+  separate_authority_from_conformance:
+    status: PROVISIONAL
+    introduced_by: ADR-0005
+    expression:
+      path: authority_semantics.decision_authority_is_conformance_oracle
+      operator: EQUALS
+      value: false
+  retire_previous_identity:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      path: authority_semantics.retired_working_name
+      operator: NON_EMPTY
+  define_purpose_vocabulary:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      all:
+      - path: authority_semantics.verification_purposes
+        operator: NON_EMPTY
+      - path: authority_semantics.governing_question
+        operator: EQUALS
+        value: WHY_VERIFICATION_EXISTS
+  separate_classification_from_verification_purpose:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      any:
+      - all:
+        - path: authority_semantics.is_ptsip_classification_plane
+          operator: EQUALS
+          value: false
+        - path: authority_semantics.verification_implementation_classification_separate_from_verification_purpose
+          operator: EQUALS
+          value: true
+      - all:
+        - path: authority_semantics.classification_axis
+          operator: EQUALS
+          value: PRIMARY_LIFECYCLE_OWNERSHIP
+        - path: authority_semantics.verification_purpose_axis
+          operator: EQUALS
+          value: VPMS
+  define_execution_unit_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      all:
+      - path: authority_semantics.smallest_execution_unit
+        operator: NON_EMPTY
+      - path: authority_semantics.case_bindings
+        operator: NON_EMPTY
+  constrain_cross_purpose_reuse:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      all:
+      - path: authority_semantics.default_cross_purpose_reuse_boundary
+        operator: EQUALS
+        value: FORMULA
+      - path: authority_semantics.cross_purpose_policy_reuse_assumed
+        operator: EQUALS
+        value: false
+  constrain_dependency_direction:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      path: authority_semantics.ptsip_core_may_depend_on_vpms
+      operator: EQUALS
+      value: false
+  permit_contract_consumption:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      path: authority_semantics.vpms_may_consume_stable_ptsip_contract
+      operator: EQUALS
+      value: true
+  separate_verification_success_from_conformance:
+    status: PROVISIONAL
+    introduced_by: ADR-0006
+    expression:
+      path: authority_semantics.vpms_pass_equals_ptsip_conformant
+      operator: EQUALS
+      value: false
+  define_ordered_decision_process:
+    status: PROVISIONAL
+    introduced_by: ADR-0007
+    expression:
+      any:
+      - path: authority_semantics.ordered_determination
+        operator: NON_EMPTY
+      - all:
+        - path: authority_semantics.temporary_source_processing_order
+          operator: NON_EMPTY
+        - path: authority_semantics.canonical_source_processing_order
+          operator: NON_EMPTY
+  require_owner_confirmation:
+    status: PROVISIONAL
+    introduced_by: ADR-0007
+    expression:
+      path: authority_semantics.ordered_determination
+      operator: CONTAINS
+      value: PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
+  define_lifecycle_handoff:
+    status: PROVISIONAL
+    introduced_by: ADR-0007
+    expression:
+      path: authority_semantics.delivery_operations_boundary
+      operator: NON_EMPTY
+  constrain_neutral_contract_qualification:
+    status: PROVISIONAL
+    introduced_by: ADR-0007
+    expression:
+      any:
+      - path: authority_semantics.neutral_contract_conditions
+        operator: NON_EMPTY
+      - path: authority_semantics.neutral_contract_consumer_count_determines_neutrality
+        operator: EQUALS
+        value: false
+  require_governable_responsibility_split:
+    status: PROVISIONAL
+    introduced_by: ADR-0007
+    expression:
+      path: authority_semantics.material_mixed_lifecycle_requires_independently_governable_responsibilities
+      operator: EQUALS
+      value: true
+  define_responsibility_role_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      all:
+      - path: authority_semantics.canonical_roles
+        operator: NON_EMPTY
+      - path: authority_semantics.roles_axis
+        operator: NON_EMPTY
+      - path: authority_semantics.role_cardinality
+        operator: NON_EMPTY
+  define_typed_relationship_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      all:
+      - path: authority_semantics.relationships_axis
+        operator: EQUALS
+        value: TYPED_DIRECTED_SEMANTICS
+      - path: authority_semantics.canonical_relationships
+        operator: NON_EMPTY
+      - path: authority_semantics.relationship_endpoint_kinds
+        operator: NON_EMPTY
+      - path: authority_semantics.generic_escape_relationships_forbidden
+        operator: NON_EMPTY
+  forbid_relationship_inference:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      path: authority_semantics.role_may_infer_relationship
+      operator: EQUALS
+      value: false
+  separate_declared_relationships_from_evidence:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      path: authority_semantics.declared_relationship_is_evidence_edge
+      operator: EQUALS
+      value: false
+  deny_relationship_permission_grant:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      path: authority_semantics.typed_relationship_is_permission
+      operator: EQUALS
+      value: false
+  constrain_associated_artifact_ownership:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      all:
+      - path: authority_semantics.associated_artifact_has_classification
+        operator: EQUALS
+        value: false
+      - path: authority_semantics.associated_artifact_anchor_cardinality
+        operator: EQUALS
+        value: EXACTLY_ONE
+  require_shared_identity_namespace:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      path: authority_semantics.component_and_associated_artifact_ids_share_namespace
+      operator: EQUALS
+      value: true
+  forbid_fabricated_reference_targets:
+    status: PROVISIONAL
+    introduced_by: ADR-0008
+    expression:
+      path: authority_semantics.unresolved_endpoint_may_be_fabricated
+      operator: EQUALS
+      value: false
+  define_source_declaration_modes:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      path: authority_semantics.source_modes
+      operator: NON_EMPTY
+  require_explicit_template_selection:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      all:
+      - path: authority_semantics.template_mode_authority
+        operator: EQUALS
+        value: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
+      - path: authority_semantics.template_selection_inference
+        operator: EQUALS
+        value: FORBIDDEN
+  define_declaration_precedence:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      path: authority_semantics.hybrid_precedence
+      operator: NON_EMPTY
+  constrain_override_granularity:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      all:
+      - path: authority_semantics.hybrid_override_granularity
+        operator: EQUALS
+        value: WHOLE_ENTITY_BY_STABLE_ID
+      - path: authority_semantics.field_level_patch_inheritance
+        operator: EQUALS
+        value: NOT_INTRODUCED
+  forbid_derived_architecture_mutation:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      all:
+      - path: authority_semantics.materializer_authority
+        operator: EQUALS
+        value: NON_AUTHORITATIVE
+      - path: authority_semantics.materializer_may_change_classification
+        operator: EQUALS
+        value: false
+      - path: authority_semantics.materializer_may_silently_repair_conflicts
+        operator: EQUALS
+        value: false
+  define_effective_map_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      path: authority_semantics.effective_map_collections
+      operator: NON_EMPTY
+  require_deterministic_semantic_digest:
+    status: PROVISIONAL
+    introduced_by: ADR-0009
+    expression:
+      path: authority_semantics.effective_map_digest
+      operator: EQUALS
+      value: SHA256_CANONICAL_SEMANTIC_REPRESENTATION
+  constrain_profile_identity_and_cardinality:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      all:
+      - path: authority_semantics.canonical_profile_path
+        operator: NON_EMPTY
+      - path: authority_semantics.temporary_profile_pattern
+        operator: NON_EMPTY
+      - path: authority_semantics.temporary_profile_internal_version_match_required
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.one_temporary_profile_per_target_semantic_version
+        operator: EQUALS
+        value: true
+  define_migration_obligation_categories:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.migration_categories
+      operator: NON_EMPTY
+  define_required_work_completion:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      all:
+      - path: authority_semantics.completion_basis
+        operator: EQUALS
+        value: REQUIRED_WORK_ELEMENTS_ONLY
+      - path: authority_semantics.removal_element_preservation_obligation
+        operator: EQUALS
+        value: false
+      - path: authority_semantics.async_target_completion_credit
+        operator: EQUALS
+        value: false
+  gate_canonical_replacement_on_completion:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.canonical_profile_replaced_before_source_completion
+      operator: EQUALS
+      value: false
+  select_final_transition_target:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.final_point_selection
+      operator: EQUALS
+      value: HIGHEST_SELECTED_TARGET_DRAFT
+  order_transition_sources:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      all:
+      - path: authority_semantics.temporary_source_processing_order
+        operator: EQUALS
+        value: DESCENDING_DRAFT_VERSION_CLOSEST_TO_FINAL_POINT_FIRST
+      - path: authority_semantics.canonical_source_processing_order
+        operator: EQUALS
+        value: LAST
+  forbid_deleted_migration_hops:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.deleted_intermediate_may_be_migration_hop
+      operator: EQUALS
+      value: false
+  forbid_source_category_inheritance:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.source_category_inheritance
+      operator: EQUALS
+      value: false
+  require_cumulative_target_state:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.final_point_is_cumulative_target_state
+      operator: EQUALS
+      value: true
+  require_version_revision_transition_inputs:
+    status: PROVISIONAL
+    introduced_by: ADR-0010
+    expression:
+      path: authority_semantics.version_and_revision_required_transition_inputs
       operator: EQUALS
       value: true
