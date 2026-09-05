@@ -292,20 +292,19 @@ approved_decisions:
       representation: CLOSED_MACHINE_DIMENSION_VECTOR
       single_exclusive_role_enum: REJECTED
       reason: THREE_INDEPENDENT_BINARY_DIMENSIONS_ALLOW_EIGHT_COMBINATIONS
-      current_dimensions:
+      coarse_conceptual_categories_from_initial_review:
         project_architecture_authority:
-          type: BOOLEAN
-          closed_machine_dimension: true
+          role: ANALYSIS_ONLY_COARSE_CATEGORY
         normative_constraint_authority:
-          type: BOOLEAN
-          closed_machine_dimension: true
+          role: ANALYSIS_ONLY_COARSE_CATEGORY
         governance_control_authority:
-          type: BOOLEAN
-          closed_machine_dimension: true
-      combination_count_for_current_dimensions: 8
+          role: ANALYSIS_ONLY_COARSE_CATEGORY
+      coarse_category_binary_combination_count: 8
+      coarse_categories_are_initial_registered_vocabulary: false
+      superseded_as_initial_vocabulary_by: P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY
       all_combinations_automatically_legal: false
       combination_legality_requires_registered_contract_validation: true
-      exact_future_dimension_set: EVOLVABLE_BY_APPROVED_REFINEMENT_CYCLE
+      exact_initial_and_future_dimension_set: DERIVED_BY_APPROVED_REFINEMENT_CYCLE
 
     semantic_cardinality_boundary:
       one_adr_one_authority_semantic: true
@@ -447,7 +446,7 @@ approved_decisions:
 
     approved_invariants:
       - AUTHORITY_ROLE_IS_CLOSED_MACHINE_DIMENSION_VECTOR
-      - THREE_CURRENT_BINARY_DIMENSIONS_ALLOW_EIGHT_MACHINE_COMBINATIONS
+      - THREE_COARSE_BINARY_CATEGORIES_ALLOW_EIGHT_CONCEPTUAL_COMBINATIONS_BUT_ARE_NOT_THE_INITIAL_REGISTERED_VOCABULARY
       - ONE_ADR_ONE_AUTHORITY_SEMANTIC_DOES_NOT_REQUIRE_ONE_EXCLUSIVE_ROLE
       - ALL_FALSE_DECLARED_ROLE_NE_UNRESOLVED_ROLE
       - ROLE_DESCRIPTION_NE_RUNTIME_AUTHORITY
@@ -457,6 +456,175 @@ approved_decisions:
       - ROLES_DESCRIPTION_ID_NULL_REQUIRES_NO_REMAINING_AUTHORITY_RELEVANT_NATURAL_LANGUAGE_DEPENDENCY
       - RUNTIME_AUTHORITY_PIPELINE_NE_VOCABULARY_EVOLUTION_PIPELINE
       - NATURAL_LANGUAGE_AUTHORITY_EXPLANATION_MUST_CONVERGE_TOWARD_CLOSED_MACHINE_DIMENSIONS
+
+
+  P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    approval_date: '2026-09-05'
+
+    supersession:
+      supersedes_p03_c_initial_three_dimension_assumption: true
+      preserves_from_p03_c:
+        - CLOSED_MACHINE_ROLE_REPRESENTATION
+        - MULTI_EFFECT_ROLE_SEMANTICS
+        - ROLES_DESCRIPTION_ID_BOUNDARY
+        - AUTHORITY_ROLE_VOCABULARY_REFINEMENT_CYCLE
+        - RUNTIME_AUTHORITY_PIPELINE_NE_VOCABULARY_EVOLUTION_PIPELINE
+      three_coarse_categories:
+        - PROJECT_ARCHITECTURE_AUTHORITY
+        - NORMATIVE_CONSTRAINT_AUTHORITY
+        - GOVERNANCE_CONTROL_AUTHORITY
+      new_status_of_three_coarse_categories: ANALYSIS_ONLY_NOT_INITIAL_REGISTERED_VOCABULARY
+
+    initial_vocabulary_principle:
+      fixed_dimension_count_before_corpus_analysis: FORBIDDEN
+      vocabulary_first_design: REJECTED
+      corpus_first_design: REQUIRED
+      canonical_corpus:
+        source: CURRENT_MACHINE_ADRS
+        adr_range: ADR-0001_THROUGH_ADR-0023
+        count: 23
+      purpose: DERIVE_REUSABLE_MACHINE_AUTHORITY_EFFECTS_FROM_EXISTING_GOVERNANCE_SEMANTICS
+      initial_closed_vocabulary_requires_project_owner_approval_after_analysis: true
+
+    authority_effect_definition:
+      extraction_question: WHAT_MACHINE_AUTHORITY_EFFECT_DOES_THIS_ADR_EXERCISE
+      must_not_be_defined_as:
+        - WHAT_TOPIC_IS_THIS_ADR_ABOUT
+        - WHAT_AUTHORITY_TYPE_NAME_DOES_THIS_ADR_HAVE
+        - WHAT_REPOSITORY_SUBJECT_DOES_THIS_ADR_BIND
+      separation:
+        authority_type_responsibility: SEMANTIC_SUBJECT_MATTER_OF_DECISION
+        subject_binding_responsibility: APPLICABILITY_SCOPE
+        authority_role_responsibility: MACHINE_CONSUMPTION_AND_AUTHORITY_EFFECT
+      invariant: AUTHORITY_EFFECT_NE_AUTHORITY_TYPE_NE_SUBJECT_BINDING
+
+    corpus_decomposition_pipeline:
+      stages:
+        - READ_CURRENT_REGISTERED_MACHINE_ADR_SEMANTICS
+        - DECOMPOSE_EACH_ADR_INTO_AUTHORITY_RELEVANT_ATOMIC_EFFECTS
+        - COLLECT_REPEATED_EFFECT_PATTERNS_ACROSS_ADRS
+        - PROPOSE_CANDIDATE_CLOSED_MACHINE_DIMENSIONS
+        - REMOVE_AUTHORITY_TYPE_AND_SUBJECT_BINDING_OVERLAP
+        - MERGE_SEMANTICALLY_DUPLICATE_CANDIDATES
+        - SPLIT_OVERBROAD_OR_PARTIAL_CANDIDATES
+        - BUILD_ADR_BY_CANDIDATE_COVERAGE_MATRIX
+        - IDENTIFY_RESIDUAL_AUTHORITY_RELEVANT_SEMANTICS
+        - REFINE_CANDIDATES_UNTIL_MACHINE_COVERAGE_IS_ACCEPTABLE_FOR_OWNER_REVIEW
+        - PRESENT_INITIAL_VOCABULARY_FOR_PROJECT_OWNER_APPROVAL
+        - REGISTER_ONLY_OWNER_APPROVED_INITIAL_CLOSED_VOCABULARY
+      direct_registration_during_candidate_extraction: FORBIDDEN
+      ai_candidate_generation_is_authority: false
+
+    candidate_effect_examples:
+      status: ANALYSIS_EXAMPLES_NOT_REGISTERED_VOCABULARY
+      examples:
+        - DEFINE_SEMANTICS
+        - DECLARE_STATE
+        - SELECT_AUTHORITY
+        - ESTABLISH_PRECEDENCE
+        - CONSTRAIN_STATE
+        - CONTROL_INFERENCE
+        - CONTROL_MUTATION
+        - DEFINE_VALIDATION
+        - DEFINE_RECONCILIATION
+        - DEFINE_FRESHNESS
+        - ACTIVATE_BINDING
+        - DEFINE_PROCESS
+      example_presence_does_not_constitute_approval: true
+
+    coverage_matrix:
+      required: true
+      rows: CURRENT_ADR_0001_THROUGH_0023
+      columns: CANDIDATE_AUTHORITY_EFFECT_DIMENSIONS
+      design_review_states:
+        - YES
+        - NO
+        - PARTIAL
+        - AMBIGUOUS
+        - NOT_REPRESENTED
+      design_review_states_are_runtime_vocabulary: false
+      partial_or_ambiguous_signal:
+        meaning: CANDIDATE_DIMENSION_MAY_BE_OVERBROAD_UNDERSPECIFIED_OR_MISPLACED
+        required_action: REVIEW_AND_REFINE_DIMENSION
+      not_represented_signal:
+        meaning: AUTHORITY_RELEVANT_SEMANTIC_REMAINS_OUTSIDE_CANDIDATE_VOCABULARY
+        required_action: FEED_AUTHORITY_ROLE_VOCABULARY_REFINEMENT_CYCLE
+
+    residual_semantic_handling:
+      per_adr_machine_coverage_required: true
+      residual_authority_relevant_semantics:
+        storage_reference: roles_description_id
+        source: decisions/ADR-description-map.yaml
+        runtime_authority: NONE
+        vocabulary_refinement_input: ALLOWED
+      target: ZERO_RESIDUAL_AUTHORITY_RELEVANT_NATURAL_LANGUAGE_SEMANTICS_PER_ADR
+      roles_description_id_null_allowed_only_under_p03_c_completeness_rule: true
+
+    machine_representation_direction:
+      semantic_model: CLOSED_MACHINE_DIMENSION_SET
+      physical_serialization_preference: REGISTERED_EFFECT_TOKEN_SET
+      boolean_field_per_dimension_as_long_term_serialization: NOT_PREFERRED
+      reason:
+        - AVOID_SCHEMA_FIELD_EXPANSION_FOR_EACH_NEW_DIMENSION
+        - PRESERVE_SET_VECTOR_EQUIVALENCE_WITHOUT_SERIALIZING_EXPLICIT_FALSE_VALUES
+      conceptual_equivalence:
+        token_present: TRUE_FOR_THAT_DIMENSION
+        token_absent: FALSE_FOR_THAT_DIMENSION_WHEN_ROLE_IS_RESOLVED
+      exact_field_name: NOT_FROZEN
+      illustrative_shape:
+        authority_role_effects:
+          - REGISTERED_EFFECT_TOKEN
+      free_form_effect_tokens: FORBIDDEN
+      effect_tokens_must_come_from_registered_closed_vocabulary: true
+      vocabulary_schema_versioning_required: true
+
+    initial_vocabulary_qualification:
+      each_effect_must:
+        - REPRESENT_AUTHORITY_EFFECT_NOT_TOPIC_LABEL
+        - BE_DISTINCT_FROM_AUTHORITY_TYPE_RESPONSIBILITY
+        - BE_DISTINCT_FROM_SUBJECT_BINDING_RESPONSIBILITY
+        - NOT_BE_HUMAN_RATIONALE_ONLY
+        - BE_REUSABLE_ACROSS_RELEVANT_ADR_CASES_OR_JUSTIFIED_AS_A_STABLE_MACHINE_AXIS
+        - MATTER_TO_MACHINE_DECISION_OR_ROUTING
+        - HAVE_CLOSED_MACHINE_SEMANTICS
+        - HAVE_TESTABLE_MEMBERSHIP_OR_APPLICABILITY_RULES
+      effect_count_minimum: NOT_FROZEN
+      effect_count_maximum: NOT_FROZEN
+      arbitrary_small_vocabulary_bias: FORBIDDEN
+      arbitrary_large_vocabulary_bias: FORBIDDEN
+
+    owner_review_gate:
+      required_before_initial_registry_creation: true
+      review_material_must_include:
+        - CANDIDATE_EFFECT_DEFINITIONS
+        - ADR_0001_THROUGH_0023_COVERAGE_MATRIX
+        - PARTIAL_AND_AMBIGUOUS_CASES
+        - RESIDUAL_AUTHORITY_RELEVANT_SEMANTICS
+        - MERGE_SPLIT_REMOVE_RATIONALE_FOR_CANDIDATES
+        - PROPOSED_INITIAL_CLOSED_VOCABULARY
+      owner_approval_authorizes_runtime_implementation: false
+      owner_approval_authorizes_schema_migration_only_if_separately_explicit: false
+
+    schema_change_boundary:
+      current_adr_schema_role_fields_may_be_changed_before_vocabulary_approval: false
+      current_23_adrs_may_be_role_classified_before_vocabulary_approval: false
+      reason: AVOID_PREMATURE_CLASSIFICATION_AND_SCHEMA_LOCK_IN
+      next_allowed_step: DESIGN_REVIEW_AND_CORPUS_ANALYSIS_ONLY
+
+    approved_invariants:
+      - INITIAL_AUTHORITY_ROLE_VOCABULARY_MUST_BE_CORPUS_DRIVEN
+      - THREE_COARSE_CATEGORIES_ARE_NOT_INITIAL_REGISTERED_VOCABULARY
+      - DIMENSION_COUNT_MUST_NOT_BE_FIXED_BEFORE_CORPUS_ANALYSIS
+      - AUTHORITY_ROLE_EFFECT_NE_AUTHORITY_TYPE_NE_SUBJECT_BINDING
+      - CANDIDATE_EFFECT_NE_REGISTERED_EFFECT
+      - PARTIAL_OR_AMBIGUOUS_COVERAGE_REQUIRES_REFINEMENT
+      - RESIDUAL_AUTHORITY_SEMANTICS_MUST_FEED_REFINEMENT_NOT_RUNTIME_REASONING
+      - INITIAL_CLOSED_VOCABULARY_REQUIRES_OWNER_REVIEW_AND_APPROVAL
+      - REGISTERED_EFFECT_TOKEN_SET_IS_PREFERRED_OVER_UNBOUNDED_BOOLEAN_SCHEMA_EXPANSION
+      - FREE_FORM_ROLE_EFFECT_TOKENS_ARE_FORBIDDEN
+      - CURRENT_ADR_SCHEMA_MUST_NOT_BE_PREMATURELY_CHANGED_BEFORE_VOCABULARY_APPROVAL
 
 
   execution_timing: IMMEDIATE_DURING_P03_REVIEW
@@ -510,7 +678,8 @@ review_progress:
   P03_ONE_ADR_ONE_AUTHORITY_SEMANTIC: APPROVED_AND_APPLIED
   P03_ADR_PATH_REFERENCE_NORMALIZATION: APPROVED_AND_APPLIED
   P03_B_EXPLICIT_AUTHORITY_ROLE_AND_FRESH_ELIGIBILITY: APPROVED
-  P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT: APPROVED
+  P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT: APPROVED_WITH_INITIAL_THREE_DIMENSION_ASSUMPTION_SUPERSEDED_BY_P03_D
+  P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY: APPROVED
   P03: IN_PROGRESS
 
 remaining_p03_review: IN_PROGRESS
