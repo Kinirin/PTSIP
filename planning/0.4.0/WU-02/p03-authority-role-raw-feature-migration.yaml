@@ -1,0 +1,104 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+
+document:
+  id: WU-02-P03-F-RAW-AUTHORITY-FEATURE-CORPUS
+  type: WORK_UNIT_EXTENSION_CONTRACT
+  status: ACTIVE
+  authority: PROJECT_OWNER
+  approval_date: '2026-09-06'
+  implementation_authorization: NOT_AUTHORIZED
+  p03_analysis_automation_authorization: AUTHORIZED_BY_PROJECT_OWNER
+
+relation:
+  parent_p03: planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
+  predecessor_analysis: planning/0.4.0/WU-02/p03-authority-role-binary-matrix.yaml
+  scope: P03_DESIGN_TIME_AUTHORITY_ROLE_CORPUS_ANALYSIS
+  remediation_runtime_implementation: FORBIDDEN
+
+migration:
+  from: PROVISIONAL_SEMANTIC_DIMENSION_FIRST
+  to: RAW_MACHINE_FEATURE_COLLECTION_BEFORE_SEMANTIC_CLUSTERING
+  reason: REDUCE_REPEATED_LLM_TAXONOMY_DESIGN_AND_BACKFILL_REASONING
+  legacy_semantic_dimensions:
+    reviewed_through: ADR-0010
+    dimension_count: 79
+    status: FROZEN_REFERENCE
+    may_grow_during_raw_collection: false
+    canonical_for_future_corpus_collection: false
+  semantic_review_boundary:
+    reviewed_through: ADR-0010
+    adr_0011_through_0023_semantically_reviewed_by_this_migration: false
+
+raw_collection:
+  source: CURRENT_MACHINE_ADR_AUTHORITY_SEMANTICS
+  first_adr: ADR-0001
+  through: ADR-0023
+  exact_registered_machine_schema_validation_required: true
+  unit: EXACT_TOP_LEVEL_AUTHORITY_SEMANTIC_PATH_TYPED_VALUE
+  natural_language_consumption: FORBIDDEN
+  semantic_effect_naming: FORBIDDEN
+  semantic_clustering: FORBIDDEN
+  authority_role_assignment: FORBIDDEN
+  raw_collection_is_semantic_review: false
+
+raw_binary_projection:
+  storage: SPARSE
+  true_when: ADR_IS_LISTED_IN_RAW_FEATURE_OCCURRENCES
+  false_when: ADR_IS_ABSENT_AFTER_EXACT_SOURCE_VALIDATION
+  blanket_false_default: FORBIDDEN
+  materialize_full_boolean_matrix_for_planning_record: false
+  reason: AVOID_REDUNDANT_LARGE_BACKFILL_ARTIFACT_AND_AGENT_CONTEXT_COST
+
+automation:
+  collector: .github/scripts/p03_authority_role_raw_features.py
+  generated_snapshot: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
+  legacy_semantic_analyzer: .github/scripts/p03_authority_role_matrix.py
+  legacy_semantic_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
+  legacy_semantic_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
+  future_adr_0011_through_0023_manual_dimension_creation_required: false
+
+planning_record_boundary:
+  duplicate_generated_backfill_cells_in_planning_yaml: FORBIDDEN
+  planning_records:
+    - MIGRATION_STATE
+    - AUTOMATION_STATE
+    - SEMANTIC_REVIEW_BOUNDARY
+    - TEST_RESULT_SUMMARY
+  generated_artifact_owns_detailed_raw_results: true
+
+post_collection_semantic_work:
+  timing: AFTER_COMPLETE_RAW_CORPUS_COLLECTION
+  operation:
+    - GROUP_RELATED_RAW_FEATURES
+    - IDENTIFY_AUTHORITY_EFFECT_CANDIDATES
+    - REMOVE_AUTHORITY_TYPE_OVERLAP
+    - REMOVE_SUBJECT_BINDING_OVERLAP
+    - SPLIT_OR_MERGE_EFFECT_BOUNDARIES
+    - REVIEW_RESIDUAL_ROLE_DESCRIPTION_SEMANTICS
+    - PRESENT_CANDIDATE_VOCABULARY_TO_PROJECT_OWNER
+  repeated_per_adr_llm_taxonomy_design: FORBIDDEN
+  stable_vocabulary_registration_before_owner_approval: FORBIDDEN
+
+verification_strategy:
+  raw_collector_snapshot_check: REQUIRED
+  small_synthetic_engine_tests: REQUIRED
+  historical_semantic_prefix_replay_growth: FROZEN
+  github_actions_required: false
+  exact_local_pytest_result: TO_BE_RECORDED_WHEN_EXECUTED
+
+invariants:
+  - RAW_FEATURE_NE_AUTHORITY_ROLE_EFFECT
+  - RAW_COLLECTION_NE_SEMANTIC_REVIEW
+  - ADR_0011_THROUGH_0023_RAW_COLLECTION_NE_OWNER_APPROVAL_OF_ROLE_CLASSIFICATION
+  - LEGACY_79_DIMENSIONS_ARE_REFERENCE_NOT_FUTURE_COLLECTION_SCHEMA
+  - NATURAL_LANGUAGE_MUST_NOT_BE_CONSUMED_BY_RAW_COLLECTOR
+  - FULL_BOOLEAN_BACKFILL_NE_REQUIRED_PERSISTED_ARTIFACT
+  - SEMANTIC_CLUSTERING_OCCURS_AFTER_COMPLETE_RAW_CORPUS_COLLECTION
+  - WU_02_REMEDIATION_RUNTIME_IMPLEMENTATION_REMAINS_NOT_AUTHORIZED
+
+review_progress:
+  ADR-0001_THROUGH_0010_SEMANTIC_DIMENSIONS: FROZEN_REFERENCE
+  ADR-0001_THROUGH_0023_RAW_COLLECTION: IMPLEMENTATION_IN_PROGRESS
+  ADR-0011_THROUGH_0023_SEMANTIC_REVIEW: NOT_STARTED
+  P03: IN_PROGRESS
