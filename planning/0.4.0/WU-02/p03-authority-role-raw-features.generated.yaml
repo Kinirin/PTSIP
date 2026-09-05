@@ -1,0 +1,1177 @@
+schema_version: "ptsip-p03-authority-role-raw-features/v1"
+source:
+  index_path: "decisions/INDEX.yaml"
+  first_adr: "ADR-0001"
+  raw_collection_through: "ADR-0023"
+  semantic_review_through: "ADR-0010"
+  authority_semantics_validation: "EXACT_REGISTERED_MACHINE_SCHEMA"
+  runtime_authority: "NONE"
+  vocabulary_registration: false
+  semantic_grouping_performed: false
+feature_model:
+  unit: "EXACT_TOP_LEVEL_AUTHORITY_SEMANTIC_PATH_TYPED_VALUE"
+  binary_projection: "SPARSE_MACHINE_DERIVABLE"
+  true_when: "ADR_ID_IS_LISTED_IN_FEATURE_OCCURS_IN"
+  false_when: "ADR_ID_IS_NOT_LISTED_AFTER_EXACT_SOURCE_VALIDATION"
+  false_is_default_fill: false
+  natural_language_consumption: "FORBIDDEN"
+  semantic_effect_name_generation: "FORBIDDEN"
+features:
+  - path: "authority_semantics.absence_may_become_false_assertion"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.absence_observation_may_fabricate_history"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.acceptance_authorizes_immediate_profile_rewrite"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.accepted_bundle_requires_project_decision_identity"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.accepted_delta_requires_exact_before_state"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.accepted_target_state_separate_typed_input"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.activated_family"
+    value_type: "STRING"
+    value: "0.3.7-draft"
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.activated_specification_family"
+    value_type: "STRING"
+    value: "0.3.4-draft"
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.activation_implies_repository_profile_mutation"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.agent_decision_is_architecture_authority"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.agent_output_schema_constrained"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.ambiguous_historical_semantics"
+    value_type: "STRING"
+    value: "OWNER_DECISION_REQUIRED"
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.analysis_states"
+    value_type: "ARRAY"
+    value: ["EXPLICIT_ASSERTION","NO_MATCH","NOT_ANALYZED","FAILED"]
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.architecture_acceptance_separate_from_identity_implementation"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.architecture_classifications"
+    value_type: "ARRAY"
+    value: ["PRODUCT","TOOLCHAIN","NEUTRAL_CONTRACT"]
+    occurs_in: ["ADR-0003","ADR-0004"]
+  - path: "authority_semantics.architecture_sensitive_read_requires_current_authority_state"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.associated_artifact_anchor_cardinality"
+    value_type: "STRING"
+    value: "EXACTLY_ONE"
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.associated_artifact_has_classification"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.async_after_required"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.async_state_separate_from_completion"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.async_target_completion_credit"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.authority_profile_conflict_silent_overwrite"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.authority"
+    value_type: "STRING"
+    value: "EVIDENCE_ONLY"
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.authorization_binds"
+    value_type: "ARRAY"
+    value: ["WU06_PLAN_DIGEST","PROJECT_DECISION_IDS","AUTHORITY_REVISION"]
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.blocking_gap_without_definite_violation_outcome"
+    value_type: "STRING"
+    value: "INCOMPLETE"
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.boundary_evidence_authority"
+    value_type: "STRING"
+    value: "EVIDENCE_ONLY"
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.boundary_evidence_provenance"
+    value_type: "STRING"
+    value: "INFERRED"
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.bridge_classification"
+    value_type: "STRING"
+    value: "IDENTITY_ONLY"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.bridge_source"
+    value_type: "STRING"
+    value: "0.3.6-draft"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.bridge_target"
+    value_type: "STRING"
+    value: "pp.1.01"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.bundle_authority_types"
+    value_type: "ARRAY"
+    value: ["PROPOSAL_BUNDLE","ACCEPTED_DELTA_BUNDLE","UNRESOLVED_BUNDLE"]
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.canonical_0_3_6_to_pp_1_01_requires_temporary_target"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.canonical_classifications"
+    value_type: "ARRAY"
+    value: ["PRODUCT","DEVELOPMENT_TOOLING","DELIVERY","OPERATIONS","NEUTRAL_CONTRACT"]
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.canonical_minor_minimum_width"
+    value_type: "INTEGER"
+    value: 2
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.canonical_name"
+    value_type: "STRING"
+    value: "VPMS"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.canonical_pp_identity"
+    value_type: "STRING"
+    value: "pp.1.01"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.canonical_profile_path"
+    value_type: "STRING"
+    value: "ptsip.yaml"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.canonical_profile_replaced_before_source_completion"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.canonical_relationships"
+    value_type: "ARRAY"
+    value: ["IMPORTS","LINKS","LOADS","INVOKES","READS","GENERATES","BUILDS","PACKAGES","PUBLISHES","DEPLOYS","VERIFIES","MANAGES","DOCUMENTS","SPECIFIES","GOVERNS"]
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.canonical_roles"
+    value_type: "ARRAY"
+    value: ["IMPLEMENTATION","VERIFICATION","AUTOMATION","CONFIGURATION","DOCUMENTATION","GOVERNANCE"]
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.canonical_source_processed_last"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.canonical_source_processing_order"
+    value_type: "STRING"
+    value: "LAST"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.canonical_term"
+    value_type: "STRING"
+    value: "PTSIP"
+    occurs_in: ["ADR-0001"]
+  - path: "authority_semantics.canonical_validator_may_reinterpret_historical_source"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.capability_authorities"
+    value_type: "ARRAY"
+    value: ["TOOL_TO_PROJECT_PROFILE","TOOL_TO_SPECIFICATION","HISTORICAL_MIGRATION_COMPATIBILITY"]
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.cartesian_capability_registration_required"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.case_bindings"
+    value_type: "ARRAY"
+    value: ["PURPOSE","TARGET","FORMULA","VARIABLES","POLICY","RUNNER"]
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.checkpoint_ledger"
+    value_type: "STRING"
+    value: "APPEND_ONLY_DIGEST_CHAINED"
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.classification_axis"
+    value_type: "STRING"
+    value: "PRIMARY_LIFECYCLE_OWNERSHIP"
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.classifies_by"
+    value_type: "ARRAY"
+    value: ["PURPOSE","LIFECYCLE_OWNERSHIP"]
+    occurs_in: ["ADR-0001"]
+  - path: "authority_semantics.coherent_component_boundary_required"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.common_properties"
+    value_type: "OBJECT"
+    value: {"compatibility_owner":"tool","executable":false,"release_owner":"tool","runtime_required":false,"shipped":true}
+    occurs_in: ["ADR-0018"]
+  - path: "authority_semantics.common_source_model_is_current_canonical_model"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.compatibility_boundary"
+    value_type: "STRING"
+    value: "src/ptsip/source_compat"
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.completion_basis"
+    value_type: "STRING"
+    value: "REQUIRED_WORK_ELEMENTS_ONLY"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.completion_equation"
+    value_type: "STRING"
+    value: "REQUIRED_UNRESOLVED_EQUALS_ZERO"
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.component_and_associated_artifact_ids_share_namespace"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.components"
+    value_type: "ARRAY"
+    value: [{"classification":"PRODUCT","id":"ptsip-evidence","role":"IMPLEMENTATION","selector":"src/ptsip/evidence/**"},{"classification":"PRODUCT","id":"ptsip-source-compat","role":"IMPLEMENTATION","selector":"src/ptsip/source_compat/**"},{"classification":"PRODUCT","id":"ptsip-migration","role":"IMPLEMENTATION","selector":"src/ptsip/migration/**"}]
+    occurs_in: ["ADR-0018"]
+  - path: "authority_semantics.compound_split_merge_representation"
+    value_type: "STRING"
+    value: "BUNDLE_OF_ATOMIC_DELTAS"
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.conditional_mutation_required"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.confidence_is_architecture_authority"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.conflict_policy"
+    value_type: "STRING"
+    value: "EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS"
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.conformance_outcomes"
+    value_type: "ARRAY"
+    value: ["CONFORMANT","NON_CONFORMANT","INCOMPLETE"]
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.consumer_repository_topology_owner"
+    value_type: "STRING"
+    value: "CONSUMER_PROJECT"
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.contract"
+    value_type: "STRING"
+    value: "ptsip-normalized-evidence/v1"
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.controlled_repository_mutation_scope"
+    value_type: "STRING"
+    value: "PARTICIPATING_PROFILE_PATHS_ONLY"
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.convergence_boundary"
+    value_type: "STRING"
+    value: "NORMALIZED_SOURCE_SEMANTICS"
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.cross_purpose_policy_reuse_assumed"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.current_generation_identity"
+    value_type: "STRING"
+    value: "pp.1.01"
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.decision_authority_is_conformance_oracle"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.decision_authority_separate_from_project_profile"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.declared_relationship_is_evidence_edge"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.default_cross_purpose_reuse_boundary"
+    value_type: "STRING"
+    value: "FORMULA"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.definite_mandatory_violation_outcome"
+    value_type: "STRING"
+    value: "NON_CONFORMANT"
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.deleted_intermediate_may_be_migration_hop"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.delivery_operations_boundary"
+    value_type: "STRING"
+    value: "DELIVERY_HANDOFF"
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.dependency_evidence_edges_typed"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.dependency_evidence_required_fields"
+    value_type: "ARRAY"
+    value: ["RELATIONSHIP_TYPE","LIFECYCLE_PHASE","RESOLUTION_STATE","PROVENANCE","SOURCE_TARGET_IDENTITY_WHEN_RESOLVABLE","UNCERTAINTY"]
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.deterministic_digest"
+    value_type: "STRING"
+    value: "SHA256"
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.direct_convergence_allows_unrestricted_inference"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.distributed_coordination_failure_behavior"
+    value_type: "STRING"
+    value: "FAIL_CLOSED"
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.distributed_decision_identity"
+    value_type: "STRING"
+    value: "STABLE"
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.effective_map_collections"
+    value_type: "ARRAY"
+    value: ["COMPONENTS","ASSOCIATED_ARTIFACTS","TYPED_RELATIONSHIPS","COMPONENT_DEPENDENCY_POLICY","PROJECT_POLICIES"]
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.effective_map_digest"
+    value_type: "STRING"
+    value: "SHA256_CANONICAL_SEMANTIC_REPRESENTATION"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.equivalent_target_collision"
+    value_type: "STRING"
+    value: "DUPLICATE_EQUIVALENT_TARGET"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.equivalent_values_preserve_all_origins"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.evidence_authority"
+    value_type: "STRING"
+    value: "NON_AUTHORITATIVE"
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.evidence_provenance"
+    value_type: "ARRAY"
+    value: ["DECLARED","OBSERVED","INFERRED"]
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.evidence_sufficiency_scope"
+    value_type: "STRING"
+    value: "RULE_RELATIVE"
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.execution_input_authority"
+    value_type: "STRING"
+    value: "ACCEPTED_DELTA_BUNDLE_ONLY"
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.existing_authorized_legacy_target_continuity_preserved"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.existing_profile_examples_remain_0_3_6_draft_without_contract_change"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.expanded_identity"
+    value_type: "STRING"
+    value: "PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY"
+    occurs_in: ["ADR-0001"]
+  - path: "authority_semantics.expanded_identity"
+    value_type: "STRING"
+    value: "VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.explicit_mode_authority"
+    value_type: "STRING"
+    value: "PROJECT_COMPLETE_DECLARATION"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.fabricated_pp_1_00_history"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.family_semantics"
+    value_type: "ARRAY"
+    value: ["V034_SOURCE_SEMANTICS","V036_SOURCE_SEMANTICS"]
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.field_level_patch_inheritance"
+    value_type: "STRING"
+    value: "NOT_INTRODUCED"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.final_point_is_cumulative_target_state"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.final_point_selection"
+    value_type: "STRING"
+    value: "HIGHEST_SELECTED_TARGET_DRAFT"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.final_point_states"
+    value_type: "ARRAY"
+    value: ["EXISTING","PLANNED"]
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.final_release_readiness_work_unit"
+    value_type: "STRING"
+    value: "WU-12"
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.forbidden_shortcuts"
+    value_type: "ARRAY"
+    value: ["PATH_NAME","TECHNOLOGY_NAME","EXECUTABLE_STATUS","LINE_COUNT","JOB_COUNT","INVOCATION_FREQUENCY","CONFIDENCE_SCORE"]
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.generic_escape_relationships_forbidden"
+    value_type: "ARRAY"
+    value: ["PRODUCES","SUPPORTS","USES","DEPENDS_ON"]
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.generic_validation_order"
+    value_type: "ARRAY"
+    value: ["VALIDATE_PP_CAPABILITY","VALIDATE_SPECIFICATION_CAPABILITY","VALIDATE_SCHEMA_AND_RESPONSIBILITY_MAP","APPLY_EXPLICIT_CROSS_CONTRACT_CONSTRAINTS"]
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.generic_validator_may_use_historical_migration_bridge_as_spec_capability"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.generic_validator_requires_profile_spec_revision_equal_global_tool_spec_revision"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.global_decision_state_separate_from_clone_local_projection"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.governing_question"
+    value_type: "STRING"
+    value: "WHY_VERIFICATION_EXISTS"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.historical_bridge_role"
+    value_type: "STRING"
+    value: "MIGRATION_INTERPRETATION_ONLY"
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.historical_flat_release_notes_bulk_moved"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.historical_validation_uses_separate_schema_snapshots"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.hybrid_override_granularity"
+    value_type: "STRING"
+    value: "WHOLE_ENTITY_BY_STABLE_ID"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.hybrid_precedence"
+    value_type: "ARRAY"
+    value: ["PROJECT_OVERRIDE_EXTENSION_REMOVAL","SELECTED_IMMUTABLE_TEMPLATE_DECLARATION"]
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.hybrid_project_authority"
+    value_type: "ARRAY"
+    value: ["TEMPLATE_SELECTION","STABLE_ID_REPLACEMENTS","STABLE_ID_EXTENSIONS","STABLE_ID_REMOVALS"]
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.identity_axes"
+    value_type: "ARRAY"
+    value: ["TOOL_VERSION","PROJECT_PROFILE_CONTRACT_VERSION","PROJECT_PROFILE_INSTANCE_REVISION"]
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.identity_axes"
+    value_type: "ARRAY"
+    value: ["TOOL_VERSION","PROJECT_PROFILE_CONTRACT_VERSION","SPECIFICATION_BINDING","PROJECT_PROFILE_INSTANCE_REVISION"]
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.identity_implementation_separate_from_migration_capability"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.immutable_normative_snapshot"
+    value_type: "STRING"
+    value: "b648d9e026f502b14481ba2d0606d9acc88a31fc"
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.independent_history_axes"
+    value_type: "ARRAY"
+    value: ["TOOL_VERSION","PROJECT_PROFILE_CONTRACT_VERSION","SPECIFICATION_FAMILY_REVISION"]
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.inspection_default_mutation_mode"
+    value_type: "STRING"
+    value: "READ_ONLY"
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.interchange_schema_paths"
+    value_type: "ARRAY"
+    value: ["schemas/ptsip-normalized-evidence.schema.json","src/ptsip/specdata/ptsip-normalized-evidence.schema.json"]
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.invalid_effective_architecture"
+    value_type: "STRING"
+    value: "FAIL_CLOSED"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.is_ptsip_classification_plane"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.known_family_unknown_revision"
+    value_type: "STRING"
+    value: "UNSUPPORTED_SOURCE_REVISION"
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.legacy_generation_identity"
+    value_type: "STRING"
+    value: "pp.0.00"
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.legacy_temporary_target_alias"
+    value_type: "STRING"
+    value: "ptsip_0.3.6.yaml"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.lifecycle_compatibility_separate_from_obligation_category"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.lifecycle_trigger_alone_proves_product_release_coupling"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.local_fallback_when_distributed_coordination_required"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.maintainability_rules"
+    value_type: "ARRAY"
+    value: ["TYPED_BOUNDARIES","STABLE_OWNERSHIP","INDEPENDENT_VERIFICATION","FAIL_CLOSED_COMPATIBILITY","EXTENSIBLE_REGISTRIES","NO_TOOL_PP_COUPLING","NO_PREMATURE_ADOPTION"]
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.major_trigger"
+    value_type: "STRING"
+    value: "GOVERNING_LIFECYCLE_CLASSIFICATION_SET_OR_SEMANTICS_CHANGE"
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.mandatory_intermediate_version_traversal"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.mandatory_rule_waiver_changes_conformance"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.material_mixed_lifecycle_requires_independently_governable_responsibilities"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.materializer_authority"
+    value_type: "STRING"
+    value: "NON_AUTHORITATIVE"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.materializer_may_change_classification"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.materializer_may_infer_missing_architecture"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.materializer_may_silently_repair_conflicts"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.migration_capability_separate_from_repository_adoption"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.migration_categories"
+    value_type: "ARRAY"
+    value: ["REQUIRED_WORK_ELEMENT","REMOVAL_MIGRATION_ELEMENT","ASYNCHRONOUS_WORK_TARGET"]
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.migration_engine_remains_implemented"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.migration_model"
+    value_type: "STRING"
+    value: "DIRECT_LATEST_TARGET_CONVERGENCE"
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.minor_trigger"
+    value_type: "STRING"
+    value: "PROFILE_CONTRACT_STRUCTURE_OR_SEMANTICS_CHANGE_WITHIN_LIFECYCLE_GENERATION"
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.mutation_promotion_verification_scope"
+    value_type: "STRING"
+    value: "ISOLATED_FIXTURE_REPOSITORIES"
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.n_by_m_handwritten_converter_matrix_required"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.neutral_contract_conditions"
+    value_type: "ARRAY"
+    value: ["NON_EXECUTABLE_ROLE","NON_OWNING_IMPLEMENTATION","LIFECYCLE_COMPATIBILITY_INDEPENDENT"]
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.neutral_contract_consumer_count_determines_neutrality"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.new_migration_creates_only_selected_canonical_target"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.normative_companion"
+    value_type: "STRING"
+    value: "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.normative_snapshot_identity"
+    value_type: "STRING"
+    value: "IMMUTABLE_GIT_REVISION"
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.one_temporary_profile_per_target_semantic_version"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.operation_mode"
+    value_type: "STRING"
+    value: "READ_ONLY"
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.ordered_determination"
+    value_type: "ARRAY"
+    value: ["ESTABLISH_PROJECT_OWNED_SCOPE","IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY","COLLECT_LIFECYCLE_EVIDENCE","TEST_NEUTRAL_CONTRACT_QUALIFICATION","DETERMINE_GOVERNING_OWNING_LIFECYCLE","TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY","KEEP_SPLIT_OR_UNRESOLVED","PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE"]
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.ordered_work_units"
+    value_type: "ARRAY"
+    value: ["WU-08","WU-09","WU-10","WU-11"]
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.ownership_declaration_modes_mutually_exclusive"
+    value_type: "ARRAY"
+    value: ["BOUNDARIES","COMPONENTS"]
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.per_source_final_point_write"
+    value_type: "STRING"
+    value: "ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS"
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.persistent_profile_location_owned_by_project"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.pilot_report_contract"
+    value_type: "STRING"
+    value: "ptsip-pilot-report/v2"
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.pipeline"
+    value_type: "ARRAY"
+    value: ["SOURCE_COVERAGE_PROJECTION","REPOSITORY_ELEMENT_RESOLUTION","OBLIGATION_TAXONOMY","LIFECYCLE_COMPATIBILITY","NORMALIZED_EVIDENCE_CORRELATION","ACCEPTED_TARGET_STATE_COMPATIBILITY","SOURCE_MIGRATION_COMPLETION"]
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.plan_binding"
+    value_type: "STRING"
+    value: "EXACT_WU06_PLAN_DIGEST"
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.planned_final_point_requires_explicit_seed"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.preserved_classifications"
+    value_type: "ARRAY"
+    value: ["PRODUCT","DEVELOPMENT_TOOLING","DELIVERY","OPERATIONS","NEUTRAL_CONTRACT"]
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.primary_owner_basis"
+    value_type: "STRING"
+    value: "GOVERNING_LIFECYCLE_OBLIGATION"
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.primary_principle"
+    value_type: "STRING"
+    value: "PURPOSE_BEFORE_REUSE"
+    occurs_in: ["ADR-0001"]
+  - path: "authority_semantics.producer_neutral"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.producer_specific_interfaces_replaced"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.product_artifact_owner_independent_from_producer"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.profile_transition_rules"
+    value_type: "ARRAY"
+    value: ["PTSIP-MIG-004","PTSIP-MIG-005","PTSIP-MIG-006","PTSIP-MIG-007","PTSIP-MIG-008","PTSIP-MIG-009","PTSIP-MIG-010","PTSIP-MIG-011","PTSIP-MIG-012","PTSIP-MIG-013","PTSIP-MIG-014","PTSIP-MIG-015"]
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.profile_validation_separate_from_conformance_evaluation"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.project_dependency_policy_may_be_stricter_than_universal_rules"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.project_instance_change_bumps_contract_version"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.project_profile_is_intended_ownership_declaration"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.project_profile_namespace"
+    value_type: "STRING"
+    value: "pp.<major>.<minor>"
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.project_profile_version_is_implicit_specification_family"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.project_profile_version_migration_authorized"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0018"]
+  - path: "authority_semantics.promotion_is_independent_state_boundary"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.promotion_success_requires_rediscovery"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.proposal_is_executable"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.proposal_purposes"
+    value_type: "ARRAY"
+    value: ["REQUIRED_MIGRATION","TARGET_VALIDITY","ASYNC_OPTIONAL","ADVISORY"]
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.ptsip_core_may_depend_on_vpms"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.ptsip_core_selector_broadened_to_recursive_src_ptsip"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0018"]
+  - path: "authority_semantics.ptsip_specific_directory_hierarchy_required_for_tool_operation"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.reconciliation_statuses"
+    value_type: "ARRAY"
+    value: ["NO_CHANGE_REQUIRED","ADD_TARGET_DECLARATION","REPLACE_WITH_EXPLICIT_OWNER_DECISION","CONFLICT_REQUIRES_CONFIRMATION","UNRESOLVED"]
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.recovery_guessing"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.reference_tool_target"
+    value_type: "STRING"
+    value: "0.2.0"
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.reference_tool_versioning"
+    value_type: "STRING"
+    value: "INDEPENDENT"
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.relationship_endpoint_kinds"
+    value_type: "ARRAY"
+    value: ["COMPONENT","ASSOCIATED_ARTIFACT"]
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.relationships_axis"
+    value_type: "STRING"
+    value: "TYPED_DIRECTED_SEMANTICS"
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.relationships"
+    value_type: "ARRAY"
+    value: ["ptsip-evidence:IMPORTS:ptsip-core","ptsip-source-compat:IMPORTS:ptsip-core","ptsip-source-compat:READS:ptsip-embedded-contracts","ptsip-migration:IMPORTS:ptsip-core","ptsip-migration:IMPORTS:ptsip-evidence","ptsip-migration:IMPORTS:ptsip-source-compat"]
+    occurs_in: ["ADR-0018"]
+  - path: "authority_semantics.release_note_namespaces"
+    value_type: "ARRAY"
+    value: ["tool","project-profile","specification"]
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.removal_element_preservation_obligation"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.removal_or_async_compensates_required"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.repository_adoption_separate_from_release_readiness"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.repository_dogfood_mode"
+    value_type: "STRING"
+    value: "CONTROLLED_SELF_ANALYSIS"
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.repository_resolution_types"
+    value_type: "ARRAY"
+    value: ["EXISTING_SOURCE_ELEMENT","REMOVED_SOURCE_ELEMENT","UNCOVERED_REPOSITORY_ELEMENT","AMBIGUOUS_SOURCE_ELEMENT"]
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.requires_product_toolchain_boundary"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0001"]
+  - path: "authority_semantics.resolution_policy"
+    value_type: "STRING"
+    value: "FIRST_VALID_RESOLUTION_WINS"
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.responsibilities"
+    value_type: "OBJECT"
+    value: {"WU-08":"REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE","WU-09":"INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE","WU-10":"PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION","WU-11":"FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS"}
+    occurs_in: ["ADR-0020"]
+  - path: "authority_semantics.retired_working_name"
+    value_type: "STRING"
+    value: "TVFM"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.role_cardinality"
+    value_type: "STRING"
+    value: "ZERO_OR_MORE"
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.role_may_determine_classification"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.role_may_infer_relationship"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.roles_axis"
+    value_type: "STRING"
+    value: "COARSE_RESPONSIBILITY_CHARACTERISTICS"
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.selected_architecture"
+    value_type: "STRING"
+    value: "SEMANTIC_DELTA_BUNDLE_DETERMINISTIC_RECONCILIATION_PLANNER"
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.selected_architecture"
+    value_type: "STRING"
+    value: "STRONGLY_TYPED_MIGRATION_STATE_MACHINE_APPEND_ONLY_CHECKPOINT_LEDGER"
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.semantic_deltas"
+    value_type: "OBJECT"
+    value: {"associated_artifacts":"NONE","components":"NONE","lifecycle_classification":"NONE","policies":"NONE","relationships":"NONE","responsibility_map":"NONE"}
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.semantic_identity_separate_from_evaluation_identity"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.semantic_identity"
+    value_type: "STRING"
+    value: "DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES"
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.semantic_versioning"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.sequential_reconciliation_uses_in_memory_cumulative_target"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.smallest_execution_unit"
+    value_type: "STRING"
+    value: "VERIFICATION_CASE"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.snapshot_instability_invalidates_evidence_set"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.source_and_repository_freshness"
+    value_type: "STRING"
+    value: "FAIL_CLOSED"
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.source_authority"
+    value_type: "STRING"
+    value: "SOURCE_DECLARATION_ONLY"
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.source_boundary"
+    value_type: "STRING"
+    value: "SOURCE_SPECIFIC_COMPATIBILITY_READER"
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.source_category_inheritance"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.source_deletion_is_wu06_permission"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.source_deletion_requires_post_apply_completion_proof"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.source_mode_is_lifecycle_classification"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.source_modes"
+    value_type: "ARRAY"
+    value: ["EXPLICIT","TEMPLATE","HYBRID"]
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.source_subsystem"
+    value_type: "STRING"
+    value: "src/vpms"
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.specification_binding_fields"
+    value_type: "ARRAY"
+    value: ["family","source","revision"]
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.specification_binding_required_for_automated_conformance"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.specification_family"
+    value_type: "STRING"
+    value: "0.2.0-draft"
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.specification_release_lifecycle_independent_from_reference_tool"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.stable_diagnostic_rule_identity_required"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0004"]
+  - path: "authority_semantics.stage_outputs"
+    value_type: "STRING"
+    value: "IMMUTABLE_TYPED"
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.stale_or_conflicting_transition"
+    value_type: "STRING"
+    value: "FAIL_CLOSED"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.states"
+    value_type: "ARRAY"
+    value: ["PLAN_BOUND","AUTHORIZED","PRECONDITIONS_VERIFIED","FINAL_POINT_APPLIED","SOURCE_REANALYZED","SOURCE_COMPLETE","ASYNC_APPLIED","SOURCE_REMOVED","CANONICAL_SOURCE_COMPLETE","GLOBAL_VALIDATION","PROMOTION_READY","PROMOTED","POST_PROMOTION_VERIFIED","RECOVERY_REQUIRED"]
+    occurs_in: ["ADR-0016"]
+  - path: "authority_semantics.superseded_scope"
+    value_type: "STRING"
+    value: "REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY"
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.supported_source_bindings"
+    value_type: "ARRAY"
+    value: [{"family":"0.3.4-draft","revision":"b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e"},{"family":"0.3.6-draft","revision":"d6995ed232e845b88d8235b851e80ab54b7804ea"}]
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.synchronization_mode"
+    value_type: "STRING"
+    value: "ACTION_TIME"
+    occurs_in: ["ADR-0005"]
+  - path: "authority_semantics.target_classification_assignment_in_reader"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.target_delta_change_kinds"
+    value_type: "ARRAY"
+    value: ["ADD","REMOVE","REPLACE"]
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.target_selection_authority"
+    value_type: "STRING"
+    value: "EXPLICIT_TOOL_PP_COMPATIBILITY"
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.taxonomy_map"
+    value_type: "OBJECT"
+    value: {"AMBIGUOUS_SOURCE_ELEMENT":"NO_OBLIGATION_CATEGORY","EXISTING_SOURCE_ELEMENT":"REQUIRED_WORK_ELEMENT","REMOVED_SOURCE_ELEMENT":"REMOVAL_MIGRATION_ELEMENT","UNCOVERED_REPOSITORY_ELEMENT":"ASYNCHRONOUS_WORK_TARGET"}
+    occurs_in: ["ADR-0014"]
+  - path: "authority_semantics.template_mode_authority"
+    value_type: "STRING"
+    value: "PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.template_selection_inference"
+    value_type: "STRING"
+    value: "FORBIDDEN"
+    occurs_in: ["ADR-0009"]
+  - path: "authority_semantics.temporary_filename_token"
+    value_type: "STRING"
+    value: "pp1.01"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.temporary_profile_internal_version_match_required"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.temporary_profile_pattern"
+    value_type: "STRING"
+    value: "ptsip_<major>.<minor>.<micro>.yaml"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.temporary_source_processing_order"
+    value_type: "STRING"
+    value: "DESCENDING_DRAFT_VERSION_CLOSEST_TO_FINAL_POINT_FIRST"
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.temporary_target_path"
+    value_type: "STRING"
+    value: "ptsip_pp1.01.yaml"
+    occurs_in: ["ADR-0021"]
+  - path: "authority_semantics.tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.tool_compatibility_inferred_from_numeric_equality"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.tool_operations_require_explicit_pp_capability"
+    value_type: "ARRAY"
+    value: ["READ","VALIDATE","ANALYZE","MIGRATE","CREATE"]
+    occurs_in: ["ADR-0019"]
+  - path: "authority_semantics.tool_owned_cache_default_scope"
+    value_type: "STRING"
+    value: "OUTSIDE_CONSUMER_REPOSITORY"
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.tool_release_implies_profile_migration"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.tool_runtime_claims_full_implementation_by_activation"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.tool_version_independent_from_project_profile_version"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0017"]
+  - path: "authority_semantics.toolchain_is_current_ptsip_classification"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0011"]
+  - path: "authority_semantics.toolchain_to_development_tooling_translation_in_reader"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.tooling_default_location"
+    value_type: "STRING"
+    value: "EXTERNAL_TO_CONSUMER_REPOSITORY"
+    occurs_in: ["ADR-0002"]
+  - path: "authority_semantics.transition_classes"
+    value_type: "ARRAY"
+    value: ["IDENTITY_ONLY","SEMANTIC_MIGRATION"]
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.typed_relationship_is_permission"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.universal_shortest_path_engine_required"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0022"]
+  - path: "authority_semantics.unknown_family"
+    value_type: "STRING"
+    value: "UNSUPPORTED_SOURCE_FAMILY"
+    occurs_in: ["ADR-0013"]
+  - path: "authority_semantics.unresolved_analysis_states"
+    value_type: "ARRAY"
+    value: ["UNKNOWN","CONFLICT","INCOMPLETE"]
+    occurs_in: ["ADR-0003"]
+  - path: "authority_semantics.unresolved_conflict_behavior"
+    value_type: "STRING"
+    value: "FAIL_CLOSED"
+    occurs_in: ["ADR-0007"]
+  - path: "authority_semantics.unresolved_endpoint_may_be_fabricated"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.unresolved_required_work_auto_designed"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.unsupported_or_malformed_binding"
+    value_type: "STRING"
+    value: "FAIL_CLOSED"
+    occurs_in: ["ADR-0023"]
+  - path: "authority_semantics.verification_implementation_classification_separate_from_verification_purpose"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.verification_purpose_axis"
+    value_type: "STRING"
+    value: "VPMS"
+    occurs_in: ["ADR-0008"]
+  - path: "authority_semantics.verification_purposes"
+    value_type: "ARRAY"
+    value: ["PRODUCT","TOOLCHAIN"]
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.version_and_revision_required_transition_inputs"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0010"]
+  - path: "authority_semantics.versioned_specification"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0001"]
+  - path: "authority_semantics.vpms_may_consume_stable_ptsip_contract"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0006"]
+  - path: "authority_semantics.vpms_pass_equals_ptsip_conformant"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0006"]
+rows:
+  "ADR-0001":
+    source_path: "decisions/ADR-0001-establish-ptsip.yaml"
+    raw_feature_count: 6
+  "ADR-0002":
+    source_path: "decisions/ADR-0002-external-tooling-non-intrusion.yaml"
+    raw_feature_count: 8
+  "ADR-0003":
+    source_path: "decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml"
+    raw_feature_count: 12
+  "ADR-0004":
+    source_path: "decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml"
+    raw_feature_count: 16
+  "ADR-0005":
+    source_path: "decisions/ADR-0005-activate-spec-0.3.4-draft.yaml"
+    raw_feature_count: 13
+  "ADR-0006":
+    source_path: "decisions/ADR-0006-establish-vpms-verification-purpose-management.yaml"
+    raw_feature_count: 15
+  "ADR-0007":
+    source_path: "decisions/ADR-0007-primary-lifecycle-boundary-determination.yaml"
+    raw_feature_count: 9
+  "ADR-0008":
+    source_path: "decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml"
+    raw_feature_count: 17
+  "ADR-0009":
+    source_path: "decisions/ADR-0009-responsibility-map-declaration-authority.yaml"
+    raw_feature_count: 16
+  "ADR-0010":
+    source_path: "decisions/ADR-0010-versioned-draft-profile-transition.yaml"
+    raw_feature_count: 17
+  "ADR-0011":
+    source_path: "decisions/ADR-0011-activate-spec-0.3.7-draft.yaml"
+    raw_feature_count: 8
+  "ADR-0012":
+    source_path: "decisions/ADR-0012-universal-normalized-evidence-contract.yaml"
+    raw_feature_count: 12
+  "ADR-0013":
+    source_path: "decisions/ADR-0013-common-source-model-family-specific-semantics.yaml"
+    raw_feature_count: 12
+  "ADR-0014":
+    source_path: "decisions/ADR-0014-strongly-typed-staged-migration-analyzer.yaml"
+    raw_feature_count: 11
+  "ADR-0015":
+    source_path: "decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.yaml"
+    raw_feature_count: 15
+  "ADR-0016":
+    source_path: "decisions/ADR-0016-strongly-typed-migration-state-machine-checkpoint-ledger.yaml"
+    raw_feature_count: 15
+  "ADR-0017":
+    source_path: "decisions/ADR-0017-tool-version-profile-contract-independence.yaml"
+    raw_feature_count: 9
+  "ADR-0018":
+    source_path: "decisions/ADR-0018-separate-product-components-for-migration-subsystems.yaml"
+    raw_feature_count: 5
+  "ADR-0019":
+    source_path: "decisions/ADR-0019-independent-project-profile-versioning.yaml"
+    raw_feature_count: 13
+  "ADR-0020":
+    source_path: "decisions/ADR-0020-responsibility-segmented-wu-sequence-for-pp-transition.yaml"
+    raw_feature_count: 7
+  "ADR-0021":
+    source_path: "decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.yaml"
+    raw_feature_count: 13
+  "ADR-0022":
+    source_path: "decisions/ADR-0022-normalized-source-direct-latest-target-convergence.yaml"
+    raw_feature_count: 12
+  "ADR-0023":
+    source_path: "decisions/ADR-0023-typed-specification-binding-and-capability-registries.yaml"
+    raw_feature_count: 11
+summary:
+  adr_count: 23
+  raw_assertion_count: 272
+  unique_raw_feature_count: 271
