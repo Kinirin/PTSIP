@@ -6,6 +6,12 @@ analysis:
   reviewed_through: ADR-0010
   vocabulary_registration: false
   runtime_authority: NONE
+migration:
+  status: FROZEN_REFERENCE
+  frozen_through: ADR-0010
+  successor: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
+  future_dimension_growth: FORBIDDEN
+  semantic_clustering_source_after_migration: RAW_FEATURE_CORPUS
 dimensions:
   establish_canonical_identity:
     status: PROVISIONAL
