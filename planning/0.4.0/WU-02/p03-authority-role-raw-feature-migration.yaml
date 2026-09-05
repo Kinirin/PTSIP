@@ -85,7 +85,9 @@ verification_strategy:
   small_synthetic_engine_tests: REQUIRED
   historical_semantic_prefix_replay_growth: FROZEN
   github_actions_required: false
-  exact_local_pytest_result: TO_BE_RECORDED_WHEN_EXECUTED
+  exact_local_pytest_result: NOT_EXECUTED_IN_CURRENT_REMOTE_TOOL_ENVIRONMENT
+  repository_snapshot_check_test_added: true
+  synthetic_type_and_freeze_tests_added: true
 
 invariants:
   - RAW_FEATURE_NE_AUTHORITY_ROLE_EFFECT
@@ -99,6 +101,10 @@ invariants:
 
 review_progress:
   ADR-0001_THROUGH_0010_SEMANTIC_DIMENSIONS: FROZEN_REFERENCE
-  ADR-0001_THROUGH_0023_RAW_COLLECTION: IMPLEMENTATION_IN_PROGRESS
+  ADR-0001_THROUGH_0023_RAW_COLLECTION: GENERATED_COMPLETE
+  RAW_COLLECTION_SUMMARY:
+    adr_count: 23
+    raw_assertion_count: 272
+    unique_raw_feature_count: 271
   ADR-0011_THROUGH_0023_SEMANTIC_REVIEW: NOT_STARTED
   P03: IN_PROGRESS
