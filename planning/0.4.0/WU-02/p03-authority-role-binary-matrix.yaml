@@ -1,0 +1,158 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+
+document:
+  id: WU-02-P03-E-PROVISIONAL-BINARY-AUTHORITY-EFFECT-MATRIX
+  type: WORK_UNIT_EXTENSION_CONTRACT
+  status: ACTIVE
+  authority: PROJECT_OWNER
+  approval_date: '2026-09-05'
+  implementation_authorization: NOT_AUTHORIZED
+
+relation:
+  parent_p03: planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
+  parent_wu: planning/0.4.0/WU-02/WU-02.yaml
+  scope: P03_AUTHORITY_ROLE_CORPUS_ANALYSIS
+  supersedes_analysis_representation_from_p03_d: true
+  does_not_authorize_remediation_runtime_implementation: true
+
+approved_decision:
+  id: P03_E_PROVISIONAL_BINARY_AUTHORITY_EFFECT_MATRIX
+  status: APPROVED
+
+  purpose:
+    fixed_candidate_effect_constants_before_full_corpus_review: FORBIDDEN
+    corpus_analysis_representation: PROVISIONAL_BOOLEAN_DIMENSION_MATRIX
+    stable_constant_vocabulary_creation_timing: AFTER_ADR_0001_THROUGH_ADR_0023_REVIEW_AND_OWNER_APPROVAL
+
+  provisional_dimension_contract:
+    registered_vocabulary_constant: false
+    runtime_authority_token: false
+    analysis_only: true
+    values:
+      - true
+      - false
+    true_means: REVIEWED_AND_EFFECT_PRESENT
+    false_means: REVIEWED_AND_EFFECT_ABSENT
+    false_must_not_mean:
+      - UNKNOWN
+      - NOT_REVIEWED
+      - AMBIGUOUS
+      - NOT_ANALYZED
+    missing_value_in_reviewed_row: FORBIDDEN
+
+  matrix_invariant:
+    shape: RECTANGULAR
+    every_reviewed_adr_must_have_every_current_provisional_dimension: true
+    every_reviewed_cell_must_be_explicit_boolean: true
+    continue_to_next_adr_requires_complete_current_matrix: true
+
+  new_dimension_backfill:
+    trigger: NEW_PROVISIONAL_DIMENSION_DISCOVERED
+    mandatory: true
+    sequence:
+      - ADD_NEW_DIMENSION
+      - REEVALUATE_ALL_PREVIOUSLY_REVIEWED_ADRS
+      - WRITE_EXPLICIT_TRUE_OR_FALSE_FOR_EACH_PREVIOUS_ADR
+      - VERIFY_RECTANGULAR_MATRIX
+      - CONTINUE_TO_NEXT_ADR
+    default_false_for_previous_adrs: FORBIDDEN
+    leave_missing_for_previous_adrs: FORBIDDEN
+
+  corpus_order:
+    - ADR-0001
+    - ADR-0002
+    - ADR-0003
+    - ADR-0004
+    - ADR-0005
+    - ADR-0006
+    - ADR-0007
+    - ADR-0008
+    - ADR-0009
+    - ADR-0010
+    - ADR-0011
+    - ADR-0012
+    - ADR-0013
+    - ADR-0014
+    - ADR-0015
+    - ADR-0016
+    - ADR-0017
+    - ADR-0018
+    - ADR-0019
+    - ADR-0020
+    - ADR-0021
+    - ADR-0022
+    - ADR-0023
+
+  adr_0001:
+    role_effect_analysis:
+      establish_canonical_identity: true
+      establish_decision_criterion_priority: true
+      define_classification_basis: true
+      require_architectural_boundary: true
+      require_versioned_normative_contract: true
+    machine_coverage: PARTIAL
+    roles_description_required: true
+    vocabulary_registration: false
+    roles_description_id: null
+
+  roles_description_identity:
+    decision_identity_ne_role_description_identity: true
+    roles_description_id_must_not_be_derived_from_decision_id: true
+    roles_description_required_ne_description_materialized: true
+    allowed_intermediate_state:
+      roles_description_required: true
+      roles_description_id: null
+    independent_description_namespace_required: true
+    exact_description_id_scheme: NOT_FROZEN
+
+  coverage_field_responsibilities:
+    machine_coverage: MACHINE_ROLE_EXPRESSION_COMPLETENESS
+    roles_description_required: RESIDUAL_HUMAN_ROLE_EXPLANATION_REQUIREMENT
+    vocabulary_registration: OFFICIAL_CLOSED_VOCABULARY_REGISTRATION_STATE
+
+  constantization_gate:
+    before_adr_0023_review_complete:
+      stable_effect_constants: FORBIDDEN
+      provisional_dimension_rename_merge_split_remove: ALLOWED
+      runtime_adr_schema_consumption: FORBIDDEN
+      vocabulary_registration: false
+    after_adr_0023_review_complete:
+      required_review:
+        - DUPLICATE_DIMENSIONS
+        - OVERLAPPING_BOUNDARIES
+        - OVERBROAD_DIMENSIONS
+        - MERGE_CANDIDATES
+        - AUTHORITY_TYPE_OVERLAP
+        - SUBJECT_BINDING_OVERLAP
+        - RESIDUAL_DESCRIPTION_COVERAGE
+      project_owner_approval_required_for_constantization: true
+    final_representation_direction:
+      provisional_boolean_matrix: ANALYSIS_ARTIFACT_ONLY
+      registered_closed_effect_tokens: PREFERRED_AFTER_CONSTANTIZATION
+      exact_final_schema: NOT_FROZEN
+
+  validation:
+    provisional_matrix_validator_required: true
+    checks:
+      - IDENTICAL_DIMENSION_KEYS_FOR_ALL_REVIEWED_ROWS
+      - EXACT_BOOLEAN_FOR_EVERY_REVIEWED_CELL
+      - NO_MISSING_BACKFILL
+      - FALSE_NE_UNKNOWN
+      - VOCABULARY_REGISTRATION_FALSE_DURING_CORPUS_ANALYSIS
+      - ADR_0001_EFFECT_FIELDS_REMAIN_PROVISIONAL
+
+  invariants:
+    - PROVISIONAL_BOOLEAN_DIMENSION_NE_REGISTERED_VOCABULARY_CONSTANT
+    - FALSE_MEANS_REVIEWED_AND_ABSENT
+    - NEW_DIMENSION_REQUIRES_BACKFILL_OF_ALL_PREVIOUSLY_REVIEWED_ADRS
+    - REVIEWED_MATRIX_MUST_REMAIN_RECTANGULAR
+    - ADR_0001_FIVE_EFFECT_FIELDS_ARE_ANALYSIS_ONLY
+    - ROLE_DESCRIPTION_IDENTITY_NE_DECISION_IDENTITY
+    - MACHINE_COVERAGE_PARTIAL_NE_VOCABULARY_REGISTRATION
+    - CONSTANTIZATION_REQUIRES_FULL_CORPUS_REVIEW_AND_PROJECT_OWNER_APPROVAL
+
+review_progress:
+  ADR-0001: APPROVED_PROVISIONAL_BINARY_ANALYSIS
+  ADR-0002: NOT_REVIEWED
+  P03: IN_PROGRESS
