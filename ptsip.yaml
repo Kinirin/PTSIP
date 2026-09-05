@@ -338,6 +338,9 @@ components:
       - "agents/**"
       - "decisions/**"
       - "reference/**"
+      - ".github/scripts/p03_authority_role_matrix.py"
+      - "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
+      - "planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml"
 
   - id: repository-release-verification
     classification: DELIVERY
@@ -431,6 +434,7 @@ components:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
       - ".github/scripts/sync_readme_argos.py"
+      - ".github/scripts/p03_authority_role_matrix.py"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"
       - ".github/scripts/wu04g_bridge_log.ps1"
@@ -446,6 +450,8 @@ components:
       - "src/**"
       - "README.md"
       - "README.ko.md"
+      - "decisions/**"
+      - "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
