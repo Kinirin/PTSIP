@@ -101,14 +101,14 @@ features:
     value_type: "BOOLEAN"
     value: false
     occurs_in: ["ADR-0010"]
-  - path: "authority_semantics.authority_profile_conflict_silent_overwrite"
-    value_type: "BOOLEAN"
-    value: false
-    occurs_in: ["ADR-0005"]
   - path: "authority_semantics.authority"
     value_type: "STRING"
     value: "EVIDENCE_ONLY"
     occurs_in: ["ADR-0012"]
+  - path: "authority_semantics.authority_profile_conflict_silent_overwrite"
+    value_type: "BOOLEAN"
+    value: false
+    occurs_in: ["ADR-0005"]
   - path: "authority_semantics.authorization_binds"
     value_type: "ARRAY"
     value: ["WU06_PLAN_DIGEST","PROJECT_DECISION_IDS","AUTHORITY_REVISION"]
@@ -769,14 +769,14 @@ features:
     value_type: "ARRAY"
     value: ["COMPONENT","ASSOCIATED_ARTIFACT"]
     occurs_in: ["ADR-0008"]
-  - path: "authority_semantics.relationships_axis"
-    value_type: "STRING"
-    value: "TYPED_DIRECTED_SEMANTICS"
-    occurs_in: ["ADR-0008"]
   - path: "authority_semantics.relationships"
     value_type: "ARRAY"
     value: ["ptsip-evidence:IMPORTS:ptsip-core","ptsip-source-compat:IMPORTS:ptsip-core","ptsip-source-compat:READS:ptsip-embedded-contracts","ptsip-migration:IMPORTS:ptsip-core","ptsip-migration:IMPORTS:ptsip-evidence","ptsip-migration:IMPORTS:ptsip-source-compat"]
     occurs_in: ["ADR-0018"]
+  - path: "authority_semantics.relationships_axis"
+    value_type: "STRING"
+    value: "TYPED_DIRECTED_SEMANTICS"
+    occurs_in: ["ADR-0008"]
   - path: "authority_semantics.release_note_namespaces"
     value_type: "ARRAY"
     value: ["tool","project-profile","specification"]
@@ -845,14 +845,14 @@ features:
     value_type: "OBJECT"
     value: {"associated_artifacts":"NONE","components":"NONE","lifecycle_classification":"NONE","policies":"NONE","relationships":"NONE","responsibility_map":"NONE"}
     occurs_in: ["ADR-0021"]
-  - path: "authority_semantics.semantic_identity_separate_from_evaluation_identity"
-    value_type: "BOOLEAN"
-    value: true
-    occurs_in: ["ADR-0012"]
   - path: "authority_semantics.semantic_identity"
     value_type: "STRING"
     value: "DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES"
     occurs_in: ["ADR-0015"]
+  - path: "authority_semantics.semantic_identity_separate_from_evaluation_identity"
+    value_type: "BOOLEAN"
+    value: true
+    occurs_in: ["ADR-0012"]
   - path: "authority_semantics.semantic_versioning"
     value_type: "BOOLEAN"
     value: false
