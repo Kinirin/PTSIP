@@ -4,7 +4,7 @@ work_unit: WU-02
 document:
   id: WU-02-P03-E-PROVISIONAL-BINARY-AUTHORITY-EFFECT-MATRIX
   type: WORK_UNIT_EXTENSION_CONTRACT
-  status: ACTIVE
+  status: FROZEN_REFERENCE
   authority: PROJECT_OWNER
   approval_date: '2026-09-05'
   implementation_authorization: NOT_AUTHORIZED
@@ -16,6 +16,14 @@ relation:
   scope: P03_AUTHORITY_ROLE_CORPUS_ANALYSIS
   supersedes_analysis_representation_from_p03_d: true
   does_not_authorize_remediation_runtime_implementation: true
+
+migration_status:
+  frozen_through: ADR-0010
+  semantic_dimension_count: 79
+  future_dimension_growth: FORBIDDEN
+  successor: planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml
+  detailed_backfill_records_below: HISTORICAL_REFERENCE_ONLY
+  extend_corpus_review_section_after_adr_0010: FORBIDDEN
 
 approved_decision:
   id: P03_E_PROVISIONAL_BINARY_AUTHORITY_EFFECT_MATRIX
