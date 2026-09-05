@@ -282,6 +282,183 @@ approved_decisions:
       - TOOL_SUPPORT_NE_CURRENT_APPLICABILITY
       - TOOL_CAPABILITY_GAP_IS_NOT_A_GENERIC_AUTHORITY_FAILURE_BUCKET
 
+
+  P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    approval_date: '2026-09-05'
+
+    authority_role_model:
+      representation: CLOSED_MACHINE_DIMENSION_VECTOR
+      single_exclusive_role_enum: REJECTED
+      reason: THREE_INDEPENDENT_BINARY_DIMENSIONS_ALLOW_EIGHT_COMBINATIONS
+      current_dimensions:
+        project_architecture_authority:
+          type: BOOLEAN
+          closed_machine_dimension: true
+        normative_constraint_authority:
+          type: BOOLEAN
+          closed_machine_dimension: true
+        governance_control_authority:
+          type: BOOLEAN
+          closed_machine_dimension: true
+      combination_count_for_current_dimensions: 8
+      all_combinations_automatically_legal: false
+      combination_legality_requires_registered_contract_validation: true
+      exact_future_dimension_set: EVOLVABLE_BY_APPROVED_REFINEMENT_CYCLE
+
+    semantic_cardinality_boundary:
+      one_adr_one_authority_semantic: true
+      one_adr_one_exclusive_role: false
+      one_authority_semantic_may_have_multiple_role_effects: true
+      invariant: ONE_ADR_ONE_AUTHORITY_SEMANTIC_ONE_RESOLVED_ROLE_VECTOR
+
+    role_resolution_boundary:
+      resolved_false_vector:
+        vector:
+          project_architecture_authority: false
+          normative_constraint_authority: false
+          governance_control_authority: false
+        meaning: EXPLICITLY_NO_CURRENT_AUTOMATIC_AUTHORITY_CONSUMPTION_PATH
+        equals_unresolved: false
+      unresolved_role:
+        must_not_be_encoded_as_all_false: true
+        resolution_state: UNRESOLVED
+      advisory_role:
+        canonical_authority_field: FORBIDDEN
+        separate_candidate_representation_required: true
+        resolution_state: ADVISORY_CANDIDATE
+      declared_role:
+        resolution_state: DECLARED
+      deterministic_role_derivation:
+        resolution_state: DETERMINISTICALLY_DERIVED
+        registered_machine_rule_required: true
+        prose_inference_forbidden: true
+
+    role_description_reference:
+      field: roles_description_id
+      location: ADR_MACHINE_RECORD
+      value:
+        stable_description_id_or_null: true
+      description_store: decisions/ADR-description-map.yaml
+      description_store_role: HUMAN_EXPLANATION_AND_VOCABULARY_REFINEMENT_SOURCE
+      machine_authority: NONE
+      runtime_solver_consumption: FORBIDDEN
+      candidate_elimination_consumption: FORBIDDEN
+      project_authority_projection_consumption: FORBIDDEN
+      role_resolution_runtime_consumption: FORBIDDEN
+      natural_language_allowed: true
+      natural_language_is_authority: false
+
+    description_map_boundary:
+      description_change_must_not_change_runtime_decision: true
+      description_translation_must_not_change_runtime_decision: true
+      description_deletion_must_not_change_existing_resolved_machine_role: true
+      explanation_may_be_used_for_design_time_vocabulary_refinement: true
+      explanation_may_not_be_used_as_runtime_authority: true
+      invariant: DESIGN_TIME_REFINEMENT_INPUT_NE_RUNTIME_AUTHORITY
+
+    authority_role_vocabulary_refinement_cycle:
+      name: AUTHORITY_ROLE_VOCABULARY_REFINEMENT_CYCLE
+      mode: ITERATIVE_SEMANTIC_NORMALIZATION
+      trigger:
+        - ROLE_DESCRIPTION_EXISTS
+        - AUTHORITY_RELEVANT_MEANING_MAY_REMAIN_OUTSIDE_CURRENT_MACHINE_DIMENSIONS
+      stages:
+        - EXTRACT_AUTHORITY_RELEVANT_SEMANTICS_FROM_ROLE_EXPLANATION_FOR_DESIGN_REVIEW
+        - COMPARE_WITH_CURRENT_CLOSED_MACHINE_DIMENSIONS
+        - IDENTIFY_UNREPRESENTED_AUTHORITY_RELEVANT_MEANING
+        - PROPOSE_NEW_MACHINE_DIMENSION_CANDIDATE_WHEN_NEEDED
+        - QUALIFY_DIMENSION_CANDIDATE
+        - REGISTER_APPROVED_CLOSED_MACHINE_DIMENSION
+        - REEXPRESS_RELEVANT_ADR_ROLE_VECTORS
+        - RECHECK_REMAINING_AUTHORITY_RELEVANT_NATURAL_LANGUAGE_SEMANTICS
+        - REPEAT_UNTIL_NO_REQUIRED_MACHINE_SEMANTICS_REMAIN_OUTSIDE_VOCABULARY
+
+    machine_dimension_candidate_qualification:
+      required_checks:
+        - NOT_ALREADY_EXPRESSIBLE_BY_EXISTING_MACHINE_DIMENSIONS
+        - NOT_AUTHORITY_TYPE_RESPONSIBILITY
+        - NOT_SUBJECT_BINDING_RESPONSIBILITY
+        - NOT_HUMAN_RATIONALE_ONLY
+        - REUSABLE_SEMANTIC_AXIS
+        - MACHINE_DECISION_RELEVANCE_EXISTS
+        - CLOSED_VOCABULARY_REPRESENTATION_IS_POSSIBLE
+      explanation_occurrence_alone_creates_dimension: false
+      arbitrary_dimension_growth: FORBIDDEN
+      approval_required_before_registry_addition: true
+
+    vocabulary_refinement_states:
+      EXPLANATION_ONLY:
+        machine_dimension_registered: false
+        runtime_authority: false
+      DIMENSION_CANDIDATE:
+        machine_dimension_registered: false
+        runtime_authority: false
+      QUALIFIED_MACHINE_DIMENSION:
+        machine_dimension_registered: false
+        runtime_authority: false
+      REGISTERED_MACHINE_DIMENSION:
+        machine_dimension_registered: true
+        runtime_use_requires_compatible_contract: true
+      ADOPTED_IN_ADR_ROLE:
+        machine_dimension_registered: true
+        relevant_adr_reexpressed: true
+
+    description_completeness:
+      description_presence_ne_machine_vocabulary_completeness: true
+      machine_coverage_state_required_conceptually: true
+      exact_field_name: NOT_FROZEN
+      conceptual_states:
+        PARTIAL:
+          authority_relevant_semantics_remain_outside_machine_vocabulary: true
+          roles_description_id_may_be_null: false
+        COMPLETE_BUT_HUMAN_EXPLANATION_RETAINED:
+          authority_relevant_semantics_remain_outside_machine_vocabulary: false
+          human_explanation_still_useful: true
+          roles_description_id_may_be_null: false
+        FULLY_MACHINE_EXPRESSED:
+          authority_relevant_semantics_remain_outside_machine_vocabulary: false
+          human_role_explanation_required: false
+          roles_description_id_may_be_null: true
+
+    roles_description_id_null_semantics:
+      null_is_not_empty_string: true
+      meaning: NO_REMAINING_AUTHORITY_RELEVANT_SEMANTICS_OUTSIDE_MACHINE_VOCABULARY_AND_NO_HUMAN_ROLE_DESCRIPTION_REQUIRED
+      requires_refinement_cycle_completion_for_current_role_semantics: true
+      description_removal_changes_authority_semantic: false
+      description_removal_changes_role_vector: false
+      description_removal_changes_runtime_eligibility: false
+
+    runtime_vs_evolution_pipeline:
+      runtime_authority_pipeline:
+        consumes:
+          - RESOLVED_CLOSED_MACHINE_ROLE_DIMENSIONS
+          - REGISTERED_AUTHORITY_CONTRACT
+          - CURRENT_SUBJECT_BINDING
+          - CURRENT_TOOL_CAPABILITY
+        consumes_role_description: false
+      vocabulary_evolution_pipeline:
+        may_consume_role_description_for_design_review: true
+        may_propose_dimensions: true
+        may_register_dimensions_without_approval: false
+        directly_changes_runtime_authority: false
+      invariant: RUNTIME_AUTHORITY_PIPELINE_NE_VOCABULARY_EVOLUTION_PIPELINE
+
+    approved_invariants:
+      - AUTHORITY_ROLE_IS_CLOSED_MACHINE_DIMENSION_VECTOR
+      - THREE_CURRENT_BINARY_DIMENSIONS_ALLOW_EIGHT_MACHINE_COMBINATIONS
+      - ONE_ADR_ONE_AUTHORITY_SEMANTIC_DOES_NOT_REQUIRE_ONE_EXCLUSIVE_ROLE
+      - ALL_FALSE_DECLARED_ROLE_NE_UNRESOLVED_ROLE
+      - ROLE_DESCRIPTION_NE_RUNTIME_AUTHORITY
+      - ROLE_DESCRIPTION_MAY_FEED_DESIGN_TIME_VOCABULARY_REFINEMENT
+      - MACHINE_DIMENSION_ADDITION_REQUIRES_SEMANTIC_QUALIFICATION
+      - DESCRIPTION_PRESENCE_NE_MACHINE_VOCABULARY_COMPLETENESS
+      - ROLES_DESCRIPTION_ID_NULL_REQUIRES_NO_REMAINING_AUTHORITY_RELEVANT_NATURAL_LANGUAGE_DEPENDENCY
+      - RUNTIME_AUTHORITY_PIPELINE_NE_VOCABULARY_EVOLUTION_PIPELINE
+      - NATURAL_LANGUAGE_AUTHORITY_EXPLANATION_MUST_CONVERGE_TOWARD_CLOSED_MACHINE_DIMENSIONS
+
+
   execution_timing: IMMEDIATE_DURING_P03_REVIEW
 
 migration_scope:
@@ -333,6 +510,7 @@ review_progress:
   P03_ONE_ADR_ONE_AUTHORITY_SEMANTIC: APPROVED_AND_APPLIED
   P03_ADR_PATH_REFERENCE_NORMALIZATION: APPROVED_AND_APPLIED
   P03_B_EXPLICIT_AUTHORITY_ROLE_AND_FRESH_ELIGIBILITY: APPROVED
+  P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT: APPROVED
   P03: IN_PROGRESS
 
 remaining_p03_review: IN_PROGRESS
