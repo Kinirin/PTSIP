@@ -1,0 +1,50 @@
+schema_version: ptsip-p03-authority-role-provisional-dimensions/v1
+
+analysis:
+  index_path: decisions/INDEX.yaml
+  first_adr: ADR-0001
+  last_adr: ADR-0023
+  reviewed_through: ADR-0001
+  vocabulary_registration: false
+  runtime_authority: NONE
+
+dimensions:
+  establish_canonical_identity:
+    status: PROVISIONAL
+    introduced_by: ADR-0001
+    expression:
+      all:
+        - path: authority_semantics.canonical_term
+          operator: NON_EMPTY
+        - path: authority_semantics.expanded_identity
+          operator: NON_EMPTY
+
+  establish_decision_criterion_priority:
+    status: PROVISIONAL
+    introduced_by: ADR-0001
+    expression:
+      path: authority_semantics.primary_principle
+      operator: NON_EMPTY
+
+  define_classification_basis:
+    status: PROVISIONAL
+    introduced_by: ADR-0001
+    expression:
+      path: authority_semantics.classifies_by
+      operator: NON_EMPTY
+
+  require_architectural_boundary:
+    status: PROVISIONAL
+    introduced_by: ADR-0001
+    expression:
+      path: authority_semantics.requires_product_toolchain_boundary
+      operator: EQUALS
+      value: true
+
+  require_versioned_normative_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0001
+    expression:
+      path: authority_semantics.versioned_specification
+      operator: EQUALS
+      value: true
