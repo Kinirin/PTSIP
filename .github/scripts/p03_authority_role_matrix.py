@@ -277,6 +277,20 @@ def _load_registry(path: Path, known_paths: dict[str, list[object]]) -> dict[str
     if not first <= reviewed <= last:
         raise AnalysisError("reviewed_through must be within first_adr..last_adr")
 
+    migration = registry.get("migration")
+    if migration is not None:
+        if not isinstance(migration, dict):
+            raise AnalysisError("registry migration must be a mapping")
+        if migration.get("status") != "FROZEN_REFERENCE":
+            raise AnalysisError("legacy semantic registry migration status must be FROZEN_REFERENCE")
+        frozen = _adr_number(migration.get("frozen_through"), label="migration.frozen_through")
+        if reviewed > frozen:
+            raise AnalysisError(
+                "legacy semantic dimension analysis is frozen; use the raw-feature corpus collector"
+            )
+        if migration.get("future_dimension_growth") != "FORBIDDEN":
+            raise AnalysisError("legacy semantic registry must forbid future dimension growth")
+
     dimensions = registry.get("dimensions")
     if not isinstance(dimensions, dict) or not dimensions:
         raise AnalysisError("registry dimensions must be a non-empty mapping")
