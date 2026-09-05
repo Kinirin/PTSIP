@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -21,6 +23,9 @@ SEMANTICS_SCHEMA_PATH = SCHEMAS / "ptsip-governance-authority-semantics.schema.j
 TEMPLATE_PATH = DECISIONS / "ADR-TEMPLATE.yaml"
 INDEX_PATH = DECISIONS / "INDEX.yaml"
 REGISTRY_PATH = DECISIONS / "AUTHORITY-SCHEMA-REGISTRY.yaml"
+P03_ROLE_ANALYZER = ROOT / ".github" / "scripts" / "p03_authority_role_matrix.py"
+P03_ROLE_REGISTRY = ROOT / "planning" / "0.4.0" / "WU-02" / "p03-authority-role-provisional-dimensions.yaml"
+P03_ROLE_MATRIX = ROOT / "planning" / "0.4.0" / "WU-02" / "p03-authority-role-matrix.generated.yaml"
 
 
 def _json(path: Path) -> dict[str, object]:
@@ -166,3 +171,96 @@ def test_index_routes_every_current_topic_to_matching_machine_adr() -> None:
 
     all_ids = {_yaml(path)["decision"]["id"] for path in _adr_paths()}
     assert routed_ids == all_ids
+
+
+def test_p03_authority_role_matrix_is_current_rectangular_and_semantically_evaluated() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(P03_ROLE_ANALYZER),
+            "--repo-root",
+            str(ROOT),
+            "--check",
+        ],
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+    matrix = _yaml(P03_ROLE_MATRIX)
+    dimensions = matrix["dimensions"]
+    rows = matrix["rows"]
+    assert matrix["source"]["vocabulary_registration"] is False
+    assert matrix["source"]["runtime_authority"] == "NONE"
+    assert matrix["validation"]["rectangular"] is True
+    assert matrix["validation"]["dimension_count"] == len(dimensions)
+    assert matrix["validation"]["reviewed_row_count"] == len(rows)
+
+    for adr_id, row in rows.items():
+        effects = row["role_effect_analysis"]
+        assert list(effects) == dimensions, adr_id
+        assert all(type(value) is bool for value in effects.values())
+
+    assert rows["ADR-0001"]["role_effect_analysis"] == {
+        "establish_canonical_identity": True,
+        "establish_decision_criterion_priority": True,
+        "define_classification_basis": True,
+        "require_architectural_boundary": True,
+        "require_versioned_normative_contract": True,
+    }
+
+
+def test_p03_new_provisional_dimension_automatically_backfills_reviewed_rows(
+    tmp_path: Path,
+) -> None:
+    registry = _yaml(P03_ROLE_REGISTRY)
+    dimensions = registry["dimensions"]
+    dimensions["probe_absent_semantic"] = {
+        "status": "PROVISIONAL",
+        "introduced_by": "ADR-0002",
+        "expression": {
+            "path": "authority_semantics.__p03_absent_probe__",
+            "operator": "PRESENT",
+        },
+    }
+
+    registry_path = tmp_path / "dimensions.yaml"
+    output_path = tmp_path / "matrix.yaml"
+    registry_path.write_text(
+        yaml.safe_dump(registry, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(P03_ROLE_ANALYZER),
+            "--repo-root",
+            str(ROOT),
+            "--registry",
+            str(registry_path),
+            "--output",
+            str(output_path),
+            "--write",
+        ],
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+    generated = _yaml(output_path)
+    assert generated["dimensions"][-1] == "probe_absent_semantic"
+    assert generated["rows"]["ADR-0001"]["role_effect_analysis"]["probe_absent_semantic"] is False
+    assert set(generated["rows"]["ADR-0001"]["role_effect_analysis"]) == set(
+        generated["dimensions"]
+    )
