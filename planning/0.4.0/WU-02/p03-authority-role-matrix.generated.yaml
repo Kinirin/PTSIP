@@ -1,0 +1,26 @@
+schema_version: ptsip-p03-authority-role-matrix/v1
+source:
+  dimension_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
+  index_path: decisions/INDEX.yaml
+  reviewed_through: ADR-0001
+  vocabulary_registration: false
+  runtime_authority: NONE
+dimensions:
+  - establish_canonical_identity
+  - establish_decision_criterion_priority
+  - define_classification_basis
+  - require_architectural_boundary
+  - require_versioned_normative_contract
+rows:
+  ADR-0001:
+    source_path: decisions/ADR-0001-establish-ptsip.yaml
+    role_effect_analysis:
+      establish_canonical_identity: true
+      establish_decision_criterion_priority: true
+      define_classification_basis: true
+      require_architectural_boundary: true
+      require_versioned_normative_contract: true
+validation:
+  rectangular: true
+  reviewed_row_count: 1
+  dimension_count: 5
