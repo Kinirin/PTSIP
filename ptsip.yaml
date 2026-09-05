@@ -325,6 +325,7 @@ components:
     include:
       - "tests/ptsip/repository/test_self_profile.py"
       - "tests/ptsip/test_adr_governance_assets.py"
+      - "tests/ptsip/test_p03_raw_feature_extraction.py"
     purpose: repository_profile_and_governance_asset_verification
     shipped: false
     runtime_required: false
@@ -339,9 +340,12 @@ components:
       - "decisions/**"
       - "reference/**"
       - ".github/scripts/p03_authority_role_matrix.py"
+      - ".github/scripts/p03_authority_role_raw_features.py"
       - "planning/0.4.0/WU-02/p03-authority-role-binary-matrix.yaml"
+      - "planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml"
       - "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
       - "planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml"
+      - "planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml"
 
   - id: repository-release-verification
     classification: DELIVERY
@@ -436,6 +440,7 @@ components:
       - ".github/workflows/readme-translation.yml"
       - ".github/scripts/sync_readme_argos.py"
       - ".github/scripts/p03_authority_role_matrix.py"
+      - ".github/scripts/p03_authority_role_raw_features.py"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"
       - ".github/scripts/wu04g_bridge_log.ps1"
@@ -453,6 +458,7 @@ components:
       - "README.ko.md"
       - "decisions/**"
       - "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
+      - "planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml"
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
