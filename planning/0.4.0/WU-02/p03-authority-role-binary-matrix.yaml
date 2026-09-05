@@ -8,6 +8,7 @@ document:
   authority: PROJECT_OWNER
   approval_date: '2026-09-05'
   implementation_authorization: NOT_AUTHORIZED
+  p03_analysis_automation_authorization: AUTHORIZED_BY_PROJECT_OWNER
 
 relation:
   parent_p03: planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
@@ -22,6 +23,10 @@ approved_decision:
 
   purpose:
     fixed_candidate_effect_constants_before_full_corpus_review: FORBIDDEN
+    deterministic_semantic_auto_evaluator: AUTHORIZED
+    automatic_matrix_regeneration_and_backfill: AUTHORIZED
+    rectangular_matrix_validator: AUTHORIZED
+    opaque_natural_language_semantic_inference: FORBIDDEN
     corpus_analysis_representation: PROVISIONAL_BOOLEAN_DIMENSION_MATRIX
     stable_constant_vocabulary_creation_timing: AFTER_ADR_0001_THROUGH_ADR_0023_REVIEW_AND_OWNER_APPROVAL
 
@@ -132,6 +137,18 @@ approved_decision:
       registered_closed_effect_tokens: PREFERRED_AFTER_CONSTANTIZATION
       exact_final_schema: NOT_FROZEN
 
+  automation:
+    dimension_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
+    generated_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
+    analyzer: .github/scripts/p03_authority_role_matrix.py
+    evaluator_input: REGISTERED_PROVISIONAL_MACHINE_PREDICATES
+    evaluator_source_semantics: ADR_MACHINE_AUTHORITY_SEMANTICS
+    natural_language_description_consumption: FORBIDDEN
+    new_dimension_behavior: REEVALUATE_ALL_REVIEWED_ADRS_AND_REGENERATE_MATRIX
+    generated_false_is_default_fill: false
+    generated_false_requires_predicate_evaluation: true
+    stable_vocabulary_registration: false
+
   validation:
     provisional_matrix_validator_required: true
     checks:
@@ -154,5 +171,7 @@ approved_decision:
 
 review_progress:
   ADR-0001: APPROVED_PROVISIONAL_BINARY_ANALYSIS
-  ADR-0002: NOT_REVIEWED
+  P03_ANALYSIS_AUTOMATION: IMPLEMENTED
+  P03_ANALYSIS_AUTOMATION_VERIFICATION: TESTS_ADDED_EXECUTION_NOT_CONFIRMED_IN_CURRENT_TOOL_ENVIRONMENT
+  ADR-0002: AUTHORIZED_FOR_DECOMPOSITION_NOT_YET_RECORDED
   P03: IN_PROGRESS
