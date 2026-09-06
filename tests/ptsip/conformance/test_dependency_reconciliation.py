@@ -4,6 +4,7 @@ import subprocess
 from pathlib import Path
 
 from ptsip.conformance import evaluate_conformance
+from ptsip.conformance_engine import evaluate_conformance as evaluate_engine_conformance
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 
@@ -116,3 +117,34 @@ def test_unlisted_product_dependency_remains_blocking(tmp_path: Path) -> None:
     reconciliation = result.report["dependency_reconciliation"]
     assert reconciliation["summary"]["resolved_external_count"] == 0
     assert reconciliation["summary"]["unresolved_candidate_count"] == 1
+
+
+def test_engine_preserves_runtime_reconciliation_and_unresolved_blockers(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    _fixture(
+        repo,
+        "import numpy\nfrom PIL import Image\nimport undeclared_runtime_package\n__import__(module_name)",
+        "numpy==2.5.2\nPillow==12.2.0",
+    )
+
+    result = evaluate_engine_conformance(repo)
+
+    gap_ids = _dependency_gap_ids(result)
+    assert not any("numpy" in item or "PIL" in item for item in gap_ids)
+    assert any("undeclared_runtime_package" in item for item in gap_ids)
+    assert "dependency-target:python-dynamic:product/app.py:4" in gap_ids
+    reconciliation = result.report["dependency_reconciliation"]
+    assert reconciliation["summary"]["resolved_external_count"] == 2
+    assert reconciliation["summary"]["unresolved_candidate_count"] == 1
+    assert reconciliation["summary"]["alias_resolved_count"] == 1
+    assert {item["distribution"] for item in reconciliation["resolved_external"]} == {"numpy", "pillow"}
+    for item in reconciliation["resolved_external"]:
+        assert item["basis"] == "PRODUCT_RUNTIME_MANIFEST"
+        assert item["declaration_paths"] == ["install/runtime-requirements.txt"]
+        assert f"dependency-target:{item['evidence_id']}" not in gap_ids
+    assert result.report["evaluators"]["dependency_reconciliation"] == {
+        "status": "RAN",
+        "resolved_external_count": 2,
+        "candidate_count": 3,
+    }
+    assert result.report["outcome"] == "INCOMPLETE"

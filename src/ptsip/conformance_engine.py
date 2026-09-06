@@ -13,6 +13,7 @@ from .conformance import (
     evaluate_conformance as evaluate_base_conformance,
 )
 from .conformance_audit import audit_conformance_report
+from .dependency_reconciliation import DependencyReconciliation, reconcile_dependency_evidence
 from .inspection.dependencies import DependencyScan
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.source_adapters import SUPPORTED_SOURCE_SUFFIXES
@@ -225,11 +226,17 @@ def evaluate_conformance(
         "document_count": len(agent_load.documents),
     }
 
+    dependency_reconciliation = DependencyReconciliation.empty()
     if components:
         partition = partition_components(root, components)
+        dependency_reconciliation = reconcile_dependency_evidence(
+            root, dependencies, components, partition
+        )
         boundary_findings = evaluate_declared_dependency_boundaries(components, partition, dependencies)
         diagnostics.extend(_finding_diagnostic(item, "declared-dependency-boundaries") for item in boundary_findings)
-        dependency_gaps = _dependency_coverage_gaps(dependencies, components, partition)
+        dependency_gaps = _dependency_coverage_gaps(
+            dependencies, components, partition, dependency_reconciliation.resolved_evidence_ids
+        )
         supplemented = _externally_supplemented_native_ids(native_dependencies, external_load.edges)
         dependency_gaps = _coverage_without_supplemented(dependency_gaps, supplemented)
         blocking.extend(item for item in dependency_gaps if item.get("blocking"))
@@ -304,6 +311,12 @@ def evaluate_conformance(
             "observations": [],
         }
 
+    report["dependency_reconciliation"] = dependency_reconciliation.as_dict()
+    evaluators["dependency_reconciliation"] = {
+        "status": dependency_reconciliation.status,
+        "resolved_external_count": len(dependency_reconciliation.resolved_external),
+        "candidate_count": dependency_reconciliation.candidate_count,
+    }
     report["diagnostics"] = diagnostics
     coverage["blocking_gaps"] = blocking
     coverage["non_blocking_gaps"] = non_blocking
