@@ -275,3 +275,78 @@ def test_p03_new_dimension_is_not_applied_while_same_review_is_deferred(
 
     assert _yaml(registry_path)["analysis"]["reviewed_through"] == "ADR-0010"
     assert _yaml(ledger_path)["records"] == {}
+
+
+def test_p03_decision_ledger_suppresses_repeat_ai_reasoning_and_allows_explicit_defer_revisit(
+    tmp_path: Path,
+) -> None:
+    module = _load_module()
+    base_packet = module.build_decision_packet(ROOT, "ADR-0011", REGISTRY, RAW, LEDGER)
+    first, second = base_packet["questions"][:2]
+
+    ledger = module._empty_ledger()
+    ledger["records"][first["candidate_id"]] = {
+        "first_reviewed_in": "ADR-0011",
+        "raw_path": first["path"],
+        "decision": "NON_EFFECT",
+        "target_dimension": None,
+        "proposed_dimension_id": None,
+        "predicate_mode": None,
+        "reason_code": "PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL",
+        "packet_fingerprint": "test-only",
+        "semantic_authority": "NONE",
+        "runtime_authority": "NONE",
+        "vocabulary_registration": False,
+    }
+    ledger["records"][second["candidate_id"]] = {
+        "first_reviewed_in": "ADR-0011",
+        "raw_path": second["path"],
+        "decision": "DEFER",
+        "target_dimension": None,
+        "proposed_dimension_id": None,
+        "predicate_mode": None,
+        "reason_code": "INSUFFICIENT_SEMANTIC_CONTEXT",
+        "packet_fingerprint": "test-only",
+        "semantic_authority": "NONE",
+        "runtime_authority": "NONE",
+        "vocabulary_registration": False,
+    }
+    ledger_path = tmp_path / "ledger.yaml"
+    ledger_path.write_text(
+        yaml.safe_dump(ledger, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    default_packet = module.build_decision_packet(
+        ROOT,
+        "ADR-0011",
+        REGISTRY,
+        RAW,
+        ledger_path,
+    )
+    assert default_packet["summary"]["question_count"] == 6
+    assert default_packet["summary"]["already_resolved_count"] == 1
+    assert default_packet["summary"]["deferred_suppressed_count"] == 1
+    assert first["candidate_id"] not in {
+        item["candidate_id"] for item in default_packet["questions"]
+    }
+    assert second["candidate_id"] not in {
+        item["candidate_id"] for item in default_packet["questions"]
+    }
+
+    revisit_packet = module.build_decision_packet(
+        ROOT,
+        "ADR-0011",
+        REGISTRY,
+        RAW,
+        ledger_path,
+        include_deferred=True,
+    )
+    assert revisit_packet["summary"]["question_count"] == 7
+    assert revisit_packet["review_contract"]["include_deferred_candidates"] is True
+    assert first["candidate_id"] not in {
+        item["candidate_id"] for item in revisit_packet["questions"]
+    }
+    assert second["candidate_id"] in {
+        item["candidate_id"] for item in revisit_packet["questions"]
+    }
