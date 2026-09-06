@@ -6,21 +6,25 @@ These instructions apply to coding agents working anywhere in this repository.
 
 For P03 Authority Role corpus-analysis tasks under `planning/0.4.0/WU-02/`, use this narrow path before the general context-loading rule below.
 
-When the task is limited to raw-feature collection, one-ADR review-packet generation, current provisional-dimension evaluation, deterministic backfill, or the focused P03 pytest files:
+When the task is limited to raw-feature collection, one-ADR semantic review, current provisional-dimension evaluation, deterministic backfill, or the focused P03 pytest files:
 
 1. read this `AGENTS.md`;
 2. read `planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml`;
 3. run the applicable P03 automation before reading analysis registries or ADRs manually;
-4. for one-ADR review, generate the compact packet first with:
-   `py -3.14 .github/scripts/p03_authority_role_review_packet.py --repo-root . --adr ADR-NNNN --compact`;
-5. use that compact generated review packet as the primary semantic-review input.
+4. for one-ADR semantic review, prepare the minimal AI decision packet and response template with:
+   `py -3.14 .github/scripts/p03_authority_role_semantic_decision.py --repo-root . prepare --adr ADR-NNNN --write`;
+5. read only the generated `ADR-NNNN.decision.generated.yaml` as the default semantic input and edit only the generated `ADR-NNNN.response.yaml`;
+6. choose only the closed structured decision fields requested by that packet; do not write free-form analysis unless a `DEFER` requires an explicit escalation;
+7. validate and apply through `.github/scripts/p03_authority_role_semantic_decision.py`; do not edit the provisional registry, generated matrix, or decision ledger directly.
 
-For this narrow path, do **not** pre-read `MEMORY.md`, the full `ptsip.yaml`, general Specification files, historical release planning, the complete provisional-dimension registry, the complete raw corpus, or unrelated ADRs unless:
+The semantic-decision tool performs raw snapshot validation, existing predicate evaluation, candidate routing, raw-value shape compression, stale-packet checking, predicate generation, ledger recording, registry mutation, full reviewed-prefix matrix regeneration, and rectangular backfill validation.
+
+For this narrow path, do **not** pre-read `MEMORY.md`, the full `ptsip.yaml`, general Specification files, historical release planning, the complete provisional-dimension registry, the complete raw corpus, full review packets, or unrelated ADRs unless:
 - the automation fails and the failing dependency must be diagnosed;
-- the generated review packet explicitly identifies an unresolved dependency; or
+- the minimal decision packet cannot support a safe semantic decision and the result must be `DEFER`; or
 - the task scope expands beyond P03 design-time corpus analysis.
 
-For one-ADR semantic review, manual scanning of all current provisional dimensions is forbidden by default. Existing dimensions are evaluated by `.github/scripts/p03_authority_role_review_packet.py`; the agent reviews only the generated residual semantic input. Current provisional dimensions are working hypotheses, not a matching target or upper bound. Do not force-fit residual semantics to them.
+For one-ADR semantic review, manual scanning of all current provisional dimensions is forbidden by default. Current provisional dimensions are working hypotheses, not a matching target or upper bound. Do not force-fit residual semantics to them. AI review is design-time advisory only and never becomes runtime authority or registered vocabulary approval.
 
 This fast path does not authorize runtime remediation implementation, schema constantization, Authority Role registration, release work, or broader repository mutation.
 
