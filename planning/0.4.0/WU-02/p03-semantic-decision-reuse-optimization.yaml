@@ -92,7 +92,8 @@ reuse_shape:
 automation:
   reuse_analyzer: .github/scripts/p03_authority_role_semantic_reuse.py
   decision_pipeline: .github/scripts/p03_authority_role_semantic_decision.py
-  exact_reuse_output: automatic_reuse_actions
+  internal_exact_reuse_output: automatic_reuse_actions
+  ai_facing_exact_reuse_surface: COMPACT_COUNT_IDS_AND_ACTION_DIGEST_ONLY
   structural_reuse_output: prior_resolution_candidate
   ai_question_modes:
     - REUSE_CONFIRMATION_OR_FULL_DECISION
@@ -120,7 +121,7 @@ test_fixture_migration:
 
 agent_responsibility:
   do_not_review:
-    - automatic_reuse_actions
+    - automatic_reuse_concrete_actions
     - complete_dimension_registry
     - complete_raw_corpus
     - unrelated_adrs
