@@ -316,6 +316,7 @@ def build_decision_packet(
                 "DEFER": "record unresolved without semantic mutation",
             },
             "free_text_rationale_required": False,
+            "include_deferred_candidates": include_deferred,
         },
         "input_fingerprints": {
             "dimension_registry_sha256": _sha256_file(registry_path),
@@ -353,6 +354,8 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
         raise SemanticDecisionError("AI decision packet must remain non-authoritative")
     if contract.get("free_text_rationale_required") is not False:
         raise SemanticDecisionError("AI decision packet must not require free-text rationale")
+    if type(contract.get("include_deferred_candidates")) is not bool:
+        raise SemanticDecisionError("AI decision packet include_deferred_candidates must be boolean")
     ids: set[str] = set()
     for question in questions:
         if not isinstance(question, dict):
@@ -575,7 +578,7 @@ def apply_response(
         registry_path,
         raw_snapshot_path,
         ledger_path,
-        include_deferred=False,
+        include_deferred=bool(packet["review_contract"]["include_deferred_candidates"]),
     )
     if current_packet["packet_fingerprint"] != packet["packet_fingerprint"]:
         raise SemanticDecisionError(
