@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
+import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -10,6 +12,7 @@ import yaml
 
 
 REVIEW_PACKET_SCHEMA_VERSION = "ptsip-p03-authority-role-review-packet/v1"
+COMPACT_PACKET_SCHEMA_VERSION = "ptsip-p03-authority-role-review-packet-compact/v1"
 DEFAULT_REGISTRY = "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
 DEFAULT_RAW_SNAPSHOT = "planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml"
 DEFAULT_OUTPUT_DIR = "planning/0.4.0/WU-02/p03-authority-role-review-packets"
@@ -38,6 +41,28 @@ def _load_yaml(path: Path, *, label: str) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ReviewPacketError(f"{label} root must be a mapping: {path}")
     return payload
+
+
+def _canonical_json(value: object) -> str:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+
+
+def _raw_candidate_id(feature: dict[str, object]) -> str:
+    digest = hashlib.sha256(
+        _canonical_json(
+            {
+                "path": feature["path"],
+                "value_type": feature["value_type"],
+                "value": feature["value"],
+            }
+        ).encode("utf-8")
+    ).hexdigest()[:20]
+    return f"raw-candidate:{digest}"
 
 
 def _top_level_semantic_path(path: str) -> str:
@@ -86,8 +111,6 @@ def _trace_expression(
             ]
             if not successes:
                 return False, ()
-            # Use the smallest successful proof so broad alternative branches do not
-            # consume unrelated raw fields and hide residual semantics.
             successes.sort(key=lambda item: (len(item[1]), item[1]))
             return successes[0]
 
@@ -122,6 +145,7 @@ def _raw_features_for_adr(snapshot: dict[str, Any], adr_id: str) -> list[dict[st
                     "path": feature["path"],
                     "value_type": feature["value_type"],
                     "value": feature["value"],
+                    "occurs_in": list(occurs_in),
                 }
             )
     selected.sort(key=lambda item: str(item["path"]))
@@ -131,6 +155,25 @@ def _raw_features_for_adr(snapshot: dict[str, Any], adr_id: str) -> list[dict[st
             f"raw feature count mismatch for {adr_id}: expected={expected} actual={len(selected)}"
         )
     return selected
+
+
+def _machine_residual_candidates(
+    residual: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    candidates: list[dict[str, object]] = []
+    for feature in residual:
+        candidates.append(
+            {
+                "candidate_id": _raw_candidate_id(feature),
+                "status": "UNINTERPRETED_RAW_BACKED_CANDIDATE",
+                "path": feature["path"],
+                "value_type": feature["value_type"],
+                "value": feature["value"],
+                "occurs_in": feature["occurs_in"],
+                "semantic_effect_dimension": "NOT_DECIDED",
+            }
+        )
+    return candidates
 
 
 def build_review_packet(
@@ -148,7 +191,6 @@ def build_review_packet(
         "p03_authority_role_raw_features",
     )
 
-    # Fail closed if the persisted raw corpus is stale before using it as review input.
     expected_raw = raw_collector.build_snapshot(repo_root)
     persisted_raw = _load_yaml(raw_snapshot_path, label="P03 raw feature snapshot")
     raw_collector.validate_snapshot(persisted_raw)
@@ -212,6 +254,7 @@ def build_review_packet(
     raw_features = _raw_features_for_adr(persisted_raw, adr_id)
     residual = [item for item in raw_features if item["path"] not in covered_paths]
     covered = [item for item in raw_features if item["path"] in covered_paths]
+    candidates = _machine_residual_candidates(residual)
 
     packet: dict[str, Any] = {
         "schema_version": REVIEW_PACKET_SCHEMA_VERSION,
@@ -229,24 +272,49 @@ def build_review_packet(
         },
         "automation": {
             "existing_dimension_evaluation": "DETERMINISTIC",
+            "matched_predicate_proof_trace": "DETERMINISTIC",
+            "residual_raw_feature_extraction": "DETERMINISTIC",
+            "machine_residual_candidate_generation": "DETERMINISTIC",
             "manual_full_dimension_scan_required": False,
+            "manual_raw_corpus_search_required": False,
             "raw_feature_force_fit": "FORBIDDEN",
             "natural_language_consumption": "FORBIDDEN",
-            "new_dimension_decision": "NOT_AUTOMATIC",
+            "semantic_effect_promotion": "DESIGN_REVIEW_ONLY",
         },
         "matched_dimensions": matched_dimensions,
         "covered_raw_features": covered,
         "residual_raw_features": residual,
+        "machine_residual_candidates": candidates,
         "summary": {
             "raw_feature_count": len(raw_features),
             "matched_dimension_count": len(matched_dimensions),
             "covered_raw_feature_count": len(covered),
             "residual_raw_feature_count": len(residual),
+            "machine_residual_candidate_count": len(candidates),
             "semantic_review_required": bool(residual),
         },
     }
     validate_review_packet(packet)
     return packet
+
+
+def compact_review_packet(packet: dict[str, Any]) -> dict[str, Any]:
+    validate_review_packet(packet)
+    return {
+        "schema_version": COMPACT_PACKET_SCHEMA_VERSION,
+        "target": packet["target"],
+        "automation": {
+            "existing_dimension_evaluation": "DETERMINISTIC",
+            "manual_full_dimension_scan_required": False,
+            "manual_raw_corpus_search_required": False,
+            "raw_feature_force_fit": "FORBIDDEN",
+        },
+        "matched_dimension_ids": [
+            item["dimension_id"] for item in packet["matched_dimensions"]
+        ],
+        "machine_residual_candidates": packet["machine_residual_candidates"],
+        "summary": packet["summary"],
+    }
 
 
 def validate_review_packet(packet: dict[str, Any]) -> None:
@@ -258,21 +326,41 @@ def validate_review_packet(packet: dict[str, Any]) -> None:
     matched = packet.get("matched_dimensions")
     covered = packet.get("covered_raw_features")
     residual = packet.get("residual_raw_features")
+    candidates = packet.get("machine_residual_candidates")
     summary = packet.get("summary")
     if not all(isinstance(value, dict) for value in (target, inputs, automation, summary)):
         raise ReviewPacketError("review packet mappings are malformed")
-    if not all(isinstance(value, list) for value in (matched, covered, residual)):
+    if not all(isinstance(value, list) for value in (matched, covered, residual, candidates)):
         raise ReviewPacketError("review packet collections are malformed")
     if automation.get("manual_full_dimension_scan_required") is not False:
         raise ReviewPacketError("manual full dimension scan must not be required")
+    if automation.get("manual_raw_corpus_search_required") is not False:
+        raise ReviewPacketError("manual raw corpus search must not be required")
     if automation.get("raw_feature_force_fit") != "FORBIDDEN":
         raise ReviewPacketError("raw feature force-fit must stay forbidden")
     if automation.get("natural_language_consumption") != "FORBIDDEN":
         raise ReviewPacketError("review automation must not consume natural language")
+
     covered_paths = [item.get("path") for item in covered if isinstance(item, dict)]
     residual_paths = [item.get("path") for item in residual if isinstance(item, dict)]
     if set(covered_paths) & set(residual_paths):
         raise ReviewPacketError("raw feature cannot be both covered and residual")
+
+    candidate_ids: set[str] = set()
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            raise ReviewPacketError("machine residual candidate must be a mapping")
+        candidate_id = candidate.get("candidate_id")
+        if not isinstance(candidate_id, str) or not candidate_id.startswith("raw-candidate:"):
+            raise ReviewPacketError("machine residual candidate has invalid candidate_id")
+        if candidate_id in candidate_ids:
+            raise ReviewPacketError("machine residual candidate ids must be unique")
+        candidate_ids.add(candidate_id)
+        if candidate.get("path") not in residual_paths:
+            raise ReviewPacketError("machine residual candidate must correspond to a residual raw feature")
+        if candidate.get("semantic_effect_dimension") != "NOT_DECIDED":
+            raise ReviewPacketError("machine residual candidate must not auto-create semantic effect authority")
+
     if summary.get("raw_feature_count") != len(covered) + len(residual):
         raise ReviewPacketError("review packet raw_feature_count is stale")
     if summary.get("covered_raw_feature_count") != len(covered):
@@ -281,6 +369,10 @@ def validate_review_packet(packet: dict[str, Any]) -> None:
         raise ReviewPacketError("review packet residual_raw_feature_count is stale")
     if summary.get("matched_dimension_count") != len(matched):
         raise ReviewPacketError("review packet matched_dimension_count is stale")
+    if summary.get("machine_residual_candidate_count") != len(candidates):
+        raise ReviewPacketError("review packet machine_residual_candidate_count is stale")
+    if len(candidates) != len(residual):
+        raise ReviewPacketError("every residual raw feature requires one machine residual candidate")
     if summary.get("semantic_review_required") is not bool(residual):
         raise ReviewPacketError("review packet semantic_review_required is stale")
 
@@ -304,6 +396,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--raw-snapshot", default=DEFAULT_RAW_SNAPSHOT)
     parser.add_argument("--output")
     parser.add_argument("--write", action="store_true")
+    parser.add_argument("--compact", action="store_true")
     args = parser.parse_args(argv)
 
     repo_root = Path(args.repo_root).resolve()
@@ -321,15 +414,17 @@ def main(argv: list[str] | None = None) -> int:
             registry_path,
             raw_snapshot_path,
         )
+        output_payload = compact_review_packet(packet) if args.compact else packet
         if args.write:
-            output = Path(args.output) if args.output else Path(DEFAULT_OUTPUT_DIR) / f"{args.adr}.generated.yaml"
+            suffix = ".compact.generated.yaml" if args.compact else ".generated.yaml"
+            output = Path(args.output) if args.output else Path(DEFAULT_OUTPUT_DIR) / f"{args.adr}{suffix}"
             if not output.is_absolute():
                 output = repo_root / output
             output.parent.mkdir(parents=True, exist_ok=True)
-            output.write_text(_dump_yaml(packet), encoding="utf-8")
+            output.write_text(_dump_yaml(output_payload), encoding="utf-8")
             print(output.relative_to(repo_root).as_posix())
         else:
-            print(_dump_yaml(packet), end="")
+            print(_dump_yaml(output_payload), end="")
     except (OSError, ReviewPacketError, ValueError, KeyError) as exc:
         print(f"P03 review-packet error: {exc}", file=sys.stderr)
         return 1
