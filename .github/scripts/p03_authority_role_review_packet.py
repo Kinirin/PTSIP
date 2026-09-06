@@ -32,6 +32,14 @@ def _load_module(path: Path, name: str):
     return module
 
 
+def _display_path(path: Path, repo_root: Path) -> str:
+    resolved_path = path.resolve()
+    resolved_root = repo_root.resolve()
+    if resolved_path.is_relative_to(resolved_root):
+        return resolved_path.relative_to(resolved_root).as_posix()
+    return resolved_path.as_posix()
+
+
 def _load_yaml(path: Path, *, label: str) -> dict[str, Any]:
     try:
         payload = yaml.safe_load(path.read_text(encoding="utf-8-sig"))
@@ -398,8 +406,8 @@ def build_review_packet(
             "authority_type": contract["authority_type"],
         },
         "inputs": {
-            "raw_snapshot": raw_snapshot_path.relative_to(repo_root).as_posix(),
-            "dimension_registry": registry_path.relative_to(repo_root).as_posix(),
+            "raw_snapshot": _display_path(raw_snapshot_path, repo_root),
+            "dimension_registry": _display_path(registry_path, repo_root),
             "dimension_count": len(dimensions),
             "runtime_authority": "NONE",
             "vocabulary_registration": False,
