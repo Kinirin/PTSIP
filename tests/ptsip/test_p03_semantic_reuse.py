@@ -20,6 +20,17 @@ def _yaml(path: Path) -> dict[str, object]:
     return value
 
 
+def _ledger_through(adr_number: int) -> dict[str, object]:
+    ledger = _ledger_through(11)
+    records = ledger["records"]
+    ledger["records"] = {
+        candidate_id: record
+        for candidate_id, record in records.items()
+        if int(str(record["first_reviewed_in"]).split("-")[1]) <= adr_number
+    }
+    return ledger
+
+
 def _load(path: Path, name: str):
     spec = importlib.util.spec_from_file_location(name, path)
     assert spec is not None and spec.loader is not None
@@ -30,7 +41,7 @@ def _load(path: Path, name: str):
 
 def test_p03_exact_context_reuse_bypasses_duplicate_ai_question() -> None:
     reuse = _load(REUSE_SCRIPT, "p03_semantic_reuse_exact")
-    ledger = _yaml(LEDGER)
+    ledger = _ledger_through(11)
     raw = _yaml(RAW)
     registry = _yaml(REGISTRY)
 
@@ -70,7 +81,7 @@ def test_p03_exact_context_reuse_bypasses_duplicate_ai_question() -> None:
 
 def test_p03_structural_reuse_remains_ai_confirmation_only() -> None:
     reuse = _load(REUSE_SCRIPT, "p03_semantic_reuse_structural")
-    ledger = _yaml(LEDGER)
+    ledger = _ledger_through(11)
     raw = _yaml(RAW)
     registry = _yaml(REGISTRY)
 
