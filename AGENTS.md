@@ -15,7 +15,9 @@ When the task is limited to raw-feature collection, one-ADR semantic review, cur
    `py -3.14 .github/scripts/p03_authority_role_semantic_decision.py --repo-root . prepare --adr ADR-NNNN --write`;
 5. read only the generated `ADR-NNNN.decision.generated.yaml` as the default semantic input and edit only the generated `ADR-NNNN.response.yaml`;
 6. choose only the closed structured decision fields requested by that packet; do not write free-form analysis unless a `DEFER` requires an explicit escalation;
-7. validate and apply through `.github/scripts/p03_authority_role_semantic_decision.py`; do not edit the provisional registry, generated matrix, or decision ledger directly.
+7. validate the edited response with:
+   `py -3.14 .github/scripts/p03_authority_role_semantic_decision.py --repo-root . validate --packet planning/0.4.0/WU-02/p03-authority-role-decision-packets/ADR-NNNN.decision.generated.yaml --response planning/0.4.0/WU-02/p03-authority-role-decision-packets/ADR-NNNN.response.yaml`;
+8. apply the validated response with the same tool's `apply` command and the same `--packet` / `--response` paths; do not edit the provisional registry, generated matrix, or decision ledger directly.
 
 The semantic-decision tool performs raw snapshot validation, existing predicate evaluation, candidate routing, raw-value shape compression, stale-packet checking, predicate generation, ledger recording, registry mutation, full reviewed-prefix matrix regeneration, and rectangular backfill validation.
 
