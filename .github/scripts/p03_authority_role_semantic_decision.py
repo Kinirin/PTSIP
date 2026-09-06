@@ -315,10 +315,16 @@ def build_decision_packet(
         ],
         predicate_modes_by_candidate,
     )
-    automatic_reuse_actions = reuse["automatic_reuse_actions"]
+    automatic_reuse_details = reuse["automatic_reuse_actions"]
     automatic_ids = {
         str(item["candidate_id"])
-        for item in automatic_reuse_actions
+        for item in automatic_reuse_details
+    }
+    automatic_reuse = {
+        "count": len(automatic_reuse_details),
+        "candidate_ids": sorted(automatic_ids),
+        "action_digest": _sha256_payload(automatic_reuse_details),
+        "ai_review_required": False,
     }
     structural_reuse = reuse["structural_reuse_candidates"]
 
@@ -364,6 +370,7 @@ def build_decision_packet(
             "role": "AI_DESIGN_TIME_SEMANTIC_REVIEW_ONLY",
             "semantic_authority": "NONE",
             "runtime_authority": "NONE",
+            "allowed_decisions": sorted(_RESPONSE_DECISION_VALUES),
             "allowed_semantic_decisions": sorted(_DECISION_VALUES),
             "allowed_review_actions": ["REUSE_PRIOR"],
             "allowed_reason_codes": sorted(_RESPONSE_REASON_VALUES),
@@ -388,11 +395,11 @@ def build_decision_packet(
         "already_matched_dimensions": [
             item["dimension_id"] for item in review_packet["matched_dimensions"]
         ],
-        "automatic_reuse_actions": automatic_reuse_actions,
+        "automatic_reuse": automatic_reuse,
         "questions": questions,
         "summary": {
             "question_count": len(questions),
-            "automatic_reuse_count": len(automatic_reuse_actions),
+            "automatic_reuse_count": automatic_reuse["count"],
             "reuse_confirmation_question_count": reuse_confirmation_count,
             "full_semantic_question_count": full_semantic_question_count,
             "already_resolved_count": excluded_resolved,
@@ -413,7 +420,7 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     contract = packet.get("review_contract")
     fingerprints = packet.get("input_fingerprints")
     questions = packet.get("questions")
-    automatic_reuse = packet.get("automatic_reuse_actions")
+    automatic_reuse = packet.get("automatic_reuse")
     matched_dimensions = packet.get("already_matched_dimensions")
     summary = packet.get("summary")
     reuse_invariants = packet.get("reuse_invariants")
@@ -422,8 +429,8 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
         for value in (target, contract, fingerprints, summary, reuse_invariants)
     ):
         raise SemanticDecisionError("AI decision packet mappings are malformed")
-    if not isinstance(questions, list) or not isinstance(automatic_reuse, list):
-        raise SemanticDecisionError("AI decision packet review collections must be lists")
+    if not isinstance(questions, list) or not isinstance(automatic_reuse, dict):
+        raise SemanticDecisionError("AI decision packet review surfaces are malformed")
     if not isinstance(matched_dimensions, list) or not all(
         isinstance(item, str) for item in matched_dimensions
     ):
@@ -453,25 +460,22 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     if reuse_invariants.get("automatic_reuse_requires_unanimous_prior_concrete_action") is not True:
         raise SemanticDecisionError("automatic reuse must fail closed on conflicting precedent")
 
-    automatic_ids: set[str] = set()
-    for action in automatic_reuse:
-        if not isinstance(action, dict):
-            raise SemanticDecisionError("automatic reuse action must be a mapping")
-        candidate_id = action.get("candidate_id")
-        if not isinstance(candidate_id, str) or not candidate_id.startswith("raw-candidate:"):
-            raise SemanticDecisionError("automatic reuse action has invalid candidate_id")
-        if candidate_id in automatic_ids:
-            raise SemanticDecisionError("automatic reuse candidate ids must be unique")
-        automatic_ids.add(candidate_id)
-        if action.get("reuse_mode") != "DETERMINISTIC_EXACT_CONTEXT_REUSE":
-            raise SemanticDecisionError("automatic reuse action has invalid reuse_mode")
-        if action.get("semantic_authority") is not False:
-            raise SemanticDecisionError("automatic reuse must remain non-authoritative")
-        if action.get("decision") not in _DECISION_VALUES - {"DEFER", "NEW_DIMENSION"}:
-            raise SemanticDecisionError("automatic reuse action has unsafe concrete decision")
-        reused_from = action.get("reused_from_candidate_id")
-        if not isinstance(reused_from, str) or not reused_from.startswith("raw-candidate:"):
-            raise SemanticDecisionError("automatic reuse action requires prior candidate provenance")
+    automatic_ids_raw = automatic_reuse.get("candidate_ids")
+    if not isinstance(automatic_ids_raw, list) or not all(
+        isinstance(item, str) and item.startswith("raw-candidate:")
+        for item in automatic_ids_raw
+    ):
+        raise SemanticDecisionError("automatic reuse candidate_ids must be raw candidate ids")
+    automatic_ids = set(automatic_ids_raw)
+    if len(automatic_ids) != len(automatic_ids_raw):
+        raise SemanticDecisionError("automatic reuse candidate_ids must be unique")
+    if automatic_reuse.get("count") != len(automatic_ids):
+        raise SemanticDecisionError("automatic reuse count is stale")
+    if automatic_reuse.get("ai_review_required") is not False:
+        raise SemanticDecisionError("automatic exact reuse must not be sent for duplicate AI review")
+    action_digest = automatic_reuse.get("action_digest")
+    if not isinstance(action_digest, str) or len(action_digest) != 64:
+        raise SemanticDecisionError("automatic reuse requires a concrete-action digest")
 
     ids: set[str] = set()
     reuse_confirmation_count = 0
@@ -520,7 +524,7 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
 
     if summary.get("question_count") != len(questions):
         raise SemanticDecisionError("AI decision packet question_count is stale")
-    if summary.get("automatic_reuse_count") != len(automatic_reuse):
+    if summary.get("automatic_reuse_count") != automatic_reuse["count"]:
         raise SemanticDecisionError("AI decision packet automatic_reuse_count is stale")
     if summary.get("reuse_confirmation_question_count") != reuse_confirmation_count:
         raise SemanticDecisionError(
@@ -986,6 +990,50 @@ def apply_response(
         _normalize_response_item(questions[str(item["candidate_id"])], item)
         for item in response["decisions"]
     ]
+    reuse_module = _load_module(
+        repo_root / ".github/scripts/p03_authority_role_semantic_reuse.py",
+        "p03_authority_role_semantic_reuse_for_apply",
+    )
+    raw_snapshot = _load_yaml(
+        raw_snapshot_path,
+        label="P03 raw feature snapshot",
+    )
+    automatic_candidate_ids = set(packet["automatic_reuse"]["candidate_ids"])
+    review_candidate_ids = automatic_candidate_ids | set(questions)
+    reuse_pending = [
+        candidate
+        for candidate_id, candidate in candidates.items()
+        if candidate_id in review_candidate_ids
+    ]
+    reuse_modes = {
+        str(candidate["candidate_id"]): _predicate_modes(str(candidate["value_type"]))
+        for candidate in reuse_pending
+    }
+    reuse_state = reuse_module.analyze_reuse(
+        repo_root,
+        adr_id,
+        reuse_pending,
+        ledger,
+        raw_snapshot,
+        dimensions,
+        [
+            str(item["dimension_id"])
+            for item in full_review["matched_dimensions"]
+        ],
+        reuse_modes,
+    )
+    exact_actions = reuse_state["automatic_reuse_actions"]
+    if {
+        str(item["candidate_id"])
+        for item in exact_actions
+    } != automatic_candidate_ids:
+        raise SemanticDecisionError(
+            "automatic reuse ownership changed; regenerate the decision packet"
+        )
+    if _sha256_payload(exact_actions) != packet["automatic_reuse"]["action_digest"]:
+        raise SemanticDecisionError(
+            "automatic reuse concrete actions changed; regenerate the decision packet"
+        )
     automatic_items = [
         {
             "candidate_id": item["candidate_id"],
@@ -997,7 +1045,7 @@ def apply_response(
             "resolution_source": "DETERMINISTIC_EXACT_CONTEXT_REUSE",
             "reused_from_candidate_id": item["reused_from_candidate_id"],
         }
-        for item in packet["automatic_reuse_actions"]
+        for item in exact_actions
     ]
     concrete_items = automatic_items + normalized_ai_items
 
