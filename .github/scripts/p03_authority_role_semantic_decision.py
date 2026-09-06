@@ -770,6 +770,139 @@ def _append_alternative(expression: dict[str, Any], condition: dict[str, Any]) -
     return {"any": [expression, condition]}
 
 
+def _raw_candidate_id_from_feature(feature: dict[str, object]) -> str:
+    digest = hashlib.sha256(
+        _canonical_json(
+            {
+                "path": feature["path"],
+                "value_type": feature["value_type"],
+                "value": feature["value"],
+            }
+        ).encode("utf-8")
+    ).hexdigest()[:20]
+    return f"raw-candidate:{digest}"
+
+
+def _raw_candidate_index(raw_snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    features = raw_snapshot.get("features")
+    if not isinstance(features, list):
+        raise SemanticDecisionError("raw snapshot features must be a list")
+    result: dict[str, dict[str, Any]] = {}
+    for feature in features:
+        if not isinstance(feature, dict):
+            raise SemanticDecisionError("raw snapshot feature must be a mapping")
+        selected = {
+            "path": feature["path"],
+            "value_type": feature["value_type"],
+            "value": feature["value"],
+            "occurs_in": list(feature.get("occurs_in", [])),
+        }
+        result[_raw_candidate_id_from_feature(selected)] = selected
+    return result
+
+
+def _remove_generated_alternative(
+    expression: dict[str, Any],
+    condition: dict[str, Any],
+) -> dict[str, Any]:
+    if expression == condition:
+        raise SemanticDecisionError(
+            "cannot remove the sole expression from an existing dimension"
+        )
+    if set(expression) != {"any"} or not isinstance(expression["any"], list):
+        raise SemanticDecisionError(
+            "generated refinement is not present as a reversible top-level alternative"
+        )
+    alternatives = copy.deepcopy(expression["any"])
+    if condition not in alternatives:
+        raise SemanticDecisionError(
+            "generated refinement condition is missing from current dimension"
+        )
+    alternatives.remove(condition)
+    if not alternatives:
+        raise SemanticDecisionError("dimension would become expressionless")
+    if len(alternatives) == 1:
+        return alternatives[0]
+    return {"any": alternatives}
+
+
+def build_registry_for_review_prefix(
+    repo_root: Path,
+    registry_path: Path,
+    raw_snapshot_path: Path,
+    ledger_path: Path,
+    reviewed_through: str,
+) -> dict[str, Any]:
+    """Reconstruct a prior reviewed-prefix registry by reversing ledger-owned changes.
+
+    This is design-time test/audit support. It never writes repository state.
+    """
+    target_number = _adr_number(reviewed_through)
+    registry = copy.deepcopy(
+        _load_yaml(registry_path, label="P03 provisional dimension registry")
+    )
+    ledger = _load_ledger(ledger_path)
+    raw_snapshot = _load_yaml(raw_snapshot_path, label="P03 raw feature snapshot")
+    candidate_index = _raw_candidate_index(raw_snapshot)
+
+    dimensions = registry.get("dimensions")
+    analysis = registry.get("analysis")
+    if not isinstance(dimensions, dict) or not isinstance(analysis, dict):
+        raise SemanticDecisionError("P03 provisional dimension registry is malformed")
+
+    reversible: list[tuple[int, str, dict[str, Any]]] = []
+    for candidate_id, record in ledger["records"].items():
+        if not isinstance(record, dict):
+            continue
+        first_reviewed_in = record.get("first_reviewed_in")
+        try:
+            review_number = _adr_number(first_reviewed_in)
+        except SemanticDecisionError:
+            continue
+        if review_number > target_number:
+            reversible.append((review_number, str(candidate_id), record))
+
+    reversible.sort(key=lambda item: (-item[0], item[1]))
+    for _, candidate_id, record in reversible:
+        decision = record.get("decision")
+        if decision == "REFINE_EXISTING":
+            target_dimension = record.get("target_dimension")
+            predicate_mode = record.get("predicate_mode")
+            definition = dimensions.get(target_dimension)
+            candidate = candidate_index.get(candidate_id)
+            if not isinstance(definition, dict) or candidate is None:
+                raise SemanticDecisionError(
+                    f"cannot reverse refinement for {candidate_id}"
+                )
+            condition = _condition_from_candidate(
+                candidate,
+                str(predicate_mode),
+            )
+            definition["expression"] = _remove_generated_alternative(
+                definition["expression"],
+                condition,
+            )
+        elif decision == "NEW_DIMENSION":
+            proposed = record.get("proposed_dimension_id")
+            if isinstance(proposed, str):
+                dimensions.pop(proposed, None)
+
+    # Safety cleanup for dimensions introduced after the requested prefix.
+    for dimension_id, definition in list(dimensions.items()):
+        if not isinstance(definition, dict):
+            continue
+        introduced_by = definition.get("introduced_by")
+        try:
+            introduced_number = _adr_number(introduced_by)
+        except SemanticDecisionError:
+            continue
+        if introduced_number > target_number:
+            del dimensions[dimension_id]
+
+    analysis["reviewed_through"] = reviewed_through
+    return registry
+
+
 def _write_transactional(paths_to_payloads: list[tuple[Path, dict[str, Any]]]) -> None:
     originals: dict[Path, bytes | None] = {}
     try:
