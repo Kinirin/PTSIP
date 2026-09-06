@@ -31,6 +31,56 @@ def _load_module():
     return module
 
 
+def _pre_adr_0011_inputs(module, tmp_path: Path) -> tuple[Path, Path, Path]:
+    registry = _yaml(REGISTRY)
+    registry["analysis"]["reviewed_through"] = "ADR-0010"
+
+    for dimension_id in (
+        "preserve_classification_vocabulary",
+        "separate_specification_activation_from_profile_mutation",
+        "separate_specification_activation_from_tool_implementation",
+    ):
+        del registry["dimensions"][dimension_id]
+
+    refinements = {
+        "activate_normative_family": {
+            "path": "authority_semantics.activated_family",
+            "operator": "NON_EMPTY",
+        },
+        "bind_immutable_normative_snapshot": {
+            "path": "authority_semantics.immutable_normative_snapshot",
+            "operator": "NON_EMPTY",
+        },
+        "define_classification_vocabulary": {
+            "path": "authority_semantics.toolchain_is_current_ptsip_classification",
+            "operator": "EQUALS",
+            "value": False,
+        },
+    }
+    for dimension_id, condition in refinements.items():
+        expression = registry["dimensions"][dimension_id]["expression"]
+        alternatives = expression["any"]
+        assert condition in alternatives
+        alternatives.remove(condition)
+        registry["dimensions"][dimension_id]["expression"] = (
+            alternatives[0] if len(alternatives) == 1 else {"any": alternatives}
+        )
+
+    registry_path = tmp_path / "dimensions.yaml"
+    matrix_path = tmp_path / "matrix.yaml"
+    ledger_path = tmp_path / "ledger.yaml"
+    registry_path.write_text(
+        yaml.safe_dump(registry, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
+    matrix_path.write_bytes(MATRIX.read_bytes())
+    ledger_path.write_text(
+        yaml.safe_dump(module._empty_ledger(), sort_keys=False),
+        encoding="utf-8",
+    )
+    return registry_path, matrix_path, ledger_path
+
+
 def _prepare_stdout(adr_id: str) -> dict[str, object]:
     result = subprocess.run(
         [
@@ -63,25 +113,18 @@ def test_p03_ai_decision_packet_is_small_and_non_authoritative() -> None:
     assert packet["review_contract"]["semantic_authority"] == "NONE"
     assert packet["review_contract"]["runtime_authority"] == "NONE"
     assert packet["review_contract"]["free_text_rationale_required"] is False
-    assert packet["summary"]["question_count"] == 8
+    assert packet["summary"]["question_count"] == 0
+    assert packet["summary"]["already_resolved_count"] == 2
     assert packet["summary"]["full_dimension_scan_required"] is False
     assert packet["summary"]["full_raw_corpus_read_required"] is False
-
-    questions = {item["path"]: item for item in packet["questions"]}
-    assert questions["authority_semantics.immutable_normative_snapshot"]["value_shape"] == {
-        "kind": "GIT_SHA1_REVISION"
+    assert set(packet["already_matched_dimensions"]) == {
+        "activate_normative_family",
+        "bind_immutable_normative_snapshot",
+        "define_classification_vocabulary",
+        "preserve_classification_vocabulary",
+        "separate_specification_activation_from_profile_mutation",
+        "separate_specification_activation_from_tool_implementation",
     }
-    assert questions["authority_semantics.profile_transition_rules"]["value_shape"] == {
-        "kind": "ARRAY",
-        "count": 12,
-        "item_types": ["STR"],
-        "pattern": "PTSIP-MIG-###",
-    }
-    assert (
-        "activate_normative_family"
-        in questions["authority_semantics.activated_family"]["existing_candidates"]
-    )
-    assert all(len(item["existing_candidates"]) <= 2 for item in packet["questions"])
 
     # The packet must not expose the exact immutable SHA or the twelve migration rule values.
     serialized = yaml.safe_dump(packet, sort_keys=False)
@@ -117,13 +160,7 @@ def test_p03_semantic_apply_generates_predicates_ledger_and_rectangular_backfill
     tmp_path: Path,
 ) -> None:
     module = _load_module()
-
-    registry_path = tmp_path / "dimensions.yaml"
-    matrix_path = tmp_path / "matrix.yaml"
-    ledger_path = tmp_path / "ledger.yaml"
-    registry_path.write_bytes(REGISTRY.read_bytes())
-    matrix_path.write_bytes(MATRIX.read_bytes())
-    ledger_path.write_bytes(LEDGER.read_bytes())
+    registry_path, matrix_path, ledger_path = _pre_adr_0011_inputs(module, tmp_path)
 
     packet = module.build_decision_packet(
         ROOT,
@@ -220,13 +257,7 @@ def test_p03_new_dimension_is_not_applied_while_same_review_is_deferred(
     tmp_path: Path,
 ) -> None:
     module = _load_module()
-
-    registry_path = tmp_path / "dimensions.yaml"
-    matrix_path = tmp_path / "matrix.yaml"
-    ledger_path = tmp_path / "ledger.yaml"
-    registry_path.write_bytes(REGISTRY.read_bytes())
-    matrix_path.write_bytes(MATRIX.read_bytes())
-    ledger_path.write_bytes(LEDGER.read_bytes())
+    registry_path, matrix_path, ledger_path = _pre_adr_0011_inputs(module, tmp_path)
 
     packet = module.build_decision_packet(
         ROOT,
@@ -281,7 +312,10 @@ def test_p03_decision_ledger_suppresses_repeat_ai_reasoning_and_allows_explicit_
     tmp_path: Path,
 ) -> None:
     module = _load_module()
-    base_packet = module.build_decision_packet(ROOT, "ADR-0011", REGISTRY, RAW, LEDGER)
+    registry_path, _, empty_ledger_path = _pre_adr_0011_inputs(module, tmp_path)
+    base_packet = module.build_decision_packet(
+        ROOT, "ADR-0011", registry_path, RAW, empty_ledger_path
+    )
     first, second = base_packet["questions"][:2]
 
     ledger = module._empty_ledger()
@@ -320,7 +354,7 @@ def test_p03_decision_ledger_suppresses_repeat_ai_reasoning_and_allows_explicit_
     default_packet = module.build_decision_packet(
         ROOT,
         "ADR-0011",
-        REGISTRY,
+        registry_path,
         RAW,
         ledger_path,
     )
@@ -337,7 +371,7 @@ def test_p03_decision_ledger_suppresses_repeat_ai_reasoning_and_allows_explicit_
     revisit_packet = module.build_decision_packet(
         ROOT,
         "ADR-0011",
-        REGISTRY,
+        registry_path,
         RAW,
         ledger_path,
         include_deferred=True,

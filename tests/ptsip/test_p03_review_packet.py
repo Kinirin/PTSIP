@@ -93,24 +93,20 @@ def test_p03_adr_0011_review_packet_is_machine_prepared() -> None:
         candidate_ids.add(candidate["candidate_id"])
 
 
-def test_p03_adr_0011_routing_preselects_obvious_existing_dimension_candidates() -> None:
+def test_p03_adr_0011_applied_semantics_have_deterministic_predicate_proofs() -> None:
     packet = _run_packet("ADR-0011")
 
-    routed = {
-        item["raw_path"]: {
-            candidate["dimension_id"] for candidate in item["candidate_dimensions"]
-        }
-        for item in packet["candidate_existing_dimension_routing"]
+    matched = {
+        item["dimension_id"]: set(item["proof_paths"])
+        for item in packet["matched_dimensions"]
     }
 
-    assert "activate_normative_family" in routed[
-        "authority_semantics.activated_family"
+    assert "authority_semantics.activated_family" in matched["activate_normative_family"]
+    assert "authority_semantics.immutable_normative_snapshot" in matched[
+        "bind_immutable_normative_snapshot"
     ]
-    assert "bind_immutable_normative_snapshot" in routed[
-        "authority_semantics.immutable_normative_snapshot"
-    ]
-    assert "define_classification_vocabulary" in routed[
-        "authority_semantics.preserved_classifications"
+    assert "authority_semantics.preserved_classifications" in matched[
+        "preserve_classification_vocabulary"
     ]
 
     for item in packet["candidate_existing_dimension_routing"]:

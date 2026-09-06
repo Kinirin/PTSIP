@@ -3,7 +3,7 @@ analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0010
+  reviewed_through: ADR-0011
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
@@ -20,13 +20,13 @@ migration:
   raw_feature_may_remain_unrepresented_pending_review: true
   incremental_review_after_adr_0010: ALLOWED
   allowed_operations:
-    - KEEP
-    - RENAME
-    - MERGE
-    - SPLIT
-    - REMOVE
-    - REPLACE
-    - ADD_NEW_DIMENSION
+  - KEEP
+  - RENAME
+  - MERGE
+  - SPLIT
+  - REMOVE
+  - REPLACE
+  - ADD_NEW_DIMENSION
   final_full_corpus_reconciliation_required: true
 dimensions:
   establish_canonical_identity:
@@ -164,9 +164,12 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0003
     expression:
-      path: authority_semantics.normative_snapshot_identity
-      operator: EQUALS
-      value: IMMUTABLE_GIT_REVISION
+      any:
+      - path: authority_semantics.normative_snapshot_identity
+        operator: EQUALS
+        value: IMMUTABLE_GIT_REVISION
+      - path: authority_semantics.immutable_normative_snapshot
+        operator: NON_EMPTY
   select_versioned_contract_target:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -185,6 +188,9 @@ dimensions:
         operator: NON_EMPTY
       - path: authority_semantics.canonical_classifications
         operator: NON_EMPTY
+      - path: authority_semantics.toolchain_is_current_ptsip_classification
+        operator: EQUALS
+        value: false
   preserve_unresolved_analysis_states:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -364,8 +370,11 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0005
     expression:
-      path: authority_semantics.activated_specification_family
-      operator: NON_EMPTY
+      any:
+      - path: authority_semantics.activated_specification_family
+        operator: NON_EMPTY
+      - path: authority_semantics.activated_family
+        operator: NON_EMPTY
   separate_decision_authority_from_profile:
     status: PROVISIONAL
     introduced_by: ADR-0005
@@ -808,3 +817,23 @@ dimensions:
       path: authority_semantics.version_and_revision_required_transition_inputs
       operator: EQUALS
       value: true
+  separate_specification_activation_from_profile_mutation:
+    status: PROVISIONAL
+    introduced_by: ADR-0011
+    expression:
+      path: authority_semantics.activation_implies_repository_profile_mutation
+      operator: EQUALS
+      value: false
+  preserve_classification_vocabulary:
+    status: PROVISIONAL
+    introduced_by: ADR-0011
+    expression:
+      path: authority_semantics.preserved_classifications
+      operator: NON_EMPTY
+  separate_specification_activation_from_tool_implementation:
+    status: PROVISIONAL
+    introduced_by: ADR-0011
+    expression:
+      path: authority_semantics.tool_runtime_claims_full_implementation_by_activation
+      operator: EQUALS
+      value: false

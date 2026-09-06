@@ -1,0 +1,157 @@
+schema_version: ptsip-p03-authority-role-ai-decision-packet/v1
+target:
+  adr_id: ADR-0011
+  authority_type: SPECIFICATION_FAMILY_ACTIVATION
+review_contract:
+  role: AI_DESIGN_TIME_SEMANTIC_REVIEW_ONLY
+  semantic_authority: NONE
+  runtime_authority: NONE
+  allowed_decisions:
+  - DEFER
+  - EXISTING
+  - NEW_DIMENSION
+  - NON_EFFECT
+  - REFINE_EXISTING
+  allowed_reason_codes:
+  - DISTINCT_REUSABLE_AUTHORITY_EFFECT
+  - EXISTING_EFFECT_BOUNDARY_NEEDS_REFINEMENT
+  - INSUFFICIENT_SEMANTIC_CONTEXT
+  - PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+  - SAME_EFFECT_ALREADY_REPRESENTED
+  - SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+  decision_rules:
+    EXISTING: attach detail to an already deterministic-matched dimension; no predicate
+      mutation
+    REFINE_EXISTING: map to one routed candidate and add one generated predicate alternative
+    NEW_DIMENSION: create one provisional dimension from this raw candidate
+    NON_EFFECT: record as parameter/reference/non-effect detail
+    DEFER: record unresolved without semantic mutation
+  free_text_rationale_required: false
+  include_deferred_candidates: false
+input_fingerprints:
+  dimension_registry_sha256: 653bedd82c10e95eb4655cf5f452d1db370eee20a95d850cb7c03c02c1cf2165
+  raw_snapshot_sha256: 803578c52766d2013caf45713668cbc4c5aedaf4530ce056d9c37e8b54277618
+  ledger_sha256: 30299a715025348a47b93e60217fab887261b2a920f21ccaf5bce03310d17286
+already_matched_dimensions: []
+questions:
+- candidate_id: raw-candidate:a750367aaa75176aabac
+  path: authority_semantics.activated_family
+  value_shape:
+    kind: VERSION_LIKE_IDENTIFIER
+    sample: 0.3.7-draft
+  occurrence_count: 1
+  existing_candidates:
+  - activate_normative_family
+  - require_versioned_normative_contract
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:fefeaaca0e11c7168211
+  path: authority_semantics.activation_implies_repository_profile_mutation
+  value_shape:
+    kind: BOOLEAN
+    value: false
+  occurrence_count: 1
+  existing_candidates:
+  - require_conditional_mutation
+  - forbid_derived_architecture_mutation
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:9d135966815587455f26
+  path: authority_semantics.immutable_normative_snapshot
+  value_shape:
+    kind: GIT_SHA1_REVISION
+  occurrence_count: 1
+  existing_candidates:
+  - bind_immutable_normative_snapshot
+  - require_explicit_specification_binding
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:3394658ac1a885e5d1b6
+  path: authority_semantics.normative_companion
+  value_shape:
+    kind: REPOSITORY_PATH
+    suffix: .md
+  occurrence_count: 1
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:d9c0e87c8367b17c0ad5
+  path: authority_semantics.preserved_classifications
+  value_shape:
+    kind: ARRAY
+    count: 5
+    item_types:
+    - STR
+    members:
+    - PRODUCT
+    - DEVELOPMENT_TOOLING
+    - DELIVERY
+    - OPERATIONS
+    - NEUTRAL_CONTRACT
+  occurrence_count: 1
+  existing_candidates:
+  - define_classification_vocabulary
+  - deny_derived_architecture_authority
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - CONTAINS_ALL_EXACT
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:6634296c4f167ec9a1b5
+  path: authority_semantics.profile_transition_rules
+  value_shape:
+    kind: ARRAY
+    count: 12
+    item_types:
+    - STR
+    pattern: PTSIP-MIG-###
+  occurrence_count: 1
+  existing_candidates:
+  - define_conformance_decision_rule
+  - permit_stricter_project_policy
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - CONTAINS_ALL_EXACT
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:45de031859b955732ca1
+  path: authority_semantics.tool_runtime_claims_full_implementation_by_activation
+  value_shape:
+    kind: BOOLEAN
+    value: false
+  occurrence_count: 1
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:6e5b2d36a256cddb90bf
+  path: authority_semantics.toolchain_is_current_ptsip_classification
+  value_shape:
+    kind: BOOLEAN
+    value: false
+  occurrence_count: 1
+  existing_candidates:
+  - reject_architecture_proxy_inference
+  - define_classification_vocabulary
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+summary:
+  question_count: 8
+  already_resolved_count: 0
+  deferred_suppressed_count: 0
+  full_dimension_scan_required: false
+  full_raw_corpus_read_required: false
+packet_fingerprint: 67bb7f20b3375d0a8a7cec4aefcdcc34c30e9b2eab53eb35e0ede69c8986fd65
