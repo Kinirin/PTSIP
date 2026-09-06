@@ -1,0 +1,158 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+
+document:
+  id: WU-02-P03-G-SEMANTIC-DECISION-REUSE-OPTIMIZATION
+  type: WORK_UNIT_EXTENSION_CONTRACT
+  status: ACTIVE
+  authority: PROJECT_OWNER
+  approval_date: '2026-09-06'
+  p03_second_optimization_migration: AUTHORIZED_BY_PROJECT_OWNER
+  remediation_runtime_implementation: NOT_AUTHORIZED
+
+relation:
+  parent: planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml
+  scope: P03_DESIGN_TIME_AUTHORITY_ROLE_CORPUS_ANALYSIS
+  stable_vocabulary_registration: FORBIDDEN_BEFORE_OWNER_APPROVAL
+  issue_31_scope: OUT_OF_SCOPE
+
+problem:
+  observed_credit_cost:
+    ADR-0011: APPROX_5_PERCENT_WITH_FIRST_APPLY_STABILIZATION
+    ADR-0012: APPROX_8_PERCENT
+  primary_remaining_cost:
+    - EACH_RESIDUAL_CANDIDATE_SOLVED_AS_INDEPENDENT_SEMANTIC_PROBLEM
+    - PER_ADR_TEST_FIXTURE_MAINTENANCE
+  prohibited_shortcut:
+    automatic_semantic_merging: FORBIDDEN
+    reason: STRUCTURAL_SIMILARITY_NE_SEMANTIC_EQUIVALENCE
+
+migration:
+  from: EVERY_PENDING_RESIDUAL_REQUIRES_FULL_AI_SEMANTIC_DECISION
+  to: RESPONSIBILITY_PARTITIONED_SEMANTIC_DECISION_REUSE
+  objective: REDUCE_AI_REVIEW_SURFACE_WITHOUT_PROMOTING_HEURISTICS_TO_AUTHORITY
+
+review_tiers:
+  EXACT_CONTEXT_REUSE:
+    owner: DETERMINISTIC_AUTOMATION
+    ai_review_required: false
+    requirements:
+      - SAME_AUTHORITY_CONTRACT_IDENTITY
+      - SAME_MACHINE_FIELD_PATH
+      - SAME_VALUE_TYPE
+      - SAME_SAFE_REUSE_SHAPE
+      - PRIOR_CONCRETE_ACTIONS_UNANIMOUS
+      - REFERENCED_DIMENSION_STILL_EXISTS_WHEN_REQUIRED
+      - PREDICATE_MODE_STILL_VALID_WHEN_REQUIRED
+    allowed_prior_resolutions:
+      - REFINE_EXISTING
+      - NEW_DIMENSION_AS_EXISTING_DIMENSION_REFINEMENT
+      - NON_EFFECT
+      - EXISTING_ONLY_IF_TARGET_ALREADY_MATCHED
+    conflict_behavior: FAIL_CLOSED_TO_AI_REVIEW
+    semantic_authority: NONE
+
+  STRUCTURAL_PRIOR_RESOLUTION:
+    owner: AI_CONFIRMATION_ONLY
+    deterministic_role:
+      - ROUTE_ONE_PRIOR_RESOLUTION_CANDIDATE
+      - REPORT_NON_AUTHORITATIVE_STRUCTURAL_SCORE
+    ai_role:
+      - CONFIRM_REUSE_OR_REPLACE_WITH_FULL_SEMANTIC_DECISION
+    allowed_response_action:
+      - REUSE_PRIOR
+    automatic_semantic_acceptance: FORBIDDEN
+    routing_score_is_authority: false
+
+  FULL_SEMANTIC_DECISION:
+    owner: AI_DESIGN_TIME_REVIEW
+    entered_when:
+      - NO_SAFE_EXACT_REUSE
+      - NO_STRUCTURAL_PRIOR_RESOLUTION
+      - STRUCTURAL_PRIOR_RESOLUTION_REJECTED_BY_AI
+    decisions:
+      - EXISTING
+      - REFINE_EXISTING
+      - NEW_DIMENSION
+      - NON_EFFECT
+      - DEFER
+
+reuse_shape:
+  boolean: EXACT_BOOLEAN_VALUE
+  integer_number: EXACT_VALUE
+  git_revision_string: GIT_SHA1_REVISION_KIND
+  version_string: VERSION_LIKE_IDENTIFIER_KIND
+  repository_path: PATH_KIND_AND_SUFFIX
+  generic_string: EXACT_VALUE_HASH
+  migration_rule_array: RULE_ID_PATTERN
+  generic_array: EXACT_VALUE_HASH
+  object: KEYSET
+  note: REUSE_SHAPE_IS_MACHINE_CONTEXT_EQUIVALENCE_FILTER_NOT_SEMANTIC_AUTHORITY
+
+automation:
+  reuse_analyzer: .github/scripts/p03_authority_role_semantic_reuse.py
+  decision_pipeline: .github/scripts/p03_authority_role_semantic_decision.py
+  exact_reuse_output: automatic_reuse_actions
+  structural_reuse_output: prior_resolution_candidate
+  ai_question_modes:
+    - REUSE_CONFIRMATION_OR_FULL_DECISION
+    - FULL_SEMANTIC_DECISION
+  response_review_action:
+    REUSE_PRIOR:
+      requires_ai_confirmation: true
+      concrete_action_materialization: DETERMINISTIC
+  applied_reuse_provenance:
+    - resolution_source
+    - reused_from_candidate_id
+  direct_registry_edit_by_ai: false
+  direct_matrix_edit_by_ai: false
+  direct_ledger_edit_by_ai: false
+
+test_fixture_migration:
+  from: PER_ADR_HARDCODED_DIMENSION_AND_PREFIX_FIXTURE_PATCHING
+  to: LEDGER_REVERSED_DYNAMIC_PREFIX_RECONSTRUCTION
+  helper: build_registry_for_review_prefix
+  normal_semantic_review_may_edit_fixture_counts: false
+  normal_semantic_review_may_edit_fixture_dimension_names: false
+  expected_effect:
+    - FUTURE_ADR_GROWTH_DOES_NOT_REQUIRE_FIXTURE_PATCH
+    - TEST_FAILURE_NO_LONGER_CAUSED_BY_EXPECTED_REVIEW_PREFIX_GROWTH
+
+agent_responsibility:
+  do_not_review:
+    - automatic_reuse_actions
+    - complete_dimension_registry
+    - complete_raw_corpus
+    - unrelated_adrs
+  review_minimally:
+    REUSE_CONFIRMATION_OR_FULL_DECISION:
+      primary_question: CAN_PRIOR_RESOLUTION_BE_REUSED_FOR_THIS_CURRENT_MACHINE_SEMANTIC
+      preferred_output_when_valid: REUSE_PRIOR
+  review_fully:
+    FULL_SEMANTIC_DECISION:
+      use_closed_decision_vocabulary: true
+  broad_read_only_on:
+    - AUTOMATION_FAILURE
+    - DEFER_REQUIRING_EXPLICIT_ESCALATION
+    - OWNER_AUTHORIZED_SCOPE_EXPANSION
+
+verification:
+  github_actions_required: false
+  focused_tests:
+    - tests/ptsip/test_p03_raw_feature_extraction.py
+    - tests/ptsip/test_p03_review_packet.py
+    - tests/ptsip/test_p03_semantic_decision.py
+    - tests/ptsip/test_p03_semantic_reuse.py
+  exact_local_result: NOT_YET_EXECUTED_FOR_THIS_MIGRATION
+
+invariants:
+  - EXACT_CONTEXT_REUSE_NE_SEMANTIC_INFERENCE
+  - STRUCTURAL_REUSE_CANDIDATE_NE_SEMANTIC_EQUIVALENCE
+  - STRUCTURAL_ROUTING_SCORE_NE_AUTHORITY
+  - AI_CONFIRMED_REUSE_NE_REGISTERED_VOCABULARY_APPROVAL
+  - AUTOMATIC_REUSE_NE_RUNTIME_AUTHORITY
+  - SEMANTIC_EFFECTS_MUST_NOT_BE_AUTOMATICALLY_MERGED
+  - CURRENT_DIMENSIONS_REMAIN_WORKING_PROVISIONAL_HYPOTHESES
+  - NEW_DIMENSION_DISCOVERY_REMAINS_ALLOWED
+  - FINAL_CORPUS_RECONCILIATION_REMAINS_REQUIRED
+  - WU_02_REMEDIATION_RUNTIME_IMPLEMENTATION_REMAINS_NOT_AUTHORIZED
