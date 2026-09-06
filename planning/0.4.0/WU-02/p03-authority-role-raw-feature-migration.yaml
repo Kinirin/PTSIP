@@ -20,17 +20,19 @@ migration:
   from: PROVISIONAL_SEMANTIC_DIMENSION_FIRST
   to: RAW_MACHINE_FEATURE_COLLECTION_BEFORE_SEMANTIC_CLUSTERING
   reason: REDUCE_REPEATED_LLM_TAXONOMY_DESIGN_AND_BACKFILL_REASONING
-  legacy_semantic_dimensions:
-    analyzed_through_under_previous_method: ADR-0010
-    dimension_count: 79
-    status: HISTORICAL_PROVISIONAL_HYPOTHESES
+  provisional_semantic_dimensions:
+    analyzed_through_before_raw_migration: ADR-0010
+    dimension_count_at_migration: 79
+    status: WORKING_PROVISIONAL_HYPOTHESES
     canonical_vocabulary: false
     matching_target_for_new_raw_features: false
     preferred_reuse_set: false
     upper_bound_on_future_dimensions: false
     immutable: false
-    may_be_revised_after_full_corpus_collection: true
-    allowed_future_operations:
+    dimension_growth_allowed: true
+    dimension_reduction_allowed: true
+    raw_feature_force_fit: FORBIDDEN
+    allowed_operations:
       - KEEP
       - RENAME
       - MERGE
@@ -38,7 +40,6 @@ migration:
       - REMOVE
       - REPLACE
       - ADD_NEW_DIMENSION
-    per_adr_growth_during_raw_collection: FORBIDDEN
   semantic_review_boundary:
     reviewed_through: ADR-0010
     adr_0011_through_0023_semantically_reviewed_by_this_migration: false
@@ -69,9 +70,12 @@ automation:
   legacy_semantic_analyzer: .github/scripts/p03_authority_role_matrix.py
   legacy_semantic_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
   legacy_semantic_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
-  future_adr_0011_through_0023_manual_dimension_creation_required: false
-  compare_each_raw_feature_to_legacy_79_during_collection: FORBIDDEN
+  future_adr_0011_through_0023_manual_dimension_creation_required: ONLY_WHEN_NEW_SEMANTIC_AXIS_IS_JUSTIFIED
+  automatic_existing_dimension_evaluation: REQUIRED
+  manual_full_79_dimension_comparison: FORBIDDEN
   force_fit_raw_feature_to_existing_dimension: FORBIDDEN
+  newly_justified_dimension_may_be_added: true
+  new_dimension_requires_automatic_prior_adr_backfill: true
 
 planning_record_boundary:
   duplicate_generated_backfill_cells_in_planning_yaml: FORBIDDEN
@@ -82,26 +86,36 @@ planning_record_boundary:
     - TEST_RESULT_SUMMARY
   generated_artifact_owns_detailed_raw_results: true
 
-post_collection_semantic_work:
-  timing: AFTER_COMPLETE_RAW_CORPUS_COLLECTION
+incremental_semantic_review:
+  enabled_after_raw_feature_collection: true
+  starting_after: ADR-0010
+  per_adr_or_small_batch_review: ALLOWED
+  existing_dimension_evaluation: DETERMINISTIC_AUTOMATION
+  residual_raw_semantic_review: HUMAN_OR_AGENT_DESIGN_REVIEW
+  new_dimension_creation: ALLOWED_WHEN_SEMANTICALLY_JUSTIFIED
+  existing_dimension_refinement: ALLOWED
+  force_fit_to_current_dimension_set: FORBIDDEN
+  full_manual_comparison_against_all_existing_dimensions: NOT_REQUIRED
+  generated_matrix_backfill_after_dimension_change: REQUIRED
+
+final_corpus_reconciliation:
+  timing: AFTER_ADR_0023_SEMANTIC_REVIEW
   operation:
-    - REVIEW_FULL_RAW_CORPUS_WITHOUT_LEGACY_DIMENSION_PREFERENCE
-    - REEVALUATE_ALL_79_HISTORICAL_PROVISIONAL_HYPOTHESES
+    - REVIEW_FULL_RAW_CORPUS_WITHOUT_CURRENT_DIMENSION_PREFERENCE
+    - REEVALUATE_ALL_WORKING_PROVISIONAL_DIMENSIONS
     - GROUP_RELATED_RAW_FEATURES
-    - IDENTIFY_AUTHORITY_EFFECT_CANDIDATES
-    - ALLOW_NEW_DIMENSIONS_NOT_PRESENT_IN_LEGACY_79
+    - IDENTIFY_MISSING_AUTHORITY_EFFECT_CANDIDATES
     - REMOVE_AUTHORITY_TYPE_OVERLAP
     - REMOVE_SUBJECT_BINDING_OVERLAP
-    - KEEP_RENAME_MERGE_SPLIT_REMOVE_OR_REPLACE_LEGACY_DIMENSIONS_AS_SUPPORTED_BY_CORPUS
+    - KEEP_RENAME_MERGE_SPLIT_REMOVE_REPLACE_OR_ADD_DIMENSIONS_AS_SUPPORTED_BY_CORPUS
     - REVIEW_RESIDUAL_ROLE_DESCRIPTION_SEMANTICS
     - PRESENT_CANDIDATE_VOCABULARY_TO_PROJECT_OWNER
-  repeated_per_adr_llm_taxonomy_design: FORBIDDEN
   stable_vocabulary_registration_before_owner_approval: FORBIDDEN
 
 verification_strategy:
   raw_collector_snapshot_check: REQUIRED
   small_synthetic_engine_tests: REQUIRED
-  historical_semantic_prefix_replay_growth: STOPPED_WITH_PREVIOUS_METHOD
+  historical_semantic_prefix_replay_growth: NOT_REQUIRED_FOR_EACH_NEW_ADR
   github_actions_required: false
   exact_local_pytest_result: NOT_EXECUTED_IN_CURRENT_REMOTE_TOOL_ENVIRONMENT
   repository_snapshot_check_test_added: true
@@ -111,17 +125,18 @@ invariants:
   - RAW_FEATURE_NE_AUTHORITY_ROLE_EFFECT
   - RAW_COLLECTION_NE_SEMANTIC_REVIEW
   - ADR_0011_THROUGH_0023_RAW_COLLECTION_NE_OWNER_APPROVAL_OF_ROLE_CLASSIFICATION
-  - LEGACY_79_DIMENSIONS_ARE_PROVISIONAL_HYPOTHESES_NOT_CONSTRAINTS
-  - LEGACY_79_DIMENSIONS_MUST_NOT_BIAS_OR_BOUND_CORPUS_WIDE_CLUSTERING
-  - RAW_FEATURES_MUST_NOT_BE_FORCE_FIT_TO_LEGACY_DIMENSIONS
-  - NEW_DIMENSIONS_MAY_EMERGE_AFTER_FULL_CORPUS_REVIEW
+  - CURRENT_79_DIMENSIONS_ARE_WORKING_PROVISIONAL_HYPOTHESES_NOT_CONSTRAINTS
+  - CURRENT_DIMENSION_SET_MUST_NOT_BIAS_OR_BOUND_NEW_SEMANTIC_DISCOVERY
+  - RAW_FEATURES_MUST_NOT_BE_FORCE_FIT_TO_EXISTING_DIMENSIONS
+  - NEW_DIMENSIONS_MAY_EMERGE_DURING_INCREMENTAL_REVIEW
+  - EXISTING_DIMENSIONS_MAY_BE_RENAMED_MERGED_SPLIT_REMOVED_OR_REPLACED
   - NATURAL_LANGUAGE_MUST_NOT_BE_CONSUMED_BY_RAW_COLLECTOR
   - FULL_BOOLEAN_BACKFILL_NE_REQUIRED_PERSISTED_ARTIFACT
   - SEMANTIC_CLUSTERING_OCCURS_AFTER_COMPLETE_RAW_CORPUS_COLLECTION
   - WU_02_REMEDIATION_RUNTIME_IMPLEMENTATION_REMAINS_NOT_AUTHORIZED
 
 review_progress:
-  ADR-0001_THROUGH_0010_SEMANTIC_DIMENSIONS: HISTORICAL_PROVISIONAL_HYPOTHESES
+  ADR-0001_THROUGH_0010_SEMANTIC_DIMENSIONS: WORKING_PROVISIONAL_HYPOTHESES
   ADR-0001_THROUGH_0023_RAW_COLLECTION: GENERATED_COMPLETE
   RAW_COLLECTION_SUMMARY:
     adr_count: 23
