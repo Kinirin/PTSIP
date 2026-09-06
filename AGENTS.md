@@ -11,7 +11,9 @@ When the task is limited to raw-feature collection, one-ADR review-packet genera
 1. read this `AGENTS.md`;
 2. read `planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml`;
 3. run the applicable P03 automation before reading analysis registries or ADRs manually;
-4. use the generated review packet as the primary semantic-review input.
+4. for one-ADR review, generate the compact packet first with:
+   `py -3.14 .github/scripts/p03_authority_role_review_packet.py --repo-root . --adr ADR-NNNN --compact`;
+5. use that compact generated review packet as the primary semantic-review input.
 
 For this narrow path, do **not** pre-read `MEMORY.md`, the full `ptsip.yaml`, general Specification files, historical release planning, the complete provisional-dimension registry, the complete raw corpus, or unrelated ADRs unless:
 - the automation fails and the failing dependency must be diagnosed;
