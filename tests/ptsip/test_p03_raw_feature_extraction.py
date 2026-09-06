@@ -100,10 +100,11 @@ def test_p03_raw_feature_extraction_preserves_exact_machine_value_types() -> Non
     assert by_path["authority_semantics.mapping"]["value"] == {"a": 1, "b": 2}
 
 
-def test_p03_legacy_per_adr_dimension_method_is_suspended_after_adr_0010(tmp_path: Path) -> None:
+def test_p03_working_dimension_set_can_extend_review_beyond_adr_0010(tmp_path: Path) -> None:
     registry = _yaml(LEGACY_REGISTRY)
     registry["analysis"]["reviewed_through"] = "ADR-0011"
-    registry_path = tmp_path / "legacy-registry.yaml"
+    registry_path = tmp_path / "working-registry.yaml"
+    output_path = tmp_path / "working-matrix.yaml"
     registry_path.write_text(
         yaml.safe_dump(registry, sort_keys=False, allow_unicode=True),
         encoding="utf-8",
@@ -118,7 +119,7 @@ def test_p03_legacy_per_adr_dimension_method_is_suspended_after_adr_0010(tmp_pat
             "--registry",
             str(registry_path),
             "--output",
-            str(tmp_path / "legacy-matrix.yaml"),
+            str(output_path),
             "--write",
         ],
         text=True,
@@ -129,19 +130,27 @@ def test_p03_legacy_per_adr_dimension_method_is_suspended_after_adr_0010(tmp_pat
         check=False,
     )
 
-    assert result.returncode == 1
-    assert "legacy per-ADR semantic-dimension method is suspended" in result.stderr
+    assert result.returncode == 0, result.stderr
+    matrix = _yaml(output_path)
+    assert "ADR-0011" in matrix["rows"]
+    assert all(
+        type(value) is bool
+        for value in matrix["rows"]["ADR-0011"]["role_effect_analysis"].values()
+    )
 
 
-def test_p03_legacy_dimensions_are_revisable_hypotheses_not_matching_target() -> None:
+def test_p03_working_dimensions_are_revisable_and_not_a_matching_target() -> None:
     registry = _yaml(LEGACY_REGISTRY)
     migration = registry["migration"]
-    assert migration["status"] == "HISTORICAL_PROVISIONAL_REFERENCE"
-    assert migration["legacy_dimensions_are_matching_target"] is False
-    assert migration["legacy_dimensions_are_preferred_reuse_set"] is False
-    assert migration["legacy_dimensions_are_immutable"] is False
-    assert migration["post_collection_revision_allowed"] is True
-    assert "ADD_NEW_DIMENSION" in migration["post_collection_allowed_operations"]
-    assert "REMOVE" in migration["post_collection_allowed_operations"]
-    assert "MERGE" in migration["post_collection_allowed_operations"]
-    assert "SPLIT" in migration["post_collection_allowed_operations"]
+    assert migration["status"] == "WORKING_PROVISIONAL_HYPOTHESES"
+    assert migration["dimensions_are_matching_target"] is False
+    assert migration["dimensions_are_preferred_reuse_set"] is False
+    assert migration["dimensions_are_immutable"] is False
+    assert migration["dimension_growth_allowed"] is True
+    assert migration["dimension_reduction_allowed"] is True
+    assert migration["raw_feature_force_fit"] == "FORBIDDEN"
+    assert migration["raw_feature_may_remain_unrepresented_pending_review"] is True
+    assert "ADD_NEW_DIMENSION" in migration["allowed_operations"]
+    assert "REMOVE" in migration["allowed_operations"]
+    assert "MERGE" in migration["allowed_operations"]
+    assert "SPLIT" in migration["allowed_operations"]
