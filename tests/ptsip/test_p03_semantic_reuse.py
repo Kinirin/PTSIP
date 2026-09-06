@@ -21,7 +21,7 @@ def _yaml(path: Path) -> dict[str, object]:
 
 
 def _ledger_through(adr_number: int) -> dict[str, object]:
-    ledger = _ledger_through(11)
+    ledger = _yaml(LEDGER)
     records = ledger["records"]
     ledger["records"] = {
         candidate_id: record
