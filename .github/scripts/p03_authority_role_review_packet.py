@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+from difflib import SequenceMatcher
 import sys
 from pathlib import Path
 from typing import Any
@@ -157,6 +158,93 @@ def _raw_features_for_adr(snapshot: dict[str, Any], adr_id: str) -> list[dict[st
     return selected
 
 
+def _expression_paths(expression: object) -> tuple[str, ...]:
+    if not isinstance(expression, dict):
+        return ()
+    if "path" in expression and isinstance(expression["path"], str):
+        return (_top_level_semantic_path(expression["path"]),)
+    paths: set[str] = set()
+    for branch in ("all", "any"):
+        value = expression.get(branch)
+        if isinstance(value, list):
+            for item in value:
+                paths.update(_expression_paths(item))
+    if "not" in expression:
+        paths.update(_expression_paths(expression["not"]))
+    return tuple(sorted(paths))
+
+
+def _field_tail(path: str) -> str:
+    return path.rsplit(".", 1)[-1].lower()
+
+
+def _lexical_similarity(left: str, right: str) -> float:
+    return SequenceMatcher(None, left.lower(), right.lower()).ratio()
+
+
+def _existing_dimension_routing_candidates(
+    residual: list[dict[str, object]],
+    dimensions: dict[str, dict[str, Any]],
+) -> list[dict[str, object]]:
+    routed: list[dict[str, object]] = []
+    for feature in residual:
+        raw_path = str(feature["path"])
+        raw_tail = _field_tail(raw_path)
+        candidates: list[dict[str, object]] = []
+
+        for dimension_id, definition in dimensions.items():
+            expression = definition.get("expression")
+            predicate_paths = _expression_paths(expression)
+            evidence: list[dict[str, object]] = []
+
+            dimension_score = _lexical_similarity(raw_tail, dimension_id)
+            if dimension_score >= 0.62:
+                evidence.append(
+                    {
+                        "basis": "DIMENSION_ID_LEXICAL_SIMILARITY",
+                        "target": dimension_id,
+                        "score": round(dimension_score, 4),
+                    }
+                )
+
+            for predicate_path in predicate_paths:
+                predicate_tail = _field_tail(predicate_path)
+                score = _lexical_similarity(raw_tail, predicate_tail)
+                if score >= 0.62:
+                    evidence.append(
+                        {
+                            "basis": "PREDICATE_PATH_LEXICAL_SIMILARITY",
+                            "target": predicate_path,
+                            "score": round(score, 4),
+                        }
+                    )
+
+            if evidence:
+                evidence.sort(key=lambda item: (-float(item["score"]), str(item["target"])))
+                candidates.append(
+                    {
+                        "dimension_id": dimension_id,
+                        "routing_score": evidence[0]["score"],
+                        "evidence": evidence[:3],
+                    }
+                )
+
+        candidates.sort(
+            key=lambda item: (-float(item["routing_score"]), str(item["dimension_id"]))
+        )
+        if candidates:
+            routed.append(
+                {
+                    "candidate_id": _raw_candidate_id(feature),
+                    "raw_path": raw_path,
+                    "routing_only": True,
+                    "semantic_authority": False,
+                    "candidate_dimensions": candidates[:3],
+                }
+            )
+    return routed
+
+
 def _machine_residual_candidates(
     residual: list[dict[str, object]],
 ) -> list[dict[str, object]]:
@@ -255,6 +343,7 @@ def build_review_packet(
     residual = [item for item in raw_features if item["path"] not in covered_paths]
     covered = [item for item in raw_features if item["path"] in covered_paths]
     candidates = _machine_residual_candidates(residual)
+    routing_candidates = _existing_dimension_routing_candidates(residual, dimensions)
 
     packet: dict[str, Any] = {
         "schema_version": REVIEW_PACKET_SCHEMA_VERSION,
@@ -275,6 +364,7 @@ def build_review_packet(
             "matched_predicate_proof_trace": "DETERMINISTIC",
             "residual_raw_feature_extraction": "DETERMINISTIC",
             "machine_residual_candidate_generation": "DETERMINISTIC",
+            "existing_dimension_candidate_routing": "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE",
             "manual_full_dimension_scan_required": False,
             "manual_raw_corpus_search_required": False,
             "raw_feature_force_fit": "FORBIDDEN",
@@ -285,12 +375,14 @@ def build_review_packet(
         "covered_raw_features": covered,
         "residual_raw_features": residual,
         "machine_residual_candidates": candidates,
+        "candidate_existing_dimension_routing": routing_candidates,
         "summary": {
             "raw_feature_count": len(raw_features),
             "matched_dimension_count": len(matched_dimensions),
             "covered_raw_feature_count": len(covered),
             "residual_raw_feature_count": len(residual),
             "machine_residual_candidate_count": len(candidates),
+            "candidate_existing_dimension_routing_count": len(routing_candidates),
             "semantic_review_required": bool(residual),
         },
     }
@@ -312,6 +404,7 @@ def compact_review_packet(packet: dict[str, Any]) -> dict[str, Any]:
         "matched_dimension_ids": [
             item["dimension_id"] for item in packet["matched_dimensions"]
         ],
+        "candidate_existing_dimension_routing": packet["candidate_existing_dimension_routing"],
         "machine_residual_candidates": packet["machine_residual_candidates"],
         "summary": packet["summary"],
     }
@@ -327,10 +420,11 @@ def validate_review_packet(packet: dict[str, Any]) -> None:
     covered = packet.get("covered_raw_features")
     residual = packet.get("residual_raw_features")
     candidates = packet.get("machine_residual_candidates")
+    routing = packet.get("candidate_existing_dimension_routing")
     summary = packet.get("summary")
     if not all(isinstance(value, dict) for value in (target, inputs, automation, summary)):
         raise ReviewPacketError("review packet mappings are malformed")
-    if not all(isinstance(value, list) for value in (matched, covered, residual, candidates)):
+    if not all(isinstance(value, list) for value in (matched, covered, residual, candidates, routing)):
         raise ReviewPacketError("review packet collections are malformed")
     if automation.get("manual_full_dimension_scan_required") is not False:
         raise ReviewPacketError("manual full dimension scan must not be required")
@@ -369,8 +463,27 @@ def validate_review_packet(packet: dict[str, Any]) -> None:
         raise ReviewPacketError("review packet residual_raw_feature_count is stale")
     if summary.get("matched_dimension_count") != len(matched):
         raise ReviewPacketError("review packet matched_dimension_count is stale")
+    for route in routing:
+        if not isinstance(route, dict):
+            raise ReviewPacketError("existing-dimension routing entry must be a mapping")
+        if route.get("routing_only") is not True or route.get("semantic_authority") is not False:
+            raise ReviewPacketError("existing-dimension routing must remain non-authoritative")
+        if route.get("raw_path") not in residual_paths:
+            raise ReviewPacketError("existing-dimension routing must reference a residual raw path")
+        route_candidates = route.get("candidate_dimensions")
+        if not isinstance(route_candidates, list) or not route_candidates:
+            raise ReviewPacketError("existing-dimension routing entry requires candidates")
+        for candidate in route_candidates:
+            if not isinstance(candidate, dict):
+                raise ReviewPacketError("routed dimension candidate must be a mapping")
+            score = candidate.get("routing_score")
+            if not isinstance(score, (int, float)) or score < 0 or score > 1:
+                raise ReviewPacketError("routing score must be between zero and one")
+
     if summary.get("machine_residual_candidate_count") != len(candidates):
         raise ReviewPacketError("review packet machine_residual_candidate_count is stale")
+    if summary.get("candidate_existing_dimension_routing_count") != len(routing):
+        raise ReviewPacketError("review packet candidate_existing_dimension_routing_count is stale")
     if len(candidates) != len(residual):
         raise ReviewPacketError("every residual raw feature requires one machine residual candidate")
     if summary.get("semantic_review_required") is not bool(residual):
