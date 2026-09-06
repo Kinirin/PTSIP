@@ -9,6 +9,7 @@ document:
   approval_date: '2026-09-06'
   implementation_authorization: NOT_AUTHORIZED
   p03_analysis_automation_authorization: AUTHORIZED_BY_PROJECT_OWNER
+  p03_minimal_ai_semantic_decision_automation: AUTHORIZED_BY_PROJECT_OWNER
 
 relation:
   parent_p03: planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
@@ -69,7 +70,11 @@ automation:
   generated_snapshot: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
   review_packet_generator: .github/scripts/p03_authority_role_review_packet.py
   review_packet_output_dir: planning/0.4.0/WU-02/p03-authority-role-review-packets
-  agent_default_review_packet_mode: COMPACT
+  review_packet_role: MACHINE_PREPROCESSING_INTERNAL
+  semantic_decision_automation: .github/scripts/p03_authority_role_semantic_decision.py
+  semantic_decision_ledger: planning/0.4.0/WU-02/p03-authority-role-semantic-decisions.yaml
+  semantic_decision_packet_dir: planning/0.4.0/WU-02/p03-authority-role-decision-packets
+  agent_default_semantic_input: MINIMAL_AI_DECISION_PACKET
   full_review_packet_use: AUTOMATION_DEBUG_OR_EXPLICIT_AUDIT_ONLY
   legacy_semantic_analyzer: .github/scripts/p03_authority_role_matrix.py
   legacy_semantic_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -81,13 +86,69 @@ automation:
   automatic_existing_dimension_candidate_routing: DETERMINISTIC_NON_AUTHORITATIVE
   candidate_routing_basis: MACHINE_FIELD_TOKEN_AND_HEAD_NOUN_STRUCTURE
   manual_full_79_dimension_comparison: FORBIDDEN
-  per_adr_agent_primary_input: GENERATED_COMPACT_REVIEW_PACKET_ONLY
+  per_adr_agent_primary_input: GENERATED_MINIMAL_AI_DECISION_PACKET_ONLY
   compact_packet_deduplicates_routed_and_unrouted_residuals: true
+  raw_values_are_shape_compressed_before_ai_review: true
+  ai_free_text_rationale_required: false
   direct_full_dimension_registry_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
   direct_full_raw_corpus_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
   force_fit_raw_feature_to_existing_dimension: FORBIDDEN
   newly_justified_dimension_may_be_added: true
   new_dimension_requires_automatic_prior_adr_backfill: true
+
+semantic_decision_pipeline:
+  purpose: MINIMIZE_AI_CREDIT_COST_WITHOUT_AUTOMATING_SEMANTIC_AUTHORITY
+  sequence:
+    - VALIDATE_RAW_SNAPSHOT
+    - EVALUATE_EXISTING_PREDICATES
+    - ROUTE_EXISTING_DIMENSION_CANDIDATES
+    - COMPRESS_RAW_VALUES_TO_SEMANTIC_SHAPES
+    - GENERATE_MINIMAL_AI_DECISION_PACKET
+    - AI_RETURNS_CLOSED_STRUCTURED_DECISION
+    - VALIDATE_PACKET_FINGERPRINT_AND_DECISION
+    - GENERATE_PREDICATE_OR_LEDGER_RESOLUTION
+    - UPDATE_PROVISIONAL_REGISTRY
+    - REGENERATE_FULL_REVIEWED_PREFIX_MATRIX
+    - VALIDATE_RECTANGULAR_BACKFILL
+  ai_decision_vocabulary:
+    - EXISTING
+    - REFINE_EXISTING
+    - NEW_DIMENSION
+    - NON_EFFECT
+    - DEFER
+  ai_output:
+    free_text_rationale: NOT_REQUIRED
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+  predicate_generation:
+    automatic_from_structured_predicate_mode: true
+    allowed_modes:
+      - PRESENT
+      - NON_EMPTY
+      - EQUALS_EXACT
+      - CONTAINS_ALL_EXACT
+  stale_decision_protection:
+    packet_fingerprint_required: true
+    registry_fingerprint_bound: true
+    raw_snapshot_fingerprint_bound: true
+    ledger_fingerprint_bound: true
+  repeated_reasoning_reduction:
+    applied_candidate_recorded_in_ledger: true
+    resolved_candidate_excluded_from_future_packets: true
+    deferred_candidate_suppressed_by_default: true
+    deferred_candidate_revisit_requires_explicit_include: true
+  registry_application:
+    ai_edits_registry_directly: false
+    ai_edits_matrix_directly: false
+    ai_performs_backfill_directly: false
+    deterministic_apply_tool_owns_mutation: true
+    sequential_review_prefix_required: true
+    new_dimension_with_unresolved_defer_same_review: FORBIDDEN
+  progress_source:
+    reviewed_through: PROVISIONAL_DIMENSION_REGISTRY
+    per_candidate_resolution: SEMANTIC_DECISION_LEDGER
+    duplicate_per_adr_planning_backfill: FORBIDDEN
 
 planning_record_boundary:
   duplicate_generated_backfill_cells_in_planning_yaml: FORBIDDEN
@@ -107,12 +168,13 @@ incremental_semantic_review:
   residual_raw_feature_extraction: DETERMINISTIC_AUTOMATION
   existing_dimension_candidate_routing: DETERMINISTIC_NON_AUTHORITATIVE_AUTOMATION
   candidate_routing_confidence_is_authority: false
-  residual_raw_semantic_review: HUMAN_OR_AGENT_DESIGN_REVIEW_OF_REVIEW_PACKET_ONLY
+  residual_raw_semantic_review: HUMAN_OR_AGENT_DESIGN_REVIEW_OF_MINIMAL_DECISION_PACKET_ONLY
   new_dimension_creation: ALLOWED_WHEN_SEMANTICALLY_JUSTIFIED
   existing_dimension_refinement: ALLOWED
   force_fit_to_current_dimension_set: FORBIDDEN
   full_manual_comparison_against_all_existing_dimensions: FORBIDDEN_BY_DEFAULT
-  review_packet_must_precede_agent_semantic_reasoning: true
+  machine_preprocessing_must_precede_agent_semantic_reasoning: true
+  semantic_decision_packet_must_precede_agent_semantic_reasoning: true
   generated_matrix_backfill_after_dimension_change: REQUIRED
 
 final_corpus_reconciliation:
@@ -137,6 +199,7 @@ verification_strategy:
   exact_local_pytest_result: NOT_EXECUTED_IN_CURRENT_REMOTE_TOOL_ENVIRONMENT
   repository_snapshot_check_test_added: true
   synthetic_type_and_dynamic_extension_tests_added: true
+  minimal_ai_decision_pipeline_tests_added: true
 
 invariants:
   - RAW_FEATURE_NE_AUTHORITY_ROLE_EFFECT
@@ -150,6 +213,10 @@ invariants:
   - NATURAL_LANGUAGE_MUST_NOT_BE_CONSUMED_BY_RAW_COLLECTOR
   - FULL_BOOLEAN_BACKFILL_NE_REQUIRED_PERSISTED_ARTIFACT
   - SEMANTIC_CLUSTERING_OCCURS_AFTER_COMPLETE_RAW_CORPUS_COLLECTION
+  - AI_DESIGN_REVIEW_ADVISORY_NE_AUTHORITY
+  - AI_SEMANTIC_DECISION_NE_REGISTERED_VOCABULARY_APPROVAL
+  - AI_MUST_NOT_EDIT_PROVISIONAL_REGISTRY_OR_MATRIX_DIRECTLY
+  - RESOLVED_RAW_CANDIDATES_MUST_NOT_REQUIRE_REPEAT_AI_REASONING
   - WU_02_REMEDIATION_RUNTIME_IMPLEMENTATION_REMAINS_NOT_AUTHORIZED
 
 review_progress:
@@ -162,7 +229,7 @@ review_progress:
     reason: MANUAL_COMPARISON_ANCHORED_TO_CURRENT_DIMENSION_SET
     repository_semantic_change_from_discarded_analysis: NONE
     current_semantic_review_state: RESET_NOT_COMPLETED
-    next_required_input: GENERATED_REVIEW_PACKET
+    next_required_input: GENERATED_MINIMAL_AI_DECISION_PACKET
   ADR-0001_THROUGH_0023_RAW_COLLECTION: GENERATED_COMPLETE
   RAW_COLLECTION_SUMMARY:
     adr_count: 23
