@@ -363,7 +363,7 @@ def analyze_reuse(
 
         # Automatic reuse is allowed only when every reusable exact precedent
         # resolves to the same concrete action. Conflicting precedent is sent to AI.
-        if exact_actions:
+        if exact_rows and len(exact_actions) == len(exact_rows):
             action_fingerprints = {
                 _canonical_json(action)
                 for _, action in exact_actions
