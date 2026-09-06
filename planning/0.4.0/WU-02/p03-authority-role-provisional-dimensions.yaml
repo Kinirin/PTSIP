@@ -7,11 +7,23 @@ analysis:
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
-  status: FROZEN_REFERENCE
-  frozen_through: ADR-0010
+  status: HISTORICAL_PROVISIONAL_REFERENCE
+  previous_method_analyzed_through: ADR-0010
   successor: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
-  future_dimension_growth: FORBIDDEN
-  semantic_clustering_source_after_migration: RAW_FEATURE_CORPUS
+  per_adr_semantic_dimension_growth_during_raw_collection: FORBIDDEN
+  legacy_dimensions_are_matching_target: false
+  legacy_dimensions_are_preferred_reuse_set: false
+  legacy_dimensions_are_immutable: false
+  post_collection_revision_allowed: true
+  post_collection_allowed_operations:
+    - KEEP
+    - RENAME
+    - MERGE
+    - SPLIT
+    - REMOVE
+    - REPLACE
+    - ADD_NEW_DIMENSION
+  semantic_clustering_source_after_migration: FULL_RAW_FEATURE_CORPUS
 dimensions:
   establish_canonical_identity:
     status: PROVISIONAL
