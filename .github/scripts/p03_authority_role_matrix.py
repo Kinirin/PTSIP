@@ -281,30 +281,20 @@ def _load_registry(path: Path, known_paths: dict[str, list[object]]) -> dict[str
     if migration is not None:
         if not isinstance(migration, dict):
             raise AnalysisError("registry migration must be a mapping")
-        if migration.get("status") != "HISTORICAL_PROVISIONAL_REFERENCE":
+        if migration.get("status") != "WORKING_PROVISIONAL_HYPOTHESES":
             raise AnalysisError(
-                "legacy semantic registry migration status must be HISTORICAL_PROVISIONAL_REFERENCE"
+                "provisional dimension registry migration status must be WORKING_PROVISIONAL_HYPOTHESES"
             )
-        boundary = _adr_number(
-            migration.get("previous_method_analyzed_through"),
-            label="migration.previous_method_analyzed_through",
-        )
-        if reviewed > boundary:
-            raise AnalysisError(
-                "legacy per-ADR semantic-dimension method is suspended; "
-                "use the raw-feature corpus collector until corpus-wide clustering"
-            )
-        if (
-            migration.get("per_adr_semantic_dimension_growth_during_raw_collection")
-            != "FORBIDDEN"
-        ):
-            raise AnalysisError(
-                "legacy per-ADR semantic dimension growth must stay disabled during raw collection"
-            )
-        if migration.get("legacy_dimensions_are_matching_target") is not False:
-            raise AnalysisError("legacy dimensions must not be a matching target for new raw features")
-        if migration.get("legacy_dimensions_are_immutable") is not False:
-            raise AnalysisError("legacy provisional dimensions must remain revisable hypotheses")
+        if migration.get("dimensions_are_matching_target") is not False:
+            raise AnalysisError("current provisional dimensions must not be a matching target")
+        if migration.get("dimensions_are_preferred_reuse_set") is not False:
+            raise AnalysisError("current provisional dimensions must not receive reuse preference")
+        if migration.get("dimensions_are_immutable") is not False:
+            raise AnalysisError("provisional dimensions must remain revisable")
+        if migration.get("dimension_growth_allowed") is not True:
+            raise AnalysisError("provisional dimension growth must remain allowed")
+        if migration.get("raw_feature_force_fit") != "FORBIDDEN":
+            raise AnalysisError("raw features must not be force-fit to current provisional dimensions")
 
     dimensions = registry.get("dimensions")
     if not isinstance(dimensions, dict) or not dimensions:
