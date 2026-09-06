@@ -1,1028 +1,600 @@
-schema_version: ptsip-p03-authority-role-full-corpus-reconciliation/v1
+schema_version: ptsip-p03-authority-role-full-corpus-reconciliation/v2
 reconciliation:
-  status: OWNER_REVIEW_REQUIRED
+  status: PARTIAL_OWNER_APPROVAL_IN_PROGRESS
   corpus:
     first_adr: ADR-0001
     through: ADR-0023
     source_dimension_count: 184
-    proposed_dimension_count: 55
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
+  primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
   source_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
-  proposed_projection_matrix: planning/0.4.0/WU-02/p03-authority-role-reconciled-matrix.generated.yaml
+  approved_low_risk_reconciliation: planning/0.4.0/WU-02/p03-authority-role-approved-low-risk-reconciliation.yaml
+  full_55_projection:
+    status: WITHDRAWN_FROM_CURRENT_BRANCH
+    historical_commit: b79748d56becb06bc1050f8e26d4060f94225bbc
+    historical_path: planning/0.4.0/WU-02/p03-authority-role-reconciled-matrix.generated.yaml
+    reason: OWNER_REJECTED_FULL_PREMERGE_PROJECTION_AS_PRIMARY_RECONCILIATION_MODEL
+  projection_policy:
+    generate_full_55_projection: false
+    premerge_unapproved_source_dimensions: false
+    owner_approved_low_risk_groups_only: true
   vocabulary_registration: false
   runtime_authority: NONE
   stable_constants_created: false
-  methodology:
-    - REVIEW_ALL_CURRENT_DIMENSIONS
-    - PRESERVE_SEMANTIC_DISTINCTIONS_OVER_NAME_SIMILARITY
-    - MERGE_PARAMETER_LEVEL_EFFECTS_INTO_REUSABLE_AUTHORITY_EFFECT_AXES
-    - SPLIT_CROSS_DOMAIN_DIMENSIONS_BEFORE_VOCABULARY_REGISTRATION
-    - DO_NOT_USE_MATRIX_COLUMN_EQUALITY_AS_SEMANTIC_EQUIVALENCE
-    - OWNER_APPROVAL_REQUIRED_BEFORE_REGISTRATION
-  disposition_counts:
-    keep: 8
-    rename: 7
-    merge_into: 165
-    keep_as_merge_target: 1
-    split: 3
-    remove: 0
-  coverage:
-    source_dimensions_reviewed: 184
-    source_dimensions_mapped: 184
-    unresolved_source_dimensions: 0
-    note: Parameter/reference-only raw fields had already been recorded as NON_EFFECT and were not promoted into the source dimension set.
-  owner_gate:
-    required: true
-    approval_effect: MAY_REGISTER_INITIAL_CLOSED_VOCABULARY_ONLY_AFTER_SEPARATE_OWNER_APPROVAL
-
-proposed_vocabulary:
-  establish_canonical_identity:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Establish canonical identity and shared identity namespace semantics for governed artifacts."
-    source_dimensions:
-      - establish_canonical_identity
-      - require_shared_identity_namespace
-  require_stable_governance_identity:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require stable machine identities for governance rules and decisions."
-    source_dimensions:
-      - require_stable_rule_identity
-      - require_stable_decision_identity
-  govern_project_profile_identity_versioning:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern project-profile identity axes, namespace, version triggers, and contract-versus-instance revision semantics."
-    source_dimensions:
-      - constrain_profile_identity_and_cardinality
-      - preserve_project_profile_identity_axes
-      - preserve_legacy_profile_generation_identity
-      - define_project_profile_major_version_trigger
-      - define_project_profile_minor_version_trigger
-      - separate_profile_instance_revision_from_contract_version
-      - forbid_semantic_versioning_for_project_profile_namespace
-      - define_project_profile_version_namespace
-  forbid_fabricated_governance_references:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Forbid invented governance history, identities, or reference targets."
-    source_dimensions:
-      - forbid_fabricated_history
-      - forbid_fabricated_reference_targets
-  govern_identity_transition:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern explicit retirement or transition of a previous canonical identity."
-    source_dimensions:
-      - retire_previous_identity
-  govern_classification_model:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Define and preserve the lifecycle classification basis, vocabulary, and qualification rules."
-    source_dimensions:
-      - define_classification_basis
-      - define_classification_vocabulary
-      - preserve_classification_vocabulary
-      - constrain_neutral_contract_qualification
-  separate_classification_from_verification_purpose:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Keep lifecycle classification orthogonal to verification purpose."
-    source_dimensions:
-      - separate_classification_from_verification_purpose
-  require_architectural_boundary:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require explicit coherent architecture or component boundaries."
-    source_dimensions:
-      - require_architectural_boundary
-  govern_responsibility_contract:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Define machine-readable responsibility roles, ownership, and governable responsibility splits."
-    source_dimensions:
-      - require_governable_responsibility_split
-      - define_responsibility_role_contract
-  govern_relationship_contract:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Define typed relationship semantics and relationship permission boundaries."
-    source_dimensions:
-      - define_typed_relationship_contract
-      - deny_relationship_permission_grant
-  govern_associated_artifact_ownership:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern associated-artifact ownership and anchoring independently from production."
-    source_dimensions:
-      - separate_artifact_ownership_from_production
-      - constrain_associated_artifact_ownership
-  govern_lifecycle_boundary_and_handoff:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Define lifecycle handoff boundaries between governed responsibilities."
-    source_dimensions:
-      - define_lifecycle_handoff
-  govern_dependency_boundary:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Constrain dependency direction and permitted cross-boundary contract consumption."
-    source_dimensions:
-      - constrain_dependency_direction
-      - permit_contract_consumption
-  reserve_project_structure_authority:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Reserve project structure and topology decisions to project authority."
-    source_dimensions:
-      - reserve_project_structure_authority
-  reserve_project_declaration_authority:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Reserve project declaration semantics to explicit project authority."
-    source_dimensions:
-      - reserve_project_declaration_authority
-  deny_unauthorized_semantic_inference:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Forbid semantic inference, guessing, or automatic design when no authority permits it."
-    source_dimensions:
-      - reject_architecture_proxy_inference
-      - forbid_relationship_inference
-      - forbid_automatic_design_of_unresolved_required_work
-      - forbid_recovery_guessing
-      - forbid_unrestricted_direct_convergence_inference
-  deny_derived_architecture_authority:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Prevent derived, advisory, evidence, or agent outputs from becoming architecture authority."
-    source_dimensions:
-      - deny_derived_architecture_authority
-  require_project_owner_decision:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require explicit project-owner confirmation for ambiguous or architecture-setting decisions."
-    source_dimensions:
-      - require_owner_confirmation
-      - require_owner_decision_for_ambiguous_historical_semantics
-  govern_decision_precedence_and_resolution:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Define decision priority, ordering, conflict handling, and resolution winner semantics."
-    source_dimensions:
-      - establish_decision_criterion_priority
-      - select_resolution_winner
-      - forbid_silent_conflict_overwrite
-      - define_ordered_decision_process
-  require_fresh_authority_or_evidence_state:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require fresh authority or evidence state before governed decisions."
-    source_dimensions:
-      - invalidate_stale_evidence
-      - require_fresh_authority_reads
-  require_fail_closed_behavior:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require invalid, stale, conflicting, unsupported, or malformed governed states to fail closed."
-    source_dimensions:
-      - fail_closed_on_invalid_state
-      - fail_closed_on_stale_source_or_repository
-      - fail_closed_on_unsupported_or_malformed_specification_binding
-  separate_decision_authority_from_profile:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Keep project-profile state separate from decision authority."
-    source_dimensions:
-      - separate_decision_authority_from_profile
-  separate_declared_semantics_from_evidence:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Keep declared project semantics separate from observed evidence."
-    source_dimensions:
-      - separate_declared_relationships_from_evidence
-  separate_authority_from_conformance:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Keep authority state separate from conformance state."
-    source_dimensions:
-      - separate_authority_from_conformance
-  separate_global_authority_from_local_projection:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Keep global authority distinct from local or projected authority views."
-    source_dimensions:
-      - separate_global_authority_from_local_projection
-  govern_mutation_authorization:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require explicit mutation authorization and forbid mutation derived from non-authoritative analysis."
-    source_dimensions:
-      - require_conditional_mutation
-      - forbid_derived_architecture_mutation
-  synchronize_authority_at_action_time:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require authority synchronization or refresh at governed action time."
-    source_dimensions:
-      - synchronize_at_action_time
-  require_read_only_operation:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require read-only behavior where inspection or compatibility analysis has no mutation authority."
-    source_dimensions:
-      - require_read_only_inspection
-      - require_read_only_source_compatibility
-  enforce_tool_non_intrusion:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Prevent tooling from imposing project topology or unauthorized persistent project state."
-    source_dimensions:
-      - constrain_tool_state_location
-      - forbid_tool_imposed_topology
-  govern_declaration_contract:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Define declaration modes, template selection, precedence, override granularity, and effective-map semantics."
-    source_dimensions:
-      - require_exclusive_declaration_modes
-      - define_source_declaration_modes
-      - require_explicit_template_selection
-      - define_declaration_precedence
-      - constrain_override_granularity
-      - define_effective_map_contract
-  govern_machine_output_contract:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Constrain machine-readable output structure required by governance processing."
-    source_dimensions:
-      - constrain_machine_output_structure
-  govern_normative_contract_binding:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern versioned normative binding, immutable revisions, contract target selection, and explicit specification-binding fields."
-    source_dimensions:
-      - require_versioned_normative_contract
-      - require_explicit_specification_binding
-      - bind_immutable_normative_snapshot
-      - select_versioned_contract_target
-      - require_version_revision_transition_inputs
-      - define_specification_binding_fields
-      - decouple_profile_specification_revision_from_global_tool_specification_revision
-  govern_normative_family_lifecycle:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern normative-family activation and preservation independently from tool/profile mutation or release lifecycle."
-    source_dimensions:
-      - separate_specification_tool_lifecycles
-      - activate_normative_family
-      - separate_specification_activation_from_profile_mutation
-      - separate_specification_activation_from_tool_implementation
-      - preserve_tool_development_normative_family
-  govern_specification_capabilities:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern specification capability authorities, registration shape, validation order, and historical bridge scope."
-    source_dimensions:
-      - define_specification_binding_capability_authorities
-      - forbid_cartesian_capability_registration_requirement
-      - define_generic_capability_validation_order
-      - forbid_historical_migration_bridge_as_specification_capability
-      - restrict_historical_bridge_to_migration_interpretation
-  govern_normalized_evidence_contract:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern normalized evidence typing, provenance, origin preservation, producer neutrality, and identity semantics."
-    source_dimensions:
-      - require_typed_evidence_relationships
-      - require_evidence_provenance
-      - forbid_absence_as_false_assertion
-      - preserve_equivalent_value_origins
-      - require_producer_neutral_evidence_contract
-      - preserve_producer_specific_interfaces
-      - separate_semantic_identity_from_evaluation_identity
-  preserve_unresolved_analysis_state:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Preserve unresolved, no-match, not-analyzed, or incomplete analysis states explicitly."
-    source_dimensions:
-      - preserve_unresolved_analysis_states
-  govern_conformance_semantics:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern conformance decisions, validation separation, waiver policy, and stricter-project-policy behavior."
-    source_dimensions:
-      - define_conformance_decision_rule
-      - forbid_conformance_waivers
-      - separate_validation_from_conformance
-      - permit_stricter_project_policy
-  govern_verification_purpose_contract:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern verification-purpose vocabulary, execution units, cross-purpose reuse, and success semantics."
-    source_dimensions:
-      - define_purpose_vocabulary
-      - define_execution_unit_contract
-      - constrain_cross_purpose_reuse
-      - separate_verification_success_from_conformance
-  require_deterministic_integrity_digest:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Require deterministic semantic integrity digests for governed materialization."
-    source_dimensions:
-      - require_deterministic_semantic_digest
-  govern_migration_obligation_model:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern migration obligation categories, completion, repository resolution, and required-versus-async semantics."
-    source_dimensions:
-      - define_migration_obligation_categories
-      - define_required_work_completion
-      - require_zero_unresolved_items_for_completion
-      - separate_lifecycle_compatibility_from_obligation_category
-      - forbid_analysis_mandated_removal_or_async_compensation
-      - preserve_repository_resolution_states
-      - require_repository_resolution_taxonomy_mapping
-  govern_migration_analysis_pipeline:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern staged migration analysis inputs, immutable typed outputs, and pipeline ordering."
-    source_dimensions:
-      - require_immutable_typed_stage_outputs
-      - define_staged_migration_analysis_pipeline
-  govern_migration_reconciliation_model:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern target-delta reconciliation bundles, proposal semantics, statuses, cumulative state, and accepted-delta constraints."
-    source_dimensions:
-      - require_exact_before_state_for_accepted_delta
-      - preserve_reconciliation_bundle_authority_types
-      - represent_compound_changes_as_atomic_delta_bundles
-      - distinguish_existing_and_planned_final_point_states
-      - forbid_executable_reconciliation_proposals
-      - preserve_reconciliation_statuses
-      - require_cumulative_target_for_sequential_reconciliation
-      - deny_source_deletion_permission_from_reconciliation
-      - define_target_delta_change_kinds
-  govern_migration_execution_state_machine:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern migration apply states, checkpoints, atomic writes, recovery, deletion proof, and promotion boundaries."
-    source_dimensions:
-      - gate_canonical_replacement_on_completion
-      - require_append_only_digest_chained_checkpoints
-      - require_atomic_per_source_final_point_write_after_cas
-      - require_explicit_seed_for_planned_final_point
-      - require_rediscovery_for_promotion_success
-      - require_post_apply_completion_proof_for_source_deletion
-      - preserve_migration_apply_states
-      - separate_promotion_as_independent_state_boundary
-  govern_migration_execution_authorization:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Bind migration execution to explicit plan, authority, accepted-delta inputs, and mutation scope."
-    source_dimensions:
-      - bind_migration_authorization_inputs
-      - restrict_migration_mutation_to_participating_profile_paths
-      - bind_migration_apply_to_exact_plan_digest
-      - restrict_migration_execution_input_to_accepted_delta_bundle
-  govern_migration_source_compatibility:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern historical source-family semantics, source-reader boundaries, unsupported bindings, and non-reinterpretation rules."
-    source_dimensions:
-      - forbid_historical_source_reinterpretation
-      - separate_common_source_model_from_current_canonical_model
-      - preserve_source_family_semantics
-      - reject_unsupported_source_revision
-      - forbid_target_classification_assignment_in_source_reader
-      - forbid_legacy_classification_translation_in_source_reader
-      - reject_unsupported_source_family
-      - define_source_compatibility_boundary
-      - define_normalized_source_convergence_boundary
-      - define_source_specific_compatibility_reader_boundary
-      - forbid_source_category_inheritance
-  govern_migration_source_ordering:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern migration source ordering, deleted-hop handling, and canonical-source sequencing."
-    source_dimensions:
-      - order_transition_sources
-      - forbid_deleted_migration_hops
-      - process_canonical_source_last
-  govern_migration_target_selection:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern final/cumulative target selection, target-selection authority, and output restriction to the selected target."
-    source_dimensions:
-      - select_final_transition_target
-      - require_cumulative_target_state
-      - restrict_target_selection_authority_to_explicit_tool_project_profile_compatibility
-      - restrict_new_migration_output_to_selected_canonical_target
-  govern_direct_latest_target_convergence:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern direct-latest-target convergence without mandatory intermediate traversal or graph/converter-matrix requirements."
-    source_dimensions:
-      - preserve_authorized_legacy_target_continuity
-      - forbid_mandatory_intermediate_version_traversal
-      - define_direct_latest_target_convergence_model
-      - forbid_n_by_m_handwritten_converter_matrix_requirement
-      - define_project_profile_transition_classes
-      - forbid_universal_shortest_path_engine_requirement
-  govern_project_profile_migration_authorization:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Prevent project-profile migration or rewrite from being implicitly authorized by tool release, acceptance, or version change."
-    source_dimensions:
-      - preserve_existing_profile_contract_without_implicit_upgrade
-      - separate_tool_release_from_profile_migration
-      - deny_project_profile_version_migration_authorization
-      - deny_immediate_profile_rewrite_authority_from_acceptance
-  separate_project_profile_lifecycle_concerns:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Separate architecture acceptance, identity implementation, migration capability, repository adoption, release readiness, and controlled dogfood concerns."
-    source_dimensions:
-      - preserve_migration_engine_independent_of_self_adoption
-      - restrict_mutation_promotion_verification_to_fixture_repositories
-      - restrict_repository_dogfood_to_controlled_self_analysis
-      - limit_supersession_to_repository_self_adoption_assumption
-      - forbid_tool_self_adoption_profile_creation
-      - separate_architecture_acceptance_from_identity_implementation
-      - separate_profile_identity_implementation_from_migration_capability
-      - separate_repository_adoption_from_release_readiness
-  govern_project_profile_transition_plan:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern ordered project-profile transition work units and maintainability requirements."
-    source_dimensions:
-      - define_project_profile_transition_maintainability_rules
-      - define_ordered_project_profile_transition_work_units
-  govern_project_profile_bridge:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern identity-only project-profile bridging, bridge source/target constraints, collision handling, aliases, and semantic-delta prohibition."
-    source_dimensions:
-      - restrict_project_profile_bridge_to_identity_only
-      - bind_project_profile_identity_bridge_source
-      - forbid_temporary_target_for_canonical_profile_identity_bridge
-      - detect_duplicate_equivalent_profile_targets
-      - preserve_legacy_temporary_target_alias
-      - forbid_semantic_deltas_in_identity_bridge
-  govern_release_history_namespace:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern independent release-history namespaces and axes while preserving historical placement."
-    source_dimensions:
-      - forbid_bulk_moving_historical_flat_release_notes
-      - separate_release_note_history_namespaces
-      - define_independent_release_history_axes
-  govern_migration_component_boundary:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern migration subsystem component ownership, selectors, and common component properties."
-    source_dimensions:
-      - preserve_narrow_ptsip_core_selector_boundary
-      - define_migration_subsystem_component_contract
-      - define_migration_subsystem_common_properties
-  govern_profile_tool_compatibility:
-    status: PROPOSED_NOT_REGISTERED
-    definition: "Govern explicit tool-to-project-profile compatibility independently from numeric version equality."
-    source_dimensions:
-      - separate_tool_version_from_project_profile_version
-      - forbid_tool_compatibility_inference_from_numeric_equality
-      - require_explicit_project_profile_capability_for_tool_operations
-
-split_reconciliation:
-  define_ordered_decision_process:
-    operation: SPLIT
-    primary_candidate: govern_decision_precedence_and_resolution
-    secondary_candidate: govern_migration_source_ordering
-    rationale: "The current dimension combines ordered architecture/owner determination with migration source-processing order. Keep ordered_determination in decision resolution; source ordering is already exactly represented by order_transition_sources."
-  define_purpose_vocabulary:
-    operation: SPLIT
-    primary_candidate: govern_verification_purpose_contract
-    secondary_candidate: govern_migration_reconciliation_model
-    rationale: "Verification-purpose vocabulary and reconciliation proposal purposes are different semantic domains. Verification purposes remain in VPMS; proposal_purposes belongs to reconciliation planning."
-  require_version_revision_transition_inputs:
-    operation: SPLIT
-    primary_candidate: govern_normative_contract_binding
-    secondary_candidate: govern_migration_analysis_pipeline
-    rationale: "Version/revision transition binding and the separate typed accepted-target-state input are distinct. The latter belongs to migration analysis inputs."
+  owner_decision:
+    approved_low_risk_group_count: 32
+    approved_source_dimension_count: 103
+    pending_source_dimension_count: 81
+    pending_groups_are_not_premerged: true
+  invariants:
+    - SOURCE_184_DISPOSITIONS_ARE_PRIMARY
+    - APPROVED_LOW_RISK_RECONCILIATIONS_DO_NOT_AUTHORIZE_STABLE_VOCABULARY_REGISTRATION
+    - UNAPPROVED_DIMENSIONS_REMAIN_DISTINCT
+    - WITHDRAWN_55_PROJECTION_DOES_NOT_CONSTRAIN_FUTURE_OWNER_DECISIONS
+    - RENAME_MERGE_SPLIT_REMOVE_REPLACE_REQUIRE_OWNER_DECISION
+    - RUNTIME_AUTHORITY_REMAINS_NONE
 
 source_dimension_dispositions:
   establish_canonical_identity:
-    operation: KEEP_AS_MERGE_TARGET
-    proposed_candidate: establish_canonical_identity
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   establish_decision_criterion_priority:
-    operation: MERGE_INTO
-    proposed_candidate: govern_decision_precedence_and_resolution
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_decision_precedence_and_resolution
   define_classification_basis:
-    operation: MERGE_INTO
-    proposed_candidate: govern_classification_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_classification_model
   require_architectural_boundary:
-    operation: KEEP
-    proposed_candidate: require_architectural_boundary
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_versioned_normative_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_contract_binding
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   constrain_tool_state_location:
-    operation: MERGE_INTO
-    proposed_candidate: enforce_tool_non_intrusion
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: enforce_tool_non_intrusion
   reserve_project_structure_authority:
-    operation: KEEP
-    proposed_candidate: reserve_project_structure_authority
+    disposition: OWNER_APPROVED_KEEP
+    approved_group: reserve_project_structure_authority
   forbid_tool_imposed_topology:
-    operation: MERGE_INTO
-    proposed_candidate: enforce_tool_non_intrusion
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: enforce_tool_non_intrusion
   require_read_only_inspection:
-    operation: MERGE_INTO
-    proposed_candidate: require_read_only_operation
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_read_only_operation
   require_explicit_specification_binding:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_contract_binding
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_specification_tool_lifecycles:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_family_lifecycle
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_normative_family_lifecycle
   bind_immutable_normative_snapshot:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_contract_binding
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   select_versioned_contract_target:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_contract_binding
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_classification_vocabulary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_classification_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_classification_model
   preserve_unresolved_analysis_states:
-    operation: RENAME
-    proposed_candidate: preserve_unresolved_analysis_state
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   reserve_project_declaration_authority:
-    operation: KEEP
-    proposed_candidate: reserve_project_declaration_authority
+    disposition: OWNER_APPROVED_KEEP
+    approved_group: reserve_project_declaration_authority
   require_typed_evidence_relationships:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   constrain_machine_output_structure:
-    operation: RENAME
-    proposed_candidate: govern_machine_output_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   deny_derived_architecture_authority:
-    operation: KEEP
-    proposed_candidate: deny_derived_architecture_authority
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   invalidate_stale_evidence:
-    operation: MERGE_INTO
-    proposed_candidate: require_fresh_authority_or_evidence_state
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_fresh_authority_or_evidence_state
   require_evidence_provenance:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_conformance_decision_rule:
-    operation: MERGE_INTO
-    proposed_candidate: govern_conformance_semantics
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_conformance_semantics
   separate_artifact_ownership_from_production:
-    operation: MERGE_INTO
-    proposed_candidate: govern_associated_artifact_ownership
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_associated_artifact_ownership
   forbid_conformance_waivers:
-    operation: MERGE_INTO
-    proposed_candidate: govern_conformance_semantics
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_conformance_semantics
   separate_validation_from_conformance:
-    operation: MERGE_INTO
-    proposed_candidate: govern_conformance_semantics
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_conformance_semantics
   require_exclusive_declaration_modes:
-    operation: MERGE_INTO
-    proposed_candidate: govern_declaration_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   permit_stricter_project_policy:
-    operation: MERGE_INTO
-    proposed_candidate: govern_conformance_semantics
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_conformance_semantics
   require_stable_rule_identity:
-    operation: MERGE_INTO
-    proposed_candidate: require_stable_governance_identity
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_stable_governance_identity
   reject_architecture_proxy_inference:
-    operation: MERGE_INTO
-    proposed_candidate: deny_unauthorized_semantic_inference
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: deny_unauthorized_semantic_inference
   activate_normative_family:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_family_lifecycle
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_normative_family_lifecycle
   separate_decision_authority_from_profile:
-    operation: KEEP
-    proposed_candidate: separate_decision_authority_from_profile
+    disposition: OWNER_APPROVED_KEEP
+    approved_group: separate_decision_authority_from_profile
   require_stable_decision_identity:
-    operation: MERGE_INTO
-    proposed_candidate: require_stable_governance_identity
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_stable_governance_identity
   select_resolution_winner:
-    operation: MERGE_INTO
-    proposed_candidate: govern_decision_precedence_and_resolution
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_decision_precedence_and_resolution
   require_conditional_mutation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_mutation_authorization
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_fresh_authority_reads:
-    operation: MERGE_INTO
-    proposed_candidate: require_fresh_authority_or_evidence_state
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_fresh_authority_or_evidence_state
   forbid_fabricated_history:
-    operation: MERGE_INTO
-    proposed_candidate: forbid_fabricated_governance_references
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_silent_conflict_overwrite:
-    operation: MERGE_INTO
-    proposed_candidate: govern_decision_precedence_and_resolution
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_decision_precedence_and_resolution
   fail_closed_on_invalid_state:
-    operation: MERGE_INTO
-    proposed_candidate: require_fail_closed_behavior
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_global_authority_from_local_projection:
-    operation: KEEP
-    proposed_candidate: separate_global_authority_from_local_projection
+    disposition: OWNER_APPROVED_KEEP
+    approved_group: separate_global_authority_from_local_projection
   synchronize_at_action_time:
-    operation: RENAME
-    proposed_candidate: synchronize_authority_at_action_time
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: synchronize_authority_at_action_time
   separate_authority_from_conformance:
-    operation: KEEP
-    proposed_candidate: separate_authority_from_conformance
+    disposition: OWNER_APPROVED_KEEP
+    approved_group: separate_authority_from_conformance
   retire_previous_identity:
-    operation: RENAME
-    proposed_candidate: govern_identity_transition
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_purpose_vocabulary:
-    operation: SPLIT
-    proposed_candidate: govern_verification_purpose_contract
-    secondary_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_verification_purpose_contract
   separate_classification_from_verification_purpose:
-    operation: KEEP
-    proposed_candidate: separate_classification_from_verification_purpose
+    disposition: OWNER_APPROVED_KEEP
+    approved_group: separate_classification_from_verification_purpose
   define_execution_unit_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_verification_purpose_contract
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_verification_purpose_contract
   constrain_cross_purpose_reuse:
-    operation: MERGE_INTO
-    proposed_candidate: govern_verification_purpose_contract
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_verification_purpose_contract
   constrain_dependency_direction:
-    operation: MERGE_INTO
-    proposed_candidate: govern_dependency_boundary
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_dependency_boundary
   permit_contract_consumption:
-    operation: MERGE_INTO
-    proposed_candidate: govern_dependency_boundary
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_dependency_boundary
   separate_verification_success_from_conformance:
-    operation: MERGE_INTO
-    proposed_candidate: govern_verification_purpose_contract
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_verification_purpose_contract
   define_ordered_decision_process:
-    operation: SPLIT
-    proposed_candidate: govern_decision_precedence_and_resolution
-    secondary_candidate: govern_migration_source_ordering
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_decision_precedence_and_resolution
   require_owner_confirmation:
-    operation: MERGE_INTO
-    proposed_candidate: require_project_owner_decision
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_project_owner_decision
   define_lifecycle_handoff:
-    operation: RENAME
-    proposed_candidate: govern_lifecycle_boundary_and_handoff
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   constrain_neutral_contract_qualification:
-    operation: MERGE_INTO
-    proposed_candidate: govern_classification_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_classification_model
   require_governable_responsibility_split:
-    operation: MERGE_INTO
-    proposed_candidate: govern_responsibility_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_responsibility_role_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_responsibility_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_typed_relationship_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_relationship_contract
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_relationship_contract
   forbid_relationship_inference:
-    operation: MERGE_INTO
-    proposed_candidate: deny_unauthorized_semantic_inference
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: deny_unauthorized_semantic_inference
   separate_declared_relationships_from_evidence:
-    operation: RENAME
-    proposed_candidate: separate_declared_semantics_from_evidence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   deny_relationship_permission_grant:
-    operation: MERGE_INTO
-    proposed_candidate: govern_relationship_contract
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_relationship_contract
   constrain_associated_artifact_ownership:
-    operation: MERGE_INTO
-    proposed_candidate: govern_associated_artifact_ownership
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_associated_artifact_ownership
   require_shared_identity_namespace:
-    operation: MERGE_INTO
-    proposed_candidate: establish_canonical_identity
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_fabricated_reference_targets:
-    operation: MERGE_INTO
-    proposed_candidate: forbid_fabricated_governance_references
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_source_declaration_modes:
-    operation: MERGE_INTO
-    proposed_candidate: govern_declaration_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_explicit_template_selection:
-    operation: MERGE_INTO
-    proposed_candidate: govern_declaration_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_declaration_precedence:
-    operation: MERGE_INTO
-    proposed_candidate: govern_declaration_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   constrain_override_granularity:
-    operation: MERGE_INTO
-    proposed_candidate: govern_declaration_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_derived_architecture_mutation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_mutation_authorization
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_effective_map_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_declaration_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_deterministic_semantic_digest:
-    operation: RENAME
-    proposed_candidate: require_deterministic_integrity_digest
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_deterministic_integrity_digest
   constrain_profile_identity_and_cardinality:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_migration_obligation_categories:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_required_work_completion:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   gate_canonical_replacement_on_completion:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   select_final_transition_target:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_target_selection
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_target_selection
   order_transition_sources:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_ordering
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_ordering
   forbid_deleted_migration_hops:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_ordering
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_ordering
   forbid_source_category_inheritance:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   require_cumulative_target_state:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_target_selection
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_target_selection
   require_version_revision_transition_inputs:
-    operation: SPLIT
-    proposed_candidate: govern_normative_contract_binding
-    secondary_candidate: govern_migration_analysis_pipeline
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_specification_activation_from_profile_mutation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_family_lifecycle
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_normative_family_lifecycle
   preserve_classification_vocabulary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_classification_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_classification_model
   separate_specification_activation_from_tool_implementation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_family_lifecycle
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_normative_family_lifecycle
   forbid_absence_as_false_assertion:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   preserve_equivalent_value_origins:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_producer_neutral_evidence_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   preserve_producer_specific_interfaces:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_semantic_identity_from_evaluation_identity:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normalized_evidence_contract
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_historical_source_reinterpretation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   separate_common_source_model_from_current_canonical_model:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   preserve_source_family_semantics:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   reject_unsupported_source_revision:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   require_read_only_source_compatibility:
-    operation: MERGE_INTO
-    proposed_candidate: require_read_only_operation
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_read_only_operation
   forbid_target_classification_assignment_in_source_reader:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   forbid_legacy_classification_translation_in_source_reader:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   reject_unsupported_source_family:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   require_zero_unresolved_items_for_completion:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_lifecycle_compatibility_from_obligation_category:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_analysis_mandated_removal_or_async_compensation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   preserve_repository_resolution_states:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   fail_closed_on_stale_source_or_repository:
-    operation: MERGE_INTO
-    proposed_candidate: require_fail_closed_behavior
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_immutable_typed_stage_outputs:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_analysis_pipeline
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_analysis_pipeline
   require_repository_resolution_taxonomy_mapping:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_obligation_model
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_exact_before_state_for_accepted_delta:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   preserve_reconciliation_bundle_authority_types:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   represent_compound_changes_as_atomic_delta_bundles:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   distinguish_existing_and_planned_final_point_states:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   forbid_executable_reconciliation_proposals:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   preserve_reconciliation_statuses:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   require_cumulative_target_for_sequential_reconciliation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   deny_source_deletion_permission_from_reconciliation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   define_target_delta_change_kinds:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_reconciliation_model
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_reconciliation_model
   forbid_automatic_design_of_unresolved_required_work:
-    operation: MERGE_INTO
-    proposed_candidate: deny_unauthorized_semantic_inference
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: deny_unauthorized_semantic_inference
   bind_migration_authorization_inputs:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_authorization
   process_canonical_source_last:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_ordering
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_ordering
   require_append_only_digest_chained_checkpoints:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   restrict_migration_mutation_to_participating_profile_paths:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_authorization
   require_atomic_per_source_final_point_write_after_cas:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   bind_migration_apply_to_exact_plan_digest:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_authorization
   require_explicit_seed_for_planned_final_point:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   require_rediscovery_for_promotion_success:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   forbid_recovery_guessing:
-    operation: MERGE_INTO
-    proposed_candidate: deny_unauthorized_semantic_inference
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: deny_unauthorized_semantic_inference
   require_post_apply_completion_proof_for_source_deletion:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   preserve_migration_apply_states:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   preserve_existing_profile_contract_without_implicit_upgrade:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_migration_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_project_profile_migration_authorization
   preserve_migration_engine_independent_of_self_adoption:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   restrict_mutation_promotion_verification_to_fixture_repositories:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   restrict_repository_dogfood_to_controlled_self_analysis:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   limit_supersession_to_repository_self_adoption_assumption:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_tool_self_adoption_profile_creation:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_tool_release_from_profile_migration:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_migration_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_project_profile_migration_authorization
   separate_tool_version_from_project_profile_version:
-    operation: MERGE_INTO
-    proposed_candidate: govern_profile_tool_compatibility
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   deny_project_profile_version_migration_authorization:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_migration_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_project_profile_migration_authorization
   preserve_narrow_ptsip_core_selector_boundary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_component_boundary
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   deny_immediate_profile_rewrite_authority_from_acceptance:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_migration_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_project_profile_migration_authorization
   preserve_project_profile_identity_axes:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   preserve_legacy_profile_generation_identity:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_project_profile_major_version_trigger:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_project_profile_minor_version_trigger:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_profile_instance_revision_from_contract_version:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_semantic_versioning_for_project_profile_namespace:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_tool_compatibility_inference_from_numeric_equality:
-    operation: MERGE_INTO
-    proposed_candidate: govern_profile_tool_compatibility
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_explicit_project_profile_capability_for_tool_operations:
-    operation: MERGE_INTO
-    proposed_candidate: govern_profile_tool_compatibility
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_source_compatibility_boundary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   define_staged_migration_analysis_pipeline:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_analysis_pipeline
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_analysis_pipeline
   restrict_migration_execution_input_to_accepted_delta_bundle:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_authorization
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_authorization
   separate_promotion_as_independent_state_boundary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_execution_state_machine
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_execution_state_machine
   preserve_tool_development_normative_family:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_family_lifecycle
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_normative_family_lifecycle
   define_migration_subsystem_component_contract:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_component_boundary
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_migration_subsystem_common_properties:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_component_boundary
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_project_profile_version_namespace:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_identity_versioning
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_architecture_acceptance_from_identity_implementation:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_profile_identity_implementation_from_migration_capability:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_project_profile_transition_maintainability_rules:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_transition_plan
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_ordered_project_profile_transition_work_units:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_transition_plan
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_repository_adoption_from_release_readiness:
-    operation: MERGE_INTO
-    proposed_candidate: separate_project_profile_lifecycle_concerns
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   restrict_project_profile_bridge_to_identity_only:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_bridge
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   bind_project_profile_identity_bridge_source:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_bridge
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_temporary_target_for_canonical_profile_identity_bridge:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_bridge
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   detect_duplicate_equivalent_profile_targets:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_bridge
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_bulk_moving_historical_flat_release_notes:
-    operation: MERGE_INTO
-    proposed_candidate: govern_release_history_namespace
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_release_history_namespace
   preserve_legacy_temporary_target_alias:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_bridge
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   separate_release_note_history_namespaces:
-    operation: MERGE_INTO
-    proposed_candidate: govern_release_history_namespace
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_release_history_namespace
   forbid_semantic_deltas_in_identity_bridge:
-    operation: MERGE_INTO
-    proposed_candidate: govern_project_profile_bridge
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   require_owner_decision_for_ambiguous_historical_semantics:
-    operation: MERGE_INTO
-    proposed_candidate: require_project_owner_decision
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: require_project_owner_decision
   forbid_unrestricted_direct_convergence_inference:
-    operation: MERGE_INTO
-    proposed_candidate: deny_unauthorized_semantic_inference
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: deny_unauthorized_semantic_inference
   preserve_authorized_legacy_target_continuity:
-    operation: MERGE_INTO
-    proposed_candidate: govern_direct_latest_target_convergence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_mandatory_intermediate_version_traversal:
-    operation: MERGE_INTO
-    proposed_candidate: govern_direct_latest_target_convergence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_direct_latest_target_convergence_model:
-    operation: MERGE_INTO
-    proposed_candidate: govern_direct_latest_target_convergence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_n_by_m_handwritten_converter_matrix_requirement:
-    operation: MERGE_INTO
-    proposed_candidate: govern_direct_latest_target_convergence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   restrict_target_selection_authority_to_explicit_tool_project_profile_compatibility:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_target_selection
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_target_selection
   define_project_profile_transition_classes:
-    operation: MERGE_INTO
-    proposed_candidate: govern_direct_latest_target_convergence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   forbid_universal_shortest_path_engine_requirement:
-    operation: MERGE_INTO
-    proposed_candidate: govern_direct_latest_target_convergence
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_specification_binding_capability_authorities:
-    operation: MERGE_INTO
-    proposed_candidate: govern_specification_capabilities
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_specification_capabilities
   forbid_cartesian_capability_registration_requirement:
-    operation: MERGE_INTO
-    proposed_candidate: govern_specification_capabilities
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_specification_capabilities
   define_generic_capability_validation_order:
-    operation: MERGE_INTO
-    proposed_candidate: govern_specification_capabilities
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_specification_capabilities
   forbid_historical_migration_bridge_as_specification_capability:
-    operation: MERGE_INTO
-    proposed_candidate: govern_specification_capabilities
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_specification_capabilities
   decouple_profile_specification_revision_from_global_tool_specification_revision:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_contract_binding
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   restrict_historical_bridge_to_migration_interpretation:
-    operation: MERGE_INTO
-    proposed_candidate: govern_specification_capabilities
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_specification_capabilities
   define_specification_binding_fields:
-    operation: MERGE_INTO
-    proposed_candidate: govern_normative_contract_binding
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   fail_closed_on_unsupported_or_malformed_specification_binding:
-    operation: MERGE_INTO
-    proposed_candidate: require_fail_closed_behavior
+    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    approved_group: null
   define_independent_release_history_axes:
-    operation: MERGE_INTO
-    proposed_candidate: govern_release_history_namespace
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_release_history_namespace
   define_normalized_source_convergence_boundary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   define_source_specific_compatibility_reader_boundary:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_source_compatibility
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_source_compatibility
   restrict_new_migration_output_to_selected_canonical_target:
-    operation: MERGE_INTO
-    proposed_candidate: govern_migration_target_selection
+    disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
+    approved_group: govern_migration_target_selection
 
 validation:
-  source_dimension_count: 184
-  proposed_dimension_count: 55
-  all_source_dimensions_accounted_for: true
-  duplicate_primary_assignment: false
-  unresolved_residuals: 0
-  source_matrix_rows: 23
-  proposed_projection_rows: 23
+  source_dimensions_total: 184
+  source_dimensions_accounted_for: 184
+  approved_low_risk_groups: 32
+  approved_source_dimensions: 103
+  pending_source_dimensions: 81
+  full_projection_generated: false
   stable_vocabulary_registration: false
   runtime_authority: NONE
