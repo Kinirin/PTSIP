@@ -1,0 +1,103 @@
+format: ptsip-wu13-local-agent-cost-control/v1
+status: ACTIVE
+scope: WU-13
+authority: operational_only
+normative_specification_change: false
+
+objective:
+  description: >-
+    Reduce local AI-agent credit consumption by requiring deterministic evidence
+    extraction and bounded review before source-wide reasoning.
+  success_signal: >-
+    Most dependency evidence is handled mechanically and AI reviews only a small
+    REVIEW_REQUIRED queue.
+
+machine_first:
+  required: true
+  order:
+    - collect
+    - reconcile
+    - classify
+    - summarize
+    - review_bounded
+    - validate_batch
+  do_not_send_to_ai:
+    - AUTO_RESOLVED
+    - RESOLVER_LIMITATION
+  repository_defect_policy: >-
+    Prefer deterministic remediation candidates. Escalate only when a support,
+    version, ownership, or compatibility decision is still required.
+  ai_allowed_bucket:
+    - REVIEW_REQUIRED
+
+review_budget:
+  max_items_per_cycle: 8
+  max_source_files_per_item: 4
+  max_context_bytes_per_item: 12000
+  overflow: DEFER
+  require_evidence_ids: true
+  require_exact_paths: true
+
+bootstrap:
+  focused_test:
+    command:
+      - python
+      - -m
+      - pytest
+      - tests/ptsip/conformance/test_dependency_reconciliation.py
+      - -q
+  conform_report:
+    output_location: TEMP
+    powershell:
+      - '$report = Join-Path $env:TEMP "ptsip-wu13-conform.json"'
+      - 'ptsip conform . --json > $report'
+      - '$exitCode = $LASTEXITCODE'
+  compact_summary:
+    powershell:
+      - '$r = Get-Content $report -Raw | ConvertFrom-Json'
+      - '$blocking = @($r.coverage.blocking_gaps)'
+      - '$dependency = @($blocking | Where-Object { $_.id -like "dependency-target:*" })'
+      - '[pscustomobject]@{ Outcome=$r.outcome; Blocking=$blocking.Count; Dependency=$dependency.Count; ExitCode=$exitCode }'
+  full_json_console_output: prohibited_by_default
+
+validation_cadence:
+  focused_change: focused_tests_only
+  tranche_complete: conformance_suite
+  checkpoint: full_regression
+  avoid:
+    - full_ci_per_dependency
+    - full_conform_per_dependency
+
+implementation_priority:
+  - actionability_classifier
+  - review_pack_generator
+  - concise_summary
+  - incremental_evidence_cache
+  - validation_plan_generator
+  - verification_dependency_separation
+  - relative_import_reconciliation
+  - namespace_local_package_reconciliation
+  - dynamic_import_classification
+  - consumer_remeasurement
+
+not_yet_implemented:
+  - actionability_classifier
+  - review_pack_generator
+  - incremental_evidence_cache
+  - validation_plan_generator
+
+until_review_pack_exists:
+  policy: >-
+    Do not perform repository-wide AI review. Use the review budget above and
+    inspect only the minimum exact source/manifest/caller evidence needed for
+    unresolved candidates.
+  prohibit:
+    - reading_all_dependency_sources
+    - passing_full_conform_json_to_ai
+    - repeated_search_for_already_collected_evidence
+
+stop_conditions:
+  - PTSIP_GATE_DECISION_REQUIRED
+  - NORMATIVE_SPECIFICATION_CHANGE_REQUIRED
+  - NEW_ARCHITECTURE_OWNERSHIP_DECISION_REQUIRED
+  - DIRTY_WORKTREE_WITH_UNRELATED_USER_CHANGES

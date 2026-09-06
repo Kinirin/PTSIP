@@ -55,6 +55,29 @@ WU-13 must not:
 - concise human summary output while preserving full machine JSON;
 - batch/component-level reconciliation reporting.
 
+## Local-agent cost-control bootstrap
+
+WU-13 uses the machine-readable operational policy:
+
+```text
+planning/0.3.7/WU-13-local-agent-cost-control.yaml
+```
+
+The local coding agent MUST use machine-first evidence handling before broad source reasoning. Until the planned Actionability Classifier and Review Pack surfaces exist, each AI review cycle is bounded to the configured item/context budget, full conformance JSON stays out of the prompt by default, and validation is batched by change/tranche rather than repeated per dependency.
+
+Implementation priority is intentionally reordered so cost-control infrastructure comes before large-scale dependency cleanup:
+
+```text
+Actionability Classifier
+    -> Review Pack
+    -> concise summary
+    -> incremental cache
+    -> validation-plan generation
+    -> remaining dependency reconciliation tranches
+```
+
+This policy is operational planning metadata only. It does not change PTSIP lifecycle authority, Specification semantics, or Consumer Repository architecture.
+
 ## Verification boundary
 
 Focused tests must prove declaration matching, alias matching, and fail-closed behavior for an undeclared dependency. Full repository regression and exact-SHA self-hosted verification remain required before WU-13 completion.
