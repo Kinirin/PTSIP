@@ -1,18 +1,20 @@
 schema_version: ptsip-p03-authority-role-initial-vocabulary-owner-review/v1
 review:
-  status: READY_FOR_PROJECT_OWNER_REVIEW
+  status: PROJECT_OWNER_REVIEW_IN_PROGRESS
   authority: NONE
   review_authority_required: PROJECT_OWNER
   runtime_authority: NONE
   vocabulary_registration: false
-  baseline_commit: 06b54c023da970ba82078a71034e479aca384073
+  baseline_commit: 216961c62169c622aa34f0d043dea59bd337b9c3
   purpose: FINALIZE_PROPOSED_INITIAL_CLOSED_AUTHORITY_ROLE_EFFECT_VOCABULARY_FROM_FULL_CORPUS_RECONCILIATION
   inputs:
     source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
     source_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
     full_corpus_reconciliation: planning/0.4.0/WU-02/p03-authority-role-full-corpus-reconciliation.yaml
     approved_low_risk_reconciliation: planning/0.4.0/WU-02/p03-authority-role-approved-low-risk-reconciliation.yaml
-    owner_dispositions: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml
+    owner_dispositions:
+      - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml
+      - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml
 
 corpus_validation:
   adr_range: ADR-0001_THROUGH_ADR-0023
@@ -28,12 +30,12 @@ corpus_validation:
 reconciliation_summary:
   owner_approved_low_risk_group_count: 32
   owner_approved_low_risk_source_dimension_count: 103
-  owner_approved_individual_transform_source_dimension_count: 3
-  owner_decided_source_dimension_count: 106
-  owner_vocabulary_disposition_pending_source_dimension_count: 78
-  proposed_effect_token_count: 113
-  owner_approved_effect_token_count: 35
-  owner_review_required_effect_token_count: 78
+  owner_approved_individual_transform_source_dimension_count: 10
+  owner_decided_source_dimension_count: 113
+  owner_vocabulary_disposition_pending_source_dimension_count: 71
+  proposed_effect_token_count: 115
+  owner_approved_effect_token_count: 44
+  owner_review_required_effect_token_count: 71
   proposed_effect_token_ids_unique: true
   all_source_dimensions_project_to_known_proposed_tokens: true
 
@@ -46,152 +48,166 @@ registration_boundary:
 
 proposed_effect_tokens:
   bind_immutable_normative_snapshot:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Bind governed evaluation to an immutable normative snapshot identity."
     source_dimensions:
       - bind_immutable_normative_snapshot
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.bind_immutable_normative_snapshot
   bind_project_profile_identity_bridge_source:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.bind_project_profile_identity_bridge_source
     source_dimensions:
       - bind_project_profile_identity_bridge_source
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.bind_project_profile_identity_bridge_source
   constrain_machine_output_structure:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Require machine-consumable output to conform to an explicit structural contract."
     source_dimensions:
       - constrain_machine_output_structure
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_machine_output_structure
   constrain_override_granularity:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_override_granularity
     source_dimensions:
       - constrain_override_granularity
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_override_granularity
   constrain_profile_identity_and_cardinality:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_profile_identity_and_cardinality
     source_dimensions:
       - constrain_profile_identity_and_cardinality
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_profile_identity_and_cardinality
+  declare_canonical_identity:
+    review_status: OWNER_APPROVED_SPLIT_RESULT
+    definition: "Declare a canonical identity value or namespace for a governed subject."
+    source_dimensions:
+      - establish_canonical_identity
+  declare_machine_contract_identity:
+    review_status: OWNER_APPROVED_SPLIT_REPLACE_RESULT
+    definition: "Declare the machine contract identity used by a governed machine-readable artifact."
+    source_dimensions:
+      - select_versioned_contract_target
   decouple_profile_specification_revision_from_global_tool_specification_revision:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.decouple_profile_specification_revision_from_global_tool_specification_revision
     source_dimensions:
       - decouple_profile_specification_revision_from_global_tool_specification_revision
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.decouple_profile_specification_revision_from_global_tool_specification_revision
   define_declaration_precedence:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_declaration_precedence
     source_dimensions:
       - define_declaration_precedence
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_declaration_precedence
+  define_deterministic_semantic_identity:
+    review_status: OWNER_APPROVED_SPLIT_RESULT
+    definition: "Define deterministic semantic identity computation from canonical content and source references."
+    source_dimensions:
+      - establish_canonical_identity
   define_direct_latest_target_convergence_model:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_direct_latest_target_convergence_model
     source_dimensions:
       - define_direct_latest_target_convergence_model
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_direct_latest_target_convergence_model
   define_effective_map_contract:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_effective_map_contract
     source_dimensions:
       - define_effective_map_contract
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_effective_map_contract
   define_lifecycle_handoff:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_lifecycle_handoff
     source_dimensions:
       - define_lifecycle_handoff
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_lifecycle_handoff
   define_migration_obligation_categories:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_obligation_categories
     source_dimensions:
       - define_migration_obligation_categories
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_obligation_categories
   define_migration_subsystem_common_properties:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_subsystem_common_properties
     source_dimensions:
       - define_migration_subsystem_common_properties
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_subsystem_common_properties
   define_migration_subsystem_component_contract:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_subsystem_component_contract
     source_dimensions:
       - define_migration_subsystem_component_contract
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_subsystem_component_contract
   define_ordered_project_profile_transition_work_units:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_ordered_project_profile_transition_work_units
     source_dimensions:
       - define_ordered_project_profile_transition_work_units
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_ordered_project_profile_transition_work_units
   define_project_profile_major_version_trigger:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_major_version_trigger
     source_dimensions:
       - define_project_profile_major_version_trigger
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_major_version_trigger
   define_project_profile_minor_version_trigger:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_minor_version_trigger
     source_dimensions:
       - define_project_profile_minor_version_trigger
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_minor_version_trigger
   define_project_profile_transition_classes:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_transition_classes
     source_dimensions:
       - define_project_profile_transition_classes
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_transition_classes
   define_project_profile_transition_maintainability_rules:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_transition_maintainability_rules
     source_dimensions:
       - define_project_profile_transition_maintainability_rules
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_transition_maintainability_rules
   define_project_profile_version_namespace:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_version_namespace
     source_dimensions:
       - define_project_profile_version_namespace
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_version_namespace
   define_required_work_completion:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_required_work_completion
     source_dimensions:
       - define_required_work_completion
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_required_work_completion
   define_responsibility_role_contract:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_responsibility_role_contract
     source_dimensions:
       - define_responsibility_role_contract
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_responsibility_role_contract
   define_source_declaration_modes:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_source_declaration_modes
     source_dimensions:
       - define_source_declaration_modes
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_source_declaration_modes
   define_specification_binding_fields:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_specification_binding_fields
     source_dimensions:
       - define_specification_binding_fields
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_specification_binding_fields
   deny_derived_architecture_authority:
     review_status: OWNER_APPROVED_SPLIT_PRESERVED_EFFECT
-    definition: "NON_AUTHORITATIVE_STATUS_OF_DERIVED_ADVISORY_EVIDENCE_AND_AGENT_OUTPUTS"
+    definition: "Keep derived advisory, evidence, agent, and materializer outputs non-authoritative for architecture."
     source_dimensions:
       - deny_derived_architecture_authority
   deny_unauthorized_semantic_inference:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Forbid semantic inference, guessing, or automatic design when no authority permits it."
     source_dimensions:
+      - deny_derived_architecture_authority
       - reject_architecture_proxy_inference
       - forbid_relationship_inference
       - forbid_automatic_design_of_unresolved_required_work
@@ -200,117 +216,111 @@ proposed_effect_tokens:
   detect_duplicate_equivalent_profile_targets:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.detect_duplicate_equivalent_profile_targets
     source_dimensions:
       - detect_duplicate_equivalent_profile_targets
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.detect_duplicate_equivalent_profile_targets
   enforce_tool_non_intrusion:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Prevent tooling from imposing project topology or unauthorized persistent project state."
     source_dimensions:
       - constrain_tool_state_location
       - forbid_tool_imposed_topology
-  establish_canonical_identity:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    source_dimensions:
-      - establish_canonical_identity
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.establish_canonical_identity
   fail_closed_on_invalid_state:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_invalid_state
     source_dimensions:
       - fail_closed_on_invalid_state
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_invalid_state
   fail_closed_on_stale_source_or_repository:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_stale_source_or_repository
     source_dimensions:
       - fail_closed_on_stale_source_or_repository
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_stale_source_or_repository
   fail_closed_on_unsupported_or_malformed_specification_binding:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_unsupported_or_malformed_specification_binding
     source_dimensions:
       - fail_closed_on_unsupported_or_malformed_specification_binding
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_unsupported_or_malformed_specification_binding
   forbid_absence_as_false_assertion:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_absence_as_false_assertion
     source_dimensions:
       - forbid_absence_as_false_assertion
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_absence_as_false_assertion
   forbid_analysis_mandated_removal_or_async_compensation:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_analysis_mandated_removal_or_async_compensation
     source_dimensions:
       - forbid_analysis_mandated_removal_or_async_compensation
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_analysis_mandated_removal_or_async_compensation
   forbid_derived_architecture_mutation:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_derived_architecture_mutation
     source_dimensions:
       - forbid_derived_architecture_mutation
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_derived_architecture_mutation
   forbid_fabricated_history:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_fabricated_history
     source_dimensions:
       - forbid_fabricated_history
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_fabricated_history
   forbid_fabricated_reference_targets:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_fabricated_reference_targets
     source_dimensions:
       - forbid_fabricated_reference_targets
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_fabricated_reference_targets
   forbid_mandatory_intermediate_version_traversal:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_mandatory_intermediate_version_traversal
     source_dimensions:
       - forbid_mandatory_intermediate_version_traversal
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_mandatory_intermediate_version_traversal
   forbid_n_by_m_handwritten_converter_matrix_requirement:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_n_by_m_handwritten_converter_matrix_requirement
     source_dimensions:
       - forbid_n_by_m_handwritten_converter_matrix_requirement
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_n_by_m_handwritten_converter_matrix_requirement
   forbid_semantic_deltas_in_identity_bridge:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_semantic_deltas_in_identity_bridge
     source_dimensions:
       - forbid_semantic_deltas_in_identity_bridge
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_semantic_deltas_in_identity_bridge
   forbid_semantic_versioning_for_project_profile_namespace:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_semantic_versioning_for_project_profile_namespace
     source_dimensions:
       - forbid_semantic_versioning_for_project_profile_namespace
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_semantic_versioning_for_project_profile_namespace
   forbid_temporary_target_for_canonical_profile_identity_bridge:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_temporary_target_for_canonical_profile_identity_bridge
     source_dimensions:
       - forbid_temporary_target_for_canonical_profile_identity_bridge
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_temporary_target_for_canonical_profile_identity_bridge
   forbid_tool_compatibility_inference_from_numeric_equality:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_tool_compatibility_inference_from_numeric_equality
     source_dimensions:
       - forbid_tool_compatibility_inference_from_numeric_equality
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_tool_compatibility_inference_from_numeric_equality
   forbid_tool_self_adoption_profile_creation:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_tool_self_adoption_profile_creation
     source_dimensions:
       - forbid_tool_self_adoption_profile_creation
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_tool_self_adoption_profile_creation
   forbid_universal_shortest_path_engine_requirement:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_universal_shortest_path_engine_requirement
     source_dimensions:
       - forbid_universal_shortest_path_engine_requirement
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_universal_shortest_path_engine_requirement
   govern_associated_artifact_ownership:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Govern associated-artifact ownership and anchoring independently from production."
@@ -323,8 +333,8 @@ proposed_effect_tokens:
     source_dimensions:
       - define_classification_basis
       - define_classification_vocabulary
-      - preserve_classification_vocabulary
       - constrain_neutral_contract_qualification
+      - preserve_classification_vocabulary
   govern_conformance_semantics:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Govern conformance decisions, validation separation, waiver policy, and stricter-project-policy behavior."
@@ -345,6 +355,7 @@ proposed_effect_tokens:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Constrain dependency direction and permitted cross-boundary contract consumption."
     source_dimensions:
+      - require_architectural_boundary
       - constrain_dependency_direction
       - permit_contract_consumption
   govern_migration_analysis_pipeline:
@@ -390,6 +401,7 @@ proposed_effect_tokens:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Govern historical source-family semantics, source-reader boundaries, unsupported bindings, and non-reinterpretation rules."
     source_dimensions:
+      - forbid_source_category_inheritance
       - forbid_historical_source_reinterpretation
       - separate_common_source_model_from_current_canonical_model
       - preserve_source_family_semantics
@@ -400,7 +412,6 @@ proposed_effect_tokens:
       - define_source_compatibility_boundary
       - define_normalized_source_convergence_boundary
       - define_source_specific_compatibility_reader_boundary
-      - forbid_source_category_inheritance
   govern_migration_source_ordering:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Govern migration source ordering, deleted-hop handling, and canonical-source sequencing."
@@ -420,6 +431,7 @@ proposed_effect_tokens:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Govern normative-family activation and preservation independently from tool/profile mutation or release lifecycle."
     source_dimensions:
+      - require_versioned_normative_contract
       - separate_specification_tool_lifecycles
       - activate_normative_family
       - separate_specification_activation_from_profile_mutation
@@ -466,63 +478,63 @@ proposed_effect_tokens:
   limit_supersession_to_repository_self_adoption_assumption:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.limit_supersession_to_repository_self_adoption_assumption
     source_dimensions:
       - limit_supersession_to_repository_self_adoption_assumption
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.limit_supersession_to_repository_self_adoption_assumption
   preserve_authorized_legacy_target_continuity:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_authorized_legacy_target_continuity
     source_dimensions:
       - preserve_authorized_legacy_target_continuity
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_authorized_legacy_target_continuity
   preserve_equivalent_value_origins:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_equivalent_value_origins
     source_dimensions:
       - preserve_equivalent_value_origins
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_equivalent_value_origins
   preserve_legacy_profile_generation_identity:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_legacy_profile_generation_identity
     source_dimensions:
       - preserve_legacy_profile_generation_identity
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_legacy_profile_generation_identity
   preserve_legacy_temporary_target_alias:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_legacy_temporary_target_alias
     source_dimensions:
       - preserve_legacy_temporary_target_alias
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_legacy_temporary_target_alias
   preserve_migration_engine_independent_of_self_adoption:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_migration_engine_independent_of_self_adoption
     source_dimensions:
       - preserve_migration_engine_independent_of_self_adoption
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_migration_engine_independent_of_self_adoption
   preserve_narrow_ptsip_core_selector_boundary:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_narrow_ptsip_core_selector_boundary
     source_dimensions:
       - preserve_narrow_ptsip_core_selector_boundary
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_narrow_ptsip_core_selector_boundary
   preserve_producer_specific_interfaces:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_producer_specific_interfaces
     source_dimensions:
       - preserve_producer_specific_interfaces
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_producer_specific_interfaces
   preserve_project_profile_identity_axes:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_project_profile_identity_axes
     source_dimensions:
       - preserve_project_profile_identity_axes
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_project_profile_identity_axes
   preserve_repository_resolution_states:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_repository_resolution_states
     source_dimensions:
       - preserve_repository_resolution_states
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_repository_resolution_states
   preserve_unresolved_analysis_state:
     review_status: OWNER_APPROVED_RENAME_TARGET
     definition: "Preserve unresolved analysis state semantics without changing the predicate payload."
@@ -530,15 +542,15 @@ proposed_effect_tokens:
       - preserve_unresolved_analysis_states
   require_architectural_boundary:
     review_status: OWNER_APPROVED_SPLIT_PRESERVED_EFFECT
-    definition: "ARCHITECTURE_COMPONENT_AND_RESPONSIBILITY_BOUNDARY"
+    definition: "Require explicit product/toolchain or coherent component and responsibility architectural boundaries."
     source_dimensions:
       - require_architectural_boundary
   require_conditional_mutation:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_conditional_mutation
     source_dimensions:
       - require_conditional_mutation
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_conditional_mutation
   require_deterministic_integrity_digest:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Require deterministic semantic integrity digests for governed materialization."
@@ -547,33 +559,32 @@ proposed_effect_tokens:
   require_evidence_provenance:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_evidence_provenance
     source_dimensions:
       - require_evidence_provenance
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_evidence_provenance
   require_exclusive_declaration_modes:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_exclusive_declaration_modes
     source_dimensions:
       - require_exclusive_declaration_modes
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_exclusive_declaration_modes
   require_explicit_project_profile_capability_for_tool_operations:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_explicit_project_profile_capability_for_tool_operations
     source_dimensions:
       - require_explicit_project_profile_capability_for_tool_operations
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_explicit_project_profile_capability_for_tool_operations
   require_explicit_specification_binding:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Require explicit specification binding for automated governed evaluation rather than implicit inference."
     source_dimensions:
       - require_explicit_specification_binding
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_explicit_specification_binding
   require_explicit_template_selection:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_explicit_template_selection
     source_dimensions:
       - require_explicit_template_selection
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_explicit_template_selection
   require_fresh_authority_or_evidence_state:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Require fresh authority or evidence state before governed decisions."
@@ -583,15 +594,15 @@ proposed_effect_tokens:
   require_governable_responsibility_split:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_governable_responsibility_split
     source_dimensions:
       - require_governable_responsibility_split
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_governable_responsibility_split
   require_producer_neutral_evidence_contract:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_producer_neutral_evidence_contract
     source_dimensions:
       - require_producer_neutral_evidence_contract
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_producer_neutral_evidence_contract
   require_project_owner_decision:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Require explicit project-owner confirmation for ambiguous or architecture-setting decisions."
@@ -607,45 +618,43 @@ proposed_effect_tokens:
   require_repository_resolution_taxonomy_mapping:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_repository_resolution_taxonomy_mapping
     source_dimensions:
       - require_repository_resolution_taxonomy_mapping
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_repository_resolution_taxonomy_mapping
   require_shared_identity_namespace:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_shared_identity_namespace
     source_dimensions:
       - require_shared_identity_namespace
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_shared_identity_namespace
   require_stable_governance_identity:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Require stable machine identities for governance rules and decisions."
     source_dimensions:
       - require_stable_rule_identity
       - require_stable_decision_identity
-  require_typed_evidence_relationships:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
+  require_typed_evidence_edges:
+    review_status: OWNER_APPROVED_RENAME_TARGET
+    definition: "Require evidence edges to carry explicit typed relationship semantics."
     source_dimensions:
       - require_typed_evidence_relationships
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_typed_evidence_relationships
   require_version_revision_transition_inputs:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_version_revision_transition_inputs
     source_dimensions:
       - require_version_revision_transition_inputs
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_version_revision_transition_inputs
   require_versioned_normative_contract:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
+    review_status: OWNER_APPROVED_SPLIT_PRESERVED_EFFECT
+    definition: "Require governed normative contracts to carry an explicit versioned contract identity."
     source_dimensions:
       - require_versioned_normative_contract
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_versioned_normative_contract
   require_zero_unresolved_items_for_completion:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_zero_unresolved_items_for_completion
     source_dimensions:
       - require_zero_unresolved_items_for_completion
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_zero_unresolved_items_for_completion
   reserve_project_declaration_authority:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Reserve project declaration semantics to explicit project authority."
@@ -659,39 +668,38 @@ proposed_effect_tokens:
   restrict_mutation_promotion_verification_to_fixture_repositories:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_mutation_promotion_verification_to_fixture_repositories
     source_dimensions:
       - restrict_mutation_promotion_verification_to_fixture_repositories
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_mutation_promotion_verification_to_fixture_repositories
   restrict_project_profile_bridge_to_identity_only:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_project_profile_bridge_to_identity_only
     source_dimensions:
       - restrict_project_profile_bridge_to_identity_only
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_project_profile_bridge_to_identity_only
   restrict_repository_dogfood_to_controlled_self_analysis:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_repository_dogfood_to_controlled_self_analysis
     source_dimensions:
       - restrict_repository_dogfood_to_controlled_self_analysis
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_repository_dogfood_to_controlled_self_analysis
   retire_previous_identity:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.retire_previous_identity
     source_dimensions:
       - retire_previous_identity
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.retire_previous_identity
-  select_versioned_contract_target:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
+  select_versioned_target_identity:
+    review_status: OWNER_APPROVED_SPLIT_REPLACE_RESULT
+    definition: "Select an explicit versioned target identity for a governed tool, bridge, or transition target."
     source_dimensions:
       - select_versioned_contract_target
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.select_versioned_contract_target
   separate_architecture_acceptance_from_identity_implementation:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_architecture_acceptance_from_identity_implementation
     source_dimensions:
       - separate_architecture_acceptance_from_identity_implementation
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_architecture_acceptance_from_identity_implementation
   separate_authority_from_conformance:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Keep authority state separate from conformance state."
@@ -710,9 +718,9 @@ proposed_effect_tokens:
   separate_declared_relationships_from_evidence:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_declared_relationships_from_evidence
     source_dimensions:
       - separate_declared_relationships_from_evidence
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_declared_relationships_from_evidence
   separate_global_authority_from_local_projection:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Keep global authority distinct from local or projected authority views."
@@ -721,39 +729,39 @@ proposed_effect_tokens:
   separate_lifecycle_compatibility_from_obligation_category:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_lifecycle_compatibility_from_obligation_category
     source_dimensions:
       - separate_lifecycle_compatibility_from_obligation_category
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_lifecycle_compatibility_from_obligation_category
   separate_profile_identity_implementation_from_migration_capability:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_profile_identity_implementation_from_migration_capability
     source_dimensions:
       - separate_profile_identity_implementation_from_migration_capability
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_profile_identity_implementation_from_migration_capability
   separate_profile_instance_revision_from_contract_version:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_profile_instance_revision_from_contract_version
     source_dimensions:
       - separate_profile_instance_revision_from_contract_version
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_profile_instance_revision_from_contract_version
   separate_repository_adoption_from_release_readiness:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_repository_adoption_from_release_readiness
     source_dimensions:
       - separate_repository_adoption_from_release_readiness
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_repository_adoption_from_release_readiness
   separate_semantic_identity_from_evaluation_identity:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_semantic_identity_from_evaluation_identity
     source_dimensions:
       - separate_semantic_identity_from_evaluation_identity
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_semantic_identity_from_evaluation_identity
   separate_tool_version_from_project_profile_version:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
+    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_tool_version_from_project_profile_version
     source_dimensions:
       - separate_tool_version_from_project_profile_version
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_tool_version_from_project_profile_version
   synchronize_authority_at_action_time:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Require authority synchronization or refresh at governed action time."
@@ -762,9 +770,11 @@ proposed_effect_tokens:
 
 source_to_proposed_effect_projection:
   establish_canonical_identity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     proposed_effect_tokens:
-      - establish_canonical_identity
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D11
   establish_decision_criterion_priority:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -779,9 +789,11 @@ source_to_proposed_effect_projection:
       - require_architectural_boundary
       - govern_dependency_boundary
   require_versioned_normative_contract:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     proposed_effect_tokens:
       - require_versioned_normative_contract
+      - govern_normative_family_lifecycle
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D12
   constrain_tool_state_location:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -799,21 +811,25 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - require_read_only_operation
   require_explicit_specification_binding:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - require_explicit_specification_binding
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D13
   separate_specification_tool_lifecycles:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
       - govern_normative_family_lifecycle
   bind_immutable_normative_snapshot:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - bind_immutable_normative_snapshot
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D14
   select_versioned_contract_target:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT_REPLACE
     proposed_effect_tokens:
-      - select_versioned_contract_target
+      - declare_machine_contract_identity
+      - select_versioned_target_identity
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D15
   define_classification_vocabulary:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -827,13 +843,15 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - reserve_project_declaration_authority
   require_typed_evidence_relationships:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     proposed_effect_tokens:
-      - require_typed_evidence_relationships
+      - require_typed_evidence_edges
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D16
   constrain_machine_output_structure:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - constrain_machine_output_structure
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D17
   deny_derived_architecture_authority:
     disposition: OWNER_APPROVED_SPLIT
     proposed_effect_tokens:
@@ -1502,10 +1520,12 @@ source_to_proposed_effect_projection:
 
 owner_review_gate:
   required: true
+  current_batch_completed: P03_INITIAL_CLOSED_VOCABULARY_BATCH_01
+  remaining_owner_review_effect_token_count: 71
   decision_surface:
     - APPROVE_PROPOSED_INITIAL_CLOSED_VOCABULARY
     - REQUEST_TOKEN_LEVEL_RECONCILIATION_CHANGES
-  approval_target_effect_token_count: 113
+  current_proposed_effect_token_count: 115
   approval_must_not_be_inferred_from_sequence_authorization: true
   approval_effect_if_granted:
     - FREEZE_EXACT_INITIAL_AUTHORITY_ROLE_VOCABULARY
@@ -1519,7 +1539,8 @@ validation:
   source_dimension_count_equals_184: true
   source_projection_coverage_complete: true
   unknown_projection_target_count: 0
-  proposed_effect_token_count_equals_113: true
-  owner_review_pending_token_count_equals_78: true
+  proposed_effect_token_count_equals_115: true
+  owner_approved_effect_token_count_equals_44: true
+  owner_review_pending_token_count_equals_71: true
   vocabulary_registration: false
   runtime_authority: NONE

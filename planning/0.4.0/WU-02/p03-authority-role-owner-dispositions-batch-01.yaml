@@ -1,0 +1,102 @@
+schema_version: ptsip-p03-authority-role-owner-dispositions/v1
+owner_decisions:
+  status: PROJECT_OWNER_APPROVED
+  decided_on: '2026-09-07'
+  scope:
+    review_batch: P03_INITIAL_CLOSED_VOCABULARY_BATCH_01
+    source_dimensions: 7
+  source_dimension_model: 184_DISPOSITION_PRIMARY
+  decision_count: 7
+  vocabulary_registration: false
+  runtime_authority: NONE
+  provisional_registry_mutated: false
+  source_matrix_mutated: false
+
+decisions:
+  D11:
+    source_dimension: establish_canonical_identity
+    decision: SPLIT
+    replace_source_token: true
+    resulting_effects:
+      - dimension: declare_canonical_identity
+        predicate_paths:
+          - authority_semantics.canonical_term
+          - authority_semantics.canonical_name
+          - authority_semantics.expanded_identity
+          - authority_semantics.current_generation_identity
+          - authority_semantics.canonical_pp_identity
+        semantic_scope: DECLARE_CANONICAL_IDENTITY_VALUE_OR_NAMESPACE
+      - dimension: define_deterministic_semantic_identity
+        predicate_paths:
+          - authority_semantics.semantic_identity
+        semantic_scope: DEFINE_DETERMINISTIC_SEMANTIC_IDENTITY_COMPUTATION
+    rationale: CANONICAL_IDENTITY_DECLARATION_NE_SEMANTIC_IDENTITY_COMPUTATION
+
+  D12:
+    source_dimension: require_versioned_normative_contract
+    decision: SPLIT
+    preserve_as:
+      dimension: require_versioned_normative_contract
+      predicate_paths:
+        - authority_semantics.versioned_specification
+        - authority_semantics.specification_family
+        - authority_semantics.normative_snapshot_identity
+      semantic_scope: REQUIRE_VERSIONED_NORMATIVE_CONTRACT_IDENTITY
+    move_to_existing_approved_effect:
+      dimension: govern_normative_family_lifecycle
+      predicate_paths:
+        - authority_semantics.activated_specification_family
+      semantic_scope: NORMATIVE_FAMILY_ACTIVATION
+    rationale: VERSIONED_NORMATIVE_CONTRACT_NE_NORMATIVE_FAMILY_ACTIVATION
+
+  D13:
+    source_dimension: require_explicit_specification_binding
+    decision: KEEP
+    dimension: require_explicit_specification_binding
+    semantic_scope: REQUIRE_EXPLICIT_SPECIFICATION_BINDING_FOR_AUTOMATED_GOVERNED_EVALUATION
+    rationale: EXPLICIT_BINDING_IS_DISTINCT_FROM_VERSIONING_AND_IMMUTABILITY
+
+  D14:
+    source_dimension: bind_immutable_normative_snapshot
+    decision: KEEP
+    dimension: bind_immutable_normative_snapshot
+    semantic_scope: BIND_GOVERNED_EVALUATION_TO_IMMUTABLE_NORMATIVE_SNAPSHOT
+    rationale: IMMUTABLE_SNAPSHOT_BINDING_IS_DISTINCT_FROM_BINDING_PRESENCE
+
+  D15:
+    source_dimension: select_versioned_contract_target
+    decision: SPLIT_REPLACE
+    replace_source_token: true
+    resulting_effects:
+      - dimension: declare_machine_contract_identity
+        predicate_paths:
+          - authority_semantics.pilot_report_contract
+          - authority_semantics.contract
+        semantic_scope: DECLARE_MACHINE_CONTRACT_IDENTITY
+      - dimension: select_versioned_target_identity
+        predicate_paths:
+          - authority_semantics.reference_tool_target
+          - authority_semantics.bridge_target
+        semantic_scope: SELECT_EXPLICIT_VERSIONED_TARGET_IDENTITY
+    rationale: MACHINE_CONTRACT_IDENTITY_NE_VERSIONED_TARGET_SELECTION
+
+  D16:
+    source_dimension: require_typed_evidence_relationships
+    decision: RENAME
+    rename_to: require_typed_evidence_edges
+    predicate_change: NONE
+    semantic_change: false
+    semantic_scope: REQUIRE_TYPED_EVIDENCE_EDGES
+    rationale: EVIDENCE_EDGE_NE_DECLARED_ARCHITECTURE_RELATIONSHIP
+
+  D17:
+    source_dimension: constrain_machine_output_structure
+    decision: KEEP
+    dimension: constrain_machine_output_structure
+    semantic_scope: REQUIRE_MACHINE_CONSUMABLE_OUTPUT_TO_HAVE_EXPLICIT_STRUCTURAL_CONTRACT
+    rationale: SUBJECT_SPECIFIC_OUTPUT_TYPES_DO_NOT_REQUIRE_SEPARATE_AUTHORITY_EFFECT_TOKENS
+
+validation:
+  approved_decision_count: 7
+  stable_vocabulary_registration: false
+  runtime_authority: NONE

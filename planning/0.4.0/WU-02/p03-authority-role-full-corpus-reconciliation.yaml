@@ -8,7 +8,7 @@ reconciliation:
     reconciled_source_dimension_count: 184
     semantic_coverage_unresolved_residual_count: 0
     exact_duplicate_expression_count: 0
-    proposed_initial_closed_vocabulary_candidate_count: 113
+    proposed_initial_closed_vocabulary_candidate_count: 115
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
   primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -29,11 +29,11 @@ reconciliation:
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
-    individually_decided_source_dimension_count: 3
-    pending_source_dimension_count: 78
-    owner_decided_source_dimension_count: 106
-    proposed_effect_token_count: 113
-    owner_review_gate: PENDING
+    individually_decided_source_dimension_count: 10
+    pending_source_dimension_count: 71
+    owner_decided_source_dimension_count: 113
+    proposed_effect_token_count: 115
+    owner_review_gate: IN_PROGRESS
     pending_groups_are_not_premerged: true
   invariants:
     - SOURCE_184_DISPOSITIONS_ARE_PRIMARY
@@ -45,8 +45,9 @@ reconciliation:
 
 source_dimension_dispositions:
   establish_canonical_identity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D11
   establish_decision_criterion_priority:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_decision_precedence_and_resolution
@@ -58,8 +59,9 @@ source_dimension_dispositions:
     approved_group: null
     owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml#D2
   require_versioned_normative_contract:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D12
   constrain_tool_state_location:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: enforce_tool_non_intrusion
@@ -73,17 +75,20 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_read_only_operation
   require_explicit_specification_binding:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D13
   separate_specification_tool_lifecycles:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_normative_family_lifecycle
   bind_immutable_normative_snapshot:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D14
   select_versioned_contract_target:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT_REPLACE
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D15
   define_classification_vocabulary:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_classification_model
@@ -96,11 +101,14 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_KEEP
     approved_group: reserve_project_declaration_authority
   require_typed_evidence_relationships:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: require_typed_evidence_edges
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D16
   constrain_machine_output_structure:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml#D17
   deny_derived_architecture_authority:
     disposition: OWNER_APPROVED_SPLIT
     approved_group: null
