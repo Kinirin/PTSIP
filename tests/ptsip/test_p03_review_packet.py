@@ -11,16 +11,19 @@ ROOT = Path(__file__).resolve().parents[2]
 REVIEW_PACKET = ROOT / ".github" / "scripts" / "p03_authority_role_review_packet.py"
 
 
-def _run_packet(adr_id: str) -> dict[str, object]:
+def _run_packet(adr_id: str, *, compact: bool = False) -> dict[str, object]:
+    command = [
+        sys.executable,
+        str(REVIEW_PACKET),
+        "--repo-root",
+        str(ROOT),
+        "--adr",
+        adr_id,
+    ]
+    if compact:
+        command.append("--compact")
     result = subprocess.run(
-        [
-            sys.executable,
-            str(REVIEW_PACKET),
-            "--repo-root",
-            str(ROOT),
-            "--adr",
-            adr_id,
-        ],
+        command,
         text=True,
         encoding="utf-8",
         errors="replace",
@@ -34,7 +37,7 @@ def _run_packet(adr_id: str) -> dict[str, object]:
     return payload
 
 
-def test_p03_adr_0011_review_packet_is_minimal_and_machine_prepared() -> None:
+def test_p03_adr_0011_review_packet_is_machine_prepared() -> None:
     packet = _run_packet("ADR-0011")
 
     assert packet["target"]["adr_id"] == "ADR-0011"
@@ -44,10 +47,14 @@ def test_p03_adr_0011_review_packet_is_minimal_and_machine_prepared() -> None:
 
     automation = packet["automation"]
     assert automation["existing_dimension_evaluation"] == "DETERMINISTIC"
+    assert automation["matched_predicate_proof_trace"] == "DETERMINISTIC"
+    assert automation["residual_raw_feature_extraction"] == "DETERMINISTIC"
+    assert automation["machine_residual_candidate_generation"] == "DETERMINISTIC"
     assert automation["manual_full_dimension_scan_required"] is False
+    assert automation["manual_raw_corpus_search_required"] is False
     assert automation["raw_feature_force_fit"] == "FORBIDDEN"
     assert automation["natural_language_consumption"] == "FORBIDDEN"
-    assert automation["new_dimension_decision"] == "NOT_AUTOMATIC"
+    assert automation["semantic_effect_promotion"] == "DESIGN_REVIEW_ONLY"
 
     summary = packet["summary"]
     assert summary["raw_feature_count"] == 8
@@ -57,6 +64,10 @@ def test_p03_adr_0011_review_packet_is_minimal_and_machine_prepared() -> None:
         == 8
     )
     assert summary["matched_dimension_count"] == len(packet["matched_dimensions"])
+    assert summary["machine_residual_candidate_count"] == len(
+        packet["machine_residual_candidates"]
+    )
+    assert summary["machine_residual_candidate_count"] == summary["residual_raw_feature_count"]
 
     covered_paths = {item["path"] for item in packet["covered_raw_features"]}
     residual_paths = {item["path"] for item in packet["residual_raw_features"]}
@@ -64,6 +75,35 @@ def test_p03_adr_0011_review_packet_is_minimal_and_machine_prepared() -> None:
 
     for match in packet["matched_dimensions"]:
         assert set(match["proof_paths"]).issubset(covered_paths)
+
+    candidate_ids = set()
+    for candidate in packet["machine_residual_candidates"]:
+        assert candidate["candidate_id"].startswith("raw-candidate:")
+        assert candidate["status"] == "UNINTERPRETED_RAW_BACKED_CANDIDATE"
+        assert candidate["path"] in residual_paths
+        assert candidate["semantic_effect_dimension"] == "NOT_DECIDED"
+        assert candidate["candidate_id"] not in candidate_ids
+        candidate_ids.add(candidate["candidate_id"])
+
+
+def test_p03_compact_packet_is_the_narrow_agent_input_surface() -> None:
+    compact = _run_packet("ADR-0011", compact=True)
+
+    assert compact["schema_version"] == "ptsip-p03-authority-role-review-packet-compact/v1"
+    assert compact["target"]["adr_id"] == "ADR-0011"
+    assert compact["automation"] == {
+        "existing_dimension_evaluation": "DETERMINISTIC",
+        "manual_full_dimension_scan_required": False,
+        "manual_raw_corpus_search_required": False,
+        "raw_feature_force_fit": "FORBIDDEN",
+    }
+    assert isinstance(compact["matched_dimension_ids"], list)
+    assert isinstance(compact["machine_residual_candidates"], list)
+    assert compact["summary"]["raw_feature_count"] == 8
+    assert "inputs" not in compact
+    assert "covered_raw_features" not in compact
+    assert "residual_raw_features" not in compact
+    assert "matched_dimensions" not in compact
 
 
 def test_p03_review_packet_does_not_materialize_semantic_decision() -> None:
