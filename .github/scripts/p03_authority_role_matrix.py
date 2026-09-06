@@ -281,15 +281,30 @@ def _load_registry(path: Path, known_paths: dict[str, list[object]]) -> dict[str
     if migration is not None:
         if not isinstance(migration, dict):
             raise AnalysisError("registry migration must be a mapping")
-        if migration.get("status") != "FROZEN_REFERENCE":
-            raise AnalysisError("legacy semantic registry migration status must be FROZEN_REFERENCE")
-        frozen = _adr_number(migration.get("frozen_through"), label="migration.frozen_through")
-        if reviewed > frozen:
+        if migration.get("status") != "HISTORICAL_PROVISIONAL_REFERENCE":
             raise AnalysisError(
-                "legacy semantic dimension analysis is frozen; use the raw-feature corpus collector"
+                "legacy semantic registry migration status must be HISTORICAL_PROVISIONAL_REFERENCE"
             )
-        if migration.get("future_dimension_growth") != "FORBIDDEN":
-            raise AnalysisError("legacy semantic registry must forbid future dimension growth")
+        boundary = _adr_number(
+            migration.get("previous_method_analyzed_through"),
+            label="migration.previous_method_analyzed_through",
+        )
+        if reviewed > boundary:
+            raise AnalysisError(
+                "legacy per-ADR semantic-dimension method is suspended; "
+                "use the raw-feature corpus collector until corpus-wide clustering"
+            )
+        if (
+            migration.get("per_adr_semantic_dimension_growth_during_raw_collection")
+            != "FORBIDDEN"
+        ):
+            raise AnalysisError(
+                "legacy per-ADR semantic dimension growth must stay disabled during raw collection"
+            )
+        if migration.get("legacy_dimensions_are_matching_target") is not False:
+            raise AnalysisError("legacy dimensions must not be a matching target for new raw features")
+        if migration.get("legacy_dimensions_are_immutable") is not False:
+            raise AnalysisError("legacy provisional dimensions must remain revisable hypotheses")
 
     dimensions = registry.get("dimensions")
     if not isinstance(dimensions, dict) or not dimensions:
