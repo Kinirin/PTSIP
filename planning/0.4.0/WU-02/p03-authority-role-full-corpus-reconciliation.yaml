@@ -1,10 +1,14 @@
 schema_version: ptsip-p03-authority-role-full-corpus-reconciliation/v2
 reconciliation:
-  status: PARTIAL_OWNER_APPROVAL_IN_PROGRESS
+  status: FULL_CORPUS_RECONCILIATION_COMPLETE_OWNER_VOCABULARY_REVIEW_PENDING
   corpus:
     first_adr: ADR-0001
     through: ADR-0023
     source_dimension_count: 184
+    reconciled_source_dimension_count: 184
+    semantic_coverage_unresolved_residual_count: 0
+    exact_duplicate_expression_count: 0
+    proposed_initial_closed_vocabulary_candidate_count: 113
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
   primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -27,6 +31,9 @@ reconciliation:
     approved_source_dimension_count: 103
     individually_decided_source_dimension_count: 3
     pending_source_dimension_count: 78
+    owner_decided_source_dimension_count: 106
+    proposed_effect_token_count: 113
+    owner_review_gate: PENDING
     pending_groups_are_not_premerged: true
   invariants:
     - SOURCE_184_DISPOSITIONS_ARE_PRIMARY
