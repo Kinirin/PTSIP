@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .artifact_evidence import ArtifactEvidenceLoad, load_artifact_evidence
 from .constants import TOOL_VERSION
+from .dependency_reconciliation import DependencyReconciliation, reconcile_dependency_evidence
 from .inspection.dependencies import DependencyScan, scan_dependency_edges
 from .inspection.source_adapters import (
     SUPPORTED_SOURCE_SUFFIXES,
@@ -127,6 +128,7 @@ def _dependency_coverage_gaps(
     dependencies: DependencyScan,
     components: list[dict[str, object]],
     partition: ComponentPartition,
+    reconciled_external_ids: frozenset[str] = frozenset(),
 ) -> list[dict[str, object]]:
     classifications = _classifications(components)
     owners = _owners(partition)
@@ -151,6 +153,8 @@ def _dependency_coverage_gaps(
         if classifications.get(source_component) != "PRODUCT":
             continue
         if edge.resolution not in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
+            continue
+        if edge.evidence_id in reconciled_external_ids:
             continue
         gaps.append(
             _coverage_gap(
@@ -371,6 +375,7 @@ def evaluate_conformance(
     partition: ComponentPartition | None = None
     components: list[dict[str, object]] = []
     payload: dict[str, object] | None = None
+    dependency_reconciliation = DependencyReconciliation.empty()
 
     if profile is None:
         coverage_gaps.append(
@@ -448,6 +453,14 @@ def evaluate_conformance(
 
             if components:
                 partition = partition_components(root, components)
+                dependency_reconciliation = reconcile_dependency_evidence(
+                    root, dependencies, components, partition
+                )
+                evaluators["dependency_reconciliation"] = {
+                    "status": "RAN",
+                    "resolved_external_count": len(dependency_reconciliation.resolved_external),
+                    "candidate_count": dependency_reconciliation.candidate_count,
+                }
                 boundary_findings = evaluate_declared_dependency_boundaries(
                     components, partition, dependencies
                 )
@@ -455,7 +468,14 @@ def evaluate_conformance(
                     _finding_diagnostic(item, "declared-dependency-boundaries")
                     for item in boundary_findings
                 )
-                coverage_gaps.extend(_dependency_coverage_gaps(dependencies, components, partition))
+                coverage_gaps.extend(
+                    _dependency_coverage_gaps(
+                        dependencies,
+                        components,
+                        partition,
+                        dependency_reconciliation.resolved_evidence_ids,
+                    )
+                )
                 coverage_gaps.extend(_unassigned_coverage_gaps(partition))
                 unsupported_gaps = _unsupported_source_coverage_gaps(partition, components)
                 coverage_gaps.extend(unsupported_gaps)
@@ -581,6 +601,7 @@ def evaluate_conformance(
         },
         "profile": profile_validation.as_dict(),
         "dependencies": dependencies.as_dict(),
+        "dependency_reconciliation": dependency_reconciliation.as_dict(),
         "artifacts": artifact_load.as_dict(),
         "project_policy": {
             "findings": project_policy_findings,
