@@ -860,13 +860,9 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0010
     expression:
-      any:
-      - path: authority_semantics.final_point_selection
-        operator: EQUALS
-        value: HIGHEST_SELECTED_TARGET_DRAFT
-      - path: authority_semantics.new_migration_creates_only_selected_canonical_target
-        operator: EQUALS
-        value: true
+      path: authority_semantics.final_point_selection
+      operator: EQUALS
+      value: HIGHEST_SELECTED_TARGET_DRAFT
   order_transition_sources:
     status: PROVISIONAL
     introduced_by: ADR-0010
@@ -1341,19 +1337,12 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0019
     expression:
-      any:
-      - path: authority_semantics.identity_axes
-        operator: CONTAINS_ALL
-        value:
-        - TOOL_VERSION
-        - PROJECT_PROFILE_CONTRACT_VERSION
-        - PROJECT_PROFILE_INSTANCE_REVISION
-      - path: authority_semantics.independent_history_axes
-        operator: EQUALS
-        value:
-        - TOOL_VERSION
-        - PROJECT_PROFILE_CONTRACT_VERSION
-        - SPECIFICATION_FAMILY_REVISION
+      path: authority_semantics.identity_axes
+      operator: CONTAINS_ALL
+      value:
+      - TOOL_VERSION
+      - PROJECT_PROFILE_CONTRACT_VERSION
+      - PROJECT_PROFILE_INSTANCE_REVISION
   preserve_legacy_profile_generation_identity:
     status: PROVISIONAL
     introduced_by: ADR-0019
@@ -1412,16 +1401,9 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0013
     expression:
-      any:
-      - path: authority_semantics.compatibility_boundary
-        operator: EQUALS
-        value: src/ptsip/source_compat
-      - path: authority_semantics.convergence_boundary
-        operator: EQUALS
-        value: NORMALIZED_SOURCE_SEMANTICS
-      - path: authority_semantics.source_boundary
-        operator: EQUALS
-        value: SOURCE_SPECIFIC_COMPATIBILITY_READER
+      path: authority_semantics.compatibility_boundary
+      operator: EQUALS
+      value: src/ptsip/source_compat
   define_staged_migration_analysis_pipeline:
     status: PROVISIONAL
     introduced_by: ADR-0014
@@ -1737,3 +1719,34 @@ dimensions:
       path: authority_semantics.unsupported_or_malformed_binding
       operator: EQUALS
       value: FAIL_CLOSED
+  define_independent_release_history_axes:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.independent_history_axes
+      operator: EQUALS
+      value:
+      - TOOL_VERSION
+      - PROJECT_PROFILE_CONTRACT_VERSION
+      - SPECIFICATION_FAMILY_REVISION
+  define_normalized_source_convergence_boundary:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.convergence_boundary
+      operator: EQUALS
+      value: NORMALIZED_SOURCE_SEMANTICS
+  define_source_specific_compatibility_reader_boundary:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.source_boundary
+      operator: EQUALS
+      value: SOURCE_SPECIFIC_COMPATIBILITY_READER
+  restrict_new_migration_output_to_selected_canonical_target:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.new_migration_creates_only_selected_canonical_target
+      operator: EQUALS
+      value: true

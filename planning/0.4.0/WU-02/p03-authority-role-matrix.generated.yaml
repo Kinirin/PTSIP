@@ -186,7 +186,11 @@ dimensions:
 - decouple_profile_specification_revision_from_global_tool_specification_revision
 - restrict_historical_bridge_to_migration_interpretation
 - define_specification_binding_fields
-- fail_closed_on_unsupported_or_malformed_specification_binding
+- fail_closed_on_unsupported_or_malformed_specification_binding- define_independent_release_history_axes
+- define_normalized_source_convergence_boundary
+- define_source_specific_compatibility_reader_boundary
+- restrict_new_migration_output_to_selected_canonical_target
+
 rows:
   ADR-0001:
     source_path: decisions/ADR-0001-establish-ptsip.yaml
@@ -371,6 +375,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0002:
     source_path: decisions/ADR-0002-external-tooling-non-intrusion.yaml
     role_effect_analysis:
@@ -554,6 +563,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0003:
     source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
     role_effect_analysis:
@@ -737,6 +751,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0004:
     source_path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml
     role_effect_analysis:
@@ -920,6 +939,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0005:
     source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.yaml
     role_effect_analysis:
@@ -1103,6 +1127,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0006:
     source_path: decisions/ADR-0006-establish-vpms-verification-purpose-management.yaml
     role_effect_analysis:
@@ -1286,6 +1315,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0007:
     source_path: decisions/ADR-0007-primary-lifecycle-boundary-determination.yaml
     role_effect_analysis:
@@ -1469,6 +1503,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0008:
     source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml
     role_effect_analysis:
@@ -1652,6 +1691,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0009:
     source_path: decisions/ADR-0009-responsibility-map-declaration-authority.yaml
     role_effect_analysis:
@@ -1835,6 +1879,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0010:
     source_path: decisions/ADR-0010-versioned-draft-profile-transition.yaml
     role_effect_analysis:
@@ -2018,6 +2067,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0011:
     source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
     role_effect_analysis:
@@ -2201,6 +2255,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0012:
     source_path: decisions/ADR-0012-universal-normalized-evidence-contract.yaml
     role_effect_analysis:
@@ -2384,6 +2443,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0013:
     source_path: decisions/ADR-0013-common-source-model-family-specific-semantics.yaml
     role_effect_analysis:
@@ -2567,6 +2631,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0014:
     source_path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.yaml
     role_effect_analysis:
@@ -2750,6 +2819,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0015:
     source_path: decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.yaml
     role_effect_analysis:
@@ -2933,6 +3007,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0016:
     source_path: decisions/ADR-0016-strongly-typed-migration-state-machine-checkpoint-ledger.yaml
     role_effect_analysis:
@@ -3116,6 +3195,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0017:
     source_path: decisions/ADR-0017-tool-version-profile-contract-independence.yaml
     role_effect_analysis:
@@ -3299,6 +3383,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0018:
     source_path: decisions/ADR-0018-separate-product-components-for-migration-subsystems.yaml
     role_effect_analysis:
@@ -3482,6 +3571,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0019:
     source_path: decisions/ADR-0019-independent-project-profile-versioning.yaml
     role_effect_analysis:
@@ -3665,6 +3759,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0020:
     source_path: decisions/ADR-0020-responsibility-segmented-wu-sequence-for-pp-transition.yaml
     role_effect_analysis:
@@ -3848,6 +3947,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0021:
     source_path: decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.yaml
     role_effect_analysis:
@@ -3985,7 +4089,7 @@ rows:
       deny_project_profile_version_migration_authorization: false
       preserve_narrow_ptsip_core_selector_boundary: false
       deny_immediate_profile_rewrite_authority_from_acceptance: false
-      preserve_project_profile_identity_axes: true
+      preserve_project_profile_identity_axes: false
       preserve_legacy_profile_generation_identity: false
       define_project_profile_major_version_trigger: false
       define_project_profile_minor_version_trigger: false
@@ -4031,6 +4135,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: true
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
   ADR-0022:
     source_path: decisions/ADR-0022-normalized-source-direct-latest-target-convergence.yaml
     role_effect_analysis:
@@ -4107,7 +4216,7 @@ rows:
       define_migration_obligation_categories: false
       define_required_work_completion: false
       gate_canonical_replacement_on_completion: false
-      select_final_transition_target: true
+      select_final_transition_target: false
       order_transition_sources: false
       forbid_deleted_migration_hops: false
       forbid_source_category_inheritance: false
@@ -4176,7 +4285,7 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
-      define_source_compatibility_boundary: true
+      define_source_compatibility_boundary: false
       define_staged_migration_analysis_pipeline: false
       restrict_migration_execution_input_to_accepted_delta_bundle: false
       separate_promotion_as_independent_state_boundary: false
@@ -4214,6 +4323,11 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: false
       define_specification_binding_fields: false
       fail_closed_on_unsupported_or_malformed_specification_binding: false
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: true
+      define_source_specific_compatibility_reader_boundary: true
+      restrict_new_migration_output_to_selected_canonical_target: true
+
   ADR-0023:
     source_path: decisions/ADR-0023-typed-specification-binding-and-capability-registries.yaml
     role_effect_analysis:
@@ -4397,7 +4511,12 @@ rows:
       restrict_historical_bridge_to_migration_interpretation: true
       define_specification_binding_fields: true
       fail_closed_on_unsupported_or_malformed_specification_binding: true
+      define_independent_release_history_axes: false
+      define_normalized_source_convergence_boundary: false
+      define_source_specific_compatibility_reader_boundary: false
+      restrict_new_migration_output_to_selected_canonical_target: false
+
 validation:
   rectangular: true
   reviewed_row_count: 23
-  dimension_count: 180
+  dimension_count: 184

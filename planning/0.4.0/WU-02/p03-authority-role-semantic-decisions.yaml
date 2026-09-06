@@ -1472,16 +1472,16 @@ records:
   raw-candidate:d5821be42c76f7be17ae:
     first_reviewed_in: ADR-0021
     raw_path: authority_semantics.independent_history_axes
-    decision: REFINE_EXISTING
-    target_dimension: preserve_project_profile_identity_axes
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: define_independent_release_history_axes
     predicate_mode: EQUALS_EXACT
-    reason_code: EXISTING_EFFECT_BOUNDARY_NEEDS_REFINEMENT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: a41111189183be5a4194e6775031e99037953c8b78472349bf07b99b00c5b076
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:3df463f14006b5bb41f8:
     first_reviewed_in: ADR-0021
     raw_path: authority_semantics.legacy_temporary_target_alias
@@ -1563,16 +1563,16 @@ records:
   raw-candidate:122b1394815ddce64078:
     first_reviewed_in: ADR-0022
     raw_path: authority_semantics.convergence_boundary
-    decision: REFINE_EXISTING
-    target_dimension: define_source_compatibility_boundary
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: define_normalized_source_convergence_boundary
     predicate_mode: EQUALS_EXACT
-    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: d43730a2c46a31aa948a068d85f5cc2301c820d1b5c8e7a09c6bc8f054c45023
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:80efcf18ea3d4b0916d1:
     first_reviewed_in: ADR-0022
     raw_path: authority_semantics.direct_convergence_allows_unrestricted_inference
@@ -1641,29 +1641,29 @@ records:
   raw-candidate:61d69ec2a80ee5757f93:
     first_reviewed_in: ADR-0022
     raw_path: authority_semantics.new_migration_creates_only_selected_canonical_target
-    decision: REFINE_EXISTING
-    target_dimension: select_final_transition_target
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: restrict_new_migration_output_to_selected_canonical_target
     predicate_mode: EQUALS_EXACT
-    reason_code: EXISTING_EFFECT_BOUNDARY_NEEDS_REFINEMENT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: d43730a2c46a31aa948a068d85f5cc2301c820d1b5c8e7a09c6bc8f054c45023
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:7430115cf94af1f86ec7:
     first_reviewed_in: ADR-0022
     raw_path: authority_semantics.source_boundary
-    decision: REFINE_EXISTING
-    target_dimension: define_source_compatibility_boundary
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: define_source_specific_compatibility_reader_boundary
     predicate_mode: EQUALS_EXACT
-    reason_code: EXISTING_EFFECT_BOUNDARY_NEEDS_REFINEMENT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: d43730a2c46a31aa948a068d85f5cc2301c820d1b5c8e7a09c6bc8f054c45023
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:1076f3316a026e9bb757:
     first_reviewed_in: ADR-0022
     raw_path: authority_semantics.target_selection_authority
