@@ -79,7 +79,7 @@ automation:
   automatic_matched_predicate_proof_trace: REQUIRED
   automatic_residual_raw_feature_extraction: REQUIRED
   automatic_existing_dimension_candidate_routing: DETERMINISTIC_NON_AUTHORITATIVE
-  candidate_routing_basis: MACHINE_FIELD_AND_PREDICATE_LEXICAL_STRUCTURE
+  candidate_routing_basis: MACHINE_FIELD_TOKEN_AND_HEAD_NOUN_STRUCTURE
   manual_full_79_dimension_comparison: FORBIDDEN
   per_adr_agent_primary_input: GENERATED_COMPACT_REVIEW_PACKET_ONLY
   compact_packet_deduplicates_routed_and_unrouted_residuals: true
