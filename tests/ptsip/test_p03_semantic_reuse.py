@@ -169,3 +169,59 @@ def test_p03_prefix_fixture_reconstruction_ignores_later_review_growth() -> None
     for definition in registry["dimensions"].values():
         introduced = int(str(definition["introduced_by"]).split("-")[1])
         assert introduced <= 10
+
+
+def test_p03_exact_reuse_fails_closed_when_any_exact_precedent_is_not_reproducible() -> None:
+    reuse = _load(REUSE_SCRIPT, "p03_semantic_reuse_fail_closed")
+    ledger = _ledger_through(11)
+    raw = _yaml(RAW)
+    registry = _yaml(REGISTRY)
+
+    synthetic_prior = {
+        "path": "authority_semantics.activated_family",
+        "value_type": "STRING",
+        "value": "0.3.9-draft",
+        "occurs_in": ["ADR-0011"],
+    }
+    synthetic_prior_id = reuse._raw_candidate_id(synthetic_prior)
+    raw["features"].append(synthetic_prior)
+    ledger["records"][synthetic_prior_id] = {
+        "first_reviewed_in": "ADR-0011",
+        "raw_path": synthetic_prior["path"],
+        "decision": "REFINE_EXISTING",
+        "target_dimension": "dimension_that_does_not_exist",
+        "proposed_dimension_id": None,
+        "predicate_mode": "NON_EMPTY",
+        "reason_code": "SAME_EFFECT_DIFFERENT_MACHINE_FIELD",
+        "packet_fingerprint": "test-only",
+        "semantic_authority": "NONE",
+        "runtime_authority": "NONE",
+        "vocabulary_registration": False,
+    }
+
+    candidate = {
+        "candidate_id": "raw-candidate:test-fail-closed",
+        "path": "authority_semantics.activated_family",
+        "value_type": "STRING",
+        "value": "0.3.8-draft",
+        "occurs_in": ["ADR-0011"],
+    }
+    result = reuse.analyze_reuse(
+        ROOT,
+        "ADR-0011",
+        [candidate],
+        ledger,
+        raw,
+        registry["dimensions"],
+        [],
+        {
+            candidate["candidate_id"]: [
+                "NON_EMPTY",
+                "EQUALS_EXACT",
+                "PRESENT",
+            ]
+        },
+    )
+
+    assert result["automatic_reuse_actions"] == []
+    assert candidate["candidate_id"] in result["structural_reuse_candidates"]
