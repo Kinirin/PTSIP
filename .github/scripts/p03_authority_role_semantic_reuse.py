@@ -86,7 +86,7 @@ def _index_routes(index: dict[str, Any]) -> dict[str, str]:
     return routes
 
 
-def _authority_contract(repo_root: Path, adr_id: str, routes: dict[str, str]) -> dict[str, str]:
+def _authority_contract(repo_root: Path, adr_id: str, routes: dict[str, str]) -> dict[str, object]:
     route = routes.get(adr_id)
     if route is None:
         raise ReuseAnalysisError(f"ADR INDEX has no current route for {adr_id}")
@@ -94,10 +94,20 @@ def _authority_contract(repo_root: Path, adr_id: str, routes: dict[str, str]) ->
     contract = record.get("authority_contract")
     if not isinstance(contract, dict):
         raise ReuseAnalysisError(f"{adr_id} authority_contract must be a mapping")
-    required = ("authority_type", "schema_id", "schema_version")
-    if not all(isinstance(contract.get(key), str) for key in required):
+    authority_type = contract.get("authority_type")
+    schema_id = contract.get("schema_id")
+    schema_version = contract.get("schema_version")
+    if not isinstance(authority_type, str) or not isinstance(schema_id, str):
         raise ReuseAnalysisError(f"{adr_id} authority_contract identity is incomplete")
-    return {key: str(contract[key]) for key in required}
+    if type(schema_version) is not int or schema_version < 1:
+        raise ReuseAnalysisError(
+            f"{adr_id} authority_contract schema_version must be a positive integer"
+        )
+    return {
+        "authority_type": authority_type,
+        "schema_id": schema_id,
+        "schema_version": schema_version,
+    }
 
 
 def _string_reuse_shape(value: str) -> dict[str, object]:
@@ -154,7 +164,7 @@ def reuse_shape(value_type: str, value: object) -> dict[str, object]:
 
 
 def _reuse_signature(
-    authority_contract: dict[str, str],
+    authority_contract: dict[str, object],
     feature: dict[str, object],
 ) -> str:
     payload = {
