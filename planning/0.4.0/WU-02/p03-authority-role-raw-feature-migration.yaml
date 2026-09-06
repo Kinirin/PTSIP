@@ -90,6 +90,12 @@ automation:
   per_adr_agent_primary_input: GENERATED_MINIMAL_AI_DECISION_PACKET_ONLY
   compact_packet_deduplicates_routed_and_unrouted_residuals: true
   raw_values_are_shape_compressed_before_ai_review: true
+  semantic_shape_compression_must_preserve_review_sufficiency: true
+  small_structured_values_preserve_compact_semantic_content: true
+  insufficient_semantic_context_requires_defer: true
+  targeted_candidate_expansion_supported: true
+  targeted_expansion_scope: EXACT_TYPED_VALUE_FOR_NAMED_CANDIDATES_ONLY
+  predicate_precision_must_bound_allowed_predicate_modes: true
   ai_free_text_rationale_required: false
   direct_full_dimension_registry_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
   direct_full_raw_corpus_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
@@ -104,6 +110,8 @@ semantic_decision_pipeline:
     - EVALUATE_EXISTING_PREDICATES
     - ROUTE_EXISTING_DIMENSION_CANDIDATES
     - COMPRESS_RAW_VALUES_TO_SEMANTIC_SHAPES
+    - CLASSIFY_REVIEW_SUFFICIENCY_AND_PREDICATE_PRECISION
+    - FAIL_CLOSED_TO_DEFER_OR_TARGETED_EXPANSION_WHEN_INSUFFICIENT
     - GENERATE_MINIMAL_AI_DECISION_PACKET
     - AI_RETURNS_CLOSED_STRUCTURED_DECISION
     - VALIDATE_PACKET_FINGERPRINT_AND_DECISION
@@ -119,6 +127,8 @@ semantic_decision_pipeline:
     - DEFER
   ai_output:
     free_text_rationale: NOT_REQUIRED
+    insufficient_context_non_defer_decision: FORBIDDEN
+    broad_read_to_bypass_sufficiency_gate: FORBIDDEN
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
