@@ -711,6 +711,11 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
         else:
             raise SemanticDecisionError("AI decision packet question has invalid review_mode")
 
+    if not expanded_ids.issubset(ids):
+        raise SemanticDecisionError(
+            "targeted expansion candidate must remain an AI review question"
+        )
+
     if summary.get("question_count") != len(questions):
         raise SemanticDecisionError("AI decision packet question_count is stale")
     if summary.get("automatic_reuse_count") != automatic_reuse["count"]:
@@ -1149,6 +1154,9 @@ def apply_response(
         ledger_path,
         include_deferred=bool(
             packet["review_contract"]["include_deferred_candidates"]
+        ),
+        expanded_candidate_ids=set(
+            packet["targeted_expansion"]["candidate_ids"]
         ),
     )
     if current_packet["packet_fingerprint"] != packet["packet_fingerprint"]:
