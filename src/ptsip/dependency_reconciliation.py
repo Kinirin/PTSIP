@@ -46,7 +46,9 @@ class ReconciledDependency:
     alias_applied: bool
 
     def as_dict(self) -> dict[str, object]:
-        return asdict(self)
+        payload = asdict(self)
+        payload["declaration_paths"] = list(self.declaration_paths)
+        return payload
 
 
 @dataclass(frozen=True)
@@ -56,10 +58,12 @@ class DependencyReconciliation:
     candidate_count: int
     unresolved_candidate_count: int
     issues: tuple[str, ...]
+    status: str = "RAN"
+    reason: str | None = None
 
     @classmethod
     def empty(cls) -> "DependencyReconciliation":
-        return cls((), 0, 0, 0, ())
+        return cls((), 0, 0, 0, (), status="BLOCKED", reason="COMPONENT_OWNERSHIP_REQUIRED")
 
     @property
     def resolved_evidence_ids(self) -> frozenset[str]:
@@ -71,7 +75,8 @@ class DependencyReconciliation:
         for item in self.resolved_external:
             basis_counts[item.basis] = basis_counts.get(item.basis, 0) + 1
         return {
-            "status": "RAN",
+            "status": self.status,
+            "reason": self.reason,
             "summary": {
                 "declaration_count": self.declaration_count,
                 "candidate_count": self.candidate_count,
