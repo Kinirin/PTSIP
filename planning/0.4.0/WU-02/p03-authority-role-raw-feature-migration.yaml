@@ -78,8 +78,11 @@ automation:
   automatic_existing_dimension_evaluation: REQUIRED
   automatic_matched_predicate_proof_trace: REQUIRED
   automatic_residual_raw_feature_extraction: REQUIRED
+  automatic_existing_dimension_candidate_routing: DETERMINISTIC_NON_AUTHORITATIVE
+  candidate_routing_basis: MACHINE_FIELD_AND_PREDICATE_LEXICAL_STRUCTURE
   manual_full_79_dimension_comparison: FORBIDDEN
   per_adr_agent_primary_input: GENERATED_COMPACT_REVIEW_PACKET_ONLY
+  compact_packet_deduplicates_routed_and_unrouted_residuals: true
   direct_full_dimension_registry_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
   direct_full_raw_corpus_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
   force_fit_raw_feature_to_existing_dimension: FORBIDDEN
@@ -102,6 +105,8 @@ incremental_semantic_review:
   existing_dimension_evaluation: DETERMINISTIC_AUTOMATION
   matched_predicate_proof_trace: DETERMINISTIC_AUTOMATION
   residual_raw_feature_extraction: DETERMINISTIC_AUTOMATION
+  existing_dimension_candidate_routing: DETERMINISTIC_NON_AUTHORITATIVE_AUTOMATION
+  candidate_routing_confidence_is_authority: false
   residual_raw_semantic_review: HUMAN_OR_AGENT_DESIGN_REVIEW_OF_REVIEW_PACKET_ONLY
   new_dimension_creation: ALLOWED_WHEN_SEMANTICALLY_JUSTIFIED
   existing_dimension_refinement: ALLOWED
