@@ -3,7 +3,7 @@ source:
   dimension_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
-  reviewed_through: ADR-0013
+  reviewed_through: ADR-0015
   vocabulary_registration: false
   runtime_authority: NONE
 dimensions:
@@ -102,6 +102,23 @@ dimensions:
 - forbid_target_classification_assignment_in_source_reader
 - forbid_legacy_classification_translation_in_source_reader
 - reject_unsupported_source_family
+- require_zero_unresolved_items_for_completion
+- separate_lifecycle_compatibility_from_obligation_category
+- forbid_analysis_mandated_removal_or_async_compensation
+- preserve_repository_resolution_states
+- fail_closed_on_stale_source_or_repository
+- require_immutable_typed_stage_outputs
+- require_repository_resolution_taxonomy_mapping
+- require_exact_before_state_for_accepted_delta
+- preserve_reconciliation_bundle_authority_types
+- represent_compound_changes_as_atomic_delta_bundles
+- distinguish_existing_and_planned_final_point_states
+- forbid_executable_reconciliation_proposals
+- preserve_reconciliation_statuses
+- require_cumulative_target_for_sequential_reconciliation
+- deny_source_deletion_permission_from_reconciliation
+- define_target_delta_change_kinds
+- forbid_automatic_design_of_unresolved_required_work
 rows:
   ADR-0001:
     source_path: decisions/ADR-0001-establish-ptsip.yaml
@@ -201,6 +218,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0002:
     source_path: decisions/ADR-0002-external-tooling-non-intrusion.yaml
     role_effect_analysis:
@@ -299,6 +333,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0003:
     source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
     role_effect_analysis:
@@ -397,6 +448,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0004:
     source_path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml
     role_effect_analysis:
@@ -495,6 +563,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0005:
     source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.yaml
     role_effect_analysis:
@@ -593,6 +678,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0006:
     source_path: decisions/ADR-0006-establish-vpms-verification-purpose-management.yaml
     role_effect_analysis:
@@ -691,6 +793,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0007:
     source_path: decisions/ADR-0007-primary-lifecycle-boundary-determination.yaml
     role_effect_analysis:
@@ -789,6 +908,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0008:
     source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml
     role_effect_analysis:
@@ -887,6 +1023,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0009:
     source_path: decisions/ADR-0009-responsibility-map-declaration-authority.yaml
     role_effect_analysis:
@@ -985,6 +1138,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0010:
     source_path: decisions/ADR-0010-versioned-draft-profile-transition.yaml
     role_effect_analysis:
@@ -1083,6 +1253,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0011:
     source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
     role_effect_analysis:
@@ -1181,6 +1368,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0012:
     source_path: decisions/ADR-0012-universal-normalized-evidence-contract.yaml
     role_effect_analysis:
@@ -1279,6 +1483,23 @@ rows:
       forbid_target_classification_assignment_in_source_reader: false
       forbid_legacy_classification_translation_in_source_reader: false
       reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
   ADR-0013:
     source_path: decisions/ADR-0013-common-source-model-family-specific-semantics.yaml
     role_effect_analysis:
@@ -1377,7 +1598,254 @@ rows:
       forbid_target_classification_assignment_in_source_reader: true
       forbid_legacy_classification_translation_in_source_reader: true
       reject_unsupported_source_family: true
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: false
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
+  ADR-0014:
+    source_path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.yaml
+    role_effect_analysis:
+      establish_canonical_identity: false
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: true
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: false
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: false
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: false
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: true
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: true
+      separate_specification_activation_from_profile_mutation: false
+      preserve_classification_vocabulary: false
+      separate_specification_activation_from_tool_implementation: false
+      forbid_absence_as_false_assertion: false
+      preserve_equivalent_value_origins: false
+      require_producer_neutral_evidence_contract: false
+      preserve_producer_specific_interfaces: false
+      separate_semantic_identity_from_evaluation_identity: false
+      forbid_historical_source_reinterpretation: false
+      separate_common_source_model_from_current_canonical_model: false
+      preserve_source_family_semantics: false
+      reject_unsupported_source_revision: false
+      require_read_only_source_compatibility: false
+      forbid_target_classification_assignment_in_source_reader: false
+      forbid_legacy_classification_translation_in_source_reader: false
+      reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: true
+      separate_lifecycle_compatibility_from_obligation_category: true
+      forbid_analysis_mandated_removal_or_async_compensation: true
+      preserve_repository_resolution_states: true
+      fail_closed_on_stale_source_or_repository: true
+      require_immutable_typed_stage_outputs: true
+      require_repository_resolution_taxonomy_mapping: true
+      require_exact_before_state_for_accepted_delta: false
+      preserve_reconciliation_bundle_authority_types: false
+      represent_compound_changes_as_atomic_delta_bundles: false
+      distinguish_existing_and_planned_final_point_states: false
+      forbid_executable_reconciliation_proposals: false
+      preserve_reconciliation_statuses: false
+      require_cumulative_target_for_sequential_reconciliation: false
+      deny_source_deletion_permission_from_reconciliation: false
+      define_target_delta_change_kinds: false
+      forbid_automatic_design_of_unresolved_required_work: false
+  ADR-0015:
+    source_path: decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.yaml
+    role_effect_analysis:
+      establish_canonical_identity: true
+      establish_decision_criterion_priority: false
+      define_classification_basis: false
+      require_architectural_boundary: false
+      require_versioned_normative_contract: false
+      constrain_tool_state_location: false
+      reserve_project_structure_authority: false
+      forbid_tool_imposed_topology: false
+      require_read_only_inspection: false
+      require_explicit_specification_binding: false
+      separate_specification_tool_lifecycles: false
+      bind_immutable_normative_snapshot: false
+      select_versioned_contract_target: false
+      define_classification_vocabulary: false
+      preserve_unresolved_analysis_states: false
+      reserve_project_declaration_authority: false
+      require_typed_evidence_relationships: false
+      constrain_machine_output_structure: false
+      deny_derived_architecture_authority: false
+      invalidate_stale_evidence: false
+      require_evidence_provenance: false
+      define_conformance_decision_rule: false
+      separate_artifact_ownership_from_production: false
+      forbid_conformance_waivers: false
+      separate_validation_from_conformance: false
+      require_exclusive_declaration_modes: false
+      permit_stricter_project_policy: false
+      require_stable_rule_identity: false
+      reject_architecture_proxy_inference: false
+      activate_normative_family: false
+      separate_decision_authority_from_profile: false
+      require_stable_decision_identity: true
+      select_resolution_winner: false
+      require_conditional_mutation: false
+      require_fresh_authority_reads: false
+      forbid_fabricated_history: false
+      forbid_silent_conflict_overwrite: false
+      fail_closed_on_invalid_state: false
+      separate_global_authority_from_local_projection: false
+      synchronize_at_action_time: false
+      separate_authority_from_conformance: false
+      retire_previous_identity: false
+      define_purpose_vocabulary: true
+      separate_classification_from_verification_purpose: false
+      define_execution_unit_contract: false
+      constrain_cross_purpose_reuse: false
+      constrain_dependency_direction: false
+      permit_contract_consumption: false
+      separate_verification_success_from_conformance: false
+      define_ordered_decision_process: false
+      require_owner_confirmation: false
+      define_lifecycle_handoff: false
+      constrain_neutral_contract_qualification: false
+      require_governable_responsibility_split: false
+      define_responsibility_role_contract: false
+      define_typed_relationship_contract: false
+      forbid_relationship_inference: false
+      separate_declared_relationships_from_evidence: false
+      deny_relationship_permission_grant: false
+      constrain_associated_artifact_ownership: false
+      require_shared_identity_namespace: false
+      forbid_fabricated_reference_targets: false
+      define_source_declaration_modes: false
+      require_explicit_template_selection: false
+      define_declaration_precedence: false
+      constrain_override_granularity: false
+      forbid_derived_architecture_mutation: false
+      define_effective_map_contract: false
+      require_deterministic_semantic_digest: false
+      constrain_profile_identity_and_cardinality: false
+      define_migration_obligation_categories: false
+      define_required_work_completion: false
+      gate_canonical_replacement_on_completion: false
+      select_final_transition_target: false
+      order_transition_sources: false
+      forbid_deleted_migration_hops: false
+      forbid_source_category_inheritance: false
+      require_cumulative_target_state: false
+      require_version_revision_transition_inputs: false
+      separate_specification_activation_from_profile_mutation: false
+      preserve_classification_vocabulary: false
+      separate_specification_activation_from_tool_implementation: false
+      forbid_absence_as_false_assertion: false
+      preserve_equivalent_value_origins: false
+      require_producer_neutral_evidence_contract: false
+      preserve_producer_specific_interfaces: false
+      separate_semantic_identity_from_evaluation_identity: false
+      forbid_historical_source_reinterpretation: false
+      separate_common_source_model_from_current_canonical_model: false
+      preserve_source_family_semantics: false
+      reject_unsupported_source_revision: false
+      require_read_only_source_compatibility: false
+      forbid_target_classification_assignment_in_source_reader: false
+      forbid_legacy_classification_translation_in_source_reader: false
+      reject_unsupported_source_family: false
+      require_zero_unresolved_items_for_completion: false
+      separate_lifecycle_compatibility_from_obligation_category: false
+      forbid_analysis_mandated_removal_or_async_compensation: true
+      preserve_repository_resolution_states: false
+      fail_closed_on_stale_source_or_repository: false
+      require_immutable_typed_stage_outputs: false
+      require_repository_resolution_taxonomy_mapping: false
+      require_exact_before_state_for_accepted_delta: true
+      preserve_reconciliation_bundle_authority_types: true
+      represent_compound_changes_as_atomic_delta_bundles: true
+      distinguish_existing_and_planned_final_point_states: true
+      forbid_executable_reconciliation_proposals: true
+      preserve_reconciliation_statuses: true
+      require_cumulative_target_for_sequential_reconciliation: true
+      deny_source_deletion_permission_from_reconciliation: true
+      define_target_delta_change_kinds: true
+      forbid_automatic_design_of_unresolved_required_work: true
 validation:
   rectangular: true
-  reviewed_row_count: 13
-  dimension_count: 95
+  reviewed_row_count: 15
+  dimension_count: 112

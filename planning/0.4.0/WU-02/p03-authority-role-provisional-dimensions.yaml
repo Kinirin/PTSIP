@@ -3,7 +3,7 @@ analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0013
+  reviewed_through: ADR-0015
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
@@ -44,6 +44,9 @@ dimensions:
           operator: NON_EMPTY
         - path: authority_semantics.expanded_identity
           operator: NON_EMPTY
+      - path: authority_semantics.semantic_identity
+        operator: EQUALS
+        value: DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES
   establish_decision_criterion_priority:
     status: PROVISIONAL
     introduced_by: ADR-0001
@@ -288,6 +291,9 @@ dimensions:
       - path: authority_semantics.source_authority
         operator: EQUALS
         value: SOURCE_DECLARATION_ONLY
+      - path: authority_semantics.evidence_authority
+        operator: EQUALS
+        value: NON_AUTHORITATIVE
   invalidate_stale_evidence:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -407,9 +413,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0005
     expression:
-      path: authority_semantics.distributed_decision_identity
-      operator: EQUALS
-      value: STABLE
+      any:
+      - path: authority_semantics.distributed_decision_identity
+        operator: EQUALS
+        value: STABLE
+      - path: authority_semantics.accepted_bundle_requires_project_decision_identity
+        operator: EQUALS
+        value: true
   select_resolution_winner:
     status: PROVISIONAL
     introduced_by: ADR-0005
@@ -514,12 +524,20 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0006
     expression:
-      all:
-      - path: authority_semantics.verification_purposes
-        operator: NON_EMPTY
-      - path: authority_semantics.governing_question
-        operator: EQUALS
-        value: WHY_VERIFICATION_EXISTS
+      any:
+      - all:
+        - path: authority_semantics.verification_purposes
+          operator: NON_EMPTY
+        - path: authority_semantics.governing_question
+          operator: EQUALS
+          value: WHY_VERIFICATION_EXISTS
+      - path: authority_semantics.proposal_purposes
+        operator: CONTAINS_ALL
+        value:
+        - REQUIRED_MIGRATION
+        - TARGET_VALIDITY
+        - ASYNC_OPTIONAL
+        - ADVISORY
   separate_classification_from_verification_purpose:
     status: PROVISIONAL
     introduced_by: ADR-0006
@@ -751,9 +769,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0009
     expression:
-      path: authority_semantics.effective_map_digest
-      operator: EQUALS
-      value: SHA256_CANONICAL_SEMANTIC_REPRESENTATION
+      any:
+      - path: authority_semantics.effective_map_digest
+        operator: EQUALS
+        value: SHA256_CANONICAL_SEMANTIC_REPRESENTATION
+      - path: authority_semantics.deterministic_digest
+        operator: EQUALS
+        value: SHA256
   constrain_profile_identity_and_cardinality:
     status: PROVISIONAL
     introduced_by: ADR-0010
@@ -839,9 +861,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0010
     expression:
-      path: authority_semantics.version_and_revision_required_transition_inputs
-      operator: EQUALS
-      value: true
+      any:
+      - path: authority_semantics.version_and_revision_required_transition_inputs
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.accepted_target_state_separate_typed_input
+        operator: EQUALS
+        value: true
   separate_specification_activation_from_profile_mutation:
     status: PROVISIONAL
     introduced_by: ADR-0011
@@ -955,3 +981,142 @@ dimensions:
       path: authority_semantics.unknown_family
       operator: EQUALS
       value: UNSUPPORTED_SOURCE_FAMILY
+  require_zero_unresolved_items_for_completion:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.completion_equation
+      operator: EQUALS
+      value: REQUIRED_UNRESOLVED_EQUALS_ZERO
+  separate_lifecycle_compatibility_from_obligation_category:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.lifecycle_compatibility_separate_from_obligation_category
+      operator: EQUALS
+      value: true
+  forbid_analysis_mandated_removal_or_async_compensation:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      any:
+      - path: authority_semantics.removal_or_async_compensates_required
+        operator: EQUALS
+        value: false
+      - path: authority_semantics.async_after_required
+        operator: EQUALS
+        value: true
+  preserve_repository_resolution_states:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.repository_resolution_types
+      operator: CONTAINS_ALL
+      value:
+      - EXISTING_SOURCE_ELEMENT
+      - REMOVED_SOURCE_ELEMENT
+      - UNCOVERED_REPOSITORY_ELEMENT
+      - AMBIGUOUS_SOURCE_ELEMENT
+  fail_closed_on_stale_source_or_repository:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.source_and_repository_freshness
+      operator: EQUALS
+      value: FAIL_CLOSED
+  require_immutable_typed_stage_outputs:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.stage_outputs
+      operator: EQUALS
+      value: IMMUTABLE_TYPED
+  require_repository_resolution_taxonomy_mapping:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.taxonomy_map
+      operator: NON_EMPTY
+  require_exact_before_state_for_accepted_delta:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.accepted_delta_requires_exact_before_state
+      operator: EQUALS
+      value: true
+  preserve_reconciliation_bundle_authority_types:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.bundle_authority_types
+      operator: CONTAINS_ALL
+      value:
+      - PROPOSAL_BUNDLE
+      - ACCEPTED_DELTA_BUNDLE
+      - UNRESOLVED_BUNDLE
+  represent_compound_changes_as_atomic_delta_bundles:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.compound_split_merge_representation
+      operator: EQUALS
+      value: BUNDLE_OF_ATOMIC_DELTAS
+  distinguish_existing_and_planned_final_point_states:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.final_point_states
+      operator: CONTAINS_ALL
+      value:
+      - EXISTING
+      - PLANNED
+  forbid_executable_reconciliation_proposals:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.proposal_is_executable
+      operator: EQUALS
+      value: false
+  preserve_reconciliation_statuses:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.reconciliation_statuses
+      operator: CONTAINS_ALL
+      value:
+      - NO_CHANGE_REQUIRED
+      - ADD_TARGET_DECLARATION
+      - REPLACE_WITH_EXPLICIT_OWNER_DECISION
+      - CONFLICT_REQUIRES_CONFIRMATION
+      - UNRESOLVED
+  require_cumulative_target_for_sequential_reconciliation:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.sequential_reconciliation_uses_in_memory_cumulative_target
+      operator: EQUALS
+      value: true
+  deny_source_deletion_permission_from_reconciliation:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.source_deletion_is_wu06_permission
+      operator: EQUALS
+      value: false
+  define_target_delta_change_kinds:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.target_delta_change_kinds
+      operator: CONTAINS_ALL
+      value:
+      - ADD
+      - REMOVE
+      - REPLACE
+  forbid_automatic_design_of_unresolved_required_work:
+    status: PROVISIONAL
+    introduced_by: ADR-0015
+    expression:
+      path: authority_semantics.unresolved_required_work_auto_designed
+      operator: EQUALS
+      value: false
