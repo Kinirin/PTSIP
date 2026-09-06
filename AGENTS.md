@@ -17,7 +17,7 @@ When the task is limited to raw-feature collection, one-ADR semantic review, cur
    `py -3.14 .github/scripts/p03_authority_role_semantic_decision.py --repo-root . prepare --adr ADR-NNNN --write`;
 5. read only the generated `ADR-NNNN.decision.generated.yaml` as the default semantic input and edit only the generated `ADR-NNNN.response.yaml`;
 6. responsibility is partitioned by the packet:
-   - `automatic_reuse_actions`: deterministic exact-context reuse; do **not** re-review or override these unless validation fails;
+   - `automatic_reuse`: compact count/IDs/digest for deterministic exact-context reuse; do **not** inspect or reconstruct concrete actions unless validation fails;
    - `review_mode: REUSE_CONFIRMATION_OR_FULL_DECISION`: inspect only the current compact semantic shape plus the single `prior_resolution_candidate`; use `REUSE_PRIOR` with `CONFIRMED_PRIOR_SEMANTIC_RESOLUTION` when the prior semantic resolution is genuinely reusable, otherwise replace it with a normal full semantic decision;
    - `review_mode: FULL_SEMANTIC_DECISION`: choose only `EXISTING / REFINE_EXISTING / NEW_DIMENSION / NON_EFFECT / DEFER`;
 7. do not infer semantic equivalence from a routing/reuse score. Structural reuse is AI-confirmed only; exact automatic reuse is restricted to the machine-context signature enforced by tooling;
