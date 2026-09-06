@@ -30,6 +30,7 @@ _DECISION_VALUES = {
     "NON_EFFECT",
     "DEFER",
 }
+_RESPONSE_DECISION_VALUES = _DECISION_VALUES | {"REUSE_PRIOR"}
 _REASON_VALUES = {
     "SAME_EFFECT_ALREADY_REPRESENTED",
     "SAME_EFFECT_DIFFERENT_MACHINE_FIELD",
@@ -38,6 +39,7 @@ _REASON_VALUES = {
     "PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL",
     "INSUFFICIENT_SEMANTIC_CONTEXT",
 }
+_RESPONSE_REASON_VALUES = _REASON_VALUES | {"CONFIRMED_PRIOR_SEMANTIC_RESOLUTION"}
 _DIMENSION_ID = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
 _ADR_ID = re.compile(r"^ADR-([0-9]{4})$")
 _GIT_SHA1 = re.compile(r"^[0-9a-f]{40}$")
@@ -262,17 +264,23 @@ def build_decision_packet(
         repo_root / ".github/scripts/p03_authority_role_review_packet.py",
         "p03_authority_role_review_packet_for_decision",
     )
+    reuse_module = _load_module(
+        repo_root / ".github/scripts/p03_authority_role_semantic_reuse.py",
+        "p03_authority_role_semantic_reuse_for_decision",
+    )
     review_packet = review_module.build_review_packet(
         repo_root,
         adr_id,
         registry_path,
         raw_snapshot_path,
     )
+    registry = _load_yaml(registry_path, label="P03 provisional dimension registry")
+    raw_snapshot = _load_yaml(raw_snapshot_path, label="P03 raw feature snapshot")
     ledger = _load_ledger(ledger_path)
     ledger_records = ledger["records"]
     routing = _routing_by_candidate(review_packet)
 
-    questions: list[dict[str, object]] = []
+    pending_candidates: list[dict[str, Any]] = []
     excluded_resolved = 0
     excluded_deferred = 0
 
@@ -288,18 +296,61 @@ def build_decision_packet(
             else:
                 excluded_resolved += 1
                 continue
+        pending_candidates.append(candidate)
+
+    predicate_modes_by_candidate = {
+        str(candidate["candidate_id"]): _predicate_modes(str(candidate["value_type"]))
+        for candidate in pending_candidates
+    }
+    reuse = reuse_module.analyze_reuse(
+        repo_root,
+        adr_id,
+        pending_candidates,
+        ledger,
+        raw_snapshot,
+        registry["dimensions"],
+        [
+            str(item["dimension_id"])
+            for item in review_packet["matched_dimensions"]
+        ],
+        predicate_modes_by_candidate,
+    )
+    automatic_reuse_actions = reuse["automatic_reuse_actions"]
+    automatic_ids = {
+        str(item["candidate_id"])
+        for item in automatic_reuse_actions
+    }
+    structural_reuse = reuse["structural_reuse_candidates"]
+
+    questions: list[dict[str, object]] = []
+    reuse_confirmation_count = 0
+    full_semantic_question_count = 0
+    for candidate in pending_candidates:
+        candidate_id = str(candidate["candidate_id"])
+        if candidate_id in automatic_ids:
+            continue
 
         top_candidates, ambiguous = _compact_routing(routing.get(candidate_id, []))
         value_type = str(candidate["value_type"])
+        prior_resolution = structural_reuse.get(candidate_id)
+        if prior_resolution is None:
+            review_mode = "FULL_SEMANTIC_DECISION"
+            full_semantic_question_count += 1
+        else:
+            review_mode = "REUSE_CONFIRMATION_OR_FULL_DECISION"
+            reuse_confirmation_count += 1
+
         questions.append(
             {
                 "candidate_id": candidate_id,
                 "path": candidate["path"],
                 "value_shape": _value_shape(value_type, candidate["value"]),
                 "occurrence_count": len(candidate["occurs_in"]),
+                "review_mode": review_mode,
+                "prior_resolution_candidate": prior_resolution,
                 "existing_candidates": top_candidates,
                 "routing_ambiguous": ambiguous,
-                "allowed_predicate_modes": _predicate_modes(value_type),
+                "allowed_predicate_modes": predicate_modes_by_candidate[candidate_id],
             }
         )
 
@@ -313,15 +364,19 @@ def build_decision_packet(
             "role": "AI_DESIGN_TIME_SEMANTIC_REVIEW_ONLY",
             "semantic_authority": "NONE",
             "runtime_authority": "NONE",
-            "allowed_decisions": sorted(_DECISION_VALUES),
-            "allowed_reason_codes": sorted(_REASON_VALUES),
+            "allowed_semantic_decisions": sorted(_DECISION_VALUES),
+            "allowed_review_actions": ["REUSE_PRIOR"],
+            "allowed_reason_codes": sorted(_RESPONSE_REASON_VALUES),
             "decision_rules": {
+                "REUSE_PRIOR": "AI confirms one structural prior resolution candidate; apply normalizes it to a concrete non-authoritative semantic action",
                 "EXISTING": "attach detail to an already deterministic-matched dimension; no predicate mutation",
                 "REFINE_EXISTING": "map to one routed candidate and add one generated predicate alternative",
                 "NEW_DIMENSION": "create one provisional dimension from this raw candidate",
                 "NON_EFFECT": "record as parameter/reference/non-effect detail",
                 "DEFER": "record unresolved without semantic mutation",
             },
+            "automatic_exact_reuse_requires_ai_review": False,
+            "structural_reuse_requires_ai_confirmation": True,
             "free_text_rationale_required": False,
             "include_deferred_candidates": include_deferred,
         },
@@ -333,19 +388,23 @@ def build_decision_packet(
         "already_matched_dimensions": [
             item["dimension_id"] for item in review_packet["matched_dimensions"]
         ],
+        "automatic_reuse_actions": automatic_reuse_actions,
         "questions": questions,
         "summary": {
             "question_count": len(questions),
+            "automatic_reuse_count": len(automatic_reuse_actions),
+            "reuse_confirmation_question_count": reuse_confirmation_count,
+            "full_semantic_question_count": full_semantic_question_count,
             "already_resolved_count": excluded_resolved,
             "deferred_suppressed_count": excluded_deferred,
             "full_dimension_scan_required": False,
             "full_raw_corpus_read_required": False,
         },
+        "reuse_invariants": reuse["invariants"],
     }
     packet["packet_fingerprint"] = _sha256_payload(packet)
     validate_decision_packet(packet)
     return packet
-
 
 def validate_decision_packet(packet: dict[str, Any]) -> None:
     if packet.get("schema_version") != PACKET_SCHEMA_VERSION:
@@ -354,40 +413,123 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     contract = packet.get("review_contract")
     fingerprints = packet.get("input_fingerprints")
     questions = packet.get("questions")
+    automatic_reuse = packet.get("automatic_reuse_actions")
     matched_dimensions = packet.get("already_matched_dimensions")
     summary = packet.get("summary")
-    if not all(isinstance(value, dict) for value in (target, contract, fingerprints, summary)):
+    reuse_invariants = packet.get("reuse_invariants")
+    if not all(
+        isinstance(value, dict)
+        for value in (target, contract, fingerprints, summary, reuse_invariants)
+    ):
         raise SemanticDecisionError("AI decision packet mappings are malformed")
-    if not isinstance(questions, list):
-        raise SemanticDecisionError("AI decision packet questions must be a list")
+    if not isinstance(questions, list) or not isinstance(automatic_reuse, list):
+        raise SemanticDecisionError("AI decision packet review collections must be lists")
     if not isinstance(matched_dimensions, list) or not all(
         isinstance(item, str) for item in matched_dimensions
     ):
-        raise SemanticDecisionError("AI decision packet already_matched_dimensions must be a string list")
+        raise SemanticDecisionError(
+            "AI decision packet already_matched_dimensions must be a string list"
+        )
     _adr_number(target.get("adr_id"))
-    if contract.get("semantic_authority") != "NONE" or contract.get("runtime_authority") != "NONE":
+    if (
+        contract.get("semantic_authority") != "NONE"
+        or contract.get("runtime_authority") != "NONE"
+    ):
         raise SemanticDecisionError("AI decision packet must remain non-authoritative")
+    if contract.get("automatic_exact_reuse_requires_ai_review") is not False:
+        raise SemanticDecisionError("exact-context reuse must not require duplicate AI review")
+    if contract.get("structural_reuse_requires_ai_confirmation") is not True:
+        raise SemanticDecisionError("structural reuse must require AI confirmation")
     if contract.get("free_text_rationale_required") is not False:
         raise SemanticDecisionError("AI decision packet must not require free-text rationale")
     if type(contract.get("include_deferred_candidates")) is not bool:
-        raise SemanticDecisionError("AI decision packet include_deferred_candidates must be boolean")
+        raise SemanticDecisionError(
+            "AI decision packet include_deferred_candidates must be boolean"
+        )
+    if reuse_invariants.get("routing_score_is_semantic_authority") is not False:
+        raise SemanticDecisionError("reuse routing score must never become semantic authority")
+    if reuse_invariants.get("automatic_reuse_requires_exact_context_signature") is not True:
+        raise SemanticDecisionError("automatic reuse must require an exact context signature")
+    if reuse_invariants.get("automatic_reuse_requires_unanimous_prior_concrete_action") is not True:
+        raise SemanticDecisionError("automatic reuse must fail closed on conflicting precedent")
+
+    automatic_ids: set[str] = set()
+    for action in automatic_reuse:
+        if not isinstance(action, dict):
+            raise SemanticDecisionError("automatic reuse action must be a mapping")
+        candidate_id = action.get("candidate_id")
+        if not isinstance(candidate_id, str) or not candidate_id.startswith("raw-candidate:"):
+            raise SemanticDecisionError("automatic reuse action has invalid candidate_id")
+        if candidate_id in automatic_ids:
+            raise SemanticDecisionError("automatic reuse candidate ids must be unique")
+        automatic_ids.add(candidate_id)
+        if action.get("reuse_mode") != "DETERMINISTIC_EXACT_CONTEXT_REUSE":
+            raise SemanticDecisionError("automatic reuse action has invalid reuse_mode")
+        if action.get("semantic_authority") is not False:
+            raise SemanticDecisionError("automatic reuse must remain non-authoritative")
+        if action.get("decision") not in _DECISION_VALUES - {"DEFER", "NEW_DIMENSION"}:
+            raise SemanticDecisionError("automatic reuse action has unsafe concrete decision")
+        reused_from = action.get("reused_from_candidate_id")
+        if not isinstance(reused_from, str) or not reused_from.startswith("raw-candidate:"):
+            raise SemanticDecisionError("automatic reuse action requires prior candidate provenance")
+
     ids: set[str] = set()
+    reuse_confirmation_count = 0
+    full_semantic_count = 0
     for question in questions:
         if not isinstance(question, dict):
             raise SemanticDecisionError("AI decision packet question must be a mapping")
         candidate_id = question.get("candidate_id")
         if not isinstance(candidate_id, str) or not candidate_id.startswith("raw-candidate:"):
             raise SemanticDecisionError("AI decision packet question has invalid candidate_id")
-        if candidate_id in ids:
-            raise SemanticDecisionError("AI decision packet candidate ids must be unique")
+        if candidate_id in ids or candidate_id in automatic_ids:
+            raise SemanticDecisionError("AI decision packet candidate review ownership overlaps")
         ids.add(candidate_id)
         if not isinstance(question.get("existing_candidates"), list):
-            raise SemanticDecisionError("AI decision packet existing_candidates must be a list")
+            raise SemanticDecisionError(
+                "AI decision packet existing_candidates must be a list"
+            )
         modes = question.get("allowed_predicate_modes")
         if not isinstance(modes, list) or not modes:
-            raise SemanticDecisionError("AI decision packet allowed_predicate_modes must be non-empty")
+            raise SemanticDecisionError(
+                "AI decision packet allowed_predicate_modes must be non-empty"
+            )
+        review_mode = question.get("review_mode")
+        prior_resolution = question.get("prior_resolution_candidate")
+        if review_mode == "REUSE_CONFIRMATION_OR_FULL_DECISION":
+            reuse_confirmation_count += 1
+            if not isinstance(prior_resolution, dict):
+                raise SemanticDecisionError(
+                    "reuse-confirmation question requires one prior resolution candidate"
+                )
+            if prior_resolution.get("confirmation_required") is not True:
+                raise SemanticDecisionError("structural prior resolution must require confirmation")
+            if prior_resolution.get("semantic_authority") is not False:
+                raise SemanticDecisionError("structural prior resolution must be non-authoritative")
+            action = prior_resolution.get("concrete_reuse_action")
+            if not isinstance(action, dict) or action.get("decision") not in _DECISION_VALUES:
+                raise SemanticDecisionError("structural prior resolution lacks concrete reuse action")
+        elif review_mode == "FULL_SEMANTIC_DECISION":
+            full_semantic_count += 1
+            if prior_resolution is not None:
+                raise SemanticDecisionError(
+                    "full semantic question must not contain a prior resolution candidate"
+                )
+        else:
+            raise SemanticDecisionError("AI decision packet question has invalid review_mode")
+
     if summary.get("question_count") != len(questions):
         raise SemanticDecisionError("AI decision packet question_count is stale")
+    if summary.get("automatic_reuse_count") != len(automatic_reuse):
+        raise SemanticDecisionError("AI decision packet automatic_reuse_count is stale")
+    if summary.get("reuse_confirmation_question_count") != reuse_confirmation_count:
+        raise SemanticDecisionError(
+            "AI decision packet reuse_confirmation_question_count is stale"
+        )
+    if summary.get("full_semantic_question_count") != full_semantic_count:
+        raise SemanticDecisionError(
+            "AI decision packet full_semantic_question_count is stale"
+        )
 
     claimed = packet.get("packet_fingerprint")
     if not isinstance(claimed, str):
@@ -397,7 +539,6 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     expected = _sha256_payload(without)
     if claimed != expected:
         raise SemanticDecisionError("AI decision packet fingerprint is stale")
-
 
 def build_response_template(packet: dict[str, Any]) -> dict[str, Any]:
     validate_decision_packet(packet)
