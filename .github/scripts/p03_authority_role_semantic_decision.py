@@ -154,6 +154,13 @@ def validate_ledger(ledger: dict[str, Any]) -> None:
             raise SemanticDecisionError(f"ledger record {candidate_id} has an invalid reason_code")
         if record.get("semantic_authority") != "NONE":
             raise SemanticDecisionError(f"ledger record {candidate_id} must remain non-authoritative")
+        if record.get("runtime_authority") != "NONE":
+            raise SemanticDecisionError(f"ledger record {candidate_id} must not claim runtime authority")
+        if record.get("vocabulary_registration") is not False:
+            raise SemanticDecisionError(f"ledger record {candidate_id} must not register vocabulary")
+        _adr_number(record.get("first_reviewed_in"))
+        if not isinstance(record.get("packet_fingerprint"), str):
+            raise SemanticDecisionError(f"ledger record {candidate_id} requires packet_fingerprint")
 
 
 def _string_shape(value: str) -> dict[str, object]:
