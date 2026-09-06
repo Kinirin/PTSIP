@@ -450,3 +450,54 @@ def test_p03_targeted_expansion_restores_exact_typed_candidate_context() -> None
         "value": value,
     }
 
+def test_p03_adr_0018_packet_preserves_component_contract_semantics(
+    tmp_path: Path,
+) -> None:
+    module = _load_module()
+    registry = module.build_registry_for_review_prefix(
+        ROOT,
+        REGISTRY,
+        RAW,
+        LEDGER,
+        "ADR-0017",
+    )
+    registry_path = tmp_path / "dimensions-0017.yaml"
+    registry_path.write_text(
+        yaml.safe_dump(registry, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
+
+    ledger = _yaml(LEDGER)
+    ledger["records"] = {
+        candidate_id: record
+        for candidate_id, record in ledger["records"].items()
+        if int(str(record["first_reviewed_in"]).split("-")[1]) <= 17
+    }
+    ledger_path = tmp_path / "ledger-0017.yaml"
+    ledger_path.write_text(
+        yaml.safe_dump(ledger, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
+
+    packet = module.build_decision_packet(
+        ROOT,
+        "ADR-0018",
+        registry_path,
+        RAW,
+        ledger_path,
+    )
+    by_path = {question["path"]: question for question in packet["questions"]}
+
+    components = by_path["authority_semantics.components"]
+    assert components["review_sufficiency"] == "SUFFICIENT"
+    assert components["predicate_precision"] == "EXACT_VALUE"
+    assert components["review_mode"] == "FULL_SEMANTIC_DECISION"
+    assert components["value_shape"]["records"][0]["id"] == "ptsip-evidence"
+    assert components["value_shape"]["records"][0]["classification"] == "PRODUCT"
+
+    common = by_path["authority_semantics.common_properties"]
+    assert common["review_sufficiency"] == "SUFFICIENT"
+    assert common["value_shape"]["fields"]["shipped"] is True
+    assert common["value_shape"]["fields"]["runtime_required"] is False
+    assert common["value_shape"]["fields"]["release_owner"] == "tool"
+
