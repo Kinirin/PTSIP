@@ -392,11 +392,41 @@ def build_review_packet(
 
 def compact_review_packet(packet: dict[str, Any]) -> dict[str, Any]:
     validate_review_packet(packet)
+    routing_by_id = {
+        item["candidate_id"]: item
+        for item in packet["candidate_existing_dimension_routing"]
+    }
+    routed: list[dict[str, object]] = []
+    unrouted: list[dict[str, object]] = []
+
+    for candidate in packet["machine_residual_candidates"]:
+        route = routing_by_id.get(candidate["candidate_id"])
+        base = {
+            "candidate_id": candidate["candidate_id"],
+            "path": candidate["path"],
+            "value_type": candidate["value_type"],
+            "value": candidate["value"],
+            "occurs_in": candidate["occurs_in"],
+            "semantic_effect_dimension": "NOT_DECIDED",
+        }
+        if route is None:
+            unrouted.append(base)
+        else:
+            routed.append(
+                {
+                    **base,
+                    "candidate_dimensions": route["candidate_dimensions"],
+                    "routing_only": True,
+                    "semantic_authority": False,
+                }
+            )
+
     return {
         "schema_version": COMPACT_PACKET_SCHEMA_VERSION,
         "target": packet["target"],
         "automation": {
             "existing_dimension_evaluation": "DETERMINISTIC",
+            "existing_dimension_candidate_routing": "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE",
             "manual_full_dimension_scan_required": False,
             "manual_raw_corpus_search_required": False,
             "raw_feature_force_fit": "FORBIDDEN",
@@ -404,9 +434,13 @@ def compact_review_packet(packet: dict[str, Any]) -> dict[str, Any]:
         "matched_dimension_ids": [
             item["dimension_id"] for item in packet["matched_dimensions"]
         ],
-        "candidate_existing_dimension_routing": packet["candidate_existing_dimension_routing"],
-        "machine_residual_candidates": packet["machine_residual_candidates"],
-        "summary": packet["summary"],
+        "routed_residual_candidates": routed,
+        "unrouted_residual_candidates": unrouted,
+        "summary": {
+            **packet["summary"],
+            "routed_residual_candidate_count": len(routed),
+            "unrouted_residual_candidate_count": len(unrouted),
+        },
     }
 
 
