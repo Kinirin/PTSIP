@@ -1259,7 +1259,10 @@ def main(argv: list[str] | None = None) -> int:
                 print(
                     f"packet={packet_path.relative_to(repo_root).as_posix()} "
                     f"response={response_path.relative_to(repo_root).as_posix()} "
-                    f"questions={packet['summary']['question_count']}"
+                    f"questions={packet['summary']['question_count']} "
+                    f"automatic_reuse={packet['summary']['automatic_reuse_count']} "
+                    f"reuse_confirmation={packet['summary']['reuse_confirmation_question_count']} "
+                    f"full_semantic={packet['summary']['full_semantic_question_count']}"
                 )
             else:
                 print(_dump_yaml(packet), end="")
