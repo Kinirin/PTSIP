@@ -3,7 +3,7 @@ analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0012
+  reviewed_through: ADR-0013
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
@@ -149,6 +149,8 @@ dimensions:
         - path: authority_semantics.normative_snapshot_identity
           operator: EQUALS
           value: IMMUTABLE_GIT_REVISION
+      - path: authority_semantics.supported_source_bindings
+        operator: NON_EMPTY
   separate_specification_tool_lifecycles:
     status: PROVISIONAL
     introduced_by: ADR-0002
@@ -170,6 +172,9 @@ dimensions:
         value: IMMUTABLE_GIT_REVISION
       - path: authority_semantics.immutable_normative_snapshot
         operator: NON_EMPTY
+      - path: authority_semantics.historical_validation_uses_separate_schema_snapshots
+        operator: EQUALS
+        value: true
   select_versioned_contract_target:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -280,6 +285,9 @@ dimensions:
       - path: authority_semantics.boundary_evidence_authority
         operator: EQUALS
         value: EVIDENCE_ONLY
+      - path: authority_semantics.source_authority
+        operator: EQUALS
+        value: SOURCE_DECLARATION_ONLY
   invalidate_stale_evidence:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -889,3 +897,61 @@ dimensions:
       path: authority_semantics.semantic_identity_separate_from_evaluation_identity
       operator: EQUALS
       value: true
+  forbid_historical_source_reinterpretation:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.canonical_validator_may_reinterpret_historical_source
+      operator: EQUALS
+      value: false
+  separate_common_source_model_from_current_canonical_model:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.common_source_model_is_current_canonical_model
+      operator: EQUALS
+      value: false
+  preserve_source_family_semantics:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.family_semantics
+      operator: CONTAINS_ALL
+      value:
+      - V034_SOURCE_SEMANTICS
+      - V036_SOURCE_SEMANTICS
+  reject_unsupported_source_revision:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.known_family_unknown_revision
+      operator: EQUALS
+      value: UNSUPPORTED_SOURCE_REVISION
+  require_read_only_source_compatibility:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.operation_mode
+      operator: EQUALS
+      value: READ_ONLY
+  forbid_target_classification_assignment_in_source_reader:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.target_classification_assignment_in_reader
+      operator: EQUALS
+      value: false
+  forbid_legacy_classification_translation_in_source_reader:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.toolchain_to_development_tooling_translation_in_reader
+      operator: EQUALS
+      value: false
+  reject_unsupported_source_family:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.unknown_family
+      operator: EQUALS
+      value: UNSUPPORTED_SOURCE_FAMILY

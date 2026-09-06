@@ -244,3 +244,160 @@ records:
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
+  raw-candidate:bcb44c6f4026ce818566:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.canonical_validator_may_reinterpret_historical_source
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: forbid_historical_source_reinterpretation
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:3426e0879d3ce161d17b:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.common_source_model_is_current_canonical_model
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: separate_common_source_model_from_current_canonical_model
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:3a45a7011a56042b9001:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.compatibility_boundary
+    decision: NON_EFFECT
+    target_dimension: null
+    proposed_dimension_id: null
+    predicate_mode: null
+    reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:1f569fbd1841eb42ca77:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.family_semantics
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: preserve_source_family_semantics
+    predicate_mode: CONTAINS_ALL_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:31acb6cc69b01052bce7:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.historical_validation_uses_separate_schema_snapshots
+    decision: REFINE_EXISTING
+    target_dimension: bind_immutable_normative_snapshot
+    proposed_dimension_id: null
+    predicate_mode: EQUALS_EXACT
+    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:f3051e75d36e24ec9e65:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.known_family_unknown_revision
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: reject_unsupported_source_revision
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:c4c46a441d469e371ca7:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.operation_mode
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: require_read_only_source_compatibility
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:c63d8bb5aa2aac5f6a2c:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.source_authority
+    decision: REFINE_EXISTING
+    target_dimension: deny_derived_architecture_authority
+    proposed_dimension_id: null
+    predicate_mode: EQUALS_EXACT
+    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_CONFIRMED_STRUCTURAL_REUSE
+    reused_from_candidate_id: raw-candidate:91faff332d84b93efaa6
+  raw-candidate:9bb8dcfeb89b5dacfaa0:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.supported_source_bindings
+    decision: REFINE_EXISTING
+    target_dimension: require_explicit_specification_binding
+    proposed_dimension_id: null
+    predicate_mode: NON_EMPTY
+    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:9627358f74e48551b6c0:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.target_classification_assignment_in_reader
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: forbid_target_classification_assignment_in_source_reader
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:d52537a5347f9676a902:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.toolchain_to_development_tooling_translation_in_reader
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: forbid_legacy_classification_translation_in_source_reader
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
+  raw-candidate:ae8b8a6f508e5d22aabd:
+    first_reviewed_in: ADR-0013
+    raw_path: authority_semantics.unknown_family
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: reject_unsupported_source_family
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+    packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
+    semantic_authority: NONE
+    runtime_authority: NONE
+    vocabulary_registration: false
+    resolution_source: AI_DESIGN_TIME_ADVISORY
