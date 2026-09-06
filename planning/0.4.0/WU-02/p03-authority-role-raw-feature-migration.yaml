@@ -196,7 +196,14 @@ verification_strategy:
   small_synthetic_engine_tests: REQUIRED
   historical_semantic_prefix_replay_growth: NOT_REQUIRED_FOR_EACH_NEW_ADR
   github_actions_required: false
-  exact_local_pytest_result: NOT_EXECUTED_IN_CURRENT_REMOTE_TOOL_ENVIRONMENT
+  exact_local_pytest_result:
+    status: PASS
+    verified_head: 43108b498b92b19608ae35307c1abc639aa605f9
+    environment: WINDOWS_LOCAL_PYTHON_3_14
+    command: py -3.14 -m pytest tests/ptsip/test_p03_raw_feature_extraction.py tests/ptsip/test_p03_review_packet.py tests/ptsip/test_p03_semantic_decision.py -q -p no:cacheprovider
+    result: 14_PASSED
+    duration_seconds: 7.77
+    evidence_source: PROJECT_OWNER_LOCAL_EXECUTION
   repository_snapshot_check_test_added: true
   synthetic_type_and_dynamic_extension_tests_added: true
   minimal_ai_decision_pipeline_tests_added: true
