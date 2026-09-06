@@ -52,7 +52,7 @@ def test_p03_adr_0011_review_packet_is_machine_prepared() -> None:
     assert automation["machine_residual_candidate_generation"] == "DETERMINISTIC"
     assert (
         automation["existing_dimension_candidate_routing"]
-        == "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE"
+        == "DETERMINISTIC_STRUCTURAL_NON_AUTHORITATIVE"
     )
     assert automation["manual_full_dimension_scan_required"] is False
     assert automation["manual_raw_corpus_search_required"] is False
@@ -125,7 +125,7 @@ def test_p03_compact_packet_is_the_narrow_agent_input_surface() -> None:
     assert compact["target"]["adr_id"] == "ADR-0011"
     assert compact["automation"] == {
         "existing_dimension_evaluation": "DETERMINISTIC",
-        "existing_dimension_candidate_routing": "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE",
+        "existing_dimension_candidate_routing": "DETERMINISTIC_STRUCTURAL_NON_AUTHORITATIVE",
         "manual_full_dimension_scan_required": False,
         "manual_raw_corpus_search_required": False,
         "raw_feature_force_fit": "FORBIDDEN",
