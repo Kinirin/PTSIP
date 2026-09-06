@@ -309,8 +309,8 @@ def build_decision_packet(
             "allowed_decisions": sorted(_DECISION_VALUES),
             "allowed_reason_codes": sorted(_REASON_VALUES),
             "decision_rules": {
-                "EXISTING": "map to one listed existing candidate without predicate mutation",
-                "REFINE_EXISTING": "map to one listed existing candidate and add one generated predicate alternative",
+                "EXISTING": "attach detail to an already deterministic-matched dimension; no predicate mutation",
+                "REFINE_EXISTING": "map to one routed candidate and add one generated predicate alternative",
                 "NEW_DIMENSION": "create one provisional dimension from this raw candidate",
                 "NON_EFFECT": "record as parameter/reference/non-effect detail",
                 "DEFER": "record unresolved without semantic mutation",
@@ -323,6 +323,9 @@ def build_decision_packet(
             "raw_snapshot_sha256": _sha256_file(raw_snapshot_path),
             "ledger_sha256": _sha256_payload(ledger),
         },
+        "already_matched_dimensions": [
+            item["dimension_id"] for item in review_packet["matched_dimensions"]
+        ],
         "questions": questions,
         "summary": {
             "question_count": len(questions),
@@ -344,11 +347,16 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     contract = packet.get("review_contract")
     fingerprints = packet.get("input_fingerprints")
     questions = packet.get("questions")
+    matched_dimensions = packet.get("already_matched_dimensions")
     summary = packet.get("summary")
     if not all(isinstance(value, dict) for value in (target, contract, fingerprints, summary)):
         raise SemanticDecisionError("AI decision packet mappings are malformed")
     if not isinstance(questions, list):
         raise SemanticDecisionError("AI decision packet questions must be a list")
+    if not isinstance(matched_dimensions, list) or not all(
+        isinstance(item, str) for item in matched_dimensions
+    ):
+        raise SemanticDecisionError("AI decision packet already_matched_dimensions must be a string list")
     _adr_number(target.get("adr_id"))
     if contract.get("semantic_authority") != "NONE" or contract.get("runtime_authority") != "NONE":
         raise SemanticDecisionError("AI decision packet must remain non-authoritative")
@@ -429,6 +437,7 @@ def validate_response(packet: dict[str, Any], response: dict[str, Any]) -> None:
         raise SemanticDecisionError("AI decision response decisions must be a list")
 
     questions = _question_map(packet)
+    matched_dimensions = set(packet["already_matched_dimensions"])
     seen: set[str] = set()
     for item in decisions:
         if not isinstance(item, dict):
@@ -466,8 +475,10 @@ def validate_response(packet: dict[str, Any], response: dict[str, Any]) -> None:
         mode = item["predicate_mode"]
 
         if decision == "EXISTING":
-            if target_dimension not in existing:
-                raise SemanticDecisionError("EXISTING requires one routed existing candidate")
+            if target_dimension not in matched_dimensions:
+                raise SemanticDecisionError(
+                    "EXISTING requires a dimension already matched deterministically in this ADR"
+                )
             if proposed is not None or mode is not None:
                 raise SemanticDecisionError("EXISTING must not define proposed_dimension_id or predicate_mode")
             if reason_code not in {
