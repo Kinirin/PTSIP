@@ -39,6 +39,21 @@ def _load(path: Path, name: str):
     return module
 
 
+def test_p03_authority_contract_identity_preserves_integer_schema_version() -> None:
+    reuse = _load(REUSE_SCRIPT, "p03_semantic_reuse_contract_identity")
+    index = _yaml(ROOT / "decisions" / "INDEX.yaml")
+    routes = reuse._index_routes(index)
+
+    contract = reuse._authority_contract(ROOT, "ADR-0011", routes)
+
+    assert contract == {
+        "authority_type": "SPECIFICATION_FAMILY_ACTIVATION",
+        "schema_id": "ptsip.governance/specification-family-activation",
+        "schema_version": 1,
+    }
+    assert type(contract["schema_version"]) is int
+
+
 def test_p03_exact_context_reuse_bypasses_duplicate_ai_question() -> None:
     reuse = _load(REUSE_SCRIPT, "p03_semantic_reuse_exact")
     ledger = _ledger_through(11)
