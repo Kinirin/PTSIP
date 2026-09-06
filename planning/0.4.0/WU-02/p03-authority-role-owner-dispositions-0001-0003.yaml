@@ -1,0 +1,78 @@
+schema_version: ptsip-p03-authority-role-owner-dispositions/v1
+owner_decisions:
+  status: PROJECT_OWNER_APPROVED
+  decided_on: '2026-09-07'
+  scope:
+    first_adr: ADR-0001
+    through: ADR-0003
+  source_dimension_model: 184_DISPOSITION_PRIMARY
+  decision_count: 3
+  vocabulary_registration: false
+  runtime_authority: NONE
+  provisional_registry_mutated: false
+  source_matrix_mutated: false
+
+decisions:
+  D2:
+    source_dimension: require_architectural_boundary
+    decision: SPLIT
+    preserve_as:
+      dimension: require_architectural_boundary
+      predicate_paths:
+        - authority_semantics.requires_product_toolchain_boundary
+        - authority_semantics.coherent_component_boundary_required
+        - authority_semantics.ordered_determination
+      semantic_scope: ARCHITECTURE_COMPONENT_AND_RESPONSIBILITY_BOUNDARY
+    move_to_existing_approved_effect:
+      dimension: govern_dependency_boundary
+      predicate_paths:
+        - authority_semantics.ptsip_core_may_depend_on_vpms
+      semantic_scope: DEPENDENCY_DIRECTION_AND_CROSS_BOUNDARY_CONSUMPTION
+    rationale: ARCHITECTURAL_BOUNDARY_NE_DEPENDENCY_DIRECTION
+
+  D7:
+    source_dimension: preserve_unresolved_analysis_states
+    decision: RENAME
+    rename_to: preserve_unresolved_analysis_state
+    predicate_change: NONE
+    semantic_change: false
+    rationale: SINGULAR_EFFECT_AXIS_NAME_WITH_MULTI_STATE_PAYLOAD
+
+  D10:
+    source_dimension: deny_derived_architecture_authority
+    decision: SPLIT
+    preserve_as:
+      dimension: deny_derived_architecture_authority
+      predicate_paths:
+        - authority_semantics.agent_decision_is_architecture_authority
+        - authority_semantics.confidence_is_architecture_authority
+        - authority_semantics.materializer_authority
+        - authority_semantics.authority
+        - authority_semantics.boundary_evidence_authority
+        - authority_semantics.source_authority
+        - authority_semantics.evidence_authority
+      semantic_scope: NON_AUTHORITATIVE_STATUS_OF_DERIVED_ADVISORY_EVIDENCE_AND_AGENT_OUTPUTS
+    move_to_existing_approved_effect:
+      dimension: deny_unauthorized_semantic_inference
+      predicate_paths:
+        - authority_semantics.role_may_determine_classification
+        - authority_semantics.role_may_infer_relationship
+        - authority_semantics.materializer_may_infer_missing_architecture
+        - authority_semantics.template_selection_inference
+      semantic_scope: FORBID_UNAUTHORIZED_SEMANTIC_INFERENCE
+    rationale: AUTHORITY_STATUS_NE_INFERENCE_PERMISSION
+
+preserved_pending_from_same_review_batch:
+  - establish_canonical_identity
+  - require_versioned_normative_contract
+  - require_explicit_specification_binding
+  - bind_immutable_normative_snapshot
+  - select_versioned_contract_target
+  - require_typed_evidence_relationships
+  - constrain_machine_output_structure
+
+validation:
+  approved_decision_count: 3
+  unchanged_pending_count_in_batch: 7
+  stable_vocabulary_registration: false
+  runtime_authority: NONE

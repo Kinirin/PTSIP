@@ -25,7 +25,8 @@ reconciliation:
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
-    pending_source_dimension_count: 81
+    individually_decided_source_dimension_count: 3
+    pending_source_dimension_count: 78
     pending_groups_are_not_premerged: true
   invariants:
     - SOURCE_184_DISPOSITIONS_ARE_PRIMARY
@@ -46,8 +47,9 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_classification_model
   require_architectural_boundary:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml#D2
   require_versioned_normative_contract:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -79,8 +81,10 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_classification_model
   preserve_unresolved_analysis_states:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: preserve_unresolved_analysis_state
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml#D7
   reserve_project_declaration_authority:
     disposition: OWNER_APPROVED_KEEP
     approved_group: reserve_project_declaration_authority
@@ -91,8 +95,9 @@ source_dimension_dispositions:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   deny_derived_architecture_authority:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml#D10
   invalidate_stale_evidence:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_fresh_authority_or_evidence_state
@@ -594,7 +599,8 @@ validation:
   source_dimensions_accounted_for: 184
   approved_low_risk_groups: 32
   approved_source_dimensions: 103
-  pending_source_dimensions: 81
+  individually_decided_source_dimensions: 3
+  pending_source_dimensions: 78
   full_projection_generated: false
   stable_vocabulary_registration: false
   runtime_authority: NONE
