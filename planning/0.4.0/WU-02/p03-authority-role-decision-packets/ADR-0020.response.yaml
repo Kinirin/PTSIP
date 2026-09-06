@@ -1,0 +1,48 @@
+schema_version: ptsip-p03-authority-role-ai-decision-response/v2
+target:
+  adr_id: ADR-0020
+  packet_fingerprint: 6d146b75c515bcc4748a843469a9b308bcecd2d8e601a0274daf56939796f66f
+reviewer: AI_DESIGN_TIME_ADVISORY
+decisions:
+- candidate_id: raw-candidate:b6c479b7296e5b1f027e
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: separate_architecture_acceptance_from_identity_implementation
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:abfde5bba306cf1e3f51
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: separate_profile_identity_implementation_from_migration_capability
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:eb2b292df47c205e3c83
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: define_project_profile_transition_maintainability_rules
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:96785783c165b865f749
+  decision: REFINE_EXISTING
+  target_dimension: preserve_migration_engine_independent_of_self_adoption
+  proposed_dimension_id: null
+  predicate_mode: EQUALS_EXACT
+  reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+- candidate_id: raw-candidate:b98c4eae514bc1c43898
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: define_ordered_project_profile_transition_work_units
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:397848e5fdd7088f96a6
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: separate_repository_adoption_from_release_readiness
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:9a330d4dc2f3fb1face6
+  decision: REFINE_EXISTING
+  target_dimension: require_governable_responsibility_split
+  proposed_dimension_id: null
+  predicate_mode: EQUALS_EXACT
+  reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD

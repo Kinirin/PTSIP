@@ -1,0 +1,218 @@
+schema_version: ptsip-p03-authority-role-ai-decision-packet/v2
+target:
+  adr_id: ADR-0020
+  authority_type: PROJECT_PROFILE_TRANSITION_WU_SEQUENCE
+review_contract:
+  role: AI_DESIGN_TIME_SEMANTIC_REVIEW_ONLY
+  semantic_authority: NONE
+  runtime_authority: NONE
+  allowed_decisions:
+  - DEFER
+  - EXISTING
+  - NEW_DIMENSION
+  - NON_EFFECT
+  - REFINE_EXISTING
+  - REUSE_PRIOR
+  allowed_semantic_decisions:
+  - DEFER
+  - EXISTING
+  - NEW_DIMENSION
+  - NON_EFFECT
+  - REFINE_EXISTING
+  allowed_review_actions:
+  - REUSE_PRIOR
+  allowed_reason_codes:
+  - CONFIRMED_PRIOR_SEMANTIC_RESOLUTION
+  - DISTINCT_REUSABLE_AUTHORITY_EFFECT
+  - EXISTING_EFFECT_BOUNDARY_NEEDS_REFINEMENT
+  - INSUFFICIENT_SEMANTIC_CONTEXT
+  - PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+  - SAME_EFFECT_ALREADY_REPRESENTED
+  - SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+  decision_rules:
+    REUSE_PRIOR: AI confirms one structural prior resolution candidate; apply normalizes
+      it to a concrete non-authoritative semantic action
+    EXISTING: attach detail to an already deterministic-matched dimension; no predicate
+      mutation
+    REFINE_EXISTING: map to one routed candidate and add one generated predicate alternative
+    NEW_DIMENSION: create one provisional dimension from this raw candidate
+    NON_EFFECT: record as parameter/reference/non-effect detail
+    DEFER: record unresolved without semantic mutation
+  automatic_exact_reuse_requires_ai_review: false
+  structural_reuse_requires_ai_confirmation: true
+  free_text_rationale_required: false
+  include_deferred_candidates: false
+  insufficient_context_requires_defer: true
+  targeted_candidate_expansion_supported: true
+input_fingerprints:
+  dimension_registry_sha256: fdc8f6afa45f4883c122fdc3b9c8d96c05aa7d1c6c176cd2e203dce069f51d69
+  raw_snapshot_sha256: 803578c52766d2013caf45713668cbc4c5aedaf4530ce056d9c37e8b54277618
+  ledger_sha256: 06c690bb3fedae8fa53458fd9e9ae04cb8583069997bf3d44f67ddd179ccb5e9
+already_matched_dimensions: []
+automatic_reuse:
+  count: 0
+  candidate_ids: []
+  action_digest: 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+  ai_review_required: false
+targeted_expansion:
+  candidate_ids: []
+  scope: EXACT_TYPED_VALUE_FOR_NAMED_CANDIDATES_ONLY
+questions:
+- candidate_id: raw-candidate:b6c479b7296e5b1f027e
+  path: authority_semantics.architecture_acceptance_separate_from_identity_implementation
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - separate_specification_activation_from_tool_implementation
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:abfde5bba306cf1e3f51
+  path: authority_semantics.identity_implementation_separate_from_migration_capability
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - require_explicit_project_profile_capability_for_tool_operations
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:eb2b292df47c205e3c83
+  path: authority_semantics.maintainability_rules
+  value_shape:
+    kind: ARRAY
+    count: 7
+    item_types:
+    - STR
+    members:
+    - TYPED_BOUNDARIES
+    - STABLE_OWNERSHIP
+    - INDEPENDENT_VERIFICATION
+    - FAIL_CLOSED_COMPATIBILITY
+    - EXTENSIBLE_REGISTRIES
+    - NO_TOOL_PP_COUPLING
+    - NO_PREMATURE_ADOPTION
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - define_conformance_decision_rule
+  - permit_stricter_project_policy
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - CONTAINS_ALL_EXACT
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:96785783c165b865f749
+  path: authority_semantics.migration_capability_separate_from_repository_adoption
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - preserve_migration_engine_independent_of_self_adoption
+  - forbid_tool_self_adoption_profile_creation
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:b98c4eae514bc1c43898
+  path: authority_semantics.ordered_work_units
+  value_shape:
+    kind: ARRAY
+    count: 4
+    item_types:
+    - STR
+    members:
+    - WU-08
+    - WU-09
+    - WU-10
+    - WU-11
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - define_execution_unit_contract
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - CONTAINS_ALL_EXACT
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:397848e5fdd7088f96a6
+  path: authority_semantics.repository_adoption_separate_from_release_readiness
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:9a330d4dc2f3fb1face6
+  path: authority_semantics.responsibilities
+  value_shape:
+    kind: OBJECT
+    fields:
+      WU-08: REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE
+      WU-09: INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE
+      WU-10: PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION
+      WU-11: FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS
+  review_sufficiency: SUFFICIENT
+  predicate_precision: EXACT_VALUE
+  targeted_expansion_available: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - require_governable_responsibility_split
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+summary:
+  question_count: 7
+  automatic_reuse_count: 0
+  reuse_confirmation_question_count: 0
+  full_semantic_question_count: 7
+  defer_only_question_count: 0
+  already_resolved_count: 0
+  deferred_suppressed_count: 0
+  full_dimension_scan_required: false
+  full_raw_corpus_read_required: false
+reuse_invariants:
+  automatic_reuse_requires_exact_context_signature: true
+  automatic_reuse_requires_unanimous_prior_concrete_action: true
+  structural_reuse_requires_ai_confirmation: true
+  routing_score_is_semantic_authority: false
+packet_fingerprint: 6d146b75c515bcc4748a843469a9b308bcecd2d8e601a0274daf56939796f66f

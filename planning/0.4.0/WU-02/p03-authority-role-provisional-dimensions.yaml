@@ -3,7 +3,7 @@ analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0019
+  reviewed_through: ADR-0023
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
@@ -48,6 +48,9 @@ dimensions:
         operator: EQUALS
         value: DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES
       - path: authority_semantics.current_generation_identity
+        operator: EQUALS
+        value: pp.1.01
+      - path: authority_semantics.canonical_pp_identity
         operator: EQUALS
         value: pp.1.01
   establish_decision_criterion_priority:
@@ -157,6 +160,9 @@ dimensions:
           value: IMMUTABLE_GIT_REVISION
       - path: authority_semantics.supported_source_bindings
         operator: NON_EMPTY
+      - path: authority_semantics.project_profile_version_is_implicit_specification_family
+        operator: EQUALS
+        value: false
   separate_specification_tool_lifecycles:
     status: PROVISIONAL
     introduced_by: ADR-0002
@@ -192,6 +198,9 @@ dimensions:
         operator: NON_EMPTY
       - path: authority_semantics.contract
         operator: NON_EMPTY
+      - path: authority_semantics.bridge_target
+        operator: EQUALS
+        value: pp.1.01
   define_classification_vocabulary:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -644,9 +653,17 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0007
     expression:
-      path: authority_semantics.material_mixed_lifecycle_requires_independently_governable_responsibilities
-      operator: EQUALS
-      value: true
+      any:
+      - path: authority_semantics.material_mixed_lifecycle_requires_independently_governable_responsibilities
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.responsibilities
+        operator: EQUALS
+        value:
+          WU-08: REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE
+          WU-09: INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE
+          WU-10: PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION
+          WU-11: FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS
   define_responsibility_role_contract:
     status: PROVISIONAL
     introduced_by: ADR-0008
@@ -843,9 +860,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0010
     expression:
-      path: authority_semantics.final_point_selection
-      operator: EQUALS
-      value: HIGHEST_SELECTED_TARGET_DRAFT
+      any:
+      - path: authority_semantics.final_point_selection
+        operator: EQUALS
+        value: HIGHEST_SELECTED_TARGET_DRAFT
+      - path: authority_semantics.new_migration_creates_only_selected_canonical_target
+        operator: EQUALS
+        value: true
   order_transition_sources:
     status: PROVISIONAL
     introduced_by: ADR-0010
@@ -1246,9 +1267,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0017
     expression:
-      path: authority_semantics.migration_engine_remains_implemented
-      operator: EQUALS
-      value: true
+      any:
+      - path: authority_semantics.migration_engine_remains_implemented
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.migration_capability_separate_from_repository_adoption
+        operator: EQUALS
+        value: true
   restrict_mutation_promotion_verification_to_fixture_repositories:
     status: PROVISIONAL
     introduced_by: ADR-0017
@@ -1316,12 +1341,19 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0019
     expression:
-      path: authority_semantics.identity_axes
-      operator: CONTAINS_ALL
-      value:
-      - TOOL_VERSION
-      - PROJECT_PROFILE_CONTRACT_VERSION
-      - PROJECT_PROFILE_INSTANCE_REVISION
+      any:
+      - path: authority_semantics.identity_axes
+        operator: CONTAINS_ALL
+        value:
+        - TOOL_VERSION
+        - PROJECT_PROFILE_CONTRACT_VERSION
+        - PROJECT_PROFILE_INSTANCE_REVISION
+      - path: authority_semantics.independent_history_axes
+        operator: EQUALS
+        value:
+        - TOOL_VERSION
+        - PROJECT_PROFILE_CONTRACT_VERSION
+        - SPECIFICATION_FAMILY_REVISION
   preserve_legacy_profile_generation_identity:
     status: PROVISIONAL
     introduced_by: ADR-0019
@@ -1380,9 +1412,16 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0013
     expression:
-      path: authority_semantics.compatibility_boundary
-      operator: EQUALS
-      value: src/ptsip/source_compat
+      any:
+      - path: authority_semantics.compatibility_boundary
+        operator: EQUALS
+        value: src/ptsip/source_compat
+      - path: authority_semantics.convergence_boundary
+        operator: EQUALS
+        value: NORMALIZED_SOURCE_SEMANTICS
+      - path: authority_semantics.source_boundary
+        operator: EQUALS
+        value: SOURCE_SPECIFIC_COMPATIBILITY_READER
   define_staged_migration_analysis_pipeline:
     status: PROVISIONAL
     introduced_by: ADR-0014
@@ -1456,3 +1495,245 @@ dimensions:
       path: authority_semantics.project_profile_namespace
       operator: EQUALS
       value: pp.<major>.<minor>
+  separate_architecture_acceptance_from_identity_implementation:
+    status: PROVISIONAL
+    introduced_by: ADR-0020
+    expression:
+      path: authority_semantics.architecture_acceptance_separate_from_identity_implementation
+      operator: EQUALS
+      value: true
+  separate_profile_identity_implementation_from_migration_capability:
+    status: PROVISIONAL
+    introduced_by: ADR-0020
+    expression:
+      path: authority_semantics.identity_implementation_separate_from_migration_capability
+      operator: EQUALS
+      value: true
+  define_project_profile_transition_maintainability_rules:
+    status: PROVISIONAL
+    introduced_by: ADR-0020
+    expression:
+      path: authority_semantics.maintainability_rules
+      operator: EQUALS
+      value:
+      - TYPED_BOUNDARIES
+      - STABLE_OWNERSHIP
+      - INDEPENDENT_VERIFICATION
+      - FAIL_CLOSED_COMPATIBILITY
+      - EXTENSIBLE_REGISTRIES
+      - NO_TOOL_PP_COUPLING
+      - NO_PREMATURE_ADOPTION
+  define_ordered_project_profile_transition_work_units:
+    status: PROVISIONAL
+    introduced_by: ADR-0020
+    expression:
+      path: authority_semantics.ordered_work_units
+      operator: EQUALS
+      value:
+      - WU-08
+      - WU-09
+      - WU-10
+      - WU-11
+  separate_repository_adoption_from_release_readiness:
+    status: PROVISIONAL
+    introduced_by: ADR-0020
+    expression:
+      path: authority_semantics.repository_adoption_separate_from_release_readiness
+      operator: EQUALS
+      value: true
+  restrict_project_profile_bridge_to_identity_only:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.bridge_classification
+      operator: EQUALS
+      value: IDENTITY_ONLY
+  bind_project_profile_identity_bridge_source:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.bridge_source
+      operator: EQUALS
+      value: 0.3.6-draft
+  forbid_temporary_target_for_canonical_profile_identity_bridge:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.canonical_0_3_6_to_pp_1_01_requires_temporary_target
+      operator: EQUALS
+      value: false
+  detect_duplicate_equivalent_profile_targets:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.equivalent_target_collision
+      operator: EQUALS
+      value: DUPLICATE_EQUIVALENT_TARGET
+  forbid_bulk_moving_historical_flat_release_notes:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.historical_flat_release_notes_bulk_moved
+      operator: EQUALS
+      value: false
+  preserve_legacy_temporary_target_alias:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.legacy_temporary_target_alias
+      operator: EQUALS
+      value: ptsip_0.3.6.yaml
+  separate_release_note_history_namespaces:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.release_note_namespaces
+      operator: EQUALS
+      value:
+      - tool
+      - project-profile
+      - specification
+  forbid_semantic_deltas_in_identity_bridge:
+    status: PROVISIONAL
+    introduced_by: ADR-0021
+    expression:
+      path: authority_semantics.semantic_deltas
+      operator: EQUALS
+      value:
+        associated_artifacts: NONE
+        components: NONE
+        lifecycle_classification: NONE
+        policies: NONE
+        relationships: NONE
+        responsibility_map: NONE
+  require_owner_decision_for_ambiguous_historical_semantics:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.ambiguous_historical_semantics
+      operator: EQUALS
+      value: OWNER_DECISION_REQUIRED
+  forbid_unrestricted_direct_convergence_inference:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.direct_convergence_allows_unrestricted_inference
+      operator: EQUALS
+      value: false
+  preserve_authorized_legacy_target_continuity:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.existing_authorized_legacy_target_continuity_preserved
+      operator: EQUALS
+      value: true
+  forbid_mandatory_intermediate_version_traversal:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.mandatory_intermediate_version_traversal
+      operator: EQUALS
+      value: false
+  define_direct_latest_target_convergence_model:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.migration_model
+      operator: EQUALS
+      value: DIRECT_LATEST_TARGET_CONVERGENCE
+  forbid_n_by_m_handwritten_converter_matrix_requirement:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.n_by_m_handwritten_converter_matrix_required
+      operator: EQUALS
+      value: false
+  restrict_target_selection_authority_to_explicit_tool_project_profile_compatibility:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.target_selection_authority
+      operator: EQUALS
+      value: EXPLICIT_TOOL_PP_COMPATIBILITY
+  define_project_profile_transition_classes:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.transition_classes
+      operator: EQUALS
+      value:
+      - IDENTITY_ONLY
+      - SEMANTIC_MIGRATION
+  forbid_universal_shortest_path_engine_requirement:
+    status: PROVISIONAL
+    introduced_by: ADR-0022
+    expression:
+      path: authority_semantics.universal_shortest_path_engine_required
+      operator: EQUALS
+      value: false
+  define_specification_binding_capability_authorities:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.capability_authorities
+      operator: EQUALS
+      value:
+      - TOOL_TO_PROJECT_PROFILE
+      - TOOL_TO_SPECIFICATION
+      - HISTORICAL_MIGRATION_COMPATIBILITY
+  forbid_cartesian_capability_registration_requirement:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.cartesian_capability_registration_required
+      operator: EQUALS
+      value: false
+  define_generic_capability_validation_order:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.generic_validation_order
+      operator: EQUALS
+      value:
+      - VALIDATE_PP_CAPABILITY
+      - VALIDATE_SPECIFICATION_CAPABILITY
+      - VALIDATE_SCHEMA_AND_RESPONSIBILITY_MAP
+      - APPLY_EXPLICIT_CROSS_CONTRACT_CONSTRAINTS
+  forbid_historical_migration_bridge_as_specification_capability:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.generic_validator_may_use_historical_migration_bridge_as_spec_capability
+      operator: EQUALS
+      value: false
+  decouple_profile_specification_revision_from_global_tool_specification_revision:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.generic_validator_requires_profile_spec_revision_equal_global_tool_spec_revision
+      operator: EQUALS
+      value: false
+  restrict_historical_bridge_to_migration_interpretation:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.historical_bridge_role
+      operator: EQUALS
+      value: MIGRATION_INTERPRETATION_ONLY
+  define_specification_binding_fields:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.specification_binding_fields
+      operator: EQUALS
+      value:
+      - family
+      - source
+      - revision
+  fail_closed_on_unsupported_or_malformed_specification_binding:
+    status: PROVISIONAL
+    introduced_by: ADR-0023
+    expression:
+      path: authority_semantics.unsupported_or_malformed_binding
+      operator: EQUALS
+      value: FAIL_CLOSED
