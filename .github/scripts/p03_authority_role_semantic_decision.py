@@ -13,8 +13,8 @@ from typing import Any
 import yaml
 
 
-PACKET_SCHEMA_VERSION = "ptsip-p03-authority-role-ai-decision-packet/v1"
-RESPONSE_SCHEMA_VERSION = "ptsip-p03-authority-role-ai-decision-response/v1"
+PACKET_SCHEMA_VERSION = "ptsip-p03-authority-role-ai-decision-packet/v2"
+RESPONSE_SCHEMA_VERSION = "ptsip-p03-authority-role-ai-decision-response/v2"
 LEDGER_SCHEMA_VERSION = "ptsip-p03-authority-role-semantic-decision-ledger/v1"
 
 DEFAULT_REGISTRY = "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
@@ -165,24 +165,83 @@ def validate_ledger(ledger: dict[str, Any]) -> None:
             raise SemanticDecisionError(f"ledger record {candidate_id} requires packet_fingerprint")
 
 
-def _string_shape(value: str) -> dict[str, object]:
+def _string_shape(value: str) -> tuple[dict[str, object], str, str]:
     if _GIT_SHA1.fullmatch(value):
-        return {"kind": "GIT_SHA1_REVISION"}
+        return {"kind": "GIT_SHA1_REVISION"}, "SUFFICIENT", "PRESENCE_ONLY"
     if _VERSION_LIKE.fullmatch(value):
-        return {"kind": "VERSION_LIKE_IDENTIFIER", "sample": value[:48]}
+        return {"kind": "VERSION_LIKE_IDENTIFIER", "value": value}, "SUFFICIENT", "EXACT_VALUE"
     if "/" in value or "\\" in value:
-        suffix = Path(value).suffix or None
-        return {"kind": "REPOSITORY_PATH", "suffix": suffix}
-    return {"kind": "STRING", "sample": value[:64], "truncated": len(value) > 64}
+        return {"kind": "REPOSITORY_PATH", "value": value}, "SUFFICIENT", "EXACT_VALUE"
+    if len(value) <= 160:
+        return {"kind": "STRING", "value": value}, "SUFFICIENT", "EXACT_VALUE"
+    return {
+        "kind": "STRING",
+        "sample": value[:160],
+        "truncated": True,
+    }, "INSUFFICIENT", "PRESENCE_ONLY"
 
 
-def _array_shape(value: list[object]) -> dict[str, object]:
+def _compact_nested_value(
+    value: object,
+    *,
+    depth: int = 0,
+) -> tuple[object, bool, bool]:
+    """Return compact semantic value, review sufficiency, and exact-value visibility."""
+    if depth > 3:
+        return {"kind": "NESTING_LIMIT"}, False, False
+    if value is None or type(value) in {bool, int, float}:
+        return copy.deepcopy(value), True, True
+    if isinstance(value, str):
+        if _GIT_SHA1.fullmatch(value):
+            return {"kind": "GIT_SHA1_REVISION"}, True, False
+        if len(value) <= 160:
+            return value, True, True
+        return {"sample": value[:160], "truncated": True}, False, False
+    if isinstance(value, list):
+        if len(value) > 16:
+            return {
+                "kind": "ARRAY_SUMMARY",
+                "count": len(value),
+                "item_types": sorted({type(item).__name__.upper() for item in value}),
+            }, False, False
+        compact: list[object] = []
+        sufficient = True
+        exact = True
+        for item in value:
+            rendered, item_sufficient, item_exact = _compact_nested_value(
+                item,
+                depth=depth + 1,
+            )
+            compact.append(rendered)
+            sufficient = sufficient and item_sufficient
+            exact = exact and item_exact
+        return compact, sufficient, exact
+    if isinstance(value, dict):
+        if len(value) > 12:
+            return {"kind": "OBJECT_KEYS", "keys": sorted(value)}, False, False
+        compact: dict[str, object] = {}
+        sufficient = True
+        exact = True
+        for key in sorted(value):
+            rendered, item_sufficient, item_exact = _compact_nested_value(
+                value[key],
+                depth=depth + 1,
+            )
+            compact[str(key)] = rendered
+            sufficient = sufficient and item_sufficient
+            exact = exact and item_exact
+        return compact, sufficient, exact
+    return {"kind": type(value).__name__.upper()}, False, False
+
+
+def _array_shape(value: list[object]) -> tuple[dict[str, object], str, str]:
     item_types = sorted({type(item).__name__.upper() for item in value})
     result: dict[str, object] = {
         "kind": "ARRAY",
         "count": len(value),
         "item_types": item_types,
     }
+
     if value and all(isinstance(item, str) for item in value):
         strings = [str(item) for item in value]
         matches = [_RULE_ID.fullmatch(item) for item in strings]
@@ -191,29 +250,80 @@ def _array_shape(value: list[object]) -> dict[str, object]:
             widths = {len(match.group(2)) for match in matches if match is not None}
             if len(prefixes) == 1 and len(widths) == 1:
                 result["pattern"] = f"{next(iter(prefixes))}{'#' * next(iter(widths))}"
-                return result
-        if len(strings) <= 6:
+                result["member_count"] = len(strings)
+                return result, "SUFFICIENT", "PRESENCE_ONLY"
+        if len(strings) <= 16:
             result["members"] = strings
+            return result, "SUFFICIENT", "EXACT_VALUE"
+        result["sample"] = strings[:3]
+        return result, "INSUFFICIENT", "PRESENCE_ONLY"
+
+    rendered, sufficient, exact = _compact_nested_value(value)
+    if sufficient:
+        if value and all(isinstance(item, dict) for item in value):
+            result["records"] = rendered
         else:
-            result["sample"] = strings[:3]
-    return result
+            result["semantic_value"] = rendered
+        return result, "SUFFICIENT", "EXACT_VALUE" if exact else "STRUCTURAL_ONLY"
+
+    if value and all(isinstance(item, dict) for item in value):
+        result["record_keys"] = sorted(
+            {
+                str(key)
+                for item in value
+                if isinstance(item, dict)
+                for key in item
+            }
+        )
+    return result, "INSUFFICIENT", "PRESENCE_ONLY"
 
 
-def _value_shape(value_type: str, value: object) -> dict[str, object]:
+def _value_shape(
+    value_type: str,
+    value: object,
+    *,
+    expanded: bool = False,
+) -> tuple[dict[str, object], str, str]:
+    if expanded:
+        return {
+            "kind": "EXPANDED_EXACT",
+            "value_type": value_type,
+            "value": copy.deepcopy(value),
+        }, "SUFFICIENT", "EXACT_VALUE"
     if value_type == "BOOLEAN":
-        return {"kind": "BOOLEAN", "value": value}
+        return {"kind": "BOOLEAN", "value": value}, "SUFFICIENT", "EXACT_VALUE"
     if value_type in {"INTEGER", "NUMBER"}:
-        return {"kind": value_type, "value": value}
+        return {"kind": value_type, "value": value}, "SUFFICIENT", "EXACT_VALUE"
     if value_type == "NULL":
-        return {"kind": "NULL"}
+        return {"kind": "NULL"}, "SUFFICIENT", "EXACT_VALUE"
     if value_type == "STRING" and isinstance(value, str):
         return _string_shape(value)
     if value_type == "ARRAY" and isinstance(value, list):
         return _array_shape(value)
     if value_type == "OBJECT" and isinstance(value, dict):
-        return {"kind": "OBJECT", "keys": sorted(value)}
-    return {"kind": value_type}
+        rendered, sufficient, exact = _compact_nested_value(value)
+        if sufficient:
+            return {
+                "kind": "OBJECT",
+                "fields": rendered,
+            }, "SUFFICIENT", "EXACT_VALUE" if exact else "STRUCTURAL_ONLY"
+        return {
+            "kind": "OBJECT",
+            "keys": sorted(value),
+        }, "INSUFFICIENT", "PRESENCE_ONLY"
+    return {"kind": value_type}, "INSUFFICIENT", "PRESENCE_ONLY"
 
+
+def _visible_predicate_modes(value_type: str, precision: str) -> list[str]:
+    if precision == "EXACT_VALUE":
+        return _predicate_modes(value_type)
+    if value_type in {"STRING", "ARRAY", "OBJECT"}:
+        return ["NON_EMPTY", "PRESENT"]
+    if value_type in {"INTEGER", "NUMBER", "BOOLEAN"}:
+        return ["PRESENT"]
+    if value_type == "NULL":
+        return ["PRESENT"]
+    raise SemanticDecisionError(f"unsupported raw feature value_type: {value_type!r}")
 
 def _predicate_modes(value_type: str) -> list[str]:
     if value_type == "BOOLEAN":
@@ -259,7 +369,9 @@ def build_decision_packet(
     ledger_path: Path,
     *,
     include_deferred: bool = False,
+    expanded_candidate_ids: set[str] | None = None,
 ) -> dict[str, Any]:
+    expanded_ids = set(expanded_candidate_ids or ())
     review_module = _load_module(
         repo_root / ".github/scripts/p03_authority_role_review_packet.py",
         "p03_authority_role_review_packet_for_decision",
@@ -328,9 +440,22 @@ def build_decision_packet(
     }
     structural_reuse = reuse["structural_reuse_candidates"]
 
+    reviewable_ids = {
+        str(candidate["candidate_id"])
+        for candidate in pending_candidates
+        if str(candidate["candidate_id"]) not in automatic_ids
+    }
+    unknown_expansions = expanded_ids - reviewable_ids
+    if unknown_expansions:
+        raise SemanticDecisionError(
+            "targeted expansion candidate is not an AI review question: "
+            + ", ".join(sorted(unknown_expansions))
+        )
+
     questions: list[dict[str, object]] = []
     reuse_confirmation_count = 0
     full_semantic_question_count = 0
+    defer_only_question_count = 0
     for candidate in pending_candidates:
         candidate_id = str(candidate["candidate_id"])
         if candidate_id in automatic_ids:
@@ -338,8 +463,17 @@ def build_decision_packet(
 
         top_candidates, ambiguous = _compact_routing(routing.get(candidate_id, []))
         value_type = str(candidate["value_type"])
+        value_shape, review_sufficiency, predicate_precision = _value_shape(
+            value_type,
+            candidate["value"],
+            expanded=candidate_id in expanded_ids,
+        )
         prior_resolution = structural_reuse.get(candidate_id)
-        if prior_resolution is None:
+        if review_sufficiency == "INSUFFICIENT":
+            review_mode = "DEFER_ONLY_INSUFFICIENT_CONTEXT"
+            prior_resolution = None
+            defer_only_question_count += 1
+        elif prior_resolution is None:
             review_mode = "FULL_SEMANTIC_DECISION"
             full_semantic_question_count += 1
         else:
@@ -350,13 +484,19 @@ def build_decision_packet(
             {
                 "candidate_id": candidate_id,
                 "path": candidate["path"],
-                "value_shape": _value_shape(value_type, candidate["value"]),
+                "value_shape": value_shape,
+                "review_sufficiency": review_sufficiency,
+                "predicate_precision": predicate_precision,
+                "targeted_expansion_available": review_sufficiency == "INSUFFICIENT",
                 "occurrence_count": len(candidate["occurs_in"]),
                 "review_mode": review_mode,
                 "prior_resolution_candidate": prior_resolution,
                 "existing_candidates": top_candidates,
                 "routing_ambiguous": ambiguous,
-                "allowed_predicate_modes": predicate_modes_by_candidate[candidate_id],
+                "allowed_predicate_modes": _visible_predicate_modes(
+                    value_type,
+                    predicate_precision,
+                ),
             }
         )
 
@@ -386,6 +526,8 @@ def build_decision_packet(
             "structural_reuse_requires_ai_confirmation": True,
             "free_text_rationale_required": False,
             "include_deferred_candidates": include_deferred,
+            "insufficient_context_requires_defer": True,
+            "targeted_candidate_expansion_supported": True,
         },
         "input_fingerprints": {
             "dimension_registry_sha256": _sha256_file(registry_path),
@@ -396,12 +538,17 @@ def build_decision_packet(
             item["dimension_id"] for item in review_packet["matched_dimensions"]
         ],
         "automatic_reuse": automatic_reuse,
+        "targeted_expansion": {
+            "candidate_ids": sorted(expanded_ids),
+            "scope": "EXACT_TYPED_VALUE_FOR_NAMED_CANDIDATES_ONLY",
+        },
         "questions": questions,
         "summary": {
             "question_count": len(questions),
             "automatic_reuse_count": automatic_reuse["count"],
             "reuse_confirmation_question_count": reuse_confirmation_count,
             "full_semantic_question_count": full_semantic_question_count,
+            "defer_only_question_count": defer_only_question_count,
             "already_resolved_count": excluded_resolved,
             "deferred_suppressed_count": excluded_deferred,
             "full_dimension_scan_required": False,
@@ -421,6 +568,7 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     fingerprints = packet.get("input_fingerprints")
     questions = packet.get("questions")
     automatic_reuse = packet.get("automatic_reuse")
+    targeted_expansion = packet.get("targeted_expansion")
     matched_dimensions = packet.get("already_matched_dimensions")
     summary = packet.get("summary")
     reuse_invariants = packet.get("reuse_invariants")
@@ -429,7 +577,11 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
         for value in (target, contract, fingerprints, summary, reuse_invariants)
     ):
         raise SemanticDecisionError("AI decision packet mappings are malformed")
-    if not isinstance(questions, list) or not isinstance(automatic_reuse, dict):
+    if (
+        not isinstance(questions, list)
+        or not isinstance(automatic_reuse, dict)
+        or not isinstance(targeted_expansion, dict)
+    ):
         raise SemanticDecisionError("AI decision packet review surfaces are malformed")
     if not isinstance(matched_dimensions, list) or not all(
         isinstance(item, str) for item in matched_dimensions
@@ -449,6 +601,10 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
         raise SemanticDecisionError("structural reuse must require AI confirmation")
     if contract.get("free_text_rationale_required") is not False:
         raise SemanticDecisionError("AI decision packet must not require free-text rationale")
+    if contract.get("insufficient_context_requires_defer") is not True:
+        raise SemanticDecisionError("insufficient semantic context must fail closed to DEFER")
+    if contract.get("targeted_candidate_expansion_supported") is not True:
+        raise SemanticDecisionError("AI decision packet must support targeted candidate expansion")
     if type(contract.get("include_deferred_candidates")) is not bool:
         raise SemanticDecisionError(
             "AI decision packet include_deferred_candidates must be boolean"
@@ -477,9 +633,20 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     if not isinstance(action_digest, str) or len(action_digest) != 64:
         raise SemanticDecisionError("automatic reuse requires a concrete-action digest")
 
+    expanded_ids_raw = targeted_expansion.get("candidate_ids")
+    if not isinstance(expanded_ids_raw, list) or not all(
+        isinstance(item, str) and item.startswith("raw-candidate:")
+        for item in expanded_ids_raw
+    ):
+        raise SemanticDecisionError("targeted expansion candidate_ids must be raw candidate ids")
+    expanded_ids = set(expanded_ids_raw)
+    if len(expanded_ids) != len(expanded_ids_raw):
+        raise SemanticDecisionError("targeted expansion candidate_ids must be unique")
+
     ids: set[str] = set()
     reuse_confirmation_count = 0
     full_semantic_count = 0
+    defer_only_count = 0
     for question in questions:
         if not isinstance(question, dict):
             raise SemanticDecisionError("AI decision packet question must be a mapping")
@@ -500,6 +667,20 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
             )
         review_mode = question.get("review_mode")
         prior_resolution = question.get("prior_resolution_candidate")
+        review_sufficiency = question.get("review_sufficiency")
+        predicate_precision = question.get("predicate_precision")
+        if review_sufficiency not in {"SUFFICIENT", "INSUFFICIENT"}:
+            raise SemanticDecisionError("AI decision packet question has invalid review_sufficiency")
+        if predicate_precision not in {"EXACT_VALUE", "STRUCTURAL_ONLY", "PRESENCE_ONLY"}:
+            raise SemanticDecisionError("AI decision packet question has invalid predicate_precision")
+        if type(question.get("targeted_expansion_available")) is not bool:
+            raise SemanticDecisionError("targeted_expansion_available must be boolean")
+        if candidate_id in expanded_ids:
+            if review_sufficiency != "SUFFICIENT":
+                raise SemanticDecisionError("expanded candidate must provide sufficient context")
+            value_shape = question.get("value_shape")
+            if not isinstance(value_shape, dict) or value_shape.get("kind") != "EXPANDED_EXACT":
+                raise SemanticDecisionError("expanded candidate must carry exact typed value")
         if review_mode == "REUSE_CONFIRMATION_OR_FULL_DECISION":
             reuse_confirmation_count += 1
             if not isinstance(prior_resolution, dict):
@@ -519,6 +700,14 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
                 raise SemanticDecisionError(
                     "full semantic question must not contain a prior resolution candidate"
                 )
+        elif review_mode == "DEFER_ONLY_INSUFFICIENT_CONTEXT":
+            defer_only_count += 1
+            if review_sufficiency != "INSUFFICIENT":
+                raise SemanticDecisionError("defer-only question must be semantically insufficient")
+            if prior_resolution is not None:
+                raise SemanticDecisionError("defer-only question must not contain prior resolution")
+            if question.get("targeted_expansion_available") is not True:
+                raise SemanticDecisionError("insufficient question must allow targeted expansion")
         else:
             raise SemanticDecisionError("AI decision packet question has invalid review_mode")
 
@@ -533,6 +722,10 @@ def validate_decision_packet(packet: dict[str, Any]) -> None:
     if summary.get("full_semantic_question_count") != full_semantic_count:
         raise SemanticDecisionError(
             "AI decision packet full_semantic_question_count is stale"
+        )
+    if summary.get("defer_only_question_count") != defer_only_count:
+        raise SemanticDecisionError(
+            "AI decision packet defer_only_question_count is stale"
         )
 
     claimed = packet.get("packet_fingerprint")
@@ -569,6 +762,19 @@ def build_response_template(packet: dict[str, Any]) -> dict[str, Any]:
 
 def _question_map(packet: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {str(item["candidate_id"]): item for item in packet["questions"]}
+
+
+def _validate_review_sufficiency(
+    question: dict[str, Any],
+    decision: object,
+) -> None:
+    if (
+        question.get("review_sufficiency") == "INSUFFICIENT"
+        and decision != "DEFER"
+    ):
+        raise SemanticDecisionError(
+            "insufficient semantic context requires DEFER or targeted candidate expansion"
+        )
 
 
 def validate_response(packet: dict[str, Any], response: dict[str, Any]) -> None:
@@ -629,6 +835,7 @@ def validate_response(packet: dict[str, Any], response: dict[str, Any]) -> None:
             )
 
         question = questions[candidate_id]
+        _validate_review_sufficiency(question, decision)
         existing = set(question["existing_candidates"])
         target_dimension = item["target_dimension"]
         proposed = item["proposed_dimension_id"]
@@ -1216,6 +1423,12 @@ def main(argv: list[str] | None = None) -> int:
     prepare.add_argument("--raw-snapshot", default=DEFAULT_RAW_SNAPSHOT)
     prepare.add_argument("--ledger", default=DEFAULT_LEDGER)
     prepare.add_argument("--include-deferred", action="store_true")
+    prepare.add_argument(
+        "--expand-candidate",
+        action="append",
+        default=[],
+        help="Expose the exact typed value for one named insufficient candidate; repeatable",
+    )
     prepare.add_argument("--write", action="store_true")
     prepare.add_argument("--output")
     prepare.add_argument("--response-output")
@@ -1247,6 +1460,7 @@ def main(argv: list[str] | None = None) -> int:
                 raw_snapshot_path,
                 ledger_path,
                 include_deferred=args.include_deferred,
+                expanded_candidate_ids=set(args.expand_candidate),
             )
             if args.write:
                 packet_path, response_path = _prepare_paths(
@@ -1262,7 +1476,8 @@ def main(argv: list[str] | None = None) -> int:
                     f"questions={packet['summary']['question_count']} "
                     f"automatic_reuse={packet['summary']['automatic_reuse_count']} "
                     f"reuse_confirmation={packet['summary']['reuse_confirmation_question_count']} "
-                    f"full_semantic={packet['summary']['full_semantic_question_count']}"
+                    f"full_semantic={packet['summary']['full_semantic_question_count']} "
+                    f"defer_only={packet['summary']['defer_only_question_count']}"
                 )
             else:
                 print(_dump_yaml(packet), end="")
