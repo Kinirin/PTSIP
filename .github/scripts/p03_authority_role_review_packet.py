@@ -178,8 +178,53 @@ def _field_tail(path: str) -> str:
     return path.rsplit(".", 1)[-1].lower()
 
 
-def _lexical_similarity(left: str, right: str) -> float:
-    return SequenceMatcher(None, left.lower(), right.lower()).ratio()
+def _normalize_token(token: str) -> str:
+    value = token.lower()
+    aliases = {
+        "activated": "activate",
+        "activation": "activate",
+        "classifications": "classification",
+        "roles": "role",
+        "relationships": "relationship",
+        "rules": "rule",
+        "states": "state",
+        "modes": "mode",
+        "bindings": "binding",
+        "versions": "version",
+    }
+    if value in aliases:
+        return aliases[value]
+    if value.endswith("s") and len(value) > 4 and not value.endswith("ss"):
+        return value[:-1]
+    return value
+
+
+def _semantic_tokens(value: str) -> tuple[str, ...]:
+    return tuple(
+        _normalize_token(token)
+        for token in value.lower().split("_")
+        if token
+    )
+
+
+def _structural_similarity(left: str, right: str) -> float:
+    left_tokens = _semantic_tokens(left)
+    right_tokens = _semantic_tokens(right)
+    if not left_tokens or not right_tokens:
+        return 0.0
+
+    left_set = set(left_tokens)
+    right_set = set(right_tokens)
+    overlap = len(left_set & right_set)
+    if overlap == 0:
+        token_score = 0.0
+    else:
+        token_score = (2.0 * overlap) / (len(left_set) + len(right_set))
+
+    head_score = 1.0 if left_tokens[-1] == right_tokens[-1] else 0.0
+    sequence_score = SequenceMatcher(None, left.lower(), right.lower()).ratio()
+
+    return 0.50 * head_score + 0.35 * token_score + 0.15 * sequence_score
 
 
 def _existing_dimension_routing_candidates(
@@ -197,11 +242,11 @@ def _existing_dimension_routing_candidates(
             predicate_paths = _expression_paths(expression)
             evidence: list[dict[str, object]] = []
 
-            dimension_score = _lexical_similarity(raw_tail, dimension_id)
-            if dimension_score >= 0.62:
+            dimension_score = _structural_similarity(raw_tail, dimension_id)
+            if dimension_score >= 0.30:
                 evidence.append(
                     {
-                        "basis": "DIMENSION_ID_LEXICAL_SIMILARITY",
+                        "basis": "DIMENSION_ID_STRUCTURAL_SIMILARITY",
                         "target": dimension_id,
                         "score": round(dimension_score, 4),
                     }
@@ -209,11 +254,11 @@ def _existing_dimension_routing_candidates(
 
             for predicate_path in predicate_paths:
                 predicate_tail = _field_tail(predicate_path)
-                score = _lexical_similarity(raw_tail, predicate_tail)
-                if score >= 0.62:
+                score = _structural_similarity(raw_tail, predicate_tail)
+                if score >= 0.30:
                     evidence.append(
                         {
-                            "basis": "PREDICATE_PATH_LEXICAL_SIMILARITY",
+                            "basis": "PREDICATE_PATH_STRUCTURAL_SIMILARITY",
                             "target": predicate_path,
                             "score": round(score, 4),
                         }
@@ -364,7 +409,7 @@ def build_review_packet(
             "matched_predicate_proof_trace": "DETERMINISTIC",
             "residual_raw_feature_extraction": "DETERMINISTIC",
             "machine_residual_candidate_generation": "DETERMINISTIC",
-            "existing_dimension_candidate_routing": "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE",
+            "existing_dimension_candidate_routing": "DETERMINISTIC_STRUCTURAL_NON_AUTHORITATIVE",
             "manual_full_dimension_scan_required": False,
             "manual_raw_corpus_search_required": False,
             "raw_feature_force_fit": "FORBIDDEN",
@@ -426,7 +471,7 @@ def compact_review_packet(packet: dict[str, Any]) -> dict[str, Any]:
         "target": packet["target"],
         "automation": {
             "existing_dimension_evaluation": "DETERMINISTIC",
-            "existing_dimension_candidate_routing": "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE",
+            "existing_dimension_candidate_routing": "DETERMINISTIC_STRUCTURAL_NON_AUTHORITATIVE",
             "manual_full_dimension_scan_required": False,
             "manual_raw_corpus_search_required": False,
             "raw_feature_force_fit": "FORBIDDEN",
