@@ -1,0 +1,36 @@
+schema_version: ptsip-p03-authority-role-ai-decision-response/v1
+target:
+  adr_id: ADR-0018
+  packet_fingerprint: c3e17d4ab7770141973798f0dc3035b0e66e5e7c823b295d8eb4ca2180bb5424
+reviewer: AI_DESIGN_TIME_ADVISORY
+decisions:
+- candidate_id: raw-candidate:8bacabedf2ae36212ff9
+  decision: NON_EFFECT
+  target_dimension: null
+  proposed_dimension_id: null
+  predicate_mode: null
+  reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+- candidate_id: raw-candidate:db71057134bed4a0522d
+  decision: NON_EFFECT
+  target_dimension: null
+  proposed_dimension_id: null
+  predicate_mode: null
+  reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+- candidate_id: raw-candidate:0648c62c79d6435f21c2
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: deny_project_profile_version_migration_authorization
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:c829ce12bd55346c9739
+  decision: NEW_DIMENSION
+  target_dimension: null
+  proposed_dimension_id: preserve_narrow_ptsip_core_selector_boundary
+  predicate_mode: EQUALS_EXACT
+  reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
+- candidate_id: raw-candidate:bc206ef36f57b395901a
+  decision: REFINE_EXISTING
+  target_dimension: define_typed_relationship_contract
+  proposed_dimension_id: null
+  predicate_mode: CONTAINS_ALL_EXACT
+  reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD

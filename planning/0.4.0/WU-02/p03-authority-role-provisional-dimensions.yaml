@@ -3,7 +3,7 @@ analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0015
+  reviewed_through: ADR-0019
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
@@ -47,6 +47,9 @@ dimensions:
       - path: authority_semantics.semantic_identity
         operator: EQUALS
         value: DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES
+      - path: authority_semantics.current_generation_identity
+        operator: EQUALS
+        value: pp.1.01
   establish_decision_criterion_priority:
     status: PROVISIONAL
     introduced_by: ADR-0001
@@ -86,6 +89,9 @@ dimensions:
       - path: authority_semantics.ordered_determination
         operator: CONTAINS
         value: IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
+      - path: authority_semantics.promotion_is_independent_state_boundary
+        operator: EQUALS
+        value: true
   require_versioned_normative_contract:
     status: PROVISIONAL
     introduced_by: ADR-0001
@@ -294,6 +300,9 @@ dimensions:
       - path: authority_semantics.evidence_authority
         operator: EQUALS
         value: NON_AUTHORITATIVE
+      - path: authority_semantics.execution_input_authority
+        operator: EQUALS
+        value: ACCEPTED_DELTA_BUNDLE_ONLY
   invalidate_stale_evidence:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -402,6 +411,9 @@ dimensions:
         operator: NON_EMPTY
       - path: authority_semantics.activated_family
         operator: NON_EMPTY
+      - path: authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family
+        operator: EQUALS
+        value: true
   separate_decision_authority_from_profile:
     status: PROVISIONAL
     introduced_by: ADR-0005
@@ -449,9 +461,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0005
     expression:
-      path: authority_semantics.absence_observation_may_fabricate_history
-      operator: EQUALS
-      value: false
+      any:
+      - path: authority_semantics.absence_observation_may_fabricate_history
+        operator: EQUALS
+        value: false
+      - path: authority_semantics.fabricated_pp_1_00_history
+        operator: EQUALS
+        value: false
   forbid_silent_conflict_overwrite:
     status: PROVISIONAL
     introduced_by: ADR-0005
@@ -655,16 +671,26 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0008
     expression:
-      all:
-      - path: authority_semantics.relationships_axis
-        operator: EQUALS
-        value: TYPED_DIRECTED_SEMANTICS
-      - path: authority_semantics.canonical_relationships
-        operator: NON_EMPTY
-      - path: authority_semantics.relationship_endpoint_kinds
-        operator: NON_EMPTY
-      - path: authority_semantics.generic_escape_relationships_forbidden
-        operator: NON_EMPTY
+      any:
+      - all:
+        - path: authority_semantics.relationships_axis
+          operator: EQUALS
+          value: TYPED_DIRECTED_SEMANTICS
+        - path: authority_semantics.canonical_relationships
+          operator: NON_EMPTY
+        - path: authority_semantics.relationship_endpoint_kinds
+          operator: NON_EMPTY
+        - path: authority_semantics.generic_escape_relationships_forbidden
+          operator: NON_EMPTY
+      - path: authority_semantics.relationships
+        operator: CONTAINS_ALL
+        value:
+        - ptsip-evidence:IMPORTS:ptsip-core
+        - ptsip-source-compat:IMPORTS:ptsip-core
+        - ptsip-source-compat:READS:ptsip-embedded-contracts
+        - ptsip-migration:IMPORTS:ptsip-core
+        - ptsip-migration:IMPORTS:ptsip-evidence
+        - ptsip-migration:IMPORTS:ptsip-source-compat
   forbid_relationship_inference:
     status: PROVISIONAL
     introduced_by: ADR-0008
@@ -701,9 +727,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0008
     expression:
-      path: authority_semantics.component_and_associated_artifact_ids_share_namespace
-      operator: EQUALS
-      value: true
+      any:
+      - path: authority_semantics.component_and_associated_artifact_ids_share_namespace
+        operator: EQUALS
+        value: true
+      - path: authority_semantics.project_profile_namespace
+        operator: EQUALS
+        value: pp.<major>.<minor>
   forbid_fabricated_reference_targets:
     status: PROVISIONAL
     introduced_by: ADR-0008
@@ -801,16 +831,20 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0010
     expression:
-      all:
-      - path: authority_semantics.completion_basis
+      any:
+      - all:
+        - path: authority_semantics.completion_basis
+          operator: EQUALS
+          value: REQUIRED_WORK_ELEMENTS_ONLY
+        - path: authority_semantics.removal_element_preservation_obligation
+          operator: EQUALS
+          value: false
+        - path: authority_semantics.async_target_completion_credit
+          operator: EQUALS
+          value: false
+      - path: authority_semantics.async_state_separate_from_completion
         operator: EQUALS
-        value: REQUIRED_WORK_ELEMENTS_ONLY
-      - path: authority_semantics.removal_element_preservation_obligation
-        operator: EQUALS
-        value: false
-      - path: authority_semantics.async_target_completion_credit
-        operator: EQUALS
-        value: false
+        value: true
   gate_canonical_replacement_on_completion:
     status: PROVISIONAL
     introduced_by: ADR-0010
@@ -1120,3 +1154,222 @@ dimensions:
       path: authority_semantics.unresolved_required_work_auto_designed
       operator: EQUALS
       value: false
+  bind_migration_authorization_inputs:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.authorization_binds
+      operator: CONTAINS_ALL
+      value:
+      - WU06_PLAN_DIGEST
+      - PROJECT_DECISION_IDS
+      - AUTHORITY_REVISION
+  process_canonical_source_last:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.canonical_source_processed_last
+      operator: EQUALS
+      value: true
+  require_append_only_digest_chained_checkpoints:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.checkpoint_ledger
+      operator: EQUALS
+      value: APPEND_ONLY_DIGEST_CHAINED
+  restrict_migration_mutation_to_participating_profile_paths:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.controlled_repository_mutation_scope
+      operator: EQUALS
+      value: PARTICIPATING_PROFILE_PATHS_ONLY
+  require_atomic_per_source_final_point_write_after_cas:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.per_source_final_point_write
+      operator: EQUALS
+      value: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
+  bind_migration_apply_to_exact_plan_digest:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.plan_binding
+      operator: EQUALS
+      value: EXACT_WU06_PLAN_DIGEST
+  require_explicit_seed_for_planned_final_point:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.planned_final_point_requires_explicit_seed
+      operator: EQUALS
+      value: true
+  require_rediscovery_for_promotion_success:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.promotion_success_requires_rediscovery
+      operator: EQUALS
+      value: true
+  forbid_recovery_guessing:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.recovery_guessing
+      operator: EQUALS
+      value: false
+  require_post_apply_completion_proof_for_source_deletion:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.source_deletion_requires_post_apply_completion_proof
+      operator: EQUALS
+      value: true
+  preserve_migration_apply_states:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.states
+      operator: NON_EMPTY
+  preserve_existing_profile_contract_without_implicit_upgrade:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.existing_profile_examples_remain_0_3_6_draft_without_contract_change
+      operator: EQUALS
+      value: true
+  preserve_migration_engine_independent_of_self_adoption:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.migration_engine_remains_implemented
+      operator: EQUALS
+      value: true
+  restrict_mutation_promotion_verification_to_fixture_repositories:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.mutation_promotion_verification_scope
+      operator: EQUALS
+      value: ISOLATED_FIXTURE_REPOSITORIES
+  restrict_repository_dogfood_to_controlled_self_analysis:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.repository_dogfood_mode
+      operator: EQUALS
+      value: CONTROLLED_SELF_ANALYSIS
+  limit_supersession_to_repository_self_adoption_assumption:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.superseded_scope
+      operator: EQUALS
+      value: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+  forbid_tool_self_adoption_profile_creation:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption
+      operator: EQUALS
+      value: false
+  separate_tool_release_from_profile_migration:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.tool_release_implies_profile_migration
+      operator: EQUALS
+      value: false
+  separate_tool_version_from_project_profile_version:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.tool_version_independent_from_project_profile_version
+      operator: EQUALS
+      value: true
+  deny_project_profile_version_migration_authorization:
+    status: PROVISIONAL
+    introduced_by: ADR-0018
+    expression:
+      path: authority_semantics.project_profile_version_migration_authorized
+      operator: EQUALS
+      value: false
+  preserve_narrow_ptsip_core_selector_boundary:
+    status: PROVISIONAL
+    introduced_by: ADR-0018
+    expression:
+      path: authority_semantics.ptsip_core_selector_broadened_to_recursive_src_ptsip
+      operator: EQUALS
+      value: false
+  deny_immediate_profile_rewrite_authority_from_acceptance:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.acceptance_authorizes_immediate_profile_rewrite
+      operator: EQUALS
+      value: false
+  preserve_project_profile_identity_axes:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.identity_axes
+      operator: CONTAINS_ALL
+      value:
+      - TOOL_VERSION
+      - PROJECT_PROFILE_CONTRACT_VERSION
+      - PROJECT_PROFILE_INSTANCE_REVISION
+  preserve_legacy_profile_generation_identity:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.legacy_generation_identity
+      operator: EQUALS
+      value: pp.0.00
+  define_project_profile_major_version_trigger:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.major_trigger
+      operator: EQUALS
+      value: GOVERNING_LIFECYCLE_CLASSIFICATION_SET_OR_SEMANTICS_CHANGE
+  define_project_profile_minor_version_trigger:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.minor_trigger
+      operator: NON_EMPTY
+  separate_profile_instance_revision_from_contract_version:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.project_instance_change_bumps_contract_version
+      operator: EQUALS
+      value: false
+  forbid_semantic_versioning_for_project_profile_namespace:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.semantic_versioning
+      operator: EQUALS
+      value: false
+  forbid_tool_compatibility_inference_from_numeric_equality:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.tool_compatibility_inferred_from_numeric_equality
+      operator: EQUALS
+      value: false
+  require_explicit_project_profile_capability_for_tool_operations:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.tool_operations_require_explicit_pp_capability
+      operator: CONTAINS_ALL
+      value:
+      - READ
+      - VALIDATE
+      - ANALYZE
+      - MIGRATE
+      - CREATE

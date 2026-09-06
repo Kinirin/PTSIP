@@ -1,0 +1,196 @@
+schema_version: ptsip-p03-authority-role-ai-decision-packet/v1
+target:
+  adr_id: ADR-0017
+  authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+review_contract:
+  role: AI_DESIGN_TIME_SEMANTIC_REVIEW_ONLY
+  semantic_authority: NONE
+  runtime_authority: NONE
+  allowed_decisions:
+  - DEFER
+  - EXISTING
+  - NEW_DIMENSION
+  - NON_EFFECT
+  - REFINE_EXISTING
+  - REUSE_PRIOR
+  allowed_semantic_decisions:
+  - DEFER
+  - EXISTING
+  - NEW_DIMENSION
+  - NON_EFFECT
+  - REFINE_EXISTING
+  allowed_review_actions:
+  - REUSE_PRIOR
+  allowed_reason_codes:
+  - CONFIRMED_PRIOR_SEMANTIC_RESOLUTION
+  - DISTINCT_REUSABLE_AUTHORITY_EFFECT
+  - EXISTING_EFFECT_BOUNDARY_NEEDS_REFINEMENT
+  - INSUFFICIENT_SEMANTIC_CONTEXT
+  - PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+  - SAME_EFFECT_ALREADY_REPRESENTED
+  - SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+  decision_rules:
+    REUSE_PRIOR: AI confirms one structural prior resolution candidate; apply normalizes
+      it to a concrete non-authoritative semantic action
+    EXISTING: attach detail to an already deterministic-matched dimension; no predicate
+      mutation
+    REFINE_EXISTING: map to one routed candidate and add one generated predicate alternative
+    NEW_DIMENSION: create one provisional dimension from this raw candidate
+    NON_EFFECT: record as parameter/reference/non-effect detail
+    DEFER: record unresolved without semantic mutation
+  automatic_exact_reuse_requires_ai_review: false
+  structural_reuse_requires_ai_confirmation: true
+  free_text_rationale_required: false
+  include_deferred_candidates: false
+input_fingerprints:
+  dimension_registry_sha256: 9ebf9fa847b2ab6dd002ea6571e8919fcbf071a6e171dff379df5e41d598ab1d
+  raw_snapshot_sha256: 803578c52766d2013caf45713668cbc4c5aedaf4530ce056d9c37e8b54277618
+  ledger_sha256: 80e16819f7d992f3173866f1bd3d7893e5b3987e25939bda1b0da2400c3991b6
+already_matched_dimensions: []
+automatic_reuse:
+  count: 0
+  candidate_ids: []
+  action_digest: 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+  ai_review_required: false
+questions:
+- candidate_id: raw-candidate:c94e36cfc7f993d08f96
+  path: authority_semantics.existing_profile_examples_remain_0_3_6_draft_without_contract_change
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:c691513bd7de67056239
+  path: authority_semantics.migration_engine_remains_implemented
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:d840a950f6deebd4d475
+  path: authority_semantics.mutation_promotion_verification_scope
+  value_shape:
+    kind: STRING
+    sample: ISOLATED_FIXTURE_REPOSITORIES
+    truncated: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - restrict_migration_mutation_to_participating_profile_paths
+  - define_conformance_decision_rule
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:cbb9e6df5f361a3721e6
+  path: authority_semantics.repository_dogfood_mode
+  value_shape:
+    kind: STRING
+    sample: CONTROLLED_SELF_ANALYSIS
+    truncated: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - synchronize_at_action_time
+  - define_source_declaration_modes
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:fe8ea2f7f7d947ac0677
+  path: authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - activate_normative_family
+  - require_explicit_specification_binding
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:70225c75321347d11383
+  path: authority_semantics.superseded_scope
+  value_shape:
+    kind: STRING
+    sample: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+    truncated: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - define_conformance_decision_rule
+  - restrict_migration_mutation_to_participating_profile_paths
+  routing_ambiguous: true
+  allowed_predicate_modes:
+  - NON_EMPTY
+  - EQUALS_EXACT
+  - PRESENT
+- candidate_id: raw-candidate:1ef5391a21dd77e119af
+  path: authority_semantics.tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption
+  value_shape:
+    kind: BOOLEAN
+    value: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:f3be9538f3341ce6816b
+  path: authority_semantics.tool_release_implies_profile_migration
+  value_shape:
+    kind: BOOLEAN
+    value: false
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates: []
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+- candidate_id: raw-candidate:469ceb1d21f42ecaca47
+  path: authority_semantics.tool_version_independent_from_project_profile_version
+  value_shape:
+    kind: BOOLEAN
+    value: true
+  occurrence_count: 1
+  review_mode: FULL_SEMANTIC_DECISION
+  prior_resolution_candidate: null
+  existing_candidates:
+  - constrain_profile_identity_and_cardinality
+  routing_ambiguous: false
+  allowed_predicate_modes:
+  - EQUALS_EXACT
+summary:
+  question_count: 9
+  automatic_reuse_count: 0
+  reuse_confirmation_question_count: 0
+  full_semantic_question_count: 9
+  already_resolved_count: 0
+  deferred_suppressed_count: 0
+  full_dimension_scan_required: false
+  full_raw_corpus_read_required: false
+reuse_invariants:
+  automatic_reuse_requires_exact_context_signature: true
+  automatic_reuse_requires_unanimous_prior_concrete_action: true
+  structural_reuse_requires_ai_confirmation: true
+  routing_score_is_semantic_authority: false
+packet_fingerprint: 8657e8357e66cef6736fb77653e560cff6ff341848489d53b5889b778d4894d5
