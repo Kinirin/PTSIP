@@ -2,6 +2,26 @@
 
 These instructions apply to coding agents working anywhere in this repository.
 
+## P03 narrow automation fast path
+
+For P03 Authority Role corpus-analysis tasks under `planning/0.4.0/WU-02/`, use this narrow path before the general context-loading rule below.
+
+When the task is limited to raw-feature collection, one-ADR review-packet generation, current provisional-dimension evaluation, deterministic backfill, or the focused P03 pytest files:
+
+1. read this `AGENTS.md`;
+2. read `planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml`;
+3. run the applicable P03 automation before reading analysis registries or ADRs manually;
+4. use the generated review packet as the primary semantic-review input.
+
+For this narrow path, do **not** pre-read `MEMORY.md`, the full `ptsip.yaml`, general Specification files, historical release planning, the complete provisional-dimension registry, the complete raw corpus, or unrelated ADRs unless:
+- the automation fails and the failing dependency must be diagnosed;
+- the generated review packet explicitly identifies an unresolved dependency; or
+- the task scope expands beyond P03 design-time corpus analysis.
+
+For one-ADR semantic review, manual scanning of all current provisional dimensions is forbidden by default. Existing dimensions are evaluated by `.github/scripts/p03_authority_role_review_packet.py`; the agent reviews only the generated residual semantic input. Current provisional dimensions are working hypotheses, not a matching target or upper bound. Do not force-fit residual semantics to them.
+
+This fast path does not authorize runtime remediation implementation, schema constantization, Authority Role registration, release work, or broader repository mutation.
+
 ## Required context before work
 
 Read, in order:
