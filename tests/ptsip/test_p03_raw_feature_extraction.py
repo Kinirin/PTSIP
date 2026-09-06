@@ -102,7 +102,7 @@ def test_p03_raw_feature_extraction_preserves_exact_machine_value_types() -> Non
 
 def test_p03_working_dimension_set_can_extend_review_beyond_adr_0010(tmp_path: Path) -> None:
     registry = _yaml(LEGACY_REGISTRY)
-    registry["analysis"]["reviewed_through"] = "ADR-0011"
+    reviewed_through = registry["analysis"]["reviewed_through"]
     registry_path = tmp_path / "working-registry.yaml"
     output_path = tmp_path / "working-matrix.yaml"
     registry_path.write_text(
@@ -132,10 +132,10 @@ def test_p03_working_dimension_set_can_extend_review_beyond_adr_0010(tmp_path: P
 
     assert result.returncode == 0, result.stderr
     matrix = _yaml(output_path)
-    assert "ADR-0011" in matrix["rows"]
+    assert reviewed_through in matrix["rows"]
     assert all(
         type(value) is bool
-        for value in matrix["rows"]["ADR-0011"]["role_effect_analysis"].values()
+        for value in matrix["rows"][reviewed_through]["role_effect_analysis"].values()
     )
 
 

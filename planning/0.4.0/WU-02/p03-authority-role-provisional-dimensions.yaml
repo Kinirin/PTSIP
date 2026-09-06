@@ -3,7 +3,7 @@ analysis:
   index_path: decisions/INDEX.yaml
   first_adr: ADR-0001
   last_adr: ADR-0023
-  reviewed_through: ADR-0011
+  reviewed_through: ADR-0012
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
@@ -179,6 +179,8 @@ dimensions:
         operator: NON_EMPTY
       - path: authority_semantics.pilot_report_contract
         operator: NON_EMPTY
+      - path: authority_semantics.contract
+        operator: NON_EMPTY
   define_classification_vocabulary:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -201,6 +203,8 @@ dimensions:
       - path: authority_semantics.blocking_gap_without_definite_violation_outcome
         operator: EQUALS
         value: INCOMPLETE
+      - path: authority_semantics.analysis_states
+        operator: NON_EMPTY
   reserve_project_declaration_authority:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -270,6 +274,12 @@ dimensions:
         - path: authority_semantics.template_selection_inference
           operator: EQUALS
           value: FORBIDDEN
+      - path: authority_semantics.authority
+        operator: EQUALS
+        value: EVIDENCE_ONLY
+      - path: authority_semantics.boundary_evidence_authority
+        operator: EQUALS
+        value: EVIDENCE_ONLY
   invalidate_stale_evidence:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -281,12 +291,15 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0004
     expression:
-      all:
-      - path: authority_semantics.evidence_provenance
+      any:
+      - all:
+        - path: authority_semantics.evidence_provenance
+          operator: NON_EMPTY
+        - path: authority_semantics.dependency_evidence_required_fields
+          operator: CONTAINS
+          value: PROVENANCE
+      - path: authority_semantics.boundary_evidence_provenance
         operator: NON_EMPTY
-      - path: authority_semantics.dependency_evidence_required_fields
-        operator: CONTAINS
-        value: PROVENANCE
   define_conformance_decision_rule:
     status: PROVISIONAL
     introduced_by: ADR-0004
@@ -393,9 +406,13 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0005
     expression:
-      path: authority_semantics.resolution_policy
-      operator: EQUALS
-      value: FIRST_VALID_RESOLUTION_WINS
+      any:
+      - path: authority_semantics.resolution_policy
+        operator: EQUALS
+        value: FIRST_VALID_RESOLUTION_WINS
+      - path: authority_semantics.conflict_policy
+        operator: EQUALS
+        value: EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS
   require_conditional_mutation:
     status: PROVISIONAL
     introduced_by: ADR-0005
@@ -837,3 +854,38 @@ dimensions:
       path: authority_semantics.tool_runtime_claims_full_implementation_by_activation
       operator: EQUALS
       value: false
+  forbid_absence_as_false_assertion:
+    status: PROVISIONAL
+    introduced_by: ADR-0012
+    expression:
+      path: authority_semantics.absence_may_become_false_assertion
+      operator: EQUALS
+      value: false
+  preserve_equivalent_value_origins:
+    status: PROVISIONAL
+    introduced_by: ADR-0012
+    expression:
+      path: authority_semantics.equivalent_values_preserve_all_origins
+      operator: EQUALS
+      value: true
+  require_producer_neutral_evidence_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0012
+    expression:
+      path: authority_semantics.producer_neutral
+      operator: EQUALS
+      value: true
+  preserve_producer_specific_interfaces:
+    status: PROVISIONAL
+    introduced_by: ADR-0012
+    expression:
+      path: authority_semantics.producer_specific_interfaces_replaced
+      operator: EQUALS
+      value: false
+  separate_semantic_identity_from_evaluation_identity:
+    status: PROVISIONAL
+    introduced_by: ADR-0012
+    expression:
+      path: authority_semantics.semantic_identity_separate_from_evaluation_identity
+      operator: EQUALS
+      value: true

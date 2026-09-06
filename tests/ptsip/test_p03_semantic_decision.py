@@ -35,12 +35,10 @@ def _pre_adr_0011_inputs(module, tmp_path: Path) -> tuple[Path, Path, Path]:
     registry = _yaml(REGISTRY)
     registry["analysis"]["reviewed_through"] = "ADR-0010"
 
-    for dimension_id in (
-        "preserve_classification_vocabulary",
-        "separate_specification_activation_from_profile_mutation",
-        "separate_specification_activation_from_tool_implementation",
-    ):
-        del registry["dimensions"][dimension_id]
+    for dimension_id, definition in list(registry["dimensions"].items()):
+        introduced_by = definition["introduced_by"]
+        if int(introduced_by.removeprefix("ADR-")) > 10:
+            del registry["dimensions"][dimension_id]
 
     refinements = {
         "activate_normative_family": {
