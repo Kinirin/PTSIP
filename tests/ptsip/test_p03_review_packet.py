@@ -50,6 +50,10 @@ def test_p03_adr_0011_review_packet_is_machine_prepared() -> None:
     assert automation["matched_predicate_proof_trace"] == "DETERMINISTIC"
     assert automation["residual_raw_feature_extraction"] == "DETERMINISTIC"
     assert automation["machine_residual_candidate_generation"] == "DETERMINISTIC"
+    assert (
+        automation["existing_dimension_candidate_routing"]
+        == "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE"
+    )
     assert automation["manual_full_dimension_scan_required"] is False
     assert automation["manual_raw_corpus_search_required"] is False
     assert automation["raw_feature_force_fit"] == "FORBIDDEN"
@@ -66,6 +70,9 @@ def test_p03_adr_0011_review_packet_is_machine_prepared() -> None:
     assert summary["matched_dimension_count"] == len(packet["matched_dimensions"])
     assert summary["machine_residual_candidate_count"] == len(
         packet["machine_residual_candidates"]
+    )
+    assert summary["candidate_existing_dimension_routing_count"] == len(
+        packet["candidate_existing_dimension_routing"]
     )
     assert summary["machine_residual_candidate_count"] == summary["residual_raw_feature_count"]
 
@@ -86,6 +93,31 @@ def test_p03_adr_0011_review_packet_is_machine_prepared() -> None:
         candidate_ids.add(candidate["candidate_id"])
 
 
+def test_p03_adr_0011_routing_preselects_obvious_existing_dimension_candidates() -> None:
+    packet = _run_packet("ADR-0011")
+
+    routed = {
+        item["raw_path"]: {
+            candidate["dimension_id"] for candidate in item["candidate_dimensions"]
+        }
+        for item in packet["candidate_existing_dimension_routing"]
+    }
+
+    assert "activate_normative_family" in routed[
+        "authority_semantics.activated_family"
+    ]
+    assert "bind_immutable_normative_snapshot" in routed[
+        "authority_semantics.immutable_normative_snapshot"
+    ]
+    assert "define_classification_vocabulary" in routed[
+        "authority_semantics.preserved_classifications"
+    ]
+
+    for item in packet["candidate_existing_dimension_routing"]:
+        assert item["routing_only"] is True
+        assert item["semantic_authority"] is False
+
+
 def test_p03_compact_packet_is_the_narrow_agent_input_surface() -> None:
     compact = _run_packet("ADR-0011", compact=True)
 
@@ -98,6 +130,7 @@ def test_p03_compact_packet_is_the_narrow_agent_input_surface() -> None:
         "raw_feature_force_fit": "FORBIDDEN",
     }
     assert isinstance(compact["matched_dimension_ids"], list)
+    assert isinstance(compact["candidate_existing_dimension_routing"], list)
     assert isinstance(compact["machine_residual_candidates"], list)
     assert compact["summary"]["raw_feature_count"] == 8
     assert "inputs" not in compact
