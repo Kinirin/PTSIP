@@ -84,7 +84,7 @@ def _prepare_stdout(adr_id: str) -> dict[str, object]:
 def test_p03_ai_decision_packet_is_small_and_non_authoritative() -> None:
     packet = _prepare_stdout("ADR-0011")
 
-    assert packet["schema_version"] == "ptsip-p03-authority-role-ai-decision-packet/v1"
+    assert packet["schema_version"] == "ptsip-p03-authority-role-ai-decision-packet/v2"
     assert packet["target"]["adr_id"] == "ADR-0011"
     assert packet["review_contract"]["semantic_authority"] == "NONE"
     assert packet["review_contract"]["runtime_authority"] == "NONE"
@@ -360,3 +360,93 @@ def test_p03_decision_ledger_suppresses_repeat_ai_reasoning_and_allows_explicit_
     assert second["candidate_id"] in {
         item["candidate_id"] for item in revisit_packet["questions"]
     }
+
+def test_p03_small_structured_semantic_views_preserve_meaning_without_broad_reads() -> None:
+    module = _load_module()
+
+    component_shape, sufficiency, precision = module._value_shape(
+        "ARRAY",
+        [
+            {
+                "id": "ptsip-evidence",
+                "classification": "PRODUCT",
+                "role": "IMPLEMENTATION",
+                "selector": "src/ptsip/evidence/**",
+            },
+            {
+                "id": "ptsip-source-compat",
+                "classification": "PRODUCT",
+                "role": "IMPLEMENTATION",
+                "selector": "src/ptsip/source_compat/**",
+            },
+        ],
+    )
+    assert sufficiency == "SUFFICIENT"
+    assert precision == "EXACT_VALUE"
+    assert component_shape["records"][0]["classification"] == "PRODUCT"
+    assert component_shape["records"][0]["selector"] == "src/ptsip/evidence/**"
+
+    binding_shape, sufficiency, precision = module._value_shape(
+        "ARRAY",
+        [
+            {
+                "family": "0.3.4-draft",
+                "revision": "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e",
+            }
+        ],
+    )
+    assert sufficiency == "SUFFICIENT"
+    assert precision == "STRUCTURAL_ONLY"
+    assert binding_shape["records"][0]["family"] == "0.3.4-draft"
+    assert binding_shape["records"][0]["revision"] == {"kind": "GIT_SHA1_REVISION"}
+    assert "EQUALS_EXACT" not in module._visible_predicate_modes("ARRAY", precision)
+    assert "CONTAINS_ALL_EXACT" not in module._visible_predicate_modes("ARRAY", precision)
+
+
+def test_p03_insufficient_semantic_context_fails_closed_to_defer() -> None:
+    module = _load_module()
+
+    shape, sufficiency, precision = module._value_shape(
+        "ARRAY",
+        [f"value-{index}" for index in range(17)],
+    )
+    assert shape["count"] == 17
+    assert sufficiency == "INSUFFICIENT"
+    assert precision == "PRESENCE_ONLY"
+
+    with pytest.raises(
+        module.SemanticDecisionError,
+        match="requires DEFER or targeted candidate expansion",
+    ):
+        module._validate_review_sufficiency(
+            {"review_sufficiency": "INSUFFICIENT"},
+            "NON_EFFECT",
+        )
+
+    module._validate_review_sufficiency(
+        {"review_sufficiency": "INSUFFICIENT"},
+        "DEFER",
+    )
+
+
+def test_p03_targeted_expansion_restores_exact_typed_candidate_context() -> None:
+    module = _load_module()
+    value = [f"value-{index}" for index in range(17)]
+
+    compact_shape, compact_sufficiency, _ = module._value_shape("ARRAY", value)
+    assert compact_sufficiency == "INSUFFICIENT"
+    assert "members" not in compact_shape
+
+    expanded_shape, expanded_sufficiency, expanded_precision = module._value_shape(
+        "ARRAY",
+        value,
+        expanded=True,
+    )
+    assert expanded_sufficiency == "SUFFICIENT"
+    assert expanded_precision == "EXACT_VALUE"
+    assert expanded_shape == {
+        "kind": "EXPANDED_EXACT",
+        "value_type": "ARRAY",
+        "value": value,
+    }
+
