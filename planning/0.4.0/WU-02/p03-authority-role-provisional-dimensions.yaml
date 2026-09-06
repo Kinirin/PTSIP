@@ -7,15 +7,19 @@ analysis:
   vocabulary_registration: false
   runtime_authority: NONE
 migration:
-  status: HISTORICAL_PROVISIONAL_REFERENCE
-  previous_method_analyzed_through: ADR-0010
-  successor: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
-  per_adr_semantic_dimension_growth_during_raw_collection: FORBIDDEN
-  legacy_dimensions_are_matching_target: false
-  legacy_dimensions_are_preferred_reuse_set: false
-  legacy_dimensions_are_immutable: false
-  post_collection_revision_allowed: true
-  post_collection_allowed_operations:
+  status: WORKING_PROVISIONAL_HYPOTHESES
+  raw_feature_migration_started_after: ADR-0010
+  raw_feature_source: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
+  current_dimension_count_at_migration: 79
+  dimensions_are_matching_target: false
+  dimensions_are_preferred_reuse_set: false
+  dimensions_are_immutable: false
+  dimension_growth_allowed: true
+  dimension_reduction_allowed: true
+  raw_feature_force_fit: FORBIDDEN
+  raw_feature_may_remain_unrepresented_pending_review: true
+  incremental_review_after_adr_0010: ALLOWED
+  allowed_operations:
     - KEEP
     - RENAME
     - MERGE
@@ -23,7 +27,7 @@ migration:
     - REMOVE
     - REPLACE
     - ADD_NEW_DIMENSION
-  semantic_clustering_source_after_migration: FULL_RAW_FEATURE_CORPUS
+  final_full_corpus_reconciliation_required: true
 dimensions:
   establish_canonical_identity:
     status: PROVISIONAL
