@@ -89,9 +89,6 @@ dimensions:
       - path: authority_semantics.ordered_determination
         operator: CONTAINS
         value: IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
-      - path: authority_semantics.promotion_is_independent_state_boundary
-        operator: EQUALS
-        value: true
   require_versioned_normative_contract:
     status: PROVISIONAL
     introduced_by: ADR-0001
@@ -300,9 +297,6 @@ dimensions:
       - path: authority_semantics.evidence_authority
         operator: EQUALS
         value: NON_AUTHORITATIVE
-      - path: authority_semantics.execution_input_authority
-        operator: EQUALS
-        value: ACCEPTED_DELTA_BUNDLE_ONLY
   invalidate_stale_evidence:
     status: PROVISIONAL
     introduced_by: ADR-0003
@@ -411,9 +405,6 @@ dimensions:
         operator: NON_EMPTY
       - path: authority_semantics.activated_family
         operator: NON_EMPTY
-      - path: authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family
-        operator: EQUALS
-        value: true
   separate_decision_authority_from_profile:
     status: PROVISIONAL
     introduced_by: ADR-0005
@@ -727,13 +718,9 @@ dimensions:
     status: PROVISIONAL
     introduced_by: ADR-0008
     expression:
-      any:
-      - path: authority_semantics.component_and_associated_artifact_ids_share_namespace
-        operator: EQUALS
-        value: true
-      - path: authority_semantics.project_profile_namespace
-        operator: EQUALS
-        value: pp.<major>.<minor>
+      path: authority_semantics.component_and_associated_artifact_ids_share_namespace
+      operator: EQUALS
+      value: true
   forbid_fabricated_reference_targets:
     status: PROVISIONAL
     introduced_by: ADR-0008
@@ -1232,7 +1219,22 @@ dimensions:
     introduced_by: ADR-0016
     expression:
       path: authority_semantics.states
-      operator: NON_EMPTY
+      operator: EQUALS
+      value:
+      - PLAN_BOUND
+      - AUTHORIZED
+      - PRECONDITIONS_VERIFIED
+      - FINAL_POINT_APPLIED
+      - SOURCE_REANALYZED
+      - SOURCE_COMPLETE
+      - ASYNC_APPLIED
+      - SOURCE_REMOVED
+      - CANONICAL_SOURCE_COMPLETE
+      - GLOBAL_VALIDATION
+      - PROMOTION_READY
+      - PROMOTED
+      - POST_PROMOTION_VERIFIED
+      - RECOVERY_REQUIRED
   preserve_existing_profile_contract_without_implicit_upgrade:
     status: PROVISIONAL
     introduced_by: ADR-0017
@@ -1339,7 +1341,8 @@ dimensions:
     introduced_by: ADR-0019
     expression:
       path: authority_semantics.minor_trigger
-      operator: NON_EMPTY
+      operator: EQUALS
+      value: PROFILE_CONTRACT_STRUCTURE_OR_SEMANTICS_CHANGE_WITHIN_LIFECYCLE_GENERATION
   separate_profile_instance_revision_from_contract_version:
     status: PROVISIONAL
     introduced_by: ADR-0019
@@ -1373,3 +1376,83 @@ dimensions:
       - ANALYZE
       - MIGRATE
       - CREATE
+  define_source_compatibility_boundary:
+    status: PROVISIONAL
+    introduced_by: ADR-0013
+    expression:
+      path: authority_semantics.compatibility_boundary
+      operator: EQUALS
+      value: src/ptsip/source_compat
+  define_staged_migration_analysis_pipeline:
+    status: PROVISIONAL
+    introduced_by: ADR-0014
+    expression:
+      path: authority_semantics.pipeline
+      operator: EQUALS
+      value:
+      - SOURCE_COVERAGE_PROJECTION
+      - REPOSITORY_ELEMENT_RESOLUTION
+      - OBLIGATION_TAXONOMY
+      - LIFECYCLE_COMPATIBILITY
+      - NORMALIZED_EVIDENCE_CORRELATION
+      - ACCEPTED_TARGET_STATE_COMPATIBILITY
+      - SOURCE_MIGRATION_COMPLETION
+  restrict_migration_execution_input_to_accepted_delta_bundle:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.execution_input_authority
+      operator: EQUALS
+      value: ACCEPTED_DELTA_BUNDLE_ONLY
+  separate_promotion_as_independent_state_boundary:
+    status: PROVISIONAL
+    introduced_by: ADR-0016
+    expression:
+      path: authority_semantics.promotion_is_independent_state_boundary
+      operator: EQUALS
+      value: true
+  preserve_tool_development_normative_family:
+    status: PROVISIONAL
+    introduced_by: ADR-0017
+    expression:
+      path: authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family
+      operator: EQUALS
+      value: true
+  define_migration_subsystem_component_contract:
+    status: PROVISIONAL
+    introduced_by: ADR-0018
+    expression:
+      path: authority_semantics.components
+      operator: EQUALS
+      value:
+      - classification: PRODUCT
+        id: ptsip-evidence
+        role: IMPLEMENTATION
+        selector: src/ptsip/evidence/**
+      - classification: PRODUCT
+        id: ptsip-source-compat
+        role: IMPLEMENTATION
+        selector: src/ptsip/source_compat/**
+      - classification: PRODUCT
+        id: ptsip-migration
+        role: IMPLEMENTATION
+        selector: src/ptsip/migration/**
+  define_migration_subsystem_common_properties:
+    status: PROVISIONAL
+    introduced_by: ADR-0018
+    expression:
+      path: authority_semantics.common_properties
+      operator: EQUALS
+      value:
+        compatibility_owner: tool
+        executable: false
+        release_owner: tool
+        runtime_required: false
+        shipped: true
+  define_project_profile_version_namespace:
+    status: PROVISIONAL
+    introduced_by: ADR-0019
+    expression:
+      path: authority_semantics.project_profile_namespace
+      operator: EQUALS
+      value: pp.<major>.<minor>

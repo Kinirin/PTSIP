@@ -1,0 +1,183 @@
+schema_version: ptsip-p03-semantic-correction/v1
+
+correction:
+  id: P03-SEMANTIC-CORRECTION-0013-0019
+  status: APPLIED_AND_VERIFIED
+  applied_on: '2026-09-06'
+  authority: PROJECT_OWNER
+  approval_evidence: EXPLICIT_CURRENT_TASK_INSTRUCTION
+  approved_correction_count: 10
+  new_semantic_analysis_performed: false
+  canonical_adr_files_modified: false
+  prior_decision_packets_or_responses_overwritten: false
+  correction_outside_approved_set: false
+
+scope:
+  first_adr: ADR-0013
+  through: ADR-0019
+  registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
+  decision_ledger: planning/0.4.0/WU-02/p03-authority-role-semantic-decisions.yaml
+  generated_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
+
+corrections:
+  - adr_id: ADR-0013
+    candidate_id: raw-candidate:3a45a7011a56042b9001
+    raw_path: authority_semantics.compatibility_boundary
+    before:
+      decision: NON_EFFECT
+      target_dimension: null
+      proposed_dimension_id: null
+      predicate_mode: null
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: define_source_compatibility_boundary
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0014
+    candidate_id: raw-candidate:79baed5bdf0e242c7c7e
+    raw_path: authority_semantics.pipeline
+    before:
+      decision: NON_EFFECT
+      target_dimension: null
+      proposed_dimension_id: null
+      predicate_mode: null
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: define_staged_migration_analysis_pipeline
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0016
+    candidate_id: raw-candidate:ec9a0e78c82358b57e18
+    raw_path: authority_semantics.execution_input_authority
+    before:
+      decision: REFINE_EXISTING
+      target_dimension: deny_derived_architecture_authority
+      proposed_dimension_id: null
+      predicate_mode: EQUALS_EXACT
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: restrict_migration_execution_input_to_accepted_delta_bundle
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0016
+    candidate_id: raw-candidate:009397e8e160d1cc08a0
+    raw_path: authority_semantics.promotion_is_independent_state_boundary
+    before:
+      decision: REFINE_EXISTING
+      target_dimension: require_architectural_boundary
+      proposed_dimension_id: null
+      predicate_mode: EQUALS_EXACT
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: separate_promotion_as_independent_state_boundary
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0016
+    candidate_id: raw-candidate:966d1b0bca85129e36f6
+    raw_path: authority_semantics.states
+    before:
+      decision: NEW_DIMENSION
+      proposed_dimension_id: preserve_migration_apply_states
+      predicate_mode: NON_EMPTY
+    after:
+      decision: NEW_DIMENSION
+      proposed_dimension_id: preserve_migration_apply_states
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0017
+    candidate_id: raw-candidate:fe8ea2f7f7d947ac0677
+    raw_path: authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family
+    before:
+      decision: REFINE_EXISTING
+      target_dimension: activate_normative_family
+      proposed_dimension_id: null
+      predicate_mode: EQUALS_EXACT
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: preserve_tool_development_normative_family
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0018
+    candidate_id: raw-candidate:db71057134bed4a0522d
+    raw_path: authority_semantics.components
+    before:
+      decision: NON_EFFECT
+      target_dimension: null
+      proposed_dimension_id: null
+      predicate_mode: null
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: define_migration_subsystem_component_contract
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0018
+    candidate_id: raw-candidate:8bacabedf2ae36212ff9
+    raw_path: authority_semantics.common_properties
+    before:
+      decision: NON_EFFECT
+      target_dimension: null
+      proposed_dimension_id: null
+      predicate_mode: null
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: define_migration_subsystem_common_properties
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0019
+    candidate_id: raw-candidate:17c99de612321ac51f58
+    raw_path: authority_semantics.project_profile_namespace
+    before:
+      decision: REFINE_EXISTING
+      target_dimension: require_shared_identity_namespace
+      proposed_dimension_id: null
+      predicate_mode: EQUALS_EXACT
+    after:
+      decision: NEW_DIMENSION
+      target_dimension: null
+      proposed_dimension_id: define_project_profile_version_namespace
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+  - adr_id: ADR-0019
+    candidate_id: raw-candidate:346e19d74ac0a65660e7
+    raw_path: authority_semantics.minor_trigger
+    before:
+      decision: NEW_DIMENSION
+      proposed_dimension_id: define_project_profile_minor_version_trigger
+      predicate_mode: NON_EMPTY
+    after:
+      decision: NEW_DIMENSION
+      proposed_dimension_id: define_project_profile_minor_version_trigger
+      predicate_mode: EQUALS_EXACT
+      resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
+
+verification:
+  matrix_generation:
+    command: py -3.14 .github/scripts/p03_authority_role_matrix.py --repo-root . --write
+    status: PASS
+    reviewed_adr_count: 19
+    provisional_dimension_count: 150
+  matrix_validation:
+    command: py -3.14 .github/scripts/p03_authority_role_matrix.py --repo-root . --check
+    status: PASS
+    reviewed_adr_count: 19
+    provisional_dimension_count: 150
+  focused_pytest:
+    command: py -3.14 -m pytest tests/ptsip/test_p03_raw_feature_extraction.py tests/ptsip/test_p03_review_packet.py tests/ptsip/test_p03_semantic_decision.py tests/ptsip/test_p03_semantic_reuse.py -q -p no:cacheprovider
+    status: PASS
+    passed: 24

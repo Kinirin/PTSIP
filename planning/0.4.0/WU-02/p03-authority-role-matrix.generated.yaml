@@ -149,6 +149,14 @@ dimensions:
 - forbid_semantic_versioning_for_project_profile_namespace
 - forbid_tool_compatibility_inference_from_numeric_equality
 - require_explicit_project_profile_capability_for_tool_operations
+- define_source_compatibility_boundary
+- define_staged_migration_analysis_pipeline
+- restrict_migration_execution_input_to_accepted_delta_bundle
+- separate_promotion_as_independent_state_boundary
+- preserve_tool_development_normative_family
+- define_migration_subsystem_component_contract
+- define_migration_subsystem_common_properties
+- define_project_profile_version_namespace
 rows:
   ADR-0001:
     source_path: decisions/ADR-0001-establish-ptsip.yaml
@@ -295,6 +303,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0002:
     source_path: decisions/ADR-0002-external-tooling-non-intrusion.yaml
     role_effect_analysis:
@@ -440,6 +456,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0003:
     source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
     role_effect_analysis:
@@ -585,6 +609,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0004:
     source_path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml
     role_effect_analysis:
@@ -730,6 +762,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0005:
     source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.yaml
     role_effect_analysis:
@@ -875,6 +915,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0006:
     source_path: decisions/ADR-0006-establish-vpms-verification-purpose-management.yaml
     role_effect_analysis:
@@ -1020,6 +1068,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0007:
     source_path: decisions/ADR-0007-primary-lifecycle-boundary-determination.yaml
     role_effect_analysis:
@@ -1165,6 +1221,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0008:
     source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml
     role_effect_analysis:
@@ -1310,6 +1374,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0009:
     source_path: decisions/ADR-0009-responsibility-map-declaration-authority.yaml
     role_effect_analysis:
@@ -1455,6 +1527,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0010:
     source_path: decisions/ADR-0010-versioned-draft-profile-transition.yaml
     role_effect_analysis:
@@ -1600,6 +1680,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0011:
     source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
     role_effect_analysis:
@@ -1745,6 +1833,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0012:
     source_path: decisions/ADR-0012-universal-normalized-evidence-contract.yaml
     role_effect_analysis:
@@ -1890,6 +1986,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0013:
     source_path: decisions/ADR-0013-common-source-model-family-specific-semantics.yaml
     role_effect_analysis:
@@ -2035,6 +2139,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: true
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0014:
     source_path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.yaml
     role_effect_analysis:
@@ -2180,6 +2292,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: true
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0015:
     source_path: decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.yaml
     role_effect_analysis:
@@ -2325,13 +2445,21 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0016:
     source_path: decisions/ADR-0016-strongly-typed-migration-state-machine-checkpoint-ledger.yaml
     role_effect_analysis:
       establish_canonical_identity: false
       establish_decision_criterion_priority: false
       define_classification_basis: false
-      require_architectural_boundary: true
+      require_architectural_boundary: false
       require_versioned_normative_contract: false
       constrain_tool_state_location: false
       reserve_project_structure_authority: false
@@ -2346,7 +2474,7 @@ rows:
       reserve_project_declaration_authority: false
       require_typed_evidence_relationships: false
       constrain_machine_output_structure: false
-      deny_derived_architecture_authority: true
+      deny_derived_architecture_authority: false
       invalidate_stale_evidence: false
       require_evidence_provenance: false
       define_conformance_decision_rule: false
@@ -2470,6 +2598,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: true
+      separate_promotion_as_independent_state_boundary: true
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0017:
     source_path: decisions/ADR-0017-tool-version-profile-contract-independence.yaml
     role_effect_analysis:
@@ -2502,7 +2638,7 @@ rows:
       permit_stricter_project_policy: false
       require_stable_rule_identity: false
       reject_architecture_proxy_inference: false
-      activate_normative_family: true
+      activate_normative_family: false
       separate_decision_authority_from_profile: false
       require_stable_decision_identity: false
       select_resolution_winner: false
@@ -2615,6 +2751,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: true
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: false
   ADR-0018:
     source_path: decisions/ADR-0018-separate-product-components-for-migration-subsystems.yaml
     role_effect_analysis:
@@ -2760,6 +2904,14 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: false
       forbid_tool_compatibility_inference_from_numeric_equality: false
       require_explicit_project_profile_capability_for_tool_operations: false
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: true
+      define_migration_subsystem_common_properties: true
+      define_project_profile_version_namespace: false
   ADR-0019:
     source_path: decisions/ADR-0019-independent-project-profile-versioning.yaml
     role_effect_analysis:
@@ -2823,7 +2975,7 @@ rows:
       separate_declared_relationships_from_evidence: false
       deny_relationship_permission_grant: false
       constrain_associated_artifact_ownership: false
-      require_shared_identity_namespace: true
+      require_shared_identity_namespace: false
       forbid_fabricated_reference_targets: false
       define_source_declaration_modes: false
       require_explicit_template_selection: false
@@ -2905,7 +3057,15 @@ rows:
       forbid_semantic_versioning_for_project_profile_namespace: true
       forbid_tool_compatibility_inference_from_numeric_equality: true
       require_explicit_project_profile_capability_for_tool_operations: true
+      define_source_compatibility_boundary: false
+      define_staged_migration_analysis_pipeline: false
+      restrict_migration_execution_input_to_accepted_delta_bundle: false
+      separate_promotion_as_independent_state_boundary: false
+      preserve_tool_development_normative_family: false
+      define_migration_subsystem_component_contract: false
+      define_migration_subsystem_common_properties: false
+      define_project_profile_version_namespace: true
 validation:
   rectangular: true
   reviewed_row_count: 19
-  dimension_count: 142
+  dimension_count: 150

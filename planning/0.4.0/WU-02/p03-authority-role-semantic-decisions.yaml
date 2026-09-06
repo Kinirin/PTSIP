@@ -273,16 +273,16 @@ records:
   raw-candidate:3a45a7011a56042b9001:
     first_reviewed_in: ADR-0013
     raw_path: authority_semantics.compatibility_boundary
-    decision: NON_EFFECT
+    decision: NEW_DIMENSION
     target_dimension: null
-    proposed_dimension_id: null
-    predicate_mode: null
-    reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+    proposed_dimension_id: define_source_compatibility_boundary
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 59983f86bbe42ffb2e211a2374a7bbee6de9af211c4ab864fc54f26b010abb3c
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:1f569fbd1841eb42ca77:
     first_reviewed_in: ADR-0013
     raw_path: authority_semantics.family_semantics
@@ -470,16 +470,16 @@ records:
   raw-candidate:79baed5bdf0e242c7c7e:
     first_reviewed_in: ADR-0014
     raw_path: authority_semantics.pipeline
-    decision: NON_EFFECT
+    decision: NEW_DIMENSION
     target_dimension: null
-    proposed_dimension_id: null
-    predicate_mode: null
-    reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+    proposed_dimension_id: define_staged_migration_analysis_pipeline
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 3fe26b3672a3cfc075363f65527918a5207c717a74172e95efaf9894c9159692
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:32c98954df11bf7abcc0:
     first_reviewed_in: ADR-0014
     raw_path: authority_semantics.removal_or_async_compensates_required
@@ -808,16 +808,16 @@ records:
   raw-candidate:ec9a0e78c82358b57e18:
     first_reviewed_in: ADR-0016
     raw_path: authority_semantics.execution_input_authority
-    decision: REFINE_EXISTING
-    target_dimension: deny_derived_architecture_authority
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: restrict_migration_execution_input_to_accepted_delta_bundle
     predicate_mode: EQUALS_EXACT
-    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 2373b7a2f5a8f841d34b39d7f282ce8923e2fc42e0a6cc1b483a9e52dfa2b7e3
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:e5b39a4d5e50a9f7ea97:
     first_reviewed_in: ADR-0016
     raw_path: authority_semantics.per_source_final_point_write
@@ -860,16 +860,16 @@ records:
   raw-candidate:009397e8e160d1cc08a0:
     first_reviewed_in: ADR-0016
     raw_path: authority_semantics.promotion_is_independent_state_boundary
-    decision: REFINE_EXISTING
-    target_dimension: require_architectural_boundary
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: separate_promotion_as_independent_state_boundary
     predicate_mode: EQUALS_EXACT
-    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 2373b7a2f5a8f841d34b39d7f282ce8923e2fc42e0a6cc1b483a9e52dfa2b7e3
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:a0641c8f778ee6a6b659:
     first_reviewed_in: ADR-0016
     raw_path: authority_semantics.promotion_success_requires_rediscovery
@@ -929,13 +929,13 @@ records:
     decision: NEW_DIMENSION
     target_dimension: null
     proposed_dimension_id: preserve_migration_apply_states
-    predicate_mode: NON_EMPTY
+    predicate_mode: EQUALS_EXACT
     reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 2373b7a2f5a8f841d34b39d7f282ce8923e2fc42e0a6cc1b483a9e52dfa2b7e3
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:c94e36cfc7f993d08f96:
     first_reviewed_in: ADR-0017
     raw_path: authority_semantics.existing_profile_examples_remain_0_3_6_draft_without_contract_change
@@ -991,16 +991,16 @@ records:
   raw-candidate:fe8ea2f7f7d947ac0677:
     first_reviewed_in: ADR-0017
     raw_path: authority_semantics.spec_0_3_7_draft_remains_tool_development_normative_family
-    decision: REFINE_EXISTING
-    target_dimension: activate_normative_family
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: preserve_tool_development_normative_family
     predicate_mode: EQUALS_EXACT
-    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 8657e8357e66cef6736fb77653e560cff6ff341848489d53b5889b778d4894d5
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:70225c75321347d11383:
     first_reviewed_in: ADR-0017
     raw_path: authority_semantics.superseded_scope
@@ -1056,29 +1056,29 @@ records:
   raw-candidate:8bacabedf2ae36212ff9:
     first_reviewed_in: ADR-0018
     raw_path: authority_semantics.common_properties
-    decision: NON_EFFECT
+    decision: NEW_DIMENSION
     target_dimension: null
-    proposed_dimension_id: null
-    predicate_mode: null
-    reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+    proposed_dimension_id: define_migration_subsystem_common_properties
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: c3e17d4ab7770141973798f0dc3035b0e66e5e7c823b295d8eb4ca2180bb5424
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:db71057134bed4a0522d:
     first_reviewed_in: ADR-0018
     raw_path: authority_semantics.components
-    decision: NON_EFFECT
+    decision: NEW_DIMENSION
     target_dimension: null
-    proposed_dimension_id: null
-    predicate_mode: null
-    reason_code: PARAMETER_REFERENCE_OR_NON_EFFECT_DETAIL
+    proposed_dimension_id: define_migration_subsystem_component_contract
+    predicate_mode: EQUALS_EXACT
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: c3e17d4ab7770141973798f0dc3035b0e66e5e7c823b295d8eb4ca2180bb5424
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:0648c62c79d6435f21c2:
     first_reviewed_in: ADR-0018
     raw_path: authority_semantics.project_profile_version_migration_authorized
@@ -1215,13 +1215,13 @@ records:
     decision: NEW_DIMENSION
     target_dimension: null
     proposed_dimension_id: define_project_profile_minor_version_trigger
-    predicate_mode: NON_EMPTY
+    predicate_mode: EQUALS_EXACT
     reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 9aa8c4d3820f2a790cc91ed11658ac658bc1a6589e29a4e47d195116084403b4
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:e6547fb7225103907747:
     first_reviewed_in: ADR-0019
     raw_path: authority_semantics.project_instance_change_bumps_contract_version
@@ -1238,16 +1238,16 @@ records:
   raw-candidate:17c99de612321ac51f58:
     first_reviewed_in: ADR-0019
     raw_path: authority_semantics.project_profile_namespace
-    decision: REFINE_EXISTING
-    target_dimension: require_shared_identity_namespace
-    proposed_dimension_id: null
+    decision: NEW_DIMENSION
+    target_dimension: null
+    proposed_dimension_id: define_project_profile_version_namespace
     predicate_mode: EQUALS_EXACT
-    reason_code: SAME_EFFECT_DIFFERENT_MACHINE_FIELD
+    reason_code: DISTINCT_REUSABLE_AUTHORITY_EFFECT
     packet_fingerprint: 9aa8c4d3820f2a790cc91ed11658ac658bc1a6589e29a4e47d195116084403b4
     semantic_authority: NONE
     runtime_authority: NONE
     vocabulary_registration: false
-    resolution_source: AI_DESIGN_TIME_ADVISORY
+    resolution_source: PROJECT_OWNER_APPROVED_CORRECTION
   raw-candidate:fa3e371f5394fd02ca61:
     first_reviewed_in: ADR-0019
     raw_path: authority_semantics.semantic_versioning
