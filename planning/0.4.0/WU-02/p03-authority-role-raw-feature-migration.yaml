@@ -67,12 +67,19 @@ raw_binary_projection:
 automation:
   collector: .github/scripts/p03_authority_role_raw_features.py
   generated_snapshot: planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml
+  review_packet_generator: .github/scripts/p03_authority_role_review_packet.py
+  review_packet_output_dir: planning/0.4.0/WU-02/p03-authority-role-review-packets
   legacy_semantic_analyzer: .github/scripts/p03_authority_role_matrix.py
   legacy_semantic_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
   legacy_semantic_matrix: planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml
   future_adr_0011_through_0023_manual_dimension_creation_required: ONLY_WHEN_NEW_SEMANTIC_AXIS_IS_JUSTIFIED
   automatic_existing_dimension_evaluation: REQUIRED
+  automatic_matched_predicate_proof_trace: REQUIRED
+  automatic_residual_raw_feature_extraction: REQUIRED
   manual_full_79_dimension_comparison: FORBIDDEN
+  per_adr_agent_primary_input: GENERATED_REVIEW_PACKET_ONLY
+  direct_full_dimension_registry_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
+  direct_full_raw_corpus_read_by_agent: FORBIDDEN_UNLESS_AUTOMATION_FAILURE
   force_fit_raw_feature_to_existing_dimension: FORBIDDEN
   newly_justified_dimension_may_be_added: true
   new_dimension_requires_automatic_prior_adr_backfill: true
@@ -91,11 +98,14 @@ incremental_semantic_review:
   starting_after: ADR-0010
   per_adr_or_small_batch_review: ALLOWED
   existing_dimension_evaluation: DETERMINISTIC_AUTOMATION
-  residual_raw_semantic_review: HUMAN_OR_AGENT_DESIGN_REVIEW
+  matched_predicate_proof_trace: DETERMINISTIC_AUTOMATION
+  residual_raw_feature_extraction: DETERMINISTIC_AUTOMATION
+  residual_raw_semantic_review: HUMAN_OR_AGENT_DESIGN_REVIEW_OF_REVIEW_PACKET_ONLY
   new_dimension_creation: ALLOWED_WHEN_SEMANTICALLY_JUSTIFIED
   existing_dimension_refinement: ALLOWED
   force_fit_to_current_dimension_set: FORBIDDEN
-  full_manual_comparison_against_all_existing_dimensions: NOT_REQUIRED
+  full_manual_comparison_against_all_existing_dimensions: FORBIDDEN_BY_DEFAULT
+  review_packet_must_precede_agent_semantic_reasoning: true
   generated_matrix_backfill_after_dimension_change: REQUIRED
 
 final_corpus_reconciliation:
@@ -137,6 +147,15 @@ invariants:
 
 review_progress:
   ADR-0001_THROUGH_0010_SEMANTIC_DIMENSIONS: WORKING_PROVISIONAL_HYPOTHESES
+  ADR-0011_PREVIOUS_LOCAL_AD_HOC_ANALYSIS:
+    status: DISCARDED_NON_AUTHORITATIVE
+    discarded_outputs:
+      - POSSIBLE_EXISTING_CORRESPONDENCE
+      - UNCLUSTERED_RAW_FEATURE_MANUAL_COMPARISON_RESULT
+    reason: MANUAL_COMPARISON_ANCHORED_TO_CURRENT_DIMENSION_SET
+    repository_semantic_change_from_discarded_analysis: NONE
+    current_semantic_review_state: RESET_NOT_COMPLETED
+    next_required_input: GENERATED_REVIEW_PACKET
   ADR-0001_THROUGH_0023_RAW_COLLECTION: GENERATED_COMPLETE
   RAW_COLLECTION_SUMMARY:
     adr_count: 23
