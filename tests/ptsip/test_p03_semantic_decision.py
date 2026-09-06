@@ -32,39 +32,6 @@ def _load_module():
 
 
 def _pre_adr_0011_inputs(module, tmp_path: Path) -> tuple[Path, Path, Path]:
-<<<<<<< HEAD
-    registry = _yaml(REGISTRY)
-    registry["analysis"]["reviewed_through"] = "ADR-0010"
-
-    for dimension_id, definition in list(registry["dimensions"].items()):
-        introduced_by = definition["introduced_by"]
-        if int(introduced_by.removeprefix("ADR-")) > 10:
-            del registry["dimensions"][dimension_id]
-
-    refinements = {
-        "activate_normative_family": {
-            "path": "authority_semantics.activated_family",
-            "operator": "NON_EMPTY",
-        },
-        "bind_immutable_normative_snapshot": {
-            "path": "authority_semantics.immutable_normative_snapshot",
-            "operator": "NON_EMPTY",
-        },
-        "define_classification_vocabulary": {
-            "path": "authority_semantics.toolchain_is_current_ptsip_classification",
-            "operator": "EQUALS",
-            "value": False,
-        },
-    }
-    for dimension_id, condition in refinements.items():
-        expression = registry["dimensions"][dimension_id]["expression"]
-        alternatives = expression["any"]
-        assert condition in alternatives
-        alternatives.remove(condition)
-        registry["dimensions"][dimension_id]["expression"] = (
-            alternatives[0] if len(alternatives) == 1 else {"any": alternatives}
-        )
-=======
     # Reconstruct the immutable ADR-0010 review prefix from current repository
     # state. Later ADR dimensions/refinements are reversed from the decision
     # ledger, so this fixture never needs per-ADR count/name maintenance.
@@ -75,7 +42,6 @@ def _pre_adr_0011_inputs(module, tmp_path: Path) -> tuple[Path, Path, Path]:
         LEDGER,
         "ADR-0010",
     )
->>>>>>> origin/dev/0.4.0
 
     registry_path = tmp_path / "dimensions.yaml"
     matrix_path = tmp_path / "matrix.yaml"
