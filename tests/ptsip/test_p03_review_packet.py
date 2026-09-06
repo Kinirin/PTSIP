@@ -125,18 +125,26 @@ def test_p03_compact_packet_is_the_narrow_agent_input_surface() -> None:
     assert compact["target"]["adr_id"] == "ADR-0011"
     assert compact["automation"] == {
         "existing_dimension_evaluation": "DETERMINISTIC",
+        "existing_dimension_candidate_routing": "DETERMINISTIC_LEXICAL_NON_AUTHORITATIVE",
         "manual_full_dimension_scan_required": False,
         "manual_raw_corpus_search_required": False,
         "raw_feature_force_fit": "FORBIDDEN",
     }
     assert isinstance(compact["matched_dimension_ids"], list)
-    assert isinstance(compact["candidate_existing_dimension_routing"], list)
-    assert isinstance(compact["machine_residual_candidates"], list)
+    assert isinstance(compact["routed_residual_candidates"], list)
+    assert isinstance(compact["unrouted_residual_candidates"], list)
     assert compact["summary"]["raw_feature_count"] == 8
+    assert (
+        compact["summary"]["routed_residual_candidate_count"]
+        + compact["summary"]["unrouted_residual_candidate_count"]
+        == compact["summary"]["residual_raw_feature_count"]
+    )
     assert "inputs" not in compact
     assert "covered_raw_features" not in compact
     assert "residual_raw_features" not in compact
     assert "matched_dimensions" not in compact
+    assert "candidate_existing_dimension_routing" not in compact
+    assert "machine_residual_candidates" not in compact
 
 
 def test_p03_review_packet_does_not_materialize_semantic_decision() -> None:
