@@ -1,0 +1,63 @@
+schema_version: ptsip-p03-authority-role-owner-dispositions/v1
+owner_decisions:
+  status: PROJECT_OWNER_APPROVED
+  decided_on: '2026-09-07'
+  scope:
+    review_batch: P03_INITIAL_CLOSED_VOCABULARY_BATCH_03_SPLIT_RESOLUTION
+    approved_split_source_dimensions: 2
+  source_dimension_model: 184_DISPOSITION_PRIMARY
+  decision_count: 2
+  vocabulary_registration: false
+  runtime_authority: NONE
+  provisional_registry_mutated: false
+  source_matrix_mutated: false
+  review_principles:
+    predicate_multiplicity_alone_authorizes_split: false
+    generic_machine_predicate_responsibility_split_without_criteria: FORBIDDEN
+    owner_explicit_case_specific_split_approval_satisfies_review_gate: true
+    split_scope_must_be_bound_to_named_source_dimension: true
+
+decisions:
+  S02:
+    source_dimension: forbid_derived_architecture_mutation
+    decision: SPLIT
+    resulting_effects:
+      - dimension: deny_derived_architecture_authority
+        disposition: MOVE_TO_EXISTING_APPROVED_EFFECT
+        predicate_paths:
+          - authority_semantics.materializer_authority
+        semantic_scope: MATERIALIZER_NON_AUTHORITATIVE_STATUS
+      - dimension: govern_decision_precedence_and_resolution
+        disposition: MOVE_TO_EXISTING_APPROVED_EFFECT
+        predicate_paths:
+          - authority_semantics.materializer_may_silently_repair_conflicts
+        semantic_scope: FORBID_SILENT_CONFLICT_REPAIR
+      - dimension: forbid_materializer_classification_mutation
+        disposition: NEW_OWNER_APPROVED_EFFECT
+        predicate_paths:
+          - authority_semantics.materializer_may_change_classification
+        semantic_scope: FORBID_NON_AUTHORITATIVE_MATERIALIZER_CLASSIFICATION_MUTATION
+    rationale: OWNER_APPROVED_CASE_SPECIFIC_SEPARATION_OF_AUTHORITY_STATUS_CONFLICT_REPAIR_AND_CLASSIFICATION_MUTATION
+
+  S03:
+    source_dimension: preserve_migration_engine_independent_of_self_adoption
+    decision: SPLIT
+    resulting_effects:
+      - dimension: preserve_migration_engine_capability
+        disposition: NEW_OWNER_APPROVED_EFFECT
+        predicate_paths:
+          - authority_semantics.migration_engine_remains_implemented
+        semantic_scope: PRESERVE_MIGRATION_ENGINE_CAPABILITY_INDEPENDENTLY_OF_REPOSITORY_SELF_ADOPTION
+      - dimension: separate_migration_capability_from_repository_adoption
+        disposition: NEW_OWNER_APPROVED_EFFECT
+        predicate_paths:
+          - authority_semantics.migration_capability_separate_from_repository_adoption
+        semantic_scope: SEPARATE_MIGRATION_CAPABILITY_RESPONSIBILITY_FROM_REPOSITORY_ADOPTION
+    rationale: OWNER_APPROVED_CASE_SPECIFIC_SEPARATION_OF_CAPABILITY_PRESERVATION_AND_ADOPTION_BOUNDARY
+
+validation:
+  approved_split_count: 2
+  new_effect_token_count: 3
+  existing_effect_target_count: 2
+  stable_vocabulary_registration: false
+  runtime_authority: NONE

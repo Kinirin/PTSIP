@@ -8,7 +8,7 @@ reconciliation:
     reconciled_source_dimension_count: 184
     semantic_coverage_unresolved_residual_count: 0
     exact_duplicate_expression_count: 0
-    proposed_initial_closed_vocabulary_candidate_count: 98
+    proposed_initial_closed_vocabulary_candidate_count: 99
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
   primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -29,11 +29,11 @@ reconciliation:
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
-    individually_decided_source_dimension_count: 79
-    pending_source_dimension_count: 2
-    owner_decided_source_dimension_count: 182
-    proposed_effect_token_count: 98
-    owner_review_gate: IN_PROGRESS
+    individually_decided_source_dimension_count: 81
+    pending_source_dimension_count: 0
+    owner_decided_source_dimension_count: 184
+    proposed_effect_token_count: 99
+    owner_review_gate: TOKEN_NAME_CONFIRMATION_PENDING
     pending_groups_are_not_premerged: true
   invariants:
     - SOURCE_184_DISPOSITIONS_ARE_PRIMARY
@@ -279,8 +279,9 @@ source_dimension_dispositions:
     approved_group: govern_project_declaration_composition
     owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D26
   forbid_derived_architecture_mutation:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-split-resolution.yaml#decisions.S02
   define_effective_map_contract:
     disposition: OWNER_APPROVED_MERGE
     approved_group: govern_project_declaration_composition
@@ -477,8 +478,9 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_project_profile_migration_authorization
   preserve_migration_engine_independent_of_self_adoption:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-split-resolution.yaml#decisions.S03
   restrict_mutation_promotion_verification_to_fixture_repositories:
     disposition: OWNER_APPROVED_KEEP
     approved_group: null
