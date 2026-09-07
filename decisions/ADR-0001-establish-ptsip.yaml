@@ -17,9 +17,28 @@ authority_semantics:
   - LIFECYCLE_OWNERSHIP
   requires_product_toolchain_boundary: true
   versioned_specification: true
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - declare_canonical_identity
+  - define_deterministic_semantic_identity
+  - govern_classification_model
+  - govern_decision_precedence_and_resolution
+  - govern_dependency_boundary
+  - govern_normative_family_lifecycle
+  - require_architectural_boundary
+  - require_versioned_normative_contract
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: ptsip_establishment
 relations:
   supersedes: []
   amends: []

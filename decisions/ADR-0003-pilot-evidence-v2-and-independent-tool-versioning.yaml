@@ -27,9 +27,36 @@ authority_semantics:
   agent_output_schema_constrained: true
   agent_decision_is_architecture_authority: false
   snapshot_instability_invalidates_evidence_set: true
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - bind_immutable_normative_snapshot
+  - constrain_machine_output_structure
+  - declare_machine_contract_identity
+  - deny_derived_architecture_authority
+  - deny_unauthorized_semantic_inference
+  - fail_closed_on_invalid_state
+  - govern_classification_model
+  - govern_conformance_semantics
+  - govern_normative_family_lifecycle
+  - preserve_unresolved_analysis_state
+  - require_explicit_specification_binding
+  - require_fresh_authority_or_evidence_state
+  - require_typed_evidence_edges
+  - require_versioned_normative_contract
+  - reserve_project_declaration_authority
+  - select_versioned_target_identity
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: specification_reference_tool_versioning
 relations:
   supersedes: []
   amends: []

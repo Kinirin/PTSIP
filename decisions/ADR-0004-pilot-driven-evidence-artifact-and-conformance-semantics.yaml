@@ -42,9 +42,34 @@ authority_semantics:
   stable_diagnostic_rule_identity_required: true
   lifecycle_trigger_alone_proves_product_release_coupling: false
   neutral_contract_consumer_count_determines_neutrality: false
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - constrain_machine_output_structure
+  - deny_unauthorized_semantic_inference
+  - fail_closed_on_invalid_state
+  - govern_associated_artifact_ownership
+  - govern_classification_model
+  - govern_conformance_semantics
+  - govern_dependency_boundary
+  - preserve_unresolved_analysis_state
+  - require_architectural_boundary
+  - require_evidence_provenance
+  - require_exclusive_ownership_declaration_modes
+  - require_fresh_authority_or_evidence_state
+  - require_stable_governance_identity
+  - require_typed_evidence_edges
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: evidence_artifact_conformance_semantics
 relations:
   supersedes: []
   amends: []

@@ -22,9 +22,33 @@ authority_semantics:
   global_decision_state_separate_from_clone_local_projection: true
   synchronization_mode: ACTION_TIME
   decision_authority_is_conformance_oracle: false
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - fail_closed_on_invalid_state
+  - forbid_fabricated_history
+  - govern_conformance_semantics
+  - govern_decision_precedence_and_resolution
+  - govern_normative_family_lifecycle
+  - require_conditional_mutation
+  - require_fresh_authority_or_evidence_state
+  - require_stable_governance_identity
+  - require_versioned_normative_contract
+  - separate_authority_from_conformance
+  - separate_decision_authority_from_profile
+  - separate_global_authority_from_local_projection
+  - synchronize_authority_at_action_time
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: distributed_decision_authority
 relations:
   supersedes: []
   amends: []

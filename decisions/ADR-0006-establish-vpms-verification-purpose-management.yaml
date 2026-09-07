@@ -32,9 +32,26 @@ authority_semantics:
   ptsip_core_may_depend_on_vpms: false
   vpms_may_consume_stable_ptsip_contract: true
   vpms_pass_equals_ptsip_conformant: false
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - declare_canonical_identity
+  - define_deterministic_semantic_identity
+  - govern_dependency_boundary
+  - govern_verification_purpose_contract
+  - require_architectural_boundary
+  - separate_classification_from_verification_purpose
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: verification_purpose_management
 relations:
   supersedes: []
   amends: []
