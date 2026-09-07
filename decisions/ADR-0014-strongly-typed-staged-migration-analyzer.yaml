@@ -35,9 +35,32 @@ authority_semantics:
   completion_equation: REQUIRED_UNRESOLVED_EQUALS_ZERO
   removal_or_async_compensates_required: false
   deterministic_digest: SHA256
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - define_repository_resolution_state_vocabulary
+  - define_repository_resolution_to_obligation_mapping
+  - deny_derived_architecture_authority
+  - deny_unauthorized_semantic_inference
+  - fail_closed_on_stale_source_or_repository
+  - forbid_removal_or_async_compensation_for_required_work
+  - govern_migration_analysis_pipeline
+  - require_async_work_after_required_work
+  - require_deterministic_integrity_digest
+  - require_version_revision_and_accepted_target_transition_inputs
+  - require_zero_required_unresolved_items_for_completion
+  - separate_lifecycle_compatibility_from_obligation_category
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: migration_analysis_pipeline
 relations:
   supersedes: []
   amends: []

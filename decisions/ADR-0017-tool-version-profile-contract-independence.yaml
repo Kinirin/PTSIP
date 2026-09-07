@@ -18,9 +18,29 @@ authority_semantics:
   mutation_promotion_verification_scope: ISOLATED_FIXTURE_REPOSITORIES
   spec_0_3_7_draft_remains_tool_development_normative_family: true
   superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - forbid_tool_driven_repository_self_adoption_profile_creation
+  - govern_normative_family_lifecycle
+  - govern_project_profile_migration_authorization
+  - preserve_migration_engine_capability
+  - restrict_mutation_promotion_verification_to_fixture_repositories
+  - restrict_repository_dogfood_to_controlled_self_analysis
+  - scope_adr_supersession_to_repository_self_adoption_assumption
+  - separate_cross_contract_identity_axes
+  - separate_migration_capability_from_repository_adoption
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: tool_profile_contract_independence
 relations:
   supersedes: []
   amends:
