@@ -116,7 +116,7 @@ phase_F1_minimal_binding_and_registry_contract:
     - EXACT_AUTHORITY_SCHEMA_REGISTRY_BINDING
 
 phase_F2_apply_to_23_adrs:
-  status: BLOCKED_ONLY_ON_F1_CONTRACT_FREEZE
+  status: COMPLETE_APPLIED_TO_23_OF_23
   authority_role_projection:
     derivation:
       - READ_ADR_TO_SOURCE_DIMENSION_COVERAGE
@@ -147,7 +147,7 @@ phase_F2_apply_to_23_adrs:
     - subject_binding
 
 phase_F3_machine_validation:
-  status: BLOCKED_ON_F2
+  status: COMPLETE_PASS_23_OF_23
   required_checks:
     - ADR_COUNT_EQUALS_23
     - AUTHORITY_ROLE_PRESENT_ON_ALL_23
@@ -212,6 +212,8 @@ authorization_boundary:
     - IMPLEMENT_REMEDIATION_SOLVER_RUNTIME
     - MATERIALIZE_PROJECT_AUTHORITY_RECORD_AT_RUNTIME
     - AUTHORIZE_MUTATION
+
+projection_validation: planning/0.4.0/WU-02/p03-f-adr-role-subject-projection-validation.yaml
 
 completion_definition:
   F1: MINIMAL_BINDING_AND_REGISTRY_CONTRACT_FROZEN

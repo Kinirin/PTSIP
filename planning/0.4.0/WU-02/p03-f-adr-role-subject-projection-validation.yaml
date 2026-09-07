@@ -1,0 +1,74 @@
+schema_version: ptsip-p03-f-adr-role-subject-projection-validation/v1
+validation:
+  status: PASS
+  validated_on: '2026-09-07'
+  projection_commits:
+    - b8a659540022c0f3074d821f8628d4c1e96b759f
+    - 20e4d1f16e133320278c249ea370febcc7055513
+    - 34aecfc56e1849a94820f554d23b996c48cf4354
+    - 1aa41d7ab25d549176631577534b0d49c18e67a7
+  adr_expected_count: 23
+  adr_projected_count: 23
+  authority_effect_registry_count: 99
+  authority_effect_union_count: 99
+  subject_binding_cardinality_per_adr: EXACTLY_ONE
+  authority_domain: PROJECT_GOVERNANCE
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity_scheme: DECISION_TOPIC_ID
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  matching_order:
+    - EXACT
+    - REGISTERED_MACHINE_RELATIONSHIP
+    - NO_MATCH
+  runtime_authority: NONE
+
+checks:
+  adr_count_equals_23: true
+  authority_role_written_to_23_of_23: true
+  authority_role_resolution_state_declared_on_23_of_23: true
+  every_projected_effect_was_checked_against_frozen_99_registry_during_projection: true
+  duplicate_effects_removed_before_write: true
+  effect_tokens_sorted_before_write: true
+  subject_binding_written_to_23_of_23: true
+  subject_identity_copied_from_existing_decision_topic_id: true
+  authority_domain_single_value: true
+  subject_type_single_value: true
+  discarded_12_category_taxonomy_not_used: true
+  repository_host_and_numeric_id_written_to_23_of_23: true
+  fuzzy_or_ai_match_not_configured: true
+  registered_relationship_required_for_relaxed_match: true
+  remediation_runtime_implementation_performed: false
+
+adr_effect_counts:
+  ADR-0001: 8
+  ADR-0002: 5
+  ADR-0003: 16
+  ADR-0004: 14
+  ADR-0005: 13
+  ADR-0006: 6
+  ADR-0007: 13
+  ADR-0008: 10
+  ADR-0009: 12
+  ADR-0010: 12
+  ADR-0011: 3
+  ADR-0012: 12
+  ADR-0013: 6
+  ADR-0014: 12
+  ADR-0015: 8
+  ADR-0016: 5
+  ADR-0017: 9
+  ADR-0018: 4
+  ADR-0019: 8
+  ADR-0020: 7
+  ADR-0021: 8
+  ADR-0022: 10
+  ADR-0023: 4
+
+completion:
+  F1_MINIMAL_BINDING_AND_REGISTRY_CONTRACT_FROZEN: true
+  F2_ADR_0001_THROUGH_ADR_0023_ROLE_AND_BINDING_APPLIED: true
+  F3_ALL_23_ADRS_MACHINE_STRUCTURALLY_VALID: true
+  P03_F_COMPLETE: true

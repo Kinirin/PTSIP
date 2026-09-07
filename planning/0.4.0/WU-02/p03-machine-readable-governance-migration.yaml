@@ -125,7 +125,7 @@ approved_decisions:
           meaning: NO_SUPPORTED_MACHINE_RESOLUTION_ESTABLISHES_THE_ROLE
           automatic_project_authority_eligibility_input: FORBIDDEN
           owner_discussion_may_be_required: true
-      exact_serialized_state_field_name: NOT_FROZEN
+      exact_serialized_state_field_name: resolution_state
 
     ai_boundary:
       may:
@@ -681,7 +681,7 @@ review_progress:
   P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT: APPROVED_WITH_INITIAL_THREE_DIMENSION_ASSUMPTION_SUPERSEDED_BY_P03_D
   P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY: APPROVED
   P03_E_INITIAL_CLOSED_VOCABULARY_CANDIDATE_FINALIZATION: PROJECT_OWNER_APPROVED_AND_FROZEN
-  P03_F_MINIMAL_BINDING_REGISTRY_AND_23_ADR_PROJECTION: F1_SUBJECT_BINDING_CORPUS_AND_SCHEMA_DRAFT_CREATED
+  P03_F_MINIMAL_BINDING_REGISTRY_AND_23_ADR_PROJECTION: COMPLETE_23_OF_23_MACHINE_VALID
   generic_machine_predicate_responsibility_split_without_explicit_criteria: FORBIDDEN
   owner_explicit_case_specific_split_approval_satisfies_review_gate: true
   P03: IN_PROGRESS
@@ -693,8 +693,10 @@ p03_f_subject_binding_owner_approval: planning/0.4.0/WU-02/p03-f-subject-binding
 p03_f_subject_binding_corpus: planning/0.4.0/WU-02/p03-f-subject-binding-corpus.yaml
 p03_f_subject_registry: decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
 p03_f_role_registry: decisions/AUTHORITY-ROLE-REGISTRY.yaml
+p03_f_role_registry_schema: schemas/ptsip-governance-authority-role-registry.schema.json
+p03_f_projection_validation: planning/0.4.0/WU-02/p03-f-adr-role-subject-projection-validation.yaml
 p03_f_subject_binding_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding-schema-draft.yaml
 p03_f_subject_binding_json_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
 governance_projection_application_authorization: AUTHORIZED_BY_PROJECT_OWNER
 remediation_runtime_implementation_authorization: NOT_AUTHORIZED
-next_p03_review: P03_F2_APPLY_ROLE_AND_SUBJECT_BINDING_TO_ADR_0001_THROUGH_ADR_0023
+next_p03_review: PROJECT_AUTHORITY_ELIGIBILITY_AND_PROJECTION_RUNTIME_IMPLEMENTATION_REVIEW
