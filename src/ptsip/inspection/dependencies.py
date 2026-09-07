@@ -150,8 +150,8 @@ def _python_edges(
             for alias in node.names:
                 resolved = resolver.resolve(alias.name, rel)
                 resolution, scope, note = _python_target_state(alias.name, resolved, declared_dependencies)
-                if len(resolver.candidates(alias.name, rel)) > 1:
-                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Ambiguous tracked local target"
+                if resolver.uncertain_local_target(alias.name, rel):
+                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Incomplete or ambiguous tracked local target"
                 edges.append(
                     DependencyEdge(
                         evidence_id=f"python:{rel}:{node.lineno}:{alias.name}",
@@ -175,7 +175,7 @@ def _python_edges(
                 targets = [(node.module or "<unknown-import>", resolver.resolve(node.module or "", rel))]
             for target, resolved in targets:
                 resolution, scope, note = _python_target_state(target, resolved, declared_dependencies)
-                if (node.level and not resolved) or len(resolver.candidates(target, rel)) > 1:
+                if (node.level and not resolved) or resolver.uncertain_local_target(target, rel):
                     resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Relative or ambiguous local target lacks exact tracked evidence"
                 edges.append(
                     DependencyEdge(
@@ -210,6 +210,19 @@ def _python_edges(
                 ancestors.append(parent)
                 parent = parents.get(parent)
             kind, targets = dynamic_targets(node, ancestors)
+            if is_builtin:
+                levels = ([node.args[4]] if len(node.args) >= 5 else []) + [
+                    keyword.value for keyword in node.keywords if keyword.arg == "level"
+                ]
+                if (any(isinstance(argument, ast.Starred) for argument in node.args)
+                        or any(keyword.arg is None for keyword in node.keywords)
+                        or len(node.args) > 5 or len(levels) > 1
+                        or any(not isinstance(level, ast.Constant)
+                               or not isinstance(level.value, int) or level.value != 0
+                               for level in levels)):
+                    # A literal module name is not an absolute target when the
+                    # relative-import level is nonzero or cannot be established.
+                    kind, targets = "UNBOUNDED_DYNAMIC_IMPORT", []
             callee = node.func.value.id if is_importlib else node.func.id
             if callee in shadowed_names:
                 kind, targets = "UNBOUNDED_DYNAMIC_IMPORT", []
@@ -218,8 +231,8 @@ def _python_edges(
                 resolution, scope, note = _python_target_state(target, resolved, declared_dependencies)
                 if not targets:
                     resolution, scope = ResolutionStatus.DYNAMIC, EvidenceNodeScope.UNRESOLVED_TARGET
-                if len(resolver.candidates(target, rel)) > 1:
-                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Ambiguous tracked local target"
+                if resolver.uncertain_local_target(target, rel):
+                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Incomplete or ambiguous tracked local target"
                 suffix = f":{target}" if kind == "BOUNDED_DYNAMIC_IMPORT" else ""
                 edges.append(DependencyEdge(
                     evidence_id=f"python-dynamic:{rel}:{node.lineno}{suffix}",

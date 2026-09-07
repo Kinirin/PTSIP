@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import tempfile
 import subprocess
+import sys
 
 from .constants import TOOL_VERSION
 from .storage.local_state import ptsip_home, repository_fingerprint
@@ -61,6 +62,8 @@ class EvidenceCache:
         self.context = digest({"repository": str(self.root), "tool": TOOL_VERSION,
                                "manifests_and_component_declarations": manifest_hashes,
                                "tracked_target_topology": paths, "untracked_target_topology": hashlib.sha256(untracked).hexdigest(),
+                               "python_parser": list(sys.version_info[:3]),
+                               "platform_module_names": sorted(sys.stdlib_module_names),
                                "resolver": resolver_hashes})
 
     def get(self, kind: str, rel: str, compute, validate=lambda value: True):

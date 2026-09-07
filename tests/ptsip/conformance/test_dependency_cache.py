@@ -1,4 +1,5 @@
 import json
+import sys
 
 from ptsip.inspection.dependencies import scan_dependency_edges
 from test_dependency_reconciliation import _fixture, _git
@@ -21,6 +22,18 @@ def test_source_cache_reuses_unaffected_evidence_and_invalidates_semantic_inputs
     assert scan_dependency_edges(repo).cache["recomputed"] == 2
     (repo / "ptsip.yaml").write_text("invalid: true\n", encoding="utf-8")
     assert scan_dependency_edges(repo).cache["recomputed"] == 2
+
+
+def test_cache_binds_resolver_platform_module_identity(tmp_path, monkeypatch):
+    repo = tmp_path / "repo"
+    monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+    _fixture(repo, "import platform_marker", "numpy==2")
+    cold = scan_dependency_edges(repo)
+    assert cold.edges[0].resolution.value == "UNRESOLVED"
+    monkeypatch.setattr(sys, "stdlib_module_names", sys.stdlib_module_names | {"platform_marker"})
+    changed = scan_dependency_edges(repo)
+    assert changed.cache["recomputed"] == 1 and changed.cache["hits"] == 0
+    assert changed.edges[0].target_scope.value == "PLATFORM"
 
 
 def test_corrupt_or_incomplete_cache_recomputes_and_in_repo_state_is_disabled(tmp_path, monkeypatch):

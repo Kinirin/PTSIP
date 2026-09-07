@@ -56,7 +56,8 @@ def _callers(report: dict, item: dict, max_files: int) -> list[dict]:
         if not path or (path not in files and len(files) >= max_files):
             continue
         files.add(path)
-        selected.append({key: caller.get(key) for key in ("path", "line", "evidence_id", "semantics")})
+        selected.append({**{key: caller.get(key) for key in ("path", "line", "evidence_id")},
+                         "semantics": caller.get("semantics") or caller.get("kind")})
         if len(selected) >= 4:
             break
     return selected
@@ -86,6 +87,7 @@ def build_review_pack(
             "review_id": "review:" + item["evidence_id"], "evidence_id": item["evidence_id"],
             "actionability": "REVIEW_REQUIRED", "reason": item["reason"],
             "dependency": deepcopy(item["dependency"]), "component": deepcopy(item["component"]),
+            "target_component": item.get("target_component"),
             "declaration": deepcopy(item.get("declaration", {})), "usage": usage,
             "fallback": fallback, "callers": callers, "snippets": [],
             "question": "What support contract governs this dependency, and is its fallback sufficient for that contract?",
@@ -116,6 +118,10 @@ def build_review_pack(
                 review["snippets"].pop()
             else:
                 files.add(path)
+        if not any(snippet["kind"] == "IMPORT" for snippet in review["snippets"]):
+            deferred.append({"evidence_id": item["evidence_id"],
+                             "reason": "IMPORT_CONTEXT_UNAVAILABLE_WITHIN_BUDGET"})
+            continue
         reviews.append(review)
     return {
         "format": "ptsip-dependency-review-pack/v1", "repository": deepcopy(report["repository"]),

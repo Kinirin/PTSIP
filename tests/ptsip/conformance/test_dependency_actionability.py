@@ -49,3 +49,17 @@ def test_local_name_ambiguity_is_resolver_queue_not_requirement_proposal(tmp_pat
     item = report["items"][0]
     assert item["actionability"] == "RESOLVER_LIMITATION"
     assert item["remediation_candidate"] is None
+
+
+def test_dynamic_function_alias_context_and_platform_provenance(tmp_path: Path):
+    repo = tmp_path / "repo"
+    _fixture(repo, "from importlib import import_module as load\n"
+             "def lookup(name):\n    try:\n        return load(name)\n"
+             "    except ImportError:\n        return None\n", "numpy==2")
+    report = analyze_dependencies(repo)
+    platform, dynamic = report["items"][1], report["items"][0]
+    assert platform["dependency"]["target"] == "importlib"
+    assert platform["declaration"]["found"] is False
+    assert dynamic["actionability"] == "REVIEW_REQUIRED"
+    assert dynamic["usage"]["import_style"] == "lazy"
+    assert dynamic["usage"]["fallback"]["detected"] is True

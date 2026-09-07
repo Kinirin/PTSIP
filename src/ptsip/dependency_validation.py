@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import tomllib
 
 from .validation.components import partition_components, selector_matches_path
@@ -48,13 +49,19 @@ def _validation_plan(root, report, *, changed_paths=()):
     runner_evidence = []
     for item in report["items"]:
         edge = item["dependency"]
-        if edge["source"] in tests and edge["target"] in {"pytest", "unittest"}:
+        if edge["source"] in tests and edge["target"] == "pytest":
             runner_evidence.append(item["evidence_id"])
     try:
         project = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8-sig")).get("project", {})
-        requirements = list(project.get("dependencies", []))
-        requirements += [value for group in project.get("optional-dependencies", {}).values() for value in group]
-        if any(str(value).startswith("pytest") for value in requirements):
+        if not isinstance(project, dict):
+            raise ValueError("Project metadata must be a table")
+        requirements = project.get("dependencies", [])
+        optional = project.get("optional-dependencies", {})
+        if not isinstance(requirements, list) or not isinstance(optional, dict):
+            raise ValueError("Dependency metadata has an invalid shape")
+        requirements = requirements + [value for group in optional.values() if isinstance(group, list) for value in group]
+        if any(isinstance(value, str) and re.match(r"^pytest(?:\s|[<>=!~\[;@]|$)", value.strip())
+               for value in requirements):
             runner_evidence.append("manifest:pyproject.toml:pytest")
     except (OSError, ValueError, TypeError):
         pass

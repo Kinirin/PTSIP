@@ -47,6 +47,14 @@ def test_review_pack_byte_budget_and_stale_evidence_fail_closed(tmp_path):
     assert not (tmp_path / "stale.json").exists()
 
 
+def test_review_pack_defers_when_import_context_does_not_fit(tmp_path):
+    report = report_for(tmp_path / "consumer")
+    (tmp_path / "consumer/example.py").write_text("# " + "x" * 1500 + "\nimport optional\n", encoding="utf-8")
+    pack = build_review_pack(report, max_context_bytes_per_item=1500)
+    assert pack["summary"]["selected_for_review"] == 0
+    assert all(item["reason"] == "IMPORT_CONTEXT_UNAVAILABLE_WITHIN_BUDGET" for item in pack["deferred"])
+
+
 def test_cli_preserves_full_json_and_concise_human_output(tmp_path, monkeypatch, capsys):
     report = report_for(tmp_path / "consumer")
     monkeypatch.setattr("ptsip.cli.analyze_dependencies", lambda *args, **kwargs: report)

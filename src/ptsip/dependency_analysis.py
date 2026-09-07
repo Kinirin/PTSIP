@@ -34,10 +34,14 @@ def python_context(root: Path, rel: str) -> dict[int, dict[str, object]]:
     except (OSError, UnicodeError, SyntaxError):
         return {}
     parents = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
+    import_functions = {alias.asname or alias.name for node in ast.walk(tree)
+                        if isinstance(node, ast.ImportFrom) and node.module == "importlib" and not node.level
+                        for alias in node.names if alias.name == "import_module"}
+    import_functions.add("__import__")
     contexts = {}
     for node in ast.walk(tree):
         dynamic = isinstance(node, ast.Call) and (
-            isinstance(node.func, ast.Name) and node.func.id == "__import__"
+            isinstance(node.func, ast.Name) and node.func.id in import_functions
             or isinstance(node.func, ast.Attribute) and node.func.attr == "import_module"
         )
         if not isinstance(node, (ast.Import, ast.ImportFrom)) and not dynamic:
@@ -141,7 +145,9 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             "component": {key: component.get(key) for key in (
                 "id", "classification", "roles", "shipped", "runtime_required")},
             "target_component": target_owner,
-            "declaration": {"found": bool(declaration) or edge.resolution == ResolutionStatus.EXTERNAL,
+            "declaration": {"found": bool(declaration) or (
+                                edge.resolution == ResolutionStatus.EXTERNAL
+                                and edge.target_scope == EvidenceNodeScope.EXTERNAL_DEPENDENCY),
                             "reconciliation": declaration, "native_basis": edge.note},
             "usage": usage,
             "dynamic_import_kind": edge.note.split(":", 1)[0] if edge.note and "DYNAMIC_IMPORT" in edge.note else None,

@@ -12,6 +12,10 @@ class PythonResolver:
         self.paths = frozenset(path for path in paths if (root / path).is_file()
                                and not (root / path).is_symlink()
                                and (root / path).resolve().is_relative_to(self.root))
+        self.package_directories = frozenset(
+            parent for path in self.paths if path.endswith(".py")
+            for parent in PurePosixPath(path).parents if parent != PurePosixPath(".")
+        )
         self.roots = {PurePosixPath(".")}
         if any(path.startswith("src/") and path.endswith(".py") for path in self.paths):
             self.roots.add(PurePosixPath("src"))
@@ -22,9 +26,17 @@ class PythonResolver:
                 payload = tomllib.loads((root / path).read_text(encoding="utf-8-sig"))
             except (OSError, ValueError):
                 continue
-            setuptools = payload.get("tool", {}).get("setuptools", {})
-            configured = list(setuptools.get("package-dir", {}).values())
-            configured += setuptools.get("packages", {}).get("find", {}).get("where", []) if isinstance(setuptools.get("packages"), dict) else []
+            tool = payload.get("tool")
+            setuptools = tool.get("setuptools") if isinstance(tool, dict) else None
+            if not isinstance(setuptools, dict):
+                continue
+            package_dir = setuptools.get("package-dir")
+            configured = list(package_dir.values()) if isinstance(package_dir, dict) else []
+            packages = setuptools.get("packages")
+            find = packages.get("find") if isinstance(packages, dict) else None
+            where = find.get("where") if isinstance(find, dict) else None
+            if isinstance(where, list):
+                configured.extend(where)
             for value in configured:
                 if not isinstance(value, str):
                     continue
@@ -50,18 +62,36 @@ class PythonResolver:
         return {str(path) for path in (base.with_suffix(".py"), base / "__init__.py")
                 if str(path) in self.paths}
 
-    def candidates(self, module: str, source: str = ""):
-        if not module or module.startswith(".") or not all(part.isidentifier() for part in module.split(".")):
-            return set()
+    def _search_roots(self, source: str):
         roots = set(self.roots)
         if source:
             package_root = self.package_root(source)
             if package_root is not None:
                 roots.add(package_root)
+        return roots
+
+    def candidates(self, module: str, source: str = ""):
+        if not module or module.startswith(".") or not all(part.isidentifier() for part in module.split(".")):
+            return set()
         result = set()
-        for root in roots:
+        for root in self._search_roots(source):
             result.update(self._files(root.joinpath(*module.split("."))))
         return result
+
+    def uncertain_local_target(self, module: str, source: str = ""):
+        """Do not let a declaration replace incomplete tracked local evidence."""
+        if not module or module.startswith(".") or not all(part.isidentifier() for part in module.split(".")):
+            return False
+        candidates = self.candidates(module, source)
+        if candidates:
+            return len(candidates) > 1
+        parts = module.split(".")
+        for root in self._search_roots(source):
+            for size in range(1, len(parts) + 1):
+                base = root.joinpath(*parts[:size])
+                if base in self.package_directories or self._files(base):
+                    return True
+        return False
 
     def resolve(self, module, source=""):
         candidates = self.candidates(module, source)
