@@ -8,7 +8,7 @@ reconciliation:
     reconciled_source_dimension_count: 184
     semantic_coverage_unresolved_residual_count: 0
     exact_duplicate_expression_count: 0
-    proposed_initial_closed_vocabulary_candidate_count: 114
+    proposed_initial_closed_vocabulary_candidate_count: 97
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
   primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -29,10 +29,10 @@ reconciliation:
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
-    individually_decided_source_dimension_count: 18
-    pending_source_dimension_count: 63
-    owner_decided_source_dimension_count: 121
-    proposed_effect_token_count: 114
+    individually_decided_source_dimension_count: 43
+    pending_source_dimension_count: 38
+    owner_decided_source_dimension_count: 146
+    proposed_effect_token_count: 97
     owner_review_gate: IN_PROGRESS
     pending_groups_are_not_premerged: true
   invariants:
@@ -252,8 +252,9 @@ source_dimension_dispositions:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   define_source_declaration_modes:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_declaration_composition
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D30
   require_explicit_template_selection:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -261,20 +262,24 @@ source_dimension_dispositions:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   constrain_override_granularity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_declaration_composition
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D26
   forbid_derived_architecture_mutation:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   define_effective_map_contract:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_declaration_composition
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D28
   require_deterministic_semantic_digest:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_deterministic_integrity_digest
   constrain_profile_identity_and_cardinality:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: constrain_profile_artifact_identity_and_cardinality
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D68
   define_migration_obligation_categories:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -456,8 +461,9 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_project_profile_migration_authorization
   separate_tool_version_from_project_profile_version:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: separate_cross_contract_identity_axes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D65
   deny_project_profile_version_migration_authorization:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_project_profile_migration_authorization
@@ -468,29 +474,36 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_project_profile_migration_authorization
   preserve_project_profile_identity_axes:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: separate_cross_contract_identity_axes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D64
   preserve_legacy_profile_generation_identity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D62
   define_project_profile_major_version_trigger:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D58
   define_project_profile_minor_version_trigger:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D59
   separate_profile_instance_revision_from_contract_version:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D63
   forbid_semantic_versioning_for_project_profile_namespace:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D61
   forbid_tool_compatibility_inference_from_numeric_equality:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   require_explicit_project_profile_capability_for_tool_operations:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D69
   define_source_compatibility_boundary:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_migration_source_compatibility
@@ -507,38 +520,47 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_normative_family_lifecycle
   define_migration_subsystem_component_contract:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_migration_subsystem_architecture
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D51
   define_migration_subsystem_common_properties:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_migration_subsystem_architecture
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D50
   define_project_profile_version_namespace:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D60
   separate_architecture_acceptance_from_identity_implementation:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_transition_work_unit_boundaries
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D86
   separate_profile_identity_implementation_from_migration_capability:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   define_project_profile_transition_maintainability_rules:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_transition_work_unit_boundaries
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D85
   define_ordered_project_profile_transition_work_units:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_transition_work_unit_boundaries
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D84
   separate_repository_adoption_from_release_readiness:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   restrict_project_profile_bridge_to_identity_only:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D73
   bind_project_profile_identity_bridge_source:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D72
   forbid_temporary_target_for_canonical_profile_identity_bridge:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D75
   detect_duplicate_equivalent_profile_targets:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -552,8 +574,9 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_release_history_namespace
   forbid_semantic_deltas_in_identity_bridge:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D74
   require_owner_decision_for_ambiguous_historical_semantics:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_project_owner_decision
@@ -594,17 +617,20 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_specification_capabilities
   decouple_profile_specification_revision_from_global_tool_specification_revision:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: separate_cross_contract_identity_axes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D66
   restrict_historical_bridge_to_migration_interpretation:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_specification_capabilities
   define_specification_binding_fields:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: require_explicit_specification_binding
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D70
   fail_closed_on_unsupported_or_malformed_specification_binding:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: fail_closed_on_invalid_state
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D71
   define_independent_release_history_axes:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_release_history_namespace

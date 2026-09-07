@@ -5,7 +5,7 @@ review:
   review_authority_required: PROJECT_OWNER
   runtime_authority: NONE
   vocabulary_registration: false
-  baseline_commit: a0487fdc853db1247fc1fc842af38c6338caeb10
+  baseline_commit: edf29dd2af1cd093c6c66898f4cfbf8d0b2b4cd5
   purpose: FINALIZE_PROPOSED_INITIAL_CLOSED_AUTHORITY_ROLE_EFFECT_VOCABULARY_FROM_FULL_CORPUS_RECONCILIATION
   inputs:
     source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -16,6 +16,7 @@ review:
       - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml
       - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml
       - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml
+      - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml
 
 corpus_validation:
   adr_range: ADR-0001_THROUGH_ADR-0023
@@ -32,12 +33,12 @@ corpus_validation:
 reconciliation_summary:
   owner_approved_low_risk_group_count: 32
   owner_approved_low_risk_source_dimension_count: 103
-  owner_approved_individual_transform_source_dimension_count: 18
-  owner_decided_source_dimension_count: 121
-  owner_vocabulary_disposition_pending_source_dimension_count: 63
-  proposed_effect_token_count: 114
-  owner_approved_effect_token_count: 51
-  owner_review_required_effect_token_count: 63
+  owner_approved_individual_transform_source_dimension_count: 43
+  owner_decided_source_dimension_count: 146
+  owner_vocabulary_disposition_pending_source_dimension_count: 38
+  proposed_effect_token_count: 97
+  owner_approved_effect_token_count: 59
+  owner_review_required_effect_token_count: 38
   proposed_effect_token_ids_unique: true
   all_source_dimensions_have_explicit_disposition: true
   all_nonremoved_source_dimensions_project_to_known_proposed_tokens: true
@@ -57,27 +58,14 @@ proposed_effect_tokens:
     definition: "Bind governed evaluation to an immutable normative snapshot identity."
     source_dimensions:
       - bind_immutable_normative_snapshot
-  bind_project_profile_identity_bridge_source:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.bind_project_profile_identity_bridge_source
-    source_dimensions:
-      - bind_project_profile_identity_bridge_source
   constrain_machine_output_structure:
     review_status: OWNER_APPROVED_KEEP
     definition: "Require machine-consumable output to conform to an explicit structural contract."
     source_dimensions:
       - constrain_machine_output_structure
-  constrain_override_granularity:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_override_granularity
-    source_dimensions:
-      - constrain_override_granularity
-  constrain_profile_identity_and_cardinality:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.constrain_profile_identity_and_cardinality
+  constrain_profile_artifact_identity_and_cardinality:
+    review_status: OWNER_APPROVED_RENAME_TARGET
+    definition: "Constrain canonical and temporary project-profile artifact identity, path/pattern matching, and temporary-profile cardinality."
     source_dimensions:
       - constrain_profile_identity_and_cardinality
   declare_canonical_identity:
@@ -90,12 +78,6 @@ proposed_effect_tokens:
     definition: "Declare the machine contract identity used by a governed machine-readable artifact."
     source_dimensions:
       - select_versioned_contract_target
-  decouple_profile_specification_revision_from_global_tool_specification_revision:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.decouple_profile_specification_revision_from_global_tool_specification_revision
-    source_dimensions:
-      - decouple_profile_specification_revision_from_global_tool_specification_revision
   define_declaration_precedence:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -113,66 +95,18 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_direct_latest_target_convergence_model
     source_dimensions:
       - define_direct_latest_target_convergence_model
-  define_effective_map_contract:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_effective_map_contract
-    source_dimensions:
-      - define_effective_map_contract
   define_migration_obligation_categories:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_obligation_categories
     source_dimensions:
       - define_migration_obligation_categories
-  define_migration_subsystem_common_properties:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_subsystem_common_properties
-    source_dimensions:
-      - define_migration_subsystem_common_properties
-  define_migration_subsystem_component_contract:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_migration_subsystem_component_contract
-    source_dimensions:
-      - define_migration_subsystem_component_contract
-  define_ordered_project_profile_transition_work_units:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_ordered_project_profile_transition_work_units
-    source_dimensions:
-      - define_ordered_project_profile_transition_work_units
-  define_project_profile_major_version_trigger:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_major_version_trigger
-    source_dimensions:
-      - define_project_profile_major_version_trigger
-  define_project_profile_minor_version_trigger:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_minor_version_trigger
-    source_dimensions:
-      - define_project_profile_minor_version_trigger
   define_project_profile_transition_classes:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_transition_classes
     source_dimensions:
       - define_project_profile_transition_classes
-  define_project_profile_transition_maintainability_rules:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_transition_maintainability_rules
-    source_dimensions:
-      - define_project_profile_transition_maintainability_rules
-  define_project_profile_version_namespace:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_project_profile_version_namespace
-    source_dimensions:
-      - define_project_profile_version_namespace
   define_required_work_completion:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -185,18 +119,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_responsibility_role_contract
     source_dimensions:
       - define_responsibility_role_contract
-  define_source_declaration_modes:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_source_declaration_modes
-    source_dimensions:
-      - define_source_declaration_modes
-  define_specification_binding_fields:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_specification_binding_fields
-    source_dimensions:
-      - define_specification_binding_fields
   define_work_unit_responsibility_assignment:
     review_status: OWNER_APPROVED_SPLIT_RESULT
     definition: "Define explicit responsibility assignment to named work units."
@@ -234,18 +156,13 @@ proposed_effect_tokens:
     definition: "Fail closed on invalid, conflicting, stale-transition, or unavailable coordinated governed state when no valid fallback is authorized."
     source_dimensions:
       - fail_closed_on_invalid_state
+      - fail_closed_on_unsupported_or_malformed_specification_binding
   fail_closed_on_stale_source_or_repository:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_stale_source_or_repository
     source_dimensions:
       - fail_closed_on_stale_source_or_repository
-  fail_closed_on_unsupported_or_malformed_specification_binding:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_unsupported_or_malformed_specification_binding
-    source_dimensions:
-      - fail_closed_on_unsupported_or_malformed_specification_binding
   forbid_absence_as_false_assertion:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -287,24 +204,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_n_by_m_handwritten_converter_matrix_requirement
     source_dimensions:
       - forbid_n_by_m_handwritten_converter_matrix_requirement
-  forbid_semantic_deltas_in_identity_bridge:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_semantic_deltas_in_identity_bridge
-    source_dimensions:
-      - forbid_semantic_deltas_in_identity_bridge
-  forbid_semantic_versioning_for_project_profile_namespace:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_semantic_versioning_for_project_profile_namespace
-    source_dimensions:
-      - forbid_semantic_versioning_for_project_profile_namespace
-  forbid_temporary_target_for_canonical_profile_identity_bridge:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_temporary_target_for_canonical_profile_identity_bridge
-    source_dimensions:
-      - forbid_temporary_target_for_canonical_profile_identity_bridge
   forbid_tool_compatibility_inference_from_numeric_equality:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -423,6 +322,12 @@ proposed_effect_tokens:
       - order_transition_sources
       - forbid_deleted_migration_hops
       - process_canonical_source_last
+  govern_migration_subsystem_architecture:
+    review_status: OWNER_APPROVED_MERGE_TARGET
+    definition: "Govern migration subsystem component declarations and their shared component properties without absorbing the separate ptsip-core selector boundary."
+    source_dimensions:
+      - define_migration_subsystem_component_contract
+      - define_migration_subsystem_common_properties
   govern_migration_target_selection:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Govern final/cumulative target selection, target-selection authority, and output restriction to the selected target."
@@ -441,6 +346,31 @@ proposed_effect_tokens:
       - separate_specification_activation_from_profile_mutation
       - separate_specification_activation_from_tool_implementation
       - preserve_tool_development_normative_family
+  govern_project_declaration_composition:
+    review_status: OWNER_APPROVED_MERGE_TARGET
+    definition: "Govern project declaration source modes, hybrid override granularity, and the effective declaration-map contract without absorbing declaration precedence, template-selection authority, or materializer mutation rules."
+    source_dimensions:
+      - define_source_declaration_modes
+      - constrain_override_granularity
+      - define_effective_map_contract
+  govern_project_profile_contract_versioning:
+    review_status: OWNER_APPROVED_MERGE_TARGET
+    definition: "Govern project-profile contract version namespace, major/minor triggers, non-SemVer semantics, legacy generation identity, and separation of instance revision from contract version."
+    source_dimensions:
+      - preserve_legacy_profile_generation_identity
+      - define_project_profile_major_version_trigger
+      - define_project_profile_minor_version_trigger
+      - separate_profile_instance_revision_from_contract_version
+      - forbid_semantic_versioning_for_project_profile_namespace
+      - define_project_profile_version_namespace
+  govern_project_profile_identity_bridge:
+    review_status: OWNER_APPROVED_MERGE_TARGET
+    definition: "Govern the project-profile identity bridge source, identity-only scope, prohibition of semantic deltas, and absence of a required temporary canonical bridge target."
+    source_dimensions:
+      - restrict_project_profile_bridge_to_identity_only
+      - bind_project_profile_identity_bridge_source
+      - forbid_temporary_target_for_canonical_profile_identity_bridge
+      - forbid_semantic_deltas_in_identity_bridge
   govern_project_profile_migration_authorization:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Prevent project-profile migration or rewrite from being implicitly authorized by tool release, acceptance, or version change."
@@ -449,6 +379,13 @@ proposed_effect_tokens:
       - separate_tool_release_from_profile_migration
       - deny_project_profile_version_migration_authorization
       - deny_immediate_profile_rewrite_authority_from_acceptance
+  govern_project_profile_transition_work_unit_boundaries:
+    review_status: OWNER_APPROVED_MERGE_TARGET
+    definition: "Govern ordered project-profile transition work units, maintainability constraints, and separation of architecture acceptance from identity implementation."
+    source_dimensions:
+      - separate_architecture_acceptance_from_identity_implementation
+      - define_project_profile_transition_maintainability_rules
+      - define_ordered_project_profile_transition_work_units
   govern_relationship_contract:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Define typed relationship semantics and relationship permission boundaries."
@@ -497,12 +434,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_equivalent_value_origins
     source_dimensions:
       - preserve_equivalent_value_origins
-  preserve_legacy_profile_generation_identity:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_legacy_profile_generation_identity
-    source_dimensions:
-      - preserve_legacy_profile_generation_identity
   preserve_legacy_temporary_target_alias:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -527,12 +458,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_producer_specific_interfaces
     source_dimensions:
       - preserve_producer_specific_interfaces
-  preserve_project_profile_identity_axes:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.preserve_project_profile_identity_axes
-    source_dimensions:
-      - preserve_project_profile_identity_axes
   preserve_repository_resolution_states:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -570,9 +495,8 @@ proposed_effect_tokens:
     source_dimensions:
       - require_exclusive_declaration_modes
   require_explicit_project_profile_capability_for_tool_operations:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_explicit_project_profile_capability_for_tool_operations
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Require explicit tool-to-project-profile capability for governed tool operations."
     source_dimensions:
       - require_explicit_project_profile_capability_for_tool_operations
   require_explicit_specification_binding:
@@ -580,6 +504,7 @@ proposed_effect_tokens:
     definition: "Require explicit specification binding for automated governed evaluation rather than implicit inference."
     source_dimensions:
       - require_explicit_specification_binding
+      - define_specification_binding_fields
   require_explicit_template_selection:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -672,12 +597,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_mutation_promotion_verification_to_fixture_repositories
     source_dimensions:
       - restrict_mutation_promotion_verification_to_fixture_repositories
-  restrict_project_profile_bridge_to_identity_only:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_project_profile_bridge_to_identity_only
-    source_dimensions:
-      - restrict_project_profile_bridge_to_identity_only
   restrict_repository_dogfood_to_controlled_self_analysis:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -689,12 +608,6 @@ proposed_effect_tokens:
     definition: "Select an explicit versioned target identity for a governed tool, bridge, or transition target."
     source_dimensions:
       - select_versioned_contract_target
-  separate_architecture_acceptance_from_identity_implementation:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_architecture_acceptance_from_identity_implementation
-    source_dimensions:
-      - separate_architecture_acceptance_from_identity_implementation
   separate_authority_from_conformance:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Keep authority state separate from conformance state."
@@ -705,6 +618,13 @@ proposed_effect_tokens:
     definition: "Keep lifecycle classification orthogonal to verification purpose."
     source_dimensions:
       - separate_classification_from_verification_purpose
+  separate_cross_contract_identity_axes:
+    review_status: OWNER_APPROVED_MERGE_TARGET
+    definition: "Keep tool version, project-profile contract identity, specification revision/binding identity, and project-profile instance revision as distinct contract axes."
+    source_dimensions:
+      - separate_tool_version_from_project_profile_version
+      - preserve_project_profile_identity_axes
+      - decouple_profile_specification_revision_from_global_tool_specification_revision
   separate_decision_authority_from_profile:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Keep project-profile state separate from decision authority."
@@ -733,12 +653,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_profile_identity_implementation_from_migration_capability
     source_dimensions:
       - separate_profile_identity_implementation_from_migration_capability
-  separate_profile_instance_revision_from_contract_version:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_profile_instance_revision_from_contract_version
-    source_dimensions:
-      - separate_profile_instance_revision_from_contract_version
   separate_repository_adoption_from_release_readiness:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -751,12 +665,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_semantic_identity_from_evaluation_identity
     source_dimensions:
       - separate_semantic_identity_from_evaluation_identity
-  separate_tool_version_from_project_profile_version:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.separate_tool_version_from_project_profile_version
-    source_dimensions:
-      - separate_tool_version_from_project_profile_version
   synchronize_authority_at_action_time:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Require authority synchronization or refresh at governed action time."
@@ -1036,9 +944,10 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - forbid_fabricated_reference_targets
   define_source_declaration_modes:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_source_declaration_modes
+      - govern_project_declaration_composition
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D30
   require_explicit_template_selection:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
@@ -1048,25 +957,28 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - define_declaration_precedence
   constrain_override_granularity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - constrain_override_granularity
+      - govern_project_declaration_composition
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D26
   forbid_derived_architecture_mutation:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
       - forbid_derived_architecture_mutation
   define_effective_map_contract:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_effective_map_contract
+      - govern_project_declaration_composition
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D28
   require_deterministic_semantic_digest:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
       - require_deterministic_integrity_digest
   constrain_profile_identity_and_cardinality:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     proposed_effect_tokens:
-      - constrain_profile_identity_and_cardinality
+      - constrain_profile_artifact_identity_and_cardinality
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D68
   define_migration_obligation_categories:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
@@ -1308,9 +1220,10 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_project_profile_migration_authorization
   separate_tool_version_from_project_profile_version:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - separate_tool_version_from_project_profile_version
+      - separate_cross_contract_identity_axes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D65
   deny_project_profile_version_migration_authorization:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -1324,37 +1237,44 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_project_profile_migration_authorization
   preserve_project_profile_identity_axes:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - preserve_project_profile_identity_axes
+      - separate_cross_contract_identity_axes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D64
   preserve_legacy_profile_generation_identity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - preserve_legacy_profile_generation_identity
+      - govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D62
   define_project_profile_major_version_trigger:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_project_profile_major_version_trigger
+      - govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D58
   define_project_profile_minor_version_trigger:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_project_profile_minor_version_trigger
+      - govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D59
   separate_profile_instance_revision_from_contract_version:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - separate_profile_instance_revision_from_contract_version
+      - govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D63
   forbid_semantic_versioning_for_project_profile_namespace:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - forbid_semantic_versioning_for_project_profile_namespace
+      - govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D61
   forbid_tool_compatibility_inference_from_numeric_equality:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
       - forbid_tool_compatibility_inference_from_numeric_equality
   require_explicit_project_profile_capability_for_tool_operations:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - require_explicit_project_profile_capability_for_tool_operations
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D69
   define_source_compatibility_boundary:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -1376,49 +1296,58 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_normative_family_lifecycle
   define_migration_subsystem_component_contract:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_migration_subsystem_component_contract
+      - govern_migration_subsystem_architecture
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D51
   define_migration_subsystem_common_properties:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_migration_subsystem_common_properties
+      - govern_migration_subsystem_architecture
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D50
   define_project_profile_version_namespace:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_project_profile_version_namespace
+      - govern_project_profile_contract_versioning
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D60
   separate_architecture_acceptance_from_identity_implementation:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - separate_architecture_acceptance_from_identity_implementation
+      - govern_project_profile_transition_work_unit_boundaries
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D86
   separate_profile_identity_implementation_from_migration_capability:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
       - separate_profile_identity_implementation_from_migration_capability
   define_project_profile_transition_maintainability_rules:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_project_profile_transition_maintainability_rules
+      - govern_project_profile_transition_work_unit_boundaries
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D85
   define_ordered_project_profile_transition_work_units:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_ordered_project_profile_transition_work_units
+      - govern_project_profile_transition_work_unit_boundaries
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D84
   separate_repository_adoption_from_release_readiness:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
       - separate_repository_adoption_from_release_readiness
   restrict_project_profile_bridge_to_identity_only:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - restrict_project_profile_bridge_to_identity_only
+      - govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D73
   bind_project_profile_identity_bridge_source:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - bind_project_profile_identity_bridge_source
+      - govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D72
   forbid_temporary_target_for_canonical_profile_identity_bridge:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - forbid_temporary_target_for_canonical_profile_identity_bridge
+      - govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D75
   detect_duplicate_equivalent_profile_targets:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
@@ -1436,9 +1365,10 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_release_history_namespace
   forbid_semantic_deltas_in_identity_bridge:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - forbid_semantic_deltas_in_identity_bridge
+      - govern_project_profile_identity_bridge
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D74
   require_owner_decision_for_ambiguous_historical_semantics:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -1492,21 +1422,24 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_specification_capabilities
   decouple_profile_specification_revision_from_global_tool_specification_revision:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - decouple_profile_specification_revision_from_global_tool_specification_revision
+      - separate_cross_contract_identity_axes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D66
   restrict_historical_bridge_to_migration_interpretation:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
       - govern_specification_capabilities
   define_specification_binding_fields:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_specification_binding_fields
+      - require_explicit_specification_binding
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D70
   fail_closed_on_unsupported_or_malformed_specification_binding:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - fail_closed_on_unsupported_or_malformed_specification_binding
+      - fail_closed_on_invalid_state
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D71
   define_independent_release_history_axes:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -1526,12 +1459,16 @@ source_to_proposed_effect_projection:
 
 owner_review_gate:
   required: true
-  current_batch_completed: P03_INITIAL_CLOSED_VOCABULARY_BATCH_02
-  remaining_owner_review_effect_token_count: 63
+  current_batch_status: P03_INITIAL_CLOSED_VOCABULARY_BATCH_03_PARTIAL_APPROVAL
+  remaining_owner_review_effect_token_count: 38
+  review_principles:
+    name_similarity_is_not_merge_authority: true
+    predicate_and_machine_effect_equivalence_required: true
+    deferred_dimensions_remain_distinct: true
   decision_surface:
     - APPROVE_PROPOSED_INITIAL_CLOSED_VOCABULARY
     - REQUEST_TOKEN_LEVEL_RECONCILIATION_CHANGES
-  current_proposed_effect_token_count: 114
+  current_proposed_effect_token_count: 97
   approval_must_not_be_inferred_from_sequence_authorization: true
   approval_effect_if_granted:
     - FREEZE_EXACT_INITIAL_AUTHORITY_ROLE_VOCABULARY
@@ -1547,8 +1484,8 @@ validation:
   nonremoved_source_projection_target_coverage_complete: true
   owner_approved_remove_without_projection_target_count_equals_1: true
   unresolved_projection_target_count: 0
-  proposed_effect_token_count_equals_114: true
-  owner_approved_effect_token_count_equals_51: true
-  owner_review_pending_token_count_equals_63: true
+  proposed_effect_token_count_equals_97: true
+  owner_approved_effect_token_count_equals_59: true
+  owner_review_pending_token_count_equals_38: true
   vocabulary_registration: false
   runtime_authority: NONE
