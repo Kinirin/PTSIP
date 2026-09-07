@@ -1,0 +1,132 @@
+planning_contract: ptsip-planning/v1
+work_unit: WU-02
+
+document:
+  id: WU-02-P03-F-SUBJECT-BINDING-SCHEMA-DRAFT
+  type: DESIGN_CONTRACT_DRAFT
+  status: DRAFT_FOR_PROJECT_OWNER_REVIEW
+  authority: NONE
+  runtime_authority: NONE
+  approval_required: PROJECT_OWNER
+  implementation_authorization: GOVERNANCE_REPRESENTATION_ONLY
+  json_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
+  corpus: planning/0.4.0/WU-02/p03-f-subject-binding-corpus.yaml
+
+purpose:
+  define_minimal_exact_shape_for_current_23_adr_projection: true
+  freeze_status: NOT_FROZEN
+  intended_next_action_after_owner_approval: FREEZE_F1_BINDING_CONTRACT_AND_APPLY_TO_ADR_0001_THROUGH_ADR_0023
+
+proposed_subject_binding_shape:
+  cardinality_per_adr: EXACTLY_ONE
+  fields:
+    authority_domain:
+      required: true
+      type: CLOSED_TOKEN
+      proposed_vocabulary:
+        - PROJECT_GOVERNANCE
+    repository_binding:
+      required: true
+      fields:
+        scheme:
+          const: GITHUB_REPOSITORY_ID
+        repository_id:
+          type: DECIMAL_IDENTIFIER_STRING
+          pattern: '^[1-9][0-9]*$'
+      current_ptsip_value:
+        scheme: GITHUB_REPOSITORY_ID
+        repository_id: '1327447827'
+      repository_slug_is_identity: false
+      local_path_is_identity: false
+    subject_type:
+      required: true
+      type: CLOSED_TOKEN
+      proposed_vocabulary:
+        - ARCHITECTURE_MODEL
+        - CAPABILITY_REGISTRY
+        - COMPONENT_ARCHITECTURE
+        - DECISION_AUTHORITY_MODEL
+        - EVIDENCE_MODEL
+        - MIGRATION_MODEL
+        - POLICY_FRAMEWORK
+        - PROJECT_PROFILE_MODEL
+        - REPOSITORY_POLICY
+        - SPECIFICATION_MODEL
+        - VERIFICATION_SYSTEM
+        - WORK_UNIT_SEQUENCE
+    subject_identity:
+      required: true
+      fields:
+        scheme:
+          const: DECISION_TOPIC_ID
+        value:
+          source: decision.topic_id
+          pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
+      wildcard_allowed: false
+      free_form_natural_language_allowed: false
+
+matching_semantics_draft:
+  match_dimensions:
+    - authority_domain
+    - repository_binding.scheme
+    - repository_binding.repository_id
+    - subject_type
+    - subject_identity.scheme
+    - subject_identity.value
+  matching_mode: EXACT_ALL_DIMENSIONS
+  repository_mismatch: NOT_APPLICABLE
+  subject_mismatch: NOT_APPLICABLE
+  malformed_binding: INVALID_BINDING
+  automatic_fuzzy_or_semantic_similarity_match: FORBIDDEN
+
+scope_model:
+  subject_identity_represents: GOVERNED_DECISION_TOPIC
+  subject_identity_does_not_represent:
+    - PHYSICAL_FILE_PATH
+    - FREE_FORM_DESCRIPTION
+    - IMPLICIT_COMPONENT_GLOB
+  reason_for_topic_level_scope: PREVENT_UNAPPROVED_EFFECT_BY_SUBJECT_CROSS_PRODUCT_WHILE_PRESERVING_CURRENT_ADR_DECISION_SCOPE
+  one_binding_per_adr_initial_v1: true
+  multiple_binding_list_initial_v1: FORBIDDEN
+  automatic_composite_topic_split: FORBIDDEN
+
+compatibility_and_migration:
+  existing_adr_subject_binding_shape:
+    fields:
+      - authority_domain
+      - repository
+  proposed_replacement:
+    fields:
+      - authority_domain
+      - repository_binding
+      - subject_type
+      - subject_identity
+  existing_authority_domain_value_preserved: PROJECT_GOVERNANCE
+  existing_repository_slug_semantics:
+    current_value: Kinirin/PTSIP
+    retained_as_identity: false
+    stable_id_replacement_candidate: '1327447827'
+  semantic_change_intended: false
+  representation_strengthening_only: true
+
+owner_review_surface:
+  decisions_required:
+    - APPROVE_SINGLE_INITIAL_AUTHORITY_DOMAIN_PROJECT_GOVERNANCE
+    - APPROVE_12_SUBJECT_TYPE_CLOSED_VOCABULARY
+    - APPROVE_GITHUB_REPOSITORY_ID_AS_INITIAL_REPOSITORY_IDENTITY_SCHEME
+    - APPROVE_DECISION_TOPIC_ID_AS_INITIAL_SUBJECT_IDENTITY_SCHEME
+    - APPROVE_ONE_BINDING_PER_ADR_GOVERNED_TOPIC_SCOPE
+    - APPROVE_EXACT_ALL_DIMENSIONS_MATCHING
+  approval_does_not_authorize:
+    - REMEDIATION_RUNTIME_IMPLEMENTATION
+    - PROJECT_AUTHORITY_RECORD_RUNTIME_MATERIALIZATION
+    - MUTATION_AUTHORIZATION
+
+invariants:
+  - AUTHORITY_EFFECT_NE_SUBJECT_BINDING
+  - AUTHORITY_TYPE_NE_SUBJECT_BINDING
+  - EXISTING_PROJECT_GOVERNANCE_DOMAIN_IS_PRESERVED
+  - SUBJECT_IDENTITY_REUSES_EXISTING_MACHINE_TOPIC_ID
+  - REPOSITORY_SLUG_NE_STABLE_REPOSITORY_IDENTITY
+  - PREDICATE_MULTIPLICITY_DOES_NOT_AUTHORIZE_SUBJECT_SPLIT
+  - NO_WILDCARD_OR_FUZZY_MATCH_IN_INITIAL_V1

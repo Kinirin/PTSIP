@@ -92,7 +92,7 @@ approved_decisions:
         - subject_identity
       repository_binding:
         required: true
-        exact_repository_identity_mechanism: NOT_FROZEN
+        exact_repository_identity_mechanism: NOT_FROZEN_DRAFT_GITHUB_REPOSITORY_ID
       subject_type:
         required: true
         closed_registered_vocabulary_required: true
@@ -665,7 +665,7 @@ migration_scope:
 implementation_constraints:
   remediation_runtime_implementation: FORBIDDEN_UNTIL_EXPLICIT_WU_02_IMPLEMENTATION_AUTHORIZATION
   exact_authority_role_vocabulary: FROZEN_99_EFFECT_TOKENS
-  exact_subject_binding_schema: NOT_FROZEN
+  exact_subject_binding_schema: NOT_FROZEN_DRAFT_AVAILABLE
   exact_repository_identity_mechanism: NOT_FROZEN
   exact_role_registry_physical_path: NOT_FROZEN
   unresolved_role_resolution_outcome_mapping: NOT_FROZEN
@@ -681,7 +681,7 @@ review_progress:
   P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT: APPROVED_WITH_INITIAL_THREE_DIMENSION_ASSUMPTION_SUPERSEDED_BY_P03_D
   P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY: APPROVED
   P03_E_INITIAL_CLOSED_VOCABULARY_CANDIDATE_FINALIZATION: PROJECT_OWNER_APPROVED_AND_FROZEN
-  P03_F_MINIMAL_BINDING_REGISTRY_AND_23_ADR_PROJECTION: APPROVED_PLAN_ACTIVE
+  P03_F_MINIMAL_BINDING_REGISTRY_AND_23_ADR_PROJECTION: F1_SUBJECT_BINDING_CORPUS_AND_SCHEMA_DRAFT_CREATED
   generic_machine_predicate_responsibility_split_without_explicit_criteria: FORBIDDEN
   owner_explicit_case_specific_split_approval_satisfies_review_gate: true
   P03: IN_PROGRESS
@@ -689,6 +689,9 @@ review_progress:
 remaining_p03_review: NONE_INITIAL_CLOSED_VOCABULARY_OWNER_REVIEW_COMPLETE
 initial_closed_vocabulary_owner_approval: planning/0.4.0/WU-02/p03-authority-role-initial-vocabulary-owner-approval.yaml
 p03_f_plan: planning/0.4.0/WU-02/p03-f-minimal-binding-registry-and-adr-projection.yaml
+p03_f_subject_binding_corpus: planning/0.4.0/WU-02/p03-f-subject-binding-corpus.yaml
+p03_f_subject_binding_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding-schema-draft.yaml
+p03_f_subject_binding_json_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
 governance_projection_application_authorization: AUTHORIZED_BY_PROJECT_OWNER
 remediation_runtime_implementation_authorization: NOT_AUTHORIZED
-next_p03_review: P03_F_MINIMAL_BINDING_REGISTRY_AND_23_ADR_PROJECTION
+next_p03_review: P03_F1_SUBJECT_BINDING_CORPUS_AND_SCHEMA_OWNER_REVIEW

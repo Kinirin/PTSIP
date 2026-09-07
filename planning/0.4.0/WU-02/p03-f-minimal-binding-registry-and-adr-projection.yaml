@@ -59,7 +59,7 @@ frozen_inputs:
     exact_repository_identity_contract: TO_FREEZE_IN_F1
 
 phase_F1_minimal_binding_and_registry_contract:
-  status: READY
+  status: CORPUS_AND_SUBJECT_BINDING_SCHEMA_DRAFT_CREATED_OWNER_REVIEW_PENDING
   goal: FREEZE_ONLY_FIELDS_AND_VOCABULARIES_REQUIRED_TO_PROJECT_CURRENT_23_ADRS
   subject_binding:
     required_fields:
@@ -100,6 +100,11 @@ phase_F1_minimal_binding_and_registry_contract:
     physical_paths: TO_FREEZE_FROM_EXISTING_REPOSITORY_LAYOUT
     published_identity_ne_physical_path: true
     versioned_schema_required: true
+  subject_binding_draft_artifacts:
+    corpus: planning/0.4.0/WU-02/p03-f-subject-binding-corpus.yaml
+    design_contract: planning/0.4.0/WU-02/p03-f-subject-binding-schema-draft.yaml
+    language_neutral_schema: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
+    status: DRAFT_NOT_FROZEN
   required_outputs:
     - EXACT_SUBJECT_BINDING_SCHEMA
     - EXACT_REPOSITORY_IDENTITY_MECHANISM
