@@ -8,7 +8,7 @@ reconciliation:
     reconciled_source_dimension_count: 184
     semantic_coverage_unresolved_residual_count: 0
     exact_duplicate_expression_count: 0
-    proposed_initial_closed_vocabulary_candidate_count: 97
+    proposed_initial_closed_vocabulary_candidate_count: 98
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
   primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -29,10 +29,10 @@ reconciliation:
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
-    individually_decided_source_dimension_count: 43
-    pending_source_dimension_count: 38
-    owner_decided_source_dimension_count: 146
-    proposed_effect_token_count: 97
+    individually_decided_source_dimension_count: 57
+    pending_source_dimension_count: 24
+    owner_decided_source_dimension_count: 160
+    proposed_effect_token_count: 98
     owner_review_gate: IN_PROGRESS
     pending_groups_are_not_premerged: true
   invariants:
@@ -237,8 +237,10 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: deny_unauthorized_semantic_inference
   separate_declared_relationships_from_evidence:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: separate_declared_relationships_from_evidence_edges
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   deny_relationship_permission_grant:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_relationship_contract
@@ -246,21 +248,29 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_associated_artifact_ownership
   require_shared_identity_namespace:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: require_shared_component_artifact_identity_namespace
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   forbid_fabricated_reference_targets:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: forbid_fabricated_unresolved_relationship_endpoints
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   define_source_declaration_modes:
     disposition: OWNER_APPROVED_MERGE
     approved_group: govern_project_declaration_composition
     owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D30
   require_explicit_template_selection:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: require_explicit_immutable_template_selection
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   define_declaration_precedence:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: define_hybrid_declaration_precedence
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   constrain_override_granularity:
     disposition: OWNER_APPROVED_MERGE
     approved_group: govern_project_declaration_composition
@@ -281,11 +291,15 @@ source_dimension_dispositions:
     rename_to: constrain_profile_artifact_identity_and_cardinality
     owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D68
   define_migration_obligation_categories:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: define_migration_obligation_taxonomy
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   define_required_work_completion:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: define_migration_required_work_completion_semantics
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   gate_canonical_replacement_on_completion:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_migration_execution_state_machine
@@ -305,8 +319,10 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_migration_target_selection
   require_version_revision_transition_inputs:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: require_version_revision_and_accepted_target_transition_inputs
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   separate_specification_activation_from_profile_mutation:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_normative_family_lifecycle
@@ -326,8 +342,10 @@ source_dimension_dispositions:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   preserve_producer_specific_interfaces:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: forbid_normalized_evidence_contract_from_replacing_producer_interfaces
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   separate_semantic_identity_from_evaluation_identity:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -356,14 +374,17 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_migration_source_compatibility
   require_zero_unresolved_items_for_completion:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: require_zero_required_unresolved_items_for_completion
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   separate_lifecycle_compatibility_from_obligation_category:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   forbid_analysis_mandated_removal_or_async_compensation:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT_SEMANTICS_PROVISIONAL_TOKEN_NAMES
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#split_decision.S01
   preserve_repository_resolution_states:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -452,8 +473,10 @@ source_dimension_dispositions:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
   limit_supersession_to_repository_self_adoption_assumption:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: scope_adr_supersession_to_repository_self_adoption_assumption
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   forbid_tool_self_adoption_profile_creation:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
@@ -468,8 +491,10 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_project_profile_migration_authorization
   preserve_narrow_ptsip_core_selector_boundary:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: forbid_recursive_ptsip_core_selector_broadening
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   deny_immediate_profile_rewrite_authority_from_acceptance:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_project_profile_migration_authorization
@@ -562,8 +587,10 @@ source_dimension_dispositions:
     approved_group: govern_project_profile_identity_bridge
     owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03.yaml#D75
   detect_duplicate_equivalent_profile_targets:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: classify_equivalent_profile_target_collision
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-03-followup.yaml#rename_decisions
   forbid_bulk_moving_historical_flat_release_notes:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_release_history_namespace
