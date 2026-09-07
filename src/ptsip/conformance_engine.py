@@ -13,7 +13,7 @@ from .conformance import (
     evaluate_conformance as evaluate_base_conformance,
 )
 from .conformance_audit import audit_conformance_report
-from .dependency_reconciliation import DependencyReconciliation, reconcile_dependency_evidence
+from .dependency_reconciliation import DependencyReconciliation, reconcile_dependency_evidence, reconcile_dependency_phases
 from .inspection.dependencies import DependencyScan
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.source_adapters import SUPPORTED_SOURCE_SUFFIXES
@@ -182,6 +182,7 @@ def evaluate_conformance(
     replace_prefixes = (
         "dependency-scan:",
         "dependency-target:",
+        "verification-dependency-target:",
         "component-ownership:",
         "build-resolution:coverage",
         "build-resolution:",
@@ -229,6 +230,8 @@ def evaluate_conformance(
     dependency_reconciliation = DependencyReconciliation.empty()
     if components:
         partition = partition_components(root, components)
+        dependencies = reconcile_dependency_phases(dependencies, components, partition)
+        report["dependencies"] = dependencies.as_dict()
         dependency_reconciliation = reconcile_dependency_evidence(
             root, dependencies, components, partition
         )

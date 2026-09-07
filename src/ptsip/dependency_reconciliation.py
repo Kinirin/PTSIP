@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
 from .inspection.dependencies import DependencyScan
-from .model import ResolutionStatus
+from .model import DependencyPhase, ResolutionStatus
 from .validation.components import ComponentPartition
 
 _REQUIREMENT_NAME_RE = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)")
@@ -142,6 +142,35 @@ def _is_product_runtime_component(component: dict[str, object] | None) -> bool:
         and component.get("classification") == "PRODUCT"
         and component.get("runtime_required") is True
     )
+
+
+def reconcile_dependency_phases(dependencies, components, partition):
+    """Separate explicitly non-shipped verification without dropping its evidence."""
+    owners = {item.path: item.component_id for item in partition.assignments}
+    metadata = _component_metadata(components)
+    implementation_paths = {path for path, owner in owners.items()
+                            if metadata[owner].get("runtime_required") is True
+                            or metadata[owner].get("shipped") is True}
+    # A verification-labelled file reached from shipped/runtime implementation
+    # must not use its role to escape runtime evaluation. Propagate transitively.
+    changed = True
+    while changed:
+        reached = {edge.resolved_path for edge in dependencies.edges
+                   if edge.source in implementation_paths and edge.resolved_path}
+        changed = not reached.issubset(implementation_paths)
+        implementation_paths.update(reached)
+    edges = []
+    for edge in dependencies.edges:
+        meta = metadata.get(owners.get(edge.source), {})
+        verification_only = (set(meta.get("roles", [])) == {"VERIFICATION"}
+                             and meta.get("shipped") is False
+                             and meta.get("runtime_required") is False
+                             and edge.source not in implementation_paths)
+        if verification_only and edge.phase == DependencyPhase.UNKNOWN:
+            edge = replace(edge, phase=DependencyPhase.TEST,
+                           note=(edge.note + "; " if edge.note else "") + "Explicit non-shipped verification source")
+        edges.append(edge)
+    return replace(dependencies, edges=tuple(edges))
 
 
 def reconcile_dependency_evidence(

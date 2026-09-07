@@ -7,7 +7,7 @@ from enum import StrEnum
 from pathlib import Path
 import tokenize
 
-from .dependency_reconciliation import reconcile_dependency_evidence
+from .dependency_reconciliation import reconcile_dependency_evidence, reconcile_dependency_phases
 from .conformance import _dependency_coverage_gaps
 from .dependency_cache import EvidenceCache
 from .inspection.dependencies_030 import scan_dependency_edges
@@ -116,6 +116,8 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             EvidenceNodeScope.EXTERNAL_DEPENDENCY, EvidenceNodeScope.PLATFORM
         }:
             state, reason = Actionability.AUTO_RESOLVED, "RESOLVED_EXTERNAL_OR_PLATFORM"
+        elif edge.phase.value == "TEST":
+            state, reason = Actionability.RESOLVER_LIMITATION, "VERIFICATION_DEPENDENCY_EVIDENCE_INCOMPLETE"
         elif edge.resolution == ResolutionStatus.DYNAMIC:
             state, reason = Actionability.REVIEW_REQUIRED, "DYNAMIC_TARGET_CONTRACT_REQUIRED"
         elif usage.get("guarded"):
@@ -161,6 +163,7 @@ def analyze_dependencies(path=".", profile_path=None, *, component=None):
         raise ValueError(f"Unknown validated component: {component}")
     partition = partition_components(root, components)
     dependencies = scan_dependency_edges(root)
+    dependencies = reconcile_dependency_phases(dependencies, components, partition)
     reconciliation = reconcile_dependency_evidence(root, dependencies, components, partition)
     items = classify_dependencies(root, dependencies, components, partition, reconciliation)
     if component:
@@ -185,6 +188,7 @@ def analyze_dependencies(path=".", profile_path=None, *, component=None):
                      "comparison": comparison.as_dict()},
         "summary": {"observed_edges": len(items), **{state.value: counts[state.value] for state in Actionability},
                     "ai_reviewed_items": 0, "machine_classified": len(items),
+                    "verification_dependency_edges": sum(item["dependency"]["phase"] == "TEST" for item in items),
                     "blocking_before_reconciliation": blocking_count() if stable else None,
                     "blocking_after_reconciliation": blocking_count(reconciliation.resolved_evidence_ids) if stable else None},
         "items": items, "issues": [issue.as_dict() for issue in dependencies.issues],

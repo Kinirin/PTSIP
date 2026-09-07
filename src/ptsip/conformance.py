@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .artifact_evidence import ArtifactEvidenceLoad, load_artifact_evidence
 from .constants import TOOL_VERSION
-from .dependency_reconciliation import DependencyReconciliation, reconcile_dependency_evidence
+from .dependency_reconciliation import DependencyReconciliation, reconcile_dependency_evidence, reconcile_dependency_phases
 from .inspection.dependencies import DependencyScan, scan_dependency_edges
 from .inspection.source_adapters import (
     SUPPORTED_SOURCE_SUFFIXES,
@@ -155,6 +155,14 @@ def _dependency_coverage_gaps(
         if edge.resolution not in {ResolutionStatus.UNRESOLVED, ResolutionStatus.DYNAMIC}:
             continue
         if edge.evidence_id in reconciled_external_ids:
+            continue
+        if edge.phase.value == "TEST":
+            gaps.append(_coverage_gap(
+                gap_id=f"verification-dependency-target:{edge.evidence_id}",
+                message="Verification dependency evidence is unresolved; test-environment resolution remains required.",
+                rule_ids=("PTSIP-BLD-001", "PTSIP-EVD-003"),
+                evidence_ids=(edge.evidence_id,), blocking=True,
+            ))
             continue
         gaps.append(
             _coverage_gap(
@@ -453,6 +461,7 @@ def evaluate_conformance(
 
             if components:
                 partition = partition_components(root, components)
+                dependencies = reconcile_dependency_phases(dependencies, components, partition)
                 dependency_reconciliation = reconcile_dependency_evidence(
                     root, dependencies, components, partition
                 )
