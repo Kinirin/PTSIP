@@ -30,9 +30,28 @@ authority_semantics:
   - MIGRATE
   - CREATE
   acceptance_authorizes_immediate_profile_rewrite: false
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - declare_canonical_identity
+  - define_deterministic_semantic_identity
+  - forbid_fabricated_history
+  - forbid_tool_compatibility_inference_from_numeric_equality
+  - govern_project_profile_contract_versioning
+  - govern_project_profile_migration_authorization
+  - require_explicit_project_profile_capability_for_tool_operations
+  - separate_cross_contract_identity_axes
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: project_profile_contract_versioning
 relations:
   supersedes: []
   amends: []
