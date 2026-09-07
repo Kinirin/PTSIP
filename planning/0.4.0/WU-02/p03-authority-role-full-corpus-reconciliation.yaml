@@ -1,6 +1,6 @@
 schema_version: ptsip-p03-authority-role-full-corpus-reconciliation/v2
 reconciliation:
-  status: FULL_CORPUS_RECONCILIATION_COMPLETE_OWNER_VOCABULARY_REVIEW_PENDING
+  status: FULL_CORPUS_RECONCILIATION_COMPLETE_OWNER_VOCABULARY_APPROVED
   corpus:
     first_adr: ADR-0001
     through: ADR-0023
@@ -26,6 +26,7 @@ reconciliation:
   vocabulary_registration: false
   runtime_authority: NONE
   stable_constants_created: false
+  initial_vocabulary_owner_approval: planning/0.4.0/WU-02/p03-authority-role-initial-vocabulary-owner-approval.yaml
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
@@ -33,7 +34,8 @@ reconciliation:
     pending_source_dimension_count: 0
     owner_decided_source_dimension_count: 184
     proposed_effect_token_count: 99
-    owner_review_gate: TOKEN_NAME_CONFIRMATION_PENDING
+    exact_initial_closed_vocabulary_status: FROZEN
+    owner_review_gate: COMPLETE_PROJECT_OWNER_APPROVED
     pending_groups_are_not_premerged: true
   invariants:
     - SOURCE_184_DISPOSITIONS_ARE_PRIMARY

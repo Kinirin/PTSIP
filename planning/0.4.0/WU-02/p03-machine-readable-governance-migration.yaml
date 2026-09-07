@@ -66,7 +66,7 @@ approved_decisions:
         may_change_authority_role: false
         may_change_project_authority_eligibility: false
       separation_invariant: MACHINE_ROLE_CODE_NE_HUMAN_ROLE_EXPLANATION
-      exact_initial_role_vocabulary: NOT_FROZEN
+      exact_initial_role_vocabulary: FROZEN_99_EFFECT_TOKENS
       project_authority_projection_role: PROJECT_ARCHITECTURE_AUTHORITY
 
     current_selection_and_role_responsibility:
@@ -664,7 +664,7 @@ migration_scope:
 
 implementation_constraints:
   remediation_runtime_implementation: FORBIDDEN_UNTIL_EXPLICIT_WU_02_IMPLEMENTATION_AUTHORIZATION
-  exact_authority_role_vocabulary: NOT_FROZEN
+  exact_authority_role_vocabulary: FROZEN_99_EFFECT_TOKENS
   exact_subject_binding_schema: NOT_FROZEN
   exact_repository_identity_mechanism: NOT_FROZEN
   exact_role_registry_physical_path: NOT_FROZEN
@@ -680,9 +680,11 @@ review_progress:
   P03_B_EXPLICIT_AUTHORITY_ROLE_AND_FRESH_ELIGIBILITY: APPROVED
   P03_C_AUTHORITY_ROLE_VECTOR_AND_VOCABULARY_REFINEMENT: APPROVED_WITH_INITIAL_THREE_DIMENSION_ASSUMPTION_SUPERSEDED_BY_P03_D
   P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY: APPROVED
-  P03_E_INITIAL_CLOSED_VOCABULARY_CANDIDATE_FINALIZATION: OWNER_REVIEW_IN_PROGRESS
+  P03_E_INITIAL_CLOSED_VOCABULARY_CANDIDATE_FINALIZATION: PROJECT_OWNER_APPROVED_AND_FROZEN
   generic_machine_predicate_responsibility_split_without_explicit_criteria: FORBIDDEN
   owner_explicit_case_specific_split_approval_satisfies_review_gate: true
   P03: IN_PROGRESS
 
-remaining_p03_review: OWNER_CONFIRMATION_OF_2_PROVISIONAL_SPLIT_TOKEN_NAMES
+remaining_p03_review: NONE_INITIAL_CLOSED_VOCABULARY_OWNER_REVIEW_COMPLETE
+initial_closed_vocabulary_owner_approval: planning/0.4.0/WU-02/p03-authority-role-initial-vocabulary-owner-approval.yaml
+next_p03_review: SUBJECT_BINDING_AND_REGISTRY_SCHEMA_CONTRACT_FREEZE

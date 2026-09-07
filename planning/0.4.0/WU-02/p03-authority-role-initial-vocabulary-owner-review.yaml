@@ -1,6 +1,6 @@
 schema_version: ptsip-p03-authority-role-initial-vocabulary-owner-review/v1
 review:
-  status: PROJECT_OWNER_SOURCE_REVIEW_COMPLETE_TOKEN_NAME_CONFIRMATION_PENDING
+  status: PROJECT_OWNER_APPROVED_INITIAL_CLOSED_VOCABULARY
   authority: NONE
   review_authority_required: PROJECT_OWNER
   runtime_authority: NONE
@@ -40,12 +40,12 @@ reconciliation_summary:
   owner_decided_source_dimension_count: 184
   owner_vocabulary_disposition_pending_source_dimension_count: 0
   proposed_effect_token_count: 99
-  owner_exact_token_approved_effect_count: 97
-  owner_approved_split_semantics_provisional_token_name_count: 2
+  owner_exact_token_approved_effect_count: 99
+  owner_approved_split_semantics_provisional_token_name_count: 0
   owner_semantically_approved_effect_count: 99
   owner_review_required_source_preserving_effect_token_count: 0
-  owner_review_required_split_token_name_count: 2
-  owner_review_required_effect_token_count: 2
+  owner_review_required_split_token_name_count: 0
+  owner_review_required_effect_token_count: 0
   proposed_effect_token_ids_unique: true
   all_source_dimensions_have_owner_disposition: true
   all_nonremoved_source_dimensions_project_to_known_proposed_tokens: true
@@ -227,7 +227,7 @@ proposed_effect_tokens:
     source_dimensions:
       - preserve_narrow_ptsip_core_selector_boundary
   forbid_removal_or_async_compensation_for_required_work:
-    review_status: OWNER_APPROVED_SPLIT_SEMANTICS_PROVISIONAL_TOKEN_NAME
+    review_status: OWNER_APPROVED_EXACT_TOKEN_NAME
     definition: "Forbid removal work or asynchronous work from compensating for unresolved required work."
     source_dimensions:
       - forbid_analysis_mandated_removal_or_async_compensation
@@ -477,7 +477,7 @@ proposed_effect_tokens:
     source_dimensions:
       - require_architectural_boundary
   require_async_work_after_required_work:
-    review_status: OWNER_APPROVED_SPLIT_SEMANTICS_PROVISIONAL_TOKEN_NAME
+    review_status: OWNER_APPROVED_EXACT_TOKEN_NAME
     definition: "Require asynchronous work to occur after required work rather than substituting for required completion."
     source_dimensions:
       - forbid_analysis_mandated_removal_or_async_compensation
@@ -1506,18 +1506,16 @@ source_to_proposed_effect_projection:
       - govern_migration_target_selection
 
 owner_review_gate:
-  required: true
+  required: false
+  status: COMPLETE_PROJECT_OWNER_APPROVED
   source_dimension_review_complete: true
   remaining_owner_review_source_dimension_count: 0
-  provisional_split_token_name_count: 2
-  remaining_review_items:
-    - forbid_removal_or_async_compensation_for_required_work
-    - require_async_work_after_required_work
-  current_proposed_effect_token_count: 99
-  exact_vocabulary_freeze_blocked_by:
-    - 2_PROVISIONAL_SPLIT_TOKEN_NAMES
-  approval_must_not_be_inferred_from_sequence_authorization: true
-
+  provisional_split_token_name_count: 0
+  remaining_review_items: []
+  final_effect_token_count: 99
+  exact_initial_closed_vocabulary_status: FROZEN
+  approval_record: planning/0.4.0/WU-02/p03-authority-role-initial-vocabulary-owner-approval.yaml
+  registration_boundary_preserved: true
 validation:
   source_dimension_count_equals_184: true
   owner_decided_source_dimension_count_equals_184: true
@@ -1526,9 +1524,10 @@ validation:
   owner_approved_remove_without_projection_target_count_equals_1: true
   unresolved_projection_target_count: 0
   proposed_effect_token_count_equals_99: true
-  owner_exact_token_approved_effect_count_equals_97: true
-  owner_approved_split_semantics_provisional_token_name_count_equals_2: true
+  owner_exact_token_approved_effect_count_equals_99: true
+  owner_approved_split_semantics_provisional_token_name_count_equals_0: true
   owner_review_pending_source_dimension_count_equals_0: true
-  owner_review_required_effect_token_count_equals_2: true
+  owner_review_required_effect_token_count_equals_0: true
+  exact_initial_closed_vocabulary_frozen: true
   vocabulary_registration: false
   runtime_authority: NONE

@@ -1,0 +1,38 @@
+schema_version: ptsip-p03-authority-role-initial-vocabulary-owner-approval/v1
+approval:
+  status: PROJECT_OWNER_APPROVED
+  approved_on: '2026-09-07'
+  scope: INITIAL_CLOSED_AUTHORITY_ROLE_EFFECT_VOCABULARY_FINALIZATION
+  source_review_complete: true
+  source_dimension_count: 184
+  final_effect_token_count: 99
+  exact_token_names_frozen: true
+  vocabulary_registration: false
+  runtime_authority: NONE
+  implementation_authorization: NOT_AUTHORIZED
+  review_packet: planning/0.4.0/WU-02/p03-authority-role-initial-vocabulary-owner-review.yaml
+  baseline_commit: d90f213d033c52f49decb65a42d7eb7e2eb20880
+
+final_token_name_confirmations:
+  - token: forbid_removal_or_async_compensation_for_required_work
+    status: OWNER_APPROVED_EXACT_NAME
+    semantic_scope: FORBID_REMOVAL_OR_ASYNC_WORK_FROM_COMPENSATING_REQUIRED_WORK
+  - token: require_async_work_after_required_work
+    status: OWNER_APPROVED_EXACT_NAME
+    semantic_scope: REQUIRE_ASYNC_WORK_TO_FOLLOW_REQUIRED_WORK
+
+finalization_effect:
+  owner_review_required_effect_token_count: 0
+  exact_initial_closed_vocabulary_status: FROZEN
+  exact_initial_closed_vocabulary_count: 99
+  registry_registration_authorized: false
+  schema_migration_authorized: false
+  runtime_consumption_authorized: false
+  adr_role_projection_authorized: false
+  wu_02_remediation_runtime_implementation_authorized: false
+
+invariants:
+  - OWNER_APPROVAL_OF_EXACT_TOKEN_NAMES_CLOSES_THE_INITIAL_VOCABULARY_REVIEW
+  - FROZEN_VOCABULARY_NE_REGISTERED_VOCABULARY
+  - VOCABULARY_APPROVAL_NE_RUNTIME_IMPLEMENTATION_AUTHORIZATION
+  - VOCABULARY_APPROVAL_NE_AUTOMATIC_PROJECT_AUTHORITY_PROMOTION
