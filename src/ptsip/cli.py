@@ -30,6 +30,8 @@ from .clarification.resolution.model import (
 from .clarification.transports.github_issue import publish as publish_github_issues
 from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
+from .dependency_analysis import analyze_dependencies
+from .dependency_review import write_review_pack
 from .doctor import doctor
 from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
@@ -93,6 +95,24 @@ def _validation_capture_command(argv: list[str]) -> list[str] | None:
             "Validation capture requires an exact command after '--'."
         )
     return command
+
+
+def _emit_dependency_summary(payload: dict, report_path: Path | None = None) -> None:
+    summary = payload["summary"]
+    print("PTSIP dependency analysis" if report_path is None else "PTSIP dependency review pack")
+    for key, label in (
+        ("observed_edges", "observed edges"), ("AUTO_RESOLVED", "auto resolved"),
+        ("REPOSITORY_DEFECT", "repository defects"), ("RESOLVER_LIMITATION", "resolver limitations"),
+        ("REVIEW_REQUIRED", "review required"), ("review_required_total", "review required total"),
+        ("selected_for_review", "selected for review"), ("deferred", "deferred"),
+        ("ai_reviewed_items", "AI reviewed items"),
+        ("blocking_after_reconciliation", "dependency blockers after reconciliation"),
+    ):
+        if key in summary:
+            print(f"{label}: {summary[key]}")
+    print("authority: ADVISORY_ONLY; conformance not evaluated")
+    if report_path is not None:
+        print(f"review pack: {report_path}")
 
 
 def _yes_no(value: str) -> bool:
@@ -241,6 +261,19 @@ def _parser() -> argparse.ArgumentParser:
     p_inspect = sub.add_parser("inspect", help="Read-only repository evidence collection")
     p_inspect.add_argument("path", nargs="?", default=".")
     p_inspect.add_argument("--json", action="store_true")
+
+    p_dependency = sub.add_parser("dependency", help="Analyze dependency actionability and prepare bounded review evidence")
+    dependency_commands = p_dependency.add_subparsers(dest="dependency_command", required=True)
+    for command in ("analyze", "review-pack"):
+        dependency_parser = dependency_commands.add_parser(command)
+        dependency_parser.add_argument("path", nargs="?", default=".")
+        dependency_parser.add_argument("--profile", help="Explicit project-profile path")
+        dependency_parser.add_argument("--component", help="Validated declared component ID")
+        dependency_parser.add_argument("--json", action="store_true")
+        if command == "review-pack":
+            dependency_parser.add_argument("--output", help="New JSON report path; default is external Tool-owned state")
+            dependency_parser.add_argument("--max-items", type=int, default=8)
+            dependency_parser.add_argument("--max-context-bytes", type=int, default=12000)
 
     p_pilot = sub.add_parser("pilot", help="Run a read-only PTSIP pilot and store the report outside the repository by default")
     p_pilot.add_argument("path", nargs="?", default=".")
@@ -397,6 +430,19 @@ def main(argv: list[str] | None = None) -> int:
             result = doctor(args.path)
             _emit(result, args.json)
             return 0 if result["python_ok"] and result["target_exists"] else 2
+        if args.command == "dependency":
+            result = analyze_dependencies(args.path, args.profile, component=args.component)
+            report_path = None
+            if args.dependency_command == "review-pack":
+                result, report_path = write_review_pack(
+                    result, args.output, max_items=args.max_items,
+                    max_context_bytes_per_item=args.max_context_bytes,
+                )
+            if args.json:
+                _emit({**result, "report_path": str(report_path)} if report_path else result, True)
+            else:
+                _emit_dependency_summary(result, report_path)
+            return 0 if result.get("status", "RAN") == "RAN" else 4
         if args.command == "inspect":
             repo = discover_repository(args.path)
             before = capture_snapshot(repo.root)

@@ -8,6 +8,7 @@ from pathlib import Path
 import tokenize
 
 from .dependency_reconciliation import reconcile_dependency_evidence
+from .conformance import _dependency_coverage_gaps
 from .inspection.dependencies_030 import scan_dependency_edges
 from .model import EvidenceNodeScope, ResolutionStatus
 from .repository.discover import discover_repository
@@ -81,6 +82,13 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
     contexts = {path: python_context(root, path) for path in sorted({
         edge.source for edge in dependencies.edges if edge.adapter == "python"})}
     issue_paths = {item.path for item in dependencies.issues}
+    incoming = {}
+    for edge in dependencies.edges:
+        if edge.resolved_path:
+            incoming.setdefault(edge.resolved_path, []).append({
+                "path": edge.source, "line": edge.line, "evidence_id": edge.evidence_id,
+                "kind": "FILE_DEPENDENCY_CALLER",
+            })
     items = []
     for edge in dependencies.edges:
         owner = owners.get(edge.source)
@@ -129,6 +137,8 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             "declaration": {"found": bool(declaration) or edge.resolution == ResolutionStatus.EXTERNAL,
                             "reconciliation": declaration, "native_basis": edge.note},
             "usage": usage,
+            "callers": sorted(incoming.get(edge.source, []), key=lambda item: item["evidence_id"])[:4],
+            "callers_total": len(incoming.get(edge.source, [])),
             "remediation_candidate": remediation,
         })
     return sorted(items, key=lambda item: item["evidence_id"])
@@ -150,6 +160,11 @@ def analyze_dependencies(path=".", profile_path=None, *, component=None):
     items = classify_dependencies(root, dependencies, components, partition, reconciliation)
     if component:
         items = [item for item in items if item["component"]["id"] == component]
+    selected_ids = {item["evidence_id"] for item in items}
+    def blocking_count(reconciled_ids=frozenset()):
+        return sum(1 for gap in _dependency_coverage_gaps(
+            dependencies, components, partition, reconciled_ids)
+            if gap["blocking"] and (not component or selected_ids.intersection(gap["evidence_ids"])))
     after = capture_snapshot(root)
     comparison = compare_snapshots(before, after)
     stable = comparison.stable and validation.valid and not partition.conflicts
@@ -164,7 +179,9 @@ def analyze_dependencies(path=".", profile_path=None, *, component=None):
         "snapshot": {"before": before.as_dict(), "after": after.as_dict(),
                      "comparison": comparison.as_dict()},
         "summary": {"observed_edges": len(items), **{state.value: counts[state.value] for state in Actionability},
-                    "ai_reviewed_items": 0, "machine_classified": len(items)},
+                    "ai_reviewed_items": 0, "machine_classified": len(items),
+                    "blocking_before_reconciliation": blocking_count() if stable else None,
+                    "blocking_after_reconciliation": blocking_count(reconciliation.resolved_evidence_ids) if stable else None},
         "items": items, "issues": [issue.as_dict() for issue in dependencies.issues],
         "profile_errors": validation.errors,
         "dependency_reconciliation": reconciliation.as_dict(),
