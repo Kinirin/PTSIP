@@ -144,6 +144,7 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             "declaration": {"found": bool(declaration) or edge.resolution == ResolutionStatus.EXTERNAL,
                             "reconciliation": declaration, "native_basis": edge.note},
             "usage": usage,
+            "dynamic_import_kind": edge.note.split(":", 1)[0] if edge.note and "DYNAMIC_IMPORT" in edge.note else None,
             "callers": sorted(incoming.get(edge.source, []), key=lambda item: item["evidence_id"])[:4],
             "callers_total": len(incoming.get(edge.source, [])),
             "remediation_candidate": remediation,

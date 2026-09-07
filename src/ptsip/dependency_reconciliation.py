@@ -192,6 +192,8 @@ def reconcile_dependency_evidence(
             continue
         if not edge.target or edge.target.startswith(".") or edge.target.startswith("<"):
             continue
+        if edge.note and ("local target" in edge.note.lower() or "relative import" in edge.note.lower()):
+            continue
 
         source_component = owners.get(edge.source)
         source_meta = metadata.get(source_component or "")

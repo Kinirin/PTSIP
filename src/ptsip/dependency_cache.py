@@ -57,7 +57,7 @@ class EvidenceCache:
         implementation = Path(__file__).parent
         resolver_hashes = {rel: file_hash(implementation / rel) for rel in (
             "dependency_cache.py", "dependency_analysis.py", "dependency_reconciliation.py",
-            "inspection/dependencies.py", "inspection/dependencies_030.py")}
+            "inspection/dependencies.py", "inspection/dependencies_030.py", "inspection/python_resolution.py")}
         self.context = digest({"repository": str(self.root), "tool": TOOL_VERSION,
                                "manifests_and_component_declarations": manifest_hashes,
                                "tracked_target_topology": paths, "untracked_target_topology": hashlib.sha256(untracked).hexdigest(),
