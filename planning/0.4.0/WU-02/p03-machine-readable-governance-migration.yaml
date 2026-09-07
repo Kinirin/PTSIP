@@ -92,7 +92,7 @@ approved_decisions:
         - subject_identity
       repository_binding:
         required: true
-        exact_repository_identity_mechanism: NOT_FROZEN_DRAFT_GITHUB_REPOSITORY_ID
+        exact_repository_identity_mechanism: FROZEN_GITHUB_REPOSITORY_ID_WITH_HOST
       subject_type:
         required: true
         closed_registered_vocabulary_required: true
@@ -665,7 +665,7 @@ migration_scope:
 implementation_constraints:
   remediation_runtime_implementation: FORBIDDEN_UNTIL_EXPLICIT_WU_02_IMPLEMENTATION_AUTHORIZATION
   exact_authority_role_vocabulary: FROZEN_99_EFFECT_TOKENS
-  exact_subject_binding_schema: NOT_FROZEN_DRAFT_AVAILABLE
+  exact_subject_binding_schema: FROZEN_PTSIP_GOVERNANCE_SUBJECT_BINDING_V1
   exact_repository_identity_mechanism: NOT_FROZEN
   exact_role_registry_physical_path: NOT_FROZEN
   unresolved_role_resolution_outcome_mapping: NOT_FROZEN
@@ -689,9 +689,11 @@ review_progress:
 remaining_p03_review: NONE_INITIAL_CLOSED_VOCABULARY_OWNER_REVIEW_COMPLETE
 initial_closed_vocabulary_owner_approval: planning/0.4.0/WU-02/p03-authority-role-initial-vocabulary-owner-approval.yaml
 p03_f_plan: planning/0.4.0/WU-02/p03-f-minimal-binding-registry-and-adr-projection.yaml
+p03_f_subject_binding_owner_approval: planning/0.4.0/WU-02/p03-f-subject-binding-owner-approval.yaml
 p03_f_subject_binding_corpus: planning/0.4.0/WU-02/p03-f-subject-binding-corpus.yaml
+p03_f_subject_registry: decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
 p03_f_subject_binding_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding-schema-draft.yaml
 p03_f_subject_binding_json_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
 governance_projection_application_authorization: AUTHORIZED_BY_PROJECT_OWNER
 remediation_runtime_implementation_authorization: NOT_AUTHORIZED
-next_p03_review: P03_F1_SUBJECT_BINDING_CORPUS_AND_SCHEMA_OWNER_REVIEW
+next_p03_review: P03_F1_ROLE_REGISTRY_AND_ADR_PROJECTION

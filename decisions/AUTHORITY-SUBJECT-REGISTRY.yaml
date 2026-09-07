@@ -1,0 +1,53 @@
+schema_version: ptsip-governance-authority-subject-registry/v1
+registry_role: SUBJECT_APPLICABILITY_CATALOG_NOT_PROJECT_AUTHORITY
+language_neutral: true
+frozen_by: planning/0.4.0/WU-02/p03-f-subject-binding-owner-approval.yaml
+authority_domains:
+  - PROJECT_GOVERNANCE
+subject_types:
+  - GOVERNANCE_TOPIC
+subject_identity_schemes:
+  DECISION_TOPIC_ID:
+    source_field: decision.topic_id
+    registered_values:
+      - ptsip_establishment
+      - consumer_repository_non_intrusion
+      - specification_reference_tool_versioning
+      - evidence_artifact_conformance_semantics
+      - distributed_decision_authority
+      - verification_purpose_management
+      - primary_lifecycle_boundary
+      - responsibility_roles_relationships_associated_artifacts
+      - responsibility_map_declaration_authority
+      - draft_profile_transition
+      - tool_0_3_7_normative_draft_activation
+      - normalized_evidence_contract
+      - source_profile_compatibility_model
+      - migration_analysis_pipeline
+      - target_reconciliation_planning
+      - migration_apply_state_machine
+      - tool_profile_contract_independence
+      - migration_subsystem_component_ownership
+      - project_profile_contract_versioning
+      - project_profile_transition_work_unit_sequence
+      - project_profile_identity_bridge_release_note_namespaces
+      - project_profile_direct_latest_target_convergence
+      - specification_binding_capability_registries
+repository_identity_schemes:
+  GITHUB_REPOSITORY_ID:
+    host_required: true
+    repository_id_pattern: '^[1-9][0-9]*$'
+current_repository_bindings:
+  - host: github.com
+    repository_id: '1327447827'
+    observed_slug: Kinirin/PTSIP
+    slug_is_identity: false
+matching:
+  order:
+    - EXACT
+    - REGISTERED_MACHINE_RELATIONSHIP
+    - NO_MATCH
+  registered_machine_relationships: []
+  relationship_must_be_registered_before_relaxed_match: true
+  fuzzy_match: FORBIDDEN
+  ai_semantic_match: FORBIDDEN

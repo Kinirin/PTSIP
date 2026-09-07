@@ -1,479 +1,340 @@
 schema_version: ptsip-p03-f-subject-binding-corpus/v1
 analysis:
-  status: DRAFT_FOR_PROJECT_OWNER_REVIEW
-  authority: NONE
+  status: PROJECT_OWNER_APPROVED_AND_FROZEN
+  authority: PROJECT_OWNER
   runtime_authority: NONE
-  vocabulary_registration: false
+  vocabulary_registration: true
+  approval: planning/0.4.0/WU-02/p03-f-subject-binding-owner-approval.yaml
   source_corpus:
     first_adr: ADR-0001
     through: ADR-0023
     adr_count: 23
     decision_index: decisions/INDEX.yaml
-  purpose: DERIVE_MINIMAL_SUBJECT_BINDING_VOCABULARY_AND_IDENTITIES_FROM_CURRENT_MACHINE_ADR_CORPUS
-  derivation_rules:
-    preserve_existing_authority_domain_semantics: true
-    invent_new_authority_effects: false
-    infer_subject_from_opaque_natural_language: false
-    subject_type_basis: DECISION_TOPIC_PLUS_MACHINE_AUTHORITY_SEMANTICS
-    subject_identity_basis: EXISTING_DECISION_TOPIC_ID
-    split_composite_adr_subjects_without_owner_rule: false
-    wildcard_subject_identity: false
 
-current_representation_baseline:
-  adr_schema: schemas/ptsip-adr.schema.json
-  current_subject_binding:
-    authority_domain: PROJECT_GOVERNANCE
-    repository: Kinirin/PTSIP
-  migration_need:
-    - REPLACE_REPOSITORY_SLUG_BINDING_WITH_STABLE_REPOSITORY_ID_BINDING
-    - ADD_SUBJECT_TYPE
-    - ADD_SUBJECT_IDENTITY
-
-repository_identity_candidate:
-  scheme: GITHUB_REPOSITORY_ID
-  repository_id: '1327447827'
-  observed_repository_slug: Kinirin/PTSIP
-  slug_is_authority_identity: false
-  local_path_is_authority_identity: false
-  rationale: USE_PROVIDER_STABLE_REPOSITORY_ID_FOR_CURRENT_PTSIP_REPOSITORY_BINDING
-
-candidate_closed_vocabulary:
-  authority_domain:
-    count: 1
-    values:
-      - PROJECT_GOVERNANCE
-    rationale: PRESERVE_EXISTING_MACHINE_ADR_DOMAIN_WITHOUT_UNNECESSARY_DOMAIN_RECLASSIFICATION
-  subject_type:
-    count: 12
-    values:
-      - ARCHITECTURE_MODEL
-      - CAPABILITY_REGISTRY
-      - COMPONENT_ARCHITECTURE
-      - DECISION_AUTHORITY_MODEL
-      - EVIDENCE_MODEL
-      - MIGRATION_MODEL
-      - POLICY_FRAMEWORK
-      - PROJECT_PROFILE_MODEL
-      - REPOSITORY_POLICY
-      - SPECIFICATION_MODEL
-      - VERIFICATION_SYSTEM
-      - WORK_UNIT_SEQUENCE
-    rationale: MINIMAL_REUSABLE_PRIMARY_GOVERNED_SCOPE_TYPES_OBSERVED_ACROSS_ADR_0001_THROUGH_ADR_0023
+frozen_model:
+  authority_domain: PROJECT_GOVERNANCE
+  subject_type: GOVERNANCE_TOPIC
   subject_identity:
     scheme: DECISION_TOPIC_ID
     source_field: decision.topic_id
-    expected_count: 23
-    expected_unique_count: 23
-    pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
-    rationale: REUSE_EXISTING_STABLE_MACHINE_TOPIC_ID_WITHOUT_INVENTING_NEW_SUBJECT_IDENTIFIERS
-
-binding_granularity:
-  unit: GOVERNED_DECISION_TOPIC
-  one_binding_per_adr_initial_v1: true
-  effect_by_subject_cross_product_from_multiple_bindings: AVOIDED
-  composite_topic_scope_preserved_when_adr_contains_multiple_related_semantics: true
-  automatic_subject_split: FORBIDDEN
+    identity_count: 23
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  binding_cardinality_per_adr: EXACTLY_ONE
+  matching_order:
+    - EXACT
+    - REGISTERED_MACHINE_RELATIONSHIP
+    - NO_MATCH
+  fuzzy_or_ai_relaxation: FORBIDDEN
 
 rows:
   ADR-0001:
     source_path: decisions/ADR-0001-establish-ptsip.yaml
     decision_topic_id: ptsip_establishment
-    authority_type: PTSIP_POLICY_IDENTITY
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.canonical_term
-      - authority_semantics.primary_principle
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: POLICY_FRAMEWORK
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: ptsip_establishment
   ADR-0002:
     source_path: decisions/ADR-0002-external-tooling-non-intrusion.yaml
     decision_topic_id: consumer_repository_non_intrusion
-    authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.consumer_repository_topology_owner
-      - authority_semantics.tooling_default_location
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: REPOSITORY_POLICY
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: consumer_repository_non_intrusion
   ADR-0003:
     source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
     decision_topic_id: specification_reference_tool_versioning
-    authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.specification_family
-      - authority_semantics.reference_tool_versioning
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: SPECIFICATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: specification_reference_tool_versioning
   ADR-0004:
     source_path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml
     decision_topic_id: evidence_artifact_conformance_semantics
-    authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.evidence_provenance
-      - authority_semantics.conformance_outcomes
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: EVIDENCE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: evidence_artifact_conformance_semantics
   ADR-0005:
     source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.yaml
     decision_topic_id: distributed_decision_authority
-    authority_type: DISTRIBUTED_DECISION_AUTHORITY
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.distributed_decision_identity
-      - authority_semantics.resolution_policy
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: DECISION_AUTHORITY_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: distributed_decision_authority
   ADR-0006:
     source_path: decisions/ADR-0006-establish-vpms-verification-purpose-management.yaml
     decision_topic_id: verification_purpose_management
-    authority_type: VPMS_VERIFICATION_PURPOSE_MANAGEMENT
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.canonical_name
-      - authority_semantics.verification_purposes
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: VERIFICATION_SYSTEM
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: verification_purpose_management
   ADR-0007:
     source_path: decisions/ADR-0007-primary-lifecycle-boundary-determination.yaml
     decision_topic_id: primary_lifecycle_boundary
-    authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.canonical_classifications
-      - authority_semantics.primary_owner_basis
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: ARCHITECTURE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: primary_lifecycle_boundary
   ADR-0008:
     source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml
     decision_topic_id: responsibility_roles_relationships_associated_artifacts
-    authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.roles_axis
-      - authority_semantics.relationships_axis
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: ARCHITECTURE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: responsibility_roles_relationships_associated_artifacts
   ADR-0009:
     source_path: decisions/ADR-0009-responsibility-map-declaration-authority.yaml
     decision_topic_id: responsibility_map_declaration_authority
-    authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.source_modes
-      - authority_semantics.effective_map_collections
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: ARCHITECTURE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: responsibility_map_declaration_authority
   ADR-0010:
     source_path: decisions/ADR-0010-versioned-draft-profile-transition.yaml
     decision_topic_id: draft_profile_transition
-    authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.canonical_profile_path
-      - authority_semantics.migration_categories
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: PROJECT_PROFILE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: draft_profile_transition
   ADR-0011:
     source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
     decision_topic_id: tool_0_3_7_normative_draft_activation
-    authority_type: SPECIFICATION_FAMILY_ACTIVATION
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.activated_family
-      - authority_semantics.immutable_normative_snapshot
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: SPECIFICATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: tool_0_3_7_normative_draft_activation
   ADR-0012:
     source_path: decisions/ADR-0012-universal-normalized-evidence-contract.yaml
     decision_topic_id: normalized_evidence_contract
-    authority_type: NORMALIZED_EVIDENCE_CONTRACT
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.contract
-      - authority_semantics.producer_neutral
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: EVIDENCE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: normalized_evidence_contract
   ADR-0013:
     source_path: decisions/ADR-0013-common-source-model-family-specific-semantics.yaml
     decision_topic_id: source_profile_compatibility_model
-    authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.compatibility_boundary
-      - authority_semantics.family_semantics
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: MIGRATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: source_profile_compatibility_model
   ADR-0014:
     source_path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.yaml
     decision_topic_id: migration_analysis_pipeline
-    authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.pipeline
-      - authority_semantics.repository_resolution_types
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: MIGRATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: migration_analysis_pipeline
   ADR-0015:
     source_path: decisions/ADR-0015-semantic-delta-bundle-deterministic-reconciliation-planner.yaml
     decision_topic_id: target_reconciliation_planning
-    authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.selected_architecture
-      - authority_semantics.target_delta_change_kinds
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: MIGRATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: target_reconciliation_planning
   ADR-0016:
     source_path: decisions/ADR-0016-strongly-typed-migration-state-machine-checkpoint-ledger.yaml
     decision_topic_id: migration_apply_state_machine
-    authority_type: MIGRATION_APPLY_STATE_MACHINE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.selected_architecture
-      - authority_semantics.states
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: MIGRATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: migration_apply_state_machine
   ADR-0017:
     source_path: decisions/ADR-0017-tool-version-profile-contract-independence.yaml
     decision_topic_id: tool_profile_contract_independence
-    authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.tool_version_independent_from_project_profile_version
-      - authority_semantics.migration_engine_remains_implemented
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: PROJECT_PROFILE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: tool_profile_contract_independence
   ADR-0018:
     source_path: decisions/ADR-0018-separate-product-components-for-migration-subsystems.yaml
     decision_topic_id: migration_subsystem_component_ownership
-    authority_type: MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.components
-      - authority_semantics.relationships
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: COMPONENT_ARCHITECTURE
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: migration_subsystem_component_ownership
   ADR-0019:
     source_path: decisions/ADR-0019-independent-project-profile-versioning.yaml
     decision_topic_id: project_profile_contract_versioning
-    authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.identity_axes
-      - authority_semantics.project_profile_namespace
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: PROJECT_PROFILE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: project_profile_contract_versioning
   ADR-0020:
     source_path: decisions/ADR-0020-responsibility-segmented-wu-sequence-for-pp-transition.yaml
     decision_topic_id: project_profile_transition_work_unit_sequence
-    authority_type: PROJECT_PROFILE_TRANSITION_WU_SEQUENCE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.ordered_work_units
-      - authority_semantics.responsibilities
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: WORK_UNIT_SEQUENCE
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: project_profile_transition_work_unit_sequence
   ADR-0021:
     source_path: decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.yaml
     decision_topic_id: project_profile_identity_bridge_release_note_namespaces
-    authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.bridge_source
-      - authority_semantics.bridge_target
-      - authority_semantics.release_note_namespaces
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: PROJECT_PROFILE_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: project_profile_identity_bridge_release_note_namespaces
-    review_note: COMPOSITE_PROJECT_PROFILE_IDENTITY_BRIDGE_AND_RELEASE_NOTE_NAMESPACE_TOPIC_PRESERVED_AS_ONE_GOVERNED_SCOPE_NO_AUTOMATIC_SPLIT
   ADR-0022:
     source_path: decisions/ADR-0022-normalized-source-direct-latest-target-convergence.yaml
     decision_topic_id: project_profile_direct_latest_target_convergence
-    authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.migration_model
-      - authority_semantics.transition_classes
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: MIGRATION_MODEL
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: project_profile_direct_latest_target_convergence
   ADR-0023:
     source_path: decisions/ADR-0023-typed-specification-binding-and-capability-registries.yaml
     decision_topic_id: specification_binding_capability_registries
-    authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
-    classification_status: PROPOSED_FOR_F1_OWNER_REVIEW
-    basis_paths:
-      - authority_semantics.specification_binding_fields
-      - authority_semantics.capability_authorities
-    proposed_subject_binding:
+    subject_binding:
       authority_domain: PROJECT_GOVERNANCE
       repository_binding:
         scheme: GITHUB_REPOSITORY_ID
+        host: github.com
         repository_id: '1327447827'
-      subject_type: CAPABILITY_REGISTRY
+      subject_type: GOVERNANCE_TOPIC
       subject_identity:
         scheme: DECISION_TOPIC_ID
         value: specification_binding_capability_registries
 
 validation:
   adr_row_count_equals_23: true
-  repository_binding_uniform_across_current_corpus: true
-  authority_domain_uniform_and_existing_semantics_preserved: true
-  subject_identity_uses_existing_machine_field_only: true
+  authority_domain_value_count_equals_1: true
+  subject_type_value_count_equals_1: true
+  subject_identity_count_equals_23: true
   subject_identity_unique_across_23: true
+  subject_identity_equals_existing_decision_topic_id: true
   automatic_subject_split_performed: false
-  runtime_authority: NONE

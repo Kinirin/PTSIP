@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-governance-authority-subject-registry.schema.json",
+  "title": "PTSIP Governance Authority Subject Registry v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_role",
+    "language_neutral",
+    "authority_domains",
+    "subject_types",
+    "subject_identity_schemes",
+    "repository_identity_schemes",
+    "matching"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-governance-authority-subject-registry/v1"
+    },
+    "registry_role": {
+      "const": "SUBJECT_APPLICABILITY_CATALOG_NOT_PROJECT_AUTHORITY"
+    },
+    "language_neutral": {
+      "const": true
+    },
+    "frozen_by": {
+      "type": "string"
+    },
+    "authority_domains": {
+      "const": [
+        "PROJECT_GOVERNANCE"
+      ]
+    },
+    "subject_types": {
+      "const": [
+        "GOVERNANCE_TOPIC"
+      ]
+    },
+    "subject_identity_schemes": {
+      "type": "object"
+    },
+    "repository_identity_schemes": {
+      "type": "object"
+    },
+    "current_repository_bindings": {
+      "type": "array"
+    },
+    "matching": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}
