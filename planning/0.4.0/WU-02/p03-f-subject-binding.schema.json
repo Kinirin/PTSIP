@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:schema:governance-subject-binding:draft-v1",
-  "title": "PTSIP Governance Subject Binding Draft v1",
-  "x-ptsip-status": "DRAFT_FOR_P03_F1_PROJECT_OWNER_REVIEW",
+  "$id": "urn:ptsip:p03-f:subject-binding:v1",
+  "title": "PTSIP Governance Subject Binding v1",
+  "x-ptsip-status": "PROJECT_OWNER_APPROVED_AND_FROZEN",
   "type": "object",
   "required": [
     "authority_domain",
@@ -18,11 +18,16 @@
       "type": "object",
       "required": [
         "scheme",
+        "host",
         "repository_id"
       ],
       "properties": {
         "scheme": {
           "const": "GITHUB_REPOSITORY_ID"
+        },
+        "host": {
+          "type": "string",
+          "minLength": 1
         },
         "repository_id": {
           "type": "string",
@@ -32,20 +37,7 @@
       "additionalProperties": false
     },
     "subject_type": {
-      "enum": [
-        "ARCHITECTURE_MODEL",
-        "CAPABILITY_REGISTRY",
-        "COMPONENT_ARCHITECTURE",
-        "DECISION_AUTHORITY_MODEL",
-        "EVIDENCE_MODEL",
-        "MIGRATION_MODEL",
-        "POLICY_FRAMEWORK",
-        "PROJECT_PROFILE_MODEL",
-        "REPOSITORY_POLICY",
-        "SPECIFICATION_MODEL",
-        "VERIFICATION_SYSTEM",
-        "WORK_UNIT_SEQUENCE"
-      ]
+      "const": "GOVERNANCE_TOPIC"
     },
     "subject_identity": {
       "type": "object",

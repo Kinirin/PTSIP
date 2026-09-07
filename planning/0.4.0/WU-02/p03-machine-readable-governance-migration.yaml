@@ -667,7 +667,7 @@ implementation_constraints:
   exact_authority_role_vocabulary: FROZEN_99_EFFECT_TOKENS
   exact_subject_binding_schema: FROZEN_PTSIP_GOVERNANCE_SUBJECT_BINDING_V1
   exact_repository_identity_mechanism: NOT_FROZEN
-  exact_role_registry_physical_path: NOT_FROZEN
+  exact_role_registry_physical_path: decisions/AUTHORITY-ROLE-REGISTRY.yaml
   unresolved_role_resolution_outcome_mapping: NOT_FROZEN
   advisory_role_resolution_outcome_mapping: NOT_FROZEN
   unregistered_contract_outcome_mapping: NOT_FROZEN
@@ -692,8 +692,9 @@ p03_f_plan: planning/0.4.0/WU-02/p03-f-minimal-binding-registry-and-adr-projecti
 p03_f_subject_binding_owner_approval: planning/0.4.0/WU-02/p03-f-subject-binding-owner-approval.yaml
 p03_f_subject_binding_corpus: planning/0.4.0/WU-02/p03-f-subject-binding-corpus.yaml
 p03_f_subject_registry: decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
+p03_f_role_registry: decisions/AUTHORITY-ROLE-REGISTRY.yaml
 p03_f_subject_binding_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding-schema-draft.yaml
 p03_f_subject_binding_json_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
 governance_projection_application_authorization: AUTHORIZED_BY_PROJECT_OWNER
 remediation_runtime_implementation_authorization: NOT_AUTHORIZED
-next_p03_review: P03_F1_ROLE_REGISTRY_AND_ADR_PROJECTION
+next_p03_review: P03_F2_APPLY_ROLE_AND_SUBJECT_BINDING_TO_ADR_0001_THROUGH_ADR_0023

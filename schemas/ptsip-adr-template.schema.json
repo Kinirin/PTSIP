@@ -17,7 +17,13 @@
       "registered_language_neutral_schema_required": true,
       "opaque_natural_language_in_authority_semantics": "FORBIDDEN",
       "arbitrary_unregistered_semantic_fields": "FORBIDDEN",
-      "authority_schema_registry": "decisions/AUTHORITY-SCHEMA-REGISTRY.yaml"
+      "authority_schema_registry": "decisions/AUTHORITY-SCHEMA-REGISTRY.yaml",
+      "authority_role_required": true,
+      "authority_role_registry": "decisions/AUTHORITY-ROLE-REGISTRY.yaml",
+      "subject_binding_required": true,
+      "authority_subject_registry": "decisions/AUTHORITY-SUBJECT-REGISTRY.yaml",
+      "subject_binding_cardinality": "EXACTLY_ONE",
+      "subject_match_relaxation": "REGISTERED_MACHINE_RELATIONSHIP_ONLY"
     },
     "explanation_boundary": {
       "human_explanation_is_machine_authority": false,

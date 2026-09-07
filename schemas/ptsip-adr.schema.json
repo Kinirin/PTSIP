@@ -8,6 +8,7 @@
     "decision",
     "authority_contract",
     "authority_semantics",
+    "authority_role",
     "subject_binding",
     "relations",
     "representation_migration"
@@ -78,20 +79,7 @@
       "minProperties": 1
     },
     "subject_binding": {
-      "type": "object",
-      "required": [
-        "authority_domain",
-        "repository"
-      ],
-      "properties": {
-        "authority_domain": {
-          "const": "PROJECT_GOVERNANCE"
-        },
-        "repository": {
-          "const": "Kinirin/PTSIP"
-        }
-      },
-      "additionalProperties": false
+      "$ref": "ptsip-governance-subject-binding.schema.json"
     },
     "relations": {
       "type": "object",
@@ -222,6 +210,9 @@
         }
       },
       "additionalProperties": false
+    },
+    "authority_role": {
+      "$ref": "ptsip-governance-authority-role.schema.json"
     }
   },
   "additionalProperties": false

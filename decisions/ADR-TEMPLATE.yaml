@@ -8,6 +8,12 @@ semantic_contract:
   authority_semantic_cardinality: EXACTLY_ONE
   authority_contract_required: true
   authority_semantics_required: true
+  authority_role_required: true
+  authority_role_registry: decisions/AUTHORITY-ROLE-REGISTRY.yaml
+  subject_binding_required: true
+  authority_subject_registry: decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
+  subject_binding_cardinality: EXACTLY_ONE
+  subject_match_relaxation: REGISTERED_MACHINE_RELATIONSHIP_ONLY
   registered_language_neutral_schema_required: true
   opaque_natural_language_in_authority_semantics: FORBIDDEN
   arbitrary_unregistered_semantic_fields: FORBIDDEN
