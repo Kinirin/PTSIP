@@ -32,6 +32,7 @@ from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
 from .dependency_analysis import analyze_dependencies
 from .dependency_review import write_review_pack
+from .dependency_validation import validation_plan
 from .doctor import doctor
 from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
@@ -264,12 +265,14 @@ def _parser() -> argparse.ArgumentParser:
 
     p_dependency = sub.add_parser("dependency", help="Analyze dependency actionability and prepare bounded review evidence")
     dependency_commands = p_dependency.add_subparsers(dest="dependency_command", required=True)
-    for command in ("analyze", "review-pack"):
+    for command in ("analyze", "review-pack", "validation-plan"):
         dependency_parser = dependency_commands.add_parser(command)
         dependency_parser.add_argument("path", nargs="?", default=".")
         dependency_parser.add_argument("--profile", help="Explicit project-profile path")
         dependency_parser.add_argument("--component", help="Validated declared component ID")
         dependency_parser.add_argument("--json", action="store_true")
+        if command == "validation-plan":
+            dependency_parser.add_argument("--changed", action="append", default=[], help="Tracked changed path; repeatable")
         if command == "review-pack":
             dependency_parser.add_argument("--output", help="New JSON report path; default is external Tool-owned state")
             dependency_parser.add_argument("--max-items", type=int, default=8)
@@ -432,6 +435,15 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if result["python_ok"] and result["target_exists"] else 2
         if args.command == "dependency":
             result = analyze_dependencies(args.path, args.profile, component=args.component)
+            if args.dependency_command == "validation-plan":
+                result = validation_plan(result["repository"]["root"], result, changed_paths=args.changed)
+                if args.json:
+                    _emit(result, True)
+                else:
+                    print(f"PTSIP dependency validation plan: {result['status']}")
+                    for step in result["steps"]:
+                        print(f"{step['scope']} ({step['run_when']}): {step['command']}")
+                return 0 if result["status"] == "PROPOSED" else 4
             report_path = None
             if args.dependency_command == "review-pack":
                 result, report_path = write_review_pack(
