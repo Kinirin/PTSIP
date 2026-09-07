@@ -15,13 +15,27 @@ work_unit:
       - WU-00B/D08
   integration_branch: dev/0.4.0
   entry_baseline: 4416e206adf2fcbff84f11cb50c002494c699a38
-  implementation_authorization: NOT_AUTHORIZED
+  implementation_authorization: PARTIALLY_AUTHORIZED
   depends_on: [WU-01]
   detail: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml
   supplements:
     - planning/0.4.0/WU-02/authority-context-machine-contract.yaml
     - planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
     - planning/0.4.0/WU-02/p03-f-minimal-binding-registry-and-adr-projection.yaml
+    - planning/0.4.0/WU-02/p03-g-project-authority-runtime-and-authorization-transition.yaml
+
+implementation_authorization_scope:
+  authorized:
+    - PROJECT_AUTHORITY_ELIGIBILITY_RUNTIME
+    - PROJECT_AUTHORITY_PROJECTION_RUNTIME
+    - PROJECT_AUTHORITY_RECORD_MATERIALIZATION_WHEN_CURRENTLY_ELIGIBLE
+    - AUTHORIZATION_READINESS_TRANSITION_ENGINE
+  held_not_authorized:
+    - SOLUTION_SPACE_AUTHORITY_CONSUMPTION_RUNTIME
+    - REMEDIATION_RUNTIME_IMPLEMENTATION
+    - REPOSITORY_MUTATION
+    - MUTATION_AUTHORIZATION
+  authorization_source: planning/0.4.0/WU-02/p03-g-project-authority-runtime-owner-approval.yaml
 
 primary_responsibility: IMPLEMENT_SOLUTION_SPACE_DETERMINISTIC_RULE_AND_NON_AUTHORITATIVE_COVERAGE_ROUTING_WITHOUT_MUTATION_OR_ESCALATION_EXECUTION
 

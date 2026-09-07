@@ -6,7 +6,7 @@ document:
   status: APPROVED
   authority: PROJECT_OWNER
   approval_date: '2026-09-03'
-  implementation_authorization: NOT_AUTHORIZED
+  implementation_authorization: PARTIALLY_AUTHORIZED_PROJECT_AUTHORITY_RUNTIME_ONLY
   purpose: RECORD_OWNER_APPROVED_P01_P02_AUTHORITY_BOUNDARY_AND_LANGUAGE_NEUTRAL_MACHINE_CONTRACT_DECISIONS
 
 relation:
@@ -14,9 +14,10 @@ relation:
   work_plan: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml
   scope: WU_02_EXTENSION
   does_not_replace_parent_plan: true
-  does_not_authorize_implementation: true
+  does_not_authorize_implementation: false
   p03_governance_migration: planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
   next_review_topic: P03_GOVERNANCE_AND_EXISTING_AUTHORITY_MATERIALIZATION
+  p03_g_runtime_authorization: planning/0.4.0/WU-02/p03-g-project-authority-runtime-owner-approval.yaml
 
 approved_decisions:
   P01:
@@ -182,8 +183,16 @@ invariants:
   - SEMANTIC_BODY_MUST_NOT_DETERMINE_CONTRACT_IDENTITY
   - UNSUPPORTED_TOOL_CAPABILITY_NE_MISSING_OWNER_INTENT
 
+authorized_runtime_scope:
+  project_authority_eligibility_runtime: AUTHORIZED
+  project_authority_projection_runtime: AUTHORIZED
+  project_authority_record_materialization: AUTHORIZED_WHEN_CURRENTLY_ELIGIBLE
+  authorization_readiness_transition_engine: AUTHORIZED
+  solution_space_authority_consumption_runtime: HOLD_NOT_AUTHORIZED
+  remediation_runtime_implementation: HOLD_NOT_AUTHORIZED
+
 implementation_constraints:
-  implementation_in_this_document: FORBIDDEN_UNTIL_EXPLICIT_WU_02_IMPLEMENTATION_AUTHORIZATION
+  implementation_in_this_document: AUTHORIZED_FOR_PROJECT_AUTHORITY_ELIGIBILITY_PROJECTION_AND_RECORD_MATERIALIZATION_ONLY
   exact_python_class_names: NOT_FROZEN
   exact_schema_serialization_format: NOT_FROZEN
   exact_registry_physical_path: NOT_FROZEN

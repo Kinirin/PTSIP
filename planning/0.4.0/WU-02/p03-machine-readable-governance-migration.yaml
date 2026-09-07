@@ -7,7 +7,7 @@ document:
   status: ACTIVE
   authority: PROJECT_OWNER
   approval_date: '2026-09-04'
-  implementation_authorization: NOT_AUTHORIZED
+  implementation_authorization: PARTIALLY_AUTHORIZED_PROJECT_AUTHORITY_RUNTIME_ONLY
   governance_representation_migration: AUTHORIZED_BY_PROJECT_OWNER
 
 relation:
@@ -682,6 +682,7 @@ review_progress:
   P03_D_CORPUS_DRIVEN_INITIAL_AUTHORITY_ROLE_VOCABULARY: APPROVED
   P03_E_INITIAL_CLOSED_VOCABULARY_CANDIDATE_FINALIZATION: PROJECT_OWNER_APPROVED_AND_FROZEN
   P03_F_MINIMAL_BINDING_REGISTRY_AND_23_ADR_PROJECTION: COMPLETE_23_OF_23_MACHINE_VALID
+  P03_G_PROJECT_AUTHORITY_RUNTIME_AND_AUTHORIZATION_TRANSITION: APPROVED_ACTIVE
   generic_machine_predicate_responsibility_split_without_explicit_criteria: FORBIDDEN
   owner_explicit_case_specific_split_approval_satisfies_review_gate: true
   P03: IN_PROGRESS
@@ -695,8 +696,14 @@ p03_f_subject_registry: decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
 p03_f_role_registry: decisions/AUTHORITY-ROLE-REGISTRY.yaml
 p03_f_role_registry_schema: schemas/ptsip-governance-authority-role-registry.schema.json
 p03_f_projection_validation: planning/0.4.0/WU-02/p03-f-adr-role-subject-projection-validation.yaml
+p03_g_owner_approval: planning/0.4.0/WU-02/p03-g-project-authority-runtime-owner-approval.yaml
+p03_g_plan: planning/0.4.0/WU-02/p03-g-project-authority-runtime-and-authorization-transition.yaml
+project_authority_eligibility_runtime_implementation_authorization: AUTHORIZED
+project_authority_projection_runtime_implementation_authorization: AUTHORIZED
+project_authority_record_materialization_authorization: AUTHORIZED_WHEN_CURRENTLY_ELIGIBLE
+authorization_readiness_transition_engine_implementation_authorization: AUTHORIZED
 p03_f_subject_binding_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding-schema-draft.yaml
 p03_f_subject_binding_json_schema_draft: planning/0.4.0/WU-02/p03-f-subject-binding.schema.json
 governance_projection_application_authorization: AUTHORIZED_BY_PROJECT_OWNER
 remediation_runtime_implementation_authorization: NOT_AUTHORIZED
-next_p03_review: PROJECT_AUTHORITY_ELIGIBILITY_AND_PROJECTION_RUNTIME_IMPLEMENTATION_REVIEW
+next_p03_review: P03_G_PROJECT_AUTHORITY_RUNTIME_IMPLEMENTATION_ACTIVE
