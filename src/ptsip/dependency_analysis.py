@@ -9,6 +9,7 @@ import tokenize
 
 from .dependency_reconciliation import reconcile_dependency_evidence
 from .conformance import _dependency_coverage_gaps
+from .dependency_cache import EvidenceCache
 from .inspection.dependencies_030 import scan_dependency_edges
 from .model import EvidenceNodeScope, ResolutionStatus
 from .repository.discover import discover_repository
@@ -79,7 +80,11 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
     _, paths, errors = repository_files(root)
     local_names = {Path(path).stem for path in paths if path.endswith(".py")}
     local_names.update(part for path in paths if path.endswith(".py") for part in Path(path).parts[:-1])
-    contexts = {path: python_context(root, path) for path in sorted({
+    context_cache = EvidenceCache(root, paths)
+    contexts = {path: {int(line): item for line, item in context_cache.get(
+        "python-context", path, lambda: {str(line): item for line, item in python_context(root, path).items()},
+        lambda value: isinstance(value, dict) and all(str(key).isdigit() and isinstance(item, dict)
+                                                     for key, item in value.items())).items()} for path in sorted({
         edge.source for edge in dependencies.edges if edge.adapter == "python"})}
     issue_paths = {item.path for item in dependencies.issues}
     incoming = {}
@@ -183,7 +188,9 @@ def analyze_dependencies(path=".", profile_path=None, *, component=None):
                     "blocking_before_reconciliation": blocking_count() if stable else None,
                     "blocking_after_reconciliation": blocking_count(reconciliation.resolved_evidence_ids) if stable else None},
         "items": items, "issues": [issue.as_dict() for issue in dependencies.issues],
+        "cache": dependencies.cache,
         "profile_errors": validation.errors,
+        "profile_path": validation.profile_path,
         "dependency_reconciliation": reconciliation.as_dict(),
         "authority": "ADVISORY_ONLY", "conformance_evaluated": False,
     }

@@ -66,4 +66,4 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
     )
     unique_issues = {(item.adapter, item.path, item.message): item for item in issues}
     ordered_issues = [unique_issues[key] for key in sorted(unique_issues)]
-    return DependencyScan(tuple(ordered_edges), tuple(ordered_issues), tuple(sorted(adapters)))
+    return DependencyScan(tuple(ordered_edges), tuple(ordered_issues), tuple(sorted(adapters)), legacy.cache)
