@@ -27,9 +27,32 @@ authority_semantics:
   - schemas/ptsip-normalized-evidence.schema.json
   - src/ptsip/specdata/ptsip-normalized-evidence.schema.json
   producer_specific_interfaces_replaced: false
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - declare_machine_contract_identity
+  - deny_derived_architecture_authority
+  - deny_unauthorized_semantic_inference
+  - forbid_absence_as_false_assertion
+  - forbid_normalized_evidence_contract_from_replacing_producer_interfaces
+  - govern_decision_precedence_and_resolution
+  - preserve_equivalent_value_origins
+  - preserve_unresolved_analysis_state
+  - require_evidence_provenance
+  - require_producer_neutral_evidence_contract
+  - select_versioned_target_identity
+  - separate_semantic_identity_from_evaluation_identity
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: normalized_evidence_contract
 relations:
   supersedes: []
   amends: []

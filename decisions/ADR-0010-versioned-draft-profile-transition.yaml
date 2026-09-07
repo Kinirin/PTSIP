@@ -29,9 +29,32 @@ authority_semantics:
   final_point_is_cumulative_target_state: true
   version_and_revision_required_transition_inputs: true
   stale_or_conflicting_transition: FAIL_CLOSED
+authority_role:
+  projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+  resolution_state: DECLARED
+  effects:
+  - constrain_profile_artifact_identity_and_cardinality
+  - define_migration_obligation_taxonomy
+  - define_migration_required_work_completion_semantics
+  - fail_closed_on_invalid_state
+  - govern_conformance_semantics
+  - govern_decision_precedence_and_resolution
+  - govern_migration_execution_state_machine
+  - govern_migration_source_compatibility
+  - govern_migration_source_ordering
+  - govern_migration_target_selection
+  - require_fresh_authority_or_evidence_state
+  - require_version_revision_and_accepted_target_transition_inputs
 subject_binding:
   authority_domain: PROJECT_GOVERNANCE
-  repository: Kinirin/PTSIP
+  repository_binding:
+    scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: '1327447827'
+  subject_type: GOVERNANCE_TOPIC
+  subject_identity:
+    scheme: DECISION_TOPIC_ID
+    value: draft_profile_transition
 relations:
   supersedes: []
   amends: []
