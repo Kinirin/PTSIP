@@ -5,7 +5,7 @@ review:
   review_authority_required: PROJECT_OWNER
   runtime_authority: NONE
   vocabulary_registration: false
-  baseline_commit: 216961c62169c622aa34f0d043dea59bd337b9c3
+  baseline_commit: a0487fdc853db1247fc1fc842af38c6338caeb10
   purpose: FINALIZE_PROPOSED_INITIAL_CLOSED_AUTHORITY_ROLE_EFFECT_VOCABULARY_FROM_FULL_CORPUS_RECONCILIATION
   inputs:
     source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -15,6 +15,7 @@ review:
     owner_dispositions:
       - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-0001-0003.yaml
       - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-01.yaml
+      - planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml
 
 corpus_validation:
   adr_range: ADR-0001_THROUGH_ADR-0023
@@ -22,22 +23,26 @@ corpus_validation:
   source_dimension_count: 184
   unique_source_dimension_count: 184
   exact_duplicate_expression_count: 0
-  mapped_source_dimension_count: 184
-  unmapped_source_dimension_count: 0
+  source_dimensions_with_projection_target_count: 183
+  owner_approved_removed_source_dimension_count: 1
+  unresolved_unmapped_source_dimension_count: 0
   owner_reported_unresolved_residual_count: 0
   matrix_dimension_count_after_repair: 184
 
 reconciliation_summary:
   owner_approved_low_risk_group_count: 32
   owner_approved_low_risk_source_dimension_count: 103
-  owner_approved_individual_transform_source_dimension_count: 10
-  owner_decided_source_dimension_count: 113
-  owner_vocabulary_disposition_pending_source_dimension_count: 71
-  proposed_effect_token_count: 115
-  owner_approved_effect_token_count: 44
-  owner_review_required_effect_token_count: 71
+  owner_approved_individual_transform_source_dimension_count: 18
+  owner_decided_source_dimension_count: 121
+  owner_vocabulary_disposition_pending_source_dimension_count: 63
+  proposed_effect_token_count: 114
+  owner_approved_effect_token_count: 51
+  owner_review_required_effect_token_count: 63
   proposed_effect_token_ids_unique: true
-  all_source_dimensions_project_to_known_proposed_tokens: true
+  all_source_dimensions_have_explicit_disposition: true
+  all_nonremoved_source_dimensions_project_to_known_proposed_tokens: true
+  intentional_no_projection_remove_count: 1
+  unresolved_projection_count: 0
 
 registration_boundary:
   proposed_effect_is_registered_effect: false
@@ -114,12 +119,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_effective_map_contract
     source_dimensions:
       - define_effective_map_contract
-  define_lifecycle_handoff:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_lifecycle_handoff
-    source_dimensions:
-      - define_lifecycle_handoff
   define_migration_obligation_categories:
     review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
     definition_source: SOURCE_DIMENSION_EXPRESSION
@@ -198,6 +197,11 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.define_specification_binding_fields
     source_dimensions:
       - define_specification_binding_fields
+  define_work_unit_responsibility_assignment:
+    review_status: OWNER_APPROVED_SPLIT_RESULT
+    definition: "Define explicit responsibility assignment to named work units."
+    source_dimensions:
+      - require_governable_responsibility_split
   deny_derived_architecture_authority:
     review_status: OWNER_APPROVED_SPLIT_PRESERVED_EFFECT
     definition: "Keep derived advisory, evidence, agent, and materializer outputs non-authoritative for architecture."
@@ -226,9 +230,8 @@ proposed_effect_tokens:
       - constrain_tool_state_location
       - forbid_tool_imposed_topology
   fail_closed_on_invalid_state:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.fail_closed_on_invalid_state
+    review_status: OWNER_APPROVED_SPLIT_PRESERVED_EFFECT
+    definition: "Fail closed on invalid, conflicting, stale-transition, or unavailable coordinated governed state when no valid fallback is authorized."
     source_dimensions:
       - fail_closed_on_invalid_state
   fail_closed_on_stale_source_or_repository:
@@ -262,9 +265,8 @@ proposed_effect_tokens:
     source_dimensions:
       - forbid_derived_architecture_mutation
   forbid_fabricated_history:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.forbid_fabricated_history
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Forbid synthesis of historical states that did not exist."
     source_dimensions:
       - forbid_fabricated_history
   forbid_fabricated_reference_targets:
@@ -333,6 +335,7 @@ proposed_effect_tokens:
     source_dimensions:
       - define_classification_basis
       - define_classification_vocabulary
+      - define_lifecycle_handoff
       - constrain_neutral_contract_qualification
       - preserve_classification_vocabulary
   govern_conformance_semantics:
@@ -343,6 +346,7 @@ proposed_effect_tokens:
       - forbid_conformance_waivers
       - separate_validation_from_conformance
       - permit_stricter_project_policy
+      - fail_closed_on_invalid_state
   govern_decision_precedence_and_resolution:
     review_status: OWNER_APPROVED_RECONCILIATION_TARGET
     definition: "Define decision priority, ordering, conflict handling, and resolution winner semantics."
@@ -546,9 +550,8 @@ proposed_effect_tokens:
     source_dimensions:
       - require_architectural_boundary
   require_conditional_mutation:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_conditional_mutation
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Require governed mutation to be gated by explicit conditions."
     source_dimensions:
       - require_conditional_mutation
   require_deterministic_integrity_digest:
@@ -557,15 +560,13 @@ proposed_effect_tokens:
     source_dimensions:
       - require_deterministic_semantic_digest
   require_evidence_provenance:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_evidence_provenance
+    review_status: OWNER_APPROVED_KEEP
+    definition: "Require evidence used by machine reasoning to preserve explicit provenance."
     source_dimensions:
       - require_evidence_provenance
-  require_exclusive_declaration_modes:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_exclusive_declaration_modes
+  require_exclusive_ownership_declaration_modes:
+    review_status: OWNER_APPROVED_RENAME_TARGET
+    definition: "Require ownership declaration representation modes to be mutually exclusive where the contract declares them as alternatives."
     source_dimensions:
       - require_exclusive_declaration_modes
   require_explicit_project_profile_capability_for_tool_operations:
@@ -591,10 +592,10 @@ proposed_effect_tokens:
     source_dimensions:
       - invalidate_stale_evidence
       - require_fresh_authority_reads
+      - fail_closed_on_invalid_state
   require_governable_responsibility_split:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.require_governable_responsibility_split
+    review_status: OWNER_APPROVED_SPLIT_PRESERVED_EFFECT
+    definition: "Require materially mixed lifecycle responsibilities to be separated into independently governable responsibilities."
     source_dimensions:
       - require_governable_responsibility_split
   require_producer_neutral_evidence_contract:
@@ -683,12 +684,6 @@ proposed_effect_tokens:
     definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.restrict_repository_dogfood_to_controlled_self_analysis
     source_dimensions:
       - restrict_repository_dogfood_to_controlled_self_analysis
-  retire_previous_identity:
-    review_status: OWNER_REVIEW_REQUIRED_SOURCE_PRESERVING_CANDIDATE
-    definition_source: SOURCE_DIMENSION_EXPRESSION
-    definition_ref: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml#dimensions.retire_previous_identity
-    source_dimensions:
-      - retire_previous_identity
   select_versioned_target_identity:
     review_status: OWNER_APPROVED_SPLIT_REPLACE_RESULT
     definition: "Select an explicit versioned target identity for a governed tool, bridge, or transition target."
@@ -862,9 +857,10 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - require_fresh_authority_or_evidence_state
   require_evidence_provenance:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - require_evidence_provenance
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D18
   define_conformance_decision_rule:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -882,9 +878,10 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_conformance_semantics
   require_exclusive_declaration_modes:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     proposed_effect_tokens:
-      - require_exclusive_declaration_modes
+      - require_exclusive_ownership_declaration_modes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D19
   permit_stricter_project_policy:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -914,25 +911,30 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - govern_decision_precedence_and_resolution
   require_conditional_mutation:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - require_conditional_mutation
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D20
   require_fresh_authority_reads:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
       - require_fresh_authority_or_evidence_state
   forbid_fabricated_history:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
       - forbid_fabricated_history
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D21
   forbid_silent_conflict_overwrite:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
       - govern_decision_precedence_and_resolution
   fail_closed_on_invalid_state:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     proposed_effect_tokens:
       - fail_closed_on_invalid_state
+      - require_fresh_authority_or_evidence_state
+      - govern_conformance_semantics
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D22
   separate_global_authority_from_local_projection:
     disposition: OWNER_APPROVED_KEEP
     proposed_effect_tokens:
@@ -946,9 +948,10 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - separate_authority_from_conformance
   retire_previous_identity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_REMOVE
     proposed_effect_tokens:
-      - retire_previous_identity
+      []
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D23
   define_purpose_vocabulary:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
@@ -986,17 +989,20 @@ source_to_proposed_effect_projection:
     proposed_effect_tokens:
       - require_project_owner_decision
   define_lifecycle_handoff:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_MERGE
     proposed_effect_tokens:
-      - define_lifecycle_handoff
+      - govern_classification_model
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D24
   constrain_neutral_contract_qualification:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     proposed_effect_tokens:
       - govern_classification_model
   require_governable_responsibility_split:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     proposed_effect_tokens:
       - require_governable_responsibility_split
+      - define_work_unit_responsibility_assignment
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D25
   define_responsibility_role_contract:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     proposed_effect_tokens:
@@ -1520,12 +1526,12 @@ source_to_proposed_effect_projection:
 
 owner_review_gate:
   required: true
-  current_batch_completed: P03_INITIAL_CLOSED_VOCABULARY_BATCH_01
-  remaining_owner_review_effect_token_count: 71
+  current_batch_completed: P03_INITIAL_CLOSED_VOCABULARY_BATCH_02
+  remaining_owner_review_effect_token_count: 63
   decision_surface:
     - APPROVE_PROPOSED_INITIAL_CLOSED_VOCABULARY
     - REQUEST_TOKEN_LEVEL_RECONCILIATION_CHANGES
-  current_proposed_effect_token_count: 115
+  current_proposed_effect_token_count: 114
   approval_must_not_be_inferred_from_sequence_authorization: true
   approval_effect_if_granted:
     - FREEZE_EXACT_INITIAL_AUTHORITY_ROLE_VOCABULARY
@@ -1537,10 +1543,12 @@ owner_review_gate:
 
 validation:
   source_dimension_count_equals_184: true
-  source_projection_coverage_complete: true
-  unknown_projection_target_count: 0
-  proposed_effect_token_count_equals_115: true
-  owner_approved_effect_token_count_equals_44: true
-  owner_review_pending_token_count_equals_71: true
+  source_disposition_entry_count_equals_184: true
+  nonremoved_source_projection_target_coverage_complete: true
+  owner_approved_remove_without_projection_target_count_equals_1: true
+  unresolved_projection_target_count: 0
+  proposed_effect_token_count_equals_114: true
+  owner_approved_effect_token_count_equals_51: true
+  owner_review_pending_token_count_equals_63: true
   vocabulary_registration: false
   runtime_authority: NONE

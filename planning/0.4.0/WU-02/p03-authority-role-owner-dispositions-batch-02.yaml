@@ -1,0 +1,106 @@
+schema_version: ptsip-p03-authority-role-owner-dispositions/v1
+owner_decisions:
+  status: PROJECT_OWNER_APPROVED
+  decided_on: '2026-09-07'
+  scope:
+    review_batch: P03_INITIAL_CLOSED_VOCABULARY_BATCH_02
+    source_dimensions: 8
+    adr_range: ADR-0004_THROUGH_ADR-0007
+  source_dimension_model: 184_DISPOSITION_PRIMARY
+  decision_count: 8
+  vocabulary_registration: false
+  runtime_authority: NONE
+  provisional_registry_mutated: false
+  source_matrix_mutated: false
+
+decisions:
+  D18:
+    source_dimension: require_evidence_provenance
+    decision: KEEP
+    dimension: require_evidence_provenance
+    semantic_scope: REQUIRE_EVIDENCE_PROVENANCE_FOR_MACHINE_REASONING
+    rationale: EVIDENCE_PROVENANCE_NE_EDGE_TYPE_NE_OUTPUT_STRUCTURE
+
+  D19:
+    source_dimension: require_exclusive_declaration_modes
+    decision: RENAME
+    rename_to: require_exclusive_ownership_declaration_modes
+    predicate_change: NONE
+    semantic_change: false
+    semantic_scope: REQUIRE_MUTUALLY_EXCLUSIVE_OWNERSHIP_DECLARATION_REPRESENTATION_MODES
+    rationale: OWNERSHIP_DECLARATION_MODE_NE_DECLARATION_SOURCE_MODE
+
+  D20:
+    source_dimension: require_conditional_mutation
+    decision: KEEP
+    dimension: require_conditional_mutation
+    semantic_scope: REQUIRE_MUTATION_TO_BE_GATED_BY_EXPLICIT_CONDITIONS
+    rationale: CONDITIONAL_MUTATION_GATE_IS_DISTINCT_FROM_ACTOR_AUTHORITY
+
+  D21:
+    source_dimension: forbid_fabricated_history
+    decision: KEEP
+    dimension: forbid_fabricated_history
+    semantic_scope: FORBID_SYNTHESIS_OF_NONEXISTENT_HISTORICAL_STATE
+    rationale: HISTORICAL_FABRICATION_NE_UNRESOLVED_REFERENCE_TARGET_FABRICATION
+
+  D22:
+    source_dimension: fail_closed_on_invalid_state
+    decision: SPLIT
+    preserve_as:
+      dimension: fail_closed_on_invalid_state
+      predicate_paths:
+        - authority_semantics.distributed_coordination_failure_behavior
+        - authority_semantics.local_fallback_when_distributed_coordination_required
+        - authority_semantics.unresolved_conflict_behavior
+        - authority_semantics.invalid_effective_architecture
+        - authority_semantics.stale_or_conflicting_transition
+      semantic_scope: FAIL_CLOSED_ON_INVALID_CONFLICTING_OR_UNCOORDINATED_GOVERNED_STATE
+    move_to_existing_approved_effects:
+      - dimension: require_fresh_authority_or_evidence_state
+        predicate_paths:
+          - authority_semantics.snapshot_instability_invalidates_evidence_set
+        semantic_scope: FRESHNESS_AND_SNAPSHOT_VALIDITY
+      - dimension: govern_conformance_semantics
+        predicate_paths:
+          - authority_semantics.blocking_gap_without_definite_violation_outcome
+        semantic_scope: CONFORMANCE_GAP_OUTCOME
+    rationale: GENERIC_FAIL_CLOSED_POLICY_NE_FRESHNESS_NE_CONFORMANCE_OUTCOME
+
+  D23:
+    source_dimension: retire_previous_identity
+    decision: REMOVE
+    removed_from_authority_effect_vocabulary: true
+    retained_as_adr_semantic_metadata: true
+    semantic_scope: HISTORICAL_WORKING_NAME_METADATA_ONLY
+    rationale: RETIRED_WORKING_NAME_DOES_NOT_EXERCISE_MACHINE_AUTHORITY_EFFECT
+
+  D24:
+    source_dimension: define_lifecycle_handoff
+    decision: MERGE
+    merge_into: govern_classification_model
+    predicate_paths:
+      - authority_semantics.delivery_operations_boundary
+    semantic_scope: LIFECYCLE_CLASSIFICATION_BOUNDARY_AND_HANDOFF
+    rationale: DELIVERY_OPERATIONS_HANDOFF_IS_PART_OF_LIFECYCLE_CLASSIFICATION_MODEL
+
+  D25:
+    source_dimension: require_governable_responsibility_split
+    decision: SPLIT
+    preserve_as:
+      dimension: require_governable_responsibility_split
+      predicate_paths:
+        - authority_semantics.material_mixed_lifecycle_requires_independently_governable_responsibilities
+      semantic_scope: REQUIRE_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITIES_TO_BE_INDEPENDENTLY_GOVERNABLE
+    new_effect:
+      dimension: define_work_unit_responsibility_assignment
+      predicate_paths:
+        - authority_semantics.responsibilities
+      semantic_scope: DEFINE_EXPLICIT_RESPONSIBILITY_ASSIGNMENT_TO_WORK_UNITS
+    rationale: GENERAL_GOVERNABLE_RESPONSIBILITY_SPLIT_NE_SPECIFIC_WORK_UNIT_RESPONSIBILITY_ASSIGNMENT
+
+validation:
+  approved_decision_count: 8
+  approved_remove_count: 1
+  stable_vocabulary_registration: false
+  runtime_authority: NONE

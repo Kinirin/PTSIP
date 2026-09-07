@@ -8,7 +8,7 @@ reconciliation:
     reconciled_source_dimension_count: 184
     semantic_coverage_unresolved_residual_count: 0
     exact_duplicate_expression_count: 0
-    proposed_initial_closed_vocabulary_candidate_count: 115
+    proposed_initial_closed_vocabulary_candidate_count: 114
   baseline_commit: d69496648218ae11dd0606e5aa2181c73b04e5e6
   primary_review_basis: SOURCE_DIMENSION_DISPOSITIONS_184
   source_registry: planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml
@@ -29,10 +29,10 @@ reconciliation:
   owner_decision:
     approved_low_risk_group_count: 32
     approved_source_dimension_count: 103
-    individually_decided_source_dimension_count: 10
-    pending_source_dimension_count: 71
-    owner_decided_source_dimension_count: 113
-    proposed_effect_token_count: 115
+    individually_decided_source_dimension_count: 18
+    pending_source_dimension_count: 63
+    owner_decided_source_dimension_count: 121
+    proposed_effect_token_count: 114
     owner_review_gate: IN_PROGRESS
     pending_groups_are_not_premerged: true
   invariants:
@@ -117,8 +117,9 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_fresh_authority_or_evidence_state
   require_evidence_provenance:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D18
   define_conformance_decision_rule:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_conformance_semantics
@@ -132,8 +133,10 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_conformance_semantics
   require_exclusive_declaration_modes:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_RENAME
     approved_group: null
+    rename_to: require_exclusive_ownership_declaration_modes
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D19
   permit_stricter_project_policy:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_conformance_semantics
@@ -156,20 +159,23 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_decision_precedence_and_resolution
   require_conditional_mutation:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D20
   require_fresh_authority_reads:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_fresh_authority_or_evidence_state
   forbid_fabricated_history:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_KEEP
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D21
   forbid_silent_conflict_overwrite:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_decision_precedence_and_resolution
   fail_closed_on_invalid_state:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D22
   separate_global_authority_from_local_projection:
     disposition: OWNER_APPROVED_KEEP
     approved_group: separate_global_authority_from_local_projection
@@ -180,8 +186,9 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_KEEP
     approved_group: separate_authority_from_conformance
   retire_previous_identity:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_REMOVE
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D23
   define_purpose_vocabulary:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_verification_purpose_contract
@@ -210,14 +217,16 @@ source_dimension_dispositions:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: require_project_owner_decision
   define_lifecycle_handoff:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
-    approved_group: null
+    disposition: OWNER_APPROVED_MERGE
+    approved_group: govern_classification_model
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D24
   constrain_neutral_contract_qualification:
     disposition: OWNER_APPROVED_LOW_RISK_RECONCILIATION
     approved_group: govern_classification_model
   require_governable_responsibility_split:
-    disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
+    disposition: OWNER_APPROVED_SPLIT
     approved_group: null
+    owner_decision_ref: planning/0.4.0/WU-02/p03-authority-role-owner-dispositions-batch-02.yaml#D25
   define_responsibility_role_contract:
     disposition: PRESERVE_SOURCE_DIMENSION_PENDING_OWNER_REVIEW
     approved_group: null
