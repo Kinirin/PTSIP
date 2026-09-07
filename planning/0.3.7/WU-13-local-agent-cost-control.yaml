@@ -49,15 +49,16 @@ bootstrap:
   conform_report:
     output_location: TEMP
     powershell:
-      - '$report = Join-Path $env:TEMP "ptsip-wu13-conform.json"'
-      - 'ptsip conform . --json > $report'
-      - '$exitCode = $LASTEXITCODE'
+      - '$wu13Report = Join-Path $env:TEMP "ptsip-wu13-conform.json"'
+      - 'ptsip conform . --json | Set-Content -LiteralPath $wu13Report -Encoding UTF8'
+      - '$wu13ExitCode = $LASTEXITCODE'
   compact_summary:
     powershell:
-      - '$r = Get-Content $report -Raw | ConvertFrom-Json'
-      - '$blocking = @($r.coverage.blocking_gaps)'
-      - '$dependency = @($blocking | Where-Object { $_.id -like "dependency-target:*" })'
-      - '[pscustomobject]@{ Outcome=$r.outcome; Blocking=$blocking.Count; Dependency=$dependency.Count; ExitCode=$exitCode }'
+      - '$wu13Result = Get-Content -LiteralPath $wu13Report -Raw -Encoding UTF8 | ConvertFrom-Json'
+      - '$wu13Blocking = @($wu13Result.coverage.blocking_gaps)'
+      - '$wu13Runtime = @($wu13Blocking | Where-Object { $_.id -like "dependency-target:*" })'
+      - '$wu13Verification = @($wu13Blocking | Where-Object { $_.id -like "verification-dependency-target:*" })'
+      - '[pscustomobject]@{ Outcome=$wu13Result.outcome; Blocking=$wu13Blocking.Count; RuntimeDependency=$wu13Runtime.Count; VerificationDependency=$wu13Verification.Count; CombinedDependency=($wu13Runtime.Count + $wu13Verification.Count); ExitCode=$wu13ExitCode }'
   full_json_console_output: prohibited_by_default
 
 validation_cadence:
@@ -80,17 +81,42 @@ implementation_priority:
   - dynamic_import_classification
   - consumer_remeasurement
 
-not_yet_implemented:
+implemented:
   - actionability_classifier
   - review_pack_generator
   - incremental_evidence_cache
   - validation_plan_generator
 
-until_review_pack_exists:
+public_surface_workflow:
+  analyze:
+    command: [ptsip, dependency, analyze, .]
+    machine_report:
+      output_location: TEMP
+      powershell:
+        - '$wu13Analysis = Join-Path $env:TEMP "ptsip-wu13-analysis.json"'
+        - 'ptsip dependency analyze . --json | Set-Content -LiteralPath $wu13Analysis -Encoding UTF8'
+        - '$wu13AnalysisExitCode = $LASTEXITCODE'
+        - '$wu13AnalysisResult = Get-Content -LiteralPath $wu13Analysis -Raw -Encoding UTF8 | ConvertFrom-Json'
+        - '$wu13AnalysisResult.summary'
+  review_pack:
+    command: [ptsip, dependency, review-pack, ., --max-items, '8', --max-context-bytes, '12000']
+    output_location: external_tool_owned_state
+    ai_input: selected_review_pack_items_only
+    insufficient_import_context: DEFER
+    ai_review_count: record_separately_from_generator_count
+  validation_plan:
+    command: [ptsip, dependency, validation-plan, ., --changed, src/ptsip/dependency_analysis.py]
+    changed_path_policy: replace_example_with_actual_tracked_paths_and_repeat_changed_as_needed
+    authority: advisory_only
+    execution: explicitly_run_proposed_commands_at_applicable_validation_cadence
   policy: >-
-    Do not perform repository-wide AI review. Use the review budget above and
-    inspect only the minimum exact source/manifest/caller evidence needed for
-    unresolved candidates.
+    Run analysis before detailed review. Use only the bounded Review Pack as
+    detailed AI input and defer insufficient or overflow context. Reuse unchanged
+    source evidence through the external cache and compare report deltas before
+    repeating collection. Apply generated validation plans at focused and batch
+    boundaries; preserve full regression and exact-SHA checkpoint requirements.
+    These advisory surfaces do not replace strict conformance, resolve support
+    or ownership decisions, or authorize consumer changes.
   prohibit:
     - reading_all_dependency_sources
     - passing_full_conform_json_to_ai

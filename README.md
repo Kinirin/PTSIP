@@ -331,6 +331,36 @@ Completed outcomes are:
 
 A valid profile does not prove conformance. Missing evidence that could hide an applicable mandatory rule remains fail-closed as `INCOMPLETE`; the Tool does not force an uncertain repository green.
 
+## Dependency analysis and bounded review
+
+The WU-13 development CLI reconciles dependency evidence before presenting items for review:
+
+```powershell
+ptsip dependency analyze .
+ptsip dependency analyze . --component ptsip-core --json
+ptsip dependency review-pack . --max-items 8 --max-context-bytes 12000
+ptsip dependency validation-plan . --changed src/ptsip/dependency_analysis.py --json
+```
+
+`--component` requires a component ID declared in the selected Project Profile. All three commands accept `--profile`; omit `--component` to analyze the repository. The examples using `ptsip-core` and `src/ptsip/dependency_analysis.py` apply to this repository and must be replaced with consumer-owned component IDs and tracked paths elsewhere.
+
+Analysis reports four advisory actionability buckets:
+
+| Bucket | Next action |
+| --- | --- |
+| `AUTO_RESOLVED` | Reuse the recorded mechanical evidence. |
+| `REPOSITORY_DEFECT` | Review the evidence-backed remediation candidate; application remains explicit. |
+| `REVIEW_REQUIRED` | Review bounded source context and the unresolved support or ownership question. |
+| `RESOLVER_LIMITATION` | Retain incomplete evidence and address the resolver or supply authoritative evidence. |
+
+The default human output is concise. `--json` preserves the detailed machine report; keep large reports in an external working directory instead of placing the entire report in an AI prompt. A Review Pack includes only `REVIEW_REQUIRED` items, defaults to at most eight items and 12,000 UTF-8 bytes per item, and limits each item to four source files. Its summary distinguishes selected and deferred items. An item is deferred when its import snippet cannot fit the context budget. Generation does not perform AI review; record actual review counts separately from the generator's `ai_reviewed_items: 0`.
+
+Review Packs and reusable Python source evidence are stored in external Tool-owned state by default. `review-pack --output <new-report.json>` chooses an explicit report path; it rejects overwriting tracked repository content. Source evidence is reused only when its cache identity matches, while repository snapshots are checked freshly. Corrupt or stale cache entries are recomputed.
+
+`validation-plan` proposes focused and component commands from declared verification ownership and observed import reachability. Repeat `--changed` for multiple tracked paths. It does not execute the commands or replace the repository's full regression and exact-SHA verification requirements.
+
+Dependency analysis and Review Packs do not evaluate conformance or establish architecture authority. Run `ptsip conform .` for the strict outcome. Unresolved verification dependencies remain blocking in a separate verification bucket; dynamic or ambiguous local imports remain unresolved when their targets cannot be established mechanically. A support-contract decision and any consumer change remain explicit.
+
 ## Tool and Specification lifecycle
 
 The PTSIP Tool and PTSIP Specification are independently versioned.
