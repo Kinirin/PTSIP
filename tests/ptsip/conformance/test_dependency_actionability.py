@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import pytest
 
 from ptsip.dependency_analysis import analyze_dependencies
 from test_dependency_reconciliation import _fixture
@@ -63,3 +64,32 @@ def test_dynamic_function_alias_context_and_platform_provenance(tmp_path: Path):
     assert dynamic["actionability"] == "REVIEW_REQUIRED"
     assert dynamic["usage"]["import_style"] == "lazy"
     assert dynamic["usage"]["fallback"]["detected"] is True
+
+
+@pytest.mark.parametrize("import_name,distribution", [("yaml", "PyYAML"), ("PIL", "Pillow")])
+def test_declared_distribution_with_unresolved_alias_is_resolver_queue(tmp_path, import_name, distribution):
+    repo = tmp_path / "repo"
+    _fixture(repo, f"import {import_name}", "numpy==2")
+    (repo / "pyproject.toml").write_text(f'[project]\ndependencies = ["{distribution}"]\n', encoding="utf-8")
+    from test_dependency_reconciliation import _git
+    _git(repo, "add", "pyproject.toml")
+    report = analyze_dependencies(repo)
+    item = report["items"][0]
+    assert item["actionability"] == "RESOLVER_LIMITATION"
+    assert item["declaration"]["found"] is True
+    assert item["remediation_candidate"] is None
+    assert report["summary"]["blocking_after_reconciliation"] == 1
+
+
+def test_owned_declaration_outside_reconciliation_scope_is_not_missing(tmp_path):
+    repo = tmp_path / "repo"
+    _fixture(repo, "from PIL import Image", "numpy==2")
+    (repo / "install/requirements.txt").write_text("Pillow==12\n", encoding="utf-8")
+    from test_dependency_reconciliation import _git
+    _git(repo, "add", "install/requirements.txt")
+    report = analyze_dependencies(repo)
+    item = report["items"][0]
+    assert item["actionability"] == "RESOLVER_LIMITATION"
+    assert item["declaration"]["unresolved_candidate"]["owned_requirement_paths"] == ["install/requirements.txt"]
+    assert item["remediation_candidate"] is None
+    assert report["summary"]["blocking_after_reconciliation"] == 1

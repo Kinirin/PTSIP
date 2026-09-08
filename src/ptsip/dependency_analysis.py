@@ -7,10 +7,14 @@ from enum import StrEnum
 from pathlib import Path
 import tokenize
 
-from .dependency_reconciliation import reconcile_dependency_evidence, reconcile_dependency_phases
+from .dependency_reconciliation import (
+    _IMPORT_DISTRIBUTION_ALIASES, _normalize_name, _read_declarations,
+    reconcile_dependency_evidence, reconcile_dependency_phases,
+)
 from .conformance import _dependency_coverage_gaps
 from .dependency_cache import EvidenceCache
 from .inspection.dependencies_030 import scan_dependency_edges
+from .inspection.dependencies import _declared_python_dependencies
 from .model import EvidenceNodeScope, ResolutionStatus
 from .repository.discover import discover_repository
 from .repository.snapshot import capture_snapshot, compare_snapshots, repository_files
@@ -79,6 +83,11 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
     owners = {item.path: item.component_id for item in partition.assignments}
     metadata = {item["id"]: item for item in components}
     reconciled = {item.evidence_id: item.as_dict() for item in reconciliation.resolved_external}
+    declarations, declaration_errors = _read_declarations(root, partition)
+    native_declarations, native_declaration_issues = _declared_python_dependencies(root)
+    declaration_paths = {}
+    for declaration in declarations:
+        declaration_paths.setdefault(declaration.distribution, set()).add(declaration.path)
     boundary = {evidence: finding for finding in evaluate_declared_dependency_boundaries(
         components, partition, dependencies) for evidence in finding.evidence_ids}
     _, paths, errors = repository_files(root)
@@ -105,6 +114,10 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
         target_owner = owners.get(edge.resolved_path)
         usage = contexts.get(edge.source, {}).get(edge.line, {})
         declaration = reconciled.get(edge.evidence_id)
+        import_root = _normalize_name(edge.target.lstrip(".").split(".", 1)[0])
+        distribution = _IMPORT_DISTRIBUTION_ALIASES.get(import_root, import_root)
+        observed_declaration = (edge.adapter == "python" and edge.resolution == ResolutionStatus.UNRESOLVED
+                                and (distribution in declaration_paths or distribution in native_declarations))
         remediation = None
         finding = boundary.get(edge.evidence_id)
         if not owner or errors or partition.scan_errors or edge.source in issue_paths:
@@ -120,6 +133,12 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             EvidenceNodeScope.EXTERNAL_DEPENDENCY, EvidenceNodeScope.PLATFORM
         }:
             state, reason = Actionability.AUTO_RESOLVED, "RESOLVED_EXTERNAL_OR_PLATFORM"
+        elif observed_declaration:
+            # Declaration presence prevents an absence-based remediation. It
+            # does not establish alias/ownership eligibility or clear a gap.
+            state, reason = Actionability.RESOLVER_LIMITATION, "DECLARATION_PRESENT_RESOLUTION_INCOMPLETE"
+        elif edge.adapter == "python" and (declaration_errors or native_declaration_issues):
+            state, reason = Actionability.RESOLVER_LIMITATION, "DECLARATION_EVIDENCE_INCOMPLETE"
         elif edge.phase.value == "TEST":
             state, reason = Actionability.RESOLVER_LIMITATION, "VERIFICATION_DEPENDENCY_EVIDENCE_INCOMPLETE"
         elif edge.resolution == ResolutionStatus.DYNAMIC:
@@ -145,10 +164,16 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             "component": {key: component.get(key) for key in (
                 "id", "classification", "roles", "shipped", "runtime_required")},
             "target_component": target_owner,
-            "declaration": {"found": bool(declaration) or (
+            "declaration": {"found": bool(declaration) or observed_declaration or (
                                 edge.resolution == ResolutionStatus.EXTERNAL
                                 and edge.target_scope == EvidenceNodeScope.EXTERNAL_DEPENDENCY),
-                            "reconciliation": declaration, "native_basis": edge.note},
+                            "reconciliation": declaration, "native_basis": edge.note,
+                            "unresolved_candidate": {
+                                "distribution": distribution,
+                                "owned_requirement_paths": sorted(declaration_paths.get(distribution, [])),
+                                "native_manifest_match": distribution in native_declarations,
+                                "semantics": "DECLARATION_PRESENCE_ONLY_NOT_RESOLUTION_AUTHORITY",
+                            } if observed_declaration else None},
             "usage": usage,
             "dynamic_import_kind": edge.note.split(":", 1)[0] if edge.note and "DYNAMIC_IMPORT" in edge.note else None,
             "callers": sorted(incoming.get(edge.source, []), key=lambda item: item["evidence_id"])[:4],
