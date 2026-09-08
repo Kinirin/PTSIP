@@ -84,7 +84,7 @@ Focused tests must prove declaration matching, alias matching, and fail-closed b
 
 ## Machine-first implementation checkpoint
 
-T1 through T10 are implemented at source commit `84427e75ab6a76fda6b32f0461c566f2dd99e3aa`. T11 consumer measurement below used those exact executable bytes. Subsequent documentation commits require their own exact-SHA verification before completion; a historical workflow success does not verify the current branch tip.
+T1 through T10, including the final classifier corrections, are implemented at source commit `141faaa9f90d74f3c3e2b04490d5dadcd0db612e`. The final T11 consumer measurement below used those executable bytes. Subsequent documentation commits require their own exact-SHA verification before completion; a historical workflow success does not verify the current branch tip.
 
 | Commit | Implementation |
 | --- | --- |
@@ -96,6 +96,8 @@ T1 through T10 are implemented at source commit `84427e75ab6a76fda6b32f0461c566f
 | `f440916` | Separate verification purpose while retaining unresolved test evidence as blocking. |
 | `7cb69c4` | Resolve tracked relative/local targets and literal or finite-loop dynamic imports. |
 | `84427e7` | Preserve namespace ambiguity, relative dynamic semantics, cache identity and minimum review context. |
+| `7ccdfa8` | Preserve declaration presence when alias or ownership scope cannot be reconciled. |
+| `141faaa` | Keep unrelated declaration read errors from hiding guarded/dynamic support review. |
 
 The frozen binding remains Tool `0.3.7`, Specification `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`. No Specification, profile, lifecycle classification, consumer dependency declaration, or consumer source rewrite was made.
 
@@ -107,7 +109,7 @@ ptsip dependency review-pack . --max-items 8 --max-context-bytes 12000
 ptsip dependency validation-plan . --changed tests/ptsip/conformance/test_dependency_local_resolution.py --changed tests/ptsip/conformance/test_dependency_cache.py --changed tests/ptsip/conformance/test_dependency_actionability.py --changed tests/ptsip/conformance/test_dependency_validation.py --changed tests/ptsip/cli/test_dependency_cli.py --json
 ```
 
-Reports were redirected through explicit UTF-8 `Set-Content` into the external temporary directory; full dependency items were not sent to AI. The last validation plan selected the declared `ptsip-core-verification` and `repository-test-mode-control-plane` components. Its generated focused command was actually executed:
+Reports were redirected through explicit UTF-8 `Set-Content` into the external temporary directory; full dependency items were not sent to AI. The initial checkpoint validation plan selected the declared `ptsip-core-verification` and `repository-test-mode-control-plane` components. Its generated focused command was actually executed:
 
 ```powershell
 python -m pytest tests/ptsip/cli/test_dependency_cli.py tests/ptsip/conformance/test_dependency_actionability.py tests/ptsip/conformance/test_dependency_cache.py tests/ptsip/conformance/test_dependency_local_resolution.py tests/ptsip/conformance/test_dependency_validation.py -q
@@ -123,7 +125,7 @@ Result: **112 passed**, exit `0`, 169.56 seconds. This includes existing scanner
 
 ## turbo-system consumer measurement
 
-Before and after strict runs used the same clean, stable consumer commit `053f3182e6c5bb840971f31f35ffaf61beb5c71c`, branch `fix/stale-import-residue-r6`. This was newer than the requested historical consumer baseline and was preserved. Baseline Tool source was `9598e43a3fb405448b133c66623bc4c3cfd5dcdb`; final Tool source was `84427e75ab6a76fda6b32f0461c566f2dd99e3aa`.
+Before and after strict runs used the same clean, stable consumer commit `053f3182e6c5bb840971f31f35ffaf61beb5c71c`, branch `fix/stale-import-residue-r6`. This was newer than the requested historical consumer baseline and was preserved. Baseline Tool source was `9598e43a3fb405448b133c66623bc4c3cfd5dcdb`; final Tool source was `141faaa9f90d74f3c3e2b04490d5dadcd0db612e`.
 
 | Measurement | Before | After |
 | --- | ---: | ---: |
@@ -143,8 +145,8 @@ The final advisory analysis classified **all 6,592 edges mechanically**:
 | --- | ---: |
 | `AUTO_RESOLVED` | 5,513 |
 | `REPOSITORY_DEFECT` | 0 |
-| `REVIEW_REQUIRED` | 61 |
-| `RESOLVER_LIMITATION` | 1,018 |
+| `REVIEW_REQUIRED` | 60 |
+| `RESOLVER_LIMITATION` | 1,019 |
 
 There are 561 verification-purpose dependency edges. Aggregate checks confirmed zero repository-defect proposals for the protected declared imports (`typer`, `openpyxl`, `piexif`, `urllib3`, `numpy`, `PIL`), verification-only edges, and resolved repository-local imports. No individual AUTO_RESOLVED or resolver-queue source review was performed.
 
@@ -157,15 +159,23 @@ Cache counts describe source files, not edges. Focused tests also prove that cha
 
 ### Bounded AI review record
 
-Actual AI-reviewed unique items: **8**. All were selected `REVIEW_REQUIRED` items in an earlier eight-item, 3,000-byte Review Pack. They remain deferred for target/support/ownership evidence; no support contract or architecture decision was invented. Two lacked sufficient import context under that smaller cap, which motivated mandatory import-context deferral in the generator.
+Actual AI-reviewed unique items: **8**. All were selected `REVIEW_REQUIRED` items in an earlier eight-item, 3,000-byte Review Pack, when the eligible queue contained 61 items. They remain deferred for target/support/ownership evidence; no support contract or architecture decision was invented. Two lacked sufficient import context under that smaller cap, which motivated mandatory import-context deferral in the generator.
 
-The final public generator selected the same eight evidence IDs with the normal 12,000-byte cap and deferred 53. All eight final items contain import context; the largest item is 8,924 serialized UTF-8 bytes and no item exceeds four source files. The expanded final pack was prepared for follow-up, not counted as a second AI review. Its `ai_reviewed_items: 0` correctly states that the Tool itself invokes no AI.
+The final public generator selected the same eight evidence IDs with the normal 12,000-byte cap and deferred 52. All eight final items contain import context; the largest item is 8,958 serialized UTF-8 bytes and no item exceeds four source files. The expanded final pack was prepared for follow-up, not counted as a second AI review. Its `ai_reviewed_items: 0` correctly states that the Tool itself invokes no AI. Compared with the initial 61-item queue, one declaration-present item moved mechanically to `RESOLVER_LIMITATION`; the other 60 support/ownership review items remain eligible.
 
 The reviewed set covers guarded optional/dynamic imports, runtime-selected plugin targets, an availability probe, a parameterized launcher, and a resolved local import needing ownership evidence. Their support and ownership questions affect consumer follow-up only; they do not authorize consumer changes or prevent the Tool from retaining fail-closed results.
 
 ## Full regression and exact-SHA evidence
 
 The first full local command, `python -m pytest -q --maxfail=10`, at `7cb69c4d87600dd221466dbae330c49f863bffea` ended with **557 passed, 1 failed** (exit `1`). The failing console-script test selected the older global Tool `0.3.6` executable through PATH. With the dedicated Tool `0.3.7` virtual environment's Scripts directory prepended to PATH, that exact test passed in the 13-test correction batch (exit `0`). No test assertion or Product behavior was weakened to hide the environment mismatch.
+
+The first full self-hosted checkpoint at `661e91fd89e6ac7d20ca171cb19893160bbf7c2f` passed **571 tests** in 433.60 seconds: [run 34100856793](https://github.com/Kinirin/PTSIP/actions/runs/34100856793). Release-contract, wheel/sdist, embedded-contract, exact artifact-binding and installed-wheel smoke steps all passed. The commit-status API independently reported `self-hosted/tooling-test: success` for that SHA. The artifact-aware repository outcome remained `INCOMPLETE`; artifact verification PASS is not a conformance claim. The subsequent classifier corrections below require another full exact-SHA run.
+
+### Declaration-presence correction
+
+Synthetic negative tests found that root `pyproject.toml` declarations for PyYAML/Pillow could still produce a missing-requirement proposal for unresolved `yaml`/`PIL` aliases. Commit `7ccdfa8c8556ae7a49123373b9518018505857f8` reuses the existing declaration collectors to route declaration-present, unresolved imports to `RESOLVER_LIMITATION`. Owned requirements outside the permitted reconciliation scope also retain declaration provenance without gaining resolution authority. Focused tests passed, and the conformance/CLI batch passed **89 tests** (exit `0`).
+
+An aggregate follow-up identified overly broad routing of 42 guarded/dynamic items when an unrelated native declaration could not be read. Commit `141faaa9f90d74f3c3e2b04490d5dadcd0db612e` confines that absence-of-evidence safeguard to missing-dependency remediation and preserves guarded/dynamic support review. All **8 actionability tests** passed (exit `0`), including the additional negative contract. Neither correction suppresses conformance blockers. The intermediate 18-item review queue is superseded and must not be reported as the final result.
 
 The final completion gate is the existing `tooling-test.yml` workflow dispatched with `scope=full`, `mode=all` on the current WU-13 branch tip. It must verify the dispatched SHA, pass the complete regression and artifact checks, and record a successful `self-hosted/tooling-test` status for that SHA. This document does not substitute a prior local or remote success for that check. Release, publication, tagging and main merge remain outside this WU.
 
@@ -176,12 +186,15 @@ The consumer's required Turbo SDK context-pack command succeeded at its exact cl
 Local raw evidence is retained outside both repositories under `%TEMP%`:
 
 - `ptsip-wu13-consumer-before-clean.json`
-- `ptsip-wu13-consumer-final-cold.json`
-- `ptsip-wu13-consumer-final-warm.json`
-- `ptsip-wu13-consumer-final-conform.json`
-- `ptsip-wu13-consumer-comparison.json`
+- `ptsip-wu13-consumer-closure-cold.json`
+- `ptsip-wu13-consumer-closure-warm.json`
+- `ptsip-wu13-consumer-closure-conform.json`
+- `ptsip-wu13-consumer-closure-comparison.json`
 - `ptsip-wu13-final-validation-plan.json`
 - `ptsip-wu13-final-component-tests.txt`
+- `ptsip-wu13-alias-validation-plan.json`
+- `ptsip-wu13-alias-component-tests.txt`
 - `ptsip-wu13-full-regression.txt` (initial failed environment run)
+- `ptsip-wu13-run-34100856793.log` (successful 571-test historical checkpoint)
 
-The final Review Pack is in existing external Tool state under `dependency-reviews/ea2e2ae2136330245901/92b9f62181bd735d98c8.json`. These local locators are handoff evidence, not durable CI records or architecture authority.
+The final Review Pack is in existing external Tool state under `dependency-reviews/ea2e2ae2136330245901/a81daa26cf36919b1708.json`. These local locators are handoff evidence, not durable CI records or architecture authority.
