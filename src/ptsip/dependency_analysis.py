@@ -137,8 +137,6 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
             # Declaration presence prevents an absence-based remediation. It
             # does not establish alias/ownership eligibility or clear a gap.
             state, reason = Actionability.RESOLVER_LIMITATION, "DECLARATION_PRESENT_RESOLUTION_INCOMPLETE"
-        elif edge.adapter == "python" and (declaration_errors or native_declaration_issues):
-            state, reason = Actionability.RESOLVER_LIMITATION, "DECLARATION_EVIDENCE_INCOMPLETE"
         elif edge.phase.value == "TEST":
             state, reason = Actionability.RESOLVER_LIMITATION, "VERIFICATION_DEPENDENCY_EVIDENCE_INCOMPLETE"
         elif edge.resolution == ResolutionStatus.DYNAMIC:
@@ -148,6 +146,8 @@ def classify_dependencies(root, dependencies, components, partition, reconciliat
         elif (usage.get("relative") or edge.target.startswith((".", "<"))
               or edge.target.split(".")[0] in local_names or edge.resolved_path):
             state, reason = Actionability.RESOLVER_LIMITATION, "LOCAL_TARGET_OR_NAMESPACE_UNRESOLVED"
+        elif edge.adapter == "python" and (declaration_errors or native_declaration_issues):
+            state, reason = Actionability.RESOLVER_LIMITATION, "DECLARATION_EVIDENCE_INCOMPLETE"
         elif edge.adapter == "python" and component.get("runtime_required") is True:
             state, reason = Actionability.REPOSITORY_DEFECT, "DIRECT_DEPENDENCY_EVIDENCE_MISSING"
             remediation = {

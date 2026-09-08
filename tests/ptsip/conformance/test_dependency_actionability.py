@@ -93,3 +93,18 @@ def test_owned_declaration_outside_reconciliation_scope_is_not_missing(tmp_path)
     assert item["declaration"]["unresolved_candidate"]["owned_requirement_paths"] == ["install/requirements.txt"]
     assert item["remediation_candidate"] is None
     assert report["summary"]["blocking_after_reconciliation"] == 1
+
+
+def test_manifest_read_issue_does_not_hide_dynamic_or_guarded_review(tmp_path):
+    repo = tmp_path / "repo"
+    _fixture(repo, 'import missing_package\n__import__(module_name)\n'
+             'try:\n    import optional_package\nexcept ImportError:\n    pass', "numpy==2")
+    (repo / "pyproject.toml").write_text("[invalid toml", encoding="utf-8")
+    from test_dependency_reconciliation import _git
+    _git(repo, "add", "pyproject.toml")
+    report = analyze_dependencies(repo)
+    items = {item["dependency"]["target"]: item for item in report["items"]}
+    assert items["missing_package"]["actionability"] == "RESOLVER_LIMITATION"
+    assert items["missing_package"]["remediation_candidate"] is None
+    assert items["<dynamic-import>"]["actionability"] == "REVIEW_REQUIRED"
+    assert items["optional_package"]["actionability"] == "REVIEW_REQUIRED"
