@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-authorization-transition.schema.json",
+  "title": "PTSIP Owner-Preauthorized Authorization Transition Registry v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_role",
+    "project_authority",
+    "authorization_provenance",
+    "states",
+    "rules",
+    "held_scopes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-authorization-transition-registry/v1"
+    },
+    "registry_role": {
+      "const": "PROJECT_OWNER_PREAUTHORIZED_IMPLEMENTATION_TRANSITION_CATALOG"
+    },
+    "project_authority": {
+      "const": false
+    },
+    "authorization_provenance": {
+      "type": "object",
+      "required": [
+        "authority",
+        "type",
+        "repository",
+        "revision"
+      ],
+      "properties": {
+        "authority": {
+          "const": "PROJECT_OWNER"
+        },
+        "type": {
+          "const": "GIT_COMMIT"
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "states": {
+      "const": [
+        "NOT_AUTHORIZED",
+        "HOLD_NOT_AUTHORIZED",
+        "READY_FOR_AUTO_AUTHORIZATION",
+        "AUTHORIZED",
+        "REVOKED_OR_INVALIDATED"
+      ]
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "target_scopes",
+          "required_predicates",
+          "when_all_true",
+          "otherwise"
+        ],
+        "properties": {
+          "target_scopes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            }
+          },
+          "required_predicates": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "when_all_true": {
+            "const": "AUTHORIZED"
+          },
+          "otherwise": {
+            "const": "HOLD_NOT_AUTHORIZED"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "held_scopes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "state",
+          "blockers"
+        ],
+        "properties": {
+          "state": {
+            "const": "HOLD_NOT_AUTHORIZED"
+          },
+          "blockers": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_:.-]*$"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -2,42 +2,19 @@
 
 These instructions apply to coding agents working anywhere in this repository.
 
-## P03 narrow automation fast path
+## Canonical Project Authority runtime
 
-For P03 Authority Role corpus-analysis tasks under `planning/0.4.0/WU-02/`, use this narrow path before the general context-loading rule below.
+For Project Authority work, use the canonical machine surface only:
 
-When the task is limited to raw-feature collection, one-ADR semantic review, current provisional-dimension evaluation, deterministic reuse/backfill, or the focused P03 pytest files:
+1. select current ADRs through `decisions/INDEX.yaml`;
+2. resolve authority contracts through `decisions/AUTHORITY-SCHEMA-REGISTRY.yaml`;
+3. resolve Authority Role effects through `decisions/AUTHORITY-ROLE-REGISTRY.yaml`;
+4. resolve repository/subject applicability through `decisions/AUTHORITY-SUBJECT-REGISTRY.yaml`;
+5. use `src/ptsip/governance/` for fresh eligibility, projection, and preauthorized transition evaluation.
 
-1. read this `AGENTS.md`;
-2. read only:
-   - `planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml`;
-   - `planning/0.4.0/WU-02/p03-semantic-decision-reuse-optimization.yaml`;
-3. run the applicable P03 automation before reading analysis registries or ADRs manually;
-4. for one-ADR semantic review, prepare the minimal AI decision packet and response template with:
-   `py -3.14 .github/scripts/p03_authority_role_semantic_decision.py --repo-root . prepare --adr ADR-NNNN --write`;
-5. read only the generated `ADR-NNNN.decision.generated.yaml` as the default semantic input and edit only the generated `ADR-NNNN.response.yaml`;
-6. responsibility is partitioned by the packet:
-   - `automatic_reuse`: compact count/IDs/digest for deterministic exact-context reuse; do **not** inspect or reconstruct concrete actions unless validation fails;
-   - `review_mode: REUSE_CONFIRMATION_OR_FULL_DECISION`: inspect only the current compact semantic shape plus the single `prior_resolution_candidate`; use `REUSE_PRIOR` with `CONFIRMED_PRIOR_SEMANTIC_RESOLUTION` when the prior semantic resolution is genuinely reusable, otherwise replace it with a normal full semantic decision;
-   - `review_mode: FULL_SEMANTIC_DECISION`: choose only `EXISTING / REFINE_EXISTING / NEW_DIMENSION / NON_EFFECT / DEFER`;
-   - `review_mode: DEFER_ONLY_INSUFFICIENT_CONTEXT`: the packet has intentionally withheld too much semantic detail for a safe decision. Use `DEFER` only, or regenerate that named candidate with `prepare --adr ADR-NNNN --expand-candidate raw-candidate:... --write`. Do not open the full ADR, raw corpus, or provisional registry to bypass the gate;
-   - respect `predicate_precision` and the packet's `allowed_predicate_modes`; a structural or presence-only view must not be turned into an exact-value predicate;
-7. do not infer semantic equivalence from a routing/reuse score. Structural reuse is AI-confirmed only; exact automatic reuse is restricted to the machine-context signature enforced by tooling;
-8. validate the edited response with:
-   `py -3.14 .github/scripts/p03_authority_role_semantic_decision.py --repo-root . validate --packet planning/0.4.0/WU-02/p03-authority-role-decision-packets/ADR-NNNN.decision.generated.yaml --response planning/0.4.0/WU-02/p03-authority-role-decision-packets/ADR-NNNN.response.yaml`;
-9. apply the validated response with the same tool's `apply` command and the same `--packet` / `--response` paths; do not edit the provisional registry, generated matrix, or decision ledger directly;
-10. normal ADR progression must not patch focused test fixtures merely because reviewed-prefix row counts, dimension counts, or dimension names grew. Those expectations are derived dynamically. Treat such a failure as an automation/test defect, not per-ADR maintenance.
+Design-time `planning/**` artifacts are not runtime authority and must not be used to infer missing machine semantics. Subject matching is exact first and may relax only through an explicitly registered machine relationship. AI confidence, prose similarity, and unregistered aliases cannot create authority.
 
-The semantic-decision tool performs raw snapshot validation, existing predicate evaluation, candidate routing, exact-context prior-decision reuse, structural prior-resolution routing, fidelity-aware raw-value compression, semantic-review sufficiency gating, targeted exact candidate expansion, stale-packet checking, predicate generation, ledger recording, registry mutation, full reviewed-prefix matrix regeneration, and rectangular backfill validation.
-
-For this narrow path, do **not** pre-read `MEMORY.md`, the full `ptsip.yaml`, general Specification files, historical release planning, the complete provisional-dimension registry, the complete raw corpus, full review packets, or unrelated ADRs unless:
-- the automation fails and the failing dependency must be diagnosed;
-- the minimal decision packet cannot support a safe semantic decision and the result must be `DEFER`; or
-- the task scope expands beyond P03 design-time corpus analysis.
-
-For one-ADR semantic review, manual scanning of all current provisional dimensions is forbidden by default. Current provisional dimensions are working hypotheses, not a matching target or upper bound. Do not force-fit residual semantics to them. AI review is design-time advisory only and never becomes runtime authority or registered vocabulary approval.
-
-This fast path does not authorize runtime remediation implementation, schema constantization, Authority Role registration, release work, Issue #31 work, or broader repository mutation.
+Completed generated review artifacts are retained through Git history rather than the active planning surface once their canonical result has been materialized and machine validation exists.
 
 ## Required context before work
 

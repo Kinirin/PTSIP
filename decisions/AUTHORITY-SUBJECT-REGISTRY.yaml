@@ -1,7 +1,10 @@
 schema_version: ptsip-governance-authority-subject-registry/v1
 registry_role: SUBJECT_APPLICABILITY_CATALOG_NOT_PROJECT_AUTHORITY
 language_neutral: true
-frozen_by: planning/0.4.0/WU-02/p03-f-subject-binding-owner-approval.yaml
+frozen_by:
+  type: GIT_COMMIT
+  repository: Kinirin/PTSIP
+  revision: 584c3d3d59b2b9028c545cd700f4eb7c0c118f7b
 authority_domains:
   - PROJECT_GOVERNANCE
 subject_types:
@@ -38,7 +41,8 @@ repository_identity_schemes:
     host_required: true
     repository_id_pattern: '^[1-9][0-9]*$'
 current_repository_bindings:
-  - host: github.com
+  - scheme: GITHUB_REPOSITORY_ID
+    host: github.com
     repository_id: '1327447827'
     observed_slug: Kinirin/PTSIP
     slug_is_identity: false

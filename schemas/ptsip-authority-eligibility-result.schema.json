@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-authority-eligibility-result.schema.json",
+  "title": "PTSIP Project Authority Eligibility Result v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authority_id",
+    "source_ref",
+    "status",
+    "lifecycle_state",
+    "subject_match",
+    "checks",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-authority-eligibility-result/v1"
+    },
+    "authority_id": {
+      "type": "string",
+      "pattern": "^(ADR-[0-9]{4}|UNKNOWN)$"
+    },
+    "source_ref": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "CURRENTLY_ELIGIBLE_FOR_PROJECT_AUTHORITY_PROJECTION",
+        "CURRENTLY_INELIGIBLE_FOR_PROJECT_AUTHORITY_PROJECTION",
+        "MALFORMED_AUTHORITY_RECORD",
+        "TOOL_CAPABILITY_GAP"
+      ]
+    },
+    "lifecycle_state": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ACTIVE",
+        "DEPRECATED",
+        "SUPERSEDED",
+        "RETIRED",
+        "DRAFT",
+        null
+      ]
+    },
+    "subject_match": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "EXACT",
+        "REGISTERED_MACHINE_RELATIONSHIP",
+        "NO_MATCH",
+        "INVALID_BINDING",
+        "UNSUPPORTED_BINDING",
+        null
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "diagnostic"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "CURRENT_ADR_IS_SELECTED",
+              "AUTHORITY_ROLE_IS_RESOLVED",
+              "AUTHORITY_ROLE_IS_PROJECT_AUTHORITY_ELIGIBLE",
+              "AUTHORITY_CONTRACT_IS_VALID",
+              "AUTHORITY_CONTRACT_LIFECYCLE_IS_CURRENTLY_USABLE",
+              "TOOL_SUPPORT_IS_SUFFICIENT",
+              "REPOSITORY_BINDING_MATCHES",
+              "SUBJECT_BINDING_MATCHES",
+              "CURRENT_APPLICABILITY_IS_APPLICABLE"
+            ]
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_EVALUATED"
+            ]
+          },
+          "diagnostic": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

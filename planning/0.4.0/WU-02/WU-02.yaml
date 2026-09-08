@@ -18,11 +18,7 @@ work_unit:
   implementation_authorization: PARTIALLY_AUTHORIZED
   depends_on: [WU-01]
   detail: planning/0.4.0/WU-02/solution-space-deterministic-rule-coverage-routing.yaml
-  supplements:
-    - planning/0.4.0/WU-02/authority-context-machine-contract.yaml
-    - planning/0.4.0/WU-02/p03-machine-readable-governance-migration.yaml
-    - planning/0.4.0/WU-02/p03-f-minimal-binding-registry-and-adr-projection.yaml
-    - planning/0.4.0/WU-02/p03-g-project-authority-runtime-and-authorization-transition.yaml
+  supplements: []
 
 implementation_authorization_scope:
   authorized:
@@ -35,7 +31,56 @@ implementation_authorization_scope:
     - REMEDIATION_RUNTIME_IMPLEMENTATION
     - REPOSITORY_MUTATION
     - MUTATION_AUTHORIZATION
-  authorization_source: planning/0.4.0/WU-02/p03-g-project-authority-runtime-owner-approval.yaml
+  authorization_provenance:
+    authority: PROJECT_OWNER
+    type: GIT_COMMIT
+    repository: Kinirin/PTSIP
+    revision: 7f5b92945b4880298b16164f92d586ebd9873254
+
+project_authority_runtime:
+  status: IMPLEMENTED
+  canonical_sources:
+    - decisions/INDEX.yaml
+    - decisions/AUTHORITY-SCHEMA-REGISTRY.yaml
+    - decisions/AUTHORITY-ROLE-REGISTRY.yaml
+    - decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
+    - decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml
+    - schemas/ptsip-project-authority-record.schema.json
+    - schemas/ptsip-authority-eligibility-result.schema.json
+    - schemas/ptsip-authorization-transition.schema.json
+    - src/ptsip/governance/
+  planning_dependency: FORBIDDEN
+  fresh_solve_eligibility: IMPLEMENTED
+  project_authority_projection: IMPLEMENTED
+  project_authority_record_materialization: IMPLEMENTED_WHEN_CURRENTLY_ELIGIBLE
+  authorization_readiness_transition: IMPLEMENTED
+  downstream_authorization:
+    SOLUTION_SPACE_AUTHORITY_CONSUMPTION_RUNTIME: HOLD_NOT_AUTHORIZED
+    REMEDIATION_RUNTIME_IMPLEMENTATION: HOLD_NOT_AUTHORIZED
+    REPOSITORY_MUTATION: HOLD_NOT_AUTHORIZED
+    MUTATION_AUTHORIZATION: HOLD_NOT_AUTHORIZED
+  focused_verification:
+    - tests/ptsip/governance/test_contracts.py
+    - tests/ptsip/governance/test_authority_runtime.py
+    - tests/ptsip/governance/test_authorization_transition.py
+    - tests/ptsip/governance/test_planning_surface.py
+
+active_planning_surface:
+  policy: EXACT_FILE_SET
+  allowed_files:
+    - WU-02.yaml
+    - solution-space-deterministic-rule-coverage-routing.yaml
+  lifecycle:
+    states:
+      - DRAFT
+      - ACTIVE
+      - CONSUMED
+    consumed_requires:
+      - CANONICAL_RESULT_MATERIALIZED
+      - MACHINE_VALIDATION_PRESENT
+      - NO_ACTIVE_REFERENCE_REQUIRES_REVIEW_ARTIFACT
+  consumed_artifact_storage: GIT_HISTORY_ONLY
+  generated_review_artifact_retention_after_consumption: FORBIDDEN
 
 primary_responsibility: IMPLEMENT_SOLUTION_SPACE_DETERMINISTIC_RULE_AND_NON_AUTHORITATIVE_COVERAGE_ROUTING_WITHOUT_MUTATION_OR_ESCALATION_EXECUTION
 
@@ -123,6 +168,7 @@ plan_review:
     - RECOGNIZED_BUT_UNSUPPORTED_AUTHORITY_SEMANTICS_MUST_ROUTE_TO_TOOL_CAPABILITY_GAP
 
 progress:
+  project_authority_runtime: IMPLEMENTED_FOCUSED_VERIFICATION_ADDED
   solution_space_contract: PLANNED
   elimination_and_ranking_separation: PLANNED
   ptsip_pkg_001_deterministic_slice: PLANNED

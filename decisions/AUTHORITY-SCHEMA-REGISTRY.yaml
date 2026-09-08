@@ -2,6 +2,13 @@ schema_version: ptsip-governance-authority-registry/v1
 registry_role: TOOL_CAPABILITY_CATALOG_NOT_PROJECT_AUTHORITY
 language_neutral: true
 semantic_schema_document: schemas/ptsip-governance-authority-semantics.schema.json
+lifecycle_policy:
+  decision_status_mapping:
+    ACCEPTED: ACTIVE
+    ACCEPTED_FOR_DRAFT_SPECIFICATION: ACTIVE
+    PROPOSED_FOR_NEXT_NORMATIVE_SNAPSHOT: DRAFT
+  project_authority_eligible_states:
+    - ACTIVE
 entries:
 - authority_type: PTSIP_POLICY_IDENTITY
   schema_id: ptsip.governance/ptsip-policy-identity

@@ -22,7 +22,26 @@
       "const": true
     },
     "frozen_by": {
-      "type": "string"
+      "type": "object",
+      "required": [
+        "type",
+        "repository",
+        "revision"
+      ],
+      "properties": {
+        "type": {
+          "const": "GIT_COMMIT"
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "additionalProperties": false
     },
     "projection_roles": {
       "const": [

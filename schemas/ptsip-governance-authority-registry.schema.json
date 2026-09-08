@@ -8,6 +8,7 @@
     "registry_role",
     "language_neutral",
     "semantic_schema_document",
+    "lifecycle_policy",
     "entries"
   ],
   "properties": {
@@ -54,6 +55,28 @@
         },
         "additionalProperties": false
       }
+    },
+    "lifecycle_policy": {
+      "type": "object",
+      "required": [
+        "decision_status_mapping",
+        "project_authority_eligible_states"
+      ],
+      "properties": {
+        "decision_status_mapping": {
+          "const": {
+            "ACCEPTED": "ACTIVE",
+            "ACCEPTED_FOR_DRAFT_SPECIFICATION": "ACTIVE",
+            "PROPOSED_FOR_NEXT_NORMATIVE_SNAPSHOT": "DRAFT"
+          }
+        },
+        "project_authority_eligible_states": {
+          "const": [
+            "ACTIVE"
+          ]
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
