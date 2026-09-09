@@ -107,7 +107,7 @@ def rewrite_textual_reference(text: str, *, root: str | Path | None = None) -> s
     return ADR_TOKEN.sub(token_replacement, text)
 
 
-def tracked_textual_reference_files(root: str | Path | None = None) -> tuple[Path, ...]:
+def tracked_files(root: str | Path | None = None) -> tuple[Path, ...]:
     base = repository_root(root)
     result = subprocess.run(
         ["git", "ls-files"],
@@ -116,11 +116,17 @@ def tracked_textual_reference_files(root: str | Path | None = None) -> tuple[Pat
         capture_output=True,
         text=True,
     )
+    return tuple(base / line for line in result.stdout.splitlines())
+
+
+def tracked_textual_reference_files(root: str | Path | None = None) -> tuple[Path, ...]:
+    base = repository_root(root)
     allowed = {".md", ".txt", ".rst"}
     return tuple(
-        base / line
-        for line in result.stdout.splitlines()
-        if Path(line).suffix.lower() in allowed and not line.startswith("decisions/")
+        path
+        for path in tracked_files(base)
+        if path.suffix.lower() in allowed
+        and not path.relative_to(base).as_posix().startswith("decisions/")
     )
 
 
@@ -132,6 +138,32 @@ def scan_textual_references(root: str | Path | None = None) -> dict[str, tuple[s
         refs = tuple(sorted(set(ADR_TOKEN.findall(text))))
         if refs:
             found[path.relative_to(base).as_posix()] = refs
+    return found
+
+
+def scan_machine_references(root: str | Path | None = None) -> dict[str, tuple[str, ...]]:
+    """Report ADR tokens in tracked non-prose files without rewriting them.
+
+    Machine-bearing formats are intentionally not rewritten by generic textual
+    lineage rules because an ADR token may carry authority/dependency meaning.
+    Those references must be handled by a dedicated materializer or exact route.
+    """
+
+    base = repository_root(root)
+    prose = {".md", ".txt", ".rst"}
+    skip_prefixes = ("decisions/",)
+    found: dict[str, tuple[str, ...]] = {}
+    for path in tracked_files(base):
+        relative = path.relative_to(base).as_posix()
+        if relative.startswith(skip_prefixes) or path.suffix.lower() in prose:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="strict")
+        except (UnicodeDecodeError, OSError):
+            continue
+        refs = tuple(sorted(set(ADR_TOKEN.findall(text))))
+        if refs:
+            found[relative] = refs
     return found
 
 
@@ -152,5 +184,9 @@ def rewrite_textual_files(*, apply: bool, root: str | Path | None = None) -> dic
 if __name__ == "__main__":
     pending = rewrite_textual_files(apply=False)
     for path, refs in sorted(pending.items()):
-        print(f"{path}: {', '.join(refs)}")
+        print(f"TEXT {path}: {', '.join(refs)}")
+    machine = scan_machine_references()
+    for path, refs in sorted(machine.items()):
+        print(f"MACHINE {path}: {', '.join(refs)}")
     print(f"Textual reference files pending deterministic rewrite: {len(pending)}")
+    print(f"Machine-bearing files requiring explicit migration review: {len(machine)}")

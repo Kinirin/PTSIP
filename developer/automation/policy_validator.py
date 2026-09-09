@@ -5,6 +5,10 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
+from developer.automation.decision_reference_migrator import (
+    UnroutedDecisionReferenceError,
+    project_relation,
+)
 
 
 INDEX = "developer/policy/index.yaml"
@@ -103,6 +107,54 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         errors.append("legacy decision inventory MPD target count does not match entries")
     if summary.get("retired_fragments") != retired_fragments:
         errors.append("legacy decision inventory retired fragment count does not match entries")
+
+    # Every machine relation in the legacy ADR corpus must project deterministically.
+    # Unique-to-unique relations may project automatically; any relation touching a
+    # SPLIT source or target must have a predeclared relation route.
+    relation_kinds = ("depends_on", "amends", "extends", "supersedes")
+    for item in inventory_entries:
+        if not isinstance(item, dict):
+            continue
+        source_id = item.get("source_id")
+        source_path = item.get("source_path")
+        if not isinstance(source_id, str) or not isinstance(source_path, str):
+            continue
+        source = load_yaml(source_path, root=base)
+        relations = source.get("relations", {})
+        if not isinstance(relations, dict):
+            continue
+        for relation_kind in relation_kinds:
+            values = relations.get(relation_kind, [])
+            if not isinstance(values, list):
+                continue
+            for relation in values:
+                if isinstance(relation, str):
+                    target_id = relation
+                    scope = None
+                elif isinstance(relation, dict):
+                    target_id = relation.get("adr")
+                    scope = relation.get("scope")
+                else:
+                    errors.append(f"{source_path}: invalid relation entry in {relation_kind}")
+                    continue
+                if not isinstance(target_id, str):
+                    errors.append(f"{source_path}: relation {relation_kind} is missing ADR target")
+                    continue
+                try:
+                    edges = project_relation(
+                        source_id,
+                        relation_kind,
+                        target_id,
+                        scope=scope if isinstance(scope, str) else None,
+                        root=base,
+                    )
+                except UnroutedDecisionReferenceError as exc:
+                    errors.append(f"{source_path}: {exc}")
+                    continue
+                if not edges:
+                    errors.append(
+                        f"{source_path}: relation {relation_kind} to {target_id} projected no edges"
+                    )
 
     for entry in index.get("policies", []):
         path = entry.get("path")

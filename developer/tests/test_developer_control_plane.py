@@ -82,3 +82,20 @@ def test_unregistered_split_relation_fails_closed() -> None:
 
     with pytest.raises(UnroutedDecisionReferenceError):
         project_relation("ADR-0017", "depends_on", "ADR-0021", root=ROOT)
+
+
+def test_all_legacy_machine_relations_have_deterministic_projection_routes() -> None:
+    # validate_developer_policy walks every legacy ADR relation and fails closed
+    # if a SPLIT source/target lacks an explicit route.
+    assert validate_developer_policy(ROOT) == ()
+
+
+def test_machine_reference_scan_never_rewrites_by_textual_lineage_rule() -> None:
+    from developer.automation.decision_reference_migrator import scan_machine_references
+
+    refs = scan_machine_references(ROOT)
+    assert isinstance(refs, dict)
+    # Existing machine references are allowed during migration, but must be
+    # surfaced separately rather than silently rewritten.
+    for path in refs:
+        assert not path.endswith((".md", ".txt", ".rst"))
