@@ -156,7 +156,7 @@ class AuthorityCatalog:
 
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:
         items = []
-        for topic_id in self.current_routes
+        for topic_id in self.current_routes:
             path, route, record = self.load_current_record(topic_id)
             items.append((topic_id, path, route, record))
         return tuple(items)
@@ -412,7 +412,7 @@ class ProjectAuthorityRuntime:
 
     def project_current_authorities(self, solve_subject: SolveSubject, *, source_revision: str) -> tuple[ProjectAuthorityRecord, ...]:
         records=[]
-        for topic_id in sorted(self.catalog.current_routes):
+        for topic_id in self.catalog.current_routes:
             projected=self.project_topic(topic_id,solve_subject,source_revision=source_revision)
             if projected is not None:
                 records.append(projected)
