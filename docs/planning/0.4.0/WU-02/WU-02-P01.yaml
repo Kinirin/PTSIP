@@ -25,6 +25,7 @@ scope:
   - MATERIALIZE_DEVELOPER_POLICY_CONTROL_PLANE
   - MATERIALIZE_DEVELOPER_PLANNING_CONTROL_PLANE
   - MOVE_PTSIP_REPOSITORY_PROFILE_TOWARD_DEVELOPER_PROFILE_PATH
+  - FIX_SUPPORT_PROFILE_SUBSYSTEM_TARGET_AS_SRC_PTSIP_PROFILES
   - INVENTORY_LEGACY_ADR_CORPUS_AS_MPD_SFP_SPLIT_OR_RETIRE
   - REMOVE_PRODUCT_RUNTIME_DEPENDENCIES_ON_DEVELOPER_POLICY
   - AUTO_REMOVE_LEGACY_DECISIONS_AFTER_MACHINE_GATE_PASS
@@ -51,8 +52,19 @@ migration_stages:
       - SFP
       - SPLIT
       - RETIRE
+    linked_profile_migration:
+      target_root: src/ptsip/profiles/
+      schema_root: src/ptsip/profiles/schema/
+      builtin_root: src/ptsip/profiles/builtin/
+      execution: DEFER_TO_POLICY_MATERIALIZATION_AFTER_INVENTORY
   P01_C_POLICY_MATERIALIZATION:
     status: BLOCKED_ON_P01_B
+    includes:
+      - MATERIALIZE_MPD_RESULTS
+      - MATERIALIZE_SFP_RESULTS
+      - SPLIT_MIXED_RESULTS
+      - MIGRATE_SUPPORT_PROFILE_SCHEMA_ASSETS_TO_SRC_PTSIP_PROFILES_SCHEMA
+      - UPDATE_PACKAGE_RESOURCE_AND_SCHEMA_REFERENCES
   P01_D_RUNTIME_BOUNDARY:
     status: BLOCKED_ON_P01_C
     required:
@@ -67,6 +79,14 @@ migration_stages:
     required:
       - DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_VERIFIED
       - ROOT_PTSIP_YAML_NOT_REQUIRED_FOR_PTSIP_REPOSITORY_SELF_MANAGEMENT
+
+profile_subsystem_decision:
+  status: APPROVED
+  target_root: src/ptsip/profiles/
+  schema_root: src/ptsip/profiles/schema/
+  builtin_root: src/ptsip/profiles/builtin/
+  current_assets_remain_in_specdata_until_inventory: true
+  move_authorized_only_as_part_of_inventory_linked_materialization: true
 
 current_known_blockers:
   - SRC_PTSIP_GOVERNANCE_READS_DECISIONS

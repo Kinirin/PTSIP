@@ -31,12 +31,34 @@ rules:
     developer_repository_profile: developer/profiles/ptsip-repository.yaml
     compatibility_root_profile: ptsip.yaml
     compatibility_state: TEMPORARY_UNTIL_DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_IS_VERIFIED
-    support_profile_schema_location: src/ptsip/specdata/
-    support_profile_schema_files:
+    support_profile_subsystem:
+      decision: APPROVED
+      target_root: src/ptsip/profiles/
+      schema_root: src/ptsip/profiles/schema/
+      builtin_root: src/ptsip/profiles/builtin/
+      ownership: PTSIP_SUPPORT_FEATURE
+      distribution: REQUIRED
+    current_profile_schema_location: src/ptsip/specdata/
+    current_profile_schema_files:
       - ptsip-profile.schema.json
       - ptsip-profile-pp-1.01.schema.json
-    specdata_profiles_subdirectory_required: false
-    builtin_profile_instance_policy: CREATE_ONLY_WHEN_A_RUNTIME_SHIPPED_BUILTIN_PROFILE_INSTANCE_EXISTS
+    migration:
+      execution_stage: SFP_MPD_INVENTORY_AND_POLICY_MATERIALIZATION
+      move_now: false
+      required_before_move:
+        - LEGACY_ADR_CORPUS_CLASSIFIED_AS_MPD_SFP_SPLIT_OR_RETIRE
+        - PROFILE_SUPPORT_FEATURE_BOUNDARY_MATERIALIZED
+        - PACKAGE_RESOURCE_LOOKUP_UPDATE_PLANNED
+        - PACKAGE_DATA_UPDATE_PLANNED
+        - PROFILE_SCHEMA_REFERENCE_UPDATE_PLANNED
+      required_with_move:
+        - MOVE_PROFILE_SCHEMAS_TO_SRC_PTSIP_PROFILES_SCHEMA
+        - UPDATE_IMPORTLIB_RESOURCE_LOOKUP
+        - UPDATE_PACKAGE_DATA
+        - UPDATE_PROFILE_SCHEMA_RESOURCE_REFERENCES
+        - UPDATE_CONSISTENCY_TESTS
+        - VERIFY_NO_STALE_SPECDATA_PROFILE_SCHEMA_REFERENCE
+    builtin_profile_instance_policy: CREATE_DIRECTORY_OR_INSTANCE_ONLY_WHEN_A_RUNTIME_SHIPPED_BUILTIN_PROFILE_EXISTS
   distribution_boundary:
     developer_policy_must_ship: false
     support_feature_policy_must_ship: true
