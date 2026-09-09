@@ -1,0 +1,74 @@
+schema_version: ptsip-plan-extension/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+
+extension:
+  id: WU-02-P01
+  parent: WU-02
+  title: Developer Policy and Support Feature Control Plane Separation
+  classification: DEVELOPMENT
+  lifecycle:
+    status: ACTIVE
+
+approval:
+  status: APPROVED
+  authority: PROJECT_OWNER
+
+implementation_authorization:
+  status: AUTHORIZED
+
+depends_on:
+  - WU-02
+
+scope:
+  - FIX_MPD_AND_SFP_NAMESPACES
+  - MATERIALIZE_DEVELOPER_POLICY_CONTROL_PLANE
+  - MATERIALIZE_DEVELOPER_PLANNING_CONTROL_PLANE
+  - MOVE_PTSIP_REPOSITORY_PROFILE_TOWARD_DEVELOPER_PROFILE_PATH
+  - INVENTORY_LEGACY_ADR_CORPUS_AS_MPD_SFP_SPLIT_OR_RETIRE
+  - REMOVE_PRODUCT_RUNTIME_DEPENDENCIES_ON_DEVELOPER_POLICY
+  - AUTO_REMOVE_LEGACY_DECISIONS_AFTER_MACHINE_GATE_PASS
+
+policy_namespaces:
+  developer:
+    constant: PTSIP_DEVELOPER_POLICY
+    id_pattern: '^MPD-[0-9]{4}$'
+  support:
+    constant: PTSIP_SUPPORT_FEATURE
+    id_pattern: '^SFP-[0-9]{4}$'
+
+migration_stages:
+  P01_A_CONTROL_PLANE:
+    status: IMPLEMENTING
+    completion:
+      - DEVELOPER_POLICY_INDEX_VALID
+      - PLANNING_INDEX_VALID
+      - CURRENT_GATE_SCHEMA_VALID
+  P01_B_DECISION_INVENTORY:
+    status: NOT_STARTED
+    output_classes:
+      - MPD
+      - SFP
+      - SPLIT
+      - RETIRE
+  P01_C_POLICY_MATERIALIZATION:
+    status: BLOCKED_ON_P01_B
+  P01_D_RUNTIME_BOUNDARY:
+    status: BLOCKED_ON_P01_C
+    required:
+      - PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO
+      - SUPPORT_FEATURE_RUNTIME_USES_ONLY_SHIPPED_CONTRACTS
+  P01_E_LEGACY_REMOVAL:
+    status: BLOCKED_ON_P01_D
+    preauthorized_action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
+    confirmation_required: false
+  P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL:
+    status: BLOCKED
+    required:
+      - DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_VERIFIED
+      - ROOT_PTSIP_YAML_NOT_REQUIRED_FOR_PTSIP_REPOSITORY_SELF_MANAGEMENT
+
+current_known_blockers:
+  - SRC_PTSIP_GOVERNANCE_READS_DECISIONS
+  - LEGACY_ADR_CORPUS_NOT_CLASSIFIED
+  - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE

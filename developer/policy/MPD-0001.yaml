@@ -1,0 +1,67 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0001
+  title: Developer and Support Feature Policy Boundary
+  status: ACTIVE
+
+rules:
+  namespace:
+    developer_policy:
+      constant: PTSIP_DEVELOPER_POLICY
+      id_pattern: '^MPD-[0-9]{4}$'
+      machine_policy_path: developer/policy/
+      human_documentation_path: docs/Developer_policy/
+      automation_path: developer/automation/
+      profile_path: developer/profiles/
+      distribution: FORBIDDEN
+    support_feature:
+      constant: PTSIP_SUPPORT_FEATURE
+      id_pattern: '^SFP-[0-9]{4}$'
+      canonical_schema_path: schemas/ptsip-support-feature-policy.schema.json
+      embedded_schema_path: src/ptsip/specdata/ptsip-support-feature-policy.schema.json
+      machine_policy_pattern: src/ptsip/specdata/SFP-*.yaml
+      human_documentation_path: docs/Support_policy/
+      implementation_roots:
+        - src/ptsip/
+        - src/vpms/
+      distribution: REQUIRED
+  profile_boundary:
+    developer_repository_profile: developer/profiles/ptsip-repository.yaml
+    compatibility_root_profile: ptsip.yaml
+    compatibility_state: TEMPORARY_UNTIL_DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_IS_VERIFIED
+    support_profile_schema_location: src/ptsip/specdata/
+    support_profile_schema_files:
+      - ptsip-profile.schema.json
+      - ptsip-profile-pp-1.01.schema.json
+    specdata_profiles_subdirectory_required: false
+    builtin_profile_instance_policy: CREATE_ONLY_WHEN_A_RUNTIME_SHIPPED_BUILTIN_PROFILE_INSTANCE_EXISTS
+  distribution_boundary:
+    developer_policy_must_ship: false
+    support_feature_policy_must_ship: true
+    developer_policy_must_not_define_consumer_project_requirement: true
+    support_feature_must_not_depend_on_developer_policy_at_runtime: true
+  planning_boundary:
+    control_plane_root: docs/planning/index.yaml
+    work_unit_id_pattern: '^WU-[0-9]{2}$'
+    extension_id_pattern: '^WU-[0-9]{2}-P[0-9]{2}$'
+    extension_meaning: PLAN_EXTENSION
+    explanation_suffix: '-explanation.yaml'
+    explanation_machine_authority: false
+    work_unit_machine_fields_may_be_detailed: true
+    work_unit_minimal_size_requirement: false
+    ambiguous_or_unsupported_definition_may_use_explanation: true
+    machine_field_implementation_required_for_automatable_state: true
+
+automation:
+  loader: developer/automation/policy_loader.py
+  policy_validator: developer/automation/policy_validator.py
+  planning_validator: developer/automation/planning_validator.py
+  transition_evaluator: developer/automation/transition_evaluator.py
+
+migration:
+  decisions_directory:
+    state: LEGACY_MIXED_POLICY_SOURCE
+    automatic_removal_when_gate_passes: true
+    user_confirmation_after_gate_passes: false

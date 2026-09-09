@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-planning-root:v1",
+  "title": "PTSIP Developer Planning Root Index v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "plans"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-developer-planning-root/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "plans": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "plan_version",
+          "path",
+          "status",
+          "integration_branch"
+        ],
+        "properties": {
+          "plan_version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
+          },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "COMPLETE",
+              "SUPERSEDED",
+              "CANCELLED"
+            ]
+          },
+          "integration_branch": {
+            "type": "string",
+            "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

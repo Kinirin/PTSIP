@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-support-feature-policy.schema.json",
+  "title": "PTSIP Support Feature Policy v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "policy",
+    "feature_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-support-feature-policy/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_SUPPORT_FEATURE"
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SFP-[0-9]{4}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "DEPRECATED",
+            "RETIRED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "feature_contract": {
+      "type": "object",
+      "required": [
+        "shipped",
+        "runtime_surface"
+      ],
+      "properties": {
+        "shipped": {
+          "const": true
+        },
+        "runtime_surface": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(src/ptsip|src/vpms)/.+"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

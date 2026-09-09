@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-policy-index:v1",
+  "title": "PTSIP Developer Policy Index v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "policies",
+    "legacy_decisions_migration"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-developer-policy-index/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^MPD-[0-9]{4}$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^developer/policy/MPD-[0-9]{4}\\.yaml$"
+          },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "SUPERSEDED",
+              "RETIRED"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "legacy_decisions_migration": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

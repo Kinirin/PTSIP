@@ -2,6 +2,18 @@
 
 These instructions apply to coding agents working anywhere in this repository.
 
+## Developer Policy vs Support Feature Policy
+
+PTSIP has two non-interchangeable policy classes.
+
+- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
+- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Shipped machine policy instances belong directly under `src/ptsip/specdata/SFP-*.yaml`; human explanation belongs under `docs/Support_policy/`.
+- PTSIP repository self-management profiles belong under `developer/profiles/`. The root `ptsip.yaml` is a temporary compatibility bridge until explicit developer-profile selection is verified.
+- `decisions/` is a legacy mixed policy source. Do not add new policy there. Existing ADRs must be classified as MPD, SFP, SPLIT, or RETIRE before the directory is automatically removed.
+- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current `src/ptsip/governance` → `decisions/` dependency is a migration blocker, not a permanent architecture.
+- Developer planning authority is `docs/planning/index.yaml` and version control planes under `docs/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
+- `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
+
 ## Canonical Project Authority runtime
 
 For Project Authority work, use the canonical machine surface only:

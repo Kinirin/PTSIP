@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-planning-index:v1",
+  "title": "PTSIP Developer Planning Version Index v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "plan",
+    "work_units"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-developer-planning-index/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "plan": {
+      "type": "object",
+      "required": [
+        "plan_version",
+        "revision",
+        "integration_branch",
+        "classification",
+        "status",
+        "control_plane",
+        "current_gate"
+      ],
+      "properties": {
+        "plan_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9]{2}$"
+        },
+        "integration_branch": {
+          "type": "string",
+          "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "classification": {
+          "enum": [
+            "CORE/RELEASE-BLOCKING",
+            "CORE",
+            "DEVELOPMENT",
+            "OPTIONAL"
+          ]
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "BLOCKED",
+            "COMPLETE",
+            "SUPERSEDED",
+            "CANCELLED"
+          ]
+        },
+        "control_plane": {
+          "type": "string",
+          "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
+        },
+        "current_gate": {
+          "type": "string",
+          "pattern": "^WU-[0-9]{2}(?:-P[0-9]{2})?$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "work_units": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "lifecycle",
+          "approval",
+          "implementation_authorization",
+          "depends_on"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^WU-[0-9]{2}$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}\\.yaml$"
+          },
+          "lifecycle": {
+            "type": "object",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "NOT_CREATED",
+                  "DRAFT",
+                  "ACTIVE",
+                  "BLOCKED",
+                  "COMPLETE",
+                  "SUPERSEDED",
+                  "CANCELLED"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "approval": {
+            "type": "object",
+            "required": [
+              "status",
+              "inherited_from"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "NOT_REQUIRED",
+                  "PENDING",
+                  "APPROVED",
+                  "REJECTED"
+                ]
+              },
+              "inherited_from": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "implementation_authorization": {
+            "type": "object",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "NOT_AUTHORIZED",
+                  "HOLD_NOT_AUTHORIZED",
+                  "AUTHORIZED",
+                  "COMPLETE"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "depends_on": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^WU-[0-9]{2}$"
+            }
+          },
+          "completion_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "result"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "GIT_COMMIT",
+                    "TEST",
+                    "MACHINE_VALIDATION"
+                  ]
+                },
+                "revision": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "result": {
+                  "enum": [
+                    "PASS",
+                    "RECORDED",
+                    "COMPLETE"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "lifecycle": {
+                  "properties": {
+                    "status": {
+                      "const": "COMPLETE"
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "completion_evidence"
+              ]
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

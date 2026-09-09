@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-work-unit:v1",
+  "title": "PTSIP Developer Work Unit v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "plan_version",
+    "planning_contract",
+    "work_unit"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-work-unit/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "plan_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "planning_contract": {
+      "const": "ptsip-planning/v1"
+    },
+    "work_unit": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "classification",
+        "lifecycle",
+        "approval",
+        "integration_branch",
+        "implementation_authorization",
+        "depends_on"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^WU-[0-9]{2}$"
+        },
+        "kind": {
+          "const": "WORK_UNIT"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "enum": [
+            "CORE/RELEASE-BLOCKING",
+            "CORE",
+            "DEVELOPMENT",
+            "OPTIONAL"
+          ]
+        },
+        "lifecycle": {
+          "type": "object",
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "DRAFT",
+                "ACTIVE",
+                "BLOCKED",
+                "COMPLETE",
+                "SUPERSEDED",
+                "CANCELLED"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "approval": {
+          "type": "object",
+          "required": [
+            "status",
+            "inherited_from"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "NOT_REQUIRED",
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ]
+            },
+            "authority": {
+              "type": "string",
+              "minLength": 1
+            },
+            "inherited_from": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "integration_branch": {
+          "type": "string",
+          "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "entry_baseline": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "implementation_authorization": {
+          "enum": [
+            "NOT_AUTHORIZED",
+            "HOLD_NOT_AUTHORIZED",
+            "AUTHORIZED",
+            "COMPLETE"
+          ]
+        },
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^WU-[0-9]{2}$"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^WU-[0-9]{2}-P[0-9]{2}$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}-P[0-9]{2}\\.yaml$"
+          },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "BLOCKED",
+              "COMPLETE",
+              "SUPERSEDED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,33 @@
+schema_version: ptsip-developer-policy-index/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policies:
+  - id: MPD-0001
+    path: developer/policy/MPD-0001.yaml
+    status: ACTIVE
+
+legacy_decisions_migration:
+  source_path: decisions/
+  legacy_id_pattern: '^ADR-[0-9]{4}$'
+  target_classes:
+    - MPD
+    - SFP
+    - SPLIT
+    - RETIRE
+  state: INVENTORY_PENDING
+  automatic_removal:
+    preauthorized: true
+    confirmation_required_when_ready: false
+    action_when_ready: REMOVE_FROM_ACTIVE_TREE
+    required_predicates:
+      ALL_LEGACY_DECISIONS_CLASSIFIED: true
+      ALL_MPD_RESULTS_MATERIALIZED: true
+      ALL_SFP_RESULTS_MATERIALIZED: true
+      ALL_SPLIT_RESULTS_MATERIALIZED: true
+      ALL_RETIRE_RESULTS_RECORDED: true
+      PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO: true
+      ACTIVE_REFERENCE_COUNT_ZERO: true
+      MACHINE_VALIDATION_PASS: true
+  current_blockers:
+    - LEGACY_DECISION_INVENTORY_NOT_COMPLETE
+    - SRC_PTSIP_GOVERNANCE_READS_DECISIONS
