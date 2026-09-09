@@ -17,6 +17,8 @@ legacy_decisions_migration:
   state: INVENTORY_COMPLETE_23_OF_23
   inventory_path: developer/policy/legacy-decisions-inventory.yaml
   inventory_schema: developer/policy/schemas/legacy-decision-inventory.schema.json
+  reference_routing: developer/policy/legacy-decision-reference-routing.yaml
+  reference_routing_schema: developer/policy/schemas/legacy-decision-reference-routing.schema.json
   automatic_removal:
     preauthorized: true
     confirmation_required_when_ready: false

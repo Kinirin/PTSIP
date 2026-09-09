@@ -38,8 +38,8 @@ def test_legacy_decision_inventory_is_complete_and_boundary_classified() -> None
         "RETIRE": 0,
         "total": 23,
         "planned_sfp_targets": 21,
-        "planned_mpd_targets": 5,
-        "retired_fragments": 3,
+        "planned_mpd_targets": 8,
+        "retired_fragments": 0,
     }
     assert [item["source_id"] for item in inventory["entries"]] == [
         f"ADR-{number:04d}" for number in range(1, 24)
@@ -49,3 +49,36 @@ def test_legacy_decision_inventory_is_complete_and_boundary_classified() -> None
         for item in inventory["entries"]
         for output in item["outputs"]
     )
+
+
+def test_split_decision_routes_are_fixed_before_materialization() -> None:
+    from developer.automation.decision_reference_migrator import canonical_targets, project_relation
+
+    assert canonical_targets("ADR-0003", root=ROOT) == ("SFP-0003", "MPD-0002")
+    assert canonical_targets("ADR-0005", root=ROOT) == ("SFP-0005", "MPD-0003")
+    assert canonical_targets("ADR-0011", root=ROOT) == ("SFP-0011", "MPD-0004")
+    assert canonical_targets("ADR-0017", root=ROOT) == ("SFP-0017", "MPD-0005")
+    assert canonical_targets("ADR-0021", root=ROOT) == ("SFP-0019", "MPD-0006")
+    assert canonical_targets("ADR-0023", root=ROOT) == ("SFP-0021", "MPD-0007")
+    assert canonical_targets("ADR-0018", root=ROOT) == ("MPD-0008",)
+    assert canonical_targets("ADR-0020", root=ROOT) == ("MPD-0009",)
+
+    assert project_relation(
+        "ADR-0017", "amends", "ADR-0011",
+        scope="REPOSITORY_SELF_ADOPTION_ASSUMPTION", root=ROOT
+    )[0].source == "MPD-0005"
+    assert project_relation(
+        "ADR-0017", "amends", "ADR-0011",
+        scope="REPOSITORY_SELF_ADOPTION_ASSUMPTION", root=ROOT
+    )[0].target == "MPD-0004"
+
+
+def test_unregistered_split_relation_fails_closed() -> None:
+    import pytest
+    from developer.automation.decision_reference_migrator import (
+        UnroutedDecisionReferenceError,
+        project_relation,
+    )
+
+    with pytest.raises(UnroutedDecisionReferenceError):
+        project_relation("ADR-0017", "depends_on", "ADR-0021", root=ROOT)

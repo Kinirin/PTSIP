@@ -1,0 +1,102 @@
+schema_version: ptsip-legacy-decision-reference-routing/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+source_inventory: developer/policy/legacy-decisions-inventory.yaml
+
+routing_principles:
+  split_relation_requires_explicit_route: true
+  unique_to_unique_relation_may_project_deterministically: true
+  unregistered_split_relation: FAIL_CLOSED
+  textual_reference_is_not_dependency: true
+
+id_routes:
+  ADR-0001:
+    targets: [SFP-0001]
+    textual_lineage: 'SFP-0001'
+  ADR-0002:
+    targets: [SFP-0002]
+    textual_lineage: 'SFP-0002'
+  ADR-0003:
+    targets: [SFP-0003, MPD-0002]
+    textual_lineage: 'SFP-0003 + MPD-0002'
+  ADR-0004:
+    targets: [SFP-0004]
+    textual_lineage: 'SFP-0004'
+  ADR-0005:
+    targets: [SFP-0005, MPD-0003]
+    textual_lineage: 'SFP-0005 + MPD-0003'
+  ADR-0006:
+    targets: [SFP-0006]
+    textual_lineage: 'SFP-0006'
+  ADR-0007:
+    targets: [SFP-0007]
+    textual_lineage: 'SFP-0007'
+  ADR-0008:
+    targets: [SFP-0008]
+    textual_lineage: 'SFP-0008'
+  ADR-0009:
+    targets: [SFP-0009]
+    textual_lineage: 'SFP-0009'
+  ADR-0010:
+    targets: [SFP-0010]
+    textual_lineage: 'SFP-0010'
+  ADR-0011:
+    targets: [SFP-0011, MPD-0004]
+    textual_lineage: 'SFP-0011 + MPD-0004'
+  ADR-0012:
+    targets: [SFP-0012]
+    textual_lineage: 'SFP-0012'
+  ADR-0013:
+    targets: [SFP-0013]
+    textual_lineage: 'SFP-0013'
+  ADR-0014:
+    targets: [SFP-0014]
+    textual_lineage: 'SFP-0014'
+  ADR-0015:
+    targets: [SFP-0015]
+    textual_lineage: 'SFP-0015'
+  ADR-0016:
+    targets: [SFP-0016]
+    textual_lineage: 'SFP-0016'
+  ADR-0017:
+    targets: [SFP-0017, MPD-0005]
+    textual_lineage: 'SFP-0017 + MPD-0005'
+  ADR-0018:
+    targets: [MPD-0008]
+    textual_lineage: 'MPD-0008'
+  ADR-0019:
+    targets: [SFP-0018]
+    textual_lineage: 'SFP-0018'
+  ADR-0020:
+    targets: [MPD-0009]
+    textual_lineage: 'MPD-0009'
+  ADR-0021:
+    targets: [SFP-0019, MPD-0006]
+    textual_lineage: 'SFP-0019 + MPD-0006'
+  ADR-0022:
+    targets: [SFP-0020]
+    textual_lineage: 'SFP-0020'
+  ADR-0023:
+    targets: [SFP-0021, MPD-0007]
+    textual_lineage: 'SFP-0021 + MPD-0007'
+
+relation_routes:
+  - source_adr: ADR-0011
+    relation: depends_on
+    target_adr: ADR-0010
+    scope: PROFILE_TRANSITION_SEMANTICS
+    projected_edges:
+      - {source: SFP-0011, target: SFP-0010}
+      - {source: MPD-0004, target: SFP-0010}
+
+  - source_adr: ADR-0017
+    relation: amends
+    target_adr: ADR-0011
+    scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
+    projected_edges:
+      - {source: MPD-0005, target: MPD-0004}
+
+textual_reference:
+  eligible_extensions: [.md, .txt, .rst]
+  split_replacement_format: '{TARGET_1} + {TARGET_2}'
+  path_reference_replacement: CANONICAL_TARGET_PATHS
+  unmapped_adr_behavior: FAIL_CLOSED

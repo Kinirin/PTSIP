@@ -55,13 +55,26 @@ migration_stages:
       RETIRE: 0
     materialization_targets:
       SFP: 21
-      MPD: 5
-      RETIRED_FRAGMENTS: 3
+      MPD: 8
+      RETIRED_FRAGMENTS: 0
     output_classes:
       - MPD
       - SFP
       - SPLIT
       - RETIRE
+    split_target_allocation:
+      ADR-0003: [SFP-0003, MPD-0002]
+      ADR-0005: [SFP-0005, MPD-0003]
+      ADR-0011: [SFP-0011, MPD-0004]
+      ADR-0017: [SFP-0017, MPD-0005]
+      ADR-0021: [SFP-0019, MPD-0006]
+      ADR-0023: [SFP-0021, MPD-0007]
+    pure_mpd_allocation:
+      ADR-0018: MPD-0008
+      ADR-0020: MPD-0009
+    reference_routing: developer/policy/legacy-decision-reference-routing.yaml
+    relation_rule: SPLIT_RELATION_REQUIRES_EXPLICIT_PREDECLARED_ROUTE
+    textual_reference_rule: LINEAGE_REWRITE_DOES_NOT_CREATE_DEPENDENCY
     linked_profile_migration:
       target_root: src/ptsip/profiles/
       schema_root: src/ptsip/profiles/schema/

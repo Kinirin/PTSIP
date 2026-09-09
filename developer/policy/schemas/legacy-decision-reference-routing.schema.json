@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:legacy-decision-reference-routing:v1",
+  "title": "PTSIP Legacy Decision Reference Routing v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "source_inventory",
+    "routing_principles",
+    "id_routes",
+    "relation_routes",
+    "textual_reference"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-legacy-decision-reference-routing/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "source_inventory": {
+      "const": "developer/policy/legacy-decisions-inventory.yaml"
+    },
+    "routing_principles": {
+      "type": "object",
+      "required": [
+        "split_relation_requires_explicit_route",
+        "unique_to_unique_relation_may_project_deterministically",
+        "unregistered_split_relation",
+        "textual_reference_is_not_dependency"
+      ],
+      "properties": {
+        "split_relation_requires_explicit_route": {
+          "const": true
+        },
+        "unique_to_unique_relation_may_project_deterministically": {
+          "const": true
+        },
+        "unregistered_split_relation": {
+          "const": "FAIL_CLOSED"
+        },
+        "textual_reference_is_not_dependency": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "id_routes": {
+      "type": "object",
+      "minProperties": 23,
+      "maxProperties": 23,
+      "patternProperties": {
+        "^ADR-[0-9]{4}$": {
+          "type": "object",
+          "required": [
+            "targets",
+            "textual_lineage"
+          ],
+          "properties": {
+            "targets": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+              }
+            },
+            "textual_lineage": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "relation_routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_adr",
+          "relation",
+          "target_adr",
+          "projected_edges"
+        ],
+        "properties": {
+          "source_adr": {
+            "type": "string",
+            "pattern": "^ADR-[0-9]{4}$"
+          },
+          "relation": {
+            "enum": [
+              "depends_on",
+              "amends",
+              "extends",
+              "supersedes"
+            ]
+          },
+          "target_adr": {
+            "type": "string",
+            "pattern": "^ADR-[0-9]{4}$"
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "projected_edges": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "required": [
+                "source",
+                "target"
+              ],
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                },
+                "target": {
+                  "type": "string",
+                  "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "textual_reference": {
+      "type": "object",
+      "required": [
+        "eligible_extensions",
+        "split_replacement_format",
+        "path_reference_replacement",
+        "unmapped_adr_behavior"
+      ],
+      "properties": {
+        "eligible_extensions": {
+          "const": [
+            ".md",
+            ".txt",
+            ".rst"
+          ]
+        },
+        "split_replacement_format": {
+          "const": "{TARGET_1} + {TARGET_2}"
+        },
+        "path_reference_replacement": {
+          "const": "CANONICAL_TARGET_PATHS"
+        },
+        "unmapped_adr_behavior": {
+          "const": "FAIL_CLOSED"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

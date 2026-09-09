@@ -12,6 +12,8 @@ INDEX_SCHEMA = "developer/policy/schemas/developer-policy-index.schema.json"
 MPD_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
 LEGACY_INVENTORY = "developer/policy/legacy-decisions-inventory.yaml"
 LEGACY_INVENTORY_SCHEMA = "developer/policy/schemas/legacy-decision-inventory.schema.json"
+LEGACY_ROUTING = "developer/policy/legacy-decision-reference-routing.yaml"
+LEGACY_ROUTING_SCHEMA = "developer/policy/schemas/legacy-decision-reference-routing.schema.json"
 SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
 SFP_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
 
@@ -24,13 +26,18 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     mpd_schema = load_json(MPD_SCHEMA, root=base)
     inventory = load_yaml(LEGACY_INVENTORY, root=base)
     inventory_schema = load_json(LEGACY_INVENTORY_SCHEMA, root=base)
+    routing = load_yaml(LEGACY_ROUTING, root=base)
+    routing_schema = load_json(LEGACY_ROUTING_SCHEMA, root=base)
     Draft202012Validator.check_schema(index_schema)
     Draft202012Validator.check_schema(mpd_schema)
     Draft202012Validator.check_schema(inventory_schema)
+    Draft202012Validator.check_schema(routing_schema)
     for error in Draft202012Validator(index_schema).iter_errors(index):
         errors.append(f"developer/policy/index.yaml: {error.message}")
     for error in Draft202012Validator(inventory_schema).iter_errors(inventory):
         errors.append(f"{LEGACY_INVENTORY}: {error.message}")
+    for error in Draft202012Validator(routing_schema).iter_errors(routing):
+        errors.append(f"{LEGACY_ROUTING}: {error.message}")
     inventory_path = index.get("legacy_decisions_migration", {}).get("inventory_path")
     if inventory_path != LEGACY_INVENTORY:
         errors.append("developer/policy/index.yaml: legacy decision inventory_path is not canonical")
@@ -71,6 +78,22 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
                 retired_fragments += 1
     if len(target_ids) != len(set(target_ids)):
         errors.append("legacy decision inventory target IDs must be unique")
+    inventory_routes = {
+        item.get("source_id"): tuple(
+            output.get("target_id")
+            for output in item.get("outputs", [])
+            if isinstance(output, dict) and isinstance(output.get("target_id"), str)
+        )
+        for item in inventory_entries
+        if isinstance(item, dict)
+    }
+    routing_routes = {
+        adr_id: tuple(route.get("targets", []))
+        for adr_id, route in routing.get("id_routes", {}).items()
+        if isinstance(route, dict)
+    }
+    if inventory_routes != routing_routes:
+        errors.append("legacy decision reference routing must exactly match inventory target allocation")
     summary = inventory.get("summary", {})
     if any(summary.get(key) != value for key, value in class_counts.items()):
         errors.append("legacy decision inventory classification summary does not match entries")

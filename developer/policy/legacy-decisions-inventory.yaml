@@ -45,8 +45,8 @@ summary:
   RETIRE: 0
   total: 23
   planned_sfp_targets: 21
-  planned_mpd_targets: 5
-  retired_fragments: 3
+  planned_mpd_targets: 8
+  retired_fragments: 0
 
 entries:
   - source_id: ADR-0001
@@ -93,8 +93,10 @@ entries:
             - agent_output_schema_constrained
             - agent_decision_is_architecture_authority
             - snapshot_instability_invalidates_evidence_set
-      - target_class: RETIRE
-        disposition: RETIRE_FRAGMENT
+      - target_class: MPD
+        target_id: MPD-0002
+        title: Pilot and Reference Tool Development Baseline
+        disposition: MATERIALIZE
         semantic_scope:
           mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
           include_fields:
@@ -141,8 +143,10 @@ entries:
             - global_decision_state_separate_from_clone_local_projection
             - synchronization_mode
             - decision_authority_is_conformance_oracle
-      - target_class: RETIRE
-        disposition: RETIRE_FRAGMENT
+      - target_class: MPD
+        target_id: MPD-0003
+        title: PTSIP Development Specification 0.3.4 Activation
+        disposition: MATERIALIZE
         semantic_scope:
           mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
           include_fields:
@@ -224,8 +228,10 @@ entries:
             - preserved_classifications
             - toolchain_is_current_ptsip_classification
             - profile_transition_rules
-      - target_class: RETIRE
-        disposition: RETIRE_FRAGMENT
+      - target_class: MPD
+        target_id: MPD-0004
+        title: PTSIP Development Specification 0.3.7 Activation
+        disposition: MATERIALIZE
         semantic_scope:
           mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
           include_fields:
@@ -312,7 +318,7 @@ entries:
             - tool_release_implies_profile_migration
             - migration_engine_remains_implemented
       - target_class: MPD
-        target_id: MPD-0002
+        target_id: MPD-0005
         title: Repository Self-Adoption and Migration Verification Boundaries
         disposition: MATERIALIZE
         semantic_scope:
@@ -332,7 +338,7 @@ entries:
     classification_basis: PTSIP_REPOSITORY_DEVELOPMENT_CONTROL
     outputs:
       - target_class: MPD
-        target_id: MPD-0003
+        target_id: MPD-0008
         title: PTSIP Migration Subsystem Component Ownership
         disposition: MATERIALIZE
         semantic_scope: {mode: FULL_AUTHORITY_SEMANTICS}
@@ -356,7 +362,7 @@ entries:
     classification_basis: PTSIP_REPOSITORY_DEVELOPMENT_CONTROL
     outputs:
       - target_class: MPD
-        target_id: MPD-0004
+        target_id: MPD-0009
         title: Project Profile Transition Work Unit Sequence
         disposition: MATERIALIZE
         semantic_scope: {mode: FULL_AUTHORITY_SEMANTICS}
@@ -386,7 +392,7 @@ entries:
             - canonical_0_3_6_to_pp_1_01_requires_temporary_target
             - equivalent_target_collision
       - target_class: MPD
-        target_id: MPD-0005
+        target_id: MPD-0006
         title: PTSIP Release Note Namespace Management
         disposition: MATERIALIZE
         semantic_scope:
@@ -431,7 +437,7 @@ entries:
             - historical_bridge_role
             - unsupported_or_malformed_binding
       - target_class: MPD
-        target_id: MPD-0006
+        target_id: MPD-0007
         title: Final Release Readiness Work Unit Assignment
         disposition: MATERIALIZE
         semantic_scope:
