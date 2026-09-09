@@ -44,6 +44,17 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
             if isinstance(wu_path, str):
                 payload = load_yaml(wu_path, root=base)
                 errors.extend(_errors(payload, wu_schema, wu_path))
+                work_unit = payload.get("work_unit", {})
+                if work_unit.get("id") != wu.get("id"):
+                    errors.append(f"{wu_path}: work_unit.id does not match version index")
+                if work_unit.get("lifecycle", {}).get("status") != wu.get("lifecycle", {}).get("status"):
+                    errors.append(f"{wu_path}: lifecycle.status does not match version index")
+                if work_unit.get("approval", {}).get("status") != wu.get("approval", {}).get("status"):
+                    errors.append(f"{wu_path}: approval.status does not match version index")
+                if work_unit.get("implementation_authorization") != wu.get("implementation_authorization", {}).get("status"):
+                    errors.append(f"{wu_path}: implementation_authorization does not match version index")
+                if work_unit.get("depends_on", []) != wu.get("depends_on", []):
+                    errors.append(f"{wu_path}: depends_on does not match version index")
                 for extension in payload.get("extensions", []):
                     ext_path = extension.get("path")
                     if not isinstance(ext_path, str):

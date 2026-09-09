@@ -10,8 +10,8 @@ work_unit:
   lifecycle:
     status: ACTIVE
   approval:
-    status: NOT_REQUIRED
-    authority: INHERITED_OWNER_APPROVAL
+    status: APPROVED
+    authority: PROJECT_OWNER
     inherited_from:
       - WU-00B/D01
       - WU-00B/D03
