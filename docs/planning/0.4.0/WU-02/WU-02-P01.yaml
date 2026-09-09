@@ -40,13 +40,23 @@ policy_namespaces:
 
 migration_stages:
   P01_A_CONTROL_PLANE:
-    status: IMPLEMENTING
+    status: IMPLEMENTED_VALIDATION_PENDING_FULL_REGRESSION
     completion:
       - DEVELOPER_POLICY_INDEX_VALID
       - PLANNING_INDEX_VALID
       - CURRENT_GATE_SCHEMA_VALID
   P01_B_DECISION_INVENTORY:
-    status: NOT_STARTED
+    status: COMPLETE_23_OF_23
+    inventory: developer/policy/legacy-decisions-inventory.yaml
+    classification_summary:
+      MPD: 2
+      SFP: 15
+      SPLIT: 6
+      RETIRE: 0
+    materialization_targets:
+      SFP: 21
+      MPD: 5
+      RETIRED_FRAGMENTS: 3
     output_classes:
       - MPD
       - SFP
@@ -58,7 +68,7 @@ migration_stages:
       builtin_root: src/ptsip/profiles/builtin/
       execution: DEFER_TO_POLICY_MATERIALIZATION_AFTER_INVENTORY
   P01_C_POLICY_MATERIALIZATION:
-    status: BLOCKED_ON_P01_B
+    status: ACTIVE
     includes:
       - MATERIALIZE_MPD_RESULTS
       - MATERIALIZE_SFP_RESULTS
@@ -89,6 +99,6 @@ profile_subsystem_decision:
   move_authorized_only_as_part_of_inventory_linked_materialization: true
 
 current_known_blockers:
+  - POLICY_MATERIALIZATION_INCOMPLETE
   - SRC_PTSIP_GOVERNANCE_READS_DECISIONS
-  - LEGACY_ADR_CORPUS_NOT_CLASSIFIED
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE

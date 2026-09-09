@@ -14,7 +14,9 @@ legacy_decisions_migration:
     - SFP
     - SPLIT
     - RETIRE
-  state: INVENTORY_PENDING
+  state: INVENTORY_COMPLETE_23_OF_23
+  inventory_path: developer/policy/legacy-decisions-inventory.yaml
+  inventory_schema: developer/policy/schemas/legacy-decision-inventory.schema.json
   automatic_removal:
     preauthorized: true
     confirmation_required_when_ready: false
@@ -29,5 +31,5 @@ legacy_decisions_migration:
       ACTIVE_REFERENCE_COUNT_ZERO: true
       MACHINE_VALIDATION_PASS: true
   current_blockers:
-    - LEGACY_DECISION_INVENTORY_NOT_COMPLETE
+    - POLICY_MATERIALIZATION_INCOMPLETE
     - SRC_PTSIP_GOVERNANCE_READS_DECISIONS
