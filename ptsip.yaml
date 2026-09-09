@@ -17,6 +17,7 @@ components:
       - "src/ptsip/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
+      - "src/ptsip/governance/**"
       - "src/ptsip/inspection/**"
       - "src/ptsip/pilot/**"
       - "src/ptsip/repository/**"
@@ -184,6 +185,8 @@ components:
       - "tests/ptsip/cli/**"
       - "tests/ptsip/conformance/**"
       - "tests/ptsip/control_plane/**"
+      - "tests/ptsip/governance/test_authority_runtime.py"
+      - "tests/ptsip/governance/test_authorization_transition.py"
       - "tests/ptsip/identity/**"
       - "tests/ptsip/inspection/**"
       - "tests/ptsip/integration/**"
@@ -207,6 +210,7 @@ components:
       - "src/ptsip/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
+      - "src/ptsip/governance/**"
       - "src/ptsip/inspection/**"
       - "src/ptsip/pilot/**"
       - "src/ptsip/repository/**"
@@ -214,6 +218,21 @@ components:
       - "src/ptsip/validation/**"
       - "ptsip.yaml"
       - "profiles/**"
+      - "decisions/INDEX.yaml"
+      - "decisions/AUTHORITY-SCHEMA-REGISTRY.yaml"
+      - "decisions/AUTHORITY-ROLE-REGISTRY.yaml"
+      - "decisions/AUTHORITY-SUBJECT-REGISTRY.yaml"
+      - "decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml"
+      - "schemas/ptsip-adr.schema.json"
+      - "schemas/ptsip-governance-authority-registry.schema.json"
+      - "schemas/ptsip-governance-authority-role.schema.json"
+      - "schemas/ptsip-governance-authority-role-registry.schema.json"
+      - "schemas/ptsip-governance-authority-semantics.schema.json"
+      - "schemas/ptsip-governance-authority-subject-registry.schema.json"
+      - "schemas/ptsip-governance-subject-binding.schema.json"
+      - "schemas/ptsip-project-authority-record.schema.json"
+      - "schemas/ptsip-authority-eligibility-result.schema.json"
+      - "schemas/ptsip-authorization-transition.schema.json"
 
   - id: ptsip-evidence-verification
     classification: PRODUCT
@@ -306,7 +325,8 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/contracts/**"
-    purpose: canonical_and_embedded_contract_consistency_verification
+      - "tests/ptsip/governance/test_contracts.py"
+    purpose: canonical_embedded_and_governance_contract_consistency_verification
     shipped: false
     runtime_required: false
     executable: true
@@ -316,6 +336,8 @@ components:
       - "spec/**"
       - "schemas/**"
       - "registry/**"
+      - "decisions/**"
+      - "src/ptsip/governance/**"
       - "src/ptsip/specdata/**"
 
   - id: repository-architecture-verification
@@ -324,12 +346,8 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/repository/test_self_profile.py"
-      - "tests/ptsip/test_adr_governance_assets.py"
-      - "tests/ptsip/test_p03_raw_feature_extraction.py"
-      - "tests/ptsip/test_p03_review_packet.py"
-      - "tests/ptsip/test_p03_semantic_decision.py"
-      - "tests/ptsip/test_p03_semantic_reuse.py"
-    purpose: repository_profile_and_governance_asset_verification
+      - "tests/ptsip/governance/test_planning_surface.py"
+    purpose: repository_profile_and_active_planning_surface_verification
     shipped: false
     runtime_required: false
     executable: true
@@ -342,20 +360,8 @@ components:
       - "agents/**"
       - "decisions/**"
       - "reference/**"
-      - ".github/scripts/p03_authority_role_matrix.py"
-      - ".github/scripts/p03_authority_role_raw_features.py"
-      - ".github/scripts/p03_authority_role_review_packet.py"
-      - ".github/scripts/p03_authority_role_semantic_decision.py"
-      - ".github/scripts/p03_authority_role_semantic_reuse.py"
-      - "planning/0.4.0/WU-02/p03-authority-role-binary-matrix.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-raw-feature-migration.yaml"
-      - "planning/0.4.0/WU-02/p03-semantic-decision-reuse-optimization.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-matrix.generated.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-review-packets/**"
-      - "planning/0.4.0/WU-02/p03-authority-role-semantic-decisions.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-decision-packets/**"
+      - "planning/0.4.0/WU-02/**"
+      - "src/ptsip/governance/**"
 
   - id: repository-release-verification
     classification: DELIVERY
@@ -449,11 +455,6 @@ components:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
       - ".github/scripts/sync_readme_argos.py"
-      - ".github/scripts/p03_authority_role_matrix.py"
-      - ".github/scripts/p03_authority_role_raw_features.py"
-      - ".github/scripts/p03_authority_role_review_packet.py"
-      - ".github/scripts/p03_authority_role_semantic_decision.py"
-      - ".github/scripts/p03_authority_role_semantic_reuse.py"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"
       - ".github/scripts/wu04g_bridge_log.ps1"
@@ -470,8 +471,6 @@ components:
       - "README.md"
       - "README.ko.md"
       - "decisions/**"
-      - "planning/0.4.0/WU-02/p03-authority-role-provisional-dimensions.yaml"
-      - "planning/0.4.0/WU-02/p03-authority-role-raw-features.generated.yaml"
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
@@ -514,6 +513,16 @@ relationships:
   - id: core-reads-embedded-contracts
     from: ptsip-core
     to: ptsip-embedded-contracts
+    type: READS
+
+  - id: core-reads-canonical-contracts
+    from: ptsip-core
+    to: ptsip-canonical-contracts
+    type: READS
+
+  - id: core-reads-governance-support
+    from: ptsip-core
+    to: ptsip-governance-support
     type: READS
 
   - id: evidence-imports-core
