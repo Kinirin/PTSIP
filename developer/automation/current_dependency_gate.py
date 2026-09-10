@@ -16,7 +16,6 @@ _POLICY_PATH_RE = re.compile(
 
 _CURRENT_EXACT_PATHS = (
     "AGENTS.md",
-    "ptsip.yaml",
     "developer/profiles/ptsip-repository.yaml",
     "docs/planning/0.4.0/WU-02/WU-02.yaml",
     "docs/planning/0.4.0/WU-02/WU-02-P01.yaml",
