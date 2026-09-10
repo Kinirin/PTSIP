@@ -7,7 +7,11 @@
     "schema_version",
     "policy_class",
     "policy",
-    "feature_contract"
+    "feature_contract",
+    "authority_contract",
+    "authority_semantics",
+    "relations",
+    "source_provenance"
   ],
   "properties": {
     "schema_version": {
@@ -64,6 +68,171 @@
         }
       },
       "additionalProperties": true
+    },
+    "authority_contract": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "authority_semantics": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "relations": {
+      "type": "object",
+      "required": [
+        "supersedes",
+        "amends",
+        "extends",
+        "depends_on"
+      ],
+      "properties": {
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "amends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "extends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_provenance": {
+      "type": "object",
+      "required": [
+        "source_type",
+        "source_id",
+        "source_topic_id",
+        "source_path",
+        "source_status",
+        "semantic_projection"
+      ],
+      "properties": {
+        "source_type": {
+          "const": "LEGACY_ADR"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^ADR-[0-9]{4}$"
+        },
+        "source_topic_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "source_path": {
+          "type": "string",
+          "pattern": "^decisions/ADR-[0-9]{4}-.+\\.yaml$"
+        },
+        "source_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_projection": {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "FULL_AUTHORITY_SEMANTICS",
+                "SELECTED_AUTHORITY_SEMANTICS_FIELDS"
+              ]
+            },
+            "include_fields": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": true

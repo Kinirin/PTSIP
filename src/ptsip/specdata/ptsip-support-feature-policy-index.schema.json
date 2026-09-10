@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-support-feature-policy-index.schema.json",
+  "title": "PTSIP Support Feature Policy Index v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "policies"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-support-feature-policy-index/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_SUPPORT_FEATURE"
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 21,
+      "maxItems": 21,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^SFP-[0-9]{4}$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^src/ptsip/specdata/SFP-[0-9]{4}\\.yaml$"
+          },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "DEPRECATED",
+              "RETIRED"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
