@@ -1,0 +1,217 @@
+schema_version: ptsip-work-unit/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+planning_contract: ptsip-planning/v1
+
+work_unit:
+  id: WU-05
+  kind: WORK_UNIT
+  title: Dependency-Free Postcondition Verification + Remediation Test Mode
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle:
+    status: ACTIVE
+  approval:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    inherited_from:
+      - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
+  integration_branch: dev/0.4.0
+  implementation_authorization: NOT_AUTHORIZED
+  depends_on: []
+  execution_branch: dev/0.4.0-WU-05
+  branch_parent: dev/0.4.0
+  branch_creation_rule: CREATE_ONLY_AFTER_PARENT_PARALLEL_PLANNING_COMMIT
+
+planning_authority:
+  status: APPROVED
+  authority: PROJECT_OWNER
+  date: '2026-09-10'
+  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  purpose: REMOVE_WU_02_WU_03_AND_WU_04_START_DEPENDENCIES_FROM_WU_05_AND_ENABLE_PARALLEL_SESSION_EXECUTION
+  implementation_authorized_by_this_plan: false
+
+primary_responsibility: IMPLEMENT_A_DEPENDENCY_FREE_POSTCONDITION_VERIFICATION_KERNEL_AND_REMEDIATION_TEST_MODE_FROM_EXPLICIT_VERIFICATION_INPUTS_WITHOUT_APPLY_OR_UPSTREAM_SOLUTION_ORCHESTRATION
+
+dependency_firewall:
+  depends_on_work_units: []
+  forbidden_runtime_dependencies:
+    - WU_02_EXACT_SOLUTION_SPACE_RESULT
+    - WU_02_RULE_SPECIFIC_SEMANTIC_PLAN_SHAPE_BEYOND_STABLE_DOMAIN_IDENTITY
+    - WU_03_ESCALATION_OR_FRESH_SOLVE_RUNTIME
+    - WU_04_AUTHORITY_GATE_RUNTIME
+    - WU_04_SAFE_APPLY_RESULT_SHAPE
+  stable_foundation_allowed:
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/conformance.py
+    - src/ptsip/repository/snapshot.py
+    - .github/test_modes.yaml
+    - ptsip.yaml#ptsip-remediation-verification
+  rule: WU_05_MUST_VERIFY_EXPLICIT_POSTCONDITIONS_AND_MUST_NOT_REQUIRE_A_PRIOR_WU_04_APPLY_RESULT_TO_BUILD_ITS_INPUT
+  moved_to_wu_03:
+    - OWNER_INTENT_AND_EXTERNAL_FACT_BOUNDARY_OUTCOME_CLOSURE
+    - DETERMINISTIC_SOLVE_TO_EXECUTION_HANDOFF
+    - POST_APPLY_RESULT_TO_POSTCONDITION_REQUEST_HANDOFF
+    - CROSS_WU_FINAL_REMEDIATION_OUTCOME_ORCHESTRATION
+
+scope:
+  - DEFINE_EXPLICIT_POSTCONDITION_VERIFICATION_REQUEST_AND_RESULT_CONTRACTS
+  - VERIFY_DECLARED_POSTCONDITION_CHECKS_AGAINST_CURRENT_REPOSITORY_STATE
+  - BIND_POSTCONDITION_VERIFICATION_TO_EXACT_EXPECTED_POSTSTATE_OR_REPOSITORY_SNAPSHOT
+  - FAIL_CLOSED_WHEN_VERIFICATION_INPUT_IS_STALE_OR_INCOMPLETE
+  - AGGREGATE_CHECK_RESULTS_INTO_EXISTING_POSTCONDITION_RESULT_SEMANTICS
+  - REEVALUATE_PTSIP_CONFORMANCE_AFTER_POSTCONDITION_CHECKS_WHEN_EXPLICITLY_REQUESTED
+  - KEEP_POSTCONDITION_VERIFICATION_SEPARATE_FROM_SAFE_APPLY
+  - REGISTER_PTSIP_REMEDIATION_TEST_MODE_USING_EXISTING_VERIFICATION_COMPONENT
+  - ADD_FOCUSED_POSTCONDITION_AND_TEST_MODE_VERIFICATION
+
+non_goals:
+  - IMPLEMENT_OR_IMPORT_WU_02_SOLUTION_SPACE_ENGINE
+  - INFER_POSTCONDITIONS_FROM_A_WU_02_SEMANTIC_CANDIDATE
+  - IMPLEMENT_OR_IMPORT_WU_03_ESCALATION_OR_FRESH_SOLVE_WORKFLOW
+  - IMPLEMENT_OR_IMPORT_WU_04_AUTHORITY_GATE
+  - CALL_WU_04_SAFE_APPLY
+  - REQUIRE_WU_04_APPLY_RESULT_TO_CREATE_A_VERIFICATION_REQUEST
+  - MUTATE_REPOSITORY_STATE
+  - AUTHORIZE_MUTATION
+  - ASK_OWNER_QUESTIONS
+  - ACQUIRE_EXTERNAL_FACTS
+  - CLOSE_OWNER_INTENT_OR_EXTERNAL_FACT_WORKFLOWS
+  - DEFINE_FINAL_PUBLIC_REMEDIATION_ORCHESTRATION
+  - MODIFY_PTSIP_YAML_TO_CREATE_A_NEW_VERIFICATION_COMPONENT
+  - DUPLICATE_ARCHITECTURE_METADATA_IN_TEST_MODE_REGISTRY
+
+postcondition_contract:
+  request_must_be_explicit: true
+  required_inputs:
+    - SEMANTIC_PLAN_ID
+    - VERIFIED_RULE_IDS_OR_EXPLICIT_CHECK_IDS
+    - EXPECTED_REPOSITORY_POSTSTATE_BINDING
+    - POSTCONDITION_CHECK_DEFINITIONS
+  forbidden_inference_sources:
+    - CANDIDATE_RANKING_SCORE
+    - HISTORICAL_REMEDIATION_RESULT
+    - WU_04_APPLY_SUCCESS_FLAG_ALONE
+    - ARBITRARY_AI_INTERPRETATION
+  stale_behavior: FAIL_CLOSED
+  incomplete_check_set_behavior: VERIFICATION_INCOMPLETE
+  success_requires:
+    - ALL_REQUIRED_CHECKS_PASS
+    - EXPECTED_POSTSTATE_BINDING_MATCHES
+  conformance_recheck:
+    supported: true
+    role: INDEPENDENT_POST_APPLY_VALIDATION
+    may_be_treated_as_AUTHORITY: false
+  output:
+    canonical_domain_result: PostconditionResult
+    may_include_machine_inspectable_check_details: true
+
+verification_kernel_boundary:
+  input_creation:
+    direct_fixture_or_explicit_caller: ALLOWED
+    WU_03_adapter_after_parallel_merge: ALLOWED
+    WU_04_runtime_required: false
+  check_protocol:
+    purpose: ALLOW_WU_05_TO_RUN_WITHOUT_IMPORTING_WU_02_RULE_IMPLEMENTATIONS
+    rule_specific_adapter_owner: WU-03
+    verifier_may_return_authority: false
+  repository_mutation: FORBIDDEN
+  auto_fix_on_verification_failure: FORBIDDEN
+  failure_requires_new_solve_or_explicit_followup: true
+
+test_mode_contract:
+  mode_id: ptsip-remediation
+  component_ref: ptsip-remediation-verification
+  component_already_declared_in_ptsip_yaml: true
+  ptsip_yaml_change_required: false
+  execution:
+    pytest:
+      - tests/ptsip/remediation
+  watch:
+    - "src/ptsip/remediation/**"
+    - "tests/ptsip/remediation/**"
+    - "src/ptsip/governance/**"
+    - "src/ptsip/conformance.py"
+    - "src/ptsip/repository/snapshot.py"
+  authority_firewall:
+    architecture_authority_copied_into_test_mode: false
+    component_ref_is_only_architecture_link: true
+    watch_paths_are_execution_selection_evidence_only: true
+  selective_success_equals_full_qualification: false
+
+parallel_branch_contract:
+  planned_branch: dev/0.4.0-WU-05
+  source_branch: dev/0.4.0
+  source_revision_rule: USE_DEV_0_4_0_REVISION_CONTAINING_WU_04_AND_THIS_PLAN
+  may_start_before_wu_02_complete: true
+  may_start_before_wu_03_complete: true
+  may_start_before_wu_04_complete: true
+  direct_merge_target: dev/0.4.0
+  branch_scope_must_remain_disjoint_from_wu_04: true
+  integration_after_merge:
+    owner: WU-03
+    rule: POST_APPLY_HANDOFF_AND_FINAL_BOUNDARY_OUTCOME_COMPOSITION_ARE_NOT_IMPLEMENTED_ON_WU_05_BRANCH
+
+implementation_shape:
+  new_paths:
+    - src/ptsip/remediation/verification/__init__.py
+    - src/ptsip/remediation/verification/contract.py
+    - src/ptsip/remediation/verification/engine.py
+    - tests/ptsip/remediation/verification/
+  existing_files_modified:
+    - .github/test_modes.yaml
+  deliberately_not_modified:
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/remediation/rules/
+    - src/ptsip/remediation/escalation/
+    - src/ptsip/remediation/execution/
+    - src/ptsip/remediation/__init__.py
+    - ptsip.yaml
+    - docs/planning/0.4.0/WU-02/
+    - docs/planning/0.4.0/WU-03/
+    - docs/planning/0.4.0/WU-04/
+    - docs/planning/0.4.0/index.yaml
+  collision_policy: TEST_MODE_REGISTRY_IS_WU_05_OWNED_AND_TOP_LEVEL_REMEDIATION_EXPORT_INTEGRATION_OCCURS_ONLY_ON_DEV_0_4_0
+
+verification_plan:
+  focused:
+    - EXPLICIT_POSTCONDITION_REQUEST_RUNS_WITHOUT_WU_04
+    - STALE_EXPECTED_POSTSTATE_FAILS_CLOSED
+    - INCOMPLETE_REQUIRED_CHECK_SET_CANNOT_REPORT_SUCCESS
+    - FAILED_REQUIRED_CHECK_PRODUCES_UNSATISFIED_POSTCONDITION_RESULT
+    - SUCCESSFUL_REQUIRED_CHECKS_PRODUCE_SATISFIED_POSTCONDITION_RESULT
+    - POSTCONDITION_ENGINE_NEVER_MUTATES_REPOSITORY
+    - OPTIONAL_CONFORMANCE_RECHECK_IS_INDEPENDENT_VALIDATION_NOT_AUTHORITY
+    - PTSIP_REMEDIATION_TEST_MODE_COMPONENT_REF_RESOLVES
+    - TEST_MODE_WATCH_PATHS_REMAIN_EXECUTION_ONLY
+    - SELECTIVE_REMEDIATION_MODE_DOES_NOT_REDEFINE_FULL_QUALIFICATION
+    - WU_05_DOES_NOT_IMPORT_WU_02_WU_03_OR_WU_04_RUNTIME_TYPES
+  pytest_target: tests/ptsip/remediation/verification
+  local_commands:
+    - python -m pytest tests/ptsip/remediation/verification -q
+    - python .github/scripts/validate_test_modes.py
+  log_files:
+    - wu05-focused.log
+    - wu05-test-mode-validation.log
+  exact_sha_full_qualification:
+    branch_iteration: NOT_REQUIRED
+    after_merge_to_dev_0_4_0: REQUIRED_BEFORE_RELEASE_QUALIFICATION
+
+progress:
+  planning: APPROVED
+  implementation: NOT_STARTED
+  verification: NOT_STARTED
+
+completion_gate:
+  requires_all:
+    - POSTCONDITION_REQUEST_IS_EXPLICIT_AND_SNAPSHOT_BOUND
+    - POSTCONDITION_ENGINE_CAN_RUN_WITHOUT_WU_04
+    - STALE_OR_INCOMPLETE_VERIFICATION_INPUT_FAILS_CLOSED
+    - POSTCONDITION_RESULT_DOES_NOT_AUTHORIZE_OR_MUTATE
+    - OPTIONAL_CONFORMANCE_RECHECK_IS_SEPARATE_FROM_AUTHORITY
+    - PTSIP_REMEDIATION_TEST_MODE_IS_REGISTERED
+    - TEST_MODE_COMPONENT_REF_USES_EXISTING_PTSIP_REMEDIATION_VERIFICATION_COMPONENT
+    - NO_PTSIP_YAML_ARCHITECTURE_CHANGE_REQUIRED
+    - NO_WU_02_WU_03_OR_WU_04_RUNTIME_DEPENDENCY_ADDED
+    - FOCUSED_WU_05_VERIFICATION_PASSES
+    - TEST_MODE_VALIDATION_PASSES
+  implementation_start_requires_explicit_owner_instruction: true

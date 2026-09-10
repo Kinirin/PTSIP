@@ -31,7 +31,7 @@ execution_exception:
   official_completion_before_dependency: FORBIDDEN
   reconciliation_after_wu_02: REQUIRED
 
-primary_responsibility: IMPLEMENT_OWNER_INTENT_AND_EXTERNAL_FACT_INPUT_BOUNDARIES_WITH_ESCALATION_PROOF_AND_MANDATORY_FRESH_SOLVE_RESTART_WITHOUT_REIMPLEMENTING_WU_02_SOLUTION_SPACE
+primary_responsibility: IMPLEMENT_OWNER_INTENT_AND_EXTERNAL_FACT_INPUT_BOUNDARIES_WITH_ESCALATION_PROOF_AND_MANDATORY_FRESH_SOLVE_RESTART_AND_OWN_ALL_DOWNSTREAM_DEPENDENCY_BEARING_REMEDIATION_INTEGRATION_WITHOUT_REIMPLEMENTING_LEAF_KERNELS
 
 scope:
   - BUILD_MACHINE_INSPECTABLE_OWNER_ESCALATION_PROOF_FROM_ALREADY_REDUCED_LEGAL_SEMANTIC_CANDIDATES
@@ -195,10 +195,64 @@ completion_gate:
 
 later_handoff:
   WU-04:
-    - CONSUME_FRESHLY_RESOLVED_SEMANTIC_TARGET_ONLY_AFTER_NEW_SOLVE
-    - AUTHORITY_GATE
-    - MUTATION_CLASS_APPLICATION
-    - AUTHORIZATION_DECISION
-    - REPOSITORY_CHANGE_PLAN
-    - SAFE_APPLY
-  boundary_status: PROVISIONAL_PENDING_WU_02_RECONCILIATION
+    - GENERIC_AUTHORITY_GATE_AND_REPOSITORY_EXECUTION_KERNEL_FROM_EXPLICIT_INPUTS
+    - NO_WU_02_OR_WU_03_RUNTIME_DEPENDENCY
+  WU-05:
+    - GENERIC_POSTCONDITION_VERIFICATION_KERNEL_AND_REMEDIATION_TEST_MODE
+    - NO_WU_02_WU_03_OR_WU_04_RUNTIME_DEPENDENCY
+  boundary_status: SUPERSEDED_BY_PARALLEL_DEPENDENCY_REPARTITION_2026_09_10
+
+parallel_dependency_repartition:
+  status: APPROVED
+  authority: PROJECT_OWNER
+  date: '2026-09-10'
+  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  objective: MOVE_ALL_DEPENDENCY_BEARING_DOWNSTREAM_WORK_INTO_WU_03_AND_LEAVE_WU_04_AND_WU_05_AS_INDEPENDENT_LEAF_WORK_UNITS
+  supersedes_dependency_placement_only:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml#later_wu_handoffs
+    - docs/planning/0.4.0/index.yaml#WU-04
+    - docs/planning/0.4.0/index.yaml#WU-05
+    - docs/planning/0.4.0/index.yaml#WU-06
+  preserves:
+    - WU_02_SEMANTIC_SCOPE
+    - WU_03_ESCALATION_AND_FRESH_SOLVE_SCOPE
+    - AUTHORITY_FIREWALL
+    - DETERMINACY_NOT_AUTHORIZATION
+    - EXACT_STATE_SAFE_APPLY
+    - POSTCONDITION_VERIFICATION_SEPARATION
+  moved_into_wu_03:
+    from_original_wu_04:
+      - FRESH_SOLVE_RESULT_TO_AUTHORITY_GATE_HANDOFF
+      - RULE_SPECIFIC_SEMANTIC_TARGET_TO_PHYSICAL_OPERATION_INTENT_TRANSLATION
+      - OWNER_CONFIRMATION_REENTRY_AFTER_AUTHORITY_GATE
+      - POST_APPLY_RESULT_TO_VERIFICATION_REQUEST_HANDOFF
+    from_original_wu_05:
+      - OWNER_INTENT_AND_EXTERNAL_FACT_BOUNDARY_OUTCOME_CLOSURE
+      - DETERMINISTIC_SOLVE_TO_EXECUTION_HANDOFF
+      - CROSS_WU_FINAL_REMEDIATION_OUTCOME_COMPOSITION
+    from_future_wu_06:
+      - ANY_CROSS_WU_OR_PUBLIC_ORCHESTRATION_THAT_REQUIRES_UNFINISHED_WU_02_WU_03_WU_04_OR_WU_05_OUTPUT_SHAPES
+  leaf_work_units:
+    WU-04:
+      depends_on: []
+      execution_branch: dev/0.4.0-WU-04
+      accepts_only_explicit_inputs: true
+    WU-05:
+      depends_on: []
+      execution_branch: dev/0.4.0-WU-05
+      accepts_only_explicit_inputs: true
+  future_wu_06_rule:
+    depends_on: []
+    status: NOT_CREATED
+    scope_may_only_be_selected_from_dependency_free_remaining_work: true
+    dependency_bearing_scope_owner: WU-03
+  branch_collision_policy:
+    leaf_branches_created_only_after_parent_planning_commit: true
+    WU_04_must_not_edit_WU_05_owned_paths: true
+    WU_05_must_not_edit_WU_04_owned_paths: true
+    cross_wu_top_level_export_or_orchestration_changes_occur_on_dev_0_4_0: true
+  reconciliation:
+    WU_02_dependency_remains_on_WU_03: true
+    WU_04_start_waits_for_WU_02_or_WU_03: false
+    WU_05_start_waits_for_WU_02_WU_03_or_WU_04: false
+    official_cross_wu_composition_owner: WU-03

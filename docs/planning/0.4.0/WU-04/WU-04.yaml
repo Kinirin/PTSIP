@@ -1,0 +1,236 @@
+schema_version: ptsip-work-unit/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+planning_contract: ptsip-planning/v1
+
+work_unit:
+  id: WU-04
+  kind: WORK_UNIT
+  title: Dependency-Free Authority Gate + Repository Execution Kernel
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle:
+    status: ACTIVE
+  approval:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    inherited_from:
+      - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
+  integration_branch: dev/0.4.0
+  implementation_authorization: NOT_AUTHORIZED
+  depends_on: []
+  execution_branch: dev/0.4.0-WU-04
+  branch_parent: dev/0.4.0
+  branch_creation_rule: CREATE_ONLY_AFTER_PARENT_PARALLEL_PLANNING_COMMIT
+
+planning_authority:
+  status: APPROVED
+  authority: PROJECT_OWNER
+  date: '2026-09-10'
+  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  purpose: REMOVE_WU_02_AND_WU_03_START_DEPENDENCIES_FROM_WU_04_AND_ENABLE_PARALLEL_SESSION_EXECUTION
+  implementation_authorized_by_this_plan: false
+
+primary_responsibility: IMPLEMENT_A_DEPENDENCY_FREE_GENERIC_AUTHORIZATION_AND_REPOSITORY_EXECUTION_KERNEL_FROM_EXPLICIT_ALREADY_DECIDED_INPUTS_WITHOUT_SOLUTION_SPACE_ESCALATION_OR_POSTCONDITION_ORCHESTRATION
+
+dependency_firewall:
+  depends_on_work_units: []
+  forbidden_runtime_dependencies:
+    - WU_02_EXACT_SOLUTION_SPACE_RESULT
+    - WU_02_CURRENT_AUTHORITY_REDUCTION_ENGINE
+    - WU_03_ESCALATION_PROOF_ENGINE
+    - WU_03_RESOLUTION_INPUT_REQUEST
+    - WU_03_FRESH_SOLVE_RESTART_ORCHESTRATION
+    - WU_05_POSTCONDITION_VERIFICATION_ENGINE
+  stable_foundation_allowed:
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/repository/snapshot.py
+    - CURRENT_GENERIC_REPOSITORY_IO_PRIMITIVES
+  rule: WU_04_MUST_ACCEPT_EXPLICIT_EXECUTION_INPUTS_AND_MUST_NOT_DISCOVER_OR_RECONSTRUCT_UPSTREAM_SEMANTIC_AUTHORITY
+  moved_to_wu_03:
+    - SOLUTION_SPACE_RESULT_TO_EXECUTION_HANDOFF
+    - FRESH_SOLVE_RESULT_TO_AUTHORITY_GATE_HANDOFF
+    - OWNER_CONFIRMATION_REENTRY_TO_NEW_FRESH_SOLVE
+    - RULE_SPECIFIC_SEMANTIC_TARGET_TO_PHYSICAL_OPERATION_INTENT_TRANSLATION
+    - POST_APPLY_TO_DOWNSTREAM_VERIFICATION_HANDOFF
+  no_leaf_to_leaf_dependency:
+    WU_04_depends_on_WU_05: false
+    WU_05_depends_on_WU_04: false
+
+scope:
+  - DEFINE_EXPLICIT_AUTHORITY_GATE_INPUT_AND_RESULT_CONTRACTS
+  - EVALUATE_MUTATION_AUTHORIZATION_ONLY_FROM_EXPLICIT_CURRENT_AUTHORIZATION_INPUT
+  - APPLY_MUTATION_CLASS_TO_EXPLICIT_OPERATION_INTENTS_WITH_FAIL_CLOSED_UNKNOWN_HANDLING
+  - PRESERVE_DETERMINACY_AND_MUTATION_AUTHORIZATION_AS_SEPARATE_CONCEPTS
+  - BUILD_REPOSITORY_CHANGE_PLAN_FROM_EXPLICIT_OPERATION_INTENTS
+  - BIND_REPOSITORY_CHANGE_PLAN_TO_EXACT_PRESTATE
+  - REJECT_STALE_REPOSITORY_STATE_BEFORE_MUTATION
+  - REQUIRE_AUTHORIZED_GATE_RESULT_BEFORE_SAFE_APPLY
+  - PROVIDE_GENERIC_SAFE_APPLY_EXECUTION_WITH_RECOVERY_STATE_ON_PARTIAL_FAILURE
+  - KEEP_RULE_SPECIFIC_SEMANTIC_TO_PHYSICAL_TRANSLATION_OUTSIDE_WU_04
+  - ADD_FOCUSED_AUTHORITY_GATE_EXECUTION_PLANNER_AND_SAFE_APPLY_VERIFICATION
+
+non_goals:
+  - IMPLEMENT_OR_IMPORT_WU_02_SOLUTION_SPACE_ENGINE
+  - IMPLEMENT_OR_IMPORT_WU_02_RULE_SPECIFIC_CANDIDATE_REDUCTION
+  - IMPLEMENT_OR_IMPORT_WU_03_ESCALATION_WORKFLOW
+  - ASK_PROJECT_OWNER_QUESTIONS
+  - MATERIALIZE_OWNER_DECISIONS_OR_EXTERNAL_FACTS
+  - PERFORM_FRESH_SOLVE
+  - DISCOVER_CURRENT_PROJECT_AUTHORITY_FROM_DECISIONS_OR_PROFILE
+  - DEFINE_PROJECT_AUTHORITY_PRECEDENCE
+  - INFER_PHYSICAL_OPERATIONS_FROM_A_WU_02_SEMANTIC_CANDIDATE
+  - IMPLEMENT_PTSIP_PKG_001_SPECIFIC_OPERATION_TRANSLATION
+  - POSTCONDITION_VERIFICATION
+  - FINAL_CONFORMANCE_OUTCOME_CLOSURE
+  - TEST_MODE_REGISTRATION
+  - MODIFY_PROJECT_PROFILE_AUTHORITY
+  - REUSE_MIGRATION_EXECUTION_MODEL_AS_GENERIC_REMEDIATION_AUTHORITY
+
+authority_gate_contract:
+  governing_invariants:
+    - DETERMINISTIC_SEMANTIC_TARGET_DOES_NOT_IMPLY_MUTATION_AUTHORIZATION
+    - EVIDENCE_OR_HEURISTIC_MUST_NOT_CREATE_AUTHORIZATION
+    - MISSING_OR_AMBIGUOUS_AUTHORIZATION_INPUT_FAILS_CLOSED
+    - OWNER_CONFIRMATION_IS_AN_INPUT_STATE_NOT_A_QUESTION_GENERATED_BY_WU_04
+    - AUTHORITY_GATE_DOES_NOT_READ_ARBITRARY_GOVERNANCE_PROSE
+  required_inputs:
+    - SEMANTIC_PLAN_IDENTITY
+    - EXPLICIT_MUTATION_CLASS
+    - EXPLICIT_CURRENT_AUTHORIZATION_POLICY_OR_PROOF
+    - EXACT_REPOSITORY_PRESTATE
+    - EXPLICIT_OPERATION_INTENTS
+  output:
+    decision_type: AuthorizationDecision
+    allowed_values:
+      - AUTHORIZED
+      - OWNER_CONFIRMATION_REQUIRED
+      - NOT_AUTHORIZED
+    reason_records_required: true
+  missing_policy_behavior: NOT_AUTHORIZED
+  stale_authorization_binding_behavior: NOT_AUTHORIZED
+
+mutation_class_contract:
+  vocabulary:
+    - MECHANICAL_REVERSIBLE
+    - STRUCTURAL_SEMANTIC_PRESERVING
+    - ARCHITECTURE_SEMANTIC
+    - DESTRUCTIVE
+  restrictiveness_order:
+    - MECHANICAL_REVERSIBLE
+    - STRUCTURAL_SEMANTIC_PRESERVING
+    - ARCHITECTURE_SEMANTIC
+    - DESTRUCTIVE
+  aggregate_rule: MOST_RESTRICTIVE_OPERATION_CLASS_WINS
+  unknown_or_unprovable_classification: FAIL_CLOSED
+  downclassification_to_obtain_authorization: FORBIDDEN
+  implementation_cost_or_diff_size_affects_mutation_class: false
+
+repository_change_plan_contract:
+  source_semantics: EXPLICIT_OPERATION_INTENTS_ONLY
+  semantic_target_inference: FORBIDDEN
+  required_bindings:
+    - SEMANTIC_PLAN_ID
+    - MUTATION_CLASS
+    - EXACT_PRESTATE_FINGERPRINT
+    - STABLE_OPERATION_IDS
+  plan_must_be_inspectable_before_apply: true
+  operation_order_may_be_mechanical_only: true
+  operation_order_may_create_new_architecture_semantics: false
+  stale_plan_rebase: FORBIDDEN
+  current_state_mismatch: FAIL_CLOSED
+
+safe_apply_contract:
+  preconditions:
+    - AUTHORIZATION_DECISION_IS_AUTHORIZED
+    - EXACT_PRESTATE_MATCHES
+    - ALL_OPERATION_PRECONDITIONS_MATCH
+  behavior:
+    implicit_rebase: FORBIDDEN
+    implicit_semantic_replanning: FORBIDDEN
+    destructive_without_explicit_authorization: FORBIDDEN
+    mutation_before_prestate_check: FORBIDDEN
+  failure:
+    partial_failure_must_be_explicit: true
+    recovery_state_required_when_repository_may_have_changed: true
+    silent_best_effort_continuation: FORBIDDEN
+  post_apply:
+    may_report_execution_result: true
+    may_declare_ptsip_conformant: false
+    postcondition_verification_owner: WU-05
+    post_apply_handoff_orchestration_owner: WU-03
+
+parallel_branch_contract:
+  planned_branch: dev/0.4.0-WU-04
+  source_branch: dev/0.4.0
+  source_revision_rule: USE_DEV_0_4_0_REVISION_CONTAINING_THIS_PLAN_AND_WU_05_PLAN
+  may_start_before_wu_02_complete: true
+  may_start_before_wu_03_complete: true
+  direct_merge_target: dev/0.4.0
+  branch_scope_must_remain_disjoint_from_wu_05: true
+  integration_after_merge:
+    owner: WU-03
+    rule: CROSS_WU_ORCHESTRATION_IS_NOT_IMPLEMENTED_ON_WU_04_BRANCH
+
+implementation_shape:
+  new_paths:
+    - src/ptsip/remediation/execution/__init__.py
+    - src/ptsip/remediation/execution/contract.py
+    - src/ptsip/remediation/execution/authority_gate.py
+    - src/ptsip/remediation/execution/planner.py
+    - src/ptsip/remediation/execution/safe_apply.py
+    - tests/ptsip/remediation/execution/
+  existing_source_files_modified:
+    - NONE_EXPECTED
+  deliberately_not_modified:
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/remediation/rules/
+    - src/ptsip/remediation/escalation/
+    - src/ptsip/remediation/__init__.py
+    - ptsip.yaml
+    - .github/test_modes.yaml
+    - docs/planning/0.4.0/WU-02/
+    - docs/planning/0.4.0/WU-03/
+    - docs/planning/0.4.0/WU-05/
+    - docs/planning/0.4.0/index.yaml
+  collision_policy: TOP_LEVEL_EXPORT_AND_PARENT_INDEX_INTEGRATION_OCCUR_ONLY_ON_DEV_0_4_0_AFTER_LEAF_MERGE
+
+verification_plan:
+  focused:
+    - DETERMINACY_NEVER_BYPASSES_AUTHORITY_GATE
+    - MISSING_AUTHORIZATION_POLICY_FAILS_CLOSED
+    - OWNER_CONFIRMATION_REQUIRED_NEVER_AUTO_APPLIES
+    - MOST_RESTRICTIVE_MUTATION_CLASS_WINS
+    - UNKNOWN_MUTATION_CLASS_FAILS_CLOSED
+    - REPOSITORY_CHANGE_PLAN_IS_EXACT_PRESTATE_BOUND
+    - STALE_PRESTATE_REJECTS_BEFORE_MUTATION
+    - UNAUTHORIZED_PLAN_NEVER_MUTATES_REPOSITORY
+    - PARTIAL_APPLY_FAILURE_PRODUCES_EXPLICIT_RECOVERY_STATE
+    - WU_04_DOES_NOT_IMPORT_WU_02_OR_WU_03_RUNTIME_TYPES
+    - WU_04_DOES_NOT_DEPEND_ON_WU_05
+  pytest_target: tests/ptsip/remediation/execution
+  local_command: python -m pytest tests/ptsip/remediation/execution -q
+  log_file: wu04-focused.log
+  test_mode_dependency: NONE
+  exact_sha_full_qualification:
+    branch_iteration: NOT_REQUIRED
+    after_merge_to_dev_0_4_0: REQUIRED_BEFORE_RELEASE_QUALIFICATION
+
+progress:
+  planning: APPROVED
+  implementation: NOT_STARTED
+  verification: NOT_STARTED
+
+completion_gate:
+  requires_all:
+    - AUTHORITY_GATE_CONSUMES_ONLY_EXPLICIT_AUTHORIZATION_INPUT
+    - DETERMINACY_AND_AUTHORIZATION_REMAIN_SEPARATE
+    - MUTATION_CLASS_AGGREGATION_FAILS_CLOSED
+    - REPOSITORY_CHANGE_PLAN_REQUIRES_EXPLICIT_OPERATION_INTENTS
+    - REPOSITORY_CHANGE_PLAN_IS_EXACT_PRESTATE_BOUND
+    - STALE_STATE_CANNOT_BE_SILENTLY_REBASED
+    - SAFE_APPLY_REQUIRES_AUTHORIZED_GATE_RESULT
+    - SAFE_APPLY_FAILURE_EXPOSES_RECOVERY_STATE
+    - NO_WU_02_OR_WU_03_RUNTIME_DEPENDENCY_ADDED
+    - NO_WU_05_RUNTIME_DEPENDENCY_ADDED
+    - FOCUSED_WU_04_VERIFICATION_PASSES
+  implementation_start_requires_explicit_owner_instruction: true
