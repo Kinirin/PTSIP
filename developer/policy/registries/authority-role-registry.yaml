@@ -1,0 +1,83 @@
+schema_version: ptsip-developer-authority-role-registry/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+registry_role: MANAGEMENT_POLICY_EFFECT_CATALOG
+language_neutral: true
+effect_vocabulary:
+  count: 22
+  tokens:
+    - bind_immutable_normative_snapshot
+    - define_work_unit_responsibility_assignment
+    - forbid_recursive_ptsip_core_selector_broadening
+    - forbid_tool_driven_repository_self_adoption_profile_creation
+    - govern_classification_model
+    - govern_migration_subsystem_architecture
+    - govern_normative_family_lifecycle
+    - govern_project_profile_migration_authorization
+    - govern_project_profile_transition_work_unit_boundaries
+    - govern_relationship_contract
+    - govern_release_history_namespace
+    - preserve_migration_engine_capability
+    - preserve_unresolved_analysis_state
+    - require_governable_responsibility_split
+    - require_versioned_normative_contract
+    - restrict_mutation_promotion_verification_to_fixture_repositories
+    - restrict_repository_dogfood_to_controlled_self_analysis
+    - scope_adr_supersession_to_repository_self_adoption_assumption
+    - select_versioned_target_identity
+    - separate_migration_capability_from_repository_adoption
+    - separate_profile_identity_implementation_from_migration_capability
+    - separate_repository_adoption_from_release_readiness
+policy_roles:
+  - policy_id: MPD-0002
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_classification_model
+      - preserve_unresolved_analysis_state
+      - govern_normative_family_lifecycle
+      - require_versioned_normative_contract
+      - select_versioned_target_identity
+  - policy_id: MPD-0003
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_normative_family_lifecycle
+      - require_versioned_normative_contract
+  - policy_id: MPD-0004
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - bind_immutable_normative_snapshot
+      - govern_normative_family_lifecycle
+  - policy_id: MPD-0005
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - forbid_tool_driven_repository_self_adoption_profile_creation
+      - govern_normative_family_lifecycle
+      - restrict_mutation_promotion_verification_to_fixture_repositories
+      - restrict_repository_dogfood_to_controlled_self_analysis
+      - scope_adr_supersession_to_repository_self_adoption_assumption
+      - govern_project_profile_migration_authorization
+      - separate_migration_capability_from_repository_adoption
+  - policy_id: MPD-0006
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_release_history_namespace
+  - policy_id: MPD-0007
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+[]
+  - policy_id: MPD-0008
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - forbid_recursive_ptsip_core_selector_broadening
+      - govern_migration_subsystem_architecture
+      - govern_project_profile_migration_authorization
+      - govern_relationship_contract
+  - policy_id: MPD-0009
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - define_work_unit_responsibility_assignment
+      - govern_project_profile_transition_work_unit_boundaries
+      - preserve_migration_engine_capability
+      - require_governable_responsibility_split
+      - separate_migration_capability_from_repository_adoption
+      - separate_profile_identity_implementation_from_migration_capability
+      - separate_repository_adoption_from_release_readiness

@@ -1,0 +1,37 @@
+schema_version: ptsip-developer-authority-subject-registry/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+registry_role: MANAGEMENT_POLICY_SUBJECT_CATALOG
+language_neutral: true
+subject_identity_schemes:
+  MANAGEMENT_POLICY_ID:
+    source_field: policy.id
+    registered_values:
+      - MPD-0001
+      - MPD-0002
+      - MPD-0003
+      - MPD-0004
+      - MPD-0005
+      - MPD-0006
+      - MPD-0007
+      - MPD-0008
+      - MPD-0009
+repository_identity_schemes:
+  GITHUB_REPOSITORY_ID:
+    host_required: true
+    repository_id_pattern: "^[1-9][0-9]*$"
+current_repository_bindings:
+  - scheme: GITHUB_REPOSITORY_ID
+    host: github.com
+    repository_id: 1327447827
+    observed_slug: Kinirin/PTSIP
+    slug_is_identity: false
+matching:
+  order:
+    - EXACT
+    - REGISTERED_MACHINE_RELATIONSHIP
+    - NO_MATCH
+  registered_machine_relationships:
+[]
+  relationship_must_be_registered_before_relaxed_match: true
+  fuzzy_match: FORBIDDEN
+  ai_semantic_match: FORBIDDEN

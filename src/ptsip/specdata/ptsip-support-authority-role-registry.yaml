@@ -1,0 +1,374 @@
+schema_version: ptsip-support-authority-role-registry/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+registry_role: SUPPORT_AUTHORITY_ROLE_CATALOG_NOT_PROJECT_AUTHORITY
+language_neutral: true
+projection_roles:
+  - PROJECT_ARCHITECTURE_AUTHORITY
+resolution_states:
+  - DECLARED
+  - DETERMINISTICALLY_DERIVED
+  - ADVISORY_CANDIDATE
+  - UNRESOLVED
+effect_vocabulary:
+  count: 89
+  tokens:
+    - bind_immutable_normative_snapshot
+    - classify_equivalent_profile_target_collision
+    - constrain_machine_output_structure
+    - constrain_profile_artifact_identity_and_cardinality
+    - declare_canonical_identity
+    - declare_machine_contract_identity
+    - define_deterministic_semantic_identity
+    - define_direct_latest_target_convergence_model
+    - define_hybrid_declaration_precedence
+    - define_migration_obligation_taxonomy
+    - define_migration_required_work_completion_semantics
+    - define_project_profile_migration_transition_classes
+    - define_repository_resolution_state_vocabulary
+    - define_repository_resolution_to_obligation_mapping
+    - define_responsibility_role_contract
+    - define_work_unit_responsibility_assignment
+    - deny_derived_architecture_authority
+    - deny_unauthorized_semantic_inference
+    - enforce_tool_non_intrusion
+    - fail_closed_on_invalid_state
+    - fail_closed_on_stale_source_or_repository
+    - forbid_absence_as_false_assertion
+    - forbid_fabricated_history
+    - forbid_fabricated_unresolved_relationship_endpoints
+    - forbid_mandatory_intermediate_version_traversal
+    - forbid_materializer_classification_mutation
+    - forbid_n_by_m_handwritten_converter_matrix_requirement
+    - forbid_normalized_evidence_contract_from_replacing_producer_interfaces
+    - forbid_removal_or_async_compensation_for_required_work
+    - forbid_tool_compatibility_inference_from_numeric_equality
+    - forbid_universal_shortest_path_engine_requirement
+    - govern_associated_artifact_ownership
+    - govern_classification_model
+    - govern_conformance_semantics
+    - govern_decision_precedence_and_resolution
+    - govern_dependency_boundary
+    - govern_migration_analysis_pipeline
+    - govern_migration_execution_authorization
+    - govern_migration_execution_state_machine
+    - govern_migration_reconciliation_model
+    - govern_migration_source_compatibility
+    - govern_migration_source_ordering
+    - govern_migration_target_selection
+    - govern_normative_family_lifecycle
+    - govern_project_declaration_composition
+    - govern_project_profile_contract_versioning
+    - govern_project_profile_identity_bridge
+    - govern_project_profile_migration_authorization
+    - govern_relationship_contract
+    - govern_specification_capabilities
+    - govern_verification_purpose_contract
+    - preserve_authorized_legacy_target_continuity
+    - preserve_equivalent_value_origins
+    - preserve_legacy_temporary_target_alias
+    - preserve_migration_engine_capability
+    - preserve_unresolved_analysis_state
+    - require_architectural_boundary
+    - require_async_work_after_required_work
+    - require_conditional_mutation
+    - require_deterministic_integrity_digest
+    - require_evidence_provenance
+    - require_exclusive_ownership_declaration_modes
+    - require_explicit_immutable_template_selection
+    - require_explicit_project_profile_capability_for_tool_operations
+    - require_explicit_specification_binding
+    - require_fresh_authority_or_evidence_state
+    - require_governable_responsibility_split
+    - require_producer_neutral_evidence_contract
+    - require_project_owner_decision
+    - require_read_only_operation
+    - require_shared_component_artifact_identity_namespace
+    - require_stable_governance_identity
+    - require_typed_evidence_edges
+    - require_version_revision_and_accepted_target_transition_inputs
+    - require_versioned_normative_contract
+    - require_zero_required_unresolved_items_for_completion
+    - reserve_project_declaration_authority
+    - reserve_project_structure_authority
+    - select_versioned_target_identity
+    - separate_authority_from_conformance
+    - separate_classification_from_verification_purpose
+    - separate_cross_contract_identity_axes
+    - separate_decision_authority_from_profile
+    - separate_declared_relationships_from_evidence_edges
+    - separate_global_authority_from_local_projection
+    - separate_lifecycle_compatibility_from_obligation_category
+    - separate_migration_capability_from_repository_adoption
+    - separate_semantic_identity_from_evaluation_identity
+    - synchronize_authority_at_action_time
+policy_roles:
+  - policy_id: SFP-0001
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+      - govern_classification_model
+      - govern_decision_precedence_and_resolution
+      - govern_dependency_boundary
+      - govern_normative_family_lifecycle
+      - require_architectural_boundary
+      - require_versioned_normative_contract
+  - policy_id: SFP-0002
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - enforce_tool_non_intrusion
+      - govern_normative_family_lifecycle
+      - require_explicit_specification_binding
+      - require_read_only_operation
+      - reserve_project_structure_authority
+  - policy_id: SFP-0003
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - bind_immutable_normative_snapshot
+      - constrain_machine_output_structure
+      - declare_machine_contract_identity
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_invalid_state
+      - govern_conformance_semantics
+      - require_explicit_specification_binding
+      - require_fresh_authority_or_evidence_state
+      - require_typed_evidence_edges
+      - reserve_project_declaration_authority
+      - govern_normative_family_lifecycle
+      - require_versioned_normative_contract
+      - select_versioned_target_identity
+  - policy_id: SFP-0004
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - constrain_machine_output_structure
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_invalid_state
+      - govern_associated_artifact_ownership
+      - govern_classification_model
+      - govern_conformance_semantics
+      - govern_dependency_boundary
+      - preserve_unresolved_analysis_state
+      - require_architectural_boundary
+      - require_evidence_provenance
+      - require_exclusive_ownership_declaration_modes
+      - require_fresh_authority_or_evidence_state
+      - require_stable_governance_identity
+      - require_typed_evidence_edges
+  - policy_id: SFP-0005
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - fail_closed_on_invalid_state
+      - forbid_fabricated_history
+      - govern_conformance_semantics
+      - govern_decision_precedence_and_resolution
+      - require_conditional_mutation
+      - require_fresh_authority_or_evidence_state
+      - require_stable_governance_identity
+      - separate_authority_from_conformance
+      - separate_decision_authority_from_profile
+      - separate_global_authority_from_local_projection
+      - synchronize_authority_at_action_time
+  - policy_id: SFP-0006
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+      - govern_dependency_boundary
+      - govern_verification_purpose_contract
+      - require_architectural_boundary
+      - separate_classification_from_verification_purpose
+  - policy_id: SFP-0007
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_work_unit_responsibility_assignment
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_invalid_state
+      - govern_classification_model
+      - govern_conformance_semantics
+      - govern_decision_precedence_and_resolution
+      - govern_dependency_boundary
+      - require_architectural_boundary
+      - require_fresh_authority_or_evidence_state
+      - require_governable_responsibility_split
+      - require_project_owner_decision
+      - reserve_project_declaration_authority
+  - policy_id: SFP-0008
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - forbid_fabricated_unresolved_relationship_endpoints
+      - govern_associated_artifact_ownership
+      - govern_classification_model
+      - govern_relationship_contract
+      - require_shared_component_artifact_identity_namespace
+      - separate_classification_from_verification_purpose
+      - separate_declared_relationships_from_evidence_edges
+  - policy_id: SFP-0009
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_hybrid_declaration_precedence
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_invalid_state
+      - forbid_materializer_classification_mutation
+      - govern_conformance_semantics
+      - govern_decision_precedence_and_resolution
+      - govern_project_declaration_composition
+      - require_deterministic_integrity_digest
+      - require_explicit_immutable_template_selection
+      - require_fresh_authority_or_evidence_state
+      - reserve_project_declaration_authority
+  - policy_id: SFP-0010
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - constrain_profile_artifact_identity_and_cardinality
+      - define_migration_obligation_taxonomy
+      - define_migration_required_work_completion_semantics
+      - fail_closed_on_invalid_state
+      - govern_conformance_semantics
+      - govern_decision_precedence_and_resolution
+      - govern_migration_execution_state_machine
+      - govern_migration_source_compatibility
+      - govern_migration_source_ordering
+      - govern_migration_target_selection
+      - require_fresh_authority_or_evidence_state
+      - require_version_revision_and_accepted_target_transition_inputs
+  - policy_id: SFP-0011
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - govern_classification_model
+  - policy_id: SFP-0012
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_machine_contract_identity
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - forbid_absence_as_false_assertion
+      - forbid_normalized_evidence_contract_from_replacing_producer_interfaces
+      - govern_decision_precedence_and_resolution
+      - preserve_equivalent_value_origins
+      - preserve_unresolved_analysis_state
+      - require_evidence_provenance
+      - require_producer_neutral_evidence_contract
+      - select_versioned_target_identity
+      - separate_semantic_identity_from_evaluation_identity
+  - policy_id: SFP-0013
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - bind_immutable_normative_snapshot
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - govern_migration_source_compatibility
+      - require_explicit_specification_binding
+      - require_read_only_operation
+  - policy_id: SFP-0014
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_repository_resolution_state_vocabulary
+      - define_repository_resolution_to_obligation_mapping
+      - deny_derived_architecture_authority
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_stale_source_or_repository
+      - forbid_removal_or_async_compensation_for_required_work
+      - govern_migration_analysis_pipeline
+      - require_async_work_after_required_work
+      - require_deterministic_integrity_digest
+      - require_version_revision_and_accepted_target_transition_inputs
+      - require_zero_required_unresolved_items_for_completion
+      - separate_lifecycle_compatibility_from_obligation_category
+  - policy_id: SFP-0015
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+      - deny_unauthorized_semantic_inference
+      - forbid_removal_or_async_compensation_for_required_work
+      - govern_migration_reconciliation_model
+      - govern_verification_purpose_contract
+      - require_async_work_after_required_work
+      - require_stable_governance_identity
+  - policy_id: SFP-0016
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_migration_required_work_completion_semantics
+      - deny_unauthorized_semantic_inference
+      - govern_migration_execution_authorization
+      - govern_migration_execution_state_machine
+      - govern_migration_source_ordering
+  - policy_id: SFP-0017
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - preserve_migration_engine_capability
+      - separate_cross_contract_identity_axes
+      - govern_project_profile_migration_authorization
+      - separate_migration_capability_from_repository_adoption
+  - policy_id: SFP-0018
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+      - forbid_fabricated_history
+      - forbid_tool_compatibility_inference_from_numeric_equality
+      - govern_project_profile_contract_versioning
+      - govern_project_profile_migration_authorization
+      - require_explicit_project_profile_capability_for_tool_operations
+      - separate_cross_contract_identity_axes
+  - policy_id: SFP-0019
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - classify_equivalent_profile_target_collision
+      - declare_canonical_identity
+      - declare_machine_contract_identity
+      - define_deterministic_semantic_identity
+      - govern_project_profile_identity_bridge
+      - preserve_legacy_temporary_target_alias
+      - select_versioned_target_identity
+  - policy_id: SFP-0020
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_direct_latest_target_convergence_model
+      - define_project_profile_migration_transition_classes
+      - deny_unauthorized_semantic_inference
+      - forbid_mandatory_intermediate_version_traversal
+      - forbid_n_by_m_handwritten_converter_matrix_requirement
+      - forbid_universal_shortest_path_engine_requirement
+      - govern_migration_source_compatibility
+      - govern_migration_target_selection
+      - preserve_authorized_legacy_target_continuity
+      - require_project_owner_decision
+  - policy_id: SFP-0021
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - fail_closed_on_invalid_state
+      - govern_specification_capabilities
+      - require_explicit_specification_binding
+      - separate_cross_contract_identity_axes
+invariants:
+  registered_effect_token_is_project_authority_by_itself: false
+  projection_role_is_current_eligibility_result_by_itself: false
+  current_project_authority_eligibility_must_be_reevaluated: true

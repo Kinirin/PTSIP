@@ -1,0 +1,30 @@
+schema_version: ptsip-developer-authority-schema-registry/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+registry_role: MANAGEMENT_POLICY_SEMANTIC_CATALOG
+language_neutral: true
+semantic_schema_document: developer/policy/schemas/developer-authority-semantics.schema.json
+entries:
+  - policy_id: MPD-0002
+    source_authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+    schema_definition: MPD_0002_V1
+  - policy_id: MPD-0003
+    source_authority_type: DISTRIBUTED_DECISION_AUTHORITY
+    schema_definition: MPD_0003_V1
+  - policy_id: MPD-0004
+    source_authority_type: SPECIFICATION_FAMILY_ACTIVATION
+    schema_definition: MPD_0004_V1
+  - policy_id: MPD-0005
+    source_authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+    schema_definition: MPD_0005_V1
+  - policy_id: MPD-0006
+    source_authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+    schema_definition: MPD_0006_V1
+  - policy_id: MPD-0007
+    source_authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
+    schema_definition: MPD_0007_V1
+  - policy_id: MPD-0008
+    source_authority_type: MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP
+    schema_definition: MPD_0008_V1
+  - policy_id: MPD-0009
+    source_authority_type: PROJECT_PROFILE_TRANSITION_WU_SEQUENCE
+    schema_definition: MPD_0009_V1

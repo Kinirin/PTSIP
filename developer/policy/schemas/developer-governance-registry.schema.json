@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-governance-registry:v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "registry_role"
+  ],
+  "properties": {
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "schema_version": {
+      "enum": [
+        "ptsip-developer-authority-schema-registry/v1",
+        "ptsip-developer-authority-role-registry/v1",
+        "ptsip-developer-authority-subject-registry/v1",
+        "ptsip-developer-authorization-transition-registry/v1"
+      ]
+    },
+    "registry_role": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    }
+  },
+  "additionalProperties": true
+}

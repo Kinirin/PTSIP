@@ -1,0 +1,48 @@
+schema_version: ptsip-support-authority-subject-registry/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+registry_role: SUPPORT_POLICY_SUBJECT_APPLICABILITY_CATALOG
+language_neutral: true
+authority_domains:
+  - PROJECT_GOVERNANCE
+subject_types:
+  - GOVERNANCE_TOPIC
+subject_identity_schemes:
+  SUPPORT_POLICY_ID:
+    source_field: policy.id
+    registered_values:
+      - SFP-0001
+      - SFP-0002
+      - SFP-0003
+      - SFP-0004
+      - SFP-0005
+      - SFP-0006
+      - SFP-0007
+      - SFP-0008
+      - SFP-0009
+      - SFP-0010
+      - SFP-0011
+      - SFP-0012
+      - SFP-0013
+      - SFP-0014
+      - SFP-0015
+      - SFP-0016
+      - SFP-0017
+      - SFP-0018
+      - SFP-0019
+      - SFP-0020
+      - SFP-0021
+repository_identity_schemes:
+  GITHUB_REPOSITORY_ID:
+    host_required: true
+    repository_id_pattern: "^[1-9][0-9]*$"
+repository_binding_policy: SOLVE_SUBJECT_PROVIDED_NO_BUILTIN_CURRENT_REPOSITORY
+matching:
+  order:
+    - EXACT
+    - REGISTERED_MACHINE_RELATIONSHIP
+    - NO_MATCH
+  registered_machine_relationships:
+[]
+  relationship_must_be_registered_before_relaxed_match: true
+  fuzzy_match: FORBIDDEN
+  ai_semantic_match: FORBIDDEN

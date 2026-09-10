@@ -238,3 +238,46 @@ def test_legacy_decision_inventory_schema_accepts_versioned_adr_filenames() -> N
 
     assert re.fullmatch(pattern, "decisions/ADR-0005-activate-spec-0.3.4-draft.yaml")
     assert re.fullmatch(pattern, "decisions/ADR-0011-activate-spec-0.3.7-draft.yaml")
+
+
+def test_four_legacy_governance_registries_are_split_and_materialized() -> None:
+    import yaml
+    from developer.automation.registry_split_validator import validate_registry_split
+
+    assert validate_registry_split(ROOT) == ()
+    inventory = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "registry-split-inventory.yaml").read_text(encoding="utf-8")
+    )
+    assert inventory["classification"] == "SPLIT"
+    assert inventory["source_registry_count"] == 4
+    assert {item["id"] for item in inventory["source_registries"]} == {
+        "AUTHORITY_SCHEMA_REGISTRY",
+        "AUTHORITY_ROLE_REGISTRY",
+        "AUTHORITY_SUBJECT_REGISTRY",
+        "AUTHORIZATION_TRANSITION_REGISTRY",
+    }
+
+
+def test_support_registry_projection_contains_no_ptsip_repository_binding() -> None:
+    import yaml
+
+    subject = yaml.safe_load(
+        (ROOT / "src" / "ptsip" / "specdata" / "ptsip-support-authority-subject-registry.yaml").read_text(encoding="utf-8")
+    )
+    assert "current_repository_bindings" not in subject
+    assert set(subject["subject_identity_schemes"]) == {"SUPPORT_POLICY_ID"}
+
+
+def test_owner_authorization_grants_remain_developer_policy_only() -> None:
+    import yaml
+
+    support = yaml.safe_load(
+        (ROOT / "src" / "ptsip" / "specdata" / "ptsip-support-authorization-registry.yaml").read_text(encoding="utf-8")
+    )
+    developer = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "registries" / "authorization-transition-registry.yaml").read_text(encoding="utf-8")
+    )
+    assert "authorization_provenance" not in support
+    assert "rules" not in support
+    assert developer["authorization_provenance"]["authority"] == "PROJECT_OWNER"
+    assert "P03G_PROJECT_AUTHORITY_RUNTIME" in developer["rules"]

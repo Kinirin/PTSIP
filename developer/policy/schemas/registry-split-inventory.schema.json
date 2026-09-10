@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:registry-split-inventory:v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "source_registry_count",
+    "classification",
+    "source_registries",
+    "role_effect_occurrence_routes",
+    "subject_routing",
+    "authorization_routing"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-registry-split-inventory/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "source_registry_count": {
+      "const": 4
+    },
+    "classification": {
+      "const": "SPLIT"
+    },
+    "source_registries": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source_path",
+          "sfp_target",
+          "mpd_target",
+          "routing"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "AUTHORITY_SCHEMA_REGISTRY",
+              "AUTHORITY_ROLE_REGISTRY",
+              "AUTHORITY_SUBJECT_REGISTRY",
+              "AUTHORIZATION_TRANSITION_REGISTRY"
+            ]
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "sfp_target": {
+            "type": "string"
+          },
+          "mpd_target": {
+            "type": "string"
+          },
+          "routing": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "role_effect_occurrence_routes": {
+      "type": "object"
+    },
+    "subject_routing": {
+      "type": "object"
+    },
+    "authorization_routing": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

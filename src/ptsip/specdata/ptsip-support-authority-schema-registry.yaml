@@ -1,0 +1,119 @@
+schema_version: ptsip-support-authority-schema-registry/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+registry_role: SUPPORT_AUTHORITY_CAPABILITY_CATALOG_NOT_PROJECT_AUTHORITY
+language_neutral: true
+semantic_schema_document: src/ptsip/specdata/ptsip-support-authority-semantics.schema.json
+lifecycle_policy:
+  policy_status_mapping:
+    ACTIVE: ACTIVE
+    DRAFT: DRAFT
+    DEPRECATED: DEPRECATED
+    RETIRED: RETIRED
+  project_authority_eligible_states:
+    - ACTIVE
+entries:
+  - policy_id: SFP-0001
+    authority_type: PTSIP_POLICY_IDENTITY
+    schema_id: ptsip.governance/ptsip-policy-identity
+    schema_version: 1
+    schema_definition: SFP_0001_V1
+  - policy_id: SFP-0002
+    authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
+    schema_id: ptsip.governance/consumer-repository-non-intrusion
+    schema_version: 1
+    schema_definition: SFP_0002_V1
+  - policy_id: SFP-0003
+    authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+    schema_id: ptsip.governance/specification-tool-version-independence
+    schema_version: 1
+    schema_definition: SFP_0003_V1
+  - policy_id: SFP-0004
+    authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
+    schema_id: ptsip.governance/evidence-artifact-conformance-model
+    schema_version: 1
+    schema_definition: SFP_0004_V1
+  - policy_id: SFP-0005
+    authority_type: DISTRIBUTED_DECISION_AUTHORITY
+    schema_id: ptsip.governance/distributed-decision-authority
+    schema_version: 1
+    schema_definition: SFP_0005_V1
+  - policy_id: SFP-0006
+    authority_type: VPMS_VERIFICATION_PURPOSE_MANAGEMENT
+    schema_id: ptsip.governance/vpms-verification-purpose-management
+    schema_version: 1
+    schema_definition: SFP_0006_V1
+  - policy_id: SFP-0007
+    authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
+    schema_id: ptsip.governance/primary-lifecycle-boundary-determination
+    schema_version: 1
+    schema_definition: SFP_0007_V1
+  - policy_id: SFP-0008
+    authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
+    schema_id: ptsip.governance/responsibility-map-semantic-axes
+    schema_version: 1
+    schema_definition: SFP_0008_V1
+  - policy_id: SFP-0009
+    authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
+    schema_id: ptsip.governance/responsibility-map-declaration-authority
+    schema_version: 1
+    schema_definition: SFP_0009_V1
+  - policy_id: SFP-0010
+    authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
+    schema_id: ptsip.governance/versioned-draft-profile-transition
+    schema_version: 1
+    schema_definition: SFP_0010_V1
+  - policy_id: SFP-0011
+    authority_type: SPECIFICATION_FAMILY_ACTIVATION
+    schema_id: ptsip.governance/specification-family-activation
+    schema_version: 1
+    schema_definition: SFP_0011_V1
+  - policy_id: SFP-0012
+    authority_type: NORMALIZED_EVIDENCE_CONTRACT
+    schema_id: ptsip.governance/normalized-evidence-contract
+    schema_version: 1
+    schema_definition: SFP_0012_V1
+  - policy_id: SFP-0013
+    authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
+    schema_id: ptsip.governance/source-profile-compatibility-model
+    schema_version: 1
+    schema_definition: SFP_0013_V1
+  - policy_id: SFP-0014
+    authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
+    schema_id: ptsip.governance/staged-migration-analysis-pipeline
+    schema_version: 1
+    schema_definition: SFP_0014_V1
+  - policy_id: SFP-0015
+    authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
+    schema_id: ptsip.governance/target-delta-reconciliation-planner
+    schema_version: 1
+    schema_definition: SFP_0015_V1
+  - policy_id: SFP-0016
+    authority_type: MIGRATION_APPLY_STATE_MACHINE
+    schema_id: ptsip.governance/migration-apply-state-machine
+    schema_version: 1
+    schema_definition: SFP_0016_V1
+  - policy_id: SFP-0017
+    authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+    schema_id: ptsip.governance/tool-profile-contract-independence
+    schema_version: 1
+    schema_definition: SFP_0017_V1
+  - policy_id: SFP-0018
+    authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
+    schema_id: ptsip.governance/project-profile-version-namespace
+    schema_version: 1
+    schema_definition: SFP_0018_V1
+  - policy_id: SFP-0019
+    authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+    schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
+    schema_version: 1
+    schema_definition: SFP_0019_V1
+  - policy_id: SFP-0020
+    authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
+    schema_id: ptsip.governance/direct-latest-target-convergence
+    schema_version: 1
+    schema_definition: SFP_0020_V1
+  - policy_id: SFP-0021
+    authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
+    schema_id: ptsip.governance/specification-binding-capability-registries
+    schema_version: 1
+    schema_definition: SFP_0021_V1

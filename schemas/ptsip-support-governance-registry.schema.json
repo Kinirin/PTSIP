@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-support-governance-registry.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "registry_role"
+  ],
+  "properties": {
+    "policy_class": {
+      "const": "PTSIP_SUPPORT_FEATURE"
+    },
+    "schema_version": {
+      "enum": [
+        "ptsip-support-authority-schema-registry/v1",
+        "ptsip-support-authority-role-registry/v1",
+        "ptsip-support-authority-subject-registry/v1",
+        "ptsip-support-authorization-registry/v1"
+      ]
+    },
+    "registry_role": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    }
+  },
+  "additionalProperties": true
+}

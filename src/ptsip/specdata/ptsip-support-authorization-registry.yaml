@@ -1,0 +1,14 @@
+schema_version: ptsip-support-authorization-registry/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+registry_role: AUTHORIZATION_STATE_CONTRACT_NOT_OWNER_GRANT
+project_authority: false
+states:
+  - NOT_AUTHORIZED
+  - HOLD_NOT_AUTHORIZED
+  - READY_FOR_AUTO_AUTHORIZATION
+  - AUTHORIZED
+  - REVOKED_OR_INVALIDATED
+generic_transition_contract:
+  explicit_rule_required_for_authorization: true
+  unknown_or_unregistered_scope: HOLD_NOT_AUTHORIZED
+  owner_grant_data_shipped: false

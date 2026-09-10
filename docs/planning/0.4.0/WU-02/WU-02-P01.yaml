@@ -129,7 +129,26 @@ migration_stages:
       - SIMULATE_TEMPORARY_SPLIT_MAPPING_BEFORE_APPLY
       - BLOCK_APPLY_WHEN_NORMATIVE_SUPPORT_DOCUMENT_WOULD_REFERENCE_MPD
   P01_D_RUNTIME_BOUNDARY:
-    status: BLOCKED_ON_P01_C
+    status: REGISTRY_SPLIT_MATERIALIZED_RUNTIME_SWITCH_PENDING
+    registry_split_materialization:
+      status: COMPLETE
+      source_registry_count: 4
+      classification: SPLIT
+      inventory: developer/policy/registry-split-inventory.yaml
+      support_targets:
+        - src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml
+        - src/ptsip/specdata/ptsip-support-authority-role-registry.yaml
+        - src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml
+        - src/ptsip/specdata/ptsip-support-authorization-registry.yaml
+      developer_targets:
+        - developer/policy/registries/authority-schema-registry.yaml
+        - developer/policy/registries/authority-role-registry.yaml
+        - developer/policy/registries/authority-subject-registry.yaml
+        - developer/policy/registries/authorization-transition-registry.yaml
+      support_repository_binding_shipped: false
+      owner_authorization_grants_shipped: false
+      split_effect_routing_granularity: ADR_EFFECT_OCCURRENCE
+      legacy_decision_topic_identity: RETIRED_FROM_NEW_REGISTRIES
     required:
       - PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO
       - SUPPORT_FEATURE_RUNTIME_USES_ONLY_SHIPPED_CONTRACTS

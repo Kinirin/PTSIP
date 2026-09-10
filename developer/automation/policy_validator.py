@@ -9,6 +9,7 @@ from developer.automation.decision_reference_migrator import (
     UnroutedDecisionReferenceError,
     project_relation,
 )
+from developer.automation.registry_split_validator import validate_registry_split
 from developer.automation.policy_materializer import (
     expected_materialized_policies,
     expected_mpd_index_entries,
@@ -276,6 +277,8 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             for token in forbidden:
                 if token in raw_text:
                     errors.append(f"{path}: forbidden legacy developer wrapper {token}")
+
+    errors.extend(validate_registry_split(base))
 
     return tuple(errors)
 

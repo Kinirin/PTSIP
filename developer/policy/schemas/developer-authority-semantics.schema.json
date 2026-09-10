@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-authority-semantics:v1",
+  "title": "PTSIP Developer Authority Semantics v1",
+  "$defs": {
+    "MPD_0002_V1": {
+      "const": {
+        "specification_family": "0.2.0-draft",
+        "reference_tool_target": "0.2.0",
+        "pilot_report_contract": "ptsip-pilot-report/v2",
+        "architecture_classifications": [
+          "PRODUCT",
+          "TOOLCHAIN",
+          "NEUTRAL_CONTRACT"
+        ],
+        "unresolved_analysis_states": [
+          "UNKNOWN",
+          "CONFLICT",
+          "INCOMPLETE"
+        ]
+      }
+    },
+    "MPD_0003_V1": {
+      "const": {
+        "activated_specification_family": "0.3.4-draft"
+      }
+    },
+    "MPD_0004_V1": {
+      "const": {
+        "activated_family": "0.3.7-draft",
+        "immutable_normative_snapshot": "b648d9e026f502b14481ba2d0606d9acc88a31fc",
+        "normative_companion": "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
+        "activation_implies_repository_profile_mutation": false,
+        "tool_runtime_claims_full_implementation_by_activation": false
+      }
+    },
+    "MPD_0005_V1": {
+      "const": {
+        "tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption": false,
+        "existing_profile_examples_remain_0_3_6_draft_without_contract_change": true,
+        "repository_dogfood_mode": "CONTROLLED_SELF_ANALYSIS",
+        "mutation_promotion_verification_scope": "ISOLATED_FIXTURE_REPOSITORIES",
+        "spec_0_3_7_draft_remains_tool_development_normative_family": true,
+        "superseded_scope": "REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY"
+      }
+    },
+    "MPD_0008_V1": {
+      "const": {
+        "components": [
+          {
+            "id": "ptsip-evidence",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/evidence/**"
+          },
+          {
+            "id": "ptsip-source-compat",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/source_compat/**"
+          },
+          {
+            "id": "ptsip-migration",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/migration/**"
+          }
+        ],
+        "common_properties": {
+          "shipped": true,
+          "runtime_required": false,
+          "executable": false,
+          "release_owner": "tool",
+          "compatibility_owner": "tool"
+        },
+        "ptsip_core_selector_broadened_to_recursive_src_ptsip": false,
+        "relationships": [
+          "ptsip-evidence:IMPORTS:ptsip-core",
+          "ptsip-source-compat:IMPORTS:ptsip-core",
+          "ptsip-source-compat:READS:ptsip-embedded-contracts",
+          "ptsip-migration:IMPORTS:ptsip-core",
+          "ptsip-migration:IMPORTS:ptsip-evidence",
+          "ptsip-migration:IMPORTS:ptsip-source-compat"
+        ],
+        "project_profile_version_migration_authorized": false
+      }
+    },
+    "MPD_0009_V1": {
+      "const": {
+        "ordered_work_units": [
+          "WU-08",
+          "WU-09",
+          "WU-10",
+          "WU-11"
+        ],
+        "responsibilities": {
+          "WU-08": "REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE",
+          "WU-09": "INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE",
+          "WU-10": "PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION",
+          "WU-11": "FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS"
+        },
+        "maintainability_rules": [
+          "TYPED_BOUNDARIES",
+          "STABLE_OWNERSHIP",
+          "INDEPENDENT_VERIFICATION",
+          "FAIL_CLOSED_COMPATIBILITY",
+          "EXTENSIBLE_REGISTRIES",
+          "NO_TOOL_PP_COUPLING",
+          "NO_PREMATURE_ADOPTION"
+        ],
+        "architecture_acceptance_separate_from_identity_implementation": true,
+        "identity_implementation_separate_from_migration_capability": true,
+        "migration_capability_separate_from_repository_adoption": true,
+        "repository_adoption_separate_from_release_readiness": true
+      }
+    },
+    "MPD_0006_V1": {
+      "const": {
+        "release_note_namespaces": [
+          "tool",
+          "project-profile",
+          "specification"
+        ],
+        "historical_flat_release_notes_bulk_moved": false
+      }
+    },
+    "MPD_0007_V1": {
+      "const": {
+        "final_release_readiness_work_unit": "WU-12"
+      }
+    }
+  }
+}
