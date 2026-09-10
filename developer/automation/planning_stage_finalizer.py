@@ -47,7 +47,9 @@ def _find_stage(payload: object, stage_id: str) -> Mapping[str, object]:
 
 
 def _replace_stage_status(text: str, stage_id: str, old: str, new: str) -> str:
-    marker = re.compile(rf"(?m)^(?P<indent>\s*)- id: {re.escape(stage_id)}\s*$")
+    marker = re.compile(
+        rf"(?m)^(?P<indent>[ \t]*)- id: {re.escape(stage_id)}[ \t]*$"
+    )
     match = marker.search(text)
     if match is None:
         raise ValueError(f"stage marker not found: {stage_id}")
@@ -56,7 +58,9 @@ def _replace_stage_status(text: str, stage_id: str, old: str, new: str) -> str:
     following = next_marker.search(text, match.end())
     end = following.start() if following else len(text)
     block = text[match.start():end]
-    status = re.compile(rf"(?m)^{re.escape(indent)}  status: {re.escape(old)}\s*$")
+    status = re.compile(
+        rf"(?m)^{re.escape(indent)}  status: {re.escape(old)}[ \t]*$"
+    )
     block, count = status.subn(f"{indent}  status: {new}", block, count=1)
     if count != 1:
         raise ValueError(f"stage {stage_id!r} status is not {old}")
@@ -64,11 +68,11 @@ def _replace_stage_status(text: str, stage_id: str, old: str, new: str) -> str:
 
 
 def _section_span(text: str, section: str) -> tuple[int, int]:
-    marker = re.compile(rf"(?m)^{re.escape(section)}:\s*$")
+    marker = re.compile(rf"(?m)^{re.escape(section)}:[ \t]*$")
     match = marker.search(text)
     if match is None:
         raise ValueError(f"top-level section not found: {section}")
-    next_top = re.compile(r"(?m)^[A-Za-z0-9_][A-Za-z0-9_-]*:\s*$")
+    next_top = re.compile(r"(?m)^[A-Za-z0-9_][A-Za-z0-9_-]*:[ \t]*$")
     following = next_top.search(text, match.end())
     return match.start(), following.start() if following else len(text)
 
@@ -84,15 +88,17 @@ def _replace_mapping_scalar(
 ) -> str:
     section_start, section_end = _section_span(text, section)
     section_text = text[section_start:section_end]
-    key_marker = re.compile(rf"(?m)^  {re.escape(key)}:\s*$")
+    key_marker = re.compile(rf"(?m)^  {re.escape(key)}:[ \t]*$")
     key_match = key_marker.search(section_text)
     if key_match is None:
         raise ValueError(f"mapping key not found: {section}.{key}")
-    next_key = re.compile(r"(?m)^  [A-Za-z0-9_][A-Za-z0-9_-]*:\s*$")
+    next_key = re.compile(r"(?m)^  [A-Za-z0-9_][A-Za-z0-9_-]*:[ \t]*$")
     following = next_key.search(section_text, key_match.end())
     key_end = following.start() if following else len(section_text)
     block = section_text[key_match.start():key_end]
-    scalar = re.compile(rf"(?m)^    {re.escape(field)}: {re.escape(old)}\s*$")
+    scalar = re.compile(
+        rf"(?m)^    {re.escape(field)}: {re.escape(old)}[ \t]*$"
+    )
     block, count = scalar.subn(f"    {field}: {new}", block, count=1)
     if count != 1:
         raise ValueError(
@@ -105,7 +111,7 @@ def _replace_mapping_scalar(
 def _remove_list_item(text: str, *, section: str, value: str) -> str:
     section_start, section_end = _section_span(text, section)
     section_text = text[section_start:section_end]
-    pattern = re.compile(rf"(?m)^  - {re.escape(value)}\s*\n?")
+    pattern = re.compile(rf"(?m)^  - {re.escape(value)}[ \t]*(?:\n|$)")
     section_text, count = pattern.subn("", section_text, count=1)
     if count != 1:
         raise ValueError(f"list item must match exactly once: {section} -> {value}")
@@ -126,7 +132,10 @@ def _apply_document_updates(text: str, automatic: Mapping[str, object]) -> str:
     for item in scalar_updates:
         if not isinstance(item, Mapping):
             raise ValueError("mapping scalar update must be a mapping")
-        values = [item.get(name) for name in ("section", "key", "field", "from_value", "to_value")]
+        values = [
+            item.get(name)
+            for name in ("section", "key", "field", "from_value", "to_value")
+        ]
         if not all(isinstance(value, str) and value for value in values):
             raise ValueError("mapping scalar update fields must be non-empty strings")
         result = _replace_mapping_scalar(
@@ -146,7 +155,12 @@ def _apply_document_updates(text: str, automatic: Mapping[str, object]) -> str:
             raise ValueError("list removal update must be a mapping")
         section = item.get("section")
         value = item.get("value")
-        if not isinstance(section, str) or not section or not isinstance(value, str) or not value:
+        if (
+            not isinstance(section, str)
+            or not section
+            or not isinstance(value, str)
+            or not value
+        ):
             raise ValueError("list removal requires section and value")
         result = _remove_list_item(result, section=section, value=value)
     return result
@@ -155,7 +169,9 @@ def _apply_document_updates(text: str, automatic: Mapping[str, object]) -> str:
 def promote_stage_text(text: str, stage_id: str, automatic: Mapping[str, object]) -> str:
     result = _replace_stage_status(text, stage_id, _PENDING, _COMPLETE)
 
-    marker = re.compile(rf"(?m)^(?P<indent>\s*)- id: {re.escape(stage_id)}\s*$")
+    marker = re.compile(
+        rf"(?m)^(?P<indent>[ \t]*)- id: {re.escape(stage_id)}[ \t]*$"
+    )
     match = marker.search(result)
     if match is None:
         raise ValueError(f"stage marker not found after promotion: {stage_id}")
@@ -165,7 +181,8 @@ def promote_stage_text(text: str, stage_id: str, automatic: Mapping[str, object]
     end = following.start() if following else len(result)
     block = result[match.start():end]
     pending_validation = re.compile(
-        rf"(?m)^({re.escape(indent)}  validation:\s*\n{re.escape(indent)}    status:) PENDING\s*$"
+        rf"(?m)^({re.escape(indent)}  validation:[ \t]*\n"
+        rf"{re.escape(indent)}    status:) PENDING[ \t]*$"
     )
     block = pending_validation.sub(r"\1 PASS", block, count=1)
     result = result[:match.start()] + block + result[end:]
@@ -194,13 +211,17 @@ def _run_pytest(base: Path, targets: object) -> tuple[str, ...]:
     )
     if completed.returncode == 0:
         return ()
-    output = "\n".join(part for part in (completed.stdout, completed.stderr) if part).strip()
+    output = "\n".join(
+        part for part in (completed.stdout, completed.stderr) if part
+    ).strip()
     return (f"pytest validation failed\n{output}",)
 
 
 def _run_registered_check(base: Path, check: str) -> tuple[str, ...]:
     if check == "POLICY_VALIDATION":
-        return tuple(f"policy validation: {item}" for item in validate_developer_policy(base))
+        return tuple(
+            f"policy validation: {item}" for item in validate_developer_policy(base)
+        )
     if check == "PLANNING_VALIDATION":
         return tuple(f"planning validation: {item}" for item in validate_planning(base))
     if check == "CURRENT_LEGACY_DEPENDENCY_ZERO":
@@ -217,7 +238,9 @@ def finalize_stage(
     base = repository_root(root)
     path = (base / relative_path).resolve()
     if base not in path.parents or not path.is_file():
-        return FinalizationResult(stage_id, False, (f"invalid planning path: {relative_path}",))
+        return FinalizationResult(
+            stage_id, False, (f"invalid planning path: {relative_path}",)
+        )
 
     payload = load_yaml(relative_path, root=base)
     try:
@@ -236,9 +259,16 @@ def finalize_stage(
 
     automatic = stage.get("automatic_completion")
     if not isinstance(automatic, Mapping):
-        return FinalizationResult(stage_id, False, ("automatic_completion contract is missing",))
-    if automatic.get("from_status") != _PENDING or automatic.get("to_status") != _COMPLETE:
-        return FinalizationResult(stage_id, False, ("automatic completion transition contract is invalid",))
+        return FinalizationResult(
+            stage_id, False, ("automatic_completion contract is missing",)
+        )
+    if (
+        automatic.get("from_status") != _PENDING
+        or automatic.get("to_status") != _COMPLETE
+    ):
+        return FinalizationResult(
+            stage_id, False, ("automatic completion transition contract is invalid",)
+        )
 
     failures = list(_run_pytest(base, automatic.get("pytest_targets")))
     checks = automatic.get("required_checks", [])
@@ -266,7 +296,10 @@ def finalize_stage(
         return FinalizationResult(
             stage_id,
             False,
-            tuple(f"post-promotion planning validation: {item}" for item in post_failures),
+            tuple(
+                f"post-promotion planning validation: {item}"
+                for item in post_failures
+            ),
         )
     return FinalizationResult(stage_id, True, ())
 
