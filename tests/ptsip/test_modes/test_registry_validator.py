@@ -8,6 +8,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
+SELF_PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
 VALIDATOR_PATH = REPO_ROOT / ".github" / "scripts" / "validate_test_modes.py"
 VALIDATOR = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
 REPOSITORY_MODE_KEYS = {"id", "component_ref", "execution", "watch"}
@@ -91,7 +92,7 @@ def _repository_registry() -> dict[str, object]:
 def test_repository_test_mode_registry_v1_is_valid() -> None:
     errors = VALIDATOR(
         REGISTRY_PATH,
-        REPO_ROOT / "ptsip.yaml",
+        SELF_PROFILE_PATH,
         REPO_ROOT,
     )
     assert errors == []
@@ -146,7 +147,7 @@ def test_unknown_component_ref_is_rejected(tmp_path: Path) -> None:
     _write_registry(tmp_path, [mode])
 
     errors = _validate(tmp_path)
-    assert any("does not exist in ptsip.yaml" in error for error in errors)
+    assert any("does not exist in the selected Project Profile" in error for error in errors)
 
 
 def test_non_verification_component_ref_is_rejected(tmp_path: Path) -> None:
