@@ -281,3 +281,31 @@ def test_owner_authorization_grants_remain_developer_policy_only() -> None:
     assert "rules" not in support
     assert developer["authorization_provenance"]["authority"] == "PROJECT_OWNER"
     assert "P03G_PROJECT_AUTHORITY_RUNTIME" in developer["rules"]
+
+
+def test_developer_owner_authorization_uses_mpd_registry() -> None:
+    from developer.automation.authorization_transition import DeveloperAuthorizationTransitionEvaluator
+    from ptsip.governance import AuthorizationState
+
+    evaluator = DeveloperAuthorizationTransitionEvaluator(ROOT)
+    readiness = evaluator.derive_project_authority_runtime_readiness()
+    assert readiness == {
+        "AUTHORITY_SCHEMA_REGISTRY_VALID": True,
+        "AUTHORITY_ROLE_REGISTRY_VALID": True,
+        "AUTHORITY_SUBJECT_REGISTRY_VALID": True,
+        "CURRENT_SUPPORT_POLICY_CORPUS_VALID": True,
+        "ROLE_EFFECT_VOCABULARY_VALID": True,
+        "SUPPORT_POLICY_SUBJECT_CONTRACT_VALID": True,
+        "PROJECT_AUTHORITY_RUNTIME_OWNER_PREAUTHORIZED": True,
+    }
+    results = evaluator.evaluate_current_project_authority_runtime()
+    assert {item.state for item in results} == {AuthorizationState.AUTHORIZED}
+
+
+def test_product_governance_runtime_has_zero_legacy_decisions_path_dependency() -> None:
+    root = ROOT / "src" / "ptsip" / "governance"
+    offenders = []
+    for path in root.glob("*.py"):
+        if "decisions/" in path.read_text(encoding="utf-8"):
+            offenders.append(path.name)
+    assert offenders == []

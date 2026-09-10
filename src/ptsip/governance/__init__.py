@@ -1,7 +1,8 @@
-"""Machine-readable Project Authority runtime.
+"""Machine-readable Support Feature authority runtime.
 
-The governance runtime consumes canonical decisions/, schemas/, and current solve
-inputs. Design-time planning artifacts are never runtime authority.
+Product runtime consumes shipped SFP policies, shipped support registries, and
+current solve inputs. Developer policy, planning artifacts, owner grants, and
+legacy decisions are not product-runtime authority inputs.
 """
 
 from .authority import AuthorityCatalog, ProjectAuthorityRuntime

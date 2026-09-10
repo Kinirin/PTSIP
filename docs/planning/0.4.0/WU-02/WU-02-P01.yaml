@@ -129,7 +129,7 @@ migration_stages:
       - SIMULATE_TEMPORARY_SPLIT_MAPPING_BEFORE_APPLY
       - BLOCK_APPLY_WHEN_NORMATIVE_SUPPORT_DOCUMENT_WOULD_REFERENCE_MPD
   P01_D_RUNTIME_BOUNDARY:
-    status: REGISTRY_SPLIT_MATERIALIZED_RUNTIME_SWITCH_PENDING
+    status: RUNTIME_SWITCH_IMPLEMENTED_VALIDATION_PENDING
     registry_split_materialization:
       status: COMPLETE
       source_registry_count: 4
@@ -149,9 +149,17 @@ migration_stages:
       owner_authorization_grants_shipped: false
       split_effect_routing_granularity: ADR_EFFECT_OCCURRENCE
       legacy_decision_topic_identity: RETIRED_FROM_NEW_REGISTRIES
+    runtime_source_switch:
+      product_authority_catalog: SHIPPED_SFP_ONLY
+      canonical_subject_identity_scheme: SUPPORT_POLICY_ID
+      repository_binding_source: SOLVE_SUBJECT
+      builtin_ptsip_repository_binding: FORBIDDEN
+      product_owner_grant_consumption: FORBIDDEN
+      developer_owner_grant_evaluator: developer/automation/authorization_transition.py
+      direct_decisions_path_dependency_count: 0
     required:
-      - PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO
-      - SUPPORT_FEATURE_RUNTIME_USES_ONLY_SHIPPED_CONTRACTS
+      - PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO # implemented; validation pending
+      - SUPPORT_FEATURE_RUNTIME_USES_ONLY_SHIPPED_CONTRACTS # implemented; validation pending
   P01_E_LEGACY_REMOVAL:
     status: BLOCKED_ON_P01_D
     preauthorized_action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
