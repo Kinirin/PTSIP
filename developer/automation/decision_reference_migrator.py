@@ -250,3 +250,106 @@ if __name__ == "__main__":
     print(f"Split textual occurrences pending manual context review: {len(split_pending)}")
     print(f"One-to-one textual reference files pending deterministic rewrite: {len(pending)}")
     print(f"Machine-bearing files requiring explicit migration review: {len(machine)}")
+
+
+TEMP_SPLIT_MAP = "developer/policy/tmp-split-textual-reference-map.yaml"
+
+
+@dataclass(frozen=True)
+class TextualRewritePreview:
+    mapping_id: str
+    file_path: str
+    line: int
+    source_adr: str
+    selected_target: str
+    replacement: str
+    before: str
+    after: str
+
+
+def _replace_nth(value: str, needle: str, occurrence: int, replacement: str) -> str:
+    if occurrence < 1:
+        raise ValueError("occurrence must be >= 1")
+    start = -1
+    search_from = 0
+    for _ in range(occurrence):
+        start = value.find(needle, search_from)
+        if start < 0:
+            raise UnroutedDecisionReferenceError(
+                f"Expected occurrence {occurrence} of {needle!r} was not found"
+            )
+        search_from = start + len(needle)
+    return value[:start] + replacement + value[start + len(needle):]
+
+
+def simulate_temporary_split_map(
+    root: str | Path | None = None,
+) -> tuple[TextualRewritePreview, ...]:
+    """Validate and simulate the temporary human-reviewed SPLIT mapping.
+
+    No repository files are modified. Exact expected lines make the simulation
+    fail closed if the document changed after the mapping was reviewed.
+    """
+
+    base = repository_root(root)
+    mapping = load_yaml(TEMP_SPLIT_MAP, root=base)
+    if mapping.get("temporary") is not True or mapping.get("status") != "DRY_RUN_READY":
+        raise UnroutedDecisionReferenceError("Temporary SPLIT map is not in DRY_RUN_READY state")
+
+    previews: list[TextualRewritePreview] = []
+    for item in mapping.get("entries", []):
+        if not isinstance(item, Mapping):
+            continue
+        relative = str(item["file_path"])
+        line_no = int(item["line"])
+        path = base / relative
+        lines = path.read_text(encoding="utf-8").splitlines()
+        if line_no > len(lines):
+            raise UnroutedDecisionReferenceError(f"{relative}:{line_no}: line no longer exists")
+        before = lines[line_no - 1]
+        expected = str(item["expected_line"])
+        if before != expected:
+            raise UnroutedDecisionReferenceError(
+                f"{relative}:{line_no}: expected line changed; manual mapping must be reviewed again"
+            )
+        target = str(item["selected_target"])
+        replacement = (
+            canonical_policy_path(target)
+            if item["replacement_form"] == "POLICY_PATH"
+            else target
+        )
+        after = _replace_nth(
+            before,
+            str(item["expected_reference"]),
+            int(item["occurrence_on_line"]),
+            replacement,
+        )
+        previews.append(
+            TextualRewritePreview(
+                mapping_id=str(item["id"]),
+                file_path=relative,
+                line=line_no,
+                source_adr=str(item["source_adr"]),
+                selected_target=target,
+                replacement=replacement,
+                before=before,
+                after=after,
+            )
+        )
+    return tuple(previews)
+
+
+def temporary_split_map_apply_blockers(root: str | Path | None = None) -> tuple[str, ...]:
+    base = repository_root(root)
+    mapping = load_yaml(TEMP_SPLIT_MAP, root=base)
+    blockers: list[str] = []
+    gate = mapping.get("application_gate", {})
+    if not gate.get("all_target_policies_materialized"):
+        blockers.append("SPLIT_TARGET_POLICIES_NOT_MATERIALIZED")
+    if not gate.get("boundary_findings_resolved"):
+        blockers.append("TEXTUAL_POLICY_BOUNDARY_FINDINGS_OPEN")
+    try:
+        simulate_temporary_split_map(base)
+    except (OSError, ValueError, UnroutedDecisionReferenceError):
+        blockers.append("SPLIT_MAPPING_SOURCE_CONTEXT_CHANGED")
+    return tuple(sorted(set(blockers)))

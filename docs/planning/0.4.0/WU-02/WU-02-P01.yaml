@@ -80,6 +80,8 @@ migration_stages:
       split_auto_rewrite: FORBIDDEN
       review_granularity: OCCURRENCE
       review_registry: developer/policy/split-textual-reference-review.yaml
+      temporary_mapping: developer/policy/tmp-split-textual-reference-map.yaml
+      temporary_mapping_retention: DELETE_AFTER_SUCCESSFUL_APPLY_AND_ZERO_REFERENCE_SCAN
       resolution_vocabulary:
         - SFP_ONLY
         - MPD_ONLY
@@ -100,6 +102,8 @@ migration_stages:
       - UPDATE_PACKAGE_RESOURCE_AND_SCHEMA_REFERENCES
       - GENERATE_SPLIT_TEXTUAL_REFERENCE_REVIEW
       - RESOLVE_SPLIT_TEXTUAL_REFERENCES_MANUALLY_BEFORE_LEGACY_REMOVAL
+      - SIMULATE_TEMPORARY_SPLIT_MAPPING_BEFORE_APPLY
+      - BLOCK_APPLY_WHEN_NORMATIVE_SUPPORT_DOCUMENT_WOULD_REFERENCE_MPD
   P01_D_RUNTIME_BOUNDARY:
     status: BLOCKED_ON_P01_C
     required:
@@ -128,3 +132,19 @@ current_known_blockers:
   - SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE
   - SRC_PTSIP_GOVERNANCE_READS_DECISIONS
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE
+
+reference_migration_simulation:
+  status: DRY_RUN_READY
+  source_revision: cf9798c1a1c510d0dcb14d5956a0539d3d0f0746
+  markdown_files_scanned: 49
+  split_reference_files_found: 6
+  split_reference_occurrences_mapped: 16
+  automatic_markdown_changes_applied: false
+  temporary_mapping: developer/policy/tmp-split-textual-reference-map.yaml
+  boundary_findings:
+    - id: BOUNDARY-001
+      path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      legacy_reference: ADR-0020
+      projected_target: MPD-0009
+      problem: PRODUCT_NORMATIVE_SPEC_REFERENCES_DEVELOPER_WORK_UNIT_POLICY_AS_ARCHITECTURE_AUTHORITY
+      action: REMOVE_FROM_NORMATIVE_AUTHORITY_LINEAGE_BEFORE_APPLY

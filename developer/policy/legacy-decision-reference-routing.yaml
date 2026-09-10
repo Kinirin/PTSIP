@@ -100,6 +100,8 @@ textual_reference:
   single_target_rewrite: AUTO_CANONICAL_TARGET
   split_target_rewrite: FORBIDDEN
   split_review_registry: developer/policy/split-textual-reference-review.yaml
+  temporary_context_map: developer/policy/tmp-split-textual-reference-map.yaml
+  temporary_context_map_delete_after_apply: true
   split_review_granularity: OCCURRENCE
   manual_resolution_vocabulary:
     - SFP_ONLY
