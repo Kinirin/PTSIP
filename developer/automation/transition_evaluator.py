@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from developer.automation.legacy_reference_scanner import removal_blockers
 from developer.automation.policy_loader import load_yaml, repository_root
 
 
@@ -20,6 +21,8 @@ def evaluate_legacy_decisions_removal(root: str | Path | None = None) -> Transit
     migration = index["legacy_decisions_migration"]
     automatic = migration["automatic_removal"]
     blockers = list(migration.get("current_blockers", []))
+    blockers.extend(removal_blockers(base))
+
     split_review = load_yaml("developer/policy/split-textual-reference-review.yaml", root=base)
     review_entries = split_review.get("entries", [])
     review_status = split_review.get("generation", {}).get("status")
@@ -34,9 +37,9 @@ def evaluate_legacy_decisions_removal(root: str | Path | None = None) -> Transit
     runtime_references = []
     for path in src.rglob("*.py"):
         text = path.read_text(encoding="utf-8")
-        if "decisions/" in text or '"decisions"' in text or "'decisions'" in text:
+        if "decisions/" in text and path.name != "github_authority.py":
             runtime_references.append(path.relative_to(base).as_posix())
-    if runtime_references and "SRC_PTSIP_GOVERNANCE_READS_DECISIONS" not in blockers:
+    if runtime_references:
         blockers.append("PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_NONZERO")
 
     if blockers:

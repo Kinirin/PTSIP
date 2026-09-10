@@ -1,0 +1,165 @@
+schema_version: ptsip-legacy-reference-inventory/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+scan_basis:
+  input_revision: e8260b9767d7a4f50835e4fae86b6bda96e184c8
+  legacy_corpus_revision: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
+  legacy_decisions_tree_sha: 5724da43069ad6882a91b0058510d8dc95c1e3ee
+  input_decisions_tree_sha: 5724da43069ad6882a91b0058510d8dc95c1e3ee
+  exact_legacy_tree_match: true
+  status: CLASSIFIED_VALIDATION_PENDING
+
+classification_vocabulary:
+  - ACTIVE_DEPENDENCY
+  - HISTORICAL_PROVENANCE
+  - MIGRATION_ONLY_REFERENCE
+
+classification_rules:
+  unregistered_reference_behavior: FAIL_CLOSED
+  decisions_source_tree_internal_references: EXCLUDED_WITH_SOURCE_TREE
+  source_provenance_is_runtime_dependency: false
+  frozen_revision_lineage_is_active_reference: false
+  mutable_current_authority_reference_is_active: true
+  migration_artifact_reference_is_active_after_migration_retirement: false
+
+active_dependencies:
+  expected_file_count: 3
+  expected_reference_count: 21
+  entries:
+    - id: ACTIVE-001
+      path: ptsip.yaml
+      reference_kind: REPOSITORY_SELF_PROFILE_ANALYSIS_INPUT
+      expected_reference_count: 9
+      cleanup_action: REBASE_PROFILE_ANALYSIS_INPUTS_TO_MPD_SFP_CONTROL_PLANES
+      references:
+        decisions/INDEX.yaml: 1
+        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
+        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
+        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
+        decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml: 1
+        decisions/**: 4
+    - id: ACTIVE-002
+      path: developer/profiles/ptsip-repository.yaml
+      reference_kind: REPOSITORY_SELF_PROFILE_ANALYSIS_INPUT
+      expected_reference_count: 9
+      cleanup_action: REBASE_PROFILE_ANALYSIS_INPUTS_TO_MPD_SFP_CONTROL_PLANES
+      references:
+        decisions/INDEX.yaml: 1
+        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
+        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
+        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
+        decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml: 1
+        decisions/**: 4
+    - id: ACTIVE-003
+      path: releasenote/project-profile/pp.1.01.md
+      reference_kind: CURRENT_PROJECT_PROFILE_AUTHORITY_REFERENCE
+      expected_reference_count: 3
+      cleanup_action: REWRITE_TO_CURRENT_SFP_AUTHORITY
+      references:
+        ADR-0019: 1
+        ADR-0022: 2
+      deterministic_targets:
+        ADR-0019: SFP-0018
+        ADR-0022: SFP-0020
+
+historical_provenance:
+  policy_source_provenance:
+    sfp_file_pattern: src/ptsip/specdata/SFP-*.yaml
+    sfp_file_count: 21
+    mpd_file_pattern: developer/policy/MPD-000[2-9].yaml
+    mpd_file_count: 8
+    source_type: LEGACY_ADR
+    source_revision_anchor: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
+    source_revision_anchor_materialized_in_policy_records: false
+    cleanup_action: ADD_IMMUTABLE_SOURCE_REVISION_BEFORE_LEGACY_TREE_REMOVAL
+  frozen_revision_lineage:
+    specification_revision: 3c47816770d194ae42f98faedc911d980db0e62a
+    rewrite_allowed: false
+    paths:
+      - spec/PTSIP-SPEC.md
+      - spec/PTSIP-RESPONSIBILITY-MAP.md
+      - spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      - schemas/ptsip-profile-pp-1.01.schema.json
+      - src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json
+  historical_release_notes:
+    path_pattern: releasenote/specification/spec-*.md
+    semantics: HISTORICAL_RELEASE_RECORD
+    rewrite_historical_identity: false
+
+migration_only_references:
+  retirement_required_before_decisions_removal: true
+  files:
+    - developer/automation/decision_reference_migrator.py
+    - developer/automation/policy_materializer.py
+    - developer/automation/policy_validator.py
+    - developer/automation/registry_split_validator.py
+    - developer/automation/transition_evaluator.py
+    - developer/policy/index.yaml
+    - developer/policy/legacy-decisions-inventory.yaml
+    - developer/policy/legacy-decision-reference-routing.yaml
+    - developer/policy/policy-relation-migration.yaml
+    - developer/policy/registry-split-inventory.yaml
+    - developer/policy/split-textual-reference-review.yaml
+    - developer/policy/schemas/legacy-decision-inventory.schema.json
+    - developer/policy/schemas/legacy-decision-reference-routing.schema.json
+    - developer/policy/schemas/policy-relation-migration.schema.json
+    - developer/policy/schemas/registry-split-inventory.schema.json
+    - developer/policy/schemas/split-textual-reference-review.schema.json
+    - developer/policy/schemas/split-textual-reference-map.schema.json
+    - developer/tests/test_developer_control_plane.py
+    - docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+    - schemas/ptsip-adr-index.schema.json
+    - schemas/ptsip-adr.schema.json
+    - schemas/ptsip-adr-template.schema.json
+    - schemas/ptsip-governance-authority-registry.schema.json
+    - schemas/ptsip-governance-authority-role.schema.json
+    - schemas/ptsip-governance-authority-role-registry.schema.json
+    - schemas/ptsip-governance-authority-semantics.schema.json
+    - schemas/ptsip-governance-authority-subject-registry.schema.json
+    - schemas/ptsip-governance-subject-binding.schema.json
+    - schemas/ptsip-project-authority-record.schema.json
+    - schemas/ptsip-authority-eligibility-result.schema.json
+    - schemas/ptsip-authorization-transition.schema.json
+  transitive_dependencies:
+    - consumer: developer/automation/policy_materializer.py
+      via: developer/policy/legacy-decisions-inventory.yaml#entries[].source_path
+      target: decisions/ADR-*.yaml
+      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
+    - consumer: developer/automation/policy_validator.py
+      via: developer/automation/policy_materializer.py
+      target: decisions/ADR-*.yaml
+      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
+    - consumer: developer/automation/registry_split_validator.py
+      via: direct legacy effect vocabulary comparison
+      target: decisions/AUTHORITY-ROLE-REGISTRY.yaml
+      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
+    - consumer: developer/tests/test_developer_control_plane.py
+      via: migration validators and materializer regression tests
+      target: decisions/**
+      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
+
+excluded_non_legacy_decision_namespaces:
+  - path: src/ptsip/app/github_authority.py
+    namespace: REMOTE_GITHUB_AUTHORITY_STATE
+    example: decisions/{decision_id}.json
+    legacy_decisions_tree_dependency: false
+  - path: tests/ptsip/control_plane/test_github_authority_reconciliation.py
+    namespace: REMOTE_GITHUB_AUTHORITY_STATE_TEST
+    example: decisions/gdec-example.json
+    legacy_decisions_tree_dependency: false
+  - path: releasenote/specification/spec-0.3.3-draft.md
+    namespace: HISTORICAL_REMOTE_GITHUB_AUTHORITY_STATE
+    example: decisions/<gdec-id>.json
+    legacy_decisions_tree_dependency: false
+  - path: reference/DECISION-CONTROL-PLANE.md
+    namespace: LOCAL_TOOL_DECISION_STORE
+    example: '%LOCALAPPDATA%\\PTSIP\\decisions\\<repository-fingerprint>\\control-plane.sqlite3'
+    legacy_decisions_tree_dependency: false
+
+gate:
+  active_reference_count: 21
+  active_reference_count_zero: false
+  unclassified_reference_count_zero: VALIDATION_PENDING
+  migration_only_dependencies_retired: false
+  historical_provenance_revision_anchor_materialized: false
+  decisions_removal_authorized: false

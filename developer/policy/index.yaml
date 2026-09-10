@@ -38,11 +38,13 @@ legacy_decisions_migration:
     - SFP
     - SPLIT
     - RETIRE
-  state: RUNTIME_BOUNDARY_COMPLETE_REFERENCE_SCAN_PENDING
+  state: REFERENCE_CLASSIFICATION_COMPLETE_CLEANUP_PENDING
   inventory_path: developer/policy/legacy-decisions-inventory.yaml
   inventory_schema: developer/policy/schemas/legacy-decision-inventory.schema.json
   reference_routing: developer/policy/legacy-decision-reference-routing.yaml
   reference_routing_schema: developer/policy/schemas/legacy-decision-reference-routing.schema.json
+  legacy_reference_inventory: developer/policy/legacy-reference-inventory.yaml
+  legacy_reference_inventory_schema: developer/policy/schemas/legacy-reference-inventory.schema.json
   automatic_removal:
     preauthorized: true
     confirmation_required_when_ready: false
@@ -55,7 +57,11 @@ legacy_decisions_migration:
       ALL_RETIRE_RESULTS_RECORDED: true
       PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO: true
       ACTIVE_REFERENCE_COUNT_ZERO: true
+      MIGRATION_ONLY_DEPENDENCY_COUNT_ZERO: true
+      HISTORICAL_PROVENANCE_ANCHOR_MATERIALIZED: true
       SPLIT_TEXTUAL_REFERENCE_REVIEW_COMPLETE: true
       MACHINE_VALIDATION_PASS: true
   current_blockers:
-    - ACTIVE_REFERENCE_COUNT_ZERO_NOT_YET_VERIFIED
+    - ACTIVE_REFERENCE_COUNT_NONZERO
+    - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
+    - HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED

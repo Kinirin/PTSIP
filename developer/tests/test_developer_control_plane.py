@@ -23,7 +23,46 @@ def test_legacy_decisions_removal_is_preauthorized_but_currently_held() -> None:
     assert result.state == "HOLD_NOT_AUTHORIZED"
     assert result.action is None
     assert result.confirmation_required is False
-    assert "RUNTIME_BOUNDARY_TARGETED_VALIDATION_PENDING" in result.blockers
+    assert "ACTIVE_REFERENCE_COUNT_NONZERO" in result.blockers
+    assert "MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING" in result.blockers
+    assert "HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED" in result.blockers
+
+
+def test_legacy_reference_inventory_is_machine_valid_and_fail_closed() -> None:
+    from developer.automation.legacy_reference_scanner import (
+        scan_summary,
+        validate_legacy_reference_inventory,
+    )
+
+    assert validate_legacy_reference_inventory(ROOT) == ()
+    summary = scan_summary(ROOT)
+    assert summary["counts"].get("UNCLASSIFIED", 0) == 0
+    assert summary["counts"]["ACTIVE_DEPENDENCY"] == 21
+    assert summary["files"]["ACTIVE_DEPENDENCY"] == [
+        "developer/profiles/ptsip-repository.yaml",
+        "ptsip.yaml",
+        "releasenote/project-profile/pp.1.01.md",
+    ]
+
+
+def test_legacy_corpus_provenance_anchor_matches_current_decisions_tree() -> None:
+    import subprocess
+    import yaml
+
+    inventory = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "legacy-reference-inventory.yaml").read_text(encoding="utf-8")
+    )
+    basis = inventory["scan_basis"]
+    anchor = subprocess.run(
+        ["git", "rev-parse", f"{basis['legacy_corpus_revision']}:decisions"],
+        cwd=ROOT, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    current = subprocess.run(
+        ["git", "rev-parse", "HEAD:decisions"],
+        cwd=ROOT, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    assert anchor == basis["legacy_decisions_tree_sha"]
+    assert current == anchor
 
 
 def test_legacy_decision_inventory_is_complete_and_boundary_classified() -> None:
@@ -85,8 +124,6 @@ def test_unregistered_split_relation_fails_closed() -> None:
 
 
 def test_all_legacy_machine_relations_have_deterministic_projection_routes() -> None:
-    # validate_developer_policy walks every legacy ADR relation and fails closed
-    # if a SPLIT source/target lacks an explicit route.
     assert validate_developer_policy(ROOT) == ()
 
 
@@ -95,8 +132,6 @@ def test_machine_reference_scan_never_rewrites_by_textual_lineage_rule() -> None
 
     refs = scan_machine_references(ROOT)
     assert isinstance(refs, dict)
-    # Existing machine references are allowed during migration, but must be
-    # surfaced separately rather than silently rewritten.
     for path in refs:
         assert not path.endswith((".md", ".txt", ".rst"))
 
@@ -181,8 +216,6 @@ def test_support_policy_index_has_exact_21_targets() -> None:
         for index, item in enumerate(payload["policies"])
         if index != 3
     )
-
-
 
 
 def test_split_textual_reference_migration_preserves_frozen_spec_revision() -> None:

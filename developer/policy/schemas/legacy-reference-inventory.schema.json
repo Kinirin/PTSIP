@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:legacy-reference-inventory:v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "scan_basis",
+    "classification_vocabulary",
+    "classification_rules",
+    "active_dependencies",
+    "historical_provenance",
+    "migration_only_references",
+    "excluded_non_legacy_decision_namespaces",
+    "gate"
+  ],
+  "properties": {
+    "schema_version": {"const": "ptsip-legacy-reference-inventory/v1"},
+    "policy_class": {"const": "PTSIP_DEVELOPER_POLICY"},
+    "scan_basis": {
+      "type": "object",
+      "required": ["input_revision", "legacy_corpus_revision", "legacy_decisions_tree_sha", "input_decisions_tree_sha", "exact_legacy_tree_match", "status"],
+      "properties": {
+        "input_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "legacy_corpus_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "legacy_decisions_tree_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "input_decisions_tree_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "exact_legacy_tree_match": {"const": true},
+        "status": {"enum": ["CLASSIFIED_VALIDATION_PENDING", "VALIDATED"]}
+      },
+      "additionalProperties": false
+    },
+    "classification_vocabulary": {
+      "const": ["ACTIVE_DEPENDENCY", "HISTORICAL_PROVENANCE", "MIGRATION_ONLY_REFERENCE"]
+    },
+    "classification_rules": {"type": "object"},
+    "active_dependencies": {
+      "type": "object",
+      "required": ["expected_file_count", "expected_reference_count", "entries"],
+      "properties": {
+        "expected_file_count": {"const": 3},
+        "expected_reference_count": {"const": 21},
+        "entries": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["id", "path", "reference_kind", "expected_reference_count", "cleanup_action", "references"],
+            "properties": {
+              "id": {"pattern": "^ACTIVE-[0-9]{3}$"},
+              "path": {"type": "string"},
+              "reference_kind": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+              "expected_reference_count": {"type": "integer", "minimum": 1},
+              "cleanup_action": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+              "references": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+              "deterministic_targets": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^(SFP|MPD)-[0-9]{4}$"}}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "historical_provenance": {"type": "object"},
+    "migration_only_references": {"type": "object"},
+    "excluded_non_legacy_decision_namespaces": {"type": "array", "items": {"type": "object"}},
+    "gate": {
+      "type": "object",
+      "required": ["active_reference_count", "active_reference_count_zero", "unclassified_reference_count_zero", "migration_only_dependencies_retired", "historical_provenance_revision_anchor_materialized", "decisions_removal_authorized"],
+      "properties": {
+        "active_reference_count": {"const": 21},
+        "active_reference_count_zero": {"const": false},
+        "unclassified_reference_count_zero": {"enum": [true, false, "VALIDATION_PENDING"]},
+        "migration_only_dependencies_retired": {"const": false},
+        "historical_provenance_revision_anchor_materialized": {"const": false},
+        "decisions_removal_authorized": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
