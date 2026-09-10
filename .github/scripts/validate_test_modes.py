@@ -10,6 +10,7 @@ import yaml
 
 
 REGISTRY_VERSION = 1
+SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
 _MODE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 _ROOT_KEYS = {"version", "modes"}
 _MODE_KEYS = {"id", "component_ref", "execution", "watch"}
@@ -139,7 +140,7 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
         else:
             component = components.get(component_ref)
             if component is None:
-                errors.append(f"{prefix}.component_ref does not exist in ptsip.yaml: {component_ref}")
+                errors.append(f"{prefix}.component_ref does not exist in the selected Project Profile: {component_ref}")
             else:
                 roles = component.get("roles", [])
                 if not isinstance(roles, list) or "VERIFICATION" not in roles:
@@ -193,11 +194,16 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
     return errors
 
 
-def main(argv: list[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Validate the repository Test Mode Registry v1")
     parser.add_argument("--registry", default=".github/test_modes.yaml")
-    parser.add_argument("--profile", default="ptsip.yaml")
+    parser.add_argument("--profile", default=SELF_PROFILE_PATH)
     parser.add_argument("--repo-root", default=".")
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
     args = parser.parse_args(argv)
 
     repo_root = Path(args.repo_root).resolve()
