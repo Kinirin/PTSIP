@@ -43,13 +43,13 @@ implementation_authorization_scope:
 
 project_authority_runtime:
   status: IMPLEMENTED
-  boundary_migration_state: LEGACY_MIXED_CONTROL_PLANE_BLOCKER
+  boundary_migration_state: SHIPPED_SFP_ONLY
   canonical_sources:
-    - decisions/INDEX.yaml
-    - decisions/AUTHORITY-SCHEMA-REGISTRY.yaml
-    - decisions/AUTHORITY-ROLE-REGISTRY.yaml
-    - decisions/AUTHORITY-SUBJECT-REGISTRY.yaml
-    - decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml
+    - src/ptsip/specdata/support-policy-index.yaml
+    - src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml
+    - src/ptsip/specdata/ptsip-support-authority-role-registry.yaml
+    - src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml
+    - src/ptsip/specdata/ptsip-support-authorization-registry.yaml
     - schemas/ptsip-project-authority-record.schema.json
     - schemas/ptsip-authority-eligibility-result.schema.json
     - schemas/ptsip-authorization-transition.schema.json
@@ -135,8 +135,8 @@ contract_bindings:
   - {id: W2-B05, source: WU-00B/representative_rules/PTSIP-CLS-010, contract: MATERIAL_MIXED_LIFECYCLE_SPLIT_REQUIRES_STRUCTURAL_FOLLOWUP_AND_UNMODELED_GENERIC_SPLIT_IS_TOOL_CAPABILITY_GAP, status: INHERITED_APPROVED}
   - {id: W2-S01, source: WU-00-core-design-contracts/solution_space_and_planning, contract: ELIMINATION_RANKING_CARDINALITY_AND_SEMANTIC_PLAN_RULES, status: FROZEN_SUPPORTING}
   - {id: W2-S02, source: WU-00-core-design-contracts/operational_rule_registry, contract: OPERATIONAL_RULE_TO_SOLUTION_SPACE_BRIDGE, status: FROZEN_SUPPORTING}
-  - {id: W2-S03, source: ADR-0007, contract: COHERENT_COMPONENT_BOUNDARY_AND_MATERIAL_MIXED_LIFECYCLE_SPLIT, status: ACCEPTED_GOVERNANCE}
-  - {id: W2-S04, source: ADR-0009, contract: DECLARED_PROJECT_AUTHORITY_AND_EFFECTIVE_MAP_CONSUMPTION_WITHOUT_INFERENCE, status: ACCEPTED_GOVERNANCE}
+  - {id: W2-S03, source: SFP-0007, contract: COHERENT_COMPONENT_BOUNDARY_AND_MATERIAL_MIXED_LIFECYCLE_SPLIT, status: ACCEPTED_GOVERNANCE}
+  - {id: W2-S04, source: SFP-0009, contract: DECLARED_PROJECT_AUTHORITY_AND_EFFECTIVE_MAP_CONSUMPTION_WITHOUT_INFERENCE, status: ACCEPTED_GOVERNANCE}
 
 authority_boundary:
   may:
@@ -233,9 +233,9 @@ scope_contract:
       representative_rule: PTSIP-PKG-001
       structural_followup_rules: [PTSIP-CLS-002, PTSIP-CLS-010]
     governance:
-      primary_lifecycle_boundary: decisions/ADR-0007-primary-lifecycle-boundary-determination.md
-      declaration_authority: decisions/ADR-0009-responsibility-map-declaration-authority.md
-      decision_index: decisions/INDEX.yaml
+      primary_lifecycle_boundary: src/ptsip/specdata/SFP-0007.yaml
+      declaration_authority: src/ptsip/specdata/SFP-0009.yaml
+      decision_index: src/ptsip/specdata/support-policy-index.yaml
     implemented_foundation:
       - src/ptsip/remediation/domain/**
       - src/ptsip/remediation/rules/contract.py
@@ -375,7 +375,7 @@ scope_contract:
       required_after_definite_package_leakage: true
       purpose: PREVENT_PACKAGE_EXCLUSION_FROM_HIDING_WRONG_OR_OVERBROAD_COMPONENT_BOUNDARIES
       applicable_rules: [PTSIP-CLS-002, PTSIP-CLS-010]
-      governance_basis: ADR-0007
+      governance_basis: SFP-0007
       canonical_classifications:
         - PRODUCT
         - DEVELOPMENT_TOOLING
