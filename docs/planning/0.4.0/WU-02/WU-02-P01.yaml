@@ -94,6 +94,17 @@ migration_stages:
       execution: DEFER_TO_POLICY_MATERIALIZATION_AFTER_INVENTORY
   P01_C_POLICY_MATERIALIZATION:
     status: ACTIVE
+    relation_reconstruction:
+      status: COMPLETE
+      source_relation_count: 5
+      projected_edge_count: 6
+      manifest: developer/policy/policy-relation-migration.yaml
+      rules:
+        SFP_TO_SFP: ALLOWED
+        MPD_TO_MPD: ALLOWED
+        MPD_TO_SFP: ALLOWED
+        SFP_TO_MPD: FORBIDDEN
+      generic_relation_inference_after_migration: FORBIDDEN
     includes:
       - MATERIALIZE_MPD_RESULTS
       - MATERIALIZE_SFP_RESULTS

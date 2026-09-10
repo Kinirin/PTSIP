@@ -22,6 +22,8 @@ SPLIT_TEXTUAL_REVIEW = "developer/policy/split-textual-reference-review.yaml"
 SPLIT_TEXTUAL_REVIEW_SCHEMA = "developer/policy/schemas/split-textual-reference-review.schema.json"
 TEMP_SPLIT_MAP = "developer/policy/tmp-split-textual-reference-map.yaml"
 TEMP_SPLIT_MAP_SCHEMA = "developer/policy/schemas/split-textual-reference-map.schema.json"
+RELATION_MIGRATION = "developer/policy/policy-relation-migration.yaml"
+RELATION_MIGRATION_SCHEMA = "developer/policy/schemas/policy-relation-migration.schema.json"
 SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
 SFP_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
 
@@ -40,12 +42,15 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     split_review_schema = load_json(SPLIT_TEXTUAL_REVIEW_SCHEMA, root=base)
     temp_split_map = load_yaml(TEMP_SPLIT_MAP, root=base)
     temp_split_map_schema = load_json(TEMP_SPLIT_MAP_SCHEMA, root=base)
+    relation_migration = load_yaml(RELATION_MIGRATION, root=base)
+    relation_migration_schema = load_json(RELATION_MIGRATION_SCHEMA, root=base)
     Draft202012Validator.check_schema(index_schema)
     Draft202012Validator.check_schema(mpd_schema)
     Draft202012Validator.check_schema(inventory_schema)
     Draft202012Validator.check_schema(routing_schema)
     Draft202012Validator.check_schema(split_review_schema)
     Draft202012Validator.check_schema(temp_split_map_schema)
+    Draft202012Validator.check_schema(relation_migration_schema)
     for error in Draft202012Validator(index_schema).iter_errors(index):
         errors.append(f"developer/policy/index.yaml: {error.message}")
     for error in Draft202012Validator(inventory_schema).iter_errors(inventory):
@@ -56,6 +61,8 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         errors.append(f"{SPLIT_TEXTUAL_REVIEW}: {error.message}")
     for error in Draft202012Validator(temp_split_map_schema).iter_errors(temp_split_map):
         errors.append(f"{TEMP_SPLIT_MAP}: {error.message}")
+    for error in Draft202012Validator(relation_migration_schema).iter_errors(relation_migration):
+        errors.append(f"{RELATION_MIGRATION}: {error.message}")
     inventory_path = index.get("legacy_decisions_migration", {}).get("inventory_path")
     if inventory_path != LEGACY_INVENTORY:
         errors.append("developer/policy/index.yaml: legacy decision inventory_path is not canonical")
@@ -143,6 +150,18 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     if summary.get("retired_fragments") != retired_fragments:
         errors.append("legacy decision inventory retired fragment count does not match entries")
 
+    manifest_source_relations = {
+        (
+            item["source_relation"]["source_adr"],
+            item["source_relation"]["relation"],
+            item["source_relation"]["target_adr"],
+            item["source_relation"]["scope"],
+        )
+        for item in relation_migration.get("relations", [])
+        if isinstance(item, dict) and isinstance(item.get("source_relation"), dict)
+    }
+    actual_source_relations: set[tuple[str, str, str, str | None]] = set()
+
     # Every machine relation in the legacy ADR corpus must project deterministically.
     # Unique-to-unique relations may project automatically; any relation touching a
     # SPLIT source or target must have a predeclared relation route.
@@ -175,6 +194,13 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
                 if not isinstance(target_id, str):
                     errors.append(f"{source_path}: relation {relation_kind} is missing ADR target")
                     continue
+                relation_key = (
+                    source_id,
+                    relation_kind,
+                    target_id,
+                    scope if isinstance(scope, str) else None,
+                )
+                actual_source_relations.add(relation_key)
                 try:
                     edges = project_relation(
                         source_id,
@@ -190,6 +216,30 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
                     errors.append(
                         f"{source_path}: relation {relation_kind} to {target_id} projected no edges"
                     )
+
+    if actual_source_relations != manifest_source_relations:
+        errors.append(
+            "policy relation migration manifest must exactly cover every legacy ADR machine relation"
+        )
+
+    allowed_boundaries = {
+        ("SFP", "SFP"),
+        ("MPD", "MPD"),
+        ("MPD", "SFP"),
+    }
+    for item in relation_migration.get("relations", []):
+        if not isinstance(item, dict):
+            continue
+        for edge in item.get("projected_edges", []):
+            if not isinstance(edge, dict):
+                continue
+            source = str(edge.get("source_policy", ""))
+            target = str(edge.get("target_policy", ""))
+            boundary = (source[:3], target[:3])
+            if boundary not in allowed_boundaries:
+                errors.append(
+                    f"{item.get('migration_id')}: forbidden policy relation boundary {source} -> {target}"
+                )
 
     for entry in index.get("policies", []):
         path = entry.get("path")

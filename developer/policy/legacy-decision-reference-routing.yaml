@@ -80,6 +80,27 @@ id_routes:
     textual_reference_mode: MANUAL_CONTEXT_REVIEW
 
 relation_routes:
+  - source_adr: ADR-0008
+    relation: depends_on
+    target_adr: ADR-0007
+    scope: PRIMARY_LIFECYCLE_ONTOLOGY
+    projected_edges:
+      - {source: SFP-0008, target: SFP-0007}
+
+  - source_adr: ADR-0009
+    relation: depends_on
+    target_adr: ADR-0007
+    scope: PRIMARY_LIFECYCLE_ONTOLOGY
+    projected_edges:
+      - {source: SFP-0009, target: SFP-0007}
+
+  - source_adr: ADR-0009
+    relation: depends_on
+    target_adr: ADR-0008
+    scope: RESPONSIBILITY_MAP_SEMANTIC_AXES
+    projected_edges:
+      - {source: SFP-0009, target: SFP-0008}
+
   - source_adr: ADR-0011
     relation: depends_on
     target_adr: ADR-0010
@@ -94,7 +115,6 @@ relation_routes:
     scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
     projected_edges:
       - {source: MPD-0005, target: MPD-0004}
-
 textual_reference:
   eligible_extensions: [.md, .txt, .rst]
   single_target_rewrite: AUTO_CANONICAL_TARGET

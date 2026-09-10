@@ -146,3 +146,38 @@ def test_split_map_preserves_occurrence_level_choice_on_same_line() -> None:
     }
     assert previews["TMP-SPLIT-001"].selected_target == "MPD-0006"
     assert previews["TMP-SPLIT-002"].selected_target == "SFP-0019"
+
+
+def test_relation_migration_manifest_covers_all_five_legacy_edges() -> None:
+    import yaml
+
+    path = ROOT / "developer" / "policy" / "policy-relation-migration.yaml"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert payload["source_relation_count"] == 5
+    assert len(payload["relations"]) == 5
+    projected = [
+        (edge["source_policy"], edge["relation"], edge["target_policy"], edge["scope"])
+        for item in payload["relations"]
+        for edge in item["projected_edges"]
+    ]
+    assert projected == [
+        ("SFP-0008", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
+        ("SFP-0009", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
+        ("SFP-0009", "depends_on", "SFP-0008", "RESPONSIBILITY_MAP_SEMANTIC_AXES"),
+        ("SFP-0011", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
+        ("MPD-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
+        ("MPD-0005", "amends", "MPD-0004", "REPOSITORY_SELF_ADOPTION_ASSUMPTION"),
+    ]
+
+
+def test_support_policy_never_depends_on_developer_policy() -> None:
+    import yaml
+
+    path = ROOT / "developer" / "policy" / "policy-relation-migration.yaml"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    for item in payload["relations"]:
+        for edge in item["projected_edges"]:
+            assert not (
+                edge["source_policy"].startswith("SFP-")
+                and edge["target_policy"].startswith("MPD-")
+            )
