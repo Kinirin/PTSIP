@@ -184,7 +184,7 @@ migration_stages:
     active_reference_files: 5
     migration_only_retirement_required: true
     legacy_policy_provenance:
-      current_state: TEMPORARY_MIGRATION_SCAFFOLD
+      current_state: RETIRED_FROM_CURRENT_POLICY_CORPUS_VALIDATION_PENDING
       final_state: REMOVED
       preserve_git_revision_in_sfp_mpd: false
       preserve_legacy_source_path_in_sfp_mpd: false
@@ -224,12 +224,15 @@ p01_e_execution_plan:
     migration_projection_metadata_retained_in_current_policy_records: false
   execution_order:
     - id: P01_E1_LEGACY_POLICY_PROVENANCE_RETIREMENT
-      status: READY
+      status: IMPLEMENTED_VALIDATION_PENDING
+      implementation_revision: e5009ad6f333b0272c1f4354e4e248e858f6582e
       responsibility: REMOVE_LEGACY_MIGRATION_PROVENANCE_FROM_CURRENT_SFP_AND_MPD_POLICY_CONTRACTS
       targets:
         - src/ptsip/specdata/ptsip-support-feature-policy.schema.json
         - schemas/ptsip-support-feature-policy.schema.json
         - developer/policy/schemas/management-policy.schema.json
+        - developer/automation/policy_materializer.py
+        - developer/policy/legacy-reference-inventory.yaml
         - src/ptsip/specdata/SFP-0001.yaml..SFP-0021.yaml
         - developer/policy/MPD-0002.yaml..MPD-0009.yaml
       requirements:
@@ -238,12 +241,16 @@ p01_e_execution_plan:
         - LEGACY_SOURCE_PATH_MUST_NOT_REMAIN_IN_CURRENT_POLICY_RECORDS
         - NO_GIT_REVISION_PROVENANCE_FIELD_IS_ADDED_TO_SFP_OR_MPD
         - CURRENT_POLICY_SEMANTICS_AND_RELATIONS_MUST_REMAIN_UNCHANGED
+        - MATERIALIZER_MAY_STILL_READ_LEGACY_INPUT_DURING_E1_BUT_MUST_NOT_EMIT_LEGACY_PROVENANCE
         - FROZEN_RELEASE_BOUND_SPECIFICATION_ASSETS_REMAIN_UNCHANGED
       completion_requires:
         - ALL_29_MIGRATED_POLICY_RECORDS_VALIDATE_WITHOUT_LEGACY_PROVENANCE
         - CURRENT_SFP_MPD_CORPUS_HAS_ZERO_LEGACY_POLICY_PROVENANCE_DEPENDENCIES
+        - DEVELOPER_CONTROL_PLANE_TESTS_PASS
+        - GOVERNANCE_FOCUSED_TESTS_PASS
+        - LEGACY_REFERENCE_INVENTORY_VALIDATION_PASSES
     - id: P01_E2_LEGACY_DERIVATION_TOOLING_RETIREMENT
-      status: BLOCKED_BY_P01_E1
+      status: BLOCKED_BY_P01_E1_VALIDATION
       responsibility: REMOVE_THE_REQUIREMENT_TO_RECONSTRUCT_CURRENT_POLICY_FROM_LEGACY_DECISION_INPUTS
       targets:
         - developer/automation/policy_materializer.py
