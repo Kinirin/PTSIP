@@ -85,6 +85,7 @@ def test_fresh_solve_does_not_persist_historical_eligibility() -> None:
     assert eligible.currently_eligible is True
     assert mismatched.currently_eligible is False
 
+
 def test_support_policy_id_is_canonical_subject_identity() -> None:
     runtime = ProjectAuthorityRuntime(ROOT)
     subject = _subject("SFP-0001")
@@ -97,3 +98,5 @@ def test_support_policy_id_is_canonical_subject_identity() -> None:
         "value": "SFP-0001",
     }
     assert not hasattr(runtime.catalog, "policy_id_for_legacy_topic")
+    assert not hasattr(runtime, "evaluate_topic")
+    assert not hasattr(runtime, "project_topic")
