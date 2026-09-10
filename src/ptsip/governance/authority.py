@@ -152,17 +152,6 @@ class AuthorityCatalog:
         record = self._load_yaml(path)
         return path, route, record
 
-    def policy_id_for_legacy_topic(self, topic_id: str) -> str:
-        matches = []
-        for policy_id in self.current_routes:
-            _, _, record = self.load_current_record(policy_id)
-            provenance = _mapping(record.get("source_provenance"), code="MALFORMED_AUTHORITY_RECORD", label="source_provenance")
-            if provenance.get("source_topic_id") == topic_id:
-                matches.append(policy_id)
-        if len(matches) != 1:
-            raise GovernanceAuthorityError("LEGACY_TOPIC_ROUTE_UNRESOLVED", "legacy topic must resolve to exactly one support policy.", topic_id)
-        return matches[0]
-
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:
         items = []
         for policy_id in self.current_routes:
