@@ -55,7 +55,7 @@
           "type": "object",
           "required": [
             "targets",
-            "textual_lineage"
+            "textual_reference_mode"
           ],
           "properties": {
             "targets": {
@@ -68,9 +68,11 @@
                 "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
               }
             },
-            "textual_lineage": {
-              "type": "string",
-              "minLength": 1
+            "textual_reference_mode": {
+              "enum": [
+                "AUTO_SINGLE_TARGET",
+                "MANUAL_CONTEXT_REVIEW"
+              ]
             }
           },
           "additionalProperties": false
@@ -140,8 +142,12 @@
       "type": "object",
       "required": [
         "eligible_extensions",
-        "split_replacement_format",
-        "path_reference_replacement",
+        "single_target_rewrite",
+        "split_target_rewrite",
+        "split_review_registry",
+        "split_review_granularity",
+        "manual_resolution_vocabulary",
+        "unresolved_split_reference_blocks_legacy_removal",
         "unmapped_adr_behavior"
       ],
       "properties": {
@@ -152,11 +158,28 @@
             ".rst"
           ]
         },
-        "split_replacement_format": {
-          "const": "{TARGET_1} + {TARGET_2}"
+        "single_target_rewrite": {
+          "const": "AUTO_CANONICAL_TARGET"
         },
-        "path_reference_replacement": {
-          "const": "CANONICAL_TARGET_PATHS"
+        "split_target_rewrite": {
+          "const": "FORBIDDEN"
+        },
+        "split_review_registry": {
+          "const": "developer/policy/split-textual-reference-review.yaml"
+        },
+        "split_review_granularity": {
+          "const": "OCCURRENCE"
+        },
+        "manual_resolution_vocabulary": {
+          "const": [
+            "SFP_ONLY",
+            "MPD_ONLY",
+            "BOTH",
+            "REMOVE_REFERENCE"
+          ]
+        },
+        "unresolved_split_reference_blocks_legacy_removal": {
+          "const": true
         },
         "unmapped_adr_behavior": {
           "const": "FAIL_CLOSED"

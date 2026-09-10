@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import re
 import subprocess
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from developer.automation.policy_loader import load_yaml, repository_root
 ADR_TOKEN = re.compile(r"\bADR-[0-9]{4}\b")
 ADR_PATH = re.compile(r"decisions/(ADR-[0-9]{4})-[A-Za-z0-9_.-]+\.(?:md|yaml)")
 ROUTING = "developer/policy/legacy-decision-reference-routing.yaml"
+SPLIT_REVIEW = "developer/policy/split-textual-reference-review.yaml"
 
 
 class UnroutedDecisionReferenceError(ValueError):
@@ -85,26 +87,77 @@ def project_relation(
 
 
 def rewrite_textual_reference(text: str, *, root: str | Path | None = None) -> str:
+    """Rewrite only one-to-one ADR references.
+
+    SPLIT ADR references are deliberately preserved because choosing SFP, MPD,
+    both, or removing the reference requires human context review.
+    """
+
     routing = load_routing(root)
     routes = routing.get("id_routes", {})
 
-    def path_replacement(match: re.Match[str]) -> str:
-        adr_id = match.group(1)
+    def replacement_for(adr_id: str, *, as_path: bool) -> str | None:
         route = routes.get(adr_id)
         if not isinstance(route, Mapping):
             raise UnroutedDecisionReferenceError(f"No textual route for {adr_id}")
         targets = [str(item) for item in route["targets"]]
-        return " + ".join(canonical_policy_path(item) for item in targets)
+        if route.get("textual_reference_mode") == "MANUAL_CONTEXT_REVIEW":
+            return None
+        if len(targets) != 1:
+            raise UnroutedDecisionReferenceError(
+                f"AUTO_SINGLE_TARGET route must have exactly one target: {adr_id}"
+            )
+        return canonical_policy_path(targets[0]) if as_path else targets[0]
+
+    def path_replacement(match: re.Match[str]) -> str:
+        value = replacement_for(match.group(1), as_path=True)
+        return match.group(0) if value is None else value
 
     def token_replacement(match: re.Match[str]) -> str:
-        adr_id = match.group(0)
-        route = routes.get(adr_id)
-        if not isinstance(route, Mapping):
-            raise UnroutedDecisionReferenceError(f"No textual route for {adr_id}")
-        return str(route["textual_lineage"])
+        value = replacement_for(match.group(0), as_path=False)
+        return match.group(0) if value is None else value
 
     text = ADR_PATH.sub(path_replacement, text)
     return ADR_TOKEN.sub(token_replacement, text)
+
+
+def split_textual_reference_occurrences(root: str | Path | None = None) -> tuple[dict[str, object], ...]:
+    base = repository_root(root)
+    routing = load_routing(base)
+    routes = routing.get("id_routes", {})
+    split_ids = {
+        adr_id
+        for adr_id, route in routes.items()
+        if isinstance(route, Mapping)
+        and route.get("textual_reference_mode") == "MANUAL_CONTEXT_REVIEW"
+    }
+    entries: list[dict[str, object]] = []
+    for path in tracked_textual_reference_files(base):
+        relative = path.relative_to(base).as_posix()
+        lines = path.read_text(encoding="utf-8", errors="strict").splitlines()
+        for line_no, line in enumerate(lines, start=1):
+            for match in ADR_TOKEN.finditer(line):
+                adr_id = match.group(0)
+                if adr_id not in split_ids:
+                    continue
+                route = routes[adr_id]
+                context_start = max(0, line_no - 2)
+                context_end = min(len(lines), line_no + 1)
+                context = "\n".join(lines[context_start:context_end])
+                context_digest = hashlib.sha256(context.encode("utf-8")).hexdigest()
+                seed = f"{relative}:{line_no}:{match.start()+1}:{adr_id}:{context_digest}"
+                occurrence_id = "SPLITREF-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16]
+                entries.append({
+                    "occurrence_id": occurrence_id,
+                    "file_path": relative,
+                    "line": line_no,
+                    "column": match.start() + 1,
+                    "context_digest": context_digest,
+                    "source_adr": adr_id,
+                    "candidate_targets": list(route["targets"]),
+                    "status": "PENDING_MANUAL_CONTEXT_REVIEW",
+                })
+    return tuple(entries)
 
 
 def tracked_files(root: str | Path | None = None) -> tuple[Path, ...]:
@@ -182,11 +235,18 @@ def rewrite_textual_files(*, apply: bool, root: str | Path | None = None) -> dic
 
 
 if __name__ == "__main__":
+    split_pending = split_textual_reference_occurrences()
+    for item in split_pending:
+        print(
+            f"SPLIT {item['file_path']}:{item['line']}:{item['column']} "
+            f"{item['source_adr']} -> {', '.join(item['candidate_targets'])}"
+        )
     pending = rewrite_textual_files(apply=False)
     for path, refs in sorted(pending.items()):
         print(f"TEXT {path}: {', '.join(refs)}")
     machine = scan_machine_references()
     for path, refs in sorted(machine.items()):
         print(f"MACHINE {path}: {', '.join(refs)}")
-    print(f"Textual reference files pending deterministic rewrite: {len(pending)}")
+    print(f"Split textual occurrences pending manual context review: {len(split_pending)}")
+    print(f"One-to-one textual reference files pending deterministic rewrite: {len(pending)}")
     print(f"Machine-bearing files requiring explicit migration review: {len(machine)}")

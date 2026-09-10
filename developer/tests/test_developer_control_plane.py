@@ -99,3 +99,18 @@ def test_machine_reference_scan_never_rewrites_by_textual_lineage_rule() -> None
     # surfaced separately rather than silently rewritten.
     for path in refs:
         assert not path.endswith((".md", ".txt", ".rst"))
+
+
+def test_split_textual_references_are_never_auto_rewritten() -> None:
+    from developer.automation.decision_reference_migrator import rewrite_textual_reference
+
+    text = "Authority: ADR-0017 and ADR-0019"
+    rewritten = rewrite_textual_reference(text, root=ROOT)
+    assert "ADR-0017" in rewritten
+    assert "SFP-0017 + MPD-0005" not in rewritten
+    assert "SFP-0018" in rewritten
+
+
+def test_split_textual_review_blocks_legacy_removal_until_manually_complete() -> None:
+    result = evaluate_legacy_decisions_removal(ROOT)
+    assert "SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE" in result.blockers

@@ -18,6 +18,8 @@ LEGACY_INVENTORY = "developer/policy/legacy-decisions-inventory.yaml"
 LEGACY_INVENTORY_SCHEMA = "developer/policy/schemas/legacy-decision-inventory.schema.json"
 LEGACY_ROUTING = "developer/policy/legacy-decision-reference-routing.yaml"
 LEGACY_ROUTING_SCHEMA = "developer/policy/schemas/legacy-decision-reference-routing.schema.json"
+SPLIT_TEXTUAL_REVIEW = "developer/policy/split-textual-reference-review.yaml"
+SPLIT_TEXTUAL_REVIEW_SCHEMA = "developer/policy/schemas/split-textual-reference-review.schema.json"
 SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
 SFP_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
 
@@ -32,16 +34,21 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     inventory_schema = load_json(LEGACY_INVENTORY_SCHEMA, root=base)
     routing = load_yaml(LEGACY_ROUTING, root=base)
     routing_schema = load_json(LEGACY_ROUTING_SCHEMA, root=base)
+    split_review = load_yaml(SPLIT_TEXTUAL_REVIEW, root=base)
+    split_review_schema = load_json(SPLIT_TEXTUAL_REVIEW_SCHEMA, root=base)
     Draft202012Validator.check_schema(index_schema)
     Draft202012Validator.check_schema(mpd_schema)
     Draft202012Validator.check_schema(inventory_schema)
     Draft202012Validator.check_schema(routing_schema)
+    Draft202012Validator.check_schema(split_review_schema)
     for error in Draft202012Validator(index_schema).iter_errors(index):
         errors.append(f"developer/policy/index.yaml: {error.message}")
     for error in Draft202012Validator(inventory_schema).iter_errors(inventory):
         errors.append(f"{LEGACY_INVENTORY}: {error.message}")
     for error in Draft202012Validator(routing_schema).iter_errors(routing):
         errors.append(f"{LEGACY_ROUTING}: {error.message}")
+    for error in Draft202012Validator(split_review_schema).iter_errors(split_review):
+        errors.append(f"{SPLIT_TEXTUAL_REVIEW}: {error.message}")
     inventory_path = index.get("legacy_decisions_migration", {}).get("inventory_path")
     if inventory_path != LEGACY_INVENTORY:
         errors.append("developer/policy/index.yaml: legacy decision inventory_path is not canonical")
@@ -98,6 +105,12 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     }
     if inventory_routes != routing_routes:
         errors.append("legacy decision reference routing must exactly match inventory target allocation")
+    for adr_id, targets in routing_routes.items():
+        route = routing.get("id_routes", {}).get(adr_id, {})
+        mode = route.get("textual_reference_mode") if isinstance(route, dict) else None
+        expected_mode = "MANUAL_CONTEXT_REVIEW" if len(targets) > 1 else "AUTO_SINGLE_TARGET"
+        if mode != expected_mode:
+            errors.append(f"{adr_id}: textual_reference_mode must be {expected_mode}")
     summary = inventory.get("summary", {})
     if any(summary.get(key) != value for key, value in class_counts.items()):
         errors.append("legacy decision inventory classification summary does not match entries")

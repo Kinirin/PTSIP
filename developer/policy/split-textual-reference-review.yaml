@@ -1,0 +1,15 @@
+schema_version: ptsip-split-textual-reference-review/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+source_routing: developer/policy/legacy-decision-reference-routing.yaml
+split_sources:
+  - ADR-0003
+  - ADR-0005
+  - ADR-0011
+  - ADR-0017
+  - ADR-0021
+  - ADR-0023
+generation:
+  mode: DETERMINISTIC_SCAN_NO_SEMANTIC_RESOLUTION
+  granularity: OCCURRENCE
+  status: PENDING_SCAN
+entries: []

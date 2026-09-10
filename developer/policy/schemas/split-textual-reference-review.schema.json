@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:split-textual-reference-review:v1",
+  "title": "PTSIP Split ADR Textual Reference Manual Review v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "source_routing",
+    "split_sources",
+    "generation",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-split-textual-reference-review/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "source_routing": {
+      "const": "developer/policy/legacy-decision-reference-routing.yaml"
+    },
+    "split_sources": {
+      "const": [
+        "ADR-0003",
+        "ADR-0005",
+        "ADR-0011",
+        "ADR-0017",
+        "ADR-0021",
+        "ADR-0023"
+      ]
+    },
+    "generation": {
+      "type": "object",
+      "required": [
+        "mode",
+        "granularity",
+        "status"
+      ],
+      "properties": {
+        "mode": {
+          "const": "DETERMINISTIC_SCAN_NO_SEMANTIC_RESOLUTION"
+        },
+        "granularity": {
+          "const": "OCCURRENCE"
+        },
+        "status": {
+          "enum": [
+            "PENDING_SCAN",
+            "GENERATED",
+            "COMPLETE"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "occurrence_id",
+          "file_path",
+          "line",
+          "column",
+          "context_digest",
+          "source_adr",
+          "candidate_targets",
+          "status"
+        ],
+        "properties": {
+          "occurrence_id": {
+            "type": "string",
+            "pattern": "^SPLITREF-[0-9a-f]{16}$"
+          },
+          "file_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "column": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "context_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_adr": {
+            "enum": [
+              "ADR-0003",
+              "ADR-0005",
+              "ADR-0011",
+              "ADR-0017",
+              "ADR-0021",
+              "ADR-0023"
+            ]
+          },
+          "candidate_targets": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+            }
+          },
+          "status": {
+            "enum": [
+              "PENDING_MANUAL_CONTEXT_REVIEW",
+              "RESOLVED"
+            ]
+          },
+          "resolution": {
+            "enum": [
+              "SFP_ONLY",
+              "MPD_ONLY",
+              "BOTH",
+              "REMOVE_REFERENCE"
+            ]
+          },
+          "selected_targets": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "RESOLVED"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "resolution",
+                "selected_targets"
+              ]
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

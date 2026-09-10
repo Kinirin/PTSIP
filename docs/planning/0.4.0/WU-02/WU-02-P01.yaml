@@ -74,7 +74,17 @@ migration_stages:
       ADR-0020: MPD-0009
     reference_routing: developer/policy/legacy-decision-reference-routing.yaml
     relation_rule: SPLIT_RELATION_REQUIRES_EXPLICIT_PREDECLARED_ROUTE
-    textual_reference_rule: LINEAGE_REWRITE_DOES_NOT_CREATE_DEPENDENCY
+    textual_reference_rule:
+      single_target: AUTO_REWRITE_ALLOWED
+      split_target: MANUAL_CONTEXT_REVIEW_REQUIRED
+      split_auto_rewrite: FORBIDDEN
+      review_granularity: OCCURRENCE
+      review_registry: developer/policy/split-textual-reference-review.yaml
+      resolution_vocabulary:
+        - SFP_ONLY
+        - MPD_ONLY
+        - BOTH
+        - REMOVE_REFERENCE
     linked_profile_migration:
       target_root: src/ptsip/profiles/
       schema_root: src/ptsip/profiles/schema/
@@ -88,6 +98,8 @@ migration_stages:
       - SPLIT_MIXED_RESULTS
       - MIGRATE_SUPPORT_PROFILE_SCHEMA_ASSETS_TO_SRC_PTSIP_PROFILES_SCHEMA
       - UPDATE_PACKAGE_RESOURCE_AND_SCHEMA_REFERENCES
+      - GENERATE_SPLIT_TEXTUAL_REFERENCE_REVIEW
+      - RESOLVE_SPLIT_TEXTUAL_REFERENCES_MANUALLY_BEFORE_LEGACY_REMOVAL
   P01_D_RUNTIME_BOUNDARY:
     status: BLOCKED_ON_P01_C
     required:
@@ -113,5 +125,6 @@ profile_subsystem_decision:
 
 current_known_blockers:
   - POLICY_MATERIALIZATION_INCOMPLETE
+  - SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE
   - SRC_PTSIP_GOVERNANCE_READS_DECISIONS
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE

@@ -20,6 +20,15 @@ def evaluate_legacy_decisions_removal(root: str | Path | None = None) -> Transit
     migration = index["legacy_decisions_migration"]
     automatic = migration["automatic_removal"]
     blockers = list(migration.get("current_blockers", []))
+    split_review = load_yaml("developer/policy/split-textual-reference-review.yaml", root=base)
+    review_entries = split_review.get("entries", [])
+    review_status = split_review.get("generation", {}).get("status")
+    unresolved = [
+        item for item in review_entries
+        if isinstance(item, dict) and item.get("status") != "RESOLVED"
+    ]
+    if review_status != "COMPLETE" or unresolved:
+        blockers.append("SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE")
 
     src = base / "src" / "ptsip"
     runtime_references = []
