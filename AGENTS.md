@@ -14,6 +14,27 @@ PTSIP has two non-interchangeable policy classes.
 - Developer planning authority is `docs/planning/index.yaml` and version control planes under `docs/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
 - `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
 
+## Mandatory branch-aware planning entry
+
+Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:
+
+```text
+python -m developer.automation.planning_entry_resolver
+```
+
+The resolver reads the current Git branch and performs an exact lookup against `docs/planning/index.yaml -> plans[].entry_routing.branch_entrypoints`. Treat its `entry_document` as the planning entry point for the current branch.
+
+Rules:
+
+- Exact mapping only. Do not infer a WU from branch prefixes, suffixes, naming similarity, `current_gate`, nearby files, or historical context.
+- A nonzero resolver result is fail-closed. Do not choose another planning document manually.
+- Re-run the resolver after every branch switch before continuing version-specific work.
+- On `INDEPENDENT_LEAF`, the returned WU document is the branch entry point; do not substitute the integration plan's current gate.
+- On `INTEGRATION_CONTROL_PLANE`, enter through the returned version index and follow its machine-readable routing.
+- The resolver selects context only. It does not grant implementation authorization or expand the selected WU's scope.
+
+For branches covered by this resolver, this section supersedes any fixed historical version-specific planning paths elsewhere in this file. Historical `planning/0.3.6...` references remain relevant only to explicit 0.3.6 release-history or handoff work and must not override the resolved entry document.
+
 ## Canonical Project Authority runtime
 
 For Project Authority work, use the canonical machine surface only:
