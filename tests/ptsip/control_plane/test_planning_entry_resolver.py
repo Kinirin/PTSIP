@@ -11,8 +11,7 @@ from developer.automation.planning_entry_resolver import (
 )
 
 
-ROOT_INDEX = """\\
-schema_version: ptsip-developer-planning-root/v1
+ROOT_INDEX = """schema_version: ptsip-developer-planning-root/v1
 policy_class: PTSIP_DEVELOPER_POLICY
 
 plans:
@@ -61,11 +60,11 @@ def _repo(tmp_path: Path) -> Path:
     repo = tmp_path / "repo"
     (repo / "docs/planning/0.4.0/WU-04").mkdir(parents=True)
     (repo / "docs/planning/0.4.0/WU-05").mkdir(parents=True)
-    (repo / "pyproject.toml").write_text("[project]\\nname='fixture'\\nversion='0.0.0'\\n", encoding="utf-8")
+    (repo / "pyproject.toml").write_text("[project]\nname='fixture'\nversion='0.0.0'\n", encoding="utf-8")
     (repo / "docs/planning/index.yaml").write_text(ROOT_INDEX, encoding="utf-8")
-    (repo / "docs/planning/0.4.0/index.yaml").write_text("plan: fixture\\n", encoding="utf-8")
-    (repo / "docs/planning/0.4.0/WU-04/WU-04.yaml").write_text("work_unit: WU-04\\n", encoding="utf-8")
-    (repo / "docs/planning/0.4.0/WU-05/WU-05.yaml").write_text("work_unit: WU-05\\n", encoding="utf-8")
+    (repo / "docs/planning/0.4.0/index.yaml").write_text("plan: fixture\n", encoding="utf-8")
+    (repo / "docs/planning/0.4.0/WU-04/WU-04.yaml").write_text("work_unit: WU-04\n", encoding="utf-8")
+    (repo / "docs/planning/0.4.0/WU-05/WU-05.yaml").write_text("work_unit: WU-05\n", encoding="utf-8")
     return repo
 
 
