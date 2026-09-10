@@ -23,7 +23,7 @@ def test_legacy_decisions_removal_is_preauthorized_but_currently_held() -> None:
     assert result.state == "HOLD_NOT_AUTHORIZED"
     assert result.action is None
     assert result.confirmation_required is False
-    assert "SRC_PTSIP_GOVERNANCE_READS_DECISIONS" in result.blockers
+    assert "RUNTIME_BOUNDARY_TARGETED_VALIDATION_PENDING" in result.blockers
 
 
 def test_legacy_decision_inventory_is_complete_and_boundary_classified() -> None:
