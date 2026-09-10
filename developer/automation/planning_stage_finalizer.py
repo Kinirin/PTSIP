@@ -115,6 +115,10 @@ def _remove_list_item(text: str, *, section: str, value: str) -> str:
     section_text, count = pattern.subn("", section_text, count=1)
     if count != 1:
         raise ValueError(f"list item must match exactly once: {section} -> {value}")
+
+    header, separator, body = section_text.partition("\n")
+    if separator and not body.strip():
+        section_text = f"{section}: []\n\n"
     return text[:section_start] + section_text + text[section_end:]
 
 
