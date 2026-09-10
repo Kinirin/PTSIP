@@ -60,16 +60,14 @@ role_effect_occurrence_routes:
     MPD_ONLY:
       - govern_normative_family_lifecycle
       - require_versioned_normative_contract
-    BOTH:
-[]
+    BOTH: []
   ADR-0011:
     SFP_ONLY:
       - govern_classification_model
     MPD_ONLY:
       - bind_immutable_normative_snapshot
       - govern_normative_family_lifecycle
-    BOTH:
-[]
+    BOTH: []
   ADR-0017:
     SFP_ONLY:
       - preserve_migration_engine_capability
@@ -94,18 +92,15 @@ role_effect_occurrence_routes:
       - select_versioned_target_identity
     MPD_ONLY:
       - govern_release_history_namespace
-    BOTH:
-[]
+    BOTH: []
   ADR-0023:
     SFP_ONLY:
       - fail_closed_on_invalid_state
       - govern_specification_capabilities
       - require_explicit_specification_binding
       - separate_cross_contract_identity_axes
-    MPD_ONLY:
-[]
-    BOTH:
-[]
+    MPD_ONLY: []
+    BOTH: []
 subject_routing:
   common:
     - authority_domains
