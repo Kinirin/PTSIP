@@ -339,6 +339,34 @@
         }
       },
       "additionalProperties": false
+    },
+    "entry_resolution": {
+      "type": "object",
+      "required": [
+        "root_index",
+        "resolver_module",
+        "match_mode",
+        "unknown_branch_behavior",
+        "branch_change_requires_reresolution"
+      ],
+      "properties": {
+        "root_index": {
+          "const": "docs/planning/index.yaml"
+        },
+        "resolver_module": {
+          "const": "developer.automation.planning_entry_resolver"
+        },
+        "match_mode": {
+          "const": "EXACT_BRANCH"
+        },
+        "unknown_branch_behavior": {
+          "const": "FAIL_CLOSED"
+        },
+        "branch_change_requires_reresolution": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

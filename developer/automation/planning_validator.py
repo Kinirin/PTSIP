@@ -111,6 +111,86 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     if any(other != leaf_id and other in declared_dependencies for other in leaf_ids):
                         errors.append(f"{path}: independent leaf {leaf_id!r} depends on another independent leaf")
 
+        if isinstance(root_routing, dict) and isinstance(plan_routing, dict):
+            resolver = root_routing.get("resolver", {})
+            entry_resolution = plan.get("entry_resolution", {})
+            if resolver.get("module") != entry_resolution.get("resolver_module"):
+                errors.append(f"{path}: resolver module does not match root entry routing")
+            if resolver.get("match_mode") != entry_resolution.get("match_mode"):
+                errors.append(f"{path}: resolver match mode does not match root entry routing")
+            if resolver.get("unmatched_behavior") != entry_resolution.get("unknown_branch_behavior"):
+                errors.append(f"{path}: resolver unknown-branch behavior does not match root entry routing")
+
+            entrypoints = root_routing.get("branch_entrypoints", [])
+            branches = [
+                entry.get("branch")
+                for entry in entrypoints
+                if isinstance(entry, dict)
+            ]
+            if len(branches) != len(set(branches)):
+                errors.append(f"{ROOT_INDEX}: branch entrypoints must use unique exact branch names")
+
+            expected_branches = {plan_entry.get("integration_branch")}
+            expected_branches.update(
+                entry.get("branch")
+                for entry in root_routing.get("independent_leaf_work_units", [])
+                if isinstance(entry, dict)
+            )
+            if set(branches) != expected_branches:
+                errors.append(
+                    f"{path}: branch entrypoint set does not match declared integration/leaf branches"
+                )
+
+            integration_entries = [
+                entry
+                for entry in entrypoints
+                if isinstance(entry, dict)
+                and entry.get("branch") == plan_entry.get("integration_branch")
+            ]
+            if len(integration_entries) != 1:
+                errors.append(f"{path}: integration branch must have exactly one planning entrypoint")
+            else:
+                integration_entry = integration_entries[0]
+                if integration_entry.get("entry_document") != path:
+                    errors.append(f"{path}: integration branch entrypoint must resolve to version index")
+                if integration_entry.get("role") != "INTEGRATION_CONTROL_PLANE":
+                    errors.append(f"{path}: integration branch entrypoint role is invalid")
+                if integration_entry.get("work_unit") is not None:
+                    errors.append(f"{path}: integration branch entrypoint must not bind a work unit")
+
+            indexed_wus = {
+                wu.get("id"): wu
+                for wu in plan.get("work_units", [])
+                if isinstance(wu, dict) and isinstance(wu.get("id"), str)
+            }
+            leaf_routes = {
+                entry.get("id"): entry
+                for entry in root_routing.get("independent_leaf_work_units", [])
+                if isinstance(entry, dict) and isinstance(entry.get("id"), str)
+            }
+            for leaf_id, leaf_route in leaf_routes.items():
+                leaf_entries = [
+                    entry
+                    for entry in entrypoints
+                    if isinstance(entry, dict)
+                    and entry.get("branch") == leaf_route.get("branch")
+                ]
+                if len(leaf_entries) != 1:
+                    errors.append(f"{path}: leaf {leaf_id!r} must have exactly one planning entrypoint")
+                    continue
+                leaf_entry = leaf_entries[0]
+                indexed = indexed_wus.get(leaf_id)
+                expected_document = indexed.get("path") if isinstance(indexed, dict) else None
+                if leaf_entry.get("work_unit") != leaf_id:
+                    errors.append(f"{path}: leaf entrypoint work_unit does not match routed leaf id")
+                if leaf_entry.get("entry_document") != expected_document:
+                    errors.append(f"{path}: leaf {leaf_id!r} entrypoint does not match indexed WU path")
+                if leaf_entry.get("role") != "INDEPENDENT_LEAF":
+                    errors.append(f"{path}: leaf {leaf_id!r} entrypoint role is invalid")
+                entry_document = leaf_entry.get("entry_document")
+                if isinstance(entry_document, str) and not (base / entry_document).is_file():
+                    errors.append(f"{path}: leaf {leaf_id!r} entry document does not exist")
+
         gate = plan.get("plan", {}).get("current_gate")
         gate_resolved = False
         for wu in plan.get("work_units", []):

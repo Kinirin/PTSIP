@@ -11,6 +11,25 @@ plans:
       canonical_plan: planning/0.4.0.md
       responsibility_control_plane: docs/planning/0.4.0/index.yaml
       branch_creation_parent: dev/0.4.0
+      resolver:
+        module: developer.automation.planning_entry_resolver
+        command: python -m developer.automation.planning_entry_resolver
+        branch_source: GIT_CURRENT_BRANCH
+        match_mode: EXACT_BRANCH
+        unmatched_behavior: FAIL_CLOSED
+        ambiguous_behavior: FAIL_CLOSED
+      branch_entrypoints:
+        - branch: dev/0.4.0
+          entry_document: docs/planning/0.4.0/index.yaml
+          role: INTEGRATION_CONTROL_PLANE
+        - branch: dev/0.4.0-WU-04
+          entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
+          role: INDEPENDENT_LEAF
+          work_unit: WU-04
+        - branch: dev/0.4.0-WU-05
+          entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
+          role: INDEPENDENT_LEAF
+          work_unit: WU-05
       dependency_bearing_convergence:
         id: WU-03
         responsibility: DOWNSTREAM_DEPENDENCY_BEARING_INTEGRATION_AND_ORCHESTRATION
