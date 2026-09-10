@@ -10,7 +10,8 @@
     "source_registries",
     "role_effect_occurrence_routes",
     "subject_routing",
-    "authorization_routing"
+    "authorization_routing",
+    "effect_vocabulary_projection"
   ],
   "properties": {
     "schema_version": {
@@ -71,6 +72,34 @@
     },
     "authorization_routing": {
       "type": "object"
+    },
+    "effect_vocabulary_projection": {
+      "type": "object",
+      "required": [
+        "source_count",
+        "sfp_count",
+        "mpd_count",
+        "union_must_equal_source",
+        "cross_boundary_overlap_allowed_only_for_shared_effect_semantics"
+      ],
+      "properties": {
+        "source_count": {
+          "const": 99
+        },
+        "sfp_count": {
+          "const": 89
+        },
+        "mpd_count": {
+          "const": 22
+        },
+        "union_must_equal_source": {
+          "const": true
+        },
+        "cross_boundary_overlap_allowed_only_for_shared_effect_semantics": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
