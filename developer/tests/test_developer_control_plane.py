@@ -38,7 +38,9 @@ def test_legacy_reference_inventory_is_machine_valid_and_fail_closed() -> None:
     assert validate_legacy_reference_inventory(ROOT) == ()
     summary = scan_summary(ROOT)
     inventory = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "legacy-reference-inventory.yaml").read_text(encoding="utf-8")
+        (ROOT / "developer" / "policy" / "legacy-reference-inventory.yaml").read_text(
+            encoding="utf-8"
+        )
     )
     expected = inventory["active_dependencies"]
 
@@ -54,48 +56,34 @@ def test_legacy_corpus_provenance_anchor_matches_current_decisions_tree() -> Non
     import yaml
 
     inventory = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "legacy-reference-inventory.yaml").read_text(encoding="utf-8")
+        (ROOT / "developer" / "policy" / "legacy-reference-inventory.yaml").read_text(
+            encoding="utf-8"
+        )
     )
     basis = inventory["scan_basis"]
     anchor = subprocess.run(
         ["git", "rev-parse", f"{basis['legacy_corpus_revision']}:decisions"],
-        cwd=ROOT, check=True, capture_output=True, text=True
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
     ).stdout.strip()
     current = subprocess.run(
         ["git", "rev-parse", "HEAD:decisions"],
-        cwd=ROOT, check=True, capture_output=True, text=True
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
     ).stdout.strip()
     assert anchor == basis["legacy_decisions_tree_sha"]
     assert current == anchor
 
 
-def test_legacy_decision_inventory_is_complete_and_boundary_classified() -> None:
-    import yaml
-
-    inventory_path = ROOT / "developer" / "policy" / "legacy-decisions-inventory.yaml"
-    inventory = yaml.safe_load(inventory_path.read_text(encoding="utf-8"))
-    assert inventory["summary"] == {
-        "MPD": 2,
-        "SFP": 15,
-        "SPLIT": 6,
-        "RETIRE": 0,
-        "total": 23,
-        "planned_sfp_targets": 21,
-        "planned_mpd_targets": 8,
-        "retired_fragments": 0,
-    }
-    assert [item["source_id"] for item in inventory["entries"]] == [
-        f"ADR-{number:04d}" for number in range(1, 24)
-    ]
-    assert all(
-        output.get("target_id") is None or not output["target_id"].startswith("ADR-")
-        for item in inventory["entries"]
-        for output in item["outputs"]
+def test_split_decision_routes_remain_available_for_remaining_reference_retirement() -> None:
+    from developer.automation.decision_reference_migrator import (
+        canonical_targets,
+        project_relation,
     )
-
-
-def test_split_decision_routes_are_fixed_before_materialization() -> None:
-    from developer.automation.decision_reference_migrator import canonical_targets, project_relation
 
     assert canonical_targets("ADR-0003", root=ROOT) == ("SFP-0003", "MPD-0002")
     assert canonical_targets("ADR-0005", root=ROOT) == ("SFP-0005", "MPD-0003")
@@ -107,12 +95,18 @@ def test_split_decision_routes_are_fixed_before_materialization() -> None:
     assert canonical_targets("ADR-0020", root=ROOT) == ("MPD-0009",)
 
     assert project_relation(
-        "ADR-0017", "amends", "ADR-0011",
-        scope="REPOSITORY_SELF_ADOPTION_ASSUMPTION", root=ROOT
+        "ADR-0017",
+        "amends",
+        "ADR-0011",
+        scope="REPOSITORY_SELF_ADOPTION_ASSUMPTION",
+        root=ROOT,
     )[0].source == "MPD-0005"
     assert project_relation(
-        "ADR-0017", "amends", "ADR-0011",
-        scope="REPOSITORY_SELF_ADOPTION_ASSUMPTION", root=ROOT
+        "ADR-0017",
+        "amends",
+        "ADR-0011",
+        scope="REPOSITORY_SELF_ADOPTION_ASSUMPTION",
+        root=ROOT,
     )[0].target == "MPD-0004"
 
 
@@ -127,7 +121,7 @@ def test_unregistered_split_relation_fails_closed() -> None:
         project_relation("ADR-0017", "depends_on", "ADR-0021", root=ROOT)
 
 
-def test_all_legacy_machine_relations_have_deterministic_projection_routes() -> None:
+def test_current_policy_relations_are_machine_valid_without_legacy_derivation() -> None:
     assert validate_developer_policy(ROOT) == ()
 
 
@@ -150,51 +144,78 @@ def test_split_textual_references_are_never_auto_rewritten() -> None:
     assert "SFP-0018" in rewritten
 
 
-def test_relation_migration_manifest_covers_all_five_legacy_edges() -> None:
+def _current_relation_edges() -> list[tuple[str, str, str, str | None]]:
     import yaml
 
-    path = ROOT / "developer" / "policy" / "policy-relation-migration.yaml"
-    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
-    assert payload["source_relation_count"] == 5
-    assert len(payload["relations"]) == 5
-    projected = [
-        (edge["source_policy"], edge["relation"], edge["target_policy"], edge["scope"])
-        for item in payload["relations"]
-        for edge in item["projected_edges"]
+    paths = [
+        ROOT / "src" / "ptsip" / "specdata" / f"SFP-{number:04d}.yaml"
+        for number in range(1, 22)
+    ] + [
+        ROOT / "developer" / "policy" / f"MPD-{number:04d}.yaml"
+        for number in range(1, 10)
     ]
-    assert projected == [
+    edges: list[tuple[str, str, str, str | None]] = []
+    for path in paths:
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        source = payload["policy"]["id"]
+        for relation_kind in ("supersedes", "amends", "extends", "depends_on"):
+            for edge in payload.get("relations", {}).get(relation_kind, []):
+                edges.append(
+                    (source, relation_kind, edge["policy"], edge.get("scope"))
+                )
+    return edges
+
+
+def test_current_policy_relations_preserve_materialized_relation_set() -> None:
+    assert _current_relation_edges() == [
         ("SFP-0008", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
         ("SFP-0009", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
-        ("SFP-0009", "depends_on", "SFP-0008", "RESPONSIBILITY_MAP_SEMANTIC_AXES"),
+        (
+            "SFP-0009",
+            "depends_on",
+            "SFP-0008",
+            "RESPONSIBILITY_MAP_SEMANTIC_AXES",
+        ),
         ("SFP-0011", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
-        ("MPD-0005", "amends", "MPD-0004", "REPOSITORY_SELF_ADOPTION_ASSUMPTION"),
+        (
+            "MPD-0005",
+            "amends",
+            "MPD-0004",
+            "REPOSITORY_SELF_ADOPTION_ASSUMPTION",
+        ),
     ]
 
 
 def test_support_policy_never_depends_on_developer_policy() -> None:
+    for source, _, target, _ in _current_relation_edges():
+        assert not (source.startswith("SFP-") and target.startswith("MPD-"))
+
+
+def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     import yaml
 
-    path = ROOT / "developer" / "policy" / "policy-relation-migration.yaml"
-    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
-    for item in payload["relations"]:
-        for edge in item["projected_edges"]:
-            assert not (
-                edge["source_policy"].startswith("SFP-")
-                and edge["target_policy"].startswith("MPD-")
-            )
+    mpd_index = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "index.yaml").read_text(encoding="utf-8")
+    )
+    sfp_index = yaml.safe_load(
+        (
+            ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml"
+        ).read_text(encoding="utf-8")
+    )
 
+    assert [item["id"] for item in mpd_index["policies"]] == [
+        f"MPD-{number:04d}" for number in range(1, 10)
+    ]
+    assert [item["id"] for item in sfp_index["policies"]] == [
+        f"SFP-{number:04d}" for number in range(1, 22)
+    ]
+    assert "legacy_decisions_migration" not in mpd_index
 
-def test_all_29_migrated_policy_files_match_deterministic_materializer() -> None:
-    from developer.automation.policy_loader import load_yaml
-    from developer.automation.policy_materializer import expected_materialized_policies
-
-    expected = expected_materialized_policies(ROOT)
-    assert len(expected) == 29
-    assert sum(path.startswith("src/ptsip/specdata/SFP-") for path in expected) == 21
-    assert sum(path.startswith("developer/policy/MPD-") for path in expected) == 8
-    for path, payload in expected.items():
-        assert load_yaml(path, root=ROOT) == payload
+    for entry in [*mpd_index["policies"], *sfp_index["policies"]]:
+        payload = yaml.safe_load((ROOT / entry["path"]).read_text(encoding="utf-8"))
+        assert payload["policy"]["id"] == entry["id"]
+        assert payload["policy"]["status"] == entry["status"]
 
 
 def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -> None:
@@ -238,17 +259,34 @@ def test_split_textual_reference_migration_preserves_frozen_spec_revision() -> N
 
     current = subprocess.run(
         ["git", "rev-parse", "HEAD:spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"],
-        cwd=ROOT, check=True, capture_output=True, text=True
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
     ).stdout.strip()
     frozen = subprocess.run(
-        ["git", "rev-parse", "3c47816770d194ae42f98faedc911d980db0e62a:spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"],
-        cwd=ROOT, check=True, capture_output=True, text=True
+        [
+            "git",
+            "rev-parse",
+            "3c47816770d194ae42f98faedc911d980db0e62a:spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
     ).stdout.strip()
     assert current == frozen
 
 
 def test_mutable_split_markdown_references_are_migrated() -> None:
-    split_ids = {"ADR-0003", "ADR-0005", "ADR-0011", "ADR-0017", "ADR-0021", "ADR-0023"}
+    split_ids = {
+        "ADR-0003",
+        "ADR-0005",
+        "ADR-0011",
+        "ADR-0017",
+        "ADR-0021",
+        "ADR-0023",
+    }
     mutable_migrated_files = (
         ROOT / "releasenote" / "README.md",
         ROOT / "releasenote" / "project-profile" / "pp.1.01.md",
@@ -265,25 +303,15 @@ def test_mutable_split_markdown_references_are_migrated() -> None:
     assert "SFP-0019's substantive identity separation" in release_note
 
 
-def test_legacy_decision_inventory_schema_accepts_versioned_adr_filenames() -> None:
-    import json
-    import re
-
-    schema_path = ROOT / "developer" / "policy" / "schemas" / "legacy-decision-inventory.schema.json"
-    schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    pattern = schema["properties"]["entries"]["items"]["properties"]["source_path"]["pattern"]
-
-    assert re.fullmatch(pattern, "decisions/ADR-0005-activate-spec-0.3.4-draft.yaml")
-    assert re.fullmatch(pattern, "decisions/ADR-0011-activate-spec-0.3.7-draft.yaml")
-
-
 def test_four_legacy_governance_registries_are_split_and_materialized() -> None:
     import yaml
     from developer.automation.registry_split_validator import validate_registry_split
 
     assert validate_registry_split(ROOT) == ()
     inventory = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "registry-split-inventory.yaml").read_text(encoding="utf-8")
+        (
+            ROOT / "developer" / "policy" / "registry-split-inventory.yaml"
+        ).read_text(encoding="utf-8")
     )
     assert inventory["classification"] == "SPLIT"
     assert inventory["source_registry_count"] == 4
@@ -299,7 +327,13 @@ def test_support_registry_projection_contains_no_ptsip_repository_binding() -> N
     import yaml
 
     subject = yaml.safe_load(
-        (ROOT / "src" / "ptsip" / "specdata" / "ptsip-support-authority-subject-registry.yaml").read_text(encoding="utf-8")
+        (
+            ROOT
+            / "src"
+            / "ptsip"
+            / "specdata"
+            / "ptsip-support-authority-subject-registry.yaml"
+        ).read_text(encoding="utf-8")
     )
     assert "current_repository_bindings" not in subject
     assert set(subject["subject_identity_schemes"]) == {"SUPPORT_POLICY_ID"}
@@ -309,10 +343,22 @@ def test_owner_authorization_grants_remain_developer_policy_only() -> None:
     import yaml
 
     support = yaml.safe_load(
-        (ROOT / "src" / "ptsip" / "specdata" / "ptsip-support-authorization-registry.yaml").read_text(encoding="utf-8")
+        (
+            ROOT
+            / "src"
+            / "ptsip"
+            / "specdata"
+            / "ptsip-support-authorization-registry.yaml"
+        ).read_text(encoding="utf-8")
     )
     developer = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "registries" / "authorization-transition-registry.yaml").read_text(encoding="utf-8")
+        (
+            ROOT
+            / "developer"
+            / "policy"
+            / "registries"
+            / "authorization-transition-registry.yaml"
+        ).read_text(encoding="utf-8")
     )
     assert "authorization_provenance" not in support
     assert "rules" not in support
@@ -321,7 +367,9 @@ def test_owner_authorization_grants_remain_developer_policy_only() -> None:
 
 
 def test_developer_owner_authorization_uses_mpd_registry() -> None:
-    from developer.automation.authorization_transition import DeveloperAuthorizationTransitionEvaluator
+    from developer.automation.authorization_transition import (
+        DeveloperAuthorizationTransitionEvaluator,
+    )
     from ptsip.governance import AuthorizationState
 
     evaluator = DeveloperAuthorizationTransitionEvaluator(ROOT)

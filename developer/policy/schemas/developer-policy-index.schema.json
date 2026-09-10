@@ -6,8 +6,7 @@
   "required": [
     "schema_version",
     "policy_class",
-    "policies",
-    "legacy_decisions_migration"
+    "policies"
   ],
   "properties": {
     "schema_version": {
@@ -47,9 +46,6 @@
         },
         "additionalProperties": false
       }
-    },
-    "legacy_decisions_migration": {
-      "type": "object"
     }
   },
   "additionalProperties": false

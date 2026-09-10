@@ -5,8 +5,6 @@ from pathlib import Path
 
 import yaml
 
-from developer.automation.policy_materializer import expected_materialized_policies
-
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -59,8 +57,17 @@ def test_current_policy_schemas_do_not_define_legacy_source_provenance() -> None
     assert mpd_schema["additionalProperties"] is False
 
 
-def test_legacy_materializer_no_longer_emits_provenance_into_current_policies() -> None:
-    expected = expected_materialized_policies(ROOT)
-    assert len(expected) == 29
-    for path, payload in expected.items():
-        assert "source_provenance" not in payload, path
+def test_legacy_policy_materializer_is_retired_from_current_validation() -> None:
+    materializer = ROOT / "developer" / "automation" / "policy_materializer.py"
+    assert not materializer.exists()
+
+    validator_text = (
+        ROOT / "developer" / "automation" / "policy_validator.py"
+    ).read_text(encoding="utf-8")
+    for forbidden in (
+        "policy_materializer",
+        "legacy-decisions-inventory.yaml",
+        "policy-relation-migration.yaml",
+        "decision_reference_migrator",
+    ):
+        assert forbidden not in validator_text

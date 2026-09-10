@@ -1,284 +1,348 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Mapping
 
 from jsonschema import Draft202012Validator
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
-from developer.automation.decision_reference_migrator import (
-    UnroutedDecisionReferenceError,
-    project_relation,
-)
-from developer.automation.registry_split_validator import validate_registry_split
-from developer.automation.policy_materializer import (
-    expected_materialized_policies,
-    expected_mpd_index_entries,
-    expected_support_policy_index,
-)
 
 
 INDEX = "developer/policy/index.yaml"
 INDEX_SCHEMA = "developer/policy/schemas/developer-policy-index.schema.json"
 MPD_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
-LEGACY_INVENTORY = "developer/policy/legacy-decisions-inventory.yaml"
-LEGACY_INVENTORY_SCHEMA = "developer/policy/schemas/legacy-decision-inventory.schema.json"
-LEGACY_ROUTING = "developer/policy/legacy-decision-reference-routing.yaml"
-LEGACY_ROUTING_SCHEMA = "developer/policy/schemas/legacy-decision-reference-routing.schema.json"
-SPLIT_TEXTUAL_REVIEW = "developer/policy/split-textual-reference-review.yaml"
-SPLIT_TEXTUAL_REVIEW_SCHEMA = "developer/policy/schemas/split-textual-reference-review.schema.json"
-RELATION_MIGRATION = "developer/policy/policy-relation-migration.yaml"
-RELATION_MIGRATION_SCHEMA = "developer/policy/schemas/policy-relation-migration.schema.json"
+
 SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
 SFP_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
 SFP_INDEX = "src/ptsip/specdata/support-policy-index.yaml"
 SFP_INDEX_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy-index.schema.json"
 SFP_INDEX_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy-index.schema.json"
 
+SUPPORT_REGISTRY_SCHEMA = "schemas/ptsip-support-governance-registry.schema.json"
+DEVELOPER_REGISTRY_SCHEMA = "developer/policy/schemas/developer-governance-registry.schema.json"
+SUPPORT_SEMANTICS_SCHEMA = "schemas/ptsip-support-authority-semantics.schema.json"
+SUPPORT_SEMANTICS_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-authority-semantics.schema.json"
+DEVELOPER_SEMANTICS_SCHEMA = "developer/policy/schemas/developer-authority-semantics.schema.json"
+
+SUPPORT_REGISTRIES = (
+    "src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml",
+    "src/ptsip/specdata/ptsip-support-authority-role-registry.yaml",
+    "src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml",
+    "src/ptsip/specdata/ptsip-support-authorization-registry.yaml",
+)
+DEVELOPER_REGISTRIES = (
+    "developer/policy/registries/authority-schema-registry.yaml",
+    "developer/policy/registries/authority-role-registry.yaml",
+    "developer/policy/registries/authority-subject-registry.yaml",
+    "developer/policy/registries/authorization-transition-registry.yaml",
+)
+RELATION_KINDS = ("supersedes", "amends", "extends", "depends_on")
+
+
+def _mapping(value: object) -> Mapping[str, object] | None:
+    return value if isinstance(value, Mapping) else None
+
+
+def _validate_current_registry_planes(
+    base: Path,
+    *,
+    sfp_ids: tuple[str, ...],
+    mpd_ids: tuple[str, ...],
+) -> list[str]:
+    errors: list[str] = []
+
+    support_registry_schema = load_json(SUPPORT_REGISTRY_SCHEMA, root=base)
+    developer_registry_schema = load_json(DEVELOPER_REGISTRY_SCHEMA, root=base)
+    support_semantics = load_json(SUPPORT_SEMANTICS_SCHEMA, root=base)
+    embedded_support_semantics = load_json(SUPPORT_SEMANTICS_EMBEDDED_SCHEMA, root=base)
+    developer_semantics = load_json(DEVELOPER_SEMANTICS_SCHEMA, root=base)
+
+    for schema in (
+        support_registry_schema,
+        developer_registry_schema,
+        support_semantics,
+        developer_semantics,
+    ):
+        Draft202012Validator.check_schema(schema)
+
+    if support_semantics != embedded_support_semantics:
+        errors.append("support authority semantics canonical and embedded schemas differ")
+
+    support_payloads: list[dict[str, object]] = []
+    for path in SUPPORT_REGISTRIES:
+        payload = load_yaml(path, root=base)
+        support_payloads.append(payload)
+        for error in Draft202012Validator(support_registry_schema).iter_errors(payload):
+            errors.append(f"{path}: {error.message}")
+        if "decisions/" in (base / path).read_text(encoding="utf-8"):
+            errors.append(f"{path}: shipped support registry must not depend on legacy decisions paths")
+
+    developer_payloads: list[dict[str, object]] = []
+    for path in DEVELOPER_REGISTRIES:
+        payload = load_yaml(path, root=base)
+        developer_payloads.append(payload)
+        for error in Draft202012Validator(developer_registry_schema).iter_errors(payload):
+            errors.append(f"{path}: {error.message}")
+
+    schema_registry = support_payloads[0]
+    support_schema_entries = schema_registry.get("entries", [])
+    if not isinstance(support_schema_entries, list):
+        errors.append("support authority schema registry entries must be a list")
+        support_schema_entries = []
+    if [
+        item.get("policy_id")
+        for item in support_schema_entries
+        if isinstance(item, Mapping)
+    ] != list(sfp_ids):
+        errors.append("support authority schema registry must cover support-policy-index exactly")
+
+    role_registry = support_payloads[1]
+    support_role_entries = role_registry.get("policy_roles", [])
+    if not isinstance(support_role_entries, list):
+        errors.append("support authority role registry policy_roles must be a list")
+        support_role_entries = []
+    if [
+        item.get("policy_id")
+        for item in support_role_entries
+        if isinstance(item, Mapping)
+    ] != list(sfp_ids):
+        errors.append("support authority role registry must cover support-policy-index exactly")
+
+    effect_vocabulary = _mapping(role_registry.get("effect_vocabulary"))
+    if effect_vocabulary is None:
+        errors.append("support authority role registry effect_vocabulary must be a mapping")
+    else:
+        tokens = effect_vocabulary.get("tokens")
+        count = effect_vocabulary.get("count")
+        if not isinstance(tokens, list) or count != len(tokens) or len(tokens) != len(set(tokens)):
+            errors.append("support authority effect vocabulary count/uniqueness mismatch")
+
+    subject_registry = support_payloads[2]
+    if "current_repository_bindings" in subject_registry:
+        errors.append("support subject registry must not ship PTSIP repository bindings")
+    subject_schemes = _mapping(subject_registry.get("subject_identity_schemes"))
+    if subject_schemes is None or set(subject_schemes) != {"SUPPORT_POLICY_ID"}:
+        errors.append("support subject registry must use SUPPORT_POLICY_ID only")
+    else:
+        support_identity = _mapping(subject_schemes.get("SUPPORT_POLICY_ID"))
+        registered = None if support_identity is None else support_identity.get("registered_values")
+        if registered != list(sfp_ids):
+            errors.append("support subject registry SUPPORT_POLICY_ID values must match support-policy-index")
+
+    auth_registry = support_payloads[3]
+    for forbidden in ("authorization_provenance", "rules", "held_scopes"):
+        if forbidden in auth_registry:
+            errors.append(f"support authorization registry must not ship {forbidden}")
+
+    developer_schema_registry = developer_payloads[0]
+    developer_schema_entries = developer_schema_registry.get("entries", [])
+    if not isinstance(developer_schema_entries, list):
+        errors.append("developer authority schema registry entries must be a list")
+        developer_schema_entries = []
+    developer_registry_ids = [
+        str(item.get("policy_id"))
+        for item in developer_schema_entries
+        if isinstance(item, Mapping)
+    ]
+    expected_developer_registry_ids = [policy_id for policy_id in mpd_ids if policy_id != "MPD-0001"]
+    if developer_registry_ids != expected_developer_registry_ids:
+        errors.append(
+            "developer authority schema registry must cover current migrated MPD policies exactly"
+        )
+
+    developer_role_registry = developer_payloads[1]
+    developer_role_entries = developer_role_registry.get("policy_roles", [])
+    if not isinstance(developer_role_entries, list):
+        errors.append("developer authority role registry policy_roles must be a list")
+        developer_role_entries = []
+    if [
+        item.get("policy_id")
+        for item in developer_role_entries
+        if isinstance(item, Mapping)
+    ] != expected_developer_registry_ids:
+        errors.append(
+            "developer authority role registry must cover current migrated MPD policies exactly"
+        )
+
+    for entry in support_schema_entries:
+        if not isinstance(entry, Mapping):
+            continue
+        policy_id = entry.get("policy_id")
+        definition_name = entry.get("schema_definition")
+        definition = support_semantics.get("$defs", {}).get(definition_name)
+        if not isinstance(policy_id, str) or not isinstance(definition, Mapping):
+            errors.append(f"support authority schema registry entry is unresolved: {entry!r}")
+            continue
+        policy = load_yaml(f"src/ptsip/specdata/{policy_id}.yaml", root=base)
+        semantics = policy.get("authority_semantics")
+        for error in Draft202012Validator(definition).iter_errors(semantics):
+            errors.append(f"{policy_id}: {error.message}")
+
+    for entry in developer_schema_entries:
+        if not isinstance(entry, Mapping):
+            continue
+        policy_id = entry.get("policy_id")
+        definition_name = entry.get("schema_definition")
+        definition = developer_semantics.get("$defs", {}).get(definition_name)
+        if not isinstance(policy_id, str) or not isinstance(definition, Mapping):
+            errors.append(f"developer authority schema registry entry is unresolved: {entry!r}")
+            continue
+        policy = load_yaml(f"developer/policy/{policy_id}.yaml", root=base)
+        rules = _mapping(policy.get("rules"))
+        semantics = None if rules is None else rules.get("authority_semantics")
+        for error in Draft202012Validator(definition).iter_errors(semantics):
+            errors.append(f"{policy_id}: {error.message}")
+
+    return errors
+
 
 def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]:
     base = repository_root(root)
     errors: list[str] = []
+
     index = load_yaml(INDEX, root=base)
     index_schema = load_json(INDEX_SCHEMA, root=base)
     mpd_schema = load_json(MPD_SCHEMA, root=base)
-    inventory = load_yaml(LEGACY_INVENTORY, root=base)
-    inventory_schema = load_json(LEGACY_INVENTORY_SCHEMA, root=base)
-    routing = load_yaml(LEGACY_ROUTING, root=base)
-    routing_schema = load_json(LEGACY_ROUTING_SCHEMA, root=base)
-    split_review = load_yaml(SPLIT_TEXTUAL_REVIEW, root=base)
-    split_review_schema = load_json(SPLIT_TEXTUAL_REVIEW_SCHEMA, root=base)
-    relation_migration = load_yaml(RELATION_MIGRATION, root=base)
-    relation_migration_schema = load_json(RELATION_MIGRATION_SCHEMA, root=base)
-    Draft202012Validator.check_schema(index_schema)
-    Draft202012Validator.check_schema(mpd_schema)
-    Draft202012Validator.check_schema(inventory_schema)
-    Draft202012Validator.check_schema(routing_schema)
-    Draft202012Validator.check_schema(split_review_schema)
-    Draft202012Validator.check_schema(relation_migration_schema)
-    for error in Draft202012Validator(index_schema).iter_errors(index):
-        errors.append(f"developer/policy/index.yaml: {error.message}")
-    for error in Draft202012Validator(inventory_schema).iter_errors(inventory):
-        errors.append(f"{LEGACY_INVENTORY}: {error.message}")
-    for error in Draft202012Validator(routing_schema).iter_errors(routing):
-        errors.append(f"{LEGACY_ROUTING}: {error.message}")
-    for error in Draft202012Validator(split_review_schema).iter_errors(split_review):
-        errors.append(f"{SPLIT_TEXTUAL_REVIEW}: {error.message}")
-    for error in Draft202012Validator(relation_migration_schema).iter_errors(relation_migration):
-        errors.append(f"{RELATION_MIGRATION}: {error.message}")
-    inventory_path = index.get("legacy_decisions_migration", {}).get("inventory_path")
-    if inventory_path != LEGACY_INVENTORY:
-        errors.append("developer/policy/index.yaml: legacy decision inventory_path is not canonical")
-    inventory_entries = inventory.get("entries", [])
-    expected_ids = [f"ADR-{number:04d}" for number in range(1, 24)]
-    actual_ids = [item.get("source_id") for item in inventory_entries if isinstance(item, dict)]
-    if actual_ids != expected_ids:
-        errors.append("legacy decision inventory must contain ADR-0001 through ADR-0023 in order")
-    target_ids: list[str] = []
-    class_counts = {"MPD": 0, "SFP": 0, "SPLIT": 0, "RETIRE": 0}
-    retired_fragments = 0
-    for item in inventory_entries:
-        if not isinstance(item, dict):
-            continue
-        classification = item.get("classification")
-        if classification in class_counts:
-            class_counts[classification] += 1
-        source_path = item.get("source_path")
-        if isinstance(source_path, str):
-            source = load_yaml(source_path, root=base)
-            decision = source.get("decision", {})
-            if decision.get("id") != item.get("source_id"):
-                errors.append(f"{source_path}: decision.id does not match inventory")
-            if decision.get("topic_id") != item.get("topic_id"):
-                errors.append(f"{source_path}: decision.topic_id does not match inventory")
-        outputs = item.get("outputs", [])
-        if classification == "SPLIT" and len(outputs) < 2:
-            errors.append(f"{item.get('source_id')}: SPLIT requires at least two outputs")
-        if classification in {"MPD", "SFP"} and len(outputs) != 1:
-            errors.append(f"{item.get('source_id')}: pure classification requires exactly one output")
-        for output in outputs:
-            if not isinstance(output, dict):
-                continue
-            target_id = output.get("target_id")
-            if isinstance(target_id, str):
-                target_ids.append(target_id)
-            if output.get("disposition") == "RETIRE_FRAGMENT":
-                retired_fragments += 1
-    if len(target_ids) != len(set(target_ids)):
-        errors.append("legacy decision inventory target IDs must be unique")
-    inventory_routes = {
-        item.get("source_id"): tuple(
-            output.get("target_id")
-            for output in item.get("outputs", [])
-            if isinstance(output, dict) and isinstance(output.get("target_id"), str)
-        )
-        for item in inventory_entries
-        if isinstance(item, dict)
-    }
-    routing_routes = {
-        adr_id: tuple(route.get("targets", []))
-        for adr_id, route in routing.get("id_routes", {}).items()
-        if isinstance(route, dict)
-    }
-    if inventory_routes != routing_routes:
-        errors.append("legacy decision reference routing must exactly match inventory target allocation")
-    for adr_id, targets in routing_routes.items():
-        route = routing.get("id_routes", {}).get(adr_id, {})
-        mode = route.get("textual_reference_mode") if isinstance(route, dict) else None
-        expected_mode = "MANUAL_CONTEXT_REVIEW" if len(targets) > 1 else "AUTO_SINGLE_TARGET"
-        if mode != expected_mode:
-            errors.append(f"{adr_id}: textual_reference_mode must be {expected_mode}")
-    summary = inventory.get("summary", {})
-    if any(summary.get(key) != value for key, value in class_counts.items()):
-        errors.append("legacy decision inventory classification summary does not match entries")
-    if summary.get("planned_sfp_targets") != sum(item.startswith("SFP-") for item in target_ids):
-        errors.append("legacy decision inventory SFP target count does not match entries")
-    if summary.get("planned_mpd_targets") != sum(item.startswith("MPD-") for item in target_ids):
-        errors.append("legacy decision inventory MPD target count does not match entries")
-    if summary.get("retired_fragments") != retired_fragments:
-        errors.append("legacy decision inventory retired fragment count does not match entries")
-
-    manifest_source_relations = {
-        (
-            item["source_relation"]["source_adr"],
-            item["source_relation"]["relation"],
-            item["source_relation"]["target_adr"],
-            item["source_relation"]["scope"],
-        )
-        for item in relation_migration.get("relations", [])
-        if isinstance(item, dict) and isinstance(item.get("source_relation"), dict)
-    }
-    actual_source_relations: set[tuple[str, str, str, str | None]] = set()
-
-    # Every machine relation in the legacy ADR corpus must project deterministically.
-    # Unique-to-unique relations may project automatically; any relation touching a
-    # SPLIT source or target must have a predeclared relation route.
-    relation_kinds = ("depends_on", "amends", "extends", "supersedes")
-    for item in inventory_entries:
-        if not isinstance(item, dict):
-            continue
-        source_id = item.get("source_id")
-        source_path = item.get("source_path")
-        if not isinstance(source_id, str) or not isinstance(source_path, str):
-            continue
-        source = load_yaml(source_path, root=base)
-        relations = source.get("relations", {})
-        if not isinstance(relations, dict):
-            continue
-        for relation_kind in relation_kinds:
-            values = relations.get(relation_kind, [])
-            if not isinstance(values, list):
-                continue
-            for relation in values:
-                if isinstance(relation, str):
-                    target_id = relation
-                    scope = None
-                elif isinstance(relation, dict):
-                    target_id = relation.get("adr")
-                    scope = relation.get("scope")
-                else:
-                    errors.append(f"{source_path}: invalid relation entry in {relation_kind}")
-                    continue
-                if not isinstance(target_id, str):
-                    errors.append(f"{source_path}: relation {relation_kind} is missing ADR target")
-                    continue
-                relation_key = (
-                    source_id,
-                    relation_kind,
-                    target_id,
-                    scope if isinstance(scope, str) else None,
-                )
-                actual_source_relations.add(relation_key)
-                try:
-                    edges = project_relation(
-                        source_id,
-                        relation_kind,
-                        target_id,
-                        scope=scope if isinstance(scope, str) else None,
-                        root=base,
-                    )
-                except UnroutedDecisionReferenceError as exc:
-                    errors.append(f"{source_path}: {exc}")
-                    continue
-                if not edges:
-                    errors.append(
-                        f"{source_path}: relation {relation_kind} to {target_id} projected no edges"
-                    )
-
-    if actual_source_relations != manifest_source_relations:
-        errors.append(
-            "policy relation migration manifest must exactly cover every legacy ADR machine relation"
-        )
-
-    allowed_boundaries = {
-        ("SFP", "SFP"),
-        ("MPD", "MPD"),
-        ("MPD", "SFP"),
-    }
-    for item in relation_migration.get("relations", []):
-        if not isinstance(item, dict):
-            continue
-        for edge in item.get("projected_edges", []):
-            if not isinstance(edge, dict):
-                continue
-            source = str(edge.get("source_policy", ""))
-            target = str(edge.get("target_policy", ""))
-            boundary = (source[:3], target[:3])
-            if boundary not in allowed_boundaries:
-                errors.append(
-                    f"{item.get('migration_id')}: forbidden policy relation boundary {source} -> {target}"
-                )
-
-    for entry in index.get("policies", []):
-        path = entry.get("path")
-        if not isinstance(path, str):
-            continue
-        payload = load_yaml(path, root=base)
-        for error in Draft202012Validator(mpd_schema).iter_errors(payload):
-            errors.append(f"{path}: {error.message}")
-        if payload.get("policy", {}).get("id") != entry.get("id"):
-            errors.append(f"{path}: policy.id does not match index id")
-    expected_policies = expected_materialized_policies(base)
-    actual_migrated_mpd_entries = [
-        entry for entry in index.get("policies", [])
-        if isinstance(entry, dict) and entry.get("id") != "MPD-0001"
-    ]
-    if actual_migrated_mpd_entries != expected_mpd_index_entries(base):
-        errors.append("developer policy index does not match materialized MPD corpus")
-
     sfp_index = load_yaml(SFP_INDEX, root=base)
     sfp_index_schema = load_json(SFP_INDEX_CANONICAL_SCHEMA, root=base)
     sfp_index_embedded_schema = load_json(SFP_INDEX_EMBEDDED_SCHEMA, root=base)
-    Draft202012Validator.check_schema(sfp_index_schema)
-    Draft202012Validator.check_schema(sfp_index_embedded_schema)
+    sfp_schema = load_json(SFP_CANONICAL_SCHEMA, root=base)
+    sfp_embedded_schema = load_json(SFP_EMBEDDED_SCHEMA, root=base)
+
+    for schema in (
+        index_schema,
+        mpd_schema,
+        sfp_index_schema,
+        sfp_index_embedded_schema,
+        sfp_schema,
+        sfp_embedded_schema,
+    ):
+        Draft202012Validator.check_schema(schema)
+
     if sfp_index_schema != sfp_index_embedded_schema:
         errors.append("Support Feature Policy index canonical and embedded schemas differ")
-    for error in Draft202012Validator(sfp_index_schema).iter_errors(sfp_index):
-        errors.append(f"{SFP_INDEX}: {error.message}")
-    if sfp_index != expected_support_policy_index(base):
-        errors.append("Support Feature Policy index does not match materialized SFP corpus")
-
-    canonical = load_json(SFP_CANONICAL_SCHEMA, root=base)
-    embedded = load_json(SFP_EMBEDDED_SCHEMA, root=base)
-    Draft202012Validator.check_schema(canonical)
-    Draft202012Validator.check_schema(embedded)
-    if canonical != embedded:
+    if sfp_schema != sfp_embedded_schema:
         errors.append("Support Feature Policy canonical and embedded schemas differ")
 
-    sfp_validator = Draft202012Validator(canonical)
-    for path, expected in expected_policies.items():
-        actual = load_yaml(path, root=base)
-        if actual != expected:
-            errors.append(f"{path}: materialized policy differs from deterministic materializer")
-        if path.startswith("src/ptsip/specdata/SFP-"):
-            for error in sfp_validator.iter_errors(actual):
-                errors.append(f"{path}: {error.message}")
-            raw_text = (base / path).read_text(encoding="utf-8")
-            forbidden = ("subject_binding:", "authority_role:", "repository_binding:")
-            for token in forbidden:
-                if token in raw_text:
-                    errors.append(f"{path}: forbidden legacy developer wrapper {token}")
+    for error in Draft202012Validator(index_schema).iter_errors(index):
+        errors.append(f"{INDEX}: {error.message}")
+    for error in Draft202012Validator(sfp_index_schema).iter_errors(sfp_index):
+        errors.append(f"{SFP_INDEX}: {error.message}")
 
-    errors.extend(validate_registry_split(base))
+    mpd_entries = index.get("policies", [])
+    sfp_entries = sfp_index.get("policies", [])
+    if not isinstance(mpd_entries, list):
+        errors.append(f"{INDEX}: policies must be a list")
+        mpd_entries = []
+    if not isinstance(sfp_entries, list):
+        errors.append(f"{SFP_INDEX}: policies must be a list")
+        sfp_entries = []
+
+    mpd_ids = tuple(
+        str(entry.get("id"))
+        for entry in mpd_entries
+        if isinstance(entry, Mapping)
+    )
+    sfp_ids = tuple(
+        str(entry.get("id"))
+        for entry in sfp_entries
+        if isinstance(entry, Mapping)
+    )
+
+    expected_mpd_ids = tuple(f"MPD-{number:04d}" for number in range(1, 10))
+    expected_sfp_ids = tuple(f"SFP-{number:04d}" for number in range(1, 22))
+    if mpd_ids != expected_mpd_ids:
+        errors.append("developer policy index must contain MPD-0001 through MPD-0009 in order")
+    if sfp_ids != expected_sfp_ids:
+        errors.append("support policy index must contain SFP-0001 through SFP-0021 in order")
+
+    all_policy_ids = set(mpd_ids) | set(sfp_ids)
+    if len(all_policy_ids) != len(mpd_ids) + len(sfp_ids):
+        errors.append("current policy IDs must be globally unique across MPD and SFP indexes")
+
+    current_records: dict[str, dict[str, object]] = {}
+    for entry in mpd_entries:
+        if not isinstance(entry, Mapping):
+            continue
+        policy_id = entry.get("id")
+        path = entry.get("path")
+        if not isinstance(policy_id, str) or not isinstance(path, str):
+            continue
+        payload = load_yaml(path, root=base)
+        current_records[policy_id] = payload
+        for error in Draft202012Validator(mpd_schema).iter_errors(payload):
+            errors.append(f"{path}: {error.message}")
+        policy = _mapping(payload.get("policy"))
+        if policy is None:
+            errors.append(f"{path}: policy must be a mapping")
+            continue
+        if policy.get("id") != policy_id:
+            errors.append(f"{path}: policy.id does not match index id")
+        if policy.get("status") != entry.get("status"):
+            errors.append(f"{path}: policy.status does not match index status")
+
+    sfp_validator = Draft202012Validator(sfp_schema)
+    for entry in sfp_entries:
+        if not isinstance(entry, Mapping):
+            continue
+        policy_id = entry.get("id")
+        path = entry.get("path")
+        if not isinstance(policy_id, str) or not isinstance(path, str):
+            continue
+        payload = load_yaml(path, root=base)
+        current_records[policy_id] = payload
+        for error in sfp_validator.iter_errors(payload):
+            errors.append(f"{path}: {error.message}")
+        policy = _mapping(payload.get("policy"))
+        if policy is None:
+            errors.append(f"{path}: policy must be a mapping")
+            continue
+        if policy.get("id") != policy_id:
+            errors.append(f"{path}: policy.id does not match index id")
+        if policy.get("status") != entry.get("status"):
+            errors.append(f"{path}: policy.status does not match index status")
+        raw_text = (base / path).read_text(encoding="utf-8")
+        for token in ("subject_binding:", "authority_role:", "repository_binding:"):
+            if token in raw_text:
+                errors.append(f"{path}: forbidden legacy developer wrapper {token}")
+
+    for source_id, payload in current_records.items():
+        relations = payload.get("relations")
+        if relations is None:
+            continue
+        relation_map = _mapping(relations)
+        if relation_map is None:
+            errors.append(f"{source_id}: relations must be a mapping")
+            continue
+        for relation_kind in RELATION_KINDS:
+            edges = relation_map.get(relation_kind, [])
+            if not isinstance(edges, list):
+                errors.append(f"{source_id}: relations.{relation_kind} must be a list")
+                continue
+            for edge in edges:
+                edge_map = _mapping(edge)
+                if edge_map is None:
+                    errors.append(f"{source_id}: invalid {relation_kind} relation entry")
+                    continue
+                target_id = edge_map.get("policy")
+                if not isinstance(target_id, str) or target_id not in all_policy_ids:
+                    errors.append(
+                        f"{source_id}: {relation_kind} targets unknown current policy {target_id!r}"
+                    )
+                    continue
+                if source_id.startswith("SFP-") and target_id.startswith("MPD-"):
+                    errors.append(
+                        f"{source_id}: forbidden current policy relation boundary "
+                        f"{source_id} -> {target_id}"
+                    )
+
+    errors.extend(
+        _validate_current_registry_planes(
+            base,
+            sfp_ids=sfp_ids,
+            mpd_ids=mpd_ids,
+        )
+    )
 
     return tuple(errors)
 

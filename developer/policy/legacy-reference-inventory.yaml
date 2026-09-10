@@ -79,23 +79,23 @@ historical_provenance:
     semantics: HISTORICAL_RELEASE_RECORD
     rewrite_historical_identity: false
 
+removal_policy:
+  preauthorized: true
+  confirmation_required_when_ready: false
+  action_when_ready: REMOVE_FROM_ACTIVE_TREE
+
 migration_only_references:
   retirement_required_before_decisions_removal: true
   files:
     - developer/automation/decision_reference_migrator.py
-    - developer/automation/policy_materializer.py
-    - developer/automation/policy_validator.py
     - developer/automation/registry_split_validator.py
     - developer/automation/transition_evaluator.py
-    - developer/policy/index.yaml
     - developer/policy/legacy-decisions-inventory.yaml
     - developer/policy/legacy-decision-reference-routing.yaml
-    - developer/policy/policy-relation-migration.yaml
     - developer/policy/registry-split-inventory.yaml
     - developer/policy/split-textual-reference-review.yaml
     - developer/policy/schemas/legacy-decision-inventory.schema.json
     - developer/policy/schemas/legacy-decision-reference-routing.schema.json
-    - developer/policy/schemas/policy-relation-migration.schema.json
     - developer/policy/schemas/registry-split-inventory.schema.json
     - developer/policy/schemas/split-textual-reference-review.schema.json
     - developer/policy/schemas/split-textual-reference-map.schema.json
@@ -114,22 +114,25 @@ migration_only_references:
     - schemas/ptsip-authority-eligibility-result.schema.json
     - schemas/ptsip-authorization-transition.schema.json
   transitive_dependencies:
-    - consumer: developer/automation/policy_materializer.py
-      via: developer/policy/legacy-decisions-inventory.yaml#entries[].source_path
-      target: decisions/ADR-*.yaml
-      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
-    - consumer: developer/automation/policy_validator.py
-      via: developer/automation/policy_materializer.py
-      target: decisions/ADR-*.yaml
-      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
     - consumer: developer/automation/registry_split_validator.py
       via: direct legacy effect vocabulary comparison
       target: decisions/AUTHORITY-ROLE-REGISTRY.yaml
       state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
     - consumer: developer/tests/test_developer_control_plane.py
-      via: migration validators and materializer regression tests
+      via: migration-only routing, registry-split, and removal-gate tests
       target: decisions/**
-      state: ACTIVE_UNTIL_MIGRATION_RETIREMENT
+      state: ACTIVE_UNTIL_MIGRATION_ONLY_RETIREMENT
+  retired_in_p01_e2:
+    - consumer: developer/automation/policy_materializer.py
+      former_dependency: decisions/ADR-*.yaml
+      state: FILE_REMOVED
+    - consumer: developer/automation/policy_validator.py
+      former_dependency: legacy materializer, inventory, routing, and relation manifest
+      state: CURRENT_POLICY_VALIDATION_REBASED_TO_SFP_MPD
+    - artifact: developer/policy/legacy-decisions-inventory.yaml
+      state: RETAINED_MIGRATION_ONLY_FOR_REMAINING_REFERENCE_ROUTING
+    - artifact: developer/policy/policy-relation-migration.yaml
+      state: REMOVED_AFTER_CURRENT_RELATION_INTEGRITY_REBASE
 
 excluded_non_legacy_decision_namespaces:
   - path: src/ptsip/app/github_authority.py
