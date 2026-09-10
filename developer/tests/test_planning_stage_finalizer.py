@@ -46,6 +46,23 @@ def test_pending_stage_is_promoted_and_document_state_is_synchronized() -> None:
     assert "STAGE_A_MACHINE_VALIDATION_PENDING" not in promoted
     assert "- id: STAGE_A\n      status: COMPLETE" in promoted
     assert "validation:\n        status: PASS" in promoted
+    assert "status: PASS\n    - id: STAGE_B" in promoted
+    assert "- id: STAGE_B\n      status: READY" in promoted
+
+
+def test_stage_boundary_survives_trailing_horizontal_whitespace() -> None:
+    text = """execution_order:\n    - id: STAGE_A   \n      status: IMPLEMENTED_VALIDATION_PENDING   \n      validation:   \n        status: PENDING   \n    - id: STAGE_B\n      status: BLOCKED_BY_STAGE_A_VALIDATION\n"""
+    automatic = {
+        "next_stage": {
+            "id": "STAGE_B",
+            "from_status": "BLOCKED_BY_STAGE_A_VALIDATION",
+            "to_status": "READY",
+        }
+    }
+
+    promoted = promote_stage_text(text, "STAGE_A", automatic)
+
+    assert "status: PASS\n    - id: STAGE_B" in promoted
     assert "- id: STAGE_B\n      status: READY" in promoted
 
 
