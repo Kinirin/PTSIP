@@ -4,6 +4,10 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from developer.automation.planning_extension_finalizer import (
+    extension_is_machine_ready,
+    extension_parent_consistency_errors,
+)
 from developer.automation.planning_merge_reconciler import (
     PlanningStateReconciliationError,
     build_materialized_state,
@@ -16,6 +20,7 @@ ROOT_SCHEMA = "developer/policy/schemas/planning-root-index.schema.json"
 PLAN_SCHEMA = "developer/policy/schemas/planning-index.schema.json"
 WU_SCHEMA = "developer/policy/schemas/work-unit.schema.json"
 EXTENSION_SCHEMA = "developer/policy/schemas/plan-extension.schema.json"
+_TERMINAL_EXTENSION_STATUSES = {"COMPLETE", "SUPERSEDED", "CANCELLED"}
 
 
 def _errors(payload: dict[str, object], schema: dict[str, object], label: str) -> list[str]:
@@ -241,12 +246,36 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
 
                 for extension in payload.get("extensions", []):
                     ext_path = extension.get("path")
-                    if not isinstance(ext_path, str):
+                    ext_id = extension.get("id")
+                    if not isinstance(ext_path, str) or not isinstance(ext_id, str):
                         continue
                     ext_payload = load_yaml(ext_path, root=base)
                     errors.extend(_errors(ext_payload, extension_schema, ext_path))
+                    errors.extend(
+                        extension_parent_consistency_errors(
+                            payload,
+                            ext_payload,
+                            extension_id=ext_id,
+                            extension_path=ext_path,
+                        )
+                    )
+                    ext_status = (
+                        ext_payload.get("extension", {})
+                        .get("lifecycle", {})
+                        .get("status")
+                    )
+                    if extension_is_machine_ready(ext_payload) and ext_status != "COMPLETE":
+                        errors.append(
+                            f"{ext_path}: machine-ready Plan Extension remains {ext_status!r}; "
+                            "run planning_stage_finalizer to close and reconcile it"
+                        )
                     if ext_payload.get("extension", {}).get("id") == gate:
                         gate_resolved = True
+                        if ext_status in _TERMINAL_EXTENSION_STATUSES:
+                            errors.append(
+                                f"{path}: current_gate {gate!r} points to terminal Plan Extension; "
+                                "planning reconciliation is required"
+                            )
         if not gate_resolved:
             errors.append(f"{path}: current_gate {gate!r} does not resolve to a current WU or Plan Extension")
 
