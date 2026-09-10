@@ -56,35 +56,99 @@ def _replace_stage_status(text: str, stage_id: str, old: str, new: str) -> str:
     following = next_marker.search(text, match.end())
     end = following.start() if following else len(text)
     block = text[match.start():end]
-    status = re.compile(
-        rf"(?m)^{re.escape(indent)}  status: {re.escape(old)}\s*$"
-    )
+    status = re.compile(rf"(?m)^{re.escape(indent)}  status: {re.escape(old)}\s*$")
     block, count = status.subn(f"{indent}  status: {new}", block, count=1)
     if count != 1:
         raise ValueError(f"stage {stage_id!r} status is not {old}")
     return text[:match.start()] + block + text[end:]
 
 
+def _section_span(text: str, section: str) -> tuple[int, int]:
+    marker = re.compile(rf"(?m)^{re.escape(section)}:\s*$")
+    match = marker.search(text)
+    if match is None:
+        raise ValueError(f"top-level section not found: {section}")
+    next_top = re.compile(r"(?m)^[A-Za-z0-9_][A-Za-z0-9_-]*:\s*$")
+    following = next_top.search(text, match.end())
+    return match.start(), following.start() if following else len(text)
+
+
+def _replace_mapping_scalar(
+    text: str,
+    *,
+    section: str,
+    key: str,
+    field: str,
+    old: str,
+    new: str,
+) -> str:
+    section_start, section_end = _section_span(text, section)
+    section_text = text[section_start:section_end]
+    key_marker = re.compile(rf"(?m)^  {re.escape(key)}:\s*$")
+    key_match = key_marker.search(section_text)
+    if key_match is None:
+        raise ValueError(f"mapping key not found: {section}.{key}")
+    next_key = re.compile(r"(?m)^  [A-Za-z0-9_][A-Za-z0-9_-]*:\s*$")
+    following = next_key.search(section_text, key_match.end())
+    key_end = following.start() if following else len(section_text)
+    block = section_text[key_match.start():key_end]
+    scalar = re.compile(rf"(?m)^    {re.escape(field)}: {re.escape(old)}\s*$")
+    block, count = scalar.subn(f"    {field}: {new}", block, count=1)
+    if count != 1:
+        raise ValueError(
+            f"mapping scalar must match exactly once: {section}.{key}.{field}={old!r}"
+        )
+    section_text = section_text[:key_match.start()] + block + section_text[key_end:]
+    return text[:section_start] + section_text + text[section_end:]
+
+
+def _remove_list_item(text: str, *, section: str, value: str) -> str:
+    section_start, section_end = _section_span(text, section)
+    section_text = text[section_start:section_end]
+    pattern = re.compile(rf"(?m)^  - {re.escape(value)}\s*\n?")
+    section_text, count = pattern.subn("", section_text, count=1)
+    if count != 1:
+        raise ValueError(f"list item must match exactly once: {section} -> {value}")
+    return text[:section_start] + section_text + text[section_end:]
+
+
 def _apply_document_updates(text: str, automatic: Mapping[str, object]) -> str:
-    updates = automatic.get("document_updates", [])
-    if updates in (None, []):
+    updates = automatic.get("document_updates")
+    if updates is None:
         return text
-    if not isinstance(updates, list):
-        raise ValueError("automatic_completion.document_updates must be a list")
+    if not isinstance(updates, Mapping):
+        raise ValueError("automatic_completion.document_updates must be a mapping")
+
     result = text
-    for item in updates:
+    scalar_updates = updates.get("mapping_scalars", [])
+    if not isinstance(scalar_updates, list):
+        raise ValueError("document_updates.mapping_scalars must be a list")
+    for item in scalar_updates:
         if not isinstance(item, Mapping):
-            raise ValueError("automatic completion document update must be a mapping")
-        old = item.get("from_text")
-        new = item.get("to_text")
-        if not isinstance(old, str) or not isinstance(new, str) or not old:
-            raise ValueError("automatic completion document update requires from_text/to_text")
-        count = result.count(old)
-        if count != 1:
-            raise ValueError(
-                f"automatic completion document update must match exactly once; matched {count}: {old!r}"
-            )
-        result = result.replace(old, new, 1)
+            raise ValueError("mapping scalar update must be a mapping")
+        values = [item.get(name) for name in ("section", "key", "field", "from_value", "to_value")]
+        if not all(isinstance(value, str) and value for value in values):
+            raise ValueError("mapping scalar update fields must be non-empty strings")
+        result = _replace_mapping_scalar(
+            result,
+            section=values[0],
+            key=values[1],
+            field=values[2],
+            old=values[3],
+            new=values[4],
+        )
+
+    list_removals = updates.get("list_removals", [])
+    if not isinstance(list_removals, list):
+        raise ValueError("document_updates.list_removals must be a list")
+    for item in list_removals:
+        if not isinstance(item, Mapping):
+            raise ValueError("list removal update must be a mapping")
+        section = item.get("section")
+        value = item.get("value")
+        if not isinstance(section, str) or not section or not isinstance(value, str) or not value:
+            raise ValueError("list removal requires section and value")
+        result = _remove_list_item(result, section=section, value=value)
     return result
 
 
