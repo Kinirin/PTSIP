@@ -21,7 +21,7 @@ classification_rules:
   frozen_revision_lineage_is_active_reference: false
   mutable_current_authority_reference_is_active: true
   migration_artifact_reference_is_active_after_migration_retirement: false
-  support_policy_source_path_schema_is_historical_provenance_contract: true
+  support_policy_source_path_schema_is_historical_provenance_contract: false
 
 active_dependencies:
   expected_file_count: 5
@@ -93,20 +93,21 @@ active_dependencies:
 
 historical_provenance:
   policy_source_provenance:
+    state: RETIRED_FROM_CURRENT_POLICY_CORPUS
     sfp_file_pattern: src/ptsip/specdata/SFP-*.yaml
-    sfp_file_count: 21
+    sfp_file_count: 0
     mpd_file_pattern: developer/policy/MPD-000[2-9].yaml
-    mpd_file_count: 8
+    mpd_file_count: 0
     source_type: LEGACY_ADR
     source_revision_anchor: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
     source_revision_anchor_materialized_in_policy_records: false
-    cleanup_action: ADD_IMMUTABLE_SOURCE_REVISION_BEFORE_LEGACY_TREE_REMOVAL
+    cleanup_action: REMOVE_LEGACY_POLICY_PROVENANCE_WITHOUT_REVISION_RETENTION
   support_policy_source_path_schema:
     paths:
       - schemas/ptsip-support-feature-policy.schema.json
       - src/ptsip/specdata/ptsip-support-feature-policy.schema.json
-    reference: decisions/ADR-
-    semantics: LEGACY_ADR_SOURCE_PROVENANCE_PATH_PATTERN
+    reference: NONE
+    semantics: RETIRED_LEGACY_ADR_SOURCE_PROVENANCE_PATH_CONTRACT
     runtime_dependency: false
     rewrite_required_before_legacy_tree_removal: false
   frozen_revision_lineage:

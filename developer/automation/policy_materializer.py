@@ -66,14 +66,6 @@ def expected_materialized_policies(
                 continue
             target_id = output["target_id"]
             target_class = output["target_class"]
-            provenance = {
-                "source_type": "LEGACY_ADR",
-                "source_id": decision["id"],
-                "source_topic_id": decision["topic_id"],
-                "source_path": entry["source_path"],
-                "source_status": decision["status"],
-                "semantic_projection": output["semantic_scope"],
-            }
             relations = relation_map.get(target_id, _empty_relations())
             semantics = _project_semantics(source, output)
 
@@ -95,7 +87,6 @@ def expected_materialized_policies(
                     "authority_contract": source["authority_contract"],
                     "authority_semantics": semantics,
                     "relations": relations,
-                    "source_provenance": provenance,
                 }
                 result[f"src/ptsip/specdata/{target_id}.yaml"] = payload
             elif target_class == "MPD":
@@ -109,7 +100,6 @@ def expected_materialized_policies(
                     },
                     "rules": {"authority_semantics": semantics},
                     "relations": relations,
-                    "source_provenance": provenance,
                 }
                 result[f"developer/policy/{target_id}.yaml"] = payload
             else:

@@ -1,7 +1,7 @@
 # Project Profile pp.1.01
 
 > **State:** Current Tool 0.3.7 contract / PTSIP repository adopted
-> **Authority:** SFP-0018, SFP-0019, SFP-0020, SFP-0021
+> **Authority:** ADR-0019, SFP-0019, ADR-0022, SFP-0021
 > **Tool target:** 0.3.7
 > **Current Specification binding:** `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`
 
@@ -72,7 +72,7 @@ PTSIP does not rewrite release history by claiming that existing `0.3.6-draft` f
 
 ## Direct latest-target convergence
 
-SFP-0020 defines Project Profile migration as **source-to-current-target convergence**, not historical version traversal.
+ADR-0022 defines Project Profile migration as **source-to-current-target convergence**, not historical version traversal.
 
 A supported project is migrated from the Project Profile it actually has to the current canonical Project Profile target selected by the installed Tool compatibility authority.
 

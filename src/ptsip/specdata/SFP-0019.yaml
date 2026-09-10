@@ -38,23 +38,3 @@ relations:
   amends: []
   extends: []
   depends_on: []
-source_provenance:
-  source_type: LEGACY_ADR
-  source_id: ADR-0021
-  source_topic_id: project_profile_identity_bridge_release_note_namespaces
-  source_path: decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.yaml
-  source_status: ACCEPTED
-  semantic_projection:
-    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
-    include_fields:
-      - independent_history_axes
-      - bridge_source
-      - bridge_target
-      - bridge_classification
-      - semantic_deltas
-      - canonical_pp_identity
-      - temporary_filename_token
-      - temporary_target_path
-      - legacy_temporary_target_alias
-      - canonical_0_3_6_to_pp_1_01_requires_temporary_target
-      - equivalent_target_collision

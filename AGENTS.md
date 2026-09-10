@@ -37,12 +37,12 @@ For branches covered by this resolver, this section supersedes any fixed histori
 
 ## Canonical Project Authority runtime
 
-For Project Authority work, use the canonical shipped Support Feature machine surface only:
+For Project Authority work, use the canonical machine surface only:
 
-1. select current support policies through `src/ptsip/specdata/support-policy-index.yaml`;
-2. resolve authority contracts through `src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml`;
-3. resolve Authority Role effects through `src/ptsip/specdata/ptsip-support-authority-role-registry.yaml`;
-4. resolve repository/subject applicability through `src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml`;
+1. select current ADRs through `decisions/INDEX.yaml`;
+2. resolve authority contracts through `decisions/AUTHORITY-SCHEMA-REGISTRY.yaml`;
+3. resolve Authority Role effects through `decisions/AUTHORITY-ROLE-REGISTRY.yaml`;
+4. resolve repository/subject applicability through `decisions/AUTHORITY-SUBJECT-REGISTRY.yaml`;
 5. use `src/ptsip/governance/` for fresh eligibility, projection, and preauthorized transition evaluation.
 
 Design-time `planning/**` artifacts are not runtime authority and must not be used to infer missing machine semantics. Subject matching is exact first and may relax only through an explicitly registered machine relationship. AI confidence, prose similarity, and unregistered aliases cannot create authority.

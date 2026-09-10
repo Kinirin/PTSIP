@@ -19,18 +19,3 @@ relations:
       scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
   extends: []
   depends_on: []
-source_provenance:
-  source_type: LEGACY_ADR
-  source_id: ADR-0017
-  source_topic_id: tool_profile_contract_independence
-  source_path: decisions/ADR-0017-tool-version-profile-contract-independence.yaml
-  source_status: ACCEPTED
-  semantic_projection:
-    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
-    include_fields:
-      - tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption
-      - existing_profile_examples_remain_0_3_6_draft_without_contract_change
-      - repository_dogfood_mode
-      - mutation_promotion_verification_scope
-      - spec_0_3_7_draft_remains_tool_development_normative_family
-      - superseded_scope

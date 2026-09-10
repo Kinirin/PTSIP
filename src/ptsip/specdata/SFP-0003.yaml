@@ -25,19 +25,3 @@ relations:
   amends: []
   extends: []
   depends_on: []
-source_provenance:
-  source_type: LEGACY_ADR
-  source_id: ADR-0003
-  source_topic_id: specification_reference_tool_versioning
-  source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
-  source_status: ACCEPTED_FOR_DRAFT_SPECIFICATION
-  semantic_projection:
-    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
-    include_fields:
-      - normative_snapshot_identity
-      - reference_tool_versioning
-      - project_profile_is_intended_ownership_declaration
-      - dependency_evidence_edges_typed
-      - agent_output_schema_constrained
-      - agent_decision_is_architecture_authority
-      - snapshot_instability_invalidates_evidence_set

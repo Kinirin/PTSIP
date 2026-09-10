@@ -40,15 +40,3 @@ relations:
   depends_on:
     - policy: SFP-0010
       scope: PROFILE_TRANSITION_SEMANTICS
-source_provenance:
-  source_type: LEGACY_ADR
-  source_id: ADR-0011
-  source_topic_id: tool_0_3_7_normative_draft_activation
-  source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
-  source_status: ACCEPTED
-  semantic_projection:
-    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
-    include_fields:
-      - preserved_classifications
-      - toolchain_is_current_ptsip_classification
-      - profile_transition_rules
