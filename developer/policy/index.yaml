@@ -38,7 +38,7 @@ legacy_decisions_migration:
     - SFP
     - SPLIT
     - RETIRE
-  state: SPLIT_TEXTUAL_REFERENCE_MIGRATION_COMPLETE
+  state: RUNTIME_BOUNDARY_COMPLETE_REFERENCE_SCAN_PENDING
   inventory_path: developer/policy/legacy-decisions-inventory.yaml
   inventory_schema: developer/policy/schemas/legacy-decision-inventory.schema.json
   reference_routing: developer/policy/legacy-decision-reference-routing.yaml
@@ -58,4 +58,4 @@ legacy_decisions_migration:
       SPLIT_TEXTUAL_REFERENCE_REVIEW_COMPLETE: true
       MACHINE_VALIDATION_PASS: true
   current_blockers:
-    - RUNTIME_BOUNDARY_TARGETED_VALIDATION_PENDING
+    - ACTIVE_REFERENCE_COUNT_ZERO_NOT_YET_VERIFIED
