@@ -12,7 +12,7 @@ from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-PROFILE_PATH = REPO_ROOT / "ptsip.yaml"
+PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
 
 
 def _profile() -> dict[str, object]:
@@ -22,7 +22,7 @@ def _profile() -> dict[str, object]:
 
 
 def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None:
-    result = validate_profile(REPO_ROOT)
+    result = validate_profile(REPO_ROOT, PROFILE_PATH)
 
     assert result.valid, result.errors
     assert result.errors == []
@@ -56,7 +56,7 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None
 
 
 def test_repository_self_profile_resolves_all_discovered_candidates() -> None:
-    analysis = analyze_clarifications(REPO_ROOT)
+    analysis = analyze_clarifications(REPO_ROOT, profile_path=PROFILE_PATH)
 
     assert analysis.comparison.stable
     assert analysis.candidate_ids
