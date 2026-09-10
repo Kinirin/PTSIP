@@ -124,3 +124,10 @@ authorization_routing:
     - rules
     - held_scopes
   product_runtime_must_not_consume_owner_grants: true
+
+effect_vocabulary_projection:
+  source_count: 99
+  sfp_count: 89
+  mpd_count: 22
+  union_must_equal_source: true
+  cross_boundary_overlap_allowed_only_for_shared_effect_semantics: true

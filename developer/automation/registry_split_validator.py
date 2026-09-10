@@ -105,6 +105,17 @@ def validate_registry_split(root: str | Path) -> tuple[str, ...]:
     if [item["policy_id"] for item in developer_role["policy_roles"]] != expected_mpd:
         errors.append("developer authority role registry must cover migrated MPD-0002..MPD-0009 exactly")
 
+    legacy_role = _yaml(base, "decisions/AUTHORITY-ROLE-REGISTRY.yaml")
+    legacy_tokens = set(legacy_role["effect_vocabulary"]["tokens"])
+    support_tokens = set(role_registry["effect_vocabulary"]["tokens"])
+    developer_tokens = set(developer_role["effect_vocabulary"]["tokens"])
+    if len(legacy_tokens) != 99:
+        errors.append("legacy frozen authority effect vocabulary must contain exactly 99 tokens")
+    if support_tokens | developer_tokens != legacy_tokens:
+        errors.append("SFP/MPD authority effect vocabularies must preserve the exact legacy 99-token union")
+    if (support_tokens | developer_tokens) - legacy_tokens:
+        errors.append("registry split introduced an authority effect token not present in the frozen legacy vocabulary")
+
     for entry in schema_registry["entries"]:
         policy = _yaml(base, f"src/ptsip/specdata/{entry['policy_id']}.yaml")
         definition = support_semantics["$defs"][entry["schema_definition"]]

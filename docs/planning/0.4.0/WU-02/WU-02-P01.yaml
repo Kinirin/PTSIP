@@ -148,6 +148,11 @@ migration_stages:
       support_repository_binding_shipped: false
       owner_authorization_grants_shipped: false
       split_effect_routing_granularity: ADR_EFFECT_OCCURRENCE
+      effect_vocabulary_union:
+        legacy: 99
+        sfp: 89
+        mpd: 22
+        union_equals_legacy: REQUIRED
       legacy_decision_topic_identity: RETIRED_FROM_NEW_REGISTRIES
     runtime_source_switch:
       product_authority_catalog: SHIPPED_SFP_ONLY
