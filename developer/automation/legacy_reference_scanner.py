@@ -5,7 +5,6 @@ import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
 
 import yaml
 from jsonschema import Draft202012Validator
@@ -22,8 +21,10 @@ MPD_POLICY_RE = re.compile(r"^developer/policy/MPD-000[2-9]\.yaml$")
 HISTORICAL_SPEC_NOTE_RE = re.compile(r"^releasenote/specification/spec-.+\.md$")
 
 ACTIVE_PATHS = {
+    "AGENTS.md",
     "ptsip.yaml",
     "developer/profiles/ptsip-repository.yaml",
+    "docs/planning/0.4.0/WU-02/WU-02.yaml",
     "releasenote/project-profile/pp.1.01.md",
 }
 FROZEN_PROVENANCE_PATHS = {
@@ -32,6 +33,10 @@ FROZEN_PROVENANCE_PATHS = {
     "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
     "schemas/ptsip-profile-pp-1.01.schema.json",
     "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+}
+PROVENANCE_SCHEMA_PATHS = {
+    "schemas/ptsip-support-feature-policy.schema.json",
+    "src/ptsip/specdata/ptsip-support-feature-policy.schema.json",
 }
 NON_LEGACY_NAMESPACE_PATHS = {
     "src/ptsip/app/github_authority.py",
@@ -102,7 +107,11 @@ def _classification(path: str, reference: str) -> str:
         return "ACTIVE_DEPENDENCY"
     if SFP_POLICY_RE.fullmatch(path) or MPD_POLICY_RE.fullmatch(path):
         return "HISTORICAL_PROVENANCE"
-    if path in FROZEN_PROVENANCE_PATHS or HISTORICAL_SPEC_NOTE_RE.fullmatch(path):
+    if (
+        path in FROZEN_PROVENANCE_PATHS
+        or path in PROVENANCE_SCHEMA_PATHS
+        or HISTORICAL_SPEC_NOTE_RE.fullmatch(path)
+    ):
         return "HISTORICAL_PROVENANCE"
     if _is_non_legacy_namespace(path, reference):
         return "NON_LEGACY_NAMESPACE"
@@ -206,17 +215,31 @@ def validate_legacy_reference_inventory(root: str | Path) -> tuple[str, ...]:
             errors.append(f"{entry['path']}: active reference occurrence map changed")
 
     provenance = inventory["historical_provenance"]["policy_source_provenance"]
-    sfp_files = sorted({item.path for item in hits if item.classification == "HISTORICAL_PROVENANCE" and SFP_POLICY_RE.fullmatch(item.path)})
-    mpd_files = sorted({item.path for item in hits if item.classification == "HISTORICAL_PROVENANCE" and MPD_POLICY_RE.fullmatch(item.path)})
+    sfp_files = sorted({
+        item.path
+        for item in hits
+        if item.classification == "HISTORICAL_PROVENANCE" and SFP_POLICY_RE.fullmatch(item.path)
+    })
+    mpd_files = sorted({
+        item.path
+        for item in hits
+        if item.classification == "HISTORICAL_PROVENANCE" and MPD_POLICY_RE.fullmatch(item.path)
+    })
     if len(sfp_files) != provenance["sfp_file_count"]:
-        errors.append(f"historical SFP provenance file count is {len(sfp_files)}; expected {provenance['sfp_file_count']}")
+        errors.append(
+            f"historical SFP provenance file count is {len(sfp_files)}; expected {provenance['sfp_file_count']}"
+        )
     if len(mpd_files) != provenance["mpd_file_count"]:
-        errors.append(f"historical MPD provenance file count is {len(mpd_files)}; expected {provenance['mpd_file_count']}")
+        errors.append(
+            f"historical MPD provenance file count is {len(mpd_files)}; expected {provenance['mpd_file_count']}"
+        )
 
     for dependency in inventory["migration_only_references"]["transitive_dependencies"]:
         consumer = base / dependency["consumer"]
         if not consumer.is_file():
-            errors.append(f"migration-only transitive dependency consumer missing: {dependency['consumer']}")
+            errors.append(
+                f"migration-only transitive dependency consumer missing: {dependency['consumer']}"
+            )
 
     return tuple(errors)
 
