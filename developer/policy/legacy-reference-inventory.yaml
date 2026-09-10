@@ -24,27 +24,9 @@ classification_rules:
   support_policy_source_path_schema_is_historical_provenance_contract: false
 
 active_dependencies:
-  expected_file_count: 1
-  expected_reference_count: 11
-  entries:
-    - id: ACTIVE-005
-      path: docs/planning/0.4.0/WU-02/WU-02.yaml
-      reference_kind: ACTIVE_WU_AUTHORITY_BINDING
-      expected_reference_count: 11
-      cleanup_action: REBASE_ACTIVE_WU_AUTHORITY_BINDINGS_TO_SFP_CONTROL_PLANE
-      references:
-        decisions/INDEX.yaml: 2
-        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
-        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
-        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
-        decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml: 1
-        ADR-0007: 2
-        ADR-0009: 1
-        decisions/ADR-0007-primary-lifecycle-boundary-determination.md: 1
-        decisions/ADR-0009-responsibility-map-declaration-authority.md: 1
-      deterministic_targets:
-        ADR-0007: SFP-0007
-        ADR-0009: SFP-0009
+  expected_file_count: 0
+  expected_reference_count: 0
+  entries: []
 
 historical_provenance:
   policy_source_provenance:
@@ -153,8 +135,8 @@ excluded_non_legacy_decision_namespaces:
     legacy_decisions_tree_dependency: false
 
 gate:
-  active_reference_count: 11
-  active_reference_count_zero: false
+  active_reference_count: 0
+  active_reference_count_zero: true
   unclassified_reference_count_zero: VALIDATION_PENDING
   migration_only_dependencies_retired: false
   historical_provenance_revision_anchor_materialized: false
