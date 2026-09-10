@@ -24,30 +24,9 @@ classification_rules:
   support_policy_source_path_schema_is_historical_provenance_contract: false
 
 active_dependencies:
-  expected_file_count: 3
-  expected_reference_count: 18
+  expected_file_count: 1
+  expected_reference_count: 11
   entries:
-    - id: ACTIVE-003
-      path: releasenote/project-profile/pp.1.01.md
-      reference_kind: CURRENT_PROJECT_PROFILE_AUTHORITY_REFERENCE
-      expected_reference_count: 3
-      cleanup_action: REWRITE_TO_CURRENT_SFP_AUTHORITY
-      references:
-        ADR-0019: 1
-        ADR-0022: 2
-      deterministic_targets:
-        ADR-0019: SFP-0018
-        ADR-0022: SFP-0020
-    - id: ACTIVE-004
-      path: AGENTS.md
-      reference_kind: CURRENT_PROJECT_AUTHORITY_RUNTIME_GUIDANCE
-      expected_reference_count: 4
-      cleanup_action: REBASE_PROJECT_AUTHORITY_GUIDANCE_TO_SFP_CONTROL_PLANE
-      references:
-        decisions/INDEX.yaml: 1
-        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
-        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
-        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
     - id: ACTIVE-005
       path: docs/planning/0.4.0/WU-02/WU-02.yaml
       reference_kind: ACTIVE_WU_AUTHORITY_BINDING
@@ -171,7 +150,7 @@ excluded_non_legacy_decision_namespaces:
     legacy_decisions_tree_dependency: false
 
 gate:
-  active_reference_count: 18
+  active_reference_count: 11
   active_reference_count_zero: false
   unclassified_reference_count_zero: VALIDATION_PENDING
   migration_only_dependencies_retired: false
