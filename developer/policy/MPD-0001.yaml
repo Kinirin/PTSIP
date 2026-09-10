@@ -46,7 +46,7 @@ rules:
       execution_stage: SFP_MPD_INVENTORY_AND_POLICY_MATERIALIZATION
       move_now: false
       required_before_move:
-        - LEGACY_ADR_CORPUS_CLASSIFIED_AS_MPD_SFP_SPLIT_OR_RETIRE
+        - LEGACY_POLICY_CORPUS_CLASSIFIED
         - PROFILE_SUPPORT_FEATURE_BOUNDARY_MATERIALIZED
         - PACKAGE_RESOURCE_LOOKUP_UPDATE_PLANNED
         - PACKAGE_DATA_UPDATE_PLANNED
@@ -75,15 +75,23 @@ rules:
     work_unit_minimal_size_requirement: false
     ambiguous_or_unsupported_definition_may_use_explanation: true
     machine_field_implementation_required_for_automatable_state: true
+    completion_transition:
+      pending_status: IMPLEMENTED_VALIDATION_PENDING
+      complete_status: COMPLETE
+      rule: REGISTERED_MACHINE_CHECKS_MUST_PASS_BEFORE_AUTOMATIC_PROMOTION
+      failed_validation_mutation: FORBIDDEN
+      post_promotion_planning_validation_required: true
 
 automation:
   loader: developer/automation/policy_loader.py
   policy_validator: developer/automation/policy_validator.py
   planning_validator: developer/automation/planning_validator.py
+  planning_stage_finalizer: developer/automation/planning_stage_finalizer.py
+  current_dependency_gate: developer/automation/current_dependency_gate.py
   transition_evaluator: developer/automation/transition_evaluator.py
 
 migration:
-  decisions_directory:
-    state: LEGACY_MIXED_POLICY_SOURCE
+  retired_policy_corpus:
+    state: MIGRATION_SOURCE_RETIRED_PENDING_PREAUTHORIZED_TREE_REMOVAL
     automatic_removal_when_gate_passes: true
     user_confirmation_after_gate_passes: false
