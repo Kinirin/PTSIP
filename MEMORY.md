@@ -1,6 +1,6 @@
 # PTSIP Repository Working Memory
 
-This file is durable repository-operational context for maintainers and coding agents. It is **not** a normative Specification and does not replace `ptsip.yaml`, `spec/`, schemas, registry data, ADRs, or the active release contract.
+This file is durable repository-operational context for maintainers and coding agents. It is **not** a normative Specification and does not replace the selected Project Profile, `spec/`, schemas, registry data, current SFP/MPD policy authority, historical ADR records, or the active release contract.
 
 ## Published baseline and current candidate
 
@@ -231,7 +231,7 @@ Conformance Evaluation
     -> deterministic evaluation against applicable rules
 ```
 
-A Decision Authority does not replace `ptsip.yaml` and does not prove conformance.
+A Decision Authority does not replace the selected Project Profile and does not prove conformance.
 
 The Reference Tool GitHub profile uses:
 
@@ -298,18 +298,15 @@ VPMS PASS != PTSIP CONFORMANT. PTSIP CONFORMANT != functional verification PASS.
 
 ## Repository self-profile
 
-Root `ptsip.yaml` self-adopts Responsibility Map v2 in explicit mode. The WU-07 exact verification reconfirmed:
+Current PTSIP repository self-management uses the explicit developer profile:
 
 ```text
-valid=true
-errors=[]
-warnings=[]
-source_mode=explicit
-materialized=true
-responsibility_map_coverage.unassigned_count=0
+developer/profiles/ptsip-repository.yaml
 ```
 
-Release/documentation paths are already covered by project-owned selectors. Documentation completion does not authorize changing `ptsip.yaml` merely to update prose.
+The former repository-root `ptsip.yaml` self-profile was a compatibility bridge and is retired by the Tool `0.4.0` P01-F migration. Repository automation, self-profile verification, and Test Mode control-plane validation must select the developer profile explicitly. This repository-specific migration does **not** change the Reference Tool's consumer default: an ordinary consumer repository still uses root `ptsip.yaml` when no explicit `--profile` is supplied.
+
+Historical Tool `0.3.6` WU-05/WU-07 evidence that validated the then-current root `ptsip.yaml` remains immutable historical evidence. It is not rewritten to describe the later P01-F repository layout.
 
 ## CI and release resource policy
 
