@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 import yaml
 
+from developer.automation import planning_stage_finalizer as stage_finalizer
 from developer.automation.planning_stage_finalizer import promote_stage_text
 
 
@@ -121,3 +124,31 @@ def test_non_pending_stage_cannot_be_promoted_by_text_helper() -> None:
     text = """execution_order:\n    - id: STAGE_A\n      status: READY\n"""
     with pytest.raises(ValueError):
         promote_stage_text(text, "STAGE_A", {})
+
+
+def test_complete_stage_retries_extension_closure_for_stale_state(
+    tmp_path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (tmp_path / "pyproject.toml").write_text("[project]\nname='fixture'\nversion='0'\n", encoding="utf-8")
+    (tmp_path / "plan.yaml").write_text(
+        """execution_order:\n  - id: STAGE_A\n    status: COMPLETE\n""",
+        encoding="utf-8",
+    )
+    calls: list[str] = []
+
+    def fake_finalize(relative_path: str, *, root):
+        calls.append(relative_path)
+        return SimpleNamespace(failures=(), finalized=True)
+
+    monkeypatch.setattr(stage_finalizer, "finalize_extension_if_ready", fake_finalize)
+
+    result = stage_finalizer.finalize_stage(
+        "plan.yaml",
+        "STAGE_A",
+        root=tmp_path,
+    )
+
+    assert calls == ["plan.yaml"]
+    assert result.promoted is False
+    assert result.extension_finalized is True
+    assert result.failures == ()
