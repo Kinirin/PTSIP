@@ -1,0 +1,74 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0008
+  title: Responsibility Roles Relationships and Associated Artifacts
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
+  schema_id: ptsip.governance/responsibility-map-semantic-axes
+  schema_version: 1
+authority_semantics:
+  classification_axis: PRIMARY_LIFECYCLE_OWNERSHIP
+  roles_axis: COARSE_RESPONSIBILITY_CHARACTERISTICS
+  relationships_axis: TYPED_DIRECTED_SEMANTICS
+  verification_purpose_axis: VPMS
+  canonical_roles:
+  - IMPLEMENTATION
+  - VERIFICATION
+  - AUTOMATION
+  - CONFIGURATION
+  - DOCUMENTATION
+  - GOVERNANCE
+  role_cardinality: ZERO_OR_MORE
+  role_may_determine_classification: false
+  role_may_infer_relationship: false
+  relationship_endpoint_kinds:
+  - COMPONENT
+  - ASSOCIATED_ARTIFACT
+  canonical_relationships:
+  - IMPORTS
+  - LINKS
+  - LOADS
+  - INVOKES
+  - READS
+  - GENERATES
+  - BUILDS
+  - PACKAGES
+  - PUBLISHES
+  - DEPLOYS
+  - VERIFIES
+  - MANAGES
+  - DOCUMENTS
+  - SPECIFIES
+  - GOVERNS
+  generic_escape_relationships_forbidden:
+  - PRODUCES
+  - SUPPORTS
+  - USES
+  - DEPENDS_ON
+  declared_relationship_is_evidence_edge: false
+  typed_relationship_is_permission: false
+  associated_artifact_has_classification: false
+  associated_artifact_anchor_cardinality: EXACTLY_ONE
+  component_and_associated_artifact_ids_share_namespace: true
+  unresolved_endpoint_may_be_fabricated: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: SFP-0007
+      scope: PRIMARY_LIFECYCLE_ONTOLOGY
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0008
+  source_topic_id: responsibility_roles_relationships_associated_artifacts
+  source_path: decisions/ADR-0008-responsibility-roles-relationships-associated-artifacts.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

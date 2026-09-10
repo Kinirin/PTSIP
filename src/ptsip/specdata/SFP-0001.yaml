@@ -1,0 +1,36 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0001
+  title: PTSIP Policy Identity
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: PTSIP_POLICY_IDENTITY
+  schema_id: ptsip.governance/ptsip-policy-identity
+  schema_version: 1
+authority_semantics:
+  canonical_term: PTSIP
+  expanded_identity: PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY
+  primary_principle: PURPOSE_BEFORE_REUSE
+  classifies_by:
+  - PURPOSE
+  - LIFECYCLE_OWNERSHIP
+  requires_product_toolchain_boundary: true
+  versioned_specification: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0001
+  source_topic_id: ptsip_establishment
+  source_path: decisions/ADR-0001-establish-ptsip.yaml
+  source_status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

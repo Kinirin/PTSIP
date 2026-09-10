@@ -1,0 +1,61 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0004
+  title: Evidence Artifact and Conformance Semantics
+  status: DRAFT
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
+  schema_id: ptsip.governance/evidence-artifact-conformance-model
+  schema_version: 1
+authority_semantics:
+  architecture_classifications:
+  - PRODUCT
+  - TOOLCHAIN
+  - NEUTRAL_CONTRACT
+  coherent_component_boundary_required: true
+  dependency_evidence_required_fields:
+  - RELATIONSHIP_TYPE
+  - LIFECYCLE_PHASE
+  - RESOLUTION_STATE
+  - PROVENANCE
+  - SOURCE_TARGET_IDENTITY_WHEN_RESOLVABLE
+  - UNCERTAINTY
+  evidence_provenance:
+  - DECLARED
+  - OBSERVED
+  - INFERRED
+  evidence_sufficiency_scope: RULE_RELATIVE
+  blocking_gap_without_definite_violation_outcome: INCOMPLETE
+  definite_mandatory_violation_outcome: NON_CONFORMANT
+  product_artifact_owner_independent_from_producer: true
+  mandatory_rule_waiver_changes_conformance: false
+  profile_validation_separate_from_conformance_evaluation: true
+  conformance_outcomes:
+  - CONFORMANT
+  - NON_CONFORMANT
+  - INCOMPLETE
+  ownership_declaration_modes_mutually_exclusive:
+  - BOUNDARIES
+  - COMPONENTS
+  project_dependency_policy_may_be_stricter_than_universal_rules: true
+  stable_diagnostic_rule_identity_required: true
+  lifecycle_trigger_alone_proves_product_release_coupling: false
+  neutral_contract_consumer_count_determines_neutrality: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0004
+  source_topic_id: evidence_artifact_conformance_semantics
+  source_path: decisions/ADR-0004-pilot-driven-evidence-artifact-and-conformance-semantics.yaml
+  source_status: PROPOSED_FOR_NEXT_NORMATIVE_SNAPSHOT
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

@@ -1,0 +1,38 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+policy:
+  id: MPD-0002
+  title: Pilot and Reference Tool Development Baseline
+  status: ACTIVE
+rules:
+  authority_semantics:
+    specification_family: 0.2.0-draft
+    reference_tool_target: '0.2.0'
+    pilot_report_contract: ptsip-pilot-report/v2
+    architecture_classifications:
+    - PRODUCT
+    - TOOLCHAIN
+    - NEUTRAL_CONTRACT
+    unresolved_analysis_states:
+    - UNKNOWN
+    - CONFLICT
+    - INCOMPLETE
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0003
+  source_topic_id: specification_reference_tool_versioning
+  source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
+  source_status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - specification_family
+      - reference_tool_target
+      - pilot_report_contract
+      - architecture_classifications
+      - unresolved_analysis_states

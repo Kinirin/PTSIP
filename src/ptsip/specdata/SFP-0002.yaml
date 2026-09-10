@@ -1,0 +1,36 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0002
+  title: Consumer Repository Non-Intrusion
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
+  schema_id: ptsip.governance/consumer-repository-non-intrusion
+  schema_version: 1
+authority_semantics:
+  tooling_default_location: EXTERNAL_TO_CONSUMER_REPOSITORY
+  consumer_repository_topology_owner: CONSUMER_PROJECT
+  ptsip_specific_directory_hierarchy_required_for_tool_operation: false
+  inspection_default_mutation_mode: READ_ONLY
+  tool_owned_cache_default_scope: OUTSIDE_CONSUMER_REPOSITORY
+  persistent_profile_location_owned_by_project: true
+  specification_binding_required_for_automated_conformance: true
+  specification_release_lifecycle_independent_from_reference_tool: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0002
+  source_topic_id: consumer_repository_non_intrusion
+  source_path: decisions/ADR-0002-external-tooling-non-intrusion.yaml
+  source_status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

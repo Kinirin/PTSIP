@@ -1,0 +1,43 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0003
+  title: Specification and Reference Tool Independence
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+  schema_id: ptsip.governance/specification-tool-version-independence
+  schema_version: 1
+authority_semantics:
+  normative_snapshot_identity: IMMUTABLE_GIT_REVISION
+  reference_tool_versioning: INDEPENDENT
+  project_profile_is_intended_ownership_declaration: true
+  dependency_evidence_edges_typed: true
+  agent_output_schema_constrained: true
+  agent_decision_is_architecture_authority: false
+  snapshot_instability_invalidates_evidence_set: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0003
+  source_topic_id: specification_reference_tool_versioning
+  source_path: decisions/ADR-0003-pilot-evidence-v2-and-independent-tool-versioning.yaml
+  source_status: ACCEPTED_FOR_DRAFT_SPECIFICATION
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - normative_snapshot_identity
+      - reference_tool_versioning
+      - project_profile_is_intended_ownership_declaration
+      - dependency_evidence_edges_typed
+      - agent_output_schema_constrained
+      - agent_decision_is_architecture_authority
+      - snapshot_instability_invalidates_evidence_set

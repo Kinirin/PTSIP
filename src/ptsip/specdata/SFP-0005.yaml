@@ -1,0 +1,53 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0005
+  title: Distributed Decision Authority
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: DISTRIBUTED_DECISION_AUTHORITY
+  schema_id: ptsip.governance/distributed-decision-authority
+  schema_version: 1
+authority_semantics:
+  decision_authority_separate_from_project_profile: true
+  distributed_decision_identity: STABLE
+  resolution_policy: FIRST_VALID_RESOLUTION_WINS
+  conditional_mutation_required: true
+  architecture_sensitive_read_requires_current_authority_state: true
+  absence_observation_may_fabricate_history: false
+  authority_profile_conflict_silent_overwrite: false
+  distributed_coordination_failure_behavior: FAIL_CLOSED
+  local_fallback_when_distributed_coordination_required: false
+  global_decision_state_separate_from_clone_local_projection: true
+  synchronization_mode: ACTION_TIME
+  decision_authority_is_conformance_oracle: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0005
+  source_topic_id: distributed_decision_authority
+  source_path: decisions/ADR-0005-activate-spec-0.3.4-draft.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - decision_authority_separate_from_project_profile
+      - distributed_decision_identity
+      - resolution_policy
+      - conditional_mutation_required
+      - architecture_sensitive_read_requires_current_authority_state
+      - absence_observation_may_fabricate_history
+      - authority_profile_conflict_silent_overwrite
+      - distributed_coordination_failure_behavior
+      - local_fallback_when_distributed_coordination_required
+      - global_decision_state_separate_from_clone_local_projection
+      - synchronization_mode
+      - decision_authority_is_conformance_oracle
