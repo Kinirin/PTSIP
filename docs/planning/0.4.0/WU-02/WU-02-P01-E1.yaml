@@ -1,0 +1,169 @@
+schema_version: ptsip-plan-extension/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+
+extension:
+  id: WU-02-P01-E1
+  parent: WU-02-P01
+  title: Legacy Decision Provenance Anchor Materialization
+  classification: DEVELOPMENT
+  lifecycle:
+    status: ACTIVE
+
+approval:
+  status: APPROVED
+  authority: PROJECT_OWNER
+
+implementation_authorization:
+  status: AUTHORIZED
+
+baseline:
+  repository: Kinirin/PTSIP
+  branch: dev/0.4.0
+  requested_start_revision: 7a356561b969304765dc2eff0d6ac67afcbad86f
+  purpose: MATERIALIZE_IMMUTABLE_LEGACY_SOURCE_REVISION_BEFORE_ACTIVE_REFERENCE_RETIREMENT
+
+scope:
+  - ADD_IMMUTABLE_SOURCE_REVISION_TO_MIGRATED_SFP_PROVENANCE
+  - ADD_IMMUTABLE_SOURCE_REVISION_TO_MIGRATED_MPD_PROVENANCE
+  - UPDATE_POLICY_SCHEMAS_FOR_REVISION_BOUND_PROVENANCE
+  - UPDATE_DETERMINISTIC_POLICY_MATERIALIZER
+  - REMATERIALIZE_ALL_MIGRATED_POLICY_RECORDS_DETERMINISTICALLY
+  - VALIDATE_ALL_MATERIALIZED_PROVENANCE_AGAINST_LEGACY_CORPUS_REVISION
+  - CLOSE_HISTORICAL_PROVENANCE_REVISION_ANCHOR_BLOCKER_ONLY_AFTER_MACHINE_VALIDATION
+  - SYNCHRONIZE_WU_02_P01_LEGACY_REMOVAL_STATE_WITH_MACHINE_INVENTORY
+
+non_goals:
+  - REWRITE_ACTIVE_LEGACY_REFERENCES
+  - RETIRE_MIGRATION_ONLY_REFERENCE_TOOLING
+  - REMOVE_DECISIONS_DIRECTORY
+  - REMOVE_ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE
+  - IMPLEMENT_WU_02_SOLUTION_SPACE_RUNTIME
+  - CHANGE_LEGACY_DECISIONS_TREE
+  - CHANGE_FROZEN_SPECIFICATION_REVISION_LINEAGE
+
+provenance_contract:
+  legacy_source_revision: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
+  legacy_decisions_tree_sha: 5724da43069ad6882a91b0058510d8dc95c1e3ee
+  required_policy_records:
+    sfp: 21
+    mpd: 8
+    total: 29
+  required_source_provenance_fields:
+    existing:
+      - source_type
+      - source_id
+      - source_topic_id
+      - source_path
+      - source_status
+      - semantic_projection
+    add:
+      - source_revision
+  source_revision_semantics:
+    immutable: true
+    exact_value: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
+    meaning: GIT_REVISION_CONTAINING_THE_LEGACY_ADR_SOURCE_USED_FOR_THIS_MATERIALIZATION
+    must_resolve_source_path_at_revision: true
+    must_not_use_current_head_as_implicit_provenance: true
+
+change_order:
+  - step: E1_01_SCHEMA_CONTRACT
+    responsibility: ALLOW_AND_REQUIRE_IMMUTABLE_SOURCE_REVISION_ON_MIGRATED_POLICY_PROVENANCE
+    targets:
+      - src/ptsip/specdata/ptsip-support-feature-policy.schema.json
+      - schemas/ptsip-support-feature-policy.schema.json
+      - developer/policy/schemas/management-policy.schema.json
+    requirements:
+      - SOURCE_REVISION_IS_REQUIRED_FOR_LEGACY_ADR_PROVENANCE
+      - SOURCE_REVISION_MATCHES_FULL_GIT_SHA
+      - EXISTING_SOURCE_PROVENANCE_FIELDS_REMAIN_VALID
+      - ADDITIONAL_UNDECLARED_PROVENANCE_FIELDS_REMAIN_FAIL_CLOSED
+  - step: E1_02_MATERIALIZER
+    responsibility: EMIT_THE_FROZEN_LEGACY_SOURCE_REVISION_DETERMINISTICALLY
+    targets:
+      - developer/automation/policy_materializer.py
+    requirements:
+      - DO_NOT_DERIVE_REVISION_FROM_CURRENT_HEAD
+      - USE_REGISTERED_LEGACY_CORPUS_REVISION
+      - SFP_AND_MPD_OUTPUTS_USE_THE_SAME_REGISTERED_REVISION
+      - REPEATED_MATERIALIZATION_IS_BYTE_STABLE_OR_STRUCTURALLY_CANONICAL
+  - step: E1_03_POLICY_CORPUS
+    responsibility: REMATERIALIZE_ALL_29_MIGRATED_POLICY_RECORDS
+    targets:
+      - src/ptsip/specdata/SFP-0001.yaml..SFP-0021.yaml
+      - developer/policy/MPD-0002.yaml..MPD-0009.yaml
+    requirements:
+      - EVERY_RECORD_HAS_SOURCE_REVISION
+      - SOURCE_REVISION_EXACTLY_MATCHES_LEGACY_CORPUS_REVISION
+      - SOURCE_PATH_RESOLVES_AT_SOURCE_REVISION
+      - EXISTING_SEMANTIC_PROJECTION_IS_UNCHANGED
+  - step: E1_04_VALIDATOR
+    responsibility: PROVE_PROVENANCE_ANCHOR_MATERIALIZATION_MACHINE_READABLY
+    targets:
+      - developer/automation/policy_validator.py
+      - developer/automation/legacy_reference_scanner.py
+      - developer/tests/test_developer_control_plane.py
+    requirements:
+      - VALIDATE_29_OF_29_POLICY_RECORDS
+      - VALIDATE_SOURCE_REVISION_EXACT_MATCH
+      - VALIDATE_SOURCE_PATH_EXISTS_AT_REGISTERED_REVISION
+      - VALIDATE_LEGACY_DECISIONS_TREE_SHA_MATCHES_REGISTERED_ANCHOR
+      - DO_NOT_TREAT_SOURCE_PROVENANCE_AS_ACTIVE_RUNTIME_DEPENDENCY
+  - step: E1_05_GATE_STATE
+    responsibility: CLOSE_ONLY_THE_PROVENANCE_ANCHOR_BLOCKER_AFTER_VALIDATION
+    targets:
+      - developer/policy/legacy-reference-inventory.yaml
+      - developer/policy/index.yaml
+      - docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+    requirements:
+      - SET_SOURCE_REVISION_ANCHOR_MATERIALIZED_TRUE_ONLY_AFTER_VALIDATION_PASSES
+      - REMOVE_HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED_ONLY_WHEN_PROVEN
+      - KEEP_ACTIVE_REFERENCE_COUNT_NONZERO
+      - KEEP_MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
+      - RECORD_CURRENT_ACTIVE_REFERENCE_COUNT_36
+      - RECORD_CURRENT_ACTIVE_REFERENCE_FILE_COUNT_5
+
+safety_constraints:
+  - NEVER_DELETE_DECISIONS_DURING_THIS_EXTENSION
+  - NEVER_REWRITE_FROZEN_REVISION_BOUND_SPECIFICATION_ASSETS
+  - NEVER_CLASSIFY_LEGACY_SOURCE_PROVENANCE_AS_CURRENT_RUNTIME_AUTHORITY
+  - NEVER_CLOSE_ACTIVE_REFERENCE_OR_MIGRATION_RETIREMENT_BLOCKERS_AS_A_SIDE_EFFECT
+  - NEVER_REPLACE_REGISTERED_SOURCE_REVISION_WITH_HEAD_OR_BRANCH_NAME
+  - FAIL_CLOSED_IF_ANY_POLICY_SOURCE_PATH_DOES_NOT_RESOLVE_AT_THE_REGISTERED_REVISION
+
+verification:
+  local_commands:
+    - python -m pytest developer/tests/test_developer_control_plane.py -q
+    - python -m pytest -q developer/tests/test_developer_control_plane.py tests/ptsip/governance
+    - python developer/automation/legacy_reference_scanner.py
+  log_files:
+    - .tmp-wu02-p01-e1-control-plane.log
+    - .tmp-wu02-p01-e1-governance.log
+    - .tmp-wu02-p01-e1-reference-scan.log
+  log_policy:
+    commit: false
+    remove_after_review: true
+  expected_after_completion:
+    historical_provenance_revision_anchor_materialized: true
+    active_reference_count: 36
+    active_reference_files: 5
+    decisions_removal_authorized: false
+    remaining_blockers:
+      - ACTIVE_REFERENCE_COUNT_NONZERO
+      - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
+
+completion_gate:
+  requires_all:
+    - BOTH_POLICY_SCHEMAS_REQUIRE_IMMUTABLE_SOURCE_REVISION_FOR_LEGACY_ADR_PROVENANCE
+    - DETERMINISTIC_MATERIALIZER_EMITS_REGISTERED_SOURCE_REVISION
+    - ALL_29_MIGRATED_POLICY_RECORDS_CONTAIN_THE_EXACT_SOURCE_REVISION
+    - ALL_29_SOURCE_PATHS_RESOLVE_AT_THE_REGISTERED_REVISION
+    - LEGACY_DECISIONS_TREE_SHA_MATCHES_REGISTERED_ANCHOR
+    - MATERIALIZER_CONSISTENCY_VALIDATION_PASSES
+    - DEVELOPER_CONTROL_PLANE_TESTS_PASS
+    - GOVERNANCE_FOCUSED_TESTS_PASS
+    - LEGACY_REFERENCE_INVENTORY_VALIDATION_PASSES
+    - HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED_BLOCKER_IS_CLOSED
+    - ACTIVE_REFERENCE_COUNT_NONZERO_BLOCKER_REMAINS_ACTIVE
+    - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING_BLOCKER_REMAINS_ACTIVE
+  next: WU-02-P01-E2-ACTIVE-REFERENCE-RETIREMENT
