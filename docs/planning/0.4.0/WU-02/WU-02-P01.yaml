@@ -144,7 +144,15 @@ reference_migration_simulation:
   boundary_findings:
     - id: BOUNDARY-001
       path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      line: 6
       legacy_reference: ADR-0020
       projected_target: MPD-0009
       problem: PRODUCT_NORMATIVE_SPEC_REFERENCES_DEVELOPER_WORK_UNIT_POLICY_AS_ARCHITECTURE_AUTHORITY
+      action: REMOVE_FROM_NORMATIVE_AUTHORITY_LINEAGE_BEFORE_APPLY
+    - id: BOUNDARY-002
+      path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      line: 487
+      legacy_reference: ADR-0020
+      projected_target: MPD-0009
+      problem: PRODUCT_NORMATIVE_SPEC_INCLUDES_DEVELOPER_WORK_UNIT_POLICY_IN_NORMATIVE_LINEAGE
       action: REMOVE_FROM_NORMATIVE_AUTHORITY_LINEAGE_BEFORE_APPLY

@@ -193,8 +193,18 @@ entries:
 boundary_findings:
   - id: BOUNDARY-001
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    line: 6
     source_adr: ADR-0020
     target_policy: MPD-0009
     problem: PRODUCT_NORMATIVE_SPEC_REFERENCES_DEVELOPER_WORK_UNIT_POLICY_AS_ARCHITECTURE_AUTHORITY
+    required_action: REMOVE_NORMATIVE_AUTHORITY_REFERENCE
+    status: OPEN
+
+  - id: BOUNDARY-002
+    file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    line: 487
+    source_adr: ADR-0020
+    target_policy: MPD-0009
+    problem: PRODUCT_NORMATIVE_SPEC_INCLUDES_DEVELOPER_WORK_UNIT_POLICY_IN_NORMATIVE_LINEAGE
     required_action: REMOVE_NORMATIVE_AUTHORITY_REFERENCE
     status: OPEN
