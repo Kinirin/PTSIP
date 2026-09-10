@@ -156,7 +156,7 @@ current_known_blockers:
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE
 
 reference_migration_simulation:
-  status: DRY_RUN_READY
+  status: DRY_RUN_READY_BOUNDARY_CLEAN
   source_revision: cf9798c1a1c510d0dcb14d5956a0539d3d0f0746
   markdown_files_scanned: 49
   split_reference_files_found: 6
@@ -171,6 +171,7 @@ reference_migration_simulation:
       projected_target: MPD-0009
       problem: PRODUCT_NORMATIVE_SPEC_REFERENCES_DEVELOPER_WORK_UNIT_POLICY_AS_ARCHITECTURE_AUTHORITY
       action: REMOVE_FROM_NORMATIVE_AUTHORITY_LINEAGE_BEFORE_APPLY
+      status: RESOLVED
     - id: BOUNDARY-002
       path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
       line: 487
@@ -178,3 +179,18 @@ reference_migration_simulation:
       projected_target: MPD-0009
       problem: PRODUCT_NORMATIVE_SPEC_INCLUDES_DEVELOPER_WORK_UNIT_POLICY_IN_NORMATIVE_LINEAGE
       action: REMOVE_FROM_NORMATIVE_AUTHORITY_LINEAGE_BEFORE_APPLY
+      status: RESOLVED
+
+normative_support_boundary_cleanup:
+  status: COMPLETE
+  removed_references:
+    - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      former_line: 6
+      removed: ADR-0020
+      reason: MPD_POLICY_FORBIDDEN_AS_PRODUCT_ARCHITECTURE_AUTHORITY
+    - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      former_line: 487
+      removed: decisions/ADR-0020-*.md
+      reason: MPD_POLICY_FORBIDDEN_IN_PRODUCT_NORMATIVE_LINEAGE
+  replacement_policy_reference: NONE
+  rationale: MPD-0009 remains developer policy and is not a support-feature authority.

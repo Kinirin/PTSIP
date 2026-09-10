@@ -218,3 +218,20 @@ def test_support_policy_index_has_exact_21_targets() -> None:
         for index, item in enumerate(payload["policies"])
         if index != 3
     )
+
+
+def test_product_normative_profile_transition_spec_has_no_mpd_0009_lineage() -> None:
+    path = ROOT / "spec" / "PTSIP-DRAFT-PROFILE-TRANSITION.md"
+    text = path.read_text(encoding="utf-8")
+    assert "ADR-0020" not in text
+    assert "MPD-0009" not in text
+
+
+def test_boundary_findings_are_resolved_before_split_mapping_apply() -> None:
+    import yaml
+
+    path = ROOT / "developer" / "policy" / "tmp-split-textual-reference-map.yaml"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert payload["application_gate"]["boundary_findings_resolved"] is True
+    assert payload["boundary_findings"]
+    assert all(item["status"] == "RESOLVED" for item in payload["boundary_findings"])

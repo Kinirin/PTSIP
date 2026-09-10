@@ -69,6 +69,20 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         errors.append(f"{SPLIT_TEXTUAL_REVIEW}: {error.message}")
     for error in Draft202012Validator(temp_split_map_schema).iter_errors(temp_split_map):
         errors.append(f"{TEMP_SPLIT_MAP}: {error.message}")
+    boundary_findings = [
+        item for item in temp_split_map.get("boundary_findings", [])
+        if isinstance(item, dict)
+    ]
+    boundary_gate = bool(
+        temp_split_map.get("application_gate", {}).get("boundary_findings_resolved")
+    )
+    all_boundary_resolved = all(
+        item.get("status") == "RESOLVED" for item in boundary_findings
+    )
+    if boundary_gate != all_boundary_resolved:
+        errors.append(
+            f"{TEMP_SPLIT_MAP}: boundary_findings_resolved gate does not match finding statuses"
+        )
     for error in Draft202012Validator(relation_migration_schema).iter_errors(relation_migration):
         errors.append(f"{RELATION_MIGRATION}: {error.message}")
     inventory_path = index.get("legacy_decisions_migration", {}).get("inventory_path")

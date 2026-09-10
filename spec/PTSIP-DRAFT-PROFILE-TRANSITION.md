@@ -3,7 +3,7 @@
 **Specification family:** `0.3.7-draft`  
 **Status:** Active normative companion / WU-12 final freeze<br>
 **Base lifecycle semantics:** the mature `0.3.6-draft` primary lifecycle ownership and Responsibility Map v2 rules remain in force except where this companion adds Project Profile identity, compatibility, migration, and transition requirements.  
-**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022, ADR-0023
+**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0021, ADR-0022, ADR-0023
 
 ## 1. Purpose
 
@@ -484,7 +484,6 @@ Architecture rationale and responsibility boundaries are recorded by:
 decisions/ADR-0010-versioned-draft-profile-transition.md
 decisions/ADR-0017-*.md
 decisions/ADR-0019-*.md
-decisions/ADR-0020-*.md
 decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md
 decisions/ADR-0022-*.md
 decisions/ADR-0023-typed-specification-binding-and-capability-registries.md

@@ -7,7 +7,7 @@ status: DRY_RUN_READY
 application_gate:
   all_target_policies_materialized: true
   all_expected_lines_match: true
-  boundary_findings_resolved: false
+  boundary_findings_resolved: true
 
 cleanup:
   delete_after_successful_apply: true
@@ -117,7 +117,7 @@ entries:
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
     line: 6
     source_adr: ADR-0017
-    expected_line: "**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022, ADR-0023"
+    expected_line: "**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0021, ADR-0022, ADR-0023"
     expected_reference: ADR-0017
     occurrence_on_line: 1
     resolution: SFP_ONLY
@@ -128,7 +128,7 @@ entries:
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
     line: 6
     source_adr: ADR-0021
-    expected_line: "**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022, ADR-0023"
+    expected_line: "**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0021, ADR-0022, ADR-0023"
     expected_reference: ADR-0021
     occurrence_on_line: 1
     resolution: SFP_ONLY
@@ -139,7 +139,7 @@ entries:
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
     line: 6
     source_adr: ADR-0023
-    expected_line: "**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022, ADR-0023"
+    expected_line: "**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0021, ADR-0022, ADR-0023"
     expected_reference: ADR-0023
     occurrence_on_line: 1
     resolution: SFP_ONLY
@@ -170,7 +170,7 @@ entries:
 
   - id: TMP-SPLIT-015
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
-    line: 488
+    line: 487
     source_adr: ADR-0021
     expected_line: "decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md"
     expected_reference: decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md
@@ -181,7 +181,7 @@ entries:
 
   - id: TMP-SPLIT-016
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
-    line: 490
+    line: 489
     source_adr: ADR-0023
     expected_line: "decisions/ADR-0023-typed-specification-binding-and-capability-registries.md"
     expected_reference: decisions/ADR-0023-typed-specification-binding-and-capability-registries.md
@@ -198,7 +198,7 @@ boundary_findings:
     target_policy: MPD-0009
     problem: PRODUCT_NORMATIVE_SPEC_REFERENCES_DEVELOPER_WORK_UNIT_POLICY_AS_ARCHITECTURE_AUTHORITY
     required_action: REMOVE_NORMATIVE_AUTHORITY_REFERENCE
-    status: OPEN
+    status: RESOLVED
 
   - id: BOUNDARY-002
     file_path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
@@ -207,4 +207,4 @@ boundary_findings:
     target_policy: MPD-0009
     problem: PRODUCT_NORMATIVE_SPEC_INCLUDES_DEVELOPER_WORK_UNIT_POLICY_IN_NORMATIVE_LINEAGE
     required_action: REMOVE_NORMATIVE_AUTHORITY_REFERENCE
-    status: OPEN
+    status: RESOLVED
