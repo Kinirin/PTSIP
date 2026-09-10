@@ -4,6 +4,7 @@ import runpy
 from pathlib import Path
 
 from ptsip.clarification.generator import analyze_clarifications
+from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH
 from ptsip.validation.profile import validate_profile
 
 
@@ -52,6 +53,10 @@ def test_current_repository_profile_has_no_root_bridge_dependency() -> None:
     text = SELF_PROFILE.read_text(encoding="utf-8")
     assert '"ptsip.yaml"' not in text
     assert "developer/profiles/ptsip-repository.yaml" in text
+
+
+def test_consumer_default_profile_path_remains_root_ptsip_yaml() -> None:
+    assert DEFAULT_PROFILE_PATH == "ptsip.yaml"
 
 
 def test_full_ci_self_management_commands_select_the_developer_profile() -> None:
