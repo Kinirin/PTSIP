@@ -127,7 +127,7 @@ migration_stages:
       preserve_legacy_source_identity_in_sfp_mpd: false
       obsolete_revision_anchor_gate: RETIRED_NOT_SATISFIED
   P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL:
-    status: IMPLEMENTED_VALIDATION_PENDING
+    status: COMPLETE
     canonical_self_profile: developer/profiles/ptsip-repository.yaml
     removed_bridge: ptsip.yaml
     product_default_profile_path_changed: false
@@ -144,8 +144,7 @@ profile_subsystem_decision:
   current_assets_remain_in_specdata_until_inventory: true
   move_authorized_only_as_part_of_inventory_linked_materialization: true
 
-current_known_blockers:
-  - P01_F_MACHINE_VALIDATION_PENDING
+current_known_blockers: []
 
 p01_e_execution_plan:
   baseline:
@@ -339,7 +338,7 @@ p01_f_execution_plan:
   product_default_profile: ptsip.yaml
   execution_order:
     - id: P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL
-      status: IMPLEMENTED_VALIDATION_PENDING
+      status: COMPLETE
       implementation_revision: 84327e668c9717e1240c66b5f6714679dd2903d8
       responsibility: REMOVE_ROOT_SELF_PROFILE_COMPATIBILITY_BRIDGE_AFTER_EXPLICIT_DEVELOPER_PROFILE_SELECTION
       implementation:
@@ -384,7 +383,7 @@ p01_f_execution_plan:
             - section: current_known_blockers
               value: P01_F_MACHINE_VALIDATION_PENDING
       validation:
-        status: PENDING
+        status: PASS
   verification:
     automatic_completion_command: >-
       python -m developer.automation.planning_stage_finalizer
