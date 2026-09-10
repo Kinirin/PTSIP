@@ -147,7 +147,7 @@
           },
           "source_path": {
             "type": "string",
-            "pattern": "^decisions/ADR-[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*\\.yaml$"
+            "pattern": "^decisions/ADR-[0-9]{4}-[a-z0-9]+(?:[.-][a-z0-9]+)*\\.yaml$"
           },
           "classification": {
             "enum": [

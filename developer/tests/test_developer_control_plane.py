@@ -226,3 +226,15 @@ def test_mutable_split_markdown_references_are_migrated() -> None:
     release_note = mutable_migrated_files[0].read_text(encoding="utf-8")
     assert "originally recorded with MPD-0006" in release_note
     assert "SFP-0019's substantive identity separation" in release_note
+
+
+def test_legacy_decision_inventory_schema_accepts_versioned_adr_filenames() -> None:
+    import json
+    import re
+
+    schema_path = ROOT / "developer" / "policy" / "schemas" / "legacy-decision-inventory.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    pattern = schema["properties"]["entries"]["items"]["properties"]["source_path"]["pattern"]
+
+    assert re.fullmatch(pattern, "decisions/ADR-0005-activate-spec-0.3.4-draft.yaml")
+    assert re.fullmatch(pattern, "decisions/ADR-0011-activate-spec-0.3.7-draft.yaml")
