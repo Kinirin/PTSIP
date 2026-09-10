@@ -1,0 +1,204 @@
+schema_version: ptsip-work-unit/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+planning_contract: ptsip-planning/v1
+
+work_unit:
+  id: WU-03
+  kind: WORK_UNIT
+  title: Escalation Proof + Resolution Input Boundary + Fresh Solve Restart
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle:
+    status: ACTIVE
+  approval:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    inherited_from: []
+  integration_branch: dev/0.4.0
+  entry_baseline: f4a178c1e781beab12ecbb6fda85cb2fc42aafc9
+  implementation_authorization: AUTHORIZED
+  depends_on: [WU-02]
+
+execution_exception:
+  mode: PROVISIONAL_OUT_OF_ORDER_EXECUTION
+  dependency_preserved: WU-02
+  authorized_by: PROJECT_OWNER
+  authorized_date: '2026-09-10'
+  authorization_source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  reason: ACCELERATE_0_4_0_WITHOUT_CREATING_A_BRANCH_OR_COLLIDING_WITH_ACTIVE_WU_02_P01_WORK
+  branch_policy: SAME_DEV_0_4_0_BRANCH_NO_WORKTREE_NO_FEATURE_BRANCH
+  current_gate_unchanged: WU-02-P01
+  official_completion_before_dependency: FORBIDDEN
+  reconciliation_after_wu_02: REQUIRED
+
+primary_responsibility: IMPLEMENT_OWNER_INTENT_AND_EXTERNAL_FACT_INPUT_BOUNDARIES_WITH_ESCALATION_PROOF_AND_MANDATORY_FRESH_SOLVE_RESTART_WITHOUT_REIMPLEMENTING_WU_02_SOLUTION_SPACE
+
+scope:
+  - BUILD_MACHINE_INSPECTABLE_OWNER_ESCALATION_PROOF_FROM_ALREADY_REDUCED_LEGAL_SEMANTIC_CANDIDATES
+  - MINIMIZE_OWNER_QUESTION_TO_ONLY_THE_UNRESOLVED_PROJECT_INTENT_DIMENSION
+  - DISTINGUISH_OWNER_INTENT_INPUT_FROM_EXTERNALLY_KNOWABLE_FACT_INPUT
+  - ROUTE_OWNER_INPUT_TO_PROJECT_AUTHORITY_MATERIALIZATION_BOUNDARY_WITHOUT_MATERIALIZING_AUTHORITY_IN_WU_03
+  - ROUTE_EXTERNAL_FACT_INPUT_TO_EVIDENCE_MATERIALIZATION_BOUNDARY_WITHOUT_ACQUIRING_EXTERNAL_FACTS_IN_WU_03
+  - BIND_EACH_RESOLUTION_INPUT_REQUEST_TO_EXACT_SPECIFICATION_EVIDENCE_REPOSITORY_AND_AUTHORITY_SNAPSHOT_IDENTITY
+  - REJECT_STALE_RESOLUTION_INPUT_REQUESTS_WHEN_ANY_FRESH_SOLVE_INPUT_CHANGED
+  - REQUIRE_A_NEW_FRESH_SOLVE_AFTER_ANY_ACCEPTED_OWNER_OR_EXTERNAL_FACT_INPUT
+  - KEEP_REQUEST_AND_HANDOFF_RECORDS_NON_AUTHORITATIVE
+  - ADD_FOCUSED_ESCALATION_AND_FRESH_SOLVE_BOUNDARY_VERIFICATION
+
+non_goals:
+  - IMPLEMENT_WU_02_SOLUTION_SPACE_ENGINE
+  - DEFINE_WU_02_EXACT_RESULT_OR_ELIMINATION_RECORD_SHAPE
+  - REIMPLEMENT_WU_02_AUTHORITY_REDUCTION_OR_PRECEDENCE
+  - CREATE_OR_INVENT_SEMANTIC_CANDIDATES
+  - MATERIALIZE_OWNER_DECISION_AS_PROJECT_AUTHORITY
+  - ACQUIRE_EXTERNAL_FACTS
+  - CONVERT_EXTERNAL_FACTS_TO_PROJECT_AUTHORITY
+  - RESUME_AN_OLD_SOLVE_AFTER_NEW_INPUT
+  - AUTHORITY_GATE
+  - MUTATION_AUTHORIZATION
+  - REPOSITORY_CHANGE_PLAN
+  - REPOSITORY_MUTATION
+  - SAFE_APPLY
+  - PUBLIC_CLI_OR_ISSUE_AUTOMATION
+  - AI_ADVISORY
+  - TEST_MODE_REGISTRATION
+
+handoff_basis:
+  source: docs/planning/0.4.0/WU-02/WU-02.yaml
+  inherited_wu_03_responsibilities:
+    - ESCALATION_PROOF
+    - OWNER_QUESTION_MINIMIZATION
+    - EXTERNAL_FACT_VS_OWNER_INTENT_BOUNDARY_WORKFLOW
+    - FRESH_SOLVE_RESTART_BOUNDARY
+  dependency_status_at_entry: WU_02_ACTIVE_AND_WU_02_P01_ACTIVE
+  dependency_semantics_changed: false
+
+provisional_dependency_boundary:
+  objective: KEEP_WU_03_IMPLEMENTATION_RECONCILABLE_WHEN_WU_02_FINALIZES_ITS_SOLUTION_SPACE_TYPES
+  stable_existing_inputs_used:
+    - ResolutionOutcome
+    - SemanticCandidate
+    - RemediationContext
+    - EscalationProof
+    - SpecificationBinding
+    - NormalizedEvidenceSet
+  deliberately_not_imported_or_assumed:
+    - WU_02_EXACT_SOLUTION_SPACE_RESULT_CLASS
+    - WU_02_EXACT_CANDIDATE_ELIMINATION_RECORD_CLASS
+    - WU_02_EXACT_AUTHORITY_CONTEXT_CLASS
+    - WU_02_EXACT_RANKING_RECORD_CLASS
+  future_integration_rule:
+    expected_change_surface: NARROW_WU_02_TO_WU_03_ADAPTER
+    wu_03_core_contract_rewrite_expected: false
+    reconciliation_required_after_wu_02_completion: true
+    compatibility_must_be_verified_before_wu_03_complete: true
+
+resolution_input_contract:
+  actionable_outcomes:
+    OWNER_INTENT_REQUIRED: PROJECT_OWNER_INTENT
+    EXTERNAL_FACT_REQUIRED: EXTERNAL_FACT
+  forbidden_human_question_outcomes:
+    - DETERMINISTIC
+    - UNSATISFIABLE
+    - TOOL_CAPABILITY_GAP
+  owner_intent:
+    minimum_surviving_legal_targets: 2
+    escalation_proof_required: true
+    question_must_not_require_owner_to_reconstruct_specification_reasoning: true
+    input_materialization_target: PROJECT_AUTHORITY
+    input_request_itself_is_authority: false
+  external_fact:
+    candidate_count_may_be_zero: true
+    external_fact_requirement_required: true
+    input_materialization_target: EVIDENCE
+    external_fact_is_project_intent: false
+    input_request_itself_is_authority: false
+
+fresh_solve_contract:
+  binding_dimensions:
+    - SPECIFICATION_BINDING
+    - NORMALIZED_EVIDENCE_DIGEST
+    - REPOSITORY_REVISION
+    - REPOSITORY_STATUS_FINGERPRINT
+    - REPOSITORY_TRACKED_CONTENT_FINGERPRINT
+    - CURRENT_AUTHORITY_SNAPSHOT_ID
+  authority_snapshot_id_role: OPAQUE_CURRENT_AUTHORITY_VIEW_IDENTITY_PROVIDED_BY_UPSTREAM_GOVERNED_AUTHORITY_LAYER
+  stale_request_behavior: FAIL_CLOSED
+  post_input_behavior: MATERIALIZE_THROUGH_CORRECT_BOUNDARY_THEN_RUN_NEW_FRESH_SOLVE
+  old_solver_session_resume: FORBIDDEN
+  historical_request_as_authority: FORBIDDEN
+
+proposed_component_boundary:
+  inquiry_context: USER_NEEDS_OFFICIAL_RESOLUTION_PATH_FOR_NOT_YET_EXISTING_PROPOSED_COMPONENT
+  wu_03_role: SUPPORT_MINIMAL_OWNER_INTENT_INPUT_AND_FRESH_SOLVE_HANDOFF_WHEN_UPSTREAM_WU_02_MODELS_A_NEW_COMPONENT_SEMANTIC_CANDIDATE
+  wu_03_may_invent_new_component_semantics: false
+  owner_answer_becomes_component_authority_directly: false
+  required_followup: PROJECT_AUTHORITY_MATERIALIZATION_THROUGH_GOVERNED_AUTHORITY_LAYER_THEN_FRESH_SOLVE
+  final_end_to_end_surface_depends_on_wu_02_reconciliation: true
+
+implementation_shape:
+  new_paths:
+    - src/ptsip/remediation/escalation/__init__.py
+    - src/ptsip/remediation/escalation/contract.py
+    - src/ptsip/remediation/escalation/engine.py
+    - tests/ptsip/remediation/test_escalation_workflow.py
+  existing_source_files_modified: []
+  top_level_remediation_init_modified: false
+  reason: MINIMIZE_COLLISION_WITH_ACTIVE_WU_02_IMPLEMENTATION_AND_KEEP_PROVISIONAL_BOUNDARY_REPLACEABLE
+  project_profile_change_expected: false
+  test_mode_registration_in_this_wu: false
+
+verification_plan:
+  focused:
+    - OWNER_INTENT_REQUIRES_TWO_OR_MORE_LEGAL_TARGETS
+    - OWNER_ESCALATION_PROOF_MATCHES_PRESENTED_SURVIVORS
+    - NON_INPUT_OUTCOMES_NEVER_BECOME_HUMAN_QUESTIONS
+    - EXTERNAL_FACT_REQUIREMENT_CAN_EXIST_BEFORE_CANDIDATES
+    - OWNER_INPUT_ROUTES_TO_PROJECT_AUTHORITY_BOUNDARY
+    - EXTERNAL_FACT_ROUTES_TO_EVIDENCE_BOUNDARY
+    - EVERY_ACCEPTED_INPUT_REQUIRES_FRESH_SOLVE_RESTART
+    - AUTHORITY_CHANGE_INVALIDATES_STALE_REQUEST
+    - REPOSITORY_OR_EVIDENCE_CHANGE_INVALIDATES_STALE_REQUEST
+    - EXACT_SPECIFICATION_EVIDENCE_REPOSITORY_AUTHORITY_BINDING_IS_INSPECTABLE
+  pytest_target: tests/ptsip/remediation/test_escalation_workflow.py
+  planning_validation: developer/automation/planning_validator.py
+  full_exact_sha_required_for_provisional_implementation: false
+  full_exact_sha_required_for_official_wu_03_completion: DEFER_TO_DEPENDENCY_RECONCILIATION_DECISION
+
+progress:
+  provisional_core_contracts: IMPLEMENTED_PENDING_REPOSITORY_FOCUSED_VERIFICATION
+  local_python_syntax_validation: PASS
+  local_isolated_behavioral_smoke: PASS
+  repository_focused_pytest: NOT_RUN
+  planning_validation: NOT_RUN
+  wu_02_integration_adapter: DEFERRED_UNTIL_WU_02_RESULT_SHAPE_EXISTS
+  lifecycle_completion: BLOCKED_BY_WU_02_COMPLETION_AND_RECONCILIATION
+
+completion_gate:
+  requires_all:
+    - WU_02_LIFECYCLE_COMPLETE
+    - WU_02_FINAL_SOLUTION_SPACE_OUTPUT_RECONCILED_WITH_WU_03_INPUT_ADAPTER
+    - OWNER_INTENT_ESCALATION_PROOF_CONSUMES_ONLY_ALREADY_LEGAL_SURVIVORS
+    - OWNER_QUESTION_CARDINALITY_AND_MINIMIZATION_CONTRACT_PASSES
+    - EXTERNAL_FACT_AND_PROJECT_INTENT_INPUTS_REMAIN_DISTINCT
+    - OWNER_INPUT_ROUTES_TO_PROJECT_AUTHORITY_MATERIALIZATION_BOUNDARY
+    - EXTERNAL_FACT_INPUT_ROUTES_TO_EVIDENCE_MATERIALIZATION_BOUNDARY
+    - STALE_INPUT_REQUESTS_FAIL_CLOSED
+    - EVERY_ACCEPTED_INPUT_RESTARTS_FRESH_SOLVE
+    - NO_WU_02_SOLUTION_SPACE_OR_AUTHORITY_PRECEDENCE_IS_DUPLICATED
+    - FOCUSED_WU_03_VERIFICATION_PASSES
+    - DEVELOPER_PLANNING_VALIDATION_PASSES
+  provisional_execution_may_satisfy_before_dependency:
+    - WU_03_CORE_CONTRACTS_IMPLEMENTED
+    - WU_03_FOCUSED_TESTS_AUTHORED
+  official_complete_before_all_requires_all: false
+
+later_handoff:
+  WU-04:
+    - CONSUME_FRESHLY_RESOLVED_SEMANTIC_TARGET_ONLY_AFTER_NEW_SOLVE
+    - AUTHORITY_GATE
+    - MUTATION_CLASS_APPLICATION
+    - AUTHORIZATION_DECISION
+    - REPOSITORY_CHANGE_PLAN
+    - SAFE_APPLY
+  boundary_status: PROVISIONAL_PENDING_WU_02_RECONCILIATION
