@@ -114,3 +114,35 @@ def test_split_textual_references_are_never_auto_rewritten() -> None:
 def test_split_textual_review_blocks_legacy_removal_until_manually_complete() -> None:
     result = evaluate_legacy_decisions_removal(ROOT)
     assert "SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE" in result.blockers
+
+
+def test_temporary_split_mapping_dry_run_is_exact_and_apply_is_blocked() -> None:
+    from developer.automation.decision_reference_migrator import (
+        simulate_temporary_split_map,
+        temporary_split_map_apply_blockers,
+    )
+
+    previews = simulate_temporary_split_map(ROOT)
+    assert len(previews) == 16
+    assert {item.file_path for item in previews} == {
+        "releasenote/README.md",
+        "releasenote/project-profile/pp.1.01.md",
+        "releasenote/specification/spec-0.2.0-draft.md",
+        "releasenote/specification/spec-0.3.4-draft.md",
+        "releasenote/specification/spec-0.3.7-draft.md",
+        "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
+    }
+    blockers = temporary_split_map_apply_blockers(ROOT)
+    assert "SPLIT_TARGET_POLICIES_NOT_MATERIALIZED" in blockers
+    assert "TEXTUAL_POLICY_BOUNDARY_FINDINGS_OPEN" in blockers
+
+
+def test_split_map_preserves_occurrence_level_choice_on_same_line() -> None:
+    from developer.automation.decision_reference_migrator import simulate_temporary_split_map
+
+    previews = {
+        item.mapping_id: item
+        for item in simulate_temporary_split_map(ROOT)
+    }
+    assert previews["TMP-SPLIT-001"].selected_target == "MPD-0006"
+    assert previews["TMP-SPLIT-002"].selected_target == "SFP-0019"

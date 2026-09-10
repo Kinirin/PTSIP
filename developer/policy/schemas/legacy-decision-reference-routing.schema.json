@@ -148,7 +148,9 @@
         "split_review_granularity",
         "manual_resolution_vocabulary",
         "unresolved_split_reference_blocks_legacy_removal",
-        "unmapped_adr_behavior"
+        "unmapped_adr_behavior",
+        "temporary_context_map",
+        "temporary_context_map_delete_after_apply"
       ],
       "properties": {
         "eligible_extensions": {
@@ -183,6 +185,12 @@
         },
         "unmapped_adr_behavior": {
           "const": "FAIL_CLOSED"
+        },
+        "temporary_context_map": {
+          "const": "developer/policy/tmp-split-textual-reference-map.yaml"
+        },
+        "temporary_context_map_delete_after_apply": {
+          "const": true
         }
       },
       "additionalProperties": false
