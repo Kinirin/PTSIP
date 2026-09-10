@@ -2,7 +2,7 @@ schema_version: ptsip-legacy-reference-inventory/v1
 policy_class: PTSIP_DEVELOPER_POLICY
 
 scan_basis:
-  input_revision: e8260b9767d7a4f50835e4fae86b6bda96e184c8
+  input_revision: fba4b287bd8a5c57876c149e2f570734df1050e1
   legacy_corpus_revision: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
   legacy_decisions_tree_sha: 5724da43069ad6882a91b0058510d8dc95c1e3ee
   input_decisions_tree_sha: 5724da43069ad6882a91b0058510d8dc95c1e3ee
@@ -21,10 +21,11 @@ classification_rules:
   frozen_revision_lineage_is_active_reference: false
   mutable_current_authority_reference_is_active: true
   migration_artifact_reference_is_active_after_migration_retirement: false
+  support_policy_source_path_schema_is_historical_provenance_contract: true
 
 active_dependencies:
-  expected_file_count: 3
-  expected_reference_count: 21
+  expected_file_count: 5
+  expected_reference_count: 36
   entries:
     - id: ACTIVE-001
       path: ptsip.yaml
@@ -61,6 +62,34 @@ active_dependencies:
       deterministic_targets:
         ADR-0019: SFP-0018
         ADR-0022: SFP-0020
+    - id: ACTIVE-004
+      path: AGENTS.md
+      reference_kind: CURRENT_PROJECT_AUTHORITY_RUNTIME_GUIDANCE
+      expected_reference_count: 4
+      cleanup_action: REBASE_PROJECT_AUTHORITY_GUIDANCE_TO_SFP_CONTROL_PLANE
+      references:
+        decisions/INDEX.yaml: 1
+        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
+        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
+        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
+    - id: ACTIVE-005
+      path: docs/planning/0.4.0/WU-02/WU-02.yaml
+      reference_kind: ACTIVE_WU_AUTHORITY_BINDING
+      expected_reference_count: 11
+      cleanup_action: REBASE_ACTIVE_WU_AUTHORITY_BINDINGS_TO_SFP_CONTROL_PLANE
+      references:
+        decisions/INDEX.yaml: 2
+        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
+        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
+        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
+        decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml: 1
+        ADR-0007: 2
+        ADR-0009: 1
+        decisions/ADR-0007-primary-lifecycle-boundary-determination.md: 1
+        decisions/ADR-0009-responsibility-map-declaration-authority.md: 1
+      deterministic_targets:
+        ADR-0007: SFP-0007
+        ADR-0009: SFP-0009
 
 historical_provenance:
   policy_source_provenance:
@@ -72,6 +101,14 @@ historical_provenance:
     source_revision_anchor: 5ac6e8f23c5adaa58a4dd8c45b610afea376990c
     source_revision_anchor_materialized_in_policy_records: false
     cleanup_action: ADD_IMMUTABLE_SOURCE_REVISION_BEFORE_LEGACY_TREE_REMOVAL
+  support_policy_source_path_schema:
+    paths:
+      - schemas/ptsip-support-feature-policy.schema.json
+      - src/ptsip/specdata/ptsip-support-feature-policy.schema.json
+    reference: decisions/ADR-
+    semantics: LEGACY_ADR_SOURCE_PROVENANCE_PATH_PATTERN
+    runtime_dependency: false
+    rewrite_required_before_legacy_tree_removal: false
   frozen_revision_lineage:
     specification_revision: 3c47816770d194ae42f98faedc911d980db0e62a
     rewrite_allowed: false
@@ -157,7 +194,7 @@ excluded_non_legacy_decision_namespaces:
     legacy_decisions_tree_dependency: false
 
 gate:
-  active_reference_count: 21
+  active_reference_count: 36
   active_reference_count_zero: false
   unclassified_reference_count_zero: VALIDATION_PENDING
   migration_only_dependencies_retired: false
