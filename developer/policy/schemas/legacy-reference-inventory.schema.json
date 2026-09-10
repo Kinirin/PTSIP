@@ -38,12 +38,12 @@
       "type": "object",
       "required": ["expected_file_count", "expected_reference_count", "entries"],
       "properties": {
-        "expected_file_count": {"const": 3},
-        "expected_reference_count": {"const": 21},
+        "expected_file_count": {"const": 5},
+        "expected_reference_count": {"const": 36},
         "entries": {
           "type": "array",
-          "minItems": 3,
-          "maxItems": 3,
+          "minItems": 5,
+          "maxItems": 5,
           "items": {
             "type": "object",
             "required": ["id", "path", "reference_kind", "expected_reference_count", "cleanup_action", "references"],
@@ -69,7 +69,7 @@
       "type": "object",
       "required": ["active_reference_count", "active_reference_count_zero", "unclassified_reference_count_zero", "migration_only_dependencies_retired", "historical_provenance_revision_anchor_materialized", "decisions_removal_authorized"],
       "properties": {
-        "active_reference_count": {"const": 21},
+        "active_reference_count": {"const": 36},
         "active_reference_count_zero": {"const": false},
         "unclassified_reference_count_zero": {"enum": [true, false, "VALIDATION_PENDING"]},
         "migration_only_dependencies_retired": {"const": false},
