@@ -167,9 +167,9 @@ jobs:
         run: |
           ptsip --version
           ptsip spec
-          ptsip validate . --json
-          ptsip clarify . --json
-          ptsip gate . --coordination local --json
+          ptsip validate . --profile developer/profiles/ptsip-repository.yaml --json
+          ptsip clarify . --profile developer/profiles/ptsip-repository.yaml --json
+          ptsip gate . --profile developer/profiles/ptsip-repository.yaml --coordination local --json
           ptsip conform --help
 
       - name: Build and verify distributions
@@ -409,7 +409,7 @@ jobs:
           }
           $binding | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $bindingPath -Encoding UTF8
 
-          $conformOutput = & ptsip conform . --artifact-evidence $evidencePath --json
+          $conformOutput = & ptsip conform . --profile developer/profiles/ptsip-repository.yaml --artifact-evidence $evidencePath --json
           $conformExit = $LASTEXITCODE
           if ($conformExit -notin @(0, 6)) {
             throw "Artifact-aware conformance failed with unexpected exit code $conformExit."
