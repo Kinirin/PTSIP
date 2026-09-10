@@ -1,7 +1,7 @@
 # Project Profile pp.1.01
 
 > **State:** Current Tool 0.3.7 contract / PTSIP repository adopted
-> **Authority:** ADR-0019, ADR-0021, ADR-0022, ADR-0023
+> **Authority:** ADR-0019, SFP-0019, ADR-0022, SFP-0021
 > **Tool target:** 0.3.7
 > **Current Specification binding:** `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`
 
@@ -37,7 +37,7 @@ SHA hard-coded into the reusable PP schema.
 
 ## Important compatibility notice for 0.3.6-draft users
 
-For the ADR-0021 bridge, historical Project Profile identity `0.3.6-draft` and canonical Project Profile identity `pp.1.01` have the same Project Profile contract semantics.
+For the SFP-0019 bridge, historical Project Profile identity `0.3.6-draft` and canonical Project Profile identity `pp.1.01` have the same Project Profile contract semantics.
 
 The transition is classified as:
 

@@ -74,7 +74,7 @@ During this draft family the canonical repository moved from an earlier reposito
 ## Governance and documentation synchronization
 
 - adopted Apache License 2.0 for the PTSIP Specification repository;
-- added ADR-0003 for the first Pilot-driven evidence-v2 migration;
+- added MPD-0002 for the first Pilot-driven evidence-v2 migration;
 - added ADR-0004 documenting the two-Pilot normative decisions;
 - synchronized Terminology, Registry, Agent Contract, Reference Architecture, and Adoption Guide with the evidence/artifact/conformance semantics above.
 

@@ -353,3 +353,112 @@ def temporary_split_map_apply_blockers(root: str | Path | None = None) -> tuple[
     except (OSError, ValueError, UnroutedDecisionReferenceError):
         blockers.append("SPLIT_MAPPING_SOURCE_CONTEXT_CHANGED")
     return tuple(sorted(set(blockers)))
+
+
+def _replacement_span(value: str, needle: str, occurrence: int) -> tuple[int, int]:
+    if occurrence < 1:
+        raise ValueError("occurrence must be >= 1")
+    start = -1
+    search_from = 0
+    for _ in range(occurrence):
+        start = value.find(needle, search_from)
+        if start < 0:
+            raise UnroutedDecisionReferenceError(
+                f"Expected occurrence {occurrence} of {needle!r} was not found"
+            )
+        search_from = start + len(needle)
+    return start, start + len(needle)
+
+
+def render_temporary_split_map(
+    root: str | Path | None = None,
+) -> dict[str, str]:
+    """Render all mapped Markdown edits without writing them.
+
+    Entries sharing a line are resolved against the same original line and
+    applied right-to-left, so occurrence numbering cannot drift after an
+    earlier replacement.
+    """
+
+    base = repository_root(root)
+    mapping = load_yaml(TEMP_SPLIT_MAP, root=base)
+    if mapping.get("temporary") is not True or mapping.get("status") not in {
+        "DRY_RUN_READY", "APPROVED_FOR_APPLY"
+    }:
+        raise UnroutedDecisionReferenceError(
+            "Temporary SPLIT map is not ready for deterministic rendering"
+        )
+
+    grouped: dict[tuple[str, int], list[Mapping[str, object]]] = {}
+    for item in mapping.get("entries", []):
+        if not isinstance(item, Mapping):
+            continue
+        key = (str(item["file_path"]), int(item["line"]))
+        grouped.setdefault(key, []).append(item)
+
+    rendered_files: dict[str, list[str]] = {}
+    for (relative, line_no), items in grouped.items():
+        path = base / relative
+        lines = rendered_files.setdefault(
+            relative, path.read_text(encoding="utf-8").splitlines()
+        )
+        if line_no > len(lines):
+            raise UnroutedDecisionReferenceError(
+                f"{relative}:{line_no}: line no longer exists"
+            )
+        original = lines[line_no - 1]
+        expected_lines = {str(item["expected_line"]) for item in items}
+        if expected_lines != {original}:
+            raise UnroutedDecisionReferenceError(
+                f"{relative}:{line_no}: expected line changed; manual map must be reviewed again"
+            )
+
+        edits: list[tuple[int, int, str]] = []
+        for item in items:
+            target = str(item["selected_target"])
+            replacement = (
+                canonical_policy_path(target)
+                if item["replacement_form"] == "POLICY_PATH"
+                else target
+            )
+            start, end = _replacement_span(
+                original,
+                str(item["expected_reference"]),
+                int(item["occurrence_on_line"]),
+            )
+            edits.append((start, end, replacement))
+
+        edits.sort(key=lambda edit: edit[0], reverse=True)
+        previous_start = len(original) + 1
+        updated = original
+        for start, end, replacement in edits:
+            if end > previous_start:
+                raise UnroutedDecisionReferenceError(
+                    f"{relative}:{line_no}: mapped replacement spans overlap"
+                )
+            updated = updated[:start] + replacement + updated[end:]
+            previous_start = start
+        lines[line_no - 1] = updated
+
+    return {
+        relative: "\n".join(lines) + "\n"
+        for relative, lines in rendered_files.items()
+    }
+
+
+def apply_temporary_split_map(
+    *,
+    root: str | Path | None = None,
+) -> tuple[str, ...]:
+    """Apply the already human-mapped SPLIT Markdown rewrite fail-closed."""
+
+    base = repository_root(root)
+    blockers = temporary_split_map_apply_blockers(base)
+    if blockers:
+        raise UnroutedDecisionReferenceError(
+            "Temporary SPLIT map apply blocked: " + ", ".join(blockers)
+        )
+    rendered = render_temporary_split_map(base)
+    for relative, content in rendered.items():
+        (base / relative).write_text(content, encoding="utf-8")
+    return tuple(sorted(rendered))

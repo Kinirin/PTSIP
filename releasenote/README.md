@@ -22,7 +22,7 @@ releasenote/specification/<spec-note>.md
 
 Historical flat Tool and Specification release-note files have been relocated into these authority namespaces. This is a repository-organization change only; it does not rewrite the historical Tool/Specification identity or publication state recorded inside each note.
 
-The path-retention convention originally recorded with ADR-0021 is therefore superseded for repository layout. ADR-0021's substantive identity separation remains: Tool version, Project Profile contract identity, and Specification family/revision remain independent authorities.
+The path-retention convention originally recorded with MPD-0006 is therefore superseded for repository layout. SFP-0019's substantive identity separation remains: Tool version, Project Profile contract identity, and Specification family/revision remain independent authorities.
 
 Namespace indexes:
 
@@ -38,7 +38,7 @@ Namespace indexes:
 
 ### `0.3.6-draft -> pp.1.01` compatibility notice
 
-ADR-0021 classifies the transition from historical Project Profile identity `0.3.6-draft` to `pp.1.01` as:
+SFP-0019 classifies the transition from historical Project Profile identity `0.3.6-draft` to `pp.1.01` as:
 
 ```text
 IDENTITY_ONLY
