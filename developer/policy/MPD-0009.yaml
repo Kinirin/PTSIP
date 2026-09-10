@@ -1,0 +1,43 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+policy:
+  id: MPD-0009
+  title: Project Profile Transition Work Unit Sequence
+  status: ACTIVE
+rules:
+  authority_semantics:
+    ordered_work_units:
+    - WU-08
+    - WU-09
+    - WU-10
+    - WU-11
+    responsibilities:
+      WU-08: REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE
+      WU-09: INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE
+      WU-10: PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION
+      WU-11: FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS
+    maintainability_rules:
+    - TYPED_BOUNDARIES
+    - STABLE_OWNERSHIP
+    - INDEPENDENT_VERIFICATION
+    - FAIL_CLOSED_COMPATIBILITY
+    - EXTENSIBLE_REGISTRIES
+    - NO_TOOL_PP_COUPLING
+    - NO_PREMATURE_ADOPTION
+    architecture_acceptance_separate_from_identity_implementation: true
+    identity_implementation_separate_from_migration_capability: true
+    migration_capability_separate_from_repository_adoption: true
+    repository_adoption_separate_from_release_readiness: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0020
+  source_topic_id: project_profile_transition_work_unit_sequence
+  source_path: decisions/ADR-0020-responsibility-segmented-wu-sequence-for-pp-transition.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

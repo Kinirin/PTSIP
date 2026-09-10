@@ -1,0 +1,60 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0019
+  title: Project Profile Identity Bridge
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+  schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
+  schema_version: 1
+authority_semantics:
+  independent_history_axes:
+  - TOOL_VERSION
+  - PROJECT_PROFILE_CONTRACT_VERSION
+  - SPECIFICATION_FAMILY_REVISION
+  bridge_source: 0.3.6-draft
+  bridge_target: pp.1.01
+  bridge_classification: IDENTITY_ONLY
+  semantic_deltas:
+    components: NONE
+    relationships: NONE
+    associated_artifacts: NONE
+    policies: NONE
+    responsibility_map: NONE
+    lifecycle_classification: NONE
+  canonical_pp_identity: pp.1.01
+  temporary_filename_token: pp1.01
+  temporary_target_path: ptsip_pp1.01.yaml
+  legacy_temporary_target_alias: ptsip_0.3.6.yaml
+  canonical_0_3_6_to_pp_1_01_requires_temporary_target: false
+  equivalent_target_collision: DUPLICATE_EQUIVALENT_TARGET
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0021
+  source_topic_id: project_profile_identity_bridge_release_note_namespaces
+  source_path: decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - independent_history_axes
+      - bridge_source
+      - bridge_target
+      - bridge_classification
+      - semantic_deltas
+      - canonical_pp_identity
+      - temporary_filename_token
+      - temporary_target_path
+      - legacy_temporary_target_alias
+      - canonical_0_3_6_to_pp_1_01_requires_temporary_target
+      - equivalent_target_collision

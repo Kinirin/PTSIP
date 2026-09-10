@@ -1,0 +1,35 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0017
+  title: Tool and Project Profile Contract Independence
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+  schema_id: ptsip.governance/tool-profile-contract-independence
+  schema_version: 1
+authority_semantics:
+  tool_version_independent_from_project_profile_version: true
+  tool_release_implies_profile_migration: false
+  migration_engine_remains_implemented: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0017
+  source_topic_id: tool_profile_contract_independence
+  source_path: decisions/ADR-0017-tool-version-profile-contract-independence.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - tool_version_independent_from_project_profile_version
+      - tool_release_implies_profile_migration
+      - migration_engine_remains_implemented
