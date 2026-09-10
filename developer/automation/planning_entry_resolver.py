@@ -97,18 +97,21 @@ def resolve_planning_entry(
         for entry in routing.get("branch_entrypoints", []):
             if not isinstance(entry, dict):
                 continue
-            if entry.get("branch") == selected_branch:
+            if (
+                entry.get("branch") == selected_branch
+                and entry.get("state", "ACTIVE") == "ACTIVE"
+            ):
                 matches.append((plan, entry))
 
     if not matches:
         raise PlanningEntryResolutionError(
             "UNKNOWN_PLANNING_ENTRY",
-            f"No exact planning entry is declared for branch {selected_branch!r}.",
+            f"No active exact planning entry is declared for branch {selected_branch!r}.",
         )
     if len(matches) != 1:
         raise PlanningEntryResolutionError(
             "AMBIGUOUS_PLANNING_ENTRY",
-            f"Multiple planning entries are declared for branch {selected_branch!r}.",
+            f"Multiple active planning entries are declared for branch {selected_branch!r}.",
         )
 
     plan, entry = matches[0]
@@ -143,7 +146,7 @@ def resolve_planning_entry(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Resolve the exact planning entry document for the current Git branch."
+        description="Resolve the exact active planning entry document for the current Git branch."
     )
     parser.add_argument(
         "--branch",

@@ -4,6 +4,10 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from developer.automation.planning_merge_reconciler import (
+    PlanningStateReconciliationError,
+    build_materialized_state,
+)
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
 
 
@@ -29,6 +33,7 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
     for schema in (root_schema, plan_schema, wu_schema, extension_schema):
         Draft202012Validator.check_schema(schema)
     errors.extend(_errors(root_index, root_schema, ROOT_INDEX))
+
     for plan_entry in root_index.get("plans", []):
         path = plan_entry.get("path")
         if not isinstance(path, str):
@@ -121,6 +126,14 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
             if resolver.get("unmatched_behavior") != entry_resolution.get("unknown_branch_behavior"):
                 errors.append(f"{path}: resolver unknown-branch behavior does not match root entry routing")
 
+            merge_reconciliation = root_routing.get("merge_reconciliation", {})
+            if merge_reconciliation.get("target_branch") != plan_entry.get("integration_branch"):
+                errors.append(f"{path}: merge reconciliation target must equal integration_branch")
+            if merge_reconciliation.get("leaf_shared_index_mutation") != "FORBIDDEN":
+                errors.append(f"{path}: leaf shared planning-index mutation must be FORBIDDEN")
+            if merge_reconciliation.get("state_source") != "WORK_UNIT_DOCUMENTS":
+                errors.append(f"{path}: merge reconciliation state source must be WORK_UNIT_DOCUMENTS")
+
             entrypoints = root_routing.get("branch_entrypoints", [])
             branches = [
                 entry.get("branch")
@@ -155,6 +168,8 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     errors.append(f"{path}: integration branch entrypoint must resolve to version index")
                 if integration_entry.get("role") != "INTEGRATION_CONTROL_PLANE":
                     errors.append(f"{path}: integration branch entrypoint role is invalid")
+                if integration_entry.get("state") != "ACTIVE":
+                    errors.append(f"{path}: integration branch entrypoint must remain ACTIVE")
                 if integration_entry.get("work_unit") is not None:
                     errors.append(f"{path}: integration branch entrypoint must not bind a work unit")
 
@@ -187,6 +202,11 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     errors.append(f"{path}: leaf {leaf_id!r} entrypoint does not match indexed WU path")
                 if leaf_entry.get("role") != "INDEPENDENT_LEAF":
                     errors.append(f"{path}: leaf {leaf_id!r} entrypoint role is invalid")
+                if leaf_entry.get("state") == "MERGED":
+                    if leaf_entry.get("merged_into") != plan_entry.get("integration_branch"):
+                        errors.append(f"{path}: merged leaf {leaf_id!r} must point to integration_branch")
+                elif leaf_entry.get("state") != "ACTIVE":
+                    errors.append(f"{path}: leaf {leaf_id!r} entrypoint state is invalid")
                 entry_document = leaf_entry.get("entry_document")
                 if isinstance(entry_document, str) and not (base / entry_document).is_file():
                     errors.append(f"{path}: leaf {leaf_id!r} entry document does not exist")
@@ -211,6 +231,14 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     errors.append(f"{wu_path}: implementation_authorization does not match version index")
                 if work_unit.get("depends_on", []) != wu.get("depends_on", []):
                     errors.append(f"{wu_path}: depends_on does not match version index")
+
+                if work_unit.get("lifecycle", {}).get("status") == "COMPLETE":
+                    completion_evidence = payload.get("completion_evidence")
+                    if not isinstance(completion_evidence, list) or not completion_evidence:
+                        errors.append(f"{wu_path}: COMPLETE work unit requires completion_evidence")
+                    elif completion_evidence != wu.get("completion_evidence"):
+                        errors.append(f"{wu_path}: completion_evidence does not match version index")
+
                 for extension in payload.get("extensions", []):
                     ext_path = extension.get("path")
                     if not isinstance(ext_path, str):
@@ -221,6 +249,22 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                         gate_resolved = True
         if not gate_resolved:
             errors.append(f"{path}: current_gate {gate!r} does not resolve to a current WU or Plan Extension")
+
+        if isinstance(root_routing, dict) and root_routing.get("merge_reconciliation"):
+            try:
+                expected_materialized_state = build_materialized_state(
+                    plan_entry,
+                    plan,
+                    base=base,
+                )
+            except PlanningStateReconciliationError as exc:
+                errors.append(f"{path}: materialized planning state cannot be derived: {exc}")
+            else:
+                if plan_entry.get("materialized_state") != expected_materialized_state:
+                    errors.append(
+                        f"{ROOT_INDEX}: materialized_state is stale or does not match canonical planning state"
+                    )
+
     return tuple(errors)
 
 

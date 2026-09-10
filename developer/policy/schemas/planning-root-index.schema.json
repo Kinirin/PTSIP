@@ -59,6 +59,7 @@
               "dependency_bearing_convergence",
               "independent_leaf_work_units",
               "resolver",
+              "merge_reconciliation",
               "branch_entrypoints"
             ],
             "properties": {
@@ -155,6 +156,76 @@
                 },
                 "additionalProperties": false
               },
+              "merge_reconciliation": {
+                "type": "object",
+                "required": [
+                  "module",
+                  "reconcile_command",
+                  "merge_command",
+                  "target_branch",
+                  "state_source",
+                  "leaf_shared_index_mutation",
+                  "merged_leaf_entrypoint_state",
+                  "unfinished_merged_leaf_continuation",
+                  "gate_policy"
+                ],
+                "properties": {
+                  "module": {
+                    "const": "developer.automation.planning_merge_reconciler"
+                  },
+                  "reconcile_command": {
+                    "const": "python -m developer.automation.planning_merge_reconciler"
+                  },
+                  "merge_command": {
+                    "const": "python -m developer.automation.planning_leaf_merge"
+                  },
+                  "target_branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+                  },
+                  "state_source": {
+                    "const": "WORK_UNIT_DOCUMENTS"
+                  },
+                  "leaf_shared_index_mutation": {
+                    "const": "FORBIDDEN"
+                  },
+                  "merged_leaf_entrypoint_state": {
+                    "const": "MERGED"
+                  },
+                  "unfinished_merged_leaf_continuation": {
+                    "const": "INTEGRATION_BRANCH"
+                  },
+                  "gate_policy": {
+                    "type": "object",
+                    "required": [
+                      "preserve_nonterminal_current_gate",
+                      "merged_unfinished_leaf_after_gate_closure",
+                      "integrated_unfinished_leaf_before_unmerged_leaf",
+                      "unmerged_leaf_order",
+                      "fallback"
+                    ],
+                    "properties": {
+                      "preserve_nonterminal_current_gate": {
+                        "const": true
+                      },
+                      "merged_unfinished_leaf_after_gate_closure": {
+                        "const": true
+                      },
+                      "integrated_unfinished_leaf_before_unmerged_leaf": {
+                        "const": true
+                      },
+                      "unmerged_leaf_order": {
+                        "const": "DECLARATION_ORDER"
+                      },
+                      "fallback": {
+                        "const": "FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              },
               "branch_entrypoints": {
                 "type": "array",
                 "minItems": 1,
@@ -164,7 +235,8 @@
                   "required": [
                     "branch",
                     "entry_document",
-                    "role"
+                    "role",
+                    "state"
                   ],
                   "properties": {
                     "branch": {
@@ -181,9 +253,19 @@
                         "INDEPENDENT_LEAF"
                       ]
                     },
+                    "state": {
+                      "enum": [
+                        "ACTIVE",
+                        "MERGED"
+                      ]
+                    },
                     "work_unit": {
                       "type": "string",
                       "pattern": "^WU-[0-9]{2}$"
+                    },
+                    "merged_into": {
+                      "type": "string",
+                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
                     }
                   },
                   "allOf": [
@@ -214,10 +296,121 @@
                           "required": [
                             "work_unit"
                           ]
+                        },
+                        "properties": {
+                          "state": {
+                            "const": "ACTIVE"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "state": {
+                            "const": "MERGED"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "merged_into"
+                        ],
+                        "properties": {
+                          "role": {
+                            "const": "INDEPENDENT_LEAF"
+                          }
                         }
                       }
                     }
                   ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "materialized_state": {
+            "type": "object",
+            "required": [
+              "mode",
+              "source",
+              "generated_by",
+              "current_gate",
+              "current_gate_document",
+              "work_units"
+            ],
+            "properties": {
+              "mode": {
+                "const": "DERIVED_CACHE"
+              },
+              "source": {
+                "type": "string",
+                "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
+              },
+              "generated_by": {
+                "const": "developer.automation.planning_merge_reconciler"
+              },
+              "current_gate": {
+                "type": "string",
+                "pattern": "^WU-[0-9]{2}(?:-P[0-9]{2})?$"
+              },
+              "current_gate_document": {
+                "type": "string",
+                "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}(?:-P[0-9]{2})?\\.yaml$"
+              },
+              "work_units": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "lifecycle_status",
+                    "implementation_authorization_status",
+                    "execution_location"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^WU-[0-9]{2}$"
+                    },
+                    "lifecycle_status": {
+                      "enum": [
+                        "NOT_CREATED",
+                        "DRAFT",
+                        "ACTIVE",
+                        "BLOCKED",
+                        "COMPLETE",
+                        "SUPERSEDED",
+                        "CANCELLED"
+                      ]
+                    },
+                    "implementation_authorization_status": {
+                      "enum": [
+                        "NOT_AUTHORIZED",
+                        "HOLD_NOT_AUTHORIZED",
+                        "AUTHORIZED",
+                        "COMPLETE"
+                      ]
+                    },
+                    "execution_location": {
+                      "enum": [
+                        "INTEGRATION_BRANCH",
+                        "LEAF_BRANCH",
+                        "NOT_CREATED"
+                      ]
+                    },
+                    "branch": {
+                      "type": "string",
+                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:-WU-[0-9]{2})?$"
+                    },
+                    "entry_document": {
+                      "type": "string",
+                      "pattern": "^docs/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}\\.yaml$"
+                    }
+                  },
                   "additionalProperties": false
                 }
               }

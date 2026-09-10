@@ -1,42 +1,99 @@
 schema_version: ptsip-developer-planning-root/v1
 policy_class: PTSIP_DEVELOPER_POLICY
-
 plans:
-  - plan_version: 0.4.0
-    path: docs/planning/0.4.0/index.yaml
-    status: ACTIVE
-    integration_branch: dev/0.4.0
-    entry_routing:
-      model: PARALLEL_DEPENDENCY_EXTRACTION
-      canonical_plan: planning/0.4.0.md
-      responsibility_control_plane: docs/planning/0.4.0/index.yaml
-      branch_creation_parent: dev/0.4.0
-      resolver:
-        module: developer.automation.planning_entry_resolver
-        command: python -m developer.automation.planning_entry_resolver
-        branch_source: GIT_CURRENT_BRANCH
-        match_mode: EXACT_BRANCH
-        unmatched_behavior: FAIL_CLOSED
-        ambiguous_behavior: FAIL_CLOSED
-      branch_entrypoints:
-        - branch: dev/0.4.0
-          entry_document: docs/planning/0.4.0/index.yaml
-          role: INTEGRATION_CONTROL_PLANE
-        - branch: dev/0.4.0-WU-04
-          entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
-          role: INDEPENDENT_LEAF
-          work_unit: WU-04
-        - branch: dev/0.4.0-WU-05
-          entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
-          role: INDEPENDENT_LEAF
-          work_unit: WU-05
-      dependency_bearing_convergence:
-        id: WU-03
-        responsibility: DOWNSTREAM_DEPENDENCY_BEARING_INTEGRATION_AND_ORCHESTRATION
-      independent_leaf_work_units:
-        - id: WU-04
-          branch: dev/0.4.0-WU-04
-          responsibility: EXPLICIT_INPUT_AUTHORITY_GATE_AND_REPOSITORY_EXECUTION_KERNEL
-        - id: WU-05
-          branch: dev/0.4.0-WU-05
-          responsibility: EXPLICIT_INPUT_POSTCONDITION_VERIFICATION_AND_REMEDIATION_TEST_MODE
+- plan_version: 0.4.0
+  path: docs/planning/0.4.0/index.yaml
+  status: ACTIVE
+  integration_branch: dev/0.4.0
+  entry_routing:
+    model: PARALLEL_DEPENDENCY_EXTRACTION
+    canonical_plan: planning/0.4.0.md
+    responsibility_control_plane: docs/planning/0.4.0/index.yaml
+    branch_creation_parent: dev/0.4.0
+    resolver:
+      module: developer.automation.planning_entry_resolver
+      command: python -m developer.automation.planning_entry_resolver
+      branch_source: GIT_CURRENT_BRANCH
+      match_mode: EXACT_BRANCH
+      unmatched_behavior: FAIL_CLOSED
+      ambiguous_behavior: FAIL_CLOSED
+    merge_reconciliation:
+      module: developer.automation.planning_merge_reconciler
+      reconcile_command: python -m developer.automation.planning_merge_reconciler
+      merge_command: python -m developer.automation.planning_leaf_merge
+      target_branch: dev/0.4.0
+      state_source: WORK_UNIT_DOCUMENTS
+      leaf_shared_index_mutation: FORBIDDEN
+      merged_leaf_entrypoint_state: MERGED
+      unfinished_merged_leaf_continuation: INTEGRATION_BRANCH
+      gate_policy:
+        preserve_nonterminal_current_gate: true
+        merged_unfinished_leaf_after_gate_closure: true
+        integrated_unfinished_leaf_before_unmerged_leaf: true
+        unmerged_leaf_order: DECLARATION_ORDER
+        fallback: FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU
+    branch_entrypoints:
+    - branch: dev/0.4.0
+      entry_document: docs/planning/0.4.0/index.yaml
+      role: INTEGRATION_CONTROL_PLANE
+      state: ACTIVE
+    - branch: dev/0.4.0-WU-04
+      entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
+      role: INDEPENDENT_LEAF
+      work_unit: WU-04
+      state: ACTIVE
+    - branch: dev/0.4.0-WU-05
+      entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
+      role: INDEPENDENT_LEAF
+      work_unit: WU-05
+      state: ACTIVE
+    dependency_bearing_convergence:
+      id: WU-03
+      responsibility: DOWNSTREAM_DEPENDENCY_BEARING_INTEGRATION_AND_ORCHESTRATION
+    independent_leaf_work_units:
+    - id: WU-04
+      branch: dev/0.4.0-WU-04
+      responsibility: EXPLICIT_INPUT_AUTHORITY_GATE_AND_REPOSITORY_EXECUTION_KERNEL
+    - id: WU-05
+      branch: dev/0.4.0-WU-05
+      responsibility: EXPLICIT_INPUT_POSTCONDITION_VERIFICATION_AND_REMEDIATION_TEST_MODE
+  materialized_state:
+    mode: DERIVED_CACHE
+    source: docs/planning/0.4.0/index.yaml
+    generated_by: developer.automation.planning_merge_reconciler
+    current_gate: WU-02-P01
+    current_gate_document: docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+    work_units:
+    - id: WU-01
+      lifecycle_status: COMPLETE
+      implementation_authorization_status: COMPLETE
+      execution_location: INTEGRATION_BRANCH
+      branch: dev/0.4.0
+    - id: WU-02
+      lifecycle_status: ACTIVE
+      implementation_authorization_status: AUTHORIZED
+      execution_location: INTEGRATION_BRANCH
+      branch: dev/0.4.0
+      entry_document: docs/planning/0.4.0/WU-02/WU-02.yaml
+    - id: WU-03
+      lifecycle_status: ACTIVE
+      implementation_authorization_status: AUTHORIZED
+      execution_location: INTEGRATION_BRANCH
+      branch: dev/0.4.0
+      entry_document: docs/planning/0.4.0/WU-03/WU-03.yaml
+    - id: WU-04
+      lifecycle_status: ACTIVE
+      implementation_authorization_status: NOT_AUTHORIZED
+      execution_location: LEAF_BRANCH
+      branch: dev/0.4.0-WU-04
+      entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
+    - id: WU-05
+      lifecycle_status: ACTIVE
+      implementation_authorization_status: NOT_AUTHORIZED
+      execution_location: LEAF_BRANCH
+      branch: dev/0.4.0-WU-05
+      entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
+    - id: WU-06
+      lifecycle_status: NOT_CREATED
+      implementation_authorization_status: NOT_AUTHORIZED
+      execution_location: NOT_CREATED
