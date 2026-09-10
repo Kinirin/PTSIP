@@ -1,0 +1,227 @@
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+
+record:
+  id: WU-02-CUSTOM-COMPONENT-AUTHORITY-2026-09-10
+  kind: OWNER_APPROVED_DESIGN_RECORD
+  status: APPROVED
+  approval:
+    authority: PROJECT_OWNER
+    date: '2026-09-10'
+    source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  repository_baseline_at_recording: 695331c8bd047da94b8a287fe57ee7088da1fb1d
+  planning_context:
+    current_gate: WU-02
+    p01_extension: COMPLETE
+  runtime_authority: false
+  implementation_authorization_granted_by_this_record: false
+  purpose: RECORD_THE_APPROVED_CUSTOM_COMPONENT_AND_COMPONENT_AUTHORITY_PROVENANCE_DESIGN_BEFORE_WU_02_IMPLEMENTATION
+  intended_consumers:
+    - WU-02
+    - WU-03
+    - TOOL_0_3_8_EMERGENCY_BRIDGE_PREPARATION
+
+custom_component_contract:
+  canonical_term: CUSTOM_COMPONENT
+  meaning: PROJECT_OWNER_DEFINED_STANDARD_PTSIP_COMPONENT
+  user_facing_distinction_only: true
+  separate_runtime_component_type: false
+  separate_project_profile_schema: false
+  separate_classification: false
+  separate_lifecycle_or_state_model: false
+  separate_automation_engine: false
+  separate_verification_system: false
+  ptsip_official_component_taxonomy_extension: false
+  compatibility_rule: PROJECT_DEFINED_COMPONENTS_USE_THE_SAME_CANONICAL_COMPONENT_CONTRACT_AND_AUTOMATION_SEMANTICS_AS_OTHER_PROJECT_PROFILE_COMPONENTS
+
+classification_contract:
+  custom_component_uses_existing_canonical_classification: true
+  allowed_values:
+    - PRODUCT
+    - DEVELOPMENT_TOOLING
+    - DELIVERY
+    - OPERATIONS
+    - NEUTRAL_CONTRACT
+  custom_component_is_itself_a_classification: false
+
+semantic_field_alignment:
+  objective: REUSE_EXISTING_COMPONENT_AND_DECISIONANSWER_SEMANTICS
+  decision_answer_fields:
+    - classification
+    - purpose
+    - shipped
+    - runtime_required
+    - executable
+  additional_component_identity_and_scope_fields:
+    - id
+    - include
+  intended_include_field: FORBIDDEN_AS_REDUNDANT_PARALLEL_SCOPE_SEMANTIC
+  include_rule:
+    pre_materialization_declaration: MAY_NAME_THE_OWNER_APPROVED_TARGET_SCOPE_BEFORE_TRACKED_CONTENT_EXISTS
+    project_profile_materialization: MUST_SATISFY_THE_CURRENT_COMPONENT_CONTRACT_AND_VALIDATION_RULES
+  optional_existing_component_fields_remain_available:
+    - roles
+    - exclude
+    - release_owner
+    - compatibility_owner
+    - manifests
+    - consumers
+    - analysis_inputs
+
+pre_materialization_boundary:
+  problem: CURRENT_ADOPTION_REQUIRES_A_REPOSITORY_DISCOVERED_COMPONENT_CANDIDATE_AND_CURRENT_PROJECT_PROFILE_COMPONENT_INCLUDE_MUST_RESOLVE_TO_REAL_TRACKED_CONTENT
+  approved_resolution: REPRESENT_OWNER_APPROVED_FUTURE_COMPONENT_AUTHORITY_BEFORE_PROJECT_PROFILE_MATERIALIZATION_WITHOUT_ADDING_A_COMPONENT_STATE_FIELD
+  flow:
+    - PROJECT_OWNER_DECIDES_COMPONENT_SEMANTICS
+    - PRE_MATERIALIZATION_COMPONENT_AUTHORITY_OR_DECLARATION_EXISTS_OUTSIDE_COMPONENT_STATE
+    - CODING_AGENT_MAY_USE_THE_APPROVED_COMPONENT_AS_A_DEVELOPMENT_TARGET
+    - REPOSITORY_CONTENT_IS_CREATED
+    - INCLUDE_SCOPE_BECOMES_VALID_FOR_CURRENT_PROJECT_PROFILE_CONTRACT
+    - COMPONENT_IS_MATERIALIZED_USING_THE_STANDARD_PROJECT_PROFILE_COMPONENT_CONTRACT
+    - NORMAL_PTSIP_AUTOMATION_CONTINUES_WITHOUT_CUSTOM_COMPONENT_SPECIAL_CASES
+  component_state_field_added: false
+  unknown_component_behavior_after_valid_pre_materialization_authority: MUST_NOT_BE_TREATED_AS_UNKNOWN_SOLELY_BECAUSE_REPOSITORY_CONTENT_DOES_NOT_YET_EXIST
+
+solution_space_alignment:
+  project_local_component_creation_semantics: CUSTOM_COMPONENT
+  prior_planning_term_to_retire_or_reconcile: NEW_COMPONENT_CANDIDATE
+  reason: CANDIDATE_NAMING_IS_REDUNDANT_INSIDE_SOLUTION_SPACE_AND_CAN_BE_CONFUSED_WITH_A_FUTURE_PTSIP_OFFICIAL_COMPONENT_TYPE
+  candidate_output_authoritative: false
+  owner_acceptance_or_existing_current_authority_required_before_PROJECT_DEFINED_COMPONENT_AUTHORITY_EXISTS: true
+  tool_may_invent_component_purpose_or_classification: false
+  repository_evidence_may_create_project_intent: false
+
+standard_automation_reuse:
+  generic_ptsip_automation_is_default: true
+  custom_component_receives_reduced_generic_automation_because_of_provenance: false
+  generic_surfaces_to_reuse_when_applicable:
+    - RESPONSIBILITY_MAP_OWNERSHIP
+    - CLASSIFICATION_VALIDATION
+    - DEPENDENCY_POLICY
+    - PACKAGING_RULES
+    - TYPED_RELATIONSHIP_VALIDATION
+    - COVERAGE_AND_CONFORMANCE
+    - GENERIC_REMEDIATION
+    - POSTCONDITION_VERIFICATION
+  project_specific_automation:
+    optional: true
+    implementation_model: EXTEND_EXISTING_PTSIP_AUTOMATION_CONTRACTS
+    separate_custom_automation_framework: false
+    authority_gate_bypass: forbidden
+    specification_override: forbidden
+    self_authorization_of_repository_mutation: forbidden
+  capability_gap_rule: MISSING_PROJECT_SPECIFIC_CAPABILITY_MAY_BLOCK_ONLY_THE_OPERATION_REQUIRING_THAT_CAPABILITY_AND_MUST_NOT_DOWNGRADE_THE_COMPONENT_AS_A_WHOLE
+
+authority_provenance_contract:
+  field_name: authority_provenance
+  applies_to: ALL_COMPONENTS_NOT_ONLY_CUSTOM_COMPONENTS
+  semantic_role: IDENTIFY_THE_CURRENT_AUTHORITATIVE_DEFINITION_ORIGIN_WITHOUT_CHANGING_COMPONENT_AUTOMATION_ENTITLEMENT
+  initial_profile_requiredness: OPTIONAL_FOR_BACKWARD_COMPATIBILITY
+  new_project_defined_component_creation_rule: RECORD_EXPLICIT_PROVENANCE
+  missing_legacy_behavior:
+    serialized_default: NONE
+    runtime_interpretation: UNSPECIFIED_LEGACY_PROVENANCE
+    generic_ptsip_automation_must_continue: true
+  source_type:
+    closed_vocabulary:
+      - PROJECT_OWNER
+      - PTSIP_PROVIDED
+      - PROJECT_AUTHORITY
+    meanings:
+      PROJECT_OWNER: COMPONENT_SEMANTICS_WERE_DIRECTLY_DEFINED_OR_APPROVED_BY_THE_PROJECT_OWNER
+      PTSIP_PROVIDED: COMPONENT_DEFINITION_ORIGINATED_FROM_A_PTSIP_PROVIDED_CANONICAL_OR_TEMPLATE_DEFINITION
+      PROJECT_AUTHORITY: COMPONENT_DEFINITION_IS_CURRENTLY_MATERIALIZED_FROM_A_GOVERNED_PROJECT_AUTHORITY_RECORD
+  provenance_is_automation_entitlement: false
+  provenance_is_component_classification: false
+
+source_ref_contract:
+  definition: STABLE_LOGICAL_REFERENCE_TO_THE_CURRENT_AUTHORITATIVE_COMPONENT_DEFINITION
+  required_when_authority_provenance_is_present: true
+  filesystem_path_is_canonical_identity: false
+  git_revision_embedded_in_source_ref: false
+  historical_lineage_accumulated_on_component: false
+  current_authority_source_only: true
+  source_type_namespace_alignment:
+    PROJECT_OWNER:
+      namespace: 'component-authority:'
+      example: 'component-authority:report-generator'
+    PTSIP_PROVIDED:
+      namespace: 'ptsip-component:'
+      example: 'ptsip-component:python-library'
+    PROJECT_AUTHORITY:
+      namespace: 'project-authority:'
+      example: 'project-authority:PA-0042'
+  source_type_and_namespace_mismatch_behavior: FAIL_CLOSED
+  stable_id_exact_grammar: NOT_FROZEN
+  resolver_storage_location: NOT_FROZEN
+  physical_storage_may_change_without_changing_logical_reference: true
+  project_owner_to_project_authority_transition:
+    component_id_must_remain_stable: true
+    authority_provenance_may_change_from: PROJECT_OWNER
+    authority_provenance_may_change_to: PROJECT_AUTHORITY
+    source_ref_may_change_to_current_authority_record_identity: true
+    original_history_owner: REFERENCED_AUTHORITY_RECORD_OR_GIT_HISTORY
+
+project_authority_interop:
+  component_does_not_duplicate_full_project_authority_record_provenance: true
+  project_authority_source_ref_points_to_record_identity: true
+  source_revision_and_source_digest_should_live_on_referenced_authority_record_when_available: true
+  owner_input_itself_becomes_component_authority_directly: false
+  governed_materialization_required_before_project_authority_source_type: true
+  accepted_authority_change_requires_fresh_solve: true
+
+compatibility_policy:
+  primary_goal: DO_NOT_FORCE_SUPPORT_LOSS_FOR_USER_CREATED_COMPONENTS_ACROSS_TOOL_UPGRADES
+  custom_component_follows_standard_component_contract_evolution: true
+  existing_component_without_authority_provenance_remains_usable: true
+  custom_component_specific_schema_migration_track: forbidden
+  custom_component_specific_automation_compatibility_track: forbidden
+  provenance_absence_alone_may_disable_generic_automation: false
+
+emergency_bridge_0_3_8:
+  objective: ALLOW_AN_OWNER_APPROVED_NOT_YET_EXISTING_PROJECT_COMPONENT_TO_BE_OFFICIALLY_REFERENCED_SO_DEVELOPMENT_CAN_CONTINUE
+  must_not_claim: FULL_0_4_0_END_TO_END_REMEDIATION_ORCHESTRATION
+  minimum_semantics_to_preserve:
+    - STANDARD_COMPONENT_FIELD_REUSE
+    - PRE_MATERIALIZATION_OWNER_AUTHORITY
+    - CUSTOM_COMPONENT_IS_PROJECT_LOCAL_NOT_A_PTSIP_TAXONOMY_EXTENSION
+    - STANDARD_PTSIP_AUTOMATION_REUSE
+    - AUTHORITY_PROVENANCE_WITH_STABLE_LOGICAL_SOURCE_REF
+    - NO_IMPLICIT_PROJECT_INTENT_FROM_REPOSITORY_EVIDENCE
+  exact_public_cli_surface: NOT_FROZEN
+  exact_packaging_version_reasserted_by_this_record: false
+
+implementation_impact_review:
+  project_profile_contract:
+    authority_provenance_field_addition_requires_schema_review: true
+    field_should_be_common_to_all_components_if_added: true
+    initial_field_optional_for_backward_compatibility: true
+    exact_project_profile_contract_revision: NOT_FROZEN
+  specification:
+    normative_revision_requirement: REVIEW_REQUIRED_BEFORE_IMPLEMENTATION
+    this_planning_record_does_not_move_spec_revision: true
+  wu_02:
+    reconcile_NEW_COMPONENT_CANDIDATE_to_CUSTOM_COMPONENT_semantics: required
+    preserve_non_authoritative_solution_candidate_boundary: true
+    preserve_no_repository_mutation_boundary: true
+  wu_03:
+    consume_owner_input_through_governed_project_authority_materialization: true
+    fresh_solve_after_accepted_authority_change: true
+    exact_adapter_reconciliation_after_wu_02: required
+
+unresolved_before_implementation:
+  - EXACT_SOURCE_REF_STABLE_ID_GRAMMAR
+  - PRE_MATERIALIZATION_AUTHORITY_RECORD_STORAGE_AND_RESOLVER_LOCATION
+  - EXACT_PROJECT_PROFILE_SCHEMA_AND_SPECIFICATION_REVISION_IMPACT
+  - PUBLIC_CLI_OR_AGENT_FACING_INPUT_SURFACE
+  - WU_03_OWNER_INTENT_CARDINALITY_RECONCILIATION_IF_ONE_CUSTOM_COMPONENT_TARGET_HAS_UNRESOLVED_OWNER_AUTHORITY_DIMENSIONS
+
+safety_invariants:
+  - CUSTOM_COMPONENT_MUST_NOT_BECOME_A_SECOND_CLASS_COMPONENT
+  - CUSTOM_COMPONENT_MUST_NOT_BECOME_A_NEW_CANONICAL_CLASSIFICATION
+  - CUSTOM_COMPONENT_MUST_NOT_DEFINE_A_PARALLEL_LIFECYCLE_OR_STATE_MODEL
+  - CUSTOM_COMPONENT_MUST_NOT_REQUIRE_A_PARALLEL_AUTOMATION_OR_VERIFICATION_ENGINE
+  - AUTHORITY_PROVENANCE_MUST_NOT_GRANT_MUTATION_AUTHORIZATION
+  - SOURCE_REF_MUST_NOT_BE_A_HIDDEN_FILESYSTEM_OR_GIT_REVISION_COUPLING
+  - LEGACY_COMPONENTS_WITHOUT_PROVENANCE_MUST_NOT_LOSE_GENERIC_AUTOMATION_SUPPORT
+  - PROJECT_SPECIFIC_AUTOMATION_MUST_REMAIN_INSIDE_EXISTING_PTSIP_AUTHORIZATION_AND_VERIFICATION_BOUNDARIES
