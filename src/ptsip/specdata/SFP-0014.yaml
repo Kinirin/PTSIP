@@ -1,0 +1,54 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0014
+  title: Staged Migration Analysis Pipeline
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
+  schema_id: ptsip.governance/staged-migration-analysis-pipeline
+  schema_version: 1
+authority_semantics:
+  pipeline:
+  - SOURCE_COVERAGE_PROJECTION
+  - REPOSITORY_ELEMENT_RESOLUTION
+  - OBLIGATION_TAXONOMY
+  - LIFECYCLE_COMPATIBILITY
+  - NORMALIZED_EVIDENCE_CORRELATION
+  - ACCEPTED_TARGET_STATE_COMPATIBILITY
+  - SOURCE_MIGRATION_COMPLETION
+  stage_outputs: IMMUTABLE_TYPED
+  repository_resolution_types:
+  - EXISTING_SOURCE_ELEMENT
+  - REMOVED_SOURCE_ELEMENT
+  - UNCOVERED_REPOSITORY_ELEMENT
+  - AMBIGUOUS_SOURCE_ELEMENT
+  taxonomy_map:
+    EXISTING_SOURCE_ELEMENT: REQUIRED_WORK_ELEMENT
+    REMOVED_SOURCE_ELEMENT: REMOVAL_MIGRATION_ELEMENT
+    UNCOVERED_REPOSITORY_ELEMENT: ASYNCHRONOUS_WORK_TARGET
+    AMBIGUOUS_SOURCE_ELEMENT: NO_OBLIGATION_CATEGORY
+  lifecycle_compatibility_separate_from_obligation_category: true
+  evidence_authority: NON_AUTHORITATIVE
+  source_and_repository_freshness: FAIL_CLOSED
+  accepted_target_state_separate_typed_input: true
+  completion_equation: REQUIRED_UNRESOLVED_EQUALS_ZERO
+  removal_or_async_compensates_required: false
+  deterministic_digest: SHA256
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0014
+  source_topic_id: migration_analysis_pipeline
+  source_path: decisions/ADR-0014-strongly-typed-staged-migration-analyzer.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

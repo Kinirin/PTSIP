@@ -1,0 +1,34 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+policy:
+  id: MPD-0004
+  title: PTSIP Development Specification 0.3.7 Activation
+  status: ACTIVE
+rules:
+  authority_semantics:
+    activated_family: 0.3.7-draft
+    immutable_normative_snapshot: b648d9e026f502b14481ba2d0606d9acc88a31fc
+    normative_companion: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    activation_implies_repository_profile_mutation: false
+    tool_runtime_claims_full_implementation_by_activation: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: SFP-0010
+      scope: PROFILE_TRANSITION_SEMANTICS
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0011
+  source_topic_id: tool_0_3_7_normative_draft_activation
+  source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - activated_family
+      - immutable_normative_snapshot
+      - normative_companion
+      - activation_implies_repository_profile_mutation
+      - tool_runtime_claims_full_implementation_by_activation

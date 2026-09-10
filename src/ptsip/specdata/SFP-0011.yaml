@@ -1,0 +1,54 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0011
+  title: Profile Transition Support Set
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: SPECIFICATION_FAMILY_ACTIVATION
+  schema_id: ptsip.governance/specification-family-activation
+  schema_version: 1
+authority_semantics:
+  preserved_classifications:
+  - PRODUCT
+  - DEVELOPMENT_TOOLING
+  - DELIVERY
+  - OPERATIONS
+  - NEUTRAL_CONTRACT
+  toolchain_is_current_ptsip_classification: false
+  profile_transition_rules:
+  - PTSIP-MIG-004
+  - PTSIP-MIG-005
+  - PTSIP-MIG-006
+  - PTSIP-MIG-007
+  - PTSIP-MIG-008
+  - PTSIP-MIG-009
+  - PTSIP-MIG-010
+  - PTSIP-MIG-011
+  - PTSIP-MIG-012
+  - PTSIP-MIG-013
+  - PTSIP-MIG-014
+  - PTSIP-MIG-015
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: SFP-0010
+      scope: PROFILE_TRANSITION_SEMANTICS
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0011
+  source_topic_id: tool_0_3_7_normative_draft_activation
+  source_path: decisions/ADR-0011-activate-spec-0.3.7-draft.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: SELECTED_AUTHORITY_SEMANTICS_FIELDS
+    include_fields:
+      - preserved_classifications
+      - toolchain_is_current_ptsip_classification
+      - profile_transition_rules

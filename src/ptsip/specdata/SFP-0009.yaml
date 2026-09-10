@@ -1,0 +1,62 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0009
+  title: Responsibility Map Declaration Authority
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
+  schema_id: ptsip.governance/responsibility-map-declaration-authority
+  schema_version: 1
+authority_semantics:
+  source_modes:
+  - EXPLICIT
+  - TEMPLATE
+  - HYBRID
+  source_mode_is_lifecycle_classification: false
+  explicit_mode_authority: PROJECT_COMPLETE_DECLARATION
+  template_mode_authority: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
+  template_selection_inference: FORBIDDEN
+  hybrid_project_authority:
+  - TEMPLATE_SELECTION
+  - STABLE_ID_REPLACEMENTS
+  - STABLE_ID_EXTENSIONS
+  - STABLE_ID_REMOVALS
+  hybrid_precedence:
+  - PROJECT_OVERRIDE_EXTENSION_REMOVAL
+  - SELECTED_IMMUTABLE_TEMPLATE_DECLARATION
+  hybrid_override_granularity: WHOLE_ENTITY_BY_STABLE_ID
+  field_level_patch_inheritance: NOT_INTRODUCED
+  materializer_authority: NON_AUTHORITATIVE
+  materializer_may_infer_missing_architecture: false
+  materializer_may_change_classification: false
+  materializer_may_silently_repair_conflicts: false
+  effective_map_collections:
+  - COMPONENTS
+  - ASSOCIATED_ARTIFACTS
+  - TYPED_RELATIONSHIPS
+  - COMPONENT_DEPENDENCY_POLICY
+  - PROJECT_POLICIES
+  effective_map_digest: SHA256_CANONICAL_SEMANTIC_REPRESENTATION
+  invalid_effective_architecture: FAIL_CLOSED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: SFP-0007
+      scope: PRIMARY_LIFECYCLE_ONTOLOGY
+    - policy: SFP-0008
+      scope: RESPONSIBILITY_MAP_SEMANTIC_AXES
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0009
+  source_topic_id: responsibility_map_declaration_authority
+  source_path: decisions/ADR-0009-responsibility-map-declaration-authority.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

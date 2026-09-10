@@ -1,0 +1,46 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0012
+  title: Universal Normalized Evidence Contract
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: NORMALIZED_EVIDENCE_CONTRACT
+  schema_id: ptsip.governance/normalized-evidence-contract
+  schema_version: 1
+authority_semantics:
+  contract: ptsip-normalized-evidence/v1
+  producer_neutral: true
+  authority: EVIDENCE_ONLY
+  semantic_identity_separate_from_evaluation_identity: true
+  equivalent_values_preserve_all_origins: true
+  conflict_policy: EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS
+  analysis_states:
+  - EXPLICIT_ASSERTION
+  - NO_MATCH
+  - NOT_ANALYZED
+  - FAILED
+  absence_may_become_false_assertion: false
+  boundary_evidence_provenance: INFERRED
+  boundary_evidence_authority: EVIDENCE_ONLY
+  interchange_schema_paths:
+  - schemas/ptsip-normalized-evidence.schema.json
+  - src/ptsip/specdata/ptsip-normalized-evidence.schema.json
+  producer_specific_interfaces_replaced: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0012
+  source_topic_id: normalized_evidence_contract
+  source_path: decisions/ADR-0012-universal-normalized-evidence-contract.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS

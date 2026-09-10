@@ -1,0 +1,48 @@
+schema_version: ptsip-support-feature-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+policy:
+  id: SFP-0010
+  title: Versioned Draft Profile Transition
+  status: ACTIVE
+feature_contract:
+  shipped: true
+  runtime_surface:
+    - src/ptsip/**
+authority_contract:
+  authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
+  schema_id: ptsip.governance/versioned-draft-profile-transition
+  schema_version: 1
+authority_semantics:
+  canonical_profile_path: ptsip.yaml
+  temporary_profile_pattern: ptsip_<major>.<minor>.<micro>.yaml
+  temporary_profile_internal_version_match_required: true
+  one_temporary_profile_per_target_semantic_version: true
+  migration_categories:
+  - REQUIRED_WORK_ELEMENT
+  - REMOVAL_MIGRATION_ELEMENT
+  - ASYNCHRONOUS_WORK_TARGET
+  completion_basis: REQUIRED_WORK_ELEMENTS_ONLY
+  removal_element_preservation_obligation: false
+  async_target_completion_credit: false
+  canonical_profile_replaced_before_source_completion: false
+  final_point_selection: HIGHEST_SELECTED_TARGET_DRAFT
+  temporary_source_processing_order: DESCENDING_DRAFT_VERSION_CLOSEST_TO_FINAL_POINT_FIRST
+  canonical_source_processing_order: LAST
+  deleted_intermediate_may_be_migration_hop: false
+  source_category_inheritance: false
+  final_point_is_cumulative_target_state: true
+  version_and_revision_required_transition_inputs: true
+  stale_or_conflicting_transition: FAIL_CLOSED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+source_provenance:
+  source_type: LEGACY_ADR
+  source_id: ADR-0010
+  source_topic_id: draft_profile_transition
+  source_path: decisions/ADR-0010-versioned-draft-profile-transition.yaml
+  source_status: ACCEPTED
+  semantic_projection:
+    mode: FULL_AUTHORITY_SEMANTICS
