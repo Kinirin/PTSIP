@@ -29,6 +29,7 @@ scope:
   - RETIRE_LEGACY_POLICY_MIGRATION_CONTROL_PLANE_AFTER_MATERIALIZATION
   - REMOVE_PRODUCT_RUNTIME_DEPENDENCIES_ON_DEVELOPER_POLICY
   - AUTO_REMOVE_LEGACY_POLICY_CORPUS_AFTER_MACHINE_GATE_PASS
+  - REMOVE_ROOT_SELF_PROFILE_COMPATIBILITY_BRIDGE_AFTER_EXPLICIT_DEVELOPER_PROFILE_SELECTION
 
 policy_namespaces:
   developer:
@@ -126,10 +127,14 @@ migration_stages:
       preserve_legacy_source_identity_in_sfp_mpd: false
       obsolete_revision_anchor_gate: RETIRED_NOT_SATISFIED
   P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL:
-    status: BLOCKED
+    status: IMPLEMENTED_VALIDATION_PENDING
+    canonical_self_profile: developer/profiles/ptsip-repository.yaml
+    removed_bridge: ptsip.yaml
+    product_default_profile_path_changed: false
     required:
       - DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_VERIFIED
       - ROOT_PTSIP_YAML_NOT_REQUIRED_FOR_PTSIP_REPOSITORY_SELF_MANAGEMENT
+      - PRODUCT_DEFAULT_ROOT_PROFILE_BEHAVIOR_UNCHANGED_FOR_CONSUMER_REPOSITORIES
 
 profile_subsystem_decision:
   status: APPROVED
@@ -140,7 +145,7 @@ profile_subsystem_decision:
   move_authorized_only_as_part_of_inventory_linked_materialization: true
 
 current_known_blockers:
-  - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE
+  - P01_F_MACHINE_VALIDATION_PENDING
 
 p01_e_execution_plan:
   baseline:
@@ -323,6 +328,75 @@ p01_e_execution_plan:
       - python -m developer.automation.policy_validator
       - python -m developer.automation.planning_validator
       - python -m developer.automation.transition_evaluator
+    log_policy:
+      commit: false
+      remove_after_review: true
+
+p01_f_execution_plan:
+  baseline_revision: d1d3ecafd0658cbd704b2fd03afedd311db48da9
+  canonical_self_profile: developer/profiles/ptsip-repository.yaml
+  removed_bridge: ptsip.yaml
+  product_default_profile: ptsip.yaml
+  execution_order:
+    - id: P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL
+      status: IMPLEMENTED_VALIDATION_PENDING
+      implementation_revision: 84327e668c9717e1240c66b5f6714679dd2903d8
+      responsibility: REMOVE_ROOT_SELF_PROFILE_COMPATIBILITY_BRIDGE_AFTER_EXPLICIT_DEVELOPER_PROFILE_SELECTION
+      implementation:
+        developer_self_profile_is_canonical: true
+        root_profile_bridge_removed: true
+        self_profile_tests_use_explicit_developer_profile: true
+        test_mode_control_plane_uses_explicit_developer_profile: true
+        full_ci_self_management_uses_explicit_developer_profile: true
+        current_dependency_gate_tracks_developer_profile: true
+        agent_operational_context_uses_developer_profile: true
+        consumer_default_root_profile_preserved: true
+      completion_requires:
+        - ROOT_PTSIP_YAML_ABSENT
+        - DEVELOPER_SELF_PROFILE_VALID_WITH_ZERO_WARNINGS
+        - SELF_PROFILE_CLARIFICATION_REQUIRES_NO_OWNER_INPUT
+        - TEST_MODE_CONTROL_PLANE_VALID_WITH_DEVELOPER_SELF_PROFILE
+        - FULL_CI_SELF_MANAGEMENT_COMMANDS_SELECT_DEVELOPER_SELF_PROFILE
+        - CONSUMER_DEFAULT_PROFILE_PATH_REMAINS_PTSIP_YAML
+        - POLICY_AND_PLANNING_VALIDATION_PASS
+      automatic_completion:
+        from_status: IMPLEMENTED_VALIDATION_PENDING
+        to_status: COMPLETE
+        pytest_targets:
+          - developer/tests/test_self_profile_bridge_removal.py
+          - tests/ptsip/repository/test_self_profile.py
+          - tests/ptsip/test_modes
+          - developer/tests/test_developer_control_plane.py
+          - developer/tests/test_policy_provenance_retirement.py
+          - developer/tests/test_planning_stage_finalizer.py
+        required_checks:
+          - POLICY_VALIDATION
+          - PLANNING_VALIDATION
+          - CURRENT_LEGACY_DEPENDENCY_ZERO
+        document_updates:
+          mapping_scalars:
+            - section: migration_stages
+              key: P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL
+              field: status
+              from_value: IMPLEMENTED_VALIDATION_PENDING
+              to_value: COMPLETE
+          list_removals:
+            - section: current_known_blockers
+              value: P01_F_MACHINE_VALIDATION_PENDING
+      validation:
+        status: PENDING
+  verification:
+    automatic_completion_command: >-
+      python -m developer.automation.planning_stage_finalizer
+      docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+      P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL
+    direct_checks:
+      - Test-Path .\ptsip.yaml
+      - python .github/scripts/validate_test_modes.py
+      - python -m developer.automation.current_dependency_gate
+      - python -m developer.automation.policy_validator
+      - python -m developer.automation.planning_validator
+    expected_root_bridge_present: false
     log_policy:
       commit: false
       remove_after_review: true
