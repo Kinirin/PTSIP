@@ -111,7 +111,7 @@ migration_stages:
       developer_owner_grant_evaluator: developer/automation/authorization_transition.py
       local_legacy_policy_tree_dependency_count: 0
   P01_E_LEGACY_REMOVAL:
-    status: MIGRATION_ONLY_RETIREMENT_COMPLETE_REMOVAL_GATE_READY
+    status: COMPLETE
     preauthorized_action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
     confirmation_required: false
     current_dependency_gate: developer/automation/current_dependency_gate.py
@@ -149,7 +149,7 @@ p01_e_execution_plan:
     active_reference_count: 36
     active_reference_files: 5
   current_state:
-    last_validated_revision: 9b01d31b9f711cda2c008724eb53ee6b3b2808dc
+    last_validated_revision: bcef14510486d32948a68b720e73a633893f9db8
     active_reference_count: 0
     active_reference_files: 0
     historical_reference_count_at_e3_validation: 26
@@ -219,7 +219,7 @@ p01_e_execution_plan:
           - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
     - id: P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION
       status: COMPLETE
-      implementation_revision: 823983acfe84d9a9f0f64d532a733d6f29a2e65a
+      implementation_revision: d2a73a3f05e660aa336822f672494667c328d135
       responsibility: RETIRE_REMAINING_MIGRATION_ONLY_DEPENDENCIES_AND_REMOVE_OBSOLETE_PROVENANCE_ANCHOR_GATE_SEMANTICS
       requirements:
         - MIGRATION_ONLY_TOOLING_AND_EVIDENCE_ARTIFACTS_RETIRED
@@ -269,7 +269,7 @@ p01_e_execution_plan:
       validation:
         status: PASS
     - id: P01_E5_REMOVAL_GATE
-      status: READY
+      status: COMPLETE
       responsibility: REEVALUATE_PREAUTHORIZED_LEGACY_DIRECTORY_REMOVAL
       requires:
         - CURRENT_LEGACY_DEPENDENCY_COUNT_ZERO
@@ -279,8 +279,15 @@ p01_e_execution_plan:
         - MIGRATION_REVIEW_ARTIFACTS_RETIRED_AFTER_CONSUMPTION
         - MACHINE_VALIDATION_PASS
       expected_state: AUTHORIZED
+      validation:
+        revision: bcef14510486d32948a68b720e73a633893f9db8
+        state: AUTHORIZED
+        action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
+        blockers: []
+        confirmation_required: false
     - id: P01_E6_LEGACY_DIRECTORY_REMOVAL
-      status: BLOCKED_BY_P01_E5
+      status: COMPLETE
+      implementation_revision: bcef14510486d32948a68b720e73a633893f9db8
       responsibility: REMOVE_LEGACY_POLICY_CORPUS_FROM_ACTIVE_TREE_ONLY_AFTER_MACHINE_GATE_AUTHORIZATION
       confirmation_required: false
       postconditions:
@@ -288,6 +295,16 @@ p01_e_execution_plan:
         - NO_CURRENT_POLICY_REQUIRES_LEGACY_SOURCE_PATH_OR_SOURCE_REVISION
         - NO_ACTIVE_RUNTIME_PLANNING_OR_DEVELOPER_AUTOMATION_DEPENDENCY_REQUIRES_THE_REMOVED_CORPUS
         - P01_E_CAN_BECOME_COMPLETE
+      validation:
+        status: PASS
+        revision: bcef14510486d32948a68b720e73a633893f9db8
+        decisions_directory_present: false
+        tests_passed: 36
+        tests_failed: 0
+        current_dependency_gate_result: PASS
+        policy_validator_result: PASS
+        planning_validator_result: PASS
+        transition_evaluator_state: AUTHORIZED
   safety_constraints:
     - NEVER_ADD_GIT_REVISION_PROVENANCE_TO_SFP_OR_MPD
     - NEVER_PRESERVE_LEGACY_SOURCE_PATH_ONLY_FOR_AUDITABILITY
@@ -305,6 +322,7 @@ p01_e_execution_plan:
       - python -m developer.automation.current_dependency_gate
       - python -m developer.automation.policy_validator
       - python -m developer.automation.planning_validator
+      - python -m developer.automation.transition_evaluator
     log_policy:
       commit: false
       remove_after_review: true
