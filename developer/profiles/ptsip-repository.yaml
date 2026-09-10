@@ -151,7 +151,7 @@ components:
       - CONFIGURATION
       - GOVERNANCE
     include:
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "profiles/**"
     purpose: repository_architecture_declaration_and_profile_examples
     shipped: false
@@ -216,7 +216,7 @@ components:
       - "src/ptsip/repository/**"
       - "src/ptsip/storage/**"
       - "src/ptsip/validation/**"
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "profiles/**"
       - "src/ptsip/specdata/support-policy-index.yaml"
       - "src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml"
@@ -300,7 +300,7 @@ components:
       - "src/ptsip/remediation/**"
       - "src/ptsip/evidence/**"
       - "src/ptsip/specification_binding.py"
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
 
   - id: vpms-verification
     classification: PRODUCT
@@ -317,7 +317,7 @@ components:
     analysis_inputs:
       - "src/vpms/**"
       - "src/ptsip/**"
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
 
   - id: ptsip-contract-verification
     classification: DEVELOPMENT_TOOLING
@@ -354,7 +354,7 @@ components:
     release_owner: architecture
     compatibility_owner: architecture
     analysis_inputs:
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "profiles/**"
       - "adoption/**"
       - "agents/**"
@@ -421,7 +421,7 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "tests/**"
 
   - id: repository-release-automation
