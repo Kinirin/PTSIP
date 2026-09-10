@@ -65,6 +65,29 @@ def _replace_stage_status(text: str, stage_id: str, old: str, new: str) -> str:
     return text[:match.start()] + block + text[end:]
 
 
+def _apply_document_updates(text: str, automatic: Mapping[str, object]) -> str:
+    updates = automatic.get("document_updates", [])
+    if updates in (None, []):
+        return text
+    if not isinstance(updates, list):
+        raise ValueError("automatic_completion.document_updates must be a list")
+    result = text
+    for item in updates:
+        if not isinstance(item, Mapping):
+            raise ValueError("automatic completion document update must be a mapping")
+        old = item.get("from_text")
+        new = item.get("to_text")
+        if not isinstance(old, str) or not isinstance(new, str) or not old:
+            raise ValueError("automatic completion document update requires from_text/to_text")
+        count = result.count(old)
+        if count != 1:
+            raise ValueError(
+                f"automatic completion document update must match exactly once; matched {count}: {old!r}"
+            )
+        result = result.replace(old, new, 1)
+    return result
+
+
 def promote_stage_text(text: str, stage_id: str, automatic: Mapping[str, object]) -> str:
     result = _replace_stage_status(text, stage_id, _PENDING, _COMPLETE)
 
@@ -90,7 +113,8 @@ def promote_stage_text(text: str, stage_id: str, automatic: Mapping[str, object]
         new = next_stage.get("to_status")
         if all(isinstance(value, str) and value for value in (next_id, old, new)):
             result = _replace_stage_status(result, next_id, old, new)
-    return result
+
+    return _apply_document_updates(result, automatic)
 
 
 def _run_pytest(base: Path, targets: object) -> tuple[str, ...]:
