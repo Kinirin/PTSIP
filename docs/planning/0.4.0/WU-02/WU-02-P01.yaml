@@ -171,7 +171,7 @@ migration_stages:
       - PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO
       - SUPPORT_FEATURE_RUNTIME_USES_ONLY_SHIPPED_CONTRACTS
   P01_E_LEGACY_REMOVAL:
-    status: REFERENCE_CLASSIFICATION_COMPLETE_CLEANUP_PENDING
+    status: PROVENANCE_RETIREMENT_COMPLETE_DERIVATION_RETIREMENT_READY
     preauthorized_action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
     confirmation_required: false
     reference_inventory: developer/policy/legacy-reference-inventory.yaml
@@ -180,11 +180,11 @@ migration_stages:
       - ACTIVE_DEPENDENCY
       - HISTORICAL_PROVENANCE
       - MIGRATION_ONLY_REFERENCE
-    classified_active_reference_count: 36
-    active_reference_files: 5
+    classified_active_reference_count: 11
+    active_reference_files: 1
     migration_only_retirement_required: true
     legacy_policy_provenance:
-      current_state: RETIRED_FROM_CURRENT_POLICY_CORPUS_VALIDATION_PENDING
+      current_state: REMOVED_FROM_CURRENT_POLICY_CORPUS
       final_state: REMOVED
       preserve_git_revision_in_sfp_mpd: false
       preserve_legacy_source_path_in_sfp_mpd: false
@@ -216,6 +216,12 @@ p01_e_execution_plan:
     branch: dev/0.4.0
     active_reference_count: 36
     active_reference_files: 5
+  current_state:
+    validation_revision: 0634933987b37a54414138686c0f96c783e97755
+    active_reference_count: 11
+    active_reference_files: 1
+    historical_provenance_reference_count: 26
+    migration_only_reference_count: 200
   final_policy_identity:
     rule: SFP_AND_MPD_ARE_CURRENT_STANDALONE_POLICY_AUTHORITIES_AFTER_MIGRATION
     legacy_adr_lineage_retained_in_current_policy_records: false
@@ -224,8 +230,8 @@ p01_e_execution_plan:
     migration_projection_metadata_retained_in_current_policy_records: false
   execution_order:
     - id: P01_E1_LEGACY_POLICY_PROVENANCE_RETIREMENT
-      status: IMPLEMENTED_VALIDATION_PENDING
-      implementation_revision: feb4ec70898dca45c1247c8aec5ae71893d31ba3
+      status: COMPLETE
+      implementation_revision: 0634933987b37a54414138686c0f96c783e97755
       responsibility: REMOVE_LEGACY_MIGRATION_PROVENANCE_FROM_CURRENT_SFP_AND_MPD_POLICY_CONTRACTS
       targets:
         - src/ptsip/specdata/ptsip-support-feature-policy.schema.json
@@ -233,6 +239,9 @@ p01_e_execution_plan:
         - developer/policy/schemas/management-policy.schema.json
         - developer/automation/policy_materializer.py
         - developer/policy/legacy-reference-inventory.yaml
+        - src/ptsip/governance/authority.py
+        - developer/tests/test_policy_provenance_retirement.py
+        - tests/ptsip/governance/test_authority_runtime.py
         - src/ptsip/specdata/SFP-0001.yaml..SFP-0021.yaml
         - developer/policy/MPD-0002.yaml..MPD-0009.yaml
       requirements:
@@ -242,6 +251,7 @@ p01_e_execution_plan:
         - NO_GIT_REVISION_PROVENANCE_FIELD_IS_ADDED_TO_SFP_OR_MPD
         - CURRENT_POLICY_SEMANTICS_AND_RELATIONS_MUST_REMAIN_UNCHANGED
         - MATERIALIZER_MAY_STILL_READ_LEGACY_INPUT_DURING_E1_BUT_MUST_NOT_EMIT_LEGACY_PROVENANCE
+        - PRODUCT_RUNTIME_LEGACY_TOPIC_LOOKUP_SURFACE_MUST_NOT_REMAIN
         - FROZEN_RELEASE_BOUND_SPECIFICATION_ASSETS_REMAIN_UNCHANGED
       completion_requires:
         - ALL_29_MIGRATED_POLICY_RECORDS_VALIDATE_WITHOUT_LEGACY_PROVENANCE
@@ -249,8 +259,20 @@ p01_e_execution_plan:
         - DEVELOPER_CONTROL_PLANE_TESTS_PASS
         - GOVERNANCE_FOCUSED_TESTS_PASS
         - LEGACY_REFERENCE_INVENTORY_VALIDATION_PASSES
+      validation:
+        revision: 0634933987b37a54414138686c0f96c783e97755
+        result: PASS
+        tests_passed: 40
+        tests_failed: 0
+        scanner_active_dependency_count: 11
+        scanner_historical_provenance_count: 26
+        scanner_migration_only_reference_count: 200
+        expected_remaining_blockers:
+          - ACTIVE_REFERENCE_COUNT_NONZERO
+          - HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED
+          - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
     - id: P01_E2_LEGACY_DERIVATION_TOOLING_RETIREMENT
-      status: BLOCKED_BY_P01_E1_VALIDATION
+      status: READY
       responsibility: REMOVE_THE_REQUIREMENT_TO_RECONSTRUCT_CURRENT_POLICY_FROM_LEGACY_DECISION_INPUTS
       targets:
         - developer/automation/policy_materializer.py
@@ -268,6 +290,11 @@ p01_e_execution_plan:
       responsibility: REBASE_ALL_CURRENT_ACTIVE_LEGACY_REFERENCES_TO_THE_CURRENT_SFP_MPD_CONTROL_PLANES
       expected_input_count: 36
       expected_input_files: 5
+      partial_prework_state: PRESERVED_PAUSED
+      remaining_input_count: 11
+      remaining_input_files: 1
+      remaining_file_order:
+        - docs/planning/0.4.0/WU-02/WU-02.yaml
       file_order:
         - releasenote/project-profile/pp.1.01.md
         - AGENTS.md
@@ -317,9 +344,8 @@ p01_e_execution_plan:
     - P01_F_ROOT_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL_REMAINS_SEPARATE
   verification:
     commands_in_order:
-      - "python -m pytest developer/tests/test_developer_control_plane.py -q 2>&1 | Tee-Object -FilePath .\\wu02-p01-e-control-plane.log"
-      - "python -m pytest -q developer/tests/test_developer_control_plane.py tests/ptsip/governance 2>&1 | Tee-Object -FilePath .\\wu02-p01-e-governance.log"
-      - "python developer/automation/legacy_reference_scanner.py 2>&1 | Tee-Object -FilePath .\\wu02-p01-e-reference-scan.log"
+      - "python -m pytest developer/tests/test_policy_provenance_retirement.py developer/tests/test_developer_control_plane.py tests/ptsip/governance -q 2>&1 | Tee-Object -FilePath .\\wu02-p01-e1-retest.log"
+      - "python developer/automation/legacy_reference_scanner.py 2>&1 | Tee-Object -FilePath .\\wu02-p01-e1-reference-scan.log"
     log_policy:
       commit: false
       remove_after_review: true
