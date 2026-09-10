@@ -49,13 +49,14 @@ work_units:
       - WU-01
 
   - id: WU-03
+    path: docs/planning/0.4.0/WU-03/WU-03.yaml
     lifecycle:
-      status: NOT_CREATED
+      status: ACTIVE
     approval:
-      status: PENDING
+      status: APPROVED
       inherited_from: []
     implementation_authorization:
-      status: NOT_AUTHORIZED
+      status: AUTHORIZED
     depends_on:
       - WU-02
 
