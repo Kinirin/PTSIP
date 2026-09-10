@@ -221,6 +221,124 @@
         ],
         "additionalProperties": false
       }
+    },
+    "responsibility_routing": {
+      "type": "object",
+      "required": [
+        "model",
+        "canonical_plan",
+        "canonical_plan_section",
+        "branch_creation_parent",
+        "dependency_bearing_convergence",
+        "independent_leaf_work_units",
+        "rules"
+      ],
+      "properties": {
+        "model": {
+          "const": "PARALLEL_DEPENDENCY_EXTRACTION"
+        },
+        "canonical_plan": {
+          "type": "string",
+          "pattern": "^planning/[0-9]+\\.[0-9]+\\.[0-9]+\\.md$"
+        },
+        "canonical_plan_section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branch_creation_parent": {
+          "type": "string",
+          "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "dependency_bearing_convergence": {
+          "type": "object",
+          "required": [
+            "id",
+            "responsibility",
+            "expected_depends_on"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^WU-[0-9]{2}$"
+            },
+            "responsibility": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expected_depends_on": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^WU-[0-9]{2}$"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "independent_leaf_work_units": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "branch",
+              "responsibility",
+              "forbidden_dependencies"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^WU-[0-9]{2}$"
+              },
+              "branch": {
+                "type": "string",
+                "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+-WU-[0-9]{2}$"
+              },
+              "responsibility": {
+                "type": "string",
+                "minLength": 1
+              },
+              "forbidden_dependencies": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^WU-[0-9]{2}$"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "rules": {
+          "type": "object",
+          "required": [
+            "dependency_bearing_work_routes_to_convergence",
+            "independent_leafs_must_have_empty_depends_on",
+            "leafs_must_not_depend_on_each_other",
+            "leaf_planning_owned_by_parent"
+          ],
+          "properties": {
+            "dependency_bearing_work_routes_to_convergence": {
+              "const": true
+            },
+            "independent_leafs_must_have_empty_depends_on": {
+              "const": true
+            },
+            "leafs_must_not_depend_on_each_other": {
+              "const": true
+            },
+            "leaf_planning_owned_by_parent": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

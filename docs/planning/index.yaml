@@ -6,3 +6,18 @@ plans:
     path: docs/planning/0.4.0/index.yaml
     status: ACTIVE
     integration_branch: dev/0.4.0
+    entry_routing:
+      model: PARALLEL_DEPENDENCY_EXTRACTION
+      canonical_plan: planning/0.4.0.md
+      responsibility_control_plane: docs/planning/0.4.0/index.yaml
+      branch_creation_parent: dev/0.4.0
+      dependency_bearing_convergence:
+        id: WU-03
+        responsibility: DOWNSTREAM_DEPENDENCY_BEARING_INTEGRATION_AND_ORCHESTRATION
+      independent_leaf_work_units:
+        - id: WU-04
+          branch: dev/0.4.0-WU-04
+          responsibility: EXPLICIT_INPUT_AUTHORITY_GATE_AND_REPOSITORY_EXECUTION_KERNEL
+        - id: WU-05
+          branch: dev/0.4.0-WU-05
+          responsibility: EXPLICIT_INPUT_POSTCONDITION_VERIFICATION_AND_REMEDIATION_TEST_MODE

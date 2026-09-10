@@ -35,6 +35,82 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
             continue
         plan = load_yaml(path, root=base)
         errors.extend(_errors(plan, plan_schema, path))
+
+        root_routing = plan_entry.get("entry_routing")
+        plan_routing = plan.get("responsibility_routing")
+        if isinstance(root_routing, dict):
+            if not isinstance(plan_routing, dict):
+                errors.append(f"{path}: root entry_routing exists but responsibility_routing is missing")
+            else:
+                if root_routing.get("model") != plan_routing.get("model"):
+                    errors.append(f"{path}: responsibility routing model does not match root entry routing")
+                if root_routing.get("canonical_plan") != plan_routing.get("canonical_plan"):
+                    errors.append(f"{path}: canonical planning document does not match root entry routing")
+                if root_routing.get("responsibility_control_plane") != path:
+                    errors.append(f"{ROOT_INDEX}: responsibility_control_plane does not match plan path")
+                if root_routing.get("branch_creation_parent") != plan_routing.get("branch_creation_parent"):
+                    errors.append(f"{path}: branch creation parent does not match root entry routing")
+                if plan_routing.get("branch_creation_parent") != plan.get("plan", {}).get("integration_branch"):
+                    errors.append(f"{path}: branch creation parent does not match integration_branch")
+
+                root_convergence = root_routing.get("dependency_bearing_convergence", {})
+                plan_convergence = plan_routing.get("dependency_bearing_convergence", {})
+                if (
+                    root_convergence.get("id"),
+                    root_convergence.get("responsibility"),
+                ) != (
+                    plan_convergence.get("id"),
+                    plan_convergence.get("responsibility"),
+                ):
+                    errors.append(f"{path}: dependency-bearing convergence routing does not match root entry routing")
+
+                root_leafs = {
+                    (entry.get("id"), entry.get("branch"), entry.get("responsibility"))
+                    for entry in root_routing.get("independent_leaf_work_units", [])
+                    if isinstance(entry, dict)
+                }
+                plan_leafs = {
+                    (entry.get("id"), entry.get("branch"), entry.get("responsibility"))
+                    for entry in plan_routing.get("independent_leaf_work_units", [])
+                    if isinstance(entry, dict)
+                }
+                if root_leafs != plan_leafs:
+                    errors.append(f"{path}: independent leaf routing does not match root entry routing")
+
+                indexed_wus = {
+                    wu.get("id"): wu
+                    for wu in plan.get("work_units", [])
+                    if isinstance(wu, dict) and isinstance(wu.get("id"), str)
+                }
+                convergence_id = plan_convergence.get("id")
+                convergence_wu = indexed_wus.get(convergence_id)
+                if convergence_wu is None:
+                    errors.append(f"{path}: dependency-bearing convergence WU is not indexed")
+                elif convergence_wu.get("depends_on", []) != plan_convergence.get("expected_depends_on", []):
+                    errors.append(f"{path}: convergence WU depends_on does not match responsibility routing")
+
+                leaf_ids = {
+                    entry.get("id")
+                    for entry in plan_routing.get("independent_leaf_work_units", [])
+                    if isinstance(entry, dict)
+                }
+                for leaf in plan_routing.get("independent_leaf_work_units", []):
+                    if not isinstance(leaf, dict):
+                        continue
+                    leaf_id = leaf.get("id")
+                    indexed = indexed_wus.get(leaf_id)
+                    if indexed is None:
+                        errors.append(f"{path}: independent leaf {leaf_id!r} is not indexed")
+                        continue
+                    declared_dependencies = indexed.get("depends_on", [])
+                    if declared_dependencies:
+                        errors.append(f"{path}: independent leaf {leaf_id!r} must have empty depends_on")
+                    forbidden = set(leaf.get("forbidden_dependencies", []))
+                    if forbidden.intersection(declared_dependencies):
+                        errors.append(f"{path}: independent leaf {leaf_id!r} has a forbidden dependency")
+                    if any(other != leaf_id and other in declared_dependencies for other in leaf_ids):
+                        errors.append(f"{path}: independent leaf {leaf_id!r} depends on another independent leaf")
+
         gate = plan.get("plan", {}).get("current_gate")
         gate_resolved = False
         for wu in plan.get("work_units", []):

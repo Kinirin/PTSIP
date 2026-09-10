@@ -3,12 +3,43 @@ policy_class: PTSIP_DEVELOPER_POLICY
 
 plan:
   plan_version: 0.4.0
-  revision: '02'
+  revision: '03'
   integration_branch: dev/0.4.0
   classification: CORE/RELEASE-BLOCKING
   status: ACTIVE
   control_plane: docs/planning/0.4.0/index.yaml
   current_gate: WU-02-P01
+
+responsibility_routing:
+  model: PARALLEL_DEPENDENCY_EXTRACTION
+  canonical_plan: planning/0.4.0.md
+  canonical_plan_section: '44. 2026-09-10 parallel work-unit dependency repartition'
+  branch_creation_parent: dev/0.4.0
+  dependency_bearing_convergence:
+    id: WU-03
+    responsibility: DOWNSTREAM_DEPENDENCY_BEARING_INTEGRATION_AND_ORCHESTRATION
+    expected_depends_on:
+      - WU-02
+  independent_leaf_work_units:
+    - id: WU-04
+      branch: dev/0.4.0-WU-04
+      responsibility: EXPLICIT_INPUT_AUTHORITY_GATE_AND_REPOSITORY_EXECUTION_KERNEL
+      forbidden_dependencies:
+        - WU-02
+        - WU-03
+        - WU-05
+    - id: WU-05
+      branch: dev/0.4.0-WU-05
+      responsibility: EXPLICIT_INPUT_POSTCONDITION_VERIFICATION_AND_REMEDIATION_TEST_MODE
+      forbidden_dependencies:
+        - WU-02
+        - WU-03
+        - WU-04
+  rules:
+    dependency_bearing_work_routes_to_convergence: true
+    independent_leafs_must_have_empty_depends_on: true
+    leafs_must_not_depend_on_each_other: true
+    leaf_planning_owned_by_parent: true
 
 work_units:
   - id: WU-01
