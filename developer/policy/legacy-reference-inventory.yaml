@@ -24,33 +24,9 @@ classification_rules:
   support_policy_source_path_schema_is_historical_provenance_contract: false
 
 active_dependencies:
-  expected_file_count: 5
-  expected_reference_count: 36
+  expected_file_count: 3
+  expected_reference_count: 18
   entries:
-    - id: ACTIVE-001
-      path: ptsip.yaml
-      reference_kind: REPOSITORY_SELF_PROFILE_ANALYSIS_INPUT
-      expected_reference_count: 9
-      cleanup_action: REBASE_PROFILE_ANALYSIS_INPUTS_TO_MPD_SFP_CONTROL_PLANES
-      references:
-        decisions/INDEX.yaml: 1
-        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
-        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
-        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
-        decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml: 1
-        decisions/**: 4
-    - id: ACTIVE-002
-      path: developer/profiles/ptsip-repository.yaml
-      reference_kind: REPOSITORY_SELF_PROFILE_ANALYSIS_INPUT
-      expected_reference_count: 9
-      cleanup_action: REBASE_PROFILE_ANALYSIS_INPUTS_TO_MPD_SFP_CONTROL_PLANES
-      references:
-        decisions/INDEX.yaml: 1
-        decisions/AUTHORITY-SCHEMA-REGISTRY.yaml: 1
-        decisions/AUTHORITY-ROLE-REGISTRY.yaml: 1
-        decisions/AUTHORITY-SUBJECT-REGISTRY.yaml: 1
-        decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml: 1
-        decisions/**: 4
     - id: ACTIVE-003
       path: releasenote/project-profile/pp.1.01.md
       reference_kind: CURRENT_PROJECT_PROFILE_AUTHORITY_REFERENCE
@@ -195,7 +171,7 @@ excluded_non_legacy_decision_namespaces:
     legacy_decisions_tree_dependency: false
 
 gate:
-  active_reference_count: 36
+  active_reference_count: 18
   active_reference_count_zero: false
   unclassified_reference_count_zero: VALIDATION_PENDING
   migration_only_dependencies_retired: false

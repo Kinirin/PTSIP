@@ -194,6 +194,10 @@ def validate_legacy_reference_inventory(root: str | Path) -> tuple[str, ...]:
 
     active = [item for item in hits if item.classification == "ACTIVE_DEPENDENCY"]
     expected_active = inventory["active_dependencies"]
+    if len(expected_active["entries"]) != expected_active["expected_file_count"]:
+        errors.append(
+            "active dependency inventory entry count does not match expected_file_count"
+        )
     if len(active) != expected_active["expected_reference_count"]:
         errors.append(
             f"active legacy reference count is {len(active)}; expected {expected_active['expected_reference_count']}"
@@ -213,6 +217,12 @@ def validate_legacy_reference_inventory(root: str | Path) -> tuple[str, ...]:
             actual_refs[item.reference] = actual_refs.get(item.reference, 0) + 1
         if actual_refs != dict(entry["references"]):
             errors.append(f"{entry['path']}: active reference occurrence map changed")
+
+    gate = inventory["gate"]
+    if gate["active_reference_count"] != len(active):
+        errors.append("gate.active_reference_count does not match actual active references")
+    if gate["active_reference_count_zero"] != (len(active) == 0):
+        errors.append("gate.active_reference_count_zero does not match actual active references")
 
     provenance = inventory["historical_provenance"]["policy_source_provenance"]
     sfp_files = sorted({

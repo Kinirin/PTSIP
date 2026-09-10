@@ -38,11 +38,11 @@
       "type": "object",
       "required": ["expected_file_count", "expected_reference_count", "entries"],
       "properties": {
-        "expected_file_count": {"const": 5},
-        "expected_reference_count": {"const": 36},
+        "expected_file_count": {"type": "integer", "minimum": 0},
+        "expected_reference_count": {"type": "integer", "minimum": 0},
         "entries": {
           "type": "array",
-          "minItems": 5,
+          "minItems": 0,
           "maxItems": 5,
           "items": {
             "type": "object",
@@ -69,8 +69,8 @@
       "type": "object",
       "required": ["active_reference_count", "active_reference_count_zero", "unclassified_reference_count_zero", "migration_only_dependencies_retired", "historical_provenance_revision_anchor_materialized", "decisions_removal_authorized"],
       "properties": {
-        "active_reference_count": {"const": 36},
-        "active_reference_count_zero": {"const": false},
+        "active_reference_count": {"type": "integer", "minimum": 0},
+        "active_reference_count_zero": {"type": "boolean"},
         "unclassified_reference_count_zero": {"enum": [true, false, "VALIDATION_PENDING"]},
         "migration_only_dependencies_retired": {"const": false},
         "historical_provenance_revision_anchor_materialized": {"const": false},
