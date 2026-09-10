@@ -25,8 +25,6 @@ LEGACY_ROUTING = "developer/policy/legacy-decision-reference-routing.yaml"
 LEGACY_ROUTING_SCHEMA = "developer/policy/schemas/legacy-decision-reference-routing.schema.json"
 SPLIT_TEXTUAL_REVIEW = "developer/policy/split-textual-reference-review.yaml"
 SPLIT_TEXTUAL_REVIEW_SCHEMA = "developer/policy/schemas/split-textual-reference-review.schema.json"
-TEMP_SPLIT_MAP = "developer/policy/tmp-split-textual-reference-map.yaml"
-TEMP_SPLIT_MAP_SCHEMA = "developer/policy/schemas/split-textual-reference-map.schema.json"
 RELATION_MIGRATION = "developer/policy/policy-relation-migration.yaml"
 RELATION_MIGRATION_SCHEMA = "developer/policy/schemas/policy-relation-migration.schema.json"
 SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
@@ -48,8 +46,6 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     routing_schema = load_json(LEGACY_ROUTING_SCHEMA, root=base)
     split_review = load_yaml(SPLIT_TEXTUAL_REVIEW, root=base)
     split_review_schema = load_json(SPLIT_TEXTUAL_REVIEW_SCHEMA, root=base)
-    temp_split_map = load_yaml(TEMP_SPLIT_MAP, root=base)
-    temp_split_map_schema = load_json(TEMP_SPLIT_MAP_SCHEMA, root=base)
     relation_migration = load_yaml(RELATION_MIGRATION, root=base)
     relation_migration_schema = load_json(RELATION_MIGRATION_SCHEMA, root=base)
     Draft202012Validator.check_schema(index_schema)
@@ -57,7 +53,6 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     Draft202012Validator.check_schema(inventory_schema)
     Draft202012Validator.check_schema(routing_schema)
     Draft202012Validator.check_schema(split_review_schema)
-    Draft202012Validator.check_schema(temp_split_map_schema)
     Draft202012Validator.check_schema(relation_migration_schema)
     for error in Draft202012Validator(index_schema).iter_errors(index):
         errors.append(f"developer/policy/index.yaml: {error.message}")
@@ -67,22 +62,6 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         errors.append(f"{LEGACY_ROUTING}: {error.message}")
     for error in Draft202012Validator(split_review_schema).iter_errors(split_review):
         errors.append(f"{SPLIT_TEXTUAL_REVIEW}: {error.message}")
-    for error in Draft202012Validator(temp_split_map_schema).iter_errors(temp_split_map):
-        errors.append(f"{TEMP_SPLIT_MAP}: {error.message}")
-    boundary_findings = [
-        item for item in temp_split_map.get("boundary_findings", [])
-        if isinstance(item, dict)
-    ]
-    boundary_gate = bool(
-        temp_split_map.get("application_gate", {}).get("boundary_findings_resolved")
-    )
-    all_boundary_resolved = all(
-        item.get("status") == "RESOLVED" for item in boundary_findings
-    )
-    if boundary_gate != all_boundary_resolved:
-        errors.append(
-            f"{TEMP_SPLIT_MAP}: boundary_findings_resolved gate does not match finding statuses"
-        )
     for error in Draft202012Validator(relation_migration_schema).iter_errors(relation_migration):
         errors.append(f"{RELATION_MIGRATION}: {error.message}")
     inventory_path = index.get("legacy_decisions_migration", {}).get("inventory_path")
@@ -141,21 +120,6 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     }
     if inventory_routes != routing_routes:
         errors.append("legacy decision reference routing must exactly match inventory target allocation")
-    for entry in temp_split_map.get("entries", []):
-        if not isinstance(entry, dict):
-            continue
-        source_adr = entry.get("source_adr")
-        selected_target = entry.get("selected_target")
-        if selected_target not in routing_routes.get(source_adr, ()):
-            errors.append(
-                f"{entry.get('id')}: selected_target {selected_target!r} is not a target of {source_adr}"
-            )
-        resolution = entry.get("resolution")
-        if resolution == "SFP_ONLY" and not str(selected_target).startswith("SFP-"):
-            errors.append(f"{entry.get('id')}: SFP_ONLY must select an SFP target")
-        if resolution == "MPD_ONLY" and not str(selected_target).startswith("MPD-"):
-            errors.append(f"{entry.get('id')}: MPD_ONLY must select an MPD target")
-
     for adr_id, targets in routing_routes.items():
         route = routing.get("id_routes", {}).get(adr_id, {})
         mode = route.get("textual_reference_mode") if isinstance(route, dict) else None

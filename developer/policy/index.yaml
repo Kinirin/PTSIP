@@ -38,7 +38,7 @@ legacy_decisions_migration:
     - SFP
     - SPLIT
     - RETIRE
-  state: POLICY_MATERIALIZATION_COMPLETE
+  state: SPLIT_TEXTUAL_REFERENCE_MIGRATION_COMPLETE
   inventory_path: developer/policy/legacy-decisions-inventory.yaml
   inventory_schema: developer/policy/schemas/legacy-decision-inventory.schema.json
   reference_routing: developer/policy/legacy-decision-reference-routing.yaml
@@ -58,5 +58,4 @@ legacy_decisions_migration:
       SPLIT_TEXTUAL_REFERENCE_REVIEW_COMPLETE: true
       MACHINE_VALIDATION_PASS: true
   current_blockers:
-    - SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE
     - SRC_PTSIP_GOVERNANCE_READS_DECISIONS

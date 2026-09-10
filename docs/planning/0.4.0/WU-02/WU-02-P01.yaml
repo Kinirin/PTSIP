@@ -80,8 +80,8 @@ migration_stages:
       split_auto_rewrite: FORBIDDEN
       review_granularity: OCCURRENCE
       review_registry: developer/policy/split-textual-reference-review.yaml
-      temporary_mapping: developer/policy/tmp-split-textual-reference-map.yaml
-      temporary_mapping_retention: DELETE_AFTER_SUCCESSFUL_APPLY_AND_ZERO_REFERENCE_SCAN
+      temporary_mapping_state: CONSUMED_AND_REMOVED
+      temporary_mapping_retention: DELETED_AFTER_SUCCESSFUL_APPLY_AND_ZERO_REFERENCE_SCAN
       resolution_vocabulary:
         - SFP_ONLY
         - MPD_ONLY
@@ -156,13 +156,15 @@ current_known_blockers:
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE
 
 reference_migration_simulation:
-  status: DRY_RUN_READY_BOUNDARY_CLEAN
+  status: APPLIED_AND_VERIFIED
   source_revision: cf327146578ccb8473aeace681682504575bde34
   markdown_files_scanned: 49
   split_reference_files_found: 6
   split_reference_occurrences_mapped: 16
-  automatic_markdown_changes_applied: false
-  temporary_mapping: developer/policy/tmp-split-textual-reference-map.yaml
+  automatic_markdown_changes_applied: true
+  mapped_occurrences_applied: 16
+  post_apply_split_reference_count_in_mapped_files: 0
+  temporary_mapping: CONSUMED_AND_REMOVED
   boundary_findings:
     - id: BOUNDARY-001
       path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
@@ -194,3 +196,12 @@ normative_support_boundary_cleanup:
       reason: MPD_POLICY_FORBIDDEN_IN_PRODUCT_NORMATIVE_LINEAGE
   replacement_policy_reference: NONE
   rationale: MPD-0009 remains developer policy and is not a support-feature authority.
+
+split_textual_reference_migration:
+  status: COMPLETE
+  affected_markdown_files: 6
+  mapped_occurrences: 16
+  dry_run_exact_match_count: 16
+  applied_occurrences: 16
+  unresolved_mapped_split_references: 0
+  temporary_mapping_retention: REMOVED
