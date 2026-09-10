@@ -340,9 +340,6 @@ class ProjectAuthorityRuntime:
         checks["CURRENT_APPLICABILITY_IS_APPLICABLE"] = EligibilityCheck("CURRENT_APPLICABILITY_IS_APPLICABLE", CheckStatus.PASS)
         return self._result(authority_id=authority_id,source_ref=source_ref,status=EligibilityStatus.CURRENTLY_ELIGIBLE,lifecycle_state=lifecycle_state,subject_match=subject_match,checks=checks)
 
-    def evaluate_topic(self, topic_id: str, solve_subject: SolveSubject, *, source_revision: str) -> EligibilityResult:
-        return self.evaluate_policy(self.catalog.policy_id_for_legacy_topic(topic_id), solve_subject, source_revision=source_revision)
-
     def evaluate_current_authorities(self, solve_subject: SolveSubject, *, source_revision: str) -> tuple[EligibilityResult, ...]:
         return tuple(self.evaluate_policy(policy_id, solve_subject, source_revision=source_revision) for policy_id in self.catalog.current_routes)
 
@@ -366,9 +363,6 @@ class ProjectAuthorityRuntime:
         schema["properties"]["subject_binding"]=deepcopy(self.catalog.subject_schema)
         Draft202012Validator(schema).validate(project_record.as_dict())
         return project_record
-
-    def project_topic(self, topic_id: str, solve_subject: SolveSubject, *, source_revision: str) -> ProjectAuthorityRecord | None:
-        return self.project_policy(self.catalog.policy_id_for_legacy_topic(topic_id), solve_subject, source_revision=source_revision)
 
     def project_current_authorities(self, solve_subject: SolveSubject, *, source_revision: str) -> tuple[ProjectAuthorityRecord, ...]:
         records=[]
