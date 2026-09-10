@@ -171,7 +171,7 @@ migration_stages:
       - PRODUCT_RUNTIME_DECISIONS_DEPENDENCY_COUNT_ZERO
       - SUPPORT_FEATURE_RUNTIME_USES_ONLY_SHIPPED_CONTRACTS
   P01_E_LEGACY_REMOVAL:
-    status: DERIVATION_RETIREMENT_COMPLETE_ACTIVE_REFERENCE_RETIREMENT_PAUSED
+    status: ACTIVE_REFERENCE_RETIREMENT_IMPLEMENTED_VALIDATION_PENDING
     preauthorized_action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
     confirmation_required: false
     reference_inventory: developer/policy/legacy-reference-inventory.yaml
@@ -180,8 +180,8 @@ migration_stages:
       - ACTIVE_DEPENDENCY
       - HISTORICAL_PROVENANCE
       - MIGRATION_ONLY_REFERENCE
-    classified_active_reference_count: 11
-    active_reference_files: 1
+    classified_active_reference_count: 0
+    active_reference_files: 0
     migration_only_retirement_required: true
     legacy_policy_provenance:
       current_state: REMOVED_FROM_CURRENT_POLICY_CORPUS
@@ -205,7 +205,6 @@ profile_subsystem_decision:
   move_authorized_only_as_part_of_inventory_linked_materialization: true
 
 current_known_blockers:
-  - ACTIVE_REFERENCE_COUNT_NONZERO
   - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
   - HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE
@@ -222,6 +221,12 @@ p01_e_execution_plan:
     active_reference_files: 1
     historical_provenance_reference_count: 26
     migration_only_reference_count: 185
+    pending_implementation:
+      stage: P01_E3_ACTIVE_REFERENCE_RETIREMENT
+      revision: be6264af3df343c4b8520fb160f9768513e7da66
+      active_reference_count: 0
+      active_reference_files: 0
+      validation_status: PENDING
   final_policy_identity:
     rule: SFP_AND_MPD_ARE_CURRENT_STANDALONE_POLICY_AUTHORITIES_AFTER_MIGRATION
     legacy_adr_lineage_retained_in_current_policy_records: false
@@ -317,15 +322,15 @@ p01_e_execution_plan:
           - HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED
           - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
     - id: P01_E3_ACTIVE_REFERENCE_RETIREMENT
-      status: READY_PAUSED_BY_USER
+      status: IMPLEMENTED_VALIDATION_PENDING
+      implementation_revision: be6264af3df343c4b8520fb160f9768513e7da66
       responsibility: REBASE_ALL_CURRENT_ACTIVE_LEGACY_REFERENCES_TO_THE_CURRENT_SFP_MPD_CONTROL_PLANES
       expected_input_count: 36
       expected_input_files: 5
-      partial_prework_state: PRESERVED_PAUSED
-      remaining_input_count: 11
-      remaining_input_files: 1
-      remaining_file_order:
-        - docs/planning/0.4.0/WU-02/WU-02.yaml
+      partial_prework_state: APPLIED_PENDING_VALIDATION
+      remaining_input_count: 0
+      remaining_input_files: 0
+      remaining_file_order: []
       file_order:
         - releasenote/project-profile/pp.1.01.md
         - AGENTS.md
@@ -337,8 +342,14 @@ p01_e_execution_plan:
         - DO_NOT_REINTRODUCE_LEGACY_SOURCE_IDENTITY_AS_PROVENANCE
         - DO_NOT_REMOVE_ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_IN_P01_E
         - ACTIVE_REFERENCE_COUNT_MUST_REACH_ZERO
+      implementation:
+        active_wu_authority_bindings_rebased_to_sfp: true
+        legacy_reference_inventory_zero_state_materialized: true
+        zero_state_test_expectations_updated: true
+      validation:
+        status: PENDING
     - id: P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION
-      status: BLOCKED_BY_P01_E3
+      status: BLOCKED_BY_P01_E3_VALIDATION
       responsibility: RETIRE_REMAINING_LEGACY_MIGRATION_ONLY_DEPENDENCIES_AND_REMOVE_OBSOLETE_PROVENANCE_ANCHOR_GATE_SEMANTICS
       requirements:
         - MIGRATION_ONLY_REFERENCE_COUNT_ZERO
@@ -375,9 +386,9 @@ p01_e_execution_plan:
     - P01_F_ROOT_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL_REMAINS_SEPARATE
   verification:
     commands_in_order:
-      - "python -m pytest developer/tests/test_policy_provenance_retirement.py developer/tests/test_developer_control_plane.py tests/ptsip/governance -q 2>&1 | Tee-Object -FilePath .\\wu02-p01-e2-regression.log"
-      - "python -m developer.automation.policy_validator 2>&1 | Tee-Object -FilePath .\\wu02-p01-e2-policy-validator.log"
-      - "python developer/automation/legacy_reference_scanner.py 2>&1 | Tee-Object -FilePath .\\wu02-p01-e2-reference-scan.log"
+      - "python -m pytest developer/tests/test_policy_provenance_retirement.py developer/tests/test_developer_control_plane.py tests/ptsip/governance -q 2>&1 | Tee-Object -FilePath .\\wu02-p01-e3-regression.log"
+      - "python -m developer.automation.policy_validator 2>&1 | Tee-Object -FilePath .\\wu02-p01-e3-policy-validator.log"
+      - "python developer/automation/legacy_reference_scanner.py 2>&1 | Tee-Object -FilePath .\\wu02-p01-e3-reference-scan.log"
     log_policy:
       commit: false
       remove_after_review: true
