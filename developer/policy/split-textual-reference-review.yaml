@@ -12,4 +12,17 @@ generation:
   mode: DETERMINISTIC_SCAN_NO_SEMANTIC_RESOLUTION
   granularity: OCCURRENCE
   status: COMPLETE
+excluded_revision_bound_documents:
+  - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    revision: 3c47816770d194ae42f98faedc911d980db0e62a
+    classification: FROZEN_REVISION_LINEAGE
+    active_reference: false
+    rewrite_allowed: false
+    reason: RELEASE_CONTRACT_IMMUTABILITY
+    split_adr_references:
+      - ADR-0017
+      - ADR-0021
+      - ADR-0023
+    developer_policy_lineage_references:
+      - ADR-0020
 entries: []

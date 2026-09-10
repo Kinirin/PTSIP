@@ -75,6 +75,7 @@ migration_stages:
     reference_routing: developer/policy/legacy-decision-reference-routing.yaml
     relation_rule: SPLIT_RELATION_REQUIRES_EXPLICIT_PREDECLARED_ROUTE
     textual_reference_rule:
+      release_bound_reference_rule: IMMUTABLE_REVISION_LINEAGE_EXCLUDED_FROM_ACTIVE_REWRITE
       single_target: AUTO_REWRITE_ALLOWED
       split_target: MANUAL_CONTEXT_REVIEW_REQUIRED
       split_auto_rewrite: FORBIDDEN
@@ -160,10 +161,13 @@ reference_migration_simulation:
   source_revision: cf327146578ccb8473aeace681682504575bde34
   markdown_files_scanned: 49
   split_reference_files_found: 6
-  split_reference_occurrences_mapped: 16
+  mutable_split_reference_files_migrated: 5
+  frozen_revision_bound_files_excluded: 1
+  split_reference_occurrences_reviewed: 16
+  mutable_occurrences_applied: 9
+  frozen_revision_occurrences_preserved: 7
   automatic_markdown_changes_applied: true
-  mapped_occurrences_applied: 16
-  post_apply_split_reference_count_in_mapped_files: 0
+  post_apply_split_reference_count_in_mutable_files: 0
   temporary_mapping: CONSUMED_AND_REMOVED
   boundary_findings:
     - id: BOUNDARY-001
@@ -184,24 +188,20 @@ reference_migration_simulation:
       status: RESOLVED
 
 normative_support_boundary_cleanup:
-  status: COMPLETE
-  removed_references:
-    - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
-      former_line: 6
-      removed: ADR-0020
-      reason: MPD_POLICY_FORBIDDEN_AS_PRODUCT_ARCHITECTURE_AUTHORITY
-    - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
-      former_line: 487
-      removed: decisions/ADR-0020-*.md
-      reason: MPD_POLICY_FORBIDDEN_IN_PRODUCT_NORMATIVE_LINEAGE
-  replacement_policy_reference: NONE
-  rationale: MPD-0009 remains developer policy and is not a support-feature authority.
+  status: SUPERSEDED_BY_IMMUTABLE_RELEASE_BOUNDARY
+  frozen_asset:
+    path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    revision: 3c47816770d194ae42f98faedc911d980db0e62a
+    classification: FROZEN_REVISION_LINEAGE
+    rewrite_allowed: false
+  rationale: Release-bound Specification assets must remain byte-identical to SPEC_REVISION; their ADR lineage is historical at that immutable revision and is not an active current-policy dependency.
 
 split_textual_reference_migration:
   status: COMPLETE
-  affected_markdown_files: 6
-  mapped_occurrences: 16
-  dry_run_exact_match_count: 16
-  applied_occurrences: 16
-  unresolved_mapped_split_references: 0
+  mutable_markdown_files: 5
+  frozen_revision_bound_files_excluded: 1
+  reviewed_occurrences: 16
+  applied_mutable_occurrences: 9
+  preserved_frozen_occurrences: 7
+  unresolved_mutable_split_references: 0
   temporary_mapping_retention: REMOVED

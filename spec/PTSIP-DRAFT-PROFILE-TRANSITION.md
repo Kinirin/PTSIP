@@ -3,7 +3,7 @@
 **Specification family:** `0.3.7-draft`  
 **Status:** Active normative companion / WU-12 final freeze<br>
 **Base lifecycle semantics:** the mature `0.3.6-draft` primary lifecycle ownership and Responsibility Map v2 rules remain in force except where this companion adds Project Profile identity, compatibility, migration, and transition requirements.  
-**Architecture authorities:** ADR-0010, SFP-0017, ADR-0019, SFP-0019, ADR-0022, SFP-0021
+**Architecture authorities:** ADR-0010, ADR-0017, ADR-0019, ADR-0020, ADR-0021, ADR-0022, ADR-0023
 
 ## 1. Purpose
 
@@ -128,7 +128,7 @@ Historical `TOOLCHAIN` semantics remain historical source semantics. A compatibi
 
 ## 4. `0.3.6-draft -> pp.1.01` identity-only bridge
 
-SFP-0019 defines:
+ADR-0021 defines:
 
 ```text
 0.3.6-draft
@@ -482,11 +482,12 @@ Architecture rationale and responsibility boundaries are recorded by:
 
 ```text
 decisions/ADR-0010-versioned-draft-profile-transition.md
-src/ptsip/specdata/SFP-0017.yaml
+decisions/ADR-0017-*.md
 decisions/ADR-0019-*.md
-src/ptsip/specdata/SFP-0019.yaml
+decisions/ADR-0020-*.md
+decisions/ADR-0021-project-profile-identity-bridge-and-release-note-namespaces.md
 decisions/ADR-0022-*.md
-src/ptsip/specdata/SFP-0021.yaml
+decisions/ADR-0023-typed-specification-binding-and-capability-registries.md
 ```
 
 Tool `0.3.7` planning consumes this companion through:

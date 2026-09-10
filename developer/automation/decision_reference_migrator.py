@@ -15,6 +15,10 @@ ADR_PATH = re.compile(r"decisions/(ADR-[0-9]{4})-[A-Za-z0-9_.-]+\.(?:md|yaml)")
 ROUTING = "developer/policy/legacy-decision-reference-routing.yaml"
 SPLIT_REVIEW = "developer/policy/split-textual-reference-review.yaml"
 
+FROZEN_REVISION_TEXTUAL_PATHS = {
+    "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
+}
+
 
 class UnroutedDecisionReferenceError(ValueError):
     pass
@@ -180,6 +184,7 @@ def tracked_textual_reference_files(root: str | Path | None = None) -> tuple[Pat
         for path in tracked_files(base)
         if path.suffix.lower() in allowed
         and not path.relative_to(base).as_posix().startswith("decisions/")
+        and path.relative_to(base).as_posix() not in FROZEN_REVISION_TEXTUAL_PATHS
     )
 
 

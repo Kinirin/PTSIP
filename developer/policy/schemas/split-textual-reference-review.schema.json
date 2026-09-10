@@ -9,7 +9,8 @@
     "source_routing",
     "split_sources",
     "generation",
-    "entries"
+    "entries",
+    "excluded_revision_bound_documents"
   ],
   "properties": {
     "schema_version": {
@@ -152,6 +153,69 @@
             }
           }
         ],
+        "additionalProperties": false
+      }
+    },
+    "excluded_revision_bound_documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "revision",
+          "classification",
+          "active_reference",
+          "rewrite_allowed",
+          "reason",
+          "split_adr_references",
+          "developer_policy_lineage_references"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^spec/.+\\.md$"
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "classification": {
+            "const": "FROZEN_REVISION_LINEAGE"
+          },
+          "active_reference": {
+            "const": false
+          },
+          "rewrite_allowed": {
+            "const": false
+          },
+          "reason": {
+            "const": "RELEASE_CONTRACT_IMMUTABILITY"
+          },
+          "split_adr_references": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "ADR-0003",
+                "ADR-0005",
+                "ADR-0011",
+                "ADR-0017",
+                "ADR-0021",
+                "ADR-0023"
+              ]
+            }
+          },
+          "developer_policy_lineage_references": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^ADR-[0-9]{4}$"
+            }
+          }
+        },
         "additionalProperties": false
       }
     }

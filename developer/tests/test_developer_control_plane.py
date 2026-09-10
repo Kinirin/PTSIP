@@ -183,43 +183,46 @@ def test_support_policy_index_has_exact_21_targets() -> None:
     )
 
 
-def test_product_normative_profile_transition_spec_has_no_mpd_0009_lineage() -> None:
-    path = ROOT / "spec" / "PTSIP-DRAFT-PROFILE-TRANSITION.md"
-    text = path.read_text(encoding="utf-8")
-    assert "ADR-0020" not in text
-    assert "MPD-0009" not in text
 
 
-
-
-def test_split_textual_reference_migration_is_complete() -> None:
+def test_split_textual_reference_migration_preserves_frozen_spec_revision() -> None:
+    import subprocess
     import yaml
 
     review_path = ROOT / "developer" / "policy" / "split-textual-reference-review.yaml"
     review = yaml.safe_load(review_path.read_text(encoding="utf-8"))
     assert review["generation"]["status"] == "COMPLETE"
-    assert not (ROOT / "developer" / "policy" / "tmp-split-textual-reference-map.yaml").exists()
+    exclusion = review["excluded_revision_bound_documents"][0]
+    assert exclusion["path"] == "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"
+    assert exclusion["revision"] == "3c47816770d194ae42f98faedc911d980db0e62a"
+    assert exclusion["classification"] == "FROZEN_REVISION_LINEAGE"
+    assert exclusion["active_reference"] is False
+    assert exclusion["rewrite_allowed"] is False
 
+    current = subprocess.run(
+        ["git", "rev-parse", "HEAD:spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"],
+        cwd=ROOT, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    frozen = subprocess.run(
+        ["git", "rev-parse", "3c47816770d194ae42f98faedc911d980db0e62a:spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"],
+        cwd=ROOT, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    assert current == frozen
+
+
+def test_mutable_split_markdown_references_are_migrated() -> None:
     split_ids = {"ADR-0003", "ADR-0005", "ADR-0011", "ADR-0017", "ADR-0021", "ADR-0023"}
-    migrated_files = (
+    mutable_migrated_files = (
         ROOT / "releasenote" / "README.md",
         ROOT / "releasenote" / "project-profile" / "pp.1.01.md",
         ROOT / "releasenote" / "specification" / "spec-0.2.0-draft.md",
         ROOT / "releasenote" / "specification" / "spec-0.3.4-draft.md",
         ROOT / "releasenote" / "specification" / "spec-0.3.7-draft.md",
-        ROOT / "spec" / "PTSIP-DRAFT-PROFILE-TRANSITION.md",
     )
-    for path in migrated_files:
+    for path in mutable_migrated_files:
         text = path.read_text(encoding="utf-8")
         assert not any(split_id in text for split_id in split_ids)
 
-
-def test_occurrence_level_split_mapping_results_are_preserved() -> None:
-    release_note = (ROOT / "releasenote" / "README.md").read_text(encoding="utf-8")
+    release_note = mutable_migrated_files[0].read_text(encoding="utf-8")
     assert "originally recorded with MPD-0006" in release_note
     assert "SFP-0019's substantive identity separation" in release_note
-
-    spec = (ROOT / "spec" / "PTSIP-DRAFT-PROFILE-TRANSITION.md").read_text(encoding="utf-8")
-    assert "SFP-0017" in spec
-    assert "SFP-0019" in spec
-    assert "SFP-0021" in spec
