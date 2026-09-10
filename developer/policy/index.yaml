@@ -5,6 +5,30 @@ policies:
   - id: MPD-0001
     path: developer/policy/MPD-0001.yaml
     status: ACTIVE
+  - id: MPD-0002
+    path: developer/policy/MPD-0002.yaml
+    status: ACTIVE
+  - id: MPD-0003
+    path: developer/policy/MPD-0003.yaml
+    status: ACTIVE
+  - id: MPD-0004
+    path: developer/policy/MPD-0004.yaml
+    status: ACTIVE
+  - id: MPD-0005
+    path: developer/policy/MPD-0005.yaml
+    status: ACTIVE
+  - id: MPD-0006
+    path: developer/policy/MPD-0006.yaml
+    status: ACTIVE
+  - id: MPD-0007
+    path: developer/policy/MPD-0007.yaml
+    status: ACTIVE
+  - id: MPD-0008
+    path: developer/policy/MPD-0008.yaml
+    status: ACTIVE
+  - id: MPD-0009
+    path: developer/policy/MPD-0009.yaml
+    status: ACTIVE
 
 legacy_decisions_migration:
   source_path: decisions/
@@ -14,7 +38,7 @@ legacy_decisions_migration:
     - SFP
     - SPLIT
     - RETIRE
-  state: INVENTORY_COMPLETE_23_OF_23
+  state: POLICY_MATERIALIZATION_COMPLETE
   inventory_path: developer/policy/legacy-decisions-inventory.yaml
   inventory_schema: developer/policy/schemas/legacy-decision-inventory.schema.json
   reference_routing: developer/policy/legacy-decision-reference-routing.yaml
@@ -34,6 +58,5 @@ legacy_decisions_migration:
       SPLIT_TEXTUAL_REFERENCE_REVIEW_COMPLETE: true
       MACHINE_VALIDATION_PASS: true
   current_blockers:
-    - POLICY_MATERIALIZATION_INCOMPLETE
     - SPLIT_TEXTUAL_REFERENCE_REVIEW_INCOMPLETE
     - SRC_PTSIP_GOVERNANCE_READS_DECISIONS

@@ -9,6 +9,11 @@ from developer.automation.decision_reference_migrator import (
     UnroutedDecisionReferenceError,
     project_relation,
 )
+from developer.automation.policy_materializer import (
+    expected_materialized_policies,
+    expected_mpd_index_entries,
+    expected_support_policy_index,
+)
 
 
 INDEX = "developer/policy/index.yaml"
@@ -26,6 +31,9 @@ RELATION_MIGRATION = "developer/policy/policy-relation-migration.yaml"
 RELATION_MIGRATION_SCHEMA = "developer/policy/schemas/policy-relation-migration.schema.json"
 SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
 SFP_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
+SFP_INDEX = "src/ptsip/specdata/support-policy-index.yaml"
+SFP_INDEX_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy-index.schema.json"
+SFP_INDEX_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy-index.schema.json"
 
 
 def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]:
@@ -250,12 +258,47 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             errors.append(f"{path}: {error.message}")
         if payload.get("policy", {}).get("id") != entry.get("id"):
             errors.append(f"{path}: policy.id does not match index id")
+    expected_policies = expected_materialized_policies(base)
+    actual_migrated_mpd_entries = [
+        entry for entry in index.get("policies", [])
+        if isinstance(entry, dict) and entry.get("id") != "MPD-0001"
+    ]
+    if actual_migrated_mpd_entries != expected_mpd_index_entries(base):
+        errors.append("developer policy index does not match materialized MPD corpus")
+
+    sfp_index = load_yaml(SFP_INDEX, root=base)
+    sfp_index_schema = load_json(SFP_INDEX_CANONICAL_SCHEMA, root=base)
+    sfp_index_embedded_schema = load_json(SFP_INDEX_EMBEDDED_SCHEMA, root=base)
+    Draft202012Validator.check_schema(sfp_index_schema)
+    Draft202012Validator.check_schema(sfp_index_embedded_schema)
+    if sfp_index_schema != sfp_index_embedded_schema:
+        errors.append("Support Feature Policy index canonical and embedded schemas differ")
+    for error in Draft202012Validator(sfp_index_schema).iter_errors(sfp_index):
+        errors.append(f"{SFP_INDEX}: {error.message}")
+    if sfp_index != expected_support_policy_index(base):
+        errors.append("Support Feature Policy index does not match materialized SFP corpus")
+
     canonical = load_json(SFP_CANONICAL_SCHEMA, root=base)
     embedded = load_json(SFP_EMBEDDED_SCHEMA, root=base)
     Draft202012Validator.check_schema(canonical)
     Draft202012Validator.check_schema(embedded)
     if canonical != embedded:
         errors.append("Support Feature Policy canonical and embedded schemas differ")
+
+    sfp_validator = Draft202012Validator(canonical)
+    for path, expected in expected_policies.items():
+        actual = load_yaml(path, root=base)
+        if actual != expected:
+            errors.append(f"{path}: materialized policy differs from deterministic materializer")
+        if path.startswith("src/ptsip/specdata/SFP-"):
+            for error in sfp_validator.iter_errors(actual):
+                errors.append(f"{path}: {error.message}")
+            raw_text = (base / path).read_text(encoding="utf-8")
+            forbidden = ("subject_binding:", "authority_role:", "repository_binding:")
+            for token in forbidden:
+                if token in raw_text:
+                    errors.append(f"{path}: forbidden legacy developer wrapper {token}")
+
     return tuple(errors)
 
 

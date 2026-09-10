@@ -181,3 +181,40 @@ def test_support_policy_never_depends_on_developer_policy() -> None:
                 edge["source_policy"].startswith("SFP-")
                 and edge["target_policy"].startswith("MPD-")
             )
+
+
+def test_all_29_migrated_policy_files_match_deterministic_materializer() -> None:
+    from developer.automation.policy_loader import load_yaml
+    from developer.automation.policy_materializer import expected_materialized_policies
+
+    expected = expected_materialized_policies(ROOT)
+    assert len(expected) == 29
+    assert sum(path.startswith("src/ptsip/specdata/SFP-") for path in expected) == 21
+    assert sum(path.startswith("developer/policy/MPD-") for path in expected) == 8
+    for path, payload in expected.items():
+        assert load_yaml(path, root=ROOT) == payload
+
+
+def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -> None:
+    for number in range(1, 22):
+        path = ROOT / "src" / "ptsip" / "specdata" / f"SFP-{number:04d}.yaml"
+        text = path.read_text(encoding="utf-8")
+        assert "subject_binding:" not in text
+        assert "authority_role:" not in text
+        assert "repository_binding:" not in text
+
+
+def test_support_policy_index_has_exact_21_targets() -> None:
+    import yaml
+
+    path = ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert [item["id"] for item in payload["policies"]] == [
+        f"SFP-{number:04d}" for number in range(1, 22)
+    ]
+    assert payload["policies"][3]["status"] == "DRAFT"
+    assert all(
+        item["status"] == "ACTIVE"
+        for index, item in enumerate(payload["policies"])
+        if index != 3
+    )
