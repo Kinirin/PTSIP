@@ -23,7 +23,7 @@ def test_legacy_decisions_removal_is_preauthorized_but_currently_held() -> None:
     assert result.state == "HOLD_NOT_AUTHORIZED"
     assert result.action is None
     assert result.confirmation_required is False
-    assert "ACTIVE_REFERENCE_COUNT_NONZERO" in result.blockers
+    assert "ACTIVE_REFERENCE_COUNT_NONZERO" not in result.blockers
     assert "MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING" in result.blockers
     assert "HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED" in result.blockers
 
@@ -45,8 +45,10 @@ def test_legacy_reference_inventory_is_machine_valid_and_fail_closed() -> None:
     expected = inventory["active_dependencies"]
 
     assert summary["counts"].get("UNCLASSIFIED", 0) == 0
-    assert summary["counts"]["ACTIVE_DEPENDENCY"] == expected["expected_reference_count"]
-    assert summary["files"]["ACTIVE_DEPENDENCY"] == sorted(
+    assert summary["counts"].get("ACTIVE_DEPENDENCY", 0) == expected[
+        "expected_reference_count"
+    ]
+    assert summary["files"].get("ACTIVE_DEPENDENCY", []) == sorted(
         item["path"] for item in expected["entries"]
     )
 
