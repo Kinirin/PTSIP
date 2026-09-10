@@ -11,6 +11,7 @@ from typing import Mapping
 from developer.automation.current_dependency_gate import (
     validate_current_legacy_dependency_gate,
 )
+from developer.automation.planning_extension_finalizer import finalize_extension_if_ready
 from developer.automation.planning_validator import validate_planning
 from developer.automation.policy_loader import load_yaml, repository_root
 from developer.automation.policy_validator import validate_developer_policy
@@ -25,6 +26,7 @@ class FinalizationResult:
     stage_id: str
     promoted: bool
     failures: tuple[str, ...]
+    extension_finalized: bool = False
 
 
 def _find_stage(payload: object, stage_id: str) -> Mapping[str, object]:
@@ -233,6 +235,29 @@ def _run_registered_check(base: Path, check: str) -> tuple[str, ...]:
     return (f"unknown automatic completion check: {check}",)
 
 
+def _finalize_ready_extension(
+    relative_path: str,
+    stage_id: str,
+    *,
+    base: Path,
+    promoted: bool,
+) -> FinalizationResult:
+    extension = finalize_extension_if_ready(relative_path, root=base)
+    if extension.failures:
+        return FinalizationResult(
+            stage_id,
+            promoted,
+            tuple(f"extension closure: {item}" for item in extension.failures),
+            extension_finalized=False,
+        )
+    return FinalizationResult(
+        stage_id,
+        promoted,
+        (),
+        extension_finalized=extension.finalized,
+    )
+
+
 def finalize_stage(
     relative_path: str,
     stage_id: str,
@@ -252,8 +277,16 @@ def finalize_stage(
     except ValueError as exc:
         return FinalizationResult(stage_id, False, (str(exc),))
 
+    # Recovery mode: an earlier finalizer may already have completed the last
+    # internal stage while leaving the Plan Extension lifecycle ACTIVE. Re-running
+    # the same command must close the ready extension and reconcile the parent gate.
     if stage.get("status") == _COMPLETE:
-        return FinalizationResult(stage_id, False, ())
+        return _finalize_ready_extension(
+            relative_path,
+            stage_id,
+            base=base,
+            promoted=False,
+        )
     if stage.get("status") != _PENDING:
         return FinalizationResult(
             stage_id,
@@ -294,6 +327,18 @@ def finalize_stage(
         return FinalizationResult(stage_id, False, (str(exc),))
     path.write_text(promoted, encoding="utf-8")
 
+    extension_result = _finalize_ready_extension(
+        relative_path,
+        stage_id,
+        base=base,
+        promoted=True,
+    )
+    if extension_result.failures:
+        path.write_text(original, encoding="utf-8")
+        return extension_result
+    if extension_result.extension_finalized:
+        return extension_result
+
     post_failures = validate_planning(base)
     if post_failures:
         path.write_text(original, encoding="utf-8")
@@ -310,7 +355,10 @@ def finalize_stage(
 
 def _main() -> int:
     parser = argparse.ArgumentParser(
-        description="Machine-validate a pending planning stage and promote it to COMPLETE."
+        description=(
+            "Machine-validate a pending planning stage, promote it to COMPLETE, "
+            "and close/reconcile a machine-ready Plan Extension."
+        )
     )
     parser.add_argument("planning_path")
     parser.add_argument("stage_id")
@@ -319,8 +367,14 @@ def _main() -> int:
     if result.failures:
         print("\n".join(result.failures), file=sys.stderr)
         return 1
-    if result.promoted:
+    if result.promoted and result.extension_finalized:
         print(f"Planning stage promoted to COMPLETE: {result.stage_id}")
+        print("Plan extension finalized and planning gate reconciled")
+    elif result.promoted:
+        print(f"Planning stage promoted to COMPLETE: {result.stage_id}")
+    elif result.extension_finalized:
+        print(f"Planning stage already COMPLETE: {result.stage_id}")
+        print("Plan extension finalized and planning gate reconciled")
     else:
         print(f"Planning stage already COMPLETE: {result.stage_id}")
     return 0
