@@ -14,6 +14,7 @@ import yaml
 
 VALIDATOR_PATH = Path(__file__).with_name("validate_test_modes.py")
 VALIDATE_REGISTRY = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
+SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
 
 CONTROL_PLANE_WATCH = (
     ".github/test_modes.yaml",
@@ -21,7 +22,7 @@ CONTROL_PLANE_WATCH = (
     ".github/scripts/resolve_test_modes.py",
     ".github/workflows/tooling-test.yml",
     "tests/ptsip/test_modes/**",
-    "ptsip.yaml",
+    SELF_PROFILE_PATH,
 )
 
 
@@ -193,7 +194,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Resolve repository Test Modes from explicit selection inputs")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--registry", default=".github/test_modes.yaml")
-    parser.add_argument("--profile", default="ptsip.yaml")
+    parser.add_argument("--profile", default=SELF_PROFILE_PATH)
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
