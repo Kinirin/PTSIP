@@ -111,13 +111,13 @@ migration_stages:
       developer_owner_grant_evaluator: developer/automation/authorization_transition.py
       local_legacy_policy_tree_dependency_count: 0
   P01_E_LEGACY_REMOVAL:
-    status: MIGRATION_ONLY_RETIREMENT_IMPLEMENTED_VALIDATION_PENDING
+    status: MIGRATION_ONLY_RETIREMENT_COMPLETE_REMOVAL_GATE_READY
     preauthorized_action: REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE
     confirmation_required: false
     current_dependency_gate: developer/automation/current_dependency_gate.py
     classified_active_reference_count: 0
     active_reference_files: 0
-    migration_only_artifacts: RETIRED_PENDING_MACHINE_VALIDATION
+    migration_only_artifacts: RETIRED
     legacy_policy_provenance:
       current_state: REMOVED_FROM_CURRENT_POLICY_CORPUS
       final_state: REMOVED
@@ -140,7 +140,6 @@ profile_subsystem_decision:
   move_authorized_only_as_part_of_inventory_linked_materialization: true
 
 current_known_blockers:
-  - P01_E4_MACHINE_VALIDATION_PENDING
   - ROOT_PTSIP_YAML_COMPATIBILITY_BRIDGE_STILL_ACTIVE
 
 p01_e_execution_plan:
@@ -219,7 +218,7 @@ p01_e_execution_plan:
           - HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED
           - MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING
     - id: P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION
-      status: IMPLEMENTED_VALIDATION_PENDING
+      status: COMPLETE
       implementation_revision: 823983acfe84d9a9f0f64d532a733d6f29a2e65a
       responsibility: RETIRE_REMAINING_MIGRATION_ONLY_DEPENDENCIES_AND_REMOVE_OBSOLETE_PROVENANCE_ANCHOR_GATE_SEMANTICS
       requirements:
@@ -268,9 +267,9 @@ p01_e_execution_plan:
             - section: current_known_blockers
               value: P01_E4_MACHINE_VALIDATION_PENDING
       validation:
-        status: PENDING
+        status: PASS
     - id: P01_E5_REMOVAL_GATE
-      status: BLOCKED_BY_P01_E4_VALIDATION
+      status: READY
       responsibility: REEVALUATE_PREAUTHORIZED_LEGACY_DIRECTORY_REMOVAL
       requires:
         - CURRENT_LEGACY_DEPENDENCY_COUNT_ZERO
