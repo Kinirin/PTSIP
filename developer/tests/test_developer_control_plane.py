@@ -29,6 +29,7 @@ def test_legacy_decisions_removal_is_preauthorized_but_currently_held() -> None:
 
 
 def test_legacy_reference_inventory_is_machine_valid_and_fail_closed() -> None:
+    import yaml
     from developer.automation.legacy_reference_scanner import (
         scan_summary,
         validate_legacy_reference_inventory,
@@ -36,13 +37,16 @@ def test_legacy_reference_inventory_is_machine_valid_and_fail_closed() -> None:
 
     assert validate_legacy_reference_inventory(ROOT) == ()
     summary = scan_summary(ROOT)
+    inventory = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "legacy-reference-inventory.yaml").read_text(encoding="utf-8")
+    )
+    expected = inventory["active_dependencies"]
+
     assert summary["counts"].get("UNCLASSIFIED", 0) == 0
-    assert summary["counts"]["ACTIVE_DEPENDENCY"] == 21
-    assert summary["files"]["ACTIVE_DEPENDENCY"] == [
-        "developer/profiles/ptsip-repository.yaml",
-        "ptsip.yaml",
-        "releasenote/project-profile/pp.1.01.md",
-    ]
+    assert summary["counts"]["ACTIVE_DEPENDENCY"] == expected["expected_reference_count"]
+    assert summary["files"]["ACTIVE_DEPENDENCY"] == sorted(
+        item["path"] for item in expected["entries"]
+    )
 
 
 def test_legacy_corpus_provenance_anchor_matches_current_decisions_tree() -> None:
