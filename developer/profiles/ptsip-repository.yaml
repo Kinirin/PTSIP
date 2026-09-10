@@ -218,11 +218,11 @@ components:
       - "src/ptsip/validation/**"
       - "ptsip.yaml"
       - "profiles/**"
-      - "decisions/INDEX.yaml"
-      - "decisions/AUTHORITY-SCHEMA-REGISTRY.yaml"
-      - "decisions/AUTHORITY-ROLE-REGISTRY.yaml"
-      - "decisions/AUTHORITY-SUBJECT-REGISTRY.yaml"
-      - "decisions/AUTHORIZATION-TRANSITION-REGISTRY.yaml"
+      - "src/ptsip/specdata/support-policy-index.yaml"
+      - "src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml"
+      - "src/ptsip/specdata/ptsip-support-authority-role-registry.yaml"
+      - "src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml"
+      - "src/ptsip/specdata/ptsip-support-authorization-registry.yaml"
       - "schemas/ptsip-adr.schema.json"
       - "schemas/ptsip-governance-authority-registry.schema.json"
       - "schemas/ptsip-governance-authority-role.schema.json"
@@ -336,7 +336,7 @@ components:
       - "spec/**"
       - "schemas/**"
       - "registry/**"
-      - "decisions/**"
+      - "developer/policy/**"
       - "src/ptsip/governance/**"
       - "src/ptsip/specdata/**"
 
@@ -358,7 +358,7 @@ components:
       - "profiles/**"
       - "adoption/**"
       - "agents/**"
-      - "decisions/**"
+      - "src/ptsip/specdata/**"
       - "reference/**"
       - "docs/planning/**"
       - "developer/policy/**"
@@ -471,7 +471,8 @@ components:
       - "src/**"
       - "README.md"
       - "README.ko.md"
-      - "decisions/**"
+      - "src/ptsip/specdata/**"
+      - "developer/policy/**"
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
@@ -509,7 +510,6 @@ associated_artifacts:
     include:
       - "adoption/**"
       - "agents/**"
-      - "decisions/**"
       - "reference/**"
       - "docs/Support_policy/**"
     purpose: specification_governance_adoption_agent_and_architecture_support
