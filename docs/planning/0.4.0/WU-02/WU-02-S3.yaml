@@ -1,0 +1,199 @@
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+
+record:
+  id: WU-02-S3
+  kind: PARALLEL_WORK_LANE
+  title: Capability Recovery + Resolution Boundary + Feedback Outcome
+  status: ACTIVE
+  parent_work_unit: WU-02
+  branch: dev/0.4.0-WU-02-S3
+  base_branch: dev/0.4.0
+  authority: PROJECT_OWNER
+  implementation_authorization: AUTHORIZED
+  integration_target: dev/0.4.0
+
+branch_baseline:
+  canonical_plan_source: CENTRAL_CONTROL_PLANE
+  control_plane_branch: dev/0.4.0
+  synchronization: MUST_START_FROM_CURRENT_CENTRAL_CONTROL_PLANE_REVISION_BEFORE_IMPLEMENTATION
+  lane_plan_is_canonical_on_control_plane: true
+
+responsibility:
+  primary: CAPABILITY_RECOVERY_RESOLUTION_BOUNDARY_AND_FEEDBACK_OUTCOME
+  question_owned: WHY_THE_CURRENT_SOLVE_CANNOT_YET_REDUCE_FURTHER_AND_WHETHER_RECOVERY_IS_AVAILABLE
+  final_output_goal: ONE_MACHINE_INSPECTABLE_RESOLUTION_RECORD
+  feedback_goal: DISTINGUISH_PROJECT_EXTERNAL_INPUT_AND_PTSIP_RESPONSIBILITY_WITHOUT_PREMATURE_TOOL_GAP
+
+resolution_model:
+  state_type: ResolutionState
+  states:
+    - RECOVERY_REQUIRED
+    - TERMINAL
+  outcome_type: ResolutionOutcome
+  terminal_outcomes:
+    - DETERMINISTIC
+    - OWNER_INTENT_REQUIRED
+    - EXTERNAL_FACT_REQUIRED
+    - UNSATISFIABLE
+    - TOOL_CAPABILITY_GAP
+  rule: RECOVERY_REQUIRED_AND_TERMINAL_ARE_RESOLUTION_STATES_NOT_TERMINAL_OUTCOMES
+
+capability_recovery:
+  unsupported_semantics_is_terminal_gap: false
+  required_order:
+    - LOSSLESS_CANONICAL_NORMALIZATION
+    - PROJECT_LOCAL_AUTHORITY_COMPATIBILITY_ADAPTER
+    - EXISTING_AUTHORITY_COMPATIBLE_MATERIALIZATION
+    - TERMINAL_TOOL_CAPABILITY_GAP_ONLY_AFTER_RECOVERY_EXHAUSTION
+  adapter_rules:
+    - MUST_MAP_EXPLICIT_EXISTING_PROJECT_MEANING_TO_PTSIP_CANONICAL_SEMANTICS
+    - MUST_NOT_INVENT_PROJECT_INTENT
+    - MUST_BE_MACHINE_READABLE
+    - MUST_USE_CLOSED_VOCABULARY
+    - MUST_FAIL_CLOSED_ON_AMBIGUITY
+    - MUST_PRESERVE_SUBJECT_BINDING
+    - MUST_NOT_USE_FILESYSTEM_PATH_OR_GIT_REVISION_AS_CANONICAL_AUTHORITY_IDENTITY
+  terminal_tool_gap_requires:
+    - CapabilityRecoveryAssessment
+    - REQUIRED_CAPABILITY_IDENTIFIED
+    - NORMALIZATION_PATH_REJECTED_WITH_REASON
+    - ADAPTER_PATH_REJECTED_WITH_REASON
+    - COMPATIBLE_MATERIALIZATION_PATH_REJECTED_WITH_REASON
+  responsibility_semantics:
+    PROJECT: MISSING_OR_AMBIGUOUS_PROJECT_INTENT
+    EXTERNAL_INPUT: MISSING_EXTERNALLY_KNOWABLE_FACT
+    PTSIP: TERMINAL_TOOL_CAPABILITY_GAP_AFTER_RECOVERY_EXHAUSTION
+    NONE: DETERMINISTIC_OR_OTHER_TERMINAL_STATE_WITHOUT_ACTION_OWNER
+
+coverage_gap_relationship:
+  CoverageGap_is_problem_observation: true
+  CoverageGap_is_not_automatically_final_outcome: true
+  final_resolution_may_be:
+    - DETERMINISTIC
+    - OWNER_INTENT_REQUIRED
+    - EXTERNAL_FACT_REQUIRED
+    - TOOL_CAPABILITY_GAP
+    - UNSATISFIABLE
+
+owned_implementation_surface:
+  allowed_paths:
+    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - src/ptsip/remediation/solution/recovery.py
+    - src/ptsip/remediation/solution/resolution.py
+    - tests/ptsip/remediation/test_solution_recovery.py
+    - tests/ptsip/remediation/test_solution_resolution.py
+  integration_only_files_forbidden:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - src/ptsip/remediation/__init__.py
+    - src/ptsip/remediation/solution/__init__.py
+    - src/ptsip/remediation/solution/engine.py
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/remediation/rules/contract.py
+  additional_path_rule: REQUEST_INTEGRATION_HANDOFF_DO_NOT_EDIT_DIRECTLY
+
+non_goals:
+  - GENERATE_SEMANTIC_CANDIDATES
+  - CREATE_OR_OVERRIDE_ELIMINATION_RECORDS
+  - SILENTLY_CREATE_NEW_PROJECT_AUTHORITY
+  - IMPLEMENT_OWNER_QUESTION_GENERATION
+  - IMPLEMENT_REPOSITORY_MUTATION
+  - MUTATION_AUTHORIZATION
+
+session_protocol:
+  required_read_before_work:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
+  required_git_checks:
+    - CONFIRM_CURRENT_BRANCH_IS_dev/0.4.0-WU-02-S3
+    - REVIEW_RECENT_GIT_LOG
+    - REVIEW_CURRENT_DIFF_AGAINST_dev/0.4.0
+  startup_report_required:
+    - CURRENT_BRANCH
+    - CURRENT_LANE_STATUS
+    - COMPLETED_ITEMS
+    - OPEN_QUESTIONS
+    - NEXT_SINGLE_ACTION
+  approved_decisions_are_not_to_be_reopened_without_new_conflicting_evidence: true
+  cross_lane_change_rule: RECORD_HANDOFF_REQUEST_DO_NOT_EDIT_SIBLING_LANE
+  before_session_end:
+    - UPDATE_EXECUTION_STATE
+    - UPDATE_DECISIONS_MADE
+    - UPDATE_UNRESOLVED_QUESTIONS
+    - UPDATE_VERIFICATION_STATE
+    - UPDATE_INTEGRATION_HANDOFF
+    - RUN_python_-m_developer.automation.wu02_lane_validator_S3
+
+execution_state:
+  status: NOT_STARTED
+  completed: []
+  current_focus: RECOVERY_BEFORE_TERMINAL_TOOL_CAPABILITY_GAP
+  remaining:
+    - DEFINE_RESOLUTION_STATE_AND_RESOLUTION_RECORD_CONTRACT
+    - DEFINE_CAPABILITY_RECOVERY_ASSESSMENT
+    - IMPLEMENT_RECOVERY_ORDER
+    - IMPLEMENT_TERMINAL_RESPONSIBILITY_CLASSIFICATION
+    - ADD_FOCUSED_TESTS
+  blockers: []
+  last_handoff_summary: CENTRAL_PLAN_CREATED_BEFORE_IMPLEMENTATION
+
+decisions_made:
+  - id: S3-D01
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: RECOVERY_REQUIRED_AND_TERMINAL_ARE_RESOLUTION_STATES_SEPARATE_FROM_TERMINAL_RESOLUTION_OUTCOMES
+  - id: S3-D02
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: UNSUPPORTED_AUTHORITY_SEMANTICS_DOES_NOT_IMMEDIATELY_JUSTIFY_TOOL_CAPABILITY_GAP
+  - id: S3-D03
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: TOOL_CAPABILITY_GAP_IS_TERMINAL_ONLY_AFTER_SAFE_PROJECT_LOCAL_RECOVERY_PATHS_ARE_EXHAUSTED
+  - id: S3-D04
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: PROJECT_LOCAL_AUTHORITY_COMPATIBILITY_MUST_TRANSLATE_EXISTING_INTENT_AND_MUST_NOT_INVENT_NEW_INTENT
+  - id: S3-D05
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: COVERAGE_GAP_IS_A_PROBLEM_OBSERVATION_WHILE_TOOL_CAPABILITY_GAP_IS_A_TERMINAL_PTSIP_RESPONSIBILITY_OUTCOME
+
+unresolved_questions:
+  - id: S3-Q01
+    status: OPEN
+    topic: EXACT_RESOLUTION_RECORD_AND_CAPABILITY_RECOVERY_ASSESSMENT_PYTHON_SHAPES
+  - id: S3-Q02
+    status: OPEN
+    topic: EXACT_PROJECT_LOCAL_AUTHORITY_COMPATIBILITY_ADAPTER_STORAGE_AND_DISCOVERY_BOUNDARY
+
+verification_state:
+  status: NOT_STARTED
+  required:
+    - UNSUPPORTED_AUTHORITY_SEMANTICS_DOES_NOT_IMMEDIATELY_BECOME_TOOL_CAPABILITY_GAP
+    - RECOVERY_PATHS_ARE_CHECKED_BEFORE_TERMINAL_TOOL_GAP
+    - RECOVERY_ADAPTER_CANNOT_INVENT_PROJECT_INTENT
+    - TOOL_CAPABILITY_GAP_IDENTIFIES_PTSIP_RESPONSIBILITY
+    - COVERAGE_GAP_AND_TOOL_CAPABILITY_GAP_REMAIN_SEMANTICALLY_DISTINCT
+  passed: []
+  failed: []
+
+integration_handoff:
+  producer: WU-02-S3
+  consumes: WU-02-S2
+  consumer: WU-02_INTEGRATION
+  guarantees_when_complete:
+    - RECOVERY_REQUIRED_IS_DISTINCT_FROM_TERMINAL_OUTCOME
+    - TOOL_CAPABILITY_GAP_HAS_MACHINE_INSPECTABLE_RECOVERY_EXHAUSTION_BASIS
+    - FINAL_RESOLUTION_IDENTIFIES_PROJECT_EXTERNAL_INPUT_OR_PTSIP_RESPONSIBILITY
+  consumer_must_not_assume:
+    - MULTIPLE_SURVIVORS_AUTOMATICALLY_MEAN_OWNER_INTENT_REQUIRED
+    - UNSUPPORTED_LANGUAGE_AUTOMATICALLY_MEANS_TOOL_CAPABILITY_GAP
+    - COMPATIBILITY_ADAPTER_MAY_CREATE_PROJECT_INTENT
+  requests_to_other_lanes: []
+  integration_notes: []
