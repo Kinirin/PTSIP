@@ -76,6 +76,9 @@ active_planning_surface:
   allowed_files:
     - WU-02.yaml
     - WU-02-P01.yaml
+    - WU-02-S1.yaml
+    - WU-02-S2.yaml
+    - WU-02-S3.yaml
   lifecycle:
     states:
       - DRAFT
@@ -89,6 +92,33 @@ active_planning_surface:
   generated_review_artifact_retention_after_consumption: FORBIDDEN
 
 primary_responsibility: IMPLEMENT_SOLUTION_SPACE_DETERMINISTIC_RULE_AND_NON_AUTHORITATIVE_COVERAGE_ROUTING_WITHOUT_MUTATION_OR_ESCALATION_EXECUTION
+
+parallel_work_lanes:
+  base_branch: dev/0.4.0
+  policy: BRANCH_LOCAL_DERIVED_WORK_PLANS
+  integration_rule: DERIVED_LANES_MUST_RETURN_TO_DEV_0_4_0_FOR_FINAL_INTEGRATION
+  shared_parent_current_gate_unchanged: true
+  lanes:
+    - id: WU-02-S1
+      branch: dev/0.4.0-WU-02-S1
+      path: docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+      responsibility: SEMANTIC_INTERPRETATION_AND_CANDIDATE_GENERATION
+      status: PLANNED_BRANCH_LOCAL
+    - id: WU-02-S2
+      branch: dev/0.4.0-WU-02-S2
+      path: docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+      responsibility: ELIMINATION_AUTHORITY_RECORDING_AND_SURVIVOR_REDUCTION
+      status: PLANNED_BRANCH_LOCAL
+    - id: WU-02-S3
+      branch: dev/0.4.0-WU-02-S3
+      path: docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+      responsibility: CAPABILITY_RECOVERY_RESOLUTION_BOUNDARY_AND_FEEDBACK_OUTCOME
+      status: PLANNED_BRANCH_LOCAL
+  integration_only_files:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - src/ptsip/remediation/__init__.py
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/remediation/rules/contract.py
 
 scope:
   - IMPLEMENT_SOLUTION_SPACE_ENGINE
