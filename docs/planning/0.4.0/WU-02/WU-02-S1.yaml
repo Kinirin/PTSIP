@@ -1,0 +1,151 @@
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+
+record:
+  id: WU-02-S1
+  kind: PARALLEL_WORK_LANE
+  title: Semantic Interpretation + Candidate Generation
+  status: ACTIVE
+  parent_work_unit: WU-02
+  branch: dev/0.4.0-WU-02-S1
+  base_branch: dev/0.4.0
+  authority: PROJECT_OWNER
+  implementation_authorization: AUTHORIZED
+  integration_target: dev/0.4.0
+
+branch_baseline:
+  canonical_plan_source: CENTRAL_CONTROL_PLANE
+  control_plane_branch: dev/0.4.0
+  synchronization: MUST_START_FROM_CURRENT_CENTRAL_CONTROL_PLANE_REVISION_BEFORE_IMPLEMENTATION
+  lane_plan_is_canonical_on_control_plane: true
+
+responsibility:
+  primary: SEMANTIC_INTERPRETATION_AND_CANDIDATE_GENERATION
+  question_owned: WHAT_LEGAL_SEMANTIC_INTERPRETATIONS_AND_TARGETS_ARE_POSSIBLE
+  outputs:
+    - SemanticCandidate
+    - CANDIDATE_GENERATION_DIAGNOSTICS
+  must_preserve:
+    - OBSERVED_CLASSIFICATION_DOES_NOT_BY_ITSELF_PROVE_VIOLATION
+    - PRODUCT_LOCATION_OR MEMBERSHIP_DOES_NOT_BY_ITSELF_PROVE_REMOVAL_IS_REQUIRED
+    - CANDIDATES_MAY_REPRESENT_CONFORMANT_OR_NON_REMEDIATION_INTERPRETATIONS_WHEN_SUPPORTED
+    - CANDIDATE_OUTPUT_IS_NOT_PROJECT_AUTHORITY
+    - TOOL_MUST_NOT_INVENT_PROJECT_INTENT
+
+approved_example_boundary:
+  observed_state: DEVELOPMENT_TOOLING_ASSOCIATED_WITH_PRODUCT_CONTEXT
+  interpretations_may_include:
+    - ACCIDENTAL_PRODUCT_ARTIFACT_INCLUSION
+    - NON_SHIPPED_REPOSITORY_COLOCATION
+    - INTENTIONAL_PRODUCT_HOSTED_TOOLING
+    - CLASSIFICATION_OR_BOUNDARY_CONFLICT_REQUIRING_FURTHER_EVIDENCE_OR_AUTHORITY
+  rule: NO_INTERPRETATION_MAY_BE_PROMOTED_TO_FACT_WITHOUT_SUPPORTING_EVIDENCE_RULE_OR_CURRENT_AUTHORITY
+
+owned_implementation_surface:
+  allowed_paths:
+    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - src/ptsip/remediation/solution/candidate.py
+    - tests/ptsip/remediation/test_solution_candidate_generation.py
+  integration_only_files_forbidden:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - src/ptsip/remediation/__init__.py
+    - src/ptsip/remediation/solution/__init__.py
+    - src/ptsip/remediation/solution/engine.py
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/remediation/rules/contract.py
+  additional_path_rule: REQUEST_INTEGRATION_HANDOFF_DO_NOT_EDIT_DIRECTLY
+
+non_goals:
+  - CREATE_CANONICAL_ELIMINATION_RECORDS
+  - REMOVE_CANDIDATES_FROM_SURVIVOR_SET
+  - CLASSIFY_FINAL_RESOLUTION_OUTCOME
+  - DEFINE_TOOL_CAPABILITY_GAP_AS_TERMINAL
+  - REPOSITORY_MUTATION
+  - MUTATION_AUTHORIZATION
+  - OWNER_QUESTION_GENERATION
+
+session_protocol:
+  required_read_before_work:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
+  required_git_checks:
+    - CONFIRM_CURRENT_BRANCH_IS_dev/0.4.0-WU-02-S1
+    - REVIEW_RECENT_GIT_LOG
+    - REVIEW_CURRENT_DIFF_AGAINST_dev/0.4.0
+  startup_report_required:
+    - CURRENT_BRANCH
+    - CURRENT_LANE_STATUS
+    - COMPLETED_ITEMS
+    - OPEN_QUESTIONS
+    - NEXT_SINGLE_ACTION
+  approved_decisions_are_not_to_be_reopened_without_new_conflicting_evidence: true
+  cross_lane_change_rule: RECORD_HANDOFF_REQUEST_DO_NOT_EDIT_SIBLING_LANE
+  before_session_end:
+    - UPDATE_EXECUTION_STATE
+    - UPDATE_DECISIONS_MADE
+    - UPDATE_UNRESOLVED_QUESTIONS
+    - UPDATE_VERIFICATION_STATE
+    - UPDATE_INTEGRATION_HANDOFF
+    - RUN_python_-m_developer.automation.wu02_lane_validator_S1
+
+execution_state:
+  status: NOT_STARTED
+  completed: []
+  current_focus: SEMANTIC_CANDIDATE_CONTRACT_AND_GENERATION_BOUNDARY
+  remaining:
+    - DEFINE_MACHINE_INSPECTABLE_SEMANTIC_INTERPRETATION_CANDIDATE_SHAPE
+    - IMPLEMENT_CANDIDATE_GENERATION_WITHOUT_PREMATURE_VIOLATION_ASSUMPTION
+    - ADD_FOCUSED_TESTS
+  blockers: []
+  last_handoff_summary: CENTRAL_PLAN_CREATED_BEFORE_IMPLEMENTATION
+
+decisions_made:
+  - id: S1-D01
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: SEMANTIC_CANDIDATE_MAY_REPRESENT_A_LEGAL_NON_REMEDIATION_INTERPRETATION
+  - id: S1-D02
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: OBSERVED_DEVELOPMENT_TOOLING_IN_PRODUCT_CONTEXT_DOES_NOT_BY_ITSELF_PROVE_A_VIOLATION
+  - id: S1-D03
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: SEMANTIC_CANDIDATE_REPORTS_POSSIBILITIES_AND_DOES_NOT_OWN_FINAL_ELIMINATION_RECORDING
+
+unresolved_questions:
+  - id: S1-Q01
+    status: OPEN
+    topic: EXACT_PYTHON_SHAPE_FOR_SEMANTIC_INTERPRETATION_METADATA
+  - id: S1-Q02
+    status: OPEN
+    topic: EXACT_OPERATIONAL_RULE_TO_CANDIDATE_GENERATION_ADAPTER_BOUNDARY
+
+verification_state:
+  status: NOT_STARTED
+  required:
+    - MULTIPLE_LEGAL_INTERPRETATIONS_CAN_COEXIST
+    - NON_SHIPPED_EVIDENCE_CAN_PRESERVE_A_NON_VIOLATION_INTERPRETATION
+    - HOSTED_TOOLING_INTERPRETATION_REQUIRES_SUPPORTING_SEMANTICS
+    - CANDIDATE_GENERATION_DOES_NOT_CREATE_PROJECT_AUTHORITY
+  passed: []
+  failed: []
+
+integration_handoff:
+  producer: WU-02-S1
+  consumer: WU-02-S2
+  guarantees_when_complete:
+    - GENERATED_CANDIDATES_HAVE_UNIQUE_IDENTITIES
+    - CANDIDATES_HAVE_MACHINE_INSPECTABLE_SUPPORT_REFERENCES
+    - CANDIDATE_EXISTENCE_DOES_NOT_MEAN_VIOLATION_OR_OWNER_APPROVAL
+  consumer_must_not_assume:
+    - EVERY_CANDIDATE_IS_A_REMEDIATION_ACTION
+    - CANDIDATE_ORDER_IS_RANKING
+    - CANDIDATE_EXISTENCE_IS_PROJECT_AUTHORITY
+  requests_to_other_lanes: []
+  integration_notes: []
