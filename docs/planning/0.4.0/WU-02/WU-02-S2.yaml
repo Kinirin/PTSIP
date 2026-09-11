@@ -1,0 +1,170 @@
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.4.0
+
+record:
+  id: WU-02-S2
+  kind: PARALLEL_WORK_LANE
+  title: Elimination Authority + Canonical Record + Survivor Reduction
+  status: ACTIVE
+  parent_work_unit: WU-02
+  branch: dev/0.4.0-WU-02-S2
+  base_branch: dev/0.4.0
+  authority: PROJECT_OWNER
+  implementation_authorization: AUTHORIZED
+  integration_target: dev/0.4.0
+
+branch_baseline:
+  canonical_plan_source: CENTRAL_CONTROL_PLANE
+  control_plane_branch: dev/0.4.0
+  synchronization: MUST_START_FROM_CURRENT_CENTRAL_CONTROL_PLANE_REVISION_BEFORE_IMPLEMENTATION
+  lane_plan_is_canonical_on_control_plane: true
+
+responsibility:
+  primary: ELIMINATION_AUTHORITY_RECORDING_AND_SURVIVOR_REDUCTION
+  question_owned: WHICH_CANDIDATES_ARE_PROVABLY_NO_LONGER_LEGAL_IN_THE_CURRENT_SOLVE
+  canonical_record: EliminationRecord
+  record_effect: ELIMINATED_CANDIDATE_IS_NOT_A_SURVIVOR_IN_THE_BOUND_CURRENT_SOLVE
+  downstream_ai_rule: MAY_NOT_SILENTLY_REINTRODUCE_AN_ELIMINATED_CANDIDATE
+  recovery_rule: CHANGED_EVIDENCE_AUTHORITY_OR_SPECIFICATION_REQUIRES_FRESH_SOLVE_RATHER_THAN_RECORD_OVERRIDE
+
+elimination_contract:
+  machine_inspectable_reason_required: true
+  supporting_references_required: true
+  valid_reason_families:
+    - VIOLATES_NORMATIVE_CONSTRAINT
+    - CONFLICTS_WITH_EXPLICIT_CURRENT_AUTHORITY
+    - FAILS_REQUIRED_PRECONDITION
+    - BREAKS_REQUIRED_ARCHITECTURE_INVARIANT
+    - PROVABLY_SEMANTICALLY_EQUIVALENT_TO_RETAINED_CANDIDATE
+    - PROVABLY_DOMINATED_UNDER_MODELED_SEMANTIC_OBJECTIVE
+  forbidden_as_elimination_authority:
+    - LOW_CONFIDENCE
+    - HIGH_IMPLEMENTATION_COST
+    - LARGE_DIFF
+    - AI_PREFERENCE
+    - HISTORY_PREFERENCE
+    - RANKING_SCORE_ONLY
+  record_must_support_fresh_solve_binding:
+    - EVIDENCE_IDENTITY
+    - SPECIFICATION_IDENTITY
+    - CURRENT_AUTHORITY_IDENTITY_WHEN_CONSUMED
+  record_is_project_authority: false
+
+ranking_policy:
+  separate_RankingRecord_required: false
+  ranking_may_be_future_candidate_advisory_metadata: true
+  ranking_may_eliminate_legal_candidate: false
+  ranking_is_not_part_of_S2_completion: true
+
+owned_implementation_surface:
+  allowed_paths:
+    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - src/ptsip/remediation/solution/elimination.py
+    - tests/ptsip/remediation/test_solution_elimination.py
+  integration_only_files_forbidden:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - src/ptsip/remediation/__init__.py
+    - src/ptsip/remediation/solution/__init__.py
+    - src/ptsip/remediation/solution/engine.py
+    - src/ptsip/remediation/domain/model.py
+    - src/ptsip/remediation/rules/contract.py
+  additional_path_rule: REQUEST_INTEGRATION_HANDOFF_DO_NOT_EDIT_DIRECTLY
+
+non_goals:
+  - GENERATE_NEW_SEMANTIC_CANDIDATES
+  - CLASSIFY_PROJECT_VS_EXTERNAL_VS_TOOL_RESOLUTION_RESPONSIBILITY
+  - CREATE_AUTHORITY_COMPATIBILITY_ADAPTERS
+  - REPOSITORY_MUTATION
+  - MUTATION_AUTHORIZATION
+
+session_protocol:
+  required_read_before_work:
+    - docs/planning/0.4.0/WU-02/WU-02.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
+  required_git_checks:
+    - CONFIRM_CURRENT_BRANCH_IS_dev/0.4.0-WU-02-S2
+    - REVIEW_RECENT_GIT_LOG
+    - REVIEW_CURRENT_DIFF_AGAINST_dev/0.4.0
+  startup_report_required:
+    - CURRENT_BRANCH
+    - CURRENT_LANE_STATUS
+    - COMPLETED_ITEMS
+    - OPEN_QUESTIONS
+    - NEXT_SINGLE_ACTION
+  approved_decisions_are_not_to_be_reopened_without_new_conflicting_evidence: true
+  cross_lane_change_rule: RECORD_HANDOFF_REQUEST_DO_NOT_EDIT_SIBLING_LANE
+  before_session_end:
+    - UPDATE_EXECUTION_STATE
+    - UPDATE_DECISIONS_MADE
+    - UPDATE_UNRESOLVED_QUESTIONS
+    - UPDATE_VERIFICATION_STATE
+    - UPDATE_INTEGRATION_HANDOFF
+    - RUN_python_-m_developer.automation.wu02_lane_validator_S2
+
+execution_state:
+  status: NOT_STARTED
+  completed: []
+  current_focus: ELIMINATION_RECORD_AUTHORITY_AND_CURRENT_SOLVE_BINDING
+  remaining:
+    - DEFINE_ELIMINATION_RECORD_CONTRACT
+    - IMPLEMENT_CANONICAL_SURVIVOR_REDUCTION
+    - DEFINE_FRESH_SOLVE_INVALIDATION_BOUNDARY
+    - ADD_FOCUSED_TESTS
+  blockers: []
+  last_handoff_summary: CENTRAL_PLAN_CREATED_BEFORE_IMPLEMENTATION
+
+decisions_made:
+  - id: S2-D01
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: ELIMINATION_RECORD_OWNS_CANONICAL_ELIMINATION_RECORDING
+  - id: S2-D02
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: ELIMINATION_RECORD_IS_STRONG_WITHIN_THE_BOUND_CURRENT_SOLVE_BUT_IS_NOT_PROJECT_AUTHORITY
+  - id: S2-D03
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: DOWNSTREAM_AI_MUST_REQUEST_FRESH_SOLVE_INSTEAD_OF_SILENTLY_OVERRIDING_A_VALID_ELIMINATION_RECORD
+  - id: S2-D04
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: SEPARATE_RANKING_RECORD_IS_NOT_REQUIRED_FOR_S01_PARALLEL_IMPLEMENTATION
+
+unresolved_questions:
+  - id: S2-Q01
+    status: OPEN
+    topic: EXACT_ELIMINATION_RECORD_PYTHON_FIELDS_AND_STABLE_ID_CONSTRUCTION
+  - id: S2-Q02
+    status: OPEN
+    topic: EXACT_SOLVE_BINDING_REFERENCE_REUSE_WITH_EXISTING_FRESH_SOLVE_CONTRACTS
+
+verification_state:
+  status: NOT_STARTED
+  required:
+    - EVERY_ELIMINATION_HAS_MACHINE_INSPECTABLE_BASIS
+    - ELIMINATED_CANDIDATE_CANNOT_REMAIN_SURVIVOR
+    - DOWNSTREAM_AI_CANNOT_OVERRIDE_RECORD_WITHOUT_FRESH_SOLVE
+    - CHANGED_SOLVE_BINDING_INVALIDATES_REUSE_RATHER_THAN_REWRITING_HISTORY
+  passed: []
+  failed: []
+
+integration_handoff:
+  producer: WU-02-S2
+  consumes: WU-02-S1
+  consumer: WU-02-S3
+  guarantees_when_complete:
+    - SURVIVOR_SET_EQUALS_GENERATED_CANDIDATES_MINUS_VALID_ELIMINATIONS
+    - EVERY_ELIMINATION_HAS_A_CANONICAL_RECORD
+    - ELIMINATION_RECORDS_ARE_BOUND_TO_CURRENT_SOLVE_IDENTITY
+  consumer_must_not_assume:
+    - ELIMINATION_RECORD_IS_PROJECT_AUTHORITY
+    - REMAINING_MULTIPLE_CANDIDATES_AUTOMATICALLY_MEAN_OWNER_INTENT_REQUIRED
+    - UNSUPPORTED_SEMANTICS_AUTOMATICALLY_MEAN_TOOL_CAPABILITY_GAP
+  requests_to_other_lanes: []
+  integration_notes: []
