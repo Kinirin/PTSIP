@@ -6,7 +6,15 @@
   <meta name="description" content="PTSIP Primitive Catalog">
   <title>PTSIP — Primitive Catalog</title>
   <link rel="stylesheet" href="./assets/site.css">
-  <script src="./assets/primitives.js" defer></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/+esm"
+    }
+  }
+  </script>
+  <script src="./config/supabase-runtime.js"></script>
+  <script type="module" src="./assets/primitives.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to main content</a>
@@ -144,6 +152,7 @@
           <div class="policy-stack">
             <section class="data-source-card">
               <h3 data-i18n="primitive.data.title">Data-source readiness</h3>
+              <p id="supabase-client-status" class="source-status" data-i18n="primitive.data.supabase_unavailable">Supabase client: configuration unavailable</p>
               <p class="source-status" data-i18n="primitive.data.registry">Registry source: not connected</p>
               <p data-i18n="primitive.data.adoption">Adoption source: public or explicitly supplied information only</p>
               <p data-i18n="primitive.data.telemetry">Private-repository telemetry: not collected</p>

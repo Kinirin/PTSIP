@@ -1,3 +1,5 @@
+import { supabaseClientState } from "./supabase-client.js";
+
 (function () {
   "use strict";
 
@@ -85,6 +87,13 @@
     document.querySelectorAll("[data-i18n-aria]").forEach(function (node) {
       node.setAttribute("aria-label", message(node.dataset.i18nAria));
     });
+
+    const clientStatus = document.getElementById("supabase-client-status");
+    if (clientStatus) {
+      clientStatus.textContent = supabaseClientState.configured
+        ? message("primitive.data.supabase_configured")
+        : message("primitive.data.supabase_unavailable");
+    }
   }
 
   function populateLanguageSelector() {

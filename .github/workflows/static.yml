@@ -29,6 +29,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Generate Supabase browser configuration
+        shell: bash
+        env:
+          PTSIP_SUPABASE_URL: ${{ vars.PTSIP_SUPABASE_URL }}
+          PTSIP_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PTSIP_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+
+          const runtimeConfig = {
+            url: process.env.PTSIP_SUPABASE_URL || "",
+            publishableKey: process.env.PTSIP_SUPABASE_PUBLISHABLE_KEY || ""
+          };
+
+          const outputDir = path.join("Pages", "config");
+          fs.mkdirSync(outputDir, { recursive: true });
+          fs.writeFileSync(
+            path.join(outputDir, "supabase-runtime.js"),
+            "window.__PTSIP_SUPABASE__ = Object.freeze(" +
+              JSON.stringify(runtimeConfig) +
+              ");\n",
+            "utf8"
+          );
+          NODE
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
