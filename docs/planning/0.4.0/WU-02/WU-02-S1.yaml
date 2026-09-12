@@ -350,7 +350,60 @@ approved_contract_design:
           operation_success_semantics: EXCLUDED_OWNED_BY_OPERATION_SEMANTICS_REF
           conformance_vectors: EXCLUDED_OWNED_BY_CONFORMANCE_VECTORS_REF
           global_fail_closed_policy: NOT_REDEFINED_HERE
-      conformance_vectors_ref: NOT_YET_MATERIALIZED
+      conformance_vectors_ref:
+        interface: CONFORMANCE_VECTOR_SET_INTERFACE
+        ownership_model: SELF_BOUND_DIRECT_WITH_BOUNDED_EXTENSION_POINT
+        required_fields:
+          - vector_set_id
+          - contract_binding
+          - vectors
+        contract_binding_required_fields:
+          - input_schema_ref
+          - output_schema_ref
+          - operation_semantics_ref
+          - failure_semantics_ref
+        vector_required_fields:
+          - vector_id
+          - input
+          - expected_result
+        expected_result:
+          tagged_union:
+            SUCCESS:
+              required:
+                - output
+            FAILURE:
+              required:
+                - failure_id
+          unknown_or_malformed_form: FAIL_CLOSED
+        bounded_extension_point:
+          field: extensions.assertion_refs
+          presence: OPTIONAL_WHEN_NONEMPTY
+          required_interface: REGISTERED_MACHINE_READABLE_ASSERTION_INTERFACE
+          may_add_or_override_base_normative_semantics: false
+          may_override_expected_result: false
+          unsupported_behavior: EXPLICIT_UNSUPPORTED_EXTENSION_CAPABILITY_SCOPED_TO_EXTENSION
+          silent_mapping_to_core_semantics: FORBIDDEN
+        inference_cost_rules:
+          self_bound_contract_refs_reduce_parent_lookup: true
+          per_vector_schema_ref_duplication: FORBIDDEN
+          failure_semantic_result_duplication_in_vector: FORBIDDEN
+          failure_vector_references_failure_id_only: true
+          vector_id_required_for_stable_machine_diagnostics: true
+          vector_order_implies_authority_confidence_or_ranking: false
+        extension_rules:
+          official_and_registered_extension_contracts_use_same_base_interface: true
+          distinct_extension_identity_required: true
+          extension_owner_retains_conformance_and_maintenance_responsibility: true
+          unsupported_extension_must_not_be_inferred_as_core_semantics: true
+          unsupported_extension_must_not_block_unrelated_development: true
+        normative_boundaries:
+          conformance_vectors_define_new_semantics: false
+          vectors_must_conform_to_bound_schema_operation_and_failure_contracts: true
+          success_output_must_conform_to_output_schema_ref: true
+          failure_id_must_exist_in_bound_failure_semantics_ref: true
+          input_must_conform_to_input_schema_ref: true
+          contract_binding_mismatch: FAIL_CLOSED
+          runtime_implementation_details: FORBIDDEN
       input_schema_ref: EXISTING_CANONICAL_SCHEMA_INTERFACE_REUSE_TO_BE_CONFIRMED
       output_schema_ref: EXISTING_CANONICAL_SCHEMA_INTERFACE_REUSE_TO_BE_CONFIRMED
 
@@ -550,6 +603,7 @@ execution_state:
     - APPROVED_CANONICAL_ACCESS_PRIMITIVE_SIX_RESPONSIBILITY_MODEL
     - APPROVED_DIRECT_DECLARATIVE_OPERATION_SEMANTICS_INTERFACE
     - APPROVED_DIRECT_FAILURE_SET_INTERFACE_WITH_COMMON_CANONICAL_EMPTY_FAILURE_CONTRACT
+    - APPROVED_SELF_BOUND_CONFORMANCE_VECTOR_SET_WITH_BOUNDED_EXTENSION_POINT
   current_focus: CANONICAL_ACCESS_PRIMITIVE_REF_INTERFACE_SHAPES_AND_S1_IMPLEMENTATION_PREPARATION
   remaining:
     - FINALIZE_CANONICAL_ACCESS_PRIMITIVE_REF_MINIMUM_INTERFACE_SHAPES
@@ -707,6 +761,39 @@ decisions_made:
       - FAILURE_SEMANTICS_DO_NOT_REDEFINE_GLOBAL_FAIL_CLOSED_POLICY
       - FAILURE_SEMANTICS_DO_NOT_OWN_OPERATION_SUCCESS_SEMANTICS_OR_CONFORMANCE_VECTORS
       - PRIMITIVES_WITH_NO_DECLARED_SEMANTIC_FAILURES_REUSE_COMMON_CANONICAL_EMPTY_FAILURE_CONTRACT
+  - id: S1-D26
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CONFORMANCE_VECTORS_REF_RESOLVES_TO_SELF_BOUND_DIRECT_VECTOR_SET_WITH_BOUNDED_MACHINE_READABLE_EXTENSION_POINT
+    required_fields:
+      - vector_set_id
+      - contract_binding
+      - vectors
+    contract_binding:
+      required:
+        - input_schema_ref
+        - output_schema_ref
+        - operation_semantics_ref
+        - failure_semantics_ref
+      purpose: REDUCE_PARENT_LOOKUP_AND_CODING_AGENT_INFERENCE_COST
+    vector_shape:
+      required:
+        - vector_id
+        - input
+        - expected_result
+      expected_result:
+        - SUCCESS_WITH_OUTPUT
+        - FAILURE_WITH_FAILURE_ID
+    bounded_extension_point:
+      field: extensions.assertion_refs
+      required_interface: REGISTERED_MACHINE_READABLE_ASSERTION_INTERFACE
+      rules:
+        - EXTENSION_ASSERTIONS_MUST_NOT_CREATE_OR_OVERRIDE_BASE_NORMATIVE_SEMANTICS
+        - EXTENSION_ASSERTIONS_MUST_NOT_OVERRIDE_BASE_EXPECTED_RESULT
+        - UNSUPPORTED_EXTENSION_IS_EXPLICIT_AND_SCOPED_TO_THE_EXTENSION
+        - UNSUPPORTED_EXTENSION_MUST_NOT_BE_SILENTLY_MAPPED_TO_CORE_SEMANTICS
+        - UNSUPPORTED_EXTENSION_MUST_NOT_BLOCK_UNRELATED_DEVELOPMENT
+        - USER_DEFINED_MACHINE_READABLE_EXTENSIONS_MAY_USE_THE_SAME_BASE_INTERFACE_UNDER_DISTINCT_IDENTITIES
 
 unresolved_questions:
   - id: S1-Q01
@@ -730,7 +817,7 @@ unresolved_questions:
   - id: S1-Q06
     status: OPEN
     topic: CANONICAL_ACCESS_PRIMITIVE_REF_MINIMUM_INTERFACE_SHAPES
-    note: OPERATION_SEMANTICS_INTERFACE_AND_FAILURE_SEMANTICS_INTERFACE_ARE_APPROVED_CONFORMANCE_VECTOR_SHAPE_REMAINS_OPEN_SCHEMA_INTERFACE_REUSE_REMAINS_TO_BE_CONFIRMED
+    note: OPERATION_FAILURE_AND_CONFORMANCE_VECTOR_INTERFACES_ARE_APPROVED_INPUT_OUTPUT_EXISTING_CANONICAL_SCHEMA_INTERFACE_REUSE_REMAINS_TO_BE_CONFIRMED
   - id: S1-Q04
     status: OPEN
     topic: AUTHORITY_SUPPORT_CONSUMED_VS_REQUIRED_IN_CANDIDATE_PROVENANCE
@@ -746,6 +833,10 @@ verification_state:
     - HOSTED_TOOLING_INTERPRETATION_REQUIRES_SUPPORTING_SEMANTICS
     - CANDIDATE_GENERATION_DOES_NOT_CREATE_PROJECT_AUTHORITY
     - LANGUAGE_BINDINGS_DO_NOT_ADD_NORMATIVE_SEMANTICS
+    - CONFORMANCE_VECTOR_SET_SELF_BINDS_EXACT_CONTRACT_REFERENCES
+    - CONFORMANCE_VECTORS_DO_NOT_CREATE_OR_OVERRIDE_NORMATIVE_SEMANTICS
+    - BOUNDED_EXTENSION_ASSERTIONS_CANNOT_OVERRIDE_BASE_EXPECTED_RESULT
+    - UNSUPPORTED_EXTENSION_CAPABILITY_IS_EXPLICIT_SCOPED_AND_DOES_NOT_BLOCK_UNRELATED_DEVELOPMENT
     - REGISTRY_RESOLUTION_PATHS_ARE_BOUNDED_AND_EXACT
     - UNDECLARED_EXTENSION_COMPATIBILITY_IS_NOT_INFERRED
     - EVIDENCE_BINDING_ORDER_AND_CARDINALITY_ARE_MACHINE_DETERMINISTIC
