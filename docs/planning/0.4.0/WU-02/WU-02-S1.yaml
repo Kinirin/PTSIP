@@ -444,6 +444,31 @@ approved_contract_design:
         access_primitive_specific_schema_layer_would_duplicate_existing_semantics: true
         future_general_schema_refinement_belongs_to_shared_schema_layer: true
 
+  canonical_access_primitive_identity_and_versioning:
+    primitive_id_semantic_binding:
+      exact_refs:
+        - input_schema_ref
+        - output_schema_ref
+        - operation_semantics_ref
+        - failure_semantics_ref
+      conformance_vectors_ref_in_semantic_identity: false
+      primitive_id_encoding: OPAQUE_NOT_DERIVED_FROM_REF_TEXT
+    identity_change_rules:
+      any_exact_semantic_ref_change_requires_new_primitive_id: true
+      semantic_change_behind_same_ref: FORBIDDEN
+      conformance_vector_coverage_change_requires_new_primitive_id: false
+      changed_conformance_vector_set_requires_new_vector_set_id: true
+      conformance_change_that_exposes_semantic_change_requires_semantic_contract_change_and_new_primitive_id: true
+      undeclared_semantic_equivalence_between_distinct_refs: FORBIDDEN
+    immutable_resolution:
+      primitive_record_is_immutable_within_bound_canonical_specification_or_extension_registry_revision: true
+      same_primitive_id_may_reference_newer_conformance_vector_set_only_in_a_new_immutable_bound_revision_when_semantic_refs_are_unchanged: true
+      in_place_mutation_without_new_bound_revision: FORBIDDEN
+    duplicate_identity_control:
+      duplicate_official_core_primitive_identities_for_same_exact_semantic_quartet: FORBIDDEN_WITHOUT_EXPLICIT_ALIAS_OR_MIGRATION_CONTRACT
+      extension_identity_may_be_distinct: true
+      extension_identity_does_not_imply_core_equivalence_or_compatibility: true
+
   composition:
     access_contract_composition_shape:
       - composition_ref
@@ -465,6 +490,35 @@ approved_contract_design:
       final_operand_output_is_composition_output: true
       adjacent_contracts_must_be_compatible: true
       failure: FAIL_CLOSED
+    schema_compatibility_validation:
+      decision_authority_layer: CANONICAL_SCHEMA_COMPATIBILITY
+      enforcement_owner_layer: ACCESS_CONTRACT_COMPOSITION
+      generated_or_runtime_projection_is_authority: false
+      direction: OUTPUT_SCHEMA_TO_NEXT_INPUT_SCHEMA
+      fast_path:
+        identical_schema_ref: COMPATIBLE
+      distinct_schema_refs:
+        explicit_machine_readable_compatibility_required: true
+        structural_similarity_inference: FORBIDDEN
+        semantic_similarity_inference: FORBIDDEN
+        natural_language_or_llm_inference: FORBIDDEN
+        implicit_transitive_compatibility: FORBIDDEN
+      outcomes:
+        - COMPATIBLE
+        - INCOMPATIBLE
+        - UNRESOLVED
+        - UNSUPPORTED_EXTENSION
+      sequence_acceptance:
+        COMPATIBLE: ACCEPT
+        INCOMPATIBLE: REJECT
+        UNRESOLVED: FAIL_CLOSED_FOR_DEPENDENT_SEQUENCE_EDGE
+        UNSUPPORTED_EXTENSION: FAIL_CLOSED_FOR_DEPENDENT_SEQUENCE_EDGE
+      extension_boundary:
+        registered_machine_readable_compatibility_extension_allowed: true
+        unsupported_extension_must_be_explicit: true
+        unsupported_extension_must_not_be_silently_mapped_to_core: true
+        unsupported_extension_must_not_block_unrelated_development: true
+      physical_registry_topology_fixed: false
 
   collection_value_schema:
     shape:
@@ -642,7 +696,9 @@ execution_state:
     - APPROVED_DIRECT_FAILURE_SET_INTERFACE_WITH_COMMON_CANONICAL_EMPTY_FAILURE_CONTRACT
     - APPROVED_SELF_BOUND_CONFORMANCE_VECTOR_SET_WITH_BOUNDED_EXTENSION_POINT
     - CONFIRMED_ACCESS_PRIMITIVE_INPUT_OUTPUT_REUSE_EXISTING_CANONICAL_SCHEMA_CONTRACT
-  current_focus: CANONICAL_ACCESS_PRIMITIVE_REF_INTERFACE_SHAPES_AND_S1_IMPLEMENTATION_PREPARATION
+    - APPROVED_ACCESS_PRIMITIVE_SEMANTIC_IDENTITY_AND_VERSIONING_RULE
+    - APPROVED_SEQUENCE_SCHEMA_COMPATIBILITY_AUTHORITY_AND_ENFORCEMENT_BOUNDARY
+  current_focus: AUTHORITY_SUPPORT_PROVENANCE_SSOT_AND_S1_IMPLEMENTATION_PREPARATION
   remaining:
     - FINALIZE_AUTHORITY_SUPPORT_IN_CANDIDATE_PROVENANCE
     - RESOLVE_LEGACY_SEMANTIC_CANDIDATE_FIELD_OVERLAP
@@ -842,6 +898,31 @@ decisions_made:
       - EXACT_RESOLUTION_AND_FAIL_CLOSED_REFERENCE_RULES_ALREADY_APPLY
       - NEW_ACCESS_PRIMITIVE_SCHEMA_LAYER_WOULD_DUPLICATE_SEMANTICS_AND_INCREASE_INFERENCE_COST
     caveat: FUTURE_GENERAL_SCHEMA_CAPABILITY_GAPS_MUST_BE_REFINED_IN_THE_SHARED_CANONICAL_SCHEMA_LAYER_NOT_IN_ACCESS_PRIMITIVE
+  - id: S1-D28
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: ACCESS_PRIMITIVE_IDENTITY_BINDS_EXACT_INPUT_OUTPUT_OPERATION_AND_FAILURE_SEMANTIC_REFS_WHILE_CONFORMANCE_VECTORS_ARE_VERIFICATION_NOT_SEMANTIC_IDENTITY
+    rules:
+      - ANY_EXACT_SEMANTIC_REF_CHANGE_REQUIRES_NEW_PRIMITIVE_ID
+      - SEMANTIC_CHANGE_BEHIND_SAME_REF_IS_FORBIDDEN
+      - CONFORMANCE_COVERAGE_CHANGE_ALONE_DOES_NOT_REQUIRE_NEW_PRIMITIVE_ID
+      - CHANGED_CONFORMANCE_VECTOR_SET_REQUIRES_NEW_VECTOR_SET_ID
+      - SAME_PRIMITIVE_ID_WITH_UPDATED_CONFORMANCE_REF_REQUIRES_NEW_IMMUTABLE_BOUND_SPEC_OR_EXTENSION_REGISTRY_REVISION
+      - UNDECLARED_EQUIVALENCE_BETWEEN_DISTINCT_SEMANTIC_REFS_MUST_NOT_PRESERVE_PRIMITIVE_ID_BY_INFERENCE
+  - id: S1-D29
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: SEQUENCE_SCHEMA_COMPATIBILITY_IS_DECIDED_BY_CANONICAL_SCHEMA_COMPATIBILITY_LAYER_AND_ENFORCED_BY_ACCESS_CONTRACT_COMPOSITION
+    rules:
+      - IDENTICAL_SCHEMA_REF_IS_DIRECTLY_COMPATIBLE
+      - DISTINCT_SCHEMA_REFS_REQUIRE_EXPLICIT_MACHINE_READABLE_DIRECTIONAL_COMPATIBILITY
+      - STRUCTURAL_SEMANTIC_OR_LLM_SIMILARITY_MUST_NOT_INFER_COMPATIBILITY
+      - IMPLICIT_TRANSITIVE_COMPATIBILITY_IS_FORBIDDEN
+      - COMPOSITION_ACCEPTS_ONLY_COMPATIBLE_RESULT
+      - INCOMPATIBLE_UNRESOLVED_OR_UNSUPPORTED_EXTENSION_FAILS_CLOSED_FOR_THE_DEPENDENT_SEQUENCE_EDGE
+      - UNSUPPORTED_EXTENSION_MUST_NOT_BLOCK_UNRELATED_DEVELOPMENT
+      - GENERATED_OR_RUNTIME_COMPATIBILITY_PROJECTION_IS_NOT_AUTHORITY
+      - PHYSICAL_REGISTRY_TOPOLOGY_REMAINS_NON_NORMATIVE
 
 unresolved_questions:
   - id: S1-Q01
@@ -888,6 +969,10 @@ verification_state:
     - REGISTRY_RESOLUTION_PATHS_ARE_BOUNDED_AND_EXACT
     - UNDECLARED_EXTENSION_COMPATIBILITY_IS_NOT_INFERRED
     - EVIDENCE_BINDING_ORDER_AND_CARDINALITY_ARE_MACHINE_DETERMINISTIC
+    - PRIMITIVE_IDENTITY_CHANGES_ON_ANY_EXACT_SEMANTIC_REF_CHANGE
+    - CONFORMANCE_COVERAGE_CHANGE_ALONE_DOES_NOT_CHANGE_PRIMITIVE_ID
+    - SEQUENCE_COMPATIBILITY_IS_DIRECTIONAL_MACHINE_READABLE_AND_NON_INFERRED
+    - UNSUPPORTED_EXTENSION_COMPATIBILITY_ONLY_BLOCKS_DEPENDENT_SEQUENCE_EDGE
   passed: []
   failed: []
 
