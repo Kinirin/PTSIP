@@ -1,19 +1,24 @@
-name: PTSIP Inline Canonical Type Request
-description: Temporary request form for proposing official PTSIP support for a type currently handled through EXTENSION.INLINE.
-title: "[Inline Type Request] "
+name: PTSIP INLINE_CANONICAL_TYPE Support Request
+description: Request official PTSIP consideration for a semantic type currently represented through EXTENSION.INLINE.
+title: "[INLINE_CANONICAL_TYPE] "
+labels:
+  - "INLINE_CANONICAL_TYPE"
 
 body:
   - type: markdown
     attributes:
       value: |
-        This is a temporary request form for EXTENSION.INLINE feedback.
-        Submitting this form does not change validation, grant authority, or guarantee promotion into an official PTSIP canonical type.
+        Use this form when a project needs `EXTENSION.INLINE` because the current official PTSIP canonical types cannot represent a required semantic distinction cleanly.
+
+        This issue is refinement evidence only. Submission does not create a canonical type, grant architecture authority, change validation behavior, or guarantee promotion into official PTSIP vocabulary.
+
+        Similar requests may later be grouped into one aggregate request for maintainability. The original issue remains evidence even if it is grouped or closed.
 
   - type: input
     id: ptsip-version
     attributes:
-      label: PTSIP used version
-      description: Enter the PTSIP version where EXTENSION.INLINE was needed.
+      label: PTSIP version
+      description: Enter the PTSIP version where EXTENSION.INLINE was required.
       placeholder: e.g. 0.4.0
     validations:
       required: true
@@ -22,16 +27,57 @@ body:
     id: extension-type-id
     attributes:
       label: EXTENSION.INLINE type identity
-      description: Enter the stable extension type identity used in your project or environment.
-      placeholder: e.g. inline-type:<identity>
+      description: Enter the stable extension type identity used by your project or environment. Keep the same identity when reporting the same semantic need again.
+      placeholder: e.g. inline-type:schema-reference
+    validations:
+      required: true
+
+  - type: input
+    id: semantic-family-key
+    attributes:
+      label: Semantic family key
+      description: Provide a short non-authoritative grouping key for this kind of need. Prefer lowercase kebab-case. This is only a triage key and is not a proposed official canonical type name.
+      placeholder: e.g. schema-reference
     validations:
       required: true
 
   - type: textarea
-    id: need
+    id: representation-gap
     attributes:
-      label: Why official canonical type support is needed
-      description: Briefly describe the repeated or practical need that could not be represented cleanly by the currently supported inline canonical types.
+      label: Representation gap
+      description: Explain what required semantic distinction cannot be represented safely or clearly by the currently supported canonical types.
+      placeholder: Describe the missing distinction, not only the implementation inconvenience.
+    validations:
+      required: true
+
+  - type: textarea
+    id: required-semantics
+    attributes:
+      label: Required semantics that must be preserved
+      description: Describe the meaning or invariants that would be lost, collapsed, or misrepresented without this inline type.
+      placeholder: What must remain distinguishable and why?
+    validations:
+      required: true
+
+  - type: input
+    id: closest-existing-type
+    attributes:
+      label: Closest existing canonical type
+      description: Optional. Name the closest current canonical type if one exists, and explain the relationship in the gap section above.
+      placeholder: optional
+    validations:
+      required: false
+
+  - type: dropdown
+    id: observed-scope
+    attributes:
+      label: Observed scope
+      description: Indicate how broadly this need has been observed. This is prioritization evidence only.
+      options:
+        - SINGLE_PROJECT
+        - MULTIPLE_PROJECTS_SAME_ECOSYSTEM
+        - MULTIPLE_ECOSYSTEMS_OR_LANGUAGES
+        - UNKNOWN
     validations:
       required: true
 
@@ -39,8 +85,8 @@ body:
     id: environment
     attributes:
       label: Development environment
-      description: Briefly identify the relevant language, tool, agent, runtime, or workflow context.
-      placeholder: e.g. Python + coding agent, Rust CLI, CI
+      description: Identify the relevant language, framework, tool, agent, runtime, protocol, or workflow context.
+      placeholder: e.g. Python + coding agent, Rust CLI, CI, schema tooling
     validations:
       required: true
 
@@ -48,16 +94,34 @@ body:
     id: current-workaround
     attributes:
       label: Current EXTENSION.INLINE usage or workaround
-      description: Optional. Describe how you currently represent the type.
-      placeholder: optional
+      description: Optional. Show how the project currently preserves the missing meaning.
+      placeholder: Include a concise example if useful.
+    validations:
+      required: false
+
+  - type: textarea
+    id: representative-examples
+    attributes:
+      label: Representative examples
+      description: Optional. Provide concrete examples that show where this semantic family appears. Do not include secrets or private credentials.
+      placeholder: Paths, shapes, pseudo-schema, or short examples are sufficient.
+    validations:
+      required: false
+
+  - type: input
+    id: related-issues
+    attributes:
+      label: Related PTSIP issues
+      description: Optional. Link known related INLINE_CANONICAL_TYPE requests or aggregate issues if you found them.
+      placeholder: e.g. #123, #145
     validations:
       required: false
 
   - type: textarea
     id: proposal
     attributes:
-      label: Suggested official type
-      description: Optional. Suggest a canonical type shape or name if you have one.
+      label: Suggested official canonical type
+      description: Optional. Suggest a future official type name or shape. This suggestion is not authoritative and may be rejected or merged with other requests.
       placeholder: optional
     validations:
       required: false
@@ -67,5 +131,7 @@ body:
     attributes:
       label: Confirmation
       options:
-        - label: I understand this request is refinement evidence only and does not automatically create or promote an official canonical type.
+        - label: I understand this issue is refinement evidence and does not automatically create, promote, or authorize an official canonical type.
+          required: true
+        - label: I understand similar requests may be grouped into a shared aggregate request while this issue remains retained as source evidence.
           required: true
