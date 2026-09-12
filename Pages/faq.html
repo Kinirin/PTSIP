@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PTSIP frequently asked questions">
+  <title>PTSIP — FAQ</title>
+  <link rel="stylesheet" href="./assets/site.css">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body data-title-key="meta.faq">
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./index.html" aria-label="PTSIP home">PTSIP</a>
+
+      <nav class="primary-nav" aria-label="Primary navigation" data-i18n-aria="a11y.primary_nav">
+        <a href="./index.html" data-i18n="nav.home">Home</a>
+        <a href="./community-modes.html" data-i18n="nav.modes">Community Modes</a>
+        <a href="./primitives.html" data-i18n="nav.primitives">Primitive Catalog</a>
+        <a href="./promotion.html" data-i18n="nav.promotion">Promotion</a>
+        <a href="./index.html#governance" data-i18n="nav.governance">Governance</a>
+        <a class="active-nav" href="./faq.html" data-i18n="nav.faq">FAQ</a>
+      </nav>
+
+      <label class="language-control">
+        <span class="visually-hidden" data-i18n="language.label">Language</span>
+        <select id="language-selector" aria-label="Language" data-i18n-aria="language.label"></select>
+      </label>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h1 data-i18n="faq.title">Common questions</h1>
+          <p class="hero-copy" data-i18n="page.faq.summary">
+            Answers to common questions about Community Modes, authority boundaries, source declarations, and official support.
+          </p>
+        </div>
+
+        <aside class="authority-card">
+          <p class="status-label" data-i18n="authority.label">Authority boundary</p>
+          <h2 data-i18n="page.faq.boundary_title">FAQ explains the model; it does not replace authoritative repository contracts.</h2>
+          <p data-i18n="authority.body">
+            Normative requirements remain in the designated PTSIP Specification, ADRs, registries, schemas, and other authoritative repository records.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt-section">
+      <div class="shell narrow">
+        <details open>
+          <summary data-i18n="faq.official.q">Is a Community Mode an official PTSIP feature?</summary>
+          <p data-i18n="faq.official.a">No. It becomes official only after deliberate adoption through authoritative repository and release boundaries.</p>
+        </details>
+
+        <details>
+          <summary data-i18n="faq.hardcoded.q">Can a Community Mode be hard-coded for one environment?</summary>
+          <p data-i18n="faq.hardcoded.a">Yes. Environment-specific assumptions are acceptable when they are explicit. Promotion later evaluates what can be generalized safely.</p>
+        </details>
+
+        <details>
+          <summary data-i18n="faq.source_mode.q">Is Community Mode the same as explicit, template, or hybrid?</summary>
+          <p data-i18n="faq.source_mode.a">No. Community Mode is an incubation and distribution concept. Canonical PTSIP source declaration modes are defined by the authoritative repository.</p>
+        </details>
+
+        <details>
+          <summary data-i18n="page.faq.primitive_translation_q">Does PTSIP translate Community Primitive content?</summary>
+          <p data-i18n="page.faq.primitive_translation_a">No. Community Primitive content is displayed in the original language submitted by its author. Readers may use browser or external translation tools if needed.</p>
+        </details>
+
+        <details>
+          <summary data-i18n="page.faq.popularity_q">Does popularity automatically promote a Community item?</summary>
+          <p data-i18n="page.faq.popularity_a">No. Popularity and adoption are evidence that may justify review. Official support still requires conformance review and an explicit governance decision.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div>
+        <strong>PTSIP</strong>
+        <p data-i18n="footer.note">This website is non-normative. Official policy remains in the PTSIP repository.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Kinirin/PTSIP" data-i18n="footer.repository">Repository</a>
+        <a href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="footer.discussions">Discussions</a>
+        <a href="https://github.com/Kinirin/PTSIP/issues" data-i18n="footer.issues">Issues</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
