@@ -283,6 +283,34 @@ approved_contract_design:
     registration_or_governance_fields: FORBIDDEN
     runtime_implementation_fields: FORBIDDEN
 
+  canonical_access_primitive:
+    canonical_shape:
+      - primitive_id
+      - input_schema_ref
+      - output_schema_ref
+      - operation_semantics_ref
+      - failure_semantics_ref
+      - conformance_vectors_ref
+    responsibility_model: SIX_RESPONSIBILITY_MODEL
+    responsibility_rules:
+      input_schema_ref: DEFINES_CANONICAL_ACCEPTED_REPRESENTATION_NOT_OPERATION_MEANING
+      output_schema_ref: DEFINES_CANONICAL_SUCCESSFUL_OUTPUT_REPRESENTATION_NOT_FAILURE_REPRESENTATION
+      operation_semantics_ref: DEFINES_NORMATIVE_SUCCESSFUL_TRANSFORMATION_SEMANTIC_PRECONDITIONS_AND_SEMANTIC_GUARANTEES
+      failure_semantics_ref: DEFINES_CANONICAL_SEMANTIC_FAILURE_STATES_AND_TRIGGERING_CONDITIONS_WITHOUT_REDEFINING_GLOBAL_FAIL_CLOSED_POLICY
+      conformance_vectors_ref: PROVIDES_MACHINE_VERIFIABLE_SUCCESS_AND_FAILURE_EXAMPLES_WITHOUT_CREATING_OR_OVERRIDING_NORMATIVE_SEMANTICS
+    outside_contract:
+      - TARGET_IDENTITY
+      - COMPOSITION_OR_ORDER
+      - RUNTIME_IMPLEMENTATION
+      - LANGUAGE_OS_OR_TOOL_BINDING
+      - PROJECT_AUTHORITY
+      - RANKING_OR_CONFIDENCE
+      - REGISTRATION_OR_GOVERNANCE_METADATA
+      - PER_INSTANCE_EXECUTION_STATE
+    generated_bindings_must_not_add_remove_or_reinterpret_semantics: true
+    unresolved_reference_undeclared_failure_interface_mismatch_or_semantic_conformance_conflict: FAIL_CLOSED
+    ref_minimum_interface_shapes: NOT_YET_MATERIALIZED
+
   composition:
     access_contract_composition_shape:
       - composition_ref
@@ -476,9 +504,10 @@ execution_state:
     - APPROVED_EVIDENCE_TARGET_ACCESS_CONTRACT_MINIMAL_SHAPE
     - MATERIALIZED_CROSS_CUTTING_DEVELOPER_POLICY_MPD-0010
     - REJECTED_CANONICAL_ACCESS_PRIMITIVE_FOUR_FIELD_MINIMUM_CONTRACT_PROPOSAL
-  current_focus: CANONICAL_ACCESS_PRIMITIVE_BOUNDARY_AND_S1_IMPLEMENTATION_PREPARATION
+    - APPROVED_CANONICAL_ACCESS_PRIMITIVE_SIX_RESPONSIBILITY_MODEL
+  current_focus: CANONICAL_ACCESS_PRIMITIVE_REF_INTERFACE_SHAPES_AND_S1_IMPLEMENTATION_PREPARATION
   remaining:
-    - FINALIZE_CANONICAL_ACCESS_PRIMITIVE_MINIMUM_CONTRACT
+    - FINALIZE_CANONICAL_ACCESS_PRIMITIVE_REF_MINIMUM_INTERFACE_SHAPES
     - FINALIZE_AUTHORITY_SUPPORT_IN_CANDIDATE_PROVENANCE
     - RESOLVE_LEGACY_SEMANTIC_CANDIDATE_FIELD_OVERLAP
     - DEFINE_OPERATIONAL_RULE_TO_CANDIDATE_GENERATION_ADAPTER_BOUNDARY
@@ -583,6 +612,18 @@ decisions_made:
       - execution_contract_ref
     scope: REJECTS_THIS_FOUR_FIELD_PROPOSAL_NOT_THE_BROADER_CANONICAL_ACCESS_PRIMITIVE_DESIGN_PROBLEM
     reconsideration: MAY_REOPEN_ONLY_AS_A_NEW_OR_REVISED_PROPOSAL
+  - id: S1-D23
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CANONICAL_ACCESS_PRIMITIVE_USES_SIX_RESPONSIBILITY_MODEL_WITH_INPUT_OUTPUT_OPERATION_FAILURE_AND_CONFORMANCE_REFERENCES
+    approved_shape:
+      - primitive_id
+      - input_schema_ref
+      - output_schema_ref
+      - operation_semantics_ref
+      - failure_semantics_ref
+      - conformance_vectors_ref
+    boundary: REF_RESPONSIBILITIES_APPROVED_EXACT_MINIMUM_INTERFACE_SHAPES_REMAIN_OPEN
 
 unresolved_questions:
   - id: S1-Q01
@@ -593,15 +634,20 @@ unresolved_questions:
     status: OPEN
     topic: EXACT_OPERATIONAL_RULE_TO_CANDIDATE_GENERATION_ADAPTER_BOUNDARY
   - id: S1-Q03
-    status: OPEN
+    status: RESOLVED
     topic: CANONICAL_ACCESS_PRIMITIVE_MINIMUM_CONTRACT
-    note: FOUR_FIELD_PROPOSAL_EXPLICITLY_REJECTED_BY_PROJECT_OWNER
-    rejected_proposal:
+    resolution: SIX_RESPONSIBILITY_MODEL_APPROVED_WITH_EXACT_REF_MINIMUM_INTERFACE_SHAPES_DEFERRED_TO_SEPARATE_DESIGN_STEP
+    approved_shape:
       - primitive_id
       - input_schema_ref
       - output_schema_ref
-      - execution_contract_ref
-    boundary: MINIMUM_CONTRACT_DESIGN_REMAINS_OPEN_AND_REQUIRES_A_REVISED_PROPOSAL
+      - operation_semantics_ref
+      - failure_semantics_ref
+      - conformance_vectors_ref
+  - id: S1-Q06
+    status: OPEN
+    topic: CANONICAL_ACCESS_PRIMITIVE_REF_MINIMUM_INTERFACE_SHAPES
+    note: COMMON_REF_RESOLUTION_RULES_EXIST_IN_MPD-0010_BUT_OPERATION_FAILURE_AND_ACCESS_PRIMITIVE_CONFORMANCE_INTERFACE_SHAPES_ARE_NOT_YET_MATERIALIZED
   - id: S1-Q04
     status: OPEN
     topic: AUTHORITY_SUPPORT_CONSUMED_VS_REQUIRED_IN_CANDIDATE_PROVENANCE
