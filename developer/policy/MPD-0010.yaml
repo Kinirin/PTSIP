@@ -1,0 +1,150 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0010
+  title: Canonical Semantic Contract Extension and Inference Cost Policy
+  status: ACTIVE
+
+rules:
+  normative_contract_architecture:
+    language_runtime_os_tool_neutral: true
+    canonical_layers:
+      - CANONICAL_IDENTITY_REGISTRY
+      - CANONICAL_SCHEMA
+      - CANONICAL_INVARIANTS
+      - GENERATED_BINDINGS
+    registry_does_not_define_object_shape: true
+    schema_does_not_duplicate_identity_grammar: true
+    invariants_do_not_duplicate_registry_or_schema_definitions: true
+    generated_bindings_must_not_add_change_or_remove_normative_semantics: true
+
+  semantic_inference_cost:
+    objective: REDUCE_REPEATED_SEMANTIC_INFERENCE_AND_AMBIGUITY_BEFORE_MINIMIZING_IMPLEMENTATION_TIME
+    absolute_zero_inference_required: false
+    machine_explicit_reference_duplication_allowed_when_it_reduces_semantic_inference_cost: true
+    machine_explicit_duplication_does_not_create_authority_confidence_priority_or_ranking: true
+
+  evidence_driven_contract_refinement:
+    strategy: EVIDENCE_DRIVEN_CONTRACT_REFINEMENT
+    refinement_signals:
+      - REPEATED_SEMANTIC_INFERENCE
+      - REPEATED_HUMAN_INTERVENTION
+      - RECURRING_CUSTOM_WORKAROUNDS
+      - REPEATED_EXTENSION_PATTERNS
+      - ACCUMULATED_USER_FEEDBACK_OR_OPERATIONAL_DATA
+    refinement_is_not_an_end_in_itself: true
+    practical_stop_allowed_when_further_subdivision_has_no_worthwhile_efficiency_or_clarity_benefit: true
+    stop_is_permanent_closure: false
+    refinement_may_reopen_when_new_evidence_appears: true
+
+  identity_and_resolution:
+    canonical_identity_default: OPAQUE_IMMUTABLE_EXACTLY_RESOLVABLE
+    same_identity_same_normative_semantics: true
+    semantic_change_requires_new_identity: true
+    registry_resolution_budget:
+      runtime_lookup: EXACT_BOUNDED
+      full_registry_scan: FORBIDDEN
+      semantic_similarity_search: FORBIDDEN
+      history_or_git_traversal_for_runtime_semantics: FORBIDDEN
+      documentation_lookup_for_runtime_semantics: FORBIDDEN
+      interpretive_fallback_candidate_selection: FORBIDDEN
+    unresolved_unsupported_or_interface_mismatch: FAIL_CLOSED
+
+  canonical_and_runtime_projection:
+    principle: SPARSE_CANONICAL_DENSE_RUNTIME
+    canonical_source_should_omit_semantically_redundant_empty_optional_structures: true
+    canonical_source_should_have_one_representation_for_one_semantic_state_where_practical: true
+    load_or_compile_may_normalize_missing_optional_structures_to_dense_empty_runtime_forms: true
+    generated_or_compiled_runtime_projection_is_not_authority: true
+    runtime_should_not_repeat_registry_traversal_when_a_reproducible_generated_projection_can_be_used: true
+
+  extension_compatibility:
+    extension_freedom: ALLOWED
+    extension_freedom_does_not_imply_core_identity_reuse: true
+    extension_freedom_does_not_imply_backward_or_forward_compatibility_entitlement: true
+    official_core_semantics_immutable_within_bound_canonical_specification_revision: true
+    modified_official_core_behavior_requires_distinct_extension_identity: true
+    absent_explicit_compatibility_must_not_be_interpreted_as_compatibility: true
+    ptsip_may_provide_machine_readable_compatibility_revalidation_or_migration_assistance: true
+    extension_owner_responsibilities:
+      - SEMANTIC_DEFINITION
+      - IMPLEMENTATION_COST
+      - INFERENCE_COST
+      - MAINTENANCE
+      - CONFORMANCE
+      - REVALIDATION_AFTER_SPEC_OR_CAPABILITY_CHANGE
+      - MIGRATION_RESPONSE
+      - COMPATIBILITY_CONFIRMATION
+    official_promotion_of_community_or_custom_semantics_requires_new_official_identity: true
+    feedback_usage_or_popularity_is_refinement_evidence_not_normative_authority: true
+
+  canonical_atomic_extension:
+    official_core_atomic_representations:
+      - SCALAR.BOOLEAN
+      - SCALAR.INTEGER
+      - SCALAR.DECIMAL
+      - SCALAR.TEXT
+      - REFERENCE.IDENTITY
+    extension_inline_allowed: true
+    extension_modes:
+      - CORE_BACKED
+      - CUSTOM_ATOMIC
+    core_backed_reuses_official_atomic_representation_semantics: true
+    custom_atomic_may_define_new_atomic_representation_semantics: true
+    validation_and_canonicalization_are_separate_responsibilities: true
+    custom_atomic_representation_contract_current_fields:
+      - representation_contract_id
+      - validation_ref
+      - canonicalization_ref
+      - canonical_serialization_ref
+      - conformance_vectors_ref
+    exact_registry_topology_for_component_refs_fixed_by_this_policy: false
+    required_ref_interfaces:
+      validation_ref: VALIDATION
+      canonicalization_ref: CANONICALIZATION
+      canonical_serialization_ref: CANONICAL_SERIALIZATION
+      conformance_vectors_ref: CONFORMANCE_VECTOR_SET
+    ref_common_rules:
+      - OPAQUE_IMMUTABLE_IDENTITY
+      - EXACT_RESOLUTION
+      - EXPECTED_INTERFACE_MATCH
+      - FAIL_CLOSED_ON_UNRESOLVED_UNSUPPORTED_OR_MISMATCH
+      - NO_UNDECLARED_COMPATIBILITY_INFERENCE
+
+  evidence_kind_extension:
+    official_core_closed_vocabulary:
+      - EVIDENCE_KIND.OBSERVED
+      - EVIDENCE_KIND.DECLARED
+      - EVIDENCE_KIND.DERIVED
+      - EVIDENCE_KIND.EXPLICIT_HUMAN_INPUT
+    selector_forms:
+      - EXACT
+      - PATTERN
+    official_core_kind_selector: EXACT_ONLY
+    pattern_selector:
+      allowed_scope: EXTENSION_COMMUNITY_OR_USER_NAMESPACE
+      matching: TERMINAL_NAMESPACE_PREFIX_ONLY
+      global_wildcard: FORBIDDEN
+      regex: FORBIDDEN
+      arbitrary_glob: FORBIDDEN
+      semantic_similarity_matching: FORBIDDEN
+      registration_required_before_match_can_be_accepted: true
+      unknown_pattern_grammar: FAIL_CLOSED
+      compatibility_guarantee: false
+      maintenance_and_revalidation_owner: EXTENSION_OWNER
+
+  deterministic_external_state_boundary:
+    current_time_dependency_in_normative_semantics: FORBIDDEN
+    randomness_dependency_in_normative_semantics: FORBIDDEN
+    direct_network_dependency_in_normative_semantics: FORBIDDEN
+    mutable_external_state_dependency_in_normative_semantics: FORBIDDEN
+    changing_external_state_must_be_materialized_as_evidence_before_normative_consumption: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-0001
+      scope: DEVELOPER_CANONICAL_SEMANTIC_CONTRACT_AND_EXTENSION_BOUNDARY
+  depends_on: []
