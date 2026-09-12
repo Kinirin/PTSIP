@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PTSIP promotion governance">
+  <title>PTSIP — Promotion</title>
+  <link rel="stylesheet" href="./assets/site.css">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body data-title-key="meta.promotion">
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./index.html" aria-label="PTSIP home">PTSIP</a>
+
+      <nav class="primary-nav" aria-label="Primary navigation" data-i18n-aria="a11y.primary_nav">
+        <a href="./index.html" data-i18n="nav.home">Home</a>
+        <a href="./community-modes.html" data-i18n="nav.modes">Community Modes</a>
+        <a href="./primitives.html" data-i18n="nav.primitives">Primitive Catalog</a>
+        <a class="active-nav" href="./promotion.html" data-i18n="nav.promotion">Promotion</a>
+        <a href="./index.html#governance" data-i18n="nav.governance">Governance</a>
+        <a href="./faq.html" data-i18n="nav.faq">FAQ</a>
+      </nav>
+
+      <label class="language-control">
+        <span class="visually-hidden" data-i18n="language.label">Language</span>
+        <select id="language-selector" aria-label="Language" data-i18n-aria="language.label"></select>
+      </label>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow" data-i18n="promotion.kicker">Official promotion</p>
+          <h1 data-i18n="promotion.title">Popularity is evidence, not authority.</h1>
+          <p class="hero-copy" data-i18n="promotion.body">
+            Repeated independent adoption is a strong signal, but official support also requires generality, deterministic semantics, authority preservation, compatibility, verification, and maintainability.
+          </p>
+        </div>
+
+        <aside class="authority-card">
+          <p class="status-label" data-i18n="page.promotion.boundary_label">Promotion boundary</p>
+          <h2 data-i18n="page.promotion.boundary_title">Review can be triggered by evidence. Promotion requires governance.</h2>
+          <p data-i18n="page.promotion.boundary_body">
+            Usage, votes, and community interest can inform review, but they do not automatically create official support.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt-section">
+      <div class="shell two-column">
+        <div>
+          <p class="section-kicker" data-i18n="page.promotion.criteria_kicker">Evaluation criteria</p>
+          <h2 data-i18n="page.promotion.criteria_title">Signals considered before official adoption</h2>
+          <p class="section-intro" data-i18n="page.promotion.criteria_intro">
+            Promotion evaluates whether a community pattern can become a stable, supportable PTSIP capability without weakening project authority.
+          </p>
+        </div>
+        <ul class="criteria-list">
+          <li data-i18n="promotion.criteria.repeated">Repeated need across independent projects</li>
+          <li data-i18n="promotion.criteria.general">Generalizable semantics rather than one repository convention</li>
+          <li data-i18n="promotion.criteria.authority">Preserves project-owned authority and owner decisions</li>
+          <li data-i18n="promotion.criteria.machine">Can be represented and verified deterministically</li>
+          <li data-i18n="promotion.criteria.release">Can be supported through repository contracts and release lifecycle</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <p class="section-kicker" data-i18n="page.promotion.flow_kicker">Decision path</p>
+        <h2 data-i18n="page.promotion.flow_title">Evidence and authority remain separate</h2>
+
+        <div class="governance-grid">
+          <article class="info-card">
+            <h3 data-i18n="page.promotion.signal_title">1. Community signal</h3>
+            <p data-i18n="page.promotion.signal_body">Adoption, repeated use, and discussion can indicate that a problem deserves formal review.</p>
+          </article>
+          <article class="info-card">
+            <h3 data-i18n="page.promotion.review_title">2. Conformance review</h3>
+            <p data-i18n="page.promotion.review_body">The candidate must still satisfy compatibility, deterministic behavior, and supportability requirements.</p>
+          </article>
+          <article class="info-card">
+            <h3 data-i18n="page.promotion.decision_title">3. Governance decision</h3>
+            <p data-i18n="page.promotion.decision_body">Only an explicit governance decision can establish official PTSIP support.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div>
+        <strong>PTSIP</strong>
+        <p data-i18n="footer.note">This website is non-normative. Official policy remains in the PTSIP repository.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Kinirin/PTSIP" data-i18n="footer.repository">Repository</a>
+        <a href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="footer.discussions">Discussions</a>
+        <a href="https://github.com/Kinirin/PTSIP/issues" data-i18n="footer.issues">Issues</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
