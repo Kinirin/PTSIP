@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PTSIP Primitive Catalog">
+  <title>PTSIP — Primitive Catalog</title>
+  <link rel="stylesheet" href="./assets/site.css">
+  <script src="./assets/primitives.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./index.html">PTSIP</a>
+
+      <nav class="primary-nav" aria-label="Primary navigation" data-i18n-aria="a11y.primary_nav">
+        <a href="./index.html" data-i18n="nav.home">Home</a>
+        <a class="active-nav" href="./primitives.html" data-i18n="nav.primitives">Primitive Catalog</a>
+        <a href="./index.html#modes" data-i18n="nav.modes">Community Modes</a>
+        <a href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="primitive.registry.discussions">PTSIP Discussions</a>
+      </nav>
+
+      <label class="language-control">
+        <span class="visually-hidden" data-i18n="language.label">Language</span>
+        <select id="language-selector" aria-label="Language" data-i18n-aria="language.label"></select>
+      </label>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="catalog-hero">
+      <div class="shell catalog-hero-grid">
+        <div>
+          <p class="eyebrow" data-i18n="primitive.hero.kicker">Community Primitive ecosystem</p>
+          <h1 data-i18n="primitive.hero.title">Primitive Catalog</h1>
+          <p class="hero-copy" data-i18n="primitive.hero.summary">
+            A presentation layer for Official Core primitives, Community primitives, and Core Candidates.
+          </p>
+          <div class="button-row">
+            <a class="button secondary" href="./index.html" data-i18n="primitive.hero.back">Back to home</a>
+            <a class="button secondary" href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="primitive.registry.discussions">PTSIP Discussions</a>
+          </div>
+        </div>
+
+        <aside class="catalog-policy-card">
+          <p class="status-label" data-i18n="primitive.boundary.label">Governance boundary</p>
+          <h2 data-i18n="primitive.boundary.title">Popularity can trigger review. It cannot create normative authority.</h2>
+          <p data-i18n="primitive.boundary.body">
+            Usage signals and Discussion votes do not automatically promote a primitive.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt-section">
+      <div class="shell">
+        <p class="section-kicker" data-i18n="primitive.lifecycle.kicker">Primitive lifecycle</p>
+        <h2 data-i18n="primitive.lifecycle.title">From local customization to governed core support</h2>
+
+        <div class="primitive-lifecycle" role="list">
+          <article class="stage" role="listitem">
+            <span class="stage-number">1</span>
+            <h3>CUSTOM_PRIMITIVE</h3>
+            <p data-i18n="primitive.lifecycle.custom">Used locally in an individual's environment.</p>
+          </article>
+          <article class="stage" role="listitem">
+            <span class="stage-number">2</span>
+            <h3>COMMUNITY_PRIMITIVE</h3>
+            <p data-i18n="primitive.lifecycle.community">Published in the PTSIP community Registry.</p>
+          </article>
+          <article class="stage" role="listitem">
+            <span class="stage-number">3</span>
+            <h3>CORE_CANDIDATE</h3>
+            <p data-i18n="primitive.lifecycle.candidate">Selected for formal Core promotion review.</p>
+          </article>
+          <article class="stage" role="listitem">
+            <span class="stage-number">4</span>
+            <h3>OFFICIAL_CORE</h3>
+            <p data-i18n="primitive.lifecycle.official">Officially supported after governance approval.</p>
+          </article>
+        </div>
+
+        <div class="policy-stack">
+          <div class="policy-note">
+            <h3 data-i18n="primitive.identity.title">Promotion issues a new Official identity</h3>
+            <div class="policy-equation" aria-label="Identity promotion example">
+              <span>community:&lt;identity&gt;</span>
+              <span>↓ promotion</span>
+              <span>core:&lt;new official identity&gt;</span>
+            </div>
+            <p data-i18n="primitive.identity.body">
+              A Community identity is not renamed into an Official Core identity.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell catalog-layout">
+        <div class="catalog-groups">
+          <section class="catalog-group" aria-labelledby="official-core-title">
+            <div class="catalog-group-header">
+              <div>
+                <h2 id="official-core-title" data-i18n="primitive.groups.official.title">Official Core</h2>
+                <p data-i18n="primitive.groups.official.body">Officially supported Core primitives.</p>
+              </div>
+              <span id="official-core-count" class="catalog-count">0</span>
+            </div>
+            <div id="official-core-list" class="primitive-list" aria-live="polite"></div>
+          </section>
+
+          <section class="catalog-group" aria-labelledby="community-title">
+            <div class="catalog-group-header">
+              <div>
+                <h2 id="community-title" data-i18n="primitive.groups.community.title">Community</h2>
+                <p data-i18n="primitive.groups.community.body">Community-published primitives.</p>
+              </div>
+              <span id="community-count" class="catalog-count">0</span>
+            </div>
+            <div id="community-list" class="primitive-list" aria-live="polite"></div>
+          </section>
+
+          <section class="catalog-group" aria-labelledby="candidate-title">
+            <div class="catalog-group-header">
+              <div>
+                <h2 id="candidate-title" data-i18n="primitive.groups.candidates.title">Core Candidates</h2>
+                <p data-i18n="primitive.groups.candidates.body">Primitives under explicit Core promotion review.</p>
+              </div>
+              <span id="candidate-count" class="catalog-count">0</span>
+            </div>
+            <div id="candidate-list" class="primitive-list" aria-live="polite"></div>
+          </section>
+        </div>
+
+        <aside class="detail-column">
+          <section class="primitive-detail" aria-labelledby="primitive-detail-title">
+            <p class="section-kicker" data-i18n="primitive.detail.title">Primitive details</p>
+            <div id="primitive-detail"></div>
+          </section>
+
+          <div class="policy-stack">
+            <section class="data-source-card">
+              <h3 data-i18n="primitive.data.title">Data-source readiness</h3>
+              <p class="source-status" data-i18n="primitive.data.registry">Registry source: not connected</p>
+              <p data-i18n="primitive.data.adoption">Adoption source: public or explicitly supplied information only</p>
+              <p data-i18n="primitive.data.telemetry">Private-repository telemetry: not collected</p>
+              <p data-i18n="primitive.data.telemetry_note">Any future telemetry path must be opt-in.</p>
+            </section>
+
+            <section class="policy-note">
+              <h3 data-i18n="primitive.review.title">Promotion review semantics</h3>
+              <div class="policy-equation">
+                <span data-i18n="primitive.review.high_usage">High adoption → eligible for promotion review</span>
+                <span data-i18n="primitive.review.not_auto">High adoption ≠ automatic Official Core promotion</span>
+                <span data-i18n="primitive.review.vote">Discussion votes ≠ automatic promotion</span>
+                <span data-i18n="primitive.review.authority">Governance decision → promotion authority</span>
+              </div>
+            </section>
+
+            <section class="policy-note">
+              <h3 data-i18n="primitive.detail.relationships">Official Core relationship</h3>
+              <p data-i18n="primitive.relationship.pending">
+                Relationship metadata is reserved for future integration.
+              </p>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div>
+        <strong>PTSIP</strong>
+        <p data-i18n="footer.note">This website is non-normative. Official policy remains in the PTSIP repository.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Kinirin/PTSIP" data-i18n="footer.repository">Repository</a>
+        <a href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="footer.discussions">Discussions</a>
+        <a href="https://github.com/Kinirin/PTSIP/issues" data-i18n="footer.issues">Issues</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

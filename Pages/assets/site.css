@@ -503,3 +503,264 @@ details p {
     color: #101827;
   }
 }
+
+/* Primitive Catalog: presentation-only UI. No primitive contract is defined here. */
+.catalog-hero {
+  padding: 74px 0 48px;
+}
+
+.catalog-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
+  gap: 42px;
+  align-items: start;
+}
+
+.catalog-policy-card,
+.catalog-group,
+.primitive-detail,
+.data-source-card,
+.policy-note {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.catalog-policy-card,
+.data-source-card,
+.policy-note {
+  padding: 24px;
+}
+
+.catalog-policy-card p:last-child,
+.data-source-card p:last-child,
+.policy-note p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.primitive-lifecycle {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.primitive-lifecycle .stage {
+  min-height: 190px;
+}
+
+.primitive-arrow {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.catalog-groups {
+  display: grid;
+  gap: 24px;
+}
+
+.catalog-group {
+  padding: 24px;
+}
+
+.catalog-group-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.catalog-group-header h2 {
+  margin-bottom: 6px;
+  font-size: 1.7rem;
+}
+
+.catalog-group-header p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.catalog-count {
+  display: inline-grid;
+  min-width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.primitive-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.primitive-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.primitive-card button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.primitive-card h3 {
+  margin-bottom: 6px;
+}
+
+.primitive-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.primitive-identity {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.62fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.detail-column {
+  position: sticky;
+  top: 96px;
+}
+
+.primitive-detail {
+  padding: 24px;
+}
+
+.primitive-detail h2 {
+  font-size: 1.65rem;
+}
+
+.detail-placeholder {
+  color: var(--muted);
+}
+
+.detail-grid {
+  display: grid;
+  gap: 0;
+  margin: 20px 0 0;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.38fr) minmax(0, 0.62fr);
+  gap: 16px;
+  padding: 13px 0;
+  border-top: 1px solid var(--border);
+}
+
+.detail-row dt {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.detail-row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.detail-row pre {
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 0.82rem;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.policy-stack {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.policy-equation {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-alt);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.source-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 750;
+}
+
+.source-status::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.active-nav {
+  color: var(--text) !important;
+}
+
+@media (max-width: 900px) {
+  .catalog-hero-grid,
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .primitive-lifecycle {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-column {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .primitive-lifecycle,
+  .primitive-list {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-group-header,
+  .detail-row {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-group-header {
+    align-items: flex-start;
+  }
+}

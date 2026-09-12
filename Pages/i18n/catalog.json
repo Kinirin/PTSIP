@@ -1,8 +1,14 @@
 {
   "default_locale": "en",
   "locales": [
-    { "code": "en", "label": "English" },
-    { "code": "ko", "label": "한국어" }
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "ko",
+      "label": "한국어"
+    }
   ],
   "aliases": {
     "en-us": "en",
@@ -249,6 +255,230 @@
     "footer.issues": {
       "en": "Issues",
       "ko": "Issues"
+    },
+    "nav.primitives": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "hero.primitives": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "primitive.meta.title": {
+      "en": "PTSIP — Primitive Catalog",
+      "ko": "PTSIP — Primitive Catalog"
+    },
+    "primitive.hero.kicker": {
+      "en": "Community Primitive ecosystem",
+      "ko": "Community Primitive 생태계"
+    },
+    "primitive.hero.title": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "primitive.hero.summary": {
+      "en": "A presentation layer for Official Core primitives, Community primitives, and Core Candidates. Registry and telemetry backends are intentionally not assumed here.",
+      "ko": "Official Core, Community Primitive, Core Candidate를 구분해 보여주기 위한 표시 계층입니다. Registry와 telemetry backend는 이 화면에서 임의로 가정하지 않습니다."
+    },
+    "primitive.hero.back": {
+      "en": "Back to home",
+      "ko": "홈으로 돌아가기"
+    },
+    "primitive.boundary.label": {
+      "en": "Governance boundary",
+      "ko": "Governance 경계"
+    },
+    "primitive.boundary.title": {
+      "en": "Popularity can trigger review. It cannot create normative authority.",
+      "ko": "인기도는 검토를 촉발할 수 있지만 normative Authority를 만들 수는 없습니다."
+    },
+    "primitive.boundary.body": {
+      "en": "Usage signals and Discussion votes do not automatically promote a primitive. Conformance review and an explicit governance decision remain separate requirements.",
+      "ko": "사용량 지표와 Discussion 투표만으로 primitive가 자동 승격되지 않습니다. Conformance 검토와 명시적 governance decision은 별도의 요구사항입니다."
+    },
+    "primitive.lifecycle.kicker": {
+      "en": "Primitive lifecycle",
+      "ko": "Primitive 생명주기"
+    },
+    "primitive.lifecycle.title": {
+      "en": "From local customization to governed core support",
+      "ko": "로컬 사용자 정의에서 governance를 거친 Core 지원까지"
+    },
+    "primitive.lifecycle.custom": {
+      "en": "Used locally in an individual's environment.",
+      "ko": "개인의 로컬 환경에서 사용하는 사용자 정의 primitive입니다."
+    },
+    "primitive.lifecycle.community": {
+      "en": "Published in the PTSIP community Registry for public discovery and reuse.",
+      "ko": "PTSIP 커뮤니티 Registry에 공개되어 검색과 재사용이 가능한 primitive입니다."
+    },
+    "primitive.lifecycle.candidate": {
+      "en": "Selected for formal Core promotion review after adoption and conformance evidence accumulates.",
+      "ko": "실제 채택과 conformance 근거가 축적된 뒤 공식 Core 승격 검토 대상으로 선정된 상태입니다."
+    },
+    "primitive.lifecycle.official": {
+      "en": "Officially supported Core primitive after governance approval.",
+      "ko": "governance 승인을 거쳐 PTSIP가 공식 지원하는 Core primitive입니다."
+    },
+    "primitive.identity.title": {
+      "en": "Promotion issues a new Official identity",
+      "ko": "공식 승격 시 새 Official identity를 발급합니다"
+    },
+    "primitive.identity.body": {
+      "en": "A Community identity is not renamed into an Official Core identity. Future machine-readable relationship metadata may connect the identities, but this website does not define the canonical relationship vocabulary.",
+      "ko": "Community identity를 그대로 Official Core identity로 변경하지 않습니다. 향후 machine-readable 관계 정보로 두 identity를 연결할 수 있지만, 이 웹사이트는 canonical 관계 vocabulary를 정의하지 않습니다."
+    },
+    "primitive.groups.official.title": {
+      "en": "Official Core",
+      "ko": "Official Core"
+    },
+    "primitive.groups.official.body": {
+      "en": "Core primitives explicitly supported through PTSIP governance and official contracts.",
+      "ko": "PTSIP governance와 공식 contract를 통해 명시적으로 지원되는 Core primitive입니다."
+    },
+    "primitive.groups.official.empty": {
+      "en": "Official Core Registry data is not connected to this website yet. No entries are invented here.",
+      "ko": "아직 이 웹사이트에 Official Core Registry 데이터가 연결되지 않았습니다. 임의 항목을 생성하지 않습니다."
+    },
+    "primitive.groups.community.title": {
+      "en": "Community",
+      "ko": "Community"
+    },
+    "primitive.groups.community.body": {
+      "en": "Community-published primitives that remain outside normative Core authority.",
+      "ko": "커뮤니티에 공개되었지만 normative Core Authority에는 포함되지 않은 primitive입니다."
+    },
+    "primitive.groups.community.empty": {
+      "en": "Community Registry data is not connected yet. The catalog is ready for future public entries.",
+      "ko": "아직 Community Registry 데이터가 연결되지 않았습니다. 향후 공개 항목을 수용할 준비만 되어 있습니다."
+    },
+    "primitive.groups.candidates.title": {
+      "en": "Core Candidates",
+      "ko": "Core Candidates"
+    },
+    "primitive.groups.candidates.body": {
+      "en": "Community primitives under explicit Core promotion review. Candidate status is not Official Core status.",
+      "ko": "명시적인 Core 승격 검토 중인 Community primitive입니다. Candidate 상태는 Official Core 상태가 아닙니다."
+    },
+    "primitive.groups.candidates.empty": {
+      "en": "No Core Candidate data is connected yet. Candidate status will only be shown when a governance source provides it.",
+      "ko": "아직 Core Candidate 데이터가 연결되지 않았습니다. governance source가 해당 상태를 제공할 때만 표시합니다."
+    },
+    "primitive.detail.title": {
+      "en": "Primitive details",
+      "ko": "Primitive 상세"
+    },
+    "primitive.detail.empty": {
+      "en": "Select a Registry-backed primitive when entries become available. This detail surface is prepared for future data sources.",
+      "ko": "Registry 기반 항목이 연결되면 primitive를 선택해 상세 정보를 볼 수 있습니다. 현재는 향후 data source 연결을 위한 화면만 준비되어 있습니다."
+    },
+    "primitive.detail.identity": {
+      "en": "Primitive identity",
+      "ko": "Primitive identity"
+    },
+    "primitive.detail.status": {
+      "en": "Status",
+      "ko": "상태"
+    },
+    "primitive.detail.author": {
+      "en": "Author / registrant",
+      "ko": "작성자 / 등록 주체"
+    },
+    "primitive.detail.description": {
+      "en": "Description",
+      "ko": "간단한 설명"
+    },
+    "primitive.detail.input": {
+      "en": "Input contract",
+      "ko": "Input contract"
+    },
+    "primitive.detail.output": {
+      "en": "Output contract",
+      "ko": "Output contract"
+    },
+    "primitive.detail.parameters": {
+      "en": "Parameter contract",
+      "ko": "Parameter contract"
+    },
+    "primitive.detail.determinism": {
+      "en": "Determinism / conformance",
+      "ko": "Determinism / conformance"
+    },
+    "primitive.detail.adoption": {
+      "en": "Usage / adoption",
+      "ko": "사용 / 채택 지표"
+    },
+    "primitive.detail.candidate": {
+      "en": "Core Candidate",
+      "ko": "Core Candidate 여부"
+    },
+    "primitive.detail.relationships": {
+      "en": "Official Core relationship",
+      "ko": "Official Core 관계"
+    },
+    "primitive.detail.discussion": {
+      "en": "GitHub Discussion",
+      "ko": "GitHub Discussion"
+    },
+    "primitive.detail.unavailable": {
+      "en": "Not provided by the connected presentation data source.",
+      "ko": "연결된 presentation data source에서 아직 제공되지 않습니다."
+    },
+    "primitive.detail.open_discussion": {
+      "en": "Open Discussion",
+      "ko": "Discussion 열기"
+    },
+    "primitive.detail.copy_link": {
+      "en": "Copy detail link",
+      "ko": "상세 링크 복사"
+    },
+    "primitive.data.title": {
+      "en": "Data-source readiness",
+      "ko": "Data source 준비 상태"
+    },
+    "primitive.data.registry": {
+      "en": "Registry source: not connected",
+      "ko": "Registry source: 아직 연결되지 않음"
+    },
+    "primitive.data.adoption": {
+      "en": "Adoption source: public or explicitly supplied information only",
+      "ko": "Adoption source: 공개 정보 또는 명시적으로 제공된 정보만 사용"
+    },
+    "primitive.data.telemetry": {
+      "en": "Private-repository telemetry: not collected",
+      "ko": "Private repository telemetry: 수집하지 않음"
+    },
+    "primitive.data.telemetry_note": {
+      "en": "Any future telemetry path must be opt-in. This initial catalog does not collect private-repository primitive usage.",
+      "ko": "향후 telemetry가 필요하다면 opt-in을 전제로 해야 합니다. 현재 Catalog는 Private repository의 primitive 사용 정보를 수집하지 않습니다."
+    },
+    "primitive.review.title": {
+      "en": "Promotion review semantics",
+      "ko": "승격 검토 의미"
+    },
+    "primitive.review.high_usage": {
+      "en": "High adoption → eligible for promotion review",
+      "ko": "사용량 높음 → 승격 검토 가능"
+    },
+    "primitive.review.not_auto": {
+      "en": "High adoption ≠ automatic Official Core promotion",
+      "ko": "사용량 높음 ≠ 자동 Official Core 승격"
+    },
+    "primitive.review.vote": {
+      "en": "Discussion votes ≠ automatic promotion",
+      "ko": "Discussion 투표 ≠ 자동 승격"
+    },
+    "primitive.review.authority": {
+      "en": "Governance decision → promotion authority",
+      "ko": "Governance decision → 공식 승격 Authority"
+    },
+    "primitive.relationship.pending": {
+      "en": "Relationship metadata is reserved for future integration. Canonical relationship vocabulary is intentionally not defined by this page.",
+      "ko": "향후 관계 정보 연결 공간을 예약해 두었습니다. canonical relationship vocabulary는 이 페이지에서 의도적으로 정의하지 않습니다."
+    },
+    "primitive.registry.discussions": {
+      "en": "PTSIP Discussions",
+      "ko": "PTSIP Discussions"
     }
   }
 }
