@@ -61,7 +61,11 @@
 
   function applyTranslations(locale) {
     document.documentElement.lang = locale;
-    document.title = message("meta.title", locale);
+    const titleKey =
+      document.body && document.body.dataset.titleKey
+        ? document.body.dataset.titleKey
+        : "meta.title";
+    document.title = message(titleKey, locale);
 
     document.querySelectorAll("[data-i18n]").forEach(function (node) {
       node.textContent = message(node.dataset.i18n, locale);
@@ -189,13 +193,13 @@
 
   async function start() {
     try {
-      const loaded = await Promise.all([
-        loadJson(CATALOG_URL),
-        loadJson(MODES_URL)
-      ]);
+      catalog = await loadJson(CATALOG_URL);
 
-      catalog = loaded[0];
-      modes = Array.isArray(loaded[1].modes) ? loaded[1].modes : [];
+      if (document.getElementById("mode-list")) {
+        const modeData = await loadJson(MODES_URL);
+        modes = Array.isArray(modeData.modes) ? modeData.modes : [];
+      }
+
       currentLocale = resolveLocale();
 
       populateLanguageSelector();
