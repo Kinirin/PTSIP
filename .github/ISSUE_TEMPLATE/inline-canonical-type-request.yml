@@ -1,0 +1,71 @@
+name: PTSIP Inline Canonical Type Request
+description: Temporary request form for proposing official PTSIP support for a type currently handled through EXTENSION.INLINE.
+title: "[Inline Type Request] "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a temporary request form for EXTENSION.INLINE feedback.
+        Submitting this form does not change validation, grant authority, or guarantee promotion into an official PTSIP canonical type.
+
+  - type: input
+    id: ptsip-version
+    attributes:
+      label: PTSIP used version
+      description: Enter the PTSIP version where EXTENSION.INLINE was needed.
+      placeholder: e.g. 0.4.0
+    validations:
+      required: true
+
+  - type: input
+    id: extension-type-id
+    attributes:
+      label: EXTENSION.INLINE type identity
+      description: Enter the stable extension type identity used in your project or environment.
+      placeholder: e.g. inline-type:<identity>
+    validations:
+      required: true
+
+  - type: textarea
+    id: need
+    attributes:
+      label: Why official canonical type support is needed
+      description: Briefly describe the repeated or practical need that could not be represented cleanly by the currently supported inline canonical types.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Development environment
+      description: Briefly identify the relevant language, tool, agent, runtime, or workflow context.
+      placeholder: e.g. Python + coding agent, Rust CLI, CI
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-workaround
+    attributes:
+      label: Current EXTENSION.INLINE usage or workaround
+      description: Optional. Describe how you currently represent the type.
+      placeholder: optional
+    validations:
+      required: false
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested official type
+      description: Optional. Suggest a canonical type shape or name if you have one.
+      placeholder: optional
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I understand this request is refinement evidence only and does not automatically create or promote an official canonical type.
+          required: true
