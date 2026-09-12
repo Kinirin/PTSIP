@@ -18,6 +18,7 @@ branch_baseline:
   control_plane_branch: dev/0.4.0
   synchronization: MUST_START_FROM_CURRENT_CENTRAL_CONTROL_PLANE_REVISION_BEFORE_IMPLEMENTATION
   lane_plan_is_canonical_on_control_plane: true
+  synchronized_control_plane_sha: fb247d55c04cb0ff7c859b6210b18dd04cfae83d
 
 responsibility:
   primary: SEMANTIC_INTERPRETATION_AND_CANDIDATE_GENERATION
@@ -27,7 +28,7 @@ responsibility:
     - CANDIDATE_GENERATION_DIAGNOSTICS
   must_preserve:
     - OBSERVED_CLASSIFICATION_DOES_NOT_BY_ITSELF_PROVE_VIOLATION
-    - PRODUCT_LOCATION_OR MEMBERSHIP_DOES_NOT_BY_ITSELF_PROVE_REMOVAL_IS_REQUIRED
+    - PRODUCT_LOCATION_OR_MEMBERSHIP_DOES_NOT_BY_ITSELF_PROVE_REMOVAL_IS_REQUIRED
     - CANDIDATES_MAY_REPRESENT_CONFORMANT_OR_NON_REMEDIATION_INTERPRETATIONS_WHEN_SUPPORTED
     - CANDIDATE_OUTPUT_IS_NOT_PROJECT_AUTHORITY
     - TOOL_MUST_NOT_INVENT_PROJECT_INTENT
@@ -41,9 +42,376 @@ approved_example_boundary:
     - CLASSIFICATION_OR_BOUNDARY_CONFLICT_REQUIRING_FURTHER_EVIDENCE_OR_AUTHORITY
   rule: NO_INTERPRETATION_MAY_BE_PROMOTED_TO_FACT_WITHOUT_SUPPORTING_EVIDENCE_RULE_OR_CURRENT_AUTHORITY
 
+approved_contract_design:
+  normative_architecture:
+    language_runtime_os_tool_neutral: true
+    binding_rule: LANGUAGE_BINDINGS_MUST_NOT_ADD_SEMANTIC_RULES
+    canonical_layers:
+      - CANONICAL_IDENTITY_REGISTRY
+      - CANONICAL_SCHEMA
+      - CANONICAL_INVARIANTS
+      - GENERATED_BINDINGS
+    registry_does_not_define_object_shape: true
+    schema_does_not_duplicate_identity_grammar: true
+    invariants_do_not_duplicate_registry_or_schema_definitions: true
+    policy_ref: MPD-0010
+
+  candidate_provenance:
+    semantic_candidate_shape:
+      fields:
+        - id
+        - rule_id
+        - remediation_family
+        - target_state
+        - provenance
+    provenance_type: CandidateProvenance
+    interpretation_id:
+      grammar: 'interpretation:<RULE_ID>:<LOCAL_INTERPRETATION_ID>'
+      rule_scoped: true
+      forbidden_meanings:
+        - TARGET
+        - SUPPORT_COUNT
+        - CONFIDENCE
+        - RANKING
+        - AUTHORITY
+        - ELIMINATION
+        - OUTCOME
+    supporting_rules:
+      producer_rule_field: SemanticCandidate.rule_id
+      consumed_rule_set: CandidateProvenance.supporting_references.RULE
+      producer_rule_must_appear_in_consumed_rule_set: true
+      only_consumed_rules_are_included: true
+      duplicate_rule_refs_forbidden: true
+    fact_support:
+      candidate_direct_raw_evidence_reference: FORBIDDEN
+      support_path:
+        - SOURCE_OBSERVATION
+        - NORMALIZED_EVIDENCE
+        - CANONICAL_FACT
+        - CANDIDATE_PROVENANCE_FACT_REFERENCE
+        - SEMANTIC_CANDIDATE
+
+  canonical_fact:
+    shape:
+      - id
+      - subject_ref
+      - predicate_id
+      - value
+      - derivation_bases
+    id_grammar: 'fact:<SEMANTIC_DIGEST>'
+    identity_payload:
+      - subject_ref
+      - predicate_id
+      - canonical_value
+    identity_excludes:
+      - derivation
+      - evidence
+      - solve_id
+      - timestamp
+      - implementation_language
+    same_semantics_different_provenance_same_fact_id: true
+    historical_comparison_requires_explicit_separate_contract: true
+
+  subject_and_predicate:
+    subject_registry:
+      root: SUBJECT
+      root_direct_reference_forbidden: true
+      initial_concrete_families:
+        - SUBJECT.COMPONENT
+        - SUBJECT.ARTIFACT
+        - SUBJECT.PACKAGE
+        - SUBJECT.PROJECT
+        - SUBJECT.DEPENDENCY
+      predicate_applicability_is_explicit_per_concrete_kind: true
+      default_wildcard: FORBIDDEN
+    predicate_registry:
+      id_grammar: 'predicate:<OPAQUE_TOKEN>'
+      immutable_semantics_per_identity: true
+      semantic_change_requires_new_identity: true
+      human_label_normative: false
+      subject_compatibility_explicit: true
+      predicate_owns_value_schema_ref: true
+
+  canonical_value_system:
+    arbitrary_native_object_or_free_json: FORBIDDEN
+    closed_value_algebra:
+      - SCALAR.BOOLEAN
+      - SCALAR.INTEGER
+      - SCALAR.DECIMAL
+      - SCALAR.TEXT
+      - REFERENCE.IDENTITY
+      - ENUM.CLOSED
+      - COLLECTION.ORDERED
+      - COLLECTION.UNORDERED
+      - STRUCTURE.RECORD
+    generic_float_preferred: false
+    canonical_decimal_required_for_decimal_semantics: true
+    generic_null_must_not_encode_unknown_unset_or_not_applicable: true
+    fact_must_not_duplicate_value_type_or_schema_ref: true
+
+  derivation_system:
+    layers:
+      - CORE_CLOSED_CANONICAL_DERIVATION_ALGEBRA
+      - REGISTERED_DETERMINISTIC_EXTENSION_CONTRACT
+    derivation_id_grammar: 'derivation:<OPAQUE_TOKEN>'
+    implementation_is_not_authority: true
+    arbitrary_custom_code_as_normative_derivation: FORBIDDEN
+    changing_external_state_must_enter_as_evidence_first: true
+    unsupported_unregistered_or_nonconformant: FAIL_CLOSED
+    derivation_basis:
+      fields:
+        - derivation_id
+        - binding_ref
+        - evidence_bindings
+      evidence_bindings_model: 'CanonicalMapping<CanonicalInputRoleIdentity,CanonicalEvidenceReferenceCollection>'
+      evidence_input_wrapper_object: FORBIDDEN
+      evidence_role_binding_wrapper_object: FORBIDDEN
+    binding:
+      id_grammar: 'binding:<OPAQUE_IMMUTABLE_TOKEN>'
+      fields:
+        - binding_id
+        - derivation_id
+        - parameter_values
+      parameter_schema_owned_by_derivation_registry: true
+      evidence_or_authority_hidden_in_binding: FORBIDDEN
+      binding_excluded_from_fact_semantic_identity: true
+      parameterless_derivation_uses_canonical_zero_parameter_binding: true
+
+  canonical_input_role:
+    role_id_grammar: 'role:<OPAQUE_IMMUTABLE_TOKEN>'
+    globally_direct_resolvable: true
+    scoped_to_exactly_one_derivation: true
+    owns:
+      - derivation_scope
+      - target_ref
+      - min_count
+      - max_count
+      - allowed_evidence_kinds
+    role_local_properties_must_not_be_repeated_in_derivation_contract: true
+    cross_role_relations_owned_by_derivation_invariants: true
+    min_count:
+      type: NON_NEGATIVE_CANONICAL_INTEGER
+    max_count:
+      type: NON_NEGATIVE_CANONICAL_INTEGER_OR_UNBOUNDED
+      unbounded_token: UNBOUNDED
+
+  evidence_bindings:
+    collection_semantics: ORDERED_UNIQUE
+    declared_order_is_canonical_order: true
+    declared_order_does_not_imply_authority_confidence_trust_or_ranking: true
+    derivation_may_consume_or_ignore_order_by_explicit_semantics: true
+    same_role_duplicate_evidence_identity: FORBIDDEN
+    cross_role_same_evidence_identity: ALLOWED_BY_DEFAULT
+    cross_role_reuse_has_no_implicit_authority_confidence_or_priority: true
+    cross_role_restriction_requires_explicit_derivation_invariant: true
+    absent_role_effective_count: 0
+    materialized_role_binding_minimum_evidence_count: 1
+    explicit_empty_collection_in_canonical_source: FORBIDDEN
+    effective_count_must_satisfy_role_cardinality: true
+
+  evidence_kind_policy:
+    core_closed_vocabulary:
+      - EVIDENCE_KIND.OBSERVED
+      - EVIDENCE_KIND.DECLARED
+      - EVIDENCE_KIND.DERIVED
+      - EVIDENCE_KIND.EXPLICIT_HUMAN_INPUT
+    excluded_as_initial_core_kind:
+      - IMPORTED
+      - GENERATED
+      - INFERRED
+      - AUTHORITY
+    allowed_selector_forms:
+      - EXACT
+      - PATTERN
+    core_kind_reference_mode: EXACT_ONLY
+    pattern:
+      scope: EXTENSION_COMMUNITY_OR_USER_NAMESPACE_ONLY
+      grammar: TERMINAL_NAMESPACE_PREFIX_WILDCARD_ONLY
+      regex: FORBIDDEN
+      arbitrary_glob: FORBIDDEN
+      semantic_similarity_matching: FORBIDDEN
+      registration_bypass: FORBIDDEN
+      unknown_pattern_grammar: FAIL_CLOSED
+      compatibility_guarantee: false
+      maintenance_owner: EXTENSION_OWNER
+
+  evidence_target:
+    canonical_shape:
+      - target_id
+      - target_class
+      - access_contract_ref
+      - parent_ref
+    optional_fields:
+      - parent_ref
+    target_class:
+      values:
+        - ABSTRACT
+        - CONCRETE
+    concrete:
+      direct_role_target_allowed: true
+      access_contract_ref: REQUIRED
+    abstract:
+      direct_role_target_allowed: false
+      access_contract_ref: FORBIDDEN
+    parent_ref_semantics: CLASSIFICATION_ONLY
+    parent_ref_does_not_imply:
+      - COMPATIBILITY
+      - AUTHORITY_INHERITANCE
+      - ACCESS_BEHAVIOR_INHERITANCE
+    fields_excluded_from_target_contract:
+      - registration_ref
+      - allowed_evidence_kinds
+      - cardinality
+      - authority
+      - compatibility_refs
+      - human_metadata
+      - runtime_implementation
+    generated_runtime_projection:
+      key: target_id
+      value: resolved_access_binding
+
+  evidence_target_access_contract:
+    canonical_shape:
+      access_contract_id: REQUIRED
+      primitive_composition:
+        composition_ref: REQUIRED
+        primitive_refs: REQUIRED
+    target_reverse_reference: FORBIDDEN
+    duplicated_input_output_contracts: FORBIDDEN
+    per_contract_failure_policy: FORBIDDEN
+    per_contract_determinism_class: FORBIDDEN
+    registration_or_governance_fields: FORBIDDEN
+    runtime_implementation_fields: FORBIDDEN
+
+  composition:
+    access_contract_composition_shape:
+      - composition_ref
+      - primitive_refs
+    composition_id_grammar: 'composition:<OPAQUE_IMMUTABLE_TOKEN>'
+    generated_dispatch: REQUIRED
+    generated_dispatch_is_authority: false
+    canonical_composition_contract:
+      fields:
+        - composition_id
+        - execution_form
+        - operand_schema_ref
+    closed_execution_algebra:
+      - SEQUENCE
+    sequence_semantics:
+      operands_ordered: true
+      first_operand_receives_external_input: true
+      each_output_feeds_next_input: true
+      final_operand_output_is_composition_output: true
+      adjacent_contracts_must_be_compatible: true
+      failure: FAIL_CLOSED
+
+  collection_value_schema:
+    shape:
+      - kind
+      - element_contract
+      - min_count
+      - max_count
+    optional_when_nonempty_only:
+      - extensions.constraint_refs
+    explicit_empty_extensions_in_canonical_source: FORBIDDEN
+    missing_extensions_normalizes_to_empty_runtime_collection: true
+    duplicate_policy_core_field: FORBIDDEN
+    element_contract_tagged_union:
+      - INLINE_CANONICAL_TYPE
+      - SCHEMA_REFERENCE
+    inline_core_atomic_representations:
+      - SCALAR.BOOLEAN
+      - SCALAR.INTEGER
+      - SCALAR.DECIMAL
+      - SCALAR.TEXT
+      - REFERENCE.IDENTITY
+    inline_extension_category:
+      - EXTENSION.INLINE
+    complex_or_reusable_element_default: SCHEMA_REFERENCE
+    min_count_type: NON_NEGATIVE_CANONICAL_INTEGER
+    max_count_type: NON_NEGATIVE_CANONICAL_INTEGER_OR_UNBOUNDED
+    unbounded_token: UNBOUNDED
+
+  extension_inline:
+    modes:
+      - CORE_BACKED
+      - CUSTOM_ATOMIC
+    core_backed:
+      representation_kind_required: true
+      representation_contract_ref_forbidden: true
+    custom_atomic:
+      representation_contract_ref_required: true
+      representation_kind_forbidden: true
+      extension_owner_bears_semantic_implementation_inference_maintenance_and_revalidation_cost: true
+    canonical_atomic_representation_contract:
+      fixed_current_fields:
+        - representation_contract_id
+        - validation_ref
+        - canonicalization_ref
+        - canonical_serialization_ref
+        - conformance_vectors_ref
+      validation_and_canonicalization_are_separate_responsibilities: true
+      validation_failure: FAIL_CLOSED
+      invalid_input_repair_by_canonicalization: FORBIDDEN
+      canonicalization_idempotent: true
+      reference_registry_topology_fixed_now: false
+      reference_requirements:
+        validation_ref: VALIDATION_INTERFACE
+        canonicalization_ref: CANONICALIZATION_INTERFACE
+        canonical_serialization_ref: CANONICAL_SERIALIZATION_INTERFACE
+        conformance_vectors_ref: CONFORMANCE_VECTOR_SET_INTERFACE
+      common_reference_rules:
+        - OPAQUE_IMMUTABLE_IDENTITY
+        - EXACT_RESOLUTION
+        - EXPECTED_INTERFACE_MATCH
+        - UNRESOLVED_UNSUPPORTED_OR_MISMATCH_FAILS_CLOSED
+        - UNDECLARED_COMPATIBILITY_MUST_NOT_BE_INFERRED
+
+  registry_and_runtime_efficiency:
+    registry_resolution_budget:
+      - EXACT_BOUNDED_LOOKUP_ONLY
+      - NO_FULL_REGISTRY_SCAN
+      - NO_SEMANTIC_SIMILARITY_SEARCH
+      - NO_HISTORY_OR_GIT_TRAVERSAL_FOR_RUNTIME_SEMANTICS
+      - NO_DOCUMENTATION_LOOKUP_FOR_RUNTIME_SEMANTICS
+      - NO_INTERPRETIVE_FALLBACK_CANDIDATE_SELECTION
+    canonical_source_representation: SPARSE_WHERE_SEMANTICALLY_UNAMBIGUOUS
+    generated_runtime_projection: DENSE_OR_PRECOMPILED_WHERE_USEFUL
+    repeated_runtime_registry_traversal: AVOID
+    machine_explicit_reference_duplication_allowed_when_it_reduces_semantic_inference_cost: true
+
+  extension_and_compatibility:
+    extension_freedom_does_not_imply_core_identity_reuse: true
+    extension_freedom_does_not_imply_compatibility_guarantee: true
+    modified_official_core_semantics_require_distinct_extension_identity: true
+    official_core_semantics_immutable_within_bound_canonical_specification_revision: true
+    cross_version_backward_or_forward_compatibility_automatic_guarantee: false
+    absent_explicit_compatibility_must_not_be_treated_as_compatibility: true
+    extension_owner_responsibilities:
+      - MAINTENANCE
+      - REVALIDATION
+      - MIGRATION_RESPONSE
+      - SEMANTIC_COMPATIBILITY_CONFIRMATION
+    promotion_to_official_core_uses_new_official_identity: true
+    feedback_or_popularity_is_refinement_evidence_not_authority: true
+
+  refinement:
+    strategy: EVIDENCE_DRIVEN_CONTRACT_REFINEMENT
+    refine_when:
+      - REPEATED_SEMANTIC_INFERENCE
+      - REPEATED_HUMAN_INTERVENTION
+      - RECURRING_CUSTOM_WORKAROUNDS
+      - REPEATED_EXTENSION_PATTERNS
+      - ACCUMULATED_USER_FEEDBACK_OR_DATA
+    stop_when_additional_subdivision_no_longer_has_WORTHWHILE_CLARITY_OR_EFFICIENCY_BENEFIT: true
+    stop_is_permanent_closure: false
+    may_reopen_on_new_evidence: true
+
 owned_implementation_surface:
   allowed_paths:
     - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - developer/policy/MPD-0010.yaml
+    - developer/policy/index.yaml
     - src/ptsip/remediation/solution/candidate.py
     - tests/ptsip/remediation/test_solution_candidate_generation.py
   integration_only_files_forbidden:
@@ -73,6 +441,7 @@ session_protocol:
     - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
     - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
     - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
+    - developer/policy/MPD-0010.yaml
   required_git_checks:
     - CONFIRM_CURRENT_BRANCH_IS_dev/0.4.0-WU-02-S1
     - REVIEW_RECENT_GIT_LOG
@@ -94,15 +463,28 @@ session_protocol:
     - RUN_python_-m_developer.automation.wu02_lane_validator_S1
 
 execution_state:
-  status: NOT_STARTED
-  completed: []
-  current_focus: SEMANTIC_CANDIDATE_CONTRACT_AND_GENERATION_BOUNDARY
+  status: DESIGN_CONTRACTS_APPROVED_IMPLEMENTATION_PENDING
+  completed:
+    - SYNCED_WITH_CURRENT_dev/0.4.0_AT_fb247d55c04cb0ff7c859b6210b18dd04cfae83d
+    - APPROVED_CANDIDATE_PROVENANCE_BOUNDARY
+    - APPROVED_CANONICAL_FACT_AND_DERIVATION_BASIS_DIRECTION
+    - APPROVED_CANONICAL_VALUE_AND_COLLECTION_BOUNDARIES
+    - APPROVED_EXTENSION_INLINE_AND_CUSTOM_ATOMIC_BOUNDARY
+    - APPROVED_EVIDENCE_BINDING_ORDER_CARDINALITY_AND_CROSS_ROLE_REUSE
+    - APPROVED_EVIDENCE_KIND_EXACT_AND_PATTERN_SELECTORS
+    - APPROVED_CANONICAL_EVIDENCE_TARGET_BOUNDARY
+    - APPROVED_EVIDENCE_TARGET_ACCESS_CONTRACT_MINIMAL_SHAPE
+    - MATERIALIZED_CROSS_CUTTING_DEVELOPER_POLICY_MPD-0010
+  current_focus: CANONICAL_ACCESS_PRIMITIVE_BOUNDARY_AND_S1_IMPLEMENTATION_PREPARATION
   remaining:
-    - DEFINE_MACHINE_INSPECTABLE_SEMANTIC_INTERPRETATION_CANDIDATE_SHAPE
+    - FINALIZE_CANONICAL_ACCESS_PRIMITIVE_MINIMUM_CONTRACT
+    - FINALIZE_AUTHORITY_SUPPORT_IN_CANDIDATE_PROVENANCE
+    - RESOLVE_LEGACY_SEMANTIC_CANDIDATE_FIELD_OVERLAP
+    - DEFINE_OPERATIONAL_RULE_TO_CANDIDATE_GENERATION_ADAPTER_BOUNDARY
     - IMPLEMENT_CANDIDATE_GENERATION_WITHOUT_PREMATURE_VIOLATION_ASSUMPTION
     - ADD_FOCUSED_TESTS
   blockers: []
-  last_handoff_summary: CENTRAL_PLAN_CREATED_BEFORE_IMPLEMENTATION
+  last_handoff_summary: APPROVED_SEMANTIC_CONTRACT_DESIGN_MATERIALIZED_BEFORE_IMPLEMENTATION
 
 decisions_made:
   - id: S1-D01
@@ -117,14 +499,97 @@ decisions_made:
     status: APPROVED
     authority: PROJECT_OWNER
     decision: SEMANTIC_CANDIDATE_REPORTS_POSSIBILITIES_AND_DOES_NOT_OWN_FINAL_ELIMINATION_RECORDING
+  - id: S1-D04
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: NORMATIVE_SEMANTIC_CONTRACTS_ARE_LANGUAGE_RUNTIME_OS_AND_TOOL_NEUTRAL
+  - id: S1-D05
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CANDIDATE_PROVENANCE_IS_NESTED_AND_FACT_SUPPORT_USES_CANONICAL_FACT_CLOSURE
+  - id: S1-D06
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CANONICAL_FACT_IDENTITY_EXCLUDES_PROVENANCE_AND_USES_OPAQUE_SEMANTIC_DIGEST
+  - id: S1-D07
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CANONICAL_DERIVATION_SYSTEM_USES_CLOSED_CORE_WITH_REGISTERED_DETERMINISTIC_EXTENSIONS
+  - id: S1-D08
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: DERIVATION_BASIS_DIRECTLY_MAPS_INPUT_ROLE_IDENTITIES_TO_EVIDENCE_REFERENCE_COLLECTIONS
+  - id: S1-D09
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: EVIDENCE_REFERENCE_COLLECTIONS_ARE_ORDERED_UNIQUE_WITH_ABSENT_ROLE_COUNT_ZERO
+  - id: S1-D10
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CROSS_ROLE_EVIDENCE_REFERENCE_REUSE_IS_ALLOWED_UNLESS_AN_EXPLICIT_DERIVATION_INVARIANT_FORBIDS_IT
+  - id: S1-D11
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CORE_EVIDENCE_KIND_VOCABULARY_HAS_FOUR_KINDS_WITH_BOUNDED_EXTENSION_PATTERN_SELECTORS
+  - id: S1-D12
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CANONICAL_EVIDENCE_TARGET_SEPARATES_RUNTIME_ACCESS_FROM_CLASSIFICATION_AND_GOVERNANCE
+  - id: S1-D13
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: EVIDENCE_TARGET_ACCESS_CONTRACT_OWNS_ONLY_CANONICAL_PRIMITIVE_COMPOSITION
+  - id: S1-D14
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: COMPOSITION_USES_OPAQUE_IDENTITY_GENERATED_DISPATCH_AND_CLOSED_EXECUTION_ALGEBRA_STARTING_WITH_SEQUENCE
+  - id: S1-D15
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: COLLECTION_SCHEMA_USES_TAGGED_ELEMENT_CONTRACT_FLAT_CARDINALITY_AND_SPARSE_CANONICAL_EXTENSIONS
+  - id: S1-D16
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: EXTENSION_INLINE_SUPPORTS_CORE_BACKED_AND_CUSTOM_ATOMIC_PATHS_WITH_EXTENSION_OWNER_COST_RESPONSIBILITY
+  - id: S1-D17
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CUSTOM_ATOMIC_REPRESENTATION_CONTRACT_IS_FIXED_TO_CURRENT_FIVE_FIELDS_WITH_VALIDATION_AND_CANONICALIZATION_SEPARATE
+  - id: S1-D18
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: EXTENSION_FREEDOM_DOES_NOT_IMPLY_CORE_IDENTITY_REUSE_OR_VERSION_COMPATIBILITY_GUARANTEE
+  - id: S1-D19
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: REGISTRY_RESOLUTION_IS_BOUNDED_EXACT_AND_RUNTIME_SHOULD_USE_GENERATED_OR_PRECOMPILED_PROJECTIONS
+  - id: S1-D20
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: MACHINE_EXPLICIT_REFERENCE_DUPLICATION_IS_ACCEPTABLE_WHEN_IT_REDUCES_SEMANTIC_INFERENCE_COST
+  - id: S1-D21
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: CONTRACT_REFINEMENT_IS_EVIDENCE_DRIVEN_AND_MAY_REOPEN_AFTER_A_PRACTICAL_STOP
 
 unresolved_questions:
   - id: S1-Q01
-    status: OPEN
+    status: RESOLVED
     topic: EXACT_PYTHON_SHAPE_FOR_SEMANTIC_INTERPRETATION_METADATA
+    resolution: SUPERSEDED_BY_LANGUAGE_NEUTRAL_CANONICAL_CONTRACT_FIRST_AND_LANGUAGE_BINDING_SECOND
   - id: S1-Q02
     status: OPEN
     topic: EXACT_OPERATIONAL_RULE_TO_CANDIDATE_GENERATION_ADAPTER_BOUNDARY
+  - id: S1-Q03
+    status: OPEN
+    topic: CANONICAL_ACCESS_PRIMITIVE_MINIMUM_CONTRACT
+    note: FOUR_FIELD_PROPOSAL_REVIEWED_BUT_EXPLICITLY_NOT_APPROVED
+  - id: S1-Q04
+    status: OPEN
+    topic: AUTHORITY_SUPPORT_CONSUMED_VS_REQUIRED_IN_CANDIDATE_PROVENANCE
+  - id: S1-Q05
+    status: OPEN
+    topic: LEGACY_SEMANTIC_CANDIDATE_fact_ids_AND_required_authority_ids_SINGLE_SOURCE_OF_TRUTH
 
 verification_state:
   status: NOT_STARTED
@@ -133,6 +598,10 @@ verification_state:
     - NON_SHIPPED_EVIDENCE_CAN_PRESERVE_A_NON_VIOLATION_INTERPRETATION
     - HOSTED_TOOLING_INTERPRETATION_REQUIRES_SUPPORTING_SEMANTICS
     - CANDIDATE_GENERATION_DOES_NOT_CREATE_PROJECT_AUTHORITY
+    - LANGUAGE_BINDINGS_DO_NOT_ADD_NORMATIVE_SEMANTICS
+    - REGISTRY_RESOLUTION_PATHS_ARE_BOUNDED_AND_EXACT
+    - UNDECLARED_EXTENSION_COMPATIBILITY_IS_NOT_INFERRED
+    - EVIDENCE_BINDING_ORDER_AND_CARDINALITY_ARE_MACHINE_DETERMINISTIC
   passed: []
   failed: []
 
@@ -143,9 +612,15 @@ integration_handoff:
     - GENERATED_CANDIDATES_HAVE_UNIQUE_IDENTITIES
     - CANDIDATES_HAVE_MACHINE_INSPECTABLE_SUPPORT_REFERENCES
     - CANDIDATE_EXISTENCE_DOES_NOT_MEAN_VIOLATION_OR_OWNER_APPROVAL
+    - FACT_SUPPORT_HAS_DETERMINISTIC_EVIDENCE_CLOSURE
+    - GENERATED_BINDINGS_DO_NOT_ADD_NORMATIVE_SEMANTICS
   consumer_must_not_assume:
     - EVERY_CANDIDATE_IS_A_REMEDIATION_ACTION
     - CANDIDATE_ORDER_IS_RANKING
     - CANDIDATE_EXISTENCE_IS_PROJECT_AUTHORITY
+    - REFERENCE_DUPLICATION_IMPLIES_AUTHORITY_CONFIDENCE_OR_PRIORITY
+    - ABSENT_EXPLICIT_COMPATIBILITY_MEANS_COMPATIBLE
   requests_to_other_lanes: []
-  integration_notes: []
+  integration_notes:
+    - S1_BRANCH_FAST_FORWARDED_TO_dev/0.4.0_SHA_fb247d55c04cb0ff7c859b6210b18dd04cfae83d_BEFORE_THIS_DESIGN_MATERIALIZATION
+    - CROSS_CUTTING_APPROVED_PRINCIPLES_MATERIALIZED_AS_MPD-0010
