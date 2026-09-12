@@ -309,7 +309,26 @@ approved_contract_design:
       - PER_INSTANCE_EXECUTION_STATE
     generated_bindings_must_not_add_remove_or_reinterpret_semantics: true
     unresolved_reference_undeclared_failure_interface_mismatch_or_semantic_conformance_conflict: FAIL_CLOSED
-    ref_minimum_interface_shapes: NOT_YET_MATERIALIZED
+    ref_minimum_interface_shapes:
+      operation_semantics_ref:
+        interface: OPERATION_SEMANTICS_INTERFACE
+        ownership_model: DIRECT_DECLARATIVE
+        required_fields:
+          - operation_semantics_id
+          - semantic_preconditions
+          - transformation
+          - semantic_guarantees
+        boundaries:
+          semantic_preconditions: SEMANTIC_VALIDITY_NOT_INPUT_SCHEMA_VALIDATION
+          transformation: NORMATIVE_SEMANTIC_TRANSFORMATION_NOT_RUNTIME_IMPLEMENTATION
+          semantic_guarantees: SUCCESSFUL_OPERATION_POSTCONDITIONS
+          failure_semantics: EXCLUDED_OWNED_BY_FAILURE_SEMANTICS_REF
+          conformance_vectors: EXCLUDED_OWNED_BY_CONFORMANCE_VECTORS_REF
+        nested_transformation_ref_required: false
+      failure_semantics_ref: NOT_YET_MATERIALIZED
+      conformance_vectors_ref: NOT_YET_MATERIALIZED
+      input_schema_ref: EXISTING_CANONICAL_SCHEMA_INTERFACE_REUSE_TO_BE_CONFIRMED
+      output_schema_ref: EXISTING_CANONICAL_SCHEMA_INTERFACE_REUSE_TO_BE_CONFIRMED
 
   composition:
     access_contract_composition_shape:
@@ -505,6 +524,7 @@ execution_state:
     - MATERIALIZED_CROSS_CUTTING_DEVELOPER_POLICY_MPD-0010
     - REJECTED_CANONICAL_ACCESS_PRIMITIVE_FOUR_FIELD_MINIMUM_CONTRACT_PROPOSAL
     - APPROVED_CANONICAL_ACCESS_PRIMITIVE_SIX_RESPONSIBILITY_MODEL
+    - APPROVED_DIRECT_DECLARATIVE_OPERATION_SEMANTICS_INTERFACE
   current_focus: CANONICAL_ACCESS_PRIMITIVE_REF_INTERFACE_SHAPES_AND_S1_IMPLEMENTATION_PREPARATION
   remaining:
     - FINALIZE_CANONICAL_ACCESS_PRIMITIVE_REF_MINIMUM_INTERFACE_SHAPES
@@ -624,6 +644,22 @@ decisions_made:
       - failure_semantics_ref
       - conformance_vectors_ref
     boundary: REF_RESPONSIBILITIES_APPROVED_EXACT_MINIMUM_INTERFACE_SHAPES_REMAIN_OPEN
+  - id: S1-D24
+    status: APPROVED
+    authority: PROJECT_OWNER
+    decision: OPERATION_SEMANTICS_REF_RESOLVES_TO_DIRECT_DECLARATIVE_OPERATION_SEMANTICS_INTERFACE
+    required_fields:
+      - operation_semantics_id
+      - semantic_preconditions
+      - transformation
+      - semantic_guarantees
+    rules:
+      - SEMANTIC_PRECONDITIONS_ARE_NOT_INPUT_SCHEMA_VALIDATION
+      - TRANSFORMATION_IS_NORMATIVE_SEMANTIC_MEANING_NOT_RUNTIME_IMPLEMENTATION
+      - SEMANTIC_GUARANTEES_ARE_SUCCESSFUL_OPERATION_POSTCONDITIONS
+      - FAILURE_SEMANTICS_REMAIN_OWNED_BY_FAILURE_SEMANTICS_REF
+      - CONFORMANCE_VECTORS_REMAIN_OWNED_BY_CONFORMANCE_VECTORS_REF
+      - NESTED_TRANSFORMATION_REF_IS_NOT_REQUIRED
 
 unresolved_questions:
   - id: S1-Q01
@@ -647,7 +683,7 @@ unresolved_questions:
   - id: S1-Q06
     status: OPEN
     topic: CANONICAL_ACCESS_PRIMITIVE_REF_MINIMUM_INTERFACE_SHAPES
-    note: COMMON_REF_RESOLUTION_RULES_EXIST_IN_MPD-0010_BUT_OPERATION_FAILURE_AND_ACCESS_PRIMITIVE_CONFORMANCE_INTERFACE_SHAPES_ARE_NOT_YET_MATERIALIZED
+    note: OPERATION_SEMANTICS_INTERFACE_IS_APPROVED_AS_DIRECT_DECLARATIVE_FOUR_FIELD_CONTRACT_FAILURE_AND_ACCESS_PRIMITIVE_CONFORMANCE_SHAPES_REMAIN_OPEN_SCHEMA_INTERFACE_REUSE_REMAINS_TO_BE_CONFIRMED
   - id: S1-Q04
     status: OPEN
     topic: AUTHORITY_SUPPORT_CONSUMED_VS_REQUIRED_IN_CANDIDATE_PROVENANCE
