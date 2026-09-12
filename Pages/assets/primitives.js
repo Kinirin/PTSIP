@@ -140,26 +140,12 @@ import { supabaseClientState } from "./supabase-client.js";
       : {};
   }
 
-  function localized(item) {
-    const view = presentation(item);
-    const localizedMap = view.localized && typeof view.localized === "object"
-      ? view.localized
-      : {};
-
-    return localizedMap[currentLocale]
-      || localizedMap[catalog.default_locale]
-      || {};
-  }
-
   function displayName(item) {
-    const local = localized(item);
-    return local.name || presentation(item).name || item.identity || "Primitive";
+    return presentation(item).name || item.identity || "Primitive";
   }
 
   function displaySummary(item) {
-    const local = localized(item);
-    return local.description
-      || presentation(item).description
+    return presentation(item).description
       || message("primitive.detail.unavailable");
   }
 
@@ -295,7 +281,6 @@ import { supabaseClientState } from "./supabase-client.js";
     }
 
     const view = presentation(item);
-    const local = localized(item);
     const heading = document.createElement("h2");
     heading.id = "primitive-detail-title";
     heading.textContent = displayName(item);
@@ -310,7 +295,8 @@ import { supabaseClientState } from "./supabase-client.js";
       detailRow("primitive.detail.identity", item.identity),
       detailRow("primitive.detail.status", item.status),
       detailRow("primitive.detail.author", view.author_or_registrant),
-      detailRow("primitive.detail.description", local.description || view.description),
+      detailRow("primitive.detail.source_language", view.source_language),
+      detailRow("primitive.detail.description", view.description),
       detailRow("primitive.detail.input", view.input_contract),
       detailRow("primitive.detail.output", view.output_contract),
       detailRow("primitive.detail.parameters", view.parameter_contract),
