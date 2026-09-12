@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PTSIP documentation and community portal">
+  <title>PTSIP</title>
+  <link rel="stylesheet" href="./assets/site.css">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#home" aria-label="PTSIP home">PTSIP</a>
+
+      <nav class="primary-nav" aria-label="Primary navigation" data-i18n-aria="a11y.primary_nav">
+        <a href="#home" data-i18n="nav.home">Home</a>
+        <a href="#modes" data-i18n="nav.modes">Community Modes</a>
+        <a href="#promotion" data-i18n="nav.promotion">Promotion</a>
+        <a href="#governance" data-i18n="nav.governance">Governance</a>
+        <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      </nav>
+
+      <label class="language-control">
+        <span class="visually-hidden" data-i18n="language.label">Language</span>
+        <select id="language-selector" aria-label="Language" data-i18n-aria="language.label"></select>
+      </label>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="home" class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow" data-i18n="hero.eyebrow">Documentation · Community · Governance</p>
+          <h1 data-i18n="hero.title">PTSIP Community Portal</h1>
+          <p class="hero-copy" data-i18n="hero.summary">
+            Learn PTSIP, share reusable policy patterns, and follow the path from community practice to official support.
+          </p>
+          <div class="button-row">
+            <a class="button primary" href="#modes" data-i18n="hero.explore">Explore Community Modes</a>
+            <a class="button secondary" href="https://github.com/Kinirin/PTSIP" data-i18n="hero.repository">Official Repository</a>
+          </div>
+        </div>
+
+        <aside class="authority-card" aria-labelledby="authority-title">
+          <p class="status-label" data-i18n="authority.label">Authority boundary</p>
+          <h2 id="authority-title" data-i18n="authority.title">The website explains policy. It does not define policy.</h2>
+          <p data-i18n="authority.body">
+            Normative requirements remain in the designated PTSIP Specification, ADRs, registries, schemas, and other authoritative repository records.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section lifecycle-section" aria-labelledby="lifecycle-title">
+      <div class="shell">
+        <p class="section-kicker" data-i18n="lifecycle.kicker">Community lifecycle</p>
+        <h2 id="lifecycle-title" data-i18n="lifecycle.title">Experiment freely. Promote deliberately.</h2>
+        <div class="lifecycle-grid" role="list">
+          <article class="stage" role="listitem">
+            <span class="stage-number">1</span>
+            <h3 data-i18n="lifecycle.custom.title">Project Custom Policy</h3>
+            <p data-i18n="lifecycle.custom.body">A project solves a real environment-specific need, including hard-coded assumptions when they are explicit.</p>
+          </article>
+          <article class="stage" role="listitem">
+            <span class="stage-number">2</span>
+            <h3>COMMUNITY</h3>
+            <p data-i18n="lifecycle.community.body">A reusable pattern is published with compatibility, limitations, provenance, and real usage evidence.</p>
+          </article>
+          <article class="stage" role="listitem">
+            <span class="stage-number">3</span>
+            <h3>PROMOTION_CANDIDATE</h3>
+            <p data-i18n="lifecycle.candidate.body">Maintainers accept the problem for formal evaluation. This is not yet official support.</p>
+          </article>
+          <article class="stage" role="listitem">
+            <span class="stage-number">4</span>
+            <h3>OFFICIAL</h3>
+            <p data-i18n="lifecycle.official.body">Support is established through authoritative repository contracts, implementation, verification, and release.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="modes" class="section alt-section" aria-labelledby="modes-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker" data-i18n="modes.kicker">Community catalog</p>
+            <h2 id="modes-title" data-i18n="modes.title">Community Modes</h2>
+          </div>
+          <a class="text-link" href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="modes.discuss">Open Discussions</a>
+        </div>
+
+        <p class="section-intro" data-i18n="modes.intro">
+          Community Modes are user-authored reusable policy patterns. Publication does not imply official PTSIP endorsement.
+        </p>
+
+        <div id="mode-list" class="mode-grid" aria-live="polite"></div>
+
+        <div class="callout">
+          <div>
+            <h3 data-i18n="modes.submit.title">Built something reusable?</h3>
+            <p data-i18n="modes.submit.body">Share the problem, assumptions, compatibility, source, limitations, and real-world evidence with the community.</p>
+          </div>
+          <a class="button secondary" href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="modes.submit.action">Start a Discussion</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="promotion" class="section" aria-labelledby="promotion-title">
+      <div class="shell two-column">
+        <div>
+          <p class="section-kicker" data-i18n="promotion.kicker">Official promotion</p>
+          <h2 id="promotion-title" data-i18n="promotion.title">Popularity is evidence, not authority.</h2>
+          <p data-i18n="promotion.body">
+            Repeated independent adoption is a strong signal, but official support also requires generality, deterministic semantics, authority preservation, compatibility, verification, and maintainability.
+          </p>
+        </div>
+        <ul class="criteria-list">
+          <li data-i18n="promotion.criteria.repeated">Repeated need across independent projects</li>
+          <li data-i18n="promotion.criteria.general">Generalizable semantics rather than one repository convention</li>
+          <li data-i18n="promotion.criteria.authority">Preserves project-owned authority and owner decisions</li>
+          <li data-i18n="promotion.criteria.machine">Can be represented and verified deterministically</li>
+          <li data-i18n="promotion.criteria.release">Can be supported through repository contracts and release lifecycle</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="governance" class="section alt-section" aria-labelledby="governance-title">
+      <div class="shell">
+        <p class="section-kicker" data-i18n="governance.kicker">Governance</p>
+        <h2 id="governance-title" data-i18n="governance.title">Community innovation and official authority stay separate.</h2>
+        <div class="governance-grid">
+          <article class="info-card">
+            <h3 data-i18n="governance.community.title">Community surface</h3>
+            <p data-i18n="governance.community.body">Examples, experiments, discussions, adoption evidence, and reusable patterns can evolve quickly.</p>
+          </article>
+          <article class="info-card">
+            <h3 data-i18n="governance.official.title">Official authority</h3>
+            <p data-i18n="governance.official.body">Specification, designated ADRs, registries, schemas, implementation contracts, verification, and releases establish official support.</p>
+          </article>
+          <article class="info-card">
+            <h3 data-i18n="governance.language.title">Language model</h3>
+            <p data-i18n="governance.language.body">The site uses one interface and locale mappings instead of language-specific page trees. Adding a language does not require duplicating site structure.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section" aria-labelledby="faq-title">
+      <div class="shell narrow">
+        <p class="section-kicker">FAQ</p>
+        <h2 id="faq-title" data-i18n="faq.title">Common questions</h2>
+
+        <details>
+          <summary data-i18n="faq.official.q">Is a Community Mode an official PTSIP feature?</summary>
+          <p data-i18n="faq.official.a">No. It becomes official only after deliberate adoption through authoritative repository and release boundaries.</p>
+        </details>
+        <details>
+          <summary data-i18n="faq.hardcoded.q">Can a Community Mode be hard-coded for one environment?</summary>
+          <p data-i18n="faq.hardcoded.a">Yes. Environment-specific assumptions are acceptable when they are explicit. Promotion later evaluates what can be generalized safely.</p>
+        </details>
+        <details>
+          <summary data-i18n="faq.source_mode.q">Is Community Mode the same as explicit, template, or hybrid?</summary>
+          <p data-i18n="faq.source_mode.a">No. Community Mode is an incubation and distribution concept. Canonical PTSIP source declaration modes are defined by the authoritative repository.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div>
+        <strong>PTSIP</strong>
+        <p data-i18n="footer.note">This website is non-normative. Official policy remains in the PTSIP repository.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Kinirin/PTSIP" data-i18n="footer.repository">Repository</a>
+        <a href="https://github.com/Kinirin/PTSIP/discussions" data-i18n="footer.discussions">Discussions</a>
+        <a href="https://github.com/Kinirin/PTSIP/issues" data-i18n="footer.issues">Issues</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
