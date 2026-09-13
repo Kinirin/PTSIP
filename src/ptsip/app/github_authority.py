@@ -434,6 +434,9 @@ def _workflow_status(record: dict[str, object]) -> str:
     if status == "PENDING":
         return "DECISION_REQUIRED"
     if status == "RESOLVED":
+        request = record.get("request")
+        if isinstance(request, dict) and request.get("origin") == "EXPLICIT_PROPOSED_COMPONENT":
+            return "RESOLVED"
         return "RESOLVED_APPLICATION_REQUIRED"
     return status
 
@@ -643,7 +646,7 @@ class GithubControlPlaneClient:
         status = str(payload.get("status", ""))
         if not decision_id:
             raise ValueError("decision_id is required")
-        if status not in {"LOCAL_APPLIED", "FAILED", "STALE"}:
+        if status not in {"LOCAL_APPLIED", "FAILED", "STALE", "PROPOSAL_APPROVED"}:
             raise ValueError("unsupported agent application status")
         profile_path = payload.get("profile_path")
         return {
