@@ -14,6 +14,31 @@ PTSIP has two non-interchangeable policy classes.
 - Developer planning authority is `docs/planning/index.yaml` and version control planes under `docs/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
 - `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
 
+## Mandatory developer policy entry
+
+Before broadly reading repository policy or planning prose, resolve the developer-policy context mechanically:
+
+```text
+python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
+```
+
+The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings.yaml` and `developer/policy/index.yaml`. Use only the returned canonical policy IDs and rule sections as the normal policy-loading path.
+
+For a returned section, prefer the bounded lookup:
+
+```text
+python -m developer.automation.policy_resolver get <MPD-ID> --section <rule-section>
+```
+
+Rules:
+
+- Do not scan `developer/policy/**`, planning trees, ADR/history, or prose documentation merely to discover potentially relevant policy.
+- Do not substitute semantic similarity, filename similarity, nearby documents, or natural-language inference for a resolver binding.
+- A resolver failure is fail-closed for the dependent policy lookup. Do not choose an alternative policy manually.
+- The resolver is a routing/projection control plane only. Canonical MPD records remain authority.
+- `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
+- Re-run resolution after changing task scope, operation class, or branch context.
+
 ## Mandatory branch-aware planning entry
 
 Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:
@@ -49,18 +74,18 @@ Design-time `planning/**` artifacts are not runtime authority and must not be us
 
 Completed generated review artifacts are retained through Git history rather than the active planning surface once their canonical result has been materialized and machine validation exists.
 
-## Required context before work
+## Context loading after policy resolution
 
-Read, in order:
+Do not unconditionally preload repository-wide natural-language context.
 
-1. `MEMORY.md`
-2. `developer/profiles/ptsip-repository.yaml`
-3. `src/ptsip/constants.py`
-4. applicable Specification files under `spec/`
-5. `planning/0.3.6.md`
-6. `planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md` when reviewing Tool `0.3.6` release closure or exact-main handoff
+Normal entry order:
 
-`MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
+1. run the Policy Resolver for the exact task scope and operation;
+2. load only the returned canonical MPD rule sections;
+3. when the operation is planning/version-specific, run the branch-aware Planning Entry Resolver and enter through its exact returned document;
+4. load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved task actually requires them.
+
+`MEMORY.md`, historical planning, release notes, and ADR/history are targeted operational or historical context, not mandatory startup reads. Their presence must not override canonical machine-readable policy or Specification authority.
 
 ## Repository-state discipline
 
