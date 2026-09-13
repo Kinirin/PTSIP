@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-resolver-contract/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+resolver:
+  id: POLICY_RESOLVER_V1
+  owner_policy_ref: MPD-0010
+  runtime_classification: DEVELOPER_CONTROL_PLANE_ONLY
+  policy_index_ref: developer/policy/index.yaml
+  binding_registry_ref: developer/policy/policy-resolver-bindings.yaml
+  binding_schema_ref: developer/policy/schemas/policy-resolver-bindings.schema.json
+
+lookup:
+  scope_resolution: EXACT_ANCESTOR_PATH
+  operation_resolution: EXACT_CLOSED_VOCABULARY
+  semantic_similarity: FORBIDDEN
+  repository_document_scan: FORBIDDEN
+  git_history_lookup: FORBIDDEN
+  natural_language_fallback: FORBIDDEN
+  unresolved_required_binding: FAIL_CLOSED
+
+authority:
+  canonical_policy_records_remain_authority: true
+  resolver_projection_is_authority: false
+  resolver_may_create_or_rank_policy_semantics: false
+  product_runtime_dependency: FORBIDDEN
