@@ -1,6 +1,8 @@
 # PTSIP License Guide
 
-This guide explains PTSIP Community Reciprocity License 1.0 in plain language. It is not a substitute for LICENSE. If this guide conflicts with LICENSE, LICENSE controls.
+This guide explains PTSIP Community Reciprocity License 1.0 in plain language.
+
+**Effective Time:** 2026-09-15T00:00:00-07:00 (Pacific Time in effect on 2026-09-15), equivalent to 2026-09-15T07:00:00Z. It is not a substitute for LICENSE. If this guide conflicts with LICENSE, LICENSE controls.
 
 ## Core philosophy
 
@@ -110,9 +112,10 @@ Commercial users do not need to wait for individual approval.
 
 A commercial user receives Standing Commercial Authorization by:
 
-1. accepting the current PTSIP license;
-2. registering within 30 days of first Commercial Use; and
-3. continuing to satisfy attribution and cooperation duties.
+1. expressly accepting the applicable PTSIP License and Commercial Cooperation Duty;
+2. identifying the PTSIP version or immutable revision actually used;
+3. registering within 90 days of first Commercial Use; and
+4. continuing to satisfy attribution and cooperation duties.
 
 There is no default monetary license fee.
 
@@ -122,9 +125,17 @@ See COMMERCIAL-USE.md for the current registration and reporting procedure.
 
 The license is designed to prefer correction over punishment.
 
-Ordinary missed obligations have a cure period. If the user cures the omission, ordinary suspended authorization can be automatically reinstated.
+Ordinary missed obligations have a 90-day cure period. The compliance periods are intended to encourage voluntary cooperation and reasonable correction, not to create traps for users acting in good faith. If the user cures the omission, ordinary suspended authorization can be automatically reinstated.
 
 Intentional attribution falsification, deliberately false reporting, concealment, or repeated attempts to evade reciprocity are treated more seriously.
+
+## Project decisions and shared improvement
+
+PTSIP supports project decisions; it does not replace the user's authority over the user's own project. Users decide how PTSIP guidance, classifications, validation results, and conformance results are applied in their own environments.
+
+A PTSIP conformance result means conformance to the applicable PTSIP rules. It is not intended as a general certification of every quality or property of the surrounding project.
+
+The cooperation model exists so that useful findings and improvements can return to the community. Reporting a finding does not make the reporter responsible for another user's independent application of PTSIP, and receiving a finding does not create a promise that the project will implement a particular correction within a particular period.
 
 ## AI use
 

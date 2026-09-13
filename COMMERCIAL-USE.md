@@ -2,6 +2,8 @@
 
 This document defines the current Official Cooperation Channels and submission mechanics for PTSIP Community Reciprocity License 1.0.
 
+**Effective Time:** 2026-09-15T00:00:00-07:00 (Pacific Time in effect on 2026-09-15), equivalent to 2026-09-15T07:00:00Z.
+
 It does not add substantive duties beyond LICENSE. If this document conflicts with LICENSE, LICENSE controls.
 
 ## Standing Commercial Authorization
@@ -11,8 +13,10 @@ No individual approval response is required.
 Standing Commercial Authorization becomes available when a Commercial User:
 
 1. accepts PTSIP Community Reciprocity License 1.0;
-2. submits a valid Commercial Use Registration within 30 calendar days of first Commercial Use; and
-3. continues to comply with the applicable attribution and cooperation duties.
+2. expressly accepts both the applicable PTSIP License and the Commercial Cooperation Duty;
+3. identifies the PTSIP Version or Revision actually used; and
+4. submits a valid Commercial Use Registration within 90 calendar days of first Commercial Use; and
+5. continues to comply with the applicable attribution and cooperation duties.
 
 PTSIP does not require a default monetary license fee.
 
@@ -68,8 +72,15 @@ Product, service, system, business activity, or internal commercial function:
 ### First Commercial Use date
 YYYY-MM-DD:
 
-### PTSIP version or revision
-Version, tag, or commit:
+### PTSIP License version — REQUIRED
+PTSIP Community Reciprocity License version:
+
+### PTSIP version / immutable revision — REQUIRED
+Provide at least one precise identifier. Include both when reasonably available.
+Tool/release version:
+Specification family:
+Immutable Specification revision:
+Git commit or other immutable revision:
 
 ### Primary environment
 Relevant coding agents, CI, operating environment, platforms, or integrations:
@@ -80,8 +91,15 @@ GitHub account or other accountable project contact:
 ### Attribution location
 Where PTSIP attribution is or will be provided:
 
-### License acceptance
-We accept the PTSIP Community Reciprocity License applicable to the PTSIP material identified above and request Standing Commercial Authorization under its published conditions.
+### License and Cooperation Duty acceptance — REQUIRED
+By submitting this Commercial Use Registration, the registering individual or Legal Entity expressly accepts:
+
+1. the PTSIP Community Reciprocity License version identified in this registration; and
+2. the Commercial Cooperation Duty, including the applicable attribution, reporting, Material Finding, PTSIP-modification return, cure, suspension, and reinstatement obligations.
+
+We acknowledge that the Commercial Cooperation Duty is a material and essential condition of Standing Commercial Authorization and is not merely a voluntary recommendation.
+
+Submission of this registration constitutes affirmative acceptance of these terms for the Commercial Use identified above.
 
 ## Annual Commercial Cooperation Report template
 
@@ -95,7 +113,10 @@ Body:
 Start:
 End:
 
-### PTSIP versions or revisions used
+### PTSIP License version — REQUIRED
+
+### PTSIP versions / immutable revisions used — REQUIRED
+Provide at least one precise identifier for each materially used PTSIP line; include both version and immutable revision when reasonably available.
 
 ### Usage scope
 Where and how PTSIP was used.
@@ -153,7 +174,10 @@ Body:
 
 ### Research period
 
-### PTSIP versions or revisions
+### PTSIP License version — REQUIRED
+
+### PTSIP versions / immutable revisions — REQUIRED
+Provide at least one precise identifier; include both when reasonably available.
 
 ### Research environment and integrations
 
@@ -183,7 +207,10 @@ Body:
 
 ### Research purpose and outcome
 
-### PTSIP versions or revisions
+### PTSIP License version — REQUIRED
+
+### PTSIP versions / immutable revisions — REQUIRED
+Provide at least one precise identifier; include both when reasonably available.
 
 ### Duration of material PTSIP use
 
@@ -210,7 +237,10 @@ Title:
 
 Body:
 
-### PTSIP version or revision
+### PTSIP License version — REQUIRED
+
+### PTSIP version / immutable revision — REQUIRED
+Provide at least one precise identifier; include both when reasonably available.
 
 ### Finding category
 Policy ambiguity / false positive / false negative / compatibility / agent behavior / conformance / security / other
@@ -230,6 +260,12 @@ Provide only non-confidential information.
 
 ### Related PTSIP modification, if any
 
+## Compliance timing principle
+
+The compliance periods in the PTSIP License are intended to encourage voluntary cooperation and reasonable correction, not to create traps for users acting in good faith.
+
+A missed ordinary deadline begins the cure process defined in LICENSE rather than being treated as a reason for immediate punitive action.
+
 ## Reporting anniversary
 
 The normal commercial reporting anniversary is based on the first Commercial Use date stated in the registration.
@@ -238,7 +274,7 @@ Example:
 
 First Commercial Use: 2026-10-15
 First annual reporting period ends: 2027-10-14
-First report due: 2027-11-13
+First report due: 2028-01-12
 
 A correction, late report, suspension, or automatic reinstatement does not reset that anniversary unless the applicable License or a later written agreement expressly says otherwise.
 

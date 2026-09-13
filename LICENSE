@@ -1,5 +1,8 @@
 PTSIP COMMUNITY RECIPROCITY LICENSE
-Version 1.0 — 2026-09-14
+Version 1.0
+License Identifier: LicenseRef-PTSIP-Community-Reciprocity-1.0
+Effective Time: 2026-09-15T00:00:00-07:00 (Pacific Time in effect on 2026-09-15)
+UTC Equivalent: 2026-09-15T07:00:00Z
 
 Copyright (c) 2026 Kinirin
 
@@ -11,6 +14,8 @@ It requires reciprocity so that knowledge gained through PTSIP does not become a
 PTSIP is made publicly available so that individuals, researchers, organizations, and developers using coding agents can inspect it, use it, improve it, and build upon it. The purpose of this License is not primarily to collect license fees. The purpose is to preserve attribution, permit broad practical use, and require reasonable return of PTSIP-related knowledge and improvements when PTSIP is used beyond purely private personal use.
 
 This is a source-available community reciprocity license. It is not intended to represent an OSI-approved Open Source license.
+
+This License is published in advance for notice and preparation. Its permissions, conditions, registration duties, cooperation duties, and compliance periods become applicable at the Effective Time stated above. Publication before the Effective Time does not retroactively alter rights or obligations that validly applied to earlier PTSIP copies or revisions.
 
 1. DEFINITIONS
 
@@ -47,6 +52,10 @@ Commercial Use does not depend on revenue, profit, net income, positive cash flo
 1.11 "Material Finding" means a reasonably confirmed PTSIP-related finding that could materially affect correctness, reliability, policy interpretation, architecture governance, compatibility, conformance, safe use, or meaningful interoperability. Examples include serious false positives or false negatives, policy bypasses, substantial ambiguity, repeated coding-agent misbehavior caused by PTSIP semantics, important compatibility defects, or security-relevant defects in PTSIP itself.
 
 1.12 "Official Cooperation Channel" means a submission channel designated by the PTSIP project for registrations, reports, findings, or contributions. The current channels and submission procedures are listed in COMMERCIAL-USE.md. Changes to submission mechanics do not change the substantive obligations of this License.
+
+1.13 "Effective Time" means 2026-09-15T00:00:00-07:00, Pacific Time as observed on September 15, 2026, equivalent to 2026-09-15T07:00:00Z.
+
+1.14 "PTSIP Version or Revision" means a version, release identifier, Specification family, immutable Specification revision, Git commit, or other sufficiently precise identifier that allows the PTSIP material actually used to be identified. Where both a version and an immutable revision are reasonably available, both should be recorded.
 
 2. LICENSE GRANT
 
@@ -106,10 +115,10 @@ A person who later distributes the material publicly, uses it on behalf of an or
 
 7.2 Institutional Research Use must provide attribution in reasonably discoverable research, technical, educational, seminar, publication, or project documentation.
 
-7.3 If Institutional Research Use continues for more than twelve consecutive months, the user must submit a Research Cooperation Report no later than thirty days after each twelve-month anniversary of that use.
+7.3 If Institutional Research Use continues for more than twelve consecutive months, the user must submit a Research Cooperation Report no later than ninety days after each twelve-month anniversary of that use.
 
 7.4 A Research Cooperation Report must, to the extent reasonably available, identify:
-(a) the PTSIP versions or revisions used;
+(a) the PTSIP Version or Revision used, including at least one precise version or revision identifier and both when reasonably available;
 (b) the purpose and approximate duration of the research;
 (c) relevant environments, coding agents, tools, or integrations;
 (d) compatibility observations;
@@ -117,9 +126,9 @@ A person who later distributes the material publicly, uses it on behalf of an or
 (f) PTSIP-related modifications made by the user; and
 (g) concrete improvement suggestions or a truthful statement that no material improvement was identified.
 
-7.5 When material Institutional Research Use concludes, or when a material publication, paper, public presentation, or formal research report based on that use is first released, the user must submit a Research Cooperation Summary within sixty days if no substantially equivalent report has already been submitted for the relevant period.
+7.5 When material Institutional Research Use concludes, or when a material publication, paper, public presentation, or formal research report based on that use is first released, the user must submit a Research Cooperation Summary within ninety days if no substantially equivalent report has already been submitted for the relevant period.
 
-7.6 A Material Finding discovered through Institutional Research Use must be reported within sixty days after it is reasonably confirmed. Security-sensitive findings may be reported through a designated private mechanism when available.
+7.6 A Material Finding discovered through Institutional Research Use must be shared no later than ninety days after a responsible participant has sufficient information to reasonably believe that the finding exists. A security-sensitive finding or a finding reasonably expected to have immediate and broad material impact should receive an initial notice within thirty days, with reasonably available supporting detail provided no later than the ordinary ninety-day deadline. These periods exist to support timely shared improvement and do not create a guarantee of correction or transfer another user's project responsibility to the reporting user. Security-sensitive findings may be reported through a designated private mechanism when available.
 
 7.7 A material modification to PTSIP itself that is used in Institutional Research Use and is reasonably capable of improving PTSIP correctness, compatibility, or operation must be offered back to the PTSIP project no later than one hundred twenty days after the modification becomes operational or with the next required Research Cooperation Report, whichever occurs first.
 
@@ -132,9 +141,11 @@ A person who later distributes the material publicly, uses it on behalf of an or
 PTSIP provides Standing Commercial Authorization. Separate case-by-case approval, a signature from the Licensor, and a monetary license fee are not required for Commercial Use that satisfies this Section.
 
 Standing Commercial Authorization applies when the Commercial User:
-(a) accepts this License;
-(b) completes Commercial Use Registration within the Commercial Adoption Window; and
-(c) remains in compliance with the applicable attribution and cooperation duties.
+(a) expressly accepts the applicable version of this License;
+(b) expressly accepts the Commercial Cooperation Duty as a material and essential condition of Standing Commercial Authorization;
+(c) identifies the PTSIP Version or Revision used;
+(d) completes Commercial Use Registration within the Commercial Adoption Window; and
+(e) remains in compliance with the applicable attribution and cooperation duties.
 
 The Licensor's silence or failure to respond to a valid registration does not prevent Standing Commercial Authorization from taking effect.
 
@@ -142,29 +153,31 @@ The Licensor's silence or failure to respond to a valid registration does not pr
 
 A Commercial User may begin evaluating, integrating, or adopting PTSIP for a Commercial Purpose before registration.
 
-The Commercial User must submit a valid Commercial Use Registration no later than thirty calendar days after the first intentional Commercial Use.
+The Commercial User must submit a valid Commercial Use Registration no later than ninety calendar days after the first intentional Commercial Use.
 
 If registration is completed within that period, Standing Commercial Authorization applies from the first day of that Commercial Use.
 
-The thirty-day period may not be repeatedly restarted, reset, or manipulated to avoid registration or cooperation duties.
+The ninety-day period may not be repeatedly restarted, reset, or manipulated to avoid registration or cooperation duties.
 
-If registration is not completed by the deadline, continued Commercial Use is not authorized until valid registration is completed.
+If registration is not completed by the deadline, Ordinary Noncompliance begins and is governed by the cure and suspension rules in Section 11. Standing Commercial Authorization remains conditionally available during the applicable cure period for a user acting in good faith to complete registration.
 
 8.3 Commercial Use Registration
 
 Registration must identify:
 (a) the individual or legal entity using PTSIP;
 (b) the product, service, system, business activity, or internal commercial function for which PTSIP is used;
-(c) the initial PTSIP version or revision;
-(d) the date Commercial Use began;
-(e) a responsible cooperation contact or accountable project contact; and
-(f) the primary Official Cooperation Channel record for that registration.
+(c) the applicable PTSIP License version;
+(d) the PTSIP Version or Revision used, with at least one precise identifier required and both version and immutable revision included when reasonably available;
+(e) the date Commercial Use began;
+(f) a responsible cooperation contact or accountable project contact;
+(g) the primary Official Cooperation Channel record for that registration; and
+(h) an affirmative statement expressly accepting both the applicable PTSIP License and the Commercial Cooperation Duty.
 
 Registration does not require disclosure of revenue, profit, customer lists, unrelated proprietary code, or confidential financial information.
 
 8.4 Annual Commercial Cooperation Report
 
-For every continuous twelve-month period of Commercial Use, the Commercial User must submit at least one Commercial Cooperation Report no later than thirty days after the end of that period.
+For every continuous twelve-month period of Commercial Use, the Commercial User must submit at least one Commercial Cooperation Report no later than ninety days after the end of that period.
 
 The report must provide substantive, truthful information reasonably obtained through actual use, including:
 (a) PTSIP versions or revisions used;
@@ -181,7 +194,7 @@ A Commercial User may truthfully report that no known defect or improvement was 
 
 8.5 Material Findings
 
-A Material Finding confirmed during Commercial Use must be reported within thirty days after reasonable confirmation.
+A Material Finding discovered during Commercial Use must be shared no later than ninety days after a responsible participant has sufficient information to reasonably believe that the finding exists. A security-sensitive finding or a finding reasonably expected to have immediate and broad material impact should receive an initial notice within thirty days, with reasonably available supporting detail provided no later than the ordinary ninety-day deadline. Reporting serves shared improvement; it does not by itself create responsibility under this License for how another user independently applies PTSIP.
 
 8.6 Commercial PTSIP Modifications
 
@@ -207,7 +220,7 @@ Commercial Use ends only when PTSIP and applicable PTSIP-Derived Material are no
 
 8.8 Final Commercial Cooperation Report
 
-When Commercial Use ends, the Commercial User must submit a Final Commercial Cooperation Report within thirty days if material Commercial Use occurred after the period covered by the most recent Commercial Cooperation Report.
+When Commercial Use ends, the Commercial User must submit a Final Commercial Cooperation Report within ninety days if material Commercial Use occurred after the period covered by the most recent Commercial Cooperation Report.
 
 Ending Commercial Use does not cancel duties that accrued before Commercial Use ended.
 
@@ -215,7 +228,7 @@ Ending Commercial Use does not cancel duties that accrued before Commercial Use 
 
 If Commercial Use resumes, the Commercial Cooperation Duty resumes automatically.
 
-The Commercial User must update or renew the applicable registration within thirty days after resumed Commercial Use.
+The Commercial User must update or renew the applicable registration within ninety days after resumed Commercial Use.
 
 A materially different category of Commercial Use requires an updated or additional registration.
 
@@ -260,9 +273,11 @@ This License does not require every individual AI output to contain a PTSIP noti
 
 Failure to submit a required registration, report, finding, attribution correction, or PTSIP modification by its deadline is Ordinary Noncompliance.
 
-A sixty-day cure period begins on the missed deadline.
+A ninety-day cure period begins on the missed deadline.
 
-Standing Commercial Authorization remains conditionally available during that cure period solely for a user acting in good faith to cure the omission.
+The compliance periods in this License are intended to encourage voluntary cooperation and reasonable correction, not to create traps for users acting in good faith.
+
+Standing Commercial Authorization remains conditionally available during that cure period for a user acting in good faith to cure the omission.
 
 If the violation remains uncured when the cure period expires, the affected Commercial Authorization is automatically suspended.
 
@@ -340,21 +355,31 @@ The Licensor and a user may voluntarily enter a separate written agreement for s
 
 15.4 This Section does not by itself grant the Licensor an unlimited right to relicense a third-party contribution under unrelated future terms. Future relicensing of third-party contributions may require additional contributor permission.
 
-16. WARRANTY DISCLAIMER
+16. PROJECT DECISION RESPONSIBILITY AND WARRANTY DISCLAIMER
 
-THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR FITNESS FOR A PARTICULAR ARCHITECTURE OR DEVELOPMENT WORKFLOW.
+16.1 PTSIP is provided as a freely available project policy and development-support tool intended to help users make clearer and more consistent project decisions.
 
-YOU ARE RESPONSIBLE FOR DETERMINING WHETHER PTSIP IS SUITABLE FOR YOUR USE.
+16.2 Users remain responsible for deciding how PTSIP guidance, classifications, validation results, conformance results, or other outputs are applied within their own projects and environments. A PTSIP conformance result describes conformance to the applicable PTSIP rules and is not a general certification of every quality or property of the surrounding project.
 
-17. LIMITATION OF LIABILITY
+16.3 THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR ACCURACY, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.
 
-TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSOR AND CONTRIBUTORS SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR SIMILAR DAMAGES ARISING FROM THE WORK OR THIS LICENSE.
+17. SHARED IMPROVEMENT AND LIABILITY BOUNDARY
 
-NOTHING IN THIS LICENSE EXCLUDES LIABILITY THAT APPLICABLE LAW DOES NOT PERMIT TO BE EXCLUDED.
+17.1 PTSIP does not require payment for access. Its reciprocity model asks institutional and commercial users to share meaningful PTSIP-related findings, experience, and improvements so that knowledge gained through use can contribute to the continued development of the project.
+
+17.2 A report, finding, or contribution is part of this shared-improvement process. Providing such information does not, by itself, make the reporting user responsible under this License for how another user independently applies PTSIP. Likewise, another user's failure to report or correct a finding does not, by itself, transfer a different user's project or commercial loss to that user under this License.
+
+17.3 Receiving a report, finding, or contribution does not create a contractual guarantee that the Licensor or Contributors will investigate, correct, patch, update, support, or warn about that issue within any particular period.
+
+17.4 The purpose of these boundaries is to keep responsibility with each user's own project decisions while allowing useful knowledge to flow back into the PTSIP community.
+
+17.5 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSOR AND CONTRIBUTORS SHALL NOT BE LIABLE FOR LOSSES ARISING FROM A USER'S INDEPENDENT DECISION TO APPLY OR RELY ON THE WORK, EXCEPT TO THE EXTENT SUCH LIABILITY CANNOT LAWFULLY BE EXCLUDED.
+
+17.6 Nothing in this License excludes responsibility that applicable law does not permit to be excluded.
 
 18. LICENSE VERSIONING AND TRANSITION
 
-18.1 This License applies to a Work distributed with this License.
+18.1 This License becomes effective at the Effective Time defined in Section 1.13 and applies prospectively from that time to PTSIP material carrying or expressly referencing this License.
 
 18.2 A later PTSIP License version may change authorization, cooperation, or other terms for later PTSIP releases.
 

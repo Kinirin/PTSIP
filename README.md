@@ -10,6 +10,7 @@
 **Specification family:** `0.3.7-draft`<br>
 **Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
 **License:** PTSIP Community Reciprocity License 1.0 (`LicenseRef-PTSIP-Community-Reciprocity-1.0`)<br>
+**License effective time:** `2026-09-15T00:00:00-07:00` Pacific Time (`2026-09-15T07:00:00Z`)<br>
 **Localized documentation:** `README.md` is canonical. Localized README files are regenerated on `main` by the self-hosted Argos Translate workflow; if a translation conflicts with this file, this file governs.
 
 PTSIP is a project-defined architecture policy for separating project responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment decision consistency.
@@ -390,11 +391,14 @@ Personal private use is permitted without registration or periodic reporting. Pu
 
 Commercial Use is determined by **commercial purpose**, not by revenue or profitability. Pre-revenue, loss-making, beta, internally funded, or cost-saving business use does not escape the applicable cooperation duties merely because profit is zero or difficult to measure.
 
+PTSIP supports project decisions while leaving each user in control of how those decisions are applied. Its cooperation duties are designed to return useful findings and improvements to the community, not to shift one user's project responsibility to another. Commercial Registration therefore records both explicit acceptance of the License and Commercial Cooperation Duty and the precise PTSIP version or revision used.
+
 See:
 
 - [LICENSE](LICENSE) — controlling legal terms;
 - [NOTICE](NOTICE) — standard attribution text;
 - [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — plain-language usage guide;
+- [LICENSE-HISTORY.md](LICENSE-HISTORY.md) — license effective-time and transition provenance;
 - [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, registration, reporting, and cooperation procedure.
 
 Earlier repository revisions may have been distributed under different license terms. The license attached to a particular revision governs that copy subject to applicable law.
