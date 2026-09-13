@@ -832,6 +832,38 @@ def _load_packet(path: Path) -> dict[str, object]:
     return payload
 
 
+def _source_context_id(role: str, path: str, selector: Mapping[str, object]) -> str:
+    digest = hashlib.sha256(
+        _selector_key(path, selector).encode("utf-8")
+    ).hexdigest()[:12]
+    return f"{role}-{digest}"
+
+
+def _source_context_refs(
+    raw_refs: object,
+    *,
+    role: str,
+) -> list[dict[str, object]]:
+    if not isinstance(raw_refs, list):
+        raise WorkPacketError(f"{role} source-context references must be a list")
+    result: list[dict[str, object]] = []
+    seen: set[str] = set()
+    for raw in raw_refs:
+        ref = _mapping(raw, f"{role} source-context ref")
+        path = ref.get("path")
+        selector = ref.get("selector")
+        if not isinstance(path, str) or not isinstance(selector, Mapping):
+            raise WorkPacketError(f"{role} source-context ref has invalid path or selector")
+        context_id = _source_context_id(role, path, selector)
+        if context_id in seen:
+            raise WorkPacketError(f"duplicate source-context id: {context_id}")
+        seen.add(context_id)
+        item = dict(ref)
+        item["context_id"] = context_id
+        result.append(item)
+    return result
+
+
 def _normative_rule_headlines(packet: Mapping[str, object]) -> list[dict[str, object]]:
     policy_context = _mapping(packet.get("policy_context"), "packet.policy_context")
     raw_rules = policy_context.get("normative_rules")
@@ -869,7 +901,10 @@ def build_agent_brief(packet: Mapping[str, object]) -> dict[str, object]:
         "policy_refs": policy_context.get("policies"),
         "normative_rules": _normative_rule_headlines(packet),
         "constraints": policy_context.get("constraints"),
-        "read_context": packet.get("read_context"),
+        "read_context": _source_context_refs(
+            packet.get("read_context"),
+            role="read",
+        ),
         "mutation_plan": packet.get("mutation_plan"),
         "acceptance_vectors": packet.get("acceptance_vectors"),
         "guard_contract": {
@@ -928,6 +963,19 @@ def build_agent_brief(packet: Mapping[str, object]) -> dict[str, object]:
                 "<PACKET>",
                 "--role",
                 "read",
+                "--context-id",
+                "<CONTEXT_ID>",
+                "--json",
+            ],
+            "read_context_all": [
+                "python",
+                "-m",
+                "developer.automation.implementation_work_packet",
+                "context",
+                "--packet",
+                "<PACKET>",
+                "--role",
+                "read",
                 "--json",
             ],
         },
@@ -939,6 +987,7 @@ def build_source_context(
     packet: Mapping[str, object],
     *,
     role: str,
+    context_id: str | None = None,
 ) -> dict[str, object]:
     root = repository_root(repository)
     if role not in {"mutation", "read", "all"}:
@@ -948,11 +997,19 @@ def build_source_context(
     read_refs = packet.get("read_context")
     if not isinstance(mutation_refs, list) or not isinstance(read_refs, list):
         raise WorkPacketError("packet source-context references are invalid")
-    selected: list[object] = []
+    selected: list[dict[str, object]] = []
     if role in {"mutation", "all"}:
-        selected.extend(mutation_refs)
+        selected.extend(_source_context_refs(mutation_refs, role="mutation"))
     if role in {"read", "all"}:
-        selected.extend(read_refs)
+        selected.extend(_source_context_refs(read_refs, role="read"))
+
+    if context_id is not None:
+        matches = [item for item in selected if item.get("context_id") == context_id]
+        if len(matches) != 1:
+            raise WorkPacketError(
+                f"source-context id must resolve exactly once for role {role}: {context_id}"
+            )
+        selected = matches
 
     seen: set[str] = set()
     items: list[dict[str, object]] = []
@@ -978,6 +1035,7 @@ def build_source_context(
         lines = (root / path).read_text(encoding="utf-8").splitlines(keepends=True)
         source = "".join(lines[line_start - 1:line_end])
         item = {
+            "context_id": ref.get("context_id"),
             "path": path,
             "selector": dict(selector),
             "resolved_location": dict(location),
@@ -993,6 +1051,7 @@ def build_source_context(
         "projection_authority": False,
         "packet_id": packet.get("packet_id"),
         "role": role,
+        "requested_context_id": context_id,
         "items": items,
     }
 
@@ -1040,6 +1099,10 @@ def _parser() -> argparse.ArgumentParser:
         "--role",
         required=True,
         choices=("mutation", "read", "all"),
+    )
+    context.add_argument(
+        "--context-id",
+        help="Project exactly one deterministic context selector instead of the full role bundle.",
     )
     context.add_argument("--json", action="store_true")
 
@@ -1095,7 +1158,12 @@ def main(argv: list[str] | None = None) -> int:
             _emit(payload, bool(args.json))
             return 0
         if args.command == "context":
-            payload = build_source_context(root, packet, role=args.role)
+            payload = build_source_context(
+                root,
+                packet,
+                role=args.role,
+                context_id=args.context_id,
+            )
             if args.output:
                 _write_json(args.output, payload)
             _emit(payload, bool(args.json))
