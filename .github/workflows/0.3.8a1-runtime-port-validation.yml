@@ -35,25 +35,23 @@ jobs:
           python -m pip install --upgrade pip build twine
           python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Print responsibility-map gaps
+      - name: Require clean repository profile
         shell: powershell
         run: |
           @'
-          import json
           from ptsip.validation.profile import validate_profile
           result = validate_profile(".")
-          details = result.details or {}
-          coverage = details.get("responsibility_map_coverage", {})
-          print("UNASSIGNED_FILES=" + json.dumps(coverage.get("unassigned_files", []), ensure_ascii=False))
-          print("UNASSIGNED_COUNT=" + str(coverage.get("unassigned_count")))
-          print("VALID=" + str(result.valid))
-          print("ERRORS=" + json.dumps(result.errors, ensure_ascii=False))
-          print("WARNINGS=" + json.dumps(result.warnings, ensure_ascii=False))
+          assert result.valid, result.errors
+          assert result.errors == [], result.errors
+          assert result.warnings == [], result.warnings
+          coverage = (result.details or {}).get("responsibility_map_coverage", {})
+          assert coverage.get("unassigned_count") == 0, coverage
+          print("PROFILE_COVERAGE=PASS")
           '@ | python -
-      - name: Run 0.3.8a1 focused feature tests
+      - name: Run regression except known Specification-revision blocker
         shell: powershell
         run: |
-          python -m pytest -q tests/ptsip/test_proposed_component.py tests/ptsip/control_plane/test_github_authority.py tests/ptsip/identity/test_tool_identity.py tests/ptsip/identity/test_spec_identity_runtime.py
+          python -m pytest -q --deselect tests/ptsip/test_release_readiness_030.py::test_release_contract_accepts_current_exact_bound_assets
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Runtime identity
         shell: powershell
@@ -70,7 +68,7 @@ jobs:
           if (-not $distFiles) { throw "No distributions produced" }
           python -m twine check $distFiles
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Verify built version
+      - name: Verify built version and license set
         shell: powershell
         run: |
           @'
@@ -79,12 +77,19 @@ jobs:
           import zipfile
           import tomllib
           expected = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+          expected_licenses = {
+              "LICENSE", "NOTICE", "LICENSE-GUIDE.md", "LICENSE-HISTORY.md", "COMMERCIAL-USE.md"
+          }
           wheel = next(Path("dist").glob("*.whl"))
           with zipfile.ZipFile(wheel) as archive:
-              meta_name = next(name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
+              names = archive.namelist()
+              meta_name = next(name for name in names if name.endswith(".dist-info/METADATA"))
               metadata = email.message_from_bytes(archive.read(meta_name))
-              license_names = sorted(name for name in archive.namelist() if ".dist-info/licenses/" in name)
+              license_names = {
+                  name.rsplit("/", 1)[-1] for name in names if ".dist-info/licenses/" in name
+              }
           assert metadata["Version"] == expected, (metadata["Version"], expected)
+          assert license_names == expected_licenses, (license_names, expected_licenses)
           print(f"VERIFIED_WHEEL_VERSION={expected}")
-          print("WHEEL_LICENSE_FILES=" + ",".join(license_names))
+          print("VERIFIED_LICENSE_SET=" + ",".join(sorted(license_names)))
           '@ | python -
