@@ -1,0 +1,88 @@
+name: iwp-v2-validation
+
+on:
+  push:
+    branches:
+      - dev/0.3.8a1
+    paths:
+      - .github/workflows/iwp-v2-validation.yml
+      - developer/automation/implementation_work_packet.py
+      - developer/automation/implementation_workflows.yaml
+      - developer/automation/implementation_workflows.schema.json
+      - developer/tests/test_implementation_work_packet.py
+      - ptsip.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iwp-v2-validation
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact pushed source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Restore branch identity at exact SHA
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          git checkout -B dev/0.3.8a1 $env:EXPECTED_SHA
+          $actualSha = (git rev-parse HEAD).Trim()
+          $actualBranch = (git branch --show-current).Trim()
+          if ($actualSha -ne $env:EXPECTED_SHA) { throw "HEAD mismatch: expected $env:EXPECTED_SHA, actual $actualSha" }
+          if ($actualBranch -ne 'dev/0.3.8a1') { throw "Branch mismatch: expected dev/0.3.8a1, actual $actualBranch" }
+          Write-Host "Validation source: $actualBranch @ $actualSha"
+
+      - name: Prepare Python 3.14
+        shell: powershell
+        run: |
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) { throw "Python 3.14 is unavailable through py -3.14." }
+          if (Test-Path -LiteralPath ".venv") { Remove-Item -LiteralPath ".venv" -Recurse -Force }
+          & $python -m venv .venv
+          if ($LASTEXITCODE -ne 0) { throw "Failed to create .venv." }
+          $venvScripts = (Resolve-Path ".venv\Scripts").Path
+          $venvScripts >> $env:GITHUB_PATH
+          & ".venv\Scripts\python.exe" --version
+
+      - name: Install repository verification dependencies
+        shell: powershell
+        run: |
+          python -m pip install --upgrade pip
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Run Implementation Work Packet v2 unit tests
+        shell: powershell
+        run: |
+          python -m pytest developer/tests/test_implementation_work_packet.py -q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Prepare and check machine execution packet
+        shell: powershell
+        run: |
+          python -m developer.automation.implementation_work_packet prepare --scope src/ptsip/app/github_authority.py --operation MODIFY --output .git/ptsip-iwp.json --json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m developer.automation.implementation_work_packet check --packet .git/ptsip-iwp.json --json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Run baseline verification through packet
+        shell: powershell
+        run: |
+          python -m developer.automation.implementation_work_packet verify --packet .git/ptsip-iwp.json --stage baseline --log .git/ptsip-iwp-baseline.log
+          if ($LASTEXITCODE -ne 0) { Get-Content .git/ptsip-iwp-baseline.log -ErrorAction SilentlyContinue; exit $LASTEXITCODE }
+
+      - name: Run canonical core regression selection
+        shell: powershell
+        run: |
+          python -m developer.automation.implementation_work_packet verify --packet .git/ptsip-iwp.json --stage core --log .git/ptsip-iwp-core.log
+          if ($LASTEXITCODE -ne 0) { Get-Content .git/ptsip-iwp-core.log -ErrorAction SilentlyContinue; exit $LASTEXITCODE }
