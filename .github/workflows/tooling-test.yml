@@ -276,8 +276,10 @@ jobs:
           if ($metadataText -notmatch '(?m)^Name:\s*PTSIP\s*$') {
             throw "Built wheel metadata does not report Name: PTSIP."
           }
-          if ($metadataText -notmatch '(?m)^Version:\s*0\.3\.7\s*$') {
-            throw "Built wheel metadata does not report Version: 0.3.7."
+          $expectedWheelVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
+          $escapedWheelVersion = [regex]::Escape($expectedWheelVersion)
+          if ($metadataText -notmatch "(?m)^Version:\s*$escapedWheelVersion\s*$") {
+            throw "Built wheel metadata does not report Version: $expectedWheelVersion."
           }
           if ($entryPointsText -notmatch '(?m)^ptsip\s*=\s*ptsip\.cli:main\s*$') {
             throw "Built wheel does not expose the ptsip console entry point."
