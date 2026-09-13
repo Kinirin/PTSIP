@@ -13,6 +13,7 @@
 **Specification 패밀리:** `0.3.7-draft`<br>
 **바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
 **인증:** PTSIP 커뮤니티 Reciprocity 라이센스 1.0 (`LicenseRef-PTSIP-Community-Reciprocity-1.0`)<br>
+**공급 능력:** `2026-09-15T00:00:00-07:00` 태평양 시간 ( Pacific Time)`2026-09-15T07:00:00Z`)<br>
 **현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 충돌하면 이 파일을 기준으로 합니다.
 
 PTSIP는 프로젝트 책임을 **주요 생명주기 소유권(primary lifecycle ownership)**에 따라 분리하면서 명시적 아키텍처 의도, 생명주기 격리, 재현 가능한 적합성, 검증 목적 분리, 여러 환경 간 의사결정 일관성을 보존하기 위한 프로젝트 정의 아키텍처 정책입니다.
@@ -392,11 +393,14 @@ PTSIP 아래 분포 **PTSIP 커뮤니티 Reciprocity 라이센스 1.0**.
 
 제품 정보 사용은 결정됩니다. **회사 소개**수익 또는 수익성이 아닌. Pre-revenue, loss-making, beta, internally funded, 또는 cost-saving 사업 사용은 이익이 0 또는 측정하기 어렵기 때문에 단지 적용 가능한 협력 업무를 피하지 않습니다.
 
+PTSIP 각 사용자를 떠나는 동안 프로젝트의 결정이 적용되는 방법. 그 협력 의무는 커뮤니티에 유용한 발견 및 개선을 반환하도록 설계되어, 다른 사람의 프로젝트 책임을 이동하지 않습니다. 상업 등록 따라서 라이센스 및 상업 협력 의무의 명시적 수용을 기록하고 정확 PTSIP 사용된 버전 또는 개정.
+
 참고 :
 
 - [LICENSE](LICENSE) — 법적 조건을 통제;
 - [NOTICE](NOTICE) - 표준 attribution 텍스트;
 - [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — 일반 언어 사용 가이드;
+- [LICENSE-HISTORY.md](LICENSE-HISTORY.md) - 유효 기간 및 전환 검증;
 - [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, 등록, 보고, 협력 절차.
 
 Earlier repository 개정은 다른 면허 기간의 밑에 분배될지도 모릅니다. 적용 가능한 법률에 따라 특정 개정 기관에 첨부된 라이센스.
