@@ -1,12 +1,22 @@
 release_family: 0.3.8
 package_version_target: 0.3.8a1
 release_kind: DEMO_PRERELEASE
-status: FOCUSED_GATE_PASSED_WAITING_FOR_FULL_VERIFICATION
+status: EMERGENCY_FEATURE_IMPLEMENTED_SELECTIVE_VERIFICATION_PASSED_FULL_RELEASE_VERIFICATION_NOT_YET_RUN
 
 purpose: >
   Emergency bridge release that restores development progress by allowing a component
   that does not yet exist to be represented first as an explicit proposed candidate,
   without pretending that the component already exists or silently granting project authority.
+
+scope_guard:
+  complete_0_4_0_policy_implementation_required_for_this_release: false
+  complete_0_4_0_policy_implementation_claimed_by_this_release: false
+  release_gate_applies_only_to: EXPLICIT_PROPOSED_NONEXISTENT_COMPONENT_REGISTRATION
+  inherited_0_4_0_policy_documents_are:
+    - SEMANTIC_DESIGN_AUTHORITY
+    - IMPLEMENTATION_CONSTRAINTS
+    - NOT_RUNTIME_COMPLETION_EVIDENCE
+  rule: DO_NOT_PROMOTE_THIS_GATE_TO_A_TOOL_0_4_0_IMPLEMENTATION_OR_RELEASE_GATE
 
 single_feature_gate:
   id: PROPOSED_NONEXISTENT_COMPONENT_CANDIDATE
@@ -58,8 +68,32 @@ verification_evidence:
       - PROJECT_PROFILE_pp_1_01
       - RELEASE_READINESS_CONTRACT
     note: USER_REPORTED_LOCAL_PYTEST_RESULT
+  selective_tooling_test:
+    status: PASS
+    workflow_run: 34756326353
+    branch: dev/0.3.8a1
+    branch_head: 5bce769e824e48221b4178361ca9ae7a6c4ac619
+    scope: selective
+    validated_modes:
+      - ptsip-migration
+      - ptsip-evidence
+      - ptsip-source-compat
+      - vpms
+    explicitly_not_validated_by_this_run:
+      - COMPLETE_REPOSITORY_REGRESSION
+      - RELEASE_CONTRACT
+      - REPOSITORY_PROFILE
+      - DISTRIBUTION_BUILD
+      - WHEEL_AND_SDIST_EMBEDDED_CONTRACTS
+      - PRODUCT_ARTIFACT_EVIDENCE
+      - REINSTALL_AND_PUBLIC_SURFACE_SMOKE
+      - COMPLETE_TOOL_0_4_0_RUNTIME_IMPLEMENTATION
   remaining:
-    - FULL_RELEVANT_REGRESSION_OR_FULL_TOOLING_TEST
-    - EXACT_main_SHA_SELF_HOSTED_STATUS
+    - REVIEW_EMERGENCY_FEATURE_IMPLEMENTATION_COMPLETENESS
+    - FULL_RELEASE_VERIFICATION_ONLY_AFTER_IMPLEMENTATION_REVIEW
+    - INTEGRATE_dev_0_3_8a1_TO_dev_0_4_0
+    - RESTORE_0_4_0_ACTIVE_PLANNING_CONTEXT
+    - INTEGRATE_dev_0_4_0_TO_main
+    - EXACT_main_SHA_SELF_HOSTED_FULL_STATUS
     - RELEASE_CONTRACT_ON_FINAL_main
     - RELEASE_DISPATCH
