@@ -50,6 +50,55 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
     ]
 
 
+def test_github_authority_scope_returns_exact_implementation_context() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="src/ptsip/app/github_authority.py",
+        operation="MODIFY",
+    )
+    assert result["binding_scope"] == "src/ptsip/app/github_authority.py"
+    assert result["policies"] == [
+        {
+            "policy_id": "MPD-0010",
+            "path": "developer/policy/MPD-0010.yaml",
+            "status": "ACTIVE",
+            "sections": [
+                "identity_and_resolution",
+                "canonical_and_runtime_projection",
+            ],
+        }
+    ]
+
+    context = result["task_context"]
+    assert context["branch"] == "dev/0.3.8a1"
+    assert context["planning_entry"] == (
+        "docs/planning/0.3.8a1/emergency-implementation-overlay.yaml"
+    )
+    assert context["normative_rule_refs"] == [
+        "PTSIP-AUT-001",
+        "PTSIP-AUT-002",
+        "PTSIP-AUT-003",
+        "PTSIP-AUT-004",
+        "PTSIP-AUT-005",
+        "PTSIP-AUT-006",
+        "PTSIP-AUT-007",
+    ]
+    assert "src/ptsip/app/github_authority.py#_workflow_status" in context[
+        "implementation_refs"
+    ]
+    assert "tests/ptsip/test_proposed_component.py" in context["test_refs"]
+
+
+def test_similar_github_authority_scope_does_not_receive_task_context() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="src/ptsip/app/github_authority_extra.py",
+        operation="MODIFY",
+    )
+    assert result["binding_scope"] == "."
+    assert "task_context" not in result
+
+
 def test_similar_scope_name_does_not_match_registered_scope() -> None:
     result = resolve_policies(
         ROOT,

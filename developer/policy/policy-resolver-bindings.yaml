@@ -82,6 +82,13 @@ scope_bindings:
           - ptsip_design_priority
           - identity_and_resolution
 
+  src/ptsip/app/github_authority.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+
   src/ptsip/migration:
     default_refs:
       - policy_id: MPD-0008

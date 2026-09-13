@@ -201,6 +201,124 @@ def _validate_policy_ref(
     }
 
 
+def _validate_repository_ref(root: Path, value: object, *, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise PolicyResolverError(f"{label} must be a non-empty repository reference")
+    reference = value.strip()
+    path_text, marker, fragment = reference.partition("#")
+    candidate = (root / path_text).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise PolicyResolverError(f"{label} escapes repository root") from exc
+    if not candidate.is_file():
+        raise PolicyResolverError(f"{label} does not exist: {path_text}")
+    if marker and not fragment:
+        raise PolicyResolverError(f"{label} has an empty fragment")
+    return reference
+
+
+def _normative_rule_ids(
+    root: Path,
+    contract: Mapping[str, object],
+) -> set[str]:
+    registry_path = _configured_path(root, contract, "normative_rule_registry_ref")
+    payload = load_yaml(registry_path, root=root)
+    registry = _mapping(payload.get("ptsip_registry"), label="ptsip_registry")
+    rules = registry.get("rules")
+    if not isinstance(rules, list):
+        raise PolicyResolverError("normative rule registry has no rules list")
+    result: set[str] = set()
+    for raw in rules:
+        rule = _mapping(raw, label="normative rule")
+        rule_id = rule.get("id")
+        if isinstance(rule_id, str) and rule_id:
+            result.add(rule_id)
+    return result
+
+
+def _task_context(
+    root: Path,
+    contract: Mapping[str, object],
+    *,
+    scope: str,
+    operation: str,
+) -> dict[str, object] | None:
+    context_path = _configured_path(root, contract, "task_context_ref")
+    payload = load_yaml(context_path, root=root)
+    entry = _mapping(payload.get("coding_agent_entry"), label="coding_agent_entry")
+    task_bindings = _mapping(
+        entry.get("task_bindings"),
+        label="coding_agent_entry.task_bindings",
+    )
+    scope_binding = task_bindings.get(scope)
+    if scope_binding is None:
+        return None
+    operations = _mapping(
+        scope_binding,
+        label=f"coding_agent_entry.task_bindings.{scope}",
+    )
+    raw_context = operations.get(operation)
+    if raw_context is None:
+        return None
+    context = _mapping(
+        raw_context,
+        label=f"coding_agent_entry.task_bindings.{scope}.{operation}",
+    )
+
+    planning_entry = _validate_repository_ref(
+        root,
+        entry.get("planning_entry"),
+        label="planning_entry",
+    )
+
+    raw_rules = context.get("normative_rule_refs")
+    if not isinstance(raw_rules, list) or not raw_rules:
+        raise PolicyResolverError("task context normative_rule_refs must be non-empty")
+    normative_rule_refs = [str(item) for item in raw_rules]
+    if len(normative_rule_refs) != len(set(normative_rule_refs)):
+        raise PolicyResolverError("task context normative_rule_refs must be unique")
+    known_rule_ids = _normative_rule_ids(root, contract)
+    unknown = [rule_id for rule_id in normative_rule_refs if rule_id not in known_rule_ids]
+    if unknown:
+        raise PolicyResolverError(
+            "task context references unknown normative rule(s): " + ", ".join(unknown)
+        )
+
+    def refs(field: str) -> list[str]:
+        raw = context.get(field)
+        if not isinstance(raw, list) or not raw:
+            raise PolicyResolverError(f"task context {field} must be non-empty")
+        values = [
+            _validate_repository_ref(root, item, label=f"{field} item")
+            for item in raw
+        ]
+        if len(values) != len(set(values)):
+            raise PolicyResolverError(f"task context {field} must be unique")
+        return values
+
+    raw_constraints = context.get("constraints")
+    if not isinstance(raw_constraints, list) or not raw_constraints:
+        raise PolicyResolverError("task context constraints must be non-empty")
+    constraints = [str(item) for item in raw_constraints]
+    if len(constraints) != len(set(constraints)):
+        raise PolicyResolverError("task context constraints must be unique")
+
+    branch = entry.get("branch")
+    if not isinstance(branch, str) or not branch:
+        raise PolicyResolverError("coding_agent_entry.branch must be non-empty")
+
+    return {
+        "branch": branch,
+        "planning_entry": planning_entry,
+        "normative_rule_refs": normative_rule_refs,
+        "normative_rule_source": "spec/PTSIP-SPEC.md",
+        "implementation_refs": refs("implementation_refs"),
+        "test_refs": refs("test_refs"),
+        "constraints": constraints,
+    }
+
+
 def resolve_policies(
     repository: str | Path,
     *,
@@ -222,7 +340,7 @@ def resolve_policies(
     ids = [str(item["policy_id"]) for item in policies]
     if len(ids) != len(set(ids)):
         raise PolicyResolverError("resolved policy identities must be unique")
-    return {
+    result: dict[str, object] = {
         "schema_version": "ptsip-policy-resolution/v1",
         "resolver_id": bindings.get("resolver_id"),
         "scope": normalized_scope,
@@ -232,6 +350,15 @@ def resolve_policies(
         "authority": "CANONICAL_POLICY_RECORDS",
         "projection_authority": False,
     }
+    task_context = _task_context(
+        root,
+        contract,
+        scope=normalized_scope,
+        operation=normalized_operation,
+    )
+    if task_context is not None:
+        result["task_context"] = task_context
+    return result
 
 
 def validate_policy_resolver(
@@ -287,8 +414,42 @@ def validate_policy_resolver(
                             f"{scope}:{operation} duplicates {policy_id}"
                         )
                     seen.add(policy_id)
+
+        task_context_path = _configured_path(root, contract, "task_context_ref")
+        task_payload = load_yaml(task_context_path, root=root)
+        entry = _mapping(task_payload.get("coding_agent_entry"), label="coding_agent_entry")
+        task_bindings = _mapping(
+            entry.get("task_bindings"),
+            label="coding_agent_entry.task_bindings",
+        )
+        vocabulary = bindings.get("operation_vocabulary")
+        if not isinstance(vocabulary, list):
+            raise PolicyResolverError("operation_vocabulary must be a list")
+        for task_scope, raw_operations in task_bindings.items():
+            if task_scope not in scope_bindings:
+                raise PolicyResolverError(
+                    f"task context scope {task_scope!r} has no exact policy binding"
+                )
+            operations = _mapping(
+                raw_operations,
+                label=f"coding_agent_entry.task_bindings.{task_scope}",
+            )
+            for operation in operations:
+                if operation not in vocabulary:
+                    raise PolicyResolverError(
+                        f"task context uses unsupported operation {operation!r}"
+                    )
+                if _task_context(
+                    root,
+                    contract,
+                    scope=str(task_scope),
+                    operation=str(operation),
+                ) is None:
+                    raise PolicyResolverError(
+                        f"task context did not resolve for {task_scope}:{operation}"
+                    )
         return ()
-    except (OSError, ValueError, PolicyResolverError) as exc:
+    except (OSError, ValueError, yaml.YAMLError, PolicyResolverError) as exc:
         return (str(exc),)
 
 

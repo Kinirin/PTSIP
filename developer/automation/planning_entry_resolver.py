@@ -11,6 +11,7 @@ from developer.automation.policy_loader import load_yaml, repository_root
 
 
 ROOT_INDEX = "docs/planning/index.yaml"
+EMERGENCY_OVERLAY_PATH = "docs/planning/0.3.8a1/emergency-implementation-overlay.yaml"
 
 
 class PlanningEntryResolutionError(RuntimeError):
@@ -84,6 +85,27 @@ def resolve_planning_entry(
             "EMPTY_BRANCH",
             "Planning entry resolution requires a non-empty exact branch name.",
         )
+
+    emergency_path = (base / EMERGENCY_OVERLAY_PATH).resolve()
+    if emergency_path.is_file():
+        emergency_overlay = load_yaml(EMERGENCY_OVERLAY_PATH, root=base)
+        emergency_branch = emergency_overlay.get("branch")
+        if isinstance(emergency_branch, dict) and emergency_branch.get("name") == selected_branch:
+            plan_version = emergency_overlay.get("plan_version")
+            if not isinstance(plan_version, str) or not plan_version:
+                raise PlanningEntryResolutionError(
+                    "INVALID_EMERGENCY_PLAN_VERSION",
+                    "Emergency planning overlay has no valid plan_version.",
+                )
+            _entry_document_path(base, EMERGENCY_OVERLAY_PATH)
+            return PlanningEntryResolution(
+                status="RESOLVED",
+                branch=selected_branch,
+                plan_version=plan_version,
+                entry_document=EMERGENCY_OVERLAY_PATH,
+                role="EMERGENCY_RELEASE_OVERLAY",
+                work_unit=None,
+            )
 
     root_index = load_yaml(ROOT_INDEX, root=base)
     matches: list[tuple[dict[str, Any], dict[str, Any]]] = []

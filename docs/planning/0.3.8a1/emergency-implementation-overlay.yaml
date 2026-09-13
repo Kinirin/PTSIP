@@ -44,6 +44,35 @@ developer_only_control_plane:
     counts_as_0_3_8a1_user_facing_release_feature: false
     purpose: REDUCE_CODING_AGENT_POLICY_DISCOVERY_AND_NATURAL_LANGUAGE_CONTEXT_LOADING
 
+coding_agent_entry:
+  branch: dev/0.3.8a1
+  planning_entry: docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
+  task_bindings:
+    src/ptsip/app/github_authority.py:
+      MODIFY:
+        normative_rule_refs:
+          - PTSIP-AUT-001
+          - PTSIP-AUT-002
+          - PTSIP-AUT-003
+          - PTSIP-AUT-004
+          - PTSIP-AUT-005
+          - PTSIP-AUT-006
+          - PTSIP-AUT-007
+        implementation_refs:
+          - src/ptsip/app/github_authority.py#_workflow_status
+          - src/ptsip/app/github_authority.py#GithubControlPlaneClient.application
+          - src/ptsip/cli.py#resolve
+          - src/ptsip/proposed_component.py
+        test_refs:
+          - tests/ptsip/test_proposed_component.py
+          - tests/ptsip/control_plane/test_github_authority.py
+          - tests/ptsip/control_plane/test_github_authority_reconciliation.py
+        constraints:
+          - PRESERVE_GLOBAL_DECISION_AND_LOCAL_PROJECTION_SEPARATION
+          - PRESERVE_FIRST_VALID_RESOLUTION_WINS
+          - FAIL_CLOSED_ON_COORDINATION_FAILURE
+          - DO_NOT_PROJECT_PROPOSAL_TO_ACTIVE_COMPONENTS
+
 release_identity:
   tool_version: 0.3.8a1
   specification_family: 0.3.7-draft
