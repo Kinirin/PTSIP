@@ -34,7 +34,7 @@ Namespace indexes:
 
 | Contract | State | Document |
 | --- | --- | --- |
-| `pp.1.01` | Current Tool 0.3.7 contract / PTSIP repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| `pp.1.01` | Current contract; reused unchanged by Tool 0.3.8a1 | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 
 ### `0.3.6-draft -> pp.1.01` compatibility notice
 
@@ -54,7 +54,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.7` | Release candidate; exact-SHA verification and publication pending | [`tool/0.3.7.md`](tool/0.3.7.md) |
+| Tool | `0.3.8a1` | Emergency demo prerelease candidate; exact-SHA verification and publication pending | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 | Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 
@@ -75,7 +75,8 @@ All retained Tool notes now live under `releasenote/tool/`.
 | `0.3.4` | Published historical Tool release; stale pre-publication repository note removed | GitHub Release history |
 | `0.3.5` | Published; first VPMS-capable Tool release | [`tool/0.3.5.md`](tool/0.3.5.md) |
 | `0.3.6` | Development complete; pre-publication release candidate | [`tool/0.3.6.md`](tool/0.3.6.md) |
-| `0.3.7` | Current release candidate | [`tool/0.3.7.md`](tool/0.3.7.md) |
+| `0.3.7` | Previous Tool release candidate baseline | [`tool/0.3.7.md`](tool/0.3.7.md) |
+| `0.3.8a1` | Emergency demo prerelease candidate | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
