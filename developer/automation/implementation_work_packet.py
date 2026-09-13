@@ -740,7 +740,7 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
     }
 
 
-def _load_packet(def _failure_signature(stage: str, returncode: int, output: str) -> str:
+def _failure_signature(stage: str, returncode: int, output: str) -> str:
     lines = [line.rstrip() for line in output.splitlines() if line.strip()]
     tail = "\n".join(lines[-80:])
     normalized = re.sub(r"\b\d+(?:\.\d+)?s\b", "<duration>", tail)
