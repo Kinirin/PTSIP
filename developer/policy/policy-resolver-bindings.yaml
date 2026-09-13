@@ -1,0 +1,108 @@
+schema_version: ptsip-policy-resolver-bindings/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+resolver_id: POLICY_RESOLVER_V1
+
+operation_vocabulary:
+  - READ
+  - MODIFY
+  - PLAN
+  - VERIFY
+  - RELEASE
+
+scope_bindings:
+  ".":
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - ptsip_design_priority
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+    operations:
+      PLAN:
+        - policy_id: MPD-0001
+          sections:
+            - planning_boundary
+        - policy_id: MPD-0010
+          sections:
+            - ptsip_design_priority
+            - identity_and_resolution
+      RELEASE:
+        - policy_id: MPD-0006
+          sections:
+            - authority_semantics
+        - policy_id: MPD-0007
+          sections:
+            - authority_semantics
+
+  developer:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+        - policy_id: MPD-0010
+          sections:
+            - ptsip_design_priority
+            - identity_and_resolution
+            - canonical_and_runtime_projection
+
+  developer/policy:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+        - policy_id: MPD-0010
+          sections:
+            - normative_contract_architecture
+            - identity_and_resolution
+            - canonical_and_runtime_projection
+
+  developer/profiles:
+    default_refs:
+      - policy_id: MPD-0005
+        sections:
+          - authority_semantics
+        - policy_id: MPD-0010
+          sections:
+            - identity_and_resolution
+
+  docs/planning:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - planning_boundary
+        - policy_id: MPD-0009
+          sections:
+            - authority_semantics
+        - policy_id: MPD-0010
+          sections:
+            - ptsip_design_priority
+            - identity_and_resolution
+
+  src/ptsip/migration:
+    default_refs:
+      - policy_id: MPD-0008
+        sections:
+          - authority_semantics
+        - policy_id: MPD-0010
+          sections:
+            - identity_and_resolution
+            - canonical_and_runtime_projection
+
+  releasenote:
+    default_refs:
+      - policy_id: MPD-0006
+        sections:
+          - authority_semantics
+        - policy_id: MPD-0010
+          sections:
+            - identity_and_resolution
+
+  .github/workflows:
+    default_refs:
+      - policy_id: MPD-0007
+        sections:
+          - authority_semantics
+        - policy_id: MPD-0010
+          sections:
+            - identity_and_resolution
