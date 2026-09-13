@@ -35,6 +35,15 @@ implementation_scope:
       - COMPLETE_TOOL_0_4_0_WORK_UNIT_IMPLEMENTATION
   interpretation_rule: PRESENCE_OF_INHERITED_0_4_0_POLICY_DOCUMENTS_MUST_NOT_BE_TREATED_AS_RUNTIME_IMPLEMENTATION_EVIDENCE
 
+developer_only_control_plane:
+  policy_resolver:
+    id: POLICY_RESOLVER_V1
+    contract_ref: developer/policy/policy-resolver-contract.yaml
+    implementation_ref: developer/automation/policy_resolver.py
+    shipped_in_ptsip_package: false
+    counts_as_0_3_8a1_user_facing_release_feature: false
+    purpose: REDUCE_CODING_AGENT_POLICY_DISCOVERY_AND_NATURAL_LANGUAGE_CONTEXT_LOADING
+
 release_identity:
   tool_version: 0.3.8a1
   specification_family: 0.3.7-draft
