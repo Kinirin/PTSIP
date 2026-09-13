@@ -67,6 +67,7 @@ def test_operation_override_is_exact() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0006",
         "MPD-0007",
+        "MPD-0010",
     ]
 
 
