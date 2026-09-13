@@ -56,11 +56,11 @@ jobs:
       - name: Simulate compact coding-agent entry
         shell: powershell
         run: |
-          python -m developer.automation.implementation_work_packet prepare --scope src/ptsip/app/github_authority.py --operation MODIFY --output .git/ptsip-iwp.json --agent-brief --json > .git/ptsip-agent-brief.json
+          python -m developer.automation.implementation_work_packet prepare --scope src/ptsip/app/github_authority.py --operation MODIFY --output .git/ptsip-iwp.json --brief-output .git/ptsip-agent-brief.json --agent-brief --json | Out-Null
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m developer.automation.implementation_work_packet context --packet .git/ptsip-iwp.json --role mutation --json > .git/ptsip-mutation-context.json
+          python -m developer.automation.implementation_work_packet context --packet .git/ptsip-iwp.json --role mutation --output .git/ptsip-mutation-context.json --json | Out-Null
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m developer.automation.policy_resolver rule PTSIP-AUT-001 --json > .git/ptsip-rule-sample.json
+          python -m developer.automation.policy_resolver rule PTSIP-AUT-001 --json | Out-Null
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Measure progressive-disclosure cost
@@ -69,11 +69,12 @@ jobs:
           @'
           import json
           from pathlib import Path
+          import developer.automation.policy_resolver as policy_resolver
           root = Path('.')
           packet = json.loads((root/'.git/ptsip-iwp.json').read_text(encoding='utf-8'))
           brief = json.loads((root/'.git/ptsip-agent-brief.json').read_text(encoding='utf-8'))
           mutation = json.loads((root/'.git/ptsip-mutation-context.json').read_text(encoding='utf-8'))
-          rule = json.loads((root/'.git/ptsip-rule-sample.json').read_text(encoding='utf-8'))
+          rule = policy_resolver.get_normative_rule(root, rule_id='PTSIP-AUT-001')
           def size(obj): return len(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode('utf-8'))
           packet_bytes = size(packet)
           brief_bytes = size(brief)
