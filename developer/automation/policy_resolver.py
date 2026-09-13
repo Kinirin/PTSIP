@@ -234,6 +234,64 @@ def resolve_policies(
     }
 
 
+def validate_policy_resolver(
+    repository: str | Path,
+) -> tuple[str, ...]:
+    try:
+        root = repository_root(repository)
+        contract = _contract(root)
+        resolver = _resolver_config(contract)
+        if resolver.get("owner_policy_ref") != "MPD-0010":
+            raise PolicyResolverError(
+                "Policy Resolver owner_policy_ref must be MPD-0010"
+            )
+        bindings = _load_bindings(root, contract)
+        index = _load_index(root, contract)
+        scope_bindings = _mapping(
+            bindings.get("scope_bindings"),
+            label="scope_bindings",
+        )
+        for scope, raw_binding in scope_bindings.items():
+            if not isinstance(scope, str) or not scope:
+                raise PolicyResolverError("scope binding key must be non-empty")
+            binding = _mapping(
+                raw_binding,
+                label=f"scope_bindings.{scope}",
+            )
+            refs_by_operation: list[tuple[str, object]] = [
+                ("DEFAULT", binding.get("default_refs"))
+            ]
+            operations = _mapping(
+                binding.get("operations", {}),
+                label=f"scope_bindings.{scope}.operations",
+            )
+            refs_by_operation.extend(
+                (str(operation), refs)
+                for operation, refs in operations.items()
+            )
+            for operation, refs in refs_by_operation:
+                if not isinstance(refs, list) or not refs:
+                    raise PolicyResolverError(
+                        f"{scope}:{operation} must contain policy refs"
+                    )
+                seen: set[str] = set()
+                for reference in refs:
+                    resolved = _validate_policy_ref(
+                        root,
+                        index,
+                        reference,
+                    )
+                    policy_id = str(resolved["policy_id"])
+                    if policy_id in seen:
+                        raise PolicyResolverError(
+                            f"{scope}:{operation} duplicates {policy_id}"
+                        )
+                    seen.add(policy_id)
+        return ()
+    except (OSError, ValueError, PolicyResolverError) as exc:
+        return (str(exc),)
+
+
 def get_policy(
     repository: str | Path,
     *,
