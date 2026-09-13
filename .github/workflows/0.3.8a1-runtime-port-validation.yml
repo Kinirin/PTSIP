@@ -93,3 +93,4 @@ jobs:
           print(f"VERIFIED_WHEEL_VERSION={expected}")
           print("VERIFIED_LICENSE_SET=" + ",".join(sorted(license_names)))
           '@ | python -
+# validation-trigger: final-workflow-repair
