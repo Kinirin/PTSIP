@@ -236,6 +236,176 @@ def test_github_authority_profile_path_is_part_of_scope_identity() -> None:
     assert len(store.documents) == 2
 
 
+def test_github_proposal_resolution_returns_terminal_local_receipt(
+    tmp_path: Path,
+    monkeypatch,
+    capsys,
+) -> None:
+    repo = _repo(tmp_path)
+    store = MemoryAuthority()
+    client = GithubControlPlaneClient("example/project", store=store)
+    monkeypatch.setattr(cli_module, "GithubControlPlaneClient", lambda repository: client)
+    monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+
+    assert main([
+        "propose-component", str(repo), "--component", "future-service",
+        "--include", "future/service/**", "--coordination", "github", "--json",
+    ]) == 0
+    registered = json.loads(capsys.readouterr().out)
+    assert registered["status"] == "DECISION_REQUIRED"
+    assert registered["decision"]["status"] == "PENDING"
+    assert registered["decision"]["request"]["origin"] == "EXPLICIT_PROPOSED_COMPONENT"
+    decision_id = registered["decision"]["id"]
+
+    receipts = []
+    winners = []
+    original_application = client.application
+
+    def record_local_receipt(payload):
+        before = copy.deepcopy(store.documents)
+        head, writes = store.head, store.counter
+        winner = client.decision({"decision_id": decision_id})["decision"]
+        assert winner["status"] == "RESOLVED"
+        receipt = original_application(payload)
+        assert store.documents == before
+        assert (store.head, store.counter) == (head, writes)
+        assert client.decision({"decision_id": decision_id})["decision"] == winner
+        winners.append(winner)
+        receipts.append(receipt)
+        return receipt
+
+    monkeypatch.setattr(client, "application", record_local_receipt)
+    assert main([
+        "resolve", str(repo), "--decision", decision_id,
+        "--classification", "DEVELOPMENT_TOOLING",
+        "--purpose", "Future repository development service",
+        "--shipped", "no", "--runtime-required", "no", "--executable", "yes",
+        "--coordination", "github", "--json",
+    ]) == 0
+    resolved = json.loads(capsys.readouterr().out)
+    assert resolved["status"] == "PROPOSAL_APPROVED"
+    assert resolved["backend"] == "GITHUB"
+    assert resolved["decision"] == winners[0]
+    assert resolved["decision"]["status"] == "RESOLVED"
+    assert resolved["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
+    assert len(receipts) == 1
+    assert resolved["application"] == receipts[0] == {
+        "backend": "GITHUB",
+        "scope": "LOCAL_PROJECTION",
+        "status": "PROPOSAL_APPROVED",
+        "decision_id": decision_id,
+        "profile_path": "ptsip.yaml",
+        "applied_revision": _git(repo, "rev-parse", "HEAD").stdout.strip(),
+    }
+    assert "application_status" not in resolved["decision"]
+    assert resolved["materialized"] is False
+    assert resolved["active_component_declared"] is False
+    assert not (repo / "ptsip.yaml").exists()
+    assert not (repo / "future").exists()
+    assert not decision_store_path(repo).exists()
+
+    authority_before = copy.deepcopy(store.documents)
+    head, writes = store.head, store.counter
+    rejected = client.resolve({
+        "decision_id": decision_id,
+        "answer": canonical_v2_answer(
+            classification="PRODUCT", purpose="Contradictory later answer",
+            shipped=True, runtime_required=True,
+        ),
+        "actor": "later-owner",
+    })
+    assert rejected["status"] == "ALREADY_RESOLVED"
+    assert rejected["accepted"] is False
+    assert rejected["decision"] == winners[0]
+    assert store.documents == authority_before
+    assert (store.head, store.counter) == (head, writes)
+
+
+def test_repeated_github_proposal_is_terminal_without_reapplication(
+    tmp_path: Path,
+    monkeypatch,
+    capsys,
+) -> None:
+    repo = _repo(tmp_path)
+    store = MemoryAuthority()
+    client = GithubControlPlaneClient("example/project", store=store)
+    monkeypatch.setattr(cli_module, "GithubControlPlaneClient", lambda repository: client)
+    monkeypatch.setenv("PTSIP_HOME", str(tmp_path / "state"))
+    propose_args = [
+        "propose-component", str(repo), "--component", "future-service",
+        "--include", "future/service/**", "--coordination", "github", "--json",
+    ]
+    assert main(propose_args) == 0
+    registered = json.loads(capsys.readouterr().out)
+    decision_id = registered["decision"]["id"]
+    resolved = client.resolve({
+        "decision_id": decision_id,
+        "answer": canonical_v2_answer(),
+        "actor": "owner",
+    })
+    assert resolved["status"] == "RESOLVED"
+    assert resolved["accepted"] is True
+    authority_before = copy.deepcopy(store.documents)
+    head, writes = store.head, store.counter
+
+    def unexpected_mutation(*args, **kwargs):
+        pytest.fail("A resolved explicit proposal must not require reapplication or authority writes")
+
+    monkeypatch.setattr(client, "application", unexpected_mutation)
+    monkeypatch.setattr(client, "resolve", unexpected_mutation)
+    monkeypatch.setattr(store, "write_json", unexpected_mutation)
+    monkeypatch.setattr(cli_module, "prepare_local_profile", unexpected_mutation)
+    monkeypatch.setattr(cli_module, "write_prepared_local_profile", unexpected_mutation)
+
+    for _ in range(3):
+        assert main(propose_args) == 0
+        repeated = json.loads(capsys.readouterr().out)
+        assert repeated["status"] == "RESOLVED"
+        assert repeated["decision"] == resolved["decision"]
+        assert repeated["candidate"]["materialized"] is False
+        assert repeated["candidate"]["authoritative"] is False
+        assert store.documents == authority_before
+        assert (store.head, store.counter) == (head, writes)
+        assert not (repo / "ptsip.yaml").exists()
+        assert not (repo / "future").exists()
+        assert not decision_store_path(repo).exists()
+
+
+def test_normal_github_resolution_still_requires_local_application() -> None:
+    store = MemoryAuthority()
+    client = GithubControlPlaneClient("example/project", store=store)
+    payload = {
+        "id": "clr-normal", "repository": "example/project", "branch": "main",
+        "subject_revision": "a" * 40, "component_id": "tools",
+        "request": {
+            "component_id": "tools", "include": ["tools/**"],
+            "missing_fields": ["classification", "purpose"],
+        },
+    }
+    pending = client.gate(payload)
+    assert pending["status"] == "DECISION_REQUIRED"
+    decision_id = pending["decision"]["id"]
+    resolved = client.resolve({
+        "decision_id": decision_id, "answer": canonical_v2_answer(), "actor": "owner",
+    })
+    assert resolved["status"] == "RESOLVED"
+    assert resolved["accepted"] is True
+    authority_before = copy.deepcopy(store.documents)
+    head, writes = store.head, store.counter
+    for response in (
+        client.gate(payload), client.peek(payload), client.decision({"decision_id": decision_id}),
+    ):
+        assert response["status"] == "RESOLVED_APPLICATION_REQUIRED"
+        assert response["decision"] == resolved["decision"]
+        assert response["decision"]["status"] == "RESOLVED"
+    for status in ("LOCAL_APPLIED", "FAILED", "STALE"):
+        receipt = client.application({"decision_id": decision_id, "status": status})
+        assert receipt["status"] == status
+        assert receipt["scope"] == "LOCAL_PROJECTION"
+    assert store.documents == authority_before
+    assert (store.head, store.counter) == (head, writes)
+
+
 def test_github_adoption_winner_reconciles_into_stale_clone(
     tmp_path: Path,
     monkeypatch,
