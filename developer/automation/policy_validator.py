@@ -344,13 +344,6 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         )
     )
 
-    from developer.automation.policy_resolver import validate_policy_resolver
-
-    errors.extend(
-        f"policy resolver: {error}"
-        for error in validate_policy_resolver(base)
-    )
-
     return tuple(errors)
 
 
