@@ -4,7 +4,6 @@ import json
 import subprocess
 from pathlib import Path
 
-import yaml
 
 from ptsip.cli import main
 from ptsip.proposed_component import (
@@ -133,11 +132,31 @@ def test_cli_registers_nonexistent_component_then_existing_resolve_flow_applies_
         == 0
     )
     resolved = json.loads(capsys.readouterr().out)
-    assert resolved["status"] in {"RESOLVED", "ALREADY_APPLIED", "LOCAL_APPLIED"}
-
-    profile = yaml.safe_load((repo / "ptsip.yaml").read_text(encoding="utf-8"))
-    components = profile["components"]
-    component = next(item for item in components if item["id"] == "future-service")
-    assert component["include"] == ["future/service/**"]
-    assert component["classification"] == "DEVELOPMENT_TOOLING"
+    assert resolved["status"] == "PROPOSAL_APPROVED"
+    assert resolved["materialized"] is False
+    assert resolved["active_component_declared"] is False
+    assert resolved["application"]["decision"]["application_status"] == "PROPOSAL_APPROVED"
+    assert resolved["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
+    assert not (repo / "ptsip.yaml").exists()
     assert not (repo / "future").exists()
+
+    assert (
+        main(
+            [
+                "propose-component",
+                str(repo),
+                "--component",
+                "future-service",
+                "--include",
+                "future/service/**",
+                "--coordination",
+                "local",
+                "--json",
+            ]
+        )
+        == 0
+    )
+    repeated = json.loads(capsys.readouterr().out)
+    assert repeated["status"] == "RESOLVED"
+    assert repeated["decision"]["application_status"] == "PROPOSAL_APPROVED"
+    assert repeated["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
