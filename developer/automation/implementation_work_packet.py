@@ -64,6 +64,27 @@ def _dedupe(items: list[str]) -> list[str]:
     return list(dict.fromkeys(items))
 
 
+def _merge_pytest_targets(root: Path, targets: list[str]) -> list[str]:
+    merged: list[str] = []
+    for target in targets:
+        normalized = target.rstrip("/")
+        already_covered = any(
+            existing == normalized
+            or ((root / existing).is_dir() and normalized.startswith(existing + "/"))
+            for existing in merged
+        )
+        if already_covered:
+            continue
+        if (root / normalized).is_dir():
+            merged = [
+                existing
+                for existing in merged
+                if not existing.startswith(normalized + "/")
+            ]
+        merged.append(normalized)
+    return merged
+
+
 def _registry(root: Path) -> dict[str, object]:
     payload = load_yaml(REGISTRY_PATH, root=root)
     schema = load_json(SCHEMA_PATH, root=root)
@@ -412,7 +433,10 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
     if not isinstance(component_source, str) or not component_source:
         raise WorkPacketError("core regression source must be non-empty")
     core_targets = _component_regression_targets(root, component_ref, component_source)
-    combined_regression = _dedupe([*task_regression, *core_targets])
+    combined_regression = _merge_pytest_targets(
+        root,
+        [*task_regression, *core_targets],
+    )
 
     acceptance_coverage: list[dict[str, object]] = []
     for raw in acceptance:
