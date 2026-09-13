@@ -1,0 +1,110 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from developer.automation.policy_resolver import (
+    PolicyResolverError,
+    explain_policy,
+    get_policy,
+    resolve_policies,
+)
+
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="src/ptsip/migration/future_engine.py",
+        operation="MODIFY",
+    )
+    assert result["binding_scope"] == "src/ptsip/migration"
+    assert result["projection_authority"] is False
+    assert result["policies"] == [
+        {
+            "policy_id": "MPD-0008",
+            "path": "developer/policy/MPD-0008.yaml",
+            "status": "ACTIVE",
+            "sections": ["authority_semantics"],
+        },
+        {
+            "policy_id": "MPD-0010",
+            "path": "developer/policy/MPD-0010.yaml",
+            "status": "ACTIVE",
+            "sections": [
+                "identity_and_resolution",
+                "canonical_and_runtime_projection",
+            ],
+        },
+    ]
+
+
+def test_similar_scope_name_does_not_match_registered_scope() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="src/ptsip-migrations/future_engine.py",
+        operation="MODIFY",
+    )
+    assert result["binding_scope"] == "."
+    assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010"]
+
+
+def test_operation_override_is_exact() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="README.md",
+        operation="RELEASE",
+    )
+    assert result["binding_scope"] == "."
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0006",
+        "MPD-0007",
+    ]
+
+
+def test_get_policy_can_return_only_one_rule_section() -> None:
+    result = get_policy(
+        ROOT,
+        policy_id="MPD-0010",
+        section="identity_and_resolution",
+    )
+    assert result["fragment"] == "rules.identity_and_resolution"
+    assert result["canonical_path"] == "developer/policy/MPD-0010.yaml"
+    assert isinstance(result["record"], dict)
+    assert "registry_resolution_budget" in result["record"]
+    assert "ptsip_design_priority" not in result["record"]
+
+
+def test_explain_is_compact_metadata_not_policy_body() -> None:
+    result = explain_policy(ROOT, policy_id="MPD-0010")
+    assert result["policy_id"] == "MPD-0010"
+    assert result["status"] == "ACTIVE"
+    assert "identity_and_resolution" in result["rule_sections"]
+    assert "record" not in result
+
+
+@pytest.mark.parametrize("operation", ["SEARCH", "GUESS", ""])
+def test_unknown_operation_fails_closed(operation: str) -> None:
+    with pytest.raises(PolicyResolverError):
+        resolve_policies(
+            ROOT,
+            scope="src/ptsip/migration/future_engine.py",
+            operation=operation,
+        )
+
+
+def test_scope_escape_fails_closed() -> None:
+    with pytest.raises(PolicyResolverError):
+        resolve_policies(
+            ROOT,
+            scope="../outside-repository",
+            operation="READ",
+        )
+
+
+def test_unknown_policy_identity_fails_closed() -> None:
+    with pytest.raises(PolicyResolverError):
+        get_policy(ROOT, policy_id="MPD-9999")
