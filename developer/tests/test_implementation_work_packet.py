@@ -282,3 +282,58 @@ def test_agent_projection_json_writer_is_utf8(tmp_path: Path) -> None:
     assert not raw.startswith(b"\xff\xfe")
     assert "—".encode("utf-8") in raw
     assert json.loads(raw.decode("utf-8")) == payload
+
+
+def test_read_context_supports_single_selector_projection(monkeypatch) -> None:
+    monkeypatch.setattr(
+        policy_resolver,
+        "_current_branch",
+        lambda _root: "dev/0.3.8a1",
+    )
+    packet = work_packet.build_packet(
+        ROOT,
+        scope="src/ptsip/app/github_authority.py",
+        operation="MODIFY",
+    )
+    brief = work_packet.build_agent_brief(packet)
+    read_refs = brief["read_context"]
+    context_ids = [item["context_id"] for item in read_refs]
+
+    assert len(read_refs) == 4
+    assert len(context_ids) == len(set(context_ids))
+    assert all(value.startswith("read-") for value in context_ids)
+    assert "--context-id" in brief["on_demand"]["read_context"]
+    assert "<CONTEXT_ID>" in brief["on_demand"]["read_context"]
+
+    all_read = work_packet.build_source_context(ROOT, packet, role="read")
+    selected = work_packet.build_source_context(
+        ROOT,
+        packet,
+        role="read",
+        context_id=context_ids[0],
+    )
+    assert len(all_read["items"]) == 4
+    assert selected["requested_context_id"] == context_ids[0]
+    assert len(selected["items"]) == 1
+    assert selected["items"][0]["context_id"] == context_ids[0]
+    assert len(selected["items"][0]["source"]) < sum(
+        len(item["source"]) for item in all_read["items"]
+    )
+
+
+def test_read_context_ids_are_stable(monkeypatch) -> None:
+    monkeypatch.setattr(
+        policy_resolver,
+        "_current_branch",
+        lambda _root: "dev/0.3.8a1",
+    )
+    packet = work_packet.build_packet(
+        ROOT,
+        scope="src/ptsip/app/github_authority.py",
+        operation="MODIFY",
+    )
+    first = work_packet.build_agent_brief(packet)["read_context"]
+    second = work_packet.build_agent_brief(packet)["read_context"]
+    assert [item["context_id"] for item in first] == [
+        item["context_id"] for item in second
+    ]
