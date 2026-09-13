@@ -19,6 +19,7 @@ from developer.automation.policy_loader import load_json, load_yaml, repository_
 
 REGISTRY_PATH = "developer/automation/implementation_workflows.yaml"
 SCHEMA_PATH = "developer/automation/implementation_workflows.schema.json"
+PROFILE_PATH = "ptsip.yaml"
 
 
 class WorkPacketError(RuntimeError):
@@ -57,6 +58,10 @@ def _selector_key(path: str, selector: Mapping[str, object]) -> str:
         sort_keys=True,
         separators=(",", ":"),
     )
+
+
+def _dedupe(items: list[str]) -> list[str]:
+    return list(dict.fromkeys(items))
 
 
 def _registry(root: Path) -> dict[str, object]:
@@ -135,11 +140,119 @@ def _registered_test_mode(root: Path, component_ref: str) -> dict[str, object]:
     for raw in modes:
         if isinstance(raw, dict) and raw.get("component_ref") == component_ref:
             return {"status": "REGISTERED", "component_ref": component_ref, "mode_id": raw.get("id")}
-    return {"status": "NOT_REGISTERED", "component_ref": component_ref, "fallback": "DEVELOPER_LOCAL_TASK_LANE"}
+    return {
+        "status": "NOT_REGISTERED",
+        "component_ref": component_ref,
+        "fallback": "CANONICAL_COMPONENT_INCLUDE_SELECTION",
+    }
+
+
+def _component_regression_targets(root: Path, component_ref: str, source: str = PROFILE_PATH) -> list[str]:
+    payload = load_yaml(source, root=root)
+    components = payload.get("components")
+    if not isinstance(components, list):
+        raise WorkPacketError(f"{source} has no components list")
+    matches = [
+        item for item in components
+        if isinstance(item, Mapping) and item.get("id") == component_ref
+    ]
+    if len(matches) != 1:
+        raise WorkPacketError(
+            f"expected one verification component {component_ref!r} in {source}, found {len(matches)}"
+        )
+    component = _mapping(matches[0], f"component {component_ref}")
+    roles = component.get("roles")
+    if not isinstance(roles, list) or "VERIFICATION" not in roles:
+        raise WorkPacketError(f"{component_ref!r} is not a VERIFICATION component")
+    includes = component.get("include")
+    if not isinstance(includes, list) or not includes:
+        raise WorkPacketError(f"{component_ref!r} has no include selectors")
+
+    targets: list[str] = []
+    for raw in includes:
+        if not isinstance(raw, str) or not raw.startswith("tests/"):
+            continue
+        pattern = raw.replace("\\", "/")
+        if pattern.endswith("/**"):
+            target = pattern[:-3].rstrip("/")
+            if not (root / target).exists():
+                raise WorkPacketError(f"core regression target does not exist: {target!r}")
+            targets.append(target)
+            continue
+        if not any(token in pattern for token in ("*", "?", "[")):
+            if not (root / pattern).exists():
+                raise WorkPacketError(f"core regression target does not exist: {pattern!r}")
+            targets.append(pattern)
+            continue
+        matches_for_pattern = sorted(
+            candidate.relative_to(root).as_posix()
+            for candidate in root.glob(pattern)
+            if candidate.is_file()
+        )
+        if not matches_for_pattern:
+            raise WorkPacketError(f"core regression selector matched nothing: {pattern!r}")
+        targets.extend(matches_for_pattern)
+    if not targets:
+        raise WorkPacketError(f"{component_ref!r} produced no pytest targets")
+    return _dedupe(targets)
+
+
+def _selector_integrity(root: Path, edit_targets: object) -> list[dict[str, object]]:
+    if not isinstance(edit_targets, list):
+        return [{"reason": "EDIT_TARGETS_INVALID"}]
+    violations: list[dict[str, object]] = []
+    for raw in edit_targets:
+        if not isinstance(raw, Mapping):
+            violations.append({"reason": "EDIT_TARGET_INVALID"})
+            continue
+        path = raw.get("path")
+        selector = raw.get("selector")
+        if not isinstance(path, str) or not isinstance(selector, Mapping):
+            violations.append({"reason": "EDIT_TARGET_INVALID", "target": dict(raw)})
+            continue
+        try:
+            current = policy_resolver._validate_implementation_ref(
+                root, {"path": path, "selector": dict(selector)}
+            )
+        except (OSError, ValueError, SyntaxError, policy_resolver.PolicyResolverError) as exc:
+            violations.append({
+                "path": path,
+                "selector": dict(selector),
+                "reason": "SELECTOR_NO_LONGER_RESOLVES",
+                "detail": str(exc),
+            })
+            continue
+        if not isinstance(current.get("resolved_location"), Mapping):
+            violations.append({
+                "path": path,
+                "selector": dict(selector),
+                "reason": "SELECTOR_LOCATION_MISSING",
+            })
+    return violations
+
+
+def _required_new_tests(verification: Mapping[str, object]) -> list[dict[str, object]]:
+    raw = verification.get("required_new_tests")
+    if not isinstance(raw, list) or not raw:
+        raise WorkPacketError("verification.required_new_tests must be non-empty")
+    result: list[dict[str, object]] = []
+    for item in raw:
+        entry = dict(_mapping(item, "required new test"))
+        node = entry.get("node")
+        acceptance_ids = entry.get("acceptance_ids")
+        if not isinstance(node, str) or not node:
+            raise WorkPacketError("required new test node must be non-empty")
+        if not isinstance(acceptance_ids, list) or not acceptance_ids or not all(
+            isinstance(value, str) and value for value in acceptance_ids
+        ):
+            raise WorkPacketError(f"required new test {node!r} has invalid acceptance_ids")
+        result.append(entry)
+    return result
 
 
 def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[str, object]:
     root = repository_root(repository)
+    registry = _registry(root)
     resolved = policy_resolver.resolve_policies(root, scope=scope, operation=operation)
     task_context = _mapping(resolved.get("task_context"), "task_context")
     branch_context = _mapping(task_context.get("branch_context"), "branch_context")
@@ -161,18 +274,21 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
             raise WorkPacketError("Policy Resolver returned duplicate implementation refs")
         resolved_by_key[key] = item
 
-    raw_edit_targets = recipe.get("edit_targets")
-    if not isinstance(raw_edit_targets, list) or not raw_edit_targets:
-        raise WorkPacketError("workflow has no edit targets")
+    mutation = _mapping(recipe.get("mutation"), "mutation")
+    raw_targets = mutation.get("targets")
+    if not isinstance(raw_targets, list) or not raw_targets:
+        raise WorkPacketError("workflow mutation.targets must be non-empty")
     edit_targets: list[dict[str, object]] = []
-    for raw in raw_edit_targets:
-        target = _mapping(raw, "edit target")
-        selector = _mapping(target.get("selector"), "edit target selector")
+    for raw in raw_targets:
+        target = _mapping(raw, "mutation target")
+        selector = _mapping(target.get("selector"), "mutation target selector")
         key = _selector_key(str(target.get("path")), selector)
         matched = resolved_by_key.get(key)
         if matched is None:
-            raise WorkPacketError("workflow edit target is not present in Policy Resolver implementation refs")
-        edit_targets.append(matched)
+            raise WorkPacketError("workflow mutation target is not present in Policy Resolver implementation refs")
+        enriched = dict(matched)
+        enriched["rationale"] = str(target.get("rationale"))
+        edit_targets.append(enriched)
 
     edit_keys = {
         _selector_key(str(item["path"]), _mapping(item["selector"], "selector"))
@@ -180,28 +296,113 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
     }
     read_context = [item for key, item in resolved_by_key.items() if key not in edit_keys]
 
+    test_refs = task_context.get("test_refs")
+    if not isinstance(test_refs, list) or not all(isinstance(item, str) for item in test_refs):
+        raise WorkPacketError("task context test refs are invalid")
+    allowed_test_paths = mutation.get("allowed_test_paths")
+    if not isinstance(allowed_test_paths, list) or not allowed_test_paths or not all(
+        isinstance(item, str) and item for item in allowed_test_paths
+    ):
+        raise WorkPacketError("mutation.allowed_test_paths must be non-empty strings")
+    unbound_test_paths = sorted(set(allowed_test_paths) - set(test_refs))
+    if unbound_test_paths:
+        raise WorkPacketError(
+            "mutation test paths are not Policy Resolver test refs: " + ", ".join(unbound_test_paths)
+        )
+
+    acceptance = recipe.get("acceptance_vectors")
+    if not isinstance(acceptance, list) or not acceptance:
+        raise WorkPacketError("workflow acceptance_vectors must be non-empty")
+    acceptance_ids: set[str] = set()
+    for raw in acceptance:
+        item = _mapping(raw, "acceptance vector")
+        vector_id = item.get("id")
+        test_nodes = item.get("test_nodes")
+        invariants = item.get("invariants")
+        if not isinstance(vector_id, str) or not vector_id:
+            raise WorkPacketError("acceptance vector id must be non-empty")
+        if vector_id in acceptance_ids:
+            raise WorkPacketError(f"duplicate acceptance vector id: {vector_id}")
+        acceptance_ids.add(vector_id)
+        if not isinstance(test_nodes, list) or not test_nodes or not all(
+            isinstance(node, str) and node for node in test_nodes
+        ):
+            raise WorkPacketError(f"acceptance vector {vector_id!r} must declare test_nodes")
+        if not isinstance(invariants, list) or not invariants or not all(
+            isinstance(value, str) and value for value in invariants
+        ):
+            raise WorkPacketError(f"acceptance vector {vector_id!r} must declare invariants")
+
     verification = _mapping(recipe.get("verification"), "verification")
     baseline_nodes = verification.get("baseline_pytest_nodes")
-    new_nodes = verification.get("required_new_pytest_nodes")
-    regression_targets = verification.get("regression_pytest_targets")
+    task_regression = verification.get("task_regression_pytest_targets")
     full_command = verification.get("full_command")
-    sequences = (baseline_nodes, new_nodes, regression_targets, full_command)
-    if not all(isinstance(value, list) and value for value in sequences):
-        raise WorkPacketError("verification lists must be non-empty")
-    if not all(isinstance(item, str) for seq in sequences for item in seq):
-        raise WorkPacketError("verification entries must be strings")
+    if not isinstance(baseline_nodes, list) or not baseline_nodes or not all(
+        isinstance(item, str) for item in baseline_nodes
+    ):
+        raise WorkPacketError("verification.baseline_pytest_nodes must be non-empty strings")
+    if not isinstance(task_regression, list) or not task_regression or not all(
+        isinstance(item, str) for item in task_regression
+    ):
+        raise WorkPacketError("verification.task_regression_pytest_targets must be non-empty strings")
+    if not isinstance(full_command, list) or not full_command or not all(
+        isinstance(item, str) for item in full_command
+    ):
+        raise WorkPacketError("verification.full_command must be non-empty strings")
+
+    required_tests = _required_new_tests(verification)
+    required_nodes = [str(item["node"]) for item in required_tests]
+    for item in required_tests:
+        unknown = sorted(set(item["acceptance_ids"]) - acceptance_ids)
+        if unknown:
+            raise WorkPacketError(
+                f"required test {item['node']!r} references unknown acceptance ids: " + ", ".join(unknown)
+            )
+        path = str(item["node"]).split("::", 1)[0]
+        if path not in allowed_test_paths:
+            raise WorkPacketError(f"required test {item['node']!r} is outside mutation.allowed_test_paths")
+
+    declared_acceptance_tests = {
+        node
+        for raw in acceptance
+        for node in _mapping(raw, "acceptance vector").get("test_nodes", [])
+        if isinstance(node, str)
+    }
+    missing_declared_mapping = sorted(set(required_nodes) - declared_acceptance_tests)
+    if missing_declared_mapping:
+        raise WorkPacketError(
+            "required tests are not mapped by acceptance vectors: " + ", ".join(missing_declared_mapping)
+        )
 
     missing_baseline = [node for node in baseline_nodes if not _test_node_exists(root, node)]
     if missing_baseline:
         raise WorkPacketError("baseline verification nodes are missing: " + ", ".join(missing_baseline))
-    missing_new = [node for node in new_nodes if not _test_node_exists(root, node)]
-    for target in regression_targets:
+    missing_new = [node for node in required_nodes if not _test_node_exists(root, node)]
+    for target in task_regression:
         if not (root / target).exists():
-            raise WorkPacketError(f"regression target does not exist: {target!r}")
+            raise WorkPacketError(f"task regression target does not exist: {target!r}")
 
-    test_refs = task_context.get("test_refs")
-    if not isinstance(test_refs, list) or not all(isinstance(item, str) for item in test_refs):
-        raise WorkPacketError("task context test refs are invalid")
+    core_policy = _mapping(verification.get("core_regression"), "verification.core_regression")
+    component_ref = core_policy.get("component_ref")
+    component_source = core_policy.get("source")
+    if not isinstance(component_ref, str) or not component_ref:
+        raise WorkPacketError("core regression component_ref must be non-empty")
+    if not isinstance(component_source, str) or not component_source:
+        raise WorkPacketError("core regression source must be non-empty")
+    core_targets = _component_regression_targets(root, component_ref, component_source)
+    combined_regression = _dedupe([*task_regression, *core_targets])
+
+    acceptance_coverage: list[dict[str, object]] = []
+    for raw in acceptance:
+        item = _mapping(raw, "acceptance vector")
+        nodes = [str(node) for node in item["test_nodes"]]
+        missing_nodes = [node for node in nodes if not _test_node_exists(root, node)]
+        acceptance_coverage.append({
+            "id": item["id"],
+            "test_nodes": nodes,
+            "missing_test_nodes": missing_nodes,
+            "covered": not missing_nodes,
+        })
 
     policy_paths = [
         str(item["path"]) for item in resolved.get("policies", [])
@@ -210,11 +411,11 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
     planning_entry = str(task_context["planning_entry"])
     normative_source = str(task_context["normative_rule_source"])
     context_files = sorted(set(
-        [REGISTRY_PATH, SCHEMA_PATH, planning_entry, normative_source, *policy_paths]
+        [REGISTRY_PATH, SCHEMA_PATH, component_source, planning_entry, normative_source, *policy_paths]
         + [str(item["path"]) for item in read_context]
     ))
     tracked_files = sorted(set(
-        context_files + [str(item["path"]) for item in edit_targets] + list(test_refs)
+        context_files + [str(item["path"]) for item in edit_targets] + list(test_refs) + list(allowed_test_paths)
     ))
     file_hashes = {path: _sha256(root / path) for path in tracked_files if (root / path).is_file()}
 
@@ -226,9 +427,10 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
         "operation": normalized_operation,
         "policy_context": resolved.get("policies"),
         "normative_rule_refs": task_context.get("normative_rule_refs"),
-        "edit_targets": raw_edit_targets,
-        "acceptance_vectors": recipe.get("acceptance_vectors"),
+        "mutation": mutation,
+        "acceptance_vectors": acceptance,
         "verification": verification,
+        "core_regression_targets": core_targets,
         "file_hashes": file_hashes,
     }
     fingerprint = hashlib.sha256(
@@ -237,16 +439,20 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
 
     commands = {
         "baseline": ["python", "-m", "pytest", *baseline_nodes, "-vv"],
-        "focused": ["python", "-m", "pytest", *baseline_nodes, *new_nodes, "-vv"],
-        "regression": ["python", "-m", "pytest", *regression_targets, "-vv"],
+        "focused": ["python", "-m", "pytest", *baseline_nodes, *required_nodes, "-vv"],
+        "task-regression": ["python", "-m", "pytest", *task_regression, "-vv"],
+        "core": ["python", "-m", "pytest", *core_targets, "-vv"],
+        "regression": ["python", "-m", "pytest", *combined_regression, "-vv"],
         "full": list(full_command),
     }
-    desired_component = recipe.get("desired_test_component")
-    if not isinstance(desired_component, str) or not desired_component:
-        raise WorkPacketError("desired_test_component must be non-empty")
+
+    failure_routing = _mapping(registry.get("failure_routing"), "failure_routing")
+    scope_expansion = mutation.get("scope_expansion")
+    if scope_expansion != "RE_RESOLVE_REQUIRED":
+        raise WorkPacketError("mutation.scope_expansion must be RE_RESOLVE_REQUIRED")
 
     return {
-        "schema_version": "ptsip-implementation-work-packet/v1",
+        "schema_version": "ptsip-implementation-work-packet/v2",
         "projection_authority": False,
         "packet_id": "iwp-" + fingerprint[:16],
         "task": {
@@ -262,32 +468,48 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
             "constraints": task_context.get("constraints"),
         },
         "read_context": read_context,
-        "edit_targets": edit_targets,
-        "acceptance_vectors": recipe.get("acceptance_vectors"),
+        "mutation_plan": {
+            "targets": edit_targets,
+            "allowed_test_paths": sorted(set(allowed_test_paths)),
+            "scope_expansion": scope_expansion,
+        },
+        "acceptance_vectors": acceptance,
+        "acceptance_coverage": acceptance_coverage,
         "verification": {
             "baseline_pytest_nodes": baseline_nodes,
-            "required_new_pytest_nodes": new_nodes,
+            "required_new_tests": required_tests,
+            "required_new_pytest_nodes": required_nodes,
             "missing_required_new_tests": missing_new,
-            "regression_pytest_targets": regression_targets,
+            "task_regression_pytest_targets": task_regression,
+            "core_regression": {
+                "component_ref": component_ref,
+                "source": component_source,
+                "selection": core_policy.get("selection"),
+                "pytest_targets": core_targets,
+            },
+            "combined_regression_pytest_targets": combined_regression,
             "commands": commands,
             "status": "REQUIRES_NEW_TESTS" if missing_new else "READY",
         },
         "edit_budget": {
             "allowed_code_paths": sorted({str(item["path"]) for item in edit_targets}),
-            "allowed_test_paths": sorted(set(test_refs)),
+            "allowed_test_paths": sorted(set(allowed_test_paths)),
             "unlisted_paths": "BLOCK",
+            "selector_removal_or_rename": "BLOCK",
         },
-        "test_mode": _registered_test_mode(root, desired_component),
+        "test_mode": _registered_test_mode(root, component_ref),
+        "failure_routing": dict(failure_routing),
         "freshness": {
             "baseline_head": head,
             "context_files": context_files,
             "file_hashes": file_hashes,
             "context_fingerprint": fingerprint,
+            "strategy": "RECHECK_BEFORE_EVERY_VERIFICATION",
         },
     }
 
 
-def _changed_paths(root: Path) -> list[str]:
+def _changed_paths(def _changed_paths(root: Path) -> list[str]:
     tracked = _git(root, "diff", "--name-only", "HEAD").splitlines()
     untracked = _git(root, "ls-files", "--others", "--exclude-standard").splitlines()
     return sorted({item.replace("\\", "/") for item in tracked + untracked if item})
@@ -313,11 +535,28 @@ def _hunk_allowed(old_start: int, old_count: int, ranges: list[tuple[int, int]])
     return any(start <= old_start and old_end <= end for start, end in ranges)
 
 
+def _iteration_fingerprint(root: Path, changed: list[str], allowed: set[str]) -> str:
+    payload: dict[str, object] = {
+        "head": _git(root, "rev-parse", "HEAD"),
+        "changed": changed,
+        "files": {},
+    }
+    files = payload["files"]
+    assert isinstance(files, dict)
+    for path in sorted(set(changed) & allowed):
+        candidate = root / path
+        files[path] = _sha256(candidate) if candidate.is_file() else "MISSING"
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
 def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[str, object]:
     root = repository_root(repository)
     task = _mapping(packet.get("task"), "packet.task")
     freshness = _mapping(packet.get("freshness"), "packet.freshness")
     budget = _mapping(packet.get("edit_budget"), "packet.edit_budget")
+    mutation_plan = _mapping(packet.get("mutation_plan"), "packet.mutation_plan")
 
     actual_branch = _git(root, "branch", "--show-current")
     actual_head = _git(root, "rev-parse", "HEAD")
@@ -343,7 +582,7 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
                 context_changed.append(path)
 
     ranges_by_path: dict[str, list[tuple[int, int]]] = {}
-    edit_targets = packet.get("edit_targets", [])
+    edit_targets = mutation_plan.get("targets", [])
     if isinstance(edit_targets, list):
         for raw in edit_targets:
             if not isinstance(raw, dict):
@@ -368,6 +607,7 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
                     {"path": path, "old_start": old_start, "old_count": old_count}
                 )
 
+    selector_violations = _selector_integrity(root, edit_targets)
     verification = _mapping(packet.get("verification"), "packet.verification")
     required_nodes = verification.get("required_new_pytest_nodes", [])
     missing_required = (
@@ -386,9 +626,15 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
         problems.append("UNEXPECTED_CHANGED_PATH")
     if code_scope_violations:
         problems.append("CODE_SCOPE_VIOLATION")
+    if selector_violations:
+        problems.append("MUTATION_SELECTOR_VIOLATION")
 
+    reprepare_required = any(
+        problem in {"BRANCH_CHANGED", "HEAD_CHANGED", "CONTEXT_CHANGED"}
+        for problem in problems
+    )
     return {
-        "schema_version": "ptsip-implementation-work-check/v1",
+        "schema_version": "ptsip-implementation-work-check/v2",
         "status": "PASS" if not problems else "BLOCKED",
         "problems": problems,
         "branch": {"expected": expected_branch, "actual": actual_branch},
@@ -397,9 +643,100 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
         "unexpected_changed_paths": unexpected,
         "context_changed": context_changed,
         "code_scope_violations": code_scope_violations,
+        "selector_violations": selector_violations,
         "missing_required_new_tests": missing_required,
-        "locations_need_refresh": bool(code_paths & set(changed)),
+        "iteration_fingerprint": _iteration_fingerprint(root, changed, allowed),
+        "reprepare_required": reprepare_required,
+        "safe_to_continue_iteration": (
+            not reprepare_required and not unexpected
+            and not code_scope_violations and not selector_violations
+        ),
     }
+
+
+def _load_packet(def _failure_signature(stage: str, returncode: int, output: str) -> str:
+    lines = [line.rstrip() for line in output.splitlines() if line.strip()]
+    tail = "\n".join(lines[-80:])
+    normalized = re.sub(r"\b\d+(?:\.\d+)?s\b", "<duration>", tail)
+    normalized = re.sub(r"0x[0-9a-fA-F]+", "0x<addr>", normalized)
+    raw = f"{stage}\n{returncode}\n{normalized}"
+    return hashlib.sha256(raw.encode("utf-8", errors="replace")).hexdigest()[:24]
+
+
+def _load_failure_state(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {"schema_version": "ptsip-implementation-failure-state/v1", "entries": {}}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise WorkPacketError("failure state must contain a JSON object")
+    entries = payload.get("entries")
+    if not isinstance(entries, dict):
+        raise WorkPacketError("failure state entries must be a mapping")
+    return payload
+
+
+def route_failure(
+    *,
+    packet_id: str,
+    stage: str,
+    returncode: int,
+    output: str,
+    state_path: Path,
+    policy: Mapping[str, object],
+) -> dict[str, object]:
+    signature = _failure_signature(stage, returncode, output)
+    state = _load_failure_state(state_path)
+    entries = state["entries"]
+    assert isinstance(entries, dict)
+    key = f"{packet_id}:{stage}:{signature}"
+    previous = entries.get(key)
+    count = int(previous.get("count", 0)) + 1 if isinstance(previous, dict) else 1
+    entries[key] = {"count": count, "returncode": returncode}
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+    collection_failure = any(
+        marker in output
+        for marker in ("ERROR collecting", "not found:", "found no collectors", "no tests ran")
+    )
+    recheck_at = int(policy.get("recheck_context_at", 2))
+    reresolve_at = int(policy.get("reresolve_scope_at", 3))
+    if collection_failure:
+        classification = "TEST_CONTRACT_FAILURE"
+        action = "REPAIR_TEST_SELECTION_OR_REQUIRED_TEST"
+    elif count >= reresolve_at:
+        classification = "REPEATED_IMPLEMENTATION_FAILURE"
+        action = "RE_RESOLVE_MUTATION_SCOPE"
+    elif count >= recheck_at:
+        classification = "REPEATED_IMPLEMENTATION_FAILURE"
+        action = "RECHECK_PACKET_ACCEPTANCE_AND_CONTEXT"
+    else:
+        classification = "IMPLEMENTATION_FAILURE"
+        action = "FIX_WITHIN_CURRENT_MUTATION_PLAN"
+    return {
+        "schema_version": "ptsip-implementation-failure-route/v1",
+        "packet_id": packet_id,
+        "stage": stage,
+        "signature": signature,
+        "repeat_count": count,
+        "classification": classification,
+        "next_action": action,
+        "scope_expansion_allowed": False,
+    }
+
+
+def _clear_failure_state(state_path: Path, packet_id: str, stage: str) -> None:
+    if not state_path.exists():
+        return
+    state = _load_failure_state(state_path)
+    entries = state["entries"]
+    assert isinstance(entries, dict)
+    prefix = f"{packet_id}:{stage}:"
+    retained = {key: value for key, value in entries.items() if not key.startswith(prefix)}
+    if retained == entries:
+        return
+    state["entries"] = retained
+    state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
 
 
 def _load_packet(path: Path) -> dict[str, object]:
@@ -432,16 +769,24 @@ def _parser() -> argparse.ArgumentParser:
     check.add_argument("--json", action="store_true")
 
     verify = sub.add_parser("verify")
+    verify.add_argument(
+        "--stage",
+        required=True,
+        choices=("baseline", "focused", "task-regression", "core", "regression", "full"),
+    )
     verify.add_argument("--packet", required=True)
-    verify.add_argument("--stage", required=True, choices=("baseline", "focused", "regression", "full"))
+    verify.add_argument("--log")
+    verify.add_argument("--failure-state")
+    verify.add_argument("--json-routing", action="store_true")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
+        root = repository_root(args.repository)
         if args.command == "prepare":
-            payload = build_packet(args.repository, scope=args.scope, operation=args.operation)
+            payload = build_packet(root, scope=args.scope, operation=args.operation)
             if args.output:
                 Path(args.output).write_text(
                     json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
@@ -451,7 +796,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
 
         packet = _load_packet(Path(args.packet))
-        checked = check_packet(args.repository, packet)
+        checked = check_packet(root, packet)
         if args.command == "check":
             _emit(checked, bool(args.json))
             return 0 if checked["status"] == "PASS" else 2
@@ -473,7 +818,39 @@ def main(argv: list[str] | None = None) -> int:
         run_command = list(command)
         if run_command and run_command[0] == "python":
             run_command[0] = sys.executable
-        completed = subprocess.run(run_command, cwd=repository_root(args.repository))
+
+        packet_id = str(packet.get("packet_id", "unknown-packet"))
+        log_path = Path(args.log) if args.log else root / ".git" / f"ptsip-iwp-{args.stage}.log"
+        state_path = (
+            Path(args.failure_state)
+            if args.failure_state
+            else root / ".git" / "ptsip-iwp-failure-state.json"
+        )
+        completed = subprocess.run(
+            run_command,
+            cwd=root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+        )
+        output = completed.stdout or ""
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        log_path.write_text(output, encoding="utf-8")
+        if output:
+            print(output, end="" if output.endswith("\n") else "\n")
+        if completed.returncode == 0:
+            _clear_failure_state(state_path, packet_id, args.stage)
+            return 0
+
+        routing = route_failure(
+            packet_id=packet_id,
+            stage=args.stage,
+            returncode=int(completed.returncode),
+            output=output,
+            state_path=state_path,
+            policy=_mapping(packet.get("failure_routing"), "packet.failure_routing"),
+        )
+        _emit(routing, bool(args.json_routing))
         return int(completed.returncode)
     except (
         OSError,
