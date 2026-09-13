@@ -9,10 +9,15 @@ from developer.automation.policy_resolver import (
     explain_policy,
     get_policy,
     resolve_policies,
+    validate_policy_resolver,
 )
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_policy_resolver_binding_plane_is_machine_valid() -> None:
+    assert validate_policy_resolver(ROOT) == ()
 
 
 def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
