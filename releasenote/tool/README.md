@@ -12,4 +12,5 @@ Historical flat Tool release-note paths remain in place under `releasenote/` and
 
 | Version | State | Document |
 | --- | --- | --- |
-| `0.3.7` | Release candidate; exact-SHA verification and publication pending | [`0.3.7.md`](0.3.7.md) |
+| `0.3.7` | Previous Tool release candidate baseline | [`0.3.7.md`](0.3.7.md) |
+| `0.3.8a1` | Emergency demo prerelease candidate; verification pending | [`0.3.8a1.md`](0.3.8a1.md) |
