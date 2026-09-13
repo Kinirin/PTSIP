@@ -69,7 +69,7 @@ def test_proposed_candidate_rejects_ambiguous_normalized_selectors() -> None:
         raise AssertionError("duplicate normalized selectors must fail closed")
 
 
-def test_cli_registers_nonexistent_component_then_existing_resolve_flow_applies_declaration(
+def test_cli_registers_and_approves_nonexistent_component_without_active_profile_projection(
     tmp_path: Path,
     monkeypatch,
     capsys,
