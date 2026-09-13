@@ -324,12 +324,183 @@ jobs:
               $components += 'vpms'
               continue
             }
-            if ($path -match '^[^/]+\.dist-info/licenses/LICENSE$') {
-              $sourcePaths += 'LICENSE'
+            if ($path -match '^[^/]+\.dist-info/licenses/(?<licenseName>[^/]+)
+            if ($path -match '^[^/]+\.dist-info/') {
+              $components += 'ptsip-distribution'
+              $sawDistributionMetadata = $true
+              continue
+            }
+            throw "Unrecognized wheel content outside the declared Product package boundary: $path"
+          }
+
+          $sourcePaths = @($sourcePaths | Sort-Object -Unique)
+          $components = @($components | Sort-Object -Unique)
+
+          if ($components -notcontains 'ptsip-core') {
+            throw "Built wheel does not contain the ptsip-core Product implementation."
+          }
+          if ($components -notcontains 'ptsip-evidence') {
+            throw "Built wheel does not contain the ptsip-evidence Product component."
+          }
+          if ($components -notcontains 'ptsip-source-compat') {
+            throw "Built wheel does not contain the ptsip-source-compat Product component."
+          }
+          if ($components -notcontains 'ptsip-migration') {
+            throw "Built wheel does not contain the ptsip-migration Product component."
+          }
+          if ($components -notcontains 'vpms') {
+            throw "Built wheel does not contain the vpms Product package."
+          }
+          if ($components -notcontains 'ptsip-embedded-contracts') {
+            throw "Built wheel does not contain embedded PTSIP contract assets."
+          }
+          if (-not $sawDistributionMetadata) {
+            throw "Built wheel does not contain distribution metadata."
+          }
+          if (-not $sawLicense) {
+            throw "Built wheel does not contain the declared LICENSE file."
+          }
+
+          $wheelHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $wheel.FullName).Hash.ToLowerInvariant()
+          $trackedFingerprint = (& python -c "from ptsip.repository.snapshot import capture_snapshot; print(capture_snapshot('.').tracked_content_fingerprint)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $trackedFingerprint) {
+            throw "Unable to capture the exact tracked-content fingerprint for artifact binding."
+          }
+
+          $evidencePath = Join-Path $env:RUNNER_TEMP 'wu06-wheel-artifact-evidence.json'
+          $bindingPath = "$evidencePath.binding.json"
+          $evidence = [ordered]@{
+            format = 'ptsip-artifact-evidence/v1'
+            artifact_id = "ptsip-wheel-$($wheelHash.Substring(0, 16))"
+            classification = 'PRODUCT'
+            producer_component = 'repository-ci'
+            artifact_type = 'python-wheel'
+            shipping_scope = 'product-distribution'
+            contents = [ordered]@{
+              paths = $sourcePaths
+              components = $components
+              complete = $true
+            }
+            derivation = @(
+              [ordered]@{
+                relation = 'BUILDS'
+                source = 'repository-ci'
+              }
+            )
+            provenance = 'OBSERVED'
+            evidence_ids = @("wheel-sha256:$wheelHash")
+          }
+          $evidence | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $evidencePath -Encoding UTF8
+
+          $evidenceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $evidencePath).Hash.ToLowerInvariant()
+          $binding = [ordered]@{
+            format = 'ptsip-artifact-evidence-binding/v1'
+            artifact_sha256 = $evidenceHash
+            subject = [ordered]@{
+              repository = $env:REPOSITORY_ID
+              revision = $env:VERIFIED_SHA
+              tracked_content_sha256 = $trackedFingerprint
+            }
+          }
+          $binding | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $bindingPath -Encoding UTF8
+
+          $conformOutput = & ptsip conform . --artifact-evidence $evidencePath --json
+          $conformExit = $LASTEXITCODE
+          if ($conformExit -notin @(0, 6)) {
+            throw "Artifact-aware conformance failed with unexpected exit code $conformExit."
+          }
+
+          $report = (($conformOutput -join "`n") | ConvertFrom-Json)
+          if ($report.evaluators.product_artifact_boundary.status -ne 'RAN') {
+            throw "Product Artifact boundary evaluator did not run."
+          }
+          if ($report.evaluators.artifact_snapshot_binding.status -ne 'RAN') {
+            throw "Artifact snapshot binding evaluator did not run successfully."
+          }
+
+          $artifactDocuments = @($report.artifacts.documents)
+          if ($artifactDocuments.Count -ne 1 -or $artifactDocuments[0].binding_valid -ne $true) {
+            throw "Artifact evidence was not imported with a valid exact-snapshot binding."
+          }
+
+          $artifactGaps = @(
+            $report.coverage.blocking_gaps |
+              Where-Object { $_.id -like 'artifact-evidence:*' }
+          )
+          if ($artifactGaps.Count -ne 0) {
+            throw "Artifact-aware conformance retained blocking artifact-evidence gaps: $($artifactGaps.id -join ', ')"
+          }
+
+          $packageViolations = @(
+            $report.diagnostics |
+              Where-Object { $_.rule_id -eq 'PTSIP-PKG-001' -and $_.outcome_effect -eq 'NON_CONFORMANT' }
+          )
+          if ($packageViolations.Count -ne 0) {
+            throw "Built Product Artifact violates PTSIP-PKG-001."
+          }
+
+          Write-Host "WU-06 Product Artifact evidence passed for wheel SHA-256 $wheelHash"
+          Write-Host "Artifact-aware conformance outcome: $($report.outcome)"
+          exit 0
+
+      - name: Reinstall built wheel and smoke public surfaces
+        if: ${{ inputs.scope == 'full' }}
+        shell: powershell
+        run: |
+          $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
+          if (-not $wheel) {
+            throw "No wheel was produced under dist/."
+          }
+          python -m pip install --force-reinstall --no-deps "$($wheel.FullName)"
+          ptsip --version
+          ptsip spec
+          ptsip conform --help
+          python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
+
+      - name: Record successful exact-SHA tooling verification
+        if: ${{ inputs.scope == 'full' }}
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            state = "success"
+            context = "self-hosted/tooling-test"
+            description = "Self-hosted Windows verification passed for the exact dispatched SHA"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
+) {
+              $licenseName = $Matches['licenseName']
+              $knownLicenseFiles = @(
+                'LICENSE',
+                'NOTICE',
+                'LICENSE-GUIDE.md',
+                'LICENSE-HISTORY.md',
+                'COMMERCIAL-USE.md'
+              )
+              if ($knownLicenseFiles -notcontains $licenseName) {
+                throw "Unrecognized packaged license/document file: $path"
+              }
+              $sourcePaths += $licenseName
               $components += 'product-documentation'
               $components += 'ptsip-distribution'
               $sawDistributionMetadata = $true
-              $sawLicense = $true
+              if ($licenseName -eq 'LICENSE') {
+                $sawLicense = $true
+              }
               continue
             }
             if ($path -match '^[^/]+\.dist-info/') {
