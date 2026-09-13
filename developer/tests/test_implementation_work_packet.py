@@ -63,9 +63,11 @@ def test_packet_builds_exact_mutation_acceptance_and_regression_plan(monkeypatch
     assert verification["status"] in {"REQUIRES_NEW_TESTS", "READY"}
     assert "tests/ptsip/control_plane" in verification["core_regression"]["pytest_targets"]
     assert "tests/ptsip/test_proposed_component.py" in verification["core_regression"]["pytest_targets"]
-    assert len(verification["combined_regression_pytest_targets"]) >= len(
-        verification["core_regression"]["pytest_targets"]
-    )
+    combined = verification["combined_regression_pytest_targets"]
+    assert "tests/ptsip/control_plane" in combined
+    assert "tests/ptsip/control_plane/test_github_authority.py" not in combined
+    assert "tests/ptsip/control_plane/test_github_authority_reconciliation.py" not in combined
+    assert "tests/ptsip/test_proposed_component.py" in combined
     assert verification["commands"]["regression"][0:3] == ["python", "-m", "pytest"]
 
     coverage = {item["id"]: item for item in packet["acceptance_coverage"]}
