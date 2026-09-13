@@ -880,8 +880,13 @@ def main(argv: list[str] | None = None) -> int:
                         args.json,
                     )
                     return 9
-                if backend != "GITHUB" and application_status in {"APPLIED", "LOCAL_APPLIED"}:
-                    _emit({"status": "ALREADY_APPLIED", "decision": decision}, args.json)
+                if backend != "GITHUB" and application_status in {"APPLIED", "LOCAL_APPLIED", "PROPOSAL_APPROVED"}:
+                    terminal_status = (
+                        "ALREADY_APPROVED_PROPOSAL"
+                        if application_status == "PROPOSAL_APPROVED"
+                        else "ALREADY_APPLIED"
+                    )
+                    _emit({"status": terminal_status, "decision": decision}, args.json)
                     return 0
                 already_resolved_same = True
             elif existing_status != "PENDING":
@@ -896,17 +901,20 @@ def main(argv: list[str] | None = None) -> int:
             if not isinstance(include, list) or not component_id:
                 raise RuntimeError("Decision request has no component include selectors")
 
-            try:
-                prepared = prepare_local_profile(
-                    repo.root,
-                    component_id,
-                    [str(item) for item in include],
-                    answer,
-                    selected_resolve_file,
-                )
-            except (ValueError, RuntimeError) as exc:
-                _emit({"status": "CONFLICT", "message": str(exc), "decision": decision}, args.json)
-                return 8
+            proposed_component = request.get("origin") == "EXPLICIT_PROPOSED_COMPONENT"
+            prepared = None
+            if not proposed_component:
+                try:
+                    prepared = prepare_local_profile(
+                        repo.root,
+                        component_id,
+                        [str(item) for item in include],
+                        answer,
+                        selected_resolve_file,
+                    )
+                except (ValueError, RuntimeError) as exc:
+                    _emit({"status": "CONFLICT", "message": str(exc), "decision": decision}, args.json)
+                    return 8
 
             if already_resolved_same and backend == "GITHUB":
                 resolved = decision
@@ -944,6 +952,30 @@ def main(argv: list[str] | None = None) -> int:
                 _emit({"status": "STALE_REQUIRES_GATE", "decision": resolved}, args.json)
                 return 8
 
+            if proposed_component:
+                application = client.application(
+                    {
+                        "decision_id": args.decision,
+                        "status": "PROPOSAL_APPROVED",
+                        "profile_path": stored_profile,
+                        "applied_revision": repo.commit,
+                    }
+                )
+                _emit(
+                    {
+                        "status": "PROPOSAL_APPROVED",
+                        "backend": backend,
+                        "decision": resolved,
+                        "selected_profile_path": stored_profile,
+                        "materialized": False,
+                        "active_component_declared": False,
+                        "application": application,
+                    },
+                    args.json,
+                )
+                return 0
+
+            assert prepared is not None
             try:
                 profile = write_prepared_local_profile(prepared)
             except Exception:
