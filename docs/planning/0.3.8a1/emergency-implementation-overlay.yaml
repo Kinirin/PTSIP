@@ -59,10 +59,31 @@ coding_agent_entry:
           - PTSIP-AUT-006
           - PTSIP-AUT-007
         implementation_refs:
-          - src/ptsip/app/github_authority.py#_workflow_status
-          - src/ptsip/app/github_authority.py#GithubControlPlaneClient.application
-          - src/ptsip/cli.py#resolve
-          - src/ptsip/proposed_component.py
+          - path: src/ptsip/app/github_authority.py
+            selector:
+              kind: PYTHON_FUNCTION
+              name: _global_decision_id
+          - path: src/ptsip/app/github_authority.py
+            selector:
+              kind: PYTHON_FUNCTION
+              name: _workflow_status
+          - path: src/ptsip/app/github_authority.py
+            selector:
+              kind: PYTHON_METHOD
+              class: GithubControlPlaneClient
+              method: gate
+          - path: src/ptsip/app/github_authority.py
+            selector:
+              kind: PYTHON_METHOD
+              class: GithubControlPlaneClient
+              method: application
+          - path: src/ptsip/cli.py
+            selector:
+              kind: CLI_COMMAND_BRANCH
+              command: resolve
+          - path: src/ptsip/proposed_component.py
+            selector:
+              kind: PYTHON_MODULE
         test_refs:
           - tests/ptsip/test_proposed_component.py
           - tests/ptsip/control_plane/test_github_authority.py

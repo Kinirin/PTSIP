@@ -10,6 +10,7 @@ import developer.automation.policy_resolver as policy_resolver_module
 from developer.automation.policy_resolver import (
     PolicyResolverError,
     explain_policy,
+    get_normative_rule,
     get_policy,
     resolve_policies,
     validate_policy_resolver,
@@ -50,7 +51,14 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
     ]
 
 
-def test_github_authority_scope_returns_exact_implementation_context() -> None:
+def test_github_authority_scope_returns_exact_implementation_context(
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(
+        policy_resolver_module,
+        "_current_branch",
+        lambda _root: "dev/0.3.8a1",
+    )
     result = resolve_policies(
         ROOT,
         scope="src/ptsip/app/github_authority.py",
@@ -71,6 +79,11 @@ def test_github_authority_scope_returns_exact_implementation_context() -> None:
 
     context = result["task_context"]
     assert context["branch"] == "dev/0.3.8a1"
+    assert context["branch_context"] == {
+        "declared": "dev/0.3.8a1",
+        "actual": "dev/0.3.8a1",
+        "match": True,
+    }
     assert context["planning_entry"] == (
         "docs/planning/0.3.8a1/emergency-implementation-overlay.yaml"
     )
@@ -83,10 +96,55 @@ def test_github_authority_scope_returns_exact_implementation_context() -> None:
         "PTSIP-AUT-006",
         "PTSIP-AUT-007",
     ]
-    assert "src/ptsip/app/github_authority.py#_workflow_status" in context[
-        "implementation_refs"
+    assert [item["rule_id"] for item in context["normative_rules"]] == context[
+        "normative_rule_refs"
     ]
+    refs = context["implementation_refs"]
+    assert refs[0]["selector"]["name"] == "_global_decision_id"
+    assert refs[2]["selector"]["method"] == "gate"
+    assert refs[3]["selector"]["method"] == "application"
+    assert refs[4]["selector"]["command"] == "resolve"
+    assert all(item["resolved_location"]["line_start"] >= 1 for item in refs)
     assert "tests/ptsip/test_proposed_component.py" in context["test_refs"]
+
+
+def test_normative_rule_projection_returns_exact_section() -> None:
+    result = get_normative_rule(ROOT, rule_id="PTSIP-AUT-007")
+    assert result["canonical_source"] == "spec/PTSIP-SPEC.md"
+    assert result["registry_record"]["id"] == "PTSIP-AUT-007"
+    assert result["projection_authority"] is False
+    assert result["section_text"].startswith("### PTSIP-AUT-007")
+    assert "## 10. Action-time synchronization" not in result["section_text"]
+
+
+def test_task_context_branch_mismatch_fails_closed(monkeypatch) -> None:
+    monkeypatch.setattr(
+        policy_resolver_module,
+        "_current_branch",
+        lambda _root: "dev/0.4.0",
+    )
+    with pytest.raises(PolicyResolverError, match="task context branch mismatch"):
+        resolve_policies(
+            ROOT,
+            scope="src/ptsip/app/github_authority.py",
+            operation="MODIFY",
+        )
+
+
+def test_rule_cli_projects_one_normative_section(capsys) -> None:
+    result = policy_resolver_module.main(
+        [
+            "--repository",
+            str(ROOT),
+            "rule",
+            "PTSIP-AUT-007",
+            "--json",
+        ]
+    )
+    captured = capsys.readouterr()
+    assert result == 0
+    assert '"rule_id": "PTSIP-AUT-007"' in captured.out
+    assert "## 10. Action-time synchronization" not in captured.out
 
 
 def test_similar_github_authority_scope_does_not_receive_task_context() -> None:

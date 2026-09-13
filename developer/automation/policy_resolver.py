@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
+import subprocess
 from pathlib import Path, PurePosixPath
 from typing import Mapping
 
@@ -201,11 +203,15 @@ def _validate_policy_ref(
     }
 
 
-def _validate_repository_ref(root: Path, value: object, *, label: str) -> str:
+def _repository_file(
+    root: Path,
+    value: object,
+    *,
+    label: str,
+) -> tuple[str, Path]:
     if not isinstance(value, str) or not value.strip():
-        raise PolicyResolverError(f"{label} must be a non-empty repository reference")
-    reference = value.strip()
-    path_text, marker, fragment = reference.partition("#")
+        raise PolicyResolverError(f"{label} must be a non-empty repository path")
+    path_text = value.strip()
     candidate = (root / path_text).resolve()
     try:
         candidate.relative_to(root)
@@ -213,28 +219,257 @@ def _validate_repository_ref(root: Path, value: object, *, label: str) -> str:
         raise PolicyResolverError(f"{label} escapes repository root") from exc
     if not candidate.is_file():
         raise PolicyResolverError(f"{label} does not exist: {path_text}")
+    return path_text, candidate
+
+
+def _validate_repository_ref(root: Path, value: object, *, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise PolicyResolverError(f"{label} must be a non-empty repository reference")
+    reference = value.strip()
+    path_text, marker, fragment = reference.partition("#")
+    _repository_file(root, path_text, label=label)
     if marker and not fragment:
         raise PolicyResolverError(f"{label} has an empty fragment")
     return reference
 
 
-def _normative_rule_ids(
+def _current_branch(root: Path) -> str:
+    completed = subprocess.run(
+        ["git", "-C", str(root), "branch", "--show-current"],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or "git branch --show-current failed"
+        raise PolicyResolverError(f"unable to resolve current Git branch: {detail}")
+    branch = completed.stdout.strip()
+    if not branch:
+        raise PolicyResolverError(
+            "Policy Resolver task context requires a named Git branch; detached HEAD fails closed"
+        )
+    return branch
+
+
+def _normative_rule_registry(
     root: Path,
     contract: Mapping[str, object],
-) -> set[str]:
+) -> dict[str, dict[str, object]]:
     registry_path = _configured_path(root, contract, "normative_rule_registry_ref")
     payload = load_yaml(registry_path, root=root)
     registry = _mapping(payload.get("ptsip_registry"), label="ptsip_registry")
     rules = registry.get("rules")
     if not isinstance(rules, list):
         raise PolicyResolverError("normative rule registry has no rules list")
-    result: set[str] = set()
+    result: dict[str, dict[str, object]] = {}
     for raw in rules:
         rule = _mapping(raw, label="normative rule")
         rule_id = rule.get("id")
-        if isinstance(rule_id, str) and rule_id:
-            result.add(rule_id)
+        if not isinstance(rule_id, str) or not rule_id:
+            raise PolicyResolverError("normative rule id must be a non-empty string")
+        if rule_id in result:
+            raise PolicyResolverError(f"duplicate normative rule identity: {rule_id}")
+        result[rule_id] = dict(rule)
     return result
+
+
+def get_normative_rule(
+    repository: str | Path,
+    *,
+    rule_id: str,
+) -> dict[str, object]:
+    root = repository_root(repository)
+    contract = _contract(root)
+    registry = _normative_rule_registry(root, contract)
+    record = registry.get(rule_id)
+    if record is None:
+        raise PolicyResolverError(f"unknown normative rule identity: {rule_id}")
+
+    source_path = _configured_path(root, contract, "normative_rule_source_ref")
+    _, source_file = _repository_file(
+        root,
+        source_path,
+        label="normative_rule_source_ref",
+    )
+    lines = source_file.read_text(encoding="utf-8").splitlines(keepends=True)
+    prefix = f"### {rule_id} "
+    starts = [
+        index
+        for index, line in enumerate(lines)
+        if line.startswith(prefix)
+    ]
+    if len(starts) != 1:
+        raise PolicyResolverError(
+            f"{rule_id}: canonical Specification must contain exactly one level-3 rule section"
+        )
+    start = starts[0]
+    end = len(lines)
+    for index in range(start + 1, len(lines)):
+        if lines[index].startswith("### ") or lines[index].startswith("## "):
+            end = index
+            break
+    section_text = "".join(lines[start:end])
+    if not section_text.strip():
+        raise PolicyResolverError(f"{rule_id}: canonical Specification section is empty")
+    return {
+        "schema_version": "ptsip-normative-rule-projection/v1",
+        "rule_id": rule_id,
+        "canonical_source": source_path,
+        "registry_record": record,
+        "line_start": start + 1,
+        "line_end": end,
+        "section_text": section_text,
+        "projection_authority": False,
+    }
+
+
+def _python_tree(path_text: str, candidate: Path) -> ast.Module:
+    try:
+        return ast.parse(
+            candidate.read_text(encoding="utf-8"),
+            filename=path_text,
+        )
+    except SyntaxError as exc:
+        raise PolicyResolverError(
+            f"implementation ref source is not valid Python: {path_text}: {exc}"
+        ) from exc
+
+
+def _location(node: ast.AST) -> dict[str, int]:
+    line_start = getattr(node, "lineno", None)
+    line_end = getattr(node, "end_lineno", line_start)
+    if not isinstance(line_start, int) or not isinstance(line_end, int):
+        raise PolicyResolverError("implementation selector resolved without source location")
+    return {
+        "line_start": line_start,
+        "line_end": line_end,
+    }
+
+
+def _cli_command_branch_matches(test: ast.AST, command: str) -> bool:
+    if not isinstance(test, ast.Compare):
+        return False
+    if len(test.ops) != 1 or not isinstance(test.ops[0], ast.Eq):
+        return False
+    if len(test.comparators) != 1:
+        return False
+    left = test.left
+    right = test.comparators[0]
+    return (
+        isinstance(left, ast.Attribute)
+        and left.attr == "command"
+        and isinstance(left.value, ast.Name)
+        and left.value.id == "args"
+        and isinstance(right, ast.Constant)
+        and right.value == command
+    )
+
+
+def _validate_implementation_ref(
+    root: Path,
+    raw_ref: object,
+) -> dict[str, object]:
+    reference = _mapping(raw_ref, label="implementation reference")
+    path_text, candidate = _repository_file(
+        root,
+        reference.get("path"),
+        label="implementation reference path",
+    )
+    if candidate.suffix != ".py":
+        raise PolicyResolverError(
+            f"typed implementation ref must target a Python source file: {path_text}"
+        )
+    selector = _mapping(
+        reference.get("selector"),
+        label=f"{path_text} implementation selector",
+    )
+    kind = selector.get("kind")
+    if kind not in {
+        "PYTHON_FUNCTION",
+        "PYTHON_METHOD",
+        "CLI_COMMAND_BRANCH",
+        "PYTHON_MODULE",
+    }:
+        raise PolicyResolverError(
+            f"{path_text}: unsupported implementation selector kind {kind!r}"
+        )
+
+    tree = _python_tree(path_text, candidate)
+    selected: ast.AST
+    if kind == "PYTHON_FUNCTION":
+        name = selector.get("name")
+        if not isinstance(name, str) or not name:
+            raise PolicyResolverError(f"{path_text}: PYTHON_FUNCTION requires name")
+        matches = [
+            node
+            for node in tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name == name
+        ]
+        if len(matches) != 1:
+            raise PolicyResolverError(
+                f"{path_text}: PYTHON_FUNCTION {name!r} must resolve exactly once"
+            )
+        selected = matches[0]
+    elif kind == "PYTHON_METHOD":
+        class_name = selector.get("class")
+        method_name = selector.get("method")
+        if not isinstance(class_name, str) or not class_name:
+            raise PolicyResolverError(f"{path_text}: PYTHON_METHOD requires class")
+        if not isinstance(method_name, str) or not method_name:
+            raise PolicyResolverError(f"{path_text}: PYTHON_METHOD requires method")
+        classes = [
+            node
+            for node in tree.body
+            if isinstance(node, ast.ClassDef) and node.name == class_name
+        ]
+        if len(classes) != 1:
+            raise PolicyResolverError(
+                f"{path_text}: class {class_name!r} must resolve exactly once"
+            )
+        methods = [
+            node
+            for node in classes[0].body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name == method_name
+        ]
+        if len(methods) != 1:
+            raise PolicyResolverError(
+                f"{path_text}: method {class_name}.{method_name} must resolve exactly once"
+            )
+        selected = methods[0]
+    elif kind == "CLI_COMMAND_BRANCH":
+        command = selector.get("command")
+        if not isinstance(command, str) or not command:
+            raise PolicyResolverError(f"{path_text}: CLI_COMMAND_BRANCH requires command")
+        matches = [
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, ast.If)
+            and _cli_command_branch_matches(node.test, command)
+        ]
+        if len(matches) != 1:
+            raise PolicyResolverError(
+                f"{path_text}: CLI command branch {command!r} must resolve exactly once"
+            )
+        selected = matches[0]
+    else:
+        selected = tree
+
+    if kind == "PYTHON_MODULE":
+        line_count = len(candidate.read_text(encoding="utf-8").splitlines())
+        resolved_location = {
+            "line_start": 1,
+            "line_end": max(1, line_count),
+        }
+    else:
+        resolved_location = _location(selected)
+    return {
+        "path": path_text,
+        "selector": dict(selector),
+        "resolved_location": resolved_location,
+    }
 
 
 def _task_context(
@@ -243,6 +478,7 @@ def _task_context(
     *,
     scope: str,
     operation: str,
+    enforce_branch: bool,
 ) -> dict[str, object] | None:
     context_path = _configured_path(root, contract, "task_context_ref")
     payload = load_yaml(context_path, root=root)
@@ -266,6 +502,20 @@ def _task_context(
         label=f"coding_agent_entry.task_bindings.{scope}.{operation}",
     )
 
+    declared_branch = entry.get("branch")
+    if not isinstance(declared_branch, str) or not declared_branch:
+        raise PolicyResolverError("coding_agent_entry.branch must be non-empty")
+    actual_branch: str | None = None
+    branch_match: bool | None = None
+    if enforce_branch:
+        actual_branch = _current_branch(root)
+        branch_match = actual_branch == declared_branch
+        if not branch_match:
+            raise PolicyResolverError(
+                "task context branch mismatch: "
+                f"declared {declared_branch!r}, actual {actual_branch!r}"
+            )
+
     planning_entry = _validate_repository_ref(
         root,
         entry.get("planning_entry"),
@@ -275,46 +525,68 @@ def _task_context(
     raw_rules = context.get("normative_rule_refs")
     if not isinstance(raw_rules, list) or not raw_rules:
         raise PolicyResolverError("task context normative_rule_refs must be non-empty")
-    normative_rule_refs = [str(item) for item in raw_rules]
+    normative_rule_refs: list[str] = []
+    for item in raw_rules:
+        if not isinstance(item, str) or not item:
+            raise PolicyResolverError(
+                "task context normative_rule_refs must contain non-empty strings"
+            )
+        normative_rule_refs.append(item)
     if len(normative_rule_refs) != len(set(normative_rule_refs)):
         raise PolicyResolverError("task context normative_rule_refs must be unique")
-    known_rule_ids = _normative_rule_ids(root, contract)
-    unknown = [rule_id for rule_id in normative_rule_refs if rule_id not in known_rule_ids]
-    if unknown:
-        raise PolicyResolverError(
-            "task context references unknown normative rule(s): " + ", ".join(unknown)
-        )
+    normative_rules = [
+        get_normative_rule(root, rule_id=rule_id)
+        for rule_id in normative_rule_refs
+    ]
 
-    def refs(field: str) -> list[str]:
-        raw = context.get(field)
-        if not isinstance(raw, list) or not raw:
-            raise PolicyResolverError(f"task context {field} must be non-empty")
-        values = [
-            _validate_repository_ref(root, item, label=f"{field} item")
-            for item in raw
-        ]
-        if len(values) != len(set(values)):
-            raise PolicyResolverError(f"task context {field} must be unique")
-        return values
+    raw_implementation_refs = context.get("implementation_refs")
+    if not isinstance(raw_implementation_refs, list) or not raw_implementation_refs:
+        raise PolicyResolverError("task context implementation_refs must be non-empty")
+    implementation_refs = [
+        _validate_implementation_ref(root, item)
+        for item in raw_implementation_refs
+    ]
+
+    raw_test_refs = context.get("test_refs")
+    if not isinstance(raw_test_refs, list) or not raw_test_refs:
+        raise PolicyResolverError("task context test_refs must be non-empty")
+    test_refs = [
+        _validate_repository_ref(root, item, label="test_refs item")
+        for item in raw_test_refs
+    ]
+    if len(test_refs) != len(set(test_refs)):
+        raise PolicyResolverError("task context test_refs must be unique")
 
     raw_constraints = context.get("constraints")
     if not isinstance(raw_constraints, list) or not raw_constraints:
         raise PolicyResolverError("task context constraints must be non-empty")
-    constraints = [str(item) for item in raw_constraints]
+    constraints: list[str] = []
+    for item in raw_constraints:
+        if not isinstance(item, str) or not item:
+            raise PolicyResolverError(
+                "task context constraints must contain non-empty strings"
+            )
+        constraints.append(item)
     if len(constraints) != len(set(constraints)):
         raise PolicyResolverError("task context constraints must be unique")
 
-    branch = entry.get("branch")
-    if not isinstance(branch, str) or not branch:
-        raise PolicyResolverError("coding_agent_entry.branch must be non-empty")
-
     return {
-        "branch": branch,
+        "branch": declared_branch,
+        "branch_context": {
+            "declared": declared_branch,
+            "actual": actual_branch,
+            "match": branch_match,
+        },
         "planning_entry": planning_entry,
         "normative_rule_refs": normative_rule_refs,
-        "normative_rule_source": "spec/PTSIP-SPEC.md",
-        "implementation_refs": refs("implementation_refs"),
-        "test_refs": refs("test_refs"),
+        "normative_rule_source": _configured_path(
+            root,
+            contract,
+            "normative_rule_source_ref",
+        ),
+        "normative_rules": normative_rules,
+        "implementation_refs": implementation_refs,
+        "test_refs": test_refs,
         "constraints": constraints,
     }
 
@@ -355,6 +627,7 @@ def resolve_policies(
         contract,
         scope=normalized_scope,
         operation=normalized_operation,
+        enforce_branch=True,
     )
     if task_context is not None:
         result["task_context"] = task_context
@@ -444,6 +717,7 @@ def validate_policy_resolver(
                     contract,
                     scope=str(task_scope),
                     operation=str(operation),
+                    enforce_branch=False,
                 ) is None:
                     raise PolicyResolverError(
                         f"task context did not resolve for {task_scope}:{operation}"
@@ -549,6 +823,10 @@ def _parser() -> argparse.ArgumentParser:
     explain = sub.add_parser("explain")
     explain.add_argument("policy_id")
     explain.add_argument("--json", action="store_true")
+
+    rule = sub.add_parser("rule")
+    rule.add_argument("rule_id")
+    rule.add_argument("--json", action="store_true")
     return parser
 
 
@@ -566,6 +844,11 @@ def main(argv: list[str] | None = None) -> int:
                 args.repository,
                 policy_id=args.policy_id,
                 section=args.section,
+            )
+        elif args.command == "rule":
+            payload = get_normative_rule(
+                args.repository,
+                rule_id=args.rule_id,
             )
         else:
             payload = explain_policy(
