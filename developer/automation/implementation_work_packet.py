@@ -567,7 +567,7 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
     }
 
 
-def _changed_paths(def _changed_paths(root: Path) -> list[str]:
+def _changed_paths(root: Path) -> list[str]:
     tracked = _git(root, "diff", "--name-only", "HEAD").splitlines()
     untracked = _git(root, "ls-files", "--others", "--exclude-standard").splitlines()
     return sorted({item.replace("\\", "/") for item in tracked + untracked if item})
