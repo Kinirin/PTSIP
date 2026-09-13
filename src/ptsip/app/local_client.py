@@ -12,7 +12,7 @@ from .store import DecisionRecord, DecisionStore
 def _workflow_status(record: DecisionRecord) -> str:
     if record.status == "PENDING":
         return "DECISION_REQUIRED"
-    if record.status == "RESOLVED" and record.application_status not in {"APPLIED", "LOCAL_APPLIED"}:
+    if record.status == "RESOLVED" and record.application_status not in {"APPLIED", "LOCAL_APPLIED", "PROPOSAL_APPROVED"}:
         return "RESOLVED_APPLICATION_REQUIRED"
     return record.status
 
@@ -110,7 +110,7 @@ class LocalControlPlaneClient:
     def application(self, payload: dict[str, Any]) -> dict[str, object]:
         decision_id = str(payload.get("decision_id", ""))
         status = str(payload.get("status", ""))
-        if status not in {"LOCAL_APPLIED", "FAILED", "STALE"}:
+        if status not in {"LOCAL_APPLIED", "PROPOSAL_APPROVED", "FAILED", "STALE"}:
             raise ValueError("unsupported agent application status")
         existing = self.store.get(decision_id)
         if existing is None:
