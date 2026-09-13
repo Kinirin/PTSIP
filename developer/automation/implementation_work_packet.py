@@ -832,6 +832,171 @@ def _load_packet(path: Path) -> dict[str, object]:
     return payload
 
 
+def _normative_rule_headlines(packet: Mapping[str, object]) -> list[dict[str, object]]:
+    policy_context = _mapping(packet.get("policy_context"), "packet.policy_context")
+    raw_rules = policy_context.get("normative_rules")
+    if not isinstance(raw_rules, list):
+        raise WorkPacketError("packet policy_context normative_rules must be a list")
+    result: list[dict[str, object]] = []
+    for raw in raw_rules:
+        rule = _mapping(raw, "packet normative rule")
+        registry = _mapping(rule.get("registry_record"), "normative rule registry_record")
+        result.append(
+            {
+                "rule_id": rule.get("rule_id"),
+                "title": registry.get("title"),
+                "severity": registry.get("severity"),
+                "applies_to": registry.get("applies_to"),
+                "canonical_source": rule.get("canonical_source"),
+                "line_start": rule.get("line_start"),
+                "line_end": rule.get("line_end"),
+            }
+        )
+    return result
+
+
+def build_agent_brief(packet: Mapping[str, object]) -> dict[str, object]:
+    policy_context = _mapping(packet.get("policy_context"), "packet.policy_context")
+    verification = _mapping(packet.get("verification"), "packet.verification")
+    core = _mapping(verification.get("core_regression"), "verification.core_regression")
+    freshness = _mapping(packet.get("freshness"), "packet.freshness")
+    edit_budget = _mapping(packet.get("edit_budget"), "packet.edit_budget")
+    return {
+        "schema_version": "ptsip-agent-implementation-brief/v1",
+        "projection_authority": False,
+        "packet_id": packet.get("packet_id"),
+        "task": packet.get("task"),
+        "policy_refs": policy_context.get("policies"),
+        "normative_rules": _normative_rule_headlines(packet),
+        "constraints": policy_context.get("constraints"),
+        "read_context": packet.get("read_context"),
+        "mutation_plan": packet.get("mutation_plan"),
+        "acceptance_vectors": packet.get("acceptance_vectors"),
+        "guard_contract": {
+            "unlisted_paths": edit_budget.get("unlisted_paths"),
+            "selector_removal_or_rename": edit_budget.get("selector_removal_or_rename"),
+        },
+        "verification": {
+            "status": verification.get("status"),
+            "baseline_pytest_nodes": verification.get("baseline_pytest_nodes"),
+            "required_new_tests": verification.get("required_new_tests"),
+            "missing_required_new_tests": verification.get("missing_required_new_tests"),
+            "task_regression_pytest_targets": verification.get("task_regression_pytest_targets"),
+            "core_regression": {
+                "component_ref": core.get("component_ref"),
+                "source": core.get("source"),
+                "selection": core.get("selection"),
+            },
+            "recommended_order": [
+                "baseline",
+                "focused",
+                "task-regression",
+                "core",
+                "regression",
+            ],
+        },
+        "freshness": {
+            "baseline_head": freshness.get("baseline_head"),
+            "strategy": freshness.get("strategy"),
+        },
+        "on_demand": {
+            "normative_rule": [
+                "python",
+                "-m",
+                "developer.automation.policy_resolver",
+                "rule",
+                "<RULE_ID>",
+                "--json",
+            ],
+            "mutation_context": [
+                "python",
+                "-m",
+                "developer.automation.implementation_work_packet",
+                "context",
+                "--packet",
+                "<PACKET>",
+                "--role",
+                "mutation",
+                "--json",
+            ],
+            "read_context": [
+                "python",
+                "-m",
+                "developer.automation.implementation_work_packet",
+                "context",
+                "--packet",
+                "<PACKET>",
+                "--role",
+                "read",
+                "--json",
+            ],
+        },
+    }
+
+
+def build_source_context(
+    repository: str | Path,
+    packet: Mapping[str, object],
+    *,
+    role: str,
+) -> dict[str, object]:
+    root = repository_root(repository)
+    if role not in {"mutation", "read", "all"}:
+        raise WorkPacketError(f"unsupported source-context role: {role}")
+    mutation_plan = _mapping(packet.get("mutation_plan"), "packet.mutation_plan")
+    mutation_refs = mutation_plan.get("targets")
+    read_refs = packet.get("read_context")
+    if not isinstance(mutation_refs, list) or not isinstance(read_refs, list):
+        raise WorkPacketError("packet source-context references are invalid")
+    selected: list[object] = []
+    if role in {"mutation", "all"}:
+        selected.extend(mutation_refs)
+    if role in {"read", "all"}:
+        selected.extend(read_refs)
+
+    seen: set[str] = set()
+    items: list[dict[str, object]] = []
+    for raw in selected:
+        ref = _mapping(raw, "source-context ref")
+        path = ref.get("path")
+        selector = ref.get("selector")
+        if not isinstance(path, str) or not isinstance(selector, Mapping):
+            raise WorkPacketError("source-context ref has invalid path or selector")
+        key = _selector_key(path, selector)
+        if key in seen:
+            continue
+        seen.add(key)
+        live = policy_resolver._validate_implementation_ref(
+            root,
+            {"path": path, "selector": dict(selector)},
+        )
+        location = _mapping(live.get("resolved_location"), "source-context resolved_location")
+        line_start = location.get("line_start")
+        line_end = location.get("line_end")
+        if not isinstance(line_start, int) or not isinstance(line_end, int):
+            raise WorkPacketError("source-context selector has no exact line range")
+        lines = (root / path).read_text(encoding="utf-8").splitlines(keepends=True)
+        source = "".join(lines[line_start - 1:line_end])
+        item = {
+            "path": path,
+            "selector": dict(selector),
+            "resolved_location": dict(location),
+            "source_sha256": hashlib.sha256(source.encode("utf-8")).hexdigest(),
+            "source": source,
+        }
+        rationale = ref.get("rationale")
+        if isinstance(rationale, str) and rationale:
+            item["rationale"] = rationale
+        items.append(item)
+    return {
+        "schema_version": "ptsip-agent-source-context/v1",
+        "projection_authority": False,
+        "packet_id": packet.get("packet_id"),
+        "role": role,
+        "items": items,
+    }
+
+
 def _emit(payload: object, as_json: bool) -> None:
     if as_json:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
@@ -849,6 +1014,24 @@ def _parser() -> argparse.ArgumentParser:
     prepare.add_argument("--operation", required=True)
     prepare.add_argument("--output")
     prepare.add_argument("--json", action="store_true")
+    prepare.add_argument(
+        "--agent-brief",
+        action="store_true",
+        help="Write the full packet to --output but emit only the compact agent brief.",
+    )
+
+    brief = sub.add_parser("brief")
+    brief.add_argument("--packet", required=True)
+    brief.add_argument("--json", action="store_true")
+
+    context = sub.add_parser("context")
+    context.add_argument("--packet", required=True)
+    context.add_argument(
+        "--role",
+        required=True,
+        choices=("mutation", "read", "all"),
+    )
+    context.add_argument("--json", action="store_true")
 
     check = sub.add_parser("check")
     check.add_argument("--packet", required=True)
@@ -882,7 +1065,8 @@ def main(argv: list[str] | None = None) -> int:
                     json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
                     encoding="utf-8",
                 )
-            _emit(payload, bool(args.json))
+            emitted = build_agent_brief(payload) if args.agent_brief else payload
+            _emit(emitted, bool(args.json))
             return 0
 
         packet = _load_packet(Path(args.packet))
@@ -894,6 +1078,16 @@ def main(argv: list[str] | None = None) -> int:
         if checked["status"] != "PASS":
             _emit(checked, True)
             return 2
+        if args.command == "brief":
+            _emit(build_agent_brief(packet), bool(args.json))
+            return 0
+        if args.command == "context":
+            _emit(
+                build_source_context(root, packet, role=args.role),
+                bool(args.json),
+            )
+            return 0
+
         verification = _mapping(packet.get("verification"), "packet.verification")
         if args.stage == "focused" and checked["missing_required_new_tests"]:
             print(
