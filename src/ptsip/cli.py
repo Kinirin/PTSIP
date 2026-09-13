@@ -35,6 +35,7 @@ from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
 from .pilot.runner import run_pilot
+from .proposed_component import ProposedComponentError, build_proposed_component_candidate
 from .repository.discover import RepositoryInfo, discover_repository
 from .repository.profile_path import (
     bind_decision_id,
@@ -312,6 +313,30 @@ def _parser() -> argparse.ArgumentParser:
     p_adopt.add_argument("--actor", default="project-owner-session", help="Audit actor label for GitHub-coordinated adoption")
     p_adopt.add_argument("--apply", action="store_true", help="Apply the reviewed adoption plan; default is dry-run")
     p_adopt.add_argument("--json", action="store_true")
+
+    p_propose_component = sub.add_parser(
+        "propose-component",
+        help="Register an explicit non-authoritative proposed component that may not exist yet",
+    )
+    p_propose_component.add_argument("path", nargs="?", default=".")
+    p_propose_component.add_argument("--profile", help="Explicit project-profile path; defaults to repository-root ptsip.yaml")
+    p_propose_component.add_argument("--component", required=True, help="Future component stable ID")
+    p_propose_component.add_argument(
+        "--include",
+        action="append",
+        required=True,
+        help="Explicit future component selector; repeatable. No filesystem discovery or existence inference is performed.",
+    )
+    p_propose_component.add_argument(
+        "--coordination",
+        choices=("local", "github"),
+        help="Decision coordination backend; default is GitHub for GitHub repositories and local otherwise",
+    )
+    p_propose_component.add_argument(
+        "--control-plane",
+        help="Optional hosted HTTP PTSIP control-plane override; mutually exclusive with --coordination",
+    )
+    p_propose_component.add_argument("--json", action="store_true")
 
     p_gate = sub.add_parser(
         "gate",
@@ -616,6 +641,53 @@ def main(argv: list[str] | None = None) -> int:
                 payload["authority"] = authority
             _emit(payload, args.json)
             return 0 if status in {"ADOPTED", "ALREADY_DECLARED"} else 8
+        if args.command == "propose-component":
+            repo = discover_repository(args.path)
+            if not repo.commit or not repo.branch:
+                raise RuntimeError("ptsip propose-component requires a checked-out Git branch and commit")
+            selected_proposal_profile = selected_profile_path(repo.root, args.profile)
+            candidate = build_proposed_component_candidate(
+                _decision_repository(repo),
+                args.component,
+                args.include,
+                selected_proposal_profile,
+            )
+            backend, client = _decision_client(repo, args.control_plane, args.coordination)
+            response = client.gate(
+                candidate.gate_payload(
+                    repository=_decision_repository(repo),
+                    branch=repo.branch,
+                    subject_revision=repo.commit,
+                )
+            )
+            decision = response.get("decision")
+            if isinstance(decision, dict):
+                existing_component_id = str(decision.get("component_id", ""))
+                if existing_component_id and existing_component_id != candidate.component_id:
+                    _emit(
+                        {
+                            "format": "ptsip-proposed-component-registration/v1",
+                            "status": "CONFLICT",
+                            "backend": backend,
+                            "candidate": candidate.as_dict(),
+                            "message": "The exact proposal scope is already bound to a different component identity.",
+                            "decision": decision,
+                        },
+                        args.json,
+                    )
+                    return 8
+            status = str(response.get("status", ""))
+            payload = {
+                "format": "ptsip-proposed-component-registration/v1",
+                "status": status,
+                "backend": backend,
+                "candidate": candidate.as_dict(),
+                "decision": decision,
+                "selected_profile_path": selected_proposal_profile,
+                "next_action": "ptsip resolve --decision <decision-id> ..." if status == "DECISION_REQUIRED" else None,
+            }
+            _emit(payload, args.json)
+            return 0 if status in {"DECISION_REQUIRED", "RESOLVED_APPLICATION_REQUIRED", "RESOLVED", "ALREADY_RESOLVED"} else 8
         if args.command == "gate":
             language = resolve_language(args.lang)
             gate_repo = discover_repository(args.path)
