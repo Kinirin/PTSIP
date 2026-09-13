@@ -1,72 +1,149 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["schema_version", "artifact_class", "projection_authority", "tasks"],
+  "required": ["schema_version", "artifact_class", "projection_authority", "failure_routing", "tasks"],
   "properties": {
-    "schema_version": {"const": "ptsip-implementation-workflows/v1"},
+    "schema_version": {"const": "ptsip-implementation-workflows/v2"},
     "artifact_class": {"const": "DEVELOPER_EXECUTION_PROJECTION"},
     "projection_authority": {"const": false},
+    "failure_routing": {
+      "type": "object",
+      "required": ["recheck_context_at", "reresolve_scope_at"],
+      "properties": {
+        "recheck_context_at": {"type": "integer", "minimum": 2},
+        "reresolve_scope_at": {"type": "integer", "minimum": 3}
+      },
+      "additionalProperties": false
+    },
     "tasks": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["branch", "scope", "operation", "edit_targets", "acceptance_vectors", "verification", "desired_test_component"],
+        "required": ["branch", "scope", "operation", "mutation", "acceptance_vectors", "verification"],
         "properties": {
           "branch": {"type": "string", "minLength": 1},
           "scope": {"type": "string", "minLength": 1},
           "operation": {"enum": ["READ", "MODIFY", "PLAN", "VERIFY", "RELEASE"]},
-          "edit_targets": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": "object",
-              "required": ["path", "selector"],
-              "properties": {
-                "path": {"type": "string", "minLength": 1},
-                "selector": {
+          "mutation": {
+            "type": "object",
+            "required": ["targets", "allowed_test_paths", "scope_expansion"],
+            "properties": {
+              "targets": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
                   "type": "object",
-                  "required": ["kind"],
+                  "required": ["path", "selector", "rationale"],
                   "properties": {
-                    "kind": {"enum": ["PYTHON_FUNCTION", "PYTHON_METHOD", "CLI_COMMAND_BRANCH", "PYTHON_MODULE"]},
-                    "name": {"type": "string"},
-                    "class": {"type": "string"},
-                    "method": {"type": "string"},
-                    "command": {"type": "string"}
+                    "path": {"type": "string", "minLength": 1},
+                    "selector": {
+                      "type": "object",
+                      "required": ["kind"],
+                      "properties": {
+                        "kind": {"enum": ["PYTHON_FUNCTION", "PYTHON_METHOD", "CLI_COMMAND_BRANCH", "PYTHON_MODULE"]},
+                        "name": {"type": "string"},
+                        "class": {"type": "string"},
+                        "method": {"type": "string"},
+                        "command": {"type": "string"}
+                      },
+                      "additionalProperties": false
+                    },
+                    "rationale": {"type": "string", "minLength": 1}
                   },
                   "additionalProperties": false
                 }
               },
-              "additionalProperties": false
-            }
+              "allowed_test_paths": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "scope_expansion": {"const": "RE_RESOLVE_REQUIRED"}
+            },
+            "additionalProperties": false
           },
           "acceptance_vectors": {
             "type": "array",
             "minItems": 1,
             "items": {
               "type": "object",
-              "required": ["id", "preconditions", "action", "expected"],
+              "required": ["id", "preconditions", "action", "expected", "invariants", "test_nodes"],
               "properties": {
                 "id": {"type": "string", "minLength": 1},
                 "preconditions": {"type": "object"},
                 "action": {"type": "string", "minLength": 1},
-                "expected": {"type": "object"}
+                "expected": {"type": "object"},
+                "invariants": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {"type": "string", "minLength": 1}
+                },
+                "test_nodes": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {"type": "string", "minLength": 1}
+                }
               },
               "additionalProperties": false
             }
           },
           "verification": {
             "type": "object",
-            "required": ["baseline_pytest_nodes", "required_new_pytest_nodes", "regression_pytest_targets", "full_command"],
+            "required": ["baseline_pytest_nodes", "required_new_tests", "task_regression_pytest_targets", "core_regression", "full_command"],
             "properties": {
-              "baseline_pytest_nodes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-              "required_new_pytest_nodes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-              "regression_pytest_targets": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-              "full_command": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+              "baseline_pytest_nodes": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "required_new_tests": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["node", "acceptance_ids", "preimplementation_expectation"],
+                  "properties": {
+                    "node": {"type": "string", "minLength": 1},
+                    "acceptance_ids": {
+                      "type": "array",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": {"type": "string", "minLength": 1}
+                    },
+                    "preimplementation_expectation": {"enum": ["FAIL_OR_MISSING", "PASS_OR_MISSING"]}
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "task_regression_pytest_targets": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "core_regression": {
+                "type": "object",
+                "required": ["component_ref", "source", "selection"],
+                "properties": {
+                  "component_ref": {"type": "string", "minLength": 1},
+                  "source": {"type": "string", "minLength": 1},
+                  "selection": {"const": "COMPONENT_INCLUDE"}
+                },
+                "additionalProperties": false
+              },
+              "full_command": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"type": "string", "minLength": 1}
+              }
             },
             "additionalProperties": false
-          },
-          "desired_test_component": {"type": "string", "minLength": 1}
+          }
         },
         "additionalProperties": false
       }
