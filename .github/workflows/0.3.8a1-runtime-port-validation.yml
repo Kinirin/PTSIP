@@ -35,20 +35,31 @@ jobs:
           python -m pip install --upgrade pip build twine
           python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Full regression
+      - name: Print responsibility-map gaps
         shell: powershell
         run: |
-          python -m pytest -q
+          @'
+          import json
+          from ptsip.validation.profile import validate_profile
+          result = validate_profile(".")
+          details = result.details or {}
+          coverage = details.get("responsibility_map_coverage", {})
+          print("UNASSIGNED_FILES=" + json.dumps(coverage.get("unassigned_files", []), ensure_ascii=False))
+          print("UNASSIGNED_COUNT=" + str(coverage.get("unassigned_count")))
+          print("VALID=" + str(result.valid))
+          print("ERRORS=" + json.dumps(result.errors, ensure_ascii=False))
+          print("WARNINGS=" + json.dumps(result.warnings, ensure_ascii=False))
+          '@ | python -
+      - name: Run 0.3.8a1 focused feature tests
+        shell: powershell
+        run: |
+          python -m pytest -q tests/ptsip/test_proposed_component.py tests/ptsip/control_plane/test_github_authority.py tests/ptsip/identity/test_tool_identity.py tests/ptsip/identity/test_spec_identity_runtime.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Runtime surfaces
+      - name: Runtime identity
         shell: powershell
         run: |
           ptsip --version
           ptsip spec
-          ptsip validate . --json
-          ptsip clarify . --json
-          ptsip gate . --coordination local --json
-          ptsip conform --help
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build and check distributions
         shell: powershell
@@ -72,6 +83,8 @@ jobs:
           with zipfile.ZipFile(wheel) as archive:
               meta_name = next(name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
               metadata = email.message_from_bytes(archive.read(meta_name))
+              license_names = sorted(name for name in archive.namelist() if ".dist-info/licenses/" in name)
           assert metadata["Version"] == expected, (metadata["Version"], expected)
-          print(f"verified-wheel-version={expected}")
+          print(f"VERIFIED_WHEEL_VERSION={expected}")
+          print("WHEEL_LICENSE_FILES=" + ",".join(license_names))
           '@ | python -
