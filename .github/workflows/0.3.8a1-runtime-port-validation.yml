@@ -1,0 +1,77 @@
+name: 0.3.8a1-runtime-port-validation
+
+on:
+  push:
+    branches:
+      - release/0.3.8a1-port
+    paths:
+      - .github/workflows/0.3.8a1-runtime-port-validation.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Prepare Python 3.14
+        shell: powershell
+        run: |
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) { throw "Python 3.14 unavailable" }
+          if (Test-Path .venv) { Remove-Item .venv -Recurse -Force }
+          & $python -m venv .venv
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          (Resolve-Path .venv\Scripts).Path >> $env:GITHUB_PATH
+      - name: Install tooling
+        shell: powershell
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Full regression
+        shell: powershell
+        run: |
+          python -m pytest -q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Runtime surfaces
+        shell: powershell
+        run: |
+          ptsip --version
+          ptsip spec
+          ptsip validate . --json
+          ptsip clarify . --json
+          ptsip gate . --coordination local --json
+          ptsip conform --help
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build and check distributions
+        shell: powershell
+        run: |
+          python -m build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $distFiles = Get-ChildItem -Path dist -File | ForEach-Object { $_.FullName }
+          if (-not $distFiles) { throw "No distributions produced" }
+          python -m twine check $distFiles
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify built version
+        shell: powershell
+        run: |
+          @'
+          from pathlib import Path
+          import email
+          import zipfile
+          import tomllib
+          expected = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+          wheel = next(Path("dist").glob("*.whl"))
+          with zipfile.ZipFile(wheel) as archive:
+              meta_name = next(name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
+              metadata = email.message_from_bytes(archive.read(meta_name))
+          assert metadata["Version"] == expected, (metadata["Version"], expected)
+          print(f"verified-wheel-version={expected}")
+          '@ | python -
