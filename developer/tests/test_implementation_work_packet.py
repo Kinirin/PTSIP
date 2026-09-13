@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import developer.automation.implementation_work_packet as work_packet
 import developer.automation.policy_resolver as policy_resolver
@@ -200,3 +201,74 @@ def test_collection_failure_routes_to_test_contract_repair(tmp_path: Path) -> No
     )
     assert routed["classification"] == "TEST_CONTRACT_FAILURE"
     assert routed["next_action"] == "REPAIR_TEST_SELECTION_OR_REQUIRED_TEST"
+
+
+def test_agent_brief_is_compact_and_progressive(monkeypatch) -> None:
+    monkeypatch.setattr(
+        policy_resolver,
+        "_current_branch",
+        lambda _root: "dev/0.3.8a1",
+    )
+    packet = work_packet.build_packet(
+        ROOT,
+        scope="src/ptsip/app/github_authority.py",
+        operation="MODIFY",
+    )
+    brief = work_packet.build_agent_brief(packet)
+
+    assert brief["schema_version"] == "ptsip-agent-implementation-brief/v1"
+    assert brief["projection_authority"] is False
+    assert brief["packet_id"] == packet["packet_id"]
+    assert len(brief["normative_rules"]) == 7
+    assert all("title" in item for item in brief["normative_rules"])
+    assert all("section_text" not in item for item in brief["normative_rules"])
+    assert "commands" not in brief["verification"]
+    assert "pytest_targets" not in brief["verification"]["core_regression"]
+    assert "file_hashes" not in brief["freshness"]
+    assert brief["on_demand"]["normative_rule"][-1] == "--json"
+
+    packet_bytes = len(
+        json.dumps(packet, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    )
+    brief_bytes = len(
+        json.dumps(brief, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    )
+    assert brief_bytes < packet_bytes * 0.5
+
+
+def test_mutation_source_context_avoids_whole_file_read(monkeypatch) -> None:
+    monkeypatch.setattr(
+        policy_resolver,
+        "_current_branch",
+        lambda _root: "dev/0.3.8a1",
+    )
+    packet = work_packet.build_packet(
+        ROOT,
+        scope="src/ptsip/app/github_authority.py",
+        operation="MODIFY",
+    )
+    context = work_packet.build_source_context(
+        ROOT,
+        packet,
+        role="mutation",
+    )
+
+    assert context["schema_version"] == "ptsip-agent-source-context/v1"
+    assert context["role"] == "mutation"
+    assert len(context["items"]) == 2
+    selectors = [item["selector"] for item in context["items"]]
+    assert {"kind": "PYTHON_FUNCTION", "name": "_workflow_status"} in selectors
+    assert {
+        "kind": "PYTHON_METHOD",
+        "class": "GithubControlPlaneClient",
+        "method": "application",
+    } in selectors
+    assert all(len(item["source_sha256"]) == 64 for item in context["items"])
+    projected_bytes = sum(
+        len(item["source"].encode("utf-8"))
+        for item in context["items"]
+    )
+    whole_file_bytes = (
+        ROOT / "src/ptsip/app/github_authority.py"
+    ).stat().st_size
+    assert projected_bytes < whole_file_bytes * 0.2
