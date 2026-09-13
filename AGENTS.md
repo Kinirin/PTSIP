@@ -39,6 +39,16 @@ Rules:
 - `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
 - Re-run resolution after changing task scope, operation class, or branch context.
 
+## Implementation Work Packet
+
+For implementation work with a registered task context, prepare a bounded developer-only work packet before editing:
+
+```text
+python -m developer.automation.implementation_work_packet prepare --scope <repository-path> --operation MODIFY --output <temporary-json-path> --json
+```
+
+Use the packet's exact edit targets, required tests, and verification stages. Run `check` before verification or commit. Branch, HEAD, context, or unlisted-path changes invalidate the packet and require regeneration.
+
 ## Mandatory branch-aware planning entry
 
 Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:

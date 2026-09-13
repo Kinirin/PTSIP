@@ -1,0 +1,73 @@
+schema_version: ptsip-implementation-workflows/v1
+artifact_class: DEVELOPER_EXECUTION_PROJECTION
+projection_authority: false
+
+tasks:
+  - branch: dev/0.3.8a1
+    scope: src/ptsip/app/github_authority.py
+    operation: MODIFY
+    edit_targets:
+      - path: src/ptsip/app/github_authority.py
+        selector:
+          kind: PYTHON_FUNCTION
+          name: _workflow_status
+      - path: src/ptsip/app/github_authority.py
+        selector:
+          kind: PYTHON_METHOD
+          class: GithubControlPlaneClient
+          method: application
+    acceptance_vectors:
+      - id: GITHUB_PROPOSAL_RESOLUTION
+        preconditions:
+          request_origin: EXPLICIT_PROPOSED_COMPONENT
+          global_decision_state: PENDING
+        action: RESOLVE_VALID_ANSWER
+        expected:
+          global_decision_state: RESOLVED
+          application_receipt_state: PROPOSAL_APPROVED
+          application_receipt_scope: LOCAL_PROJECTION
+          active_component_projection: false
+          physical_materialization: false
+      - id: GITHUB_PROPOSAL_REPEAT
+        preconditions:
+          request_origin: EXPLICIT_PROPOSED_COMPONENT
+          global_decision_state: RESOLVED
+        action: GATE_SAME_SCOPE
+        expected:
+          workflow_status: RESOLVED
+          authority_write_required: false
+          active_component_projection: false
+      - id: NORMAL_GITHUB_DECISION_UNCHANGED
+        preconditions:
+          request_origin: NORMAL_DECISION
+          global_decision_state: RESOLVED
+        action: READ_WORKFLOW_STATUS
+        expected:
+          workflow_status: RESOLVED_APPLICATION_REQUIRED
+      - id: LOCAL_RECEIPT_DOES_NOT_CHANGE_WINNER
+        preconditions:
+          request_origin: EXPLICIT_PROPOSED_COMPONENT
+          global_decision_state: RESOLVED
+        action: RECORD_PROPOSAL_APPROVED_RECEIPT
+        expected:
+          application_receipt_scope: LOCAL_PROJECTION
+          global_answer_unchanged: true
+    verification:
+      baseline_pytest_nodes:
+        - tests/ptsip/test_proposed_component.py::test_cli_registers_and_approves_nonexistent_component_without_active_profile_projection
+        - tests/ptsip/control_plane/test_github_authority.py::test_github_authority_uses_component_scope_not_local_clarification_id
+        - tests/ptsip/control_plane/test_github_authority_reconciliation.py::test_application_receipt_is_explicitly_local_projection
+      required_new_pytest_nodes:
+        - tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt
+        - tests/ptsip/control_plane/test_github_authority.py::test_repeated_github_proposal_is_terminal_without_reapplication
+        - tests/ptsip/control_plane/test_github_authority.py::test_normal_github_resolution_still_requires_local_application
+      regression_pytest_targets:
+        - tests/ptsip/test_proposed_component.py
+        - tests/ptsip/control_plane/test_github_authority.py
+        - tests/ptsip/control_plane/test_github_authority_reconciliation.py
+      full_command:
+        - python
+        - -m
+        - pytest
+        - -q
+    desired_test_component: ptsip-core-verification
