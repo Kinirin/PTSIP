@@ -43,11 +43,11 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-        - policy_id: MPD-0010
-          sections:
-            - ptsip_design_priority
-            - identity_and_resolution
-            - canonical_and_runtime_projection
+      - policy_id: MPD-0010
+        sections:
+          - ptsip_design_priority
+          - identity_and_resolution
+          - canonical_and_runtime_projection
 
   developer/policy:
     default_refs:
