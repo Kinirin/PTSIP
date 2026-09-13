@@ -272,3 +272,13 @@ def test_mutation_source_context_avoids_whole_file_read(monkeypatch) -> None:
         ROOT / "src/ptsip/app/github_authority.py"
     ).stat().st_size
     assert projected_bytes < whole_file_bytes * 0.2
+
+
+def test_agent_projection_json_writer_is_utf8(tmp_path: Path) -> None:
+    target = tmp_path / "brief.json"
+    payload = {"text": "authority — local projection"}
+    work_packet._write_json(target, payload)
+    raw = target.read_bytes()
+    assert not raw.startswith(b"\xff\xfe")
+    assert "—".encode("utf-8") in raw
+    assert json.loads(raw.decode("utf-8")) == payload
