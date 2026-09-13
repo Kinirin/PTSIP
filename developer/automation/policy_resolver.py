@@ -411,7 +411,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.repository,
                 policy_id=args.policy_id,
             )
-    except (OSError, ValueError, PolicyResolverError) as exc:
+    except (OSError, ValueError, yaml.YAMLError, PolicyResolverError) as exc:
         print(f"Policy Resolver error: {exc}")
         return 2
     _emit(payload, as_json=bool(args.json))
