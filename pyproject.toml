@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,8 +8,8 @@ version = "0.3.7"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
-license = "Apache-2.0"
-license-files = ["LICENSE"]
+license = "LicenseRef-PTSIP-Community-Reciprocity-1.0"
+license-files = ["LICENSE", "NOTICE", "LICENSE-GUIDE.md", "COMMERCIAL-USE.md"]
 authors = [
   { name = "Kinirin" }
 ]
@@ -56,5 +56,5 @@ github-app = [
 dev = [
   "build>=1.2,<2",
   "pytest>=8,<9",
-  "setuptools>=77",
+  "setuptools>=77.0.3",
 ]

@@ -1,201 +1,379 @@
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+PTSIP COMMUNITY RECIPROCITY LICENSE
+Version 1.0 — 2026-09-14
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+Copyright (c) 2026 Kinirin
 
-   1. Definitions.
+PREAMBLE
 
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
+PTSIP does not require contribution as a price for access.
+It requires reciprocity so that knowledge gained through PTSIP does not become a one-way private benefit.
 
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
+PTSIP is made publicly available so that individuals, researchers, organizations, and developers using coding agents can inspect it, use it, improve it, and build upon it. The purpose of this License is not primarily to collect license fees. The purpose is to preserve attribution, permit broad practical use, and require reasonable return of PTSIP-related knowledge and improvements when PTSIP is used beyond purely private personal use.
 
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
+This is a source-available community reciprocity license. It is not intended to represent an OSI-approved Open Source license.
 
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
+1. DEFINITIONS
 
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
+1.1 "Licensor" means Kinirin, the original PTSIP author and copyright holder, or a successor copyright holder expressly identified by the PTSIP project.
 
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
+1.2 "PTSIP" means the Primary Lifecycle Ownership and Responsibility Isolation Policy project and the Work distributed with this License.
 
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
+1.3 "Work" means the particular PTSIP source distribution, repository revision, package, documentation set, Specification, or other material distributed with this License.
 
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
+1.4 "Protected PTSIP Material" means copyrightable expression originating in PTSIP, including PTSIP source code, normative Specification text, policy definitions, schemas, registry material, canonical data models, conformance vectors, tests, documentation, and the original selection, coordination, and arrangement of those materials to the extent protected by applicable law.
 
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
+Protected PTSIP Material does not include abstract ideas, general concepts, procedures, methods of operation, algorithms as such, or independently created material merely because it performs a similar function.
 
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
+1.5 "PTSIP-Derived Material" means material that copies, translates, ports, transforms, adapts, or substantially incorporates Protected PTSIP Material.
 
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
+A change of programming language, file layout, names, superficial ordering, formatting, or generation through an AI system does not by itself prevent material from being PTSIP-Derived Material when the protected expression was used as a source.
 
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
+Functional similarity alone does not automatically make an independent implementation PTSIP-Derived Material.
 
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
+1.6 "Personal Private Use" means use by a natural person solely for that person's own noncommercial, non-organizational, nonpublic purposes and not on behalf of another individual, business, institution, employer, client, or other legal entity.
 
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
+1.7 "Institutional Research Use" means use by an organization, research group, educational institution, company research unit, laboratory, or similar body for research, evaluation, education, publication, seminar, or technical study that is not yet being used to develop, operate, maintain, market, sell, support, or materially enable a Commercial Activity.
 
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
+1.8 "Commercial Purpose" means a purpose intended to create, support, preserve, increase, or obtain direct or indirect economic or business value.
 
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
+Commercial Purpose includes, without limitation, development or operation of paid products or services, pre-revenue products, free products used for customer acquisition or business growth, advertising-supported services, consulting, investment-funded product development, internal business operations, cost reduction, productivity improvement, development-credit or AI-credit reduction, and work performed for a client or employer.
 
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+1.9 "Commercial Use" means intentional use of PTSIP or PTSIP-Derived Material for a Commercial Purpose.
 
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
+Commercial Use does not depend on revenue, profit, net income, positive cash flow, return on investment, or the ability to measure a financial benefit.
 
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
+1.10 "AI Use" means intentional use of Protected PTSIP Material for AI training, fine-tuning, retrieval, evaluation, benchmarking, agent development, system prompting, compatibility testing, dataset construction, or other machine-learning or generative-AI activity.
 
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
+1.11 "Material Finding" means a reasonably confirmed PTSIP-related finding that could materially affect correctness, reliability, policy interpretation, architecture governance, compatibility, conformance, safe use, or meaningful interoperability. Examples include serious false positives or false negatives, policy bypasses, substantial ambiguity, repeated coding-agent misbehavior caused by PTSIP semantics, important compatibility defects, or security-relevant defects in PTSIP itself.
 
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
+1.12 "Official Cooperation Channel" means a submission channel designated by the PTSIP project for registrations, reports, findings, or contributions. The current channels and submission procedures are listed in COMMERCIAL-USE.md. Changes to submission mechanics do not change the substantive obligations of this License.
 
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
+2. LICENSE GRANT
 
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
+Subject to compliance with this License, the Licensor grants You a worldwide, non-exclusive, no-charge copyright license to use, reproduce, inspect, modify, create PTSIP-Derived Material from, publicly display, and distribute the Work and PTSIP-Derived Material.
 
-   END OF TERMS AND CONDITIONS
+This grant is conditional on the attribution and reciprocity duties applicable to Your form of use.
 
-   APPENDIX: How to apply the Apache License to your work.
+Using PTSIP to analyze, govern, test, maintain, or assist another project does not transfer ownership of that other project to PTSIP or the Licensor. PTSIP claims no copyright in independently created user code merely because PTSIP was used during development.
 
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
+No patent right, trademark ownership, or other intellectual-property right is granted except as expressly stated in this License.
 
-   Copyright [yyyy] [name of copyright owner]
+3. ACCEPTANCE
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+You accept this License when You intentionally exercise permissions granted by it beyond rights You already possess under applicable law.
 
-       http://www.apache.org/licenses/LICENSE-2.0
+If You do not accept this License, You may not rely on its permissions.
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+4. ATTRIBUTION
+
+4.1 Copyright and authorship notices distributed with PTSIP must not be removed, falsified, or replaced in a manner that misrepresents the origin of Protected PTSIP Material.
+
+4.2 Personal Private Use does not require a public attribution display, but notices contained in copies of PTSIP must be retained.
+
+4.3 Public distribution, public presentation, Institutional Research Use, Commercial Use, and public AI-related use must provide reasonably visible and discoverable attribution to PTSIP and its original author.
+
+4.4 Attribution must substantially identify:
+
+PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
+Original PTSIP author: Kinirin
+Canonical project: https://github.com/Kinirin/PTSIP
+
+Equivalent wording is permitted if it clearly communicates the same origin.
+
+4.5 Use of the PTSIP name for compatibility statements, integrations, research, derived products, or branding is permitted, provided the original PTSIP authorship is acknowledged and the use does not falsely imply official status, certification, sponsorship, or endorsement.
+
+5. PERSONAL PRIVATE USE
+
+Personal Private Use is permitted without registration, periodic reporting, or mandatory publication of private modifications.
+
+A person who later distributes the material publicly, uses it on behalf of an organization, or begins Commercial Use becomes subject to the applicable provisions of this License from that later use.
+
+6. PUBLIC AND COMMUNITY REDISTRIBUTION
+
+6.1 You may publicly distribute unmodified or modified PTSIP and PTSIP-Derived Material if You preserve the required attribution.
+
+6.2 PTSIP-Derived portions distributed to the public must remain available under this License, including their corresponding source form when source form exists.
+
+6.3 A larger work may use different terms for independently created portions, provided those terms do not remove or restrict the rights and obligations that this License applies to the PTSIP-Derived portions.
+
+6.4 You may charge for a larger product, hosting, support, distribution, consulting, or other service that includes PTSIP, but such activity is Commercial Use and must satisfy Section 8.
+
+6.5 Redistribution must not represent a third-party or modified version as an official release of the original PTSIP project unless the Licensor expressly authorizes that representation.
+
+7. RESEARCH, EDUCATION, AND INSTITUTIONAL RECIPROCITY
+
+7.1 Institutional Research Use is permitted without a monetary license fee.
+
+7.2 Institutional Research Use must provide attribution in reasonably discoverable research, technical, educational, seminar, publication, or project documentation.
+
+7.3 If Institutional Research Use continues for more than twelve consecutive months, the user must submit a Research Cooperation Report no later than thirty days after each twelve-month anniversary of that use.
+
+7.4 A Research Cooperation Report must, to the extent reasonably available, identify:
+(a) the PTSIP versions or revisions used;
+(b) the purpose and approximate duration of the research;
+(c) relevant environments, coding agents, tools, or integrations;
+(d) compatibility observations;
+(e) policy ambiguities, failures, unexpected behavior, or notable successful behavior;
+(f) PTSIP-related modifications made by the user; and
+(g) concrete improvement suggestions or a truthful statement that no material improvement was identified.
+
+7.5 When material Institutional Research Use concludes, or when a material publication, paper, public presentation, or formal research report based on that use is first released, the user must submit a Research Cooperation Summary within sixty days if no substantially equivalent report has already been submitted for the relevant period.
+
+7.6 A Material Finding discovered through Institutional Research Use must be reported within sixty days after it is reasonably confirmed. Security-sensitive findings may be reported through a designated private mechanism when available.
+
+7.7 A material modification to PTSIP itself that is used in Institutional Research Use and is reasonably capable of improving PTSIP correctness, compatibility, or operation must be offered back to the PTSIP project no later than one hundred twenty days after the modification becomes operational or with the next required Research Cooperation Report, whichever occurs first.
+
+7.8 Institutional Research Use becomes Commercial Use when PTSIP or the research implementation is intentionally used to develop, operate, maintain, support, market, sell, or materially enable a Commercial Activity. Commercial obligations begin on that date. Research obligations already accrued remain due.
+
+8. STANDING COMMERCIAL AUTHORIZATION AND COMMERCIAL COOPERATION DUTY
+
+8.1 Standing Authorization
+
+PTSIP provides Standing Commercial Authorization. Separate case-by-case approval, a signature from the Licensor, and a monetary license fee are not required for Commercial Use that satisfies this Section.
+
+Standing Commercial Authorization applies when the Commercial User:
+(a) accepts this License;
+(b) completes Commercial Use Registration within the Commercial Adoption Window; and
+(c) remains in compliance with the applicable attribution and cooperation duties.
+
+The Licensor's silence or failure to respond to a valid registration does not prevent Standing Commercial Authorization from taking effect.
+
+8.2 Commercial Adoption Window
+
+A Commercial User may begin evaluating, integrating, or adopting PTSIP for a Commercial Purpose before registration.
+
+The Commercial User must submit a valid Commercial Use Registration no later than thirty calendar days after the first intentional Commercial Use.
+
+If registration is completed within that period, Standing Commercial Authorization applies from the first day of that Commercial Use.
+
+The thirty-day period may not be repeatedly restarted, reset, or manipulated to avoid registration or cooperation duties.
+
+If registration is not completed by the deadline, continued Commercial Use is not authorized until valid registration is completed.
+
+8.3 Commercial Use Registration
+
+Registration must identify:
+(a) the individual or legal entity using PTSIP;
+(b) the product, service, system, business activity, or internal commercial function for which PTSIP is used;
+(c) the initial PTSIP version or revision;
+(d) the date Commercial Use began;
+(e) a responsible cooperation contact or accountable project contact; and
+(f) the primary Official Cooperation Channel record for that registration.
+
+Registration does not require disclosure of revenue, profit, customer lists, unrelated proprietary code, or confidential financial information.
+
+8.4 Annual Commercial Cooperation Report
+
+For every continuous twelve-month period of Commercial Use, the Commercial User must submit at least one Commercial Cooperation Report no later than thirty days after the end of that period.
+
+The report must provide substantive, truthful information reasonably obtained through actual use, including:
+(a) PTSIP versions or revisions used;
+(b) usage scope and approximate duration;
+(c) material coding-agent, tool, CI, platform, or integration environments;
+(d) compatibility findings and workarounds;
+(e) known policy ambiguities or architecture-governance findings;
+(f) known false positives, false negatives, incorrect classifications, failures, or policy bypasses;
+(g) meaningful improvement suggestions, missing capabilities, or usability observations;
+(h) a description of modifications made directly to PTSIP and the status of their upstream submission; and
+(i) reasonably shareable aggregated operational observations useful to PTSIP improvement.
+
+A Commercial User may truthfully report that no known defect or improvement was found. The user is not required to invent defects or contributions. However, a statement such as "no feedback" does not by itself satisfy the report when usage, version, environment, integration, and reporting-period information can reasonably be provided.
+
+8.5 Material Findings
+
+A Material Finding confirmed during Commercial Use must be reported within thirty days after reasonable confirmation.
+
+8.6 Commercial PTSIP Modifications
+
+If a Commercial User modifies PTSIP itself and uses that modification in Commercial Use, the PTSIP-specific modification must be offered back to the PTSIP project in source form, as a patch, pull request, equivalent implementation, or sufficiently complete technical contribution.
+
+The submission is due no later than the earlier of:
+(a) ninety days after the modified PTSIP implementation enters Commercial Use; or
+(b) the due date of the next Commercial Cooperation Report.
+
+This obligation applies to the PTSIP modification. It does not require disclosure of unrelated proprietary product source code.
+
+8.7 Ending Commercial Use
+
+Commercial Use does not end merely because:
+(a) revenue is zero;
+(b) the activity or company is unprofitable;
+(c) expenses exceed revenue;
+(d) the PTSIP-attributable financial benefit cannot be measured;
+(e) a product is pre-revenue, beta, subsidized, investment-funded, or temporarily free; or
+(f) PTSIP is one of many technologies used.
+
+Commercial Use ends only when PTSIP and applicable PTSIP-Derived Material are no longer materially used to develop, operate, maintain, support, improve, distribute, or otherwise enable the relevant Commercial Activity.
+
+8.8 Final Commercial Cooperation Report
+
+When Commercial Use ends, the Commercial User must submit a Final Commercial Cooperation Report within thirty days if material Commercial Use occurred after the period covered by the most recent Commercial Cooperation Report.
+
+Ending Commercial Use does not cancel duties that accrued before Commercial Use ended.
+
+8.9 Resumption
+
+If Commercial Use resumes, the Commercial Cooperation Duty resumes automatically.
+
+The Commercial User must update or renew the applicable registration within thirty days after resumed Commercial Use.
+
+A materially different category of Commercial Use requires an updated or additional registration.
+
+8.10 No Profit-Based Avoidance
+
+For avoidance of doubt, no Commercial User may avoid this Section merely by asserting that the user earned no revenue, operated at a loss, could not isolate PTSIP's financial contribution, had not yet reached profitability, received only indirect economic value, or temporarily provided the relevant activity without charge.
+
+The duty follows Commercial Use, not profitability.
+
+9. AI USE
+
+9.1 AI Use of PTSIP is permitted subject to this License.
+
+9.2 When PTSIP is intentionally used in AI training, fine-tuning, evaluation, dataset construction, agent development, or compatibility work, attribution must be provided in a reasonably discoverable model card, training record, dataset record, system documentation, technical documentation, compliance record, research documentation, or equivalent location.
+
+This License does not require every individual AI output to contain a PTSIP notice.
+
+9.3 Noncommercial Institutional AI Use is subject to Section 7.
+
+9.4 Commercial AI Use is subject to Section 8.
+
+9.5 PTSIP-related findings gained through AI Use, including policy failures, compatibility results, agent-behavior findings, evaluation results, and meaningful improvement observations, must be shared according to the applicable research or commercial reporting duties.
+
+10. INFORMATION PROTECTION AND REASONABLE DISCLOSURE
+
+10.1 This License does not require disclosure of:
+(a) personal information that may not lawfully be disclosed;
+(b) passwords, credentials, keys, or authentication secrets;
+(c) customer-confidential information;
+(d) legally privileged or otherwise legally protected information;
+(e) information whose disclosure is prohibited by a binding third-party obligation;
+(f) trade secrets unrelated to PTSIP itself; or
+(g) unrelated proprietary product source code.
+
+10.2 Where raw information cannot reasonably or lawfully be disclosed, the user should provide an anonymized result, aggregated information, reduced reproduction, compatibility matrix, technical summary, or other meaningful substitute when reasonably possible.
+
+10.3 A confidentiality assertion must not be used as a pretext to withhold information that can reasonably be provided without exposing protected information.
+
+11. COMPLIANCE, CURE, SUSPENSION, AND REINSTATEMENT
+
+11.1 Ordinary Noncompliance
+
+Failure to submit a required registration, report, finding, attribution correction, or PTSIP modification by its deadline is Ordinary Noncompliance.
+
+A sixty-day cure period begins on the missed deadline.
+
+Standing Commercial Authorization remains conditionally available during that cure period solely for a user acting in good faith to cure the omission.
+
+If the violation remains uncured when the cure period expires, the affected Commercial Authorization is automatically suspended.
+
+11.2 Effect of Suspension
+
+During suspension, the user may perform only activities reasonably necessary to:
+(a) cure the violation;
+(b) cease unauthorized PTSIP use;
+(c) protect security or data integrity; or
+(d) comply with applicable law.
+
+Accrued obligations remain due.
+
+11.3 Automatic Reinstatement
+
+Authorization suspended solely for Ordinary Noncompliance is automatically reinstated when all overdue obligations causing the suspension are fully cured.
+
+Reinstatement does not erase the historical violation and does not reset reporting anniversaries.
+
+11.4 Material or Intentional Noncompliance
+
+Intentional removal or falsification of attribution, knowingly false cooperation reports, deliberate concealment of a Material Finding to avoid reporting, deliberate concealment of a required PTSIP modification, or repeated manipulation of adoption, suspension, or resumption periods to evade reciprocity duties is Material Noncompliance.
+
+For Material Noncompliance, the Licensor may provide written notice requiring cure within thirty days. If the violation is not cured within that period, the Licensor may suspend the affected authorization.
+
+Repeated or persistent Material Noncompliance may require renewed written authorization after cure.
+
+11.5 Persistent Noncompliance
+
+If a required obligation remains uncured for one hundred eighty days after its original due date, the affected Standing Commercial Authorization may be treated as terminated.
+
+A user that fully cures the outstanding obligations may request or obtain a new Standing Commercial Authorization by completing the then-applicable registration requirements.
+
+11.6 No Monetary Penalty Created by This License
+
+This License does not create a fixed license fee, royalty, fine, or liquidated-damages schedule.
+
+Nothing in this Section limits remedies that applicable law may otherwise provide.
+
+12. RECIPROCITY, NOT ACCESS FEES
+
+PTSIP does not require contribution as a price for access.
+
+The reciprocity duties exist so that PTSIP-related knowledge, compatibility findings, corrections, and improvements obtained through organized or commercial use do not remain solely a one-way private benefit.
+
+Commercial Authorization does not inherently require payment of a monetary license fee.
+
+The Licensor and a user may voluntarily enter a separate written agreement for support, consulting, confidentiality, certification, or other services, but such an agreement does not silently replace this License unless it expressly says so.
+
+13. BRANDING AND PROJECT IDENTITY
+
+13.1 This License permits truthful reference to the PTSIP name for attribution, compatibility, research, integration, derived products, or comparative purposes.
+
+13.2 No permission is granted to falsely claim that a third-party implementation is the official PTSIP project, an official PTSIP release, or endorsed or certified by the Licensor when it is not.
+
+13.3 This License does not transfer ownership of the PTSIP name, logo, or other source-identifying rights.
+
+14. INDEPENDENT IMPLEMENTATIONS AND IDEA-EXPRESSION BOUNDARY
+
+14.1 This License does not claim exclusive ownership of abstract ideas, general architecture concepts, procedures, methods of operation, or independently created functional equivalents merely because they are similar to PTSIP.
+
+14.2 A PTSIP-Derived implementation may nevertheless exist when Protected PTSIP Material has actually been used as a source and has been copied, ported, translated, adapted, or substantially incorporated.
+
+14.3 Evidence of derivation may include, subject to applicable law, substantial reuse of distinctive PTSIP-specific terminology, normative text, schema structures, field arrangements, rule identifiers, conformance vectors, source structure, or a distinctive selection and arrangement of protected PTSIP expression.
+
+14.4 Reordering, renaming, translating, porting, or using an AI system to transform Protected PTSIP Material does not automatically create an independent work.
+
+15. CONTRIBUTIONS TO PTSIP
+
+15.1 A contributor must have the right to submit a contribution.
+
+15.2 Unless a separate written contribution agreement says otherwise, a contribution intentionally submitted for inclusion in the canonical PTSIP project is offered for inclusion under this License.
+
+15.3 Contributors retain copyright in their contributions unless separately assigned.
+
+15.4 This Section does not by itself grant the Licensor an unlimited right to relicense a third-party contribution under unrelated future terms. Future relicensing of third-party contributions may require additional contributor permission.
+
+16. WARRANTY DISCLAIMER
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR FITNESS FOR A PARTICULAR ARCHITECTURE OR DEVELOPMENT WORKFLOW.
+
+YOU ARE RESPONSIBLE FOR DETERMINING WHETHER PTSIP IS SUITABLE FOR YOUR USE.
+
+17. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSOR AND CONTRIBUTORS SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR SIMILAR DAMAGES ARISING FROM THE WORK OR THIS LICENSE.
+
+NOTHING IN THIS LICENSE EXCLUDES LIABILITY THAT APPLICABLE LAW DOES NOT PERMIT TO BE EXCLUDED.
+
+18. LICENSE VERSIONING AND TRANSITION
+
+18.1 This License applies to a Work distributed with this License.
+
+18.2 A later PTSIP License version may change authorization, cooperation, or other terms for later PTSIP releases.
+
+18.3 Publication of a later license version does not, by itself, silently rewrite the terms attached to an earlier copy.
+
+18.4 Use of a later PTSIP release may require acceptance of the license distributed with that later release.
+
+18.5 Earlier PTSIP revisions may have been distributed under different license terms. Nothing in this License is intended to retroactively rewrite rights or obligations that validly attached to an earlier revision under different terms.
+
+19. SEVERABILITY AND INTERPRETATION
+
+If a provision of this License is unenforceable in a particular jurisdiction, the remaining provisions continue to apply to the extent permitted by law.
+
+LICENSE is the controlling legal text for this PTSIP License version.
+
+NOTICE defines the project's standard attribution notice.
+
+LICENSE-GUIDE.md is explanatory and non-normative. If it conflicts with LICENSE, LICENSE controls.
+
+COMMERCIAL-USE.md specifies current submission procedures and Official Cooperation Channels. It may clarify mechanics but may not increase the substantive duties stated in LICENSE without a new License version.
+
+END OF LICENSE

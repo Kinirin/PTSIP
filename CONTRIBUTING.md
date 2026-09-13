@@ -69,3 +69,13 @@ Examples must not silently weaken normative rules or imply that a particular rep
 ## Release-facing changes
 
 Before a Tool release, keep release-facing documents consistent with the exact Tool/package version and bound Specification revision. Historical release notes and ADRs are immutable history and must not be rewritten merely to make current-version wording uniform.
+
+## Licensing of contributions
+
+Contributions intentionally submitted for inclusion in the canonical PTSIP project must be submitted by a contributor who has the right to provide them.
+
+Unless a separate written contribution agreement states otherwise, an accepted contribution is distributed as part of PTSIP under the PTSIP Community Reciprocity License applicable to that PTSIP revision. Contributors retain copyright in their contributions unless separately assigned.
+
+The current PTSIP license does not silently grant the project an unlimited right to relicense third-party contributions under unrelated future terms. A future relicensing that requires broader rights may therefore require additional contributor permission or a separate contributor agreement.
+
+Contributors should review [LICENSE](LICENSE), [NOTICE](NOTICE), and [LICENSE-GUIDE.md](LICENSE-GUIDE.md) before submitting material intended for inclusion.

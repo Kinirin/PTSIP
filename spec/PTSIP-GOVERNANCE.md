@@ -111,4 +111,4 @@ Documentation SHOULD distinguish:
 - the project-defined PTSIP name/rule set; and
 - the pre-existing software-engineering concepts that influenced it.
 
-The repository is licensed under Apache License 2.0.
+Current PTSIP revisions are licensed under the PTSIP Community Reciprocity License 1.0 (`LicenseRef-PTSIP-Community-Reciprocity-1.0`). The license preserves attribution and applies reciprocity duties according to use context. Earlier immutable revisions may retain the license terms distributed with those revisions.
