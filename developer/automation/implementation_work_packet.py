@@ -231,6 +231,28 @@ def _selector_integrity(root: Path, edit_targets: object) -> list[dict[str, obje
     return violations
 
 
+def _selector_fingerprint(root: Path, item: Mapping[str, object]) -> str:
+    path = item.get("path")
+    selector = item.get("selector")
+    if not isinstance(path, str) or not isinstance(selector, Mapping):
+        raise WorkPacketError("read-context selector fingerprint input is invalid")
+    resolved = policy_resolver._validate_implementation_ref(
+        root,
+        {"path": path, "selector": dict(selector)},
+    )
+    location = _mapping(
+        resolved.get("resolved_location"),
+        "read-context resolved_location",
+    )
+    line_start = location.get("line_start")
+    line_end = location.get("line_end")
+    if not isinstance(line_start, int) or not isinstance(line_end, int):
+        raise WorkPacketError("read-context selector has no exact line range")
+    lines = (root / path).read_text(encoding="utf-8").splitlines()
+    segment = "\n".join(lines[line_start - 1:line_end]) + "\n"
+    return hashlib.sha256(segment.encode("utf-8")).hexdigest()
+
+
 def _required_new_tests(verification: Mapping[str, object]) -> list[dict[str, object]]:
     raw = verification.get("required_new_tests")
     if not isinstance(raw, list) or not raw:
@@ -412,10 +434,21 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
     normative_source = str(task_context["normative_rule_source"])
     context_files = sorted(set(
         [REGISTRY_PATH, SCHEMA_PATH, component_source, planning_entry, normative_source, *policy_paths]
-        + [str(item["path"]) for item in read_context]
     ))
+    read_context_fingerprints = [
+        {
+            "path": str(item["path"]),
+            "selector": dict(_mapping(item["selector"], "read-context selector")),
+            "fingerprint": _selector_fingerprint(root, item),
+        }
+        for item in read_context
+    ]
     tracked_files = sorted(set(
-        context_files + [str(item["path"]) for item in edit_targets] + list(test_refs) + list(allowed_test_paths)
+        context_files
+        + [str(item["path"]) for item in read_context]
+        + [str(item["path"]) for item in edit_targets]
+        + list(test_refs)
+        + list(allowed_test_paths)
     ))
     file_hashes = {path: _sha256(root / path) for path in tracked_files if (root / path).is_file()}
 
@@ -502,9 +535,10 @@ def build_packet(repository: str | Path, *, scope: str, operation: str) -> dict[
         "freshness": {
             "baseline_head": head,
             "context_files": context_files,
+            "read_context_fingerprints": read_context_fingerprints,
             "file_hashes": file_hashes,
             "context_fingerprint": fingerprint,
-            "strategy": "RECHECK_BEFORE_EVERY_VERIFICATION",
+            "strategy": "FILE_AND_SELECTOR_RECHECK_BEFORE_EVERY_VERIFICATION",
         },
     }
 
@@ -581,6 +615,31 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
             if not candidate.is_file() or _sha256(candidate) != baseline:
                 context_changed.append(path)
 
+    read_context_changed: list[dict[str, object]] = []
+    raw_read_fingerprints = freshness.get("read_context_fingerprints", [])
+    if isinstance(raw_read_fingerprints, list):
+        for raw in raw_read_fingerprints:
+            if not isinstance(raw, Mapping):
+                read_context_changed.append({"reason": "READ_CONTEXT_FINGERPRINT_INVALID"})
+                continue
+            baseline = raw.get("fingerprint")
+            try:
+                current = _selector_fingerprint(root, raw)
+            except (OSError, ValueError, policy_resolver.PolicyResolverError, WorkPacketError) as exc:
+                read_context_changed.append({
+                    "path": raw.get("path"),
+                    "selector": raw.get("selector"),
+                    "reason": "READ_CONTEXT_SELECTOR_NO_LONGER_RESOLVES",
+                    "detail": str(exc),
+                })
+                continue
+            if not isinstance(baseline, str) or current != baseline:
+                read_context_changed.append({
+                    "path": raw.get("path"),
+                    "selector": raw.get("selector"),
+                    "reason": "READ_CONTEXT_SELECTOR_CHANGED",
+                })
+
     ranges_by_path: dict[str, list[tuple[int, int]]] = {}
     edit_targets = mutation_plan.get("targets", [])
     if isinstance(edit_targets, list):
@@ -622,6 +681,8 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
         problems.append("HEAD_CHANGED")
     if context_changed:
         problems.append("CONTEXT_CHANGED")
+    if read_context_changed:
+        problems.append("READ_CONTEXT_CHANGED")
     if unexpected:
         problems.append("UNEXPECTED_CHANGED_PATH")
     if code_scope_violations:
@@ -630,7 +691,7 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
         problems.append("MUTATION_SELECTOR_VIOLATION")
 
     reprepare_required = any(
-        problem in {"BRANCH_CHANGED", "HEAD_CHANGED", "CONTEXT_CHANGED"}
+        problem in {"BRANCH_CHANGED", "HEAD_CHANGED", "CONTEXT_CHANGED", "READ_CONTEXT_CHANGED"}
         for problem in problems
     )
     return {
@@ -642,6 +703,7 @@ def check_packet(repository: str | Path, packet: Mapping[str, object]) -> dict[s
         "changed_paths": changed,
         "unexpected_changed_paths": unexpected,
         "context_changed": context_changed,
+        "read_context_changed": read_context_changed,
         "code_scope_violations": code_scope_violations,
         "selector_violations": selector_violations,
         "missing_required_new_tests": missing_required,
