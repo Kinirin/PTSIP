@@ -997,6 +997,13 @@ def build_source_context(
     }
 
 
+def _write_json(path: str | Path, payload: object) -> None:
+    Path(path).write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
 def _emit(payload: object, as_json: bool) -> None:
     if as_json:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
@@ -1013,6 +1020,7 @@ def _parser() -> argparse.ArgumentParser:
     prepare.add_argument("--scope", required=True)
     prepare.add_argument("--operation", required=True)
     prepare.add_argument("--output")
+    prepare.add_argument("--brief-output")
     prepare.add_argument("--json", action="store_true")
     prepare.add_argument(
         "--agent-brief",
@@ -1022,10 +1030,12 @@ def _parser() -> argparse.ArgumentParser:
 
     brief = sub.add_parser("brief")
     brief.add_argument("--packet", required=True)
+    brief.add_argument("--output")
     brief.add_argument("--json", action="store_true")
 
     context = sub.add_parser("context")
     context.add_argument("--packet", required=True)
+    context.add_argument("--output")
     context.add_argument(
         "--role",
         required=True,
@@ -1061,11 +1071,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "prepare":
             payload = build_packet(root, scope=args.scope, operation=args.operation)
             if args.output:
-                Path(args.output).write_text(
-                    json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-                    encoding="utf-8",
-                )
-            emitted = build_agent_brief(payload) if args.agent_brief else payload
+                _write_json(args.output, payload)
+            brief_payload = build_agent_brief(payload)
+            if args.brief_output:
+                _write_json(args.brief_output, brief_payload)
+            emitted = brief_payload if args.agent_brief else payload
             _emit(emitted, bool(args.json))
             return 0
 
@@ -1079,13 +1089,16 @@ def main(argv: list[str] | None = None) -> int:
             _emit(checked, True)
             return 2
         if args.command == "brief":
-            _emit(build_agent_brief(packet), bool(args.json))
+            payload = build_agent_brief(packet)
+            if args.output:
+                _write_json(args.output, payload)
+            _emit(payload, bool(args.json))
             return 0
         if args.command == "context":
-            _emit(
-                build_source_context(root, packet, role=args.role),
-                bool(args.json),
-            )
+            payload = build_source_context(root, packet, role=args.role)
+            if args.output:
+                _write_json(args.output, payload)
+            _emit(payload, bool(args.json))
             return 0
 
         verification = _mapping(packet.get("verification"), "packet.verification")
