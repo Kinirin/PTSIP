@@ -82,7 +82,15 @@ def test_packet_builds_exact_mutation_acceptance_and_regression_plan(monkeypatch
     assert packet["test_mode"]["component_ref"] == "ptsip-core-verification"
     assert packet["test_mode"]["status"] == "NOT_REGISTERED"
     assert packet["test_mode"]["fallback"] == "CANONICAL_COMPONENT_INCLUDE_SELECTION"
-    assert packet["freshness"]["strategy"] == "RECHECK_BEFORE_EVERY_VERIFICATION"
+    freshness = packet["freshness"]
+    assert freshness["strategy"] == "FILE_AND_SELECTOR_RECHECK_BEFORE_EVERY_VERIFICATION"
+    assert "src/ptsip/app/github_authority.py" not in freshness["context_files"]
+    same_file_read_context = [
+        item for item in freshness["read_context_fingerprints"]
+        if item["path"] == "src/ptsip/app/github_authority.py"
+    ]
+    assert len(same_file_read_context) == 2
+    assert all(len(item["fingerprint"]) == 64 for item in same_file_read_context)
 
 
 def test_core_regression_is_derived_from_canonical_component_profile() -> None:
