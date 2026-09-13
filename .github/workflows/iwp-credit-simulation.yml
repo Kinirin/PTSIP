@@ -1,0 +1,133 @@
+name: iwp-credit-simulation
+
+on:
+  push:
+    branches:
+      - dev/0.3.8a1
+    paths:
+      - .github/workflows/iwp-credit-simulation.yml
+
+permissions:
+  contents: read
+
+jobs:
+  simulate:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Restore branch identity
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          git checkout -B dev/0.3.8a1 $env:EXPECTED_SHA
+          if ((git rev-parse HEAD).Trim() -ne $env:EXPECTED_SHA) { throw 'HEAD mismatch' }
+
+      - name: Prepare Python 3.14
+        shell: powershell
+        run: |
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) { throw 'Python 3.14 unavailable' }
+          if (Test-Path .venv) { Remove-Item .venv -Recurse -Force }
+          & $python -m venv .venv
+          $scripts = (Resolve-Path .venv\Scripts).Path
+          $scripts >> $env:GITHUB_PATH
+
+      - name: Install dependencies
+        shell: powershell
+        run: |
+          python -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Simulate coding-agent context cost
+        shell: powershell
+        run: |
+          @'
+          import json
+          from pathlib import Path
+          import developer.automation.policy_resolver as pr
+          import developer.automation.implementation_work_packet as iwp
+
+          root = Path('.').resolve()
+          scope = 'src/ptsip/app/github_authority.py'
+          operation = 'MODIFY'
+          resolved = pr.resolve_policies(root, scope=scope, operation=operation)
+          packet = iwp.build_packet(root, scope=scope, operation=operation)
+
+          def size(obj):
+              return len(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode('utf-8'))
+
+          task_context = resolved['task_context']
+          refs = task_context['implementation_refs']
+          unique_files = sorted({item['path'] for item in refs})
+          whole_impl_bytes = sum((root / path).stat().st_size for path in unique_files)
+          selector_bytes = 0
+          for item in refs:
+              loc = item['resolved_location']
+              lines = (root / item['path']).read_text(encoding='utf-8').splitlines(keepends=True)
+              selector_bytes += len(''.join(lines[loc['line_start']-1:loc['line_end']]).encode('utf-8'))
+
+          normative_bytes = sum(
+              len(item['section_text'].encode('utf-8'))
+              for item in task_context['normative_rules']
+          )
+
+          compact = {
+              'schema_version': 'ptsip-agent-brief-simulation/v1',
+              'packet_id': packet['packet_id'],
+              'task': packet['task'],
+              'policy_refs': packet['policy_context']['policies'],
+              'normative_rule_refs': task_context['normative_rule_refs'],
+              'constraints': packet['policy_context']['constraints'],
+              'read_context': packet['read_context'],
+              'mutation_plan': packet['mutation_plan'],
+              'acceptance_vectors': packet['acceptance_vectors'],
+              'verification': {
+                  'required_new_tests': packet['verification']['required_new_tests'],
+                  'baseline_pytest_nodes': packet['verification']['baseline_pytest_nodes'],
+                  'task_regression_pytest_targets': packet['verification']['task_regression_pytest_targets'],
+                  'core_component_ref': packet['verification']['core_regression']['component_ref'],
+                  'status': packet['verification']['status'],
+              },
+              'freshness': {
+                  'baseline_head': packet['freshness']['baseline_head'],
+                  'strategy': packet['freshness']['strategy'],
+              },
+          }
+
+          failure_route = {
+              'schema_version': 'ptsip-implementation-failure-route/v1',
+              'repeat_count': 1,
+              'classification': 'IMPLEMENTATION_FAILURE',
+              'next_action': 'FIX_WITHIN_CURRENT_MUTATION_PLAN',
+              'scope_expansion_allowed': False,
+          }
+
+          metrics = {
+              'resolver_json_bytes': size(resolved),
+              'work_packet_json_bytes': size(packet),
+              'compact_agent_brief_bytes': size(compact),
+              'normative_section_text_bytes_inside_resolver': normative_bytes,
+              'implementation_whole_files_bytes': whole_impl_bytes,
+              'implementation_exact_selector_bytes': selector_bytes,
+              'implementation_file_to_selector_ratio': round(whole_impl_bytes / selector_bytes, 2) if selector_bytes else None,
+              'packet_to_compact_ratio': round(size(packet) / size(compact), 2),
+              'three_iteration_full_packet_bytes': size(packet) * 3,
+              'initial_compact_plus_three_failure_routes_bytes': size(compact) + size(failure_route) * 3,
+              'required_new_test_count': len(packet['verification']['required_new_tests']),
+              'task_regression_target_count': len(packet['verification']['task_regression_pytest_targets']),
+              'core_regression_target_count': len(packet['verification']['core_regression']['pytest_targets']),
+              'combined_regression_target_count': len(packet['verification']['combined_regression_pytest_targets']),
+              'read_context_count': len(packet['read_context']),
+              'mutation_target_count': len(packet['mutation_plan']['targets']),
+              'normative_rule_count': len(task_context['normative_rule_refs']),
+              'constraint_count': len(packet['policy_context']['constraints']),
+          }
+          print('IWP_CREDIT_SIMULATION_METRICS=' + json.dumps(metrics, ensure_ascii=True, sort_keys=True))
+          print('IWP_COMPACT_AGENT_BRIEF=' + json.dumps(compact, ensure_ascii=True, sort_keys=True))
+          '@ | python -
