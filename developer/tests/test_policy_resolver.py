@@ -3,6 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+import yaml
+
+import developer.automation.policy_resolver as policy_resolver_module
 
 from developer.automation.policy_resolver import (
     PolicyResolverError,
@@ -114,3 +117,33 @@ def test_scope_escape_fails_closed() -> None:
 def test_unknown_policy_identity_fails_closed() -> None:
     with pytest.raises(PolicyResolverError):
         get_policy(ROOT, policy_id="MPD-9999")
+
+
+def test_cli_fails_closed_cleanly_on_malformed_binding_yaml(
+    monkeypatch,
+    capsys,
+) -> None:
+    original = policy_resolver_module.load_yaml
+
+    def malformed(path, *, root=None):
+        if str(path).endswith("policy-resolver-bindings.yaml"):
+            raise yaml.YAMLError("synthetic malformed binding")
+        return original(path, root=root)
+
+    monkeypatch.setattr(policy_resolver_module, "load_yaml", malformed)
+    result = policy_resolver_module.main(
+        [
+            "--repository",
+            str(ROOT),
+            "resolve",
+            "--scope",
+            "src/ptsip/migration/engine.py",
+            "--operation",
+            "MODIFY",
+            "--json",
+        ]
+    )
+    captured = capsys.readouterr()
+    assert result == 2
+    assert "Policy Resolver error: synthetic malformed binding" in captured.out
+    assert "Traceback" not in captured.out
