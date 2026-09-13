@@ -12,7 +12,7 @@
 **Project Profile 계약:** `pp.1.01`<br>
 **Specification 패밀리:** `0.3.7-draft`<br>
 **바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**인증:** Apache 라이센스 2.0<br>
+**인증:** PTSIP 커뮤니티 Reciprocity 라이센스 1.0 (`LicenseRef-PTSIP-Community-Reciprocity-1.0`)<br>
 **현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 충돌하면 이 파일을 기준으로 합니다.
 
 PTSIP는 프로젝트 책임을 **주요 생명주기 소유권(primary lifecycle ownership)**에 따라 분리하면서 명시적 아키텍처 의도, 생명주기 격리, 재현 가능한 적합성, 검증 목적 분리, 여러 환경 간 의사결정 일관성을 보존하기 위한 프로젝트 정의 아키텍처 정책입니다.
@@ -381,6 +381,25 @@ final main exact SHA
 ```
 
 현재 구현과 handoff 경계는 [`STATUS.md`](STATUS.md), [`planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`](planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md), [`releasenote/tool/0.3.7.md`](releasenote/tool/0.3.7.md)를 참고하십시오.
+
+## 면허 및 reciprocity
+
+PTSIP 아래 분포 **PTSIP 커뮤니티 Reciprocity 라이센스 1.0**.
+
+> **PTSIP 액세스의 가격으로 기여하지 않습니다. 그것은 reciprocity 그래서 그 지식을 통해 얻었다 PTSIP 편도 개인 혜택이되지 않습니다.**
+
+개인 이용은 등록 또는 정기적 인 보고없이 허용됩니다. 공공, 기관, 연구, AI 및 상업적 사용은 심판 및 적용 가능한 reciprocity 의무에 따라 광범위하게 허용됩니다. 상업적인 사용은 통해 유효합니다 **Standing 상업 허가**: 출판 등록 및 협력 조건이 만족할 때 개별 승인 또는 기본 라이센스 수수료가 필요하지 않습니다.
+
+제품 정보 사용은 결정됩니다. **회사 소개**수익 또는 수익성이 아닌. Pre-revenue, loss-making, beta, internally funded, 또는 cost-saving 사업 사용은 이익이 0 또는 측정하기 어렵기 때문에 단지 적용 가능한 협력 업무를 피하지 않습니다.
+
+참고 :
+
+- [LICENSE](LICENSE) — 법적 조건을 통제;
+- [NOTICE](NOTICE) - 표준 attribution 텍스트;
+- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — 일반 언어 사용 가이드;
+- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, 등록, 보고, 협력 절차.
+
+Earlier repository 개정은 다른 면허 기간의 밑에 분배될지도 모릅니다. 적용 가능한 법률에 따라 특정 개정 기관에 첨부된 라이센스.
 
 ## Consumer Repository 비침투 원칙
 
