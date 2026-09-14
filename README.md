@@ -1,16 +1,16 @@
 <p align="right">
-  English | <a href="README.ko.md">한국어</a>
+  English | <a href="README.ko.md">?쒓뎅??/a>
 </p>
 
-# PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
+# PTSIP ??Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-**Status:** Tool `0.3.7` WU-12 implementation integrated — exact-SHA verification pending<br>
+**Status:** Tool `0.3.7` WU-12 implementation integrated ??exact-SHA verification pending<br>
 **Tool/package version:** `0.3.7`<br>
 **Project Profile contract:** `pp.1.01`<br>
 **Specification family:** `0.3.7-draft`<br>
 **Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**License:** PTSIP Community Reciprocity License 1.0 (`LicenseRef-PTSIP-Community-Reciprocity-1.0`)<br>
-**License effective time:** `2026-09-15T00:00:00-07:00` Pacific Time (`2026-09-15T07:00:00Z`)<br>
+**License authority:** [`License-Authority/`](License-Authority/) (closed authority boundary; references elsewhere are non-authoritative)<br>
+**License effective time:** `2026-09-15T00:00:00Z` (UTC)<br>
 **Localized documentation:** `README.md` is canonical. Localized README files are regenerated on `main` by the self-hosted Argos Translate workflow; if a translation conflicts with this file, this file governs.
 
 PTSIP is a project-defined architecture policy for separating project responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment decision consistency.
@@ -300,7 +300,7 @@ Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLIN
 
 Tool `0.3.7` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
 
-## VPMS — Verification Purpose Management System
+## VPMS ??Verification Purpose Management System
 
 PTSIP and VPMS answer different questions:
 
@@ -381,28 +381,15 @@ final main exact SHA
 See [`STATUS.md`](STATUS.md), [`planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`](planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md), and [`releasenote/tool/0.3.7.md`](releasenote/tool/0.3.7.md) for the current implementation and handoff boundary.
 
 
-## License and reciprocity
+## License authority
 
-PTSIP is distributed under the **PTSIP Community Reciprocity License 1.0**.
+PTSIP licensing authority is contained exclusively under [`License-Authority/`](License-Authority/). The machine-readable entry point is [`License-Authority/license-authority.yaml`](License-Authority/license-authority.yaml), and the controlling legal text is [`License-Authority/LICENSE.md`](License-Authority/LICENSE.md).
 
-> **PTSIP does not require contribution as a price for access. It requires reciprocity so that knowledge gained through PTSIP does not become a one-way private benefit.**
+The canonical effective time currently declared by the License Authority is `2026-09-15T00:00:00Z` (UTC).
 
-Personal private use is permitted without registration or periodic reporting. Public, institutional, research, AI, and commercial use remain broadly permitted subject to attribution and the applicable reciprocity duties. Commercial use is available through **Standing Commercial Authorization**: no individual approval or default license fee is required when the published registration and cooperation conditions are satisfied.
+License-related wording elsewhere in this repository is informational or contextual only. It does not become part of the License, modify it, or become incorporated by reference.
 
-Commercial Use is determined by **commercial purpose**, not by revenue or profitability. Pre-revenue, loss-making, beta, internally funded, or cost-saving business use does not escape the applicable cooperation duties merely because profit is zero or difficult to measure.
-
-PTSIP supports project decisions while leaving each user in control of how those decisions are applied. Its cooperation duties are designed to return useful findings and improvements to the community, not to shift one user's project responsibility to another. Commercial Registration therefore records both explicit acceptance of the License and Commercial Cooperation Duty and the precise PTSIP version or revision used.
-
-See:
-
-- [LICENSE](LICENSE) — controlling legal terms;
-- [NOTICE](NOTICE) — standard attribution text;
-- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — plain-language usage guide;
-- [LICENSE-HISTORY.md](LICENSE-HISTORY.md) — license effective-time and transition provenance;
-- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, registration, reporting, and cooperation procedure.
-
-Earlier repository revisions may have been distributed under different license terms. The license attached to a particular revision governs that copy subject to applicable law.
-
+Normal Tool releases, Specification validation, Tool version changes, documentation mentions, keyword matches, and AI semantic guesses do not authorize License Authority entry. Entry uses only the triggers declared by `License-Authority/license-authority.yaml`.
 ## Consumer Repository non-intrusion
 
 PTSIP does not require Consumer Repositories to create PTSIP-specific `.ptsip/`, cache, report, or hidden state directories merely to use the Tool. External inspection and Pilot operations are read-only by default. Tool-owned local state belongs outside the Consumer Repository unless a repository path is explicitly chosen.

@@ -12,19 +12,19 @@ _ROOT = Path(__file__).resolve().parents[3]
 _EXPECTED_SPEC_REVISION = "3c47816770d194ae42f98faedc911d980db0e62a"
 
 
-def test_tool_037_distribution_and_runtime_identity_match() -> None:
+def test_tool_038a1_distribution_and_runtime_identity_match() -> None:
     with (_ROOT / "pyproject.toml").open("rb") as handle:
         project = tomllib.load(handle)["project"]
 
-    assert project["version"] == "0.3.7"
-    assert TOOL_VERSION == "0.3.7"
+    assert project["version"] == "0.3.8a1"
+    assert TOOL_VERSION == "0.3.8a1"
     assert ptsip.__version__ == TOOL_VERSION
 
 
-def test_tool_037_preserves_independent_specification_binding() -> None:
+def test_tool_038a1_preserves_independent_specification_binding() -> None:
     identity = current_spec_identity()
 
-    assert identity.tool_version == "0.3.7"
+    assert identity.tool_version == "0.3.8a1"
     assert SPEC_VERSION == "0.3.7-draft"
     assert SPEC_REVISION == _EXPECTED_SPEC_REVISION
     assert identity.version == SPEC_VERSION

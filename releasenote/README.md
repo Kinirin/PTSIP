@@ -26,6 +26,7 @@ Examples:
 
 ```text
 releasenote/tool/0.3.7.md
+releasenote/tool/0.3.8a1.md
 releasenote/project-profile/pp.1.01.md
 releasenote/specification/0.3.7-draft.md
 ```
@@ -42,7 +43,7 @@ Namespace indexes:
 
 | Contract | State | Document |
 | --- | --- | --- |
-| `pp.1.01` | **Current Tool 0.3.7 contract / PTSIP repository adopted** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| `pp.1.01` | **Current contract; reused unchanged by Tool 0.3.8a1** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 
 ### `0.3.6-draft -> pp.1.01` compatibility notice
 
@@ -62,7 +63,7 @@ Historical `0.3.6-draft` records remain historical facts; they are not rewritten
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.7` | Release candidate; exact-SHA verification and publication pending | [`tool/0.3.7.md`](tool/0.3.7.md) |
+| Tool | `0.3.8a1` | Emergency demo prerelease candidate; exact-SHA verification and publication pending | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 | Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 

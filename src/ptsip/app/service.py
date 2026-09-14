@@ -50,7 +50,7 @@ def _answer_from_mapping(payload: dict[str, object]) -> DecisionAnswer:
 def _workflow_status(record: DecisionRecord) -> str:
     if record.status == "PENDING":
         return "DECISION_REQUIRED"
-    if record.status == "RESOLVED" and record.application_status not in {"APPLIED", "LOCAL_APPLIED"}:
+    if record.status == "RESOLVED" and record.application_status not in {"APPLIED", "LOCAL_APPLIED", "PROPOSAL_APPROVED"}:
         return "RESOLVED_APPLICATION_REQUIRED"
     return record.status
 
@@ -134,7 +134,7 @@ class DecisionService:
     def application(self, payload: dict[str, Any]) -> dict[str, object]:
         decision_id = str(payload.get("decision_id", ""))
         status = str(payload.get("status", ""))
-        if status not in {"LOCAL_APPLIED", "FAILED", "STALE"}:
+        if status not in {"LOCAL_APPLIED", "PROPOSAL_APPROVED", "FAILED", "STALE"}:
             raise ValueError("unsupported agent application status")
         existing = self.store.get(decision_id)
         if existing is None:
@@ -146,14 +146,22 @@ class DecisionService:
             status,
             str(payload.get("applied_revision") or "") or None,
         )
-        if status == "LOCAL_APPLIED" and record.issue_number:
+        if status in {"LOCAL_APPLIED", "PROPOSAL_APPROVED"} and record.issue_number:
             try:
                 installation = self._installation_for(record.repository)
                 self.github.add_issue_comment(
                     record.repository,
                     installation,
                     record.issue_number,
-                    f"PTSIP decision `{record.id}` was resolved via `{record.resolution_source}` and applied by the active coding-agent workflow. Late replies are ignored.",
+                    (
+                        f"PTSIP decision `{record.id}` was resolved via `{record.resolution_source}`. "
+                        + (
+                            "The proposed component is approved but not materialized; no active component declaration was created."
+                            if status == "PROPOSAL_APPROVED"
+                            else "The decision was applied by the active coding-agent workflow."
+                        )
+                        + " Late replies are ignored."
+                    ),
                 )
                 self.github.update_issue_state(record.repository, installation, record.issue_number, "closed")
             except GitHubAPIError:

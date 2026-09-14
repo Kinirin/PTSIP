@@ -2,7 +2,7 @@
 
 This guide explains PTSIP Community Reciprocity License 1.0 in plain language.
 
-**Effective Time:** 2026-09-15T00:00:00-07:00 (Pacific Time in effect on 2026-09-15), equivalent to 2026-09-15T07:00:00Z. It is not a substitute for LICENSE. If this guide conflicts with LICENSE, LICENSE controls.
+**Effective Time:** `2026-09-15T00:00:00Z` (UTC). It is not a substitute for LICENSE.md. If this guide conflicts with LICENSE.md, LICENSE.md controls.
 
 ## Core philosophy
 
@@ -153,7 +153,7 @@ Later PTSIP license versions do not silently rewrite earlier copies. A later PTS
 
 ## Project files
 
-- [LICENSE](LICENSE) — controlling license text
-- [NOTICE](NOTICE) — standard attribution text
-- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — this plain-language guide
-- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, registration, and cooperation submission procedure
+- [LICENSE.md](LICENSE.md) ??controlling license text
+- [NOTICE.md](NOTICE.md) ??standard attribution text
+- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) ??this plain-language guide
+- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) ??Standing Commercial Authorization, registration, and cooperation submission procedure

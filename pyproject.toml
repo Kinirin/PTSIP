@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PTSIP"
-version = "0.3.7"
+version = "0.3.8a1"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "LicenseRef-PTSIP-Community-Reciprocity-1.0"
-license-files = ["LICENSE", "NOTICE", "LICENSE-GUIDE.md", "LICENSE-HISTORY.md", "COMMERCIAL-USE.md"]
+license-files = ["License-Authority/license-authority.yaml", "License-Authority/LICENSE.md", "License-Authority/NOTICE.md", "License-Authority/LICENSE-GUIDE.md", "License-Authority/LICENSE-HISTORY.md", "License-Authority/COMMERCIAL-USE.md"]
 authors = [
   { name = "Kinirin" }
 ]

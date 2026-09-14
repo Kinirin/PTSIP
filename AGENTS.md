@@ -14,6 +14,24 @@ Read, in order:
 6. `planning/0.3.6/WU-07-final-specification-freeze-release-preparation.md` when reviewing Tool `0.3.6` release closure or exact-main handoff
 
 `MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
+## License Authority entry discipline
+
+`License-Authority/` is a closed License Authority Boundary and is not part of the default coding-agent read set. Default behavior is `DO_NOT_ENTER`.
+
+Entry is permitted only for `EXPLICIT_USER_REQUEST`, `LICENSE_AUTHORITY_PATH_CHANGED`, `LICENSE_PROJECTION_MISMATCH`, or `REPORTED_LICENSE_PROBLEM`.
+
+Normal Tool releases, normal Specification validation, Tool version changes, documentation mentions, keyword detection, and AI semantic guesses do not authorize License Authority entry.
+
+When entry is permitted:
+
+1. evaluate the trigger without reading License content;
+2. read only `License-Authority/license-authority.yaml`;
+3. resolve the requested operation from its closed operation map;
+4. read only documents declared for that operation;
+5. read external projections only when that operation declares them;
+6. fail closed on unknown operations, undeclared files, or paths outside `License-Authority/`.
+
+Files outside `License-Authority/` may mention or describe licensing, but those references are non-authoritative and are not incorporated into the License by reference. Do not scan the repository for license-like prose to determine License Authority.
 
 ## Repository-state discipline
 
@@ -39,7 +57,7 @@ WU-06  full regression/package/distribution verification   COMPLETE / EXACT-SHA 
 WU-07  final Specification freeze/release preparation      COMPLETE / EXACT-SHA VERIFIED
 ```
 
-WU-07 used **Strategy B — Release Contract Strengthening**.
+WU-07 used **Strategy B ??Release Contract Strengthening**.
 
 Exact WU-07 verification authority:
 

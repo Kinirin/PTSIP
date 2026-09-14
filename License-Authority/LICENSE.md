@@ -1,8 +1,7 @@
 PTSIP COMMUNITY RECIPROCITY LICENSE
 Version 1.0
 License Identifier: LicenseRef-PTSIP-Community-Reciprocity-1.0
-Effective Time: 2026-09-15T00:00:00-07:00 (Pacific Time in effect on 2026-09-15)
-UTC Equivalent: 2026-09-15T07:00:00Z
+Effective Time: 2026-09-15T00:00:00Z (UTC)
 
 Copyright (c) 2026 Kinirin
 
@@ -17,6 +16,17 @@ This is a source-available community reciprocity license. It is not intended to 
 
 This License is published in advance for notice and preparation. Its permissions, conditions, registration duties, cooperation duties, and compliance periods become applicable at the Effective Time stated above. Publication before the Effective Time does not retroactively alter rights or obligations that validly applied to earlier PTSIP copies or revisions.
 
+LICENSE AUTHORITY BOUNDARY
+
+The authoritative licensing materials for PTSIP are contained exclusively within the repository License-Authority/ directory.
+
+Only documents located within License-Authority/ and assigned a licensing role by License-Authority/license-authority.yaml may define, amend, supplement, govern, or be incorporated into this License.
+
+References to licensing, copyright, attribution, commercial use, reciprocity, or related subjects appearing outside License-Authority/ are informational or contextual only. Such references do not become part of this License and do not modify, supplement, supersede, or authoritatively interpret the licensing terms.
+
+No repository document outside License-Authority/ is incorporated into this License by reference.
+
+A document within License-Authority/ may be incorporated only when License-Authority/license-authority.yaml explicitly assigns it an incorporated role. The controlling legal terms remain in License-Authority/LICENSE.md.
 1. DEFINITIONS
 
 1.1 "Licensor" means Kinirin, the original PTSIP author and copyright holder, or a successor copyright holder expressly identified by the PTSIP project.
@@ -53,7 +63,7 @@ Commercial Use does not depend on revenue, profit, net income, positive cash flo
 
 1.12 "Official Cooperation Channel" means a submission channel designated by the PTSIP project for registrations, reports, findings, or contributions. The current channels and submission procedures are listed in COMMERCIAL-USE.md. Changes to submission mechanics do not change the substantive obligations of this License.
 
-1.13 "Effective Time" means 2026-09-15T00:00:00-07:00, Pacific Time as observed on September 15, 2026, equivalent to 2026-09-15T07:00:00Z.
+1.13 "Effective Time" means 2026-09-15T00:00:00Z in Coordinated Universal Time (UTC).
 
 1.14 "PTSIP Version or Revision" means a version, release identifier, Specification family, immutable Specification revision, Git commit, or other sufficiently precise identifier that allows the PTSIP material actually used to be identified. Where both a version and an immutable revision are reasonably available, both should be recorded.
 
@@ -83,7 +93,7 @@ If You do not accept this License, You may not rely on its permissions.
 
 4.4 Attribution must substantially identify:
 
-PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
+PTSIP ??Primary Lifecycle Ownership and Responsibility Isolation Policy
 Original PTSIP author: Kinirin
 Canonical project: https://github.com/Kinirin/PTSIP
 
@@ -395,10 +405,10 @@ If a provision of this License is unenforceable in a particular jurisdiction, th
 
 LICENSE is the controlling legal text for this PTSIP License version.
 
-NOTICE defines the project's standard attribution notice.
+NOTICE.md defines the project's standard attribution notice.
 
-LICENSE-GUIDE.md is explanatory and non-normative. If it conflicts with LICENSE, LICENSE controls.
+LICENSE-GUIDE.md is explanatory and non-normative. If it conflicts with LICENSE.md, LICENSE.md controls.
 
-COMMERCIAL-USE.md specifies current submission procedures and Official Cooperation Channels. It may clarify mechanics but may not increase the substantive duties stated in LICENSE without a new License version.
+COMMERCIAL-USE.md specifies current submission procedures and Official Cooperation Channels. It may clarify mechanics but may not increase the substantive duties stated in LICENSE.md without a new License version.
 
 END OF LICENSE

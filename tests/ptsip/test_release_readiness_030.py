@@ -13,10 +13,10 @@ EXPECTED_SPEC_REVISION = "3c47816770d194ae42f98faedc911d980db0e62a"
 HISTORICAL_036_REVISION = "d6995ed232e845b88d8235b851e80ab54b7804ea"
 
 
-def test_tool_037_package_runtime_pp_and_spec_binding_match() -> None:
+def test_tool_038a1_package_runtime_pp_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.7"
-    assert TOOL_VERSION == "0.3.7"
+    assert payload["project"]["version"] == "0.3.8a1"
+    assert TOOL_VERSION == "0.3.8a1"
     assert CURRENT_PROJECT_PROFILE_VERSION == "pp.1.01"
     assert SPEC_VERSION == "0.3.7-draft"
     assert SPEC_SOURCE == "https://github.com/Kinirin/PTSIP"
@@ -30,7 +30,8 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "actions/setup-python@" not in workflow
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
-    assert "Version:\\s*0\\.3\\.7" in workflow
+    assert "$expectedWheelVersion" in workflow
+    assert "[regex]::Escape($expectedWheelVersion)" in workflow
     assert "ptsip-profile-pp-1.01.schema.json" in workflow
     assert "ptsip-normalized-evidence.schema.json" in workflow
     assert "Verify publication Product Artifact evidence and exact snapshot binding" in workflow
@@ -73,7 +74,8 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
     assert "python .github/scripts/verify_release_contract.py" in workflow
-    assert "Version:\\s*0\\.3\\.7" in workflow
+    assert "$expectedWheelVersion" in workflow
+    assert "[regex]::Escape($expectedWheelVersion)" in workflow
     assert "ptsip-profile-pp-1.01.schema.json" in workflow
     assert "Verify Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
@@ -194,18 +196,18 @@ def test_release_contract_requires_full_037_normative_snapshot() -> None:
 
 
 def test_release_documents_record_current_tool_and_spec_binding() -> None:
-    tool_note = (ROOT / "releasenote" / "tool" / "0.3.7.md").read_text(encoding="utf-8")
+    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a1.md").read_text(encoding="utf-8")
     pp_note = (ROOT / "releasenote" / "project-profile" / "pp.1.01.md").read_text(
         encoding="utf-8"
     )
     release_index = (ROOT / "releasenote" / "README.md").read_text(encoding="utf-8")
-    assert "0.3.7" in tool_note
+    assert "0.3.8a1" in tool_note
     assert "pp.1.01" in tool_note
     assert "0.3.7-draft" in tool_note
     assert EXPECTED_SPEC_REVISION in tool_note
     assert "\n## " in tool_note
     assert EXPECTED_SPEC_REVISION in pp_note
-    assert "tool/0.3.7.md" in release_index
+    assert "tool/0.3.8a1.md" in release_index
     assert "project-profile/pp.1.01.md" in release_index
     assert "specification/0.3.7-draft.md" in release_index
 

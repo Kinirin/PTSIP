@@ -55,5 +55,5 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys) -> None:
     assert main(["pilot", str(repo), "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["format"] == "ptsip-pilot-report/v2"
-    assert payload["tool"]["version"] == "0.3.7"
+    assert payload["tool"]["version"] == "0.3.8a1"
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
