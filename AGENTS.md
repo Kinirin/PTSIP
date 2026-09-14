@@ -57,7 +57,7 @@ WU-06  full regression/package/distribution verification   COMPLETE / EXACT-SHA 
 WU-07  final Specification freeze/release preparation      COMPLETE / EXACT-SHA VERIFIED
 ```
 
-WU-07 used **Strategy B ??Release Contract Strengthening**.
+WU-07 used **Strategy B — Release Contract Strengthening**.
 
 Exact WU-07 verification authority:
 

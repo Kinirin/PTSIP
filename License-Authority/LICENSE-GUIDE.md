@@ -153,7 +153,7 @@ Later PTSIP license versions do not silently rewrite earlier copies. A later PTS
 
 ## Project files
 
-- [LICENSE.md](LICENSE.md) ??controlling license text
-- [NOTICE.md](NOTICE.md) ??standard attribution text
-- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) ??this plain-language guide
-- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) ??Standing Commercial Authorization, registration, and cooperation submission procedure
+- [LICENSE.md](LICENSE.md) — controlling license text
+- [NOTICE.md](NOTICE.md) — standard attribution text
+- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — this plain-language guide
+- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, registration, and cooperation submission procedure

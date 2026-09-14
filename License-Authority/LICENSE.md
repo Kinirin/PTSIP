@@ -93,7 +93,7 @@ If You do not accept this License, You may not rely on its permissions.
 
 4.4 Attribution must substantially identify:
 
-PTSIP ??Primary Lifecycle Ownership and Responsibility Isolation Policy
+PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 Original PTSIP author: Kinirin
 Canonical project: https://github.com/Kinirin/PTSIP
 

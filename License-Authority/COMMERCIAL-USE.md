@@ -72,10 +72,10 @@ Product, service, system, business activity, or internal commercial function:
 ### First Commercial Use date
 YYYY-MM-DD:
 
-### PTSIP License version ??REQUIRED
+### PTSIP License version — REQUIRED
 PTSIP Community Reciprocity License version:
 
-### PTSIP version / immutable revision ??REQUIRED
+### PTSIP version / immutable revision — REQUIRED
 Provide at least one precise identifier. Include both when reasonably available.
 Tool/release version:
 Specification family:
@@ -91,7 +91,7 @@ GitHub account or other accountable project contact:
 ### Attribution location
 Where PTSIP attribution is or will be provided:
 
-### License and Cooperation Duty acceptance ??REQUIRED
+### License and Cooperation Duty acceptance — REQUIRED
 By submitting this Commercial Use Registration, the registering individual or Legal Entity expressly accepts:
 
 1. the PTSIP Community Reciprocity License version identified in this registration; and
@@ -113,9 +113,9 @@ Body:
 Start:
 End:
 
-### PTSIP License version ??REQUIRED
+### PTSIP License version — REQUIRED
 
-### PTSIP versions / immutable revisions used ??REQUIRED
+### PTSIP versions / immutable revisions used — REQUIRED
 Provide at least one precise identifier for each materially used PTSIP line; include both version and immutable revision when reasonably available.
 
 ### Usage scope
@@ -174,9 +174,9 @@ Body:
 
 ### Research period
 
-### PTSIP License version ??REQUIRED
+### PTSIP License version — REQUIRED
 
-### PTSIP versions / immutable revisions ??REQUIRED
+### PTSIP versions / immutable revisions — REQUIRED
 Provide at least one precise identifier; include both when reasonably available.
 
 ### Research environment and integrations
@@ -207,9 +207,9 @@ Body:
 
 ### Research purpose and outcome
 
-### PTSIP License version ??REQUIRED
+### PTSIP License version — REQUIRED
 
-### PTSIP versions / immutable revisions ??REQUIRED
+### PTSIP versions / immutable revisions — REQUIRED
 Provide at least one precise identifier; include both when reasonably available.
 
 ### Duration of material PTSIP use
@@ -237,9 +237,9 @@ Title:
 
 Body:
 
-### PTSIP License version ??REQUIRED
+### PTSIP License version — REQUIRED
 
-### PTSIP version / immutable revision ??REQUIRED
+### PTSIP version / immutable revision — REQUIRED
 Provide at least one precise identifier; include both when reasonably available.
 
 ### Finding category
