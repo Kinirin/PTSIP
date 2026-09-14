@@ -1,0 +1,133 @@
+format: ptsip-license-authority/v1
+manifest_revision: 1
+
+authority:
+  kind: LICENSE_AUTHORITY
+  root: License-Authority/
+  boundary: CLOSED
+  resolution: PATH_ONLY
+
+  rules:
+    files_outside_authority_root_are_authoritative: false
+    external_license_mentions_are_authoritative: false
+    external_documents_are_incorporated_by_reference: false
+    semantic_inference_of_authority: forbidden
+    undeclared_incorporation: forbidden
+
+license:
+  id: LicenseRef-PTSIP-Community-Reciprocity-1.0
+  version: "1.0"
+  effective_at: "2026-09-15T00:00:00Z"
+  time_basis: UTC
+
+documents:
+  authority_manifest:
+    - license-authority.yaml
+  controlling:
+    - LICENSE.md
+  incorporated:
+    - COMMERCIAL-USE.md
+  required_notice:
+    - NOTICE.md
+  informative:
+    - LICENSE-GUIDE.md
+    - LICENSE-HISTORY.md
+
+entry_policy:
+  default: DO_NOT_ENTER
+
+  allowed_triggers:
+    - EXPLICIT_USER_REQUEST
+    - LICENSE_AUTHORITY_PATH_CHANGED
+    - LICENSE_PROJECTION_MISMATCH
+    - REPORTED_LICENSE_PROBLEM
+
+  forbidden_triggers:
+    - NORMAL_TOOL_RELEASE
+    - NORMAL_SPECIFICATION_VALIDATION
+    - TOOL_VERSION_CHANGE
+    - DOCUMENTATION_MENTION
+    - LICENSE_KEYWORD_DETECTED
+    - AI_SEMANTIC_GUESS
+
+  sequence:
+    - EVALUATE_TRIGGER_WITHOUT_READING_LICENSE_CONTENT
+    - READ_LICENSE_AUTHORITY_MANIFEST_ONLY
+    - RESOLVE_REQUESTED_OPERATION
+    - READ_ONLY_DOCUMENTS_DECLARED_FOR_OPERATION
+    - READ_DECLARED_EXTERNAL_PROJECTIONS_ONLY_IF_OPERATION_REQUIRES
+    - FAIL_CLOSED_ON_UNKNOWN_OPERATION_OR_UNDECLARED_PATH
+
+operations:
+  IDENTIFY:
+    reads:
+      - license-authority.yaml
+
+  VERIFY_IDENTITY:
+    reads:
+      - license-authority.yaml
+      - LICENSE.md
+
+  REVIEW_TERMS:
+    reads:
+      - license-authority.yaml
+      - LICENSE.md
+
+  REVIEW_COMMERCIAL_USE:
+    reads:
+      - license-authority.yaml
+      - LICENSE.md
+      - COMMERCIAL-USE.md
+
+  REVIEW_ATTRIBUTION:
+    reads:
+      - license-authority.yaml
+      - NOTICE.md
+
+  REVIEW_GUIDANCE:
+    reads:
+      - license-authority.yaml
+      - LICENSE-GUIDE.md
+
+  REVIEW_HISTORY:
+    reads:
+      - license-authority.yaml
+      - LICENSE-HISTORY.md
+
+  VERIFY_PROJECTION:
+    reads:
+      - license-authority.yaml
+    external_projections:
+      - ../pyproject.toml
+
+  MODIFY_LICENSE:
+    reads:
+      - license-authority.yaml
+      - LICENSE.md
+      - NOTICE.md
+      - COMMERCIAL-USE.md
+      - LICENSE-GUIDE.md
+      - LICENSE-HISTORY.md
+
+projections:
+  - path: ../pyproject.toml
+    authority: NON_AUTHORITATIVE_PROJECTION
+    fields:
+      - project.license
+      - project.license-files
+
+distribution:
+  declared_files:
+    - License-Authority/license-authority.yaml
+    - License-Authority/LICENSE.md
+    - License-Authority/NOTICE.md
+    - License-Authority/COMMERCIAL-USE.md
+    - License-Authority/LICENSE-GUIDE.md
+    - License-Authority/LICENSE-HISTORY.md
+
+fail_closed:
+  unknown_trigger: true
+  unknown_operation: true
+  undeclared_authority_document: true
+  authority_document_outside_root: true
+  undeclared_incorporation: true

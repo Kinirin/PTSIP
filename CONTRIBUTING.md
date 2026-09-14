@@ -72,10 +72,6 @@ Before a Tool release, keep release-facing documents consistent with the exact T
 
 ## Licensing of contributions
 
-Contributions intentionally submitted for inclusion in the canonical PTSIP project must be submitted by a contributor who has the right to provide them.
+Authoritative licensing terms and contribution-related licensing obligations are governed exclusively by the closed License Authority under [`License-Authority/`](License-Authority/).
 
-Unless a separate written contribution agreement states otherwise, an accepted contribution is distributed as part of PTSIP under the PTSIP Community Reciprocity License applicable to that PTSIP revision. Contributors retain copyright in their contributions unless separately assigned.
-
-The current PTSIP license does not silently grant the project an unlimited right to relicense third-party contributions under unrelated future terms. A future relicensing that requires broader rights may therefore require additional contributor permission or a separate contributor agreement.
-
-Contributors should review [LICENSE](LICENSE), [NOTICE](NOTICE), and [LICENSE-GUIDE.md](LICENSE-GUIDE.md) before submitting material intended for inclusion.
+Start with [`License-Authority/license-authority.yaml`](License-Authority/license-authority.yaml) only when a declared License Authority entry trigger applies. The controlling legal text is [`License-Authority/LICENSE.md`](License-Authority/LICENSE.md). Licensing wording in this file is informational only.

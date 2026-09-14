@@ -146,6 +146,19 @@ components:
     release_owner: architecture
     compatibility_owner: architecture
 
+  - id: repository-license-authority
+    classification: PRODUCT
+    roles:
+      - GOVERNANCE
+      - DOCUMENTATION
+    include:
+      - "License-Authority/**"
+    purpose: closed_path_owned_license_authority_and_distribution_documents
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
   - id: product-documentation
     classification: PRODUCT
     roles:
@@ -153,11 +166,6 @@ components:
     include:
       - "README.md"
       - "README.ko.md"
-      - "LICENSE"
-      - "NOTICE"
-      - "LICENSE-GUIDE.md"
-      - "LICENSE-HISTORY.md"
-      - "COMMERCIAL-USE.md"
       - "Pages/**"
       - "releasenote/**"
     purpose: product_distribution_documentation_and_release_history

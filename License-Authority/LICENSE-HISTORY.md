@@ -1,13 +1,12 @@
 # PTSIP License History
 
-This file records licensing-policy provenance for the PTSIP project. It is informational unless LICENSE expressly incorporates a statement from this file.
+This file records licensing-policy provenance for the PTSIP project. It is informational unless LICENSE.md expressly incorporates a statement from this file.
 
 ## PTSIP Community Reciprocity License 1.0
 
 - License identifier: `LicenseRef-PTSIP-Community-Reciprocity-1.0`
-- Effective Time: `2026-09-15T00:00:00-07:00`
-- Time basis: Pacific Time in effect on September 15, 2026
-- UTC equivalent: `2026-09-15T07:00:00Z`
+- Effective Time: `2026-09-15T00:00:00Z`
+- Time basis: Coordinated Universal Time (UTC)
 - Status before Effective Time: published in advance for notice and preparation
 - Effect: prospective from the Effective Time; not retroactive
 
