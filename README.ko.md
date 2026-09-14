@@ -3,17 +3,17 @@
   <a href="README.md">English</a> | 한국어
 </p>
 
-# PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
+# PTSIP ??Primary Lifecycle Ownership and Responsibility Isolation Policy
 
 > 이 문서는 정식 원본인 [`README.md`](README.md)를 기준으로 유지되는 한국어 번역본입니다. 변경되지 않은 번역은 보존하고, 변경된 원문 블록만 self-hosted Argos Translate로 갱신합니다. 프로젝트 사실이나 의미가 상충할 경우 영문 원본을 기준으로 합니다.
 
-**상태:** Tool `0.3.7` WU-12 구현 통합 — exact-SHA 검증 대기<br>
+**상태:** Tool `0.3.7` WU-12 구현 통합 ??exact-SHA 검증 종료<br>
 **Tool/패키지 버전:** `0.3.7`<br>
 **Project Profile 계약:** `pp.1.01`<br>
 **Specification 패밀리:** `0.3.7-draft`<br>
 **바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**인증:** PTSIP 커뮤니티 Reciprocity 라이센스 1.0 (`LicenseRef-PTSIP-Community-Reciprocity-1.0`)<br>
-**공급 능력:** `2026-09-15T00:00:00-07:00` 태평양 시간 ( Pacific Time)`2026-09-15T07:00:00Z`)<br>
+**라이센스 기관:** [`License-Authority/`](License-Authority/) (닫은 권위 경계; 다른 사람은 비 긴급합니다)<br>
+**공급 능력:** `2026-09-15T00:00:00Z` (세계)<br>
 **현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 충돌하면 이 파일을 기준으로 합니다.
 
 PTSIP는 프로젝트 책임을 **주요 생명주기 소유권(primary lifecycle ownership)**에 따라 분리하면서 명시적 아키텍처 의도, 생명주기 격리, 재현 가능한 적합성, 검증 목적 분리, 여러 환경 간 의사결정 일관성을 보존하기 위한 프로젝트 정의 아키텍처 정책입니다.
@@ -303,7 +303,7 @@ Artifact 소유권은 producer 소유권과 독립적입니다. `DEVELOPMENT_TOO
 
 Tool `0.3.7`은 snapshot-bound Product Artifact evidence를 지원합니다. 릴리스 검증은 패키징 설정을 증거로 간주하지 않고 실제 빌드된 distribution 내용을 확인하며, `PTSIP-PKG-001`에 따른 확정적인 non-Product 구현 유입을 거부합니다.
 
-## VPMS — Verification Purpose Management System
+## VPMS ??Verification 목적 관리 체계
 
 PTSIP와 VPMS는 서로 다른 질문에 답합니다.
 
@@ -383,29 +383,16 @@ final main exact SHA
 
 현재 구현과 handoff 경계는 [`STATUS.md`](STATUS.md), [`planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`](planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md), [`releasenote/tool/0.3.7.md`](releasenote/tool/0.3.7.md)를 참고하십시오.
 
-## 면허 및 reciprocity
+## 인증 기관
 
-PTSIP 아래 분포 **PTSIP 커뮤니티 Reciprocity 라이센스 1.0**.
+PTSIP licensing Authority는 독점적으로 포함되어 있습니다. [`License-Authority/`](License-Authority/). 기계 읽기 쉬운 입장 점은 입니다 [`License-Authority/license-authority.yaml`](License-Authority/license-authority.yaml), 그리고 통제 법적인 원본은 입니다 [`License-Authority/LICENSE.md`](License-Authority/LICENSE.md).
 
-> **PTSIP 액세스의 가격으로 기여하지 않습니다. 그것은 reciprocity 그래서 그 지식을 통해 얻었다 PTSIP 편도 개인 혜택이되지 않습니다.**
+현재 면허 기관이 선언 한 후보 유효 시간은 `2026-09-15T00:00:00Z` (UTC).
 
-개인 이용은 등록 또는 정기적 인 보고없이 허용됩니다. 공공, 기관, 연구, AI 및 상업적 사용은 심판 및 적용 가능한 reciprocity 의무에 따라 광범위하게 허용됩니다. 상업적인 사용은 통해 유효합니다 **Standing 상업 허가**: 출판 등록 및 협력 조건이 만족할 때 개별 승인 또는 기본 라이센스 수수료가 필요하지 않습니다.
+이 저장소의 다른 언어는 정보 또는 상황에만 사용됩니다. 그것은 라이센스의 일부가되지 않습니다, 수정, 또는 참조에 의해 통합됩니다.
 
-제품 정보 사용은 결정됩니다. **회사 소개**수익 또는 수익성이 아닌. Pre-revenue, loss-making, beta, internally funded, 또는 cost-saving 사업 사용은 이익이 0 또는 측정하기 어렵기 때문에 단지 적용 가능한 협력 업무를 피하지 않습니다.
-
-PTSIP 각 사용자를 떠나는 동안 프로젝트의 결정이 적용되는 방법. 그 협력 의무는 커뮤니티에 유용한 발견 및 개선을 반환하도록 설계되어, 다른 사람의 프로젝트 책임을 이동하지 않습니다. 상업 등록 따라서 라이센스 및 상업 협력 의무의 명시적 수용을 기록하고 정확 PTSIP 사용된 버전 또는 개정.
-
-참고 :
-
-- [LICENSE](LICENSE) — 법적 조건을 통제;
-- [NOTICE](NOTICE) - 표준 attribution 텍스트;
-- [LICENSE-GUIDE.md](LICENSE-GUIDE.md) — 일반 언어 사용 가이드;
-- [LICENSE-HISTORY.md](LICENSE-HISTORY.md) - 유효 기간 및 전환 검증;
-- [COMMERCIAL-USE.md](COMMERCIAL-USE.md) — Standing Commercial Authorization, 등록, 보고, 협력 절차.
-
-Earlier repository 개정은 다른 면허 기간의 밑에 분배될지도 모릅니다. 적용 가능한 법률에 따라 특정 개정 기관에 첨부된 라이센스.
-
-## Consumer Repository 비침투 원칙
+· Tool 출시, Specification 인증, Tool 버전 변경, 문서 언급, 키워드 일치, 및 AI semantic 추측은 라이센스 기관 항목을 승인하지 않습니다. Entry는 선언된 트리거만 사용합니다. `License-Authority/license-authority.yaml`.
+## Consumer Repository 비 침입
 
 PTSIP는 Consumer Repository가 Tool 사용만을 위해 PTSIP 전용 `.ptsip/`, cache, report, hidden state directory를 만들도록 요구하지 않습니다. External inspection과 Pilot은 기본적으로 read-only이며 Tool 소유 local state는 사용자가 저장소 경로를 명시적으로 선택하지 않는 한 Consumer Repository 밖에 둡니다.
 
