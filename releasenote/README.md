@@ -22,7 +22,14 @@ releasenote/specification/<spec-note>.md
 
 Historical flat Tool and Specification release-note files have been relocated into these authority namespaces. This is a repository-organization change only; it does not rewrite the historical Tool/Specification identity or publication state recorded inside each note.
 
-The path-retention convention originally recorded with MPD-0006 is therefore superseded for repository layout. SFP-0019's substantive identity separation remains: Tool version, Project Profile contract identity, and Specification family/revision remain independent authorities.
+```text
+releasenote/tool/0.3.7.md
+releasenote/tool/0.3.8a1.md
+releasenote/project-profile/pp.1.01.md
+releasenote/specification/0.3.7-draft.md
+```
+
+Published or historical flat files already stored directly under `releasenote/` remain in place. They are not bulk-moved merely to make the directory visually uniform or to rewrite old identity conventions.
 
 Namespace indexes:
 
@@ -34,7 +41,7 @@ Namespace indexes:
 
 | Contract | State | Document |
 | --- | --- | --- |
-| `pp.1.01` | Current contract; reused unchanged by Tool 0.3.8a1 | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| `pp.1.01` | **Current contract; reused unchanged by Tool 0.3.8a1** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 
 ### `0.3.6-draft -> pp.1.01` compatibility notice
 
@@ -54,7 +61,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.8a1` | Emergency demo prerelease candidate; exact-SHA verification and publication pending | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
+| Tool | `0.3.8a1` | Emergency demo prerelease; exact-SHA verified, publication pending | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 | Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 

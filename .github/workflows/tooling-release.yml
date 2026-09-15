@@ -166,7 +166,13 @@ jobs:
           $sourcePaths = @()
           $components = @()
           $sawDistributionMetadata = $false
-          $sawLicense = $false
+          $declaredLicenseFiles = @(
+            & python -c "import tomllib; f=open('pyproject.toml','rb'); p=tomllib.load(f)['project']; print(*p.get('license-files', []), sep='\n'); f.close()"
+          )
+          if ($LASTEXITCODE -ne 0 -or $declaredLicenseFiles.Count -eq 0) {
+            throw "Unable to resolve declared distribution license files from pyproject.toml."
+          }
+          $seenLicenseFiles = @()
 
           foreach ($path in $wheelPaths) {
             if ($path -like 'ptsip/specdata/*') {
@@ -199,12 +205,23 @@ jobs:
               $components += 'vpms'
               continue
             }
-            if ($path -match '^[^/]+\.dist-info/licenses/LICENSE$') {
-              $sourcePaths += 'LICENSE'
-              $components += 'product-documentation'
+            if ($path -like '*.dist-info/licenses/*') {
+              $marker = '.dist-info/licenses/'
+              $markerIndex = $path.IndexOf($marker)
+              if ($markerIndex -lt 0) {
+                throw "Unable to resolve packaged license projection path: $path"
+              }
+
+              $licenseRelativePath = $path.Substring($markerIndex + $marker.Length)
+              if ($declaredLicenseFiles -notcontains $licenseRelativePath) {
+                throw "Packaged license file is not declared by pyproject.toml: $path"
+              }
+
+              $sourcePaths += $licenseRelativePath
+              $seenLicenseFiles += $licenseRelativePath
+              $components += 'repository-license-authority'
               $components += 'ptsip-distribution'
               $sawDistributionMetadata = $true
-              $sawLicense = $true
               continue
             }
             if ($path -match '^[^/]+\.dist-info/') {
@@ -239,8 +256,12 @@ jobs:
           if (-not $sawDistributionMetadata) {
             throw "Built wheel does not contain distribution metadata."
           }
-          if (-not $sawLicense) {
-            throw "Built wheel does not contain the declared LICENSE file."
+          $missingDeclaredLicenseFiles = @(
+            $declaredLicenseFiles |
+              Where-Object { $seenLicenseFiles -notcontains $_ }
+          )
+          if ($missingDeclaredLicenseFiles.Count -ne 0) {
+            throw "Built wheel is missing declared license projections: $($missingDeclaredLicenseFiles -join ', ')"
           }
 
           python -m pip install --force-reinstall --no-deps "$($wheel.FullName)"

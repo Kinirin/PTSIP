@@ -26,3 +26,5 @@ Historical Tool notes that previously lived directly under `releasenote/` have b
 | `0.3.8a1` | Emergency demo prerelease candidate; verification pending | [`0.3.8a1.md`](0.3.8a1.md) |
 
 Tool `0.3.4` is represented by immutable GitHub Release history rather than a retained repository release-note file.
+| `0.3.7` | Previous Tool release candidate baseline | [`0.3.7.md`](0.3.7.md) |
+| `0.3.8a1` | Emergency demo prerelease; exact-SHA verified, publication pending | [`0.3.8a1.md`](0.3.8a1.md) |

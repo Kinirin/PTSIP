@@ -69,3 +69,9 @@ Examples must not silently weaken normative rules or imply that a particular rep
 ## Release-facing changes
 
 Before a Tool release, keep release-facing documents consistent with the exact Tool/package version and bound Specification revision. Historical release notes and ADRs are immutable history and must not be rewritten merely to make current-version wording uniform.
+
+## Licensing of contributions
+
+Authoritative licensing terms and contribution-related licensing obligations are governed exclusively by the closed License Authority under [`License-Authority/`](License-Authority/).
+
+Start with [`License-Authority/license-authority.yaml`](License-Authority/license-authority.yaml) only when a declared License Authority entry trigger applies. The controlling legal text is [`License-Authority/LICENSE.md`](License-Authority/LICENSE.md). Licensing wording in this file is informational only.

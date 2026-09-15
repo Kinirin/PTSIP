@@ -1,0 +1,648 @@
+{
+  "default_locale": "en",
+  "locales": [
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "ko",
+      "label": "한국어"
+    }
+  ],
+  "aliases": {
+    "en-us": "en",
+    "en-gb": "en",
+    "ko-kr": "ko"
+  },
+  "messages": {
+    "meta.title": {
+      "en": "PTSIP — Documentation & Community",
+      "ko": "PTSIP — 문서 및 커뮤니티"
+    },
+    "a11y.skip": {
+      "en": "Skip to main content",
+      "ko": "본문으로 바로가기"
+    },
+    "a11y.primary_nav": {
+      "en": "Primary navigation",
+      "ko": "주요 탐색 메뉴"
+    },
+    "language.label": {
+      "en": "Language",
+      "ko": "언어"
+    },
+    "nav.home": {
+      "en": "Home",
+      "ko": "홈"
+    },
+    "nav.modes": {
+      "en": "Community Modes",
+      "ko": "Community Modes"
+    },
+    "nav.promotion": {
+      "en": "Promotion",
+      "ko": "공식 승격"
+    },
+    "nav.governance": {
+      "en": "Governance",
+      "ko": "거버넌스"
+    },
+    "nav.faq": {
+      "en": "FAQ",
+      "ko": "FAQ"
+    },
+    "hero.eyebrow": {
+      "en": "Documentation · Community · Governance",
+      "ko": "문서 · 커뮤니티 · 거버넌스"
+    },
+    "hero.title": {
+      "en": "PTSIP Community Portal",
+      "ko": "PTSIP 커뮤니티 포털"
+    },
+    "hero.summary": {
+      "en": "Learn PTSIP, share reusable policy patterns, and follow the path from community practice to official support.",
+      "ko": "PTSIP를 이해하고, 재사용 가능한 정책 패턴을 공유하며, 커뮤니티 관행이 공식 지원으로 발전하는 과정을 확인할 수 있습니다."
+    },
+    "hero.explore": {
+      "en": "Explore Community Modes",
+      "ko": "Community Mode 둘러보기"
+    },
+    "hero.repository": {
+      "en": "Official Repository",
+      "ko": "공식 저장소"
+    },
+    "authority.label": {
+      "en": "Authority boundary",
+      "ko": "Authority 경계"
+    },
+    "authority.title": {
+      "en": "The website explains policy. It does not define policy.",
+      "ko": "이 웹사이트는 정책을 설명하지만 정책을 정의하지 않습니다."
+    },
+    "authority.body": {
+      "en": "Normative requirements remain in the designated PTSIP Specification, ADRs, registries, schemas, and other authoritative repository records.",
+      "ko": "규범적 요구사항은 지정된 PTSIP Specification, ADR, registry, schema 및 기타 권위 있는 저장소 기록에 유지됩니다."
+    },
+    "lifecycle.kicker": {
+      "en": "Community lifecycle",
+      "ko": "커뮤니티 생명주기"
+    },
+    "lifecycle.title": {
+      "en": "Experiment freely. Promote deliberately.",
+      "ko": "실험은 자유롭게, 공식 승격은 명시적으로."
+    },
+    "lifecycle.custom.title": {
+      "en": "Project Custom Policy",
+      "ko": "프로젝트 전용 Custom Policy"
+    },
+    "lifecycle.custom.body": {
+      "en": "A project solves a real environment-specific need, including hard-coded assumptions when they are explicit.",
+      "ko": "프로젝트가 실제 환경별 요구를 해결합니다. 하드코딩된 가정도 명시적으로 공개된다면 사용할 수 있습니다."
+    },
+    "lifecycle.community.body": {
+      "en": "A reusable pattern is published with compatibility, limitations, provenance, and real usage evidence.",
+      "ko": "재사용 가능한 패턴을 호환성, 한계, provenance, 실제 사용 근거와 함께 공개합니다."
+    },
+    "lifecycle.candidate.body": {
+      "en": "Maintainers accept the problem for formal evaluation. This is not yet official support.",
+      "ko": "Maintainer가 해당 문제를 공식 평가 대상으로 승인한 상태입니다. 아직 공식 지원은 아닙니다."
+    },
+    "lifecycle.official.body": {
+      "en": "Support is established through authoritative repository contracts, implementation, verification, and release.",
+      "ko": "권위 있는 저장소 contract, 구현, 검증, 릴리스를 통해 공식 지원이 확립됩니다."
+    },
+    "modes.kicker": {
+      "en": "Community catalog",
+      "ko": "커뮤니티 카탈로그"
+    },
+    "modes.title": {
+      "en": "Community Modes",
+      "ko": "Community Modes"
+    },
+    "modes.discuss": {
+      "en": "Open Discussions",
+      "ko": "Discussions 열기"
+    },
+    "modes.intro": {
+      "en": "Community Modes are user-authored reusable policy patterns. Publication does not imply official PTSIP endorsement.",
+      "ko": "Community Mode는 사용자가 만든 재사용 가능한 정책 패턴입니다. 공개되었다는 이유만으로 PTSIP 공식 인증이나 지원을 의미하지 않습니다."
+    },
+    "modes.empty": {
+      "en": "No Community Modes are registered yet. The catalog is ready for the first contribution.",
+      "ko": "아직 등록된 Community Mode가 없습니다. 첫 번째 커뮤니티 기여를 받을 준비가 되어 있습니다."
+    },
+    "modes.source": {
+      "en": "View source",
+      "ko": "Source 보기"
+    },
+    "modes.submit.title": {
+      "en": "Built something reusable?",
+      "ko": "재사용할 가치가 있는 정책을 만들었나요?"
+    },
+    "modes.submit.body": {
+      "en": "Share the problem, assumptions, compatibility, source, limitations, and real-world evidence with the community.",
+      "ko": "해결하려는 문제, 전제조건, 호환성, source, 알려진 한계, 실제 사용 근거를 커뮤니티와 공유해 주세요."
+    },
+    "modes.submit.action": {
+      "en": "Start a Discussion",
+      "ko": "Discussion 시작하기"
+    },
+    "promotion.kicker": {
+      "en": "Official promotion",
+      "ko": "공식 승격"
+    },
+    "promotion.title": {
+      "en": "Popularity is evidence, not authority.",
+      "ko": "인기도는 Evidence이지 Authority가 아닙니다."
+    },
+    "promotion.body": {
+      "en": "Repeated independent adoption is a strong signal, but official support also requires generality, deterministic semantics, authority preservation, compatibility, verification, and maintainability.",
+      "ko": "서로 독립적인 프로젝트의 반복 채택은 강한 신호지만, 공식 지원에는 범용성, deterministic semantics, Authority 보존, 호환성, 검증 가능성, 유지보수 가능성도 필요합니다."
+    },
+    "promotion.criteria.repeated": {
+      "en": "Repeated need across independent projects",
+      "ko": "서로 독립적인 프로젝트에서 반복되는 실제 수요"
+    },
+    "promotion.criteria.general": {
+      "en": "Generalizable semantics rather than one repository convention",
+      "ko": "한 저장소의 관례가 아닌 일반화 가능한 semantics"
+    },
+    "promotion.criteria.authority": {
+      "en": "Preserves project-owned authority and owner decisions",
+      "ko": "project-owned Authority와 owner decision 경계 보존"
+    },
+    "promotion.criteria.machine": {
+      "en": "Can be represented and verified deterministically",
+      "ko": "deterministic하게 표현하고 검증할 수 있음"
+    },
+    "promotion.criteria.release": {
+      "en": "Can be supported through repository contracts and release lifecycle",
+      "ko": "저장소 contract 및 release lifecycle을 통해 지속적으로 지원 가능"
+    },
+    "governance.kicker": {
+      "en": "Governance",
+      "ko": "거버넌스"
+    },
+    "governance.title": {
+      "en": "Community innovation and official authority stay separate.",
+      "ko": "커뮤니티의 실험과 공식 Authority를 분리합니다."
+    },
+    "governance.community.title": {
+      "en": "Community surface",
+      "ko": "커뮤니티 영역"
+    },
+    "governance.community.body": {
+      "en": "Examples, experiments, discussions, adoption evidence, and reusable patterns can evolve quickly.",
+      "ko": "예제, 실험, 토론, 채택 근거, 재사용 패턴은 빠르게 발전할 수 있습니다."
+    },
+    "governance.official.title": {
+      "en": "Official authority",
+      "ko": "공식 Authority"
+    },
+    "governance.official.body": {
+      "en": "Specification, designated ADRs, registries, schemas, implementation contracts, verification, and releases establish official support.",
+      "ko": "Specification, 지정 ADR, registry, schema, 구현 contract, verification, release가 공식 지원을 확립합니다."
+    },
+    "governance.language.title": {
+      "en": "Language model",
+      "ko": "다국어 모델"
+    },
+    "governance.language.body": {
+      "en": "The site uses one interface and locale mappings instead of language-specific page trees. Adding a language does not require duplicating site structure.",
+      "ko": "언어별 페이지 트리를 복제하지 않고 하나의 UI와 locale mapping을 사용합니다. 새 언어를 추가해도 사이트 구조를 다시 만들 필요가 없습니다."
+    },
+    "faq.title": {
+      "en": "Common questions",
+      "ko": "자주 묻는 질문"
+    },
+    "faq.official.q": {
+      "en": "Is a Community Mode an official PTSIP feature?",
+      "ko": "Community Mode는 PTSIP 공식 기능인가요?"
+    },
+    "faq.official.a": {
+      "en": "No. It becomes official only after deliberate adoption through authoritative repository and release boundaries.",
+      "ko": "아닙니다. 권위 있는 저장소와 릴리스 경계를 통해 명시적으로 채택된 이후에만 공식 기능이 됩니다."
+    },
+    "faq.hardcoded.q": {
+      "en": "Can a Community Mode be hard-coded for one environment?",
+      "ko": "Community Mode를 특정 환경에 맞게 하드코딩해도 되나요?"
+    },
+    "faq.hardcoded.a": {
+      "en": "Yes. Environment-specific assumptions are acceptable when they are explicit. Promotion later evaluates what can be generalized safely.",
+      "ko": "가능합니다. 환경별 가정이 명시되어 있다면 허용할 수 있습니다. 공식 승격 단계에서 안전하게 일반화할 수 있는 범위를 별도로 평가합니다."
+    },
+    "faq.source_mode.q": {
+      "en": "Is Community Mode the same as explicit, template, or hybrid?",
+      "ko": "Community Mode는 explicit, template, hybrid와 같은 개념인가요?"
+    },
+    "faq.source_mode.a": {
+      "en": "No. Community Mode is an incubation and distribution concept. Canonical PTSIP source declaration modes are defined by the authoritative repository.",
+      "ko": "아닙니다. Community Mode는 incubation 및 distribution 개념입니다. Canonical PTSIP source declaration mode는 권위 있는 저장소가 정의합니다."
+    },
+    "footer.note": {
+      "en": "This website is non-normative. Official policy remains in the PTSIP repository.",
+      "ko": "이 웹사이트는 non-normative입니다. 공식 정책 Authority는 PTSIP 저장소에 유지됩니다."
+    },
+    "footer.repository": {
+      "en": "Repository",
+      "ko": "저장소"
+    },
+    "footer.discussions": {
+      "en": "Discussions",
+      "ko": "Discussions"
+    },
+    "footer.issues": {
+      "en": "Issues",
+      "ko": "Issues"
+    },
+    "nav.primitives": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "hero.primitives": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "primitive.meta.title": {
+      "en": "PTSIP — Primitive Catalog",
+      "ko": "PTSIP — Primitive Catalog"
+    },
+    "primitive.hero.kicker": {
+      "en": "Community Primitive ecosystem",
+      "ko": "Community Primitive 생태계"
+    },
+    "primitive.hero.title": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "primitive.hero.summary": {
+      "en": "A presentation layer for Official Core primitives, Community primitives, and Core Candidates. Registry and telemetry backends are intentionally not assumed here.",
+      "ko": "Official Core, Community Primitive, Core Candidate를 구분해 보여주기 위한 표시 계층입니다. Registry와 telemetry backend는 이 화면에서 임의로 가정하지 않습니다."
+    },
+    "primitive.hero.back": {
+      "en": "Back to home",
+      "ko": "홈으로 돌아가기"
+    },
+    "primitive.boundary.label": {
+      "en": "Governance boundary",
+      "ko": "Governance 경계"
+    },
+    "primitive.boundary.title": {
+      "en": "Popularity can trigger review. It cannot create normative authority.",
+      "ko": "인기도는 검토를 촉발할 수 있지만 normative Authority를 만들 수는 없습니다."
+    },
+    "primitive.boundary.body": {
+      "en": "Usage signals and Discussion votes do not automatically promote a primitive. Conformance review and an explicit governance decision remain separate requirements.",
+      "ko": "사용량 지표와 Discussion 투표만으로 primitive가 자동 승격되지 않습니다. Conformance 검토와 명시적 governance decision은 별도의 요구사항입니다."
+    },
+    "primitive.lifecycle.kicker": {
+      "en": "Primitive lifecycle",
+      "ko": "Primitive 생명주기"
+    },
+    "primitive.lifecycle.title": {
+      "en": "From local customization to governed core support",
+      "ko": "로컬 사용자 정의에서 governance를 거친 Core 지원까지"
+    },
+    "primitive.lifecycle.custom": {
+      "en": "Used locally in an individual's environment.",
+      "ko": "개인의 로컬 환경에서 사용하는 사용자 정의 primitive입니다."
+    },
+    "primitive.lifecycle.community": {
+      "en": "Published in the PTSIP community Registry for public discovery and reuse.",
+      "ko": "PTSIP 커뮤니티 Registry에 공개되어 검색과 재사용이 가능한 primitive입니다."
+    },
+    "primitive.lifecycle.candidate": {
+      "en": "Selected for formal Core promotion review after adoption and conformance evidence accumulates.",
+      "ko": "실제 채택과 conformance 근거가 축적된 뒤 공식 Core 승격 검토 대상으로 선정된 상태입니다."
+    },
+    "primitive.lifecycle.official": {
+      "en": "Officially supported Core primitive after governance approval.",
+      "ko": "governance 승인을 거쳐 PTSIP가 공식 지원하는 Core primitive입니다."
+    },
+    "primitive.identity.title": {
+      "en": "Promotion issues a new Official identity",
+      "ko": "공식 승격 시 새 Official identity를 발급합니다"
+    },
+    "primitive.identity.body": {
+      "en": "A Community identity is not renamed into an Official Core identity. Future machine-readable relationship metadata may connect the identities, but this website does not define the canonical relationship vocabulary.",
+      "ko": "Community identity를 그대로 Official Core identity로 변경하지 않습니다. 향후 machine-readable 관계 정보로 두 identity를 연결할 수 있지만, 이 웹사이트는 canonical 관계 vocabulary를 정의하지 않습니다."
+    },
+    "primitive.groups.official.title": {
+      "en": "Official Core",
+      "ko": "Official Core"
+    },
+    "primitive.groups.official.body": {
+      "en": "Core primitives explicitly supported through PTSIP governance and official contracts.",
+      "ko": "PTSIP governance와 공식 contract를 통해 명시적으로 지원되는 Core primitive입니다."
+    },
+    "primitive.groups.official.empty": {
+      "en": "Official Core Registry data is not connected to this website yet. No entries are invented here.",
+      "ko": "아직 이 웹사이트에 Official Core Registry 데이터가 연결되지 않았습니다. 임의 항목을 생성하지 않습니다."
+    },
+    "primitive.groups.community.title": {
+      "en": "Community",
+      "ko": "Community"
+    },
+    "primitive.groups.community.body": {
+      "en": "Community-published primitives that remain outside normative Core authority.",
+      "ko": "커뮤니티에 공개되었지만 normative Core Authority에는 포함되지 않은 primitive입니다."
+    },
+    "primitive.groups.community.empty": {
+      "en": "Community Registry data is not connected yet. The catalog is ready for future public entries.",
+      "ko": "아직 Community Registry 데이터가 연결되지 않았습니다. 향후 공개 항목을 수용할 준비만 되어 있습니다."
+    },
+    "primitive.groups.candidates.title": {
+      "en": "Core Candidates",
+      "ko": "Core Candidates"
+    },
+    "primitive.groups.candidates.body": {
+      "en": "Community primitives under explicit Core promotion review. Candidate status is not Official Core status.",
+      "ko": "명시적인 Core 승격 검토 중인 Community primitive입니다. Candidate 상태는 Official Core 상태가 아닙니다."
+    },
+    "primitive.groups.candidates.empty": {
+      "en": "No Core Candidate data is connected yet. Candidate status will only be shown when a governance source provides it.",
+      "ko": "아직 Core Candidate 데이터가 연결되지 않았습니다. governance source가 해당 상태를 제공할 때만 표시합니다."
+    },
+    "primitive.detail.title": {
+      "en": "Primitive details",
+      "ko": "Primitive 상세"
+    },
+    "primitive.detail.empty": {
+      "en": "Select a Registry-backed primitive when entries become available. This detail surface is prepared for future data sources.",
+      "ko": "Registry 기반 항목이 연결되면 primitive를 선택해 상세 정보를 볼 수 있습니다. 현재는 향후 data source 연결을 위한 화면만 준비되어 있습니다."
+    },
+    "primitive.detail.identity": {
+      "en": "Primitive identity",
+      "ko": "Primitive identity"
+    },
+    "primitive.detail.status": {
+      "en": "Status",
+      "ko": "상태"
+    },
+    "primitive.detail.author": {
+      "en": "Author / registrant",
+      "ko": "작성자 / 등록 주체"
+    },
+    "primitive.detail.description": {
+      "en": "Description",
+      "ko": "간단한 설명"
+    },
+    "primitive.detail.input": {
+      "en": "Input contract",
+      "ko": "Input contract"
+    },
+    "primitive.detail.output": {
+      "en": "Output contract",
+      "ko": "Output contract"
+    },
+    "primitive.detail.parameters": {
+      "en": "Parameter contract",
+      "ko": "Parameter contract"
+    },
+    "primitive.detail.determinism": {
+      "en": "Determinism / conformance",
+      "ko": "Determinism / conformance"
+    },
+    "primitive.detail.adoption": {
+      "en": "Usage / adoption",
+      "ko": "사용 / 채택 지표"
+    },
+    "primitive.detail.candidate": {
+      "en": "Core Candidate",
+      "ko": "Core Candidate 여부"
+    },
+    "primitive.detail.relationships": {
+      "en": "Official Core relationship",
+      "ko": "Official Core 관계"
+    },
+    "primitive.detail.discussion": {
+      "en": "GitHub Discussion",
+      "ko": "GitHub Discussion"
+    },
+    "primitive.detail.unavailable": {
+      "en": "Not provided by the connected presentation data source.",
+      "ko": "연결된 presentation data source에서 아직 제공되지 않습니다."
+    },
+    "primitive.detail.open_discussion": {
+      "en": "Open Discussion",
+      "ko": "Discussion 열기"
+    },
+    "primitive.detail.copy_link": {
+      "en": "Copy detail link",
+      "ko": "상세 링크 복사"
+    },
+    "primitive.data.title": {
+      "en": "Data-source readiness",
+      "ko": "Data source 준비 상태"
+    },
+    "primitive.data.registry": {
+      "en": "Registry source: not connected",
+      "ko": "Registry source: 아직 연결되지 않음"
+    },
+    "primitive.data.adoption": {
+      "en": "Adoption source: public or explicitly supplied information only",
+      "ko": "Adoption source: 공개 정보 또는 명시적으로 제공된 정보만 사용"
+    },
+    "primitive.data.telemetry": {
+      "en": "Private-repository telemetry: not collected",
+      "ko": "Private repository telemetry: 수집하지 않음"
+    },
+    "primitive.data.telemetry_note": {
+      "en": "Any future telemetry path must be opt-in. This initial catalog does not collect private-repository primitive usage.",
+      "ko": "향후 telemetry가 필요하다면 opt-in을 전제로 해야 합니다. 현재 Catalog는 Private repository의 primitive 사용 정보를 수집하지 않습니다."
+    },
+    "primitive.review.title": {
+      "en": "Promotion review semantics",
+      "ko": "승격 검토 의미"
+    },
+    "primitive.review.high_usage": {
+      "en": "High adoption → eligible for promotion review",
+      "ko": "사용량 높음 → 승격 검토 가능"
+    },
+    "primitive.review.not_auto": {
+      "en": "High adoption ≠ automatic Official Core promotion",
+      "ko": "사용량 높음 ≠ 자동 Official Core 승격"
+    },
+    "primitive.review.vote": {
+      "en": "Discussion votes ≠ automatic promotion",
+      "ko": "Discussion 투표 ≠ 자동 승격"
+    },
+    "primitive.review.authority": {
+      "en": "Governance decision → promotion authority",
+      "ko": "Governance decision → 공식 승격 Authority"
+    },
+    "primitive.relationship.pending": {
+      "en": "Relationship metadata is reserved for future integration. Canonical relationship vocabulary is intentionally not defined by this page.",
+      "ko": "향후 관계 정보 연결 공간을 예약해 두었습니다. canonical relationship vocabulary는 이 페이지에서 의도적으로 정의하지 않습니다."
+    },
+    "primitive.registry.discussions": {
+      "en": "PTSIP Discussions",
+      "ko": "PTSIP Discussions"
+    },
+    "primitive.data.supabase_configured": {
+      "en": "Supabase client: configured (Registry query disabled)",
+      "ko": "Supabase client: 설정됨 (Registry 조회는 비활성)"
+    },
+    "primitive.data.supabase_unavailable": {
+      "en": "Supabase client: configuration unavailable",
+      "ko": "Supabase client: 설정을 사용할 수 없음"
+    },
+    "primitive.detail.source_language": {
+      "en": "Source language",
+      "ko": "원문 언어"
+    },
+    "primitive.language.community_title": {
+      "en": "Community content language",
+      "ko": "Community 콘텐츠 언어"
+    },
+    "primitive.language.community_body": {
+      "en": "Community Primitive content is displayed exactly as submitted. PTSIP does not translate it or store translated copies. Readers may use their browser or external translation tools if they choose.",
+      "ko": "Community Primitive 콘텐츠는 제출된 원문 그대로 표시합니다. PTSIP는 이를 번역하거나 번역본을 저장하지 않습니다. 필요한 경우 사용자가 브라우저 또는 외부 번역 도구를 직접 사용할 수 있습니다."
+    },
+    "meta.community_modes": {
+      "en": "PTSIP — Community Modes",
+      "ko": "PTSIP — Community Modes"
+    },
+    "meta.promotion": {
+      "en": "PTSIP — Promotion",
+      "ko": "PTSIP — 공식 승격"
+    },
+    "meta.faq": {
+      "en": "PTSIP — FAQ",
+      "ko": "PTSIP — FAQ"
+    },
+    "page.community_modes.promotion_link": {
+      "en": "How promotion works",
+      "ko": "공식 승격 절차 보기"
+    },
+    "page.community_modes.boundary_title": {
+      "en": "Community publication is not official PTSIP authority.",
+      "ko": "Community 공개는 PTSIP 공식 Authority가 아닙니다."
+    },
+    "page.community_modes.boundary_body": {
+      "en": "Community Modes can accumulate evidence and adoption, but official support requires a separate governance path.",
+      "ko": "Community Mode는 사용 근거와 채택을 축적할 수 있지만, 공식 지원에는 별도의 governance 절차가 필요합니다."
+    },
+    "page.community_modes.catalog_kicker": {
+      "en": "Published patterns",
+      "ko": "공개된 패턴"
+    },
+    "page.community_modes.catalog_title": {
+      "en": "Community catalog",
+      "ko": "Community 카탈로그"
+    },
+    "page.promotion.boundary_label": {
+      "en": "Promotion boundary",
+      "ko": "승격 경계"
+    },
+    "page.promotion.boundary_title": {
+      "en": "Review can be triggered by evidence. Promotion requires governance.",
+      "ko": "Evidence는 검토를 촉발할 수 있지만 승격에는 governance가 필요합니다."
+    },
+    "page.promotion.boundary_body": {
+      "en": "Usage, votes, and community interest can inform review, but they do not automatically create official support.",
+      "ko": "사용량, 투표, 커뮤니티 관심은 검토 근거가 될 수 있지만 자동으로 공식 지원을 만들지는 않습니다."
+    },
+    "page.promotion.criteria_kicker": {
+      "en": "Evaluation criteria",
+      "ko": "평가 기준"
+    },
+    "page.promotion.criteria_title": {
+      "en": "Signals considered before official adoption",
+      "ko": "공식 채택 전에 검토하는 신호"
+    },
+    "page.promotion.criteria_intro": {
+      "en": "Promotion evaluates whether a community pattern can become a stable, supportable PTSIP capability without weakening project authority.",
+      "ko": "승격 검토는 Community 패턴이 project authority를 약화시키지 않으면서 안정적으로 지원 가능한 PTSIP 기능이 될 수 있는지를 평가합니다."
+    },
+    "page.promotion.flow_kicker": {
+      "en": "Decision path",
+      "ko": "결정 경로"
+    },
+    "page.promotion.flow_title": {
+      "en": "Evidence and authority remain separate",
+      "ko": "Evidence와 Authority를 분리합니다"
+    },
+    "page.promotion.signal_title": {
+      "en": "1. Community signal",
+      "ko": "1. Community 신호"
+    },
+    "page.promotion.signal_body": {
+      "en": "Adoption, repeated use, and discussion can indicate that a problem deserves formal review.",
+      "ko": "채택, 반복 사용, 공개 논의는 해당 문제가 공식 검토할 가치가 있다는 신호가 될 수 있습니다."
+    },
+    "page.promotion.review_title": {
+      "en": "2. Conformance review",
+      "ko": "2. Conformance 검토"
+    },
+    "page.promotion.review_body": {
+      "en": "The candidate must still satisfy compatibility, deterministic behavior, and supportability requirements.",
+      "ko": "Candidate는 호환성, deterministic behavior, 지속적인 지원 가능성 등의 요구를 별도로 충족해야 합니다."
+    },
+    "page.promotion.decision_title": {
+      "en": "3. Governance decision",
+      "ko": "3. Governance decision"
+    },
+    "page.promotion.decision_body": {
+      "en": "Only an explicit governance decision can establish official PTSIP support.",
+      "ko": "명시적인 governance decision만 PTSIP 공식 지원을 확립할 수 있습니다."
+    },
+    "page.faq.summary": {
+      "en": "Answers to common questions about Community Modes, authority boundaries, source declarations, and official support.",
+      "ko": "Community Mode, Authority 경계, source declaration, 공식 지원에 관한 자주 묻는 질문을 정리합니다."
+    },
+    "page.faq.boundary_title": {
+      "en": "FAQ explains the model; it does not replace authoritative repository contracts.",
+      "ko": "FAQ는 모델을 설명하지만 권위 있는 저장소 contract를 대체하지 않습니다."
+    },
+    "page.faq.primitive_translation_q": {
+      "en": "Does PTSIP translate Community Primitive content?",
+      "ko": "PTSIP가 Community Primitive 콘텐츠를 번역하나요?"
+    },
+    "page.faq.primitive_translation_a": {
+      "en": "No. Community Primitive content is displayed in the original language submitted by its author. Readers may use browser or external translation tools if needed.",
+      "ko": "아닙니다. Community Primitive 콘텐츠는 작성자가 제출한 원문 언어 그대로 표시됩니다. 필요한 경우 사용자가 브라우저 또는 외부 번역 도구를 직접 사용할 수 있습니다."
+    },
+    "page.faq.popularity_q": {
+      "en": "Does popularity automatically promote a Community item?",
+      "ko": "인기가 높으면 Community 항목이 자동으로 공식 승격되나요?"
+    },
+    "page.faq.popularity_a": {
+      "en": "No. Popularity and adoption are evidence that may justify review. Official support still requires conformance review and an explicit governance decision.",
+      "ko": "아닙니다. 인기와 채택은 검토를 정당화할 수 있는 Evidence입니다. 공식 지원에는 별도의 conformance 검토와 명시적인 governance decision이 필요합니다."
+    },
+    "home.explore.kicker": {
+      "en": "Explore PTSIP",
+      "ko": "PTSIP 둘러보기"
+    },
+    "home.explore.title": {
+      "en": "Choose the area you need",
+      "ko": "필요한 영역으로 이동하세요"
+    },
+    "home.explore.modes.body": {
+      "en": "Browse reusable community policy patterns and their public discussion surface.",
+      "ko": "재사용 가능한 Community 정책 패턴과 공개 논의 영역을 확인합니다."
+    },
+    "home.explore.primitives.title": {
+      "en": "Primitive Catalog",
+      "ko": "Primitive Catalog"
+    },
+    "home.explore.primitives.body": {
+      "en": "Browse Official Core, Community, and Core Candidate primitives.",
+      "ko": "Official Core, Community, Core Candidate primitive를 구분해 확인합니다."
+    },
+    "home.explore.promotion.body": {
+      "en": "Understand how evidence can lead to review without becoming automatic authority.",
+      "ko": "Evidence가 어떻게 검토로 이어지고 자동 Authority와는 어떻게 구분되는지 확인합니다."
+    },
+    "home.explore.faq.body": {
+      "en": "Find concise answers about PTSIP community and governance concepts.",
+      "ko": "PTSIP Community와 governance 개념에 대한 자주 묻는 질문을 확인합니다."
+    },
+    "home.explore.open": {
+      "en": "Open page",
+      "ko": "페이지 열기"
+    }
+  }
+}

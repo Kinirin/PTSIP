@@ -96,6 +96,26 @@ Normal entry order:
 4. load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved task actually requires them.
 
 `MEMORY.md`, historical planning, release notes, and ADR/history are targeted operational or historical context, not mandatory startup reads. Their presence must not override canonical machine-readable policy or Specification authority.
+`MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
+
+## License Authority entry discipline
+
+`License-Authority/` is a closed License Authority Boundary and is not part of the default coding-agent read set. Default behavior is `DO_NOT_ENTER`.
+
+Entry is permitted only for `EXPLICIT_USER_REQUEST`, `LICENSE_AUTHORITY_PATH_CHANGED`, `LICENSE_PROJECTION_MISMATCH`, or `REPORTED_LICENSE_PROBLEM`.
+
+Normal Tool releases, normal Specification validation, Tool version changes, documentation mentions, keyword detection, and AI semantic guesses do not authorize License Authority entry.
+
+When entry is permitted:
+
+1. evaluate the trigger without reading License content;
+2. read only `License-Authority/license-authority.yaml`;
+3. resolve the requested operation from its closed operation map;
+4. read only documents declared for that operation;
+5. read external projections only when that operation declares them;
+6. fail closed on unknown operations, undeclared files, or paths outside `License-Authority/`.
+
+Files outside `License-Authority/` may mention or describe licensing, but those references are non-authoritative and are not incorporated into the License by reference. Do not scan the repository for license-like prose to determine License Authority.
 
 ## Repository-state discipline
 

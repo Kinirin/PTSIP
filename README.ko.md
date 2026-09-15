@@ -7,23 +7,24 @@
 
 > 이 문서는 정식 원본인 [`README.md`](README.md)를 기준으로 유지되는 한국어 번역본입니다. 변경되지 않은 번역은 보존하고, 변경된 원문 블록만 self-hosted Argos Translate로 갱신합니다. 프로젝트 사실이나 의미가 상충할 경우 영문 원본을 기준으로 합니다.
 
-**상태:** Tool `0.3.7` WU-12 구현 통합 — exact-SHA 검증 대기<br>
-**Tool/패키지 버전:** `0.3.7`<br>
+**상태:** Tool `0.3.8a1` 비상사태 prerelease — 간행물<br>
+**Tool/package 버전:** `0.3.8a1`<br>
 **Project Profile 계약:** `pp.1.01`<br>
 **Specification 패밀리:** `0.3.7-draft`<br>
 **바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**인증:** Apache 라이센스 2.0<br>
+**라이센스 기관:** [`License-Authority/`](License-Authority/) (닫은 권위 경계; 다른 사람은 비 긴급합니다)<br>
+**공급 능력:** `2026-09-15T00:00:00Z` (세계)<br>
 **현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 충돌하면 이 파일을 기준으로 합니다.
 
 PTSIP는 프로젝트 책임을 **주요 생명주기 소유권(primary lifecycle ownership)**에 따라 분리하면서 명시적 아키텍처 의도, 생명주기 격리, 재현 가능한 적합성, 검증 목적 분리, 여러 환경 간 의사결정 일관성을 보존하기 위한 프로젝트 정의 아키텍처 정책입니다.
 
 > **재사용보다 목적이 우선합니다.** 코드 공유를 최적화하기 전에 하나의 일관된 책임이 왜 존재하고 어느 생명주기가 그것을 소유하는지를 먼저 판단합니다.
 
-Tool `0.3.7`은 현재 `main`의 릴리스 후보에 WU-12 구현과 동결된 Specification binding을 포함합니다. WU-12 구현은 완료되었지만 exact-SHA 검증 이후 저장소가 변경되면 릴리스 준비 전에 새로운 self-hosted workflow 검증을 다시 통과해야 합니다. 공개 경계가 성공하기 전까지 PyPI의 최신 공개 패키지는 Tool `0.3.5`입니다.
+Tool `0.3.8a1` 좁아진 비상출 교량 Tool `0.3.7` 기본 및 동일한 냉동 Specification 바인딩. 명시적 제안 후보로 존재하지 않는 구성 요소를 나타내는 지원 방법을 추가하고 기존 결정 제어 계획을 통해 제안을 해결하고 승인 된 제안을 유지합니다. `PROPOSAL_APPROVED` 프로젝트 없이 `components[]` 물자화의 앞에. Tool `0.3.8a1` 의도적으로 완료되지 않습니다 Tool `0.4.0`.
 
 ## 주요 생명주기 소유권
 
-Tool `0.3.7`의 정식 분류는 계속해서 정확히 다음 다섯 가지입니다.
+언어: English Tool `0.3.8a1` 분류는 정확히 남아:
 
 | 분류 | 의미 |
 | --- | --- |
@@ -45,9 +46,9 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.7`은 Tool `0.3.6`에서 확립된 다섯 분류 모델을 유지합니다. 따라서 `TOOLCHAIN`은 **Tool `0.3.5` 레거시 입력**이며 현재 정식 별칭이 아닙니다. 기존 Toolchain 책임은 실제 생명주기 소유권에 따라 `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`로 이동하거나 분리가 필요할 수 있습니다. 일괄적인 `TOOLCHAIN -> DEVELOPMENT_TOOLING` 치환은 금지됩니다.
+Tool `0.3.8a1` 5등급 모델 유지 Tool `0.3.6`. `TOOLCHAIN` 견적 요청 **이름 * Tool `0.3.5` 제품정보**, 현재 canonical 별명으로. 법적 책임은 될 수있다 `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, 또는 실제 수명주기 소유권에 따라 분할이 필요합니다. 팟캐스트 `TOOLCHAIN -> DEVELOPMENT_TOOLING` 관련 상품
 
-Tool `0.3.7`은 명시적으로 지원되는 historical source를 위한 증거 기반 direct current-target migration을 제공합니다. Migration capability는 repository adoption authority와 분리되며 inference를 project intent로 바꾸지 않습니다.
+Tool `0.3.8a1` 명시적으로 지원되는 역사적 소스에 대한 증거 반방향 직접 현재 표적 이동을 제공합니다. Migration 기능은 저장소 채택 권위에서 분리되고 프로젝트 intent로 방해하지 않습니다.
 
 ## 분류는 경로나 기술이 아닙니다
 
@@ -68,7 +69,7 @@ Independent non-executable shared contract          -> NEUTRAL_CONTRACT
 
 ## Responsibility Map v2
 
-Tool `0.3.7`은 Responsibility Map v2를 프로젝트 소유 아키텍처 선언 모델로 사용하며 다음 축을 서로 분리합니다.
+Tool `0.3.8a1` 제품정보 Responsibility Map 프로젝트 소유 건축 선언 모델 v2. 그것은 몇몇 axes를 자주 지킵니다:
 
 ```text
 classification
@@ -197,7 +198,15 @@ python -m pip install PTSIP
 python -m pip install --upgrade PTSIP
 ```
 
-Tool `0.3.7`이 공개되기 전에는 이 명령이 PyPI의 Tool `0.3.5`를 설치할 수 있습니다. 현재 릴리스 후보 소스 개발은 다음과 같이 설치합니다.
+Tool `0.3.8a1` 사전 출시입니다. 정상적인 `pip install PTSIP` 사전 릴리스가 명시적으로 요청되지 않는 한 최신 안정된 릴리스를 계속 선택할 수 있습니다.
+
+출판 후, 명시적으로이 prerelease를 설치:
+
+```powershell
+python -m pip install "PTSIP==0.3.8a1"
+```
+
+이 방출 선에 근원 발달을 위해:
 
 ```powershell
 python -m pip install -e ".[dev]"
@@ -225,7 +234,7 @@ ptsip conform .
 
 저장소 증거는 아키텍처 권한이 아닙니다. Candidate discovery, 경로명, 템플릿, heuristic, agent confidence는 검토를 지원할 수 있지만 프로젝트 의도를 만들어낼 수 없습니다.
 
-Tool `0.3.7`에서는 `classification` 자체가 주요 생명주기 소유권 권한입니다. 새로운 정식 결정은 다음과 같은 사실을 사용합니다.
+언어: English Tool `0.3.8a1` 명시된 채택 사실에 `classification` lifecycle 소유권 권위로. 새로운 후보 결정은 다음과 같은 사실을 사용합니다.
 
 ```text
 classification
@@ -235,7 +244,7 @@ runtime_required
 executable
 ```
 
-역사적 `lifecycle_owner`는 레거시 마이그레이션 증거이며 Tool `0.3.7`의 두 번째 소유권 권한이 아닙니다.
+역사 `lifecycle_owner` 필드는 레거시 마이그레이션 증거, 두 번째 Tool `0.3.8a1` 소유권.
 
 Dry-run 예시:
 
@@ -300,9 +309,9 @@ PTSIP는 지속적인 background polling이 아니라 action-time synchronizatio
 
 Artifact 소유권은 producer 소유권과 독립적입니다. `DEVELOPMENT_TOOLING` 또는 `DELIVERY` component가 `PRODUCT` artifact를 만들 수 있지만 결과 artifact는 Product package 경계를 만족해야 합니다.
 
-Tool `0.3.7`은 snapshot-bound Product Artifact evidence를 지원합니다. 릴리스 검증은 패키징 설정을 증거로 간주하지 않고 실제 빌드된 distribution 내용을 확인하며, `PTSIP-PKG-001`에 따른 확정적인 non-Product 구현 유입을 거부합니다.
+Tool `0.3.8a1` Snapshot-bound 지원 Product Artifact 견적 요청 포장 구성을 증거로 대우하기 보다는 오히려 실제적인 건축한 배급 내용을 풀어 놓으십시오. 제품 유통 검증은 밑에 definite non-Product 구현 누설을 거부합니다. `PTSIP-PKG-001`.
 
-## VPMS — Verification Purpose Management System
+## VPMS — Verification 목적 관리 체계
 
 PTSIP와 VPMS는 서로 다른 질문에 답합니다.
 
@@ -316,7 +325,7 @@ VPMS
 
 PTSIP classification과 VPMS Verification Purpose는 별개의 축입니다. PTSIP core는 VPMS에 의존하지 않으며 VPMS는 이미 해석된 PTSIP metadata의 좁은 read-only projection만 소비합니다.
 
-현재 VPMS 호환성 vocabulary에는 `PRODUCT | TOOLCHAIN`이 남아 있을 수 있습니다. VPMS의 `TOOLCHAIN`은 Tool `0.3.7`의 PTSIP 정식 분류가 아닙니다.
+현재 위치 VPMS 호환성 vocabulary는 아직도 포함될지도 모릅니다 `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` canonical는 아닙니다 Tool `0.3.8a1` PTSIP 분류.
 
 VPMS PASS는 PTSIP `CONFORMANT`를 의미하지 않고, PTSIP `CONFORMANT` 역시 기능 검증 PASS를 의미하지 않습니다.
 
@@ -344,7 +353,7 @@ PTSIP Tool과 PTSIP Specification은 독립적으로 버전 관리됩니다.
 - `spec/`, `schemas/`, `registry/`는 canonical Specification asset입니다.
 - `src/ptsip/specdata/`는 Tool에 포함된 동일한 machine-readable asset입니다.
 
-Tool `0.3.7`은 독립적인 PP 및 Specification 정체성에 바인딩됩니다.
+Tool `0.3.8a1` 독립적 인 PP와 경계 Specification 이름:
 
 ```text
 Project Profile pp.1.01
@@ -354,38 +363,37 @@ SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
 
 새 immutable revision은 실제 normative change가 있을 때만 필요합니다. release workflow, test, planning, status, documentation-only 변경만으로 `SPEC_REVISION`을 이동하지 않습니다.
 
-## Tool 0.3.7 검증 및 릴리스 상태
+## Tool 0.3.8a1 릴리스 정체성
 
-WU-12 구현과 불변 Specification freeze는 완료되었습니다. 릴리스 handoff 중 repository CI infrastructure가 변경되었으므로 현재 `main` source state는 새로운 exact-SHA `tooling-test` 검증이 필요합니다.
-
-```text
-Tool:              0.3.7
-Project Profile:   pp.1.01
-Specification:     0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a
-exact source SHA:  pending final post-CI main commit
-tooling-test:      PENDING for the current exact main SHA
-publication:       NOT RUN
-```
-
-이전 workflow evidence는 해당 SHA에 대한 역사적 증거로만 유지되며 이후 source state를 검증하지 않습니다.
-
-남은 릴리스 경계는 다음과 같습니다.
+Tool `0.3.8a1` 긴급 교량은 의도적으로 좁은 범위로 선출됩니다.
 
 ```text
-final main exact SHA
-    -> tooling-test.yml on that exact SHA
-    -> require self-hosted/tooling-test success
-    -> full regression, independent identity, distribution, artifact, and wheel smoke PASS
-    -> release.yml and reviewed draft publication from the same source identity
-    -> tooling-release.yml publication verification and PyPI Trusted Publishing
+Tool:             0.3.8a1
+Project Profile:  pp.1.01
+Specification:    0.3.7-draft
+SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
+Release scope:    explicit proposed candidate bridge
 ```
 
-현재 구현과 handoff 경계는 [`STATUS.md`](STATUS.md), [`planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`](planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md), [`releasenote/tool/0.3.7.md`](releasenote/tool/0.3.7.md)를 참고하십시오.
+으로 Tool 릴리스는 새로운 것을 소개하지 않습니다. Specification 가족 또는 Project Profile 계약.
 
-## Consumer Repository 비침투 원칙
+그것은 명시적 제안 된 후보자로서의 not-yet-existing 구성 요소를 나타내는 지원을 추가하고 활성 구성 요소로 분리하지 않고 제안을 해결합니다. 그것은 더 넓은의 완료를 주장하지 않습니다 Tool `0.4.0` 기능 회복 건축.
+
+릴리스 범위 및 검증 내역은 기록됩니다. [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). 방출 문은 정의됩니다 [`planning/0.3.8/0.3.8a1-emergency-release-gate.yaml`](planning/0.3.8/0.3.8a1-emergency-release-gate.yaml).
+
+## 인증 기관
+
+PTSIP licensing Authority는 독점적으로 포함되어 있습니다. [`License-Authority/`](License-Authority/). 기계 읽기 쉬운 입장 점은 입니다 [`License-Authority/license-authority.yaml`](License-Authority/license-authority.yaml), 그리고 통제 법적인 원본은 입니다 [`License-Authority/LICENSE.md`](License-Authority/LICENSE.md).
+
+현재 면허 기관이 선언 한 후보 유효 시간은 `2026-09-15T00:00:00Z` (UTC).
+
+이 저장소의 다른 언어는 정보 또는 상황에만 사용됩니다. 그것은 라이센스의 일부가되지 않습니다, 수정, 또는 참조에 의해 통합됩니다.
+
+· Tool 출시, Specification 인증, Tool 버전 변경, 문서 언급, 키워드 일치, 및 AI semantic 추측은 라이센스 기관 항목을 승인하지 않습니다. Entry는 선언된 트리거만 사용합니다. `License-Authority/license-authority.yaml`.
+## Consumer Repository 비 침입
 
 PTSIP는 Consumer Repository가 Tool 사용만을 위해 PTSIP 전용 `.ptsip/`, cache, report, hidden state directory를 만들도록 요구하지 않습니다. External inspection과 Pilot은 기본적으로 read-only이며 Tool 소유 local state는 사용자가 저장소 경로를 명시적으로 선택하지 않는 한 Consumer Repository 밖에 둡니다.
 
 ## 프로젝트 상태
 
-PTSIP는 여전히 experimental 단계입니다. 현재 exact-main completion gate가 성공하기 전까지 Tool `0.3.7`은 공개되지 않은 release candidate입니다. 과거 Tool release와 Specification 기록은 [`releasenote/`](releasenote/) 아래에 보존됩니다.
+PTSIP 실험을 한다. Tool `0.3.8a1` 출판물 경계가 추적되는 비상 prerelease [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). 역사 Tool 출시 및 Specification 주의사항 [`releasenote/`](releasenote/).
