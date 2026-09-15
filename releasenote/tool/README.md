@@ -23,8 +23,6 @@ Historical Tool notes that previously lived directly under `releasenote/` have b
 | `0.3.5` | Published; first VPMS-capable Tool release | [`0.3.5.md`](0.3.5.md) |
 | `0.3.6` | Development complete; pre-publication release candidate | [`0.3.6.md`](0.3.6.md) |
 | `0.3.7` | Previous Tool release candidate baseline | [`0.3.7.md`](0.3.7.md) |
-| `0.3.8a1` | Emergency demo prerelease candidate; verification pending | [`0.3.8a1.md`](0.3.8a1.md) |
+| `0.3.8a1` | Published emergency prerelease | [`0.3.8a1.md`](0.3.8a1.md) |
 
 Tool `0.3.4` is represented by immutable GitHub Release history rather than a retained repository release-note file.
-| `0.3.7` | Previous Tool release candidate baseline | [`0.3.7.md`](0.3.7.md) |
-| `0.3.8a1` | Emergency demo prerelease; exact-SHA verified, publication pending | [`0.3.8a1.md`](0.3.8a1.md) |

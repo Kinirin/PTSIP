@@ -1,50 +1,40 @@
 # PTSIP Status
 
-## Current published release
+## Current published releases
 
 - Canonical repository: `Kinirin/PTSIP`
 - Maturity: Experimental
-- Published Tool/package version: **`0.3.5`**
-- Published tag: **`tool-v0.3.5`**
-- Release commit: `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1`
-- GitHub Release: **PUBLISHED** on 2026-08-17
-- PyPI publication: **COMPLETE** through Trusted Publishing
-- Bound published Specification: `0.3.4-draft @ b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e`
-- Historical Tool `0.3.5` classifications: `PRODUCT | TOOLCHAIN | NEUTRAL_CONTRACT`
+- Latest stable Tool/package version: **`0.3.7`**
+- Latest stable tag: **`tool-v0.3.7`**
+- Stable release commit: `2ff44d28f555138c362f50adbb95936f16d1797a`
+- Stable GitHub Release: **PUBLISHED**
+- Current prerelease Tool/package version: **`0.3.8a1`**
+- Current prerelease tag: **`tool-v0.3.8a1`**
+- Prerelease release commit: `b0833ad50d4852974696f35219bfa8f8da167d27`
+- Prerelease GitHub Release: **PUBLISHED**
+- Prerelease PyPI publication: **COMPLETE** through Trusted Publishing
+- Prerelease external install check: **PASS**
+- Project Profile contract: `pp.1.01`
+- Bound Specification: `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`
 
-Tool `0.3.5` remains the published compatibility baseline. Its historical PTSIP semantics are not rewritten by Tool `0.3.6` development.
+Tool `0.3.8a1` is an emergency prerelease bridge and does not replace Tool `0.3.7` as the latest stable Tool release.
 
-## Tool 0.3.7 WU-12 release-readiness implementation
+## Tool 0.3.7 publication state
 
-Development branch:
+Tool `0.3.7` is the latest stable Tool release.
+
+Published identity:
 
 ```text
-dev/0.3.7
-```
-
-Current integrated identities:
-
-```text
-Tool:                  0.3.7
-Project Profile:       pp.1.01
-Specification family: 0.3.7-draft
-Specification source: https://github.com/Kinirin/PTSIP
+Tool:                   0.3.7
+Tag:                    tool-v0.3.7
+Release commit:         2ff44d28f555138c362f50adbb95936f16d1797a
+Project Profile:        pp.1.01
+Specification family:  0.3.7-draft
 Specification revision: 3c47816770d194ae42f98faedc911d980db0e62a
 ```
 
-The Specification revision is the dedicated WU-12 normative freeze commit. The
-repository root has adopted `pp.1.01` with that explicit binding without changing
-its lifecycle classifications or Responsibility Map semantics.
-
-WU-12 implementation includes typed Specification binding/capability composition,
-direct current-target migration compatibility, command-faithful validation
-capture, independent release-contract identities, namespaced release notes, and
-Tool/package `0.3.7` surfaces.
-
-This is not a completion or verification claim. The final exact source SHA has
-not yet received the required fresh self-hosted `tooling-test` result. Release
-preparation, GitHub Release publication, `tooling-release`, and PyPI publication
-have not been run for Tool `0.3.7`.
+Its historical WU-12 implementation and exact-SHA verification records remain preserved below and in Git/release history. They are no longer pending publication state.
 
 ## Tool 0.3.6 development closure
 
@@ -652,6 +642,6 @@ Earlier Tool `0.3.6` verification authority `452d0f8...` is not transferable to 
 - Tool `0.3.4`: published historical Tool release
 - Tool `0.3.5`: **published; first VPMS-capable Tool release**
 - Tool `0.3.6`: **development complete; WU-07 COMPLETE / EXACT-SHA VERIFIED at `452d0f8...`; exact-main release handoff pending; not yet published**
-- Tool `0.3.7`: **WU-12 implementation integrated; final exact-SHA workflow and publication pending; not yet verified or published**
+- Tool `0.3.7`: **published; latest stable Tool release**
 
-Current Tool `0.3.7` release-readiness authority is `planning/0.3.7/WU-12-specification-binding-capability-registry-release-readiness.md`.
+Tool `0.3.7` release-readiness planning is historical; the published release/tag and immutable Git history are the durable publication record.

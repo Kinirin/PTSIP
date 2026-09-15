@@ -61,7 +61,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.8a1` | Emergency demo prerelease; exact-SHA verified, publication pending | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
+| Tool | `0.3.8a1` | Published emergency prerelease | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 | Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 
@@ -83,9 +83,29 @@ All retained Tool notes now live under `releasenote/tool/`.
 | `0.3.5` | Published; first VPMS-capable Tool release | [`tool/0.3.5.md`](tool/0.3.5.md) |
 | `0.3.6` | Development complete; pre-publication release candidate | [`tool/0.3.6.md`](tool/0.3.6.md) |
 | `0.3.7` | Previous Tool release candidate baseline | [`tool/0.3.7.md`](tool/0.3.7.md) |
-| `0.3.8a1` | Emergency demo prerelease candidate | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
+| `0.3.8a1` | Published emergency prerelease | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
+
+### Tool 0.3.8a1 publication note
+
+`tool-v0.3.8a1` was published from commit `b0833ad50d4852974696f35219bfa8f8da167d27`.
+
+Final publication evidence:
+
+```text
+Tool:                 0.3.8a1
+tag:                  tool-v0.3.8a1
+source SHA:           b0833ad50d4852974696f35219bfa8f8da167d27
+tooling-test run:     34841600965
+tooling-test status:  success
+tooling-release run:  34843040476
+tooling-release:      success
+PyPI package:         PTSIP==0.3.8a1
+PyPI install check:   PASS
+```
+
+The tagged `tool/0.3.8a1.md` is preserved as the immutable release-point document. Post-publication operational status is recorded in this index rather than by rewriting the tagged release note.
 
 ### Tool 0.3.5 publication note
 
