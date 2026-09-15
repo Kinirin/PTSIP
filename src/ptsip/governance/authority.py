@@ -143,7 +143,8 @@ class AuthorityCatalog:
         if not isinstance(path, str):
             raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy route requires a path.", route)
         record = self._load_yaml("policy", path)
-        return path, route, record
+        source_ref = f"docs/Support_policy/policy/{path}"
+        return source_ref, route, record
 
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:
         items = []
@@ -154,7 +155,11 @@ class AuthorityCatalog:
 
     def _validate_current_selection(self, policy_id: str, source_ref: str, route: Mapping[str, object], record: Mapping[str, object]) -> None:
         policy = _mapping(record.get("policy"), code="MALFORMED_AUTHORITY_RECORD", label="policy")
-        if policy.get("id") != policy_id or route.get("id") != policy_id or route.get("path") != source_ref:
+        if (
+            policy.get("id") != policy_id
+            or route.get("id") != policy_id
+            or route.get("path") != Path(source_ref).name
+        ):
             raise GovernanceAuthorityError("CURRENT_SUPPORT_POLICY_SELECTION_MISMATCH", "support policy record does not exactly match support-policy-index.", {"policy_id":policy_id,"source_ref":source_ref})
 
     def _role_for_policy(self, policy_id: str) -> Mapping[str, object]:

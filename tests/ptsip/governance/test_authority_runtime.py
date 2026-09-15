@@ -45,6 +45,7 @@ def test_exact_current_subject_projects_one_current_authority_record() -> None:
     assert record["authority_role"]["projection_role"] == "PROJECT_ARCHITECTURE_AUTHORITY"
     assert record["subject_binding"]["subject_identity"] == {"scheme":"SUPPORT_POLICY_ID","value":"SFP-0001"}
     assert record["authority_provenance"]["source_type"] == "SUPPORT_FEATURE_POLICY"
+    assert record["authority_provenance"]["source_ref"] == "docs/Support_policy/policy/SFP-0001.yaml"
     assert len(record["authority_provenance"]["source_digest"]) == 64
 
 
