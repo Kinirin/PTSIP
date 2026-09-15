@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-support-feature-policy-index.schema.json",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/docs/Support_policy/policy/schemas/ptsip-support-feature-policy-index.schema.json",
   "title": "PTSIP Support Feature Policy Index v1",
   "type": "object",
   "required": [
@@ -34,7 +34,7 @@
           },
           "path": {
             "type": "string",
-            "pattern": "^src/ptsip/specdata/SFP-[0-9]{4}\\.yaml$"
+            "pattern": "^SFP-[0-9]{4}\\.yaml$"
           },
           "status": {
             "enum": [

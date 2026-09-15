@@ -1,5 +1,32 @@
 # Support Policy
 
-This directory explains PTSIP features that are intentionally supported for installed users.
+PTSIP Support Feature Policy has one canonical repository authority and one installed-package projection.
 
-Machine-readable Support Feature Policies use the `SFP-####` namespace. Their shipped machine source is `src/ptsip/specdata/SFP-*.yaml`, validated by `ptsip-support-feature-policy.schema.json`. No SFP instance is created until an existing or new user-facing feature is explicitly classified as a Support Feature.
+Repository authority:
+
+```text
+docs/Support_policy/
+├─ automation/
+└─ policy/
+   ├─ index.yaml
+   ├─ SFP-*.yaml
+   ├─ schemas/
+   └─ registries/
+```
+
+- `policy/` is the canonical Support Feature Policy authority.
+- `automation/` is repository-side Support Policy management/projection support and is not policy authority.
+- `developer/` is a separate PTSIP repository-development policy boundary.
+
+Installed distribution projection:
+
+```text
+ptsip/support/
+├─ schemas/
+├─ registries/
+└─ policy/
+   ├─ index.yaml
+   └─ SFP-*.yaml
+```
+
+The installed projection is generated deterministically during package build. It is not a second authoring authority. Repository-source execution reads the canonical source; an installed PTSIP distribution reads the shipped `ptsip/support/` projection.

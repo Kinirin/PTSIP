@@ -6,6 +6,7 @@ from typing import Mapping
 import yaml
 
 from .model import AuthorizationState, AuthorizationTransitionResult, GovernanceAuthorityError
+from .support_assets import resolve_support_asset_layout
 
 
 class AuthorizationTransitionEvaluator:
@@ -16,12 +17,13 @@ class AuthorizationTransitionEvaluator:
     implementation authorization from developer policy.
     """
 
-    REGISTRY = "src/ptsip/specdata/ptsip-support-authorization-registry.yaml"
+    REGISTRY = "ptsip-support-authorization-registry.yaml"
 
     def __init__(self, repository_root: str | Path) -> None:
         self.root = Path(repository_root).resolve()
-        path = (self.root / self.REGISTRY).resolve()
-        if self.root not in path.parents or not path.is_file():
+        self.assets = resolve_support_asset_layout(self.root)
+        path = (self.assets.registries / self.REGISTRY).resolve()
+        if self.assets.registries.resolve() not in path.parents or not path.is_file():
             raise GovernanceAuthorityError("AUTHORIZATION_TRANSITION_REGISTRY_MISSING", "missing shipped support authorization registry.", self.REGISTRY)
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
         if not isinstance(value, dict):

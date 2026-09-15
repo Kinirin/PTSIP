@@ -7,7 +7,7 @@ These instructions apply to coding agents working anywhere in this repository.
 PTSIP has two non-interchangeable policy classes.
 
 - `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
-- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Shipped machine policy instances belong directly under `src/ptsip/specdata/SFP-*.yaml`; human explanation belongs under `docs/Support_policy/`.
+- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`; repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.
 - PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
 - The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
 - Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
@@ -74,10 +74,10 @@ For branches covered by this resolver, this section supersedes any fixed histori
 
 For Project Authority work, use the canonical shipped Support Feature machine surface only:
 
-1. select current support policies through `src/ptsip/specdata/support-policy-index.yaml`;
-2. resolve authority contracts through `src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml`;
-3. resolve Authority Role effects through `src/ptsip/specdata/ptsip-support-authority-role-registry.yaml`;
-4. resolve repository/subject applicability through `src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml`;
+1. select current support policies through canonical `docs/Support_policy/policy/index.yaml` when working from repository source, or the shipped `ptsip/support/policy/index.yaml` projection when installed;
+2. resolve authority contracts through the corresponding Support `registries/` boundary;
+3. resolve Authority Role effects through the corresponding Support `registries/` boundary;
+4. resolve repository/subject applicability through the corresponding Support `registries/` boundary;
 5. use `src/ptsip/governance/` for fresh eligibility, projection, and preauthorized transition evaluation.
 
 Design-time `planning/**` artifacts are not runtime authority and must not be used to infer missing machine semantics. Subject matching is exact first and may relax only through an explicitly registered machine relationship. AI confidence, prose similarity, and unregistered aliases cannot create authority.

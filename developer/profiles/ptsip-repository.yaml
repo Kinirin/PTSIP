@@ -114,7 +114,8 @@ components:
       - CONFIGURATION
     include:
       - "MANIFEST.in"
-    purpose: release_distribution_content_assembly_configuration
+      - "setup.py"
+    purpose: release_distribution_content_assembly_and_support_projection_configuration
     shipped: false
     runtime_required: false
     executable: false
@@ -125,7 +126,8 @@ components:
     classification: NEUTRAL_CONTRACT
     include:
       - "src/ptsip/specdata/**"
-    purpose: tool_embedded_machine_readable_specification_contracts
+      - "docs/Support_policy/policy/**"
+    purpose: tool_embedded_machine_readable_specification_and_support_policy_contracts
     shipped: true
     runtime_required: true
     executable: false
@@ -218,11 +220,7 @@ components:
       - "src/ptsip/validation/**"
       - "developer/profiles/ptsip-repository.yaml"
       - "profiles/**"
-      - "src/ptsip/specdata/support-policy-index.yaml"
-      - "src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml"
-      - "src/ptsip/specdata/ptsip-support-authority-role-registry.yaml"
-      - "src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml"
-      - "src/ptsip/specdata/ptsip-support-authorization-registry.yaml"
+      - "docs/Support_policy/policy/**"
       - "schemas/ptsip-adr.schema.json"
       - "schemas/ptsip-governance-authority-registry.schema.json"
       - "schemas/ptsip-governance-authority-role.schema.json"
@@ -339,6 +337,7 @@ components:
       - "developer/policy/**"
       - "src/ptsip/governance/**"
       - "src/ptsip/specdata/**"
+      - "docs/Support_policy/policy/**"
 
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
@@ -358,6 +357,7 @@ components:
       - "profiles/**"
       - "adoption/**"
       - "agents/**"
+      - "docs/Support_policy/**"
       - "src/ptsip/specdata/**"
       - "reference/**"
       - "docs/planning/**"
@@ -379,6 +379,8 @@ components:
     analysis_inputs:
       - "pyproject.toml"
       - "MANIFEST.in"
+      - "setup.py"
+      - "docs/Support_policy/policy/**"
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
@@ -443,6 +445,7 @@ components:
       - "pyproject.toml"
       - "src/ptsip/**"
       - "src/vpms/**"
+      - "docs/Support_policy/policy/**"
       - "spec/**"
       - "schemas/**"
       - "registry/**"
@@ -472,6 +475,7 @@ components:
       - "README.md"
       - "README.ko.md"
       - "src/ptsip/specdata/**"
+      - "docs/Support_policy/**"
       - "developer/policy/**"
 
   - id: repository-maintenance
@@ -511,8 +515,9 @@ associated_artifacts:
       - "adoption/**"
       - "agents/**"
       - "reference/**"
-      - "docs/Support_policy/**"
-    purpose: specification_governance_adoption_agent_and_architecture_support
+      - "docs/Support_policy/README.md"
+      - "docs/Support_policy/automation/**"
+    purpose: specification_governance_adoption_agent_and_support_policy_operational_guidance
 
 relationships:
   - id: core-reads-embedded-contracts

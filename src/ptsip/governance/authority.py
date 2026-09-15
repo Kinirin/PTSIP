@@ -23,6 +23,7 @@ from .model import (
     SubjectMatchKind,
 )
 from .subject_matching import match_subject_binding
+from .support_assets import resolve_support_asset, resolve_support_asset_layout
 
 
 _CHECK_IDS = (
@@ -60,45 +61,37 @@ class AuthorityCatalog:
     product-runtime authority inputs.
     """
 
-    INDEX = "src/ptsip/specdata/support-policy-index.yaml"
-    AUTHORITY_SCHEMA_REGISTRY = "src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml"
-    AUTHORITY_ROLE_REGISTRY = "src/ptsip/specdata/ptsip-support-authority-role-registry.yaml"
-    AUTHORITY_SUBJECT_REGISTRY = "src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml"
+    INDEX = "index.yaml"
+    AUTHORITY_SCHEMA_REGISTRY = "ptsip-support-authority-schema-registry.yaml"
+    AUTHORITY_ROLE_REGISTRY = "ptsip-support-authority-role-registry.yaml"
+    AUTHORITY_SUBJECT_REGISTRY = "ptsip-support-authority-subject-registry.yaml"
 
-    SUPPORT_POLICY_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
-    SUPPORT_INDEX_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy-index.schema.json"
-    AUTHORITY_SEMANTICS_SCHEMA = "src/ptsip/specdata/ptsip-support-authority-semantics.schema.json"
-    AUTHORITY_ROLE_SCHEMA = "src/ptsip/specdata/ptsip-support-authority-role.schema.json"
-    AUTHORITY_SUBJECT_SCHEMA = "src/ptsip/specdata/ptsip-support-subject-binding.schema.json"
-    PROJECT_AUTHORITY_RECORD_SCHEMA = "src/ptsip/specdata/ptsip-support-project-authority-record.schema.json"
-    ELIGIBILITY_RESULT_SCHEMA = "src/ptsip/specdata/ptsip-support-authority-eligibility-result.schema.json"
+    SUPPORT_POLICY_SCHEMA = "ptsip-support-feature-policy.schema.json"
+    SUPPORT_INDEX_SCHEMA = "ptsip-support-feature-policy-index.schema.json"
+    AUTHORITY_SEMANTICS_SCHEMA = "ptsip-support-authority-semantics.schema.json"
+    AUTHORITY_ROLE_SCHEMA = "ptsip-support-authority-role.schema.json"
+    AUTHORITY_SUBJECT_SCHEMA = "ptsip-support-subject-binding.schema.json"
+    PROJECT_AUTHORITY_RECORD_SCHEMA = "ptsip-support-project-authority-record.schema.json"
+    ELIGIBILITY_RESULT_SCHEMA = "ptsip-support-authority-eligibility-result.schema.json"
 
     def __init__(self, repository_root: str | Path) -> None:
         self.root = Path(repository_root).resolve()
-        self.index = self._load_yaml(self.INDEX)
-        self.authority_schema_registry = self._load_yaml(self.AUTHORITY_SCHEMA_REGISTRY)
-        self.role_registry = self._load_yaml(self.AUTHORITY_ROLE_REGISTRY)
-        self.subject_registry = self._load_yaml(self.AUTHORITY_SUBJECT_REGISTRY)
-        self.policy_schema = self._load_json(self.SUPPORT_POLICY_SCHEMA)
-        self.index_schema = self._load_json(self.SUPPORT_INDEX_SCHEMA)
-        self.semantics_schema = self._load_json(self.AUTHORITY_SEMANTICS_SCHEMA)
-        self.role_schema = self._load_json(self.AUTHORITY_ROLE_SCHEMA)
-        self.subject_schema = self._load_json(self.AUTHORITY_SUBJECT_SCHEMA)
-        self.project_authority_record_schema = self._load_json(self.PROJECT_AUTHORITY_RECORD_SCHEMA)
-        self.eligibility_result_schema = self._load_json(self.ELIGIBILITY_RESULT_SCHEMA)
+        self.assets = resolve_support_asset_layout(self.root)
+        self.index = self._load_yaml("policy", self.INDEX)
+        self.authority_schema_registry = self._load_yaml("registries", self.AUTHORITY_SCHEMA_REGISTRY)
+        self.role_registry = self._load_yaml("registries", self.AUTHORITY_ROLE_REGISTRY)
+        self.subject_registry = self._load_yaml("registries", self.AUTHORITY_SUBJECT_REGISTRY)
+        self.policy_schema = self._load_json("schemas", self.SUPPORT_POLICY_SCHEMA)
+        self.index_schema = self._load_json("schemas", self.SUPPORT_INDEX_SCHEMA)
+        self.semantics_schema = self._load_json("schemas", self.AUTHORITY_SEMANTICS_SCHEMA)
+        self.role_schema = self._load_json("schemas", self.AUTHORITY_ROLE_SCHEMA)
+        self.subject_schema = self._load_json("schemas", self.AUTHORITY_SUBJECT_SCHEMA)
+        self.project_authority_record_schema = self._load_json("schemas", self.PROJECT_AUTHORITY_RECORD_SCHEMA)
+        self.eligibility_result_schema = self._load_json("schemas", self.ELIGIBILITY_RESULT_SCHEMA)
         self._validate_catalog_assets()
 
-    def _path(self, relative: str) -> Path:
-        path = Path(relative)
-        if path.is_absolute() or ".." in path.parts:
-            raise GovernanceAuthorityError("GOVERNANCE_PATH_INVALID", "support governance paths must be repository-relative and traversal-free.", relative)
-        resolved = (self.root / path).resolve()
-        if self.root not in resolved.parents and resolved != self.root:
-            raise GovernanceAuthorityError("GOVERNANCE_PATH_INVALID", "support governance path escaped repository root.", relative)
-        return resolved
-
-    def _load_yaml(self, relative: str) -> dict[str, object]:
-        path = self._path(relative)
+    def _load_yaml(self, category: str, relative: str) -> dict[str, object]:
+        path = resolve_support_asset(self.assets, category, relative)
         if not path.is_file():
             raise GovernanceAuthorityError("GOVERNANCE_ASSET_MISSING", f"missing support governance asset: {relative}", relative)
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -106,8 +99,8 @@ class AuthorityCatalog:
             raise GovernanceAuthorityError("GOVERNANCE_ASSET_INVALID", f"support governance asset must contain a mapping: {relative}", value)
         return value
 
-    def _load_json(self, relative: str) -> dict[str, object]:
-        path = self._path(relative)
+    def _load_json(self, category: str, relative: str) -> dict[str, object]:
+        path = resolve_support_asset(self.assets, category, relative)
         if not path.is_file():
             raise GovernanceAuthorityError("GOVERNANCE_SCHEMA_MISSING", f"missing support governance schema: {relative}", relative)
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -149,7 +142,7 @@ class AuthorityCatalog:
         path = route.get("path")
         if not isinstance(path, str):
             raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy route requires a path.", route)
-        record = self._load_yaml(path)
+        record = self._load_yaml("policy", path)
         return path, route, record
 
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:

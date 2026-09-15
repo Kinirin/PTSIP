@@ -197,12 +197,19 @@ jobs:
               "ptsip/specdata/ptsip-normalized-evidence.schema.json",
               "ptsip/specdata/ptsip-registry.yaml",
           )
+          support_required = (
+              "ptsip/support/policy/index.yaml",
+              "ptsip/support/policy/SFP-0001.yaml",
+              "ptsip/support/policy/SFP-0021.yaml",
+              "ptsip/support/schemas/ptsip-support-feature-policy.schema.json",
+              "ptsip/support/registries/ptsip-support-authority-schema-registry.yaml",
+          )
           wheel = next(Path("dist").glob("*.whl"))
           sdist = next(Path("dist").glob("*.tar.gz"))
 
           with zipfile.ZipFile(wheel) as archive:
               wheel_names = set(archive.namelist())
-          missing_wheel = [name for name in required if name not in wheel_names]
+          missing_wheel = [name for name in (*required, *support_required) if name not in wheel_names]
           if missing_wheel:
               raise SystemExit(f"wheel is missing embedded contracts: {missing_wheel}")
 
@@ -212,6 +219,17 @@ jobs:
               name for name in required
               if not any(path.endswith(f"/src/{name}") for path in sdist_names)
           ]
+          support_sdist_required = (
+              "docs/Support_policy/policy/index.yaml",
+              "docs/Support_policy/policy/SFP-0001.yaml",
+              "docs/Support_policy/policy/SFP-0021.yaml",
+              "docs/Support_policy/policy/schemas/ptsip-support-feature-policy.schema.json",
+              "docs/Support_policy/policy/registries/ptsip-support-authority-schema-registry.yaml",
+          )
+          missing_sdist.extend(
+              name for name in support_sdist_required
+              if not any(path.endswith(f"/{name}") for path in sdist_names)
+          )
           if missing_sdist:
               raise SystemExit(f"sdist is missing embedded contracts: {missing_sdist}")
           '@ | python -
@@ -300,6 +318,24 @@ jobs:
           $seenLicenseFiles = @()
 
           foreach ($path in $wheelPaths) {
+            if ($path -like 'ptsip/support/policy/*') {
+              $relativeSupportPath = $path.Substring('ptsip/support/policy/'.Length)
+              $sourcePaths += "docs/Support_policy/policy/$relativeSupportPath"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/support/schemas/*') {
+              $relativeSupportPath = $path.Substring('ptsip/support/schemas/'.Length)
+              $sourcePaths += "docs/Support_policy/policy/schemas/$relativeSupportPath"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/support/registries/*') {
+              $relativeSupportPath = $path.Substring('ptsip/support/registries/'.Length)
+              $sourcePaths += "docs/Support_policy/policy/registries/$relativeSupportPath"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
             if ($path -like 'ptsip/specdata/*') {
               $sourcePaths += "src/$path"
               $components += 'ptsip-embedded-contracts'
@@ -482,6 +518,7 @@ jobs:
           python -m pip install --force-reinstall --no-deps "$($wheel.FullName)"
           ptsip --version
           ptsip spec
+          python -c "from pathlib import Path; import ptsip; p=Path(ptsip.__file__).resolve().parent/'support'/'policy'/'index.yaml'; assert p.is_file(), p"
           ptsip conform --help
           python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
 
