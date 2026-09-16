@@ -269,7 +269,7 @@ def _git(repo_root: Path, *args: str) -> str:
     return result.stdout.strip()
 
 
-def test_automatic_git_diff_uses_branch_merge_base_not_only_head_parent(tmp_path: Path) -> None:
+def test_automatic_git_diff_defaults_to_immediate_parent(tmp_path: Path) -> None:
     _git(tmp_path, "init")
     _git(tmp_path, "checkout", "-b", "main")
     _git(tmp_path, "config", "user.email", "tests@example.invalid")
@@ -278,8 +278,6 @@ def test_automatic_git_diff_uses_branch_merge_base_not_only_head_parent(tmp_path
     (tmp_path / "base.txt").write_text("base\n", encoding="utf-8")
     _git(tmp_path, "add", "base.txt")
     _git(tmp_path, "commit", "-m", "base")
-    base_sha = _git(tmp_path, "rev-parse", "HEAD")
-    _git(tmp_path, "update-ref", "refs/remotes/origin/main", base_sha)
 
     _git(tmp_path, "checkout", "-b", "feature")
     (tmp_path / "first.txt").write_text("first\n", encoding="utf-8")
@@ -289,7 +287,28 @@ def test_automatic_git_diff_uses_branch_merge_base_not_only_head_parent(tmp_path
     _git(tmp_path, "add", "second.txt")
     _git(tmp_path, "commit", "-m", "second")
 
-    assert CHANGED_FILES_FROM_GIT(tmp_path, "", "HEAD") == [
+    assert CHANGED_FILES_FROM_GIT(tmp_path, "", "HEAD") == ["second.txt"]
+
+
+def test_automatic_git_diff_honors_explicit_verified_base(tmp_path: Path) -> None:
+    _git(tmp_path, "init")
+    _git(tmp_path, "checkout", "-b", "main")
+    _git(tmp_path, "config", "user.email", "tests@example.invalid")
+    _git(tmp_path, "config", "user.name", "PTSIP Tests")
+
+    (tmp_path / "base.txt").write_text("base\n", encoding="utf-8")
+    _git(tmp_path, "add", "base.txt")
+    _git(tmp_path, "commit", "-m", "base")
+    base_sha = _git(tmp_path, "rev-parse", "HEAD")
+
+    (tmp_path / "first.txt").write_text("first\n", encoding="utf-8")
+    _git(tmp_path, "add", "first.txt")
+    _git(tmp_path, "commit", "-m", "first")
+    (tmp_path / "second.txt").write_text("second\n", encoding="utf-8")
+    _git(tmp_path, "add", "second.txt")
+    _git(tmp_path, "commit", "-m", "second")
+
+    assert CHANGED_FILES_FROM_GIT(tmp_path, base_sha, "HEAD") == [
         "first.txt",
         "second.txt",
     ]

@@ -49,6 +49,23 @@ python -m developer.automation.implementation_work_packet prepare --scope <repos
 
 Use the packet's exact edit targets, required tests, and verification stages. Run `check` before verification or commit. Branch, HEAD, context, or unlisted-path changes invalidate the packet and require regeneration.
 
+## Deterministic Test Mode verification
+
+Normal development verification uses automatic Test Mode resolution. The agent does not infer the affected Test Mode from prose, semantic similarity, confidence, or uncertainty.
+
+```text
+python .github/scripts/resolve_test_modes.py automatic --head HEAD
+```
+
+Rules:
+
+- Project Profile verification `analysis_inputs` and owned test `include` paths are the selection authority.
+- Run only the Test Modes returned by the resolver.
+- `all` is not an uncertainty fallback and is not a Test Mode.
+- Use `full` only for a release boundary, an explicit policy requirement, or an explicit maintainer request.
+- An unmapped changed path is fail-closed; do not replace it with full verification.
+- Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
+
 ## Mandatory branch-aware planning entry
 
 Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:

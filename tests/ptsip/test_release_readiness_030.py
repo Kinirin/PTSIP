@@ -64,8 +64,12 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "ref: ${{ github.sha }}" in workflow
     assert "py -3.14" in workflow
     assert "actions/setup-python@" not in workflow
+    assert "Resolve automatic verification baseline" in workflow
+    assert "self-hosted/change-verification" in workflow
+    assert "self-hosted/tooling-test" in workflow
+    assert "PARENT_FALLBACK" in workflow
     assert "Resolve and run deterministic change verification" in workflow
-    assert "resolve_test_modes.py automatic --head HEAD" in workflow
+    assert "resolve_test_modes.py automatic --base $autoBase --head HEAD" in workflow
     assert "resolve_test_modes.py manual --mode $env:VERIFICATION_MODE" in workflow
     assert "& python -m pytest -q @targets" in workflow
     assert "self-hosted/change-verification" in workflow

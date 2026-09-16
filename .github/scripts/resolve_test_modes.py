@@ -308,14 +308,10 @@ def _git_output(repo_root: Path, *args: str) -> str | None:
 
 
 def _default_change_base(repo_root: Path, head: str) -> str:
-    head_sha = _git_output(repo_root, "rev-parse", "--verify", head)
-    main_sha = _git_output(repo_root, "rev-parse", "--verify", "origin/main")
-
-    if head_sha and main_sha and head_sha != main_sha:
-        merge_base = _git_output(repo_root, "merge-base", "origin/main", head)
-        if merge_base and merge_base != head_sha:
-            return merge_base
-
+    # Local/default automatic verification is scoped to the current logical
+    # change. CI may pass an earlier verified ancestor explicitly with --base.
+    # Do not use origin/main merge-base here: long-lived development branches
+    # would repeatedly re-verify their entire branch history.
     return _git_output(repo_root, "rev-parse", f"{head}^") or ""
 
 

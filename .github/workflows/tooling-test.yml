@@ -42,6 +42,61 @@ jobs:
           Write-Host "Verification source SHA: $actualSha"
           Write-Host "Self-hosted runner: $env:RUNNER_NAME"
 
+      - name: Resolve automatic verification baseline
+        id: auto-base
+        if: ${{ inputs.verification == 'auto' }}
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+
+          $base = $null
+          $source = $null
+          $candidates = @(git rev-list --first-parent --max-count=12 HEAD^)
+          foreach ($candidate in $candidates) {
+            try {
+              $status = Invoke-RestMethod `
+                -Method Get `
+                -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/commits/$candidate/status" `
+                -Headers $headers
+            }
+            catch {
+              continue
+            }
+
+            $verified = @(
+              $status.statuses |
+                Where-Object {
+                  $_.state -eq 'success' -and
+                  $_.context -in @(
+                    'self-hosted/change-verification',
+                    'self-hosted/tooling-test'
+                  )
+                }
+            )
+            if ($verified.Count -gt 0) {
+              $base = $candidate
+              $source = "VERIFIED_ANCESTOR"
+              break
+            }
+          }
+
+          if (-not $base) {
+            $base = (git rev-parse HEAD^).Trim()
+            if (-not $base) {
+              throw "Unable to resolve an automatic verification baseline."
+            }
+            $source = "PARENT_FALLBACK"
+          }
+
+          "base=$base" >> $env:GITHUB_OUTPUT
+          Write-Host "Automatic verification base: $base ($source)"
+
       - name: Prepare self-hosted Python 3.14
         shell: powershell
         run: |
@@ -108,8 +163,12 @@ jobs:
           VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
           if ($env:VERIFICATION_MODE -eq 'auto') {
-            $json = & python .github/scripts/resolve_test_modes.py automatic --head HEAD
-            $requestLabel = 'auto'
+            $autoBase = "${{ steps.auto-base.outputs.base }}"
+            if (-not $autoBase) {
+              throw "Automatic verification baseline was not resolved."
+            }
+            $json = & python .github/scripts/resolve_test_modes.py automatic --base $autoBase --head HEAD
+            $requestLabel = "auto:$autoBase"
           }
           else {
             $json = & python .github/scripts/resolve_test_modes.py manual --mode $env:VERIFICATION_MODE
