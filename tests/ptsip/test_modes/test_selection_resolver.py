@@ -156,6 +156,25 @@ def test_test_change_selects_owner_and_small_control_plane_guard() -> None:
     ]
 
 
+def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["tests/ptsip/conftest.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-core",
+        "ptsip-evidence",
+        "ptsip-source-compat",
+        "ptsip-migration",
+        "ptsip-remediation",
+        "ptsip-contract",
+        "repository-architecture",
+        "repository-release",
+        "test-mode-control-plane",
+    ]
+
+
 def test_test_mode_control_plane_change_does_not_expand_to_all_modes() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),

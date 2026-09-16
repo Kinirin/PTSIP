@@ -210,6 +210,8 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "src/ptsip/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
@@ -246,6 +248,8 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "src/ptsip/evidence/**"
       - "schemas/ptsip-normalized-evidence.schema.json"
 
@@ -262,6 +266,8 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "src/ptsip/source_compat/**"
       - "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json"
       - "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json"
@@ -279,6 +285,8 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "src/ptsip/migration/**"
       - "src/ptsip/evidence/**"
       - "src/ptsip/source_compat/**"
@@ -296,6 +304,8 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "src/ptsip/remediation/**"
       - "src/ptsip/evidence/**"
       - "src/ptsip/specification_binding.py"
@@ -332,6 +342,8 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "spec/**"
       - "schemas/**"
       - "registry/**"
@@ -354,6 +366,8 @@ components:
     release_owner: architecture
     compatibility_owner: architecture
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "developer/profiles/ptsip-repository.yaml"
       - "profiles/**"
       - "adoption/**"
@@ -378,6 +392,8 @@ components:
     release_owner: delivery
     compatibility_owner: delivery
     analysis_inputs:
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
       - "pyproject.toml"
       - "MANIFEST.in"
       - "setup.py"
