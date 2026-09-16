@@ -236,3 +236,17 @@ def test_registry_cannot_duplicate_architecture_authority(tmp_path: Path) -> Non
         "duplicates architecture authority fields" in error
         for error in errors
     )
+
+
+
+def test_nested_pytest_targets_are_rejected_as_overlapping_execution(tmp_path: Path) -> None:
+    _write_profile(tmp_path)
+    (tmp_path / "tests" / "product" / "secondary").mkdir(parents=True)
+    mode = _valid_mode()
+    mode["execution"] = {
+        "pytest": ["tests/product", "tests/product/secondary"]
+    }
+    _write_registry(tmp_path, [mode])
+
+    errors = _validate(tmp_path)
+    assert any("overlaps pytest target" in error for error in errors)

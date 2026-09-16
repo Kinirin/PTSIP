@@ -293,6 +293,32 @@ def build_execution_plan(
     return plan
 
 
+def _git_output(repo_root: Path, *args: str) -> str | None:
+    result = subprocess.run(
+        ["git", *args],
+        cwd=repo_root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    value = result.stdout.strip()
+    return value or None
+
+
+def _default_change_base(repo_root: Path, head: str) -> str:
+    head_sha = _git_output(repo_root, "rev-parse", "--verify", head)
+    main_sha = _git_output(repo_root, "rev-parse", "--verify", "origin/main")
+
+    if head_sha and main_sha and head_sha != main_sha:
+        merge_base = _git_output(repo_root, "merge-base", "origin/main", head)
+        if merge_base and merge_base != head_sha:
+            return merge_base
+
+    return _git_output(repo_root, "rev-parse", f"{head}^") or ""
+
+
 def changed_files_from_git(
     repo_root: Path,
     base: str,
@@ -302,15 +328,7 @@ def changed_files_from_git(
     head = (head or "HEAD").strip()
 
     if not base:
-        parent = subprocess.run(
-            ["git", "rev-parse", f"{head}^"],
-            cwd=repo_root,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        if parent.returncode == 0 and parent.stdout.strip():
-            base = parent.stdout.strip()
+        base = _default_change_base(repo_root, head)
 
     if base:
         command = ["git", "diff", "--name-only", base, head]

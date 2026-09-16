@@ -115,6 +115,18 @@ def _target_is_owned(target: str, include: list[object]) -> bool:
     return False
 
 
+def _targets_overlap(first: str, second: str, repo_root: Path) -> bool:
+    first_path = repo_root.joinpath(*PurePosixPath(first).parts)
+    second_path = repo_root.joinpath(*PurePosixPath(second).parts)
+    first_prefix = first.rstrip("/") + "/"
+    second_prefix = second.rstrip("/") + "/"
+    return (
+        first_path.is_dir() and second.startswith(first_prefix)
+    ) or (
+        second_path.is_dir() and first.startswith(second_prefix)
+    )
+
+
 def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) -> list[str]:
     registry, errors = _load_yaml(registry_path, label="Test Mode Registry")
     if registry is None:
@@ -143,7 +155,7 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
 
     seen_ids: set[str] = set()
     seen_component_refs: set[str] = set()
-    seen_pytest_targets: dict[str, str] = {}
+    seen_pytest_targets: list[tuple[str, str]] = []
 
     for position, mode in enumerate(modes):
         prefix = f"mode[{position}]"
@@ -239,15 +251,21 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
             if path_errors or not isinstance(target, str):
                 continue
 
-            owner = seen_pytest_targets.get(target)
             current_owner = mode_id if isinstance(mode_id, str) else prefix
-            if owner is not None:
-                errors.append(
-                    f"{label} duplicates pytest target {target!r} already owned by "
-                    f"mode {owner!r}"
-                )
-            else:
-                seen_pytest_targets[target] = current_owner
+            for existing_target, owner in seen_pytest_targets:
+                if target == existing_target:
+                    errors.append(
+                        f"{label} duplicates pytest target {target!r} already owned by "
+                        f"mode {owner!r}"
+                    )
+                    break
+                if _targets_overlap(target, existing_target, repo_root):
+                    errors.append(
+                        f"{label} overlaps pytest target {existing_target!r} already owned by "
+                        f"mode {owner!r}"
+                    )
+                    break
+            seen_pytest_targets.append((target, current_owner))
 
             if not _target_is_owned(target, include):
                 errors.append(

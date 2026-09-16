@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import runpy
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -19,6 +20,7 @@ SELECT_AUTOMATIC = RESOLVER["select_automatic_modes"]
 RESOLVE_AUTOMATIC = RESOLVER["resolve_automatic_selection"]
 SELECT_MANUAL = RESOLVER["select_manual_modes"]
 BUILD_PLAN = RESOLVER["build_execution_plan"]
+CHANGED_FILES_FROM_GIT = RESOLVER["changed_files_from_git"]
 SELECTION_ERROR = RESOLVER["TestModeSelectionError"]
 
 EXPECTED_MODE_IDS = [
@@ -144,16 +146,13 @@ def test_vpms_change_selects_only_vpms() -> None:
     assert _ids(selected) == ["vpms"]
 
 
-def test_test_change_selects_owner_and_small_control_plane_guard() -> None:
+def test_test_change_selects_only_declared_verification_owner() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
         ["tests/ptsip/evidence/test_normalization_037.py"],
     )
-    assert _ids(selected) == [
-        "ptsip-evidence",
-        "test-mode-control-plane",
-    ]
+    assert _ids(selected) == ["ptsip-evidence"]
 
 
 def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
@@ -256,3 +255,41 @@ def test_execution_plan_contains_execution_identity_not_architecture_authority()
     assert all("classification" not in item for item in plan)
     assert all("roles" not in item for item in plan)
     assert all("purpose" not in item for item in plan)
+
+
+
+def _git(repo_root: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", *args],
+        cwd=repo_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def test_automatic_git_diff_uses_branch_merge_base_not_only_head_parent(tmp_path: Path) -> None:
+    _git(tmp_path, "init")
+    _git(tmp_path, "checkout", "-b", "main")
+    _git(tmp_path, "config", "user.email", "tests@example.invalid")
+    _git(tmp_path, "config", "user.name", "PTSIP Tests")
+
+    (tmp_path / "base.txt").write_text("base\n", encoding="utf-8")
+    _git(tmp_path, "add", "base.txt")
+    _git(tmp_path, "commit", "-m", "base")
+    base_sha = _git(tmp_path, "rev-parse", "HEAD")
+    _git(tmp_path, "update-ref", "refs/remotes/origin/main", base_sha)
+
+    _git(tmp_path, "checkout", "-b", "feature")
+    (tmp_path / "first.txt").write_text("first\n", encoding="utf-8")
+    _git(tmp_path, "add", "first.txt")
+    _git(tmp_path, "commit", "-m", "first")
+    (tmp_path / "second.txt").write_text("second\n", encoding="utf-8")
+    _git(tmp_path, "add", "second.txt")
+    _git(tmp_path, "commit", "-m", "second")
+
+    assert CHANGED_FILES_FROM_GIT(tmp_path, "", "HEAD") == [
+        "first.txt",
+        "second.txt",
+    ]

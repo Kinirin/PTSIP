@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import runpy
+
+import ptsip
 import tomllib
 from pathlib import Path
 
@@ -11,6 +13,10 @@ from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 ROOT = Path(__file__).resolve().parents[2]
 EXPECTED_SPEC_REVISION = "3c47816770d194ae42f98faedc911d980db0e62a"
 HISTORICAL_036_REVISION = "d6995ed232e845b88d8235b851e80ab54b7804ea"
+
+
+def test_pytest_binds_to_checked_out_ptsip_source() -> None:
+    assert Path(ptsip.__file__).resolve().parent == ROOT / "src" / "ptsip"
 
 
 def test_tool_038a1_package_runtime_pp_and_spec_binding_match() -> None:

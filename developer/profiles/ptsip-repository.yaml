@@ -442,7 +442,7 @@ components:
     analysis_inputs:
       - "developer/profiles/ptsip-repository.yaml"
       - ".github/workflows/tooling-test.yml"
-      - "tests/**"
+      - "tests/ptsip/conftest.py"
 
   - id: repository-release-automation
     classification: DELIVERY
