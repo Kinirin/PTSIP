@@ -170,6 +170,27 @@ def _path_has_declared_owner(
             for pattern in _patterns(component, "include")
         ):
             return True
+
+    associated = profile.get("associated_artifacts", [])
+    if not isinstance(associated, list):
+        raise TestModeSelectionError(
+            "Project Profile associated_artifacts must be a list"
+        )
+    for artifact in associated:
+        if not isinstance(artifact, dict):
+            raise TestModeSelectionError(
+                "Project Profile associated_artifacts must contain mappings"
+            )
+        include = artifact.get("include", [])
+        if not isinstance(include, list) or not all(
+            isinstance(pattern, str) for pattern in include
+        ):
+            raise TestModeSelectionError(
+                f"associated artifact {artifact.get('id')!r} has invalid include"
+            )
+        if any(matches_pattern(path, pattern) for pattern in include):
+            return True
+
     return False
 
 
@@ -191,6 +212,10 @@ def resolve_automatic_selection(
     unmapped: list[str] = []
 
     for path in changed:
+        if not _path_has_declared_owner(profile, path):
+            unmapped.append(path)
+            continue
+
         matching_modes = [
             mode
             for mode in modes
@@ -202,10 +227,7 @@ def resolve_automatic_selection(
                     selected.append(mode)
             continue
 
-        if _path_has_declared_owner(profile, path):
-            no_verification_required.append(path)
-        else:
-            unmapped.append(path)
+        no_verification_required.append(path)
 
     if unmapped:
         raise TestModeSelectionError(

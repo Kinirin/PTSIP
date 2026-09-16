@@ -196,6 +196,15 @@ def test_unmapped_change_fails_closed() -> None:
         )
 
 
+def test_broad_dependent_analysis_input_cannot_create_ownership() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_AUTOMATIC(
+            _registry(),
+            _profile(),
+            ["src/ptsip/unregistered_subsystem/new_file.py"],
+        )
+
+
 def test_manual_specific_mode_selects_only_requested_mode() -> None:
     selected = SELECT_MANUAL(_registry(), "ptsip-evidence")
     assert _ids(selected) == ["ptsip-evidence"]
