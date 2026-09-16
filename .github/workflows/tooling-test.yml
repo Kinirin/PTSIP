@@ -3,25 +3,11 @@ name: tooling-test
 on:
   workflow_dispatch:
     inputs:
-      scope:
-        description: Verification scope
+      verification:
+        description: auto, full, or a registered Test Mode id
         required: true
-        default: selective
-        type: choice
-        options:
-          - selective
-          - full
-      mode:
-        description: Test Mode used for selective verification
-        required: true
-        default: all
-        type: choice
-        options:
-          - all
-          - ptsip-migration
-          - ptsip-evidence
-          - ptsip-source-compat
-          - vpms
+        default: auto
+        type: string
 
 permissions:
   contents: read
@@ -98,9 +84,9 @@ jobs:
       - name: Install verification tooling
         shell: powershell
         env:
-          VERIFICATION_SCOPE: ${{ inputs.scope }}
+          VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
-          if ($env:VERIFICATION_SCOPE -eq 'full') {
+          if ($env:VERIFICATION_MODE -eq 'full') {
             python -m pip install --upgrade pip build twine
           }
           else {
@@ -115,15 +101,23 @@ jobs:
             throw "Failed to install the repository for verification."
           }
 
-      - name: Resolve and run selected Test Modes
-        if: ${{ inputs.scope == 'selective' }}
+      - name: Resolve and run deterministic change verification
+        if: ${{ inputs.verification != 'full' }}
         shell: powershell
         env:
-          TEST_MODE: ${{ inputs.mode }}
+          VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
-          $json = & python .github/scripts/resolve_test_modes.py manual --mode $env:TEST_MODE
+          if ($env:VERIFICATION_MODE -eq 'auto') {
+            $json = & python .github/scripts/resolve_test_modes.py automatic --head HEAD
+            $requestLabel = 'auto'
+          }
+          else {
+            $json = & python .github/scripts/resolve_test_modes.py manual --mode $env:VERIFICATION_MODE
+            $requestLabel = $env:VERIFICATION_MODE
+          }
+
           if ($LASTEXITCODE -ne 0) {
-            throw "Test Mode resolution failed for '$env:TEST_MODE'."
+            throw "Test Mode resolution failed for '$requestLabel'."
           }
           if (-not $json) {
             throw "Test Mode resolver returned no execution plan."
@@ -131,38 +125,77 @@ jobs:
 
           $result = (($json -join "`n") | ConvertFrom-Json)
           $plan = @($result.plan)
+
+          Write-Host "Verification resolution: $($result.resolution)"
+          if (@($result.changed_files).Count -gt 0) {
+            Write-Host "Changed files: $($result.changed_files -join ', ')"
+          }
+          if (@($result.no_verification_required).Count -gt 0) {
+            Write-Host "Declared no-Test-Mode paths: $($result.no_verification_required -join ', ')"
+          }
+
           if ($plan.Count -eq 0) {
-            throw "Test Mode resolver selected no modes for manual request '$env:TEST_MODE'."
+            if ($result.resolution -ne 'NO_TEST_MODE_REQUIRED') {
+              throw "Resolver returned an empty plan without an explicit no-verification result."
+            }
+            Write-Host "No Test Mode is required by the current Project Profile."
+          }
+          else {
+            Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
+            foreach ($mode in $plan) {
+              $targets = @($mode.pytest)
+              if ($targets.Count -eq 0) {
+                throw "Test Mode '$($mode.id)' contains no pytest targets."
+              }
+
+              Write-Host "=== Test Mode: $($mode.id) ==="
+              Write-Host "Verification component: $($mode.component_ref)"
+              Write-Host "pytest targets: $($targets -join ', ')"
+              & python -m pytest -q @targets
+              if ($LASTEXITCODE -ne 0) {
+                throw "Test Mode '$($mode.id)' failed."
+              }
+            }
           }
 
-          Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
-          foreach ($mode in $plan) {
-            $targets = @($mode.pytest)
-            if ($targets.Count -eq 0) {
-              throw "Test Mode '$($mode.id)' contains no pytest targets."
-            }
-
-            Write-Host "=== Test Mode: $($mode.id) ==="
-            Write-Host "Verification component: $($mode.component_ref)"
-            Write-Host "pytest targets: $($targets -join ', ')"
-            & python -m pytest -q @targets
-            if ($LASTEXITCODE -ne 0) {
-              throw "Test Mode '$($mode.id)' failed."
-            }
+      - name: Record successful exact-SHA change verification
+        if: ${{ inputs.verification != 'full' }}
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
           }
+          $body = @{
+            state = "success"
+            context = "self-hosted/change-verification"
+            description = "Deterministic Test Mode verification passed for the exact dispatched SHA"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
 
       - name: Verify Tool, PP, and Specification release contract
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         run: python .github/scripts/verify_release_contract.py
 
       - name: Run complete repository regression
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         run: python -m pytest -q
 
       - name: Verify Tool, Specification, and repository profile
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         run: |
           ptsip --version
@@ -173,7 +206,7 @@ jobs:
           ptsip conform --help
 
       - name: Build and verify distributions
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         run: |
           python -m build
@@ -184,7 +217,7 @@ jobs:
           python -m twine check $distFiles
 
       - name: Verify wheel and sdist embedded contracts
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         run: |
           @'
@@ -235,7 +268,7 @@ jobs:
           '@ | python -
 
       - name: Verify Product Artifact evidence and exact snapshot binding
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         env:
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
@@ -508,7 +541,7 @@ jobs:
           exit 0
 
       - name: Reinstall built wheel and smoke public surfaces
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         run: |
           $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
@@ -523,7 +556,7 @@ jobs:
           python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
 
       - name: Record successful exact-SHA tooling verification
-        if: ${{ inputs.scope == 'full' }}
+        if: ${{ inputs.verification == 'full' }}
         shell: powershell
         env:
           GITHUB_TOKEN: ${{ github.token }}

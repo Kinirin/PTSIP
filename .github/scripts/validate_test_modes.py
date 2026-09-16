@@ -9,11 +9,11 @@ from typing import Any
 import yaml
 
 
-REGISTRY_VERSION = 1
+REGISTRY_VERSION = 2
 SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
 _MODE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 _ROOT_KEYS = {"version", "modes"}
-_MODE_KEYS = {"id", "component_ref", "execution", "watch"}
+_MODE_KEYS = {"id", "component_ref", "execution"}
 _EXECUTION_KEYS = {"pytest"}
 _ARCHITECTURE_KEYS = {
     "classification",
@@ -25,6 +25,7 @@ _ARCHITECTURE_KEYS = {
     "release_owner",
     "compatibility_owner",
     "analysis_inputs",
+    "include",
 }
 _GLOB_CHARS = set("*?[]")
 
@@ -78,6 +79,42 @@ def _component_index(profile: dict[str, Any]) -> tuple[dict[str, dict[str, Any]]
     return index, errors
 
 
+def _owns_test_path(pattern: object) -> bool:
+    return isinstance(pattern, str) and (
+        pattern.startswith("tests/") or pattern.startswith("developer/tests")
+    )
+
+
+def _testable_verification_components(
+    components: dict[str, dict[str, Any]],
+) -> set[str]:
+    result: set[str] = set()
+    for component_id, component in components.items():
+        roles = component.get("roles", [])
+        include = component.get("include", [])
+        if (
+            isinstance(roles, list)
+            and "VERIFICATION" in roles
+            and isinstance(include, list)
+            and any(_owns_test_path(pattern) for pattern in include)
+        ):
+            result.add(component_id)
+    return result
+
+
+def _target_is_owned(target: str, include: list[object]) -> bool:
+    for pattern in include:
+        if not isinstance(pattern, str):
+            continue
+        if pattern == target:
+            return True
+        if pattern.endswith("/**"):
+            prefix = pattern[:-3].rstrip("/")
+            if target == prefix or target.startswith(prefix + "/"):
+                return True
+    return False
+
+
 def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) -> list[str]:
     registry, errors = _load_yaml(registry_path, label="Test Mode Registry")
     if registry is None:
@@ -102,9 +139,12 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
 
     components, component_errors = _component_index(profile)
     errors.extend(component_errors)
+    required_components = _testable_verification_components(components)
 
     seen_ids: set[str] = set()
+    seen_component_refs: set[str] = set()
     seen_pytest_targets: dict[str, str] = {}
+
     for position, mode in enumerate(modes):
         prefix = f"mode[{position}]"
         if not isinstance(mode, dict):
@@ -135,67 +175,109 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
             seen_ids.add(mode_id)
 
         component_ref = mode.get("component_ref")
+        component: dict[str, Any] | None = None
         if not isinstance(component_ref, str) or not component_ref:
             errors.append(f"{prefix}.component_ref must be a non-empty string")
         else:
             component = components.get(component_ref)
             if component is None:
-                errors.append(f"{prefix}.component_ref does not exist in the selected Project Profile: {component_ref}")
+                errors.append(
+                    f"{prefix}.component_ref does not exist in the selected Project Profile: "
+                    f"{component_ref}"
+                )
             else:
                 roles = component.get("roles", [])
                 if not isinstance(roles, list) or "VERIFICATION" not in roles:
                     errors.append(
-                        f"{prefix}.component_ref must reference a VERIFICATION component: {component_ref}"
+                        f"{prefix}.component_ref must reference a VERIFICATION component: "
+                        f"{component_ref}"
+                    )
+                if component_ref not in required_components:
+                    errors.append(
+                        f"{prefix}.component_ref does not own repository tests: {component_ref}"
+                    )
+                if component_ref in seen_component_refs:
+                    errors.append(
+                        f"{prefix}.component_ref already has a Test Mode: {component_ref}"
+                    )
+                else:
+                    seen_component_refs.add(component_ref)
+
+                analysis_inputs = component.get("analysis_inputs")
+                if not isinstance(analysis_inputs, list) or not analysis_inputs:
+                    errors.append(
+                        f"{prefix}.component_ref requires non-empty analysis_inputs for "
+                        f"automatic selection: {component_ref}"
                     )
 
         execution = mode.get("execution")
         if not isinstance(execution, dict):
             errors.append(f"{prefix}.execution must be a mapping")
-        else:
-            unknown_execution = sorted(set(execution) - _EXECUTION_KEYS)
-            if unknown_execution:
-                errors.append(f"{prefix}.execution contains unsupported fields: {unknown_execution}")
+            continue
 
-            pytest_targets = execution.get("pytest")
-            if not isinstance(pytest_targets, list) or not pytest_targets:
-                errors.append(f"{prefix}.execution.pytest must be a non-empty list")
-            else:
-                for target_position, target in enumerate(pytest_targets):
-                    label = f"{prefix}.execution.pytest[{target_position}]"
-                    path_errors = _validate_relative_posix_path(target, label=label, allow_glob=False)
-                    errors.extend(path_errors)
-                    if not path_errors and isinstance(target, str):
-                        owner = seen_pytest_targets.get(target)
-                        current_owner = mode_id if isinstance(mode_id, str) else prefix
-                        if owner is not None:
-                            errors.append(
-                                f"{label} duplicates pytest target {target!r} already owned by mode {owner!r}"
-                            )
-                        else:
-                            seen_pytest_targets[target] = current_owner
+        unknown_execution = sorted(set(execution) - _EXECUTION_KEYS)
+        if unknown_execution:
+            errors.append(
+                f"{prefix}.execution contains unsupported fields: {unknown_execution}"
+            )
 
-                        parts = PurePosixPath(target).parts
-                        if not repo_root.joinpath(*parts).exists():
-                            errors.append(f"{label} does not exist in the repository: {target}")
+        pytest_targets = execution.get("pytest")
+        if not isinstance(pytest_targets, list) or not pytest_targets:
+            errors.append(f"{prefix}.execution.pytest must be a non-empty list")
+            continue
 
-        watch = mode.get("watch")
-        if not isinstance(watch, list) or not watch:
-            errors.append(f"{prefix}.watch must be a non-empty list")
-        else:
-            for watch_position, pattern in enumerate(watch):
-                errors.extend(
-                    _validate_relative_posix_path(
-                        pattern,
-                        label=f"{prefix}.watch[{watch_position}]",
-                        allow_glob=True,
-                    )
+        include = component.get("include", []) if isinstance(component, dict) else []
+        if not isinstance(include, list):
+            include = []
+
+        for target_position, target in enumerate(pytest_targets):
+            label = f"{prefix}.execution.pytest[{target_position}]"
+            path_errors = _validate_relative_posix_path(
+                target, label=label, allow_glob=False
+            )
+            errors.extend(path_errors)
+            if path_errors or not isinstance(target, str):
+                continue
+
+            owner = seen_pytest_targets.get(target)
+            current_owner = mode_id if isinstance(mode_id, str) else prefix
+            if owner is not None:
+                errors.append(
+                    f"{label} duplicates pytest target {target!r} already owned by "
+                    f"mode {owner!r}"
                 )
+            else:
+                seen_pytest_targets[target] = current_owner
+
+            if not _target_is_owned(target, include):
+                errors.append(
+                    f"{label} is outside component_ref include authority: {target}"
+                )
+
+            parts = PurePosixPath(target).parts
+            if not repo_root.joinpath(*parts).exists():
+                errors.append(f"{label} does not exist in the repository: {target}")
+
+    missing_components = sorted(required_components - seen_component_refs)
+    extra_components = sorted(seen_component_refs - required_components)
+    if missing_components:
+        errors.append(
+            "Test Mode Registry is missing test-owning VERIFICATION components: "
+            + ", ".join(missing_components)
+        )
+    if extra_components:
+        errors.append(
+            "Test Mode Registry contains non-testable component refs: "
+            + ", ".join(extra_components)
+        )
 
     return errors
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Validate the repository Test Mode Registry v1")
+    parser = argparse.ArgumentParser(
+        description="Validate the repository Test Mode Registry v2"
+    )
     parser.add_argument("--registry", default=".github/test_modes.yaml")
     parser.add_argument("--profile", default=SELF_PROFILE_PATH)
     parser.add_argument("--repo-root", default=".")

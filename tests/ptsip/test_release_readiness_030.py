@@ -46,29 +46,26 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
 
 
 def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> None:
-    workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github" / "workflows" / "tooling-test.yml").read_text(
+        encoding="utf-8"
+    )
     assert "workflow_dispatch:" in workflow
     assert "inputs:" in workflow
-    assert "scope:" in workflow
-    assert "default: selective" in workflow
-    assert "mode:" in workflow
-    assert "ptsip-migration" in workflow
-    assert "ptsip-evidence" in workflow
-    assert "ptsip-source-compat" in workflow
-    assert "vpms" in workflow
+    assert "verification:" in workflow
+    assert "default: auto" in workflow
+    assert "scope:" not in workflow
+    assert "default: all" not in workflow
     assert "ref: ${{ github.sha }}" in workflow
     assert "py -3.14" in workflow
     assert "actions/setup-python@" not in workflow
-    assert "Resolve and run selected Test Modes" in workflow
-    assert "resolve_test_modes.py manual --mode $env:TEST_MODE" in workflow
+    assert "Resolve and run deterministic change verification" in workflow
+    assert "resolve_test_modes.py automatic --head HEAD" in workflow
+    assert "resolve_test_modes.py manual --mode $env:VERIFICATION_MODE" in workflow
     assert "& python -m pytest -q @targets" in workflow
-    assert (
-        "      - name: Resolve and run selected Test Modes\n"
-        "        if: ${{ inputs.scope == 'selective' }}"
-    ) in workflow
+    assert "self-hosted/change-verification" in workflow
     assert (
         "      - name: Run complete repository regression\n"
-        "        if: ${{ inputs.scope == 'full' }}"
+        "        if: ${{ inputs.verification == 'full' }}"
     ) in workflow
     assert "python -m pytest -q" in workflow
     assert "python -m build" in workflow
@@ -89,7 +86,7 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "--force-reinstall --no-deps" in workflow
     assert (
         "      - name: Record successful exact-SHA tooling verification\n"
-        "        if: ${{ inputs.scope == 'full' }}"
+        "        if: ${{ inputs.verification == 'full' }}"
     ) in workflow
     assert 'context = "self-hosted/tooling-test"' in workflow
     assert "ptsip --version" in workflow

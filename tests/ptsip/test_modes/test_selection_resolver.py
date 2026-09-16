@@ -9,28 +9,44 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
+PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
 RESOLVER_PATH = REPO_ROOT / ".github" / "scripts" / "resolve_test_modes.py"
 RESOLVER = runpy.run_path(str(RESOLVER_PATH))
 
-MATCHES_WATCH = RESOLVER["matches_watch"]
+MATCHES_PATTERN = RESOLVER["matches_pattern"]
 NORMALIZE_REPO_PATH = RESOLVER["normalize_repo_path"]
 SELECT_AUTOMATIC = RESOLVER["select_automatic_modes"]
+RESOLVE_AUTOMATIC = RESOLVER["resolve_automatic_selection"]
 SELECT_MANUAL = RESOLVER["select_manual_modes"]
 BUILD_PLAN = RESOLVER["build_execution_plan"]
 SELECTION_ERROR = RESOLVER["TestModeSelectionError"]
 
 EXPECTED_MODE_IDS = [
-    "ptsip-migration",
+    "ptsip-core",
     "ptsip-evidence",
     "ptsip-source-compat",
+    "ptsip-migration",
+    "ptsip-remediation",
     "vpms",
+    "ptsip-contract",
+    "repository-architecture",
+    "repository-release",
+    "test-mode-control-plane",
 ]
 
 
-def _registry() -> dict[str, object]:
-    payload = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8-sig"))
+def _yaml(path: Path) -> dict[str, object]:
+    payload = yaml.safe_load(path.read_text(encoding="utf-8-sig"))
     assert isinstance(payload, dict)
     return payload
+
+
+def _registry() -> dict[str, object]:
+    return _yaml(REGISTRY_PATH)
+
+
+def _profile() -> dict[str, object]:
+    return _yaml(PROFILE_PATH)
 
 
 def _ids(selected: list[dict[str, object]]) -> list[str]:
@@ -38,52 +54,156 @@ def _ids(selected: list[dict[str, object]]) -> list[str]:
 
 
 def test_repo_path_normalization_accepts_windows_separators() -> None:
-    assert NORMALIZE_REPO_PATH(r"src\ptsip\evidence\contract.py") == "src/ptsip/evidence/contract.py"
+    assert (
+        NORMALIZE_REPO_PATH(r"src\ptsip\evidence\contract.py")
+        == "src/ptsip/evidence/contract.py"
+    )
 
 
-def test_watch_matching_respects_recursive_repository_globs() -> None:
-    assert MATCHES_WATCH("src/ptsip/evidence/contract.py", "src/ptsip/evidence/**")
-    assert not MATCHES_WATCH("src/ptsip/migration/model.py", "src/ptsip/evidence/**")
+def test_profile_pattern_matching_respects_recursive_repository_globs() -> None:
+    assert MATCHES_PATTERN(
+        "src/ptsip/evidence/contract.py",
+        "src/ptsip/evidence/**",
+    )
+    assert not MATCHES_PATTERN(
+        "src/ptsip/migration/model.py",
+        "src/ptsip/evidence/**",
+    )
 
 
-def test_evidence_change_selects_evidence_and_migration() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), ["src/ptsip/evidence/contract.py"])
-    assert _ids(selected) == ["ptsip-migration", "ptsip-evidence"]
+def test_evidence_change_selects_declared_dependents() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/evidence/contract.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-evidence",
+        "ptsip-migration",
+        "ptsip-remediation",
+        "vpms",
+    ]
 
 
-def test_source_compat_change_selects_source_compat_and_migration() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), ["src/ptsip/source_compat/reader.py"])
-    assert _ids(selected) == ["ptsip-migration", "ptsip-source-compat"]
+def test_source_compat_change_selects_declared_dependents() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/source_compat/reader.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-source-compat",
+        "ptsip-migration",
+        "vpms",
+    ]
 
 
-def test_migration_change_selects_only_migration() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), ["src/ptsip/migration/model.py"])
-    assert _ids(selected) == ["ptsip-migration"]
+def test_migration_change_selects_migration_and_current_vpms_boundary() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/migration/model.py"],
+    )
+    assert _ids(selected) == ["ptsip-migration", "vpms"]
+
+
+def test_support_policy_change_selects_all_declared_support_verifiers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["docs/Support_policy/policy/index.yaml"],
+    )
+    assert _ids(selected) == [
+        "ptsip-core",
+        "ptsip-contract",
+        "repository-architecture",
+        "repository-release",
+    ]
+
+
+def test_governance_change_selects_declared_cross_boundary_verifiers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/governance/authority.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-core",
+        "vpms",
+        "ptsip-contract",
+        "repository-architecture",
+    ]
 
 
 def test_vpms_change_selects_only_vpms() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), ["src/vpms/model.py"])
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/vpms/model.py"],
+    )
     assert _ids(selected) == ["vpms"]
 
 
-def test_unrelated_change_selects_no_modes() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), ["README.md"])
+def test_test_change_selects_owner_and_small_control_plane_guard() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["tests/ptsip/evidence/test_normalization_037.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-evidence",
+        "test-mode-control-plane",
+    ]
+
+
+def test_test_mode_control_plane_change_does_not_expand_to_all_modes() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".github/scripts/resolve_test_modes.py"],
+    )
+    assert _ids(selected) == ["test-mode-control-plane"]
+
+
+def test_tooling_workflow_change_selects_release_and_control_plane() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".github/workflows/tooling-test.yml"],
+    )
+    assert _ids(selected) == [
+        "repository-release",
+        "test-mode-control-plane",
+    ]
+
+
+def test_declared_documentation_change_can_require_no_test_mode() -> None:
+    selected, no_verification = RESOLVE_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["README.md"],
+    )
     assert _ids(selected) == []
+    assert no_verification == ["README.md"]
 
 
-def test_control_plane_change_selects_all_registered_modes() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), [".github/scripts/resolve_test_modes.py"])
-    assert _ids(selected) == EXPECTED_MODE_IDS
-
-
-def test_manual_all_selects_all_registered_modes() -> None:
-    selected = SELECT_MANUAL(_registry(), "all")
-    assert _ids(selected) == EXPECTED_MODE_IDS
+def test_unmapped_change_fails_closed() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_AUTOMATIC(
+            _registry(),
+            _profile(),
+            ["unregistered-area/file.txt"],
+        )
 
 
 def test_manual_specific_mode_selects_only_requested_mode() -> None:
     selected = SELECT_MANUAL(_registry(), "ptsip-evidence")
     assert _ids(selected) == ["ptsip-evidence"]
+
+
+def test_manual_all_is_not_a_special_escape_hatch() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unknown requested Test Mode"):
+        SELECT_MANUAL(_registry(), "all")
 
 
 def test_manual_unknown_mode_fails_closed() -> None:
@@ -92,20 +212,18 @@ def test_manual_unknown_mode_fails_closed() -> None:
 
 
 def test_execution_plan_contains_execution_identity_not_architecture_authority() -> None:
-    selected = SELECT_AUTOMATIC(_registry(), ["src/ptsip/evidence/contract.py"])
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/evidence/contract.py"],
+    )
     plan = BUILD_PLAN(selected)
 
-    assert plan == [
-        {
-            "id": "ptsip-migration",
-            "component_ref": "ptsip-migration-verification",
-            "pytest": ["tests/ptsip/migration"],
-        },
-        {
-            "id": "ptsip-evidence",
-            "component_ref": "ptsip-evidence-verification",
-            "pytest": ["tests/ptsip/evidence"],
-        },
+    assert [item["id"] for item in plan] == [
+        "ptsip-evidence",
+        "ptsip-migration",
+        "ptsip-remediation",
+        "vpms",
     ]
     assert all("classification" not in item for item in plan)
     assert all("roles" not in item for item in plan)

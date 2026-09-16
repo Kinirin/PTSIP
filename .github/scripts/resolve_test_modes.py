@@ -16,15 +16,6 @@ VALIDATOR_PATH = Path(__file__).with_name("validate_test_modes.py")
 VALIDATE_REGISTRY = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
 SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
 
-CONTROL_PLANE_WATCH = (
-    ".github/test_modes.yaml",
-    ".github/scripts/validate_test_modes.py",
-    ".github/scripts/resolve_test_modes.py",
-    ".github/workflows/tooling-test.yml",
-    "tests/ptsip/test_modes/**",
-    SELF_PROFILE_PATH,
-)
-
 
 class TestModeSelectionError(ValueError):
     """Stable fail-closed error for Test Mode selection."""
@@ -43,7 +34,9 @@ def normalize_repo_path(value: str) -> str:
 
     path = PurePosixPath(normalized)
     if path.is_absolute() or normalized == "." or ".." in path.parts:
-        raise TestModeSelectionError(f"repository path escapes repository root: {value!r}")
+        raise TestModeSelectionError(
+            f"repository path escapes repository root: {value!r}"
+        )
     return path.as_posix()
 
 
@@ -75,55 +68,161 @@ def _glob_regex(pattern: str) -> re.Pattern[str]:
     return re.compile("".join(output))
 
 
-def matches_watch(path: str, pattern: str) -> bool:
+def matches_pattern(path: str, pattern: str) -> bool:
     return bool(_glob_regex(pattern).match(normalize_repo_path(path)))
 
 
-def _load_registry(registry_path: Path) -> dict[str, Any]:
-    payload = yaml.safe_load(registry_path.read_text(encoding="utf-8-sig"))
+def _load_mapping(path: Path, *, label: str) -> dict[str, Any]:
+    payload = yaml.safe_load(path.read_text(encoding="utf-8-sig"))
     if not isinstance(payload, dict):
-        raise TestModeSelectionError("Test Mode Registry root must be a mapping")
-    modes = payload.get("modes")
-    if not isinstance(modes, list):
-        raise TestModeSelectionError("Test Mode Registry modes must be a list")
+        raise TestModeSelectionError(f"{label} root must be a mapping")
     return payload
 
 
-def load_valid_registry(registry_path: Path, profile_path: Path, repo_root: Path) -> dict[str, Any]:
+def load_valid_registry(
+    registry_path: Path,
+    profile_path: Path,
+    repo_root: Path,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     errors = VALIDATE_REGISTRY(registry_path, profile_path, repo_root)
     if errors:
-        raise TestModeSelectionError("invalid Test Mode Registry: " + "; ".join(errors))
-    return _load_registry(registry_path)
+        raise TestModeSelectionError(
+            "invalid Test Mode Registry: " + "; ".join(errors)
+        )
+    registry = _load_mapping(registry_path, label="Test Mode Registry")
+    profile = _load_mapping(profile_path, label="Project Profile")
+    return registry, profile
 
 
 def _modes(registry: dict[str, Any]) -> list[dict[str, Any]]:
     modes = registry.get("modes")
-    if not isinstance(modes, list) or not all(isinstance(mode, dict) for mode in modes):
-        raise TestModeSelectionError("Test Mode Registry modes must contain mappings")
+    if not isinstance(modes, list) or not all(
+        isinstance(mode, dict) for mode in modes
+    ):
+        raise TestModeSelectionError(
+            "Test Mode Registry modes must contain mappings"
+        )
     return modes
 
 
-def _is_control_plane_change(path: str) -> bool:
-    return any(matches_watch(path, pattern) for pattern in CONTROL_PLANE_WATCH)
+def _components(profile: dict[str, Any]) -> list[dict[str, Any]]:
+    components = profile.get("components")
+    if not isinstance(components, list) or not all(
+        isinstance(component, dict) for component in components
+    ):
+        raise TestModeSelectionError(
+            "Project Profile components must contain mappings"
+        )
+    return components
+
+
+def _component_index(profile: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    result: dict[str, dict[str, Any]] = {}
+    for component in _components(profile):
+        component_id = component.get("id")
+        if not isinstance(component_id, str) or not component_id:
+            raise TestModeSelectionError(
+                "Project Profile component has invalid id"
+            )
+        if component_id in result:
+            raise TestModeSelectionError(
+                f"Project Profile duplicate component id: {component_id}"
+            )
+        result[component_id] = component
+    return result
+
+
+def _patterns(component: dict[str, Any], field: str) -> list[str]:
+    value = component.get(field, [])
+    if not isinstance(value, list) or not all(
+        isinstance(item, str) for item in value
+    ):
+        raise TestModeSelectionError(
+            f"component {component.get('id')!r} has invalid {field}"
+        )
+    return list(value)
+
+
+def _mode_matches_path(
+    mode: dict[str, Any],
+    components: dict[str, dict[str, Any]],
+    path: str,
+) -> bool:
+    component_ref = mode.get("component_ref")
+    component = components.get(str(component_ref))
+    if component is None:
+        raise TestModeSelectionError(
+            f"Test Mode references missing component: {component_ref!r}"
+        )
+    patterns = _patterns(component, "analysis_inputs") + _patterns(
+        component, "include"
+    )
+    return any(matches_pattern(path, pattern) for pattern in patterns)
+
+
+def _path_has_declared_owner(
+    profile: dict[str, Any],
+    path: str,
+) -> bool:
+    for component in _components(profile):
+        if any(
+            matches_pattern(path, pattern)
+            for pattern in _patterns(component, "include")
+        ):
+            return True
+    return False
+
+
+def resolve_automatic_selection(
+    registry: dict[str, Any],
+    profile: dict[str, Any],
+    changed_files: Iterable[str],
+) -> tuple[list[dict[str, Any]], list[str]]:
+    changed = normalize_changed_files(changed_files)
+    if not changed:
+        raise TestModeSelectionError(
+            "automatic Test Mode resolution received no changed files"
+        )
+
+    modes = _modes(registry)
+    components = _component_index(profile)
+    selected: list[dict[str, Any]] = []
+    no_verification_required: list[str] = []
+    unmapped: list[str] = []
+
+    for path in changed:
+        matching_modes = [
+            mode
+            for mode in modes
+            if _mode_matches_path(mode, components, path)
+        ]
+        if matching_modes:
+            for mode in matching_modes:
+                if mode not in selected:
+                    selected.append(mode)
+            continue
+
+        if _path_has_declared_owner(profile, path):
+            no_verification_required.append(path)
+        else:
+            unmapped.append(path)
+
+    if unmapped:
+        raise TestModeSelectionError(
+            "unmapped changed paths: " + ", ".join(unmapped)
+        )
+
+    return selected, no_verification_required
 
 
 def select_automatic_modes(
     registry: dict[str, Any],
+    profile: dict[str, Any],
     changed_files: Iterable[str],
 ) -> list[dict[str, Any]]:
-    changed = normalize_changed_files(changed_files)
-    modes = _modes(registry)
-
-    if any(_is_control_plane_change(path) for path in changed):
-        return list(modes)
-
-    selected: list[dict[str, Any]] = []
-    for mode in modes:
-        watch = mode.get("watch")
-        if not isinstance(watch, list):
-            raise TestModeSelectionError(f"mode {mode.get('id')!r} has invalid watch declaration")
-        if any(matches_watch(path, pattern) for path in changed for pattern in watch):
-            selected.append(mode)
+    selected, _ = resolve_automatic_selection(
+        registry, profile, changed_files
+    )
     return selected
 
 
@@ -131,26 +230,37 @@ def select_manual_modes(
     registry: dict[str, Any],
     requested_mode: str,
 ) -> list[dict[str, Any]]:
-    modes = _modes(registry)
-    requested = (requested_mode or "all").strip()
-    if requested == "all":
-        return list(modes)
+    requested = (requested_mode or "").strip()
+    if not requested:
+        raise TestModeSelectionError("requested Test Mode must not be empty")
 
-    selected = [mode for mode in modes if mode.get("id") == requested]
+    selected = [
+        mode for mode in _modes(registry) if mode.get("id") == requested
+    ]
     if not selected:
-        raise TestModeSelectionError(f"unknown requested Test Mode: {requested}")
+        raise TestModeSelectionError(
+            f"unknown requested Test Mode: {requested}"
+        )
     return selected
 
 
-def build_execution_plan(selected_modes: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+def build_execution_plan(
+    selected_modes: Iterable[dict[str, Any]],
+) -> list[dict[str, Any]]:
     plan: list[dict[str, Any]] = []
     for mode in selected_modes:
         execution = mode.get("execution")
         if not isinstance(execution, dict):
-            raise TestModeSelectionError(f"mode {mode.get('id')!r} has invalid execution declaration")
+            raise TestModeSelectionError(
+                f"mode {mode.get('id')!r} has invalid execution declaration"
+            )
         targets = execution.get("pytest")
-        if not isinstance(targets, list) or not all(isinstance(target, str) for target in targets):
-            raise TestModeSelectionError(f"mode {mode.get('id')!r} has invalid pytest targets")
+        if not isinstance(targets, list) or not all(
+            isinstance(target, str) for target in targets
+        ):
+            raise TestModeSelectionError(
+                f"mode {mode.get('id')!r} has invalid pytest targets"
+            )
         plan.append(
             {
                 "id": mode["id"],
@@ -161,15 +271,37 @@ def build_execution_plan(selected_modes: Iterable[dict[str, Any]]) -> list[dict[
     return plan
 
 
-def changed_files_from_git(repo_root: Path, base: str, head: str) -> list[str]:
+def changed_files_from_git(
+    repo_root: Path,
+    base: str,
+    head: str,
+) -> list[str]:
     base = (base or "").strip()
     head = (head or "HEAD").strip()
-    zero_sha = bool(base) and set(base) == {"0"}
 
-    if base and not zero_sha:
+    if not base:
+        parent = subprocess.run(
+            ["git", "rev-parse", f"{head}^"],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if parent.returncode == 0 and parent.stdout.strip():
+            base = parent.stdout.strip()
+
+    if base:
         command = ["git", "diff", "--name-only", base, head]
     else:
-        command = ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", head]
+        command = [
+            "git",
+            "diff-tree",
+            "--root",
+            "--no-commit-id",
+            "--name-only",
+            "-r",
+            head,
+        ]
 
     result = subprocess.run(
         command,
@@ -178,20 +310,34 @@ def changed_files_from_git(repo_root: Path, base: str, head: str) -> list[str]:
         capture_output=True,
         text=True,
     )
-    return normalize_changed_files(line for line in result.stdout.splitlines() if line.strip())
+    return normalize_changed_files(
+        line for line in result.stdout.splitlines() if line.strip()
+    )
 
 
-def _result_payload(selected: list[dict[str, Any]], changed_files: list[str]) -> dict[str, Any]:
+def _result_payload(
+    selected: list[dict[str, Any]],
+    changed_files: list[str],
+    no_verification_required: list[str] | None = None,
+) -> dict[str, Any]:
     plan = build_execution_plan(selected)
     return {
+        "resolution": (
+            "SELECTED" if plan else "NO_TEST_MODE_REQUIRED"
+        ),
         "changed_files": changed_files,
         "selected_ids": [item["id"] for item in plan],
+        "no_verification_required": no_verification_required or [],
         "plan": plan,
     }
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Resolve repository Test Modes from explicit selection inputs")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Resolve repository Test Modes from the canonical Project Profile"
+        )
+    )
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--registry", default=".github/test_modes.yaml")
     parser.add_argument("--profile", default=SELF_PROFILE_PATH)
@@ -204,7 +350,7 @@ def build_parser() -> argparse.ArgumentParser:
     automatic.add_argument("--changed-file", action="append", default=[])
 
     manual = subparsers.add_parser("manual")
-    manual.add_argument("--mode", default="all")
+    manual.add_argument("--mode", required=True)
     return parser
 
 
@@ -216,21 +362,42 @@ def main(argv: list[str] | None = None) -> int:
     profile_path = repo_root / args.profile
 
     try:
-        registry = load_valid_registry(registry_path, profile_path, repo_root)
+        registry, profile = load_valid_registry(
+            registry_path, profile_path, repo_root
+        )
         if args.command == "automatic":
             changed = (
                 normalize_changed_files(args.changed_file)
                 if args.changed_file
                 else changed_files_from_git(repo_root, args.base, args.head)
             )
-            selected = select_automatic_modes(registry, changed)
+            selected, no_verification_required = (
+                resolve_automatic_selection(
+                    registry, profile, changed
+                )
+            )
         else:
             changed = []
+            no_verification_required = []
             selected = select_manual_modes(registry, args.mode)
 
-        print(json.dumps(_result_payload(selected, changed), separators=(",", ":")))
+        print(
+            json.dumps(
+                _result_payload(
+                    selected,
+                    changed,
+                    no_verification_required,
+                ),
+                separators=(",", ":"),
+            )
+        )
         return 0
-    except (OSError, subprocess.CalledProcessError, TestModeSelectionError, yaml.YAMLError) as exc:
+    except (
+        OSError,
+        subprocess.CalledProcessError,
+        TestModeSelectionError,
+        yaml.YAMLError,
+    ) as exc:
         print(f"Test Mode resolver error: {exc}", file=sys.stderr)
         return 2
 

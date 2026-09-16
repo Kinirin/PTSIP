@@ -1,49 +1,91 @@
-# Repository-local Test Mode Registry v1.
+# Repository-local Test Mode Registry v2.
 #
 # Authority firewall:
-# - component_ref MUST resolve to a VERIFICATION component in ptsip.yaml.
-# - classification, roles, purpose, and other architecture authority MUST NOT be
-#   duplicated here.
-# - execution and watch paths are execution-selection data only.
-version: 1
+# - component_ref MUST resolve to a test-owning VERIFICATION component in the
+#   canonical Project Profile.
+# - selection paths come only from that component's analysis_inputs + include.
+# - this registry owns execution targets only; it MUST NOT duplicate
+#   architecture authority or change-impact watch paths.
+version: 2
 
 modes:
-  - id: ptsip-migration
-    component_ref: ptsip-migration-verification
+  - id: ptsip-core
+    component_ref: ptsip-core-verification
     execution:
       pytest:
-        - tests/ptsip/migration
-    watch:
-      - src/ptsip/migration/**
-      - src/ptsip/evidence/**
-      - src/ptsip/source_compat/**
-      - tests/ptsip/migration/**
+        - tests/ptsip/clarification
+        - tests/ptsip/cli
+        - tests/ptsip/conformance
+        - tests/ptsip/control_plane
+        - tests/ptsip/governance/test_authority_runtime.py
+        - tests/ptsip/governance/test_authorization_transition.py
+        - tests/ptsip/identity
+        - tests/ptsip/inspection
+        - tests/ptsip/integration
+        - tests/ptsip/pilot
+        - tests/ptsip/topology
+        - tests/ptsip/validation
+        - tests/ptsip/repository/test_profile_convergence_037.py
+        - tests/ptsip/repository/test_profile_transition_037.py
+        - tests/ptsip/repository/test_remote_discovery.py
+        - tests/ptsip/repository/test_snapshot_integrity.py
+        - tests/ptsip/test_adoption.py
+        - tests/ptsip/test_clarification.py
+        - tests/ptsip/test_merge_gate_followup_030.py
+        - tests/ptsip/test_proposed_component.py
 
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
     execution:
       pytest:
         - tests/ptsip/evidence
-    watch:
-      - src/ptsip/evidence/**
-      - tests/ptsip/evidence/**
 
   - id: ptsip-source-compat
     component_ref: ptsip-source-compat-verification
     execution:
       pytest:
         - tests/ptsip/source_compat
-    watch:
-      - src/ptsip/source_compat/**
-      - tests/ptsip/source_compat/**
-      - src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json
-      - src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json
+
+  - id: ptsip-migration
+    component_ref: ptsip-migration-verification
+    execution:
+      pytest:
+        - tests/ptsip/migration
+
+  - id: ptsip-remediation
+    component_ref: ptsip-remediation-verification
+    execution:
+      pytest:
+        - tests/ptsip/remediation
 
   - id: vpms
     component_ref: vpms-verification
     execution:
       pytest:
         - tests/vpms
-    watch:
-      - src/vpms/**
-      - tests/vpms/**
+
+  - id: ptsip-contract
+    component_ref: ptsip-contract-verification
+    execution:
+      pytest:
+        - tests/ptsip/contracts
+        - tests/ptsip/governance/test_contracts.py
+
+  - id: repository-architecture
+    component_ref: repository-architecture-verification
+    execution:
+      pytest:
+        - tests/ptsip/repository/test_self_profile.py
+        - developer/tests
+
+  - id: repository-release
+    component_ref: repository-release-verification
+    execution:
+      pytest:
+        - tests/ptsip/test_release_readiness_030.py
+
+  - id: test-mode-control-plane
+    component_ref: repository-test-mode-control-plane
+    execution:
+      pytest:
+        - tests/ptsip/test_modes
