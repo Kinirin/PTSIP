@@ -19,7 +19,7 @@ from developer.automation.agent_instruction_classifier import (
 
 
 DEFAULT_SOURCE = Path("AGENTS.md")
-DEFAULT_OUTPUT_ROOT = Path("developer/agent_instructions")
+DEFAULT_OUTPUT_ROOT = Path(".agent")
 REGISTRY_NAME = "registry.yaml"
 INDEX_NAME = "index.yaml"
 UNRESOLVED_NAME = "unresolved.yaml"
