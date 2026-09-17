@@ -34,6 +34,74 @@ rules:
         - USER_POLICY_AUTOMATION_MUST_NOT_SILENTLY_GAIN_PROJECT_OR_CORE_AUTHORITY
         - USER_POLICY_INTERPRETATION_MUST_REMAIN_EXACT_BOUNDED_AND_FAIL_CLOSED_WHEN_REQUIRED_SEMANTICS_CANNOT_BE_RESOLVED
 
+  agent_instruction_entry_taxonomy_trial:
+    decision: APPROVED
+    stage: REPOSITORY_TRIAL
+    objective: REDUCE_CODING_AGENT_ENTRY_INFERENCE_WITH_LOW_DIFFICULTY_MACHINE_ROUTING
+    distribution: FORBIDDEN
+    product_integration: NOT_AUTHORIZED
+    promotion_to_product_requires_separate_evidence_and_approval: true
+    level_1_vocabulary:
+      - APPLICABILITY
+      - RULE
+      - ACTION
+      - EVIDENCE
+      - OTHER
+    level_1_rules:
+      - LEVEL_1_MUST_USE_LOW_DIFFICULTY_MACHINE_CLASSIFICATION_ONLY
+      - MULTI_LABEL_CLASSIFICATION_IS_ALLOWED
+      - CLASSIFY_ONLY_WITH_POSITIVE_MACHINE_EVIDENCE
+      - OTHER_MUST_NOT_BE_USED_AS_A_CLASSIFICATION_FAILURE_FALLBACK
+      - UNRESOLVED_IS_A_ROUTING_STATE_NOT_A_NAMESPACE
+      - EXPLICIT_PARENT_SEMANTICS_MAY_BE_INHERITED_BY_CHILD_INSTRUCTION_ATOMS
+      - DEEPER_CLASSIFICATION_MAY_STOP_AT_THE_DEEPEST_PROVEN_PARENT
+    level_2_vocabulary:
+      APPLICABILITY:
+        - PATH
+        - TASK
+        - ENVIRONMENT
+        - VERSION
+        - VCS_CONTEXT
+      RULE:
+        - MUTATION
+        - DEPENDENCY
+        - COMPATIBILITY
+        - STYLE
+        - SECURITY
+        - RESOURCE
+      ACTION:
+        - COMMAND
+        - READ
+        - WRITE
+        - GENERATE
+        - BUILD
+        - INSTALL
+        - PUBLISH
+      EVIDENCE:
+        - TEST
+        - BUILD_RESULT
+        - STATIC_CHECK
+        - ARTIFACT
+        - REVIEW
+        - STATUS
+      OTHER:
+        - CONTEXT
+        - GOAL
+    other_semantics:
+      context_and_goal_share_level_1_parent: true
+      goal_machine_classification_requires_explicit_purpose_relation: true
+      ambiguous_context_or_goal_may_stop_at_other: true
+    unresolved_is_namespace: false
+    unresolved_behavior:
+      preserve_as_routing_state: true
+      must_not_be_silently_coerced_to_other: true
+      ai_or_person_escalation_only_when_required_by_current_operation: true
+    source_and_authority:
+      source_instruction_text_remains_authoritative_for_its_own_instruction_semantics: true
+      derived_classification_is_non_authoritative: true
+      classifier_must_not_rewrite_source_instruction_text: true
+      ai_classification_does_not_create_policy_authority: true
+
   normative_contract_architecture:
     language_runtime_os_tool_neutral: true
     canonical_layers:
