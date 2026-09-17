@@ -1,0 +1,80 @@
+name: Agent Level 1 Cloud Simulation
+
+on:
+  push:
+    branches:
+      - sim/agent-level1-cloud-20260917-use2
+    paths:
+      - AGENTS.md
+      - developer/automation/agent_instruction_classifier.py
+      - developer/automation/agent_instruction_materializer.py
+      - developer/policy/MPD-0010.yaml
+      - developer/policy/policy-resolver-bindings.yaml
+      - developer/tests/test_agent_instruction_classifier.py
+      - developer/tests/test_agent_instruction_materializer.py
+      - developer/tests/test_agent_instruction_surface.py
+      - .github/workflows/agent-level1-cloud-simulation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install simulation dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML pytest
+
+      - name: Run focused tests
+        run: >-
+          python -m pytest -q
+          developer/tests/test_agent_instruction_classifier.py
+          developer/tests/test_agent_instruction_materializer.py
+          developer/tests/test_agent_instruction_surface.py
+
+      - name: Preview Level 1 materialization
+        run: python -m developer.automation.agent_instruction_materializer status
+
+      - name: Materialize repository-local agent surface
+        run: python -m developer.automation.agent_instruction_materializer materialize
+
+      - name: Verify generated surface
+        run: python -m developer.automation.agent_instruction_materializer check
+
+      - name: Show generated summary
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+          index = yaml.safe_load(Path('.agent/index.yaml').read_text(encoding='utf-8'))
+          registry = yaml.safe_load(Path('.agent/registry.yaml').read_text(encoding='utf-8'))
+          print('index.stage=', index['stage'])
+          print('index.level_2_materialized=', index['level_2_materialized'])
+          print('summary=', registry['summary'])
+          print('files=')
+          for p in sorted(Path('.agent').rglob('*.yaml')):
+              print(' ', p.as_posix())
+          PY
+
+      - name: Commit generated .agent surface on simulation branch
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .agent
+          if git diff --cached --quiet; then
+            echo 'No generated changes.'
+          else
+            git commit -m 'test: materialize Level 1 agent surface [agent-sim-output]'
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
