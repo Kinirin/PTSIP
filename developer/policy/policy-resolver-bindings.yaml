@@ -61,6 +61,30 @@ scope_bindings:
           - agent_instruction_entry_taxonomy_trial
           - identity_and_resolution
 
+  developer/automation/agent_instruction_materializer.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - ptsip_design_priority
+          - agent_instruction_entry_taxonomy_trial
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+
+  developer/agent_instructions:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - agent_instruction_entry_taxonomy_trial
+          - canonical_and_runtime_projection
+
   developer/policy:
     default_refs:
       - policy_id: MPD-0001
