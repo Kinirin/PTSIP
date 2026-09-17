@@ -41,6 +41,12 @@ rules:
     distribution: FORBIDDEN
     product_integration: NOT_AUTHORIZED
     promotion_to_product_requires_separate_evidence_and_approval: true
+    repository_management_surface:
+      canonical_root: .agent/
+      purpose: REPOSITORY_LOCAL_AGENT_INSTRUCTION_MANAGEMENT
+      developer_tool_implementation_root: developer/automation/
+      developer_tool_root_is_management_surface: false
+      product_distribution: FORBIDDEN
     level_1_vocabulary:
       - APPLICABILITY
       - RULE
