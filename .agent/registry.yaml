@@ -1,0 +1,3151 @@
+schema_version: ptsip-agent-instruction-level1-materialization/v1
+policy_ref: MPD-0010#agent_instruction_entry_taxonomy_trial
+stage: LEVEL_1_ONLY
+source:
+  path: AGENTS.md
+  sha256: 6ef66b9b61a324dfb664df2b9ea154272141488f339853550196d7c98407fcce
+level_1_vocabulary:
+- APPLICABILITY
+- RULE
+- ACTION
+- EVIDENCE
+- OTHER
+level_2_materialized: false
+summary:
+  atom_count: 154
+  classified_count: 132
+  unresolved_count: 22
+  level_1_counts:
+    APPLICABILITY: 37
+    RULE: 64
+    ACTION: 46
+    EVIDENCE: 44
+    OTHER: 52
+atoms:
+- atom_id: A0001
+  kind: paragraph
+  normalized_text: These instructions apply to coding agents working anywhere in this repository.
+  source:
+    path: AGENTS.md
+    line_start: 3
+    line_end: 3
+    heading_path:
+    - AGENTS.md
+    parent_atom_id: null
+    raw_excerpt: 'These instructions apply to coding agents working anywhere in this repository.
+
+      '
+    raw_excerpt_sha256: 732547b6ec13cb814d62812134b07a9d93c600ed742d914762b4ecf772c1dd48
+  level_1:
+  - APPLICABILITY
+  unresolved: false
+- atom_id: A0002
+  kind: paragraph
+  normalized_text: PTSIP has two non-interchangeable policy classes.
+  source:
+    path: AGENTS.md
+    line_start: 7
+    line_end: 7
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: 'PTSIP has two non-interchangeable policy classes.
+
+      '
+    raw_excerpt_sha256: 26c33fb721cddbaabfe6ae4badcfc88c8ba4d36fffe28299dd060570b8a38143
+  level_1: []
+  unresolved: true
+- atom_id: A0003
+  kind: list_item
+  normalized_text: '`PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`,
+    and must not ship as a consumer runtime contract.'
+  source:
+    path: AGENTS.md
+    line_start: 9
+    line_end: 9
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`,
+      and must not ship as a consumer runtime contract.
+
+      '
+    raw_excerpt_sha256: 1ca66f2ad8c0a0e3b94b2af3b9f005d483c562a5cecb927eed2cc0269dc7d306
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0004
+  kind: list_item
+  normalized_text: '`PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`;
+    repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive
+    the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.'
+  source:
+    path: AGENTS.md
+    line_start: 10
+    line_end: 10
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`;
+      repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive
+      the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.
+
+      '
+    raw_excerpt_sha256: 4515edb7ab293465960c18bdd6c7db7f4a64eaa076bfb2f83e59293304ab5671
+  level_1:
+  - APPLICABILITY
+  - OTHER
+  unresolved: false
+- atom_id: A0005
+  kind: list_item
+  normalized_text: PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository
+    self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired
+    by the 0.4.0 P01-F migration.
+  source:
+    path: AGENTS.md
+    line_start: 11
+    line_end: 11
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository
+      self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired
+      by the 0.4.0 P01-F migration.
+
+      '
+    raw_excerpt_sha256: 12e69f001bac8e4a2e7372346943cf8ba591aa7d808cc2e828f1c948d8f1e3e7
+  level_1:
+  - APPLICABILITY
+  - OTHER
+  unresolved: false
+- atom_id: A0006
+  kind: list_item
+  normalized_text: The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities.
+    Do not recreate it as an active policy source.
+  source:
+    path: AGENTS.md
+    line_start: 12
+    line_end: 12
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities.
+      Do not recreate it as an active policy source.
+
+      '
+    raw_excerpt_sha256: fb20c6c8d7e40651b3ef5604ea738e35b42ffa65d5d5d158609ec1e732486c3e
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0007
+  kind: list_item
+  normalized_text: Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product
+    governance consumes shipped SFP contracts only.
+  source:
+    path: AGENTS.md
+    line_start: 13
+    line_end: 13
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product
+      governance consumes shipped SFP contracts only.
+
+      '
+    raw_excerpt_sha256: e6cc9d643a35cc9ae9398db8a7b07c3d76359be2b71bd323c6afa478c034b1da
+  level_1:
+  - APPLICABILITY
+  - RULE
+  unresolved: false
+- atom_id: A0008
+  kind: list_item
+  normalized_text: Developer planning authority is `docs/planning/index.yaml` and version control planes under `docs/planning/<version>/index.yaml`.
+    `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
+  source:
+    path: AGENTS.md
+    line_start: 14
+    line_end: 14
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- Developer planning authority is `docs/planning/index.yaml` and version control planes under `docs/planning/<version>/index.yaml`.
+      `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
+
+      '
+    raw_excerpt_sha256: d9aefaecd8e53a3f057fb973388166051523d44814c3528fc6b6a1a8816bd49b
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0009
+  kind: list_item
+  normalized_text: '`Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine
+    fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.'
+  source:
+    path: AGENTS.md
+    line_start: 15
+    line_end: 15
+    heading_path:
+    - AGENTS.md
+    - Developer Policy vs Support Feature Policy
+    parent_atom_id: null
+    raw_excerpt: '- `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine
+      fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
+
+      '
+    raw_excerpt_sha256: 39e64136d73029f6412dfba67f9895d169d0c3139d8829bdaee6a286951dc013
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0010
+  kind: paragraph
+  normalized_text: 'Before broadly reading repository policy or planning prose, resolve the developer-policy context mechanically:'
+  source:
+    path: AGENTS.md
+    line_start: 19
+    line_end: 19
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: null
+    raw_excerpt: 'Before broadly reading repository policy or planning prose, resolve the developer-policy context mechanically:
+
+      '
+    raw_excerpt_sha256: d48955a04a72d11397ce2b27e2bbdbfe2d21e5cab7c8ce1c4b9df7ce0383b20f
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0011
+  kind: code_block
+  normalized_text: python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
+  source:
+    path: AGENTS.md
+    line_start: 22
+    line_end: 22
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0010
+    raw_excerpt: 'python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
+
+      '
+    raw_excerpt_sha256: e5b79fabc7a5479c3db5229714d177d3c34ccce927feb0f3d3f6639cd5767154
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0012
+  kind: paragraph
+  normalized_text: The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings.yaml`
+    and `developer/policy/index.yaml`. Use only the returned canonical policy IDs and rule sections as the normal policy-loading
+    path.
+  source:
+    path: AGENTS.md
+    line_start: 25
+    line_end: 25
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: null
+    raw_excerpt: 'The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings.yaml`
+      and `developer/policy/index.yaml`. Use only the returned canonical policy IDs and rule sections as the normal policy-loading
+      path.
+
+      '
+    raw_excerpt_sha256: 1f6bbf3ec33e39ffc15f469fcc1bbf70ca4635b19406697ec8199f771507ef3f
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0013
+  kind: paragraph
+  normalized_text: 'For a returned section, prefer the bounded lookup:'
+  source:
+    path: AGENTS.md
+    line_start: 27
+    line_end: 27
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: null
+    raw_excerpt: 'For a returned section, prefer the bounded lookup:
+
+      '
+    raw_excerpt_sha256: 8444328a622b8ec4ff2db4994b8c79911fa637bad15307486b38163b73e1429a
+  level_1:
+  - APPLICABILITY
+  - RULE
+  unresolved: false
+- atom_id: A0014
+  kind: code_block
+  normalized_text: python -m developer.automation.policy_resolver get <MPD-ID> --section <rule-section>
+  source:
+    path: AGENTS.md
+    line_start: 30
+    line_end: 30
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0013
+    raw_excerpt: 'python -m developer.automation.policy_resolver get <MPD-ID> --section <rule-section>
+
+      '
+    raw_excerpt_sha256: 9a91a14a5f7f19fbdb410ce8fde98ef6fd6807339460cdd6bce41467d1580b1f
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0015
+  kind: paragraph
+  normalized_text: 'Rules:'
+  source:
+    path: AGENTS.md
+    line_start: 33
+    line_end: 33
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: null
+    raw_excerpt: 'Rules:
+
+      '
+    raw_excerpt_sha256: c3706221eb7c09449a8d8baaa1eea19d06c024d2b197118ba77ecb66cdcdeece
+  level_1: []
+  unresolved: true
+- atom_id: A0016
+  kind: list_item
+  normalized_text: Do not scan `developer/policy/**`, planning trees, ADR/history, or prose documentation merely to discover
+    potentially relevant policy.
+  source:
+    path: AGENTS.md
+    line_start: 35
+    line_end: 35
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0015
+    raw_excerpt: '- Do not scan `developer/policy/**`, planning trees, ADR/history, or prose documentation merely to discover
+      potentially relevant policy.
+
+      '
+    raw_excerpt_sha256: a564cc0e2a399104e94ae89508ca42bfd82330371e0b369e1a909e3a0bff6868
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0017
+  kind: list_item
+  normalized_text: Do not substitute semantic similarity, filename similarity, nearby documents, or natural-language inference
+    for a resolver binding.
+  source:
+    path: AGENTS.md
+    line_start: 36
+    line_end: 36
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0015
+    raw_excerpt: '- Do not substitute semantic similarity, filename similarity, nearby documents, or natural-language inference
+      for a resolver binding.
+
+      '
+    raw_excerpt_sha256: 020c73fe074806b99cacaa011a4faf3f06175ec2c4ad2f09dc56651142fae0a6
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0018
+  kind: list_item
+  normalized_text: A resolver failure is fail-closed for the dependent policy lookup. Do not choose an alternative policy
+    manually.
+  source:
+    path: AGENTS.md
+    line_start: 37
+    line_end: 37
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0015
+    raw_excerpt: '- A resolver failure is fail-closed for the dependent policy lookup. Do not choose an alternative policy
+      manually.
+
+      '
+    raw_excerpt_sha256: c620f469e28b49a57455950c368b8b92035d2615d124dd17f1ba12f1072831a4
+  level_1:
+  - RULE
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0019
+  kind: list_item
+  normalized_text: The resolver is a routing/projection control plane only. Canonical MPD records remain authority.
+  source:
+    path: AGENTS.md
+    line_start: 38
+    line_end: 38
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0015
+    raw_excerpt: '- The resolver is a routing/projection control plane only. Canonical MPD records remain authority.
+
+      '
+    raw_excerpt_sha256: 008ac070c2c346cec617728197039524367af7ea72c25d532f51e34a9bc57815
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0020
+  kind: list_item
+  normalized_text: '`explain` is optional human-facing metadata and is not the normal coding-agent policy path.'
+  source:
+    path: AGENTS.md
+    line_start: 39
+    line_end: 39
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0015
+    raw_excerpt: '- `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
+
+      '
+    raw_excerpt_sha256: 31dbad1f2fa181886d1ca2197a1a4fe604954797bcf29359b60ac6c159c13755
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0021
+  kind: list_item
+  normalized_text: Re-run resolution after changing task scope, operation class, or branch context.
+  source:
+    path: AGENTS.md
+    line_start: 40
+    line_end: 40
+    heading_path:
+    - AGENTS.md
+    - Mandatory developer policy entry
+    parent_atom_id: A0015
+    raw_excerpt: '- Re-run resolution after changing task scope, operation class, or branch context.
+
+      '
+    raw_excerpt_sha256: 3ae3bc6d91639b78aed15eb2fe6340bd01363b81443c98e39e6a8b7e8dc71773
+  level_1: []
+  unresolved: true
+- atom_id: A0022
+  kind: paragraph
+  normalized_text: 'For implementation work with a registered task context, prepare a bounded developer-only work packet before
+    editing:'
+  source:
+    path: AGENTS.md
+    line_start: 44
+    line_end: 44
+    heading_path:
+    - AGENTS.md
+    - Implementation Work Packet
+    parent_atom_id: null
+    raw_excerpt: 'For implementation work with a registered task context, prepare a bounded developer-only work packet before
+      editing:
+
+      '
+    raw_excerpt_sha256: bb6db5b76e4e5c00c82bf73b3bcfae6ab97a6d3da2c00a62e8553015bc7e36cd
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0023
+  kind: code_block
+  normalized_text: python -m developer.automation.implementation_work_packet prepare --scope <repository-path> --operation
+    MODIFY --output <temporary-json-path> --json
+  source:
+    path: AGENTS.md
+    line_start: 47
+    line_end: 47
+    heading_path:
+    - AGENTS.md
+    - Implementation Work Packet
+    parent_atom_id: A0022
+    raw_excerpt: 'python -m developer.automation.implementation_work_packet prepare --scope <repository-path> --operation
+      MODIFY --output <temporary-json-path> --json
+
+      '
+    raw_excerpt_sha256: 2e6042dfef676abcd87db029964a3c289ff48a38cdce40dfffdff1c5335f6dea
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0024
+  kind: paragraph
+  normalized_text: Use the packet's exact edit targets, required tests, and verification stages. Run `check` before verification
+    or commit. Branch, HEAD, context, or unlisted-path changes invalidate the packet and require regeneration.
+  source:
+    path: AGENTS.md
+    line_start: 50
+    line_end: 50
+    heading_path:
+    - AGENTS.md
+    - Implementation Work Packet
+    parent_atom_id: null
+    raw_excerpt: 'Use the packet''s exact edit targets, required tests, and verification stages. Run `check` before verification
+      or commit. Branch, HEAD, context, or unlisted-path changes invalidate the packet and require regeneration.
+
+      '
+    raw_excerpt_sha256: 2cd31593009041cbc6430382d2717559110318e32db028f05549b37f962a76ca
+  level_1:
+  - RULE
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0025
+  kind: paragraph
+  normalized_text: Normal development verification uses automatic Test Mode resolution. The agent does not infer the affected
+    Test Mode from prose, semantic similarity, confidence, or uncertainty.
+  source:
+    path: AGENTS.md
+    line_start: 54
+    line_end: 54
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: null
+    raw_excerpt: 'Normal development verification uses automatic Test Mode resolution. The agent does not infer the affected
+      Test Mode from prose, semantic similarity, confidence, or uncertainty.
+
+      '
+    raw_excerpt_sha256: 416491f96da6579d27a12c42fe6b931c35b1b7250b3fca121f738d1b2182c803
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0026
+  kind: code_block
+  normalized_text: python .github/scripts/resolve_test_modes.py automatic --head HEAD
+  source:
+    path: AGENTS.md
+    line_start: 57
+    line_end: 57
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: null
+    raw_excerpt: 'python .github/scripts/resolve_test_modes.py automatic --head HEAD
+
+      '
+    raw_excerpt_sha256: f5d0bc24574e120fb060494b2014962e8b501ba66dc5dfb45a6675c9f30ce459
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0027
+  kind: paragraph
+  normalized_text: 'Rules:'
+  source:
+    path: AGENTS.md
+    line_start: 60
+    line_end: 60
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: null
+    raw_excerpt: 'Rules:
+
+      '
+    raw_excerpt_sha256: c3706221eb7c09449a8d8baaa1eea19d06c024d2b197118ba77ecb66cdcdeece
+  level_1: []
+  unresolved: true
+- atom_id: A0028
+  kind: list_item
+  normalized_text: Project Profile verification `analysis_inputs` and owned test `include` paths are the selection authority.
+  source:
+    path: AGENTS.md
+    line_start: 62
+    line_end: 62
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: A0027
+    raw_excerpt: '- Project Profile verification `analysis_inputs` and owned test `include` paths are the selection authority.
+
+      '
+    raw_excerpt_sha256: b92690f3230223351da2046d5a26f1ecb1db227b41ac0c643985c2a3762d43be
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0029
+  kind: list_item
+  normalized_text: Run only the Test Modes returned by the resolver.
+  source:
+    path: AGENTS.md
+    line_start: 63
+    line_end: 63
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: A0027
+    raw_excerpt: '- Run only the Test Modes returned by the resolver.
+
+      '
+    raw_excerpt_sha256: f228cb3f1474d41f02a599a1e0a6d857777bed4cb7fabaece0059a03793cdfba
+  level_1:
+  - RULE
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0030
+  kind: list_item
+  normalized_text: '`all` is not an uncertainty fallback and is not a Test Mode.'
+  source:
+    path: AGENTS.md
+    line_start: 64
+    line_end: 64
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: A0027
+    raw_excerpt: '- `all` is not an uncertainty fallback and is not a Test Mode.
+
+      '
+    raw_excerpt_sha256: 94886752c3d9877f728c44837011ba4c89d04c1be6a917c233d353b8ed6aab3a
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0031
+  kind: list_item
+  normalized_text: Use `full` only for a release boundary, an explicit policy requirement, or an explicit maintainer request.
+  source:
+    path: AGENTS.md
+    line_start: 65
+    line_end: 65
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: A0027
+    raw_excerpt: '- Use `full` only for a release boundary, an explicit policy requirement, or an explicit maintainer request.
+
+      '
+    raw_excerpt_sha256: 2b882c0c72e458259cd07f24dd8e0928ce924170374210072bdf2d319fce021d
+  level_1:
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0032
+  kind: list_item
+  normalized_text: An unmapped changed path is fail-closed; do not replace it with full verification.
+  source:
+    path: AGENTS.md
+    line_start: 66
+    line_end: 66
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: A0027
+    raw_excerpt: '- An unmapped changed path is fail-closed; do not replace it with full verification.
+
+      '
+    raw_excerpt_sha256: 173df0376bd2b67a5d6b8df79b83a3c435e36cc4f78c0b1cab5dfb7ae952c527
+  level_1:
+  - RULE
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0033
+  kind: list_item
+  normalized_text: Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
+  source:
+    path: AGENTS.md
+    line_start: 67
+    line_end: 67
+    heading_path:
+    - AGENTS.md
+    - Deterministic Test Mode verification
+    parent_atom_id: A0027
+    raw_excerpt: '- Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
+
+      '
+    raw_excerpt_sha256: be746cc481c042ad72c66b96883a66f6728019f362a5fc3c178a6587c5c0e748
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0034
+  kind: paragraph
+  normalized_text: 'Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name,
+    resolve the planning entry mechanically:'
+  source:
+    path: AGENTS.md
+    line_start: 71
+    line_end: 71
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: null
+    raw_excerpt: 'Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve
+      the planning entry mechanically:
+
+      '
+    raw_excerpt_sha256: d93525188f1b68dc4a7db8bb7787bdc4e0e77412c8fd08d9665c8e7bdec0f657
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0035
+  kind: code_block
+  normalized_text: python -m developer.automation.planning_entry_resolver
+  source:
+    path: AGENTS.md
+    line_start: 74
+    line_end: 74
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0034
+    raw_excerpt: 'python -m developer.automation.planning_entry_resolver
+
+      '
+    raw_excerpt_sha256: adaa7ccf3b91a2f0d94bddbfd5418487f7a6cf72802119cbe6bdfbfa12f4b09f
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0036
+  kind: paragraph
+  normalized_text: The resolver reads the current Git branch and performs an exact lookup against `docs/planning/index.yaml
+    -> plans[].entry_routing.branch_entrypoints`. Treat its `entry_document` as the planning entry point for the current branch.
+  source:
+    path: AGENTS.md
+    line_start: 77
+    line_end: 77
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: null
+    raw_excerpt: 'The resolver reads the current Git branch and performs an exact lookup against `docs/planning/index.yaml
+      -> plans[].entry_routing.branch_entrypoints`. Treat its `entry_document` as the planning entry point for the current
+      branch.
+
+      '
+    raw_excerpt_sha256: 0f0b4ea3cb6eb2891194bdafeec65c5c09bee50e28b15b0a6c343e069090fefe
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0037
+  kind: paragraph
+  normalized_text: 'Rules:'
+  source:
+    path: AGENTS.md
+    line_start: 79
+    line_end: 79
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: null
+    raw_excerpt: 'Rules:
+
+      '
+    raw_excerpt_sha256: c3706221eb7c09449a8d8baaa1eea19d06c024d2b197118ba77ecb66cdcdeece
+  level_1: []
+  unresolved: true
+- atom_id: A0038
+  kind: list_item
+  normalized_text: Exact mapping only. Do not infer a WU from branch prefixes, suffixes, naming similarity, `current_gate`,
+    nearby files, or historical context.
+  source:
+    path: AGENTS.md
+    line_start: 81
+    line_end: 81
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0037
+    raw_excerpt: '- Exact mapping only. Do not infer a WU from branch prefixes, suffixes, naming similarity, `current_gate`,
+      nearby files, or historical context.
+
+      '
+    raw_excerpt_sha256: 34ca952a344deca8dd0596aeed56020dd954dc77f7d763305050482c4cb16b7c
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0039
+  kind: list_item
+  normalized_text: A nonzero resolver result is fail-closed. Do not choose another planning document manually.
+  source:
+    path: AGENTS.md
+    line_start: 82
+    line_end: 82
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0037
+    raw_excerpt: '- A nonzero resolver result is fail-closed. Do not choose another planning document manually.
+
+      '
+    raw_excerpt_sha256: 5344c30a52be2f48d273a1a9a625ec9d2dc3606ba5882c3524c9423bb526101f
+  level_1:
+  - RULE
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0040
+  kind: list_item
+  normalized_text: Re-run the resolver after every branch switch before continuing version-specific work.
+  source:
+    path: AGENTS.md
+    line_start: 83
+    line_end: 83
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0037
+    raw_excerpt: '- Re-run the resolver after every branch switch before continuing version-specific work.
+
+      '
+    raw_excerpt_sha256: 3034cf5cd1659627d1c8a0b3a42a0e5492625a16b7453908c6e9f6d972e52915
+  level_1: []
+  unresolved: true
+- atom_id: A0041
+  kind: list_item
+  normalized_text: On `INDEPENDENT_LEAF`, the returned WU document is the branch entry point; do not substitute the integration
+    plan's current gate.
+  source:
+    path: AGENTS.md
+    line_start: 84
+    line_end: 84
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0037
+    raw_excerpt: '- On `INDEPENDENT_LEAF`, the returned WU document is the branch entry point; do not substitute the integration
+      plan''s current gate.
+
+      '
+    raw_excerpt_sha256: cc4e5b302e43e7b2759b02385ed4434135e2efef04bc2433a9df70017a166cbc
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0042
+  kind: list_item
+  normalized_text: On `INTEGRATION_CONTROL_PLANE`, enter through the returned version index and follow its machine-readable
+    routing.
+  source:
+    path: AGENTS.md
+    line_start: 85
+    line_end: 85
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0037
+    raw_excerpt: '- On `INTEGRATION_CONTROL_PLANE`, enter through the returned version index and follow its machine-readable
+      routing.
+
+      '
+    raw_excerpt_sha256: d0e7fd47073d3ad41c74958136618dd7a7aac58bcdd3bf5c723cec4b76447ea5
+  level_1:
+  - APPLICABILITY
+  unresolved: false
+- atom_id: A0043
+  kind: list_item
+  normalized_text: The resolver selects context only. It does not grant implementation authorization or expand the selected
+    WU's scope.
+  source:
+    path: AGENTS.md
+    line_start: 86
+    line_end: 86
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: A0037
+    raw_excerpt: '- The resolver selects context only. It does not grant implementation authorization or expand the selected
+      WU''s scope.
+
+      '
+    raw_excerpt_sha256: 201bf2670f026f25262b0874d69eaaed55b7623508c210537cbf787679cf348e
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0044
+  kind: paragraph
+  normalized_text: For branches covered by this resolver, this section supersedes any fixed historical version-specific planning
+    paths elsewhere in this file. Historical `planning/0.3.6...` references remain relevant only to explicit 0.3.6 release-history
+    or handoff work and must not override the resolved entry document.
+  source:
+    path: AGENTS.md
+    line_start: 88
+    line_end: 88
+    heading_path:
+    - AGENTS.md
+    - Mandatory branch-aware planning entry
+    parent_atom_id: null
+    raw_excerpt: 'For branches covered by this resolver, this section supersedes any fixed historical version-specific planning
+      paths elsewhere in this file. Historical `planning/0.3.6...` references remain relevant only to explicit 0.3.6 release-history
+      or handoff work and must not override the resolved entry document.
+
+      '
+    raw_excerpt_sha256: 8bad9be45f5315358d0049886ddc1186773cf1a1d9136e83fdd47275c4a6e37c
+  level_1:
+  - APPLICABILITY
+  - RULE
+  unresolved: false
+- atom_id: A0045
+  kind: paragraph
+  normalized_text: 'For Project Authority work, use the canonical shipped Support Feature machine surface only:'
+  source:
+    path: AGENTS.md
+    line_start: 92
+    line_end: 92
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: null
+    raw_excerpt: 'For Project Authority work, use the canonical shipped Support Feature machine surface only:
+
+      '
+    raw_excerpt_sha256: 39bdb8e67a570484569ef6b6e7f0b57b08a83fcbdc1e0b2cde58897d6fe9fad2
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0046
+  kind: list_item
+  normalized_text: select current support policies through canonical `docs/Support_policy/policy/index.yaml` when working
+    from repository source, or the shipped `ptsip/support/policy/index.yaml` projection when installed;
+  source:
+    path: AGENTS.md
+    line_start: 94
+    line_end: 94
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: A0045
+    raw_excerpt: '1. select current support policies through canonical `docs/Support_policy/policy/index.yaml` when working
+      from repository source, or the shipped `ptsip/support/policy/index.yaml` projection when installed;
+
+      '
+    raw_excerpt_sha256: e499a1881df36929e13c1db53ac8e9199c8c56e8bf1b2642aeb3d3362e68df5d
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0047
+  kind: list_item
+  normalized_text: resolve authority contracts through the corresponding Support `registries/` boundary;
+  source:
+    path: AGENTS.md
+    line_start: 95
+    line_end: 95
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: A0045
+    raw_excerpt: '2. resolve authority contracts through the corresponding Support `registries/` boundary;
+
+      '
+    raw_excerpt_sha256: aa6d8aab460727f06584d5932ca75068ab22a5484b0fa28bddbceed11394dc19
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0048
+  kind: list_item
+  normalized_text: resolve Authority Role effects through the corresponding Support `registries/` boundary;
+  source:
+    path: AGENTS.md
+    line_start: 96
+    line_end: 96
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: A0045
+    raw_excerpt: '3. resolve Authority Role effects through the corresponding Support `registries/` boundary;
+
+      '
+    raw_excerpt_sha256: 45b649b1590dcd23196b5b9908e16852c628c0ab9d86db343eb49b816606ae00
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0049
+  kind: list_item
+  normalized_text: resolve repository/subject applicability through the corresponding Support `registries/` boundary;
+  source:
+    path: AGENTS.md
+    line_start: 97
+    line_end: 97
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: A0045
+    raw_excerpt: '4. resolve repository/subject applicability through the corresponding Support `registries/` boundary;
+
+      '
+    raw_excerpt_sha256: f6cdd84155360ea84854724e86dba3358bc5514993ccacadd0702326986ab6aa
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0050
+  kind: list_item
+  normalized_text: use `src/ptsip/governance/` for fresh eligibility, projection, and preauthorized transition evaluation.
+  source:
+    path: AGENTS.md
+    line_start: 98
+    line_end: 98
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: A0045
+    raw_excerpt: '5. use `src/ptsip/governance/` for fresh eligibility, projection, and preauthorized transition evaluation.
+
+      '
+    raw_excerpt_sha256: 345ee92d2e6513485143606396ee0900e576a59b55ba64fa683760bfb9ca448d
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0051
+  kind: paragraph
+  normalized_text: Design-time `planning/**` artifacts are not runtime authority and must not be used to infer missing machine
+    semantics. Subject matching is exact first and may relax only through an explicitly registered machine relationship. AI
+    confidence, prose similarity, and unregistered aliases cannot create authority.
+  source:
+    path: AGENTS.md
+    line_start: 100
+    line_end: 100
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: null
+    raw_excerpt: 'Design-time `planning/**` artifacts are not runtime authority and must not be used to infer missing machine
+      semantics. Subject matching is exact first and may relax only through an explicitly registered machine relationship.
+      AI confidence, prose similarity, and unregistered aliases cannot create authority.
+
+      '
+    raw_excerpt_sha256: b82fc5681d085ab522549e0eb16a0de55f701a0bc0736f030a7f82d3c41c3a68
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0052
+  kind: paragraph
+  normalized_text: Completed generated review artifacts are retained through Git history rather than the active planning surface
+    once their canonical result has been materialized and machine validation exists.
+  source:
+    path: AGENTS.md
+    line_start: 102
+    line_end: 102
+    heading_path:
+    - AGENTS.md
+    - Canonical Project Authority runtime
+    parent_atom_id: null
+    raw_excerpt: 'Completed generated review artifacts are retained through Git history rather than the active planning surface
+      once their canonical result has been materialized and machine validation exists.
+
+      '
+    raw_excerpt_sha256: 8a76921c789b40f3e98ce35d2ba50330d054ea51ca0fc7b77bde74749be8d848
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0053
+  kind: paragraph
+  normalized_text: Do not unconditionally preload repository-wide natural-language context.
+  source:
+    path: AGENTS.md
+    line_start: 106
+    line_end: 106
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: null
+    raw_excerpt: 'Do not unconditionally preload repository-wide natural-language context.
+
+      '
+    raw_excerpt_sha256: cb99cb9ba833083db9609e381fad8479318ee2a98c59e37f8a58111bc038a1c1
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0054
+  kind: paragraph
+  normalized_text: 'Normal entry order:'
+  source:
+    path: AGENTS.md
+    line_start: 108
+    line_end: 108
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: null
+    raw_excerpt: 'Normal entry order:
+
+      '
+    raw_excerpt_sha256: 175488b95654497f4460e400169a7677ff008fa42f8e64fab4ca8929f493e749
+  level_1: []
+  unresolved: true
+- atom_id: A0055
+  kind: list_item
+  normalized_text: run the Policy Resolver for the exact task scope and operation;
+  source:
+    path: AGENTS.md
+    line_start: 110
+    line_end: 110
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: A0054
+    raw_excerpt: '1. run the Policy Resolver for the exact task scope and operation;
+
+      '
+    raw_excerpt_sha256: cd2853b6457377dae08bc5c60daf6aca6f085f367d6d41a86225e98dd60d0e74
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0056
+  kind: list_item
+  normalized_text: load only the returned canonical MPD rule sections;
+  source:
+    path: AGENTS.md
+    line_start: 111
+    line_end: 111
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: A0054
+    raw_excerpt: '2. load only the returned canonical MPD rule sections;
+
+      '
+    raw_excerpt_sha256: 4c8efcd3d3d08594315f5873cfedf8aa30c5badf6800a1590e50b4b56673c285
+  level_1:
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0057
+  kind: list_item
+  normalized_text: when the operation is planning/version-specific, run the branch-aware Planning Entry Resolver and enter
+    through its exact returned document;
+  source:
+    path: AGENTS.md
+    line_start: 112
+    line_end: 112
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: A0054
+    raw_excerpt: '3. when the operation is planning/version-specific, run the branch-aware Planning Entry Resolver and enter
+      through its exact returned document;
+
+      '
+    raw_excerpt_sha256: 94b3583b660b2452f33bd0e51e85f589aa209474f051dbef845b3807f60bc715
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  - OTHER
+  unresolved: false
+- atom_id: A0058
+  kind: list_item
+  normalized_text: load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved
+    task actually requires them.
+  source:
+    path: AGENTS.md
+    line_start: 113
+    line_end: 113
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: A0054
+    raw_excerpt: '4. load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved
+      task actually requires them.
+
+      '
+    raw_excerpt_sha256: c52f9bedef13ec6d697d16973dc31bc415ace3ccc1c1962c7f177f18b7e4e026
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0059
+  kind: paragraph
+  normalized_text: '`MEMORY.md`, historical planning, release notes, and ADR/history are targeted operational or historical
+    context, not mandatory startup reads. Their presence must not override canonical machine-readable policy or Specification
+    authority. `MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound
+    Specification and canonical machine-readable contracts.'
+  source:
+    path: AGENTS.md
+    line_start: 115
+    line_end: 116
+    heading_path:
+    - AGENTS.md
+    - Context loading after policy resolution
+    parent_atom_id: null
+    raw_excerpt: '`MEMORY.md`, historical planning, release notes, and ADR/history are targeted operational or historical
+      context, not mandatory startup reads. Their presence must not override canonical machine-readable policy or Specification
+      authority.
+
+      `MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification
+      and canonical machine-readable contracts.
+
+      '
+    raw_excerpt_sha256: 78dc33ba14b399b0e7c40f1383dc7c141fb515355c3c07026cf7c5786f05086f
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0060
+  kind: paragraph
+  normalized_text: '`License-Authority/` is a closed License Authority Boundary and is not part of the default coding-agent
+    read set. Default behavior is `DO_NOT_ENTER`.'
+  source:
+    path: AGENTS.md
+    line_start: 120
+    line_end: 120
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: null
+    raw_excerpt: '`License-Authority/` is a closed License Authority Boundary and is not part of the default coding-agent
+      read set. Default behavior is `DO_NOT_ENTER`.
+
+      '
+    raw_excerpt_sha256: 7e182b1bb6189cec6b31bc5bf9526af30af2df6adc979fd9774dfbeb1eb8a1d8
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0061
+  kind: paragraph
+  normalized_text: Entry is permitted only for `EXPLICIT_USER_REQUEST`, `LICENSE_AUTHORITY_PATH_CHANGED`, `LICENSE_PROJECTION_MISMATCH`,
+    or `REPORTED_LICENSE_PROBLEM`.
+  source:
+    path: AGENTS.md
+    line_start: 122
+    line_end: 122
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: null
+    raw_excerpt: 'Entry is permitted only for `EXPLICIT_USER_REQUEST`, `LICENSE_AUTHORITY_PATH_CHANGED`, `LICENSE_PROJECTION_MISMATCH`,
+      or `REPORTED_LICENSE_PROBLEM`.
+
+      '
+    raw_excerpt_sha256: f8909c70b545a5b31c2cf3bac1bbf5be4a38d01aaecb897b8032d70c97c7fcc8
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0062
+  kind: paragraph
+  normalized_text: Normal Tool releases, normal Specification validation, Tool version changes, documentation mentions, keyword
+    detection, and AI semantic guesses do not authorize License Authority entry.
+  source:
+    path: AGENTS.md
+    line_start: 124
+    line_end: 124
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: null
+    raw_excerpt: 'Normal Tool releases, normal Specification validation, Tool version changes, documentation mentions, keyword
+      detection, and AI semantic guesses do not authorize License Authority entry.
+
+      '
+    raw_excerpt_sha256: 6489e1249045793655dee5ce68c9ffca3b7f295d8c5c73cdc8e48b0a33d8bfe0
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0063
+  kind: paragraph
+  normalized_text: 'When entry is permitted:'
+  source:
+    path: AGENTS.md
+    line_start: 126
+    line_end: 126
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: null
+    raw_excerpt: 'When entry is permitted:
+
+      '
+    raw_excerpt_sha256: d5c448a8814913a9d305abadf5584de7818c14a0b9b850988bb70caa7558faeb
+  level_1:
+  - APPLICABILITY
+  - OTHER
+  unresolved: false
+- atom_id: A0064
+  kind: list_item
+  normalized_text: evaluate the trigger without reading License content;
+  source:
+    path: AGENTS.md
+    line_start: 128
+    line_end: 128
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: A0063
+    raw_excerpt: '1. evaluate the trigger without reading License content;
+
+      '
+    raw_excerpt_sha256: a2dac6b9b953a3dcc2419a53fe1a0eac079eba1ffbf026f23f7d998f180e73a8
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0065
+  kind: list_item
+  normalized_text: read only `License-Authority/license-authority.yaml`;
+  source:
+    path: AGENTS.md
+    line_start: 129
+    line_end: 129
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: A0063
+    raw_excerpt: '2. read only `License-Authority/license-authority.yaml`;
+
+      '
+    raw_excerpt_sha256: d79fbfc30e1d6e255cc8e2f54a584951c1819ab18a2c18a4d6ca9c86777112a7
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0066
+  kind: list_item
+  normalized_text: resolve the requested operation from its closed operation map;
+  source:
+    path: AGENTS.md
+    line_start: 130
+    line_end: 130
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: A0063
+    raw_excerpt: '3. resolve the requested operation from its closed operation map;
+
+      '
+    raw_excerpt_sha256: b15ac88017e84a67d904c104cb2051a4499c68a9ae319d28ffa90a8125016e57
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0067
+  kind: list_item
+  normalized_text: read only documents declared for that operation;
+  source:
+    path: AGENTS.md
+    line_start: 131
+    line_end: 131
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: A0063
+    raw_excerpt: '4. read only documents declared for that operation;
+
+      '
+    raw_excerpt_sha256: bc91af5aca7f0dabac80990a478587dfc30877e6e1928e5cfe4c608abf250cba
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0068
+  kind: list_item
+  normalized_text: read external projections only when that operation declares them;
+  source:
+    path: AGENTS.md
+    line_start: 132
+    line_end: 132
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: A0063
+    raw_excerpt: '5. read external projections only when that operation declares them;
+
+      '
+    raw_excerpt_sha256: 47eda2bc0138aa7d27cdfe5571f767febb635884a6b72a1f23752f128f624c69
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0069
+  kind: list_item
+  normalized_text: fail closed on unknown operations, undeclared files, or paths outside `License-Authority/`.
+  source:
+    path: AGENTS.md
+    line_start: 133
+    line_end: 133
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: A0063
+    raw_excerpt: '6. fail closed on unknown operations, undeclared files, or paths outside `License-Authority/`.
+
+      '
+    raw_excerpt_sha256: b0bc206aa513b03c1b34e25d4c96a83bf9786618bbd00bf3e2f1097ce119307a
+  level_1:
+  - APPLICABILITY
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0070
+  kind: paragraph
+  normalized_text: Files outside `License-Authority/` may mention or describe licensing, but those references are non-authoritative
+    and are not incorporated into the License by reference. Do not scan the repository for license-like prose to determine
+    License Authority.
+  source:
+    path: AGENTS.md
+    line_start: 135
+    line_end: 135
+    heading_path:
+    - AGENTS.md
+    - License Authority entry discipline
+    parent_atom_id: null
+    raw_excerpt: 'Files outside `License-Authority/` may mention or describe licensing, but those references are non-authoritative
+      and are not incorporated into the License by reference. Do not scan the repository for license-like prose to determine
+      License Authority.
+
+      '
+    raw_excerpt_sha256: 70a77bd0302609081bdfb34d4a1ece06b2f9a1737a717a7e052d8b589576702f
+  level_1:
+  - APPLICABILITY
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0071
+  kind: list_item
+  normalized_text: Re-read the remote target branch HEAD immediately before every GitHub write, merge, release preparation,
+    or exact-SHA evidence claim.
+  source:
+    path: AGENTS.md
+    line_start: 139
+    line_end: 139
+    heading_path:
+    - AGENTS.md
+    - Repository-state discipline
+    parent_atom_id: null
+    raw_excerpt: '- Re-read the remote target branch HEAD immediately before every GitHub write, merge, release preparation,
+      or exact-SHA evidence claim.
+
+      '
+    raw_excerpt_sha256: 7f6a773e3c7f897726d8ec56fe287c362b553459df27d31197d7a221526c82d3
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0072
+  kind: list_item
+  normalized_text: Preserve maintainer commits and never force-update `main`.
+  source:
+    path: AGENTS.md
+    line_start: 140
+    line_end: 140
+    heading_path:
+    - AGENTS.md
+    - Repository-state discipline
+    parent_atom_id: null
+    raw_excerpt: '- Preserve maintainer commits and never force-update `main`.
+
+      '
+    raw_excerpt_sha256: ca7477bb0ff35b938c963d82514af59a8d4df780a11743dc057499fb25ca4646
+  level_1:
+  - RULE
+  - ACTION
+  unresolved: false
+- atom_id: A0073
+  kind: list_item
+  normalized_text: Do not claim tests, builds, releases, tags, or publication succeeded without evidence for the exact relevant
+    SHA.
+  source:
+    path: AGENTS.md
+    line_start: 141
+    line_end: 141
+    heading_path:
+    - AGENTS.md
+    - Repository-state discipline
+    parent_atom_id: null
+    raw_excerpt: '- Do not claim tests, builds, releases, tags, or publication succeeded without evidence for the exact relevant
+      SHA.
+
+      '
+    raw_excerpt_sha256: 5fe8b01a45f102fc21f543e3836559b2d603c154d6126f561fa9b707109489de
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0074
+  kind: list_item
+  normalized_text: Documentation descendants after a successful verification run record results; they do not replace the exact
+    source verification authority.
+  source:
+    path: AGENTS.md
+    line_start: 142
+    line_end: 142
+    heading_path:
+    - AGENTS.md
+    - Repository-state discipline
+    parent_atom_id: null
+    raw_excerpt: '- Documentation descendants after a successful verification run record results; they do not replace the
+      exact source verification authority.
+
+      '
+    raw_excerpt_sha256: 3cb56f288b3bc956e65f0a3ac0f2ca8e548b7ab25408c4f5d8857da128c13919
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0075
+  kind: list_item
+  normalized_text: Do not enter future Tool `0.3.6.1` implementation merely because its planning documents exist.
+  source:
+    path: AGENTS.md
+    line_start: 143
+    line_end: 143
+    heading_path:
+    - AGENTS.md
+    - Repository-state discipline
+    parent_atom_id: null
+    raw_excerpt: '- Do not enter future Tool `0.3.6.1` implementation merely because its planning documents exist.
+
+      '
+    raw_excerpt_sha256: d07dd3d6e602a4e20b885c9189ea70e8fa37ac9dd8f9079596509203b70a5f17
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0076
+  kind: list_item
+  normalized_text: Historical release notes, ADRs, and completed WU evidence are not rewritten to make current-version wording
+    uniform.
+  source:
+    path: AGENTS.md
+    line_start: 144
+    line_end: 144
+    heading_path:
+    - AGENTS.md
+    - Repository-state discipline
+    parent_atom_id: null
+    raw_excerpt: '- Historical release notes, ADRs, and completed WU evidence are not rewritten to make current-version wording
+      uniform.
+
+      '
+    raw_excerpt_sha256: a87f8aee386ebef3b4a449a60028af3e2eafd6a7b7d100e1bf00884c72e95fd7
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0077
+  kind: paragraph
+  normalized_text: 'Tool `0.3.6` development work is complete. Current ordered state:'
+  source:
+    path: AGENTS.md
+    line_start: 148
+    line_end: 148
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'Tool `0.3.6` development work is complete. Current ordered state:
+
+      '
+    raw_excerpt_sha256: 1ad89e1791cf0ba5e489e0908c3110e676dc83edf75c22f28d77ed3a992f53ee
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0078
+  kind: code_block
+  normalized_text: WU-00 0.3.6-draft normative baseline COMPLETE WU-01 lifecycle ontology/boundary rules COMPLETE WU-02 roles
+    + typed relationships + associated artifacts COMPLETE WU-03 canonical Responsibility Map v2 activation COMPLETE WU-04
+    template/materialization/effective-map pipeline COMPLETE / EXACT-SHA VERIFIED WU-05 repository dogfood / self-evaluation
+    COMPLETE / DOGFOOD REVIEWED WU-06 full regression/package/distribution verification COMPLETE / EXACT-SHA VERIFIED WU-07
+    final Specification freeze/release preparation COMPLETE / EXACT-SHA VERIFIED
+  source:
+    path: AGENTS.md
+    line_start: 151
+    line_end: 158
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: A0077
+    raw_excerpt: 'WU-00  0.3.6-draft normative baseline                     COMPLETE
+
+      WU-01  lifecycle ontology/boundary rules                   COMPLETE
+
+      WU-02  roles + typed relationships + associated artifacts  COMPLETE
+
+      WU-03  canonical Responsibility Map v2 activation          COMPLETE
+
+      WU-04  template/materialization/effective-map pipeline     COMPLETE / EXACT-SHA VERIFIED
+
+      WU-05  repository dogfood / self-evaluation                COMPLETE / DOGFOOD REVIEWED
+
+      WU-06  full regression/package/distribution verification   COMPLETE / EXACT-SHA VERIFIED
+
+      WU-07  final Specification freeze/release preparation      COMPLETE / EXACT-SHA VERIFIED
+
+      '
+    raw_excerpt_sha256: a1cffdc6be5e4eae755fdf8aa13922404ca34c502014267d539edb315e6b4f0d
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0079
+  kind: paragraph
+  normalized_text: WU-07 used **Strategy B — Release Contract Strengthening**.
+  source:
+    path: AGENTS.md
+    line_start: 161
+    line_end: 161
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'WU-07 used **Strategy B — Release Contract Strengthening**.
+
+      '
+    raw_excerpt_sha256: 56769552e4b16fb20efc60dd331438d059dcf158f4e41b2f66ac20c61a33e3fc
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0080
+  kind: paragraph
+  normalized_text: 'Exact WU-07 verification authority:'
+  source:
+    path: AGENTS.md
+    line_start: 163
+    line_end: 163
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'Exact WU-07 verification authority:
+
+      '
+    raw_excerpt_sha256: 77f042bf4775b98629bee416edf501c57061f66c6d07cb8b52052bfea328f205
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0081
+  kind: code_block
+  normalized_text: 'source SHA: 452d0f8b0c78bdebb180ceb2b9994485f59eb43a workflow run/job: 32640319047 / 97196299107 Python:
+    3.14.6 pytest: 331 passed / 0 failed Specification: 0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea profile coverage:
+    unassigned_count=0 Product Artifact: PASS / exact snapshot binding PTSIP-PKG-001: 0 definite violations wheel/VPMS smoke:
+    PASS commit status: self-hosted/tooling-test = success'
+  source:
+    path: AGENTS.md
+    line_start: 166
+    line_end: 175
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: A0080
+    raw_excerpt: 'source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
+
+      workflow run/job: 32640319047 / 97196299107
+
+      Python:           3.14.6
+
+      pytest:           331 passed / 0 failed
+
+      Specification:    0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
+
+      profile coverage: unassigned_count=0
+
+      Product Artifact: PASS / exact snapshot binding
+
+      PTSIP-PKG-001:    0 definite violations
+
+      wheel/VPMS smoke: PASS
+
+      commit status:    self-hosted/tooling-test = success
+
+      '
+    raw_excerpt_sha256: 708f1d6bfb203f825dc57e98c4a8e700a1c81d58e7150bdc60978e4219c0724f
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0082
+  kind: paragraph
+  normalized_text: 'The exact WU-07 entry baseline remains:'
+  source:
+    path: AGENTS.md
+    line_start: 178
+    line_end: 178
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'The exact WU-07 entry baseline remains:
+
+      '
+    raw_excerpt_sha256: 48242a4ad88d39f7e3ff6b87d3c8b60422b07306ad60df7103ac1e62ebefbcaa
+  level_1: []
+  unresolved: true
+- atom_id: A0083
+  kind: code_block
+  normalized_text: 8b2c0819e10b58902a780a094a0f52c603c39fba
+  source:
+    path: AGENTS.md
+    line_start: 181
+    line_end: 181
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: A0082
+    raw_excerpt: '8b2c0819e10b58902a780a094a0f52c603c39fba
+
+      '
+    raw_excerpt_sha256: 55b8bf2b72de2685699ab26382c02de0f33e0f3ec3ed0f948e2fed082493656c
+  level_1: []
+  unresolved: true
+- atom_id: A0084
+  kind: paragraph
+  normalized_text: The completion/verification authority is the later exact candidate `452d0f8...`; closure/documentation
+    commits after it do not replace that verification authority.
+  source:
+    path: AGENTS.md
+    line_start: 184
+    line_end: 184
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'The completion/verification authority is the later exact candidate `452d0f8...`; closure/documentation commits
+      after it do not replace that verification authority.
+
+      '
+    raw_excerpt_sha256: 546575dac881cb96f8d7c0b50de1f88ca6b0907d69842e0bc31c21508568c702
+  level_1:
+  - RULE
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0085
+  kind: paragraph
+  normalized_text: 'The next release boundary is exact-main handoff:'
+  source:
+    path: AGENTS.md
+    line_start: 186
+    line_end: 186
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'The next release boundary is exact-main handoff:
+
+      '
+    raw_excerpt_sha256: d044e11343046dea9c3258fa56ced9c7022dfd3ef3a05f421d406dc41a666439
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0086
+  kind: code_block
+  normalized_text: approved Tool 0.3.6 state -> main -> fresh exact main SHA -> tooling-test.yml on that exact SHA -> require
+    self-hosted/tooling-test success -> release.yml from the same current main SHA -> release contract PASS -> draft GitHub
+    Release targeting the same SHA -> maintainer publication -> tooling-release.yml publication build/verification -> PyPI
+    Trusted Publishing
+  source:
+    path: AGENTS.md
+    line_start: 189
+    line_end: 198
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: A0085
+    raw_excerpt: "approved Tool 0.3.6 state -> main\n    -> fresh exact main SHA\n    -> tooling-test.yml on that exact SHA\n\
+      \    -> require self-hosted/tooling-test success\n    -> release.yml from the same current main SHA\n    -> release\
+      \ contract PASS\n    -> draft GitHub Release targeting the same SHA\n    -> maintainer publication\n    -> tooling-release.yml\
+      \ publication build/verification\n    -> PyPI Trusted Publishing\n"
+    raw_excerpt_sha256: 266485881dbd7ef0b78238e4ab13aba480b2d1857ca5881f7d1b6bea8eda06d6
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0087
+  kind: paragraph
+  normalized_text: Do not describe Tool `0.3.6` as published until that publication boundary actually succeeds.
+  source:
+    path: AGENTS.md
+    line_start: 201
+    line_end: 201
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 completion state
+    parent_atom_id: null
+    raw_excerpt: 'Do not describe Tool `0.3.6` as published until that publication boundary actually succeeds.
+
+      '
+    raw_excerpt_sha256: a8934fe72fc3df071befea6c857f87025e20b3b897d6bd6da940d3d577de9d5c
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0088
+  kind: paragraph
+  normalized_text: 'Tool `0.3.6` is bound to:'
+  source:
+    path: AGENTS.md
+    line_start: 205
+    line_end: 205
+    heading_path:
+    - AGENTS.md
+    - Current Specification binding
+    parent_atom_id: null
+    raw_excerpt: 'Tool `0.3.6` is bound to:
+
+      '
+    raw_excerpt_sha256: a05d5422aca39b27762935db6bbedfd9e6bc6c42dc1f5cd29fd07c185a152717
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0089
+  kind: code_block
+  normalized_text: Specification 0.3.6-draft SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+  source:
+    path: AGENTS.md
+    line_start: 208
+    line_end: 209
+    heading_path:
+    - AGENTS.md
+    - Current Specification binding
+    parent_atom_id: A0088
+    raw_excerpt: 'Specification 0.3.6-draft
+
+      SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
+
+      '
+    raw_excerpt_sha256: d65a4a4608e49d218ee335b9022425d0df50b8dff8736f071911486d24f09b72
+  level_1: []
+  unresolved: true
+- atom_id: A0090
+  kind: paragraph
+  normalized_text: A new immutable Specification revision is required only for a genuine normative change. Workflow, test,
+    planning, status, release-note, or other documentation-only changes do not move `SPEC_REVISION` by themselves.
+  source:
+    path: AGENTS.md
+    line_start: 212
+    line_end: 212
+    heading_path:
+    - AGENTS.md
+    - Current Specification binding
+    parent_atom_id: null
+    raw_excerpt: 'A new immutable Specification revision is required only for a genuine normative change. Workflow, test,
+      planning, status, release-note, or other documentation-only changes do not move `SPEC_REVISION` by themselves.
+
+      '
+    raw_excerpt_sha256: c5268b8b84ce6be2aaad96d3743cc1c7f95322880064a42ca9cf4624ebfa47e2
+  level_1:
+  - RULE
+  - ACTION
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0091
+  kind: paragraph
+  normalized_text: 'PTSIP classification answers:'
+  source:
+    path: AGENTS.md
+    line_start: 216
+    line_end: 216
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: null
+    raw_excerpt: 'PTSIP classification answers:
+
+      '
+    raw_excerpt_sha256: dd2df6693974e27c8fba5c2864aa6eaa10a4944cca74f5377be1939b85bc2fdf
+  level_1: []
+  unresolved: true
+- atom_id: A0092
+  kind: code_block
+  normalized_text: Who primarily owns this project responsibility across its lifecycle?
+  source:
+    path: AGENTS.md
+    line_start: 219
+    line_end: 219
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0091
+    raw_excerpt: 'Who primarily owns this project responsibility across its lifecycle?
+
+      '
+    raw_excerpt_sha256: 2352f30090fa3043e3091defd3634fce1ac81c9fb418993dce8eb7ea4898b9db
+  level_1: []
+  unresolved: true
+- atom_id: A0093
+  kind: paragraph
+  normalized_text: 'Canonical Tool `0.3.6` classifications are exactly:'
+  source:
+    path: AGENTS.md
+    line_start: 222
+    line_end: 222
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: null
+    raw_excerpt: 'Canonical Tool `0.3.6` classifications are exactly:
+
+      '
+    raw_excerpt_sha256: 4cb80a3eb3c949a9f0dde7bd7beff8603f444ac6835694e8d5113f624b592bc5
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0094
+  kind: code_block
+  normalized_text: PRODUCT DEVELOPMENT_TOOLING DELIVERY OPERATIONS NEUTRAL_CONTRACT
+  source:
+    path: AGENTS.md
+    line_start: 225
+    line_end: 229
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0093
+    raw_excerpt: 'PRODUCT
+
+      DEVELOPMENT_TOOLING
+
+      DELIVERY
+
+      OPERATIONS
+
+      NEUTRAL_CONTRACT
+
+      '
+    raw_excerpt_sha256: 13fd021fb899dc0f4bb4bcf072eac6d5dbb13d51e96e828ede5a9079c7b8496c
+  level_1: []
+  unresolved: true
+- atom_id: A0095
+  kind: paragraph
+  normalized_text: '`TOOLCHAIN` is historical Tool `0.3.5` migration input only. It must not be emitted or preserved as a
+    canonical Tool `0.3.6` alias.'
+  source:
+    path: AGENTS.md
+    line_start: 232
+    line_end: 232
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: null
+    raw_excerpt: '`TOOLCHAIN` is historical Tool `0.3.5` migration input only. It must not be emitted or preserved as a canonical
+      Tool `0.3.6` alias.
+
+      '
+    raw_excerpt_sha256: 23524265aea2e93fa0af820f29e9414d494117d80150377d8599a6ab8fafff6e
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0096
+  kind: paragraph
+  normalized_text: Classification is determined from governing lifecycle obligation, not file type, path, framework, language,
+    executable status, workflow provider, compilation behavior, test status, majority of files/jobs/steps, runtime duration,
+    invocation frequency, or confidence score.
+  source:
+    path: AGENTS.md
+    line_start: 234
+    line_end: 234
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: null
+    raw_excerpt: 'Classification is determined from governing lifecycle obligation, not file type, path, framework, language,
+      executable status, workflow provider, compilation behavior, test status, majority of files/jobs/steps, runtime duration,
+      invocation frequency, or confidence score.
+
+      '
+    raw_excerpt_sha256: 886200f47c8e0ede1e03c9a9f52ecd27764419076ff9deba51d311547a4c7f5f
+  level_1:
+  - ACTION
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0097
+  kind: paragraph
+  normalized_text: 'Important boundaries:'
+  source:
+    path: AGENTS.md
+    line_start: 236
+    line_end: 236
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: null
+    raw_excerpt: 'Important boundaries:
+
+      '
+    raw_excerpt_sha256: 0674718ebf35016e97dce335bf8a70dea9f7b707cd05c416fef4e3931097e225
+  level_1: []
+  unresolved: true
+- atom_id: A0098
+  kind: list_item
+  normalized_text: Product-specific verification may be `PRODUCT`.
+  source:
+    path: AGENTS.md
+    line_start: 238
+    line_end: 238
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- Product-specific verification may be `PRODUCT`.
+
+      '
+    raw_excerpt_sha256: b6e815ac5bd1bc049ba7860439c1c62af0f7876617a49f621c1566d96cc879c1
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0099
+  kind: list_item
+  normalized_text: Reusable verification/test SDK/framework/harness infrastructure may be `DEVELOPMENT_TOOLING`.
+  source:
+    path: AGENTS.md
+    line_start: 239
+    line_end: 239
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- Reusable verification/test SDK/framework/harness infrastructure may be `DEVELOPMENT_TOOLING`.
+
+      '
+    raw_excerpt_sha256: 39213195c4f11d3a51ddf527f4e728cf3f285db157e0257d92d67d884f09a2b8
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0100
+  kind: list_item
+  normalized_text: Local/intermediate development build support is normally `DEVELOPMENT_TOOLING`.
+  source:
+    path: AGENTS.md
+    line_start: 240
+    line_end: 240
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- Local/intermediate development build support is normally `DEVELOPMENT_TOOLING`.
+
+      '
+    raw_excerpt_sha256: eb79791faf2068ba5f1ac560fb84c1bcd87142929942accb2e47e1361da5b27e
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0101
+  kind: list_item
+  normalized_text: Authoritative release-unit assembly/signing/packaging/publication/deployment-to-destination is normally
+    `DELIVERY`.
+  source:
+    path: AGENTS.md
+    line_start: 241
+    line_end: 241
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- Authoritative release-unit assembly/signing/packaging/publication/deployment-to-destination is normally
+      `DELIVERY`.
+
+      '
+    raw_excerpt_sha256: 5772cca6c632b30c5b087a8fafd0d7ea883aa4f55d9634d90c20c99226fafc6d
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0102
+  kind: list_item
+  normalized_text: '`DELIVERY` ends at delivery handoff; ongoing health/recovery/reconciliation/maintenance is `OPERATIONS`.'
+  source:
+    path: AGENTS.md
+    line_start: 242
+    line_end: 242
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- `DELIVERY` ends at delivery handoff; ongoing health/recovery/reconciliation/maintenance is `OPERATIONS`.
+
+      '
+    raw_excerpt_sha256: 40ab632de546b0cb044b3fc8d880744df6ca919fc84187221344e84ac21e5257
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0103
+  kind: list_item
+  normalized_text: '`NEUTRAL_CONTRACT` requires non-executable, non-owning, lifecycle-independent contract responsibility.'
+  source:
+    path: AGENTS.md
+    line_start: 243
+    line_end: 243
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- `NEUTRAL_CONTRACT` requires non-executable, non-owning, lifecycle-independent contract responsibility.
+
+      '
+    raw_excerpt_sha256: f982b87ebaab5c79e4817afb6ecfe664a105da3bd080aed5ba6cac5609460403
+  level_1: []
+  unresolved: true
+- atom_id: A0104
+  kind: list_item
+  normalized_text: Material mixed-lifecycle responsibilities should split when independently governable; do not choose a majority
+    lifecycle.
+  source:
+    path: AGENTS.md
+    line_start: 244
+    line_end: 244
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- Material mixed-lifecycle responsibilities should split when independently governable; do not choose a
+      majority lifecycle.
+
+      '
+    raw_excerpt_sha256: f9e6f4c20257922d673c122f7b637ec549d4482ad4cefe4acafb9d5f7ed18cfc
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0105
+  kind: list_item
+  normalized_text: Material unresolved ownership fails closed.
+  source:
+    path: AGENTS.md
+    line_start: 245
+    line_end: 245
+    heading_path:
+    - AGENTS.md
+    - Tool 0.3.6 lifecycle reasoning
+    parent_atom_id: A0097
+    raw_excerpt: '- Material unresolved ownership fails closed.
+
+      '
+    raw_excerpt_sha256: 3030b309a353d36dde7418b80d67c8141a7d8ae7b8b679f30eb80df8681cadaf
+  level_1: []
+  unresolved: true
+- atom_id: A0106
+  kind: paragraph
+  normalized_text: 'Keep these distinct:'
+  source:
+    path: AGENTS.md
+    line_start: 249
+    line_end: 249
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: null
+    raw_excerpt: 'Keep these distinct:
+
+      '
+    raw_excerpt_sha256: 3ebd19a8621983a753a2e5d1530e3bb6b01395807d8ecef35489cc047d5caf09
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0107
+  kind: code_block
+  normalized_text: classification = primary lifecycle ownership roles = coarse responsibility characteristics relationships
+    = project-owned typed directed semantics source_mode / derived origin = declaration/materialization provenance VPMS Verification
+    Purpose = what verification protects/verifies
+  source:
+    path: AGENTS.md
+    line_start: 252
+    line_end: 265
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: A0106
+    raw_excerpt: "classification\n    = primary lifecycle ownership\n\nroles\n    = coarse responsibility characteristics\n\
+      \nrelationships\n    = project-owned typed directed semantics\n\nsource_mode / derived origin\n    = declaration/materialization\
+      \ provenance\n\nVPMS Verification Purpose\n    = what verification protects/verifies\n"
+    raw_excerpt_sha256: 000e406b910fb9d4399b69e04e2f8b478d8328888d90817bb2aadb06b327dfdf
+  level_1:
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0108
+  kind: paragraph
+  normalized_text: 'Canonical roles:'
+  source:
+    path: AGENTS.md
+    line_start: 268
+    line_end: 268
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: null
+    raw_excerpt: 'Canonical roles:
+
+      '
+    raw_excerpt_sha256: 04ea564e980880f3200c6e38bb84268874baa1a6b3de8302dd2b3c4cf85cc73b
+  level_1: []
+  unresolved: true
+- atom_id: A0109
+  kind: code_block
+  normalized_text: IMPLEMENTATION VERIFICATION AUTOMATION CONFIGURATION DOCUMENTATION GOVERNANCE
+  source:
+    path: AGENTS.md
+    line_start: 271
+    line_end: 276
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: A0108
+    raw_excerpt: 'IMPLEMENTATION
+
+      VERIFICATION
+
+      AUTOMATION
+
+      CONFIGURATION
+
+      DOCUMENTATION
+
+      GOVERNANCE
+
+      '
+    raw_excerpt_sha256: b00411cb8320f874d80292639ee65351a51d0f54197e04819e1d2684ebd801a8
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0110
+  kind: paragraph
+  normalized_text: 'Canonical project-declared relationship types:'
+  source:
+    path: AGENTS.md
+    line_start: 279
+    line_end: 279
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: null
+    raw_excerpt: 'Canonical project-declared relationship types:
+
+      '
+    raw_excerpt_sha256: 4595dbafe5936c6efef327a09d35bbe87fa8c3bb4d176dac8dc82e81e53794af
+  level_1: []
+  unresolved: true
+- atom_id: A0111
+  kind: code_block
+  normalized_text: IMPORTS LINKS LOADS INVOKES READS GENERATES BUILDS PACKAGES PUBLISHES DEPLOYS VERIFIES MANAGES DOCUMENTS
+    SPECIFIES GOVERNS
+  source:
+    path: AGENTS.md
+    line_start: 282
+    line_end: 296
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: A0110
+    raw_excerpt: 'IMPORTS
+
+      LINKS
+
+      LOADS
+
+      INVOKES
+
+      READS
+
+      GENERATES
+
+      BUILDS
+
+      PACKAGES
+
+      PUBLISHES
+
+      DEPLOYS
+
+      VERIFIES
+
+      MANAGES
+
+      DOCUMENTS
+
+      SPECIFIES
+
+      GOVERNS
+
+      '
+    raw_excerpt_sha256: c9de75e1b3af4af3c5154d00f64292d686f6341afe8b78efa93f536e1fbb3452
+  level_1: []
+  unresolved: true
+- atom_id: A0112
+  kind: paragraph
+  normalized_text: Do not derive project-owned relationships automatically from observed evidence. Evidence can support a
+    proposal; explicit project declaration remains authority.
+  source:
+    path: AGENTS.md
+    line_start: 299
+    line_end: 299
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map v2 axes
+    parent_atom_id: null
+    raw_excerpt: 'Do not derive project-owned relationships automatically from observed evidence. Evidence can support a proposal;
+      explicit project declaration remains authority.
+
+      '
+    raw_excerpt_sha256: 241c19d9cd5f48afa5dfdd6a9e95bf9c1fc5cce33de4fc4e15341712405a9862
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0113
+  kind: paragraph
+  normalized_text: 'Canonical source modes are:'
+  source:
+    path: AGENTS.md
+    line_start: 303
+    line_end: 303
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map declaration modes
+    parent_atom_id: null
+    raw_excerpt: 'Canonical source modes are:
+
+      '
+    raw_excerpt_sha256: b7cf32da65df95700a75aa97c8ce04768d50f434fc72d836d5f5cc57e4492fe7
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0114
+  kind: code_block
+  normalized_text: explicit template hybrid
+  source:
+    path: AGENTS.md
+    line_start: 306
+    line_end: 308
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map declaration modes
+    parent_atom_id: A0113
+    raw_excerpt: 'explicit
+
+      template
+
+      hybrid
+
+      '
+    raw_excerpt_sha256: 070e74a82b0ac9d38a0a3cb9602c7d7b0e3a01460192e14bdfba324fc56d5c59
+  level_1: []
+  unresolved: true
+- atom_id: A0115
+  kind: paragraph
+  normalized_text: Template selection is explicit and immutable-revision-bound. Never select a template from repository layout,
+    language, framework, manifest presence, or confidence.
+  source:
+    path: AGENTS.md
+    line_start: 311
+    line_end: 311
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map declaration modes
+    parent_atom_id: null
+    raw_excerpt: 'Template selection is explicit and immutable-revision-bound. Never select a template from repository layout,
+      language, framework, manifest presence, or confidence.
+
+      '
+    raw_excerpt_sha256: fdb0a177a876aee29a090086765a5d62053a0a9543f509df7a51eb16e9dafacc
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0116
+  kind: paragraph
+  normalized_text: Materialization is deterministic and non-authoritative. It must not infer lifecycle ownership, repair architecture,
+    create project intent, or silently rewrite the Source Project Profile.
+  source:
+    path: AGENTS.md
+    line_start: 313
+    line_end: 313
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map declaration modes
+    parent_atom_id: null
+    raw_excerpt: 'Materialization is deterministic and non-authoritative. It must not infer lifecycle ownership, repair architecture,
+      create project intent, or silently rewrite the Source Project Profile.
+
+      '
+    raw_excerpt_sha256: 17cc387a7e65114887e9e4198e4575d9902e736d63f47860ddff65e6b9945a18
+  level_1:
+  - RULE
+  - ACTION
+  - OTHER
+  unresolved: false
+- atom_id: A0117
+  kind: paragraph
+  normalized_text: All source modes resolve to a validated Canonical Effective Responsibility Map for downstream Tool behavior.
+    Preserve source declaration and materialized provenance separately.
+  source:
+    path: AGENTS.md
+    line_start: 315
+    line_end: 315
+    heading_path:
+    - AGENTS.md
+    - Responsibility Map declaration modes
+    parent_atom_id: null
+    raw_excerpt: 'All source modes resolve to a validated Canonical Effective Responsibility Map for downstream Tool behavior.
+      Preserve source declaration and materialized provenance separately.
+
+      '
+    raw_excerpt_sha256: 4bba21e70a31c0025f772d6172788f40c17209a9276a9e5e0bb04445573afb50
+  level_1: []
+  unresolved: true
+- atom_id: A0118
+  kind: paragraph
+  normalized_text: Canonical Tool `0.3.6` Project Profiles use `classification` as primary lifecycle ownership authority.
+    A second canonical `lifecycle_owner` field must not compete with it.
+  source:
+    path: AGENTS.md
+    line_start: 319
+    line_end: 319
+    heading_path:
+    - AGENTS.md
+    - Adoption and migration discipline
+    parent_atom_id: null
+    raw_excerpt: 'Canonical Tool `0.3.6` Project Profiles use `classification` as primary lifecycle ownership authority. A
+      second canonical `lifecycle_owner` field must not compete with it.
+
+      '
+    raw_excerpt_sha256: a47f17f5103f203c070478cb3491d209d0a53b9766086160538e95f1cc8ea813
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0119
+  kind: paragraph
+  normalized_text: 'When explicit adoption/resolution records architecture facts, preserve applicable facts such as:'
+  source:
+    path: AGENTS.md
+    line_start: 321
+    line_end: 321
+    heading_path:
+    - AGENTS.md
+    - Adoption and migration discipline
+    parent_atom_id: null
+    raw_excerpt: 'When explicit adoption/resolution records architecture facts, preserve applicable facts such as:
+
+      '
+    raw_excerpt_sha256: a46da58aaa74fc5d01011218aa0f77386b106bb017cb3b864d84e7b2375be22a
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0120
+  kind: code_block
+  normalized_text: classification roles purpose shipped runtime_required executable associated artifacts typed relationships
+    explicit release/compatibility metadata
+  source:
+    path: AGENTS.md
+    line_start: 324
+    line_end: 332
+    heading_path:
+    - AGENTS.md
+    - Adoption and migration discipline
+    parent_atom_id: A0119
+    raw_excerpt: 'classification
+
+      roles
+
+      purpose
+
+      shipped
+
+      runtime_required
+
+      executable
+
+      associated artifacts
+
+      typed relationships
+
+      explicit release/compatibility metadata
+
+      '
+    raw_excerpt_sha256: 5416608b7738c3c1a340a35663bf849b2abe6e0908474c9dd135243027a3324a
+  level_1:
+  - APPLICABILITY
+  - ACTION
+  unresolved: false
+- atom_id: A0121
+  kind: paragraph
+  normalized_text: Legacy Tool `0.3.5` `TOOLCHAIN`, `lifecycle_owner`, old boundary roots, consumers, analysis inputs, or
+    untyped policy edges are migration evidence only. Do not blindly convert them into Tool `0.3.6` authority.
+  source:
+    path: AGENTS.md
+    line_start: 335
+    line_end: 335
+    heading_path:
+    - AGENTS.md
+    - Adoption and migration discipline
+    parent_atom_id: null
+    raw_excerpt: 'Legacy Tool `0.3.5` `TOOLCHAIN`, `lifecycle_owner`, old boundary roots, consumers, analysis inputs, or untyped
+      policy edges are migration evidence only. Do not blindly convert them into Tool `0.3.6` authority.
+
+      '
+    raw_excerpt_sha256: c91174eec4ed86ff3fc4c80f239e2fbe5d5c94cc1383e5f5fad7223f0a31c54e
+  level_1:
+  - RULE
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0122
+  kind: paragraph
+  normalized_text: Evidence-backed Tool `0.3.5 -> 0.3.6` assisted migration is owned by Tool `0.3.6.1`. Tool `0.3.6` release
+    closure does not authorize implementing that continuation.
+  source:
+    path: AGENTS.md
+    line_start: 337
+    line_end: 337
+    heading_path:
+    - AGENTS.md
+    - Adoption and migration discipline
+    parent_atom_id: null
+    raw_excerpt: 'Evidence-backed Tool `0.3.5 -> 0.3.6` assisted migration is owned by Tool `0.3.6.1`. Tool `0.3.6` release
+      closure does not authorize implementing that continuation.
+
+      '
+    raw_excerpt_sha256: de0d75fff4baa2b90ef68180251f361873260ffa222e2233e5601a1d7de5f844
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0123
+  kind: paragraph
+  normalized_text: 'Keep these responsibilities separate:'
+  source:
+    path: AGENTS.md
+    line_start: 341
+    line_end: 341
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: null
+    raw_excerpt: 'Keep these responsibilities separate:
+
+      '
+    raw_excerpt_sha256: 3ab1dc9a52ff796569f01e251c6243e8bd0708ad196f217928863d97f2390d0d
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0124
+  kind: code_block
+  normalized_text: Specification -> normative rules Decision Authority -> which explicit coordinated architecture answer won
+    Project Profile / Responsibility Map -> durable project-owned architecture declaration Observed evidence -> what repository/artifacts
+    actually do Conformance Evaluation -> whether declaration + evidence satisfy applicable rules
+  source:
+    path: AGENTS.md
+    line_start: 344
+    line_end: 357
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: A0123
+    raw_excerpt: "Specification\n    -> normative rules\n\nDecision Authority\n    -> which explicit coordinated architecture\
+      \ answer won\n\nProject Profile / Responsibility Map\n    -> durable project-owned architecture declaration\n\nObserved\
+      \ evidence\n    -> what repository/artifacts actually do\n\nConformance Evaluation\n    -> whether declaration + evidence\
+      \ satisfy applicable rules\n"
+    raw_excerpt_sha256: 41e603f80d4ed90591c764f8a5d300195364bba8bcfe6d0aa1a442773a778315
+  level_1:
+  - ACTION
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0125
+  kind: paragraph
+  normalized_text: A Decision Authority does not replace the selected Project Profile and does not prove conformance.
+  source:
+    path: AGENTS.md
+    line_start: 360
+    line_end: 360
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: null
+    raw_excerpt: 'A Decision Authority does not replace the selected Project Profile and does not prove conformance.
+
+      '
+    raw_excerpt_sha256: d9e083af806cd5c8558031d40f0b7e4b1258acded8a64fa9e72988fd9aba747f
+  level_1: []
+  unresolved: true
+- atom_id: A0126
+  kind: paragraph
+  normalized_text: 'For GitHub coordination, the Reference Tool uses:'
+  source:
+    path: AGENTS.md
+    line_start: 362
+    line_end: 362
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: null
+    raw_excerpt: 'For GitHub coordination, the Reference Tool uses:
+
+      '
+    raw_excerpt_sha256: 995d2cd76e0b53c4ff516da49d24c0c057f5d0481378e45831657b23c8eac737
+  level_1:
+  - APPLICABILITY
+  - OTHER
+  unresolved: false
+- atom_id: A0127
+  kind: code_block
+  normalized_text: refs/heads/ptsip-policy
+  source:
+    path: AGENTS.md
+    line_start: 365
+    line_end: 365
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: A0126
+    raw_excerpt: 'refs/heads/ptsip-policy
+
+      '
+    raw_excerpt_sha256: 0423c3246e50f2ed1f87589ca022f4e4d6f18446a736e948dea13d91ec9df0bf
+  level_1:
+  - APPLICABILITY
+  unresolved: false
+- atom_id: A0128
+  kind: paragraph
+  normalized_text: Preserve stable decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation,
+    read-side authority freshness, deterministic reconciliation, fail-closed behavior, and global/local state separation.
+  source:
+    path: AGENTS.md
+    line_start: 368
+    line_end: 368
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: null
+    raw_excerpt: 'Preserve stable decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation,
+      read-side authority freshness, deterministic reconciliation, fail-closed behavior, and global/local state separation.
+
+      '
+    raw_excerpt_sha256: 2adb3e34d4997edeac912fe80c5c00ed8c56f3c3086bf7fead289d6368f96492
+  level_1:
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0129
+  kind: paragraph
+  normalized_text: A complete local declaration is not sufficient reason to skip relevant distributed authority reads. Semantic
+    equivalence is architecture meaning, not YAML formatting.
+  source:
+    path: AGENTS.md
+    line_start: 370
+    line_end: 370
+    heading_path:
+    - AGENTS.md
+    - Decision Authority / Project Profile / evidence
+    parent_atom_id: null
+    raw_excerpt: 'A complete local declaration is not sufficient reason to skip relevant distributed authority reads. Semantic
+      equivalence is architecture meaning, not YAML formatting.
+
+      '
+    raw_excerpt_sha256: 855e9fa49c966d785aeec6599777405bed9fe779631796fa351f5f8101d66555
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0130
+  kind: paragraph
+  normalized_text: Inspection and Pilot behavior are read-only by default. Tool-owned caches, reports, and local decision
+    databases stay outside the Consumer Repository unless explicitly directed otherwise.
+  source:
+    path: AGENTS.md
+    line_start: 374
+    line_end: 374
+    heading_path:
+    - AGENTS.md
+    - Read-only default and mutation safety
+    parent_atom_id: null
+    raw_excerpt: 'Inspection and Pilot behavior are read-only by default. Tool-owned caches, reports, and local decision databases
+      stay outside the Consumer Repository unless explicitly directed otherwise.
+
+      '
+    raw_excerpt_sha256: 6cf48ea2cc24382fb40324dfa9690773e0d2f578669f060942f17fa4fa0195c9
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0131
+  kind: paragraph
+  normalized_text: Prepared profile writes must reject stale repository/profile state. Do not combine evidence from different
+    revisions into one stable claim.
+  source:
+    path: AGENTS.md
+    line_start: 376
+    line_end: 376
+    heading_path:
+    - AGENTS.md
+    - Read-only default and mutation safety
+    parent_atom_id: null
+    raw_excerpt: 'Prepared profile writes must reject stale repository/profile state. Do not combine evidence from different
+      revisions into one stable claim.
+
+      '
+    raw_excerpt_sha256: 311cc80deb9ab1431c92d7d6f762ec1a3e5e115b012cb87542ca60ca0de35cd5
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0132
+  kind: paragraph
+  normalized_text: Artifact owner and producer are different concepts. Development Tooling or Delivery may build a Product
+    Artifact, but Product distribution contents still have to satisfy the Product lifecycle boundary.
+  source:
+    path: AGENTS.md
+    line_start: 380
+    line_end: 380
+    heading_path:
+    - AGENTS.md
+    - Product Artifact boundary
+    parent_atom_id: null
+    raw_excerpt: 'Artifact owner and producer are different concepts. Development Tooling or Delivery may build a Product
+      Artifact, but Product distribution contents still have to satisfy the Product lifecycle boundary.
+
+      '
+    raw_excerpt_sha256: 8bdb8bf6a444001c40397b3101e7635d8c189826ee3f35be71722db7f7bbd6ce
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0133
+  kind: paragraph
+  normalized_text: Release verification must inspect actual built artifacts, not packaging configuration as proof. Preserve
+    snapshot-bound Product Artifact evidence and fail closed on definite `PTSIP-PKG-001` violations.
+  source:
+    path: AGENTS.md
+    line_start: 382
+    line_end: 382
+    heading_path:
+    - AGENTS.md
+    - Product Artifact boundary
+    parent_atom_id: null
+    raw_excerpt: 'Release verification must inspect actual built artifacts, not packaging configuration as proof. Preserve
+      snapshot-bound Product Artifact evidence and fail closed on definite `PTSIP-PKG-001` violations.
+
+      '
+    raw_excerpt_sha256: aff471a17470e4b3d02445501a40c77d282ca67565919276897e40b4ce4a174f
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0134
+  kind: paragraph
+  normalized_text: PTSIP asks who owns a responsibility across its lifecycle. VPMS asks why a Verification Case exists and
+    what it protects.
+  source:
+    path: AGENTS.md
+    line_start: 386
+    line_end: 386
+    heading_path:
+    - AGENTS.md
+    - VPMS boundary
+    parent_atom_id: null
+    raw_excerpt: 'PTSIP asks who owns a responsibility across its lifecycle. VPMS asks why a Verification Case exists and
+      what it protects.
+
+      '
+    raw_excerpt_sha256: ca3bfd9c19cf5648331fff4922f91dee7a4185ae37e33a18eedda76bcccd65ed
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0135
+  kind: paragraph
+  normalized_text: PTSIP classification and VPMS Verification Purpose remain independent. PTSIP core must not depend on VPMS.
+    VPMS consumes only a narrow read-only projection of validated effective PTSIP metadata.
+  source:
+    path: AGENTS.md
+    line_start: 388
+    line_end: 388
+    heading_path:
+    - AGENTS.md
+    - VPMS boundary
+    parent_atom_id: null
+    raw_excerpt: 'PTSIP classification and VPMS Verification Purpose remain independent. PTSIP core must not depend on VPMS.
+      VPMS consumes only a narrow read-only projection of validated effective PTSIP metadata.
+
+      '
+    raw_excerpt_sha256: 238f58a9652d1bb1ac427618733dea950930d33a1c21142f2c7155fc4dcbdcda
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0136
+  kind: paragraph
+  normalized_text: Current VPMS compatibility vocabulary may retain `PRODUCT | TOOLCHAIN`; VPMS `TOOLCHAIN` is not a Tool
+    `0.3.6` PTSIP classification.
+  source:
+    path: AGENTS.md
+    line_start: 390
+    line_end: 390
+    heading_path:
+    - AGENTS.md
+    - VPMS boundary
+    parent_atom_id: null
+    raw_excerpt: 'Current VPMS compatibility vocabulary may retain `PRODUCT | TOOLCHAIN`; VPMS `TOOLCHAIN` is not a Tool `0.3.6`
+      PTSIP classification.
+
+      '
+    raw_excerpt_sha256: b5cba4dc61b11175e72c239713aca7c249cda2a1da10420d57940c11bfeaba62
+  level_1:
+  - OTHER
+  unresolved: false
+- atom_id: A0137
+  kind: paragraph
+  normalized_text: VPMS PASS != PTSIP CONFORMANT, and PTSIP CONFORMANT != functional verification PASS.
+  source:
+    path: AGENTS.md
+    line_start: 392
+    line_end: 392
+    heading_path:
+    - AGENTS.md
+    - VPMS boundary
+    parent_atom_id: null
+    raw_excerpt: 'VPMS PASS != PTSIP CONFORMANT, and PTSIP CONFORMANT != functional verification PASS.
+
+      '
+    raw_excerpt_sha256: 7eecf450e615c6b5a8bce6c272d861a1f43e6ebd2933d771ff83b72affeca497
+  level_1:
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0138
+  kind: paragraph
+  normalized_text: 'Completed Consumer Repository outcomes are only:'
+  source:
+    path: AGENTS.md
+    line_start: 396
+    line_end: 396
+    heading_path:
+    - AGENTS.md
+    - Conformance behavior
+    parent_atom_id: null
+    raw_excerpt: 'Completed Consumer Repository outcomes are only:
+
+      '
+    raw_excerpt_sha256: 11a3eec814a82948cd67c68508a8c5392b574f6d673de7b6377f7bbd7cb4f0e6
+  level_1:
+  - RULE
+  - OTHER
+  unresolved: false
+- atom_id: A0139
+  kind: code_block
+  normalized_text: CONFORMANT NON_CONFORMANT INCOMPLETE
+  source:
+    path: AGENTS.md
+    line_start: 399
+    line_end: 401
+    heading_path:
+    - AGENTS.md
+    - Conformance behavior
+    parent_atom_id: A0138
+    raw_excerpt: 'CONFORMANT
+
+      NON_CONFORMANT
+
+      INCOMPLETE
+
+      '
+    raw_excerpt_sha256: 82873df6f4183bd1badde0325f063d41da636cc5652450a243463f6083a18d06
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0140
+  kind: paragraph
+  normalized_text: Do not equate zero findings with conformance. Blocking evidence gaps remain `INCOMPLETE` unless a definite
+    mandatory violation already establishes `NON_CONFORMANT`.
+  source:
+    path: AGENTS.md
+    line_start: 404
+    line_end: 404
+    heading_path:
+    - AGENTS.md
+    - Conformance behavior
+    parent_atom_id: null
+    raw_excerpt: 'Do not equate zero findings with conformance. Blocking evidence gaps remain `INCOMPLETE` unless a definite
+      mandatory violation already establishes `NON_CONFORMANT`.
+
+      '
+    raw_excerpt_sha256: bdc0aecbbf888e40fc19828108e7e929d09f2deb157180557449d15620e109e6
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0141
+  kind: paragraph
+  normalized_text: Do not let project-local policy weaken universal PTSIP requirements.
+  source:
+    path: AGENTS.md
+    line_start: 406
+    line_end: 406
+    heading_path:
+    - AGENTS.md
+    - Conformance behavior
+    parent_atom_id: null
+    raw_excerpt: 'Do not let project-local policy weaken universal PTSIP requirements.
+
+      '
+    raw_excerpt_sha256: 684201ad39795e8b0d4cf64b83ee45b142a0f013579b27f44b23ee712db183b4
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0142
+  kind: paragraph
+  normalized_text: Primary regression/release verification uses capability-bound self-hosted Windows X64 execution with PowerShell
+    and Python 3.14 available through `py -3.14`.
+  source:
+    path: AGENTS.md
+    line_start: 410
+    line_end: 410
+    heading_path:
+    - AGENTS.md
+    - Release and CI resource policy
+    parent_atom_id: null
+    raw_excerpt: 'Primary regression/release verification uses capability-bound self-hosted Windows X64 execution with PowerShell
+      and Python 3.14 available through `py -3.14`.
+
+      '
+    raw_excerpt_sha256: 8cac54e0224724aebb0c38c8158772f198dd242ecf7f6705502ebff80c6d66a9
+  level_1:
+  - EVIDENCE
+  - OTHER
+  unresolved: false
+- atom_id: A0143
+  kind: paragraph
+  normalized_text: Do not hard-code a machine name. Preserve the existing exact-SHA checkout/status model. The narrow GNU/Linux
+    PyPI Trusted Publishing job may remain the GitHub-hosted exception.
+  source:
+    path: AGENTS.md
+    line_start: 412
+    line_end: 412
+    heading_path:
+    - AGENTS.md
+    - Release and CI resource policy
+    parent_atom_id: null
+    raw_excerpt: 'Do not hard-code a machine name. Preserve the existing exact-SHA checkout/status model. The narrow GNU/Linux
+      PyPI Trusted Publishing job may remain the GitHub-hosted exception.
+
+      '
+    raw_excerpt_sha256: 8f821a371394edebe9f6b8e131e0285874cd89b1da5bdfd4dcef53c61667d417
+  level_1:
+  - RULE
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0144
+  kind: paragraph
+  normalized_text: Do not create a parallel workflow where an existing release/test workflow can be narrowly maintained.
+  source:
+    path: AGENTS.md
+    line_start: 414
+    line_end: 414
+    heading_path:
+    - AGENTS.md
+    - Release and CI resource policy
+    parent_atom_id: null
+    raw_excerpt: 'Do not create a parallel workflow where an existing release/test workflow can be narrowly maintained.
+
+      '
+    raw_excerpt_sha256: 1724a34aafb642f60503a407310abfb2a85f2bd4c66cec025541e21d9a66222b
+  level_1:
+  - RULE
+  unresolved: false
+- atom_id: A0145
+  kind: paragraph
+  normalized_text: 'Use this order:'
+  source:
+    path: AGENTS.md
+    line_start: 418
+    line_end: 418
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: null
+    raw_excerpt: 'Use this order:
+
+      '
+    raw_excerpt_sha256: 8d764085c87ab2cfb7c49546a0afe40761785d8e91b5bbbd4a7cb7081badbd7b
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0146
+  kind: list_item
+  normalized_text: bound canonical Specification and normative companion assets from the same immutable revision;
+  source:
+    path: AGENTS.md
+    line_start: 420
+    line_end: 420
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '1. bound canonical Specification and normative companion assets from the same immutable revision;
+
+      '
+    raw_excerpt_sha256: c8676dd3353bf0c6d2f7c514a65f25a4ecb2e8c6b0e0df45172e6a6518189b71
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0147
+  kind: list_item
+  normalized_text: relevant Decision Authority winner when distributed coordination applies;
+  source:
+    path: AGENTS.md
+    line_start: 421
+    line_end: 421
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '2. relevant Decision Authority winner when distributed coordination applies;
+
+      '
+    raw_excerpt_sha256: 4956410c80db905a8adb69a9b85a4f80ab9218e9160173d3f846e8904e9de396
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0148
+  kind: list_item
+  normalized_text: repository Project Profile / Responsibility Map;
+  source:
+    path: AGENTS.md
+    line_start: 422
+    line_end: 422
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '3. repository Project Profile / Responsibility Map;
+
+      '
+    raw_excerpt_sha256: 7dbdfae7bf1048b811a6e5fe405c547556e04b072b352934aca51a778e7f1bef
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0149
+  kind: list_item
+  normalized_text: observed repository/dependency/artifact evidence;
+  source:
+    path: AGENTS.md
+    line_start: 423
+    line_end: 423
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '4. observed repository/dependency/artifact evidence;
+
+      '
+    raw_excerpt_sha256: d7388c22a27115278006e0ebc21d64fb90f3e3d5d6300b7d8e77381728de7856
+  level_1:
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0150
+  kind: list_item
+  normalized_text: imported external evidence with provenance;
+  source:
+    path: AGENTS.md
+    line_start: 424
+    line_end: 424
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '5. imported external evidence with provenance;
+
+      '
+    raw_excerpt_sha256: b2fe558ad8018f1c54e31c033d6d97c69db27e3af8bc3e297b3270f2f364fdb0
+  level_1:
+  - ACTION
+  - EVIDENCE
+  unresolved: false
+- atom_id: A0151
+  kind: list_item
+  normalized_text: project ADR/history;
+  source:
+    path: AGENTS.md
+    line_start: 425
+    line_end: 425
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '6. project ADR/history;
+
+      '
+    raw_excerpt_sha256: ef9dfd9e2afb9698bd2dad6983e5f7f60b2472aa13ef3815f9af6bd76b203aea
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0152
+  kind: list_item
+  normalized_text: this repository-operational contract;
+  source:
+    path: AGENTS.md
+    line_start: 426
+    line_end: 426
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '7. this repository-operational contract;
+
+      '
+    raw_excerpt_sha256: 13ecf7f18400c7120c51da95a0abbbea13efb0760a1aa11f888e68cdadbb8fb3
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0153
+  kind: list_item
+  normalized_text: informal examples.
+  source:
+    path: AGENTS.md
+    line_start: 427
+    line_end: 427
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: A0145
+    raw_excerpt: '8. informal examples.
+
+      '
+    raw_excerpt_sha256: c1d2d189e24bc13a897f1959fc9ab7ae68cedd7da1537ad220a28aeed8ec5e5f
+  level_1:
+  - ACTION
+  unresolved: false
+- atom_id: A0154
+  kind: paragraph
+  normalized_text: This priority does not make Decision Authority a conformance oracle. Authority governs which explicit answer
+    won; observed evidence still governs what the repository actually does.
+  source:
+    path: AGENTS.md
+    line_start: 429
+    line_end: 429
+    heading_path:
+    - AGENTS.md
+    - Instruction priority
+    parent_atom_id: null
+    raw_excerpt: 'This priority does not make Decision Authority a conformance oracle. Authority governs which explicit answer
+      won; observed evidence still governs what the repository actually does.
+
+      '
+    raw_excerpt_sha256: 47651fe49b061b2bd68f65a1a831b4f40c05052b0c6d0c196b5979c9407e33c1
+  level_1:
+  - EVIDENCE
+  unresolved: false

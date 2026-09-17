@@ -1,0 +1,12 @@
+schema_version: ptsip-agent-instruction-level1-index/v1
+stage: LEVEL_1_ONLY
+source_ref: AGENTS.md
+registry_ref: registry.yaml
+level_1_projections:
+  APPLICABILITY: level1/applicability.yaml
+  RULE: level1/rule.yaml
+  ACTION: level1/action.yaml
+  EVIDENCE: level1/evidence.yaml
+  OTHER: level1/other.yaml
+unresolved_ref: unresolved.yaml
+level_2_materialized: false
