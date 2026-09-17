@@ -37,6 +37,14 @@ scope_bindings:
           sections:
             - identity_and_resolution
 
+  .agent:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - agent_instruction_entry_taxonomy_trial
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+
   developer:
     default_refs:
       - policy_id: MPD-0001
@@ -72,17 +80,6 @@ scope_bindings:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
           - identity_and_resolution
-          - canonical_and_runtime_projection
-
-  developer/agent_instructions:
-    default_refs:
-      - policy_id: MPD-0001
-        sections:
-          - namespace
-          - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
-          - agent_instruction_entry_taxonomy_trial
           - canonical_and_runtime_projection
 
   developer/policy:
