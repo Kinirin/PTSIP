@@ -69,7 +69,7 @@ def test_progressive_level1_replaces_pass_prose_with_machine_plus_residual(
     )
 
 
-def test_level1_unresolved_stays_natural_language_and_blocks_level2(
+def test_level1_unresolved_stays_natural_language_without_blocking_passed_atoms(
     tmp_path: Path,
 ) -> None:
     repo = _repo(tmp_path)
@@ -88,7 +88,10 @@ def test_level1_unresolved_stays_natural_language_and_blocks_level2(
         (repo / ".agent/index.yaml").read_text(encoding="utf-8")
     )
     progressive = index["progressive_reasoning"]
-    assert progressive["next_level_allowed"] is False
+    assert progressive["highest_materialized_level"] == 1
+    assert progressive["per_atom_advancement"] is True
+    assert progressive["next_level_candidate_count"] > 0
+    assert progressive["unresolved_blocks_next_level_candidates"] is False
     assert progressive["previous_level_rerun_forbidden"] is True
 
 
