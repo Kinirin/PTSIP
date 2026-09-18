@@ -50,16 +50,37 @@ rules:
     managed_level_1_transition:
       activation: EXPLICIT
       activation_precondition: CURRENT_LEVEL_1_MATERIALIZATION
-      classified_atom_destination: .agent/registry.yaml
-      classified_instruction_authority_after_activation: ".agent/registry.yaml#atoms[].instruction_text"
+      level_1_pass_destination: .agent/stages/level1.json
+      level_1_unresolved_destination: .agent/unresolved/level1.json
+      registry_role_after_activation: IDENTITY_AND_ROUTING_METADATA_ONLY
+      natural_language_payload_in_registry_after_activation: FORBIDDEN
+      provenance_markdown_as_reasoning_input: FORBIDDEN
       unresolved_state_after_activation: UNRESOLVED
       unresolved_must_remain_unclassified: true
-      original_agents_snapshot: .agent/provenance/AGENTS.pre-level1.md
-      original_agents_snapshot_is_authority: false
       root_agents_role_after_activation: ENTRY_BOOTSTRAP_ONLY
       level_2_during_transition: FORBIDDEN
+    progressive_reasoning_pipeline:
+      ordered_levels:
+        - LEVEL_1
+        - LEVEL_2
+        - LEVEL_3
+      stage_contract:
+        next_level_input: PREVIOUS_LEVEL_PASS_HEADER_PLUS_REMAINING_NATURAL_RESIDUAL_ONLY
+        rerun_previous_passed_level: FORBIDDEN
+        machine_resolved_fragments_must_not_remain_in_next_natural_reasoning_input: true
+        unresolved_remains_natural_language_at_current_level: true
+        next_level_requires_current_level_unresolved_zero: true
+      runtime_entry:
+        consume_deepest_active_machine_stage: true
+        consume_only_remaining_natural_residual: true
+        provenance_or_history_as_reasoning_input: FORBIDDEN
+      partial_mechanization:
+        allowed: true
+        full_mechanization_required: false
+        machine_constants_preferred_when_exact_semantics_are_available: true
+        natural_residual_allowed_only_for_semantics_not_yet_mechanized: true
     level_1_entry_resolution:
-      routing_stage: LEVEL_1_ONLY
+      routing_stage: DEEPEST_ACTIVE_PROGRESSIVE_STAGE
       default_routes:
         READ:
           - APPLICABILITY
@@ -148,10 +169,12 @@ rules:
       ai_or_person_escalation_only_when_required_by_current_operation: true
     source_and_authority:
       pre_activation_source_instruction_text_is_authoritative_for_its_own_instruction_semantics: true
-      post_activation_managed_instruction_authority: ".agent/registry.yaml#atoms[].instruction_text"
-      derived_classification_is_non_authoritative_before_activation: true
+      post_activation_level_1_pass_authority: ".agent/stages/level1.json#pass[]"
+      post_activation_level_1_unresolved_authority: ".agent/unresolved/level1.json#items[]"
+      registry_is_instruction_authority_after_activation: false
       activated_level_1_labels_are_routing_metadata: true
-      classifier_must_not_rewrite_source_instruction_text: true
+      machine_fields_and_natural_residual_jointly_preserve_remaining_semantics: true
+      classifier_must_not_rewrite_unresolved_natural_language: true
       ai_classification_does_not_create_policy_authority: true
 
   normative_contract_architecture:
