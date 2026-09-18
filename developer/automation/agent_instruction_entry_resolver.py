@@ -49,6 +49,18 @@ def _load(path: Path, label: str) -> Mapping[str, object]:
     return value
 
 
+def _load_json(path: Path, label: str) -> Mapping[str, object]:
+    if not path.is_file():
+        raise AgentInstructionEntryResolverError(f"{label} missing: {path}")
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise AgentInstructionEntryResolverError(f"{label} invalid JSON") from exc
+    if not isinstance(value, Mapping):
+        raise AgentInstructionEntryResolverError(f"{label} must be an object")
+    return value
+
+
 def _ref(root: Path, base: Path, value: object, label: str) -> Path:
     if not isinstance(value, str) or not value:
         raise AgentInstructionEntryResolverError(f"{label} must be a path")
@@ -82,6 +94,99 @@ def _compact(atom: Mapping[str, object]) -> dict[str, object]:
     return {"atom_id": atom_id, "level_1": list(labels), "text": text.rstrip("\r\n")}
 
 
+def _resolve_progressive(
+    root: Path,
+    agent: Path,
+    index: Mapping[str, object],
+    operation: str,
+    labels: list[str],
+) -> dict[str, object]:
+    progressive = index.get("progressive_reasoning")
+    if not isinstance(progressive, Mapping) or progressive.get("active_level") != 1:
+        raise AgentInstructionEntryResolverError("progressive Level 1 state is invalid")
+
+    stage = _load_json(
+        _ref(root, agent, progressive.get("level_1_ref"), "level_1_ref"),
+        "Level 1 stage",
+    )
+    unresolved_doc = _load_json(
+        _ref(
+            root,
+            agent,
+            progressive.get("level_1_unresolved_ref"),
+            "level_1_unresolved_ref",
+        ),
+        "Level 1 unresolved",
+    )
+    if stage.get("level") != 1 or unresolved_doc.get("level") != 1:
+        raise AgentInstructionEntryResolverError("Level 1 staged artifact mismatch")
+
+    raw_pass = stage.get("pass")
+    raw_unresolved = unresolved_doc.get("items")
+    if not isinstance(raw_pass, list) or not isinstance(raw_unresolved, list):
+        raise AgentInstructionEntryResolverError("Level 1 staged collections invalid")
+
+    instructions: list[dict[str, object]] = []
+    seen: set[str] = set()
+    for raw in raw_pass:
+        if not isinstance(raw, Mapping):
+            raise AgentInstructionEntryResolverError("invalid Level 1 pass item")
+        atom_id = raw.get("atom_id")
+        header = raw.get("pass_header")
+        if not isinstance(atom_id, str) or not isinstance(header, Mapping):
+            raise AgentInstructionEntryResolverError("invalid Level 1 pass identity")
+        item_labels = header.get("labels")
+        if not isinstance(item_labels, list) or any(x not in LEVEL1 for x in item_labels):
+            raise AgentInstructionEntryResolverError(f"invalid pass labels: {atom_id}")
+        if not set(item_labels).intersection(labels) or atom_id in seen:
+            continue
+        machine = raw.get("machine")
+        residual = raw.get("natural_residual")
+        if not isinstance(machine, Mapping) or not isinstance(residual, list):
+            raise AgentInstructionEntryResolverError(f"invalid staged payload: {atom_id}")
+        instructions.append(
+            {
+                "atom_id": atom_id,
+                "pass_header": dict(header),
+                "machine": dict(machine),
+                "natural_residual": list(residual),
+            }
+        )
+        seen.add(atom_id)
+
+    unresolved: list[dict[str, object]] = []
+    for raw in raw_unresolved:
+        if (
+            not isinstance(raw, Mapping)
+            or not isinstance(raw.get("atom_id"), str)
+            or not isinstance(raw.get("natural_language"), str)
+        ):
+            raise AgentInstructionEntryResolverError("invalid Level 1 unresolved item")
+        unresolved.append(
+            {
+                "atom_id": raw["atom_id"],
+                "status": "UNRESOLVED",
+                "heading_path": list(raw.get("heading_path", [])),
+                "natural_language": raw["natural_language"],
+            }
+        )
+
+    return {
+        "schema_version": "ptsip-agent-instruction-entry-resolution/v2",
+        "stage": "PROGRESSIVE_LEVEL_1",
+        "operation": operation,
+        "selected_level_1": labels,
+        "scope_filtering": "NOT_AVAILABLE_AT_LEVEL_1",
+        "level_2_used": False,
+        "previous_level_rerun": False,
+        "unresolved_policy": "ALWAYS_INCLUDE_UNTIL_CLASSIFIED",
+        "instruction_count": len(instructions),
+        "unresolved_count": len(unresolved),
+        "instructions": instructions,
+        "unresolved": unresolved,
+    }
+
+
 def resolve_entry(
     repository: str | Path,
     *,
@@ -100,7 +205,18 @@ def resolve_entry(
     except ValueError as exc:
         raise AgentInstructionEntryResolverError("agent root escapes repository") from exc
 
+    labels = list(routes[operation])
+    for raw in include:
+        label = raw.upper()
+        if label not in widen_allowed:
+            raise AgentInstructionEntryResolverError(f"unsupported Level 1 widen: {label}")
+        if label not in labels:
+            labels.append(label)
+
     index = _load(agent / "index.yaml", ".agent/index.yaml")
+    if isinstance(index.get("progressive_reasoning"), Mapping):
+        return _resolve_progressive(root, agent, index, operation, labels)
+
     registry = _load(_ref(root, agent, index.get("registry_ref"), "registry_ref"), "registry")
     if index.get("level_2_materialized") is not False or registry.get("level_2_materialized") is not False:
         raise AgentInstructionEntryResolverError("Level 2 routing is not active")
@@ -118,14 +234,6 @@ def resolve_entry(
             raise AgentInstructionEntryResolverError(f"duplicate atom id: {atom_id}")
         ordered.append(raw)
         by_id[atom_id] = raw
-
-    labels = list(routes[operation])
-    for raw in include:
-        label = raw.upper()
-        if label not in widen_allowed:
-            raise AgentInstructionEntryResolverError(f"unsupported Level 1 widen: {label}")
-        if label not in labels:
-            labels.append(label)
 
     selected: set[str] = set()
     for label in labels:
@@ -153,7 +261,7 @@ def resolve_entry(
 
     return {
         "schema_version": "ptsip-agent-instruction-entry-resolution/v1",
-        "stage": "LEVEL_1_ONLY",
+        "stage": "LEGACY_LEVEL_1",
         "operation": operation,
         "selected_level_1": labels,
         "scope_filtering": "NOT_AVAILABLE_AT_LEVEL_1",
@@ -184,11 +292,22 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Agent entry {result['operation']}: {result['instruction_count']} managed, {result['unresolved_count']} unresolved")
     print("Level 1:", ", ".join(result["selected_level_1"]))
     for item in result["instructions"]:
-        print(f"[{item['atom_id']}|{','.join(item['level_1'])}] {item['text']}")
+        if result["stage"] == "PROGRESSIVE_LEVEL_1":
+            machine = json.dumps(item["machine"], ensure_ascii=True, separators=(",", ":"))
+            residual = item["natural_residual"]
+            suffix = f" residual={json.dumps(residual, ensure_ascii=True)}" if residual else ""
+            print(f"[{item['atom_id']}|PASS] machine={machine}{suffix}")
+        else:
+            print(f"[{item['atom_id']}|{','.join(item['level_1'])}] {item['text']}")
     for item in result["unresolved"]:
-        heading = " > ".join(item["heading_path"])
-        suffix = f"|{heading}" if heading else ""
-        print(f"[{item['atom_id']}|UNRESOLVED{suffix}] {item['text']}")
+        if result["stage"] == "PROGRESSIVE_LEVEL_1":
+            heading = " > ".join(item["heading_path"])
+            suffix = f"|{heading}" if heading else ""
+            print(f"[{item['atom_id']}|UNRESOLVED{suffix}] {item['natural_language']}")
+        else:
+            heading = " > ".join(item["heading_path"])
+            suffix = f"|{heading}" if heading else ""
+            print(f"[{item['atom_id']}|UNRESOLVED{suffix}] {item['text']}")
     return 0
 
 
