@@ -70,24 +70,39 @@ rules:
         rerun_previous_passed_level: FORBIDDEN
         machine_resolved_fragments_must_not_remain_in_next_natural_reasoning_input: true
         unresolved_remains_natural_language_at_current_level: true
-        unresolved_advances_to_next_level: false
+        unresolved_is_direct_next_level_candidate: false
+        unresolved_may_transition_to_pass_when_current_level_becomes_exactly_classifiable: true
+        pass_transition_immediately_creates_next_level_candidate: true
         unresolved_blocks_other_passed_atoms: false
         current_level_unresolved_zero_required_for_next_level: false
+        next_level_candidate_set_is_dynamic: true
       runtime_entry:
         progression_unit: ATOM
         consume_deepest_proven_machine_stage_per_atom: true
         consume_only_remaining_natural_residual: true
-        current_level_unresolved_stays_at_current_level: true
+        current_level_unresolved_is_retained_until_same_level_pass_transition: true
+        unresolved_pass_transition_does_not_skip_current_level: true
         provenance_or_history_as_reasoning_input: FORBIDDEN
       partial_mechanization:
         allowed: true
         full_mechanization_required: false
         machine_constants_preferred_when_exact_semantics_are_available: true
         natural_residual_allowed_only_for_semantics_not_yet_mechanized: true
+      unresolved_reassessment:
+        source: .agent/unresolved/level1.json
+        allowed_triggers:
+          - CLASSIFIER_CAPABILITY_EXPANSION
+          - TAXONOMY_EXTENSION
+          - EXACT_RESPONSIBILITY_BOUNDARY_BECOMES_RESOLVABLE
+        reassess_only_at_current_level: true
+        positive_result_transition: UNRESOLVED_TO_PASS
+        negative_result_behavior: KEEP_UNRESOLVED
+        forced_assignment_to_reduce_unresolved_count: FORBIDDEN
       taxonomy_evolution:
         unresolved_may_persist_without_forced_classification: true
         new_level_1_category_may_be_added_when_distinct_semantics_are_evidenced: true
         taxonomy_extension_may_re_evaluate_unresolved_atoms_only: true
+        newly_passed_unresolved_atom_becomes_next_level_candidate: true
         adding_category_does_not_force_existing_pass_reclassification: true
         existing_category_semantic_change_requires_explicit_revalidation: true
     level_1_entry_resolution:
