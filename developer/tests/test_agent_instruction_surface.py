@@ -37,3 +37,21 @@ def test_policy_binding_uses_root_agent_surface_only() -> None:
     )["scope_bindings"]
     assert ".agent" in bindings
     assert "developer/agent_instructions" not in bindings
+
+
+def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_gate() -> None:
+    policy = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+    )
+    trial = policy["rules"]["agent_instruction_entry_taxonomy_trial"]
+    stage = trial["progressive_reasoning_pipeline"]["stage_contract"]
+    runtime = trial["progressive_reasoning_pipeline"]["runtime_entry"]
+    evolution = trial["progressive_reasoning_pipeline"]["taxonomy_evolution"]
+
+    assert stage["next_level_input"] == "CURRENT_LEVEL_PASS_SUBSET_ONLY"
+    assert stage["unresolved_advances_to_next_level"] is False
+    assert stage["unresolved_blocks_other_passed_atoms"] is False
+    assert stage["current_level_unresolved_zero_required_for_next_level"] is False
+    assert runtime["progression_unit"] == "ATOM"
+    assert evolution["unresolved_may_persist_without_forced_classification"] is True
+    assert evolution["new_level_1_category_may_be_added_when_distinct_semantics_are_evidenced"] is True
