@@ -47,7 +47,7 @@ Before repository work, classify the current operation as READ, MODIFY, PLAN, VE
 
     python -m developer.automation.agent_instruction_entry_resolver <READ|MODIFY|PLAN|VERIFY|RELEASE>
 
-The resolver consumes the deepest active machine stage plus only the natural-language residual that has not yet been mechanized. It must not re-run a previous passed classification level.
+The resolver consumes the deepest proven machine stage for each atom plus only the natural-language residual that has not yet been mechanized. It must not re-run a previous passed classification level.
 
 Level 1 UNRESOLVED items remain natural language at Level 1 until positively resolved or the Level 1 taxonomy is extended. They are not coerced to OTHER. Level 2 may advance only the Level 1 PASS subset; Level 1 UNRESOLVED items do not block unrelated PASS atoms and are not consumed by Level 2.
 
@@ -251,7 +251,8 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
     index.pop("provenance_ref", None)
     index["management_mode"] = "PROGRESSIVE_LEVEL_1"
     index["progressive_reasoning"] = {
-        "active_level": 1,
+        "highest_materialized_level": 1,
+        "per_atom_advancement": True,
         "level_1_ref": LEVEL1_STAGE_REF,
         "level_1_unresolved_ref": LEVEL1_UNRESOLVED_REF,
         "previous_level_rerun_forbidden": True,
@@ -298,7 +299,11 @@ def check(repository: str | Path) -> tuple[str, ...]:
     index = _load_yaml(agent / "index.yaml", "index")
     registry = _load_yaml(agent / "registry.yaml", "registry")
     progressive = index.get("progressive_reasoning")
-    if not isinstance(progressive, Mapping) or progressive.get("active_level") != 1:
+    if (
+        not isinstance(progressive, Mapping)
+        or progressive.get("highest_materialized_level") != 1
+        or progressive.get("per_atom_advancement") is not True
+    ):
         return ("LEVEL_1_PROGRESSIVE_MODE_NOT_ACTIVE",)
 
     stage_path = agent / str(progressive.get("level_1_ref", ""))
