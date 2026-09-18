@@ -47,6 +47,50 @@ rules:
       developer_tool_implementation_root: developer/automation/
       developer_tool_root_is_management_surface: false
       product_distribution: FORBIDDEN
+    managed_level_1_transition:
+      activation: EXPLICIT
+      activation_precondition: CURRENT_LEVEL_1_MATERIALIZATION
+      classified_atom_destination: .agent/registry.yaml
+      classified_instruction_authority_after_activation: ".agent/registry.yaml#atoms[].instruction_text"
+      unresolved_state_after_activation: UNRESOLVED
+      unresolved_must_remain_unclassified: true
+      original_agents_snapshot: .agent/provenance/AGENTS.pre-level1.md
+      original_agents_snapshot_is_authority: false
+      root_agents_role_after_activation: ENTRY_BOOTSTRAP_ONLY
+      level_2_during_transition: FORBIDDEN
+    level_1_entry_resolution:
+      routing_stage: LEVEL_1_ONLY
+      default_routes:
+        READ:
+          - APPLICABILITY
+          - RULE
+          - ACTION
+        MODIFY:
+          - APPLICABILITY
+          - RULE
+          - ACTION
+        PLAN:
+          - APPLICABILITY
+          - RULE
+          - ACTION
+        VERIFY:
+          - APPLICABILITY
+          - RULE
+          - ACTION
+          - EVIDENCE
+        RELEASE:
+          - APPLICABILITY
+          - RULE
+          - ACTION
+          - EVIDENCE
+      explicit_widen_allowed:
+        - OTHER
+        - EVIDENCE
+      unresolved_policy: ALWAYS_INCLUDE_UNTIL_CLASSIFIED
+      scope_filtering: NOT_AVAILABLE_AT_LEVEL_1
+      level_2_used: false
+      preserve_registry_order: true
+      deduplicate_by_atom_id: true
     level_1_vocabulary:
       - APPLICABILITY
       - RULE
@@ -103,8 +147,10 @@ rules:
       must_not_be_silently_coerced_to_other: true
       ai_or_person_escalation_only_when_required_by_current_operation: true
     source_and_authority:
-      source_instruction_text_remains_authoritative_for_its_own_instruction_semantics: true
-      derived_classification_is_non_authoritative: true
+      pre_activation_source_instruction_text_is_authoritative_for_its_own_instruction_semantics: true
+      post_activation_managed_instruction_authority: ".agent/registry.yaml#atoms[].instruction_text"
+      derived_classification_is_non_authoritative_before_activation: true
+      activated_level_1_labels_are_routing_metadata: true
       classifier_must_not_rewrite_source_instruction_text: true
       ai_classification_does_not_create_policy_authority: true
 
