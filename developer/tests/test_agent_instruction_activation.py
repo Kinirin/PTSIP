@@ -90,7 +90,9 @@ def test_level1_unresolved_stays_natural_language_without_blocking_passed_atoms(
     progressive = index["progressive_reasoning"]
     assert progressive["highest_materialized_level"] == 1
     assert progressive["per_atom_advancement"] is True
-    assert progressive["next_level_candidate_count"] > 0
+    assert progressive["current_next_level_candidate_count"] > 0
+    assert progressive["next_level_candidate_set_is_dynamic"] is True
+    assert progressive["unresolved_reassessment_source"] == "unresolved/level1.json"
     assert progressive["unresolved_blocks_next_level_candidates"] is False
     assert progressive["previous_level_rerun_forbidden"] is True
 
