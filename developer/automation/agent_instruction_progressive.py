@@ -38,6 +38,27 @@ class ProgressiveReasoningError(RuntimeError):
     pass
 
 
+def bootstrap_text() -> str:
+    return """# AGENTS.md
+
+This repository uses progressive repository-local agent instruction reasoning under .agent/.
+
+Before repository work, classify the current operation as READ, MODIFY, PLAN, VERIFY, or RELEASE, then resolve the bounded instruction set mechanically:
+
+    python -m developer.automation.agent_instruction_entry_resolver <READ|MODIFY|PLAN|VERIFY|RELEASE>
+
+The resolver consumes the deepest active machine stage plus only the natural-language residual that has not yet been mechanized. It must not re-run a previous passed classification level.
+
+Level 1 UNRESOLVED items remain natural language until they are explicitly resolved. They are not coerced to OTHER, and Level 2 automatic classification must not begin while Level 1 unresolved items remain.
+
+OTHER is intentionally excluded from normal Level 1 entry. Widen only when context or goal material is required:
+
+    python -m developer.automation.agent_instruction_entry_resolver <OPERATION> --include OTHER
+
+Do not use provenance/history as a reasoning input. Re-run the entry resolver whenever the operation changes. Resolver failure is fail-closed for repository instruction loading.
+"""
+
+
 def _load_yaml(path: Path, label: str) -> dict[str, object]:
     if not path.is_file():
         raise ProgressiveReasoningError(f"{label} missing: {path}")
@@ -251,6 +272,12 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         except OSError:
             pass
 
+    (root / "AGENTS.md").write_text(
+        bootstrap_text(),
+        encoding="utf-8",
+        newline="\n",
+    )
+
     return {
         "level": 1,
         "pass_count": stage["pass_count"],
@@ -301,6 +328,9 @@ def check(repository: str | Path) -> tuple[str, ...]:
 
     if (agent / "provenance" / "AGENTS.pre-level1.md").exists():
         errors.append("PROVENANCE_MD_MUST_NOT_BE_REASONING_SURFACE")
+    agents = root / "AGENTS.md"
+    if not agents.is_file() or agents.read_text(encoding="utf-8") != bootstrap_text():
+        errors.append("AGENTS_BOOTSTRAP_STALE")
     return tuple(errors)
 
 
