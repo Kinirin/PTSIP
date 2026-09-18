@@ -102,7 +102,11 @@ def _resolve_progressive(
     labels: list[str],
 ) -> dict[str, object]:
     progressive = index.get("progressive_reasoning")
-    if not isinstance(progressive, Mapping) or progressive.get("active_level") != 1:
+    if (
+        not isinstance(progressive, Mapping)
+        or progressive.get("highest_materialized_level") != 1
+        or progressive.get("per_atom_advancement") is not True
+    ):
         raise AgentInstructionEntryResolverError("progressive Level 1 state is invalid")
 
     stage = _load_json(
