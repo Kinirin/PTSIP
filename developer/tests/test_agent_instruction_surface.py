@@ -49,9 +49,18 @@ def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_
     evolution = trial["progressive_reasoning_pipeline"]["taxonomy_evolution"]
 
     assert stage["next_level_input"] == "CURRENT_LEVEL_PASS_SUBSET_ONLY"
-    assert stage["unresolved_advances_to_next_level"] is False
+    reassessment = trial["progressive_reasoning_pipeline"]["unresolved_reassessment"]
+
+    assert stage["unresolved_is_direct_next_level_candidate"] is False
+    assert stage["unresolved_may_transition_to_pass_when_current_level_becomes_exactly_classifiable"] is True
+    assert stage["pass_transition_immediately_creates_next_level_candidate"] is True
     assert stage["unresolved_blocks_other_passed_atoms"] is False
     assert stage["current_level_unresolved_zero_required_for_next_level"] is False
+    assert stage["next_level_candidate_set_is_dynamic"] is True
     assert runtime["progression_unit"] == "ATOM"
+    assert reassessment["positive_result_transition"] == "UNRESOLVED_TO_PASS"
+    assert reassessment["negative_result_behavior"] == "KEEP_UNRESOLVED"
+    assert reassessment["forced_assignment_to_reduce_unresolved_count"] == "FORBIDDEN"
     assert evolution["unresolved_may_persist_without_forced_classification"] is True
     assert evolution["new_level_1_category_may_be_added_when_distinct_semantics_are_evidenced"] is True
+    assert evolution["newly_passed_unresolved_atom_becomes_next_level_candidate"] is True
