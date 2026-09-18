@@ -51,13 +51,22 @@ rules:
       source: AGENTS.md
       existing_agent_surface_required: false
       legacy_materialization_required: false
-      source_mutation_during_bootstrap: FORBIDDEN
+      source_mutation_during_bootstrap: PASS_ATOMS_REPLACED_BY_DIRECT_ROUTES
       output_index: .agent/index.yaml
       output_pass_stage: .agent/stages/level1.json
       output_unresolved_stage: .agent/unresolved/level1.json
       registry_required: false
       provenance_markdown_required: false
       source_change_after_bootstrap_marks_stage_stale: true
+      routed_agents_contract:
+        entry_directive_required: true
+        pass_atom_natural_language_in_agents: FORBIDDEN
+        pass_atom_replacement: DIRECT_EXACT_ATOM_ROUTE
+        unresolved_natural_language_in_agents: PRESERVED
+        stage_shape: PASS_BY_ATOM
+        exact_pointer_template: ".agent/stages/level1.json#/pass_by_atom/{atom_id}"
+        semantic_matching_after_route: FORBIDDEN
+        route_requires_natural_language_inference: false
     managed_level_1_transition:
       activation: EXPLICIT
       activation_precondition: CURRENT_LEVEL_1_STAGE

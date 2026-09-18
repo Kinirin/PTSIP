@@ -17,6 +17,18 @@ LEVEL1_UNRESOLVED_REF = "unresolved/level1.json"
 SCHEMA = "ptsip-agent-progressive-reasoning/v1"
 INDEX_SCHEMA = "ptsip-agent-progressive-index/v1"
 DEFAULT_SOURCE = Path("AGENTS.md")
+ENTRY_DIRECTIVE = (
+    'PTSIP_AGENT_ENTRY version=1 '
+    'stage=".agent/stages/level1.json" '
+    'unresolved=".agent/unresolved/level1.json" '
+    'resolver="python -m developer.automation.agent_instruction_entry_resolver '
+    '<READ|MODIFY|PLAN|VERIFY|RELEASE>"'
+)
+ROUTE_PREFIX = "PTSIP_AGENT_ROUTE"
+ROUTE_RE = re.compile(
+    r'PTSIP_AGENT_ROUTE\s+level=1\s+atom_id=(A[0-9]{4})\s+'
+    r'ref="\.agent/stages/level1\.json#/pass_by_atom/\1"'
+)
 
 TRIGGER = re.compile(r"^\s*(before|after|when|whenever|if|unless|while|during|for|on)\b", re.I)
 MODAL_PATTERNS = (
@@ -163,7 +175,8 @@ def _sha256(value: str) -> str:
 def _stage_from_items(
     items: list[dict[str, object]],
 ) -> tuple[dict[str, object], dict[str, object]]:
-    passed: list[dict[str, object]] = []
+    pass_order: list[str] = []
+    pass_by_atom: dict[str, dict[str, object]] = {}
     unresolved: list[dict[str, object]] = []
     for atom in items:
         atom_id = atom.get("atom_id")
@@ -193,18 +206,17 @@ def _stage_from_items(
         if any(label not in LEVEL1 for label in labels):
             raise ProgressiveReasoningError(f"invalid Level 1 label on {atom_id}")
         machine, residual = _mechanize(text, list(labels))
-        passed.append(
-            {
-                "atom_id": atom_id,
-                "pass_header": {
-                    "level": 1,
-                    "status": "PASS",
-                    "labels": list(labels),
-                },
-                "machine": machine,
-                "natural_residual": residual,
-            }
-        )
+        pass_order.append(atom_id)
+        pass_by_atom[atom_id] = {
+            "atom_id": atom_id,
+            "pass_header": {
+                "level": 1,
+                "status": "PASS",
+                "labels": list(labels),
+            },
+            "machine": machine,
+            "natural_residual": residual,
+        }
 
     stage = {
         "schema_version": SCHEMA,
@@ -218,9 +230,10 @@ def _stage_from_items(
         "unresolved_may_become_candidate_after_same_level_pass": True,
         "next_level_candidate_set_is_dynamic": True,
         "unresolved_blocks_passed_atoms": False,
-        "pass_count": len(passed),
+        "pass_count": len(pass_order),
         "unresolved_count": len(unresolved),
-        "pass": passed,
+        "pass_order": pass_order,
+        "pass_by_atom": pass_by_atom,
     }
     unresolved_doc = {
         "schema_version": SCHEMA,
@@ -241,6 +254,9 @@ def _source_items(root: Path) -> tuple[list[dict[str, object]], str]:
     items = [
         {
             "atom_id": atom.atom_id,
+            "kind": atom.kind,
+            "line_start": atom.line_start,
+            "line_end": atom.line_end,
             "level_1": list(atom.level1),
             "unresolved": atom.unresolved,
             "text": atom.text,
@@ -249,6 +265,88 @@ def _source_items(root: Path) -> tuple[list[dict[str, object]], str]:
         for atom in atoms
     ]
     return items, source_text
+
+
+def _route_token(atom_id: str) -> str:
+    return (
+        f'{ROUTE_PREFIX} level=1 atom_id={atom_id} '
+        f'ref=".agent/stages/level1.json#/pass_by_atom/{atom_id}"'
+    )
+
+
+def _render_routed_agents(
+    source_text: str,
+    items: list[dict[str, object]],
+) -> str:
+    lines = source_text.splitlines()
+    replacements: list[tuple[int, int, str]] = []
+    fence = chr(96) * 3
+
+    for item in items:
+        if item.get("unresolved") is True or not item.get("level_1"):
+            continue
+        atom_id = item.get("atom_id")
+        kind = item.get("kind")
+        start = item.get("line_start")
+        end = item.get("line_end")
+        if (
+            not isinstance(atom_id, str)
+            or not isinstance(kind, str)
+            or not isinstance(start, int)
+            or not isinstance(end, int)
+        ):
+            raise ProgressiveReasoningError("source atom lacks routing span")
+
+        first = lines[start - 1] if 0 < start <= len(lines) else ""
+        prefix_match = re.match(r"^\s*", first)
+        prefix = prefix_match.group(0) if prefix_match else ""
+        list_match = re.match(r"^(\s*)([-*+]|\d+\.)\s+", first)
+        token = _route_token(atom_id)
+        if list_match:
+            rendered = f"{list_match.group(1)}{list_match.group(2)} {token}"
+        else:
+            rendered = prefix + token
+
+        replace_start = start
+        replace_end = end
+        if kind == "code_block":
+            if (
+                replace_start > 1
+                and lines[replace_start - 2].strip().startswith(fence)
+            ):
+                replace_start -= 1
+            if (
+                replace_end < len(lines)
+                and lines[replace_end].strip().startswith(fence)
+            ):
+                replace_end += 1
+        replacements.append((replace_start, replace_end, rendered))
+
+    occupied: set[int] = set()
+    for start, end, _ in replacements:
+        for line_no in range(start, end + 1):
+            if line_no in occupied:
+                raise ProgressiveReasoningError(
+                    f"overlapping routed atom span at line {line_no}"
+                )
+            occupied.add(line_no)
+
+    for start, end, rendered in sorted(
+        replacements,
+        key=lambda item: item[0],
+        reverse=True,
+    ):
+        lines[start - 1 : end] = [rendered]
+
+    if ENTRY_DIRECTIVE not in lines:
+        insert_at = 1 if lines and lines[0].lstrip().startswith("#") else 0
+        lines[insert_at:insert_at] = ["", ENTRY_DIRECTIVE, ""]
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _route_ids(source_text: str) -> list[str]:
+    return [match.group(1) for match in ROUTE_RE.finditer(source_text)]
 
 
 def _legacy_items(registry: Mapping[str, object]) -> list[dict[str, object]]:
@@ -284,6 +382,44 @@ def build_level1(
     index_path = agent / "index.yaml"
     registry_path = agent / "registry.yaml"
 
+    if index_path.is_file() and not registry_path.exists():
+        index = _load_yaml(index_path, "index")
+        progressive = index.get("progressive_reasoning")
+        if isinstance(progressive, Mapping):
+            source_state = progressive.get("source_state")
+            if source_state == "ROUTED_LEVEL_1":
+                raise ProgressiveReasoningError(
+                    "Level 1 is already routed; use check instead of rebuilding"
+                )
+            if source_state == "SOURCE_PRESERVED":
+                source = index.get("source")
+                if not isinstance(source, Mapping):
+                    raise ProgressiveReasoningError(
+                        "source-preserved bootstrap is missing source binding"
+                    )
+                source_path = source.get("path")
+                digest = source.get("sha256")
+                if not isinstance(source_path, str) or not isinstance(digest, str):
+                    raise ProgressiveReasoningError(
+                        "source-preserved bootstrap binding is invalid"
+                    )
+                path = root / source_path
+                if (
+                    not path.is_file()
+                    or _sha256(path.read_text(encoding="utf-8")) != digest
+                ):
+                    raise ProgressiveReasoningError(
+                        "source-preserved AGENTS.md changed before route cutover"
+                    )
+                items, source_text = _source_items(root)
+                stage, unresolved = _stage_from_items(items)
+                return stage, unresolved, {
+                    "mode": "SOURCE_BOOTSTRAP_UPGRADE",
+                    "source_path": DEFAULT_SOURCE.as_posix(),
+                    "source_text": source_text,
+                    "items": items,
+                }
+
     if index_path.is_file() and registry_path.is_file():
         index = _load_yaml(index_path, "index")
         registry = _load_yaml(registry_path, "registry")
@@ -296,7 +432,7 @@ def build_level1(
 
     if index_path.exists() or registry_path.exists():
         raise ProgressiveReasoningError(
-            "partial .agent legacy surface exists; expected both index.yaml and registry.yaml"
+            "partial .agent surface exists and cannot be routed safely"
         )
 
     items, source_text = _source_items(root)
@@ -304,7 +440,8 @@ def build_level1(
     return stage, unresolved, {
         "mode": "SOURCE_BOOTSTRAP",
         "source_path": DEFAULT_SOURCE.as_posix(),
-        "source_sha256": _sha256(source_text),
+        "source_text": source_text,
+        "items": items,
     }
 
 
@@ -336,6 +473,13 @@ def _progressive_index(
             "level_1_pass": LEVEL1_STAGE_REF,
             "level_1_unresolved": unresolved_ref,
         },
+        "route_contract": {
+            "syntax": "PTSIP_AGENT_ROUTE_V1",
+            "entry_directive": ENTRY_DIRECTIVE,
+            "stage_ref": LEVEL1_STAGE_REF,
+            "pointer_template": "#/pass_by_atom/{atom_id}",
+            "exact_atom_pointer_required": True,
+        },
     }
     if source_path is not None and source_sha256 is not None:
         index["source"] = {
@@ -362,21 +506,33 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
     )
 
     mode = state["mode"]
-    if mode == "SOURCE_BOOTSTRAP":
+    if mode in {"SOURCE_BOOTSTRAP", "SOURCE_BOOTSTRAP_UPGRADE"}:
+        source_text = state.get("source_text")
+        items = state.get("items")
+        if not isinstance(source_text, str) or not isinstance(items, list):
+            raise ProgressiveReasoningError(
+                "source bootstrap routing state is invalid"
+            )
+        routed_text = _render_routed_agents(source_text, items)
         index = _progressive_index(
             stage=stage,
             unresolved_ref=LEVEL1_UNRESOLVED_REF,
-            source_state="SOURCE_PRESERVED",
+            source_state="ROUTED_LEVEL_1",
             source_path=str(state["source_path"]),
-            source_sha256=str(state["source_sha256"]),
+            source_sha256=_sha256(routed_text),
         )
         (agent / "index.yaml").write_text(
             _dump_yaml(index),
             encoding="utf-8",
             newline="\n",
         )
+        (root / DEFAULT_SOURCE).write_text(
+            routed_text,
+            encoding="utf-8",
+            newline="\n",
+        )
         return {
-            "mode": "BOOTSTRAPPED_FROM_AGENTS",
+            "mode": "ROUTED_FROM_AGENTS",
             "level": 1,
             "pass_count": stage["pass_count"],
             "unresolved_count": stage["unresolved_count"],
@@ -478,7 +634,15 @@ def check(repository: str | Path) -> tuple[str, ...]:
 
     if stage.get("level") != 1 or unresolved.get("level") != 1:
         errors.append("LEVEL_1_STAGE_MISMATCH")
-    if stage.get("pass_count") != len(stage.get("pass", [])):
+    pass_order = stage.get("pass_order")
+    pass_by_atom = stage.get("pass_by_atom")
+    if (
+        not isinstance(pass_order, list)
+        or not isinstance(pass_by_atom, Mapping)
+        or stage.get("pass_count") != len(pass_order)
+        or stage.get("pass_count") != len(pass_by_atom)
+        or set(pass_order) != set(pass_by_atom)
+    ):
         errors.append("LEVEL_1_PASS_COUNT_MISMATCH")
     if unresolved.get("count") != len(unresolved.get("items", [])):
         errors.append("LEVEL_1_UNRESOLVED_COUNT_MISMATCH")
@@ -493,7 +657,7 @@ def check(repository: str | Path) -> tuple[str, ...]:
         errors.append("UNRESOLVED_MUST_NOT_BLOCK_PASSED_ATOMS")
 
     source_state = progressive.get("source_state")
-    if source_state == "SOURCE_PRESERVED":
+    if source_state == "ROUTED_LEVEL_1":
         source = index.get("source")
         if not isinstance(source, Mapping):
             errors.append("SOURCE_BINDING_MISSING")
@@ -504,14 +668,36 @@ def check(repository: str | Path) -> tuple[str, ...]:
                 errors.append("SOURCE_BINDING_INVALID")
             else:
                 source_path = root / path
-                if (
-                    not source_path.is_file()
-                    or _sha256(source_path.read_text(encoding="utf-8"))
-                    != digest
-                ):
-                    errors.append("SOURCE_AGENTS_STALE")
+                if not source_path.is_file():
+                    errors.append("ROUTED_AGENTS_MISSING")
+                else:
+                    routed_text = source_path.read_text(encoding="utf-8")
+                    if _sha256(routed_text) != digest:
+                        errors.append("ROUTED_AGENTS_STALE")
+                    route_ids = _route_ids(routed_text)
+                    expected_ids = (
+                        stage.get("pass_order")
+                        if isinstance(stage.get("pass_order"), list)
+                        else []
+                    )
+                    if route_ids != expected_ids:
+                        errors.append("ROUTED_ATOM_SET_MISMATCH")
+                    if ENTRY_DIRECTIVE not in routed_text:
+                        errors.append("AGENT_ENTRY_DIRECTIVE_MISSING")
+                    normalized_source = " ".join(routed_text.split())
+                    for item in unresolved.get("items", []):
+                        if not isinstance(item, Mapping):
+                            continue
+                        natural = item.get("natural_language")
+                        if (
+                            isinstance(natural, str)
+                            and " ".join(natural.split()) not in normalized_source
+                        ):
+                            errors.append(
+                                f"UNRESOLVED_NATURAL_LANGUAGE_MISSING:{item.get('atom_id')}"
+                            )
         if (agent / "registry.yaml").exists():
-            errors.append("BOOTSTRAP_MUST_NOT_REQUIRE_REGISTRY")
+            errors.append("ROUTED_BOOTSTRAP_MUST_NOT_REQUIRE_REGISTRY")
     elif source_state == "MANAGED_BOOTSTRAP":
         registry_path = agent / "registry.yaml"
         if registry_path.is_file():
@@ -538,12 +724,6 @@ def check(repository: str | Path) -> tuple[str, ...]:
                             "REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD"
                         )
                         break
-        agents = root / "AGENTS.md"
-        if (
-            not agents.is_file()
-            or agents.read_text(encoding="utf-8") != bootstrap_text()
-        ):
-            errors.append("AGENTS_BOOTSTRAP_STALE")
     else:
         errors.append("UNKNOWN_PROGRESSIVE_SOURCE_STATE")
 

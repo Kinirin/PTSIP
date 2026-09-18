@@ -125,19 +125,32 @@ def _resolve_progressive(
     if stage.get("level") != 1 or unresolved_doc.get("level") != 1:
         raise AgentInstructionEntryResolverError("Level 1 staged artifact mismatch")
 
-    raw_pass = stage.get("pass")
+    pass_order = stage.get("pass_order")
+    pass_by_atom = stage.get("pass_by_atom")
     raw_unresolved = unresolved_doc.get("items")
-    if not isinstance(raw_pass, list) or not isinstance(raw_unresolved, list):
+    if (
+        not isinstance(pass_order, list)
+        or not isinstance(pass_by_atom, Mapping)
+        or not isinstance(raw_unresolved, list)
+    ):
         raise AgentInstructionEntryResolverError("Level 1 staged collections invalid")
 
     instructions: list[dict[str, object]] = []
     seen: set[str] = set()
-    for raw in raw_pass:
+    for atom_id in pass_order:
+        if not isinstance(atom_id, str):
+            raise AgentInstructionEntryResolverError("invalid Level 1 pass order")
+        raw = pass_by_atom.get(atom_id)
         if not isinstance(raw, Mapping):
-            raise AgentInstructionEntryResolverError("invalid Level 1 pass item")
-        atom_id = raw.get("atom_id")
+            raise AgentInstructionEntryResolverError(
+                f"missing direct Level 1 atom: {atom_id}"
+            )
+        if raw.get("atom_id") != atom_id:
+            raise AgentInstructionEntryResolverError(
+                f"direct Level 1 atom identity mismatch: {atom_id}"
+            )
         header = raw.get("pass_header")
-        if not isinstance(atom_id, str) or not isinstance(header, Mapping):
+        if not isinstance(header, Mapping):
             raise AgentInstructionEntryResolverError("invalid Level 1 pass identity")
         item_labels = header.get("labels")
         if not isinstance(item_labels, list) or any(x not in LEVEL1 for x in item_labels):
@@ -151,6 +164,9 @@ def _resolve_progressive(
         instructions.append(
             {
                 "atom_id": atom_id,
+                "stage_ref": (
+                    ".agent/stages/level1.json#/pass_by_atom/" + atom_id
+                ),
                 "pass_header": dict(header),
                 "machine": dict(machine),
                 "natural_residual": list(residual),

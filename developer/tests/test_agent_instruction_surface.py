@@ -50,12 +50,21 @@ def test_progressive_policy_allows_clean_level1_bootstrap() -> None:
     assert bootstrap["source"] == "AGENTS.md"
     assert bootstrap["existing_agent_surface_required"] is False
     assert bootstrap["legacy_materialization_required"] is False
-    assert bootstrap["source_mutation_during_bootstrap"] == "FORBIDDEN"
+    assert bootstrap["source_mutation_during_bootstrap"] == "PASS_ATOMS_REPLACED_BY_DIRECT_ROUTES"
     assert bootstrap["output_index"] == ".agent/index.yaml"
     assert bootstrap["output_pass_stage"] == ".agent/stages/level1.json"
     assert bootstrap["output_unresolved_stage"] == ".agent/unresolved/level1.json"
     assert bootstrap["registry_required"] is False
     assert bootstrap["provenance_markdown_required"] is False
+
+
+    routed = bootstrap["routed_agents_contract"]
+    assert routed["pass_atom_natural_language_in_agents"] == "FORBIDDEN"
+    assert routed["pass_atom_replacement"] == "DIRECT_EXACT_ATOM_ROUTE"
+    assert routed["unresolved_natural_language_in_agents"] == "PRESERVED"
+    assert routed["stage_shape"] == "PASS_BY_ATOM"
+    assert routed["semantic_matching_after_route"] == "FORBIDDEN"
+    assert routed["route_requires_natural_language_inference"] is False
 
 
 def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_gate() -> None:

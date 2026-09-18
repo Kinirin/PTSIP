@@ -48,10 +48,10 @@ def test_progressive_level1_replaces_pass_prose_with_machine_plus_residual(
         (repo / ".agent/stages/level1.json").read_text(encoding="utf-8")
     )
     special = next(
-        item
-        for item in stage["pass"]
+        stage["pass_by_atom"][atom_id]
+        for atom_id in stage["pass_order"]
         if "AUTOMATED_REASONING_DURING_REPOSITORY_DOCUMENT_RETRIEVAL"
-        in item["machine"].get("operations", [])
+        in stage["pass_by_atom"][atom_id]["machine"].get("operations", [])
     )
     assert special["pass_header"]["status"] == "PASS"
     assert special["natural_residual"] == []
