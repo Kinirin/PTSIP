@@ -49,7 +49,7 @@ Before repository work, classify the current operation as READ, MODIFY, PLAN, VE
 
 The resolver consumes the deepest active machine stage plus only the natural-language residual that has not yet been mechanized. It must not re-run a previous passed classification level.
 
-Level 1 UNRESOLVED items remain natural language until they are explicitly resolved. They are not coerced to OTHER, and Level 2 automatic classification must not begin while Level 1 unresolved items remain.
+Level 1 UNRESOLVED items remain natural language at Level 1 until positively resolved or the Level 1 taxonomy is extended. They are not coerced to OTHER. Level 2 may advance only the Level 1 PASS subset; Level 1 UNRESOLVED items do not block unrelated PASS atoms and are not consumed by Level 2.
 
 OTHER is intentionally excluded from normal Level 1 entry. Widen only when context or goal material is required:
 
@@ -201,8 +201,11 @@ def build_level1(root: Path) -> tuple[dict[str, object], dict[str, object], dict
         "level": 1,
         "status": "PASS_WITH_UNRESOLVED" if unresolved else "PASS",
         "input_contract": "SOURCE_NATURAL_LANGUAGE",
-        "next_level_input_contract": "LEVEL_1_PASS_HEADER_PLUS_NATURAL_RESIDUAL_ONLY",
+        "next_level_input_contract": "CURRENT_LEVEL_PASS_SUBSET_ONLY",
+        "next_level_payload": "PASS_HEADER_PLUS_MACHINE_FIELDS_PLUS_NATURAL_RESIDUAL",
         "rerun_previous_level_for_next_level": False,
+        "unresolved_advances_to_next_level": False,
+        "unresolved_blocks_passed_atoms": False,
         "pass_count": len(passed),
         "unresolved_count": len(unresolved),
         "pass": passed,
@@ -253,7 +256,8 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         "level_1_unresolved_ref": LEVEL1_UNRESOLVED_REF,
         "previous_level_rerun_forbidden": True,
         "provenance_is_reasoning_input": False,
-        "next_level_allowed": unresolved["count"] == 0,
+        "next_level_candidate_count": stage["pass_count"],
+        "unresolved_blocks_next_level_candidates": False,
     }
     index["authority_refs"] = {
         "level_1_pass": LEVEL1_STAGE_REF,
@@ -282,7 +286,8 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         "level": 1,
         "pass_count": stage["pass_count"],
         "unresolved_count": stage["unresolved_count"],
-        "next_level_allowed": unresolved["count"] == 0,
+        "next_level_candidate_count": stage["pass_count"],
+        "unresolved_blocks_next_level_candidates": False,
     }
 
 
@@ -310,8 +315,10 @@ def check(repository: str | Path) -> tuple[str, ...]:
         errors.append("LEVEL_1_PASS_COUNT_MISMATCH")
     if unresolved.get("count") != len(unresolved.get("items", [])):
         errors.append("LEVEL_1_UNRESOLVED_COUNT_MISMATCH")
-    if bool(progressive.get("next_level_allowed")) != (unresolved.get("count") == 0):
-        errors.append("NEXT_LEVEL_GATE_MISMATCH")
+    if progressive.get("next_level_candidate_count") != stage.get("pass_count"):
+        errors.append("NEXT_LEVEL_CANDIDATE_COUNT_MISMATCH")
+    if progressive.get("unresolved_blocks_next_level_candidates") is not False:
+        errors.append("UNRESOLVED_MUST_NOT_BLOCK_PASSED_ATOMS")
 
     atoms = registry.get("atoms")
     if isinstance(atoms, list):
@@ -342,10 +349,10 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "migrate-level1":
             result = migrate_level1(args.repository)
-            state = "allowed" if result["next_level_allowed"] else "blocked"
             print(
                 f"Progressive Level 1: {result['pass_count']} pass, "
-                f"{result['unresolved_count']} unresolved; Level 2 {state}"
+                f"{result['unresolved_count']} unresolved; "
+                f"{result['next_level_candidate_count']} Level 2 candidate(s)"
             )
             return 0
         errors = check(args.repository)
