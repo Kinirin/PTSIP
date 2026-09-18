@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -8,12 +9,14 @@ from typing import Mapping
 
 import yaml
 
-from developer.automation.agent_instruction_classifier import LEVEL1
+from developer.automation.agent_instruction_classifier import LEVEL1, classify_markdown
 from developer.automation.agent_instruction_materializer import DEFAULT_OUTPUT_ROOT
 
 LEVEL1_STAGE_REF = "stages/level1.json"
 LEVEL1_UNRESOLVED_REF = "unresolved/level1.json"
 SCHEMA = "ptsip-agent-progressive-reasoning/v1"
+INDEX_SCHEMA = "ptsip-agent-progressive-index/v1"
+DEFAULT_SOURCE = Path("AGENTS.md")
 
 TRIGGER = re.compile(r"^\s*(before|after|when|whenever|if|unless|while|during|for|on)\b", re.I)
 MODAL_PATTERNS = (
@@ -153,44 +156,51 @@ def _mechanize(text: str, labels: list[str]) -> tuple[dict[str, object], list[di
     return machine, residual
 
 
-def build_level1(root: Path) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
-    agent = root / DEFAULT_OUTPUT_ROOT
-    index = _load_yaml(agent / "index.yaml", "index")
-    registry = _load_yaml(agent / "registry.yaml", "registry")
-    atoms = registry.get("atoms")
-    if not isinstance(atoms, list):
-        raise ProgressiveReasoningError("registry.atoms must be a list")
+def _sha256(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
+
+def _stage_from_items(
+    items: list[dict[str, object]],
+) -> tuple[dict[str, object], dict[str, object]]:
     passed: list[dict[str, object]] = []
     unresolved: list[dict[str, object]] = []
-    for raw in atoms:
-        if not isinstance(raw, Mapping):
-            raise ProgressiveReasoningError("invalid registry atom")
-        atom = dict(raw)
+    for atom in items:
         atom_id = atom.get("atom_id")
         labels = atom.get("level_1")
-        if not isinstance(atom_id, str) or not isinstance(labels, list):
-            raise ProgressiveReasoningError("invalid registry atom identity")
-        text = _atom_text(atom)
-        if atom.get("unresolved") is True or not labels:
-            source = atom.get("source")
-            heading = list(source.get("heading_path", [])) if isinstance(source, Mapping) else []
+        text = atom.get("text")
+        heading_path = atom.get("heading_path", [])
+        unresolved_state = atom.get("unresolved")
+        if (
+            not isinstance(atom_id, str)
+            or not isinstance(labels, list)
+            or not isinstance(text, str)
+            or not isinstance(heading_path, list)
+        ):
+            raise ProgressiveReasoningError("invalid Level 1 source atom")
+
+        if unresolved_state is True or not labels:
             unresolved.append(
                 {
                     "atom_id": atom_id,
                     "status": "UNRESOLVED",
-                    "heading_path": heading,
+                    "heading_path": list(heading_path),
                     "natural_language": text,
                 }
             )
             continue
+
         if any(label not in LEVEL1 for label in labels):
             raise ProgressiveReasoningError(f"invalid Level 1 label on {atom_id}")
         machine, residual = _mechanize(text, list(labels))
         passed.append(
             {
                 "atom_id": atom_id,
-                "pass_header": {"level": 1, "status": "PASS", "labels": list(labels)},
+                "pass_header": {
+                    "level": 1,
+                    "status": "PASS",
+                    "labels": list(labels),
+                },
                 "machine": machine,
                 "natural_residual": residual,
             }
@@ -219,22 +229,167 @@ def build_level1(root: Path) -> tuple[dict[str, object], dict[str, object], dict
         "count": len(unresolved),
         "items": unresolved,
     }
-    return stage, unresolved_doc, {"index": index, "registry": registry}
+    return stage, unresolved_doc
+
+
+def _source_items(root: Path) -> tuple[list[dict[str, object]], str]:
+    source = root / DEFAULT_SOURCE
+    if not source.is_file():
+        raise ProgressiveReasoningError(f"source missing: {source}")
+    source_text = source.read_text(encoding="utf-8")
+    atoms = classify_markdown(source_text)
+    items = [
+        {
+            "atom_id": atom.atom_id,
+            "level_1": list(atom.level1),
+            "unresolved": atom.unresolved,
+            "text": atom.text,
+            "heading_path": list(atom.heading_path),
+        }
+        for atom in atoms
+    ]
+    return items, source_text
+
+
+def _legacy_items(registry: Mapping[str, object]) -> list[dict[str, object]]:
+    atoms = registry.get("atoms")
+    if not isinstance(atoms, list):
+        raise ProgressiveReasoningError("registry.atoms must be a list")
+    items: list[dict[str, object]] = []
+    for raw in atoms:
+        if not isinstance(raw, Mapping):
+            raise ProgressiveReasoningError("invalid registry atom")
+        source = raw.get("source")
+        heading = (
+            list(source.get("heading_path", []))
+            if isinstance(source, Mapping)
+            else []
+        )
+        items.append(
+            {
+                "atom_id": raw.get("atom_id"),
+                "level_1": list(raw.get("level_1", [])),
+                "unresolved": raw.get("unresolved"),
+                "text": _atom_text(raw),
+                "heading_path": heading,
+            }
+        )
+    return items
+
+
+def build_level1(
+    root: Path,
+) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
+    agent = root / DEFAULT_OUTPUT_ROOT
+    index_path = agent / "index.yaml"
+    registry_path = agent / "registry.yaml"
+
+    if index_path.is_file() and registry_path.is_file():
+        index = _load_yaml(index_path, "index")
+        registry = _load_yaml(registry_path, "registry")
+        stage, unresolved = _stage_from_items(_legacy_items(registry))
+        return stage, unresolved, {
+            "mode": "LEGACY_AGENT_SURFACE",
+            "index": index,
+            "registry": registry,
+        }
+
+    if index_path.exists() or registry_path.exists():
+        raise ProgressiveReasoningError(
+            "partial .agent legacy surface exists; expected both index.yaml and registry.yaml"
+        )
+
+    items, source_text = _source_items(root)
+    stage, unresolved = _stage_from_items(items)
+    return stage, unresolved, {
+        "mode": "SOURCE_BOOTSTRAP",
+        "source_path": DEFAULT_SOURCE.as_posix(),
+        "source_sha256": _sha256(source_text),
+    }
+
+
+def _progressive_index(
+    *,
+    stage: Mapping[str, object],
+    unresolved_ref: str,
+    source_state: str,
+    source_path: str | None = None,
+    source_sha256: str | None = None,
+) -> dict[str, object]:
+    index: dict[str, object] = {
+        "schema_version": INDEX_SCHEMA,
+        "management_mode": "PROGRESSIVE_LEVEL_1",
+        "progressive_reasoning": {
+            "highest_materialized_level": 1,
+            "per_atom_advancement": True,
+            "level_1_ref": LEVEL1_STAGE_REF,
+            "level_1_unresolved_ref": unresolved_ref,
+            "previous_level_rerun_forbidden": True,
+            "provenance_is_reasoning_input": False,
+            "current_next_level_candidate_count": stage["pass_count"],
+            "next_level_candidate_set_is_dynamic": True,
+            "unresolved_reassessment_source": unresolved_ref,
+            "unresolved_blocks_next_level_candidates": False,
+            "source_state": source_state,
+        },
+        "authority_refs": {
+            "level_1_pass": LEVEL1_STAGE_REF,
+            "level_1_unresolved": unresolved_ref,
+        },
+    }
+    if source_path is not None and source_sha256 is not None:
+        index["source"] = {
+            "path": source_path,
+            "sha256": source_sha256,
+        }
+    return index
 
 
 def migrate_level1(repository: str | Path) -> dict[str, object]:
     root = Path(repository).resolve()
     agent = root / DEFAULT_OUTPUT_ROOT
     stage, unresolved, state = build_level1(root)
-    index = state["index"]
-    registry = state["registry"]
 
     stage_path = agent / LEVEL1_STAGE_REF
     unresolved_path = agent / LEVEL1_UNRESOLVED_REF
     stage_path.parent.mkdir(parents=True, exist_ok=True)
     unresolved_path.parent.mkdir(parents=True, exist_ok=True)
     stage_path.write_text(_dump_json(stage), encoding="utf-8", newline="\n")
-    unresolved_path.write_text(_dump_json(unresolved), encoding="utf-8", newline="\n")
+    unresolved_path.write_text(
+        _dump_json(unresolved),
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    mode = state["mode"]
+    if mode == "SOURCE_BOOTSTRAP":
+        index = _progressive_index(
+            stage=stage,
+            unresolved_ref=LEVEL1_UNRESOLVED_REF,
+            source_state="SOURCE_PRESERVED",
+            source_path=str(state["source_path"]),
+            source_sha256=str(state["source_sha256"]),
+        )
+        (agent / "index.yaml").write_text(
+            _dump_yaml(index),
+            encoding="utf-8",
+            newline="\n",
+        )
+        return {
+            "mode": "BOOTSTRAPPED_FROM_AGENTS",
+            "level": 1,
+            "pass_count": stage["pass_count"],
+            "unresolved_count": stage["unresolved_count"],
+            "current_next_level_candidate_count": stage["pass_count"],
+            "next_level_candidate_set_is_dynamic": True,
+            "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
+            "unresolved_blocks_next_level_candidates": False,
+        }
+
+    index = state["index"]
+    registry = state["registry"]
+    assert isinstance(index, dict)
+    assert isinstance(registry, dict)
 
     atoms = registry.get("atoms")
     assert isinstance(atoms, list)
@@ -250,28 +405,27 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
     registry["management_mode"] = "PROGRESSIVE_LEVEL_1"
     registry["reasoning_payload"] = "STAGED_ONLY"
 
+    progressive_index = _progressive_index(
+        stage=stage,
+        unresolved_ref=LEVEL1_UNRESOLVED_REF,
+        source_state="MANAGED_BOOTSTRAP",
+    )
     index.pop("provenance_ref", None)
-    index["management_mode"] = "PROGRESSIVE_LEVEL_1"
-    index["progressive_reasoning"] = {
-        "highest_materialized_level": 1,
-        "per_atom_advancement": True,
-        "level_1_ref": LEVEL1_STAGE_REF,
-        "level_1_unresolved_ref": LEVEL1_UNRESOLVED_REF,
-        "previous_level_rerun_forbidden": True,
-        "provenance_is_reasoning_input": False,
-        "current_next_level_candidate_count": stage["pass_count"],
-        "next_level_candidate_set_is_dynamic": True,
-        "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
-        "unresolved_blocks_next_level_candidates": False,
-    }
-    index["authority_refs"] = {
-        "level_1_pass": LEVEL1_STAGE_REF,
-        "level_1_unresolved": LEVEL1_UNRESOLVED_REF,
-    }
+    index["management_mode"] = progressive_index["management_mode"]
+    index["progressive_reasoning"] = progressive_index["progressive_reasoning"]
+    index["authority_refs"] = progressive_index["authority_refs"]
     index.pop("authority_ref", None)
 
-    (agent / "registry.yaml").write_text(_dump_yaml(registry), encoding="utf-8", newline="\n")
-    (agent / "index.yaml").write_text(_dump_yaml(index), encoding="utf-8", newline="\n")
+    (agent / "registry.yaml").write_text(
+        _dump_yaml(registry),
+        encoding="utf-8",
+        newline="\n",
+    )
+    (agent / "index.yaml").write_text(
+        _dump_yaml(index),
+        encoding="utf-8",
+        newline="\n",
+    )
 
     provenance = agent / "provenance" / "AGENTS.pre-level1.md"
     if provenance.is_file():
@@ -288,6 +442,7 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
     )
 
     return {
+        "mode": "MIGRATED_LEGACY_AGENT_SURFACE",
         "level": 1,
         "pass_count": stage["pass_count"],
         "unresolved_count": stage["unresolved_count"],
@@ -303,7 +458,6 @@ def check(repository: str | Path) -> tuple[str, ...]:
     agent = root / DEFAULT_OUTPUT_ROOT
     errors: list[str] = []
     index = _load_yaml(agent / "index.yaml", "index")
-    registry = _load_yaml(agent / "registry.yaml", "registry")
     progressive = index.get("progressive_reasoning")
     if (
         not isinstance(progressive, Mapping)
@@ -313,7 +467,9 @@ def check(repository: str | Path) -> tuple[str, ...]:
         return ("LEVEL_1_PROGRESSIVE_MODE_NOT_ACTIVE",)
 
     stage_path = agent / str(progressive.get("level_1_ref", ""))
-    unresolved_path = agent / str(progressive.get("level_1_unresolved_ref", ""))
+    unresolved_path = agent / str(
+        progressive.get("level_1_unresolved_ref", "")
+    )
     try:
         stage = json.loads(stage_path.read_text(encoding="utf-8"))
         unresolved = json.loads(unresolved_path.read_text(encoding="utf-8"))
@@ -326,44 +482,86 @@ def check(repository: str | Path) -> tuple[str, ...]:
         errors.append("LEVEL_1_PASS_COUNT_MISMATCH")
     if unresolved.get("count") != len(unresolved.get("items", [])):
         errors.append("LEVEL_1_UNRESOLVED_COUNT_MISMATCH")
-    if progressive.get("current_next_level_candidate_count") != stage.get("pass_count"):
+    if (
+        progressive.get("current_next_level_candidate_count")
+        != stage.get("pass_count")
+    ):
         errors.append("NEXT_LEVEL_CANDIDATE_COUNT_MISMATCH")
     if progressive.get("next_level_candidate_set_is_dynamic") is not True:
         errors.append("NEXT_LEVEL_CANDIDATE_SET_MUST_BE_DYNAMIC")
     if progressive.get("unresolved_blocks_next_level_candidates") is not False:
         errors.append("UNRESOLVED_MUST_NOT_BLOCK_PASSED_ATOMS")
 
-    atoms = registry.get("atoms")
-    if isinstance(atoms, list):
-        for atom in atoms:
-            if not isinstance(atom, Mapping):
-                continue
-            source = atom.get("source")
-            if atom.get("instruction_text") is not None or atom.get("normalized_text") is not None:
-                errors.append("REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD")
-                break
-            if isinstance(source, Mapping) and source.get("raw_excerpt") is not None:
-                errors.append("REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD")
-                break
+    source_state = progressive.get("source_state")
+    if source_state == "SOURCE_PRESERVED":
+        source = index.get("source")
+        if not isinstance(source, Mapping):
+            errors.append("SOURCE_BINDING_MISSING")
+        else:
+            path = source.get("path")
+            digest = source.get("sha256")
+            if not isinstance(path, str) or not isinstance(digest, str):
+                errors.append("SOURCE_BINDING_INVALID")
+            else:
+                source_path = root / path
+                if (
+                    not source_path.is_file()
+                    or _sha256(source_path.read_text(encoding="utf-8"))
+                    != digest
+                ):
+                    errors.append("SOURCE_AGENTS_STALE")
+        if (agent / "registry.yaml").exists():
+            errors.append("BOOTSTRAP_MUST_NOT_REQUIRE_REGISTRY")
+    elif source_state == "MANAGED_BOOTSTRAP":
+        registry_path = agent / "registry.yaml"
+        if registry_path.is_file():
+            registry = _load_yaml(registry_path, "registry")
+            atoms = registry.get("atoms")
+            if isinstance(atoms, list):
+                for atom in atoms:
+                    if not isinstance(atom, Mapping):
+                        continue
+                    source = atom.get("source")
+                    if (
+                        atom.get("instruction_text") is not None
+                        or atom.get("normalized_text") is not None
+                    ):
+                        errors.append(
+                            "REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD"
+                        )
+                        break
+                    if (
+                        isinstance(source, Mapping)
+                        and source.get("raw_excerpt") is not None
+                    ):
+                        errors.append(
+                            "REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD"
+                        )
+                        break
+        agents = root / "AGENTS.md"
+        if (
+            not agents.is_file()
+            or agents.read_text(encoding="utf-8") != bootstrap_text()
+        ):
+            errors.append("AGENTS_BOOTSTRAP_STALE")
+    else:
+        errors.append("UNKNOWN_PROGRESSIVE_SOURCE_STATE")
 
     if (agent / "provenance" / "AGENTS.pre-level1.md").exists():
         errors.append("PROVENANCE_MD_MUST_NOT_BE_REASONING_SURFACE")
-    agents = root / "AGENTS.md"
-    if not agents.is_file() or agents.read_text(encoding="utf-8") != bootstrap_text():
-        errors.append("AGENTS_BOOTSTRAP_STALE")
     return tuple(errors)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Progressive agent instruction reasoning stages")
-    parser.add_argument("command", choices=("migrate-level1", "check"))
+    parser.add_argument("command", choices=("bootstrap-level1", "migrate-level1", "check"))
     parser.add_argument("--repository", default=".")
     args = parser.parse_args(argv)
     try:
-        if args.command == "migrate-level1":
+        if args.command in {"bootstrap-level1", "migrate-level1"}:
             result = migrate_level1(args.repository)
             print(
-                f"Progressive Level 1: {result['pass_count']} pass, "
+                f"Progressive Level 1 {result['mode']}: {result['pass_count']} pass, "
                 f"{result['unresolved_count']} unresolved; "
                 f"{result['current_next_level_candidate_count']} current Level 2 candidate(s)"
             )

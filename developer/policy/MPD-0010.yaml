@@ -47,9 +47,20 @@ rules:
       developer_tool_implementation_root: developer/automation/
       developer_tool_root_is_management_surface: false
       product_distribution: FORBIDDEN
+    level_1_bootstrap:
+      source: AGENTS.md
+      existing_agent_surface_required: false
+      legacy_materialization_required: false
+      source_mutation_during_bootstrap: FORBIDDEN
+      output_index: .agent/index.yaml
+      output_pass_stage: .agent/stages/level1.json
+      output_unresolved_stage: .agent/unresolved/level1.json
+      registry_required: false
+      provenance_markdown_required: false
+      source_change_after_bootstrap_marks_stage_stale: true
     managed_level_1_transition:
       activation: EXPLICIT
-      activation_precondition: CURRENT_LEVEL_1_MATERIALIZATION
+      activation_precondition: CURRENT_LEVEL_1_STAGE
       level_1_pass_destination: .agent/stages/level1.json
       level_1_unresolved_destination: .agent/unresolved/level1.json
       registry_role_after_activation: IDENTITY_AND_ROUTING_METADATA_ONLY

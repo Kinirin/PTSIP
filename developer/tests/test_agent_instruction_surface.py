@@ -39,6 +39,25 @@ def test_policy_binding_uses_root_agent_surface_only() -> None:
     assert "developer/agent_instructions" not in bindings
 
 
+def test_progressive_policy_allows_clean_level1_bootstrap() -> None:
+    policy = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+    )
+    bootstrap = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
+        "level_1_bootstrap"
+    ]
+
+    assert bootstrap["source"] == "AGENTS.md"
+    assert bootstrap["existing_agent_surface_required"] is False
+    assert bootstrap["legacy_materialization_required"] is False
+    assert bootstrap["source_mutation_during_bootstrap"] == "FORBIDDEN"
+    assert bootstrap["output_index"] == ".agent/index.yaml"
+    assert bootstrap["output_pass_stage"] == ".agent/stages/level1.json"
+    assert bootstrap["output_unresolved_stage"] == ".agent/unresolved/level1.json"
+    assert bootstrap["registry_required"] is False
+    assert bootstrap["provenance_markdown_required"] is False
+
+
 def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_gate() -> None:
     policy = yaml.safe_load(
         (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
