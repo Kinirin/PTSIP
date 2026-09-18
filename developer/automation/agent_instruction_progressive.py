@@ -10,6 +10,11 @@ from typing import Mapping
 import yaml
 
 from developer.automation.agent_instruction_classifier import LEVEL1, classify_markdown
+from developer.automation.agent_integration import (
+    LOCAL_CLI_ONLY,
+    default_integration_contract,
+    entry_directive,
+)
 from developer.automation.agent_instruction_materializer import DEFAULT_OUTPUT_ROOT
 
 LEVEL1_STAGE_REF = "stages/level1.json"
@@ -17,18 +22,8 @@ LEVEL1_UNRESOLVED_REF = "unresolved/level1.json"
 SCHEMA = "ptsip-agent-progressive-reasoning/v1"
 INDEX_SCHEMA = "ptsip-agent-progressive-index/v1"
 DEFAULT_SOURCE = Path("AGENTS.md")
-ENTRY_DIRECTIVE = (
-    'PTSIP_AGENT_ENTRY version=1 '
-    'stage=".agent/stages/level1.json" '
-    'unresolved=".agent/unresolved/level1.json" '
-    'resolver="python -m developer.automation.agent_instruction_entry_resolver '
-    '<READ|MODIFY|PLAN|VERIFY|RELEASE>"'
-)
-ROUTE_PREFIX = "PTSIP_AGENT_ROUTE"
-ROUTE_RE = re.compile(
-    r'PTSIP_AGENT_ROUTE\s+level=1\s+atom_id=(A[0-9]{4})\s+'
-    r'ref="\.agent/stages/level1\.json#/pass_by_atom/\1"'
-)
+ENTRY_DIRECTIVE = entry_directive(LOCAL_CLI_ONLY)
+COMPACT_SOURCE_STATE = "COMPACT_ENTRY_LEVEL_1"
 
 TRIGGER = re.compile(r"^\s*(before|after|when|whenever|if|unless|while|during|for|on)\b", re.I)
 MODAL_PATTERNS = (
@@ -54,24 +49,7 @@ class ProgressiveReasoningError(RuntimeError):
 
 
 def bootstrap_text() -> str:
-    return """# AGENTS.md
-
-This repository uses progressive repository-local agent instruction reasoning under .agent/.
-
-Before repository work, classify the current operation as READ, MODIFY, PLAN, VERIFY, or RELEASE, then resolve the bounded instruction set mechanically:
-
-    python -m developer.automation.agent_instruction_entry_resolver <READ|MODIFY|PLAN|VERIFY|RELEASE>
-
-The resolver consumes the deepest proven machine stage for each atom plus only the natural-language residual that has not yet been mechanized. It must not re-run a previous passed classification level.
-
-Level 1 UNRESOLVED items remain natural language at Level 1 until positively resolved or the Level 1 taxonomy is extended. They are not coerced to OTHER. Level 2 may advance only the Level 1 PASS subset; Level 1 UNRESOLVED items do not block unrelated PASS atoms and are not consumed by Level 2.
-
-OTHER is intentionally excluded from normal Level 1 entry. Widen only when context or goal material is required:
-
-    python -m developer.automation.agent_instruction_entry_resolver <OPERATION> --include OTHER
-
-Do not use provenance/history as a reasoning input. Re-run the entry resolver whenever the operation changes. Resolver failure is fail-closed for repository instruction loading.
-"""
+    return "# AGENTS.md\n\n" + ENTRY_DIRECTIVE + "\n"
 
 
 def _load_yaml(path: Path, label: str) -> dict[str, object]:
@@ -267,86 +245,66 @@ def _source_items(root: Path) -> tuple[list[dict[str, object]], str]:
     return items, source_text
 
 
-def _route_token(atom_id: str) -> str:
-    return (
-        f'{ROUTE_PREFIX} level=1 atom_id={atom_id} '
-        f'ref=".agent/stages/level1.json#/pass_by_atom/{atom_id}"'
-    )
-
-
-def _render_routed_agents(
-    source_text: str,
-    items: list[dict[str, object]],
+def _render_compact_agents(
+    unresolved_doc: Mapping[str, object],
 ) -> str:
-    lines = source_text.splitlines()
-    replacements: list[tuple[int, int, str]] = []
-    fence = chr(96) * 3
+    items = unresolved_doc.get("items")
+    if not isinstance(items, list):
+        raise ProgressiveReasoningError("unresolved.items must be a list")
 
-    for item in items:
-        if item.get("unresolved") is True or not item.get("level_1"):
-            continue
-        atom_id = item.get("atom_id")
-        kind = item.get("kind")
-        start = item.get("line_start")
-        end = item.get("line_end")
-        if (
-            not isinstance(atom_id, str)
-            or not isinstance(kind, str)
-            or not isinstance(start, int)
-            or not isinstance(end, int)
-        ):
-            raise ProgressiveReasoningError("source atom lacks routing span")
+    lines = ["# AGENTS.md", "", ENTRY_DIRECTIVE]
+    if not items:
+        return "\n".join(lines).rstrip() + "\n"
 
-        first = lines[start - 1] if 0 < start <= len(lines) else ""
-        prefix_match = re.match(r"^\s*", first)
-        prefix = prefix_match.group(0) if prefix_match else ""
-        list_match = re.match(r"^(\s*)([-*+]|\d+\.)\s+", first)
-        token = _route_token(atom_id)
-        if list_match:
-            rendered = f"{list_match.group(1)}{list_match.group(2)} {token}"
-        else:
-            rendered = prefix + token
+    lines.extend(["", "## Level 1 unresolved"])
+    last_context: tuple[str, ...] | None = None
+    for raw in items:
+        if not isinstance(raw, Mapping):
+            raise ProgressiveReasoningError("invalid unresolved item")
+        natural = raw.get("natural_language")
+        heading_path = raw.get("heading_path", [])
+        if not isinstance(natural, str) or not isinstance(heading_path, list):
+            raise ProgressiveReasoningError("invalid unresolved natural language")
 
-        replace_start = start
-        replace_end = end
-        if kind == "code_block":
-            if (
-                replace_start > 1
-                and lines[replace_start - 2].strip().startswith(fence)
-            ):
-                replace_start -= 1
-            if (
-                replace_end < len(lines)
-                and lines[replace_end].strip().startswith(fence)
-            ):
-                replace_end += 1
-        replacements.append((replace_start, replace_end, rendered))
-
-    occupied: set[int] = set()
-    for start, end, _ in replacements:
-        for line_no in range(start, end + 1):
-            if line_no in occupied:
-                raise ProgressiveReasoningError(
-                    f"overlapping routed atom span at line {line_no}"
-                )
-            occupied.add(line_no)
-
-    for start, end, rendered in sorted(
-        replacements,
-        key=lambda item: item[0],
-        reverse=True,
-    ):
-        lines[start - 1 : end] = [rendered]
-
-    if ENTRY_DIRECTIVE not in lines:
-        insert_at = 1 if lines and lines[0].lstrip().startswith("#") else 0
-        lines[insert_at:insert_at] = ["", ENTRY_DIRECTIVE, ""]
+        context = tuple(
+            str(value)
+            for value in heading_path
+            if str(value).strip() and str(value).strip() != "AGENTS.md"
+        )
+        if context and context != last_context:
+            lines.extend(["", "### " + " > ".join(context)])
+            last_context = context
+        lines.extend(["", natural])
 
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _route_ids(source_text: str) -> list[str]:
-    return [match.group(1) for match in ROUTE_RE.finditer(source_text)]
+def _load_existing_progressive_stage(
+    root: Path,
+    index: Mapping[str, object],
+) -> tuple[dict[str, object], dict[str, object]]:
+    progressive = index.get("progressive_reasoning")
+    if not isinstance(progressive, Mapping):
+        raise ProgressiveReasoningError("progressive reasoning state missing")
+    stage_ref = progressive.get("level_1_ref")
+    unresolved_ref = progressive.get("level_1_unresolved_ref")
+    if not isinstance(stage_ref, str) or not isinstance(unresolved_ref, str):
+        raise ProgressiveReasoningError("progressive Level 1 references invalid")
+
+    try:
+        stage = json.loads((root / ".agent" / stage_ref).read_text(encoding="utf-8"))
+        unresolved = json.loads(
+            (root / ".agent" / unresolved_ref).read_text(encoding="utf-8")
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ProgressiveReasoningError(
+            "existing progressive Level 1 artifacts invalid"
+        ) from exc
+    if not isinstance(stage, dict) or not isinstance(unresolved, dict):
+        raise ProgressiveReasoningError(
+            "existing progressive Level 1 artifacts must be objects"
+        )
+    return stage, unresolved
 
 
 def _legacy_items(registry: Mapping[str, object]) -> list[dict[str, object]]:
@@ -473,13 +431,14 @@ def _progressive_index(
             "level_1_pass": LEVEL1_STAGE_REF,
             "level_1_unresolved": unresolved_ref,
         },
-        "route_contract": {
-            "syntax": "PTSIP_AGENT_ROUTE_V1",
+        "entry_contract": {
+            "syntax": "PTSIP_AGENT_ENTRY_V1",
             "entry_directive": ENTRY_DIRECTIVE,
-            "stage_ref": LEVEL1_STAGE_REF,
-            "pointer_template": "#/pass_by_atom/{atom_id}",
-            "exact_atom_pointer_required": True,
+            "index_ref": ".agent/index.yaml",
+            "pass_atoms_in_agents": False,
+            "unresolved_natural_language_in_agents": True,
         },
+        "integration": default_integration_contract(),
     }
     if source_path is not None and source_sha256 is not None:
         index["source"] = {
@@ -492,6 +451,65 @@ def _progressive_index(
 def migrate_level1(repository: str | Path) -> dict[str, object]:
     root = Path(repository).resolve()
     agent = root / DEFAULT_OUTPUT_ROOT
+    index_path = agent / "index.yaml"
+
+    if index_path.is_file() and not (agent / "registry.yaml").exists():
+        existing_index = _load_yaml(index_path, "index")
+        progressive = existing_index.get("progressive_reasoning")
+        if isinstance(progressive, Mapping):
+            source_state = progressive.get("source_state")
+            if source_state == COMPACT_SOURCE_STATE:
+                raise ProgressiveReasoningError(
+                    "Level 1 compact entry is already active; use check instead"
+                )
+            if source_state == "ROUTED_LEVEL_1":
+                stage, unresolved = _load_existing_progressive_stage(
+                    root,
+                    existing_index,
+                )
+                compact_text = _render_compact_agents(unresolved)
+                existing_index["progressive_reasoning"] = {
+                    **dict(progressive),
+                    "source_state": COMPACT_SOURCE_STATE,
+                }
+                existing_index["entry_contract"] = {
+                    "syntax": "PTSIP_AGENT_ENTRY_V1",
+                    "entry_directive": ENTRY_DIRECTIVE,
+                    "index_ref": ".agent/index.yaml",
+                    "pass_atoms_in_agents": False,
+                    "unresolved_natural_language_in_agents": True,
+                }
+                existing_index["integration"] = default_integration_contract()
+                existing_index.pop("route_contract", None)
+                existing_index["source"] = {
+                    "path": DEFAULT_SOURCE.as_posix(),
+                    "sha256": _sha256(compact_text),
+                }
+                index_path.write_text(
+                    _dump_yaml(existing_index),
+                    encoding="utf-8",
+                    newline="\n",
+                )
+                (root / DEFAULT_SOURCE).write_text(
+                    compact_text,
+                    encoding="utf-8",
+                    newline="\n",
+                )
+                return {
+                    "mode": "COMPACTED_EXISTING_LEVEL_1",
+                    "level": 1,
+                    "pass_count": stage.get("pass_count", 0),
+                    "unresolved_count": unresolved.get("count", 0),
+                    "current_next_level_candidate_count": stage.get(
+                        "pass_count",
+                        0,
+                    ),
+                    "next_level_candidate_set_is_dynamic": True,
+                    "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
+                    "unresolved_blocks_next_level_candidates": False,
+                    "integration": LOCAL_CLI_ONLY,
+                }
+
     stage, unresolved, state = build_level1(root)
 
     stage_path = agent / LEVEL1_STAGE_REF
@@ -507,19 +525,13 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
 
     mode = state["mode"]
     if mode in {"SOURCE_BOOTSTRAP", "SOURCE_BOOTSTRAP_UPGRADE"}:
-        source_text = state.get("source_text")
-        items = state.get("items")
-        if not isinstance(source_text, str) or not isinstance(items, list):
-            raise ProgressiveReasoningError(
-                "source bootstrap routing state is invalid"
-            )
-        routed_text = _render_routed_agents(source_text, items)
+        compact_text = _render_compact_agents(unresolved)
         index = _progressive_index(
             stage=stage,
             unresolved_ref=LEVEL1_UNRESOLVED_REF,
-            source_state="ROUTED_LEVEL_1",
+            source_state=COMPACT_SOURCE_STATE,
             source_path=str(state["source_path"]),
-            source_sha256=_sha256(routed_text),
+            source_sha256=_sha256(compact_text),
         )
         (agent / "index.yaml").write_text(
             _dump_yaml(index),
@@ -527,12 +539,12 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
             newline="\n",
         )
         (root / DEFAULT_SOURCE).write_text(
-            routed_text,
+            compact_text,
             encoding="utf-8",
             newline="\n",
         )
         return {
-            "mode": "ROUTED_FROM_AGENTS",
+            "mode": "COMPACTED_FROM_AGENTS",
             "level": 1,
             "pass_count": stage["pass_count"],
             "unresolved_count": stage["unresolved_count"],
@@ -540,6 +552,7 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
             "next_level_candidate_set_is_dynamic": True,
             "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
             "unresolved_blocks_next_level_candidates": False,
+            "integration": LOCAL_CLI_ONLY,
         }
 
     index = state["index"]
@@ -561,16 +574,23 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
     registry["management_mode"] = "PROGRESSIVE_LEVEL_1"
     registry["reasoning_payload"] = "STAGED_ONLY"
 
+    compact_text = _render_compact_agents(unresolved)
     progressive_index = _progressive_index(
         stage=stage,
         unresolved_ref=LEVEL1_UNRESOLVED_REF,
-        source_state="MANAGED_BOOTSTRAP",
+        source_state=COMPACT_SOURCE_STATE,
+        source_path=DEFAULT_SOURCE.as_posix(),
+        source_sha256=_sha256(compact_text),
     )
     index.pop("provenance_ref", None)
     index["management_mode"] = progressive_index["management_mode"]
     index["progressive_reasoning"] = progressive_index["progressive_reasoning"]
     index["authority_refs"] = progressive_index["authority_refs"]
+    index["entry_contract"] = progressive_index["entry_contract"]
+    index["integration"] = progressive_index["integration"]
+    index["source"] = progressive_index["source"]
     index.pop("authority_ref", None)
+    index.pop("route_contract", None)
 
     (agent / "registry.yaml").write_text(
         _dump_yaml(registry),
@@ -591,8 +611,8 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         except OSError:
             pass
 
-    (root / "AGENTS.md").write_text(
-        bootstrap_text(),
+    (root / DEFAULT_SOURCE).write_text(
+        compact_text,
         encoding="utf-8",
         newline="\n",
     )
@@ -606,6 +626,7 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         "next_level_candidate_set_is_dynamic": True,
         "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
         "unresolved_blocks_next_level_candidates": False,
+        "integration": LOCAL_CLI_ONLY,
     }
 
 
@@ -657,7 +678,7 @@ def check(repository: str | Path) -> tuple[str, ...]:
         errors.append("UNRESOLVED_MUST_NOT_BLOCK_PASSED_ATOMS")
 
     source_state = progressive.get("source_state")
-    if source_state == "ROUTED_LEVEL_1":
+    if source_state == COMPACT_SOURCE_STATE:
         source = index.get("source")
         if not isinstance(source, Mapping):
             errors.append("SOURCE_BINDING_MISSING")
@@ -669,22 +690,16 @@ def check(repository: str | Path) -> tuple[str, ...]:
             else:
                 source_path = root / path
                 if not source_path.is_file():
-                    errors.append("ROUTED_AGENTS_MISSING")
+                    errors.append("COMPACT_AGENTS_MISSING")
                 else:
-                    routed_text = source_path.read_text(encoding="utf-8")
-                    if _sha256(routed_text) != digest:
-                        errors.append("ROUTED_AGENTS_STALE")
-                    route_ids = _route_ids(routed_text)
-                    expected_ids = (
-                        stage.get("pass_order")
-                        if isinstance(stage.get("pass_order"), list)
-                        else []
-                    )
-                    if route_ids != expected_ids:
-                        errors.append("ROUTED_ATOM_SET_MISMATCH")
-                    if ENTRY_DIRECTIVE not in routed_text:
-                        errors.append("AGENT_ENTRY_DIRECTIVE_MISSING")
-                    normalized_source = " ".join(routed_text.split())
+                    compact_text = source_path.read_text(encoding="utf-8")
+                    if _sha256(compact_text) != digest:
+                        errors.append("COMPACT_AGENTS_STALE")
+                    if compact_text.count(ENTRY_DIRECTIVE) != 1:
+                        errors.append("AGENT_ENTRY_DIRECTIVE_INVALID")
+                    if "PTSIP_AGENT_ROUTE" in compact_text:
+                        errors.append("PER_ATOM_ROUTE_MUST_NOT_BE_IN_AGENTS")
+                    normalized_source = " ".join(compact_text.split())
                     for item in unresolved.get("items", []):
                         if not isinstance(item, Mapping):
                             continue
@@ -696,34 +711,29 @@ def check(repository: str | Path) -> tuple[str, ...]:
                             errors.append(
                                 f"UNRESOLVED_NATURAL_LANGUAGE_MISSING:{item.get('atom_id')}"
                             )
-        if (agent / "registry.yaml").exists():
-            errors.append("ROUTED_BOOTSTRAP_MUST_NOT_REQUIRE_REGISTRY")
+
+        entry = index.get("entry_contract")
+        if not isinstance(entry, Mapping):
+            errors.append("ENTRY_CONTRACT_MISSING")
+        else:
+            if entry.get("pass_atoms_in_agents") is not False:
+                errors.append("PASS_ATOMS_MUST_NOT_BE_IN_AGENTS")
+            if entry.get("unresolved_natural_language_in_agents") is not True:
+                errors.append("UNRESOLVED_AGENTS_CONTRACT_INVALID")
+
+        integration = index.get("integration")
+        if not isinstance(integration, Mapping):
+            errors.append("INTEGRATION_CONTRACT_MISSING")
+        else:
+            if integration.get("mode") != LOCAL_CLI_ONLY:
+                errors.append("INTEGRATION_MODE_MISMATCH")
+            mcp = integration.get("mcp")
+            if not isinstance(mcp, Mapping) or mcp.get("state") != "ABSENT":
+                errors.append("MCP_ABSENT_STATE_REQUIRED")
+    elif source_state == "ROUTED_LEVEL_1":
+        errors.append("ENTRY_COMPACTION_REQUIRED")
     elif source_state == "MANAGED_BOOTSTRAP":
-        registry_path = agent / "registry.yaml"
-        if registry_path.is_file():
-            registry = _load_yaml(registry_path, "registry")
-            atoms = registry.get("atoms")
-            if isinstance(atoms, list):
-                for atom in atoms:
-                    if not isinstance(atom, Mapping):
-                        continue
-                    source = atom.get("source")
-                    if (
-                        atom.get("instruction_text") is not None
-                        or atom.get("normalized_text") is not None
-                    ):
-                        errors.append(
-                            "REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD"
-                        )
-                        break
-                    if (
-                        isinstance(source, Mapping)
-                        and source.get("raw_excerpt") is not None
-                    ):
-                        errors.append(
-                            "REGISTRY_CONTAINS_NATURAL_LANGUAGE_PAYLOAD"
-                        )
-                        break
+        errors.append("ENTRY_COMPACTION_REQUIRED")
     else:
         errors.append("UNKNOWN_PROGRESSIVE_SOURCE_STATE")
 

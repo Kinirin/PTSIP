@@ -50,7 +50,7 @@ def test_progressive_policy_allows_clean_level1_bootstrap() -> None:
     assert bootstrap["source"] == "AGENTS.md"
     assert bootstrap["existing_agent_surface_required"] is False
     assert bootstrap["legacy_materialization_required"] is False
-    assert bootstrap["source_mutation_during_bootstrap"] == "PASS_ATOMS_REPLACED_BY_DIRECT_ROUTES"
+    assert bootstrap["source_mutation_during_bootstrap"] == "PASS_ATOMS_REMOVED_FROM_AGENTS"
     assert bootstrap["output_index"] == ".agent/index.yaml"
     assert bootstrap["output_pass_stage"] == ".agent/stages/level1.json"
     assert bootstrap["output_unresolved_stage"] == ".agent/unresolved/level1.json"
@@ -58,13 +58,35 @@ def test_progressive_policy_allows_clean_level1_bootstrap() -> None:
     assert bootstrap["provenance_markdown_required"] is False
 
 
-    routed = bootstrap["routed_agents_contract"]
-    assert routed["pass_atom_natural_language_in_agents"] == "FORBIDDEN"
-    assert routed["pass_atom_replacement"] == "DIRECT_EXACT_ATOM_ROUTE"
-    assert routed["unresolved_natural_language_in_agents"] == "PRESERVED"
-    assert routed["stage_shape"] == "PASS_BY_ATOM"
-    assert routed["semantic_matching_after_route"] == "FORBIDDEN"
-    assert routed["route_requires_natural_language_inference"] is False
+    compact = bootstrap["compact_agents_contract"]
+    assert compact["machine_entry_count"] == 1
+    assert compact["machine_entry_schema"] == "PTSIP_AGENT_ENTRY_V1"
+    assert compact["pass_atom_natural_language_in_agents"] == "FORBIDDEN"
+    assert compact["pass_atom_route_lines_in_agents"] == "FORBIDDEN"
+    assert compact["unresolved_natural_language_in_agents"] == "PRESERVED"
+    assert compact["stage_shape"] == "PASS_BY_ATOM"
+    assert compact["semantic_matching_after_entry"] == "FORBIDDEN"
+    assert compact["integration_state_in_entry_required"] is True
+
+
+def test_agent_integration_policy_uses_local_cli_baseline() -> None:
+    policy = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+    )
+    integration = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
+        "agent_integration"
+    ]
+
+    assert integration["baseline_mode_without_mcp"] == "LOCAL_CLI_ONLY"
+    assert integration["mcp_optional"] is True
+    assert integration["mcp_transport_when_available"] == "STDIO"
+    assert integration["remote_ptsip_mcp_service_required"] is False
+    assert integration["daemon_required"] is False
+    assert integration["network_required"] is False
+    assert integration["mcp_installation"]["current_mcp_state"] == "ABSENT"
+    assert integration["mcp_installation"]["current_implementation_state"] == "NOT_AVAILABLE"
+    assert integration["mcp_installation"]["user_approval_required"] is True
+    assert integration["mcp_installation"]["offer_to_user_now"] is False
 
 
 def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_gate() -> None:

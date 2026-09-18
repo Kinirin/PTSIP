@@ -108,6 +108,19 @@ scope_bindings:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
+  developer/automation/agent_integration.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - ptsip_design_priority
+          - agent_instruction_entry_taxonomy_trial
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+
   developer/automation/agent_instruction_progressive.py:
     default_refs:
       - policy_id: MPD-0001

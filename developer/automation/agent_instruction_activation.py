@@ -5,13 +5,8 @@ from pathlib import Path
 
 import yaml
 
-from developer.automation.agent_instruction_materializer import (
-    DEFAULT_OUTPUT_ROOT,
-    DEFAULT_SOURCE,
-    check_materialization,
-)
 from developer.automation.agent_instruction_progressive import (
-    bootstrap_text,
+    ProgressiveReasoningError,
     check as check_progressive,
     migrate_level1,
 )
@@ -23,36 +18,19 @@ class AgentInstructionActivationError(RuntimeError):
 
 def activate(repository: str | Path) -> dict[str, object]:
     root = Path(repository).resolve()
-    source = root / DEFAULT_SOURCE
-    if not source.is_file():
-        raise AgentInstructionActivationError("AGENTS.md is missing")
-    stale = check_materialization(
-        DEFAULT_SOURCE,
-        root=root,
-        output_root=DEFAULT_OUTPUT_ROOT,
-    )
-    if stale:
-        raise AgentInstructionActivationError(
-            "materialization is stale: " + ", ".join(stale)
-        )
-
-    result = migrate_level1(root)
-    source.write_text(bootstrap_text(), encoding="utf-8", newline="\n")
-    return result
+    try:
+        return migrate_level1(root)
+    except (ProgressiveReasoningError, OSError, yaml.YAMLError) as exc:
+        raise AgentInstructionActivationError(str(exc)) from exc
 
 
 def check_activation(repository: str | Path) -> tuple[str, ...]:
-    root = Path(repository).resolve()
-    errors = list(check_progressive(root))
-    source = root / DEFAULT_SOURCE
-    if not source.is_file() or source.read_text(encoding="utf-8") != bootstrap_text():
-        errors.append("AGENTS_BOOTSTRAP_STALE")
-    return tuple(errors)
+    return check_progressive(Path(repository).resolve())
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Activate progressive repository agent instruction reasoning"
+        description="Activate compact progressive repository agent instructions"
     )
     parser.add_argument("command", choices=("activate", "check"))
     parser.add_argument("--repository", default=".")
@@ -64,7 +42,7 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 f"Agent instruction Level 1 activated: {result['pass_count']} pass, "
                 f"{result['unresolved_count']} unresolved; "
-                f"{result['current_next_level_candidate_count']} current Level 2 candidate(s)"
+                f"integration={result.get('integration', 'UNKNOWN')}"
             )
             return 0
 
@@ -76,7 +54,12 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print("Agent instruction progressive activation: CURRENT")
         return 0
-    except (AgentInstructionActivationError, OSError, yaml.YAMLError) as exc:
+    except (
+        AgentInstructionActivationError,
+        ProgressiveReasoningError,
+        OSError,
+        yaml.YAMLError,
+    ) as exc:
         print(f"agent-instruction-activation: {exc}")
         return 2
 

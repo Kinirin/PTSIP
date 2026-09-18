@@ -51,22 +51,22 @@ rules:
       source: AGENTS.md
       existing_agent_surface_required: false
       legacy_materialization_required: false
-      source_mutation_during_bootstrap: PASS_ATOMS_REPLACED_BY_DIRECT_ROUTES
+      source_mutation_during_bootstrap: PASS_ATOMS_REMOVED_FROM_AGENTS
       output_index: .agent/index.yaml
       output_pass_stage: .agent/stages/level1.json
       output_unresolved_stage: .agent/unresolved/level1.json
       registry_required: false
       provenance_markdown_required: false
       source_change_after_bootstrap_marks_stage_stale: true
-      routed_agents_contract:
-        entry_directive_required: true
+      compact_agents_contract:
+        machine_entry_count: 1
+        machine_entry_schema: PTSIP_AGENT_ENTRY_V1
         pass_atom_natural_language_in_agents: FORBIDDEN
-        pass_atom_replacement: DIRECT_EXACT_ATOM_ROUTE
+        pass_atom_route_lines_in_agents: FORBIDDEN
         unresolved_natural_language_in_agents: PRESERVED
         stage_shape: PASS_BY_ATOM
-        exact_pointer_template: ".agent/stages/level1.json#/pass_by_atom/{atom_id}"
-        semantic_matching_after_route: FORBIDDEN
-        route_requires_natural_language_inference: false
+        semantic_matching_after_entry: FORBIDDEN
+        integration_state_in_entry_required: true
     managed_level_1_transition:
       activation: EXPLICIT
       activation_precondition: CURRENT_LEVEL_1_STAGE
@@ -77,8 +77,35 @@ rules:
       provenance_markdown_as_reasoning_input: FORBIDDEN
       unresolved_state_after_activation: UNRESOLVED
       unresolved_must_remain_unclassified: true
-      root_agents_role_after_activation: ENTRY_BOOTSTRAP_ONLY
+      root_agents_role_after_activation: MACHINE_ENTRY_PLUS_UNRESOLVED_ONLY
       level_2_during_transition: FORBIDDEN
+    agent_integration:
+      baseline_mode_without_mcp: LOCAL_CLI_ONLY
+      mcp_optional: true
+      mcp_transport_when_available: STDIO
+      remote_ptsip_mcp_service_required: false
+      daemon_required: false
+      network_required: false
+      mcp_installation:
+        user_approval_required: true
+        automatic_install_without_user_approval: FORBIDDEN
+        current_implementation_state: NOT_AVAILABLE
+        current_mcp_state: ABSENT
+        offer_to_user_now: false
+        intended_install_command: "python -m developer.automation.agent_integration install-mcp --user-approved"
+      local_cli:
+        state: READY
+        resolver_command: "python -m developer.automation.agent_instruction_entry_resolver <READ|MODIFY|PLAN|VERIFY|RELEASE>"
+      mode_transition:
+        LOCAL_CLI_ONLY_to_MCP_STDIO_READY_requires:
+          - MCP_IMPLEMENTATION_READY
+          - EXPLICIT_USER_APPROVAL
+          - SUCCESSFUL_LOCAL_CONFIGURATION
+          - SUCCESSFUL_CONNECTION_CHECK
+        failed_or_unavailable_mcp_install_preserves_mode: LOCAL_CLI_ONLY
+      mcp_adapter_must_reuse_existing_resolver_semantics: true
+      mcp_adapter_must_not_create_parallel_policy_semantics: true
+
     progressive_reasoning_pipeline:
       ordered_levels:
         - LEVEL_1
@@ -215,7 +242,7 @@ rules:
       ai_or_person_escalation_only_when_required_by_current_operation: true
     source_and_authority:
       pre_activation_source_instruction_text_is_authoritative_for_its_own_instruction_semantics: true
-      post_activation_level_1_pass_authority: ".agent/stages/level1.json#pass[]"
+      post_activation_level_1_pass_authority: ".agent/stages/level1.json#pass_by_atom"
       post_activation_level_1_unresolved_authority: ".agent/unresolved/level1.json#items[]"
       registry_is_instruction_authority_after_activation: false
       activated_level_1_labels_are_routing_metadata: true
