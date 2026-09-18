@@ -89,6 +89,34 @@ def test_agent_integration_policy_uses_local_cli_baseline() -> None:
     assert integration["mcp_installation"]["offer_to_user_now"] is False
 
 
+def test_mcp_ready_is_blocked_until_levels_1_through_3_complete() -> None:
+    policy = yaml.safe_load(
+        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+    )
+    installation = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
+        "agent_integration"
+    ]["mcp_installation"]
+    gate = installation["readiness_gate"]
+
+    assert installation["current_implementation_state"] == "NOT_AVAILABLE"
+    assert installation["offer_to_user_now"] is False
+    assert gate["current_state"] == "BLOCKED_BY_PROGRESSIVE_REASONING_COMPLETION"
+    assert gate["implementation_work_before_gate_completion"] == "ALLOWED"
+    assert gate["runtime_mcp_exposure_before_gate_completion"] == "FORBIDDEN"
+    assert gate["ready_state_before_gate_completion"] == "FORBIDDEN"
+    assert gate["required_completed_levels"] == [
+        "LEVEL_1",
+        "LEVEL_2",
+        "LEVEL_3",
+    ]
+    assert gate["current_completed_levels"] == ["LEVEL_1"]
+    assert gate["level_1_only_is_sufficient"] is False
+    assert gate["transition_to_ready_is_automatic"] is False
+    assert gate["transition_to_ready_requires_explicit_policy_update"] is True
+    assert gate["state_until_all_requirements_satisfied"] == "NOT_AVAILABLE"
+    assert gate["offer_to_user_until_all_requirements_satisfied"] is False
+
+
 def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_gate() -> None:
     policy = yaml.safe_load(
         (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
