@@ -64,7 +64,7 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 f"Agent instruction Level 1 activated: {result['pass_count']} pass, "
                 f"{result['unresolved_count']} unresolved; "
-                f"{result['next_level_candidate_count']} Level 2 candidate(s)"
+                f"{result['current_next_level_candidate_count']} current Level 2 candidate(s)"
             )
             return 0
 
