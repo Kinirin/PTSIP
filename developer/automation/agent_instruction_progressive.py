@@ -204,7 +204,9 @@ def build_level1(root: Path) -> tuple[dict[str, object], dict[str, object], dict
         "next_level_input_contract": "CURRENT_LEVEL_PASS_SUBSET_ONLY",
         "next_level_payload": "PASS_HEADER_PLUS_MACHINE_FIELDS_PLUS_NATURAL_RESIDUAL",
         "rerun_previous_level_for_next_level": False,
-        "unresolved_advances_to_next_level": False,
+        "unresolved_is_direct_next_level_candidate": False,
+        "unresolved_may_become_candidate_after_same_level_pass": True,
+        "next_level_candidate_set_is_dynamic": True,
         "unresolved_blocks_passed_atoms": False,
         "pass_count": len(passed),
         "unresolved_count": len(unresolved),
@@ -257,7 +259,9 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         "level_1_unresolved_ref": LEVEL1_UNRESOLVED_REF,
         "previous_level_rerun_forbidden": True,
         "provenance_is_reasoning_input": False,
-        "next_level_candidate_count": stage["pass_count"],
+        "current_next_level_candidate_count": stage["pass_count"],
+        "next_level_candidate_set_is_dynamic": True,
+        "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
         "unresolved_blocks_next_level_candidates": False,
     }
     index["authority_refs"] = {
@@ -287,7 +291,9 @@ def migrate_level1(repository: str | Path) -> dict[str, object]:
         "level": 1,
         "pass_count": stage["pass_count"],
         "unresolved_count": stage["unresolved_count"],
-        "next_level_candidate_count": stage["pass_count"],
+        "current_next_level_candidate_count": stage["pass_count"],
+        "next_level_candidate_set_is_dynamic": True,
+        "unresolved_reassessment_source": LEVEL1_UNRESOLVED_REF,
         "unresolved_blocks_next_level_candidates": False,
     }
 
@@ -320,8 +326,10 @@ def check(repository: str | Path) -> tuple[str, ...]:
         errors.append("LEVEL_1_PASS_COUNT_MISMATCH")
     if unresolved.get("count") != len(unresolved.get("items", [])):
         errors.append("LEVEL_1_UNRESOLVED_COUNT_MISMATCH")
-    if progressive.get("next_level_candidate_count") != stage.get("pass_count"):
+    if progressive.get("current_next_level_candidate_count") != stage.get("pass_count"):
         errors.append("NEXT_LEVEL_CANDIDATE_COUNT_MISMATCH")
+    if progressive.get("next_level_candidate_set_is_dynamic") is not True:
+        errors.append("NEXT_LEVEL_CANDIDATE_SET_MUST_BE_DYNAMIC")
     if progressive.get("unresolved_blocks_next_level_candidates") is not False:
         errors.append("UNRESOLVED_MUST_NOT_BLOCK_PASSED_ATOMS")
 
@@ -357,7 +365,7 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 f"Progressive Level 1: {result['pass_count']} pass, "
                 f"{result['unresolved_count']} unresolved; "
-                f"{result['next_level_candidate_count']} Level 2 candidate(s)"
+                f"{result['current_next_level_candidate_count']} current Level 2 candidate(s)"
             )
             return 0
         errors = check(args.repository)
