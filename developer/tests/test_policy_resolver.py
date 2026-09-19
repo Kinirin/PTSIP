@@ -317,3 +317,25 @@ def test_unrelated_modify_does_not_route_pp_transition_policy() -> None:
 
     assert result["binding_scope"] == "."
     assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010"]
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        "developer/automation/project_profile_registry.py",
+        "developer/automation/pp_transition_delta.py",
+    ],
+)
+def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
+    result = resolve_policies(
+        ROOT,
+        scope=scope,
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == scope
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0001",
+        "MPD-0010",
+        "MPD-0011",
+    ]

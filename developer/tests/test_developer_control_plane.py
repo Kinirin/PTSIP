@@ -11,6 +11,9 @@ from developer.automation.current_dependency_gate import (
 )
 from developer.automation.planning_validator import validate_planning
 from developer.automation.policy_validator import validate_developer_policy
+from developer.automation.project_profile_registry import (
+    validate_project_profile_registry_plane,
+)
 from developer.automation.transition_evaluator import evaluate_legacy_decisions_removal
 
 
@@ -26,6 +29,10 @@ def _yaml(path: Path) -> dict[str, object]:
 
 def test_developer_policy_control_plane_is_machine_valid() -> None:
     assert validate_developer_policy(ROOT) == ()
+
+
+def test_project_profile_registry_plane_is_machine_valid() -> None:
+    assert validate_project_profile_registry_plane(ROOT) == ()
 
 
 def test_developer_planning_control_plane_is_machine_valid() -> None:
