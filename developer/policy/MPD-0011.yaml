@@ -31,12 +31,12 @@ rules:
     public_profile_catalog: MATERIALIZED
     canonical_pp_contract_registry: MATERIALIZED
     t2_delta_resolver: MATERIALIZED
-    transition_reconciler: NOT_IMPLEMENTED
+    transition_reconciler: MATERIALIZED_MANUAL_ENTRYPOINT_NOT_HOOKED
     h3_hook_activation: NOT_IMPLEMENTED
     remote_commit_verifier: NOT_IMPLEMENTED
     release_transition_verifier: NOT_IMPLEMENTED
     runtime_current_pp_registry_resolution: NOT_IMPLEMENTED
-    claim: POLICY_ROUTING_ONLY_NOT_OPERATIONAL_AUTOMATION
+    claim: RECONCILER_AVAILABLE_NOT_AUTOMATICALLY_INVOKED
 
   commit_candidate_trigger:
     unit: GIT_COMMIT_CANDIDATE

@@ -283,3 +283,22 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
+  developer/automation/pp_transition_reconciler.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - authority_semantics
+          - commit_candidate_trigger
+          - t2_authority_delta
+          - transition_generation
+          - reconciliation_safety
+          - verification_layers
+
