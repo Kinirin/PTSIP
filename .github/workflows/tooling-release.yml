@@ -389,6 +389,12 @@ jobs:
 
           wheel = next(Path("dist").glob("*.whl"))
           sdist = next(Path("dist").glob("*.tar.gz"))
+          public_profile_pairs = (
+              ("profiles/example.ptsip.yaml", "ptsip/profiles/example.ptsip.yaml"),
+              ("profiles/hybrid-python-package.ptsip.yaml", "ptsip/profiles/hybrid-python-package.ptsip.yaml"),
+              ("profiles/template-python-package.ptsip.yaml", "ptsip/profiles/template-python-package.ptsip.yaml"),
+          )
+          public_profile_required = tuple(wheel_path for _, wheel_path in public_profile_pairs)
 
           with zipfile.ZipFile(wheel) as archive:
               wheel_names = set(archive.namelist())
@@ -413,12 +419,6 @@ jobs:
           if sdist_tests:
               raise SystemExit(f"sdist contains tests/: {sdist_tests}")
 
-          public_profile_pairs = (
-              ("profiles/example.ptsip.yaml", "ptsip/profiles/example.ptsip.yaml"),
-              ("profiles/hybrid-python-package.ptsip.yaml", "ptsip/profiles/hybrid-python-package.ptsip.yaml"),
-              ("profiles/template-python-package.ptsip.yaml", "ptsip/profiles/template-python-package.ptsip.yaml"),
-          )
-          public_profile_required = tuple(wheel_path for _, wheel_path in public_profile_pairs)
           required = (
               "ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
               "ptsip/specdata/ptsip-normalized-evidence.schema.json",
