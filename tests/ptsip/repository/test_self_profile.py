@@ -81,6 +81,7 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert classifications["ptsip-canonical-contracts"] == "NEUTRAL_CONTRACT"
     assert classifications["ptsip-public-profiles"] == "NEUTRAL_CONTRACT"
     assert classifications["repository-architecture"] == "DEVELOPMENT_TOOLING"
+    assert classifications["repository-license-authority"] == "PRODUCT"
 
     assert classifications["ptsip-core-verification"] == "PRODUCT"
     assert classifications["ptsip-evidence-verification"] == "PRODUCT"
@@ -115,8 +116,12 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert components["ptsip-public-profiles"]["runtime_required"] is True
     assert components["ptsip-public-profiles"]["executable"] is False
     assert components["repository-architecture"]["include"] == [
-        "developer/profiles/ptsip-repository.yaml"
+        "developer/profiles/ptsip-repository.yaml",
+        "ptsip.yaml",
     ]
+    assert components["repository-license-authority"]["include"] == ["License-Authority/**"]
+    assert "Pages/**" in components["product-documentation"]["include"]
+    assert ".github/workflows/static.yml" in components["repository-ci"]["include"]
 
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]
     assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]

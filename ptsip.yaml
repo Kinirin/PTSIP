@@ -321,7 +321,6 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/repository/test_self_profile.py"
-      - "tests/ptsip/test_adr_governance_assets.py"
     purpose: repository_profile_and_governance_asset_verification
     shipped: false
     runtime_required: false
@@ -332,7 +331,6 @@ components:
       - "ptsip.yaml"
       - "adoption/**"
       - "agents/**"
-      - "decisions/**"
       - "reference/**"
 
   - id: repository-release-verification
@@ -466,8 +464,6 @@ components:
       - "cliff.toml"
       - "planning/**"
       - "docs/planning/**"
-      - "docs/ptsip/validation/**"
-      - "verification-evidence/**"
     purpose: development_planning_evidence_and_repository_maintenance
     shipped: false
     runtime_required: false
@@ -481,7 +477,6 @@ associated_artifacts:
     include:
       - "adoption/**"
       - "agents/**"
-      - "decisions/**"
       - "reference/**"
     purpose: specification_governance_adoption_agent_and_architecture_support
 

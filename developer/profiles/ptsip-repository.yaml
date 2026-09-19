@@ -167,12 +167,27 @@ components:
       - GOVERNANCE
     include:
       - "developer/profiles/ptsip-repository.yaml"
+      - "ptsip.yaml"
     purpose: repository_development_architecture_declaration
     shipped: false
     runtime_required: false
     executable: false
     release_owner: architecture
     compatibility_owner: architecture
+
+  - id: repository-license-authority
+    classification: PRODUCT
+    roles:
+      - GOVERNANCE
+      - DOCUMENTATION
+    include:
+      - "License-Authority/**"
+    purpose: closed_path_owned_license_authority_and_distribution_documents
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
 
   - id: product-documentation
     classification: PRODUCT
@@ -181,7 +196,7 @@ components:
     include:
       - "README.md"
       - "README.ko.md"
-      - "LICENSE"
+      - "Pages/**"
       - "releasenote/**"
     purpose: product_distribution_documentation_and_release_history
     shipped: true
@@ -490,6 +505,7 @@ components:
     include:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
+      - ".github/workflows/static.yml"
       - ".github/scripts/sync_readme_argos.py"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"
@@ -529,10 +545,7 @@ components:
       - "cliff.toml"
       - "planning/**"
       - "developer/**"
-      - "docs/Developer_policy/**"
       - "docs/planning/**"
-      - "docs/ptsip/validation/**"
-      - "verification-evidence/**"
     purpose: development_planning_evidence_and_repository_maintenance
     shipped: false
     runtime_required: false
