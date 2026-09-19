@@ -48,6 +48,7 @@ def _validate_current_registry_planes(
     *,
     sfp_ids: tuple[str, ...],
     developer_authority_ids: tuple[str, ...],
+    mpd_ids: tuple[str, ...],
 ) -> list[str]:
     errors: list[str] = []
 
@@ -163,6 +164,33 @@ def _validate_current_registry_planes(
         errors.append(
             "developer authority role registry must cover current migrated MPD policies exactly"
         )
+
+    developer_effect_vocabulary = _mapping(developer_role_registry.get("effect_vocabulary"))
+    if developer_effect_vocabulary is None:
+        errors.append("developer authority role registry effect_vocabulary must be a mapping")
+    else:
+        tokens = developer_effect_vocabulary.get("tokens")
+        count = developer_effect_vocabulary.get("count")
+        if not isinstance(tokens, list) or count != len(tokens) or len(tokens) != len(set(tokens)):
+            errors.append("developer authority effect vocabulary count/uniqueness mismatch")
+
+    developer_subject_registry = developer_payloads[2]
+    developer_subject_schemes = _mapping(
+        developer_subject_registry.get("subject_identity_schemes")
+    )
+    if developer_subject_schemes is None:
+        errors.append("developer authority subject registry subject_identity_schemes must be a mapping")
+    else:
+        management_policy_id = _mapping(
+            developer_subject_schemes.get("MANAGEMENT_POLICY_ID")
+        )
+        registered_values = (
+            None if management_policy_id is None else management_policy_id.get("registered_values")
+        )
+        if registered_values != list(mpd_ids):
+            errors.append(
+                "developer authority subject registry MANAGEMENT_POLICY_ID values must match developer policy index"
+            )
 
     for entry in support_schema_entries:
         if not isinstance(entry, Mapping):
@@ -363,6 +391,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             base,
             sfp_ids=sfp_ids,
             developer_authority_ids=tuple(developer_authority_ids),
+            mpd_ids=mpd_ids,
         )
     )
 

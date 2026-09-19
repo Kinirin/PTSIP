@@ -215,6 +215,16 @@ def test_current_generic_authority_schema_names_resolve_to_support_contracts() -
         assert payload["$ref"] == target
 
 
+
+def test_developer_authority_subject_registry_tracks_policy_index() -> None:
+    index = _yaml(ROOT / "developer" / "policy" / "index.yaml")
+    subject = _yaml(
+        ROOT / "developer" / "policy" / "registries" / "authority-subject-registry.yaml"
+    )
+
+    registered = subject["subject_identity_schemes"]["MANAGEMENT_POLICY_ID"]["registered_values"]
+    assert registered == [item["id"] for item in index["policies"]]
+
 def test_support_registry_projection_contains_no_repository_binding() -> None:
     subject = _yaml(
         ROOT / "src" / "ptsip" / "specdata" / "ptsip-support-authority-subject-registry.yaml"
