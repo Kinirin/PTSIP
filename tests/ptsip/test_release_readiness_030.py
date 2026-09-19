@@ -40,6 +40,10 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "[regex]::Escape($expectedWheelVersion)" in workflow
     assert "ptsip-profile-pp-1.01.schema.json" in workflow
     assert "ptsip-normalized-evidence.schema.json" in workflow
+    assert "ptsip/profiles/example.ptsip.yaml" in workflow
+    assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" in workflow
+    assert "ptsip/profiles/template-python-package.ptsip.yaml" in workflow
+    assert "ptsip-public-profiles" in workflow
     assert "Verify publication Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
     assert "ptsip-artifact-evidence-binding/v1" in workflow
@@ -84,6 +88,10 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "$expectedWheelVersion" in workflow
     assert "[regex]::Escape($expectedWheelVersion)" in workflow
     assert "ptsip-profile-pp-1.01.schema.json" in workflow
+    assert "ptsip/profiles/example.ptsip.yaml" in workflow
+    assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" in workflow
+    assert "ptsip/profiles/template-python-package.ptsip.yaml" in workflow
+    assert "ptsip-public-profiles" in workflow
     assert "Verify Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
     assert "ptsip-artifact-evidence-binding/v1" in workflow
@@ -119,6 +127,23 @@ def test_release_preparation_derives_identity_without_manual_inputs() -> None:
     assert "py -3.14" in workflow
     assert "actions/setup-python@" not in workflow
     assert '$note = "releasenote/tool/$packageVersion.md"' in workflow
+
+
+def test_public_profiles_are_canonical_root_assets_projected_by_build() -> None:
+    setup_text = (ROOT / "setup.py").read_text(encoding="utf-8")
+    manifest_text = (ROOT / "MANIFEST.in").read_text(encoding="utf-8")
+
+    assert 'CANONICAL_PUBLIC_PROFILES = ROOT / "profiles"' in setup_text
+    assert 'source.glob("*.ptsip.yaml")' in setup_text
+    assert 'build_lib / "ptsip" / "profiles"' in setup_text
+    assert "recursive-include profiles *.ptsip.yaml" in manifest_text
+
+    for name in (
+        "example.ptsip.yaml",
+        "hybrid-python-package.ptsip.yaml",
+        "template-python-package.ptsip.yaml",
+    ):
+        assert (ROOT / "profiles" / name).is_file()
 
 
 def test_release_package_contains_bound_machine_readable_contracts() -> None:

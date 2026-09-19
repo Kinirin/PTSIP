@@ -44,6 +44,11 @@ RELEASE_BOUND_SPEC_PATHS = (
 CANONICAL_EMBEDDED_PAIRS = tuple(
     zip(CANONICAL_MACHINE_READABLE_PATHS, EMBEDDED_MACHINE_READABLE_PATHS)
 )
+PUBLIC_PROFILE_PATHS = (
+    "profiles/example.ptsip.yaml",
+    "profiles/hybrid-python-package.ptsip.yaml",
+    "profiles/template-python-package.ptsip.yaml",
+)
 
 
 def _git(*args: str) -> subprocess.CompletedProcess[str]:
@@ -127,12 +132,7 @@ def main() -> int:
     if profile_spec.get("source") != spec_source:
         errors.append("ptsip.yaml specification.source does not match SPEC_SOURCE.")
 
-    maintained_profiles = (
-        "profiles/example.ptsip.yaml",
-        "profiles/hybrid-python-package.ptsip.yaml",
-        "profiles/template-python-package.ptsip.yaml",
-    )
-    for relative_path in maintained_profiles:
+    for relative_path in PUBLIC_PROFILE_PATHS:
         maintained = yaml.safe_load((ROOT / relative_path).read_text(encoding="utf-8"))
         maintained_ptsip = maintained.get("ptsip", {})
         maintained_spec = maintained_ptsip.get("specification", {})

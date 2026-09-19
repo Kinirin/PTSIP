@@ -100,7 +100,8 @@ components:
       - CONFIGURATION
     include:
       - "MANIFEST.in"
-    purpose: release_distribution_content_assembly_configuration
+      - "setup.py"
+    purpose: release_distribution_content_assembly_support_and_public_profile_projection_configuration
     shipped: false
     runtime_required: false
     executable: false
@@ -131,6 +132,19 @@ components:
     release_owner: specification
     compatibility_owner: specification
 
+  - id: ptsip-public-profiles
+    classification: NEUTRAL_CONTRACT
+    roles:
+      - CONFIGURATION
+    include:
+      - "profiles/**"
+    purpose: canonical_public_project_profile_templates_distributed_with_ptsip_tool
+    shipped: true
+    runtime_required: true
+    executable: false
+    release_owner: tool
+    compatibility_owner: specification
+
   - id: repository-architecture
     classification: DEVELOPMENT_TOOLING
     roles:
@@ -138,8 +152,7 @@ components:
       - GOVERNANCE
     include:
       - "ptsip.yaml"
-      - "profiles/**"
-    purpose: repository_architecture_declaration_and_profile_examples
+    purpose: repository_architecture_declaration
     shipped: false
     runtime_required: false
     executable: false
@@ -300,6 +313,7 @@ components:
       - "schemas/**"
       - "registry/**"
       - "src/ptsip/specdata/**"
+      - "profiles/**"
 
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
@@ -316,7 +330,6 @@ components:
     compatibility_owner: architecture
     analysis_inputs:
       - "ptsip.yaml"
-      - "profiles/**"
       - "adoption/**"
       - "agents/**"
       - "decisions/**"
@@ -337,6 +350,8 @@ components:
     analysis_inputs:
       - "pyproject.toml"
       - "MANIFEST.in"
+      - "setup.py"
+      - "profiles/**"
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
@@ -399,6 +414,7 @@ components:
     compatibility_owner: delivery
     analysis_inputs:
       - "pyproject.toml"
+      - "profiles/**"
       - "src/ptsip/**"
       - "src/vpms/**"
       - "spec/**"
@@ -575,6 +591,11 @@ relationships:
     to: ptsip-embedded-contracts
     type: VERIFIES
 
+  - id: ptsip-contract-verification-verifies-public-profiles
+    from: ptsip-contract-verification
+    to: ptsip-public-profiles
+    type: VERIFIES
+
   - id: repository-architecture-verification-verifies-profile
     from: repository-architecture-verification
     to: repository-architecture
@@ -609,6 +630,16 @@ relationships:
     from: repository-release-verification
     to: ptsip-embedded-contracts
     type: VERIFIES
+
+  - id: repository-release-verification-verifies-public-profiles
+    from: repository-release-verification
+    to: ptsip-public-profiles
+    type: VERIFIES
+
+  - id: package-assembly-packages-public-profiles
+    from: ptsip-package-assembly
+    to: ptsip-public-profiles
+    type: PACKAGES
 
   - id: package-assembly-packages-distribution
     from: ptsip-package-assembly

@@ -79,6 +79,7 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert classifications["ptsip-package-assembly"] == "DELIVERY"
     assert classifications["ptsip-embedded-contracts"] == "NEUTRAL_CONTRACT"
     assert classifications["ptsip-canonical-contracts"] == "NEUTRAL_CONTRACT"
+    assert classifications["ptsip-public-profiles"] == "NEUTRAL_CONTRACT"
     assert classifications["repository-architecture"] == "DEVELOPMENT_TOOLING"
 
     assert classifications["ptsip-core-verification"] == "PRODUCT"
@@ -109,6 +110,14 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         for item in payload.get("components", [])
         if isinstance(item, dict) and item.get("id")
     }
+    assert components["ptsip-public-profiles"]["include"] == ["profiles/**"]
+    assert components["ptsip-public-profiles"]["shipped"] is True
+    assert components["ptsip-public-profiles"]["runtime_required"] is True
+    assert components["ptsip-public-profiles"]["executable"] is False
+    assert components["repository-architecture"]["include"] == [
+        "developer/profiles/ptsip-repository.yaml"
+    ]
+
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]
     assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]
     assert components["repository-test-mode-control-plane"]["roles"] == [
@@ -179,12 +188,15 @@ def test_repository_self_profile_declares_target_oriented_verification_relations
         ("vpms-verification", "vpms", "VERIFIES"),
         ("ptsip-contract-verification", "ptsip-canonical-contracts", "VERIFIES"),
         ("ptsip-contract-verification", "ptsip-embedded-contracts", "VERIFIES"),
+        ("ptsip-contract-verification", "ptsip-public-profiles", "VERIFIES"),
         ("repository-architecture-verification", "repository-architecture", "VERIFIES"),
         ("repository-architecture-verification", "ptsip-governance-support", "VERIFIES"),
         ("repository-release-verification", "ptsip-distribution", "VERIFIES"),
         ("repository-release-verification", "repository-release-automation", "VERIFIES"),
         ("repository-release-verification", "repository-ci", "VERIFIES"),
         ("repository-release-verification", "ptsip-embedded-contracts", "VERIFIES"),
+        ("repository-release-verification", "ptsip-public-profiles", "VERIFIES"),
+        ("ptsip-package-assembly", "ptsip-public-profiles", "PACKAGES"),
     }
     assert expected <= relationships
 
