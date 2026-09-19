@@ -87,10 +87,10 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "python .github/scripts/verify_release_contract.py" in workflow
     assert "$expectedWheelVersion" in workflow
     assert "[regex]::Escape($expectedWheelVersion)" in workflow
-    assert "ptsip-profile-pp-1.01.schema.json" in workflow
-    assert "ptsip/profiles/example.ptsip.yaml" in workflow
-    assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" in workflow
-    assert "ptsip/profiles/template-python-package.ptsip.yaml" in workflow
+    assert "python .github/scripts/verify_distribution_contracts.py" in workflow
+    assert "ptsip/profiles/example.ptsip.yaml" not in workflow
+    assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" not in workflow
+    assert "ptsip/profiles/template-python-package.ptsip.yaml" not in workflow
     assert "ptsip-public-profiles" in workflow
     assert "Verify Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
@@ -129,21 +129,23 @@ def test_release_preparation_derives_identity_without_manual_inputs() -> None:
     assert '$note = "releasenote/tool/$packageVersion.md"' in workflow
 
 
-def test_public_profiles_are_canonical_root_assets_projected_by_build() -> None:
+def test_public_profiles_are_catalog_authorized_build_assets() -> None:
     setup_text = (ROOT / "setup.py").read_text(encoding="utf-8")
     manifest_text = (ROOT / "MANIFEST.in").read_text(encoding="utf-8")
+    catalog = yaml.safe_load((ROOT / "profiles" / "index.yaml").read_text(encoding="utf-8"))
 
-    assert 'CANONICAL_PUBLIC_PROFILES = ROOT / "profiles"' in setup_text
-    assert 'source.glob("*.ptsip.yaml")' in setup_text
+    assert 'CANONICAL_PUBLIC_PROFILE_CATALOG' in setup_text
+    assert '_registered_public_profile_resources()' in setup_text
+    assert '_registered_profile_baselines()' in setup_text
+    assert 'source.glob("*.ptsip.yaml")' not in setup_text
     assert 'build_lib / "ptsip" / "profiles"' in setup_text
     assert "recursive-include profiles *.ptsip.yaml" in manifest_text
+    assert "include profiles/index.yaml" in manifest_text
+    assert "include registry/project-profile-contracts.yaml" in manifest_text
 
-    for name in (
-        "example.ptsip.yaml",
-        "hybrid-python-package.ptsip.yaml",
-        "template-python-package.ptsip.yaml",
-    ):
-        assert (ROOT / "profiles" / name).is_file()
+    resources = [item["resource"] for item in catalog["profiles"]]
+    discovered = sorted(path.name for path in (ROOT / "profiles").glob("*.ptsip.yaml"))
+    assert sorted(resources) == discovered
 
 
 def test_release_package_contains_bound_machine_readable_contracts() -> None:
@@ -151,6 +153,7 @@ def test_release_package_contains_bound_machine_readable_contracts() -> None:
     for name in (
         "ptsip-profile.schema.json",
         "ptsip-profile-pp-1.01.schema.json",
+        "project-profile-contracts.yaml",
         "ptsip-registry.yaml",
         "ptsip-artifact-evidence.schema.json",
         "ptsip-agent-classification.schema.json",
@@ -165,6 +168,10 @@ def test_canonical_and_embedded_machine_readable_contracts_are_identical() -> No
         ("schemas/ptsip-profile.schema.json", "src/ptsip/specdata/ptsip-profile.schema.json"),
         ("schemas/ptsip-profile-pp-1.01.schema.json", "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json"),
         ("registry/ptsip-registry.yaml", "src/ptsip/specdata/ptsip-registry.yaml"),
+        (
+            "registry/project-profile-contracts.yaml",
+            "src/ptsip/specdata/project-profile-contracts.yaml",
+        ),
         ("schemas/ptsip-artifact-evidence.schema.json", "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"),
         ("schemas/ptsip-agent-classification.schema.json", "src/ptsip/specdata/ptsip-agent-classification.schema.json"),
         ("schemas/ptsip-diagnostic.schema.json", "src/ptsip/specdata/ptsip-diagnostic.schema.json"),
@@ -278,3 +285,16 @@ def test_release_contract_rejects_bound_asset_blob_drift() -> None:
 
     globals_dict["_git_object_id"] = fake_object_id
     assert main() == 1
+
+
+def test_distribution_contract_verifier_is_registry_driven() -> None:
+    verifier = (
+        ROOT / ".github" / "scripts" / "verify_distribution_contracts.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'profiles" / "index.yaml' in verifier
+    assert 'registry" / "project-profile-contracts.yaml' in verifier
+    assert "current_contract.get(\"schema\")" in verifier
+    assert "_baseline_pairs(contracts)" in verifier
+    assert "example.ptsip.yaml" not in verifier
+    assert "pp.1.01" not in verifier

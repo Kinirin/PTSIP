@@ -349,3 +349,65 @@ scope_bindings:
           - transition_generation
           - verification_layers
 
+  setup.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  pyproject.toml:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  MANIFEST.in:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  .github/scripts/verify_distribution_contracts.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  .github/workflows/tooling-test.yml:
+    default_refs:
+      - policy_id: MPD-0007
+        sections:
+          - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
