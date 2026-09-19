@@ -12,23 +12,20 @@ INDEX = "developer/policy/index.yaml"
 INDEX_SCHEMA = "developer/policy/schemas/developer-policy-index.schema.json"
 MPD_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
 
-SFP_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy.schema.json"
-SFP_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy.schema.json"
-SFP_INDEX = "src/ptsip/specdata/support-policy-index.yaml"
-SFP_INDEX_CANONICAL_SCHEMA = "schemas/ptsip-support-feature-policy-index.schema.json"
-SFP_INDEX_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-feature-policy-index.schema.json"
+SUPPORT_POLICY_ROOT = "docs/Support_policy/policy"\nSFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
+SFP_INDEX = f"{SUPPORT_POLICY_ROOT}/index.yaml"
+SFP_INDEX_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy-index.schema.json"
 
-SUPPORT_REGISTRY_SCHEMA = "schemas/ptsip-support-governance-registry.schema.json"
+SUPPORT_REGISTRY_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-governance-registry.schema.json"
 DEVELOPER_REGISTRY_SCHEMA = "developer/policy/schemas/developer-governance-registry.schema.json"
-SUPPORT_SEMANTICS_SCHEMA = "schemas/ptsip-support-authority-semantics.schema.json"
-SUPPORT_SEMANTICS_EMBEDDED_SCHEMA = "src/ptsip/specdata/ptsip-support-authority-semantics.schema.json"
+SUPPORT_SEMANTICS_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-authority-semantics.schema.json"
 DEVELOPER_SEMANTICS_SCHEMA = "developer/policy/schemas/developer-authority-semantics.schema.json"
 
 SUPPORT_REGISTRIES = (
-    "src/ptsip/specdata/ptsip-support-authority-schema-registry.yaml",
-    "src/ptsip/specdata/ptsip-support-authority-role-registry.yaml",
-    "src/ptsip/specdata/ptsip-support-authority-subject-registry.yaml",
-    "src/ptsip/specdata/ptsip-support-authorization-registry.yaml",
+    f"{SUPPORT_POLICY_ROOT}/registries/ptsip-support-authority-schema-registry.yaml",
+    f"{SUPPORT_POLICY_ROOT}/registries/ptsip-support-authority-role-registry.yaml",
+    f"{SUPPORT_POLICY_ROOT}/registries/ptsip-support-authority-subject-registry.yaml",
+    f"{SUPPORT_POLICY_ROOT}/registries/ptsip-support-authorization-registry.yaml",
 )
 DEVELOPER_REGISTRIES = (
     "developer/policy/registries/authority-schema-registry.yaml",
@@ -55,7 +52,6 @@ def _validate_current_registry_planes(
     support_registry_schema = load_json(SUPPORT_REGISTRY_SCHEMA, root=base)
     developer_registry_schema = load_json(DEVELOPER_REGISTRY_SCHEMA, root=base)
     support_semantics = load_json(SUPPORT_SEMANTICS_SCHEMA, root=base)
-    embedded_support_semantics = load_json(SUPPORT_SEMANTICS_EMBEDDED_SCHEMA, root=base)
     developer_semantics = load_json(DEVELOPER_SEMANTICS_SCHEMA, root=base)
 
     for schema in (
@@ -65,9 +61,6 @@ def _validate_current_registry_planes(
         developer_semantics,
     ):
         Draft202012Validator.check_schema(schema)
-
-    if support_semantics != embedded_support_semantics:
-        errors.append("support authority semantics canonical and embedded schemas differ")
 
     support_payloads: list[dict[str, object]] = []
     for path in SUPPORT_REGISTRIES:
@@ -201,7 +194,7 @@ def _validate_current_registry_planes(
         if not isinstance(policy_id, str) or not isinstance(definition, Mapping):
             errors.append(f"support authority schema registry entry is unresolved: {entry!r}")
             continue
-        policy = load_yaml(f"src/ptsip/specdata/{policy_id}.yaml", root=base)
+        policy = load_yaml(f"{SUPPORT_POLICY_ROOT}/{policy_id}.yaml", root=base)
         semantics = policy.get("authority_semantics")
         for error in Draft202012Validator(definition).iter_errors(semantics):
             errors.append(f"{policy_id}: {error.message}")
@@ -233,24 +226,15 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     mpd_schema = load_json(MPD_SCHEMA, root=base)
     sfp_index = load_yaml(SFP_INDEX, root=base)
     sfp_index_schema = load_json(SFP_INDEX_CANONICAL_SCHEMA, root=base)
-    sfp_index_embedded_schema = load_json(SFP_INDEX_EMBEDDED_SCHEMA, root=base)
     sfp_schema = load_json(SFP_CANONICAL_SCHEMA, root=base)
-    sfp_embedded_schema = load_json(SFP_EMBEDDED_SCHEMA, root=base)
 
     for schema in (
         index_schema,
         mpd_schema,
         sfp_index_schema,
-        sfp_index_embedded_schema,
         sfp_schema,
-        sfp_embedded_schema,
     ):
         Draft202012Validator.check_schema(schema)
-
-    if sfp_index_schema != sfp_index_embedded_schema:
-        errors.append("Support Feature Policy index canonical and embedded schemas differ")
-    if sfp_schema != sfp_embedded_schema:
-        errors.append("Support Feature Policy canonical and embedded schemas differ")
 
     for error in Draft202012Validator(index_schema).iter_errors(index):
         errors.append(f"{INDEX}: {error.message}")
@@ -330,7 +314,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         path = entry.get("path")
         if not isinstance(policy_id, str) or not isinstance(path, str):
             continue
-        payload = load_yaml(path, root=base)
+        payload = load_yaml(f"{SUPPORT_POLICY_ROOT}/{path}", root=base)
         current_records[policy_id] = payload
         for error in sfp_validator.iter_errors(payload):
             errors.append(f"{path}: {error.message}")
@@ -342,7 +326,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             errors.append(f"{path}: policy.id does not match index id")
         if policy.get("status") != entry.get("status"):
             errors.append(f"{path}: policy.status does not match index status")
-        raw_text = (base / path).read_text(encoding="utf-8")
+        raw_text = (base / SUPPORT_POLICY_ROOT / path).read_text(encoding="utf-8")
         for token in ("subject_binding:", "authority_role:", "repository_binding:"):
             if token in raw_text:
                 errors.append(f"{path}: forbidden legacy developer wrapper {token}")
