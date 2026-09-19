@@ -12,7 +12,8 @@ INDEX = "developer/policy/index.yaml"
 INDEX_SCHEMA = "developer/policy/schemas/developer-policy-index.schema.json"
 MPD_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
 
-SUPPORT_POLICY_ROOT = "docs/Support_policy/policy"\nSFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
+SUPPORT_POLICY_ROOT = "docs/Support_policy/policy"
+SFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
 SFP_INDEX = f"{SUPPORT_POLICY_ROOT}/index.yaml"
 SFP_INDEX_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy-index.schema.json"
 
