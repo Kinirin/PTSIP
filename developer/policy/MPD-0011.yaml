@@ -21,6 +21,22 @@ rules:
     merge_event_is_transition_authority: false
     implementation_infrastructure_change_without_t2_delta_changes_pp_version: false
 
+
+  implementation_state:
+    policy_record: MATERIALIZED
+    policy_index_registration: MATERIALIZED
+    policy_resolver_routing: MATERIALIZED
+    authority_plane_registration: MATERIALIZED
+    operationalization_level: L1_MACHINE_READABLE_POLICY_ROUTING
+    public_profile_catalog: NOT_MATERIALIZED
+    canonical_pp_contract_registry: NOT_MATERIALIZED
+    transition_reconciler: NOT_IMPLEMENTED
+    h3_hook_activation: NOT_IMPLEMENTED
+    remote_commit_verifier: NOT_IMPLEMENTED
+    release_transition_verifier: NOT_IMPLEMENTED
+    runtime_current_pp_registry_resolution: NOT_IMPLEMENTED
+    claim: POLICY_ROUTING_ONLY_NOT_OPERATIONAL_AUTOMATION
+
   commit_candidate_trigger:
     unit: GIT_COMMIT_CANDIDATE
     local:

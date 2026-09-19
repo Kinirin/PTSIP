@@ -47,7 +47,7 @@ def _validate_current_registry_planes(
     base: Path,
     *,
     sfp_ids: tuple[str, ...],
-    mpd_ids: tuple[str, ...],
+    developer_authority_ids: tuple[str, ...],
 ) -> list[str]:
     errors: list[str] = []
 
@@ -144,7 +144,7 @@ def _validate_current_registry_planes(
         for item in developer_schema_entries
         if isinstance(item, Mapping)
     ]
-    expected_developer_registry_ids = [policy_id for policy_id in mpd_ids if policy_id != "MPD-0001"]
+    expected_developer_registry_ids = list(developer_authority_ids)
     if developer_registry_ids != expected_developer_registry_ids:
         errors.append(
             "developer authority schema registry must cover current migrated MPD policies exactly"
@@ -249,10 +249,23 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         if isinstance(entry, Mapping)
     )
 
-    expected_mpd_ids = tuple(f"MPD-{number:04d}" for number in range(1, 10))
+    indexed_mpd_paths = tuple(
+        str(entry.get("path"))
+        for entry in mpd_entries
+        if isinstance(entry, Mapping)
+    )
+    discovered_mpd_paths = tuple(
+        path.relative_to(base).as_posix()
+        for path in sorted((base / "developer" / "policy").glob("MPD-*.yaml"))
+    )
+    if indexed_mpd_paths != discovered_mpd_paths:
+        errors.append(
+            "developer policy index must cover the current MPD corpus exactly in path order"
+        )
+    if mpd_ids != tuple(sorted(mpd_ids)):
+        errors.append("developer policy index MPD identities must be in canonical ascending order")
+
     expected_sfp_ids = tuple(f"SFP-{number:04d}" for number in range(1, 22))
-    if mpd_ids != expected_mpd_ids:
-        errors.append("developer policy index must contain MPD-0001 through MPD-0009 in order")
     if sfp_ids != expected_sfp_ids:
         errors.append("support policy index must contain SFP-0001 through SFP-0021 in order")
 
@@ -336,11 +349,20 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
                         f"{source_id} -> {target_id}"
                     )
 
+    developer_authority_ids: list[str] = []
+    for policy_id in mpd_ids:
+        payload = current_records.get(policy_id)
+        if payload is None:
+            continue
+        rules = _mapping(payload.get("rules"))
+        if rules is not None and "authority_semantics" in rules:
+            developer_authority_ids.append(policy_id)
+
     errors.extend(
         _validate_current_registry_planes(
             base,
             sfp_ids=sfp_ids,
-            mpd_ids=mpd_ids,
+            developer_authority_ids=tuple(developer_authority_ids),
         )
     )
 

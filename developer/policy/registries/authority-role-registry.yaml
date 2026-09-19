@@ -3,16 +3,21 @@ policy_class: PTSIP_DEVELOPER_POLICY
 registry_role: MANAGEMENT_POLICY_EFFECT_CATALOG
 language_neutral: true
 effect_vocabulary:
-  count: 22
+  count: 27
   tokens:
     - bind_immutable_normative_snapshot
     - define_work_unit_responsibility_assignment
     - forbid_recursive_ptsip_core_selector_broadening
     - forbid_tool_driven_repository_self_adoption_profile_creation
     - govern_classification_model
+    - govern_commit_atomic_project_profile_transition
     - govern_migration_subsystem_architecture
     - govern_normative_family_lifecycle
+    - govern_project_profile_authority_delta_trigger
+    - govern_project_profile_hook_activation
     - govern_project_profile_migration_authorization
+    - govern_project_profile_user_revision_lineage
+    - govern_project_profile_verification_layers
     - govern_project_profile_transition_work_unit_boundaries
     - govern_relationship_contract
     - govern_release_history_namespace
@@ -80,3 +85,12 @@ policy_roles:
       - separate_migration_capability_from_repository_adoption
       - separate_profile_identity_implementation_from_migration_capability
       - separate_repository_adoption_from_release_readiness
+  - policy_id: MPD-0011
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_commit_atomic_project_profile_transition
+      - govern_project_profile_authority_delta_trigger
+      - govern_project_profile_hook_activation
+      - govern_project_profile_migration_authorization
+      - govern_project_profile_user_revision_lineage
+      - govern_project_profile_verification_layers

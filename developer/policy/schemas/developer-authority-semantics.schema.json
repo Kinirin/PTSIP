@@ -82,7 +82,9 @@
           "ptsip-migration:IMPORTS:ptsip-evidence",
           "ptsip-migration:IMPORTS:ptsip-source-compat"
         ],
-        "project_profile_version_migration_authorized": false
+        "project_profile_version_migration_authority_ref": "MPD-0011",
+        "project_profile_version_migration_authorized_when": "MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED",
+        "project_profile_version_migration_otherwise": "FORBIDDEN"
       }
     },
     "MPD_0009_V1": {
@@ -127,6 +129,22 @@
     "MPD_0007_V1": {
       "const": {
         "final_release_readiness_work_unit": "WU-12"
+      }
+    },
+    "MPD_0011_V1": {
+      "const": {
+        "decision": "APPROVED",
+        "approval_date": "2026-09-19",
+        "scope": "PTSIP_REPOSITORY_DEVELOPER_CONTROL_PLANE",
+        "distribution": "FORBIDDEN",
+        "consumer_project_requirement": false,
+        "purpose": "AUTOMATE_DEVELOPER_OWNED_PROJECT_PROFILE_CONTRACT_TRANSITIONS_WITHOUT_REQUIRING_MANUAL_VERSION_MAINTENANCE",
+        "applies_to_git_refs": "ALL",
+        "trigger_is_branch_independent": true,
+        "branch_name_is_transition_authority": false,
+        "pull_request_presence_is_transition_authority": false,
+        "merge_event_is_transition_authority": false,
+        "implementation_infrastructure_change_without_t2_delta_changes_pp_version": false
       }
     }
   }

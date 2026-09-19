@@ -92,12 +92,13 @@ def test_migration_only_tooling_and_evidence_are_retired() -> None:
 
 
 def _current_relation_edges() -> list[tuple[str, str, str, str | None]]:
+    mpd_index = _yaml(ROOT / "developer" / "policy" / "index.yaml")
     paths = [
         ROOT / "src" / "ptsip" / "specdata" / f"SFP-{number:04d}.yaml"
         for number in range(1, 22)
     ] + [
-        ROOT / "developer" / "policy" / f"MPD-{number:04d}.yaml"
-        for number in range(1, 10)
+        ROOT / entry["path"]
+        for entry in mpd_index["policies"]
     ]
     edges: list[tuple[str, str, str, str | None]] = []
     for path in paths:
@@ -117,6 +118,9 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("SFP-0011", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-0005", "amends", "MPD-0004", "REPOSITORY_SELF_ADOPTION_ASSUMPTION"),
+        ("MPD-0011", "amends", "MPD-0008", "project_profile_version_migration_authorization"),
+        ("MPD-0011", "extends", "MPD-0010", "identity_and_resolution"),
+        ("MPD-0011", "depends_on", "MPD-0001", "developer_distribution_boundary"),
     ]
 
 
@@ -129,9 +133,11 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     mpd_index = _yaml(ROOT / "developer" / "policy" / "index.yaml")
     sfp_index = _yaml(ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml")
 
-    assert [item["id"] for item in mpd_index["policies"]] == [
-        f"MPD-{number:04d}" for number in range(1, 10)
+    discovered_mpd_ids = [
+        path.stem
+        for path in sorted((ROOT / "developer" / "policy").glob("MPD-*.yaml"))
     ]
+    assert [item["id"] for item in mpd_index["policies"]] == discovered_mpd_ids
     assert [item["id"] for item in sfp_index["policies"]] == [
         f"SFP-{number:04d}" for number in range(1, 22)
     ]
@@ -142,6 +148,20 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
         assert payload["policy"]["id"] == entry["id"]
         assert payload["policy"]["status"] == entry["status"]
 
+
+
+def test_mpd_0011_declares_policy_routing_only_implementation_state() -> None:
+    payload = _yaml(ROOT / "developer" / "policy" / "MPD-0011.yaml")
+    state = payload["rules"]["implementation_state"]
+
+    assert state["operationalization_level"] == "L1_MACHINE_READABLE_POLICY_ROUTING"
+    assert state["policy_record"] == "MATERIALIZED"
+    assert state["policy_index_registration"] == "MATERIALIZED"
+    assert state["policy_resolver_routing"] == "MATERIALIZED"
+    assert state["authority_plane_registration"] == "MATERIALIZED"
+    assert state["transition_reconciler"] == "NOT_IMPLEMENTED"
+    assert state["h3_hook_activation"] == "NOT_IMPLEMENTED"
+    assert state["claim"] == "POLICY_ROUTING_ONLY_NOT_OPERATIONAL_AUTOMATION"
 
 def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -> None:
     for number in range(1, 22):

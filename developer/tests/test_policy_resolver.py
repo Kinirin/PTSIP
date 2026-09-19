@@ -254,3 +254,66 @@ def test_cli_fails_closed_cleanly_on_malformed_binding_yaml(
     assert result == 2
     assert "Policy Resolver error: synthetic malformed binding" in captured.out
     assert "Traceback" not in captured.out
+
+
+def test_pp_transition_policy_routes_for_public_profile_modify() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="profiles/example.ptsip.yaml",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == "profiles"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-0011",
+    ]
+    assert result["policies"][1]["sections"] == [
+        "authority_semantics",
+        "commit_candidate_trigger",
+        "t2_authority_delta",
+        "transition_generation",
+        "user_revision_lineage",
+        "reconciliation_safety",
+        "verification_layers",
+    ]
+
+
+def test_pp_transition_policy_routes_for_current_schema_modify() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="schemas/ptsip-profile-pp-1.01.schema.json",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == "schemas"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-0011",
+    ]
+    assert "t2_authority_delta" in result["policies"][1]["sections"]
+
+
+def test_pp_transition_policy_routes_for_future_canonical_registry_path() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="registry/project-profile-contracts.yaml",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == "registry/project-profile-contracts.yaml"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-0011",
+    ]
+
+
+def test_unrelated_modify_does_not_route_pp_transition_policy() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="README.md",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == "."
+    assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010"]
