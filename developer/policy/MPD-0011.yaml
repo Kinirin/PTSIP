@@ -28,8 +28,8 @@ rules:
     policy_resolver_routing: MATERIALIZED
     authority_plane_registration: MATERIALIZED
     operationalization_level: L1_MACHINE_READABLE_POLICY_ROUTING
-    public_profile_catalog: NOT_MATERIALIZED
-    canonical_pp_contract_registry: NOT_MATERIALIZED
+    public_profile_catalog: MATERIALIZED
+    canonical_pp_contract_registry: MATERIALIZED
     transition_reconciler: NOT_IMPLEMENTED
     h3_hook_activation: NOT_IMPLEMENTED
     remote_commit_verifier: NOT_IMPLEMENTED

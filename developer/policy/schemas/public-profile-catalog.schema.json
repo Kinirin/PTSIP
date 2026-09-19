@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer:public-profile-catalog:v1",
+  "title": "PTSIP Public Profile Catalog v1",
+  "type": "object",
+  "required": ["schema_version", "authority", "root", "profiles"],
+  "properties": {
+    "schema_version": {"const": "ptsip-public-profile-catalog/v1"},
+    "authority": {"const": "PTSIP_PUBLIC_PROFILE_CATALOG"},
+    "root": {"const": "profiles"},
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "resource", "contract", "responsibility_mode"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+          "resource": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.ptsip\\.yaml$"},
+          "contract": {"type": "string", "pattern": "^pp\\.[0-9]+\\.[0-9]+$"},
+          "responsibility_mode": {"enum": ["explicit", "template", "hybrid"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

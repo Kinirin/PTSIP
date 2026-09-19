@@ -1,0 +1,16 @@
+schema_version: ptsip-public-profile-catalog/v1
+authority: PTSIP_PUBLIC_PROFILE_CATALOG
+root: profiles
+profiles:
+  - id: example
+    resource: example.ptsip.yaml
+    contract: pp.1.01
+    responsibility_mode: explicit
+  - id: hybrid-python-package
+    resource: hybrid-python-package.ptsip.yaml
+    contract: pp.1.01
+    responsibility_mode: hybrid
+  - id: template-python-package
+    resource: template-python-package.ptsip.yaml
+    contract: pp.1.01
+    responsibility_mode: template
