@@ -118,6 +118,7 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("SFP-0011", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-0005", "amends", "MPD-0004", "REPOSITORY_SELF_ADOPTION_ASSUMPTION"),
+        ("MPD-0010", "extends", "MPD-0001", "DEVELOPER_CANONICAL_SEMANTIC_CONTRACT_AND_EXTENSION_BOUNDARY"),
         ("MPD-0011", "amends", "MPD-0008", "project_profile_version_migration_authorization"),
         ("MPD-0011", "extends", "MPD-0010", "identity_and_resolution"),
         ("MPD-0011", "depends_on", "MPD-0001", "developer_distribution_boundary"),
