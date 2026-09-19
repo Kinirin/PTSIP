@@ -233,3 +233,26 @@ def test_no_t2_delta_is_no_change(tmp_path: Path) -> None:
     result = reconcile_staged_transition(tmp_path)
     assert result.status == "NO_CHANGE"
     assert result.target == "pp.1.01"
+
+
+def test_historical_baseline_mutation_fails_closed(tmp_path: Path) -> None:
+    _init_repo(tmp_path)
+    _write(tmp_path, "profiles/example.ptsip.yaml", _profile("pp.1.01", "changed"))
+    with (tmp_path / "profiles/history/pp.1.01/example.ptsip.yaml").open(
+        "a",
+        encoding="utf-8",
+    ) as stream:
+        stream.write("# forbidden history edit\n")
+    _run(
+        tmp_path,
+        "add",
+        "profiles/example.ptsip.yaml",
+        "profiles/history/pp.1.01/example.ptsip.yaml",
+    )
+
+    try:
+        reconcile_staged_transition(tmp_path)
+    except PPTransitionReconcileError as exc:
+        assert exc.code == "HISTORICAL_BASELINE_MUTATION"
+    else:
+        raise AssertionError("historical baseline mutation must fail closed")

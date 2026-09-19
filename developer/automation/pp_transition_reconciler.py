@@ -359,6 +359,34 @@ def _verify_history_baseline(
             )
 
 
+def _staged_history_paths(root: Path, *, base_revision: str) -> tuple[str, ...]:
+    raw = _require_git(
+        root,
+        "diff",
+        "--cached",
+        "--name-only",
+        base_revision,
+        "--",
+        "profiles/history",
+    ).decode("utf-8", errors="replace")
+    return tuple(
+        sorted(
+            line.strip().replace("\\", "/")
+            for line in raw.splitlines()
+            if line.strip()
+        )
+    )
+
+
+def _reject_staged_history_mutation(root: Path, *, base_revision: str) -> None:
+    paths = _staged_history_paths(root, base_revision=base_revision)
+    if paths:
+        raise PPTransitionReconcileError(
+            "HISTORICAL_BASELINE_MUTATION",
+            "historical Public Profile baselines are immutable: " + ", ".join(paths),
+        )
+
+
 def build_transition_plan(
     root: str | Path,
     *,
@@ -405,6 +433,8 @@ def build_transition_plan(
             target=delta.expected_next,
             reasons=delta.reasons,
         )
+
+    _reject_staged_history_mutation(repo, base_revision=base_revision)
 
     base = GitSnapshot(repo, base_revision)
     candidate = GitIndexSnapshot(repo)
@@ -506,6 +536,25 @@ def _verify_already_reconciled(
     reasons: tuple[str, ...],
 ) -> TransitionPlan:
     candidate = GitIndexSnapshot(root)
+    base = GitSnapshot(root, base_revision)
+    base_state = load_authority_state(base)
+    source_prefix = _history_root(source)
+    target_prefix = _history_root(target)
+    staged_history = _staged_history_paths(root, base_revision=base_revision)
+    for path in staged_history:
+        if not path.startswith(target_prefix + "/"):
+            raise PPTransitionReconcileError(
+                "HISTORICAL_BASELINE_MUTATION",
+                f"historical baseline mutation is forbidden: {path}",
+            )
+    for resource in base_state.discovered_resources:
+        source_path = f"{source_prefix}/{resource}"
+        if base.read_bytes(source_path) != candidate.read_bytes(source_path):
+            raise PPTransitionReconcileError(
+                "HISTORICAL_BASELINE_MUTATION",
+                f"historical baseline mutation is forbidden: {source_path}",
+            )
+
     registry = _yaml(
         candidate.read_bytes(PP_CONTRACT_REGISTRY),
         label=f"STAGED_INDEX:{PP_CONTRACT_REGISTRY}",
