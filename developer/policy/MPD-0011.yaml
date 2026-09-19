@@ -1,0 +1,148 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0011
+  title: Commit-Atomic Full Project Profile Transition Automation
+  status: ACTIVE
+
+rules:
+  authority_semantics:
+    decision: APPROVED
+    approval_date: "2026-09-19"
+    scope: PTSIP_REPOSITORY_DEVELOPER_CONTROL_PLANE
+    distribution: FORBIDDEN
+    consumer_project_requirement: false
+    purpose: AUTOMATE_DEVELOPER_OWNED_PROJECT_PROFILE_CONTRACT_TRANSITIONS_WITHOUT_REQUIRING_MANUAL_VERSION_MAINTENANCE
+    applies_to_git_refs: ALL
+    trigger_is_branch_independent: true
+    branch_name_is_transition_authority: false
+    pull_request_presence_is_transition_authority: false
+    merge_event_is_transition_authority: false
+    implementation_infrastructure_change_without_t2_delta_changes_pp_version: false
+
+  commit_candidate_trigger:
+    unit: GIT_COMMIT_CANDIDATE
+    local:
+      base: HEAD
+      candidate: STAGED_GIT_INDEX
+      comparison: HEAD_TO_STAGED_COMMIT_CANDIDATE
+      behavior: AUTO_RECONCILE_THEN_VERIFY
+    remote:
+      unit: INTRODUCED_COMMIT
+      comparison: PARENT_STATE_TO_COMMIT_STATE
+      behavior: VERIFY_ONLY
+      mutation: FORBIDDEN
+      every_introduced_commit_must_be_checked: true
+    release:
+      source: EXACT_SHA
+      behavior: VERIFY_ONLY
+      mutation: FORBIDDEN
+    merge_commit_with_authority_delta: SAME_RULE_AS_ANY_OTHER_COMMIT
+
+  t2_authority_delta:
+    model: T2_AUTHORITY_DELTA
+    trigger_sources:
+      - REGISTERED_CANONICAL_PUBLIC_PROFILE_CONTENT
+      - PUBLIC_PROFILE_CATALOG_MEMBERSHIP
+      - PUBLIC_PROFILE_CATALOG_RESOURCE_IDENTITY
+      - CURRENT_PP_CANONICAL_SCHEMA_CONTENT
+    canonical_public_profile_catalog_ref: profiles/index.yaml
+    canonical_public_profile_root: profiles/
+    canonical_pp_contract_registry_ref: registry/project-profile-contracts.yaml
+    canonical_current_schema_pattern: schemas/ptsip-profile-pp-<current>.schema.json
+    non_trigger_sources:
+      - GIT_BRANCH_NAME
+      - PULL_REQUEST_STATE
+      - MERGE_EVENT_AS_SUCH
+      - EMBEDDED_SCHEMA_PROJECTION
+      - RUNTIME_CURRENT_PP_PROJECTION
+      - PROJECT_PROFILE_RELEASE_NOTE
+      - PUBLIC_PROFILE_HISTORY_BASELINE
+      - VERIFICATION_TESTS
+      - PTSIP_REPOSITORY_PROJECT_PROFILE_INSTANCE
+      - DEVELOPER_REPOSITORY_SELF_PROFILE
+      - TRANSITION_AUTOMATION_IMPLEMENTATION
+    derived_surface_change_must_not_retrigger_transition: true
+    manual_current_pp_pointer_change_without_t2_authority_delta: FAIL_CLOSED
+
+  transition_generation:
+    developer_owned_public_profile_or_pp_contract_semantic_change_requires_new_pp_identity: true
+    normal_automatic_version_step: NEXT_MINOR
+    automatic_major_version_step: FORBIDDEN
+    major_transition_requires: EXPLICIT_PROJECT_OWNER_DECISION
+    current_pp_identity_source: CANONICAL_PP_CONTRACT_REGISTRY
+    canonical_public_profiles_rebind_to_new_pp: REQUIRED
+    canonical_and_embedded_schema_pair_for_new_pp: REQUIRED
+    pp_transition_registry_record: REQUIRED
+    default_transition_kind_for_t2_delta: SEMANTIC_MIGRATION
+    identity_only_transition_requires_explicit_registered_evidence: true
+    transition_commit_atomicity: REQUIRED
+    split_invalid_transition_across_commits: FORBIDDEN
+    retry_behavior: VERIFY_EXISTING_EXPECTED_TRANSITION_WITHOUT_SECOND_VERSION_BUMP
+
+  user_revision_lineage:
+    owner: USER
+    developer_distributed_baseline_revision: 1
+    developer_pp_generation_change_revision: RESET_TO_1
+    user_authoritative_mutation_within_same_pp: INCREMENT_EXACTLY_ONE_AFTER_SUCCESSFUL_ATOMIC_APPLY
+    read_only_or_derived_operations_increment_revision: false
+    developer_must_not_use_user_revision_as_pp_version_bump_substitute: true
+    content_digest_is_user_revision: false
+    content_digest_purpose:
+      - INTEGRITY
+      - EXACT_CONTENT_IDENTITY
+      - STALE_PLAN_DETECTION
+
+  reconciliation_safety:
+    historical_developer_baseline: IMMUTABLE
+    reconciliation_model: THREE_WAY_USER_AUTHORITY_PRESERVING
+    reconciliation_inputs:
+      - DISTRIBUTED_BASELINE
+      - USER_CURRENT_AUTHORITATIVE_PROFILE
+      - NEW_DISTRIBUTED_BASELINE
+    user_change_when_developer_semantic_field_is_unchanged: PRESERVE
+    same_semantic_field_changed_by_user_and_developer: DECISION_REQUIRED
+    non_conflicting_developer_addition: SAFE_CANDIDATE
+    modified_profile_without_provable_origin: UNKNOWN_ORIGIN_FAIL_CLOSED
+    missing_or_changed_required_template_revision: FAIL_CLOSED
+    materialization_may_mutate_source_project_profile: false
+    automation_staging: EXACT_AUTOMATION_OWNED_OUTPUTS_ONLY
+    git_add_all: FORBIDDEN
+    unstaged_user_change_on_automation_owned_output: AUTOMATION_WRITE_CONFLICT
+    post_write_validation: REQUIRED
+    partial_authoritative_state_after_failure: FORBIDDEN
+
+  h3_hook_activation:
+    strategy: H3_SHARED_INSTALLER
+    entrypoints:
+      - setup_dev.bat
+      - bootstrap_repo.ps1
+      - python -m developer.automation.dev_setup
+    shared_installer: REQUIRED
+    git_config_scope: LOCAL_REPOSITORY
+    core_hooks_path: .githooks
+    product_runtime_dependency: FORBIDDEN
+    developer_module_distribution: FORBIDDEN
+    consumer_repository_requirement: false
+
+  verification_layers:
+    local_pre_commit: AUTO_RECONCILE_AND_VERIFY
+    remote: VERIFY_ONLY
+    remote_must_detect_local_hook_bypass: true
+    remote_must_validate_every_introduced_commit: true
+    release: EXACT_SHA_VERIFY_ONLY
+    release_publication_with_invalid_pp_transition: FORBIDDEN
+    pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
+
+relations:
+  supersedes: []
+  amends:
+    - policy: MPD-0008
+      scope: project_profile_version_migration_authorization
+  extends:
+    - policy: MPD-0010
+      scope: identity_and_resolution
+  depends_on:
+    - policy: MPD-0001
+      scope: developer_distribution_boundary

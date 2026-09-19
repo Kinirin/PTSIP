@@ -33,7 +33,9 @@ rules:
     - ptsip-migration:IMPORTS:ptsip-core
     - ptsip-migration:IMPORTS:ptsip-evidence
     - ptsip-migration:IMPORTS:ptsip-source-compat
-    project_profile_version_migration_authorized: false
+    project_profile_version_migration_authority_ref: MPD-0011
+    project_profile_version_migration_authorized_when: MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED
+    project_profile_version_migration_otherwise: FORBIDDEN
 relations:
   supersedes: []
   amends: []

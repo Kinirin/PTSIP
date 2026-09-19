@@ -201,3 +201,47 @@ scope_bindings:
       - policy_id: MPD-0010
         sections:
           - identity_and_resolution
+
+  profiles:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - authority_semantics
+          - commit_candidate_trigger
+          - t2_authority_delta
+          - transition_generation
+          - user_revision_lineage
+          - reconciliation_safety
+          - verification_layers
+
+  schemas:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - normative_contract_architecture
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - t2_authority_delta
+          - transition_generation
+          - reconciliation_safety
+          - verification_layers
+
+  registry/project-profile-contracts.yaml:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - normative_contract_architecture
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - authority_semantics
+          - t2_authority_delta
+          - transition_generation
+          - verification_layers
