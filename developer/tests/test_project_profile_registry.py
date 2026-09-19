@@ -74,3 +74,15 @@ def test_public_profile_catalog_exactly_describes_existing_distribution_assets()
         )
         assert payload["ptsip"]["version"] == entry["contract"]
         assert payload["responsibility_map"]["mode"] == entry["responsibility_mode"]
+
+
+def test_current_contract_has_immutable_baseline() -> None:
+    current = current_project_profile_contract(ROOT)
+    assert current["baseline"] == "profiles/history/pp.1.01"
+
+    baseline = ROOT / current["baseline"]
+    catalog = load_public_profile_catalog(ROOT)
+    for entry in catalog["profiles"]:
+        assert (baseline / entry["resource"]).read_bytes() == (
+            ROOT / "profiles" / entry["resource"]
+        ).read_bytes()

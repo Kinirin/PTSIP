@@ -83,6 +83,16 @@ def validate_project_profile_registry_plane(
         current_contract = current_contracts[0]
         if current_contract.get("lifecycle") != "CURRENT":
             errors.append("current project-profile contract must have lifecycle CURRENT")
+        baseline_path = current_contract.get("baseline")
+        if not isinstance(baseline_path, str):
+            errors.append("current project-profile contract must bind an immutable baseline")
+        else:
+            baseline_root = base / baseline_path
+            if not baseline_root.is_dir():
+                errors.append(
+                    f"current project-profile baseline is missing: {baseline_path}"
+                )
+
         schema_path = current_contract.get("schema")
         if not isinstance(schema_path, str):
             errors.append("current project-profile contract must bind a canonical schema")
@@ -167,6 +177,35 @@ def validate_project_profile_registry_plane(
     current_profile_contracts = {
         item.get("contract") for item in profile_entries if isinstance(item.get("contract"), str)
     }
+
+    for contract in contracts:
+        baseline_path = contract.get("baseline")
+        if not isinstance(baseline_path, str):
+            continue
+        baseline_root = base / baseline_path
+        if not baseline_root.is_dir():
+            errors.append(
+                f"project-profile baseline is missing for {contract.get('version')}: {baseline_path}"
+            )
+            continue
+        baseline_resources = sorted(
+            path.name for path in baseline_root.glob("*.ptsip.yaml")
+        )
+        if contract.get("version") == current and baseline_resources != sorted(resources):
+            errors.append(
+                "current project-profile baseline must cover current public profile resources exactly"
+            )
+        for resource in baseline_resources:
+            payload = load_yaml(
+                (baseline_root / resource).relative_to(base).as_posix(),
+                root=base,
+            )
+            ptsip = _mapping(payload.get("ptsip"))
+            declared = None if ptsip is None else ptsip.get("version")
+            if declared != contract.get("version"):
+                errors.append(
+                    f"baseline {baseline_path}/{resource} does not declare contract {contract.get('version')!r}"
+                )
     if current_profile_contracts != {current}:
         errors.append(
             "current public profile catalog must bind every distributed profile to registry current"

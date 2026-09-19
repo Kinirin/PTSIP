@@ -1,0 +1,148 @@
+ptsip:
+  version: "pp.1.01"
+  specification:
+    family: "0.3.7-draft"
+    source: "https://github.com/Kinirin/PTSIP"
+    revision: "3c47816770d194ae42f98faedc911d980db0e62a"
+
+responsibility_map:
+  mode: explicit
+
+components:
+  - id: product-runtime
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "product/app/**"
+    purpose: product_runtime
+    shipped: true
+    runtime_required: true
+    executable: true
+    release_owner: product
+    compatibility_owner: product
+
+  - id: product-sdk
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "product/sdk/**"
+    purpose: shipped_product_sdk
+    shipped: true
+    runtime_required: false
+    executable: true
+    release_owner: product
+    compatibility_owner: product
+
+  - id: product-tests
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/product/**"
+    purpose: product_owned_quality_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: product
+    compatibility_owner: product
+
+  - id: development-toolkit
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - IMPLEMENTATION
+      - VERIFICATION
+    include:
+      - "tools/sdk/**"
+    purpose: reusable_development_validation_and_generation
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+    analysis_inputs:
+      - "product/**"
+      - "contracts/**"
+
+  - id: release-automation
+    classification: DELIVERY
+    roles:
+      - AUTOMATION
+    include:
+      - ".github/workflows/release.yml"
+    purpose: build_publish_and_deploy_release_targets
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: delivery
+    compatibility_owner: delivery
+
+  - id: production-operations
+    classification: OPERATIONS
+    roles:
+      - AUTOMATION
+    include:
+      - "ops/**"
+    purpose: ongoing_production_health_recovery_and_maintenance
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: operations
+    compatibility_owner: operations
+
+  - id: shared-contracts
+    classification: NEUTRAL_CONTRACT
+    include:
+      - "contracts/**"
+    purpose: lifecycle_independent_declarative_contracts
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: contract
+    compatibility_owner: contract
+
+associated_artifacts:
+  - id: development-toolkit-docs
+    anchor: development-toolkit
+    include:
+      - "docs/toolkit/**"
+    purpose: toolkit_owned_usage_and_authority_documentation
+
+relationships:
+  - id: product-tests-verify-runtime
+    from: product-tests
+    to: product-runtime
+    type: VERIFIES
+
+  - id: toolkit-reads-contracts
+    from: development-toolkit
+    to: shared-contracts
+    type: READS
+
+  - id: toolkit-docs-document-toolkit
+    from: development-toolkit-docs
+    to: development-toolkit
+    type: DOCUMENTS
+
+  - id: release-builds-sdk
+    from: release-automation
+    to: product-sdk
+    type: BUILDS
+
+  - id: release-publishes-sdk
+    from: release-automation
+    to: product-sdk
+    type: PUBLISHES
+
+  - id: operations-manages-runtime
+    from: production-operations
+    to: product-runtime
+    type: MANAGES
+
+policies:
+  product_to_nonproduct_runtime_dependency: "deny"
+  nonproduct_in_product_package: "deny"
+  independent_build_resolution: "required"
+  shared_executable_cross_lifecycle: "deny"
+  neutral_contract_sharing: "allow"

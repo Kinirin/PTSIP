@@ -3,29 +3,74 @@
   "$id": "urn:ptsip:developer:project-profile-contract-registry:v1",
   "title": "PTSIP Project Profile Contract Registry v1",
   "type": "object",
-  "required": ["schema_version", "authority", "current", "contracts", "transitions"],
+  "required": [
+    "schema_version",
+    "authority",
+    "current",
+    "contracts",
+    "transitions"
+  ],
   "properties": {
-    "schema_version": {"const": "ptsip-project-profile-contract-registry/v1"},
-    "authority": {"const": "PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY"},
-    "current": {"type": "string", "pattern": "^pp\\.[0-9]+\\.[0-9]+$"},
+    "schema_version": {
+      "const": "ptsip-project-profile-contract-registry/v1"
+    },
+    "authority": {
+      "const": "PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY"
+    },
+    "current": {
+      "type": "string",
+      "pattern": "^pp\\.[0-9]+\\.[0-9]+$"
+    },
     "contracts": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["version", "lifecycle", "operations", "schema"],
+        "required": [
+          "version",
+          "lifecycle",
+          "operations",
+          "schema"
+        ],
         "properties": {
-          "version": {"type": "string", "pattern": "^pp\\.[0-9]+\\.[0-9]+$"},
-          "lifecycle": {"enum": ["LEGACY_COMPATIBILITY_ONLY", "CURRENT", "SUPERSEDED"]},
+          "version": {
+            "type": "string",
+            "pattern": "^pp\\.[0-9]+\\.[0-9]+$"
+          },
+          "lifecycle": {
+            "enum": [
+              "LEGACY_COMPATIBILITY_ONLY",
+              "CURRENT",
+              "SUPERSEDED"
+            ]
+          },
           "operations": {
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
-            "items": {"enum": ["IDENTIFY", "VALIDATE", "ANALYZE", "MIGRATE_SOURCE", "CREATE_TARGET"]}
+            "items": {
+              "enum": [
+                "IDENTIFY",
+                "VALIDATE",
+                "ANALYZE",
+                "MIGRATE_SOURCE",
+                "CREATE_TARGET"
+              ]
+            }
           },
           "schema": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "pattern": "^schemas/ptsip-profile-pp-[0-9]+\\.[0-9]+\\.schema\\.json$"
+          },
+          "baseline": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^profiles/history/pp\\.[0-9]+\\.[0-9]+$"
           }
         },
         "additionalProperties": false
@@ -35,11 +80,26 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["from", "to", "kind"],
+        "required": [
+          "from",
+          "to",
+          "kind"
+        ],
         "properties": {
-          "from": {"type": "string", "pattern": "^pp\\.[0-9]+\\.[0-9]+$"},
-          "to": {"type": "string", "pattern": "^pp\\.[0-9]+\\.[0-9]+$"},
-          "kind": {"enum": ["IDENTITY_ONLY", "SEMANTIC_MIGRATION"]}
+          "from": {
+            "type": "string",
+            "pattern": "^pp\\.[0-9]+\\.[0-9]+$"
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^pp\\.[0-9]+\\.[0-9]+$"
+          },
+          "kind": {
+            "enum": [
+              "IDENTITY_ONLY",
+              "SEMANTIC_MIGRATION"
+            ]
+          }
         },
         "additionalProperties": false
       }
