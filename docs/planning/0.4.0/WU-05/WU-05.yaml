@@ -16,7 +16,7 @@ work_unit:
     inherited_from:
       - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
   integration_branch: dev/0.4.0
-  implementation_authorization: NOT_AUTHORIZED
+  implementation_authorization: AUTHORIZED
   depends_on: []
   execution_branch: dev/0.4.0-WU-05
   branch_parent: dev/0.4.0
@@ -31,6 +31,45 @@ planning_authority:
   implementation_authorized_by_this_plan: false
 
 primary_responsibility: IMPLEMENT_A_DEPENDENCY_FREE_POSTCONDITION_VERIFICATION_KERNEL_AND_REMEDIATION_TEST_MODE_FROM_EXPLICIT_VERIFICATION_INPUTS_WITHOUT_APPLY_OR_UPSTREAM_SOLUTION_ORCHESTRATION
+
+refactor_ops_migration_authorization:
+  status: AUTHORIZED
+  authority: PROJECT_OWNER
+  date: '2026-09-20'
+  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  ownership:
+    canonical_target: PTSIP
+    source_implementation: Kinirin/turbo-system@ccac88c452ce2943be284f99243eb5acdae65725:tools/ai_interface_tool/refactor_ops
+    source_state: TRANSITIONAL
+    new_independent_refactor_ops_validation_capabilities: FORBIDDEN
+  r1_r4_static_evidence:
+    verification_capabilities_observed:
+      - DETACHED_VALIDATION_WORKTREE
+      - CANDIDATE_SHA_VERIFICATION
+      - CHANGED_FILE_BOUNDARY_VERIFICATION
+      - PARALLEL_EXTERNAL_VALIDATION_STEPS
+      - PROCESS_TIMEOUT_AND_TREE_TERMINATION
+      - STDOUT_STDERR_LOG_CAPTURE
+      - ENVIRONMENT_VALUE_REDACTION
+      - SAFE_OUTPUT_PUBLICATION
+      - GIT_DIFF_CHECK
+    existing_ptsip_capabilities_to_reuse:
+      - REPOSITORY_SNAPSHOT
+      - CONFORMANCE_RECHECK
+      - VPMS_VERIFICATION_PURPOSE_BOUNDARY
+      - PTSIP_REMEDIATION_TEST_MODE_CONTRACT
+    generic_gaps_owned_by_wu_05:
+      - ISOLATED_CANDIDATE_MATERIALIZATION_FOR_POSTCONDITION_CHECKS
+      - GENERIC_EXTERNAL_CHECK_EXECUTION
+      - BOUNDED_PARALLEL_VALIDATION
+      - TIMEOUT_AND_CANCELLATION
+      - REDACTED_MACHINE_INSPECTABLE_VALIDATION_EVIDENCE
+      - POSTSTATE_FILE_BOUNDARY_AND_SHA_VERIFICATION
+  migration_rule:
+    postcondition_verification_remains_read_only: true
+    validation_success_never_grants_authority: true
+    refactor_ops_source_code_is_evidence_not_ptsip_authority: true
+    verification_mechanics_must_be_generalized_before_turbo_system_source_retirement: true
 
 dependency_firewall:
   depends_on_work_units: []
