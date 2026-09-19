@@ -302,3 +302,50 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
+  src/ptsip/project_profile_contracts.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  src/ptsip/profile_identity.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  src/ptsip/profile_compatibility.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  src/ptsip/specdata/project-profile-contracts.yaml:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+

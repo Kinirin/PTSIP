@@ -11,6 +11,7 @@ from developer.automation.policy_loader import load_json, load_yaml, repository_
 PUBLIC_PROFILE_CATALOG = "profiles/index.yaml"
 PUBLIC_PROFILE_CATALOG_SCHEMA = "developer/policy/schemas/public-profile-catalog.schema.json"
 PP_CONTRACT_REGISTRY = "registry/project-profile-contracts.yaml"
+EMBEDDED_PP_CONTRACT_REGISTRY = "src/ptsip/specdata/project-profile-contracts.yaml"
 PP_CONTRACT_REGISTRY_SCHEMA = (
     "developer/policy/schemas/project-profile-contract-registry.schema.json"
 )
@@ -55,6 +56,7 @@ def validate_project_profile_registry_plane(
 
     catalog = load_yaml(PUBLIC_PROFILE_CATALOG, root=base)
     registry = load_yaml(PP_CONTRACT_REGISTRY, root=base)
+    embedded_registry = load_yaml(EMBEDDED_PP_CONTRACT_REGISTRY, root=base)
     catalog_schema = load_json(PUBLIC_PROFILE_CATALOG_SCHEMA, root=base)
     registry_schema = load_json(PP_CONTRACT_REGISTRY_SCHEMA, root=base)
 
@@ -65,6 +67,11 @@ def validate_project_profile_registry_plane(
         errors.append(f"{PUBLIC_PROFILE_CATALOG}: {error.message}")
     for error in Draft202012Validator(registry_schema).iter_errors(registry):
         errors.append(f"{PP_CONTRACT_REGISTRY}: {error.message}")
+
+    if registry != embedded_registry:
+        errors.append(
+            "embedded Project Profile contract registry must equal canonical registry"
+        )
 
     contracts = [
         item

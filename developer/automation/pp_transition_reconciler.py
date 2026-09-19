@@ -23,6 +23,7 @@ from developer.automation.pp_transition_delta import (
     load_authority_state,
 )
 from developer.automation.project_profile_registry import (
+    EMBEDDED_PP_CONTRACT_REGISTRY,
     PP_CONTRACT_REGISTRY,
     PUBLIC_PROFILE_CATALOG,
     validate_project_profile_registry_plane,
@@ -510,11 +511,13 @@ def build_transition_plan(
         catalog,
         target=delta.expected_next,
     )
-    outputs[PP_CONTRACT_REGISTRY] = _build_registry(
+    generated_registry = _build_registry(
         _base_registry(base),
         source=delta.base_current,
         target=delta.expected_next,
     )
+    outputs[PP_CONTRACT_REGISTRY] = generated_registry
+    outputs[EMBEDDED_PP_CONTRACT_REGISTRY] = generated_registry
 
     paths = tuple(sorted(outputs))
     return TransitionPlan(
@@ -575,6 +578,14 @@ def _verify_already_reconciled(
         raise PPTransitionReconcileError(
             "RECONCILED_TRANSITION_MISSING",
             f"candidate registry does not record {source!r} -> {target!r}.",
+        )
+
+    canonical_registry = candidate.read_bytes(PP_CONTRACT_REGISTRY)
+    embedded_registry = candidate.read_bytes(EMBEDDED_PP_CONTRACT_REGISTRY)
+    if canonical_registry is None or canonical_registry != embedded_registry:
+        raise PPTransitionReconcileError(
+            "RECONCILED_RUNTIME_REGISTRY_PROJECTION_MISMATCH",
+            "reconciled embedded PP registry must be byte-identical to canonical registry.",
         )
 
     catalog = _candidate_catalog(candidate)

@@ -12,6 +12,7 @@ from ptsip.profile_compatibility import (
     require_historical_project_profile_bridge,
 )
 from ptsip.profile_identity import (
+    CURRENT_PROJECT_PROFILE_VERSION,
     PP_0_00,
     PP_1_01,
     ProjectProfileIdentityError,
@@ -53,7 +54,10 @@ def test_036_bridge_preserves_legacy_target_alias_without_making_it_a_hop() -> N
 def test_current_target_is_pp_identity_not_tool_draft_identity() -> None:
     target = current_project_profile_target()
 
-    assert target.contract == PP_1_01
+    assert target.contract == ProjectProfileVersion.parse(
+        CURRENT_PROJECT_PROFILE_VERSION,
+        require_canonical=True,
+    )
     assert target.temporary_filename == "ptsip_pp1.01.yaml"
     assert target.schema_resource == "ptsip-profile-pp-1.01.schema.json"
 

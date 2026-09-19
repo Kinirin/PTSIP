@@ -24,3 +24,16 @@ def test_embedded_profile_schema_and_registry_match_bound_snapshot_assets() -> N
         files("ptsip").joinpath("specdata/ptsip-registry.yaml").read_text(encoding="utf-8")
     )
     assert embedded_registry == canonical_registry
+
+
+def test_embedded_project_profile_contract_registry_matches_canonical() -> None:
+    root = Path(__file__).resolve().parents[3]
+    canonical = yaml.safe_load(
+        (root / "registry/project-profile-contracts.yaml").read_text(encoding="utf-8")
+    )
+    embedded = yaml.safe_load(
+        files("ptsip")
+        .joinpath("specdata/project-profile-contracts.yaml")
+        .read_text(encoding="utf-8")
+    )
+    assert embedded == canonical

@@ -5,6 +5,12 @@ import re
 from dataclasses import dataclass
 from enum import Enum
 
+from .project_profile_contracts import (
+    ProjectProfileContractRegistryError,
+    current_runtime_project_profile_contract,
+    current_runtime_project_profile_version,
+)
+
 
 _PP_PATTERN = re.compile(r"^pp\.(\d+)\.(\d+)$")
 _PP_FILENAME_TOKEN_PATTERN = re.compile(r"^pp(\d+)\.(\d+)$")
@@ -150,7 +156,13 @@ class ProjectProfileSupport:
 
 PP_0_00 = ProjectProfileVersion(0, 0)
 PP_1_01 = ProjectProfileVersion(1, 1)
-CURRENT_PROJECT_PROFILE_VERSION = PP_1_01.canonical
+try:
+    CURRENT_PROJECT_PROFILE_VERSION = current_runtime_project_profile_version()
+except ProjectProfileContractRegistryError as exc:
+    raise ProjectProfileIdentityError(
+        "PP_RUNTIME_REGISTRY_INVALID",
+        str(exc),
+    ) from exc
 PP_COMPATIBILITY_TARGET_TOOL_VERSION = "0.3.7"
 
 
@@ -220,10 +232,40 @@ def require_current_project_profile_support(
     contract: ProjectProfileVersion | str,
     operation: ProjectProfileOperation,
 ) -> ProjectProfileSupport:
-    """Validate PP support against the target Tool release without changing advertised Tool identity."""
+    """Validate PP support from the embedded current-contract registry."""
 
-    return require_project_profile_support(
-        PP_COMPATIBILITY_TARGET_TOOL_VERSION,
-        contract,
-        operation,
+    version = (
+        ProjectProfileVersion.parse(contract, require_canonical=True)
+        if isinstance(contract, str)
+        else contract
+    )
+    try:
+        runtime = current_runtime_project_profile_contract()
+        current = ProjectProfileVersion.parse(
+            runtime.version,
+            require_canonical=True,
+        )
+        operations = frozenset(ProjectProfileOperation(item) for item in runtime.operations)
+    except (ProjectProfileContractRegistryError, ValueError) as exc:
+        raise ProjectProfileIdentityError(
+            "PP_RUNTIME_REGISTRY_INVALID",
+            f"Embedded Project Profile contract registry is invalid: {exc}",
+            CURRENT_PROJECT_PROFILE_VERSION,
+        ) from exc
+
+    if version != current or operation not in operations:
+        raise ProjectProfileIdentityError(
+            "PP_IDENTITY_UNSUPPORTED",
+            (
+                f"Current Tool runtime does not support Project Profile "
+                f"{version.canonical!r} for {operation.value}."
+            ),
+            version.canonical,
+        )
+
+    return ProjectProfileSupport(
+        tool_version=PP_COMPATIBILITY_TARGET_TOOL_VERSION,
+        contract=current,
+        operations=operations,
+        schema_resource=runtime.schema_resource,
     )

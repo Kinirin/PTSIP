@@ -9,6 +9,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from ptsip.constants import SPEC_VERSION, TOOL_VERSION
+from ptsip.project_profile_contracts import current_runtime_project_profile_contract
 from ptsip.profile_identity import (
     CURRENT_PROJECT_PROFILE_VERSION,
     PP_0_00,
@@ -191,3 +192,14 @@ def test_pp_1_01_release_note_discloses_identity_only_bridge() -> None:
     assert "pp.1.01" in note
     assert "IDENTITY_ONLY" in note
     assert "does **not** need lifecycle redesign" in note
+
+
+def test_current_pp_identity_is_loaded_from_embedded_registry() -> None:
+    runtime = current_runtime_project_profile_contract()
+
+    assert CURRENT_PROJECT_PROFILE_VERSION == runtime.version
+    assert runtime.version == "pp.1.01"
+    assert runtime.schema_resource == "ptsip-profile-pp-1.01.schema.json"
+    assert runtime.operations == frozenset(
+        {"IDENTIFY", "VALIDATE", "ANALYZE", "CREATE_TARGET"}
+    )

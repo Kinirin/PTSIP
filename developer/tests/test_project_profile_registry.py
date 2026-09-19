@@ -86,3 +86,15 @@ def test_current_contract_has_immutable_baseline() -> None:
         assert (baseline / entry["resource"]).read_bytes() == (
             ROOT / "profiles" / entry["resource"]
         ).read_bytes()
+
+
+def test_embedded_pp_contract_registry_matches_canonical() -> None:
+    canonical = yaml.safe_load(
+        (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
+    )
+    embedded = yaml.safe_load(
+        (
+            ROOT / "src" / "ptsip" / "specdata" / "project-profile-contracts.yaml"
+        ).read_text(encoding="utf-8")
+    )
+    assert embedded == canonical

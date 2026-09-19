@@ -123,6 +123,22 @@ transitions: []
 """,
     )
 
+    _write(
+        root,
+        "src/ptsip/specdata/project-profile-contracts.yaml",
+        """schema_version: ptsip-project-profile-contract-registry/v1
+authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
+current: pp.1.01
+contracts:
+  - version: pp.1.01
+    lifecycle: CURRENT
+    operations: [IDENTIFY, VALIDATE, ANALYZE, CREATE_TARGET]
+    schema: schemas/ptsip-profile-pp-1.01.schema.json
+    baseline: profiles/history/pp.1.01
+transitions: []
+""",
+    )
+
     schema_root = Path(__file__).resolve().parents[2] / "developer" / "policy" / "schemas"
     for name in (
         "public-profile-catalog.schema.json",
@@ -155,6 +171,12 @@ def test_profile_semantic_change_reconciles_adjacent_minor(tmp_path: Path) -> No
     assert registry["transitions"] == [
         {"from": "pp.1.01", "to": "pp.1.02", "kind": "SEMANTIC_MIGRATION"}
     ]
+    embedded_registry = yaml.safe_load(
+        (
+            tmp_path / "src" / "ptsip" / "specdata" / "project-profile-contracts.yaml"
+        ).read_text(encoding="utf-8")
+    )
+    assert embedded_registry == registry
     assert (
         yaml.safe_load((tmp_path / "profiles/example.ptsip.yaml").read_text(encoding="utf-8"))
         ["ptsip"]["version"]

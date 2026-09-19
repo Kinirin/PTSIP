@@ -4,12 +4,14 @@ from dataclasses import dataclass
 
 from .profile_identity import (
     PP_0_00,
+    CURRENT_PROJECT_PROFILE_VERSION,
     PP_1_01,
     PP_COMPATIBILITY_TARGET_TOOL_VERSION,
     ProjectProfileIdentityError,
     ProjectProfileOperation,
     ProjectProfileTransitionKind,
     ProjectProfileVersion,
+    require_current_project_profile_support,
     require_project_profile_support,
 )
 
@@ -131,22 +133,25 @@ def require_historical_project_profile_bridge(
 def current_project_profile_target(
     tool_version: str = PP_COMPATIBILITY_TARGET_TOOL_VERSION,
 ) -> ProjectProfileTarget:
-    support = require_project_profile_support(
-        tool_version,
-        PP_1_01,
+    current = ProjectProfileVersion.parse(
+        CURRENT_PROJECT_PROFILE_VERSION,
+        require_canonical=True,
+    )
+    support = require_current_project_profile_support(
+        current,
         ProjectProfileOperation.CREATE_TARGET,
     )
     if not support.schema_resource:
         raise ProjectProfileIdentityError(
             "PP_COMPAT_TARGET_SCHEMA_MISSING",
-            f"Project Profile target {PP_1_01.canonical!r} has no schema resource.",
-            PP_1_01.canonical,
+            f"Project Profile target {current.canonical!r} has no schema resource.",
+            current.canonical,
         )
     return ProjectProfileTarget(
         tool_version=tool_version,
-        contract=PP_1_01,
+        contract=current,
         schema_resource=support.schema_resource,
-        temporary_filename=f"ptsip_{PP_1_01.filename_token}.yaml",
+        temporary_filename=f"ptsip_{current.filename_token}.yaml",
     )
 
 

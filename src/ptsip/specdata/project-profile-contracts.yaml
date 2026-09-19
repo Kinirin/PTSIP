@@ -1,0 +1,19 @@
+schema_version: ptsip-project-profile-contract-registry/v1
+authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
+current: pp.1.01
+contracts:
+  - version: pp.0.00
+    lifecycle: LEGACY_COMPATIBILITY_ONLY
+    operations:
+      - IDENTIFY
+    schema: null
+  - version: pp.1.01
+    lifecycle: CURRENT
+    operations:
+      - IDENTIFY
+      - VALIDATE
+      - ANALYZE
+      - CREATE_TARGET
+    schema: schemas/ptsip-profile-pp-1.01.schema.json
+    baseline: profiles/history/pp.1.01
+transitions: []

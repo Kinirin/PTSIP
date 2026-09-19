@@ -340,3 +340,26 @@ def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
         "MPD-0010",
         "MPD-0011",
     ]
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        "src/ptsip/project_profile_contracts.py",
+        "src/ptsip/profile_identity.py",
+        "src/ptsip/profile_compatibility.py",
+        "src/ptsip/specdata/project-profile-contracts.yaml",
+    ],
+)
+def test_runtime_pp_registry_surfaces_route_transition_policy(scope: str) -> None:
+    result = resolve_policies(
+        ROOT,
+        scope=scope,
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == scope
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-0011",
+    ]
