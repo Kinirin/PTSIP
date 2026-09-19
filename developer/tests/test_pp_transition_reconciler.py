@@ -96,9 +96,7 @@ profiles:
     )
     _write(root, "profiles/example.ptsip.yaml", _profile("pp.1.01"))
     _write(root, "profiles/history/pp.1.01/example.ptsip.yaml", _profile("pp.1.01"))
-    _write(root, "schemas/ptsip-profile-pp.1.01.schema.json", _schema("pp.1.01"))
     _write(root, "schemas/ptsip-profile-pp-1.01.schema.json", _schema("pp.1.01"))
-    _write(root, "src/ptsip/specdata/ptsip-profile-pp.1.01.schema.json", _schema("pp.1.01"))
     _write(root, "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json", _schema("pp.1.01"))
     _write(
         root,
@@ -175,11 +173,6 @@ def test_schema_change_moves_semantics_to_new_generation_and_restores_old(tmp_pa
     reconcile_staged_transition(tmp_path, apply=True)
 
     assert (tmp_path / "schemas/ptsip-profile-pp-1.01.schema.json").read_bytes() == baseline
-    generated = json.loads(
-        (tmp_path / "schemas/ptsip-profile-pp.1.02.schema.json").read_text(encoding="utf-8")
-    )
-    # The reconciler uses the canonical hyphenated path; this assertion below
-    # deliberately checks that no dotted-path output is created.
     assert not (tmp_path / "schemas/ptsip-profile-pp.1.02.schema.json").exists()
     generated = json.loads(
         (tmp_path / "schemas/ptsip-profile-pp-1.02.schema.json").read_text(encoding="utf-8")
@@ -211,6 +204,7 @@ def test_manual_registry_mutation_fails_closed(tmp_path: Path) -> None:
             "PP_TRANSITION_IDENTITY_MISMATCH",
             "MANUAL_PP_TRANSITION_WITHOUT_AUTHORITY",
             "MANUAL_PP_REGISTRY_MUTATION",
+            "RECONCILED_TRANSITION_MISSING",
         }
     else:
         raise AssertionError("manual PP registry mutation must fail closed")

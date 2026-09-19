@@ -324,6 +324,7 @@ def test_unrelated_modify_does_not_route_pp_transition_policy() -> None:
     [
         "developer/automation/project_profile_registry.py",
         "developer/automation/pp_transition_delta.py",
+        "developer/automation/pp_transition_reconciler.py",
     ],
 )
 def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:

@@ -172,12 +172,25 @@ def _rebind_profile(raw: bytes, *, source: str, target: str, label: str) -> byte
     return rebound
 
 
+def _schema_filename_token(version: str) -> str:
+    if not version.startswith("pp."):
+        raise PPTransitionReconcileError(
+            "PP_IDENTITY_INVALID",
+            f"Project Profile identity {version!r} is not canonical.",
+        )
+    return "pp-" + version[len("pp."):]
+
+
 def _schema_path(version: str) -> str:
-    return f"schemas/ptsip-profile-{version}.schema.json"
+    return f"schemas/ptsip-profile-{_schema_filename_token(version)}.schema.json"
 
 
 def _embedded_schema_path(version: str) -> str:
-    return f"src/ptsip/specdata/ptsip-profile-{version}.schema.json"
+    return (
+        "src/ptsip/specdata/ptsip-profile-"
+        + _schema_filename_token(version)
+        + ".schema.json"
+    )
 
 
 def _history_root(version: str) -> str:

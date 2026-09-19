@@ -427,7 +427,10 @@ def evaluate_t2_authority_delta(
         if base.current_schema_semantic != candidate.current_schema_semantic:
             reasons.append("CURRENT_PP_CANONICAL_SCHEMA_CONTENT")
     else:
-        if base.current_schema_semantic != candidate.current_schema_semantic:
+        if (
+            candidate.current_schema_semantic is not None
+            and base.current_schema_semantic != candidate.current_schema_semantic
+        ):
             reasons.append("CURRENT_PP_CANONICAL_SCHEMA_CONTENT")
         elif (
             base_schema_bytes_for_candidate_current is not None
