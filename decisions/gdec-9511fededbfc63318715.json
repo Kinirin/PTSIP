@@ -1,0 +1,45 @@
+{
+  "answer": null,
+  "branch": "dev/0.4.0",
+  "clarification_id": "clr-883fc47b120d8326",
+  "component_id": "developer-policy-schemas",
+  "created_at": "2026-09-19T16:33:50.813889Z",
+  "id": "gdec-9511fededbfc63318715",
+  "issue_number": null,
+  "issue_url": null,
+  "profile_path": "ptsip.yaml",
+  "repository": "Kinirin/PTSIP",
+  "request": {
+    "anchors": [
+      "contract/schema-group"
+    ],
+    "component_id": "developer-policy-schemas",
+    "evidence_ids": [
+      "schema-group:developer/policy/schemas:11"
+    ],
+    "id": "clr-883fc47b120d8326",
+    "include": [
+      "developer/policy/schemas/**"
+    ],
+    "missing_fields": [
+      "classification",
+      "purpose",
+      "shipped",
+      "runtime_required",
+      "executable"
+    ],
+    "reason_codes": [
+      "MISSING_CLASSIFICATION",
+      "MISSING_PURPOSE",
+      "MISSING_PACKAGING_RESPONSIBILITY",
+      "MISSING_RUNTIME_ROLE",
+      "MISSING_EXECUTABLE_ROLE"
+    ],
+    "status": "INCOMPLETE"
+  },
+  "resolution_source": null,
+  "resolved_by": null,
+  "status": "PENDING",
+  "subject_revision": "2568f634558f3c366235067deed1d0fd83f9a1f1",
+  "updated_at": "2026-09-19T16:33:50.813889Z"
+}
