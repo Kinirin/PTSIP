@@ -83,6 +83,15 @@ def _init_repo(root: Path) -> None:
 
     _write(
         root,
+        "pyproject.toml",
+        """[project]
+name = "ptsip-transition-fixture"
+version = "0.0.0"
+""",
+    )
+
+    _write(
+        root,
         "profiles/index.yaml",
         """schema_version: ptsip-public-profile-catalog/v1
 authority: PTSIP_PUBLIC_PROFILE_CATALOG
