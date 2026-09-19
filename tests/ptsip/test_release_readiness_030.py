@@ -137,7 +137,7 @@ def test_public_profiles_are_catalog_authorized_build_assets() -> None:
     assert 'CANONICAL_PUBLIC_PROFILE_CATALOG' in setup_text
     assert '_registered_public_profile_resources()' in setup_text
     assert '_registered_profile_baselines()' in setup_text
-    assert 'source.glob("*.ptsip.yaml")' not in setup_text
+    assert 'public_profiles = sorted(source.glob("*.ptsip.yaml"))' not in setup_text
     assert 'build_lib / "ptsip" / "profiles"' in setup_text
     assert "recursive-include profiles *.ptsip.yaml" in manifest_text
     assert "include profiles/index.yaml" in manifest_text
