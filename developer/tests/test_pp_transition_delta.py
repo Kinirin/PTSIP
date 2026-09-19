@@ -24,6 +24,7 @@ def _state(
     semantic: str = PROFILE_A,
     raw: bytes = b"profile",
     schema: bytes | None = b"schema-v1",
+    schema_semantic: str | None = "schema-v1",
 ) -> AuthorityState:
     selected = entries or {
         "example": PublicProfileEntry("example", "example.ptsip.yaml", current or "pp.1.01")
@@ -45,6 +46,7 @@ def _state(
         semantic_profiles={resource: semantic for resource in resources},
         declared_profile_versions={resource: current for resource in resources},
         current_schema_bytes=schema,
+        current_schema_semantic=schema_semantic,
     )
 
 
@@ -124,7 +126,11 @@ def test_catalog_resource_identity_change_is_t2_authority_delta() -> None:
 
 def test_current_canonical_schema_change_is_t2_authority_delta() -> None:
     base = _state(label="base", schema=b"schema-v1")
-    candidate = _state(label="candidate", schema=b"schema-v2")
+    candidate = _state(
+        label="candidate",
+        schema=b"schema-v2",
+        schema_semantic="schema-v2",
+    )
 
     result = evaluate_t2_authority_delta(
         base,
@@ -144,6 +150,7 @@ def test_manual_current_pointer_change_without_authority_delta_fails_closed() ->
         current="pp.1.02",
         contract_schemas={"pp.1.02": "schemas/ptsip-profile-pp-1.02.schema.json"},
         current_schema_bytes=b"schema-v2",
+        current_schema_semantic="schema-v1",
     )
 
     result = evaluate_t2_authority_delta(
@@ -164,6 +171,7 @@ def test_already_reconciled_candidate_does_not_request_second_bump() -> None:
         current="pp.1.02",
         contract_schemas={"pp.1.02": "schemas/ptsip-profile-pp-1.02.schema.json"},
         current_schema_bytes=b"schema-v2",
+        current_schema_semantic="schema-v1",
     )
 
     result = evaluate_t2_authority_delta(
@@ -204,7 +212,11 @@ def test_initial_catalog_and_registry_materialization_is_not_semantic_delta() ->
 
 
 def test_baseline_materialization_rejects_schema_drift() -> None:
-    candidate = _state(label="candidate", schema=b"schema-v2")
+    candidate = _state(
+        label="candidate",
+        schema=b"schema-v2",
+        schema_semantic="schema-v2",
+    )
     base = replace(
         candidate,
         label="base",

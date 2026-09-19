@@ -52,6 +52,7 @@ class AuthorityState:
     semantic_profiles: Mapping[str, str]
     declared_profile_versions: Mapping[str, str | None]
     current_schema_bytes: bytes | None
+    current_schema_semantic: str | None
 
 
 @dataclass(frozen=True)
@@ -183,6 +184,35 @@ def _semantic_profile(raw: bytes, *, label: str) -> tuple[str, str | None]:
     )
 
 
+def _semantic_schema(raw: bytes, *, label: str) -> str:
+    try:
+        payload = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise PPTransitionDeltaError(
+            "CURRENT_PP_SCHEMA_INVALID",
+            f"{label} is not valid UTF-8 JSON: {exc}",
+        ) from exc
+    if not isinstance(payload, dict):
+        raise PPTransitionDeltaError(
+            "CURRENT_PP_SCHEMA_INVALID",
+            f"{label} must be a JSON object.",
+        )
+
+    semantic = copy.deepcopy(payload)
+    semantic.pop("$id", None)
+    semantic.pop("title", None)
+    version_contract = (
+        semantic.get("properties", {})
+        .get("ptsip", {})
+        .get("properties", {})
+        .get("version")
+    )
+    if isinstance(version_contract, dict):
+        version_contract.pop("const", None)
+        version_contract.pop("description", None)
+    return json.dumps(semantic, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
 def load_authority_state(source: SnapshotSource) -> AuthorityState:
     catalog_payload = _yaml_mapping(
         source.read_bytes(PUBLIC_PROFILE_CATALOG),
@@ -249,10 +279,16 @@ def load_authority_state(source: SnapshotSource) -> AuthorityState:
         declared_versions[resource] = declared
 
     current_schema_bytes: bytes | None = None
+    current_schema_semantic: str | None = None
     if current is not None:
         schema_path = contract_schemas.get(current)
         if isinstance(schema_path, str):
             current_schema_bytes = source.read_bytes(schema_path)
+            if current_schema_bytes is not None:
+                current_schema_semantic = _semantic_schema(
+                    current_schema_bytes,
+                    label=f"{source.label}:{schema_path}",
+                )
 
     return AuthorityState(
         label=source.label,
@@ -266,6 +302,7 @@ def load_authority_state(source: SnapshotSource) -> AuthorityState:
         semantic_profiles=semantic_profiles,
         declared_profile_versions=declared_versions,
         current_schema_bytes=current_schema_bytes,
+        current_schema_semantic=current_schema_semantic,
     )
 
 
@@ -316,8 +353,8 @@ def evaluate_t2_authority_delta(
 ) -> T2DeltaResult:
     if _is_baseline_materialization(base, candidate):
         if (
-            base_schema_bytes_for_candidate_current is not None
-            and base_schema_bytes_for_candidate_current != candidate.current_schema_bytes
+            base_schema_bytes_for_candidate_current is None
+            or base_schema_bytes_for_candidate_current != candidate.current_schema_bytes
         ):
             return T2DeltaResult(
                 classification="INVALID_BASELINE_MATERIALIZATION",
@@ -384,15 +421,21 @@ def evaluate_t2_authority_delta(
             f"base current contract {base.current!r} has no canonical schema path.",
         )
 
-    # current_schema_bytes on candidate follows candidate.current, so callers comparing
-    # an already-reconciled candidate must supply the old-current path separately.
-    candidate_old_current_schema = (
-        candidate.current_schema_bytes
-        if candidate.current == base.current
-        else base_schema_bytes_for_candidate_current
-    )
-    if base.current_schema_bytes != candidate_old_current_schema:
-        reasons.append("CURRENT_PP_CANONICAL_SCHEMA_CONTENT")
+    # Compare the currently authoritative schema semantically. Identity-only
+    # generation fields ($id/title/version const) do not create T2 authority.
+    if candidate.current == base.current:
+        if base.current_schema_semantic != candidate.current_schema_semantic:
+            reasons.append("CURRENT_PP_CANONICAL_SCHEMA_CONTENT")
+    else:
+        if base.current_schema_semantic != candidate.current_schema_semantic:
+            reasons.append("CURRENT_PP_CANONICAL_SCHEMA_CONTENT")
+        elif (
+            base_schema_bytes_for_candidate_current is not None
+            and base.current_schema_bytes != base_schema_bytes_for_candidate_current
+        ):
+            # Pre-reconciliation staged state may still carry the semantic edit
+            # on the old-current path.
+            reasons.append("CURRENT_PP_CANONICAL_SCHEMA_CONTENT")
 
     unique_reasons = tuple(dict.fromkeys(reasons))
     if not unique_reasons:
