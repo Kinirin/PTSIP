@@ -1,20 +1,30 @@
-format: ptsip-agent-spec/v1
+format: ptsip-agent-spec/v2
 id: PTSIP-AGENT-SPEC-GOVERNANCE
-status: BOOTSTRAP
-normative_rule_refs:
-  - PTSIP-POL-001
-  - PTSIP-SPC-001
-statements:
-  - statement_id: GOV-PROJECT-STRENGTHENING
-    kind: REQUIREMENT
-    subject: project_policy
-    predicate: may_strengthen_but_not_weaken_ptsip
+status: CANDIDATE
+scope: Authority and dependency rules for the Agent Contract Plane.
+rules:
+  - rule_id: PTSIP-ACP-GOV-001
+    modality: MUST_NOT
+    subject: agent_contract_plane
+    predicate: require_markdown_for_normative_behavior
     object: true
-  - statement_id: GOV-SPEC-BINDING
-    kind: REQUIREMENT
-    subject: normative_evaluation
-    predicate: binds_exact_specification_identity
+  - rule_id: PTSIP-ACP-GOV-002
+    modality: MUST
+    subject: agent_contract_discovery
+    predicate: root
+    object: index.yaml
+  - rule_id: PTSIP-ACP-GOV-003
+    modality: MUST
+    subject: unresolved_internal_reference
+    predicate: behavior
+    object: FAIL_CLOSED
+  - rule_id: PTSIP-ACP-GOV-004
+    modality: MUST
+    subject: external_machine_contract
+    predicate: consumption
+    object: EXPLICIT_BINDING_REQUIRED
+  - rule_id: PTSIP-ACP-GOV-005
+    modality: MUST_NOT
+    subject: implementation_binding
+    predicate: create_normative_semantics
     object: true
-migration_evidence_refs:
-  - spec/PTSIP-GOVERNANCE.md
-  - spec/PTSIP-SPEC.md
