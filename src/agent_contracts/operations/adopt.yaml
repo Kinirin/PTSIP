@@ -37,11 +37,11 @@ steps:
       /context: $step:ANALYZE#/context
       /facts_resolved: $step:ANALYZE#/facts_resolved
     branches:
-      TRUE:
+      "TRUE":
         step_ref: PREPARE
-      FALSE:
+      "FALSE":
         outcome: CLARIFICATION_REQUIRED
-      UNKNOWN:
+      "UNKNOWN":
         outcome: CLARIFICATION_REQUIRED
   - step_id: PREPARE
     type: ACTION
@@ -58,11 +58,11 @@ steps:
     input_bindings:
       /context: $step:PREPARE#/context
     branches:
-      TRUE:
+      "TRUE":
         step_ref: APPLY
-      FALSE:
+      "FALSE":
         outcome: READY
-      UNKNOWN:
+      "UNKNOWN":
         outcome: READY
   - step_id: APPLY
     type: ACTION
