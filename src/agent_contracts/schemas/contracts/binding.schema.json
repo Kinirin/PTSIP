@@ -1,0 +1,32 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"ptsip-agent-binding/v2",
+  "type":"object","additionalProperties":false,
+  "required":["format","binding_id","status","contract_set_id","active_specs","active_operations","active_actions","active_conditions","active_gates","active_io_schemas","active_vocabularies","external_machine_contracts","action_bindings","condition_evaluator_bindings","operation_entrypoints"],
+  "properties":{
+    "format":{"const":"ptsip-agent-binding/v2"},
+    "binding_id":{"type":"string","minLength":1},
+    "status":{"enum":["CANDIDATE","CURRENT","SUPERSEDED"]},
+    "contract_set_id":{"const":"ptsip-agent-contracts"},
+    "active_specs":{"$ref":"#/$defs/idList"},
+    "active_operations":{"$ref":"#/$defs/idList"},
+    "active_actions":{"$ref":"#/$defs/idList"},
+    "active_conditions":{"$ref":"#/$defs/idList"},
+    "active_gates":{"$ref":"#/$defs/idList"},
+    "active_io_schemas":{"$ref":"#/$defs/idList"},
+    "active_vocabularies":{"$ref":"#/$defs/idList"},
+    "external_machine_contracts":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["contract_id","version","package","resource"],"properties":{
+      "contract_id":{"type":"string","minLength":1},"version":{"type":"string","minLength":1},"package":{"type":"string","minLength":1},"resource":{"type":"string","minLength":1}
+    }}},
+    "action_bindings":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["action_id","python_callable"],"properties":{
+      "action_id":{"type":"string","pattern":"^PTSIP-ACT-[A-Z0-9-]+$"},"python_callable":{"type":"string","pattern":"^[A-Za-z_][A-Za-z0-9_.]*:[A-Za-z_][A-Za-z0-9_.]*$"}
+    }}},
+    "condition_evaluator_bindings":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["condition_id","python_callable"],"properties":{
+      "condition_id":{"type":"string","pattern":"^PTSIP-COND-[A-Z0-9-]+$"},"python_callable":{"type":"string","pattern":"^[A-Za-z_][A-Za-z0-9_.]*:[A-Za-z_][A-Za-z0-9_.]*$"}
+    }}},
+    "operation_entrypoints":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["operation_id","cli_command"],"properties":{
+      "operation_id":{"type":"string","pattern":"^PTSIP-OP-[A-Z0-9-]+$"},"cli_command":{"type":"string","minLength":1}
+    }}}
+  },
+  "$defs":{"idList":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}}
+}
