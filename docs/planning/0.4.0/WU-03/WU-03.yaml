@@ -14,7 +14,7 @@ work_unit:
     status: APPROVED
     authority: PROJECT_OWNER
     inherited_from: []
-  integration_branch: dev/0.4.0
+  integration_branch: dev/0.3.8
   entry_baseline: f4a178c1e781beab12ecbb6fda85cb2fc42aafc9
   implementation_authorization: AUTHORIZED
   depends_on: [WU-02]
@@ -235,11 +235,15 @@ parallel_dependency_repartition:
   leaf_work_units:
     WU-04:
       depends_on: []
-      execution_branch: dev/0.4.0-WU-04
+      execution_branch: dev/0.3.8
+      legacy_execution_branch: dev/0.4.0-WU-04
+      legacy_branch_state: MERGED
       accepts_only_explicit_inputs: true
     WU-05:
       depends_on: []
-      execution_branch: dev/0.4.0-WU-05
+      execution_branch: dev/0.3.8
+      legacy_execution_branch: dev/0.4.0-WU-05
+      legacy_branch_state: MERGED
       accepts_only_explicit_inputs: true
   future_wu_06_rule:
     depends_on: []
@@ -250,7 +254,7 @@ parallel_dependency_repartition:
     leaf_branches_created_only_after_parent_planning_commit: true
     WU_04_must_not_edit_WU_05_owned_paths: true
     WU_05_must_not_edit_WU_04_owned_paths: true
-    cross_wu_top_level_export_or_orchestration_changes_occur_on_dev_0_4_0: true
+    cross_wu_top_level_export_or_orchestration_changes_occur_on_integration_branch: true
   reconciliation:
     WU_02_dependency_remains_on_WU_03: true
     WU_04_start_waits_for_WU_02_or_WU_03: false
