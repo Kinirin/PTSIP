@@ -1,30 +1,52 @@
-format: ptsip-agent-binding/v1
+format: ptsip-agent-binding/v2
 binding_id: PTSIP-AGENT-BINDING-CURRENT
-status: BOOTSTRAP
-project_profile_contract: pp.1.02
-specification:
-  source: https://github.com/Kinirin/PTSIP
-  family: 0.3.7-draft
-  rule_registry_ref: registry/ptsip-registry.yaml
+status: CANDIDATE
+contract_set_id: ptsip-agent-contracts
 active_specs:
-  - spec/core.yaml
-  - spec/classification.yaml
-  - spec/responsibility-map.yaml
-  - spec/adoption.yaml
-  - spec/authority.yaml
-  - spec/conformance.yaml
-  - spec/governance.yaml
-  - spec/profile-transition.yaml
+  - PTSIP-AGENT-SPEC-CORE
+  - PTSIP-AGENT-SPEC-CLASSIFICATION
+  - PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP
+  - PTSIP-AGENT-SPEC-ADOPTION
+  - PTSIP-AGENT-SPEC-AUTHORITY
+  - PTSIP-AGENT-SPEC-CONFORMANCE
+  - PTSIP-AGENT-SPEC-GOVERNANCE
+  - PTSIP-AGENT-SPEC-PROFILE-TRANSITION
 active_operations:
-  - operations/adopt.yaml
-  - operations/validate.yaml
-  - operations/conform.yaml
-  - operations/reconcile-authority.yaml
-  - operations/migrate-profile.yaml
+  - PTSIP-OP-ADOPT-001
+  - PTSIP-OP-VALIDATE-001
+  - PTSIP-OP-CONFORM-001
+  - PTSIP-OP-RECONCILE-AUTHORITY-001
+  - PTSIP-OP-MIGRATE-PROFILE-001
 active_vocabularies:
-  - vocabulary/lifecycle.yaml
-  - vocabulary/outcomes.yaml
-  - vocabulary/diagnostics.yaml
-  - vocabulary/authority.yaml
-coverage:
-  legacy_markdown_replacement: INCOMPLETE
+  - PTSIP-VOCAB-LIFECYCLE
+  - PTSIP-VOCAB-OUTCOMES
+  - PTSIP-VOCAB-DIAGNOSTICS
+  - PTSIP-VOCAB-AUTHORITY
+external_machine_contracts:
+  - contract_id: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
+    version: pp.1.02
+    resource: specdata/project-profile-contracts.yaml
+implementation_bindings:
+  - operation_id: PTSIP-OP-ADOPT-001
+    python_modules:
+      - ptsip.adoption
+      - ptsip.cli
+    cli_command: ptsip adopt
+  - operation_id: PTSIP-OP-VALIDATE-001
+    python_modules:
+      - ptsip.validation.profile
+      - ptsip.project_profile_contracts
+    cli_command: ptsip validate
+  - operation_id: PTSIP-OP-CONFORM-001
+    python_modules:
+      - ptsip.conformance
+      - ptsip.conformance_audit
+  - operation_id: PTSIP-OP-RECONCILE-AUTHORITY-001
+    python_modules:
+      - ptsip.app.github_authority
+      - ptsip.app.github_reconciliation
+  - operation_id: PTSIP-OP-MIGRATE-PROFILE-001
+    python_modules:
+      - ptsip.migration.analyzer
+      - ptsip.migration.direct_planner
+      - ptsip.migration.direct_execution
