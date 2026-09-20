@@ -1,0 +1,20 @@
+format: ptsip-agent-spec/v1
+id: PTSIP-AGENT-SPEC-GOVERNANCE
+status: BOOTSTRAP
+normative_rule_refs:
+  - PTSIP-POL-001
+  - PTSIP-SPC-001
+statements:
+  - statement_id: GOV-PROJECT-STRENGTHENING
+    kind: REQUIREMENT
+    subject: project_policy
+    predicate: may_strengthen_but_not_weaken_ptsip
+    object: true
+  - statement_id: GOV-SPEC-BINDING
+    kind: REQUIREMENT
+    subject: normative_evaluation
+    predicate: binds_exact_specification_identity
+    object: true
+migration_evidence_refs:
+  - spec/PTSIP-GOVERNANCE.md
+  - spec/PTSIP-SPEC.md
