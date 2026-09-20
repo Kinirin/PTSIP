@@ -1,0 +1,27 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"ptsip-agent-contract-index/v2",
+  "type":"object","additionalProperties":false,
+  "required":["format","contract_set","dependency_policy","schemas","binding","specs","operations","actions","conditions","gates","io_schemas","vocabularies"],
+  "properties":{
+    "format":{"const":"ptsip-agent-contract-index/v2"},
+    "contract_set":{"type":"object","additionalProperties":false,"required":["id","status","authority_scope","purpose"],"properties":{
+      "id":{"const":"ptsip-agent-contracts"},"status":{"enum":["CANDIDATE","CURRENT","SUPERSEDED"]},
+      "authority_scope":{"const":"CODING_AGENT_BEHAVIOR"},"purpose":{"type":"string","minLength":1}
+    }},
+    "dependency_policy":{"type":"object","additionalProperties":false,"required":["markdown_normative_dependency","unresolved_reference","external_machine_contracts"],"properties":{
+      "markdown_normative_dependency":{"const":"FORBIDDEN"},"unresolved_reference":{"const":"FAIL_CLOSED"},"external_machine_contracts":{"const":"EXPLICIT_BINDING_ONLY"}
+    }},
+    "schemas":{"type":"object","additionalProperties":false,"required":["index","spec","operation","action","condition","gate","io","vocabulary","binding"],"properties":{
+      "index":{"type":"string","minLength":1},"spec":{"type":"string","minLength":1},"operation":{"type":"string","minLength":1},
+      "action":{"type":"string","minLength":1},"condition":{"type":"string","minLength":1},"gate":{"type":"string","minLength":1},
+      "io":{"type":"string","minLength":1},"vocabulary":{"type":"string","minLength":1},"binding":{"type":"string","minLength":1}
+    }},
+    "binding":{"type":"object","additionalProperties":false,"required":["current_ref"],"properties":{"current_ref":{"type":"string","minLength":1}}},
+    "specs":{"$ref":"#/$defs/refList"},"operations":{"$ref":"#/$defs/refList"},"actions":{"$ref":"#/$defs/refList"},
+    "conditions":{"$ref":"#/$defs/refList"},"gates":{"$ref":"#/$defs/refList"},"io_schemas":{"$ref":"#/$defs/refList"},"vocabularies":{"$ref":"#/$defs/refList"}
+  },
+  "$defs":{"refList":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["id","ref"],"properties":{
+    "id":{"type":"string","minLength":1},"ref":{"type":"string","minLength":1}
+  }}}}
+}
