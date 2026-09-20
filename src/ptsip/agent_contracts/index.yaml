@@ -1,0 +1,53 @@
+format: ptsip-agent-contract-index/v1
+contract_set:
+  id: ptsip-agent-contracts
+  status: BOOTSTRAP
+  purpose: Machine-readable entry point for coding agents consuming PTSIP.
+schemas:
+  index: schemas/index.schema.json
+  spec: schemas/spec.schema.json
+  operation: schemas/operation.schema.json
+  vocabulary: schemas/vocabulary.schema.json
+  binding: schemas/binding.schema.json
+binding:
+  current_ref: bindings/current.yaml
+specs:
+  - id: core
+    ref: spec/core.yaml
+  - id: classification
+    ref: spec/classification.yaml
+  - id: responsibility-map
+    ref: spec/responsibility-map.yaml
+  - id: adoption
+    ref: spec/adoption.yaml
+  - id: authority
+    ref: spec/authority.yaml
+  - id: conformance
+    ref: spec/conformance.yaml
+  - id: governance
+    ref: spec/governance.yaml
+  - id: profile-transition
+    ref: spec/profile-transition.yaml
+operations:
+  - id: adopt
+    ref: operations/adopt.yaml
+  - id: validate
+    ref: operations/validate.yaml
+  - id: conform
+    ref: operations/conform.yaml
+  - id: reconcile-authority
+    ref: operations/reconcile-authority.yaml
+  - id: migrate-profile
+    ref: operations/migrate-profile.yaml
+vocabularies:
+  - id: lifecycle
+    ref: vocabulary/lifecycle.yaml
+  - id: outcomes
+    ref: vocabulary/outcomes.yaml
+  - id: diagnostics
+    ref: vocabulary/diagnostics.yaml
+  - id: authority
+    ref: vocabulary/authority.yaml
+migration:
+  legacy_markdown_replacement: INCOMPLETE
+  rule: Existing Markdown may be used as migration evidence until machine-contract coverage is explicitly complete.
