@@ -13,12 +13,8 @@ class AgentContractValidationError(RuntimeError):
     """Raised when the embedded Agent Contract Plane is inconsistent."""
 
 
-def _ptsip_root():
-    return files("ptsip")
-
-
 def _root():
-    return _ptsip_root().joinpath("agent_contracts")
+    return files("agent_contracts")
 
 
 def _safe_ref(value: object) -> str:
@@ -82,12 +78,21 @@ def _reject_markdown_dependency(payload: dict[str, Any], ref: str) -> None:
 
 def _validate_external_machine_contract(binding: dict[str, Any]) -> None:
     for contract in binding["external_machine_contracts"]:
+        package = contract["package"]
         resource_ref = _safe_ref(contract["resource"])
-        resource = _ptsip_root().joinpath(*PurePosixPath(resource_ref).parts)
+        try:
+            package_root = files(package)
+        except Exception as exc:
+            raise AgentContractValidationError(
+                f"Unable to resolve external machine-contract package {package!r}: {exc}"
+            ) from exc
+
+        resource = package_root.joinpath(*PurePosixPath(resource_ref).parts)
         if not resource.is_file():
             raise AgentContractValidationError(
-                f"Missing external machine contract resource: {resource_ref}"
+                f"Missing external machine contract resource: {package}:{resource_ref}"
             )
+
         if contract["contract_id"] == "PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY":
             payload = yaml.safe_load(resource.read_text(encoding="utf-8"))
             if not isinstance(payload, dict) or payload.get("current") != contract["version"]:
