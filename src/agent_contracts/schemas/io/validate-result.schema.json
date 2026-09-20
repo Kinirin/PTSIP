@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-VALIDATE-RESULT-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["outcome"],
+  "properties":{"outcome":{"enum":["VALID","PROFILE_INVALID","UNSUPPORTED_PROFILE_CONTRACT","SCHEMA_RESOLUTION_FAILED"]},"detail":{"type":"object"}}
+}
