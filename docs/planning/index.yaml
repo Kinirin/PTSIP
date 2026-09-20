@@ -4,12 +4,20 @@ plans:
 - plan_version: 0.4.0
   path: docs/planning/0.4.0/index.yaml
   status: ACTIVE
-  integration_branch: dev/0.4.0
+  integration_branch: dev/0.3.8
+  branch_identity_migration:
+    status: RENAME_PENDING
+    canonical_branch: dev/0.3.8
+    legacy_branch: dev/0.4.0
+    scope: EXECUTION_BRANCH_IDENTITY_ONLY
+    plan_version_unchanged: true
+    planning_path_unchanged: true
+    legacy_alias_retirement_trigger: BRANCH_RENAME_CONFIRMED
   entry_routing:
     model: PARALLEL_DEPENDENCY_EXTRACTION
     canonical_plan: planning/0.4.0.md
     responsibility_control_plane: docs/planning/0.4.0/index.yaml
-    branch_creation_parent: dev/0.4.0
+    branch_creation_parent: dev/0.3.8
     resolver:
       module: developer.automation.planning_entry_resolver
       command: python -m developer.automation.planning_entry_resolver
@@ -21,7 +29,7 @@ plans:
       module: developer.automation.planning_merge_reconciler
       reconcile_command: python -m developer.automation.planning_merge_reconciler
       merge_command: python -m developer.automation.planning_leaf_merge
-      target_branch: dev/0.4.0
+      target_branch: dev/0.3.8
       state_source: WORK_UNIT_DOCUMENTS
       leaf_shared_index_mutation: FORBIDDEN
       merged_leaf_entrypoint_state: MERGED
@@ -33,29 +41,43 @@ plans:
         unmerged_leaf_order: DECLARATION_ORDER
         fallback: FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU
     branch_entrypoints:
-    - branch: dev/0.4.0
+    - branch: dev/0.3.8
       entry_document: docs/planning/0.4.0/index.yaml
       role: INTEGRATION_CONTROL_PLANE
       state: ACTIVE
+    - branch: dev/0.4.0
+      entry_document: docs/planning/0.4.0/index.yaml
+      role: BRANCH_RENAME_SOURCE_ALIAS
+      state: ACTIVE
+      canonical_branch: dev/0.3.8
+      retire_after: BRANCH_RENAME_CONFIRMED
     - branch: dev/0.4.0-WU-04
       entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
       role: INDEPENDENT_LEAF
       work_unit: WU-04
-      state: ACTIVE
+      state: MERGED
+      merged_into: dev/0.4.0
+      continuation_branch: dev/0.3.8
     - branch: dev/0.4.0-WU-05
       entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
       role: INDEPENDENT_LEAF
       work_unit: WU-05
-      state: ACTIVE
+      state: MERGED
+      merged_into: dev/0.4.0
+      continuation_branch: dev/0.3.8
     dependency_bearing_convergence:
       id: WU-03
       responsibility: DOWNSTREAM_DEPENDENCY_BEARING_INTEGRATION_AND_ORCHESTRATION
     independent_leaf_work_units:
     - id: WU-04
       branch: dev/0.4.0-WU-04
+      state: MERGED
+      continuation_branch: dev/0.3.8
       responsibility: EXPLICIT_INPUT_AUTHORITY_GATE_AND_REPOSITORY_EXECUTION_KERNEL
     - id: WU-05
       branch: dev/0.4.0-WU-05
+      state: MERGED
+      continuation_branch: dev/0.3.8
       responsibility: EXPLICIT_INPUT_POSTCONDITION_VERIFICATION_AND_REMEDIATION_TEST_MODE
   materialized_state:
     mode: DERIVED_CACHE
@@ -68,30 +90,30 @@ plans:
       lifecycle_status: COMPLETE
       implementation_authorization_status: COMPLETE
       execution_location: INTEGRATION_BRANCH
-      branch: dev/0.4.0
+      branch: dev/0.3.8
     - id: WU-02
       lifecycle_status: ACTIVE
       implementation_authorization_status: AUTHORIZED
       execution_location: INTEGRATION_BRANCH
-      branch: dev/0.4.0
+      branch: dev/0.3.8
       entry_document: docs/planning/0.4.0/WU-02/WU-02.yaml
     - id: WU-03
       lifecycle_status: ACTIVE
       implementation_authorization_status: AUTHORIZED
       execution_location: INTEGRATION_BRANCH
-      branch: dev/0.4.0
+      branch: dev/0.3.8
       entry_document: docs/planning/0.4.0/WU-03/WU-03.yaml
     - id: WU-04
       lifecycle_status: ACTIVE
-      implementation_authorization_status: NOT_AUTHORIZED
-      execution_location: LEAF_BRANCH
-      branch: dev/0.4.0-WU-04
+      implementation_authorization_status: AUTHORIZED
+      execution_location: INTEGRATION_BRANCH
+      branch: dev/0.3.8
       entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
     - id: WU-05
       lifecycle_status: ACTIVE
-      implementation_authorization_status: NOT_AUTHORIZED
-      execution_location: LEAF_BRANCH
-      branch: dev/0.4.0-WU-05
+      implementation_authorization_status: AUTHORIZED
+      execution_location: INTEGRATION_BRANCH
+      branch: dev/0.3.8
       entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
     - id: WU-06
       lifecycle_status: NOT_CREATED
