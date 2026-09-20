@@ -2,5 +2,5 @@
   "$schema":"https://json-schema.org/draft/2020-12/schema",
   "x-ptsip-io-id":"PTSIP-IO-ADOPT-RESULT-001","x-ptsip-status":"CANDIDATE",
   "type":"object","additionalProperties":false,"required":["outcome"],
-  "properties":{"outcome":{"enum":["READY","APPLIED","CLARIFICATION_REQUIRED","PROFILE_INVALID","AUTHORITY_PROFILE_CONFLICT","STALE_STATE","WRITE_NOT_AUTHORIZED","SNAPSHOT_UNAVAILABLE"]},"detail":{"type":"object"}}
+  "properties":{"outcome":{"enum":["READY","APPLIED","CLARIFICATION_REQUIRED","PROFILE_INVALID","AUTHORITY_PROFILE_CONFLICT","STALE_STATE","WRITE_NOT_AUTHORIZED","SNAPSHOT_UNAVAILABLE","COORDINATION_UNAVAILABLE"]},"detail":{"type":"object"}}
 }

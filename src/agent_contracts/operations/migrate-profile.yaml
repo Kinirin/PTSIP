@@ -7,34 +7,70 @@ rule_refs:
   - PTSIP-MIG-003
   - PTSIP-MIG-004
   - PTSIP-MIG-005
-mutation:
-  default: READ_ONLY
-  write_requires:
-    - EXPLICIT_WRITE_AUTHORIZATION
-    - SOURCE_FRESHNESS_RECHECK_PASS
-    - TARGET_FRESHNESS_RECHECK_PASS
+input_schema_ref: PTSIP-IO-MIGRATE-REQUEST-001
+output_schema_ref: PTSIP-IO-MIGRATE-RESULT-001
 preconditions:
-  - SOURCE_PROFILE_IDENTIFIED
-  - TARGET_PROFILE_CONTRACT_RESOLVED
+  - condition_ref: PTSIP-COND-MIG-SOURCE-PROFILE-IDENTIFIED-001
+    on_false: UNSUPPORTED_SOURCE
+    on_unknown: UNSUPPORTED_SOURCE
+entry_step: ANALYZE
 steps:
   - step_id: ANALYZE
-    action_id: ANALYZE_SOURCE_PROFILE_CONTRACT
-    fail_closed_outcomes:
-      - UNSUPPORTED_SOURCE
+    type: ACTION
+    action_ref: PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001
+    input_bindings:
+      /context: $input#/context
+      /source_profile_identified: $input#/source_profile_identified
+    on_success:
+      step_ref: MAP
   - step_id: MAP
-    action_id: MAP_SOURCE_TO_CURRENT_TARGET
-    fail_closed_outcomes:
-      - OWNER_DECISION_REQUIRED
+    type: ACTION
+    action_ref: PTSIP-ACT-MAP-PROFILE-TARGET-001
+    input_bindings:
+      /context: $step:ANALYZE#/context
+      /target_contract_resolved: $step:ANALYZE#/target_contract_resolved
+      /source_fresh: $step:ANALYZE#/source_fresh
+      /target_fresh: $step:ANALYZE#/target_fresh
+    on_success:
+      step_ref: PREPARE
   - step_id: PREPARE
-    action_id: BUILD_NON_MUTATING_TRANSITION_PLAN
+    type: ACTION
+    action_ref: PTSIP-ACT-BUILD-TRANSITION-PLAN-001
+    input_bindings:
+      /context: $step:MAP#/context
+      /target_contract_resolved: $step:MAP#/target_contract_resolved
+      /source_fresh: $step:MAP#/source_fresh
+      /target_fresh: $step:MAP#/target_fresh
+    on_success:
+      step_ref: APPLY-REQUESTED
+  - step_id: APPLY-REQUESTED
+    type: CONDITION
+    condition_ref: PTSIP-COND-MIG-APPLY-REQUESTED-001
+    input_bindings:
+      /context: $step:PREPARE#/context
+    branches:
+      TRUE:
+        step_ref: APPLY
+      FALSE:
+        outcome: READY
+      UNKNOWN:
+        outcome: READY
   - step_id: APPLY
-    action_id: APPLY_AUTHORIZED_PROFILE_TRANSITION
-    requires:
-      - EXPLICIT_WRITE_AUTHORIZATION
-      - FRESHNESS_RECHECK_PASSED
-    fail_closed_outcomes:
-      - STALE_STATE
-      - WRITE_NOT_AUTHORIZED
+    type: ACTION
+    action_ref: PTSIP-ACT-APPLY-PROFILE-TRANSITION-001
+    input_bindings:
+      /context: $step:PREPARE#/context
+      /target_contract_resolved: $step:PREPARE#/target_contract_resolved
+      /source_fresh: $step:PREPARE#/source_fresh
+      /target_fresh: $step:PREPARE#/target_fresh
+      /plan_ready: $step:PREPARE#/plan_ready
+    mutation_gate_ref: PTSIP-GATE-PROFILE-TRANSITION-WRITE-001
+    mutation_gate_input_bindings:
+      /context: $step:PREPARE#/context
+      /source_fresh: $step:PREPARE#/source_fresh
+      /target_fresh: $step:PREPARE#/target_fresh
+    on_success:
+      outcome: APPLIED
 outcomes:
   - READY
   - APPLIED
