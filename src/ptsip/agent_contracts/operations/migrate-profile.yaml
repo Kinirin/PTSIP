@@ -1,32 +1,44 @@
-format: ptsip-agent-operation/v1
+format: ptsip-agent-operation/v2
 operation_id: PTSIP-OP-MIGRATE-PROFILE-001
-status: BOOTSTRAP
-policy_refs:
+status: CANDIDATE
+rule_refs:
   - PTSIP-MIG-001
   - PTSIP-MIG-002
   - PTSIP-MIG-003
-  - PTSIP-MIG-014
-default_mutation: READ_ONLY
+  - PTSIP-MIG-004
+  - PTSIP-MIG-005
+mutation:
+  default: READ_ONLY
+  write_requires:
+    - EXPLICIT_WRITE_AUTHORIZATION
+    - SOURCE_FRESHNESS_RECHECK_PASS
+    - TARGET_FRESHNESS_RECHECK_PASS
 preconditions:
-  - source_profile_identified
-  - current_profile_contract_resolved
+  - SOURCE_PROFILE_IDENTIFIED
+  - TARGET_PROFILE_CONTRACT_RESOLVED
 steps:
   - step_id: ANALYZE
-    action: Analyze the historical source as migration evidence rather than current architecture authority.
-  - step_id: PLAN
-    action: Create a source-to-current target plan preserving accepted project-owned semantics.
+    action_id: ANALYZE_SOURCE_PROFILE_CONTRACT
+    fail_closed_outcomes:
+      - UNSUPPORTED_SOURCE
+  - step_id: MAP
+    action_id: MAP_SOURCE_TO_CURRENT_TARGET
+    fail_closed_outcomes:
+      - OWNER_DECISION_REQUIRED
+  - step_id: PREPARE
+    action_id: BUILD_NON_MUTATING_TRANSITION_PLAN
   - step_id: APPLY
-    action: Apply only after explicit authorization and stale-state checks.
-    fail_closed_on:
-      - unsupported_source
-      - unresolved_owner_decision
-      - stale_state
+    action_id: APPLY_AUTHORIZED_PROFILE_TRANSITION
+    requires:
+      - EXPLICIT_WRITE_AUTHORIZATION
+      - FRESHNESS_RECHECK_PASSED
+    fail_closed_outcomes:
+      - STALE_STATE
+      - WRITE_NOT_AUTHORIZED
 outcomes:
   - READY
+  - APPLIED
   - OWNER_DECISION_REQUIRED
   - UNSUPPORTED_SOURCE
   - STALE_STATE
-implementation_refs:
-  - src/ptsip/migration/analyzer.py
-  - src/ptsip/migration/direct_planner.py
-  - src/ptsip/migration/direct_execution.py
+  - WRITE_NOT_AUTHORIZED
