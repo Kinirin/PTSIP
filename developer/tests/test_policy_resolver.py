@@ -479,3 +479,55 @@ def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> No
         "MPD-0010",
         "MPD-0011",
     ]
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        "src/ptsip/local_profile_catalog.py",
+        "src/ptsip/profile_metadata.py",
+    ],
+)
+def test_local_profile_runtime_surfaces_route_pp_policy(scope: str) -> None:
+    result = resolve_policies(
+        ROOT,
+        scope=scope,
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == scope
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-0011",
+    ]
+
+
+def test_pp_102_transition_seed_routes_developer_and_pp_policy() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="developer/automation/seed_pp_102_transition.py",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == "developer/automation/seed_pp_102_transition.py"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0001",
+        "MPD-0010",
+        "MPD-0011",
+    ]
+
+
+def test_public_profile_catalog_schema_routes_pp_transition_policy() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="developer/policy/schemas/public-profile-catalog.schema.json",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == (
+        "developer/policy/schemas/public-profile-catalog.schema.json"
+    )
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-0011",
+    ]

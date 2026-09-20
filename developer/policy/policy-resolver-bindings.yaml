@@ -575,3 +575,63 @@ scope_bindings:
         sections:
           - verification_layers
 
+  src/ptsip/local_profile_catalog.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - user_revision_lineage
+          - reconciliation_safety
+          - verification_layers
+
+
+  src/ptsip/profile_metadata.py:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - user_revision_lineage
+          - verification_layers
+
+
+  developer/automation/seed_pp_102_transition.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - authority_semantics
+          - commit_candidate_trigger
+          - t2_authority_delta
+          - transition_generation
+          - user_revision_lineage
+          - reconciliation_safety
+          - verification_layers
+
+
+  developer/policy/schemas/public-profile-catalog.schema.json:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - normative_contract_architecture
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - t2_authority_delta
+          - transition_generation
+          - verification_layers
+
