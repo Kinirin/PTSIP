@@ -442,3 +442,50 @@ def test_complete_work_unit_without_completion_evidence_fails_closed(tmp_path: P
         )
 
     assert error.value.code == "MISSING_COMPLETION_EVIDENCE"
+
+
+def test_pending_branch_rename_alias_resolves_and_reconciles_to_canonical_branch(
+    tmp_path: Path,
+) -> None:
+    repo = _repo(tmp_path, wu04_entry_state="MERGED")
+
+    root_path = repo / "docs/planning/index.yaml"
+    root_index = yaml.safe_load(root_path.read_text(encoding="utf-8"))
+    root_plan = root_index["plans"][0]
+    root_plan["integration_branch"] = "dev/0.3.8"
+    root_plan["branch_identity_migration"] = {
+        "status": "RENAME_PENDING",
+        "canonical_branch": "dev/0.3.8",
+        "legacy_branch": "dev/0.4.0",
+        "scope": "EXECUTION_BRANCH_IDENTITY_ONLY",
+    }
+    routing = root_plan["entry_routing"]
+    routing["merge_reconciliation"]["target_branch"] = "dev/0.3.8"
+    legacy_entry = next(
+        entry
+        for entry in routing["branch_entrypoints"]
+        if entry["branch"] == "dev/0.4.0"
+    )
+    legacy_entry["role"] = "BRANCH_RENAME_SOURCE_ALIAS"
+    legacy_entry["canonical_branch"] = "dev/0.3.8"
+    routing["branch_entrypoints"].insert(
+        0,
+        {
+            "branch": "dev/0.3.8",
+            "entry_document": "docs/planning/0.4.0/index.yaml",
+            "role": "INTEGRATION_CONTROL_PLANE",
+            "state": "ACTIVE",
+        },
+    )
+    _write_yaml(root_path, root_index)
+
+    canonical = resolve_planning_entry("dev/0.3.8", root=repo)
+    legacy = resolve_planning_entry("dev/0.4.0", root=repo)
+    result = reconcile_planning_state(
+        root=repo,
+        current_branch="dev/0.4.0",
+    )
+
+    assert canonical.role == "INTEGRATION_CONTROL_PLANE"
+    assert legacy.role == "BRANCH_RENAME_SOURCE_ALIAS"
+    assert result.integration_branch == "dev/0.3.8"
