@@ -7,18 +7,18 @@ record:
   title: Capability Recovery + Resolution Boundary + Feedback Outcome
   status: ACTIVE
   parent_work_unit: WU-02
-  branch: dev/0.4.0
-  base_branch: dev/0.4.0
+  branch: dev/0.3.8
+  base_branch: dev/0.3.8
   authority: PROJECT_OWNER
   implementation_authorization: AUTHORIZED
-  integration_target: dev/0.4.0
+  integration_target: dev/0.3.8
 
 branch_baseline:
   canonical_plan_source: CENTRAL_CONTROL_PLANE
-  control_plane_branch: dev/0.4.0
+  control_plane_branch: dev/0.3.8
   synchronization: MUST_START_FROM_CURRENT_CENTRAL_CONTROL_PLANE_REVISION_BEFORE_IMPLEMENTATION
   lane_plan_is_canonical_on_control_plane: true
-  implementation_base: dev/0.4.0
+  implementation_base: dev/0.3.8
   legacy_branch: dev/0.4.0-WU-02-S3
   legacy_reference_commit: 560c996971d66cc37aba223ddcedb1e65a2c4395
   legacy_reference_commit_role: HISTORICAL_IMPLEMENTATION_PROVENANCE_LOCATOR_ONLY
@@ -433,7 +433,7 @@ session_protocol:
     - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
     - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
   required_git_checks:
-    - CONFIRM_CURRENT_BRANCH_IS_dev/0.4.0
+    - CONFIRM_CURRENT_BRANCH_IS_dev/0.3.8
     - REVIEW_RECENT_GIT_LOG
     - REVIEW_LEGACY_REFERENCE_COMMIT_560c996971d66cc37aba223ddcedb1e65a2c4395_ONLY_WHEN_SELECTIVELY_PORTING_APPROVED_BEHAVIOR
   startup_report_required:
@@ -477,7 +477,7 @@ execution_state:
     - RUN_FOCUSED_TESTS_ON_CURRENT_dev_0_4_0
     - RUN_WU02_LANE_VALIDATOR_S3_ON_CURRENT_dev_0_4_0
   blockers: []
-  last_handoff_summary: LEGACY_S3_BRANCH_MAY_BE_DELETED_AFTER_FIXED_REFERENCE_COMMIT_RECORDING_CURRENT_MACHINE_PLAN_OWNS_CANONICAL_S3_SEMANTICS_AND_CURRENT_dev_0_4_0_OWNS_IMPLEMENTATION
+  last_handoff_summary: LEGACY_S3_BRANCH_MAY_BE_DELETED_AFTER_FIXED_REFERENCE_COMMIT_RECORDING_CURRENT_MACHINE_PLAN_OWNS_CANONICAL_S3_SEMANTICS_AND_CURRENT_dev_0_3_8_OWNS_IMPLEMENTATION
 
 decisions_made:
   - id: S3-D01
@@ -697,7 +697,7 @@ integration_handoff:
     - target: WU-02-S1_OR_WU-02_INTEGRATION
       request: WHEN_S1_LANGUAGE_BINDINGS_FOR_CandidateProvenance_AND_AuthorityRequirement_ARE_MATERIALIZED_BIND_S3_TO_THOSE_TYPES_WITHOUT_CREATING_A_SECOND_SSOT
   integration_notes:
-    - THIS_POLICY_REVISION_IS_CANONICAL_ON_dev/0.4.0_AND_GOVERNS_THE_CURRENT_DEV_IMPLEMENTATION
+    - THIS_POLICY_REVISION_IS_CANONICAL_ON_dev/0.3.8_AND_GOVERNS_THE_CURRENT_DEV_IMPLEMENTATION
     - LEGACY_dev_0_4_0_WU_02_S3_MUST_NOT_BE_MERGED_OR_REBASED_INTO_CURRENT_dev_0_4_0
     - LEGACY_dev_0_4_0_WU_02_S3_BRANCH_MAY_BE_DELETED_BECAUSE_560c996971d66cc37aba223ddcedb1e65a2c4395_IS_THE_FIXED_HISTORICAL_REFERENCE
     - LEGACY_REFERENCE_COMMIT_IS_NON_REQUIRED_PROVENANCE_ONLY_AND_CURRENT_WORK_MUST_NOT_DEPEND_ON_ITS_FUTURE_RETRIEVABILITY
