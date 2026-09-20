@@ -15,11 +15,14 @@ work_unit:
     authority: PROJECT_OWNER
     inherited_from:
       - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
-  integration_branch: dev/0.4.0
+  integration_branch: dev/0.3.8
   implementation_authorization: AUTHORIZED
   depends_on: []
-  execution_branch: dev/0.4.0-WU-05
-  branch_parent: dev/0.4.0
+  execution_location: INTEGRATION_BRANCH
+  execution_branch: dev/0.3.8
+  branch_parent: dev/0.3.8
+  legacy_execution_branch: dev/0.4.0-WU-05
+  legacy_execution_branch_state: MERGED_RETIRED
   branch_creation_rule: CREATE_ONLY_AFTER_PARENT_PARALLEL_PLANNING_COMMIT
 
 planning_authority:
@@ -179,12 +182,15 @@ test_mode_contract:
 
 parallel_branch_contract:
   planned_branch: dev/0.4.0-WU-05
+  branch_state: MERGED
   source_branch: dev/0.4.0
   source_revision_rule: USE_DEV_0_4_0_REVISION_CONTAINING_WU_04_AND_THIS_PLAN
   may_start_before_wu_02_complete: true
   may_start_before_wu_03_complete: true
   may_start_before_wu_04_complete: true
   direct_merge_target: dev/0.4.0
+  continuation_branch: dev/0.3.8
+  branch_recreation: FORBIDDEN_WITHOUT_NEW_PLAN
   branch_scope_must_remain_disjoint_from_wu_04: true
   integration_after_merge:
     owner: WU-03
