@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-MIGRATE-REQUEST-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["context","source_profile_identified"],
+  "properties":{
+    "context":{"type":"object","additionalProperties":false,"required":["repository_root","source_profile","apply_requested","write_authorized"],"properties":{
+      "repository_root":{"type":"string","minLength":1},"source_profile":{"type":"string","minLength":1},"apply_requested":{"type":"boolean"},"write_authorized":{"type":"boolean"}
+    }},
+    "source_profile_identified":{"type":"boolean"}
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-MIGRATE-RESULT-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["outcome"],
+  "properties":{"outcome":{"enum":["READY","APPLIED","OWNER_DECISION_REQUIRED","UNSUPPORTED_SOURCE","STALE_STATE","WRITE_NOT_AUTHORIZED"]},"detail":{"type":"object"}}
+}
