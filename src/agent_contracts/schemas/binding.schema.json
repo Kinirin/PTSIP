@@ -17,10 +17,11 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["contract_id", "version", "resource"],
+        "required": ["contract_id", "version", "package", "resource"],
         "properties": {
           "contract_id": {"type": "string", "minLength": 1},
           "version": {"type": "string", "minLength": 1},
+          "package": {"type": "string", "minLength": 1},
           "resource": {"type": "string", "minLength": 1}
         }
       }
