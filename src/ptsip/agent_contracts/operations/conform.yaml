@@ -1,32 +1,30 @@
-format: ptsip-agent-operation/v1
+format: ptsip-agent-operation/v2
 operation_id: PTSIP-OP-CONFORM-001
-status: BOOTSTRAP
-policy_refs:
-  - PTSIP-EVD-001
-  - PTSIP-EVD-002
-  - PTSIP-EVD-003
-  - PTSIP-EVD-004
-  - PTSIP-DIA-001
-default_mutation: READ_ONLY
+status: CANDIDATE
+rule_refs:
+  - PTSIP-CONF-001
+  - PTSIP-CONF-002
+  - PTSIP-CONF-003
+  - PTSIP-CONF-004
+  - PTSIP-CONF-005
+  - PTSIP-CONF-006
+mutation:
+  default: READ_ONLY
+  write_requires: []
 preconditions:
-  - project_profile_validated_or_materialized
-  - specification_binding_resolved
+  - PROJECT_PROFILE_VALIDATED_OR_MATERIALIZED
+  - REPOSITORY_SNAPSHOT_IDENTIFIED
 steps:
   - step_id: COLLECT
-    action: Collect rule-relevant evidence bound to one repository snapshot.
-    fail_closed_on:
-      - mixed_snapshot
+    action_id: COLLECT_RULE_RELEVANT_EVIDENCE
+    fail_closed_outcomes:
+      - INCOMPLETE
   - step_id: EVALUATE
-    action: Evaluate applicable mandatory rules without treating missing evidence as compliance.
-    fail_closed_on:
-      - evaluator_capability_gap_hides_result
+    action_id: EVALUATE_APPLICABLE_MANDATORY_RULES
   - step_id: EMIT
-    action: Emit one conformance outcome plus stable diagnostics and evidence references.
+    action_id: EMIT_CONFORMANCE_RESULT
 outcomes:
   - CONFORMANT
   - NON_CONFORMANT
   - INCOMPLETE
   - NOT_EVALUATED
-implementation_refs:
-  - src/ptsip/conformance.py
-  - src/ptsip/conformance_audit.py
