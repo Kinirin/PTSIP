@@ -1,0 +1,12 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-APPLY-ADOPTION-001
+status: CANDIDATE
+effect: MUTATE
+input_schema_ref: PTSIP-IO-ADOPT-STATE-001
+output_schema_ref: PTSIP-IO-ADOPT-RESULT-001
+preconditions: []
+postconditions: []
+failure_outcomes:
+  - STALE_STATE
+  - WRITE_NOT_AUTHORIZED
+  - PROFILE_INVALID

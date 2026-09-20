@@ -1,0 +1,14 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001
+status: CANDIDATE
+effect: READ_ONLY
+input_schema_ref: PTSIP-IO-VALIDATE-REQUEST-001
+output_schema_ref: PTSIP-IO-VALIDATE-STATE-001
+preconditions: []
+postconditions: 
+  - condition_ref: PTSIP-COND-VALIDATE-CONTRACT-RESOLVED-001
+    on_false: UNSUPPORTED_PROFILE_CONTRACT
+    on_unknown: SCHEMA_RESOLUTION_FAILED
+failure_outcomes:
+  - UNSUPPORTED_PROFILE_CONTRACT
+  - SCHEMA_RESOLUTION_FAILED

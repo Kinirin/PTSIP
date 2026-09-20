@@ -1,0 +1,10 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001
+status: CANDIDATE
+effect: READ_ONLY
+input_schema_ref: PTSIP-IO-VALIDATE-STATE-001
+output_schema_ref: PTSIP-IO-VALIDATE-STATE-001
+preconditions: []
+postconditions: []
+failure_outcomes:
+  - PROFILE_INVALID

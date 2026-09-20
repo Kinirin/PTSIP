@@ -1,0 +1,13 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001
+status: CANDIDATE
+effect: READ_ONLY
+input_schema_ref: PTSIP-IO-ADOPT-REQUEST-001
+output_schema_ref: PTSIP-IO-ADOPT-STATE-001
+preconditions: []
+postconditions: 
+  - condition_ref: PTSIP-COND-ADOPT-SNAPSHOT-IDENTIFIED-001
+    on_false: SNAPSHOT_UNAVAILABLE
+    on_unknown: SNAPSHOT_UNAVAILABLE
+failure_outcomes:
+  - SNAPSHOT_UNAVAILABLE
