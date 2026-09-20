@@ -48,11 +48,11 @@ steps:
       /projection_required: $step:DECIDE#/projection_required
       /reconciliation_outcome: $step:DECIDE#/reconciliation_outcome
     branches:
-      TRUE:
+      "TRUE":
         step_ref: PROJECT
-      FALSE:
+      "FALSE":
         outcome_from: $step:DECIDE#/reconciliation_outcome
-      UNKNOWN:
+      "UNKNOWN":
         outcome: COORDINATION_UNAVAILABLE
   - step_id: PROJECT
     type: ACTION
