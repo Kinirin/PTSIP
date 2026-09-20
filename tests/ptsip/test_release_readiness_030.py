@@ -4,6 +4,7 @@ import runpy
 
 import ptsip
 import tomllib
+import yaml
 from pathlib import Path
 
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
