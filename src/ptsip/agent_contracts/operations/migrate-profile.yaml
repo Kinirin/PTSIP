@@ -1,0 +1,32 @@
+format: ptsip-agent-operation/v1
+operation_id: PTSIP-OP-MIGRATE-PROFILE-001
+status: BOOTSTRAP
+policy_refs:
+  - PTSIP-MIG-001
+  - PTSIP-MIG-002
+  - PTSIP-MIG-003
+  - PTSIP-MIG-014
+default_mutation: READ_ONLY
+preconditions:
+  - source_profile_identified
+  - current_profile_contract_resolved
+steps:
+  - step_id: ANALYZE
+    action: Analyze the historical source as migration evidence rather than current architecture authority.
+  - step_id: PLAN
+    action: Create a source-to-current target plan preserving accepted project-owned semantics.
+  - step_id: APPLY
+    action: Apply only after explicit authorization and stale-state checks.
+    fail_closed_on:
+      - unsupported_source
+      - unresolved_owner_decision
+      - stale_state
+outcomes:
+  - READY
+  - OWNER_DECISION_REQUIRED
+  - UNSUPPORTED_SOURCE
+  - STALE_STATE
+implementation_refs:
+  - src/ptsip/migration/analyzer.py
+  - src/ptsip/migration/direct_planner.py
+  - src/ptsip/migration/direct_execution.py
