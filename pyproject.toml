@@ -53,9 +53,13 @@ ptsip = [
 ]
 agent_contracts = [
   "*.yaml",
-  "schemas/*.json",
+  "schemas/contracts/*.json",
+  "schemas/io/*.json",
   "spec/*.yaml",
   "operations/*.yaml",
+  "actions/*.yaml",
+  "conditions/*.yaml",
+  "gates/*.yaml",
   "vocabulary/*.yaml",
   "bindings/*.yaml",
 ]
