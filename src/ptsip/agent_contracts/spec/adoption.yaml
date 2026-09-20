@@ -1,26 +1,33 @@
-format: ptsip-agent-spec/v1
+format: ptsip-agent-spec/v2
 id: PTSIP-AGENT-SPEC-ADOPTION
-status: BOOTSTRAP
-normative_rule_refs:
-  - PTSIP-ADP-001
-  - PTSIP-EVD-001
-  - PTSIP-EVD-002
-statements:
-  - statement_id: ADP-LOSSLESS
-    kind: REQUIREMENT
+status: CANDIDATE
+scope: Controlled adoption of PTSIP architecture declarations.
+rules:
+  - rule_id: PTSIP-ADP-001
+    modality: MUST
     subject: adoption
-    predicate: preserves_supplied_structured_architecture_facts_losslessly
-    object: true
-  - statement_id: ADP-DRY-RUN
-    kind: REQUIREMENT
+    predicate: preserve_supplied_structured_architecture_facts
+    object: LOSSLESS
+  - rule_id: PTSIP-ADP-002
+    modality: MUST
     subject: adoption_planning
-    predicate: mutates_repository
-    object: false
-  - statement_id: ADP-STALE-WRITE
-    kind: PROHIBITION
+    predicate: mutation
+    object: NONE
+  - rule_id: PTSIP-ADP-003
+    modality: MUST
     subject: adoption_apply
-    predicate: applies_when_repository_or_profile_freshness_changed
+    predicate: freshness_recheck
+    object:
+      - repository
+      - project_profile
+      - relevant_authority
+  - rule_id: PTSIP-ADP-004
+    modality: MUST
+    subject: adoption_write
+    predicate: authorization
+    object: EXPLICIT
+  - rule_id: PTSIP-ADP-005
+    modality: MUST_NOT
+    subject: adoption
+    predicate: convert_unresolved_fact_to_assumed_architecture
     object: true
-migration_evidence_refs:
-  - adoption/ADOPTION-GUIDE.md
-  - spec/PTSIP-SPEC.md
