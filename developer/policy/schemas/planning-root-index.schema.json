@@ -119,6 +119,16 @@
                     "responsibility": {
                       "type": "string",
                       "minLength": 1
+                    },
+                    "state": {
+                      "enum": [
+                        "ACTIVE",
+                        "MERGED"
+                      ]
+                    },
+                    "continuation_branch": {
+                      "type": "string",
+                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
                     }
                   },
                   "additionalProperties": false
@@ -250,7 +260,8 @@
                     "role": {
                       "enum": [
                         "INTEGRATION_CONTROL_PLANE",
-                        "INDEPENDENT_LEAF"
+                        "INDEPENDENT_LEAF",
+                        "BRANCH_RENAME_SOURCE_ALIAS"
                       ]
                     },
                     "state": {
@@ -264,6 +275,17 @@
                       "pattern": "^WU-[0-9]{2}$"
                     },
                     "merged_into": {
+                      "type": "string",
+                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+                    },
+                    "canonical_branch": {
+                      "type": "string",
+                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+                    },
+                    "retire_after": {
+                      "const": "BRANCH_RENAME_CONFIRMED"
+                    },
+                    "continuation_branch": {
                       "type": "string",
                       "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
                     }
@@ -319,6 +341,31 @@
                         "properties": {
                           "role": {
                             "const": "INDEPENDENT_LEAF"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "role": {
+                            "const": "BRANCH_RENAME_SOURCE_ALIAS"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "canonical_branch",
+                          "retire_after"
+                        ],
+                        "not": {
+                          "required": [
+                            "work_unit"
+                          ]
+                        },
+                        "properties": {
+                          "state": {
+                            "const": "ACTIVE"
                           }
                         }
                       }
@@ -413,6 +460,47 @@
                   },
                   "additionalProperties": false
                 }
+              }
+            },
+            "additionalProperties": false
+          },
+          "branch_identity_migration": {
+            "type": "object",
+            "required": [
+              "status",
+              "canonical_branch",
+              "legacy_branch",
+              "scope",
+              "plan_version_unchanged",
+              "planning_path_unchanged",
+              "legacy_alias_retirement_trigger"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "RENAME_PENDING",
+                  "RENAMED"
+                ]
+              },
+              "canonical_branch": {
+                "type": "string",
+                "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+              },
+              "legacy_branch": {
+                "type": "string",
+                "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+              },
+              "scope": {
+                "const": "EXECUTION_BRANCH_IDENTITY_ONLY"
+              },
+              "plan_version_unchanged": {
+                "const": true
+              },
+              "planning_path_unchanged": {
+                "const": true
+              },
+              "legacy_alias_retirement_trigger": {
+                "const": "BRANCH_RENAME_CONFIRMED"
               }
             },
             "additionalProperties": false
