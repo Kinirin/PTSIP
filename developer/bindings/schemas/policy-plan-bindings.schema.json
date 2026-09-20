@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy-plan-bindings:v1",
+  "title": "PTSIP Developer Policy-Plan Binding Registry v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_role",
+    "schema_ref",
+    "bindings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-policy-plan-bindings/v1"
+    },
+    "registry_role": {
+      "const": "POLICY_PLAN_BINDING"
+    },
+    "schema_ref": {
+      "const": "developer/bindings/schemas/policy-plan-bindings.schema.json"
+    },
+    "bindings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/binding"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "binding": {
+      "type": "object",
+      "required": [
+        "policy_ref",
+        "plan_ref"
+      ],
+      "properties": {
+        "policy_ref": {
+          "type": "string",
+          "pattern": "^MPD-[0-9]{4}$"
+        },
+        "plan_ref": {
+          "type": "string",
+          "pattern": "^developer/planning/.+\\.ya?ml$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,18 +1,38 @@
-"""Automation boundary for Policy ↔ Planning binding maintenance.
+"""Deterministic automation for Policy ↔ Planning binding maintenance.
 
-This package intentionally does not define binding semantics. Canonical binding
-fields, lifecycle, and transition rules remain policy decisions and must be
-materialized separately before resolver/reconciler behavior is added.
+The package owns mechanical registry access, exact resolution, integrity checks,
+and canonical ordering. Policy meaning, approval semantics, lifecycle, and
+transition rules remain outside this automation boundary until separately
+approved.
 """
 
 from .errors import PolicyPlanBindingError
-from .registry import BINDING_REGISTRY_PATH, BindingRegistrySnapshot, load_registry
+from .registry import (
+    BINDING_REGISTRY_PATH,
+    BINDING_SCHEMA_PATH,
+    BindingRegistrySnapshot,
+    load_registry,
+    validate_registry_schema,
+)
+from .reconciler import (
+    PolicyPlanBindingReconciliation,
+    reconcile_registry,
+    validate_registry_integrity,
+)
+from .resolver import PolicyPlanBindingResolution, resolve_bindings
 from .store import replace_registry
 
 __all__ = [
     "BINDING_REGISTRY_PATH",
+    "BINDING_SCHEMA_PATH",
     "BindingRegistrySnapshot",
     "PolicyPlanBindingError",
+    "PolicyPlanBindingReconciliation",
+    "PolicyPlanBindingResolution",
     "load_registry",
+    "reconcile_registry",
     "replace_registry",
+    "resolve_bindings",
+    "validate_registry_integrity",
+    "validate_registry_schema",
 ]
