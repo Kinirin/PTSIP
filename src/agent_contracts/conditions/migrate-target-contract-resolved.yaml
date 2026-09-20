@@ -1,0 +1,10 @@
+format: ptsip-agent-condition/v2
+condition_id: PTSIP-COND-MIG-TARGET-CONTRACT-RESOLVED-001
+status: CANDIDATE
+input_schema_ref: PTSIP-IO-MIGRATE-STATE-001
+evaluation:
+  type: FIELD_COMPARE
+  pointer: /target_contract_resolved
+  operator: EQ
+  expected: true
+  missing_result: UNKNOWN
