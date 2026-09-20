@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"ptsip-agent-action/v2",
+  "type":"object","additionalProperties":false,
+  "required":["format","action_id","status","effect","input_schema_ref","output_schema_ref","preconditions","postconditions","failure_outcomes"],
+  "properties":{
+    "format":{"const":"ptsip-agent-action/v2"},
+    "action_id":{"type":"string","pattern":"^PTSIP-ACT-[A-Z0-9-]+$"},
+    "status":{"enum":["CANDIDATE","CURRENT","SUPERSEDED"]},
+    "effect":{"enum":["READ_ONLY","MUTATE"]},
+    "input_schema_ref":{"type":"string","pattern":"^PTSIP-IO-[A-Z0-9-]+$"},
+    "output_schema_ref":{"type":"string","pattern":"^PTSIP-IO-[A-Z0-9-]+$"},
+    "preconditions":{"$ref":"#/$defs/checks"},
+    "postconditions":{"$ref":"#/$defs/checks"},
+    "failure_outcomes":{"type":"array","uniqueItems":true,"items":{"type":"string","minLength":1}}
+  },
+  "$defs":{"checks":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["condition_ref","on_false","on_unknown"],"properties":{
+    "condition_ref":{"type":"string","pattern":"^PTSIP-COND-[A-Z0-9-]+$"},
+    "on_false":{"type":"string","minLength":1},"on_unknown":{"type":"string","minLength":1}
+  }}}}
+}
