@@ -7,6 +7,10 @@ def test_embedded_agent_contract_plane_is_self_consistent() -> None:
     assert result == {
         "specs": 8,
         "operations": 5,
+        "actions": 18,
+        "conditions": 23,
+        "gates": 3,
+        "io_schemas": 15,
         "vocabularies": 4,
         "rules": 48,
         "bindings": 1,
