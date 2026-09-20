@@ -34,6 +34,7 @@ from .doctor import doctor
 from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
+from .local_profile_catalog import canonical_new_profile_path
 from .pilot.runner import run_pilot
 from .proposed_component import ProposedComponentError, build_proposed_component_candidate
 from .repository.discover import RepositoryInfo, discover_repository
@@ -47,7 +48,7 @@ from .repository.snapshot import capture_snapshot, compare_snapshots
 from .spec_identity import current_spec_identity
 from .storage.local_state import repository_fingerprint
 from .topology import migrate_topology
-from .validation.profile import validate_profile
+from .validation.profile import find_profile, validate_profile
 from .validation_capture import ValidationCaptureError, capture_validation_command
 
 DecisionClient = ControlPlaneClient | LocalControlPlaneClient | GithubControlPlaneClient
@@ -525,9 +526,37 @@ def main(argv: list[str] | None = None) -> int:
                 executable=_yes_no(args.executable),
             )
             adopt_repo = discover_repository(args.path)
-            selected_adopt_profile = selected_profile_path(adopt_repo.root, args.profile)
-            selected_adopt_file = profile_path_on_disk(adopt_repo.root, selected_adopt_profile)
-            preparation = prepare_adoption(args.path, args.component, answer, selected_adopt_file)
+            adopt_root = Path(adopt_repo.root).resolve()
+            selected_adopt_file: Path | None = None
+            if args.profile is not None:
+                selected_adopt_profile = selected_profile_path(adopt_root, args.profile)
+                selected_adopt_file = profile_path_on_disk(
+                    adopt_root,
+                    selected_adopt_profile,
+                )
+            else:
+                existing_adopt_profile = find_profile(adopt_root)
+                default_adopt_file = (
+                    existing_adopt_profile
+                    if existing_adopt_profile is not None
+                    else canonical_new_profile_path(adopt_root)
+                )
+                selected_adopt_profile = selected_profile_path(
+                    adopt_root,
+                    default_adopt_file,
+                )
+
+            preparation = prepare_adoption(
+                args.path,
+                args.component,
+                answer,
+                selected_adopt_file,
+            )
+            if preparation.prepared is not None:
+                selected_adopt_profile = selected_profile_path(
+                    adopt_root,
+                    preparation.prepared.path,
+                )
             backend = _coordination_backend(preparation.repository, args.coordination)
             payload = preparation.as_dict(apply=args.apply, backend=backend)
             payload["selected_profile_path"] = selected_adopt_profile

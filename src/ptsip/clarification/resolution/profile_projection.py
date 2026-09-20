@@ -316,7 +316,7 @@ def prepare_local_profile(
     catalog_path: Path | None = None
     catalog_content: str | None = None
     expected_catalog_source: str | None = None
-    if explicit is None and profile == canonical_new_profile_path(root):
+    if profile_path is None and profile == canonical_new_profile_path(root):
         catalog_path = root / LOCAL_PROFILE_CATALOG.as_posix()
         expected_catalog_source = (
             catalog_path.read_text(encoding="utf-8-sig")
