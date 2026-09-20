@@ -8,26 +8,39 @@ rule_refs:
   - PTSIP-RMAP-004
   - PTSIP-RMAP-005
   - PTSIP-ACP-GOV-003
-mutation:
-  default: READ_ONLY
-  write_requires: []
+input_schema_ref: PTSIP-IO-VALIDATE-REQUEST-001
+output_schema_ref: PTSIP-IO-VALIDATE-RESULT-001
 preconditions:
-  - PROJECT_PROFILE_SELECTED
-  - PROJECT_PROFILE_CONTRACT_RESOLVED
+  - condition_ref: PTSIP-COND-VALIDATE-PROFILE-SELECTED-001
+    on_false: PROFILE_INVALID
+    on_unknown: PROFILE_INVALID
+entry_step: RESOLVE
 steps:
   - step_id: RESOLVE
-    action_id: RESOLVE_PROFILE_SCHEMA
-    fail_closed_outcomes:
-      - UNSUPPORTED_PROFILE_CONTRACT
-      - SCHEMA_RESOLUTION_FAILED
+    type: ACTION
+    action_ref: PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001
+    input_bindings:
+      /context: $input#/context
+      /profile_selected: $input#/profile_selected
+    on_success:
+      step_ref: STRUCTURE
   - step_id: STRUCTURE
-    action_id: VALIDATE_PROFILE_STRUCTURE
-    fail_closed_outcomes:
-      - PROFILE_INVALID
+    type: ACTION
+    action_ref: PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001
+    input_bindings:
+      /context: $step:RESOLVE#/context
+      /contract_resolved: $step:RESOLVE#/contract_resolved
+    on_success:
+      step_ref: SEMANTICS
   - step_id: SEMANTICS
-    action_id: VALIDATE_RESPONSIBILITY_MAP_SEMANTICS
-    fail_closed_outcomes:
-      - PROFILE_INVALID
+    type: ACTION
+    action_ref: PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001
+    input_bindings:
+      /context: $step:STRUCTURE#/context
+      /contract_resolved: $step:STRUCTURE#/contract_resolved
+      /structure_valid: $step:STRUCTURE#/structure_valid
+    on_success:
+      outcome: VALID
 outcomes:
   - VALID
   - PROFILE_INVALID

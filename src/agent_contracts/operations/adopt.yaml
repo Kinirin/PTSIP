@@ -10,42 +10,78 @@ rule_refs:
   - PTSIP-AUT-004
   - PTSIP-AUT-005
   - PTSIP-AUT-006
-mutation:
-  default: READ_ONLY
-  write_requires:
-    - EXPLICIT_WRITE_AUTHORIZATION
-    - REPOSITORY_FRESHNESS_RECHECK_PASS
-    - PROFILE_FRESHNESS_RECHECK_PASS
-    - RELEVANT_AUTHORITY_RECHECK_PASS
-preconditions:
-  - REPOSITORY_SNAPSHOT_IDENTIFIED
-  - PROJECT_PROFILE_TARGET_RESOLVED
-  - REQUIRED_ARCHITECTURE_FACTS_RESOLVED
+input_schema_ref: PTSIP-IO-ADOPT-REQUEST-001
+output_schema_ref: PTSIP-IO-ADOPT-RESULT-001
+preconditions: []
+entry_step: SNAPSHOT
 steps:
   - step_id: SNAPSHOT
-    action_id: CAPTURE_REPOSITORY_SNAPSHOT
-    fail_closed_outcomes:
-      - SNAPSHOT_UNAVAILABLE
+    type: ACTION
+    action_ref: PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001
+    input_bindings:
+      /context: $input#/context
+    on_success:
+      step_ref: ANALYZE
   - step_id: ANALYZE
-    action_id: RESOLVE_ADOPTION_FACTS
-    fail_closed_outcomes:
-      - CLARIFICATION_REQUIRED
-      - PROFILE_INVALID
+    type: ACTION
+    action_ref: PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001
+    input_bindings:
+      /context: $step:SNAPSHOT#/context
+      /snapshot_identified: $step:SNAPSHOT#/snapshot_identified
+    on_success:
+      step_ref: FACTS
+  - step_id: FACTS
+    type: CONDITION
+    condition_ref: PTSIP-COND-ADOPT-FACTS-RESOLVED-001
+    input_bindings:
+      /context: $step:ANALYZE#/context
+      /facts_resolved: $step:ANALYZE#/facts_resolved
+    branches:
+      TRUE:
+        step_ref: PREPARE
+      FALSE:
+        outcome: CLARIFICATION_REQUIRED
+      UNKNOWN:
+        outcome: CLARIFICATION_REQUIRED
   - step_id: PREPARE
-    action_id: BUILD_NON_MUTATING_ADOPTION_PLAN
-  - step_id: RECHECK
-    action_id: RECHECK_MUTATION_PRECONDITIONS
-    fail_closed_outcomes:
-      - AUTHORITY_PROFILE_CONFLICT
-      - STALE_STATE
+    type: ACTION
+    action_ref: PTSIP-ACT-BUILD-ADOPTION-PLAN-001
+    input_bindings:
+      /context: $step:ANALYZE#/context
+      /snapshot_identified: $step:ANALYZE#/snapshot_identified
+      /facts_resolved: $step:ANALYZE#/facts_resolved
+    on_success:
+      step_ref: APPLY-REQUESTED
+  - step_id: APPLY-REQUESTED
+    type: CONDITION
+    condition_ref: PTSIP-COND-ADOPT-APPLY-REQUESTED-001
+    input_bindings:
+      /context: $step:PREPARE#/context
+    branches:
+      TRUE:
+        step_ref: APPLY
+      FALSE:
+        outcome: READY
+      UNKNOWN:
+        outcome: READY
   - step_id: APPLY
-    action_id: APPLY_AUTHORIZED_ADOPTION
-    requires:
-      - EXPLICIT_WRITE_AUTHORIZATION
-      - RECHECK_PASSED
-    fail_closed_outcomes:
-      - WRITE_NOT_AUTHORIZED
-      - STALE_STATE
+    type: ACTION
+    action_ref: PTSIP-ACT-APPLY-ADOPTION-001
+    input_bindings:
+      /context: $step:PREPARE#/context
+      /facts_resolved: $step:PREPARE#/facts_resolved
+      /repository_fresh: $step:PREPARE#/repository_fresh
+      /profile_fresh: $step:PREPARE#/profile_fresh
+      /authority_fresh: $step:PREPARE#/authority_fresh
+      /plan_ready: $step:PREPARE#/plan_ready
+    mutation_gate_ref: PTSIP-GATE-ADOPTION-WRITE-001
+    mutation_gate_input_bindings:
+      /context: $step:PREPARE#/context
+      /repository_fresh: $step:PREPARE#/repository_fresh
+      /profile_fresh: $step:PREPARE#/profile_fresh
+      /authority_fresh: $step:PREPARE#/authority_fresh
+    on_success:
+      outcome: APPLIED
 outcomes:
   - READY
   - APPLIED
@@ -55,3 +91,4 @@ outcomes:
   - STALE_STATE
   - WRITE_NOT_AUTHORIZED
   - SNAPSHOT_UNAVAILABLE
+  - COORDINATION_UNAVAILABLE
