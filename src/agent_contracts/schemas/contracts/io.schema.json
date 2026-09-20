@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"ptsip-agent-io-contract/v2",
+  "type":"object",
+  "required":["$schema","x-ptsip-io-id","x-ptsip-status","type"],
+  "properties":{
+    "$schema":{"const":"https://json-schema.org/draft/2020-12/schema"},
+    "x-ptsip-io-id":{"type":"string","pattern":"^PTSIP-IO-[A-Z0-9-]+$"},
+    "x-ptsip-status":{"enum":["CANDIDATE","CURRENT","SUPERSEDED"]},
+    "type":{"const":"object"}
+  }
+}
