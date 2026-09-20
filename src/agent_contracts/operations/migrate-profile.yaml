@@ -49,11 +49,11 @@ steps:
     input_bindings:
       /context: $step:PREPARE#/context
     branches:
-      TRUE:
+      "TRUE":
         step_ref: APPLY
-      FALSE:
+      "FALSE":
         outcome: READY
-      UNKNOWN:
+      "UNKNOWN":
         outcome: READY
   - step_id: APPLY
     type: ACTION
