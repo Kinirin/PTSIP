@@ -75,6 +75,7 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "pp-transition-verify:" in workflow
     assert "github.event_name == 'push'" in workflow
     assert "developer.automation.pp_remote_verify range" in workflow
+    assert '"jsonschema>=4.23,<5"' in workflow
     assert "self-hosted/pp-transition" in workflow
     assert "github.event_name == 'workflow_dispatch'" in workflow
     assert "PARENT_FALLBACK" in workflow

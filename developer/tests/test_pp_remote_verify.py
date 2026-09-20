@@ -62,3 +62,10 @@ def test_divergent_merge_parent_authority_fails_closed() -> None:
         require_comparable_parent_authority((current, divergent))
 
     assert exc_info.value.code == "DIVERGENT_PARENT_PP_AUTHORITY"
+
+
+def test_symbolic_commit_ref_is_normalized_to_sha() -> None:
+    result = verify_commit(ROOT, "HEAD")
+
+    assert result.commit == _git("rev-parse", "--verify", "HEAD^{commit}")
+    assert len(result.commit) == 40

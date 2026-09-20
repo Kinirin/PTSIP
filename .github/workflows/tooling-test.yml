@@ -53,7 +53,7 @@ jobs:
           }
 
           $venvPython = Join-Path (Resolve-Path ".venv-pp-transition").Path "Scripts\python.exe"
-          & $venvPython -m pip install --upgrade pip "PyYAML>=6.0,<7"
+          & $venvPython -m pip install --upgrade pip "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install PP transition verifier dependency."
           }

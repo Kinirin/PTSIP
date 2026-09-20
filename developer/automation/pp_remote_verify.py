@@ -326,7 +326,7 @@ def _verify_transition_shape(
     if not isinstance(contracts, list) or not isinstance(transitions, list):
         raise PPRemoteVerifyError(
             "PP_TRANSITION_REGISTRY_INVALID",
-            f"{commit}: contract registry transition plane is invalid.",
+            f"{resolved_commit}: contract registry transition plane is invalid.",
         )
 
     source_rows = [
@@ -347,7 +347,7 @@ def _verify_transition_shape(
     ):
         raise PPRemoteVerifyError(
             "PP_TRANSITION_REGISTRY_INVALID",
-            f"{commit}: source/target lifecycle transition is incomplete.",
+            f"{resolved_commit}: source/target lifecycle transition is incomplete.",
         )
     if not any(
         isinstance(row, Mapping)
@@ -358,7 +358,7 @@ def _verify_transition_shape(
     ):
         raise PPRemoteVerifyError(
             "PP_TRANSITION_RECORD_MISSING",
-            f"{commit}: semantic migration record is missing.",
+            f"{resolved_commit}: semantic migration record is missing.",
         )
 
     expected_history_prefix = f"profiles/history/{delta.expected_next}/"
@@ -366,7 +366,7 @@ def _verify_transition_shape(
         if not status.startswith("A") or not path.startswith(expected_history_prefix):
             raise PPRemoteVerifyError(
                 "HISTORICAL_BASELINE_MUTATION",
-                f"{commit}: forbidden historical baseline change {status} {path}.",
+                f"{resolved_commit}: forbidden historical baseline change {status} {path}.",
             )
 
     parent_state = load_authority_state(parent_source)
@@ -375,19 +375,20 @@ def _verify_transition_shape(
         if parent_source.read_bytes(old_schema) != candidate.read_bytes(old_schema):
             raise PPRemoteVerifyError(
                 "SUPERSEDED_PP_SCHEMA_MUTATION",
-                f"{commit}: superseded schema {old_schema!r} was not preserved.",
+                f"{resolved_commit}: superseded schema {old_schema!r} was not preserved.",
             )
 
 
 def verify_commit(root: str | Path, commit: str) -> CommitVerification:
     repo = repository_root(root)
-    parents = commit_parents(repo, commit)
-    candidate_source = GitSnapshot(repo, commit)
+    resolved_commit = _require_git(repo, "rev-parse", "--verify", f"{commit}^{commit}")
+    parents = commit_parents(repo, resolved_commit)
+    candidate_source = GitSnapshot(repo, resolved_commit)
     candidate_state = _validate_snapshot(candidate_source)
 
     if not parents:
         return CommitVerification(
-            commit=commit,
+            commit=resolved_commit,
             parents=(),
             classification="ROOT_COMMIT",
             triggered=False,
@@ -403,14 +404,14 @@ def verify_commit(root: str | Path, commit: str) -> CommitVerification:
     if not delta.valid:
         raise PPRemoteVerifyError(
             delta.classification,
-            f"{commit}: " + json.dumps(delta.as_dict(), sort_keys=True),
+            f"{resolved_commit}: " + json.dumps(delta.as_dict(), sort_keys=True),
         )
 
     parent_fingerprint = authority_fingerprint(parent_states[0])
     candidate_fingerprint = authority_fingerprint(candidate_state)
     if len(parents) > 1 and candidate_fingerprint == parent_fingerprint:
         return CommitVerification(
-            commit=commit,
+            commit=resolved_commit,
             parents=parents,
             classification="MERGE_INHERITED_PP_AUTHORITY",
             triggered=False,
@@ -421,17 +422,17 @@ def verify_commit(root: str | Path, commit: str) -> CommitVerification:
         _verify_transition_shape(
             repo,
             parent=parents[0],
-            commit=commit,
+            commit=resolved_commit,
             delta=delta,
         )
     elif candidate_fingerprint != parent_fingerprint:
         raise PPRemoteVerifyError(
             "UNCLASSIFIED_PP_AUTHORITY_CHANGE",
-            f"{commit}: PP authority changed without a classified T2 delta.",
+            f"{resolved_commit}: PP authority changed without a classified T2 delta.",
         )
 
     return CommitVerification(
-        commit=commit,
+        commit=resolved_commit,
         parents=parents,
         classification=delta.classification,
         triggered=delta.triggered,
