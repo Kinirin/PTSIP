@@ -411,3 +411,92 @@ scope_bindings:
           - transition_generation
           - verification_layers
 
+  developer/automation/dev_setup.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - h3_hook_activation
+          - commit_candidate_trigger
+          - reconciliation_safety
+          - verification_layers
+
+
+  developer/automation/pp_pre_commit.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - h3_hook_activation
+          - commit_candidate_trigger
+          - reconciliation_safety
+          - verification_layers
+
+
+  .githooks/pre-commit:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - h3_hook_activation
+          - commit_candidate_trigger
+          - reconciliation_safety
+          - verification_layers
+
+
+  setup_dev.bat:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - h3_hook_activation
+          - commit_candidate_trigger
+          - reconciliation_safety
+          - verification_layers
+
+
+  bootstrap_repo.ps1:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - h3_hook_activation
+          - commit_candidate_trigger
+          - reconciliation_safety
+          - verification_layers
+

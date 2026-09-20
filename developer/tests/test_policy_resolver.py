@@ -401,3 +401,28 @@ def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None
         "MPD-0010",
         "MPD-0011",
     ]
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        "developer/automation/dev_setup.py",
+        "developer/automation/pp_pre_commit.py",
+        ".githooks/pre-commit",
+        "setup_dev.bat",
+        "bootstrap_repo.ps1",
+    ],
+)
+def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
+    result = resolve_policies(
+        ROOT,
+        scope=scope,
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == scope
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0001",
+        "MPD-0010",
+        "MPD-0011",
+    ]

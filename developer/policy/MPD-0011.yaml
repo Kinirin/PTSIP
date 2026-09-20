@@ -27,18 +27,18 @@ rules:
     policy_index_registration: MATERIALIZED
     policy_resolver_routing: MATERIALIZED
     authority_plane_registration: MATERIALIZED
-    operationalization_level: L1_MACHINE_READABLE_POLICY_ROUTING
+    operationalization_level: L4_LOCAL_AUTO_REMEDIATION_REMOTE_PENDING
     public_profile_catalog: MATERIALIZED
     canonical_pp_contract_registry: MATERIALIZED
     t2_delta_resolver: MATERIALIZED
-    transition_reconciler: MATERIALIZED_MANUAL_ENTRYPOINT_NOT_HOOKED
-    h3_hook_activation: NOT_IMPLEMENTED
+    transition_reconciler: MATERIALIZED_AND_HOOK_INVOKED
+    h3_hook_activation: MATERIALIZED_SHARED_INSTALLER
     remote_commit_verifier: NOT_IMPLEMENTED
     release_transition_verifier: NOT_IMPLEMENTED
     runtime_current_pp_registry_resolution: MATERIALIZED
     packaging_registry_projection: MATERIALIZED
     distribution_contract_verifier: MATERIALIZED
-    claim: RECONCILER_AVAILABLE_NOT_AUTOMATICALLY_INVOKED
+    claim: LOCAL_COMMIT_AUTOMATION_ACTIVE_REMOTE_AND_RELEASE_VERIFY_PENDING
 
   commit_candidate_trigger:
     unit: GIT_COMMIT_CANDIDATE

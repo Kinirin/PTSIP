@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+if [ -x ".venv/Scripts/python.exe" ]; then
+  PYTHON=".venv/Scripts/python.exe"
+elif [ -x ".venv/bin/python" ]; then
+  PYTHON=".venv/bin/python"
+else
+  PYTHON="python"
+fi
+
+exec "$PYTHON" -m developer.automation.pp_pre_commit --repository .
