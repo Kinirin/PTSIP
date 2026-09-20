@@ -51,3 +51,14 @@ def test_pp_102_seed_updates_pp_surfaces_without_rewriting_tool_history() -> Non
     assert 'repo / "README.md"' in source
     assert 'repo / "STATUS.md"' in source
     assert "releasenote/tool/0.3.8a1.md" not in source
+
+
+def test_pp_102_seed_writes_transition_acceptance_test() -> None:
+    source = (
+        ROOT / "developer" / "automation" / "seed_pp_102_transition.py"
+    ).read_text(encoding="utf-8")
+
+    assert "_write_pp_102_acceptance_test(repo, changed)" in source
+    assert "test_pp_102_current_contract.py" in source
+    assert 'registry["current"] == CURRENT_PROJECT_PROFILE_VERSION == "pp.1.02"' in source
+    assert 'payload["ptsip"]["revision"] == "Rev.0001"' in source
