@@ -5,7 +5,9 @@ status: ACTIVE_EMERGENCY_RELEASE_OVERLAY
 branch:
   name: dev/0.3.8a1
   base_branch: dev/0.4.0
+  base_branch_role: HISTORICAL_FORK_PROVENANCE
   base_sha: 269cfeca3d1b60a9f61ae2402e07b184bb177c07
+  current_continuation_branch: dev/0.3.8
   purpose: EMERGENCY_DEMO_PRERELEASE_IMPLEMENTATION
 
 authority:
@@ -129,6 +131,9 @@ integration:
   required_order:
     - dev/0.3.8a1_TO_dev/0.4.0
     - dev/0.4.0_TO_main
+  required_order_role: HISTORICAL_ORIGINAL_INTEGRATION_FLOW
+  current_continuation_target: dev/0.3.8
+  current_development_line: 0.3.8
   dev_0_4_0_post_integration_cleanup:
     - REMOVE_THIS_EMERGENCY_BRANCH_OVERLAY_FROM_ACTIVE_0_4_0_PLANNING
     - RESTORE_ANY_TEMPORARY_0_3_8a1_ONLY_DOCUMENT_CONTEXT_TO_0_4_0
