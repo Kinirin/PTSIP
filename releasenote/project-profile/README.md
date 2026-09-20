@@ -11,7 +11,8 @@ Project Profile contract versions are independent from Tool SemVer and from one 
 Current intended contract:
 
 ```text
-pp.1.01
+pp.1.02
 ```
 
-See [`pp.1.01.md`](pp.1.01.md) for the identity-only compatibility notice covering historical `0.3.6-draft` profiles.
+See [`pp.1.02.md`](pp.1.02.md) for the current semantic-migration contract.
+The historical [`pp.1.01.md`](pp.1.01.md) identity-only bridge remains preserved.

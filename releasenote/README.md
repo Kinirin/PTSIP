@@ -26,6 +26,7 @@ Historical flat Tool and Specification release-note files have been relocated in
 releasenote/tool/0.3.7.md
 releasenote/tool/0.3.8a1.md
 releasenote/project-profile/pp.1.01.md
+releasenote/project-profile/pp.1.02.md
 releasenote/specification/0.3.7-draft.md
 ```
 
@@ -41,7 +42,8 @@ Namespace indexes:
 
 | Contract | State | Document |
 | --- | --- | --- |
-| `pp.1.01` | **Current contract; reused unchanged by Tool 0.3.8a1** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| `pp.1.02` | **Current contract; semantic migration from pp.1.01** | [`project-profile/pp.1.02.md`](project-profile/pp.1.02.md) |
+| `pp.1.01` | Historical identity-only baseline; superseded by current PP contract | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
 
 ### `0.3.6-draft -> pp.1.01` compatibility notice
 
@@ -62,7 +64,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
 | Tool | `0.3.8a1` | Published emergency prerelease | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
-| Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |
+| Project Profile | `pp.1.02` | Current contract / repository adopted | [`project-profile/pp.1.02.md`](project-profile/pp.1.02.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 
 ## Historical Reference Tool history

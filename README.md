@@ -6,7 +6,7 @@
 
 **Status:** Tool `0.3.8a1` emergency prerelease — publication pending<br>
 **Tool/package version:** `0.3.8a1`<br>
-**Project Profile contract:** `pp.1.01`<br>
+**Project Profile contract:** `pp.1.02`<br>
 **Specification family:** `0.3.7-draft`<br>
 **Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
 **License authority:** [`License-Authority/`](License-Authority/) (closed authority boundary; references elsewhere are non-authoritative)<br>
@@ -225,7 +225,7 @@ ptsip resolve --help
 ptsip conform .
 ```
 
-The default project-owned profile is repository-root `ptsip.yaml`; projects may consistently use another explicit path through `--profile`.
+New project-owned profiles are selected through `.ptsip/profiles/index.yaml`; the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. Repository-root `ptsip.yaml` remains a compatibility/migration input, and an explicit `--profile` path still takes precedence.
 
 ## Adoption and decision authority
 
@@ -288,7 +288,7 @@ Observed evidence
     -> what the repository and artifacts actually do
 ```
 
-A Decision Authority does not replace `ptsip.yaml` and does not prove conformance.
+A Decision Authority does not replace the Project Profile selected by `.ptsip/profiles/index.yaml` and does not prove conformance. Legacy root `ptsip.yaml` remains compatibility input only.
 
 ## Distributed decision coordination
 
@@ -350,13 +350,16 @@ The PTSIP Tool and PTSIP Specification are independently versioned.
 - `spec/`, `schemas/`, and `registry/` contain canonical Specification assets;
 - `src/ptsip/specdata/` contains matching embedded machine-readable assets.
 
-Tool `0.3.8a1` is bound to independent PP and Specification identities:
+The current source tree exposes independent PP and Specification identities:
 
 ```text
-Project Profile pp.1.01
+Project Profile pp.1.02
 Specification 0.3.7-draft
 SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
 ```
+
+The already-published Tool `0.3.8a1` release retains its historical PP binding
+in its Tool release note; advancing the PP contract does not rewrite that Tool history.
 
 A new immutable revision is required only for a genuine normative change. Release workflow, test, planning, status, or documentation-only changes do not move `SPEC_REVISION` by themselves.
 

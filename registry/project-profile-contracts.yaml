@@ -1,6 +1,6 @@
 schema_version: ptsip-project-profile-contract-registry/v1
 authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
-current: pp.1.01
+current: pp.1.02
 contracts:
   - version: pp.0.00
     lifecycle: LEGACY_COMPATIBILITY_ONLY
@@ -8,7 +8,7 @@ contracts:
       - IDENTIFY
     schema: null
   - version: pp.1.01
-    lifecycle: CURRENT
+    lifecycle: SUPERSEDED
     operations:
       - IDENTIFY
       - VALIDATE
@@ -16,4 +16,16 @@ contracts:
       - CREATE_TARGET
     schema: schemas/ptsip-profile-pp-1.01.schema.json
     baseline: profiles/history/pp.1.01
-transitions: []
+  - version: pp.1.02
+    lifecycle: CURRENT
+    operations:
+      - IDENTIFY
+      - VALIDATE
+      - ANALYZE
+      - CREATE_TARGET
+    schema: schemas/ptsip-profile-pp-1.02.schema.json
+    baseline: profiles/history/pp.1.02
+transitions:
+  - from: pp.1.01
+    to: pp.1.02
+    kind: SEMANTIC_MIGRATION

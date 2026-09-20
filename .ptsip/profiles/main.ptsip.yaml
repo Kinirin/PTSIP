@@ -18,7 +18,6 @@ components:
       - "src/ptsip/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
-      - "src/ptsip/governance/**"
       - "src/ptsip/inspection/**"
       - "src/ptsip/pilot/**"
       - "src/ptsip/repository/**"
@@ -70,19 +69,6 @@ components:
     release_owner: tool
     compatibility_owner: tool
 
-  - id: ptsip-remediation
-    classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
-    include:
-      - "src/ptsip/remediation/**"
-    purpose: generic_authority_aware_remediation_runtime
-    shipped: true
-    runtime_required: false
-    executable: false
-    release_owner: tool
-    compatibility_owner: tool
-
   - id: vpms
     classification: PRODUCT
     roles:
@@ -127,8 +113,7 @@ components:
     classification: NEUTRAL_CONTRACT
     include:
       - "src/ptsip/specdata/**"
-      - "docs/Support_policy/policy/**"
-    purpose: tool_embedded_machine_readable_specification_and_support_policy_contracts
+    purpose: tool_embedded_machine_readable_specification_contracts
     shipped: true
     runtime_required: true
     executable: false
@@ -167,10 +152,9 @@ components:
       - CONFIGURATION
       - GOVERNANCE
     include:
-      - "developer/profiles/ptsip-repository.yaml"
       - "ptsip.yaml"
       - ".ptsip/**"
-    purpose: repository_development_architecture_declaration
+    purpose: repository_architecture_declaration
     shipped: false
     runtime_required: false
     executable: false
@@ -190,7 +174,6 @@ components:
     executable: false
     release_owner: tool
     compatibility_owner: tool
-
   - id: product-documentation
     classification: PRODUCT
     roles:
@@ -216,8 +199,6 @@ components:
       - "tests/ptsip/cli/**"
       - "tests/ptsip/conformance/**"
       - "tests/ptsip/control_plane/**"
-      - "tests/ptsip/governance/test_authority_runtime.py"
-      - "tests/ptsip/governance/test_authorization_transition.py"
       - "tests/ptsip/identity/**"
       - "tests/ptsip/inspection/**"
       - "tests/ptsip/integration/**"
@@ -239,30 +220,16 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
       - "src/ptsip/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
-      - "src/ptsip/governance/**"
       - "src/ptsip/inspection/**"
       - "src/ptsip/pilot/**"
       - "src/ptsip/repository/**"
       - "src/ptsip/storage/**"
       - "src/ptsip/validation/**"
-      - "developer/profiles/ptsip-repository.yaml"
+      - "ptsip.yaml"
       - "profiles/**"
-      - "docs/Support_policy/policy/**"
-      - "schemas/ptsip-adr.schema.json"
-      - "schemas/ptsip-governance-authority-registry.schema.json"
-      - "schemas/ptsip-governance-authority-role.schema.json"
-      - "schemas/ptsip-governance-authority-role-registry.schema.json"
-      - "schemas/ptsip-governance-authority-semantics.schema.json"
-      - "schemas/ptsip-governance-authority-subject-registry.schema.json"
-      - "schemas/ptsip-governance-subject-binding.schema.json"
-      - "schemas/ptsip-project-authority-record.schema.json"
-      - "schemas/ptsip-authority-eligibility-result.schema.json"
-      - "schemas/ptsip-authorization-transition.schema.json"
 
   - id: ptsip-evidence-verification
     classification: PRODUCT
@@ -277,8 +244,6 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
       - "src/ptsip/evidence/**"
       - "schemas/ptsip-normalized-evidence.schema.json"
 
@@ -295,8 +260,6 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
       - "src/ptsip/source_compat/**"
       - "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json"
       - "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json"
@@ -314,31 +277,9 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
       - "src/ptsip/migration/**"
       - "src/ptsip/evidence/**"
       - "src/ptsip/source_compat/**"
-
-  - id: ptsip-remediation-verification
-    classification: PRODUCT
-    roles:
-      - VERIFICATION
-    include:
-      - "tests/ptsip/remediation/**"
-    purpose: product_owned_generic_remediation_contract_verification
-    shipped: false
-    runtime_required: false
-    executable: true
-    release_owner: tool
-    compatibility_owner: tool
-    analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
-      - "src/ptsip/remediation/**"
-      - "src/ptsip/evidence/**"
-      - "src/ptsip/specification_binding.py"
-      - "developer/profiles/ptsip-repository.yaml"
 
   - id: vpms-verification
     classification: PRODUCT
@@ -355,7 +296,7 @@ components:
     analysis_inputs:
       - "src/vpms/**"
       - "src/ptsip/**"
-      - "developer/profiles/ptsip-repository.yaml"
+      - "ptsip.yaml"
 
   - id: ptsip-contract-verification
     classification: DEVELOPMENT_TOOLING
@@ -363,23 +304,17 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/contracts/**"
-      - "tests/ptsip/governance/test_contracts.py"
-    purpose: canonical_embedded_and_governance_contract_consistency_verification
+    purpose: canonical_and_embedded_contract_consistency_verification
     shipped: false
     runtime_required: false
     executable: true
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
       - "spec/**"
       - "schemas/**"
       - "registry/**"
-      - "developer/policy/**"
-      - "src/ptsip/governance/**"
       - "src/ptsip/specdata/**"
-      - "docs/Support_policy/policy/**"
       - "profiles/**"
 
   - id: repository-architecture-verification
@@ -388,25 +323,17 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/repository/test_self_profile.py"
-      - "developer/tests/**"
-    purpose: repository_profile_and_active_planning_surface_verification
+    purpose: repository_profile_and_governance_asset_verification
     shipped: false
     runtime_required: false
     executable: true
     release_owner: architecture
     compatibility_owner: architecture
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
-      - "developer/profiles/ptsip-repository.yaml"
+      - "ptsip.yaml"
       - "adoption/**"
       - "agents/**"
-      - "docs/Support_policy/**"
-      - "src/ptsip/specdata/**"
       - "reference/**"
-      - "docs/planning/**"
-      - "developer/policy/**"
-      - "src/ptsip/governance/**"
 
   - id: repository-release-verification
     classification: DELIVERY
@@ -421,13 +348,10 @@ components:
     release_owner: delivery
     compatibility_owner: delivery
     analysis_inputs:
-      - "tests/ptsip/conftest.py"
-      - "tests/ptsip/_test_support.py"
       - "pyproject.toml"
       - "MANIFEST.in"
       - "setup.py"
       - "profiles/**"
-      - "docs/Support_policy/policy/**"
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
@@ -470,9 +394,8 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
-      - "developer/profiles/ptsip-repository.yaml"
-      - ".github/workflows/tooling-test.yml"
-      - "tests/ptsip/conftest.py"
+      - "ptsip.yaml"
+      - "tests/**"
 
   - id: repository-release-automation
     classification: DELIVERY
@@ -494,7 +417,6 @@ components:
       - "profiles/**"
       - "src/ptsip/**"
       - "src/vpms/**"
-      - "docs/Support_policy/policy/**"
       - "spec/**"
       - "schemas/**"
       - "registry/**"
@@ -524,9 +446,6 @@ components:
       - "src/**"
       - "README.md"
       - "README.ko.md"
-      - "src/ptsip/specdata/**"
-      - "docs/Support_policy/**"
-      - "developer/policy/**"
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
@@ -546,7 +465,6 @@ components:
       - "setup_dev.bat"
       - "cliff.toml"
       - "planning/**"
-      - "developer/**"
       - "docs/planning/**"
     purpose: development_planning_evidence_and_repository_maintenance
     shipped: false
@@ -562,24 +480,12 @@ associated_artifacts:
       - "adoption/**"
       - "agents/**"
       - "reference/**"
-      - "docs/Support_policy/README.md"
-      - "docs/Support_policy/automation/**"
-    purpose: specification_governance_adoption_agent_and_support_policy_operational_guidance
+    purpose: specification_governance_adoption_agent_and_architecture_support
 
 relationships:
   - id: core-reads-embedded-contracts
     from: ptsip-core
     to: ptsip-embedded-contracts
-    type: READS
-
-  - id: core-reads-canonical-contracts
-    from: ptsip-core
-    to: ptsip-canonical-contracts
-    type: READS
-
-  - id: core-reads-governance-support
-    from: ptsip-core
-    to: ptsip-governance-support
     type: READS
 
   - id: evidence-imports-core
@@ -612,16 +518,6 @@ relationships:
     to: ptsip-source-compat
     type: IMPORTS
 
-  - id: remediation-imports-core
-    from: ptsip-remediation
-    to: ptsip-core
-    type: IMPORTS
-
-  - id: remediation-imports-evidence
-    from: ptsip-remediation
-    to: ptsip-evidence
-    type: IMPORTS
-
   - id: canonical-specifies-core
     from: ptsip-canonical-contracts
     to: ptsip-core
@@ -640,11 +536,6 @@ relationships:
   - id: canonical-specifies-migration
     from: ptsip-canonical-contracts
     to: ptsip-migration
-    type: SPECIFIES
-
-  - id: canonical-specifies-remediation
-    from: ptsip-canonical-contracts
-    to: ptsip-remediation
     type: SPECIFIES
 
   - id: canonical-specifies-vpms
@@ -680,11 +571,6 @@ relationships:
   - id: ptsip-migration-verification-verifies-migration
     from: ptsip-migration-verification
     to: ptsip-migration
-    type: VERIFIES
-
-  - id: ptsip-remediation-verification-verifies-remediation
-    from: ptsip-remediation-verification
-    to: ptsip-remediation
     type: VERIFIES
 
   - id: vpms-verification-verifies-vpms

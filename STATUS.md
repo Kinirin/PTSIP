@@ -14,7 +14,7 @@
 - Prerelease GitHub Release: **PUBLISHED**
 - Prerelease PyPI publication: **COMPLETE** through Trusted Publishing
 - Prerelease external install check: **PASS**
-- Project Profile contract: `pp.1.01`
+- Project Profile contract: `pp.1.02`
 - Bound Specification: `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a`
 
 Tool `0.3.8a1` is an emergency prerelease bridge and does not replace Tool `0.3.7` as the latest stable Tool release.

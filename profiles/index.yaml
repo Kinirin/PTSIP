@@ -4,13 +4,19 @@ root: profiles
 profiles:
   - id: example
     resource: example.ptsip.yaml
-    contract: pp.1.01
+    contract: pp.1.02
     responsibility_mode: explicit
+    profile_role: DISTRIBUTED_EXAMPLE
+    materialization: PROJECT_PATH_RESOLUTION_REQUIRED
   - id: hybrid-python-package
     resource: hybrid-python-package.ptsip.yaml
-    contract: pp.1.01
+    contract: pp.1.02
     responsibility_mode: hybrid
+    profile_role: DISTRIBUTED_EXAMPLE
+    materialization: PROJECT_PATH_RESOLUTION_REQUIRED
   - id: template-python-package
     resource: template-python-package.ptsip.yaml
-    contract: pp.1.01
+    contract: pp.1.02
     responsibility_mode: template
+    profile_role: DISTRIBUTED_EXAMPLE
+    materialization: PROJECT_PATH_RESOLUTION_REQUIRED
