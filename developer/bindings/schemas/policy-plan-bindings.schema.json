@@ -21,7 +21,6 @@
     },
     "bindings": {
       "type": "array",
-      "uniqueItems": true,
       "items": {
         "$ref": "#/$defs/binding"
       }
@@ -32,19 +31,65 @@
     "binding": {
       "type": "object",
       "required": [
+        "binding_id",
         "policy_ref",
-        "plan_ref"
+        "planning_state"
       ],
       "properties": {
+        "binding_id": {
+          "type": "string",
+          "pattern": "^PPB-[0-9]{4,}$"
+        },
         "policy_ref": {
           "type": "string",
           "pattern": "^MPD-[0-9]{4}$"
+        },
+        "planning_state": {
+          "enum": ["NOT_CREATED", "CREATED"]
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
         },
         "plan_ref": {
           "type": "string",
           "pattern": "^developer/planning/.+\\.ya?ml$"
         }
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "planning_state": {
+                "const": "NOT_CREATED"
+              }
+            },
+            "required": ["planning_state"]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {"required": ["plan_id"]},
+                {"required": ["plan_ref"]}
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "planning_state": {
+                "const": "CREATED"
+              }
+            },
+            "required": ["planning_state"]
+          },
+          "then": {
+            "required": ["plan_id", "plan_ref"]
+          }
+        }
+      ],
       "additionalProperties": false
     }
   }

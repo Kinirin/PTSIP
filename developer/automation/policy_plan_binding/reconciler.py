@@ -50,7 +50,7 @@ def validate_registry_integrity(
     *,
     root: str | Path | None = None,
 ) -> tuple[str, ...]:
-    """Validate only approved structural facts: schema, exact refs, and duplicates."""
+    """Validate approved binding identity, state, exact refs, and M:N integrity."""
 
     base = repository_root(root)
     failures = list(validate_registry_schema(payload, root=base))
@@ -58,7 +58,8 @@ def validate_registry_integrity(
         return tuple(failures)
 
     known_policies = _policy_ids(base)
-    seen: set[tuple[str, str]] = set()
+    seen_binding_ids: set[str] = set()
+    seen_created_relations: set[tuple[str, str]] = set()
 
     bindings = payload.get("bindings", [])
     for index, raw in enumerate(bindings):
@@ -66,25 +67,38 @@ def validate_registry_integrity(
             failures.append(f"bindings[{index}]: entry must be a mapping")
             continue
 
+        binding_id = raw.get("binding_id")
         policy_ref = raw.get("policy_ref")
-        plan_ref = raw.get("plan_ref")
-        if not isinstance(policy_ref, str) or not isinstance(plan_ref, str):
-            failures.append(
-                f"bindings[{index}]: policy_ref and plan_ref must be strings"
-            )
-            continue
+        planning_state = raw.get("planning_state")
 
-        pair = (policy_ref, plan_ref)
-        if pair in seen:
-            failures.append(
-                f"bindings[{index}]: duplicate exact binding {policy_ref} -> {plan_ref}"
-            )
-        seen.add(pair)
+        if isinstance(binding_id, str):
+            if binding_id in seen_binding_ids:
+                failures.append(
+                    f"bindings[{index}]: duplicate binding_id {binding_id}"
+                )
+            seen_binding_ids.add(binding_id)
 
-        if policy_ref not in known_policies:
+        if isinstance(policy_ref, str) and policy_ref not in known_policies:
             failures.append(
                 f"bindings[{index}]: unknown developer policy {policy_ref}"
             )
+
+        if planning_state != "CREATED":
+            continue
+
+        plan_id = raw.get("plan_id")
+        plan_ref = raw.get("plan_ref")
+        if not isinstance(policy_ref, str) or not isinstance(plan_id, str):
+            continue
+        if not isinstance(plan_ref, str):
+            continue
+
+        relation = (policy_ref, plan_id)
+        if relation in seen_created_relations:
+            failures.append(
+                f"bindings[{index}]: duplicate created relation {policy_ref} -> {plan_id}"
+            )
+        seen_created_relations.add(relation)
 
         candidate = (base / plan_ref).resolve()
         try:
@@ -102,11 +116,19 @@ def validate_registry_integrity(
     return tuple(failures)
 
 
+def _binding_sort_key(item: Mapping[str, Any]) -> tuple[int, str]:
+    binding_id = str(item.get("binding_id", ""))
+    try:
+        return int(binding_id.split("-", 1)[1]), binding_id
+    except (IndexError, ValueError):
+        return 2**31 - 1, binding_id
+
+
 def _canonical_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     bindings = payload.get("bindings", [])
     canonical_bindings = sorted(
         (dict(item) for item in bindings if isinstance(item, Mapping)),
-        key=lambda item: (str(item.get("policy_ref")), str(item.get("plan_ref"))),
+        key=_binding_sort_key,
     )
     return {
         "schema_version": payload["schema_version"],
@@ -121,14 +143,8 @@ def reconcile_registry(
     apply: bool = False,
     root: str | Path | None = None,
 ) -> PolicyPlanBindingReconciliation:
-    """Deterministically validate and canonicalize the binding registry.
-
-    No relationship is created, removed, or semantically reclassified here.
-    Reconciliation is limited to fail-closed integrity checks and stable ordering.
-    """
-
     snapshot = load_registry(root, required=True, validate_schema=True)
-    if snapshot is None:  # pragma: no cover - required=True fails closed.
+    if snapshot is None:  # pragma: no cover
         raise PolicyPlanBindingError(
             "BINDING_REGISTRY_MISSING",
             "binding registry is required for reconciliation.",
@@ -167,11 +183,7 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Validate and deterministically reconcile Policy ↔ Planning bindings."
     )
-    parser.add_argument(
-        "--apply",
-        action="store_true",
-        help="Apply canonical ordering after all fail-closed integrity checks pass.",
-    )
+    parser.add_argument("--apply", action="store_true")
     parser.add_argument("--root")
     return parser
 
@@ -181,16 +193,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         result = reconcile_registry(apply=args.apply, root=args.root)
     except PolicyPlanBindingError as exc:
-        print(
-            json.dumps(
-                {
-                    "status": "UNRESOLVED",
-                    "code": exc.code,
-                    "message": str(exc),
-                },
-                sort_keys=True,
-            )
-        )
+        print(json.dumps(
+            {"status": "UNRESOLVED", "code": exc.code, "message": str(exc)},
+            sort_keys=True,
+        ))
         return 2
 
     print(json.dumps(result.to_payload(), sort_keys=True))
