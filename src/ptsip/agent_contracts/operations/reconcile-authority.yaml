@@ -1,35 +1,45 @@
-format: ptsip-agent-operation/v1
+format: ptsip-agent-operation/v2
 operation_id: PTSIP-OP-RECONCILE-AUTHORITY-001
-status: BOOTSTRAP
-policy_refs:
+status: CANDIDATE
+rule_refs:
   - PTSIP-AUT-001
+  - PTSIP-AUT-002
   - PTSIP-AUT-003
   - PTSIP-AUT-004
   - PTSIP-AUT-005
   - PTSIP-AUT-006
   - PTSIP-AUT-007
-default_mutation: READ_ONLY
+mutation:
+  default: READ_ONLY
+  write_requires:
+    - EXPLICIT_WRITE_AUTHORIZATION
+    - AUTHORITY_FRESHNESS_RECHECK_PASS
+    - PROFILE_FRESHNESS_RECHECK_PASS
 preconditions:
-  - coordination_backend_selected
-  - coordination_scope_identified
+  - COORDINATION_BACKEND_SELECTED
+  - COORDINATION_SCOPE_IDENTIFIED
 steps:
   - step_id: READ
-    action: Read relevant current authority without fabricating pending history for absence checks.
-    fail_closed_on:
-      - required_authority_unavailable
+    action_id: READ_RELEVANT_AUTHORITY
+    fail_closed_outcomes:
+      - COORDINATION_UNAVAILABLE
   - step_id: COMPARE
-    action: Compare local Project Profile semantics with the distributed winner when one exists.
+    action_id: COMPARE_PROFILE_AND_AUTHORITY_SEMANTICS
+  - step_id: DECIDE
+    action_id: RESOLVE_RECONCILIATION_STATE
   - step_id: PROJECT
-    action: Project an equivalent or missing resolved winner locally only after freshness and validation checks.
-    fail_closed_on:
-      - semantic_conflict
-      - stale_state
+    action_id: PROJECT_AUTHORIZED_WINNER
+    requires:
+      - EXPLICIT_WRITE_AUTHORIZATION
+      - SEMANTIC_CONFLICT_ABSENT
+      - FRESHNESS_RECHECK_PASSED
+    fail_closed_outcomes:
+      - AUTHORITY_PROFILE_CONFLICT
+      - STALE_STATE
 outcomes:
   - NO_REMOTE_DECISION
   - CONSISTENT
   - REMOTE_RESOLVED
   - AUTHORITY_PROFILE_CONFLICT
   - COORDINATION_UNAVAILABLE
-implementation_refs:
-  - src/ptsip/app/github_authority.py
-  - src/ptsip/app/github_reconciliation.py
+  - STALE_STATE
