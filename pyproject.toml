@@ -44,18 +44,20 @@ ptsip-app = "ptsip.app.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["ptsip*", "vpms*"]
+include = ["ptsip*", "vpms*", "agent_contracts*"]
 
 [tool.setuptools.package-data]
 ptsip = [
   "specdata/*.json",
   "specdata/*.yaml",
-  "agent_contracts/*.yaml",
-  "agent_contracts/schemas/*.json",
-  "agent_contracts/spec/*.yaml",
-  "agent_contracts/operations/*.yaml",
-  "agent_contracts/vocabulary/*.yaml",
-  "agent_contracts/bindings/*.yaml",
+]
+agent_contracts = [
+  "*.yaml",
+  "schemas/*.json",
+  "spec/*.yaml",
+  "operations/*.yaml",
+  "vocabulary/*.yaml",
+  "bindings/*.yaml",
 ]
 
 [project.optional-dependencies]
