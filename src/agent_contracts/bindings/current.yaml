@@ -17,6 +17,69 @@ active_operations:
   - PTSIP-OP-CONFORM-001
   - PTSIP-OP-RECONCILE-AUTHORITY-001
   - PTSIP-OP-MIGRATE-PROFILE-001
+active_actions:
+  - PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001
+  - PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001
+  - PTSIP-ACT-BUILD-ADOPTION-PLAN-001
+  - PTSIP-ACT-APPLY-ADOPTION-001
+  - PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001
+  - PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001
+  - PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001
+  - PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001
+  - PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001
+  - PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001
+  - PTSIP-ACT-READ-RELEVANT-AUTHORITY-001
+  - PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001
+  - PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001
+  - PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001
+  - PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001
+  - PTSIP-ACT-MAP-PROFILE-TARGET-001
+  - PTSIP-ACT-BUILD-TRANSITION-PLAN-001
+  - PTSIP-ACT-APPLY-PROFILE-TRANSITION-001
+active_conditions:
+  - PTSIP-COND-ADOPT-SNAPSHOT-IDENTIFIED-001
+  - PTSIP-COND-ADOPT-FACTS-RESOLVED-001
+  - PTSIP-COND-ADOPT-APPLY-REQUESTED-001
+  - PTSIP-COND-ADOPT-WRITE-AUTHORIZED-001
+  - PTSIP-COND-ADOPT-REPOSITORY-FRESH-001
+  - PTSIP-COND-ADOPT-PROFILE-FRESH-001
+  - PTSIP-COND-ADOPT-AUTHORITY-FRESH-001
+  - PTSIP-COND-VALIDATE-PROFILE-SELECTED-001
+  - PTSIP-COND-VALIDATE-CONTRACT-RESOLVED-001
+  - PTSIP-COND-CONFORM-PROFILE-READY-001
+  - PTSIP-COND-CONFORM-SNAPSHOT-IDENTIFIED-001
+  - PTSIP-COND-AUTH-COORDINATION-AVAILABLE-001
+  - PTSIP-COND-AUTH-PROJECTION-REQUIRED-001
+  - PTSIP-COND-AUTH-WRITE-AUTHORIZED-001
+  - PTSIP-COND-AUTH-AUTHORITY-FRESH-001
+  - PTSIP-COND-AUTH-PROFILE-FRESH-001
+  - PTSIP-COND-AUTH-SEMANTIC-CONFLICT-ABSENT-001
+  - PTSIP-COND-MIG-SOURCE-PROFILE-IDENTIFIED-001
+  - PTSIP-COND-MIG-TARGET-CONTRACT-RESOLVED-001
+  - PTSIP-COND-MIG-APPLY-REQUESTED-001
+  - PTSIP-COND-MIG-WRITE-AUTHORIZED-001
+  - PTSIP-COND-MIG-SOURCE-FRESH-001
+  - PTSIP-COND-MIG-TARGET-FRESH-001
+active_gates:
+  - PTSIP-GATE-ADOPTION-WRITE-001
+  - PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001
+  - PTSIP-GATE-PROFILE-TRANSITION-WRITE-001
+active_io_schemas:
+  - PTSIP-IO-ADOPT-REQUEST-001
+  - PTSIP-IO-ADOPT-STATE-001
+  - PTSIP-IO-ADOPT-RESULT-001
+  - PTSIP-IO-VALIDATE-REQUEST-001
+  - PTSIP-IO-VALIDATE-STATE-001
+  - PTSIP-IO-VALIDATE-RESULT-001
+  - PTSIP-IO-CONFORM-REQUEST-001
+  - PTSIP-IO-CONFORM-STATE-001
+  - PTSIP-IO-CONFORM-RESULT-001
+  - PTSIP-IO-AUTHORITY-REQUEST-001
+  - PTSIP-IO-AUTHORITY-STATE-001
+  - PTSIP-IO-AUTHORITY-RESULT-001
+  - PTSIP-IO-MIGRATE-REQUEST-001
+  - PTSIP-IO-MIGRATE-STATE-001
+  - PTSIP-IO-MIGRATE-RESULT-001
 active_vocabularies:
   - PTSIP-VOCAB-LIFECYCLE
   - PTSIP-VOCAB-OUTCOMES
@@ -27,27 +90,28 @@ external_machine_contracts:
     version: pp.1.02
     package: ptsip
     resource: specdata/project-profile-contracts.yaml
-implementation_bindings:
-  - operation_id: PTSIP-OP-ADOPT-001
-    python_modules:
-      - ptsip.adoption
-      - ptsip.cli
-    cli_command: ptsip adopt
-  - operation_id: PTSIP-OP-VALIDATE-001
-    python_modules:
-      - ptsip.validation.profile
-      - ptsip.project_profile_contracts
-    cli_command: ptsip validate
-  - operation_id: PTSIP-OP-CONFORM-001
-    python_modules:
-      - ptsip.conformance
-      - ptsip.conformance_audit
-  - operation_id: PTSIP-OP-RECONCILE-AUTHORITY-001
-    python_modules:
-      - ptsip.app.github_authority
-      - ptsip.app.github_reconciliation
-  - operation_id: PTSIP-OP-MIGRATE-PROFILE-001
-    python_modules:
-      - ptsip.migration.analyzer
-      - ptsip.migration.direct_planner
-      - ptsip.migration.direct_execution
+action_bindings:
+  - {action_id: PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001, python_callable: ptsip.repository.snapshot:capture_snapshot}
+  - {action_id: PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001, python_callable: ptsip.adoption:prepare_adoption}
+  - {action_id: PTSIP-ACT-BUILD-ADOPTION-PLAN-001, python_callable: ptsip.adoption:prepare_adoption}
+  - {action_id: PTSIP-ACT-APPLY-ADOPTION-001, python_callable: ptsip.adoption:apply_adoption}
+  - {action_id: PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001, python_callable: ptsip.validation.profile:validate_profile}
+  - {action_id: PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001, python_callable: ptsip.validation.profile:validate_profile}
+  - {action_id: PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001, python_callable: ptsip.validation.profile:validate_profile}
+  - {action_id: PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001, python_callable: ptsip.conformance_engine:evaluate_conformance}
+  - {action_id: PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001, python_callable: ptsip.conformance_engine:evaluate_conformance}
+  - {action_id: PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001, python_callable: ptsip.conformance_audit:audit_conformance_report}
+  - {action_id: PTSIP-ACT-READ-RELEVANT-AUTHORITY-001, python_callable: ptsip.app.github_authority:GithubControlPlaneClient.peek}
+  - {action_id: PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001, python_callable: ptsip.app.github_reconciliation:run_github_gate}
+  - {action_id: PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001, python_callable: ptsip.app.github_reconciliation:run_github_gate}
+  - {action_id: PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001, python_callable: ptsip.app.github_reconciliation:run_github_gate}
+  - {action_id: PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001, python_callable: ptsip.migration.analyzer:analyze_source_migration}
+  - {action_id: PTSIP-ACT-MAP-PROFILE-TARGET-001, python_callable: ptsip.migration.direct_planner:build_direct_final_point_convergence_plan}
+  - {action_id: PTSIP-ACT-BUILD-TRANSITION-PLAN-001, python_callable: ptsip.migration.direct_planner:build_direct_final_point_convergence_plan}
+  - {action_id: PTSIP-ACT-APPLY-PROFILE-TRANSITION-001, python_callable: ptsip.migration.execution_promotion:promote_canonical}
+condition_evaluator_bindings: []
+operation_entrypoints:
+  - {operation_id: PTSIP-OP-ADOPT-001, cli_command: ptsip adopt}
+  - {operation_id: PTSIP-OP-VALIDATE-001, cli_command: ptsip validate}
+  - {operation_id: PTSIP-OP-CONFORM-001, cli_command: ptsip conform}
+  - {operation_id: PTSIP-OP-RECONCILE-AUTHORITY-001, cli_command: ptsip gate}
