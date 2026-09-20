@@ -8,17 +8,12 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
-from ...constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ...local_profile_catalog import (
     LOCAL_PROFILE_CATALOG,
     canonical_new_profile_path,
     default_catalog_text,
 )
-from ...profile_identity import (
-    CURRENT_PROJECT_PROFILE_VERSION,
-    DEVELOPER_BASELINE_USER_REVISION,
-    ProjectProfileVersion,
-)
+from ...profile_metadata import current_project_profile_ptsip_metadata
 from ...validation.profile import _schema, find_profile, validate_profile
 from ...validation.templates import materialize_profile
 from .model import DecisionAnswer
@@ -49,28 +44,8 @@ class PreparedLocalProfile:
 
 
 def _base_profile() -> dict[str, object]:
-    version = ProjectProfileVersion.parse(
-        CURRENT_PROJECT_PROFILE_VERSION,
-        require_canonical=True,
-    )
-    ptsip: dict[str, object] = {
-        "version": CURRENT_PROJECT_PROFILE_VERSION,
-    }
-    if version >= ProjectProfileVersion(1, 2):
-        ptsip["revision"] = DEVELOPER_BASELINE_USER_REVISION.canonical
-        ptsip["profile_role"] = "PROJECT"
-        ptsip["specification"] = {
-            "source": SPEC_SOURCE,
-            "revision": SPEC_REVISION,
-        }
-    else:
-        ptsip["specification"] = {
-            "family": SPEC_VERSION,
-            "source": SPEC_SOURCE,
-            "revision": SPEC_REVISION,
-        }
     return {
-        "ptsip": ptsip,
+        "ptsip": current_project_profile_ptsip_metadata(),
         "responsibility_map": {"mode": "explicit"},
         "components": [],
         "policies": dict(DEFAULT_POLICIES),

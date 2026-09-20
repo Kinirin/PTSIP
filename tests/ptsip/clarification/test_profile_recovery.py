@@ -8,6 +8,7 @@ import yaml
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import current_project_profile_ptsip_metadata
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -35,14 +36,7 @@ def _repo(tmp_path: Path) -> Path:
 
 def _write_valid_profile(profile: Path) -> None:
     payload = {
-        "ptsip": {
-            "version": CURRENT_PROJECT_PROFILE_VERSION,
-            "specification": {
-                "family": SPEC_VERSION,
-                "source": SPEC_SOURCE,
-                "revision": SPEC_REVISION,
-            },
-        },
+        "ptsip": current_project_profile_ptsip_metadata(),
         "responsibility_map": {"mode": "explicit"},
         "components": [
             {

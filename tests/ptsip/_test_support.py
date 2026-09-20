@@ -8,6 +8,7 @@ import yaml
 
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import current_project_profile_ptsip_metadata
 
 
 PYTHON_PACKAGE_TEMPLATE_ID = "python-package-library"
@@ -171,14 +172,7 @@ def associated_artifact_payload(
 
 def _profile_base() -> dict[str, object]:
     return {
-        "ptsip": {
-            "version": CURRENT_PROJECT_PROFILE_VERSION,
-            "specification": {
-                "family": SPEC_VERSION,
-                "source": SPEC_SOURCE,
-                "revision": SPEC_REVISION,
-            },
-        },
+        "ptsip": current_project_profile_ptsip_metadata(),
         "policies": policy_payload(),
     }
 

@@ -7,6 +7,7 @@ from ptsip.app.store import DecisionStore
 from ptsip.clarification.resolution import DecisionAnswer, project_payload
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import current_project_profile_ptsip_metadata
 from _test_support import canonical_v2_answer, clarification_answer_text
 
 
@@ -103,14 +104,7 @@ def _issue_payload(classification: str = "PRODUCT") -> dict[str, object]:
 
 def test_profile_projection_preserves_existing_boundary_and_structured_facts_and_rejects_conflict():
     existing = {
-        "ptsip": {
-            "version": CURRENT_PROJECT_PROFILE_VERSION,
-            "specification": {
-                "family": SPEC_VERSION,
-                "source": SPEC_SOURCE,
-                "revision": SPEC_REVISION,
-            },
-        },
+        "ptsip": current_project_profile_ptsip_metadata(),
         "responsibility_map": {"mode": "explicit"},
         "components": [
             {
