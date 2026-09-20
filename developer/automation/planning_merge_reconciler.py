@@ -75,6 +75,16 @@ def detect_current_branch(root: str | Path | None = None) -> str:
     return branch
 
 
+def _is_pending_branch_alias(plan: dict[str, Any], branch: str) -> bool:
+    migration = plan.get("branch_identity_migration")
+    return (
+        isinstance(migration, dict)
+        and migration.get("status") == "RENAME_PENDING"
+        and migration.get("legacy_branch") == branch
+        and migration.get("canonical_branch") == plan.get("integration_branch")
+    )
+
+
 def _find_plan_for_integration_branch(
     root_index: dict[str, Any],
     integration_branch: str,
@@ -82,7 +92,11 @@ def _find_plan_for_integration_branch(
     matches = [
         plan
         for plan in root_index.get("plans", [])
-        if isinstance(plan, dict) and plan.get("integration_branch") == integration_branch
+        if isinstance(plan, dict)
+        and (
+            plan.get("integration_branch") == integration_branch
+            or _is_pending_branch_alias(plan, integration_branch)
+        )
     ]
     if not matches:
         raise PlanningStateReconciliationError(
@@ -578,7 +592,10 @@ def reconcile_planning_state(
     routing = root_plan.get("entry_routing", {})
     reconciliation = routing.get("merge_reconciliation", {})
     target_branch = reconciliation.get("target_branch")
-    if target_branch != active_branch:
+    pending_alias = _is_pending_branch_alias(root_plan, active_branch)
+    if target_branch != active_branch and not (
+        pending_alias and target_branch == root_plan.get("integration_branch")
+    ):
         raise PlanningStateReconciliationError(
             "RECONCILIATION_WRONG_BRANCH",
             f"Planning reconciliation may run only on target integration branch {target_branch!r}; current branch is {active_branch!r}.",
@@ -653,7 +670,7 @@ def reconcile_planning_state(
 
     return PlanningStateReconciliation(
         status="RECONCILED" if apply else "PREVIEW",
-        integration_branch=active_branch,
+        integration_branch=str(root_plan["integration_branch"]),
         merged_branch=merged_branch,
         merged_work_unit=merged_work_unit,
         current_gate_before=current_gate_before,
