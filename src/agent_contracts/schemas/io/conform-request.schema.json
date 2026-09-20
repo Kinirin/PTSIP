@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-CONFORM-REQUEST-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["context","profile_ready"],
+  "properties":{"context":{"type":"object","additionalProperties":false,"required":["repository_root"],"properties":{"repository_root":{"type":"string","minLength":1}}},"profile_ready":{"type":"boolean"}}
+}
