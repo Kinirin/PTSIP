@@ -75,12 +75,24 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     errors.append(f"{path}: dependency-bearing convergence routing does not match root entry routing")
 
                 root_leafs = {
-                    (entry.get("id"), entry.get("branch"), entry.get("responsibility"))
+                    (
+                        entry.get("id"),
+                        entry.get("branch"),
+                        entry.get("responsibility"),
+                        entry.get("state"),
+                        entry.get("continuation_branch"),
+                    )
                     for entry in root_routing.get("independent_leaf_work_units", [])
                     if isinstance(entry, dict)
                 }
                 plan_leafs = {
-                    (entry.get("id"), entry.get("branch"), entry.get("responsibility"))
+                    (
+                        entry.get("id"),
+                        entry.get("branch"),
+                        entry.get("responsibility"),
+                        entry.get("state"),
+                        entry.get("continuation_branch"),
+                    )
                     for entry in plan_routing.get("independent_leaf_work_units", [])
                     if isinstance(entry, dict)
                 }
@@ -148,12 +160,32 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
             if len(branches) != len(set(branches)):
                 errors.append(f"{ROOT_INDEX}: branch entrypoints must use unique exact branch names")
 
+            branch_migration = plan_entry.get("branch_identity_migration")
+            legacy_branch: str | None = None
+            migration_pending = False
+            if isinstance(branch_migration, dict):
+                canonical_branch = branch_migration.get("canonical_branch")
+                legacy_value = branch_migration.get("legacy_branch")
+                migration_pending = branch_migration.get("status") == "RENAME_PENDING"
+                if canonical_branch != plan_entry.get("integration_branch"):
+                    errors.append(
+                        f"{path}: branch migration canonical_branch must equal integration_branch"
+                    )
+                if not isinstance(legacy_value, str) or legacy_value == canonical_branch:
+                    errors.append(
+                        f"{path}: branch migration legacy_branch must be a distinct exact branch"
+                    )
+                else:
+                    legacy_branch = legacy_value
+
             expected_branches = {plan_entry.get("integration_branch")}
             expected_branches.update(
                 entry.get("branch")
                 for entry in root_routing.get("independent_leaf_work_units", [])
                 if isinstance(entry, dict)
             )
+            if migration_pending and legacy_branch is not None:
+                expected_branches.add(legacy_branch)
             if set(branches) != expected_branches:
                 errors.append(
                     f"{path}: branch entrypoint set does not match declared integration/leaf branches"
@@ -177,6 +209,28 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     errors.append(f"{path}: integration branch entrypoint must remain ACTIVE")
                 if integration_entry.get("work_unit") is not None:
                     errors.append(f"{path}: integration branch entrypoint must not bind a work unit")
+
+            alias_entries = [
+                entry
+                for entry in entrypoints
+                if isinstance(entry, dict)
+                and entry.get("role") == "BRANCH_RENAME_SOURCE_ALIAS"
+            ]
+            if migration_pending:
+                if len(alias_entries) != 1:
+                    errors.append(f"{path}: pending branch rename requires exactly one source alias")
+                else:
+                    alias = alias_entries[0]
+                    if alias.get("branch") != legacy_branch:
+                        errors.append(f"{path}: branch rename alias must use legacy_branch")
+                    if alias.get("canonical_branch") != plan_entry.get("integration_branch"):
+                        errors.append(f"{path}: branch rename alias must point to integration_branch")
+                    if alias.get("entry_document") != path:
+                        errors.append(f"{path}: branch rename alias must resolve to version index")
+                    if alias.get("state") != "ACTIVE":
+                        errors.append(f"{path}: branch rename source alias must remain ACTIVE until rename")
+            elif alias_entries:
+                errors.append(f"{path}: branch rename alias must be removed after migration is no longer pending")
 
             indexed_wus = {
                 wu.get("id"): wu
@@ -208,8 +262,21 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                 if leaf_entry.get("role") != "INDEPENDENT_LEAF":
                     errors.append(f"{path}: leaf {leaf_id!r} entrypoint role is invalid")
                 if leaf_entry.get("state") == "MERGED":
-                    if leaf_entry.get("merged_into") != plan_entry.get("integration_branch"):
-                        errors.append(f"{path}: merged leaf {leaf_id!r} must point to integration_branch")
+                    valid_merge_targets = {plan_entry.get("integration_branch")}
+                    if legacy_branch is not None:
+                        valid_merge_targets.add(legacy_branch)
+                    if leaf_entry.get("merged_into") not in valid_merge_targets:
+                        errors.append(
+                            f"{path}: merged leaf {leaf_id!r} must point to current or recorded legacy integration_branch"
+                        )
+                    continuation_branch = leaf_entry.get("continuation_branch")
+                    if (
+                        continuation_branch is not None
+                        and continuation_branch != plan_entry.get("integration_branch")
+                    ):
+                        errors.append(
+                            f"{path}: merged leaf {leaf_id!r} continuation_branch must equal integration_branch"
+                        )
                 elif leaf_entry.get("state") != "ACTIVE":
                     errors.append(f"{path}: leaf {leaf_id!r} entrypoint state is invalid")
                 entry_document = leaf_entry.get("entry_document")
