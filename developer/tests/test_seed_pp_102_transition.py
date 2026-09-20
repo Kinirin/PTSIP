@@ -39,3 +39,15 @@ def test_pp_102_seed_declares_placeholderized_example_paths() -> None:
         "$" + "{CONTRACT_ROOT}/**",
     ):
         assert placeholder in source
+
+
+def test_pp_102_seed_updates_pp_surfaces_without_rewriting_tool_history() -> None:
+    source = (
+        ROOT / "developer" / "automation" / "seed_pp_102_transition.py"
+    ).read_text(encoding="utf-8")
+
+    assert "releasenote/project-profile" in source
+    assert "_project_profile_note(target, specification_revision)" in source
+    assert 'repo / "README.md"' in source
+    assert 'repo / "STATUS.md"' in source
+    assert "releasenote/tool/0.3.8a1.md" not in source

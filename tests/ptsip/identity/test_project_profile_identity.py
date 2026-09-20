@@ -169,18 +169,22 @@ def test_pp_1_01_schema_is_identity_only_structural_peer_of_legacy_schema() -> N
     ]
 
 
-def test_maintained_examples_use_pp_1_01_without_structural_redesign() -> None:
+def test_pp_1_01_historical_baseline_remains_valid_and_immutable() -> None:
     schema = json.loads(
         (ROOT / "schemas" / "ptsip-profile-pp-1.01.schema.json").read_text(encoding="utf-8")
     )
     validator = Draft202012Validator(schema)
 
-    for relative_path in (
-        "profiles/example.ptsip.yaml",
-        "profiles/hybrid-python-package.ptsip.yaml",
-        "profiles/template-python-package.ptsip.yaml",
+    for resource in (
+        "example.ptsip.yaml",
+        "hybrid-python-package.ptsip.yaml",
+        "template-python-package.ptsip.yaml",
     ):
-        profile = yaml.safe_load((ROOT / relative_path).read_text(encoding="utf-8"))
+        profile = yaml.safe_load(
+            (ROOT / "profiles" / "history" / "pp.1.01" / resource).read_text(
+                encoding="utf-8"
+            )
+        )
         assert profile["ptsip"]["version"] == "pp.1.01"
         validator.validate(profile)
 

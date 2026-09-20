@@ -227,12 +227,11 @@ def main() -> int:
             if package_version not in tool_note_text:
                 errors.append("Tool release note does not record the package version.")
             if (
-                pp_version not in tool_note_text
-                or spec_version not in tool_note_text
+                spec_version not in tool_note_text
                 or spec_revision not in tool_note_text
             ):
                 errors.append(
-                    "Tool release note does not record the exact Tool/PP/Specification binding."
+                    "Tool release note does not record the exact Tool/Specification binding."
                 )
 
     pp_note = ROOT / "releasenote" / "project-profile" / f"{pp_version}.md"

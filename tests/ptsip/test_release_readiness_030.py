@@ -246,20 +246,26 @@ def test_release_contract_requires_full_037_normative_snapshot() -> None:
     assert 'profile_ptsip.get("version") != spec_version' not in release_contract
 
 
-def test_release_documents_record_current_tool_and_spec_binding() -> None:
-    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a1.md").read_text(encoding="utf-8")
-    pp_note = (ROOT / "releasenote" / "project-profile" / "pp.1.01.md").read_text(
-        encoding="utf-8"
+def test_release_documents_record_independent_current_authorities() -> None:
+    registry = yaml.safe_load(
+        (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
     )
+    current_pp = registry["current"]
+    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a1.md").read_text(encoding="utf-8")
+    pp_note = (
+        ROOT / "releasenote" / "project-profile" / f"{current_pp}.md"
+    ).read_text(encoding="utf-8")
     release_index = (ROOT / "releasenote" / "README.md").read_text(encoding="utf-8")
+
     assert "0.3.8a1" in tool_note
-    assert "pp.1.01" in tool_note
     assert "0.3.7-draft" in tool_note
     assert EXPECTED_SPEC_REVISION in tool_note
     assert "\n## " in tool_note
+
+    assert current_pp in pp_note
     assert EXPECTED_SPEC_REVISION in pp_note
     assert "tool/0.3.8a1.md" in release_index
-    assert "project-profile/pp.1.01.md" in release_index
+    assert f"project-profile/{current_pp}.md" in release_index
     assert "specification/0.3.7-draft.md" in release_index
 
 

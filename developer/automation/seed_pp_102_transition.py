@@ -69,6 +69,174 @@ def _dump_yaml(path: Path, payload: Mapping[str, object]) -> None:
     )
 
 
+def _replace_once(path: Path, old: str, new: str) -> None:
+    text = path.read_text(encoding="utf-8")
+    count = text.count(old)
+    if count != 1:
+        raise SeedError(
+            f"Expected exactly one documentation marker in {path}: {old!r}; found {count}."
+        )
+    path.write_text(text.replace(old, new, 1), encoding="utf-8", newline="\n")
+
+
+def _project_profile_note(target: str, specification_revision: str) -> str:
+    return f"""# Project Profile {target}
+
+State: Current Project Profile contract
+Transition: pp.1.01 -> {target} / SEMANTIC_MIGRATION
+Specification binding: 0.3.7-draft @ {specification_revision}
+
+## Purpose
+
+This contract separates developer-owned Project Profile generation from
+user-owned profile lineage and removes path-shaped examples that could be
+misread as repository architecture authority.
+
+## Contract changes
+
+- ptsip.revision is now required and uses canonical Rev.#### form.
+- Developer-distributed baselines begin at Rev.0001.
+- ptsip.specification.family is no longer serialized in current Project
+  Profiles. Specification identity remains exact through source plus the
+  immutable Git revision.
+- ptsip.profile_role distinguishes repository authority (PROJECT) from
+  distributed examples (DISTRIBUTED_EXAMPLE).
+- Distributed examples require project-path materialization and must not be
+  treated as canonical repository layout.
+- New repository-local profile storage uses .ptsip/profiles/index.yaml with
+  an explicit default_profile and one or more *.ptsip.yaml resources.
+- New adoption defaults to .ptsip/profiles/main.ptsip.yaml.
+- Repository-root ptsip.yaml remains a compatibility/migration input rather
+  than the default target for new profile creation.
+
+## Example-path safety
+
+Public examples use unresolved project-owned selector placeholders instead of
+prescribing paths such as product/app/** or a developer's private tooling
+layout. A project or agent must resolve those selectors against repository
+evidence and explicit project authority before materializing a PROJECT profile.
+
+## Authority boundaries
+
+This Project Profile transition does not change the frozen Specification
+family or its immutable revision. It also does not rewrite historical Tool
+release notes. Tool SemVer, Project Profile contract identity,
+ptsip.revision, and Specification revision remain separate axes.
+"""
+
+
+def _update_release_surfaces(
+    repo: Path,
+    *,
+    target: str,
+    specification_revision: str,
+    changed: list[str],
+) -> None:
+    note_path = repo / "releasenote" / "project-profile" / f"{target}.md"
+    note_path.write_text(
+        _project_profile_note(target, specification_revision),
+        encoding="utf-8",
+        newline="\n",
+    )
+    changed.append(note_path.relative_to(repo).as_posix())
+
+    pp_index = repo / "releasenote" / "project-profile" / "README.md"
+    _replace_once(
+        pp_index,
+        """Current intended contract:
+
+```text
+pp.1.01
+```
+
+See [`pp.1.01.md`](pp.1.01.md) for the identity-only compatibility notice covering historical `0.3.6-draft` profiles.
+""",
+        f"""Current intended contract:
+
+```text
+{target}
+```
+
+See [`{target}.md`]({target}.md) for the current semantic-migration contract.
+The historical [`pp.1.01.md`](pp.1.01.md) identity-only bridge remains preserved.
+""",
+    )
+    changed.append(pp_index.relative_to(repo).as_posix())
+
+    release_index = repo / "releasenote" / "README.md"
+    _replace_once(
+        release_index,
+        "releasenote/project-profile/pp.1.01.md\n",
+        "releasenote/project-profile/pp.1.01.md\n"
+        + f"releasenote/project-profile/{target}.md\n",
+    )
+    _replace_once(
+        release_index,
+        "| `pp.1.01` | **Current contract; reused unchanged by Tool 0.3.8a1** | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |",
+        f"| `{target}` | **Current contract; semantic migration from pp.1.01** | [`project-profile/{target}.md`](project-profile/{target}.md) |\n"
+        "| `pp.1.01` | Historical identity-only baseline; superseded by current PP contract | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |",
+    )
+    _replace_once(
+        release_index,
+        "| Project Profile | `pp.1.01` | Current contract / repository adopted | [`project-profile/pp.1.01.md`](project-profile/pp.1.01.md) |",
+        f"| Project Profile | `{target}` | Current contract / repository adopted | [`project-profile/{target}.md`](project-profile/{target}.md) |",
+    )
+    changed.append(release_index.relative_to(repo).as_posix())
+
+    readme = repo / "README.md"
+    _replace_once(
+        readme,
+        "**Project Profile contract:** `pp.1.01`<br>",
+        f"**Project Profile contract:** `{target}`<br>",
+    )
+    _replace_once(
+        readme,
+        "The default project-owned profile is repository-root `ptsip.yaml`; projects may consistently use another explicit path through `--profile`.",
+        "New project-owned profiles are selected through `.ptsip/profiles/index.yaml`; "
+        "the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. "
+        "Repository-root `ptsip.yaml` remains a compatibility/migration input, and "
+        "an explicit `--profile` path still takes precedence.",
+    )
+    _replace_once(
+        readme,
+        "A Decision Authority does not replace `ptsip.yaml` and does not prove conformance.",
+        "A Decision Authority does not replace the Project Profile selected by "
+        "`.ptsip/profiles/index.yaml` and does not prove conformance. "
+        "Legacy root `ptsip.yaml` remains compatibility input only.",
+    )
+    _replace_once(
+        readme,
+        """Tool `0.3.8a1` is bound to independent PP and Specification identities:
+
+```text
+Project Profile pp.1.01
+Specification 0.3.7-draft
+SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
+```
+""",
+        f"""The current source tree exposes independent PP and Specification identities:
+
+```text
+Project Profile {target}
+Specification 0.3.7-draft
+SPEC_REVISION {specification_revision}
+```
+
+The already-published Tool `0.3.8a1` release retains its historical PP binding
+in its Tool release note; advancing the PP contract does not rewrite that Tool history.
+""",
+    )
+    changed.append(readme.relative_to(repo).as_posix())
+
+    status = repo / "STATUS.md"
+    _replace_once(
+        status,
+        "- Project Profile contract: `pp.1.01`",
+        f"- Project Profile contract: `{target}`",
+    )
+    changed.append(status.relative_to(repo).as_posix())
+
+
 def _next_minor(value: str) -> str:
     version = ProjectProfileVersion.parse(value, require_canonical=True)
     return ProjectProfileVersion(version.major, version.minor + 1).canonical
@@ -260,6 +428,18 @@ def seed(root: str | Path | None = None) -> tuple[str, ...]:
     _add_ptsip_control_root(developer_profile)
     _dump_yaml(developer_profile_path, developer_profile)
     changed.append(developer_profile_path.relative_to(repo).as_posix())
+
+    local_ptsip = root_profile.get("ptsip")
+    local_specification = local_ptsip.get("specification") if isinstance(local_ptsip, Mapping) else None
+    specification_revision = local_specification.get("revision") if isinstance(local_specification, Mapping) else None
+    if not isinstance(specification_revision, str):
+        raise SeedError("Migrated repository profile lost immutable Specification revision.")
+    _update_release_surfaces(
+        repo,
+        target=target,
+        specification_revision=specification_revision,
+        changed=changed,
+    )
 
     forbidden = [
         path
