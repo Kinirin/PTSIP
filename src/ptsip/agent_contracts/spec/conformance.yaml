@@ -1,30 +1,43 @@
-format: ptsip-agent-spec/v1
+format: ptsip-agent-spec/v2
 id: PTSIP-AGENT-SPEC-CONFORMANCE
-status: BOOTSTRAP
-normative_rule_refs:
-  - PTSIP-EVD-001
-  - PTSIP-EVD-002
-  - PTSIP-EVD-003
-  - PTSIP-EVD-004
-  - PTSIP-DIA-001
-statements:
-  - statement_id: CONF-VALIDATION-SEPARATION
-    kind: SEPARATION
+status: CANDIDATE
+scope: Conformance evaluation semantics and evidence sufficiency.
+rules:
+  - rule_id: PTSIP-CONF-001
+    modality: MUST
     subject: conformance_evaluation
-    predicate: distinct_from
+    predicate: remain_distinct_from
     object:
-      - profile_validation
-      - authority_reconciliation
-  - statement_id: CONF-NO-EMPTY-FINDING-SHORTCUT
-    kind: PROHIBITION
-    subject: conformance
-    predicate: treats_empty_findings_as_sufficient_for_conformant
-    object: true
-  - statement_id: CONF-BLOCKING-EVIDENCE
-    kind: REQUIREMENT
+      - PROFILE_VALIDATION
+      - AUTHORITY_RECONCILIATION
+  - rule_id: PTSIP-CONF-002
+    modality: MUST
+    subject: completed_conformance_evaluation
+    predicate: outcome
+    object:
+      - CONFORMANT
+      - NON_CONFORMANT
+      - INCOMPLETE
+  - rule_id: PTSIP-CONF-003
+    modality: MUST_NOT
     subject: conformant_outcome
-    predicate: requires_no_blocking_uncertainty
+    predicate: inferred_from_empty_findings_alone
     object: true
-migration_evidence_refs:
-  - spec/PTSIP-CONFORMANCE.md
-  - spec/PTSIP-SPEC.md
+  - rule_id: PTSIP-CONF-004
+    modality: MUST
+    subject: conformant_outcome
+    predicate: blocking_uncertainty
+    object: NONE
+  - rule_id: PTSIP-CONF-005
+    modality: MUST
+    subject: evidence_model
+    predicate: distinguish
+    object:
+      - DECLARED
+      - OBSERVED
+      - INFERRED
+  - rule_id: PTSIP-CONF-006
+    modality: MUST_NOT
+    subject: unresolved_evidence
+    predicate: count_as_absence_of_violation
+    object: true
