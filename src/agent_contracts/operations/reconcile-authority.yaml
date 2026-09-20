@@ -9,33 +9,70 @@ rule_refs:
   - PTSIP-AUT-005
   - PTSIP-AUT-006
   - PTSIP-AUT-007
-mutation:
-  default: READ_ONLY
-  write_requires:
-    - EXPLICIT_WRITE_AUTHORIZATION
-    - AUTHORITY_FRESHNESS_RECHECK_PASS
-    - PROFILE_FRESHNESS_RECHECK_PASS
-preconditions:
-  - COORDINATION_BACKEND_SELECTED
-  - COORDINATION_SCOPE_IDENTIFIED
+input_schema_ref: PTSIP-IO-AUTHORITY-REQUEST-001
+output_schema_ref: PTSIP-IO-AUTHORITY-RESULT-001
+preconditions: []
+entry_step: READ
 steps:
   - step_id: READ
-    action_id: READ_RELEVANT_AUTHORITY
-    fail_closed_outcomes:
-      - COORDINATION_UNAVAILABLE
+    type: ACTION
+    action_ref: PTSIP-ACT-READ-RELEVANT-AUTHORITY-001
+    input_bindings:
+      /context: $input#/context
+    on_success:
+      step_ref: COMPARE
   - step_id: COMPARE
-    action_id: COMPARE_PROFILE_AND_AUTHORITY_SEMANTICS
+    type: ACTION
+    action_ref: PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001
+    input_bindings:
+      /context: $step:READ#/context
+      /coordination_available: $step:READ#/coordination_available
+    on_success:
+      step_ref: DECIDE
   - step_id: DECIDE
-    action_id: RESOLVE_RECONCILIATION_STATE
+    type: ACTION
+    action_ref: PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001
+    input_bindings:
+      /context: $step:COMPARE#/context
+      /coordination_available: $step:COMPARE#/coordination_available
+      /semantic_conflict_absent: $step:COMPARE#/semantic_conflict_absent
+      /authority_fresh: $step:COMPARE#/authority_fresh
+      /profile_fresh: $step:COMPARE#/profile_fresh
+    on_success:
+      step_ref: PROJECT-REQUIRED
+  - step_id: PROJECT-REQUIRED
+    type: CONDITION
+    condition_ref: PTSIP-COND-AUTH-PROJECTION-REQUIRED-001
+    input_bindings:
+      /context: $step:DECIDE#/context
+      /projection_required: $step:DECIDE#/projection_required
+      /reconciliation_outcome: $step:DECIDE#/reconciliation_outcome
+    branches:
+      TRUE:
+        step_ref: PROJECT
+      FALSE:
+        outcome_from: $step:DECIDE#/reconciliation_outcome
+      UNKNOWN:
+        outcome: COORDINATION_UNAVAILABLE
   - step_id: PROJECT
-    action_id: PROJECT_AUTHORIZED_WINNER
-    requires:
-      - EXPLICIT_WRITE_AUTHORIZATION
-      - SEMANTIC_CONFLICT_ABSENT
-      - FRESHNESS_RECHECK_PASSED
-    fail_closed_outcomes:
-      - AUTHORITY_PROFILE_CONFLICT
-      - STALE_STATE
+    type: ACTION
+    action_ref: PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001
+    input_bindings:
+      /context: $step:DECIDE#/context
+      /coordination_available: $step:DECIDE#/coordination_available
+      /semantic_conflict_absent: $step:DECIDE#/semantic_conflict_absent
+      /authority_fresh: $step:DECIDE#/authority_fresh
+      /profile_fresh: $step:DECIDE#/profile_fresh
+      /projection_required: $step:DECIDE#/projection_required
+      /reconciliation_outcome: $step:DECIDE#/reconciliation_outcome
+    mutation_gate_ref: PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001
+    mutation_gate_input_bindings:
+      /context: $step:DECIDE#/context
+      /semantic_conflict_absent: $step:DECIDE#/semantic_conflict_absent
+      /authority_fresh: $step:DECIDE#/authority_fresh
+      /profile_fresh: $step:DECIDE#/profile_fresh
+    on_success:
+      outcome: REMOTE_RESOLVED
 outcomes:
   - NO_REMOTE_DECISION
   - CONSISTENT
@@ -43,3 +80,4 @@ outcomes:
   - AUTHORITY_PROFILE_CONFLICT
   - COORDINATION_UNAVAILABLE
   - STALE_STATE
+  - WRITE_NOT_AUTHORIZED

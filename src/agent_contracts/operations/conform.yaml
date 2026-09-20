@@ -8,21 +8,42 @@ rule_refs:
   - PTSIP-CONF-004
   - PTSIP-CONF-005
   - PTSIP-CONF-006
-mutation:
-  default: READ_ONLY
-  write_requires: []
+input_schema_ref: PTSIP-IO-CONFORM-REQUEST-001
+output_schema_ref: PTSIP-IO-CONFORM-RESULT-001
 preconditions:
-  - PROJECT_PROFILE_VALIDATED_OR_MATERIALIZED
-  - REPOSITORY_SNAPSHOT_IDENTIFIED
+  - condition_ref: PTSIP-COND-CONFORM-PROFILE-READY-001
+    on_false: INCOMPLETE
+    on_unknown: INCOMPLETE
+entry_step: COLLECT
 steps:
   - step_id: COLLECT
-    action_id: COLLECT_RULE_RELEVANT_EVIDENCE
-    fail_closed_outcomes:
-      - INCOMPLETE
+    type: ACTION
+    action_ref: PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001
+    input_bindings:
+      /context: $input#/context
+      /profile_ready: $input#/profile_ready
+    on_success:
+      step_ref: EVALUATE
   - step_id: EVALUATE
-    action_id: EVALUATE_APPLICABLE_MANDATORY_RULES
+    type: ACTION
+    action_ref: PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001
+    input_bindings:
+      /context: $step:COLLECT#/context
+      /snapshot_identified: $step:COLLECT#/snapshot_identified
+      /evidence_collected: $step:COLLECT#/evidence_collected
+    on_success:
+      step_ref: EMIT
   - step_id: EMIT
-    action_id: EMIT_CONFORMANCE_RESULT
+    type: ACTION
+    action_ref: PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001
+    input_bindings:
+      /context: $step:EVALUATE#/context
+      /snapshot_identified: $step:EVALUATE#/snapshot_identified
+      /evidence_collected: $step:EVALUATE#/evidence_collected
+      /evaluation_complete: $step:EVALUATE#/evaluation_complete
+      /outcome: $step:EVALUATE#/outcome
+    on_success:
+      outcome_from: $step:EMIT#/outcome
 outcomes:
   - CONFORMANT
   - NON_CONFORMANT
