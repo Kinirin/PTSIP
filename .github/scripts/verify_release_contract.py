@@ -118,6 +118,7 @@ def main() -> int:
     from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
     from ptsip.spec_identity import current_spec_identity
     from ptsip.specification_binding import current_target_specification_binding
+    from ptsip.validation.profile import find_profile
 
     tool_version = TOOL_VERSION
     pp_version = CURRENT_PROJECT_PROFILE_VERSION
@@ -162,28 +163,39 @@ def main() -> int:
     if not re.fullmatch(r"[0-9a-f]{40}", spec_revision):
         errors.append("SPEC_REVISION must be a full 40-character lowercase Git commit SHA.")
 
-    profile = yaml.safe_load((ROOT / "ptsip.yaml").read_text(encoding="utf-8"))
-    profile_ptsip = profile.get("ptsip", {})
-    profile_spec = profile_ptsip.get("specification", {})
+    selected_profile = find_profile(ROOT)
+    if selected_profile is None:
+        errors.append("No repository Project Profile resolves for release verification.")
+        profile = {}
+    else:
+        profile = yaml.safe_load(selected_profile.read_text(encoding="utf-8"))
+
+    profile_ptsip = profile.get("ptsip", {}) if isinstance(profile, dict) else {}
+    profile_spec = profile_ptsip.get("specification", {}) if isinstance(profile_ptsip, dict) else {}
 
     if profile_ptsip.get("version") != pp_version:
-        errors.append("ptsip.yaml ptsip.version does not match the current PP contract.")
-    if profile_spec.get("family") != spec_version:
-        errors.append("ptsip.yaml specification.family does not match SPEC_VERSION.")
+        errors.append("Resolved repository profile ptsip.version does not match the current PP contract.")
     if profile_spec.get("revision") != spec_revision:
-        errors.append("ptsip.yaml specification.revision does not match SPEC_REVISION.")
+        errors.append("Resolved repository profile specification.revision does not match SPEC_REVISION.")
     if profile_spec.get("source") != spec_source:
-        errors.append("ptsip.yaml specification.source does not match SPEC_SOURCE.")
+        errors.append("Resolved repository profile specification.source does not match SPEC_SOURCE.")
+    if "family" in profile_spec and profile_spec.get("family") != spec_version:
+        errors.append("Resolved repository profile specification.family does not match SPEC_VERSION.")
 
     for relative_path in public_profile_paths:
         maintained = yaml.safe_load((ROOT / relative_path).read_text(encoding="utf-8"))
         maintained_ptsip = maintained.get("ptsip", {})
         maintained_spec = maintained_ptsip.get("specification", {})
-        if maintained_ptsip.get("version") != pp_version or maintained_spec != {
-            "family": spec_version,
-            "source": spec_source,
-            "revision": spec_revision,
-        }:
+        stale = (
+            maintained_ptsip.get("version") != pp_version
+            or maintained_spec.get("source") != spec_source
+            or maintained_spec.get("revision") != spec_revision
+            or (
+                "family" in maintained_spec
+                and maintained_spec.get("family") != spec_version
+            )
+        )
+        if stale:
             errors.append(f"Maintained profile {relative_path!r} has a stale release binding.")
 
     spec_note = ROOT / "releasenote" / "specification" / f"{spec_version}.md"

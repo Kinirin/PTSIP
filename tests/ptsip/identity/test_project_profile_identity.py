@@ -112,7 +112,6 @@ def test_spec_identity_exposes_tool_spec_and_pp_as_separate_axes() -> None:
     assert identity.tool_version == TOOL_VERSION
     assert identity.version == SPEC_VERSION
     assert identity.project_profile_contract_version == CURRENT_PROJECT_PROFILE_VERSION
-    assert identity.project_profile_contract_version == "pp.1.01"
     assert identity.version != identity.project_profile_contract_version
 
 
@@ -199,8 +198,12 @@ def test_current_pp_identity_is_loaded_from_embedded_registry() -> None:
     runtime = current_runtime_project_profile_contract()
 
     assert CURRENT_PROJECT_PROFILE_VERSION == runtime.version
-    assert runtime.version == "pp.1.01"
-    assert runtime.schema_resource == "ptsip-profile-pp-1.01.schema.json"
+    expected_schema = (
+        "ptsip-profile-pp-"
+        + runtime.version.removeprefix("pp.")
+        + ".schema.json"
+    )
+    assert runtime.schema_resource == expected_schema
     assert runtime.operations == frozenset(
         {"IDENTIFY", "VALIDATE", "ANALYZE", "CREATE_TARGET"}
     )

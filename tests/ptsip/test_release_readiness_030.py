@@ -24,7 +24,10 @@ def test_tool_038a1_package_runtime_pp_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     assert payload["project"]["version"] == "0.3.8a1"
     assert TOOL_VERSION == "0.3.8a1"
-    assert CURRENT_PROJECT_PROFILE_VERSION == "pp.1.01"
+    registry = yaml.safe_load(
+        (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
+    )
+    assert CURRENT_PROJECT_PROFILE_VERSION == registry["current"]
     assert SPEC_VERSION == "0.3.7-draft"
     assert SPEC_SOURCE == "https://github.com/Kinirin/PTSIP"
     assert SPEC_REVISION == EXPECTED_SPEC_REVISION

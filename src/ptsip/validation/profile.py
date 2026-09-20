@@ -398,6 +398,19 @@ def _effective_partition_details(
         )
 
 
+def _profile_role_errors(payload: dict[str, object]) -> list[str]:
+    ptsip = payload.get("ptsip")
+    if not isinstance(ptsip, dict):
+        return []
+    role = ptsip.get("profile_role")
+    if role == "DISTRIBUTED_EXAMPLE":
+        return [
+            "ptsip.profile_role: DISTRIBUTED_EXAMPLE must be materialized with "
+            "project-owned selectors before it can act as Project Authority"
+        ]
+    return []
+
+
 def _profile_contract_identity_errors(
     payload: dict[str, object],
     *,
@@ -460,6 +473,8 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
     details: dict[str, object] = {}
     errors = _profile_contract_identity_errors(payload, details=details)
     errors.extend(_schema_errors(payload))
+    if not errors:
+        errors.extend(_profile_role_errors(payload))
 
     if not errors:
         errors.extend(specification_binding_errors(payload, details=details))
