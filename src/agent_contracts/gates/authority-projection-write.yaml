@@ -1,0 +1,18 @@
+format: ptsip-agent-mutation-gate/v2
+gate_id: PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001
+status: CANDIDATE
+input_schema_ref: PTSIP-IO-AUTHORITY-STATE-001
+strategy: ALL_REQUIRED
+requirements:
+  - condition_ref: PTSIP-COND-AUTH-WRITE-AUTHORIZED-001
+    on_false: WRITE_NOT_AUTHORIZED
+    on_unknown: WRITE_NOT_AUTHORIZED
+  - condition_ref: PTSIP-COND-AUTH-AUTHORITY-FRESH-001
+    on_false: STALE_STATE
+    on_unknown: COORDINATION_UNAVAILABLE
+  - condition_ref: PTSIP-COND-AUTH-PROFILE-FRESH-001
+    on_false: STALE_STATE
+    on_unknown: STALE_STATE
+  - condition_ref: PTSIP-COND-AUTH-SEMANTIC-CONFLICT-ABSENT-001
+    on_false: AUTHORITY_PROFILE_CONFLICT
+    on_unknown: AUTHORITY_PROFILE_CONFLICT
