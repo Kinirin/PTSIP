@@ -7,17 +7,18 @@ from pathlib import Path
 from developer.automation.policy_loader import load_yaml, repository_root
 
 
-CONTROL_BRANCH = "dev/0.4.0"
+CONTROL_BRANCH = "dev/0.3.8"
+LEGACY_CONTROL_BRANCH = "dev/0.4.0"
 PARENT_PLAN = "docs/planning/0.4.0/WU-02/WU-02.yaml"
 LANES = {
     "S1": {
         "id": "WU-02-S1",
-        "branch": "dev/0.4.0-WU-02-S1",
+        "branch": CONTROL_BRANCH,
         "path": "docs/planning/0.4.0/WU-02/WU-02-S1.yaml",
     },
     "S2": {
         "id": "WU-02-S2",
-        "branch": "dev/0.4.0-WU-02-S2",
+        "branch": CONTROL_BRANCH,
         "path": "docs/planning/0.4.0/WU-02/WU-02-S2.yaml",
     },
     "S3": {
@@ -55,14 +56,38 @@ def _current_branch(base: Path) -> str:
     return _git(base, "branch", "--show-current")
 
 
+def _ref_exists(base: Path, ref: str) -> bool:
+    try:
+        _git(base, "rev-parse", "--verify", ref)
+    except subprocess.CalledProcessError:
+        return False
+    return True
+
+
+def _legacy_control_alias_active(base: Path) -> bool:
+    canonical_exists = any(
+        _ref_exists(base, ref)
+        for ref in (f"origin/{CONTROL_BRANCH}", CONTROL_BRANCH)
+    )
+    legacy_exists = any(
+        _ref_exists(base, ref)
+        for ref in (f"origin/{LEGACY_CONTROL_BRANCH}", LEGACY_CONTROL_BRANCH)
+    )
+    return legacy_exists and not canonical_exists
+
+
 def _resolve_control_ref(base: Path) -> str:
-    for ref in ("origin/dev/0.4.0", "dev/0.4.0"):
-        try:
-            _git(base, "rev-parse", "--verify", ref)
-        except subprocess.CalledProcessError:
-            continue
-        return ref
-    raise RuntimeError("Cannot resolve dev/0.4.0 or origin/dev/0.4.0.")
+    for ref in (
+        f"origin/{CONTROL_BRANCH}",
+        CONTROL_BRANCH,
+        f"origin/{LEGACY_CONTROL_BRANCH}",
+        LEGACY_CONTROL_BRANCH,
+    ):
+        if _ref_exists(base, ref):
+            return ref
+    raise RuntimeError(
+        f"Cannot resolve {CONTROL_BRANCH}, {LEGACY_CONTROL_BRANCH}, or their origin refs."
+    )
 
 
 def _changed_files(base: Path, control_ref: str) -> tuple[str, ...]:
@@ -171,7 +196,12 @@ def validate_current_lane(
     payload = load_yaml(expected["path"], root=base)
 
     branch = _current_branch(base)
-    if branch != expected["branch"]:
+    legacy_alias_allowed = (
+        expected["branch"] == CONTROL_BRANCH
+        and branch == LEGACY_CONTROL_BRANCH
+        and _legacy_control_alias_active(base)
+    )
+    if branch != expected["branch"] and not legacy_alias_allowed:
         errors.append(
             f"Current branch {branch!r} does not match {lane} branch {expected['branch']!r}"
         )
