@@ -1,4 +1,4 @@
-from ptsip.agent_contracts import validate_agent_contract_plane
+from agent_contracts import validate_agent_contract_plane
 
 
 def test_embedded_agent_contract_plane_is_self_consistent() -> None:
