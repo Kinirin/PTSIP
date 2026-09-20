@@ -1,9 +1,20 @@
-format: ptsip-agent-vocabulary/v1
+format: ptsip-agent-vocabulary/v2
 vocabulary_id: PTSIP-VOCAB-LIFECYCLE
-status: BOOTSTRAP
+status: CANDIDATE
+domain: PRIMARY_LIFECYCLE_CLASSIFICATION
 entries:
-  - {id: PRODUCT, meaning: "Responsibility primarily owned by the Product lifecycle.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: DEVELOPMENT_TOOLING, meaning: "Responsibility primarily owned by the development lifecycle.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: DELIVERY, meaning: "Responsibility primarily owned by release, publication, promotion, distribution, or deployment-to-destination work.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: OPERATIONS, meaning: "Responsibility primarily owned by post-delivery operation, health, recovery, maintenance, reconciliation, and production-state management.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: NEUTRAL_CONTRACT, meaning: "Deliberately non-executable non-owning contract responsibility with independent lifecycle governance.", source_refs: [registry/ptsip-registry.yaml]}
+  - id: PRODUCT
+    category: CLASSIFICATION
+    meaning: Responsibility governed by the product lifecycle and product-owned runtime or distribution obligations.
+  - id: DEVELOPMENT_TOOLING
+    category: CLASSIFICATION
+    meaning: Responsibility governed by development-time authoring, analysis, transformation, validation, or reusable development support.
+  - id: DELIVERY
+    category: CLASSIFICATION
+    meaning: Responsibility governed by release, publication, promotion, distribution, deployment, or delivery handoff.
+  - id: OPERATIONS
+    category: CLASSIFICATION
+    meaning: Responsibility governed by post-delivery operation, health, recovery, maintenance, or production-state management.
+  - id: NEUTRAL_CONTRACT
+    category: CLASSIFICATION
+    meaning: Non-executable contract responsibility intentionally independent from executable lifecycle ownership.
