@@ -7,15 +7,19 @@ record:
   title: Elimination Authority + Canonical Record + Survivor Reduction
   status: ACTIVE
   parent_work_unit: WU-02
-  branch: dev/0.4.0-WU-02-S2
-  base_branch: dev/0.4.0
+  branch: dev/0.3.8
+  base_branch: dev/0.3.8
   authority: PROJECT_OWNER
   implementation_authorization: AUTHORIZED
-  integration_target: dev/0.4.0
+  integration_target: dev/0.3.8
+  execution_mode: CONTROL_PLANE_INTEGRATED
 
 branch_baseline:
   canonical_plan_source: CENTRAL_CONTROL_PLANE
-  control_plane_branch: dev/0.4.0
+  control_plane_branch: dev/0.3.8
+  legacy_branch: dev/0.4.0-WU-02-S2
+  legacy_branch_state: RETIRED_COMPLETE
+  legacy_branch_recreation: FORBIDDEN
   synchronization: MUST_START_FROM_CURRENT_CENTRAL_CONTROL_PLANE_REVISION_BEFORE_IMPLEMENTATION
   lane_plan_is_canonical_on_control_plane: true
 
@@ -87,9 +91,9 @@ session_protocol:
     - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
     - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
   required_git_checks:
-    - CONFIRM_CURRENT_BRANCH_IS_dev/0.4.0-WU-02-S2
+    - CONFIRM_CURRENT_BRANCH_IS_dev/0.3.8
     - REVIEW_RECENT_GIT_LOG
-    - REVIEW_CURRENT_DIFF_AGAINST_dev/0.4.0
+    - REVIEW_CURRENT_CONTROL_PLANE_STATE
   startup_report_required:
     - CURRENT_BRANCH
     - CURRENT_LANE_STATUS
