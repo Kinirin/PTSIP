@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-ADOPT-STATE-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["context"],
+  "properties":{
+    "context":{"type":"object","additionalProperties":false,
+      "required":["repository_root","component_id","apply_requested","write_authorized"],
+      "properties":{"repository_root":{"type":"string","minLength":1},"component_id":{"type":"string","minLength":1},"apply_requested":{"type":"boolean"},"write_authorized":{"type":"boolean"}}},
+    "snapshot_identified":{"type":"boolean"},"facts_resolved":{"type":"boolean"},"repository_fresh":{"type":"boolean"},
+    "profile_fresh":{"type":"boolean"},"authority_fresh":{"type":"boolean"},"plan_ready":{"type":"boolean"}
+  }
+}
