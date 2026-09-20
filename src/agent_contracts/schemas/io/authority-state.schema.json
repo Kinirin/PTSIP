@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-AUTHORITY-STATE-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["context"],
+  "properties":{
+    "context":{"type":"object","additionalProperties":false,"required":["coordination_backend","scope_id","write_authorized"],"properties":{
+      "coordination_backend":{"type":"string","minLength":1},"scope_id":{"type":"string","minLength":1},"write_authorized":{"type":"boolean"}
+    }},
+    "coordination_available":{"type":"boolean"},"semantic_conflict_absent":{"type":"boolean"},"projection_required":{"type":"boolean"},
+    "authority_fresh":{"type":"boolean"},"profile_fresh":{"type":"boolean"},
+    "reconciliation_outcome":{"enum":["NO_REMOTE_DECISION","CONSISTENT","REMOTE_RESOLVED","AUTHORITY_PROFILE_CONFLICT","COORDINATION_UNAVAILABLE","STALE_STATE"]}
+  }
+}

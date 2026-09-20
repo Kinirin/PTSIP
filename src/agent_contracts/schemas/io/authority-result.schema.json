@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-AUTHORITY-RESULT-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["outcome"],
+  "properties":{"outcome":{"enum":["NO_REMOTE_DECISION","CONSISTENT","REMOTE_RESOLVED","AUTHORITY_PROFILE_CONFLICT","COORDINATION_UNAVAILABLE","STALE_STATE"]},"detail":{"type":"object"}}
+}

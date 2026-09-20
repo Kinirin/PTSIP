@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "x-ptsip-io-id":"PTSIP-IO-AUTHORITY-REQUEST-001","x-ptsip-status":"CANDIDATE",
+  "type":"object","additionalProperties":false,"required":["context"],
+  "properties":{"context":{"type":"object","additionalProperties":false,"required":["coordination_backend","scope_id","write_authorized"],"properties":{
+    "coordination_backend":{"type":"string","minLength":1},"scope_id":{"type":"string","minLength":1},"write_authorized":{"type":"boolean"}
+  }}}
+}
