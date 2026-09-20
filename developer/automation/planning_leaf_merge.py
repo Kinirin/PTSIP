@@ -10,6 +10,7 @@ from typing import Sequence
 from developer.automation.planning_merge_reconciler import (
     PlanningStateReconciliationError,
     _find_plan_for_integration_branch,
+    _is_pending_branch_alias,
     _leaf_entrypoint,
     detect_current_branch,
     reconcile_planning_state,
@@ -174,10 +175,14 @@ def merge_leaf_branch(
             "MERGE_RECONCILIATION_MISSING",
             "Planning merge reconciliation contract is not declared.",
         )
-    if merge_contract.get("target_branch") != integration_branch:
+    target_branch = merge_contract.get("target_branch")
+    pending_alias = _is_pending_branch_alias(root_plan, integration_branch)
+    if target_branch != integration_branch and not (
+        pending_alias and target_branch == root_plan.get("integration_branch")
+    ):
         raise PlanningLeafMergeError(
             "WRONG_INTEGRATION_BRANCH",
-            f"Automated leaf merge must run on {merge_contract.get('target_branch')!r}, "
+            f"Automated leaf merge must run on {target_branch!r}, "
             f"not {integration_branch!r}.",
         )
     if merge_contract.get("leaf_shared_index_mutation") != "FORBIDDEN":
@@ -265,7 +270,7 @@ def merge_leaf_branch(
         status="MERGED",
         source_branch=branch,
         source_ref=source_ref,
-        integration_branch=integration_branch,
+        integration_branch=str(root_plan["integration_branch"]),
         merged_work_unit=work_unit,
         merge_commit=head.stdout.strip(),
         current_gate=reconciliation.current_gate_after,
