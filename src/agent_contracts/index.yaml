@@ -9,47 +9,97 @@ dependency_policy:
   unresolved_reference: FAIL_CLOSED
   external_machine_contracts: EXPLICIT_BINDING_ONLY
 schemas:
-  index: schemas/index.schema.json
-  spec: schemas/spec.schema.json
-  operation: schemas/operation.schema.json
-  vocabulary: schemas/vocabulary.schema.json
-  binding: schemas/binding.schema.json
+  index: schemas/contracts/index.schema.json
+  spec: schemas/contracts/spec.schema.json
+  operation: schemas/contracts/operation.schema.json
+  action: schemas/contracts/action.schema.json
+  condition: schemas/contracts/condition.schema.json
+  gate: schemas/contracts/mutation-gate.schema.json
+  io: schemas/contracts/io.schema.json
+  vocabulary: schemas/contracts/vocabulary.schema.json
+  binding: schemas/contracts/binding.schema.json
 binding:
   current_ref: bindings/current.yaml
 specs:
-  - id: PTSIP-AGENT-SPEC-CORE
-    ref: spec/core.yaml
-  - id: PTSIP-AGENT-SPEC-CLASSIFICATION
-    ref: spec/classification.yaml
-  - id: PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP
-    ref: spec/responsibility-map.yaml
-  - id: PTSIP-AGENT-SPEC-ADOPTION
-    ref: spec/adoption.yaml
-  - id: PTSIP-AGENT-SPEC-AUTHORITY
-    ref: spec/authority.yaml
-  - id: PTSIP-AGENT-SPEC-CONFORMANCE
-    ref: spec/conformance.yaml
-  - id: PTSIP-AGENT-SPEC-GOVERNANCE
-    ref: spec/governance.yaml
-  - id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION
-    ref: spec/profile-transition.yaml
+  - {id: PTSIP-AGENT-SPEC-CORE, ref: spec/core.yaml}
+  - {id: PTSIP-AGENT-SPEC-CLASSIFICATION, ref: spec/classification.yaml}
+  - {id: PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP, ref: spec/responsibility-map.yaml}
+  - {id: PTSIP-AGENT-SPEC-ADOPTION, ref: spec/adoption.yaml}
+  - {id: PTSIP-AGENT-SPEC-AUTHORITY, ref: spec/authority.yaml}
+  - {id: PTSIP-AGENT-SPEC-CONFORMANCE, ref: spec/conformance.yaml}
+  - {id: PTSIP-AGENT-SPEC-GOVERNANCE, ref: spec/governance.yaml}
+  - {id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION, ref: spec/profile-transition.yaml}
 operations:
-  - id: PTSIP-OP-ADOPT-001
-    ref: operations/adopt.yaml
-  - id: PTSIP-OP-VALIDATE-001
-    ref: operations/validate.yaml
-  - id: PTSIP-OP-CONFORM-001
-    ref: operations/conform.yaml
-  - id: PTSIP-OP-RECONCILE-AUTHORITY-001
-    ref: operations/reconcile-authority.yaml
-  - id: PTSIP-OP-MIGRATE-PROFILE-001
-    ref: operations/migrate-profile.yaml
+  - {id: PTSIP-OP-ADOPT-001, ref: operations/adopt.yaml}
+  - {id: PTSIP-OP-VALIDATE-001, ref: operations/validate.yaml}
+  - {id: PTSIP-OP-CONFORM-001, ref: operations/conform.yaml}
+  - {id: PTSIP-OP-RECONCILE-AUTHORITY-001, ref: operations/reconcile-authority.yaml}
+  - {id: PTSIP-OP-MIGRATE-PROFILE-001, ref: operations/migrate-profile.yaml}
+actions:
+  - {id: PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001, ref: actions/capture-repository-snapshot.yaml}
+  - {id: PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001, ref: actions/resolve-adoption-facts.yaml}
+  - {id: PTSIP-ACT-BUILD-ADOPTION-PLAN-001, ref: actions/build-adoption-plan.yaml}
+  - {id: PTSIP-ACT-APPLY-ADOPTION-001, ref: actions/apply-adoption.yaml}
+  - {id: PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001, ref: actions/resolve-profile-schema.yaml}
+  - {id: PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001, ref: actions/validate-profile-structure.yaml}
+  - {id: PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001, ref: actions/validate-responsibility-map-semantics.yaml}
+  - {id: PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001, ref: actions/collect-conformance-evidence.yaml}
+  - {id: PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001, ref: actions/evaluate-conformance-rules.yaml}
+  - {id: PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001, ref: actions/emit-conformance-result.yaml}
+  - {id: PTSIP-ACT-READ-RELEVANT-AUTHORITY-001, ref: actions/read-relevant-authority.yaml}
+  - {id: PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001, ref: actions/compare-profile-authority.yaml}
+  - {id: PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001, ref: actions/resolve-reconciliation-state.yaml}
+  - {id: PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001, ref: actions/project-authority-winner.yaml}
+  - {id: PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001, ref: actions/analyze-source-profile.yaml}
+  - {id: PTSIP-ACT-MAP-PROFILE-TARGET-001, ref: actions/map-profile-target.yaml}
+  - {id: PTSIP-ACT-BUILD-TRANSITION-PLAN-001, ref: actions/build-transition-plan.yaml}
+  - {id: PTSIP-ACT-APPLY-PROFILE-TRANSITION-001, ref: actions/apply-profile-transition.yaml}
+conditions:
+  - {id: PTSIP-COND-ADOPT-SNAPSHOT-IDENTIFIED-001, ref: conditions/adopt-snapshot-identified.yaml}
+  - {id: PTSIP-COND-ADOPT-FACTS-RESOLVED-001, ref: conditions/adopt-facts-resolved.yaml}
+  - {id: PTSIP-COND-ADOPT-APPLY-REQUESTED-001, ref: conditions/adopt-apply-requested.yaml}
+  - {id: PTSIP-COND-ADOPT-WRITE-AUTHORIZED-001, ref: conditions/adopt-write-authorized.yaml}
+  - {id: PTSIP-COND-ADOPT-REPOSITORY-FRESH-001, ref: conditions/adopt-repository-fresh.yaml}
+  - {id: PTSIP-COND-ADOPT-PROFILE-FRESH-001, ref: conditions/adopt-profile-fresh.yaml}
+  - {id: PTSIP-COND-ADOPT-AUTHORITY-FRESH-001, ref: conditions/adopt-authority-fresh.yaml}
+  - {id: PTSIP-COND-VALIDATE-PROFILE-SELECTED-001, ref: conditions/validate-profile-selected.yaml}
+  - {id: PTSIP-COND-VALIDATE-CONTRACT-RESOLVED-001, ref: conditions/validate-contract-resolved.yaml}
+  - {id: PTSIP-COND-CONFORM-PROFILE-READY-001, ref: conditions/conform-profile-ready.yaml}
+  - {id: PTSIP-COND-CONFORM-SNAPSHOT-IDENTIFIED-001, ref: conditions/conform-snapshot-identified.yaml}
+  - {id: PTSIP-COND-AUTH-COORDINATION-AVAILABLE-001, ref: conditions/authority-coordination-available.yaml}
+  - {id: PTSIP-COND-AUTH-PROJECTION-REQUIRED-001, ref: conditions/authority-projection-required.yaml}
+  - {id: PTSIP-COND-AUTH-WRITE-AUTHORIZED-001, ref: conditions/authority-write-authorized.yaml}
+  - {id: PTSIP-COND-AUTH-AUTHORITY-FRESH-001, ref: conditions/authority-authority-fresh.yaml}
+  - {id: PTSIP-COND-AUTH-PROFILE-FRESH-001, ref: conditions/authority-profile-fresh.yaml}
+  - {id: PTSIP-COND-AUTH-SEMANTIC-CONFLICT-ABSENT-001, ref: conditions/authority-semantic-conflict-absent.yaml}
+  - {id: PTSIP-COND-MIG-SOURCE-PROFILE-IDENTIFIED-001, ref: conditions/migrate-source-profile-identified.yaml}
+  - {id: PTSIP-COND-MIG-TARGET-CONTRACT-RESOLVED-001, ref: conditions/migrate-target-contract-resolved.yaml}
+  - {id: PTSIP-COND-MIG-APPLY-REQUESTED-001, ref: conditions/migrate-apply-requested.yaml}
+  - {id: PTSIP-COND-MIG-WRITE-AUTHORIZED-001, ref: conditions/migrate-write-authorized.yaml}
+  - {id: PTSIP-COND-MIG-SOURCE-FRESH-001, ref: conditions/migrate-source-fresh.yaml}
+  - {id: PTSIP-COND-MIG-TARGET-FRESH-001, ref: conditions/migrate-target-fresh.yaml}
+gates:
+  - {id: PTSIP-GATE-ADOPTION-WRITE-001, ref: gates/adoption-write.yaml}
+  - {id: PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001, ref: gates/authority-projection-write.yaml}
+  - {id: PTSIP-GATE-PROFILE-TRANSITION-WRITE-001, ref: gates/profile-transition-write.yaml}
+io_schemas:
+  - {id: PTSIP-IO-ADOPT-REQUEST-001, ref: schemas/io/adopt-request.schema.json}
+  - {id: PTSIP-IO-ADOPT-STATE-001, ref: schemas/io/adopt-state.schema.json}
+  - {id: PTSIP-IO-ADOPT-RESULT-001, ref: schemas/io/adopt-result.schema.json}
+  - {id: PTSIP-IO-VALIDATE-REQUEST-001, ref: schemas/io/validate-request.schema.json}
+  - {id: PTSIP-IO-VALIDATE-STATE-001, ref: schemas/io/validate-state.schema.json}
+  - {id: PTSIP-IO-VALIDATE-RESULT-001, ref: schemas/io/validate-result.schema.json}
+  - {id: PTSIP-IO-CONFORM-REQUEST-001, ref: schemas/io/conform-request.schema.json}
+  - {id: PTSIP-IO-CONFORM-STATE-001, ref: schemas/io/conform-state.schema.json}
+  - {id: PTSIP-IO-CONFORM-RESULT-001, ref: schemas/io/conform-result.schema.json}
+  - {id: PTSIP-IO-AUTHORITY-REQUEST-001, ref: schemas/io/authority-request.schema.json}
+  - {id: PTSIP-IO-AUTHORITY-STATE-001, ref: schemas/io/authority-state.schema.json}
+  - {id: PTSIP-IO-AUTHORITY-RESULT-001, ref: schemas/io/authority-result.schema.json}
+  - {id: PTSIP-IO-MIGRATE-REQUEST-001, ref: schemas/io/migrate-request.schema.json}
+  - {id: PTSIP-IO-MIGRATE-STATE-001, ref: schemas/io/migrate-state.schema.json}
+  - {id: PTSIP-IO-MIGRATE-RESULT-001, ref: schemas/io/migrate-result.schema.json}
 vocabularies:
-  - id: PTSIP-VOCAB-LIFECYCLE
-    ref: vocabulary/lifecycle.yaml
-  - id: PTSIP-VOCAB-OUTCOMES
-    ref: vocabulary/outcomes.yaml
-  - id: PTSIP-VOCAB-DIAGNOSTICS
-    ref: vocabulary/diagnostics.yaml
-  - id: PTSIP-VOCAB-AUTHORITY
-    ref: vocabulary/authority.yaml
+  - {id: PTSIP-VOCAB-LIFECYCLE, ref: vocabulary/lifecycle.yaml}
+  - {id: PTSIP-VOCAB-OUTCOMES, ref: vocabulary/outcomes.yaml}
+  - {id: PTSIP-VOCAB-DIAGNOSTICS, ref: vocabulary/diagnostics.yaml}
+  - {id: PTSIP-VOCAB-AUTHORITY, ref: vocabulary/authority.yaml}
