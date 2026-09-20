@@ -1,7 +1,23 @@
-format: ptsip-agent-vocabulary/v1
+format: ptsip-agent-vocabulary/v2
 vocabulary_id: PTSIP-VOCAB-DIAGNOSTICS
-status: BOOTSTRAP
+status: CANDIDATE
+domain: STABLE_DIAGNOSTIC_CLASSES
 entries:
-  - {id: PTSIP-DIA-001, meaning: "Diagnostic instances preserve stable PTSIP rule identity separately from diagnostic instance identity.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-SPEC.md]}
-  - {id: AUTHORITY_PROFILE_CONFLICT, meaning: "Current coordinated authority and selected local Project Profile disagree for the same governed scope.", source_refs: [spec/PTSIP-CONFORMANCE.md, reference/DECISION-CONTROL-PLANE.md]}
-  - {id: STALE_STATE, meaning: "Mutation cannot proceed because repository, profile, or relevant authority state changed after analysis.", source_refs: [spec/PTSIP-SPEC.md]}
+  - id: RULE_VIOLATION
+    category: EVALUATION
+    meaning: A machine-defined mandatory rule is violated by sufficient evidence.
+  - id: REFERENCE_UNRESOLVED
+    category: CONTRACT
+    meaning: Required internal or explicitly bound machine reference cannot be resolved.
+  - id: CONTRACT_INVALID
+    category: CONTRACT
+    meaning: A machine contract fails its governing schema or semantic integrity checks.
+  - id: EVIDENCE_INCOMPLETE
+    category: EVIDENCE
+    meaning: Required evidence coverage is insufficient to safely settle an applicable rule.
+  - id: AUTHORITY_CONFLICT
+    category: AUTHORITY
+    meaning: Competing architecture authority states cannot be reconciled without explicit resolution.
+  - id: STALE_MUTATION_BLOCKED
+    category: SAFETY
+    meaning: Mutation was blocked because relevant state changed after analysis.
