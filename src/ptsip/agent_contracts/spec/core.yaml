@@ -1,23 +1,29 @@
-format: ptsip-agent-spec/v1
+format: ptsip-agent-spec/v2
 id: PTSIP-AGENT-SPEC-CORE
-status: BOOTSTRAP
-normative_rule_refs:
-  - PTSIP-CORE-001
-  - PTSIP-CORE-002
-statements:
-  - statement_id: CORE-PURPOSE-BEFORE-REUSE
-    kind: INVARIANT
-    subject: responsibility
-    predicate: classification_precedes_reuse
+status: CANDIDATE
+scope: Core invariants for coding-agent use of PTSIP.
+rules:
+  - rule_id: PTSIP-CORE-001
+    modality: INVARIANT
+    subject: responsibility_classification
+    predicate: governing_lifecycle_precedes_reuse_convenience
     object: true
-  - statement_id: CORE-AXES-DISTINCT
-    kind: SEPARATION
+  - rule_id: PTSIP-CORE-002
+    modality: MUST
     subject: architecture_axes
-    predicate: distinct
+    predicate: remain_distinct
     object:
       - classification
       - role
       - relationship
       - verification_purpose
-migration_evidence_refs:
-  - spec/PTSIP-SPEC.md
+  - rule_id: PTSIP-CORE-003
+    modality: MUST_NOT
+    subject: coding_agent
+    predicate: invent_missing_architecture_authority
+    object: true
+  - rule_id: PTSIP-CORE-004
+    modality: MUST
+    subject: unresolved_normative_input
+    predicate: behavior
+    object: FAIL_CLOSED
