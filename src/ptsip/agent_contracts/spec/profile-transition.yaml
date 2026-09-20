@@ -1,30 +1,30 @@
-format: ptsip-agent-spec/v1
+format: ptsip-agent-spec/v2
 id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION
-status: BOOTSTRAP
-normative_rule_refs:
-  - PTSIP-MIG-001
-  - PTSIP-MIG-002
-  - PTSIP-MIG-003
-  - PTSIP-MIG-012
-  - PTSIP-MIG-013
-  - PTSIP-MIG-014
-  - PTSIP-MIG-015
-statements:
-  - statement_id: MIG-SOURCE-TO-CURRENT
-    kind: REQUIREMENT
-    subject: project_profile_migration
-    predicate: targets_current_supported_contract
+status: CANDIDATE
+scope: Project Profile transition from an identified source contract to the current target contract.
+rules:
+  - rule_id: PTSIP-MIG-001
+    modality: MUST
+    subject: profile_transition
+    predicate: source_identity
+    object: EXPLICIT
+  - rule_id: PTSIP-MIG-002
+    modality: MUST
+    subject: profile_transition
+    predicate: target
+    object: CURRENT_SUPPORTED_PROJECT_PROFILE_CONTRACT
+  - rule_id: PTSIP-MIG-003
+    modality: MUST_NOT
+    subject: retired_profile_semantics
+    predicate: become_current_authority_by_readability
     object: true
-  - statement_id: MIG-NO-LEGACY-ONTOLOGY
-    kind: PROHIBITION
-    subject: legacy_profile_readability
-    predicate: preserves_retired_ontology_as_current_authority
-    object: true
-  - statement_id: MIG-STALE-SAFETY
-    kind: REQUIREMENT
-    subject: migration_apply
-    predicate: refuses_stale_state
-    object: true
-migration_evidence_refs:
-  - spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
-  - spec/PTSIP-SPEC.md
+  - rule_id: PTSIP-MIG-004
+    modality: MUST
+    subject: lossy_or_ambiguous_transition
+    predicate: result
+    object: OWNER_DECISION_REQUIRED
+  - rule_id: PTSIP-MIG-005
+    modality: MUST
+    subject: transition_apply
+    predicate: stale_state_behavior
+    object: REFUSE
