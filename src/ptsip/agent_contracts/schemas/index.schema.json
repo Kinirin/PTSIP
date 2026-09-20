@@ -1,50 +1,66 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "ptsip-agent-contract-index/v1",
+  "$id": "ptsip-agent-contract-index/v2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["format","contract_set","schemas","binding","specs","operations","vocabularies","migration"],
+  "required": ["format", "contract_set", "dependency_policy", "schemas", "binding", "specs", "operations", "vocabularies"],
   "properties": {
-    "format": {"const": "ptsip-agent-contract-index/v1"},
+    "format": {"const": "ptsip-agent-contract-index/v2"},
     "contract_set": {
-      "type":"object","additionalProperties":false,
-      "required":["id","status","purpose"],
-      "properties":{
-        "id":{"const":"ptsip-agent-contracts"},
-        "status":{"enum":["BOOTSTRAP","CURRENT","SUPERSEDED"]},
-        "purpose":{"type":"string","minLength":1}
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "authority_scope", "purpose"],
+      "properties": {
+        "id": {"const": "ptsip-agent-contracts"},
+        "status": {"enum": ["CANDIDATE", "CURRENT", "SUPERSEDED"]},
+        "authority_scope": {"const": "CODING_AGENT_BEHAVIOR"},
+        "purpose": {"type": "string", "minLength": 1}
       }
     },
-    "schemas":{
-      "type":"object","additionalProperties":false,
-      "required":["index","spec","operation","vocabulary","binding"],
-      "properties":{
-        "index":{"type":"string"},"spec":{"type":"string"},"operation":{"type":"string"},
-        "vocabulary":{"type":"string"},"binding":{"type":"string"}
+    "dependency_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["markdown_normative_dependency", "unresolved_reference", "external_machine_contracts"],
+      "properties": {
+        "markdown_normative_dependency": {"const": "FORBIDDEN"},
+        "unresolved_reference": {"const": "FAIL_CLOSED"},
+        "external_machine_contracts": {"const": "EXPLICIT_BINDING_ONLY"}
       }
     },
-    "binding":{
-      "type":"object","additionalProperties":false,"required":["current_ref"],
-      "properties":{"current_ref":{"type":"string","minLength":1}}
-    },
-    "specs":{"$ref":"#/$defs/refList"},
-    "operations":{"$ref":"#/$defs/refList"},
-    "vocabularies":{"$ref":"#/$defs/refList"},
-    "migration":{
-      "type":"object","additionalProperties":false,
-      "required":["legacy_markdown_replacement","rule"],
-      "properties":{
-        "legacy_markdown_replacement":{"enum":["INCOMPLETE","COMPLETE"]},
-        "rule":{"type":"string","minLength":1}
+    "schemas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "spec", "operation", "vocabulary", "binding"],
+      "properties": {
+        "index": {"type": "string", "minLength": 1},
+        "spec": {"type": "string", "minLength": 1},
+        "operation": {"type": "string", "minLength": 1},
+        "vocabulary": {"type": "string", "minLength": 1},
+        "binding": {"type": "string", "minLength": 1}
       }
-    }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_ref"],
+      "properties": {"current_ref": {"type": "string", "minLength": 1}}
+    },
+    "specs": {"$ref": "#/$defs/refList"},
+    "operations": {"$ref": "#/$defs/refList"},
+    "vocabularies": {"$ref": "#/$defs/refList"}
   },
-  "$defs":{
-    "refList":{
-      "type":"array","minItems":1,
-      "items":{
-        "type":"object","additionalProperties":false,"required":["id","ref"],
-        "properties":{"id":{"type":"string","minLength":1},"ref":{"type":"string","minLength":1}}
+  "$defs": {
+    "refList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "ref"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "ref": {"type": "string", "minLength": 1}
+        }
       }
     }
   }
