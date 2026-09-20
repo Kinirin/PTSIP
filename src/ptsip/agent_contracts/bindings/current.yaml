@@ -1,0 +1,30 @@
+format: ptsip-agent-binding/v1
+binding_id: PTSIP-AGENT-BINDING-CURRENT
+status: BOOTSTRAP
+project_profile_contract: pp.1.02
+specification:
+  source: https://github.com/Kinirin/PTSIP
+  family: 0.3.7-draft
+  rule_registry_ref: registry/ptsip-registry.yaml
+active_specs:
+  - spec/core.yaml
+  - spec/classification.yaml
+  - spec/responsibility-map.yaml
+  - spec/adoption.yaml
+  - spec/authority.yaml
+  - spec/conformance.yaml
+  - spec/governance.yaml
+  - spec/profile-transition.yaml
+active_operations:
+  - operations/adopt.yaml
+  - operations/validate.yaml
+  - operations/conform.yaml
+  - operations/reconcile-authority.yaml
+  - operations/migrate-profile.yaml
+active_vocabularies:
+  - vocabulary/lifecycle.yaml
+  - vocabulary/outcomes.yaml
+  - vocabulary/diagnostics.yaml
+  - vocabulary/authority.yaml
+coverage:
+  legacy_markdown_replacement: INCOMPLETE
