@@ -253,10 +253,21 @@ def validate_agent_contract_plane() -> dict[str, int]:
             ) from exc
 
     for condition_id, condition in conditions.items():
-        require_io(condition["input_schema_ref"], condition_id)
+        input_schema = require_io(condition["input_schema_ref"], condition_id)
         evaluation = condition["evaluation"]
         evaluation_type = evaluation["type"]
-        if evaluation_type in {"ALL_OF", "ANY_OF"}:
+        if evaluation_type == "FIELD_COMPARE":
+            field_schema = _schema_at_pointer(
+                input_schema,
+                evaluation["pointer"],
+                f"{condition_id} FIELD_COMPARE",
+            )
+            if not Draft202012Validator(field_schema).is_valid(evaluation["expected"]):
+                raise AgentContractValidationError(
+                    f"Condition {condition_id} expected value does not satisfy "
+                    f"the schema at {evaluation['pointer']}."
+                )
+        elif evaluation_type in {"ALL_OF", "ANY_OF"}:
             for child_ref in evaluation["condition_refs"]:
                 child = conditions.get(child_ref)
                 if child is None:
@@ -425,8 +436,19 @@ def validate_agent_contract_plane() -> dict[str, int]:
             current_step: str,
             *,
             allow_same_step: bool = False,
+            implicit_required: set[str] | None = None,
         ) -> None:
             target_schema = require_io(target_schema_id, f"{operation_id}.{current_step}")
+            implicit = implicit_required or set()
+            required_fields = target_schema.get("required", [])
+            if isinstance(required_fields, list):
+                for required_name in required_fields:
+                    token = str(required_name).replace("~", "~0").replace("/", "~1")
+                    if required_name not in implicit and f"/{token}" not in bindings:
+                        raise AgentContractValidationError(
+                            f"Operation {operation_id} step {current_step} does not bind "
+                            f"required target field {required_name!r}."
+                        )
             for target_pointer, source_ref in bindings.items():
                 target_fragment = _schema_at_pointer(
                     target_schema, target_pointer, f"{operation_id}.{current_step} target"
@@ -485,7 +507,11 @@ def validate_agent_contract_plane() -> dict[str, int]:
                     )
                 if "output_bindings" in transition:
                     validate_bindings(
-                        transition["output_bindings"], output_io, current_step, allow_same_step=True
+                        transition["output_bindings"],
+                        output_io,
+                        current_step,
+                        allow_same_step=True,
+                        implicit_required={"outcome"},
                     )
                 return
 
