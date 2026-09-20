@@ -1,0 +1,10 @@
+format: ptsip-agent-condition/v2
+condition_id: PTSIP-COND-ADOPT-SNAPSHOT-IDENTIFIED-001
+status: CANDIDATE
+input_schema_ref: PTSIP-IO-ADOPT-STATE-001
+evaluation:
+  type: FIELD_COMPARE
+  pointer: /snapshot_identified
+  operator: EQ
+  expected: true
+  missing_result: UNKNOWN

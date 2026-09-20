@@ -1,0 +1,10 @@
+format: ptsip-agent-condition/v2
+condition_id: PTSIP-COND-ADOPT-APPLY-REQUESTED-001
+status: CANDIDATE
+input_schema_ref: PTSIP-IO-ADOPT-STATE-001
+evaluation:
+  type: FIELD_COMPARE
+  pointer: /context/apply_requested
+  operator: EQ
+  expected: true
+  missing_result: UNKNOWN
