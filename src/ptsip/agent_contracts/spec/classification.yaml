@@ -1,34 +1,64 @@
-format: ptsip-agent-spec/v1
+format: ptsip-agent-spec/v2
 id: PTSIP-AGENT-SPEC-CLASSIFICATION
-status: BOOTSTRAP
-normative_rule_refs:
-  - PTSIP-CLS-001
-  - PTSIP-CLS-002
-  - PTSIP-CLS-003
-  - PTSIP-CLS-004
-  - PTSIP-CLS-005
-  - PTSIP-CLS-006
-  - PTSIP-CLS-007
-  - PTSIP-CLS-008
-  - PTSIP-CLS-009
-  - PTSIP-CLS-010
-  - PTSIP-CLS-011
-statements:
-  - statement_id: CLS-PRIMARY-LIFECYCLE
-    kind: REQUIREMENT
+status: CANDIDATE
+scope: Primary lifecycle classification and ambiguity handling.
+rules:
+  - rule_id: PTSIP-CLS-001
+    modality: MUST
     subject: project_component
-    predicate: has_primary_lifecycle_classification
-    object: true
-  - statement_id: CLS-NO-PATH-AUTHORITY
-    kind: PROHIBITION
+    predicate: primary_classification_count
+    object: 1
+  - rule_id: PTSIP-CLS-002
+    modality: MUST
+    subject: classified_component
+    predicate: responsibility_boundary
+    object: COHERENT
+  - rule_id: PTSIP-CLS-003
+    modality: MUST_NOT
     subject: classification
-    predicate: inferred_from_path_or_technology_alone
+    predicate: derive_authority_from
+    object:
+      - path_name
+      - file_extension
+      - implementation_language
+      - framework_name
+  - rule_id: PTSIP-CLS-004
+    modality: MUST
+    subject: classification_decision
+    predicate: primary_basis
+    object: GOVERNING_LIFECYCLE_OBLIGATION
+  - rule_id: PTSIP-CLS-005
+    modality: MUST
+    subject: insufficient_classification_evidence
+    predicate: result
+    object: UNRESOLVED
+  - rule_id: PTSIP-CLS-006
+    modality: MUST
+    subject: product_classification
+    predicate: requires
+    object: PRODUCT_LIFECYCLE_OWNERSHIP
+  - rule_id: PTSIP-CLS-007
+    modality: MUST
+    subject: delivery_classification
+    predicate: requires
+    object: DELIVERY_HANDOFF_OWNERSHIP
+  - rule_id: PTSIP-CLS-008
+    modality: MUST
+    subject: operations_classification
+    predicate: requires
+    object: POST_DELIVERY_OPERATIONAL_OWNERSHIP
+  - rule_id: PTSIP-CLS-009
+    modality: MUST
+    subject: neutral_contract_classification
+    predicate: executable_ownership
+    object: false
+  - rule_id: PTSIP-CLS-010
+    modality: MUST
+    subject: material_mixed_lifecycle_responsibility
+    predicate: remediation
+    object: SPLIT_OR_EXPLICITLY_RESOLVE_BOUNDARY
+  - rule_id: PTSIP-CLS-011
+    modality: MUST_NOT
+    subject: ambiguous_classification
+    predicate: resolve_by_agent_confidence
     object: true
-  - statement_id: CLS-MIXED-RESPONSIBILITY
-    kind: REQUIREMENT
-    subject: material_mixed_lifecycle_component
-    predicate: requires_coherent_boundary_remediation
-    object: true
-migration_evidence_refs:
-  - spec/PTSIP-SPEC.md
-  - spec/PTSIP-RESPONSIBILITY-MAP.md
