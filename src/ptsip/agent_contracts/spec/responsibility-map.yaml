@@ -1,0 +1,29 @@
+format: ptsip-agent-spec/v1
+id: PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP
+status: BOOTSTRAP
+normative_rule_refs:
+  - PTSIP-RMAP-001
+  - PTSIP-RMAP-002
+  - PTSIP-RMAP-003
+statements:
+  - statement_id: RMAP-PROJECT-OWNED
+    kind: REQUIREMENT
+    subject: responsibility_map
+    predicate: ownership
+    object: project
+  - statement_id: RMAP-SOURCE-MODES
+    kind: DEFINITION
+    subject: responsibility_map
+    predicate: source_modes
+    object:
+      - explicit
+      - template
+      - hybrid
+  - statement_id: RMAP-TYPED-RELATIONSHIPS
+    kind: REQUIREMENT
+    subject: responsibility_map
+    predicate: preserves_typed_relationships
+    object: true
+migration_evidence_refs:
+  - spec/PTSIP-RESPONSIBILITY-MAP.md
+  - spec/PTSIP-SPEC.md
