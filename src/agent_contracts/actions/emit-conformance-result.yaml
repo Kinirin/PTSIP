@@ -1,0 +1,10 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001
+status: CANDIDATE
+effect: READ_ONLY
+input_schema_ref: PTSIP-IO-CONFORM-STATE-001
+output_schema_ref: PTSIP-IO-CONFORM-RESULT-001
+preconditions: []
+postconditions: []
+failure_outcomes:
+  - NOT_EVALUATED
