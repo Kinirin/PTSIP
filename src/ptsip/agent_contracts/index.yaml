@@ -1,8 +1,13 @@
-format: ptsip-agent-contract-index/v1
+format: ptsip-agent-contract-index/v2
 contract_set:
   id: ptsip-agent-contracts
-  status: BOOTSTRAP
-  purpose: Machine-readable entry point for coding agents consuming PTSIP.
+  status: CANDIDATE
+  authority_scope: CODING_AGENT_BEHAVIOR
+  purpose: Machine-readable normative control plane for coding agents using PTSIP.
+dependency_policy:
+  markdown_normative_dependency: FORBIDDEN
+  unresolved_reference: FAIL_CLOSED
+  external_machine_contracts: EXPLICIT_BINDING_ONLY
 schemas:
   index: schemas/index.schema.json
   spec: schemas/spec.schema.json
@@ -12,42 +17,39 @@ schemas:
 binding:
   current_ref: bindings/current.yaml
 specs:
-  - id: core
+  - id: PTSIP-AGENT-SPEC-CORE
     ref: spec/core.yaml
-  - id: classification
+  - id: PTSIP-AGENT-SPEC-CLASSIFICATION
     ref: spec/classification.yaml
-  - id: responsibility-map
+  - id: PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP
     ref: spec/responsibility-map.yaml
-  - id: adoption
+  - id: PTSIP-AGENT-SPEC-ADOPTION
     ref: spec/adoption.yaml
-  - id: authority
+  - id: PTSIP-AGENT-SPEC-AUTHORITY
     ref: spec/authority.yaml
-  - id: conformance
+  - id: PTSIP-AGENT-SPEC-CONFORMANCE
     ref: spec/conformance.yaml
-  - id: governance
+  - id: PTSIP-AGENT-SPEC-GOVERNANCE
     ref: spec/governance.yaml
-  - id: profile-transition
+  - id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION
     ref: spec/profile-transition.yaml
 operations:
-  - id: adopt
+  - id: PTSIP-OP-ADOPT-001
     ref: operations/adopt.yaml
-  - id: validate
+  - id: PTSIP-OP-VALIDATE-001
     ref: operations/validate.yaml
-  - id: conform
+  - id: PTSIP-OP-CONFORM-001
     ref: operations/conform.yaml
-  - id: reconcile-authority
+  - id: PTSIP-OP-RECONCILE-AUTHORITY-001
     ref: operations/reconcile-authority.yaml
-  - id: migrate-profile
+  - id: PTSIP-OP-MIGRATE-PROFILE-001
     ref: operations/migrate-profile.yaml
 vocabularies:
-  - id: lifecycle
+  - id: PTSIP-VOCAB-LIFECYCLE
     ref: vocabulary/lifecycle.yaml
-  - id: outcomes
+  - id: PTSIP-VOCAB-OUTCOMES
     ref: vocabulary/outcomes.yaml
-  - id: diagnostics
+  - id: PTSIP-VOCAB-DIAGNOSTICS
     ref: vocabulary/diagnostics.yaml
-  - id: authority
+  - id: PTSIP-VOCAB-AUTHORITY
     ref: vocabulary/authority.yaml
-migration:
-  legacy_markdown_replacement: INCOMPLETE
-  rule: Existing Markdown may be used as migration evidence until machine-contract coverage is explicitly complete.
