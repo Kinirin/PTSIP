@@ -8,6 +8,11 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
+from ..local_profile_catalog import (
+    LEGACY_ROOT_PROFILE,
+    LocalProfileCatalogError,
+    load_local_profile_selection,
+)
 from ..profile_identity import (
     ProjectProfileIdentityError,
     ProjectProfileOperation,
@@ -75,11 +80,17 @@ def _schema_errors(payload: dict[str, object], *, prefix: str = "") -> list[str]
 
 
 def find_profile(repository_root: str | Path, explicit: str | Path | None = None) -> Path | None:
+    root = Path(repository_root).resolve()
     if explicit:
         candidate = Path(explicit).expanduser().resolve()
         return candidate if candidate.is_file() else None
-    candidate = Path(repository_root).resolve() / "ptsip.yaml"
-    return candidate if candidate.is_file() else None
+
+    selection = load_local_profile_selection(root)
+    if selection is not None:
+        return selection.path
+
+    legacy = root / LEGACY_ROOT_PROFILE
+    return legacy if legacy.is_file() else None
 
 
 def _root_overlap_errors(payload: dict[str, object]) -> list[str]:
@@ -422,7 +433,15 @@ def _profile_contract_identity_errors(
 
 def validate_profile(repository_root: str | Path, explicit: str | Path | None = None) -> ValidationResult:
     repository_root = Path(repository_root).resolve()
-    profile = find_profile(repository_root, explicit)
+    try:
+        profile = find_profile(repository_root, explicit)
+    except LocalProfileCatalogError as exc:
+        return ValidationResult(
+            profile_path=None,
+            valid=False,
+            errors=[f"Local profile catalog invalid: {exc}"],
+            warnings=[],
+        )
     if profile is None:
         return ValidationResult(
             profile_path=None,

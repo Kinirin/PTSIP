@@ -14,6 +14,7 @@ from .project_profile_contracts import (
 
 _PP_PATTERN = re.compile(r"^pp\.(\d+)\.(\d+)$")
 _PP_FILENAME_TOKEN_PATTERN = re.compile(r"^pp(\d+)\.(\d+)$")
+_USER_REVISION_PATTERN = re.compile(r"^Rev\.(\d{4})$")
 
 
 class ProjectProfileIdentityError(ValueError):
@@ -108,6 +109,48 @@ class ProjectProfileVersion:
 
     def __str__(self) -> str:
         return self.canonical
+
+
+@dataclass(frozen=True, order=True)
+class ProjectProfileUserRevision:
+    """User-owned authoritative generation within one Project Profile contract."""
+
+    number: int
+
+    def __post_init__(self) -> None:
+        if self.number < 1 or self.number > 9999:
+            raise ProjectProfileIdentityError(
+                "PP_USER_REVISION_RANGE",
+                "Project Profile user revision must be between Rev.0001 and Rev.9999.",
+                self.number,
+            )
+
+    @classmethod
+    def parse(cls, value: object) -> "ProjectProfileUserRevision":
+        if not isinstance(value, str):
+            raise ProjectProfileIdentityError(
+                "PP_USER_REVISION_TYPE",
+                "Project Profile user revision must use Rev.#### form.",
+                value,
+            )
+        match = _USER_REVISION_PATTERN.fullmatch(value)
+        if match is None:
+            raise ProjectProfileIdentityError(
+                "PP_USER_REVISION_MALFORMED",
+                "Project Profile user revision must use canonical Rev.#### form.",
+                value,
+            )
+        return cls(int(match.group(1)))
+
+    @property
+    def canonical(self) -> str:
+        return f"Rev.{self.number:04d}"
+
+    def next(self) -> "ProjectProfileUserRevision":
+        return ProjectProfileUserRevision(self.number + 1)
+
+
+DEVELOPER_BASELINE_USER_REVISION = ProjectProfileUserRevision(1)
 
 
 @dataclass(frozen=True)

@@ -9,8 +9,17 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from ...constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ...profile_identity import CURRENT_PROJECT_PROFILE_VERSION
-from ...validation.profile import _schema, validate_profile
+from ...local_profile_catalog import (
+    LOCAL_PROFILE_CATALOG,
+    canonical_new_profile_path,
+    default_catalog_text,
+)
+from ...profile_identity import (
+    CURRENT_PROJECT_PROFILE_VERSION,
+    DEVELOPER_BASELINE_USER_REVISION,
+    ProjectProfileVersion,
+)
+from ...validation.profile import _schema, find_profile, validate_profile
 from ...validation.templates import materialize_profile
 from .model import DecisionAnswer
 
@@ -34,18 +43,34 @@ class PreparedLocalProfile:
     path: Path
     content: str
     expected_source: str | None
+    catalog_path: Path | None = None
+    catalog_content: str | None = None
+    expected_catalog_source: str | None = None
 
 
 def _base_profile() -> dict[str, object]:
+    version = ProjectProfileVersion.parse(
+        CURRENT_PROJECT_PROFILE_VERSION,
+        require_canonical=True,
+    )
+    ptsip: dict[str, object] = {
+        "version": CURRENT_PROJECT_PROFILE_VERSION,
+    }
+    if version >= ProjectProfileVersion(1, 2):
+        ptsip["revision"] = DEVELOPER_BASELINE_USER_REVISION.canonical
+        ptsip["profile_role"] = "PROJECT"
+        ptsip["specification"] = {
+            "source": SPEC_SOURCE,
+            "revision": SPEC_REVISION,
+        }
+    else:
+        ptsip["specification"] = {
+            "family": SPEC_VERSION,
+            "source": SPEC_SOURCE,
+            "revision": SPEC_REVISION,
+        }
     return {
-        "ptsip": {
-            "version": CURRENT_PROJECT_PROFILE_VERSION,
-            "specification": {
-                "family": SPEC_VERSION,
-                "source": SPEC_SOURCE,
-                "revision": SPEC_REVISION,
-            },
-        },
+        "ptsip": ptsip,
         "responsibility_map": {"mode": "explicit"},
         "components": [],
         "policies": dict(DEFAULT_POLICIES),
@@ -267,12 +292,18 @@ def load_profile_text(text: str | None) -> dict[str, object] | None:
 
 
 def _local_profile_path(repository_root: Path, explicit: str | Path | None) -> Path:
-    if explicit is None:
-        return repository_root / "ptsip.yaml"
-    profile = Path(explicit).expanduser().resolve()
-    if not profile.parent.is_dir():
-        raise FileNotFoundError(f"PTSIP profile parent directory does not exist: {profile.parent}")
-    return profile
+    if explicit is not None:
+        profile = Path(explicit).expanduser().resolve()
+        if not profile.parent.is_dir():
+            raise FileNotFoundError(
+                f"PTSIP profile parent directory does not exist: {profile.parent}"
+            )
+        return profile
+
+    existing = find_profile(repository_root)
+    if existing is not None:
+        return existing
+    return canonical_new_profile_path(repository_root)
 
 
 def prepare_local_profile(
@@ -289,10 +320,11 @@ def prepare_local_profile(
     projected = project_payload(existing, component_id, include, answer)
     content = dump_payload(projected)
 
+    temp_parent = profile.parent if profile.parent.is_dir() else root
     with tempfile.NamedTemporaryFile(
         "w",
         suffix=".yaml",
-        dir=profile.parent,
+        dir=temp_parent,
         delete=False,
         encoding="utf-8",
         newline="\n",
@@ -306,15 +338,53 @@ def prepare_local_profile(
     finally:
         if temp.exists():
             temp.unlink()
-    return PreparedLocalProfile(profile, content, expected_source)
+    catalog_path: Path | None = None
+    catalog_content: str | None = None
+    expected_catalog_source: str | None = None
+    if explicit is None and profile == canonical_new_profile_path(root):
+        catalog_path = root / LOCAL_PROFILE_CATALOG.as_posix()
+        expected_catalog_source = (
+            catalog_path.read_text(encoding="utf-8-sig")
+            if catalog_path.is_file()
+            else None
+        )
+        catalog_content = default_catalog_text()
+
+    return PreparedLocalProfile(
+        profile,
+        content,
+        expected_source,
+        catalog_path,
+        catalog_content,
+        expected_catalog_source,
+    )
 
 
 def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
-    current_source = prepared.path.read_text(encoding="utf-8-sig") if prepared.path.is_file() else None
+    current_source = (
+        prepared.path.read_text(encoding="utf-8-sig")
+        if prepared.path.is_file()
+        else None
+    )
     if current_source != prepared.expected_source:
         raise RuntimeError(
-            f"{prepared.path} changed after decision projection validation; refusing to overwrite concurrent changes"
+            f"{prepared.path} changed after decision projection validation; "
+            "refusing to overwrite concurrent changes"
         )
+
+    if prepared.catalog_path is not None:
+        current_catalog = (
+            prepared.catalog_path.read_text(encoding="utf-8-sig")
+            if prepared.catalog_path.is_file()
+            else None
+        )
+        if current_catalog != prepared.expected_catalog_source:
+            raise RuntimeError(
+                f"{prepared.catalog_path} changed after decision projection validation; "
+                "refusing to overwrite concurrent changes"
+            )
+
+    prepared.path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(
         "w",
         suffix=".yaml",
@@ -325,11 +395,30 @@ def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
     ) as handle:
         temp = Path(handle.name)
         handle.write(prepared.content)
+
+    catalog_temp: Path | None = None
     try:
+        if prepared.catalog_path is not None and prepared.catalog_content is not None:
+            prepared.catalog_path.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile(
+                "w",
+                suffix=".yaml",
+                dir=prepared.catalog_path.parent,
+                delete=False,
+                encoding="utf-8",
+                newline="\n",
+            ) as catalog_handle:
+                catalog_temp = Path(catalog_handle.name)
+                catalog_handle.write(prepared.catalog_content)
+
         temp.replace(prepared.path)
+        if catalog_temp is not None and prepared.catalog_path is not None:
+            catalog_temp.replace(prepared.catalog_path)
     finally:
         if temp.exists():
             temp.unlink()
+        if catalog_temp is not None and catalog_temp.exists():
+            catalog_temp.unlink()
     return prepared.path
 
 

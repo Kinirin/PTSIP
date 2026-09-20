@@ -4,6 +4,7 @@ from ..specification_binding import (
     SPECIFICATION_036_FAMILY,
     SpecificationBindingError,
     SpecificationOperation,
+    require_current_specification_reference_support,
     require_current_specification_support,
 )
 
@@ -37,10 +38,17 @@ def specification_binding_errors(
         candidate = dict(binding)
 
     try:
-        support = require_current_specification_support(
-            candidate,
-            SpecificationOperation.VALIDATE,
-        )
+        if "family" in candidate:
+            support = require_current_specification_support(
+                candidate,
+                SpecificationOperation.VALIDATE,
+            )
+        else:
+            support = require_current_specification_reference_support(
+                candidate.get("source"),
+                candidate.get("revision"),
+                SpecificationOperation.VALIDATE,
+            )
     except SpecificationBindingError as exc:
         return [f"ptsip.specification [{exc.code}]: {exc}"]
 

@@ -197,6 +197,40 @@ def require_specification_support(
     return support
 
 
+def require_current_specification_reference_support(
+    source: object,
+    revision: object,
+    operation: SpecificationOperation,
+) -> SpecificationSupport:
+    """Resolve a family-less serialized reference through registered capability authority."""
+
+    if not isinstance(source, str) or not isinstance(revision, str):
+        raise SpecificationBindingError(
+            "SPEC_REFERENCE_INVALID",
+            "Specification reference requires string source and revision fields.",
+            {"source": source, "revision": revision},
+        )
+
+    matches = [
+        support
+        for (tool_version, binding), support in _TOOL_SPECIFICATION_SUPPORT.items()
+        if tool_version == SPECIFICATION_TARGET_TOOL_VERSION
+        and binding.source == source
+        and binding.revision == revision
+        and support.supports(operation)
+    ]
+    if len(matches) != 1:
+        raise SpecificationBindingError(
+            "SPEC_REFERENCE_UNRESOLVED",
+            (
+                "Specification source/revision must resolve exactly once through "
+                "registered Tool capability authority."
+            ),
+            {"source": source, "revision": revision},
+        )
+    return matches[0]
+
+
 def require_current_specification_support(
     binding: SpecificationBinding | object,
     operation: SpecificationOperation,

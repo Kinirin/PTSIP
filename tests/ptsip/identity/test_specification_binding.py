@@ -15,6 +15,7 @@ from ptsip.specification_binding import (
     SpecificationBindingError,
     SpecificationOperation,
     current_target_specification_binding,
+    require_current_specification_reference_support,
     require_current_specification_support,
 )
 
@@ -134,3 +135,24 @@ def test_pp_and_specification_capabilities_are_independent_authorities() -> None
     assert pp_support.contract == PP_1_01
     assert specification_support.binding == SPECIFICATION_037
     assert current_target_specification_binding() == SPECIFICATION_037
+
+
+def test_familyless_serialized_reference_resolves_through_capability_authority() -> None:
+    support = require_current_specification_reference_support(
+        SPECIFICATION_037.source,
+        SPECIFICATION_037.revision,
+        SpecificationOperation.VALIDATE,
+    )
+
+    assert support.binding == SPECIFICATION_037
+
+
+def test_unknown_familyless_reference_fails_closed() -> None:
+    with pytest.raises(SpecificationBindingError) as caught:
+        require_current_specification_reference_support(
+            SPECIFICATION_037.source,
+            "0" * 40,
+            SpecificationOperation.VALIDATE,
+        )
+
+    assert caught.value.code == "SPEC_REFERENCE_UNRESOLVED"

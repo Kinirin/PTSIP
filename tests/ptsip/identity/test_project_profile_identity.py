@@ -16,6 +16,7 @@ from ptsip.profile_identity import (
     PP_1_01,
     ProjectProfileIdentityError,
     ProjectProfileInstanceRevision,
+    ProjectProfileUserRevision,
     ProjectProfileOperation,
     ProjectProfileTransitionKind,
     ProjectProfileVersion,
@@ -203,3 +204,14 @@ def test_current_pp_identity_is_loaded_from_embedded_registry() -> None:
     assert runtime.operations == frozenset(
         {"IDENTIFY", "VALIDATE", "ANALYZE", "CREATE_TARGET"}
     )
+
+
+def test_user_revision_uses_canonical_rev_generation() -> None:
+    baseline = ProjectProfileUserRevision.parse("Rev.0001")
+
+    assert baseline.canonical == "Rev.0001"
+    assert baseline.next().canonical == "Rev.0002"
+
+    with pytest.raises(ProjectProfileIdentityError) as exc_info:
+        ProjectProfileUserRevision.parse("RevX0001")
+    assert exc_info.value.code == "PP_USER_REVISION_MALFORMED"
