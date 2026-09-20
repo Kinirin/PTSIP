@@ -1,39 +1,57 @@
-format: ptsip-agent-operation/v1
+format: ptsip-agent-operation/v2
 operation_id: PTSIP-OP-ADOPT-001
-status: BOOTSTRAP
-policy_refs:
+status: CANDIDATE
+rule_refs:
   - PTSIP-ADP-001
+  - PTSIP-ADP-002
+  - PTSIP-ADP-003
+  - PTSIP-ADP-004
+  - PTSIP-ADP-005
   - PTSIP-AUT-004
   - PTSIP-AUT-005
-  - PTSIP-EVD-001
-default_mutation: READ_ONLY
+  - PTSIP-AUT-006
+mutation:
+  default: READ_ONLY
+  write_requires:
+    - EXPLICIT_WRITE_AUTHORIZATION
+    - REPOSITORY_FRESHNESS_RECHECK_PASS
+    - PROFILE_FRESHNESS_RECHECK_PASS
+    - RELEVANT_AUTHORITY_RECHECK_PASS
 preconditions:
-  - repository_snapshot_identified
-  - specification_binding_resolved
-  - project_profile_target_resolved
+  - REPOSITORY_SNAPSHOT_IDENTIFIED
+  - PROJECT_PROFILE_TARGET_RESOLVED
+  - REQUIRED_ARCHITECTURE_FACTS_RESOLVED
 steps:
+  - step_id: SNAPSHOT
+    action_id: CAPTURE_REPOSITORY_SNAPSHOT
+    fail_closed_outcomes:
+      - SNAPSHOT_UNAVAILABLE
+  - step_id: ANALYZE
+    action_id: RESOLVE_ADOPTION_FACTS
+    fail_closed_outcomes:
+      - CLARIFICATION_REQUIRED
+      - PROFILE_INVALID
   - step_id: PREPARE
-    action: Build a non-mutating adoption plan from the current repository snapshot.
-    fail_closed_on:
-      - invalid_profile_target
-      - unresolved_required_architecture_fact
+    action_id: BUILD_NON_MUTATING_ADOPTION_PLAN
   - step_id: RECHECK
-    action: Re-check repository, profile, and relevant authority freshness before mutation.
-    fail_closed_on:
-      - repository_changed
-      - profile_changed
-      - authority_conflict
+    action_id: RECHECK_MUTATION_PRECONDITIONS
+    fail_closed_outcomes:
+      - AUTHORITY_PROFILE_CONFLICT
+      - STALE_STATE
   - step_id: APPLY
-    action: Apply only after explicit write authorization and successful freshness checks.
-    fail_closed_on:
-      - write_not_authorized
-      - stale_state
+    action_id: APPLY_AUTHORIZED_ADOPTION
+    requires:
+      - EXPLICIT_WRITE_AUTHORIZATION
+      - RECHECK_PASSED
+    fail_closed_outcomes:
+      - WRITE_NOT_AUTHORIZED
+      - STALE_STATE
 outcomes:
   - READY
+  - APPLIED
   - CLARIFICATION_REQUIRED
   - PROFILE_INVALID
   - AUTHORITY_PROFILE_CONFLICT
   - STALE_STATE
-implementation_refs:
-  - src/ptsip/adoption.py
-  - src/ptsip/cli.py
+  - WRITE_NOT_AUTHORIZED
+  - SNAPSHOT_UNAVAILABLE
