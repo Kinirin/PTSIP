@@ -17,7 +17,7 @@ work_unit:
       - WU-00B/D03
       - WU-00B/D06
       - WU-00B/D08
-  integration_branch: dev/0.4.0
+  integration_branch: dev/0.3.8
   entry_baseline: 4416e206adf2fcbff84f11cb50c002494c699a38
   implementation_authorization: AUTHORIZED
   depends_on: [WU-01]
@@ -94,11 +94,11 @@ active_planning_surface:
 primary_responsibility: IMPLEMENT_SOLUTION_SPACE_DETERMINISTIC_RULE_AND_NON_AUTHORITATIVE_COVERAGE_ROUTING_WITHOUT_MUTATION_OR_ESCALATION_EXECUTION
 
 parallel_work_lanes:
-  control_plane_branch: dev/0.4.0
+  control_plane_branch: dev/0.3.8
   canonical_lane_plans:
-    - {id: WU-02-S1, branch: dev/0.4.0-WU-02-S1, path: docs/planning/0.4.0/WU-02/WU-02-S1.yaml}
-    - {id: WU-02-S2, branch: dev/0.4.0-WU-02-S2, path: docs/planning/0.4.0/WU-02/WU-02-S2.yaml}
-    - {id: WU-02-S3, branch: dev/0.4.0, path: docs/planning/0.4.0/WU-02/WU-02-S3.yaml, execution_mode: CONTROL_PLANE_DIRECT}
+    - {id: WU-02-S1, branch: dev/0.3.8, path: docs/planning/0.4.0/WU-02/WU-02-S1.yaml, execution_mode: CONTROL_PLANE_DIRECT}
+    - {id: WU-02-S2, branch: dev/0.3.8, path: docs/planning/0.4.0/WU-02/WU-02-S2.yaml, execution_mode: CONTROL_PLANE_INTEGRATED}
+    - {id: WU-02-S3, branch: dev/0.3.8, path: docs/planning/0.4.0/WU-02/WU-02-S3.yaml, execution_mode: CONTROL_PLANE_DIRECT}
   lane_details_owned_by_canonical_lane_plans: true
   final_integration_owned_by_control_plane: true
 
