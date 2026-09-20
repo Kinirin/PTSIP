@@ -83,6 +83,7 @@ jobs:
           }
 
           python .github/scripts/verify_release_contract.py
+          python -m developer.automation.pp_release_verify --sha HEAD
 
       - name: Build distributions
         shell: powershell
@@ -379,85 +380,9 @@ jobs:
           Write-Host "Publication artifact-aware conformance outcome: $($report.outcome)"
           exit 0
 
-      - name: Verify wheel and sdist contents
+      - name: Verify wheel and sdist registry projections
         shell: powershell
-        run: |
-          @'
-          from pathlib import Path, PurePosixPath
-          import tarfile
-          import zipfile
-
-          wheel = next(Path("dist").glob("*.whl"))
-          sdist = next(Path("dist").glob("*.tar.gz"))
-          public_profile_pairs = (
-              ("profiles/example.ptsip.yaml", "ptsip/profiles/example.ptsip.yaml"),
-              ("profiles/hybrid-python-package.ptsip.yaml", "ptsip/profiles/hybrid-python-package.ptsip.yaml"),
-              ("profiles/template-python-package.ptsip.yaml", "ptsip/profiles/template-python-package.ptsip.yaml"),
-          )
-          public_profile_required = tuple(wheel_path for _, wheel_path in public_profile_pairs)
-
-          with zipfile.ZipFile(wheel) as archive:
-              wheel_names = set(archive.namelist())
-              wheel_tests = [
-                  name for name in wheel_names
-                  if "tests" in PurePosixPath(name).parts
-              ]
-              for source_path, wheel_path in public_profile_pairs:
-                  if wheel_path in wheel_names and archive.read(wheel_path) != Path(source_path).read_bytes():
-                      raise SystemExit(
-                          f"wheel public Profile projection differs from canonical source: {source_path} -> {wheel_path}"
-                      )
-          if wheel_tests:
-              raise SystemExit(f"wheel contains tests/: {wheel_tests}")
-
-          with tarfile.open(sdist, "r:gz") as archive:
-              sdist_names = {member.name for member in archive.getmembers()}
-              sdist_tests = [
-                  name for name in sdist_names
-                  if "tests" in PurePosixPath(name).parts
-              ]
-          if sdist_tests:
-              raise SystemExit(f"sdist contains tests/: {sdist_tests}")
-
-          required = (
-              "ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
-              "ptsip/specdata/ptsip-normalized-evidence.schema.json",
-              "ptsip/specdata/ptsip-registry.yaml",
-              "ptsip/support/policy/index.yaml",
-              "ptsip/support/policy/SFP-0001.yaml",
-              "ptsip/support/policy/SFP-0021.yaml",
-              "ptsip/support/schemas/ptsip-support-feature-policy.schema.json",
-              "ptsip/support/registries/ptsip-support-authority-schema-registry.yaml",
-          )
-          missing_wheel = [
-              name for name in (*required, *public_profile_required)
-              if name not in wheel_names
-          ]
-          if missing_wheel:
-              raise SystemExit(f"wheel is missing embedded contracts: {missing_wheel}")
-          embedded_required = required[:3]
-          missing_sdist = [
-              name for name in embedded_required
-              if not any(path.endswith(f"/src/{name}") for path in sdist_names)
-          ]
-          support_sdist_required = (
-              "docs/Support_policy/policy/index.yaml",
-              "docs/Support_policy/policy/SFP-0001.yaml",
-              "docs/Support_policy/policy/SFP-0021.yaml",
-              "docs/Support_policy/policy/schemas/ptsip-support-feature-policy.schema.json",
-              "docs/Support_policy/policy/registries/ptsip-support-authority-schema-registry.yaml",
-          )
-          missing_sdist.extend(
-              name for name in support_sdist_required
-              if not any(path.endswith(f"/{name}") for path in sdist_names)
-          )
-          missing_sdist.extend(
-              source_path for source_path, _ in public_profile_pairs
-              if not any(path.endswith(f"/{source_path}") for path in sdist_names)
-          )
-          if missing_sdist:
-              raise SystemExit(f"sdist is missing embedded contracts: {missing_sdist}")
-          '@ | python -
+        run: python .github/scripts/verify_distribution_contracts.py
 
       - name: Verify distribution metadata
         shell: powershell

@@ -39,11 +39,11 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "python -m twine check $distFiles" in workflow
     assert "$expectedWheelVersion" in workflow
     assert "[regex]::Escape($expectedWheelVersion)" in workflow
-    assert "ptsip-profile-pp-1.01.schema.json" in workflow
-    assert "ptsip-normalized-evidence.schema.json" in workflow
-    assert "ptsip/profiles/example.ptsip.yaml" in workflow
-    assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" in workflow
-    assert "ptsip/profiles/template-python-package.ptsip.yaml" in workflow
+    assert "python -m developer.automation.pp_release_verify --sha HEAD" in workflow
+    assert "python .github/scripts/verify_distribution_contracts.py" in workflow
+    assert "ptsip/profiles/example.ptsip.yaml" not in workflow
+    assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" not in workflow
+    assert "ptsip/profiles/template-python-package.ptsip.yaml" not in workflow
     assert "ptsip-public-profiles" in workflow
     assert "Verify publication Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
@@ -127,6 +127,8 @@ def test_release_preparation_derives_identity_without_manual_inputs() -> None:
     assert 'DISPATCHED_REF: ${{ github.ref }}' in workflow
     assert 'refs/heads/main' in workflow
     assert 'self-hosted/tooling-test' in workflow
+    assert 'self-hosted/pp-transition' in workflow
+    assert "developer.automation.pp_release_verify --sha $env:SOURCE_SHA" in workflow
     assert "Reconfirm candidate remains current main" in workflow
     assert 'target_commitish = $env:SOURCE_SHA' in workflow
     assert 'draft = $true' in workflow
@@ -305,3 +307,23 @@ def test_distribution_contract_verifier_is_registry_driven() -> None:
     assert "_baseline_pairs(contracts)" in verifier
     assert "example.ptsip.yaml" not in verifier
     assert "pp.1.01" not in verifier
+
+
+def test_release_pp_authority_resolution_is_registry_driven() -> None:
+    release_contract = (
+        ROOT / ".github" / "scripts" / "verify_release_contract.py"
+    ).read_text(encoding="utf-8")
+    release_verifier = (
+        ROOT / "developer" / "automation" / "pp_release_verify.py"
+    ).read_text(encoding="utf-8")
+
+    assert "PP_CONTRACT_REGISTRY" in release_contract
+    assert "PUBLIC_PROFILE_CATALOG" in release_contract
+    assert "_current_pp_authority()" in release_contract
+    assert "PUBLIC_PROFILE_PATHS = (" not in release_contract
+    assert 'pp_version != "pp.1.01"' not in release_contract
+
+    assert "verify_commit(repo, resolved)" in release_verifier
+    assert "CURRENT_PROJECT_PROFILE_VERSION" in release_verifier
+    assert "current_runtime_project_profile_contract" in release_verifier
+    assert "current_project_profile_target" in release_verifier

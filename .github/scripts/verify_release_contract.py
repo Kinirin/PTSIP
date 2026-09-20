@@ -44,11 +44,45 @@ RELEASE_BOUND_SPEC_PATHS = (
 CANONICAL_EMBEDDED_PAIRS = tuple(
     zip(CANONICAL_MACHINE_READABLE_PATHS, EMBEDDED_MACHINE_READABLE_PATHS)
 )
-PUBLIC_PROFILE_PATHS = (
-    "profiles/example.ptsip.yaml",
-    "profiles/hybrid-python-package.ptsip.yaml",
-    "profiles/template-python-package.ptsip.yaml",
-)
+PP_CONTRACT_REGISTRY = "registry/project-profile-contracts.yaml"
+PUBLIC_PROFILE_CATALOG = "profiles/index.yaml"
+
+
+def _load_mapping(relative_path: str) -> dict[str, object]:
+    value = yaml.safe_load((ROOT / relative_path).read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise RuntimeError(f"Release authority asset must be a mapping: {relative_path}")
+    return value
+
+
+def _current_pp_authority() -> tuple[str, tuple[str, ...]]:
+    registry = _load_mapping(PP_CONTRACT_REGISTRY)
+    catalog = _load_mapping(PUBLIC_PROFILE_CATALOG)
+    current = registry.get("current")
+    contracts = registry.get("contracts")
+    rows = catalog.get("profiles")
+    if not isinstance(current, str) or not isinstance(contracts, list):
+        raise RuntimeError("Project Profile registry current/contracts are invalid.")
+    current_rows = [
+        row
+        for row in contracts
+        if isinstance(row, dict) and row.get("version") == current
+    ]
+    if len(current_rows) != 1 or current_rows[0].get("lifecycle") != "CURRENT":
+        raise RuntimeError("Project Profile current contract must resolve exactly once.")
+    if not isinstance(rows, list) or not rows:
+        raise RuntimeError("Public Profile catalog is empty.")
+
+    resources: list[str] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            raise RuntimeError("Public Profile catalog entry is invalid.")
+        resource = row.get("resource")
+        contract = row.get("contract")
+        if not isinstance(resource, str) or contract != current:
+            raise RuntimeError("Public Profile catalog binding is stale.")
+        resources.append(f"profiles/{resource}")
+    return current, tuple(resources)
 
 
 def _git(*args: str) -> subprocess.CompletedProcess[str]:
@@ -87,6 +121,12 @@ def main() -> int:
 
     tool_version = TOOL_VERSION
     pp_version = CURRENT_PROJECT_PROFILE_VERSION
+    try:
+        canonical_pp_version, public_profile_paths = _current_pp_authority()
+    except RuntimeError as exc:
+        errors.append(str(exc))
+        canonical_pp_version = pp_version
+        public_profile_paths = ()
     spec_version = SPEC_VERSION
     spec_revision = SPEC_REVISION
     spec_source = SPEC_SOURCE
@@ -97,8 +137,11 @@ def main() -> int:
         errors.append(
             f"Package version {package_version!r} does not match Tool runtime {tool_version!r}."
         )
-    if pp_version != "pp.1.01":
-        errors.append(f"Current Project Profile contract is {pp_version!r}; expected 'pp.1.01'.")
+    if pp_version != canonical_pp_version:
+        errors.append(
+            f"Runtime Project Profile {pp_version!r} does not match canonical registry "
+            f"current {canonical_pp_version!r}."
+        )
     if (
         current_binding.family != spec_version
         or current_binding.source != spec_source
@@ -132,7 +175,7 @@ def main() -> int:
     if profile_spec.get("source") != spec_source:
         errors.append("ptsip.yaml specification.source does not match SPEC_SOURCE.")
 
-    for relative_path in PUBLIC_PROFILE_PATHS:
+    for relative_path in public_profile_paths:
         maintained = yaml.safe_load((ROOT / relative_path).read_text(encoding="utf-8"))
         maintained_ptsip = maintained.get("ptsip", {})
         maintained_spec = maintained_ptsip.get("specification", {})

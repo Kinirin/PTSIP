@@ -518,3 +518,60 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
+  developer/automation/pp_release_verify.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - commit_candidate_trigger
+          - transition_generation
+          - verification_layers
+
+
+  .github/workflows/release.yml:
+    default_refs:
+      - policy_id: MPD-0007
+        sections:
+          - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+      - policy_id: MPD-0011
+        sections:
+          - verification_layers
+
+
+  .github/workflows/tooling-release.yml:
+    default_refs:
+      - policy_id: MPD-0007
+        sections:
+          - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+      - policy_id: MPD-0011
+        sections:
+          - transition_generation
+          - verification_layers
+
+
+  .github/scripts/verify_release_contract.py:
+    default_refs:
+      - policy_id: MPD-0007
+        sections:
+          - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - canonical_and_runtime_projection
+      - policy_id: MPD-0011
+        sections:
+          - verification_layers
+

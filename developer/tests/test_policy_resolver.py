@@ -441,3 +441,41 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
         "MPD-0010",
         "MPD-0011",
     ]
+
+
+def test_release_pp_verifier_routes_release_transition_policy() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="developer/automation/pp_release_verify.py",
+        operation="RELEASE",
+    )
+
+    assert result["binding_scope"] == "developer/automation/pp_release_verify.py"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0001",
+        "MPD-0010",
+        "MPD-0011",
+    ]
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        ".github/workflows/release.yml",
+        ".github/workflows/tooling-release.yml",
+        ".github/scripts/verify_release_contract.py",
+    ],
+)
+def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> None:
+    result = resolve_policies(
+        ROOT,
+        scope=scope,
+        operation="RELEASE",
+    )
+
+    assert result["binding_scope"] == scope
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0007",
+        "MPD-0010",
+        "MPD-0011",
+    ]

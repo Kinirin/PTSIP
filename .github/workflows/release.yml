@@ -134,21 +134,32 @@ jobs:
             -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/commits/$env:SOURCE_SHA/status" `
             -Headers $headers
 
-          $status = $combined.statuses |
-            Where-Object { $_.context -eq "self-hosted/tooling-test" } |
-            Select-Object -First 1
-
-          if (-not $status -or $status.state -ne "success") {
-            throw "No successful self-hosted/tooling-test status exists for exact release-candidate SHA $env:SOURCE_SHA."
+          $requiredContexts = @(
+            "self-hosted/tooling-test",
+            "self-hosted/pp-transition"
+          )
+          foreach ($context in $requiredContexts) {
+            $status = $combined.statuses |
+              Where-Object { $_.context -eq $context } |
+              Select-Object -First 1
+            if (-not $status -or $status.state -ne "success") {
+              throw "No successful $context status exists for exact release-candidate SHA $env:SOURCE_SHA."
+            }
           }
 
-          Write-Host "Exact self-hosted tooling verification confirmed for $env:SOURCE_SHA"
+          Write-Host "Exact self-hosted tooling and PP transition verification confirmed for $env:SOURCE_SHA"
 
       - name: Install release verification tooling
         shell: powershell
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
+
+      - name: Verify exact-SHA Project Profile release snapshot
+        shell: powershell
+        env:
+          SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
+        run: python -m developer.automation.pp_release_verify --sha $env:SOURCE_SHA
 
       - name: Verify required Specification release contract
         shell: powershell
