@@ -1,0 +1,39 @@
+format: ptsip-agent-operation/v1
+operation_id: PTSIP-OP-ADOPT-001
+status: BOOTSTRAP
+policy_refs:
+  - PTSIP-ADP-001
+  - PTSIP-AUT-004
+  - PTSIP-AUT-005
+  - PTSIP-EVD-001
+default_mutation: READ_ONLY
+preconditions:
+  - repository_snapshot_identified
+  - specification_binding_resolved
+  - project_profile_target_resolved
+steps:
+  - step_id: PREPARE
+    action: Build a non-mutating adoption plan from the current repository snapshot.
+    fail_closed_on:
+      - invalid_profile_target
+      - unresolved_required_architecture_fact
+  - step_id: RECHECK
+    action: Re-check repository, profile, and relevant authority freshness before mutation.
+    fail_closed_on:
+      - repository_changed
+      - profile_changed
+      - authority_conflict
+  - step_id: APPLY
+    action: Apply only after explicit write authorization and successful freshness checks.
+    fail_closed_on:
+      - write_not_authorized
+      - stale_state
+outcomes:
+  - READY
+  - CLARIFICATION_REQUIRED
+  - PROFILE_INVALID
+  - AUTHORITY_PROFILE_CONFLICT
+  - STALE_STATE
+implementation_refs:
+  - src/ptsip/adoption.py
+  - src/ptsip/cli.py
