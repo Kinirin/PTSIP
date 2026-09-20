@@ -1,8 +1,26 @@
-format: ptsip-agent-vocabulary/v1
+format: ptsip-agent-vocabulary/v2
 vocabulary_id: PTSIP-VOCAB-OUTCOMES
-status: BOOTSTRAP
+status: CANDIDATE
+domain: OPERATION_OUTCOMES
 entries:
-  - {id: CONFORMANT, meaning: "Applicable mandatory evidence is sufficient and no applicable mandatory violation is established.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-CONFORMANCE.md]}
-  - {id: NON_CONFORMANT, meaning: "Sufficient evidence establishes at least one applicable mandatory violation.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-CONFORMANCE.md]}
-  - {id: INCOMPLETE, meaning: "Blocking uncertainty prevents a conformant conclusion when no definite violation already settles the result.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-CONFORMANCE.md]}
-  - {id: NOT_EVALUATED, meaning: "Tool execution state indicating that Conformance Evaluation was not completed; it is not a conformance outcome.", source_refs: [spec/PTSIP-CONFORMANCE.md]}
+  - {id: READY, category: CONTROL, meaning: Operation analysis completed and required mutation gates may be evaluated.}
+  - {id: APPLIED, category: CONTROL, meaning: Authorized mutation completed successfully.}
+  - {id: VALID, category: VALIDATION, meaning: Selected machine contract satisfies required structural and semantic checks.}
+  - {id: PROFILE_INVALID, category: VALIDATION, meaning: Selected Project Profile fails required structure or semantics.}
+  - {id: UNSUPPORTED_PROFILE_CONTRACT, category: VALIDATION, meaning: Selected Project Profile contract is not supported by the active binding.}
+  - {id: SCHEMA_RESOLUTION_FAILED, category: VALIDATION, meaning: Required machine schema could not be resolved safely.}
+  - {id: CONFORMANT, category: CONFORMANCE, meaning: Applicable mandatory evaluation is sufficiently evidenced and no applicable violation is established.}
+  - {id: NON_CONFORMANT, category: CONFORMANCE, meaning: Sufficient evidence establishes at least one applicable mandatory violation.}
+  - {id: INCOMPLETE, category: CONFORMANCE, meaning: Blocking uncertainty prevents a conformant conclusion and no definite violation already settles the result.}
+  - {id: NOT_EVALUATED, category: CONFORMANCE, meaning: Conformance evaluation did not complete and no conformance claim is produced.}
+  - {id: CLARIFICATION_REQUIRED, category: ADOPTION, meaning: Required architecture fact cannot be resolved without explicit authority input.}
+  - {id: AUTHORITY_PROFILE_CONFLICT, category: AUTHORITY, meaning: Local Project Profile and relevant distributed authority disagree on the same governed scope.}
+  - {id: COORDINATION_UNAVAILABLE, category: AUTHORITY, meaning: Required distributed authority state cannot be read or mutated safely.}
+  - {id: NO_REMOTE_DECISION, category: AUTHORITY, meaning: No relevant distributed decision exists for the governed scope.}
+  - {id: CONSISTENT, category: AUTHORITY, meaning: Local Project Profile is semantically consistent with relevant distributed authority.}
+  - {id: REMOTE_RESOLVED, category: AUTHORITY, meaning: A relevant distributed winner exists and is available for controlled reconciliation.}
+  - {id: OWNER_DECISION_REQUIRED, category: MIGRATION, meaning: Transition cannot preserve intended semantics without explicit project-owner decision.}
+  - {id: UNSUPPORTED_SOURCE, category: MIGRATION, meaning: Source contract cannot be safely interpreted by the active transition contract.}
+  - {id: STALE_STATE, category: SAFETY, meaning: State changed after analysis and mutation must not proceed.}
+  - {id: WRITE_NOT_AUTHORIZED, category: SAFETY, meaning: A mutating step was requested without explicit write authorization.}
+  - {id: SNAPSHOT_UNAVAILABLE, category: SAFETY, meaning: A stable repository snapshot could not be established.}
