@@ -64,6 +64,11 @@ def test_pre_commit_execution_layer_delegates_to_reconciler_and_verifier(
     monkeypatch.setattr(pp_pre_commit, "repository_root", lambda root=None: tmp_path)
     monkeypatch.setattr(
         pp_pre_commit,
+        "verify_staged_parent_authority",
+        lambda root: None,
+    )
+    monkeypatch.setattr(
+        pp_pre_commit,
         "reconcile_staged_transition",
         lambda root, apply=False: SimpleNamespace(status="NO_CHANGE"),
     )

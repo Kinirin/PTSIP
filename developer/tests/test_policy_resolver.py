@@ -426,3 +426,18 @@ def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
         "MPD-0010",
         "MPD-0011",
     ]
+
+
+def test_remote_pp_verifier_routes_transition_policy() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="developer/automation/pp_remote_verify.py",
+        operation="VERIFY",
+    )
+
+    assert result["binding_scope"] == "developer/automation/pp_remote_verify.py"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0001",
+        "MPD-0010",
+        "MPD-0011",
+    ]

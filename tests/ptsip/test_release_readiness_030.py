@@ -72,6 +72,11 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "Resolve automatic verification baseline" in workflow
     assert "self-hosted/change-verification" in workflow
     assert "self-hosted/tooling-test" in workflow
+    assert "pp-transition-verify:" in workflow
+    assert "github.event_name == 'push'" in workflow
+    assert "developer.automation.pp_remote_verify range" in workflow
+    assert "self-hosted/pp-transition" in workflow
+    assert "github.event_name == 'workflow_dispatch'" in workflow
     assert "PARENT_FALLBACK" in workflow
     assert "Resolve and run deterministic change verification" in workflow
     assert "resolve_test_modes.py automatic --base $autoBase --head HEAD" in workflow

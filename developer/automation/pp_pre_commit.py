@@ -8,6 +8,7 @@ from typing import Sequence
 from developer.automation.policy_loader import repository_root
 from developer.automation.pp_transition_delta import compare_git_snapshots
 from developer.automation.pp_transition_reconciler import reconcile_staged_transition
+from developer.automation.pp_remote_verify import verify_staged_parent_authority
 from developer.automation.project_profile_registry import (
     validate_project_profile_registry_plane,
 )
@@ -21,6 +22,7 @@ def verify_staged_pp_transition(root: str | Path | None = None) -> dict[str, obj
     repo = repository_root(root)
 
     try:
+        verify_staged_parent_authority(repo)
         reconciliation = reconcile_staged_transition(repo, apply=True)
     except Exception as exc:
         code = getattr(exc, "code", "PP_RECONCILIATION_FAILED")

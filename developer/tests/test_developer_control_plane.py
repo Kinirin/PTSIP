@@ -169,16 +169,16 @@ def test_mpd_0011_declares_incremental_implementation_state() -> None:
     payload = _yaml(ROOT / "developer" / "policy" / "MPD-0011.yaml")
     state = payload["rules"]["implementation_state"]
 
-    assert state["operationalization_level"] == "L4_LOCAL_AUTO_REMEDIATION_REMOTE_PENDING"
+    assert state["operationalization_level"] == "L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_VERIFY_RELEASE_PENDING"
     assert state["policy_record"] == "MATERIALIZED"
     assert state["policy_index_registration"] == "MATERIALIZED"
     assert state["policy_resolver_routing"] == "MATERIALIZED"
     assert state["authority_plane_registration"] == "MATERIALIZED"
     assert state["transition_reconciler"] == "MATERIALIZED_AND_HOOK_INVOKED"
     assert state["h3_hook_activation"] == "MATERIALIZED_SHARED_INSTALLER"
-    assert state["remote_commit_verifier"] == "NOT_IMPLEMENTED"
+    assert state["remote_commit_verifier"] == "MATERIALIZED_PUSH_VERIFY_ONLY"
     assert state["release_transition_verifier"] == "NOT_IMPLEMENTED"
-    assert state["claim"] == "LOCAL_COMMIT_AUTOMATION_ACTIVE_REMOTE_AND_RELEASE_VERIFY_PENDING"
+    assert state["claim"] == "LOCAL_AND_REMOTE_PP_AUTOMATION_ACTIVE_RELEASE_VERIFY_PENDING"
 
 def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -> None:
     support_root = ROOT / "docs" / "Support_policy" / "policy"

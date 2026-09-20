@@ -1,6 +1,7 @@
 name: tooling-test
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       verification:
@@ -18,7 +19,700 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  pp-transition-verify:
+    if: ${{ github.event_name == 'push' && github.event.deleted == false }}
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact pushed source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Prepare PP transition verifier
+        shell: powershell
+        run: |
+          $launcher = Get-Command py -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
+          }
+
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
+          }
+
+          if (Test-Path -LiteralPath ".venv-pp-transition") {
+            Remove-Item -LiteralPath ".venv-pp-transition" -Recurse -Force
+          }
+
+          & $python -m venv .venv-pp-transition
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create PP transition verification environment."
+          }
+
+          $venvPython = Join-Path (Resolve-Path ".venv-pp-transition").Path "Scripts\python.exe"
+          & $venvPython -m pip install --upgrade pip "PyYAML>=6.0,<7"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install PP transition verifier dependency."
+          }
+
+          "PP_VERIFY_PYTHON=$venvPython" >> $env:GITHUB_ENV
+
+      - name: Resolve introduced commit baseline
+        id: pp-base
+        shell: powershell
+        env:
+          PUSH_BEFORE: ${{ github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          $base = $env:PUSH_BEFORE
+          $zero = '^[0]+    steps:
+      - name: Checkout exact dispatched source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Verify exact dispatched source identity
+        id: source
+        shell: powershell
+        env:
+          DISPATCHED_SHA: ${{ github.sha }}
+        run: |
+          $actualSha = (git rev-parse HEAD).Trim()
+          if ($actualSha -ne $env:DISPATCHED_SHA) {
+            throw "Checked out SHA $actualSha does not match workflow-dispatch SHA $env:DISPATCHED_SHA."
+          }
+          "verified_sha=$actualSha" >> $env:GITHUB_OUTPUT
+          Write-Host "Verification source SHA: $actualSha"
+          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
+
+      - name: Resolve automatic verification baseline
+        id: auto-base
+        if: ${{ inputs.verification == 'auto' }}
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+
+          $base = $null
+          $source = $null
+          $candidates = @(git rev-list --first-parent --max-count=12 HEAD^)
+          foreach ($candidate in $candidates) {
+            try {
+              $status = Invoke-RestMethod `
+                -Method Get `
+                -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/commits/$candidate/status" `
+                -Headers $headers
+            }
+            catch {
+              continue
+            }
+
+            $verified = @(
+              $status.statuses |
+                Where-Object {
+                  $_.state -eq 'success' -and
+                  $_.context -in @(
+                    'self-hosted/change-verification',
+                    'self-hosted/tooling-test'
+                  )
+                }
+            )
+            if ($verified.Count -gt 0) {
+              $base = $candidate
+              $source = "VERIFIED_ANCESTOR"
+              break
+            }
+          }
+
+          if (-not $base) {
+            $base = (git rev-parse HEAD^).Trim()
+            if (-not $base) {
+              throw "Unable to resolve an automatic verification baseline."
+            }
+            $source = "PARENT_FALLBACK"
+          }
+
+          "base=$base" >> $env:GITHUB_OUTPUT
+          Write-Host "Automatic verification base: $base ($source)"
+
+      - name: Prepare self-hosted Python 3.14
+        shell: powershell
+        run: |
+          $launcher = Get-Command py -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
+          }
+
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
+          }
+
+          & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
+          if ($LASTEXITCODE -ne 0) {
+            throw "The selected host interpreter is not Python 3.14."
+          }
+
+          if (Test-Path -LiteralPath ".venv") {
+            Remove-Item -LiteralPath ".venv" -Recurse -Force
+          }
+
+          & $python -m venv .venv
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create the isolated verification virtual environment."
+          }
+
+          $venvRoot = (Resolve-Path -LiteralPath ".venv").Path
+          $venvScripts = Join-Path $venvRoot "Scripts"
+          $venvPython = Join-Path $venvScripts "python.exe"
+          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
+            throw "Verification virtual environment did not produce .venv\Scripts\python.exe."
+          }
+
+          & $venvPython --version
+          "VIRTUAL_ENV=$venvRoot" >> $env:GITHUB_ENV
+          $venvScripts >> $env:GITHUB_PATH
+          Write-Host "Using host Python 3.14 via isolated environment: $venvPython"
+
+      - name: Install verification tooling
+        shell: powershell
+        env:
+          VERIFICATION_MODE: ${{ inputs.verification }}
+        run: |
+          if ($env:VERIFICATION_MODE -eq 'full') {
+            python -m pip install --upgrade pip build twine
+          }
+          else {
+            python -m pip install --upgrade pip
+          }
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to prepare Python verification tooling."
+          }
+
+          python -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install the repository for verification."
+          }
+
+      - name: Resolve and run deterministic change verification
+        if: ${{ inputs.verification != 'full' }}
+        shell: powershell
+        env:
+          VERIFICATION_MODE: ${{ inputs.verification }}
+        run: |
+          if ($env:VERIFICATION_MODE -eq 'auto') {
+            $autoBase = "${{ steps.auto-base.outputs.base }}"
+            if (-not $autoBase) {
+              throw "Automatic verification baseline was not resolved."
+            }
+            $json = & python .github/scripts/resolve_test_modes.py automatic --base $autoBase --head HEAD
+            $requestLabel = "auto:$autoBase"
+          }
+          else {
+            $json = & python .github/scripts/resolve_test_modes.py manual --mode $env:VERIFICATION_MODE
+            $requestLabel = $env:VERIFICATION_MODE
+          }
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "Test Mode resolution failed for '$requestLabel'."
+          }
+          if (-not $json) {
+            throw "Test Mode resolver returned no execution plan."
+          }
+
+          $result = (($json -join "`n") | ConvertFrom-Json)
+          $plan = @($result.plan)
+
+          Write-Host "Verification resolution: $($result.resolution)"
+          if (@($result.changed_files).Count -gt 0) {
+            Write-Host "Changed files: $($result.changed_files -join ', ')"
+          }
+          if (@($result.no_verification_required).Count -gt 0) {
+            Write-Host "Declared no-Test-Mode paths: $($result.no_verification_required -join ', ')"
+          }
+
+          if ($plan.Count -eq 0) {
+            if ($result.resolution -ne 'NO_TEST_MODE_REQUIRED') {
+              throw "Resolver returned an empty plan without an explicit no-verification result."
+            }
+            Write-Host "No Test Mode is required by the current Project Profile."
+          }
+          else {
+            Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
+            foreach ($mode in $plan) {
+              $targets = @($mode.pytest)
+              if ($targets.Count -eq 0) {
+                throw "Test Mode '$($mode.id)' contains no pytest targets."
+              }
+
+              Write-Host "=== Test Mode: $($mode.id) ==="
+              Write-Host "Verification component: $($mode.component_ref)"
+              Write-Host "pytest targets: $($targets -join ', ')"
+              & python -m pytest -q @targets
+              if ($LASTEXITCODE -ne 0) {
+                throw "Test Mode '$($mode.id)' failed."
+              }
+            }
+          }
+
+      - name: Record successful exact-SHA change verification
+        if: ${{ inputs.verification != 'full' }}
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            state = "success"
+            context = "self-hosted/change-verification"
+            description = "Deterministic Test Mode verification passed for the exact dispatched SHA"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
+
+      - name: Verify Tool, PP, and Specification release contract
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        run: python .github/scripts/verify_release_contract.py
+
+      - name: Run complete repository regression
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        run: python -m pytest -q
+
+      - name: Verify Tool, Specification, and repository profile
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        run: |
+          ptsip --version
+          ptsip spec
+          ptsip validate . --profile developer/profiles/ptsip-repository.yaml --json
+          ptsip clarify . --profile developer/profiles/ptsip-repository.yaml --json
+          ptsip gate . --profile developer/profiles/ptsip-repository.yaml --coordination local --json
+          ptsip conform --help
+
+      - name: Build and verify distributions
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        run: |
+          python -m build
+          $distFiles = Get-ChildItem -Path dist -File | ForEach-Object { $_.FullName }
+          if (-not $distFiles) {
+            throw "No distributions were produced under dist/."
+          }
+          python -m twine check $distFiles
+
+      - name: Verify wheel and sdist embedded contracts
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        run: python .github/scripts/verify_distribution_contracts.py
+
+      - name: Verify Product Artifact evidence and exact snapshot binding
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        env:
+          VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
+          REPOSITORY_ID: ${{ github.repository }}
+        run: |
+          $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
+          if (-not $wheel) {
+            throw "No wheel was produced under dist/."
+          }
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($wheel.FullName)
+          try {
+            $wheelPaths = @(
+              $archive.Entries |
+                Where-Object { -not [string]::IsNullOrWhiteSpace($_.Name) } |
+                ForEach-Object { $_.FullName } |
+                Sort-Object -Unique
+            )
+
+            $metadataEntry = $archive.Entries |
+              Where-Object { $_.FullName -match '^[^/]+\.dist-info/METADATA$' } |
+              Select-Object -First 1
+            if (-not $metadataEntry) {
+              throw "Built wheel has no .dist-info/METADATA entry."
+            }
+            $metadataReader = New-Object System.IO.StreamReader($metadataEntry.Open())
+            try {
+              $metadataText = $metadataReader.ReadToEnd()
+            }
+            finally {
+              $metadataReader.Dispose()
+            }
+
+            $entryPointsEntry = $archive.Entries |
+              Where-Object { $_.FullName -match '^[^/]+\.dist-info/entry_points\.txt$' } |
+              Select-Object -First 1
+            if (-not $entryPointsEntry) {
+              throw "Built wheel has no .dist-info/entry_points.txt entry."
+            }
+            $entryPointsReader = New-Object System.IO.StreamReader($entryPointsEntry.Open())
+            try {
+              $entryPointsText = $entryPointsReader.ReadToEnd()
+            }
+            finally {
+              $entryPointsReader.Dispose()
+            }
+          }
+          finally {
+            $archive.Dispose()
+          }
+
+          if (-not $wheelPaths) {
+            throw "Built wheel contains no file entries."
+          }
+          if ($metadataText -notmatch '(?m)^Name:\s*PTSIP\s*$') {
+            throw "Built wheel metadata does not report Name: PTSIP."
+          }
+          $expectedWheelVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
+          $escapedWheelVersion = [regex]::Escape($expectedWheelVersion)
+          if ($metadataText -notmatch "(?m)^Version:\s*$escapedWheelVersion\s*$") {
+            throw "Built wheel metadata does not report Version: $expectedWheelVersion."
+          }
+          if ($entryPointsText -notmatch '(?m)^ptsip\s*=\s*ptsip\.cli:main\s*$') {
+            throw "Built wheel does not expose the ptsip console entry point."
+          }
+          if ($entryPointsText -notmatch '(?m)^ptsip-app\s*=\s*ptsip\.app\.server:main\s*$') {
+            throw "Built wheel does not expose the ptsip-app console entry point."
+          }
+
+          $sourcePaths = @()
+          $components = @()
+          $sawDistributionMetadata = $false
+          $declaredLicenseFiles = @(
+            & python -c "import tomllib; f=open('pyproject.toml','rb'); p=tomllib.load(f)['project']; print(*p.get('license-files', []), sep='\n'); f.close()"
+          )
+          if ($LASTEXITCODE -ne 0 -or $declaredLicenseFiles.Count -eq 0) {
+            throw "Unable to resolve declared distribution license files from pyproject.toml."
+          }
+          $seenLicenseFiles = @()
+
+          foreach ($path in $wheelPaths) {
+            if ($path -like 'ptsip/support/policy/*') {
+              $relativeSupportPath = $path.Substring('ptsip/support/policy/'.Length)
+              $sourcePaths += "docs/Support_policy/policy/$relativeSupportPath"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/support/schemas/*') {
+              $relativeSupportPath = $path.Substring('ptsip/support/schemas/'.Length)
+              $sourcePaths += "docs/Support_policy/policy/schemas/$relativeSupportPath"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/support/registries/*') {
+              $relativeSupportPath = $path.Substring('ptsip/support/registries/'.Length)
+              $sourcePaths += "docs/Support_policy/policy/registries/$relativeSupportPath"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/specdata/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-embedded-contracts'
+              continue
+            }
+            if ($path -like 'ptsip/profiles/*') {
+              $relativeProfilePath = $path.Substring('ptsip/profiles/'.Length)
+              $sourcePaths += "profiles/$relativeProfilePath"
+              $components += 'ptsip-public-profiles'
+              continue
+            }
+            if ($path -like 'ptsip/evidence/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-evidence'
+              continue
+            }
+            if ($path -like 'ptsip/source_compat/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-source-compat'
+              continue
+            }
+            if ($path -like 'ptsip/migration/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-migration'
+              continue
+            }
+            if ($path -like 'ptsip/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-core'
+              continue
+            }
+            if ($path -like 'vpms/*') {
+              $sourcePaths += "src/$path"
+              $components += 'vpms'
+              continue
+            }
+            if ($path -like '*.dist-info/licenses/*') {
+              $marker = '.dist-info/licenses/'
+              $markerIndex = $path.IndexOf($marker)
+              if ($markerIndex -lt 0) {
+                throw "Unable to resolve packaged license projection path: $path"
+              }
+
+              $licenseRelativePath = $path.Substring($markerIndex + $marker.Length)
+              if ($declaredLicenseFiles -notcontains $licenseRelativePath) {
+                throw "Packaged license file is not declared by pyproject.toml: $path"
+              }
+
+              $sourcePaths += $licenseRelativePath
+              $seenLicenseFiles += $licenseRelativePath
+              $components += 'repository-license-authority'
+              $components += 'ptsip-distribution'
+              $sawDistributionMetadata = $true
+              continue
+            }
+            if ($path -match '^[^/]+\.dist-info/') {
+              $components += 'ptsip-distribution'
+              $sawDistributionMetadata = $true
+              continue
+            }
+            throw "Unrecognized wheel content outside the declared Product package boundary: $path"
+          }
+
+          $sourcePaths = @($sourcePaths | Sort-Object -Unique)
+          $components = @($components | Sort-Object -Unique)
+
+          if ($components -notcontains 'ptsip-core') {
+            throw "Built wheel does not contain the ptsip-core Product implementation."
+          }
+          if ($components -notcontains 'ptsip-evidence') {
+            throw "Built wheel does not contain the ptsip-evidence Product component."
+          }
+          if ($components -notcontains 'ptsip-source-compat') {
+            throw "Built wheel does not contain the ptsip-source-compat Product component."
+          }
+          if ($components -notcontains 'ptsip-migration') {
+            throw "Built wheel does not contain the ptsip-migration Product component."
+          }
+          if ($components -notcontains 'vpms') {
+            throw "Built wheel does not contain the vpms Product package."
+          }
+          if ($components -notcontains 'ptsip-embedded-contracts') {
+            throw "Built wheel does not contain embedded PTSIP contract assets."
+          }
+          if (-not $sawDistributionMetadata) {
+            throw "Built wheel does not contain distribution metadata."
+          }
+          $missingDeclaredLicenseFiles = @(
+            $declaredLicenseFiles |
+              Where-Object { $seenLicenseFiles -notcontains $_ }
+          )
+          if ($missingDeclaredLicenseFiles.Count -ne 0) {
+            throw "Built wheel is missing declared license projections: $($missingDeclaredLicenseFiles -join ', ')"
+          }
+
+          $wheelHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $wheel.FullName).Hash.ToLowerInvariant()
+          $trackedFingerprint = (& python -c "from ptsip.repository.snapshot import capture_snapshot; print(capture_snapshot('.').tracked_content_fingerprint)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $trackedFingerprint) {
+            throw "Unable to capture the exact tracked-content fingerprint for artifact binding."
+          }
+
+          $evidencePath = Join-Path $env:RUNNER_TEMP 'wu06-wheel-artifact-evidence.json'
+          $bindingPath = "$evidencePath.binding.json"
+          $evidence = [ordered]@{
+            format = 'ptsip-artifact-evidence/v1'
+            artifact_id = "ptsip-wheel-$($wheelHash.Substring(0, 16))"
+            classification = 'PRODUCT'
+            producer_component = 'repository-ci'
+            artifact_type = 'python-wheel'
+            shipping_scope = 'product-distribution'
+            contents = [ordered]@{
+              paths = $sourcePaths
+              components = $components
+              complete = $true
+            }
+            derivation = @(
+              [ordered]@{
+                relation = 'BUILDS'
+                source = 'repository-ci'
+              }
+            )
+            provenance = 'OBSERVED'
+            evidence_ids = @("wheel-sha256:$wheelHash")
+          }
+          $evidence | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $evidencePath -Encoding UTF8
+
+          $evidenceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $evidencePath).Hash.ToLowerInvariant()
+          $binding = [ordered]@{
+            format = 'ptsip-artifact-evidence-binding/v1'
+            artifact_sha256 = $evidenceHash
+            subject = [ordered]@{
+              repository = $env:REPOSITORY_ID
+              revision = $env:VERIFIED_SHA
+              tracked_content_sha256 = $trackedFingerprint
+            }
+          }
+          $binding | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $bindingPath -Encoding UTF8
+
+          $conformOutput = & ptsip conform . --profile developer/profiles/ptsip-repository.yaml --artifact-evidence $evidencePath --json
+          $conformExit = $LASTEXITCODE
+          if ($conformExit -notin @(0, 6)) {
+            throw "Artifact-aware conformance failed with unexpected exit code $conformExit."
+          }
+
+          $report = (($conformOutput -join "`n") | ConvertFrom-Json)
+          if ($report.evaluators.product_artifact_boundary.status -ne 'RAN') {
+            throw "Product Artifact boundary evaluator did not run."
+          }
+          if ($report.evaluators.artifact_snapshot_binding.status -ne 'RAN') {
+            throw "Artifact snapshot binding evaluator did not run successfully."
+          }
+
+          $artifactDocuments = @($report.artifacts.documents)
+          if ($artifactDocuments.Count -ne 1 -or $artifactDocuments[0].binding_valid -ne $true) {
+            throw "Artifact evidence was not imported with a valid exact-snapshot binding."
+          }
+
+          $artifactGaps = @(
+            $report.coverage.blocking_gaps |
+              Where-Object { $_.id -like 'artifact-evidence:*' }
+          )
+          if ($artifactGaps.Count -ne 0) {
+            throw "Artifact-aware conformance retained blocking artifact-evidence gaps: $($artifactGaps.id -join ', ')"
+          }
+
+          $packageViolations = @(
+            $report.diagnostics |
+              Where-Object { $_.rule_id -eq 'PTSIP-PKG-001' -and $_.outcome_effect -eq 'NON_CONFORMANT' }
+          )
+          if ($packageViolations.Count -ne 0) {
+            throw "Built Product Artifact violates PTSIP-PKG-001."
+          }
+
+          Write-Host "WU-06 Product Artifact evidence passed for wheel SHA-256 $wheelHash"
+          Write-Host "Artifact-aware conformance outcome: $($report.outcome)"
+          exit 0
+
+      - name: Reinstall built wheel and smoke public surfaces
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        run: |
+          $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
+          if (-not $wheel) {
+            throw "No wheel was produced under dist/."
+          }
+          python -m pip install --force-reinstall --no-deps "$($wheel.FullName)"
+          ptsip --version
+          ptsip spec
+          python -c "from pathlib import Path; import ptsip; p=Path(ptsip.__file__).resolve().parent/'support'/'policy'/'index.yaml'; assert p.is_file(), p"
+          ptsip conform --help
+          python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
+
+      - name: Record successful exact-SHA tooling verification
+        if: ${{ inputs.verification == 'full' }}
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            state = "success"
+            context = "self-hosted/tooling-test"
+            description = "Self-hosted Windows verification passed for the exact dispatched SHA"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
+
+
+          if (-not $base -or $base -match $zero) {
+            git fetch origin $env:DEFAULT_BRANCH --no-tags
+            if ($LASTEXITCODE -ne 0) {
+              throw "Unable to fetch default branch for PP verification baseline."
+            }
+            $base = (git merge-base HEAD "origin/$env:DEFAULT_BRANCH").Trim()
+          }
+          else {
+            git merge-base --is-ancestor $base HEAD
+            if ($LASTEXITCODE -ne 0) {
+              $mergeBase = (git merge-base $base HEAD).Trim()
+              if (-not $mergeBase) {
+                throw "Unable to resolve PP verification baseline for non-fast-forward push."
+              }
+              $base = $mergeBase
+            }
+          }
+
+          if (-not $base) {
+            throw "PP transition verification baseline is empty."
+          }
+
+          "base=$base" >> $env:GITHUB_OUTPUT
+          Write-Host "PP transition verification base: $base"
+
+      - name: Verify every introduced PP transition commit
+        shell: powershell
+        env:
+          PP_BASE: ${{ steps.pp-base.outputs.base }}
+          PP_HEAD: ${{ github.sha }}
+          PYTHONPATH: ".;src"
+        run: |
+          & $env:PP_VERIFY_PYTHON -m developer.automation.pp_remote_verify range --base $env:PP_BASE --head $env:PP_HEAD
+          if ($LASTEXITCODE -ne 0) {
+            throw "Remote PP transition verification failed."
+          }
+
+      - name: Record successful PP transition verification
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ github.sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            state = "success"
+            context = "self-hosted/pp-transition"
+            description = "Every introduced commit passed PP transition verification"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
+
   test:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: [self-hosted, Windows, X64]
     steps:
       - name: Checkout exact dispatched source
