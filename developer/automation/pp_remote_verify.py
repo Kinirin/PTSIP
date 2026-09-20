@@ -381,7 +381,7 @@ def _verify_transition_shape(
 
 def verify_commit(root: str | Path, commit: str) -> CommitVerification:
     repo = repository_root(root)
-    resolved_commit = _require_git(repo, "rev-parse", "--verify", f"{commit}^{commit}")
+    resolved_commit = _require_git(repo, "rev-parse", "--verify", f"{commit}^{{commit}}")
     parents = commit_parents(repo, resolved_commit)
     candidate_source = GitSnapshot(repo, resolved_commit)
     candidate_state = _validate_snapshot(candidate_source)
