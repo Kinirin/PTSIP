@@ -66,7 +66,14 @@ def verify_exact_release_snapshot(
             f"checked-out HEAD {head} does not match requested release SHA {resolved}.",
         )
 
-    commit_result = verify_commit(repo, resolved)
+    try:
+        commit_result = verify_commit(repo, resolved)
+    except Exception as exc:
+        code = getattr(exc, "code", "PP_RELEASE_COMMIT_VERIFY_FAILED")
+        raise PPReleaseVerifyError(
+            code,
+            f"exact release commit verification failed: {exc}",
+        ) from exc
 
     canonical_registry = repo / "registry" / "project-profile-contracts.yaml"
     embedded_registry = (
