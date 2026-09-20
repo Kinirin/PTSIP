@@ -1,28 +1,35 @@
-format: ptsip-agent-operation/v1
+format: ptsip-agent-operation/v2
 operation_id: PTSIP-OP-VALIDATE-001
-status: BOOTSTRAP
-policy_refs:
-  - PTSIP-SPC-001
+status: CANDIDATE
+rule_refs:
   - PTSIP-RMAP-001
   - PTSIP-RMAP-002
   - PTSIP-RMAP-003
-default_mutation: READ_ONLY
+  - PTSIP-RMAP-004
+  - PTSIP-RMAP-005
+  - PTSIP-ACP-GOV-003
+mutation:
+  default: READ_ONLY
+  write_requires: []
 preconditions:
-  - project_profile_selected
+  - PROJECT_PROFILE_SELECTED
+  - PROJECT_PROFILE_CONTRACT_RESOLVED
 steps:
-  - step_id: RESOLVE-CONTRACT
-    action: Resolve the selected Project Profile contract and schema.
-    fail_closed_on:
-      - unsupported_profile_contract
-      - schema_resolution_failure
-  - step_id: VALIDATE
-    action: Validate Project Profile structure and profile-level semantics.
-    fail_closed_on:
-      - invalid_profile
+  - step_id: RESOLVE
+    action_id: RESOLVE_PROFILE_SCHEMA
+    fail_closed_outcomes:
+      - UNSUPPORTED_PROFILE_CONTRACT
+      - SCHEMA_RESOLUTION_FAILED
+  - step_id: STRUCTURE
+    action_id: VALIDATE_PROFILE_STRUCTURE
+    fail_closed_outcomes:
+      - PROFILE_INVALID
+  - step_id: SEMANTICS
+    action_id: VALIDATE_RESPONSIBILITY_MAP_SEMANTICS
+    fail_closed_outcomes:
+      - PROFILE_INVALID
 outcomes:
   - VALID
-  - INVALID
-  - UNSUPPORTED
-implementation_refs:
-  - src/ptsip/validation/profile.py
-  - src/ptsip/project_profile_contracts.py
+  - PROFILE_INVALID
+  - UNSUPPORTED_PROFILE_CONTRACT
+  - SCHEMA_RESOLUTION_FAILED
