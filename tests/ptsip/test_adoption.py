@@ -10,6 +10,10 @@ from ptsip.clarification.resolution import DecisionAnswer
 from ptsip.cli import main
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import (
+    current_project_profile_header_yaml,
+    current_project_profile_ptsip_metadata,
+)
 from ptsip.storage.local_state import decision_store_path
 from _test_support import (
     canonical_v2_answer,
@@ -67,13 +71,7 @@ def _adopt_args(
 
 
 def _profile_header() -> str:
-    return f"""ptsip:
-  version: {CURRENT_PROJECT_PROFILE_VERSION}
-  specification:
-    family: {SPEC_VERSION}
-    source: {SPEC_SOURCE}
-    revision: {SPEC_REVISION}
-responsibility_map:
+    return current_project_profile_header_yaml() + """responsibility_map:
   mode: explicit
 """
 
@@ -101,17 +99,17 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_current_declaration(
     assert plan["apply"] is False
     assert plan["backend"] == "LOCAL"
     assert not (repo / "ptsip.yaml").exists()
+    assert not (repo / ".ptsip" / "profiles" / "main.ptsip.yaml").exists()
     assert git(repo, "status", "--porcelain").stdout == before
 
     assert main(_adopt_args(repo, apply=True)) == 0
     adopted = json.loads(capsys.readouterr().out)
     assert adopted["status"] == "ADOPTED"
-    profile = repo / "ptsip.yaml"
+    profile = repo / ".ptsip" / "profiles" / "main.ptsip.yaml"
+    catalog = repo / ".ptsip" / "profiles" / "index.yaml"
+    assert catalog.is_file()
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
-    assert document["ptsip"]["version"] == CURRENT_PROJECT_PROFILE_VERSION
-    assert document["ptsip"]["specification"]["family"] == SPEC_VERSION
-    assert document["ptsip"]["specification"]["source"] == SPEC_SOURCE
-    assert document["ptsip"]["specification"]["revision"] == SPEC_REVISION
+    assert document["ptsip"] == current_project_profile_ptsip_metadata()
     assert document["responsibility_map"] == {"mode": "explicit"}
     component = next(item for item in document["components"] if item["id"] == "tools")
     assert component == {
@@ -168,7 +166,9 @@ def test_adopt_does_not_classify_from_tools_directory_name(tmp_path: Path, capsy
         assert main(_adopt_args(repo, apply=True, classification=classification)) == 0
         result = json.loads(capsys.readouterr().out)
         assert result["status"] == "ADOPTED"
-        profile = yaml.safe_load((repo / "ptsip.yaml").read_text(encoding="utf-8"))
+        profile = yaml.safe_load(
+            (repo / ".ptsip" / "profiles" / "main.ptsip.yaml").read_text(encoding="utf-8")
+        )
         component = profile["components"][0]
         assert component["classification"] == classification
         assert "lifecycle_owner" not in component

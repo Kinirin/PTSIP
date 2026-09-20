@@ -7,6 +7,7 @@ from pathlib import Path
 
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import current_project_profile_header_yaml
 from ptsip.repository.snapshot import capture_snapshot
 
 
@@ -77,12 +78,7 @@ def write_workflow(
 
 def write_component_profile(repo: Path, declared_components: list[dict[str, object]]) -> None:
     lines = [
-        "ptsip:",
-        f'  version: "{CURRENT_PROJECT_PROFILE_VERSION}"',
-        "  specification:",
-        f'    family: "{SPEC_VERSION}"',
-        f'    source: "{SPEC_SOURCE}"',
-        f'    revision: "{SPEC_REVISION}"',
+        *current_project_profile_header_yaml().rstrip("\n").splitlines(),
         "responsibility_map:",
         "  mode: explicit",
         "components:",

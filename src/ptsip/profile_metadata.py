@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+import yaml
+
 from .constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from .profile_identity import (
     CURRENT_PROJECT_PROFILE_VERSION,
@@ -45,4 +47,15 @@ def current_project_profile_ptsip_metadata(
             CURRENT_PROJECT_PROFILE_VERSION,
             role=role,
         )
+    )
+
+
+def current_project_profile_header_yaml(
+    *,
+    role: str = "PROJECT",
+) -> str:
+    return yaml.safe_dump(
+        {"ptsip": current_project_profile_ptsip_metadata(role=role)},
+        sort_keys=False,
+        allow_unicode=True,
     )

@@ -6,6 +6,7 @@ from pathlib import Path
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.pilot.runner import run_pilot
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import current_project_profile_header_yaml
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -40,7 +41,23 @@ def test_dependency_evaluator_reports_ran_instead_of_inferring_from_empty_findin
     (repo / "product" / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
     (repo / "tools" / "check.py").write_text("VALUE = 2\n", encoding="utf-8")
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:\n  version: \"{CURRENT_PROJECT_PROFILE_VERSION}\"\n  specification:\n    family: \"{SPEC_VERSION}\"\n    source: \"{SPEC_SOURCE}\"\n    revision: \"{SPEC_REVISION}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: product_runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: development_tooling\npolicies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n""",
+        current_project_profile_header_yaml()
+        + """responsibility_map:
+  mode: explicit
+components:
+  - id: product
+    classification: PRODUCT
+    include: ["product/**"]
+    purpose: product_runtime
+  - id: tools
+    classification: DEVELOPMENT_TOOLING
+    include: ["tools/**"]
+    purpose: development_tooling
+policies:
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
+  independent_build_resolution: required
+""",
         encoding="utf-8",
     )
     _commit_all(repo)

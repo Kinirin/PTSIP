@@ -3,8 +3,11 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
+import yaml
+
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profile_metadata import current_project_profile_ptsip_metadata
 from ptsip.validation.profile import validate_profile
 
 
@@ -26,7 +29,27 @@ def _init_repo(repo: Path) -> None:
 
 
 def _profile(revision: str, policy: str = "") -> str:
-    return f"""ptsip:\n  version: \"{CURRENT_PROJECT_PROFILE_VERSION}\"\n  specification:\n    family: \"{SPEC_VERSION}\"\n    source: \"{SPEC_SOURCE}\"\n    revision: \"{revision}\"\nresponsibility_map:\n  mode: explicit\ncomponents:\n  - id: product\n    classification: PRODUCT\n    include: [\"product/**\"]\n    purpose: runtime\n  - id: tools\n    classification: DEVELOPMENT_TOOLING\n    include: [\"tools/**\"]\n    purpose: tooling\n{policy}policies:\n  product_to_nonproduct_runtime_dependency: deny\n  nonproduct_in_product_package: deny\n  independent_build_resolution: required\n"""
+    ptsip = current_project_profile_ptsip_metadata()
+    specification = ptsip["specification"]
+    assert isinstance(specification, dict)
+    specification["revision"] = revision
+    header = yaml.safe_dump({"ptsip": ptsip}, sort_keys=False, allow_unicode=True)
+    return header + f"""responsibility_map:
+  mode: explicit
+components:
+  - id: product
+    classification: PRODUCT
+    include: ["product/**"]
+    purpose: runtime
+  - id: tools
+    classification: DEVELOPMENT_TOOLING
+    include: ["tools/**"]
+    purpose: tooling
+{policy}policies:
+  product_to_nonproduct_runtime_dependency: deny
+  nonproduct_in_product_package: deny
+  independent_build_resolution: required
+"""
 
 
 def test_explicit_profile_revision_must_match_tool_binding(tmp_path: Path) -> None:
