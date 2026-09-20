@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","$id":"ptsip-agent-spec/v2",
+  "type":"object","additionalProperties":false,
+  "required":["format","id","status","scope","rules"],
+  "properties":{"format":{"const":"ptsip-agent-spec/v2"},"id":{"type":"string","minLength":1},
+    "status":{"enum":["CANDIDATE","CURRENT","SUPERSEDED"]},"scope":{"type":"string","minLength":1},
+    "rules":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,
+      "required":["rule_id","modality","subject","predicate","object"],
+      "properties":{"rule_id":{"type":"string","minLength":1},"modality":{"enum":["MUST","MUST_NOT","MAY","DEFINITION","INVARIANT"]},
+        "subject":{"type":"string","minLength":1},"predicate":{"type":"string","minLength":1},
+        "object":{"oneOf":[{"type":["string","number","boolean"]},{"type":"array","minItems":1,"items":{"type":["string","number","boolean"]}}]}}}}
+  }
+}
