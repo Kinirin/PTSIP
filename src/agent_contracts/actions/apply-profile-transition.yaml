@@ -1,0 +1,11 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-APPLY-PROFILE-TRANSITION-001
+status: CANDIDATE
+effect: MUTATE
+input_schema_ref: PTSIP-IO-MIGRATE-STATE-001
+output_schema_ref: PTSIP-IO-MIGRATE-RESULT-001
+preconditions: []
+postconditions: []
+failure_outcomes:
+  - STALE_STATE
+  - WRITE_NOT_AUTHORIZED

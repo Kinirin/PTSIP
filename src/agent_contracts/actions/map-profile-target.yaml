@@ -1,0 +1,10 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-MAP-PROFILE-TARGET-001
+status: CANDIDATE
+effect: READ_ONLY
+input_schema_ref: PTSIP-IO-MIGRATE-STATE-001
+output_schema_ref: PTSIP-IO-MIGRATE-STATE-001
+preconditions: []
+postconditions: []
+failure_outcomes:
+  - OWNER_DECISION_REQUIRED

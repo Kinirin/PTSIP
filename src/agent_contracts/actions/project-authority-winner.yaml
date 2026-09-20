@@ -1,0 +1,13 @@
+format: ptsip-agent-action/v2
+action_id: PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001
+status: CANDIDATE
+effect: MUTATE
+input_schema_ref: PTSIP-IO-AUTHORITY-STATE-001
+output_schema_ref: PTSIP-IO-AUTHORITY-RESULT-001
+preconditions: []
+postconditions: []
+failure_outcomes:
+  - AUTHORITY_PROFILE_CONFLICT
+  - COORDINATION_UNAVAILABLE
+  - STALE_STATE
+  - WRITE_NOT_AUTHORIZED
