@@ -22,7 +22,7 @@ LANES = {
     },
     "S3": {
         "id": "WU-02-S3",
-        "branch": "dev/0.4.0-WU-02-S3",
+        "branch": CONTROL_BRANCH,
         "path": "docs/planning/0.4.0/WU-02/WU-02-S3.yaml",
     },
 }
@@ -196,13 +196,13 @@ def validate_current_lane(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Validate WU-02 parallel lane planning and branch ownership."
+        description="Validate WU-02 lane planning and execution-branch ownership."
     )
     parser.add_argument(
         "lane",
         nargs="?",
         choices=tuple(LANES),
-        help="Validate one leaf branch (S1, S2, or S3). Omit for control-plane planning validation.",
+        help="Validate one lane execution context (S1, S2, or S3). Omit for control-plane planning validation.",
     )
     args = parser.parse_args(argv)
 
