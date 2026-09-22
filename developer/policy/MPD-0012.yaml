@@ -1,0 +1,301 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0012
+  title: Agent Contract Semantic Verification and Feature Extension Decision Ledger
+  status: DRAFT
+
+rules:
+  authority_semantics:
+    decision_record_state: DRAFT_WITH_APPROVED_SUBDECISIONS
+    decision_date: "2026-09-22"
+    scope: AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION
+    record_role: SESSION_POLICY_DECISION_LEDGER
+    runtime_authority: NOT_ACTIVATED
+    implementation_change_authorized_by_this_record: false
+    activation_requires_separate_reconciliation_and_approval: true
+    existing_active_policy_reconciliation_required_before_activation: true
+
+  approved_decisions:
+    normative_document_boundary:
+      normative_and_operational_markdown_removal: APPROVED
+      new_policy_or_specification_markdown: FORBIDDEN
+      normative_markdown_dependency: FORBIDDEN
+      legacy_markdown_as_authority_dependency_provenance_or_fallback: FORBIDDEN
+      machine_readable_agent_contract_root: src/agent_contracts
+      new_human_readable_projection_generation_current_stage: FORBIDDEN
+      non_normative_human_communication_markdown_is_not_removed_by_format_alone: true
+
+    agent_contract_authority:
+      scope: CODING_AGENT_BEHAVIOR_SEMANTICS
+      role: NORMATIVE_SSOT
+      external_authority_behavior: CONSUME_WITHOUT_CREATING_MISSING_NORMATIVE_AUTHORITY
+      authority_producing_inference: FORBIDDEN
+      operational_inference: CONDITIONALLY_ALLOWED
+
+    missing_information_resolution:
+      primary: MACHINE_DEFINED_OUTCOME
+      fallback: BOUNDED_REASONABLE_DEFAULT
+      fallback_allowed_only_when_normative_authority_is_not_created_or_changed: true
+      machine_resolution_precedes_agent_reasoning: true
+      repeated_resolvable_inference_should_be_materialized_for_future_deterministic_resolution: true
+
+    mutation_authorization:
+      strategy: CONTRACT_DEFINED_CONDITIONAL_AUTHORIZATION
+      contract_may_authorize_mutation: true
+      required_condition_dimensions:
+        - SCOPE
+        - PRECONDITION
+        - FRESHNESS
+        - CONFLICT
+      unresolved_or_unknown_required_condition_authorizes_mutation: false
+      out_of_scope_mutation_authorizes_mutation: false
+
+    binding_discovery_and_promotion:
+      explicit_binding_preferred: true
+      missing_binding_allows_bounded_repository_discovery: true
+      discovered_binding_initial_state: CANDIDATE
+      verification_model: REQUIRED_AND_OPTIONAL_SEPARATION
+      required_all_pass_result: AUTO_PROMOTE
+      required_any_fail_result: REJECT
+      required_no_fail_with_unknown_result: USER_REVIEW_REQUIRED
+      verified_or_user_approved_resolution_must_be_persisted: true
+      repeat_discovery_for_same_resolved_case: FORBIDDEN_WHEN_PERSISTED_RESOLUTION_IS_CURRENT
+      model_confidence_score_as_promotion_authority: FORBIDDEN
+
+    required_verification:
+      model: R2_BEHAVIOR_SEMANTIC_REQUIRED
+      required_checks:
+        - IDENTITY_MATCH
+        - IMPLEMENTATION_RESOLUTION_VALID
+        - INPUT_CONTRACT_MATCH
+        - OUTPUT_CONTRACT_MATCH
+        - EFFECT_MATCH
+        - FAILURE_CONTRACT_MATCH
+        - COMPATIBILITY_MATCH
+      result_domain:
+        - PASS
+        - FAIL
+        - UNKNOWN
+      aggregate:
+        all_pass: AUTO_PROMOTE
+        any_fail: REJECT
+        unknown_without_fail: USER_REVIEW_REQUIRED
+      optional_verification:
+        promotion_blocking: false
+        exact_optional_set: DEFERRED
+
+    identity_match:
+      strategy: I3_EXPLICIT_IDENTITY_WITH_DISCOVERY_CANDIDATE
+      explicit_identity: EXACT_MATCH_FIRST
+      missing_explicit_identity: DISCOVERY_CANDIDATE_ALLOWED
+      discovery_is_identity_authority: false
+      verified_promoted_identity_becomes_persistent_resolution: true
+
+    input_output_contract_match:
+      strategy: IO4_GENERATED_AND_VERIFIED_IO_RESOLUTION
+      ordered_resolution:
+        - EXACT
+        - STRUCTURAL_COMPATIBLE
+        - DETERMINISTIC_TRANSFORM
+        - GENERATED_VERIFIED_MAPPING
+      generated_mapping_initial_state: CANDIDATE
+      generated_mapping_requires_machine_verification: true
+      machine_derived_new_normative_fact: FORBIDDEN
+      unknown_is_null: false
+      undeclared_default_invention: FORBIDDEN
+      silent_loss_of_required_outcome_or_failure_information: FORBIDDEN
+      lossy_semantic_mapping_auto_pass: FORBIDDEN
+
+    effect_match:
+      strategy: E3_DECLARATION_PLUS_MACHINE_VERIFICATION
+      declaration_only_is_sufficient: false
+      declaration_and_machine_evidence_agree: PASS
+      declaration_and_machine_evidence_conflict: FAIL
+      insufficient_evidence: UNKNOWN
+
+    failure_contract_match:
+      observation_and_semantic_failure_are_separate_contract_concerns: true
+      technical_exception_type_is_normative_failure_identity: false
+      failure_observation_role: EVIDENCE
+      failure_semantic_role: NORMATIVE_INTERPRETATION
+      observation_assembly:
+        strategy: FO4_SPLIT_EVIDENCE_RUNTIME_ASSEMBLED
+        evidence_sources:
+          - IMPLEMENTATION_TECHNICAL_FAILURE
+          - RUNTIME_EXECUTION_CONTEXT
+          - EFFECT_EVIDENCE
+        observation_builder_may_create_normative_failure_meaning: false
+        adapter_may_normalize_native_failure_representation: true
+        adapter_may_create_normative_failure_meaning: false
+        unproven_state: UNKNOWN
+      failure_resolution_is_separate_from_observation_assembly: true
+
+    compatibility_match:
+      strategy: C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+      version_number_equality_is_sufficient: false
+      capability_name_equality_is_sufficient: false
+      required_semantics_must_be_compared_against_provided_semantics: true
+
+    source_contract_model:
+      source_contract_type_count: 2
+      type_roles:
+        - STRICT_CANONICAL
+        - SEMANTIC_EXTENSION
+      permanent_type_identifiers: DEFERRED
+      extensibility_implies_lower_strictness: false
+      semantic_extension_model: E3_SEMANTIC_EXTENSION_CONTRACT
+
+    feature_stable_core:
+      required_immutable_fields:
+        - identity
+        - semantic_category
+        - value_contract
+        - comparison_semantics
+        - evolution_semantics
+      breaking_stable_semantic_change_requires_new_feature_identity: true
+      evolution_semantics_modes:
+        - IMMUTABLE
+        - COMPATIBLE_EXTENSION
+        - EXPLICIT
+      mandatory_global_fine_grained_change_classification_vocabulary: FORBIDDEN
+      explicit_mode_may_reference_machine_readable_evolution_rules: true
+
+    feature_implementation_body:
+      minimum_required_fields:
+        - implementation_kind
+        - revision
+        - implementation_ref
+      additional_fields_required_by_core: false
+      implementation_detail_overconstraint: FORBIDDEN
+
+    atomic_feature_management:
+      general_user_direct_atomic_feature_management: NOT_REQUIRED
+      ptsip_internal_management_required: true
+      source_contract_to_atomic_feature_automation: REQUIRED_WHERE_DETERMINISTICALLY_AVAILABLE
+      atomic_feature_is_preferred_as_derived_projection_not_independent_user_managed_authority: true
+      truly_new_user_semantics_may_require_user_owned_extension_environment: true
+      user_owned_external_resolution_environment_is_ptsip_0_3_8_support_responsibility: false
+
+    external_orchestration_boundary:
+      langgraph_core_dependency_in_0_3_8: FORBIDDEN
+      langchain_core_dependency_in_0_3_8: FORBIDDEN
+      external_model_orchestration_account_required_by_core: false
+      future_optional_plugin_consideration: ALLOWED
+      future_plugin_must_not_own_ptsip_normative_policy_semantics: true
+
+  provisional_decisions:
+    implementation_resolution:
+      state: APPROVED_FOR_CURRENT_DESIGN_EVOLVABLE
+      replaces_required_check: INTERFACE_MATCH
+      required_check: IMPLEMENTATION_RESOLUTION_VALID
+      current_resolution_modes:
+        - DIRECT
+        - DECLARATIVE_BINDING
+        - DETERMINISTIC_ADAPTER
+        - GENERATED_VERIFIED_ADAPTER
+        - USER_RESOLVED
+      generated_verified_adapter_resolution: AD4
+      current_mode_order_is_permanent: false
+      responsibility_boundary_may_be_revised_after_simulation: true
+
+    fine_grained_atomic_feature_model:
+      state: CURRENT_DIRECTION_NOT_FROZEN
+      model: CF2_FINE_GRAINED_ATOMIC_FEATURE
+      reason_for_non_frozen_state:
+        - FEATURE_COUNT_MANAGEMENT_COST_REMAINS_OPEN
+        - COMPILER_AND_MAPPING_BOUNDARIES_REQUIRE_FURTHER_DESIGN
+        - MIGRATION_BURDEN_REQUIRES_EVIDENCE
+      external_orchestration_is_not_the_0_3_8_solution: true
+
+  deferred_decisions:
+    feature_implementation_body_details:
+      implementation_kind_allowed_values_and_semantics: DEFERRED
+      revision_format_and_compatibility_rules: DEFERRED
+      implementation_ref_target_kinds: DEFERRED
+      optional_extension_fields: DEFERRED
+    compatibility_feature_compiler:
+      exact_compiler_contract_shape: DEFERRED
+      exact_atomic_feature_projection_format: DEFERRED
+      registry_topology: DEFERRED
+      feature_mapping_algorithm: DEFERRED
+      migration_mechanics: DEFERRED
+    generated_resolution:
+      automatic_semantic_transformation_upper_bound: DEFERRED
+      user_review_threshold_beyond_required_unknown_rule: DEFERRED
+    plugin_integration:
+      langgraph_plugin_contract: DEFERRED_BEYOND_0_3_8
+      langchain_plugin_contract: DEFERRED_BEYOND_0_3_8
+      local_model_integration_contract: DEFERRED_BEYOND_0_3_8
+      remote_user_resolver_contract: DEFERRED_BEYOND_0_3_8
+    human_projection:
+      future_human_readable_projection_format: DEFERRED
+
+  repository_materialization_snapshot:
+    observed_branch: dev/0.3.8
+    observed_head_before_this_record: df018272ef31ef84c3cc158d00235af946862c09
+    currently_materialized:
+      agent_contract_root: src/agent_contracts
+      contract_set_status: CANDIDATE
+      authority_scope: CODING_AGENT_BEHAVIOR
+      markdown_normative_dependency: FORBIDDEN
+      external_machine_contracts: EXPLICIT_BINDING_ONLY
+      typed_contract_kinds:
+        - SPEC
+        - OPERATION
+        - ACTION
+        - CONDITION
+        - MUTATION_GATE
+        - IO_SCHEMA
+        - VOCABULARY
+        - BINDING
+    not_yet_materialized_from_this_decision_ledger:
+      - R2_REQUIRED_VERIFICATION_MODEL
+      - IMPLEMENTATION_RESOLUTION_VALID
+      - IO4_GENERATED_VERIFIED_IO_RESOLUTION
+      - E3_EFFECT_MATCH_VERIFICATION
+      - FAILURE_OBSERVATION_AND_FAILURE_SEMANTIC_SPLIT
+      - FO4_RUNTIME_ASSEMBLED_FAILURE_OBSERVATION
+      - C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+      - CF2_FINE_GRAINED_ATOMIC_FEATURE_SYSTEM
+      - FEATURE_STABLE_CORE
+      - SEMANTIC_EXTENSION_CONTRACT
+      - FEATURE_IMPLEMENTATION_BODY_MINIMUM
+      - NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL
+    current_legacy_markdown_physical_presence: PRESENT
+    implementation_work_from_this_ledger: NOT_STARTED
+
+  validation_evidence:
+    user_reported_local_validation:
+      pytest_result: "1 passed in 2.32s"
+      validator_counts:
+        specs: 8
+        operations: 5
+        actions: 18
+        conditions: 23
+        gates: 3
+        io_schemas: 15
+        vocabularies: 4
+        rules: 48
+        bindings: 1
+      evidence_scope: PRE_MPD_0012_EXISTING_AGENT_CONTRACT_PLANE
+      assistant_independent_execution: false
+
+  activation_boundary:
+    this_draft_does_not_promote_agent_contract_candidate_to_current: true
+    this_draft_does_not_delete_markdown: true
+    this_draft_does_not_modify_agent_contract_runtime: true
+    this_draft_does_not_implement_feature_compiler: true
+    this_draft_does_not_authorize_langgraph_or_langchain_core_dependency: true
+    next_required_phase: POLICY_RECONCILIATION_THEN_SEPARATE_IMPLEMENTATION_PLANNING
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-0010
+      scope: AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION_REFINEMENT
+  depends_on:
+    - policy: MPD-0010
+      scope: INFERENCE_COST_EXTENSION_AND_IDENTITY_BASELINE
