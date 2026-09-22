@@ -1,0 +1,79 @@
+schema_version: ptsip-markdown-cleanup-workflow/v1
+artifact_class: DEVELOPER_EXECUTION_PROJECTION
+projection_authority: false
+policy_ref: MPD-0012#rules.approved_decisions.markdown_cleanup_preconditions
+
+stages:
+  - INSPECT
+  - PLAN
+  - VERIFY
+  - APPLY
+  - POST_VALIDATE
+
+default_scopes:
+  - adoption
+  - agents
+  - spec
+
+reference_scan_exclusions:
+  - developer/automation/markdown_cleanup_workflow.yaml
+  - developer/policy/MPD-0012.yaml
+
+apply_requires_policy_status: ACTIVE
+
+targets:
+  - path: adoption/ADOPTION-GUIDE.md
+    semantic_role: OPERATION_PROCEDURE
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: APPROVED_SCOPE_AND_EXPLICIT_OPERATIONAL_STRUCTURE
+      marker: "Phase 0"
+
+  - path: agents/AGENT-CONTRACT.md
+    semantic_role: CODING_AGENT_BEHAVIOR
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "Mandatory agent behavior"
+
+  - path: spec/PTSIP-CONFORMANCE.md
+    semantic_role: VALIDATION_OR_CONFORMANCE_SEMANTICS
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "PTSIP Conformance"
+
+  - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    semantic_role: PROFILE_TRANSITION_SEMANTICS
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "Active normative companion"
+
+  - path: spec/PTSIP-GOVERNANCE.md
+    semantic_role: GOVERNANCE_OR_AUTHORITY_SEMANTICS
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "PTSIP Governance"
+
+  - path: spec/PTSIP-RESPONSIBILITY-MAP.md
+    semantic_role: NORMATIVE_RULE
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "Active normative companion specification"
+
+  - path: spec/PTSIP-SPEC.md
+    semantic_role: NORMATIVE_RULE
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "Active draft normative specification"
+
+  - path: spec/PTSIP-TERMINOLOGY.md
+    semantic_role: NORMATIVE_TERMINOLOGY
+    disposition: REMOVE_CANDIDATE
+    evidence:
+      kind: EXPLICIT_SELF_DECLARATION
+      marker: "canonical human-readable terminology registry"

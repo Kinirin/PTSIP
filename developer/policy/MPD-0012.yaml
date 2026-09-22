@@ -293,6 +293,7 @@ rules:
         - IO_SCHEMA
         - VOCABULARY
         - BINDING
+      markdown_cleanup_automation: MATERIALIZED_SIMULATION_AND_GUARDED_APPLY
     not_yet_materialized_from_this_decision_ledger:
       - R2_REQUIRED_VERIFICATION_MODEL
       - IMPLEMENTATION_RESOLUTION_VALID
@@ -307,7 +308,7 @@ rules:
       - FEATURE_IMPLEMENTATION_BODY_MINIMUM
       - NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL
     current_legacy_markdown_physical_presence: PRESENT
-    implementation_work_from_this_ledger: NOT_STARTED
+    implementation_work_from_this_ledger: MARKDOWN_CLEANUP_AUTOMATION_MATERIALIZED
 
   validation_evidence:
     user_reported_local_validation:
@@ -324,6 +325,10 @@ rules:
         bindings: 1
       evidence_scope: PRE_MPD_0012_EXISTING_AGENT_CONTRACT_PLANE
       assistant_independent_execution: false
+    markdown_cleanup_automation:
+      implementation_state: MATERIALIZED
+      local_test_execution: NOT_RUN_BY_ASSISTANT
+      simulation_execution: NOT_RUN_BY_ASSISTANT
 
   activation_boundary:
     this_draft_does_not_promote_agent_contract_candidate_to_current: true
@@ -331,7 +336,9 @@ rules:
     this_draft_does_not_modify_agent_contract_runtime: true
     this_draft_does_not_implement_feature_compiler: true
     this_draft_does_not_authorize_langgraph_or_langchain_core_dependency: true
-    next_required_phase: POLICY_RECONCILIATION_THEN_SEPARATE_IMPLEMENTATION_PLANNING
+    markdown_cleanup_inspect_plan_verify_simulate_allowed: true
+    markdown_cleanup_physical_apply_requires_policy_active: true
+    next_required_phase: MARKDOWN_CLEANUP_SIMULATION_AND_REFERENCE_REMEDIATION
 
 relations:
   supersedes: []
