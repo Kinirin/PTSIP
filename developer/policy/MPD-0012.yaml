@@ -27,6 +27,49 @@ rules:
       new_human_readable_projection_generation_current_stage: FORBIDDEN
       non_normative_human_communication_markdown_is_not_removed_by_format_alone: true
 
+    markdown_cleanup_preconditions:
+      decision: APPROVED
+      target_classification:
+        basis: SEMANTIC_ROLE_NOT_FILE_EXTENSION_OR_DIRECTORY_NAME
+        remove_when_markdown_owns_any_of:
+          - NORMATIVE_RULE
+          - CODING_AGENT_BEHAVIOR
+          - OPERATION_PROCEDURE
+          - VALIDATION_OR_CONFORMANCE_SEMANTICS
+          - GOVERNANCE_OR_AUTHORITY_SEMANTICS
+          - PROFILE_TRANSITION_SEMANTICS
+          - NORMATIVE_TERMINOLOGY
+        markdown_format_alone_is_removal_authority: false
+      replacement_requirement:
+        legacy_markdown_one_to_one_semantic_replacement_required: false
+        legacy_markdown_coverage_proof_required_before_removal: false
+        legacy_markdown_is_migration_authority: false
+        new_agent_contract_plane_must_be_independently_valid: true
+      residual_reference_policy:
+        active_normative_or_machine_dependency_on_removed_markdown: FORBIDDEN
+        runtime_validator_schema_workflow_dependency_on_removed_markdown: FORBIDDEN
+        historical_non_authoritative_mention: ALLOWED
+      authority_gap_policy:
+        legacy_markdown_fallback_after_removal: FORBIDDEN
+        missing_required_semantics_after_removal:
+          - UNRESOLVED
+          - UNKNOWN
+          - OWNER_DECISION_REQUIRED
+        missing_semantics_is_new_machine_contract_gap: true
+      removal_readiness:
+        required_conditions:
+          - AGENT_CONTRACT_PLANE_STRUCTURAL_VALIDATION_PASS
+          - NO_ACTIVE_MACHINE_DEPENDENCY_ON_REMOVAL_TARGETS
+          - SRC_AGENT_CONTRACTS_CONFIRMED_AS_NORMATIVE_SOURCE
+          - UNRESOLVED_SEMANTICS_CAN_BE_REPRESENTED_WITHOUT_LEGACY_FALLBACK
+        all_feature_system_work_complete_required: false
+        cf2_completion_required: false
+        feature_compiler_completion_required: false
+        implementation_body_detail_completion_required: false
+      execution_boundary:
+        this_policy_approval_performs_physical_markdown_deletion: false
+        next_cleanup_phase: FILE_CLASSIFICATION_REFERENCE_REMOVAL_AND_VALIDATION
+
     agent_contract_authority:
       scope: CODING_AGENT_BEHAVIOR_SEMANTICS
       role: NORMATIVE_SSOT
