@@ -66,5 +66,11 @@ validation:
     - NO_OLD_PLANNING_AUTOMATION_IMPORT
   evidence:
     repository_structure: IMPLEMENTED
-    local_test_execution: PENDING
+    local_test_execution: FAILED_BEFORE_REMEDIATION
+    failure_class: STALE_POLICY_RESOLVER_TASK_CONTEXT_REFERENCE
+    failure_reference: docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
+    remediation:
+      policy_resolver_contract_task_context_ref: developer/planning/0.3.8a1/emergency-implementation-overlay.yaml
+      repository_commit: 276f6c7e5e3941ff49feda282ae118c3bb128097
+      status: APPLIED_REVALIDATION_REQUIRED
     final_transition_to_complete: REQUIRES_REGISTERED_MACHINE_CHECKS_PASS
