@@ -1,0 +1,198 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0013
+  title: Developer Planning Authority and Policy-Plan Binding
+  status: ACTIVE
+
+rules:
+  authority_separation:
+    policy_planning_implementation_are_separate_authority_layers: true
+
+    policy_authority:
+      owns:
+        - POLICY_SEMANTICS
+        - POLICY_LIFECYCLE
+        - POLICY_APPROVAL
+      does_not_own:
+        - PLAN_CONTENT
+        - PLAN_APPROVAL
+        - PLAN_IMPLEMENTATION_PROGRESS
+        - PLAN_COMPLETION_STATE
+        - IMPLEMENTATION_ARTIFACT_STATE
+
+    planning_authority:
+      owns:
+        - PLAN_CONTENT
+        - PLAN_DESIGN
+        - PLAN_OPTIONS
+        - PLAN_APPROVAL
+        - PLAN_IMPLEMENTATION_PROGRESS
+        - PLAN_IMPLEMENTATION_COMPLETION
+        - PLAN_COMPLETION_AND_VERIFICATION_EVIDENCE
+      superior_policy_reference_required: true
+
+    implementation_artifacts:
+      role: IMPLEMENTATION_OUTPUT
+      own_authoritative_plan_completion_state: false
+
+    approval_boundary:
+      policy_approval_implies_plan_approval: false
+      plan_requires_separate_approval: true
+      multiple_valid_planning_options_may_exist_for_same_policy: true
+
+  policy_plan_binding_authority:
+    canonical_registry: developer/bindings/policy-plan-bindings.yaml
+    authority_role: POLICY_PLAN_RELATIONSHIP_AUTHORITY
+
+    binding_layer_owns:
+      - POLICY_TO_PLAN_RELATIONSHIP
+      - PLAN_EXISTENCE_STATE
+      - RELATIONSHIP_MAINTENANCE_AFTER_POLICY_CHANGE_OR_RETIREMENT
+      - PLAN_REFERENCE_MAINTENANCE_AFTER_PLAN_MOVE_OR_REPLACEMENT
+
+    binding_layer_does_not_own:
+      - PLAN_CONTENT
+      - PLAN_APPROVAL
+      - PLAN_IMPLEMENTATION_PROGRESS
+      - PLAN_IMPLEMENTATION_COMPLETION
+      - PLAN_VERIFICATION_RESULT
+
+    automation_root: developer/automation/policy_plan_binding/
+    automation_semantics:
+      invent_policy_authority: false
+      invent_planning_authority: false
+      infer_unregistered_relationships: false
+      exact_machine_resolution_required: true
+      ambiguous_binding_selection: FAIL_CLOSED
+
+  relationship_cardinality:
+    model: MANY_TO_MANY
+
+    one_policy_may_bind_multiple_plans: true
+    one_plan_may_bind_multiple_policies: true
+
+    primary_policy:
+      supported: false
+      required: false
+
+    unrelated_policy_reference:
+      allowed: false
+
+  binding_identity:
+    binding_id:
+      role: POLICY_PLANNING_RELATIONSHIP_IDENTITY
+      exists_before_plan_creation: true
+      machine_allocated: true
+      current_identity_pattern: "PPB-[0-9]{4,}"
+
+    plan_id:
+      role: STABLE_PLAN_IDENTITY
+      allocated_before_plan_creation: false
+      allocated_when_plan_is_created: true
+      path_independent: true
+
+    plan_ref:
+      role: CURRENT_PLAN_DOCUMENT_LOCATION
+      stable_identity: false
+      mutable_when_same_plan_moves: true
+
+    identity_responsibility:
+      binding_id_identifies_relationship: true
+      plan_id_identifies_plan: true
+      plan_ref_identifies_current_physical_location: true
+
+  planning_existence_state:
+    vocabulary:
+      - NOT_CREATED
+      - CREATED
+
+    absent_binding_semantics:
+      meaning: POLICY_PLANNING_RELATIONSHIP_NOT_REGISTERED
+
+    NOT_CREATED:
+      meaning: POLICY_PLANNING_RELATIONSHIP_EXISTS_BUT_PLAN_DOES_NOT_EXIST
+      plan_id: FORBIDDEN
+      plan_ref: FORBIDDEN
+
+    CREATED:
+      meaning: PLAN_EXISTS
+      plan_id: REQUIRED
+      plan_ref: REQUIRED
+
+  deterministic_binding_management:
+    binding_creation:
+      initial_planning_state: NOT_CREATED
+      binding_id_allocation: AUTOMATIC
+
+    plan_materialization:
+      transition:
+        from: NOT_CREATED
+        to: CREATED
+      plan_id_allocation_at_transition: REQUIRED
+      plan_ref_registration_at_transition: REQUIRED
+
+    automatic_uncreated_binding_selection:
+      when_exactly_one_matching_not_created_binding_exists: ALLOWED
+      when_zero_matching_not_created_bindings_exist: FAIL_CLOSED
+      when_multiple_matching_not_created_bindings_exist: FAIL_CLOSED
+      ambiguous_case_requires_exact_binding_id: true
+
+    duplicate_identity:
+      duplicate_binding_id: FORBIDDEN
+
+    relationship_resolution:
+      exact_lookup_keys:
+        - binding_id
+        - policy_ref
+        - plan_id
+        - plan_ref
+      semantic_similarity_resolution: FORBIDDEN
+
+  plan_movement_and_replacement:
+    same_plan_path_move:
+      preserve_plan_id: true
+      update_plan_ref_automatically: true
+      create_new_plan_identity: false
+
+    same_plan_content_revision:
+      preserve_binding_relationship: true
+
+    plan_replacement:
+      replacement_is_same_as_path_move: false
+      replacement_requires_distinct_plan_identity: true
+      previous_plan_relationship_must_remain_referenceable: true
+      previous_plan_ref_must_remain_preserved_for_reference: true
+      previous_plan_is_mandatory_traversal_input: false
+
+    historical_reference:
+      purpose:
+        - PROVENANCE
+        - TRACEABILITY
+        - OPTIONAL_REFERENCE
+      mandatory_agent_traversal: false
+
+  deferred_relation_lifecycle_semantics:
+    relation_state_field_defined: false
+    relation_state_vocabulary_defined: false
+
+    policy_change_or_retirement_relationship_management:
+      responsibility_owner: POLICY_PLAN_BINDING_LAYER
+      exact_state_vocabulary: DEFERRED
+
+    replaced_plan_relation_state:
+      historical_relationship_preservation_required: true
+      exact_state_vocabulary: DEFERRED
+
+  planning_namespace_boundary:
+    target_namespace: developer/planning/
+    canonical_root_transition_owned_by_this_policy: false
+    current_repository_migration_authorized_by_this_policy: false
+    note: MPD-0001_PLANNING_BOUNDARY_REQUIRES_SEPARATE_CHANGE
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
