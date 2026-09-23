@@ -5,11 +5,11 @@ from pathlib import Path
 import pytest
 import yaml
 
-from developer.automation.planning_entry_resolver import (
+from developer.automation.planning.planning_entry_resolver import (
     PlanningEntryResolutionError,
     resolve_planning_entry,
 )
-from developer.automation.planning_merge_reconciler import (
+from developer.automation.planning.planning_merge_reconciler import (
     PlanningStateReconciliationError,
     build_materialized_state,
     reconcile_planning_state,
@@ -58,7 +58,7 @@ def _work_unit(
         payload["extensions"] = [
             {
                 "id": "WU-02-P01",
-                "path": "docs/planning/0.4.0/WU-02/WU-02-P01.yaml",
+                "path": "developer/planning/0.4.0/WU-02/WU-02-P01.yaml",
                 "status": "ACTIVE",
             }
         ]
@@ -96,26 +96,26 @@ def _repo(
         "plans": [
             {
                 "plan_version": "0.4.0",
-                "path": "docs/planning/0.4.0/index.yaml",
+                "path": "developer/planning/0.4.0/index.yaml",
                 "status": "ACTIVE",
                 "integration_branch": "dev/0.4.0",
                 "entry_routing": {
                     "model": "PARALLEL_DEPENDENCY_EXTRACTION",
                     "canonical_plan": "planning/0.4.0.md",
-                    "responsibility_control_plane": "docs/planning/0.4.0/index.yaml",
+                    "responsibility_control_plane": "developer/planning/0.4.0/index.yaml",
                     "branch_creation_parent": "dev/0.4.0",
                     "resolver": {
-                        "module": "developer.automation.planning_entry_resolver",
-                        "command": "python -m developer.automation.planning_entry_resolver",
+                        "module": "developer.automation.planning.planning_entry_resolver",
+                        "command": "python -m developer.automation.planning.planning_entry_resolver",
                         "branch_source": "GIT_CURRENT_BRANCH",
                         "match_mode": "EXACT_BRANCH",
                         "unmatched_behavior": "FAIL_CLOSED",
                         "ambiguous_behavior": "FAIL_CLOSED",
                     },
                     "merge_reconciliation": {
-                        "module": "developer.automation.planning_merge_reconciler",
-                        "reconcile_command": "python -m developer.automation.planning_merge_reconciler",
-                        "merge_command": "python -m developer.automation.planning_leaf_merge",
+                        "module": "developer.automation.planning.planning_merge_reconciler",
+                        "reconcile_command": "python -m developer.automation.planning.planning_merge_reconciler",
+                        "merge_command": "python -m developer.automation.planning.planning_leaf_merge",
                         "target_branch": "dev/0.4.0",
                         "state_source": "WORK_UNIT_DOCUMENTS",
                         "leaf_shared_index_mutation": "FORBIDDEN",
@@ -132,13 +132,13 @@ def _repo(
                     "branch_entrypoints": [
                         {
                             "branch": "dev/0.4.0",
-                            "entry_document": "docs/planning/0.4.0/index.yaml",
+                            "entry_document": "developer/planning/0.4.0/index.yaml",
                             "role": "INTEGRATION_CONTROL_PLANE",
                             "state": "ACTIVE",
                         },
                         {
                             "branch": "dev/0.4.0-WU-04",
-                            "entry_document": "docs/planning/0.4.0/WU-04/WU-04.yaml",
+                            "entry_document": "developer/planning/0.4.0/WU-04/WU-04.yaml",
                             "role": "INDEPENDENT_LEAF",
                             "work_unit": "WU-04",
                             "state": wu04_entry_state,
@@ -150,7 +150,7 @@ def _repo(
                         },
                         {
                             "branch": "dev/0.4.0-WU-05",
-                            "entry_document": "docs/planning/0.4.0/WU-05/WU-05.yaml",
+                            "entry_document": "developer/planning/0.4.0/WU-05/WU-05.yaml",
                             "role": "INDEPENDENT_LEAF",
                             "work_unit": "WU-05",
                             "state": "ACTIVE",
@@ -176,7 +176,7 @@ def _repo(
             }
         ],
     }
-    _write_yaml(repo / "docs/planning/index.yaml", root)
+    _write_yaml(repo / "developer/planning/index.yaml", root)
 
     version = {
         "schema_version": "ptsip-developer-planning-index/v1",
@@ -187,7 +187,7 @@ def _repo(
             "integration_branch": "dev/0.4.0",
             "classification": "CORE",
             "status": "ACTIVE",
-            "control_plane": "docs/planning/0.4.0/index.yaml",
+            "control_plane": "developer/planning/0.4.0/index.yaml",
             "current_gate": current_gate,
         },
         "work_units": [
@@ -203,7 +203,7 @@ def _repo(
             },
             {
                 "id": "WU-02",
-                "path": "docs/planning/0.4.0/WU-02/WU-02.yaml",
+                "path": "developer/planning/0.4.0/WU-02/WU-02.yaml",
                 "lifecycle": {"status": wu02_status},
                 "approval": _approval(),
                 "implementation_authorization": {
@@ -226,7 +226,7 @@ def _repo(
             },
             {
                 "id": "WU-03",
-                "path": "docs/planning/0.4.0/WU-03/WU-03.yaml",
+                "path": "developer/planning/0.4.0/WU-03/WU-03.yaml",
                 "lifecycle": {"status": "ACTIVE"},
                 "approval": _approval(),
                 "implementation_authorization": {"status": "AUTHORIZED"},
@@ -234,7 +234,7 @@ def _repo(
             },
             {
                 "id": "WU-04",
-                "path": "docs/planning/0.4.0/WU-04/WU-04.yaml",
+                "path": "developer/planning/0.4.0/WU-04/WU-04.yaml",
                 "lifecycle": {"status": wu04_status},
                 "approval": _approval(),
                 "implementation_authorization": {
@@ -257,7 +257,7 @@ def _repo(
             },
             {
                 "id": "WU-05",
-                "path": "docs/planning/0.4.0/WU-05/WU-05.yaml",
+                "path": "developer/planning/0.4.0/WU-05/WU-05.yaml",
                 "lifecycle": {"status": "ACTIVE"},
                 "approval": _approval(),
                 "implementation_authorization": {"status": "AUTHORIZED"},
@@ -265,10 +265,10 @@ def _repo(
             },
         ],
     }
-    _write_yaml(repo / "docs/planning/0.4.0/index.yaml", version)
+    _write_yaml(repo / "developer/planning/0.4.0/index.yaml", version)
 
     _write_yaml(
-        repo / "docs/planning/0.4.0/WU-02/WU-02.yaml",
+        repo / "developer/planning/0.4.0/WU-02/WU-02.yaml",
         _work_unit(
             "WU-02",
             status=wu02_status,
@@ -279,7 +279,7 @@ def _repo(
         ),
     )
     _write_yaml(
-        repo / "docs/planning/0.4.0/WU-02/WU-02-P01.yaml",
+        repo / "developer/planning/0.4.0/WU-02/WU-02-P01.yaml",
         {
             "extension": {
                 "id": "WU-02-P01",
@@ -288,7 +288,7 @@ def _repo(
         },
     )
     _write_yaml(
-        repo / "docs/planning/0.4.0/WU-03/WU-03.yaml",
+        repo / "developer/planning/0.4.0/WU-03/WU-03.yaml",
         _work_unit(
             "WU-03",
             status="ACTIVE",
@@ -297,7 +297,7 @@ def _repo(
         ),
     )
     _write_yaml(
-        repo / "docs/planning/0.4.0/WU-04/WU-04.yaml",
+        repo / "developer/planning/0.4.0/WU-04/WU-04.yaml",
         _work_unit(
             "WU-04",
             status=wu04_status,
@@ -307,7 +307,7 @@ def _repo(
         ),
     )
     _write_yaml(
-        repo / "docs/planning/0.4.0/WU-05/WU-05.yaml",
+        repo / "developer/planning/0.4.0/WU-05/WU-05.yaml",
         _work_unit(
             "WU-05",
             status="ACTIVE",
@@ -399,9 +399,9 @@ def test_later_wu02_completion_resumes_previously_merged_wu04(tmp_path: Path) ->
 
     assert result.current_gate_after == "WU-04"
 
-    root_index = yaml.safe_load((repo / "docs/planning/index.yaml").read_text(encoding="utf-8"))
+    root_index = yaml.safe_load((repo / "developer/planning/index.yaml").read_text(encoding="utf-8"))
     version_index = yaml.safe_load(
-        (repo / "docs/planning/0.4.0/index.yaml").read_text(encoding="utf-8")
+        (repo / "developer/planning/0.4.0/index.yaml").read_text(encoding="utf-8")
     )
     root_plan = root_index["plans"][0]
     root_plan["materialized_state"] = build_materialized_state(
@@ -449,7 +449,7 @@ def test_pending_branch_rename_alias_resolves_and_reconciles_to_canonical_branch
 ) -> None:
     repo = _repo(tmp_path, wu04_entry_state="MERGED")
 
-    root_path = repo / "docs/planning/index.yaml"
+    root_path = repo / "developer/planning/index.yaml"
     root_index = yaml.safe_load(root_path.read_text(encoding="utf-8"))
     root_plan = root_index["plans"][0]
     root_plan["integration_branch"] = "dev/0.3.8"
@@ -472,7 +472,7 @@ def test_pending_branch_rename_alias_resolves_and_reconciles_to_canonical_branch
         0,
         {
             "branch": "dev/0.3.8",
-            "entry_document": "docs/planning/0.4.0/index.yaml",
+            "entry_document": "developer/planning/0.4.0/index.yaml",
             "role": "INTEGRATION_CONTROL_PLANE",
             "state": "ACTIVE",
         },

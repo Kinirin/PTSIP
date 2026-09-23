@@ -10,8 +10,8 @@ from typing import Any, Sequence
 from developer.automation.policy_loader import load_yaml, repository_root
 
 
-ROOT_INDEX = "docs/planning/index.yaml"
-EMERGENCY_OVERLAY_PATH = "docs/planning/0.3.8a1/emergency-implementation-overlay.yaml"
+ROOT_INDEX = "developer/planning/index.yaml"
+EMERGENCY_OVERLAY_PATH = "developer/planning/0.3.8a1/emergency-implementation-overlay.yaml"
 
 
 class PlanningEntryResolutionError(RuntimeError):

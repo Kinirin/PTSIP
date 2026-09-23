@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
-from developer.automation.planning_merge_reconciler import (
+from developer.automation.planning.planning_merge_reconciler import (
     PlanningStateReconciliationError,
     reconcile_planning_state,
 )
@@ -242,7 +242,7 @@ def _resolve_parent_context(
     if not all(isinstance(value, str) and value for value in (extension_id, parent_id, plan_version)):
         raise ValueError("extension id, parent, and plan_version must be canonical strings")
 
-    root_index = load_yaml("docs/planning/index.yaml", root=base)
+    root_index = load_yaml("developer/planning/index.yaml", root=base)
     plan_matches = [
         item
         for item in root_index.get("plans", [])
@@ -331,7 +331,7 @@ def finalize_extension_if_ready(
         )
 
     parent = base / parent_path
-    root_index = base / "docs/planning/index.yaml"
+    root_index = base / "developer/planning/index.yaml"
     version_index = base / version_path
     originals = {
         path: path.read_text(encoding="utf-8"),
@@ -378,7 +378,7 @@ def finalize_extension_if_ready(
                 f"terminal extension {extension_id!r} did not return current gate to its parent",
             )
 
-        from developer.automation.planning_validator import validate_planning
+        from developer.automation.planning.planning_validator import validate_planning
 
         failures = validate_planning(base)
         if failures:

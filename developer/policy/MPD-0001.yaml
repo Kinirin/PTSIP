@@ -27,6 +27,7 @@ rules:
         - src/ptsip/
         - src/vpms/
       distribution: REQUIRED
+
   profile_boundary:
     developer_repository_profile: developer/profiles/ptsip-repository.yaml
     compatibility_root_profile: ptsip.yaml
@@ -59,22 +60,88 @@ rules:
         - UPDATE_CONSISTENCY_TESTS
         - VERIFY_NO_STALE_SPECDATA_PROFILE_SCHEMA_REFERENCE
     builtin_profile_instance_policy: CREATE_DIRECTORY_OR_INSTANCE_ONLY_WHEN_A_RUNTIME_SHIPPED_BUILTIN_PROFILE_EXISTS
+
   distribution_boundary:
     developer_policy_must_ship: false
     support_feature_policy_must_ship: true
     developer_policy_must_not_define_consumer_project_requirement: true
     support_feature_must_not_depend_on_developer_policy_at_runtime: true
+
   planning_boundary:
-    control_plane_root: docs/planning/index.yaml
-    work_unit_id_pattern: '^WU-[0-9]{2}$'
-    extension_id_pattern: '^WU-[0-9]{2}-P[0-9]{2}$'
-    extension_meaning: PLAN_EXTENSION
-    explanation_suffix: '-explanation.yaml'
-    explanation_machine_authority: false
-    work_unit_machine_fields_may_be_detailed: true
-    work_unit_minimal_size_requirement: false
-    ambiguous_or_unsupported_definition_may_use_explanation: true
-    machine_field_implementation_required_for_automatable_state: true
+    authority:
+      root: developer/planning/
+      control_plane_entry: developer/planning/index.yaml
+      ownership: PLANNING_AUTHORITY
+
+    schema:
+      root: developer/planning/schemas/
+      ownership: PLANNING_AUTHORITY
+      canonical_schema_files:
+        - planning-root-index.schema.json
+        - planning-index.schema.json
+        - work-unit.schema.json
+        - plan-extension.schema.json
+
+    automation:
+      root: developer/automation/planning/
+      ownership: PLANNING_AUTOMATION
+      owns:
+        - PLANNING_RESOLUTION
+        - PLANNING_VALIDATION
+        - WORK_UNIT_LIFECYCLE
+        - PLAN_EXTENSION_LIFECYCLE
+        - PLANNING_RECONCILIATION
+        - PLANNING_COMPLETION_TRANSITION
+      does_not_own:
+        - POLICY_LIFECYCLE
+        - POLICY_PLAN_RELATIONSHIP
+        - BINDING_IDENTITY
+        - BINDING_LIFECYCLE
+      authoritative_mutation_scope:
+        - developer/planning/
+      external_authority_direct_mutation: FORBIDDEN
+
+    external_interfaces:
+      policy_plan_binding:
+        authority_ref: developer/bindings/policy-plan-bindings.yaml
+        automation_ref: developer/automation/policy_plan_binding/
+        ownership: EXTERNAL_TO_PLANNING
+        authority_owner: POLICY_PLAN_BINDING
+        planning_may_directly_mutate_binding_authority: false
+        mutation_interface_required: true
+
+    subsystem_ownership:
+      planning_authority:
+        owns:
+          - PLAN_CONTENT
+          - PLAN_STRUCTURE
+          - PLAN_LIFECYCLE
+          - PLAN_APPROVAL_STATE
+          - PLAN_IMPLEMENTATION_PROGRESS
+          - PLAN_COMPLETION_STATE
+          - PLAN_VERIFICATION_EVIDENCE
+      policy_plan_binding:
+        external_to_planning: true
+        owns:
+          - POLICY_PLAN_RELATIONSHIP
+          - BINDING_IDENTITY
+          - PLAN_EXISTENCE_RELATION_STATE
+          - PLAN_ID_AND_PLAN_REF_BINDING
+
+    work_unit:
+      id_pattern: '^WU-[0-9]{2}$'
+      extension_id_pattern: '^WU-[0-9]{2}-P[0-9]{2}$'
+      extension_meaning: PLAN_EXTENSION
+      machine_fields:
+        may_be_detailed: true
+        minimal_size_requirement: false
+        implementation_required_for_automatable_state: true
+
+    explanation:
+      suffix: '-explanation.yaml'
+      machine_authority: false
+      allowed_for_ambiguous_or_unsupported_definition: true
+
     completion_transition:
       pending_status: IMPLEMENTED_VALIDATION_PENDING
       complete_status: COMPLETE
@@ -82,11 +149,67 @@ rules:
       failed_validation_mutation: FORBIDDEN
       post_promotion_planning_validation_required: true
 
+    migration:
+      legacy_authority_root: docs/planning/
+      legacy_control_plane_entry: docs/planning/index.yaml
+      target_authority_root: developer/planning/
+      target_control_plane_entry: developer/planning/index.yaml
+      target_schema_root: developer/planning/schemas/
+      target_automation_root: developer/automation/planning/
+      migration_authorized: true
+      planning_schema_migration:
+        from: developer/policy/schemas/
+        to: developer/planning/schemas/
+        files:
+          - planning-root-index.schema.json
+          - planning-index.schema.json
+          - work-unit.schema.json
+          - plan-extension.schema.json
+      planning_automation_migration:
+        from: developer/automation/
+        to: developer/automation/planning/
+        currently_identified_modules:
+          - planning_entry_resolver.py
+          - planning_extension_finalizer.py
+          - planning_leaf_merge.py
+          - planning_merge_reconciler.py
+          - planning_stage_finalizer.py
+          - planning_validator.py
+      policy_plan_binding_automation_migration: NOT_REQUIRED
+      policy_plan_binding_automation_root_preserved: developer/automation/policy_plan_binding/
+      migration_requirements:
+        - PRESERVE_EXISTING_PLANNING_MACHINE_STATE
+        - PRESERVE_WORK_UNIT_IDENTITIES
+        - PRESERVE_PLAN_EXTENSION_IDENTITIES
+        - UPDATE_PLANNING_INTERNAL_REFERENCES
+        - UPDATE_SCHEMA_REFERENCES
+        - UPDATE_AUTOMATION_IMPORTS_AND_PATH_CONSTANTS
+        - UPDATE_VALIDATION_TARGETS
+        - UPDATE_TEST_REFERENCES
+        - UPDATE_WORKFLOW_REFERENCES
+        - VERIFY_NO_ACTIVE_DOCS_PLANNING_AUTHORITY_REFERENCE
+        - VERIFY_NO_PLANNING_SCHEMA_REMAINS_OWNED_BY_POLICY_NAMESPACE
+        - VERIFY_POLICY_PLAN_BINDING_AUTHORITY_REMAINS_SEPARATE
+      migration_completion_condition:
+        canonical_planning_root_resolves: developer/planning/index.yaml
+        planning_schema_root_resolves: developer/planning/schemas/
+        planning_automation_root_resolves: developer/automation/planning/
+        binding_automation_root_resolves: developer/automation/policy_plan_binding/
+        stale_authoritative_legacy_reference_count: 0
+
 automation:
   loader: developer/automation/policy_loader.py
   policy_validator: developer/automation/policy_validator.py
-  planning_validator: developer/automation/planning_validator.py
-  planning_stage_finalizer: developer/automation/planning_stage_finalizer.py
+  planning:
+    root: developer/automation/planning/
+    entry_resolver: developer/automation/planning/planning_entry_resolver.py
+    validator: developer/automation/planning/planning_validator.py
+    stage_finalizer: developer/automation/planning/planning_stage_finalizer.py
+    extension_finalizer: developer/automation/planning/planning_extension_finalizer.py
+    leaf_merge: developer/automation/planning/planning_leaf_merge.py
+    merge_reconciler: developer/automation/planning/planning_merge_reconciler.py
+  policy_plan_binding:
+    root: developer/automation/policy_plan_binding/
   current_dependency_gate: developer/automation/current_dependency_gate.py
   transition_evaluator: developer/automation/transition_evaluator.py
 

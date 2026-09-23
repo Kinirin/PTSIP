@@ -11,7 +11,7 @@ branch:
   purpose: EMERGENCY_DEMO_PRERELEASE_IMPLEMENTATION
 
 authority:
-  inherited_policy_source: docs/planning/0.4.0
+  inherited_policy_source: developer/planning/0.4.0
   rule: THE_0_4_0_POLICY_DOCUMENTS_REMAIN_SEMANTIC_DESIGN_AUTHORITY_AND_IMPLEMENTATION_CONSTRAINTS_EXCEPT_WHERE_THIS_OVERLAY_NARROWS_RELEASE_SCOPE
   implementation_evidence_rule: POLICY_PRESENCE_DOES_NOT_PROVE_RUNTIME_IMPLEMENTATION
   must_not_reinterpret_or_weaken_0_4_0_semantic_boundaries: true
@@ -48,7 +48,7 @@ developer_only_control_plane:
 
 coding_agent_entry:
   branch: dev/0.3.8a1
-  planning_entry: docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
+  planning_entry: developer/planning/0.3.8a1/emergency-implementation-overlay.yaml
   task_bindings:
     src/ptsip/app/github_authority.py:
       MODIFY:

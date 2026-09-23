@@ -15,7 +15,7 @@ import yaml
 from developer.automation.policy_loader import load_yaml, repository_root
 
 
-ROOT_INDEX = "docs/planning/index.yaml"
+ROOT_INDEX = "developer/planning/index.yaml"
 TERMINAL_WU_STATUSES = {"COMPLETE", "SUPERSEDED", "CANCELLED"}
 NONTERMINAL_WU_STATUSES = {"DRAFT", "ACTIVE", "BLOCKED"}
 DEPENDENCY_SATISFIED_STATUSES = {"COMPLETE"}
@@ -526,7 +526,7 @@ def build_materialized_state(
     return {
         "mode": "DERIVED_CACHE",
         "source": str(root_plan["path"]),
-        "generated_by": "developer.automation.planning_merge_reconciler",
+        "generated_by": "developer.automation.planning.planning_merge_reconciler",
         "current_gate": gate,
         "current_gate_document": gate_document,
         "work_units": work_units,
@@ -655,7 +655,7 @@ def reconcile_planning_state(
         _atomic_write(root_path, root_text_after)
         _atomic_write(version_path, version_text_after)
         try:
-            from developer.automation.planning_validator import validate_planning
+            from developer.automation.planning.planning_validator import validate_planning
 
             failures = validate_planning(base)
             if failures:

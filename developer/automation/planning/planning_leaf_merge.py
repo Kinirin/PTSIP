@@ -7,7 +7,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Sequence
 
-from developer.automation.planning_merge_reconciler import (
+from developer.automation.planning.planning_merge_reconciler import (
     PlanningStateReconciliationError,
     _find_plan_for_integration_branch,
     _is_pending_branch_alias,
@@ -18,7 +18,7 @@ from developer.automation.planning_merge_reconciler import (
 from developer.automation.policy_loader import load_yaml, repository_root
 
 
-ROOT_INDEX = "docs/planning/index.yaml"
+ROOT_INDEX = "developer/planning/index.yaml"
 
 
 class PlanningLeafMergeError(RuntimeError):

@@ -62,13 +62,13 @@ ranking_policy:
 
 owned_implementation_surface:
   allowed_paths:
-    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - developer/planning/0.4.0/WU-02/WU-02-S2.yaml
     - src/ptsip/remediation/solution/elimination.py
     - tests/ptsip/remediation/test_solution_elimination.py
   integration_only_files_forbidden:
-    - docs/planning/0.4.0/WU-02/WU-02.yaml
-    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
-    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - developer/planning/0.4.0/WU-02/WU-02.yaml
+    - developer/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - developer/planning/0.4.0/WU-02/WU-02-S3.yaml
     - src/ptsip/remediation/__init__.py
     - src/ptsip/remediation/solution/__init__.py
     - src/ptsip/remediation/solution/engine.py
@@ -85,11 +85,11 @@ non_goals:
 
 session_protocol:
   required_read_before_work:
-    - docs/planning/0.4.0/WU-02/WU-02.yaml
-    - docs/planning/0.4.0/WU-02/WU-02-S1.yaml
-    - docs/planning/0.4.0/WU-02/WU-02-S2.yaml
-    - docs/planning/0.4.0/WU-02/WU-02-S3.yaml
-    - docs/planning/0.4.0/custom-component-owner-approved-design.yaml
+    - developer/planning/0.4.0/WU-02/WU-02.yaml
+    - developer/planning/0.4.0/WU-02/WU-02-S1.yaml
+    - developer/planning/0.4.0/WU-02/WU-02-S2.yaml
+    - developer/planning/0.4.0/WU-02/WU-02-S3.yaml
+    - developer/planning/0.4.0/custom-component-owner-approved-design.yaml
   required_git_checks:
     - CONFIRM_CURRENT_BRANCH_IS_dev/0.3.8
     - REVIEW_RECENT_GIT_LOG

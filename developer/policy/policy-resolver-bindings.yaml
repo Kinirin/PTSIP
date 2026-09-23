@@ -154,7 +154,7 @@ scope_bindings:
         sections:
           - identity_and_resolution
 
-  docs/planning:
+  developer/planning:
     default_refs:
       - policy_id: MPD-0001
         sections:
@@ -166,6 +166,10 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - identity_and_resolution
+      - policy_id: MPD-0013
+        sections:
+          - authority_separation
+          - policy_plan_binding_authority
 
   src/ptsip/app/github_authority.py:
     default_refs:

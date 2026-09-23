@@ -10,7 +10,7 @@ from developer.automation.current_dependency_gate import (
 from developer.automation.policy_loader import load_yaml, repository_root
 
 
-P01_PLAN = "docs/planning/0.4.0/WU-02/WU-02-P01.yaml"
+P01_PLAN = "developer/planning/0.4.0/WU-02/WU-02-P01.yaml"
 E4_STAGE = "P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION"
 
 

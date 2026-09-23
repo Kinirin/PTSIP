@@ -5,8 +5,8 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from developer.automation import planning_stage_finalizer as stage_finalizer
-from developer.automation.planning_stage_finalizer import promote_stage_text
+from developer.automation.planning import planning_stage_finalizer as stage_finalizer
+from developer.automation.planning.planning_stage_finalizer import promote_stage_text
 
 
 def test_pending_stage_is_promoted_and_document_state_is_synchronized() -> None:

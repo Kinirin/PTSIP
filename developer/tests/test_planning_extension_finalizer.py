@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from developer.automation.planning_extension_finalizer import (
+from developer.automation.planning.planning_extension_finalizer import (
     _replace_authorization_status,
     _replace_extension_lifecycle,
     _replace_parent_extension_status,
@@ -69,7 +69,7 @@ depends_on:
 """
     parent_text = """extensions:
   - id: WU-02-P01
-    path: docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+    path: developer/planning/0.4.0/WU-02/WU-02-P01.yaml
     status: ACTIVE
 scope_contract:
   planning_contract: ptsip-planning/v1
@@ -97,7 +97,7 @@ def test_parent_extension_status_mismatch_is_machine_detectable() -> None:
         "extensions": [
             {
                 "id": "WU-02-P01",
-                "path": "docs/planning/0.4.0/WU-02/WU-02-P01.yaml",
+                "path": "developer/planning/0.4.0/WU-02/WU-02-P01.yaml",
                 "status": "COMPLETE",
             }
         ],
@@ -107,7 +107,7 @@ def test_parent_extension_status_mismatch_is_machine_detectable() -> None:
         parent_payload,
         extension_payload,
         extension_id="WU-02-P01",
-        extension_path="docs/planning/0.4.0/WU-02/WU-02-P01.yaml",
+        extension_path="developer/planning/0.4.0/WU-02/WU-02-P01.yaml",
     )
 
     assert len(errors) == 1

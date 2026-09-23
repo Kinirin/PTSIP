@@ -1,0 +1,70 @@
+schema_version: ptsip-planning-migration/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+plan:
+  plan_id: MPD-0001-PLANNING-SUBSYSTEM-MIGRATION
+  title: Planning Authority Namespace Migration
+  status: IMPLEMENTED_VALIDATION_PENDING
+  authority:
+    policy_refs:
+      - MPD-0001
+      - MPD-0013
+    authorization_source: DIRECT_PROJECT_OWNER_TEMPORARY_APPROVAL
+    implementation_authorized: true
+    provisional_detail_refinement_allowed: true
+
+scope:
+  authority_root:
+    from: docs/planning/
+    to: developer/planning/
+  schema_root:
+    from: developer/policy/schemas/
+    to: developer/planning/schemas/
+    files:
+      - planning-root-index.schema.json
+      - planning-index.schema.json
+      - work-unit.schema.json
+      - plan-extension.schema.json
+  automation_root:
+    from: developer/automation/
+    to: developer/automation/planning/
+    files:
+      - planning_entry_resolver.py
+      - planning_extension_finalizer.py
+      - planning_leaf_merge.py
+      - planning_merge_reconciler.py
+      - planning_stage_finalizer.py
+      - planning_validator.py
+  preserved_external_subsystem:
+    authority_root: developer/bindings/
+    automation_root: developer/automation/policy_plan_binding/
+
+invariants:
+  - PRESERVE_EXISTING_PLAN_AND_WORK_UNIT_IDENTITIES
+  - PRESERVE_PLANNING_LIFECYCLE_AND_APPROVAL_STATE
+  - POLICY_PLAN_BINDING_REMAINS_SEPARATE_FROM_PLANNING_AUTOMATION
+  - NO_SEMANTIC_RELATION_STATE_VOCABULARY_ADDED
+  - ACTIVE_REFERENCES_MUST_RESOLVE_TO_NEW_PATHS
+
+execution:
+  policy_revision: IMPLEMENTED
+  planning_tree_move: IMPLEMENTED
+  schema_move: IMPLEMENTED
+  automation_move: IMPLEMENTED
+  reference_rewrite: IMPLEMENTED
+  test_reference_rewrite: IMPLEMENTED
+  validation: PENDING
+
+validation:
+  required:
+    - MPD_0001_POLICY_VALIDATION
+    - PLANNING_SCHEMA_VALIDATION
+    - PLANNING_CONTROL_PLANE_VALIDATION
+    - PLANNING_AUTOMATION_TESTS
+    - POLICY_RESOLVER_TESTS
+    - NO_ACTIVE_DOCS_PLANNING_REFERENCE
+    - NO_OLD_PLANNING_AUTOMATION_IMPORT
+  evidence:
+    repository_structure: IMPLEMENTED
+    local_test_execution: PENDING
+    final_transition_to_complete: REQUIRES_REGISTERED_MACHINE_CHECKS_PASS

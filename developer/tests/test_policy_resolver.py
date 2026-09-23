@@ -85,7 +85,7 @@ def test_github_authority_scope_returns_exact_implementation_context(
         "match": True,
     }
     assert context["planning_entry"] == (
-        "docs/planning/0.3.8a1/emergency-implementation-overlay.yaml"
+        "developer/planning/0.3.8a1/emergency-implementation-overlay.yaml"
     )
     assert context["normative_rule_refs"] == [
         "PTSIP-AUT-001",

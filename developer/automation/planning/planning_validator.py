@@ -4,22 +4,22 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-from developer.automation.planning_extension_finalizer import (
+from developer.automation.planning.planning_extension_finalizer import (
     extension_is_machine_ready,
     extension_parent_consistency_errors,
 )
-from developer.automation.planning_merge_reconciler import (
+from developer.automation.planning.planning_merge_reconciler import (
     PlanningStateReconciliationError,
     build_materialized_state,
 )
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
 
 
-ROOT_INDEX = "docs/planning/index.yaml"
-ROOT_SCHEMA = "developer/policy/schemas/planning-root-index.schema.json"
-PLAN_SCHEMA = "developer/policy/schemas/planning-index.schema.json"
-WU_SCHEMA = "developer/policy/schemas/work-unit.schema.json"
-EXTENSION_SCHEMA = "developer/policy/schemas/plan-extension.schema.json"
+ROOT_INDEX = "developer/planning/index.yaml"
+ROOT_SCHEMA = "developer/planning/schemas/planning-root-index.schema.json"
+PLAN_SCHEMA = "developer/planning/schemas/planning-index.schema.json"
+WU_SCHEMA = "developer/planning/schemas/work-unit.schema.json"
+EXTENSION_SCHEMA = "developer/planning/schemas/plan-extension.schema.json"
 _TERMINAL_EXTENSION_STATUSES = {"COMPLETE", "SUPERSEDED", "CANCELLED"}
 
 

@@ -9,11 +9,11 @@ plan:
   previous_integration_branch: dev/0.4.0
   classification: CORE/RELEASE-BLOCKING
   status: ACTIVE
-  control_plane: docs/planning/0.4.0/index.yaml
+  control_plane: developer/planning/0.4.0/index.yaml
   current_gate: WU-02
 entry_resolution:
-  root_index: docs/planning/index.yaml
-  resolver_module: developer.automation.planning_entry_resolver
+  root_index: developer/planning/index.yaml
+  resolver_module: developer.automation.planning.planning_entry_resolver
   match_mode: EXACT_BRANCH
   unknown_branch_behavior: FAIL_CLOSED
   branch_change_requires_reresolution: true
@@ -73,7 +73,7 @@ work_units:
     id: WU-01-focused-verification
     result: PASS
 - id: WU-02
-  path: docs/planning/0.4.0/WU-02/WU-02.yaml
+  path: developer/planning/0.4.0/WU-02/WU-02.yaml
   lifecycle:
     status: ACTIVE
   approval:
@@ -88,7 +88,7 @@ work_units:
   depends_on:
   - WU-01
 - id: WU-03
-  path: docs/planning/0.4.0/WU-03/WU-03.yaml
+  path: developer/planning/0.4.0/WU-03/WU-03.yaml
   lifecycle:
     status: ACTIVE
   approval:
@@ -99,7 +99,7 @@ work_units:
   depends_on:
   - WU-02
 - id: WU-04
-  path: docs/planning/0.4.0/WU-04/WU-04.yaml
+  path: developer/planning/0.4.0/WU-04/WU-04.yaml
   lifecycle:
     status: ACTIVE
   approval:
@@ -110,7 +110,7 @@ work_units:
     status: AUTHORIZED
   depends_on: []
 - id: WU-05
-  path: docs/planning/0.4.0/WU-05/WU-05.yaml
+  path: developer/planning/0.4.0/WU-05/WU-05.yaml
   lifecycle:
     status: ACTIVE
   approval:

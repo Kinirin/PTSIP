@@ -11,7 +11,7 @@ PTSIP has two non-interchangeable policy classes.
 - PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
 - The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
 - Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
-- Developer planning authority is `docs/planning/index.yaml` and version control planes under `docs/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
+- Developer planning authority is `developer/planning/index.yaml` and version control planes under `developer/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
 - `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
 
 ## Mandatory developer policy entry
@@ -71,10 +71,10 @@ Rules:
 Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:
 
 ```text
-python -m developer.automation.planning_entry_resolver
+python -m developer.automation.planning.planning_entry_resolver
 ```
 
-The resolver reads the current Git branch and performs an exact lookup against `docs/planning/index.yaml -> plans[].entry_routing.branch_entrypoints`. Treat its `entry_document` as the planning entry point for the current branch.
+The resolver reads the current Git branch and performs an exact lookup against `developer/planning/index.yaml -> plans[].entry_routing.branch_entrypoints`. Treat its `entry_document` as the planning entry point for the current branch.
 
 Rules:
 

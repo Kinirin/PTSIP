@@ -319,13 +319,13 @@ p01_e_execution_plan:
     - P01_F_ROOT_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL_REMAINS_SEPARATE
   verification:
     automatic_completion_command: >-
-      python -m developer.automation.planning_stage_finalizer
-      docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+      python -m developer.automation.planning.planning_stage_finalizer
+      developer/planning/0.4.0/WU-02/WU-02-P01.yaml
       P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION
     direct_checks:
       - python -m developer.automation.current_dependency_gate
       - python -m developer.automation.policy_validator
-      - python -m developer.automation.planning_validator
+      - python -m developer.automation.planning.planning_validator
       - python -m developer.automation.transition_evaluator
     log_policy:
       commit: false
@@ -386,15 +386,15 @@ p01_f_execution_plan:
         status: PASS
   verification:
     automatic_completion_command: >-
-      python -m developer.automation.planning_stage_finalizer
-      docs/planning/0.4.0/WU-02/WU-02-P01.yaml
+      python -m developer.automation.planning.planning_stage_finalizer
+      developer/planning/0.4.0/WU-02/WU-02-P01.yaml
       P01_F_PROFILE_COMPATIBILITY_BRIDGE_REMOVAL
     direct_checks:
       - Test-Path .\ptsip.yaml
       - python .github/scripts/validate_test_modes.py
       - python -m developer.automation.current_dependency_gate
       - python -m developer.automation.policy_validator
-      - python -m developer.automation.planning_validator
+      - python -m developer.automation.planning.planning_validator
     expected_root_bridge_present: false
     log_policy:
       commit: false

@@ -64,7 +64,7 @@ non_goals:
   - TEST_MODE_REGISTRATION
 
 handoff_basis:
-  source: docs/planning/0.4.0/WU-02/WU-02.yaml
+  source: developer/planning/0.4.0/WU-02/WU-02.yaml
   inherited_wu_03_responsibilities:
     - ESCALATION_PROOF
     - OWNER_QUESTION_MINIMIZATION
@@ -161,7 +161,7 @@ verification_plan:
     - REPOSITORY_OR_EVIDENCE_CHANGE_INVALIDATES_STALE_REQUEST
     - EXACT_SPECIFICATION_EVIDENCE_REPOSITORY_AUTHORITY_BINDING_IS_INSPECTABLE
   pytest_target: tests/ptsip/remediation/test_escalation_workflow.py
-  planning_validation: developer/automation/planning_validator.py
+  planning_validation: developer/automation/planning/planning_validator.py
   full_exact_sha_required_for_provisional_implementation: false
   full_exact_sha_required_for_official_wu_03_completion: DEFER_TO_DEPENDENCY_RECONCILIATION_DECISION
 
@@ -209,10 +209,10 @@ parallel_dependency_repartition:
   source: DIRECT_PROJECT_OWNER_INSTRUCTION
   objective: MOVE_ALL_DEPENDENCY_BEARING_DOWNSTREAM_WORK_INTO_WU_03_AND_LEAVE_WU_04_AND_WU_05_AS_INDEPENDENT_LEAF_WORK_UNITS
   supersedes_dependency_placement_only:
-    - docs/planning/0.4.0/WU-02/WU-02.yaml#later_wu_handoffs
-    - docs/planning/0.4.0/index.yaml#WU-04
-    - docs/planning/0.4.0/index.yaml#WU-05
-    - docs/planning/0.4.0/index.yaml#WU-06
+    - developer/planning/0.4.0/WU-02/WU-02.yaml#later_wu_handoffs
+    - developer/planning/0.4.0/index.yaml#WU-04
+    - developer/planning/0.4.0/index.yaml#WU-05
+    - developer/planning/0.4.0/index.yaml#WU-06
   preserves:
     - WU_02_SEMANTIC_SCOPE
     - WU_03_ESCALATION_AND_FRESH_SOLVE_SCOPE

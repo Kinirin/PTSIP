@@ -17,18 +17,18 @@ _POLICY_PATH_RE = re.compile(
 _CURRENT_EXACT_PATHS = (
     "AGENTS.md",
     "developer/profiles/ptsip-repository.yaml",
-    "docs/planning/0.4.0/WU-02/WU-02.yaml",
-    "docs/planning/0.4.0/WU-02/WU-02-P01.yaml",
+    "developer/planning/0.4.0/WU-02/WU-02.yaml",
+    "developer/planning/0.4.0/WU-02/WU-02-P01.yaml",
     "releasenote/project-profile/pp.1.01.md",
     "developer/policy/index.yaml",
     "src/ptsip/specdata/support-policy-index.yaml",
     "schemas/ptsip-authorization-transition.schema.json",
 )
 _CURRENT_GLOBS = (
-    "developer/automation/*.py",
+    "developer/automation/*.py",\n    "developer/automation/planning/*.py",
     "developer/policy/MPD-*.yaml",
     "developer/policy/registries/*.yaml",
-    "developer/policy/schemas/*.json",
+    "developer/policy/schemas/*.json",\n    "developer/planning/schemas/*.json",
     "src/ptsip/**/*.py",
     "src/ptsip/specdata/SFP-*.yaml",
     "src/ptsip/specdata/ptsip-support-*.yaml",

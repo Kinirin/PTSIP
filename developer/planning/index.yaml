@@ -2,7 +2,7 @@ schema_version: ptsip-developer-planning-root/v1
 policy_class: PTSIP_DEVELOPER_POLICY
 plans:
 - plan_version: 0.4.0
-  path: docs/planning/0.4.0/index.yaml
+  path: developer/planning/0.4.0/index.yaml
   status: ACTIVE
   integration_branch: dev/0.3.8
   branch_identity_migration:
@@ -16,19 +16,19 @@ plans:
   entry_routing:
     model: PARALLEL_DEPENDENCY_EXTRACTION
     canonical_plan: planning/0.4.0.md
-    responsibility_control_plane: docs/planning/0.4.0/index.yaml
+    responsibility_control_plane: developer/planning/0.4.0/index.yaml
     branch_creation_parent: dev/0.3.8
     resolver:
-      module: developer.automation.planning_entry_resolver
-      command: python -m developer.automation.planning_entry_resolver
+      module: developer.automation.planning.planning_entry_resolver
+      command: python -m developer.automation.planning.planning_entry_resolver
       branch_source: GIT_CURRENT_BRANCH
       match_mode: EXACT_BRANCH
       unmatched_behavior: FAIL_CLOSED
       ambiguous_behavior: FAIL_CLOSED
     merge_reconciliation:
-      module: developer.automation.planning_merge_reconciler
-      reconcile_command: python -m developer.automation.planning_merge_reconciler
-      merge_command: python -m developer.automation.planning_leaf_merge
+      module: developer.automation.planning.planning_merge_reconciler
+      reconcile_command: python -m developer.automation.planning.planning_merge_reconciler
+      merge_command: python -m developer.automation.planning.planning_leaf_merge
       target_branch: dev/0.3.8
       state_source: WORK_UNIT_DOCUMENTS
       leaf_shared_index_mutation: FORBIDDEN
@@ -42,24 +42,24 @@ plans:
         fallback: FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU
     branch_entrypoints:
     - branch: dev/0.3.8
-      entry_document: docs/planning/0.4.0/index.yaml
+      entry_document: developer/planning/0.4.0/index.yaml
       role: INTEGRATION_CONTROL_PLANE
       state: ACTIVE
     - branch: dev/0.4.0
-      entry_document: docs/planning/0.4.0/index.yaml
+      entry_document: developer/planning/0.4.0/index.yaml
       role: BRANCH_RENAME_SOURCE_ALIAS
       state: ACTIVE
       canonical_branch: dev/0.3.8
       retire_after: BRANCH_RENAME_CONFIRMED
     - branch: dev/0.4.0-WU-04
-      entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
+      entry_document: developer/planning/0.4.0/WU-04/WU-04.yaml
       role: INDEPENDENT_LEAF
       work_unit: WU-04
       state: MERGED
       merged_into: dev/0.4.0
       continuation_branch: dev/0.3.8
     - branch: dev/0.4.0-WU-05
-      entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
+      entry_document: developer/planning/0.4.0/WU-05/WU-05.yaml
       role: INDEPENDENT_LEAF
       work_unit: WU-05
       state: MERGED
@@ -81,10 +81,10 @@ plans:
       responsibility: EXPLICIT_INPUT_POSTCONDITION_VERIFICATION_AND_REMEDIATION_TEST_MODE
   materialized_state:
     mode: DERIVED_CACHE
-    source: docs/planning/0.4.0/index.yaml
-    generated_by: developer.automation.planning_merge_reconciler
+    source: developer/planning/0.4.0/index.yaml
+    generated_by: developer.automation.planning.planning_merge_reconciler
     current_gate: WU-02
-    current_gate_document: docs/planning/0.4.0/WU-02/WU-02.yaml
+    current_gate_document: developer/planning/0.4.0/WU-02/WU-02.yaml
     work_units:
     - id: WU-01
       lifecycle_status: COMPLETE
@@ -96,25 +96,25 @@ plans:
       implementation_authorization_status: AUTHORIZED
       execution_location: INTEGRATION_BRANCH
       branch: dev/0.3.8
-      entry_document: docs/planning/0.4.0/WU-02/WU-02.yaml
+      entry_document: developer/planning/0.4.0/WU-02/WU-02.yaml
     - id: WU-03
       lifecycle_status: ACTIVE
       implementation_authorization_status: AUTHORIZED
       execution_location: INTEGRATION_BRANCH
       branch: dev/0.3.8
-      entry_document: docs/planning/0.4.0/WU-03/WU-03.yaml
+      entry_document: developer/planning/0.4.0/WU-03/WU-03.yaml
     - id: WU-04
       lifecycle_status: ACTIVE
       implementation_authorization_status: AUTHORIZED
       execution_location: INTEGRATION_BRANCH
       branch: dev/0.3.8
-      entry_document: docs/planning/0.4.0/WU-04/WU-04.yaml
+      entry_document: developer/planning/0.4.0/WU-04/WU-04.yaml
     - id: WU-05
       lifecycle_status: ACTIVE
       implementation_authorization_status: AUTHORIZED
       execution_location: INTEGRATION_BRANCH
       branch: dev/0.3.8
-      entry_document: docs/planning/0.4.0/WU-05/WU-05.yaml
+      entry_document: developer/planning/0.4.0/WU-05/WU-05.yaml
     - id: WU-06
       lifecycle_status: NOT_CREATED
       implementation_authorization_status: NOT_AUTHORIZED

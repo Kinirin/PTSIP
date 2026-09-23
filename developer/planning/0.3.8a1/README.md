@@ -68,12 +68,12 @@ Use this rule:
 
 For Tool 0.3.8a1 work, use this order:
 
-1. `docs/planning/0.3.8a1/README.md` — branch scope and implementation boundary.
-2. `docs/planning/0.3.8a1/emergency-implementation-overlay.yaml` — machine-readable implementation scope.
+1. `developer/planning/0.3.8a1/README.md` — branch scope and implementation boundary.
+2. `developer/planning/0.3.8a1/emergency-implementation-overlay.yaml` — machine-readable implementation scope.
 3. `planning/0.3.8/0.3.8a1-emergency-release-gate.yaml` — emergency feature acceptance and verification gate.
 4. `releasenote/tool/0.3.8a1.md` — user-visible prerelease scope.
 
-Consult `docs/planning/0.4.0/**` only for inherited semantic constraints or future 0.4.0 work. Do not infer implementation completion from those documents.
+Consult `developer/planning/0.4.0/**` only for inherited semantic constraints or future 0.4.0 work. Do not infer implementation completion from those documents.
 
 ## Integration boundary
 

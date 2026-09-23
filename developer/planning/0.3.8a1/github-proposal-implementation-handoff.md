@@ -35,7 +35,7 @@ The current coding-agent entry path is machine-resolved through:
 ```text
 Planning Entry Resolver
         ↓
-docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
+developer/planning/0.3.8a1/emergency-implementation-overlay.yaml
 
 Policy Resolver
         ↓
@@ -62,7 +62,7 @@ freshness guard
 `dev/0.3.8a1` resolves exactly to:
 
 ```text
-docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
+developer/planning/0.3.8a1/emergency-implementation-overlay.yaml
 role = EMERGENCY_RELEASE_OVERLAY
 ```
 
