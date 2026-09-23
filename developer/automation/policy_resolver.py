@@ -287,43 +287,19 @@ def get_normative_rule(
     if record is None:
         raise PolicyResolverError(f"unknown normative rule identity: {rule_id}")
 
-    source_path = _configured_path(root, contract, "normative_rule_source_ref")
-    _, source_file = _repository_file(
+    source_path = _configured_path(root, contract, "normative_rule_registry_ref")
+    _repository_file(
         root,
         source_path,
-        label="normative_rule_source_ref",
+        label="normative_rule_registry_ref",
     )
-    lines = source_file.read_text(encoding="utf-8").splitlines(keepends=True)
-    prefix = f"### {rule_id} "
-    starts = [
-        index
-        for index, line in enumerate(lines)
-        if line.startswith(prefix)
-    ]
-    if len(starts) != 1:
-        raise PolicyResolverError(
-            f"{rule_id}: canonical Specification must contain exactly one level-3 rule section"
-        )
-    start = starts[0]
-    end = len(lines)
-    for index in range(start + 1, len(lines)):
-        if lines[index].startswith("### ") or lines[index].startswith("## "):
-            end = index
-            break
-    section_text = "".join(lines[start:end])
-    if not section_text.strip():
-        raise PolicyResolverError(f"{rule_id}: canonical Specification section is empty")
     return {
-        "schema_version": "ptsip-normative-rule-projection/v1",
+        "schema_version": "ptsip-normative-rule-projection/v2",
         "rule_id": rule_id,
         "canonical_source": source_path,
         "registry_record": record,
-        "line_start": start + 1,
-        "line_end": end,
-        "section_text": section_text,
         "projection_authority": False,
     }
-
 
 def _python_tree(path_text: str, candidate: Path) -> ast.Module:
     try:
@@ -583,7 +559,7 @@ def _task_context(
         "normative_rule_source": _configured_path(
             root,
             contract,
-            "normative_rule_source_ref",
+            "normative_rule_registry_ref",
         ),
         "normative_rules": normative_rules,
         "implementation_refs": implementation_refs,

@@ -72,20 +72,17 @@ def test_registry_contains_lifecycle_map_migration_and_authority_rule_ids() -> N
     assert rules["PTSIP-AUT-001"]["applies_to"] == "distributed_coordination_implementation"
 
 
-def test_every_registry_rule_id_has_a_normative_spec_heading() -> None:
+def test_every_registry_rule_id_is_machine_resolvable() -> None:
     registry = _yaml("registry/ptsip-registry.yaml")["ptsip_registry"]
-    spec_text = "\n".join(
-        (ROOT / path).read_text(encoding="utf-8")
-        for path in (
-            "spec/PTSIP-SPEC.md",
-            "spec/PTSIP-RESPONSIBILITY-MAP.md",
-            "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
-        )
-    )
-    headings = set(re.findall(r"^###\s+(PTSIP-[A-Z]+-\d{3})\b", spec_text, flags=re.MULTILINE))
-    registered = {item["id"] for item in registry["rules"]}
-    assert registered <= headings
+    records = registry["rules"]
+    rule_ids = [item["id"] for item in records]
 
+    assert len(rule_ids) == len(set(rule_ids))
+    for item in records:
+        assert isinstance(item["id"], str) and item["id"]
+        assert isinstance(item["title"], str) and item["title"]
+        assert item["severity"] in {"error", "warning", "info"}
+        assert isinstance(item["applies_to"], str) and item["applies_to"]
 
 def _minimal_profile() -> dict[str, object]:
     return {

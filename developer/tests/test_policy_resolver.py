@@ -108,13 +108,14 @@ def test_github_authority_scope_returns_exact_implementation_context(
     assert "tests/ptsip/test_proposed_component.py" in context["test_refs"]
 
 
-def test_normative_rule_projection_returns_exact_section() -> None:
+def test_normative_rule_projection_returns_machine_registry_record() -> None:
     result = get_normative_rule(ROOT, rule_id="PTSIP-AUT-007")
-    assert result["canonical_source"] == "spec/PTSIP-SPEC.md"
+    assert result["schema_version"] == "ptsip-normative-rule-projection/v2"
+    assert result["canonical_source"] == "registry/ptsip-registry.yaml"
     assert result["registry_record"]["id"] == "PTSIP-AUT-007"
     assert result["projection_authority"] is False
-    assert result["section_text"].startswith("### PTSIP-AUT-007")
-    assert "## 10. Action-time synchronization" not in result["section_text"]
+    assert "section_text" not in result
+    assert "line_start" not in result
 
 
 def test_task_context_branch_mismatch_fails_closed(monkeypatch) -> None:

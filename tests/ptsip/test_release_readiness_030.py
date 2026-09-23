@@ -197,15 +197,11 @@ def _release_contract_namespace() -> dict[str, object]:
     return runpy.run_path(str(ROOT / ".github" / "scripts" / "verify_release_contract.py"))
 
 
-def test_release_contract_requires_full_037_normative_snapshot() -> None:
-    release_contract = (ROOT / ".github" / "scripts" / "verify_release_contract.py").read_text(encoding="utf-8")
+def test_release_contract_requires_bound_machine_readable_snapshot() -> None:
+    release_contract = (ROOT / ".github" / "scripts" / "verify_release_contract.py").read_text(
+        encoding="utf-8"
+    )
     for path in (
-        "spec/PTSIP-SPEC.md",
-        "spec/PTSIP-CONFORMANCE.md",
-        "spec/PTSIP-TERMINOLOGY.md",
-        "spec/PTSIP-GOVERNANCE.md",
-        "spec/PTSIP-RESPONSIBILITY-MAP.md",
-        "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
         "schemas/ptsip-profile.schema.json",
         "schemas/ptsip-profile-pp-1.01.schema.json",
         "schemas/ptsip-artifact-evidence.schema.json",
@@ -223,28 +219,34 @@ def test_release_contract_requires_full_037_normative_snapshot() -> None:
     ):
         assert path in release_contract
 
-    assert 'head_object != bound_object' in release_contract
-    assert 'canonical_object != embedded_object' in release_contract
+    assert "head_object != bound_object" in release_contract
+    assert "canonical_object != embedded_object" in release_contract
 
-    spec = (ROOT / "spec" / "PTSIP-SPEC.md").read_text(encoding="utf-8")
-    map_spec = (ROOT / "spec" / "PTSIP-RESPONSIBILITY-MAP.md").read_text(encoding="utf-8")
-    transition_spec = (ROOT / "spec" / "PTSIP-DRAFT-PROFILE-TRANSITION.md").read_text(
-        encoding="utf-8"
+    registry = yaml.safe_load(
+        (ROOT / "registry" / "ptsip-registry.yaml").read_text(encoding="utf-8")
+    )["ptsip_registry"]
+    assert registry["specification"]["version"] == "0.3.7-draft"
+    classifications = {item["id"] for item in registry["classifications"]}
+    assert {"DEVELOPMENT_TOOLING", "DELIVERY", "OPERATIONS"} <= classifications
+    rules = {item["id"] for item in registry["rules"]}
+    assert "PTSIP-RMAP-012" in rules
+    assert "PTSIP-SPC-001" in rules
+
+    transition = yaml.safe_load(
+        (ROOT / "docs" / "Support_policy" / "policy" / "SFP-0010.yaml").read_text(
+            encoding="utf-8"
+        )
     )
+    assert transition["authority_semantics"]["version_and_revision_required_transition_inputs"] is True
+    assert transition["authority_semantics"]["stale_or_conflicting_transition"] == "FAIL_CLOSED"
+
     spec_note = (
         ROOT / "releasenote" / "specification" / "0.3.7-draft.md"
     ).read_text(encoding="utf-8")
-    assert "0.3.6-draft" in spec
-    assert "DEVELOPMENT_TOOLING" in spec
-    assert "DELIVERY" in spec
-    assert "OPERATIONS" in spec
-    assert "PTSIP-RMAP-012" in map_spec
-    assert "Explicit Specification binding and capability authority" in transition_spec
     assert EXPECTED_SPEC_REVISION in spec_note
 
     assert 'expected_spec_version = f"{package_version}-draft"' not in release_contract
     assert 'profile_ptsip.get("version") != spec_version' not in release_contract
-
 
 def test_release_documents_record_independent_current_authorities() -> None:
     registry = yaml.safe_load(
@@ -283,7 +285,7 @@ def test_release_contract_accepts_current_exact_bound_assets() -> None:
     namespace = _release_contract_namespace()
     bound_paths = namespace["RELEASE_BOUND_SPEC_PATHS"]
     assert isinstance(bound_paths, tuple)
-    assert len(bound_paths) == 20
+    assert len(bound_paths) == 14
     main = namespace["main"]
     assert callable(main)
     assert main() == 0
@@ -297,7 +299,7 @@ def test_release_contract_rejects_bound_asset_blob_drift() -> None:
     original_object_id = globals_dict["_git_object_id"]
 
     def fake_object_id(revision: str, path: str) -> str | None:
-        if path == "spec/PTSIP-SPEC.md":
+        if path == "registry/ptsip-registry.yaml":
             return "head-drift" if revision == "HEAD" else "bound-object"
         return original_object_id(revision, path)
 

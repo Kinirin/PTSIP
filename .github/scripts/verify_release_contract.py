@@ -10,14 +10,6 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[2]
-REQUIRED_SPEC_PATHS = (
-    "spec/PTSIP-SPEC.md",
-    "spec/PTSIP-CONFORMANCE.md",
-    "spec/PTSIP-TERMINOLOGY.md",
-    "spec/PTSIP-GOVERNANCE.md",
-    "spec/PTSIP-RESPONSIBILITY-MAP.md",
-    "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md",
-)
 CANONICAL_MACHINE_READABLE_PATHS = (
     "schemas/ptsip-profile.schema.json",
     "schemas/ptsip-profile-pp-1.01.schema.json",
@@ -37,7 +29,6 @@ EMBEDDED_MACHINE_READABLE_PATHS = (
     "src/ptsip/specdata/ptsip-registry.yaml",
 )
 RELEASE_BOUND_SPEC_PATHS = (
-    *REQUIRED_SPEC_PATHS,
     *CANONICAL_MACHINE_READABLE_PATHS,
     *EMBEDDED_MACHINE_READABLE_PATHS,
 )

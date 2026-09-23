@@ -204,8 +204,8 @@ def test_support_policy_index_has_exact_21_targets() -> None:
     )
 
 
-def test_frozen_specification_asset_remains_byte_identical() -> None:
-    path = "spec/PTSIP-DRAFT-PROFILE-TRANSITION.md"
+def test_frozen_machine_specification_registry_remains_byte_identical() -> None:
+    path = "registry/ptsip-registry.yaml"
     revision = "3c47816770d194ae42f98faedc911d980db0e62a"
     current = subprocess.run(
         ["git", "rev-parse", f"HEAD:{path}"],
