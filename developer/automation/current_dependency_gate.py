@@ -25,10 +25,12 @@ _CURRENT_EXACT_PATHS = (
     "schemas/ptsip-authorization-transition.schema.json",
 )
 _CURRENT_GLOBS = (
-    "developer/automation/*.py",\n    "developer/automation/planning/*.py",
+    "developer/automation/*.py",
+    "developer/automation/planning/*.py",
     "developer/policy/MPD-*.yaml",
     "developer/policy/registries/*.yaml",
-    "developer/policy/schemas/*.json",\n    "developer/planning/schemas/*.json",
+    "developer/policy/schemas/*.json",
+    "developer/planning/schemas/*.json",
     "src/ptsip/**/*.py",
     "src/ptsip/specdata/SFP-*.yaml",
     "src/ptsip/specdata/ptsip-support-*.yaml",
