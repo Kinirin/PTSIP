@@ -18,6 +18,7 @@ default_scopes:
 reference_scan_exclusions:
   - developer/automation/markdown_cleanup_workflow.yaml
   - developer/policy/MPD-0012.yaml
+  - developer/tests/test_markdown_cleanup.py
 
 apply_requires_policy_status: ACTIVE
 

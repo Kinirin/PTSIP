@@ -70,6 +70,7 @@ def test_current_cleanup_workflow_is_machine_valid() -> None:
 
     assert workflow["projection_authority"] is False
     assert workflow["default_scopes"] == ["adoption", "agents", "spec"]
+    assert "developer/tests/test_markdown_cleanup.py" in workflow["reference_scan_exclusions"]
     assert [item["path"] for item in workflow["targets"]] == [
         "adoption/ADOPTION-GUIDE.md",
         "agents/AGENT-CONTRACT.md",
