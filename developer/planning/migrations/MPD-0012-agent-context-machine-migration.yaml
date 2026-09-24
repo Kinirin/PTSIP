@@ -250,7 +250,7 @@ phases:
       - MISSING_OPERATION_OR_GATE_CANDIDATES
 
   - id: M2
-    status: IMPLEMENTED_VALIDATION_PENDING
+    status: COMPLETE
     name: AGENT_CONTRACT_PLANE_COMPLETION
     mutation_scope: src/agent_contracts/
     prerequisites:
@@ -267,7 +267,7 @@ phases:
       - UNBOUNDED_FULL_CORPUS_LOOKUP
 
   - id: M3
-    status: IMPLEMENTED_VALIDATION_PENDING
+    status: COMPLETE
     name: STATUS_AND_MEMORY_CONTEXT_REPLACEMENT
     mutation_scope: STATE_ROUTING
     prerequisites:
@@ -282,7 +282,7 @@ phases:
       exact_historical_retention_format: OWNER_DECISION_REQUIRED
 
   - id: M4
-    status: IMPLEMENTED_VALIDATION_PENDING
+    status: COMPLETE
     name: AGENT_ENTRY_COST_REDUCTION
     mutation_scope: AGENT_ROUTING
     prerequisites:
@@ -298,7 +298,7 @@ phases:
       operation_specific_context_is_bounded: true
 
   - id: M5
-    status: VALIDATION_PENDING
+    status: COMPLETE
     name: INDEPENDENT_MACHINE_PLANE_VERIFICATION
     prerequisites:
       - M2_COMPLETE
@@ -317,6 +317,7 @@ phases:
       - UNKNOWN
 
   - id: M6
+    status: PREFLIGHT_PENDING
     name: AUTHORITY_ACTIVATION
     prerequisites:
       - M5_ALL_PASS
@@ -378,3 +379,17 @@ completion_definition:
   context_cost_migration_complete_when:
     - M8_ALL_PASS
   physical_markdown_deletion_is_not_the_definition_of_semantic_completion: true
+
+verification_evidence:
+  m5_independent_machine_plane:
+    source_sha: 48c44448cdbb19fa5c666ad680e85ee4aa72e828
+    workflow_run_id: 36031848090
+    workflow_job_id: 107743172276
+    result: PASS
+    stable_rule_gap_expected: 42
+    stable_rule_gap_missing: 0
+    agent_contract_specs: 15
+    agent_contract_rules: 156
+    agent_contract_vocabularies: 5
+    representative_operation_failures: 0
+    bounded_state_routing_failures: 0

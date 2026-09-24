@@ -61,6 +61,14 @@ jobs:
             throw "Developer policy validation failed."
           }
 
+          $activationApproval = "developer/policy/approvals/MPA-20260925-MPD-0012-AGENT-CONTEXT-ACTIVATION.yaml"
+          if (Test-Path -LiteralPath $activationApproval) {
+            & $env:POLICY_LIFECYCLE_PYTHON -m developer.automation.policy_identity_lifecycle status-preflight MPD-0012 --approval-ref $activationApproval
+            if ($LASTEXITCODE -ne 0) {
+              throw "MPD-0012 activation status preflight failed."
+            }
+          }
+
   planning-migration-verify:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'planning-migration') }}
     runs-on: [self-hosted, Windows, X64]
