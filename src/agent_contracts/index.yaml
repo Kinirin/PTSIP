@@ -29,6 +29,13 @@ specs:
   - {id: PTSIP-AGENT-SPEC-CONFORMANCE, ref: spec/conformance.yaml}
   - {id: PTSIP-AGENT-SPEC-GOVERNANCE, ref: spec/governance.yaml}
   - {id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION, ref: spec/profile-transition.yaml}
+  - {id: PTSIP-AGENT-SPEC-REPOSITORY-BOUNDARIES, ref: spec/repository-boundaries.yaml}
+  - {id: PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP-DETAIL, ref: spec/responsibility-map-detail.yaml}
+  - {id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION-DETAIL, ref: spec/profile-transition-detail.yaml}
+  - {id: PTSIP-AGENT-SPEC-BEHAVIOR, ref: spec/agent-behavior.yaml}
+  - {id: PTSIP-AGENT-SPEC-ADOPTION-PROCEDURE, ref: spec/adoption-procedure.yaml}
+  - {id: PTSIP-AGENT-SPEC-SPECIFICATION-GOVERNANCE, ref: spec/specification-governance.yaml}
+  - {id: PTSIP-AGENT-SPEC-CONFORMANCE-DETAIL, ref: spec/conformance-detail.yaml}
 operations:
   - {id: PTSIP-OP-ADOPT-001, ref: operations/adopt.yaml}
   - {id: PTSIP-OP-VALIDATE-001, ref: operations/validate.yaml}
@@ -103,3 +110,4 @@ vocabularies:
   - {id: PTSIP-VOCAB-OUTCOMES, ref: vocabulary/outcomes.yaml}
   - {id: PTSIP-VOCAB-DIAGNOSTICS, ref: vocabulary/diagnostics.yaml}
   - {id: PTSIP-VOCAB-AUTHORITY, ref: vocabulary/authority.yaml}
+  - {id: PTSIP-VOCAB-TERMINOLOGY, ref: vocabulary/terminology.yaml}

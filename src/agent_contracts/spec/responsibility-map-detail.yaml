@@ -1,0 +1,92 @@
+{
+  "format": "ptsip-agent-spec/v2",
+  "id": "PTSIP-AGENT-SPEC-RESPONSIBILITY-MAP-DETAIL",
+  "status": "CANDIDATE",
+  "scope": "Detailed typed relationship, associated artifact, declaration authority, and materialization rules.",
+  "rules": [
+    {
+      "rule_id": "PTSIP-RMAP-006",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-006",
+      "predicate": "normative_contract_text",
+      "object": "A Responsibility Map typed relationship is a project-declared directed semantic edge:\n\n```text\nsource --TYPE--> target\n```\n\nThe source is the responsibility/artifact that depends on, acts on, derives, verifies, delivers, operates, documents, specifies, or governs the target according to `TYPE`.\n\nA relationship MUST identify a valid declared source endpoint, valid declared target endpoint, and one canonical relationship type.\n\nRelationship direction MUST be stable and MUST NOT be inferred from YAML/JSON nesting or endpoint classification.\n\nA Tool MUST NOT fabricate unresolved endpoints merely to preserve an edge."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-007",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-007",
+      "predicate": "normative_contract_text",
+      "object": "The canonical Tool `0.3.6` Responsibility Map relationship vocabulary is exactly:\n\n#### Dependency/use\n\n- `IMPORTS` — source imports target implementation/module/package semantics.\n- `LINKS` — source links target as build/link implementation dependency.\n- `LOADS` — source dynamically loads target implementation/artifact.\n- `INVOKES` — source executes or triggers target responsibility/process.\n- `READS` — source consumes target as data, configuration, contract, or input rather than executable implementation reuse.\n\n#### Derivation/build/delivery\n\n- `GENERATES` — source derives generated source, data, metadata, configuration, or artifact from or for target.\n- `BUILDS` — source materializes or assembles a build output/build unit for target.\n- `PACKAGES` — source includes or assembles target content into a package/distribution boundary.\n- `PUBLISHES` — source publishes or distributes a release target associated with target responsibility.\n- `DEPLOYS` — source places or activates a release target associated with target at a destination environment.\n\n#### Verification/operations\n\n- `VERIFIES` — source checks or establishes correctness, conformance, acceptance, compatibility, or policy satisfaction of target.\n- `MANAGES` — source performs ongoing post-delivery-handoff operational management of target/deployed state.\n\n#### Documentation/authority\n\n- `DOCUMENTS` — source provides descriptive/explanatory information about target.\n- `SPECIFIES` — source defines normative technical semantics, required contract meaning, or authoritative interface/behavior expectations for target.\n- `GOVERNS` — source carries project authority, lifecycle policy, decision control, or governance rules over target.\n\n`PRODUCES`, `SUPPORTS`, `USES`, and generic `DEPENDS_ON` are not canonical Tool `0.3.6` Responsibility Map relationship types. Implementations MUST prefer the more specific canonical meaning when one is available."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-008",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-008",
+      "predicate": "normative_contract_text",
+      "object": "Responsibility Map relationships are project-owned architecture declaration. Evidence edges are observed/declared/inferred facts collected for analysis. Dependency policy is permission/constraint metadata.\n\nThese MUST remain separate:\n\n```text\nobserved/inferred evidence\n    -> may support or contradict relationship proposal\n\nproject-owner declaration\n    -> typed Responsibility Map relationship\n\npolicy\n    -> constrains what is allowed\n```\n\nAn evidence edge MUST NOT silently become a project-owned relationship solely because both vocabularies contain related terms.\n\nA declared relationship MUST NOT be treated as proof that observed repository behavior agrees.\n\nA typed relationship MUST NOT be interpreted as permission to violate a PTSIP mandatory rule.\n\nAn allow-policy entry MUST NOT be interpreted as proof that the relationship exists.\n\nThe evidence vocabulary retains `TESTS`. Responsibility Map v2 uses the broader declared relationship `VERIFIES`. An observed/declared evidence `TESTS` edge MAY support a `VERIFIES` migration proposal, but MUST NOT automatically create that project-owned edge."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-009",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-009",
+      "predicate": "normative_contract_text",
+      "object": "An **Associated Artifact** is a project-owned, non-component support surface subordinate to exactly one classified anchor component.\n\nAn associated artifact MUST:\n\n1. have stable Responsibility Map identity;\n2. have explicit project-owned scope/selectors and purpose;\n3. have exactly one anchor component;\n4. be non-executable in its architectural role;\n5. have no independently governable primary lifecycle responsibility;\n6. have no independent release/compatibility lifecycle that must be governed separately from its anchor;\n7. participate in at least one typed relationship connecting it to its anchor;\n8. not hide a mandatory dependency, packaging, delivery, operations, or conformance responsibility.\n\nAn associated artifact has no PTSIP `classification` of its own and no component `roles` of its own.\n\nIt MUST NOT inherit its anchor's classification merely to make validation convenient.\n\nFile format, path, extension, declarative form, or lack of executable permission is insufficient to establish associated-artifact eligibility."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-010",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-010",
+      "predicate": "normative_contract_text",
+      "object": "Every associated artifact has exactly one semantic **anchor component**.\n\nThe anchor identifies the coherent classified responsibility whose lifecycle explains why the associated artifact exists and changes. It does not make the associated artifact a component and does not copy classification onto it.\n\nComponent IDs and associated-artifact IDs MUST share one map-wide unambiguous endpoint identity namespace.\n\nA component ID and associated-artifact ID MUST NOT collide.\n\nA relationship endpoint MUST resolve to one declared component or one declared associated artifact.\n\nThe exact serialization of the anchor relationship is defined by the Responsibility Map v2 JSON Schema; the one-anchor semantic is mandatory."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-011",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-011",
+      "predicate": "normative_contract_text",
+      "object": "An associated artifact MUST be promoted/re-evaluated as a PTSIP Component when it acquires independently governable lifecycle responsibility under the WU-01 mixed-lifecycle criteria.\n\nPromotion/re-evaluation is required when, for example:\n\n- the artifact becomes executable responsibility in its own architectural role;\n- it has independent release or compatibility obligations;\n- it can evolve/govern independently from its anchor in a lifecycle-relevant way;\n- it carries independently owned Delivery or Operations responsibility;\n- it carries cross-lifecycle authority that cannot coherently remain subordinate to one anchor.\n\nIf the responsibility becomes an independently governed, non-executable, non-owning, lifecycle-independent cross-lifecycle contract, it MUST be evaluated for `NEUTRAL_CONTRACT`.\n\nIf the responsibility becomes independently owned by Product, Development Tooling, Delivery, or Operations, it MUST be evaluated as a classified component under that lifecycle.\n\nAn associated artifact MAY have typed relationships to components other than its anchor only while it remains subordinate to the anchor and does not acquire independent cross-lifecycle authority."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-012",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-012",
+      "predicate": "normative_contract_text",
+      "object": "Tool `0.3.5` fields such as `consumers`, `analysis_inputs`, and untyped `component_dependency_policy` relations MAY be used as migration evidence.\n\nThey MUST NOT be blindly translated into canonical typed relationships.\n\nIn particular:\n\n- `consumers` does not distinguish `IMPORTS`, `READS`, `LOADS`, `INVOKES`, or another consumption mechanism;\n- `analysis_inputs` may support `READS`, `VERIFIES`, or another relation depending on stronger evidence;\n- an allow/deny `from`/`to` dependency-policy entry declares policy, not necessarily an actual architecture edge.\n\nMigration tooling SHOULD combine legacy declaration with observed/inferred repository evidence and produce typed relationship/associated-artifact proposals for project-owner confirmation.\n\nIf a confirmed legacy fact cannot be represented without semantic loss, migration MUST stop rather than dropping it or replacing it with a generic relationship."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-013",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-013",
+      "predicate": "normative_contract_text",
+      "object": "Responsibility Map declaration source and PTSIP lifecycle classification are independent semantic axes.\n\n`source_mode` identifies how the project declaration is sourced:\n\n```text\nexplicit\ntemplate\nhybrid\n```\n\nIt MUST NOT be interpreted as a lifecycle classification, responsibility role, relationship type, VPMS Verification Purpose, evidence provenance value, or substitute for `classification`.\n\nA component's canonical lifecycle ownership MUST have the same meaning regardless of whether that component declaration originated from an explicit profile, an explicitly selected template revision, or a hybrid project override."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-014",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-014",
+      "predicate": "normative_contract_text",
+      "object": "Template selection MUST be an explicit project-owned architecture decision.\n\nA template-backed declaration MUST identify an exact supported template identity using stable template ID plus immutable/versioned revision.\n\nThe Tool MUST NOT select or change the selected template solely from repository path, language, framework, manifest, package manager, workflow provider, candidate confidence, or other discovery evidence.\n\nFor `template` mode, the project owns the decision to adopt the exact selected template revision, and that immutable revision supplies the adopted declaration content.\n\nFor `hybrid` mode, the project owns both exact template selection and its explicit stable-ID replacement, extension, and removal decisions.\n\nA later template revision MUST NOT silently change the Canonical Effective Responsibility Map of a project still bound to an earlier revision."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-015",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-015",
+      "predicate": "normative_contract_text",
+      "object": "Tool `0.3.6` hybrid materialization MUST apply project-owned stable-ID declarations over the selected immutable template declaration.\n\nPrecedence is:\n\n```text\nproject replacement / extension / removal\n    > selected immutable template declaration\n```\n\nFor a template entity replaced by the same project-owned stable ID, the project declaration owns the entire resulting entity. Tool `0.3.6` MUST NOT perform implicit field-level inheritance that fragments declaration authority inside that entity.\n\nA project-owned new stable ID is an extension. A project-owned removal is an explicit decision not to include the selected template entity in the effective map.\n\nMaterialization MAY expose derived review provenance such as `PROJECT_EXPLICIT`, `TEMPLATE`, `PROJECT_OVERRIDE`, `PROJECT_EXTENSION`, and `PROJECT_REMOVAL`, but that provenance MUST remain distinct from lifecycle classification and need not be persisted into the canonical Project Profile."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-016",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-016",
+      "predicate": "normative_contract_text",
+      "object": "The materializer MUST resolve an already-declared `explicit`, `template`, or `hybrid` source into one **Canonical Effective Responsibility Map** without acquiring architecture authority.\n\nThe Canonical Effective Responsibility Map is the common downstream semantic representation of:\n\n- components;\n- associated artifacts;\n- typed relationships;\n- applicable component dependency policy; and\n- project policies.\n\nThe original source declaration and exact template identity, where applicable, MUST remain distinguishable from the derived effective view.\n\nThe materializer MUST NOT:\n\n- infer missing architecture;\n- auto-select a template;\n- change lifecycle classification to make validation pass;\n- fabricate components, artifacts, roles, or relationships;\n- silently repair or delete dangling relationships;\n- silently cascade removals into additional project architecture changes;\n- resolve project/template semantic conflicts using confidence or path heuristics;\n- mutate the source profile merely to obtain a valid effective map.\n\nIf materialization produces an invalid effective endpoint, anchor, identity, selector, or other canonical Responsibility Map condition, the operation MUST fail closed and report the inconsistency for project-owner action.\n\nImplementations MAY calculate a deterministic semantic digest of the Canonical Effective Responsibility Map for reproducibility, comparison, stale-state detection, or migration preview. Such a digest MUST NOT replace declaration provenance or become architecture authority."
+    },
+    {
+      "rule_id": "PTSIP-RMAP-017",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-RMAP-017",
+      "predicate": "normative_contract_text",
+      "object": "An accepted clarification/adoption decision produced through an authorized project decision process MAY act as project-owned declaration authority only for the exact architecture facts accepted by that decision.\n\nRepository discovery, candidate identity, selector/path heuristics, confidence, observed evidence, or materialization MUST NOT independently authorize that declaration change or any source-mode transition.\n\nWhen the selected source mode is `template` and the accepted decision cannot be represented without a project-owned declaration, a Tool MAY change the source mode to `hybrid` only as the representation of that accepted project decision. The Tool MUST preserve the exact selected template ID and immutable revision and MUST encode only the minimum stable-ID project extension or replacement required by the accepted decision.\n\nFor an existing `hybrid` source, safe apply MUST preserve unrelated project overrides and removals and MUST change only the exact project-owned declaration covered by the accepted decision.\n\nSafe apply MUST NOT:\n\n- materialize the whole Canonical Effective Responsibility Map back into project-owned `explicit` source;\n- copy template-owned entities into project overrides merely because they exist in the effective map;\n- select or change a template ID or revision without a separate project-owned architecture decision;\n- infer unrelated components, associated artifacts, relationships, overrides, or removals;\n- silently overwrite a conflicting existing project declaration;\n- partially mutate the source when the accepted change cannot be represented losslessly.\n\nIf a conflict, stale declaration, invalid target state, or other condition prevents lossless representation of the accepted decision, the operation MUST fail closed without source mutation and report the conflict for project-owner action.\n\nThis safe-apply authority belongs to the accepted project decision and the mutation layer that encodes it. It does not transfer architecture authority to the materializer, which remains deterministic and non-authoritative under `PTSIP-RMAP-016`."
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "format": "ptsip-agent-spec/v2",
+  "id": "PTSIP-AGENT-SPEC-BEHAVIOR",
+  "status": "CANDIDATE",
+  "scope": "Mandatory coding-agent behavior when operating on a PTSIP-governed repository.",
+  "rules": [
+    {
+      "rule_id": "PTSIP-AGENT-BEH-001",
+      "modality": "INVARIANT",
+      "subject": "classify_before_modifying",
+      "predicate": "required_behavior",
+      "object": "Classify before modifying. Before adding, splitting, relocating, or changing an in-scope project responsibility, determine its primary lifecycle ownership: `PRODUCT`, `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or `NEUTRAL_CONTRACT`."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-002",
+      "modality": "INVARIANT",
+      "subject": "use_governing_lifecycle_obligation",
+      "predicate": "required_behavior",
+      "object": "Use governing lifecycle obligation. Classification follows why the responsibility must exist/change/remain compatible/execute/retire, not filename, directory, framework, language, executable status, workflow provider, or test status."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-003",
+      "modality": "INVARIANT",
+      "subject": "purpose_before_reuse",
+      "predicate": "required_behavior",
+      "object": "Purpose before reuse. Do not create cross-lifecycle executable sharing merely to remove duplicate code."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-004",
+      "modality": "INVARIANT",
+      "subject": "no_product_runtime_dependency_on_non_product_implementation",
+      "predicate": "required_behavior",
+      "object": "No Product runtime dependency on non-Product implementation. Product code must not import, link, load, vendor, or otherwise require `DEVELOPMENT_TOOLING`, `DELIVERY`, or `OPERATIONS` implementation at Product runtime or as shipped implementation."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-005",
+      "modality": "INVARIANT",
+      "subject": "do_not_package_non_product_lifecycle_implementation_with_product",
+      "predicate": "required_behavior",
+      "object": "Do not package non-Product lifecycle implementation with Product. Development-only, Delivery-only, and Operations-only implementation/dependencies stay outside Product artifacts unless ownership is explicitly redesigned as `PRODUCT`."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-006",
+      "modality": "INVARIANT",
+      "subject": "separate_artifact_owner_from_producer",
+      "predicate": "required_behavior",
+      "object": "Separate artifact owner from producer. Development Tooling or Delivery may generate/build/package/publish a Product Artifact. Inspect artifact ownership, contents, derivation, and shipping scope rather than classifying output from producer ownership alone."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-007",
+      "modality": "INVARIANT",
+      "subject": "prefer_contract_sharing",
+      "predicate": "required_behavior",
+      "object": "Prefer contract sharing. When lifecycles need the same semantics, prefer valid `NEUTRAL_CONTRACT`, generated lifecycle-owned implementations, or separately governed external/platform contracts over one shared executable project-local implementation."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-008",
+      "modality": "INVARIANT",
+      "subject": "preserve_independently_resolvable_lifecycle_environments",
+      "predicate": "required_behavior",
+      "object": "Preserve independently resolvable lifecycle environments. Do not solve missing Product dependencies by importing from Development Tooling, Delivery, or Operations environments, or vice versa."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-009",
+      "modality": "INVARIANT",
+      "subject": "preserve_lifecycle_independence",
+      "predicate": "required_behavior",
+      "object": "Preserve lifecycle independence. A change in one lifecycle should not force unrelated lifecycle compatibility/version/publication obligations unless a release-relevant artifact, compatibility obligation, or explicitly coupled contract changes."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-010",
+      "modality": "INVARIANT",
+      "subject": "never_treat_generic_names_as_ownerless",
+      "predicate": "required_behavior",
+      "object": "Never treat generic names as ownerless. `common`, `shared`, `core`, `utils`, and similar names do not create neutral ownership."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-011",
+      "modality": "INVARIANT",
+      "subject": "do_not_invent_extra_architecture_classifications",
+      "predicate": "required_behavior",
+      "object": "Do not invent extra architecture classifications. External libraries, platforms, unresolved targets, confidence values, and workflow states are not PTSIP classifications."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-012",
+      "modality": "INVARIANT",
+      "subject": "read_the_selected_project_profile_when_one_exists",
+      "predicate": "required_behavior",
+      "object": "Read the selected Project Profile when one exists. A Project Profile is project-owned architecture declaration state; it is not observed proof and does not become globally fresh merely because it is locally complete."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-013",
+      "modality": "INVARIANT",
+      "subject": "resolve_the_bound_specification",
+      "predicate": "required_behavior",
+      "object": "Resolve the bound Specification. Use the exact source/family/revision declared by the Tool or profile. Do not silently substitute a different normative snapshot."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-014",
+      "modality": "INVARIANT",
+      "subject": "do_not_create_waivers_for_mandatory_violations",
+      "predicate": "required_behavior",
+      "object": "Do not create waivers for mandatory violations. A project migration/debt record does not convert `NON_CONFORMANT` into `CONFORMANT`."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-015",
+      "modality": "INVARIANT",
+      "subject": "preserve_uncertainty",
+      "predicate": "required_behavior",
+      "object": "Preserve uncertainty. `UNKNOWN`, `CONFLICT`, and `INCOMPLETE` are decision/evaluation states, not classifications."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-016",
+      "modality": "INVARIANT",
+      "subject": "preserve_evidence_provenance",
+      "predicate": "required_behavior",
+      "object": "Preserve evidence provenance. Keep `DECLARED`, `OBSERVED`, and `INFERRED` distinguishable."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-017",
+      "modality": "INVARIANT",
+      "subject": "do_not_override_contradictory_evidence",
+      "predicate": "required_behavior",
+      "object": "Do not override contradictory evidence. Report contradictions among declarations, dependency/artifact/lifecycle evidence, imported evidence, and agent review."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-018",
+      "modality": "INVARIANT",
+      "subject": "do_not_equate_zero_findings_with_conformance",
+      "predicate": "required_behavior",
+      "object": "Do not equate zero findings with conformance. A blocking evidence gap produces `INCOMPLETE` unless a definite mandatory violation already establishes `NON_CONFORMANT`."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-019",
+      "modality": "INVARIANT",
+      "subject": "do_not_let_project_local_policy_weaken_universal_ptsip",
+      "predicate": "required_behavior",
+      "object": "Do not let project-local policy weaken universal PTSIP. Project policy may be stricter, never weaker."
+    },
+    {
+      "rule_id": "PTSIP-AGENT-BEH-020",
+      "modality": "INVARIANT",
+      "subject": "do_not_invent_architecture_intent",
+      "predicate": "required_behavior",
+      "object": "Do not invent architecture intent. Candidate discovery, path names, heuristics, template similarity, or agent confidence may support a proposal but do not authorize a project-owner architecture decision."
+    }
+  ]
+}

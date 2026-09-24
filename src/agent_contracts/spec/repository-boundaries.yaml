@@ -1,0 +1,148 @@
+{
+  "format": "ptsip-agent-spec/v2",
+  "id": "PTSIP-AGENT-SPEC-REPOSITORY-BOUNDARIES",
+  "status": "CANDIDATE",
+  "scope": "Repository dependency, packaging, lifecycle, evidence, specification binding, and diagnostic rules.",
+  "rules": [
+    {
+      "rule_id": "PTSIP-DEP-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-DEP-001",
+      "predicate": "normative_contract_text",
+      "object": "A Product component MUST NOT import, link, load, vendor, or otherwise depend on `DEVELOPMENT_TOOLING`, `DELIVERY`, or `OPERATIONS` implementation as a Product runtime or shipped implementation dependency.\n\nThis rule does not prohibit a Product component from consuming a valid `NEUTRAL_CONTRACT`, external platform contract, generated Product implementation, or explicit Product-owned artifact."
+    },
+    {
+      "rule_id": "PTSIP-DEP-002",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-DEP-002",
+      "predicate": "normative_contract_text",
+      "object": "Development Tooling MAY inspect, parse, validate, transform, generate, test, or migrate Product source/artifacts when those are bounded development activities and do not create Product runtime/package coupling.\n\nDelivery MAY build, package, sign, publish, promote, or deploy Product release targets without becoming Product-owned.\n\nOperations MAY inspect and manage deployed Product state as bounded operational responsibility without becoming Product-owned.\n\nDirection alone does not authorize executable implementation reuse."
+    },
+    {
+      "rule_id": "PTSIP-DEP-003",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-DEP-003",
+      "predicate": "normative_contract_text",
+      "object": "A project-local executable package used directly as implementation by multiple primary lifecycle classifications SHOULD NOT be introduced unless an explicit architecture decision demonstrates that the ownership and release/runtime obligations remain coherent. Prefer lifecycle-owned implementations, generated separate implementations, external/platform dependencies, or a `NEUTRAL_CONTRACT` when appropriate."
+    },
+    {
+      "rule_id": "PTSIP-PKG-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-PKG-001",
+      "predicate": "normative_contract_text",
+      "object": "`DEVELOPMENT_TOOLING`, `DELIVERY`, and `OPERATIONS` implementation and their lifecycle-only dependencies MUST NOT be included in Product deployable/distributable artifacts unless their ownership has explicitly changed to `PRODUCT` through a valid architecture decision."
+    },
+    {
+      "rule_id": "PTSIP-ART-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-ART-001",
+      "predicate": "normative_contract_text",
+      "object": "Artifact owner MUST be evaluated independently from producer ownership. Automated packaging evidence used for strict packaging evaluation MUST be sufficient to establish Product Artifact contents or equivalent packaging truth and SHOULD preserve producer/derivation relationships."
+    },
+    {
+      "rule_id": "PTSIP-BLD-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-BLD-001",
+      "predicate": "normative_contract_text",
+      "object": "Each executable lifecycle responsibility MUST have determinable direct dependencies without relying on accidental undeclared state from another lifecycle. PTSIP does not require identical build mechanisms or physically separate repositories/environments."
+    },
+    {
+      "rule_id": "PTSIP-BLD-002",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-BLD-002",
+      "predicate": "normative_contract_text",
+      "object": "A Product build MUST NOT require Development Tooling, Delivery, or Operations packages merely because those responsibilities share a repository. Bounded build/delivery tooling MAY consume declared Product source/contracts/artifacts as inputs."
+    },
+    {
+      "rule_id": "PTSIP-LCY-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-LCY-001",
+      "predicate": "normative_contract_text",
+      "object": "Versioning, release, delivery, operations, and compatibility decisions MUST be governable according to the lifecycle that owns them. A change in one lifecycle SHOULD NOT force an unrelated lifecycle release unless it changes a release-relevant artifact, compatibility obligation, or explicitly coupled contract.\n\nA CI/workflow trigger alone is not proof of lifecycle ownership."
+    },
+    {
+      "rule_id": "PTSIP-LCY-002",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-LCY-002",
+      "predicate": "normative_contract_text",
+      "object": "Backward-compatibility obligations MUST be owned by the lifecycle whose consumers require them. Product compatibility requirements MUST NOT automatically freeze Development-Tooling-only, Delivery-only, or Operations-only interfaces with no Product consumer."
+    },
+    {
+      "rule_id": "PTSIP-CMN-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-CMN-001",
+      "predicate": "normative_contract_text",
+      "object": "A package named `common`, `shared`, `core`, `utils`, or equivalent MUST NOT be exempt from PTSIP classification. Generic naming does not create neutral ownership."
+    },
+    {
+      "rule_id": "PTSIP-CNT-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-CNT-001",
+      "predicate": "normative_contract_text",
+      "object": "When multiple lifecycles need shared semantics, projects SHOULD prefer a valid `NEUTRAL_CONTRACT`, generated lifecycle-owned implementations, or separately governed external/platform contracts over one shared project-local executable implementation."
+    },
+    {
+      "rule_id": "PTSIP-POL-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-POL-001",
+      "predicate": "normative_contract_text",
+      "object": "A project MAY declare stricter component-to-component dependency policy. Project policy MUST NOT authorize behavior prohibited by a universal PTSIP `MUST`/`MUST NOT`."
+    },
+    {
+      "rule_id": "PTSIP-INT-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-INT-001",
+      "predicate": "normative_contract_text",
+      "object": "External PTSIP Tooling MUST NOT require PTSIP-specific repository directories merely to operate. Inspection/Pilot operations MUST be read-only by default. Repository writes require explicit user action or explicit write-enabled mode. Tool-owned cache, reports, and local operational state SHOULD live outside the Consumer Repository by default."
+    },
+    {
+      "rule_id": "PTSIP-SPC-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-SPC-001",
+      "predicate": "normative_contract_text",
+      "object": "A machine-readable Project Profile used for automated conformance MUST identify the canonical Specification source and family/version. Enforced Conformance against a mutable draft MUST bind an exact immutable Specification revision.\n\nA Reference Tool implementing a mutable draft MUST report the exact revision it implements and MUST NOT silently evaluate against a different normative revision."
+    },
+    {
+      "rule_id": "PTSIP-EVD-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-EVD-001",
+      "predicate": "normative_contract_text",
+      "object": "Automated conformance or migration evidence MUST identify the Consumer Repository revision or equivalent snapshot. If relevant repository state changes during collection, evidence MUST be invalidated, marked incomplete, or otherwise prevented from supporting stale architecture/conformance claims."
+    },
+    {
+      "rule_id": "PTSIP-EVD-002",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-EVD-002",
+      "predicate": "normative_contract_text",
+      "object": "A Project Profile is intended architecture declaration, not proof of actual repository behavior. Validators MUST distinguish declaration from observed evidence and report material contradictions.\n\nAgent/heuristic decisions MAY assist review but MUST NOT silently override project declaration or transform unresolved evidence into architecture/conformance fact."
+    },
+    {
+      "rule_id": "PTSIP-EVD-003",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-EVD-003",
+      "predicate": "normative_contract_text",
+      "object": "A strict conformance claim MUST NOT be derived solely from absence of detected violations. A coverage gap is blocking when it can conceal an applicable mandatory-rule result. Blocking gaps prevent `CONFORMANT` unless a definite violation already establishes `NON_CONFORMANT`.\n\nPTSIP defines no universal unresolved-count or coverage-percentage threshold; sufficiency is rule-relative."
+    },
+    {
+      "rule_id": "PTSIP-EVD-004",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-EVD-004",
+      "predicate": "normative_contract_text",
+      "object": "Automated evidence MUST preserve enough information to distinguish relationship type, lifecycle phase when known, resolution state, provenance, source/target identity when resolvable, and unresolved uncertainty.\n\nCanonical provenance is `DECLARED`, `OBSERVED`, `INFERRED`. Unknown/dynamic/multi-phase evidence MUST NOT be forced into guessed values merely to complete evaluation."
+    },
+    {
+      "rule_id": "PTSIP-EVD-005",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-EVD-005",
+      "predicate": "normative_contract_text",
+      "object": "Candidate discovery MAY use invocation, manifest, dependency, packaging, workflow/build, delivery, operations, and explicit project-declaration evidence.\n\nPath/name heuristics MAY remain low-confidence evidence but MUST NOT dominate stronger evidence or become project architecture authority.\n\nDiscovery MAY propose lifecycle classification, role, relationship, associated-artifact, or component-split candidates. It MUST NOT silently finalize project ownership."
+    },
+    {
+      "rule_id": "PTSIP-DIA-001",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-DIA-001",
+      "predicate": "normative_contract_text",
+      "object": "Automated diagnostics MUST distinguish diagnostic instance identity from stable PTSIP rule identity. Diagnostics SHOULD preserve rule ID, outcome effect, severity, evidence references, component endpoints where applicable, evaluator/provenance data, and reviewable message text."
+    }
+  ]
+}

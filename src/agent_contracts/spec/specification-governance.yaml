@@ -1,0 +1,91 @@
+{
+  "format": "ptsip-agent-spec/v2",
+  "id": "PTSIP-AGENT-SPEC-SPECIFICATION-GOVERNANCE",
+  "status": "CANDIDATE",
+  "scope": "Specification identity, versioning, rule evolution, remediation, tooling relationship, and non-claim governance.",
+  "rules": [
+    {
+      "rule_id": "PTSIP-SPEC-GOV-001",
+      "modality": "INVARIANT",
+      "subject": "specification_source",
+      "predicate": "canonical_repository",
+      "object": "https://github.com/Kinirin/PTSIP"
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-002",
+      "modality": "INVARIANT",
+      "subject": "draft_family",
+      "predicate": "machine_evaluated_identity",
+      "object": [
+        "SPECIFICATION_FAMILY",
+        "IMMUTABLE_REVISION"
+      ]
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-003",
+      "modality": "INVARIANT",
+      "subject": "tool_version_and_specification_family",
+      "predicate": "lifecycle_relation",
+      "object": "INDEPENDENT"
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-004",
+      "modality": "MUST_NOT",
+      "subject": "published_rule_id",
+      "predicate": "reuse_for_incompatible_meaning",
+      "object": true
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-005",
+      "modality": "DEFINITION",
+      "subject": "specification_change_category",
+      "predicate": "allowed_values",
+      "object": [
+        "EDITORIAL",
+        "CLARIFICATION",
+        "NORMATIVE_ADDITION",
+        "NORMATIVE_BREAKING",
+        "SCHEMA_CHANGE",
+        "CONFORMANCE_CHANGE"
+      ]
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-006",
+      "modality": "MUST",
+      "subject": "implementation_evidence",
+      "predicate": "remain_distinct_from",
+      "object": "NORMATIVE_SPECIFICATION_SEMANTICS"
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-007",
+      "modality": "MUST_NOT",
+      "subject": "project_governance_record",
+      "predicate": "waive_confirmed_mandatory_violation",
+      "object": true
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-008",
+      "modality": "MUST",
+      "subject": "tool",
+      "predicate": "identify_bound_specification",
+      "object": [
+        "FAMILY",
+        "IMMUTABLE_REVISION"
+      ]
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-009",
+      "modality": "MUST_NOT",
+      "subject": "tool",
+      "predicate": "present_implementation_only_behavior_as_normative",
+      "object": true
+    },
+    {
+      "rule_id": "PTSIP-SPEC-GOV-010",
+      "modality": "MUST_NOT",
+      "subject": "specification_change",
+      "predicate": "claim_external_industry_standardization_without_external_adoption",
+      "object": true
+    }
+  ]
+}

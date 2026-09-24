@@ -5,13 +5,17 @@ authority: false
 identity:
   migration_id: MPD-0012-AGENT-CONTEXT-MACHINE-MIGRATION
   title: Markdown-to-Machine Agent Context Migration
-  status: DRAFT
+  status: ACTIVE
   governing_policy_ref: MPD-0012
   governing_policy_status: DRAFT
   planning_approval:
-    status: PENDING
+    status: APPROVED
+    approval_source: USER_EXPLICIT
+    approval_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
   implementation_authorization:
-    status: NOT_AUTHORIZED
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
+    authorization_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
 
 objective:
   primary: REDUCE_CODING_AGENT_CONTEXT_LOOKUP_AND_REPEATED_SEMANTIC_INFERENCE_COST
@@ -208,6 +212,7 @@ document_matrix:
 
 phases:
   - id: M0
+    status: COMPLETE
     name: DOCUMENT_ROLE_AND_MACHINE_OWNER_RECONCILIATION
     mutation_scope: PLANNING_ONLY
     actions:
@@ -220,6 +225,7 @@ phases:
       unresolved_semantics_machine_representable: true
 
   - id: M1
+    status: COMPLETE
     name: NORMATIVE_SEMANTIC_GAP_EXTRACTION
     mutation_scope: AGENT_CONTRACT_CANDIDATE
     targets:
@@ -244,6 +250,7 @@ phases:
       - MISSING_OPERATION_OR_GATE_CANDIDATES
 
   - id: M2
+    status: IMPLEMENTED_VALIDATION_PENDING
     name: AGENT_CONTRACT_PLANE_COMPLETION
     mutation_scope: src/agent_contracts/
     prerequisites:

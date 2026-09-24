@@ -1,0 +1,81 @@
+{
+  "schema_version": "ptsip-agent-context-coverage/v1",
+  "artifact_class": "DEVELOPER_VERIFICATION_PROJECTION",
+  "authority": false,
+  "migration_ref": "developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml",
+  "m0": {
+    "status": "COMPLETE",
+    "document_count": 12,
+    "normative_or_operational_targets": 8,
+    "machine_state_targets": 2,
+    "human_projection_targets": 2
+  },
+  "m1": {
+    "status": "COMPLETE",
+    "stable_rule_gap_before_m2": [
+      "PTSIP-DEP-001",
+      "PTSIP-DEP-002",
+      "PTSIP-DEP-003",
+      "PTSIP-PKG-001",
+      "PTSIP-ART-001",
+      "PTSIP-BLD-001",
+      "PTSIP-BLD-002",
+      "PTSIP-LCY-001",
+      "PTSIP-LCY-002",
+      "PTSIP-CMN-001",
+      "PTSIP-CNT-001",
+      "PTSIP-POL-001",
+      "PTSIP-INT-001",
+      "PTSIP-SPC-001",
+      "PTSIP-EVD-001",
+      "PTSIP-EVD-002",
+      "PTSIP-EVD-003",
+      "PTSIP-EVD-004",
+      "PTSIP-EVD-005",
+      "PTSIP-DIA-001",
+      "PTSIP-RMAP-006",
+      "PTSIP-RMAP-007",
+      "PTSIP-RMAP-008",
+      "PTSIP-RMAP-009",
+      "PTSIP-RMAP-010",
+      "PTSIP-RMAP-011",
+      "PTSIP-RMAP-012",
+      "PTSIP-RMAP-013",
+      "PTSIP-RMAP-014",
+      "PTSIP-RMAP-015",
+      "PTSIP-RMAP-016",
+      "PTSIP-RMAP-017",
+      "PTSIP-MIG-006",
+      "PTSIP-MIG-007",
+      "PTSIP-MIG-008",
+      "PTSIP-MIG-009",
+      "PTSIP-MIG-010",
+      "PTSIP-MIG-011",
+      "PTSIP-MIG-012",
+      "PTSIP-MIG-013",
+      "PTSIP-MIG-014",
+      "PTSIP-MIG-015"
+    ],
+    "non_stable_semantic_surfaces": [
+      "ADOPTION_OPERATION_PROCEDURE",
+      "MANDATORY_AGENT_BEHAVIOR",
+      "DETAILED_CONFORMANCE_SEMANTICS",
+      "SPECIFICATION_GOVERNANCE",
+      "CANONICAL_TERMINOLOGY"
+    ]
+  },
+  "m2": {
+    "status": "IMPLEMENTED_VALIDATION_PENDING",
+    "machine_owners": [
+      "src/agent_contracts/spec/repository-boundaries.yaml",
+      "src/agent_contracts/spec/responsibility-map-detail.yaml",
+      "src/agent_contracts/spec/profile-transition-detail.yaml",
+      "src/agent_contracts/spec/agent-behavior.yaml",
+      "src/agent_contracts/spec/adoption-procedure.yaml",
+      "src/agent_contracts/spec/specification-governance.yaml",
+      "src/agent_contracts/spec/conformance-detail.yaml",
+      "src/agent_contracts/vocabulary/terminology.yaml"
+    ],
+    "markdown_runtime_fallback": "FORBIDDEN"
+  }
+}

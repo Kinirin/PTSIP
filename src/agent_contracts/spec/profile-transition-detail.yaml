@@ -1,0 +1,78 @@
+{
+  "format": "ptsip-agent-spec/v2",
+  "id": "PTSIP-AGENT-SPEC-PROFILE-TRANSITION-DETAIL",
+  "status": "CANDIDATE",
+  "scope": "Detailed source-specific Project Profile migration and guarded promotion rules.",
+  "rules": [
+    {
+      "rule_id": "PTSIP-MIG-006",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-006",
+      "predicate": "normative_contract_text",
+      "object": "A semantic source migration is complete only when every Required Work Element for that source has been represented, transformed, or explicitly resolved into the accepted current-target state.\n\nStructural target validation, optional work, or high-confidence inference MUST NOT substitute for unresolved Required Work."
+    },
+    {
+      "rule_id": "PTSIP-MIG-007",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-007",
+      "predicate": "normative_contract_text",
+      "object": "Removal Migration Elements MUST NOT be migrated merely to preserve obsolete source declarations. Their omission is not migration loss and their handling does not increase completion credit."
+    },
+    {
+      "rule_id": "PTSIP-MIG-008",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-008",
+      "predicate": "normative_contract_text",
+      "object": "Asynchronous Work Targets are not immediate source-migration obligations. They MAY be handled after Required Work when separately authorized, but they do not increase completion and MUST NOT mask unresolved Required Work."
+    },
+    {
+      "rule_id": "PTSIP-MIG-009",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-009",
+      "predicate": "normative_contract_text",
+      "object": "A supported historical source MUST reconcile directly against the current canonical PP target selected by explicit Tool/PP compatibility authority.\n\nCompleted or historical intermediate Project Profile generations MUST NOT be required as migration hops. No synthetic intermediate profile may be created solely for version traversal."
+    },
+    {
+      "rule_id": "PTSIP-MIG-010",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-010",
+      "predicate": "normative_contract_text",
+      "object": "After a temporary source has completed its source-specific semantic migration into the current target and post-apply checks establish completion, that source MAY be removed according to the accepted execution plan.\n\nLater sources MUST NOT be routed through the removed intermediate state."
+    },
+    {
+      "rule_id": "PTSIP-MIG-011",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-011",
+      "predicate": "normative_contract_text",
+      "object": "Required Work, Removal Migration, and Asynchronous Work categories are local to one source evaluation. They MUST NOT be copied into another source evaluation as architecture authority."
+    },
+    {
+      "rule_id": "PTSIP-MIG-012",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-012",
+      "predicate": "normative_contract_text",
+      "object": "Declarations already accepted into the current target are target state, not inherited source-category metadata.\n\nSemantically equivalent later proposals SHOULD preserve existing accepted target state without unnecessary rewrite.\n\nMaterial conflict with accepted target state MUST fail closed or require explicit project-owner resolution. File recency, source age, numeric version order, confidence, or migration order MUST NOT silently choose a winner."
+    },
+    {
+      "rule_id": "PTSIP-MIG-013",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-013",
+      "predicate": "normative_contract_text",
+      "object": "For genuine semantic migration using a separate target, canonical promotion MAY occur only after required source obligations are complete and the selected current target passes required validation and consistency checks.\n\nPromotion MUST preserve accepted target semantics and MUST NOT become an implicit architecture rewrite.\n\nWhen the accepted bridge is `IDENTITY_ONLY`, an in-place canonical identity rewrite MAY be used instead of synthetic target creation/promotion, subject to the same freshness and post-write validation requirements."
+    },
+    {
+      "rule_id": "PTSIP-MIG-014",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-014",
+      "predicate": "normative_contract_text",
+      "object": "Migration discovery, analysis, accepted plan, apply operations, source deletion, identity rewrite, and promotion MUST be bound to sufficiently exact repository/profile state.\n\nIf a relevant source profile, target profile, accepted delta, or repository state changes after analysis but before mutation, the operation MUST fail closed or re-analyze the changed state before mutation.\n\nSemantic compare-and-swap or equivalent stale-writer protection MUST preserve the exact accepted mutation boundary."
+    },
+    {
+      "rule_id": "PTSIP-MIG-015",
+      "modality": "INVARIANT",
+      "subject": "PTSIP-MIG-015",
+      "predicate": "normative_contract_text",
+      "object": "When several active source states require convergence to one current target, tooling SHOULD process them in an order that minimizes repeated analysis and conflicting architecture judgments, while preserving source-specific completion and canonical-last safety where applicable.\n\nThe ordering recommendation MUST NOT be interpreted as a requirement to preserve obsolete intermediate versions or traverse historical Project Profile generations sequentially."
+    }
+  ]
+}

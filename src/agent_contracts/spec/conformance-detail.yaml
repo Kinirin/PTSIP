@@ -1,0 +1,120 @@
+{
+  "format": "ptsip-agent-spec/v2",
+  "id": "PTSIP-AGENT-SPEC-CONFORMANCE-DETAIL",
+  "status": "CANDIDATE",
+  "scope": "Detailed Consumer Repository conformance, claim identity, evidence sufficiency, diagnostics, and coordination requirements.",
+  "rules": [
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-001",
+      "modality": "INVARIANT",
+      "subject": "1_consumer_repository_conformance_levels",
+      "predicate": "conformance_contract_text",
+      "object": "### 1.1 PTSIP Core Conformant\n\nA project is **PTSIP Core Conformant** when it satisfies all applicable Consumer Repository `MUST`/`MUST NOT` requirements in the bound canonical Specification and its normative companion specifications, including primary lifecycle classification, coherent responsibility boundaries, Product runtime isolation from non-Product implementation, Product packaging isolation, independently resolvable lifecycle environments, lifecycle independence, Responsibility Map requirements, and other applicable universal rules.\n\nA project does not need to use distributed decision coordination merely to be Core Conformant.\n\n### 1.2 PTSIP Enforced Conformant\n\nA project is **PTSIP Enforced Conformant** when it is Core Conformant and additionally provides enough machine-readable declaration and reproducible evidence for automated enforcement, including:\n\n- a PTSIP Project Profile or equivalent materialized declaration;\n- canonical Specification source/family and exact immutable revision for a mutable draft;\n- automated dependency-boundary evaluation;\n- Product Artifact evidence when required by `PTSIP-PKG-001` / `PTSIP-ART-001`;\n- stable diagnostics with PTSIP rule IDs and evidence references;\n- stable evidence tied to one repository snapshot;\n- rule-relative evidence coverage sufficient for applicable mandatory rules; and\n- CI or equivalent repeatable validation.\n\nA template or hybrid Project Profile may be structurally valid before materialization. A component-level Enforced Conformance evaluator that requires concrete component endpoints MUST materialize the exact version-bound template plus overrides before making a component-level claim."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-002",
+      "modality": "INVARIANT",
+      "subject": "2_profile_validation_authority_reconciliation_and_conformance_evaluation",
+      "predicate": "conformance_contract_text",
+      "object": "These operations are distinct.\n\n### 2.1 Profile Validation\n\nProfile Validation asks whether the selected declaration is structurally and semantically valid. It may check schema structure, Specification binding, Responsibility Map mode/template identity, component/associated-artifact/relationship IDs, selector conflicts, primary lifecycle facts, typed relationship endpoints, anchor semantics, and project-specific dependency policy.\n\nA valid profile is not proof that observed dependencies, artifacts, build behavior, delivery/operations behavior, or lifecycle behavior conform.\n\n### 2.2 Authority reconciliation\n\nWhen distributed coordination is selected, authority reconciliation determines whether the relevant local Project Profile declaration is consistent with current coordinated authority state.\n\nA local profile may be structurally valid but stale relative to a resolved distributed winner. Conversely, a resolved distributed winner may be perfectly synchronized with the profile while the repository remains architecturally non-conformant.\n\nAuthority reconciliation therefore MUST NOT be treated as Conformance Evaluation.\n\n### 2.3 Conformance Evaluation\n\nConformance Evaluation combines, as applicable:\n\n- validated/materialized project declaration;\n- observed repository evidence;\n- dependency evidence;\n- Product Artifact evidence;\n- build/delivery/operations/lifecycle evidence;\n- evidence coverage;\n- snapshot integrity; and\n- deterministic Consumer Repository PTSIP rules."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-003",
+      "modality": "INVARIANT",
+      "subject": "3_conformance_outcomes",
+      "predicate": "conformance_contract_text",
+      "object": "A completed Consumer Repository Conformance Evaluation has exactly one of these outcomes:\n\n### 3.1 `CONFORMANT`\n\n`CONFORMANT` means evidence is sufficient for the applicable mandatory rule set, no applicable mandatory violation is established, and no blocking uncertainty remains.\n\nAn empty finding list alone is insufficient.\n\n### 3.2 `NON_CONFORMANT`\n\n`NON_CONFORMANT` means sufficient evidence establishes at least one applicable PTSIP `MUST`/`MUST NOT` violation.\n\nA definite mandatory violation settles the result even if unrelated evidence gaps also exist. Those gaps remain reportable but do not erase the violation.\n\n### 3.3 `INCOMPLETE`\n\n`INCOMPLETE` means no definite violation has already settled the result, but one or more blocking conditions prevent a conformant conclusion. Examples include:\n\n- evidence gaps capable of hiding an applicable violation;\n- unresolved `UNKNOWN`, `CONFLICT`, or `INCOMPLETE` ownership relevant to a mandatory boundary;\n- unsupported relevant language/build/package analysis;\n- unresolved dynamic dependency relevant to a mandatory rule;\n- missing required Product Artifact evidence;\n- unmaterialized template/hybrid responsibility data required by an evaluator;\n- unstable/mixed repository snapshot;\n- missing required Enforced Conformance binding; or\n- missing durable responsibility facts when a mandatory rule cannot be evaluated without them.\n\n### 3.4 `NOT_EVALUATED`\n\n`NOT_EVALUATED` MAY be used as a Tool execution state when evaluation was not attempted or could not start. It is not a PTSIP conformance outcome."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-004",
+      "modality": "INVARIANT",
+      "subject": "4_required_claim_identity",
+      "predicate": "conformance_contract_text",
+      "object": "A reproducible conformance claim SHOULD identify:\n\n- canonical PTSIP Specification source;\n- Specification family/version;\n- exact immutable Specification revision;\n- project commit/release;\n- conformance level;\n- conformance outcome;\n- selected Project Profile path/configuration source;\n- Responsibility Map mode and materialized template revision where applicable;\n- validation/evaluation status;\n- evidence snapshot status;\n- blocking/non-blocking evidence gaps; and\n- diagnostic/evidence format versions where applicable.\n\nFor Enforced Conformance against `0.3.6-draft`, the immutable Specification revision is required."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-005",
+      "modality": "INVARIANT",
+      "subject": "5_evidence_sufficiency_and_coverage",
+      "predicate": "conformance_contract_text",
+      "object": "Evidence coverage is rule-relative, not a universal percentage.\n\nA gap is **blocking** when it can conceal whether an applicable mandatory PTSIP rule is satisfied. A blocking gap prevents `CONFORMANT` unless a definite violation already establishes `NON_CONFORMANT`.\n\nA gap is **non-blocking** when it cannot materially change the result for the applicable mandatory rule set.\n\nUnresolved evidence MUST NOT be converted into absence-of-violation proof."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-006",
+      "modality": "INVARIANT",
+      "subject": "6_durable_project_profile_facts",
+      "predicate": "conformance_contract_text",
+      "object": "`0.3.6-draft` defines canonical component-level representation around these explicit responsibility facts:\n\n- `classification` as primary lifecycle ownership;\n- optional `roles`;\n- `purpose`;\n- `shipped` when applicable;\n- `runtime_required` when applicable;\n- `executable` when applicable;\n- associated-artifact declarations when subordinate project-owned support surfaces are represented; and\n- typed relationship declarations when project-owned semantic edges are represented.\n\nA separate `lifecycle_owner` field is not a second canonical ownership authority in Tool `0.3.6`; legacy readers may preserve an old lifecycle-owner fact only as migration evidence while producing a canonical classification proposal.\n\nA manually authored profile may omit optional facts when they are not needed for the claim, but if a missing fact prevents evaluation of an applicable mandatory rule, the result cannot be `CONFORMANT` on that evidence alone.\n\nA write-enabled structured adoption/resolution workflow must preserve supplied facts losslessly under `PTSIP-ADP-001`. Failure of a Tool to preserve those facts is an implementation-conformance problem, not proof of Consumer Repository non-conformance.\n\nLegacy Tool `0.3.5` boundary/root or old component declarations may be accepted by a legacy reader as migration input. They are not silently treated as canonical Tool `0.3.6` Responsibility Maps."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-007",
+      "modality": "INVARIANT",
+      "subject": "7_declaration_versus_observed_evidence",
+      "predicate": "conformance_contract_text",
+      "object": "A Project Profile records intended architecture. It does not prove observed repository behavior.\n\nAutomated evaluation SHOULD distinguish:\n\n- project-owned Responsibility Map declaration/policy (`DECLARED`);\n- direct repository/artifact/runtime facts (`OBSERVED`);\n- bounded derived conclusions (`INFERRED`);\n- agent/review proposals and decisions; and\n- deterministic findings.\n\nA contradiction between declaration and observation MUST NOT be hidden by treating the declaration as proof of compliance.\n\nA typed Responsibility Map relationship is project architecture declaration, not proof that the observed repository contains the corresponding interaction. Likewise, an observed evidence edge does not become a project-owned relationship without project authority."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-008",
+      "modality": "INVARIANT",
+      "subject": "8_product_artifact_evidence",
+      "predicate": "conformance_contract_text",
+      "object": "Packaging-isolation evaluation must distinguish artifact owner, artifact producer, contained components/paths or equivalent content evidence, derivation relationship, and shipping scope.\n\nA `DEVELOPMENT_TOOLING`, `DELIVERY`, or `OPERATIONS` producer creating or handling a Product Artifact is not itself a violation. The relevant question is whether the Product Artifact contains non-Product implementation or lifecycle-only dependencies contrary to `PTSIP-PKG-001`.\n\nA valid `NEUTRAL_CONTRACT` may be included or consumed where applicable without becoming non-Product executable implementation.\n\nIf required artifact-content evidence is unavailable, the packaging conclusion is `INCOMPLETE`, not conformant by absence of a detected inclusion."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-009",
+      "modality": "INVARIANT",
+      "subject": "9_lifecycle_evidence",
+      "predicate": "conformance_contract_text",
+      "object": "A workflow/CI trigger is evidence of automation behavior, not by itself proof of one primary lifecycle ownership.\n\nLifecycle evaluation SHOULD distinguish:\n\n- development/verification obligation;\n- authoritative release-unit creation;\n- Product Artifact modification;\n- Product version/release decision;\n- publication/promotion/deployment and delivery handoff;\n- ongoing post-handoff operational responsibility; and\n- compatibility obligation."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-010",
+      "modality": "INVARIANT",
+      "subject": "10_dependency_evidence_and_external_nodes",
+      "predicate": "conformance_contract_text",
+      "object": "Dependency evidence SHOULD preserve relationship type, lifecycle phase(s), resolution state, provenance, and evidence-node scope.\n\nExternal libraries, standard-library modules, platforms, and unresolved targets are evidence nodes, not PTSIP architecture classifications.\n\nA project-owned target MUST NOT be mislabeled external merely to avoid PTSIP evaluation."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-011",
+      "modality": "INVARIANT",
+      "subject": "11_stable_diagnostics",
+      "predicate": "conformance_contract_text",
+      "object": "Automated diagnostics SHOULD conform to `ptsip-diagnostic/v1` and MUST distinguish diagnostic instance ID from stable PTSIP rule ID.\n\nOne rule may produce multiple diagnostic instances. Diagnostics SHOULD include outcome effect, severity, component endpoints where relevant, evidence IDs, message, and evaluator/provenance metadata."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-012",
+      "modality": "INVARIANT",
+      "subject": "12_mandatory_violations_and_remediation",
+      "predicate": "conformance_contract_text",
+      "object": "PTSIP defines no mandatory-rule waiver that changes a real violation into conformance.\n\nA confirmed violation remains `NON_CONFORMANT` until remediated and reevaluated. A project MAY describe itself as `PTSIP-adopting` or `PTSIP-transitioning`, but those labels do not replace the current conformance outcome."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-013",
+      "modality": "INVARIANT",
+      "subject": "13_external_validator_independence_and_non_intrusion",
+      "predicate": "conformance_contract_text",
+      "object": "An external PTSIP validator is architecture-governance tooling and is not a Consumer Repository lifecycle component merely because it is installed in a developer environment or CI image.\n\nIf the project vendors/takes lifecycle ownership of the validator, that project-owned copy becomes subject to normal PTSIP classification.\n\nExternal inspection/Pilot tooling SHOULD compare observable repository state before/after analysis and SHOULD place Tool-owned state outside the Consumer Repository by default."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-014",
+      "modality": "INVARIANT",
+      "subject": "14_distributed_coordination_implementation_conformance",
+      "predicate": "conformance_contract_text",
+      "object": "`PTSIP-AUT-001` through `PTSIP-AUT-007` are requirements on a PTSIP implementation that claims distributed coordination semantics. They do not add Consumer Repository architecture requirements when distributed coordination is not used.\n\nA distributed implementation conforms to this capability only when it satisfies at least:\n\n- Decision Authority remains distinct from Project Profile;\n- stable coordination-domain/decision identity;\n- first-valid-resolution-wins with ordered conditional mutation;\n- authority freshness at coordination-sensitive boundaries;\n- non-mutating absence observation where supported;\n- deterministic missing/equivalent/conflicting reconciliation;\n- no silent overwrite of conflicting local declaration;\n- stale application refusal;\n- fail-closed behavior rather than isolated Local fallback; and\n- separation of global decision state from clone-local projection/application state.\n\nA failure of these requirements is an implementation capability failure. It does not by itself mean the Consumer Repository violates lifecycle ownership architecture rules."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-015",
+      "modality": "INVARIANT",
+      "subject": "15_authority_conflict_and_consumer_repository_claims",
+      "predicate": "conformance_contract_text",
+      "object": "An `AUTHORITY_PROFILE_CONFLICT`-equivalent state means distributed authority and the selected local declaration disagree about architecture intent for the same coordinated scope.\n\nWhile that conflict is unresolved, an architecture-sensitive operation requiring one unambiguous declaration MUST stop. A strict Enforced Conformance run that depends on the conflicted declaration cannot claim `CONFORMANT` until the declaration basis is unambiguous.\n\nThis does not authorize the Tool to choose either side silently. Explicit reconciliation is required."
+    },
+    {
+      "rule_id": "PTSIP-CONF-DETAIL-016",
+      "modality": "INVARIANT",
+      "subject": "16_false_positive_handling",
+      "predicate": "conformance_contract_text",
+      "object": "A validator suppression MUST NOT silently disable a PTSIP rule. A suppression MAY document evidence established as false positive; a real architecture violation remains `NON_CONFORMANT` until remediated."
+    }
+  ]
+}
