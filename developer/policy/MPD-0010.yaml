@@ -445,6 +445,59 @@ rules:
       authority_schema_and_role_registries_do_not_gain_draft_operational_authority: true
       registration_requires_exact_policy_file_index_status_match: true
 
+
+  provisional_resolution_framework:
+    decision: APPROVED
+    authority_role: OPERATIONAL_RESOLUTION_NOT_POLICY_AUTHORITY
+
+    default_behavior:
+      provisional_resolution_enabled: false
+      explicit_user_authorization_required: true
+      user_silence_is_authorization: false
+      implementation_urgency_is_authorization: false
+      agent_convenience_is_authorization: false
+
+    unauthorized_case:
+      agent_may_create_provisional_resolution: false
+      unresolved_normative_decision_result: USER_DECISION_REQUIRED
+
+    authorized_case:
+      agent_may_create_provisional_resolution: true
+      implementation_may_proceed_when_not_blocked_by_official_policy: true
+      creates_official_policy_authority: false
+      automatic_promotion_to_official_authority: FORBIDDEN
+      test_success_promotes_to_official_authority: false
+      implementation_success_promotes_to_official_authority: false
+      future_user_review_required: true
+
+    authorization_scope:
+      default_inheritance: FORBIDDEN
+      must_be_bounded_to:
+        - TASK
+        - RESPONSIBILITY_SCOPE
+        - EXPLICITLY_DECLARED_OPERATION_SCOPE
+      authorization_outside_declared_scope: FORBIDDEN
+
+    required_record:
+      - DECISION_SOURCE
+      - AUTHORIZATION_SOURCE
+      - REASON
+      - RESPONSIBILITY_SCOPE
+      - AFFECTED_POLICY_REFS
+      - AFFECTED_PLAN_REFS
+      - UNRESOLVED_QUESTIONS
+
+    conflict_boundary:
+      official_policy_may_be_overridden_by_provisional_resolution: false
+      official_policy_conflict_result: CHANGE_IMPLEMENTATION_OR_BLOCK
+      provisional_resolution_must_remain_distinguishable_from_user_approved_policy: true
+
+    lifecycle_boundary:
+      physical_policy_status_mutation_from_provisional_resolution: FORBIDDEN
+      provisional_resolution_is_not_management_policy_status: true
+      provisional_resolution_is_not_plan_approval_status: true
+      explicit_user_approval_required_for_official_promotion: true
+
 relations:
   supersedes: []
   amends: []
