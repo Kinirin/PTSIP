@@ -407,6 +407,44 @@ rules:
     mutable_external_state_dependency_in_normative_semantics: FORBIDDEN
     changing_external_state_must_be_materialized_as_evidence_before_normative_consumption: true
 
+
+  management_policy_identity_lifecycle_preflight:
+    objective: ELIMINATE_REPEATED_AGENT_INFERENCE_AND_PREVENT_POLICY_ID_OR_STATUS_COLLISIONS
+    automation_module: developer.automation.policy_identity_lifecycle
+    approval_provenance_schema: developer/policy/schemas/policy-approval-provenance.schema.json
+    approval_provenance_root: developer/policy/approvals/
+
+    mandatory_order:
+      - RECONCILE_POLICY_FILE_INDEX_AND_SUBJECT_IDENTITY_CORPUS
+      - INSPECT_REQUESTED_OR_EXISTING_POLICY_ID
+      - VERIFY_EXISTING_POLICY_CONTENT_AND_INDEX_STATUS_WHEN_PRESENT
+      - VALIDATE_EXPLICIT_PROJECT_OWNER_APPROVAL_PROVENANCE
+      - ALLOCATE_NEW_ID_OR_BIND_EXISTING_ID_EXACTLY
+      - VERIFY_POLICY_FILE_ID_AND_EXPLICIT_TARGET_STATUS
+      - MUTATE_INDEX_AND_SUBJECT_IDENTITY_REGISTRY
+      - REVALIDATE_POLICY_CONTROL_PLANE
+
+    inference_boundary:
+      infer_next_id_from_visual_or_semantic_guessing: FORBIDDEN
+      infer_policy_status_from_approval_wording: FORBIDDEN
+      infer_activation_from_implementation_authorization: FORBIDDEN
+      infer_approval_from_repository_state: FORBIDDEN
+      existing_id_collision: FAIL_CLOSED
+      corpus_mismatch: FAIL_CLOSED
+      missing_or_invalid_approval_provenance: FAIL_CLOSED
+
+    approval_semantics:
+      temporary_approval_may_authorize_implementation: true
+      temporary_approval_does_not_imply_active_or_draft_status: true
+      target_policy_status_must_be_explicit_in_approval_provenance: true
+      implementation_authorization_and_policy_lifecycle_status_are_independent_fields: true
+      policy_content_review_scope_must_be_recorded: true
+
+    registry_semantics:
+      subject_identity_registry_tracks_existing_policy_ids_regardless_of_active_or_draft_status: true
+      authority_schema_and_role_registries_do_not_gain_draft_operational_authority: true
+      registration_requires_exact_policy_file_index_status_match: true
+
 relations:
   supersedes: []
   amends: []

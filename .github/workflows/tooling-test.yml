@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       verification:
-        description: auto, full, planning-migration, markdown-cleanup-simulation, or a registered Test Mode id
+        description: auto, full, policy-lifecycle, planning-migration, markdown-cleanup-simulation, or a registered Test Mode id
         required: true
         default: auto
         type: string
@@ -19,6 +19,48 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  policy-lifecycle-verify:
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'policy-lifecycle') }}
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact policy lifecycle source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Prepare policy lifecycle Python 3.14
+        shell: powershell
+        run: |
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is required."
+          }
+          if (Test-Path -LiteralPath ".venv-policy-lifecycle") {
+            Remove-Item -LiteralPath ".venv-policy-lifecycle" -Recurse -Force
+          }
+          & $python -m venv .venv-policy-lifecycle
+          $venvPython = Join-Path (Resolve-Path ".venv-policy-lifecycle").Path "Scripts\python.exe"
+          & $venvPython -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install policy lifecycle verification environment."
+          }
+          "POLICY_LIFECYCLE_PYTHON=$venvPython" >> $env:GITHUB_ENV
+
+      - name: Verify policy lifecycle automation
+        shell: powershell
+        env:
+          PYTHONPATH: ".;src"
+        run: |
+          & $env:POLICY_LIFECYCLE_PYTHON -m pytest -q developer/tests/test_policy_identity_lifecycle.py
+          if ($LASTEXITCODE -ne 0) {
+            throw "Policy identity lifecycle tests failed."
+          }
+          & $env:POLICY_LIFECYCLE_PYTHON -m developer.automation.policy_validator
+          if ($LASTEXITCODE -ne 0) {
+            throw "Developer policy validation failed."
+          }
+
   planning-migration-verify:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'planning-migration') }}
     runs-on: [self-hosted, Windows, X64]

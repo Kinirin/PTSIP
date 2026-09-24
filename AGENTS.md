@@ -39,6 +39,31 @@ Rules:
 - `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
 - Re-run resolution after changing task scope, operation class, or branch context.
 
+
+## Mandatory MPD identity lifecycle preflight
+
+Do not choose a new `MPD-####` ID or change an MPD lifecycle status by repository scan or conversational inference.
+
+For an existing ID, inspect it mechanically first:
+
+```text
+python -m developer.automation.policy_identity_lifecycle inspect <MPD-ID>
+```
+
+Before allocating a new ID, create an approved provenance record under `developer/policy/approvals/` and run:
+
+```text
+python -m developer.automation.policy_identity_lifecycle preflight --approval-ref developer/policy/approvals/<record>.yaml
+```
+
+After the policy file is materialized with the exact allocated ID and explicit approved status, register it through:
+
+```text
+python -m developer.automation.policy_identity_lifecycle register --approval-ref developer/policy/approvals/<record>.yaml --policy-file developer/policy/<MPD-ID>.yaml
+```
+
+For a lifecycle status change on an existing MPD, run `status-preflight` first. Temporary implementation approval does not imply `ACTIVE` or `DRAFT`; the approval provenance must state the target status explicitly. Any ID collision, index/file/subject-registry mismatch, missing approval provenance, or status mismatch is fail-closed.
+
 ## Implementation Work Packet
 
 For implementation work with a registered task context, prepare a bounded developer-only work packet before editing:
