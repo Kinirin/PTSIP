@@ -317,7 +317,7 @@ phases:
       - UNKNOWN
 
   - id: M6
-    status: IMPLEMENTED_VALIDATION_PENDING
+    status: COMPLETE
     name: AUTHORITY_ACTIVATION
     prerequisites:
       - M5_ALL_PASS
@@ -330,6 +330,7 @@ phases:
       - TEST_PASS_AUTO_PROMOTION_TO_OFFICIAL_AUTHORITY
 
   - id: M7
+    status: READINESS_REMEDIATION
     name: MARKDOWN_DEPENDENCY_REMOVAL
     prerequisites:
       - M6_COMPLETE
@@ -402,3 +403,12 @@ verification_evidence:
     current_status: DRAFT
     target_status: ACTIVE
     result: READY
+
+  m6_activation:
+    source_sha: 7d5ab1b1240c8ce16036c7ebed71e6fa191f2a09
+    workflow_run_id: 36033778565
+    policy_lifecycle_job_id: 107748719535
+    agent_context_job_id: 107748720039
+    result: PASS
+    mpd_0012_status: ACTIVE
+    agent_contract_set_status: CURRENT

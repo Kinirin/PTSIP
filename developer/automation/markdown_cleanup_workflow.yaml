@@ -19,6 +19,9 @@ reference_scan_exclusions:
   - developer/automation/markdown_cleanup_workflow.yaml
   - developer/policy/MPD-0012.yaml
   - developer/tests/test_markdown_cleanup.py
+  - developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml
+  - developer/planning/migrations/MPD-0012-agent-context-coverage.yaml
+  - developer/automation/agent_context_migration.py
 
 apply_requires_policy_status: ACTIVE
 
