@@ -4,7 +4,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 plan:
   plan_id: MPD-0001-PLANNING-SUBSYSTEM-MIGRATION
   title: Planning Authority Namespace Migration
-  status: IMPLEMENTED_VALIDATION_PENDING
+  status: COMPLETE
   authority:
     policy_refs:
       - MPD-0001
@@ -53,7 +53,7 @@ execution:
   automation_move: IMPLEMENTED
   reference_rewrite: IMPLEMENTED
   test_reference_rewrite: IMPLEMENTED
-  validation: PENDING
+  validation: COMPLETE
 
 validation:
   required:
@@ -66,11 +66,26 @@ validation:
     - NO_OLD_PLANNING_AUTOMATION_IMPORT
   evidence:
     repository_structure: IMPLEMENTED
-    local_test_execution: FAILED_BEFORE_REMEDIATION
-    failure_class: STALE_POLICY_RESOLVER_TASK_CONTEXT_REFERENCE
-    failure_reference: docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
+    initial_local_test_execution: FAILED_BEFORE_REMEDIATION
+    initial_failure_class: STALE_POLICY_RESOLVER_TASK_CONTEXT_REFERENCE
+    initial_failure_reference: docs/planning/0.3.8a1/emergency-implementation-overlay.yaml
     remediation:
       policy_resolver_contract_task_context_ref: developer/planning/0.3.8a1/emergency-implementation-overlay.yaml
       repository_commit: 276f6c7e5e3941ff49feda282ae118c3bb128097
-      status: APPLIED_REVALIDATION_REQUIRED
-    final_transition_to_complete: REQUIRES_REGISTERED_MACHINE_CHECKS_PASS
+      authority_registry_remediation_commit: 3135f773f72b5e190fd28aecee10cd9b53fd8d4f
+      status: VERIFIED
+    self_hosted_revalidation:
+      workflow: tooling-test
+      workflow_run_id: 35962580066
+      job: planning-migration-verify
+      job_id: 107514133735
+      source_sha: 3135f773f72b5e190fd28aecee10cd9b53fd8d4f
+      developer_policy_validation: PASS
+      developer_planning_validation: PASS
+      focused_pytest:
+        result: PASS
+        passed: 72
+        duration_seconds: 5.89
+      commit_status_context: self-hosted/planning-migration
+      result: PASS
+    final_transition_to_complete: SATISFIED
