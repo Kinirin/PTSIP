@@ -1,0 +1,38 @@
+schema_version: ptsip-governance-source-registry/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+registry_role: GOVERNANCE_SOURCE_VOCABULARY
+owner_policy_ref: MPD-0010
+
+constants:
+  USER_EXPLICIT:
+    description: Explicit user decision, approval, or authorization.
+    may_create_official_authority: true
+    allowed_roles:
+      - DECISION_SOURCE
+      - APPROVAL_SOURCE
+      - AUTHORIZATION_SOURCE
+
+  AGENT_INFERRED:
+    description: Agent-created provisional resolution within explicitly authorized scope.
+    may_create_official_authority: false
+    provisional_resolution_only: true
+    explicit_user_opt_in_required: true
+    allowed_roles:
+      - DECISION_SOURCE
+
+  AUTOMATION_DERIVED:
+    description: Deterministic derivation from already registered authority and machine state.
+    may_create_official_authority: false
+    may_propagate_existing_authority_only: true
+    allowed_roles:
+      - DECISION_SOURCE
+      - TRANSITION_SOURCE
+
+invariants:
+  user_silence_maps_to_USER_EXPLICIT: false
+  test_success_maps_to_USER_EXPLICIT: false
+  implementation_success_maps_to_USER_EXPLICIT: false
+  repository_presence_maps_to_USER_EXPLICIT: false
+  generic_source_key_is_governance_source: false
+  exact_constant_resolution_required: true
+  unknown_source_constant: FAIL_CLOSED

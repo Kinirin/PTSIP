@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:governance-source-registry:v1",
+  "title": "PTSIP Governance Source Registry v1",
+  "type": "object",
+  "required": ["schema_version", "policy_class", "registry_role", "owner_policy_ref", "constants", "invariants"],
+  "properties": {
+    "schema_version": {"const": "ptsip-governance-source-registry/v1"},
+    "policy_class": {"const": "PTSIP_DEVELOPER_POLICY"},
+    "registry_role": {"const": "GOVERNANCE_SOURCE_VOCABULARY"},
+    "owner_policy_ref": {"const": "MPD-0010"},
+    "constants": {
+      "type": "object",
+      "required": ["USER_EXPLICIT", "AGENT_INFERRED", "AUTOMATION_DERIVED"],
+      "additionalProperties": false,
+      "properties": {
+        "USER_EXPLICIT": {"$ref": "#/$defs/source"},
+        "AGENT_INFERRED": {"$ref": "#/$defs/source"},
+        "AUTOMATION_DERIVED": {"$ref": "#/$defs/source"}
+      }
+    },
+    "invariants": {"type": "object", "minProperties": 1}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["description", "may_create_official_authority", "allowed_roles"],
+      "properties": {
+        "description": {"type": "string", "minLength": 1},
+        "may_create_official_authority": {"type": "boolean"},
+        "provisional_resolution_only": {"type": "boolean"},
+        "explicit_user_opt_in_required": {"type": "boolean"},
+        "may_propagate_existing_authority_only": {"type": "boolean"},
+        "allowed_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["DECISION_SOURCE", "APPROVAL_SOURCE", "AUTHORIZATION_SOURCE", "TRANSITION_SOURCE"]
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

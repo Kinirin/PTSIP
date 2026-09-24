@@ -13,6 +13,7 @@
         "approval_id",
         "decision",
         "source_kind",
+        "decision_source",
         "approval_scope",
         "target_status",
         "implementation_authorized",
@@ -23,6 +24,7 @@
         "approval_id": {"type": "string", "pattern": "^MPA-[A-Za-z0-9._-]+$"},
         "decision": {"const": "APPROVED"},
         "source_kind": {"enum": ["PROJECT_OWNER_DIRECT_INSTRUCTION", "PROJECT_OWNER_REPOSITORY_RECORD"]},
+        "decision_source": {"const": "USER_EXPLICIT"},
         "source_reference": {"type": ["string", "null"]},
         "approval_scope": {
           "enum": [

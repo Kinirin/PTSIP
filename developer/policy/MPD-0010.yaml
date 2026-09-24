@@ -498,6 +498,54 @@ rules:
       provisional_resolution_is_not_plan_approval_status: true
       explicit_user_approval_required_for_official_promotion: true
 
+
+  governance_source_vocabulary:
+    decision: APPROVED
+    registry_ref: developer/policy/registries/governance-source-registry.yaml
+    review_index_ref: developer/policy/source-application-review.yaml
+    source_is_first_class_governance_dimension: true
+    closed_vocabulary:
+      - USER_EXPLICIT
+      - AGENT_INFERRED
+      - AUTOMATION_DERIVED
+
+    semantic_roles:
+      decision_source:
+        meaning: ORIGIN_OF_THE_DECISION_OR_RESOLUTION
+      approval_source:
+        meaning: ORIGIN_OF_APPROVAL_AUTHORITY
+      authorization_source:
+        meaning: ORIGIN_OF_EXECUTION_AUTHORIZATION
+      transition_source:
+        meaning: ORIGIN_OF_A_DERIVED_STATE_TRANSITION
+
+    authority_rules:
+      USER_EXPLICIT:
+        may_create_official_authority: true
+      AGENT_INFERRED:
+        may_create_official_authority: false
+        provisional_resolution_only: true
+        requires_explicit_user_opt_in_for_provisional_resolution: true
+      AUTOMATION_DERIVED:
+        may_create_official_authority: false
+        may_propagate_existing_authority_only: true
+
+    source_field_boundary:
+      generic_source_field_is_governance_source: false
+      existing_file_data_revision_or_artifact_source_fields_must_not_be_reinterpreted: true
+      governance_source_fields_must_use_explicit_role_names: true
+      examples_not_governance_source:
+        - AGENTS_MD_FILE_SOURCE
+        - EXACT_SHA_VERIFICATION_SOURCE
+        - PROJECT_PROFILE_DATA_SOURCE
+
+    invariants:
+      user_silence_is_not_USER_EXPLICIT: true
+      test_success_is_not_USER_EXPLICIT: true
+      implementation_success_is_not_USER_EXPLICIT: true
+      repository_presence_is_not_USER_EXPLICIT: true
+      lower_authority_source_must_not_be_relabelled_as_higher_authority_source: true
+
 relations:
   supersedes: []
   amends: []

@@ -86,6 +86,7 @@ def _approval(
         "approval_id": "MPA-test",
         "decision": "APPROVED",
         "source_kind": "PROJECT_OWNER_DIRECT_INSTRUCTION",
+        "decision_source": "USER_EXPLICIT",
         "source_reference": "test-fixture",
         "approval_scope": scope,
         "target_status": target_status,

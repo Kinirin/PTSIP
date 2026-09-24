@@ -145,6 +145,36 @@ scope_bindings:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
+
+  developer/policy/source-application-review.yaml:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - management_policy_identity_lifecycle_preflight
+          - provisional_resolution_framework
+          - governance_source_vocabulary
+      - policy_id: MPD-0011
+        sections:
+          - authority_semantics
+          - transition_generation
+          - reconciliation_safety
+      - policy_id: MPD-0013
+        sections:
+          - authority_separation
+          - policy_plan_binding_authority
+
+  developer/policy/registries/governance-source-registry.yaml:
+    default_refs:
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - provisional_resolution_framework
+          - governance_source_vocabulary
+
   developer/profiles:
     default_refs:
       - policy_id: MPD-0005
