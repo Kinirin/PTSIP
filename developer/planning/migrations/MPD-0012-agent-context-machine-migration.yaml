@@ -1,0 +1,370 @@
+schema_version: ptsip-agent-context-machine-migration/v1
+artifact_class: DEVELOPER_PLANNING_MIGRATION
+authority: false
+
+identity:
+  migration_id: MPD-0012-AGENT-CONTEXT-MACHINE-MIGRATION
+  title: Markdown-to-Machine Agent Context Migration
+  status: DRAFT
+  governing_policy_ref: MPD-0012
+  governing_policy_status: DRAFT
+  planning_approval:
+    status: PENDING
+  implementation_authorization:
+    status: NOT_AUTHORIZED
+
+objective:
+  primary: REDUCE_CODING_AGENT_CONTEXT_LOOKUP_AND_REPEATED_SEMANTIC_INFERENCE_COST
+  target_behavior:
+    normative_markdown_dependency: FORBIDDEN
+    default_normative_markdown_reads: 0
+    full_document_corpus_read_as_default: FORBIDDEN
+    exact_operation_scoped_machine_resolution: REQUIRED
+    unresolved_required_semantics: FAIL_CLOSED
+    historical_context_traversal_as_runtime_requirement: FORBIDDEN
+
+existing_machine_plane:
+  root: src/agent_contracts/
+  index: src/agent_contracts/index.yaml
+  contract_set_status: CANDIDATE
+  authority_scope: CODING_AGENT_BEHAVIOR
+  current_dependency_policy:
+    markdown_normative_dependency: FORBIDDEN
+    unresolved_reference: FAIL_CLOSED
+    external_machine_contracts: EXPLICIT_BINDING_ONLY
+  activation_state: NOT_CURRENT
+
+migration_principles:
+  - DO_NOT_TRANSLATE_EACH_MARKDOWN_DOCUMENT_ONE_TO_ONE
+  - MOVE_SEMANTICS_TO_THE_CANONICAL_MACHINE_OWNER_BY_RESPONSIBILITY
+  - DO_NOT_DUPLICATE_NORMATIVE_SEMANTICS_ONLY_TO_PRESERVE_DOCUMENT_SHAPE
+  - HUMAN_PROJECTION_MUST_NOT_BECOME_AUTHORITY
+  - CURRENT_MACHINE_CONTRACTS_MUST_BE_INDEPENDENTLY_VALID_BEFORE_MARKDOWN_REMOVAL
+  - EXISTING_NON_GOVERNANCE_SOURCE_FIELDS_RETAIN_THEIR_OWN_SEMANTICS
+  - STATUS_HISTORY_AND_REFERENCE_CONTEXT_MUST_NOT_BE_FORCED_INTO_NORMATIVE_SPEC_CONTRACTS
+  - AGENT_ENTRY_SHOULD_LOAD_ONLY_OPERATION_RELEVANT_RULES_ACTIONS_CONDITIONS_AND_VOCABULARY
+
+document_classes:
+  CANONICAL_AUTHORITY_MIGRATION:
+    meaning: Semantics must be owned by machine-readable normative or operational contracts.
+  MACHINE_STATE_REPLACEMENT:
+    meaning: Current operational facts should be machine-resolvable without mandatory narrative traversal.
+  HUMAN_INFORMATIVE_PROJECTION:
+    meaning: Human-readable explanatory material may remain, but coding agents must not depend on it for normative behavior.
+
+document_matrix:
+  - path: adoption/ADOPTION-GUIDE.md
+    current_role: OPERATION_PROCEDURE
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/spec/adoption.yaml
+      - src/agent_contracts/operations/adopt.yaml
+      - src/agent_contracts/actions/
+      - src/agent_contracts/conditions/
+      - src/agent_contracts/gates/adoption-write.yaml
+      - src/agent_contracts/schemas/io/adopt-request.schema.json
+      - src/agent_contracts/schemas/io/adopt-state.schema.json
+      - src/agent_contracts/schemas/io/adopt-result.schema.json
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: agents/AGENT-CONTRACT.md
+    current_role: CODING_AGENT_BEHAVIOR
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/index.yaml
+      - src/agent_contracts/spec/
+      - src/agent_contracts/operations/
+      - src/agent_contracts/actions/
+      - src/agent_contracts/conditions/
+      - src/agent_contracts/gates/
+      - src/agent_contracts/vocabulary/
+      - src/agent_contracts/bindings/current.yaml
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: spec/PTSIP-CONFORMANCE.md
+    current_role: VALIDATION_OR_CONFORMANCE_SEMANTICS
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/spec/conformance.yaml
+      - src/agent_contracts/operations/conform.yaml
+      - schemas/ptsip-diagnostic.schema.json
+      - schemas/ptsip-normalized-evidence.schema.json
+      - schemas/ptsip-artifact-evidence.schema.json
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+    current_role: PROFILE_TRANSITION_SEMANTICS
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/spec/profile-transition.yaml
+      - src/agent_contracts/operations/migrate-profile.yaml
+      - registry/project-profile-contracts.yaml
+      - schemas/ptsip-profile-pp-1.02.schema.json
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: spec/PTSIP-GOVERNANCE.md
+    current_role: GOVERNANCE_OR_AUTHORITY_SEMANTICS
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/spec/governance.yaml
+      - src/agent_contracts/spec/authority.yaml
+      - src/agent_contracts/operations/reconcile-authority.yaml
+      - registry/ptsip-registry.yaml
+      - developer/policy/registries/
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: spec/PTSIP-RESPONSIBILITY-MAP.md
+    current_role: NORMATIVE_RULE
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/spec/responsibility-map.yaml
+      - schemas/ptsip-profile.schema.json
+      - schemas/ptsip-profile-pp-1.02.schema.json
+      - registry/project-profile-contracts.yaml
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: spec/PTSIP-SPEC.md
+    current_role: NORMATIVE_RULE
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/spec/core.yaml
+      - src/agent_contracts/spec/classification.yaml
+      - src/agent_contracts/spec/responsibility-map.yaml
+      - src/agent_contracts/spec/conformance.yaml
+      - src/agent_contracts/spec/authority.yaml
+      - registry/ptsip-registry.yaml
+      - schemas/
+    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: spec/PTSIP-TERMINOLOGY.md
+    current_role: NORMATIVE_TERMINOLOGY
+    migration_class: CANONICAL_AUTHORITY_MIGRATION
+    current_machine_targets:
+      - src/agent_contracts/vocabulary/lifecycle.yaml
+      - src/agent_contracts/vocabulary/outcomes.yaml
+      - src/agent_contracts/vocabulary/diagnostics.yaml
+      - src/agent_contracts/vocabulary/authority.yaml
+      - registry/ptsip-registry.yaml
+    current_coverage: PARTIAL_REQUIRES_VOCABULARY_DIFF
+    final_agent_dependency: MACHINE_ONLY
+
+  - path: STATUS.md
+    current_role: REPOSITORY_RELEASE_AND_WORK_STATE_SUMMARY
+    migration_class: MACHINE_STATE_REPLACEMENT
+    current_machine_targets:
+      - developer/planning/index.yaml
+      - developer/planning/0.4.0/index.yaml
+      - registry/project-profile-contracts.yaml
+      - developer/profiles/ptsip-repository.yaml
+      - GitHub release_and_verification_evidence
+    current_coverage: DISTRIBUTED_FACTS_NO_SINGLE_BOUNDED_ENTRY
+    exact_new_state_index_path: OWNER_DECISION_REQUIRED
+    final_agent_dependency: BOUNDED_MACHINE_STATE_ONLY
+    historical_narrative_runtime_required: false
+
+  - path: MEMORY.md
+    current_role: REPOSITORY_WORKING_CONTEXT_AND_HISTORY
+    migration_class: MACHINE_STATE_REPLACEMENT
+    current_machine_targets:
+      - developer/policy/
+      - developer/planning/
+      - developer/bindings/
+      - developer/profiles/
+      - src/agent_contracts/
+    current_coverage: DISTRIBUTED_FACTS_WITH_HISTORICAL_NARRATIVE
+    exact_new_state_index_path: OWNER_DECISION_REQUIRED
+    final_agent_dependency: NONE_FOR_NORMATIVE_RUNTIME
+    historical_narrative_runtime_required: false
+
+  - path: reference/DECISION-CONTROL-PLANE.md
+    current_role: INFORMATIVE_AUTHORITY_REFERENCE
+    migration_class: HUMAN_INFORMATIVE_PROJECTION
+    current_machine_targets:
+      - src/agent_contracts/spec/authority.yaml
+      - src/agent_contracts/operations/reconcile-authority.yaml
+      - src/agent_contracts/actions/read-relevant-authority.yaml
+      - src/agent_contracts/actions/compare-profile-authority.yaml
+      - src/agent_contracts/actions/resolve-reconciliation-state.yaml
+    current_coverage: MACHINE_BEHAVIOR_EXISTS_REFERENCE_REMAINS_EXPLANATORY
+    final_agent_dependency: NONE
+
+  - path: reference/REFERENCE-ARCHITECTURE.md
+    current_role: INFORMATIVE_ARCHITECTURE_REFERENCE
+    migration_class: HUMAN_INFORMATIVE_PROJECTION
+    current_machine_targets:
+      - src/agent_contracts/spec/core.yaml
+      - src/agent_contracts/spec/classification.yaml
+      - src/agent_contracts/spec/responsibility-map.yaml
+      - src/agent_contracts/vocabulary/lifecycle.yaml
+    current_coverage: MACHINE_CORE_EXISTS_REFERENCE_REMAINS_EXPLANATORY
+    final_agent_dependency: NONE
+
+phases:
+  - id: M0
+    name: DOCUMENT_ROLE_AND_MACHINE_OWNER_RECONCILIATION
+    mutation_scope: PLANNING_ONLY
+    actions:
+      - VERIFY_EACH_DOCUMENT_SEMANTIC_ROLE
+      - VERIFY_EXISTING_MACHINE_OWNER
+      - CLASSIFY_DUPLICATE_VS_MISSING_SEMANTICS
+      - RECORD_UNRESOLVED_WITHOUT_MARKDOWN_FALLBACK
+    completion:
+      all_documents_classified: true
+      unresolved_semantics_machine_representable: true
+
+  - id: M1
+    name: NORMATIVE_SEMANTIC_GAP_EXTRACTION
+    mutation_scope: AGENT_CONTRACT_CANDIDATE
+    targets:
+      - adoption/ADOPTION-GUIDE.md
+      - agents/AGENT-CONTRACT.md
+      - spec/PTSIP-CONFORMANCE.md
+      - spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      - spec/PTSIP-GOVERNANCE.md
+      - spec/PTSIP-RESPONSIBILITY-MAP.md
+      - spec/PTSIP-SPEC.md
+      - spec/PTSIP-TERMINOLOGY.md
+    rules:
+      one_to_one_document_translation_required: false
+      compare_by_semantic_responsibility: true
+      preserve_stable_existing_rule_ids_when_semantics_match: true
+      incompatible_semantics_require_distinct_identity: true
+      missing_required_semantics_result: UNRESOLVED
+    output:
+      - MACHINE_COVERAGE_MATRIX
+      - MISSING_RULE_CANDIDATES
+      - MISSING_VOCABULARY_CANDIDATES
+      - MISSING_OPERATION_OR_GATE_CANDIDATES
+
+  - id: M2
+    name: AGENT_CONTRACT_PLANE_COMPLETION
+    mutation_scope: src/agent_contracts/
+    prerequisites:
+      - M1_COMPLETE
+    actions:
+      - MATERIALIZE_REQUIRED_MACHINE_RULES
+      - MATERIALIZE_REQUIRED_VOCABULARY
+      - MATERIALIZE_REQUIRED_OPERATION_ACTION_CONDITION_GATE_CONTRACTS
+      - BIND_IMPLEMENTATIONS_EXACTLY
+      - VALIDATE_INTERNAL_REFERENCES
+    forbidden:
+      - MARKDOWN_RUNTIME_FALLBACK
+      - SEMANTIC_SIMILARITY_RESOLUTION
+      - UNBOUNDED_FULL_CORPUS_LOOKUP
+
+  - id: M3
+    name: STATUS_AND_MEMORY_CONTEXT_REPLACEMENT
+    mutation_scope: STATE_ROUTING
+    prerequisites:
+      - M0_COMPLETE
+    actions:
+      - DEFINE_BOUNDED_CURRENT_STATE_ENTRY
+      - ROUTE_RELEASE_PROFILE_PLANNING_POLICY_AND_BINDING_FACTS_TO_CANONICAL_MACHINE_OWNERS
+      - REMOVE_STATUS_AND_MEMORY_FROM_DEFAULT_AGENT_CONTEXT
+      - KEEP_HISTORY_OPTIONAL_AND_NON_AUTHORITATIVE
+    unresolved:
+      exact_state_index_location: OWNER_DECISION_REQUIRED
+      exact_historical_retention_format: OWNER_DECISION_REQUIRED
+
+  - id: M4
+    name: AGENT_ENTRY_COST_REDUCTION
+    mutation_scope: AGENT_ROUTING
+    prerequisites:
+      - M2_COMPLETE
+      - M3_COMPLETE
+    actions:
+      - ROUTE_BY_OPERATION_ID
+      - LOAD_RULE_REFS_FROM_SELECTED_OPERATION_ONLY
+      - LOAD_REFERENCED_VOCABULARY_AND_SCHEMAS_ONLY
+      - FORBID_DEFAULT_FULL_MARKDOWN_CORPUS_READ
+      - FORBID_STATUS_MEMORY_REFERENCE_DOCS_AS_MANDATORY_BOOTSTRAP
+    expected_property:
+      operation_specific_context_is_bounded: true
+
+  - id: M5
+    name: INDEPENDENT_MACHINE_PLANE_VERIFICATION
+    prerequisites:
+      - M2_COMPLETE
+      - M4_COMPLETE
+    required_checks:
+      - AGENT_CONTRACT_PLANE_STRUCTURAL_VALIDATION_PASS
+      - NO_REQUIRED_MARKDOWN_REFERENCE_FROM_RUNTIME_VALIDATOR_SCHEMA_OR_WORKFLOW
+      - ALL_OPERATION_RULE_REFS_RESOLVE_EXACTLY
+      - ALL_ACTION_CONDITION_GATE_REFS_RESOLVE_EXACTLY
+      - UNRESOLVED_REQUIRED_SEMANTICS_FAIL_CLOSED
+      - CURRENT_PROJECT_PROFILE_BINDING_RESOLVES
+      - REPRESENTATIVE_ADOPT_VALIDATE_CONFORM_AUTHORITY_AND_MIGRATE_OPERATIONS_PASS
+    result_domain:
+      - PASS
+      - FAIL
+      - UNKNOWN
+
+  - id: M6
+    name: AUTHORITY_ACTIVATION
+    prerequisites:
+      - M5_ALL_PASS
+    automatic: false
+    requires:
+      - EXPLICIT_USER_APPROVAL
+      - MPD_0012_ACTIVE_OR_EQUIVALENT_ACTIVE_RECONCILED_POLICY
+      - src_agent_contracts_contract_set_CURRENT
+    forbidden:
+      - TEST_PASS_AUTO_PROMOTION_TO_OFFICIAL_AUTHORITY
+
+  - id: M7
+    name: MARKDOWN_DEPENDENCY_REMOVAL
+    prerequisites:
+      - M6_COMPLETE
+    automation:
+      module: developer.automation.markdown_cleanup
+      workflow: developer/automation/markdown_cleanup_workflow.yaml
+    normative_cleanup_targets:
+      - adoption/ADOPTION-GUIDE.md
+      - agents/AGENT-CONTRACT.md
+      - spec/PTSIP-CONFORMANCE.md
+      - spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
+      - spec/PTSIP-GOVERNANCE.md
+      - spec/PTSIP-RESPONSIBILITY-MAP.md
+      - spec/PTSIP-SPEC.md
+      - spec/PTSIP-TERMINOLOGY.md
+    non_normative_context_targets:
+      - STATUS.md
+      - MEMORY.md
+      - reference/DECISION-CONTROL-PLANE.md
+      - reference/REFERENCE-ARCHITECTURE.md
+    note: Non-normative targets require role-specific disposition and are not deleted merely because they are Markdown.
+
+  - id: M8
+    name: POST_MIGRATION_VALIDATION
+    prerequisites:
+      - M7_COMPLETE
+    required_checks:
+      - DEFAULT_AGENT_NORMATIVE_MARKDOWN_READ_COUNT_ZERO
+      - ACTIVE_MACHINE_DEPENDENCY_ON_REMOVED_MARKDOWN_ZERO
+      - POLICY_PLAN_PROFILE_AND_AGENT_CONTRACT_VALIDATORS_PASS
+      - SELF_HOSTED_FOCUSED_TESTS_PASS
+      - HISTORICAL_REFERENCES_DO_NOT_BECOME_RUNTIME_AUTHORITY
+
+activation_gates:
+  current_blockers:
+    - MPD_0012_STATUS_DRAFT
+    - AGENT_CONTRACT_SET_STATUS_CANDIDATE
+    - MACHINE_SEMANTIC_COVERAGE_NOT_YET_PROVEN
+    - STATUS_MEMORY_BOUNDED_STATE_ENTRY_NOT_YET_DEFINED
+  cleanup_apply_allowed_now: false
+  plan_and_gap_analysis_allowed_now: true
+
+completion_definition:
+  normative_authority_migration_complete_when:
+    - M5_ALL_PASS
+    - M6_COMPLETE
+  context_cost_migration_complete_when:
+    - M8_ALL_PASS
+  physical_markdown_deletion_is_not_the_definition_of_semantic_completion: true
