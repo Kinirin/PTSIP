@@ -210,7 +210,8 @@ parallel_dependency_repartition:
   status: APPROVED
   authority: PROJECT_OWNER
   date: '2026-09-10'
-  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  approval_source: USER_EXPLICIT
+  approval_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
   objective: MOVE_ALL_DEPENDENCY_BEARING_DOWNSTREAM_WORK_INTO_WU_03_AND_LEAVE_WU_04_AND_WU_05_AS_INDEPENDENT_LEAF_WORK_UNITS
   supersedes_dependency_placement_only:
     - developer/planning/0.4.0/WU-02/WU-02.yaml#later_wu_handoffs

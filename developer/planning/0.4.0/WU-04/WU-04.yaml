@@ -32,7 +32,8 @@ planning_authority:
   status: APPROVED
   authority: PROJECT_OWNER
   date: '2026-09-10'
-  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  approval_source: USER_EXPLICIT
+  approval_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
   purpose: REMOVE_WU_02_AND_WU_03_START_DEPENDENCIES_FROM_WU_04_AND_ENABLE_PARALLEL_SESSION_EXECUTION
   implementation_authorized_by_this_plan: false
 
@@ -42,7 +43,8 @@ refactor_ops_migration_authorization:
   status: AUTHORIZED
   authority: PROJECT_OWNER
   date: '2026-09-20'
-  source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  authorization_source: USER_EXPLICIT
+  authorization_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
   approved_sequence:
     - R1_REFACTOR_OPS_CAPABILITY_INVENTORY
     - R2_PTSIP_ONE_TO_ONE_CAPABILITY_COMPARISON

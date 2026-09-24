@@ -20,7 +20,64 @@ ROOT_SCHEMA = "developer/planning/schemas/planning-root-index.schema.json"
 PLAN_SCHEMA = "developer/planning/schemas/planning-index.schema.json"
 WU_SCHEMA = "developer/planning/schemas/work-unit.schema.json"
 EXTENSION_SCHEMA = "developer/planning/schemas/plan-extension.schema.json"
+SOURCE_REGISTRY = "developer/policy/registries/governance-source-registry.yaml"
 _TERMINAL_EXTENSION_STATUSES = {"COMPLETE", "SUPERSEDED", "CANCELLED"}
+_GOVERNANCE_SOURCE_FIELDS = {
+    "decision_source": "DECISION_SOURCE",
+    "approval_source": "APPROVAL_SOURCE",
+    "authorization_source": "AUTHORIZATION_SOURCE",
+    "transition_source": "TRANSITION_SOURCE",
+}
+_LEGACY_GOVERNANCE_SOURCE_VALUES = {
+    "DIRECT_PROJECT_OWNER_INSTRUCTION",
+    "DIRECT_PROJECT_OWNER_TEMPORARY_APPROVAL",
+}
+
+
+
+def _governance_source_errors(
+    payload: object,
+    registry: dict[str, object],
+    label: str,
+) -> list[str]:
+    errors: list[str] = []
+    constants = registry.get("constants", {})
+    if not isinstance(constants, dict):
+        return [f"{SOURCE_REGISTRY}: constants must be a mapping"]
+
+    def visit(value: object, path: str) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                child_path = f"{path}.{key}" if path else str(key)
+                role = _GOVERNANCE_SOURCE_FIELDS.get(str(key))
+                if role is not None:
+                    if not isinstance(child, str) or child not in constants:
+                        errors.append(
+                            f"{label}: {child_path} must resolve to a canonical governance source constant"
+                        )
+                    else:
+                        source_record = constants.get(child)
+                        allowed_roles = (
+                            source_record.get("allowed_roles")
+                            if isinstance(source_record, dict)
+                            else None
+                        )
+                        if not isinstance(allowed_roles, list) or role not in allowed_roles:
+                            errors.append(
+                                f"{label}: {child_path} source {child!r} is not allowed for role {role}"
+                            )
+                elif key == "source" and child in _LEGACY_GOVERNANCE_SOURCE_VALUES:
+                    errors.append(
+                        f"{label}: {child_path} uses legacy governance source {child!r}; "
+                        "use an explicit governance source role field and preserve the old value as evidence kind"
+                    )
+                visit(child, child_path)
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                visit(child, f"{path}[{index}]")
+
+    visit(payload, "")
+    return errors
 
 
 def _errors(payload: dict[str, object], schema: dict[str, object], label: str) -> list[str]:
@@ -35,9 +92,15 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
     plan_schema = load_json(PLAN_SCHEMA, root=base)
     wu_schema = load_json(WU_SCHEMA, root=base)
     extension_schema = load_json(EXTENSION_SCHEMA, root=base)
+    source_registry = load_yaml(SOURCE_REGISTRY, root=base)
     for schema in (root_schema, plan_schema, wu_schema, extension_schema):
         Draft202012Validator.check_schema(schema)
     errors.extend(_errors(root_index, root_schema, ROOT_INDEX))
+
+    for planning_path in sorted((base / "developer/planning").rglob("*.yaml")):
+        relative = planning_path.relative_to(base).as_posix()
+        planning_payload = load_yaml(relative, root=base)
+        errors.extend(_governance_source_errors(planning_payload, source_registry, relative))
 
     for plan_entry in root_index.get("plans", []):
         path = plan_entry.get("path")

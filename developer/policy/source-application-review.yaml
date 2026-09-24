@@ -93,6 +93,10 @@ artifact_review_list:
     classification: GOVERNANCE_SOURCE_ADOPTED
     target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
 
+  - path: developer/planning/0.4.0/custom-component-owner-approved-design.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE
+
   - path: developer/planning/migrations/MPD-0001-planning-subsystem-migration.yaml
     classification: GOVERNANCE_SOURCE_ADOPTED
     target_role: AUTHORIZATION_SOURCE
@@ -117,4 +121,5 @@ migration_order:
   - DECISION_SOURCE_TO_POLICY_APPROVAL_PROVENANCE_ADOPTED
   - AUTHORIZATION_TRANSITION_SOURCE_ADOPTED
   - PLANNING_APPROVAL_AND_AUTHORIZATION_SOURCE_ADOPTED
+  - LEGACY_PLANNING_GOVERNANCE_SOURCE_NORMALIZED
   - ADD_DERIVED_PROJECTIONS_ONLY_AFTER_CANONICAL_FIELDS_EXIST
