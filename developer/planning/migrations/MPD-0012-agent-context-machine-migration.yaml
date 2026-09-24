@@ -330,7 +330,7 @@ phases:
       - TEST_PASS_AUTO_PROMOTION_TO_OFFICIAL_AUTHORITY
 
   - id: M7
-    status: READINESS_REMEDIATION
+    status: IMPLEMENTED_VALIDATION_PENDING
     name: MARKDOWN_DEPENDENCY_REMOVAL
     prerequisites:
       - M6_COMPLETE
@@ -354,6 +354,7 @@ phases:
     note: Non-normative targets require role-specific disposition and are not deleted merely because they are Markdown.
 
   - id: M8
+    status: VALIDATION_PENDING
     name: POST_MIGRATION_VALIDATION
     prerequisites:
       - M7_COMPLETE
@@ -412,3 +413,12 @@ verification_evidence:
     result: PASS
     mpd_0012_status: ACTIVE
     agent_contract_set_status: CURRENT
+
+  m7_cleanup_readiness:
+    source_sha: 786da0e8c5183f1b7361a5da85fbb6d66a663618
+    workflow_run_id: 36034253999
+    workflow_job_id: 107750303245
+    result: READY
+    apply_authorized: true
+    remove_candidate_count: 8
+    active_machine_dependency_count: 0

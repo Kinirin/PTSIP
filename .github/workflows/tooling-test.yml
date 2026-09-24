@@ -237,7 +237,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
           $log = ".artifacts\agent-context-migration-verification.log"
 
-          & $env:AGENT_CONTEXT_PYTHON -m developer.automation.agent_context_migration verify --stage M5 2>&1 |
+          & $env:AGENT_CONTEXT_PYTHON -m developer.automation.agent_context_migration verify --stage AUTO 2>&1 |
             Tee-Object -FilePath $log
           if ($LASTEXITCODE -ne 0) {
             throw "Agent context migration M5 verification failed."

@@ -312,8 +312,9 @@ rules:
       - FEATURE_STABLE_CORE
       - SEMANTIC_EXTENSION_CONTRACT
       - FEATURE_IMPLEMENTATION_BODY_MINIMUM
+    completed_materialization:
       - NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL
-    current_legacy_markdown_physical_presence: PRESENT
+    current_legacy_markdown_physical_presence: ABSENT
     implementation_work_from_this_ledger: AGENT_CONTRACT_MACHINE_PLANE_M0_M5_VERIFIED
 
   validation_evidence:
@@ -334,7 +335,7 @@ rules:
     markdown_cleanup_automation:
       implementation_state: MATERIALIZED
       local_test_execution: NOT_RUN_BY_ASSISTANT
-      simulation_execution: NOT_RUN_BY_ASSISTANT
+      simulation_execution: READY_VERIFIED_36034253999
     agent_context_migration_m5:
       source_sha: 48c44448cdbb19fa5c666ad680e85ee4aa72e828
       workflow_run_id: 36031848090
