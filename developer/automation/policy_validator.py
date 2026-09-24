@@ -367,8 +367,14 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         payload = current_records.get(policy_id)
         if payload is None:
             continue
+        policy = _mapping(payload.get("policy"))
         rules = _mapping(payload.get("rules"))
-        if rules is not None and "authority_semantics" in rules:
+        if (
+            policy is not None
+            and policy.get("status") == "ACTIVE"
+            and rules is not None
+            and "authority_semantics" in rules
+        ):
             developer_authority_ids.append(policy_id)
 
     errors.extend(
