@@ -11,6 +11,12 @@ from developer.automation.policy_loader import load_json, load_yaml, repository_
 INDEX = "developer/policy/index.yaml"
 INDEX_SCHEMA = "developer/policy/schemas/developer-policy-index.schema.json"
 MPD_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
+GOVERNANCE_SOURCE_REGISTRY = "developer/policy/registries/governance-source-registry.yaml"
+GOVERNANCE_SOURCE_REGISTRY_SCHEMA = "developer/policy/schemas/governance-source-registry.schema.json"
+SOURCE_APPLICATION_REVIEW = "developer/policy/source-application-review.yaml"
+SOURCE_APPLICATION_REVIEW_SCHEMA = "developer/policy/schemas/source-application-review.schema.json"
+APPROVAL_PROVENANCE_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.json"
+APPROVAL_PROVENANCE_ROOT = "developer/policy/approvals"
 
 SUPPORT_POLICY_ROOT = "docs/Support_policy/policy"
 SFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
@@ -218,6 +224,128 @@ def _validate_current_registry_planes(
     return errors
 
 
+def _validate_governance_source_plane(
+    base: Path,
+    *,
+    current_records: Mapping[str, Mapping[str, object]],
+    mpd_ids: tuple[str, ...],
+) -> list[str]:
+    errors: list[str] = []
+
+    registry_schema = load_json(GOVERNANCE_SOURCE_REGISTRY_SCHEMA, root=base)
+    review_schema = load_json(SOURCE_APPLICATION_REVIEW_SCHEMA, root=base)
+    approval_schema = load_json(APPROVAL_PROVENANCE_SCHEMA, root=base)
+    for schema in (registry_schema, review_schema, approval_schema):
+        Draft202012Validator.check_schema(schema)
+
+    registry = load_yaml(GOVERNANCE_SOURCE_REGISTRY, root=base)
+    review = load_yaml(SOURCE_APPLICATION_REVIEW, root=base)
+
+    for error in Draft202012Validator(registry_schema).iter_errors(registry):
+        errors.append(f"{GOVERNANCE_SOURCE_REGISTRY}: {error.message}")
+    for error in Draft202012Validator(review_schema).iter_errors(review):
+        errors.append(f"{SOURCE_APPLICATION_REVIEW}: {error.message}")
+
+    constants = _mapping(registry.get("constants"))
+    expected_constants = ("USER_EXPLICIT", "AGENT_INFERRED", "AUTOMATION_DERIVED")
+    if constants is None or tuple(constants) != expected_constants:
+        errors.append(
+            "governance source registry constants must be USER_EXPLICIT, "
+            "AGENT_INFERRED, AUTOMATION_DERIVED in canonical order"
+        )
+        constants = {}
+
+    user_explicit = _mapping(constants.get("USER_EXPLICIT"))
+    agent_inferred = _mapping(constants.get("AGENT_INFERRED"))
+    automation_derived = _mapping(constants.get("AUTOMATION_DERIVED"))
+
+    if user_explicit is None or user_explicit.get("may_create_official_authority") is not True:
+        errors.append("USER_EXPLICIT must be the only source allowed to create official authority")
+    if agent_inferred is None or agent_inferred.get("may_create_official_authority") is not False:
+        errors.append("AGENT_INFERRED must not create official authority")
+    elif (
+        agent_inferred.get("provisional_resolution_only") is not True
+        or agent_inferred.get("explicit_user_opt_in_required") is not True
+    ):
+        errors.append(
+            "AGENT_INFERRED must be provisional-resolution-only and require explicit user opt-in"
+        )
+    if automation_derived is None or automation_derived.get("may_create_official_authority") is not False:
+        errors.append("AUTOMATION_DERIVED must not create official authority")
+    elif automation_derived.get("may_propagate_existing_authority_only") is not True:
+        errors.append("AUTOMATION_DERIVED may only propagate already registered authority")
+
+    query_list = review.get("policy_query_list", [])
+    if not isinstance(query_list, list):
+        errors.append(f"{SOURCE_APPLICATION_REVIEW}: policy_query_list must be a list")
+        query_list = []
+
+    for item in query_list:
+        item_map = _mapping(item)
+        if item_map is None:
+            continue
+        policy_id = item_map.get("policy_id")
+        expected_status = item_map.get("expected_status")
+        sections = item_map.get("sections")
+        if not isinstance(policy_id, str) or policy_id not in mpd_ids:
+            errors.append(f"{SOURCE_APPLICATION_REVIEW}: unknown policy query {policy_id!r}")
+            continue
+        payload = current_records.get(policy_id)
+        if payload is None:
+            errors.append(f"{SOURCE_APPLICATION_REVIEW}: unresolved policy query {policy_id}")
+            continue
+        policy = _mapping(payload.get("policy"))
+        rules = _mapping(payload.get("rules"))
+        actual_status = None if policy is None else policy.get("status")
+        if actual_status != expected_status:
+            errors.append(
+                f"{SOURCE_APPLICATION_REVIEW}: {policy_id} expected status "
+                f"{expected_status!r}, got {actual_status!r}"
+            )
+        if actual_status != "ACTIVE" and item_map.get("review_role") != "REVIEW_ONLY_NOT_AUTHORITY":
+            errors.append(
+                f"{SOURCE_APPLICATION_REVIEW}: non-ACTIVE {policy_id} must be REVIEW_ONLY_NOT_AUTHORITY"
+            )
+        if not isinstance(sections, list) or rules is None:
+            continue
+        for section in sections:
+            if section not in rules:
+                errors.append(
+                    f"{SOURCE_APPLICATION_REVIEW}: {policy_id} missing queried section {section!r}"
+                )
+
+    artifact_list = review.get("artifact_review_list", [])
+    if isinstance(artifact_list, list):
+        for item in artifact_list:
+            item_map = _mapping(item)
+            if item_map is None:
+                continue
+            path = item_map.get("path")
+            if isinstance(path, str) and not (base / path).exists():
+                errors.append(f"{SOURCE_APPLICATION_REVIEW}: review artifact does not exist: {path}")
+
+    approval_validator = Draft202012Validator(approval_schema)
+    valid_sources = set(constants)
+    approval_root = base / APPROVAL_PROVENANCE_ROOT
+    for path in sorted(approval_root.glob("*.yaml")):
+        payload = load_yaml(path, root=base)
+        relative = path.relative_to(base).as_posix()
+        for error in approval_validator.iter_errors(payload):
+            errors.append(f"{relative}: {error.message}")
+        approval = _mapping(payload.get("approval"))
+        if approval is None:
+            continue
+        source = approval.get("decision_source")
+        if source not in valid_sources:
+            errors.append(f"{relative}: unknown decision_source {source!r}")
+        if source != "USER_EXPLICIT":
+            errors.append(
+                f"{relative}: policy approval provenance must use USER_EXPLICIT decision_source"
+            )
+
+    return errors
+
+
 def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]:
     base = repository_root(root)
     errors: list[str] = []
@@ -361,6 +489,14 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
                         f"{source_id}: forbidden current policy relation boundary "
                         f"{source_id} -> {target_id}"
                     )
+
+    errors.extend(
+        _validate_governance_source_plane(
+            base,
+            current_records=current_records,
+            mpd_ids=mpd_ids,
+        )
+    )
 
     developer_authority_ids: list[str] = []
     for policy_id in mpd_ids:
