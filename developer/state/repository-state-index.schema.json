@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:repository-state-index:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_class",
+    "authority",
+    "domains",
+    "default_agent_context"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-repository-state-index/v1"
+    },
+    "artifact_class": {
+      "const": "DERIVED_STATE_ROUTER"
+    },
+    "authority": {
+      "const": false
+    },
+    "domains": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "role"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "pattern": "\\\\.md(?:#|$)"
+            }
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "default_agent_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prose_history_required",
+        "status_markdown_required",
+        "memory_markdown_required",
+        "reference_markdown_required"
+      ],
+      "properties": {
+        "prose_history_required": {
+          "const": false
+        },
+        "status_markdown_required": {
+          "const": false
+        },
+        "memory_markdown_required": {
+          "const": false
+        },
+        "reference_markdown_required": {
+          "const": false
+        }
+      }
+    }
+  }
+}

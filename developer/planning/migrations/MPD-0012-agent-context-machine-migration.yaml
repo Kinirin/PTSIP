@@ -267,6 +267,7 @@ phases:
       - UNBOUNDED_FULL_CORPUS_LOOKUP
 
   - id: M3
+    status: IMPLEMENTED_VALIDATION_PENDING
     name: STATUS_AND_MEMORY_CONTEXT_REPLACEMENT
     mutation_scope: STATE_ROUTING
     prerequisites:
@@ -281,6 +282,7 @@ phases:
       exact_historical_retention_format: OWNER_DECISION_REQUIRED
 
   - id: M4
+    status: IMPLEMENTED_VALIDATION_PENDING
     name: AGENT_ENTRY_COST_REDUCTION
     mutation_scope: AGENT_ROUTING
     prerequisites:

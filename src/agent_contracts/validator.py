@@ -368,6 +368,11 @@ def validate_agent_contract_plane() -> dict[str, int]:
         require_io(input_io, operation_id)
         output_schema = require_io(output_io, operation_id)
         operation_outcomes = set(operation["outcomes"])
+        for vocabulary_ref in operation["vocabulary_refs"]:
+            if vocabulary_ref not in payloads["vocabularies"]:
+                raise AgentContractValidationError(
+                    f"Operation {operation_id} has unresolved vocabulary ref: {vocabulary_ref}"
+                )
         for outcome in operation_outcomes:
             require_outcome(outcome, operation_id)
 

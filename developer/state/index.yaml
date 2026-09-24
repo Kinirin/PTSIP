@@ -1,0 +1,41 @@
+{
+  "schema_version": "ptsip-repository-state-index/v1",
+  "artifact_class": "DERIVED_STATE_ROUTER",
+  "authority": false,
+  "domains": {
+    "developer_policy": {
+      "ref": "developer/policy/index.yaml",
+      "role": "CANONICAL_DEVELOPER_POLICY_INDEX"
+    },
+    "developer_planning": {
+      "ref": "developer/planning/index.yaml",
+      "role": "CANONICAL_DEVELOPER_PLANNING_INDEX"
+    },
+    "project_profile": {
+      "ref": "developer/profiles/ptsip-repository.yaml",
+      "role": "CANONICAL_REPOSITORY_PROFILE"
+    },
+    "policy_plan_binding": {
+      "ref": "developer/bindings/policy-plan-bindings.yaml",
+      "role": "CANONICAL_POLICY_PLAN_RELATIONSHIP_REGISTRY"
+    },
+    "agent_contract": {
+      "ref": "src/agent_contracts/bindings/current.yaml",
+      "role": "AGENT_CONTRACT_BINDING"
+    },
+    "governance_source": {
+      "ref": "developer/policy/registries/governance-source-registry.yaml",
+      "role": "GOVERNANCE_SOURCE_VOCABULARY"
+    },
+    "context_migration": {
+      "ref": "developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml",
+      "role": "AGENT_CONTEXT_MIGRATION_STATE"
+    }
+  },
+  "default_agent_context": {
+    "prose_history_required": false,
+    "status_markdown_required": false,
+    "memory_markdown_required": false,
+    "reference_markdown_required": false
+  }
+}
