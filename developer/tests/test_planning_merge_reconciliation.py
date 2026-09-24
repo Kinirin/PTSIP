@@ -271,7 +271,7 @@ def _repo(
                 "path": "developer/planning/0.4.0/WU-05/WU-05.yaml",
                 "lifecycle": {"status": "ACTIVE"},
                 "approval": _approval(),
-                "implementation_authorization": {"status": "AUTHORIZED"},
+                "implementation_authorization": _authorization("AUTHORIZED"),
                 "depends_on": [],
             },
         ],
