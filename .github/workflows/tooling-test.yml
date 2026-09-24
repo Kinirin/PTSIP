@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       verification:
-        description: auto, full, markdown-cleanup-simulation, or a registered Test Mode id
+        description: auto, full, planning-migration, markdown-cleanup-simulation, or a registered Test Mode id
         required: true
         default: auto
         type: string
@@ -19,6 +19,138 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  planning-migration-verify:
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'planning-migration') }}
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact Planning migration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Verify exact Planning migration source identity
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          $actualSha = (git rev-parse HEAD).Trim()
+          if ($actualSha -ne $env:EXPECTED_SHA) {
+            throw "Checked out SHA $actualSha does not match Planning migration SHA $env:EXPECTED_SHA."
+          }
+          Write-Host "Planning migration verification source SHA: $actualSha"
+          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
+
+      - name: Prepare Planning migration Python 3.14
+        shell: powershell
+        run: |
+          $launcher = Get-Command py -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
+          }
+
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
+          }
+
+          if (Test-Path -LiteralPath ".venv-planning-migration") {
+            Remove-Item -LiteralPath ".venv-planning-migration" -Recurse -Force
+          }
+
+          & $python -m venv .venv-planning-migration
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create Planning migration verification environment."
+          }
+
+          $venvPython = Join-Path (Resolve-Path ".venv-planning-migration").Path "Scripts\python.exe"
+          & $venvPython -m pip install --upgrade pip
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to upgrade pip for Planning migration verification."
+          }
+
+          & $venvPython -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install repository for Planning migration verification."
+          }
+
+          "PLANNING_VERIFY_PYTHON=$venvPython" >> $env:GITHUB_ENV
+
+      - name: Run Planning migration focused verification
+        shell: powershell
+        env:
+          PYTHONPATH: ".;src"
+        run: |
+          New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
+          $log = ".artifacts\planning-migration-verification.log"
+
+          & $env:PLANNING_VERIFY_PYTHON -m developer.automation.policy_validator 2>&1 |
+            Tee-Object -FilePath $log
+          if ($LASTEXITCODE -ne 0) {
+            throw "Developer policy validation failed."
+          }
+
+          & $env:PLANNING_VERIFY_PYTHON -m developer.automation.planning.planning_validator 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            throw "Developer planning validation failed."
+          }
+
+          & $env:PLANNING_VERIFY_PYTHON -m pytest -q `
+            developer/tests/test_planning_extension_finalizer.py `
+            developer/tests/test_planning_merge_reconciliation.py `
+            developer/tests/test_planning_stage_finalizer.py `
+            developer/tests/test_policy_resolver.py `
+            tests/ptsip/control_plane/test_planning_entry_resolver.py 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            throw "Planning migration focused pytest verification failed."
+          }
+
+          @(
+            "## Planning migration verification"
+            ""
+            "- Source SHA: ${{ github.sha }}"
+            "- Policy validation: PASS"
+            "- Planning validation: PASS"
+            "- Focused pytest: PASS"
+          ) | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding UTF8
+
+      - name: Upload Planning migration verification log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: planning-migration-verification-${{ github.sha }}
+          path: .artifacts/planning-migration-verification.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Record successful Planning migration verification
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ github.sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            state = "success"
+            context = "self-hosted/planning-migration"
+            description = "Planning migration policy, control-plane, and focused tests passed"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
+
   pp-transition-verify:
     if: ${{ github.event_name == 'push' && github.event.deleted == false }}
     runs-on: [self-hosted, Windows, X64]
