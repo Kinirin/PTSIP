@@ -4,18 +4,24 @@ policy_class: PTSIP_DEVELOPER_POLICY
 policy:
   id: MPD-0012
   title: Agent Contract Semantic Verification and Feature Extension Decision Ledger
-  status: DRAFT
+  status: ACTIVE
 
 rules:
   authority_semantics:
-    decision_record_state: DRAFT_WITH_APPROVED_SUBDECISIONS
+    decision_record_state: ACTIVE_RECONCILED
     decision_date: "2026-09-22"
+    activation_date: "2026-09-25"
     scope: AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION
     record_role: SESSION_POLICY_DECISION_LEDGER
-    runtime_authority: NOT_ACTIVATED
-    implementation_change_authorized_by_this_record: false
+    runtime_authority: ACTIVATED
+    runtime_authority_scope: APPROVED_DECISIONS_ONLY
+    provisional_decisions_are_runtime_authority: false
+    deferred_decisions_are_runtime_authority: false
+    implementation_change_authorized_by_this_record: true
     activation_requires_separate_reconciliation_and_approval: true
+    activation_approval_satisfied: true
     existing_active_policy_reconciliation_required_before_activation: true
+    existing_active_policy_reconciliation_satisfied: true
 
   approved_decisions:
     normative_document_boundary:
@@ -280,7 +286,7 @@ rules:
     observed_head_before_this_record: df018272ef31ef84c3cc158d00235af946862c09
     currently_materialized:
       agent_contract_root: src/agent_contracts
-      contract_set_status: CANDIDATE
+      contract_set_status: CURRENT
       authority_scope: CODING_AGENT_BEHAVIOR
       markdown_normative_dependency: FORBIDDEN
       external_machine_contracts: EXPLICIT_BINDING_ONLY
@@ -308,7 +314,7 @@ rules:
       - FEATURE_IMPLEMENTATION_BODY_MINIMUM
       - NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL
     current_legacy_markdown_physical_presence: PRESENT
-    implementation_work_from_this_ledger: MARKDOWN_CLEANUP_AUTOMATION_MATERIALIZED
+    implementation_work_from_this_ledger: AGENT_CONTRACT_MACHINE_PLANE_M0_M5_VERIFIED
 
   validation_evidence:
     user_reported_local_validation:
@@ -329,15 +335,25 @@ rules:
       implementation_state: MATERIALIZED
       local_test_execution: NOT_RUN_BY_ASSISTANT
       simulation_execution: NOT_RUN_BY_ASSISTANT
+    agent_context_migration_m5:
+      source_sha: 48c44448cdbb19fa5c666ad680e85ee4aa72e828
+      workflow_run_id: 36031848090
+      workflow_job_id: 107743172276
+      result: PASS
+      machine_contract_specs: 15
+      machine_contract_rules: 156
+      machine_contract_vocabularies: 5
 
   activation_boundary:
-    this_draft_does_not_promote_agent_contract_candidate_to_current: true
-    this_draft_does_not_delete_markdown: true
-    this_draft_does_not_modify_agent_contract_runtime: true
-    this_draft_does_not_implement_feature_compiler: true
-    this_draft_does_not_authorize_langgraph_or_langchain_core_dependency: true
+    activation_approval_ref: developer/policy/approvals/MPA-20260925-MPD-0012-AGENT-CONTEXT-ACTIVATION.yaml
+    agent_contract_current_activation: AUTHORIZED
+    runtime_authority_limited_to_approved_decisions: true
+    provisional_decisions_promoted_by_activation: false
+    deferred_decisions_promoted_by_activation: false
     markdown_cleanup_inspect_plan_verify_simulate_allowed: true
-    markdown_cleanup_physical_apply_requires_policy_active: true
+    markdown_cleanup_physical_apply_authorized_only_after_readiness: true
+    this_activation_does_not_implement_feature_compiler: true
+    this_activation_does_not_authorize_langgraph_or_langchain_core_dependency: true
     next_required_phase: MARKDOWN_CLEANUP_SIMULATION_AND_REFERENCE_REMEDIATION
 
 relations:

@@ -317,7 +317,7 @@ phases:
       - UNKNOWN
 
   - id: M6
-    status: PREFLIGHT_PENDING
+    status: IMPLEMENTED_VALIDATION_PENDING
     name: AUTHORITY_ACTIVATION
     prerequisites:
       - M5_ALL_PASS
@@ -393,3 +393,12 @@ verification_evidence:
     agent_contract_vocabularies: 5
     representative_operation_failures: 0
     bounded_state_routing_failures: 0
+
+  m6_status_preflight:
+    source_sha: d69d1e0e4f428208f6338310163deae8b2d13c73
+    workflow_run_id: 36032505085
+    workflow_job_id: 107744495178
+    approval_id: MPA-20260925-MPD-0012-AGENT-CONTEXT-ACTIVATION
+    current_status: DRAFT
+    target_status: ACTIVE
+    result: READY

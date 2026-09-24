@@ -28,13 +28,12 @@ policy_query_list:
     reason: Contains explicit project-owner decision requirements and derived transition semantics.
 
   - policy_id: MPD-0012
-    expected_status: DRAFT
+    expected_status: ACTIVE
     sections:
       - authority_semantics
       - approved_decisions
       - provisional_decisions
-    review_role: REVIEW_ONLY_NOT_AUTHORITY
-    reason: Contains source and provisional-decision concepts but is not operational authority.
+    reason: Approved decisions are operational authority; provisional and deferred decisions remain explicitly non-authoritative.
 
   - policy_id: MPD-0013
     expected_status: ACTIVE

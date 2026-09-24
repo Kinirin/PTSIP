@@ -40,6 +40,24 @@ Rules:
 - Re-run resolution after changing task scope, operation class, or branch context.
 
 
+## Mandatory PTSIP Agent Contract entry
+
+For PTSIP product/consumer operations, resolve the bounded machine contract before reading any narrative specification:
+
+```text
+python -m agent_contracts.resolver <PTSIP-OP-ID> --json
+```
+
+Current operation IDs are `PTSIP-OP-ADOPT-001`, `PTSIP-OP-VALIDATE-001`, `PTSIP-OP-CONFORM-001`, `PTSIP-OP-RECONCILE-AUTHORITY-001`, and `PTSIP-OP-MIGRATE-PROFILE-001`. Use only the returned exact rules, actions, conditions, gates, I/O schemas, vocabularies, and implementation bindings.
+
+For current repository state, resolve one exact owner instead of reading repository history or status prose:
+
+```text
+python -m developer.automation.repository_state_resolver <domain> --json
+```
+
+Do not preload `adoption/`, `agents/AGENT-CONTRACT.md`, `STATUS.md`, `MEMORY.md`, `spec/*.md`, or `reference/*.md` as normative or default coding-agent context. Human-readable history/reference material is optional and cannot override the current machine contract or canonical state owner. Resolver failure is fail-closed.
+
 ## Mandatory MPD identity lifecycle preflight
 
 Do not choose a new `MPD-####` ID or change an MPD lifecycle status by repository scan or conversational inference.

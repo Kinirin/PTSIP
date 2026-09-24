@@ -644,6 +644,25 @@ def validate_agent_contract_plane() -> dict[str, int]:
     _validate(binding, _json(_safe_ref(schemas.get("binding"))), binding_ref)
     _reject_markdown_dependency(binding, binding_ref)
 
+    contract_set = index.get("contract_set")
+    if not isinstance(contract_set, dict):
+        raise AgentContractValidationError("index.yaml contract_set must be a mapping.")
+    if contract_set.get("status") == "CURRENT":
+        if binding.get("status") != "CURRENT":
+            raise AgentContractValidationError(
+                "CURRENT Agent Contract set requires CURRENT binding."
+            )
+        for kind in ("specs", "operations", "actions", "conditions", "gates", "vocabularies"):
+            non_current = sorted(
+                item_id
+                for item_id, payload in payloads[kind].items()
+                if payload.get("status") != "CURRENT"
+            )
+            if non_current:
+                raise AgentContractValidationError(
+                    f"CURRENT Agent Contract set contains non-CURRENT {kind}: {non_current}"
+                )
+
     indexed_sets = {
         "active_specs": set(payloads["specs"]),
         "active_operations": set(payloads["operations"]),

@@ -146,6 +146,24 @@
         "merge_event_is_transition_authority": false,
         "implementation_infrastructure_change_without_t2_delta_changes_pp_version": false
       }
+    },
+    "MPD_0012_V1": {
+      "const": {
+        "decision_record_state": "ACTIVE_RECONCILED",
+        "decision_date": "2026-09-22",
+        "activation_date": "2026-09-25",
+        "scope": "AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION",
+        "record_role": "SESSION_POLICY_DECISION_LEDGER",
+        "runtime_authority": "ACTIVATED",
+        "runtime_authority_scope": "APPROVED_DECISIONS_ONLY",
+        "provisional_decisions_are_runtime_authority": false,
+        "deferred_decisions_are_runtime_authority": false,
+        "implementation_change_authorized_by_this_record": true,
+        "activation_requires_separate_reconciliation_and_approval": true,
+        "activation_approval_satisfied": true,
+        "existing_active_policy_reconciliation_required_before_activation": true,
+        "existing_active_policy_reconciliation_satisfied": true
+      }
     }
   }
 }
