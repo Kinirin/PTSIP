@@ -46,11 +46,11 @@ policy_query_list:
 
 artifact_review_list:
   - path: developer/policy/schemas/policy-approval-provenance.schema.json
-    classification: MUST_ADOPT_GOVERNANCE_SOURCE_CONSTANT
+    classification: GOVERNANCE_SOURCE_ADOPTED
     target_role: DECISION_SOURCE
 
   - path: developer/policy/approvals/
-    classification: MUST_ADOPT_GOVERNANCE_SOURCE_CONSTANT
+    classification: GOVERNANCE_SOURCE_ADOPTED
     target_role: DECISION_SOURCE
 
   - path: developer/policy/registries/authorization-transition-registry.yaml
@@ -93,6 +93,10 @@ artifact_review_list:
     classification: GOVERNANCE_SOURCE_ADOPTED
     target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
 
+  - path: developer/planning/migrations/MPD-0001-planning-subsystem-migration.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: AUTHORIZATION_SOURCE
+
   - path: developer/automation/implementation_workflows.schema.json
     classification: SOURCE_KEY_HAS_NON_GOVERNANCE_MEANING
     target_role: NONE
@@ -110,7 +114,7 @@ excluded_existing_source_semantics:
 migration_order:
   - ESTABLISH_SOURCE_REGISTRY
   - VALIDATE_POLICY_QUERY_LIST
-  - APPLY_DECISION_SOURCE_TO_POLICY_APPROVAL_PROVENANCE
+  - DECISION_SOURCE_TO_POLICY_APPROVAL_PROVENANCE_ADOPTED
   - AUTHORIZATION_TRANSITION_SOURCE_ADOPTED
   - PLANNING_APPROVAL_AND_AUTHORIZATION_SOURCE_ADOPTED
   - ADD_DERIVED_PROJECTIONS_ONLY_AFTER_CANONICAL_FIELDS_EXIST
