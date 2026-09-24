@@ -58,16 +58,40 @@ artifact_review_list:
     target_role: AUTHORIZATION_SOURCE_AND_TRANSITION_SOURCE
 
   - path: developer/planning/schemas/work-unit.schema.json
-    classification: REVIEW_BEFORE_SOURCE_ADOPTION
-    target_role: APPROVAL_AND_AUTHORIZATION_SOURCE
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
 
   - path: developer/planning/schemas/plan-extension.schema.json
-    classification: REVIEW_BEFORE_SOURCE_ADOPTION
-    target_role: APPROVAL_AND_AUTHORIZATION_SOURCE
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
 
   - path: developer/planning/schemas/planning-index.schema.json
-    classification: REVIEW_BEFORE_SOURCE_ADOPTION
-    target_role: APPROVAL_AND_AUTHORIZATION_SOURCE
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+
+  - path: developer/planning/0.4.0/index.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+
+  - path: developer/planning/0.4.0/WU-02/WU-02.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+
+  - path: developer/planning/0.4.0/WU-03/WU-03.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+
+  - path: developer/planning/0.4.0/WU-04/WU-04.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+
+  - path: developer/planning/0.4.0/WU-05/WU-05.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+
+  - path: developer/planning/0.4.0/WU-02/WU-02-P01.yaml
+    classification: GOVERNANCE_SOURCE_ADOPTED
+    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
 
   - path: developer/automation/implementation_workflows.schema.json
     classification: SOURCE_KEY_HAS_NON_GOVERNANCE_MEANING
@@ -88,5 +112,5 @@ migration_order:
   - VALIDATE_POLICY_QUERY_LIST
   - APPLY_DECISION_SOURCE_TO_POLICY_APPROVAL_PROVENANCE
   - AUTHORIZATION_TRANSITION_SOURCE_ADOPTED
-  - REVIEW_PLANNING_APPROVAL_AND_AUTHORIZATION_SOURCE
+  - PLANNING_APPROVAL_AND_AUTHORIZATION_SOURCE_ADOPTED
   - ADD_DERIVED_PROJECTIONS_ONLY_AFTER_CANONICAL_FIELDS_EXIST

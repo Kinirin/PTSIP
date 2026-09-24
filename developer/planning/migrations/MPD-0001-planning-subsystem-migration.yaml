@@ -9,7 +9,8 @@ plan:
     policy_refs:
       - MPD-0001
       - MPD-0013
-    authorization_source: DIRECT_PROJECT_OWNER_TEMPORARY_APPROVAL
+    authorization_source: USER_EXPLICIT
+    authorization_evidence_kind: DIRECT_PROJECT_OWNER_TEMPORARY_APPROVAL
     implementation_authorized: true
     provisional_detail_refinement_allowed: true
 

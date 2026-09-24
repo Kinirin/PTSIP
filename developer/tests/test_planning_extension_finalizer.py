@@ -18,7 +18,10 @@ def _ready_extension_payload() -> dict[str, object]:
             "parent": "WU-02",
             "lifecycle": {"status": "ACTIVE"},
         },
-        "implementation_authorization": {"status": "AUTHORIZED"},
+        "implementation_authorization": {
+            "status": "AUTHORIZED",
+            "authorization_source": "USER_EXPLICIT",
+        },
         "current_known_blockers": [],
         "migration_stages": {
             "P01_A": {"status": "COMPLETE"},
@@ -62,8 +65,10 @@ extension:
     status: ACTIVE
 approval:
   status: APPROVED
+  approval_source: USER_EXPLICIT
 implementation_authorization:
   status: AUTHORIZED
+  authorization_source: USER_EXPLICIT
 depends_on:
   - WU-02
 """
@@ -86,6 +91,7 @@ scope_contract:
 
     assert "lifecycle:\n    status: COMPLETE" in extension_text
     assert "implementation_authorization:\n  status: COMPLETE" in extension_text
+    assert "  authorization_source: USER_EXPLICIT" in extension_text
     assert "- id: WU-02-P01\n    path:" in parent_text
     assert "    status: COMPLETE\nscope_contract:" in parent_text
 

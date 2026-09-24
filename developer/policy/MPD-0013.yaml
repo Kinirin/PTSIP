@@ -42,6 +42,18 @@ rules:
       plan_requires_separate_approval: true
       multiple_valid_planning_options_may_exist_for_same_policy: true
 
+    source_boundary:
+      governance_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
+      approval_source_role: ORIGIN_OF_PLAN_APPROVAL_AUTHORITY
+      authorization_source_role: ORIGIN_OF_IMPLEMENTATION_EXECUTION_AUTHORIZATION
+      official_plan_approval_source: USER_EXPLICIT
+      official_implementation_authorization_source: USER_EXPLICIT
+      automation_derived_may_create_plan_approval: false
+      automation_derived_may_create_implementation_authorization: false
+      automation_derived_may_propagate_or_transition_existing_authority: true
+      approval_source_and_authorization_source_are_independent: true
+      lifecycle_or_completion_transition_does_not_create_new_authority: true
+
   policy_plan_binding_authority:
     canonical_registry: developer/bindings/policy-plan-bindings.yaml
     authority_role: POLICY_PLAN_RELATIONSHIP_AUTHORITY

@@ -78,6 +78,7 @@ work_units:
     status: ACTIVE
   approval:
     status: APPROVED
+    approval_source: USER_EXPLICIT
     inherited_from:
     - WU-00B/D01
     - WU-00B/D03
@@ -85,6 +86,7 @@ work_units:
     - WU-00B/D08
   implementation_authorization:
     status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on:
   - WU-01
 - id: WU-03
@@ -93,9 +95,11 @@ work_units:
     status: ACTIVE
   approval:
     status: APPROVED
+    approval_source: USER_EXPLICIT
     inherited_from: []
   implementation_authorization:
     status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on:
   - WU-02
 - id: WU-04
@@ -104,10 +108,12 @@ work_units:
     status: ACTIVE
   approval:
     status: APPROVED
+    approval_source: USER_EXPLICIT
     inherited_from:
     - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
   implementation_authorization:
     status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on: []
 - id: WU-05
   path: developer/planning/0.4.0/WU-05/WU-05.yaml
@@ -115,10 +121,12 @@ work_units:
     status: ACTIVE
   approval:
     status: APPROVED
+    approval_source: USER_EXPLICIT
     inherited_from:
     - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
   implementation_authorization:
     status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on: []
 - id: WU-06
   lifecycle:

@@ -13,10 +13,13 @@ work_unit:
   approval:
     status: APPROVED
     authority: PROJECT_OWNER
+    approval_source: USER_EXPLICIT
     inherited_from:
       - DIRECT_PROJECT_OWNER_PARALLEL_REPARTITION_2026_09_10
   integration_branch: dev/0.3.8
-  implementation_authorization: AUTHORIZED
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on: []
   execution_location: INTEGRATION_BRANCH
   execution_branch: dev/0.3.8

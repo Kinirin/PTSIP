@@ -13,10 +13,13 @@ work_unit:
   approval:
     status: APPROVED
     authority: PROJECT_OWNER
+    approval_source: USER_EXPLICIT
     inherited_from: []
   integration_branch: dev/0.3.8
   entry_baseline: f4a178c1e781beab12ecbb6fda85cb2fc42aafc9
-  implementation_authorization: AUTHORIZED
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on: [WU-02]
 
 execution_exception:
@@ -24,7 +27,8 @@ execution_exception:
   dependency_preserved: WU-02
   authorized_by: PROJECT_OWNER
   authorized_date: '2026-09-10'
-  authorization_source: DIRECT_PROJECT_OWNER_INSTRUCTION
+  authorization_source: USER_EXPLICIT
+  authorization_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
   reason: ACCELERATE_0_4_0_WITHOUT_CREATING_A_BRANCH_OR_COLLIDING_WITH_ACTIVE_WU_02_P01_WORK
   branch_policy: SAME_DEV_0_4_0_BRANCH_NO_WORKTREE_NO_FEATURE_BRANCH
   current_gate_unchanged: WU-02-P01

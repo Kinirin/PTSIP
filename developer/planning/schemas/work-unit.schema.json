@@ -102,9 +102,41 @@
                 "type": "string",
                 "minLength": 1
               }
+            },
+            "approval_source": {
+              "const": "USER_EXPLICIT"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "APPROVED",
+                      "REJECTED"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "required": [
+                  "approval_source"
+                ]
+              },
+              "else": {
+                "not": {
+                  "required": [
+                    "approval_source"
+                  ]
+                }
+              }
+            }
+          ]
         },
         "integration_branch": {
           "type": "string",
@@ -115,12 +147,68 @@
           "pattern": "^[0-9a-f]{40}$"
         },
         "implementation_authorization": {
-          "enum": [
-            "NOT_AUTHORIZED",
-            "HOLD_NOT_AUTHORIZED",
-            "AUTHORIZED",
-            "COMPLETE"
-          ]
+          "type": "object",
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "NOT_AUTHORIZED",
+                "HOLD_NOT_AUTHORIZED",
+                "AUTHORIZED",
+                "COMPLETE"
+              ]
+            },
+            "authorization_source": {
+              "const": "USER_EXPLICIT"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "AUTHORIZED",
+                      "COMPLETE"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "required": [
+                  "authorization_source"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "NOT_AUTHORIZED",
+                      "HOLD_NOT_AUTHORIZED"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "not": {
+                  "required": [
+                    "authorization_source"
+                  ]
+                }
+              }
+            }
+          ],
+          "additionalProperties": false
         },
         "depends_on": {
           "type": "array",

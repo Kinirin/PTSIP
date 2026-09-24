@@ -12,6 +12,7 @@ work_unit:
   approval:
     status: APPROVED
     authority: PROJECT_OWNER
+    approval_source: USER_EXPLICIT
     inherited_from:
       - WU-00B/D01
       - WU-00B/D03
@@ -19,7 +20,9 @@ work_unit:
       - WU-00B/D08
   integration_branch: dev/0.3.8
   entry_baseline: 4416e206adf2fcbff84f11cb50c002494c699a38
-  implementation_authorization: AUTHORIZED
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   depends_on: [WU-01]
   legacy_detail_migrated_into_scope_contract: true
   supplements:

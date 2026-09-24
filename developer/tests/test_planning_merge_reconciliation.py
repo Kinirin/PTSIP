@@ -17,7 +17,18 @@ from developer.automation.planning.planning_merge_reconciler import (
 
 
 def _approval() -> dict[str, object]:
-    return {"status": "APPROVED", "inherited_from": []}
+    return {
+        "status": "APPROVED",
+        "approval_source": "USER_EXPLICIT",
+        "inherited_from": [],
+    }
+
+
+def _authorization(status: str) -> dict[str, object]:
+    result: dict[str, object] = {"status": status}
+    if status in {"AUTHORIZED", "COMPLETE"}:
+        result["authorization_source"] = "USER_EXPLICIT"
+    return result
 
 
 def _write_yaml(path: Path, payload: dict[str, object]) -> None:
@@ -50,7 +61,7 @@ def _work_unit(
             "lifecycle": {"status": status},
             "approval": _approval(),
             "integration_branch": "dev/0.4.0",
-            "implementation_authorization": authorization,
+            "implementation_authorization": _authorization(authorization),
             "depends_on": depends_on,
         },
     }
@@ -206,9 +217,9 @@ def _repo(
                 "path": "developer/planning/0.4.0/WU-02/WU-02.yaml",
                 "lifecycle": {"status": wu02_status},
                 "approval": _approval(),
-                "implementation_authorization": {
-                    "status": "COMPLETE" if wu02_status == "COMPLETE" else "AUTHORIZED"
-                },
+                "implementation_authorization": _authorization(
+                    "COMPLETE" if wu02_status == "COMPLETE" else "AUTHORIZED"
+                ),
                 "depends_on": ["WU-01"],
                 **(
                     {
@@ -229,7 +240,7 @@ def _repo(
                 "path": "developer/planning/0.4.0/WU-03/WU-03.yaml",
                 "lifecycle": {"status": "ACTIVE"},
                 "approval": _approval(),
-                "implementation_authorization": {"status": "AUTHORIZED"},
+                "implementation_authorization": _authorization("AUTHORIZED"),
                 "depends_on": ["WU-02"],
             },
             {
@@ -237,9 +248,9 @@ def _repo(
                 "path": "developer/planning/0.4.0/WU-04/WU-04.yaml",
                 "lifecycle": {"status": wu04_status},
                 "approval": _approval(),
-                "implementation_authorization": {
-                    "status": "COMPLETE" if wu04_status == "COMPLETE" else "AUTHORIZED"
-                },
+                "implementation_authorization": _authorization(
+                    "COMPLETE" if wu04_status == "COMPLETE" else "AUTHORIZED"
+                ),
                 "depends_on": [],
                 **(
                     {
@@ -489,3 +500,27 @@ def test_pending_branch_rename_alias_resolves_and_reconciles_to_canonical_branch
     assert canonical.role == "INTEGRATION_CONTROL_PLANE"
     assert legacy.role == "BRANCH_RENAME_SOURCE_ALIAS"
     assert result.integration_branch == "dev/0.3.8"
+
+
+def test_reconciliation_rejects_approved_work_unit_without_user_explicit_source(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    wu_path = repo / "developer/planning/0.4.0/WU-03/WU-03.yaml"
+    payload = yaml.safe_load(wu_path.read_text(encoding="utf-8"))
+    del payload["work_unit"]["approval"]["approval_source"]
+    _write_yaml(wu_path, payload)
+
+    with pytest.raises(PlanningStateReconciliationError) as exc:
+        reconcile_planning_state(root=repo, current_branch="dev/0.4.0")
+    assert exc.value.code == "INVALID_WORK_UNIT_APPROVAL_SOURCE"
+
+
+def test_reconciliation_rejects_authorized_work_unit_without_user_explicit_source(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    wu_path = repo / "developer/planning/0.4.0/WU-03/WU-03.yaml"
+    payload = yaml.safe_load(wu_path.read_text(encoding="utf-8"))
+    del payload["work_unit"]["implementation_authorization"]["authorization_source"]
+    _write_yaml(wu_path, payload)
+
+    with pytest.raises(PlanningStateReconciliationError) as exc:
+        reconcile_planning_state(root=repo, current_branch="dev/0.4.0")
+    assert exc.value.code == "INVALID_WORK_UNIT_AUTHORIZATION_SOURCE"

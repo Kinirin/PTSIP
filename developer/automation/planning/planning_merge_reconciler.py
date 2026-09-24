@@ -159,12 +159,23 @@ def _copy_work_unit_state_into_version_index(
         work_unit = payload.get("work_unit", {})
         lifecycle = work_unit.get("lifecycle", {})
         approval = work_unit.get("approval", {})
-        implementation_authorization = work_unit.get("implementation_authorization")
+        implementation_authorization = work_unit.get("implementation_authorization", {})
         depends_on = work_unit.get("depends_on", [])
 
         lifecycle_status = lifecycle.get("status")
         approval_status = approval.get("status")
+        approval_source = approval.get("approval_source")
         inherited_from = approval.get("inherited_from")
+        authorization_status = (
+            implementation_authorization.get("status")
+            if isinstance(implementation_authorization, dict)
+            else None
+        )
+        authorization_source = (
+            implementation_authorization.get("authorization_source")
+            if isinstance(implementation_authorization, dict)
+            else None
+        )
         if not isinstance(lifecycle_status, str):
             raise PlanningStateReconciliationError(
                 "INVALID_WORK_UNIT_LIFECYCLE",
@@ -180,10 +191,20 @@ def _copy_work_unit_state_into_version_index(
                 "INVALID_WORK_UNIT_APPROVAL_PROVENANCE",
                 f"{work_unit_id}: approval.inherited_from is missing or invalid.",
             )
-        if not isinstance(implementation_authorization, str):
+        if not isinstance(implementation_authorization, dict) or not isinstance(authorization_status, str):
             raise PlanningStateReconciliationError(
                 "INVALID_WORK_UNIT_AUTHORIZATION",
-                f"{work_unit_id}: implementation_authorization is missing or invalid.",
+                f"{work_unit_id}: implementation_authorization.status is missing or invalid.",
+            )
+        if approval_status in {"APPROVED", "REJECTED"} and approval_source != "USER_EXPLICIT":
+            raise PlanningStateReconciliationError(
+                "INVALID_WORK_UNIT_APPROVAL_SOURCE",
+                f"{work_unit_id}: approved/rejected planning authority requires USER_EXPLICIT approval_source.",
+            )
+        if authorization_status == "AUTHORIZED" and authorization_source != "USER_EXPLICIT":
+            raise PlanningStateReconciliationError(
+                "INVALID_WORK_UNIT_AUTHORIZATION_SOURCE",
+                f"{work_unit_id}: AUTHORIZED implementation requires USER_EXPLICIT authorization_source.",
             )
         if not isinstance(depends_on, list):
             raise PlanningStateReconciliationError(
@@ -196,9 +217,13 @@ def _copy_work_unit_state_into_version_index(
             "status": approval_status,
             "inherited_from": list(inherited_from),
         }
+        if isinstance(approval_source, str):
+            index_entry["approval"]["approval_source"] = approval_source
         index_entry["implementation_authorization"] = {
-            "status": implementation_authorization
+            "status": authorization_status
         }
+        if isinstance(authorization_source, str):
+            index_entry["implementation_authorization"]["authorization_source"] = authorization_source
         index_entry["depends_on"] = list(depends_on)
 
         if lifecycle_status == "COMPLETE":

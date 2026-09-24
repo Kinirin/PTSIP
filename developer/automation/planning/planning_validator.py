@@ -297,10 +297,22 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
                     errors.append(f"{wu_path}: work_unit.id does not match version index")
                 if work_unit.get("lifecycle", {}).get("status") != wu.get("lifecycle", {}).get("status"):
                     errors.append(f"{wu_path}: lifecycle.status does not match version index")
-                if work_unit.get("approval", {}).get("status") != wu.get("approval", {}).get("status"):
+                work_approval = work_unit.get("approval", {})
+                indexed_approval = wu.get("approval", {})
+                if work_approval.get("status") != indexed_approval.get("status"):
                     errors.append(f"{wu_path}: approval.status does not match version index")
-                if work_unit.get("implementation_authorization") != wu.get("implementation_authorization", {}).get("status"):
-                    errors.append(f"{wu_path}: implementation_authorization does not match version index")
+                if work_approval.get("approval_source") != indexed_approval.get("approval_source"):
+                    errors.append(f"{wu_path}: approval_source does not match version index")
+
+                work_authorization = work_unit.get("implementation_authorization", {})
+                indexed_authorization = wu.get("implementation_authorization", {})
+                if not isinstance(work_authorization, dict):
+                    errors.append(f"{wu_path}: implementation_authorization must be an object")
+                else:
+                    if work_authorization.get("status") != indexed_authorization.get("status"):
+                        errors.append(f"{wu_path}: implementation_authorization.status does not match version index")
+                    if work_authorization.get("authorization_source") != indexed_authorization.get("authorization_source"):
+                        errors.append(f"{wu_path}: authorization_source does not match version index")
                 if work_unit.get("depends_on", []) != wu.get("depends_on", []):
                     errors.append(f"{wu_path}: depends_on does not match version index")
 

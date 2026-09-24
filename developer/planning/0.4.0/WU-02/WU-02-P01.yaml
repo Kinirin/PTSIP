@@ -13,9 +13,11 @@ extension:
 approval:
   status: APPROVED
   authority: PROJECT_OWNER
+  approval_source: USER_EXPLICIT
 
 implementation_authorization:
   status: COMPLETE
+  authorization_source: USER_EXPLICIT
 
 depends_on:
   - WU-02
