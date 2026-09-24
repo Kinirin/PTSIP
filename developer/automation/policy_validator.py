@@ -324,6 +324,33 @@ def _validate_governance_source_plane(
             if isinstance(path, str) and not (base / path).exists():
                 errors.append(f"{SOURCE_APPLICATION_REVIEW}: review artifact does not exist: {path}")
 
+    authorization_registry = load_yaml(
+        "developer/policy/registries/authorization-transition-registry.yaml",
+        root=base,
+    )
+    authorization_provenance = _mapping(
+        authorization_registry.get("authorization_provenance")
+    )
+    transition_semantics = _mapping(
+        authorization_registry.get("transition_semantics")
+    )
+    if (
+        authorization_provenance is None
+        or authorization_provenance.get("authorization_source") != "USER_EXPLICIT"
+    ):
+        errors.append(
+            "authorization transition registry must bind authorization_source to USER_EXPLICIT"
+        )
+    if (
+        transition_semantics is None
+        or transition_semantics.get("transition_source") != "AUTOMATION_DERIVED"
+        or transition_semantics.get("may_create_official_authority") is not False
+    ):
+        errors.append(
+            "authorization transition registry must use AUTOMATION_DERIVED "
+            "for non-authority-creating transition derivation"
+        )
+
     approval_validator = Draft202012Validator(approval_schema)
     valid_sources = set(constants)
     approval_root = base / APPROVAL_PROVENANCE_ROOT

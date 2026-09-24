@@ -4,9 +4,14 @@ registry_role: PROJECT_OWNER_PREAUTHORIZED_IMPLEMENTATION_TRANSITION_CATALOG
 project_authority: false
 authorization_provenance:
   authority: PROJECT_OWNER
+  authorization_source: USER_EXPLICIT
   type: GIT_COMMIT
   repository: Kinirin/PTSIP
   revision: 7f5b92945b4880298b16164f92d586ebd9873254
+transition_semantics:
+  transition_source: AUTOMATION_DERIVED
+  derives_from_registered_authorization: true
+  may_create_official_authority: false
 states:
   - NOT_AUTHORIZED
   - HOLD_NOT_AUTHORIZED
