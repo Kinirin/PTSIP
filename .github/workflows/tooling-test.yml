@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       verification:
-        description: auto, full, policy-lifecycle, planning-migration, markdown-cleanup-simulation, or a registered Test Mode id
+        description: auto, full, policy-lifecycle, planning-migration, agent-context-migration, markdown-cleanup-simulation, or a registered Test Mode id
         required: true
         default: auto
         type: string
@@ -183,6 +183,92 @@ jobs:
             state = "success"
             context = "self-hosted/planning-migration"
             description = "Planning migration policy, control-plane, and focused tests passed"
+            target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod `
+            -Method Post `
+            -Uri "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/statuses/$env:VERIFIED_SHA" `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $body
+
+  agent-context-migration-verify:
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'agent-context-migration') }}
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout exact agent context migration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Prepare agent context migration Python 3.14
+        shell: powershell
+        run: |
+          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
+          if ($LASTEXITCODE -ne 0 -or -not $python) {
+            throw "Python 3.14 is required."
+          }
+          if (Test-Path -LiteralPath ".venv-agent-context") {
+            Remove-Item -LiteralPath ".venv-agent-context" -Recurse -Force
+          }
+          & $python -m venv .venv-agent-context
+          $venvPython = Join-Path (Resolve-Path ".venv-agent-context").Path "Scripts\python.exe"
+          & $venvPython -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install agent context migration verification environment."
+          }
+          "AGENT_CONTEXT_PYTHON=$venvPython" >> $env:GITHUB_ENV
+
+      - name: Verify bounded machine context migration
+        shell: powershell
+        env:
+          PYTHONPATH: ".;src"
+        run: |
+          New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
+          $log = ".artifacts\agent-context-migration-verification.log"
+
+          & $env:AGENT_CONTEXT_PYTHON -m developer.automation.agent_context_migration verify --stage M5 2>&1 |
+            Tee-Object -FilePath $log
+          if ($LASTEXITCODE -ne 0) {
+            throw "Agent context migration M5 verification failed."
+          }
+
+          & $env:AGENT_CONTEXT_PYTHON -m pytest -q `
+            tests/agent_contracts/test_contract_plane.py `
+            tests/agent_contracts/test_resolver.py `
+            developer/tests/test_repository_state_resolver.py `
+            developer/tests/test_agent_context_migration.py 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            throw "Agent context migration focused tests failed."
+          }
+
+      - name: Upload agent context migration verification log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-context-migration-verification-${{ github.sha }}
+          path: .artifacts/agent-context-migration-verification.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Record successful agent context migration verification
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ github.sha }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            state = "success"
+            context = "self-hosted/agent-context-migration"
+            description = "Agent context machine migration verification passed"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
 
