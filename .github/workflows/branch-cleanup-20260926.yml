@@ -37,8 +37,6 @@ jobs:
 
       - name: Delete explicitly rejected legacy branches
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           branches=(
@@ -59,6 +57,10 @@ jobs:
             "verify/context-plane-20260925"
           )
           for branch in "${branches[@]}"; do
-            echo "Deleting $branch"
-            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${branch}"
+            if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+              echo "Deleting $branch"
+              git push origin --delete "$branch"
+            else
+              echo "Already absent: $branch"
+            fi
           done
