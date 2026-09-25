@@ -15,13 +15,13 @@ permissions:
   statuses: write
 
 concurrency:
-  group: tooling-test-self-hosted
+  group: tooling-test
   cancel-in-progress: false
 
 jobs:
   pp-transition-verify:
     if: ${{ github.event_name == 'push' && github.event.deleted == false }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact pushed source
         uses: actions/checkout@v4
@@ -30,39 +30,23 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Prepare PP transition verifier
-        shell: powershell
+      - name: Set up Python 3.14 for PP transition verification
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Install PP transition verifier dependencies
+        shell: pwsh
         run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          if (Test-Path -LiteralPath ".venv-pp-transition") {
-            Remove-Item -LiteralPath ".venv-pp-transition" -Recurse -Force
-          }
-
-          & $python -m venv .venv-pp-transition
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create PP transition verification environment."
-          }
-
-          $venvPython = Join-Path (Resolve-Path ".venv-pp-transition").Path "Scripts\python.exe"
-          & $venvPython -m pip install --upgrade pip "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
+          python -m pip install --upgrade pip "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install PP transition verifier dependency."
           }
-
-          "PP_VERIFY_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "PP_VERIFY_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Resolve introduced commit baseline
         id: pp-base
-        shell: powershell
+        shell: pwsh
         env:
           PUSH_BEFORE: ${{ github.event.before }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
@@ -101,11 +85,11 @@ jobs:
           Write-Host "PP transition verification base: $base"
 
       - name: Verify every introduced PP transition commit
-        shell: powershell
+        shell: pwsh
         env:
           PP_BASE: ${{ steps.pp-base.outputs.base }}
           PP_HEAD: ${{ github.sha }}
-          PYTHONPATH: ".;src"
+          PYTHONPATH: ".:src"
         run: |
           & $env:PP_VERIFY_PYTHON -m developer.automation.pp_remote_verify range --base $env:PP_BASE --head $env:PP_HEAD
           if ($LASTEXITCODE -ne 0) {
@@ -113,7 +97,7 @@ jobs:
           }
 
       - name: Record successful PP transition verification
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.sha }}
@@ -125,7 +109,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/pp-transition"
+            context = "ci/pp-transition"
             description = "Every introduced commit passed PP transition verification"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -139,7 +123,7 @@ jobs:
 
   test:
     if: ${{ github.event_name == 'workflow_dispatch' }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact dispatched source
         uses: actions/checkout@v4
@@ -150,7 +134,7 @@ jobs:
 
       - name: Verify exact dispatched source identity
         id: source
-        shell: powershell
+        shell: pwsh
         env:
           DISPATCHED_SHA: ${{ github.sha }}
         run: |
@@ -160,12 +144,12 @@ jobs:
           }
           "verified_sha=$actualSha" >> $env:GITHUB_OUTPUT
           Write-Host "Verification source SHA: $actualSha"
-          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
+          Write-Host "GitHub-hosted runner: $env:RUNNER_NAME"
 
       - name: Resolve automatic verification baseline
         id: auto-base
         if: ${{ inputs.verification == 'auto' }}
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
@@ -194,8 +178,8 @@ jobs:
                 Where-Object {
                   $_.state -eq 'success' -and
                   $_.context -in @(
-                    'self-hosted/change-verification',
-                    'self-hosted/tooling-test'
+                    'ci/change-verification',
+                    'ci/tooling-test'
                   )
                 }
             )
@@ -217,47 +201,13 @@ jobs:
           "base=$base" >> $env:GITHUB_OUTPUT
           Write-Host "Automatic verification base: $base ($source)"
 
-      - name: Prepare self-hosted Python 3.14
-        shell: powershell
-        run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
-          if ($LASTEXITCODE -ne 0) {
-            throw "The selected host interpreter is not Python 3.14."
-          }
-
-          if (Test-Path -LiteralPath ".venv") {
-            Remove-Item -LiteralPath ".venv" -Recurse -Force
-          }
-
-          & $python -m venv .venv
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create the isolated verification virtual environment."
-          }
-
-          $venvRoot = (Resolve-Path -LiteralPath ".venv").Path
-          $venvScripts = Join-Path $venvRoot "Scripts"
-          $venvPython = Join-Path $venvScripts "python.exe"
-          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
-            throw "Verification virtual environment did not produce .venv\Scripts\python.exe."
-          }
-
-          & $venvPython --version
-          "VIRTUAL_ENV=$venvRoot" >> $env:GITHUB_ENV
-          $venvScripts >> $env:GITHUB_PATH
-          Write-Host "Using host Python 3.14 via isolated environment: $venvPython"
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
 
       - name: Install verification tooling
-        shell: powershell
+        shell: pwsh
         env:
           VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
@@ -278,7 +228,7 @@ jobs:
 
       - name: Resolve and run deterministic change verification
         if: ${{ inputs.verification != 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
@@ -339,7 +289,7 @@ jobs:
 
       - name: Record successful exact-SHA change verification
         if: ${{ inputs.verification != 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
@@ -351,7 +301,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/change-verification"
+            context = "ci/change-verification"
             description = "Deterministic Test Mode verification passed for the exact dispatched SHA"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -365,17 +315,17 @@ jobs:
 
       - name: Verify Tool, PP, and Specification release contract
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: python .github/scripts/verify_release_contract.py
 
       - name: Run complete repository regression
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: python -m pytest -q
 
       - name: Verify Tool, Specification, and repository profile
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: |
           ptsip --version
           ptsip spec
@@ -386,7 +336,7 @@ jobs:
 
       - name: Build and verify distributions
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: |
           python -m build
           $distFiles = Get-ChildItem -Path dist -File | ForEach-Object { $_.FullName }
@@ -397,12 +347,12 @@ jobs:
 
       - name: Verify wheel and sdist embedded contracts
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: python .github/scripts/verify_distribution_contracts.py
 
       - name: Verify Product Artifact evidence and exact snapshot binding
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
           REPOSITORY_ID: ${{ github.repository }}
@@ -681,7 +631,7 @@ jobs:
 
       - name: Reinstall built wheel and smoke public surfaces
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: |
           $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
           if (-not $wheel) {
@@ -696,7 +646,7 @@ jobs:
 
       - name: Record successful exact-SHA tooling verification
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
@@ -708,8 +658,8 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/tooling-test"
-            description = "Self-hosted Windows verification passed for the exact dispatched SHA"
+            context = "ci/tooling-test"
+            description = "GitHub-hosted Ubuntu verification passed for the exact dispatched SHA"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
 

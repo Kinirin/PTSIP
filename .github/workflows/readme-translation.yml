@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   sync-localized-readmes:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
@@ -28,59 +28,33 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Prepare persistent Argos runtime
-        shell: powershell
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Prepare Argos runtime
+        shell: pwsh
         run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
+          python -m pip install --upgrade pip
+          if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip for Argos runtime." }
+          python -m pip install --upgrade "argostranslate==1.11.0"
+          if ($LASTEXITCODE -ne 0) { throw "Failed to install argostranslate==1.11.0." }
 
-          $hostPythonOutput = & py -3.14 -c "import sys; print(sys.executable)"
-          if ($LASTEXITCODE -ne 0 -or -not $hostPythonOutput) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-          $hostPython = ($hostPythonOutput | Select-Object -First 1).Trim()
-
-          $runtimeRoot = Join-Path $env:USERPROFILE ".ptsip\readme-translation"
-          $venvRoot = Join-Path $runtimeRoot "venv-py314"
-          $venvPython = Join-Path $venvRoot "Scripts\python.exe"
-          $modelRoot = Join-Path $runtimeRoot "argos-packages"
-
-          New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
-          New-Item -ItemType Directory -Force -Path $modelRoot | Out-Null
-
-          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
-            & $hostPython -m venv $venvRoot
-            if ($LASTEXITCODE -ne 0) {
-              throw "Failed to create persistent Argos virtual environment at $venvRoot."
-            }
-          }
-
-          $versionProbe = "import importlib.util, importlib.metadata; print(importlib.metadata.version('argostranslate') if importlib.util.find_spec('argostranslate') else '')"
-          $versionOutput = & $venvPython -c $versionProbe
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to inspect the persistent Argos virtual environment."
-          }
-          $installedVersion = (($versionOutput | Select-Object -First 1) -as [string]).Trim()
-
-          if ($installedVersion -ne "1.11.0") {
-            & $venvPython -m pip install --upgrade pip
-            if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip for Argos runtime." }
-            & $venvPython -m pip install --upgrade "argostranslate==1.11.0"
-            if ($LASTEXITCODE -ne 0) { throw "Failed to install argostranslate==1.11.0." }
-          }
-
-          & $venvPython -c "import argostranslate, importlib.metadata; print('Argos Translate ' + importlib.metadata.version('argostranslate'))"
+          python -c "import argostranslate, importlib.metadata; print('Argos Translate ' + importlib.metadata.version('argostranslate'))"
           if ($LASTEXITCODE -ne 0) { throw "Argos runtime verification failed." }
+
+          $runtimeRoot = Join-Path $HOME ".ptsip/readme-translation"
+          $modelRoot = Join-Path $runtimeRoot "argos-packages"
+          New-Item -ItemType Directory -Force -Path $modelRoot | Out-Null
 
           "ARGOS_PACKAGES_DIR=$modelRoot" >> $env:GITHUB_ENV
           "ARGOS_DEVICE_TYPE=cpu" >> $env:GITHUB_ENV
           "ARGOS_CHUNK_TYPE=MINISBD" >> $env:GITHUB_ENV
-          "TRANSLATION_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "TRANSLATION_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Generate localized README files
-        shell: powershell
+        shell: pwsh
         run: |
           & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --source README.md --target "ko:README.ko.md"
           if ($LASTEXITCODE -ne 0) {
@@ -88,7 +62,7 @@ jobs:
           }
 
       - name: Commit synchronized translations
-        shell: powershell
+        shell: pwsh
         run: |
           git diff --check
           if ($LASTEXITCODE -ne 0) {
