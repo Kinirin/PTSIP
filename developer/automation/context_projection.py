@@ -422,6 +422,10 @@ def write_context(input_path: str | Path, root: str | Path = ".") -> ContextProj
     return projections
 
 
+def _normalized_text_bytes(payload: bytes) -> bytes:
+    return payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+
 def check_context(root: str | Path = ".") -> ContextProjectionSet:
     base = Path(root).resolve()
     projections = render_projections(_load_json(base / SOURCE_PATH))
@@ -431,7 +435,7 @@ def check_context(root: str | Path = ".") -> ContextProjectionSet:
         path = base / relative
         if not path.is_file():
             drift.append(f"{relative.as_posix()}: MISSING")
-        elif path.read_bytes() != expected:
+        elif _normalized_text_bytes(path.read_bytes()) != _normalized_text_bytes(expected):
             drift.append(f"{relative.as_posix()}: DRIFT")
     if drift:
         raise ContextProjectionError(
