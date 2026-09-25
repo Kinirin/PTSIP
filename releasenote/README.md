@@ -113,7 +113,7 @@ The tagged `tool/0.3.8a1.md` is preserved as the immutable release-point documen
 
 `tool-v0.3.5` was published from commit `79bc4c2daf695e8462a02f2a7c4b1bb1a88846e1` on 2026-08-17. The `tooling-release` workflow run `32011194245` completed both build and PyPI Trusted Publishing successfully.
 
-The tagged Tool note was finalized immediately before publication. Current operational status corrections belong in this index and `STATUS.md` rather than rewriting an immutable tagged release point.
+The tagged Tool note was finalized immediately before publication. Current operational status corrections belong in this index and `.ptsip/context/context.json` rather than rewriting an immutable tagged release point.
 
 ### Tool 0.3.6 pre-publication note
 
@@ -167,7 +167,7 @@ Draft family labels are not immutable normative identity by themselves. Exact no
 - commit the final Tool release note to `main` before the release tag is published;
 - use the same reviewed Markdown as the GitHub Release body at publication;
 - treat a tagged version document as immutable after publication;
-- record post-publication operational corrections in `releasenote/README.md` and `STATUS.md`;
+- record post-publication operational corrections in `releasenote/README.md` and `.ptsip/context/context.json`;
 - publish the prepared GitHub draft manually so `tooling-release.yml` can perform PyPI Trusted Publishing.
 
 ## Project Profile note policy

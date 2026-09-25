@@ -15,13 +15,13 @@ permissions:
   statuses: write
 
 concurrency:
-  group: tooling-test-self-hosted
+  group: tooling-test
   cancel-in-progress: false
 
 jobs:
   policy-lifecycle-verify:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'policy-lifecycle') }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact policy lifecycle source
         uses: actions/checkout@v4
@@ -29,28 +29,24 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Prepare policy lifecycle Python 3.14
-        shell: powershell
+      - name: Set up Python 3.14 for policy lifecycle
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Prepare policy lifecycle environment
+        shell: pwsh
         run: |
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is required."
-          }
-          if (Test-Path -LiteralPath ".venv-policy-lifecycle") {
-            Remove-Item -LiteralPath ".venv-policy-lifecycle" -Recurse -Force
-          }
-          & $python -m venv .venv-policy-lifecycle
-          $venvPython = Join-Path (Resolve-Path ".venv-policy-lifecycle").Path "Scripts\python.exe"
-          & $venvPython -m pip install -e ".[dev]"
+          python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install policy lifecycle verification environment."
           }
-          "POLICY_LIFECYCLE_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "POLICY_LIFECYCLE_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Verify policy lifecycle automation
-        shell: powershell
+        shell: pwsh
         env:
-          PYTHONPATH: ".;src"
+          PYTHONPATH: ".:src"
         run: |
           & $env:POLICY_LIFECYCLE_PYTHON -m pytest -q developer/tests/test_policy_identity_lifecycle.py
           if ($LASTEXITCODE -ne 0) {
@@ -71,7 +67,7 @@ jobs:
 
   planning-migration-verify:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'planning-migration') }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact Planning migration source
         uses: actions/checkout@v4
@@ -81,7 +77,7 @@ jobs:
           fetch-tags: true
 
       - name: Verify exact Planning migration source identity
-        shell: powershell
+        shell: pwsh
         env:
           EXPECTED_SHA: ${{ github.sha }}
         run: |
@@ -90,50 +86,30 @@ jobs:
             throw "Checked out SHA $actualSha does not match Planning migration SHA $env:EXPECTED_SHA."
           }
           Write-Host "Planning migration verification source SHA: $actualSha"
-          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
+          Write-Host "GitHub-hosted runner: $env:RUNNER_NAME"
 
-      - name: Prepare Planning migration Python 3.14
-        shell: powershell
+      - name: Set up Python 3.14 for Planning migration
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Prepare Planning migration environment
+        shell: pwsh
         run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          if (Test-Path -LiteralPath ".venv-planning-migration") {
-            Remove-Item -LiteralPath ".venv-planning-migration" -Recurse -Force
-          }
-
-          & $python -m venv .venv-planning-migration
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create Planning migration verification environment."
-          }
-
-          $venvPython = Join-Path (Resolve-Path ".venv-planning-migration").Path "Scripts\python.exe"
-          & $venvPython -m pip install --upgrade pip
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to upgrade pip for Planning migration verification."
-          }
-
-          & $venvPython -m pip install -e ".[dev]"
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install repository for Planning migration verification."
           }
-
-          "PLANNING_VERIFY_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "PLANNING_VERIFY_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Run Planning migration focused verification
-        shell: powershell
+        shell: pwsh
         env:
-          PYTHONPATH: ".;src"
+          PYTHONPATH: ".:src"
         run: |
           New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
-          $log = ".artifacts\planning-migration-verification.log"
+          $log = ".artifacts/planning-migration-verification.log"
 
           & $env:PLANNING_VERIFY_PYTHON -m developer.automation.policy_validator 2>&1 |
             Tee-Object -FilePath $log
@@ -188,7 +164,7 @@ jobs:
           retention-days: 14
 
       - name: Record successful Planning migration verification
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.sha }}
@@ -200,7 +176,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/planning-migration"
+            context = "ci/planning-migration"
             description = "Planning migration policy, control-plane, and focused tests passed"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -214,7 +190,7 @@ jobs:
 
   agent-context-migration-verify:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'agent-context-migration') }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact agent context migration source
         uses: actions/checkout@v4
@@ -222,31 +198,27 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Prepare agent context migration Python 3.14
-        shell: powershell
+      - name: Set up Python 3.14 for agent context migration
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Prepare agent context migration environment
+        shell: pwsh
         run: |
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is required."
-          }
-          if (Test-Path -LiteralPath ".venv-agent-context") {
-            Remove-Item -LiteralPath ".venv-agent-context" -Recurse -Force
-          }
-          & $python -m venv .venv-agent-context
-          $venvPython = Join-Path (Resolve-Path ".venv-agent-context").Path "Scripts\python.exe"
-          & $venvPython -m pip install -e ".[dev]"
+          python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install agent context migration verification environment."
           }
-          "AGENT_CONTEXT_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "AGENT_CONTEXT_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Verify bounded machine context migration
-        shell: powershell
+        shell: pwsh
         env:
-          PYTHONPATH: ".;src"
+          PYTHONPATH: ".:src"
         run: |
           New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
-          $log = ".artifacts\agent-context-migration-verification.log"
+          $log = ".artifacts/agent-context-migration-verification.log"
 
           & $env:AGENT_CONTEXT_PYTHON -m developer.automation.agent_context_migration verify --stage AUTO 2>&1 |
             Tee-Object -FilePath $log
@@ -274,7 +246,7 @@ jobs:
           retention-days: 14
 
       - name: Record successful agent context migration verification
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.sha }}
@@ -286,7 +258,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/agent-context-migration"
+            context = "ci/agent-context-migration"
             description = "Agent context machine migration verification passed"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -300,7 +272,7 @@ jobs:
 
   pp-transition-verify:
     if: ${{ github.event_name == 'push' && github.event.deleted == false }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact pushed source
         uses: actions/checkout@v4
@@ -309,39 +281,23 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Prepare PP transition verifier
-        shell: powershell
+      - name: Set up Python 3.14 for PP transition verification
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Install PP transition verifier dependencies
+        shell: pwsh
         run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          if (Test-Path -LiteralPath ".venv-pp-transition") {
-            Remove-Item -LiteralPath ".venv-pp-transition" -Recurse -Force
-          }
-
-          & $python -m venv .venv-pp-transition
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create PP transition verification environment."
-          }
-
-          $venvPython = Join-Path (Resolve-Path ".venv-pp-transition").Path "Scripts\python.exe"
-          & $venvPython -m pip install --upgrade pip "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
+          python -m pip install --upgrade pip "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install PP transition verifier dependency."
           }
-
-          "PP_VERIFY_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "PP_VERIFY_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Resolve introduced commit baseline
         id: pp-base
-        shell: powershell
+        shell: pwsh
         env:
           PUSH_BEFORE: ${{ github.event.before }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
@@ -380,11 +336,11 @@ jobs:
           Write-Host "PP transition verification base: $base"
 
       - name: Verify every introduced PP transition commit
-        shell: powershell
+        shell: pwsh
         env:
           PP_BASE: ${{ steps.pp-base.outputs.base }}
           PP_HEAD: ${{ github.sha }}
-          PYTHONPATH: ".;src"
+          PYTHONPATH: ".:src"
         run: |
           & $env:PP_VERIFY_PYTHON -m developer.automation.pp_remote_verify range --base $env:PP_BASE --head $env:PP_HEAD
           if ($LASTEXITCODE -ne 0) {
@@ -392,7 +348,7 @@ jobs:
           }
 
       - name: Record successful PP transition verification
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.sha }}
@@ -404,7 +360,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/pp-transition"
+            context = "ci/pp-transition"
             description = "Every introduced commit passed PP transition verification"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -419,7 +375,7 @@ jobs:
 
   markdown-cleanup-simulate:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && inputs.verification == 'markdown-cleanup-simulation') }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact cleanup simulation source
         uses: actions/checkout@v4
@@ -429,7 +385,7 @@ jobs:
           fetch-tags: true
 
       - name: Verify exact cleanup simulation source identity
-        shell: powershell
+        shell: pwsh
         env:
           EXPECTED_SHA: ${{ github.sha }}
         run: |
@@ -438,51 +394,25 @@ jobs:
             throw "Checked out SHA $actualSha does not match cleanup simulation SHA $env:EXPECTED_SHA."
           }
           Write-Host "Markdown cleanup simulation source SHA: $actualSha"
-          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
+          Write-Host "GitHub-hosted runner: $env:RUNNER_NAME"
 
-      - name: Prepare cleanup simulation Python 3.14
-        shell: powershell
+      - name: Set up Python 3.14 for Markdown cleanup simulation
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Prepare cleanup simulation environment
+        shell: pwsh
         run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          if (Test-Path -LiteralPath ".venv-markdown-cleanup") {
-            Remove-Item -LiteralPath ".venv-markdown-cleanup" -Recurse -Force
-          }
-
-          & $python -m venv .venv-markdown-cleanup
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create Markdown cleanup simulation environment."
-          }
-
-          $venvRoot = (Resolve-Path -LiteralPath ".venv-markdown-cleanup").Path
-          $venvScripts = Join-Path $venvRoot "Scripts"
-          $venvPython = Join-Path $venvScripts "python.exe"
-          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
-            throw "Cleanup simulation environment did not produce python.exe."
-          }
-
-          & $venvPython -m pip install --upgrade pip
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to upgrade pip for cleanup simulation."
-          }
-
-          & $venvPython -m pip install -e ".[dev]"
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install the repository for cleanup simulation."
           }
-
-          "MARKDOWN_CLEANUP_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "MARKDOWN_CLEANUP_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Verify Markdown cleanup automation
-        shell: powershell
+        shell: pwsh
         run: |
           & $env:MARKDOWN_CLEANUP_PYTHON -m pytest -q developer/tests/test_markdown_cleanup.py
           if ($LASTEXITCODE -ne 0) {
@@ -491,12 +421,12 @@ jobs:
 
       - name: Run MPD-0012 Markdown cleanup simulation
         id: cleanup
-        shell: powershell
+        shell: pwsh
         env:
-          PYTHONPATH: ".;src"
+          PYTHONPATH: ".:src"
         run: |
           New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
-          $outputPath = ".artifacts\markdown-cleanup-simulation.json"
+          $outputPath = ".artifacts/markdown-cleanup-simulation.json"
 
           & $env:MARKDOWN_CLEANUP_PYTHON -m developer.automation.markdown_cleanup simulate --output $outputPath
           if ($LASTEXITCODE -ne 0) {
@@ -539,7 +469,7 @@ jobs:
           retention-days: 14
 
       - name: Record successful cleanup simulation execution
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.sha }}
@@ -558,7 +488,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/markdown-cleanup-simulation"
+            context = "ci/markdown-cleanup-simulation"
             description = $description
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -567,7 +497,7 @@ jobs:
 
   test:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.verification != 'markdown-cleanup-simulation' }}
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact dispatched source
         uses: actions/checkout@v4
@@ -578,7 +508,7 @@ jobs:
 
       - name: Verify exact dispatched source identity
         id: source
-        shell: powershell
+        shell: pwsh
         env:
           DISPATCHED_SHA: ${{ github.sha }}
         run: |
@@ -588,12 +518,12 @@ jobs:
           }
           "verified_sha=$actualSha" >> $env:GITHUB_OUTPUT
           Write-Host "Verification source SHA: $actualSha"
-          Write-Host "Self-hosted runner: $env:RUNNER_NAME"
+          Write-Host "GitHub-hosted runner: $env:RUNNER_NAME"
 
       - name: Resolve automatic verification baseline
         id: auto-base
         if: ${{ inputs.verification == 'auto' }}
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
@@ -622,8 +552,8 @@ jobs:
                 Where-Object {
                   $_.state -eq 'success' -and
                   $_.context -in @(
-                    'self-hosted/change-verification',
-                    'self-hosted/tooling-test'
+                    'ci/change-verification',
+                    'ci/tooling-test'
                   )
                 }
             )
@@ -645,47 +575,13 @@ jobs:
           "base=$base" >> $env:GITHUB_OUTPUT
           Write-Host "Automatic verification base: $base ($source)"
 
-      - name: Prepare self-hosted Python 3.14
-        shell: powershell
-        run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
-          if ($LASTEXITCODE -ne 0) {
-            throw "The selected host interpreter is not Python 3.14."
-          }
-
-          if (Test-Path -LiteralPath ".venv") {
-            Remove-Item -LiteralPath ".venv" -Recurse -Force
-          }
-
-          & $python -m venv .venv
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create the isolated verification virtual environment."
-          }
-
-          $venvRoot = (Resolve-Path -LiteralPath ".venv").Path
-          $venvScripts = Join-Path $venvRoot "Scripts"
-          $venvPython = Join-Path $venvScripts "python.exe"
-          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
-            throw "Verification virtual environment did not produce .venv\Scripts\python.exe."
-          }
-
-          & $venvPython --version
-          "VIRTUAL_ENV=$venvRoot" >> $env:GITHUB_ENV
-          $venvScripts >> $env:GITHUB_PATH
-          Write-Host "Using host Python 3.14 via isolated environment: $venvPython"
+      - name: Set up Python 3.14 for tooling verification
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
 
       - name: Install verification tooling
-        shell: powershell
+        shell: pwsh
         env:
           VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
@@ -706,7 +602,7 @@ jobs:
 
       - name: Resolve and run deterministic change verification
         if: ${{ inputs.verification != 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
@@ -767,7 +663,7 @@ jobs:
 
       - name: Record successful exact-SHA change verification
         if: ${{ inputs.verification != 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
@@ -779,7 +675,7 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/change-verification"
+            context = "ci/change-verification"
             description = "Deterministic Test Mode verification passed for the exact dispatched SHA"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
@@ -793,17 +689,17 @@ jobs:
 
       - name: Verify Tool, PP, and Specification release contract
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: python .github/scripts/verify_release_contract.py
 
       - name: Run complete repository regression
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: python -m pytest -q
 
       - name: Verify Tool, Specification, and repository profile
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: |
           ptsip --version
           ptsip spec
@@ -814,7 +710,7 @@ jobs:
 
       - name: Build and verify distributions
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: |
           python -m build
           $distFiles = Get-ChildItem -Path dist -File | ForEach-Object { $_.FullName }
@@ -825,12 +721,12 @@ jobs:
 
       - name: Verify wheel and sdist embedded contracts
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: python .github/scripts/verify_distribution_contracts.py
 
       - name: Verify Product Artifact evidence and exact snapshot binding
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
           REPOSITORY_ID: ${{ github.repository }}
@@ -1109,7 +1005,7 @@ jobs:
 
       - name: Reinstall built wheel and smoke public surfaces
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         run: |
           $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
           if (-not $wheel) {
@@ -1124,7 +1020,7 @@ jobs:
 
       - name: Record successful exact-SHA tooling verification
         if: ${{ inputs.verification == 'full' }}
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
@@ -1136,8 +1032,8 @@ jobs:
           }
           $body = @{
             state = "success"
-            context = "self-hosted/tooling-test"
-            description = "Self-hosted Windows verification passed for the exact dispatched SHA"
+            context = "ci/tooling-test"
+            description = "GitHub-hosted Ubuntu verification passed for the exact dispatched SHA"
             target_url = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
           } | ConvertTo-Json
 

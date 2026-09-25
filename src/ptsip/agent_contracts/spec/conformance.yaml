@@ -1,0 +1,27 @@
+format: ptsip-agent-spec/v1
+id: PTSIP-AGENT-SPEC-CONFORMANCE
+status: CURRENT
+normative_rule_refs:
+  - PTSIP-EVD-001
+  - PTSIP-EVD-002
+  - PTSIP-EVD-003
+  - PTSIP-EVD-004
+  - PTSIP-DIA-001
+statements:
+  - statement_id: CONF-VALIDATION-SEPARATION
+    kind: SEPARATION
+    subject: conformance_evaluation
+    predicate: distinct_from
+    object:
+      - profile_validation
+      - authority_reconciliation
+  - statement_id: CONF-NO-EMPTY-FINDING-SHORTCUT
+    kind: PROHIBITION
+    subject: conformance
+    predicate: treats_empty_findings_as_sufficient_for_conformant
+    object: true
+  - statement_id: CONF-BLOCKING-EVIDENCE
+    kind: REQUIREMENT
+    subject: conformant_outcome
+    predicate: requires_no_blocking_uncertainty
+    object: true

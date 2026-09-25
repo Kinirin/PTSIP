@@ -1,0 +1,31 @@
+format: ptsip-agent-spec/v1
+id: PTSIP-AGENT-SPEC-CLASSIFICATION
+status: CURRENT
+normative_rule_refs:
+  - PTSIP-CLS-001
+  - PTSIP-CLS-002
+  - PTSIP-CLS-003
+  - PTSIP-CLS-004
+  - PTSIP-CLS-005
+  - PTSIP-CLS-006
+  - PTSIP-CLS-007
+  - PTSIP-CLS-008
+  - PTSIP-CLS-009
+  - PTSIP-CLS-010
+  - PTSIP-CLS-011
+statements:
+  - statement_id: CLS-PRIMARY-LIFECYCLE
+    kind: REQUIREMENT
+    subject: project_component
+    predicate: has_primary_lifecycle_classification
+    object: true
+  - statement_id: CLS-NO-PATH-AUTHORITY
+    kind: PROHIBITION
+    subject: classification
+    predicate: inferred_from_path_or_technology_alone
+    object: true
+  - statement_id: CLS-MIXED-RESPONSIBILITY
+    kind: REQUIREMENT
+    subject: material_mixed_lifecycle_component
+    predicate: requires_coherent_boundary_remediation
+    object: true

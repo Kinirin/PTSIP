@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-agent-operation/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "operation_id",
+    "status",
+    "policy_refs",
+    "spec_refs",
+    "vocabulary_refs",
+    "default_mutation",
+    "preconditions",
+    "steps",
+    "outcomes",
+    "implementation_refs"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-agent-operation/v1"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "BOOTSTRAP",
+        "CURRENT",
+        "SUPERSEDED"
+      ]
+    },
+    "policy_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "spec_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^spec/[A-Za-z0-9._-]+\\.yaml$"
+      }
+    },
+    "vocabulary_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^vocabulary/[A-Za-z0-9._-]+\\.yaml$"
+      }
+    },
+    "default_mutation": {
+      "enum": [
+        "READ_ONLY",
+        "WRITE_REQUIRES_EXPLICIT_AUTHORIZATION"
+      ]
+    },
+    "preconditions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "action"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fail_closed_on": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "outcomes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "implementation_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

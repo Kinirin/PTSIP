@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-agent-binding/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "binding_id",
+    "status",
+    "project_profile_contract",
+    "specification",
+    "activation",
+    "loading",
+    "active_specs",
+    "active_operations",
+    "active_vocabularies",
+    "coverage"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-agent-binding/v1"
+    },
+    "binding_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "BOOTSTRAP",
+        "CURRENT",
+        "SUPERSEDED"
+      ]
+    },
+    "project_profile_contract": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "family",
+        "revision",
+        "rule_registry_ref"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "rule_registry_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "INACTIVE",
+            "ACTIVE"
+          ]
+        },
+        "basis": {
+          "enum": [
+            "EXPLICIT_PROJECT_OWNER_APPROVAL"
+          ]
+        }
+      }
+    },
+    "loading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "markdown_dependency",
+        "max_context_bytes"
+      ],
+      "properties": {
+        "strategy": {
+          "const": "OPERATION_SCOPED"
+        },
+        "markdown_dependency": {
+          "const": "FORBIDDEN"
+        },
+        "max_context_bytes": {
+          "type": "integer",
+          "minimum": 1024
+        }
+      }
+    },
+    "active_specs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "active_operations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "active_vocabularies": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "legacy_markdown_replacement"
+      ],
+      "properties": {
+        "legacy_markdown_replacement": {
+          "enum": [
+            "INCOMPLETE",
+            "COMPLETE"
+          ]
+        }
+      }
+    }
+  }
+}

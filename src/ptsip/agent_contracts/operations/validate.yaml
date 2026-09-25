@@ -1,0 +1,36 @@
+format: ptsip-agent-operation/v1
+operation_id: PTSIP-OP-VALIDATE-001
+status: CURRENT
+policy_refs:
+  - PTSIP-SPC-001
+  - PTSIP-RMAP-001
+  - PTSIP-RMAP-002
+  - PTSIP-RMAP-003
+spec_refs:
+  - spec/core.yaml
+  - spec/classification.yaml
+  - spec/responsibility-map.yaml
+  - spec/governance.yaml
+vocabulary_refs:
+  - vocabulary/lifecycle.yaml
+  - vocabulary/diagnostics.yaml
+default_mutation: READ_ONLY
+preconditions:
+  - project_profile_selected
+steps:
+  - step_id: RESOLVE-CONTRACT
+    action: Resolve the selected Project Profile contract and schema.
+    fail_closed_on:
+      - unsupported_profile_contract
+      - schema_resolution_failure
+  - step_id: VALIDATE
+    action: Validate Project Profile structure and profile-level semantics.
+    fail_closed_on:
+      - invalid_profile
+outcomes:
+  - VALID
+  - INVALID
+  - UNSUPPORTED
+implementation_refs:
+  - src/ptsip/validation/profile.py
+  - src/ptsip/project_profile_contracts.py

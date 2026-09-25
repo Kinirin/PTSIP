@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import yaml
@@ -114,10 +115,30 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert components["repository-architecture"]["include"] == [
         "developer/profiles/ptsip-repository.yaml",
         "ptsip.yaml",
+        ".ptsip/**",
     ]
     assert components["repository-license-authority"]["include"] == ["License-Authority/**"]
     assert "Pages/**" in components["product-documentation"]["include"]
     assert ".github/workflows/static.yml" in components["repository-ci"]["include"]
+    assert ".githooks/**" in components["repository-maintenance"]["include"]
+    assert ".gitattributes" in components["repository-maintenance"]["include"]
+    assert "MEMORY.md" not in components["repository-maintenance"]["include"]
+    assert "STATUS.md" not in components["repository-maintenance"]["include"]
+    assert ".ptsip/**" in components["repository-architecture-verification"]["analysis_inputs"]
+    assert ".gitattributes" in components["repository-architecture-verification"]["analysis_inputs"]
+    assert (
+        ".github/scripts/verify_distribution_contracts.py"
+        in components["repository-release-automation"]["include"]
+    )
+    assert "src/ptsip/agent_contracts/*.py" in components["ptsip-core"]["include"]
+    assert (
+        "src/ptsip/agent_contracts/**/*.yaml"
+        in components["ptsip-embedded-contracts"]["include"]
+    )
+    assert (
+        "tests/ptsip/agent_contracts/**"
+        in components["ptsip-contract-verification"]["include"]
+    )
 
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]
     assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]
@@ -226,3 +247,40 @@ def test_vpms_self_adoption_targets_resolve_against_repository_self_profile() ->
     assert distribution.classification == "PRODUCT"
     assert release_automation is not None
     assert release_automation.classification == "DELIVERY"
+
+
+def test_provider_neutral_context_plane_replaces_legacy_repository_state() -> None:
+    assert not (REPO_ROOT / "STATUS.md").exists()
+    assert not (REPO_ROOT / "MEMORY.md").exists()
+    assert not (REPO_ROOT / ".ptsip" / "state" / "current.json").exists()
+    assert not (REPO_ROOT / ".ptsip" / "memory" / "memory.jsonl").exists()
+
+    context_root = REPO_ROOT / ".ptsip" / "context"
+    source = json.loads(
+        (context_root / "source" / "context.source.json").read_text(encoding="utf-8")
+    )
+    projection = json.loads((context_root / "context.json").read_text(encoding="utf-8"))
+
+    assert source["format"] == "ptsip-context-source/v1"
+    assert source["projection_policy"] == {
+        "authority": "CANONICAL_SEMANTIC_MODEL",
+        "extension_policy": "EXTENSIBLE",
+        "generated_only": True,
+        "mandatory_formats": ["json", "jsonl", "schema-json"],
+        "provider_scope": ["OPENAI", "ANTHROPIC", "GOOGLE", "XAI"],
+        "semantic_equivalence": "REQUIRED",
+    }
+    assert projection["format"] == "ptsip-context/v1"
+    assert projection["state"] == source["state"]
+    assert projection["memory"] == source["memory"]
+    assert projection["state"]["project_profile"] == {
+        "version": "pp.1.02",
+        "revision": "Rev.0001",
+        "path": "developer/profiles/ptsip-repository.yaml",
+    }
+    assert projection["state"]["specification"]["revision"] == SPEC_REVISION
+    assert projection["state"]["context_plane"]["projection_authority"] == "NON_AUTHORITATIVE"
+    assert (context_root / "context.jsonl").is_file()
+    assert (context_root / "context.schema.json").is_file()
+
+

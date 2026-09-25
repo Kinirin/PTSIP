@@ -152,6 +152,7 @@ components:
       - GOVERNANCE
     include:
       - "ptsip.yaml"
+      - ".ptsip/**"
     purpose: repository_architecture_declaration
     shipped: false
     runtime_required: false
@@ -329,6 +330,9 @@ components:
     compatibility_owner: architecture
     analysis_inputs:
       - "ptsip.yaml"
+      - ".gitattributes"
+      - ".ptsip/**"
+      - "developer/automation/context_projection.py"
       - "adoption/**"
       - "agents/**"
       - "reference/**"
@@ -454,11 +458,10 @@ components:
       - GOVERNANCE
     include:
       - ".gitignore"
+      - ".gitattributes"
       - ".github/ISSUE_TEMPLATE/**"
       - "AGENTS.md"
       - "CONTRIBUTING.md"
-      - "MEMORY.md"
-      - "STATUS.md"
       - "bootstrap_repo.ps1"
       - "setup_dev.bat"
       - "cliff.toml"

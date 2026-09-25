@@ -1,0 +1,23 @@
+format: ptsip-agent-spec/v1
+id: PTSIP-AGENT-SPEC-ADOPTION
+status: CURRENT
+normative_rule_refs:
+  - PTSIP-ADP-001
+  - PTSIP-EVD-001
+  - PTSIP-EVD-002
+statements:
+  - statement_id: ADP-LOSSLESS
+    kind: REQUIREMENT
+    subject: adoption
+    predicate: preserves_supplied_structured_architecture_facts_losslessly
+    object: true
+  - statement_id: ADP-DRY-RUN
+    kind: REQUIREMENT
+    subject: adoption_planning
+    predicate: mutates_repository
+    object: false
+  - statement_id: ADP-STALE-WRITE
+    kind: PROHIBITION
+    subject: adoption_apply
+    predicate: applies_when_repository_or_profile_freshness_changed
+    object: true

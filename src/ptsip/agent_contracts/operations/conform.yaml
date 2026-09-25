@@ -1,0 +1,42 @@
+format: ptsip-agent-operation/v1
+operation_id: PTSIP-OP-CONFORM-001
+status: CURRENT
+policy_refs:
+  - PTSIP-EVD-001
+  - PTSIP-EVD-002
+  - PTSIP-EVD-003
+  - PTSIP-EVD-004
+  - PTSIP-DIA-001
+spec_refs:
+  - spec/core.yaml
+  - spec/classification.yaml
+  - spec/responsibility-map.yaml
+  - spec/conformance.yaml
+  - spec/governance.yaml
+vocabulary_refs:
+  - vocabulary/lifecycle.yaml
+  - vocabulary/outcomes.yaml
+  - vocabulary/diagnostics.yaml
+default_mutation: READ_ONLY
+preconditions:
+  - project_profile_validated_or_materialized
+  - specification_binding_resolved
+steps:
+  - step_id: COLLECT
+    action: Collect rule-relevant evidence bound to one repository snapshot.
+    fail_closed_on:
+      - mixed_snapshot
+  - step_id: EVALUATE
+    action: Evaluate applicable mandatory rules without treating missing evidence as compliance.
+    fail_closed_on:
+      - evaluator_capability_gap_hides_result
+  - step_id: EMIT
+    action: Emit one conformance outcome plus stable diagnostics and evidence references.
+outcomes:
+  - CONFORMANT
+  - NON_CONFORMANT
+  - INCOMPLETE
+  - NOT_EVALUATED
+implementation_refs:
+  - src/ptsip/conformance.py
+  - src/ptsip/conformance_audit.py

@@ -155,8 +155,10 @@ Normal entry order:
 3. when the operation is planning/version-specific, run the branch-aware Planning Entry Resolver and enter through its exact returned document;
 4. load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved task actually requires them.
 
-`MEMORY.md`, historical planning, release notes, and ADR/history are targeted operational or historical context, not mandatory startup reads. Their presence must not override canonical machine-readable policy or Specification authority.
-`MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
+Repository state and memory use the provider-neutral Context Plane under `.ptsip/context/`. The single semantic write target is `.ptsip/context/source/context.source.json`; `context.json`, `context.jsonl`, and `context.schema.json` are deterministic generated projections and are never independent authority.
+Choose `context.json` or `context.jsonl` according to the consuming agent's supported machine-input shape. `context.schema.json` is their shared machine contract. No projection format is privileged by provider. Do not edit generated projections directly.
+Use `python -m developer.automation.context_projection write --input <source.json>` for a single semantic write, `python -m developer.automation.context_projection sync` after an authorized source edit, and `python -m developer.automation.context_projection check` to fail closed on source-binding, byte, schema, or semantic-equivalence drift. Historical memory is targeted context; do not replay the complete memory set unless an explicitly resolved operation requires full-history analysis.
+Planning documents and context memory records are operational or historical context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
 ## License Authority entry discipline
 

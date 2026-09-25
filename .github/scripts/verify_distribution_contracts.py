@@ -155,6 +155,24 @@ def main() -> int:
         for resource in resources
     )
     baseline_pairs = _baseline_pairs(contracts)
+    agent_contract_root = ROOT / "src" / "ptsip" / "agent_contracts"
+    agent_contract_sources = tuple(
+        sorted(
+            (
+                *agent_contract_root.rglob("*.yaml"),
+                *agent_contract_root.rglob("*.json"),
+            ),
+            key=lambda path: path.as_posix(),
+        )
+    )
+    agent_contract_pairs = tuple(
+        (
+            source,
+            "ptsip/agent_contracts/"
+            + source.relative_to(agent_contract_root).as_posix(),
+        )
+        for source in agent_contract_sources
+    )
     canonical_pairs = (
         (ROOT / "profiles" / "index.yaml", "ptsip/profiles/index.yaml"),
         (
@@ -167,6 +185,7 @@ def main() -> int:
         ),
         *public_pairs,
         *baseline_pairs,
+        *agent_contract_pairs,
     )
 
     required = (
@@ -178,6 +197,7 @@ def main() -> int:
         "ptsip/profiles/index.yaml",
         *(target for _, target in public_pairs),
         *(target for _, target in baseline_pairs),
+        *(target for _, target in agent_contract_pairs),
     )
     support_required = (
         "ptsip/support/policy/index.yaml",
@@ -210,6 +230,10 @@ def main() -> int:
             source.relative_to(ROOT).as_posix()
             for source, _ in baseline_pairs
         ),
+        *(
+            source.relative_to(ROOT).as_posix()
+            for source, _ in agent_contract_pairs
+        ),
         "docs/Support_policy/policy/index.yaml",
         "docs/Support_policy/policy/SFP-0001.yaml",
         "docs/Support_policy/policy/SFP-0021.yaml",
@@ -228,6 +252,7 @@ def main() -> int:
     print(f"Project Profile: {current}")
     print(f"Public Profiles: {len(resources)}")
     print(f"Historical baseline assets: {len(baseline_pairs)}")
+    print(f"Agent Contract machine assets: {len(agent_contract_pairs)}")
     return 0
 
 

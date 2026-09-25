@@ -1,0 +1,40 @@
+format: ptsip-agent-operation/v1
+operation_id: PTSIP-OP-RECONCILE-AUTHORITY-001
+status: CURRENT
+policy_refs:
+  - PTSIP-AUT-001
+  - PTSIP-AUT-003
+  - PTSIP-AUT-004
+  - PTSIP-AUT-005
+  - PTSIP-AUT-006
+  - PTSIP-AUT-007
+spec_refs:
+  - spec/authority.yaml
+vocabulary_refs:
+  - vocabulary/authority.yaml
+  - vocabulary/diagnostics.yaml
+default_mutation: READ_ONLY
+preconditions:
+  - coordination_backend_selected
+  - coordination_scope_identified
+steps:
+  - step_id: READ
+    action: Read relevant current authority without fabricating pending history for absence checks.
+    fail_closed_on:
+      - required_authority_unavailable
+  - step_id: COMPARE
+    action: Compare local Project Profile semantics with the distributed winner when one exists.
+  - step_id: PROJECT
+    action: Project an equivalent or missing resolved winner locally only after freshness and validation checks.
+    fail_closed_on:
+      - semantic_conflict
+      - stale_state
+outcomes:
+  - NO_REMOTE_DECISION
+  - CONSISTENT
+  - REMOTE_RESOLVED
+  - AUTHORITY_PROFILE_CONFLICT
+  - COORDINATION_UNAVAILABLE
+implementation_refs:
+  - src/ptsip/app/github_authority.py
+  - src/ptsip/app/github_reconciliation.py

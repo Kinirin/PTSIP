@@ -1,0 +1,302 @@
+{
+  "$defs": {
+    "context_bundle": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "ptsip-context/v1"
+        },
+        "memory": {
+          "items": {
+            "$ref": "#/$defs/memory_event"
+          },
+          "type": "array"
+        },
+        "projection_policy": {
+          "$ref": "#/$defs/projection_policy"
+        },
+        "source_binding": {
+          "$ref": "#/$defs/source_binding"
+        },
+        "state": {
+          "$ref": "#/$defs/state"
+        }
+      },
+      "required": [
+        "format",
+        "source_binding",
+        "projection_policy",
+        "state",
+        "memory"
+      ],
+      "type": "object"
+    },
+    "context_record": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/manifest_record"
+        },
+        {
+          "$ref": "#/$defs/state_record"
+        },
+        {
+          "$ref": "#/$defs/memory_record"
+        }
+      ]
+    },
+    "manifest_record": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "ptsip-context-record/v1"
+        },
+        "projection_policy": {
+          "$ref": "#/$defs/projection_policy"
+        },
+        "record_type": {
+          "const": "manifest"
+        },
+        "source_binding": {
+          "$ref": "#/$defs/source_binding"
+        }
+      },
+      "required": [
+        "format",
+        "record_type",
+        "source_binding",
+        "projection_policy"
+      ],
+      "type": "object"
+    },
+    "memory_event": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "type": "object"
+        },
+        "format": {
+          "const": "ptsip-memory-event/v1"
+        },
+        "id": {
+          "pattern": "^PTSIP-MEM-[0-9]{6}$",
+          "type": "string"
+        },
+        "recorded_on": {
+          "format": "date",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "status": {
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "type": "string"
+        },
+        "subject": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "format",
+        "id",
+        "recorded_on",
+        "type",
+        "subject",
+        "status"
+      ],
+      "type": "object"
+    },
+    "memory_record": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "ptsip-context-record/v1"
+        },
+        "ordinal": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "payload": {
+          "$ref": "#/$defs/memory_event"
+        },
+        "record_type": {
+          "const": "memory"
+        }
+      },
+      "required": [
+        "format",
+        "record_type",
+        "ordinal",
+        "payload"
+      ],
+      "type": "object"
+    },
+    "projection_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "authority": {
+          "const": "CANONICAL_SEMANTIC_MODEL"
+        },
+        "extension_policy": {
+          "const": "EXTENSIBLE"
+        },
+        "generated_only": {
+          "const": true
+        },
+        "mandatory_formats": {
+          "items": false,
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "const": "json"
+            },
+            {
+              "const": "jsonl"
+            },
+            {
+              "const": "schema-json"
+            }
+          ],
+          "type": "array"
+        },
+        "provider_scope": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "semantic_equivalence": {
+          "const": "REQUIRED"
+        }
+      },
+      "required": [
+        "authority",
+        "generated_only",
+        "semantic_equivalence",
+        "mandatory_formats",
+        "provider_scope",
+        "extension_policy"
+      ],
+      "type": "object"
+    },
+    "source_binding": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "const": ".ptsip/context/source/context.source.json"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "state": {
+      "additionalProperties": true,
+      "properties": {
+        "agent_contract": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "context_plane": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "format": {
+          "const": "ptsip-project-state/v1"
+        },
+        "legacy_markdown_state": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "planning": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "project_profile": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "specification": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "status": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "tool": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "verification": {
+          "additionalProperties": true,
+          "type": "object"
+        }
+      },
+      "required": [
+        "format",
+        "status",
+        "project_profile",
+        "specification",
+        "tool",
+        "planning",
+        "agent_contract",
+        "verification",
+        "context_plane",
+        "legacy_markdown_state"
+      ],
+      "type": "object"
+    },
+    "state_record": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "ptsip-context-record/v1"
+        },
+        "payload": {
+          "$ref": "#/$defs/state"
+        },
+        "record_type": {
+          "const": "state"
+        }
+      },
+      "required": [
+        "format",
+        "record_type",
+        "payload"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://github.com/Kinirin/PTSIP/.ptsip/context/context.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/context_bundle"
+    },
+    {
+      "$ref": "#/$defs/context_record"
+    }
+  ],
+  "title": "PTSIP Provider-Neutral Context Plane"
+}
