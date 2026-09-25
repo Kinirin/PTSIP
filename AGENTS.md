@@ -109,6 +109,24 @@ Rules:
 - An unmapped changed path is fail-closed; do not replace it with full verification.
 - Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
 
+## Mandatory branch creation preflight
+
+Branch creation is governed by `MPD-0014`. Coding agents must not invent a branch name from planning state, version context, a Project Profile change, a test need, or a temporary verification need.
+
+Before creating a branch, validate the exact user-approved name mechanically:
+
+```text
+python -m developer.automation.branch_creation_guard validate --candidate <exact-branch-name> --approved-name <exact-user-approved-branch-name> --authorization-source USER_EXPLICIT --request-kind DEVELOPMENT_VERSION_BRANCH
+```
+
+Rules:
+
+- Current v1 creation authority recognizes only development-version branches matching `dev/[0-9].[0-9].[0-9]`.
+- The exact candidate branch name must equal the exact branch name supplied by the user request. Missing or inferred names fail closed.
+- Changes to `ptsip-public-profile-catalog/v1` or a `pp.[0-9].[0-9]{2}` identity do not authorize branch creation and do not require a development branch rename or version change.
+- Existing `tool-0.3.[0-9]-*` branches are grandfathered for retention only; that pattern is not new branch-creation authority.
+- Merge and retirement policy are separate from creation. Do not use merge eligibility or branch age as a substitute for creation authorization.
+
 ## Mandatory branch-aware planning entry
 
 Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:
@@ -452,9 +470,9 @@ Do not let project-local policy weaken universal PTSIP requirements.
 
 ## Release and CI resource policy
 
-Primary regression/release verification uses capability-bound self-hosted Windows X64 execution with PowerShell and Python 3.14 available through `py -3.14`.
+Primary regression/release verification uses GitHub-hosted `ubuntu-latest` execution with Python 3.14 provisioned through `actions/setup-python`.
 
-Do not hard-code a machine name. Preserve the existing exact-SHA checkout/status model. The narrow GNU/Linux PyPI Trusted Publishing job may remain the GitHub-hosted exception.
+Preserve the existing exact-SHA checkout/status model. Do not reintroduce self-hosted runner assumptions, Windows-only Python launcher requirements, or runner-specific status-context names.
 
 Do not create a parallel workflow where an existing release/test workflow can be narrowly maintained.
 

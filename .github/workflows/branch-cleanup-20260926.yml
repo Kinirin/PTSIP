@@ -1,0 +1,63 @@
+name: one-shot-branch-cleanup-20260926
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/branch-cleanup-20260926.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact cleanup policy source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate branch policy and automation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+          python -m developer.automation.policy_identity_lifecycle inspect MPD-0014
+          python -m developer.automation.policy_validator
+          python -m pytest -q developer/tests/test_branch_creation_guard.py developer/tests/test_policy_identity_lifecycle.py
+
+      - name: Delete explicitly rejected legacy branches
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          branches=(
+            "sim/agent-level1-cloud-20260917-2"
+            "sim/agent-level1-cloud-20260917-exec"
+            "sim/agent-level1-cloud-20260917-final"
+            "sim/agent-level1-cloud-20260917-final-run"
+            "sim/agent-level1-cloud-20260917-final-run-2"
+            "sim/agent-level1-cloud-20260917-run"
+            "sim/agent-level1-cloud-20260917-use"
+            "sim/agent-level1-cloud-20260917-use2-run"
+            "sim/agent-level1-cloud-20260917-use2-run2"
+            "sim/agent-level1-cloud-20260917-use2-run3"
+            "sim/agent-level1-cloud-20260917-use2-run4"
+            "sim/agent-level1-cloud-20260917-use2-run5"
+            "sim/agent-level1-cloud-20260917-use2"
+            "sim/agent-level1-cloud-20260917"
+            "verify/context-plane-20260925"
+          )
+          for branch in "${branches[@]}"; do
+            echo "Deleting $branch"
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${branch}"
+          done

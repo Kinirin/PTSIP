@@ -1,0 +1,56 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0014
+  title: Developer Branch Creation Authority and Naming
+  status: ACTIVE
+
+rules:
+  branch_creation_authority:
+    enforcement_scope: BRANCH_CREATION
+    default: FAIL_CLOSED
+    authorization_source: USER_EXPLICIT
+    agent_may_invent_branch_name: false
+    agent_may_derive_branch_name_from_context: false
+    exact_user_approved_name_required: true
+    exact_candidate_must_equal_user_approved_name: true
+    allowed_branch_classes:
+      DEVELOPMENT_VERSION:
+        request_kind: DEVELOPMENT_VERSION_BRANCH
+        exact_name_pattern: "^dev/[0-9]\\.[0-9]\\.[0-9]$"
+        creation_trigger: USER_EXPLICIT_REQUEST
+    unregistered_branch_class_creation: FORBIDDEN
+
+  project_profile_independence:
+    catalog_schema: ptsip-public-profile-catalog/v1
+    project_profile_identity_pattern: "^pp\\.[0-9]\\.[0-9]{2}$"
+    project_profile_change_authorizes_branch_creation: false
+    project_profile_change_requires_dev_branch_change: false
+    project_profile_change_requires_dev_version_change: false
+
+  merge_policy:
+    normal_planning_root: developer/planning/
+    completed_version_plan_may_merge_without_new_user_approval: true
+    pre_merge_policy_analysis_required: true
+    pre_merge_policy_review_required: true
+    explicit_user_merge_request_allowed: true
+    merge_eligibility_does_not_authorize_branch_creation: true
+
+  retirement_policy:
+    stale_branch_age_guidance_days: 90
+    age_is_hard_gate: false
+    explicit_user_removal_allowed: true
+    age_does_not_authorize_branch_creation: true
+
+  legacy_retention:
+    grandfathered_patterns:
+      - "^tool-0\\.3\\.[0-9]-.*$"
+    retention_only: true
+    new_creation_authority: false
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

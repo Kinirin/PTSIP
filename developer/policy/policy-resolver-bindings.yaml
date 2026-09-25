@@ -670,3 +670,17 @@ scope_bindings:
           - transition_generation
           - verification_layers
 
+  developer/automation/branch_creation_guard.py:
+    default_refs:
+      - policy_id: MPD-0001
+        sections:
+          - namespace
+          - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+          - identity_and_resolution
+          - governance_source_vocabulary
+      - policy_id: MPD-0014
+        sections:
+          - branch_creation_authority
+          - project_profile_independence
