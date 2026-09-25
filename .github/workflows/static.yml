@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   verify:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact validation source
         uses: actions/checkout@v4
@@ -18,30 +18,23 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Prepare Python 3.14
-        shell: powershell
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Install context verification environment
+        shell: pwsh
         run: |
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is required."
-          }
-          if (Test-Path -LiteralPath ".venv-context") {
-            Remove-Item -LiteralPath ".venv-context" -Recurse -Force
-          }
-          & $python -m venv .venv-context
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create verification environment."
-          }
-          $venvPython = Join-Path (Resolve-Path ".venv-context").Path "Scripts\python.exe"
-          & $venvPython -m pip install --upgrade pip
-          & $venvPython -m pip install -e ".[dev]"
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
           if ($LASTEXITCODE -ne 0) {
             throw "Failed to install verification environment."
           }
-          "CTX_PYTHON=$venvPython" >> $env:GITHUB_ENV
+          "CTX_PYTHON=python" >> $env:GITHUB_ENV
 
       - name: Verify generated context projections
-        shell: powershell
+        shell: pwsh
         run: |
           & $env:CTX_PYTHON -m developer.automation.context_projection check
           if ($LASTEXITCODE -ne 0) {
@@ -52,7 +45,7 @@ jobs:
           }
 
       - name: Resolve and run deterministic Test Modes
-        shell: powershell
+        shell: pwsh
         env:
           VERIFY_BASE: 8fa45f8b12d8794f7f5e85bb2e209cfc1d3d5540
         run: |
@@ -76,7 +69,7 @@ jobs:
           }
 
       - name: Confirm legacy state files are retired
-        shell: powershell
+        shell: pwsh
         run: |
           if (Test-Path -LiteralPath "STATUS.md") { throw "STATUS.md must remain retired." }
           if (Test-Path -LiteralPath "MEMORY.md") { throw "MEMORY.md must remain retired." }

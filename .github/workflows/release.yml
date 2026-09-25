@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   prepare:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout exact dispatched main source
         uses: actions/checkout@v4
@@ -22,48 +22,14 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Prepare self-hosted Python 3.14
-        shell: powershell
-        run: |
-          $launcher = Get-Command py -ErrorAction SilentlyContinue
-          if (-not $launcher) {
-            throw "The self-hosted Windows runner must provide the Python launcher 'py' on PATH."
-          }
-
-          $python = (& py -3.14 -c "import sys; print(sys.executable)").Trim()
-          if ($LASTEXITCODE -ne 0 -or -not $python) {
-            throw "Python 3.14 is not available through 'py -3.14' on this self-hosted runner."
-          }
-
-          & $python -c "import sys; assert sys.version_info[:2] == (3, 14), sys.version; print(sys.version)"
-          if ($LASTEXITCODE -ne 0) {
-            throw "The selected host interpreter is not Python 3.14."
-          }
-
-          if (Test-Path -LiteralPath ".venv") {
-            Remove-Item -LiteralPath ".venv" -Recurse -Force
-          }
-
-          & $python -m venv .venv
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to create the isolated release virtual environment."
-          }
-
-          $venvRoot = (Resolve-Path -LiteralPath ".venv").Path
-          $venvScripts = Join-Path $venvRoot "Scripts"
-          $venvPython = Join-Path $venvScripts "python.exe"
-          if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
-            throw "Release virtual environment did not produce .venv\\Scripts\\python.exe."
-          }
-
-          & $venvPython --version
-          "VIRTUAL_ENV=$venvRoot" >> $env:GITHUB_ENV
-          $venvScripts >> $env:GITHUB_PATH
-          Write-Host "Using host Python 3.14 via isolated environment: $venvPython"
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
 
       - name: Resolve and verify immutable release identity
         id: release
-        shell: powershell
+        shell: pwsh
         env:
           DISPATCHED_SHA: ${{ github.sha }}
           DISPATCHED_REF: ${{ github.ref }}
@@ -117,8 +83,8 @@ jobs:
           "note=$note" >> $env:GITHUB_OUTPUT
           "source_sha=$sourceSha" >> $env:GITHUB_OUTPUT
 
-      - name: Require exact self-hosted tooling verification
-        shell: powershell
+      - name: Require exact CI tooling verification
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
@@ -135,8 +101,8 @@ jobs:
             -Headers $headers
 
           $requiredContexts = @(
-            "self-hosted/tooling-test",
-            "self-hosted/pp-transition"
+            "ci/tooling-test",
+            "ci/pp-transition"
           )
           foreach ($context in $requiredContexts) {
             $status = $combined.statuses |
@@ -147,33 +113,33 @@ jobs:
             }
           }
 
-          Write-Host "Exact self-hosted tooling and PP transition verification confirmed for $env:SOURCE_SHA"
+          Write-Host "Exact CI tooling and PP transition verification confirmed for $env:SOURCE_SHA"
 
       - name: Install release verification tooling
-        shell: powershell
+        shell: pwsh
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
       - name: Verify exact-SHA Project Profile release snapshot
-        shell: powershell
+        shell: pwsh
         env:
           SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
         run: python -m developer.automation.pp_release_verify --sha $env:SOURCE_SHA
 
       - name: Verify required Specification release contract
-        shell: powershell
+        shell: pwsh
         run: python .github/scripts/verify_release_contract.py
 
       - name: Verify Tool identity before release preparation
-        shell: powershell
+        shell: pwsh
         run: |
           ptsip --version
           ptsip spec
           ptsip conform --help
 
       - name: Reconfirm candidate remains current main
-        shell: powershell
+        shell: pwsh
         env:
           SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
         run: |
@@ -187,7 +153,7 @@ jobs:
           }
 
       - name: Create draft GitHub Release for exact verified SHA
-        shell: powershell
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.release.outputs.version }}

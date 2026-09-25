@@ -37,8 +37,8 @@ def test_tool_038a1_package_runtime_pp_and_spec_binding_match() -> None:
 def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     workflow = (ROOT / ".github" / "workflows" / "tooling-release.yml").read_text(encoding="utf-8")
     assert '$expectedTag = "tool-v$packageVersion"' in workflow
-    assert "py -3.14" in workflow
-    assert "actions/setup-python@" not in workflow
+    assert "runs-on: ubuntu-latest" in workflow
+    assert "uses: actions/setup-python@v7" in workflow
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
     assert "$expectedWheelVersion" in workflow
@@ -71,23 +71,23 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "scope:" not in workflow
     assert "default: all" not in workflow
     assert "ref: ${{ github.sha }}" in workflow
-    assert "py -3.14" in workflow
-    assert "actions/setup-python@" not in workflow
+    assert "runs-on: ubuntu-latest" in workflow
+    assert "uses: actions/setup-python@v7" in workflow
     assert "Resolve automatic verification baseline" in workflow
-    assert "self-hosted/change-verification" in workflow
-    assert "self-hosted/tooling-test" in workflow
+    assert "ci/change-verification" in workflow
+    assert "ci/tooling-test" in workflow
     assert "pp-transition-verify:" in workflow
     assert "github.event_name == 'push'" in workflow
     assert "developer.automation.pp_remote_verify range" in workflow
     assert '"jsonschema>=4.23,<5"' in workflow
-    assert "self-hosted/pp-transition" in workflow
+    assert "ci/pp-transition" in workflow
     assert "github.event_name == 'workflow_dispatch'" in workflow
     assert "PARENT_FALLBACK" in workflow
     assert "Resolve and run deterministic change verification" in workflow
     assert "resolve_test_modes.py automatic --base $autoBase --head HEAD" in workflow
     assert "resolve_test_modes.py manual --mode $env:VERIFICATION_MODE" in workflow
     assert "& python -m pytest -q @targets" in workflow
-    assert "self-hosted/change-verification" in workflow
+    assert "ci/change-verification" in workflow
     assert (
         "      - name: Run complete repository regression\n"
         "        if: ${{ inputs.verification == 'full' }}"
@@ -117,7 +117,7 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
         "      - name: Record successful exact-SHA tooling verification\n"
         "        if: ${{ inputs.verification == 'full' }}"
     ) in workflow
-    assert 'context = "self-hosted/tooling-test"' in workflow
+    assert 'context = "ci/tooling-test"' in workflow
     assert "ptsip --version" in workflow
     assert "ptsip spec" in workflow
     assert "ptsip conform --help" in workflow
@@ -130,15 +130,15 @@ def test_release_preparation_derives_identity_without_manual_inputs() -> None:
     assert "ref: ${{ github.sha }}" in workflow
     assert 'DISPATCHED_REF: ${{ github.ref }}' in workflow
     assert 'refs/heads/main' in workflow
-    assert 'self-hosted/tooling-test' in workflow
-    assert 'self-hosted/pp-transition' in workflow
+    assert 'ci/tooling-test' in workflow
+    assert 'ci/pp-transition' in workflow
     assert "developer.automation.pp_release_verify --sha $env:SOURCE_SHA" in workflow
     assert "Reconfirm candidate remains current main" in workflow
     assert 'target_commitish = $env:SOURCE_SHA' in workflow
     assert 'draft = $true' in workflow
     assert 'origin/main moved to $mainSha after tooling verification' in workflow
-    assert "py -3.14" in workflow
-    assert "actions/setup-python@" not in workflow
+    assert "runs-on: ubuntu-latest" in workflow
+    assert "uses: actions/setup-python@v7" in workflow
     assert '$note = "releasenote/tool/$packageVersion.md"' in workflow
 
 
@@ -346,3 +346,21 @@ def test_release_pp_authority_resolution_is_registry_driven() -> None:
     assert "CURRENT_PROJECT_PROFILE_VERSION" in release_verifier
     assert "current_runtime_project_profile_contract" in release_verifier
     assert "current_project_profile_target" in release_verifier
+
+def test_all_workflows_use_github_hosted_ubuntu() -> None:
+    workflow_dir = ROOT / ".github" / "workflows"
+    workflows = sorted(workflow_dir.glob("*.yml"))
+    assert workflows
+
+    for path in workflows:
+        workflow = path.read_text(encoding="utf-8")
+        runs_on = [
+            line.strip()
+            for line in workflow.splitlines()
+            if line.strip().startswith("runs-on:")
+        ]
+        assert runs_on, path
+        assert set(runs_on) == {"runs-on: ubuntu-latest"}, path
+        assert "self-hosted" not in workflow.lower(), path
+        assert "shell: powershell" not in workflow, path
+
