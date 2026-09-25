@@ -114,10 +114,25 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert components["repository-architecture"]["include"] == [
         "developer/profiles/ptsip-repository.yaml",
         "ptsip.yaml",
+        ".ptsip/**",
     ]
     assert components["repository-license-authority"]["include"] == ["License-Authority/**"]
     assert "Pages/**" in components["product-documentation"]["include"]
     assert ".github/workflows/static.yml" in components["repository-ci"]["include"]
+    assert ".githooks/**" in components["repository-maintenance"]["include"]
+    assert (
+        ".github/scripts/verify_distribution_contracts.py"
+        in components["repository-release-automation"]["include"]
+    )
+    assert "src/ptsip/agent_contracts/*.py" in components["ptsip-core"]["include"]
+    assert (
+        "src/ptsip/agent_contracts/**/*.yaml"
+        in components["ptsip-embedded-contracts"]["include"]
+    )
+    assert (
+        "tests/ptsip/agent_contracts/**"
+        in components["ptsip-contract-verification"]["include"]
+    )
 
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]
     assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]

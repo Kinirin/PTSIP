@@ -161,7 +161,7 @@ def test_agent_contract_source_change_selects_contract_verification() -> None:
         _profile(),
         ["src/ptsip/agent_contracts/operations/conform.yaml"],
     )
-    assert _ids(selected) == ["vpms", "ptsip-contract"]
+    assert _ids(selected) == ["vpms", "ptsip-contract", "repository-release"]
 
 
 def test_agent_contract_test_change_selects_contract_verification() -> None:
@@ -171,6 +171,24 @@ def test_agent_contract_test_change_selects_contract_verification() -> None:
         ["tests/ptsip/agent_contracts/test_operation_loading.py"],
     )
     assert _ids(selected) == ["ptsip-contract"]
+
+
+def test_pre_commit_hook_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".githooks/pre-commit"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
+def test_distribution_contract_validator_change_selects_release_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".github/scripts/verify_distribution_contracts.py"],
+    )
+    assert _ids(selected) == ["repository-release"]
 
 
 def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
