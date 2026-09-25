@@ -1,6 +1,6 @@
 format: ptsip-agent-spec/v1
 id: PTSIP-AGENT-SPEC-ADOPTION
-status: BOOTSTRAP
+status: CURRENT
 normative_rule_refs:
   - PTSIP-ADP-001
   - PTSIP-EVD-001
@@ -21,6 +21,3 @@ statements:
     subject: adoption_apply
     predicate: applies_when_repository_or_profile_freshness_changed
     object: true
-migration_evidence_refs:
-  - adoption/ADOPTION-GUIDE.md
-  - spec/PTSIP-SPEC.md

@@ -1,7 +1,7 @@
 format: ptsip-agent-contract-index/v1
 contract_set:
   id: ptsip-agent-contracts
-  status: BOOTSTRAP
+  status: CURRENT
   purpose: Machine-readable entry point for coding agents consuming PTSIP.
 schemas:
   index: schemas/index.schema.json
@@ -49,5 +49,5 @@ vocabularies:
   - id: authority
     ref: vocabulary/authority.yaml
 migration:
-  legacy_markdown_replacement: INCOMPLETE
-  rule: Existing Markdown may be used as migration evidence until machine-contract coverage is explicitly complete.
+  legacy_markdown_replacement: COMPLETE
+  rule: Markdown surfaces are human-readable projections only and MUST NOT be required to load or execute the active machine contract.

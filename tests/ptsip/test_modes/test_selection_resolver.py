@@ -155,6 +155,24 @@ def test_test_change_selects_only_declared_verification_owner() -> None:
     assert _ids(selected) == ["ptsip-evidence"]
 
 
+def test_agent_contract_source_change_selects_contract_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/agent_contracts/operations/conform.yaml"],
+    )
+    assert _ids(selected) == ["vpms", "ptsip-contract"]
+
+
+def test_agent_contract_test_change_selects_contract_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["tests/ptsip/agent_contracts/test_operation_loading.py"],
+    )
+    assert _ids(selected) == ["ptsip-contract"]
+
+
 def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),

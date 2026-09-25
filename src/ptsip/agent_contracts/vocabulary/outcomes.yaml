@@ -1,8 +1,8 @@
 format: ptsip-agent-vocabulary/v1
 vocabulary_id: PTSIP-VOCAB-OUTCOMES
-status: BOOTSTRAP
+status: CURRENT
 entries:
-  - {id: CONFORMANT, meaning: "Applicable mandatory evidence is sufficient and no applicable mandatory violation is established.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-CONFORMANCE.md]}
-  - {id: NON_CONFORMANT, meaning: "Sufficient evidence establishes at least one applicable mandatory violation.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-CONFORMANCE.md]}
-  - {id: INCOMPLETE, meaning: "Blocking uncertainty prevents a conformant conclusion when no definite violation already settles the result.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-CONFORMANCE.md]}
-  - {id: NOT_EVALUATED, meaning: "Tool execution state indicating that Conformance Evaluation was not completed; it is not a conformance outcome.", source_refs: [spec/PTSIP-CONFORMANCE.md]}
+  - {id: CONFORMANT, meaning: "Applicable mandatory evidence is sufficient and no applicable mandatory violation is established."}
+  - {id: NON_CONFORMANT, meaning: "Sufficient evidence establishes at least one applicable mandatory violation."}
+  - {id: INCOMPLETE, meaning: "Blocking uncertainty prevents a conformant conclusion when no definite violation already settles the result."}
+  - {id: NOT_EVALUATED, meaning: "Tool execution state indicating that Conformance Evaluation was not completed; it is not a conformance outcome."}

@@ -1,11 +1,21 @@
 format: ptsip-agent-operation/v1
 operation_id: PTSIP-OP-ADOPT-001
-status: BOOTSTRAP
+status: CURRENT
 policy_refs:
   - PTSIP-ADP-001
   - PTSIP-AUT-004
   - PTSIP-AUT-005
   - PTSIP-EVD-001
+spec_refs:
+  - spec/core.yaml
+  - spec/adoption.yaml
+  - spec/classification.yaml
+  - spec/responsibility-map.yaml
+  - spec/authority.yaml
+vocabulary_refs:
+  - vocabulary/lifecycle.yaml
+  - vocabulary/authority.yaml
+  - vocabulary/diagnostics.yaml
 default_mutation: READ_ONLY
 preconditions:
   - repository_snapshot_identified

@@ -1,6 +1,6 @@
 format: ptsip-agent-spec/v1
 id: PTSIP-AGENT-SPEC-PROFILE-TRANSITION
-status: BOOTSTRAP
+status: CURRENT
 normative_rule_refs:
   - PTSIP-MIG-001
   - PTSIP-MIG-002
@@ -25,6 +25,3 @@ statements:
     subject: migration_apply
     predicate: refuses_stale_state
     object: true
-migration_evidence_refs:
-  - spec/PTSIP-DRAFT-PROFILE-TRANSITION.md
-  - spec/PTSIP-SPEC.md

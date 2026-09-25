@@ -1,9 +1,9 @@
 format: ptsip-agent-vocabulary/v1
 vocabulary_id: PTSIP-VOCAB-LIFECYCLE
-status: BOOTSTRAP
+status: CURRENT
 entries:
-  - {id: PRODUCT, meaning: "Responsibility primarily owned by the Product lifecycle.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: DEVELOPMENT_TOOLING, meaning: "Responsibility primarily owned by the development lifecycle.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: DELIVERY, meaning: "Responsibility primarily owned by release, publication, promotion, distribution, or deployment-to-destination work.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: OPERATIONS, meaning: "Responsibility primarily owned by post-delivery operation, health, recovery, maintenance, reconciliation, and production-state management.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: NEUTRAL_CONTRACT, meaning: "Deliberately non-executable non-owning contract responsibility with independent lifecycle governance.", source_refs: [registry/ptsip-registry.yaml]}
+  - {id: PRODUCT, meaning: "Responsibility primarily owned by the Product lifecycle."}
+  - {id: DEVELOPMENT_TOOLING, meaning: "Responsibility primarily owned by the development lifecycle."}
+  - {id: DELIVERY, meaning: "Responsibility primarily owned by release, publication, promotion, distribution, or deployment-to-destination work."}
+  - {id: OPERATIONS, meaning: "Responsibility primarily owned by post-delivery operation, health, recovery, maintenance, reconciliation, and production-state management."}
+  - {id: NEUTRAL_CONTRACT, meaning: "Deliberately non-executable non-owning contract responsibility with independent lifecycle governance."}

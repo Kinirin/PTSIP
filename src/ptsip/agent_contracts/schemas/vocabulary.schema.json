@@ -1,20 +1,48 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"ptsip-agent-vocabulary/v1",
-  "type":"object","additionalProperties":false,
-  "required":["format","vocabulary_id","status","entries"],
-  "properties":{
-    "format":{"const":"ptsip-agent-vocabulary/v1"},
-    "vocabulary_id":{"type":"string","minLength":1},
-    "status":{"enum":["BOOTSTRAP","CURRENT","SUPERSEDED"]},
-    "entries":{
-      "type":"array","minItems":1,
-      "items":{
-        "type":"object","additionalProperties":false,"required":["id","meaning","source_refs"],
-        "properties":{
-          "id":{"type":"string","minLength":1},
-          "meaning":{"type":"string","minLength":1},
-          "source_refs":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-agent-vocabulary/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "vocabulary_id",
+    "status",
+    "entries"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-agent-vocabulary/v1"
+    },
+    "vocabulary_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "BOOTSTRAP",
+        "CURRENT",
+        "SUPERSEDED"
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "meaning"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     }

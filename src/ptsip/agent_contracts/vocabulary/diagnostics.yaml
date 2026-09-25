@@ -1,7 +1,7 @@
 format: ptsip-agent-vocabulary/v1
 vocabulary_id: PTSIP-VOCAB-DIAGNOSTICS
-status: BOOTSTRAP
+status: CURRENT
 entries:
-  - {id: PTSIP-DIA-001, meaning: "Diagnostic instances preserve stable PTSIP rule identity separately from diagnostic instance identity.", source_refs: [registry/ptsip-registry.yaml, spec/PTSIP-SPEC.md]}
-  - {id: AUTHORITY_PROFILE_CONFLICT, meaning: "Current coordinated authority and selected local Project Profile disagree for the same governed scope.", source_refs: [spec/PTSIP-CONFORMANCE.md, reference/DECISION-CONTROL-PLANE.md]}
-  - {id: STALE_STATE, meaning: "Mutation cannot proceed because repository, profile, or relevant authority state changed after analysis.", source_refs: [spec/PTSIP-SPEC.md]}
+  - {id: PTSIP-DIA-001, meaning: "Diagnostic instances preserve stable PTSIP rule identity separately from diagnostic instance identity."}
+  - {id: AUTHORITY_PROFILE_CONFLICT, meaning: "Current coordinated authority and selected local Project Profile disagree for the same governed scope."}
+  - {id: STALE_STATE, meaning: "Mutation cannot proceed because repository, profile, or relevant authority state changed after analysis."}

@@ -1,6 +1,6 @@
 ptsip:
   version: "pp.1.02"
-  revision: "Rev.0001"
+  revision: "Rev.0002"
   profile_role: "PROJECT"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
@@ -24,6 +24,7 @@ components:
       - "src/ptsip/repository/**"
       - "src/ptsip/storage/**"
       - "src/ptsip/validation/**"
+      - "src/ptsip/agent_contracts/*.py"
     purpose: distributed_ptsip_reference_tool
     shipped: true
     runtime_required: true
@@ -127,8 +128,10 @@ components:
     classification: NEUTRAL_CONTRACT
     include:
       - "src/ptsip/specdata/**"
+      - "src/ptsip/agent_contracts/**/*.yaml"
+      - "src/ptsip/agent_contracts/**/*.json"
       - "docs/Support_policy/policy/**"
-    purpose: tool_embedded_machine_readable_specification_and_support_policy_contracts
+    purpose: tool_embedded_machine_readable_specification_support_policy_and_agent_contracts
     shipped: true
     runtime_required: true
     executable: false
@@ -363,6 +366,7 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/contracts/**"
+      - "tests/ptsip/agent_contracts/**"
       - "tests/ptsip/governance/test_contracts.py"
     purpose: canonical_embedded_and_governance_contract_consistency_verification
     shipped: false
@@ -379,6 +383,7 @@ components:
       - "developer/policy/**"
       - "src/ptsip/governance/**"
       - "src/ptsip/specdata/**"
+      - "src/ptsip/agent_contracts/**"
       - "docs/Support_policy/policy/**"
       - "profiles/**"
 

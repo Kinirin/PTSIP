@@ -1,11 +1,19 @@
 format: ptsip-agent-binding/v1
 binding_id: PTSIP-AGENT-BINDING-CURRENT
-status: BOOTSTRAP
+status: CURRENT
 project_profile_contract: pp.1.02
 specification:
   source: https://github.com/Kinirin/PTSIP
   family: 0.3.7-draft
-  rule_registry_ref: registry/ptsip-registry.yaml
+  revision: 3c47816770d194ae42f98faedc911d980db0e62a
+  rule_registry_ref: specdata/ptsip-registry.yaml
+activation:
+  status: ACTIVE
+  basis: EXPLICIT_PROJECT_OWNER_APPROVAL
+loading:
+  strategy: OPERATION_SCOPED
+  markdown_dependency: FORBIDDEN
+  max_context_bytes: 12288
 active_specs:
   - spec/core.yaml
   - spec/classification.yaml
@@ -27,4 +35,4 @@ active_vocabularies:
   - vocabulary/diagnostics.yaml
   - vocabulary/authority.yaml
 coverage:
-  legacy_markdown_replacement: INCOMPLETE
+  legacy_markdown_replacement: COMPLETE

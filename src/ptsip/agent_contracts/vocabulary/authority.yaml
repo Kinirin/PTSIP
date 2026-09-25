@@ -1,8 +1,8 @@
 format: ptsip-agent-vocabulary/v1
 vocabulary_id: PTSIP-VOCAB-AUTHORITY
-status: BOOTSTRAP
+status: CURRENT
 entries:
-  - {id: PENDING, meaning: "A coordinated architecture decision exists but has no accepted winner.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: RESOLVED, meaning: "One valid architecture answer is the accepted distributed winner.", source_refs: [registry/ptsip-registry.yaml]}
-  - {id: LOCAL_PROFILE, meaning: "Project-owned durable declaration for the repository revision or worktree; it is not distributed Decision Authority.", source_refs: [spec/PTSIP-SPEC.md]}
-  - {id: DISTRIBUTED_AUTHORITY, meaning: "Coordination plane that determines the accepted winner for a stable distributed decision identity.", source_refs: [spec/PTSIP-SPEC.md, reference/DECISION-CONTROL-PLANE.md]}
+  - {id: PENDING, meaning: "A coordinated architecture decision exists but has no accepted winner."}
+  - {id: RESOLVED, meaning: "One valid architecture answer is the accepted distributed winner."}
+  - {id: LOCAL_PROFILE, meaning: "Project-owned durable declaration for the repository revision or worktree; it is not distributed Decision Authority."}
+  - {id: DISTRIBUTED_AUTHORITY, meaning: "Coordination plane that determines the accepted winner for a stable distributed decision identity."}

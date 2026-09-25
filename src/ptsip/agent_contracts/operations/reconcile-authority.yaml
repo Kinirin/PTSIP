@@ -1,6 +1,6 @@
 format: ptsip-agent-operation/v1
 operation_id: PTSIP-OP-RECONCILE-AUTHORITY-001
-status: BOOTSTRAP
+status: CURRENT
 policy_refs:
   - PTSIP-AUT-001
   - PTSIP-AUT-003
@@ -8,6 +8,11 @@ policy_refs:
   - PTSIP-AUT-005
   - PTSIP-AUT-006
   - PTSIP-AUT-007
+spec_refs:
+  - spec/authority.yaml
+vocabulary_refs:
+  - vocabulary/authority.yaml
+  - vocabulary/diagnostics.yaml
 default_mutation: READ_ONLY
 preconditions:
   - coordination_backend_selected

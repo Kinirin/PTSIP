@@ -1,6 +1,6 @@
 format: ptsip-agent-spec/v1
 id: PTSIP-AGENT-SPEC-AUTHORITY
-status: BOOTSTRAP
+status: CURRENT
 normative_rule_refs:
   - PTSIP-AUT-001
   - PTSIP-AUT-002
@@ -30,6 +30,3 @@ statements:
     subject: distributed_coordination_failure
     predicate: silently_falls_back_to_isolated_local_winner
     object: true
-migration_evidence_refs:
-  - reference/DECISION-CONTROL-PLANE.md
-  - spec/PTSIP-SPEC.md

@@ -1,12 +1,22 @@
 format: ptsip-agent-operation/v1
 operation_id: PTSIP-OP-CONFORM-001
-status: BOOTSTRAP
+status: CURRENT
 policy_refs:
   - PTSIP-EVD-001
   - PTSIP-EVD-002
   - PTSIP-EVD-003
   - PTSIP-EVD-004
   - PTSIP-DIA-001
+spec_refs:
+  - spec/core.yaml
+  - spec/classification.yaml
+  - spec/responsibility-map.yaml
+  - spec/conformance.yaml
+  - spec/governance.yaml
+vocabulary_refs:
+  - vocabulary/lifecycle.yaml
+  - vocabulary/outcomes.yaml
+  - vocabulary/diagnostics.yaml
 default_mutation: READ_ONLY
 preconditions:
   - project_profile_validated_or_materialized
