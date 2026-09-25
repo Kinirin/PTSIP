@@ -1,0 +1,52 @@
+{
+  "format": "ptsip-project-state/v1",
+  "status": "CURRENT",
+  "updated_on": "2026-09-25",
+  "project_profile": {
+    "version": "pp.1.02",
+    "revision": "Rev.0001",
+    "path": "developer/profiles/ptsip-repository.yaml"
+  },
+  "specification": {
+    "family": "0.3.7-draft",
+    "source": "https://github.com/Kinirin/PTSIP",
+    "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+  },
+  "tool": {
+    "stable": "0.3.7",
+    "prerelease": "0.3.8a1"
+  },
+  "planning": {
+    "development_line": "0.4.0",
+    "branch": "dev/0.4.0",
+    "entry_document": "docs/planning/0.4.0/index.yaml"
+  },
+  "agent_contract": {
+    "binding": "src/ptsip/agent_contracts/bindings/current.yaml",
+    "status": "ACTIVE",
+    "loading_strategy": "OPERATION_SCOPED",
+    "markdown_dependency": "FORBIDDEN"
+  },
+  "verification": {
+    "last_verified_scope": "M8_AGENT_CONTRACT_TRANSITION",
+    "last_verified_source_sha": "1a60598f2bd43e32fa656f0227f2b4ddd0dfeed3",
+    "workflow_run_id": 36086390623,
+    "tests_passed": 53,
+    "status": "PASS"
+  },
+  "memory": {
+    "canonical_log": ".ptsip/memory/memory.jsonl",
+    "schema": ".ptsip/memory/schema.json",
+    "index": ".ptsip/memory/index.json",
+    "index_authority": "NON_AUTHORITATIVE",
+    "loading": "TARGETED_ONLY",
+    "full_replay_default": "FORBIDDEN"
+  },
+  "legacy_markdown_state": {
+    "status": "RETIRED",
+    "retired_files": [
+      "STATUS.md",
+      "MEMORY.md"
+    ]
+  }
+}

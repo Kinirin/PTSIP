@@ -414,6 +414,7 @@ components:
       - "developer/policy/**"
       - "src/ptsip/governance/**"
       - ".githooks/**"
+      - ".ptsip/**"
 
   - id: repository-release-verification
     classification: DELIVERY
@@ -551,8 +552,6 @@ components:
       - ".github/ISSUE_TEMPLATE/**"
       - "AGENTS.md"
       - "CONTRIBUTING.md"
-      - "MEMORY.md"
-      - "STATUS.md"
       - "bootstrap_repo.ps1"
       - "setup_dev.bat"
       - "cliff.toml"

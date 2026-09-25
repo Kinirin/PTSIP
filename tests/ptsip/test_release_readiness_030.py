@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import runpy
 
 import ptsip
@@ -271,12 +272,24 @@ def test_release_documents_record_independent_current_authorities() -> None:
 
 def test_historical_036_operational_context_remains_exact() -> None:
     stale_active_marker = "WU-04G  clarification/adoption integration               ACTIVE"
-    for path in ("MEMORY.md", "AGENTS.md"):
-        text = (ROOT / path).read_text(encoding="utf-8")
-        assert "WU-07" in text, path
-        assert "Release Contract Strengthening" in text, path
-        assert HISTORICAL_036_REVISION in text, path
-        assert stale_active_marker not in text, path
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    records = [
+        json.loads(line)
+        for line in (ROOT / ".ptsip" / "memory" / "memory.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+        if line.strip()
+    ]
+    historical = next(record for record in records if record["id"] == "PTSIP-MEM-000001")
+
+    assert historical["subject"] == "tool-0.3.6/WU-07"
+    assert historical["status"] == "COMPLETE"
+    assert historical["data"]["strategy"] == "Release Contract Strengthening"
+    assert historical["data"]["specification_revision"] == HISTORICAL_036_REVISION
+    assert "WU-07" in agents
+    assert "Release Contract Strengthening" in agents
+    assert HISTORICAL_036_REVISION in agents
+    assert stale_active_marker not in agents
 
 
 def test_release_contract_accepts_current_exact_bound_assets() -> None:

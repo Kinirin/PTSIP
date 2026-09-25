@@ -112,8 +112,9 @@ Normal entry order:
 3. when the operation is planning/version-specific, run the branch-aware Planning Entry Resolver and enter through its exact returned document;
 4. load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved task actually requires them.
 
-`MEMORY.md`, historical planning, release notes, and ADR/history are targeted operational or historical context, not mandatory startup reads. Their presence must not override canonical machine-readable policy or Specification authority.
-`MEMORY.md` and planning documents are operational context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
+`.ptsip/state/current.json` is the canonical repository current-state snapshot when task execution requires repository state. Load it directly; do not reconstruct current state by replaying history.
+`.ptsip/memory/memory.jsonl`, historical planning, release notes, and ADR/history are targeted historical evidence, not mandatory startup reads. Use `.ptsip/memory/index.json` to identify relevant memory records and load only those records. The index is non-authoritative and must not override `memory.jsonl`. Do not preload or replay the complete memory log unless an explicitly resolved operation requires full-history analysis.
+Planning documents and memory records are operational or historical context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
 ## License Authority entry discipline
 

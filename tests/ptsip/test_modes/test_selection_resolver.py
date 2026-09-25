@@ -182,6 +182,15 @@ def test_pre_commit_hook_change_selects_architecture_verification() -> None:
     assert _ids(selected) == ["repository-architecture"]
 
 
+def test_machine_state_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".ptsip/state/current.json"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
 def test_distribution_contract_validator_change_selects_release_verification() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Kinirin/PTSIP/.ptsip/memory/schema.json",
+  "title": "PTSIP Repository Memory Event",
+  "type": "object",
+  "required": [
+    "format",
+    "id",
+    "recorded_on",
+    "type",
+    "subject",
+    "status"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-memory-event/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^PTSIP-MEM-[0-9]{6}$"
+    },
+    "recorded_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

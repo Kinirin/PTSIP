@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import yaml
+from jsonschema import Draft202012Validator
 
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
@@ -120,6 +122,9 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert "Pages/**" in components["product-documentation"]["include"]
     assert ".github/workflows/static.yml" in components["repository-ci"]["include"]
     assert ".githooks/**" in components["repository-maintenance"]["include"]
+    assert "MEMORY.md" not in components["repository-maintenance"]["include"]
+    assert "STATUS.md" not in components["repository-maintenance"]["include"]
+    assert ".ptsip/**" in components["repository-architecture-verification"]["analysis_inputs"]
     assert (
         ".github/scripts/verify_distribution_contracts.py"
         in components["repository-release-automation"]["include"]
@@ -241,3 +246,42 @@ def test_vpms_self_adoption_targets_resolve_against_repository_self_profile() ->
     assert distribution.classification == "PRODUCT"
     assert release_automation is not None
     assert release_automation.classification == "DELIVERY"
+
+
+def test_machine_repository_state_replaces_legacy_markdown_state() -> None:
+    assert not (REPO_ROOT / "STATUS.md").exists()
+    assert not (REPO_ROOT / "MEMORY.md").exists()
+
+    current = json.loads(
+        (REPO_ROOT / ".ptsip" / "state" / "current.json").read_text(encoding="utf-8")
+    )
+    assert current["format"] == "ptsip-project-state/v1"
+    assert current["status"] == "CURRENT"
+    assert current["project_profile"] == {
+        "version": "pp.1.02",
+        "revision": "Rev.0001",
+        "path": "developer/profiles/ptsip-repository.yaml",
+    }
+    assert current["specification"]["revision"] == SPEC_REVISION
+    assert current["memory"]["canonical_log"] == ".ptsip/memory/memory.jsonl"
+    assert current["memory"]["loading"] == "TARGETED_ONLY"
+    assert current["legacy_markdown_state"]["status"] == "RETIRED"
+
+    memory_root = REPO_ROOT / ".ptsip" / "memory"
+    schema = json.loads((memory_root / "schema.json").read_text(encoding="utf-8"))
+    records = [
+        json.loads(line)
+        for line in (memory_root / "memory.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    validator = Draft202012Validator(schema)
+    for record in records:
+        validator.validate(record)
+
+    index = json.loads((memory_root / "index.json").read_text(encoding="utf-8"))
+    assert index["format"] == "ptsip-memory-index/v1"
+    assert index["authority"] == "NON_AUTHORITATIVE"
+    assert index["source"] == ".ptsip/memory/memory.jsonl"
+    assert index["line_count"] == len(records)
+    assert [entry["id"] for entry in index["entries"]] == [record["id"] for record in records]
+    assert [entry["line"] for entry in index["entries"]] == list(range(1, len(records) + 1))
