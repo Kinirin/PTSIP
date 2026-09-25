@@ -273,13 +273,10 @@ def test_release_documents_record_independent_current_authorities() -> None:
 def test_historical_036_operational_context_remains_exact() -> None:
     stale_active_marker = "WU-04G  clarification/adoption integration               ACTIVE"
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-    records = [
-        json.loads(line)
-        for line in (ROOT / ".ptsip" / "memory" / "memory.jsonl")
-        .read_text(encoding="utf-8")
-        .splitlines()
-        if line.strip()
-    ]
+    context = json.loads(
+        (ROOT / ".ptsip" / "context" / "context.json").read_text(encoding="utf-8")
+    )
+    records = context["memory"]
     historical = next(record for record in records if record["id"] == "PTSIP-MEM-000001")
 
     assert historical["subject"] == "tool-0.3.6/WU-07"

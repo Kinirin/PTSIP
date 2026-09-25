@@ -182,11 +182,20 @@ def test_pre_commit_hook_change_selects_architecture_verification() -> None:
     assert _ids(selected) == ["repository-architecture"]
 
 
-def test_machine_state_change_selects_architecture_verification() -> None:
+def test_context_plane_change_selects_architecture_verification() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        [".ptsip/state/current.json"],
+        [".ptsip/context/context.json"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
+def test_context_projection_generator_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["developer/automation/context_projection.py"],
     )
     assert _ids(selected) == ["repository-architecture"]
 
