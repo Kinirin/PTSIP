@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 from pathlib import Path
 
@@ -53,7 +54,13 @@ def _git(base: Path, *args: str) -> str:
 
 
 def _current_branch(base: Path) -> str:
-    return _git(base, "branch", "--show-current")
+    branch = _git(base, "branch", "--show-current")
+    if branch:
+        return branch
+    github_ref_name = os.environ.get("GITHUB_REF_NAME", "").strip()
+    if github_ref_name:
+        return github_ref_name
+    return branch
 
 
 def _ref_exists(base: Path, ref: str) -> bool:
