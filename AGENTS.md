@@ -116,15 +116,139 @@ Branch creation is governed by `MPD-0014`. Coding agents must not invent a branc
 Before creating a branch, validate the exact user-approved name mechanically:
 
 ```text
-python -m developer.automation.branch_creation_guard validate --candidate <exact-branch-name> --approved-name <exact-user-approved-branch-name> --authorization-source USER_EXPLICIT --request-kind DEVELOPMENT_VERSION_BRANCH
+python -m developer.automation.branch_creation_guard validate --candidate <exact-branch-name> --approved-name <exact-user-approved-branch-name> --authorization-source USER_EXPLICIT --request-kind DEVELOPMENT_VERSION_BRANCH --creation-mechanism GITHUB_CREATE_BRANCH_API
 ```
 
 Rules:
 
-- Current v1 creation authority recognizes only development-version branches matching `dev/[0-9].[0-9].[0-9]`.
+- Current v1 creation authority recognizes only development-version branches matching `^dev/[0-9]+\\.[0-9]+\\.[0-9]+# AGENTS.md
+
+These instructions apply to coding agents working anywhere in this repository.
+
+## Developer Policy vs Support Feature Policy
+
+PTSIP has two non-interchangeable policy classes.
+
+- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
+- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`; repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.
+- PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
+- The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
+- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
+- Developer planning authority is `developer/planning/index.yaml` and version control planes under `developer/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
+- `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
+
+## Mandatory developer policy entry
+
+Before broadly reading repository policy or planning prose, resolve the developer-policy context mechanically:
+
+```text
+python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
+```
+
+The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings.yaml` and `developer/policy/index.yaml`. Use only the returned canonical policy IDs and rule sections as the normal policy-loading path.
+
+For a returned section, prefer the bounded lookup:
+
+```text
+python -m developer.automation.policy_resolver get <MPD-ID> --section <rule-section>
+```
+
+Rules:
+
+- Do not scan `developer/policy/**`, planning trees, ADR/history, or prose documentation merely to discover potentially relevant policy.
+- Do not substitute semantic similarity, filename similarity, nearby documents, or natural-language inference for a resolver binding.
+- A resolver failure is fail-closed for the dependent policy lookup. Do not choose an alternative policy manually.
+- The resolver is a routing/projection control plane only. Canonical MPD records remain authority.
+- `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
+- Re-run resolution after changing task scope, operation class, or branch context.
+
+
+## Mandatory PTSIP Agent Contract entry
+
+For PTSIP product/consumer operations, resolve the bounded machine contract before reading any narrative specification:
+
+```text
+python -m agent_contracts.resolver <PTSIP-OP-ID> --json
+```
+
+Current operation IDs are `PTSIP-OP-ADOPT-001`, `PTSIP-OP-VALIDATE-001`, `PTSIP-OP-CONFORM-001`, `PTSIP-OP-RECONCILE-AUTHORITY-001`, and `PTSIP-OP-MIGRATE-PROFILE-001`. Use only the returned exact rules, actions, conditions, gates, I/O schemas, vocabularies, and implementation bindings.
+
+For current repository state, resolve one exact owner instead of reading repository history or status prose:
+
+```text
+python -m developer.automation.repository_state_resolver <domain> --json
+```
+
+Do not preload `adoption/`, `agents/AGENT-CONTRACT.md`, `STATUS.md`, `MEMORY.md`, `spec/*.md`, or `reference/*.md` as normative or default coding-agent context. Human-readable history/reference material is optional and cannot override the current machine contract or canonical state owner. Resolver failure is fail-closed.
+
+## Mandatory MPD identity lifecycle preflight
+
+Do not choose a new `MPD-####` ID or change an MPD lifecycle status by repository scan or conversational inference.
+
+For an existing ID, inspect it mechanically first:
+
+```text
+python -m developer.automation.policy_identity_lifecycle inspect <MPD-ID>
+```
+
+Before allocating a new ID, create an approved provenance record under `developer/policy/approvals/` and run:
+
+```text
+python -m developer.automation.policy_identity_lifecycle preflight --approval-ref developer/policy/approvals/<record>.yaml
+```
+
+After the policy file is materialized with the exact allocated ID and explicit approved status, register it through:
+
+```text
+python -m developer.automation.policy_identity_lifecycle register --approval-ref developer/policy/approvals/<record>.yaml --policy-file developer/policy/<MPD-ID>.yaml
+```
+
+For a lifecycle status change on an existing MPD, run `status-preflight` first. Temporary implementation approval does not imply `ACTIVE` or `DRAFT`; the approval provenance must state the target status explicitly. Any ID collision, index/file/subject-registry mismatch, missing approval provenance, or status mismatch is fail-closed.
+
+## Implementation Work Packet
+
+For implementation work with a registered task context, prepare a bounded developer-only work packet before editing:
+
+```text
+python -m developer.automation.implementation_work_packet prepare --scope <repository-path> --operation MODIFY --output <temporary-json-path> --json
+```
+
+Use the packet's exact edit targets, required tests, and verification stages. Run `check` before verification or commit. Branch, HEAD, context, or unlisted-path changes invalidate the packet and require regeneration.
+
+## Deterministic Test Mode verification
+
+Normal development verification uses automatic Test Mode resolution. The agent does not infer the affected Test Mode from prose, semantic similarity, confidence, or uncertainty.
+
+```text
+python .github/scripts/resolve_test_modes.py automatic --head HEAD
+```
+
+Rules:
+
+- Project Profile verification `analysis_inputs` and owned test `include` paths are the selection authority.
+- Run only the Test Modes returned by the resolver.
+- `all` is not an uncertainty fallback and is not a Test Mode.
+- Use `full` only for a release boundary, an explicit policy requirement, or an explicit maintainer request.
+- An unmapped changed path is fail-closed; do not replace it with full verification.
+- Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
+
+## Mandatory branch creation preflight
+
+Branch creation is governed by `MPD-0014`. Coding agents must not invent a branch name from planning state, version context, a Project Profile change, a test need, or a temporary verification need.
+
+Before creating a branch, validate the exact user-approved name mechanically:
+
+```text
+python -m developer.automation.branch_creation_guard validate --candidate <exact-branch-name> --approved-name <exact-user-approved-branch-name> --authorization-source USER_EXPLICIT --request-kind DEVELOPMENT_VERSION_BRANCH --creation-mechanism GITHUB_CREATE_BRANCH_API
+```
+
+Rules:
+
+.
 - The exact candidate branch name must equal the exact branch name supplied by the user request. Missing or inferred names fail closed.
 - Changes to `ptsip-public-profile-catalog/v1` or a `pp.[0-9].[0-9]{2}` identity do not authorize branch creation and do not require a development branch rename or version change.
 - Existing `tool-0.3.[0-9]-*` branches are grandfathered for retention only; that pattern is not new branch-creation authority.
+- The only authorized creation mechanism is the GitHub `create_branch` API after a successful guard result. Do not create branches with `git push`, `git switch -c`, `git checkout -b`, `git update-ref`, the GitHub `update_ref` API, or a workflow that writes a new ref.
 - Merge and retirement policy are separate from creation. Do not use merge eligibility or branch age as a substitute for creation authorization.
 
 ## Mandatory branch-aware planning entry

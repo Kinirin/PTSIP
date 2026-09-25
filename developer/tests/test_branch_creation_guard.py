@@ -10,48 +10,79 @@ from developer.automation.branch_creation_guard import (
 )
 
 
+def _validate(candidate: str, approved_name: str, **overrides: str):
+    args = {
+        "authorization_source": "USER_EXPLICIT",
+        "request_kind": "DEVELOPMENT_VERSION_BRANCH",
+        "creation_mechanism": "GITHUB_CREATE_BRANCH_API",
+    }
+    args.update(overrides)
+    return validate_creation(candidate, approved_name, **args)
+
+
 def test_exact_user_approved_development_branch_is_authorized() -> None:
-    decision = validate_creation(
-        "dev/0.4.0",
-        "dev/0.4.0",
-        authorization_source="USER_EXPLICIT",
-        request_kind="DEVELOPMENT_VERSION_BRANCH",
-    )
+    decision = _validate("dev/0.4.0", "dev/0.4.0")
     assert decision.status == "AUTHORIZED"
     assert decision.branch_class == "DEVELOPMENT_VERSION"
+    assert decision.creation_mechanism == "GITHUB_CREATE_BRANCH_API"
+
+
+@pytest.mark.parametrize(
+    "branch",
+    [
+        "dev/0.10.0",
+        "dev/12.3.45",
+        "dev/123.456.789",
+    ],
+)
+def test_multi_digit_semver_components_are_authorized(branch: str) -> None:
+    assert _validate(branch, branch).status == "AUTHORIZED"
 
 
 def test_agent_cannot_invent_or_substitute_branch_name() -> None:
     with pytest.raises(BranchCreationPolicyError) as exc:
-        validate_creation(
-            "verify/context-plane-20260925",
-            "dev/0.4.0",
-            authorization_source="USER_EXPLICIT",
-            request_kind="DEVELOPMENT_VERSION_BRANCH",
-        )
+        _validate("verify/context-plane-20260925", "dev/0.4.0")
     assert exc.value.code == "BRANCH_NAME_NOT_EXACTLY_APPROVED"
 
 
 def test_non_user_authority_fails_closed() -> None:
     with pytest.raises(BranchCreationPolicyError) as exc:
-        validate_creation(
+        _validate(
             "dev/0.4.0",
             "dev/0.4.0",
             authorization_source="AGENT_INFERRED",
-            request_kind="DEVELOPMENT_VERSION_BRANCH",
         )
     assert exc.value.code == "BRANCH_CREATION_REQUIRES_USER_EXPLICIT"
 
 
 def test_unregistered_branch_shape_is_not_creation_authority() -> None:
     with pytest.raises(BranchCreationPolicyError) as exc:
-        validate_creation(
+        _validate(
             "fix/js-ts-dependency-resolution",
             "fix/js-ts-dependency-resolution",
-            authorization_source="USER_EXPLICIT",
-            request_kind="DEVELOPMENT_VERSION_BRANCH",
         )
     assert exc.value.code == "UNAUTHORIZED_BRANCH_NAME"
+
+
+@pytest.mark.parametrize(
+    "mechanism",
+    [
+        "GIT_PUSH_BRANCH_CREATION",
+        "GIT_SWITCH_CREATE",
+        "GIT_CHECKOUT_CREATE",
+        "GIT_UPDATE_REF",
+        "GITHUB_UPDATE_REF_API",
+        "WORKFLOW_REF_CREATION",
+    ],
+)
+def test_only_github_create_branch_api_is_authorized(mechanism: str) -> None:
+    with pytest.raises(BranchCreationPolicyError) as exc:
+        _validate(
+            "dev/0.4.1",
+            "dev/0.4.1",
+            creation_mechanism=mechanism,
+        )
+    assert exc.value.code == "UNAUTHORIZED_BRANCH_CREATION_MECHANISM"
 
 
 def test_project_profile_change_does_not_change_development_branch_identity() -> None:
@@ -66,9 +97,7 @@ def test_legacy_tool_branch_is_retention_only() -> None:
     assert result["classification"] == "GRANDFATHERED_RETENTION"
 
     with pytest.raises(BranchCreationPolicyError):
-        validate_creation(
+        _validate(
             "tool-0.3.4-authority-consistency",
             "tool-0.3.4-authority-consistency",
-            authorization_source="USER_EXPLICIT",
-            request_kind="DEVELOPMENT_VERSION_BRANCH",
         )

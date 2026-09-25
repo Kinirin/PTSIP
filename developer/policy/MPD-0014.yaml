@@ -18,9 +18,20 @@ rules:
     allowed_branch_classes:
       DEVELOPMENT_VERSION:
         request_kind: DEVELOPMENT_VERSION_BRANCH
-        exact_name_pattern: "^dev/[0-9]\\.[0-9]\\.[0-9]$"
+        exact_name_pattern: "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
         creation_trigger: USER_EXPLICIT_REQUEST
     unregistered_branch_class_creation: FORBIDDEN
+    creation_mechanism:
+      allowed: GITHUB_CREATE_BRANCH_API
+      direct_api_use_authorized: true
+      caller_must_run_branch_creation_guard_first: true
+      forbidden:
+        - GIT_PUSH_BRANCH_CREATION
+        - GIT_SWITCH_CREATE
+        - GIT_CHECKOUT_CREATE
+        - GIT_UPDATE_REF
+        - GITHUB_UPDATE_REF_API
+        - WORKFLOW_REF_CREATION
 
   project_profile_independence:
     catalog_schema: ptsip-public-profile-catalog/v1

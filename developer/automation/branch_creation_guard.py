@@ -7,11 +7,12 @@ from dataclasses import dataclass
 from typing import Sequence
 
 
-DEVELOPMENT_VERSION_PATTERN = re.compile(r"^dev/[0-9]\.[0-9]\.[0-9]$")
+DEVELOPMENT_VERSION_PATTERN = re.compile(r"^dev/[0-9]+\.[0-9]+\.[0-9]+$")
 PROJECT_PROFILE_PATTERN = re.compile(r"^pp\.[0-9]\.[0-9]{2}$")
 LEGACY_TOOL_PATTERN = re.compile(r"^tool-0\.3\.[0-9]-.*$")
 USER_EXPLICIT = "USER_EXPLICIT"
 DEVELOPMENT_VERSION_BRANCH = "DEVELOPMENT_VERSION_BRANCH"
+GITHUB_CREATE_BRANCH_API = "GITHUB_CREATE_BRANCH_API"
 
 
 class BranchCreationPolicyError(RuntimeError):
@@ -27,6 +28,7 @@ class BranchCreationDecision:
     branch_class: str
     authorization_source: str
     request_kind: str
+    creation_mechanism: str
 
     def as_dict(self) -> dict[str, str]:
         return {
@@ -35,6 +37,7 @@ class BranchCreationDecision:
             "branch_class": self.branch_class,
             "authorization_source": self.authorization_source,
             "request_kind": self.request_kind,
+            "creation_mechanism": self.creation_mechanism,
         }
 
 
@@ -44,7 +47,13 @@ def validate_creation(
     *,
     authorization_source: str,
     request_kind: str,
+    creation_mechanism: str,
 ) -> BranchCreationDecision:
+    if creation_mechanism != GITHUB_CREATE_BRANCH_API:
+        raise BranchCreationPolicyError(
+            "UNAUTHORIZED_BRANCH_CREATION_MECHANISM",
+            "branch creation must use the GitHub create_branch API",
+        )
     if authorization_source != USER_EXPLICIT:
         raise BranchCreationPolicyError(
             "BRANCH_CREATION_REQUIRES_USER_EXPLICIT",
@@ -68,7 +77,7 @@ def validate_creation(
     if DEVELOPMENT_VERSION_PATTERN.fullmatch(candidate) is None:
         raise BranchCreationPolicyError(
             "UNAUTHORIZED_BRANCH_NAME",
-            "current creation authority only permits dev/[0-9].[0-9].[0-9]",
+            "current creation authority only permits dev/<major>.<minor>.<patch> with decimal components",
         )
     return BranchCreationDecision(
         status="AUTHORIZED",
@@ -76,6 +85,7 @@ def validate_creation(
         branch_class="DEVELOPMENT_VERSION",
         authorization_source=authorization_source,
         request_kind=request_kind,
+        creation_mechanism=creation_mechanism,
     )
 
 
@@ -124,6 +134,7 @@ def _parser() -> argparse.ArgumentParser:
     validate.add_argument("--approved-name", required=True)
     validate.add_argument("--authorization-source", required=True)
     validate.add_argument("--request-kind", required=True)
+    validate.add_argument("--creation-mechanism", required=True)
 
     profile = sub.add_parser("profile-transition")
     profile.add_argument("--branch", required=True)
@@ -144,6 +155,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.approved_name,
                 authorization_source=args.authorization_source,
                 request_kind=args.request_kind,
+                creation_mechanism=args.creation_mechanism,
             ).as_dict()
         elif args.command == "profile-transition":
             result = project_profile_transition(
