@@ -5,9 +5,9 @@ authority: false
 identity:
   migration_id: MPD-0012-AGENT-CONTEXT-MACHINE-MIGRATION
   title: Markdown-to-Machine Agent Context Migration
-  status: ACTIVE
+  status: COMPLETE
   governing_policy_ref: MPD-0012
-  governing_policy_status: DRAFT
+  governing_policy_status: ACTIVE
   planning_approval:
     status: APPROVED
     approval_source: USER_EXPLICIT
@@ -30,13 +30,13 @@ objective:
 existing_machine_plane:
   root: src/agent_contracts/
   index: src/agent_contracts/index.yaml
-  contract_set_status: CANDIDATE
+  contract_set_status: CURRENT
   authority_scope: CODING_AGENT_BEHAVIOR
   current_dependency_policy:
     markdown_normative_dependency: FORBIDDEN
     unresolved_reference: FAIL_CLOSED
     external_machine_contracts: EXPLICIT_BINDING_ONLY
-  activation_state: NOT_CURRENT
+  activation_state: CURRENT
 
 migration_principles:
   - DO_NOT_TRANSLATE_EACH_MARKDOWN_DOCUMENT_ONE_TO_ONE
@@ -69,7 +69,7 @@ document_matrix:
       - src/agent_contracts/schemas/io/adopt-request.schema.json
       - src/agent_contracts/schemas/io/adopt-state.schema.json
       - src/agent_contracts/schemas/io/adopt-result.schema.json
-    current_coverage: PARTIAL_REQUIRES_SEMANTIC_DIFF
+    current_coverage: COMPLETE_MACHINE_AUTHORITY
     final_agent_dependency: MACHINE_ONLY
 
   - path: agents/AGENT-CONTRACT.md
@@ -156,7 +156,7 @@ document_matrix:
       - src/agent_contracts/vocabulary/diagnostics.yaml
       - src/agent_contracts/vocabulary/authority.yaml
       - registry/ptsip-registry.yaml
-    current_coverage: PARTIAL_REQUIRES_VOCABULARY_DIFF
+    current_coverage: COMPLETE_MACHINE_AUTHORITY
     final_agent_dependency: MACHINE_ONLY
 
   - path: STATUS.md
@@ -168,8 +168,8 @@ document_matrix:
       - registry/project-profile-contracts.yaml
       - developer/profiles/ptsip-repository.yaml
       - GitHub release_and_verification_evidence
-    current_coverage: DISTRIBUTED_FACTS_NO_SINGLE_BOUNDED_ENTRY
-    exact_new_state_index_path: OWNER_DECISION_REQUIRED
+    current_coverage: BOUNDED_MACHINE_STATE_ROUTING_COMPLETE
+    exact_new_state_index_path: developer/state/index.yaml
     final_agent_dependency: BOUNDED_MACHINE_STATE_ONLY
     historical_narrative_runtime_required: false
 
@@ -182,8 +182,8 @@ document_matrix:
       - developer/bindings/
       - developer/profiles/
       - src/agent_contracts/
-    current_coverage: DISTRIBUTED_FACTS_WITH_HISTORICAL_NARRATIVE
-    exact_new_state_index_path: OWNER_DECISION_REQUIRED
+    current_coverage: BOUNDED_MACHINE_STATE_ROUTING_COMPLETE
+    exact_new_state_index_path: developer/state/index.yaml
     final_agent_dependency: NONE_FOR_NORMATIVE_RUNTIME
     historical_narrative_runtime_required: false
 
@@ -277,9 +277,9 @@ phases:
       - ROUTE_RELEASE_PROFILE_PLANNING_POLICY_AND_BINDING_FACTS_TO_CANONICAL_MACHINE_OWNERS
       - REMOVE_STATUS_AND_MEMORY_FROM_DEFAULT_AGENT_CONTEXT
       - KEEP_HISTORY_OPTIONAL_AND_NON_AUTHORITATIVE
-    unresolved:
-      exact_state_index_location: OWNER_DECISION_REQUIRED
-      exact_historical_retention_format: OWNER_DECISION_REQUIRED
+    resolved_state_routing:
+      exact_state_index_location: developer/state/index.yaml
+      historical_retention_role: OPTIONAL_NON_AUTHORITATIVE_CONTEXT
 
   - id: M4
     status: COMPLETE
@@ -330,7 +330,7 @@ phases:
       - TEST_PASS_AUTO_PROMOTION_TO_OFFICIAL_AUTHORITY
 
   - id: M7
-    status: IMPLEMENTED_VALIDATION_PENDING
+    status: COMPLETE
     name: MARKDOWN_DEPENDENCY_REMOVAL
     prerequisites:
       - M6_COMPLETE
@@ -354,7 +354,7 @@ phases:
     note: Non-normative targets require role-specific disposition and are not deleted merely because they are Markdown.
 
   - id: M8
-    status: VALIDATION_PENDING
+    status: COMPLETE
     name: POST_MIGRATION_VALIDATION
     prerequisites:
       - M7_COMPLETE
@@ -366,13 +366,11 @@ phases:
       - HISTORICAL_REFERENCES_DO_NOT_BECOME_RUNTIME_AUTHORITY
 
 activation_gates:
-  current_blockers:
-    - MPD_0012_STATUS_DRAFT
-    - AGENT_CONTRACT_SET_STATUS_CANDIDATE
-    - MACHINE_SEMANTIC_COVERAGE_NOT_YET_PROVEN
-    - STATUS_MEMORY_BOUNDED_STATE_ENTRY_NOT_YET_DEFINED
-  cleanup_apply_allowed_now: false
-  plan_and_gap_analysis_allowed_now: true
+  current_blockers: []
+  activation_complete: true
+  cleanup_apply_complete: true
+  machine_semantic_coverage_proven: true
+  bounded_state_entry: developer/state/index.yaml
 
 completion_definition:
   normative_authority_migration_complete_when:
@@ -422,3 +420,14 @@ verification_evidence:
     apply_authorized: true
     remove_candidate_count: 8
     active_machine_dependency_count: 0
+
+  m8_post_migration_validation:
+    source_sha: 6efb4e2d62d7e72c178ca1b82bf32c93af76509d
+    workflow_run_id: 36034595361
+    workflow_job_id: 107751616304
+    result: PASS
+    mpd_0012_active: true
+    agent_contract_set_current: true
+    normative_markdown_targets_removed: true
+    default_agent_normative_markdown_read_count: 0
+    focused_tests_passed: 17
