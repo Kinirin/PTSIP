@@ -152,10 +152,18 @@ jobs:
             developer/tests/test_planning_merge_reconciliation.py `
             developer/tests/test_planning_stage_finalizer.py `
             developer/tests/test_policy_resolver.py `
-            tests/ptsip/control_plane/test_planning_entry_resolver.py 2>&1 |
+            developer/tests/test_wu02_lane_validator.py `
+            tests/ptsip/control_plane/test_planning_entry_resolver.py `
+            tests/ptsip/remediation/test_solution_candidate_generation.py 2>&1 |
             Tee-Object -FilePath $log -Append
           if ($LASTEXITCODE -ne 0) {
             throw "Planning migration focused pytest verification failed."
+          }
+
+          & $env:PLANNING_VERIFY_PYTHON -m developer.automation.wu02_lane_validator S1 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            throw "WU-02 S1 lane validation failed."
           }
 
           @(
@@ -165,6 +173,7 @@ jobs:
             "- Policy validation: PASS"
             "- Planning validation: PASS"
             "- Focused pytest: PASS"
+            "- WU-02 S1 lane validation: PASS"
           ) | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding UTF8
 
       - name: Upload Planning migration verification log
