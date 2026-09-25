@@ -1,6 +1,6 @@
 ptsip:
   version: "pp.1.02"
-  revision: "Rev.0002"
+  revision: "Rev.0001"
   profile_role: "PROJECT"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
@@ -412,6 +412,7 @@ components:
       - "docs/planning/**"
       - "developer/policy/**"
       - "src/ptsip/governance/**"
+      - ".githooks/**"
 
   - id: repository-release-verification
     classification: DELIVERY
@@ -438,6 +439,8 @@ components:
       - ".github/workflows/tooling-release.yml"
       - ".github/scripts/verify_release_contract.py"
       - "src/ptsip/specdata/**"
+      - "src/ptsip/agent_contracts/**"
+      - ".github/scripts/verify_distribution_contracts.py"
       - "spec/**"
       - "schemas/**"
       - "registry/**"
@@ -488,6 +491,7 @@ components:
       - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
       - ".github/scripts/verify_release_contract.py"
+      - ".github/scripts/verify_distribution_contracts.py"
     purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false
     runtime_required: false
@@ -542,6 +546,7 @@ components:
       - GOVERNANCE
     include:
       - ".gitignore"
+      - ".githooks/**"
       - ".github/ISSUE_TEMPLATE/**"
       - "AGENTS.md"
       - "CONTRIBUTING.md"
