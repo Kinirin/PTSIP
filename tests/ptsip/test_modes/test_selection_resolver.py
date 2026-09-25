@@ -200,6 +200,15 @@ def test_context_projection_generator_change_selects_architecture_verification()
     assert _ids(selected) == ["repository-architecture"]
 
 
+def test_context_line_ending_policy_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".gitattributes"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
 def test_distribution_contract_validator_change_selects_release_verification() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),

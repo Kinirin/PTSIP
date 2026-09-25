@@ -414,6 +414,7 @@ components:
       - "developer/policy/**"
       - "src/ptsip/governance/**"
       - ".githooks/**"
+      - ".gitattributes"
       - ".ptsip/**"
       - "developer/automation/context_projection.py"
 
@@ -549,6 +550,7 @@ components:
       - GOVERNANCE
     include:
       - ".gitignore"
+      - ".gitattributes"
       - ".githooks/**"
       - ".github/ISSUE_TEMPLATE/**"
       - "AGENTS.md"

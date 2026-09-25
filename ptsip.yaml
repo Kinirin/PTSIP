@@ -330,6 +330,7 @@ components:
     compatibility_owner: architecture
     analysis_inputs:
       - "ptsip.yaml"
+      - ".gitattributes"
       - ".ptsip/**"
       - "developer/automation/context_projection.py"
       - "adoption/**"
@@ -457,6 +458,7 @@ components:
       - GOVERNANCE
     include:
       - ".gitignore"
+      - ".gitattributes"
       - ".github/ISSUE_TEMPLATE/**"
       - "AGENTS.md"
       - "CONTRIBUTING.md"
