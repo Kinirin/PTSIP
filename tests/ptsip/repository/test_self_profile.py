@@ -121,9 +121,11 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert "Pages/**" in components["product-documentation"]["include"]
     assert ".github/workflows/static.yml" in components["repository-ci"]["include"]
     assert ".githooks/**" in components["repository-maintenance"]["include"]
+    assert ".gitattributes" in components["repository-maintenance"]["include"]
     assert "MEMORY.md" not in components["repository-maintenance"]["include"]
     assert "STATUS.md" not in components["repository-maintenance"]["include"]
     assert ".ptsip/**" in components["repository-architecture-verification"]["analysis_inputs"]
+    assert ".gitattributes" in components["repository-architecture-verification"]["analysis_inputs"]
     assert (
         ".github/scripts/verify_distribution_contracts.py"
         in components["repository-release-automation"]["include"]
