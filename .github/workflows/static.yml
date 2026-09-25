@@ -45,6 +45,9 @@ jobs:
         run: |
           & $env:CTX_PYTHON -m developer.automation.context_projection check
           if ($LASTEXITCODE -ne 0) {
+            Write-Host "Canonical projection drift detected; regenerating for diagnostic diff."
+            & $env:CTX_PYTHON -m developer.automation.context_projection sync
+            git diff --no-ext-diff -- .ptsip/context
             throw "Context projection verification failed."
           }
 
