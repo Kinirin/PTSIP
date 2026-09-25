@@ -9,22 +9,22 @@ from developer.automation.policy_loader import load_yaml, repository_root
 
 CONTROL_BRANCH = "dev/0.3.8"
 LEGACY_CONTROL_BRANCH = "dev/0.4.0"
-PARENT_PLAN = "docs/planning/0.4.0/WU-02/WU-02.yaml"
+PARENT_PLAN = "developer/planning/0.4.0/WU-02/WU-02.yaml"
 LANES = {
     "S1": {
         "id": "WU-02-S1",
         "branch": CONTROL_BRANCH,
-        "path": "docs/planning/0.4.0/WU-02/WU-02-S1.yaml",
+        "path": "developer/planning/0.4.0/WU-02/WU-02-S1.yaml",
     },
     "S2": {
         "id": "WU-02-S2",
         "branch": CONTROL_BRANCH,
-        "path": "docs/planning/0.4.0/WU-02/WU-02-S2.yaml",
+        "path": "developer/planning/0.4.0/WU-02/WU-02-S2.yaml",
     },
     "S3": {
         "id": "WU-02-S3",
         "branch": CONTROL_BRANCH,
-        "path": "docs/planning/0.4.0/WU-02/WU-02-S3.yaml",
+        "path": "developer/planning/0.4.0/WU-02/WU-02-S3.yaml",
     },
 }
 _REQUIRED_SECTIONS = (
