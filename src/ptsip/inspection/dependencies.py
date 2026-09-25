@@ -21,6 +21,8 @@ from ..model import (
     ResolutionStatus,
 )
 from ..repository.snapshot import repository_files
+from ..dependency_cache import EvidenceCache
+from .python_resolution import PythonResolver, dynamic_targets
 
 _REQUIREMENT_NAME_RE = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)")
 _SCRIPT_SUFFIXES = {".py", ".ps1", ".sh", ".bash", ".bat", ".cmd"}
@@ -45,6 +47,7 @@ class DependencyScan:
     edges: tuple[DependencyEdge, ...]
     issues: tuple[DependencyScanIssue, ...]
     adapters: tuple[str, ...]
+    cache: dict[str, object] | None = None
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -53,6 +56,7 @@ class DependencyScan:
             "adapters": list(self.adapters),
             "edge_count": len(self.edges),
             "coverage_complete": not self.issues,
+            "cache": self.cache,
         }
 
 
@@ -102,57 +106,6 @@ def _declared_python_dependencies(root: Path) -> tuple[set[str], list[Dependency
     return names, issues
 
 
-def _resolve_module(root: Path, module: str) -> str | None:
-    if not module:
-        return None
-    rel = Path(*module.split("."))
-    candidates = [
-        root / rel.with_suffix(".py"),
-        root / rel / "__init__.py",
-        root / "src" / rel.with_suffix(".py"),
-        root / "src" / rel / "__init__.py",
-    ]
-    for candidate in candidates:
-        if candidate.is_file():
-            return candidate.relative_to(root).as_posix()
-    return None
-
-
-def _source_package_parts(root: Path, rel: str) -> list[str]:
-    path = root / rel
-    parent = path.parent
-    parts: list[str] = []
-    while parent != root and (parent / "__init__.py").is_file():
-        parts.insert(0, parent.name)
-        parent = parent.parent
-    return parts
-
-
-def _resolve_relative_import(root: Path, rel: str, node: ast.ImportFrom) -> tuple[str, str | None]:
-    package = _source_package_parts(root, rel)
-    if not package or node.level <= 0 or node.level > len(package):
-        target = ("." * node.level) + (node.module or "")
-        return target or "<relative>", None
-
-    keep = len(package) - node.level + 1
-    base_parts = package[:keep]
-    if node.module:
-        base_parts.extend(node.module.split("."))
-        target = ".".join(base_parts)
-        return target, _resolve_module(root, target)
-
-    for alias in node.names:
-        if alias.name == "*":
-            continue
-        target = ".".join([*base_parts, *alias.name.split(".")])
-        resolved = _resolve_module(root, target)
-        if resolved:
-            return target, resolved
-
-    target = ".".join(base_parts)
-    return target, _resolve_module(root, target)
-
-
 def _python_target_state(
     module: str,
     resolved: str | None,
@@ -172,7 +125,9 @@ def _python_edges(
     root: Path,
     rel: str,
     declared_dependencies: set[str],
+    resolver: PythonResolver | None = None,
 ) -> tuple[list[DependencyEdge], list[DependencyScanIssue]]:
+    resolver = resolver or PythonResolver(root, repository_files(root)[1])
     path = root / rel
     try:
         with tokenize.open(path) as handle:
@@ -182,11 +137,21 @@ def _python_edges(
         return [], [DependencyScanIssue("python", rel, str(exc))]
 
     edges: list[DependencyEdge] = []
+    parents = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
+    importlib_aliases = {alias.asname or alias.name for node in ast.walk(tree) if isinstance(node, ast.Import)
+                         for alias in node.names if alias.name == "importlib"}
+    import_function_aliases = {alias.asname or alias.name for node in ast.walk(tree)
+                               if isinstance(node, ast.ImportFrom) and node.module == "importlib" and not node.level
+                               for alias in node.names if alias.name == "import_module"}
+    shadowed_names = {node.id for node in ast.walk(tree) if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}
+    shadowed_names.update(node.arg for node in ast.walk(tree) if isinstance(node, ast.arg))
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                resolved = _resolve_module(root, alias.name)
+                resolved = resolver.resolve(alias.name, rel)
                 resolution, scope, note = _python_target_state(alias.name, resolved, declared_dependencies)
+                if resolver.uncertain_local_target(alias.name, rel):
+                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Incomplete or ambiguous tracked local target"
                 edges.append(
                     DependencyEdge(
                         evidence_id=f"python:{rel}:{node.lineno}:{alias.name}",
@@ -205,66 +170,78 @@ def _python_edges(
                 )
         elif isinstance(node, ast.ImportFrom):
             if node.level:
-                target, resolved = _resolve_relative_import(root, rel, node)
+                targets = resolver.relative(rel, node)
             else:
-                target = node.module or "<unknown-import>"
-                resolved = _resolve_module(root, node.module or "")
-            resolution, scope, note = _python_target_state(target, resolved, declared_dependencies)
-            if node.level and not resolved and note is None:
-                note = "Relative import target could not be resolved from repository package evidence"
-            edges.append(
-                DependencyEdge(
-                    evidence_id=f"python:{rel}:{node.lineno}:{target}",
-                    source=rel,
-                    target=target,
-                    edge_type=EdgeType.IMPORTS,
-                    phase=DependencyPhase.UNKNOWN,
-                    resolution=resolution,
-                    target_scope=scope,
-                    provenance=EvidenceProvenance.OBSERVED,
-                    line=node.lineno,
-                    resolved_path=resolved,
-                    adapter="python",
-                    note=note,
+                targets = [(node.module or "<unknown-import>", resolver.resolve(node.module or "", rel))]
+            for target, resolved in targets:
+                resolution, scope, note = _python_target_state(target, resolved, declared_dependencies)
+                if (node.level and not resolved) or resolver.uncertain_local_target(target, rel):
+                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Relative or ambiguous local target lacks exact tracked evidence"
+                edges.append(
+                    DependencyEdge(
+                        evidence_id=f"python:{rel}:{node.lineno}:{target}",
+                        source=rel,
+                        target=target,
+                        edge_type=EdgeType.IMPORTS,
+                        phase=DependencyPhase.UNKNOWN,
+                        resolution=resolution,
+                        target_scope=scope,
+                        provenance=EvidenceProvenance.OBSERVED,
+                        line=node.lineno,
+                        resolved_path=resolved,
+                        adapter="python",
+                        note=note,
+                    )
                 )
-            )
         elif isinstance(node, ast.Call):
             is_importlib = (
                 isinstance(node.func, ast.Attribute)
                 and isinstance(node.func.value, ast.Name)
-                and node.func.value.id == "importlib"
+                and node.func.value.id in importlib_aliases
                 and node.func.attr == "import_module"
             )
             is_builtin = isinstance(node.func, ast.Name) and node.func.id == "__import__"
-            if not (is_importlib or is_builtin):
+            is_alias = isinstance(node.func, ast.Name) and node.func.id in import_function_aliases
+            if not (is_importlib or is_builtin or is_alias):
                 continue
-            module_value = node.args[0] if node.args else None
-            if isinstance(module_value, ast.Constant) and isinstance(module_value.value, str):
-                target = module_value.value
-                resolved = _resolve_module(root, target)
+            ancestors = []
+            parent = parents.get(node)
+            while parent is not None:
+                ancestors.append(parent)
+                parent = parents.get(parent)
+            kind, targets = dynamic_targets(node, ancestors)
+            if is_builtin:
+                levels = ([node.args[4]] if len(node.args) >= 5 else []) + [
+                    keyword.value for keyword in node.keywords if keyword.arg == "level"
+                ]
+                if (any(isinstance(argument, ast.Starred) for argument in node.args)
+                        or any(keyword.arg is None for keyword in node.keywords)
+                        or len(node.args) > 5 or len(levels) > 1
+                        or any(not isinstance(level, ast.Constant)
+                               or not isinstance(level.value, int) or level.value != 0
+                               for level in levels)):
+                    # A literal module name is not an absolute target when the
+                    # relative-import level is nonzero or cannot be established.
+                    kind, targets = "UNBOUNDED_DYNAMIC_IMPORT", []
+            callee = node.func.value.id if is_importlib else node.func.id
+            if callee in shadowed_names:
+                kind, targets = "UNBOUNDED_DYNAMIC_IMPORT", []
+            for target in targets or ["<dynamic-import>"]:
+                resolved = resolver.resolve(target, rel)
                 resolution, scope, note = _python_target_state(target, resolved, declared_dependencies)
-            else:
-                resolved = None
-                resolution = ResolutionStatus.DYNAMIC
-                scope = EvidenceNodeScope.UNRESOLVED_TARGET
-                target = "<dynamic-import>"
-                note = "Dynamic import target is not statically known"
-            edges.append(
-                DependencyEdge(
-                    evidence_id=f"python-dynamic:{rel}:{node.lineno}",
-                    source=rel,
-                    target=target,
-                    edge_type=EdgeType.LOADS,
-                    phase=DependencyPhase.UNKNOWN,
-                    resolution=resolution,
-                    target_scope=scope,
-                    provenance=EvidenceProvenance.OBSERVED,
-                    line=node.lineno,
-                    resolved_path=resolved,
-                    adapter="python",
-                    note=note,
-                )
-            )
+                if not targets:
+                    resolution, scope = ResolutionStatus.DYNAMIC, EvidenceNodeScope.UNRESOLVED_TARGET
+                if resolver.uncertain_local_target(target, rel):
+                    resolution, scope, note = ResolutionStatus.UNRESOLVED, EvidenceNodeScope.UNRESOLVED_TARGET, "Incomplete or ambiguous tracked local target"
+                suffix = f":{target}" if kind == "BOUNDED_DYNAMIC_IMPORT" else ""
+                edges.append(DependencyEdge(
+                    evidence_id=f"python-dynamic:{rel}:{node.lineno}{suffix}",
+                    source=rel, target=target, edge_type=EdgeType.LOADS,
+                    phase=DependencyPhase.UNKNOWN, resolution=resolution,
+                    target_scope=scope, provenance=EvidenceProvenance.OBSERVED,
+                    line=node.lineno, resolved_path=resolved, adapter="python",
+                    note=kind + (": " + note if note else ""),
+                ))
     return edges, []
 
 
@@ -477,10 +454,18 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
     adapters: set[str] = set()
     declared_python_dependencies, declaration_issues = _declared_python_dependencies(root)
     issues.extend(declaration_issues)
+    cache = EvidenceCache(root, paths)
+    python_resolver = PythonResolver(root, paths)
     for rel in paths:
         suffix = Path(rel).suffix.lower()
         if suffix == ".py":
-            found, found_issues = _python_edges(root, rel, declared_python_dependencies)
+            def compute():
+                found, found_issues = _python_edges(root, rel, declared_python_dependencies, python_resolver)
+                return {"edges": [edge.as_dict() for edge in found],
+                        "issues": [issue.as_dict() for issue in found_issues]}
+            cached = cache.get("python-edges", rel, compute, _valid_cached_python_scan)
+            found = [_cached_edge(item) for item in cached["edges"]]
+            found_issues = [DependencyScanIssue(**item) for item in cached["issues"]]
             adapters.add("python")
         elif suffix == ".csproj":
             found, found_issues = _csproj_edges(root, rel)
@@ -493,4 +478,25 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
         edges.extend(found)
         issues.extend(found_issues)
     edges.sort(key=lambda item: (item.source, item.line or 0, item.target, item.evidence_id))
-    return DependencyScan(tuple(edges), tuple(issues), tuple(sorted(adapters)))
+    return DependencyScan(tuple(edges), tuple(issues), tuple(sorted(adapters)), dict(cache.stats))
+
+
+def _cached_edge(item):
+    return DependencyEdge(**{**item, "edge_type": EdgeType(item["edge_type"]),
+                            "phase": DependencyPhase(item["phase"]),
+                            "resolution": ResolutionStatus(item["resolution"]),
+                            "target_scope": EvidenceNodeScope(item["target_scope"]),
+                            "provenance": EvidenceProvenance(item["provenance"])})
+
+
+def _valid_cached_python_scan(value):
+    try:
+        if not isinstance(value["edges"], list) or not isinstance(value["issues"], list):
+            return False
+        for item in value["edges"]:
+            _cached_edge(item)
+        for item in value["issues"]:
+            DependencyScanIssue(**item)
+        return True
+    except (ValueError, KeyError, TypeError):
+        return False
