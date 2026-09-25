@@ -90,8 +90,17 @@ jobs:
 
           Push-Location $env:RUNNER_TEMP
           try {
-            $code = 'from ptsip.agent_contracts import load_operation_contract, validate_agent_contract_plane; assert validate_agent_contract_plane() == {"specs": 8, "operations": 5, "vocabularies": 4, "bindings": 1}; ops=("adopt","validate","conform","reconcile-authority","migrate-profile"); bundles=[load_operation_contract(op) for op in ops]; assert all(b.binding["loading"]["markdown_dependency"] == "FORBIDDEN" for b in bundles); assert all(b.context_bytes <= b.context_budget_bytes for b in bundles); print("PACKAGE_ONLY_AGENT_ENTRY: PASS")'
-            & $wheelPython -c $code
+            $script = Join-Path $env:RUNNER_TEMP "m8-package-entry.py"
+            @(
+              'from ptsip.agent_contracts import load_operation_contract, validate_agent_contract_plane'
+              'assert validate_agent_contract_plane() == {"specs": 8, "operations": 5, "vocabularies": 4, "bindings": 1}'
+              'ops = ("adopt", "validate", "conform", "reconcile-authority", "migrate-profile")'
+              'bundles = [load_operation_contract(op) for op in ops]'
+              'assert all(b.binding["loading"]["markdown_dependency"] == "FORBIDDEN" for b in bundles)'
+              'assert all(b.context_bytes <= b.context_budget_bytes for b in bundles)'
+              'print("PACKAGE_ONLY_AGENT_ENTRY: PASS")'
+            ) | Set-Content -LiteralPath $script -Encoding UTF8
+            & $wheelPython $script
             if ($LASTEXITCODE -ne 0) { throw "Package-only agent entry failed." }
           }
           finally {
