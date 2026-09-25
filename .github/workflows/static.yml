@@ -90,15 +90,8 @@ jobs:
 
           Push-Location $env:RUNNER_TEMP
           try {
-            @'
-            from ptsip.agent_contracts import load_operation_contract, validate_agent_contract_plane
-            assert validate_agent_contract_plane() == {"specs": 8, "operations": 5, "vocabularies": 4, "bindings": 1}
-            for op in ("adopt", "validate", "conform", "reconcile-authority", "migrate-profile"):
-                bundle = load_operation_contract(op)
-                assert bundle.binding["loading"]["markdown_dependency"] == "FORBIDDEN"
-                assert bundle.context_bytes <= bundle.context_budget_bytes
-            print("PACKAGE_ONLY_AGENT_ENTRY: PASS")
-            '@ | & $wheelPython -
+            $code = 'from ptsip.agent_contracts import load_operation_contract, validate_agent_contract_plane; assert validate_agent_contract_plane() == {"specs": 8, "operations": 5, "vocabularies": 4, "bindings": 1}; ops=("adopt","validate","conform","reconcile-authority","migrate-profile"); bundles=[load_operation_contract(op) for op in ops]; assert all(b.binding["loading"]["markdown_dependency"] == "FORBIDDEN" for b in bundles); assert all(b.context_bytes <= b.context_budget_bytes for b in bundles); print("PACKAGE_ONLY_AGENT_ENTRY: PASS")'
+            & $wheelPython -c $code
             if ($LASTEXITCODE -ne 0) { throw "Package-only agent entry failed." }
           }
           finally {
