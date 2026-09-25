@@ -154,7 +154,9 @@ jobs:
             developer/tests/test_policy_resolver.py `
             developer/tests/test_wu02_lane_validator.py `
             tests/ptsip/control_plane/test_planning_entry_resolver.py `
-            tests/ptsip/remediation/test_solution_candidate_generation.py 2>&1 |
+            tests/ptsip/remediation/test_operational_rule_contract.py `
+            tests/ptsip/remediation/test_solution_candidate_generation.py `
+            tests/ptsip/remediation/test_solution_elimination.py 2>&1 |
             Tee-Object -FilePath $log -Append
           if ($LASTEXITCODE -ne 0) {
             throw "Planning migration focused pytest verification failed."

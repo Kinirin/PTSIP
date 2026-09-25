@@ -9,9 +9,9 @@ from ..domain import (
     NormativeConstraint,
     PostconditionResult,
     RemediationContext,
-    SemanticCandidate,
     SemanticRemediationPlan,
 )
+from ..solution.candidate import SemanticCandidate
 from ...specification_binding import SpecificationBinding
 
 

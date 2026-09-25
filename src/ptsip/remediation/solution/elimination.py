@@ -6,7 +6,8 @@ from enum import StrEnum
 
 from ...evidence.contract import stable_digest
 from ...specification_binding import SpecificationBinding
-from ..domain import RemediationContext, SemanticCandidate
+from ..domain import RemediationContext
+from .candidate import SemanticCandidate
 
 
 _SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")

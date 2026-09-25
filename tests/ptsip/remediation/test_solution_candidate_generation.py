@@ -231,3 +231,11 @@ def test_candidate_provenance_is_the_only_support_and_requirement_ssot() -> None
     }
     assert "required_authority_ids" not in provenance.as_dict()
     assert "mutation_authorization" not in provenance.as_dict()
+
+
+def test_public_remediation_candidate_is_canonical_s1_type() -> None:
+    from ptsip.remediation import SemanticCandidate as PublicSemanticCandidate
+    from ptsip.remediation.domain import SemanticCandidate as LegacySemanticCandidate
+
+    assert PublicSemanticCandidate is SemanticCandidate
+    assert PublicSemanticCandidate is not LegacySemanticCandidate

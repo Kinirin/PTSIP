@@ -16,8 +16,17 @@ from .domain import (
     RemediationDispositionCandidate,
     RepositoryChangePlan,
     ResolutionOutcome,
-    SemanticCandidate,
     SemanticRemediationPlan,
+)
+from .solution.candidate import (
+    AuthorityRequirement,
+    CandidateGenerationContractError,
+    CandidateProvenance,
+    CandidateSupportingReferences,
+    SemanticCandidate,
+    SemanticCandidateProposal,
+    materialize_candidate,
+    materialize_candidates,
 )
 from .rules import (
     OperationalRule,
@@ -32,7 +41,11 @@ from .rules import (
 )
 
 __all__ = [
+    "AuthorityRequirement",
     "AuthorizationDecision",
+    "CandidateGenerationContractError",
+    "CandidateProvenance",
+    "CandidateSupportingReferences",
     "CoverageGap",
     "DerivedFact",
     "EscalationProof",
@@ -57,5 +70,8 @@ __all__ = [
     "RuleEvaluationStatus",
     "RuleRequirementKind",
     "SemanticCandidate",
+    "SemanticCandidateProposal",
     "SemanticRemediationPlan",
+    "materialize_candidate",
+    "materialize_candidates",
 ]

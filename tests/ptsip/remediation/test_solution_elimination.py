@@ -9,7 +9,12 @@ from ptsip.evidence.contract import (
     NormalizedEvidenceSet,
     SnapshotBinding,
 )
-from ptsip.remediation.domain import RemediationContext, SemanticCandidate
+from ptsip.remediation.domain import RemediationContext
+from ptsip.remediation.solution.candidate import (
+    CandidateProvenance,
+    CandidateSupportingReferences,
+    SemanticCandidate,
+)
 from ptsip.remediation.solution.elimination import (
     EliminationContractError,
     EliminationReasonFamily,
@@ -40,11 +45,18 @@ def _context(*, tracked_content_fingerprint: str = "content") -> RemediationCont
 
 
 def _candidate(candidate_id: str) -> SemanticCandidate:
+    local_id = candidate_id.removeprefix("candidate:")
+    canonical_id = f"interpretation:PTSIP-PKG-001:{local_id}"
     return SemanticCandidate(
-        id=candidate_id,
+        id=canonical_id,
         rule_id="PTSIP-PKG-001",
         remediation_family="PACKAGE_ISOLATION",
-        target_state={"candidate": candidate_id},
+        target_state={"candidate": canonical_id},
+        provenance=CandidateProvenance(
+            supporting_references=CandidateSupportingReferences(
+                rules=("PTSIP-PKG-001",),
+            )
+        ),
     )
 
 
@@ -242,8 +254,9 @@ def test_changed_evidence_binding_invalidates_record_reuse_instead_of_rewriting_
     original = EliminationSolveBinding.from_context(
         _context(tracked_content_fingerprint="before")
     )
+    candidate = _candidate("candidate:a")
     record = EliminationRecord(
-        candidate_id="candidate:a",
+        candidate_id=candidate.id,
         reason_family=EliminationReasonFamily.FAILS_REQUIRED_PRECONDITION,
         solve_binding=original,
         supporting_references=(
@@ -256,7 +269,7 @@ def test_changed_evidence_binding_invalidates_record_reuse_instead_of_rewriting_
 
     with pytest.raises(EliminationContractError) as exc_info:
         reduce_survivors(
-            (_candidate("candidate:a"),),
+            (candidate,),
             (record,),
             solve_binding=changed,
         )
@@ -270,8 +283,9 @@ def test_changed_consumed_authority_identity_requires_fresh_solve() -> None:
         _context(),
         consumed_authority_identities=("authority:rev-a",),
     )
+    candidate = _candidate("candidate:a")
     record = EliminationRecord(
-        candidate_id="candidate:a",
+        candidate_id=candidate.id,
         reason_family=EliminationReasonFamily.CONFLICTS_WITH_EXPLICIT_CURRENT_AUTHORITY,
         solve_binding=original,
         supporting_references=(
@@ -285,7 +299,7 @@ def test_changed_consumed_authority_identity_requires_fresh_solve() -> None:
 
     with pytest.raises(EliminationContractError) as exc_info:
         reduce_survivors(
-            (_candidate("candidate:a"),),
+            (candidate,),
             (record,),
             solve_binding=changed,
         )
@@ -327,7 +341,7 @@ def test_equivalence_or_dominance_must_keep_its_declared_retained_candidate_aliv
 def test_record_cannot_eliminate_candidate_absent_from_bound_current_solve() -> None:
     binding = EliminationSolveBinding.from_context(_context())
     record = EliminationRecord(
-        candidate_id="candidate:old",
+        candidate_id="interpretation:PTSIP-PKG-001:old",
         reason_family=EliminationReasonFamily.FAILS_REQUIRED_PRECONDITION,
         solve_binding=binding,
         supporting_references=(
@@ -342,3 +356,15 @@ def test_record_cannot_eliminate_candidate_absent_from_bound_current_solve() -> 
             solve_binding=binding,
         )
     assert exc_info.value.code == "ELIMINATION_CANDIDATE_UNKNOWN"
+
+
+def test_survivor_reduction_preserves_canonical_candidate_provenance() -> None:
+    binding = EliminationSolveBinding.from_context(_context())
+    candidate = _candidate("candidate:canonical")
+
+    result = reduce_survivors((candidate,), (), solve_binding=binding)
+
+    assert result.survivors == (candidate,)
+    assert result.survivors[0].provenance.supporting_references.rules == (
+        "PTSIP-PKG-001",
+    )

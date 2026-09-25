@@ -252,6 +252,14 @@ class RemediationDispositionCandidate:
 
 @dataclass(frozen=True)
 class SemanticCandidate:
+    """Legacy downstream compatibility shape.
+
+    The canonical WU-02 S1 candidate SSOT is
+    ptsip.remediation.solution.candidate.SemanticCandidate with CandidateProvenance.
+    This legacy shape remains only for the downstream WU-03 reconciliation boundary
+    and must not be used by new WU-02 candidate-generation or elimination code.
+    """
+
     id: str
     rule_id: str
     remediation_family: str
