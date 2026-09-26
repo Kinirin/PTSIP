@@ -43,7 +43,7 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "python -m twine check $distFiles" in workflow
     assert "$expectedWheelVersion" in workflow
     assert "[regex]::Escape($expectedWheelVersion)" in workflow
-    assert "python -m developer.automation.pp_release_verify --sha HEAD" in workflow
+    assert "python -m developer.automation.pp.pp_release_verify --sha HEAD" in workflow
     assert "python .github/scripts/verify_distribution_contracts.py" in workflow
     assert "ptsip/profiles/example.ptsip.yaml" not in workflow
     assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" not in workflow
@@ -72,13 +72,17 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "default: all" not in workflow
     assert "ref: ${{ github.sha }}" in workflow
     assert "runs-on: ubuntu-latest" in workflow
+    assert "static-validation:" in workflow
+    assert "test-build:" in workflow
+    assert "pp-transition:" in workflow
+    assert 'cache: "pip"' in workflow
     assert "uses: actions/setup-python@v7" in workflow
     assert "Resolve automatic verification baseline" in workflow
     assert "ci/change-verification" in workflow
     assert "ci/tooling-test" in workflow
-    assert "pp-transition-verify:" in workflow
+    assert "pp-transition:" in workflow
     assert "github.event_name == 'push'" in workflow
-    assert "developer.automation.pp_remote_verify range" in workflow
+    assert "developer.automation.pp.pp_remote_verify range" in workflow
     assert '"jsonschema>=4.23,<5"' in workflow
     assert "ci/pp-transition" in workflow
     assert "github.event_name == 'workflow_dispatch'" in workflow
@@ -132,7 +136,7 @@ def test_release_preparation_derives_identity_without_manual_inputs() -> None:
     assert 'refs/heads/main' in workflow
     assert 'ci/tooling-test' in workflow
     assert 'ci/pp-transition' in workflow
-    assert "developer.automation.pp_release_verify --sha $env:SOURCE_SHA" in workflow
+    assert "developer.automation.pp.pp_release_verify --sha $env:SOURCE_SHA" in workflow
     assert "Reconfirm candidate remains current main" in workflow
     assert 'target_commitish = $env:SOURCE_SHA' in workflow
     assert 'draft = $true' in workflow
@@ -336,7 +340,7 @@ def test_release_pp_authority_resolution_is_registry_driven() -> None:
         ROOT / ".github" / "scripts" / "verify_release_contract.py"
     ).read_text(encoding="utf-8")
     release_verifier = (
-        ROOT / "developer" / "automation" / "pp_release_verify.py"
+        ROOT / "developer" / "automation" / "pp" / "pp_release_verify.py"
     ).read_text(encoding="utf-8")
 
     assert "PP_CONTRACT_REGISTRY" in release_contract

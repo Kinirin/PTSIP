@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import os
 import subprocess
 from pathlib import Path
 
@@ -54,13 +53,24 @@ def _git(base: Path, *args: str) -> str:
 
 
 def _current_branch(base: Path) -> str:
-    branch = _git(base, "branch", "--show-current")
-    if branch:
-        return branch
-    github_ref_name = os.environ.get("GITHUB_REF_NAME", "").strip()
-    if github_ref_name:
-        return github_ref_name
-    return branch
+    return _git(base, "branch", "--show-current")
+
+
+def _execution_branch(base: Path, explicit_branch: str | None = None) -> str:
+    if explicit_branch is not None:
+        return explicit_branch.strip()
+    return _current_branch(base)
+
+
+def validate_control_branch_context(execution_branch: str) -> tuple[str, ...]:
+    branch = execution_branch.strip()
+    if not branch:
+        return ("Explicit execution branch must be non-empty.",)
+    if branch != CONTROL_BRANCH:
+        return (
+            f"Execution branch {branch!r} does not match control branch {CONTROL_BRANCH!r}",
+        )
+    return ()
 
 
 def _ref_exists(base: Path, ref: str) -> bool:
@@ -192,6 +202,8 @@ def validate_lane_documents(root: str | Path | None = None) -> tuple[str, ...]:
 def validate_current_lane(
     lane: str,
     root: str | Path | None = None,
+    *,
+    execution_branch: str | None = None,
 ) -> tuple[str, ...]:
     lane = lane.upper()
     if lane not in LANES:
@@ -202,7 +214,7 @@ def validate_current_lane(
     expected = LANES[lane]
     payload = load_yaml(expected["path"], root=base)
 
-    branch = _current_branch(base)
+    branch = _execution_branch(base, execution_branch)
     legacy_alias_allowed = (
         expected["branch"] == CONTROL_BRANCH
         and branch == LEGACY_CONTROL_BRANCH
@@ -241,9 +253,24 @@ def main(argv: list[str] | None = None) -> int:
         choices=tuple(LANES),
         help="Validate one lane execution context (S1, S2, or S3). Omit for control-plane planning validation.",
     )
+    parser.add_argument(
+        "--execution-branch",
+        help=(
+            "Explicit logical execution branch. CI callers must pass workflow branch "
+            "identity instead of relying on detached-HEAD Git inference."
+        ),
+    )
     args = parser.parse_args(argv)
 
-    errors = validate_current_lane(args.lane) if args.lane else validate_lane_documents()
+    if args.lane:
+        errors = validate_current_lane(
+            args.lane,
+            execution_branch=args.execution_branch,
+        )
+    else:
+        errors = validate_lane_documents()
+        if args.execution_branch is not None:
+            errors = (*errors, *validate_control_branch_context(args.execution_branch))
     if errors:
         print("WU-02 lane validation: FAIL")
         for error in errors:

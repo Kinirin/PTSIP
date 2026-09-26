@@ -21,10 +21,20 @@ def test_wu02_lane_paths_are_unique_and_lanes_use_control_plane() -> None:
     assert set(branches) == {CONTROL_BRANCH}
 
 
-def test_current_branch_uses_github_ref_name_when_exact_sha_checkout_is_detached(
-    monkeypatch,
-) -> None:
+def test_explicit_execution_branch_overrides_detached_git(monkeypatch) -> None:
+    monkeypatch.setattr(lane_validator, "_git", lambda _base, *_args: "")
+
+    assert lane_validator._execution_branch(Path("."), CONTROL_BRANCH) == CONTROL_BRANCH
+
+
+def test_detached_git_does_not_infer_github_ref_name(monkeypatch) -> None:
     monkeypatch.setattr(lane_validator, "_git", lambda _base, *_args: "")
     monkeypatch.setenv("GITHUB_REF_NAME", CONTROL_BRANCH)
 
-    assert lane_validator._current_branch(Path(".")) == CONTROL_BRANCH
+    assert lane_validator._execution_branch(Path(".")) == ""
+
+
+def test_control_branch_context_is_fail_closed() -> None:
+    assert lane_validator.validate_control_branch_context(CONTROL_BRANCH) == ()
+    assert lane_validator.validate_control_branch_context("") != ()
+    assert lane_validator.validate_control_branch_context("main") != ()

@@ -6,14 +6,14 @@ from pathlib import Path
 
 import pytest
 
-from developer.automation.pp_remote_verify import (
+from developer.automation.pp.pp_remote_verify import (
     PPRemoteVerifyError,
     introduced_commits,
     require_comparable_parent_authority,
     verify_commit,
     verify_range,
 )
-from developer.automation.pp_transition_delta import GitSnapshot, load_authority_state
+from developer.automation.pp.pp_transition_delta import GitSnapshot, load_authority_state
 
 
 ROOT = Path(__file__).resolve().parents[3]

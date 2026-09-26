@@ -9,4 +9,4 @@ else
   PYTHON="python"
 fi
 
-exec "$PYTHON" -m developer.automation.pp_pre_commit --repository .
+exec "$PYTHON" -m developer.automation.pp.pp_pre_commit --repository .

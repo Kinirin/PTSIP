@@ -299,7 +299,7 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
-  developer/automation/pp_transition_delta.py:
+  developer/automation/pp/pp_transition_delta.py:
     default_refs:
       - policy_id: MPD-0001
         sections:
@@ -318,7 +318,7 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
-  developer/automation/pp_transition_reconciler.py:
+  developer/automation/pp/pp_transition_reconciler.py:
     default_refs:
       - policy_id: MPD-0001
         sections:
@@ -464,7 +464,7 @@ scope_bindings:
           - verification_layers
 
 
-  developer/automation/pp_pre_commit.py:
+  developer/automation/pp/pp_pre_commit.py:
     default_refs:
       - policy_id: MPD-0001
         sections:
@@ -535,7 +535,7 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
-  developer/automation/pp_remote_verify.py:
+  developer/automation/pp/pp_remote_verify.py:
     default_refs:
       - policy_id: MPD-0001
         sections:
@@ -553,7 +553,7 @@ scope_bindings:
           - reconciliation_safety
           - verification_layers
 
-  developer/automation/pp_release_verify.py:
+  developer/automation/pp/pp_release_verify.py:
     default_refs:
       - policy_id: MPD-0001
         sections:

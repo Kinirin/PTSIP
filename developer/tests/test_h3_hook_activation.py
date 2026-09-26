@@ -4,9 +4,9 @@ import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 
-from developer.automation import pp_pre_commit
+from developer.automation.pp import pp_pre_commit
 from developer.automation.dev_setup import HOOKS_PATH, install_developer_hooks
-from developer.automation.pp_transition_delta import T2DeltaResult
+from developer.automation.pp.pp_transition_delta import T2DeltaResult
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -43,7 +43,7 @@ def test_repository_entrypoints_share_canonical_installer() -> None:
 
     assert "python -m developer.automation.dev_setup" in setup
     assert "python -m developer.automation.dev_setup" in bootstrap
-    assert "developer.automation.pp_pre_commit" in hook
+    assert "developer.automation.pp.pp_pre_commit" in hook
     assert "git add -A" not in hook
 
 

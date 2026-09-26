@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from developer.automation.pp_release_verify import (
+from developer.automation.pp.pp_release_verify import (
     PPReleaseVerifyError,
     verify_exact_release_snapshot,
 )
@@ -57,7 +57,7 @@ def test_release_verifier_rejects_non_head_exact_sha() -> None:
 
 def test_release_verifier_is_verify_only() -> None:
     source = (
-        ROOT / "developer" / "automation" / "pp_release_verify.py"
+        ROOT / "developer" / "automation" / "pp" / "pp_release_verify.py"
     ).read_text(encoding="utf-8")
 
     for mutation in (

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import yaml
 
-from developer.automation.pp_transition_reconciler import (
+from developer.automation.pp.pp_transition_reconciler import (
     PPTransitionReconcileError,
     reconcile_staged_transition,
 )

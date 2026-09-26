@@ -26,6 +26,8 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
 
       - name: Resolve and verify immutable release identity
         id: release
@@ -125,7 +127,7 @@ jobs:
         shell: pwsh
         env:
           SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
-        run: python -m developer.automation.pp_release_verify --sha $env:SOURCE_SHA
+        run: python -m developer.automation.pp.pp_release_verify --sha $env:SOURCE_SHA
 
       - name: Verify required Specification release contract
         shell: pwsh

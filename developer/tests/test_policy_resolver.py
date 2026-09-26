@@ -273,8 +273,8 @@ def test_unrelated_modify_does_not_route_pp_transition_policy() -> None:
     "scope",
     [
         "developer/automation/project_profile_registry.py",
-        "developer/automation/pp_transition_delta.py",
-        "developer/automation/pp_transition_reconciler.py",
+        "developer/automation/pp/pp_transition_delta.py",
+        "developer/automation/pp/pp_transition_reconciler.py",
     ],
 )
 def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
@@ -357,7 +357,7 @@ def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None
     "scope",
     [
         "developer/automation/dev_setup.py",
-        "developer/automation/pp_pre_commit.py",
+        "developer/automation/pp/pp_pre_commit.py",
         ".githooks/pre-commit",
         "setup_dev.bat",
         "bootstrap_repo.ps1",
@@ -381,11 +381,11 @@ def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
 def test_remote_pp_verifier_routes_transition_policy() -> None:
     result = resolve_policies(
         ROOT,
-        scope="developer/automation/pp_remote_verify.py",
+        scope="developer/automation/pp/pp_remote_verify.py",
         operation="VERIFY",
     )
 
-    assert result["binding_scope"] == "developer/automation/pp_remote_verify.py"
+    assert result["binding_scope"] == "developer/automation/pp/pp_remote_verify.py"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0001",
         "MPD-0010",
@@ -396,11 +396,11 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
 def test_release_pp_verifier_routes_release_transition_policy() -> None:
     result = resolve_policies(
         ROOT,
-        scope="developer/automation/pp_release_verify.py",
+        scope="developer/automation/pp/pp_release_verify.py",
         operation="RELEASE",
     )
 
-    assert result["binding_scope"] == "developer/automation/pp_release_verify.py"
+    assert result["binding_scope"] == "developer/automation/pp/pp_release_verify.py"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0001",
         "MPD-0010",

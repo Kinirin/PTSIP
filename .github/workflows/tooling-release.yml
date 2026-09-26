@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
 
       - name: Install distribution tooling
         shell: pwsh
@@ -49,7 +51,7 @@ jobs:
           }
 
           python .github/scripts/verify_release_contract.py
-          python -m developer.automation.pp_release_verify --sha HEAD
+          python -m developer.automation.pp.pp_release_verify --sha HEAD
 
       - name: Build distributions
         shell: pwsh
