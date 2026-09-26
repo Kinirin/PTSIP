@@ -109,11 +109,26 @@ Rules:
 - An unmapped changed path is fail-closed; do not replace it with full verification.
 - Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
 
+## Mandatory branch command plane
+
+Branch creation and remote branch inspection are governed by `MPD-0014` and must enter through the canonical command plane:
+
+```text
+python -m developer.automation.branch_control commands
+python -m developer.automation.branch_control list --repository Kinirin/PTSIP
+python -m developer.automation.branch_control inspect --repository Kinirin/PTSIP --branch <exact-branch-name>
+python -m developer.automation.branch_control create --repository Kinirin/PTSIP --branch <exact-branch-name> --approved-name <exact-user-approved-branch-name> --base-ref <exact-base-ref>
+```
+
+The registered v1 command vocabulary is exactly `commands | list | inspect | create`. An unregistered branch operation fails closed. A coding agent that is about to create, query, rename, delete, or otherwise mutate a branch outside this command plane must treat that path as a management-intent deviation signal and stop rather than invent an alternative branch-management mechanism.
+
+The `create` command internally applies `branch_creation_guard` and the only authorized mutation backend is the GitHub `create_branch` API. Do not create branches with `git push`, `git switch -c`, `git checkout -b`, `git update-ref`, the GitHub `update_ref` API, or a workflow that writes a new ref.
+
 ## Mandatory branch creation preflight
 
 Branch creation is governed by `MPD-0014`. Coding agents must not invent a branch name from planning state, version context, a Project Profile change, a test need, or a temporary verification need.
 
-Before creating a branch, validate the exact user-approved name mechanically:
+Before creating a branch, the canonical command plane performs the exact-name preflight mechanically. Direct guard invocation is diagnostic/internal and is not the normal branch-management entry:
 
 ```text
 python -m developer.automation.branch_creation_guard validate --candidate <exact-branch-name> --approved-name <exact-user-approved-branch-name> --authorization-source USER_EXPLICIT --request-kind DEVELOPMENT_VERSION_BRANCH --creation-mechanism GITHUB_CREATE_BRANCH_API

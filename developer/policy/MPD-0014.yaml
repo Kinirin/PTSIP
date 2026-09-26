@@ -25,6 +25,15 @@ rules:
       allowed: GITHUB_CREATE_BRANCH_API
       direct_api_use_authorized: true
       caller_must_run_branch_creation_guard_first: true
+      canonical_command_plane: developer/automation/branch_control.py
+      branch_operations_must_enter_through_command_plane: true
+      unregistered_command: FAIL_CLOSED
+      out_of_plane_branch_operation: MANAGEMENT_INTENT_DEVIATION_SIGNAL
+      registered_commands:
+        - COMMANDS
+        - LIST
+        - INSPECT
+        - CREATE
       forbidden:
         - GIT_PUSH_BRANCH_CREATION
         - GIT_SWITCH_CREATE
