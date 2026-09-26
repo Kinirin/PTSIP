@@ -34,6 +34,16 @@ rules:
         - LIST
         - INSPECT
         - CREATE
+        - RECREATE
+      recreate_semantics:
+        authorization_source: USER_EXPLICIT
+        exact_user_approved_name_required: true
+        require_existing_branch: true
+        require_existing_branch_fully_contained_in_base_ref: true
+        delete_existing_ref_before_creation: true
+        refresh_base_ref_before_creation: true
+        verify_recreated_ref_matches_base_ref: true
+        rollback_original_ref_on_creation_failure: true
       forbidden:
         - GIT_PUSH_BRANCH_CREATION
         - GIT_SWITCH_CREATE

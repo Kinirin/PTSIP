@@ -36,6 +36,13 @@ COMMAND_REGISTRY: Mapping[str, Mapping[str, object]] = {
         "creation_mechanism": GITHUB_CREATE_BRANCH_API,
         "requires_exact_user_approved_name": True,
     },
+    "recreate": {
+        "mutation": True,
+        "purpose": "Delete one fully-integrated development branch and recreate it from an exact base ref.",
+        "creation_mechanism": GITHUB_CREATE_BRANCH_API,
+        "requires_exact_user_approved_name": True,
+        "requires_fully_contained_existing_branch": True,
+    },
 }
 DEFAULT_API_ROOT = "https://api.github.com"
 REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
@@ -55,10 +62,7 @@ class GitHubClient:
 
     def __post_init__(self) -> None:
         if REPOSITORY_PATTERN.fullmatch(self.repository) is None:
-            raise BranchControlError(
-                "INVALID_REPOSITORY",
-                "repository must be in owner/name form",
-            )
+            raise BranchControlError("INVALID_REPOSITORY", "repository must be in owner/name form")
 
     def request(
         self,
@@ -95,6 +99,9 @@ class GitHubClient:
             return {}
         return json.loads(raw.decode("utf-8"))
 
+    def _encoded_ref(self, ref: str) -> str:
+        return urllib.parse.quote(ref.removeprefix("refs/heads/"), safe="")
+
     def list_branches(self) -> list[dict[str, object]]:
         result: list[dict[str, object]] = []
         page = 1
@@ -111,15 +118,19 @@ class GitHubClient:
             page += 1
 
     def inspect_branch(self, branch: str) -> dict[str, object]:
-        encoded = urllib.parse.quote(branch, safe="")
-        payload = self.request("GET", f"/repos/{self.repository}/branches/{encoded}")
+        payload = self.request(
+            "GET",
+            f"/repos/{self.repository}/branches/{self._encoded_ref(branch)}",
+        )
         if not isinstance(payload, dict):
             raise BranchControlError("INVALID_GITHUB_RESPONSE", "branch response is not an object")
         return payload
 
     def resolve_ref_sha(self, ref: str) -> str:
-        encoded = urllib.parse.quote(ref.removeprefix("refs/heads/"), safe="")
-        payload = self.request("GET", f"/repos/{self.repository}/git/ref/heads/{encoded}")
+        payload = self.request(
+            "GET",
+            f"/repos/{self.repository}/git/ref/heads/{self._encoded_ref(ref)}",
+        )
         if not isinstance(payload, dict):
             raise BranchControlError("INVALID_GITHUB_RESPONSE", "ref response is not an object")
         obj = payload.get("object")
@@ -127,20 +138,40 @@ class GitHubClient:
             raise BranchControlError("INVALID_GITHUB_RESPONSE", "ref response has no object.sha")
         return str(obj["sha"])
 
-    def create_branch(self, branch: str, base_ref: str) -> dict[str, object]:
+    def compare(self, base: str, head: str) -> dict[str, object]:
+        encoded_base = urllib.parse.quote(base, safe="")
+        encoded_head = urllib.parse.quote(head, safe="")
+        payload = self.request(
+            "GET",
+            f"/repos/{self.repository}/compare/{encoded_base}...{encoded_head}",
+        )
+        if not isinstance(payload, dict):
+            raise BranchControlError("INVALID_GITHUB_RESPONSE", "compare response is not an object")
+        return payload
+
+    def create_branch_at_sha(self, branch: str, sha: str) -> dict[str, object]:
         if not self.token:
-            raise BranchControlError(
-                "GITHUB_TOKEN_REQUIRED",
-                "branch creation requires GITHUB_TOKEN or GH_TOKEN",
-            )
-        base_sha = self.resolve_ref_sha(base_ref)
+            raise BranchControlError("GITHUB_TOKEN_REQUIRED", "branch creation requires GITHUB_TOKEN or GH_TOKEN")
         payload = self.request(
             "POST",
             f"/repos/{self.repository}/git/refs",
-            payload={"ref": f"refs/heads/{branch}", "sha": base_sha},
+            payload={"ref": f"refs/heads/{branch}", "sha": sha},
         )
         if not isinstance(payload, dict):
             raise BranchControlError("INVALID_GITHUB_RESPONSE", "create-ref response is not an object")
+        return payload
+
+    def delete_branch_ref(self, branch: str) -> None:
+        if not self.token:
+            raise BranchControlError("GITHUB_TOKEN_REQUIRED", "branch deletion requires GITHUB_TOKEN or GH_TOKEN")
+        self.request(
+            "DELETE",
+            f"/repos/{self.repository}/git/refs/heads/{self._encoded_ref(branch)}",
+        )
+
+    def create_branch(self, branch: str, base_ref: str) -> dict[str, object]:
+        base_sha = self.resolve_ref_sha(base_ref)
+        payload = self.create_branch_at_sha(branch, base_sha)
         return {
             "status": "CREATED",
             "repository": self.repository,
@@ -158,6 +189,16 @@ def _token() -> str | None:
 
 def _client(repository: str) -> GitHubClient:
     return GitHubClient(repository=repository, token=_token())
+
+
+def _validate_client(repository: str, client: GitHubClient | None) -> GitHubClient:
+    selected = client if client is not None else _client(repository)
+    if selected.repository != repository:
+        raise BranchControlError(
+            "REPOSITORY_BINDING_MISMATCH",
+            "client repository does not match requested repository",
+        )
+    return selected
 
 
 def registered_commands() -> dict[str, object]:
@@ -184,13 +225,74 @@ def create_authorized_branch(
         request_kind="DEVELOPMENT_VERSION_BRANCH",
         creation_mechanism=GITHUB_CREATE_BRANCH_API,
     )
-    selected = client if client is not None else _client(repository)
-    if selected.repository != repository:
+    return _validate_client(repository, client).create_branch(branch, base_ref)
+
+
+def recreate_authorized_branch(
+    *,
+    repository: str,
+    branch: str,
+    approved_name: str,
+    base_ref: str,
+    client: GitHubClient | None = None,
+) -> dict[str, object]:
+    validate_creation(
+        branch,
+        approved_name,
+        authorization_source="USER_EXPLICIT",
+        request_kind="DEVELOPMENT_VERSION_BRANCH",
+        creation_mechanism=GITHUB_CREATE_BRANCH_API,
+    )
+    if branch == base_ref:
+        raise BranchControlError("RECREATE_BASE_EQUALS_BRANCH", "recreate base ref must differ from the branch")
+    selected = _validate_client(repository, client)
+    old_sha = selected.resolve_ref_sha(branch)
+    comparison = selected.compare(branch, base_ref)
+    if comparison.get("behind_by") != 0:
         raise BranchControlError(
-            "REPOSITORY_BINDING_MISMATCH",
-            "client repository does not match requested repository",
+            "BRANCH_HAS_UNMERGED_COMMITS",
+            f"{branch} contains commits that are not contained in {base_ref}",
         )
-    return selected.create_branch(branch, base_ref)
+
+    selected.delete_branch_ref(branch)
+    try:
+        base_sha = selected.resolve_ref_sha(base_ref)
+        selected.create_branch_at_sha(branch, base_sha)
+        recreated_sha = selected.resolve_ref_sha(branch)
+        final_base_sha = selected.resolve_ref_sha(base_ref)
+        if recreated_sha != base_sha or final_base_sha != base_sha:
+            raise BranchControlError(
+                "RECREATE_BASE_MOVED_OR_REF_MISMATCH",
+                "base ref moved during recreation or recreated ref does not match the selected base SHA",
+            )
+    except Exception as exc:
+        try:
+            selected.create_branch_at_sha(branch, old_sha)
+        except Exception as rollback_exc:
+            raise BranchControlError(
+                "RECREATE_FAILED_ROLLBACK_FAILED",
+                f"recreate failed ({exc}); rollback to {old_sha} also failed ({rollback_exc})",
+            ) from rollback_exc
+        if isinstance(exc, BranchControlError):
+            raise BranchControlError(
+                "RECREATE_FAILED_ROLLED_BACK",
+                f"{exc}; original ref restored to {old_sha}",
+            ) from exc
+        raise BranchControlError(
+            "RECREATE_FAILED_ROLLED_BACK",
+            f"recreate failed; original ref restored to {old_sha}",
+        ) from exc
+
+    return {
+        "status": "RECREATED",
+        "repository": repository,
+        "branch": branch,
+        "base_ref": base_ref,
+        "old_sha": old_sha,
+        "new_sha": recreated_sha,
+        "creation_mechanism": GITHUB_CREATE_BRANCH_API,
+        "safety": "OLD_BRANCH_FULLY_CONTAINED_IN_BASE",
+    }
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -211,6 +313,12 @@ def _parser() -> argparse.ArgumentParser:
     create_cmd.add_argument("--branch", required=True)
     create_cmd.add_argument("--approved-name", required=True)
     create_cmd.add_argument("--base-ref", required=True)
+
+    recreate_cmd = sub.add_parser("recreate")
+    recreate_cmd.add_argument("--repository", required=True)
+    recreate_cmd.add_argument("--branch", required=True)
+    recreate_cmd.add_argument("--approved-name", required=True)
+    recreate_cmd.add_argument("--base-ref", required=True)
     return parser
 
 
@@ -248,8 +356,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "sha": (item.get("commit") or {}).get("sha"),
                 "protected": item.get("protected"),
             }
-        else:
+        elif args.command == "create":
             result = create_authorized_branch(
+                repository=args.repository,
+                branch=args.branch,
+                approved_name=args.approved_name,
+                base_ref=args.base_ref,
+            )
+        else:
+            result = recreate_authorized_branch(
                 repository=args.repository,
                 branch=args.branch,
                 approved_name=args.approved_name,
