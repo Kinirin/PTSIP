@@ -1,0 +1,26 @@
+name: branch-control-verify-20260926
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/branch-control-verify-20260926.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Verify branch command plane
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -e ".[dev]"
+          python -m developer.automation.policy_validator
+          python -m developer.automation.branch_control commands
+          python -m pytest -q developer/tests/test_branch_creation_guard.py developer/tests/test_branch_control.py developer/tests/test_policy_identity_lifecycle.py
