@@ -703,7 +703,7 @@ def validate_policy_resolver(
                         raise PolicyResolverError(
                             f"task context did not resolve for {task_scope}:{operation}"
                         )
-            return ()
+        return ()
     except (OSError, ValueError, yaml.YAMLError, PolicyResolverError) as exc:
         return (str(exc),)
 
