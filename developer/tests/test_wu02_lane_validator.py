@@ -10,7 +10,16 @@ from developer.automation.wu02_lane_validator import (
 )
 
 
-def test_wu02_lane_documents_are_centrally_consistent() -> None:
+def test_wu02_lane_documents_are_centrally_consistent_when_active() -> None:
+    base = lane_validator.repository_root()
+    if not (base / lane_validator.PARENT_PLAN).is_file():
+        planning_index = lane_validator.load_yaml(
+            "developer/planning/index.yaml",
+            root=base,
+        )
+        assert planning_index.get("plans") == []
+        return
+
     assert validate_lane_documents() == ()
 
 

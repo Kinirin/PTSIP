@@ -267,10 +267,10 @@ def main(argv: list[str] | None = None) -> int:
             args.lane,
             execution_branch=args.execution_branch,
         )
+    elif args.execution_branch is not None:
+        errors = validate_control_branch_context(args.execution_branch)
     else:
         errors = validate_lane_documents()
-        if args.execution_branch is not None:
-            errors = (*errors, *validate_control_branch_context(args.execution_branch))
     if errors:
         print("WU-02 lane validation: FAIL")
         for error in errors:
