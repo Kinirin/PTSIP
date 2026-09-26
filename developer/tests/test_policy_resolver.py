@@ -51,14 +51,7 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
     ]
 
 
-def test_github_authority_scope_returns_exact_implementation_context(
-    monkeypatch,
-) -> None:
-    monkeypatch.setattr(
-        policy_resolver_module,
-        "_current_branch",
-        lambda _root: "dev/0.3.8a1",
-    )
+def test_github_authority_scope_resolves_policy_without_plan_task_context() -> None:
     result = resolve_policies(
         ROOT,
         scope="src/ptsip/app/github_authority.py",
@@ -76,37 +69,7 @@ def test_github_authority_scope_returns_exact_implementation_context(
             ],
         }
     ]
-
-    context = result["task_context"]
-    assert context["branch"] == "dev/0.3.8a1"
-    assert context["branch_context"] == {
-        "declared": "dev/0.3.8a1",
-        "actual": "dev/0.3.8a1",
-        "match": True,
-    }
-    assert context["planning_entry"] == (
-        "developer/planning/0.3.8a1/emergency-implementation-overlay.yaml"
-    )
-    assert context["normative_rule_refs"] == [
-        "PTSIP-AUT-001",
-        "PTSIP-AUT-002",
-        "PTSIP-AUT-003",
-        "PTSIP-AUT-004",
-        "PTSIP-AUT-005",
-        "PTSIP-AUT-006",
-        "PTSIP-AUT-007",
-    ]
-    assert [item["rule_id"] for item in context["normative_rules"]] == context[
-        "normative_rule_refs"
-    ]
-    refs = context["implementation_refs"]
-    assert refs[0]["selector"]["name"] == "_global_decision_id"
-    assert refs[2]["selector"]["method"] == "gate"
-    assert refs[3]["selector"]["method"] == "application"
-    assert refs[4]["selector"]["command"] == "resolve"
-    assert all(item["resolved_location"]["line_start"] >= 1 for item in refs)
-    assert "tests/ptsip/test_proposed_component.py" in context["test_refs"]
-
+    assert "task_context" not in result
 
 def test_normative_rule_projection_returns_machine_registry_record() -> None:
     result = get_normative_rule(ROOT, rule_id="PTSIP-AUT-007")
@@ -116,20 +79,6 @@ def test_normative_rule_projection_returns_machine_registry_record() -> None:
     assert result["projection_authority"] is False
     assert "section_text" not in result
     assert "line_start" not in result
-
-
-def test_task_context_branch_mismatch_fails_closed(monkeypatch) -> None:
-    monkeypatch.setattr(
-        policy_resolver_module,
-        "_current_branch",
-        lambda _root: "dev/0.4.0",
-    )
-    with pytest.raises(PolicyResolverError, match="task context branch mismatch"):
-        resolve_policies(
-            ROOT,
-            scope="src/ptsip/app/github_authority.py",
-            operation="MODIFY",
-        )
 
 
 def test_rule_cli_projects_one_normative_section(capsys) -> None:

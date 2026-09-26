@@ -11,7 +11,20 @@ PTSIP has two non-interchangeable policy classes.
 - PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
 - The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
 - Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
-- Developer planning authority is `developer/planning/index.yaml` and version control planes under `developer/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
+- Developer planning registry is `developer/planning/index.yaml`. It may intentionally contain `plans: []` when no development plan is active. Version control planes are created under `developer/planning/<version>/index.yaml` only after a new plan is materialized from policy. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?# AGENTS.md
+
+These instructions apply to coding agents working anywhere in this repository.
+
+## Developer Policy vs Support Feature Policy
+
+PTSIP has two non-interchangeable policy classes.
+
+- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
+- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`; repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.
+- PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
+- The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
+- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
+ when a plan exists.
 - `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
 
 ## Mandatory developer policy entry
@@ -157,7 +170,7 @@ The resolver reads the current Git branch and performs an exact lookup against `
 Rules:
 
 - Exact mapping only. Do not infer a WU from branch prefixes, suffixes, naming similarity, `current_gate`, nearby files, or historical context.
-- A nonzero resolver result is fail-closed. Do not choose another planning document manually.
+- A nonzero resolver result is fail-closed. When the root registry contains `plans: []`, `UNKNOWN_PLANNING_ENTRY` is the expected no-active-plan state; do not infer or resurrect a historical plan. A new plan must be materialized and registered before version-specific planning work continues.
 - Re-run the resolver after every branch switch before continuing version-specific work.
 - On `INDEPENDENT_LEAF`, the returned WU document is the branch entry point; do not substitute the integration plan's current gate.
 - On `INTEGRATION_CONTROL_PLANE`, enter through the returned version index and follow its machine-readable routing.

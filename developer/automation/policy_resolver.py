@@ -457,6 +457,9 @@ def _task_context(
     operation: str,
     enforce_branch: bool,
 ) -> dict[str, object] | None:
+    resolver = _resolver_config(contract)
+    if resolver.get("task_context_ref") is None:
+        return None
     context_path = _configured_path(root, contract, "task_context_ref")
     payload = load_yaml(context_path, root=root)
     entry = _mapping(payload.get("coding_agent_entry"), label="coding_agent_entry")
@@ -665,41 +668,42 @@ def validate_policy_resolver(
                         )
                     seen.add(policy_id)
 
-        task_context_path = _configured_path(root, contract, "task_context_ref")
-        task_payload = load_yaml(task_context_path, root=root)
-        entry = _mapping(task_payload.get("coding_agent_entry"), label="coding_agent_entry")
-        task_bindings = _mapping(
-            entry.get("task_bindings"),
-            label="coding_agent_entry.task_bindings",
-        )
-        vocabulary = bindings.get("operation_vocabulary")
-        if not isinstance(vocabulary, list):
-            raise PolicyResolverError("operation_vocabulary must be a list")
-        for task_scope, raw_operations in task_bindings.items():
-            if task_scope not in scope_bindings:
-                raise PolicyResolverError(
-                    f"task context scope {task_scope!r} has no exact policy binding"
-                )
-            operations = _mapping(
-                raw_operations,
-                label=f"coding_agent_entry.task_bindings.{task_scope}",
+        if _resolver_config(contract).get("task_context_ref") is not None:
+            task_context_path = _configured_path(root, contract, "task_context_ref")
+            task_payload = load_yaml(task_context_path, root=root)
+            entry = _mapping(task_payload.get("coding_agent_entry"), label="coding_agent_entry")
+            task_bindings = _mapping(
+                entry.get("task_bindings"),
+                label="coding_agent_entry.task_bindings",
             )
-            for operation in operations:
-                if operation not in vocabulary:
+            vocabulary = bindings.get("operation_vocabulary")
+            if not isinstance(vocabulary, list):
+                raise PolicyResolverError("operation_vocabulary must be a list")
+            for task_scope, raw_operations in task_bindings.items():
+                if task_scope not in scope_bindings:
                     raise PolicyResolverError(
-                        f"task context uses unsupported operation {operation!r}"
+                        f"task context scope {task_scope!r} has no exact policy binding"
                     )
-                if _task_context(
-                    root,
-                    contract,
-                    scope=str(task_scope),
-                    operation=str(operation),
-                    enforce_branch=False,
-                ) is None:
-                    raise PolicyResolverError(
-                        f"task context did not resolve for {task_scope}:{operation}"
-                    )
-        return ()
+                operations = _mapping(
+                    raw_operations,
+                    label=f"coding_agent_entry.task_bindings.{task_scope}",
+                )
+                for operation in operations:
+                    if operation not in vocabulary:
+                        raise PolicyResolverError(
+                            f"task context uses unsupported operation {operation!r}"
+                        )
+                    if _task_context(
+                        root,
+                        contract,
+                        scope=str(task_scope),
+                        operation=str(operation),
+                        enforce_branch=False,
+                    ) is None:
+                        raise PolicyResolverError(
+                            f"task context did not resolve for {task_scope}:{operation}"
+                        )
+            return ()
     except (OSError, ValueError, yaml.YAMLError, PolicyResolverError) as exc:
         return (str(exc),)
 
