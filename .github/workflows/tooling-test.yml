@@ -543,7 +543,7 @@ jobs:
       - name: Run complete repository regression
         if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
-        run: python -m pytest -q
+        run: python -m pytest -q --import-mode=importlib
 
       - name: Verify Tool, Specification, and repository profile
         if: ${{ env.VERIFICATION_MODE == 'full' }}

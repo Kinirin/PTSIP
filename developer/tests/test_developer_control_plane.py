@@ -9,7 +9,7 @@ import yaml
 from developer.automation.current_dependency_gate import (
     validate_current_legacy_dependency_gate,
 )
-from developer.automation.planning_validator import validate_planning
+from developer.automation.planning.planning_validator import validate_planning
 from developer.automation.policy_validator import validate_developer_policy
 from developer.automation.project_profile_registry import (
     validate_project_profile_registry_plane,
@@ -18,8 +18,6 @@ from developer.automation.transition_evaluator import evaluate_legacy_decisions_
 
 
 ROOT = Path(__file__).resolve().parents[2]
-P01_PLAN = ROOT / "docs" / "planning" / "0.4.0" / "WU-02" / "WU-02-P01.yaml"
-
 
 def _yaml(path: Path) -> dict[str, object]:
     value = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -43,30 +41,13 @@ def test_current_control_planes_have_zero_retired_local_policy_dependencies() ->
     assert validate_current_legacy_dependency_gate(ROOT) == ()
 
 
-def test_removal_gate_tracks_e4_machine_completion() -> None:
-    plan = _yaml(P01_PLAN)
-    execution = plan["p01_e_execution_plan"]["execution_order"]
-    e4 = next(
-        item
-        for item in execution
-        if item["id"] == "P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION"
-    )
+def test_legacy_decisions_removal_gate_reflects_current_machine_state() -> None:
     result = evaluate_legacy_decisions_removal(ROOT)
 
-    assert "HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED" not in result.blockers
-    assert "MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING" not in result.blockers
-    assert "CURRENT_LEGACY_DEPENDENCY_NONZERO" not in result.blockers
-
-    if e4["status"] == "COMPLETE":
-        assert result.state == "AUTHORIZED"
-        assert result.action == "REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE"
-        assert result.blockers == ()
-        assert result.confirmation_required is False
-    else:
-        assert result.state == "HOLD_NOT_AUTHORIZED"
-        assert result.action is None
-        assert result.blockers == ("P01_E4_VALIDATION_NOT_COMPLETE",)
-        assert result.confirmation_required is False
+    assert result.state == "AUTHORIZED"
+    assert result.action == "REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE"
+    assert result.blockers == ()
+    assert result.confirmation_required is False
 
 
 def test_migration_only_tooling_and_evidence_are_retired() -> None:
