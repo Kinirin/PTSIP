@@ -543,7 +543,23 @@ jobs:
       - name: Run complete repository regression
         if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
-        run: python -m pytest -q --import-mode=importlib
+        run: |
+          python -m pytest -q developer/tests
+          if ($LASTEXITCODE -ne 0) {
+            throw "Developer test corpus failed."
+          }
+          python -m pytest -q tests/agent_contracts
+          if ($LASTEXITCODE -ne 0) {
+            throw "Agent contract test corpus failed."
+          }
+          python -m pytest -q tests/ptsip
+          if ($LASTEXITCODE -ne 0) {
+            throw "PTSIP test corpus failed."
+          }
+          python -m pytest -q tests/vpms
+          if ($LASTEXITCODE -ne 0) {
+            throw "VPMS test corpus failed."
+          }
 
       - name: Verify Tool, Specification, and repository profile
         if: ${{ env.VERIFICATION_MODE == 'full' }}
