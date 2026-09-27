@@ -44,6 +44,7 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "$expectedWheelVersion" in workflow
     assert "[regex]::Escape($expectedWheelVersion)" in workflow
     assert "python -m developer.automation.pp.pp_release_verify --sha HEAD" in workflow
+    assert 'PYTHONPATH: ".:src"' in workflow
     assert "python .github/scripts/verify_distribution_contracts.py" in workflow
     assert "ptsip/profiles/example.ptsip.yaml" not in workflow
     assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" not in workflow

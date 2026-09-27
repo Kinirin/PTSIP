@@ -38,6 +38,7 @@ jobs:
         shell: pwsh
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
+          PYTHONPATH: ".:src"
         run: |
           $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
           $expectedTag = "tool-v$packageVersion"
