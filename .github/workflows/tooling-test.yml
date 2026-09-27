@@ -343,25 +343,27 @@ jobs:
 
 
   test-build:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.verification != 'policy-lifecycle' && inputs.verification != 'agent-context-migration' && inputs.verification != 'markdown-cleanup-simulation' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && env.VERIFICATION_MODE != 'policy-lifecycle' && env.VERIFICATION_MODE != 'agent-context-migration' && env.VERIFICATION_MODE != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8' && startsWith(github.event.head_commit.message, 'release:')) }}
     runs-on: ubuntu-latest
+    env:
+      VERIFICATION_MODE: ${{ github.event_name == 'push' && 'full' || inputs.verification }}
     steps:
-      - name: Checkout exact dispatched source
+      - name: Checkout exact verification source
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Verify exact dispatched source identity
+      - name: Verify exact verification source identity
         id: source
         shell: pwsh
         env:
-          DISPATCHED_SHA: ${{ github.sha }}
+          EXPECTED_SHA: ${{ github.sha }}
         run: |
           $actualSha = (git rev-parse HEAD).Trim()
-          if ($actualSha -ne $env:DISPATCHED_SHA) {
-            throw "Checked out SHA $actualSha does not match workflow-dispatch SHA $env:DISPATCHED_SHA."
+          if ($actualSha -ne $env:EXPECTED_SHA) {
+            throw "Checked out SHA $actualSha does not match expected verification SHA $env:EXPECTED_SHA."
           }
           "verified_sha=$actualSha" >> $env:GITHUB_OUTPUT
           Write-Host "Verification source SHA: $actualSha"
@@ -369,7 +371,7 @@ jobs:
 
       - name: Resolve automatic verification baseline
         id: auto-base
-        if: ${{ inputs.verification == 'auto' }}
+        if: ${{ env.VERIFICATION_MODE == 'auto' }}
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -432,7 +434,7 @@ jobs:
       - name: Install verification tooling
         shell: pwsh
         env:
-          VERIFICATION_MODE: ${{ inputs.verification }}
+          VERIFICATION_MODE: ${{ env.VERIFICATION_MODE }}
         run: |
           if ($env:VERIFICATION_MODE -eq 'full') {
             python -m pip install build twine
@@ -447,10 +449,10 @@ jobs:
           }
 
       - name: Resolve and run deterministic change verification
-        if: ${{ inputs.verification != 'full' }}
+        if: ${{ env.VERIFICATION_MODE != 'full' }}
         shell: pwsh
         env:
-          VERIFICATION_MODE: ${{ inputs.verification }}
+          VERIFICATION_MODE: ${{ env.VERIFICATION_MODE }}
         run: |
           if ($env:VERIFICATION_MODE -eq 'auto') {
             $autoBase = "${{ steps.auto-base.outputs.base }}"
@@ -508,7 +510,7 @@ jobs:
           }
 
       - name: Record successful exact-SHA change verification
-        if: ${{ inputs.verification != 'full' }}
+        if: ${{ env.VERIFICATION_MODE != 'full' }}
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -534,17 +536,17 @@ jobs:
             -Body $body
 
       - name: Verify Tool, PP, and Specification release contract
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: python .github/scripts/verify_release_contract.py
 
       - name: Run complete repository regression
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: python -m pytest -q
 
       - name: Verify Tool, Specification, and repository profile
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: |
           ptsip --version
@@ -555,7 +557,7 @@ jobs:
           ptsip conform --help
 
       - name: Build and verify distributions
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: |
           python -m build
@@ -566,12 +568,12 @@ jobs:
           python -m twine check $distFiles
 
       - name: Verify wheel and sdist embedded contracts
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: python .github/scripts/verify_distribution_contracts.py
 
       - name: Verify Product Artifact evidence and exact snapshot binding
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         env:
           VERIFIED_SHA: ${{ steps.source.outputs.verified_sha }}
@@ -850,7 +852,7 @@ jobs:
           exit 0
 
       - name: Reinstall built wheel and smoke public surfaces
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: |
           $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
@@ -865,7 +867,7 @@ jobs:
           python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
 
       - name: Record successful exact-SHA tooling verification
-        if: ${{ inputs.verification == 'full' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
