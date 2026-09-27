@@ -93,9 +93,13 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "& python -m pytest -q @targets" in workflow
     assert "ci/change-verification" in workflow
     assert (
-        "      - name: Run complete repository regression\n"
-        "        if: ${{ inputs.verification == 'full' }}"
+        "      - name: Run complete shipping and release regression\n"
+        "        if: ${{ env.VERIFICATION_MODE == 'full' }}"
     ) in workflow
+    assert "Run 0.3.8a2 namespace prerelease regression" in workflow
+    assert "env.VERIFICATION_MODE == 'a2-prerelease'" in workflow
+    assert "tests/ptsip/validation/test_local_profile_catalog.py" in workflow
+    assert "test_repository_uses_canonical_ptsip_namespace_and_json_indexes" in workflow
     assert "python -m pytest -q" in workflow
     assert "python -m build" in workflow
     assert "python -m twine check $distFiles" in workflow
@@ -119,7 +123,7 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "--force-reinstall --no-deps" in workflow
     assert (
         "      - name: Record successful exact-SHA tooling verification\n"
-        "        if: ${{ inputs.verification == 'full' }}"
+        "        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}"
     ) in workflow
     assert 'context = "ci/tooling-test"' in workflow
     assert "ptsip --version" in workflow
