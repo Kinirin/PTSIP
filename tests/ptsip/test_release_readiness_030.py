@@ -58,6 +58,9 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "$conformExit -notin @(0, 6)" in workflow
     assert "--force-reinstall --no-deps" in workflow
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
+    assert "PTSIP 0.3.8a2 bounded publication gate" in workflow
+    assert "$expectedWheelVersion -eq '0.3.8a2'" in workflow
+    assert "Full Product Artifact repository conformance remains outside this prerelease claim." in workflow
 
 
 def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> None:
