@@ -258,7 +258,7 @@ def test_release_documents_record_independent_current_authorities() -> None:
         (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
     )
     current_pp = registry["current"]
-    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a1.md").read_text(encoding="utf-8")
+    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a2.md").read_text(encoding="utf-8")
     pp_note = (
         ROOT / "releasenote" / "project-profile" / f"{current_pp}.md"
     ).read_text(encoding="utf-8")
@@ -271,6 +271,7 @@ def test_release_documents_record_independent_current_authorities() -> None:
 
     assert current_pp in pp_note
     assert EXPECTED_SPEC_REVISION in pp_note
+    assert "tool/0.3.8a2.md" in release_index
     assert "tool/0.3.8a1.md" in release_index
     assert f"project-profile/{current_pp}.md" in release_index
     assert "specification/0.3.7-draft.md" in release_index
