@@ -343,7 +343,7 @@ jobs:
 
 
   test-build:
-    if: ${{ (github.event_name == 'workflow_dispatch' && env.VERIFICATION_MODE != 'policy-lifecycle' && env.VERIFICATION_MODE != 'agent-context-migration' && env.VERIFICATION_MODE != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8' && startsWith(github.event.head_commit.message, 'release:')) }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.verification != 'policy-lifecycle' && inputs.verification != 'agent-context-migration' && inputs.verification != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8' && startsWith(github.event.head_commit.message, 'release:')) }}
     runs-on: ubuntu-latest
     env:
       VERIFICATION_MODE: ${{ github.event_name == 'push' && 'full' || inputs.verification }}
