@@ -50,6 +50,10 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" not in workflow
     assert "ptsip/profiles/template-python-package.ptsip.yaml" not in workflow
     assert "ptsip-public-profiles" in workflow
+    assert "agent_contracts/*" in workflow
+    assert '$sourcePaths += "src/$path"' in workflow
+    assert "$sawAgentContractsPackage = $true" in workflow
+    assert "Built wheel does not contain the canonical agent_contracts package." in workflow
     assert "Verify publication Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
     assert "ptsip-artifact-evidence-binding/v1" in workflow
@@ -115,6 +119,9 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "ptsip/profiles/hybrid-python-package.ptsip.yaml" not in workflow
     assert "ptsip/profiles/template-python-package.ptsip.yaml" not in workflow
     assert "ptsip-public-profiles" in workflow
+    assert "agent_contracts/*" in workflow
+    assert "$sawAgentContractsPackage = $true" in workflow
+    assert "Built wheel does not contain the canonical agent_contracts package." in workflow
     assert "Verify Product Artifact evidence and exact snapshot binding" in workflow
     assert "ptsip-artifact-evidence/v1" in workflow
     assert "ptsip-artifact-evidence-binding/v1" in workflow

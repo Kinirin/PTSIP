@@ -683,6 +683,7 @@ jobs:
           $sourcePaths = @()
           $components = @()
           $sawDistributionMetadata = $false
+          $sawAgentContractsPackage = $false
           $declaredLicenseFiles = @(
             & python -c "import tomllib; f=open('pyproject.toml','rb'); p=tomllib.load(f)['project']; print(*p.get('license-files', []), sep='\n'); f.close()"
           )
@@ -741,6 +742,12 @@ jobs:
               $components += 'ptsip-core'
               continue
             }
+            if ($path -like 'agent_contracts/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-embedded-contracts'
+              $sawAgentContractsPackage = $true
+              continue
+            }
             if ($path -like 'vpms/*') {
               $sourcePaths += "src/$path"
               $components += 'vpms'
@@ -793,6 +800,9 @@ jobs:
           }
           if ($components -notcontains 'ptsip-embedded-contracts') {
             throw "Built wheel does not contain embedded PTSIP contract assets."
+          }
+          if (-not $sawAgentContractsPackage) {
+            throw "Built wheel does not contain the canonical agent_contracts package."
           }
           if (-not $sawDistributionMetadata) {
             throw "Built wheel does not contain distribution metadata."
