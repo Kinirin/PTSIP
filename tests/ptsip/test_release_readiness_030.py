@@ -21,10 +21,10 @@ def test_pytest_binds_to_checked_out_ptsip_source() -> None:
     assert Path(ptsip.__file__).resolve().parent == ROOT / "src" / "ptsip"
 
 
-def test_tool_038a1_package_runtime_pp_and_spec_binding_match() -> None:
+def test_tool_038a2_package_runtime_pp_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.8a1"
-    assert TOOL_VERSION == "0.3.8a1"
+    assert payload["project"]["version"] == "0.3.8a2"
+    assert TOOL_VERSION == "0.3.8a2"
     registry = yaml.safe_load(
         (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
     )
@@ -264,7 +264,7 @@ def test_release_documents_record_independent_current_authorities() -> None:
     ).read_text(encoding="utf-8")
     release_index = (ROOT / "releasenote" / "README.md").read_text(encoding="utf-8")
 
-    assert "0.3.8a1" in tool_note
+    assert "0.3.8a2" in tool_note
     assert "0.3.7-draft" in tool_note
     assert EXPECTED_SPEC_REVISION in tool_note
     assert "\n## " in tool_note
