@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-repository-index.schema.json",
+  "title": "PTSIP Repository Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "namespaces"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-repository-index/v1"
+    },
+    "namespaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profiles",
+        "context",
+        "tasks",
+        "runtime"
+      ],
+      "properties": {
+        "profiles": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "index"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "ACTIVE",
+                "RESERVED"
+              ]
+            },
+            "index": {
+              "const": "profiles/index.json"
+            }
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "root"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "ACTIVE",
+                "RESERVED"
+              ]
+            },
+            "root": {
+              "const": "context/"
+            }
+          }
+        },
+        "tasks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "index"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "ACTIVE",
+                "RESERVED"
+              ]
+            },
+            "index": {
+              "const": "tasks/index.json"
+            }
+          }
+        },
+        "runtime": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "root"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "ACTIVE",
+                "RESERVED"
+              ]
+            },
+            "root": {
+              "const": "runtime/"
+            }
+          }
+        }
+      }
+    }
+  }
+}
