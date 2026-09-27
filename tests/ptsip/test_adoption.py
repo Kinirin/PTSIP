@@ -106,7 +106,7 @@ def test_adopt_is_dry_run_by_default_and_apply_persists_current_declaration(
     adopted = json.loads(capsys.readouterr().out)
     assert adopted["status"] == "ADOPTED"
     profile = repo / ".ptsip" / "profiles" / "main.ptsip.yaml"
-    catalog = repo / ".ptsip" / "profiles" / "index.yaml"
+    catalog = repo / ".ptsip" / "profiles" / "index.json"
     assert catalog.is_file()
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
     assert document["ptsip"] == current_project_profile_ptsip_metadata()

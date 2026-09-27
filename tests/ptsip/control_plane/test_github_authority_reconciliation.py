@@ -172,7 +172,7 @@ def test_complete_equivalent_local_profile_still_checks_authority(
     assert main(_development_tooling_args(repo_b, "--coordination", "local")) == 0
     capsys.readouterr()
 
-    before = (repo_b / "ptsip.yaml").read_text(encoding="utf-8")
+    before = (repo_b / ".ptsip" / "profiles" / "main.ptsip.yaml").read_text(encoding="utf-8")
     assert main(["gate", str(repo_b), "--component", "tools", "--json"]) == 0
     gated = json.loads(capsys.readouterr().out)
 
@@ -180,7 +180,7 @@ def test_complete_equivalent_local_profile_still_checks_authority(
     assert gated["backend"] == "GITHUB"
     assert gated["decisions"][0]["reconciliation"]["status"] == "CONSISTENT"
     assert "lifecycle_owner" not in gated["decisions"][0]["decision"]["answer"]
-    assert (repo_b / "ptsip.yaml").read_text(encoding="utf-8") == before
+    assert (repo_b / ".ptsip" / "profiles" / "main.ptsip.yaml").read_text(encoding="utf-8") == before
 
 
 def test_complete_conflicting_local_profile_returns_explicit_conflict_without_overwrite(
@@ -198,14 +198,14 @@ def test_complete_conflicting_local_profile_returns_explicit_conflict_without_ov
     assert main(_product_args(repo_b, "--coordination", "local")) == 0
     capsys.readouterr()
 
-    before = (repo_b / "ptsip.yaml").read_text(encoding="utf-8")
+    before = (repo_b / ".ptsip" / "profiles" / "main.ptsip.yaml").read_text(encoding="utf-8")
     assert main(["gate", str(repo_b), "--component", "tools", "--json"]) == 8
     gated = json.loads(capsys.readouterr().out)
 
     assert gated["status"] == "AUTHORITY_PROFILE_CONFLICT"
     assert gated["backend"] == "GITHUB"
     assert gated["decisions"][0]["status"] == "AUTHORITY_PROFILE_CONFLICT"
-    assert (repo_b / "ptsip.yaml").read_text(encoding="utf-8") == before
+    assert (repo_b / ".ptsip" / "profiles" / "main.ptsip.yaml").read_text(encoding="utf-8") == before
     profile = yaml.safe_load(before)
     assert profile["components"][0]["classification"] == "PRODUCT"
 
