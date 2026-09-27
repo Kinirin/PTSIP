@@ -53,6 +53,18 @@ Rules:
 - Re-run resolution after changing task scope, operation class, or branch context.
 
 
+## Canonical repository-local PTSIP namespace
+
+For repository-local state semantically owned by PTSIP, `.ptsip/` is the only canonical control-plane root. Enter through `.ptsip/index.json` before discovering PTSIP-owned repository namespaces. Canonical PTSIP namespace indexes use JSON.
+
+Rules:
+
+- Do not create a parallel PTSIP Task, Policy, Operation, registry, configuration, or execution-state root under `tools/`, `scripts/`, `automation/`, or another repository path.
+- Repository tooling implementations may physically live outside `.ptsip/`; their PTSIP-owned registration, bindings, contracts, and lifecycle state belong under the canonical `.ptsip/` namespace.
+- `.ptsip/profiles/index.json` is the canonical local Project Profile catalog. The former `.ptsip/profiles/index.yaml` is compatibility-only migration input and must not be emitted by new writes.
+- `.ptsip/tasks/index.json` currently advertises a reserved/unavailable Task capability. That state is fail-closed for dependent Task execution and does not authorize inventing a repository-specific Task Engine.
+- `.ptsip/runtime/` is reserved as the repository-local PTSIP runtime namespace. Its exact persistence semantics are not finalized by Tool 0.3.8a2; do not move runtime authority into a second top-level control-plane root.
+
 ## Mandatory PTSIP Agent Contract entry
 
 For PTSIP product/consumer operations, resolve the bounded machine contract before reading any narrative specification:
@@ -464,7 +476,7 @@ A complete local declaration is not sufficient reason to skip relevant distribut
 
 ## Read-only default and mutation safety
 
-Inspection and Pilot behavior are read-only by default. Tool-owned caches, reports, and local decision databases stay outside the Consumer Repository unless explicitly directed otherwise.
+Inspection and Pilot behavior are read-only by default. Read-only commands do not materialize repository-local state. External temporary caches and reports may remain outside the Consumer Repository, but when repository-local PTSIP runtime state is explicitly persisted, its canonical ownership namespace is `.ptsip/runtime/`; an external cache or working directory must not become a second repository control-plane authority.
 
 Prepared profile writes must reject stale repository/profile state. Do not combine evidence from different revisions into one stable claim.
 
