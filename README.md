@@ -4,8 +4,8 @@
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-**Status:** Tool `0.3.8a1` emergency prerelease — publication pending<br>
-**Tool/package version:** `0.3.8a1`<br>
+**Status:** Tool `0.3.8a2` current published release<br>
+**Tool/package version:** `0.3.8a2`<br>
 **Project Profile contract:** `pp.1.02`<br>
 **Specification family:** `0.3.7-draft`<br>
 **Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
@@ -17,11 +17,11 @@ PTSIP is a project-defined architecture policy for separating project responsibi
 
 > **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
 
-Tool `0.3.8a1` is a narrow emergency prerelease bridge built on the Tool `0.3.7` baseline and the same frozen Specification binding. It adds a supported way to represent a component that does not yet exist as an explicit proposed candidate, resolve that proposal through the existing Decision Control Plane, and retain an approved proposal as `PROPOSAL_APPROVED` without projecting it into active `components[]` before materialization. Tool `0.3.8a1` is intentionally not the completion of Tool `0.4.0`.
+Tool `0.3.8a2` is the current published release. It establishes `.ptsip/` as the canonical repository-local ownership boundary for PTSIP-managed contracts, registries, configuration, task/operation metadata, and execution state. Canonical repository indexes use JSON. The current release reserves Task and runtime namespaces but does not claim a completed generic Task Engine, Go runtime, or Tool `0.4.0` capability-recovery implementation.
 
 ## Primary lifecycle ownership
 
-Canonical Tool `0.3.8a1` classifications remain exactly:
+Canonical Tool `0.3.8a2` classifications remain exactly:
 
 | Classification | Meaning |
 | --- | --- |
@@ -43,9 +43,9 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.8a1` preserves the five-classification model established by Tool `0.3.6`. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a current canonical alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
+Tool `0.3.8a2` preserves the five-classification model established by Tool `0.3.6`. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a current canonical alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
 
-Tool `0.3.8a1` provides evidence-bound direct current-target migration for explicitly supported historical sources. Migration capability remains separate from repository adoption authority and never turns inference into project intent.
+Tool `0.3.8a2` provides evidence-bound direct current-target migration for explicitly supported historical sources. Migration capability remains separate from repository adoption authority and never turns inference into project intent.
 
 ## Classification is not path or technology
 
@@ -66,7 +66,7 @@ Paths such as `tests/`, `tools/`, `deploy/`, `ops/`, or `.github/workflows/` are
 
 ## Responsibility Map v2
 
-Tool `0.3.8a1` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
+Tool `0.3.8a2` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
 
 ```text
 classification
@@ -195,12 +195,12 @@ Upgrade to the latest **published** release:
 python -m pip install --upgrade PTSIP
 ```
 
-Tool `0.3.8a1` is a prerelease. A normal `pip install PTSIP` may continue to select the latest stable release unless prereleases are explicitly requested.
+Tool `0.3.8a2` is a prerelease. A normal `pip install PTSIP` may continue to select the latest stable release unless prereleases are explicitly requested.
 
-After publication, install this prerelease explicitly with:
+Install the current release explicitly with:
 
 ```powershell
-python -m pip install "PTSIP==0.3.8a1"
+python -m pip install "PTSIP==0.3.8a2"
 ```
 
 For source development on this release line:
@@ -225,13 +225,13 @@ ptsip resolve --help
 ptsip conform .
 ```
 
-New project-owned profiles are selected through `.ptsip/profiles/index.yaml`; the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. Repository-root `ptsip.yaml` remains a compatibility/migration input, and an explicit `--profile` path still takes precedence.
+New project-owned profiles are selected through `.ptsip/profiles/index.json`; the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. Repository-root `ptsip.yaml` remains a compatibility/migration input, and an explicit `--profile` path still takes precedence.
 
 ## Adoption and decision authority
 
 Repository evidence is not architecture authority. Candidate discovery, path names, templates, heuristics, and agent confidence can support review but cannot manufacture project intent.
 
-Canonical Tool `0.3.8a1` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
+Canonical Tool `0.3.8a2` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
 
 ```text
 classification
@@ -241,7 +241,7 @@ runtime_required
 executable
 ```
 
-The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.8a1` ownership authority.
+The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.8a2` ownership authority.
 
 Example dry-run:
 
@@ -288,7 +288,7 @@ Observed evidence
     -> what the repository and artifacts actually do
 ```
 
-A Decision Authority does not replace the Project Profile selected by `.ptsip/profiles/index.yaml` and does not prove conformance. Legacy root `ptsip.yaml` remains compatibility input only.
+A Decision Authority does not replace the Project Profile selected by `.ptsip/profiles/index.json` and does not prove conformance. Legacy root `ptsip.yaml` remains compatibility input only.
 
 ## Distributed decision coordination
 
@@ -306,7 +306,7 @@ PTSIP uses action-time synchronization rather than continuous background polling
 
 Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLING` or `DELIVERY` component may validly build a `PRODUCT` artifact, but the resulting artifact must still satisfy the Product package boundary.
 
-Tool `0.3.8a1` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
+Tool `0.3.8a2` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
 
 ## VPMS — Verification Purpose Management System
 
@@ -322,7 +322,7 @@ VPMS
 
 PTSIP classification and VPMS Verification Purpose remain separate axes. PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved PTSIP metadata.
 
-The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.8a1` PTSIP classification.
+The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.8a2` PTSIP classification.
 
 VPMS verification PASS does not imply PTSIP `CONFORMANT`, and PTSIP `CONFORMANT` does not imply functional verification PASS.
 
@@ -388,28 +388,7 @@ Specification 0.3.7-draft
 SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
 ```
 
-The already-published Tool `0.3.8a1` release retains its historical PP binding
-in its Tool release note; advancing the PP contract does not rewrite that Tool history.
-
 A new immutable revision is required only for a genuine normative change. Release workflow, test, planning, status, or documentation-only changes do not move `SPEC_REVISION` by themselves.
-
-## Tool 0.3.8a1 release identity
-
-Tool `0.3.8a1` is an emergency bridge prerelease with an intentionally narrow scope.
-
-```text
-Tool:             0.3.8a1
-Project Profile:  pp.1.01
-Specification:    0.3.7-draft
-SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
-Release scope:    explicit proposed candidate bridge
-```
-
-This Tool release does not introduce a new Specification family or Project Profile contract.
-
-It adds support for representing a not-yet-existing component as an explicit proposed candidate and resolving that proposal without silently materializing it as an active component. It does not claim completion of the broader Tool `0.4.0` capability-recovery architecture.
-
-Release scope and verification history are recorded in [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). The release gate is defined by [`planning/0.3.8/0.3.8a1-emergency-release-gate.yaml`](planning/0.3.8/0.3.8a1-emergency-release-gate.yaml).
 
 ## License authority
 
@@ -420,10 +399,14 @@ The canonical effective time currently declared by the License Authority is `202
 License-related wording elsewhere in this repository is informational or contextual only. It does not become part of the License, modify it, or become incorporated by reference.
 
 Normal Tool releases, Specification validation, Tool version changes, documentation mentions, keyword matches, and AI semantic guesses do not authorize License Authority entry. Entry uses only the triggers declared by `License-Authority/license-authority.yaml`.
-## Consumer Repository non-intrusion
+## Consumer Repository canonical namespace
 
-PTSIP does not require Consumer Repositories to create PTSIP-specific `.ptsip/`, cache, report, or hidden state directories merely to use the Tool. External inspection and Pilot operations are read-only by default. Tool-owned local state belongs outside the Consumer Repository unless a repository path is explicitly chosen.
+Read-only inspection and Pilot operations remain read-only and do not create repository state merely by being invoked. When a Consumer Repository persists repository-local contracts, registries, configuration, task/operation metadata, or execution state whose semantic owner is PTSIP, `.ptsip/` is the canonical ownership boundary.
+
+Repository tooling implementations may physically live under `tools/`, `scripts/`, `src/`, or another project-owned path. Their PTSIP-owned registration, policy bindings, task/operation contracts, indexes, and lifecycle state must not establish an alternative repository-local PTSIP control-plane root.
+
+Canonical machine indexes under `.ptsip/` use JSON. Tool `0.3.8a2` uses `.ptsip/index.json` as the root router and `.ptsip/profiles/index.json` for local Project Profile selection. The Task and runtime namespaces are reserved; runtime persistence details remain future work. A reserved or unavailable Task capability must fail closed for the dependent operation rather than causing an agent to invent a new Task Engine elsewhere in the repository.
 
 ## Project status
 
-PTSIP remains experimental. Tool `0.3.8a1` is an emergency prerelease whose publication boundary is tracked in [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).
+PTSIP remains experimental. Tool `0.3.8a2` is the current published release. Version-specific changes, publication details, and historical Tool release records are maintained under [`releasenote/tool/`](releasenote/tool/).
