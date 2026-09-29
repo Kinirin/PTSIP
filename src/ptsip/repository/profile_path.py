@@ -41,11 +41,32 @@ def selected_profile_path(
     repository_root: str | Path,
     explicit: str | Path | None = None,
 ) -> str:
-    """Resolve a CLI/local profile selection to repository-relative identity."""
+    """Resolve a CLI/local profile selection to repository-relative identity.
+
+    Explicit paths are preserved. For implicit selection, an existing canonical
+    local-profile catalog wins, an existing historical root profile remains
+    compatible, and a repository with no declaration targets the canonical
+    .ptsip profile location.
+    """
 
     root = Path(repository_root).expanduser().resolve()
     if explicit is None:
-        return DEFAULT_PROFILE_PATH
+        # Import lazily so the generic path-normalization helpers remain usable
+        # without creating a module initialization cycle.
+        from ..local_profile_catalog import (
+            canonical_new_profile_path,
+            load_local_profile_selection,
+        )
+
+        local = load_local_profile_selection(root)
+        if local is not None:
+            return normalize_profile_path(local.path.relative_to(root).as_posix())
+        legacy = root / DEFAULT_PROFILE_PATH
+        if legacy.is_file():
+            return DEFAULT_PROFILE_PATH
+        return normalize_profile_path(
+            canonical_new_profile_path(root).relative_to(root).as_posix()
+        )
     raw = Path(explicit).expanduser()
     candidate = raw.resolve() if raw.is_absolute() else (root / raw).resolve()
     try:

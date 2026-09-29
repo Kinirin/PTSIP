@@ -436,19 +436,19 @@ def test_github_adoption_winner_reconciles_into_stale_clone(
     assert adopted["backend"] == "GITHUB"
     assert adopted["authority"]["decision"]["answer"]["classification"] == "DEVELOPMENT_TOOLING"
     assert adopted["authority"]["decision"]["answer"]["runtime_required"] is False
-    assert adopted["authority"]["decision"]["profile_path"] == "ptsip.yaml"
+    assert adopted["authority"]["decision"]["profile_path"] == ".ptsip/profiles/main.ptsip.yaml"
     assert "lifecycle_owner" not in adopted["authority"]["decision"]["answer"]
-    assert (repo_a / "ptsip.yaml").is_file()
-    assert not (repo_b / "ptsip.yaml").exists()
+    assert (repo_a / ".ptsip" / "profiles" / "main.ptsip.yaml").is_file()
+    assert not (repo_b / ".ptsip" / "profiles" / "main.ptsip.yaml").exists()
 
     assert main(["gate", str(repo_b), "--component", "tools", "--json"]) == 0
     gated = json.loads(capsys.readouterr().out)
     assert gated["status"] == "RESOLVED"
     assert gated["backend"] == "GITHUB"
-    assert gated["profile_path"] == "ptsip.yaml"
+    assert gated["profile_path"] == ".ptsip/profiles/main.ptsip.yaml"
     assert gated["decisions"][0]["reconciliation"]["status"] == "LOCAL_APPLIED"
 
-    profile = yaml.safe_load((repo_b / "ptsip.yaml").read_text(encoding="utf-8"))
+    profile = yaml.safe_load((repo_b / ".ptsip" / "profiles" / "main.ptsip.yaml").read_text(encoding="utf-8"))
     component = next(item for item in profile["components"] if item["id"] == "tools")
     assert component["classification"] == "DEVELOPMENT_TOOLING"
     assert component["runtime_required"] is False

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import yaml
 
-from developer.automation.pp_transition_reconciler import (
+from developer.automation.pp.pp_transition_reconciler import (
     PPTransitionReconcileError,
     reconcile_staged_transition,
 )
@@ -139,7 +139,7 @@ transitions: []
 """,
     )
 
-    schema_root = Path(__file__).resolve().parents[2] / "developer" / "policy" / "schemas"
+    schema_root = Path(__file__).resolve().parents[3] / "developer" / "policy" / "schemas"
     for name in (
         "public-profile-catalog.schema.json",
         "project-profile-contract-registry.schema.json",

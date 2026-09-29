@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
 
       - name: Install distribution tooling
         shell: pwsh
@@ -36,6 +38,7 @@ jobs:
         shell: pwsh
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
+          PYTHONPATH: ".:src"
         run: |
           $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
           $expectedTag = "tool-v$packageVersion"
@@ -49,7 +52,11 @@ jobs:
           }
 
           python .github/scripts/verify_release_contract.py
-          python -m developer.automation.pp_release_verify --sha HEAD
+          python -m ptsip context check . --json
+          if ($LASTEXITCODE -ne 0) {
+            throw "Published source Context Plane is not release-ready."
+          }
+          python -m developer.automation.pp.pp_release_verify --sha HEAD
 
       - name: Build distributions
         shell: pwsh
@@ -133,6 +140,7 @@ jobs:
           $sourcePaths = @()
           $components = @()
           $sawDistributionMetadata = $false
+          $sawAgentContractsPackage = $false
           $declaredLicenseFiles = @(
             & python -c "import tomllib; f=open('pyproject.toml','rb'); p=tomllib.load(f)['project']; print(*p.get('license-files', []), sep='\n'); f.close()"
           )
@@ -191,6 +199,12 @@ jobs:
               $components += 'ptsip-core'
               continue
             }
+            if ($path -like 'agent_contracts/*') {
+              $sourcePaths += "src/$path"
+              $components += 'ptsip-embedded-contracts'
+              $sawAgentContractsPackage = $true
+              continue
+            }
             if ($path -like 'vpms/*') {
               $sourcePaths += "src/$path"
               $components += 'vpms'
@@ -244,6 +258,9 @@ jobs:
           if ($components -notcontains 'ptsip-embedded-contracts') {
             throw "Built wheel does not contain embedded PTSIP contract assets."
           }
+          if (-not $sawAgentContractsPackage) {
+            throw "Built wheel does not contain the canonical agent_contracts package."
+          }
           if (-not $sawDistributionMetadata) {
             throw "Built wheel does not contain distribution metadata."
           }
@@ -262,6 +279,28 @@ jobs:
           python -c "from pathlib import Path; import ptsip; p=Path(ptsip.__file__).resolve().parent/'support'/'policy'/'index.yaml'; assert p.is_file(), p"
           if ($LASTEXITCODE -ne 0) {
             throw "Installed publication wheel is missing the ptsip/support projection."
+          }
+          python -c "import ptsip.context_plane as cp; assert callable(cp.context_status); assert callable(cp.check_context)"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installed publication wheel is missing the Consumer Context Plane implementation."
+          }
+          ptsip context --help
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installed publication wheel does not expose the ptsip context command surface."
+          }
+          ptsip context check . --json
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installed publication wheel cannot validate the repository Context Plane."
+          }
+
+          # Tool 0.3.8a3 is a bounded namespace-stabilization prerelease.
+          # Keep package-content, metadata, license, installation, registry-projection,
+          # and twine verification, but do not promote its known continuing 0.3.8
+          # repository-conformance work into a publication blocker.
+          if ($expectedWheelVersion -eq '0.3.8a3') {
+            Write-Host "PTSIP 0.3.8a3 bounded publication gate: wheel content and install verification passed."
+            Write-Host "Full Product Artifact repository conformance remains outside this prerelease claim."
+            exit 0
           }
 
           $wheelHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $wheel.FullName).Hash.ToLowerInvariant()

@@ -6,13 +6,13 @@ from pathlib import Path
 import pytest
 import yaml
 
-from developer.automation.pp_release_verify import (
+from developer.automation.pp.pp_release_verify import (
     PPReleaseVerifyError,
     verify_exact_release_snapshot,
 )
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 def _git(*args: str) -> str:
@@ -57,7 +57,7 @@ def test_release_verifier_rejects_non_head_exact_sha() -> None:
 
 def test_release_verifier_is_verify_only() -> None:
     source = (
-        ROOT / "developer" / "automation" / "pp_release_verify.py"
+        ROOT / "developer" / "automation" / "pp" / "pp_release_verify.py"
     ).read_text(encoding="utf-8")
 
     for mutation in (

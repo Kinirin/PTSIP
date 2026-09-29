@@ -368,6 +368,18 @@ policy_roles:
       - govern_specification_capabilities
       - require_explicit_specification_binding
       - separate_cross_contract_identity_axes
+  - policy_id: SFP-0022
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - constrain_machine_output_structure
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_invalid_state
+      - govern_migration_execution_authorization
+      - govern_migration_execution_state_machine
+      - require_deterministic_integrity_digest
+      - require_project_owner_decision
+      - separate_global_authority_from_local_projection
 invariants:
   registered_effect_token_is_project_authority_by_itself: false
   projection_role_is_current_eligibility_result_by_itself: false

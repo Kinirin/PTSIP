@@ -60,8 +60,8 @@ def test_repository_default_profile_resolves_through_local_catalog() -> None:
     selected = find_profile(ROOT)
     assert selected == ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 
-    catalog = yaml.safe_load(
-        (ROOT / ".ptsip" / "profiles" / "index.yaml").read_text(encoding="utf-8")
+    catalog = json.loads(
+        (ROOT / ".ptsip" / "profiles" / "index.json").read_text(encoding="utf-8")
     )
     assert catalog["schema_version"] == "ptsip-local-profile-catalog/v1"
     assert catalog["default_profile"] == "main"

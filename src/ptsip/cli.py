@@ -30,6 +30,13 @@ from .clarification.resolution.model import (
 from .clarification.transports.github_issue import publish as publish_github_issues
 from .conformance_engine import evaluate_conformance
 from .constants import TOOL_VERSION
+from .context_plane import (
+    ContextProjectionError,
+    check_context,
+    context_status,
+    migrate_context,
+    repair_context,
+)
 from .dependency_analysis import analyze_dependencies
 from .dependency_review import write_review_pack
 from .dependency_validation import validation_plan
@@ -423,6 +430,28 @@ def _parser() -> argparse.ArgumentParser:
     )
     p_resolve.add_argument("--json", action="store_true")
 
+    p_context = sub.add_parser(
+        "context",
+        help="Inspect, migrate, repair, or verify the repository-local PTSIP Context Plane",
+    )
+    context_commands = p_context.add_subparsers(dest="context_command", required=True)
+    for command in ("status", "check", "repair"):
+        context_parser = context_commands.add_parser(command)
+        context_parser.add_argument("path", nargs="?", default=".")
+        context_parser.add_argument("--json", action="store_true")
+    context_migrate = context_commands.add_parser("migrate")
+    context_migrate.add_argument("path", nargs="?", default=".")
+    context_migrate.add_argument(
+        "--input",
+        help="Prepared canonical semantic source JSON. Required when legacy MEMORY.md must be converted.",
+    )
+    context_migrate.add_argument(
+        "--user-approved-source-replacement",
+        action="store_true",
+        help="Replace an existing semantic source only after explicit user approval.",
+    )
+    context_migrate.add_argument("--json", action="store_true")
+
     p_topology = sub.add_parser(
         "topology",
         help="Plan or explicitly apply a repository component-root migration without changing architecture classification",
@@ -533,6 +562,42 @@ def main(argv: list[str] | None = None) -> int:
             if result.outcome == "NON_CONFORMANT":
                 return 5
             return 6
+        if args.command == "context":
+            if args.context_command == "status":
+                _emit(context_status(args.path), args.json)
+                return 0
+            if args.context_command == "check":
+                try:
+                    check_context(args.path)
+                except ContextProjectionError as exc:
+                    _emit({"status": "FAIL", "error": str(exc)}, args.json)
+                    return 8
+                _emit({"status": "PASS", "state": "ACTIVE"}, args.json)
+                return 0
+            if args.context_command == "repair":
+                try:
+                    result = repair_context(args.path)
+                except ContextProjectionError as exc:
+                    _emit({"status": "FAIL", "error": str(exc)}, args.json)
+                    return 8
+                _emit(result, args.json)
+                return 0
+            try:
+                result = migrate_context(
+                    args.path,
+                    args.input,
+                    user_approved_source_replacement=args.user_approved_source_replacement,
+                )
+            except ContextProjectionError as exc:
+                status = (
+                    "USER_DECISION_REQUIRED"
+                    if str(exc).startswith("USER_DECISION_REQUIRED:")
+                    else "FAIL"
+                )
+                _emit({"status": status, "error": str(exc)}, args.json)
+                return 7 if status == "USER_DECISION_REQUIRED" else 8
+            _emit(result, args.json)
+            return 7 if result.get("status") == "SOURCE_INPUT_REQUIRED" else 0
         if args.command == "topology":
             repo = discover_repository(args.path)
             result = migrate_topology(

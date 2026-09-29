@@ -11,8 +11,20 @@ PTSIP has two non-interchangeable policy classes.
 - PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
 - The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
 - Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
-- Developer planning authority is `developer/planning/index.yaml` and version control planes under `developer/planning/<version>/index.yaml`. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?$`.
-- `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
+- Developer planning registry is `developer/planning/index.yaml`. It may intentionally contain `plans: []` when no development plan is active. Version control planes are created under `developer/planning/<version>/index.yaml` only after a new plan is materialized from policy. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?# AGENTS.md
+
+These instructions apply to coding agents working anywhere in this repository.
+
+## Developer Policy vs Support Feature Policy
+
+PTSIP has two non-interchangeable policy classes.
+
+- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
+- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`; repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.
+- PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
+- The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
+- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
+ when a plan exists.\n- `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
 
 ## Mandatory developer policy entry
 
@@ -39,6 +51,35 @@ Rules:
 - `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
 - Re-run resolution after changing task scope, operation class, or branch context.
 
+
+## Canonical repository-local PTSIP namespace
+
+For repository-local state semantically owned by PTSIP, `.ptsip/` is the only canonical control-plane root. Enter through `.ptsip/index.json` before discovering PTSIP-owned repository namespaces. Canonical PTSIP namespace indexes use JSON.
+
+Rules:
+
+- Do not create a parallel PTSIP Task, Policy, Operation, registry, configuration, or execution-state root under `tools/`, `scripts/`, `automation/`, or another repository path.
+- Repository tooling implementations may physically live outside `.ptsip/`; their PTSIP-owned registration, bindings, contracts, and lifecycle state belong under the canonical `.ptsip/` namespace.
+- `.ptsip/profiles/index.json` is the canonical local Project Profile catalog. The former `.ptsip/profiles/index.yaml` is compatibility-only migration input and must not be emitted by new writes.
+- `.ptsip/tasks/index.json` currently advertises a reserved/unavailable Task capability. That state is fail-closed for dependent Task execution and does not authorize inventing a repository-specific Task Engine.
+- `.ptsip/runtime/` is reserved as the repository-local PTSIP runtime namespace. Its exact persistence semantics are not finalized by Tool 0.3.8a2; do not move runtime authority into a second top-level control-plane root.
+
+## Mandatory Context Plane transition entry
+
+When `MEMORY.md` or `.ptsip/context/` is present, do not infer migration or deletion behavior from filenames. Resolve the machine state first:
+
+```text
+ptsip context status . --json
+```
+
+Rules:
+
+- `MEMORY.md` is not a normal operational context source. It may be read only when the status authorizes `MIGRATE_LEGACY_MEMORY_TO_SOURCE` or `PREPARE_CANONICAL_SOURCE_FROM_LEGACY_MEMORY`.
+- `.ptsip/context/source/context.source.json` is the semantic source of truth. `context.json`, `context.jsonl`, and `context.schema.json` are generated projections and are not independent authority.
+- `PROJECTION_REPAIR_REQUIRED` authorizes `ptsip context repair .` without a user question because the correct projections are deterministic consequences of the semantic source.
+- A semantic choice, conflict, or replacement of an existing canonical source is not preauthorized. Ask the user and use `--user-approved-source-replacement` only after explicit approval.
+- Legacy `MEMORY.md` deletion is allowed only after Context Plane validation succeeds. Migration failure must leave it intact.
+- Direct projection editing is forbidden during normal operation. A temporary emergency direct edit requires explicit user approval and must be replaced by generated projections plus a successful `ptsip context check .` before release.
 
 ## Mandatory PTSIP Agent Contract entry
 
@@ -157,7 +198,7 @@ The resolver reads the current Git branch and performs an exact lookup against `
 Rules:
 
 - Exact mapping only. Do not infer a WU from branch prefixes, suffixes, naming similarity, `current_gate`, nearby files, or historical context.
-- A nonzero resolver result is fail-closed. Do not choose another planning document manually.
+- A nonzero resolver result is fail-closed. When the root registry contains `plans: []`, `UNKNOWN_PLANNING_ENTRY` is the expected no-active-plan state; do not infer or resurrect a historical plan. A new plan must be materialized and registered before version-specific planning work continues.
 - Re-run the resolver after every branch switch before continuing version-specific work.
 - On `INDEPENDENT_LEAF`, the returned WU document is the branch entry point; do not substitute the integration plan's current gate.
 - On `INTEGRATION_CONTROL_PLANE`, enter through the returned version index and follow its machine-readable routing.
@@ -192,7 +233,7 @@ Normal entry order:
 
 Repository state and memory use the provider-neutral Context Plane under `.ptsip/context/`. The single semantic write target is `.ptsip/context/source/context.source.json`; `context.json`, `context.jsonl`, and `context.schema.json` are deterministic generated projections and are never independent authority.
 Choose `context.json` or `context.jsonl` according to the consuming agent's supported machine-input shape. `context.schema.json` is their shared machine contract. No projection format is privileged by provider. Do not edit generated projections directly.
-Use `python -m developer.automation.context_projection write --input <source.json>` for a single semantic write, `python -m developer.automation.context_projection sync` after an authorized source edit, and `python -m developer.automation.context_projection check` to fail closed on source-binding, byte, schema, or semantic-equivalence drift. Historical memory is targeted context; do not replay the complete memory set unless an explicitly resolved operation requires full-history analysis.
+Use `ptsip context migrate . --input <source.json>` for a single semantic write, `ptsip context repair .` after an authorized source edit, and `ptsip context check .` to fail closed on source-binding, byte, schema, or semantic-equivalence drift. Historical memory is targeted context; do not replay the complete memory set unless an explicitly resolved operation requires full-history analysis.
 Planning documents and context memory records are operational or historical context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
 
 ## License Authority entry discipline
@@ -451,7 +492,7 @@ A complete local declaration is not sufficient reason to skip relevant distribut
 
 ## Read-only default and mutation safety
 
-Inspection and Pilot behavior are read-only by default. Tool-owned caches, reports, and local decision databases stay outside the Consumer Repository unless explicitly directed otherwise.
+Inspection and Pilot behavior are read-only by default. Read-only commands do not materialize repository-local state. External temporary caches and reports may remain outside the Consumer Repository, but when repository-local PTSIP runtime state is explicitly persisted, its canonical ownership namespace is `.ptsip/runtime/`; an external cache or working directory must not become a second repository control-plane authority.
 
 Prepared profile writes must reject stale repository/profile state. Do not combine evidence from different revisions into one stable claim.
 

@@ -13,6 +13,11 @@ from ...local_profile_catalog import (
     canonical_new_profile_path,
     default_catalog_text,
 )
+from ...repository.namespace import (
+    REPOSITORY_INDEX,
+    default_repository_index_text,
+    load_repository_index,
+)
 from ...profile_metadata import current_project_profile_ptsip_metadata
 from ...validation.profile import _schema, find_profile, validate_profile
 from ...validation.templates import materialize_profile
@@ -41,6 +46,9 @@ class PreparedLocalProfile:
     catalog_path: Path | None = None
     catalog_content: str | None = None
     expected_catalog_source: str | None = None
+    repository_index_path: Path | None = None
+    repository_index_content: str | None = None
+    expected_repository_index_source: str | None = None
 
 
 def _base_profile() -> dict[str, object]:
@@ -316,6 +324,9 @@ def prepare_local_profile(
     catalog_path: Path | None = None
     catalog_content: str | None = None
     expected_catalog_source: str | None = None
+    repository_index_path: Path | None = None
+    repository_index_content: str | None = None
+    expected_repository_index_source: str | None = None
     if profile_path is None and profile == canonical_new_profile_path(root):
         catalog_path = root / LOCAL_PROFILE_CATALOG.as_posix()
         expected_catalog_source = (
@@ -325,6 +336,17 @@ def prepare_local_profile(
         )
         catalog_content = default_catalog_text()
 
+        repository_index_path = root / REPOSITORY_INDEX.as_posix()
+        expected_repository_index_source = (
+            repository_index_path.read_text(encoding="utf-8-sig")
+            if repository_index_path.is_file()
+            else None
+        )
+        if expected_repository_index_source is None:
+            repository_index_content = default_repository_index_text()
+        else:
+            load_repository_index(root)
+
     return PreparedLocalProfile(
         profile,
         content,
@@ -332,6 +354,9 @@ def prepare_local_profile(
         catalog_path,
         catalog_content,
         expected_catalog_source,
+        repository_index_path,
+        repository_index_content,
+        expected_repository_index_source,
     )
 
 
@@ -359,6 +384,18 @@ def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
                 "refusing to overwrite concurrent changes"
             )
 
+    if prepared.repository_index_path is not None:
+        current_repository_index = (
+            prepared.repository_index_path.read_text(encoding="utf-8-sig")
+            if prepared.repository_index_path.is_file()
+            else None
+        )
+        if current_repository_index != prepared.expected_repository_index_source:
+            raise RuntimeError(
+                f"{prepared.repository_index_path} changed after decision projection validation; "
+                "refusing to overwrite concurrent changes"
+            )
+
     prepared.path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(
         "w",
@@ -372,12 +409,13 @@ def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
         handle.write(prepared.content)
 
     catalog_temp: Path | None = None
+    repository_index_temp: Path | None = None
     try:
         if prepared.catalog_path is not None and prepared.catalog_content is not None:
             prepared.catalog_path.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.NamedTemporaryFile(
                 "w",
-                suffix=".yaml",
+                suffix=".json",
                 dir=prepared.catalog_path.parent,
                 delete=False,
                 encoding="utf-8",
@@ -386,14 +424,34 @@ def write_prepared_local_profile(prepared: PreparedLocalProfile) -> Path:
                 catalog_temp = Path(catalog_handle.name)
                 catalog_handle.write(prepared.catalog_content)
 
+        if (
+            prepared.repository_index_path is not None
+            and prepared.repository_index_content is not None
+        ):
+            prepared.repository_index_path.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile(
+                "w",
+                suffix=".json",
+                dir=prepared.repository_index_path.parent,
+                delete=False,
+                encoding="utf-8",
+                newline="\n",
+            ) as index_handle:
+                repository_index_temp = Path(index_handle.name)
+                index_handle.write(prepared.repository_index_content)
+
         temp.replace(prepared.path)
         if catalog_temp is not None and prepared.catalog_path is not None:
             catalog_temp.replace(prepared.catalog_path)
+        if repository_index_temp is not None and prepared.repository_index_path is not None:
+            repository_index_temp.replace(prepared.repository_index_path)
     finally:
         if temp.exists():
             temp.unlink()
         if catalog_temp is not None and catalog_temp.exists():
             catalog_temp.unlink()
+        if repository_index_temp is not None and repository_index_temp.exists():
+            repository_index_temp.unlink()
     return prepared.path
 
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PTSIP"
-version = "0.3.8a1"
+version = "0.3.8a3"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -50,6 +50,7 @@ include = ["ptsip*", "vpms*", "agent_contracts*"]
 ptsip = [
   "specdata/*.json",
   "specdata/*.yaml",
+  "repository/schemas/*.json",
   "agent_contracts/*.yaml",
   "agent_contracts/schemas/*.json",
   "agent_contracts/spec/*.yaml",

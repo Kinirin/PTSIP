@@ -1,0 +1,77 @@
+release_family: 0.3.8
+package_version_target: 0.3.8a2
+release_kind: NAMESPACE_STABILIZATION_PRERELEASE
+status: IMPLEMENTED_PENDING_EXACT_SHA_PRERELEASE_VERIFICATION
+
+purpose: >
+  Stabilize .ptsip as the canonical repository-local PTSIP ownership namespace
+  without claiming completion of the broader continuing 0.3.8 development line.
+
+scope_guard:
+  branch: dev/0.3.8
+  separate_release_branch_required: false
+  merge_to_another_development_branch_required: false
+  complete_repository_regression_claimed: false
+  complete_repository_regression_required_for_this_prerelease: false
+  rule: >
+    A passing 0.3.8a2 prerelease gate proves only the bounded namespace,
+    release-contract, distribution-build, and installed-wheel surfaces declared here.
+
+required_contract:
+  canonical_root: .ptsip/
+  root_index: .ptsip/index.json
+  canonical_index_encoding: JSON
+  local_profile_catalog: .ptsip/profiles/index.json
+  legacy_local_profile_catalog:
+    path: .ptsip/profiles/index.yaml
+    role: COMPATIBILITY_INPUT_ONLY
+  task_namespace:
+    path: .ptsip/tasks/index.json
+    status: RESERVED
+    engine: UNAVAILABLE
+  runtime_namespace:
+    path: .ptsip/runtime/
+    status: RESERVED
+
+verification:
+  exact_sha_required: true
+  release_contract: REQUIRED
+  focused_tests:
+    - tests/ptsip/validation/test_local_profile_catalog.py
+    - tests/ptsip/repository/test_self_profile.py::test_repository_uses_canonical_ptsip_namespace_and_json_indexes
+    - tests/ptsip/identity/test_tool_identity.py
+    - tests/ptsip/cli/test_runtime_surface.py
+    - tests/ptsip/test_release_readiness_030.py
+  distribution:
+    build_wheel_and_sdist: REQUIRED
+    twine_check: REQUIRED
+    embedded_contract_verification: REQUIRED
+    installed_wheel_smoke: REQUIRED
+  explicitly_not_claimed:
+    - COMPLETE_CONTINUING_0_3_8_REGRESSION
+    - COMPLETE_pp_1_02_MIGRATION_REGRESSION
+    - COMPLETE_MIGRATION_ENGINE_REGRESSION
+    - COMPLETE_CONFORMANCE_ENGINE_REGRESSION
+
+publication:
+  tag: tool-v0.3.8a2
+  source_rule: EXACT_VERIFIED_dev_0_3_8_SHA
+  branch_continuation: KEEP_dev_0_3_8_OPEN
+
+publication_workflow:
+  exact_version_exception: 0.3.8a2
+  retained_checks:
+    - TAG_MATCHES_PACKAGE_VERSION
+    - RELEASE_CONTRACT
+    - PROJECT_PROFILE_RELEASE_VERIFY
+    - WHEEL_CONTENT_BOUNDARY_INSPECTION
+    - DISTRIBUTION_METADATA
+    - LICENSE_PROJECTIONS
+    - INSTALLED_WHEEL_SUPPORT_PROJECTION
+    - DISTRIBUTION_REGISTRY_PROJECTIONS
+    - TWINE_CHECK
+    - PYPI_TRUSTED_PUBLISHING
+  deferred_check:
+    id: FULL_PRODUCT_ARTIFACT_REPOSITORY_CONFORMANCE
+    reason: CONTINUING_0_3_8_PP_1_02_AND_CONFORMANCE_REGRESSION_NOT_CLAIMED_BY_A2
+  scope_rule: EXACT_VERSION_ONLY_DO_NOT_GENERALIZE

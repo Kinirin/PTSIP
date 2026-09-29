@@ -9,6 +9,7 @@ from ptsip.clarification.generator import analyze_clarifications
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.profile_metadata import current_project_profile_ptsip_metadata
+from ptsip.repository.namespace import load_repository_index
 from ptsip.validation.profile import validate_profile
 from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
@@ -284,3 +285,27 @@ def test_provider_neutral_context_plane_replaces_legacy_repository_state() -> No
     assert (context_root / "context.schema.json").is_file()
 
 
+
+
+def test_repository_uses_canonical_ptsip_namespace_and_json_indexes() -> None:
+    repository_index = load_repository_index(REPO_ROOT)
+    assert repository_index is not None
+    assert repository_index["format"] == "ptsip-repository-index/v1"
+    assert repository_index["namespaces"] == {
+        "profiles": {"status": "ACTIVE", "index": "profiles/index.json"},
+        "context": {"status": "ACTIVE", "root": "context/"},
+        "tasks": {"status": "RESERVED", "index": "tasks/index.json"},
+        "runtime": {"status": "RESERVED", "root": "runtime/"},
+    }
+    assert (REPO_ROOT / ".ptsip" / "profiles" / "index.json").is_file()
+    assert not (REPO_ROOT / ".ptsip" / "profiles" / "index.yaml").exists()
+    task_index = json.loads(
+        (REPO_ROOT / ".ptsip" / "tasks" / "index.json").read_text(encoding="utf-8")
+    )
+    assert task_index == {
+        "format": "ptsip-task-index/v1alpha1",
+        "status": "RESERVED",
+        "engine": "UNAVAILABLE",
+        "tasks": [],
+        "operations": [],
+    }

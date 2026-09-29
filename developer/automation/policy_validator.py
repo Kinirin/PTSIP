@@ -433,9 +433,9 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     if mpd_ids != tuple(sorted(mpd_ids)):
         errors.append("developer policy index MPD identities must be in canonical ascending order")
 
-    expected_sfp_ids = tuple(f"SFP-{number:04d}" for number in range(1, 22))
+    expected_sfp_ids = tuple(f"SFP-{number:04d}" for number in range(1, 23))
     if sfp_ids != expected_sfp_ids:
-        errors.append("support policy index must contain SFP-0001 through SFP-0021 in order")
+        errors.append("support policy index must contain SFP-0001 through SFP-0022 in order")
 
     all_policy_ids = set(mpd_ids) | set(sfp_ids)
     if len(all_policy_ids) != len(mpd_ids) + len(sfp_ids):

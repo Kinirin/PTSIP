@@ -143,6 +143,26 @@
       "status": "ACTIVE",
       "subject": "provider-neutral-context-plane",
       "type": "CONTEXT_PLANE_ACTIVATED"
+    },
+    {
+      "data": {
+        "deterministic_projection_repair": "PREAUTHORIZED",
+        "emergency_direct_projection_repair": "USER_EXPLICIT_TEMPORARY_ONLY",
+        "legacy_memory_deletion": "POST_VALIDATION_ONLY",
+        "semantic_conflict": "USER_DECISION_REQUIRED",
+        "tool_version": "0.3.8a3"
+      },
+      "format": "ptsip-memory-event/v1",
+      "id": "PTSIP-MEM-000008",
+      "recorded_on": "2026-09-29",
+      "refs": [
+        "docs/Support_policy/policy/SFP-0022.yaml",
+        "src/ptsip/context_plane.py",
+        "releasenote/tool/0.3.8a3.md"
+      ],
+      "status": "ACTIVE",
+      "subject": "tool-0.3.8a3/context-plane-migration",
+      "type": "CONTEXT_MIGRATION_SEMANTICS_HARDENED"
     }
   ],
   "projection_policy": {
@@ -171,7 +191,7 @@
     },
     "context_plane": {
       "canonical_source": ".ptsip/context/source/context.source.json",
-      "check_entry": "python -m developer.automation.context_projection check",
+      "check_entry": "ptsip context check . --json",
       "projection_authority": "NON_AUTHORITATIVE",
       "projections": {
         "json": ".ptsip/context/context.json",
@@ -179,8 +199,9 @@
         "schema_json": ".ptsip/context/context.schema.json"
       },
       "status": "ACTIVE",
-      "sync_entry": "python -m developer.automation.context_projection sync",
-      "write_entry": "python -m developer.automation.context_projection write --input <source.json>"
+      "status_entry": "ptsip context status . --json",
+      "sync_entry": "ptsip context repair . --json",
+      "write_entry": "ptsip context migrate . --input <source.json> --json"
     },
     "format": "ptsip-project-state/v1",
     "legacy_markdown_state": {
@@ -207,10 +228,10 @@
     },
     "status": "CURRENT",
     "tool": {
-      "prerelease": "0.3.8a1",
+      "prerelease": "0.3.8a3",
       "stable": "0.3.7"
     },
-    "updated_on": "2026-09-25",
+    "updated_on": "2026-09-29",
     "verification": {
       "last_verified_scope": "M8_AGENT_CONTRACT_TRANSITION",
       "last_verified_source_sha": "1a60598f2bd43e32fa656f0227f2b4ddd0dfeed3",

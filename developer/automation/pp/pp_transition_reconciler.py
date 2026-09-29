@@ -14,7 +14,7 @@ from typing import Mapping, Sequence
 import yaml
 
 from developer.automation.policy_loader import repository_root
-from developer.automation.pp_transition_delta import (
+from developer.automation.pp.pp_transition_delta import (
     GitIndexSnapshot,
     GitSnapshot,
     PPTransitionDeltaError,

@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 from dataclasses import replace
 
-from developer.automation.pp_transition_delta import (
+from developer.automation.pp.pp_transition_delta import (
     AuthorityState,
     PublicProfileEntry,
     evaluate_t2_authority_delta,
