@@ -1,0 +1,87 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+completion_evidence:
+  - "USER_EXPLICIT completion handoff: 3914cba74ea4438e76e6593237f94ababb5685ba"
+  - "Exact baseline classification: work_unit.regression_baseline_classification"
+
+work_unit:
+  id: WU-01
+  title: Prerelease planning topology bootstrap
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: []
+
+  objective: >-
+    Make developer/planning/0.3.8/0.3.8a3 the exact planning entry for
+    dev/0.3.8a3 without restoring root-level planning as a canonical source.
+
+  scope:
+    primary:
+      - developer/planning/index.yaml
+      - developer/planning/schemas/
+      - developer/automation/planning/
+      - developer/planning/0.3.8/0.3.8a3/
+    verification_remediation:
+      - tests/ptsip/conformance/**
+    preserve:
+      - existing dev/0.3.8 planning semantics where still active
+    forbidden:
+      - NEW_CANONICAL_PLAN_UNDER_ROOT_PLANNING_DIRECTORY
+
+  required_changes:
+    - SUPPORT_NESTED_DEVELOPMENT_LINE_AND_PRERELEASE_PLANNING_PATH
+    - SUPPORT_EXACT_PRERELEASE_BRANCH_IDENTITY_DEV_0_3_8A3
+    - RESOLVE_DEV_0_3_8A3_TO_THIS_PLAN_INDEX
+    - KEEP_UNKNOWN_OR_AMBIGUOUS_BRANCH_RESOLUTION_FAIL_CLOSED
+    - REMOVE_NEW_PLAN_DEPENDENCY_ON_ROOT_LEVEL_PLANNING_MARKDOWN
+    - PRESERVE_BACKWARD_COMPATIBILITY_FOR_EXISTING_VALID_PLANNING_RECORDS
+
+  reasoning_boundary:
+    fixed:
+      - CANONICAL_PLAN_LOCATION_IS_DEVELOPER_PLANNING_0_3_8_0_3_8A3
+      - INTEGRATION_BRANCH_IS_DEV_0_3_8A3
+      - BRANCH_TO_PLAN_RESOLUTION_IS_EXACT
+      - UNKNOWN_OR_AMBIGUOUS_BRANCH_RESOLUTION_FAILS_CLOSED
+      - ROOT_LEVEL_PLANNING_IS_NOT_A_NEW_CANONICAL_PLAN_TARGET
+    bounded_reasoning:
+      - PRERELEASE_BRANCH_GRAMMAR_IMPLEMENTATION
+      - MECHANICAL_STALE_REFERENCE_REMEDIATION_UNDER_TESTS_PTSIP_CONFORMANCE
+      - NESTED_PLANNING_PATH_SCHEMA_EXTENSION_METHOD
+      - PLANNING_ENTRY_RESOLVER_INTERNAL_STRUCTURE
+      - BACKWARD_COMPATIBILITY_IMPLEMENTATION
+    candidate_only:
+      - NEW_GENERALIZED_PRERELEASE_PLANNING_ABSTRACTION_BEYOND_0_3_8A3_REQUIREMENTS
+    escalation_required:
+      - CONFORMANCE_TEST_CHANGE_THAT_ALTERS_NORMATIVE_EXPECTATION
+      - CHANGE_OF_CANONICAL_PLAN_LOCATION
+      - CHANGE_OF_INTEGRATION_BRANCH_IDENTITY
+      - WEAKENING_EXACT_BRANCH_RESOLUTION
+      - RETIRING_EXISTING_VALID_PLANNING_SEMANTICS_WITHOUT_EXPLICIT_AUTHORITY
+
+  regression_baseline_classification:
+    exact_pre_wu01_baseline_sha: f55fcfa97f362520e642ed60f1f4f9fcd585e9a8
+    comparison_head_sha: c695c7e7071a39532778327bbc6179c4db7e4795
+    compared_failure_nodes: 23
+    result:
+      PRE_EXISTING_REGRESSION_DEBT: 23
+      WU01_INTRODUCED_REGRESSION: 0
+      CHANGED_FAILURE: 0
+      UNRESOLVED: 0
+    failure_signature_match: true
+    classification_source: USER_REPORTED_EXACT_SHA_ISOLATED_COMPARISON
+    pre_existing_debt_blocks_wu01_completion: false
+    failure_waiver_created: false
+    debt_must_remain_visible_for_plan_level_regression_gate: true
+
+  acceptance:
+    - planning entry resolver returns developer/planning/0.3.8/0.3.8a3/index.yaml for dev/0.3.8a3
+    - validators accept prerelease path and branch without weakening exact matching
+    - developer/planning/index.yaml can route to the prerelease plan after bootstrap
+    - root-level planning is not required for plan resolution
+    - focused planning regression tests pass
+    - WU-01 introduces zero regressions relative to the exact pre-WU-01 baseline
+    - pre-existing regression debt remains tracked separately and is not reclassified as WU-01 failure

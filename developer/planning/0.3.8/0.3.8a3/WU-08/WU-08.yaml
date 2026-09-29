@@ -1,0 +1,538 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-08
+  title: Conformance cutover and 0.3.8a3 readiness gate
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle: {status: BLOCKED}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-06, WU-07]
+
+  objective: >-
+    Prove conformance to the approved semantic baseline, activate the language-neutral contract authority only when cutover requirements are met, and establish a bounded readiness result for a future Go canonical runtime candidate without freezing Python implementation evolution.
+
+  canonical_serialization_decision:
+    status: ADOPTED
+    scheme: PTSIP_CANONICAL_JSON_V1
+    authority_source: USER_EXPLICIT
+    policy_ref: MPD-0015
+    fixed_rules:
+      - UTF_8
+      - BOM_FORBIDDEN
+      - DUPLICATE_OBJECT_KEYS_FORBIDDEN
+      - DETERMINISTIC_OBJECT_MEMBER_ORDER
+      - ARRAY_ELEMENT_ORDER_PRESERVED
+      - INSIGNIFICANT_WHITESPACE_FORBIDDEN_IN_CANONICAL_OUTPUT
+      - AMBIGUOUS_OR_UNSUPPORTED_INPUT_FAILS_CLOSED
+    adopted_subrules:
+      number:
+        option: N2
+        model: EXACT_DECIMAL_VALUE
+        binary_floating_point_conversion_for_canonicalization: FORBIDDEN
+        negative_zero: NORMALIZE_TO_ZERO
+        canonical_decimal_lexical_form:
+          option: L2
+          model: NORMALIZED_EXACT_SCIENTIFIC
+          zero: "0"
+          exactly_one_nonzero_digit_before_decimal_point: true
+          lowercase_exponent_marker: true
+          exponent_plus_sign: FORBIDDEN
+          exponent_leading_zeroes: FORBIDDEN
+          trailing_fractional_zeroes: FORBIDDEN
+          rounding: FORBIDDEN
+      unicode:
+        option: U2
+        normalization: NFC
+        applies_to: [OBJECT_MEMBER_NAMES, STRING_VALUES]
+        compatibility_normalization: FORBIDDEN
+        post_normalization_object_key_collision: FAIL_CLOSED
+      string_escape:
+        option: E1
+        model: MINIMAL_UTF8_ESCAPE
+        non_control_unicode: EMIT_UTF8
+        unnecessary_unicode_escape: FORBIDDEN
+        lone_surrogate: FAIL_CLOSED
+    unresolved_subrules: []
+    canonical_serialization_semantics_status: COMPLETE
+    canonical_digest_status: UNRESOLVED
+    activation_blocked_until_digest_and_other_required_checks_resolved: true
+
+  canonical_digest_decision:
+    management_model:
+      option: D-B
+      model: SINGLE_ACTIVE_WITH_ALGORITHM_AGILITY
+      status: ADOPTED
+      authority_source: USER_EXPLICIT
+    registry:
+      multiple_registered_schemes_allowed: true
+      multiple_digest_emission_allowed: true
+      roles: [CANONICAL, SUPPORTED, RETIRED]
+      canonical_role_cardinality: EXACTLY_ONE_ACTIVE
+    canonical_use:
+      semantic_equality: ACTIVE_CANONICAL_ONLY
+      stale_state_detection: ACTIVE_CANONICAL_ONLY
+      evidence_binding: ACTIVE_CANONICAL_ONLY
+      noncanonical_fallback: FORBIDDEN
+    scheme_identity_components:
+      - NORMATIVE_SEMANTIC_PROJECTION
+      - PTSIP_CANONICAL_JSON_V1
+      - HASH_ALGORITHM
+      - OUTPUT_ENCODING
+    active_scheme: UNRESOLVED
+    normative_semantic_projection: UNRESOLVED
+    overall_digest_semantics_status: PARTIALLY_RESOLVED
+
+    projection:
+      id: PTSIP_NORMATIVE_SEMANTIC_PROJECTION_V1
+      collection_order:
+        option: C3
+        model: MEANING_AWARE_COLLECTION_ORDER
+        collection_type_must_be_explicit: true
+        set_like:
+          ordering: DETERMINISTIC_SORT
+          strategy: S2_PRIMARY_S3_EXACT_BINDING_EXCEPTION
+          primary:
+            option: S2
+            model: STABLE_SEMANTIC_IDENTITY
+            identity_contract: UNRESOLVED
+            missing_or_invalid_identity: FAIL_CLOSED
+          exception:
+            option: S3
+            model: COLLECTION_EXACT_SORT_BINDING
+            explicit_exception_required: true
+            exact_bindings: UNRESOLVED
+            automatic_exception_inference: FORBIDDEN
+            missing_binding: FAIL_CLOSED
+        ordered:
+          ordering: PRESERVE_DECLARED_ORDER
+        unclassified_collection: FAIL_CLOSED
+      field_governance:
+        model: P2_PLUS_P3_DUAL_GUARD
+        include_allowlist_required: true
+        exclude_denylist_veto: true
+        eligible_only_when_included_and_not_excluded: true
+        include_exclude_overlap:
+          classification: POLICY_CONFLICT
+          behavior: FAIL_CLOSED
+          digest_generation_allowed: false
+        unclassified_field: FAIL_CLOSED
+        ai_auto_admission: FORBIDDEN
+        exact_include_list:
+          option: I3
+          model: SEMANTIC_ROLE_WITH_EXACT_BINDING
+          semantic_role_registry_required: true
+          exact_binding_required: true
+          automatic_binding_inference: FORBIDDEN
+          unresolved_role_or_binding: FAIL_CLOSED
+          exact_semantic_roles: UNRESOLVED
+          exact_role_bindings: UNRESOLVED
+        exact_exclude_list:
+          option: E3
+          model: SEMANTIC_ROLE_WITH_EXACT_BINDING
+          semantic_role_registry_required: true
+          exact_binding_required: true
+          automatic_binding_inference: FORBIDDEN
+          unresolved_role_or_binding: FAIL_CLOSED
+          exact_semantic_roles: UNRESOLVED
+          exact_role_bindings: UNRESOLVED
+
+    selected_digest_components:
+      hash_algorithm: SHA_256
+      output_encoding: LOWERCASE_HEXADECIMAL
+      digest_size_bits: 256
+      output_length_characters: 64
+      active_scheme_activation: BLOCKED_UNTIL_PROJECTION_COMPLETE
+
+  semantic_baseline:
+    comparison_target: CURRENT_APPROVED_SEMANTIC_BASELINE
+    python_is_reference_implementation_not_authority: true
+    python_may_change_during_plan_execution: true
+    conformance_recheck_required_after_relevant_python_change: true
+    semantic_baseline_may_not_be_silently_redefined_by_python_changes: true
+
+  reasoning_boundary:
+    fixed:
+      - ALL_REQUIRED_CONFORMANCE_DIMENSIONS_MUST_PASS_FOR_CUTOVER
+      - UNKNOWN_REQUIRED_SEMANTICS_BLOCKS_CUTOVER
+      - DUAL_NORMATIVE_AUTHORITY_IS_FORBIDDEN
+      - PYTHON_REMOVAL_WITHOUT_SEPARATE_AUTHORIZATION_BY_THIS_WORK_UNIT_IS_FORBIDDEN
+      - PYTHON_EVOLUTION_IS_ALLOWED_WHEN_SEMANTIC_CONFORMANCE_IS_PRESERVED
+      - TESTS_MAY_NOT_REDEFINE_CONTRACT_SEMANTICS
+      - GO_RUNTIME_IMPLEMENTATION_IS_OUTSIDE_THIS_WORK_UNIT
+      - FINAL_.PTSIP_RUNTIME_PERSISTENCE_SEMANTICS_ARE_NOT_CLAIMED
+    bounded_reasoning:
+      - TEST_VECTOR_SELECTION
+      - EDGE_CASE_EXPANSION
+      - REGRESSION_TARGET_SELECTION
+      - CONFORMANCE_TEST_ORGANIZATION
+      - DIAGNOSTIC_EVIDENCE_PRESENTATION
+    candidate_only:
+      - ADDITIONAL_CONFORMANCE_VECTOR
+      - NEW_NEGATIVE_TEST_CASE
+      - FUTURE_GO_RUNTIME_READINESS_REQUIREMENT
+    escalation_required:
+      - CONTRACT_AND_PYTHON_SEMANTIC_MISMATCH_WITH_NO_EXISTING_AUTHORITY
+      - REQUEST_TO_WAIVE_A_REQUIRED_CONFORMANCE_FAILURE
+      - REQUEST_TO_REMOVE_PYTHON_WITHOUT_SEPARATE_AUTHORIZATION
+      - PYTHON_CHANGE_THAT_REQUIRES_NEW_NORMATIVE_SEMANTICS
+      - REQUEST_TO_ACTIVATE_GO_AS_CANONICAL_RUNTIME
+      - REQUEST_TO_FINALIZE_.PTSIP_RUNTIME_PERSISTENCE
+
+  approved_conformance_test_scope:
+    path: tests/ptsip/conformance/**
+    operations: [MODIFY, VERIFY]
+    mechanical_reference_remediation_allowed: true
+    normative_expectation_change_allowed_without_applicable_authority: false
+
+  inherited_regression_debt_gate:
+    source: PLAN_0_3_8A3_PRE_EXISTING_REGRESSION_DEBT
+    current_known_count: 23
+    debt_origin: PRE_WU_01
+    debt_is_wu01_regression: false
+    failure_waiver_created: false
+    cutover_may_ignore_required_pre_existing_regression_debt: false
+    required_action_before_cutover:
+      - REVALIDATE_APPLICABLE_REGRESSION_DEBT
+      - RESOLVE_OR_OBTAIN_SEPARATE_EXPLICIT_AUTHORITY_FOR_ANY_NON_APPLICABLE_CLASSIFICATION
+
+  required_verification:
+    - CONTRACT_SCHEMA_VALIDATION
+    - EXACT_IDENTITY_AND_REFERENCE_RESOLUTION
+    - PYTHON_IMPLEMENTATION_BINDING_RESOLUTION
+    - INPUT_OUTPUT_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE
+    - EFFECT_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE
+    - FAILURE_SEMANTIC_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE
+    - STATE_TRANSITION_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE
+    - EXECUTION_FEEDBACK_LOOP_PASS
+    - REASONING_PROMOTION_BOUNDARY_PASS
+    - NEGATIVE_UNBOUND_SCOPE_TESTS
+    - REGRESSION_TEST_MODE_PASS
+
+  cutover:
+    activate_json_contract_authority_only_if_all_required_checks_pass: true
+    legacy_yaml_after_cutover: MIGRATION_REFERENCE_ONLY
+    dual_normative_authority: FORBIDDEN
+    python_removal_by_this_work_unit: FORBIDDEN
+    python_implementation_evolution: ALLOWED_WHEN_CONFORMANT
+    unresolved_required_semantics: BLOCK_CUTOVER
+
+  go_runtime_candidate:
+    role: CANONICAL_RUNTIME_CANDIDATE_READINESS
+    implementation_in_this_work_unit: false
+    readiness_requires_language_neutral_contract_and_conformance_vectors: true
+    separate_plan_extension_or_explicit_authorization_for_implementation: true
+
+  release_gate:
+    prerelease: "0.3.8a3"
+    must_not_claim:
+      - COMPLETE_GENERIC_REPOSITORY_TASK_ENGINE_IF_NOT_IMPLEMENTED
+      - GO_CANONICAL_RUNTIME_IF_NOT_IMPLEMENTED
+      - PYTHON_REMOVAL
+      - FINAL_.PTSIP_RUNTIME_PERSISTENCE_SEMANTICS
+
+
+verification_observations:
+  source_head_sha: 4e8214b398df38c001c82fa8d8fb2fdbd99764c4
+  overall: BLOCKED
+  json_authority_activated: false
+  go_canonical_runtime_activated: false
+  python_removed: false
+  runtime_persistence_finalized: false
+  failure_waiver_created: false
+  required_checks:
+    CONTRACT_SCHEMA_VALIDATION:
+      status: PASS
+      evidence: All candidate and source assets validate; 15 specs, 156 rules, 5 operations, 18 actions, 23 conditions,
+        3 gates, 15 I/O schemas, 5 vocabularies.
+    EXACT_IDENTITY_AND_REFERENCE_RESOLUTION:
+      status: PASS
+      evidence: All five registered operation identities resolve exactly; candidate parity and negative resolution
+        tests pass.
+    PYTHON_IMPLEMENTATION_BINDING_RESOLUTION:
+      status: PASS
+      evidence: 18 action locators resolve; zero required bound condition evaluators; four declared CLI entrypoints.
+        Callable resolution alone is not behavioral conformance.
+    INPUT_OUTPUT_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE:
+      status: UNKNOWN
+      evidence: Migration-parity vectors preserve declarations; complete observed operation input/output conformance
+        is not established.
+    EFFECT_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE:
+      status: UNKNOWN
+      evidence: WU-06 observes migration effects, but complete cross-operation runtime effect conformance is not
+        established.
+    FAILURE_SEMANTIC_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE:
+      status: UNKNOWN
+      evidence: Declared failure routes are preserved and negative feedback/promotion tests pass; full operation
+        failure-vector coverage is not established.
+    STATE_TRANSITION_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE:
+      status: UNKNOWN
+      evidence: Scoped execution ledger transitions pass; parity vectors do not prove all operation runtime transitions.
+    EXECUTION_FEEDBACK_LOOP_PASS:
+      status: PASS
+      evidence: 10 focused WU-06 tests pass; existing authorization and checkpoint/effect evidence are revalidated.
+    REASONING_PROMOTION_BOUNDARY_PASS:
+      status: PASS
+      evidence: 46 focused WU-07 tests pass; trusted caller verifiers and explicit current authorized cases are
+        required; no normative authority created.
+    NEGATIVE_UNBOUND_SCOPE_TESTS:
+      status: PASS
+      evidence: 35 MPD-0015 scope tests in the selected ptsip-contract mode pass; no inferred parent or sibling
+        scope.
+    REGRESSION_TEST_MODE_PASS:
+      status: FAIL
+      evidence: 'Eight automatically selected modes: 751 passed, 43 failed, two collection errors. Known debt is
+        retained without waiver.'
+  automatic_test_modes:
+    ptsip-contract:
+      passed: 142
+      failed: 1
+      errors: 0
+    repository-architecture:
+      passed: 0
+      failed: 0
+      errors: 2
+    ptsip-core:
+      passed: 320
+      failed: 23
+      errors: 0
+    ptsip-remediation:
+      passed: 55
+      failed: 0
+      errors: 0
+    vpms:
+      passed: 114
+      failed: 2
+      errors: 0
+    test-mode-control-plane:
+      passed: 38
+      failed: 0
+      errors: 0
+    repository-release:
+      passed: 14
+      failed: 2
+      errors: 0
+    ptsip-migration:
+      passed: 68
+      failed: 15
+      errors: 0
+  regression_attribution:
+    original_core_debt:
+      count: 23
+      exact_pre_wu01_sha: f55fcfa97f362520e642ed60f1f4f9fcd585e9a8
+      established_comparison_head: c695c7e7071a39532778327bbc6179c4db7e4795
+      revalidated_current_count: 23
+      materially_changed_causes: 0
+      normalization:
+      - test temporary paths
+      - path-derived clarification IDs
+      - object addresses
+      - truncated diagnostic path repr
+    additional_mode_failures:
+      count: 20
+      baseline_sha: 3914cba74ea4438e76e6593237f94ababb5685ba
+      current_signatures_match_prior_verified_observations: true
+    architecture_collection_errors:
+      count: 2
+      baseline_sha: 3914cba74ea4438e76e6593237f94ababb5685ba
+      paths:
+      - developer/tests/test_developer_control_plane.py
+      - developer/tests/test_emergency_entry_routing.py
+      causes:
+      - developer.automation.planning_validator import is stale
+      - developer.automation.planning_entry_resolver import is stale
+    additional_architecture_debt: WU-02 regression_observations retains 17 separately diagnosed failures; the current
+      full architecture mode cannot collect and is not PASS.
+    observed_new_automatic_test_failures: 0
+    failed_nodes:
+      ptsip-contract:
+      - tests/ptsip/contracts/test_spec_assets.py::test_example_profile_validates_against_canonical_schema
+      ptsip-core:
+      - tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt
+      - tests/ptsip/control_plane/test_github_authority.py::test_github_adoption_winner_reconciles_into_stale_clone
+      - tests/ptsip/control_plane/test_local_control_plane.py::test_gate_and_resolve_use_local_control_plane_without_server_or_github_origin
+      - tests/ptsip/control_plane/test_local_control_plane.py::test_local_first_valid_resolution_cannot_be_replaced
+      - tests/ptsip/identity/test_pp_102_current_contract.py::test_repository_default_profile_resolves_through_local_catalog
+      - tests/ptsip/identity/test_project_profile_compatibility.py::test_current_target_is_pp_identity_not_tool_draft_identity
+      - tests/ptsip/identity/test_project_profile_identity.py::test_legacy_and_pp_schemas_are_separate_canonical_embedded_pairs
+      - tests/ptsip/identity/test_project_profile_identity.py::test_pp_1_01_schema_is_identity_only_structural_peer_of_legacy_schema
+      - tests/ptsip/identity/test_project_profile_identity.py::test_pp_1_01_historical_baseline_remains_valid_and_immutable
+      - tests/ptsip/identity/test_specification_binding.py::test_pp_and_specification_capabilities_are_independent_authorities
+      - tests/ptsip/integration/test_adoption_clarification_control_plane.py::test_repeated_gate_does_not_reopen_applied_architecture
+      - tests/ptsip/integration/test_clarification_adoption_effective_map_integration.py::TestG5RecoveryAndIntegration::test_repeated_gate_does_not_reopen_effectively_declared_architecture
+      - tests/ptsip/validation/test_profile_correctness.py::test_explicit_profile_revision_must_match_tool_binding
+      - tests/ptsip/validation/test_specification_binding_validation.py::test_current_profile_validation_uses_explicit_specification_capability
+      - tests/ptsip/validation/test_specification_binding_validation.py::test_current_profile_unknown_exact_revision_fails_capability_closed
+      - tests/ptsip/validation/test_specification_binding_validation.py::test_current_pp_schema_requires_explicit_family
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_036_canonical_converges_in_place_as_identity_only
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_034_source_targets_pp101_directly_without_historical_hops
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_existing_legacy_036_target_is_reused_for_pp101
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_equivalent_legacy_and_pp_targets_fail_closed
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_synthetic_intermediate_tool_target_is_not_replayed
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_current_pp101_profile_is_already_converged
+      - tests/ptsip/repository/test_profile_convergence_037.py::test_direct_convergence_snapshot_detects_target_change
+      vpms:
+      - tests/vpms/architecture/test_packaging_035.py::test_setuptools_discovery_includes_vpms_responsibility_packages
+      - tests/vpms/integration/test_repository_self_adoption_035.py::test_registered_pytest_nodeids_exist_in_real_repository_module
+      repository-release:
+      - tests/ptsip/test_release_readiness_030.py::test_historical_036_operational_context_remains_exact
+      - tests/ptsip/test_release_readiness_030.py::test_release_contract_accepts_current_exact_bound_assets
+      ptsip-migration:
+      - tests/ptsip/migration/test_analyzer_037.py::test_default_target_semantics_use_current_pp_contract_not_spec_family
+      - tests/ptsip/migration/test_direct_convergence_037.py::test_identity_only_bridge_does_not_invoke_semantic_migration
+      - tests/ptsip/migration/test_direct_convergence_037.py::test_semantic_direct_convergence_requires_normalized_evidence
+      - tests/ptsip/migration/test_direct_convergence_037.py::test_semantic_direct_convergence_binds_pp_target_not_tool_draft
+      - tests/ptsip/migration/test_direct_convergence_037.py::test_legacy_target_alias_is_projected_as_logical_pp_target_for_analysis
+      - tests/ptsip/migration/test_direct_convergence_037.py::test_toolchain_ambiguity_survives_direct_convergence
+      - tests/ptsip/migration/test_direct_execution_037.py::test_legacy_alias_runs_direct_pp_execution_and_atomic_promotion
+      - tests/ptsip/migration/test_direct_planner_037.py::test_planned_direct_final_point_skips_all_intermediate_versions
+      - tests/ptsip/migration/test_direct_planner_037.py::test_existing_legacy_target_is_one_logical_pp_final_point
+      - tests/ptsip/migration/test_direct_planner_037.py::test_identity_only_bridge_is_rejected_by_semantic_direct_planner
+      - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_changes_only_contract_identity_and_validates
+      - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_requires_exact_authorized_plan
+      - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_fails_closed_if_repository_changes_after_plan
+      - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_rolls_back_original_bytes_on_post_validation_failure
+      - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_authority_revision_must_be_explicit
+  blocking_findings:
+  - id: CANONICAL_SEMANTICS_UNRESOLVED
+    path: src/agent_contracts/index.json
+    fields:
+    - canonical_serialization
+    - canonical_digest
+    status: UNRESOLVED
+    reasoning_boundary: ESCALATION_REQUIRED
+    authority_reference: WU-03.reasoning_boundary.escalation_required.UNRESOLVED_CANONICAL_SERIALIZATION_OR_DIGEST_SEMANTICS_REQUIRED_FOR_ACTIVATION
+    remediation: Applicable authority must define the missing normative semantics before activation; deterministic
+      formatting is not sufficient.
+  - id: REQUIRED_CONFORMANCE_NOT_PROVEN
+    path: src/agent_contracts/conformance/current.json
+    status: UNKNOWN
+    reasoning_boundary: ALL_REQUIRED_CONFORMANCE_DIMENSIONS_MUST_PASS_FOR_CUTOVER
+    remediation: Obtain observed full-operation input/output, effect, failure and transition evidence against the
+      approved baseline; do not promote parity checks to behavioral proof.
+  - id: REQUIRED_REGRESSION_GATE_FAILED
+    status: FAIL
+    reasoning_boundary: REQUEST_TO_WAIVE_A_REQUIRED_CONFORMANCE_FAILURE
+    remediation: Retain and remediate applicable debt or follow separate explicit authority for non-applicability;
+      no waiver requested or created.
+  evidence_limits:
+  - Installed package asset loading is now verified; full-operation behavioral conformance and cutover readiness
+    remain gated.
+  - Trusted promotion verifier fixtures do not establish arbitrary candidate semantics.
+  - 'No work packet: task_context must be a mapping; no task context invented.'
+  planning_validation: PASS
+  resolved_findings:
+  - id: NEW_JSON_ASSETS_MISSING_FROM_DISTRIBUTION
+    path: pyproject.toml
+    status: PASS
+    classification: MECHANICAL_PACKAGING_REMEDIATION
+    authorization_source: USER_EXPLICIT
+    previously_missing_resources:
+    - agent_contracts/index.json
+    - agent_contracts/contracts/current.json
+    - agent_contracts/conformance/current.json
+    - agent_contracts/schemas/candidate-index.schema.json
+    - agent_contracts/schemas/candidate-group.schema.json
+    - agent_contracts/schemas/candidate-vectors.schema.json
+    - agent_contracts/promotion/current.json
+    - ptsip/agent_contracts/bindings/python.json
+    evidence: Wheel and sdist include all eight resources byte-identically. Isolated installed-wheel validation
+      resolves all five operations and 18 action bindings; promotion policy schema validates. Distribution contract
+      verification PASS.
+    normative_authority_activated: false
+mechanical_scope_remediation:
+  authority_source: USER_EXPLICIT
+  pre_change_head_sha: da3d8b771b0fbc489b0cad7bf5c6216e0f318610
+  scope: pyproject.toml package-data and its policy/planning/verification records
+  normative_semantic_change: false
+  failure_waiver_created: false
+  validation:
+    scope_boundary_tests:
+      passed: 36
+    policy_resolver_tests:
+      passed: 46
+    wheel_build: PASS
+    sdist_build: PASS
+    wheel_and_sdist_eight_asset_byte_parity: PASS
+    existing_distribution_contract_verifier: PASS
+    isolated_installed_wheel_resolver_and_binding_smoke: PASS
+    policy_binding_registry: PASS
+    planning: PASS
+  automatic_modes:
+    ptsip-contract:
+      passed: 143
+      failed: 1
+    repository-architecture:
+      collection_errors: 2
+    repository-release:
+      passed: 14
+      failed: 2
+  failure_attribution: Same failure nodes and signatures as the prior full run. No new observed regression; full
+    core mode was not selected or repeated for this packaging-only change.
+  policy_validation:
+    status: FAIL
+    classification: PRE_EXISTING_PROVENANCE_SCHEMA_ERROR
+    baseline_sha: da3d8b771b0fbc489b0cad7bf5c6216e0f318610
+    path: developer/policy/approvals/MPA-20260927-MPD-0015-CONFORMANCE-TEST-SCOPE.yaml
+    error: Additional properties are not allowed ('approved_change' was unexpected)
+    existing_approval_payload_preserved: true
+    approval_schema_changed: false
+  remaining_cutover_result: BLOCKED
+
+regression_debt_remediation:
+  authority_source: USER_EXPLICIT
+  request: REMEDIATE_PRE_EXISTING_REGRESSION_DEBT
+  status: REQUIRES_EXECUTION_REVERIFICATION
+  failure_waiver_created: false
+  expands_mpd_0015_inherited_scope: false
+  normative_semantic_change_authorized: false
+  mechanical_remediations_applied:
+    - developer/policy/approvals/MPA-20260927-MPD-0015-CONFORMANCE-TEST-SCOPE.yaml
+    - developer/tests/test_developer_control_plane.py
+    - developer/tests/test_emergency_entry_routing.py
+    - developer/tests/test_policy_provenance_retirement.py
+    - developer/tests/test_project_profile_registry.py
+    - developer/tests/test_self_profile_bridge_removal.py
+    - tests/vpms/architecture/test_packaging_035.py
+    - tests/vpms/integration/test_repository_self_adoption_035.py
+    - tests/ptsip/contracts/test_spec_assets.py
+    - tests/ptsip/identity/test_project_profile_identity.py
+    - tests/ptsip/identity/test_project_profile_compatibility.py
+    - tests/ptsip/identity/test_specification_binding.py
+    - tests/ptsip/validation/test_profile_correctness.py
+    - tests/ptsip/validation/test_specification_binding_validation.py
+    - tests/ptsip/test_release_readiness_030.py
+    - tests/ptsip/control_plane/test_local_control_plane.py
+    - tests/ptsip/control_plane/test_github_authority.py
+  mechanical_basis:
+    - CURRENT_MACHINE_REGISTRY_OR_SCHEMA_PATH
+    - CURRENT_PP_1_02_AUTHORITY
+    - CURRENT_LOCAL_PROFILE_CATALOG_RULE
+    - CURRENT_PACKAGE_DISCOVERY
+    - CURRENT_COMPACT_AGENT_ENTRY
+    - CURRENT_POLICY_PROVENANCE_SCHEMA
+  semantic_debt_not_auto_modified:
+    - id: HISTORICAL_PP_1_01_TO_CURRENT_PP_1_02_MIGRATION_COMPOSITION
+      observed_cluster: tests/ptsip/migration/**
+      reason: HISTORICAL_BRIDGES_EXPLICITLY_TARGET_PP_1_01_WHILE_CURRENT_PP_IS_PP_1_02_AND_TRANSITION_IS_SEMANTIC_MIGRATION
+      classification: SEMANTIC_REMEDIATION_REQUIRED
+    - id: AGENT_NAMESPACE_PROJECT_PROFILE_OWNERSHIP
+      observed_path: .agent/**
+      reason: CURRENT_REPOSITORY_PROFILE_HAS_NO_EXPLICIT_OWNER_FOR_AGENT_NAMESPACE
+      classification: PROJECT_AUTHORITY_REQUIRED
+    - id: FULL_RUNTIME_BEHAVIORAL_CONFORMANCE
+      reason: MIGRATION_PARITY_DOES_NOT_PROVE_ALL_OPERATION_RUNTIME_BEHAVIOR
+      classification: CONFORMANCE_EVIDENCE_REQUIRED
+  revalidation_required:
+    - POLICY_VALIDATION
+    - REPOSITORY_ARCHITECTURE_MODE
+    - PTSIP_CONTRACT_MODE
+    - PTSIP_CORE_MODE
+    - VPMS_MODE
+    - REPOSITORY_RELEASE_MODE
+    - PTSIP_MIGRATION_MODE
+  note: >-
+    These remediations remove stale mechanical expectations only. They do not
+    establish WU-08 PASS until executed verification confirms the new state.

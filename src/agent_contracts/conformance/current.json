@@ -1,0 +1,987 @@
+{
+  "format": "ptsip-machine-contract-candidate-vectors/v1",
+  "status": "CANDIDATE",
+  "normative_authority": false,
+  "purpose": "MIGRATION_PARITY",
+  "operations": {
+    "PTSIP-OP-ADOPT-001": [
+      {
+        "ref": "/payloads/operations/PTSIP-OP-ADOPT-001/input_schema_ref",
+        "expected": "PTSIP-IO-ADOPT-REQUEST-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-ADOPT-001/output_schema_ref",
+        "expected": "PTSIP-IO-ADOPT-RESULT-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-ADOPT-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-ADOPT-001/entry_step",
+        "expected": "SNAPSHOT"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-ADOPT-001/steps",
+        "expected": [
+          {
+            "step_id": "SNAPSHOT",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001",
+            "input_bindings": {
+              "/context": "$input#/context"
+            },
+            "on_success": {
+              "step_ref": "ANALYZE"
+            }
+          },
+          {
+            "step_id": "ANALYZE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001",
+            "input_bindings": {
+              "/context": "$step:SNAPSHOT#/context",
+              "/snapshot_identified": "$step:SNAPSHOT#/snapshot_identified"
+            },
+            "on_success": {
+              "step_ref": "FACTS"
+            }
+          },
+          {
+            "step_id": "FACTS",
+            "type": "CONDITION",
+            "condition_ref": "PTSIP-COND-ADOPT-FACTS-RESOLVED-001",
+            "input_bindings": {
+              "/context": "$step:ANALYZE#/context",
+              "/facts_resolved": "$step:ANALYZE#/facts_resolved"
+            },
+            "branches": {
+              "TRUE": {
+                "step_ref": "PREPARE"
+              },
+              "FALSE": {
+                "outcome": "CLARIFICATION_REQUIRED"
+              },
+              "UNKNOWN": {
+                "outcome": "CLARIFICATION_REQUIRED"
+              }
+            }
+          },
+          {
+            "step_id": "PREPARE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-BUILD-ADOPTION-PLAN-001",
+            "input_bindings": {
+              "/context": "$step:ANALYZE#/context",
+              "/snapshot_identified": "$step:ANALYZE#/snapshot_identified",
+              "/facts_resolved": "$step:ANALYZE#/facts_resolved"
+            },
+            "on_success": {
+              "step_ref": "APPLY-REQUESTED"
+            }
+          },
+          {
+            "step_id": "APPLY-REQUESTED",
+            "type": "CONDITION",
+            "condition_ref": "PTSIP-COND-ADOPT-APPLY-REQUESTED-001",
+            "input_bindings": {
+              "/context": "$step:PREPARE#/context"
+            },
+            "branches": {
+              "TRUE": {
+                "step_ref": "APPLY"
+              },
+              "FALSE": {
+                "outcome": "READY"
+              },
+              "UNKNOWN": {
+                "outcome": "READY"
+              }
+            }
+          },
+          {
+            "step_id": "APPLY",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-APPLY-ADOPTION-001",
+            "input_bindings": {
+              "/context": "$step:PREPARE#/context",
+              "/facts_resolved": "$step:PREPARE#/facts_resolved",
+              "/repository_fresh": "$step:PREPARE#/repository_fresh",
+              "/profile_fresh": "$step:PREPARE#/profile_fresh",
+              "/authority_fresh": "$step:PREPARE#/authority_fresh",
+              "/plan_ready": "$step:PREPARE#/plan_ready"
+            },
+            "mutation_gate_ref": "PTSIP-GATE-ADOPTION-WRITE-001",
+            "mutation_gate_input_bindings": {
+              "/context": "$step:PREPARE#/context",
+              "/repository_fresh": "$step:PREPARE#/repository_fresh",
+              "/profile_fresh": "$step:PREPARE#/profile_fresh",
+              "/authority_fresh": "$step:PREPARE#/authority_fresh"
+            },
+            "on_success": {
+              "outcome": "APPLIED"
+            }
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-ADOPT-001/outcomes",
+        "expected": [
+          "READY",
+          "APPLIED",
+          "CLARIFICATION_REQUIRED",
+          "PROFILE_INVALID",
+          "AUTHORITY_PROFILE_CONFLICT",
+          "STALE_STATE",
+          "WRITE_NOT_AUTHORIZED",
+          "SNAPSHOT_UNAVAILABLE",
+          "COORDINATION_UNAVAILABLE"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001/postconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-ADOPT-SNAPSHOT-IDENTIFIED-001",
+            "on_false": "SNAPSHOT_UNAVAILABLE",
+            "on_unknown": "SNAPSHOT_UNAVAILABLE"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-CAPTURE-REPOSITORY-SNAPSHOT-001/failure_outcomes",
+        "expected": [
+          "SNAPSHOT_UNAVAILABLE"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-ADOPTION-FACTS-001/failure_outcomes",
+        "expected": [
+          "CLARIFICATION_REQUIRED",
+          "PROFILE_INVALID"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-ADOPTION-PLAN-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-ADOPTION-PLAN-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-ADOPTION-PLAN-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-ADOPTION-PLAN-001/failure_outcomes",
+        "expected": [
+          "PROFILE_INVALID"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-ADOPTION-001/effect",
+        "expected": "MUTATE"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-ADOPTION-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-ADOPTION-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-ADOPTION-001/failure_outcomes",
+        "expected": [
+          "STALE_STATE",
+          "WRITE_NOT_AUTHORIZED",
+          "PROFILE_INVALID"
+        ]
+      },
+      {
+        "ref": "/payloads/gates/PTSIP-GATE-ADOPTION-WRITE-001",
+        "expected": {
+          "format": "ptsip-agent-mutation-gate/v2",
+          "gate_id": "PTSIP-GATE-ADOPTION-WRITE-001",
+          "status": "CURRENT",
+          "input_schema_ref": "PTSIP-IO-ADOPT-STATE-001",
+          "strategy": "ALL_REQUIRED",
+          "requirements": [
+            {
+              "condition_ref": "PTSIP-COND-ADOPT-WRITE-AUTHORIZED-001",
+              "on_false": "WRITE_NOT_AUTHORIZED",
+              "on_unknown": "WRITE_NOT_AUTHORIZED"
+            },
+            {
+              "condition_ref": "PTSIP-COND-ADOPT-REPOSITORY-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "STALE_STATE"
+            },
+            {
+              "condition_ref": "PTSIP-COND-ADOPT-PROFILE-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "STALE_STATE"
+            },
+            {
+              "condition_ref": "PTSIP-COND-ADOPT-AUTHORITY-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "COORDINATION_UNAVAILABLE"
+            }
+          ]
+        }
+      }
+    ],
+    "PTSIP-OP-VALIDATE-001": [
+      {
+        "ref": "/payloads/operations/PTSIP-OP-VALIDATE-001/input_schema_ref",
+        "expected": "PTSIP-IO-VALIDATE-REQUEST-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-VALIDATE-001/output_schema_ref",
+        "expected": "PTSIP-IO-VALIDATE-RESULT-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-VALIDATE-001/preconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-VALIDATE-PROFILE-SELECTED-001",
+            "on_false": "PROFILE_INVALID",
+            "on_unknown": "PROFILE_INVALID"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-VALIDATE-001/entry_step",
+        "expected": "RESOLVE"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-VALIDATE-001/steps",
+        "expected": [
+          {
+            "step_id": "RESOLVE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001",
+            "input_bindings": {
+              "/context": "$input#/context",
+              "/profile_selected": "$input#/profile_selected"
+            },
+            "on_success": {
+              "step_ref": "STRUCTURE"
+            }
+          },
+          {
+            "step_id": "STRUCTURE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001",
+            "input_bindings": {
+              "/context": "$step:RESOLVE#/context",
+              "/contract_resolved": "$step:RESOLVE#/contract_resolved"
+            },
+            "on_success": {
+              "step_ref": "SEMANTICS"
+            }
+          },
+          {
+            "step_id": "SEMANTICS",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001",
+            "input_bindings": {
+              "/context": "$step:STRUCTURE#/context",
+              "/contract_resolved": "$step:STRUCTURE#/contract_resolved",
+              "/structure_valid": "$step:STRUCTURE#/structure_valid"
+            },
+            "on_success": {
+              "outcome": "VALID"
+            }
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-VALIDATE-001/outcomes",
+        "expected": [
+          "VALID",
+          "PROFILE_INVALID",
+          "UNSUPPORTED_PROFILE_CONTRACT",
+          "SCHEMA_RESOLUTION_FAILED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001/postconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-VALIDATE-CONTRACT-RESOLVED-001",
+            "on_false": "UNSUPPORTED_PROFILE_CONTRACT",
+            "on_unknown": "SCHEMA_RESOLUTION_FAILED"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-PROFILE-SCHEMA-001/failure_outcomes",
+        "expected": [
+          "UNSUPPORTED_PROFILE_CONTRACT",
+          "SCHEMA_RESOLUTION_FAILED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-PROFILE-STRUCTURE-001/failure_outcomes",
+        "expected": [
+          "PROFILE_INVALID"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-VALIDATE-RESPONSIBILITY-MAP-SEMANTICS-001/failure_outcomes",
+        "expected": [
+          "PROFILE_INVALID"
+        ]
+      }
+    ],
+    "PTSIP-OP-CONFORM-001": [
+      {
+        "ref": "/payloads/operations/PTSIP-OP-CONFORM-001/input_schema_ref",
+        "expected": "PTSIP-IO-CONFORM-REQUEST-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-CONFORM-001/output_schema_ref",
+        "expected": "PTSIP-IO-CONFORM-RESULT-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-CONFORM-001/preconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-CONFORM-PROFILE-READY-001",
+            "on_false": "INCOMPLETE",
+            "on_unknown": "INCOMPLETE"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-CONFORM-001/entry_step",
+        "expected": "COLLECT"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-CONFORM-001/steps",
+        "expected": [
+          {
+            "step_id": "COLLECT",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001",
+            "input_bindings": {
+              "/context": "$input#/context",
+              "/profile_ready": "$input#/profile_ready"
+            },
+            "on_success": {
+              "step_ref": "EVALUATE"
+            }
+          },
+          {
+            "step_id": "EVALUATE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001",
+            "input_bindings": {
+              "/context": "$step:COLLECT#/context",
+              "/snapshot_identified": "$step:COLLECT#/snapshot_identified",
+              "/evidence_collected": "$step:COLLECT#/evidence_collected"
+            },
+            "on_success": {
+              "step_ref": "EMIT"
+            }
+          },
+          {
+            "step_id": "EMIT",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001",
+            "input_bindings": {
+              "/context": "$step:EVALUATE#/context",
+              "/snapshot_identified": "$step:EVALUATE#/snapshot_identified",
+              "/evidence_collected": "$step:EVALUATE#/evidence_collected",
+              "/evaluation_complete": "$step:EVALUATE#/evaluation_complete",
+              "/outcome": "$step:EVALUATE#/outcome"
+            },
+            "on_success": {
+              "outcome_from": "$step:EMIT#/outcome"
+            }
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-CONFORM-001/outcomes",
+        "expected": [
+          "CONFORMANT",
+          "NON_CONFORMANT",
+          "INCOMPLETE",
+          "NOT_EVALUATED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001/postconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-CONFORM-SNAPSHOT-IDENTIFIED-001",
+            "on_false": "INCOMPLETE",
+            "on_unknown": "INCOMPLETE"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COLLECT-CONFORMANCE-EVIDENCE-001/failure_outcomes",
+        "expected": [
+          "INCOMPLETE"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EVALUATE-CONFORMANCE-RULES-001/failure_outcomes",
+        "expected": [
+          "NOT_EVALUATED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-EMIT-CONFORMANCE-RESULT-001/failure_outcomes",
+        "expected": [
+          "NOT_EVALUATED"
+        ]
+      }
+    ],
+    "PTSIP-OP-RECONCILE-AUTHORITY-001": [
+      {
+        "ref": "/payloads/operations/PTSIP-OP-RECONCILE-AUTHORITY-001/input_schema_ref",
+        "expected": "PTSIP-IO-AUTHORITY-REQUEST-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-RECONCILE-AUTHORITY-001/output_schema_ref",
+        "expected": "PTSIP-IO-AUTHORITY-RESULT-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-RECONCILE-AUTHORITY-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-RECONCILE-AUTHORITY-001/entry_step",
+        "expected": "READ"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-RECONCILE-AUTHORITY-001/steps",
+        "expected": [
+          {
+            "step_id": "READ",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-READ-RELEVANT-AUTHORITY-001",
+            "input_bindings": {
+              "/context": "$input#/context"
+            },
+            "on_success": {
+              "step_ref": "COMPARE"
+            }
+          },
+          {
+            "step_id": "COMPARE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001",
+            "input_bindings": {
+              "/context": "$step:READ#/context",
+              "/coordination_available": "$step:READ#/coordination_available"
+            },
+            "on_success": {
+              "step_ref": "DECIDE"
+            }
+          },
+          {
+            "step_id": "DECIDE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001",
+            "input_bindings": {
+              "/context": "$step:COMPARE#/context",
+              "/coordination_available": "$step:COMPARE#/coordination_available",
+              "/semantic_conflict_absent": "$step:COMPARE#/semantic_conflict_absent",
+              "/authority_fresh": "$step:COMPARE#/authority_fresh",
+              "/profile_fresh": "$step:COMPARE#/profile_fresh"
+            },
+            "on_success": {
+              "step_ref": "PROJECT-REQUIRED"
+            }
+          },
+          {
+            "step_id": "PROJECT-REQUIRED",
+            "type": "CONDITION",
+            "condition_ref": "PTSIP-COND-AUTH-PROJECTION-REQUIRED-001",
+            "input_bindings": {
+              "/context": "$step:DECIDE#/context",
+              "/projection_required": "$step:DECIDE#/projection_required",
+              "/reconciliation_outcome": "$step:DECIDE#/reconciliation_outcome"
+            },
+            "branches": {
+              "TRUE": {
+                "step_ref": "PROJECT"
+              },
+              "FALSE": {
+                "outcome_from": "$step:DECIDE#/reconciliation_outcome"
+              },
+              "UNKNOWN": {
+                "outcome": "COORDINATION_UNAVAILABLE"
+              }
+            }
+          },
+          {
+            "step_id": "PROJECT",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001",
+            "input_bindings": {
+              "/context": "$step:DECIDE#/context",
+              "/coordination_available": "$step:DECIDE#/coordination_available",
+              "/semantic_conflict_absent": "$step:DECIDE#/semantic_conflict_absent",
+              "/authority_fresh": "$step:DECIDE#/authority_fresh",
+              "/profile_fresh": "$step:DECIDE#/profile_fresh",
+              "/projection_required": "$step:DECIDE#/projection_required",
+              "/reconciliation_outcome": "$step:DECIDE#/reconciliation_outcome"
+            },
+            "mutation_gate_ref": "PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001",
+            "mutation_gate_input_bindings": {
+              "/context": "$step:DECIDE#/context",
+              "/semantic_conflict_absent": "$step:DECIDE#/semantic_conflict_absent",
+              "/authority_fresh": "$step:DECIDE#/authority_fresh",
+              "/profile_fresh": "$step:DECIDE#/profile_fresh"
+            },
+            "on_success": {
+              "outcome": "REMOTE_RESOLVED"
+            }
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-RECONCILE-AUTHORITY-001/outcomes",
+        "expected": [
+          "NO_REMOTE_DECISION",
+          "CONSISTENT",
+          "REMOTE_RESOLVED",
+          "AUTHORITY_PROFILE_CONFLICT",
+          "COORDINATION_UNAVAILABLE",
+          "STALE_STATE",
+          "WRITE_NOT_AUTHORIZED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-READ-RELEVANT-AUTHORITY-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-READ-RELEVANT-AUTHORITY-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-READ-RELEVANT-AUTHORITY-001/postconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-AUTH-COORDINATION-AVAILABLE-001",
+            "on_false": "COORDINATION_UNAVAILABLE",
+            "on_unknown": "COORDINATION_UNAVAILABLE"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-READ-RELEVANT-AUTHORITY-001/failure_outcomes",
+        "expected": [
+          "COORDINATION_UNAVAILABLE"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001/failure_outcomes",
+        "expected": [
+          "AUTHORITY_PROFILE_CONFLICT"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001/failure_outcomes",
+        "expected": [
+          "COORDINATION_UNAVAILABLE"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001/effect",
+        "expected": "MUTATE"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001/failure_outcomes",
+        "expected": [
+          "AUTHORITY_PROFILE_CONFLICT",
+          "COORDINATION_UNAVAILABLE",
+          "STALE_STATE",
+          "WRITE_NOT_AUTHORIZED"
+        ]
+      },
+      {
+        "ref": "/payloads/gates/PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001",
+        "expected": {
+          "format": "ptsip-agent-mutation-gate/v2",
+          "gate_id": "PTSIP-GATE-AUTHORITY-PROJECTION-WRITE-001",
+          "status": "CURRENT",
+          "input_schema_ref": "PTSIP-IO-AUTHORITY-STATE-001",
+          "strategy": "ALL_REQUIRED",
+          "requirements": [
+            {
+              "condition_ref": "PTSIP-COND-AUTH-WRITE-AUTHORIZED-001",
+              "on_false": "WRITE_NOT_AUTHORIZED",
+              "on_unknown": "WRITE_NOT_AUTHORIZED"
+            },
+            {
+              "condition_ref": "PTSIP-COND-AUTH-AUTHORITY-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "COORDINATION_UNAVAILABLE"
+            },
+            {
+              "condition_ref": "PTSIP-COND-AUTH-PROFILE-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "STALE_STATE"
+            },
+            {
+              "condition_ref": "PTSIP-COND-AUTH-SEMANTIC-CONFLICT-ABSENT-001",
+              "on_false": "AUTHORITY_PROFILE_CONFLICT",
+              "on_unknown": "AUTHORITY_PROFILE_CONFLICT"
+            }
+          ]
+        }
+      }
+    ],
+    "PTSIP-OP-MIGRATE-PROFILE-001": [
+      {
+        "ref": "/payloads/operations/PTSIP-OP-MIGRATE-PROFILE-001/input_schema_ref",
+        "expected": "PTSIP-IO-MIGRATE-REQUEST-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-MIGRATE-PROFILE-001/output_schema_ref",
+        "expected": "PTSIP-IO-MIGRATE-RESULT-001"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-MIGRATE-PROFILE-001/preconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-MIG-SOURCE-PROFILE-IDENTIFIED-001",
+            "on_false": "UNSUPPORTED_SOURCE",
+            "on_unknown": "UNSUPPORTED_SOURCE"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-MIGRATE-PROFILE-001/entry_step",
+        "expected": "ANALYZE"
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-MIGRATE-PROFILE-001/steps",
+        "expected": [
+          {
+            "step_id": "ANALYZE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001",
+            "input_bindings": {
+              "/context": "$input#/context",
+              "/source_profile_identified": "$input#/source_profile_identified"
+            },
+            "on_success": {
+              "step_ref": "MAP"
+            }
+          },
+          {
+            "step_id": "MAP",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-MAP-PROFILE-TARGET-001",
+            "input_bindings": {
+              "/context": "$step:ANALYZE#/context",
+              "/target_contract_resolved": "$step:ANALYZE#/target_contract_resolved",
+              "/source_fresh": "$step:ANALYZE#/source_fresh",
+              "/target_fresh": "$step:ANALYZE#/target_fresh"
+            },
+            "on_success": {
+              "step_ref": "PREPARE"
+            }
+          },
+          {
+            "step_id": "PREPARE",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-BUILD-TRANSITION-PLAN-001",
+            "input_bindings": {
+              "/context": "$step:MAP#/context",
+              "/target_contract_resolved": "$step:MAP#/target_contract_resolved",
+              "/source_fresh": "$step:MAP#/source_fresh",
+              "/target_fresh": "$step:MAP#/target_fresh"
+            },
+            "on_success": {
+              "step_ref": "APPLY-REQUESTED"
+            }
+          },
+          {
+            "step_id": "APPLY-REQUESTED",
+            "type": "CONDITION",
+            "condition_ref": "PTSIP-COND-MIG-APPLY-REQUESTED-001",
+            "input_bindings": {
+              "/context": "$step:PREPARE#/context"
+            },
+            "branches": {
+              "TRUE": {
+                "step_ref": "APPLY"
+              },
+              "FALSE": {
+                "outcome": "READY"
+              },
+              "UNKNOWN": {
+                "outcome": "READY"
+              }
+            }
+          },
+          {
+            "step_id": "APPLY",
+            "type": "ACTION",
+            "action_ref": "PTSIP-ACT-APPLY-PROFILE-TRANSITION-001",
+            "input_bindings": {
+              "/context": "$step:PREPARE#/context",
+              "/target_contract_resolved": "$step:PREPARE#/target_contract_resolved",
+              "/source_fresh": "$step:PREPARE#/source_fresh",
+              "/target_fresh": "$step:PREPARE#/target_fresh",
+              "/plan_ready": "$step:PREPARE#/plan_ready"
+            },
+            "mutation_gate_ref": "PTSIP-GATE-PROFILE-TRANSITION-WRITE-001",
+            "mutation_gate_input_bindings": {
+              "/context": "$step:PREPARE#/context",
+              "/source_fresh": "$step:PREPARE#/source_fresh",
+              "/target_fresh": "$step:PREPARE#/target_fresh"
+            },
+            "on_success": {
+              "outcome": "APPLIED"
+            }
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/operations/PTSIP-OP-MIGRATE-PROFILE-001/outcomes",
+        "expected": [
+          "READY",
+          "APPLIED",
+          "OWNER_DECISION_REQUIRED",
+          "UNSUPPORTED_SOURCE",
+          "STALE_STATE",
+          "WRITE_NOT_AUTHORIZED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001/postconditions",
+        "expected": [
+          {
+            "condition_ref": "PTSIP-COND-MIG-TARGET-CONTRACT-RESOLVED-001",
+            "on_false": "UNSUPPORTED_SOURCE",
+            "on_unknown": "UNSUPPORTED_SOURCE"
+          }
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001/failure_outcomes",
+        "expected": [
+          "UNSUPPORTED_SOURCE"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-MAP-PROFILE-TARGET-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-MAP-PROFILE-TARGET-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-MAP-PROFILE-TARGET-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-MAP-PROFILE-TARGET-001/failure_outcomes",
+        "expected": [
+          "OWNER_DECISION_REQUIRED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-TRANSITION-PLAN-001/effect",
+        "expected": "READ_ONLY"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-TRANSITION-PLAN-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-TRANSITION-PLAN-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-BUILD-TRANSITION-PLAN-001/failure_outcomes",
+        "expected": [
+          "OWNER_DECISION_REQUIRED"
+        ]
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-PROFILE-TRANSITION-001/effect",
+        "expected": "MUTATE"
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-PROFILE-TRANSITION-001/preconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-PROFILE-TRANSITION-001/postconditions",
+        "expected": []
+      },
+      {
+        "ref": "/payloads/actions/PTSIP-ACT-APPLY-PROFILE-TRANSITION-001/failure_outcomes",
+        "expected": [
+          "STALE_STATE",
+          "WRITE_NOT_AUTHORIZED"
+        ]
+      },
+      {
+        "ref": "/payloads/gates/PTSIP-GATE-PROFILE-TRANSITION-WRITE-001",
+        "expected": {
+          "format": "ptsip-agent-mutation-gate/v2",
+          "gate_id": "PTSIP-GATE-PROFILE-TRANSITION-WRITE-001",
+          "status": "CURRENT",
+          "input_schema_ref": "PTSIP-IO-MIGRATE-STATE-001",
+          "strategy": "ALL_REQUIRED",
+          "requirements": [
+            {
+              "condition_ref": "PTSIP-COND-MIG-WRITE-AUTHORIZED-001",
+              "on_false": "WRITE_NOT_AUTHORIZED",
+              "on_unknown": "WRITE_NOT_AUTHORIZED"
+            },
+            {
+              "condition_ref": "PTSIP-COND-MIG-SOURCE-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "STALE_STATE"
+            },
+            {
+              "condition_ref": "PTSIP-COND-MIG-TARGET-FRESH-001",
+              "on_false": "STALE_STATE",
+              "on_unknown": "STALE_STATE"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

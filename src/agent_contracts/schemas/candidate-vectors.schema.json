@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "normative_authority",
+    "purpose",
+    "operations"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-machine-contract-candidate-vectors/v1"
+    },
+    "status": {
+      "const": "CANDIDATE"
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "purpose": {
+      "const": "MIGRATION_PARITY"
+    },
+    "operations": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ref",
+            "expected"
+          ],
+          "properties": {
+            "ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expected": {}
+          }
+        }
+      }
+    }
+  }
+}

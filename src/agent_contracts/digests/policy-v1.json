@@ -1,0 +1,126 @@
+{
+  "format": "ptsip-digest-policy/v1",
+  "id": "PTSIP-DIGEST-POLICY-V1",
+  "status": "CANDIDATE",
+  "normative_authority": false,
+  "activation": "REQUIRES_VERIFIED_CUTOVER",
+  "management_model": "SINGLE_ACTIVE_WITH_ALGORITHM_AGILITY",
+  "registry": {
+    "multiple_registered_schemes_allowed": true,
+    "multiple_digest_emission_allowed": true,
+    "scheme_roles": [
+      "CANONICAL",
+      "SUPPORTED",
+      "RETIRED"
+    ],
+    "canonical_role_cardinality": "EXACTLY_ONE_ACTIVE"
+  },
+  "canonical_identity_use": {
+    "semantic_equality": "ACTIVE_CANONICAL_ONLY",
+    "stale_state_detection": "ACTIVE_CANONICAL_ONLY",
+    "evidence_binding": "ACTIVE_CANONICAL_ONLY",
+    "silent_fallback_to_noncanonical_scheme": "FORBIDDEN"
+  },
+  "scheme_identity_components": [
+    "NORMATIVE_SEMANTIC_PROJECTION",
+    "CANONICAL_SERIALIZATION",
+    "HASH_ALGORITHM",
+    "OUTPUT_ENCODING"
+  ],
+  "canonical_serialization_ref": "../canonicalization/ptsip-canonical-json-v1.json",
+  "active_scheme": "UNRESOLVED",
+  "unresolved_active_scheme_behavior": "FAIL_CLOSED",
+  "unresolved": [
+    "PROJECTION_EXACT_INCLUSION_SEMANTIC_ROLES",
+    "PROJECTION_EXACT_INCLUSION_ROLE_BINDINGS",
+    "ACTIVE_DIGEST_SCHEME",
+    "PROJECTION_EXACT_EXCLUSION_SEMANTIC_ROLES",
+    "PROJECTION_EXACT_EXCLUSION_ROLE_BINDINGS",
+    "SET_LIKE_STABLE_SEMANTIC_IDENTITY_CONTRACT",
+    "SET_LIKE_EXACT_EXCEPTION_SORT_BINDINGS"
+  ],
+  "projection_policy": {
+    "projection_id": "PTSIP_NORMATIVE_SEMANTIC_PROJECTION_V1",
+    "status": "PARTIALLY_RESOLVED",
+    "field_governance": {
+      "model": "EXPLICIT_INCLUDE_WITH_EXPLICIT_EXCLUDE_VETO",
+      "inclusion_policy": "EXPLICIT_ALLOWLIST_REQUIRED",
+      "exclusion_policy": "EXPLICIT_DENYLIST_VETO",
+      "eligibility_rule": "INCLUDED_AND_NOT_EXCLUDED",
+      "exclusion_precedence": "VETO",
+      "unclassified_field_behavior": "FAIL_CLOSED",
+      "automatic_ai_field_classification": "FORBIDDEN",
+      "semantic_similarity_field_admission": "FORBIDDEN",
+      "exact_inclusion_list": {
+        "option": "I3",
+        "model": "SEMANTIC_ROLE_WITH_EXACT_BINDING",
+        "semantic_role_registry_required": true,
+        "exact_binding_required_for_extraction": true,
+        "automatic_binding_inference": "FORBIDDEN",
+        "unresolved_role_or_binding_behavior": "FAIL_CLOSED",
+        "exact_semantic_roles": "UNRESOLVED",
+        "exact_role_bindings": "UNRESOLVED"
+      },
+      "exact_exclusion_list": {
+        "option": "E3",
+        "model": "SEMANTIC_ROLE_WITH_EXACT_BINDING",
+        "semantic_role_registry_required": true,
+        "exact_binding_required_for_exclusion": true,
+        "automatic_binding_inference": "FORBIDDEN",
+        "unresolved_role_or_binding_behavior": "FAIL_CLOSED",
+        "exact_semantic_roles": "UNRESOLVED",
+        "exact_role_bindings": "UNRESOLVED"
+      },
+      "include_exclude_overlap": {
+        "classification": "POLICY_CONFLICT",
+        "behavior": "FAIL_CLOSED",
+        "silent_exclusion": "FORBIDDEN",
+        "silent_inclusion": "FORBIDDEN",
+        "digest_generation_allowed": false
+      }
+    },
+    "collection_semantics": {
+      "option": "C3",
+      "model": "MEANING_AWARE_COLLECTION_ORDER",
+      "collection_type_must_be_explicit": true,
+      "allowed_collection_types": [
+        "SET_LIKE",
+        "ORDERED"
+      ],
+      "set_like": {
+        "canonical_ordering": "DETERMINISTIC_SORT",
+        "strategy": "STABLE_SEMANTIC_IDENTITY_PRIMARY_WITH_EXACT_BINDING_EXCEPTION",
+        "primary": {
+          "option": "S2",
+          "model": "STABLE_SEMANTIC_IDENTITY",
+          "stable_semantic_identity_required": true,
+          "identity_contract": "UNRESOLVED",
+          "missing_or_invalid_identity_behavior": "FAIL_CLOSED"
+        },
+        "exception": {
+          "option": "S3",
+          "model": "COLLECTION_EXACT_SORT_BINDING",
+          "use_only_when_primary_identity_model_not_applicable": true,
+          "explicit_exception_declaration_required": true,
+          "exact_sort_binding_required": true,
+          "automatic_exception_inference": "FORBIDDEN",
+          "exact_exception_bindings": "UNRESOLVED",
+          "missing_binding_behavior": "FAIL_CLOSED"
+        },
+        "undeclared_sort_behavior": "FAIL_CLOSED"
+      },
+      "ordered": {
+        "canonical_ordering": "PRESERVE_DECLARED_ORDER"
+      },
+      "unclassified_collection_behavior": "FAIL_CLOSED",
+      "ai_may_infer_collection_type": false
+    }
+  },
+  "selected_digest_components": {
+    "hash_algorithm": "SHA-256",
+    "output_encoding": "LOWERCASE_HEXADECIMAL",
+    "digest_size_bits": 256,
+    "output_length_characters": 64
+  },
+  "normative_semantic_projection_ref": "projection-v1.json"
+}

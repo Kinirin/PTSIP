@@ -219,6 +219,39 @@ scope_bindings:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
+    inherit_to_descendants: true
+    operations:
+      PLAN:
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - python_migration_reference
+        - implementation_authorization
+      MODIFY:
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - python_migration_reference
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - python_migration_reference
+        - implementation_authorization
+
   releasenote:
     default_refs:
       - policy_id: MPD-0006
@@ -407,6 +440,23 @@ scope_bindings:
           - transition_generation
           - verification_layers
 
+
+    inherit_to_descendants: false
+    operations:
+      MODIFY:
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - contract_artifact_representation
+        - implementation_role
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - contract_artifact_representation
+        - implementation_role
+        - implementation_authorization
 
   MANIFEST.in:
     default_refs:
@@ -699,3 +749,1433 @@ scope_bindings:
         sections:
           - branch_creation_authority
           - project_profile_independence
+
+  src/agent_contracts:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  src/ptsip/agent_contracts:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  src/ptsip/repository:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+        - python_migration_reference
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  src/ptsip/validation:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  developer/automation/planning:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: true
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+
+  developer/state:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: true
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+
+  tests/ptsip/agent_contracts:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  tests/ptsip/conformance:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  tests/ptsip/migration:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  tests/ptsip/repository:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+    inherit_to_descendants: true
+
+  tests/ptsip/validation:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+    inherit_to_descendants: true
+
+  developer/automation/policy_resolver.py:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: false
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - developer_policy_resolution_binding_boundary
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - developer_policy_resolution_binding_boundary
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - developer_policy_resolution_binding_boundary
+
+  developer/automation/repository_state_resolver.py:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: false
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+
+  developer/automation/implementation_work_packet.py:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: false
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+
+  developer/automation/implementation_workflows.yaml:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: false
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+
+  developer/automation/implementation_workflows.schema.json:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+      - distribution_boundary
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: false
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+        - distribution_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - implementation_authorization
+
+  src/ptsip/conformance.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - python_migration_reference
+    inherit_to_descendants: false
+
+  src/ptsip/conformance_engine.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+        - python_migration_reference
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+        - python_migration_reference
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+        - python_migration_reference
+    inherit_to_descendants: false
+
+  src/ptsip/conformance_audit.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - machine_contract_ownership
+        - execution_feedback_cycle
+    inherit_to_descendants: false
+
+  src/ptsip/validation_capture.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+    inherit_to_descendants: false
+
+  src/ptsip/artifact_evidence.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+    inherit_to_descendants: false
+
+  src/ptsip/lifecycle_evidence.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+    inherit_to_descendants: false
+
+  src/ptsip/review_evidence.py:
+    default_refs:
+    - policy_id: MPD-0010
+      sections:
+      - ptsip_design_priority
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - planning_boundary
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+      RELEASE:
+      - policy_id: MPD-0006
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0007
+        sections:
+        - authority_semantics
+      - policy_id: MPD-0010
+        sections:
+        - identity_and_resolution
+      MODIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+      VERIFY:
+      - policy_id: MPD-0010
+        sections:
+        - ptsip_design_priority
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - implementation_role
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+    inherit_to_descendants: false
+
+  developer/policy/MPD-0015.yaml:
+    default_refs:
+    - policy_id: MPD-0001
+      sections:
+      - namespace
+    - policy_id: MPD-0010
+      sections:
+      - normative_contract_architecture
+      - identity_and_resolution
+      - canonical_and_runtime_projection
+    inherit_to_descendants: false
+    operations:
+      PLAN:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+      - policy_id: MPD-0010
+        sections:
+        - normative_contract_architecture
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - developer_policy_resolution_binding_boundary
+        - implementation_language
+        - implementation_role
+        - canonical_runtime
+        - python_migration_reference
+        - implementation_authorization
+      MODIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+      - policy_id: MPD-0010
+        sections:
+        - normative_contract_architecture
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - developer_policy_resolution_binding_boundary
+        - implementation_language
+        - implementation_role
+        - canonical_runtime
+        - python_migration_reference
+        - implementation_authorization
+      VERIFY:
+      - policy_id: MPD-0001
+        sections:
+        - namespace
+      - policy_id: MPD-0010
+        sections:
+        - normative_contract_architecture
+        - identity_and_resolution
+        - canonical_and_runtime_projection
+      - policy_id: MPD-0015
+        sections:
+        - normative_authority
+        - machine_contract_ownership
+        - contract_artifact_representation
+        - mechanized_resolution_cycle
+        - execution_feedback_cycle
+        - reasoning_promotion_cycle
+        - developer_policy_resolution_binding_boundary
+        - implementation_language
+        - implementation_role
+        - canonical_runtime
+        - python_migration_reference
+        - implementation_authorization

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "normative_authority",
+    "payloads",
+    "failures"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-machine-contract-candidate-group/v1"
+    },
+    "status": {
+      "const": "CANDIDATE"
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "payloads": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "specs",
+        "operations",
+        "actions",
+        "conditions",
+        "gates",
+        "io_schemas",
+        "vocabularies"
+      ],
+      "properties": {
+        "specs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "operations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "actions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "gates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "io_schemas": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "vocabularies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "failures": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "preconditions",
+          "actions",
+          "gates",
+          "condition_branches"
+        ],
+        "properties": {
+          "preconditions": {
+            "type": "array"
+          },
+          "actions": {
+            "type": "object"
+          },
+          "gates": {
+            "type": "object"
+          },
+          "condition_branches": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

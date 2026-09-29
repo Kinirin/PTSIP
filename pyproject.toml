@@ -69,6 +69,15 @@ agent_contracts = [
   "gates/*.yaml",
   "vocabulary/*.yaml",
   "bindings/*.yaml",
+  "index.json",
+  "contracts/current.json",
+  "conformance/current.json",
+  "promotion/current.json",
+  "canonicalization/*.json",
+  "digests/*.json",
+  "schemas/candidate-index.schema.json",
+  "schemas/candidate-group.schema.json",
+  "schemas/candidate-vectors.schema.json",
 ]
 
 [project.optional-dependencies]

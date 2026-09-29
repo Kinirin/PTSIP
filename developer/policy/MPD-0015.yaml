@@ -1,0 +1,485 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0015
+  title: Language-Neutral Normative Authority and Implementation Migration
+  status: ACTIVE
+
+rules:
+  normative_authority:
+    implementation_language_owns_final_ptsip_rules: false
+    authority_owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+
+    machine_contract:
+      language_neutral: true
+      versioned: true
+      machine_readable: true
+      semantics_must_be_explicit: true
+      implementation_may_add_normative_semantics: false
+
+  machine_contract_ownership:
+    principle: EXTERNALLY_OBSERVABLE_PTSIP_SEMANTICS_ARE_MACHINE_CONTRACT_AUTHORITY
+    owns:
+      - RULE_MEANING
+      - STATE_MEANING
+      - INPUT_STRUCTURE
+      - OUTPUT_STRUCTURE
+      - ALLOWED_STATE_TRANSITIONS
+      - PRECONDITIONS
+      - POSTCONDITION_GUARANTEES
+      - FAILURE_SEMANTICS
+      - STANDARD_ERROR_CODES
+      - IDENTITY_RULES
+      - CANONICAL_REPRESENTATION
+      - DIGEST_RULES
+      - CAPABILITY_DECLARATIONS
+
+    implementation_freedom:
+      principle: INTERNAL_MECHANISMS_ARE_FREE_WHEN_NORMATIVE_SEMANTICS_DO_NOT_CHANGE
+      may_choose:
+        - INTERNAL_DATA_STRUCTURES
+        - INTERNAL_FUNCTION_AND_TYPE_NAMES
+        - MODULE_OR_PACKAGE_DECOMPOSITION
+        - CACHING_STRATEGY
+        - CONCURRENCY_MECHANISM
+        - INTERNAL_HELPER_IMPLEMENTATION
+      must_not_change:
+        - EXTERNALLY_OBSERVABLE_MEANING
+        - CONTRACT_DEFINED_STATE_TRANSITIONS
+        - CONTRACT_DEFINED_FAILURE_RESULTS
+        - CONTRACT_DEFINED_IDENTITY
+        - CONTRACT_DEFINED_CANONICAL_REPRESENTATION
+        - CONTRACT_DEFINED_DIGEST_RESULTS
+      unresolved_semantic_boundary: FAIL_CLOSED
+
+  contract_artifact_representation:
+    canonical_index:
+      format: JSON
+      role: CANONICAL_INDEX
+
+    normative_contract:
+      format: JSON
+      role: NORMATIVE_MACHINE_CONTRACT
+      language_neutral: true
+      canonical_serialization_required: true
+
+    canonical_serialization:
+      scheme: PTSIP_CANONICAL_JSON_V1
+      status: ADOPTED
+      ownership: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+      encoding: UTF_8
+      bom: FORBIDDEN
+      duplicate_object_keys: FORBIDDEN
+      object_member_order: DETERMINISTIC
+      array_element_order: PRESERVE_DECLARED_ORDER
+      insignificant_whitespace_in_canonical_output: FORBIDDEN
+      ambiguous_or_unsupported_input: FAIL_CLOSED
+      number_canonical_representation:
+        model: EXACT_DECIMAL_VALUE
+        binary_floating_point_conversion_for_canonicalization: FORBIDDEN
+        negative_zero: NORMALIZE_TO_ZERO
+        nan: FORBIDDEN
+        infinity: FORBIDDEN
+        leading_plus: FORBIDDEN
+        ambiguous_or_unrepresentable_value: FAIL_CLOSED
+        canonical_decimal_lexical_form:
+          model: NORMALIZED_EXACT_SCIENTIFIC
+          zero: "0"
+          nonzero_coefficient:
+            exactly_one_nonzero_digit_before_decimal_point: true
+            leading_zeroes: FORBIDDEN
+            trailing_fractional_zeroes: FORBIDDEN
+            decimal_point_when_fraction_absent: FORBIDDEN
+          exponent:
+            marker: LOWERCASE_E
+            positive_plus_sign: FORBIDDEN
+            leading_zeroes: FORBIDDEN
+            zero_exponent_for_nonzero_value: ALLOWED
+          rounding: FORBIDDEN
+
+      unicode_normalization:
+        form: NFC
+        applies_to:
+          - OBJECT_MEMBER_NAMES
+          - STRING_VALUES
+        compatibility_normalization: FORBIDDEN
+        invalid_unicode: FAIL_CLOSED
+        post_normalization_object_key_collision: FAIL_CLOSED
+
+      string_escape_normalization:
+        model: MINIMAL_UTF8_ESCAPE
+        quote: ESCAPE
+        reverse_solidus: ESCAPE
+        short_control_escapes:
+          backspace: "\\b"
+          tab: "\\t"
+          line_feed: "\\n"
+          form_feed: "\\f"
+          carriage_return: "\\r"
+        other_u0000_to_u001f: LOWERCASE_U00XX
+        non_control_unicode: EMIT_UTF8
+        solidus_escape: FORBIDDEN
+        unnecessary_unicode_escape: FORBIDDEN
+        lone_surrogate: FAIL_CLOSED
+
+      unresolved_subrules: []
+      serialization_semantics_complete: true
+      implementation_may_invent_unresolved_subrule: false
+
+    canonical_digest_management:
+      model: SINGLE_ACTIVE_WITH_ALGORITHM_AGILITY
+      status: ADOPTED
+      registered_schemes_multiple_allowed: true
+      simultaneous_digest_emission_multiple_allowed: true
+      canonical_role_cardinality: EXACTLY_ONE_ACTIVE
+      scheme_roles:
+        - CANONICAL
+        - SUPPORTED
+        - RETIRED
+      canonical_identity_operations:
+        - SEMANTIC_EQUALITY
+        - STALE_STATE_DETECTION
+        - EVIDENCE_BINDING
+      canonical_identity_must_use_active_scheme_only: true
+      supported_or_retired_scheme_may_define_canonical_identity: false
+      silent_fallback_to_noncanonical_scheme: FORBIDDEN
+      scheme_identity_must_bind:
+        - NORMATIVE_SEMANTIC_PROJECTION
+        - CANONICAL_SERIALIZATION
+        - HASH_ALGORITHM
+        - OUTPUT_ENCODING
+      active_scheme: UNRESOLVED
+      unresolved_active_scheme_behavior: FAIL_CLOSED
+      dual_canonical_authority: FORBIDDEN
+
+    normative_semantic_projection:
+      projection_id: PTSIP_NORMATIVE_SEMANTIC_PROJECTION_V1
+      status: PARTIALLY_RESOLVED
+
+      field_governance:
+        model: EXPLICIT_INCLUDE_WITH_EXPLICIT_EXCLUDE_VETO
+        inclusion_policy: EXPLICIT_ALLOWLIST_REQUIRED
+        exclusion_policy: EXPLICIT_DENYLIST_VETO
+        eligibility_rule: INCLUDED_AND_NOT_EXCLUDED
+        exclusion_precedence: VETO
+        include_exclude_overlap:
+          classification: POLICY_CONFLICT
+          behavior: FAIL_CLOSED
+          silent_exclusion: FORBIDDEN
+          silent_inclusion: FORBIDDEN
+          digest_generation_allowed: false
+        unclassified_field_behavior: FAIL_CLOSED
+        automatic_ai_field_classification: FORBIDDEN
+        semantic_similarity_field_admission: FORBIDDEN
+        exact_inclusion_list:
+          model: SEMANTIC_ROLE_WITH_EXACT_BINDING
+          option: I3
+          semantic_role_registry_required: true
+          physical_representation_may_define_semantic_role: false
+          exact_binding_required_for_extraction: true
+          automatic_binding_inference: FORBIDDEN
+          semantic_similarity_binding: FORBIDDEN
+          unresolved_role_or_binding_behavior: FAIL_CLOSED
+          exact_semantic_roles: UNRESOLVED
+          exact_role_bindings: UNRESOLVED
+        exact_exclusion_list:
+          model: SEMANTIC_ROLE_WITH_EXACT_BINDING
+          option: E3
+          semantic_role_registry_required: true
+          physical_representation_may_define_exclusion_role: false
+          exact_binding_required_for_exclusion: true
+          automatic_binding_inference: FORBIDDEN
+          semantic_similarity_binding: FORBIDDEN
+          unresolved_role_or_binding_behavior: FAIL_CLOSED
+          exact_semantic_roles: UNRESOLVED
+          exact_role_bindings: UNRESOLVED
+
+      collection_semantics:
+        model: MEANING_AWARE_COLLECTION_ORDER
+        option: C3
+        collection_type_must_be_explicit: true
+        allowed_collection_types:
+          - SET_LIKE
+          - ORDERED
+        set_like:
+          canonical_ordering: DETERMINISTIC_SORT
+          strategy: STABLE_SEMANTIC_IDENTITY_PRIMARY_WITH_EXACT_BINDING_EXCEPTION
+          primary:
+            option: S2
+            model: STABLE_SEMANTIC_IDENTITY
+            stable_semantic_identity_required: true
+            identity_contract: UNRESOLVED
+            missing_or_invalid_identity_behavior: FAIL_CLOSED
+          exception:
+            option: S3
+            model: COLLECTION_EXACT_SORT_BINDING
+            use_only_when_primary_identity_model_not_applicable: true
+            explicit_exception_declaration_required: true
+            exact_sort_binding_required: true
+            automatic_exception_inference: FORBIDDEN
+            exact_exception_bindings: UNRESOLVED
+            missing_binding_behavior: FAIL_CLOSED
+          undeclared_sort_behavior: FAIL_CLOSED
+        ordered:
+          canonical_ordering: PRESERVE_DECLARED_ORDER
+        unclassified_collection_behavior: FAIL_CLOSED
+        ai_may_infer_collection_type: false
+
+    canonical_digest_scheme_selection:
+      hash_algorithm: SHA_256
+      output_encoding: LOWERCASE_HEXADECIMAL
+      digest_size_bits: 256
+      output_length_characters: 64
+      active_scheme: UNRESOLVED
+      activation_requires_complete_projection: true
+      unresolved_projection_may_be_hashed_as_canonical: false
+
+
+    input_output_schema:
+      format: JSON_SCHEMA
+      role: STRUCTURAL_VALIDATION_CONTRACT
+
+    conformance_vectors:
+      format: JSON
+      role: CONFORMANCE_EXPECTATION_DATA
+
+    implementation_binding:
+      format: JSON
+      role: LANGUAGE_OR_RUNTIME_ADAPTER_METADATA
+      normative_authority: false
+
+    human_explanation:
+      format: MARKDOWN
+      role: NON_NORMATIVE_EXPLANATION
+      may_replace_machine_contract_authority: false
+
+    governance_policy_document:
+      format: YAML
+      role: GOVERNANCE_PLANE
+      machine_runtime_contract: false
+
+  mechanized_resolution_cycle:
+    objective: REDUCE_REPEATED_AI_REASONING_BY_REUSING_VERIFIED_MACHINE_RESOLUTIONS
+
+    semantic_responsibility:
+      roles_must_be_distinguishable_when_present: true
+      roles_may_include:
+        - RULE
+        - CONDITION
+        - OPERATION
+        - FAILURE
+        - CAPABILITY
+        - CONFORMANCE
+      independent_file_per_role_required: false
+      independent_contract_per_role_required: false
+      domain_or_semantic_unit_grouping_allowed: true
+
+    explicit_binding:
+      previously_decided_reusable_relationships_should_be_machine_explicit: true
+      current_explicit_binding_must_precede_repeated_semantic_inference: true
+      repeated_ai_reinference_when_current_binding_resolves_exactly: FORBIDDEN
+
+    deterministic_resolver:
+      purpose: RESOLVE_EXISTING_DECISIONS
+      may_create_new_normative_meaning: false
+      resolution_basis:
+        - REGISTERED_IDENTITY
+        - EXPLICIT_MACHINE_BINDING
+      deterministic_resolution_precedes_ai_reasoning: true
+
+    unresolved_resolution:
+      bounded_ai_reasoning_allowed: true
+      ai_result_role: CANDIDATE
+      ai_candidate_is_normative_authority: false
+      candidate_may_become_reusable_only_after_applicable_validation_and_authority_rules: true
+      verified_or_approved_reusable_resolution_may_be_materialized_as:
+        - MACHINE_CONTRACT
+        - MACHINE_BINDING
+
+    automatic_plan:
+      preferred_inputs:
+        - RESOLVED_FACTS
+        - MACHINE_BINDINGS
+        - MACHINE_CONTRACTS
+      machine_derivation_preferred_when_inputs_are_sufficiently_resolved: true
+      analysis_uncertainty_allowed: true
+      unresolved_authority_may_be_invented: false
+      mutation_may_proceed_without_required_approved_semantics: false
+
+  execution_feedback_cycle:
+    principle: EXECUTION_IS_NOT_A_TERMINAL_STAGE
+    cycle:
+      - AUTOMATIC_PLAN
+      - EXECUTION
+      - STRUCTURED_RESULT
+      - OBSERVABLE_EVIDENCE
+      - MECHANICAL_VERIFICATION
+      - STATE_PROJECTION
+      - RERESOLUTION
+
+    execution_output:
+      structured_result_required: true
+      observable_evidence_required: true
+      resulting_state_required: true
+
+    verification:
+      expected_vs_observed_required: true
+      verification_result_must_be_machine_readable: true
+
+    verified_pass:
+      verified_state_may_feed_next_resolution: true
+      may_continue_without_new_human_confirmation_when_existing_authorization_remains_valid: true
+      may_create_new_approval_or_authorization: false
+
+    deviation:
+      must_return_to_resolution_or_escalation: true
+      silent_success_coercion: FORBIDDEN
+      deviation_may_create_normative_authority: false
+
+    state_boundary:
+      exact_runtime_persistence_path_fixed_by_this_policy: false
+      state_projection_is_normative_authority: false
+      state_may_propagate_existing_verified_facts_only: true
+
+  reasoning_promotion_cycle:
+    objective: TURN_VERIFIED_REPEATED_REASONING_INTO_REUSABLE_MACHINE_RESOLUTION
+
+    entry_conditions:
+      - DETERMINISTIC_RESOLUTION_UNAVAILABLE
+      - VERIFIED_EXECUTION_DEVIATION_REQUIRING_NEW_RESOLUTION
+
+    flow:
+      - BOUNDED_AI_REASONING
+      - CANDIDATE
+      - VALIDATION
+      - AUTHORITY_BOUNDARY
+      - REUSABLE_MACHINE_RESOLUTION
+      - DETERMINISTIC_RESOLVER_REUSE
+
+    candidate:
+      normative_authority: false
+      implementation_success_is_promotion_authority: false
+      test_success_is_promotion_authority: false
+      model_confidence_is_promotion_authority: false
+
+    promotion:
+      applicable_validation_required: true
+      applicable_authority_rules_required: true
+      reusable_targets:
+        - MACHINE_CONTRACT
+        - MACHINE_BINDING
+      promoted_resolution_must_preserve_source_and_authority_provenance: true
+
+    reuse:
+      current_promoted_resolution_should_precede_new_ai_reasoning: true
+      repeat_reasoning_for_same_current_resolved_case: FORBIDDEN
+      revalidation_may_reopen_resolution_when_contract_binding_capability_or_evidence_changes: true
+
+  developer_policy_resolution_binding_boundary:
+    purpose: BOUND_MPD_0015_DEVELOPER_POLICY_APPLICATION_WITHOUT_SEMANTIC_SCOPE_GUESSING
+
+    registration:
+      initial_scope_or_file_registration_requires_explicit_human_decision: true
+      automatic_semantic_scope_discovery: FORBIDDEN
+      semantic_similarity_scope_mapping: FORBIDDEN
+      registered_binding_resolution_may_be_automatic: true
+      new_unregistered_scope_remains_unbound_until_explicitly_registered: true
+
+    inherited_directory_scopes:
+      - path: src/agent_contracts
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/agent_contracts
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/migration
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/repository
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/validation
+        operations: [MODIFY, VERIFY]
+      - path: developer/automation/planning
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: developer/state
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: tests/ptsip/agent_contracts
+        operations: [MODIFY, VERIFY]
+      - path: tests/ptsip/conformance
+        operations: [MODIFY, VERIFY]
+      - path: tests/ptsip/migration
+        operations: [MODIFY, VERIFY]
+      - path: tests/ptsip/repository
+        operations: [MODIFY, VERIFY]
+      - path: tests/ptsip/validation
+        operations: [MODIFY, VERIFY]
+
+    exact_file_scopes:
+      - path: developer/automation/policy_resolver.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: developer/automation/repository_state_resolver.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: developer/automation/implementation_work_packet.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: developer/automation/implementation_workflows.yaml
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: developer/automation/implementation_workflows.schema.json
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/conformance.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/conformance_engine.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/conformance_audit.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/validation_capture.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/artifact_evidence.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/lifecycle_evidence.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: src/ptsip/review_evidence.py
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: developer/policy/MPD-0015.yaml
+        operations: [PLAN, MODIFY, VERIFY]
+      - path: pyproject.toml
+        operations: [MODIFY, VERIFY]
+
+    explicitly_not_inherited_roots:
+      - src/ptsip
+      - developer/automation
+      - tests/ptsip
+      - .github
+      - .ptsip
+
+    inheritance_boundary:
+      descendant_inheritance_applies_only_to_registered_directory_scopes: true
+      exact_file_scope_does_not_expand_to_siblings: true
+      parent_root_presence_does_not_imply_mpd_0015_applicability: true
+
+  implementation_language:
+    allowed_language_set: OPEN
+    python_only: false
+    go_only: false
+    python_and_go_only: false
+
+  implementation_role:
+    rule: IMPLEMENTATIONS_INTERPRET_AND_EXECUTE_MACHINE_CONTRACTS
+    may_define_new_normative_meaning: false
+
+  canonical_runtime:
+    go_role: CANONICAL_RUNTIME_CANDIDATE
+    go_is_normative_authority: false
+
+  python_migration_reference:
+    applies_to_behavior_not_yet_extracted_to_machine_contract: true
+    role: MIGRATION_REFERENCE
+    permanent_normative_authority: false
+
+  implementation_authorization:
+    policy_approval_authorizes_runtime_migration: false
+    policy_approval_authorizes_python_removal: false
+    separate_planning_and_user_authorization_required: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

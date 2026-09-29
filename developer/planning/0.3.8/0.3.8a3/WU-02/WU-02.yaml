@@ -1,0 +1,99 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-02
+  title: MPD-0015 developer policy binding materialization
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-01]
+
+  objective: >-
+    Materialize only the human-approved MPD-0015 directory and exact-file
+    policy routing boundary so local coding agents receive the required policy
+    sections without semantic scope guessing.
+
+  policy_source:
+    policy_id: MPD-0015
+    section: developer_policy_resolution_binding_boundary
+
+  required_changes:
+    - REGISTER_APPROVED_INHERITED_DIRECTORY_SCOPES
+    - REGISTER_APPROVED_EXACT_FILE_SCOPES
+    - USE_MINIMUM_RELEVANT_MPD_0015_SECTIONS_PER_SCOPE
+    - DO_NOT_ADD_MPD_0015_TO_UNAPPROVED_PARENT_ROOTS
+    - DO_NOT_USE_SEMANTIC_SIMILARITY_OR_AUTOMATIC_SCOPE_DISCOVERY
+    - ENSURE_LOCAL_POLICY_RESOLUTION_EXPOSES_MPD_0015_FOR_REGISTERED_TASKS
+
+  reasoning_boundary:
+    fixed:
+      - APPROVED_DIRECTORY_SCOPE_SET_INCLUDING_TESTS_PTSIP_CONFORMANCE
+      - APPROVED_EXACT_FILE_SCOPE_SET
+      - APPROVED_OPERATION_SET_PER_SCOPE
+      - NO_AUTOMATIC_SEMANTIC_SCOPE_DISCOVERY
+      - NO_SEMANTIC_SIMILARITY_SCOPE_MAPPING
+      - UNREGISTERED_SCOPE_REMAINS_UNBOUND
+    bounded_reasoning:
+      - POLICY_RESOLVER_DATA_SHAPE_FOR_APPROVED_BINDINGS
+      - MINIMUM_SECTION_SELECTION_PER_APPROVED_SCOPE
+      - INTERNAL_LOOKUP_OPTIMIZATION
+    candidate_only:
+      - MORE_COMPACT_BINDING_REPRESENTATION_WITH_IDENTICAL_APPROVED_SCOPE_MEANING
+    escalation_required:
+      - ADDING_A_NEW_SCOPE_OR_FILE
+      - EXPANDING_AN_APPROVED_OPERATION_SET
+      - ENABLING_PARENT_ROOT_INHERITANCE
+      - CHANGING_MPD_0015_APPLICABILITY_SEMANTICS
+
+  verification:
+    positive:
+      - registered contract, migration, repository, validation, state, planning and listed test scopes resolve MPD-0015
+      - tests/ptsip/conformance descendants resolve MPD-0015 for MODIFY and VERIFY
+    negative:
+      - unrelated src/ptsip paths do not inherit MPD-0015
+      - unrelated developer/automation paths do not inherit MPD-0015
+      - unrelated tests/ptsip paths outside the approved test directories do not inherit MPD-0015
+      - .github and .ptsip do not gain MPD-0015 by parent inference
+
+completion_evidence:
+- 'Approved 12 directory and 13 exact-file scope/operation registrations verified: tests/ptsip/agent_contracts/test_mpd0015_policy_bindings.py
+  (35 passed).'
+- 'Legacy resolver behavior and exact-file non-inheritance: developer/tests/test_policy_resolver.py (46 passed).'
+- 'Policy resolver registry/schema validation and developer planning validation: PASS.'
+- 'WORK_PACKET_NOT_AVAILABLE: no registered task_context; continued under explicit plan authorization.'
+- 'Automatic modes selected: ptsip-contract and repository-architecture. Full modes are not PASS; pre-entry failures
+  remain unwaived.'
+- 'ptsip-contract: 70 passed, 1 failed. repository-architecture: 2 collection errors. Separate collection-unblocked
+  diagnostic: 209 passed, 17 failed.'
+- All 18 executed failure nodes and both collection errors reproduced at exact pre-WU02 baseline 3914cba74ea4438e76e6593237f94ababb5685ba
+  with materially unchanged causes. Zero observed WU02-introduced failures.
+- Existing 23-node pre-WU01 debt remains tracked in the plan; this observation does not replace or waive it.
+regression_observations:
+  baseline_sha: 3914cba74ea4438e76e6593237f94ababb5685ba
+  failure_waiver_created: false
+  final_gate_owner: WU-08
+  failed_nodes:
+  - tests/ptsip/contracts/test_spec_assets.py::test_example_profile_validates_against_canonical_schema
+  - tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_is_valid_complete_and_revision_pinned
+  - tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_resolves_all_discovered_candidates
+  - developer/tests/test_implementation_work_packet.py::test_packet_builds_exact_mutation_acceptance_and_regression_plan
+  - developer/tests/test_implementation_work_packet.py::test_agent_brief_is_compact_and_progressive
+  - developer/tests/test_implementation_work_packet.py::test_mutation_source_context_avoids_whole_file_read
+  - developer/tests/test_implementation_work_packet.py::test_read_context_supports_single_selector_projection
+  - developer/tests/test_implementation_work_packet.py::test_read_context_ids_are_stable
+  - developer/tests/test_policy_provenance_retirement.py::test_current_sfp_mpd_corpus_has_no_legacy_source_provenance
+  - developer/tests/test_policy_provenance_retirement.py::test_current_policy_schemas_do_not_define_legacy_source_provenance
+  - developer/tests/test_project_profile_registry.py::test_contract_registry_owns_single_current_identity
+  - developer/tests/test_project_profile_registry.py::test_historical_compatibility_identity_is_registered_without_becoming_current
+  - developer/tests/test_project_profile_registry.py::test_public_profile_catalog_exactly_describes_existing_distribution_assets
+  - developer/tests/test_project_profile_registry.py::test_current_contract_has_immutable_baseline
+  - developer/tests/test_self_profile_bridge_removal.py::test_repository_self_profile_is_explicit_and_root_bridge_is_absent
+  - developer/tests/test_self_profile_bridge_removal.py::test_repository_test_mode_control_plane_defaults_to_explicit_self_profile
+  - developer/tests/test_self_profile_bridge_removal.py::test_current_repository_profile_has_no_root_bridge_dependency
+  - developer/tests/test_wu02_lane_validator.py::test_wu02_lane_documents_are_centrally_consistent_when_active
+  collection_errors:
+    developer/tests/test_developer_control_plane.py: 'ModuleNotFoundError: developer.automation.planning_validator'
+    developer/tests/test_emergency_entry_routing.py: 'ModuleNotFoundError: developer.automation.planning_entry_resolver'
