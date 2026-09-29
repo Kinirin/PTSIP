@@ -14,27 +14,60 @@
     "migration_order"
   ],
   "properties": {
-    "schema_version": {"const": "ptsip-source-application-review/v1"},
-    "artifact_class": {"const": "PTSIP_DEVELOPER_POLICY_SOURCE_REVIEW"},
-    "authority": {"const": false},
-    "canonical_source_registry_ref": {"const": "developer/policy/registries/governance-source-registry.yaml"},
+    "schema_version": {
+      "const": "ptsip-source-application-review/v1"
+    },
+    "artifact_class": {
+      "const": "PTSIP_DEVELOPER_POLICY_SOURCE_REVIEW"
+    },
+    "authority": {
+      "const": false
+    },
+    "canonical_source_registry_ref": {
+      "const": "developer/policy/registries/governance-source-registry.yaml"
+    },
     "policy_query_list": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["policy_id", "expected_status", "sections", "reason"],
+        "required": [
+          "policy_id",
+          "expected_status",
+          "sections",
+          "reason"
+        ],
         "properties": {
-          "policy_id": {"type": "string", "pattern": "^MPD-[0-9]{4}$"},
-          "expected_status": {"enum": ["DRAFT", "ACTIVE", "SUPERSEDED", "RETIRED"]},
+          "policy_id": {
+            "type": "string",
+            "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+          },
+          "expected_status": {
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "SUPERSEDED",
+              "RETIRED"
+            ]
+          },
           "sections": {
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
-            "items": {"type": "string", "pattern": "^[A-Za-z0-9_]+$"}
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_]+$"
+            }
           },
-          "review_role": {"enum": ["REVIEW_ONLY_NOT_AUTHORITY"]},
-          "reason": {"type": "string", "minLength": 1}
+          "review_role": {
+            "enum": [
+              "REVIEW_ONLY_NOT_AUTHORITY"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "additionalProperties": false
       }
@@ -44,9 +77,16 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["path", "classification", "target_role"],
+        "required": [
+          "path",
+          "classification",
+          "target_role"
+        ],
         "properties": {
-          "path": {"type": "string", "minLength": 1},
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
           "classification": {
             "enum": [
               "MUST_ADOPT_GOVERNANCE_SOURCE_CONSTANT",
@@ -55,7 +95,10 @@
               "SOURCE_KEY_HAS_NON_GOVERNANCE_MEANING"
             ]
           },
-          "target_role": {"type": "string", "minLength": 1}
+          "target_role": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "additionalProperties": false
       }
@@ -65,10 +108,19 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["location", "meaning"],
+        "required": [
+          "location",
+          "meaning"
+        ],
         "properties": {
-          "location": {"type": "string", "minLength": 1},
-          "meaning": {"type": "string", "minLength": 1}
+          "location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "additionalProperties": false
       }
@@ -77,7 +129,10 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"type": "string", "pattern": "^[A-Z0-9_]+$"}
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9_]+$"
+      }
     }
   },
   "additionalProperties": false

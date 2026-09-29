@@ -6,7 +6,7 @@ These instructions apply to coding agents working anywhere in this repository.
 
 PTSIP has two non-interchangeable policy classes.
 
-- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
+- `PTSIP_DEVELOPER_POLICY` uses legacy migration IDs `MPD-####` and family IDs `MPD-<SPEC|PLAN|WORK|VERI|MIGR|RELS>-####` under `developer/policy/`. Family IDs express the normative responsibility family; legacy IDs remain only while staged responsibility migration is incomplete. Developer policy is automated by `developer/automation/` and must not ship as a consumer runtime contract.
 - `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. Canonical repository authority lives under `docs/Support_policy/policy/`; repository-side Support Policy automation lives under `docs/Support_policy/automation/`. Installed distributions receive the deterministic `ptsip/support/` projection. This boundary is separate from `developer/`.
 - PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`; the former root `ptsip.yaml` compatibility bridge was retired by the 0.4.0 P01-F migration.
 - The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.

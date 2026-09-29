@@ -42,10 +42,13 @@
         },
         "policy_ref": {
           "type": "string",
-          "pattern": "^MPD-[0-9]{4}$"
+          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
         },
         "planning_state": {
-          "enum": ["NOT_CREATED", "CREATED"]
+          "enum": [
+            "NOT_CREATED",
+            "CREATED"
+          ]
         },
         "plan_id": {
           "type": "string",
@@ -65,13 +68,23 @@
                 "const": "NOT_CREATED"
               }
             },
-            "required": ["planning_state"]
+            "required": [
+              "planning_state"
+            ]
           },
           "then": {
             "not": {
               "anyOf": [
-                {"required": ["plan_id"]},
-                {"required": ["plan_ref"]}
+                {
+                  "required": [
+                    "plan_id"
+                  ]
+                },
+                {
+                  "required": [
+                    "plan_ref"
+                  ]
+                }
               ]
             }
           }
@@ -83,10 +96,15 @@
                 "const": "CREATED"
               }
             },
-            "required": ["planning_state"]
+            "required": [
+              "planning_state"
+            ]
           },
           "then": {
-            "required": ["plan_id", "plan_ref"]
+            "required": [
+              "plan_id",
+              "plan_ref"
+            ]
           }
         }
       ],

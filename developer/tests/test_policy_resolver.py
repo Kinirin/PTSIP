@@ -286,7 +286,7 @@ def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
 
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0001",
+        "MPD-SPEC-0001",
         "MPD-0010",
         "MPD-0011",
     ]
@@ -372,7 +372,7 @@ def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
 
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0001",
+        "MPD-SPEC-0001",
         "MPD-0010",
         "MPD-0011",
     ]
@@ -387,7 +387,7 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
 
     assert result["binding_scope"] == "developer/automation/pp/pp_remote_verify.py"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0001",
+        "MPD-SPEC-0001",
         "MPD-0010",
         "MPD-0011",
     ]
@@ -402,7 +402,7 @@ def test_release_pp_verifier_routes_release_transition_policy() -> None:
 
     assert result["binding_scope"] == "developer/automation/pp/pp_release_verify.py"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0001",
+        "MPD-SPEC-0001",
         "MPD-0010",
         "MPD-0011",
     ]
@@ -461,7 +461,7 @@ def test_pp_102_transition_seed_routes_developer_and_pp_policy() -> None:
 
     assert result["binding_scope"] == "developer/automation/seed_pp_102_transition.py"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0001",
+        "MPD-SPEC-0001",
         "MPD-0010",
         "MPD-0011",
     ]

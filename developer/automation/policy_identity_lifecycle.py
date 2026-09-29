@@ -21,6 +21,7 @@ APPROVAL_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.js
 MANAGEMENT_POLICY_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
+_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
 
 
 class PolicyIdentityLifecycleError(RuntimeError):
@@ -141,7 +142,7 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
 
 
 def _discover_policy_ids(base: Path) -> tuple[str, ...]:
-    return tuple(path.stem for path in sorted((base / "developer/policy").glob("MPD-[0-9][0-9][0-9][0-9].yaml")))
+    return tuple(path.stem for path in sorted((base / "developer/policy").glob("MPD-*.yaml")))
 
 
 def _assert_no_unregistered_policy_file(base: Path, state: CorpusState) -> None:
@@ -158,6 +159,8 @@ def _next_policy_id(ids: Sequence[str]) -> str:
     for policy_id in ids:
         match = _POLICY_ID_RE.fullmatch(policy_id)
         if match is None:
+            if _FAMILY_POLICY_ID_RE.fullmatch(policy_id):
+                continue
             raise PolicyIdentityLifecycleError("INVALID_POLICY_ID", f"invalid policy ID: {policy_id}")
         numbers.append(int(match.group(1)))
     number = (max(numbers) + 1) if numbers else 1

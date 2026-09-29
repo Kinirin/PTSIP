@@ -3,10 +3,18 @@
   "$id": "urn:ptsip:policy-approval-provenance:v1",
   "title": "PTSIP Developer Policy Approval Provenance v1",
   "type": "object",
-  "required": ["schema_version", "policy_class", "approval"],
+  "required": [
+    "schema_version",
+    "policy_class",
+    "approval"
+  ],
   "properties": {
-    "schema_version": {"const": "ptsip-policy-approval-provenance/v1"},
-    "policy_class": {"const": "PTSIP_DEVELOPER_POLICY"},
+    "schema_version": {
+      "const": "ptsip-policy-approval-provenance/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
     "approval": {
       "type": "object",
       "required": [
@@ -21,11 +29,28 @@
         "recorded_at"
       ],
       "properties": {
-        "approval_id": {"type": "string", "pattern": "^MPA-[A-Za-z0-9._-]+$"},
-        "decision": {"const": "APPROVED"},
-        "source_kind": {"enum": ["PROJECT_OWNER_DIRECT_INSTRUCTION", "PROJECT_OWNER_REPOSITORY_RECORD"]},
-        "decision_source": {"const": "USER_EXPLICIT"},
-        "source_reference": {"type": ["string", "null"]},
+        "approval_id": {
+          "type": "string",
+          "pattern": "^MPA-[A-Za-z0-9._-]+$"
+        },
+        "decision": {
+          "const": "APPROVED"
+        },
+        "source_kind": {
+          "enum": [
+            "PROJECT_OWNER_DIRECT_INSTRUCTION",
+            "PROJECT_OWNER_REPOSITORY_RECORD"
+          ]
+        },
+        "decision_source": {
+          "const": "USER_EXPLICIT"
+        },
+        "source_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "approval_scope": {
           "enum": [
             "DRAFT_CREATION",
@@ -33,14 +58,34 @@
             "FINAL_POLICY"
           ]
         },
-        "target_status": {"enum": ["DRAFT", "ACTIVE", "SUPERSEDED", "RETIRED"]},
-        "implementation_authorized": {"type": "boolean"},
-        "policy_content_review_scope": {"enum": ["DIRECTION", "FULL"]},
-        "requested_policy_id": {
-          "type": ["string", "null"],
-          "pattern": "^MPD-[0-9]{4}$"
+        "target_status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "SUPERSEDED",
+            "RETIRED"
+          ]
         },
-        "recorded_at": {"type": "string", "minLength": 1}
+        "implementation_authorized": {
+          "type": "boolean"
+        },
+        "policy_content_review_scope": {
+          "enum": [
+            "DIRECTION",
+            "FULL"
+          ]
+        },
+        "requested_policy_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+        },
+        "recorded_at": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "additionalProperties": false
     }

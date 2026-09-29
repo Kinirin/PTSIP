@@ -25,7 +25,13 @@
       "minItems": 1,
       "uniqueItems": true,
       "items": {
-        "enum": ["READ", "MODIFY", "PLAN", "VERIFY", "RELEASE"]
+        "enum": [
+          "READ",
+          "MODIFY",
+          "PLAN",
+          "VERIFY",
+          "RELEASE"
+        ]
       }
     },
     "scope_bindings": {
@@ -40,11 +46,14 @@
   "$defs": {
     "policyRef": {
       "type": "object",
-      "required": ["policy_id", "sections"],
+      "required": [
+        "policy_id",
+        "sections"
+      ],
       "properties": {
         "policy_id": {
           "type": "string",
-          "pattern": "^MPD-[0-9]{4}$"
+          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
         },
         "sections": {
           "type": "array",
@@ -67,7 +76,9 @@
     },
     "scopeBinding": {
       "type": "object",
-      "required": ["default_refs"],
+      "required": [
+        "default_refs"
+      ],
       "properties": {
         "default_refs": {
           "$ref": "#/$defs/policyRefList"
@@ -75,7 +86,13 @@
         "operations": {
           "type": "object",
           "propertyNames": {
-            "enum": ["READ", "MODIFY", "PLAN", "VERIFY", "RELEASE"]
+            "enum": [
+              "READ",
+              "MODIFY",
+              "PLAN",
+              "VERIFY",
+              "RELEASE"
+            ]
           },
           "additionalProperties": {
             "$ref": "#/$defs/policyRefList"

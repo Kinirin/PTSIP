@@ -7,42 +7,10 @@ policy:
   status: ACTIVE
 
 rules:
-  namespace:
-    developer_policy:
-      constant: PTSIP_DEVELOPER_POLICY
-      id_pattern: '^MPD-[0-9]{4}$'
-      machine_policy_path: developer/policy/
-      human_documentation_path: docs/Developer_policy/
-      automation_path: developer/automation/
-      profile_path: developer/profiles/
-      distribution: FORBIDDEN
-    support_feature:
-      constant: PTSIP_SUPPORT_FEATURE
-      id_pattern: '^SFP-[0-9]{4}$'
-      canonical_schema_path: schemas/ptsip-support-feature-policy.schema.json
-      embedded_schema_path: src/ptsip/specdata/ptsip-support-feature-policy.schema.json
-      machine_policy_pattern: src/ptsip/specdata/SFP-*.yaml
-      human_documentation_path: docs/Support_policy/
-      implementation_roots:
-        - src/ptsip/
-        - src/vpms/
-      distribution: REQUIRED
-
   profile_boundary:
-    developer_repository_profile: developer/profiles/ptsip-repository.yaml
-    compatibility_root_profile: ptsip.yaml
     compatibility_state: TEMPORARY_UNTIL_DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_IS_VERIFIED
     support_profile_subsystem:
       decision: APPROVED
-      target_root: src/ptsip/profiles/
-      schema_root: src/ptsip/profiles/schema/
-      builtin_root: src/ptsip/profiles/builtin/
-      ownership: PTSIP_SUPPORT_FEATURE
-      distribution: REQUIRED
-    current_profile_schema_location: src/ptsip/specdata/
-    current_profile_schema_files:
-      - ptsip-profile.schema.json
-      - ptsip-profile-pp-1.01.schema.json
     migration:
       execution_stage: SFP_MPD_INVENTORY_AND_POLICY_MATERIALIZATION
       move_now: false
@@ -59,13 +27,6 @@ rules:
         - UPDATE_PROFILE_SCHEMA_RESOURCE_REFERENCES
         - UPDATE_CONSISTENCY_TESTS
         - VERIFY_NO_STALE_SPECDATA_PROFILE_SCHEMA_REFERENCE
-    builtin_profile_instance_policy: CREATE_DIRECTORY_OR_INSTANCE_ONLY_WHEN_A_RUNTIME_SHIPPED_BUILTIN_PROFILE_EXISTS
-
-  distribution_boundary:
-    developer_policy_must_ship: false
-    support_feature_policy_must_ship: true
-    developer_policy_must_not_define_consumer_project_requirement: true
-    support_feature_must_not_depend_on_developer_policy_at_runtime: true
 
   planning_boundary:
     authority:
