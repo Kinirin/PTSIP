@@ -338,15 +338,18 @@ def test_pp_transition_policy_routes_for_public_profile_modify() -> None:
         "MPD-SPEC-0026",
         "MPD-SPEC-0027",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
     assert result["policies"][1]["sections"] == ["t2_authority_delta"]
     assert result["policies"][2]["sections"] == ["user_revision_lineage"]
     assert result["policies"][3]["sections"] == [
         "authority_semantics",
+        "verification_layers",
+    ]
+    assert result["policies"][4]["sections"] == [
         "commit_candidate_trigger",
         "transition_generation",
         "reconciliation_safety",
-        "verification_layers",
     ]
 
 
@@ -362,6 +365,7 @@ def test_pp_transition_policy_routes_for_current_schema_modify() -> None:
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
     assert result["policies"][1]["sections"] == ["t2_authority_delta"]
 
@@ -416,6 +420,7 @@ def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -439,6 +444,7 @@ def test_runtime_pp_registry_surfaces_route_transition_policy(scope: str) -> Non
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -461,6 +467,7 @@ def test_distribution_projection_surfaces_route_pp_transition_policy(scope: str)
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -475,7 +482,7 @@ def test_pyproject_modify_uses_explicit_contract_operation_override() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0021",
         "MPD-SPEC-0022",
-        "MPD-0015",
+        "MPD-MIGR-0005",
     ]
     assert result["policies"][0]["sections"] == [
         "normative_authority",
@@ -497,6 +504,7 @@ def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -522,6 +530,7 @@ def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -538,6 +547,7 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -553,6 +563,7 @@ def test_release_pp_verifier_routes_release_transition_policy() -> None:
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -560,7 +571,6 @@ def test_release_pp_verifier_routes_release_transition_policy() -> None:
     "scope",
     [
         ".github/workflows/release.yml",
-        ".github/workflows/tooling-release.yml",
         ".github/scripts/verify_release_contract.py",
     ],
 )
@@ -576,6 +586,22 @@ def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> No
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
         "MPD-0011",
+    ]
+
+
+def test_tooling_release_routes_transition_mechanics() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope=".github/workflows/tooling-release.yml",
+        operation="RELEASE",
+    )
+
+    assert result["binding_scope"] == ".github/workflows/tooling-release.yml"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-PLAN-0002",
+        "MPD-SPEC-0006",
+        "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -598,6 +624,7 @@ def test_local_profile_runtime_surfaces_route_pp_policy(scope: str) -> None:
         "MPD-SPEC-0006",
         "MPD-SPEC-0027",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -615,6 +642,7 @@ def test_pp_102_transition_seed_routes_developer_and_pp_policy() -> None:
         "MPD-SPEC-0026",
         "MPD-SPEC-0027",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
@@ -632,6 +660,7 @@ def test_public_profile_catalog_schema_routes_pp_transition_policy() -> None:
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
