@@ -11,7 +11,7 @@ b648d9e026f502b14481ba2d0606d9acc88a31fc
 Activation is recorded by:
 
 ```text
-developer/policy/MPD-0004.yaml
+developer/policy/SPEC/MPD-SPEC-0004.yaml
 ```
 
 The architectural policy that led to this family is:

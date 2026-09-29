@@ -127,7 +127,7 @@ The immutable freeze `b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e` aligns:
 - `adoption/ADOPTION-GUIDE.md`;
 - `reference/REFERENCE-ARCHITECTURE.md`;
 - `profiles/example.ptsip.yaml`;
-- `developer/policy/MPD-0003.yaml`;
+- `developer/policy/SPEC/MPD-SPEC-0003.yaml`;
 - Reference Tool profile projection behavior required to preserve new durable facts; and
 - all packaged `src/ptsip/specdata/*` counterparts used by the Tool.
 
