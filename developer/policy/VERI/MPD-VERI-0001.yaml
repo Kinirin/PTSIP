@@ -1,0 +1,55 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-VERI-0001
+  title: Developer Policy-Plan Consistency Verification
+  status: DRAFT
+
+rules:
+  policy_plan_consistency_verification:
+    binding_contract_ref: MPD-SPEC-0023
+    binding_registry: developer/bindings/policy-plan-bindings.yaml
+
+    verification_scope:
+      - POLICY_ID_RESOLUTION
+      - PLAN_EXISTENCE_STATE
+      - PLAN_ID_BINDING
+      - PLAN_REF_BINDING
+      - POLICY_PLAN_RELATIONSHIP_CONSISTENCY
+
+    invariants:
+      indexed_policy_reference_required: true
+      registered_binding_must_resolve_policy: true
+      not_created_state_forbids_plan_identity: true
+      created_state_requires_plan_id: true
+      created_state_requires_plan_ref: true
+      created_plan_ref_must_resolve: true
+      plan_path_does_not_define_policy_authority: true
+      semantic_similarity_must_not_create_binding: true
+
+    result:
+      machine_readable: true
+      mismatch_state: FAIL
+      unresolved_registered_reference: FAIL
+      automatic_semantic_repair: FORBIDDEN
+
+  responsibility_boundary:
+    owns:
+      - POLICY_PLAN_CONSISTENCY_VERIFICATION
+    does_not_own:
+      - POLICY_SEMANTICS
+      - PLAN_CONTENT
+      - PLAN_APPROVAL
+      - POLICY_PLAN_BINDING_AUTHORITY
+      - IMPLEMENTATION_AUTHORIZATION
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-SPEC-0023
+      scope: POLICY_PLAN_BINDING_CONTRACT
+    - policy: MPD-PLAN-0001
+      scope: PLANNING_AUTHORITY_AND_LIFECYCLE
