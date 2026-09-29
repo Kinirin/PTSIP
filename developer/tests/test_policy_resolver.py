@@ -245,7 +245,7 @@ def test_operation_override_is_exact() -> None:
     assert result["binding_scope"] == "."
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0006",
-        "MPD-0007",
+        "MPD-PLAN-0002",
         "MPD-SPEC-0006",
     ]
 
@@ -494,7 +494,7 @@ def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None
 
     assert result["binding_scope"] == ".github/workflows/tooling-test.yml"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0007",
+        "MPD-PLAN-0002",
         "MPD-SPEC-0006",
         "MPD-0011",
     ]
@@ -573,7 +573,7 @@ def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> No
 
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0007",
+        "MPD-PLAN-0002",
         "MPD-SPEC-0006",
         "MPD-0011",
     ]

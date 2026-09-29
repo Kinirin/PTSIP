@@ -48,24 +48,10 @@ policy_roles:
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
       - govern_release_history_namespace
-  - policy_id: MPD-0007
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects: []
   - policy_id: MPD-0008
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
-      - govern_project_profile_migration_authorization
-  - policy_id: MPD-0009
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - define_work_unit_responsibility_assignment
-      - govern_project_profile_transition_work_unit_boundaries
-      - preserve_migration_engine_capability
-      - require_governable_responsibility_split
-      - separate_migration_capability_from_repository_adoption
-      - separate_profile_identity_implementation_from_migration_capability
-      - separate_repository_adoption_from_release_readiness
-  - policy_id: MPD-0011
+      - govern_project_profile_migration_authorization  - policy_id: MPD-0011
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
       - govern_commit_atomic_project_profile_transition
