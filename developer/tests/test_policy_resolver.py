@@ -43,13 +43,13 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
         },
         {
             "policy_id": "MPD-SPEC-0005",
-            "path": "developer/policy/MPD-SPEC-0005.yaml",
+            "path": "developer/policy/SPEC/MPD-SPEC-0005.yaml",
             "status": "ACTIVE",
             "sections": ["authority_semantics"],
         },
         {
             "policy_id": "MPD-SPEC-0006",
-            "path": "developer/policy/MPD-SPEC-0006.yaml",
+            "path": "developer/policy/SPEC/MPD-SPEC-0006.yaml",
             "status": "ACTIVE",
             "sections": [
                 "identity_and_resolution",
@@ -180,7 +180,7 @@ def test_github_authority_scope_resolves_policy_without_plan_task_context() -> N
     assert result["policies"] == [
         {
             "policy_id": "MPD-SPEC-0006",
-            "path": "developer/policy/MPD-SPEC-0006.yaml",
+            "path": "developer/policy/SPEC/MPD-SPEC-0006.yaml",
             "status": "ACTIVE",
             "sections": [
                 "identity_and_resolution",
@@ -257,7 +257,7 @@ def test_get_policy_can_return_only_one_rule_section() -> None:
         section="identity_and_resolution",
     )
     assert result["fragment"] == "rules.identity_and_resolution"
-    assert result["canonical_path"] == "developer/policy/MPD-SPEC-0006.yaml"
+    assert result["canonical_path"] == "developer/policy/SPEC/MPD-SPEC-0006.yaml"
     assert isinstance(result["record"], dict)
     assert "registry_resolution_budget" in result["record"]
     assert "ptsip_design_priority" not in result["record"]
