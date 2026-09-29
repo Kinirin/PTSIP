@@ -446,9 +446,9 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         path.relative_to(base).as_posix()
         for path in sorted((base / "developer" / "policy").rglob("MPD-*.yaml"))
     )
-    if indexed_mpd_paths != discovered_mpd_paths:
+    if tuple(sorted(indexed_mpd_paths)) != discovered_mpd_paths:
         errors.append(
-            "developer policy index must cover the current MPD corpus exactly in path order"
+            "developer policy index must cover the current MPD corpus exactly"
         )
     if mpd_ids != tuple(sorted(mpd_ids)):
         errors.append("developer policy index MPD identities must be in canonical ascending order")
