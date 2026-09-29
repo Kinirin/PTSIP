@@ -244,7 +244,7 @@ def test_operation_override_is_exact() -> None:
     )
     assert result["binding_scope"] == "."
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0006",
+        "MPD-RELS-0001",
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
     ]
@@ -565,6 +565,7 @@ def test_release_pp_verifier_routes_release_transition_policy() -> None:
         "MPD-SPEC-0006",
         "MPD-0011",
         "MPD-MIGR-0004",
+        "MPD-RELS-0002",
     ]
 
 
@@ -587,6 +588,7 @@ def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> No
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-RELS-0002",
     ]
 
 
@@ -603,6 +605,7 @@ def test_tooling_release_routes_transition_mechanics() -> None:
         "MPD-SPEC-0006",
         "MPD-0011",
         "MPD-MIGR-0004",
+        "MPD-RELS-0002",
     ]
 
 
