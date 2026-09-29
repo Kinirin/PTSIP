@@ -39,9 +39,14 @@ policy_query_list:
     expected_status: ACTIVE
     sections:
       - authority_semantics
+    reason: Contains the explicit project-owner decision baseline for Project Profile transition automation.
+
+  - policy_id: MPD-MIGR-0004
+    expected_status: ACTIVE
+    sections:
       - transition_generation
       - reconciliation_safety
-    reason: Contains explicit project-owner decision requirements and derived transition semantics.
+    reason: Canonical owner of Project Profile transition generation and reconciliation mechanics.
 
   - policy_id: MPD-0012
     expected_status: ACTIVE
@@ -121,7 +126,7 @@ excluded_existing_source_semantics:
     meaning: FILE_SOURCE
   - location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.unresolved_reassessment.source
     meaning: FILE_SOURCE
-  - location: developer/policy/MPD-0011.yaml#rules.commit_candidate_trigger.release.source
+  - location: developer/policy/MIGR/MPD-MIGR-0004.yaml#rules.commit_candidate_trigger.release.source
     meaning: VERIFICATION_REVISION_SOURCE
   - location: developer/automation/implementation_workflows.yaml#tasks.*.watch_inputs.*.source
     meaning: DATA_SOURCE
