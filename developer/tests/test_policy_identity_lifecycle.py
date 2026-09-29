@@ -24,6 +24,13 @@ def _write_yaml(path: Path, payload: object) -> None:
     path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
 
 
+def _fixture_policy_path(policy_id: str) -> str:
+    parts = policy_id.split("-")
+    if len(parts) == 3:
+        return f"developer/policy/{parts[1]}/{policy_id}.yaml"
+    return f"developer/policy/{policy_id}.yaml"
+
+
 @pytest.fixture()
 def repo(tmp_path: Path) -> Path:
     (tmp_path / "pyproject.toml").write_text("[project]\nname='fixture'\nversion='0'\n", encoding="utf-8")
@@ -35,6 +42,7 @@ def repo(tmp_path: Path) -> Path:
     policies = [
         ("MPD-0012", "DRAFT", "Existing draft"),
         ("MPD-0013", "ACTIVE", "Existing active"),
+        ("MPD-SPEC-0001", "ACTIVE", "Existing family policy"),
     ]
     _write_yaml(
         tmp_path / "developer/policy/index.yaml",
@@ -42,14 +50,14 @@ def repo(tmp_path: Path) -> Path:
             "schema_version": "ptsip-developer-policy-index/v1",
             "policy_class": "PTSIP_DEVELOPER_POLICY",
             "policies": [
-                {"id": policy_id, "path": f"developer/policy/{policy_id}.yaml", "status": status}
+                {"id": policy_id, "path": _fixture_policy_path(policy_id), "status": status}
                 for policy_id, status, _ in policies
             ],
         },
     )
     for policy_id, status, title in policies:
         _write_yaml(
-            tmp_path / f"developer/policy/{policy_id}.yaml",
+            tmp_path / _fixture_policy_path(policy_id),
             {
                 "schema_version": "ptsip-developer-policy/v1",
                 "policy_class": "PTSIP_DEVELOPER_POLICY",
@@ -66,7 +74,7 @@ def repo(tmp_path: Path) -> Path:
             "subject_identity_schemes": {
                 "MANAGEMENT_POLICY_ID": {
                     "source_field": "policy.id",
-                    "registered_values": ["MPD-0012", "MPD-0013"],
+                    "registered_values": ["MPD-0012", "MPD-0013", "MPD-SPEC-0001"],
                 }
             },
         },
@@ -160,12 +168,22 @@ def test_register_updates_index_and_subject_registry_only_after_exact_policy_fil
     assert result["status"] == "REGISTERED"
 
     index = yaml.safe_load((repo / "developer/policy/index.yaml").read_text(encoding="utf-8"))
-    assert index["policies"][-1]["id"] == "MPD-0014"
-    assert index["policies"][-1]["status"] == "ACTIVE"
+    assert [item["id"] for item in index["policies"]] == [
+        "MPD-0012",
+        "MPD-0013",
+        "MPD-0014",
+        "MPD-SPEC-0001",
+    ]
+    assert next(item for item in index["policies"] if item["id"] == "MPD-0014")["status"] == "ACTIVE"
     registry = yaml.safe_load(
         (repo / "developer/policy/registries/authority-subject-registry.yaml").read_text(encoding="utf-8")
     )
-    assert registry["subject_identity_schemes"]["MANAGEMENT_POLICY_ID"]["registered_values"][-1] == "MPD-0014"
+    assert registry["subject_identity_schemes"]["MANAGEMENT_POLICY_ID"]["registered_values"] == [
+        "MPD-0012",
+        "MPD-0013",
+        "MPD-0014",
+        "MPD-SPEC-0001",
+    ]
 
 
 def test_status_preflight_requires_exact_existing_policy_binding(repo: Path) -> None:

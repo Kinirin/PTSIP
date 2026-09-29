@@ -151,9 +151,18 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
 
     discovered_mpd_ids = [
         path.stem
-        for path in sorted((ROOT / "developer" / "policy").glob("MPD-*.yaml"))
+        for path in sorted((ROOT / "developer" / "policy").rglob("MPD-*.yaml"))
     ]
     assert [item["id"] for item in mpd_index["policies"]] == discovered_mpd_ids
+    for item in mpd_index["policies"]:
+        policy_id = item["id"]
+        parts = policy_id.split("-")
+        expected_path = (
+            f"developer/policy/{parts[1]}/{policy_id}.yaml"
+            if len(parts) == 3
+            else f"developer/policy/{policy_id}.yaml"
+        )
+        assert item["path"] == expected_path
     assert [item["id"] for item in sfp_index["policies"]] == [
         f"SFP-{number:04d}" for number in range(1, 23)
     ]

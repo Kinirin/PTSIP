@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 from typing import Mapping
 
 from jsonschema import Draft202012Validator
@@ -41,6 +42,16 @@ DEVELOPER_REGISTRIES = (
     "developer/policy/registries/authorization-transition-registry.yaml",
 )
 RELATION_KINDS = ("supersedes", "amends", "extends", "depends_on")
+_FAMILY_POLICY_ID_RE = re.compile(
+    r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+)
+
+
+def _canonical_mpd_path(policy_id: str) -> str:
+    match = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+    if match is not None:
+        return f"developer/policy/{match.group(1)}/{policy_id}.yaml"
+    return f"developer/policy/{policy_id}.yaml"
 
 
 def _mapping(value: object) -> Mapping[str, object] | None:
@@ -53,6 +64,7 @@ def _validate_current_registry_planes(
     sfp_ids: tuple[str, ...],
     developer_authority_ids: tuple[str, ...],
     mpd_ids: tuple[str, ...],
+    current_records: Mapping[str, Mapping[str, object]],
 ) -> list[str]:
     errors: list[str] = []
 
@@ -215,7 +227,10 @@ def _validate_current_registry_planes(
         if not isinstance(policy_id, str) or not isinstance(definition, Mapping):
             errors.append(f"developer authority schema registry entry is unresolved: {entry!r}")
             continue
-        policy = load_yaml(f"developer/policy/{policy_id}.yaml", root=base)
+        policy = current_records.get(policy_id)
+        if policy is None:
+            errors.append(f"developer authority schema registry policy is unresolved: {policy_id}")
+            continue
         rules = _mapping(policy.get("rules"))
         semantics = None if rules is None else rules.get("authority_semantics")
         for error in Draft202012Validator(definition).iter_errors(semantics):
@@ -422,9 +437,14 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         for entry in mpd_entries
         if isinstance(entry, Mapping)
     )
+    expected_mpd_paths = tuple(_canonical_mpd_path(policy_id) for policy_id in mpd_ids)
+    if indexed_mpd_paths != expected_mpd_paths:
+        errors.append(
+            "developer policy index paths must match canonical family materialization"
+        )
     discovered_mpd_paths = tuple(
         path.relative_to(base).as_posix()
-        for path in sorted((base / "developer" / "policy").glob("MPD-*.yaml"))
+        for path in sorted((base / "developer" / "policy").rglob("MPD-*.yaml"))
     )
     if indexed_mpd_paths != discovered_mpd_paths:
         errors.append(
@@ -546,6 +566,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             sfp_ids=sfp_ids,
             developer_authority_ids=tuple(developer_authority_ids),
             mpd_ids=mpd_ids,
+            current_records=current_records,
         )
     )
 

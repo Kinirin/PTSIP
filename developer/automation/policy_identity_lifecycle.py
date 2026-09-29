@@ -21,13 +21,22 @@ APPROVAL_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.js
 MANAGEMENT_POLICY_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
-_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
 
 
 class PolicyIdentityLifecycleError(RuntimeError):
     def __init__(self, code: str, message: str) -> None:
         super().__init__(message)
         self.code = code
+
+
+def _canonical_policy_path(policy_id: str) -> str:
+    family = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+    if family is not None:
+        return f"developer/policy/{family.group(1)}/{policy_id}.yaml"
+    if _POLICY_ID_RE.fullmatch(policy_id) is not None:
+        return f"developer/policy/{policy_id}.yaml"
+    raise PolicyIdentityLifecycleError("INVALID_POLICY_ID", f"invalid policy ID: {policy_id}")
 
 
 @dataclass(frozen=True)
@@ -115,7 +124,7 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
     if ids != tuple(sorted(ids)):
         raise PolicyIdentityLifecycleError("NONCANONICAL_POLICY_INDEX_ORDER", "developer policy index IDs are not ordered")
 
-    expected_paths = tuple(f"developer/policy/{policy_id}.yaml" for policy_id in ids)
+    expected_paths = tuple(_canonical_policy_path(policy_id) for policy_id in ids)
     if paths != expected_paths:
         raise PolicyIdentityLifecycleError(
             "POLICY_INDEX_PATH_MISMATCH",
@@ -142,7 +151,7 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
 
 
 def _discover_policy_ids(base: Path) -> tuple[str, ...]:
-    return tuple(path.stem for path in sorted((base / "developer/policy").glob("MPD-*.yaml")))
+    return tuple(path.stem for path in sorted((base / "developer/policy").rglob("MPD-*.yaml")))
 
 
 def _assert_no_unregistered_policy_file(base: Path, state: CorpusState) -> None:
@@ -300,7 +309,7 @@ def register_policy(
             f"requested {requested}, next available is {allocated}",
         )
 
-    expected_relative = Path(f"developer/policy/{allocated}.yaml")
+    expected_relative = Path(_canonical_policy_path(allocated))
     candidate = Path(policy_file)
     if candidate.is_absolute():
         try:
@@ -319,7 +328,7 @@ def register_policy(
         raise PolicyIdentityLifecycleError("POLICY_FILE_NOT_FOUND", relative.as_posix())
 
     discovered = _discover_policy_ids(base)
-    expected_discovered = tuple((*state.ids, allocated))
+    expected_discovered = tuple(sorted((*state.ids, allocated)))
     if discovered != expected_discovered:
         raise PolicyIdentityLifecycleError(
             "POLICY_CORPUS_MISMATCH",
@@ -352,12 +361,13 @@ def register_policy(
         "path": expected_relative.as_posix(),
         "status": approval["target_status"],
     })
+    index_entries.sort(key=lambda item: str(item["id"]))
     index["policies"] = index_entries
 
     registry = dict(state.subject_registry)
     schemes = dict(_mapping(registry["subject_identity_schemes"], label="subject_identity_schemes"))
     identity = dict(_mapping(schemes["MANAGEMENT_POLICY_ID"], label="MANAGEMENT_POLICY_ID"))
-    identity["registered_values"] = [*state.ids, allocated]
+    identity["registered_values"] = sorted([*state.ids, allocated])
     schemes["MANAGEMENT_POLICY_ID"] = identity
     registry["subject_identity_schemes"] = schemes
 

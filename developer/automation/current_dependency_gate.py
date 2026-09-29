@@ -27,7 +27,7 @@ _CURRENT_EXACT_PATHS = (
 _CURRENT_GLOBS = (
     "developer/automation/*.py",
     "developer/automation/planning/*.py",
-    "developer/policy/MPD-*.yaml",
+    "developer/policy/**/MPD-*.yaml",
     "developer/policy/registries/*.yaml",
     "developer/policy/schemas/*.json",
     "developer/planning/schemas/*.json",

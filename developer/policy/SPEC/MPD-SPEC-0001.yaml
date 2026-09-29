@@ -21,6 +21,22 @@ rules:
         - MIGR
         - RELS
       machine_policy_path: developer/policy/
+      machine_policy_path_role: POLICY_ROOT
+      family_directory_materialization:
+        rule: REQUIRED_FOR_NAMED_POLICY_FAMILY
+        generic_policy_path_pattern: '^developer/policy/MPD-[0-9]{4}\.yaml$'
+        family_policy_path_pattern: '^developer/policy/<FAMILY>/MPD-<FAMILY>-[0-9]{4}\.yaml$'
+        family_paths:
+          SPEC: developer/policy/SPEC/
+          PLAN: developer/policy/PLAN/
+          WORK: developer/policy/WORK/
+          VERI: developer/policy/VERI/
+          MIGR: developer/policy/MIGR/
+          RELS: developer/policy/RELS/
+        index_is_canonical_path_registry: true
+        directory_does_not_define_policy_identity: true
+        family_identity_and_directory_must_match: true
+        unindexed_policy_file: FORBIDDEN
       human_documentation_path: docs/Developer_policy/
       automation_path: developer/automation/
       profile_path: developer/profiles/
