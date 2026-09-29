@@ -234,7 +234,7 @@ def rebase_link_target(value: str, source_path: Path, target_path: Path) -> str:
     path_value, separator, title = value.partition(" ")
     if (
         not path_value
-        or path_value.startswith(("#", "/"))
+        or path_value.startswith(("#", "/", "../"))
         or re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", path_value)
     ):
         return value
