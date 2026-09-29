@@ -214,29 +214,6 @@ rules:
         - MIGRATION_BURDEN_REQUIRES_EVIDENCE
       external_orchestration_is_not_the_0_3_8_solution: true
 
-  deferred_decisions:
-    feature_implementation_body_details:
-      implementation_kind_allowed_values_and_semantics: DEFERRED
-      revision_format_and_compatibility_rules: DEFERRED
-      implementation_ref_target_kinds: DEFERRED
-      optional_extension_fields: DEFERRED
-    compatibility_feature_compiler:
-      exact_compiler_contract_shape: DEFERRED
-      exact_atomic_feature_projection_format: DEFERRED
-      registry_topology: DEFERRED
-      feature_mapping_algorithm: DEFERRED
-      migration_mechanics: DEFERRED
-    generated_resolution:
-      automatic_semantic_transformation_upper_bound: DEFERRED
-      user_review_threshold_beyond_required_unknown_rule: DEFERRED
-    plugin_integration:
-      langgraph_plugin_contract: DEFERRED_BEYOND_0_3_8
-      langchain_plugin_contract: DEFERRED_BEYOND_0_3_8
-      local_model_integration_contract: DEFERRED_BEYOND_0_3_8
-      remote_user_resolver_contract: DEFERRED_BEYOND_0_3_8
-    human_projection:
-      future_human_readable_projection_format: DEFERRED
-
   repository_materialization_snapshot:
     observed_branch: dev/0.3.8
     observed_head_before_this_record: df018272ef31ef84c3cc158d00235af946862c09
@@ -256,18 +233,6 @@ rules:
         - VOCABULARY
         - BINDING
       markdown_cleanup_automation: MATERIALIZED_SIMULATION_AND_GUARDED_APPLY
-    not_yet_materialized_from_this_decision_ledger:
-      - R2_REQUIRED_VERIFICATION_MODEL
-      - IMPLEMENTATION_RESOLUTION_VALID
-      - IO4_GENERATED_VERIFIED_IO_RESOLUTION
-      - E3_EFFECT_MATCH_VERIFICATION
-      - FAILURE_OBSERVATION_AND_FAILURE_SEMANTIC_SPLIT
-      - FO4_RUNTIME_ASSEMBLED_FAILURE_OBSERVATION
-      - C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
-      - CF2_FINE_GRAINED_ATOMIC_FEATURE_SYSTEM
-      - FEATURE_STABLE_CORE
-      - SEMANTIC_EXTENSION_CONTRACT
-      - FEATURE_IMPLEMENTATION_BODY_MINIMUM
     completed_materialization:
       - NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL
     current_legacy_markdown_physical_presence: ABSENT
@@ -332,3 +297,5 @@ relations:
       scope: AGENT_CONTRACT_NORMATIVE_AUTHORITY
     - policy: MPD-SPEC-0025
       scope: SOURCE_AND_FEATURE_CONTRACT_MODEL
+    - policy: MPD-PLAN-0004
+      scope: AGENT_CONTRACT_DEFERRED_WORK_AND_PENDING_MATERIALIZATION

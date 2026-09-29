@@ -29,6 +29,12 @@ policy_query_list:
       - governance_source_vocabulary
     reason: Canonical owner of governance source vocabulary and source authority semantics.
 
+  - policy_id: MPD-PLAN-0004
+    expected_status: ACTIVE
+    sections:
+      - agent_contract_deferred_work_plan
+    reason: Canonical owner of deferred Agent Contract work and pending materialization planning state.
+
   - policy_id: MPD-0011
     expected_status: ACTIVE
     sections:

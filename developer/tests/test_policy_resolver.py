@@ -633,3 +633,18 @@ def test_public_profile_catalog_schema_routes_pp_transition_policy() -> None:
         "MPD-SPEC-0026",
         "MPD-0011",
     ]
+
+
+def test_agent_contract_plan_routes_deferred_work_plan() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="src/agent_contracts/example.yaml",
+        operation="PLAN",
+    )
+
+    plan = next(
+        item for item in result["policies"]
+        if item["policy_id"] == "MPD-PLAN-0004"
+    )
+    assert plan["path"] == "developer/policy/PLAN/MPD-PLAN-0004.yaml"
+    assert plan["sections"] == ["agent_contract_deferred_work_plan"]
