@@ -125,12 +125,17 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("SFP-0009", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
         ("SFP-0009", "depends_on", "SFP-0008", "RESPONSIBILITY_MAP_SEMANTIC_AXES"),
         ("SFP-0011", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
-        ("MPD-SPEC-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-0005", "amends", "MPD-SPEC-0004", "REPOSITORY_SELF_ADOPTION_ASSUMPTION"),
-        ("MPD-0010", "extends", "MPD-SPEC-0001", "DEVELOPER_CANONICAL_SEMANTIC_CONTRACT_AND_EXTENSION_BOUNDARY"),
         ("MPD-0011", "amends", "MPD-0008", "project_profile_version_migration_authorization"),
-        ("MPD-0011", "extends", "MPD-0010", "identity_and_resolution"),
+        ("MPD-0011", "extends", "MPD-SPEC-0006", "identity_and_resolution"),
         ("MPD-0011", "depends_on", "MPD-SPEC-0001", "developer_distribution_boundary"),
+        ("MPD-0012", "extends", "MPD-0010", "AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION_REFINEMENT"),
+        ("MPD-0012", "extends", "MPD-SPEC-0007", "AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION_REFINEMENT"),
+        ("MPD-0012", "depends_on", "MPD-0010", "INFERENCE_COST_EXTENSION_AND_IDENTITY_BASELINE"),
+        ("MPD-0012", "depends_on", "MPD-SPEC-0006", "INFERENCE_COST_EXTENSION_AND_IDENTITY_BASELINE"),
+        ("MPD-0012", "depends_on", "MPD-SPEC-0007", "INFERENCE_COST_EXTENSION_AND_IDENTITY_BASELINE"),
+        ("MPD-SPEC-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
+        ("MPD-SPEC-0006", "extends", "MPD-SPEC-0001", "DEVELOPER_CANONICAL_SEMANTIC_CONTRACT_AND_EXTENSION_BOUNDARY"),
     ]
 
 

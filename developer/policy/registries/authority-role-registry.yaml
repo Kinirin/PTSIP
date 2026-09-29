@@ -54,10 +54,7 @@ policy_roles:
   - policy_id: MPD-0008
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
-      - forbid_recursive_ptsip_core_selector_broadening
-      - govern_migration_subsystem_architecture
       - govern_project_profile_migration_authorization
-      - govern_relationship_contract
   - policy_id: MPD-0009
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
@@ -99,3 +96,9 @@ policy_roles:
     effects:
       - bind_immutable_normative_snapshot
       - govern_normative_family_lifecycle
+  - policy_id: MPD-SPEC-0005
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - forbid_recursive_ptsip_core_selector_broadening
+      - govern_migration_subsystem_architecture
+      - govern_relationship_contract

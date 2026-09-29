@@ -40,8 +40,14 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
             "sections": ["authority_semantics"],
         },
         {
-            "policy_id": "MPD-0010",
-            "path": "developer/policy/MPD-0010.yaml",
+            "policy_id": "MPD-SPEC-0005",
+            "path": "developer/policy/MPD-SPEC-0005.yaml",
+            "status": "ACTIVE",
+            "sections": ["authority_semantics"],
+        },
+        {
+            "policy_id": "MPD-SPEC-0006",
+            "path": "developer/policy/MPD-SPEC-0006.yaml",
             "status": "ACTIVE",
             "sections": [
                 "identity_and_resolution",
@@ -60,8 +66,8 @@ def test_github_authority_scope_resolves_policy_without_plan_task_context() -> N
     assert result["binding_scope"] == "src/ptsip/app/github_authority.py"
     assert result["policies"] == [
         {
-            "policy_id": "MPD-0010",
-            "path": "developer/policy/MPD-0010.yaml",
+            "policy_id": "MPD-SPEC-0006",
+            "path": "developer/policy/MPD-SPEC-0006.yaml",
             "status": "ACTIVE",
             "sections": [
                 "identity_and_resolution",
@@ -114,7 +120,7 @@ def test_similar_scope_name_does_not_match_registered_scope() -> None:
         operation="MODIFY",
     )
     assert result["binding_scope"] == "."
-    assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010"]
+    assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010", "MPD-SPEC-0006"]
 
 
 def test_operation_override_is_exact() -> None:
@@ -127,26 +133,26 @@ def test_operation_override_is_exact() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0006",
         "MPD-0007",
-        "MPD-0010",
+        "MPD-SPEC-0006",
     ]
 
 
 def test_get_policy_can_return_only_one_rule_section() -> None:
     result = get_policy(
         ROOT,
-        policy_id="MPD-0010",
+        policy_id="MPD-SPEC-0006",
         section="identity_and_resolution",
     )
     assert result["fragment"] == "rules.identity_and_resolution"
-    assert result["canonical_path"] == "developer/policy/MPD-0010.yaml"
+    assert result["canonical_path"] == "developer/policy/MPD-SPEC-0006.yaml"
     assert isinstance(result["record"], dict)
     assert "registry_resolution_budget" in result["record"]
     assert "ptsip_design_priority" not in result["record"]
 
 
 def test_explain_is_compact_metadata_not_policy_body() -> None:
-    result = explain_policy(ROOT, policy_id="MPD-0010")
-    assert result["policy_id"] == "MPD-0010"
+    result = explain_policy(ROOT, policy_id="MPD-SPEC-0006")
+    assert result["policy_id"] == "MPD-SPEC-0006"
     assert result["status"] == "ACTIVE"
     assert "identity_and_resolution" in result["rule_sections"]
     assert "record" not in result
@@ -215,7 +221,7 @@ def test_pp_transition_policy_routes_for_public_profile_modify() -> None:
 
     assert result["binding_scope"] == "profiles"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
     assert result["policies"][1]["sections"] == [
@@ -238,7 +244,7 @@ def test_pp_transition_policy_routes_for_current_schema_modify() -> None:
 
     assert result["binding_scope"] == "schemas"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
     assert "t2_authority_delta" in result["policies"][1]["sections"]
@@ -253,7 +259,7 @@ def test_pp_transition_policy_routes_for_future_canonical_registry_path() -> Non
 
     assert result["binding_scope"] == "registry/project-profile-contracts.yaml"
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -287,7 +293,7 @@ def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -310,7 +316,7 @@ def test_runtime_pp_registry_surfaces_route_transition_policy(scope: str) -> Non
 
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -333,7 +339,7 @@ def test_distribution_projection_surfaces_route_pp_transition_policy(scope: str)
 
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -348,7 +354,7 @@ def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None
     assert result["binding_scope"] == ".github/workflows/tooling-test.yml"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0007",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -373,7 +379,7 @@ def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -388,7 +394,7 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
     assert result["binding_scope"] == "developer/automation/pp/pp_remote_verify.py"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -403,7 +409,7 @@ def test_release_pp_verifier_routes_release_transition_policy() -> None:
     assert result["binding_scope"] == "developer/automation/pp/pp_release_verify.py"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -426,7 +432,7 @@ def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> No
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-0007",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -447,7 +453,7 @@ def test_local_profile_runtime_surfaces_route_pp_policy(scope: str) -> None:
 
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -462,7 +468,7 @@ def test_pp_102_transition_seed_routes_developer_and_pp_policy() -> None:
     assert result["binding_scope"] == "developer/automation/seed_pp_102_transition.py"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]
 
@@ -478,6 +484,6 @@ def test_public_profile_catalog_schema_routes_pp_transition_policy() -> None:
         "developer/policy/schemas/public-profile-catalog.schema.json"
     )
     assert [item["policy_id"] for item in result["policies"]] == [
-        "MPD-0010",
+        "MPD-SPEC-0006",
         "MPD-0011",
     ]

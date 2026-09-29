@@ -15,42 +15,6 @@
     },
     "MPD_0008_V1": {
       "const": {
-        "components": [
-          {
-            "id": "ptsip-evidence",
-            "classification": "PRODUCT",
-            "role": "IMPLEMENTATION",
-            "selector": "src/ptsip/evidence/**"
-          },
-          {
-            "id": "ptsip-source-compat",
-            "classification": "PRODUCT",
-            "role": "IMPLEMENTATION",
-            "selector": "src/ptsip/source_compat/**"
-          },
-          {
-            "id": "ptsip-migration",
-            "classification": "PRODUCT",
-            "role": "IMPLEMENTATION",
-            "selector": "src/ptsip/migration/**"
-          }
-        ],
-        "common_properties": {
-          "shipped": true,
-          "runtime_required": false,
-          "executable": false,
-          "release_owner": "tool",
-          "compatibility_owner": "tool"
-        },
-        "ptsip_core_selector_broadened_to_recursive_src_ptsip": false,
-        "relationships": [
-          "ptsip-evidence:IMPORTS:ptsip-core",
-          "ptsip-source-compat:IMPORTS:ptsip-core",
-          "ptsip-source-compat:READS:ptsip-embedded-contracts",
-          "ptsip-migration:IMPORTS:ptsip-core",
-          "ptsip-migration:IMPORTS:ptsip-evidence",
-          "ptsip-migration:IMPORTS:ptsip-source-compat"
-        ],
         "project_profile_version_migration_authority_ref": "MPD-0011",
         "project_profile_version_migration_authorized_when": "MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED",
         "project_profile_version_migration_otherwise": "FORBIDDEN"
@@ -163,6 +127,46 @@
         "normative_companion": "SFP-0010",
         "activation_implies_repository_profile_mutation": false,
         "tool_runtime_claims_full_implementation_by_activation": false
+      }
+    },
+    "MPD_SPEC_0005_V1": {
+      "const": {
+        "components": [
+          {
+            "id": "ptsip-evidence",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/evidence/**"
+          },
+          {
+            "id": "ptsip-source-compat",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/source_compat/**"
+          },
+          {
+            "id": "ptsip-migration",
+            "classification": "PRODUCT",
+            "role": "IMPLEMENTATION",
+            "selector": "src/ptsip/migration/**"
+          }
+        ],
+        "common_properties": {
+          "shipped": true,
+          "runtime_required": false,
+          "executable": false,
+          "release_owner": "tool",
+          "compatibility_owner": "tool"
+        },
+        "ptsip_core_selector_broadened_to_recursive_src_ptsip": false,
+        "relationships": [
+          "ptsip-evidence:IMPORTS:ptsip-core",
+          "ptsip-source-compat:IMPORTS:ptsip-core",
+          "ptsip-source-compat:READS:ptsip-embedded-contracts",
+          "ptsip-migration:IMPORTS:ptsip-core",
+          "ptsip-migration:IMPORTS:ptsip-evidence",
+          "ptsip-migration:IMPORTS:ptsip-source-compat"
+        ]
       }
     }
   }

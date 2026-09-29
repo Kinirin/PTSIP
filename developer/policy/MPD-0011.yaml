@@ -160,7 +160,7 @@ relations:
     - policy: MPD-0008
       scope: project_profile_version_migration_authorization
   extends:
-    - policy: MPD-0010
+    - policy: MPD-SPEC-0006
       scope: identity_and_resolution
   depends_on:
     - policy: MPD-SPEC-0001

@@ -15,6 +15,8 @@ scope_bindings:
       - policy_id: MPD-0010
         sections:
           - ptsip_design_priority
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
     operations:
@@ -25,6 +27,8 @@ scope_bindings:
         - policy_id: MPD-0010
           sections:
             - ptsip_design_priority
+        - policy_id: MPD-SPEC-0006
+          sections:
             - identity_and_resolution
       RELEASE:
         - policy_id: MPD-0006
@@ -33,7 +37,7 @@ scope_bindings:
         - policy_id: MPD-0007
           sections:
             - authority_semantics
-        - policy_id: MPD-0010
+        - policy_id: MPD-SPEC-0006
           sections:
             - identity_and_resolution
 
@@ -42,6 +46,8 @@ scope_bindings:
       - policy_id: MPD-0010
         sections:
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -54,6 +60,8 @@ scope_bindings:
       - policy_id: MPD-0010
         sections:
           - ptsip_design_priority
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -67,6 +75,8 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
 
   developer/automation/agent_instruction_materializer.py:
@@ -79,6 +89,8 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -92,6 +104,8 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -105,6 +119,8 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -118,6 +134,8 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -131,6 +149,8 @@ scope_bindings:
         sections:
           - ptsip_design_priority
           - agent_instruction_entry_taxonomy_trial
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
 
@@ -139,7 +159,7 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
           - namespace
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - normative_contract_architecture
           - identity_and_resolution
@@ -151,11 +171,15 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
           - planning_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
+      - policy_id: MPD-0010
+        sections:
           - management_policy_identity_lifecycle_preflight
           - provisional_resolution_framework
+      - policy_id: MPD-SPEC-0010
+        sections:
           - governance_source_vocabulary
       - policy_id: MPD-0011
         sections:
@@ -169,10 +193,14 @@ scope_bindings:
 
   developer/policy/registries/governance-source-registry.yaml:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
+      - policy_id: MPD-0010
+        sections:
           - provisional_resolution_framework
+      - policy_id: MPD-SPEC-0010
+        sections:
           - governance_source_vocabulary
 
   developer/profiles:
@@ -180,7 +208,7 @@ scope_bindings:
       - policy_id: MPD-0005
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
 
@@ -195,7 +223,11 @@ scope_bindings:
       - policy_id: MPD-0010
         sections:
           - ptsip_design_priority
+      - policy_id: MPD-SPEC-0006
+        sections:
           - identity_and_resolution
+      - policy_id: MPD-SPEC-0010
+        sections:
           - governance_source_vocabulary
       - policy_id: MPD-0013
         sections:
@@ -204,7 +236,7 @@ scope_bindings:
 
   src/ptsip/app/github_authority.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -214,7 +246,10 @@ scope_bindings:
       - policy_id: MPD-0008
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0005
+        sections:
+          - authority_semantics
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -257,7 +292,7 @@ scope_bindings:
       - policy_id: MPD-0006
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
 
@@ -266,13 +301,13 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
 
   profiles:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -288,7 +323,7 @@ scope_bindings:
 
   schemas:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - normative_contract_architecture
           - identity_and_resolution
@@ -302,7 +337,7 @@ scope_bindings:
 
   registry/project-profile-contracts.yaml:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - normative_contract_architecture
           - identity_and_resolution
@@ -320,7 +355,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -338,7 +373,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -357,7 +392,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -372,7 +407,7 @@ scope_bindings:
 
   src/ptsip/project_profile_contracts.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -384,7 +419,7 @@ scope_bindings:
 
   src/ptsip/profile_identity.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -396,7 +431,7 @@ scope_bindings:
 
   src/ptsip/profile_compatibility.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -408,7 +443,7 @@ scope_bindings:
 
   src/ptsip/specdata/project-profile-contracts.yaml:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -419,7 +454,7 @@ scope_bindings:
 
   setup.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -431,7 +466,7 @@ scope_bindings:
 
   pyproject.toml:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -460,7 +495,7 @@ scope_bindings:
 
   MANIFEST.in:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -472,7 +507,7 @@ scope_bindings:
 
   .github/scripts/verify_distribution_contracts.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -487,7 +522,7 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -502,7 +537,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -520,7 +555,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -538,7 +573,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -556,7 +591,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -574,7 +609,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -591,7 +626,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -609,7 +644,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -625,7 +660,7 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
       - policy_id: MPD-0011
@@ -638,7 +673,7 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
       - policy_id: MPD-0011
@@ -652,7 +687,7 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
           - authority_semantics
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -662,7 +697,7 @@ scope_bindings:
 
   src/ptsip/local_profile_catalog.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -675,7 +710,7 @@ scope_bindings:
 
   src/ptsip/profile_metadata.py:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -692,7 +727,7 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
           - canonical_and_runtime_projection
@@ -709,7 +744,7 @@ scope_bindings:
 
   developer/policy/schemas/public-profile-catalog.schema.json:
     default_refs:
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - normative_contract_architecture
           - identity_and_resolution
@@ -726,9 +761,11 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
+      - policy_id: MPD-SPEC-0010
+        sections:
           - governance_source_vocabulary
       - policy_id: MPD-0014
         sections:
@@ -741,9 +778,11 @@ scope_bindings:
         sections:
           - namespace
           - distribution_boundary
-      - policy_id: MPD-0010
+      - policy_id: MPD-SPEC-0006
         sections:
           - identity_and_resolution
+      - policy_id: MPD-SPEC-0010
+        sections:
           - governance_source_vocabulary
       - policy_id: MPD-0014
         sections:
@@ -752,8 +791,6 @@ scope_bindings:
 
   src/agent_contracts:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -762,8 +799,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -781,12 +816,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -799,8 +830,6 @@ scope_bindings:
         - mechanized_resolution_cycle
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -816,8 +845,6 @@ scope_bindings:
 
   src/ptsip/agent_contracts:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -826,8 +853,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -844,12 +869,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -861,8 +882,6 @@ scope_bindings:
         - mechanized_resolution_cycle
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -877,8 +896,6 @@ scope_bindings:
 
   src/ptsip/repository:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -887,8 +904,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -905,12 +920,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -922,8 +933,6 @@ scope_bindings:
         - execution_feedback_cycle
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -938,8 +947,6 @@ scope_bindings:
 
   src/ptsip/validation:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -948,8 +955,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       RELEASE:
@@ -959,12 +964,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -976,8 +977,6 @@ scope_bindings:
         - contract_artifact_representation
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -996,8 +995,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1008,8 +1005,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1025,8 +1020,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1042,8 +1035,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1061,8 +1052,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1073,8 +1062,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1088,8 +1075,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1103,8 +1088,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1116,8 +1099,6 @@ scope_bindings:
 
   tests/ptsip/agent_contracts:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1126,8 +1107,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       RELEASE:
@@ -1137,12 +1116,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1155,8 +1130,6 @@ scope_bindings:
         - mechanized_resolution_cycle
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1172,8 +1145,6 @@ scope_bindings:
 
   tests/ptsip/conformance:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1182,8 +1153,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       RELEASE:
@@ -1193,12 +1162,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1209,8 +1174,6 @@ scope_bindings:
         - machine_contract_ownership
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1224,8 +1187,6 @@ scope_bindings:
 
   tests/ptsip/migration:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1234,8 +1195,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       RELEASE:
@@ -1245,12 +1204,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1263,8 +1218,6 @@ scope_bindings:
         - reasoning_promotion_cycle
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1280,8 +1233,6 @@ scope_bindings:
 
   tests/ptsip/repository:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1290,8 +1241,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       RELEASE:
@@ -1301,12 +1250,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1317,8 +1262,6 @@ scope_bindings:
         - machine_contract_ownership
         - execution_feedback_cycle
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1332,8 +1275,6 @@ scope_bindings:
 
   tests/ptsip/validation:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1342,8 +1283,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       RELEASE:
@@ -1353,12 +1292,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1369,8 +1304,6 @@ scope_bindings:
         - machine_contract_ownership
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1388,8 +1321,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1400,8 +1331,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1416,8 +1345,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1432,8 +1359,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1450,8 +1375,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1462,8 +1385,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1477,8 +1398,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1492,8 +1411,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1509,8 +1426,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1521,8 +1436,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1538,8 +1451,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1555,8 +1466,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1574,8 +1483,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1586,8 +1493,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1603,8 +1508,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1620,8 +1523,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1639,8 +1540,6 @@ scope_bindings:
       sections:
       - namespace
       - distribution_boundary
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1651,8 +1550,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1668,8 +1565,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1685,8 +1580,6 @@ scope_bindings:
         sections:
         - namespace
         - distribution_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1700,8 +1593,6 @@ scope_bindings:
 
   src/ptsip/conformance.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1710,8 +1601,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -1727,12 +1616,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1743,8 +1628,6 @@ scope_bindings:
         - machine_contract_ownership
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1758,8 +1641,6 @@ scope_bindings:
 
   src/ptsip/conformance_engine.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1768,8 +1649,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -1786,12 +1665,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1803,8 +1678,6 @@ scope_bindings:
         - execution_feedback_cycle
         - python_migration_reference
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1819,8 +1692,6 @@ scope_bindings:
 
   src/ptsip/conformance_audit.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1829,8 +1700,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -1846,12 +1715,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1862,8 +1727,6 @@ scope_bindings:
         - machine_contract_ownership
         - execution_feedback_cycle
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1877,8 +1740,6 @@ scope_bindings:
 
   src/ptsip/validation_capture.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1887,8 +1748,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -1903,12 +1762,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1918,8 +1773,6 @@ scope_bindings:
         - implementation_role
         - execution_feedback_cycle
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1932,8 +1785,6 @@ scope_bindings:
 
   src/ptsip/artifact_evidence.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1942,8 +1793,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -1958,12 +1807,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1973,8 +1818,6 @@ scope_bindings:
         - implementation_role
         - execution_feedback_cycle
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -1987,8 +1830,6 @@ scope_bindings:
 
   src/ptsip/lifecycle_evidence.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -1997,8 +1838,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -2013,12 +1852,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -2028,8 +1863,6 @@ scope_bindings:
         - implementation_role
         - execution_feedback_cycle
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -2042,8 +1875,6 @@ scope_bindings:
 
   src/ptsip/review_evidence.py:
     default_refs:
-    - policy_id: MPD-0010
-      sections:
       - ptsip_design_priority
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -2052,8 +1883,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - planning_boundary
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
       - policy_id: MPD-0015
@@ -2069,12 +1898,8 @@ scope_bindings:
       - policy_id: MPD-0007
         sections:
         - authority_semantics
-      - policy_id: MPD-0010
-        sections:
         - identity_and_resolution
       MODIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -2085,8 +1910,6 @@ scope_bindings:
         - execution_feedback_cycle
         - reasoning_promotion_cycle
       VERIFY:
-      - policy_id: MPD-0010
-        sections:
         - ptsip_design_priority
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -2103,8 +1926,6 @@ scope_bindings:
     - policy_id: MPD-0001
       sections:
       - namespace
-    - policy_id: MPD-0010
-      sections:
       - normative_contract_architecture
       - identity_and_resolution
       - canonical_and_runtime_projection
@@ -2114,8 +1935,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - namespace
-      - policy_id: MPD-0010
-        sections:
         - normative_contract_architecture
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -2137,8 +1956,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - namespace
-      - policy_id: MPD-0010
-        sections:
         - normative_contract_architecture
         - identity_and_resolution
         - canonical_and_runtime_projection
@@ -2160,8 +1977,6 @@ scope_bindings:
       - policy_id: MPD-0001
         sections:
         - namespace
-      - policy_id: MPD-0010
-        sections:
         - normative_contract_architecture
         - identity_and_resolution
         - canonical_and_runtime_projection

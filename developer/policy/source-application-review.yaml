@@ -13,11 +13,21 @@ policy_query_list:
   - policy_id: MPD-0010
     expected_status: ACTIVE
     sections:
-      - identity_and_resolution
       - management_policy_identity_lifecycle_preflight
       - provisional_resolution_framework
+    reason: Owns developer policy lifecycle preflight and provisional operational resolution.
+
+  - policy_id: MPD-SPEC-0006
+    expected_status: ACTIVE
+    sections:
+      - identity_and_resolution
+    reason: Canonical owner of identity and exact resolution semantics.
+
+  - policy_id: MPD-SPEC-0010
+    expected_status: ACTIVE
+    sections:
       - governance_source_vocabulary
-    reason: Canonical owner of source vocabulary, provisional resolution, identity, and inference boundaries.
+    reason: Canonical owner of governance source vocabulary and source authority semantics.
 
   - policy_id: MPD-0011
     expected_status: ACTIVE

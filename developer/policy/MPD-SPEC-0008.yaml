@@ -1,0 +1,37 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0008
+  title: Evidence Kind Extension Contract
+  status: ACTIVE
+
+rules:
+  evidence_kind_extension:
+      official_core_closed_vocabulary:
+        - EVIDENCE_KIND.OBSERVED
+        - EVIDENCE_KIND.DECLARED
+        - EVIDENCE_KIND.DERIVED
+        - EVIDENCE_KIND.EXPLICIT_HUMAN_INPUT
+      selector_forms:
+        - EXACT
+        - PATTERN
+      official_core_kind_selector: EXACT_ONLY
+      pattern_selector:
+        allowed_scope: EXTENSION_COMMUNITY_OR_USER_NAMESPACE
+        matching: TERMINAL_NAMESPACE_PREFIX_ONLY
+        global_wildcard: FORBIDDEN
+        regex: FORBIDDEN
+        arbitrary_glob: FORBIDDEN
+        semantic_similarity_matching: FORBIDDEN
+        registration_required_before_match_can_be_accepted: true
+        unknown_pattern_grammar: FAIL_CLOSED
+        compatibility_guarantee: false
+        maintenance_and_revalidation_owner: EXTENSION_OWNER
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
