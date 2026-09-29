@@ -1,18 +1,18 @@
 <!-- AUTO-GENERATED: README.md is canonical. Unchanged reviewed translations are preserved; changed source blocks are translated by self-hosted Argos Translate. Do not edit directly. -->
 <p align="right">
-  <a href="README.md">English</a> | 한국어
+  <a href="../../README.md">English</a> | 한국어
 </p>
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-> 이 문서는 정식 원본인 [`README.md`](README.md)를 기준으로 유지되는 한국어 번역본입니다. 변경되지 않은 번역은 보존하고, 변경된 원문 블록만 self-hosted Argos Translate로 갱신합니다. 프로젝트 사실이나 의미가 상충할 경우 영문 원본을 기준으로 합니다.
+> 이 문서는 정식 원본인 [`README.md`](../../README.md)를 기준으로 유지되는 한국어 번역본입니다. 변경되지 않은 번역은 보존하고, 변경된 원문 블록만 self-hosted Argos Translate로 갱신합니다. 프로젝트 사실이나 의미가 상충할 경우 영문 원본을 기준으로 합니다.
 
 **상태:** Tool `0.3.8a1` 비상사태 prerelease — 간행물<br>
 **Tool/package 버전:** `0.3.8a1`<br>
 **Project Profile 계약:** `pp.1.01`<br>
 **Specification 패밀리:** `0.3.7-draft`<br>
 **바인딩된 불변 Specification 리비전:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**라이센스 기관:** [`License-Authority/`](License-Authority/) (닫은 권위 경계; 다른 사람은 비 긴급합니다)<br>
+**라이센스 기관:** [`License-Authority/`](../../License-Authority/) (닫은 권위 경계; 다른 사람은 비 긴급합니다)<br>
 **공급 능력:** `2026-09-15T00:00:00Z` (세계)<br>
 **현지화 문서:** `README.md`가 정식 원본입니다. 현지화된 README 파일은 `main`에서 self-hosted Argos Translate 워크플로로 다시 생성됩니다. 번역과 이 파일의 내용이 충돌하면 이 파일을 기준으로 합니다.
 
@@ -379,11 +379,11 @@ Release scope:    explicit proposed candidate bridge
 
 그것은 명시적 제안 된 후보자로서의 not-yet-existing 구성 요소를 나타내는 지원을 추가하고 활성 구성 요소로 분리하지 않고 제안을 해결합니다. 그것은 더 넓은의 완료를 주장하지 않습니다 Tool `0.4.0` 기능 회복 건축.
 
-릴리스 범위 및 검증 내역은 기록됩니다. [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). 방출 문은 정의됩니다 [`planning/0.3.8/0.3.8a1-emergency-release-gate.yaml`](planning/0.3.8/0.3.8a1-emergency-release-gate.yaml).
+릴리스 범위 및 검증 내역은 기록됩니다. [`releasenote/tool/0.3.8a1.md`](../../releasenote/tool/0.3.8a1.md). 방출 문은 정의됩니다 [`planning/0.3.8/0.3.8a1-emergency-release-gate.yaml`](../../planning/0.3.8/0.3.8a1-emergency-release-gate.yaml).
 
 ## 인증 기관
 
-PTSIP licensing Authority는 독점적으로 포함되어 있습니다. [`License-Authority/`](License-Authority/). 기계 읽기 쉬운 입장 점은 입니다 [`License-Authority/license-authority.yaml`](License-Authority/license-authority.yaml), 그리고 통제 법적인 원본은 입니다 [`License-Authority/LICENSE.md`](License-Authority/LICENSE.md).
+PTSIP licensing Authority는 독점적으로 포함되어 있습니다. [`License-Authority/`](../../License-Authority/). 기계 읽기 쉬운 입장 점은 입니다 [`License-Authority/license-authority.yaml`](../../License-Authority/license-authority.yaml), 그리고 통제 법적인 원본은 입니다 [`License-Authority/LICENSE.md`](../../License-Authority/LICENSE.md).
 
 현재 면허 기관이 선언 한 후보 유효 시간은 `2026-09-15T00:00:00Z` (UTC).
 
@@ -396,4 +396,4 @@ PTSIP는 Consumer Repository가 Tool 사용만을 위해 PTSIP 전용 `.ptsip/`,
 
 ## 프로젝트 상태
 
-PTSIP 실험을 한다. Tool `0.3.8a1` 출판물 경계가 추적되는 비상 prerelease [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). 역사 Tool 출시 및 Specification 주의사항 [`releasenote/`](releasenote/).
+PTSIP 실험을 한다. Tool `0.3.8a1` 출판물 경계가 추적되는 비상 prerelease [`releasenote/tool/0.3.8a1.md`](../../releasenote/tool/0.3.8a1.md). 역사 Tool 출시 및 Specification 주의사항 [`releasenote/`](../../releasenote/).

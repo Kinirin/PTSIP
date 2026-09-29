@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import posixpath
 import re
 import subprocess
 from collections import defaultdict, deque
@@ -228,6 +229,42 @@ def link_targets(text: str) -> list[str]:
     ]
 
 
+def rebase_link_target(value: str, source_path: Path, target_path: Path) -> str:
+    value = value.strip()
+    path_value, separator, title = value.partition(" ")
+    if (
+        not path_value
+        or path_value.startswith(("#", "/"))
+        or re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", path_value)
+    ):
+        return value
+    path_without_fragment, fragment_separator, fragment = path_value.partition("#")
+    path_without_query, query_separator, query = path_without_fragment.partition("?")
+    if not path_without_query:
+        return value
+    repository_target = posixpath.normpath(
+        posixpath.join(source_path.parent.as_posix(), path_without_query)
+    )
+    rebased = posixpath.relpath(repository_target, target_path.parent.as_posix())
+    if path_without_query.endswith("/") and not rebased.endswith("/"):
+        rebased += "/"
+    if query_separator:
+        rebased += "?" + query
+    if fragment_separator:
+        rebased += "#" + fragment
+    if separator:
+        rebased += separator + title
+    return rebased
+
+
+def rebase_markdown_links(text: str, source_path: Path, target_path: Path) -> str:
+    return re.sub(
+        r"\]\(([^)]+)\)",
+        lambda match: "](" + rebase_link_target(match.group(1), source_path, target_path) + ")",
+        text,
+    )
+
+
 def semantic_tokens(block: str) -> tuple[str, ...]:
     values = SEMANTIC_TOKEN.findall(block)
     values.extend(term for term in PROPER_TERMS if term in block)
@@ -301,7 +338,15 @@ def aligned_baseline(
     ref: str, source_path: Path, target_path: Path
 ) -> tuple[list[str], dict[int, str]]:
     source_blocks = split_blocks(strip_navigation(git_text(ref, source_path)))
-    localized_blocks = split_blocks(strip_localized_prefix(git_text(ref, target_path)))
+    try:
+        localized_text = git_text(ref, target_path)
+    except RuntimeError:
+        legacy_target = Path(target_path.name)
+        if legacy_target == target_path:
+            raise
+        print(f"Translation-memory target moved; using legacy baseline {legacy_target}.")
+        localized_text = git_text(ref, legacy_target)
+    localized_blocks = split_blocks(strip_localized_prefix(localized_text))
     matcher = difflib.SequenceMatcher(
         a=[block_key(block) for block in source_blocks],
         b=[block_key(block) for block in localized_blocks],
@@ -536,15 +581,20 @@ def render(
         raise RuntimeError("README.md must contain a top-level '# ' title.")
     title = blocks[0]
     body = "\n\n".join(blocks[1:]).rstrip()
+    body = rebase_markdown_links(body, source_path, target_path)
+    canonical_href = posixpath.relpath(
+        source_path.as_posix(), target_path.parent.as_posix()
+    )
+    notice = rebase_markdown_links(metadata["notice"], source_path, target_path)
     nav = (
         '<p align="right">\n'
-        '  <a href="README.md">English</a> | '
+        f'  <a href="{canonical_href}">English</a> | '
         f'{metadata["label"]}\n'
         "</p>"
     )
     return (
         f"{GENERATED_COMMENT}\n{nav}\n\n{title}\n\n"
-        f"{metadata['notice']}\n\n{body}\n"
+        f"{notice}\n\n{body}\n"
     )
 
 
@@ -560,7 +610,13 @@ def inline_code(text: str) -> list[str]:
     return re.findall(r"`+[^`\n]*`+", text)
 
 
-def validate(source: str, localized: str, target_code: str) -> None:
+def validate(
+    source: str,
+    localized: str,
+    target_code: str,
+    source_path: Path,
+    target_path: Path,
+) -> None:
     canonical = strip_navigation(source)
     localized_body = strip_localized_prefix(localized)
     if target_code == "ko" and not re.search(r"[가-힣]", localized):
@@ -570,7 +626,11 @@ def validate(source: str, localized: str, target_code: str) -> None:
     if fenced_blocks(canonical) != fenced_blocks(localized_body):
         raise RuntimeError("Translation validation failed: fenced code blocks changed.")
 
-    missing_links = [target for target in link_targets(canonical) if target not in localized]
+    expected_links = [
+        rebase_link_target(target, source_path, target_path)
+        for target in link_targets(canonical)
+    ]
+    missing_links = [target for target in expected_links if target not in localized]
     if missing_links:
         raise RuntimeError(
             "Translation validation failed: link targets disappeared: "
@@ -598,25 +658,86 @@ def parse_target(value: str) -> tuple[str, Path]:
     return code.strip(), Path(raw_path.strip())
 
 
+def load_registry(path: Path) -> tuple[Path, list[tuple[str, Path]]]:
+    import yaml
+
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise RuntimeError("Translation registry must be a mapping.")
+    if payload.get("schema_version") != "ptsip-readme-translation-registry/v1":
+        raise RuntimeError("Unsupported translation registry schema_version.")
+    canonical = payload.get("canonical")
+    if not isinstance(canonical, dict):
+        raise RuntimeError("Translation registry canonical entry must be a mapping.")
+    if canonical.get("language") != SOURCE_LANGUAGE:
+        raise RuntimeError(f"Translation registry canonical language must be {SOURCE_LANGUAGE!r}.")
+    source_value = canonical.get("path")
+    if not isinstance(source_value, str) or not source_value.strip():
+        raise RuntimeError("Translation registry canonical path is required.")
+    rows = payload.get("translations")
+    if not isinstance(rows, list):
+        raise RuntimeError("Translation registry translations must be a list.")
+
+    targets: list[tuple[str, Path]] = []
+    seen_languages: set[str] = set()
+    seen_paths: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            raise RuntimeError("Translation registry entries must be mappings.")
+        language = row.get("language")
+        target_value = row.get("path")
+        if not isinstance(language, str) or not language.strip():
+            raise RuntimeError("Translation registry language is required.")
+        if language not in LANGUAGE_METADATA:
+            raise RuntimeError(f"Unsupported registered translation language: {language}")
+        if not isinstance(target_value, str) or not target_value.strip():
+            raise RuntimeError(f"Translation registry path is required for language {language}.")
+        target_path = Path(target_value)
+        if language in seen_languages:
+            raise RuntimeError(f"Duplicate translation language: {language}")
+        if target_path.as_posix() in seen_paths:
+            raise RuntimeError(f"Duplicate translation path: {target_path.as_posix()}")
+        seen_languages.add(language)
+        seen_paths.add(target_path.as_posix())
+        targets.append((language, target_path))
+    return Path(source_value), targets
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=Path, default=Path("README.md"))
-    parser.add_argument("--target", action="append", type=parse_target, required=True)
+    parser.add_argument("--registry", type=Path)
+    parser.add_argument("--source", type=Path)
+    parser.add_argument("--target", action="append", type=parse_target)
+    parser.add_argument("--list-targets", action="store_true")
     args = parser.parse_args()
 
-    source = args.source.read_text(encoding="utf-8").lstrip("\ufeff")
-    for target_code, target_path in args.target:
+    if args.registry is not None:
+        if args.source is not None or args.target:
+            parser.error("--registry cannot be combined with --source or --target")
+        source_path, targets = load_registry(args.registry)
+    else:
+        source_path = args.source or Path("README.md")
+        if not args.target:
+            parser.error("--target is required when --registry is not used")
+        targets = args.target
+
+    if args.list_targets:
+        if args.registry is None:
+            parser.error("--list-targets requires --registry")
+        for _, target_path in targets:
+            print(target_path.as_posix())
+        return 0
+
+    source = source_path.read_text(encoding="utf-8").lstrip("\ufeff")
+    for target_code, target_path in targets:
         translator = ArgosTranslator(SOURCE_LANGUAGE, target_code)
-        localized = render(
-            source, target_code, args.source, target_path, translator
-        )
-        validate(source, localized, target_code)
-        current = (
-            target_path.read_text(encoding="utf-8") if target_path.exists() else None
-        )
+        localized = render(source, target_code, source_path, target_path, translator)
+        validate(source, localized, target_code, source_path, target_path)
+        current = target_path.read_text(encoding="utf-8") if target_path.exists() else None
         if current == localized:
             print(f"{target_path} is already synchronized.")
             continue
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(localized, encoding="utf-8", newline="\n")
         print(f"Updated {target_path} with incremental local Argos Translate.")
     return 0

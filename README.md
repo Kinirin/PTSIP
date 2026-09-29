@@ -1,5 +1,5 @@
 <p align="right">
-  English | <a href="README.ko.md">한국어</a>
+  English | <a href="docs/translated/README.ko.md">한국어</a>
 </p>
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
