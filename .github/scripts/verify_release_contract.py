@@ -106,10 +106,16 @@ def main() -> int:
         sys.path.insert(0, source_root)
 
     from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
+    from ptsip.context_plane import ContextProjectionError, check_context
     from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
     from ptsip.spec_identity import current_spec_identity
     from ptsip.specification_binding import current_target_specification_binding
     from ptsip.validation.profile import find_profile
+
+    try:
+        check_context(ROOT)
+    except ContextProjectionError as exc:
+        errors.append(f"Repository Context Plane is not release-ready: {exc}")
 
     tool_version = TOOL_VERSION
     pp_version = CURRENT_PROJECT_PROFILE_VERSION

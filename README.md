@@ -4,8 +4,8 @@
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-**Status:** Tool `0.3.8a2` repository-namespace stabilization prerelease — publication pending<br>
-**Tool/package version:** `0.3.8a2`<br>
+**Status:** Tool `0.3.8a3` Context Plane migration-semantics emergency prerelease — publication pending<br>
+**Tool/package version:** `0.3.8a3`<br>
 **Project Profile contract:** `pp.1.02`<br>
 **Specification family:** `0.3.7-draft`<br>
 **Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
@@ -17,11 +17,11 @@ PTSIP is a project-defined architecture policy for separating project responsibi
 
 > **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
 
-Tool `0.3.8a2` is a repository-namespace stabilization prerelease built on the already-published `0.3.8a1` bridge and the same frozen Specification binding. It preserves the proposed-candidate bridge while establishing `.ptsip/` as the canonical repository-local ownership boundary for PTSIP-managed contracts, registries, configuration, task/operation metadata, and execution state. Canonical repository indexes use JSON. This release reserves Task and runtime namespaces but does not claim a completed generic Task Engine, Go runtime, or Tool `0.4.0` capability-recovery implementation.
+Tool `0.3.8a3` is a repository-namespace stabilization prerelease built on the already-published `0.3.8a1` bridge and the same frozen Specification binding. It preserves the proposed-candidate bridge while establishing `.ptsip/` as the canonical repository-local ownership boundary for PTSIP-managed contracts, registries, configuration, task/operation metadata, and execution state. Canonical repository indexes use JSON. This release reserves Task and runtime namespaces but does not claim a completed generic Task Engine, Go runtime, or Tool `0.4.0` capability-recovery implementation.
 
 ## Primary lifecycle ownership
 
-Canonical Tool `0.3.8a2` classifications remain exactly:
+Canonical Tool `0.3.8a3` classifications remain exactly:
 
 | Classification | Meaning |
 | --- | --- |
@@ -43,9 +43,9 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.8a2` preserves the five-classification model established by Tool `0.3.6`. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a current canonical alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
+Tool `0.3.8a3` preserves the five-classification model established by Tool `0.3.6`. `TOOLCHAIN` is therefore **legacy Tool `0.3.5` input**, not a current canonical alias. A legacy Toolchain responsibility may become `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, or require a split depending on its actual lifecycle ownership. Blind `TOOLCHAIN -> DEVELOPMENT_TOOLING` rewriting is prohibited.
 
-Tool `0.3.8a2` provides evidence-bound direct current-target migration for explicitly supported historical sources. Migration capability remains separate from repository adoption authority and never turns inference into project intent.
+Tool `0.3.8a3` provides evidence-bound direct current-target migration for explicitly supported historical sources. Migration capability remains separate from repository adoption authority and never turns inference into project intent.
 
 ## Classification is not path or technology
 
@@ -66,7 +66,7 @@ Paths such as `tests/`, `tools/`, `deploy/`, `ops/`, or `.github/workflows/` are
 
 ## Responsibility Map v2
 
-Tool `0.3.8a2` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
+Tool `0.3.8a3` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
 
 ```text
 classification
@@ -195,12 +195,12 @@ Upgrade to the latest **published** release:
 python -m pip install --upgrade PTSIP
 ```
 
-Tool `0.3.8a2` is a prerelease. A normal `pip install PTSIP` may continue to select the latest stable release unless prereleases are explicitly requested.
+Tool `0.3.8a3` is a prerelease. A normal `pip install PTSIP` may continue to select the latest stable release unless prereleases are explicitly requested.
 
 After publication, install this prerelease explicitly with:
 
 ```powershell
-python -m pip install "PTSIP==0.3.8a2"
+python -m pip install "PTSIP==0.3.8a3"
 ```
 
 For source development on this release line:
@@ -231,7 +231,7 @@ New project-owned profiles are selected through `.ptsip/profiles/index.json`; th
 
 Repository evidence is not architecture authority. Candidate discovery, path names, templates, heuristics, and agent confidence can support review but cannot manufacture project intent.
 
-Canonical Tool `0.3.8a2` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
+Canonical Tool `0.3.8a3` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
 
 ```text
 classification
@@ -241,7 +241,7 @@ runtime_required
 executable
 ```
 
-The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.8a2` ownership authority.
+The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.8a3` ownership authority.
 
 Example dry-run:
 
@@ -306,7 +306,7 @@ PTSIP uses action-time synchronization rather than continuous background polling
 
 Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLING` or `DELIVERY` component may validly build a `PRODUCT` artifact, but the resulting artifact must still satisfy the Product package boundary.
 
-Tool `0.3.8a2` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
+Tool `0.3.8a3` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
 
 ## VPMS — Verification Purpose Management System
 
@@ -322,7 +322,7 @@ VPMS
 
 PTSIP classification and VPMS Verification Purpose remain separate axes. PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved PTSIP metadata.
 
-The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.8a2` PTSIP classification.
+The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.8a3` PTSIP classification.
 
 VPMS verification PASS does not imply PTSIP `CONFORMANT`, and PTSIP `CONFORMANT` does not imply functional verification PASS.
 
@@ -393,6 +393,20 @@ in its Tool release note; advancing the PP contract does not rewrite that Tool h
 
 A new immutable revision is required only for a genuine normative change. Release workflow, test, planning, status, or documentation-only changes do not move `SPEC_REVISION` by themselves.
 
+## Tool 0.3.8a3 release identity
+
+Tool `0.3.8a3` is an emergency Context Plane migration-semantics patch over the published `0.3.8a2` repository-namespace release.
+
+```text
+Tool:             0.3.8a3
+Project Profile:  pp.1.02
+Specification:    0.3.7-draft
+SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
+Release scope:    deterministic MEMORY.md -> Context Plane migration and projection repair
+```
+
+The canonical semantic write target is `.ptsip/context/source/context.source.json`. Generated `context.json`, `context.jsonl`, and `context.schema.json` are repaired from that source. Semantic ambiguity remains user-owned; deterministic projection repair is preauthorized for coding agents.
+
 ## Tool 0.3.8a2 release identity
 
 Tool `0.3.8a2` is a repository-namespace stabilization prerelease with a deliberately narrow compatibility goal.
@@ -444,8 +458,8 @@ Read-only inspection and Pilot operations remain read-only and do not create rep
 
 Repository tooling implementations may physically live under `tools/`, `scripts/`, `src/`, or another project-owned path. Their PTSIP-owned registration, policy bindings, task/operation contracts, indexes, and lifecycle state must not establish an alternative repository-local PTSIP control-plane root.
 
-Canonical machine indexes under `.ptsip/` use JSON. Tool `0.3.8a2` uses `.ptsip/index.json` as the root router and `.ptsip/profiles/index.json` for local Project Profile selection. The Task and runtime namespaces are reserved; runtime persistence details remain future work. A reserved or unavailable Task capability must fail closed for the dependent operation rather than causing an agent to invent a new Task Engine elsewhere in the repository.
+Canonical machine indexes under `.ptsip/` use JSON. Tool `0.3.8a3` uses `.ptsip/index.json` as the root router and `.ptsip/profiles/index.json` for local Project Profile selection. The Task and runtime namespaces are reserved; runtime persistence details remain future work. A reserved or unavailable Task capability must fail closed for the dependent operation rather than causing an agent to invent a new Task Engine elsewhere in the repository.
 
 ## Project status
 
-PTSIP remains experimental. Tool `0.3.8a2` is the current namespace-stabilization prerelease candidate; its publication boundary is tracked in [`releasenote/tool/0.3.8a2.md`](releasenote/tool/0.3.8a2.md). Historical Tool releases, including `0.3.8a1`, and Specification notes are preserved under [`releasenote/`](releasenote/).
+PTSIP remains experimental. Tool `0.3.8a3` is the current namespace-stabilization prerelease candidate; its publication boundary is tracked in [`releasenote/tool/0.3.8a3.md`](releasenote/tool/0.3.8a3.md). Historical Tool releases, including `0.3.8a1`, and Specification notes are preserved under [`releasenote/`](releasenote/).

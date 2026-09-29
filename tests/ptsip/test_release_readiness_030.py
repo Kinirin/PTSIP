@@ -21,10 +21,10 @@ def test_pytest_binds_to_checked_out_ptsip_source() -> None:
     assert Path(ptsip.__file__).resolve().parent == ROOT / "src" / "ptsip"
 
 
-def test_tool_038a2_package_runtime_pp_and_spec_binding_match() -> None:
+def test_tool_038a3_package_runtime_pp_and_spec_binding_match() -> None:
     payload = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert payload["project"]["version"] == "0.3.8a2"
-    assert TOOL_VERSION == "0.3.8a2"
+    assert payload["project"]["version"] == "0.3.8a3"
+    assert TOOL_VERSION == "0.3.8a3"
     registry = yaml.safe_load(
         (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
     )
@@ -63,8 +63,8 @@ def test_release_workflow_derives_tool_tag_from_package_version() -> None:
     assert "$conformExit -notin @(0, 6)" in workflow
     assert "--force-reinstall --no-deps" in workflow
     assert "pypa/gh-action-pypi-publish@release/v1" in workflow
-    assert "PTSIP 0.3.8a2 bounded publication gate" in workflow
-    assert "$expectedWheelVersion -eq '0.3.8a2'" in workflow
+    assert "PTSIP 0.3.8a3 bounded publication gate" in workflow
+    assert "$expectedWheelVersion -eq '0.3.8a3'" in workflow
     assert "Full Product Artifact repository conformance remains outside this prerelease claim." in workflow
 
 
@@ -104,8 +104,8 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
         "      - name: Run complete shipping and release regression\n"
         "        if: ${{ env.VERIFICATION_MODE == 'full' }}"
     ) in workflow
-    assert "Run 0.3.8a2 namespace prerelease regression" in workflow
-    assert "env.VERIFICATION_MODE == 'a2-prerelease'" in workflow
+    assert "Run 0.3.8a3 Context Plane emergency regression" in workflow
+    assert "env.VERIFICATION_MODE == 'a3-prerelease'" in workflow
     assert "tests/ptsip/validation/test_local_profile_catalog.py" in workflow
     assert "test_repository_uses_canonical_ptsip_namespace_and_json_indexes" in workflow
     assert "python -m pytest -q" in workflow
@@ -134,12 +134,14 @@ def test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha() -> N
     assert "--force-reinstall --no-deps" in workflow
     assert (
         "      - name: Record successful exact-SHA tooling verification\n"
-        "        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}"
+        "        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}"
     ) in workflow
     assert 'context = "ci/tooling-test"' in workflow
     assert "ptsip --version" in workflow
     assert "ptsip spec" in workflow
     assert "ptsip conform --help" in workflow
+    assert "ptsip context check . --json" in workflow
+    assert "tests/ptsip/test_context_plane.py" in workflow
 
 
 def test_release_preparation_derives_identity_without_manual_inputs() -> None:
@@ -273,20 +275,20 @@ def test_release_documents_record_independent_current_authorities() -> None:
         (ROOT / "registry" / "project-profile-contracts.yaml").read_text(encoding="utf-8")
     )
     current_pp = registry["current"]
-    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a2.md").read_text(encoding="utf-8")
+    tool_note = (ROOT / "releasenote" / "tool" / "0.3.8a3.md").read_text(encoding="utf-8")
     pp_note = (
         ROOT / "releasenote" / "project-profile" / f"{current_pp}.md"
     ).read_text(encoding="utf-8")
     release_index = (ROOT / "releasenote" / "README.md").read_text(encoding="utf-8")
 
-    assert "0.3.8a2" in tool_note
+    assert "0.3.8a3" in tool_note
     assert "0.3.7-draft" in tool_note
     assert EXPECTED_SPEC_REVISION in tool_note
     assert "\n## " in tool_note
 
     assert current_pp in pp_note
     assert EXPECTED_SPEC_REVISION in pp_note
-    assert "tool/0.3.8a2.md" in release_index
+    assert "tool/0.3.8a3.md" in release_index
     assert "tool/0.3.8a1.md" in release_index
     assert f"project-profile/{current_pp}.md" in release_index
     assert "specification/0.3.7-draft.md" in release_index

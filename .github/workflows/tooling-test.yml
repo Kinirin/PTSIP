@@ -346,7 +346,7 @@ jobs:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.verification != 'policy-lifecycle' && inputs.verification != 'agent-context-migration' && inputs.verification != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8' && startsWith(github.event.head_commit.message, 'release:')) }}
     runs-on: ubuntu-latest
     env:
-      VERIFICATION_MODE: ${{ github.event_name == 'push' && 'a2-prerelease' || inputs.verification }}
+      VERIFICATION_MODE: ${{ github.event_name == 'push' && 'a3-prerelease' || inputs.verification }}
     steps:
       - name: Checkout exact verification source
         uses: actions/checkout@v4
@@ -436,7 +436,7 @@ jobs:
         env:
           VERIFICATION_MODE: ${{ env.VERIFICATION_MODE }}
         run: |
-          if ($env:VERIFICATION_MODE -in @('full', 'a2-prerelease')) {
+          if ($env:VERIFICATION_MODE -in @('full', 'a3-prerelease')) {
             python -m pip install build twine
             if ($LASTEXITCODE -ne 0) {
               throw "Failed to prepare build verification tooling."
@@ -449,7 +449,7 @@ jobs:
           }
 
       - name: Resolve and run deterministic change verification
-        if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a3-prerelease' }}
         shell: pwsh
         env:
           VERIFICATION_MODE: ${{ env.VERIFICATION_MODE }}
@@ -510,7 +510,7 @@ jobs:
           }
 
       - name: Record successful exact-SHA change verification
-        if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a3-prerelease' }}
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -536,12 +536,12 @@ jobs:
             -Body $body
 
       - name: Verify Tool, PP, and Specification release contract
-        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: python .github/scripts/verify_release_contract.py
 
-      - name: Run 0.3.8a2 namespace prerelease regression
-        if: ${{ env.VERIFICATION_MODE == 'a2-prerelease' }}
+      - name: Run 0.3.8a3 Context Plane emergency regression
+        if: ${{ env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
           python -m pytest -q tests/ptsip/validation/test_local_profile_catalog.py
@@ -554,11 +554,19 @@ jobs:
           }
           python -m pytest -q tests/ptsip/identity/test_tool_identity.py tests/ptsip/cli/test_runtime_surface.py
           if ($LASTEXITCODE -ne 0) {
-            throw "0.3.8a2 Tool/runtime identity regression failed."
+            throw "0.3.8a3 Tool/runtime identity regression failed."
           }
           python -m pytest -q tests/ptsip/test_release_readiness_030.py
           if ($LASTEXITCODE -ne 0) {
-            throw "0.3.8a2 release-readiness contract regression failed."
+            throw "0.3.8a3 release-readiness contract regression failed."
+          }
+          python -m pytest -q tests/ptsip/test_context_plane.py
+          if ($LASTEXITCODE -ne 0) {
+            throw "0.3.8a3 Context Plane migration regression failed."
+          }
+          ptsip context check . --json
+          if ($LASTEXITCODE -ne 0) {
+            throw "0.3.8a3 repository Context Plane release gate failed."
           }
           ptsip --version
           ptsip spec
@@ -593,7 +601,7 @@ jobs:
           ptsip conform --help
 
       - name: Build and verify distributions
-        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
           python -m build
@@ -604,7 +612,7 @@ jobs:
           python -m twine check $distFiles
 
       - name: Verify wheel and sdist embedded contracts
-        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: python .github/scripts/verify_distribution_contracts.py
 
@@ -898,7 +906,7 @@ jobs:
           exit 0
 
       - name: Reinstall built wheel and smoke public surfaces
-        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
           $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
@@ -913,7 +921,7 @@ jobs:
           python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
 
       - name: Record successful exact-SHA tooling verification
-        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a2-prerelease' }}
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}

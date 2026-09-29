@@ -52,6 +52,10 @@ jobs:
           }
 
           python .github/scripts/verify_release_contract.py
+          python -m ptsip context check . --json
+          if ($LASTEXITCODE -ne 0) {
+            throw "Published source Context Plane is not release-ready."
+          }
           python -m developer.automation.pp.pp_release_verify --sha HEAD
 
       - name: Build distributions
@@ -277,12 +281,12 @@ jobs:
             throw "Installed publication wheel is missing the ptsip/support projection."
           }
 
-          # Tool 0.3.8a2 is a bounded namespace-stabilization prerelease.
+          # Tool 0.3.8a3 is a bounded namespace-stabilization prerelease.
           # Keep package-content, metadata, license, installation, registry-projection,
           # and twine verification, but do not promote its known continuing 0.3.8
           # repository-conformance work into a publication blocker.
-          if ($expectedWheelVersion -eq '0.3.8a2') {
-            Write-Host "PTSIP 0.3.8a2 bounded publication gate: wheel content and install verification passed."
+          if ($expectedWheelVersion -eq '0.3.8a3') {
+            Write-Host "PTSIP 0.3.8a3 bounded publication gate: wheel content and install verification passed."
             Write-Host "Full Product Artifact repository conformance remains outside this prerelease claim."
             exit 0
           }
