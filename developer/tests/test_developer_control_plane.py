@@ -163,6 +163,7 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("MPD-PLAN-0002", "depends_on", "MPD-PLAN-0001", "PLANNING_AUTHORITY_AND_LIFECYCLE"),
         ("MPD-PLAN-0003", "depends_on", "MPD-PLAN-0001", "PLANNING_AUTHORITY_AND_LIFECYCLE"),
         ("MPD-PLAN-0004", "depends_on", "MPD-PLAN-0001", "PLANNING_AUTHORITY_AND_LIFECYCLE"),
+        ("MPD-RELS-0002", "depends_on", "MPD-0011", "PROJECT_PROFILE_TRANSITION_VERIFICATION"),
         ("MPD-SPEC-0004", "depends_on", "SFP-0010", "PROFILE_TRANSITION_SEMANTICS"),
         ("MPD-SPEC-0006", "extends", "MPD-SPEC-0001", "DEVELOPER_CANONICAL_SEMANTIC_CONTRACT_AND_EXTENSION_BOUNDARY"),
         ("MPD-SPEC-0022", "extends", "MPD-SPEC-0021", "LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY"),
