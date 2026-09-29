@@ -34,7 +34,6 @@ rules:
     owns:
       - PLANNING_RESOLUTION
       - PLANNING_VALIDATION
-      - WORK_UNIT_LIFECYCLE
       - PLAN_EXTENSION_LIFECYCLE
       - PLANNING_RECONCILIATION
       - PLANNING_COMPLETION_TRANSITION
@@ -124,3 +123,5 @@ relations:
   depends_on:
     - policy: MPD-PLAN-0001
       scope: PLANNING_AUTHORITY_AND_LIFECYCLE
+    - policy: MPD-WORK-0001
+      scope: WORK_UNIT_LIFECYCLE
