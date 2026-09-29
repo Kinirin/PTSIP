@@ -36,8 +36,8 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
     assert result["projection_authority"] is False
     assert result["policies"] == [
         {
-            "policy_id": "MPD-0008",
-            "path": "developer/policy/MPD-0008.yaml",
+            "policy_id": "MPD-MIGR-0003",
+            "path": "developer/policy/MIGR/MPD-MIGR-0003.yaml",
             "status": "ACTIVE",
             "sections": ["authority_semantics"],
         },
@@ -382,6 +382,7 @@ def test_pp_transition_policy_routes_for_future_canonical_registry_path() -> Non
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-MIGR-0004",
     ]
 
 
