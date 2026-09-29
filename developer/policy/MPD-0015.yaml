@@ -200,21 +200,15 @@ rules:
     go_role: CANONICAL_RUNTIME_CANDIDATE
     go_is_normative_authority: false
 
-  python_migration_reference:
-    applies_to_behavior_not_yet_extracted_to_machine_contract: true
-    role: MIGRATION_REFERENCE
-    permanent_normative_authority: false
-
-  implementation_authorization:
-    policy_approval_authorizes_runtime_migration: false
-    policy_approval_authorizes_python_removal: false
-    separate_planning_and_user_authorization_required: true
+  implementation_migration_ref: MPD-MIGR-0005
 
 relations:
   supersedes: []
   amends: []
   extends: []
   depends_on:
+    - policy: MPD-MIGR-0005
+      scope: IMPLEMENTATION_MIGRATION_REFERENCE_AND_AUTHORIZATION
     - policy: MPD-SPEC-0021
       scope: LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY
     - policy: MPD-SPEC-0022
