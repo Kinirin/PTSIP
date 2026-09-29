@@ -2,6 +2,14 @@ schema_version: ptsip-policy-materialization-analysis-registry/v1
 artifact_class: PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY
 
 bindings:
+  - policy_id: MPD-RELS-0001
+    analysis_ref: developer/policy/analysis/PRA-20260929-RELS-FAMILY-MATERIALIZATION.yaml
+    analysis_id: PRA-20260929-RELS-FAMILY-MATERIALIZATION
+    group_id: G01
+  - policy_id: MPD-RELS-0002
+    analysis_ref: developer/policy/analysis/PRA-20260929-RELS-FAMILY-MATERIALIZATION.yaml
+    analysis_id: PRA-20260929-RELS-FAMILY-MATERIALIZATION
+    group_id: G02
   - policy_id: MPD-WORK-0003
     analysis_ref: developer/policy/analysis/PRA-20260929-POLICY-RESPONSIBILITY-GATES.yaml
     analysis_id: PRA-20260929-POLICY-RESPONSIBILITY-GATES
