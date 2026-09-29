@@ -581,6 +581,50 @@
         "historical_bridge_role": "MIGRATION_INTERPRETATION_ONLY",
         "unsupported_or_malformed_binding": "FAIL_CLOSED"
       }
+    },
+    "SFP_0022_V1": {
+      "const": {
+        "canonical_semantic_source": ".ptsip/context/source/context.source.json",
+        "generated_projections": [
+          ".ptsip/context/context.json",
+          ".ptsip/context/context.jsonl",
+          ".ptsip/context/context.schema.json"
+        ],
+        "normal_direct_projection_edit": "FORBIDDEN",
+        "deterministic_projection_repair": {
+          "coding_agent_authorization": "PREAUTHORIZED",
+          "user_decision_required": false
+        },
+        "semantic_source_creation_from_legacy_memory": {
+          "legacy_memory_read_scope": "MIGRATION_ONLY",
+          "deterministic_conversion_authorization": "PREAUTHORIZED",
+          "semantic_ambiguity": "OWNER_DECISION_REQUIRED"
+        },
+        "existing_semantic_source_replacement": {
+          "authorization": "USER_EXPLICIT",
+          "silent_agent_selection": "FORBIDDEN"
+        },
+        "legacy_memory_deletion": {
+          "before_context_validation": "FORBIDDEN",
+          "after_context_validation": "PREAUTHORIZED",
+          "migration_failure_preserves_legacy_memory": true
+        },
+        "emergency_direct_projection_repair": {
+          "authorization": "USER_EXPLICIT",
+          "status": "TEMPORARY_ONLY",
+          "release_while_active": "FORBIDDEN",
+          "required_reconciliation": [
+            "REGENERATE_FROM_CANONICAL_SOURCE",
+            "CONTEXT_CHECK_PASS"
+          ]
+        },
+        "release_gate": {
+          "context_check": "REQUIRED",
+          "missing_projection": "FAIL_CLOSED",
+          "projection_drift": "FAIL_CLOSED",
+          "semantic_equivalence_failure": "FAIL_CLOSED"
+        }
+      }
     }
   }
 }

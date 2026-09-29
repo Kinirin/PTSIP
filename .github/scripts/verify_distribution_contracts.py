@@ -203,6 +203,7 @@ def main() -> int:
         "ptsip/support/policy/index.yaml",
         "ptsip/support/policy/SFP-0001.yaml",
         "ptsip/support/policy/SFP-0021.yaml",
+        "ptsip/support/policy/SFP-0022.yaml",
         "ptsip/support/schemas/ptsip-support-feature-policy.schema.json",
         "ptsip/support/registries/ptsip-support-authority-schema-registry.yaml",
     )
@@ -237,6 +238,7 @@ def main() -> int:
         "docs/Support_policy/policy/index.yaml",
         "docs/Support_policy/policy/SFP-0001.yaml",
         "docs/Support_policy/policy/SFP-0021.yaml",
+        "docs/Support_policy/policy/SFP-0022.yaml",
         "docs/Support_policy/policy/schemas/ptsip-support-feature-policy.schema.json",
         "docs/Support_policy/policy/registries/ptsip-support-authority-schema-registry.yaml",
     )

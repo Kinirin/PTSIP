@@ -150,7 +150,7 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     ]
     assert [item["id"] for item in mpd_index["policies"]] == discovered_mpd_ids
     assert [item["id"] for item in sfp_index["policies"]] == [
-        f"SFP-{number:04d}" for number in range(1, 22)
+        f"SFP-{number:04d}" for number in range(1, 23)
     ]
     assert "legacy_decisions_migration" not in mpd_index
 
@@ -191,10 +191,10 @@ def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -
         assert "repository_binding:" not in text
 
 
-def test_support_policy_index_has_exact_21_targets() -> None:
+def test_support_policy_index_has_exact_22_targets() -> None:
     payload = _yaml(ROOT / "docs" / "Support_policy" / "policy" / "index.yaml")
     assert [item["id"] for item in payload["policies"]] == [
-        f"SFP-{number:04d}" for number in range(1, 22)
+        f"SFP-{number:04d}" for number in range(1, 23)
     ]
     assert payload["policies"][3]["status"] == "DRAFT"
     assert all(
