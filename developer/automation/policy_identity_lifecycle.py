@@ -13,12 +13,19 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
+from developer.automation.policy_responsibility_gate import (
+    FAMILIES,
+    ResponsibilityGateError,
+    validate_responsibility_analysis,
+)
 
 
 INDEX = "developer/policy/index.yaml"
 SUBJECT_REGISTRY = "developer/policy/registries/authority-subject-registry.yaml"
 APPROVAL_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.json"
 MANAGEMENT_POLICY_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
+ANALYSIS_REGISTRY = "developer/policy/analysis/registry.yaml"
+ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
 _FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
@@ -187,6 +194,123 @@ def _next_policy_id(ids: Sequence[str]) -> str:
     if number > 9999:
         raise PolicyIdentityLifecycleError("POLICY_ID_SPACE_EXHAUSTED", "MPD four-digit identity space exhausted")
     return f"MPD-{number:04d}"
+
+
+def _next_family_policy_id(ids: Sequence[str], family: str) -> str:
+    if family not in FAMILIES:
+        raise PolicyIdentityLifecycleError(
+            "INVALID_POLICY_FAMILY",
+            f"unknown Family: {family}",
+        )
+    prefix = f"MPD-{family}-"
+    numbers = [
+        int(policy_id.rsplit("-", 1)[1])
+        for policy_id in ids
+        if policy_id.startswith(prefix) and _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+    ]
+    number = (max(numbers) + 1) if numbers else 1
+    if number > 9999:
+        raise PolicyIdentityLifecycleError(
+            "POLICY_ID_SPACE_EXHAUSTED",
+            f"{family} four-digit identity space exhausted",
+        )
+    return f"MPD-{family}-{number:04d}"
+
+
+def _validated_analysis_group(
+    *,
+    family: str,
+    analysis_ref: str | Path,
+    group_id: str,
+    base: Path,
+) -> tuple[dict[str, object], Mapping[str, object]]:
+    try:
+        analysis = validate_responsibility_analysis(
+            analysis_ref,
+            root=base,
+            enforce_current_lookup=True,
+        )
+    except ResponsibilityGateError as exc:
+        raise PolicyIdentityLifecycleError(exc.code, str(exc)) from exc
+
+    if analysis.get("materialization_allowed") is not True:
+        raise PolicyIdentityLifecycleError(
+            "RESPONSIBILITY_MATERIALIZATION_BLOCKED",
+            "responsibility analysis contains an unresolved blocking collision",
+        )
+
+    groups = analysis.get("materialization_groups")
+    if not isinstance(groups, list):
+        raise PolicyIdentityLifecycleError(
+            "INVALID_RESPONSIBILITY_ANALYSIS",
+            "analysis materialization_groups must be a list",
+        )
+
+    group = next(
+        (
+            item
+            for item in groups
+            if isinstance(item, Mapping) and item.get("group_id") == group_id
+        ),
+        None,
+    )
+    if group is None:
+        raise PolicyIdentityLifecycleError(
+            "MATERIALIZATION_GROUP_NOT_FOUND",
+            f"analysis has no materialization group {group_id}",
+        )
+    if group.get("family") != family:
+        raise PolicyIdentityLifecycleError(
+            "MATERIALIZATION_GROUP_FAMILY_MISMATCH",
+            f"group {group_id} belongs to {group.get('family')}, not {family}",
+        )
+    return analysis, group
+
+
+def preflight_family_policy(
+    family: str,
+    approval_ref: str | Path,
+    analysis_ref: str | Path,
+    group_id: str,
+    *,
+    root: str | Path | None = None,
+) -> dict[str, object]:
+    base = repository_root(root)
+    state = _load_consistent_registered_corpus(base)
+    _assert_no_unregistered_policy_file(base, state)
+    approval = _load_approval(approval_ref, base=base)
+
+    analysis, group = _validated_analysis_group(
+        family=family,
+        analysis_ref=analysis_ref,
+        group_id=group_id,
+        base=base,
+    )
+    allocated = _next_family_policy_id(state.ids, family)
+    requested = approval.get("requested_policy_id")
+    if requested != allocated:
+        raise PolicyIdentityLifecycleError(
+            "REQUESTED_POLICY_ID_NOT_NEXT_AVAILABLE",
+            f"requested {requested!r}, next available {family} policy is {allocated}",
+        )
+
+    return {
+        "status": "READY",
+        "allocated_policy_id": allocated,
+        "family": family,
+        "group_id": group_id,
+        "analysis_id": analysis["analysis_id"],
+        "analysis_ref": analysis["analysis_ref"],
+        "split_required": analysis["split_required"],
+        "target_status": approval["target_status"],
+        "approval_id": approval["approval_id"],
+        "approval_scope": approval["approval_scope"],
+        "implementation_authorized": approval["implementation_authorized"],
+        "policy_content_review_scope": approval["policy_content_review_scope"],
+        "cohesion_key": group.get("cohesion_key"),
+        "registry_mutation_required": True,
+        "analysis_registry_mutation_required": True,
+    }
 
 
 def inspect_policy(policy_id: str, *, root: str | Path | None = None) -> dict[str, object]:
@@ -400,6 +524,186 @@ def register_policy(
     }
 
 
+def register_family_policy(
+    family: str,
+    approval_ref: str | Path,
+    analysis_ref: str | Path,
+    group_id: str,
+    policy_file: str | Path,
+    *,
+    root: str | Path | None = None,
+) -> dict[str, object]:
+    base = repository_root(root)
+    state = _load_consistent_registered_corpus(base)
+    approval = _load_approval(approval_ref, base=base)
+
+    analysis, _ = _validated_analysis_group(
+        family=family,
+        analysis_ref=analysis_ref,
+        group_id=group_id,
+        base=base,
+    )
+    allocated = _next_family_policy_id(state.ids, family)
+    requested = approval.get("requested_policy_id")
+    if requested != allocated:
+        raise PolicyIdentityLifecycleError(
+            "REQUESTED_POLICY_ID_NOT_NEXT_AVAILABLE",
+            f"requested {requested!r}, next available {family} policy is {allocated}",
+        )
+
+    expected_relative = Path(_canonical_policy_path(allocated))
+    candidate = Path(policy_file)
+    if candidate.is_absolute():
+        try:
+            relative = candidate.resolve().relative_to(base.resolve())
+        except ValueError as exc:
+            raise PolicyIdentityLifecycleError(
+                "POLICY_FILE_OUTSIDE_REPOSITORY",
+                str(candidate),
+            ) from exc
+    else:
+        relative = candidate
+        candidate = base / candidate
+
+    if relative.as_posix() != expected_relative.as_posix():
+        raise PolicyIdentityLifecycleError(
+            "POLICY_FILE_PATH_MISMATCH",
+            f"expected {expected_relative.as_posix()}, got {relative.as_posix()}",
+        )
+    if not candidate.is_file():
+        raise PolicyIdentityLifecycleError(
+            "POLICY_FILE_NOT_FOUND",
+            relative.as_posix(),
+        )
+
+    discovered = _discover_policy_ids(base)
+    expected_discovered = tuple(sorted((*state.ids, allocated)))
+    if discovered != expected_discovered:
+        raise PolicyIdentityLifecycleError(
+            "POLICY_CORPUS_MISMATCH",
+            "family registration requires exactly one analyzed next-ID policy file",
+        )
+
+    payload = load_yaml(relative, root=base)
+    schema = load_json(MANAGEMENT_POLICY_SCHEMA, root=base)
+    errors = tuple(Draft202012Validator(schema).iter_errors(payload))
+    if errors:
+        raise PolicyIdentityLifecycleError(
+            "INVALID_POLICY_FILE",
+            "; ".join(error.message for error in errors),
+        )
+
+    policy = _mapping(payload.get("policy"), label=f"{allocated}.policy")
+    if policy.get("id") != allocated:
+        raise PolicyIdentityLifecycleError(
+            "POLICY_FILE_ID_MISMATCH",
+            f"expected {allocated}",
+        )
+    if policy.get("status") != approval["target_status"]:
+        raise PolicyIdentityLifecycleError(
+            "APPROVED_STATUS_MISMATCH",
+            f"policy status {policy.get('status')!r} != approved target {approval['target_status']!r}",
+        )
+
+    analysis_registry = load_yaml(ANALYSIS_REGISTRY, root=base)
+    analysis_registry_schema = load_json(ANALYSIS_REGISTRY_SCHEMA, root=base)
+    registry_errors = tuple(
+        Draft202012Validator(analysis_registry_schema).iter_errors(analysis_registry)
+    )
+    if registry_errors:
+        raise PolicyIdentityLifecycleError(
+            "INVALID_ANALYSIS_REGISTRY",
+            "; ".join(error.message for error in registry_errors),
+        )
+
+    bindings = analysis_registry.get("bindings")
+    if not isinstance(bindings, list):
+        raise PolicyIdentityLifecycleError(
+            "INVALID_ANALYSIS_REGISTRY",
+            "analysis registry bindings must be a list",
+        )
+    if any(
+        isinstance(item, Mapping) and item.get("policy_id") == allocated
+        for item in bindings
+    ):
+        raise PolicyIdentityLifecycleError(
+            "DUPLICATE_ANALYSIS_BINDING",
+            f"{allocated} already has an analysis binding",
+        )
+
+    original_index = (base / INDEX).read_text(encoding="utf-8")
+    original_registry = (base / SUBJECT_REGISTRY).read_text(encoding="utf-8")
+    original_analysis_registry = (base / ANALYSIS_REGISTRY).read_text(encoding="utf-8")
+
+    index = dict(state.index)
+    index_entries = list(index["policies"])
+    index_entries.append(
+        {
+            "id": allocated,
+            "path": expected_relative.as_posix(),
+            "status": approval["target_status"],
+        }
+    )
+    index_entries.sort(key=lambda item: str(item["id"]))
+    index["policies"] = index_entries
+
+    registry = dict(state.subject_registry)
+    schemes = dict(
+        _mapping(
+            registry["subject_identity_schemes"],
+            label="subject_identity_schemes",
+        )
+    )
+    identity = dict(
+        _mapping(
+            schemes["MANAGEMENT_POLICY_ID"],
+            label="MANAGEMENT_POLICY_ID",
+        )
+    )
+    identity["registered_values"] = sorted([*state.ids, allocated])
+    schemes["MANAGEMENT_POLICY_ID"] = identity
+    registry["subject_identity_schemes"] = schemes
+
+    updated_analysis_registry = dict(analysis_registry)
+    updated_bindings = list(bindings)
+    updated_bindings.append(
+        {
+            "policy_id": allocated,
+            "analysis_ref": analysis["analysis_ref"],
+            "analysis_id": analysis["analysis_id"],
+            "group_id": group_id,
+        }
+    )
+    updated_bindings.sort(key=lambda item: str(item["policy_id"]))
+    updated_analysis_registry["bindings"] = updated_bindings
+
+    try:
+        _atomic_write_yaml(base / INDEX, index)
+        _atomic_write_yaml(base / SUBJECT_REGISTRY, registry)
+        _atomic_write_yaml(base / ANALYSIS_REGISTRY, updated_analysis_registry)
+    except Exception:
+        (base / INDEX).write_text(original_index, encoding="utf-8")
+        (base / SUBJECT_REGISTRY).write_text(original_registry, encoding="utf-8")
+        (base / ANALYSIS_REGISTRY).write_text(
+            original_analysis_registry,
+            encoding="utf-8",
+        )
+        raise
+
+    return {
+        "status": "REGISTERED",
+        "policy_id": allocated,
+        "family": family,
+        "group_id": group_id,
+        "analysis_id": analysis["analysis_id"],
+        "policy_status": approval["target_status"],
+        "approval_id": approval["approval_id"],
+        "index": INDEX,
+        "subject_registry": SUBJECT_REGISTRY,
+        "analysis_registry": ANALYSIS_REGISTRY,
+    }
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Deterministic MPD identity and lifecycle preflight.")
     parser.add_argument("--root")
@@ -411,9 +715,22 @@ def _parser() -> argparse.ArgumentParser:
     preflight_cmd = sub.add_parser("preflight")
     preflight_cmd.add_argument("--approval-ref", required=True)
 
+    family_preflight_cmd = sub.add_parser("family-preflight")
+    family_preflight_cmd.add_argument("--family", choices=FAMILIES, required=True)
+    family_preflight_cmd.add_argument("--approval-ref", required=True)
+    family_preflight_cmd.add_argument("--analysis-ref", required=True)
+    family_preflight_cmd.add_argument("--group-id", required=True)
+
     register_cmd = sub.add_parser("register")
     register_cmd.add_argument("--approval-ref", required=True)
     register_cmd.add_argument("--policy-file", required=True)
+
+    family_register_cmd = sub.add_parser("family-register")
+    family_register_cmd.add_argument("--family", choices=FAMILIES, required=True)
+    family_register_cmd.add_argument("--approval-ref", required=True)
+    family_register_cmd.add_argument("--analysis-ref", required=True)
+    family_register_cmd.add_argument("--group-id", required=True)
+    family_register_cmd.add_argument("--policy-file", required=True)
 
     status_cmd = sub.add_parser("status-preflight")
     status_cmd.add_argument("policy_id")
@@ -428,8 +745,25 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = inspect_policy(args.policy_id, root=args.root)
         elif args.command == "preflight":
             result = preflight_new_policy(args.approval_ref, root=args.root)
+        elif args.command == "family-preflight":
+            result = preflight_family_policy(
+                args.family,
+                args.approval_ref,
+                args.analysis_ref,
+                args.group_id,
+                root=args.root,
+            )
         elif args.command == "register":
             result = register_policy(args.approval_ref, args.policy_file, root=args.root)
+        elif args.command == "family-register":
+            result = register_family_policy(
+                args.family,
+                args.approval_ref,
+                args.analysis_ref,
+                args.group_id,
+                args.policy_file,
+                root=args.root,
+            )
         else:
             result = status_preflight(args.policy_id, args.approval_ref, root=args.root)
     except PolicyIdentityLifecycleError as exc:

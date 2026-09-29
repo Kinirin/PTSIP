@@ -172,6 +172,8 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("MPD-VERI-0001", "depends_on", "MPD-SPEC-0023", "POLICY_PLAN_BINDING_CONTRACT"),
         ("MPD-VERI-0001", "depends_on", "MPD-PLAN-0001", "PLANNING_AUTHORITY_AND_LIFECYCLE"),
         ("MPD-WORK-0002", "depends_on", "MPD-WORK-0001", "WORK_UNIT_LIFECYCLE"),
+        ("MPD-WORK-0003", "depends_on", "MPD-WORK-0001", "WORK_UNIT_LIFECYCLE"),
+        ("MPD-WORK-0003", "depends_on", "MPD-WORK-0002", "EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF"),
     ]
 
 def test_support_policy_never_depends_on_developer_policy() -> None:

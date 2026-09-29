@@ -1,0 +1,57 @@
+schema_version: ptsip-policy-responsibility-analysis/v1
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+
+analysis:
+  analysis_id: PRA-20260929-POLICY-RESPONSIBILITY-GATES
+  source_ref: PROJECT_OWNER_APPROVED_RESPONSIBILITY_DECOMPOSITION_AND_AUTHORITY_RECONCILIATION_IMPLEMENTATION
+
+  responsibilities:
+    - responsibility_id: R01
+      statement: FAMILY_POLICY_MATERIALIZATION_REQUIRES_RESPONSIBILITY_LEVEL_DECOMPOSITION_BEFORE_FAMILY_SELECTION
+      authority_relation: OWN
+      authority_subject: POLICY_RESPONSIBILITY_DECOMPOSITION
+      lifecycle_scope: DEVELOPER_POLICY_MATERIALIZATION
+      cohesion_key: POLICY_MATERIALIZATION_GATE
+      family: WORK
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: WORK
+        searched_policy_ids:
+          - MPD-WORK-0001
+          - MPD-WORK-0002
+        lookup_outcome: NO_MATCH
+        candidate_comparisons: []
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+
+    - responsibility_id: R02
+      statement: FAMILY_POLICY_MATERIALIZATION_REQUIRES_EXISTING_AUTHORITY_DISCOVERY_COLLISION_CLASSIFICATION_AND_RESOLUTION_BEFORE_NEW_AUTHORITY_CREATION
+      authority_relation: OWN
+      authority_subject: POLICY_AUTHORITY_RECONCILIATION
+      lifecycle_scope: DEVELOPER_POLICY_MATERIALIZATION
+      cohesion_key: POLICY_MATERIALIZATION_GATE
+      family: WORK
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: WORK
+        searched_policy_ids:
+          - MPD-WORK-0001
+          - MPD-WORK-0002
+        lookup_outcome: NO_MATCH
+        candidate_comparisons: []
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+
+  decision:
+    owned_family_set:
+      - WORK
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+      - group_id: G01
+        family: WORK
+        cohesion_key: POLICY_MATERIALIZATION_GATE
+        responsibility_ids:
+          - R01
+          - R02
+        cohesion_rationale: BOTH_RESPONSIBILITIES_GOVERN_THE_SAME_PRE_MATERIALIZATION_DEVELOPER_POLICY_WORKFLOW_GATE

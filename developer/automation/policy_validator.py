@@ -7,6 +7,10 @@ from typing import Mapping
 from jsonschema import Draft202012Validator
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
+from developer.automation.policy_responsibility_gate import (
+    FAMILIES,
+    validate_analysis_semantics,
+)
 
 
 INDEX = "developer/policy/index.yaml"
@@ -18,6 +22,10 @@ SOURCE_APPLICATION_REVIEW = "developer/policy/source-application-review.yaml"
 SOURCE_APPLICATION_REVIEW_SCHEMA = "developer/policy/schemas/source-application-review.schema.json"
 APPROVAL_PROVENANCE_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.json"
 APPROVAL_PROVENANCE_ROOT = "developer/policy/approvals"
+RESPONSIBILITY_ANALYSIS_ROOT = "developer/policy/analysis"
+RESPONSIBILITY_ANALYSIS_SCHEMA = "developer/policy/schemas/policy-responsibility-analysis.schema.json"
+RESPONSIBILITY_ANALYSIS_REGISTRY = "developer/policy/analysis/registry.yaml"
+RESPONSIBILITY_ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
 
 SUPPORT_POLICY_ROOT = "docs/Support_policy/policy"
 SFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
@@ -388,6 +396,191 @@ def _validate_governance_source_plane(
     return errors
 
 
+def _validate_policy_responsibility_analysis_plane(
+    base: Path,
+    *,
+    mpd_ids: tuple[str, ...],
+    current_records: Mapping[str, Mapping[str, object]],
+) -> list[str]:
+    errors: list[str] = []
+
+    gate_policy = current_records.get("MPD-WORK-0003")
+    if gate_policy is None:
+        errors.append(
+            "MPD-WORK-0003: responsibility materialization gate policy is required"
+        )
+        return errors
+
+    rules = _mapping(gate_policy.get("rules"))
+    gate = (
+        None
+        if rules is None
+        else _mapping(rules.get("policy_responsibility_materialization"))
+    )
+    static_enforcement = (
+        None
+        if gate is None
+        else _mapping(gate.get("static_enforcement"))
+    )
+    baselines = (
+        None
+        if static_enforcement is None
+        else _mapping(static_enforcement.get("grandfathered_family_maximums"))
+    )
+    if baselines is None or set(baselines) != set(FAMILIES):
+        errors.append(
+            "MPD-WORK-0003: grandfathered_family_maximums must define all Family vocabulary"
+        )
+        return errors
+
+    for family in FAMILIES:
+        value = baselines.get(family)
+        if not isinstance(value, int) or value < 0 or value > 9999:
+            errors.append(
+                f"MPD-WORK-0003: invalid grandfathered maximum for {family}: {value!r}"
+            )
+
+    analysis_schema = load_json(RESPONSIBILITY_ANALYSIS_SCHEMA, root=base)
+    registry_schema = load_json(
+        RESPONSIBILITY_ANALYSIS_REGISTRY_SCHEMA,
+        root=base,
+    )
+    Draft202012Validator.check_schema(analysis_schema)
+    Draft202012Validator.check_schema(registry_schema)
+    analysis_validator = Draft202012Validator(analysis_schema)
+
+    analysis_payloads: dict[str, Mapping[str, object]] = {}
+    analysis_root = base / RESPONSIBILITY_ANALYSIS_ROOT
+    if analysis_root.is_dir():
+        for path in sorted(analysis_root.glob("*.yaml")):
+            if path.name == "registry.yaml":
+                continue
+            relative = path.relative_to(base).as_posix()
+            payload = load_yaml(relative, root=base)
+            for error in analysis_validator.iter_errors(payload):
+                errors.append(f"{relative}: {error.message}")
+            for error in validate_analysis_semantics(payload):
+                errors.append(f"{relative}: {error}")
+            analysis = _mapping(payload.get("analysis"))
+            analysis_id = None if analysis is None else analysis.get("analysis_id")
+            if isinstance(analysis_id, str):
+                if analysis_id in analysis_payloads:
+                    errors.append(f"{relative}: duplicate analysis_id {analysis_id}")
+                analysis_payloads[analysis_id] = payload
+
+    registry = load_yaml(RESPONSIBILITY_ANALYSIS_REGISTRY, root=base)
+    for error in Draft202012Validator(registry_schema).iter_errors(registry):
+        errors.append(f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {error.message}")
+
+    bindings = registry.get("bindings", [])
+    if not isinstance(bindings, list):
+        errors.append(
+            f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: bindings must be a list"
+        )
+        bindings = []
+
+    expected_policy_ids: list[str] = []
+    for policy_id in mpd_ids:
+        match = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+        if match is None:
+            continue
+        family = match.group(1)
+        number = int(policy_id.rsplit("-", 1)[1])
+        baseline = baselines.get(family)
+        if isinstance(baseline, int) and number > baseline:
+            expected_policy_ids.append(policy_id)
+
+    bound_policy_ids = [
+        str(item.get("policy_id"))
+        for item in bindings
+        if isinstance(item, Mapping)
+    ]
+    if bound_policy_ids != sorted(expected_policy_ids):
+        errors.append(
+            "policy responsibility analysis registry must cover every post-baseline "
+            "Family policy exactly in policy-id order"
+        )
+    if len(bound_policy_ids) != len(set(bound_policy_ids)):
+        errors.append(
+            "policy responsibility analysis registry contains duplicate policy bindings"
+        )
+
+    for item in bindings:
+        binding = _mapping(item)
+        if binding is None:
+            continue
+        policy_id = binding.get("policy_id")
+        analysis_ref = binding.get("analysis_ref")
+        analysis_id = binding.get("analysis_id")
+        group_id = binding.get("group_id")
+
+        if not isinstance(policy_id, str) or policy_id not in mpd_ids:
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: unknown policy binding {policy_id!r}"
+            )
+            continue
+
+        if not isinstance(analysis_ref, str) or not analysis_ref.startswith(
+            f"{RESPONSIBILITY_ANALYSIS_ROOT}/"
+        ):
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: invalid analysis_ref for {policy_id}"
+            )
+            continue
+        if not (base / analysis_ref).is_file():
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: missing analysis for "
+                f"{policy_id}: {analysis_ref}"
+            )
+            continue
+
+        payload = load_yaml(analysis_ref, root=base)
+        analysis = _mapping(payload.get("analysis"))
+        if analysis is None:
+            continue
+        if analysis.get("analysis_id") != analysis_id:
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {policy_id} analysis_id mismatch"
+            )
+
+        decision = _mapping(analysis.get("decision"))
+        if decision is None:
+            continue
+        if decision.get("materialization_allowed") is not True:
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {policy_id} binds blocked analysis"
+            )
+
+        groups = decision.get("materialization_groups", [])
+        group = (
+            next(
+                (
+                    entry
+                    for entry in groups
+                    if isinstance(entry, Mapping)
+                    and entry.get("group_id") == group_id
+                ),
+                None,
+            )
+            if isinstance(groups, list)
+            else None
+        )
+        if group is None:
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {policy_id} "
+                f"group {group_id!r} not found"
+            )
+            continue
+
+        family_match = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+        if family_match is None or group.get("family") != family_match.group(1):
+            errors.append(
+                f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {policy_id} group Family mismatch"
+            )
+
+    return errors
+
+
 def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]:
     base = repository_root(root)
     errors: list[str] = []
@@ -546,6 +739,13 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             base,
             current_records=current_records,
             mpd_ids=mpd_ids,
+        )
+    )
+    errors.extend(
+        _validate_policy_responsibility_analysis_plane(
+            base,
+            mpd_ids=mpd_ids,
+            current_records=current_records,
         )
     )
 

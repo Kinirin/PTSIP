@@ -4,6 +4,12 @@ authority: false
 canonical_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
 
 policy_query_list:
+  - policy_id: MPD-WORK-0003
+    expected_status: ACTIVE
+    sections:
+      - policy_responsibility_materialization
+    reason: Requires responsibility decomposition and existing-authority reconciliation before Family policy materialization.
+
   - policy_id: MPD-PLAN-0001
     expected_status: ACTIVE
     sections:

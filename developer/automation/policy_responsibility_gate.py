@@ -1,0 +1,482 @@
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from pathlib import Path
+from typing import Mapping, Sequence
+
+from jsonschema import Draft202012Validator
+
+from developer.automation.policy_loader import load_json, load_yaml, repository_root
+
+
+INDEX = "developer/policy/index.yaml"
+ANALYSIS_ROOT = Path("developer/policy/analysis")
+ANALYSIS_SCHEMA = "developer/policy/schemas/policy-responsibility-analysis.schema.json"
+
+FAMILIES = ("SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS")
+AUTHORITY_RELATIONS = ("OWN", "REFERENCE", "CONSUME", "VERIFY", "TRANSFORM", "EXECUTE")
+_FAMILY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+
+COLLISION_RESOLUTION = {
+    "EXACT_DUPLICATE": {"REFERENCE_EXISTING"},
+    "SEMANTIC_EQUIVALENT": {"REFERENCE_EXISTING"},
+    "EXISTING_SUBSUMES_CANDIDATE": {"DROP_REDUNDANT_CANDIDATE"},
+    "CANDIDATE_EXTENDS_EXISTING": {"MERGE_INTO_EXISTING", "CREATE_NEW_SIBLING_POLICY"},
+    "PARTIAL_OVERLAP": {"SPLIT_RESPONSIBILITY_REQUIRED"},
+    "DISTINCT_SCOPED_AUTHORITY": {"COEXIST_SCOPED"},
+    "CONFLICT": {"FAIL_CLOSED_OWNER_DECISION_REQUIRED"},
+}
+BLOCKING_COLLISIONS = {"PARTIAL_OVERLAP", "CONFLICT"}
+NEW_POLICY_RESOLUTIONS = {"CREATE_NEW_SIBLING_POLICY", "COEXIST_SCOPED"}
+
+
+class ResponsibilityGateError(RuntimeError):
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
+
+
+def _mapping(value: object, *, label: str) -> Mapping[str, object]:
+    if not isinstance(value, Mapping):
+        raise ResponsibilityGateError(
+            "INVALID_RESPONSIBILITY_ANALYSIS",
+            f"{label} must be a mapping",
+        )
+    return value
+
+
+def _analysis_path(analysis_ref: str | Path, *, base: Path) -> tuple[Path, str]:
+    path = Path(analysis_ref)
+    if not path.is_absolute():
+        path = base / path
+    try:
+        relative = path.resolve().relative_to(base.resolve())
+    except ValueError as exc:
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_OUTSIDE_REPOSITORY",
+            f"analysis must be inside the repository: {path}",
+        ) from exc
+    if ANALYSIS_ROOT not in (relative, *relative.parents):
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_OUTSIDE_CANONICAL_ROOT",
+            f"analysis must be under {ANALYSIS_ROOT.as_posix()}/",
+        )
+    if relative.name == "registry.yaml":
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_REF_IS_REGISTRY",
+            "analysis_ref must name an analysis artifact, not the registry",
+        )
+    return path, relative.as_posix()
+
+
+def _family_from_policy_id(policy_id: str) -> str | None:
+    match = _FAMILY_ID_RE.fullmatch(policy_id)
+    return None if match is None else match.group(1)
+
+
+def _active_family_ids(base: Path, family: str) -> tuple[str, ...]:
+    index = load_yaml(INDEX, root=base)
+    entries = index.get("policies", [])
+    if not isinstance(entries, list):
+        raise ResponsibilityGateError(
+            "INVALID_POLICY_INDEX",
+            "developer policy index policies must be a list",
+        )
+    ids = [
+        str(entry.get("id"))
+        for entry in entries
+        if isinstance(entry, Mapping)
+        and entry.get("status") == "ACTIVE"
+        and isinstance(entry.get("id"), str)
+        and _family_from_policy_id(str(entry.get("id"))) == family
+    ]
+    return tuple(sorted(ids))
+
+
+def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...]:
+    errors: list[str] = []
+    analysis = payload.get("analysis")
+    if not isinstance(analysis, Mapping):
+        return ("analysis must be a mapping",)
+
+    responsibilities = analysis.get("responsibilities")
+    decision = analysis.get("decision")
+    if not isinstance(responsibilities, list) or not isinstance(decision, Mapping):
+        return ("analysis responsibilities/decision must be present",)
+
+    by_id: dict[str, Mapping[str, object]] = {}
+    owned_families: list[str] = []
+    create_ids: set[str] = set()
+    blocked_ids: set[str] = set()
+    partial_overlap_present = False
+
+    for raw in responsibilities:
+        if not isinstance(raw, Mapping):
+            errors.append("responsibility entry must be a mapping")
+            continue
+
+        responsibility_id = raw.get("responsibility_id")
+        if not isinstance(responsibility_id, str):
+            errors.append("responsibility_id must be a string")
+            continue
+        if responsibility_id in by_id:
+            errors.append(f"{responsibility_id}: duplicate responsibility_id")
+            continue
+        by_id[responsibility_id] = raw
+
+        relation = raw.get("authority_relation")
+        family = raw.get("family")
+        referenced_family = raw.get("referenced_family")
+        lookup = raw.get("existing_authority_lookup")
+        action = raw.get("materialization_action")
+        target_group = raw.get("target_group_id")
+
+        if relation == "OWN":
+            if family not in FAMILIES:
+                errors.append(f"{responsibility_id}: OWN responsibility requires one Family")
+                continue
+            owned_families.append(str(family))
+            if referenced_family is not None:
+                errors.append(
+                    f"{responsibility_id}: OWN responsibility must not use referenced_family"
+                )
+            if not isinstance(lookup, Mapping):
+                errors.append(
+                    f"{responsibility_id}: OWN responsibility requires existing_authority_lookup"
+                )
+                continue
+            if lookup.get("searched_family") != family:
+                errors.append(
+                    f"{responsibility_id}: lookup searched_family must equal owned Family"
+                )
+
+            searched = lookup.get("searched_policy_ids")
+            comparisons = lookup.get("candidate_comparisons")
+            if not isinstance(searched, list) or len(searched) != len(set(searched)):
+                errors.append(
+                    f"{responsibility_id}: searched_policy_ids must be a unique list"
+                )
+                searched = []
+            if not isinstance(comparisons, list):
+                errors.append(
+                    f"{responsibility_id}: candidate_comparisons must be a list"
+                )
+                comparisons = []
+
+            comparison_ids: set[str] = set()
+            has_blocker = False
+            has_new_resolution = False
+            for comparison in comparisons:
+                if not isinstance(comparison, Mapping):
+                    errors.append(f"{responsibility_id}: comparison must be a mapping")
+                    continue
+                policy_id = comparison.get("policy_id")
+                collision = comparison.get("collision_class")
+                resolution = comparison.get("resolution_action")
+                scope_relation = comparison.get("scope_relation")
+
+                if not isinstance(policy_id, str):
+                    errors.append(
+                        f"{responsibility_id}: comparison policy_id must be a string"
+                    )
+                    continue
+                if policy_id in comparison_ids:
+                    errors.append(
+                        f"{responsibility_id}: duplicate comparison for {policy_id}"
+                    )
+                comparison_ids.add(policy_id)
+                if policy_id not in searched:
+                    errors.append(
+                        f"{responsibility_id}: compared policy {policy_id} was not searched"
+                    )
+
+                allowed = COLLISION_RESOLUTION.get(str(collision), set())
+                if resolution not in allowed:
+                    errors.append(
+                        f"{responsibility_id}: {collision} does not allow {resolution}"
+                    )
+
+                if collision == "DISTINCT_SCOPED_AUTHORITY":
+                    if scope_relation != "DISTINCT_SCOPE":
+                        errors.append(
+                            f"{responsibility_id}: DISTINCT_SCOPED_AUTHORITY requires DISTINCT_SCOPE"
+                        )
+                elif collision in COLLISION_RESOLUTION and scope_relation != "SAME_SCOPE":
+                    errors.append(
+                        f"{responsibility_id}: {collision} requires SAME_SCOPE"
+                    )
+
+                if collision in BLOCKING_COLLISIONS:
+                    has_blocker = True
+                    blocked_ids.add(responsibility_id)
+                if collision == "PARTIAL_OVERLAP":
+                    partial_overlap_present = True
+                if resolution in NEW_POLICY_RESOLUTIONS:
+                    has_new_resolution = True
+
+            expected_outcome = "MATCHES_FOUND" if comparisons else "NO_MATCH"
+            if lookup.get("lookup_outcome") != expected_outcome:
+                errors.append(
+                    f"{responsibility_id}: lookup_outcome must be {expected_outcome}"
+                )
+
+            expected_action = (
+                "BLOCKED"
+                if has_blocker
+                else "CREATE_NEW_POLICY"
+                if not comparisons or has_new_resolution
+                else "USE_EXISTING_AUTHORITY"
+            )
+            if action != expected_action:
+                errors.append(
+                    f"{responsibility_id}: materialization_action must be {expected_action}"
+                )
+
+            if expected_action == "CREATE_NEW_POLICY":
+                create_ids.add(responsibility_id)
+                if not isinstance(target_group, str):
+                    errors.append(
+                        f"{responsibility_id}: CREATE_NEW_POLICY requires target_group_id"
+                    )
+            elif target_group is not None:
+                errors.append(
+                    f"{responsibility_id}: only CREATE_NEW_POLICY may declare target_group_id"
+                )
+        else:
+            if relation not in AUTHORITY_RELATIONS:
+                errors.append(
+                    f"{responsibility_id}: unknown authority_relation {relation!r}"
+                )
+            if family is not None:
+                errors.append(
+                    f"{responsibility_id}: non-OWN responsibility must not own a Family"
+                )
+            if lookup is not None:
+                errors.append(
+                    f"{responsibility_id}: non-OWN responsibility must not perform owner authority lookup"
+                )
+            if action != "USE_EXISTING_AUTHORITY":
+                errors.append(
+                    f"{responsibility_id}: non-OWN responsibility must USE_EXISTING_AUTHORITY"
+                )
+            if target_group is not None:
+                errors.append(
+                    f"{responsibility_id}: non-OWN responsibility must not target a new group"
+                )
+
+    expected_families = [family for family in FAMILIES if family in set(owned_families)]
+    if decision.get("owned_family_set") != expected_families:
+        errors.append(
+            f"decision.owned_family_set must equal canonical owned Family set {expected_families}"
+        )
+
+    groups = decision.get("materialization_groups")
+    if not isinstance(groups, list):
+        errors.append("decision.materialization_groups must be a list")
+        groups = []
+
+    group_ids: set[str] = set()
+    grouped_responsibilities: set[str] = set()
+    for group in groups:
+        if not isinstance(group, Mapping):
+            errors.append("materialization group must be a mapping")
+            continue
+        group_id = group.get("group_id")
+        family = group.get("family")
+        cohesion_key = group.get("cohesion_key")
+        responsibility_ids = group.get("responsibility_ids")
+
+        if not isinstance(group_id, str):
+            errors.append("materialization group_id must be a string")
+            continue
+        if group_id in group_ids:
+            errors.append(f"{group_id}: duplicate materialization group")
+        group_ids.add(group_id)
+
+        if not isinstance(responsibility_ids, list) or not responsibility_ids:
+            errors.append(f"{group_id}: responsibility_ids must be non-empty")
+            continue
+        if len(responsibility_ids) != len(set(responsibility_ids)):
+            errors.append(f"{group_id}: responsibility_ids must be unique")
+
+        for responsibility_id in responsibility_ids:
+            responsibility = by_id.get(str(responsibility_id))
+            if responsibility is None:
+                errors.append(f"{group_id}: unknown responsibility {responsibility_id}")
+                continue
+            if str(responsibility_id) in grouped_responsibilities:
+                errors.append(
+                    f"{responsibility_id}: responsibility appears in multiple groups"
+                )
+            grouped_responsibilities.add(str(responsibility_id))
+            if responsibility.get("materialization_action") != "CREATE_NEW_POLICY":
+                errors.append(
+                    f"{group_id}: {responsibility_id} is not a new-policy responsibility"
+                )
+            if responsibility.get("target_group_id") != group_id:
+                errors.append(
+                    f"{group_id}: {responsibility_id} target_group_id mismatch"
+                )
+            if responsibility.get("family") != family:
+                errors.append(f"{group_id}: {responsibility_id} Family mismatch")
+            if responsibility.get("cohesion_key") != cohesion_key:
+                errors.append(
+                    f"{group_id}: {responsibility_id} cohesion_key mismatch"
+                )
+
+    if grouped_responsibilities != create_ids:
+        errors.append(
+            "materialization_groups must cover every and only CREATE_NEW_POLICY responsibility"
+        )
+
+    expected_split = (
+        len(expected_families) > 1
+        or len(groups) > 1
+        or partial_overlap_present
+    )
+    if decision.get("split_required") is not expected_split:
+        errors.append(f"decision.split_required must be {expected_split}")
+
+    expected_allowed = not blocked_ids
+    if decision.get("materialization_allowed") is not expected_allowed:
+        errors.append(
+            f"decision.materialization_allowed must be {expected_allowed}"
+        )
+
+    return tuple(errors)
+
+
+def validate_responsibility_analysis(
+    analysis_ref: str | Path,
+    *,
+    root: str | Path | None = None,
+    enforce_current_lookup: bool = True,
+) -> dict[str, object]:
+    base = repository_root(root)
+    path, relative = _analysis_path(analysis_ref, base=base)
+    if not path.is_file():
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_NOT_FOUND",
+            f"analysis does not exist: {relative}",
+        )
+
+    payload = load_yaml(relative, root=base)
+    schema = load_json(ANALYSIS_SCHEMA, root=base)
+    schema_errors = tuple(Draft202012Validator(schema).iter_errors(payload))
+    errors = [error.message for error in schema_errors]
+    errors.extend(validate_analysis_semantics(payload))
+
+    analysis = payload.get("analysis")
+    if isinstance(analysis, Mapping) and enforce_current_lookup:
+        responsibilities = analysis.get("responsibilities", [])
+        if isinstance(responsibilities, list):
+            for raw in responsibilities:
+                if not isinstance(raw, Mapping) or raw.get("authority_relation") != "OWN":
+                    continue
+                responsibility_id = str(raw.get("responsibility_id"))
+                family = raw.get("family")
+                lookup = raw.get("existing_authority_lookup")
+                if family not in FAMILIES or not isinstance(lookup, Mapping):
+                    continue
+
+                expected = list(_active_family_ids(base, str(family)))
+                searched = lookup.get("searched_policy_ids")
+                if searched != expected:
+                    errors.append(
+                        f"{responsibility_id}: searched_policy_ids must exactly cover current ACTIVE "
+                        f"{family} policies {expected}"
+                    )
+
+                comparisons = lookup.get("candidate_comparisons", [])
+                if not isinstance(comparisons, list):
+                    continue
+                for comparison in comparisons:
+                    if not isinstance(comparison, Mapping):
+                        continue
+                    policy_id = comparison.get("policy_id")
+                    section = comparison.get("section")
+                    if not isinstance(policy_id, str) or policy_id not in expected:
+                        errors.append(
+                            f"{responsibility_id}: comparison target {policy_id!r} is not current ACTIVE {family} authority"
+                        )
+                        continue
+                    if isinstance(section, str):
+                        index = load_yaml(INDEX, root=base)
+                        entry = next(
+                            (
+                                item
+                                for item in index.get("policies", [])
+                                if isinstance(item, Mapping)
+                                and item.get("id") == policy_id
+                            ),
+                            None,
+                        )
+                        if not isinstance(entry, Mapping):
+                            errors.append(
+                                f"{responsibility_id}: unresolved comparison policy {policy_id}"
+                            )
+                            continue
+                        target = load_yaml(str(entry["path"]), root=base)
+                        rules = target.get("rules")
+                        if not isinstance(rules, Mapping) or section not in rules:
+                            errors.append(
+                                f"{responsibility_id}: {policy_id} has no compared rules section {section!r}"
+                            )
+
+    if errors:
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_BLOCKED",
+            "; ".join(errors),
+        )
+
+    analysis_map = _mapping(payload.get("analysis"), label="analysis")
+    decision = _mapping(analysis_map.get("decision"), label="analysis.decision")
+    return {
+        "status": "PASS",
+        "analysis_id": analysis_map.get("analysis_id"),
+        "analysis_ref": relative,
+        "owned_family_set": decision.get("owned_family_set"),
+        "split_required": decision.get("split_required"),
+        "materialization_allowed": decision.get("materialization_allowed"),
+        "materialization_groups": decision.get("materialization_groups"),
+    }
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Validate responsibility decomposition and authority reconciliation."
+    )
+    parser.add_argument("--root")
+    parser.add_argument("--analysis-ref", required=True)
+    parser.add_argument(
+        "--current-authority-lookup",
+        action="store_true",
+        help="Require searched_policy_ids to match the current ACTIVE target-Family corpus.",
+    )
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
+    try:
+        result = validate_responsibility_analysis(
+            args.analysis_ref,
+            root=args.root,
+            enforce_current_lookup=args.current_authority_lookup,
+        )
+    except ResponsibilityGateError as exc:
+        print(
+            json.dumps(
+                {"status": "BLOCKED", "code": exc.code, "message": str(exc)},
+                sort_keys=True,
+            )
+        )
+        return 2
+    print(json.dumps(result, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

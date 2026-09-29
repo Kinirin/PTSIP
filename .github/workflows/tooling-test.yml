@@ -63,7 +63,7 @@ jobs:
         env:
           PYTHONPATH: ".:src"
         run: |
-          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py
+          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py
           if ($LASTEXITCODE -ne 0) {
             throw "Policy identity lifecycle tests failed."
           }
