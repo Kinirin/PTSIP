@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy-resolver-binding:v1",
+  "title": "PTSIP Developer Policy Resolver Binding Record v1",
+  "type": "object",
+  "required": [
+    "scope",
+    "inherit_to_descendants",
+    "default_refs"
+  ],
+  "properties": {
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inherit_to_descendants": {
+      "type": "boolean"
+    },
+    "default_refs": {
+      "$ref": "#/$defs/policyRefList"
+    },
+    "operations": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "READ",
+          "MODIFY",
+          "PLAN",
+          "VERIFY",
+          "RELEASE"
+        ]
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/policyRefList"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "policyRef": {
+      "type": "object",
+      "required": [
+        "policy_id",
+        "sections"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+        },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_]+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "policyRefList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/policyRef"
+      }
+    }
+  }
+}

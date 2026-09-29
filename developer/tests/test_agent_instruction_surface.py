@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import json
 import yaml
 
 from developer.automation.agent_instruction_materializer import DEFAULT_OUTPUT_ROOT
@@ -27,14 +28,20 @@ def test_agent_instruction_policy_separates_tooling_from_management_surface() ->
 
 
 def test_policy_binding_uses_root_agent_surface_only() -> None:
-    bindings = yaml.safe_load(
-        (
-            ROOT
-            / "developer"
-            / "policy"
-            / "policy-resolver-bindings.yaml"
-        ).read_text(encoding="utf-8")
-    )["scope_bindings"]
+    bindings = {
+        record["scope"]: record
+        for record in (
+            json.loads(line)
+            for line in (
+                ROOT
+                / "developer"
+                / "policy"
+                / "policy-resolver-bindings"
+                / "bindings.jsonl"
+            ).read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        )
+    }
     assert ".agent" in bindings
     assert "developer/agent_instructions" not in bindings
 

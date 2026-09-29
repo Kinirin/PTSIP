@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import json
 import yaml
 
 from developer.automation.agent_instruction_classifier import classify_markdown, load_trial_policy
@@ -47,10 +48,23 @@ def test_repository_trial_policy_and_resolver_binding_are_wired() -> None:
     assert payload["distribution"] == "FORBIDDEN"
     assert payload["product_integration"] == "NOT_AUTHORIZED"
 
-    bindings = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "policy-resolver-bindings.yaml").read_text(encoding="utf-8")
+    binding_records = [
+        json.loads(line)
+        for line in (
+            ROOT
+            / "developer"
+            / "policy"
+            / "policy-resolver-bindings"
+            / "bindings.jsonl"
+        ).read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    binding = next(
+        item
+        for item in binding_records
+        if item["scope"] == "developer/automation/agent_instruction_classifier.py"
     )
-    refs = bindings["scope_bindings"]["developer/automation/agent_instruction_classifier.py"]["default_refs"]
+    refs = binding["default_refs"]
     mpd10 = next(item for item in refs if item["policy_id"] == "MPD-0010")
     assert "agent_instruction_entry_taxonomy_trial" in mpd10["sections"]
 

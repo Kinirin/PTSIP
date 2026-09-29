@@ -1,0 +1,13 @@
+schema_version: ptsip-policy-resolver-binding-registry/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+resolver_id: POLICY_RESOLVER_V1
+
+binding_records_ref: developer/policy/policy-resolver-bindings/bindings.jsonl
+binding_record_schema_ref: developer/policy/schemas/policy-resolver-binding.schema.json
+
+operation_vocabulary:
+  - READ
+  - MODIFY
+  - PLAN
+  - VERIFY
+  - RELEASE

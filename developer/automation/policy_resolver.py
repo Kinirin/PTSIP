@@ -52,24 +52,155 @@ def _configured_path(
     return value
 
 
+def _validate_binding_lookup_contract(
+    contract: Mapping[str, object],
+) -> None:
+    lookup = _mapping(contract.get("lookup"), label="lookup")
+    expected = {
+        "scope_resolution": "EXACT_ANCESTOR_PATH",
+        "descendant_inheritance": "EXPLICIT_SCOPE_CONTROL",
+        "exact_scope_binding": "ALWAYS_ELIGIBLE",
+        "ancestor_binding_requirement": "INHERIT_TO_DESCENDANTS_TRUE",
+        "non_inheritable_ancestor": "SKIP_AND_CONTINUE",
+        "no_eligible_binding": "FAIL_CLOSED",
+        "operation_resolution": "EXACT_CLOSED_VOCABULARY",
+    }
+    for field, expected_value in expected.items():
+        if lookup.get(field) != expected_value:
+            raise PolicyResolverError(
+                f"lookup.{field} must be {expected_value}"
+            )
+
+
+def _load_binding_records(
+    root: Path,
+    registry: Mapping[str, object],
+    schema: Mapping[str, object],
+) -> dict[str, object]:
+    records_path, records_file = _repository_file(
+        root,
+        registry.get("binding_records_ref"),
+        label="binding registry binding_records_ref",
+    )
+    validator = Draft202012Validator(schema)
+    scope_bindings: dict[str, object] = {}
+    lines = records_file.read_text(encoding="utf-8").splitlines()
+    if not lines:
+        raise PolicyResolverError("Policy Resolver binding record source is empty")
+
+    for line_number, raw_line in enumerate(lines, start=1):
+        if not raw_line.strip():
+            raise PolicyResolverError(
+                f"Policy Resolver binding record {records_path}:{line_number} is blank"
+            )
+        try:
+            raw_record = json.loads(raw_line)
+        except json.JSONDecodeError as exc:
+            raise PolicyResolverError(
+                f"Policy Resolver binding record {records_path}:{line_number} "
+                f"is not valid JSON: {exc.msg}"
+            ) from exc
+
+        errors = sorted(
+            validator.iter_errors(raw_record),
+            key=lambda error: tuple(str(part) for part in error.absolute_path),
+        )
+        if errors:
+            rendered = "; ".join(
+                f"{'.'.join(str(part) for part in error.absolute_path) or '<root>'}: "
+                f"{error.message}"
+                for error in errors
+            )
+            raise PolicyResolverError(
+                f"Policy Resolver binding record {records_path}:{line_number} "
+                f"is invalid: {rendered}"
+            )
+
+        record = _mapping(
+            raw_record,
+            label=f"binding record {records_path}:{line_number}",
+        )
+        scope = record.get("scope")
+        if not isinstance(scope, str) or not scope:
+            raise PolicyResolverError(
+                f"binding record {records_path}:{line_number} has invalid scope"
+            )
+        if scope in scope_bindings:
+            raise PolicyResolverError(f"duplicate policy binding scope: {scope}")
+
+        binding = dict(record)
+        binding.pop("scope", None)
+        scope_bindings[scope] = binding
+
+    return scope_bindings
+
+
 def _load_bindings(root: Path, contract: Mapping[str, object]) -> dict[str, object]:
-    binding_path = _configured_path(root, contract, "binding_registry_ref")
-    schema_path = _configured_path(root, contract, "binding_schema_ref")
-    payload = load_yaml(binding_path, root=root)
+    _validate_binding_lookup_contract(contract)
+    registry_path = _configured_path(root, contract, "binding_registry_ref")
+    registry = _mapping(
+        load_yaml(registry_path, root=root),
+        label="binding registry",
+    )
+    expected_registry_fields = {
+        "schema_version",
+        "policy_class",
+        "resolver_id",
+        "binding_records_ref",
+        "binding_record_schema_ref",
+        "operation_vocabulary",
+    }
+    actual_registry_fields = set(registry)
+    if actual_registry_fields != expected_registry_fields:
+        missing = sorted(expected_registry_fields - actual_registry_fields)
+        extra = sorted(actual_registry_fields - expected_registry_fields)
+        raise PolicyResolverError(
+            "binding registry fields are invalid: "
+            f"missing={missing}, extra={extra}"
+        )
+    if registry.get("schema_version") != "ptsip-policy-resolver-binding-registry/v1":
+        raise PolicyResolverError("binding registry schema_version is invalid")
+    if registry.get("policy_class") != "PTSIP_DEVELOPER_POLICY":
+        raise PolicyResolverError("binding registry policy_class is invalid")
+
+    resolver = _resolver_config(contract)
+    resolver_id = registry.get("resolver_id")
+    if resolver_id != resolver.get("id"):
+        raise PolicyResolverError(
+            "binding registry resolver_id does not match resolver contract"
+        )
+
+    vocabulary = registry.get("operation_vocabulary")
+    allowed_operations = {"READ", "MODIFY", "PLAN", "VERIFY", "RELEASE"}
+    if (
+        not isinstance(vocabulary, list)
+        or not vocabulary
+        or not all(isinstance(item, str) for item in vocabulary)
+        or len(vocabulary) != len(set(vocabulary))
+        or set(vocabulary) != allowed_operations
+    ):
+        raise PolicyResolverError(
+            "binding registry operation_vocabulary must contain the exact closed vocabulary"
+        )
+
+    schema_path, _ = _repository_file(
+        root,
+        registry.get("binding_record_schema_ref"),
+        label="binding registry binding_record_schema_ref",
+    )
     schema = load_json(schema_path, root=root)
     Draft202012Validator.check_schema(schema)
-    errors = sorted(
-        Draft202012Validator(schema).iter_errors(payload),
-        key=lambda error: tuple(str(part) for part in error.absolute_path),
-    )
-    if errors:
-        rendered = "; ".join(
-            f"{'.'.join(str(part) for part in error.absolute_path) or '<root>'}: {error.message}"
-            for error in errors
-        )
-        raise PolicyResolverError(f"Policy Resolver bindings are invalid: {rendered}")
-    return payload
+    if schema.get("$id") != "urn:ptsip:policy-resolver-binding:v1":
+        raise PolicyResolverError("binding record schema identity is invalid")
 
+    scope_bindings = _load_binding_records(root, registry, schema)
+    return {
+        "schema_version": registry.get("schema_version"),
+        "policy_class": registry.get("policy_class"),
+        "resolver_id": resolver_id,
+        "operation_vocabulary": list(vocabulary),
+        "scope_bindings": scope_bindings,
+    }
 
 def _load_index(
     root: Path,
@@ -138,10 +269,25 @@ def _select_scope_binding(
     )
     for candidate in _ancestor_scopes(scope):
         value = scope_bindings.get(candidate)
-        if value is not None:
-            return candidate, _mapping(value, label=f"scope_bindings.{candidate}")
-    raise PolicyResolverError(f"no registered policy binding for scope {scope!r}")
+        if value is None:
+            continue
 
+        binding = _mapping(value, label=f"scope_bindings.{candidate}")
+        inherit_to_descendants = binding.get("inherit_to_descendants")
+        if not isinstance(inherit_to_descendants, bool):
+            raise PolicyResolverError(
+                f"scope_bindings.{candidate}.inherit_to_descendants "
+                "must be an explicit boolean"
+            )
+
+        if candidate == scope:
+            return candidate, binding
+        if inherit_to_descendants:
+            return candidate, binding
+
+    raise PolicyResolverError(
+        f"no eligible policy binding for scope {scope!r}"
+    )
 
 def _selected_refs(
     bindings: Mapping[str, object],

@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import json
+
 import pytest
-import yaml
+from jsonschema import Draft202012Validator
 
 import developer.automation.policy_resolver as policy_resolver_module
 
@@ -55,6 +57,117 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
             ],
         },
     ]
+
+
+def test_non_inheritable_nearest_ancestor_skips_to_higher_ancestor() -> None:
+    bindings = {
+        "scope_bindings": {
+            "developer": {
+                "inherit_to_descendants": True,
+                "default_refs": [],
+            },
+            "developer/foo": {
+                "inherit_to_descendants": False,
+                "default_refs": [],
+            },
+        }
+    }
+    binding_scope, _ = policy_resolver_module._select_scope_binding(
+        bindings,
+        "developer/foo/bar.py",
+    )
+    assert binding_scope == "developer"
+
+
+def test_non_inheritable_exact_scope_remains_eligible() -> None:
+    bindings = {
+        "scope_bindings": {
+            "developer": {
+                "inherit_to_descendants": True,
+                "default_refs": [],
+            },
+            "developer/foo": {
+                "inherit_to_descendants": False,
+                "default_refs": [],
+            },
+        }
+    }
+    binding_scope, _ = policy_resolver_module._select_scope_binding(
+        bindings,
+        "developer/foo",
+    )
+    assert binding_scope == "developer/foo"
+
+
+def test_all_non_inheritable_ancestors_fail_closed() -> None:
+    bindings = {
+        "scope_bindings": {
+            ".": {
+                "inherit_to_descendants": False,
+                "default_refs": [],
+            },
+            "developer": {
+                "inherit_to_descendants": False,
+                "default_refs": [],
+            },
+        }
+    }
+    with pytest.raises(PolicyResolverError, match="no eligible policy binding"):
+        policy_resolver_module._select_scope_binding(
+            bindings,
+            "developer/foo.py",
+        )
+
+
+def test_binding_record_schema_requires_explicit_inheritance() -> None:
+    schema = json.loads(
+        (
+            ROOT
+            / "developer"
+            / "policy"
+            / "schemas"
+            / "policy-resolver-binding.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    record = {
+        "scope": "synthetic/scope",
+        "default_refs": [
+            {
+                "policy_id": "MPD-SPEC-0006",
+                "sections": ["identity_and_resolution"],
+            }
+        ],
+    }
+    errors = list(Draft202012Validator(schema).iter_errors(record))
+    assert any(
+        error.validator == "required"
+        and "inherit_to_descendants" in error.message
+        for error in errors
+    )
+
+
+def test_binding_record_schema_rejects_non_boolean_inheritance() -> None:
+    schema = json.loads(
+        (
+            ROOT
+            / "developer"
+            / "policy"
+            / "schemas"
+            / "policy-resolver-binding.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    record = {
+        "scope": "synthetic/scope",
+        "inherit_to_descendants": "true",
+        "default_refs": [
+            {
+                "policy_id": "MPD-SPEC-0006",
+                "sections": ["identity_and_resolution"],
+            }
+        ],
+    }
+    errors = list(Draft202012Validator(schema).iter_errors(record))
+    assert any(error.validator == "type" for error in errors)
 
 
 def test_github_authority_scope_resolves_policy_without_plan_task_context() -> None:
@@ -182,18 +295,18 @@ def test_unknown_policy_identity_fails_closed() -> None:
         get_policy(ROOT, policy_id="MPD-9999")
 
 
-def test_cli_fails_closed_cleanly_on_malformed_binding_yaml(
+def test_cli_fails_closed_cleanly_on_malformed_binding_jsonl(
     monkeypatch,
     capsys,
 ) -> None:
-    original = policy_resolver_module.load_yaml
+    def malformed(*args, **kwargs):
+        raise PolicyResolverError("synthetic malformed binding record")
 
-    def malformed(path, *, root=None):
-        if str(path).endswith("policy-resolver-bindings.yaml"):
-            raise yaml.YAMLError("synthetic malformed binding")
-        return original(path, root=root)
-
-    monkeypatch.setattr(policy_resolver_module, "load_yaml", malformed)
+    monkeypatch.setattr(
+        policy_resolver_module,
+        "_load_binding_records",
+        malformed,
+    )
     result = policy_resolver_module.main(
         [
             "--repository",
@@ -208,7 +321,7 @@ def test_cli_fails_closed_cleanly_on_malformed_binding_yaml(
     )
     captured = capsys.readouterr()
     assert result == 2
-    assert "Policy Resolver error: synthetic malformed binding" in captured.out
+    assert "Policy Resolver error: synthetic malformed binding record" in captured.out
     assert "Traceback" not in captured.out
 
 

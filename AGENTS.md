@@ -34,7 +34,7 @@ Before broadly reading repository policy or planning prose, resolve the develope
 python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
 ```
 
-The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings.yaml` and `developer/policy/index.yaml`. Use only the returned canonical policy IDs and rule sections as the normal policy-loading path.
+The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings/registry.yaml`, its `bindings.jsonl` record source, and `developer/policy/index.yaml`. Scope inheritance is controlled only by each binding record's explicit `inherit_to_descendants` value. Use only the returned canonical policy IDs and rule sections as the normal policy-loading path.
 
 For a returned section, prefer the bounded lookup:
 
