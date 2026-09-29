@@ -42,6 +42,7 @@ def repo(tmp_path: Path) -> Path:
     policies = [
         ("MPD-0012", "DRAFT", "Existing draft"),
         ("MPD-0013", "ACTIVE", "Existing active"),
+        ("MPD-MIGR-0001", "ACTIVE", "Existing migration family policy"),
         ("MPD-SPEC-0001", "ACTIVE", "Existing family policy"),
     ]
     _write_yaml(
@@ -74,7 +75,12 @@ def repo(tmp_path: Path) -> Path:
             "subject_identity_schemes": {
                 "MANAGEMENT_POLICY_ID": {
                     "source_field": "policy.id",
-                    "registered_values": ["MPD-0012", "MPD-0013", "MPD-SPEC-0001"],
+                    "registered_values": [
+                        "MPD-0012",
+                        "MPD-0013",
+                        "MPD-MIGR-0001",
+                        "MPD-SPEC-0001",
+                    ],
                 }
             },
         },
@@ -121,6 +127,16 @@ def test_inspect_reports_draft_without_operational_resolution(repo: Path) -> Non
     assert result["policy_status"] == "DRAFT"
     assert result["index_status"] == "DRAFT"
     assert result["operationally_resolvable"] is False
+
+
+def test_missing_indexed_policy_file_fails_closed_with_machine_error(repo: Path) -> None:
+    (repo / "developer/policy/MPD-0012.yaml").unlink()
+
+    with pytest.raises(PolicyIdentityLifecycleError) as exc:
+        inspect_policy("MPD-0013", root=repo)
+
+    assert exc.value.code == "POLICY_FILE_NOT_FOUND"
+    assert "MPD-0012" in str(exc.value)
 
 
 def test_preflight_rejects_existing_requested_id(repo: Path) -> None:
@@ -172,6 +188,7 @@ def test_register_updates_index_and_subject_registry_only_after_exact_policy_fil
         "MPD-0012",
         "MPD-0013",
         "MPD-0014",
+        "MPD-MIGR-0001",
         "MPD-SPEC-0001",
     ]
     assert next(item for item in index["policies"] if item["id"] == "MPD-0014")["status"] == "ACTIVE"
@@ -182,6 +199,7 @@ def test_register_updates_index_and_subject_registry_only_after_exact_policy_fil
         "MPD-0012",
         "MPD-0013",
         "MPD-0014",
+        "MPD-MIGR-0001",
         "MPD-SPEC-0001",
     ]
 
