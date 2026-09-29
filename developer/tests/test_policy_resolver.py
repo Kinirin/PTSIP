@@ -30,7 +30,7 @@ def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
     result = resolve_policies(
         ROOT,
         scope="src/ptsip/migration/future_engine.py",
-        operation="MODIFY",
+        operation="READ",
     )
     assert result["binding_scope"] == "src/ptsip/migration"
     assert result["projection_authority"] is False
@@ -385,7 +385,10 @@ def test_unrelated_modify_does_not_route_pp_transition_policy() -> None:
     )
 
     assert result["binding_scope"] == "."
-    assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010"]
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0010",
+        "MPD-SPEC-0006",
+    ]
 
 
 @pytest.mark.parametrize(
@@ -438,7 +441,6 @@ def test_runtime_pp_registry_surfaces_route_transition_policy(scope: str) -> Non
     "scope",
     [
         "setup.py",
-        "pyproject.toml",
         "MANIFEST.in",
         ".github/scripts/verify_distribution_contracts.py",
     ],
@@ -454,6 +456,25 @@ def test_distribution_projection_surfaces_route_pp_transition_policy(scope: str)
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
         "MPD-0011",
+    ]
+
+
+def test_pyproject_modify_uses_explicit_contract_operation_override() -> None:
+    result = resolve_policies(
+        ROOT,
+        scope="pyproject.toml",
+        operation="MODIFY",
+    )
+
+    assert result["binding_scope"] == "pyproject.toml"
+    assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-0015",
+    ]
+    assert result["policies"][0]["sections"] == [
+        "normative_authority",
+        "contract_artifact_representation",
+        "implementation_role",
+        "implementation_authorization",
     ]
 
 
