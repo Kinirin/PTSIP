@@ -56,7 +56,7 @@ rules:
       mutation_may_proceed_without_required_approved_semantics: false
 
   execution_feedback_cycle:
-    principle: EXECUTION_IS_NOT_A_TERMINAL_STAGE
+    work_execution_lifecycle_ref: MPD-WORK-0002
     cycle:
       - AUTOMATIC_PLAN
       - EXECUTION
@@ -67,23 +67,11 @@ rules:
       - RERESOLUTION
 
     execution_output:
-      structured_result_required: true
       observable_evidence_required: true
-      resulting_state_required: true
 
     verification:
       expected_vs_observed_required: true
       verification_result_must_be_machine_readable: true
-
-    verified_pass:
-      verified_state_may_feed_next_resolution: true
-      may_continue_without_new_human_confirmation_when_existing_authorization_remains_valid: true
-      may_create_new_approval_or_authorization: false
-
-    deviation:
-      must_return_to_resolution_or_escalation: true
-      silent_success_coercion: FORBIDDEN
-      deviation_may_create_normative_authority: false
 
     state_boundary:
       exact_runtime_persistence_path_fixed_by_this_policy: false
@@ -231,3 +219,5 @@ relations:
       scope: LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY
     - policy: MPD-SPEC-0022
       scope: CONTRACT_ARTIFACT_REPRESENTATION
+    - policy: MPD-WORK-0002
+      scope: EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF
