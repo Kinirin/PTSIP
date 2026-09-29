@@ -62,8 +62,9 @@ rules:
     remote_must_detect_local_hook_bypass: true
     remote_must_validate_every_introduced_commit: true
     release: EXACT_SHA_VERIFY_ONLY
-    release_publication_with_invalid_pp_transition: FORBIDDEN
     pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
+
+  release_publication_gate_ref: MPD-RELS-0002
 
 relations:
   supersedes: []
