@@ -26,12 +26,7 @@ rules:
   approved_decisions:
     normative_document_boundary:
       normative_and_operational_markdown_removal: APPROVED
-      new_policy_or_specification_markdown: FORBIDDEN
-      normative_markdown_dependency: FORBIDDEN
-      legacy_markdown_as_authority_dependency_provenance_or_fallback: FORBIDDEN
-      machine_readable_agent_contract_root: src/agent_contracts
       new_human_readable_projection_generation_current_stage: FORBIDDEN
-      non_normative_human_communication_markdown_is_not_removed_by_format_alone: true
 
     markdown_cleanup_preconditions:
       decision: APPROVED
@@ -75,13 +70,6 @@ rules:
       execution_boundary:
         this_policy_approval_performs_physical_markdown_deletion: false
         next_cleanup_phase: FILE_CLASSIFICATION_REFERENCE_REMOVAL_AND_VALIDATION
-
-    agent_contract_authority:
-      scope: CODING_AGENT_BEHAVIOR_SEMANTICS
-      role: NORMATIVE_SSOT
-      external_authority_behavior: CONSUME_WITHOUT_CREATING_MISSING_NORMATIVE_AUTHORITY
-      authority_producing_inference: FORBIDDEN
-      operational_inference: CONDITIONALLY_ALLOWED
 
     missing_information_resolution:
       primary: MACHINE_DEFINED_OUTCOME
@@ -186,38 +174,6 @@ rules:
       version_number_equality_is_sufficient: false
       capability_name_equality_is_sufficient: false
       required_semantics_must_be_compared_against_provided_semantics: true
-
-    source_contract_model:
-      source_contract_type_count: 2
-      type_roles:
-        - STRICT_CANONICAL
-        - SEMANTIC_EXTENSION
-      permanent_type_identifiers: DEFERRED
-      extensibility_implies_lower_strictness: false
-      semantic_extension_model: E3_SEMANTIC_EXTENSION_CONTRACT
-
-    feature_stable_core:
-      required_immutable_fields:
-        - identity
-        - semantic_category
-        - value_contract
-        - comparison_semantics
-        - evolution_semantics
-      breaking_stable_semantic_change_requires_new_feature_identity: true
-      evolution_semantics_modes:
-        - IMMUTABLE
-        - COMPATIBLE_EXTENSION
-        - EXPLICIT
-      mandatory_global_fine_grained_change_classification_vocabulary: FORBIDDEN
-      explicit_mode_may_reference_machine_readable_evolution_rules: true
-
-    feature_implementation_body:
-      minimum_required_fields:
-        - implementation_kind
-        - revision
-        - implementation_ref
-      additional_fields_required_by_core: false
-      implementation_detail_overconstraint: FORBIDDEN
 
     atomic_feature_management:
       general_user_direct_atomic_feature_management: NOT_REQUIRED
@@ -372,3 +328,7 @@ relations:
       scope: INFERENCE_COST_EXTENSION_AND_IDENTITY_BASELINE
     - policy: MPD-SPEC-0007
       scope: INFERENCE_COST_EXTENSION_AND_IDENTITY_BASELINE
+    - policy: MPD-SPEC-0024
+      scope: AGENT_CONTRACT_NORMATIVE_AUTHORITY
+    - policy: MPD-SPEC-0025
+      scope: SOURCE_AND_FEATURE_CONTRACT_MODEL

@@ -335,14 +335,16 @@ def test_pp_transition_policy_routes_for_public_profile_modify() -> None:
     assert result["binding_scope"] == "profiles"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
+        "MPD-SPEC-0027",
         "MPD-0011",
     ]
-    assert result["policies"][1]["sections"] == [
+    assert result["policies"][1]["sections"] == ["t2_authority_delta"]
+    assert result["policies"][2]["sections"] == ["user_revision_lineage"]
+    assert result["policies"][3]["sections"] == [
         "authority_semantics",
         "commit_candidate_trigger",
-        "t2_authority_delta",
         "transition_generation",
-        "user_revision_lineage",
         "reconciliation_safety",
         "verification_layers",
     ]
@@ -358,9 +360,10 @@ def test_pp_transition_policy_routes_for_current_schema_modify() -> None:
     assert result["binding_scope"] == "schemas"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
         "MPD-0011",
     ]
-    assert "t2_authority_delta" in result["policies"][1]["sections"]
+    assert result["policies"][1]["sections"] == ["t2_authority_delta"]
 
 
 def test_pp_transition_policy_routes_for_future_canonical_registry_path() -> None:
@@ -373,6 +376,7 @@ def test_pp_transition_policy_routes_for_future_canonical_registry_path() -> Non
     assert result["binding_scope"] == "registry/project-profile-contracts.yaml"
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
         "MPD-0011",
     ]
 
@@ -410,6 +414,7 @@ def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
         "MPD-0011",
     ]
 
@@ -468,14 +473,16 @@ def test_pyproject_modify_uses_explicit_contract_operation_override() -> None:
 
     assert result["binding_scope"] == "pyproject.toml"
     assert [item["policy_id"] for item in result["policies"]] == [
+        "MPD-SPEC-0021",
+        "MPD-SPEC-0022",
         "MPD-0015",
     ]
     assert result["policies"][0]["sections"] == [
         "normative_authority",
-        "contract_artifact_representation",
         "implementation_role",
-        "implementation_authorization",
     ]
+    assert result["policies"][1]["sections"] == ["contract_artifact_representation"]
+    assert result["policies"][2]["sections"] == ["implementation_authorization"]
 
 
 def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None:
@@ -529,6 +536,7 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
         "MPD-0011",
     ]
 
@@ -588,6 +596,7 @@ def test_local_profile_runtime_surfaces_route_pp_policy(scope: str) -> None:
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
+        "MPD-SPEC-0027",
         "MPD-0011",
     ]
 
@@ -603,6 +612,8 @@ def test_pp_102_transition_seed_routes_developer_and_pp_policy() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
+        "MPD-SPEC-0027",
         "MPD-0011",
     ]
 
@@ -619,5 +630,6 @@ def test_public_profile_catalog_schema_routes_pp_transition_policy() -> None:
     )
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
+        "MPD-SPEC-0026",
         "MPD-0011",
     ]

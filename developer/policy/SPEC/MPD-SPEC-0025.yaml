@@ -1,0 +1,53 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0025
+  title: Source and Feature Contract Model
+  status: ACTIVE
+
+rules:
+  source_contract_model:
+      source_contract_type_count: 2
+      type_roles:
+        - STRICT_CANONICAL
+        - SEMANTIC_EXTENSION
+      permanent_type_identifiers: DEFERRED
+      extensibility_implies_lower_strictness: false
+      semantic_extension_model: E3_SEMANTIC_EXTENSION_CONTRACT
+  
+
+  feature_stable_core:
+      required_immutable_fields:
+        - identity
+        - semantic_category
+        - value_contract
+        - comparison_semantics
+        - evolution_semantics
+      breaking_stable_semantic_change_requires_new_feature_identity: true
+      evolution_semantics_modes:
+        - IMMUTABLE
+        - COMPATIBLE_EXTENSION
+        - EXPLICIT
+      mandatory_global_fine_grained_change_classification_vocabulary: FORBIDDEN
+      explicit_mode_may_reference_machine_readable_evolution_rules: true
+  
+
+  feature_implementation_body:
+      minimum_required_fields:
+        - implementation_kind
+        - revision
+        - implementation_ref
+      additional_fields_required_by_core: false
+      implementation_detail_overconstraint: FORBIDDEN
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-SPEC-0007
+      scope: AGENT_CONTRACT_FEATURE_EXTENSION_MODEL
+  depends_on:
+    - policy: MPD-SPEC-0024
+      scope: AGENT_CONTRACT_NORMATIVE_AUTHORITY

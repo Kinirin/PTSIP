@@ -1,0 +1,29 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0024
+  title: Agent Contract Normative Authority Boundary
+  status: ACTIVE
+
+rules:
+  normative_document_authority_boundary:
+    new_policy_or_specification_markdown: FORBIDDEN
+    normative_markdown_dependency: FORBIDDEN
+    legacy_markdown_as_authority_dependency_provenance_or_fallback: FORBIDDEN
+    machine_readable_agent_contract_root: src/agent_contracts
+    non_normative_human_communication_markdown_is_not_removed_by_format_alone: true
+
+  agent_contract_authority:
+      scope: CODING_AGENT_BEHAVIOR_SEMANTICS
+      role: NORMATIVE_SSOT
+      external_authority_behavior: CONSUME_WITHOUT_CREATING_MISSING_NORMATIVE_AUTHORITY
+      authority_producing_inference: FORBIDDEN
+      operational_inference: CONDITIONALLY_ALLOWED
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

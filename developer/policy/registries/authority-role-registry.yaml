@@ -69,15 +69,12 @@ policy_roles:
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
       - govern_commit_atomic_project_profile_transition
-      - govern_project_profile_authority_delta_trigger
       - govern_project_profile_hook_activation
       - govern_project_profile_migration_authorization
-      - govern_project_profile_user_revision_lineage
       - govern_project_profile_verification_layers
   - policy_id: MPD-0012
     role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - govern_agent_contract_machine_authority
+    effects: []
   - policy_id: MPD-SPEC-0002
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:

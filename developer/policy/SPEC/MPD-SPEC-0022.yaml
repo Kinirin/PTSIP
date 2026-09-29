@@ -1,0 +1,223 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0022
+  title: Canonical Contract Artifact Representation
+  status: ACTIVE
+
+rules:
+  contract_artifact_representation:
+      canonical_index:
+        format: JSON
+        role: CANONICAL_INDEX
+  
+      normative_contract:
+        format: JSON
+        role: NORMATIVE_MACHINE_CONTRACT
+        language_neutral: true
+        canonical_serialization_required: true
+  
+      canonical_serialization:
+        scheme: PTSIP_CANONICAL_JSON_V1
+        status: ADOPTED
+        ownership: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+        encoding: UTF_8
+        bom: FORBIDDEN
+        duplicate_object_keys: FORBIDDEN
+        object_member_order: DETERMINISTIC
+        array_element_order: PRESERVE_DECLARED_ORDER
+        insignificant_whitespace_in_canonical_output: FORBIDDEN
+        ambiguous_or_unsupported_input: FAIL_CLOSED
+        number_canonical_representation:
+          model: EXACT_DECIMAL_VALUE
+          binary_floating_point_conversion_for_canonicalization: FORBIDDEN
+          negative_zero: NORMALIZE_TO_ZERO
+          nan: FORBIDDEN
+          infinity: FORBIDDEN
+          leading_plus: FORBIDDEN
+          ambiguous_or_unrepresentable_value: FAIL_CLOSED
+          canonical_decimal_lexical_form:
+            model: NORMALIZED_EXACT_SCIENTIFIC
+            zero: "0"
+            nonzero_coefficient:
+              exactly_one_nonzero_digit_before_decimal_point: true
+              leading_zeroes: FORBIDDEN
+              trailing_fractional_zeroes: FORBIDDEN
+              decimal_point_when_fraction_absent: FORBIDDEN
+            exponent:
+              marker: LOWERCASE_E
+              positive_plus_sign: FORBIDDEN
+              leading_zeroes: FORBIDDEN
+              zero_exponent_for_nonzero_value: ALLOWED
+            rounding: FORBIDDEN
+  
+        unicode_normalization:
+          form: NFC
+          applies_to:
+            - OBJECT_MEMBER_NAMES
+            - STRING_VALUES
+          compatibility_normalization: FORBIDDEN
+          invalid_unicode: FAIL_CLOSED
+          post_normalization_object_key_collision: FAIL_CLOSED
+  
+        string_escape_normalization:
+          model: MINIMAL_UTF8_ESCAPE
+          quote: ESCAPE
+          reverse_solidus: ESCAPE
+          short_control_escapes:
+            backspace: "\\b"
+            tab: "\\t"
+            line_feed: "\\n"
+            form_feed: "\\f"
+            carriage_return: "\\r"
+          other_u0000_to_u001f: LOWERCASE_U00XX
+          non_control_unicode: EMIT_UTF8
+          solidus_escape: FORBIDDEN
+          unnecessary_unicode_escape: FORBIDDEN
+          lone_surrogate: FAIL_CLOSED
+  
+        unresolved_subrules: []
+        serialization_semantics_complete: true
+        implementation_may_invent_unresolved_subrule: false
+  
+      canonical_digest_management:
+        model: SINGLE_ACTIVE_WITH_ALGORITHM_AGILITY
+        status: ADOPTED
+        registered_schemes_multiple_allowed: true
+        simultaneous_digest_emission_multiple_allowed: true
+        canonical_role_cardinality: EXACTLY_ONE_ACTIVE
+        scheme_roles:
+          - CANONICAL
+          - SUPPORTED
+          - RETIRED
+        canonical_identity_operations:
+          - SEMANTIC_EQUALITY
+          - STALE_STATE_DETECTION
+          - EVIDENCE_BINDING
+        canonical_identity_must_use_active_scheme_only: true
+        supported_or_retired_scheme_may_define_canonical_identity: false
+        silent_fallback_to_noncanonical_scheme: FORBIDDEN
+        scheme_identity_must_bind:
+          - NORMATIVE_SEMANTIC_PROJECTION
+          - CANONICAL_SERIALIZATION
+          - HASH_ALGORITHM
+          - OUTPUT_ENCODING
+        active_scheme: UNRESOLVED
+        unresolved_active_scheme_behavior: FAIL_CLOSED
+        dual_canonical_authority: FORBIDDEN
+  
+      normative_semantic_projection:
+        projection_id: PTSIP_NORMATIVE_SEMANTIC_PROJECTION_V1
+        status: PARTIALLY_RESOLVED
+  
+        field_governance:
+          model: EXPLICIT_INCLUDE_WITH_EXPLICIT_EXCLUDE_VETO
+          inclusion_policy: EXPLICIT_ALLOWLIST_REQUIRED
+          exclusion_policy: EXPLICIT_DENYLIST_VETO
+          eligibility_rule: INCLUDED_AND_NOT_EXCLUDED
+          exclusion_precedence: VETO
+          include_exclude_overlap:
+            classification: POLICY_CONFLICT
+            behavior: FAIL_CLOSED
+            silent_exclusion: FORBIDDEN
+            silent_inclusion: FORBIDDEN
+            digest_generation_allowed: false
+          unclassified_field_behavior: FAIL_CLOSED
+          automatic_ai_field_classification: FORBIDDEN
+          semantic_similarity_field_admission: FORBIDDEN
+          exact_inclusion_list:
+            model: SEMANTIC_ROLE_WITH_EXACT_BINDING
+            option: I3
+            semantic_role_registry_required: true
+            physical_representation_may_define_semantic_role: false
+            exact_binding_required_for_extraction: true
+            automatic_binding_inference: FORBIDDEN
+            semantic_similarity_binding: FORBIDDEN
+            unresolved_role_or_binding_behavior: FAIL_CLOSED
+            exact_semantic_roles: UNRESOLVED
+            exact_role_bindings: UNRESOLVED
+          exact_exclusion_list:
+            model: SEMANTIC_ROLE_WITH_EXACT_BINDING
+            option: E3
+            semantic_role_registry_required: true
+            physical_representation_may_define_exclusion_role: false
+            exact_binding_required_for_exclusion: true
+            automatic_binding_inference: FORBIDDEN
+            semantic_similarity_binding: FORBIDDEN
+            unresolved_role_or_binding_behavior: FAIL_CLOSED
+            exact_semantic_roles: UNRESOLVED
+            exact_role_bindings: UNRESOLVED
+  
+        collection_semantics:
+          model: MEANING_AWARE_COLLECTION_ORDER
+          option: C3
+          collection_type_must_be_explicit: true
+          allowed_collection_types:
+            - SET_LIKE
+            - ORDERED
+          set_like:
+            canonical_ordering: DETERMINISTIC_SORT
+            strategy: STABLE_SEMANTIC_IDENTITY_PRIMARY_WITH_EXACT_BINDING_EXCEPTION
+            primary:
+              option: S2
+              model: STABLE_SEMANTIC_IDENTITY
+              stable_semantic_identity_required: true
+              identity_contract: UNRESOLVED
+              missing_or_invalid_identity_behavior: FAIL_CLOSED
+            exception:
+              option: S3
+              model: COLLECTION_EXACT_SORT_BINDING
+              use_only_when_primary_identity_model_not_applicable: true
+              explicit_exception_declaration_required: true
+              exact_sort_binding_required: true
+              automatic_exception_inference: FORBIDDEN
+              exact_exception_bindings: UNRESOLVED
+              missing_binding_behavior: FAIL_CLOSED
+            undeclared_sort_behavior: FAIL_CLOSED
+          ordered:
+            canonical_ordering: PRESERVE_DECLARED_ORDER
+          unclassified_collection_behavior: FAIL_CLOSED
+          ai_may_infer_collection_type: false
+  
+      canonical_digest_scheme_selection:
+        hash_algorithm: SHA_256
+        output_encoding: LOWERCASE_HEXADECIMAL
+        digest_size_bits: 256
+        output_length_characters: 64
+        active_scheme: UNRESOLVED
+        activation_requires_complete_projection: true
+        unresolved_projection_may_be_hashed_as_canonical: false
+  
+  
+      input_output_schema:
+        format: JSON_SCHEMA
+        role: STRUCTURAL_VALIDATION_CONTRACT
+  
+      conformance_vectors:
+        format: JSON
+        role: CONFORMANCE_EXPECTATION_DATA
+  
+      implementation_binding:
+        format: JSON
+        role: LANGUAGE_OR_RUNTIME_ADAPTER_METADATA
+        normative_authority: false
+  
+      human_explanation:
+        format: MARKDOWN
+        role: NON_NORMATIVE_EXPLANATION
+        may_replace_machine_contract_authority: false
+  
+      governance_policy_document:
+        format: YAML
+        role: GOVERNANCE_PLANE
+        machine_runtime_contract: false
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-SPEC-0021
+      scope: LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY
+  depends_on: []

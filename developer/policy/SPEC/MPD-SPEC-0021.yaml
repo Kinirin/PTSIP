@@ -1,0 +1,67 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0021
+  title: Language-Neutral Normative Authority and Machine Contract Ownership
+  status: ACTIVE
+
+rules:
+  normative_authority:
+      implementation_language_owns_final_ptsip_rules: false
+      authority_owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+  
+      machine_contract:
+        language_neutral: true
+        versioned: true
+        machine_readable: true
+        semantics_must_be_explicit: true
+        implementation_may_add_normative_semantics: false
+  
+
+  machine_contract_ownership:
+      principle: EXTERNALLY_OBSERVABLE_PTSIP_SEMANTICS_ARE_MACHINE_CONTRACT_AUTHORITY
+      owns:
+        - RULE_MEANING
+        - STATE_MEANING
+        - INPUT_STRUCTURE
+        - OUTPUT_STRUCTURE
+        - ALLOWED_STATE_TRANSITIONS
+        - PRECONDITIONS
+        - POSTCONDITION_GUARANTEES
+        - FAILURE_SEMANTICS
+        - STANDARD_ERROR_CODES
+        - IDENTITY_RULES
+        - CANONICAL_REPRESENTATION
+        - DIGEST_RULES
+        - CAPABILITY_DECLARATIONS
+  
+      implementation_freedom:
+        principle: INTERNAL_MECHANISMS_ARE_FREE_WHEN_NORMATIVE_SEMANTICS_DO_NOT_CHANGE
+        may_choose:
+          - INTERNAL_DATA_STRUCTURES
+          - INTERNAL_FUNCTION_AND_TYPE_NAMES
+          - MODULE_OR_PACKAGE_DECOMPOSITION
+          - CACHING_STRATEGY
+          - CONCURRENCY_MECHANISM
+          - INTERNAL_HELPER_IMPLEMENTATION
+        must_not_change:
+          - EXTERNALLY_OBSERVABLE_MEANING
+          - CONTRACT_DEFINED_STATE_TRANSITIONS
+          - CONTRACT_DEFINED_FAILURE_RESULTS
+          - CONTRACT_DEFINED_IDENTITY
+          - CONTRACT_DEFINED_CANONICAL_REPRESENTATION
+          - CONTRACT_DEFINED_DIGEST_RESULTS
+        unresolved_semantic_boundary: FAIL_CLOSED
+  
+
+  implementation_role:
+      rule: IMPLEMENTATIONS_INTERPRET_AND_EXECUTE_MACHINE_CONTRACTS
+      may_define_new_normative_meaning: false
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

@@ -1,0 +1,136 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0023
+  title: Policy-Plan Authority and Binding Contract
+  status: ACTIVE
+
+rules:
+  authority_separation:
+      policy_planning_implementation_are_separate_authority_layers: true
+  
+      policy_authority:
+        owns:
+          - POLICY_SEMANTICS
+          - POLICY_LIFECYCLE
+          - POLICY_APPROVAL
+        does_not_own:
+          - PLAN_CONTENT
+          - PLAN_APPROVAL
+          - PLAN_IMPLEMENTATION_PROGRESS
+          - PLAN_COMPLETION_STATE
+          - IMPLEMENTATION_ARTIFACT_STATE
+  
+      planning_authority:
+        owns:
+          - PLAN_CONTENT
+          - PLAN_DESIGN
+          - PLAN_OPTIONS
+          - PLAN_APPROVAL
+          - PLAN_IMPLEMENTATION_PROGRESS
+          - PLAN_IMPLEMENTATION_COMPLETION
+          - PLAN_COMPLETION_AND_VERIFICATION_EVIDENCE
+        superior_policy_reference_required: true
+  
+      implementation_artifacts:
+        role: IMPLEMENTATION_OUTPUT
+        own_authoritative_plan_completion_state: false
+  
+      approval_boundary:
+        policy_approval_implies_plan_approval: false
+        plan_requires_separate_approval: true
+        multiple_valid_planning_options_may_exist_for_same_policy: true
+  
+      source_boundary:
+        governance_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
+        approval_source_role: ORIGIN_OF_PLAN_APPROVAL_AUTHORITY
+        authorization_source_role: ORIGIN_OF_IMPLEMENTATION_EXECUTION_AUTHORIZATION
+        official_plan_approval_source: USER_EXPLICIT
+        official_implementation_authorization_source: USER_EXPLICIT
+        automation_derived_may_create_plan_approval: false
+        automation_derived_may_create_implementation_authorization: false
+        automation_derived_may_propagate_or_transition_existing_authority: true
+        approval_source_and_authorization_source_are_independent: true
+        lifecycle_or_completion_transition_does_not_create_new_authority: true
+  
+
+  policy_plan_binding_authority:
+      canonical_registry: developer/bindings/policy-plan-bindings.yaml
+      authority_role: POLICY_PLAN_RELATIONSHIP_AUTHORITY
+  
+      binding_layer_owns:
+        - POLICY_TO_PLAN_RELATIONSHIP
+        - PLAN_EXISTENCE_STATE
+        - RELATIONSHIP_MAINTENANCE_AFTER_POLICY_CHANGE_OR_RETIREMENT
+        - PLAN_REFERENCE_MAINTENANCE_AFTER_PLAN_MOVE_OR_REPLACEMENT
+  
+      binding_layer_does_not_own:
+        - PLAN_CONTENT
+        - PLAN_APPROVAL
+        - PLAN_IMPLEMENTATION_PROGRESS
+        - PLAN_IMPLEMENTATION_COMPLETION
+        - PLAN_VERIFICATION_RESULT
+
+  relationship_cardinality:
+      model: MANY_TO_MANY
+  
+      one_policy_may_bind_multiple_plans: true
+      one_plan_may_bind_multiple_policies: true
+  
+      primary_policy:
+        supported: false
+        required: false
+  
+      unrelated_policy_reference:
+        allowed: false
+  
+
+  binding_identity:
+      binding_id:
+        role: POLICY_PLANNING_RELATIONSHIP_IDENTITY
+        exists_before_plan_creation: true
+        machine_allocated: true
+        current_identity_pattern: "PPB-[0-9]{4,}"
+  
+      plan_id:
+        role: STABLE_PLAN_IDENTITY
+        allocated_before_plan_creation: false
+        allocated_when_plan_is_created: true
+        path_independent: true
+  
+      plan_ref:
+        role: CURRENT_PLAN_DOCUMENT_LOCATION
+        stable_identity: false
+        mutable_when_same_plan_moves: true
+  
+      identity_responsibility:
+        binding_id_identifies_relationship: true
+        plan_id_identifies_plan: true
+        plan_ref_identifies_current_physical_location: true
+  
+
+  planning_existence_state:
+      vocabulary:
+        - NOT_CREATED
+        - CREATED
+  
+      absent_binding_semantics:
+        meaning: POLICY_PLANNING_RELATIONSHIP_NOT_REGISTERED
+  
+      NOT_CREATED:
+        meaning: POLICY_PLANNING_RELATIONSHIP_EXISTS_BUT_PLAN_DOES_NOT_EXIST
+        plan_id: FORBIDDEN
+        plan_ref: FORBIDDEN
+  
+      CREATED:
+        meaning: PLAN_EXISTS
+        plan_id: REQUIRED
+        plan_ref: REQUIRED
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

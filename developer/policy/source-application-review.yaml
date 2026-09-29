@@ -45,13 +45,37 @@ policy_query_list:
       - provisional_decisions
     reason: Approved decisions are operational authority; provisional and deferred decisions remain explicitly non-authoritative.
 
-  - policy_id: MPD-0013
+  - policy_id: MPD-SPEC-0023
     expected_status: ACTIVE
     sections:
       - authority_separation
       - policy_plan_binding_authority
+      - relationship_cardinality
+      - binding_identity
+      - planning_existence_state
+    reason: Canonical owner of Policy-Plan authority separation, identity, cardinality, and existence-state contracts.
+
+  - policy_id: MPD-0013
+    expected_status: ACTIVE
+    sections:
+      - policy_plan_binding_automation
       - deferred_relation_lifecycle_semantics
-    reason: Separates Policy, Planning, Binding, and implementation authority planes.
+    reason: Owns operational binding automation and deferred relationship lifecycle handling.
+
+  - policy_id: MPD-SPEC-0024
+    expected_status: ACTIVE
+    sections:
+      - normative_document_authority_boundary
+      - agent_contract_authority
+    reason: Canonical owner of agent-contract normative authority boundaries.
+
+  - policy_id: MPD-SPEC-0025
+    expected_status: ACTIVE
+    sections:
+      - source_contract_model
+      - feature_stable_core
+      - feature_implementation_body
+    reason: Canonical owner of source and feature contract model semantics.
 
 artifact_review_list:
   - path: developer/policy/schemas/policy-approval-provenance.schema.json
