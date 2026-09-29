@@ -44,10 +44,6 @@ policy_roles:
       - scope_adr_supersession_to_repository_self_adoption_assumption
       - govern_project_profile_migration_authorization
       - separate_migration_capability_from_repository_adoption
-  - policy_id: MPD-0006
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - govern_release_history_namespace
   - policy_id: MPD-0011
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
@@ -61,6 +57,10 @@ policy_roles:
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
       - govern_project_profile_migration_authorization
+  - policy_id: MPD-RELS-0001
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_release_history_namespace
   - policy_id: MPD-SPEC-0002
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
