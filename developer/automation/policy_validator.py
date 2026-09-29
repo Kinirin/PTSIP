@@ -469,6 +469,10 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         path = entry.get("path")
         if not isinstance(policy_id, str) or not isinstance(path, str):
             continue
+        candidate = base / path
+        if not candidate.is_file():
+            errors.append(f"{path}: indexed policy file does not exist")
+            continue
         payload = load_yaml(path, root=base)
         current_records[policy_id] = payload
         for error in Draft202012Validator(mpd_schema).iter_errors(payload):
