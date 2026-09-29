@@ -51,7 +51,8 @@ policy_roles:
   - policy_id: MPD-0008
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
-      - govern_project_profile_migration_authorization  - policy_id: MPD-0011
+      - govern_project_profile_migration_authorization
+  - policy_id: MPD-0011
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
       - govern_commit_atomic_project_profile_transition
