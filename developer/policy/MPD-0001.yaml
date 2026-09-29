@@ -11,22 +11,7 @@ rules:
     compatibility_state: TEMPORARY_UNTIL_DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_IS_VERIFIED
     support_profile_subsystem:
       decision: APPROVED
-    migration:
-      execution_stage: SFP_MPD_INVENTORY_AND_POLICY_MATERIALIZATION
-      move_now: false
-      required_before_move:
-        - LEGACY_POLICY_CORPUS_CLASSIFIED
-        - PROFILE_SUPPORT_FEATURE_BOUNDARY_MATERIALIZED
-        - PACKAGE_RESOURCE_LOOKUP_UPDATE_PLANNED
-        - PACKAGE_DATA_UPDATE_PLANNED
-        - PROFILE_SCHEMA_REFERENCE_UPDATE_PLANNED
-      required_with_move:
-        - MOVE_PROFILE_SCHEMAS_TO_SRC_PTSIP_PROFILES_SCHEMA
-        - UPDATE_IMPORTLIB_RESOURCE_LOOKUP
-        - UPDATE_PACKAGE_DATA
-        - UPDATE_PROFILE_SCHEMA_RESOURCE_REFERENCES
-        - UPDATE_CONSISTENCY_TESTS
-        - VERIFY_NO_STALE_SPECDATA_PROFILE_SCHEMA_REFERENCE
+    migration_authority_ref: MPD-MIGR-0001
 
   planning_automation:
     root: developer/automation/planning/
@@ -46,53 +31,7 @@ rules:
       - developer/planning/
     external_authority_direct_mutation: FORBIDDEN
 
-  planning_migration:
-    legacy_authority_root: docs/planning/
-    legacy_control_plane_entry: docs/planning/index.yaml
-    target_authority_root: developer/planning/
-    target_control_plane_entry: developer/planning/index.yaml
-    target_schema_root: developer/planning/schemas/
-    target_automation_root: developer/automation/planning/
-    migration_authorized: true
-    planning_schema_migration:
-      from: developer/policy/schemas/
-      to: developer/planning/schemas/
-      files:
-        - planning-root-index.schema.json
-        - planning-index.schema.json
-        - work-unit.schema.json
-        - plan-extension.schema.json
-    planning_automation_migration:
-      from: developer/automation/
-      to: developer/automation/planning/
-      currently_identified_modules:
-        - planning_entry_resolver.py
-        - planning_extension_finalizer.py
-        - planning_leaf_merge.py
-        - planning_merge_reconciler.py
-        - planning_stage_finalizer.py
-        - planning_validator.py
-    policy_plan_binding_automation_migration: NOT_REQUIRED
-    policy_plan_binding_automation_root_preserved: developer/automation/policy_plan_binding/
-    migration_requirements:
-      - PRESERVE_EXISTING_PLANNING_MACHINE_STATE
-      - PRESERVE_WORK_UNIT_IDENTITIES
-      - PRESERVE_PLAN_EXTENSION_IDENTITIES
-      - UPDATE_PLANNING_INTERNAL_REFERENCES
-      - UPDATE_SCHEMA_REFERENCES
-      - UPDATE_AUTOMATION_IMPORTS_AND_PATH_CONSTANTS
-      - UPDATE_VALIDATION_TARGETS
-      - UPDATE_TEST_REFERENCES
-      - UPDATE_WORKFLOW_REFERENCES
-      - VERIFY_NO_ACTIVE_DOCS_PLANNING_AUTHORITY_REFERENCE
-      - VERIFY_NO_PLANNING_SCHEMA_REMAINS_OWNED_BY_POLICY_NAMESPACE
-      - VERIFY_POLICY_PLAN_BINDING_AUTHORITY_REMAINS_SEPARATE
-    migration_completion_condition:
-      canonical_planning_root_resolves: developer/planning/index.yaml
-      planning_schema_root_resolves: developer/planning/schemas/
-      planning_automation_root_resolves: developer/automation/planning/
-      binding_automation_root_resolves: developer/automation/policy_plan_binding/
-      stale_authoritative_legacy_reference_count: 0
+  planning_migration_authority_ref: MPD-MIGR-0001
 
 automation:
   loader: developer/automation/policy_loader.py
@@ -111,16 +50,15 @@ automation:
   transition_evaluator: developer/automation/transition_evaluator.py
 
 migration:
-  retired_policy_corpus:
-    state: MIGRATION_SOURCE_RETIRED_PENDING_PREAUTHORIZED_TREE_REMOVAL
-    automatic_removal_when_gate_passes: true
-    user_confirmation_after_gate_passes: false
+  authority_ref: MPD-MIGR-0001
 
 relations:
   supersedes: []
   amends: []
   extends: []
   depends_on:
+    - policy: MPD-MIGR-0001
+      scope: PROFILE_PLANNING_AND_RETIRED_POLICY_CORPUS_MIGRATION
     - policy: MPD-PLAN-0001
       scope: PLANNING_AUTHORITY_AND_LIFECYCLE
     - policy: MPD-WORK-0001
