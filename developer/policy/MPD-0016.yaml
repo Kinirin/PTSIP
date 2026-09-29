@@ -1,0 +1,57 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0016
+  title: README Translation Governance and Automation Boundary
+  status: DRAFT
+
+rules:
+  readme_translation_governance:
+    canonical_readme:
+      path: README.md
+      language: en
+      authority: CANONICAL_CONTENT_SOURCE
+
+    translation_registry:
+      path: docs/translated/index.yaml
+      role: TRANSLATION_ACTIVATION_REGISTRY
+      registered_languages_define_active_translation_set: true
+      workflow_hard_coded_language_list_is_activation_authority: false
+      implicit_language_activation: FORBIDDEN
+
+    current_translation_scope:
+      active_languages:
+        - ko
+      not_activated:
+        - ja
+        - zh-CN
+
+    translation_projection:
+      root: docs/translated/
+      filename_pattern: 'README.<language-tag>.md'
+      canonical_authority: README.md
+      translation_is_independent_normative_authority: false
+      translation_may_add_independent_normative_meaning: false
+      conflict_resolution: CANONICAL_README_WINS
+
+  translation_automation_boundary:
+    workflow: .github/workflows/readme-translation.yml
+    source: README.md
+    target_set_source: docs/translated/index.yaml
+    generate_registered_languages_only: true
+    generate_unregistered_language: FORBIDDEN
+    canonical_readme_mutation_on_translation_failure: FORBIDDEN
+    existing_translation_deletion_on_translation_failure: FORBIDDEN
+
+  registry_contract:
+    language_identity_must_be_unique: true
+    registered_translation_path_must_be_explicit: true
+    registered_translation_path_must_resolve: true
+    unregistered_generated_translation_is_invalid: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
