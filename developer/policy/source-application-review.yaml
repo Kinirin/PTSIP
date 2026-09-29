@@ -4,11 +4,11 @@ authority: false
 canonical_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
 
 policy_query_list:
-  - policy_id: MPD-0001
+  - policy_id: MPD-PLAN-0001
     expected_status: ACTIVE
     sections:
       - planning_boundary
-    reason: Planning lifecycle, approval, and implementation authorization are separate responsibilities.
+    reason: Canonical owner of developer planning authority, planning structure, Work Unit identity, and planning lifecycle boundaries.
 
   - policy_id: MPD-0010
     expected_status: ACTIVE

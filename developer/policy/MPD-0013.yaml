@@ -83,7 +83,7 @@ rules:
     target_namespace: developer/planning/
     canonical_root_transition_owned_by_this_policy: false
     current_repository_migration_authorized_by_this_policy: false
-    note: MPD-0001_PLANNING_BOUNDARY_REQUIRES_SEPARATE_CHANGE
+    note: MPD-PLAN-0001_OWNS_PLANNING_BOUNDARY
 
 relations:
   supersedes: []
@@ -92,3 +92,5 @@ relations:
   depends_on:
     - policy: MPD-SPEC-0023
       scope: POLICY_PLAN_BINDING_CONTRACT
+    - policy: MPD-PLAN-0001
+      scope: PLANNING_AUTHORITY_AND_LIFECYCLE
