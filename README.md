@@ -17,7 +17,7 @@ PTSIP is a project-defined architecture policy for separating project responsibi
 
 > **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
 
-Tool `0.3.8a3` is a repository-namespace stabilization prerelease built on the already-published `0.3.8a1` bridge and the same frozen Specification binding. It preserves the proposed-candidate bridge while establishing `.ptsip/` as the canonical repository-local ownership boundary for PTSIP-managed contracts, registries, configuration, task/operation metadata, and execution state. Canonical repository indexes use JSON. This release reserves Task and runtime namespaces but does not claim a completed generic Task Engine, Go runtime, or Tool `0.4.0` capability-recovery implementation.
+Tool `0.3.8a3` is an emergency corrective prerelease over the published `0.3.8a2` repository-namespace release. Tool `0.3.8a2` established `.ptsip/` and the provider-neutral Context Plane at repository level, but its Context Projection implementation remained under `developer/automation/` and therefore was not shipped in the installed Consumer Tool. Tool `0.3.8a3` closes that packaging and migration gap by shipping the canonical Context Plane implementation as `ptsip.context_plane`, exposing `ptsip context status|migrate|repair|check`, and binding release verification to the installed wheel. The Specification and Project Profile identities remain unchanged.
 
 ## Primary lifecycle ownership
 
@@ -223,6 +223,8 @@ ptsip clarify .
 ptsip gate .
 ptsip resolve --help
 ptsip conform .
+ptsip context status . --json
+ptsip context check . --json
 ```
 
 New project-owned profiles are selected through `.ptsip/profiles/index.json`; the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. Repository-root `ptsip.yaml` remains a compatibility/migration input, and an explicit `--profile` path still takes precedence.
@@ -405,7 +407,7 @@ SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
 Release scope:    deterministic MEMORY.md -> Context Plane migration and projection repair
 ```
 
-The canonical semantic write target is `.ptsip/context/source/context.source.json`. Generated `context.json`, `context.jsonl`, and `context.schema.json` are repaired from that source. Semantic ambiguity remains user-owned; deterministic projection repair is preauthorized for coding agents.
+The canonical semantic write target is `.ptsip/context/source/context.source.json`. Generated `context.json`, `context.jsonl`, and `context.schema.json` are repaired from that source. Semantic ambiguity remains user-owned; deterministic projection repair is preauthorized for coding agents. Unlike Tool `0.3.8a2`, Tool `0.3.8a3` ships this implementation inside the Consumer Tool as `ptsip/context_plane.py`; a release build is invalid if that module or the `ptsip context` CLI surface is absent from the built wheel.
 
 ## Tool 0.3.8a2 release identity
 

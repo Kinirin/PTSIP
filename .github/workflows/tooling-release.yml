@@ -280,6 +280,18 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Installed publication wheel is missing the ptsip/support projection."
           }
+          python -c "import ptsip.context_plane as cp; assert callable(cp.context_status); assert callable(cp.check_context)"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installed publication wheel is missing the Consumer Context Plane implementation."
+          }
+          ptsip context --help
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installed publication wheel does not expose the ptsip context command surface."
+          }
+          ptsip context check . --json
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installed publication wheel cannot validate the repository Context Plane."
+          }
 
           # Tool 0.3.8a3 is a bounded namespace-stabilization prerelease.
           # Keep package-content, metadata, license, installation, registry-projection,

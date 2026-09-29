@@ -189,6 +189,7 @@ def main() -> int:
     )
 
     required = (
+        "ptsip/context_plane.py",
         "ptsip/specdata/ptsip-profile.schema.json",
         f"ptsip/specdata/{schema_source.name}",
         "ptsip/specdata/project-profile-contracts.yaml",
@@ -223,6 +224,7 @@ def main() -> int:
         sdist_names = {member.name for member in archive.getmembers()}
 
     sdist_required = (
+        "src/ptsip/context_plane.py",
         "profiles/index.yaml",
         "registry/project-profile-contracts.yaml",
         "src/ptsip/specdata/project-profile-contracts.yaml",

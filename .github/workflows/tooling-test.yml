@@ -918,6 +918,10 @@ jobs:
           ptsip spec
           python -c "from pathlib import Path; import ptsip; p=Path(ptsip.__file__).resolve().parent/'support'/'policy'/'index.yaml'; assert p.is_file(), p"
           ptsip conform --help
+          python -c "import ptsip.context_plane as cp; assert callable(cp.context_status); assert callable(cp.check_context)"
+          ptsip context --help
+          ptsip context status . --json
+          ptsip context check . --json
           python -c "from vpms import VerificationPurpose; assert VerificationPurpose.PRODUCT.value == 'PRODUCT'; assert VerificationPurpose.TOOLCHAIN.value == 'TOOLCHAIN'"
 
       - name: Record successful exact-SHA tooling verification
