@@ -140,7 +140,13 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
 
     for entry in entries:
         policy_id = str(entry["id"])
-        payload = load_yaml(str(entry["path"]), root=base)
+        policy_path = str(entry["path"])
+        if not (base / policy_path).is_file():
+            raise PolicyIdentityLifecycleError(
+                "POLICY_FILE_NOT_FOUND",
+                f"{policy_id}: indexed policy file does not exist: {policy_path}",
+            )
+        payload = load_yaml(policy_path, root=base)
         policy = _mapping(payload.get("policy"), label=f"{policy_id}.policy")
         if policy.get("id") != policy_id:
             raise PolicyIdentityLifecycleError("POLICY_FILE_ID_MISMATCH", f"{policy_id}: policy.id mismatch")
@@ -151,7 +157,12 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
 
 
 def _discover_policy_ids(base: Path) -> tuple[str, ...]:
-    return tuple(path.stem for path in sorted((base / "developer/policy").rglob("MPD-*.yaml")))
+    return tuple(
+        sorted(
+            path.stem
+            for path in (base / "developer/policy").rglob("MPD-*.yaml")
+        )
+    )
 
 
 def _assert_no_unregistered_policy_file(base: Path, state: CorpusState) -> None:
