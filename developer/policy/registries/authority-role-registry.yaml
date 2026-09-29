@@ -34,24 +34,6 @@ effect_vocabulary:
     - separate_profile_identity_implementation_from_migration_capability
     - separate_repository_adoption_from_release_readiness
 policy_roles:
-  - policy_id: MPD-0002
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - govern_classification_model
-      - preserve_unresolved_analysis_state
-      - govern_normative_family_lifecycle
-      - require_versioned_normative_contract
-      - select_versioned_target_identity
-  - policy_id: MPD-0003
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - govern_normative_family_lifecycle
-      - require_versioned_normative_contract
-  - policy_id: MPD-0004
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - bind_immutable_normative_snapshot
-      - govern_normative_family_lifecycle
   - policy_id: MPD-0005
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
@@ -99,3 +81,21 @@ policy_roles:
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
       - govern_agent_contract_machine_authority
+  - policy_id: MPD-SPEC-0002
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_classification_model
+      - preserve_unresolved_analysis_state
+      - govern_normative_family_lifecycle
+      - require_versioned_normative_contract
+      - select_versioned_target_identity
+  - policy_id: MPD-SPEC-0003
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - govern_normative_family_lifecycle
+      - require_versioned_normative_contract
+  - policy_id: MPD-SPEC-0004
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - bind_immutable_normative_snapshot
+      - govern_normative_family_lifecycle

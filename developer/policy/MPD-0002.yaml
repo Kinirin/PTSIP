@@ -3,20 +3,16 @@ policy_class: PTSIP_DEVELOPER_POLICY
 policy:
   id: MPD-0002
   title: Pilot and Reference Tool Development Baseline
-  status: ACTIVE
+  status: RETIRED
 rules:
-  authority_semantics:
-    specification_family: 0.2.0-draft
-    reference_tool_target: '0.2.0'
-    pilot_report_contract: ptsip-pilot-report/v2
-    architecture_classifications:
-    - PRODUCT
-    - TOOLCHAIN
-    - NEUTRAL_CONTRACT
-    unresolved_analysis_states:
-    - UNKNOWN
-    - CONFLICT
-    - INCOMPLETE
+  authority_transfer:
+    family: SPEC
+    target_policy: MPD-SPEC-0002
+    active_authority_retained: false
+migration:
+  responsibility_family: SPEC
+  authority_transferred_to: MPD-SPEC-0002
+  source_policy_identity_preserved: true
 relations:
   supersedes: []
   amends: []
