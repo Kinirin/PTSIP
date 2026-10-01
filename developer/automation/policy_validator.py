@@ -66,6 +66,125 @@ def _mapping(value: object) -> Mapping[str, object] | None:
     return value if isinstance(value, Mapping) else None
 
 
+
+def _validate_policy_transition_semantics(
+    policy_id: str,
+    payload: Mapping[str, object],
+) -> list[str]:
+    """Validate machine transition dependencies and derived lifecycle state."""
+
+    errors: list[str] = []
+    policy = _mapping(payload.get("policy"))
+    transition = _mapping(payload.get("transition"))
+    if policy is None or transition is None:
+        return errors
+
+    requirements = transition.get("requirements")
+    if not isinstance(requirements, list):
+        return errors
+
+    requirement_maps = [
+        item for item in requirements if isinstance(item, Mapping)
+    ]
+    requirement_ids = [
+        str(item.get("id"))
+        for item in requirement_maps
+        if isinstance(item.get("id"), str)
+    ]
+    if len(requirement_ids) != len(set(requirement_ids)):
+        errors.append(f"{policy_id}: transition requirement IDs must be unique")
+
+    states = {
+        str(item["id"]): item.get("state")
+        for item in requirement_maps
+        if isinstance(item.get("id"), str)
+    }
+    known_ids = set(states)
+    dependencies: dict[str, tuple[str, ...]] = {}
+
+    for item in requirement_maps:
+        requirement_id = item.get("id")
+        if not isinstance(requirement_id, str):
+            continue
+        next_action = _mapping(item.get("next_action"))
+        after = () if next_action is None else next_action.get("after", ())
+        if not isinstance(after, list):
+            continue
+        dependency_ids = tuple(
+            str(value) for value in after if isinstance(value, str)
+        )
+        dependencies[requirement_id] = dependency_ids
+
+        for dependency_id in dependency_ids:
+            if dependency_id not in known_ids:
+                errors.append(
+                    f"{policy_id}: {requirement_id} references unknown transition "
+                    f"requirement {dependency_id}"
+                )
+            if dependency_id == requirement_id:
+                errors.append(
+                    f"{policy_id}: {requirement_id} must not depend on itself"
+                )
+
+        if item.get("state") in {"IN_PROGRESS", "FAILED", "SATISFIED"}:
+            unsatisfied = [
+                dependency_id
+                for dependency_id in dependency_ids
+                if states.get(dependency_id) != "SATISFIED"
+            ]
+            if unsatisfied:
+                errors.append(
+                    f"{policy_id}: {requirement_id} cannot be {item.get('state')} "
+                    "before after-dependencies are SATISFIED: "
+                    + ", ".join(unsatisfied)
+                )
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(requirement_id: str, lineage: tuple[str, ...]) -> None:
+        if requirement_id in visited:
+            return
+        if requirement_id in visiting:
+            cycle = " -> ".join((*lineage, requirement_id))
+            errors.append(f"{policy_id}: transition dependency cycle: {cycle}")
+            return
+        visiting.add(requirement_id)
+        for dependency_id in dependencies.get(requirement_id, ()):
+            if dependency_id in known_ids:
+                visit(dependency_id, (*lineage, requirement_id))
+        visiting.remove(requirement_id)
+        visited.add(requirement_id)
+
+    for requirement_id in requirement_ids:
+        visit(requirement_id, ())
+
+    all_satisfied = bool(requirement_maps) and all(
+        item.get("state") == "SATISFIED"
+        for item in requirement_maps
+    )
+    policy_status = policy.get("status")
+    transition_state = transition.get("state")
+
+    if policy_status == "APPROVED":
+        expected_state = "READY" if all_satisfied else "PENDING"
+        if transition_state != expected_state:
+            errors.append(
+                f"{policy_id}: APPROVED transition state must be {expected_state}, "
+                f"got {transition_state!r}"
+            )
+    elif policy_status == "ACTIVE" and transition is not None:
+        if not all_satisfied:
+            errors.append(
+                f"{policy_id}: ACTIVE transition history requires all requirements SATISFIED"
+            )
+        if transition_state != "COMPLETE":
+            errors.append(
+                f"{policy_id}: ACTIVE transition history must be COMPLETE"
+            )
+
+    return errors
+
 def _validate_current_registry_planes(
     base: Path,
     *,
@@ -678,6 +797,8 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             errors.append(f"{path}: policy.id does not match index id")
         if policy.get("status") != entry.get("status"):
             errors.append(f"{path}: policy.status does not match index status")
+        for transition_error in _validate_policy_transition_semantics(policy_id, payload):
+            errors.append(f"{path}: {transition_error}")
 
     sfp_validator = Draft202012Validator(sfp_schema)
     for entry in sfp_entries:

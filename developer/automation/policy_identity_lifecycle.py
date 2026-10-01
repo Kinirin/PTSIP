@@ -329,6 +329,8 @@ def inspect_policy(policy_id: str, *, root: str | Path | None = None) -> dict[st
     payload = load_yaml(str(entry["path"]), root=base)
     policy = _mapping(payload.get("policy"), label=f"{policy_id}.policy")
     rules = _mapping(payload.get("rules"), label=f"{policy_id}.rules")
+    transition = payload.get("transition")
+    transition_payload = dict(transition) if isinstance(transition, Mapping) else None
     authority = rules.get("authority_semantics")
     runtime_authority = None
     if isinstance(authority, Mapping):
@@ -342,6 +344,7 @@ def inspect_policy(policy_id: str, *, root: str | Path | None = None) -> dict[st
         "subject_identity_registered": policy_id in state.ids,
         "operationally_resolvable": policy.get("status") == "ACTIVE",
         "declared_runtime_authority": runtime_authority,
+        "transition": transition_payload,
         "path": entry.get("path"),
     }
 
