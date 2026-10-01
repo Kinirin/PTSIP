@@ -15,6 +15,7 @@ rules:
       infer_unregistered_relationships: false
       exact_machine_resolution_required: true
       ambiguous_binding_selection: FAIL_CLOSED
+
   deterministic_binding_management:
     binding_creation:
       initial_planning_state: NOT_CREATED
@@ -24,8 +25,12 @@ rules:
       transition:
         from: NOT_CREATED
         to: CREATED
-      plan_id_allocation_at_transition: REQUIRED
+      resolved_plan_id_allocation_at_transition: REQUIRED
+      plan_file_id_allocation_at_transition: REQUIRED
+      plan_version_registration_at_transition: REQUIRED
+      plan_revision_registration_at_transition: REQUIRED
       plan_ref_registration_at_transition: REQUIRED
+      separate_registered_plan_id_allocation: FORBIDDEN
 
     automatic_uncreated_binding_selection:
       when_exactly_one_matching_not_created_binding_exists: ALLOWED
@@ -35,30 +40,78 @@ rules:
 
     duplicate_identity:
       duplicate_binding_id: FORBIDDEN
+      duplicate_resolved_plan_id: FORBIDDEN
+      duplicate_plan_file_id: FORBIDDEN
 
     relationship_resolution:
       exact_lookup_keys:
         - binding_id
         - policy_ref
-        - plan_id
+        - resolved_plan_id
+        - plan_file_id
         - plan_ref
       semantic_similarity_resolution: FORBIDDEN
 
+  plan_identity_and_file_identity:
+    resolved_plan_id:
+      contract_ref: MPD-SPEC-0023
+      role: LOGICAL_PLAN_IDENTITY
+      content_change_reallocates_identity: false
+      version_change_reallocates_identity: false
+      revision_change_reallocates_identity: false
+
+    plan_file_id:
+      contract_ref: MPD-SPEC-0023
+      role: STABLE_PLAN_FILE_IDENTITY
+      absorbs_registered_plan_id_responsibility: true
+      path_move_reallocates_identity: false
+      file_rename_reallocates_identity: false
+      content_change_reallocates_identity: false
+      version_change_reallocates_identity: false
+      revision_change_reallocates_identity: false
+
   plan_movement_and_replacement:
     same_plan_path_move:
-      preserve_plan_id: true
+      classification:
+        resolved_plan_id: SAME
+        plan_file_id: SAME
+        plan_ref: DIFFERENT
+        outcome: MOVE
+      preserve_resolved_plan_id: true
+      preserve_plan_file_id: true
       update_plan_ref_automatically: true
       create_new_plan_identity: false
+      create_new_plan_file_identity: false
+
+    plan_file_replacement:
+      classification:
+        resolved_plan_id: SAME
+        plan_file_id: DIFFERENT
+        outcome: FILE_REPLACEMENT
+      replacement_is_same_as_path_move: false
+      automatic_move_reclassification: FORBIDDEN
+      replacement_requires_distinct_plan_file_id: true
+      resolved_plan_id_may_be_preserved_for_same_logical_plan: true
+
+    plan_file_identity_conflict:
+      classification:
+        resolved_plan_id: DIFFERENT
+        plan_file_id: SAME
+        outcome: PLAN_FILE_ID_CONFLICT
+      behavior: FAIL_CLOSED
+
+    different_plan:
+      classification:
+        resolved_plan_id: DIFFERENT
+        plan_file_id: DIFFERENT
+        outcome: DIFFERENT_PLAN
+      automatic_move_reclassification: FORBIDDEN
 
     same_plan_content_revision:
       preserve_binding_relationship: true
-
-    plan_replacement:
-      replacement_is_same_as_path_move: false
-      replacement_requires_distinct_plan_identity: true
-      previous_plan_relationship_must_remain_referenceable: true
-      previous_plan_ref_must_remain_preserved_for_reference: true
-      previous_plan_is_mandatory_traversal_input: false
+      preserve_resolved_plan_id: true
+      preserve_plan_file_id: true
+      version_and_revision_may_change: true
 
     historical_reference:
       purpose:
@@ -66,6 +119,43 @@ rules:
         - TRACEABILITY
         - OPTIONAL_REFERENCE
       mandatory_agent_traversal: false
+
+  plan_ref_tracking:
+    tracker_module: developer/automation/policy_plan_binding/ref_tracker.py
+    search_root: developer/planning/
+    search_key: plan_file_id
+    semantic_similarity_search: FORBIDDEN
+
+    missing_current_ref_resolution:
+      zero_exact_plan_file_id_matches: UNRESOLVED
+      one_exact_plan_file_id_match:
+        resolved_plan_id_exact_match_required: true
+        outcome: RECONCILE_REQUIRED
+      multiple_exact_plan_file_id_matches: FAIL_CLOSED
+
+    movement_mutation_contract:
+      operation: move_plan_ref
+      required_inputs:
+        - binding_id
+        - policy_ref
+        - resolved_plan_id
+        - plan_file_id
+        - from_plan_ref
+        - to_plan_ref
+      forbidden_inputs:
+        - version
+        - revision
+      preconditions:
+        - BINDING_ID_EXACT_MATCH
+        - POLICY_REF_EXACT_MATCH
+        - RESOLVED_PLAN_ID_EXACT_MATCH
+        - PLAN_FILE_ID_EXACT_MATCH
+        - CURRENT_PLAN_REF_EQUALS_FROM_PLAN_REF
+        - TO_PLAN_REF_RESOLVES_EXACT_PLAN_FILE_ID
+        - TO_PLAN_REF_RESOLVES_EXACT_RESOLVED_PLAN_ID
+      update_scope:
+        - plan_ref
+      stale_state_protection: EXPECTED_REGISTRY_DIGEST_CAS
 
   deferred_relation_lifecycle_semantics:
     relation_state_field_defined: false
