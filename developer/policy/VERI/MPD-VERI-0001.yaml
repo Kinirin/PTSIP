@@ -4,7 +4,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 policy:
   id: MPD-VERI-0001
   title: Developer Policy-Plan Consistency Verification
-  status: DRAFT
+  status: APPROVED
 
 rules:
   policy_plan_consistency_verification:
@@ -14,24 +14,35 @@ rules:
     verification_scope:
       - POLICY_ID_RESOLUTION
       - PLAN_EXISTENCE_STATE
-      - PLAN_ID_BINDING
+      - RESOLVED_PLAN_ID_BINDING
+      - PLAN_FILE_ID_BINDING
       - PLAN_REF_BINDING
+      - PLAN_VERSION_REVISION_IDENTITY_CURRENTNESS
       - POLICY_PLAN_RELATIONSHIP_CONSISTENCY
 
     invariants:
       indexed_policy_reference_required: true
       registered_binding_must_resolve_policy: true
       not_created_state_forbids_plan_identity: true
-      created_state_requires_plan_id: true
+      created_state_requires_resolved_plan_id: true
+      created_state_requires_plan_file_id: true
       created_state_requires_plan_ref: true
+      resolved_plan_id_requires_exact_contract_resolution: true
+      plan_file_id_requires_exact_contract_resolution: true
+      binding_and_plan_resolved_plan_id_must_match_exactly: true
+      binding_and_plan_file_id_must_match_exactly: true
       created_plan_ref_must_resolve: true
+      moved_plan_ref_must_resolve_by_exact_plan_file_identity: true
       plan_path_does_not_define_policy_authority: true
-      semantic_similarity_must_not_create_binding: true
+      semantic_similarity_must_not_create_or_repair_binding: true
 
     result:
       machine_readable: true
-      mismatch_state: FAIL
-      unresolved_registered_reference: FAIL
+      binary_only: false
+      policy_identity_fields:
+        - id
+        - version
+        - status
       automatic_semantic_repair: FORBIDDEN
 
   responsibility_boundary:
@@ -43,6 +54,84 @@ rules:
       - PLAN_APPROVAL
       - POLICY_PLAN_BINDING_AUTHORITY
       - IMPLEMENTATION_AUTHORIZATION
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+
+  requirements:
+    - id: TR-001
+      type: STRUCTURAL_COMPATIBILITY
+      state: OPEN
+      refs:
+        - MPD-SPEC-0023
+        - MPD-0013
+      next_action:
+        action: ALIGN_POLICY_PLAN_IDENTITY_CONTRACT
+        execution: PARALLEL_ALLOWED
+        target_refs:
+          - developer/policy/SPEC/MPD-SPEC-0023.yaml
+          - developer/policy/MPD-0013.yaml
+        completion_check: POLICY_PLAN_IDENTITY_CONTRACT_ALIGNED
+
+    - id: TR-002
+      type: SCHEMA_MIGRATION
+      state: OPEN
+      refs:
+        - developer/bindings/schemas/policy-plan-bindings.schema.json
+      next_action:
+        action: MIGRATE_POLICY_PLAN_BINDING_SCHEMA
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - developer/bindings/schemas/policy-plan-bindings.schema.json
+        after:
+          - TR-001
+        completion_check: POLICY_PLAN_BINDING_SCHEMA_VALID
+
+    - id: TR-003
+      type: AUTOMATION_INTEGRATION
+      state: OPEN
+      refs:
+        - developer/automation/policy_plan_binding/
+      next_action:
+        action: IMPLEMENT_PLAN_IDENTITY_AND_REF_TRACKING
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - developer/automation/policy_plan_binding/
+        after:
+          - TR-002
+        completion_check: PLAN_IDENTITY_AND_REF_TRACKING_VALID
+
+    - id: TR-004
+      type: VERIFICATION
+      state: OPEN
+      refs:
+        - developer/automation/
+        - .github/workflows/tooling-test.yml
+      next_action:
+        action: IMPLEMENT_POLICY_PLAN_CONSISTENCY_VERIFICATION
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - developer/automation/
+          - .github/workflows/tooling-test.yml
+        after:
+          - TR-002
+          - TR-003
+        completion_check: POLICY_PLAN_CONSISTENCY_VERIFICATION_PASS
+
+    - id: TR-005
+      type: OUTPUT_CONTRACT
+      state: OPEN
+      refs:
+        - developer/policy/VERI/MPD-VERI-0001.yaml
+        - developer/policy/schemas/management-policy.schema.json
+      next_action:
+        action: COMPLETE_VERIFICATION_OUTPUT_CONTRACT
+        execution: PARALLEL_ALLOWED
+        target_refs:
+          - developer/policy/VERI/MPD-VERI-0001.yaml
+          - developer/policy/schemas/management-policy.schema.json
+        completion_check: VERIFICATION_OUTPUT_CONTRACT_COMPLETE
 
 relations:
   supersedes: []
