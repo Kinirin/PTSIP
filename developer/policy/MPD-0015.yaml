@@ -66,12 +66,7 @@ rules:
       - STATE_PROJECTION
       - RERESOLUTION
 
-    execution_output:
-      observable_evidence_required: true
-
-    verification:
-      expected_vs_observed_required: true
-      verification_result_must_be_machine_readable: true
+    verification_contract_ref: MPD-VERI-0005
 
     state_boundary:
       exact_runtime_persistence_path_fixed_by_this_policy: false
@@ -207,6 +202,8 @@ relations:
   amends: []
   extends: []
   depends_on:
+    - policy: MPD-VERI-0005
+      scope: EXECUTION_EVIDENCE_AND_EXPECTED_OBSERVED_VERIFICATION
     - policy: MPD-MIGR-0005
       scope: IMPLEMENTATION_MIGRATION_REFERENCE_AND_AUTHORIZATION
     - policy: MPD-SPEC-0021
