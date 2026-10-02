@@ -53,6 +53,7 @@ RELATION_KINDS = ("supersedes", "amends", "extends", "depends_on")
 _FAMILY_POLICY_ID_RE = re.compile(
     r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
 )
+_POLICY_VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 
 
 def _canonical_mpd_path(policy_id: str) -> str:
@@ -65,6 +66,39 @@ def _canonical_mpd_path(policy_id: str) -> str:
 def _mapping(value: object) -> Mapping[str, object] | None:
     return value if isinstance(value, Mapping) else None
 
+
+
+def _validate_policy_version_semantics(
+    policy_id: str,
+    payload: Mapping[str, object],
+) -> list[str]:
+    """Validate explicit Policy version/status integrity without inferring either field."""
+
+    policy = _mapping(payload.get("policy"))
+    if policy is None:
+        return []
+
+    version = policy.get("version")
+    status = policy.get("status")
+    if not isinstance(version, str):
+        return [f"{policy_id}: policy.version must be an explicit string"]
+    match = _POLICY_VERSION_RE.fullmatch(version)
+    if match is None:
+        return [f"{policy_id}: invalid policy.version {version!r}"]
+
+    major = int(match.group(1))
+    expected = (
+        major == 0 if status == "DRAFT"
+        else major == 1 if status == "APPROVED"
+        else major >= 2 if status in {"ACTIVE", "SUPERSEDED", "RETIRED"}
+        else False
+    )
+    if not expected:
+        return [
+            f"{policy_id}: POLICY_VERSION_STATUS_MISMATCH "
+            f"version={version!r} status={status!r}"
+        ]
+    return []
 
 
 def _validate_policy_transition_semantics(
@@ -797,6 +831,8 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             errors.append(f"{path}: policy.id does not match index id")
         if policy.get("status") != entry.get("status"):
             errors.append(f"{path}: policy.status does not match index status")
+        for version_error in _validate_policy_version_semantics(policy_id, payload):
+            errors.append(f"{path}: {version_error}")
         for transition_error in _validate_policy_transition_semantics(policy_id, payload):
             errors.append(f"{path}: {transition_error}")
 

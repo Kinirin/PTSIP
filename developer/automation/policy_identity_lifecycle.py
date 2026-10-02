@@ -29,12 +29,112 @@ ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-anal
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
 _FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+_POLICY_VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
+POLICY_VERSION_CHANGE_CLASSES = (
+    "NON_NORMATIVE",
+    "DRAFT_NORMATIVE",
+    "COMPATIBLE_NORMATIVE",
+    "INCOMPATIBLE_NORMATIVE",
+    "LIFECYCLE_TRANSITION",
+)
 
 
 class PolicyIdentityLifecycleError(RuntimeError):
     def __init__(self, code: str, message: str) -> None:
         super().__init__(message)
         self.code = code
+
+
+def _parse_policy_version(version: str) -> tuple[int, int]:
+    match = _POLICY_VERSION_RE.fullmatch(version)
+    if match is None:
+        raise PolicyIdentityLifecycleError(
+            "INVALID_POLICY_VERSION",
+            f"invalid Management Policy version: {version!r}",
+        )
+    return int(match.group(1)), int(match.group(2))
+
+
+def initial_policy_version() -> str:
+    """Return the only valid initial version for a newly created Management Policy."""
+
+    return "0.0"
+
+
+def resolve_policy_version_transition(
+    *,
+    current_version: str,
+    current_status: str,
+    change_class: str,
+    target_status: str | None = None,
+) -> dict[str, object]:
+    """Resolve only explicitly approved Management Policy version transitions."""
+
+    if change_class not in POLICY_VERSION_CHANGE_CLASSES:
+        raise PolicyIdentityLifecycleError(
+            "UNSUPPORTED_POLICY_VERSION_CHANGE_CLASS",
+            f"unsupported policy version change class: {change_class}",
+        )
+
+    major, minor = _parse_policy_version(current_version)
+    target = current_status if target_status is None else target_status
+    next_major = major
+    next_minor = minor
+
+    if change_class == "NON_NORMATIVE":
+        if target != current_status:
+            raise PolicyIdentityLifecycleError(
+                "UNSUPPORTED_POLICY_VERSION_TRANSITION",
+                "NON_NORMATIVE change cannot change lifecycle status",
+            )
+    elif change_class == "DRAFT_NORMATIVE":
+        if current_status != "DRAFT" or target != "DRAFT" or major != 0:
+            raise PolicyIdentityLifecycleError(
+                "UNSUPPORTED_POLICY_VERSION_TRANSITION",
+                "DRAFT_NORMATIVE requires DRAFT 0.N -> DRAFT 0.(N+1)",
+            )
+        next_minor += 1
+    elif change_class == "LIFECYCLE_TRANSITION":
+        if current_status == "DRAFT" and target == "APPROVED" and major == 0:
+            next_major = 1
+        elif current_status == "APPROVED" and target == "ACTIVE" and major == 1:
+            next_major = 2
+        elif (
+            current_status == "ACTIVE"
+            and target in {"SUPERSEDED", "RETIRED"}
+            and major >= 2
+        ):
+            pass
+        else:
+            raise PolicyIdentityLifecycleError(
+                "UNSUPPORTED_POLICY_VERSION_TRANSITION",
+                f"unsupported lifecycle version transition: "
+                f"{current_status} {current_version} -> {target}",
+            )
+    elif change_class == "COMPATIBLE_NORMATIVE":
+        if current_status != "ACTIVE" or target != "ACTIVE" or major < 2:
+            raise PolicyIdentityLifecycleError(
+                "UNSUPPORTED_POLICY_VERSION_TRANSITION",
+                "COMPATIBLE_NORMATIVE requires ACTIVE M.N with M >= 2",
+            )
+        next_minor += 1
+    else:
+        if current_status != "ACTIVE" or target != "ACTIVE" or major < 2:
+            raise PolicyIdentityLifecycleError(
+                "UNSUPPORTED_POLICY_VERSION_TRANSITION",
+                "INCOMPATIBLE_NORMATIVE requires ACTIVE M.N with M >= 2",
+            )
+        next_major += 1
+        next_minor = 0
+
+    return {
+        "status": "READY",
+        "change_class": change_class,
+        "current_status": current_status,
+        "target_status": target,
+        "current_version": current_version,
+        "next_version": f"{next_major}.{next_minor}",
+    }
 
 
 def _canonical_policy_path(policy_id: str) -> str:
@@ -279,6 +379,11 @@ def preflight_family_policy(
     state = _load_consistent_registered_corpus(base)
     _assert_no_unregistered_policy_file(base, state)
     approval = _load_approval(approval_ref, base=base)
+    if approval.get("target_status") != "DRAFT":
+        raise PolicyIdentityLifecycleError(
+            "NEW_POLICY_MUST_START_DRAFT",
+            "new Management Policy registration must start at DRAFT version 0.0",
+        )
 
     analysis, group = _validated_analysis_group(
         family=family,
@@ -340,6 +445,7 @@ def inspect_policy(policy_id: str, *, root: str | Path | None = None) -> dict[st
         "policy_id": policy_id,
         "title": policy.get("title"),
         "policy_status": policy.get("status"),
+        "policy_version": policy.get("version"),
         "index_status": entry.get("status"),
         "subject_identity_registered": policy_id in state.ids,
         "operationally_resolvable": policy.get("status") == "ACTIVE",
@@ -373,6 +479,12 @@ def preflight_new_policy(
                 "REQUESTED_POLICY_ID_NOT_NEXT_AVAILABLE",
                 f"requested {requested}, next available is {allocated}",
             )
+
+    if approval.get("target_status") != "DRAFT":
+        raise PolicyIdentityLifecycleError(
+            "NEW_POLICY_MUST_START_DRAFT",
+            "new Management Policy registration must start at DRAFT version 0.0",
+        )
 
     return {
         "status": "READY",
@@ -439,6 +551,11 @@ def register_policy(
     base = repository_root(root)
     state = _load_consistent_registered_corpus(base)
     approval = _load_approval(approval_ref, base=base)
+    if approval.get("target_status") != "DRAFT":
+        raise PolicyIdentityLifecycleError(
+            "NEW_POLICY_MUST_START_DRAFT",
+            "new Management Policy registration must start at DRAFT version 0.0",
+        )
     allocated = _next_policy_id(state.ids)
     requested = approval.get("requested_policy_id")
     if isinstance(requested, str) and requested != allocated:
@@ -488,6 +605,11 @@ def register_policy(
         raise PolicyIdentityLifecycleError(
             "APPROVED_STATUS_MISMATCH",
             f"policy status {policy.get('status')!r} != approved target {approval['target_status']!r}",
+        )
+    if policy.get("version") != initial_policy_version():
+        raise PolicyIdentityLifecycleError(
+            "NEW_POLICY_VERSION_MISMATCH",
+            f"new Management Policy must start at version {initial_policy_version()}",
         )
 
     original_index = (base / INDEX).read_text(encoding="utf-8")
@@ -539,6 +661,11 @@ def register_family_policy(
     base = repository_root(root)
     state = _load_consistent_registered_corpus(base)
     approval = _load_approval(approval_ref, base=base)
+    if approval.get("target_status") != "DRAFT":
+        raise PolicyIdentityLifecycleError(
+            "NEW_POLICY_MUST_START_DRAFT",
+            "new Management Policy registration must start at DRAFT version 0.0",
+        )
 
     analysis, _ = _validated_analysis_group(
         family=family,
@@ -606,6 +733,11 @@ def register_family_policy(
         raise PolicyIdentityLifecycleError(
             "APPROVED_STATUS_MISMATCH",
             f"policy status {policy.get('status')!r} != approved target {approval['target_status']!r}",
+        )
+    if policy.get("version") != initial_policy_version():
+        raise PolicyIdentityLifecycleError(
+            "NEW_POLICY_VERSION_MISMATCH",
+            f"new Management Policy must start at version {initial_policy_version()}",
         )
 
     analysis_registry = load_yaml(ANALYSIS_REGISTRY, root=base)
@@ -738,6 +870,14 @@ def _parser() -> argparse.ArgumentParser:
     status_cmd = sub.add_parser("status-preflight")
     status_cmd.add_argument("policy_id")
     status_cmd.add_argument("--approval-ref", required=True)
+
+    sub.add_parser("version-initial")
+
+    version_cmd = sub.add_parser("version-transition")
+    version_cmd.add_argument("--current-version", required=True)
+    version_cmd.add_argument("--current-status", required=True)
+    version_cmd.add_argument("--change-class", choices=POLICY_VERSION_CHANGE_CLASSES, required=True)
+    version_cmd.add_argument("--target-status")
     return parser
 
 
@@ -766,6 +906,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.group_id,
                 args.policy_file,
                 root=args.root,
+            )
+        elif args.command == "version-initial":
+            result = {"status": "READY", "version": initial_policy_version()}
+        elif args.command == "version-transition":
+            result = resolve_policy_version_transition(
+                current_version=args.current_version,
+                current_status=args.current_status,
+                change_class=args.change_class,
+                target_status=args.target_status,
             )
         else:
             result = status_preflight(args.policy_id, args.approval_ref, root=args.root)

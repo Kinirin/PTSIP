@@ -24,6 +24,16 @@ def _write_yaml(path: Path, payload: object) -> None:
     path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
 
 
+def _fixture_version(status: str) -> str:
+    return {
+        "DRAFT": "0.0",
+        "APPROVED": "1.0",
+        "ACTIVE": "2.0",
+        "SUPERSEDED": "2.0",
+        "RETIRED": "2.0",
+    }[status]
+
+
 def _fixture_policy_path(policy_id: str) -> str:
     parts = policy_id.split("-")
     if len(parts) == 3:
@@ -62,7 +72,12 @@ def repo(tmp_path: Path) -> Path:
             {
                 "schema_version": "ptsip-developer-policy/v1",
                 "policy_class": "PTSIP_DEVELOPER_POLICY",
-                "policy": {"id": policy_id, "title": title, "status": status},
+                "policy": {
+                    "id": policy_id,
+                    "version": _fixture_version(status),
+                    "title": title,
+                    "status": status,
+                },
                 "rules": {"fixture": {"enabled": True}},
             },
         )
@@ -140,7 +155,7 @@ def test_missing_indexed_policy_file_fails_closed_with_machine_error(repo: Path)
 
 
 def test_preflight_rejects_existing_requested_id(repo: Path) -> None:
-    approval = _approval(repo, requested_policy_id="MPD-0013")
+    approval = _approval(repo, requested_policy_id="MPD-0013", target_status="DRAFT")
     with pytest.raises(PolicyIdentityLifecycleError) as exc:
         preflight_new_policy(approval, root=repo)
     assert exc.value.code == "POLICY_ID_ALREADY_EXISTS"
@@ -166,7 +181,7 @@ def test_invalid_approval_without_explicit_target_status_fails_closed(repo: Path
 
 
 def test_register_updates_index_and_subject_registry_only_after_exact_policy_file(repo: Path) -> None:
-    approval = _approval(repo, requested_policy_id="MPD-0014", target_status="ACTIVE")
+    approval = _approval(repo, requested_policy_id="MPD-0014", target_status="DRAFT")
     preflight = preflight_new_policy(approval, root=repo)
     assert preflight["allocated_policy_id"] == "MPD-0014"
 
@@ -176,7 +191,12 @@ def test_register_updates_index_and_subject_registry_only_after_exact_policy_fil
         {
             "schema_version": "ptsip-developer-policy/v1",
             "policy_class": "PTSIP_DEVELOPER_POLICY",
-            "policy": {"id": "MPD-0014", "title": "New policy", "status": "ACTIVE"},
+            "policy": {
+                "id": "MPD-0014",
+                "version": "0.0",
+                "title": "New policy",
+                "status": "DRAFT",
+            },
             "rules": {"fixture": {"enabled": True}},
         },
     )
@@ -191,7 +211,7 @@ def test_register_updates_index_and_subject_registry_only_after_exact_policy_fil
         "MPD-MIGR-0001",
         "MPD-SPEC-0001",
     ]
-    assert next(item for item in index["policies"] if item["id"] == "MPD-0014")["status"] == "ACTIVE"
+    assert next(item for item in index["policies"] if item["id"] == "MPD-0014")["status"] == "DRAFT"
     registry = yaml.safe_load(
         (repo / "developer/policy/registries/authority-subject-registry.yaml").read_text(encoding="utf-8")
     )
@@ -215,3 +235,10 @@ def test_status_preflight_requires_exact_existing_policy_binding(repo: Path) -> 
         "approval_id": "MPA-test",
         "implementation_authorized": True,
     }
+
+
+def test_new_policy_preflight_rejects_non_draft_target(repo: Path) -> None:
+    approval = _approval(repo, requested_policy_id="MPD-0014", target_status="ACTIVE")
+    with pytest.raises(PolicyIdentityLifecycleError) as exc:
+        preflight_new_policy(approval, root=repo)
+    assert exc.value.code == "NEW_POLICY_MUST_START_DRAFT"

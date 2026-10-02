@@ -3,6 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 
 policy:
   id: MPD-0010
+  version: "2.0"
   title: Canonical Semantic Contract Extension and Inference Cost Policy
   status: ACTIVE
 
@@ -323,6 +324,47 @@ rules:
       target_policy_status_must_be_explicit_in_approval_provenance: true
       implementation_authorization_and_policy_lifecycle_status_are_independent_fields: true
       policy_content_review_scope_must_be_recorded: true
+
+    policy_version_contract:
+      format: MAJOR.MINOR
+      pattern: '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
+      minor_digit_limit: UNBOUNDED
+      initial_version: "0.0"
+      lifecycle_major_contract:
+        DRAFT: 0
+        APPROVED: 1
+        ACTIVE_MINIMUM: 2
+        SUPERSEDED_PRESERVE_VERSION: true
+        RETIRED_PRESERVE_VERSION: true
+      status_version_cross_check:
+        status_inference_from_version: FORBIDDEN
+        version_inference_from_status: FORBIDDEN
+        mismatch: FAIL_CLOSED
+      change_classes:
+        - NON_NORMATIVE
+        - DRAFT_NORMATIVE
+        - COMPATIBLE_NORMATIVE
+        - INCOMPATIBLE_NORMATIVE
+        - LIFECYCLE_TRANSITION
+      deterministic_transitions:
+        NEW_POLICY: "0.0"
+        NON_NORMATIVE: KEEP
+        DRAFT_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR_0
+        DRAFT_TO_APPROVED: PRESERVE_MINOR_SET_MAJOR_1
+        APPROVED_TO_ACTIVE: PRESERVE_MINOR_SET_MAJOR_2
+        ACTIVE_COMPATIBLE_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR
+        ACTIVE_INCOMPATIBLE_NORMATIVE: INCREMENT_MAJOR_RESET_MINOR_0
+        ACTIVE_TO_SUPERSEDED: KEEP
+        ACTIVE_TO_RETIRED: KEEP
+      unsupported_transition: FAIL_CLOSED
+      compatibility_obligation_across_major: NOT_REQUIRED
+      exact_snapshot_identity: GIT_REVISION
+      contract_adoption_baseline:
+        DRAFT: "0.0"
+        APPROVED: "1.0"
+        ACTIVE: "2.0"
+        SUPERSEDED: "2.0"
+        RETIRED: "2.0"
 
     registry_semantics:
       subject_identity_registry_tracks_existing_policy_ids_regardless_of_active_or_draft_status: true

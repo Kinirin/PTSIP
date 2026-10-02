@@ -20,6 +20,7 @@
       "type": "object",
       "required": [
         "id",
+        "version",
         "title",
         "status"
       ],
@@ -40,6 +41,10 @@
             "SUPERSEDED",
             "RETIRED"
           ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
         }
       },
       "additionalProperties": false
@@ -371,6 +376,129 @@
           "required": [
             "transition"
           ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "const": "DRAFT"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^0\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "const": "APPROVED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^1\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "const": "ACTIVE"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^(?:[2-9]|[1-9][0-9]+)\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "SUPERSEDED",
+                  "RETIRED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^(?:[2-9]|[1-9][0-9]+)\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
         }
       }
     }

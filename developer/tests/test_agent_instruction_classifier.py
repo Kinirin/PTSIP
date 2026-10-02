@@ -22,7 +22,7 @@ def test_level1_policy_vocabulary_is_exact_and_unresolved_is_not_namespace(tmp_p
     (policy / "MPD-0010.yaml").write_text(
         """schema_version: ptsip-developer-policy/v1
 policy_class: PTSIP_DEVELOPER_POLICY
-policy: {id: MPD-0010, title: trial, status: ACTIVE}
+policy: {id: MPD-0010, version: "2.0", title: trial, status: ACTIVE}
 rules:
   agent_instruction_entry_taxonomy_trial:
     level_1_vocabulary: [APPLICABILITY, RULE, ACTION, EVIDENCE, OTHER]

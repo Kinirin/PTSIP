@@ -51,6 +51,7 @@ def _write_policy(root: Path, *, status: str = "DRAFT") -> None:
         "policy_class": "PTSIP_DEVELOPER_POLICY",
         "policy": {
             "id": "MPD-0012",
+            "version": "0.0" if status == "DRAFT" else "2.0",
             "title": "Synthetic",
             "status": status,
         },

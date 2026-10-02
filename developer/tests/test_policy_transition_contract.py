@@ -27,6 +27,7 @@ def _approved_policy(
         "policy_class": "PTSIP_DEVELOPER_POLICY",
         "policy": {
             "id": "MPD-VERI-0001",
+            "version": "1.0",
             "title": "Fixture",
             "status": "APPROVED",
         },
@@ -123,6 +124,7 @@ def test_active_transition_history_requires_complete_and_satisfied() -> None:
         requirement_state="SATISFIED",
     )
     payload["policy"]["status"] = "ACTIVE"
+    payload["policy"]["version"] = "2.0"
     payload["transition"]["state"] = "COMPLETE"
 
     schema_errors = tuple(
