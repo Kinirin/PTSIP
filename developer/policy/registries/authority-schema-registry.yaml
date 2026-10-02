@@ -4,9 +4,6 @@ registry_role: MANAGEMENT_POLICY_SEMANTIC_CATALOG
 language_neutral: true
 semantic_schema_document: developer/policy/schemas/developer-authority-semantics.schema.json
 entries:
-  - policy_id: MPD-0005
-    source_authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
-    schema_definition: MPD_0005_V1
   - policy_id: MPD-0011
     source_authority_type: COMMIT_ATOMIC_FULL_PROJECT_PROFILE_TRANSITION_AUTOMATION
     schema_definition: MPD_0011_V1
@@ -31,3 +28,6 @@ entries:
   - policy_id: MPD-SPEC-0005
     source_authority_type: MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP
     schema_definition: MPD_SPEC_0005_V1
+  - policy_id: MPD-SPEC-0011
+    source_authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+    schema_definition: MPD_SPEC_0011_V1
