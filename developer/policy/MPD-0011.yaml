@@ -56,13 +56,7 @@ rules:
     developer_module_distribution: FORBIDDEN
     consumer_repository_requirement: false
 
-  verification_layers:
-    local_pre_commit: AUTO_RECONCILE_AND_VERIFY
-    remote: VERIFY_ONLY
-    remote_must_detect_local_hook_bypass: true
-    remote_must_validate_every_introduced_commit: true
-    release: EXACT_SHA_VERIFY_ONLY
-    pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
+  verification_layers_ref: MPD-VERI-0003
 
   release_publication_gate_ref: MPD-RELS-0002
 
@@ -73,6 +67,8 @@ relations:
     - policy: MPD-SPEC-0006
       scope: identity_and_resolution
   depends_on:
+    - policy: MPD-VERI-0003
+      scope: PROJECT_PROFILE_TRANSITION_VERIFICATION
     - policy: MPD-MIGR-0003
       scope: PROJECT_PROFILE_VERSION_MIGRATION_AUTHORIZATION
     - policy: MPD-MIGR-0004
