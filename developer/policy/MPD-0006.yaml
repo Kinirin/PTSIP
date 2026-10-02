@@ -8,14 +8,19 @@ policy:
 
 rules:
   authority_transfer:
-    family: RELS
-    target_policy: MPD-RELS-0001
     active_authority_retained: false
+    destinations:
+      - family: RELS
+        target_policy: MPD-RELS-0001
+        scope: RELEASE_NOTE_AND_HISTORY_NAMESPACE
 
 migration:
-  responsibility_family: RELS
-  authority_transferred_to: MPD-RELS-0001
   source_policy_identity_preserved: true
+  responsibility_transfers:
+    - target_policy: MPD-RELS-0001
+      responsibilities:
+        - RELEASE_NOTE_NAMESPACE_SET
+        - HISTORICAL_FLAT_RELEASE_NOTE_BULK_MOVE_STATE
 
 relations:
   supersedes: []
