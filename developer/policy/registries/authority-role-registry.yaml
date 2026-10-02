@@ -39,7 +39,6 @@ policy_roles:
     effects:
       - forbid_tool_driven_repository_self_adoption_profile_creation
       - govern_normative_family_lifecycle
-      - restrict_mutation_promotion_verification_to_fixture_repositories
       - restrict_repository_dogfood_to_controlled_self_analysis
       - scope_adr_supersession_to_repository_self_adoption_assumption
       - govern_project_profile_migration_authorization
