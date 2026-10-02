@@ -1,0 +1,24 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-VERI-0003
+  title: Project Profile Transition Verification
+  status: ACTIVE
+
+rules:
+  verification_layers:
+    local_pre_commit: AUTO_RECONCILE_AND_VERIFY
+    remote: VERIFY_ONLY
+    remote_must_detect_local_hook_bypass: true
+    remote_must_validate_every_introduced_commit: true
+    release: EXACT_SHA_VERIFY_ONLY
+    pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-MIGR-0004
+      scope: PROJECT_PROFILE_TRANSITION_MECHANICS
