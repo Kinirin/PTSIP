@@ -1,0 +1,21 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-VERI-0005
+  title: Execution Evidence and Expected-vs-Observed Verification
+  status: ACTIVE
+
+rules:
+  execution_evidence_and_verification:
+    observable_evidence_required: true
+    expected_vs_observed_required: true
+    verification_result_must_be_machine_readable: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-WORK-0002
+      scope: EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF
