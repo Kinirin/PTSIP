@@ -24,6 +24,11 @@ from .resolver import (
     binding_entries,
     resolve_bindings,
 )
+from .ref_tracker import (
+    PLANNING_ROOT,
+    PlanRefTrackingResult,
+    track_plan_ref,
+)
 from .store import replace_registry
 
 __all__ = [
@@ -34,6 +39,8 @@ __all__ = [
     "PolicyPlanBindingMutation",
     "PolicyPlanBindingReconciliation",
     "PolicyPlanBindingResolution",
+    "PlanRefTrackingResult",
+    "PLANNING_ROOT",
     "binding_entries",
     "create_binding",
     "link_plan",
@@ -42,6 +49,7 @@ __all__ = [
     "reconcile_registry",
     "replace_registry",
     "resolve_bindings",
+    "track_plan_ref",
     "validate_registry_integrity",
     "validate_registry_schema",
 ]

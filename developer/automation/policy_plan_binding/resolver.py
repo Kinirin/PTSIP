@@ -15,7 +15,8 @@ class PolicyPlanBindingResolution:
     status: str
     binding_id: str | None
     policy_ref: str | None
-    plan_id: str | None
+    resolved_plan_id: str | None
+    plan_file_id: str | None
     plan_ref: str | None
     bindings: tuple[dict[str, Any], ...]
 
@@ -48,16 +49,25 @@ def resolve_bindings(
     *,
     binding_id: str | None = None,
     policy_ref: str | None = None,
-    plan_id: str | None = None,
+    resolved_plan_id: str | None = None,
+    plan_file_id: str | None = None,
     plan_ref: str | None = None,
     root: str | Path | None = None,
 ) -> PolicyPlanBindingResolution:
-    """Resolve Policy ↔ Planning relations by exact identity only."""
+    """Resolve Policy ↔ Planning relations by approved v2 exact identity only."""
 
-    if all(value is None for value in (binding_id, policy_ref, plan_id, plan_ref)):
+    query = (
+        binding_id,
+        policy_ref,
+        resolved_plan_id,
+        plan_file_id,
+        plan_ref,
+    )
+    if all(value is None for value in query):
         raise PolicyPlanBindingError(
             "BINDING_QUERY_EMPTY",
-            "exact binding resolution requires binding_id, policy_ref, plan_id, or plan_ref.",
+            "exact binding resolution requires binding_id, policy_ref, "
+            "resolved_plan_id, plan_file_id, or plan_ref.",
         )
 
     snapshot = load_registry(root, required=True, validate_schema=True)
@@ -72,7 +82,11 @@ def resolve_bindings(
         for binding in binding_entries(snapshot.payload)
         if (binding_id is None or binding.get("binding_id") == binding_id)
         and (policy_ref is None or binding.get("policy_ref") == policy_ref)
-        and (plan_id is None or binding.get("plan_id") == plan_id)
+        and (
+            resolved_plan_id is None
+            or binding.get("resolved_plan_id") == resolved_plan_id
+        )
+        and (plan_file_id is None or binding.get("plan_file_id") == plan_file_id)
         and (plan_ref is None or binding.get("plan_ref") == plan_ref)
     )
 
@@ -80,7 +94,8 @@ def resolve_bindings(
         status="BOUND" if matches else "UNBOUND",
         binding_id=binding_id,
         policy_ref=policy_ref,
-        plan_id=plan_id,
+        resolved_plan_id=resolved_plan_id,
+        plan_file_id=plan_file_id,
         plan_ref=plan_ref,
         bindings=matches,
     )
@@ -92,7 +107,8 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--binding-id")
     parser.add_argument("--policy", dest="policy_ref")
-    parser.add_argument("--plan-id")
+    parser.add_argument("--resolved-plan-id")
+    parser.add_argument("--plan-file-id")
     parser.add_argument("--plan", dest="plan_ref")
     parser.add_argument("--root")
     return parser
@@ -104,7 +120,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         result = resolve_bindings(
             binding_id=args.binding_id,
             policy_ref=args.policy_ref,
-            plan_id=args.plan_id,
+            resolved_plan_id=args.resolved_plan_id,
+            plan_file_id=args.plan_file_id,
             plan_ref=args.plan_ref,
             root=args.root,
         )
