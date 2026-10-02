@@ -1,0 +1,100 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-VERI-0004
+  title: Agent Contract Semantic Verification
+  status: ACTIVE
+
+rules:
+  binding_promotion_verification:
+    verification_model: REQUIRED_AND_OPTIONAL_SEPARATION
+    required_all_pass_result: AUTO_PROMOTE
+    required_any_fail_result: REJECT
+    required_no_fail_with_unknown_result: USER_REVIEW_REQUIRED
+
+  required_verification:
+    model: R2_BEHAVIOR_SEMANTIC_REQUIRED
+    required_checks:
+      - IDENTITY_MATCH
+      - IMPLEMENTATION_RESOLUTION_VALID
+      - INPUT_CONTRACT_MATCH
+      - OUTPUT_CONTRACT_MATCH
+      - EFFECT_MATCH
+      - FAILURE_CONTRACT_MATCH
+      - COMPATIBILITY_MATCH
+    result_domain:
+      - PASS
+      - FAIL
+      - UNKNOWN
+    aggregate:
+      all_pass: AUTO_PROMOTE
+      any_fail: REJECT
+      unknown_without_fail: USER_REVIEW_REQUIRED
+    optional_verification:
+      promotion_blocking: false
+      exact_optional_set: DEFERRED
+
+  identity_match:
+    strategy: I3_EXPLICIT_IDENTITY_WITH_DISCOVERY_CANDIDATE
+    explicit_identity: EXACT_MATCH_FIRST
+    missing_explicit_identity: DISCOVERY_CANDIDATE_ALLOWED
+    discovery_is_identity_authority: false
+    verified_promoted_identity_becomes_persistent_resolution: true
+
+  input_output_contract_match:
+    strategy: IO4_GENERATED_AND_VERIFIED_IO_RESOLUTION
+    ordered_resolution:
+      - EXACT
+      - STRUCTURAL_COMPATIBLE
+      - DETERMINISTIC_TRANSFORM
+      - GENERATED_VERIFIED_MAPPING
+    generated_mapping_initial_state: CANDIDATE
+    generated_mapping_requires_machine_verification: true
+    machine_derived_new_normative_fact: FORBIDDEN
+    unknown_is_null: false
+    undeclared_default_invention: FORBIDDEN
+    silent_loss_of_required_outcome_or_failure_information: FORBIDDEN
+    lossy_semantic_mapping_auto_pass: FORBIDDEN
+
+  effect_match:
+    strategy: E3_DECLARATION_PLUS_MACHINE_VERIFICATION
+    declaration_only_is_sufficient: false
+    declaration_and_machine_evidence_agree: PASS
+    declaration_and_machine_evidence_conflict: FAIL
+    insufficient_evidence: UNKNOWN
+
+  failure_contract_match:
+    observation_and_semantic_failure_are_separate_contract_concerns: true
+    technical_exception_type_is_normative_failure_identity: false
+    failure_observation_role: EVIDENCE
+    failure_semantic_role: NORMATIVE_INTERPRETATION
+    observation_assembly:
+      strategy: FO4_SPLIT_EVIDENCE_RUNTIME_ASSEMBLED
+      evidence_sources:
+        - IMPLEMENTATION_TECHNICAL_FAILURE
+        - RUNTIME_EXECUTION_CONTEXT
+        - EFFECT_EVIDENCE
+      observation_builder_may_create_normative_failure_meaning: false
+      adapter_may_normalize_native_failure_representation: true
+      adapter_may_create_normative_failure_meaning: false
+      unproven_state: UNKNOWN
+    failure_resolution_is_separate_from_observation_assembly: true
+
+  compatibility_match:
+    strategy: C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+    version_number_equality_is_sufficient: false
+    capability_name_equality_is_sufficient: false
+    required_semantics_must_be_compared_against_provided_semantics: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-SPEC-0006
+      scope: IDENTITY_AND_RESOLUTION
+    - policy: MPD-SPEC-0024
+      scope: AGENT_CONTRACT_NORMATIVE_AUTHORITY
+    - policy: MPD-SPEC-0025
+      scope: SOURCE_AND_FEATURE_CONTRACT_MODEL
