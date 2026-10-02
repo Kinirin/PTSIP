@@ -40,8 +40,14 @@ rules:
 
     duplicate_identity:
       duplicate_binding_id: FORBIDDEN
-      duplicate_resolved_plan_id: FORBIDDEN
-      duplicate_plan_file_id: FORBIDDEN
+      duplicate_created_relation:
+        key:
+          - policy_ref
+          - resolved_plan_id
+        behavior: FORBIDDEN
+      shared_resolved_plan_id_across_distinct_policy_ref: ALLOWED
+      shared_plan_file_id_for_same_resolved_plan_id: ALLOWED
+      plan_file_id_reused_for_different_resolved_plan_id: FAIL_CLOSED
 
     relationship_resolution:
       exact_lookup_keys:
