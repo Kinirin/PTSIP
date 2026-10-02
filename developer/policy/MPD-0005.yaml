@@ -9,13 +9,16 @@ rules:
     tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
     existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
     repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
-    mutation_promotion_verification_scope: ISOLATED_FIXTURE_REPOSITORIES
     spec_0_3_7_draft_remains_tool_development_normative_family: true
     superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+  mutation_promotion_verification_ref: MPD-VERI-0002
+
 relations:
   supersedes: []
   amends:
     - policy: MPD-SPEC-0004
       scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
   extends: []
-  depends_on: []
+  depends_on:
+    - policy: MPD-VERI-0002
+      scope: MUTATION_PROMOTION_VERIFICATION_BOUNDARY
