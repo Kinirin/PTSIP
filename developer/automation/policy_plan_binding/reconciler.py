@@ -50,7 +50,7 @@ def validate_registry_integrity(
     *,
     root: str | Path | None = None,
 ) -> tuple[str, ...]:
-    """Validate approved binding identity, state, exact refs, and M:N integrity."""
+    """Validate v2 binding identity, state, exact refs, and M:N integrity."""
 
     base = repository_root(root)
     failures = list(validate_registry_schema(payload, root=base))
@@ -60,6 +60,7 @@ def validate_registry_integrity(
     known_policies = _policy_ids(base)
     seen_binding_ids: set[str] = set()
     seen_created_relations: set[tuple[str, str]] = set()
+    plan_file_owners: dict[str, str] = {}
 
     bindings = payload.get("bindings", [])
     for index, raw in enumerate(bindings):
@@ -86,19 +87,33 @@ def validate_registry_integrity(
         if planning_state != "CREATED":
             continue
 
-        plan_id = raw.get("plan_id")
+        resolved_plan_id = raw.get("resolved_plan_id")
+        plan_file_id = raw.get("plan_file_id")
         plan_ref = raw.get("plan_ref")
-        if not isinstance(policy_ref, str) or not isinstance(plan_id, str):
-            continue
-        if not isinstance(plan_ref, str):
+        if (
+            not isinstance(policy_ref, str)
+            or not isinstance(resolved_plan_id, str)
+            or not isinstance(plan_file_id, str)
+            or not isinstance(plan_ref, str)
+        ):
             continue
 
-        relation = (policy_ref, plan_id)
+        relation = (policy_ref, resolved_plan_id)
         if relation in seen_created_relations:
             failures.append(
-                f"bindings[{index}]: duplicate created relation {policy_ref} -> {plan_id}"
+                f"bindings[{index}]: duplicate created relation "
+                f"{policy_ref} -> {resolved_plan_id}"
             )
         seen_created_relations.add(relation)
+
+        prior_resolved = plan_file_owners.get(plan_file_id)
+        if prior_resolved is not None and prior_resolved != resolved_plan_id:
+            failures.append(
+                f"bindings[{index}]: plan_file_id {plan_file_id} is reused by "
+                f"different resolved_plan_id values"
+            )
+        else:
+            plan_file_owners[plan_file_id] = resolved_plan_id
 
         candidate = (base / plan_ref).resolve()
         try:
