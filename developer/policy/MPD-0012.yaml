@@ -93,10 +93,7 @@ rules:
       explicit_binding_preferred: true
       missing_binding_allows_bounded_repository_discovery: true
       discovered_binding_initial_state: CANDIDATE
-      verification_model: REQUIRED_AND_OPTIONAL_SEPARATION
-      required_all_pass_result: AUTO_PROMOTE
-      required_any_fail_result: REJECT
-      required_no_fail_with_unknown_result: USER_REVIEW_REQUIRED
+      verification_ref: MPD-VERI-0004
       verified_or_user_approved_resolution_must_be_persisted: true
       repeat_discovery_for_same_resolved_case: FORBIDDEN_WHEN_PERSISTED_RESOLUTION_IS_CURRENT
       model_confidence_score_as_promotion_authority: FORBIDDEN
