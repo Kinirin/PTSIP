@@ -505,7 +505,7 @@ def test_tooling_test_workflow_routes_release_and_pp_transition_policy() -> None
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -532,6 +532,7 @@ def test_h3_hook_surfaces_route_pp_transition_policy(scope: str) -> None:
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
         "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -548,7 +549,7 @@ def test_remote_pp_verifier_routes_transition_policy() -> None:
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -564,7 +565,7 @@ def test_release_pp_verifier_routes_release_transition_policy() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0001",
         "MPD-SPEC-0006",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
         "MPD-RELS-0002",
     ]
@@ -588,7 +589,7 @@ def test_release_surfaces_route_pp_release_verification_policy(scope: str) -> No
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-RELS-0002",
     ]
 
@@ -604,7 +605,7 @@ def test_tooling_release_routes_transition_mechanics() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-PLAN-0002",
         "MPD-SPEC-0006",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
         "MPD-RELS-0002",
     ]
@@ -628,7 +629,7 @@ def test_local_profile_runtime_surfaces_route_pp_policy(scope: str) -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
         "MPD-SPEC-0027",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -647,6 +648,7 @@ def test_pp_102_transition_seed_routes_developer_and_pp_policy() -> None:
         "MPD-SPEC-0026",
         "MPD-SPEC-0027",
         "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -664,7 +666,7 @@ def test_public_profile_catalog_schema_routes_pp_transition_policy() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
