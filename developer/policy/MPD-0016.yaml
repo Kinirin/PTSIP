@@ -4,7 +4,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 policy:
   id: MPD-0016
   title: README Translation Governance and Automation Boundary
-  status: DRAFT
+  status: APPROVED
 
 rules:
   readme_translation_governance:
@@ -49,6 +49,25 @@ rules:
     registered_translation_path_must_be_explicit: true
     registered_translation_path_must_resolve: true
     unregistered_generated_translation_is_invalid: true
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+    - id: TR-001
+      type: VERIFICATION
+      state: OPEN
+      refs:
+        - docs/translated/index.yaml
+        - .github/workflows/readme-translation.yml
+      next_action:
+        action: VALIDATE_README_TRANSLATION_GOVERNANCE
+        execution: PARALLEL_ALLOWED
+        target_refs:
+          - developer/policy/MPD-0016.yaml
+          - docs/translated/index.yaml
+          - .github/workflows/readme-translation.yml
+        completion_check: README_TRANSLATION_GOVERNANCE_VALID
 
 relations:
   supersedes: []
