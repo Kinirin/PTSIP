@@ -8,14 +8,29 @@ policy:
 
 rules:
   authority_transfer:
-    family: MIGR
-    target_policy: MPD-MIGR-0003
     active_authority_retained: false
+    destinations:
+      - family: SPEC
+        target_policy: MPD-SPEC-0005
+        scope: REPOSITORY_COMPONENT_ARCHITECTURE_CONTRACT
+      - family: MIGR
+        target_policy: MPD-MIGR-0003
+        scope: PROJECT_PROFILE_VERSION_MIGRATION_AUTHORIZATION
 
 migration:
-  responsibility_family: MIGR
-  authority_transferred_to: MPD-MIGR-0003
   source_policy_identity_preserved: true
+  responsibility_transfers:
+    - target_policy: MPD-SPEC-0005
+      responsibilities:
+        - COMPONENT_CLASSIFICATION_ROLE_AND_SELECTOR
+        - COMPONENT_COMMON_PROPERTIES
+        - PTSIP_CORE_SELECTOR_RECURSION_BOUNDARY
+        - COMPONENT_RELATIONSHIP_CONTRACT
+    - target_policy: MPD-MIGR-0003
+      responsibilities:
+        - PROJECT_PROFILE_VERSION_MIGRATION_AUTHORITY_REFERENCE
+        - PROJECT_PROFILE_VERSION_MIGRATION_AUTHORIZATION_GATE
+        - PROJECT_PROFILE_VERSION_MIGRATION_DEFAULT_FORBIDDEN_STATE
 
 relations:
   supersedes: []
