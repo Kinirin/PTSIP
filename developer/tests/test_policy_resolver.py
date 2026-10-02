@@ -338,15 +338,14 @@ def test_pp_transition_policy_routes_for_public_profile_modify() -> None:
         "MPD-SPEC-0026",
         "MPD-SPEC-0027",
         "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
     assert result["policies"][1]["sections"] == ["t2_authority_delta"]
     assert result["policies"][2]["sections"] == ["user_revision_lineage"]
-    assert result["policies"][3]["sections"] == [
-        "authority_semantics",
-        "verification_layers",
-    ]
-    assert result["policies"][4]["sections"] == [
+    assert result["policies"][3]["sections"] == ["authority_semantics"]
+    assert result["policies"][4]["sections"] == ["verification_layers"]
+    assert result["policies"][5]["sections"] == [
         "commit_candidate_trigger",
         "transition_generation",
         "reconciliation_safety",
@@ -364,7 +363,7 @@ def test_pp_transition_policy_routes_for_current_schema_modify() -> None:
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
     assert result["policies"][1]["sections"] == ["t2_authority_delta"]
@@ -382,6 +381,7 @@ def test_pp_transition_policy_routes_for_future_canonical_registry_path() -> Non
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -421,6 +421,7 @@ def test_pp_transition_automation_modules_route_mpd_0011(scope: str) -> None:
         "MPD-SPEC-0006",
         "MPD-SPEC-0026",
         "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -444,7 +445,7 @@ def test_runtime_pp_registry_surfaces_route_transition_policy(scope: str) -> Non
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
@@ -467,7 +468,7 @@ def test_distribution_projection_surfaces_route_pp_transition_policy(scope: str)
     assert result["binding_scope"] == scope
     assert [item["policy_id"] for item in result["policies"]] == [
         "MPD-SPEC-0006",
-        "MPD-0011",
+        "MPD-VERI-0003",
         "MPD-MIGR-0004",
     ]
 
