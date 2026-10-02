@@ -9,12 +9,12 @@ policy:
 rules:
   release_publication_gate:
     release_publication_with_invalid_pp_transition: FORBIDDEN
-    project_profile_transition_verification_ref: MPD-0011
+    project_profile_transition_verification_ref: MPD-VERI-0003
 
 relations:
   supersedes: []
   amends: []
   extends: []
   depends_on:
-    - policy: MPD-0011
+    - policy: MPD-VERI-0003
       scope: PROJECT_PROFILE_TRANSITION_VERIFICATION
