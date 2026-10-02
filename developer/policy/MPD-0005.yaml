@@ -1,24 +1,38 @@
 schema_version: ptsip-developer-policy/v1
 policy_class: PTSIP_DEVELOPER_POLICY
+
 policy:
   id: MPD-0005
   title: Repository Self-Adoption and Migration Verification Boundaries
-  status: ACTIVE
+  status: RETIRED
+
 rules:
-  authority_semantics:
-    tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
-    existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
-    repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
-    spec_0_3_7_draft_remains_tool_development_normative_family: true
-    superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
-  mutation_promotion_verification_ref: MPD-VERI-0002
+  authority_transfer:
+    active_authority_retained: false
+    destinations:
+      - family: SPEC
+        target_policy: MPD-SPEC-0011
+        scope: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+      - family: VERI
+        target_policy: MPD-VERI-0002
+        scope: MUTATION_PROMOTION_VERIFICATION_BOUNDARY
+
+migration:
+  source_policy_identity_preserved: true
+  responsibility_transfers:
+    - target_policy: MPD-SPEC-0011
+      responsibilities:
+        - SELF_ADOPTION_PROFILE_CREATION_BOUNDARY
+        - PROFILE_EXAMPLE_CONTRACT_STABILITY
+        - REPOSITORY_DOGFOOD_MODE
+        - TOOL_DEVELOPMENT_NORMATIVE_FAMILY
+        - SELF_ADOPTION_SUPERSESSION_SCOPE
+    - target_policy: MPD-VERI-0002
+      responsibilities:
+        - MUTATION_PROMOTION_VERIFICATION_BOUNDARY
 
 relations:
   supersedes: []
-  amends:
-    - policy: MPD-SPEC-0004
-      scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
+  amends: []
   extends: []
-  depends_on:
-    - policy: MPD-VERI-0002
-      scope: MUTATION_PROMOTION_VERIFICATION_BOUNDARY
+  depends_on: []
