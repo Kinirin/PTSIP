@@ -34,15 +34,6 @@ effect_vocabulary:
     - separate_profile_identity_implementation_from_migration_capability
     - separate_repository_adoption_from_release_readiness
 policy_roles:
-  - policy_id: MPD-0005
-    role: MANAGEMENT_POLICY_AUTHORITY
-    effects:
-      - forbid_tool_driven_repository_self_adoption_profile_creation
-      - govern_normative_family_lifecycle
-      - restrict_repository_dogfood_to_controlled_self_analysis
-      - scope_adr_supersession_to_repository_self_adoption_assumption
-      - govern_project_profile_migration_authorization
-      - separate_migration_capability_from_repository_adoption
   - policy_id: MPD-0011
     role: MANAGEMENT_POLICY_AUTHORITY
     effects:
@@ -83,3 +74,10 @@ policy_roles:
       - forbid_recursive_ptsip_core_selector_broadening
       - govern_migration_subsystem_architecture
       - govern_relationship_contract
+  - policy_id: MPD-SPEC-0011
+    role: MANAGEMENT_POLICY_AUTHORITY
+    effects:
+      - forbid_tool_driven_repository_self_adoption_profile_creation
+      - govern_normative_family_lifecycle
+      - restrict_repository_dogfood_to_controlled_self_analysis
+      - scope_adr_supersession_to_repository_self_adoption_assumption
