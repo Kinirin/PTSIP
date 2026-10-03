@@ -4,4 +4,9 @@ schema_ref: developer/bindings/schemas/policy-plan-bindings.schema.json
 bindings:
   - binding_id: PPB-0001
     policy_ref: MPD-0012
-    planning_state: NOT_CREATED
+    planning_state: CREATED
+    resolved_plan_id: PLN.POLI.BNDR.MPD0012A
+    plan_file_id: PLANFILE.MAIN.MPD0012RESP1
+    version: "1.0"
+    revision: "Rev.0001"
+    plan_ref: developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml
