@@ -1,4 +1,7 @@
 schema_version: ptsip-policy-plan-bindings/v2
 registry_role: POLICY_PLAN_BINDING
 schema_ref: developer/bindings/schemas/policy-plan-bindings.schema.json
-bindings: []
+bindings:
+  - binding_id: PPB-0001
+    policy_ref: MPD-0012
+    planning_state: NOT_CREATED
