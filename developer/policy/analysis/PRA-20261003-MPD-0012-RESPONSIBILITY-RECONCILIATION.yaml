@@ -1,0 +1,276 @@
+schema_version: ptsip-policy-responsibility-analysis/v1
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+
+analysis:
+  analysis_id: PRA-20261003-MPD-0012-RESPONSIBILITY-RECONCILIATION
+  source_ref: developer/policy/MPD-0012.yaml
+
+  responsibilities:
+    - responsibility_id: R01
+      statement: Agent Contract normative document and machine-authority boundary semantics must be owned outside the decision ledger.
+      authority_relation: OWN
+      authority_subject: AGENT_CONTRACT_NORMATIVE_AUTHORITY_BOUNDARY
+      lifecycle_scope: AGENT_CONTRACT_CURRENT_AUTHORITY
+      cohesion_key: AGENT_CONTRACT_NORMATIVE_AUTHORITY
+      family: SPEC
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: SPEC
+        searched_policy_ids:
+          - MPD-SPEC-0001
+          - MPD-SPEC-0002
+          - MPD-SPEC-0003
+          - MPD-SPEC-0004
+          - MPD-SPEC-0005
+          - MPD-SPEC-0006
+          - MPD-SPEC-0007
+          - MPD-SPEC-0008
+          - MPD-SPEC-0009
+          - MPD-SPEC-0010
+          - MPD-SPEC-0011
+          - MPD-SPEC-0020
+          - MPD-SPEC-0021
+          - MPD-SPEC-0022
+          - MPD-SPEC-0023
+          - MPD-SPEC-0024
+          - MPD-SPEC-0025
+          - MPD-SPEC-0026
+          - MPD-SPEC-0027
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-SPEC-0024
+            section: normative_document_authority_boundary
+            scope_relation: SAME_SCOPE
+            collision_class: EXISTING_SUBSUMES_CANDIDATE
+            resolution_action: DROP_REDUNDANT_CANDIDATE
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R02
+      statement: Agent Contract binding promotion verification must be owned by the Agent Contract semantic verification policy.
+      authority_relation: OWN
+      authority_subject: AGENT_CONTRACT_BINDING_PROMOTION_VERIFICATION
+      lifecycle_scope: AGENT_CONTRACT_BINDING_AND_PROMOTION
+      cohesion_key: AGENT_CONTRACT_SEMANTIC_VERIFICATION
+      family: VERI
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: VERI
+        searched_policy_ids:
+          - MPD-VERI-0002
+          - MPD-VERI-0003
+          - MPD-VERI-0004
+          - MPD-VERI-0005
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-VERI-0004
+            section: binding_promotion_verification
+            scope_relation: SAME_SCOPE
+            collision_class: EXISTING_SUBSUMES_CANDIDATE
+            resolution_action: DROP_REDUNDANT_CANDIDATE
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R03
+      statement: Agent Contract required semantic checks and PASS FAIL UNKNOWN aggregation must be owned by the Agent Contract semantic verification policy.
+      authority_relation: OWN
+      authority_subject: AGENT_CONTRACT_REQUIRED_SEMANTIC_VERIFICATION
+      lifecycle_scope: AGENT_CONTRACT_VERIFICATION
+      cohesion_key: AGENT_CONTRACT_SEMANTIC_VERIFICATION
+      family: VERI
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: VERI
+        searched_policy_ids:
+          - MPD-VERI-0002
+          - MPD-VERI-0003
+          - MPD-VERI-0004
+          - MPD-VERI-0005
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-VERI-0004
+            section: required_verification
+            scope_relation: SAME_SCOPE
+            collision_class: EXISTING_SUBSUMES_CANDIDATE
+            resolution_action: DROP_REDUNDANT_CANDIDATE
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R04
+      statement: Stable Agent Contract feature-model semantics and derived feature ownership belong in the Source and Feature Contract Model.
+      authority_relation: OWN
+      authority_subject: AGENT_CONTRACT_FEATURE_MODEL
+      lifecycle_scope: SOURCE_AND_FEATURE_CONTRACT
+      cohesion_key: SOURCE_AND_FEATURE_CONTRACT_MODEL
+      family: SPEC
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: SPEC
+        searched_policy_ids:
+          - MPD-SPEC-0001
+          - MPD-SPEC-0002
+          - MPD-SPEC-0003
+          - MPD-SPEC-0004
+          - MPD-SPEC-0005
+          - MPD-SPEC-0006
+          - MPD-SPEC-0007
+          - MPD-SPEC-0008
+          - MPD-SPEC-0009
+          - MPD-SPEC-0010
+          - MPD-SPEC-0011
+          - MPD-SPEC-0020
+          - MPD-SPEC-0021
+          - MPD-SPEC-0022
+          - MPD-SPEC-0023
+          - MPD-SPEC-0024
+          - MPD-SPEC-0025
+          - MPD-SPEC-0026
+          - MPD-SPEC-0027
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-SPEC-0025
+            section: feature_stable_core
+            scope_relation: SAME_SCOPE
+            collision_class: CANDIDATE_EXTENDS_EXISTING
+            resolution_action: MERGE_INTO_EXISTING
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R05
+      statement: User-owned extension semantics and extension-owner responsibility belong in the canonical extension compatibility policy.
+      authority_relation: OWN
+      authority_subject: USER_OWNED_EXTENSION_SEMANTICS
+      lifecycle_scope: AGENT_CONTRACT_EXTENSION
+      cohesion_key: EXTENSION_COMPATIBILITY
+      family: SPEC
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: SPEC
+        searched_policy_ids:
+          - MPD-SPEC-0001
+          - MPD-SPEC-0002
+          - MPD-SPEC-0003
+          - MPD-SPEC-0004
+          - MPD-SPEC-0005
+          - MPD-SPEC-0006
+          - MPD-SPEC-0007
+          - MPD-SPEC-0008
+          - MPD-SPEC-0009
+          - MPD-SPEC-0010
+          - MPD-SPEC-0011
+          - MPD-SPEC-0020
+          - MPD-SPEC-0021
+          - MPD-SPEC-0022
+          - MPD-SPEC-0023
+          - MPD-SPEC-0024
+          - MPD-SPEC-0025
+          - MPD-SPEC-0026
+          - MPD-SPEC-0027
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-SPEC-0007
+            section: extension_compatibility
+            scope_relation: SAME_SCOPE
+            collision_class: EXISTING_SUBSUMES_CANDIDATE
+            resolution_action: DROP_REDUNDANT_CANDIDATE
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R06
+      statement: Evolvable implementation-resolution modes and generated-resolution work belong in deferred Agent Contract planning.
+      authority_relation: OWN
+      authority_subject: AGENT_CONTRACT_IMPLEMENTATION_RESOLUTION_PENDING_WORK
+      lifecycle_scope: DEFERRED_AGENT_CONTRACT_MATERIALIZATION
+      cohesion_key: AGENT_CONTRACT_DEFERRED_WORK
+      family: PLAN
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: PLAN
+        searched_policy_ids:
+          - MPD-PLAN-0001
+          - MPD-PLAN-0002
+          - MPD-PLAN-0003
+          - MPD-PLAN-0004
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-PLAN-0004
+            section: agent_contract_deferred_work_plan
+            scope_relation: SAME_SCOPE
+            collision_class: CANDIDATE_EXTENDS_EXISTING
+            resolution_action: MERGE_INTO_EXISTING
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R07
+      statement: Fine-grained atomic-feature compiler and plugin-integration work that is not frozen belongs in deferred Agent Contract planning.
+      authority_relation: OWN
+      authority_subject: AGENT_CONTRACT_FEATURE_COMPILER_AND_PLUGIN_PENDING_WORK
+      lifecycle_scope: DEFERRED_AGENT_CONTRACT_MATERIALIZATION
+      cohesion_key: AGENT_CONTRACT_DEFERRED_WORK
+      family: PLAN
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: PLAN
+        searched_policy_ids:
+          - MPD-PLAN-0001
+          - MPD-PLAN-0002
+          - MPD-PLAN-0003
+          - MPD-PLAN-0004
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-PLAN-0004
+            section: agent_contract_deferred_work_plan
+            scope_relation: SAME_SCOPE
+            collision_class: CANDIDATE_EXTENDS_EXISTING
+            resolution_action: MERGE_INTO_EXISTING
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+    - responsibility_id: R08
+      statement: Optional plugin or implementation layers must not create or own normative PTSIP semantics.
+      authority_relation: OWN
+      authority_subject: IMPLEMENTATION_NORMATIVE_AUTHORITY_BOUNDARY
+      lifecycle_scope: AGENT_CONTRACT_IMPLEMENTATION_AND_PLUGIN
+      cohesion_key: LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY
+      family: SPEC
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: SPEC
+        searched_policy_ids:
+          - MPD-SPEC-0001
+          - MPD-SPEC-0002
+          - MPD-SPEC-0003
+          - MPD-SPEC-0004
+          - MPD-SPEC-0005
+          - MPD-SPEC-0006
+          - MPD-SPEC-0007
+          - MPD-SPEC-0008
+          - MPD-SPEC-0009
+          - MPD-SPEC-0010
+          - MPD-SPEC-0011
+          - MPD-SPEC-0020
+          - MPD-SPEC-0021
+          - MPD-SPEC-0022
+          - MPD-SPEC-0023
+          - MPD-SPEC-0024
+          - MPD-SPEC-0025
+          - MPD-SPEC-0026
+          - MPD-SPEC-0027
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-SPEC-0021
+            section: implementation_role
+            scope_relation: SAME_SCOPE
+            collision_class: EXISTING_SUBSUMES_CANDIDATE
+            resolution_action: DROP_REDUNDANT_CANDIDATE
+      materialization_action: USE_EXISTING_AUTHORITY
+      target_group_id: null
+
+  decision:
+    owned_family_set:
+      - SPEC
+      - PLAN
+      - VERI
+    split_required: true
+    materialization_allowed: true
+    materialization_groups: []
