@@ -443,7 +443,7 @@ This Tool release does not introduce a new Specification family or Project Profi
 
 It adds support for representing a not-yet-existing component as an explicit proposed candidate and resolving that proposal without silently materializing it as an active component. It does not claim completion of the broader Tool `0.4.0` capability-recovery architecture.
 
-Release scope and verification history are recorded in [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). The release gate is defined by [`planning/0.3.8/0.3.8a1-emergency-release-gate.yaml`](planning/0.3.8/0.3.8a1-emergency-release-gate.yaml).
+Release scope and verification history are recorded in [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). The release gate is defined by [`developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml`](developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml).
 
 ## License authority
 

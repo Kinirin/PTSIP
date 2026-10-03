@@ -60,7 +60,7 @@ WU-13 must not:
 WU-13 uses the machine-readable operational policy:
 
 ```text
-planning/0.3.7/WU-13-local-agent-cost-control.yaml
+developer/planning/0.3.7/WU-13-local-agent-cost-control.yaml
 ```
 
 The local coding agent MUST use machine-first evidence handling before broad source reasoning. Until the planned Actionability Classifier and Review Pack surfaces exist, each AI review cycle is bounded to the configured item/context budget, full conformance JSON stays out of the prompt by default, and validation is batched by change/tranche rather than repeated per dependency.
