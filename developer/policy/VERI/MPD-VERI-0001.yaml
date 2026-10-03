@@ -124,14 +124,14 @@ transition:
       type: OUTPUT_CONTRACT
       state: OPEN
       refs:
-        - developer/policy/VERI/MPD-VERI-0001.yaml
-        - developer/policy/schemas/management-policy.schema.json
+        - MPD-VERI-0006
+        - developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
       next_action:
         action: COMPLETE_VERIFICATION_OUTPUT_CONTRACT
         execution: PARALLEL_ALLOWED
         target_refs:
-          - developer/policy/VERI/MPD-VERI-0001.yaml
-          - developer/policy/schemas/management-policy.schema.json
+          - developer/policy/VERI/MPD-VERI-0006.yaml
+          - developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
         completion_check: VERIFICATION_OUTPUT_CONTRACT_COMPLETE
 
 relations:

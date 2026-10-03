@@ -1,0 +1,65 @@
+schema_version: ptsip-policy-responsibility-analysis/v1
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+
+analysis:
+  analysis_id: PRA-20261003-MPD-VERI-0006-OUTPUT-CONTRACT
+  source_ref: developer/policy/VERI/MPD-VERI-0001.yaml;project-conversation:2026-10-03:policy-plan-output-schema-identity
+
+  responsibilities:
+    - responsibility_id: R01
+      statement: Policy-Plan consistency verification output structure and report schema identity are a distinct verification-output responsibility from the underlying verification semantics.
+      authority_relation: OWN
+      authority_subject: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+      lifecycle_scope: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT
+      cohesion_key: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+      family: VERI
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: VERI
+        searched_policy_ids:
+          - MPD-VERI-0001
+          - MPD-VERI-0002
+          - MPD-VERI-0003
+          - MPD-VERI-0004
+          - MPD-VERI-0005
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-VERI-0001
+            section: policy_plan_consistency_verification
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: CREATE_NEW_SIBLING_POLICY
+          - policy_id: MPD-VERI-0002
+            section: mutation_promotion_verification
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+          - policy_id: MPD-VERI-0003
+            section: verification_layers
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+          - policy_id: MPD-VERI-0004
+            section: binding_promotion_verification
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+          - policy_id: MPD-VERI-0005
+            section: execution_evidence_and_verification
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+
+  decision:
+    owned_family_set:
+      - VERI
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+      - group_id: G01
+        family: VERI
+        cohesion_key: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+        responsibility_ids: [R01]
+        cohesion_rationale: Verification output identity and report schema enforcement form one cohesive VERI responsibility while remaining separate from MPD-VERI-0001 verification semantics.

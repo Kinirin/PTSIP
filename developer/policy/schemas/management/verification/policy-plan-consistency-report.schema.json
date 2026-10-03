@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:management-verification:policy-plan-consistency-report:v1",
+  "title": "PTSIP Management Verification Policy-Plan Consistency Report v1",
+  "$comment": "Identity-only DRAFT schema. Top-level report structure, verdict contract, failure contract, serialization, and exit-code semantics are not yet authorized by MPD-VERI-0006.",
+  "type": "object",
+  "required": [
+    "schema_version"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-management-verification-policy-plan-consistency-report/v1"
+    }
+  },
+  "additionalProperties": true
+}
