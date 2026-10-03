@@ -1,0 +1,159 @@
+schema_version: ptsip-policy-change-plan/v1
+artifact_class: DEVELOPER_PLANNING_MIGRATION
+authority: false
+
+identity:
+  plan_id: MPD-0017-MANAGEMENT-NEXT-ACTION-CONTROL-PLANE
+  title: Management Next-Action Control Plane Materialization Plan
+  status: DRAFT
+  governing_policy_ref: MPD-0017
+  related_policy_refs:
+    - MPD-VERI-0006
+    - MPD-VERI-0001
+  planning_approval:
+    status: APPROVED
+    approval_source: USER_EXPLICIT
+    approval_evidence_kind: DIRECT_PROJECT_OWNER_INSTRUCTION
+  implementation_authorization:
+    status: NOT_AUTHORIZED
+
+objective:
+  primary: MATERIALIZE_EXACT_MANAGEMENT_NEXT_ACTION_IDENTITIES_WITHOUT_REINTRODUCING_AGENT_SEMANTIC_INFERENCE
+  current_scope: POLICY_AND_PLANNING_RECORD_ONLY
+  implementation_deferred: true
+
+approved_design_baseline:
+  next_action:
+    required_fields:
+      - action
+      - execution
+      - completion_check
+    direct_id_reference_required: true
+    after_field: REMOVED_FROM_TARGET_CONTRACT
+    target_refs_field: REMOVED_FROM_TARGET_CONTRACT
+    inferred_dependency_order: FORBIDDEN
+
+  registries:
+    action:
+      path: developer/policy/registries/management/actions.yaml
+      schema: developer/policy/schemas/management/action-registry.schema.json
+      minimum_record_fields:
+        - id
+        - authority_ref
+        - operation_ref
+    execution:
+      path: developer/policy/registries/management/executions.yaml
+      schema: developer/policy/schemas/management/execution-registry.schema.json
+      id_pattern: '^MP-EXEC-(AUTO|GOV)-[0-9]{4}$'
+      dimensions:
+        executor_class:
+          - AUTOMATION
+          - GOVERNANCE
+        concurrency:
+          - PARALLEL
+          - SERIAL
+          - NOT_APPLICABLE
+      executor_ref_resolution:
+        AUTOMATION: AUTOMATION_RUNTIME_PLANE
+        GOVERNANCE: GOVERNANCE_AUTHORITY_PLANE
+    completion_check:
+      path: developer/policy/registries/management/completion-checks.yaml
+      schema: developer/policy/schemas/management/completion-check-registry.schema.json
+      minimum_record_fields:
+        - id
+        - authority_ref
+        - predicate_ref
+
+  execution_profile_category:
+    AUTO:
+      partial_normative: true
+      required_executor_class: AUTOMATION
+    GOV:
+      partial_normative: true
+      required_executor_class: GOVERNANCE
+    complete_execution_semantics_source: REGISTRY_DIMENSIONS
+
+policy_plan_output_adoption:
+  policy_ref: MPD-VERI-0006
+  target_top_level_fields:
+    - schema_version
+    - policy
+    - verification
+    - failures
+  policy_namespace:
+    authorities:
+      - verification_authority
+      - output_authority
+    authority_structure:
+      identity:
+        - id
+        - version
+      lifecycle:
+        - status
+        - next_action
+  next_action_projection:
+    explicit_source_declaration_required: true
+    derive_from_status: FORBIDDEN
+    target_shape:
+      - action
+      - execution
+      - completion_check
+
+unresolved_before_implementation:
+  - ACTION_ID_PATTERN
+  - ACTION_AUTHORITY_REF_RESOLUTION_DOMAIN
+  - OPERATION_REF_EXACT_CONTRACT
+  - COMPLETION_CHECK_ID_PATTERN
+  - COMPLETION_CHECK_AUTHORITY_REF_RESOLUTION_DOMAIN
+  - PREDICATE_REF_EXACT_CONTRACT
+  - AUTOMATION_RUNTIME_PLANE_EXACT_IDENTITY_CONTRACT
+  - GOVERNANCE_AUTHORITY_PLANE_EXACT_REUSE_BINDING
+  - LEGACY_ACTION_ID_MIGRATION_MAPPING
+  - LEGACY_EXECUTION_VALUE_MIGRATION_MAPPING
+  - LEGACY_COMPLETION_CHECK_ID_MIGRATION_MAPPING
+  - LEGACY_AFTER_AND_TARGET_REFS_DISPOSITION
+
+future_materialization_scope:
+  planned_create:
+    - developer/policy/registries/management/actions.yaml
+    - developer/policy/registries/management/executions.yaml
+    - developer/policy/registries/management/completion-checks.yaml
+    - developer/policy/schemas/management/action-registry.schema.json
+    - developer/policy/schemas/management/execution-registry.schema.json
+    - developer/policy/schemas/management/completion-check-registry.schema.json
+  planned_modify:
+    - developer/policy/schemas/management-policy.schema.json
+    - developer/automation/policy_validator.py
+    - developer/tests/test_policy_transition_contract.py
+    - developer/tests/test_policy_version_contract.py
+    - developer/policy/VERI/MPD-VERI-0001.yaml
+    - developer/policy/MPD-0016.yaml
+  implementation_order_is_planning_only_not_runtime_dependency_semantics: true
+
+future_verification:
+  required:
+    - ALL_NEXT_ACTION_IDS_RESOLVE_EXACTLY
+    - EXECUTION_PROFILE_CATEGORY_DIMENSION_CROSS_CHECK_PASS
+    - EXECUTOR_REF_CLASS_SCOPED_RESOLUTION_PASS
+    - UNKNOWN_OR_DUPLICATE_ID_FAILS_CLOSED
+    - LEGACY_NEXT_ACTION_MIGRATION_IS_EXPLICIT
+    - MANAGEMENT_POLICY_SCHEMA_VALID
+    - POLICY_TRANSITION_VALIDATOR_PASS
+    - MPD_VERI_0006_OUTPUT_PROJECTION_CONFORMS_TO_CONTROL_PLANE
+
+explicitly_not_authorized:
+  - CREATE_MANAGEMENT_ACTION_REGISTRY
+  - CREATE_MANAGEMENT_EXECUTION_REGISTRY
+  - CREATE_MANAGEMENT_COMPLETION_CHECK_REGISTRY
+  - CREATE_THEIR_SCHEMAS
+  - MODIFY_MANAGEMENT_POLICY_SCHEMA
+  - MODIFY_POLICY_VALIDATOR
+  - MIGRATE_EXISTING_NEXT_ACTION_RECORDS
+  - MODIFY_WORKFLOWS
+  - ACTIVATE_MPD_0017
+  - PROMOTE_MPD_VERI_0006
+
+implementation_authorization_gate:
+  current_state: NOT_AUTHORIZED
+  required_before_repository_implementation: EXPLICIT_PROJECT_OWNER_AUTHORIZATION
+  policy_or_plan_presence_is_implementation_authority: false

@@ -1,0 +1,163 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0017
+  version: "0.0"
+  title: Management Next-Action Identity and Execution Profile Control Plane
+  status: DRAFT
+
+rules:
+  management_next_action_control_plane:
+    responsibility: MANAGEMENT_NEXT_ACTION_IDENTITY_AND_EXECUTION_CONTROL_PLANE
+    purpose: >-
+      Replace free-form Management Policy next-action execution semantics with
+      exact machine-resolvable Action, Execution Profile, and Completion Check
+      identities while keeping their responsibilities separate.
+
+    canonical_next_action:
+      required_fields:
+        - action
+        - execution
+        - completion_check
+      additional_fields: FORBIDDEN
+      direct_id_reference_required: true
+      field_semantics:
+        action: FULLY_BOUND_OPERATION_IDENTITY
+        execution: CANONICAL_EXECUTION_PROFILE_IDENTITY
+        completion_check: COMPLETION_PREDICATE_IDENTITY
+      requirement_id_implies_execution_order: false
+      requirement_array_order_implies_execution_order: false
+      dependency_inference_from_identity_or_position: FORBIDDEN
+
+    registry_topology:
+      action:
+        planned_registry_path: developer/policy/registries/management/actions.yaml
+        planned_schema_path: developer/policy/schemas/management/action-registry.schema.json
+        minimum_record_fields:
+          - id
+          - authority_ref
+          - operation_ref
+        id_pattern: UNRESOLVED
+      execution:
+        planned_registry_path: developer/policy/registries/management/executions.yaml
+        planned_schema_path: developer/policy/schemas/management/execution-registry.schema.json
+        minimum_record_fields:
+          - id
+          - dimensions.executor_class
+          - dimensions.executor_ref
+          - dimensions.concurrency
+        id_pattern: '^MP-EXEC-(AUTO|GOV)-[0-9]{4}$'
+      completion_check:
+        planned_registry_path: developer/policy/registries/management/completion-checks.yaml
+        planned_schema_path: developer/policy/schemas/management/completion-check-registry.schema.json
+        minimum_record_fields:
+          - id
+          - authority_ref
+          - predicate_ref
+        id_pattern: UNRESOLVED
+
+    exact_resolution:
+      unregistered_action_id: FAIL_CLOSED
+      unregistered_execution_id: FAIL_CLOSED
+      unregistered_completion_check_id: FAIL_CLOSED
+      duplicate_identity: FAIL_CLOSED
+      semantic_similarity_resolution: FORBIDDEN
+
+    execution_profile_contract:
+      identity_semantics:
+        namespace: MP_EXEC
+        pattern: '^MP-EXEC-(AUTO|GOV)-[0-9]{4}$'
+        numeric_suffix_role: OPAQUE_ALLOCATION_IDENTITY
+        numeric_suffix_implies_priority: false
+        numeric_suffix_implies_order: false
+        numeric_suffix_implies_version: false
+        numeric_suffix_implies_compatibility: false
+
+      category_semantics:
+        AUTO:
+          normative_scope: PARTIAL
+          required_executor_class: AUTOMATION
+        GOV:
+          normative_scope: PARTIAL
+          required_executor_class: GOVERNANCE
+        category_does_not_define_complete_execution_semantics: true
+
+      dimensions:
+        executor_class:
+          vocabulary:
+            - AUTOMATION
+            - GOVERNANCE
+        executor_ref:
+          semantics: CLASS_SCOPED_EXACT_REFERENCE
+          resolution_domains:
+            AUTOMATION: AUTOMATION_RUNTIME_PLANE
+            GOVERNANCE: GOVERNANCE_AUTHORITY_PLANE
+          cross_domain_fallback: FORBIDDEN
+          unresolved_reference: FAIL_CLOSED
+        concurrency:
+          vocabulary:
+            - PARALLEL
+            - SERIAL
+            - NOT_APPLICABLE
+
+      resolution_routing:
+        AUTOMATION:
+          required_domain: AUTOMATION_RUNTIME_PLANE
+          exact_domain_binding: UNRESOLVED
+        GOVERNANCE:
+          required_domain: GOVERNANCE_AUTHORITY_PLANE
+          exact_domain_binding: UNRESOLVED
+        class_name_guessing: FORBIDDEN
+        executor_name_guessing: FORBIDDEN
+
+    draft_scope:
+      approved_decisions:
+        - CANONICAL_NEXT_ACTION_DIRECT_ID_TRIPLE
+        - ACTION_ID_AS_FULLY_BOUND_OPERATION_IDENTITY
+        - EXECUTION_ID_AS_CANONICAL_EXECUTION_PROFILE_IDENTITY
+        - COMPLETION_CHECK_ID_AS_COMPLETION_PREDICATE_IDENTITY
+        - MANAGEMENT_ACTION_EXECUTION_COMPLETION_REGISTRY_TOPOLOGY
+        - EXECUTION_PROFILE_ID_PATTERN
+        - EXECUTION_PROFILE_PARTIAL_NORMATIVE_CATEGORY
+        - EXECUTOR_CLASS_CANONICAL_REFERENCE_MODEL
+        - CONCURRENCY_CLOSED_VOCABULARY
+        - AUTOMATION_GOVERNANCE_RESOLUTION_DOMAIN_SEPARATION
+        - REQUIREMENT_ID_AND_ARRAY_ORDER_NON_NORMATIVE
+        - NEXT_ACTION_AFTER_DEPENDENCY_REMOVAL
+        - NEXT_ACTION_TARGET_REFS_REMOVAL
+      unresolved_decisions:
+        - ACTION_ID_PATTERN
+        - ACTION_AUTHORITY_REF_RESOLUTION_DOMAIN
+        - OPERATION_REF_EXACT_CONTRACT
+        - COMPLETION_CHECK_ID_PATTERN
+        - COMPLETION_CHECK_AUTHORITY_REF_RESOLUTION_DOMAIN
+        - PREDICATE_REF_EXACT_CONTRACT
+        - AUTOMATION_RUNTIME_PLANE_EXACT_IDENTITY_CONTRACT
+        - GOVERNANCE_AUTHORITY_PLANE_EXACT_REUSE_BINDING
+        - LEGACY_NEXT_ACTION_VALUE_MIGRATION_MAPPING
+      implementation_authorized_by_this_draft: false
+      registry_schema_validator_workflow_materialization: NOT_AUTHORIZED
+
+  responsibility_boundary:
+    owns:
+      - MANAGEMENT_NEXT_ACTION_REFERENCE_CONTRACT
+      - MANAGEMENT_ACTION_IDENTITY_ROUTING
+      - MANAGEMENT_EXECUTION_PROFILE_IDENTITY
+      - MANAGEMENT_COMPLETION_CHECK_IDENTITY_ROUTING
+      - CLASS_SCOPED_EXECUTOR_RESOLUTION
+    does_not_own:
+      - REFERENCED_OPERATION_SEMANTICS
+      - GOVERNANCE_AUTHORITY_SEMANTICS
+      - AUTOMATION_RUNTIME_IMPLEMENTATION
+      - COMPLETION_PREDICATE_SEMANTICS
+      - MANAGEMENT_POLICY_LIFECYCLE_STATUS_SEMANTICS
+      - IMPLEMENTATION_AUTHORIZATION
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-0010
+      scope: EXACT_MACHINE_RESOLUTION_AND_INFERENCE_COST_BASELINE
