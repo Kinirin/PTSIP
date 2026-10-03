@@ -1,0 +1,471 @@
+schema_version: ptsip-policy-change-plan/v1
+artifact_class: DEVELOPER_PLANNING_MIGRATION
+authority: false
+
+plan_identity:
+  resolved_plan_id: PLN.POLI.BNDR.MPD0012A
+  plan_file_id: PLANFILE.MAIN.MPD0012RESP1
+  version: "1.0"
+  revision: "Rev.0001"
+
+identity:
+  plan_id: MPD-0012-DECISION-APPROVAL-LEDGER-RESPONSIBILITY-RECONCILIATION
+  title: MPD-0012 Decision and Approval Ledger Responsibility Reconciliation
+  status: DRAFT
+  governing_policy_ref: MPD-0012
+  policy_direction_approval_ref: developer/policy/approvals/MPA-20261003-MPD-0012-DECISION-APPROVAL-LEDGER-BOUNDARY.yaml
+  responsibility_analysis_ref: developer/policy/analysis/PRA-20261003-MPD-0012-RESPONSIBILITY-RECONCILIATION.yaml
+  planning_approval:
+    status: PENDING
+  implementation_authorization:
+    status: NOT_AUTHORIZED
+
+objective:
+  selected_model: OPTION_2_DECISION_AND_APPROVAL_LEDGER
+  principle: MPD_0012_OWNS_DECISION_APPROVAL_AND_PROVENANCE_STATE_BUT_DOES_NOT_OWN_DOMAIN_SEMANTICS
+  target_policy_version: "3.0"
+  version_reason: ACTIVE_INCOMPATIBLE_NORMATIVE_RESPONSIBILITY_REDEFINITION
+  new_family_policy_creation_by_this_plan: FORBIDDEN
+  family_policy_dependencies_may_remain_when_REQUIRED_BY_THEIR_OWN_RESPONSIBILITIES: true
+  minimum_change_strategy: FORBIDDEN_AS_RESPONSIBILITY_SPLIT_CRITERION
+
+disposition_vocabulary:
+  - KEEP_IN_MPD_0012
+  - MOVE_TO_EXISTING_OWNER
+  - HISTORICAL_REFERENCE_ONLY
+  - OWNER_DECISION_REQUIRED
+
+target_boundary:
+  mpd_0012_owns:
+    - DECISION_IDENTITY
+    - DECISION_CLASSIFICATION
+    - DECISION_STATE
+    - APPROVAL_STATE
+    - PROVISIONAL_OR_DEFERRED_CLASSIFICATION
+    - DECISION_DATE
+    - ACTIVATION_DECISION
+    - DECISION_PROVENANCE
+    - APPROVAL_AND_AUTHORIZATION_SCOPE_RECORD
+  mpd_0012_does_not_own:
+    - NORMATIVE_SEMANTICS
+    - AGENT_CONTRACT_AUTHORITY_SEMANTICS
+    - SOURCE_OR_FEATURE_CONTRACT_SEMANTICS
+    - SEMANTIC_VERIFICATION_RULES
+    - IMPLEMENTATION_RESOLUTION_SEMANTICS
+    - MUTATION_SEMANTICS
+    - MIGRATION_SEMANTICS
+    - REPOSITORY_MATERIALIZATION_STATE
+    - VALIDATION_EVIDENCE
+  ledger_rule:
+    decision_record_may_name_canonical_owner: true
+    naming_owner_creates_runtime_dependency: false
+    semantic_payload_duplication_from_owner_policy: FORBIDDEN
+    historical_reference_creates_normative_authority: false
+
+responsibility_inventory:
+  - inventory_id: I01
+    source: rules.authority_semantics
+    disposition: KEEP_IN_MPD_0012
+    target_owner: MPD-0012
+    action: REWRITE_AS_LEDGER_AUTHORITY_BOUNDARY
+    requirements:
+      - REMOVE_CLAIM_THAT_APPROVED_DECISION_PAYLOAD_IS_RUNTIME_SEMANTIC_AUTHORITY
+      - PRESERVE_DECISION_APPROVAL_PROVISIONAL_DEFERRED_AND_ACTIVATION_STATE
+      - PRESERVE_IMPLEMENTATION_AUTHORIZATION_AS_RECORDED_SCOPE_ONLY
+
+  - inventory_id: I02
+    source: rules.approved_decisions.normative_document_boundary
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-SPEC-0024
+    owner_verification:
+      section: normative_document_authority_boundary
+      collision: EXISTING_SUBSUMES_CANDIDATE
+      action: DROP_REDUNDANT_LEDGER_SEMANTICS
+    ledger_projection_after_move: DECISION_STATE_AND_CANONICAL_OWNER_ONLY
+
+  - inventory_id: I03
+    source: rules.approved_decisions.markdown_cleanup_preconditions
+    disposition: HISTORICAL_REFERENCE_ONLY
+    target_owner: null
+    historical_refs:
+      - developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml
+      - developer/planning/migrations/MPD-0012-agent-context-coverage.yaml
+    reason: MIGRATION_M8_COMPLETE_AND_DETAILED_CLEANUP_PRECONDITIONS_NO_LONGER_REQUIRE_ACTIVE_POLICY_AUTHORITY
+    active_runtime_dependency_after_reconciliation: FORBIDDEN
+
+  - inventory_id: I04
+    source: rules.approved_decisions.missing_information_resolution.machine_resolution_and_reuse
+    source_fields:
+      - primary
+      - machine_resolution_precedes_agent_reasoning
+      - repeated_resolvable_inference_should_be_materialized_for_future_deterministic_resolution
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-0015
+    owner_verification:
+      sections:
+        - mechanized_resolution_cycle
+        - reasoning_promotion_cycle
+      relation: EXISTING_SUBSUMES_CANDIDATE
+    ledger_projection_after_move: DECISION_STATE_AND_CANONICAL_OWNER_ONLY
+
+  - inventory_id: I05
+    source: rules.approved_decisions.missing_information_resolution.fallback
+    source_fields:
+      - fallback
+      - fallback_allowed_only_when_normative_authority_is_not_created_or_changed
+    disposition: OWNER_DECISION_REQUIRED
+    target_owner: null
+    conflict_context:
+      - MPD-0010#rules.provisional_resolution_framework
+      - MPD-SPEC-0006#rules.identity_and_resolution
+    reason: BOUNDED_REASONABLE_DEFAULT_HAS_NO_EXACT_CURRENT_OWNER_AND_MAY_DIVERGE_FROM_EXPLICIT_AUTHORIZATION_OR_FAIL_CLOSED_RULES
+
+  - inventory_id: I06
+    source: rules.approved_decisions.mutation_authorization
+    disposition: OWNER_DECISION_REQUIRED
+    target_owner: null
+    checked_existing_authority:
+      - MPD-WORK-0002#rules.work_execution_lifecycle
+      - MPD-0010#rules.provisional_resolution_framework
+    reason: NO_ACTIVE_POLICY_EXACTLY_OWNS_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_MUTATION_AUTHORIZATION_SEMANTICS
+
+  - inventory_id: I07
+    source: rules.approved_decisions.binding_discovery_and_promotion.resolution_lifecycle
+    source_fields:
+      - explicit_binding_preferred
+      - missing_binding_allows_bounded_repository_discovery
+      - discovered_binding_initial_state
+      - verified_or_user_approved_resolution_must_be_persisted
+      - repeat_discovery_for_same_resolved_case
+      - model_confidence_score_as_promotion_authority
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-0015
+    owner_verification:
+      sections:
+        - mechanized_resolution_cycle
+        - reasoning_promotion_cycle
+      relation: EXISTING_SUBSUMES_OR_BOUNDS_CANDIDATE
+    ledger_projection_after_move: DECISION_STATE_AND_CANONICAL_OWNER_ONLY
+
+  - inventory_id: I08
+    source: rules.approved_decisions.binding_discovery_and_promotion.verification_ref
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-VERI-0004
+    owner_verification:
+      sections:
+        - binding_promotion_verification
+        - identity_match
+      collision: EXISTING_SUBSUMES_CANDIDATE
+    ledger_projection_after_move: DECISION_STATE_AND_CANONICAL_OWNER_ONLY
+
+  - inventory_id: I09
+    source: rules.approved_decisions.agent_contract_verification_ref
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-VERI-0004
+    owner_verification:
+      section: required_verification
+      collision: EXISTING_SUBSUMES_CANDIDATE
+    action: REMOVE_STANDALONE_RUNTIME_REFERENCE_FROM_LEDGER
+
+  - inventory_id: I10
+    source: rules.approved_decisions.atomic_feature_management.feature_model
+    source_fields:
+      - general_user_direct_atomic_feature_management
+      - ptsip_internal_management_required
+      - atomic_feature_is_preferred_as_derived_projection_not_independent_user_managed_authority
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-SPEC-0025
+    owner_verification:
+      sections:
+        - source_contract_model
+        - feature_stable_core
+      collision: CANDIDATE_EXTENDS_EXISTING
+      action: MERGE_INTO_EXISTING
+    ledger_projection_after_move: DECISION_STATE_AND_CANONICAL_OWNER_ONLY
+
+  - inventory_id: I11
+    source: rules.approved_decisions.atomic_feature_management.user_extension_semantics
+    source_fields:
+      - truly_new_user_semantics_may_require_user_owned_extension_environment
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-SPEC-0007
+    owner_verification:
+      section: extension_compatibility
+      collision: EXISTING_SUBSUMES_CANDIDATE
+
+  - inventory_id: I12
+    source: rules.approved_decisions.atomic_feature_management.automation_and_0_3_8_scope
+    source_fields:
+      - source_contract_to_atomic_feature_automation
+      - user_owned_external_resolution_environment_is_ptsip_0_3_8_support_responsibility
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-PLAN-0004
+    owner_verification:
+      section: agent_contract_deferred_work_plan
+      collision: CANDIDATE_EXTENDS_EXISTING
+      action: MERGE_INTO_EXISTING
+
+  - inventory_id: I13
+    source: rules.approved_decisions.external_orchestration_boundary.current_and_future_plugin_scope
+    source_fields:
+      - langgraph_core_dependency_in_0_3_8
+      - langchain_core_dependency_in_0_3_8
+      - external_model_orchestration_account_required_by_core
+      - future_optional_plugin_consideration
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-PLAN-0004
+    owner_verification:
+      section: agent_contract_deferred_work_plan
+      collision: CANDIDATE_EXTENDS_EXISTING
+      action: MERGE_INTO_EXISTING
+
+  - inventory_id: I14
+    source: rules.approved_decisions.external_orchestration_boundary.future_plugin_must_not_own_ptsip_normative_policy_semantics
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-SPEC-0021
+    owner_verification:
+      section: implementation_role
+      collision: EXISTING_SUBSUMES_CANDIDATE
+
+  - inventory_id: I15
+    source: rules.provisional_decisions.implementation_resolution.state
+    disposition: KEEP_IN_MPD_0012
+    target_owner: MPD-0012
+    action: KEEP_PROVISIONAL_DECISION_STATE_WITHOUT_MODE_SEMANTICS
+
+  - inventory_id: I16
+    source: rules.provisional_decisions.implementation_resolution.required_check
+    source_fields:
+      - replaces_required_check
+      - required_check
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-VERI-0004
+    owner_verification:
+      section: required_verification
+      collision: EXISTING_SUBSUMES_CANDIDATE
+
+  - inventory_id: I17
+    source: rules.provisional_decisions.implementation_resolution.design_payload
+    source_fields:
+      - current_resolution_modes
+      - generated_verified_adapter_resolution
+      - current_mode_order_is_permanent
+      - responsibility_boundary_may_be_revised_after_simulation
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-PLAN-0004
+    owner_verification:
+      section: agent_contract_deferred_work_plan
+      collision: CANDIDATE_EXTENDS_EXISTING
+      action: MERGE_INTO_EXISTING
+
+  - inventory_id: I18
+    source: rules.provisional_decisions.fine_grained_atomic_feature_model.state
+    disposition: KEEP_IN_MPD_0012
+    target_owner: MPD-0012
+    action: KEEP_PROVISIONAL_DECISION_STATE_WITHOUT_MODEL_SEMANTICS
+
+  - inventory_id: I19
+    source: rules.provisional_decisions.fine_grained_atomic_feature_model.design_payload
+    source_fields:
+      - model
+      - reason_for_non_frozen_state
+      - external_orchestration_is_not_the_0_3_8_solution
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-PLAN-0004
+    owner_verification:
+      section: agent_contract_deferred_work_plan
+      collision: CANDIDATE_EXTENDS_EXISTING
+      action: MERGE_INTO_EXISTING
+
+  - inventory_id: I20
+    source: rules.repository_materialization_snapshot
+    disposition: HISTORICAL_REFERENCE_ONLY
+    target_owner: null
+    current_state_router: developer/state/index.yaml
+    historical_ref: developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml
+    reason: REPOSITORY_STATE_AND_MATERIALIZATION_EVIDENCE_ARE_OUTSIDE_DECISION_LEDGER_AUTHORITY
+
+  - inventory_id: I21
+    source: rules.validation_evidence
+    disposition: HISTORICAL_REFERENCE_ONLY
+    target_owner: null
+    historical_ref: developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml
+    reason: VALIDATION_EVIDENCE_IS_NOT_DECISION_OR_APPROVAL_AUTHORITY
+
+  - inventory_id: I22
+    source: rules.activation_boundary.approval_and_authorization_record
+    source_fields:
+      - activation_approval_ref
+      - agent_contract_current_activation
+      - provisional_decisions_promoted_by_activation
+      - deferred_decisions_promoted_by_activation
+      - this_activation_does_not_implement_feature_compiler
+      - this_activation_does_not_authorize_langgraph_or_langchain_core_dependency
+    disposition: KEEP_IN_MPD_0012
+    target_owner: MPD-0012
+    action: NORMALIZE_TO_APPROVAL_AND_AUTHORIZATION_SCOPE_RECORD
+
+  - inventory_id: I23
+    source: rules.activation_boundary.cleanup_execution_and_next_phase
+    source_fields:
+      - runtime_authority_limited_to_approved_decisions
+      - markdown_cleanup_inspect_plan_verify_simulate_allowed
+      - markdown_cleanup_physical_apply_authorized_only_after_readiness
+      - next_required_phase
+    disposition: HISTORICAL_REFERENCE_ONLY
+    target_owner: null
+    reason: CLEANUP_IS_COMPLETE_AND_NEXT_REQUIRED_PHASE_IS_STALE
+
+  - inventory_id: I24
+    source: relations
+    disposition: HISTORICAL_REFERENCE_ONLY
+    target_owner: null
+    action: REMOVE_MPD_0012_SEMANTIC_EXTENDS_AND_DEPENDS_ON_RELATIONS_AFTER_OWNER_TRANSFER
+    preserve_family_policy_relations: true
+    note: THIS_DOES_NOT_REMOVE_DEPENDENCIES_AMONG_MPD_SPEC_0024_MPD_SPEC_0025_MPD_VERI_0004_OR_OTHER_FAMILY_POLICIES
+
+owner_decision_blockers:
+  - blocker_id: B01
+    inventory_ref: I05
+    subject: BOUNDED_REASONABLE_DEFAULT
+    decision_required: SELECT_CANONICAL_OWNER_OR_REMOVE_THE_FALLBACK_SEMANTIC
+    constraints:
+      - MUST_NOT_BYPASS_MPD_0010_EXPLICIT_PROVISIONAL_AUTHORIZATION
+      - MUST_NOT_WEAKEN_MPD_SPEC_0006_FAIL_CLOSED_IDENTITY_AND_RESOLUTION
+      - MUST_NOT_REMAIN_AS_DOMAIN_SEMANTIC_PAYLOAD_IN_MPD_0012
+
+  - blocker_id: B02
+    inventory_ref: I06
+    subject: CONTRACT_DEFINED_CONDITIONAL_MUTATION_AUTHORIZATION
+    decision_required: SELECT_CANONICAL_OWNER_AND_FAMILY_FOR_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_SEMANTICS
+    constraints:
+      - MUST_NOT_BE_ASSIGNED_BY_SEMANTIC_SIMILARITY
+      - MPD_WORK_0002_MAY_CONSUME_EXISTING_AUTHORIZATION_BUT_DOES_NOT_CURRENTLY_DEFINE_THIS_MUTATION_GATE
+      - MUST_NOT_REMAIN_AS_DOMAIN_SEMANTIC_PAYLOAD_IN_MPD_0012
+
+existing_owner_summary:
+  MPD-SPEC-0024:
+    responsibility: AGENT_CONTRACT_NORMATIVE_AUTHORITY_BOUNDARY
+    change_expected: false
+  MPD-VERI-0004:
+    responsibility: AGENT_CONTRACT_SEMANTIC_VERIFICATION
+    change_expected: false
+  MPD-0015:
+    responsibility: MECHANIZED_RESOLUTION_AND_REASONING_PROMOTION
+    change_expected: false
+  MPD-SPEC-0007:
+    responsibility: EXTENSION_COMPATIBILITY_AND_EXTENSION_OWNER_BOUNDARY
+    change_expected: false
+  MPD-SPEC-0021:
+    responsibility: LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY_AND_IMPLEMENTATION_ROLE
+    change_expected: false
+  MPD-SPEC-0025:
+    responsibility: SOURCE_AND_FEATURE_CONTRACT_MODEL
+    change_expected: true
+    target_version_if_plan_approved: "2.1"
+  MPD-PLAN-0004:
+    responsibility: AGENT_CONTRACT_DEFERRED_WORK_AND_PENDING_MATERIALIZATION
+    change_expected: true
+    target_version_if_plan_approved: "2.1"
+
+stale_coupling_inventory:
+  - path: developer/automation/markdown_cleanup.py
+    coupling: DIRECT_LOAD_OF_MPD_0012_MARKDOWN_CLEANUP_PRECONDITIONS
+    disposition: RETIRE_ONE_OFF_ACTIVE_COUPLING_AFTER_COMPLETED_MIGRATION
+  - path: developer/automation/markdown_cleanup_workflow.yaml
+    coupling: DIRECT_POLICY_REF_TO_MPD_0012_MARKDOWN_CLEANUP_PRECONDITIONS
+    disposition: RETIRE_ONE_OFF_ACTIVE_COUPLING_AFTER_COMPLETED_MIGRATION
+  - path: developer/tests/test_markdown_cleanup.py
+    coupling: TEST_FIXTURE_REQUIRES_OLD_MPD_0012_SECTION
+    disposition: RETIRE_WITH_COMPLETED_ONE_OFF_AUTOMATION
+  - path: .github/workflows/tooling-test.yml
+    coupling: ACTIVE_MARKDOWN_CLEANUP_SIMULATION_ROUTE
+    disposition: REMOVE_COMPLETED_ONE_OFF_ROUTE_AFTER_RECONCILIATION
+  - path: developer/policy/PLAN/MPD-PLAN-0004.yaml
+    coupling: SOURCE_SNAPSHOT_REF_POINTS_TO_MPD_0012_REPOSITORY_MATERIALIZATION_SNAPSHOT
+    disposition: REPLACE_WITH_HISTORICAL_MIGRATION_OR_APPROVAL_PROVENANCE_REFERENCE_BEFORE_REMOVING_SNAPSHOT
+  - path: developer/policy/source-application-review.yaml
+    coupling: MPD_0012_APPROVED_DECISIONS_DESCRIBED_AS_OPERATIONAL_AUTHORITY
+    disposition: REWRITE_TO_DECISION_AND_APPROVAL_LEDGER_ROLE
+
+implementation_sequence:
+  - phase: P0_OWNER_DECISIONS
+    status: BLOCKED_PENDING_PLAN_REVIEW
+    actions:
+      - RESOLVE_B01_BOUNDED_REASONABLE_DEFAULT_OWNER
+      - RESOLVE_B02_MUTATION_AUTHORIZATION_OWNER
+    completion: ALL_OWNER_DECISION_REQUIRED_ITEMS_RESOLVED
+
+  - phase: P1_EXISTING_OWNER_RECONCILIATION
+    status: NOT_STARTED
+    actions:
+      - EXTEND_MPD_SPEC_0025_WITH_ONLY_THE_STABLE_FEATURE_MODEL_SEMANTICS_IDENTIFIED_BY_I10
+      - EXTEND_MPD_PLAN_0004_WITH_I12_I13_I17_I19_PENDING_OR_SCOPE_SEMANTICS
+      - REPLACE_MPD_PLAN_0004_SOURCE_SNAPSHOT_REF_WITH_NON_NORMATIVE_HISTORICAL_PROVENANCE
+      - DO_NOT_DUPLICATE_SEMANTICS_ALREADY_OWNED_BY_MPD_SPEC_0024_MPD_VERI_0004_MPD_0015_MPD_SPEC_0007_OR_MPD_SPEC_0021
+    completion: EVERY_MOVE_TO_EXISTING_OWNER_ITEM_HAS_ONE_CANONICAL_OWNER_WITH_NO_DUPLICATE_RUNTIME_AUTHORITY
+
+  - phase: P2_COMPLETED_MIGRATION_COUPLING_RETIREMENT
+    status: NOT_STARTED
+    actions:
+      - RETIRE_ACTIVE_MPD_0012_MARKDOWN_CLEANUP_POLICY_COUPLING
+      - REMOVE_COMPLETED_MARKDOWN_CLEANUP_SIMULATION_FROM_DEFAULT_CI_ROUTING
+      - PRESERVE_COMPLETED_MIGRATION_AND_VERIFICATION_HISTORY_IN_DEVELOPER_PLANNING_MIGRATIONS_AND_GIT_HISTORY
+      - VERIFY_NO_ACTIVE_EXECUTION_PATH_REQUIRES_REMOVED_MPD_0012_CLEANUP_SEMANTICS
+    completion: ACTIVE_REFERENCE_COUNT_TO_MPD_0012_MARKDOWN_CLEANUP_PRECONDITIONS_ZERO
+
+  - phase: P3_MPD_0012_LEDGER_REWRITE
+    status: NOT_STARTED
+    actions:
+      - BUMP_MPD_0012_TO_3_0
+      - REPLACE_APPROVED_DECISION_SEMANTIC_PAYLOADS_WITH_DECISION_STATE_OWNER_AND_PROVENANCE_RECORDS
+      - REPLACE_PROVISIONAL_SEMANTIC_PAYLOADS_WITH_PROVISIONAL_DECISION_STATE_OWNER_AND_PROVENANCE_RECORDS
+      - REMOVE_REPOSITORY_MATERIALIZATION_SNAPSHOT
+      - REMOVE_VALIDATION_EVIDENCE
+      - NORMALIZE_ACTIVATION_BOUNDARY_TO_APPROVAL_AND_AUTHORIZATION_SCOPE_RECORD
+      - REMOVE_SEMANTIC_EXTENDS_AND_DEPENDS_ON_RELATIONS_NO_LONGER_REQUIRED_BY_LEDGER_OPERATION
+    completion: MPD_0012_CONTAINS_ONLY_DECISION_APPROVAL_PROVENANCE_AND_AUTHORIZATION_SCOPE_STATE
+
+  - phase: P4_ENTRY_AND_SOURCE_RECONCILIATION
+    status: NOT_STARTED
+    actions:
+      - UPDATE_SOURCE_APPLICATION_REVIEW_TO_QUERY_NEW_LEDGER_SECTIONS
+      - REMOVE_CLAIM_THAT_MPD_0012_APPROVED_DECISION_PAYLOAD_IS_OPERATIONAL_SEMANTIC_AUTHORITY
+      - DO_NOT_ADD_MPD_0012_AS_RUNTIME_POLICY_RESOLVER_SEMANTIC_INPUT
+      - PRESERVE_EXISTING_FAMILY_POLICY_RESOLVER_BINDINGS_ACCORDING_TO_THEIR_OWN_RESPONSIBILITIES
+    completion: AGENT_ENTRY_CAN_REACH_CANONICAL_FAMILY_OWNERS_WITHOUT_READING_LEDGER_FOR_DOMAIN_SEMANTICS
+
+  - phase: P5_VERIFICATION
+    status: NOT_STARTED
+    required_checks:
+      - DEVELOPER_POLICY_VALIDATION_PASS
+      - RESPONSIBILITY_ANALYSIS_GATE_PASS
+      - POLICY_PLAN_BINDING_REGISTRY_PASS
+      - NO_ACTIVE_REFERENCE_TO_REMOVED_MPD_0012_SEMANTIC_PATHS
+      - MPD_0012_LEDGER_ONLY_BOUNDARY_PASS
+      - FAMILY_OWNER_DUPLICATE_AUTHORITY_CHECK_PASS
+      - POLICY_RESOLVER_TESTS_PASS
+      - SOURCE_APPLICATION_REVIEW_PASS
+    completion: ALL_REQUIRED_CHECKS_PASS
+
+non_goals:
+  - RETIRE_MPD_0012
+  - CREATE_NEW_FAMILY_POLICY_WITHOUT_SEPARATE_OWNER_DECISION
+  - REMOVE_DEPENDENCIES_AMONG_FAMILY_POLICIES_JUST_TO_REDUCE_GRAPH_EDGES
+  - TOUCH_MPD_VERI_0001_TR_005_WORK
+  - TOUCH_MPD_VERI_0006_WORK
+  - TOUCH_WU_08_WORK
+  - REACTIVATE_HISTORICAL_0_4_0_PLANNING_CONTROL_PLANE
+
+completion_definition:
+  policy_plan_may_enter_implementation_only_when:
+    - PLANNING_APPROVAL_IS_EXPLICIT
+    - IMPLEMENTATION_AUTHORIZATION_IS_EXPLICIT
+    - B01_RESOLVED
+    - B02_RESOLVED
+  completed_when:
+    - MPD_0012_IS_LEDGER_ONLY
+    - ALL_DOMAIN_SEMANTICS_HAVE_CANONICAL_NON_LEDGER_OWNERS
+    - HISTORICAL_ONLY_STATE_AND_EVIDENCE_ARE_NOT_ACTIVE_POLICY_PAYLOAD
+    - STALE_RUNTIME_AND_CI_COUPLING_IS_REMOVED
+    - NO_NEW_UNAPPROVED_FAMILY_POLICY_WAS_CREATED
