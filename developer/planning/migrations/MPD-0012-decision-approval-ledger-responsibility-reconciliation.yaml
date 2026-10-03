@@ -25,7 +25,16 @@ objective:
   principle: MPD_0012_OWNS_DECISION_APPROVAL_AND_PROVENANCE_STATE_BUT_DOES_NOT_OWN_DOMAIN_SEMANTICS
   target_policy_version: "3.0"
   version_reason: ACTIVE_INCOMPATIBLE_NORMATIVE_RESPONSIBILITY_REDEFINITION
-  new_family_policy_creation_by_this_plan: FORBIDDEN
+  new_family_policy_creation:
+    default: FORBIDDEN
+    explicitly_approved:
+      - policy_id: MPD-WORK-0004
+        family: WORK
+        title: Mutation Authorization Gate
+        initial_status: DRAFT
+        draft_approval_ref: developer/policy/approvals/MPA-20261004-MPD-WORK-0004-MUTATION-AUTHORIZATION-GATE-DRAFT.yaml
+        responsibility_analysis_ref: developer/policy/analysis/PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE.yaml
+        implementation_authorized_by_draft_approval: false
   family_policy_dependencies_may_remain_when_REQUIRED_BY_THEIR_OWN_RESPONSIBILITIES: true
   minimum_change_strategy: FORBIDDEN_AS_RESPONSIBILITY_SPLIT_CRITERION
 
@@ -113,21 +122,48 @@ responsibility_inventory:
     source_fields:
       - fallback
       - fallback_allowed_only_when_normative_authority_is_not_created_or_changed
-    disposition: OWNER_DECISION_REQUIRED
-    target_owner: null
-    conflict_context:
-      - MPD-0010#rules.provisional_resolution_framework
-      - MPD-SPEC-0006#rules.identity_and_resolution
-    reason: BOUNDED_REASONABLE_DEFAULT_HAS_NO_EXACT_CURRENT_OWNER_AND_MAY_DIVERGE_FROM_EXPLICIT_AUTHORIZATION_OR_FAIL_CLOSED_RULES
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owners:
+      authorization: MPD-0010
+      resolution_execution_and_reuse: MPD-0015
+    owner_decision:
+      status: APPROVED
+      approval_source: USER_EXPLICIT
+      approved_option: MPD_0010_AUTHORIZATION_PLUS_MPD_0015_RESOLUTION_EXECUTION_AND_REUSE
+      replacement_term: AUTHORIZED_BOUNDED_PROVISIONAL_RESOLUTION
+    constraints:
+      - REASONABLE_DEFAULT_MUST_NOT_REMAIN_AS_AGENT_DISCRETION
+      - MPD_0010_EXPLICIT_PROVISIONAL_AUTHORIZATION_REQUIRED
+      - MPD_0015_MAY_EXECUTE_BOUNDED_RESOLUTION_ONLY_AFTER_APPLICABLE_AUTHORIZATION
+      - MUST_NOT_WEAKEN_MPD_SPEC_0006_FAIL_CLOSED_IDENTITY_AND_RESOLUTION
+    ledger_projection_after_move: DECISION_STATE_AND_CANONICAL_OWNERS_ONLY
 
   - inventory_id: I06
     source: rules.approved_decisions.mutation_authorization
-    disposition: OWNER_DECISION_REQUIRED
-    target_owner: null
-    checked_existing_authority:
-      - MPD-WORK-0002#rules.work_execution_lifecycle
-      - MPD-0010#rules.provisional_resolution_framework
-    reason: NO_ACTIVE_POLICY_EXACTLY_OWNS_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_MUTATION_AUTHORIZATION_SEMANTICS
+    disposition: MOVE_TO_EXISTING_OWNER
+    target_owner: MPD-WORK-0004
+    target_owner_state: APPROVED_FOR_DRAFT_MATERIALIZATION
+    owner_decision:
+      status: APPROVED
+      approval_source: USER_EXPLICIT
+      approved_option: INDEPENDENT_WORK_FAMILY_MUTATION_AUTHORIZATION_GATE
+    responsibility_analysis_ref: developer/policy/analysis/PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE.yaml
+    draft_approval_ref: developer/policy/approvals/MPA-20261004-MPD-WORK-0004-MUTATION-AUTHORIZATION-GATE-DRAFT.yaml
+    required_scope:
+      - SCOPE
+      - PRECONDITION
+      - FRESHNESS
+      - CONFLICT
+    required_fail_closed_outcomes:
+      - UNKNOWN_REQUIRED_CONDITION_NOT_AUTHORIZED
+      - UNRESOLVED_REQUIRED_CONDITION_NOT_AUTHORIZED
+      - OUT_OF_SCOPE_NOT_AUTHORIZED
+    boundary:
+      may_authorize_mutation: true
+      owns_execution: false
+      owns_safe_apply: false
+      owns_verification: false
+      owns_rollback: false
 
   - inventory_id: I07
     source: rules.approved_decisions.binding_discovery_and_promotion.resolution_lifecycle
@@ -328,20 +364,18 @@ owner_decision_blockers:
   - blocker_id: B01
     inventory_ref: I05
     subject: BOUNDED_REASONABLE_DEFAULT
-    decision_required: SELECT_CANONICAL_OWNER_OR_REMOVE_THE_FALLBACK_SEMANTIC
-    constraints:
-      - MUST_NOT_BYPASS_MPD_0010_EXPLICIT_PROVISIONAL_AUTHORIZATION
-      - MUST_NOT_WEAKEN_MPD_SPEC_0006_FAIL_CLOSED_IDENTITY_AND_RESOLUTION
-      - MUST_NOT_REMAIN_AS_DOMAIN_SEMANTIC_PAYLOAD_IN_MPD_0012
+    status: RESOLVED
+    resolution: MPD_0010_AUTHORIZATION_PLUS_MPD_0015_RESOLUTION_EXECUTION_AND_REUSE
+    approved_replacement_semantics: AUTHORIZED_BOUNDED_PROVISIONAL_RESOLUTION
 
   - blocker_id: B02
     inventory_ref: I06
     subject: CONTRACT_DEFINED_CONDITIONAL_MUTATION_AUTHORIZATION
-    decision_required: SELECT_CANONICAL_OWNER_AND_FAMILY_FOR_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_SEMANTICS
-    constraints:
-      - MUST_NOT_BE_ASSIGNED_BY_SEMANTIC_SIMILARITY
-      - MPD_WORK_0002_MAY_CONSUME_EXISTING_AUTHORIZATION_BUT_DOES_NOT_CURRENTLY_DEFINE_THIS_MUTATION_GATE
-      - MUST_NOT_REMAIN_AS_DOMAIN_SEMANTIC_PAYLOAD_IN_MPD_0012
+    status: RESOLVED
+    resolution: INDEPENDENT_WORK_FAMILY_MUTATION_AUTHORIZATION_GATE
+    target_policy_id: MPD-WORK-0004
+    target_policy_initial_status: DRAFT
+    responsibility_analysis_ref: developer/policy/analysis/PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE.yaml
 
 existing_owner_summary:
   MPD-SPEC-0024:
@@ -350,9 +384,20 @@ existing_owner_summary:
   MPD-VERI-0004:
     responsibility: AGENT_CONTRACT_SEMANTIC_VERIFICATION
     change_expected: false
+  MPD-0010:
+    responsibility: PROVISIONAL_RESOLUTION_AUTHORIZATION
+    change_expected: true
+    target_version_if_plan_approved: "2.1"
   MPD-0015:
     responsibility: MECHANIZED_RESOLUTION_AND_REASONING_PROMOTION
-    change_expected: false
+    change_expected: true
+    target_version_if_plan_approved: "2.1"
+  MPD-WORK-0004:
+    responsibility: MUTATION_AUTHORIZATION_GATE
+    current_state: NOT_MATERIALIZED
+    planned_initial_version: "0.0"
+    planned_initial_status: DRAFT
+    implementation_requires_separate_policy_content_approval_and_activation: true
   MPD-SPEC-0007:
     responsibility: EXTENSION_COMPATIBILITY_AND_EXTENSION_OWNER_BOUNDARY
     change_expected: false
@@ -390,22 +435,33 @@ stale_coupling_inventory:
 
 implementation_sequence:
   - phase: P0_OWNER_DECISIONS
-    status: BLOCKED_PENDING_PLAN_REVIEW
+    status: COMPLETE
     actions:
-      - RESOLVE_B01_BOUNDED_REASONABLE_DEFAULT_OWNER
-      - RESOLVE_B02_MUTATION_AUTHORIZATION_OWNER
+      - B01_RESOLVED_TO_MPD_0010_AUTHORIZATION_AND_MPD_0015_RESOLUTION_EXECUTION_REUSE
+      - B02_RESOLVED_TO_INDEPENDENT_MPD_WORK_0004_MUTATION_AUTHORIZATION_GATE
     completion: ALL_OWNER_DECISION_REQUIRED_ITEMS_RESOLVED
 
-  - phase: P1_EXISTING_OWNER_RECONCILIATION
+  - phase: P1_OWNER_POLICY_MATERIALIZATION
     status: NOT_STARTED
     actions:
+      - MATERIALIZE_MPD_WORK_0004_AS_DRAFT_0_0_USING_APPROVED_ANALYSIS_G01
+      - KEEP_MPD_WORK_0004_NON_OPERATIONAL_WHILE_DRAFT
+      - REQUIRE_EXPLICIT_PROJECT_OWNER_POLICY_CONTENT_APPROVAL_BEFORE_APPROVED_OR_ACTIVE_TRANSITION
+      - DO_NOT_MOVE_MUTATION_AUTHORIZATION_RUNTIME_AUTHORITY_TO_A_DRAFT_POLICY
+    completion: MPD_WORK_0004_DRAFT_EXISTS_AND_EXPLICIT_POLICY_REVIEW_GATE_IS_REACHED
+
+  - phase: P2_EXISTING_OWNER_RECONCILIATION
+    status: NOT_STARTED
+    actions:
+      - EXTEND_MPD_0010_WITH_AUTHORIZED_BOUNDED_PROVISIONAL_RESOLUTION_AUTHORIZATION_ONLY
+      - EXTEND_MPD_0015_TO_CONSUME_APPLICABLE_PROVISIONAL_AUTHORIZATION_BEFORE_BOUNDED_RESOLUTION_EXECUTION_AND_REUSE
       - EXTEND_MPD_SPEC_0025_WITH_ONLY_THE_STABLE_FEATURE_MODEL_SEMANTICS_IDENTIFIED_BY_I10
       - EXTEND_MPD_PLAN_0004_WITH_I12_I13_I17_I19_PENDING_OR_SCOPE_SEMANTICS
       - REPLACE_MPD_PLAN_0004_SOURCE_SNAPSHOT_REF_WITH_NON_NORMATIVE_HISTORICAL_PROVENANCE
-      - DO_NOT_DUPLICATE_SEMANTICS_ALREADY_OWNED_BY_MPD_SPEC_0024_MPD_VERI_0004_MPD_0015_MPD_SPEC_0007_OR_MPD_SPEC_0021
+      - DO_NOT_DUPLICATE_SEMANTICS_ALREADY_OWNED_BY_MPD_SPEC_0024_MPD_VERI_0004_MPD_SPEC_0007_OR_MPD_SPEC_0021
     completion: EVERY_MOVE_TO_EXISTING_OWNER_ITEM_HAS_ONE_CANONICAL_OWNER_WITH_NO_DUPLICATE_RUNTIME_AUTHORITY
 
-  - phase: P2_COMPLETED_MIGRATION_COUPLING_RETIREMENT
+  - phase: P3_COMPLETED_MIGRATION_COUPLING_RETIREMENT
     status: NOT_STARTED
     actions:
       - RETIRE_ACTIVE_MPD_0012_MARKDOWN_CLEANUP_POLICY_COUPLING
@@ -414,7 +470,7 @@ implementation_sequence:
       - VERIFY_NO_ACTIVE_EXECUTION_PATH_REQUIRES_REMOVED_MPD_0012_CLEANUP_SEMANTICS
     completion: ACTIVE_REFERENCE_COUNT_TO_MPD_0012_MARKDOWN_CLEANUP_PRECONDITIONS_ZERO
 
-  - phase: P3_MPD_0012_LEDGER_REWRITE
+  - phase: P4_MPD_0012_LEDGER_REWRITE
     status: NOT_STARTED
     actions:
       - BUMP_MPD_0012_TO_3_0
@@ -426,7 +482,7 @@ implementation_sequence:
       - REMOVE_SEMANTIC_EXTENDS_AND_DEPENDS_ON_RELATIONS_NO_LONGER_REQUIRED_BY_LEDGER_OPERATION
     completion: MPD_0012_CONTAINS_ONLY_DECISION_APPROVAL_PROVENANCE_AND_AUTHORIZATION_SCOPE_STATE
 
-  - phase: P4_ENTRY_AND_SOURCE_RECONCILIATION
+  - phase: P5_ENTRY_AND_SOURCE_RECONCILIATION
     status: NOT_STARTED
     actions:
       - UPDATE_SOURCE_APPLICATION_REVIEW_TO_QUERY_NEW_LEDGER_SECTIONS
@@ -435,7 +491,7 @@ implementation_sequence:
       - PRESERVE_EXISTING_FAMILY_POLICY_RESOLVER_BINDINGS_ACCORDING_TO_THEIR_OWN_RESPONSIBILITIES
     completion: AGENT_ENTRY_CAN_REACH_CANONICAL_FAMILY_OWNERS_WITHOUT_READING_LEDGER_FOR_DOMAIN_SEMANTICS
 
-  - phase: P5_VERIFICATION
+  - phase: P6_VERIFICATION
     status: NOT_STARTED
     required_checks:
       - DEVELOPER_POLICY_VALIDATION_PASS
@@ -450,7 +506,7 @@ implementation_sequence:
 
 non_goals:
   - RETIRE_MPD_0012
-  - CREATE_NEW_FAMILY_POLICY_WITHOUT_SEPARATE_OWNER_DECISION
+  - CREATE_NEW_FAMILY_POLICY_WITHOUT_SEPARATE_OWNER_DECISION_EXCEPT_EXPLICITLY_APPROVED_MPD_WORK_0004
   - REMOVE_DEPENDENCIES_AMONG_FAMILY_POLICIES_JUST_TO_REDUCE_GRAPH_EDGES
   - TOUCH_MPD_VERI_0001_TR_005_WORK
   - TOUCH_MPD_VERI_0006_WORK
@@ -463,6 +519,7 @@ completion_definition:
     - IMPLEMENTATION_AUTHORIZATION_IS_EXPLICIT
     - B01_RESOLVED
     - B02_RESOLVED
+    - MPD_WORK_0004_DRAFT_MATERIALIZATION_AND_POLICY_REVIEW_GATE_DEFINED
   completed_when:
     - MPD_0012_IS_LEDGER_ONLY
     - ALL_DOMAIN_SEMANTICS_HAVE_CANONICAL_NON_LEDGER_OWNERS
