@@ -76,8 +76,8 @@ policy_query_list:
     expected_status: ACTIVE
     sections:
       - policy_plan_binding_automation
-      - deferred_relation_lifecycle_semantics
-    reason: Owns operational binding automation and deferred relationship lifecycle handling.
+      - relation_lifecycle_semantics_boundary
+    reason: Owns operational binding automation and the explicit boundary that additional relation lifecycle states are not modeled by the current policy.
 
   - policy_id: MPD-SPEC-0024
     expected_status: ACTIVE
