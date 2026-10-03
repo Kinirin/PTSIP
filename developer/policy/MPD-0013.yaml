@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 
 policy:
   id: MPD-0013
-  version: "2.0"
+  version: "2.1"
   title: Developer Planning Authority and Policy-Plan Binding
   status: ACTIVE
 
@@ -164,17 +164,21 @@ rules:
         - plan_ref
       stale_state_protection: EXPECTED_REGISTRY_DIGEST_CAS
 
-  deferred_relation_lifecycle_semantics:
+  relation_lifecycle_semantics_boundary:
+    current_modeled_planning_states:
+      - NOT_CREATED
+      - CREATED
     relation_state_field_defined: false
     relation_state_vocabulary_defined: false
+    additional_relation_lifecycle_states: NOT_MODELED_BY_CURRENT_POLICY
 
     policy_change_or_retirement_relationship_management:
       responsibility_owner: POLICY_PLAN_BINDING_LAYER
-      exact_state_vocabulary: DEFERRED
+      exact_state_vocabulary: NOT_MODELED_BY_CURRENT_POLICY
 
     replaced_plan_relation_state:
       historical_relationship_preservation_required: true
-      exact_state_vocabulary: DEFERRED
+      exact_state_vocabulary: NOT_MODELED_BY_CURRENT_POLICY
 
   planning_namespace_boundary:
     target_namespace: developer/planning/
