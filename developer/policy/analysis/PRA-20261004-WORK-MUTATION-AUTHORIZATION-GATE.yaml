@@ -1,0 +1,54 @@
+schema_version: ptsip-policy-responsibility-analysis/v1
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+
+analysis:
+  analysis_id: PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE
+  source_ref: developer/policy/MPD-0012.yaml#rules.approved_decisions.mutation_authorization
+
+  responsibilities:
+    - responsibility_id: R01
+      statement: A generic mutation authorization gate decides whether repository mutation is authorized from explicit scope, precondition, freshness, and conflict conditions, while unresolved, unknown, or out-of-scope conditions remain not authorized.
+      authority_relation: OWN
+      authority_subject: MUTATION_AUTHORIZATION_GATE
+      lifecycle_scope: PRE_EXECUTION_MUTATION_AUTHORIZATION
+      cohesion_key: MUTATION_AUTHORIZATION_GATE
+      family: WORK
+      referenced_family: null
+      existing_authority_lookup:
+        searched_family: WORK
+        searched_policy_ids:
+          - MPD-WORK-0001
+          - MPD-WORK-0002
+          - MPD-WORK-0003
+        lookup_outcome: MATCHES_FOUND
+        candidate_comparisons:
+          - policy_id: MPD-WORK-0001
+            section: work_unit_lifecycle
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+          - policy_id: MPD-WORK-0002
+            section: work_execution_lifecycle
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+          - policy_id: MPD-WORK-0003
+            section: policy_responsibility_materialization
+            scope_relation: DISTINCT_SCOPE
+            collision_class: DISTINCT_SCOPED_AUTHORITY
+            resolution_action: COEXIST_SCOPED
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+
+  decision:
+    owned_family_set:
+      - WORK
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+      - group_id: G01
+        family: WORK
+        cohesion_key: MUTATION_AUTHORIZATION_GATE
+        responsibility_ids:
+          - R01
+        cohesion_rationale: Mutation authorization is a pre-execution authority gate distinct from Work Unit lifecycle, execution/result handoff, and policy responsibility materialization.
