@@ -28,7 +28,7 @@ analysis:
             section: policy_plan_consistency_verification
             scope_relation: DISTINCT_SCOPE
             collision_class: DISTINCT_SCOPED_AUTHORITY
-            resolution_action: CREATE_NEW_SIBLING_POLICY
+            resolution_action: COEXIST_SCOPED
           - policy_id: MPD-VERI-0002
             section: mutation_promotion_verification
             scope_relation: DISTINCT_SCOPE
