@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from ptsip.migration.identity_rewrite import (
+from ptsip.migration.execution.direct import (
     IdentityRewriteAuthorization,
     IdentityRewriteError,
     authorize_identity_rewrite,
@@ -139,7 +139,7 @@ def test_identity_rewrite_rolls_back_original_bytes_on_post_validation_failure(
     plan = build_identity_rewrite_plan(state)
     authorization = authorize_identity_rewrite(plan, authority_revision="owner-decision:1")
     monkeypatch.setattr(
-        "ptsip.migration.identity_rewrite.validate_profile",
+        "ptsip.migration.execution.direct.identity_rewrite.validate_profile",
         lambda *_args, **_kwargs: SimpleNamespace(
             valid=False,
             errors=["forced post-write failure"],

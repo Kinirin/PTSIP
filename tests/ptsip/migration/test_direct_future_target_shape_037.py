@@ -3,9 +3,9 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
-from ptsip.migration.direct_convergence import DirectConvergenceAnalysis
-from ptsip.migration.direct_planner import build_direct_final_point_convergence_plan
-from ptsip.migration.model import MigrationAnalysis, SourceMigrationCompletion
+from ptsip.migration.analysis.direct import DirectConvergenceAnalysis
+from ptsip.migration.planning.direct import build_direct_final_point_convergence_plan
+from ptsip.migration.analysis import MigrationAnalysis, SourceMigrationCompletion
 from ptsip.migration.proposal import SourceProposalSet
 from ptsip.profile_identity import ProjectProfileTransitionKind, ProjectProfileVersion
 from ptsip.repository.profile_convergence import (

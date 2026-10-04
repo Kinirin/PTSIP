@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ptsip.migration.model import (
+from ptsip.migration.analysis import (
     ArchitectureFinding,
     ArchitectureFindingKind,
     AsynchronousWorkTarget,
@@ -10,7 +10,7 @@ from ptsip.migration.model import (
     SourceMigrationCompletion,
     TargetCompatibility,
 )
-from ptsip.migration.planner import (
+from ptsip.migration.planning import (
     DeletionGate,
     FinalPointKind,
     ReconciliationStatus,
