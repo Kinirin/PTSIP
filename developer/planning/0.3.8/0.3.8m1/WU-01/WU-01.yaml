@@ -3,7 +3,7 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-01
   title: Freeze migration surface and relocation baseline
-  lifecycle: {status: ACTIVE}
+  lifecycle: {status: COMPLETED}
   approval: {status: APPROVED, approval_source: USER_EXPLICIT}
   implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: []
@@ -28,3 +28,9 @@ work_unit:
     - every current migration implementation module maps to at least one target responsibility
     - all public migration package exports are recorded
     - baseline focused tests are recorded before relocation
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT

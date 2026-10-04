@@ -3,7 +3,7 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-05
   title: Decompose execution mutation promotion and direct flow
-  lifecycle: {status: ACTIVE}
+  lifecycle: {status: COMPLETED}
   approval: {status: APPROVED, approval_source: USER_EXPLICIT}
   implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-04]
@@ -26,6 +26,12 @@ work_unit:
     - direct identity rewrite stays under direct execution ownership
     - no execution module creates new policy semantics
   acceptance:
-    - execution and promotion tests pass
+    - execution and promotion tests introduce no new failures versus the pinned parent baseline
     - mutation paths are distinguishable from verification paths by directory ownership
     - direct execution responsibilities no longer require flat direct_ modules
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT

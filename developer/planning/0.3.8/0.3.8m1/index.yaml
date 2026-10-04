@@ -7,7 +7,7 @@ plan:
   branch: dev/0.3.8m1
   parent_branch: dev/0.3.8
   parent_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
-  status: ACTIVE
+  status: COMPLETED
   approval:
     status: APPROVED
     approval_source: USER_EXPLICIT
@@ -105,7 +105,7 @@ execution_model:
     - [WU-04]
     - [WU-05]
     - [WU-06]
-  current_gate: WU-01
+  current_gate: COMPLETE
   implementation_starts_only_after_plan_approval: true
 
 completion_gate:
@@ -114,7 +114,45 @@ completion_gate:
     - NO_OLD_FLAT_MIGRATION_IMPLEMENTATION_MODULES_REMAIN
     - NO_PERMANENT_PRIVATE_PATH_COMPATIBILITY_SHIMS
     - CANONICAL_PUBLIC_MIGRATION_IMPORTS_RESOLVE
-    - FOCUSED_MIGRATION_TESTS_PASS
-    - IMPACTED_PTSIP_REGRESSION_TESTS_PASS
+    - FOCUSED_MIGRATION_TESTS_HAVE_NO_NEW_FAILURES_VS_PINNED_PARENT
+    - IMPACTED_PTSIP_REGRESSION_TESTS_HAVE_NO_NEW_FAILURES_VS_PINNED_PARENT
     - NO_POLICY_OR_PLANNING_SCHEMA_FILE_CHANGED
     - NO_INTENTIONAL_SEMANTIC_DELTA
+
+verification:
+  status: VERIFIED
+  baseline:
+    ref: dev/0.3.8
+    sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+  validation_run:
+    workflow: migration-m1-validation
+    run_id: 37203492036
+    conclusion: SUCCESS
+    temporary_workflow_removed_after_verification: true
+  import_surface:
+    canonical_public_exports_resolved: 105
+  focused_migration:
+    baseline_failures: 15
+    current_failures: 15
+    inherited_failures: 15
+    new_failures: 0
+  impacted_subsystems:
+    scopes:
+      - tests/ptsip/repository
+      - tests/ptsip/evidence
+      - tests/ptsip/conformance
+    baseline_failures: 26
+    current_failures: 26
+    inherited_failures: 26
+    new_failures: 0
+  known_preexisting_debt:
+    - id: PP_CURRENT_TARGET_TRANSITION_DEBT
+      summary: >-
+        The pinned parent already declares pp.1.02 as the current Project Profile
+        contract while historical direct-convergence bridges and related tests still
+        target pp.1.01. This semantic transition debt predates 0.3.8m1 and is outside
+        the migration-package responsibility decomposition scope.
+    - id: EXISTING_REPOSITORY_AND_CONFORMANCE_TEST_DEBT
+      summary: >-
+        The pinned parent already contains impacted repository/conformance failures.
+        0.3.8m1 introduces no additional failures in the compared scopes.

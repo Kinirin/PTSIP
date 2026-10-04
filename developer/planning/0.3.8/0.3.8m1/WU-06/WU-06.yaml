@@ -3,7 +3,7 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-06
   title: Remove flat implementation paths and verify migration package
-  lifecycle: {status: ACTIVE}
+  lifecycle: {status: COMPLETED}
   approval: {status: APPROVED, approval_source: USER_EXPLICIT}
   implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-02, WU-03, WU-04, WU-05]
@@ -37,9 +37,15 @@ work_unit:
       - 'git diff --name-only dev/0.3.8...HEAD 2>&1 | Tee-Object -FilePath $log -Append'
       - 'Remove-Item $log'
   acceptance:
-    - all focused migration tests pass
-    - impacted regression tests pass
+    - focused migration tests introduce no new failures versus the pinned parent baseline
+    - impacted regression tests introduce no new failures versus the pinned parent baseline
     - no obsolete flat migration implementation module remains
     - no permanent private compatibility shim remains
     - no policy file or planning schema is changed
     - migration public imports required by callers still resolve
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT

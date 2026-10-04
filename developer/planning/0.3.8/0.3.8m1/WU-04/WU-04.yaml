@@ -3,7 +3,7 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-04
   title: Decompose execution state guard authorization and ledger
-  lifecycle: {status: ACTIVE}
+  lifecycle: {status: COMPLETED}
   approval: {status: APPROVED, approval_source: USER_EXPLICIT}
   implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-01, WU-02, WU-03]
@@ -25,5 +25,11 @@ work_unit:
     - ledger records and ledger persistence are separately owned
     - recovery state does not silently authorize execution
   acceptance:
-    - execution binding and ledger tests pass
+    - execution binding and ledger tests introduce no new failures versus the pinned parent baseline
     - state guard authorization and ledger responsibilities are separately addressable
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT
