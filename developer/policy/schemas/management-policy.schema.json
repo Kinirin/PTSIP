@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:developer-policy:v1",
-  "title": "PTSIP Management Policy for Developers v1",
+  "title": "Developer Management Policy v1",
   "type": "object",
   "required": [
     "schema_version",
@@ -14,7 +14,12 @@
       "const": "ptsip-developer-policy/v1"
     },
     "policy_class": {
-      "const": "PTSIP_DEVELOPER_POLICY"
+      "enum": [
+        "PTSIP_DEVELOPER_POLICY",
+        "VPMS_DEVELOPER_POLICY",
+        "PTSIP_BOUND_POLICY"
+      ],
+      "description": "Canonical developer-policy ownership discriminator. Physical path, policy ID, and schema_version do not imply subsystem ownership."
     },
     "policy": {
       "type": "object",
