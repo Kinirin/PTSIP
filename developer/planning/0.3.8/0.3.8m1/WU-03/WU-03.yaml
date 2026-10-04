@@ -1,0 +1,25 @@
+schema_version: ptsip-isolated-work-unit/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+work_unit:
+  id: WU-03
+  title: Decompose planning responsibilities
+  lifecycle: {status: DRAFT}
+  approval: {status: PENDING}
+  implementation_authorization: {status: NOT_AUTHORIZED}
+  depends_on: [WU-01, WU-02]
+  objective: >-
+    Separate final-state representation, reconciliation, proposal derivation,
+    convergence-plan construction, direct planning, and planning result ownership.
+  target_paths:
+    - src/ptsip/migration/planning/**
+  source_modules:
+    - src/ptsip/migration/planner.py
+    - src/ptsip/migration/direct_planner.py
+  invariants:
+    - planning does not mutate repository state
+    - reconciliation does not own proposal semantic identity
+    - direct planning stays separate from general convergence planning
+  acceptance:
+    - planning tests pass
+    - final-state and reconciliation responsibilities are separately addressable by path
+    - direct planner filename prefix is no longer required to identify responsibility

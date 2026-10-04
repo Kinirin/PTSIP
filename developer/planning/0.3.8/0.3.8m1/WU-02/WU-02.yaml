@@ -1,0 +1,28 @@
+schema_version: ptsip-isolated-work-unit/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+work_unit:
+  id: WU-02
+  title: Decompose analysis and proposal responsibilities
+  lifecycle: {status: DRAFT}
+  approval: {status: PENDING}
+  implementation_authorization: {status: NOT_AUTHORIZED}
+  depends_on: [WU-01]
+  objective: >-
+    Split mixed analysis, source/target interpretation, findings, direct convergence,
+    and proposal semantics into responsibility-owned modules.
+  target_paths:
+    - src/ptsip/migration/analysis/**
+    - src/ptsip/migration/proposal/**
+  source_modules:
+    - src/ptsip/migration/model.py
+    - src/ptsip/migration/analyzer.py
+    - src/ptsip/migration/direct_convergence.py
+    - src/ptsip/migration/proposal.py
+  invariants:
+    - analysis observation does not perform repository mutation
+    - proposal semantic identity is separated from delta and bundle representation
+    - direct mode is expressed by path ownership rather than direct_ filename prefixes
+  acceptance:
+    - analysis and proposal tests pass
+    - no target analysis module owns unrelated execution behavior
+    - no generic model bucket remains for moved analysis/proposal responsibilities

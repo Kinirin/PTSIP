@@ -1,0 +1,141 @@
+schema_version: ptsip-migration-responsibility-map/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+source_root: src/ptsip/migration
+mapping_intent: FUTURE_MODULE_OWNERSHIP_AND_RELOCATION
+
+directory_rule:
+  create_directory_when: TWO_OR_MORE_MODULES_SHARE_A_STABLE_RESPONSIBILITY_BOUNDARY
+  do_not_create_directory_when: ONLY_ONE_MODULE_WOULD_BE_WRAPPED
+  forbidden_buckets: [utils, common, helpers]
+
+target_layout:
+  analysis:
+    source:
+      - projection.py
+      - repository_resolution.py
+      - evidence_correlation.py
+      - binding_validation.py
+    target:
+      - semantics.py
+      - compatibility.py
+      - relationship_findings.py
+    findings:
+      - lifecycle.py
+      - architecture.py
+      - work_requirements.py
+    direct:
+      - source_projection.py
+      - target_projection.py
+      - convergence.py
+    root_modules:
+      - result.py
+      - analyzer.py
+
+  proposal:
+    root_modules:
+      - semantic_identity.py
+      - target_delta.py
+      - bundle.py
+      - source_set.py
+
+  planning:
+    convergence:
+      - final_state.py
+      - reconciliation.py
+      - builder.py
+    direct:
+      - reference.py
+      - builder.py
+    root_modules:
+      - proposal_derivation.py
+      - result.py
+
+  execution:
+    state:
+      - source_steps.py
+      - promotion.py
+      - recovery.py
+    guard:
+      - repository_snapshot.py
+      - mutation.py
+    authorization:
+      - binding.py
+      - proof.py
+      - preconditions.py
+    ledger:
+      - record.py
+      - store.py
+    mutation:
+      - delta.py
+      - source.py
+      - asynchronous.py
+      - finalization.py
+    promotion:
+      - preparation.py
+      - mutation.py
+      - verification.py
+    direct:
+      - identity_plan.py
+      - identity_rewrite.py
+      - promotion.py
+      - verification.py
+
+current_module_decomposition:
+  model.py:
+    target_responsibilities:
+      - analysis/source
+      - analysis/target
+      - analysis/findings
+      - analysis/result.py
+  analyzer.py:
+    target_responsibilities:
+      - analysis/source
+      - analysis/target
+      - analysis/analyzer.py
+  direct_convergence.py:
+    target_responsibilities:
+      - analysis/direct
+  proposal.py:
+    target_responsibilities:
+      - proposal/semantic_identity.py
+      - proposal/target_delta.py
+      - proposal/bundle.py
+      - proposal/source_set.py
+  planner.py:
+    target_responsibilities:
+      - planning/convergence
+      - planning/proposal_derivation.py
+      - planning/result.py
+  direct_planner.py:
+    target_responsibilities:
+      - planning/direct
+  execution_model.py:
+    target_responsibilities:
+      - execution/state
+      - execution/guard
+      - execution/authorization
+  execution_binding.py:
+    target_responsibilities:
+      - execution/guard
+      - execution/authorization
+  execution_ledger.py:
+    target_responsibilities:
+      - execution/ledger
+  execution_apply.py:
+    target_responsibilities:
+      - execution/mutation
+  execution_promotion.py:
+    target_responsibilities:
+      - execution/promotion
+  direct_execution.py:
+    target_responsibilities:
+      - execution/direct
+  identity_rewrite.py:
+    target_responsibilities:
+      - execution/direct
+
+final_path_policy:
+  old_flat_modules_may_exist_during_intermediate_work_units: true
+  old_flat_modules_must_be_absent_at_WU_06_completion: true
+  permanent_private_path_aliases: FORBIDDEN
+  public_api_reexport_from_migration_package: ALLOWED_WHEN_REQUIRED

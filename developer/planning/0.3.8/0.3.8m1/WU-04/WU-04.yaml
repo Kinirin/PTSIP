@@ -1,0 +1,29 @@
+schema_version: ptsip-isolated-work-unit/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+work_unit:
+  id: WU-04
+  title: Decompose execution state guard authorization and ledger
+  lifecycle: {status: DRAFT}
+  approval: {status: PENDING}
+  implementation_authorization: {status: NOT_AUTHORIZED}
+  depends_on: [WU-01, WU-02, WU-03]
+  objective: >-
+    Separate execution state models, repository/mutation guards, authorization
+    binding/proofs/preconditions, and checkpoint ledger storage.
+  target_paths:
+    - src/ptsip/migration/execution/state/**
+    - src/ptsip/migration/execution/guard/**
+    - src/ptsip/migration/execution/authorization/**
+    - src/ptsip/migration/execution/ledger/**
+  source_modules:
+    - src/ptsip/migration/execution_model.py
+    - src/ptsip/migration/execution_binding.py
+    - src/ptsip/migration/execution_ledger.py
+  invariants:
+    - guard state is not authorization authority
+    - authorization logic does not perform target mutation
+    - ledger records and ledger persistence are separately owned
+    - recovery state does not silently authorize execution
+  acceptance:
+    - execution binding and ledger tests pass
+    - state guard authorization and ledger responsibilities are separately addressable
