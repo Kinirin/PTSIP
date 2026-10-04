@@ -9,7 +9,7 @@ from ptsip.migration.analysis.result import MigrationAnalysis
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import MutationGuardExpectation, capture_mutation_guard
 from ptsip.migration.execution.guard.repository_snapshot import RepositorySnapshotExpectation, _analysis_snapshot, _current_snapshot_matches_analysis
-from ptsip.migration.execution.state.source_steps import ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
 from ptsip.migration.planning.result import FinalPointConvergencePlan
 from ptsip.migration.proposal.source_set import SourceProposalSet
 from ptsip.migration.proposal.target_delta import TargetDelta

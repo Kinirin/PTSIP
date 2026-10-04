@@ -1,28 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import StrEnum
 
 from ptsip.migration.execution.authorization.binding import SourceExecutionBinding
 from ptsip.migration.execution.authorization.proof import AuthorizedExecutionPlan
+from ptsip.migration.execution.state.phase import ExecutionPhase
 
-class ExecutionPhase(StrEnum):
-    PLAN_BOUND = "PLAN_BOUND"
-    AUTHORIZED = "AUTHORIZED"
-    PRECONDITIONS_VERIFIED = "PRECONDITIONS_VERIFIED"
-    FINAL_POINT_APPLIED = "FINAL_POINT_APPLIED"
-    SOURCE_REANALYZED = "SOURCE_REANALYZED"
-    SOURCE_COMPLETE = "SOURCE_COMPLETE"
-    ASYNC_APPLIED = "ASYNC_APPLIED"
-    SOURCE_REMOVED = "SOURCE_REMOVED"
-    CANONICAL_SOURCE_COMPLETE = "CANONICAL_SOURCE_COMPLETE"
-    GLOBAL_VALIDATION = "GLOBAL_VALIDATION"
-    PROMOTION_READY = "PROMOTION_READY"
-    PROMOTED = "PROMOTED"
-    POST_PROMOTION_VERIFIED = "POST_PROMOTION_VERIFIED"
-    RECOVERY_REQUIRED = "RECOVERY_REQUIRED"
-
-@dataclass(frozen=True)
 class VerifiedSourceStep:
     authorized: AuthorizedExecutionPlan
     source_index: int

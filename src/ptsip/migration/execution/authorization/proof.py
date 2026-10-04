@@ -6,7 +6,7 @@ from typing import Protocol
 from ptsip.migration.execution.authorization.binding import BoundExecutionPlan
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.ledger.store import CheckpointLedger
-from ptsip.migration.execution.state.source_steps import ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
 from ptsip.migration.proposal.semantic_identity import semantic_digest
 
 @dataclass(frozen=True)

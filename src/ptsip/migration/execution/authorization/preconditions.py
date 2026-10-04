@@ -10,7 +10,8 @@ from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import _sha256_file, capture_mutation_guard
 from ptsip.migration.execution.guard.repository_snapshot import RepositorySnapshotExpectation
 from ptsip.migration.execution.ledger.store import CheckpointLedger
-from ptsip.migration.execution.state.source_steps import ExecutionPhase, VerifiedSourceStep
+from ptsip.migration.execution.state.phase import ExecutionPhase
+from ptsip.migration.execution.state.source_steps import VerifiedSourceStep
 from ptsip.migration.planning.convergence.final_state import FinalPointKind
 
 def _guard_matches(root: Path, bound: BoundExecutionPlan) -> bool:

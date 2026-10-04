@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Mapping
 
 from ptsip.migration.execution.guard.repository_snapshot import RepositorySnapshotExpectation
-from ptsip.migration.execution.state.source_steps import ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
 from ptsip.migration.execution.ledger.record import CheckpointRecord, LedgerIntegrityError
 from ptsip.migration.proposal.semantic_identity import semantic_digest
 
