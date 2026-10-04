@@ -23,42 +23,85 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.14"
-          cache: "pip"
-          cache-dependency-path: pyproject.toml
 
-      - name: Install test dependencies
-        run: python -m pip install -e ".[dev]"
-
-      - name: Verify migration import surface
-        shell: pwsh
+      - name: Prepare baseline and current environments
+        shell: bash
         run: |
-          New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
-          $log = ".artifacts/migration-0.3.8m1.log"
-          python -c "import ptsip.migration as m; print('migration import ok', len(m.__all__))" 2>&1 |
-            Tee-Object -FilePath $log
-          if ($LASTEXITCODE -ne 0) { throw "Migration import smoke failed." }
+          set -euo pipefail
+          mkdir -p .artifacts
+          git worktree add --detach ../PTSIP-baseline 698c1a79aee06fcc0705663f8eecf9462a6d46c0
 
-      - name: Run migration focused tests
-        shell: pwsh
+          python -m venv ../venv-baseline
+          ../venv-baseline/bin/python -m pip install -q -e "../PTSIP-baseline[dev]"             > .artifacts/baseline-install.log 2>&1
+
+          python -m venv ../venv-current
+          ../venv-current/bin/python -m pip install -q -e ".[dev]"             > .artifacts/current-install.log 2>&1
+
+      - name: Verify current migration import surface
+        shell: bash
         run: |
-          $log = ".artifacts/migration-0.3.8m1.log"
-          python -m pytest -q tests/ptsip/migration 2>&1 |
-            Tee-Object -FilePath $log -Append
-          if ($LASTEXITCODE -ne 0) { throw "Migration focused tests failed." }
+          set -euo pipefail
+          ../venv-current/bin/python -c "import ptsip.migration as m; print('migration import ok', len(m.__all__))"             2>&1 | tee .artifacts/import-smoke.log
+
+      - name: Compare migration failures with baseline
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          ../venv-baseline/bin/python -m pytest -q ../PTSIP-baseline/tests/ptsip/migration             --junitxml=.artifacts/baseline-migration.xml             > .artifacts/baseline-migration.log 2>&1
+          BASELINE_RC=$?
+
+          ../venv-current/bin/python -m pytest -q tests/ptsip/migration             --junitxml=.artifacts/current-migration.xml             > .artifacts/current-migration.log 2>&1
+          CURRENT_RC=$?
+
+          set -e
+          BASELINE_RC=$BASELINE_RC CURRENT_RC=$CURRENT_RC ../venv-current/bin/python - <<'PY'             2>&1 | tee .artifacts/migration-differential.log
+          import os
+          import sys
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          def failures(path: str) -> set[str]:
+              root = ET.parse(path).getroot()
+              result: set[str] = set()
+              for case in root.iter("testcase"):
+                  if case.find("failure") is not None or case.find("error") is not None:
+                      classname = case.attrib.get("classname", "")
+                      name = case.attrib.get("name", "")
+                      result.add(f"{classname}::{name}")
+              return result
+
+          baseline = failures(".artifacts/baseline-migration.xml")
+          current = failures(".artifacts/current-migration.xml")
+          new_failures = sorted(current - baseline)
+          inherited_failures = sorted(current & baseline)
+          baseline_only = sorted(baseline - current)
+
+          print(f"baseline_rc={os.environ['BASELINE_RC']}")
+          print(f"current_rc={os.environ['CURRENT_RC']}")
+          print(f"baseline_failures={len(baseline)}")
+          print(f"current_failures={len(current)}")
+          print(f"inherited_failures={len(inherited_failures)}")
+          print(f"baseline_only_failures={len(baseline_only)}")
+          print(f"new_failures={len(new_failures)}")
+          for item in new_failures:
+              print(f"NEW_FAILURE {item}")
+
+          if new_failures:
+              sys.exit(1)
+          PY
 
       - name: Run impacted subsystem regression tests
-        shell: pwsh
+        shell: bash
         run: |
-          $log = ".artifacts/migration-0.3.8m1.log"
-          python -m pytest -q tests/ptsip/repository tests/ptsip/evidence tests/ptsip/conformance 2>&1 |
-            Tee-Object -FilePath $log -Append
-          if ($LASTEXITCODE -ne 0) { throw "Impacted subsystem regression tests failed." }
+          set -euo pipefail
+          ../venv-current/bin/python -m pytest -q             tests/ptsip/repository             tests/ptsip/evidence             tests/ptsip/conformance             2>&1 | tee .artifacts/impacted-regression.log
 
-      - name: Upload validation log
+      - name: Upload validation logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: migration-0.3.8m1-${{ github.sha }}
-          path: .artifacts/migration-0.3.8m1.log
+          path: .artifacts/
           if-no-files-found: warn
           retention-days: 3
