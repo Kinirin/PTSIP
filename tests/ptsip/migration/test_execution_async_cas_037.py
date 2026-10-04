@@ -30,7 +30,7 @@ from ptsip.migration import (
     reanalyze_source,
     verify_source_preconditions,
 )
-from ptsip.migration.execution_apply import _apply_delta
+from ptsip.migration.execution.mutation.delta import _apply_delta
 from ptsip.repository.profile_transition import ProfileTransitionState
 
 from _execution_fixture import (

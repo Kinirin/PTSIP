@@ -12,9 +12,9 @@ from ptsip.evidence.contract import (
     SnapshotBinding,
     SourceGenerationBinding as EvidenceSourceGenerationBinding,
 )
-from ptsip.migration.direct_convergence import analyze_direct_profile_convergence
-from ptsip.migration.direct_planner import build_direct_final_point_convergence_plan
-from ptsip.migration.planner import (
+from ptsip.migration.analysis.direct import analyze_direct_profile_convergence
+from ptsip.migration.planning.direct import build_direct_final_point_convergence_plan
+from ptsip.migration.planning import (
     FinalPointKind,
     derive_source_proposals,
     final_point_state_from_mapping,

@@ -13,31 +13,31 @@ from ptsip.evidence.contract import (
     SnapshotBinding,
     SourceGenerationBinding as EvidenceSourceGenerationBinding,
 )
-from ptsip.migration.direct_convergence import analyze_direct_profile_convergence
-from ptsip.migration.direct_execution import (
+from ptsip.migration.analysis.direct import analyze_direct_profile_convergence
+from ptsip.migration.execution.direct import (
     build_legacy_target_identity_rewrite_plan,
     prepare_direct_promotion,
     verify_direct_post_promotion,
 )
-from ptsip.migration.direct_planner import build_direct_final_point_convergence_plan
-from ptsip.migration.execution_apply import (
+from ptsip.migration.planning.direct import build_direct_final_point_convergence_plan
+from ptsip.migration.execution.mutation import (
     apply_required_deltas,
     complete_source,
     finalize_source,
     reanalyze_source,
 )
-from ptsip.migration.execution_binding import (
+from ptsip.migration import (
     authorize_execution,
     bind_execution_plan,
     build_authorization_proof,
     inspect_recovery,
     verify_source_preconditions,
 )
-from ptsip.migration.execution_ledger import CheckpointLedger
-from ptsip.migration.execution_model import PostPromotionVerifiedState, SourceCompletionProof
-from ptsip.migration.execution_promotion import promote_canonical
-from ptsip.migration.identity_rewrite import authorize_identity_rewrite, execute_identity_rewrite
-from ptsip.migration.planner import derive_source_proposals, final_point_state_from_mapping
+from ptsip.migration.execution.ledger import CheckpointLedger
+from ptsip.migration import PostPromotionVerifiedState, SourceCompletionProof
+from ptsip.migration.execution.promotion import promote_canonical
+from ptsip.migration.execution.direct import authorize_identity_rewrite, execute_identity_rewrite
+from ptsip.migration.planning import derive_source_proposals, final_point_state_from_mapping
 from ptsip.profile_compatibility import V034_REVISION, V036_REVISION
 from ptsip.repository.profile_convergence import discover_direct_profile_convergence
 from ptsip.repository.snapshot import capture_snapshot

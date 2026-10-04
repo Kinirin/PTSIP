@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from ptsip.migration import ExecutionStateError
-from ptsip.migration.execution_apply import _apply_delta_batch
+from ptsip.migration.execution.mutation.delta import _apply_delta_batch
 
 
 def _verified() -> SimpleNamespace:

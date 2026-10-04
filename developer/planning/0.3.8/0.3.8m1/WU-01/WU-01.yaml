@@ -1,0 +1,36 @@
+schema_version: ptsip-isolated-work-unit/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+work_unit:
+  id: WU-01
+  title: Freeze migration surface and relocation baseline
+  lifecycle: {status: COMPLETED}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
+  depends_on: []
+  objective: >-
+    Establish an exact migration-package baseline before relocation so public imports,
+    internal cross-module dependencies, and tests can be compared mechanically after
+    the structural decomposition.
+  scope:
+    - src/ptsip/migration/**
+    - tests/ptsip/migration/**
+  required_changes:
+    - INVENTORY_CURRENT_MIGRATION_MODULES_AND_EXPORTS
+    - IDENTIFY_EXTERNAL_IMPORTERS_OF_MIGRATION_PACKAGE
+    - IDENTIFY_INTERNAL_CROSS_MODULE_IMPORTS
+    - RECORD_BASELINE_TEST_COMMANDS_AND_RESULTS
+    - VERIFY_RESPONSIBILITY_MAP_COVERS_ALL_CURRENT_MIGRATION_MODULES
+  forbidden:
+    - STRUCTURAL_RELOCATION
+    - POLICY_CHANGE
+    - SEMANTIC_CHANGE
+  acceptance:
+    - every current migration implementation module maps to at least one target responsibility
+    - all public migration package exports are recorded
+    - baseline focused tests are recorded before relocation
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT

@@ -1,0 +1,51 @@
+schema_version: ptsip-isolated-work-unit/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+work_unit:
+  id: WU-06
+  title: Remove flat implementation paths and verify migration package
+  lifecycle: {status: COMPLETED}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-02, WU-03, WU-04, WU-05]
+  objective: >-
+    Finish the migration-package cutover, remove obsolete flat implementation modules,
+    update exact import references, retain only required canonical public re-exports,
+    and prove no behavior or policy semantics changed.
+  scope:
+    primary:
+      - src/ptsip/migration/**
+      - tests/ptsip/migration/**
+    conditional_import_remediation:
+      - src/ptsip/**
+      - tests/ptsip/**
+  required_changes:
+    - REMOVE_OBSOLETE_FLAT_MIGRATION_IMPLEMENTATION_MODULES
+    - UPDATE_INTERNAL_AND_EXTERNAL_IMPORTS
+    - KEEP_ONLY_CANONICAL_PUBLIC_REEXPORTS_REQUIRED_BY_EXISTING_PUBLIC_API
+    - RUN_FOCUSED_AND_IMPACTED_REGRESSION_TESTS
+    - VERIFY_NO_POLICY_OR_PLANNING_SCHEMA_FILES_CHANGED
+  forbidden:
+    - PERMANENT_PRIVATE_MODULE_COMPATIBILITY_SHIMS
+    - EXTENSION_CHANGE
+    - POLICY_CHANGE
+    - UNRELATED_SUBSYSTEM_RESTRUCTURE
+  verification_commands:
+    windows_powershell:
+      - '$log = ".\\migration-0.3.8m1.log"'
+      - 'python -m pytest -q tests/ptsip/migration 2>&1 | Tee-Object -FilePath $log'
+      - 'python -m pytest -q tests/ptsip/repository tests/ptsip/evidence tests/ptsip/conformance 2>&1 | Tee-Object -FilePath $log -Append'
+      - 'git diff --name-only dev/0.3.8...HEAD 2>&1 | Tee-Object -FilePath $log -Append'
+      - 'Remove-Item $log'
+  acceptance:
+    - focused migration tests introduce no new failures versus the pinned parent baseline
+    - impacted regression tests introduce no new failures versus the pinned parent baseline
+    - no obsolete flat migration implementation module remains
+    - no permanent private compatibility shim remains
+    - no policy file or planning schema is changed
+    - migration public imports required by callers still resolve
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT

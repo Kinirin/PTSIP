@@ -12,7 +12,7 @@ from ptsip.evidence.contract import (
     SnapshotBinding,
     SourceGenerationBinding as EvidenceSourceGenerationBinding,
 )
-from ptsip.migration.direct_convergence import (
+from ptsip.migration.analysis.direct import (
     analyze_direct_profile_convergence,
     current_pp_target_semantics,
 )
