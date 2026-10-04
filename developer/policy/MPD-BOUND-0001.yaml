@@ -1,0 +1,93 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_BOUND_POLICY
+
+policy:
+  id: MPD-BOUND-0001
+  version: "0.0"
+  title: Developer Policy Authority Family Resolution Boundary
+  status: DRAFT
+
+rules:
+  developer_policy_authority_family_boundary:
+    boundary_role: CROSS_POLICY_CLASS_AUTHORITY_RESOLUTION
+
+    participating_policy_classes:
+      current:
+        - PTSIP_DEVELOPER_POLICY
+        - VPMS_DEVELOPER_POLICY
+      policy_class_must_be_explicit: true
+      unknown_policy_class: FAIL_CLOSED
+
+    authority_family_identity:
+      canonical_key_fields:
+        - policy_class
+        - responsibility_family
+      responsibility_family_alone_is_authority_identity: false
+      policy_class_alone_is_authority_identity: false
+      missing_key_field: FAIL_CLOSED
+
+    policy_identity_namespace:
+      responsibility_family_policy_pattern: MPD-<FAMILY>-<NNNN>
+      boundary_policy_pattern: MPD-BOUND-<NNNN>
+      responsibility_family_sequence_shared_across_policy_classes: true
+      class_specific_responsibility_family_namespace_creation: FORBIDDEN
+      boundary_namespace_is_responsibility_family: false
+      boundary_policy_class_required: PTSIP_BOUND_POLICY
+
+    authority_lookup_isolation:
+      family_only_lookup: FORBIDDEN
+      lookup_scope_key:
+        - policy_class
+        - responsibility_family
+      same_policy_class_same_family: COLLISION_ANALYSIS_DOMAIN
+      same_family_different_policy_class: DISTINCT_AUTHORITY_DOMAIN
+      cross_policy_class_collision_comparison: FORBIDDEN
+      unresolved_lookup_scope: FAIL_CLOSED
+
+    responsibility_analysis_binding:
+      owned_authority_identity_requires:
+        - policy_class
+        - responsibility_family
+      referenced_authority_identity_requires:
+        - referenced_policy_class
+        - referenced_family
+      implicit_policy_class_inference_from_family: FORBIDDEN
+      implicit_policy_class_inference_from_policy_id_family_segment: FORBIDDEN
+
+    materialization_coherence:
+      one_group_one_policy_class: true
+      one_group_one_responsibility_family: true
+      one_group_one_cohesion_key: true
+      cross_policy_class_grouping: FORBIDDEN
+      target_policy_class_must_be_explicit: true
+      target_responsibility_family_must_be_explicit: true
+
+    boundary_ownership:
+      owns:
+        - POLICY_CLASS_AND_RESPONSIBILITY_FAMILY_COMPOSITE_IDENTITY
+        - AUTHORITY_LOOKUP_ISOLATION
+        - CROSS_POLICY_CLASS_COLLISION_FIREWALL
+        - MATERIALIZATION_CLASS_COHERENCE
+        - BOUNDARY_POLICY_IDENTITY_NAMESPACE
+      does_not_own:
+        - PTSIP_INTERNAL_RESPONSIBILITY_FAMILY_SEMANTICS
+        - VPMS_INTERNAL_RESPONSIBILITY_FAMILY_SEMANTICS
+        - DEVELOPER_POLICY_INDEX_OWNERSHIP
+        - POLICY_STORAGE_LAYOUT
+        - RESPONSIBILITY_FAMILY_DEFINITION
+        - MIGRATION_IMPLEMENTATION_SEQUENCE
+        - RUNTIME_EXECUTION_IMPLEMENTATION
+
+    migration_guard:
+      class_aware_lookup_required_before_multi_class_family_materialization: true
+      family_only_lookup_may_not_authorize_cross_class_materialization: true
+      existing_policy_ids_must_not_be_renamed_for_class_separation: true
+      existing_responsibility_family_names_must_not_be_duplicated_per_policy_class: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-WORK-0003
+      scope: RESPONSIBILITY_FAMILY_DECOMPOSITION_AND_AUTHORITY_RECONCILIATION_BASELINE
