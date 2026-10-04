@@ -1,0 +1,64 @@
+name: migration-m1-validation
+
+on:
+  push:
+    branches:
+      - dev/0.3.8m1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  migration-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact validation source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
+
+      - name: Install test dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Verify migration import surface
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
+          $log = ".artifacts/migration-0.3.8m1.log"
+          python -c "import ptsip.migration as m; print('migration import ok', len(m.__all__))" 2>&1 |
+            Tee-Object -FilePath $log
+          if ($LASTEXITCODE -ne 0) { throw "Migration import smoke failed." }
+
+      - name: Run migration focused tests
+        shell: pwsh
+        run: |
+          $log = ".artifacts/migration-0.3.8m1.log"
+          python -m pytest -q tests/ptsip/migration 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) { throw "Migration focused tests failed." }
+
+      - name: Run impacted subsystem regression tests
+        shell: pwsh
+        run: |
+          $log = ".artifacts/migration-0.3.8m1.log"
+          python -m pytest -q tests/ptsip/repository tests/ptsip/evidence tests/ptsip/conformance 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) { throw "Impacted subsystem regression tests failed." }
+
+      - name: Upload validation log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-0.3.8m1-${{ github.sha }}
+          path: .artifacts/migration-0.3.8m1.log
+          if-no-files-found: warn
+          retention-days: 3
