@@ -29,20 +29,3 @@ class RecoveryRequiredState:
     source_path: str | None = None
     phase: ExecutionPhase = ExecutionPhase.RECOVERY_REQUIRED
 
-
-ExecutionState: TypeAlias = (
-    BoundExecutionPlan
-    | AuthorizedExecutionPlan
-    | VerifiedSourceStep
-    | AppliedSourceStep
-    | ReanalyzedSourceStep
-    | CompletedSourceStep
-    | AsyncAppliedSourceStep
-    | RemovedTemporarySourceStep
-    | CanonicalSourceComplete
-    | PromotionReadyState
-    | PromotedState
-    | PostPromotionVerifiedState
-    | RecoveryRequiredState
-)
-
