@@ -81,7 +81,7 @@
             "string",
             "null"
           ],
-          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+          "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
         },
         "recorded_at": {
           "type": "string",
