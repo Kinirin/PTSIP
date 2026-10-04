@@ -1,3 +1,0 @@
-from ptsip.migration.execution.direct.promotion import build_legacy_target_identity_rewrite_plan, prepare_direct_promotion
-from ptsip.migration.execution.direct.verification import verify_direct_post_promotion
-__all__=["build_legacy_target_identity_rewrite_plan","prepare_direct_promotion","verify_direct_post_promotion"]
