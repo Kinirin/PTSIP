@@ -14,7 +14,8 @@ from ptsip.migration.execution.ledger.store import CheckpointLedger
 from ptsip.migration.execution.mutation.delta import _load_yaml
 from ptsip.migration.execution.mutation.finalization import _completed_verified
 from ptsip.migration.execution.state.promotion import PromotionReadyState
-from ptsip.migration.execution.state.source_steps import CanonicalSourceComplete, ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
+from ptsip.migration.execution.state.source_steps import CanonicalSourceComplete
 from ptsip.migration.planning.convergence.final_state import final_point_state_from_mapping
 
 def _direct_plan_profile_contract(bound) -> str:

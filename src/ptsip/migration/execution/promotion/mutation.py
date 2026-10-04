@@ -10,7 +10,7 @@ from ptsip.migration.execution.guard.mutation import _sha256_file
 from ptsip.migration.execution.ledger.store import CheckpointLedger
 from ptsip.migration.execution.mutation.finalization import _completed_verified
 from ptsip.migration.execution.state.promotion import PromotedState, PromotionReadyState
-from ptsip.migration.execution.state.source_steps import ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
 
 def promote_canonical(
     repository_root: str | Path,

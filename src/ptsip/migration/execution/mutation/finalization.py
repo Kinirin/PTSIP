@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ptsip.migration.execution.state.phase import ExecutionPhase
 from pathlib import Path
 
 from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
@@ -12,7 +13,6 @@ from ptsip.migration.execution.state.source_steps import (
     AsyncAppliedSourceStep,
     CanonicalSourceComplete,
     CompletedSourceStep,
-    ExecutionPhase,
     RemovedTemporarySourceStep,
     VerifiedSourceStep,
 )
