@@ -6,6 +6,7 @@ from pathlib import Path
 import yaml
 
 from developer.automation.policy_loader import repository_root
+from developer.tests.policy_contract_fixtures import write_catalog_fixture
 from developer.automation.policy_plan_binding.manager import create_binding, link_plan
 from developer.automation.verification.policy_plan_consistency import (
     verify_policy_plan_consistency,
@@ -51,6 +52,7 @@ def _repo(tmp_path: Path) -> Path:
         "  status: ACTIVE\n",
         encoding="utf-8",
     )
+    write_catalog_fixture(root, ["MPD-0001"])
     return root
 
 

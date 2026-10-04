@@ -221,8 +221,17 @@ def _subject_values(registry: Mapping[str, object]) -> list[str]:
 
 
 def _load_consistent_registered_corpus(base: Path) -> CorpusState:
-    index = load_yaml(INDEX, root=base)
+    from developer.automation.policy_validator import load_neutral_policy_index
+    try:
+        index = load_neutral_policy_index(base)
+    except (OSError, ValueError) as exc:
+        raise PolicyIdentityLifecycleError("INVALID_POLICY_INDEX", str(exc)) from exc
     registry = load_yaml(SUBJECT_REGISTRY, root=base)
+    from developer.automation.policy_validator import developer_contract_validator
+    subject_schema = load_json("developer/policy/schemas/developer-policy-subject-catalog.schema.json", root=base)
+    subject_errors = tuple(developer_contract_validator(subject_schema, base).iter_errors(registry))
+    if subject_errors:
+        raise PolicyIdentityLifecycleError("INVALID_SUBJECT_REGISTRY", "; ".join(error.message for error in subject_errors))
     entries = _index_entries(index)
     ids = tuple(str(item.get("id")) for item in entries)
     paths = tuple(str(item.get("path")) for item in entries)
@@ -260,6 +269,8 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
             raise PolicyIdentityLifecycleError("POLICY_FILE_ID_MISMATCH", f"{policy_id}: policy.id mismatch")
         if policy.get("status") != entry.get("status"):
             raise PolicyIdentityLifecycleError("POLICY_STATUS_MISMATCH", f"{policy_id}: file/index status mismatch")
+        if payload.get("policy_class") != entry.get("policy_class"):
+            raise PolicyIdentityLifecycleError("POLICY_CLASS_MISMATCH", f"{policy_id}: file/index policy_class mismatch")
 
     return CorpusState(ids=ids, index=index, subject_registry=registry)
 
@@ -320,6 +331,7 @@ def _next_family_policy_id(ids: Sequence[str], family: str) -> str:
 
 def _validated_analysis_group(
     *,
+    policy_class: str,
     family: str,
     analysis_ref: str | Path,
     group_id: str,
@@ -365,6 +377,8 @@ def _validated_analysis_group(
             "MATERIALIZATION_GROUP_FAMILY_MISMATCH",
             f"group {group_id} belongs to {group.get('family')}, not {family}",
         )
+    if group.get("policy_class") != policy_class:
+        raise PolicyIdentityLifecycleError("MATERIALIZATION_GROUP_CLASS_MISMATCH", f"group {group_id} policy_class does not match {policy_class}")
     return analysis, group
 
 
@@ -374,9 +388,11 @@ def preflight_family_policy(
     analysis_ref: str | Path,
     group_id: str,
     *,
+    policy_class: str,
     root: str | Path | None = None,
 ) -> dict[str, object]:
     base = repository_root(root)
+    _require_family_class_materialization(policy_class, base)
     state = _load_consistent_registered_corpus(base)
     _assert_no_unregistered_policy_file(base, state)
     approval = _load_approval(approval_ref, base=base)
@@ -387,6 +403,7 @@ def preflight_family_policy(
         )
 
     analysis, group = _validated_analysis_group(
+        policy_class=policy_class,
         family=family,
         analysis_ref=analysis_ref,
         group_id=group_id,
@@ -394,7 +411,7 @@ def preflight_family_policy(
     )
     allocated = _next_family_policy_id(state.ids, family)
     requested = approval.get("requested_policy_id")
-    if requested != allocated:
+    if requested is not None and requested != allocated:
         raise PolicyIdentityLifecycleError(
             "REQUESTED_POLICY_ID_NOT_NEXT_AVAILABLE",
             f"requested {requested!r}, next available {family} policy is {allocated}",
@@ -404,6 +421,7 @@ def preflight_family_policy(
         "status": "READY",
         "allocated_policy_id": allocated,
         "family": family,
+        "policy_class": policy_class,
         "group_id": group_id,
         "analysis_id": analysis["analysis_id"],
         "analysis_ref": analysis["analysis_ref"],
@@ -593,7 +611,8 @@ def register_policy(
 
     payload = load_yaml(relative, root=base)
     schema = load_json(MANAGEMENT_POLICY_SCHEMA, root=base)
-    errors = tuple(Draft202012Validator(schema).iter_errors(payload))
+    from developer.automation.policy_validator import developer_contract_validator
+    errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
     if errors:
         raise PolicyIdentityLifecycleError(
             "INVALID_POLICY_FILE",
@@ -619,6 +638,7 @@ def register_policy(
     index_entries = list(index["policies"])
     index_entries.append({
         "id": allocated,
+        "policy_class": payload["policy_class"],
         "path": expected_relative.as_posix(),
         "status": approval["target_status"],
     })
@@ -657,9 +677,11 @@ def register_family_policy(
     group_id: str,
     policy_file: str | Path,
     *,
+    policy_class: str,
     root: str | Path | None = None,
 ) -> dict[str, object]:
     base = repository_root(root)
+    _require_family_class_materialization(policy_class, base)
     state = _load_consistent_registered_corpus(base)
     approval = _load_approval(approval_ref, base=base)
     if approval.get("target_status") != "DRAFT":
@@ -669,6 +691,7 @@ def register_family_policy(
         )
 
     analysis, _ = _validated_analysis_group(
+        policy_class=policy_class,
         family=family,
         analysis_ref=analysis_ref,
         group_id=group_id,
@@ -717,7 +740,8 @@ def register_family_policy(
 
     payload = load_yaml(relative, root=base)
     schema = load_json(MANAGEMENT_POLICY_SCHEMA, root=base)
-    errors = tuple(Draft202012Validator(schema).iter_errors(payload))
+    from developer.automation.policy_validator import developer_contract_validator
+    errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
     if errors:
         raise PolicyIdentityLifecycleError(
             "INVALID_POLICY_FILE",
@@ -725,6 +749,8 @@ def register_family_policy(
         )
 
     policy = _mapping(payload.get("policy"), label=f"{allocated}.policy")
+    if payload.get("policy_class") != policy_class:
+        raise PolicyIdentityLifecycleError("POLICY_CLASS_MISMATCH", "new policy file must match requested and analyzed policy_class")
     if policy.get("id") != allocated:
         raise PolicyIdentityLifecycleError(
             "POLICY_FILE_ID_MISMATCH",
@@ -744,7 +770,7 @@ def register_family_policy(
     analysis_registry = load_yaml(ANALYSIS_REGISTRY, root=base)
     analysis_registry_schema = load_json(ANALYSIS_REGISTRY_SCHEMA, root=base)
     registry_errors = tuple(
-        Draft202012Validator(analysis_registry_schema).iter_errors(analysis_registry)
+        developer_contract_validator(analysis_registry_schema, base).iter_errors(analysis_registry)
     )
     if registry_errors:
         raise PolicyIdentityLifecycleError(
@@ -776,6 +802,7 @@ def register_family_policy(
     index_entries.append(
         {
             "id": allocated,
+            "policy_class": policy_class,
             "path": expected_relative.as_posix(),
             "status": approval["target_status"],
         }
@@ -805,6 +832,8 @@ def register_family_policy(
     updated_bindings.append(
         {
             "policy_id": allocated,
+            "policy_class": policy_class,
+            "family": family,
             "analysis_ref": analysis["analysis_ref"],
             "analysis_id": analysis["analysis_id"],
             "group_id": group_id,
@@ -830,6 +859,7 @@ def register_family_policy(
         "status": "REGISTERED",
         "policy_id": allocated,
         "family": family,
+        "policy_class": policy_class,
         "group_id": group_id,
         "analysis_id": analysis["analysis_id"],
         "policy_status": approval["target_status"],
@@ -838,6 +868,16 @@ def register_family_policy(
         "subject_registry": SUBJECT_REGISTRY,
         "analysis_registry": ANALYSIS_REGISTRY,
     }
+
+
+def _require_family_class_materialization(policy_class: str, base: Path) -> None:
+    contract = load_json("developer/policy/registries/developer-policy-catalog-contracts.json", root=base)
+    if policy_class not in contract["$defs"]["developer_policy_class"]["enum"]:
+        raise PolicyIdentityLifecycleError("UNKNOWN_POLICY_CLASS", "Family materialization requires an explicit registered developer policy class")
+    if policy_class == "VPMS_DEVELOPER_POLICY":
+        execution = contract.get("application_execution", {})
+        if not contract["application_gate"]["vpms_policy_materialization_authorized"] or not execution.get("vpms_class_materialization_enabled") or not execution.get("m1_m7_verified"):
+            raise PolicyIdentityLifecycleError("VPMS_CLASS_MATERIALIZATION_NOT_ENABLED", "M1-M7 verification must complete before VPMS Family policy materialization")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -853,6 +893,7 @@ def _parser() -> argparse.ArgumentParser:
 
     family_preflight_cmd = sub.add_parser("family-preflight")
     family_preflight_cmd.add_argument("--family", choices=FAMILIES, required=True)
+    family_preflight_cmd.add_argument("--policy-class", required=True)
     family_preflight_cmd.add_argument("--approval-ref", required=True)
     family_preflight_cmd.add_argument("--analysis-ref", required=True)
     family_preflight_cmd.add_argument("--group-id", required=True)
@@ -863,6 +904,7 @@ def _parser() -> argparse.ArgumentParser:
 
     family_register_cmd = sub.add_parser("family-register")
     family_register_cmd.add_argument("--family", choices=FAMILIES, required=True)
+    family_register_cmd.add_argument("--policy-class", required=True)
     family_register_cmd.add_argument("--approval-ref", required=True)
     family_register_cmd.add_argument("--analysis-ref", required=True)
     family_register_cmd.add_argument("--group-id", required=True)
@@ -895,6 +937,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.approval_ref,
                 args.analysis_ref,
                 args.group_id,
+                policy_class=args.policy_class,
                 root=args.root,
             )
         elif args.command == "register":
@@ -906,6 +949,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.analysis_ref,
                 args.group_id,
                 args.policy_file,
+                policy_class=args.policy_class,
                 root=args.root,
             )
         elif args.command == "version-initial":

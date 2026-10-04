@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
+from developer.tests.policy_contract_fixtures import contract_validator
 
 from developer.automation.policy_validator import _validate_policy_transition_semantics
 
@@ -62,7 +63,7 @@ def _approved_policy(
 def test_management_policy_schema_accepts_approved_transition_contract() -> None:
     payload = _approved_policy()
     errors = tuple(
-        Draft202012Validator(_schema("management-policy.schema.json")).iter_errors(payload)
+        contract_validator(_schema("management-policy.schema.json")).iter_errors(payload)
     )
     assert errors == ()
 
@@ -72,11 +73,11 @@ def test_requirement_state_vocabulary_is_closed_and_has_no_blocking_field() -> N
 
     deferred = _approved_policy()
     deferred["transition"]["requirements"][0]["state"] = "DEFERRED"
-    assert tuple(Draft202012Validator(schema).iter_errors(deferred))
+    assert tuple(contract_validator(schema).iter_errors(deferred))
 
     blocking = _approved_policy()
     blocking["transition"]["requirements"][0]["blocking"] = True
-    assert tuple(Draft202012Validator(schema).iter_errors(blocking))
+    assert tuple(contract_validator(schema).iter_errors(blocking))
 
 
 def test_approved_ready_state_requires_all_requirements_satisfied_semantically() -> None:
@@ -128,7 +129,7 @@ def test_active_transition_history_requires_complete_and_satisfied() -> None:
     payload["transition"]["state"] = "COMPLETE"
 
     schema_errors = tuple(
-        Draft202012Validator(_schema("management-policy.schema.json")).iter_errors(payload)
+        contract_validator(_schema("management-policy.schema.json")).iter_errors(payload)
     )
     assert schema_errors == ()
     assert _validate_policy_transition_semantics("MPD-VERI-0001", payload) == []

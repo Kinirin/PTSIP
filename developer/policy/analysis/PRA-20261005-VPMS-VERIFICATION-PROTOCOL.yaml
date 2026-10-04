@@ -1,0 +1,88 @@
+schema_version: developer-policy-responsibility-analysis/v2
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-20261005-VPMS-VERIFICATION-PROTOCOL
+  source_ref: >-
+    project-conversation:2026-10-05:VPMS-VERI-source-role-declaration;
+    src/vpms/domain/model.py;src/vpms/domain/registry.py;src/vpms/execution/runner.py
+  responsibilities:
+    - responsibility_id: R01
+      statement: >-
+        Own the VPMS Case protocol's distinct Target, Formula, Variables, Policy
+        and Runner references and its execution outcome/result structure, bounded
+        to the explicitly approved model.py declarations. Do not own purpose or
+        selection semantics.
+      authority_relation: OWN
+      authority_subject: VPMS_CASE_AND_OUTCOME_PROTOCOL
+      lifecycle_scope: VPMS_VERIFICATION_PROTOCOL
+      cohesion_key: VPMS_VERIFICATION_PROTOCOL
+      policy_class: VPMS_DEVELOPER_POLICY
+      family: VERI
+      referenced_policy_class: null
+      referenced_family: null
+      existing_authority_lookup:
+        searched_policy_class: VPMS_DEVELOPER_POLICY
+        searched_family: VERI
+        searched_policy_ids: []
+        lookup_outcome: NO_MATCH
+        candidate_comparisons: []
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+    - responsibility_id: R02
+      statement: >-
+        Own explicit Case reference binding, unresolved-reference diagnostics and
+        reusable Formula registration, bounded to registry.py. Reference failure
+        must not infer a replacement reference or silently produce a usable Registry.
+      authority_relation: OWN
+      authority_subject: VPMS_EXPLICIT_REFERENCE_BINDING
+      lifecycle_scope: VPMS_VERIFICATION_PROTOCOL
+      cohesion_key: VPMS_VERIFICATION_PROTOCOL
+      policy_class: VPMS_DEVELOPER_POLICY
+      family: VERI
+      referenced_policy_class: null
+      referenced_family: null
+      existing_authority_lookup:
+        searched_policy_class: VPMS_DEVELOPER_POLICY
+        searched_family: VERI
+        searched_policy_ids: []
+        lookup_outcome: NO_MATCH
+        candidate_comparisons: []
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+    - responsibility_id: R03
+      statement: >-
+        Own the framework-neutral Runner adapter protocol, individual Case execution
+        and normalized result/error structure in RunnerExecution, CaseExecutor and
+        run_case. Exclude run_selected_cases and selector.py selection responsibility.
+      authority_relation: OWN
+      authority_subject: VPMS_RUNNER_EXECUTION_AND_NORMALIZATION
+      lifecycle_scope: VPMS_VERIFICATION_PROTOCOL
+      cohesion_key: VPMS_VERIFICATION_PROTOCOL
+      policy_class: VPMS_DEVELOPER_POLICY
+      family: VERI
+      referenced_policy_class: null
+      referenced_family: null
+      existing_authority_lookup:
+        searched_policy_class: VPMS_DEVELOPER_POLICY
+        searched_family: VERI
+        searched_policy_ids: []
+        lookup_outcome: NO_MATCH
+        candidate_comparisons: []
+      materialization_action: CREATE_NEW_POLICY
+      target_group_id: G01
+  decision:
+    owned_authority_family_set:
+      - policy_class: VPMS_DEVELOPER_POLICY
+        family: VERI
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+      - group_id: G01
+        policy_class: VPMS_DEVELOPER_POLICY
+        family: VERI
+        cohesion_key: VPMS_VERIFICATION_PROTOCOL
+        responsibility_ids: [R01, R02, R03]
+        cohesion_rationale: >-
+          The explicitly approved Case shape, exact reference resolution and
+          individual Runner/result protocol form one cohesive VPMS verification
+          protocol. Purpose, selection and orchestration are not included.

@@ -7,6 +7,7 @@ import pytest
 import yaml
 
 from developer.automation.policy_loader import repository_root
+from developer.tests.policy_contract_fixtures import write_catalog_fixture
 from developer.automation.policy_plan_binding.errors import PolicyPlanBindingError
 from developer.automation.policy_plan_binding.ref_tracker import track_plan_ref
 from developer.automation.policy_plan_binding.resolver import resolve_bindings
@@ -67,6 +68,7 @@ def _repo(tmp_path: Path, *, plan_ref: str = "developer/planning/old/plan.yaml")
         "  status: ACTIVE\n",
         encoding="utf-8",
     )
+    write_catalog_fixture(root, ["MPD-0001"])
     return root
 
 

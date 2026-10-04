@@ -207,7 +207,13 @@ def _load_index(
     contract: Mapping[str, object],
 ) -> dict[str, dict[str, str]]:
     index_path = _configured_path(root, contract, "policy_index_ref")
-    payload = load_yaml(index_path, root=root)
+    from developer.automation.policy_validator import load_neutral_policy_index
+    if (root / index_path).resolve() != (root / "developer/policy/index.yaml").resolve():
+        raise PolicyResolverError("policy index must use the canonical neutral catalog path")
+    try:
+        payload = load_neutral_policy_index(root)
+    except (OSError, ValueError) as exc:
+        raise PolicyResolverError(str(exc)) from exc
     entries = payload.get("policies")
     if not isinstance(entries, list):
         raise PolicyResolverError("developer policy index must contain policies")
@@ -227,6 +233,7 @@ def _load_index(
             raise PolicyResolverError(f"duplicate policy identity: {policy_id}")
         result[policy_id] = {
             "id": policy_id,
+            "policy_class": entry["policy_class"],
             "path": path,
             "status": status,
         }
@@ -332,6 +339,8 @@ def _validate_policy_ref(
         raise PolicyResolverError(
             f"{policy_id}: canonical record identity does not match index"
         )
+    if policy.get("policy_class") != entry["policy_class"] or identity.get("status") != entry["status"]:
+        raise PolicyResolverError(f"{policy_id}: canonical class/status does not match index projection")
     rules = _mapping(policy.get("rules"), label=f"{policy_id}.rules")
     normalized_sections: list[str] = []
     for section in sections:
@@ -872,6 +881,8 @@ def get_policy(
         raise PolicyResolverError(
             f"{policy_id}: canonical record identity does not match index"
         )
+    if payload.get("policy_class") != entry["policy_class"] or identity.get("status") != entry["status"]:
+        raise PolicyResolverError(f"{policy_id}: canonical class/status does not match index projection")
     if section is None:
         value: object = payload
         fragment = None

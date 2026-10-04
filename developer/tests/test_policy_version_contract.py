@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 from jsonschema import Draft202012Validator
+from developer.tests.policy_contract_fixtures import contract_validator
 
 from developer.automation.policy_identity_lifecycle import (
     PolicyIdentityLifecycleError,
@@ -78,7 +79,7 @@ def test_schema_accepts_lifecycle_aware_policy_versions(version: str, status: st
                 }
             ],
         }
-    errors = tuple(Draft202012Validator(_schema()).iter_errors(payload))
+    errors = tuple(contract_validator(_schema()).iter_errors(payload))
     assert errors == ()
 
 
@@ -98,7 +99,7 @@ def test_schema_accepts_lifecycle_aware_policy_versions(version: str, status: st
 )
 def test_schema_rejects_invalid_or_mismatched_policy_versions(version: str, status: str) -> None:
     payload = _policy(version, status)
-    assert tuple(Draft202012Validator(_schema()).iter_errors(payload))
+    assert tuple(contract_validator(_schema()).iter_errors(payload))
 
 
 def test_semantic_validator_reports_status_version_mismatch() -> None:

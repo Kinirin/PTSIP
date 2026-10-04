@@ -258,7 +258,12 @@ def _validate_current_registry_planes(
     for path in DEVELOPER_REGISTRIES:
         payload = load_yaml(path, root=base)
         developer_payloads.append(payload)
-        for error in Draft202012Validator(developer_registry_schema).iter_errors(payload):
+        validator = (
+            developer_contract_validator(load_json("developer/policy/schemas/developer-policy-subject-catalog.schema.json", root=base), base)
+            if path == "developer/policy/registries/authority-subject-registry.yaml"
+            else Draft202012Validator(developer_registry_schema)
+        )
+        for error in validator.iter_errors(payload):
             errors.append(f"{path}: {error.message}")
 
     schema_registry = support_payloads[0]
@@ -603,7 +608,7 @@ def _validate_policy_responsibility_analysis_plane(
     )
     Draft202012Validator.check_schema(analysis_schema)
     Draft202012Validator.check_schema(registry_schema)
-    analysis_validator = Draft202012Validator(analysis_schema)
+    analysis_validator = developer_contract_validator(analysis_schema, base)
 
     analysis_payloads: dict[str, Mapping[str, object]] = {}
     analysis_root = base / RESPONSIBILITY_ANALYSIS_ROOT
@@ -615,7 +620,7 @@ def _validate_policy_responsibility_analysis_plane(
             payload = load_yaml(relative, root=base)
             for error in analysis_validator.iter_errors(payload):
                 errors.append(f"{relative}: {error.message}")
-            for error in validate_analysis_semantics(payload):
+            for error in validate_analysis_semantics(payload, root=base):
                 errors.append(f"{relative}: {error}")
             analysis = _mapping(payload.get("analysis"))
             analysis_id = None if analysis is None else analysis.get("analysis_id")
@@ -625,7 +630,7 @@ def _validate_policy_responsibility_analysis_plane(
                 analysis_payloads[analysis_id] = payload
 
     registry = load_yaml(RESPONSIBILITY_ANALYSIS_REGISTRY, root=base)
-    for error in Draft202012Validator(registry_schema).iter_errors(registry):
+    for error in developer_contract_validator(registry_schema, base).iter_errors(registry):
         errors.append(f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {error.message}")
 
     bindings = registry.get("bindings", [])
@@ -733,6 +738,11 @@ def _validate_policy_responsibility_analysis_plane(
             errors.append(
                 f"{RESPONSIBILITY_ANALYSIS_REGISTRY}: {policy_id} group Family mismatch"
             )
+        source_class = current_records[policy_id].get("policy_class")
+        if group.get("policy_class") != source_class or binding.get("policy_class") != source_class:
+            errors.append(f"{policy_id}: analysis binding/group/source policy_class mismatch")
+        if binding.get("family") != group.get("family"):
+            errors.append(f"{policy_id}: analysis binding/group Family mismatch")
 
     return errors
 
@@ -767,6 +777,34 @@ def _neutral_catalog_resources(base: Path) -> tuple[dict[str, object], Registry]
                 pending.extend(item)
         resources = resources.with_resource(str(target["$id"]), Resource.from_contents(target))
     return record, resources
+
+
+def developer_contract_validator(schema: Mapping[str, object], base: Path) -> Draft202012Validator:
+    """Resolve shared developer-contract identities offline, without policy inference."""
+    _, resources = _neutral_catalog_resources(base)
+    return Draft202012Validator(schema, registry=resources)
+
+
+def load_neutral_policy_index(base: Path) -> dict[str, object]:
+    """Load the exact catalog shape; policy-file projection checks belong to verification."""
+    record, resources = _neutral_catalog_resources(base)
+    contract = record["contracts"][record["entrypoints"]["index"]]
+    index = load_yaml(contract["canonical_path"], root=base)
+    schema = load_json(contract["schema_ref"], root=base)
+    errors = [error.message for error in Draft202012Validator(schema, registry=resources).iter_errors(index)]
+    if errors:
+        raise ValueError("INVALID_NEUTRAL_POLICY_INDEX: " + "; ".join(errors))
+    ids = [entry["id"] for entry in index["policies"]]
+    if ids != sorted(set(ids)):
+        raise ValueError("INVALID_NEUTRAL_POLICY_INDEX: IDs must be globally unique and ordered")
+    for entry in index["policies"]:
+        policy_id = entry["id"]
+        if entry["path"] != _canonical_mpd_path(policy_id):
+            raise ValueError(f"INVALID_NEUTRAL_POLICY_INDEX: {policy_id} path mismatch")
+        is_boundary = re.fullmatch(record["$defs"]["boundary_policy_id"]["pattern"], policy_id) is not None
+        if is_boundary != (entry["policy_class"] == record["$defs"]["boundary_policy_class"]["const"]):
+            raise ValueError(f"INVALID_NEUTRAL_POLICY_INDEX: {policy_id} class/namespace mismatch")
+    return index
 
 
 def resolve_neutral_catalog_contract(
@@ -837,6 +875,13 @@ def validate_neutral_catalog_contract_registration(
             if not (base / reference).is_file():
                 errors.append(f"neutral catalog preserved contract is missing: {reference}")
         gate = record["application_gate"]
+        execution = record.get("application_execution")
+        if any(gate[key] for key in ("catalog_payload_migration_authorized", "m2_m8_implementation_authorized", "vpms_policy_materialization_authorized")):
+            if not isinstance(execution, Mapping) or execution.get("decision_source") != "USER_EXPLICIT":
+                errors.append("neutral catalog application requires explicit execution provenance")
+        if isinstance(execution, Mapping) and execution.get("vpms_class_materialization_enabled"):
+            if not execution.get("m1_m7_verified") or not gate["vpms_policy_materialization_authorized"]:
+                errors.append("VPMS class materialization requires M1-M7 verification and explicit authorization")
         if not (base / gate["existing_policy_materialization_schema_ref"]).is_file():
             errors.append("neutral catalog policy materialization gate cannot be resolved")
     except (OSError, ValueError, KeyError, TypeError) as exc:
@@ -917,7 +962,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     errors: list[str] = []
 
     index = load_yaml(INDEX, root=base)
-    index_schema = load_json(INDEX_SCHEMA, root=base)
+    index_schema = load_json("developer/policy/schemas/developer-policy-catalog.schema.json", root=base)
     mpd_schema = load_json(MPD_SCHEMA, root=base)
     sfp_index = load_yaml(SFP_INDEX, root=base)
     sfp_index_schema = load_json(SFP_INDEX_CANONICAL_SCHEMA, root=base)
@@ -931,7 +976,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     ):
         Draft202012Validator.check_schema(schema)
 
-    for error in Draft202012Validator(index_schema).iter_errors(index):
+    for error in developer_contract_validator(index_schema, base).iter_errors(index):
         errors.append(f"{INDEX}: {error.message}")
     for error in Draft202012Validator(sfp_index_schema).iter_errors(sfp_index):
         errors.append(f"{SFP_INDEX}: {error.message}")
@@ -999,7 +1044,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             continue
         payload = load_yaml(path, root=base)
         current_records[policy_id] = payload
-        for error in Draft202012Validator(mpd_schema).iter_errors(payload):
+        for error in developer_contract_validator(mpd_schema, base).iter_errors(payload):
             errors.append(f"{path}: {error.message}")
         policy = _mapping(payload.get("policy"))
         if policy is None:
@@ -1009,6 +1054,8 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             errors.append(f"{path}: policy.id does not match index id")
         if policy.get("status") != entry.get("status"):
             errors.append(f"{path}: policy.status does not match index status")
+        if payload.get("policy_class") != entry.get("policy_class"):
+            errors.append(f"{path}: policy_class does not match index projection")
         for version_error in _validate_policy_version_semantics(policy_id, payload):
             errors.append(f"{path}: {version_error}")
         for transition_error in _validate_policy_transition_semantics(policy_id, payload):

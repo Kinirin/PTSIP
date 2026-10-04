@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:developer-policy:v1",
-  "title": "PTSIP Management Policy for Developers v1",
+  "$id": "urn:developer-policy:management-policy:v2",
+  "title": "Class-aware Developer Management Policy v2",
   "type": "object",
   "required": [
     "schema_version",
@@ -11,13 +11,10 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-developer-policy/v1"
+      "enum": ["ptsip-developer-policy/v1", "developer-policy/v2"]
     },
     "policy_class": {
-      "enum": [
-        "PTSIP_DEVELOPER_POLICY",
-        "PTSIP_BOUND_POLICY"
-      ]
+      "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_class"
     },
     "policy": {
       "type": "object",
@@ -504,6 +501,17 @@
           }
         }
       }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "ptsip-developer-policy/v1"}}, "required": ["schema_version"]},
+      "then": {"properties": {"policy_class": {"enum": ["PTSIP_DEVELOPER_POLICY", "PTSIP_BOUND_POLICY"]}}}
+    },
+    {
+      "if": {"properties": {"policy_class": {"const": "VPMS_DEVELOPER_POLICY"}}, "required": ["policy_class"]},
+      "then": {"properties": {
+        "schema_version": {"const": "developer-policy/v2"},
+        "policy": {"properties": {"id": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/family_policy_id"}}}
+      }}
     },
     {
       "if": {

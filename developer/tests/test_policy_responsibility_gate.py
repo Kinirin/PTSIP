@@ -14,6 +14,7 @@ from developer.automation.policy_identity_lifecycle import (
 from developer.automation.policy_responsibility_gate import (
     validate_analysis_semantics,
 )
+from developer.tests.policy_contract_fixtures import neutralize_fixture_catalog
 
 
 SOURCE_ROOT = Path(__file__).resolve().parents[2]
@@ -41,9 +42,12 @@ def _responsibility(
         "authority_subject": f"{responsibility_id}_SUBJECT",
         "lifecycle_scope": "TEST_SCOPE",
         "cohesion_key": f"{family}_COHESION",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
         "family": family,
+        "referenced_policy_class": None,
         "referenced_family": None,
         "existing_authority_lookup": {
+            "searched_policy_class": "PTSIP_DEVELOPER_POLICY",
             "searched_family": family,
             "searched_policy_ids": searched_policy_ids or [],
             "lookup_outcome": "NO_MATCH",
@@ -62,15 +66,17 @@ def _analysis_payload(
     split_required: bool,
     materialization_allowed: bool = True,
 ) -> dict[str, object]:
+    for group in groups:
+        group.setdefault("policy_class", "PTSIP_DEVELOPER_POLICY")
     return {
-        "schema_version": "ptsip-policy-responsibility-analysis/v1",
+        "schema_version": "developer-policy-responsibility-analysis/v2",
         "artifact_class": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS",
         "analysis": {
             "analysis_id": "PRA-test",
             "source_ref": "test",
             "responsibilities": responsibilities,
             "decision": {
-                "owned_family_set": owned_family_set,
+                "owned_authority_family_set": [{"policy_class": "PTSIP_DEVELOPER_POLICY", "family": family} for family in owned_family_set],
                 "split_required": split_required,
                 "materialization_allowed": materialization_allowed,
                 "materialization_groups": groups,
@@ -121,6 +127,7 @@ def test_exact_duplicate_reuses_existing_authority() -> None:
         searched_policy_ids=["MPD-SPEC-0001"],
     )
     responsibility["existing_authority_lookup"] = {
+        "searched_policy_class": "PTSIP_DEVELOPER_POLICY",
         "searched_family": "SPEC",
         "searched_policy_ids": ["MPD-SPEC-0001"],
         "lookup_outcome": "MATCHES_FOUND",
@@ -154,6 +161,7 @@ def test_conflict_cannot_be_resolved_as_new_policy() -> None:
         searched_policy_ids=["MPD-SPEC-0001"],
     )
     responsibility["existing_authority_lookup"] = {
+        "searched_policy_class": "PTSIP_DEVELOPER_POLICY",
         "searched_family": "SPEC",
         "searched_policy_ids": ["MPD-SPEC-0001"],
         "lookup_outcome": "MATCHES_FOUND",
@@ -270,11 +278,12 @@ def repo(tmp_path: Path) -> Path:
     _write_yaml(
         tmp_path / "developer/policy/analysis/registry.yaml",
         {
-            "schema_version": "ptsip-policy-materialization-analysis-registry/v1",
+            "schema_version": "developer-policy-materialization-analysis-registry/v2",
             "artifact_class": "PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY",
             "bindings": [],
         },
     )
+    neutralize_fixture_catalog(tmp_path)
     return tmp_path
 
 
@@ -340,6 +349,7 @@ def test_family_preflight_requires_complete_existing_authority_lookup(repo: Path
             analysis,
             "G01",
             root=repo,
+            policy_class="PTSIP_DEVELOPER_POLICY",
         )
     assert exc.value.code == "RESPONSIBILITY_ANALYSIS_BLOCKED"
 
@@ -354,6 +364,7 @@ def test_family_register_binds_analysis_atomically(repo: Path) -> None:
         analysis,
         "G01",
         root=repo,
+        policy_class="PTSIP_DEVELOPER_POLICY",
     )
     assert preflight["allocated_policy_id"] == "MPD-SPEC-0002"
 
@@ -380,6 +391,7 @@ def test_family_register_binds_analysis_atomically(repo: Path) -> None:
         "G01",
         policy_path,
         root=repo,
+        policy_class="PTSIP_DEVELOPER_POLICY",
     )
     assert result["status"] == "REGISTERED"
     assert result["analysis_id"] == "PRA-test"
@@ -390,6 +402,8 @@ def test_family_register_binds_analysis_atomically(repo: Path) -> None:
     assert registry["bindings"] == [
         {
             "policy_id": "MPD-SPEC-0002",
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "family": "SPEC",
             "analysis_ref": "developer/policy/analysis/PRA-test-family.yaml",
             "analysis_id": "PRA-test",
             "group_id": "G01",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy-responsibility-analysis:v1",
-  "title": "PTSIP Policy Responsibility Analysis v1",
+  "$id": "urn:developer-policy:policy-responsibility-analysis:v2",
+  "title": "Class-aware Policy Responsibility Analysis v2",
   "type": "object",
   "required": [
     "schema_version",
@@ -10,7 +10,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-policy-responsibility-analysis/v1"
+      "const": "developer-policy-responsibility-analysis/v2"
     },
     "artifact_class": {
       "const": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS"
@@ -46,7 +46,9 @@
               "authority_subject",
               "lifecycle_scope",
               "cohesion_key",
+              "policy_class",
               "family",
+              "referenced_policy_class",
               "referenced_family",
               "existing_authority_lookup",
               "materialization_action",
@@ -83,36 +85,10 @@
                 "type": "string",
                 "minLength": 1
               },
-              "family": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "enum": [
-                  "SPEC",
-                  "PLAN",
-                  "WORK",
-                  "VERI",
-                  "MIGR",
-                  "RELS",
-                  null
-                ]
-              },
-              "referenced_family": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "enum": [
-                  "SPEC",
-                  "PLAN",
-                  "WORK",
-                  "VERI",
-                  "MIGR",
-                  "RELS",
-                  null
-                ]
-              },
+              "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_developer_policy_class"},
+              "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_responsibility_family"},
+              "referenced_policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_developer_policy_class"},
+              "referenced_family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_responsibility_family"},
               "existing_authority_lookup": {
                 "anyOf": [
                   {
@@ -121,22 +97,15 @@
                   {
                     "type": "object",
                     "required": [
+                      "searched_policy_class",
                       "searched_family",
                       "searched_policy_ids",
                       "lookup_outcome",
                       "candidate_comparisons"
                     ],
                     "properties": {
-                      "searched_family": {
-                        "enum": [
-                          "SPEC",
-                          "PLAN",
-                          "WORK",
-                          "VERI",
-                          "MIGR",
-                          "RELS"
-                        ]
-                      },
+                      "searched_policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+                      "searched_family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
                       "searched_policy_ids": {
                         "type": "array",
                         "uniqueItems": true,
@@ -231,24 +200,23 @@
         "decision": {
           "type": "object",
           "required": [
-            "owned_family_set",
+            "owned_authority_family_set",
             "split_required",
             "materialization_allowed",
             "materialization_groups"
           ],
           "properties": {
-            "owned_family_set": {
+            "owned_authority_family_set": {
               "type": "array",
               "uniqueItems": true,
               "items": {
-                "enum": [
-                  "SPEC",
-                  "PLAN",
-                  "WORK",
-                  "VERI",
-                  "MIGR",
-                  "RELS"
-                ]
+                "type": "object",
+                "required": ["policy_class", "family"],
+                "additionalProperties": false,
+                "properties": {
+                  "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+                  "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"}
+                }
               }
             },
             "split_required": {
@@ -263,6 +231,7 @@
                 "type": "object",
                 "required": [
                   "group_id",
+                  "policy_class",
                   "family",
                   "cohesion_key",
                   "responsibility_ids",
@@ -273,16 +242,8 @@
                     "type": "string",
                     "pattern": "^G[0-9]{2,}$"
                   },
-                  "family": {
-                    "enum": [
-                      "SPEC",
-                      "PLAN",
-                      "WORK",
-                      "VERI",
-                      "MIGR",
-                      "RELS"
-                    ]
-                  },
+                  "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+                  "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
                   "cohesion_key": {
                     "type": "string",
                     "minLength": 1

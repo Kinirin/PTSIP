@@ -76,26 +76,31 @@ def _family_from_policy_id(policy_id: str) -> str | None:
     return None if match is None else match.group(1)
 
 
-def _active_family_ids(base: Path, family: str) -> tuple[str, ...]:
-    index = load_yaml(INDEX, root=base)
-    entries = index.get("policies", [])
-    if not isinstance(entries, list):
-        raise ResponsibilityGateError(
-            "INVALID_POLICY_INDEX",
-            "developer policy index policies must be a list",
-        )
-    ids = [
-        str(entry.get("id"))
-        for entry in entries
-        if isinstance(entry, Mapping)
-        and entry.get("status") == "ACTIVE"
-        and isinstance(entry.get("id"), str)
-        and _family_from_policy_id(str(entry.get("id"))) == family
-    ]
+def _active_family_ids(base: Path, policy_class: str, family: str) -> tuple[str, ...]:
+    from developer.automation.policy_validator import load_neutral_policy_index
+
+    classes = load_json("developer/policy/registries/developer-policy-catalog-contracts.json", root=base)["$defs"]["developer_policy_class"]["enum"]
+    if policy_class not in classes or family not in FAMILIES:
+        raise ResponsibilityGateError("INVALID_AUTHORITY_FAMILY_KEY", "explicit registered policy_class and Family are required")
+    try:
+        index = load_neutral_policy_index(base)
+    except (OSError, ValueError) as exc:
+        raise ResponsibilityGateError("INVALID_POLICY_INDEX", str(exc)) from exc
+    ids: list[str] = []
+    for entry in index["policies"]:
+        if _family_from_policy_id(entry["id"]) != family:
+            continue
+        target = load_yaml(entry["path"], root=base)
+        policy = _mapping(target.get("policy"), label=entry["id"])
+        if target.get("policy_class") != entry["policy_class"] or policy.get("status") != entry["status"] or policy.get("id") != entry["id"]:
+            raise ResponsibilityGateError("AUTHORITY_METADATA_MISMATCH", f"{entry['id']}: class/status/identity projection mismatch")
+        if entry["status"] == "ACTIVE" and entry["policy_class"] == policy_class:
+            ids.append(entry["id"])
     return tuple(sorted(ids))
 
 
-def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...]:
+def validate_analysis_semantics(payload: Mapping[str, object], *, root: str | Path | None = None) -> tuple[str, ...]:
+    classes = load_json("developer/policy/registries/developer-policy-catalog-contracts.json", root=repository_root(root))["$defs"]["developer_policy_class"]["enum"]
     errors: list[str] = []
     analysis = payload.get("analysis")
     if not isinstance(analysis, Mapping):
@@ -107,7 +112,7 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
         return ("analysis responsibilities/decision must be present",)
 
     by_id: dict[str, Mapping[str, object]] = {}
-    owned_families: list[str] = []
+    owned_keys: set[tuple[str, str]] = set()
     create_ids: set[str] = set()
     blocked_ids: set[str] = set()
     partial_overlap_present = False
@@ -128,29 +133,29 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
 
         relation = raw.get("authority_relation")
         family = raw.get("family")
+        policy_class = raw.get("policy_class")
         referenced_family = raw.get("referenced_family")
+        referenced_policy_class = raw.get("referenced_policy_class")
         lookup = raw.get("existing_authority_lookup")
         action = raw.get("materialization_action")
         target_group = raw.get("target_group_id")
 
         if relation == "OWN":
-            if family not in FAMILIES:
-                errors.append(f"{responsibility_id}: OWN responsibility requires one Family")
+            if family not in FAMILIES or policy_class not in classes:
+                errors.append(f"{responsibility_id}: OWN responsibility requires explicit policy_class and one Family")
                 continue
-            owned_families.append(str(family))
-            if referenced_family is not None:
-                errors.append(
-                    f"{responsibility_id}: OWN responsibility must not use referenced_family"
-                )
+            owned_keys.add((str(policy_class), str(family)))
+            if referenced_family is not None or referenced_policy_class is not None:
+                errors.append(f"{responsibility_id}: OWN responsibility must not use referenced authority identity")
             if not isinstance(lookup, Mapping):
-                errors.append(
-                    f"{responsibility_id}: OWN responsibility requires existing_authority_lookup"
-                )
+                errors.append(f"{responsibility_id}: OWN responsibility requires existing_authority_lookup")
                 continue
             if lookup.get("searched_family") != family:
                 errors.append(
                     f"{responsibility_id}: lookup searched_family must equal owned Family"
                 )
+            if lookup.get("searched_policy_class") != policy_class:
+                errors.append(f"{responsibility_id}: lookup searched_policy_class must equal owned policy_class")
 
             searched = lookup.get("searched_policy_ids")
             comparisons = lookup.get("candidate_comparisons")
@@ -245,6 +250,12 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
                     f"{responsibility_id}: only CREATE_NEW_POLICY may declare target_group_id"
                 )
         else:
+            if policy_class is not None:
+                errors.append(f"{responsibility_id}: non-OWN responsibility must not own a policy_class")
+            if (referenced_family is None) != (referenced_policy_class is None) or (
+                referenced_family is not None and (referenced_family not in FAMILIES or referenced_policy_class not in classes)
+            ):
+                errors.append(f"{responsibility_id}: referenced authority requires an explicit registered policy_class and Family pair")
             if relation not in AUTHORITY_RELATIONS:
                 errors.append(
                     f"{responsibility_id}: unknown authority_relation {relation!r}"
@@ -266,10 +277,10 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
                     f"{responsibility_id}: non-OWN responsibility must not target a new group"
                 )
 
-    expected_families = [family for family in FAMILIES if family in set(owned_families)]
-    if decision.get("owned_family_set") != expected_families:
+    expected_keys = [{"policy_class": policy_class, "family": family} for policy_class in classes for family in FAMILIES if (policy_class, family) in owned_keys]
+    if decision.get("owned_authority_family_set") != expected_keys:
         errors.append(
-            f"decision.owned_family_set must equal canonical owned Family set {expected_families}"
+            f"decision.owned_authority_family_set must equal canonical owned authority Family set {expected_keys}"
         )
 
     groups = decision.get("materialization_groups")
@@ -285,6 +296,9 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
             continue
         group_id = group.get("group_id")
         family = group.get("family")
+        policy_class = group.get("policy_class")
+        if policy_class not in classes or family not in FAMILIES:
+            errors.append(f"{group.get('group_id')}: materialization group requires explicit policy_class and Family")
         cohesion_key = group.get("cohesion_key")
         responsibility_ids = group.get("responsibility_ids")
 
@@ -321,6 +335,8 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
                 )
             if responsibility.get("family") != family:
                 errors.append(f"{group_id}: {responsibility_id} Family mismatch")
+            if responsibility.get("policy_class") != policy_class:
+                errors.append(f"{group_id}: {responsibility_id} policy_class mismatch")
             if responsibility.get("cohesion_key") != cohesion_key:
                 errors.append(
                     f"{group_id}: {responsibility_id} cohesion_key mismatch"
@@ -332,7 +348,7 @@ def validate_analysis_semantics(payload: Mapping[str, object]) -> tuple[str, ...
         )
 
     expected_split = (
-        len(expected_families) > 1
+        len(expected_keys) > 1
         or len(groups) > 1
         or partial_overlap_present
     )
@@ -364,9 +380,10 @@ def validate_responsibility_analysis(
 
     payload = load_yaml(relative, root=base)
     schema = load_json(ANALYSIS_SCHEMA, root=base)
-    schema_errors = tuple(Draft202012Validator(schema).iter_errors(payload))
+    from developer.automation.policy_validator import developer_contract_validator
+    schema_errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
     errors = [error.message for error in schema_errors]
-    errors.extend(validate_analysis_semantics(payload))
+    errors.extend(validate_analysis_semantics(payload, root=base))
 
     analysis = payload.get("analysis")
     if isinstance(analysis, Mapping) and enforce_current_lookup:
@@ -377,16 +394,17 @@ def validate_responsibility_analysis(
                     continue
                 responsibility_id = str(raw.get("responsibility_id"))
                 family = raw.get("family")
+                policy_class = raw.get("policy_class")
                 lookup = raw.get("existing_authority_lookup")
-                if family not in FAMILIES or not isinstance(lookup, Mapping):
+                if family not in FAMILIES or not isinstance(policy_class, str) or not isinstance(lookup, Mapping):
                     continue
 
-                expected = list(_active_family_ids(base, str(family)))
+                expected = list(_active_family_ids(base, policy_class, str(family)))
                 searched = lookup.get("searched_policy_ids")
                 if searched != expected:
                     errors.append(
                         f"{responsibility_id}: searched_policy_ids must exactly cover current ACTIVE "
-                        f"{family} policies {expected}"
+                        f"{policy_class} + {family} policies {expected}"
                     )
 
                 comparisons = lookup.get("candidate_comparisons", [])
@@ -437,7 +455,7 @@ def validate_responsibility_analysis(
         "status": "PASS",
         "analysis_id": analysis_map.get("analysis_id"),
         "analysis_ref": relative,
-        "owned_family_set": decision.get("owned_family_set"),
+        "owned_authority_family_set": decision.get("owned_authority_family_set"),
         "split_required": decision.get("split_required"),
         "materialization_allowed": decision.get("materialization_allowed"),
         "materialization_groups": decision.get("materialization_groups"),

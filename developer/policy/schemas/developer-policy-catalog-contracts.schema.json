@@ -11,7 +11,7 @@
     "artifact_class": {"const": "DEVELOPER_POLICY_CATALOG_CONTRACT_REGISTRY"},
     "model": {"const": "NEUTRAL_DEVELOPER_POLICY_CATALOG_ARTIFACT"},
     "contract_status": {"const": "REGISTERED"},
-    "catalog_application_status": {"const": "NOT_APPLIED"},
+    "catalog_application_status": {"enum": ["NOT_APPLIED", "APPLIED"]},
     "maintenance_authority": {"const": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG"},
     "approval": {
       "type": "object",
@@ -67,11 +67,46 @@
       "required": ["catalog_payload_migration_authorized", "m2_m8_implementation_authorized", "vpms_policy_materialization_authorized", "existing_policy_materialization_schema_ref", "neutral_type_recognition_does_not_authorize_policy_materialization"],
       "additionalProperties": false,
       "properties": {
-        "catalog_payload_migration_authorized": {"const": false},
-        "m2_m8_implementation_authorized": {"const": false},
-        "vpms_policy_materialization_authorized": {"const": false},
+        "catalog_payload_migration_authorized": {"type": "boolean"},
+        "m2_m8_implementation_authorized": {"type": "boolean"},
+        "vpms_policy_materialization_authorized": {"type": "boolean"},
         "existing_policy_materialization_schema_ref": {"type": "string", "minLength": 1},
         "neutral_type_recognition_does_not_authorize_policy_materialization": {"const": true}
+      }
+    },
+    "application_execution": {
+      "type": "object",
+      "required": ["decision", "decision_source", "source_reference", "base_head", "status", "vpms_target_status", "vpms_content_status", "vpms_class_materialization_enabled", "m1_m7_verified", "targets"],
+      "additionalProperties": false,
+      "properties": {
+        "decision": {"const": "APPROVED"},
+        "decision_source": {"const": "USER_EXPLICIT"},
+        "source_reference": {"type": "string", "minLength": 1},
+        "base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "status": {"enum": ["IN_PROGRESS", "MIGRATION_COMPLETE_POLICY_CONTENT_PENDING", "COMPLETE"]},
+        "vpms_target_status": {"const": "APPROVED"},
+        "vpms_content_status": {"enum": ["OWNER_CONTENT_REQUIRED", "SOURCE_DECLARATIONS_APPROVED", "REGISTERED"]},
+        "vpms_class_materialization_enabled": {"type": "boolean"},
+        "m1_m7_verified": {"type": "boolean"},
+        "m1_m7_verification": {
+          "type": "object",
+          "required": ["stage", "snapshot_kind", "base_head", "test_modes", "return_code", "passed", "failed", "skipped", "log_path"],
+          "additionalProperties": false,
+          "properties": {
+            "stage": {"const": "M1_M7_CLASS_ISOLATION"},
+            "snapshot_kind": {"const": "WORKING_TREE_ON_BASE_HEAD"},
+            "base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+            "test_modes": {"$ref": "#/$defs/paths"},
+            "return_code": {"const": 0},
+            "passed": {"type": "integer", "minimum": 1},
+            "failed": {"const": 0},
+            "skipped": {"type": "integer", "minimum": 0},
+            "log_path": {"type": "string", "minLength": 1}
+          }
+        },
+        "registered_vpms_policy_id": {"type": "string", "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
+        "targets": {"$ref": "#/$defs/paths"},
+        "preserved_analysis_semantic_digests": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
       }
     },
     "change_scope": {

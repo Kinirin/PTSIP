@@ -7,6 +7,7 @@ from jsonschema import Draft202012Validator
 import pytest
 
 from developer.automation.policy_loader import load_json, load_yaml
+from developer.tests.policy_contract_fixtures import contract_validator
 from developer.automation.policy_validator import (
     NEUTRAL_CATALOG_CONTRACTS,
     resolve_neutral_catalog_contract,
@@ -29,7 +30,7 @@ def snapshot():
     for entry in catalog["policies"]:
         entry["policy_class"] = records[entry["id"]]["policy_class"]
     subject = copy.deepcopy(source_subject)
-    subject.pop("policy_class")
+    subject.pop("policy_class", None)
     subject["schema_version"] = registry["entrypoints"]["subject"]
     subject["artifact_class"] = registry["contracts"][registry["entrypoints"]["subject"]]["artifact_class"]
     return catalog, subject, records, source_index, source_subject
@@ -43,7 +44,7 @@ def _check(snapshot):
 def test_neutral_contract_registration_and_exact_scope_are_valid() -> None:
     assert validate_neutral_catalog_contract_registration(ROOT) == ()
     registry = load_json(NEUTRAL_CATALOG_CONTRACTS, root=ROOT)
-    assert registry["catalog_application_status"] == "NOT_APPLIED"
+    assert registry["catalog_application_status"] == "APPLIED"
     assert len(registry["change_scope"]["materialization_targets"]) == 7
     assert all(not target["execution_authorized"] for target in registry["change_scope"]["deferred_application_targets"])
 
@@ -54,9 +55,14 @@ def test_neutral_contract_resolution_is_exact_and_fail_closed() -> None:
         resolve_neutral_catalog_contract("developer-policy-catalog", ROOT)
 
 
-def test_legacy_catalog_payloads_have_not_been_migrated() -> None:
-    for path in ("developer/policy/index.yaml", "developer/policy/registries/authority-subject-registry.yaml"):
-        assert load_yaml(path, root=ROOT)["policy_class"] == "PTSIP_DEVELOPER_POLICY"
+def test_live_catalog_payloads_use_registered_neutral_artifact_contracts() -> None:
+    registry = load_json(NEUTRAL_CATALOG_CONTRACTS, root=ROOT)
+    for contract_id in registry["entrypoints"].values():
+        contract = registry["contracts"][contract_id]
+        payload = load_yaml(contract["canonical_path"], root=ROOT)
+        assert "policy_class" not in payload
+        assert payload["schema_version"] == contract_id
+        assert payload["artifact_class"] == contract["artifact_class"]
 
 
 def test_in_memory_neutral_snapshot_preserves_registered_corpus(snapshot) -> None:
@@ -134,8 +140,12 @@ def test_root_policy_class_is_not_a_neutral_artifact_field(snapshot, artifact_in
 def test_neutral_type_recognition_does_not_open_vpms_policy_materialization(snapshot) -> None:
     registry = load_json(NEUTRAL_CATALOG_CONTRACTS, root=ROOT)
     assert "VPMS_DEVELOPER_POLICY" in registry["$defs"]["developer_policy_class"]["enum"]
-    assert not registry["application_gate"]["vpms_policy_materialization_authorized"]
+    assert registry["application_gate"]["vpms_policy_materialization_authorized"]
     candidate = copy.deepcopy(snapshot[2]["MPD-VERI-0001"])
     candidate["policy_class"] = "VPMS_DEVELOPER_POLICY"
     schema = load_json(registry["application_gate"]["existing_policy_materialization_schema_ref"], root=ROOT)
-    assert tuple(Draft202012Validator(schema).iter_errors(candidate))
+    assert tuple(contract_validator(schema).iter_errors(candidate))
+    candidate["schema_version"] = "developer-policy/v2"
+    assert tuple(contract_validator(schema).iter_errors(candidate)) == ()
+    assert registry["application_execution"]["m1_m7_verified"]
+    assert registry["application_execution"]["vpms_class_materialization_enabled"]

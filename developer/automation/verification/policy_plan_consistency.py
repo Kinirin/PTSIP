@@ -49,7 +49,11 @@ class PolicyPlanConsistencyReport:
 
 
 def _known_policy_ids(base: Path) -> set[str]:
-    payload = load_yaml(POLICY_INDEX_PATH, root=base)
+    from developer.automation.policy_validator import load_neutral_policy_index
+    try:
+        payload = load_neutral_policy_index(base)
+    except (OSError, ValueError) as exc:
+        raise PolicyPlanBindingError("POLICY_INDEX_INVALID", str(exc)) from exc
     entries = payload.get("policies")
     if not isinstance(entries, list):
         raise PolicyPlanBindingError(

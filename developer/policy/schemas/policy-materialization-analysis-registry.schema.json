@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy-materialization-analysis-registry:v1",
-  "title": "PTSIP Policy Materialization Analysis Registry v1",
+  "$id": "urn:developer-policy:policy-materialization-analysis-registry:v2",
+  "title": "Class-aware Policy Materialization Analysis Registry v2",
   "type": "object",
   "required": [
     "schema_version",
@@ -10,7 +10,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-policy-materialization-analysis-registry/v1"
+      "const": "developer-policy-materialization-analysis-registry/v2"
     },
     "artifact_class": {
       "const": "PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY"
@@ -22,11 +22,15 @@
         "type": "object",
         "required": [
           "policy_id",
+          "policy_class",
+          "family",
           "analysis_ref",
           "analysis_id",
           "group_id"
         ],
         "properties": {
+          "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+          "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
           "policy_id": {
             "type": "string",
             "pattern": "^MPD-(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"

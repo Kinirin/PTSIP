@@ -14,6 +14,7 @@ from developer.automation.policy_identity_lifecycle import (
     register_policy,
     status_preflight,
 )
+from developer.tests.policy_contract_fixtures import neutralize_fixture_catalog
 
 
 SOURCE_ROOT = Path(__file__).resolve().parents[2]
@@ -100,6 +101,7 @@ def repo(tmp_path: Path) -> Path:
             },
         },
     )
+    neutralize_fixture_catalog(tmp_path)
     return tmp_path
 
 
