@@ -3,9 +3,9 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-01
   title: Freeze migration surface and relocation baseline
-  lifecycle: {status: DRAFT}
-  approval: {status: PENDING}
-  implementation_authorization: {status: NOT_AUTHORIZED}
+  lifecycle: {status: ACTIVE}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: []
   objective: >-
     Establish an exact migration-package baseline before relocation so public imports,

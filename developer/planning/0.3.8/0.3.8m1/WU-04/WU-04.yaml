@@ -3,9 +3,9 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-04
   title: Decompose execution state guard authorization and ledger
-  lifecycle: {status: DRAFT}
-  approval: {status: PENDING}
-  implementation_authorization: {status: NOT_AUTHORIZED}
+  lifecycle: {status: ACTIVE}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-01, WU-02, WU-03]
   objective: >-
     Separate execution state models, repository/mutation guards, authorization

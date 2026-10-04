@@ -3,9 +3,9 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-06
   title: Remove flat implementation paths and verify migration package
-  lifecycle: {status: DRAFT}
-  approval: {status: PENDING}
-  implementation_authorization: {status: NOT_AUTHORIZED}
+  lifecycle: {status: ACTIVE}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-02, WU-03, WU-04, WU-05]
   objective: >-
     Finish the migration-package cutover, remove obsolete flat implementation modules,

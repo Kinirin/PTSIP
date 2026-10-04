@@ -7,11 +7,13 @@ plan:
   branch: dev/0.3.8m1
   parent_branch: dev/0.3.8
   parent_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
-  status: DRAFT
+  status: ACTIVE
   approval:
-    status: PENDING
+    status: APPROVED
+    approval_source: USER_EXPLICIT
   implementation_authorization:
-    status: NOT_AUTHORIZED
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
   canonical_location: developer/planning/0.3.8/0.3.8m1/index.yaml
 
   planning_mode: ISOLATED_BRANCH_LOCAL

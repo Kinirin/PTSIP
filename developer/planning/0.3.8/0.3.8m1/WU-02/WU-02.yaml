@@ -3,9 +3,9 @@ plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
 work_unit:
   id: WU-02
   title: Decompose analysis and proposal responsibilities
-  lifecycle: {status: DRAFT}
-  approval: {status: PENDING}
-  implementation_authorization: {status: NOT_AUTHORIZED}
+  lifecycle: {status: ACTIVE}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-01]
   objective: >-
     Split mixed analysis, source/target interpretation, findings, direct convergence,
