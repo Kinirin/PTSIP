@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 from collections import Counter
 from pathlib import Path
@@ -30,6 +31,16 @@ def _yaml(path: Path) -> dict[str, object]:
     value = yaml.safe_load(path.read_text(encoding="utf-8"))
     assert isinstance(value, dict)
     return value
+
+
+def _expected_policy_path(policy_id: str) -> str:
+    family_match = re.fullmatch(
+        r"MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}", policy_id
+    )
+    if family_match is not None:
+        return f"developer/policy/{family_match.group(1)}/{policy_id}.yaml"
+    assert re.fullmatch(r"MPD-(?:[0-9]{4}|BOUND-[0-9]{4})", policy_id)
+    return f"developer/policy/{policy_id}.yaml"
 
 
 def test_developer_policy_control_plane_is_machine_valid() -> None:
@@ -178,6 +189,7 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("MPD-0015", "depends_on", "MPD-SPEC-0022", "CONTRACT_ARTIFACT_REPRESENTATION"),
         ("MPD-0015", "depends_on", "MPD-WORK-0002", "EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF"),
         ("MPD-0017", "depends_on", "MPD-0010", "EXACT_MACHINE_RESOLUTION_AND_INFERENCE_COST_BASELINE"),
+        ("MPD-BOUND-0001", "depends_on", "MPD-WORK-0003", "RESPONSIBILITY_FAMILY_DECOMPOSITION_AND_AUTHORITY_RECONCILIATION_BASELINE"),
         ("MPD-MIGR-0001", "depends_on", "MPD-PLAN-0001", "PLANNING_TARGET_AUTHORITY"),
         ("MPD-MIGR-0002", "depends_on", "MPD-0016", "README_TRANSLATION_GOVERNANCE"),
         ("MPD-MIGR-0002", "depends_on", "MPD-MIGR-0001", "DEVELOPER_REPOSITORY_MIGRATION_BOUNDARY"),
@@ -232,13 +244,7 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     assert Counter(indexed_mpd_ids) == Counter(discovered_mpd_ids)
     for item in mpd_index["policies"]:
         policy_id = item["id"]
-        parts = policy_id.split("-")
-        expected_path = (
-            f"developer/policy/{parts[1]}/{policy_id}.yaml"
-            if len(parts) == 3
-            else f"developer/policy/{policy_id}.yaml"
-        )
-        assert item["path"] == expected_path
+        assert item["path"] == _expected_policy_path(policy_id)
     assert [item["id"] for item in sfp_index["policies"]] == [
         f"SFP-{number:04d}" for number in range(1, 23)
     ]
@@ -252,6 +258,33 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
         payload = _yaml(support_root / entry["path"])
         assert payload["policy"]["id"] == entry["id"]
         assert payload["policy"]["status"] == entry["status"]
+
+
+@pytest.mark.parametrize(
+    ("policy_id", "expected_path"),
+    [
+        ("MPD-0001", "developer/policy/MPD-0001.yaml"),
+        ("MPD-BOUND-0001", "developer/policy/MPD-BOUND-0001.yaml"),
+        ("MPD-SPEC-0001", "developer/policy/SPEC/MPD-SPEC-0001.yaml"),
+        ("MPD-PLAN-0001", "developer/policy/PLAN/MPD-PLAN-0001.yaml"),
+        ("MPD-WORK-0001", "developer/policy/WORK/MPD-WORK-0001.yaml"),
+        ("MPD-VERI-0001", "developer/policy/VERI/MPD-VERI-0001.yaml"),
+        ("MPD-MIGR-0001", "developer/policy/MIGR/MPD-MIGR-0001.yaml"),
+        ("MPD-RELS-0001", "developer/policy/RELS/MPD-RELS-0001.yaml"),
+    ],
+)
+def test_policy_path_fixture_distinguishes_boundary_from_families(
+    policy_id: str, expected_path: str
+) -> None:
+    assert _expected_policy_path(policy_id) == expected_path
+    assert _expected_policy_path("MPD-BOUND-0001") != (
+        "developer/policy/BOUND/MPD-BOUND-0001.yaml"
+    )
+
+
+def test_policy_path_fixture_rejects_unregistered_family() -> None:
+    with pytest.raises(AssertionError):
+        _expected_policy_path("MPD-UNKNOWN-0001")
 
 
 

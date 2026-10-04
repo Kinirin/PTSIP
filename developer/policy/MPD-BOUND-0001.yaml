@@ -3,9 +3,9 @@ policy_class: PTSIP_BOUND_POLICY
 
 policy:
   id: MPD-BOUND-0001
-  version: "0.0"
+  version: "2.0"
   title: Developer Policy Authority Family Resolution Boundary
-  status: DRAFT
+  status: ACTIVE
 
 rules:
   developer_policy_authority_family_boundary:
@@ -83,6 +83,25 @@ rules:
       family_only_lookup_may_not_authorize_cross_class_materialization: true
       existing_policy_ids_must_not_be_renamed_for_class_separation: true
       existing_responsibility_family_names_must_not_be_duplicated_per_policy_class: true
+
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+    - id: TR-001
+      type: EXPLICIT_OWNER_ACTIVATION_APPROVAL
+      state: SATISFIED
+      refs:
+        - developer/policy/approvals/MPA-20261005-BOUND-0001-APPROVED.yaml
+        - developer/policy/approvals/MPA-20261005-BOUND-0001-ACTIVE.yaml
+      next_action:
+        action: APPLY_APPROVED_LIFECYCLE_TRANSITION
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - developer/policy/MPD-BOUND-0001.yaml
+          - developer/policy/index.yaml
+        after: []
+        completion_check: POLICY_AND_INDEX_ACTIVE
 
 relations:
   supersedes: []

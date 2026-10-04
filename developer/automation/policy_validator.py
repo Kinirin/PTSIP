@@ -5,6 +5,7 @@ import re
 from typing import Mapping
 
 from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
 from developer.automation.policy_responsibility_gate import (
@@ -26,6 +27,8 @@ RESPONSIBILITY_ANALYSIS_ROOT = "developer/policy/analysis"
 RESPONSIBILITY_ANALYSIS_SCHEMA = "developer/policy/schemas/policy-responsibility-analysis.schema.json"
 RESPONSIBILITY_ANALYSIS_REGISTRY = "developer/policy/analysis/registry.yaml"
 RESPONSIBILITY_ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
+NEUTRAL_CATALOG_CONTRACTS = "developer/policy/registries/developer-policy-catalog-contracts.json"
+NEUTRAL_CATALOG_CONTRACTS_SCHEMA = "developer/policy/schemas/developer-policy-catalog-contracts.schema.json"
 
 SUPPORT_POLICY_ROOT = "src/policy"
 SFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
@@ -734,6 +737,181 @@ def _validate_policy_responsibility_analysis_plane(
     return errors
 
 
+def _neutral_catalog_resources(base: Path) -> tuple[dict[str, object], Registry]:
+    record = load_json(NEUTRAL_CATALOG_CONTRACTS, root=base)
+    schema = load_json(NEUTRAL_CATALOG_CONTRACTS_SCHEMA, root=base)
+    Draft202012Validator.check_schema(schema)
+    errors = [error.message for error in Draft202012Validator(schema).iter_errors(record)]
+    if errors:
+        raise ValueError("; ".join(errors))
+    Draft202012Validator.check_schema(record)
+    resources = Registry().with_resource(str(record["$id"]), Resource.from_contents(record))
+    for contract in record["contracts"].values():
+        path = base / contract["schema_ref"]
+        if not path.resolve().is_relative_to(base.resolve()):
+            raise ValueError("neutral catalog schema path escapes repository")
+        target = load_json(contract["schema_ref"], root=base)
+        Draft202012Validator.check_schema(target)
+        pending: list[object] = [target]
+        while pending:
+            item = pending.pop()
+            if isinstance(item, dict):
+                reference = item.get("$ref")
+                if reference is not None and not (
+                    isinstance(reference, str)
+                    and (reference.startswith("#/") or reference.startswith(str(record["$id"]) + "#/"))
+                ):
+                    raise ValueError("neutral catalog schema uses an unregistered external reference")
+                pending.extend(item.values())
+            elif isinstance(item, list):
+                pending.extend(item)
+        resources = resources.with_resource(str(target["$id"]), Resource.from_contents(target))
+    return record, resources
+
+
+def resolve_neutral_catalog_contract(
+    contract_id: str, root: str | Path | None = None
+) -> dict[str, object]:
+    """Resolve an exact neutral artifact contract, not a policy or Task permission."""
+    record, _ = _neutral_catalog_resources(repository_root(root))
+    contract = record["contracts"].get(contract_id)
+    if contract is None:
+        raise ValueError(f"UNKNOWN_NEUTRAL_CATALOG_CONTRACT: {contract_id}")
+    return {"contract_id": contract_id, **contract}
+
+
+def validate_neutral_catalog_contract_registration(
+    root: str | Path | None = None,
+) -> tuple[str, ...]:
+    """Validate the registered contract and bounded, non-executing change scope."""
+    base = repository_root(root)
+    errors: list[str] = []
+    try:
+        record, resources = _neutral_catalog_resources(base)
+        contracts = record["contracts"]
+        if set(record["entrypoints"].values()) != set(contracts):
+            errors.append("neutral catalog entrypoints must cover each exact registered contract")
+        for role, definition in (("index", "catalog"), ("subject", "subject")):
+            contract_id = record["entrypoints"][role]
+            contract = contracts[contract_id]
+            definitions = record["$defs"]
+            if contract_id != definitions[f"{definition}_schema_version"]["const"]:
+                errors.append(f"neutral catalog {role} schema identity mismatch")
+            if contract["artifact_class"] != definitions[f"{definition}_artifact_class"]["const"]:
+                errors.append(f"neutral catalog {role} artifact identity mismatch")
+            for reference in (contract["schema_ref"], contract["canonical_path"]):
+                candidate = base / reference
+                if not candidate.resolve().is_relative_to(base.resolve()) or not candidate.is_file():
+                    errors.append(f"neutral catalog unresolved repository reference: {reference}")
+            target = load_json(contract["schema_ref"], root=base)
+            validator = Draft202012Validator(target, registry=resources)
+            # Resolve all cross-layer identity references without enabling an artifact migration.
+            expected = {"schema_version": contract_id, "artifact_class": contract["artifact_class"]}
+            for field, value in expected.items():
+                field_schema = target["properties"][field]
+                errors.extend(error.message for error in validator.evolve(schema=field_schema).iter_errors(value))
+
+        scope = record["change_scope"]
+        targets = scope["materialization_targets"]
+        paths = [target["path"] for target in targets]
+        if len(paths) != len(set(paths)):
+            errors.append("neutral catalog materialization targets must be unique")
+        from developer.automation.policy_resolver import _validate_implementation_ref
+
+        for target in targets + scope["deferred_application_targets"]:
+            reference = target["path"]
+            candidate = base / reference
+            if not candidate.resolve().is_relative_to(base.resolve()) or not candidate.is_file():
+                errors.append(f"neutral catalog unresolved scope target: {reference}")
+                continue
+            for name in target.get("python_functions", []):
+                _validate_implementation_ref(
+                    base, {"path": reference, "selector": {"kind": "PYTHON_FUNCTION", "name": name}}
+                )
+        for path in paths:
+            if any(path.startswith(prefix) for prefix in scope["forbidden_write_roots"]):
+                errors.append(f"neutral catalog forbidden materialization target: {path}")
+        if not set(scope["verification_test_paths"]).issubset(paths):
+            errors.append("neutral catalog verification paths must be registered materialization targets")
+        for reference in scope["preserved_contracts"]:
+            if not (base / reference).is_file():
+                errors.append(f"neutral catalog preserved contract is missing: {reference}")
+        gate = record["application_gate"]
+        if not (base / gate["existing_policy_materialization_schema_ref"]).is_file():
+            errors.append("neutral catalog policy materialization gate cannot be resolved")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        errors.append(f"neutral catalog registration: {exc}")
+    return tuple(errors)
+
+
+def validate_neutral_catalog_snapshot(
+    catalog: Mapping[str, object],
+    subject: Mapping[str, object],
+    policy_records: Mapping[str, Mapping[str, object]],
+    *,
+    source_index: Mapping[str, object],
+    source_subject: Mapping[str, object],
+    root: str | Path | None = None,
+) -> tuple[str, ...]:
+    """Check an in-memory migration snapshot; never write, register or activate policies.
+
+    Callers supply the exact indexed source snapshot and its validated policy records.
+    This is a catalog contract check, not the M3 authority resolver or M4 registrar.
+    """
+    base = repository_root(root)
+    errors = list(validate_neutral_catalog_contract_registration(base))
+    if errors:
+        return tuple(errors)
+    record, resources = _neutral_catalog_resources(base)
+    for role, payload in (("index", catalog), ("subject", subject)):
+        contract = record["contracts"][record["entrypoints"][role]]
+        schema = load_json(contract["schema_ref"], root=base)
+        errors.extend(
+            f"neutral catalog {role}: {error.message}"
+            for error in Draft202012Validator(schema, registry=resources).iter_errors(payload)
+        )
+    if errors:
+        return tuple(errors)
+    entries = catalog["policies"]
+    ids = [entry["id"] for entry in entries]
+    if ids != sorted(set(ids)):
+        errors.append("neutral catalog IDs must be globally unique and canonically ordered")
+    source_entries = source_index.get("policies", [])
+    source_paths = {entry["id"]: entry["path"] for entry in source_entries}
+    if ids != [entry["id"] for entry in source_entries] or set(ids) != set(policy_records):
+        errors.append("neutral catalog membership must preserve the exact indexed source snapshot")
+    definitions = record["$defs"]
+    for entry in entries:
+        policy_id = entry["id"]
+        family = re.fullmatch(definitions["family_policy_id"]["pattern"], policy_id)
+        expected_path = (
+            f"developer/policy/{family.group(1)}/{policy_id}.yaml"
+            if family else f"developer/policy/{policy_id}.yaml"
+        )
+        if entry["path"] != expected_path or source_paths.get(policy_id) != entry["path"]:
+            errors.append(f"{policy_id}: neutral catalog canonical path mismatch")
+        boundary = re.fullmatch(definitions["boundary_policy_id"]["pattern"], policy_id)
+        boundary_class = definitions["boundary_policy_class"]["const"]
+        if bool(boundary) != (entry["policy_class"] == boundary_class):
+            errors.append(f"{policy_id}: neutral catalog boundary class/namespace mismatch")
+        source = policy_records.get(policy_id)
+        policy = None if source is None else _mapping(source.get("policy"))
+        if source is None or policy is None or policy.get("id") != policy_id:
+            errors.append(f"{policy_id}: neutral catalog unresolved source policy")
+            continue
+        if entry["policy_class"] != source.get("policy_class"):
+            errors.append(f"{policy_id}: neutral catalog policy_class projection mismatch")
+        if entry["status"] != policy.get("status"):
+            errors.append(f"{policy_id}: neutral catalog status projection mismatch")
+    registered = subject["subject_identity_schemes"]["MANAGEMENT_POLICY_ID"]["registered_values"]
+    if registered != ids:
+        errors.append("neutral subject registered policy IDs must exactly project catalog membership")
+    for field in record["invariants"]["preserved_subject_fields"]:
+        if subject.get(field) != source_subject.get(field):
+            errors.append(f"neutral subject source semantics changed: {field}")
+    return tuple(errors)
+
+
 def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]:
     base = repository_root(root)
     errors: list[str] = []
@@ -931,6 +1109,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         )
     )
 
+    errors.extend(validate_neutral_catalog_contract_registration(base))
     return tuple(errors)
 
 

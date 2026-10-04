@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:catalog-contracts:v1",
+  "schema_version": "developer-policy-catalog-contract-registry/v1",
+  "artifact_class": "DEVELOPER_POLICY_CATALOG_CONTRACT_REGISTRY",
+  "model": "NEUTRAL_DEVELOPER_POLICY_CATALOG_ARTIFACT",
+  "contract_status": "REGISTERED",
+  "catalog_application_status": "NOT_APPLIED",
+  "maintenance_authority": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG",
+  "approval": {
+    "decision": "APPROVED",
+    "decision_source": "USER_EXPLICIT",
+    "source_kind": "PROJECT_OWNER_DIRECT_INSTRUCTION",
+    "source_reference": "두 stale fixture는 제안한 한 파일 범위와 최소 경계 검증 보강으로 수정하는 것을 승인합니다. C 모델은 위 계약표의 권고안으로 확정하며, neutral catalog의 정식 계약 materialization과 정확한 변경 범위 등록을 승인합니다.",
+    "recorded_at": "2026-10-05T02:36:32+09:00",
+    "approved_scopes": ["STALE_FIXTURE_REMEDIATION", "NEUTRAL_CATALOG_CONTRACT_MATERIALIZATION", "EXACT_CHANGE_SCOPE_REGISTRATION"]
+  },
+  "entrypoints": {
+    "index": "developer-policy-catalog/v1",
+    "subject": "developer-policy-subject-catalog/v1"
+  },
+  "contracts": {
+    "developer-policy-catalog/v1": {
+      "artifact_class": "DEVELOPER_POLICY_CATALOG",
+      "schema_ref": "developer/policy/schemas/developer-policy-catalog.schema.json",
+      "canonical_path": "developer/policy/index.yaml"
+    },
+    "developer-policy-subject-catalog/v1": {
+      "artifact_class": "DEVELOPER_POLICY_SUBJECT_CATALOG",
+      "schema_ref": "developer/policy/schemas/developer-policy-subject-catalog.schema.json",
+      "canonical_path": "developer/policy/registries/authority-subject-registry.yaml"
+    }
+  },
+  "invariants": {
+    "catalog_authority": ["REGISTRATION_MEMBERSHIP", "CANONICAL_PATH_BINDINGS"],
+    "policy_file_authority": ["POLICY_CLASS", "LIFECYCLE_STATUS", "NORMATIVE_RULES"],
+    "index_policy_class_and_status": "VALIDATED_POLICY_FILE_PROJECTION",
+    "subject_registered_policy_ids": "CATALOG_MEMBERSHIP_PROJECTION",
+    "preserved_subject_fields": ["registry_role", "language_neutral", "repository_identity_schemes", "current_repository_bindings", "matching"],
+    "policy_ids_globally_unique": true,
+    "responsibility_family_sequence_shared_across_policy_classes": true,
+    "boundary_is_responsibility_family": false,
+    "authority_lookup_key": ["policy_class", "responsibility_family"],
+    "family_only_authority_lookup": "FORBIDDEN",
+    "unknown_or_mismatched_metadata": "FAIL_CLOSED",
+    "projection_is_independent_authority": false,
+    "catalog_owns_policy_normative_meaning": false,
+    "consumer_runtime_dependency_on_developer_policies": "FORBIDDEN"
+  },
+  "application_gate": {
+    "catalog_payload_migration_authorized": false,
+    "m2_m8_implementation_authorized": false,
+    "vpms_policy_materialization_authorized": false,
+    "existing_policy_materialization_schema_ref": "developer/policy/schemas/management-policy.schema.json",
+    "neutral_type_recognition_does_not_authorize_policy_materialization": true
+  },
+  "change_scope": {
+    "base_head": "22b5fe6316001e013210e75424d32ccc0d0d3e54",
+    "pre_existing_changes": [
+      "developer/policy/MPD-BOUND-0001.yaml",
+      "developer/policy/index.yaml",
+      "developer/policy/approvals/MPA-20261005-BOUND-0001-APPROVED.yaml",
+      "developer/policy/approvals/MPA-20261005-BOUND-0001-ACTIVE.yaml"
+    ],
+    "materialization_targets": [
+      {
+        "path": "developer/tests/test_developer_control_plane.py",
+        "operation": "MODIFY",
+        "python_functions": ["_expected_policy_path", "test_current_policy_relations_preserve_materialized_relation_set", "test_current_policy_indexes_cover_self_contained_corpus", "test_policy_path_fixture_distinguishes_boundary_from_families", "test_policy_path_fixture_rejects_unregistered_family"],
+        "module_fields": ["import re"]
+      },
+      {
+        "path": "developer/automation/policy_validator.py",
+        "operation": "MODIFY",
+        "python_functions": ["_neutral_catalog_resources", "resolve_neutral_catalog_contract", "validate_neutral_catalog_contract_registration", "validate_neutral_catalog_snapshot", "validate_developer_policy"],
+        "module_fields": ["from referencing import Registry, Resource", "NEUTRAL_CATALOG_CONTRACTS", "NEUTRAL_CATALOG_CONTRACTS_SCHEMA"]
+      },
+      {"path": "developer/policy/registries/developer-policy-catalog-contracts.json", "operation": "CREATE"},
+      {"path": "developer/policy/schemas/developer-policy-catalog-contracts.schema.json", "operation": "CREATE"},
+      {"path": "developer/policy/schemas/developer-policy-catalog.schema.json", "operation": "CREATE"},
+      {"path": "developer/policy/schemas/developer-policy-subject-catalog.schema.json", "operation": "CREATE"},
+      {"path": "developer/tests/test_neutral_policy_catalog_contract.py", "operation": "CREATE"}
+    ],
+    "deferred_application_targets": [
+      {"path": "developer/policy/index.yaml", "fields": ["schema_version", "artifact_class", "policies[].policy_class", "policies[].status"], "execution_authorized": false},
+      {"path": "developer/policy/registries/authority-subject-registry.yaml", "fields": ["schema_version", "artifact_class", "subject_identity_schemes.MANAGEMENT_POLICY_ID.registered_values"], "execution_authorized": false},
+      {"path": "developer/automation/policy_validator.py", "python_functions": ["validate_developer_policy", "_validate_current_registry_planes"], "execution_authorized": false},
+      {"path": "developer/automation/policy_identity_lifecycle.py", "python_functions": ["_load_consistent_registered_corpus", "register_policy", "register_family_policy"], "execution_authorized": false},
+      {"path": "developer/automation/policy_resolver.py", "python_functions": ["_load_index"], "execution_authorized": false},
+      {"path": "developer/automation/verification/policy_plan_consistency.py", "python_functions": ["_known_policy_ids"], "execution_authorized": false},
+      {"path": "developer/automation/policy_plan_binding/reconciler.py", "python_functions": ["_policy_ids"], "execution_authorized": false}
+    ],
+    "separate_authority_family_work": ["developer/automation/policy_responsibility_gate.py", "developer/policy/analysis/", "developer/policy/schemas/policy-responsibility-analysis.schema.json", "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"],
+    "preserved_contracts": ["developer/policy/schemas/developer-policy-index.schema.json", "developer/policy/schemas/developer-governance-registry.schema.json", "developer/policy/schemas/management-policy.schema.json"],
+    "forbidden_write_roots": ["src/", "License-Authority/"],
+    "forbidden_actions": ["VPMS_POLICY_CREATION", "MPD_ID_RENAMING", "ADD_BOUND_TO_FAMILY_VOCABULARY", "GIT_COMMIT", "GIT_PUSH"],
+    "verification_selection": "AUTOMATIC_TEST_MODE_RESOLUTION",
+    "verification_test_paths": ["developer/tests/test_developer_control_plane.py", "developer/tests/test_neutral_policy_catalog_contract.py"]
+  },
+  "$defs": {
+    "catalog_schema_version": {"const": "developer-policy-catalog/v1"},
+    "catalog_artifact_class": {"const": "DEVELOPER_POLICY_CATALOG"},
+    "subject_schema_version": {"const": "developer-policy-subject-catalog/v1"},
+    "subject_artifact_class": {"const": "DEVELOPER_POLICY_SUBJECT_CATALOG"},
+    "subject_registry_role": {"const": "MANAGEMENT_POLICY_SUBJECT_CATALOG"},
+    "forbidden_subject_match": {"const": "FORBIDDEN"},
+    "policy_id": {"type": "string", "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"},
+    "family_policy_id": {"type": "string", "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
+    "boundary_policy_id": {"type": "string", "pattern": "^MPD-BOUND-[0-9]{4}$"},
+    "developer_policy_class": {"enum": ["PTSIP_DEVELOPER_POLICY", "VPMS_DEVELOPER_POLICY"]},
+    "boundary_policy_class": {"const": "PTSIP_BOUND_POLICY"},
+    "policy_class": {"anyOf": [{"$ref": "#/$defs/developer_policy_class"}, {"$ref": "#/$defs/boundary_policy_class"}]},
+    "policy_status": {"enum": ["DRAFT", "APPROVED", "ACTIVE", "SUPERSEDED", "RETIRED"]},
+    "policy_path": {"type": "string", "pattern": "^developer/policy/(?:MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:SPEC/MPD-SPEC|PLAN/MPD-PLAN|WORK/MPD-WORK|VERI/MPD-VERI|MIGR/MPD-MIGR|RELS/MPD-RELS)-[0-9]{4})\\.yaml$"}
+  }
+}
