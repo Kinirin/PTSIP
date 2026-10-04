@@ -142,7 +142,7 @@ def _canonical_policy_path(policy_id: str) -> str:
     family = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
     if family is not None:
         return f"developer/policy/{family.group(1)}/{policy_id}.yaml"
-    if _POLICY_ID_RE.fullmatch(policy_id) is not None:
+    if _POLICY_ID_RE.fullmatch(policy_id) is not None or _BOUND_POLICY_ID_RE.fullmatch(policy_id) is not None:
         return f"developer/policy/{policy_id}.yaml"
     raise PolicyIdentityLifecycleError("INVALID_POLICY_ID", f"invalid policy ID: {policy_id}")
 
