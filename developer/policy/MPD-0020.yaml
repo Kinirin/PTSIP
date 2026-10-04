@@ -1,0 +1,227 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: VPMS_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0020
+  version: "1.0"
+  title: VPMS Verification Protocol Management and Language-Neutral Execution
+  status: APPROVED
+
+rules:
+  vpms_identity:
+    canonical_expanded_identity: VERIFICATION_PROTOCOL_MANAGEMENT_SYSTEM
+    historical_expanded_identity: VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM
+    historical_policy_ref: SFP-0006
+    governing_question: HOW_SELECTED_VERIFICATION_IS_BOUND_EXECUTED_AND_NORMALIZED
+
+    historical_purpose_axis:
+      values:
+        - PRODUCT
+        - TOOLCHAIN
+      status: LEGACY_COMPATIBILITY_ONLY
+      canonical_selection_axis: false
+      ptsip_lifecycle_taxonomy_alias: false
+
+  verification_protocol:
+    invocation_input: EXPLICIT_VERIFICATION_REF_SET
+    selection_inference: FORBIDDEN
+
+    protocol_record:
+      required_fields:
+        - protocol_id
+        - target_ref
+        - semantics_ref
+        - input_contract_ref
+        - expectation_ref
+        - runner_ref
+        - result_contract_ref
+        - evidence_contract_ref
+
+      field_semantics:
+        protocol_id: STABLE_VERIFICATION_PROTOCOL_IDENTITY
+        target_ref: VERIFICATION_TARGET_REFERENCE
+        semantics_ref: VERIFIED_PROPERTY_OR_INVARIANT_REFERENCE
+        input_contract_ref: REQUIRED_INPUT_CONTRACT_REFERENCE
+        expectation_ref: SUCCESS_FAILURE_EXPECTATION_REFERENCE
+        runner_ref: EXECUTION_ADAPTER_REFERENCE
+        result_contract_ref: CANONICAL_RESULT_NORMALIZATION_REFERENCE
+        evidence_contract_ref: CANONICAL_EVIDENCE_NORMALIZATION_REFERENCE
+
+    retained_binding_concepts:
+      FORMULA: RETAIN
+      VARIABLES: RETAIN
+      POLICY: RETAIN
+      PURPOSE_AS_SELECTION_AXIS: RETIRE
+      SELECTION_SCOPE_PRODUCT_TOOLCHAIN_FULL: RETIRE_FROM_CANONICAL_API
+
+  execution_plane:
+    language_neutral: true
+    framework_neutral: true
+    core_may_require_specific_language_or_test_framework: false
+    runner_adapter_identity_must_be_explicit: true
+    runner_adapter_inference_from_target_path: FORBIDDEN
+
+    current_command_executor:
+      role: PROCESS_EXECUTION_ADAPTER
+      process_boundary_language_neutral: true
+      sufficient_as_complete_verification_protocol: false
+      zero_exit_is_universal_verification_semantics: false
+
+    non_normative_adapter_examples:
+      - PYTEST
+      - GO_TEST
+      - CARGO_TEST
+      - GRADLE_TEST
+      - VITEST
+      - PESTER
+      - CUSTOM_COMMAND
+      - REMOTE_EXECUTOR
+
+  canonical_result_and_evidence:
+    result_normalization_required: true
+    evidence_normalization_required: true
+    canonical_result_minimum_fields:
+      - verification_id
+      - protocol_id
+      - target_ref
+      - outcome
+      - diagnostics
+      - evidence_refs
+      - artifact_refs
+      - runner_execution
+    outcome_vocabulary:
+      - PASS
+      - FAIL
+      - ERROR
+      - SKIPPED
+    framework_specific_output_must_not_escape_as_canonical_result_without_normalization: true
+
+  ptsip_independence:
+    ptsip_classification_taxonomy_mirroring: FORBIDDEN
+    ptsip_test_mode_selection_ownership: FORBIDDEN
+    ptsip_change_impact_resolution_ownership: FORBIDDEN
+    project_profile_authority_ownership: FORBIDDEN
+    ptsip_metadata_consumption: READ_ONLY_EXPLICIT_CONTRACT_ONLY
+
+  migration:
+    legacy_selection_scope:
+      current_values:
+        - PRODUCT
+        - TOOLCHAIN
+        - FULL
+      canonical_future_role: NONE
+      compatibility_retention_may_be_temporary: true
+
+    current_ptsip_test_mode_pytest_binding:
+      state: TRANSITION_DEBT
+      target_state: PTSIP_EMITS_VERIFICATION_REFS_ONLY
+
+    legacy_support_policy:
+      policy_ref: SFP-0006
+      reconciliation_required_before_activation: true
+      silent_semantic_override: FORBIDDEN
+
+  responsibility_boundary:
+    owns:
+      - VERIFICATION_PROTOCOL_MODEL
+      - VERIFICATION_PROTOCOL_RESOLUTION
+      - VERIFICATION_BINDING
+      - RUNNER_ADAPTER_RESOLUTION
+      - VERIFICATION_EXECUTION
+      - RESULT_NORMALIZATION
+      - EVIDENCE_NORMALIZATION
+    does_not_own:
+      - PTSIP_ARCHITECTURE_CLASSIFICATION
+      - PTSIP_CHANGE_IMPACT
+      - PTSIP_TEST_MODE_SELECTION
+      - PTSIP_PROJECT_PROFILE_AUTHORITY
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+    - id: TR-001
+      type: LEGACY_AUTHORITY_RECONCILIATION
+      state: OPEN
+      refs:
+        - src/policy/SFP-0006.yaml
+      next_action:
+        action: RECONCILE_VPMS_IDENTITY_AND_PURPOSE_AUTHORITY
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - src/policy/SFP-0006.yaml
+          - developer/policy/MPD-0020.yaml
+        completion_check: VPMS_LEGACY_AUTHORITY_RECONCILED
+
+    - id: TR-002
+      type: PROTOCOL_CONTRACT
+      state: OPEN
+      refs:
+        - src/vpms
+      next_action:
+        action: MATERIALIZE_VERIFICATION_PROTOCOL_CONTRACTS
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - src/vpms
+        after:
+          - TR-001
+        completion_check: VERIFICATION_PROTOCOL_CONTRACTS_VALID
+
+    - id: TR-003
+      type: EXECUTION_NORMALIZATION
+      state: OPEN
+      refs:
+        - src/vpms/execution
+      next_action:
+        action: MATERIALIZE_RUNNER_RESULT_EVIDENCE_CONTRACTS
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - src/vpms/execution
+        after:
+          - TR-002
+        completion_check: RUNNER_RESULT_EVIDENCE_CONTRACTS_VALID
+
+    - id: TR-004
+      type: PTSIP_HANDOFF
+      state: OPEN
+      refs:
+        - .github/test_modes.yaml
+        - .github/scripts/resolve_test_modes.py
+      next_action:
+        action: MIGRATE_TEST_MODE_EXECUTION_TO_VERIFICATION_REFS
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - .github/test_modes.yaml
+          - .github/scripts/resolve_test_modes.py
+        after:
+          - TR-002
+          - TR-003
+        completion_check: PTSIP_VPMS_HANDOFF_VALID
+
+    - id: TR-005
+      type: LANGUAGE_NEUTRALITY
+      state: OPEN
+      refs:
+        - src/vpms
+        - tests/vpms
+      next_action:
+        action: VERIFY_MULTI_LANGUAGE_FRAMEWORK_NEUTRALITY
+        execution: PARALLEL_ALLOWED
+        target_refs:
+          - src/vpms
+          - tests/vpms
+        after:
+          - TR-003
+        completion_check: VPMS_LANGUAGE_NEUTRALITY_VALID
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-0018
+      scope: POLICY_CLASS_OWNERSHIP_DISCRIMINATION
+    - policy: MPD-0019
+      scope: PTSIP_VPMS_VERIFICATION_RESPONSIBILITY_BOUNDARY
+    - policy: SFP-0006
+      scope: LEGACY_VERIFICATION_PURPOSE_MANAGEMENT_AUTHORITY
