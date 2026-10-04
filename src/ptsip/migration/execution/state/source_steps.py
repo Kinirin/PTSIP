@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from ptsip.migration.execution.authorization.binding import SourceExecutionBinding
 from ptsip.migration.execution.authorization.proof import AuthorizedExecutionPlan
 from ptsip.migration.execution.state.phase import ExecutionPhase
+from ptsip.migration.execution.guard.repository_snapshot import RepositorySnapshotExpectation
 
+@dataclass(frozen=True)
 class VerifiedSourceStep:
     authorized: AuthorizedExecutionPlan
     source_index: int

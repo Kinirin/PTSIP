@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import StrEnum
 
 from ptsip.source_compat.model import CompatibilitySourceProfile, SourceFamily, V034SourceSemantics, V036SourceSemantics, thaw_json
 from ptsip.validation.components import normalize_selector

@@ -16,14 +16,6 @@ from ptsip.migration.analysis.findings.work_requirements import (
 )
 from ptsip.migration.analysis.source.projection import AmbiguousSourceElement
 
-class MigrationAnalysisIssue:
-    code: str
-    message: str
-    subject_id: str | None = None
-
-    def as_dict(self) -> dict[str, object]:
-        return {"code": self.code, "message": self.message, "subject_id": self.subject_id}
-
 @dataclass(frozen=True)
 class MigrationAnalysis:
     source_generation: SourceGenerationBinding

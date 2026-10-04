@@ -11,6 +11,7 @@ from ptsip.migration.execution.guard.mutation import MutationGuardExpectation, c
 from ptsip.migration.execution.guard.repository_snapshot import RepositorySnapshotExpectation, _analysis_snapshot, _current_snapshot_matches_analysis
 from ptsip.migration.execution.state.phase import ExecutionPhase
 from ptsip.migration.planning.result import FinalPointConvergencePlan
+from ptsip.migration.proposal.bundle import AcceptedDeltaBundle
 from ptsip.migration.proposal.source_set import SourceProposalSet
 from ptsip.migration.proposal.target_delta import TargetDelta
 
