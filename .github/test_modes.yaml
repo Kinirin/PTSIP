@@ -69,8 +69,16 @@ modes:
     execution:
       pytest:
         - tests/ptsip/contracts
-        - tests/ptsip/agent_contracts
+        - tests/ptsip/agent_contracts/test_contract_plane.py
+        - tests/ptsip/agent_contracts/test_operation_loading.py
         - tests/ptsip/governance/test_contracts.py
+
+  - id: agent-contract-candidate
+    component_ref: agent-contract-candidate-verification
+    execution:
+      pytest:
+        - tests/ptsip/agent_contracts/test_candidate_parity.py
+        - tests/ptsip/agent_contracts/test_projection_bindings.py
 
   - id: repository-architecture
     component_ref: repository-architecture-verification

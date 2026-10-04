@@ -45,6 +45,34 @@ components:
     release_owner: tool
     compatibility_owner: tool
 
+  - id: agent-contract-candidate-runtime
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/agent_contracts/candidate.py"
+      - "src/agent_contracts/machine_resolver.py"
+    purpose: reference_tool_candidate_compilation_parity_validation_and_freshness_checked_resolution
+    shipped: true
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: agent-contract-digest-contracts
+    classification: NEUTRAL_CONTRACT
+    roles:
+      - CONFIGURATION
+    include:
+      - "src/agent_contracts/digests/policy-v1.json"
+      - "src/agent_contracts/digests/projection-v1.json"
+    purpose: language_neutral_digest_and_semantic_projection_contract_candidates
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: specification
+    compatibility_owner: specification
+
   - id: ptsip-source-compat
     classification: PRODUCT
     roles:
@@ -367,7 +395,8 @@ components:
       - VERIFICATION
     include:
       - "tests/ptsip/contracts/**"
-      - "tests/ptsip/agent_contracts/**"
+      - "tests/ptsip/agent_contracts/test_contract_plane.py"
+      - "tests/ptsip/agent_contracts/test_operation_loading.py"
       - "tests/ptsip/governance/test_contracts.py"
     purpose: canonical_embedded_and_governance_contract_consistency_verification
     shipped: false
@@ -387,6 +416,28 @@ components:
       - "src/ptsip/agent_contracts/**"
       - "docs/Support_policy/policy/**"
       - "profiles/**"
+
+  - id: agent-contract-candidate-verification
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/ptsip/agent_contracts/test_candidate_parity.py"
+      - "tests/ptsip/agent_contracts/test_projection_bindings.py"
+    purpose: candidate_cutover_parity_and_explicit_semantic_projection_binding_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+    analysis_inputs:
+      - "src/agent_contracts/candidate.py"
+      - "src/agent_contracts/machine_resolver.py"
+      - "src/agent_contracts/digests/policy-v1.json"
+      - "src/agent_contracts/digests/projection-v1.json"
+      - "developer/profiles/ptsip-repository.yaml"
+      - "tests/ptsip/conftest.py"
+      - "tests/ptsip/_test_support.py"
 
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
@@ -580,6 +631,21 @@ associated_artifacts:
     purpose: specification_governance_adoption_agent_and_support_policy_operational_guidance
 
 relationships:
+  - id: candidate-runtime-reads-digest-contracts
+    from: agent-contract-candidate-runtime
+    to: agent-contract-digest-contracts
+    type: READS
+
+  - id: candidate-verification-verifies-runtime
+    from: agent-contract-candidate-verification
+    to: agent-contract-candidate-runtime
+    type: VERIFIES
+
+  - id: candidate-verification-verifies-digest-contracts
+    from: agent-contract-candidate-verification
+    to: agent-contract-digest-contracts
+    type: VERIFIES
+
   - id: core-reads-embedded-contracts
     from: ptsip-core
     to: ptsip-embedded-contracts

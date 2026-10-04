@@ -17,7 +17,10 @@ def test_wu02_lane_documents_are_centrally_consistent_when_active() -> None:
             "developer/planning/index.yaml",
             root=base,
         )
-        assert planning_index.get("plans") == []
+        assert not any(
+            entry.get("plan_version") == "0.4.0"
+            for entry in planning_index.get("plans", [])
+        )
         return
 
     assert validate_lane_documents() == ()

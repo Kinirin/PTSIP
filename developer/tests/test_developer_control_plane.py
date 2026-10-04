@@ -9,7 +9,7 @@ import yaml
 from developer.automation.current_dependency_gate import (
     validate_current_legacy_dependency_gate,
 )
-from developer.automation.planning_validator import validate_planning
+from developer.automation.planning.planning_validator import validate_planning
 from developer.automation.policy_validator import validate_developer_policy
 from developer.automation.project_profile_registry import (
     validate_project_profile_registry_plane,

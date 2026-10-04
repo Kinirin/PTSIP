@@ -20,68 +20,105 @@
       "minItems": 0,
       "uniqueItems": true,
       "items": {
-        "type": "object",
-        "required": [
-          "plan_version",
-          "path",
-          "status",
-          "integration_branch"
-        ],
-        "properties": {
-          "plan_version": {
-            "type": "string",
-            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        "oneOf": [
+          {
+            "$ref": "#/$defs/releasePlan"
           },
-          "path": {
-            "type": "string",
-            "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
-          },
-          "status": {
-            "enum": [
-              "DRAFT",
-              "ACTIVE",
-              "COMPLETE",
-              "SUPERSEDED",
-              "CANCELLED"
-            ]
-          },
-          "integration_branch": {
-            "type": "string",
-            "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-          },
-          "entry_routing": {
-            "type": "object",
-            "required": [
-              "model",
-              "canonical_plan",
-              "responsibility_control_plane",
-              "branch_creation_parent",
-              "dependency_bearing_convergence",
-              "independent_leaf_work_units",
-              "resolver",
-              "merge_reconciliation",
-              "branch_entrypoints"
-            ],
-            "properties": {
-              "model": {
-                "const": "PARALLEL_DEPENDENCY_EXTRACTION"
+          {
+            "$ref": "#/$defs/prereleasePlan"
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "releasePlan": {
+      "type": "object",
+      "required": [
+        "plan_version",
+        "path",
+        "status",
+        "integration_branch"
+      ],
+      "properties": {
+        "plan_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "COMPLETE",
+            "SUPERSEDED",
+            "CANCELLED"
+          ]
+        },
+        "integration_branch": {
+          "type": "string",
+          "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "entry_routing": {
+          "type": "object",
+          "required": [
+            "model",
+            "canonical_plan",
+            "responsibility_control_plane",
+            "branch_creation_parent",
+            "dependency_bearing_convergence",
+            "independent_leaf_work_units",
+            "resolver",
+            "merge_reconciliation",
+            "branch_entrypoints"
+          ],
+          "properties": {
+            "model": {
+              "const": "PARALLEL_DEPENDENCY_EXTRACTION"
+            },
+            "canonical_plan": {
+              "type": "string",
+              "pattern": "^planning/[0-9]+\\.[0-9]+\\.[0-9]+\\.md$"
+            },
+            "responsibility_control_plane": {
+              "type": "string",
+              "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
+            },
+            "branch_creation_parent": {
+              "type": "string",
+              "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+            },
+            "dependency_bearing_convergence": {
+              "type": "object",
+              "required": [
+                "id",
+                "responsibility"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^WU-[0-9]{2}$"
+                },
+                "responsibility": {
+                  "type": "string",
+                  "minLength": 1
+                }
               },
-              "canonical_plan": {
-                "type": "string",
-                "pattern": "^planning/[0-9]+\\.[0-9]+\\.[0-9]+\\.md$"
-              },
-              "responsibility_control_plane": {
-                "type": "string",
-                "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
-              },
-              "branch_creation_parent": {
-                "type": "string",
-                "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-              },
-              "dependency_bearing_convergence": {
+              "additionalProperties": false
+            },
+            "independent_leaf_work_units": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
                 "type": "object",
                 "required": [
                   "id",
+                  "branch",
                   "responsibility"
                 ],
                 "properties": {
@@ -89,426 +126,499 @@
                     "type": "string",
                     "pattern": "^WU-[0-9]{2}$"
                   },
+                  "branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+-WU-[0-9]{2}$"
+                  },
                   "responsibility": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "state": {
+                    "enum": [
+                      "ACTIVE",
+                      "MERGED"
+                    ]
+                  },
+                  "continuation_branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
                   }
                 },
                 "additionalProperties": false
+              }
+            },
+            "resolver": {
+              "type": "object",
+              "required": [
+                "module",
+                "command",
+                "branch_source",
+                "match_mode",
+                "unmatched_behavior",
+                "ambiguous_behavior"
+              ],
+              "properties": {
+                "module": {
+                  "const": "developer.automation.planning.planning_entry_resolver"
+                },
+                "command": {
+                  "const": "python -m developer.automation.planning.planning_entry_resolver"
+                },
+                "branch_source": {
+                  "const": "GIT_CURRENT_BRANCH"
+                },
+                "match_mode": {
+                  "const": "EXACT_BRANCH"
+                },
+                "unmatched_behavior": {
+                  "const": "FAIL_CLOSED"
+                },
+                "ambiguous_behavior": {
+                  "const": "FAIL_CLOSED"
+                }
               },
-              "independent_leaf_work_units": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": {
+              "additionalProperties": false
+            },
+            "merge_reconciliation": {
+              "type": "object",
+              "required": [
+                "module",
+                "reconcile_command",
+                "merge_command",
+                "target_branch",
+                "state_source",
+                "leaf_shared_index_mutation",
+                "merged_leaf_entrypoint_state",
+                "unfinished_merged_leaf_continuation",
+                "gate_policy"
+              ],
+              "properties": {
+                "module": {
+                  "const": "developer.automation.planning.planning_merge_reconciler"
+                },
+                "reconcile_command": {
+                  "const": "python -m developer.automation.planning.planning_merge_reconciler"
+                },
+                "merge_command": {
+                  "const": "python -m developer.automation.planning.planning_leaf_merge"
+                },
+                "target_branch": {
+                  "type": "string",
+                  "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+                },
+                "state_source": {
+                  "const": "WORK_UNIT_DOCUMENTS"
+                },
+                "leaf_shared_index_mutation": {
+                  "const": "FORBIDDEN"
+                },
+                "merged_leaf_entrypoint_state": {
+                  "const": "MERGED"
+                },
+                "unfinished_merged_leaf_continuation": {
+                  "const": "INTEGRATION_BRANCH"
+                },
+                "gate_policy": {
                   "type": "object",
                   "required": [
-                    "id",
-                    "branch",
-                    "responsibility"
+                    "preserve_nonterminal_current_gate",
+                    "merged_unfinished_leaf_after_gate_closure",
+                    "integrated_unfinished_leaf_before_unmerged_leaf",
+                    "unmerged_leaf_order",
+                    "fallback"
                   ],
                   "properties": {
-                    "id": {
-                      "type": "string",
-                      "pattern": "^WU-[0-9]{2}$"
+                    "preserve_nonterminal_current_gate": {
+                      "const": true
                     },
-                    "branch": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+-WU-[0-9]{2}$"
+                    "merged_unfinished_leaf_after_gate_closure": {
+                      "const": true
                     },
-                    "responsibility": {
-                      "type": "string",
-                      "minLength": 1
+                    "integrated_unfinished_leaf_before_unmerged_leaf": {
+                      "const": true
                     },
-                    "state": {
-                      "enum": [
-                        "ACTIVE",
-                        "MERGED"
-                      ]
+                    "unmerged_leaf_order": {
+                      "const": "DECLARATION_ORDER"
                     },
-                    "continuation_branch": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+                    "fallback": {
+                      "const": "FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU"
                     }
                   },
                   "additionalProperties": false
                 }
               },
-              "resolver": {
+              "additionalProperties": false
+            },
+            "branch_entrypoints": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
                 "type": "object",
                 "required": [
-                  "module",
-                  "command",
-                  "branch_source",
-                  "match_mode",
-                  "unmatched_behavior",
-                  "ambiguous_behavior"
+                  "branch",
+                  "entry_document",
+                  "role",
+                  "state"
                 ],
                 "properties": {
-                  "module": {
-                    "const": "developer.automation.planning.planning_entry_resolver"
+                  "branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:-WU-[0-9]{2})?$"
                   },
-                  "command": {
-                    "const": "python -m developer.automation.planning.planning_entry_resolver"
+                  "entry_document": {
+                    "type": "string",
+                    "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/(?:index|WU-[0-9]{2}/WU-[0-9]{2})\\.yaml$"
                   },
-                  "branch_source": {
-                    "const": "GIT_CURRENT_BRANCH"
+                  "role": {
+                    "enum": [
+                      "INTEGRATION_CONTROL_PLANE",
+                      "INDEPENDENT_LEAF",
+                      "BRANCH_RENAME_SOURCE_ALIAS"
+                    ]
                   },
-                  "match_mode": {
-                    "const": "EXACT_BRANCH"
+                  "state": {
+                    "enum": [
+                      "ACTIVE",
+                      "MERGED"
+                    ]
                   },
-                  "unmatched_behavior": {
-                    "const": "FAIL_CLOSED"
+                  "work_unit": {
+                    "type": "string",
+                    "pattern": "^WU-[0-9]{2}$"
                   },
-                  "ambiguous_behavior": {
-                    "const": "FAIL_CLOSED"
-                  }
-                },
-                "additionalProperties": false
-              },
-              "merge_reconciliation": {
-                "type": "object",
-                "required": [
-                  "module",
-                  "reconcile_command",
-                  "merge_command",
-                  "target_branch",
-                  "state_source",
-                  "leaf_shared_index_mutation",
-                  "merged_leaf_entrypoint_state",
-                  "unfinished_merged_leaf_continuation",
-                  "gate_policy"
-                ],
-                "properties": {
-                  "module": {
-                    "const": "developer.automation.planning.planning_merge_reconciler"
-                  },
-                  "reconcile_command": {
-                    "const": "python -m developer.automation.planning.planning_merge_reconciler"
-                  },
-                  "merge_command": {
-                    "const": "python -m developer.automation.planning.planning_leaf_merge"
-                  },
-                  "target_branch": {
+                  "merged_into": {
                     "type": "string",
                     "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
                   },
-                  "state_source": {
-                    "const": "WORK_UNIT_DOCUMENTS"
+                  "canonical_branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
                   },
-                  "leaf_shared_index_mutation": {
-                    "const": "FORBIDDEN"
+                  "retire_after": {
+                    "const": "BRANCH_RENAME_CONFIRMED"
                   },
-                  "merged_leaf_entrypoint_state": {
-                    "const": "MERGED"
-                  },
-                  "unfinished_merged_leaf_continuation": {
-                    "const": "INTEGRATION_BRANCH"
-                  },
-                  "gate_policy": {
-                    "type": "object",
-                    "required": [
-                      "preserve_nonterminal_current_gate",
-                      "merged_unfinished_leaf_after_gate_closure",
-                      "integrated_unfinished_leaf_before_unmerged_leaf",
-                      "unmerged_leaf_order",
-                      "fallback"
-                    ],
-                    "properties": {
-                      "preserve_nonterminal_current_gate": {
-                        "const": true
-                      },
-                      "merged_unfinished_leaf_after_gate_closure": {
-                        "const": true
-                      },
-                      "integrated_unfinished_leaf_before_unmerged_leaf": {
-                        "const": true
-                      },
-                      "unmerged_leaf_order": {
-                        "const": "DECLARATION_ORDER"
-                      },
-                      "fallback": {
-                        "const": "FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU"
+                  "continuation_branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "role": {
+                          "const": "INDEPENDENT_LEAF"
+                        }
                       }
                     },
-                    "additionalProperties": false
+                    "then": {
+                      "required": [
+                        "work_unit"
+                      ]
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "role": {
+                          "const": "INTEGRATION_CONTROL_PLANE"
+                        }
+                      }
+                    },
+                    "then": {
+                      "not": {
+                        "required": [
+                          "work_unit"
+                        ]
+                      },
+                      "properties": {
+                        "state": {
+                          "const": "ACTIVE"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "MERGED"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "merged_into"
+                      ],
+                      "properties": {
+                        "role": {
+                          "const": "INDEPENDENT_LEAF"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "role": {
+                          "const": "BRANCH_RENAME_SOURCE_ALIAS"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "canonical_branch",
+                        "retire_after"
+                      ],
+                      "not": {
+                        "required": [
+                          "work_unit"
+                        ]
+                      },
+                      "properties": {
+                        "state": {
+                          "const": "ACTIVE"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "materialized_state": {
+          "type": "object",
+          "required": [
+            "mode",
+            "source",
+            "generated_by",
+            "current_gate",
+            "current_gate_document",
+            "work_units"
+          ],
+          "properties": {
+            "mode": {
+              "const": "DERIVED_CACHE"
+            },
+            "source": {
+              "type": "string",
+              "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
+            },
+            "generated_by": {
+              "const": "developer.automation.planning.planning_merge_reconciler"
+            },
+            "current_gate": {
+              "type": "string",
+              "pattern": "^WU-[0-9]{2}(?:-P[0-9]{2})?$"
+            },
+            "current_gate_document": {
+              "type": "string",
+              "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}(?:-P[0-9]{2})?\\.yaml$"
+            },
+            "work_units": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "lifecycle_status",
+                  "implementation_authorization_status",
+                  "execution_location"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^WU-[0-9]{2}$"
+                  },
+                  "lifecycle_status": {
+                    "enum": [
+                      "NOT_CREATED",
+                      "DRAFT",
+                      "ACTIVE",
+                      "BLOCKED",
+                      "COMPLETE",
+                      "SUPERSEDED",
+                      "CANCELLED"
+                    ]
+                  },
+                  "implementation_authorization_status": {
+                    "enum": [
+                      "NOT_AUTHORIZED",
+                      "HOLD_NOT_AUTHORIZED",
+                      "AUTHORIZED",
+                      "COMPLETE"
+                    ]
+                  },
+                  "execution_location": {
+                    "enum": [
+                      "INTEGRATION_BRANCH",
+                      "LEAF_BRANCH",
+                      "NOT_CREATED"
+                    ]
+                  },
+                  "branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:-WU-[0-9]{2})?$"
+                  },
+                  "entry_document": {
+                    "type": "string",
+                    "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}\\.yaml$"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "branch_identity_migration": {
+          "type": "object",
+          "required": [
+            "status",
+            "canonical_branch",
+            "legacy_branch",
+            "scope",
+            "plan_version_unchanged",
+            "planning_path_unchanged",
+            "legacy_alias_retirement_trigger"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "RENAME_PENDING",
+                "RENAMED"
+              ]
+            },
+            "canonical_branch": {
+              "type": "string",
+              "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+            },
+            "legacy_branch": {
+              "type": "string",
+              "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+            },
+            "scope": {
+              "const": "EXECUTION_BRANCH_IDENTITY_ONLY"
+            },
+            "plan_version_unchanged": {
+              "const": true
+            },
+            "planning_path_unchanged": {
+              "const": true
+            },
+            "legacy_alias_retirement_trigger": {
+              "const": "BRANCH_RENAME_CONFIRMED"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "prereleasePlan": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "plan_version",
+        "path",
+        "status",
+        "integration_branch",
+        "approval",
+        "entry_routing"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "ptsip-prerelease-plan-entry/v1alpha1"
+        },
+        "plan_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:a|b|rc)[0-9]+$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/[0-9]+\\.[0-9]+\\.[0-9]+(?:a|b|rc)[0-9]+/index\\.yaml$"
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "COMPLETE",
+            "SUPERSEDED",
+            "CANCELLED"
+          ]
+        },
+        "integration_branch": {
+          "type": "string",
+          "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:(?:a|b|rc)[0-9]+)?$"
+        },
+        "approval": {
+          "type": "object",
+          "required": [
+            "status",
+            "approval_source"
+          ],
+          "properties": {
+            "status": {
+              "const": "APPROVED"
+            },
+            "approval_source": {
+              "const": "USER_EXPLICIT"
+            }
+          }
+        },
+        "entry_routing": {
+          "type": "object",
+          "required": [
+            "model",
+            "branch_entrypoints"
+          ],
+          "properties": {
+            "model": {
+              "const": "PRERELEASE_SINGLE_CONTROL_PLANE"
+            },
+            "branch_entrypoints": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": [
+                  "branch",
+                  "entry_document",
+                  "role",
+                  "state"
+                ],
+                "properties": {
+                  "branch": {
+                    "type": "string",
+                    "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:(?:a|b|rc)[0-9]+)?$"
+                  },
+                  "entry_document": {
+                    "type": "string",
+                    "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/[0-9]+\\.[0-9]+\\.[0-9]+(?:a|b|rc)[0-9]+/index\\.yaml$"
+                  },
+                  "role": {
+                    "const": "INTEGRATION_CONTROL_PLANE"
+                  },
+                  "state": {
+                    "const": "ACTIVE"
                   }
                 },
                 "additionalProperties": false
               },
-              "branch_entrypoints": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": {
-                  "type": "object",
-                  "required": [
-                    "branch",
-                    "entry_document",
-                    "role",
-                    "state"
-                  ],
-                  "properties": {
-                    "branch": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:-WU-[0-9]{2})?$"
-                    },
-                    "entry_document": {
-                      "type": "string",
-                      "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/(?:index|WU-[0-9]{2}/WU-[0-9]{2})\\.yaml$"
-                    },
-                    "role": {
-                      "enum": [
-                        "INTEGRATION_CONTROL_PLANE",
-                        "INDEPENDENT_LEAF",
-                        "BRANCH_RENAME_SOURCE_ALIAS"
-                      ]
-                    },
-                    "state": {
-                      "enum": [
-                        "ACTIVE",
-                        "MERGED"
-                      ]
-                    },
-                    "work_unit": {
-                      "type": "string",
-                      "pattern": "^WU-[0-9]{2}$"
-                    },
-                    "merged_into": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-                    },
-                    "canonical_branch": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-                    },
-                    "retire_after": {
-                      "const": "BRANCH_RENAME_CONFIRMED"
-                    },
-                    "continuation_branch": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-                    }
-                  },
-                  "allOf": [
-                    {
-                      "if": {
-                        "properties": {
-                          "role": {
-                            "const": "INDEPENDENT_LEAF"
-                          }
-                        }
-                      },
-                      "then": {
-                        "required": [
-                          "work_unit"
-                        ]
-                      }
-                    },
-                    {
-                      "if": {
-                        "properties": {
-                          "role": {
-                            "const": "INTEGRATION_CONTROL_PLANE"
-                          }
-                        }
-                      },
-                      "then": {
-                        "not": {
-                          "required": [
-                            "work_unit"
-                          ]
-                        },
-                        "properties": {
-                          "state": {
-                            "const": "ACTIVE"
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "if": {
-                        "properties": {
-                          "state": {
-                            "const": "MERGED"
-                          }
-                        }
-                      },
-                      "then": {
-                        "required": [
-                          "merged_into"
-                        ],
-                        "properties": {
-                          "role": {
-                            "const": "INDEPENDENT_LEAF"
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "if": {
-                        "properties": {
-                          "role": {
-                            "const": "BRANCH_RENAME_SOURCE_ALIAS"
-                          }
-                        }
-                      },
-                      "then": {
-                        "required": [
-                          "canonical_branch",
-                          "retire_after"
-                        ],
-                        "not": {
-                          "required": [
-                            "work_unit"
-                          ]
-                        },
-                        "properties": {
-                          "state": {
-                            "const": "ACTIVE"
-                          }
-                        }
-                      }
-                    }
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            },
-            "additionalProperties": false
+              "uniqueItems": true
+            }
           },
-          "materialized_state": {
-            "type": "object",
-            "required": [
-              "mode",
-              "source",
-              "generated_by",
-              "current_gate",
-              "current_gate_document",
-              "work_units"
-            ],
-            "properties": {
-              "mode": {
-                "const": "DERIVED_CACHE"
-              },
-              "source": {
-                "type": "string",
-                "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/index\\.yaml$"
-              },
-              "generated_by": {
-                "const": "developer.automation.planning.planning_merge_reconciler"
-              },
-              "current_gate": {
-                "type": "string",
-                "pattern": "^WU-[0-9]{2}(?:-P[0-9]{2})?$"
-              },
-              "current_gate_document": {
-                "type": "string",
-                "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}(?:-P[0-9]{2})?\\.yaml$"
-              },
-              "work_units": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": {
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "lifecycle_status",
-                    "implementation_authorization_status",
-                    "execution_location"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "pattern": "^WU-[0-9]{2}$"
-                    },
-                    "lifecycle_status": {
-                      "enum": [
-                        "NOT_CREATED",
-                        "DRAFT",
-                        "ACTIVE",
-                        "BLOCKED",
-                        "COMPLETE",
-                        "SUPERSEDED",
-                        "CANCELLED"
-                      ]
-                    },
-                    "implementation_authorization_status": {
-                      "enum": [
-                        "NOT_AUTHORIZED",
-                        "HOLD_NOT_AUTHORIZED",
-                        "AUTHORIZED",
-                        "COMPLETE"
-                      ]
-                    },
-                    "execution_location": {
-                      "enum": [
-                        "INTEGRATION_BRANCH",
-                        "LEAF_BRANCH",
-                        "NOT_CREATED"
-                      ]
-                    },
-                    "branch": {
-                      "type": "string",
-                      "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+(?:-WU-[0-9]{2})?$"
-                    },
-                    "entry_document": {
-                      "type": "string",
-                      "pattern": "^developer/planning/[0-9]+\\.[0-9]+\\.[0-9]+/WU-[0-9]{2}/WU-[0-9]{2}\\.yaml$"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            },
-            "additionalProperties": false
-          },
-          "branch_identity_migration": {
-            "type": "object",
-            "required": [
-              "status",
-              "canonical_branch",
-              "legacy_branch",
-              "scope",
-              "plan_version_unchanged",
-              "planning_path_unchanged",
-              "legacy_alias_retirement_trigger"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "RENAME_PENDING",
-                  "RENAMED"
-                ]
-              },
-              "canonical_branch": {
-                "type": "string",
-                "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-              },
-              "legacy_branch": {
-                "type": "string",
-                "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
-              },
-              "scope": {
-                "const": "EXECUTION_BRANCH_IDENTITY_ONLY"
-              },
-              "plan_version_unchanged": {
-                "const": true
-              },
-              "planning_path_unchanged": {
-                "const": true
-              },
-              "legacy_alias_retirement_trigger": {
-                "const": "BRANCH_RENAME_CONFIRMED"
-              }
-            },
-            "additionalProperties": false
-          }
-        },
-        "additionalProperties": false
-      }
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
-  },
-  "additionalProperties": false
+  }
 }

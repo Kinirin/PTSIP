@@ -19,6 +19,9 @@ class MachineContractResolver:
                 "schemas/candidate-index.schema.json", "schemas/candidate-group.schema.json",
                 "schemas/candidate-vectors.schema.json"}
         refs.update(ref for by_id in self.index["migration_sources"].values() for ref in by_id.values())
+        refs.update(self.index[field] for field in (
+            "canonicalization_ref", "canonical_digest_policy_ref", "normative_semantic_projection_ref"
+        ))
         self._compiled_bytes = {ref: resource(self.root, ref).read_bytes() for ref in sorted(refs)}
 
     def resolve(self, operation_id: str) -> dict:

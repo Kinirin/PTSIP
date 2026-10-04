@@ -2,6 +2,12 @@ schema_version: ptsip-developer-prerelease-planning-index/v1alpha1
 policy_class: PTSIP_DEVELOPER_POLICY
 artifact_class: PTSIP_DEVELOPER_PLANNING
 
+plan_identity:
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: "1.0"
+  revision: "Rev.0001"
+
 plan:
   id: PLAN-0.3.8A3-MPD-0015
   development_line: "0.3.8"
@@ -31,20 +37,44 @@ plan:
 
   governing_policy_refs:
     - policy_id: MPD-0015
-      role: PRIMARY
+      role: MECHANIZED_RESOLUTION_BASELINE
     - policy_id: MPD-0010
       role: INFERENCE_COST_AND_EXACT_RESOLUTION_BASELINE
     - policy_id: MPD-0012
       role: CANDIDATE_VERIFICATION_AND_PROMOTION_BASELINE
     - policy_id: MPD-0013
       role: POLICY_PLANNING_IMPLEMENTATION_AUTHORITY_SEPARATION
+    - policy_id: MPD-SPEC-0022
+      role: CANONICAL_REPRESENTATION_AND_DIGEST_CONTRACT
+    - policy_id: MPD-VERI-0004
+      role: AGENT_CONTRACT_REQUIRED_SEMANTIC_VERIFICATION
+    - policy_id: MPD-WORK-0004
+      role: CONDITIONAL_PRE_EXECUTION_MUTATION_AUTHORIZATION
+
+  formal_identity_materialization:
+    approval_source: USER_EXPLICIT
+    contract_ref: MPD-SPEC-0023#rules.binding_identity
+    allocation: MACHINE_GENERATED_OPAQUE_TOKENS
+    label_retained: PLAN-0.3.8A3-MPD-0015
+    label_is_formal_policy_plan_binding_identity: false
+    path_or_branch_defines_formal_identity: false
+    identity_reallocated_by_version_revision_or_path_change: false
 
   bootstrap_compatibility:
-    current_planning_v1_supports_nested_prerelease_path: false
-    current_planning_v1_supports_prerelease_branch_identity: false
-    current_root_index_registration: DEFERRED_TO_WU_01
+    current_planning_v1_supports_nested_prerelease_path: true
+    current_planning_v1_supports_prerelease_branch_identity: true
+    current_root_index_registration: REGISTERED
     first_work_unit: WU-01
     bootstrap_document_is_implementation_authority: false
+
+  entry_registration:
+    status: REGISTERED
+    registry_ref: developer/planning/index.yaml
+    approval_source: USER_EXPLICIT
+    canonical_integration_branch: dev/0.3.8a3
+    approved_continuation_branch: dev/0.3.8
+    entry_document: developer/planning/0.3.8/0.3.8a3/index.yaml
+    branch_creation_authorized: false
 
   reasoning_boundary_model:
     purpose: REDUCE_AGENT_INFERENCE_WITHOUT_PREMATURELY_FREEZING_IMPLEMENTATION_DETAIL

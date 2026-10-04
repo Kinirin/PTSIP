@@ -11,8 +11,132 @@ work_unit:
   implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
   depends_on: [WU-06, WU-07]
 
+  mutation_authorization_owner_assessment:
+    observation_phase: BEFORE_APPROVED_POLICY_MATERIALIZATION
+    latest_state_ref: policy_materialization
+    assessed_on: "2026-10-04"
+    assessment_role: PLANNING_HANDOFF_NOT_POLICY_LIFECYCLE_OR_BINDING_AUTHORITY
+    owner_confirmation:
+      policy_id: MPD-WORK-0004
+      responsibility: PRE_EXECUTION_MUTATION_AUTHORIZATION
+      confirmation_source: USER_EXPLICIT
+      statement: MUTATION_AUTHORIZATION_HAS_SEPARATE_OWNER_MPD_WORK_0004
+      confirmation_implies_active_lifecycle_approval: false
+    observed_policy_state:
+      inspection_entry: developer.automation.policy_identity_lifecycle.inspect
+      path: developer/policy/WORK/MPD-WORK-0004.yaml
+      version: "0.0"
+      policy_status: DRAFT
+      index_status: DRAFT
+      subject_identity_registered: true
+      operationally_resolvable: false
+      lifecycle_transition: null
+      draft_rule_ref: MPD-WORK-0004#rules.mutation_authorization_gate
+      draft_used_as_operational_or_acceptance_authority: false
+    observed_dependency_state:
+      resolver_entry: developer.automation.policy_plan_binding.resolver
+      registry_ref: developer/bindings/policy-plan-bindings.yaml
+      policy_id: MPD-WORK-0004
+      plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+      status: UNBOUND
+      dependency_inferred_from_owner_identity: false
+      formal_dependency_registered_by_this_assessment: false
+    activation_prerequisite:
+      judgment: REQUIRED_BEFORE_CONSUMING_OWNER_AS_OPERATIONAL_MUTATION_AUTHORIZATION_AUTHORITY
+      operational_use_boundary: DEVELOPER_POLICY_CONTEXT_ONLY
+      product_runtime_may_depend_on_mpd_documents: false
+      requirement_currently_satisfied: false
+      unconditional_prerequisite_for_all_wu08_work: false
+      applies_to:
+        - OPERATIONAL_MUTATION_AUTHORIZATION_USING_MPD_WORK_0004
+        - CANONICAL_CUTOVER_IF_IT_REQUIRES_THAT_AUTHORIZATION_GATE
+      not_implied_for:
+        - OWNER_AND_DEPENDENCY_ASSESSMENT
+        - NON_AUTHORITATIVE_CANDIDATE_ANALYSIS
+        - INDEPENDENT_ALREADY_AUTHORIZED_MECHANICAL_REMEDIATION_AND_DEBUG_VERIFICATION
+      required_resolution_before_dependent_use:
+        - EXPLICIT_ACTIVE_STATUS_APPROVAL_AND_SUCCESSFUL_LIFECYCLE_STATUS_PREFLIGHT
+        - CONSISTENT_ACTIVE_POLICY_IDENTITY_INDEX_AND_RECORD
+        - EXACT_OPERATIONAL_POLICY_APPLICABILITY_AND_REQUIRED_PLAN_DEPENDENCY_BINDING
+        - APPLICABLE_CONTRACT_DEFINED_SCOPE_PRECONDITION_FRESHNESS_AND_CONFLICT_INPUTS
+      active_status_alone_authorizes_target_mutation: false
+      owner_identity_alone_authorizes_target_mutation: false
+      missing_domain_conditions_may_be_invented: false
+      activation_performed_by_this_assessment: false
+    distinct_unresolved_authorities:
+      digest_projection_and_active_scheme: verification_resumption.remaining_required_authority
+      verification_path_selection: policy_followup_verification.automatic_test_modes
+      full_behavioral_conformance: verification_resumption.behavioral_conformance
+      owner_activation_resolves_these_automatically: false
+    assessment_policy_refs:
+      - MPD-SPEC-0006#rules.identity_and_resolution
+      - MPD-SPEC-0023#rules.authority_separation
+      - MPD-SPEC-0023#rules.policy_plan_binding_authority
+      - MPD-0013#rules.policy_plan_binding_automation
+      - MPD-0015#rules.mechanized_resolution_cycle
+    runtime_mutation_authorization_changed: false
+    wu08_completion_claimed: false
+
   objective: >-
     Prove conformance to the approved semantic baseline, activate the language-neutral contract authority only when cutover requirements are met, and establish a bounded readiness result for a future Go canonical runtime candidate without freezing Python implementation evolution.
+
+  policy_based_remediation_plan:
+    authorization_ref: work_unit.implementation_authorization
+    policy_resolution: EXACT_SCOPE_AND_OPERATION
+    user_rejected_change:
+      target: developer/profiles/ptsip-repository.yaml
+      component_id: ptsip-contract-verification
+      field: analysis_inputs
+      addition: "src/agent_contracts/**"
+      approval_source: USER_EXPLICIT
+      status: REJECTED
+    stages:
+      - id: CANONICAL_DIGEST_POLICY_APPLICATION
+        status: APPROVED_BASELINE_APPLIED_ACTIVATION_BLOCKED
+        policy_ref: MPD-SPEC-0022#rules.contract_artifact_representation
+        implementation_policy_ref: MPD-SPEC-0021#rules.machine_contract_ownership
+        resolved_semantics:
+          - PTSIP_CANONICAL_JSON_V1
+          - SINGLE_ACTIVE_WITH_ALGORITHM_AGILITY
+          - SHA_256
+          - LOWERCASE_HEXADECIMAL
+        unresolved_semantics_ref: policy_materialization.digest.remaining_required_details
+        implement_existing_fail_closed_guards: true
+        agent_may_define_missing_projection_semantics: false
+        canonical_activation: BLOCKED_UNTIL_EXPLICIT_PROJECTION_AND_SCHEME_RESOLUTION
+      - id: CANDIDATE_GENERATOR_CONSISTENCY
+        status: IMPLEMENTED_TARGETED_DEBUG_PASS_REQUIRED_MODE_BLOCKED
+        policy_refs:
+          - MPD-SPEC-0022#rules.contract_artifact_representation
+          - MPD-SPEC-0006#rules.canonical_and_runtime_projection
+          - MPD-0015#rules.mechanized_resolution_cycle
+        exact_edit_targets:
+          - src/agent_contracts/candidate.py
+          - src/agent_contracts/machine_resolver.py
+          - tests/ptsip/agent_contracts/test_candidate_parity.py
+        metadata_binding_source: src/agent_contracts/schemas/candidate-index.schema.json
+        metadata_fields_ref: verification_resumption.candidate_migration_parity.generated_index_diff_fields
+        implementation:
+          - MATERIALIZE_EXPLICIT_INDEX_METADATA_FROM_BOUND_SCHEMA_CONSTANTS
+          - REJECT_MISSING_OR_UNSUPPORTED_REQUIRED_METADATA_BINDINGS
+          - TRACK_ALL_THREE_EXPLICIT_SERIALIZATION_AND_DIGEST_RESOURCE_REFS_FOR_FRESHNESS
+          - PRESERVE_MIGRATION_PAYLOADS_VECTORS_AND_CANDIDATE_AUTHORITY_FLAGS
+        targeted_debug_verification: tests/ptsip/agent_contracts/test_candidate_parity.py
+        targeted_debug_pass_may_replace_required_test_mode_selection: false
+      - id: UNMAPPED_VERIFICATION_POLICY_ENTRY
+        status: IMPLEMENTED_AUTOMATIC_SELECTION_RESOLVED_REQUIRED_REGRESSION_FAILED
+        policy_ref: MPD-SPEC-0006#rules.identity_and_resolution
+        verification_policy_ref: MPD-VERI-0004#rules.required_verification
+        operational_rule_ref: AGENTS.md#deterministic-test-mode-verification
+        registry_ref: .github/test_modes.yaml
+        exact_selection_authority: DECLARED_PROJECT_PROFILE_VERIFICATION_ANALYSIS_INPUTS_AND_INCLUDE
+        policy_resolver_scope: src/agent_contracts
+        agent_contract_verification_entry_policy_returned_for_scope: true
+        rejected_glob_addition_may_be_applied: false
+        alternative_selection_authority_may_be_invented: false
+        full_verification_fallback: FORBIDDEN
+        required_next_resolution: FAILURE_OWNER_ALIGNMENT_AND_REQUIRED_VERIFICATION_RERUN
+        implementation_ref: exact_binding_and_ownership_materialization
 
   canonical_serialization_decision:
     status: ADOPTED
@@ -536,3 +660,634 @@ regression_debt_remediation:
   note: >-
     These remediations remove stale mechanical expectations only. They do not
     establish WU-08 PASS until executed verification confirms the new state.
+
+verification_resumption:
+  observation_phase: BEFORE_POLICY_BASED_GENERATOR_REMEDIATION
+  latest_followup_ref: policy_followup_verification
+  authorization_source: USER_EXPLICIT
+  date: "2026-10-04"
+  overall: BLOCKED
+  tested_state: LOCAL_WORKING_TREE
+  base_head_sha: f5352e785dd1646b8a62062f572eb1421376769f
+  exact_commit_verification_claimed: false
+  initial_head_sha: 154d4db69ce9fe17c76fbac7dbba4cb09e34a359
+  head_advance_during_initial_verification: true
+  final_architecture_run_head_stable: true
+  json_authority_activated: false
+  failure_waiver_created: false
+  planning_entry:
+    registry_ref: developer/planning/index.yaml
+    approved_continuation_branch: dev/0.3.8
+    resolved_entry: developer/planning/0.3.8/0.3.8a3/index.yaml
+    resolver_status: RESOLVED
+    validation: PASS
+    canonical_integration_branch_preserved: dev/0.3.8a3
+    prerequisite_work_units: {WU-06: COMPLETE, WU-07: COMPLETE}
+  focused_planning_verification:
+    passed: 35
+    failed: 0
+    includes:
+      - developer/tests/test_prerelease_planning.py
+      - developer/tests/test_planning_merge_reconciliation.py
+      - developer/tests/test_planning_stage_finalizer.py
+      - developer/tests/test_planning_extension_finalizer.py
+      - developer/tests/test_emergency_entry_routing.py
+      - developer/tests/test_wu02_lane_validator.py
+  policy_validation: PASS
+  context_plane_check: PASS
+  source_contract_schema_validation:
+    status: PASS
+    counts: {specs: 15, rules: 156, operations: 5, actions: 18, conditions: 23, gates: 3, io_schemas: 15, vocabularies: 5}
+  compatibility_operation_resolution:
+    status: PASS
+    resolved_operations: 5
+    role: EXISTING_COMPATIBILITY_SOURCE_ONLY
+  candidate_schema_validation:
+    status: PASS
+    migration_source_comparison_included: false
+    behavioral_conformance_claimed: false
+  candidate_migration_parity:
+    status: FAIL
+    reason: CANDIDATE_GENERATOR_HAS_STALE_SERIALIZATION_METADATA
+    path: src/agent_contracts/candidate.py
+    generated_index_diff_fields:
+      - canonical_digest_management
+      - canonical_digest_policy_ref
+      - canonical_serialization
+      - canonical_serialization_status
+      - canonicalization_ref
+      - normative_semantic_projection_ref
+      - selected_digest_output_encoding
+      - selected_hash_algorithm
+    payload_group_and_vector_drift: false
+    machine_resolver_compilation: BLOCKED
+  implementation_binding_resolution:
+    status: UNKNOWN
+    previously_reported_asset: src/ptsip/agent_contracts/bindings/python.json
+    previously_reported_asset_present: false
+    historical_binding_pass_reused_as_current_evidence: false
+  behavioral_conformance:
+    input_output: UNKNOWN
+    effects: UNKNOWN
+    failures: UNKNOWN
+    state_transitions: UNKNOWN
+    execution_feedback: NOT_REVERIFIED
+    reasoning_promotion: NOT_REVERIFIED
+    migration_parity_may_substitute_for_behavioral_proof: false
+  automatic_test_modes:
+    current_edit_scope:
+      resolution: SELECTED
+      selected_ids: [repository-architecture]
+    repository_architecture:
+      passed: 294
+      failed: 22
+      errors: 0
+      result: FAIL
+      junit_xml: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-c6da0462d81047f9bc19e25f2d8f3348/architecture-stable.xml
+      log: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-c6da0462d81047f9bc19e25f2d8f3348/architecture-stable.log
+      complete_plan_regression_claimed: false
+    since_previous_wu08_observation:
+      base_sha: 4e8214b398df38c001c82fa8d8fb2fdbd99764c4
+      resolution: BLOCKED_UNMAPPED_CHANGED_PATHS
+      unmapped_paths:
+        - .agent/index.yaml
+        - .agent/stages/level1.json
+        - .agent/unresolved/level1.json
+        - docs/translated/README.ko.md
+        - docs/translated/index.yaml
+        - src/agent_contracts/canonicalization/ptsip-canonical-json-v1.json
+        - src/agent_contracts/digests/policy-v1.json
+        - src/agent_contracts/digests/projection-v1.json
+        - src/agent_contracts/index.json
+        - src/agent_contracts/schemas/candidate-index.schema.json
+        - tests/ptsip/governance/test_policy_plan_binding.py
+        - tests/ptsip/governance/test_policy_plan_resolver_tracker.py
+        - tests/ptsip/test_context_plane.py
+      full_verification_fallback_used: false
+    proposed_generator_remediation:
+      resolution: BLOCKED_UNMAPPED_CHANGED_PATHS
+      unmapped_paths: [src/agent_contracts/candidate.py, src/agent_contracts/machine_resolver.py]
+  work_packet:
+    status: UNAVAILABLE_NO_REGISTERED_TASK_CONTEXT
+    error: task_context must be a mapping
+    task_context_invented: false
+  remaining_required_authority:
+    digest_projection:
+      - EXACT_INCLUSION_SEMANTIC_ROLES
+      - EXACT_INCLUSION_ROLE_BINDINGS
+      - EXACT_EXCLUSION_SEMANTIC_ROLES
+      - EXACT_EXCLUSION_ROLE_BINDINGS
+      - SET_LIKE_STABLE_SEMANTIC_IDENTITY_CONTRACT
+      - SET_LIKE_EXACT_EXCEPTION_SORT_BINDINGS
+    active_canonical_digest_scheme: UNRESOLVED
+
+policy_followup_verification:
+  observation_phase: BEFORE_APPROVED_POLICY_MATERIALIZATION
+  latest_state_ref: policy_materialization
+  authorization_source: USER_EXPLICIT
+  date: "2026-10-04"
+  overall: BLOCKED
+  tested_state: LOCAL_WORKING_TREE
+  base_head_sha: f5352e785dd1646b8a62062f572eb1421376769f
+  exact_commit_verification_claimed: false
+  supersedes_observations:
+    - verification_resumption.candidate_migration_parity
+    - verification_resumption.automatic_test_modes.current_edit_scope
+  rejected_analysis_inputs_addition:
+    applied: false
+    existing_component_glob_mandated_by_returned_policy_sections: false
+    profile_and_test_mode_selection_files_unchanged: true
+  candidate_generator_consistency:
+    status: PASS
+    explicit_metadata_bindings: 8
+    metadata_binding_source: src/agent_contracts/schemas/candidate-index.schema.json
+    migration_source_comparison_included: true
+    payload_group_and_vector_drift: false
+    candidate_counts: {specs: 15, operations: 5, actions: 18, conditions: 23, gates: 3, io_schemas: 15, vocabularies: 5}
+    machine_resolver_compilation: PASS
+    exact_operations_resolved: 5
+    normative_authority_created: false
+    mutation_authorized: false
+    behavioral_conformance_claimed: false
+  targeted_debug_verification:
+    test: tests/ptsip/agent_contracts/test_candidate_parity.py
+    result: PASS
+    passed: 17
+    failed: 0
+    errors: 0
+    junit_xml: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-final-1cabf2fced934c43b1f5c73164aea7dc/candidate-parity.xml
+    verifies:
+      - EXACT_SCHEMA_METADATA_BINDING_AND_MIGRATION_SOURCE_PARITY
+      - MISSING_METADATA_BINDING_FAILS_CLOSED
+      - FAILURE_PROJECTION_DRIFT_FAILS_CLOSED
+      - ALL_THREE_SERIALIZATION_AND_DIGEST_REFERENCES_REQUIRE_FRESH_REVALIDATION
+      - UNKNOWN_EXACT_OPERATION_IDENTITY_FAILS_CLOSED
+      - UNRESOLVED_DIGEST_AND_CANDIDATE_AUTHORITY_CANNOT_BE_PROMOTED_BY_INDEX_EDITS
+    replaces_required_test_mode_verification: false
+    initial_final_rerun:
+      result: HARNESS_SETUP_ERROR
+      passed: 2
+      errors: 15
+      cause: TEMPORARY_BASE_DIRECTORY_PARENT_NOT_CREATED
+      repair: CREATE_NEW_ISOLATED_TEMPORARY_PARENT_BEFORE_PYTEST
+      product_or_test_code_changed_for_repair: false
+  canonical_digest:
+    policy_ref: MPD-SPEC-0022#rules.contract_artifact_representation
+    projection_status: PARTIALLY_RESOLVED
+    remaining_semantics_ref: verification_resumption.remaining_required_authority
+    active_scheme: UNRESOLVED
+    generated_value: UNRESOLVED
+    activation: BLOCKED
+    missing_semantics_inferred: false
+  automatic_test_modes:
+    resolution: BLOCKED_UNMAPPED_CHANGED_PATHS
+    resolver_exit_code: 2
+    head: HEAD
+    changed_file_source: GIT_TRACKED_DIFF_AND_NONIGNORED_UNTRACKED_FILES
+    unmapped_paths:
+      - src/agent_contracts/candidate.py
+      - src/agent_contracts/machine_resolver.py
+    alternative_selection_authority_created: false
+    full_verification_fallback_used: false
+    prior_repository_architecture_failures_closed: false
+    prior_repository_architecture_observation_ref: verification_resumption.automatic_test_modes.repository_architecture
+  policy_validation: PASS
+  planning_validation: PASS
+  context_plane_check: PASS
+  work_packet_ref: verification_resumption.work_packet
+  task_context_invented: false
+  wu08_complete: false
+  json_authority_activated: false
+  failure_waiver_created: false
+
+policy_materialization:
+  observation_phase: BEFORE_EXACT_BINDING_AND_OWNERSHIP_MATERIALIZATION
+  latest_state_ref: exact_binding_and_ownership_materialization
+  date: "2026-10-04"
+  authorization_source: USER_EXPLICIT
+  tested_state: LOCAL_WORKING_TREE
+  base_head_sha: f5352e785dd1646b8a62062f572eb1421376769f
+  exact_commit_verification_claimed: false
+  overall: POLICY_AND_FORMAL_BINDING_APPLIED_IMPLEMENTATION_GATES_BLOCKED
+  policy_records:
+    mutation_authorization:
+      id: MPD-WORK-0004
+      status: ACTIVE
+      version: "2.0"
+      lifecycle_path: [DRAFT_0_0, APPROVED_1_0, ACTIVE_2_0]
+      status_preflight_each_transition: PASS
+      approval_refs:
+        - developer/policy/approvals/MPA-20261004-WU08-MUTATION-GATE-APPROVED.yaml
+        - developer/policy/approvals/MPA-20261004-WU08-MUTATION-GATE-ACTIVE.yaml
+      activation_creates_target_mutation_authorization: false
+    canonical_representation:
+      id: MPD-SPEC-0022
+      status: ACTIVE
+      version: "2.1"
+      change_class: COMPATIBLE_NORMATIVE
+      approval_ref: developer/policy/approvals/MPA-20261004-WU08-DIGEST-REFINEMENT.yaml
+    required_semantic_verification:
+      id: MPD-VERI-0004
+      status: ACTIVE
+      version: "2.1"
+      change_class: COMPATIBLE_NORMATIVE
+      approval_ref: developer/policy/approvals/MPA-20261004-WU08-VERIFICATION-ENTRY.yaml
+      responsibility_analysis_ref: developer/policy/analysis/PRA-20261004-WU08-VERIFICATION-ENTRY.yaml
+      responsibility_analysis: PASS
+      new_policy_identity_allocated: false
+  formal_plan_identity:
+    source_ref: developer/planning/0.3.8/0.3.8a3/index.yaml#plan_identity
+    resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+    plan_file_id: PLANFILE.MAIN.2c4c961377dd
+    version: "1.0"
+    revision: "Rev.0001"
+    grammar_authority: developer/bindings/schemas/policy-plan-bindings.schema.json
+    prerelease_validator_reuses_canonical_grammar: true
+  formal_policy_plan_bindings:
+    registry_ref: developer/bindings/policy-plan-bindings.yaml
+    mutation_interface: developer.automation.policy_plan_binding.manager
+    state: BOUND
+    bindings:
+      - {binding_id: PPB-0002, policy_ref: MPD-0015}
+      - {binding_id: PPB-0003, policy_ref: MPD-SPEC-0022}
+      - {binding_id: PPB-0004, policy_ref: MPD-VERI-0004}
+      - {binding_id: PPB-0005, policy_ref: MPD-WORK-0004}
+    pre_existing_binding_preserved: PPB-0001
+    reconciliation: CURRENT
+    consistency_verification: PASS
+    checked_registry_bindings: 5
+  policy_context_entry:
+    binding_ref: developer/policy/policy-resolver-bindings/bindings.jsonl
+    wu08_exact_scope: developer/planning/0.3.8/0.3.8a3/WU-08/WU-08.yaml
+    owner_policies_resolve: true
+    source_verification_scope: src/agent_contracts
+    source_verification_owner: MPD-VERI-0004
+  digest:
+    policy_to_candidate_reflection: VERIFIED
+    inclusion_semantic_roles: 12
+    exclusion_semantic_roles: 4
+    set_identity_contract: REGISTERED_KIND_AND_LOGICAL_ID
+    exact_role_bindings_approved: false
+    remaining_required_details:
+      - EXACT_INCLUSION_ROLE_BINDINGS
+      - EXACT_EXCLUSION_ROLE_BINDINGS
+      - COLLECTION_TYPE_AND_IDENTITY_BINDINGS
+      - SET_LIKE_EXACT_EXCEPTION_SORT_BINDINGS
+      - ACTIVE_DIGEST_SCHEME_AND_REQUIRED_VERIFICATION
+    field_names_used_as_role_authority: false
+    runtime_canonical_digest: UNRESOLVED
+    runtime_authority_activated: false
+  source_ownership_and_verification:
+    declared_source_ownership: UNRESOLVED
+    required_review:
+      - PRIMARY_LIFECYCLE_OWNERSHIP_OF_CONTRACT_ASSETS_AND_EXECUTABLE_IMPLEMENTATION
+      - EXACT_COMPONENT_INCLUDE_AND_TEST_OWNERSHIP_PARTITION
+      - EXPLICIT_TYPED_VERIFICATION_RELATIONSHIPS
+      - EXACT_VERIFICATION_COMPONENT_ANALYSIS_INPUTS
+    policy_activation_creates_project_architecture_declaration: false
+    rejected_existing_component_glob_applied: false
+    project_profile_and_test_mode_registry_changed: false
+  targeted_debug_verification:
+    result: PASS
+    passed: 45
+    failed: 0
+    errors: 0
+    junit_xml: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-policy-final-1c616f49af6e43d2a43e4d8df1db9087/materialization.xml
+    suites:
+      - developer/tests/test_wu08_policy_materialization.py
+      - developer/tests/test_prerelease_planning.py
+      - tests/ptsip/agent_contracts/test_candidate_parity.py
+    replaces_required_automatic_verification: false
+  automatic_test_modes:
+    resolution: BLOCKED_UNMAPPED_CHANGED_PATHS
+    changed_path_source: GIT_DIFF_HEAD_PLUS_NON_IGNORED_UNTRACKED_FILES
+    resolver_input: AUTOMATIC_WITH_EXPLICIT_CHANGED_FILE_ARGUMENTS
+    resolver_exit_code: 2
+    unmapped_paths:
+      - src/agent_contracts/candidate.py
+      - src/agent_contracts/digests/policy-v1.json
+      - src/agent_contracts/digests/projection-v1.json
+      - src/agent_contracts/machine_resolver.py
+    inherited_unmapped_paths_ref: verification_resumption.automatic_test_modes.since_previous_wu08_observation
+    prior_repository_architecture_failures_closed: false
+    full_verification_fallback_used: false
+  policy_validation: PASS
+  planning_validation: PASS
+  work_packet:
+    status: UNAVAILABLE_NO_REGISTERED_TASK_CONTEXT
+    error: task_context must be a mapping
+    task_context_invented: false
+  wu08_complete: false
+  failure_waiver_created: false
+  commit_or_push_performed: false
+
+exact_binding_and_ownership_materialization:
+  date: "2026-10-04"
+  observation_phase: BEFORE_USER_REQUESTED_COMMIT_AND_PUSH
+  authorization_source: USER_EXPLICIT
+  approved_scope: FOUR_UNMAPPED_PATHS_DETAILED_FIELD_BINDINGS_AND_SOURCE_TEST_OWNERSHIP
+  verification_delegation: ALL_SEVEN_AUTOMATICALLY_SELECTED_MODES_AND_RESULT_REVIEW
+  tested_state: LOCAL_WORKING_TREE
+  base_head_sha: f5352e785dd1646b8a62062f572eb1421376769f
+  exact_commit_verification_claimed: false
+  approval_ref: developer/policy/approvals/MPA-20261004-WU08-EXACT-BINDINGS-AND-OWNERSHIP.yaml
+  final_source_and_selection_input_hashes:
+    algorithm: SHA256
+    canonical_contract_digest_authority: false
+    files:
+      src/agent_contracts/candidate.py: 52c5960d5f15d2f19dd0303d710331eabbf655222ca9d07ca0cc3f00c8d72ff2
+      src/agent_contracts/machine_resolver.py: bdc494387ef44458cccbd499b243b4fe771b2972556c4066531b7f561cb1ace8
+      src/agent_contracts/digests/policy-v1.json: 145b97f3989b4b2a591520a5e544c8ad5d9ea97e9b02ad22912324c547343d79
+      src/agent_contracts/digests/projection-v1.json: 95b221ca20acc804cebbdbef51675f804ffd46e135c19c0c7ade3733286bf3c5
+      developer/profiles/ptsip-repository.yaml: 17d3543d185df402f5a4d315db3fbf0f347edd9330952458f9c8c376d5134ea8
+      .github/test_modes.yaml: 0d9aa5baac11aeb2b35b657ba73c9a77da7d80d52aaaf0a63bd1bc0d65165655
+      tests/ptsip/agent_contracts/test_candidate_parity.py: 6f091252ac0f6bc037f1545b8554d969ea0f89755146d0129c7cfd79e819ab8d
+      tests/ptsip/agent_contracts/test_projection_bindings.py: 51366a4519388b5016f6504c80df3700a16224fa29e4b6a0677e260aa77a7a41
+  policy:
+    id: MPD-SPEC-0022
+    status: ACTIVE
+    version: "2.2"
+    change_class: COMPATIBLE_NORMATIVE
+    lifecycle_status_preflight: PASS
+  source_ownership:
+    authority_ref: developer/profiles/ptsip-repository.yaml
+    status: DECLARED
+    components:
+      - id: agent-contract-candidate-runtime
+        classification: PRODUCT
+        governing_obligation: REFERENCE_TOOL_CANDIDATE_COMPILATION_PARITY_AND_FRESHNESS_CHECKED_RESOLUTION
+        evidence_refs:
+          - src/agent_contracts/candidate.py#build_candidate_assets
+          - src/agent_contracts/candidate.py#validate_candidate_assets
+          - src/agent_contracts/machine_resolver.py#MachineContractResolver
+        include:
+          - src/agent_contracts/candidate.py
+          - src/agent_contracts/machine_resolver.py
+      - id: agent-contract-digest-contracts
+        classification: NEUTRAL_CONTRACT
+        governing_obligation: NON_EXECUTABLE_LANGUAGE_NEUTRAL_DIGEST_AND_PROJECTION_CONTRACT
+        policy_basis: MPD-SPEC-0022#rules.contract_artifact_representation
+        include:
+          - src/agent_contracts/digests/policy-v1.json
+          - src/agent_contracts/digests/projection-v1.json
+    packaging_evidence_ref: pyproject.toml#tool.setuptools
+    lifecycle_not_inferred_from_file_extension_or_packaging_alone: true
+    other_unmapped_source_ownership_expanded: false
+  test_ownership:
+    component_id: agent-contract-candidate-verification
+    classification: DEVELOPMENT_TOOLING
+    scope: CANDIDATE_CUTOVER_PARITY_AND_BINDING_VERIFICATION
+    include:
+      - tests/ptsip/agent_contracts/test_candidate_parity.py
+      - tests/ptsip/agent_contracts/test_projection_bindings.py
+    typed_verifies_targets: [agent-contract-candidate-runtime, agent-contract-digest-contracts]
+    existing_embedded_tests_retained_by: ptsip-contract-verification
+    overlapping_test_ownership: false
+    existing_component_rejected_analysis_inputs_glob_applied: false
+    test_mode_id: agent-contract-candidate
+    execution_registry_ref: .github/test_modes.yaml
+    registry_defines_alternative_watch_paths: false
+  detailed_bindings:
+    binding_set_id: PTSIP-CANDIDATE-SEMANTIC-BINDINGS-V1
+    binding_status: BOUND_PENDING_REQUIRED_SEMANTIC_VERIFICATION
+    package_projection_ref: src/agent_contracts/digests/projection-v1.json
+    package_digest_policy_ref: src/agent_contracts/digests/policy-v1.json
+    included_field_bindings: 576
+    excluded_field_bindings: 23
+    exact_collection_bindings: 254
+    exact_asset_refs: 11
+    set_like_identity_collections: 20
+    ordered_collections: 234
+    identity_kind_fields: {RULE: /rule_id, VOCABULARY_ENTRY: /id}
+    nested_set_member_selection: EXACT_LOGICAL_ID_NOT_ARRAY_POSITION
+    exception_sort_bindings: []
+    exception_absence_basis: ALL_DECLARED_SET_LIKE_COLLECTIONS_USE_REGISTERED_PRIMARY_IDENTITIES
+    domain_status_fields_included: true
+    conformance_vector_exclusion_requires_exact_parity: true
+    unknown_field_record_collection_and_role: FAIL_CLOSED
+    runtime_validator_ref: src/agent_contracts/candidate.py#validate_projection_bindings
+    canonical_digest_scheme: UNRESOLVED
+    digest_computation_implemented: false
+    runtime_authority_activated: false
+    remaining_activation_gates: [ACTIVE_DIGEST_SCHEME_BINDING, REQUIRED_SEMANTIC_VERIFICATION_PASS, REQUIRED_REGRESSION_PASS]
+  automatic_test_modes:
+    resolution: SELECTED
+    changed_path_source: GIT_DIFF_HEAD_PLUS_NON_IGNORED_UNTRACKED_FILES
+    four_paths_select: [agent-contract-candidate]
+    current_working_tree_selected_modes:
+      - test-mode-control-plane
+      - ptsip-contract
+      - repository-architecture
+      - ptsip-core
+      - ptsip-remediation
+      - vpms
+      - agent-contract-candidate
+    full_verification_fallback_used: false
+    inherited_baseline_unmapped_paths_ref: verification_resumption.automatic_test_modes.since_previous_wu08_observation
+  focused_debug_verification:
+    result: PASS
+    passed: 90
+    failed: 0
+    errors: 0
+    observation: BEFORE_LAST_ADDITIONAL_DIGEST_ACTIVATION_GUARD_TEST
+    junit_xml: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-bindings-fb7691a3e44444a6bd29945d7cef35b6/focused.xml
+    replaces_required_automatic_verification: false
+  required_seven_mode_verification:
+    status: FAIL
+    all_selected_modes_executed: true
+    selected_mode_count: 7
+    passed_mode_count: 3
+    failed_mode_count: 4
+    report_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-seven-567692019c4b40038120bb4da1abb509
+    aggregate: {tests: 954, passed: 893, failed: 61, errors: 0, skipped: 0}
+    duplicate_diagnostic_and_superseded_attempts_counted: false
+    evidence_hash_algorithm: SHA256
+    evidence_hashes_are_not_canonical_contract_digests: true
+    modes:
+      - id: test-mode-control-plane
+        result: PASS
+        tests: 38
+        passed: 38
+        failed: 0
+        errors: 0
+        skipped: 0
+        junit_xml: test-mode-control-plane.xml
+        report_sha256: 13a5a5603ae7cd9bb9c8c9929fd73c73e1bbde17f135734988b572c4184039c4
+      - id: ptsip-contract
+        result: FAIL
+        tests: 33
+        passed: 32
+        failed: 1
+        errors: 0
+        skipped: 0
+        junit_xml: ptsip-contract.xml
+        report_sha256: 8635fcd0f5e5dfc9b435a9067935f7bbb48fe6b8f08782e4d0f9faba9fade4e7
+      - id: repository-architecture
+        result: FAIL
+        tests: 334
+        passed: 312
+        failed: 22
+        errors: 0
+        skipped: 0
+        junit_xml: repository-architecture-tracked.xml
+        report_sha256: 2405b1ef6dce810f9bd2a8d27c1ad28219847fa5ad14c3e0da4bb746bac55147
+        supersedes: repository-architecture.xml
+        rerun_reason: REGISTER_EXACT_NEW_TEST_PATHS_IN_TRACKED_DISCOVERY_WITHOUT_STAGING_CONTENT
+      - id: ptsip-core
+        result: FAIL
+        tests: 337
+        passed: 300
+        failed: 37
+        errors: 0
+        skipped: 0
+        junit_xml: ptsip-core.xml
+        report_sha256: a68b95f7a1e77378ed04f6f818ca53dd038ed3fbd1253cddf5a1e6dcd413b03e
+      - id: ptsip-remediation
+        result: PASS
+        tests: 55
+        passed: 55
+        failed: 0
+        errors: 0
+        skipped: 0
+        junit_xml: ptsip-remediation.xml
+        report_sha256: 332471317930c0316bcbe2ab3e21c73522d49b9a4add9b885df8f315d6c20bbc
+      - id: vpms
+        result: FAIL
+        tests: 116
+        passed: 115
+        failed: 1
+        errors: 0
+        skipped: 0
+        junit_xml: vpms.xml
+        report_sha256: 315d90f72c51afea1cd303487c1f6b52ff20ff46cfa688bffed107b567014b05
+      - id: agent-contract-candidate
+        result: PASS
+        tests: 41
+        passed: 41
+        failed: 0
+        errors: 0
+        skipped: 0
+        junit_xml: agent-contract-candidate.xml
+        report_sha256: 094a300b05491135238319904fd9fa5ca119749fe6461f68ad933a459cd55473
+        required_semantic_checks_implicitly_satisfied: false
+    tracked_test_registration:
+      mechanism: GIT_INTENT_TO_ADD
+      paths:
+        - tests/ptsip/agent_contracts/test_candidate_parity.py
+        - tests/ptsip/agent_contracts/test_projection_bindings.py
+      file_content_staged: false
+      new_verification_component_unmatched_test_selector_resolved: true
+      unrelated_existing_unmatched_profile_selectors_resolved: false
+    failure_review:
+      status: COMPLETED_WITH_REQUIRED_FAILURES_RETAINED
+      contract:
+        failed: 1
+        observation: PP_1_01_SCHEMA_IS_USED_FOR_PP_1_02_EXAMPLE_PROFILE
+        test_ref: tests/ptsip/contracts/test_spec_assets.py#test_example_profile_validates_against_canonical_schema
+        schema_ref: schemas/ptsip-profile-pp-1.01.schema.json
+        example_ref: profiles/example.ptsip.yaml
+        test_schema_and_example_unchanged_by_this_task: true
+      repository_architecture:
+        failed: 22
+        previous_report: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-c6da0462d81047f9bc19e25f2d8f3348/architecture-stable.xml
+        previous_failed_count: 22
+        failure_test_id_sets_identical: true
+        same_ids_do_not_prove_all_failure_causes_identical: true
+        groups:
+          - {id: SELF_PROFILE_UNMATCHED_EXISTING_SELECTORS, failed: 2}
+          - {id: DEVELOPER_CONTROL_PLANE_REMOVAL_RELATION_CORPUS_AND_OWNER_EXPECTATIONS, failed: 4}
+          - {id: IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING, failed: 5}
+          - {id: OUTPUT_SCHEMA_POLICY_VERSION_EXPECTATION, failed: 1}
+          - {id: RETIRED_SUPPORT_POLICY_SOURCE_AND_SCHEMA_PATHS, failed: 2}
+          - {id: MIGRATION_SCOPE_DUPLICATE_POLICY_BINDING, failed: 1}
+          - {id: PROJECT_PROFILE_REGISTRY_AND_BASELINE_EXPECTATIONS, failed: 4}
+          - {id: SELF_PROFILE_BRIDGE_AND_TEST_MODE_CLI_EXPECTATIONS, failed: 3}
+        migration_scope_record_equal_to_head: true
+        migration_scope_record_modified_by_this_task: false
+      core:
+        failed: 37
+        exact_prior_full_core_failure_baseline_available: false
+        blanket_pre_existing_failure_claimed: false
+        groups:
+          - {id: DEPENDENCY_ANALYSIS_BLOCKED_OR_EXPECTED_COUNTS_UNAVAILABLE, failed: 16}
+          - {id: CONTROL_PLANE_LOCAL_PROFILE_PATH_AND_PARENT_DIRECTORY, failed: 4}
+          - {id: LOCAL_CATALOG_SELF_PROFILE_EXISTING_UNMATCHED_SELECTORS, failed: 1}
+          - {id: PROFILE_AND_SPECIFICATION_IDENTITY_EXPECTATIONS, failed: 3}
+          - {id: INTEGRATION_LOCAL_PROFILE_PARENT_DIRECTORY, failed: 2}
+          - {id: PROFILE_SCHEMA_AND_SPECIFICATION_BINDING_EXPECTATIONS, failed: 4}
+          - {id: PROFILE_CONVERGENCE_TARGET_AND_SEMANTIC_MIGRATION_EXPECTATIONS, failed: 7}
+        dependency_fixture_observation: CURRENT_PROFILE_IDENTITY_WITH_LEGACY_ROOT_AND_SPECIFICATION_SHAPE
+        dependency_fixture_ref: tests/ptsip/conformance/test_dependency_reconciliation.py#_fixture
+        dependency_group_exact_causal_equivalence_claimed: false
+        unchanged_dependency_identity_validation_and_convergence_source_inputs_checked: true
+        after_tracked_registration_diagnostic:
+          junit_xml: ptsip-core-index-check.xml
+          result: FAIL
+          tests: 1
+          failure: EXISTING_SELF_PROFILE_SELECTORS_STILL_UNMATCHED
+          included_in_aggregate: false
+      vpms:
+        failed: 1
+        observation: TEST_EXPECTS_TWO_PACKAGE_PATTERNS_BUT_EXISTING_DISCOVERY_ALSO_INCLUDES_AGENT_CONTRACTS
+        test_ref: tests/vpms/architecture/test_packaging_035.py#test_setuptools_discovery_includes_vpms_responsibility_packages
+        packaging_ref: pyproject.toml#tool.setuptools.packages.find
+        test_and_packaging_configuration_unchanged_by_this_task: true
+      out_of_scope_remediation_applied: false
+      required_failure_waiver_created: false
+      inferred_semantic_profile_migration_applied: false
+      canonical_digest_or_candidate_authority_activated: false
+    required_next_action: RESOLVE_EXACT_FAILURE_OWNERS_AND_APPROVED_REMEDIATION_BEFORE_REQUIRED_RERUN
+    interrupted_combined_attempt:
+      status: INCOMPLETE_NO_FINAL_REPORT
+      report_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-automatic-20e713a367d34dab8673b8a5b98d3db5
+      completed_verification_claimed: false
+  final_structural_and_routing_checks:
+    developer_policy_validation: PASS
+    developer_planning_validation: PASS
+    planning_entry_resolution: RESOLVED
+    test_mode_registry_validation: PASS
+    registered_test_mode_count: 11
+    working_tree_selection: SELECTED
+    working_tree_changed_path_count: 35
+    working_tree_selected_mode_count: 7
+    exact_four_source_path_selection: [agent-contract-candidate]
+    unresolved_current_working_tree_verification_paths: []
+    committed_head_only_selection_is_not_working_tree_selection: true
+    policy_plan_binding_registry: CURRENT
+    binding_count: 5
+    policy_plan_consistency: PASS
+    checked_binding_count: 5
+    context_plane_check: PASS
+    git_diff_check: PASS
+    content_staged: false
+    post_test_content_changes: WU08_RESULT_EVIDENCE_ONLY
+    required_regression_result: FAIL
+  work_packet:
+    status: UNAVAILABLE_NO_REGISTERED_TASK_CONTEXT
+    error: task_context must be a mapping
+    task_context_invented: false
+  wu08_complete: false
+  failure_waiver_created: false
+  commit_or_push_performed: false
+
+verification_scope_registration_candidate:
+  status: REJECTED
+  decision_source: AGENT_INFERRED
+  normative_authority: false
+  approved: false
+  rejection_source: USER_EXPLICIT
+  applied: false
+  target: developer/profiles/ptsip-repository.yaml
+  component_id: ptsip-contract-verification
+  field: analysis_inputs
+  proposed_addition: "src/agent_contracts/**"
+  intended_effect: SOURCE_CONTRACT_CHANGES_SELECT_PTSIP_CONTRACT_MODE
+  source_component_ownership_assigned_by_this_candidate: false
+  may_resolve_all_other_unmapped_paths: false
+  subsequent_bounded_remediation:
+    status: SUPERSEDED_BY_WORK_UNIT_POLICY_BASED_REMEDIATION_PLAN
+    target: src/agent_contracts/candidate.py
+    change: SYNCHRONIZE_GENERATED_INDEX_METADATA_WITH_EXISTING_APPROVED_SCHEMA_CONSTANTS
+    metadata_fields_ref: verification_resumption.candidate_migration_parity.generated_index_diff_fields
+    canonical_digest_activation: false
+    normative_semantic_change: false

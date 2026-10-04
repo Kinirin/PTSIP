@@ -20,6 +20,9 @@ ROOT_SCHEMA = "developer/planning/schemas/planning-root-index.schema.json"
 PLAN_SCHEMA = "developer/planning/schemas/planning-index.schema.json"
 WU_SCHEMA = "developer/planning/schemas/work-unit.schema.json"
 EXTENSION_SCHEMA = "developer/planning/schemas/plan-extension.schema.json"
+PRERELEASE_PLAN_SCHEMA = "developer/planning/schemas/prerelease-planning-index.schema.json"
+PRERELEASE_WU_SCHEMA = "developer/planning/schemas/prerelease-work-unit.schema.json"
+BINDING_SCHEMA = "developer/bindings/schemas/policy-plan-bindings.schema.json"
 SOURCE_REGISTRY = "developer/policy/registries/governance-source-registry.yaml"
 _TERMINAL_EXTENSION_STATUSES = {"COMPLETE", "SUPERSEDED", "CANCELLED"}
 _GOVERNANCE_SOURCE_FIELDS = {
@@ -84,6 +87,104 @@ def _errors(payload: dict[str, object], schema: dict[str, object], label: str) -
     return [f"{label}: {error.message}" for error in Draft202012Validator(schema).iter_errors(payload)]
 
 
+def _validate_prerelease_plan(
+    base: Path,
+    entry: dict[str, object],
+    plan: dict[str, object],
+) -> list[str]:
+    path = str(entry["path"])
+    plan_schema = load_json(PRERELEASE_PLAN_SCHEMA, root=base)
+    wu_schema = load_json(PRERELEASE_WU_SCHEMA, root=base)
+    for schema in (plan_schema, wu_schema):
+        Draft202012Validator.check_schema(schema)
+    errors = _errors(plan, plan_schema, path)
+    if errors:
+        return errors
+
+    binding_contract = load_json(BINDING_SCHEMA, root=base)["$defs"]["binding"]["properties"]
+    identity_fields = ("resolved_plan_id", "plan_file_id", "version", "revision")
+    formal_identity_schema = {
+        "type": "object",
+        "required": list(identity_fields),
+        "properties": {field: binding_contract[field] for field in identity_fields},
+        "additionalProperties": False,
+    }
+    errors.extend(_errors(plan["plan_identity"], formal_identity_schema, f"{path}: plan_identity"))
+
+    identity = plan["plan"]
+    prefix = f"developer/planning/{identity['development_line']}/{identity['prerelease']}"
+    expected_path = f"{prefix}/index.yaml"
+    if path != expected_path or identity["canonical_location"] != path:
+        errors.append(f"{path}: prerelease canonical location does not match its identity")
+    for field, value in (
+        ("plan_version", identity["prerelease"]),
+        ("integration_branch", identity["integration_branch"]),
+        ("status", identity["status"]),
+    ):
+        if entry[field] != value:
+            errors.append(f"{path}: {field} does not match root registration")
+
+    routes = entry["entry_routing"]["branch_entrypoints"]
+    branches = [route["branch"] for route in routes]
+    if len(set(branches)) != len(branches):
+        errors.append(f"{path}: branch entrypoints must use unique exact branch names")
+    if identity["integration_branch"] not in branches:
+        errors.append(f"{path}: integration branch has no registered entrypoint")
+    for route in routes:
+        if route["entry_document"] != path:
+            errors.append(f"{path}: prerelease branch entrypoint must resolve to its own plan")
+
+    work_units: dict[str, dict[str, object]] = {}
+    for indexed in plan["work_units"]:
+        wu_id = indexed["id"]
+        if wu_id in work_units:
+            errors.append(f"{path}: duplicate work unit {wu_id}")
+            continue
+        wu_path = indexed["path"]
+        if wu_path != f"{prefix}/{wu_id}/{wu_id}.yaml":
+            errors.append(f"{path}: work unit {wu_id} has an invalid canonical path")
+            continue
+        if not (base / wu_path).is_file():
+            errors.append(f"{wu_path}: registered work unit is missing")
+            continue
+        payload = load_yaml(wu_path, root=base)
+        wu_errors = _errors(payload, wu_schema, wu_path)
+        errors.extend(wu_errors)
+        if wu_errors:
+            continue
+        work_unit = payload["work_unit"]
+        work_units[wu_id] = work_unit
+        if payload["plan_id"] != identity["id"] or work_unit["id"] != wu_id:
+            errors.append(f"{wu_path}: work unit identity does not match its registered plan")
+        if work_unit["depends_on"] != indexed["depends_on"]:
+            errors.append(f"{wu_path}: depends_on does not match version index")
+        if work_unit["lifecycle"]["status"] == "COMPLETE" and not payload.get("completion_evidence"):
+            errors.append(f"{wu_path}: COMPLETE work unit requires completion_evidence")
+
+    batches = plan["execution_model"]["dependency_order"]
+    ordered_ids = [wu_id for batch in batches for wu_id in batch]
+    indexed_ids = [wu["id"] for wu in plan["work_units"]]
+    if len(set(ordered_ids)) != len(ordered_ids) or set(ordered_ids) != set(indexed_ids):
+        errors.append(f"{path}: dependency order must contain every indexed work unit exactly once")
+    preceding: set[str] = set()
+    for batch in batches:
+        for wu_id in batch:
+            work_unit = work_units.get(wu_id)
+            if work_unit and not set(work_unit["depends_on"]).issubset(preceding):
+                errors.append(f"{path}: dependency order is invalid for {wu_id}")
+        preceding.update(batch)
+    gate = plan["execution_model"]["current_gate"]
+    gate_unit = work_units.get(gate)
+    if gate_unit is None:
+        errors.append(f"{path}: current_gate does not resolve to a registered work unit")
+    else:
+        for dependency in gate_unit["depends_on"]:
+            dependency_unit = work_units.get(dependency)
+            if dependency_unit is None or dependency_unit["lifecycle"]["status"] != "COMPLETE":
+                errors.append(f"{path}: current_gate dependency {dependency} is not complete")
+    return errors
+
+
 def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
     base = repository_root(root)
     errors: list[str] = []
@@ -107,6 +208,13 @@ def validate_planning(root: str | Path | None = None) -> tuple[str, ...]:
         if not isinstance(path, str):
             continue
         plan = load_yaml(path, root=base)
+        if plan_entry.get("schema_version") == "ptsip-prerelease-plan-entry/v1alpha1":
+            entry_errors = _errors(
+                plan_entry, root_schema["$defs"]["prereleasePlan"], ROOT_INDEX
+            )
+            if not entry_errors:
+                errors.extend(_validate_prerelease_plan(base, plan_entry, plan))
+            continue
         errors.extend(_errors(plan, plan_schema, path))
 
         root_routing = plan_entry.get("entry_routing")

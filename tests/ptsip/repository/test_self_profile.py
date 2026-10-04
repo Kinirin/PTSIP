@@ -136,10 +136,15 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         "src/ptsip/agent_contracts/**/*.yaml"
         in components["ptsip-embedded-contracts"]["include"]
     )
-    assert (
-        "tests/ptsip/agent_contracts/**"
-        in components["ptsip-contract-verification"]["include"]
-    )
+    assert components["ptsip-contract-verification"]["include"] == [
+        "tests/ptsip/contracts/**",
+        "tests/ptsip/agent_contracts/test_contract_plane.py",
+        "tests/ptsip/agent_contracts/test_operation_loading.py",
+        "tests/ptsip/governance/test_contracts.py",
+    ]
+    assert components["agent-contract-candidate-runtime"]["classification"] == "PRODUCT"
+    assert components["agent-contract-digest-contracts"]["classification"] == "NEUTRAL_CONTRACT"
+    assert "src/agent_contracts/**" not in components["ptsip-contract-verification"]["analysis_inputs"]
 
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]
     assert components["repository-verification-support"]["roles"] == ["CONFIGURATION"]
