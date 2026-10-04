@@ -33,6 +33,7 @@ modes:
         - tests/ptsip/test_clarification.py
         - tests/ptsip/test_merge_gate_followup_030.py
         - tests/ptsip/test_proposed_component.py
+        - tests/ptsip/test_context_plane.py
 
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
@@ -86,6 +87,21 @@ modes:
       pytest:
         - tests/ptsip/repository/test_self_profile.py
         - developer/tests
+        - tests/ptsip/governance/test_policy_plan_binding.py
+        - tests/ptsip/governance/test_policy_plan_resolver_tracker.py
+
+  - id: agent-contract-runtime
+    component_ref: agent-contract-runtime-verification
+    execution:
+      pytest:
+        - tests/agent_contracts/test_resolver.py
+
+  - id: agent-contract-plane
+    component_ref: agent-contract-plane-verification
+    execution:
+      pytest:
+        - tests/agent_contracts/test_contract_plane.py
+        - tests/agent_contracts/test_promotion_contract.py
 
   - id: repository-release
     component_ref: repository-release-verification
