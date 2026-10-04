@@ -287,7 +287,7 @@ def _next_policy_id(ids: Sequence[str]) -> str:
     for policy_id in ids:
         match = _POLICY_ID_RE.fullmatch(policy_id)
         if match is None:
-            if _FAMILY_POLICY_ID_RE.fullmatch(policy_id):
+            if _FAMILY_POLICY_ID_RE.fullmatch(policy_id) or _BOUND_POLICY_ID_RE.fullmatch(policy_id):
                 continue
             raise PolicyIdentityLifecycleError("INVALID_POLICY_ID", f"invalid policy ID: {policy_id}")
         numbers.append(int(match.group(1)))
