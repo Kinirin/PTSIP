@@ -52,6 +52,9 @@ target_layout:
       - result.py
 
   execution:
+    root_modules:
+      - error.py
+      - recovery.py
     state:
       - source_steps.py
       - promotion.py
