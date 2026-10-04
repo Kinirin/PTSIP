@@ -13,7 +13,8 @@ from ptsip.migration.analysis.findings.work_requirements import (
     RequiredWorkElement,
     SourceMigrationCompletion,
 )
-from ptsip.migration.analysis.result import MigrationAnalysis, MigrationAnalysisIssue
+from ptsip.migration.analysis.issue import MigrationAnalysisIssue
+from ptsip.migration.analysis.result import MigrationAnalysis
 from ptsip.migration.analysis.source.binding_validation import _validate_evidence_context, _validate_source_binding
 from ptsip.migration.analysis.source.evidence_correlation import _evidence_for_path
 from ptsip.migration.analysis.source.projection import SourceProjectionKind, _project_source

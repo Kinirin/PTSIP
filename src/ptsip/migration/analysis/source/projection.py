@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from ptsip.source_compat.model import CompatibilitySourceProfile, SourceFamily, V034SourceSemantics, V036SourceSemantics, thaw_json
 from ptsip.validation.components import normalize_selector
 from ptsip.validation.templates import TemplateMaterializationError, materialize_profile
-from ptsip.migration.analysis.result import MigrationAnalysisIssue
+from ptsip.migration.analysis.issue import MigrationAnalysisIssue
 
 class SourceProjectionKind(StrEnum):
     COMPONENT = "COMPONENT"

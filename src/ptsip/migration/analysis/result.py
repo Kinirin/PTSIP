@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 from ptsip.source_compat.model import SourceGenerationBinding
 from ptsip.migration.analysis.findings.architecture import ArchitectureFinding
+from ptsip.migration.analysis.issue import MigrationAnalysisIssue
 from ptsip.migration.analysis.findings.lifecycle import LifecycleFinding
 from ptsip.migration.analysis.findings.work_requirements import (
     AsynchronousWorkTarget,
@@ -15,7 +16,6 @@ from ptsip.migration.analysis.findings.work_requirements import (
 )
 from ptsip.migration.analysis.source.projection import AmbiguousSourceElement
 
-@dataclass(frozen=True)
 class MigrationAnalysisIssue:
     code: str
     message: str

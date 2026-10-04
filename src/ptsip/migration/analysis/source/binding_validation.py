@@ -6,7 +6,7 @@ from pathlib import Path
 from ptsip.evidence.contract import NormalizedEvidenceSet
 from ptsip.repository.profile_path import normalize_profile_path, profile_path_on_disk
 from ptsip.source_compat.model import CompatibilitySourceProfile
-from ptsip.migration.analysis.result import MigrationAnalysisIssue
+from ptsip.migration.analysis.issue import MigrationAnalysisIssue
 
 def _validate_source_binding(repository_root: Path, profile: CompatibilitySourceProfile) -> tuple[MigrationAnalysisIssue, ...]:
     binding = profile.generation
