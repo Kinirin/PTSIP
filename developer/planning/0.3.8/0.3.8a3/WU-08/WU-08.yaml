@@ -1738,3 +1738,166 @@ root_bridge_retirement:
       - UNKNOWN_OR_PREVIOUSLY_UNOWNED_PATHS_REMAIN_FAIL_CLOSED
       - NO_FULL_VERIFICATION_FALLBACK_OR_FAILURE_WAIVER
     explicit_user_approval_required_before_policy_or_resolver_change: true
+
+self_profile_responsibility_and_support_source_migration:
+  recorded_on: "2026-10-04"
+  record_role: IMPLEMENTATION_AND_VERIFICATION_EVIDENCE_NOT_NORMATIVE_AUTHORITY
+  approval_source: USER_EXPLICIT
+  approved_choices:
+    promotion_design: INDEPENDENT_PRODUCT_CONTRACT
+    promotion_authority: SPECIFICATION_MACHINE_CONTRACT
+    candidate_ownership: COMPILER_PARITY_AND_RESOLVER_SEPARATION
+    verification_ownership: RUNTIME_BEHAVIOR_AND_CONTRACT_PLANE_SEPARATION
+    support_policy_canonical_root: src/policy/
+  source_state:
+    base_head: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    branch: dev/0.3.8
+    evidence_kind: LOCAL_UNCOMMITTED_WORKTREE_WITH_AUTOMATIC_DELTA_RERUNS
+    exact_committed_source_verification_claimed: false
+    this_record_is_post_verification_documentation: true
+    evidence_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-support-promotion-verification-6zkcldp0
+    review_ref: C:/Users/rhkrt/AppData/Local/Temp/ptsip-support-promotion-verification-6zkcldp0/final-review.json
+    source_patch_ref: C:/Users/rhkrt/AppData/Local/Temp/ptsip-support-promotion-verification-6zkcldp0/source-final.patch
+  support_source_relocation:
+    old_root: docs/Support_policy/policy/
+    new_root: src/policy/
+    files: 35
+    policy_records: 22
+    index_files: 1
+    registries: 4
+    schemas: 8
+    old_root_absent: true
+    before_and_after_move_sha256_parity: PASS_35_FILES
+    unchanged_content_after_routing_remediation: 34
+    head_content_comparison_ignores_checkout_line_endings: true
+    intentional_schema_change:
+      path: src/policy/schemas/ptsip-support-project-authority-record.schema.json
+      field: properties.authority_provenance.properties.source_ref.pattern
+      reason: REQUIRE_NEW_CANONICAL_SOURCE_PROVENANCE_PATH
+    stable_schema_id_uris_preserved: true
+    sfp_policy_ids_and_lifecycle_statuses_preserved: true
+    installed_projection_root: ptsip/support/
+    installed_projection_is_new_authoring_authority: false
+    developer_namespace_owner: MPD-SPEC-0001
+    developer_namespace_change: CANONICAL_SOURCE_AND_INSTALLED_PROJECTION_LOCATORS_ONLY
+    developer_policy_identity_and_lifecycle_changed: false
+    history_or_completed_evidence_rewritten: false
+  responsibility_materialization:
+    profile: developer/profiles/ptsip-repository.yaml
+    project_profile_contract: pp.1.02
+    user_revision: Rev.0002
+    specification_binding_changed: false
+    before: {unmatched_selectors: 5, unassigned_paths: 113}
+    observed_after:
+      valid: true
+      errors: 0
+      warnings: 0
+      unmatched_component_selectors: 0
+      unmatched_associated_artifact_selectors: 0
+      unassigned_paths: 0
+      component_conflicts: 0
+      associated_artifact_conflicts: 0
+    compiler_component: agent-contract-candidate-compiler
+    resolver_component: agent-contract-candidate-resolver
+    candidate_contract_component: agent-contract-candidate-contracts
+    candidate_projection_artifact: agent-contract-candidate-projections
+    candidate_projection_anchor: agent-contract-candidate-compiler
+    candidate_projection_ownership_reason: AUXILIARY_OUTPUT_OF_CANDIDATE_GENERATION_REPRODUCIBILITY_AND_PARITY_VERIFICATION
+    candidate_projection_is_normative_authority: false
+    runtime_verification_component: agent-contract-runtime-verification
+    contract_plane_verification_component: agent-contract-plane-verification
+    source_ownership_is_separate_from_analysis_inputs: true
+    broad_src_agent_contracts_input_added_to_ptsip_contract_verification: false
+    existing_local_default_profile_replaced: false
+  promotion_candidate:
+    registry: src/agent_contracts/promotion/index.json
+    contract: src/agent_contracts/promotion/specification-contract.json
+    schema: src/agent_contracts/schemas/contracts/promotion.schema.json
+    projection: src/agent_contracts/promotion/current.json
+    intended_authority: SPECIFICATION_MACHINE_CONTRACT
+    developer_policy_source_removed: true
+    product_agent_contract_mpd_reference_scan: NO_MATCHES
+    existing_promotion_and_required_verification_payloads_preserved: true
+    status: CANDIDATE
+    specification_binding: UNBOUND
+    normative_authority: false
+    activation: REQUIRES_VERIFIED_SPECIFICATION_CUTOVER
+    r2_required_check_names: 7
+    candidate_schema_and_projection_tests_prove_all_r2_behavioral_checks: false
+    active_specification_revision_changed: false
+    canonical_serialization_or_digest_authority_changed: false
+  implementation_work_packet_assessment:
+    prepare_result: "task_context must be a mapping"
+    exact_scope_resolutions_have_registered_task_context: false
+    conditional_registered_task_context_requirement_applicable: false
+    fabricated_task_context_or_helper_bypass_used: false
+  verification:
+    test_mode_registry: {result: PASS, modes: 13}
+    normal_mode_selection: AUTOMATIC
+    changed_path_source: GIT_DIFF_HEAD_RENAME_AWARE_WORKTREE_PATHS
+    automatic_modes: 10
+    final_passed_modes: 9
+    final_failed_modes: 1
+    passed_tests: 982
+    failed_tests: 37
+    full_fallback_used: false
+    current_checkout_source_explicitly_bound_in_child_processes: true
+    results:
+      - {mode: repository-release, result: PASS, passed: 17, failed: 0}
+      - {mode: test-mode-control-plane, result: PASS, passed: 38, failed: 0}
+      - {mode: ptsip-core, result: FAIL, passed: 306, failed: 37}
+      - {mode: ptsip-remediation, result: PASS, passed: 55, failed: 0}
+      - {mode: vpms, result: PASS, passed: 116, failed: 0}
+      - {mode: agent-contract-candidate, result: PASS, passed: 41, failed: 0}
+      - {mode: repository-architecture, result: PASS, passed: 363, failed: 0}
+      - {mode: agent-contract-runtime, result: PASS, passed: 6, failed: 0}
+      - {mode: agent-contract-plane, result: PASS, passed: 7, failed: 0}
+      - {mode: ptsip-contract, result: PASS, passed: 33, failed: 0}
+    snapshot_invalidated_during_parallel_build:
+      initial_result: FAIL_CLOSED
+      initial_failed_tests: 1
+      repair: RERUN_AFTER_BUILD_WITHOUT_CONCURRENT_REPOSITORY_MUTATION
+      sequential_rerun: PASS
+      freshness_check_disabled: false
+    final_policy_locator_delta:
+      automatic_selected_modes: [ptsip-contract, repository-architecture]
+      execution: SEQUENTIAL
+      result: PASS
+    developer_policy_validation: PASS
+    developer_planning_validation: PASS
+    context_plane_check: PASS
+    context_semantic_source_or_projections_changed: false
+  distribution_verification:
+    artifact_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-support-promotion-distribution-20261004
+    wheel_build: PASS
+    sdist_build: PASS
+    distribution_contract_verifier: PASS
+    support_source_to_wheel_and_sdist_byte_parity: {files: 35, result: PASS}
+    promotion_source_to_wheel_and_sdist_byte_parity: {files: 4, result: PASS}
+    wheel_sha256: f6b4c1f94c9ce7093029aa206550ac114515923a0560be5855d3ca0aaf99e139
+    sdist_sha256: 9c66a805f1fa7444da1c845b21999420c49fafda58de92c868030da78c664683
+    artifact_hashes_are_canonical_contract_digests: false
+    old_support_source_root_present_in_sdist: false
+    developer_policy_shipped_in_wheel: false
+    installation_smoke:
+      isolated_installed_imports: PASS
+      repository_source_available_to_consumer: false
+      support_layout: SHIPPED_PROJECTION
+      support_policies_validated: 22
+      exact_agent_operations_resolved: 5
+      support_authority_projection: PASS
+      promotion_schema_validation: PASS
+      promotion_activation_claimed: false
+  remaining_gate:
+    required_core_mode_failures: 37
+    failed_test_ids_ref: C:/Users/rhkrt/AppData/Local/Temp/ptsip-support-promotion-verification-6zkcldp0/final-review.json
+    canonical_verification_owner: ptsip-core-verification
+    failure_categories_resolved_by_test_success_or_semantic_inference: false
+    local_default_profile: .ptsip/profiles/main.ptsip.yaml
+    local_default_profile_stale_selectors_observed: true
+    local_default_profile_authority_replacement_preapproved_by_this_record: false
+    immutable_specification_binding_required_before_promotion_activation: true
+    required_failures_waived: false
+    wu08_lifecycle: BLOCKED
+    wu08_complete: false
+    commits_or_pushes_performed: false

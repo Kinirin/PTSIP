@@ -8,6 +8,7 @@ import pytest
 import yaml
 from jsonschema import Draft202012Validator
 
+from ptsip.project_profile_contracts import current_runtime_project_profile_contract
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -116,8 +117,10 @@ def _minimal_profile() -> dict[str, object]:
 
 
 def test_example_profile_validates_against_canonical_schema() -> None:
-    schema = _json("schemas/ptsip-profile-pp-1.01.schema.json")
+    current = current_runtime_project_profile_contract()
+    schema = _json(f"schemas/{current.schema_resource}")
     profile = _yaml("profiles/example.ptsip.yaml")
+    assert profile["ptsip"]["version"] == current.version
     Draft202012Validator(schema).validate(profile)
 
 

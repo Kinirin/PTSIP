@@ -204,7 +204,12 @@ def test_four_approved_paths_have_exact_owners_and_select_only_the_new_mode() ->
         assert sum(resolver["matches_pattern"](path, pattern)
                    for c in components.values() for pattern in c["include"]) == 1
     relations = {(r["from"], r["to"], r["type"]) for r in profile["relationships"]}
-    for source in ("agent-contract-candidate-runtime", "agent-contract-digest-contracts"):
+    for source in (
+        "agent-contract-candidate-compiler",
+        "agent-contract-candidate-resolver",
+        "agent-contract-candidate-contracts",
+        "agent-contract-candidate-projections",
+    ):
         assert (verification["id"], source, "VERIFIES") in relations
     with pytest.raises(resolver["TestModeSelectionError"], match="unmapped changed paths"):
         resolver["resolve_automatic_selection"](registry, profile, ["src/agent_contracts/not-approved.py"])

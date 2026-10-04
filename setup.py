@@ -9,7 +9,7 @@ from setuptools.command.build_py import build_py as _build_py
 
 
 ROOT = Path(__file__).resolve().parent
-CANONICAL_SUPPORT_POLICY = ROOT / "docs" / "Support_policy" / "policy"
+CANONICAL_SUPPORT_POLICY = ROOT / "src" / "policy"
 CANONICAL_PUBLIC_PROFILES = ROOT / "profiles"
 CANONICAL_PUBLIC_PROFILE_CATALOG = CANONICAL_PUBLIC_PROFILES / "index.yaml"
 CANONICAL_PP_CONTRACT_REGISTRY = ROOT / "registry" / "project-profile-contracts.yaml"

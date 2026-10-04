@@ -27,7 +27,7 @@ RESPONSIBILITY_ANALYSIS_SCHEMA = "developer/policy/schemas/policy-responsibility
 RESPONSIBILITY_ANALYSIS_REGISTRY = "developer/policy/analysis/registry.yaml"
 RESPONSIBILITY_ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
 
-SUPPORT_POLICY_ROOT = "docs/Support_policy/policy"
+SUPPORT_POLICY_ROOT = "src/policy"
 SFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
 SFP_INDEX = f"{SUPPORT_POLICY_ROOT}/index.yaml"
 SFP_INDEX_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy-index.schema.json"

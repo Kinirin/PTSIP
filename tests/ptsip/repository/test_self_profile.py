@@ -49,7 +49,10 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None
     payload = _profile()
     ptsip = payload["ptsip"]
     assert isinstance(ptsip, dict)
-    assert ptsip == current_project_profile_ptsip_metadata()
+    expected = current_project_profile_ptsip_metadata()
+    # Repository-owned revisions do not change the Tool's new-profile baseline.
+    expected["revision"] = "Rev.0002"
+    assert ptsip == expected
     assert payload["responsibility_map"] == {"mode": "explicit"}
 
 
@@ -115,7 +118,6 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert components["ptsip-public-profiles"]["executable"] is False
     assert components["repository-architecture"]["include"] == [
         "developer/profiles/ptsip-repository.yaml",
-        "ptsip.yaml",
         ".ptsip/**",
     ]
     assert components["repository-license-authority"]["include"] == ["License-Authority/**"]
@@ -142,8 +144,13 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         "tests/ptsip/agent_contracts/test_operation_loading.py",
         "tests/ptsip/governance/test_contracts.py",
     ]
-    assert components["agent-contract-candidate-runtime"]["classification"] == "PRODUCT"
-    assert components["agent-contract-digest-contracts"]["classification"] == "NEUTRAL_CONTRACT"
+    assert components["agent-contract-candidate-compiler"]["classification"] == "PRODUCT"
+    assert components["agent-contract-candidate-resolver"]["classification"] == "PRODUCT"
+    assert components["agent-contract-candidate-contracts"]["classification"] == "NEUTRAL_CONTRACT"
+    assert components["agent-contract-runtime-verification"]["classification"] == "PRODUCT"
+    assert components["agent-contract-plane-verification"]["classification"] == "PRODUCT"
+    assert artifacts["agent-contract-candidate-projections"]["anchor"] == "agent-contract-candidate-compiler"
+    assert artifacts["agent-contract-promotion-projection"]["anchor"] == "agent-contract-promotion-contracts"
     assert "src/agent_contracts/**" not in components["ptsip-contract-verification"]["analysis_inputs"]
 
     assert components["repository-ci"]["roles"] == ["AUTOMATION"]

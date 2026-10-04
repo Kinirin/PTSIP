@@ -23,6 +23,8 @@ EXPECTED_REPOSITORY_COMPONENT_REFS = {
     "vpms": "vpms-verification",
     "ptsip-contract": "ptsip-contract-verification",
     "agent-contract-candidate": "agent-contract-candidate-verification",
+    "agent-contract-runtime": "agent-contract-runtime-verification",
+    "agent-contract-plane": "agent-contract-plane-verification",
     "repository-architecture": "repository-architecture-verification",
     "repository-release": "repository-release-verification",
     "test-mode-control-plane": "repository-test-mode-control-plane",

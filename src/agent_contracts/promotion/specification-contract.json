@@ -1,14 +1,13 @@
 {
-  "format": "ptsip-promotion-contract-candidate-projection/v1",
-  "normative_authority": false,
+  "format": "ptsip-specification-promotion-contract-candidate/v1",
+  "contract_id": "PTSIP-PROMOTION-CANDIDATE-V1",
   "status": "CANDIDATE",
-  "activation": "REQUIRES_VERIFIED_SPECIFICATION_CUTOVER",
-  "source": {
-    "authority_class": "SPECIFICATION_MACHINE_CONTRACT",
-    "registry_ref": "promotion/index.json",
-    "contract_id": "PTSIP-PROMOTION-CANDIDATE-V1",
-    "contract_ref": "promotion/specification-contract.json"
+  "normative_authority": false,
+  "specification_binding": {
+    "status": "UNBOUND",
+    "revision": null
   },
+  "activation": "REQUIRES_VERIFIED_SPECIFICATION_CUTOVER",
   "binding_discovery_and_promotion": {
     "explicit_binding_preferred": true,
     "missing_binding_allows_bounded_repository_discovery": true,

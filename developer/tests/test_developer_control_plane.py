@@ -103,7 +103,7 @@ def test_migration_only_tooling_and_evidence_are_retired() -> None:
 
 def _current_relation_edges() -> list[tuple[str, str, str, str | None]]:
     mpd_index = _yaml(ROOT / "developer" / "policy" / "index.yaml")
-    support_root = ROOT / "docs" / "Support_policy" / "policy"
+    support_root = ROOT / "src" / "policy"
     support_index = _yaml(support_root / "index.yaml")
     paths = [
         support_root / entry["path"]
@@ -198,7 +198,7 @@ def test_support_policy_never_depends_on_developer_policy() -> None:
 
 def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     mpd_index = _yaml(ROOT / "developer" / "policy" / "index.yaml")
-    support_root = ROOT / "docs" / "Support_policy" / "policy"
+    support_root = ROOT / "src" / "policy"
     sfp_index = _yaml(support_root / "index.yaml")
 
     discovered_mpd_ids = [
@@ -249,7 +249,7 @@ def test_mpd_0011_declares_incremental_implementation_state() -> None:
     assert state["claim"] == "LOCAL_REMOTE_RELEASE_PP_AUTOMATION_ACTIVE"
 
 def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -> None:
-    support_root = ROOT / "docs" / "Support_policy" / "policy"
+    support_root = ROOT / "src" / "policy"
     index = _yaml(support_root / "index.yaml")
     for entry in index["policies"]:
         path = support_root / entry["path"]
@@ -260,7 +260,7 @@ def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -
 
 
 def test_support_policy_index_has_exact_22_targets() -> None:
-    payload = _yaml(ROOT / "docs" / "Support_policy" / "policy" / "index.yaml")
+    payload = _yaml(ROOT / "src" / "policy" / "index.yaml")
     assert [item["id"] for item in payload["policies"]] == [
         f"SFP-{number:04d}" for number in range(1, 23)
     ]
@@ -270,6 +270,19 @@ def test_support_policy_index_has_exact_22_targets() -> None:
         for index, item in enumerate(payload["policies"])
         if index != 3
     )
+
+
+def test_policy_namespace_distinguishes_canonical_source_and_installed_projection() -> None:
+    payload = _yaml(ROOT / "developer/policy/SPEC/MPD-SPEC-0001.yaml")
+    support = payload["rules"]["namespace"]["support_feature"]
+    assert support["machine_policy_path"] == "src/policy/"
+    assert support["machine_policy_index"] == "src/policy/index.yaml"
+    assert support["machine_policy_pattern"] == "src/policy/SFP-*.yaml"
+    assert support["canonical_schema_path"] == "src/policy/schemas/ptsip-support-feature-policy.schema.json"
+    assert (ROOT / support["canonical_schema_path"]).is_file()
+    assert support["embedded_schema_path"] == "ptsip/support/schemas/ptsip-support-feature-policy.schema.json"
+    assert support["embedded_schema_path_role"] == "INSTALLED_DISTRIBUTION_PROJECTION"
+    assert support["distribution"] == "REQUIRED"
 
 
 def test_frozen_machine_specification_registry_remains_byte_identical() -> None:
@@ -314,7 +327,7 @@ def test_developer_authority_subject_registry_tracks_policy_index() -> None:
 
 def test_support_registry_projection_contains_no_repository_binding() -> None:
     subject = _yaml(
-        ROOT / "docs" / "Support_policy" / "policy" / "registries" / "ptsip-support-authority-subject-registry.yaml"
+        ROOT / "src" / "policy" / "registries" / "ptsip-support-authority-subject-registry.yaml"
     )
     assert "current_repository_bindings" not in subject
     assert set(subject["subject_identity_schemes"]) == {"SUPPORT_POLICY_ID"}
@@ -322,7 +335,7 @@ def test_support_registry_projection_contains_no_repository_binding() -> None:
 
 def test_owner_authorization_grants_remain_developer_policy_only() -> None:
     support = _yaml(
-        ROOT / "docs" / "Support_policy" / "policy" / "registries" / "ptsip-support-authorization-registry.yaml"
+        ROOT / "src" / "policy" / "registries" / "ptsip-support-authorization-registry.yaml"
     )
     developer = _yaml(
         ROOT / "developer" / "policy" / "registries" / "authorization-transition-registry.yaml"

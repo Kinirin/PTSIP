@@ -139,6 +139,31 @@ def _assert_wheel_bytes(
             )
 
 
+def _support_contract_pairs() -> tuple[tuple[Path, str], ...]:
+    source_root = ROOT / "src" / "policy"
+    policy_sources = (source_root / "index.yaml", *sorted(source_root.glob("SFP-*.yaml")))
+    pairs = [(source, f"ptsip/support/policy/{source.name}") for source in policy_sources]
+    for category in ("schemas", "registries"):
+        base = source_root / category
+        sources = sorted((*base.rglob("*.json"), *base.rglob("*.yaml")))
+        pairs.extend(
+            (source, f"ptsip/support/{category}/{source.relative_to(base).as_posix()}")
+            for source in sources
+        )
+    return tuple(pairs)
+
+
+def _promotion_candidate_pairs() -> tuple[tuple[Path, str], ...]:
+    root = ROOT / "src" / "agent_contracts"
+    refs = (
+        "promotion/index.json",
+        "promotion/specification-contract.json",
+        "promotion/current.json",
+        "schemas/contracts/promotion.schema.json",
+    )
+    return tuple((root / ref, f"agent_contracts/{ref}") for ref in refs)
+
+
 def main() -> int:
     resources = _catalog_resources()
     current, current_contract, contracts = _registry_contracts()
@@ -173,6 +198,8 @@ def main() -> int:
         )
         for source in agent_contract_sources
     )
+    support_pairs = _support_contract_pairs()
+    promotion_pairs = _promotion_candidate_pairs()
     canonical_pairs = (
         (ROOT / "profiles" / "index.yaml", "ptsip/profiles/index.yaml"),
         (
@@ -186,6 +213,8 @@ def main() -> int:
         *public_pairs,
         *baseline_pairs,
         *agent_contract_pairs,
+        *support_pairs,
+        *promotion_pairs,
     )
 
     required = (
@@ -199,6 +228,8 @@ def main() -> int:
         *(target for _, target in public_pairs),
         *(target for _, target in baseline_pairs),
         *(target for _, target in agent_contract_pairs),
+        *(target for _, target in support_pairs),
+        *(target for _, target in promotion_pairs),
     )
     support_required = (
         "ptsip/support/policy/index.yaml",
@@ -222,6 +253,14 @@ def main() -> int:
     sdist = _single_distribution("*.tar.gz")
     with tarfile.open(sdist, "r:gz") as archive:
         sdist_names = {member.name for member in archive.getmembers()}
+        for source, _ in (*support_pairs, *promotion_pairs):
+            relative = source.relative_to(ROOT).as_posix()
+            matches = [name for name in sdist_names if name.endswith(f"/{relative}")]
+            if len(matches) != 1:
+                raise SystemExit(f"sdist must contain exactly one canonical contract: {relative}")
+            member = archive.extractfile(matches[0])
+            if member is None or member.read() != source.read_bytes():
+                raise SystemExit(f"sdist differs from canonical source: {relative}")
 
     sdist_required = (
         "src/ptsip/context_plane.py",
@@ -237,12 +276,12 @@ def main() -> int:
             source.relative_to(ROOT).as_posix()
             for source, _ in agent_contract_pairs
         ),
-        "docs/Support_policy/policy/index.yaml",
-        "docs/Support_policy/policy/SFP-0001.yaml",
-        "docs/Support_policy/policy/SFP-0021.yaml",
-        "docs/Support_policy/policy/SFP-0022.yaml",
-        "docs/Support_policy/policy/schemas/ptsip-support-feature-policy.schema.json",
-        "docs/Support_policy/policy/registries/ptsip-support-authority-schema-registry.yaml",
+        "src/policy/index.yaml",
+        "src/policy/SFP-0001.yaml",
+        "src/policy/SFP-0021.yaml",
+        "src/policy/SFP-0022.yaml",
+        "src/policy/schemas/ptsip-support-feature-policy.schema.json",
+        "src/policy/registries/ptsip-support-authority-schema-registry.yaml",
     )
     missing_sdist = [
         required_path
@@ -257,6 +296,8 @@ def main() -> int:
     print(f"Public Profiles: {len(resources)}")
     print(f"Historical baseline assets: {len(baseline_pairs)}")
     print(f"Agent Contract machine assets: {len(agent_contract_pairs)}")
+    print(f"Support Policy machine assets: {len(support_pairs)}")
+    print(f"Promotion candidate assets (non-authoritative): {len(promotion_pairs)}")
     return 0
 
 

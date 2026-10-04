@@ -215,6 +215,27 @@ def test_canonical_and_embedded_machine_readable_contracts_are_identical() -> No
         assert (ROOT / canonical).read_bytes() == (ROOT / embedded).read_bytes(), canonical
 
 
+def test_distribution_projection_verifier_covers_relocated_policies_and_promotion_candidate() -> None:
+    verifier = runpy.run_path(str(ROOT / ".github" / "scripts" / "verify_distribution_contracts.py"))
+    support = verifier["_support_contract_pairs"]()
+    promotion = verifier["_promotion_candidate_pairs"]()
+    expected = {
+        path for path in (ROOT / "src" / "policy").rglob("*")
+        if path.suffix in {".yaml", ".json"}
+    }
+    assert {source for source, _ in support} == expected
+    assert len(support) == 35
+    assert len({target for _, target in support}) == len(support)
+    assert all(target.startswith("ptsip/support/") for _, target in support)
+    assert {target for _, target in promotion} == {
+        "agent_contracts/promotion/index.json",
+        "agent_contracts/promotion/specification-contract.json",
+        "agent_contracts/promotion/current.json",
+        "agent_contracts/schemas/contracts/promotion.schema.json",
+    }
+    assert all(source.is_file() for source, _ in (*support, *promotion))
+
+
 def _release_contract_namespace() -> dict[str, object]:
     return runpy.run_path(str(ROOT / ".github" / "scripts" / "verify_release_contract.py"))
 
@@ -255,7 +276,7 @@ def test_release_contract_requires_bound_machine_readable_snapshot() -> None:
     assert "PTSIP-SPC-001" in rules
 
     transition = yaml.safe_load(
-        (ROOT / "docs" / "Support_policy" / "policy" / "SFP-0010.yaml").read_text(
+        (ROOT / "src" / "policy" / "SFP-0010.yaml").read_text(
             encoding="utf-8"
         )
     )

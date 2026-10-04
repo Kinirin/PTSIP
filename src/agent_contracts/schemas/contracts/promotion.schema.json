@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-specification-promotion-contract-candidate/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "contract_id",
+    "status",
+    "normative_authority",
+    "specification_binding",
+    "activation",
+    "binding_discovery_and_promotion",
+    "required_verification"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-specification-promotion-contract-candidate/v1"
+    },
+    "contract_id": {
+      "const": "PTSIP-PROMOTION-CANDIDATE-V1"
+    },
+    "status": {
+      "const": "CANDIDATE"
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "specification_binding": {
+      "const": {
+        "status": "UNBOUND",
+        "revision": null
+      }
+    },
+    "activation": {
+      "const": "REQUIRES_VERIFIED_SPECIFICATION_CUTOVER"
+    },
+    "binding_discovery_and_promotion": {
+      "const": {
+        "explicit_binding_preferred": true,
+        "missing_binding_allows_bounded_repository_discovery": true,
+        "discovered_binding_initial_state": "CANDIDATE",
+        "verification_model": "REQUIRED_AND_OPTIONAL_SEPARATION",
+        "required_all_pass_result": "AUTO_PROMOTE",
+        "required_any_fail_result": "REJECT",
+        "required_no_fail_with_unknown_result": "USER_REVIEW_REQUIRED",
+        "verified_or_user_approved_resolution_must_be_persisted": true,
+        "repeat_discovery_for_same_resolved_case": "FORBIDDEN_WHEN_PERSISTED_RESOLUTION_IS_CURRENT",
+        "model_confidence_score_as_promotion_authority": "FORBIDDEN"
+      }
+    },
+    "required_verification": {
+      "const": {
+        "model": "R2_BEHAVIOR_SEMANTIC_REQUIRED",
+        "required_checks": [
+          "IDENTITY_MATCH",
+          "IMPLEMENTATION_RESOLUTION_VALID",
+          "INPUT_CONTRACT_MATCH",
+          "OUTPUT_CONTRACT_MATCH",
+          "EFFECT_MATCH",
+          "FAILURE_CONTRACT_MATCH",
+          "COMPATIBILITY_MATCH"
+        ],
+        "result_domain": [
+          "PASS",
+          "FAIL",
+          "UNKNOWN"
+        ],
+        "aggregate": {
+          "all_pass": "AUTO_PROMOTE",
+          "any_fail": "REJECT",
+          "unknown_without_fail": "USER_REVIEW_REQUIRED"
+        },
+        "optional_verification": {
+          "promotion_blocking": false,
+          "exact_optional_set": "DEFERRED"
+        }
+      }
+    }
+  }
+}

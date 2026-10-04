@@ -23,7 +23,7 @@ def _load_json(path: Path) -> dict[str, object]:
 
 
 def test_current_sfp_mpd_corpus_has_no_legacy_source_provenance() -> None:
-    support_root = ROOT / "docs" / "Support_policy" / "policy"
+    support_root = ROOT / "src" / "policy"
     support_index = _load_yaml(support_root / "index.yaml")
     developer_index = _load_yaml(ROOT / "developer" / "policy" / "index.yaml")
     policy_paths = [
@@ -45,7 +45,7 @@ def test_current_sfp_mpd_corpus_has_no_legacy_source_provenance() -> None:
 def test_current_policy_schemas_do_not_define_legacy_source_provenance() -> None:
     catalog = AuthorityCatalog(ROOT)
     canonical_schema = _load_json(
-        ROOT / "docs" / "Support_policy" / "policy" / "schemas" / catalog.SUPPORT_POLICY_SCHEMA
+        ROOT / "src" / "policy" / "schemas" / catalog.SUPPORT_POLICY_SCHEMA
     )
     assert canonical_schema == catalog.policy_schema
     sfp_schemas = [canonical_schema, catalog.policy_schema]

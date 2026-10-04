@@ -45,9 +45,12 @@ rules:
     support_feature:
       constant: PTSIP_SUPPORT_FEATURE
       id_pattern: '^SFP-[0-9]{4}$'
-      canonical_schema_path: schemas/ptsip-support-feature-policy.schema.json
-      embedded_schema_path: src/ptsip/specdata/ptsip-support-feature-policy.schema.json
-      machine_policy_pattern: src/ptsip/specdata/SFP-*.yaml
+      machine_policy_path: src/policy/
+      machine_policy_index: src/policy/index.yaml
+      canonical_schema_path: src/policy/schemas/ptsip-support-feature-policy.schema.json
+      embedded_schema_path: ptsip/support/schemas/ptsip-support-feature-policy.schema.json
+      embedded_schema_path_role: INSTALLED_DISTRIBUTION_PROJECTION
+      machine_policy_pattern: src/policy/SFP-*.yaml
       human_documentation_path: docs/Support_policy/
       implementation_roots:
         - src/ptsip/

@@ -742,19 +742,19 @@ jobs:
           foreach ($path in $wheelPaths) {
             if ($path -like 'ptsip/support/policy/*') {
               $relativeSupportPath = $path.Substring('ptsip/support/policy/'.Length)
-              $sourcePaths += "docs/Support_policy/policy/$relativeSupportPath"
+              $sourcePaths += "src/policy/$relativeSupportPath"
               $components += 'ptsip-embedded-contracts'
               continue
             }
             if ($path -like 'ptsip/support/schemas/*') {
               $relativeSupportPath = $path.Substring('ptsip/support/schemas/'.Length)
-              $sourcePaths += "docs/Support_policy/policy/schemas/$relativeSupportPath"
+              $sourcePaths += "src/policy/schemas/$relativeSupportPath"
               $components += 'ptsip-embedded-contracts'
               continue
             }
             if ($path -like 'ptsip/support/registries/*') {
               $relativeSupportPath = $path.Substring('ptsip/support/registries/'.Length)
-              $sourcePaths += "docs/Support_policy/policy/registries/$relativeSupportPath"
+              $sourcePaths += "src/policy/registries/$relativeSupportPath"
               $components += 'ptsip-embedded-contracts'
               continue
             }

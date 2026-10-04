@@ -114,7 +114,7 @@ def test_support_policy_change_selects_all_declared_support_verifiers() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        ["docs/Support_policy/policy/index.yaml"],
+        ["src/policy/index.yaml"],
     )
     assert _ids(selected) == [
         "ptsip-core",

@@ -143,7 +143,7 @@ class AuthorityCatalog:
         if not isinstance(path, str):
             raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy route requires a path.", route)
         record = self._load_yaml("policy", path)
-        source_ref = f"docs/Support_policy/policy/{path}"
+        source_ref = f"src/policy/{path}"
         return source_ref, route, record
 
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:

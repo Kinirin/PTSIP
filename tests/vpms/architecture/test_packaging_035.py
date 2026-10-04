@@ -30,7 +30,7 @@ def test_setuptools_discovery_includes_vpms_responsibility_packages() -> None:
     find_config = config["tool"]["setuptools"]["packages"]["find"]
 
     assert find_config["where"] == ["src"]
-    assert find_config["include"] == ["ptsip*", "vpms*"]
+    assert find_config["include"] == ["ptsip*", "vpms*", "agent_contracts*"]
 
     discovered = set(
         find_packages(
