@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ptsip.migration.execution.state.phase import ExecutionPhase
 from typing import Callable
 
 from ptsip.migration.execution.error import ExecutionStateError
@@ -7,7 +8,6 @@ from ptsip.migration.execution.ledger.store import CheckpointLedger
 from ptsip.migration.execution.state.source_steps import (
     AppliedSourceStep,
     CompletedSourceStep,
-    ExecutionPhase,
     ReanalyzedSourceStep,
     SourceCompletionProof,
 )

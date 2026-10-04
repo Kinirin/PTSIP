@@ -12,7 +12,8 @@ from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import _sha256_bytes
 from ptsip.migration.execution.ledger.store import CheckpointLedger
-from ptsip.migration.execution.state.source_steps import AppliedSourceStep, ExecutionPhase, VerifiedSourceStep
+from ptsip.migration.execution.state.phase import ExecutionPhase
+from ptsip.migration.execution.state.source_steps import AppliedSourceStep, VerifiedSourceStep
 from ptsip.migration.planning.convergence.final_state import final_point_state_from_mapping
 from ptsip.migration.proposal.semantic_identity import canonical_semantics
 from ptsip.migration.proposal.target_delta import DeltaChangeKind, TargetDelta, TargetEntityKind

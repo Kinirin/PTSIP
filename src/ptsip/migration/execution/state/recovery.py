@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ptsip.migration.execution.state.source_steps import ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
 
 @dataclass(frozen=True)
 class RecoveryInspection:

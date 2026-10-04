@@ -8,7 +8,8 @@ from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import _sha256_file
 from ptsip.migration.execution.ledger.store import CheckpointLedger
 from ptsip.migration.execution.mutation.delta import _apply_delta_batch
-from ptsip.migration.execution.state.source_steps import AsyncAppliedSourceStep, CompletedSourceStep, ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
+from ptsip.migration.execution.state.source_steps import AsyncAppliedSourceStep, CompletedSourceStep
 
 def apply_optional_async_deltas(
     repository_root: str | Path,

@@ -10,7 +10,7 @@ from ptsip.migration.execution.guard.mutation import _sha256_file
 from ptsip.migration.execution.ledger.record import LedgerIntegrityError
 from ptsip.migration.execution.ledger.store import CheckpointLedger
 from ptsip.migration.execution.state.recovery import RecoveryInspection
-from ptsip.migration.execution.state.source_steps import ExecutionPhase
+from ptsip.migration.execution.state.phase import ExecutionPhase
 
 def inspect_recovery(
     repository_root: str | Path,
