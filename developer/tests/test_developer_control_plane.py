@@ -11,7 +11,10 @@ import yaml
 from developer.automation.current_dependency_gate import (
     validate_current_legacy_dependency_gate,
 )
-from developer.automation.planning.planning_validator import validate_planning
+from developer.automation.planning.planning_validator import (
+    _governance_source_errors,
+    validate_planning,
+)
 from developer.automation.policy_validator import validate_developer_policy
 from developer.automation.project_profile_registry import (
     validate_project_profile_registry_plane,
@@ -39,6 +42,25 @@ def test_project_profile_registry_plane_is_machine_valid() -> None:
 
 def test_developer_planning_control_plane_is_machine_valid() -> None:
     assert validate_planning(ROOT) == ()
+
+
+@pytest.mark.parametrize("source", (["projection.py"], {"module": "projection.py"}))
+def test_layout_source_containers_are_not_governance_constants(source: object) -> None:
+    registry = _yaml(ROOT / "developer/policy/registries/governance-source-registry.yaml")
+    payload = {"target_layout": {"analysis": {"source": source}}}
+    assert _governance_source_errors(payload, registry, "responsibility-map.yaml") == []
+
+
+def test_layout_source_containers_preserve_nested_governance_validation() -> None:
+    registry = _yaml(ROOT / "developer/policy/registries/governance-source-registry.yaml")
+    payload = {"source": [
+        {"approval_source": "DIRECT_PROJECT_OWNER_TEMPORARY_APPROVAL"},
+        {"source": "DIRECT_PROJECT_OWNER_INSTRUCTION"},
+    ]}
+    errors = _governance_source_errors(payload, registry, "fixture.yaml")
+    assert len(errors) == 2
+    assert "source[0].approval_source" in errors[0]
+    assert "source[1].source uses legacy governance source" in errors[1]
 
 
 def test_current_control_planes_have_zero_retired_local_policy_dependencies() -> None:

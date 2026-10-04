@@ -69,7 +69,11 @@ def _governance_source_errors(
                             errors.append(
                                 f"{label}: {child_path} source {child!r} is not allowed for role {role}"
                             )
-                elif key == "source" and child in _LEGACY_GOVERNANCE_SOURCE_VALUES:
+                elif (
+                    key == "source"
+                    and isinstance(child, str)
+                    and child in _LEGACY_GOVERNANCE_SOURCE_VALUES
+                ):
                     errors.append(
                         f"{label}: {child_path} uses legacy governance source {child!r}; "
                         "use an explicit governance source role field and preserve the old value as evidence kind"

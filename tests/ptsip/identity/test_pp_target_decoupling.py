@@ -12,10 +12,7 @@ from ptsip.validation.profile import find_profile
 
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 _CURRENT_PP_RUNTIME_SURFACES = (
-    "src/ptsip/migration/analyzer.py",
-    "src/ptsip/migration/direct_convergence.py",
-    "src/ptsip/migration/direct_planner.py",
-    "src/ptsip/migration/direct_execution.py",
+    "src/ptsip/migration",
     "src/ptsip/repository/profile_convergence.py",
 )
 
@@ -41,9 +38,14 @@ def test_default_migration_target_comes_from_current_pp_contract() -> None:
 
 def test_current_pp_runtime_surfaces_do_not_use_spec_family_as_profile_target() -> None:
     for relative in _CURRENT_PP_RUNTIME_SURFACES:
-        text = (_REPOSITORY_ROOT / relative).read_text(encoding="utf-8")
-        assert '"0.3.7-draft"' not in text, relative
-        assert "'0.3.7-draft'" not in text, relative
+        surface = _REPOSITORY_ROOT / relative
+        assert surface.exists(), relative
+        files = sorted(surface.rglob("*.py")) if surface.is_dir() else [surface]
+        assert files, relative
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            assert '"0.3.7-draft"' not in text, path
+            assert "'0.3.7-draft'" not in text, path
 
 
 def test_public_migration_surface_prefers_direct_pp_convergence() -> None:

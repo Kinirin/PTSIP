@@ -67,8 +67,11 @@ def test_repository_default_profile_resolves_through_local_catalog() -> None:
     assert catalog["default_profile"] == "main"
 
     payload = yaml.safe_load(selected.read_text(encoding="utf-8"))
+    canonical = yaml.safe_load(
+        (ROOT / "developer/profiles/ptsip-repository.yaml").read_text(encoding="utf-8")
+    )
     assert payload["ptsip"]["version"] == "pp.1.02"
-    assert payload["ptsip"]["revision"] == "Rev.0001"
+    assert payload["ptsip"] == canonical["ptsip"]
     assert payload["ptsip"]["profile_role"] == "PROJECT"
     assert set(payload["ptsip"]["specification"]) == {"source", "revision"}
 

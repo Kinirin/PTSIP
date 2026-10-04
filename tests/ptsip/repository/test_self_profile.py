@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 import yaml
 
 from ptsip.clarification.generator import analyze_clarifications
@@ -16,6 +17,7 @@ from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
+LOCAL_PROFILE_PATH = REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 
 
 def _profile() -> dict[str, object]:
@@ -24,8 +26,9 @@ def _profile() -> dict[str, object]:
     return payload
 
 
-def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None:
-    result = validate_profile(REPO_ROOT, PROFILE_PATH)
+@pytest.mark.parametrize("profile_path", [PROFILE_PATH, LOCAL_PROFILE_PATH])
+def test_repository_self_profile_is_valid_complete_and_revision_pinned(profile_path: Path) -> None:
+    result = validate_profile(REPO_ROOT, profile_path)
 
     assert result.valid, result.errors
     assert result.errors == []
@@ -46,7 +49,7 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None
     assert isinstance(map_coverage, dict)
     assert map_coverage["unassigned_count"] == 0
 
-    payload = _profile()
+    payload = yaml.safe_load(profile_path.read_text(encoding="utf-8-sig"))
     ptsip = payload["ptsip"]
     assert isinstance(ptsip, dict)
     expected = current_project_profile_ptsip_metadata()
@@ -56,14 +59,15 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned() -> None
     assert payload["responsibility_map"] == {"mode": "explicit"}
 
 
-def test_repository_self_profile_resolves_all_discovered_candidates() -> None:
-    analysis = analyze_clarifications(REPO_ROOT, profile_path=PROFILE_PATH)
+@pytest.mark.parametrize("profile_path", [PROFILE_PATH, LOCAL_PROFILE_PATH])
+def test_repository_self_profile_resolves_all_discovered_candidates(profile_path: Path) -> None:
+    analysis = analyze_clarifications(REPO_ROOT, profile_path=profile_path)
 
     assert analysis.comparison.stable
     assert analysis.candidate_ids
     assert analysis.status == "NO_CLARIFICATION_REQUIRED"
     assert analysis.requests == ()
-    assert analysis.profile_path == str(PROFILE_PATH)
+    assert analysis.profile_path == str(profile_path)
     assert analysis.profile_parse_error is None
 
 
@@ -160,6 +164,21 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         "VERIFICATION",
         "CONFIGURATION",
     ]
+
+
+def test_local_default_profile_preserves_current_repository_responsibilities() -> None:
+    local = yaml.safe_load(LOCAL_PROFILE_PATH.read_text(encoding="utf-8-sig"))
+    canonical = _profile()
+    for field in ("responsibility_map", "components", "associated_artifacts", "relationships", "policies"):
+        assert local.get(field) == canonical.get(field), field
+    assert validate_profile(REPO_ROOT).profile_path == str(LOCAL_PROFILE_PATH)
+
+
+def test_repository_verification_covers_policy_and_planning_feedback() -> None:
+    components = {item["id"]: item for item in _profile()["components"]}
+    inputs = components["repository-architecture-verification"]["analysis_inputs"]
+    assert "developer/automation/**" in inputs
+    assert "developer/planning/**" in inputs
 
 
 def test_repository_self_profile_keeps_migration_subsystems_as_explicit_product_components() -> None:

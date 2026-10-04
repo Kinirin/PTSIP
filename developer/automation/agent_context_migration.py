@@ -2,18 +2,31 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Mapping
 
 import yaml
 
 from agent_contracts.resolver import resolve_operation
 from agent_contracts.validator import validate_agent_contract_plane
+from ptsip.local_profile_catalog import (
+    LOCAL_PROFILE_CATALOG,
+    LOCAL_PROFILE_ROOT,
+    LocalProfileCatalogError,
+    load_local_profile_selection,
+)
+from ptsip.repository.namespace import RepositoryNamespaceError, load_repository_index
+from ptsip.validation.components import normalize_selector
+
 from developer.automation.policy_loader import repository_root
-from developer.automation.repository_state_resolver import resolve_state
+from developer.automation.repository_state_resolver import (
+    RepositoryStateResolutionError,
+    resolve_state,
+)
 
 
 AGENT_INDEX = "src/agent_contracts/index.yaml"
+EMBEDDED_AGENT_ROOT = "src/ptsip/agent_contracts"
 MPD_0012 = "developer/policy/MPD-0012.yaml"
 COVERAGE = "developer/planning/migrations/MPD-0012-agent-context-coverage.yaml"
 STATE_INDEX = "developer/state/index.yaml"
@@ -45,6 +58,17 @@ NORMATIVE_MARKDOWN_TARGETS = (
     "spec/PTSIP-RESPONSIBILITY-MAP.md",
     "spec/PTSIP-SPEC.md",
     "spec/PTSIP-TERMINOLOGY.md",
+)
+
+# Retired operational roots remain migration evidence, never current profile selectors.
+RETIRED_PROFILE_ROOTS = (
+    "MEMORY.md",
+    "STATUS.md",
+    "ptsip.yaml",
+    "spec",
+    "adoption",
+    "agents",
+    "docs/planning",
 )
 
 
@@ -96,6 +120,217 @@ def _strings(value: object):
             yield from _strings(item)
 
 
+def verify_current_profile_selectors(root: str | Path | None = None) -> dict[str, object]:
+    """Revalidate bounded current declarations even if retired paths reappear."""
+
+    base = repository_root(root)
+    profiles: list[str] = []
+    violations: list[dict[str, str]] = []
+    errors: list[str] = []
+
+    try:
+        profiles.append(str(resolve_state("project_profile", base)["ref"]))
+        index = load_repository_index(base)
+        if index is None:
+            raise AgentContextMigrationError("missing required file: .ptsip/index.json")
+        namespace = index["namespaces"]["profiles"]
+        if namespace["status"] != "ACTIVE":
+            raise AgentContextMigrationError(".ptsip/index.json: profiles namespace must be ACTIVE")
+        catalog_path = base / ".ptsip" / namespace["index"]
+        if not catalog_path.is_file():
+            raise AgentContextMigrationError(
+                f"missing required file: {LOCAL_PROFILE_CATALOG.as_posix()}"
+            )
+        if load_local_profile_selection(base) is None:
+            raise AgentContextMigrationError("canonical local profile catalog did not resolve")
+        # The selector loader validates every catalog row; enumerate that exact catalog,
+        # including registered profiles other than its default selection.
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8-sig"))
+        profiles.extend(
+            (LOCAL_PROFILE_ROOT / row["resource"]).as_posix()
+            for row in catalog["profiles"]
+        )
+    except (
+        AgentContextMigrationError,
+        LocalProfileCatalogError,
+        RepositoryNamespaceError,
+        RepositoryStateResolutionError,
+        KeyError,
+        OSError,
+        TypeError,
+        ValueError,
+        yaml.YAMLError,
+    ) as exc:
+        errors.append(str(exc))
+
+    for relative in dict.fromkeys(profiles):
+        try:
+            (base / relative).resolve().relative_to(base)
+            profile = _yaml(base, relative)
+        except (AgentContextMigrationError, OSError, ValueError, yaml.YAMLError) as exc:
+            errors.append(f"{relative}: {exc}")
+            continue
+        for collection, fields in (
+            ("components", ("include", "analysis_inputs")),
+            ("associated_artifacts", ("include",)),
+        ):
+            items = profile.get(collection, [] if collection == "associated_artifacts" else None)
+            if not isinstance(items, list) or (collection == "components" and not items):
+                required = "non-empty " if collection == "components" else ""
+                errors.append(f"{relative}: {collection} must be a {required}list")
+                continue
+            for position, item in enumerate(items):
+                location = f"{collection}[{position}]"
+                if (
+                    not isinstance(item, Mapping)
+                    or not isinstance(item.get("id"), str)
+                    or not item["id"]
+                ):
+                    errors.append(f"{relative}: {location} must be a mapping with a non-empty id")
+                    continue
+                location = f"{collection}[{item['id']}]"
+                for field in fields:
+                    selectors = item.get(field, [] if field == "analysis_inputs" else None)
+                    if (
+                        not isinstance(selectors, list)
+                        or (field == "include" and not selectors)
+                        or not all(
+                            isinstance(selector, str) and normalize_selector(selector)
+                            for selector in selectors
+                        )
+                    ):
+                        required = "non-empty " if field == "include" else ""
+                        errors.append(
+                            f"{relative}: {location}.{field} must be a "
+                            f"{required}list of non-empty selectors"
+                        )
+                        continue
+                    for selector in selectors:
+                        normalized = normalize_selector(selector)
+                        retired_root = next(
+                            (
+                                retired for retired in RETIRED_PROFILE_ROOTS
+                                if normalized == retired or normalized.startswith(retired + "/")
+                            ),
+                            None,
+                        )
+                        if retired_root is not None:
+                            violations.append({
+                                "profile": relative,
+                                "item": f"{location}.{field}",
+                                "selector": selector,
+                                "retired_root": retired_root,
+                            })
+
+    return {
+        "id": "CURRENT_PROJECT_PROFILE_SELECTORS_REVALIDATED",
+        "status": "PASS" if not errors and not violations else "FAIL",
+        "detail": {
+            "profiles": list(dict.fromkeys(profiles)),
+            "retired_selectors": violations,
+            "errors": errors,
+        },
+    }
+
+
+def verify_operation_implementation_refs(root: str | Path | None = None) -> dict[str, object]:
+    """Check source references in the repository without importing implementations."""
+
+    base = repository_root(root)
+    errors: list[str] = []
+    checked: list[dict[str, str]] = []
+    contract_root = (base / EMBEDDED_AGENT_ROOT).resolve()
+    try:
+        contract_root.relative_to(base)
+        (contract_root / "index.yaml").resolve().relative_to(contract_root)
+        (contract_root / "operations").resolve().relative_to(contract_root)
+        index = _yaml(base, f"{EMBEDDED_AGENT_ROOT}/index.yaml")
+        operations = index.get("operations")
+        if not isinstance(operations, list) or not operations:
+            raise AgentContextMigrationError("embedded index operations must be a non-empty list")
+    except (AgentContextMigrationError, OSError, ValueError, yaml.YAMLError) as exc:
+        return {
+            "id": "OPERATION_IMPLEMENTATION_REFS_EXIST",
+            "status": "FAIL",
+            "detail": {"checked": [], "errors": [str(exc)]},
+        }
+
+    seen: set[str] = set()
+    for entry in operations:
+        ref = entry.get("ref") if isinstance(entry, Mapping) else None
+        if not isinstance(ref, str):
+            errors.append(f"embedded operation entry has invalid ref: {ref!r}")
+            continue
+        path = PurePosixPath(ref)
+        if (
+            len(path.parts) != 2
+            or path.parts[0] != "operations"
+            or path.suffix != ".yaml"
+            or path.as_posix() != ref
+            or "\\" in ref
+        ):
+            errors.append(f"unsafe embedded operation ref: {ref!r}")
+            continue
+        if ref in seen:
+            errors.append(f"duplicate embedded operation ref: {ref}")
+            continue
+        seen.add(ref)
+        operation_path = f"{EMBEDDED_AGENT_ROOT}/{ref}"
+        try:
+            (base / operation_path).resolve().relative_to(contract_root)
+            operation = _yaml(base, operation_path)
+        except (AgentContextMigrationError, OSError, ValueError, yaml.YAMLError) as exc:
+            errors.append(f"{operation_path}: {exc}")
+            continue
+        operation_id = operation.get("operation_id")
+        refs = operation.get("implementation_refs")
+        if not isinstance(operation_id, str) or not operation_id:
+            errors.append(f"{operation_path}: operation_id must be a non-empty string")
+            continue
+        if not isinstance(refs, list) or not refs:
+            errors.append(f"{operation_path} ({operation_id}): implementation_refs must be non-empty")
+            continue
+        for implementation in refs:
+            location = f"{operation_path} ({operation_id}) implementation_refs"
+            if not isinstance(implementation, str) or not implementation:
+                errors.append(f"{location}: invalid ref {implementation!r}")
+                continue
+            relative = PurePosixPath(implementation)
+            if (
+                relative.is_absolute()
+                or PureWindowsPath(implementation).drive
+                or ".." in relative.parts
+                or "\\" in implementation
+                or relative.as_posix() != implementation
+                or any(token in implementation for token in ("*", "?", "[", ":"))
+            ):
+                errors.append(f"{location}: unsafe ref {implementation!r}")
+                continue
+            try:
+                implementation_path = (base / implementation).resolve()
+                implementation_path.relative_to(base)
+                if not implementation_path.is_file():
+                    raise AgentContextMigrationError("referenced implementation file does not exist")
+            except (AgentContextMigrationError, OSError, ValueError) as exc:
+                errors.append(f"{location}: {implementation}: {exc}")
+                continue
+            checked.append({"operation": operation_id, "ref": implementation})
+
+    unindexed = sorted(
+        f"operations/{path.name}"
+        for path in (contract_root / "operations").glob("*.yaml")
+        if f"operations/{path.name}" not in seen
+    )
+    if unindexed:
+        errors.append(f"embedded operation resources missing from index: {unindexed}")
+
+    return {
+        "id": "OPERATION_IMPLEMENTATION_REFS_EXIST",
+        "status": "FAIL" if errors else "PASS",
+        "detail": {"checked": checked, "errors": errors},
+    }
+
+
 def verify(stage: str = "M5", root: str | Path | None = None) -> dict[str, object]:
     base = repository_root(root)
     stage = stage.upper()
@@ -125,6 +360,8 @@ def verify(stage: str = "M5", root: str | Path | None = None) -> dict[str, objec
         checks.append({"id": "AGENT_CONTRACT_PLANE_STRUCTURAL_VALIDATION_PASS", "status": "PASS", "detail": counts})
     except Exception as exc:
         checks.append({"id": "AGENT_CONTRACT_PLANE_STRUCTURAL_VALIDATION_PASS", "status": "FAIL", "detail": str(exc)})
+
+    checks.append(verify_operation_implementation_refs(base))
 
     coverage = _yaml(base, COVERAGE)
     m1 = coverage.get("m1")
@@ -230,6 +467,7 @@ def verify(stage: str = "M5", root: str | Path | None = None) -> dict[str, objec
                 "detail": {"count": 0 if state_ok and markdown_forbidden else None},
             },
         ])
+        checks.append(verify_current_profile_selectors(base))
 
     passed = all(item["status"] == "PASS" for item in checks)
     return {

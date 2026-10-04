@@ -85,6 +85,7 @@ def test_evidence_change_selects_declared_dependents() -> None:
         "ptsip-migration",
         "ptsip-remediation",
         "vpms",
+        "repository-architecture",
     ]
 
 
@@ -98,16 +99,19 @@ def test_source_compat_change_selects_declared_dependents() -> None:
         "ptsip-source-compat",
         "ptsip-migration",
         "vpms",
+        "repository-architecture",
     ]
 
 
-def test_migration_change_selects_migration_and_current_vpms_boundary() -> None:
+def test_migration_change_selects_migration_and_contract_reference_verifiers() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        ["src/ptsip/migration/model.py"],
+        ["src/ptsip/migration/analysis/analyzer.py"],
     )
-    assert _ids(selected) == ["ptsip-migration", "vpms"]
+    assert _ids(selected) == [
+        "ptsip-migration", "vpms", "repository-architecture", "agent-contract-plane",
+    ]
 
 
 def test_support_policy_change_selects_all_declared_support_verifiers() -> None:
@@ -162,7 +166,9 @@ def test_agent_contract_source_change_selects_contract_verification() -> None:
         _profile(),
         ["src/ptsip/agent_contracts/operations/conform.yaml"],
     )
-    assert _ids(selected) == ["vpms", "ptsip-contract", "repository-release"]
+    assert _ids(selected) == [
+        "vpms", "ptsip-contract", "repository-architecture", "repository-release",
+    ]
 
 
 def test_agent_contract_test_change_selects_contract_verification() -> None:
@@ -316,6 +322,7 @@ def test_execution_plan_contains_execution_identity_not_architecture_authority()
         "ptsip-migration",
         "ptsip-remediation",
         "vpms",
+        "repository-architecture",
     ]
     assert all("classification" not in item for item in plan)
     assert all("roles" not in item for item in plan)
