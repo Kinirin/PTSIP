@@ -26,6 +26,30 @@ def test_policy_resolver_binding_plane_is_machine_valid() -> None:
     assert validate_policy_resolver(ROOT) == ()
 
 
+@pytest.mark.parametrize("operation", ["PLAN", "MODIFY", "VERIFY"])
+def test_migration_binding_preserves_both_sections_under_one_policy_identity(operation: str) -> None:
+    result = resolve_policies(ROOT, scope="src/ptsip/migration", operation=operation)
+    policies = result["policies"]
+    assert len(policies) == len({item["policy_id"] for item in policies})
+    migration = next(item for item in policies if item["policy_id"] == "MPD-MIGR-0005")
+    assert migration["sections"] == ["python_migration_reference", "implementation_authorization"]
+
+
+def test_duplicate_policy_identity_remains_a_blocking_binding_error(monkeypatch) -> None:
+    from copy import deepcopy
+
+    original = policy_resolver_module._load_bindings
+
+    def duplicate(root, contract):
+        bindings = deepcopy(original(root, contract))
+        refs = bindings["scope_bindings"]["src/ptsip/migration"]["operations"]["PLAN"]
+        refs.append(deepcopy(next(item for item in refs if item["policy_id"] == "MPD-MIGR-0005")))
+        return bindings
+
+    monkeypatch.setattr(policy_resolver_module, "_load_bindings", duplicate)
+    assert validate_policy_resolver(ROOT) == ("src/ptsip/migration:PLAN duplicates MPD-MIGR-0005",)
+
+
 def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
     result = resolve_policies(
         ROOT,

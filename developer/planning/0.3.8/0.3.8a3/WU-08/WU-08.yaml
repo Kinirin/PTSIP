@@ -1204,6 +1204,7 @@ exact_binding_and_ownership_materialization:
           - {id: SELF_PROFILE_BRIDGE_AND_TEST_MODE_CLI_EXPECTATIONS, failed: 3}
         migration_scope_record_equal_to_head: true
         migration_scope_record_modified_by_this_task: false
+        subsequent_owner_reconciliation_ref: failure_owner_reconciliation
       core:
         failed: 37
         exact_prior_full_core_failure_baseline_available: false
@@ -1291,3 +1292,316 @@ verification_scope_registration_candidate:
     metadata_fields_ref: verification_resumption.candidate_migration_parity.generated_index_diff_fields
     canonical_digest_activation: false
     normative_semantic_change: false
+
+failure_owner_reconciliation:
+  observation_kind: FAILURE_OWNER_RECONCILIATION
+  authority: NON_NORMATIVE_EXECUTION_EVIDENCE
+  status: PARTIAL_REMEDIATION_OWNER_DECISION_REQUIRED
+  observed_on: "2026-10-04"
+  authorization_source: USER_EXPLICIT
+  authorization_scope: EXPAND_AND_REMEDIATE_RECORDED_22_REPOSITORY_ARCHITECTURE_FAILURES
+  baseline_head: 02a3f6fd72607e512a1708867747f474e02426a8
+  branch_context: dev/0.3.8
+  tested_state: LOCAL_WORKING_TREE
+  exact_committed_sha_verification_claimed: false
+  historical_observation_ref: exact_binding_and_ownership_materialization.required_seven_mode_verification
+  human_review_ref: developer/planning/0.3.8/0.3.8a3/WU-08/WU-08-failure-owners.md
+  classification_vocabulary:
+    A: ACTUAL_IMPLEMENTATION_REGRESSION
+    B: STALE_TEST_OR_FIXTURE_WITH_CURRENT_CANONICAL_STATE
+    C: OWNER_DECISION_REQUIRED
+  aggregate:
+    original_failed_tests: 22
+    reproduced_failed_tests: 22
+    category_counts: {A: 2, B: 16, C: 4}
+    remediated_original_tests_passed: 18
+    retained_owner_decision_failures: 4
+    new_fail_closed_guard_cases_passed: 9
+  groups:
+    - {"id":"SELF_PROFILE_UNMATCHED_EXISTING_SELECTORS","original_failed":2,"category_counts":{"A":0,"B":0,"C":2},"after":{"passed":0,"failed":2}}
+    - {"id":"DEVELOPER_CONTROL_PLANE_REMOVAL_RELATION_CORPUS_AND_OWNER_EXPECTATIONS","original_failed":4,"category_counts":{"A":1,"B":3,"C":0},"after":{"passed":4,"failed":0}}
+    - {"id":"IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING","original_failed":5,"category_counts":{"A":0,"B":5,"C":0},"after":{"passed":5,"failed":0}}
+    - {"id":"OUTPUT_SCHEMA_POLICY_VERSION_EXPECTATION","original_failed":1,"category_counts":{"A":0,"B":1,"C":0},"after":{"passed":1,"failed":0}}
+    - {"id":"RETIRED_SUPPORT_POLICY_SOURCE_AND_SCHEMA_PATHS","original_failed":2,"category_counts":{"A":0,"B":2,"C":0},"after":{"passed":2,"failed":0}}
+    - {"id":"MIGRATION_SCOPE_DUPLICATE_POLICY_BINDING","original_failed":1,"category_counts":{"A":1,"B":0,"C":0},"after":{"passed":1,"failed":0}}
+    - {"id":"PROJECT_PROFILE_REGISTRY_AND_BASELINE_EXPECTATIONS","original_failed":4,"category_counts":{"A":0,"B":4,"C":0},"after":{"passed":4,"failed":0}}
+    - {"id":"SELF_PROFILE_BRIDGE_AND_TEST_MODE_CLI_EXPECTATIONS","original_failed":3,"category_counts":{"A":0,"B":1,"C":2},"after":{"passed":1,"failed":2}}
+  test_cases:
+    - {"ordinal":1,"test_id":"tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_is_valid_complete_and_revision_pinned","group_id":"SELF_PROFILE_UNMATCHED_EXISTING_SELECTORS","category":"C","owner_refs":["developer/profiles/ptsip-repository.yaml"],"decision_status":"OWNER_DECISION_REQUIRED","evidence":"5개 dead selector와 113개 미배정 경로; architecture 의미는 테스트가 정할 수 없음","remediation":"selector 정리와 경로별 classification/roles/associated-artifact 선언 승인 대기","remediation_id":"PROFILE_PARTITION_DECISION_REQUIRED","result":"FAIL"}
+    - {"ordinal":2,"test_id":"tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_resolves_all_discovered_candidates","group_id":"SELF_PROFILE_UNMATCHED_EXISTING_SELECTORS","category":"C","owner_refs":["developer/profiles/ptsip-repository.yaml"],"decision_status":"OWNER_DECISION_REQUIRED","evidence":"같은 self-profile 때문에 clarification이 안정적 완료 상태에 도달하지 못함","remediation":"같은 architecture 결정에 종속; 기대 상태를 낮추지 않음","remediation_id":"PROFILE_PARTITION_DECISION_REQUIRED","result":"FAIL"}
+    - {"ordinal":3,"test_id":"developer/tests/test_developer_control_plane.py::test_removal_gate_tracks_e4_machine_completion","group_id":"DEVELOPER_CONTROL_PLANE_REMOVAL_RELATION_CORPUS_AND_OWNER_EXPECTATIONS","category":"B","owner_refs":["developer/automation/transition_evaluator.py"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"폐기된 docs/planning/0.4.0 계획을 live fixture로 로딩","remediation":"격리 fixture로 E4 COMPLETE / VALIDATION_PENDING 분기 모두 검증","remediation_id":"ISOLATED_E4_FIXTURE","result":"PASS"}
+    - {"ordinal":4,"test_id":"developer/tests/test_developer_control_plane.py::test_current_policy_relations_preserve_materialized_relation_set","group_id":"DEVELOPER_CONTROL_PLANE_REMOVAL_RELATION_CORPUS_AND_OWNER_EXPECTATIONS","category":"B","owner_refs":["developer/policy/index.yaml","docs/Support_policy/policy/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"관계 집합에 index 순서를 강제하고 현재 3개 관계를 누락","remediation":"정확한 multiset 비교와 현재 3개 edge 반영; DRAFT는 비활성 유지","remediation_id":"EXACT_RELATION_MULTISET","result":"PASS"}
+    - {"ordinal":5,"test_id":"developer/tests/test_developer_control_plane.py::test_current_policy_indexes_cover_self_contained_corpus","group_id":"DEVELOPER_CONTROL_PLANE_REMOVAL_RELATION_CORPUS_AND_OWNER_EXPECTATIONS","category":"B","owner_refs":["developer/policy/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"family-ID 파일 정렬 순서와 canonical index 선언 순서를 동일시","remediation":"ID 중복 검출 및 exact multiset corpus coverage 유지","remediation_id":"EXACT_INDEX_COVERAGE","result":"PASS"}
+    - {"ordinal":6,"test_id":"developer/tests/test_developer_control_plane.py::test_developer_owner_authorization_uses_mpd_registry","group_id":"DEVELOPER_CONTROL_PLANE_REMOVAL_RELATION_CORPUS_AND_OWNER_EXPECTATIONS","category":"A","owner_refs":["developer/policy/registries/authorization-transition-registry.yaml","developer/automation/authorization_transition.py","docs/Support_policy/policy/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"authorization 구현에서 SFP 수를 21로 고정, 현재 index는 22","remediation":"canonical selected IDs와 validated IDs의 비어 있지 않은 exact set/count 검증","remediation_id":"EXACT_AUTHORIZATION_CORPUS","result":"PASS"}
+    - {"ordinal":7,"test_id":"developer/tests/test_implementation_work_packet.py::test_packet_builds_exact_mutation_acceptance_and_regression_plan","group_id":"IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING","category":"B","owner_refs":["developer/automation/implementation_workflows.yaml","developer/automation/implementation_work_packet.py"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"미등록 live task_context를 unit input으로 기대","remediation":"기존 execution projection을 복사한 격리 fixture; live 등록 없음","remediation_id":"ISOLATED_PACKET_CONTEXT","result":"PASS"}
+    - {"ordinal":8,"test_id":"developer/tests/test_implementation_work_packet.py::test_agent_brief_is_compact_and_progressive","group_id":"IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING","category":"B","owner_refs":["developer/automation/implementation_workflows.yaml","developer/automation/implementation_work_packet.py"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"과거 live normative rule 수와 branch context에 의존","remediation":"canonical rule의 bounded projection fixture와 compact brief 검증","remediation_id":"ISOLATED_PACKET_CONTEXT","result":"PASS"}
+    - {"ordinal":9,"test_id":"developer/tests/test_implementation_work_packet.py::test_mutation_source_context_avoids_whole_file_read","group_id":"IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING","category":"B","owner_refs":["developer/automation/implementation_workflows.yaml","developer/automation/implementation_work_packet.py"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"같은 미등록 task_context 의존","remediation":"선택적 function/method read fixture와 whole-file read 방지 검증","remediation_id":"ISOLATED_PACKET_CONTEXT","result":"PASS"}
+    - {"ordinal":10,"test_id":"developer/tests/test_implementation_work_packet.py::test_read_context_supports_single_selector_projection","group_id":"IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING","category":"B","owner_refs":["developer/automation/implementation_workflows.yaml","developer/automation/implementation_work_packet.py"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"같은 미등록 task_context 의존","remediation":"단일 selector projection 동작 검증","remediation_id":"ISOLATED_PACKET_CONTEXT","result":"PASS"}
+    - {"ordinal":11,"test_id":"developer/tests/test_implementation_work_packet.py::test_read_context_ids_are_stable","group_id":"IMPLEMENTATION_WORK_PACKET_TASK_CONTEXT_NOT_MAPPING","category":"B","owner_refs":["developer/automation/implementation_workflows.yaml","developer/automation/implementation_work_packet.py"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"같은 미등록 task_context 의존","remediation":"동일 fixture에서 안정적 read-context ID 검증","remediation_id":"ISOLATED_PACKET_CONTEXT","result":"PASS"}
+    - {"ordinal":12,"test_id":"developer/tests/test_policy_plan_output_schema_identity.py::test_output_policy_owns_output_semantics_not_verification_semantics","group_id":"OUTPUT_SCHEMA_POLICY_VERSION_EXPECTATION","category":"B","owner_refs":["developer/policy/VERI/MPD-VERI-0006.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"current DRAFT output 정책 0.1을 과거 0.0으로 기대","remediation":"metadata 기대값만 0.1로 정합; DRAFT와 verification owner 경계 유지","remediation_id":"DRAFT_OUTPUT_METADATA_EXPECTATION","result":"PASS"}
+    - {"ordinal":13,"test_id":"developer/tests/test_policy_provenance_retirement.py::test_current_sfp_mpd_corpus_has_no_legacy_source_provenance","group_id":"RETIRED_SUPPORT_POLICY_SOURCE_AND_SCHEMA_PATHS","category":"B","owner_refs":["docs/Support_policy/policy/index.yaml","developer/policy/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"retired src/ptsip/specdata/SFP 및 legacy MPD subset을 canonical corpus로 기대","remediation":"두 canonical index의 모든 exact record path를 검증","remediation_id":"CANONICAL_POLICY_PATHS","result":"PASS"}
+    - {"ordinal":14,"test_id":"developer/tests/test_policy_provenance_retirement.py::test_current_policy_schemas_do_not_define_legacy_source_provenance","group_id":"RETIRED_SUPPORT_POLICY_SOURCE_AND_SCHEMA_PATHS","category":"B","owner_refs":["docs/Support_policy/policy/schemas/ptsip-support-feature-policy.schema.json","developer/policy/schemas/management-policy.schema.json"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"폐기된 SFP schema 경로를 기대","remediation":"docs/Support_policy canonical schema와 runtime catalog projection 정합 검증","remediation_id":"CANONICAL_SUPPORT_SCHEMA","result":"PASS"}
+    - {"ordinal":15,"test_id":"developer/tests/test_policy_resolver.py::test_policy_resolver_binding_plane_is_machine_valid","group_id":"MIGRATION_SCOPE_DUPLICATE_POLICY_BINDING","category":"A","owner_refs":["developer/policy/policy-resolver-bindings/registry.yaml","developer/policy/policy-resolver-bindings/bindings.jsonl"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"migration / MPD-0015 exact binding의 MPD-MIGR-0005 ID 중복","remediation":"PLAN/MODIFY/VERIFY의 두 section을 동일 ID 한 record로 합침; duplicate 거부 유지","remediation_id":"UNIQUE_BINDING_WITH_BOTH_SECTIONS","result":"PASS"}
+    - {"ordinal":16,"test_id":"developer/tests/test_project_profile_registry.py::test_contract_registry_owns_single_current_identity","group_id":"PROJECT_PROFILE_REGISTRY_AND_BASELINE_EXPECTATIONS","category":"B","owner_refs":["registry/project-profile-contracts.yaml","profiles/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"single-current registry는 pp.1.02인데 pp.1.01 기대","remediation":"current ID와 canonical schema 기대값 정합","remediation_id":"CURRENT_PROFILE_REGISTRY_EXPECTATION","result":"PASS"}
+    - {"ordinal":17,"test_id":"developer/tests/test_project_profile_registry.py::test_historical_compatibility_identity_is_registered_without_becoming_current","group_id":"PROJECT_PROFILE_REGISTRY_AND_BASELINE_EXPECTATIONS","category":"B","owner_refs":["registry/project-profile-contracts.yaml","profiles/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"등록된 pp.1.01 SUPERSEDED / SEMANTIC_MIGRATION을 없음으로 기대","remediation":"정확한 lifecycle과 SEMANTIC_MIGRATION 선언 검증; runtime migration 없음","remediation_id":"SEMANTIC_MIGRATION_DECLARATION_EXPECTATION","result":"PASS"}
+    - {"ordinal":18,"test_id":"developer/tests/test_project_profile_registry.py::test_public_profile_catalog_exactly_describes_existing_distribution_assets","group_id":"PROJECT_PROFILE_REGISTRY_AND_BASELINE_EXPECTATIONS","category":"B","owner_refs":["registry/project-profile-contracts.yaml","profiles/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"기존 catalog의 pp.1.02 / DISTRIBUTED_EXAMPLE metadata 누락","remediation":"exact 3개 distribution entry 정합; immutable asset 검증 유지","remediation_id":"DISTRIBUTED_CATALOG_EXPECTATION","result":"PASS"}
+    - {"ordinal":19,"test_id":"developer/tests/test_project_profile_registry.py::test_current_contract_has_immutable_baseline","group_id":"PROJECT_PROFILE_REGISTRY_AND_BASELINE_EXPECTATIONS","category":"B","owner_refs":["registry/project-profile-contracts.yaml","profiles/index.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"current pp.1.02 baseline을 pp.1.01로 기대","remediation":"current immutable baseline byte 검증 유지","remediation_id":"CURRENT_IMMUTABLE_BASELINE_EXPECTATION","result":"PASS"}
+    - {"ordinal":20,"test_id":"developer/tests/test_self_profile_bridge_removal.py::test_repository_self_profile_is_explicit_and_root_bridge_is_absent","group_id":"SELF_PROFILE_BRIDGE_AND_TEST_MODE_CLI_EXPECTATIONS","category":"C","owner_refs":["developer/profiles/ptsip-repository.yaml","ptsip.yaml","AGENTS.md"],"decision_status":"OWNER_DECISION_REQUIRED","evidence":"root bridge retired라는 운영 계약과 tracked ptsip.yaml 존재가 충돌","remediation":"실제 폐기 여부 owner 승인 대기; 삭제나 기대값 완화 없음","remediation_id":"ROOT_BRIDGE_DECISION_REQUIRED","result":"FAIL"}
+    - {"ordinal":21,"test_id":"developer/tests/test_self_profile_bridge_removal.py::test_repository_test_mode_control_plane_defaults_to_explicit_self_profile","group_id":"SELF_PROFILE_BRIDGE_AND_TEST_MODE_CLI_EXPECTATIONS","category":"B","owner_refs":[".github/scripts/resolve_test_modes.py",".github/test_modes.yaml","developer/profiles/ptsip-repository.yaml"],"decision_status":"CANONICAL_OWNER_RESOLVED","evidence":"manual Test Mode CLI의 필수 --mode를 누락","remediation":"명시적 --mode repository-architecture 전달; canonical self-profile default 검증 유지","remediation_id":"EXPLICIT_MANUAL_MODE_ARGUMENT","result":"PASS"}
+    - {"ordinal":22,"test_id":"developer/tests/test_self_profile_bridge_removal.py::test_current_repository_profile_has_no_root_bridge_dependency","group_id":"SELF_PROFILE_BRIDGE_AND_TEST_MODE_CLI_EXPECTATIONS","category":"C","owner_refs":["developer/profiles/ptsip-repository.yaml","ptsip.yaml",".ptsip/profiles/index.json"],"decision_status":"OWNER_DECISION_REQUIRED","evidence":"canonical self-profile의 include에 ptsip.yaml 의존이 남음","remediation":"root bridge 참조 제거와 local catalog/default 정합 결정 대기","remediation_id":"ROOT_BRIDGE_DECISION_REQUIRED","result":"FAIL"}
+  owner_decisions:
+    self_profile_partition:
+      status: OWNER_DECISION_REQUIRED
+      responsibility_owner_candidate: REPOSITORY_PROJECT_OWNER
+      artifact_owner_ref: developer/profiles/ptsip-repository.yaml
+      artifact_owner_resolution: repository_state_resolver.project_profile
+      dependent_test_ordinals: [1, 2]
+      required_decision:
+        - EXACT_COMPONENT_AND_ASSOCIATED_ARTIFACT_SELECTOR_CORRECTIONS
+        - EXPLICIT_LIFECYCLE_CLASSIFICATION_ROLES_AND_ARTIFACT_OWNERSHIP_FOR_UNASSIGNED_PATHS
+        - EXPLICIT_TEST_OWNERSHIP_AND_ANALYSIS_INPUT_BINDING_IF_APPLICABLE
+      current_profile_and_tests_unchanged: true
+      ownership_inferred_from_path_or_file_type: false
+      prior_four_path_approval_expanded_by_inference: false
+      unmatched_selectors:
+        components:
+          - {owner_id: product-documentation, selector: README.ko.md}
+          - {owner_id: ptsip-canonical-contracts, selector: "spec/**"}
+          - {owner_id: repository-maintenance, selector: "docs/planning/**"}
+        associated_artifacts:
+          - {owner_id: ptsip-governance-support, selector: "adoption/**"}
+          - {owner_id: ptsip-governance-support, selector: "agents/**"}
+      unassigned_count: 113
+      path_count_groups:
+        - {path_prefix: docs/translated/, count: 2}
+        - {path_prefix: src/agent_contracts/, count: 106}
+        - {path_prefix: tests/agent_contracts/, count: 2}
+        - {path_prefix: tests/ptsip/, count: 3}
+      path_manifest_serialization: SORTED_UTF8_LF_JOIN_WITH_FINAL_LF
+      path_manifest_sha256: d9d00fa955fa3c74642d1a898eff6500bcdaf773b5458cdd4046d1231f3aa614
+      path_manifest_hash_is_canonical_contract_digest: false
+      unassigned_paths:
+        - docs/translated/README.ko.md
+        - docs/translated/index.yaml
+        - src/agent_contracts/__init__.py
+        - src/agent_contracts/actions/analyze-source-profile.yaml
+        - src/agent_contracts/actions/apply-adoption.yaml
+        - src/agent_contracts/actions/apply-profile-transition.yaml
+        - src/agent_contracts/actions/build-adoption-plan.yaml
+        - src/agent_contracts/actions/build-transition-plan.yaml
+        - src/agent_contracts/actions/capture-repository-snapshot.yaml
+        - src/agent_contracts/actions/collect-conformance-evidence.yaml
+        - src/agent_contracts/actions/compare-profile-authority.yaml
+        - src/agent_contracts/actions/emit-conformance-result.yaml
+        - src/agent_contracts/actions/evaluate-conformance-rules.yaml
+        - src/agent_contracts/actions/map-profile-target.yaml
+        - src/agent_contracts/actions/project-authority-winner.yaml
+        - src/agent_contracts/actions/read-relevant-authority.yaml
+        - src/agent_contracts/actions/resolve-adoption-facts.yaml
+        - src/agent_contracts/actions/resolve-profile-schema.yaml
+        - src/agent_contracts/actions/resolve-reconciliation-state.yaml
+        - src/agent_contracts/actions/validate-profile-structure.yaml
+        - src/agent_contracts/actions/validate-responsibility-map-semantics.yaml
+        - src/agent_contracts/bindings/current.yaml
+        - src/agent_contracts/canonicalization/ptsip-canonical-json-v1.json
+        - src/agent_contracts/conditions/adopt-apply-requested.yaml
+        - src/agent_contracts/conditions/adopt-authority-fresh.yaml
+        - src/agent_contracts/conditions/adopt-facts-resolved.yaml
+        - src/agent_contracts/conditions/adopt-profile-fresh.yaml
+        - src/agent_contracts/conditions/adopt-repository-fresh.yaml
+        - src/agent_contracts/conditions/adopt-snapshot-identified.yaml
+        - src/agent_contracts/conditions/adopt-write-authorized.yaml
+        - src/agent_contracts/conditions/authority-authority-fresh.yaml
+        - src/agent_contracts/conditions/authority-coordination-available.yaml
+        - src/agent_contracts/conditions/authority-profile-fresh.yaml
+        - src/agent_contracts/conditions/authority-projection-required.yaml
+        - src/agent_contracts/conditions/authority-semantic-conflict-absent.yaml
+        - src/agent_contracts/conditions/authority-write-authorized.yaml
+        - src/agent_contracts/conditions/conform-profile-ready.yaml
+        - src/agent_contracts/conditions/conform-snapshot-identified.yaml
+        - src/agent_contracts/conditions/migrate-apply-requested.yaml
+        - src/agent_contracts/conditions/migrate-source-fresh.yaml
+        - src/agent_contracts/conditions/migrate-source-profile-identified.yaml
+        - src/agent_contracts/conditions/migrate-target-contract-resolved.yaml
+        - src/agent_contracts/conditions/migrate-target-fresh.yaml
+        - src/agent_contracts/conditions/migrate-write-authorized.yaml
+        - src/agent_contracts/conditions/validate-contract-resolved.yaml
+        - src/agent_contracts/conditions/validate-profile-selected.yaml
+        - src/agent_contracts/conformance/current.json
+        - src/agent_contracts/contracts/current.json
+        - src/agent_contracts/gates/adoption-write.yaml
+        - src/agent_contracts/gates/authority-projection-write.yaml
+        - src/agent_contracts/gates/profile-transition-write.yaml
+        - src/agent_contracts/index.json
+        - src/agent_contracts/index.yaml
+        - src/agent_contracts/operations/adopt.yaml
+        - src/agent_contracts/operations/conform.yaml
+        - src/agent_contracts/operations/migrate-profile.yaml
+        - src/agent_contracts/operations/reconcile-authority.yaml
+        - src/agent_contracts/operations/validate.yaml
+        - src/agent_contracts/promotion/current.json
+        - src/agent_contracts/resolver.py
+        - src/agent_contracts/schemas/candidate-group.schema.json
+        - src/agent_contracts/schemas/candidate-index.schema.json
+        - src/agent_contracts/schemas/candidate-vectors.schema.json
+        - src/agent_contracts/schemas/contracts/action.schema.json
+        - src/agent_contracts/schemas/contracts/binding.schema.json
+        - src/agent_contracts/schemas/contracts/condition.schema.json
+        - src/agent_contracts/schemas/contracts/index.schema.json
+        - src/agent_contracts/schemas/contracts/io.schema.json
+        - src/agent_contracts/schemas/contracts/mutation-gate.schema.json
+        - src/agent_contracts/schemas/contracts/operation.schema.json
+        - src/agent_contracts/schemas/contracts/spec.schema.json
+        - src/agent_contracts/schemas/contracts/vocabulary.schema.json
+        - src/agent_contracts/schemas/io/adopt-request.schema.json
+        - src/agent_contracts/schemas/io/adopt-result.schema.json
+        - src/agent_contracts/schemas/io/adopt-state.schema.json
+        - src/agent_contracts/schemas/io/authority-request.schema.json
+        - src/agent_contracts/schemas/io/authority-result.schema.json
+        - src/agent_contracts/schemas/io/authority-state.schema.json
+        - src/agent_contracts/schemas/io/conform-request.schema.json
+        - src/agent_contracts/schemas/io/conform-result.schema.json
+        - src/agent_contracts/schemas/io/conform-state.schema.json
+        - src/agent_contracts/schemas/io/migrate-request.schema.json
+        - src/agent_contracts/schemas/io/migrate-result.schema.json
+        - src/agent_contracts/schemas/io/migrate-state.schema.json
+        - src/agent_contracts/schemas/io/validate-request.schema.json
+        - src/agent_contracts/schemas/io/validate-result.schema.json
+        - src/agent_contracts/schemas/io/validate-state.schema.json
+        - src/agent_contracts/spec/adoption-procedure.yaml
+        - src/agent_contracts/spec/adoption.yaml
+        - src/agent_contracts/spec/agent-behavior.yaml
+        - src/agent_contracts/spec/authority.yaml
+        - src/agent_contracts/spec/classification.yaml
+        - src/agent_contracts/spec/conformance-detail.yaml
+        - src/agent_contracts/spec/conformance.yaml
+        - src/agent_contracts/spec/core.yaml
+        - src/agent_contracts/spec/governance.yaml
+        - src/agent_contracts/spec/profile-transition-detail.yaml
+        - src/agent_contracts/spec/profile-transition.yaml
+        - src/agent_contracts/spec/repository-boundaries.yaml
+        - src/agent_contracts/spec/responsibility-map-detail.yaml
+        - src/agent_contracts/spec/responsibility-map.yaml
+        - src/agent_contracts/spec/specification-governance.yaml
+        - src/agent_contracts/validator.py
+        - src/agent_contracts/vocabulary/authority.yaml
+        - src/agent_contracts/vocabulary/diagnostics.yaml
+        - src/agent_contracts/vocabulary/lifecycle.yaml
+        - src/agent_contracts/vocabulary/outcomes.yaml
+        - src/agent_contracts/vocabulary/terminology.yaml
+        - tests/agent_contracts/test_contract_plane.py
+        - tests/agent_contracts/test_resolver.py
+        - tests/ptsip/governance/test_policy_plan_binding.py
+        - tests/ptsip/governance/test_policy_plan_resolver_tracker.py
+        - tests/ptsip/test_context_plane.py
+    root_bridge:
+      status: OWNER_DECISION_REQUIRED
+      responsibility_owner_candidate: REPOSITORY_PROJECT_OWNER
+      dependent_test_ordinals: [20, 22]
+      observed_operational_contract: AGENTS_ROOT_BRIDGE_RETIRED
+      observed_root_bridge: TRACKED_PRESENT
+      root_bridge_ref: ptsip.yaml
+      conflicting_declaration_ref: developer/profiles/ptsip-repository.yaml
+      conflicting_field: components.repository-maintenance.include
+      declared_selector: ptsip.yaml
+      local_catalog_ref: .ptsip/profiles/index.json
+      local_catalog_default: main
+      local_catalog_resource: main.ptsip.yaml
+      required_decision:
+        - CONFIRM_ROOT_BRIDGE_RETIREMENT_OR_CURRENT_DECLARATION_AUTHORITY
+        - APPROVE_EXACT_REFERENCE_AND_LOCAL_CATALOG_RECONCILIATION
+      root_bridge_deleted: false
+      self_profile_dependency_changed: false
+      test_absence_or_no_dependency_expectation_weakened: false
+  remediation_boundaries:
+    exact_canonical_owner_lookup_used: true
+    policy_lifecycle_changes: false
+    normative_policy_record_changes: false
+    runtime_semantic_migration: false
+    live_task_context_registered: false
+    unit_work_packet_fixture_creates_live_authority: false
+    verification_path_ownership_expanded: false
+    user_rejected_broad_contract_analysis_input_added: false
+    binding_duplicate_id_guard_relaxed: false
+    required_failure_waiver_created: false
+    required_failures_skipped_or_xfailed: false
+    canonical_digest_or_candidate_or_runtime_activated: false
+    commits_or_pushes_performed_in_this_reconciliation: false
+  focused_verification:
+    report_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-owner-d5e7b11d4e0b4dd79ae56682dde4fe0b
+    baseline: {junit_xml: architecture-22-before.xml, tests: 22, passed: 0, failed: 22, errors: 0, skipped: 0, report_sha256: d2a4806bcdce91421c2c5ce0531bb9462f972330df580e94647f2d9689d7de58}
+    after: {junit_xml: architecture-22-after.xml, tests: 31, passed: 27, failed: 4, errors: 0, skipped: 0, report_sha256: a7fc9944e0c542328fb5178fb75a9572523e9219f7f88ffbcd6b80e83cacf496}
+    original_failure_test_id_set_matches_prior_22: true
+    original_after_failed_test_ids_are_exactly_category_c: true
+    evidence_hashes_are_not_canonical_contract_digests: true
+    replaces_required_automatic_verification: false
+  required_automatic_verification:
+    status: FAIL
+    selected_modes: [ptsip-contract, repository-architecture]
+    selection_source: AUTOMATIC_CURRENT_WORKING_TREE_CHANGED_PATHS
+    full_fallback_used: false
+    report_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-wu08-owner-d5e7b11d4e0b4dd79ae56682dde4fe0b
+    all_selected_modes_executed: true
+    changed_path_count: 11
+    unowned_changed_verification_paths: []
+    aggregate: {tests: 376, passed: 371, failed: 5, errors: 0, skipped: 0}
+    modes:
+      - {"id":"ptsip-contract","junit_xml":"required-ptsip-contract.xml","tests":33,"passed":32,"failed":1,"errors":0,"skipped":0,"report_sha256":"c689b61f5e0fc0f8074d1252b11140209600a8edd3e618197970d879ec3f9ca0","failed_test_ids":["tests/ptsip/contracts/test_spec_assets.py::test_example_profile_validates_against_canonical_schema"],"result":"FAIL"}
+      - {"id":"repository-architecture","junit_xml":"required-repository-architecture.xml","tests":343,"passed":339,"failed":4,"errors":0,"skipped":0,"report_sha256":"a6fd3278410e0f5932971c95ff48a4474b8bec184efabfc0d1f01b6c7a2f413f","failed_test_ids":["developer/tests/test_self_profile_bridge_removal.py::test_current_repository_profile_has_no_root_bridge_dependency","developer/tests/test_self_profile_bridge_removal.py::test_repository_self_profile_is_explicit_and_root_bridge_is_absent","tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_is_valid_complete_and_revision_pinned","tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_resolves_all_discovered_candidates"],"result":"FAIL"}
+    report_hash_algorithm: SHA256
+    report_hashes_are_not_canonical_contract_digests: true
+    source_test_and_binding_hashes:
+      - {"path":"developer/automation/authorization_transition.py","sha256":"a2c0ad6c1c8d9fa8610a210c811f9ef5b60811e34a2e03bca2128ea6d1d1f737"}
+      - {"path":"developer/policy/policy-resolver-bindings/bindings.jsonl","sha256":"f7fc077aabb8599aa3f8b3bec9fdb9d3a8f35b8e7efacc162df71ba02cdb144c"}
+      - {"path":"developer/tests/test_developer_control_plane.py","sha256":"2fc90efc20bec6adc41cacebdc012b9267bb013e605dadb28b2f98312f055ec2"}
+      - {"path":"developer/tests/test_implementation_work_packet.py","sha256":"849aec68f0f5fd1aeefa61972b00b3b2a1960c1ac8ee1df376df6b3aec07feb3"}
+      - {"path":"developer/tests/test_policy_plan_output_schema_identity.py","sha256":"c87264c798329bfcf5685540c96d31243f1d36f528bf00c62e76d454e9ef1a6e"}
+      - {"path":"developer/tests/test_policy_provenance_retirement.py","sha256":"f8fa3ecddc367629c63d9024d25ebdf2c0e122ea09d216aff2f423a30e7acfe9"}
+      - {"path":"developer/tests/test_policy_resolver.py","sha256":"50adee4b641582a0c16a6f2900ac08759db8e8d880b11fd3522d3c348e6ac67a"}
+      - {"path":"developer/tests/test_project_profile_registry.py","sha256":"5c8260168588471412ee128b49d9d94d4ae8e6c0a96a8dd89b71c15c88fde364"}
+      - {"path":"developer/tests/test_self_profile_bridge_removal.py","sha256":"fdab3f9c72dd4b68380a397c20c2666a38b43a62f8d4d62da3b02ecc4656f9ec"}
+    post_test_edits: WU08_RESULT_EVIDENCE_AND_REVIEW_PROJECTION_ONLY
+    unchanged_out_of_scope_failure:
+      test_id: tests/ptsip/contracts/test_spec_assets.py::test_example_profile_validates_against_canonical_schema
+      cause: PP_1_01_SCHEMA_USED_FOR_EXISTING_PP_1_02_EXAMPLE
+      canonical_schema_registry_ref: registry/project-profile-contracts.yaml
+      test_input_schema_ref: schemas/ptsip-profile-pp-1.01.schema.json
+      example_ref: profiles/example.ptsip.yaml
+      test_and_schema_and_example_changed: false
+  result_review:
+    status: COMPLETED_WITH_OWNER_DECISIONS_AND_REQUIRED_FAILURES_RETAINED
+    test_case_record_count: 22
+    unique_test_id_count: 22
+    failure_group_count: 8
+    original_22_failure_set_matches_prior_report: true
+    focused_and_required_results_match_every_original_test_id: true
+    exact_four_category_c_tests_are_only_full_architecture_failures: true
+    canonical_owner_artifact_refs_exist: true
+    unassigned_113_path_manifest_integrity: PASS
+    new_guard_test_ids:
+      - developer/tests/test_developer_control_plane.py::test_owner_authorization_requires_exact_validated_support_corpus[duplicate]
+      - developer/tests/test_developer_control_plane.py::test_owner_authorization_requires_exact_validated_support_corpus[empty]
+      - developer/tests/test_developer_control_plane.py::test_owner_authorization_requires_exact_validated_support_corpus[missing]
+      - developer/tests/test_developer_control_plane.py::test_owner_authorization_requires_exact_validated_support_corpus[unknown]
+      - developer/tests/test_implementation_work_packet.py::test_unregistered_live_task_context_still_fails_closed
+      - developer/tests/test_policy_resolver.py::test_duplicate_policy_identity_remains_a_blocking_binding_error
+      - developer/tests/test_policy_resolver.py::test_migration_binding_preserves_both_sections_under_one_policy_identity[MODIFY]
+      - developer/tests/test_policy_resolver.py::test_migration_binding_preserves_both_sections_under_one_policy_identity[PLAN]
+      - developer/tests/test_policy_resolver.py::test_migration_binding_preserves_both_sections_under_one_policy_identity[VERIFY]
+    structural_checks:
+      developer_policy_validation: PASS
+      developer_planning_validation: PASS
+      planning_entry_resolution: RESOLVED
+      test_mode_registry_validation: PASS
+      policy_resolver_binding_plane: PASS
+      policy_plan_binding_reconciliation: CURRENT
+      policy_plan_consistency: PASS
+      context_plane_check: PASS
+      git_diff_check: PASS
+    decision_request_refs:
+      - failure_owner_reconciliation.owner_decisions.self_profile_partition
+      - failure_owner_reconciliation.owner_decisions.root_bridge
+    wu08_lifecycle: BLOCKED
+    wu08_complete: false
+    remaining_architecture_test_failures: OWNER_DECISION_REQUIRED
+    other_required_mode_failures_resolved_by_this_task: false

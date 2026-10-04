@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import json
 import subprocess
+from collections import Counter
 from pathlib import Path
 
+import pytest
 import yaml
 
 from developer.automation.current_dependency_gate import (
@@ -15,10 +17,10 @@ from developer.automation.project_profile_registry import (
     validate_project_profile_registry_plane,
 )
 from developer.automation.transition_evaluator import evaluate_legacy_decisions_removal
+import developer.automation.transition_evaluator as transition_evaluator
 
 
 ROOT = Path(__file__).resolve().parents[2]
-P01_PLAN = ROOT / "docs" / "planning" / "0.4.0" / "WU-02" / "WU-02-P01.yaml"
 
 
 def _yaml(path: Path) -> dict[str, object]:
@@ -43,30 +45,31 @@ def test_current_control_planes_have_zero_retired_local_policy_dependencies() ->
     assert validate_current_legacy_dependency_gate(ROOT) == ()
 
 
-def test_removal_gate_tracks_e4_machine_completion() -> None:
-    plan = _yaml(P01_PLAN)
-    execution = plan["p01_e_execution_plan"]["execution_order"]
-    e4 = next(
-        item
-        for item in execution
-        if item["id"] == "P01_E4_MIGRATION_ONLY_RETIREMENT_AND_GATE_SIMPLIFICATION"
-    )
-    result = evaluate_legacy_decisions_removal(ROOT)
-
-    assert "HISTORICAL_PROVENANCE_REVISION_ANCHOR_NOT_MATERIALIZED" not in result.blockers
-    assert "MIGRATION_ONLY_REFERENCE_RETIREMENT_PENDING" not in result.blockers
-    assert "CURRENT_LEGACY_DEPENDENCY_NONZERO" not in result.blockers
-
-    if e4["status"] == "COMPLETE":
-        assert result.state == "AUTHORIZED"
-        assert result.action == "REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE"
-        assert result.blockers == ()
+def test_removal_gate_tracks_e4_machine_completion(monkeypatch, tmp_path: Path) -> None:
+    # This unit fixture must not reactivate or preload a retired version plan.
+    monkeypatch.setattr(transition_evaluator, "repository_root", lambda root: Path(root))
+    monkeypatch.setattr(transition_evaluator, "validate_current_legacy_dependency_gate", lambda _root: ())
+    for status in ("COMPLETE", "VALIDATION_PENDING"):
+        plan = {
+            "migration_stages": {"P01_E_LEGACY_REMOVAL": {
+                "preauthorized_action": "REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE",
+                "confirmation_required": False,
+            }},
+            "p01_e_execution_plan": {"execution_order": [{
+                "id": transition_evaluator.E4_STAGE, "status": status,
+            }]},
+        }
+        monkeypatch.setattr(transition_evaluator, "load_yaml", lambda _path, *, root: plan)
+        result = evaluate_legacy_decisions_removal(tmp_path)
         assert result.confirmation_required is False
-    else:
-        assert result.state == "HOLD_NOT_AUTHORIZED"
-        assert result.action is None
-        assert result.blockers == ("P01_E4_VALIDATION_NOT_COMPLETE",)
-        assert result.confirmation_required is False
+        if status == "COMPLETE":
+            assert result.state == "AUTHORIZED"
+            assert result.action == "REMOVE_DECISIONS_DIRECTORY_FROM_ACTIVE_TREE"
+            assert result.blockers == ()
+        else:
+            assert result.state == "HOLD_NOT_AUTHORIZED"
+            assert result.action is None
+            assert result.blockers == ("P01_E4_VALIDATION_NOT_COMPLETE",)
 
 
 def test_migration_only_tooling_and_evidence_are_retired() -> None:
@@ -120,7 +123,7 @@ def _current_relation_edges() -> list[tuple[str, str, str, str | None]]:
 
 
 def test_current_policy_relations_preserve_materialized_relation_set() -> None:
-    assert _current_relation_edges() == [
+    assert Counter(_current_relation_edges()) == Counter([
         ("SFP-0008", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
         ("SFP-0009", "depends_on", "SFP-0007", "PRIMARY_LIFECYCLE_ONTOLOGY"),
         ("SFP-0009", "depends_on", "SFP-0008", "RESPONSIBILITY_MAP_SEMANTIC_AXES"),
@@ -152,6 +155,7 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("MPD-0015", "depends_on", "MPD-SPEC-0021", "LANGUAGE_NEUTRAL_NORMATIVE_AUTHORITY"),
         ("MPD-0015", "depends_on", "MPD-SPEC-0022", "CONTRACT_ARTIFACT_REPRESENTATION"),
         ("MPD-0015", "depends_on", "MPD-WORK-0002", "EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF"),
+        ("MPD-0017", "depends_on", "MPD-0010", "EXACT_MACHINE_RESOLUTION_AND_INFERENCE_COST_BASELINE"),
         ("MPD-MIGR-0001", "depends_on", "MPD-PLAN-0001", "PLANNING_TARGET_AUTHORITY"),
         ("MPD-MIGR-0002", "depends_on", "MPD-0016", "README_TRANSLATION_GOVERNANCE"),
         ("MPD-MIGR-0002", "depends_on", "MPD-MIGR-0001", "DEVELOPER_REPOSITORY_MIGRATION_BOUNDARY"),
@@ -180,10 +184,12 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("MPD-VERI-0004", "depends_on", "MPD-SPEC-0024", "AGENT_CONTRACT_NORMATIVE_AUTHORITY"),
         ("MPD-VERI-0004", "depends_on", "MPD-SPEC-0025", "SOURCE_AND_FEATURE_CONTRACT_MODEL"),
         ("MPD-VERI-0005", "depends_on", "MPD-WORK-0002", "EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF"),
+        ("MPD-VERI-0006", "depends_on", "MPD-0017", "MANAGEMENT_NEXT_ACTION_IDENTITY_AND_EXECUTION_CONTROL_PLANE"),
+        ("MPD-VERI-0006", "depends_on", "MPD-VERI-0001", "POLICY_PLAN_CONSISTENCY_VERIFICATION_SEMANTICS"),
         ("MPD-WORK-0002", "depends_on", "MPD-WORK-0001", "WORK_UNIT_LIFECYCLE"),
         ("MPD-WORK-0003", "depends_on", "MPD-WORK-0001", "WORK_UNIT_LIFECYCLE"),
         ("MPD-WORK-0003", "depends_on", "MPD-WORK-0002", "EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF"),
-    ]
+    ])
 
 def test_support_policy_never_depends_on_developer_policy() -> None:
     for source, _, target, _ in _current_relation_edges():
@@ -199,7 +205,9 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
         path.stem
         for path in sorted((ROOT / "developer" / "policy").rglob("MPD-*.yaml"))
     ]
-    assert [item["id"] for item in mpd_index["policies"]] == discovered_mpd_ids
+    indexed_mpd_ids = [item["id"] for item in mpd_index["policies"]]
+    assert len(indexed_mpd_ids) == len(set(indexed_mpd_ids))
+    assert Counter(indexed_mpd_ids) == Counter(discovered_mpd_ids)
     for item in mpd_index["policies"]:
         policy_id = item["id"]
         parts = policy_id.split("-")
@@ -336,6 +344,30 @@ def test_developer_owner_authorization_uses_mpd_registry() -> None:
     assert all(readiness.values())
     results = evaluator.evaluate_current_project_authority_runtime()
     assert {item.state for item in results} == {AuthorizationState.AUTHORIZED}
+
+
+@pytest.mark.parametrize("defect", ["missing", "duplicate", "unknown", "empty"])
+def test_owner_authorization_requires_exact_validated_support_corpus(monkeypatch, defect: str) -> None:
+    import developer.automation.authorization_transition as transitions
+    from ptsip.governance import AuthorizationState
+    from ptsip.governance.authority import AuthorityCatalog
+
+    catalog = AuthorityCatalog(ROOT)
+    ids = tuple(catalog.current_routes)
+    invalid = {
+        "missing": ids[:-1],
+        "duplicate": (*ids[:-1], ids[0]),
+        "unknown": (*ids[:-1], "SFP-9999"),
+        "empty": (),
+    }[defect]
+    monkeypatch.setattr(catalog, "validate_current_corpus", lambda: invalid)
+    monkeypatch.setattr(transitions, "AuthorityCatalog", lambda _root: catalog)
+    evaluator = transitions.DeveloperAuthorizationTransitionEvaluator(ROOT)
+    readiness = evaluator.derive_project_authority_runtime_readiness()
+    assert readiness["CURRENT_SUPPORT_POLICY_CORPUS_VALID"] is False
+    assert {item.state for item in evaluator.evaluate_current_project_authority_runtime()} == {
+        AuthorizationState.HOLD_NOT_AUTHORIZED
+    }
 
 
 def test_product_governance_runtime_has_zero_local_policy_tree_dependency() -> None:

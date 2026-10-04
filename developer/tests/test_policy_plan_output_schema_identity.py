@@ -45,7 +45,7 @@ def test_output_policy_owns_output_semantics_not_verification_semantics() -> Non
 
     assert policy == {
         "id": "MPD-VERI-0006",
-        "version": "0.0",
+        "version": "0.1",
         "title": "Policy-Plan Consistency Verification Output Contract",
         "status": "DRAFT",
     }

@@ -42,7 +42,7 @@ def test_repository_test_mode_control_plane_defaults_to_explicit_self_profile() 
     assert validator_args.profile == "developer/profiles/ptsip-repository.yaml"
 
     resolver_parser = resolver["build_parser"]()
-    resolver_args = resolver_parser.parse_args(["manual"])
+    resolver_args = resolver_parser.parse_args(["manual", "--mode", "repository-architecture"])
     assert resolver_args.profile == "developer/profiles/ptsip-repository.yaml"
 
     errors = validator["validate_registry"](TEST_MODE_REGISTRY, SELF_PROFILE, REPO_ROOT)

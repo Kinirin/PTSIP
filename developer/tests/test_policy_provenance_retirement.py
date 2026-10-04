@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import yaml
+from ptsip.governance.authority import AuthorityCatalog
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,15 +23,17 @@ def _load_json(path: Path) -> dict[str, object]:
 
 
 def test_current_sfp_mpd_corpus_has_no_legacy_source_provenance() -> None:
+    support_root = ROOT / "docs" / "Support_policy" / "policy"
+    support_index = _load_yaml(support_root / "index.yaml")
+    developer_index = _load_yaml(ROOT / "developer" / "policy" / "index.yaml")
     policy_paths = [
-        ROOT / "src" / "ptsip" / "specdata" / f"SFP-{number:04d}.yaml"
-        for number in range(1, 22)
+        support_root / entry["path"] for entry in support_index["policies"]
     ] + [
-        ROOT / "developer" / "policy" / f"MPD-{number:04d}.yaml"
-        for number in range(2, 10)
+        ROOT / entry["path"] for entry in developer_index["policies"]
     ]
 
-    assert len(policy_paths) == 29
+    assert len(policy_paths) == len(support_index["policies"]) + len(developer_index["policies"])
+    assert len(policy_paths) == len(set(policy_paths))
     for path in policy_paths:
         payload = _load_yaml(path)
         assert "source_provenance" not in payload, path.relative_to(ROOT).as_posix()
@@ -40,12 +43,12 @@ def test_current_sfp_mpd_corpus_has_no_legacy_source_provenance() -> None:
 
 
 def test_current_policy_schemas_do_not_define_legacy_source_provenance() -> None:
-    sfp_schema_paths = (
-        ROOT / "schemas" / "ptsip-support-feature-policy.schema.json",
-        ROOT / "src" / "ptsip" / "specdata" / "ptsip-support-feature-policy.schema.json",
+    catalog = AuthorityCatalog(ROOT)
+    canonical_schema = _load_json(
+        ROOT / "docs" / "Support_policy" / "policy" / "schemas" / catalog.SUPPORT_POLICY_SCHEMA
     )
-    sfp_schemas = [_load_json(path) for path in sfp_schema_paths]
-    assert sfp_schemas[0] == sfp_schemas[1]
+    assert canonical_schema == catalog.policy_schema
+    sfp_schemas = [canonical_schema, catalog.policy_schema]
     for schema in sfp_schemas:
         assert "source_provenance" not in schema["properties"]
         assert schema.get("not") == {"required": ["source_provenance"]}

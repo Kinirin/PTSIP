@@ -2,12 +2,61 @@ from __future__ import annotations
 
 from pathlib import Path
 import json
+from copy import deepcopy
+
+import pytest
 
 import developer.automation.implementation_work_packet as work_packet
 import developer.automation.policy_resolver as policy_resolver
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+@pytest.fixture
+def packet_context(monkeypatch):
+    """Synthetic resolver input for unit tests; never registers a live task."""
+    registry = deepcopy(work_packet._registry(ROOT))
+    recipe = next(item for item in registry["tasks"] if item["scope"] == "src/ptsip/app/github_authority.py")
+    recipe["verification"]["core_regression"]["source"] = "developer/profiles/ptsip-repository.yaml"
+    rule = policy_resolver.get_normative_rule(ROOT, rule_id="PTSIP-AUT-007")
+    refs = deepcopy(recipe["mutation"]["targets"])
+    refs.extend([
+        {"path": "src/ptsip/app/github_authority.py", "selector": {"kind": "PYTHON_FUNCTION", "name": "_global_decision_id"}},
+        {"path": "src/ptsip/app/github_authority.py", "selector": {"kind": "PYTHON_METHOD", "class": "GithubControlPlaneClient", "method": "gate"}},
+        {"path": "developer/automation/policy_resolver.py", "selector": {"kind": "PYTHON_FUNCTION", "name": "_current_branch"}},
+        {"path": "developer/automation/implementation_work_packet.py", "selector": {"kind": "PYTHON_FUNCTION", "name": "_merge_pytest_targets"}},
+    ])
+    resolved = {
+        "scope": recipe["scope"],
+        "policies": [],
+        "task_context": {
+            "branch_context": {"actual": recipe["branch"]},
+            "implementation_refs": refs,
+            "test_refs": recipe["mutation"]["allowed_test_paths"],
+            "planning_entry": work_packet.REGISTRY_PATH,
+            "normative_rule_source": rule["canonical_source"],
+            "normative_rule_refs": [rule["rule_id"]],
+            "normative_rules": [rule],
+            "constraints": {"fixture_only": True, "live_task_registration": False},
+        },
+    }
+
+    def resolve_fixture(_root, *, scope, operation):
+        assert scope == recipe["scope"]
+        assert operation == "MODIFY"
+        return deepcopy(resolved)
+
+    monkeypatch.setattr(work_packet, "_registry", lambda _root: deepcopy(registry))
+    monkeypatch.setattr(policy_resolver, "resolve_policies", resolve_fixture)
+    return resolved
+
+
+def test_unregistered_live_task_context_still_fails_closed() -> None:
+    resolved = policy_resolver.resolve_policies(ROOT, scope="src/ptsip/app/github_authority.py", operation="MODIFY")
+    assert "task_context" not in resolved
+    with pytest.raises(work_packet.WorkPacketError, match="task_context must be a mapping"):
+        work_packet.build_packet(ROOT, scope="src/ptsip/app/github_authority.py", operation="MODIFY")
 
 
 def test_workflow_registry_is_machine_valid() -> None:
@@ -19,12 +68,7 @@ def test_workflow_registry_is_machine_valid() -> None:
     assert len(payload["tasks"]) >= 1
 
 
-def test_packet_builds_exact_mutation_acceptance_and_regression_plan(monkeypatch) -> None:
-    monkeypatch.setattr(
-        policy_resolver,
-        "_current_branch",
-        lambda _root: "dev/0.3.8a1",
-    )
+def test_packet_builds_exact_mutation_acceptance_and_regression_plan(packet_context) -> None:
     packet = work_packet.build_packet(
         ROOT,
         scope="src/ptsip/app/github_authority.py",
@@ -83,8 +127,9 @@ def test_packet_builds_exact_mutation_acceptance_and_regression_plan(monkeypatch
     ]
 
     assert packet["test_mode"]["component_ref"] == "ptsip-core-verification"
-    assert packet["test_mode"]["status"] == "NOT_REGISTERED"
-    assert packet["test_mode"]["fallback"] == "CANONICAL_COMPONENT_INCLUDE_SELECTION"
+    assert packet["test_mode"]["status"] == "REGISTERED"
+    assert packet["test_mode"]["mode_id"] == "ptsip-core"
+    assert "fallback" not in packet["test_mode"]
     freshness = packet["freshness"]
     assert freshness["strategy"] == "FILE_AND_SELECTOR_RECHECK_BEFORE_EVERY_VERIFICATION"
     assert "src/ptsip/app/github_authority.py" not in freshness["context_files"]
@@ -203,12 +248,7 @@ def test_collection_failure_routes_to_test_contract_repair(tmp_path: Path) -> No
     assert routed["next_action"] == "REPAIR_TEST_SELECTION_OR_REQUIRED_TEST"
 
 
-def test_agent_brief_is_compact_and_progressive(monkeypatch) -> None:
-    monkeypatch.setattr(
-        policy_resolver,
-        "_current_branch",
-        lambda _root: "dev/0.3.8a1",
-    )
+def test_agent_brief_is_compact_and_progressive(packet_context) -> None:
     packet = work_packet.build_packet(
         ROOT,
         scope="src/ptsip/app/github_authority.py",
@@ -219,7 +259,7 @@ def test_agent_brief_is_compact_and_progressive(monkeypatch) -> None:
     assert brief["schema_version"] == "ptsip-agent-implementation-brief/v1"
     assert brief["projection_authority"] is False
     assert brief["packet_id"] == packet["packet_id"]
-    assert len(brief["normative_rules"]) == 7
+    assert len(brief["normative_rules"]) == len(packet_context["task_context"]["normative_rules"]) == 1
     assert all("title" in item for item in brief["normative_rules"])
     assert all("section_text" not in item for item in brief["normative_rules"])
     assert "commands" not in brief["verification"]
@@ -236,12 +276,7 @@ def test_agent_brief_is_compact_and_progressive(monkeypatch) -> None:
     assert brief_bytes < packet_bytes * 0.5
 
 
-def test_mutation_source_context_avoids_whole_file_read(monkeypatch) -> None:
-    monkeypatch.setattr(
-        policy_resolver,
-        "_current_branch",
-        lambda _root: "dev/0.3.8a1",
-    )
+def test_mutation_source_context_avoids_whole_file_read(packet_context) -> None:
     packet = work_packet.build_packet(
         ROOT,
         scope="src/ptsip/app/github_authority.py",
@@ -284,12 +319,7 @@ def test_agent_projection_json_writer_is_utf8(tmp_path: Path) -> None:
     assert json.loads(raw.decode("utf-8")) == payload
 
 
-def test_read_context_supports_single_selector_projection(monkeypatch) -> None:
-    monkeypatch.setattr(
-        policy_resolver,
-        "_current_branch",
-        lambda _root: "dev/0.3.8a1",
-    )
+def test_read_context_supports_single_selector_projection(packet_context) -> None:
     packet = work_packet.build_packet(
         ROOT,
         scope="src/ptsip/app/github_authority.py",
@@ -321,12 +351,7 @@ def test_read_context_supports_single_selector_projection(monkeypatch) -> None:
     )
 
 
-def test_read_context_ids_are_stable(monkeypatch) -> None:
-    monkeypatch.setattr(
-        policy_resolver,
-        "_current_branch",
-        lambda _root: "dev/0.3.8a1",
-    )
+def test_read_context_ids_are_stable(packet_context) -> None:
     packet = work_packet.build_packet(
         ROOT,
         scope="src/ptsip/app/github_authority.py",

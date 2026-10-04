@@ -21,12 +21,12 @@ def test_project_profile_registry_plane_is_machine_valid() -> None:
 
 def test_contract_registry_owns_single_current_identity() -> None:
     registry = load_project_profile_contract_registry(ROOT)
-    assert registry["current"] == "pp.1.01"
+    assert registry["current"] == "pp.1.02"
 
     current = current_project_profile_contract(ROOT)
-    assert current["version"] == "pp.1.01"
+    assert current["version"] == "pp.1.02"
     assert current["lifecycle"] == "CURRENT"
-    assert current["schema"] == "schemas/ptsip-profile-pp-1.01.schema.json"
+    assert current["schema"] == "schemas/ptsip-profile-pp-1.02.schema.json"
 
 
 def test_historical_compatibility_identity_is_registered_without_becoming_current() -> None:
@@ -36,7 +36,10 @@ def test_historical_compatibility_identity_is_registered_without_becoming_curren
     assert contracts["pp.0.00"]["lifecycle"] == "LEGACY_COMPATIBILITY_ONLY"
     assert contracts["pp.0.00"]["operations"] == ["IDENTIFY"]
     assert contracts["pp.0.00"]["schema"] is None
-    assert registry["transitions"] == []
+    assert contracts["pp.1.01"]["lifecycle"] == "SUPERSEDED"
+    assert registry["transitions"] == [
+        {"from": "pp.1.01", "to": "pp.1.02", "kind": "SEMANTIC_MIGRATION"}
+    ]
 
 
 def test_public_profile_catalog_has_no_duplicate_current_authority() -> None:
@@ -51,20 +54,26 @@ def test_public_profile_catalog_exactly_describes_existing_distribution_assets()
         {
             "id": "example",
             "resource": "example.ptsip.yaml",
-            "contract": "pp.1.01",
+            "contract": "pp.1.02",
             "responsibility_mode": "explicit",
+            "profile_role": "DISTRIBUTED_EXAMPLE",
+            "materialization": "PROJECT_PATH_RESOLUTION_REQUIRED",
         },
         {
             "id": "hybrid-python-package",
             "resource": "hybrid-python-package.ptsip.yaml",
-            "contract": "pp.1.01",
+            "contract": "pp.1.02",
             "responsibility_mode": "hybrid",
+            "profile_role": "DISTRIBUTED_EXAMPLE",
+            "materialization": "PROJECT_PATH_RESOLUTION_REQUIRED",
         },
         {
             "id": "template-python-package",
             "resource": "template-python-package.ptsip.yaml",
-            "contract": "pp.1.01",
+            "contract": "pp.1.02",
             "responsibility_mode": "template",
+            "profile_role": "DISTRIBUTED_EXAMPLE",
+            "materialization": "PROJECT_PATH_RESOLUTION_REQUIRED",
         },
     ]
 
@@ -78,7 +87,7 @@ def test_public_profile_catalog_exactly_describes_existing_distribution_assets()
 
 def test_current_contract_has_immutable_baseline() -> None:
     current = current_project_profile_contract(ROOT)
-    assert current["baseline"] == "profiles/history/pp.1.01"
+    assert current["baseline"] == "profiles/history/pp.1.02"
 
     baseline = ROOT / current["baseline"]
     catalog = load_public_profile_catalog(ROOT)

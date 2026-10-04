@@ -29,11 +29,14 @@ class DeveloperAuthorizationTransitionEvaluator:
         role=catalog.role_registry.get("effect_vocabulary",{})
         subject=catalog.subject_registry.get("subject_identity_schemes",{})
         provenance=self.registry.get("authorization_provenance")
+        validated=catalog.validate_current_corpus()
+        selected=tuple(catalog.current_routes)
+        corpus_valid=bool(selected) and len(validated)==len(selected) and set(validated)==set(selected)
         return {
             "AUTHORITY_SCHEMA_REGISTRY_VALID": bool(catalog.authority_schema_registry.get("entries")),
             "AUTHORITY_ROLE_REGISTRY_VALID": bool(catalog.role_registry.get("policy_roles")),
             "AUTHORITY_SUBJECT_REGISTRY_VALID": "SUPPORT_POLICY_ID" in subject,
-            "CURRENT_SUPPORT_POLICY_CORPUS_VALID": len(catalog.validate_current_corpus()) == 21,
+            "CURRENT_SUPPORT_POLICY_CORPUS_VALID": corpus_valid,
             "ROLE_EFFECT_VOCABULARY_VALID": isinstance(role,Mapping) and role.get("count")==len(role.get("tokens",[])),
             "SUPPORT_POLICY_SUBJECT_CONTRACT_VALID": catalog.subject_registry.get("repository_binding_policy")=="SOLVE_SUBJECT_PROVIDED_NO_BUILTIN_CURRENT_REPOSITORY",
             "PROJECT_AUTHORITY_RUNTIME_OWNER_PREAUTHORIZED": isinstance(provenance,Mapping) and provenance.get("authority")=="PROJECT_OWNER" and provenance.get("type")=="GIT_COMMIT" and isinstance(provenance.get("revision"),str) and len(provenance["revision"])==40,
