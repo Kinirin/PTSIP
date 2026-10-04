@@ -92,11 +92,64 @@ jobs:
               sys.exit(1)
           PY
 
-      - name: Run impacted subsystem regression tests
+      - name: Compare impacted subsystem failures with baseline
         shell: bash
         run: |
-          set -euo pipefail
-          ../venv-current/bin/python -m pytest -q             tests/ptsip/repository             tests/ptsip/evidence             tests/ptsip/conformance             2>&1 | tee .artifacts/impacted-regression.log
+          set +e
+          set -uo pipefail
+
+          ../venv-baseline/bin/python -m pytest -q \
+            ../PTSIP-baseline/tests/ptsip/repository \
+            ../PTSIP-baseline/tests/ptsip/evidence \
+            ../PTSIP-baseline/tests/ptsip/conformance \
+            --junitxml=.artifacts/baseline-impacted.xml \
+            > .artifacts/baseline-impacted.log 2>&1
+          BASELINE_RC=$?
+
+          ../venv-current/bin/python -m pytest -q \
+            tests/ptsip/repository \
+            tests/ptsip/evidence \
+            tests/ptsip/conformance \
+            --junitxml=.artifacts/current-impacted.xml \
+            > .artifacts/current-impacted.log 2>&1
+          CURRENT_RC=$?
+
+          set -e
+          BASELINE_RC=$BASELINE_RC CURRENT_RC=$CURRENT_RC ../venv-current/bin/python - <<'PY' \
+            2>&1 | tee .artifacts/impacted-differential.log
+          import os
+          import sys
+          import xml.etree.ElementTree as ET
+
+          def failures(path: str) -> set[str]:
+              root = ET.parse(path).getroot()
+              result: set[str] = set()
+              for case in root.iter("testcase"):
+                  if case.find("failure") is not None or case.find("error") is not None:
+                      classname = case.attrib.get("classname", "")
+                      name = case.attrib.get("name", "")
+                      result.add(f"{classname}::{name}")
+              return result
+
+          baseline = failures(".artifacts/baseline-impacted.xml")
+          current = failures(".artifacts/current-impacted.xml")
+          new_failures = sorted(current - baseline)
+          inherited_failures = sorted(current & baseline)
+          baseline_only = sorted(baseline - current)
+
+          print(f"baseline_rc={os.environ['BASELINE_RC']}")
+          print(f"current_rc={os.environ['CURRENT_RC']}")
+          print(f"baseline_failures={len(baseline)}")
+          print(f"current_failures={len(current)}")
+          print(f"inherited_failures={len(inherited_failures)}")
+          print(f"baseline_only_failures={len(baseline_only)}")
+          print(f"new_failures={len(new_failures)}")
+          for item in new_failures:
+              print(f"NEW_FAILURE {item}")
+
+          if new_failures:
+              sys.exit(1)
+          PY
 
       - name: Upload validation logs
         if: always()
