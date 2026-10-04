@@ -29,6 +29,7 @@ ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-anal
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
 _FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+_BOUND_POLICY_ID_RE = re.compile(r"^MPD-BOUND-[0-9]{4}$")
 _POLICY_VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 POLICY_VERSION_CHANGE_CLASSES = (
     "NON_NORMATIVE",
