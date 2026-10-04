@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import os
 import subprocess
+from dataclasses import dataclass
 from pathlib import Path
 
 from ptsip.repository.profile_path import normalize_profile_path
