@@ -46,6 +46,7 @@ jobs:
       - name: Compare migration failures with baseline
         shell: bash
         run: |
+          set +e
           set -uo pipefail
 
           ../venv-baseline/bin/python -m pytest -q ../PTSIP-baseline/tests/ptsip/migration             --junitxml=.artifacts/baseline-migration.xml             > .artifacts/baseline-migration.log 2>&1
@@ -105,3 +106,4 @@ jobs:
           path: .artifacts/
           if-no-files-found: warn
           retention-days: 3
+          include-hidden-files: true
