@@ -1,9 +1,5 @@
-from .authorization import *
-from .direct import *
-from .error import ExecutionStateError
-from .guard import *
-from .ledger import *
-from .mutation import *
-from .promotion import *
-from .recovery import inspect_recovery
-from .state import *
+"""Migration execution responsibility packages.
+
+Public compatibility is owned by ptsip.migration. Internal execution modules import
+concrete responsibility modules rather than this package aggregator.
+"""
