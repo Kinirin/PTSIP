@@ -152,7 +152,7 @@ components:
       - CONFIGURATION
       - GOVERNANCE
     include:
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - ".ptsip/**"
     purpose: repository_architecture_declaration
     shipped: false
@@ -228,7 +228,7 @@ components:
       - "src/ptsip/repository/**"
       - "src/ptsip/storage/**"
       - "src/ptsip/validation/**"
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "profiles/**"
 
   - id: ptsip-evidence-verification
@@ -296,7 +296,7 @@ components:
     analysis_inputs:
       - "src/vpms/**"
       - "src/ptsip/**"
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
 
   - id: ptsip-contract-verification
     classification: DEVELOPMENT_TOOLING
@@ -330,7 +330,7 @@ components:
     release_owner: architecture
     compatibility_owner: architecture
     analysis_inputs:
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "adoption/**"
       - "agents/**"
       - "reference/**"
@@ -394,7 +394,7 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
-      - "ptsip.yaml"
+      - "developer/profiles/ptsip-repository.yaml"
       - "tests/**"
 
   - id: repository-release-automation

@@ -1495,6 +1495,8 @@ failure_owner_reconciliation:
         - tests/ptsip/governance/test_policy_plan_resolver_tracker.py
         - tests/ptsip/test_context_plane.py
     root_bridge:
+      observation_phase: BEFORE_USER_CONFIRMED_CURRENT_BRANCH_RETIREMENT
+      latest_state_ref: root_bridge_retirement
       status: OWNER_DECISION_REQUIRED
       responsibility_owner_candidate: REPOSITORY_PROJECT_OWNER
       dependent_test_ordinals: [20, 22]
@@ -1605,3 +1607,134 @@ failure_owner_reconciliation:
     wu08_complete: false
     remaining_architecture_test_failures: OWNER_DECISION_REQUIRED
     other_required_mode_failures_resolved_by_this_task: false
+
+root_bridge_retirement:
+  observation_kind: APPROVED_REPOSITORY_ROOT_BRIDGE_RETIREMENT
+  authority: NON_NORMATIVE_EXECUTION_EVIDENCE
+  status: APPLIED_REQUIRED_AUTOMATIC_VERIFICATION_BLOCKED
+  observed_on: "2026-10-04"
+  baseline_head: f8d25428e5aca9209e5537465126577018267d42
+  branch_context: dev/0.3.8
+  tested_state: LOCAL_WORKING_TREE_WITH_ROOT_DELETION_REGISTERED_IN_INDEX
+  exact_committed_sha_verification_claimed: false
+  approval:
+    status: APPROVED
+    approval_source: USER_EXPLICIT
+    authorization_source: USER_EXPLICIT
+    tool_version_boundary: "0.3.8_AND_LATER"
+    apply_to_current_dev_0_3_8: true
+    owner_decision: RETIRE_REPOSITORY_ROOT_BRIDGE_AND_REMOVE_ACTIVE_DEPENDENCIES
+    current_branch_confirmation: "현재 0.3.8 브랜치에도 바로 적용 의미가 맞습니다"
+  prior_owner_assessment_ref: failure_owner_reconciliation.owner_decisions.root_bridge
+  prior_assessment_field_correction:
+    recorded_field: components.repository-maintenance.include
+    observed_actual_field: components.repository-architecture.include
+  scope:
+    retired_file: ptsip.yaml
+    deleted_baseline_sha256: af5d759257267dff620b9b0e00c914e7dee3098f64624107f567efefa7824d7e
+    recovery_ref: "f8d25428e5aca9209e5537465126577018267d42:ptsip.yaml"
+    canonical_self_profile: developer/profiles/ptsip-repository.yaml
+    local_catalog_profile: .ptsip/profiles/main.ptsip.yaml
+    work_packet: developer/automation/implementation_work_packet.py
+    workflow_registry: developer/automation/implementation_workflows.yaml
+    operational_instructions: AGENTS.md
+    tests:
+      - developer/tests/test_implementation_work_packet.py
+      - developer/tests/test_self_profile_bridge_removal.py
+      - developer/tests/test_seed_pp_102_transition.py
+  implemented:
+    repository_root_file_absent: true
+    canonical_self_profile_root_include_removed: true
+    local_profile_root_include_and_four_analysis_input_references_rebound: true
+    work_packet_default_and_workflow_source_select_canonical_self_profile: true
+    test_fixture_no_longer_overrides_retired_workflow_source: true
+    operational_version_boundary_updated_to_user_confirmed_0_3_8: true
+    local_catalog_default_and_resource_unchanged: true
+    local_catalog_default: main
+    local_catalog_resource: main.ptsip.yaml
+  preserved:
+    consumer_root_compatibility_and_migration_support: true
+    consumer_profile_path_constants_and_runtime_source: true
+    historical_documents_and_release_notes: true
+    completed_pp_102_seed_source: true
+    completed_seed_replay_refused_before_retired_root_read: true
+    profile_identity_revision_roles_and_lifecycle_classification: true
+    unassigned_113_paths_and_existing_five_unmatched_selectors: true
+    canonical_policy_records_and_lifecycle_statuses: true
+    agent_contract_digest_candidate_and_runtime_activation_state: true
+  focused_debug_verification:
+    replaces_required_automatic_verification: false
+    report_root: C:/Users/rhkrt/AppData/Local/Temp/ptsip-root-bridge-543ae3141ae14181944135ed9393433f
+    junit_xml: root-bridge-focused-tracked.xml
+    supersedes: root-bridge-focused.xml
+    rerun_reason: REGISTER_APPROVED_ROOT_DELETION_IN_TRACKED_DISCOVERY
+    tests: 28
+    passed: 25
+    failed: 3
+    errors: 0
+    skipped: 0
+    report_sha256: 82a1917c0191ecd909425d538594437c546e4c8e086fae75a0d04a90d643b94b
+    report_hash_is_canonical_contract_digest: false
+    failed_test_ids:
+      - developer/tests/test_self_profile_bridge_removal.py::test_repository_self_profile_is_explicit_and_root_bridge_is_absent
+      - tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_is_valid_complete_and_revision_pinned
+      - tests/ptsip/repository/test_self_profile.py::test_repository_self_profile_resolves_all_discovered_candidates
+    root_absence_assertion_in_coupled_test: PASS
+    coupled_test_failure_after_root_absence: SELF_PROFILE_VALIDATION_STILL_FAILS
+    root_dependency_test: PASS
+    new_root_cleanup_guard_cases: {tests: 3, passed: 3, failed: 0}
+    consumer_legacy_profile_constant_guard: PASS
+    source_test_and_binding_hashes:
+      - {"path":".ptsip/profiles/main.ptsip.yaml","sha256":"2d379fac3f89fddc42e5ded3bb437493354cb0091285ea57f472d9a359ad6676"}
+      - {"path":"developer/automation/implementation_work_packet.py","sha256":"67d963fdeef17cb6af6015cd893f1ef326580871a128400a0caa8649d1513e0a"}
+      - {"path":"developer/automation/implementation_workflows.yaml","sha256":"62d36842aad2fc35d23066fb1dbfe2421683d76db309c6723f8f7d69edb5317c"}
+      - {"path":"developer/profiles/ptsip-repository.yaml","sha256":"1fae5b5517a4ead350bfae2fed705a5e8d0c68540330098bacc19d00d3d9e65b"}
+      - {"path":"developer/tests/test_implementation_work_packet.py","sha256":"cb8e1f06e03bf9a21a4020fa178c69818fd0ab5ecca07ea211b6779f92e32353"}
+      - {"path":"developer/tests/test_seed_pp_102_transition.py","sha256":"541b6b951cd00630adea1b58e349292841594bb36c9165b2152bfba808e75a7d"}
+      - {"path":"developer/tests/test_self_profile_bridge_removal.py","sha256":"bae5bced0dc8e3f798238b9587b1de9ef864c894330b4cb6ca1a3e2b05973c42"}
+    post_focused_test_edits: OPERATIONAL_INSTRUCTIONS_AND_WU08_RESULT_EVIDENCE_ONLY
+  required_automatic_verification:
+    status: BLOCKED_UNMAPPED_DELETED_PATH
+    resolution: FAIL_CLOSED
+    changed_path_source: GIT_DIFF_HEAD_INCLUDING_INDEX_REGISTERED_DELETION
+    unmapped_paths: [ptsip.yaml]
+    error: "Test Mode resolver error: unmapped changed paths: ptsip.yaml"
+    selected_modes_returned: false
+    required_mode_execution_completed: false
+    full_fallback_used: false
+    deletion_filtered_out_of_changed_paths: false
+    retired_selector_reintroduced_to_active_profile: false
+    resolver_semantics_changed: false
+  result_review:
+    root_retirement_owner_decision: CONFIRMED
+    root_retirement_and_active_reference_cleanup: APPLIED
+    profile_diff_equals_exact_approved_root_reference_changes: PASS
+    unassigned_count: 113
+    unassigned_path_manifest_sha256: d9d00fa955fa3c74642d1a898eff6500bcdaf773b5458cdd4046d1231f3aa614
+    self_profile_partition_owner_decision: STILL_REQUIRED
+    policy_validation: PASS
+    planning_validation: PASS
+    test_mode_registry_validation: PASS
+    context_plane_check: PASS
+    git_diff_check: PASS
+    index_registration: {root_deletion_staged: true, other_content_staged: false}
+    commits_or_pushes_performed: false
+    wu08_lifecycle: BLOCKED
+    wu08_complete: false
+  next_action_candidate:
+    status: PROPOSED_NOT_AUTHORIZED
+    decision_source: AGENT_INFERRED
+    normative_authority: false
+    applied: false
+    candidate_owner_component_ref: repository-test-mode-control-plane
+    implementation_ref: .github/scripts/resolve_test_modes.py
+    test_ref: tests/ptsip/test_modes/test_selection_resolver.py
+    proposal: EXACT_DELETED_PATH_OWNERSHIP_LOOKUP_AGAINST_PRE_CHANGE_CANONICAL_SELF_PROFILE
+    constraints:
+      - ONLY_PROVEN_DELETED_PATHS_MAY_USE_THE_EXACT_PRE_CHANGE_PROFILE
+      - BASELINE_HEAD_PROFILE_PATH_AND_DELETION_STATE_MUST_BE_FRESH_AND_EXPLICIT
+      - EXISTING_LIVE_PATH_SELECTION_AUTHORITY_REMAINS_CURRENT_CANONICAL_PROFILE
+      - NO_SEMANTIC_SIMILARITY_OR_UNREGISTERED_OWNER_INFERENCE
+      - UNKNOWN_OR_PREVIOUSLY_UNOWNED_PATHS_REMAIN_FAIL_CLOSED
+      - NO_FULL_VERIFICATION_FALLBACK_OR_FAILURE_WAIVER
+    explicit_user_approval_required_before_policy_or_resolver_change: true

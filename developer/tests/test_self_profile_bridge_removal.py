@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import json
 import runpy
 from pathlib import Path
+
+import yaml
 
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH
@@ -53,6 +56,22 @@ def test_current_repository_profile_has_no_root_bridge_dependency() -> None:
     text = SELF_PROFILE.read_text(encoding="utf-8")
     assert '"ptsip.yaml"' not in text
     assert "developer/profiles/ptsip-repository.yaml" in text
+
+
+def test_local_catalog_declarations_have_no_root_bridge_dependency() -> None:
+    catalog = json.loads(
+        (REPO_ROOT / ".ptsip" / "profiles" / "index.json").read_text(encoding="utf-8")
+    )
+    assert catalog["default_profile"] == "main"
+    entry = next(item for item in catalog["profiles"] if item["id"] == "main")
+    assert entry["resource"] == "main.ptsip.yaml"
+    local_profile = REPO_ROOT / ".ptsip" / "profiles" / entry["resource"]
+    payload = yaml.safe_load(local_profile.read_text(encoding="utf-8"))
+    architecture = next(item for item in payload["components"] if item["id"] == "repository-architecture")
+    assert "developer/profiles/ptsip-repository.yaml" in architecture["include"]
+    for component in payload["components"]:
+        assert "ptsip.yaml" not in component.get("include", [])
+        assert "ptsip.yaml" not in component.get("analysis_inputs", [])
 
 
 def test_consumer_default_profile_path_remains_root_ptsip_yaml() -> None:

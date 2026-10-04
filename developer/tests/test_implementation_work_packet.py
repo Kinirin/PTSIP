@@ -18,7 +18,7 @@ def packet_context(monkeypatch):
     """Synthetic resolver input for unit tests; never registers a live task."""
     registry = deepcopy(work_packet._registry(ROOT))
     recipe = next(item for item in registry["tasks"] if item["scope"] == "src/ptsip/app/github_authority.py")
-    recipe["verification"]["core_regression"]["source"] = "developer/profiles/ptsip-repository.yaml"
+    assert recipe["verification"]["core_regression"]["source"] == work_packet.PROFILE_PATH
     rule = policy_resolver.get_normative_rule(ROOT, rule_id="PTSIP-AUT-007")
     refs = deepcopy(recipe["mutation"]["targets"])
     refs.extend([
@@ -145,12 +145,19 @@ def test_core_regression_is_derived_from_canonical_component_profile() -> None:
     targets = work_packet._component_regression_targets(
         ROOT,
         "ptsip-core-verification",
-        "ptsip.yaml",
     )
     assert "tests/ptsip/control_plane" in targets
     assert "tests/ptsip/identity" in targets
     assert "tests/ptsip/test_proposed_component.py" in targets
     assert all(target.startswith("tests/") for target in targets)
+
+
+def test_workflow_regression_sources_do_not_depend_on_retired_root_bridge() -> None:
+    assert work_packet.PROFILE_PATH == "developer/profiles/ptsip-repository.yaml"
+    assert (ROOT / work_packet.PROFILE_PATH).is_file()
+    assert not (ROOT / "ptsip.yaml").exists()
+    for recipe in work_packet._registry(ROOT)["tasks"]:
+        assert recipe["verification"]["core_regression"]["source"] == work_packet.PROFILE_PATH
 
 
 def test_mutation_selector_integrity_resolves_current_targets() -> None:

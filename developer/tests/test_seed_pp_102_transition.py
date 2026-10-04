@@ -3,8 +3,29 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
+import pytest
+
+from developer.automation import seed_pp_102_transition as seed_module
+
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_completed_pp_102_seed_rejects_replay_before_reading_retired_root(monkeypatch) -> None:
+    original = seed_module._load_yaml
+    reads = []
+
+    def load_current_registry(path):
+        assert path == ROOT / "registry" / "project-profile-contracts.yaml"
+        reads.append(path)
+        return original(path)
+
+    monkeypatch.setattr(seed_module, "_require_clean", lambda _root: None)
+    monkeypatch.setattr(seed_module, "_load_yaml", load_current_registry)
+    assert not (ROOT / "ptsip.yaml").exists()
+    with pytest.raises(seed_module.SeedError, match="Seed requires current pp.1.01.*refusing replay"):
+        seed_module.seed(ROOT)
+    assert reads == [ROOT / "registry" / "project-profile-contracts.yaml"]
 
 
 def test_pp_102_seed_does_not_own_transition_outputs() -> None:

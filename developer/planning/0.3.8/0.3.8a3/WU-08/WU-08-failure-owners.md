@@ -103,3 +103,29 @@ contract 실패는 기존 `pp.1.02` 예제를 `pp.1.01` schema로 검증하는 �
 필수 검증 후 변경은 결과 machine record와 이 review projection뿐이다. source/test/binding은 검증된 working-tree byte hash로 고정했다.
 기존 7개 mode의 893 PASS / 61 FAIL 관찰은 변경하지 않는다. 현재 요청은 그중 architecture 22개에 한정하며 core / vpms 등 다른 실패를 해결했다고 주장하지 않는다.
 WU-08은 BLOCKED이며 canonical digest / candidate / runtime activation 또는 release readiness를 승인하지 않았다.
+
+## 후속 승인: 현재 0.3.8 root bridge 정식 폐기
+
+위 22개 표와 343개 전체 검증은 폐기 승인 **이전** 관찰이다. 최신 결과는 이 절과 machine record의 `root_bridge_retirement`를 따른다.
+사용자가 Tool 0.3.8 이후의 정식 폐기 및 현재 `dev/0.3.8` 즉시 적용을 명시했다.
+후속 작업 기준 commit은 `f8d25428e5aca9209e5537465126577018267d42`이며 검증 대상은 이후 LOCAL_WORKING_TREE다.
+
+- Root `ptsip.yaml` 삭제. Git `f8d25428e5aca9209e5537465126577018267d42:ptsip.yaml`에서 복구할 수 있다.
+- Canonical self-profile의 `repository-architecture.include`에서 root selector 1개 제거.
+- Local catalog `main.ptsip.yaml`의 root include 1개와 analysis input 4개를 canonical developer self-profile로 재연결.
+- Work packet default와 workflow regression source도 `developer/profiles/ptsip-repository.yaml`로 정합화.
+- `AGENTS.md`의 적용 경계를 사용자 결정대로 Tool 0.3.8 이후로 갱신. Consumer compatibility/migration 지원은 유지.
+- 소비자 코드·fixture의 `ptsip.yaml` 규약, 역사 기록, 완료된 pp.1.01→pp.1.02 seed는 유지. 현재 pp.1.02에서 seed가 root를 읽기 전에 replay를 거부하는 guard를 추가.
+- Canonical/self local profile의 다른 metadata, owner/classification 및 selector는 그대로다. Local catalog의 default `main` / resource `main.ptsip.yaml`도 유지.
+
+진단 재실행은 **28개 중 25 PASS / 3 FAIL**이다. 추가 root 정리 guard 3개는 모두 통과했다.
+기존 #22 root dependency 테스트는 통과했다. 기존 #20은 root absence 조건을 통과하지만 뒤이어 실행하는 self-profile validation에서 실패한다.
+#1, #2 역시 기존 self-profile 오류로 실패한다. 5개 unmatched selector와 113개 미배정 경로는 다른 owner 결정이 필요하므로 완화하지 않았다.
+
+필수 자동 검증은 **BLOCKED**다. 현재 resolver는 삭제된 `ptsip.yaml`을 새 self-profile에서 소유 경로로 찾지 못해 `unmapped changed paths: ptsip.yaml`로 fail-closed 한다.
+삭제 경로를 변경 목록에서 제외하거나, retired selector를 활성 선언에 다시 넣거나, 임의 full 실행으로 대체하지 않았다.
+삭제 경로에 한해 정확한 삭제 전 HEAD의 canonical self-profile 소유 선언을 확인하는 resolver 정책/구현 확장은 **승인 대기 후보**로만 기록했다.
+
+Root 삭제만 검증용으로 index에 반영했다. 다른 내용은 미스테이징이며 커밋·푸시는 하지 않았다.
+정책·계획·Test Mode registry·Context Plane·diff 검증은 PASS지만, 필수 자동 검증 성공이나 WU-08 완료를 주장하지 않는다.
+진단 report: `C:/Users/rhkrt/AppData/Local/Temp/ptsip-root-bridge-543ae3141ae14181944135ed9393433f/root-bridge-focused-tracked.xml`; SHA256 `82a1917c0191ecd909425d538594437c546e4c8e086fae75a0d04a90d643b94b`.

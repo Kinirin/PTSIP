@@ -19,7 +19,7 @@ from developer.automation.policy_loader import load_json, load_yaml, repository_
 
 REGISTRY_PATH = "developer/automation/implementation_workflows.yaml"
 SCHEMA_PATH = "developer/automation/implementation_workflows.schema.json"
-PROFILE_PATH = "ptsip.yaml"
+PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
 
 
 class WorkPacketError(RuntimeError):
