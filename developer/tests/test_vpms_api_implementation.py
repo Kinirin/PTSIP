@@ -24,10 +24,10 @@ def test_explicit_api_implementation_and_automatic_commit_push_do_not_activate_c
 def test_new_user_policy_writes_use_source_policy_not_retired_docs_tree():
     record = json.loads((ROOT / "developer/policy/registries/vpms-api-implementation.json").read_text(encoding="utf-8"))
     assert record["support_policy_generation_root"] == "src/policy"
-    assert not (ROOT / "docs/Support_policy/automation/contract_registration.py").exists()
+    assert not (ROOT / "docs/Support_policy").exists()
     assert (ROOT / "developer/automation/support_contract_registration.py").is_file()
+    retired = {item["path"] for item in record["subsequent_retirements"]}
     assert all(not path.startswith("docs/Support_policy/")
                for path in record["mutation_targets"]
-               if path != "docs/Support_policy/automation/README.md")
-    retired_notice = (ROOT / "docs/Support_policy/automation/README.md").read_text(encoding="utf-8")
-    assert "is retired" in retired_notice and "must be created under `src/policy/`" in retired_notice
+               if path not in retired)
+    assert verify(ROOT)["retired_target_count"] == 1

@@ -138,5 +138,14 @@
   },
   "hash_role": "LOCAL_BYTE_AUDIT_NOT_NORMATIVE_SEMANTIC_DIGEST",
   "support_policy_generation_root": "src/policy",
-  "removed_uncommitted_paths": ["docs/Support_policy/automation/contract_registration.py"]
+  "removed_uncommitted_paths": ["docs/Support_policy/automation/contract_registration.py"],
+  "subsequent_retirements": [
+    {
+      "path": "docs/Support_policy/automation/README.md",
+      "decision": "APPROVED",
+      "decision_source": "USER_EXPLICIT",
+      "base_head": "24bd87840879a90a45aac5dac1d1f33308326076",
+      "source_reference": "2026-10-05 user requested removal of both remaining Support Policy READMEs and all operational dependencies on the retired directory. Original implementation targets remain historical evidence."
+    }
+  ]
 }

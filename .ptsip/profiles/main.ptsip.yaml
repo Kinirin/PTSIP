@@ -851,7 +851,6 @@ components:
       - "tests/ptsip/conftest.py"
       - "tests/ptsip/_test_support.py"
       - "developer/profiles/ptsip-repository.yaml"
-      - "docs/Support_policy/**"
       - "src/policy/**"
       - "src/ptsip/specdata/**"
       - "reference/**"
@@ -982,7 +981,6 @@ components:
       - "README.md"
       - "README.ko.md"
       - "src/ptsip/specdata/**"
-      - "docs/Support_policy/**"
       - "developer/policy/**"
 
   - id: repository-maintenance
@@ -1031,9 +1029,7 @@ associated_artifacts:
     anchor: ptsip-canonical-contracts
     include:
       - "reference/**"
-      - "docs/Support_policy/README.md"
-      - "docs/Support_policy/automation/README.md"
-    purpose: specification_governance_adoption_agent_and_support_policy_operational_guidance
+    purpose: specification_governance_adoption_and_agent_reference_guidance
 
 relationships:
   - id: candidate-compiler-generates-projections

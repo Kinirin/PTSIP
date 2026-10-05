@@ -21,6 +21,8 @@ RESOLVE_AUTOMATIC = RESOLVER["resolve_automatic_selection"]
 SELECT_MANUAL = RESOLVER["select_manual_modes"]
 BUILD_PLAN = RESOLVER["build_execution_plan"]
 CHANGED_FILES_FROM_GIT = RESOLVER["changed_files_from_git"]
+RESOLVE_WITH_DELETIONS = RESOLVER["resolve_automatic_with_deletions"]
+DELETION_PREIMAGE = RESOLVER["deletion_preimage_from_git"]
 SELECTION_ERROR = RESOLVER["TestModeSelectionError"]
 
 EXPECTED_MODE_IDS = [
@@ -401,3 +403,81 @@ def test_automatic_git_diff_honors_explicit_verified_base(tmp_path: Path) -> Non
         "first.txt",
         "second.txt",
     ]
+
+
+def _deletion_profiles():
+    registry = {"modes": [{"id": "contracts", "component_ref": "verify",
+                            "execution": {"pytest": ["tests/contracts"]}}]}
+    previous = {"components": [
+        {"id": "docs", "include": ["old/README.md"]},
+        {"id": "verify", "include": ["tests/contracts/**"], "analysis_inputs": ["old/README.md"]},
+    ]}
+    current = {"components": [{"id": "verify", "include": ["tests/contracts/**"]}]}
+    return registry, previous, current
+
+
+def test_deleted_path_uses_preimage_owner_without_retaining_obsolete_selector():
+    registry, previous, current = _deletion_profiles()
+    selected, no_test = RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], ["old/README.md"], previous)
+    assert _ids(selected) == ["contracts"]
+    assert no_test == []
+    assert current["components"][0].get("analysis_inputs") is None
+
+
+def test_removed_declaration_does_not_authorize_an_added_or_modified_path():
+    registry, previous, current = _deletion_profiles()
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], [], previous)
+
+
+def test_deleted_path_without_exact_preimage_owner_fails_closed():
+    registry, previous, current = _deletion_profiles()
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_WITH_DELETIONS(registry, current, ["old/unknown.md"], ["old/unknown.md"], previous)
+
+
+def test_deletion_outside_changed_scope_fails_closed():
+    registry, previous, current = _deletion_profiles()
+    with pytest.raises(SELECTION_ERROR, match="outside the change scope"):
+        RESOLVE_WITH_DELETIONS(registry, current, ["tests/contracts/test_a.py"], ["old/README.md"], previous)
+
+
+def test_deletion_preserves_preimage_and_current_verification_obligations():
+    registry, previous, current = _deletion_profiles()
+    registry["modes"].append({"id": "runtime", "component_ref": "runtime-tests"})
+    previous["components"].append({"id": "runtime-tests", "include": ["tests/runtime/**"]})
+    current["components"] += [
+        {"id": "docs", "include": ["old/README.md"]},
+        {"id": "runtime-tests", "include": ["tests/runtime/**"], "analysis_inputs": ["old/README.md"]},
+    ]
+    selected, no_test = RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], ["old/README.md"], previous)
+    assert _ids(selected) == ["contracts", "runtime"]
+    assert no_test == []
+
+
+@pytest.mark.parametrize("committed", [False, True])
+def test_git_confirms_deletion_and_binds_exact_preimage(tmp_path: Path, committed: bool):
+    _git(tmp_path, "init")
+    _git(tmp_path, "config", "user.email", "tests@example.invalid")
+    _git(tmp_path, "config", "user.name", "PTSIP Tests")
+    _, previous, current = _deletion_profiles()
+    profile = tmp_path / "profile.yaml"
+    profile.write_text(yaml.safe_dump(previous), encoding="utf-8")
+    old = tmp_path / "old/README.md"
+    old.parent.mkdir()
+    old.write_text("old guidance\n", encoding="utf-8")
+    _git(tmp_path, "add", ".")
+    _git(tmp_path, "commit", "-m", "base")
+    base = _git(tmp_path, "rev-parse", "HEAD")
+    old.unlink()
+    profile.write_text(yaml.safe_dump(current), encoding="utf-8")
+    if committed:
+        _git(tmp_path, "add", "-u")
+        _git(tmp_path, "commit", "-m", "retire guidance")
+    deleted, preimage, revision = DELETION_PREIMAGE(
+        tmp_path, profile, ["old/README.md", "profile.yaml", "old/untracked.md"],
+        base if committed else "", "HEAD", worktree=not committed,
+    )
+    assert deleted == ["old/README.md"]
+    assert preimage == previous
+    assert revision == base

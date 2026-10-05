@@ -181,6 +181,23 @@
     },
     "support_policy_generation_root": {"const": "src/policy"},
     "removed_uncommitted_paths": {"type": "array", "items": {"type": "string"}},
+    "subsequent_retirements": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "decision", "decision_source", "base_head", "source_reference"],
+        "properties": {
+          "path": {"const": "docs/Support_policy/automation/README.md"},
+          "decision": {"const": "APPROVED"},
+          "decision_source": {"const": "USER_EXPLICIT"},
+          "base_head": {"const": "24bd87840879a90a45aac5dac1d1f33308326076"},
+          "source_reference": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
     "hash_role": {
       "const": "LOCAL_BYTE_AUDIT_NOT_NORMATIVE_SEMANTIC_DIGEST"
     }

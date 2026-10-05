@@ -27,7 +27,15 @@ def verify(root: Path = ROOT, *, check_worktree: bool = False):
     for item in record["preserved_files"]:
         if not preserved_text_matches((root / item["path"]).read_bytes(), item):
             raise ValueError("PRESERVED_SOURCE_CHANGED: " + item["path"])
-    for relative in record["mutation_targets"]:
+    # Keep the original scope as provenance, but honor only exact, approved
+    # subsequent retirements. Missing live implementation targets still fail.
+    retired = {item["path"] for item in record.get("subsequent_retirements", [])}
+    if not retired <= set(record["mutation_targets"]):
+        raise ValueError("RETIREMENT_OUTSIDE_ORIGINAL_SCOPE")
+    for relative in retired:
+        if (root / relative).exists():
+            raise ValueError("RETIRED_IMPLEMENTATION_TARGET_PRESENT: " + relative)
+    for relative in set(record["mutation_targets"]) - retired:
         if not (root / relative).is_file():
             raise ValueError("MISSING_IMPLEMENTATION_TARGET: " + relative)
     for relative in record["removed_uncommitted_paths"]:
@@ -46,6 +54,8 @@ def verify(root: Path = ROOT, *, check_worktree: bool = False):
     expected = set(prior["materialization_targets"]) | set(record["mutation_targets"])
     expected |= {item["path"] for item in record["preserved_files"] if item["path"].startswith("developer/")}
     if check_worktree:
+        if retired:
+            raise ValueError("ORIGINAL_WORKTREE_SCOPE_SUPERSEDED_BY_RETIREMENT")
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
         if head != record["base_head"]:
             raise ValueError("BASE_HEAD_CHANGED")
@@ -55,7 +65,8 @@ def verify(root: Path = ROOT, *, check_worktree: bool = False):
             raise ValueError("EXACT_CHANGE_SCOPE_MISMATCH: " + str(sorted(set(changed) ^ expected)))
     return {"status": "IMPLEMENTED_INACTIVE", "runtime_activation": False,
             "commit_push_authorized": True, "implementation_target_count": len(record["mutation_targets"]),
-            "combined_changed_path_count": len(expected), "preserved_file_count": len(record["preserved_files"])}
+            "combined_changed_path_count": len(expected), "preserved_file_count": len(record["preserved_files"]),
+            "retired_target_count": len(retired)}
 
 
 def main():
