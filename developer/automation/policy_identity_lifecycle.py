@@ -626,12 +626,7 @@ def register_policy(
         )
 
     payload = load_yaml(relative, root=base)
-    schema_ref = (
-        ROOT_FAMILY_POLICY_SCHEMA
-        if policy_class == "PTSIP_DEVELOPER_POLICY" and family in ROOT_FAMILIES
-        else MANAGEMENT_POLICY_SCHEMA
-    )
-    schema = load_json(schema_ref, root=base)
+    schema = load_json(MANAGEMENT_POLICY_SCHEMA, root=base)
     from developer.automation.policy_validator import developer_contract_validator
     errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
     if errors:
@@ -702,7 +697,7 @@ def register_family_policy(
     root: str | Path | None = None,
 ) -> dict[str, object]:
     base = repository_root(root)
-    _require_family_class_materialization(policy_class, base)
+    _require_family_class_materialization(policy_class, family, base)
     state = _load_consistent_registered_corpus(base)
     approval = _load_approval(approval_ref, base=base)
     if approval.get("target_status") != "DRAFT":
@@ -718,7 +713,7 @@ def register_family_policy(
         group_id=group_id,
         base=base,
     )
-    allocated = _next_family_policy_id(state.ids, family)
+    allocated = _next_family_policy_id(state.ids, family, policy_class=policy_class)
     requested = approval.get("requested_policy_id")
     if requested != allocated:
         raise PolicyIdentityLifecycleError(
