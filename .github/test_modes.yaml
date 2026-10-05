@@ -95,7 +95,7 @@ modes:
     component_ref: repository-architecture-verification
     execution:
       go:
-        - developer/src/tests/rootfamily
+        - developer/tests/rootfamily
       pytest:
         - src/tests/ptsip/repository/test_self_profile.py
         - developer/tests

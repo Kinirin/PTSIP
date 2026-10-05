@@ -133,15 +133,15 @@ rules:
         operations: [PLAN, MODIFY, VERIFY]
       - path: developer/state
         operations: [PLAN, MODIFY, VERIFY]
-      - path: src/tests/ptsip/agent_contracts
+      - path: tests/ptsip/agent_contracts
         operations: [MODIFY, VERIFY]
-      - path: src/tests/ptsip/conformance
+      - path: tests/ptsip/conformance
         operations: [MODIFY, VERIFY]
-      - path: src/tests/ptsip/migration
+      - path: tests/ptsip/migration
         operations: [MODIFY, VERIFY]
-      - path: src/tests/ptsip/repository
+      - path: tests/ptsip/repository
         operations: [MODIFY, VERIFY]
-      - path: src/tests/ptsip/validation
+      - path: tests/ptsip/validation
         operations: [MODIFY, VERIFY]
 
     exact_file_scopes:
@@ -177,7 +177,7 @@ rules:
     explicitly_not_inherited_roots:
       - src/ptsip
       - developer/automation
-      - src/tests/ptsip
+      - tests/ptsip
       - .github
       - .ptsip
 

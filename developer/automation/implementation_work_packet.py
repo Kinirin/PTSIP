@@ -191,7 +191,7 @@ def _component_regression_targets(root: Path, component_ref: str, source: str = 
 
     targets: list[str] = []
     for raw in includes:
-        if not isinstance(raw, str) or not raw.startswith("tests/"):
+        if not isinstance(raw, str) or not raw.startswith("src/tests/"):
             continue
         pattern = raw.replace("\\", "/")
         if pattern.endswith("/**"):

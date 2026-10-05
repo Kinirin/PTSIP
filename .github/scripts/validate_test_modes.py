@@ -81,7 +81,7 @@ def _component_index(profile: dict[str, Any]) -> tuple[dict[str, dict[str, Any]]
 
 def _owns_test_path(pattern: object) -> bool:
     return isinstance(pattern, str) and (
-        pattern.startswith("tests/") or pattern.startswith("developer/tests")
+        pattern.startswith("src/tests/") or pattern.startswith("developer/tests")
     )
 
 
