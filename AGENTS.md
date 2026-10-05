@@ -2,29 +2,37 @@
 
 These instructions apply to coding agents working anywhere in this repository.
 
+## Mandatory Root Responsibility Family transition entry
+
+The Root Responsibility Family transition introduced on `dev/0.3.8a4` has a dedicated bootstrap entry. This section applies only to work that creates, changes, registers, resolves, migrates, or decomposes responsibility-family policy structure under `developer/policy/` or `src/policy/`.
+
+Before reading legacy family policy sets for that work:
+
+1. read `developer/policy/MPD-0018.yaml` for `PTSIP_DEVELOPER_POLICY`;
+2. read `src/policy/SFP-0024.yaml` for `PTSIP_SUPPORT_FEATURE`;
+3. treat authority identity as the exact pair `(policy_class, responsibility_family)`;
+4. use the shared Root Family token vocabulary exactly as:
+   `NORM | GOV | INTENT | ARCH | INFO | CNTR | RISK | SUPPLY | REAL | ASSURE | CTRL | CHANGE | OPS | RECORD`;
+5. do not infer shared semantics from a shared family token. `authority_subject` and `exclusive_kernel` are defined independently per policy class;
+6. an unmaterialized Root slot is `RESERVED`, not an implicit authority;
+7. `SPEC | PLAN | WORK | VERI | MIGR | RELS` are legacy developer-family migration sources for this transition. Do not create new target policy authority in those families, do not rename them into Root families, and do not infer one-to-one mappings;
+8. existing `SFP-####` policies retain their identities until explicit semantic decomposition. An existing SFP ID does not imply a Root Family assignment;
+9. `MPD-0018` and `SFP-0024` bootstrap the transition only. They do not define any individual Root Family's class-specific `authority_subject` or `exclusive_kernel`;
+10. unresolved class/family assignment is fail-closed for materialization or mutation. Do not use semantic similarity or AI confidence to choose a Root Family.
+
+For Root Family transition work, this section takes precedence over legacy family discovery and over any resolver result that would otherwise be treated as target-family authority. Legacy resolver results may still be used as bounded migration-source evidence. For all other developer-policy work, use the normal developer policy resolver entry below.
+
 ## Developer Policy vs Support Feature Policy
 
-PTSIP has two non-interchangeable policy classes.
+PTSIP policy classes are non-interchangeable authority domains.
 
-- `PTSIP_DEVELOPER_POLICY` uses legacy migration IDs `MPD-####` and family IDs `MPD-<SPEC|PLAN|WORK|VERI|MIGR|RELS>-####` under `developer/policy/`. Family IDs express the normative responsibility family; legacy IDs remain only while staged responsibility migration is incomplete. Developer policy is automated by `developer/automation/` and must not ship as a consumer runtime contract.
-- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. All new user-policy generation and registration targets must live under canonical `src/policy/`. Repository-only generation/registration tooling belongs under `developer/automation/` and must not ship; installed distributions receive the deterministic `ptsip/support/` projection, separate from developer authority.
+- `PTSIP_DEVELOPER_POLICY` lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract. `MPD-0018` is the active Root Family transition bootstrap. Existing `MPD-<SPEC|PLAN|WORK|VERI|MIGR|RELS>-####` records are preserved as legacy migration sources while class-scoped Root Family schemas and routing are materialized.
+- `PTSIP_SUPPORT_FEATURE` lives under canonical `src/policy/` and ships through the deterministic `ptsip/support/` projection. `SFP-0024` is the active Support Root Family transition bootstrap. Existing `SFP-####` records remain identity-stable until explicit decomposition; family-aware policy identity requires later schema and resolver materialization.
+- The 14 Root Family tokens are shared only as a coordinate vocabulary. Same-named families in different policy classes are distinct authority domains and have no implicit semantic inheritance or fallback.
 - PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`. This repository's root `ptsip.yaml` compatibility bridge is retired for Tool `0.3.8` and later; consumer compatibility/migration input support is unchanged.
 - The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
 - Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
-- Developer planning registry is `developer/planning/index.yaml`. It may intentionally contain `plans: []` when no development plan is active. Version control planes are created under `developer/planning/<version>/index.yaml` only after a new plan is materialized from policy. `current_gate` must match `^WU-[0-9]{2}(?:-P[0-9]{2})?# AGENTS.md
-
-These instructions apply to coding agents working anywhere in this repository.
-
-## Developer Policy vs Support Feature Policy
-
-PTSIP has two non-interchangeable policy classes.
-
-- `PTSIP_DEVELOPER_POLICY` uses IDs `MPD-####`, lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract.
-- `PTSIP_SUPPORT_FEATURE` uses IDs `SFP-####`. All new user-policy generation and registration targets must live under canonical `src/policy/`. Repository-only generation/registration tooling belongs under `developer/automation/` and must not ship; installed distributions receive the deterministic `ptsip/support/` projection, separate from developer authority.
-- PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`. This repository's root `ptsip.yaml` compatibility bridge is retired for Tool `0.3.8` and later; consumer compatibility/migration input support is unchanged.
-- The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
-- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
- when a plan exists.\n- `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields. Use `WU-xx-explanation.yaml` only for definitions that cannot yet be represented by supported machine fields.
+- Developer planning registry is `developer/planning/index.yaml`. It may intentionally contain `plans: []` when no development plan is active. Version control planes are created under `developer/planning/<version>/index.yaml` only after a new plan is materialized from policy. `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields.
 
 ## Mandatory developer policy entry
 
