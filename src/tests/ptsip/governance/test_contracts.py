@@ -9,7 +9,7 @@ from jsonschema import Draft202012Validator
 from ptsip.governance import AuthorityCatalog
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def _json(path: str) -> dict[str, object]:

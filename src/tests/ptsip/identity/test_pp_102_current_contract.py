@@ -9,7 +9,7 @@ from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import find_profile, validate_profile
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_pp_102_is_current_and_declares_user_revision_semantics() -> None:

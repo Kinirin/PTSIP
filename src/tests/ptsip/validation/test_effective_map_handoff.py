@@ -9,7 +9,7 @@ from ptsip.validation.handoff import (
     load_validated_effective_map,
 )
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_real_validation_produces_an_immutable_owned_snapshot():

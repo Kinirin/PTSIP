@@ -18,7 +18,7 @@ from vpms import load_registry_snapshot, resolve_selection, run_cases
 from vpms.execution.adapters.command import CommandExecutor
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 SHARED_FORMULA_ID = "command.exit-zero"
 FULL_REPOSITORY_PYTEST_ARGV = (sys.executable, "-m", "pytest", "-q", "tests")
 
@@ -118,7 +118,7 @@ def _execute(registry, *, case_ids, executors):
 
 
 def _release_readiness_test_names() -> set[str]:
-    path = REPO_ROOT / "tests" / "ptsip" / "test_release_readiness_030.py"
+    path = REPO_ROOT / "src" / "tests" / "ptsip" / "test_release_readiness_030.py"
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     return {
         node.name

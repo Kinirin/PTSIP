@@ -10,7 +10,7 @@ from vpms.integration.ptsip_bridge import (
     PtsipMetadataError, metadata_from_effective_map, resolve_target_metadata,
 )
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_active_boundary_projects_real_validated_ptsip_metadata_without_mutation():

@@ -8,7 +8,7 @@ from ptsip.constants import SPEC_REVISION, SPEC_VERSION, TOOL_VERSION
 from ptsip.spec_identity import current_spec_identity
 
 
-_ROOT = Path(__file__).resolve().parents[3]
+_ROOT = Path(__file__).resolve().parents[4]
 _EXPECTED_SPEC_REVISION = "3c47816770d194ae42f98faedc911d980db0e62a"
 
 

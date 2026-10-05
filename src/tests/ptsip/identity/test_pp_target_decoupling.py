@@ -10,7 +10,7 @@ from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import find_profile
 
 
-_REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 _CURRENT_PP_RUNTIME_SURFACES = (
     "src/ptsip/migration",
     "src/ptsip/repository/profile_convergence.py",

@@ -14,7 +14,7 @@ from vpms.domain.registry import (
 )
 
 
-_REPO_ROOT = Path(__file__).resolve().parents[3]
+_REPO_ROOT = Path(__file__).resolve().parents[4]
 _FORMULA = "structure.required-fields"
 
 

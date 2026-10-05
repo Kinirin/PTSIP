@@ -6,7 +6,7 @@ import tomllib
 from setuptools import find_packages
 
 
-_REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 _EXPECTED_VPMS_PACKAGES = {
     "vpms",
     "vpms.domain",

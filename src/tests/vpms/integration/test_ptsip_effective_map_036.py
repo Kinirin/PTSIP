@@ -37,7 +37,7 @@ from vpms.integration.ptsip_bridge import (
 )
 
 
-_REPO_ROOT = Path(__file__).resolve().parents[3]
+_REPO_ROOT = Path(__file__).resolve().parents[4]
 _POLICIES = {
     "product_to_nonproduct_runtime_dependency": "deny",
     "nonproduct_in_product_package": "deny",

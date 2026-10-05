@@ -15,7 +15,7 @@ from ptsip.validation.profile import validate_profile
 from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
 LOCAL_PROFILE_PATH = REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 
@@ -143,10 +143,10 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         in components["ptsip-embedded-contracts"]["include"]
     )
     assert components["ptsip-contract-verification"]["include"] == [
-        "tests/ptsip/contracts/**",
-        "tests/ptsip/agent_contracts/test_contract_plane.py",
-        "tests/ptsip/agent_contracts/test_operation_loading.py",
-        "tests/ptsip/governance/test_contracts.py",
+        "src/tests/ptsip/contracts/**",
+        "src/tests/ptsip/agent_contracts/test_contract_plane.py",
+        "src/tests/ptsip/agent_contracts/test_operation_loading.py",
+        "src/tests/ptsip/governance/test_contracts.py",
     ]
     assert components["agent-contract-candidate-compiler"]["classification"] == "PRODUCT"
     assert components["agent-contract-candidate-resolver"]["classification"] == "PRODUCT"

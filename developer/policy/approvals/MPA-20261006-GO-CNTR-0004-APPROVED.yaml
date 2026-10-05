@@ -1,0 +1,16 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261006-GO-CNTR-0004-APPROVED
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: developer/automation 의 경우 GO 언어를 의무화로 정책을 변경했습니다. 따라서 변경 작업을 수행해
+    주세요. 기존 구현 전체를 Go로 전환. 차후 developer/policy/legacy 내부 정책 파일들은 14 Root Family 분할된
+    정책으로 분리되어 새로 생성하고 legacy 내부 정책 파일들은 제거해야 합니다.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-CNTR-0004
+  recorded_at: '2026-10-05T18:40:43.562402+00:00'

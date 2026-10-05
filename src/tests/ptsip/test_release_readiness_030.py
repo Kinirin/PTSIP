@@ -12,7 +12,7 @@ from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSI
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 EXPECTED_SPEC_REVISION = "3c47816770d194ae42f98faedc911d980db0e62a"
 HISTORICAL_036_REVISION = "d6995ed232e845b88d8235b851e80ab54b7804ea"
 

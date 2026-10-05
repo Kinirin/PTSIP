@@ -43,6 +43,12 @@ bindings:
   analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
   analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
   group_id: G20
+- policy_id: MPD-CHANGE-0004
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: CHANGE
+  analysis_ref: developer/policy/analysis/PRA-20261006-GO-AUTOMATION-CUTOVER.yaml
+  analysis_id: PRA-20261006-GO-AUTOMATION-CUTOVER
+  group_id: G03
 - policy_id: MPD-CNTR-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CNTR
@@ -60,6 +66,12 @@ bindings:
   family: CNTR
   analysis_ref: developer/policy/analysis/PRA-20261006-NEUTRAL-MODULE-CREATION.yaml
   analysis_id: PRA-20261006-NEUTRAL-MODULE-CREATION
+  group_id: G01
+- policy_id: MPD-CNTR-0004
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: CNTR
+  analysis_ref: developer/policy/analysis/PRA-20261006-GO-AUTOMATION-CUTOVER.yaml
+  analysis_id: PRA-20261006-GO-AUTOMATION-CUTOVER
   group_id: G01
 - policy_id: MPD-CTRL-0001
   policy_class: PTSIP_DEVELOPER_POLICY
@@ -138,6 +150,12 @@ bindings:
   family: REAL
   analysis_ref: developer/policy/analysis/PRA-20261006-NEUTRAL-MODULE-CREATION.yaml
   analysis_id: PRA-20261006-NEUTRAL-MODULE-CREATION
+  group_id: G02
+- policy_id: MPD-REAL-0005
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: REAL
+  analysis_ref: developer/policy/analysis/PRA-20261006-GO-AUTOMATION-CUTOVER.yaml
+  analysis_id: PRA-20261006-GO-AUTOMATION-CUTOVER
   group_id: G02
 - policy_id: MPD-RECORD-0001
   policy_class: PTSIP_DEVELOPER_POLICY

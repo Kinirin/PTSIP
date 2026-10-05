@@ -85,6 +85,31 @@ jobs:
             }
           }
 
+      - name: Set up Go Developer automation
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/rootfamily/go.sum
+
+      - name: Verify direct Root policy Go automation
+        if: ${{ github.event_name == 'push' || inputs.verification == 'policy-lifecycle' }}
+        shell: pwsh
+        run: |
+          go -C developer/automation vet ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go Developer automation vet failed."
+          }
+          go -C developer/automation run ./cmd/ptsip-dev policy-resolver validate
+          if ($LASTEXITCODE -ne 0) {
+            throw "Direct Root policy Go resolver validation failed."
+          }
+          go -C developer/tests/rootfamily test -count=1 -v -run '^TestGo(DirectRootResolver|ResolverNeeds|ResolverRejects|CutoverReports|StateAndPlanning|RootIdentityInspection)' ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go automation boundary verification failed."
+          }
+
       - name: Verify README translation registry layout
         if: ${{ github.event_name == 'push' }}
         shell: pwsh

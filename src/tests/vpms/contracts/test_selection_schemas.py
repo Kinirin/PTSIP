@@ -6,7 +6,7 @@ import runpy
 import pytest
 from jsonschema import ValidationError
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 TOOLS = runpy.run_path(str(ROOT / "developer/automation/support_contract_registration.py"))
 VALIDATE = TOOLS["validate_selection_document"]
 RegistrationError = TOOLS["RegistrationError"]

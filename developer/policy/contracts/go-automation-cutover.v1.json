@@ -1,0 +1,128 @@
+{
+  "schema_version": "ptsip-go-automation-cutover/v1",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "authority_owners": {
+    "interface": "MPD-CNTR-0004#direct_root_automation_contract",
+    "implementation": "MPD-REAL-0005#go_automation_implementation",
+    "retirement": "MPD-CHANGE-0004#developer_legacy_retirement"
+  },
+  "inventory_ref": "developer/policy/registries/go-automation-migration.json",
+  "target": {
+    "automation_language": "GO",
+    "automation_scope_root": "developer/automation",
+    "policy_reference_model": "EXACT_ROOT_POLICY_ID_AND_SECTION",
+    "removed_paths": [
+      "developer/policy/legacy"
+    ],
+    "remove_python_automation_entrypoints": true,
+    "python_automation_delegation": "FORBIDDEN",
+    "support_plane_inheritance": "FORBIDDEN"
+  },
+  "completion_requirements": [
+    "EVERY_INVENTORIED_IMPLEMENTATION_HAS_VERIFIED_GO_EQUIVALENCE",
+    "NO_PYTHON_IMPLEMENTATION_OR_ENTRYPOINT_UNDER_DEVELOPER_AUTOMATION",
+    "NO_GO_DELEGATION_TO_PYTHON_AUTOMATION",
+    "ALL_OPERATIONAL_CALLERS_CI_AND_HOOKS_USE_GO",
+    "ALL_DEVELOPER_RESPONSIBILITIES_HAVE_EXACT_ROOT_POLICY_AND_SECTION_OWNERS",
+    "ORIGINAL_RESPONSIBILITY_LIFECYCLE_PRESERVED",
+    "ALL_OPERATIONAL_DEVELOPER_POLICY_REFERENCES_ARE_DIRECT_ROOT_REFERENCES",
+    "NO_DEVELOPER_LEGACY_POLICY_FILES_OR_RUNTIME_PROJECTIONS",
+    "GO_VERIFICATION_AND_PRESERVED_REGRESSION_COVERAGE_PASS"
+  ],
+  "partial_port_is_complete": false,
+  "policy_admission_is_implementation_completion": false,
+  "delete_legacy_before_consumer_cutover": "FORBIDDEN",
+  "runtime_commands": [
+    {
+      "command": [
+        "policy-resolver",
+        "resolve"
+      ],
+      "required_options": [
+        "scope",
+        "operation"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "get"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ],
+      "optional_options": [
+        "section"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "explain"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "rule"
+      ],
+      "required_arguments": [
+        "rule_id"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "validate"
+      ]
+    },
+    {
+      "command": [
+        "root-family-entry",
+        "resolve"
+      ],
+      "required_options": [
+        "policy_class",
+        "family"
+      ]
+    },
+    {
+      "command": [
+        "automation-migration",
+        "inspect"
+      ]
+    },
+    {
+      "command": [
+        "repository-state",
+        "resolve"
+      ],
+      "required_options": [
+        "domain"
+      ]
+    },
+    {
+      "command": [
+        "planning-entry",
+        "resolve"
+      ],
+      "optional_options": [
+        "branch"
+      ]
+    },
+    {
+      "command": [
+        "root-family-entry",
+        "inspect"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ]
+    }
+  ],
+  "normative_semantics_owner": "LANGUAGE_NEUTRAL_MACHINE_CONTRACT",
+  "go_runtime_is_implementation_binding": true
+}

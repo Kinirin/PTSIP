@@ -18,7 +18,7 @@ from agent_contracts.candidate import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 FOUR_PATHS = (
     "src/agent_contracts/candidate.py",
     "src/agent_contracts/machine_resolver.py",

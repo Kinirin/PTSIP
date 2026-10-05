@@ -8,7 +8,7 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 import pytest
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 BASE = ROOT / "src/vpms/contracts"
 
 

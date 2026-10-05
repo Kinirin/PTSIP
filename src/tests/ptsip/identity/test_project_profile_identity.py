@@ -26,7 +26,7 @@ from ptsip.profile_identity import (
 from ptsip.spec_identity import current_spec_identity
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_pp_version_parses_and_serializes_canonically() -> None:

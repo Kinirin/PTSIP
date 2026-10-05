@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 TEST_ROOT = Path(__file__).resolve().parent
-REPO_ROOT = TEST_ROOT.parents[1]
+REPO_ROOT = TEST_ROOT.parents[2]
 SOURCE_ROOT = REPO_ROOT / "src"
 
 # Focused local pytest runs must verify the checked-out source tree, not an

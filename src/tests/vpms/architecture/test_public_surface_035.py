@@ -12,7 +12,7 @@ from vpms.execution.composition import run_cases
 from vpms.execution.adapters.command import CommandExecutor
 
 
-_REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 _EXPECTED_PUBLIC_SURFACE = (
     "CaseExecutor",
     "CommandExecutor",

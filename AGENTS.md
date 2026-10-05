@@ -59,7 +59,7 @@ other developer-control-plane behavior, enter:
 Use the canonical developer Policy Resolver before loading broader policy or planning context:
 
 ```text
-python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
+go -C developer/automation run ./cmd/ptsip-dev policy-resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
 ```
 
 Use only the exact policies, sections, contracts, and implementation bindings returned by the

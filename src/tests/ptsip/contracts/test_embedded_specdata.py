@@ -8,7 +8,7 @@ import yaml
 
 
 def test_embedded_profile_schema_and_registry_match_bound_snapshot_assets() -> None:
-    root = Path(__file__).resolve().parents[3]
+    root = Path(__file__).resolve().parents[4]
     canonical_schema = json.loads(
         (root / "schemas/ptsip-profile.schema.json").read_text(encoding="utf-8")
     )
@@ -27,7 +27,7 @@ def test_embedded_profile_schema_and_registry_match_bound_snapshot_assets() -> N
 
 
 def test_embedded_project_profile_contract_registry_matches_canonical() -> None:
-    root = Path(__file__).resolve().parents[3]
+    root = Path(__file__).resolve().parents[4]
     canonical = yaml.safe_load(
         (root / "registry/project-profile-contracts.yaml").read_text(encoding="utf-8")
     )

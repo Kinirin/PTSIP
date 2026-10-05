@@ -5,7 +5,7 @@ from pathlib import Path
 from ptsip.governance import AuthorizationState, AuthorizationTransitionEvaluator
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_product_runtime_does_not_ship_project_owner_authorization_grants() -> None:

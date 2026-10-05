@@ -10,7 +10,7 @@ from jsonschema import Draft202012Validator
 
 from ptsip.project_profile_contracts import current_runtime_project_profile_contract
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def _json(path: str) -> dict[str, object]:

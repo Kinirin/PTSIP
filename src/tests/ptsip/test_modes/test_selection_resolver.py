@@ -8,7 +8,7 @@ import pytest
 import yaml
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
 PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
 RESOLVER_PATH = REPO_ROOT / ".github" / "scripts" / "resolve_test_modes.py"
@@ -174,7 +174,7 @@ def test_test_change_selects_only_declared_verification_owner() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        ["tests/ptsip/evidence/test_normalization_037.py"],
+        ["src/tests/ptsip/evidence/test_normalization_037.py"],
     )
     assert _ids(selected) == ["ptsip-evidence"]
 
@@ -194,7 +194,7 @@ def test_agent_contract_test_change_selects_contract_verification() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        ["tests/ptsip/agent_contracts/test_operation_loading.py"],
+        ["src/tests/ptsip/agent_contracts/test_operation_loading.py"],
     )
     assert _ids(selected) == ["ptsip-contract"]
 
@@ -248,7 +248,7 @@ def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        ["tests/ptsip/conftest.py"],
+        ["src/tests/ptsip/conftest.py"],
     )
     assert _ids(selected) == [
         "ptsip-core",
@@ -407,12 +407,12 @@ def test_automatic_git_diff_honors_explicit_verified_base(tmp_path: Path) -> Non
 
 def _deletion_profiles():
     registry = {"modes": [{"id": "contracts", "component_ref": "verify",
-                            "execution": {"pytest": ["tests/contracts"]}}]}
+                            "execution": {"pytest": ["src/tests/contracts"]}}]}
     previous = {"components": [
         {"id": "docs", "include": ["old/README.md"]},
-        {"id": "verify", "include": ["tests/contracts/**"], "analysis_inputs": ["old/README.md"]},
+        {"id": "verify", "include": ["src/tests/contracts/**"], "analysis_inputs": ["old/README.md"]},
     ]}
-    current = {"components": [{"id": "verify", "include": ["tests/contracts/**"]}]}
+    current = {"components": [{"id": "verify", "include": ["src/tests/contracts/**"]}]}
     return registry, previous, current
 
 
@@ -439,16 +439,16 @@ def test_deleted_path_without_exact_preimage_owner_fails_closed():
 def test_deletion_outside_changed_scope_fails_closed():
     registry, previous, current = _deletion_profiles()
     with pytest.raises(SELECTION_ERROR, match="outside the change scope"):
-        RESOLVE_WITH_DELETIONS(registry, current, ["tests/contracts/test_a.py"], ["old/README.md"], previous)
+        RESOLVE_WITH_DELETIONS(registry, current, ["src/tests/contracts/test_a.py"], ["old/README.md"], previous)
 
 
 def test_deletion_preserves_preimage_and_current_verification_obligations():
     registry, previous, current = _deletion_profiles()
     registry["modes"].append({"id": "runtime", "component_ref": "runtime-tests"})
-    previous["components"].append({"id": "runtime-tests", "include": ["tests/runtime/**"]})
+    previous["components"].append({"id": "runtime-tests", "include": ["src/tests/runtime/**"]})
     current["components"] += [
         {"id": "docs", "include": ["old/README.md"]},
-        {"id": "runtime-tests", "include": ["tests/runtime/**"], "analysis_inputs": ["old/README.md"]},
+        {"id": "runtime-tests", "include": ["src/tests/runtime/**"], "analysis_inputs": ["old/README.md"]},
     ]
     selected, no_test = RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], ["old/README.md"], previous)
     assert _ids(selected) == ["contracts", "runtime"]

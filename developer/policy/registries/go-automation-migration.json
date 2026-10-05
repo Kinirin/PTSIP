@@ -1,0 +1,792 @@
+{
+  "schema_version": "ptsip-go-automation-migration-inventory/v1",
+  "projection_authority": false,
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "completion_contract_ref": "developer/policy/contracts/go-automation-cutover.v1.json",
+  "modules": [
+    {
+      "python_path": "developer/automation/__init__.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 1,
+      "public_definitions": [],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_context_migration.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 496,
+      "public_definitions": [
+        "AgentContextMigrationError",
+        "verify_current_profile_selectors",
+        "verify_operation_implementation_refs",
+        "verify",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_instruction_activation.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 68,
+      "public_definitions": [
+        "AgentInstructionActivationError",
+        "activate",
+        "check_activation",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_instruction_classifier.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 334,
+      "public_definitions": [
+        "AgentInstructionClassifierError",
+        "InstructionAtom",
+        "ClassifiedAtom",
+        "repository_root",
+        "load_trial_policy",
+        "parse_markdown",
+        "classify_atoms",
+        "classify_markdown",
+        "classify_file",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_instruction_entry_resolver.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 335,
+      "public_definitions": [
+        "AgentInstructionEntryResolverError",
+        "resolve_entry",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_instruction_materializer.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 314,
+      "public_definitions": [
+        "AgentInstructionMaterializerError",
+        "build_materialization",
+        "expected_files",
+        "materialize",
+        "check_materialization",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_instruction_progressive.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 773,
+      "public_definitions": [
+        "ProgressiveReasoningError",
+        "bootstrap_text",
+        "build_level1",
+        "migrate_level1",
+        "check",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/agent_integration.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 168,
+      "public_definitions": [
+        "AgentIntegrationError",
+        "entry_directive",
+        "default_integration_contract",
+        "status",
+        "install_mcp",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/authority_family_migration.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 133,
+      "public_definitions": [
+        "legacy_analysis_projection",
+        "semantic_digest",
+        "backfill_legacy_analysis",
+        "migrate"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/authorization_transition.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 67,
+      "public_definitions": [
+        "DeveloperAuthorizationTransitionEvaluator"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/branch_control.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 383,
+      "public_definitions": [
+        "BranchControlError",
+        "GitHubClient",
+        "registered_commands",
+        "create_authorized_branch",
+        "recreate_authorized_branch",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/branch_creation_guard.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 176,
+      "public_definitions": [
+        "BranchCreationPolicyError",
+        "BranchCreationDecision",
+        "validate_creation",
+        "project_profile_transition",
+        "classify_existing",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/context_projection.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 36,
+      "public_definitions": [],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/current_dependency_gate.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 106,
+      "public_definitions": [
+        "CurrentDependencyHit",
+        "scan_current_legacy_dependencies",
+        "validate_current_legacy_dependency_gate"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/dev_setup.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 76,
+      "public_definitions": [
+        "DeveloperSetupError",
+        "install_developer_hooks",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/implementation_work_packet.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 1232,
+      "public_definitions": [
+        "WorkPacketError",
+        "build_packet",
+        "check_packet",
+        "route_failure",
+        "build_agent_brief",
+        "build_source_context",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/markdown_cleanup.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 678,
+      "public_definitions": [
+        "MarkdownCleanupError",
+        "ReferenceHit",
+        "load_cleanup_workflow",
+        "scan_reference_hits",
+        "inspect_repository",
+        "verify_cleanup_readiness",
+        "build_cleanup_plan",
+        "apply_cleanup_plan",
+        "simulate_cleanup",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/planning/__init__.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 4,
+      "public_definitions": [],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/planning/planning_entry_resolver.py",
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/state.go"
+      ],
+      "python_line_count": 214,
+      "public_definitions": [
+        "PlanningEntryResolutionError",
+        "PlanningEntryResolution",
+        "detect_current_branch",
+        "resolve_planning_entry",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
+    },
+    {
+      "python_path": "developer/automation/planning/planning_extension_finalizer.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 409,
+      "public_definitions": [
+        "ExtensionFinalizationResult",
+        "extension_is_machine_ready",
+        "extension_parent_consistency_errors",
+        "finalize_extension_if_ready"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/planning/planning_leaf_merge.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 320,
+      "public_definitions": [
+        "PlanningLeafMergeError",
+        "PlanningLeafMergeResult",
+        "merge_leaf_branch",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/planning/planning_merge_reconciler.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 759,
+      "public_definitions": [
+        "PlanningStateReconciliationError",
+        "PlanningStateReconciliation",
+        "detect_current_branch",
+        "resolve_gate_document",
+        "select_current_gate",
+        "mark_leaf_merged",
+        "build_materialized_state",
+        "reconcile_planning_state",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/planning/planning_stage_finalizer.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 384,
+      "public_definitions": [
+        "FinalizationResult",
+        "promote_stage_text",
+        "finalize_stage"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/planning/planning_validator.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 558,
+      "public_definitions": [
+        "validate_planning"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_identity_lifecycle.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 1016,
+      "public_definitions": [
+        "PolicyIdentityLifecycleError",
+        "initial_policy_version",
+        "resolve_policy_version_transition",
+        "CorpusState",
+        "preflight_family_policy",
+        "inspect_policy",
+        "preflight_new_policy",
+        "status_preflight",
+        "register_policy",
+        "register_family_policy",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_loader.py",
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/repository.go"
+      ],
+      "python_line_count": 65,
+      "public_definitions": [
+        "repository_root",
+        "registered_policy_file",
+        "load_yaml",
+        "load_json"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/__init__.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 55,
+      "public_definitions": [],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/errors.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 9,
+      "public_definitions": [
+        "PolicyPlanBindingError"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/manager.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 425,
+      "public_definitions": [
+        "PolicyPlanBindingMutation",
+        "create_binding",
+        "link_plan",
+        "move_plan_ref",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/reconciler.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 226,
+      "public_definitions": [
+        "PolicyPlanBindingReconciliation",
+        "validate_registry_integrity",
+        "reconcile_registry",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/ref_tracker.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 248,
+      "public_definitions": [
+        "PlanRefTrackingResult",
+        "track_plan_ref",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/registry.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 97,
+      "public_definitions": [
+        "BindingRegistrySnapshot",
+        "registry_path",
+        "validate_registry_schema",
+        "load_registry"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/resolver.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 140,
+      "public_definitions": [
+        "PolicyPlanBindingResolution",
+        "binding_entries",
+        "resolve_bindings",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_plan_binding/store.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 78,
+      "public_definitions": [
+        "replace_registry"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_resolver.py",
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/resolver.go"
+      ],
+      "python_line_count": 1019,
+      "public_definitions": [
+        "PolicyResolverError",
+        "get_normative_rule",
+        "resolve_policies",
+        "validate_policy_resolver",
+        "get_policy",
+        "explain_policy",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
+    },
+    {
+      "python_path": "developer/automation/policy_responsibility_gate.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 508,
+      "public_definitions": [
+        "ResponsibilityGateError",
+        "validate_analysis_semantics",
+        "validate_responsibility_analysis",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/policy_validator.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 1237,
+      "public_definitions": [
+        "developer_contract_validator",
+        "load_neutral_policy_index",
+        "resolve_neutral_catalog_contract",
+        "validate_neutral_catalog_contract_registration",
+        "validate_neutral_catalog_snapshot",
+        "validate_developer_policy"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/pp/__init__.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 1,
+      "public_definitions": [],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/pp/pp_pre_commit.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 79,
+      "public_definitions": [
+        "PPPreCommitError",
+        "verify_staged_pp_transition",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/pp/pp_release_verify.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 200,
+      "public_definitions": [
+        "PPReleaseVerifyError",
+        "verify_exact_release_snapshot",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/pp/pp_remote_verify.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 510,
+      "public_definitions": [
+        "PPRemoteVerifyError",
+        "CommitVerification",
+        "commit_parents",
+        "introduced_commits",
+        "authority_fingerprint",
+        "require_comparable_parent_authority",
+        "staged_parent_states",
+        "verify_staged_parent_authority",
+        "verify_commit",
+        "verify_range",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/pp/pp_transition_delta.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 557,
+      "public_definitions": [
+        "PPTransitionDeltaError",
+        "SnapshotSource",
+        "PublicProfileEntry",
+        "AuthorityState",
+        "T2DeltaResult",
+        "GitSnapshot",
+        "GitIndexSnapshot",
+        "load_authority_state",
+        "evaluate_t2_authority_delta",
+        "compare_git_snapshots",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/pp/pp_transition_reconciler.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 782,
+      "public_definitions": [
+        "PPTransitionReconcileError",
+        "TransitionPlan",
+        "build_transition_plan",
+        "apply_transition_plan",
+        "reconcile_staged_transition",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/project_profile_registry.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 228,
+      "public_definitions": [
+        "load_public_profile_catalog",
+        "load_project_profile_contract_registry",
+        "current_project_profile_contract",
+        "validate_project_profile_registry_plane"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/repository_state_resolver.py",
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/state.go"
+      ],
+      "python_line_count": 66,
+      "public_definitions": [
+        "RepositoryStateResolutionError",
+        "resolve_state",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
+    },
+    {
+      "python_path": "developer/automation/root_family_policy_entry.py",
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/family.go",
+        "developer/automation/internal/machine/identity.go"
+      ],
+      "python_line_count": 255,
+      "public_definitions": [
+        "RootFamilyEntryError",
+        "canonical_path",
+        "resolve_entry",
+        "inspect_id",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
+    },
+    {
+      "python_path": "developer/automation/seed_pp_102_transition.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 577,
+      "public_definitions": [
+        "SeedError",
+        "seed",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/support_contract_registration.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 290,
+      "public_definitions": [
+        "RegistrationError",
+        "preserved_text_matches",
+        "scope_record",
+        "preflight",
+        "inspect_contract",
+        "validate_selection_document",
+        "verify_registration",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/transition_evaluator.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 77,
+      "public_definitions": [
+        "TransitionDecision",
+        "evaluate_legacy_decisions_removal"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/verification/__init__.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 13,
+      "public_definitions": [],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/verification/policy_plan_consistency.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 444,
+      "public_definitions": [
+        "PolicyPlanConsistencyFailure",
+        "PolicyPlanConsistencyReport",
+        "verify_policy_plan_consistency",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/vpms_api_implementation.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 82,
+      "public_definitions": [
+        "verify",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/vpms_runtime_activation.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 129,
+      "public_definitions": [
+        "activation_record",
+        "preflight",
+        "verify_preserved",
+        "verify",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    },
+    {
+      "python_path": "developer/automation/wu02_lane_validator.py",
+      "state": "PENDING",
+      "go_paths": [],
+      "python_line_count": 285,
+      "public_definitions": [
+        "validate_control_branch_context",
+        "validate_lane_documents",
+        "validate_current_lane",
+        "main"
+      ],
+      "python_entrypoint_removed": false,
+      "equivalence_verification": "PENDING"
+    }
+  ]
+}

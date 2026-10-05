@@ -1,0 +1,33 @@
+schema_version: ptsip-policy-resolver-contract/v3
+policy_class: PTSIP_DEVELOPER_POLICY
+resolver:
+  id: POLICY_RESOLVER_V1
+  owner_policy_ref: MPD-CNTR-0004
+  owner_section: direct_root_automation_contract
+  runtime_classification: DEVELOPER_CONTROL_PLANE_ONLY
+  policy_index_ref: developer/policy/index.yaml
+  binding_registry_ref: developer/policy/policy-resolver-bindings/registry.yaml
+  task_context_ref: null
+  normative_rule_registry_ref: registry/ptsip-registry.yaml
+  implementation_binding:
+    language: GO
+    module_path: developer/automation
+    command: [go, -C, developer/automation, run, ./cmd/ptsip-dev, policy-resolver]
+lookup:
+  scope_resolution: EXACT_ANCESTOR_PATH
+  descendant_inheritance: EXPLICIT_SCOPE_CONTROL
+  exact_scope_binding: ALWAYS_ELIGIBLE
+  ancestor_binding_requirement: INHERIT_TO_DESCENDANTS_TRUE
+  non_inheritable_ancestor: SKIP_AND_CONTINUE
+  no_eligible_binding: FAIL_CLOSED
+  operation_resolution: EXACT_CLOSED_VOCABULARY
+  semantic_similarity: FORBIDDEN
+  repository_document_scan: FORBIDDEN
+  git_history_lookup: FORBIDDEN
+  natural_language_fallback: FORBIDDEN
+  unresolved_required_binding: FAIL_CLOSED
+authority:
+  canonical_policy_records_remain_authority: true
+  resolver_projection_is_authority: false
+  resolver_may_create_or_rank_policy_semantics: false
+  product_runtime_dependency: FORBIDDEN

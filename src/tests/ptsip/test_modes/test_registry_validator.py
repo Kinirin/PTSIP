@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
 SELF_PROFILE_PATH = (
     REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
@@ -48,7 +48,7 @@ def _write_profile(root: Path) -> None:
                 "id": "product-verification",
                 "classification": "PRODUCT",
                 "roles": ["VERIFICATION"],
-                "include": ["tests/product/**"],
+                "include": ["src/tests/product/**"],
                 "purpose": "product_verification",
                 "shipped": False,
                 "runtime_required": False,
@@ -92,7 +92,7 @@ def _valid_mode() -> dict[str, object]:
     return {
         "id": "product",
         "component_ref": "product-verification",
-        "execution": {"pytest": ["tests/product"]},
+        "execution": {"pytest": ["src/tests/product"]},
     }
 
 
@@ -155,7 +155,7 @@ def test_repository_test_mode_registry_covers_test_owning_verification_component
 
 def test_valid_mode_resolves_declared_verification_component(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product").mkdir(parents=True)
     _write_registry(tmp_path, [_valid_mode()])
 
     assert _validate(tmp_path) == []
@@ -163,7 +163,7 @@ def test_valid_mode_resolves_declared_verification_component(tmp_path: Path) -> 
 
 def test_unknown_component_ref_is_rejected(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product").mkdir(parents=True)
     mode = _valid_mode()
     mode["component_ref"] = "missing-verification"
     _write_registry(tmp_path, [mode])
@@ -177,7 +177,7 @@ def test_unknown_component_ref_is_rejected(tmp_path: Path) -> None:
 
 def test_missing_verification_component_mode_is_rejected(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product").mkdir(parents=True)
     _write_registry(tmp_path, [])
 
     errors = _validate(tmp_path)
@@ -189,12 +189,12 @@ def test_missing_verification_component_mode_is_rejected(tmp_path: Path) -> None
 
 def test_duplicate_component_ref_is_rejected(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product").mkdir(parents=True)
     first = _valid_mode()
     second = _valid_mode()
     second["id"] = "product-secondary"
-    second["execution"] = {"pytest": ["tests/product/secondary"]}
-    (tmp_path / "tests" / "product" / "secondary").mkdir()
+    second["execution"] = {"pytest": ["src/tests/product/secondary"]}
+    (tmp_path / "src" / "tests" / "product" / "secondary").mkdir()
     _write_registry(tmp_path, [first, second])
 
     errors = _validate(tmp_path)
@@ -203,9 +203,9 @@ def test_duplicate_component_ref_is_rejected(tmp_path: Path) -> None:
 
 def test_pytest_target_must_stay_inside_component_include(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "other").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "other").mkdir(parents=True)
     mode = _valid_mode()
-    mode["execution"] = {"pytest": ["tests/other"]}
+    mode["execution"] = {"pytest": ["src/tests/other"]}
     _write_registry(tmp_path, [mode])
 
     errors = _validate(tmp_path)
@@ -217,7 +217,7 @@ def test_pytest_target_must_stay_inside_component_include(tmp_path: Path) -> Non
 
 def test_watch_is_rejected_as_duplicate_selection_authority(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product").mkdir(parents=True)
     mode = _valid_mode()
     mode["watch"] = ["src/product/**"]
     _write_registry(tmp_path, [mode])
@@ -228,7 +228,7 @@ def test_watch_is_rejected_as_duplicate_selection_authority(tmp_path: Path) -> N
 
 def test_registry_cannot_duplicate_architecture_authority(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product").mkdir(parents=True)
     mode = _valid_mode()
     mode["classification"] = "PRODUCT"
     mode["roles"] = ["VERIFICATION"]
@@ -245,10 +245,10 @@ def test_registry_cannot_duplicate_architecture_authority(tmp_path: Path) -> Non
 
 def test_nested_pytest_targets_are_rejected_as_overlapping_execution(tmp_path: Path) -> None:
     _write_profile(tmp_path)
-    (tmp_path / "tests" / "product" / "secondary").mkdir(parents=True)
+    (tmp_path / "src" / "tests" / "product" / "secondary").mkdir(parents=True)
     mode = _valid_mode()
     mode["execution"] = {
-        "pytest": ["tests/product", "tests/product/secondary"]
+        "pytest": ["src/tests/product", "src/tests/product/secondary"]
     }
     _write_registry(tmp_path, [mode])
 

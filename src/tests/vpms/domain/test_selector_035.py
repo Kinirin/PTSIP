@@ -9,7 +9,7 @@ import pytest
 
 from vpms import load_registry_snapshot, resolve_selection
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def _snapshot(ids=("toolchain.required-fields", "product.required-fields")):
