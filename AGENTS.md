@@ -8,16 +8,16 @@ The Root Responsibility Family transition introduced on `dev/0.3.8a4` has a dedi
 
 Before reading legacy family policy sets for that work:
 
-0. resolve the exact class-scoped Root Family entry mechanically:
+0. read the class-scoped bootstrap authority first: `developer/policy/MPD-0018.yaml` for `PTSIP_DEVELOPER_POLICY` and `src/policy/SFP-0024.yaml` for `PTSIP_SUPPORT_FEATURE`;
+1. only after an exact Root Family is explicitly selected by approved decomposition or owner decision, resolve its entry mechanically:
 
 ```text
 python -m developer.automation.root_family_policy_entry resolve --policy-class <PTSIP_DEVELOPER_POLICY|PTSIP_SUPPORT_FEATURE> --family <NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD>
 ```
 
-Use the returned `allocated_policy_id`, `canonical_path`, and `schema_ref`. Do not construct a Root Family policy ID, path, or Schema choice from naming similarity. A legacy `SPEC|PLAN|WORK|VERI|MIGR|RELS` family passed to this entry is fail-closed for new allocation.
+Use the returned `allocated_policy_id`, `canonical_path`, and `schema_ref`. Do not construct a Root Family policy ID, path, or Schema choice from naming similarity. If the Root Family is still unresolved, do not call the resolver with a guessed Family and do not materialize a policy. A legacy `SPEC|PLAN|WORK|VERI|MIGR|RELS` family passed to this entry is fail-closed for new allocation.
 
-1. read `developer/policy/MPD-0018.yaml` for `PTSIP_DEVELOPER_POLICY`;
-2. read `src/policy/SFP-0024.yaml` for `PTSIP_SUPPORT_FEATURE`;
+2. preserve the selected Policy Class throughout analysis and materialization;
 3. treat authority identity as the exact pair `(policy_class, responsibility_family)`;
 4. use the shared Root Family token vocabulary exactly as:
    `NORM | GOV | INTENT | ARCH | INFO | CNTR | RISK | SUPPLY | REAL | ASSURE | CTRL | CHANGE | OPS | RECORD`;
