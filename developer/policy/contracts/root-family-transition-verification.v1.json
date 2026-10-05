@@ -158,5 +158,16 @@
     "semantic_authority": "EACH_PLANE_OWN_REGISTERED_MODULE_AND_SCHEMA",
     "independent_interpreter": "GO",
     "existing_adapter_interpreter": "PYTHON"
-  }
+  },
+  "execution_smoke_cases": [
+    {
+      "id": "MARKDOWN_CLEANUP_REGISTERED_SOURCE_INTERFACE",
+      "command": [
+        "-m",
+        "developer.automation.markdown_cleanup",
+        "simulate"
+      ],
+      "expected_mutation": false
+    }
+  ]
 }

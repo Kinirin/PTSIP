@@ -60,6 +60,11 @@ type verificationContract struct {
 			Accepted bool   `json:"accepted"`
 		} `json:"acceptance_cases"`
 	} `json:"neutral_module_verification"`
+	SmokeCases []struct {
+		ID               string   `json:"id"`
+		Command          []string `json:"command"`
+		ExpectedMutation bool     `json:"expected_mutation"`
+	} `json:"execution_smoke_cases"`
 }
 
 func repository(t *testing.T) string {

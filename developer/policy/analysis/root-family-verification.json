@@ -186,5 +186,49 @@
   },
   "full_repository_pass_confirmed": false,
   "release_readiness": "NOT_ESTABLISHED_BY_THIS_REPORT",
-  "required_next_evidence": "Resolve the remaining full-regression failures under their canonical owners and obtain a complete final-SHA PASS; focused passes and CI contexts do not substitute for it."
+  "required_next_evidence": "Resolve the remaining full-regression failures under their canonical owners and obtain a complete final-SHA PASS; focused passes and CI contexts do not substitute for it.",
+  "ci_consumer_followup": {
+    "source_head": "3877e1ca1e514a306f6de3cbf0d8b0ce80379e37",
+    "recorded_at": "2026-10-06T02:31:12+09:00",
+    "working_tree_diff_digest": "44b594d8784bf37760c42c718d0ee492010801f5f728561d45f3b95acb725c38",
+    "reported_ci_failure": {
+      "source_sha": "3877e1ca1e514a306f6de3cbf0d8b0ce80379e37",
+      "run_url": "https://github.com/Kinirin/PTSIP/actions/runs/37347506179",
+      "job": "static-validation",
+      "cause": "Markdown cleanup read the unregistered original physical path developer/policy/MPD-0012.yaml after migration."
+    },
+    "correction": "Existing cleanup adapter uses canonical policy loader; exact Root GOV unit binding is registered; the actual CI simulation is admitted as a Go smoke case.",
+    "verification_stages": [
+      {
+        "verification_stage": "GO_WITH_CI_CONSUMER_SMOKE",
+        "return_code": 0,
+        "passed": 8,
+        "subtests_passed": 21,
+        "failed": 0,
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\go-ci-followup.jsonl"
+      },
+      {
+        "verification_stage": "MARKDOWN_AND_RESOLVER_PYTHON_REGRESSION",
+        "return_code": 0,
+        "passed": 63,
+        "failed": 0,
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\ci-entry.log"
+      },
+      {
+        "verification_stage": "EXACT_CI_CLEANUP_SIMULATION",
+        "return_code": 0,
+        "simulation_status": "READY",
+        "mutation_performed": false,
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\cleanup-ci-followup.log"
+      },
+      {
+        "verification_stage": "POLICY_VALIDATION",
+        "return_code": 0,
+        "status": "PASS",
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\policy-ci-followup.log"
+      }
+    ],
+    "local_runtime_refresh": "Repository virtualenv refreshed from installed PTSIP 0.3.8a2 to current repository editable PTSIP 0.3.8a3. No pyproject change was included. Canonical resolver works without PYTHONPATH override.",
+    "full_repository_pass_confirmed": false
+  }
 }

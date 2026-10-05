@@ -11,7 +11,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 import yaml
 
-from developer.automation.policy_loader import repository_root
+from developer.automation.policy_loader import load_yaml, repository_root
 
 
 POLICY_PATH = "developer/policy/MPD-0012.yaml"
@@ -111,7 +111,10 @@ def load_cleanup_workflow(root: str | Path | None = None) -> dict[str, object]:
 
 
 def _load_policy(root: Path) -> dict[str, object]:
-    payload = _load_yaml(root / POLICY_PATH, label="MPD-0012")
+    try:
+        payload = load_yaml(POLICY_PATH, root=root)
+    except (OSError, UnicodeDecodeError, ValueError, yaml.YAMLError) as exc:
+        raise MarkdownCleanupError(f"MPD-0012 could not be loaded: {exc}") from exc
     identity = _mapping(payload.get("policy"), label="MPD-0012.policy")
     if identity.get("id") != "MPD-0012":
         raise MarkdownCleanupError("cleanup policy identity must be MPD-0012")
