@@ -1,0 +1,20 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261005-MPD-0018-ROOT-FAMILY-ACTIVE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner explicitly authorized policy document generation in both
+    developer/policy and src/policy and requested the repository-root AGENTS.md
+    policy entry to move to the 14 Root Family transition authority on
+    dev/0.3.8a4. This activation authorizes the bootstrap authority model only.
+    Legacy policy decomposition, family-specific schema materialization, and
+    resolver implementation remain subsequent work governed by this policy.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-0018
+  recorded_at: "2026-10-05T19:06:00+09:00"
