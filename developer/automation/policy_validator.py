@@ -17,6 +17,7 @@ from developer.automation.policy_responsibility_gate import (
 INDEX = "developer/policy/index.yaml"
 INDEX_SCHEMA = "developer/policy/schemas/developer-policy-index.schema.json"
 MPD_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
+ROOT_FAMILY_MPD_SCHEMA = "developer/policy/schemas/root-family-policy.schema.json"
 GOVERNANCE_SOURCE_REGISTRY = "developer/policy/registries/governance-source-registry.yaml"
 GOVERNANCE_SOURCE_REGISTRY_SCHEMA = "developer/policy/schemas/governance-source-registry.schema.json"
 SOURCE_APPLICATION_REVIEW = "developer/policy/source-application-review.yaml"
@@ -32,6 +33,7 @@ NEUTRAL_CATALOG_CONTRACTS_SCHEMA = "developer/policy/schemas/developer-policy-ca
 
 SUPPORT_POLICY_ROOT = "src/policy"
 SFP_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy.schema.json"
+SFP_ROOT_FAMILY_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-root-family-policy.schema.json"
 SFP_INDEX = f"{SUPPORT_POLICY_ROOT}/index.yaml"
 SFP_INDEX_CANONICAL_SCHEMA = f"{SUPPORT_POLICY_ROOT}/schemas/ptsip-support-feature-policy-index.schema.json"
 
@@ -54,7 +56,13 @@ DEVELOPER_REGISTRIES = (
 )
 RELATION_KINDS = ("supersedes", "amends", "extends", "depends_on")
 _FAMILY_POLICY_ID_RE = re.compile(
-    r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+    r"^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+)
+_ROOT_FAMILY_POLICY_ID_RE = re.compile(
+    r"^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
+)
+_SUPPORT_ROOT_FAMILY_POLICY_ID_RE = re.compile(
+    r"^SFP-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
 )
 _POLICY_VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 
@@ -648,7 +656,9 @@ def _validate_policy_responsibility_analysis_plane(
         family = match.group(1)
         number = int(policy_id.rsplit("-", 1)[1])
         baseline = baselines.get(family)
-        if isinstance(baseline, int) and number > baseline:
+        if _ROOT_FAMILY_POLICY_ID_RE.fullmatch(policy_id):
+            expected_policy_ids.append(policy_id)
+        elif isinstance(baseline, int) and number > baseline:
             expected_policy_ids.append(policy_id)
 
     bound_policy_ids = [
@@ -964,15 +974,19 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     index = load_yaml(INDEX, root=base)
     index_schema = load_json("developer/policy/schemas/developer-policy-catalog.schema.json", root=base)
     mpd_schema = load_json(MPD_SCHEMA, root=base)
+    root_family_mpd_schema = load_json(ROOT_FAMILY_MPD_SCHEMA, root=base)
     sfp_index = load_yaml(SFP_INDEX, root=base)
     sfp_index_schema = load_json(SFP_INDEX_CANONICAL_SCHEMA, root=base)
     sfp_schema = load_json(SFP_CANONICAL_SCHEMA, root=base)
+    sfp_root_family_schema = load_json(SFP_ROOT_FAMILY_SCHEMA, root=base)
 
     for schema in (
         index_schema,
         mpd_schema,
+        root_family_mpd_schema,
         sfp_index_schema,
         sfp_schema,
+        sfp_root_family_schema,
     ):
         Draft202012Validator.check_schema(schema)
 
@@ -1028,7 +1042,10 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     if sfp_ids != tuple(sorted(set(sfp_ids))):
         errors.append("support policy IDs must be unique and canonically ordered")
     indexed_sfp_paths = {entry.get("path") for entry in sfp_entries if isinstance(entry, Mapping)}
-    discovered_sfp_paths = {path.name for path in (base / SUPPORT_POLICY_ROOT).glob("SFP-*.yaml")}
+    discovered_sfp_paths = {
+        path.relative_to(base / SUPPORT_POLICY_ROOT).as_posix()
+        for path in (base / SUPPORT_POLICY_ROOT).rglob("SFP-*.yaml")
+    }
     if indexed_sfp_paths != discovered_sfp_paths:
         errors.append("support policy index must cover the current SFP corpus exactly")
 
@@ -1050,7 +1067,12 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             continue
         payload = load_yaml(path, root=base)
         current_records[policy_id] = payload
-        for error in developer_contract_validator(mpd_schema, base).iter_errors(payload):
+        selected_mpd_schema = (
+            root_family_mpd_schema
+            if _ROOT_FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+            else mpd_schema
+        )
+        for error in developer_contract_validator(selected_mpd_schema, base).iter_errors(payload):
             errors.append(f"{path}: {error.message}")
         policy = _mapping(payload.get("policy"))
         if policy is None:
@@ -1068,6 +1090,7 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             errors.append(f"{path}: {transition_error}")
 
     sfp_validator = Draft202012Validator(sfp_schema)
+    sfp_root_family_validator = Draft202012Validator(sfp_root_family_schema)
     for entry in sfp_entries:
         if not isinstance(entry, Mapping):
             continue
@@ -1077,7 +1100,12 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
             continue
         payload = load_yaml(f"{SUPPORT_POLICY_ROOT}/{path}", root=base)
         current_records[policy_id] = payload
-        for error in sfp_validator.iter_errors(payload):
+        selected_sfp_validator = (
+            sfp_root_family_validator
+            if _SUPPORT_ROOT_FAMILY_POLICY_ID_RE.fullmatch(policy_id)
+            else sfp_validator
+        )
+        for error in selected_sfp_validator.iter_errors(payload):
             errors.append(f"{path}: {error.message}")
         policy = _mapping(payload.get("policy"))
         if policy is None:
