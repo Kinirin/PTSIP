@@ -2,575 +2,172 @@
 
 These instructions apply to coding agents working anywhere in this repository.
 
-## Mandatory Root Responsibility Family transition entry
+## Role of this file
 
-The Root Responsibility Family transition introduced on `dev/0.3.8a4` has a dedicated bootstrap entry. This section applies only to work that creates, changes, registers, resolves, migrates, or decomposes responsibility-family policy structure under `developer/policy/` or `src/policy/`.
+`AGENTS.md` is an operational entry projection for coding agents.
 
-Before reading legacy family policy sets for that work:
+It does not own normative policy semantics, canonical policy identity, authority precedence,
+classification semantics, current planning state, release verification authority, or other
+repository state. Those responsibilities belong to their canonical machine-readable owners.
 
-0. read the class-scoped bootstrap authority first: `developer/policy/MPD-0018.yaml` for `PTSIP_DEVELOPER_POLICY` and `src/policy/SFP-0024.yaml` for `PTSIP_SUPPORT_FEATURE`;
-1. only after an exact Root Family is explicitly selected by approved decomposition or owner decision, resolve its entry mechanically:
+Rules:
 
-```text
-python -m developer.automation.root_family_policy_entry resolve --policy-class <PTSIP_DEVELOPER_POLICY|PTSIP_SUPPORT_FEATURE> --family <NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD>
-```
+- Do not create, change, or infer normative semantics from this file.
+- Do not store current branch, work-unit, specification, release, verification, or other mutable
+  repository state in this file.
+- Do not copy canonical policy bodies into this file.
+- Prefer exact machine resolution over natural-language interpretation.
+- Generated or cached agent artifacts are projections only and must not become authority.
+- If a derived projection conflicts with its canonical source, the canonical source wins and the
+  projection must be treated as stale.
+- Unresolved or ambiguous routing fails closed for mutation.
+- Bounded read-only discovery may be used for a genuinely unregistered capability, but discovery
+  does not authorize mutation or create authority.
 
-Use the returned `allocated_policy_id`, `canonical_path`, and `schema_ref`. Do not construct a Root Family policy ID, path, or Schema choice from naming similarity. If the Root Family is still unresolved, do not call the resolver with a guessed Family and do not materialize a policy. A legacy `SPEC|PLAN|WORK|VERI|MIGR|RELS` family passed to this entry is fail-closed for new allocation.
+During the transition to generated projection, this checked-in file is limited to the bootstrap
+routing contract below. Do not expand it with policy or state semantics that belong in a canonical
+machine plane.
 
-2. preserve the selected Policy Class throughout analysis and materialization;
-3. treat authority identity as the exact pair `(policy_class, responsibility_family)`;
-4. use the shared Root Family token vocabulary exactly as:
-   `NORM | GOV | INTENT | ARCH | INFO | CNTR | RISK | SUPPLY | REAL | ASSURE | CTRL | CHANGE | OPS | RECORD`;
-5. do not infer shared semantics from a shared family token. `authority_subject` and `exclusive_kernel` are defined independently per policy class;
-6. an unmaterialized Root slot is `RESERVED`, not an implicit authority;
-7. `SPEC | PLAN | WORK | VERI | MIGR | RELS` are legacy developer-family migration sources for this transition. Do not create new target policy authority in those families, do not rename them into Root families, and do not infer one-to-one mappings;
-8. existing `SFP-####` policies retain their identities until explicit semantic decomposition. An existing SFP ID does not imply a Root Family assignment;
-9. `MPD-0018` and `SFP-0024` bootstrap the transition only. They do not define any individual Root Family's class-specific `authority_subject` or `exclusive_kernel`;
-10. unresolved class/family assignment is fail-closed for materialization or mutation. Do not use semantic similarity or AI confidence to choose a Root Family.
+## Top-level machine entry routing
 
-For Root Family transition work, this section takes precedence over legacy family discovery and over any resolver result that would otherwise be treated as target-family authority. Legacy resolver results may still be used as bounded migration-source evidence. For all other developer-policy work, use the normal developer policy resolver entry below.
+### 1. PTSIP capability use
 
-## Developer Policy vs Support Feature Policy
+When an operation uses PTSIP functionality in a repository, enter the repository-local PTSIP
+machine plane first through:
 
-PTSIP policy classes are non-interchangeable authority domains.
+`.ptsip/index.json`
 
-- `PTSIP_DEVELOPER_POLICY` lives under `developer/policy/`, is automated by `developer/automation/`, and must not ship as a consumer runtime contract. `MPD-0018` is the active Root Family transition bootstrap. Existing `MPD-<SPEC|PLAN|WORK|VERI|MIGR|RELS>-####` records are preserved as legacy migration sources while class-scoped Root Family schemas and routing are materialized.
-- `PTSIP_SUPPORT_FEATURE` lives under canonical `src/policy/` and ships through the deterministic `ptsip/support/` projection. `SFP-0024` is the active Support Root Family transition bootstrap. Existing `SFP-####` records remain identity-stable until explicit decomposition; family-aware policy identity requires later schema and resolver materialization.
-- The 14 Root Family tokens are shared only as a coordinate vocabulary. Same-named families in different policy classes are distinct authority domains and have no implicit semantic inheritance or fallback.
-- PTSIP repository self-management profiles belong under `developer/profiles/`. The canonical repository self-profile is `developer/profiles/ptsip-repository.yaml`. This repository's root `ptsip.yaml` compatibility bridge is retired for Tool `0.3.8` and later; consumer compatibility/migration input support is unchanged.
-- The legacy mixed-policy `decisions/` tree was retired and removed after migration to current SFP/MPD authorities. Do not recreate it as an active policy source.
-- Product runtime under `src/ptsip/**` or `src/vpms/**` must not depend on MPD documents. Current product governance consumes shipped SFP contracts only.
-- Developer planning registry is `developer/planning/index.yaml`. It may intentionally contain `plans: []` when no development plan is active. Version control planes are created under `developer/planning/<version>/index.yaml` only after a new plan is materialized from policy. `Pxx` means Plan Extension. WU files may be detailed; automatable state must remain in structured machine fields.
+Use the namespaces and machine contracts reachable from that index. Do not begin by scanning
+narrative documentation, implementation source, or similarly named files to infer a PTSIP entry
+point.
 
-## Mandatory developer policy entry
+The `.ptsip/` plane is the repository-local entry for using PTSIP capabilities. It is not the
+developer-policy authority for the Kinirin/PTSIP repository.
 
-Before broadly reading repository policy or planning prose, resolve the developer-policy context mechanically:
+### 2. Kinirin/PTSIP repository development
+
+When:
+
+`repository == Kinirin/PTSIP`
+
+and the operation changes or governs the repository development environment, development process,
+planning, verification, release preparation, CI, branch management, repository maintenance, or
+other developer-control-plane behavior, enter:
+
+`developer/policy/`
+
+Use the canonical developer Policy Resolver before loading broader policy or planning context:
 
 ```text
 python -m developer.automation.policy_resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
 ```
 
-The Policy Resolver performs exact bounded lookup through `developer/policy/policy-resolver-bindings/registry.yaml`, its `bindings.jsonl` record source, and `developer/policy/index.yaml`. Scope inheritance is controlled only by each binding record's explicit `inherit_to_descendants` value. Use only the returned canonical policy IDs and rule sections as the normal policy-loading path.
+Use only the exact policies, sections, contracts, and implementation bindings returned by the
+machine path. If the required developer operation cannot be resolved exactly, fail closed rather
+than reconstructing the rule from this file, historical documents, naming similarity, or model
+confidence.
 
-For a returned section, prefer the bounded lookup:
+### 3. Kinirin/PTSIP consumer-facing feature semantics
 
-```text
-python -m developer.automation.policy_resolver get <MPD-ID> --section <rule-section>
-```
-
-Rules:
-
-- Do not scan `developer/policy/**`, planning trees, ADR/history, or prose documentation merely to discover potentially relevant policy.
-- Do not substitute semantic similarity, filename similarity, nearby documents, or natural-language inference for a resolver binding.
-- A resolver failure is fail-closed for the dependent policy lookup. Do not choose an alternative policy manually.
-- The resolver is a routing/projection control plane only. Canonical MPD records remain authority.
-- `explain` is optional human-facing metadata and is not the normal coding-agent policy path.
-- Re-run resolution after changing task scope, operation class, or branch context.
-
-
-## Canonical repository-local PTSIP namespace
-
-For repository-local state semantically owned by PTSIP, `.ptsip/` is the only canonical control-plane root. Enter through `.ptsip/index.json` before discovering PTSIP-owned repository namespaces. Canonical PTSIP namespace indexes use JSON.
-
-Rules:
-
-- Do not create a parallel PTSIP Task, Policy, Operation, registry, configuration, or execution-state root under `tools/`, `scripts/`, `automation/`, or another repository path.
-- Repository tooling implementations may physically live outside `.ptsip/`; their PTSIP-owned registration, bindings, contracts, and lifecycle state belong under the canonical `.ptsip/` namespace.
-- `.ptsip/profiles/index.json` is the canonical local Project Profile catalog. The former `.ptsip/profiles/index.yaml` is compatibility-only migration input and must not be emitted by new writes.
-- `.ptsip/tasks/index.json` currently advertises a reserved/unavailable Task capability. That state is fail-closed for dependent Task execution and does not authorize inventing a repository-specific Task Engine.
-- `.ptsip/runtime/` is reserved as the repository-local PTSIP runtime namespace. Its exact persistence semantics are not finalized by Tool 0.3.8a2; do not move runtime authority into a second top-level control-plane root.
-
-## Mandatory Context Plane transition entry
-
-When `MEMORY.md` or `.ptsip/context/` is present, do not infer migration or deletion behavior from filenames. Resolve the machine state first:
+Use the Support Feature policy plane only when both conditions are true:
 
 ```text
-ptsip context status . --json
+repository == Kinirin/PTSIP
+AND
+operation changes PTSIP consumer-facing feature semantics
 ```
 
-Rules:
+Enter through:
 
-- `MEMORY.md` is not a normal operational context source. It may be read only when the status authorizes `MIGRATE_LEGACY_MEMORY_TO_SOURCE` or `PREPARE_CANONICAL_SOURCE_FROM_LEGACY_MEMORY`.
-- `.ptsip/context/source/context.source.json` is the semantic source of truth. `context.json`, `context.jsonl`, and `context.schema.json` are generated projections and are not independent authority.
-- `PROJECTION_REPAIR_REQUIRED` authorizes `ptsip context repair .` without a user question because the correct projections are deterministic consequences of the semantic source.
-- A semantic choice, conflict, or replacement of an existing canonical source is not preauthorized. Ask the user and use `--user-approved-source-replacement` only after explicit approval.
-- Legacy `MEMORY.md` deletion is allowed only after Context Plane validation succeeds. Migration failure must leave it intact.
-- Direct projection editing is forbidden during normal operation. A temporary emergency direct edit requires explicit user approval and must be replaced by generated projections plus a successful `ptsip context check .` before release.
+`src/policy/index.yaml`
 
-## Mandatory PTSIP Agent Contract entry
+Use only registered Support Feature policy and machine-contract relationships reachable from the
+canonical Support Feature plane. Do not infer Support Feature authority from shared names,
+developer-policy similarity, historical documents, or implementation proximity.
 
-For PTSIP product/consumer operations, resolve the bounded machine contract before reading any narrative specification:
+The Support Feature plane must not inherit developer-policy authority implicitly. If exact Support
+Feature resolution required for a mutation is unavailable, fail closed.
+
+## Cross-plane work
+
+A request may contain work belonging to more than one plane. Do not collapse such work into one
+inferred authority route.
+
+Segment cross-plane work into independently resolvable work units. Resolve each segment through its
+own canonical plane, preserve its authority boundary, and only combine segment results through
+machine-defined execution or join semantics when those semantics are available.
+
+Authority or authorization resolved for one segment must not be reused as implicit authority for a
+different plane.
+
+## Machine routing and capability discipline
+
+Routing is capability-owned and machine-resolved.
+
+- Capabilities declare their own routing eligibility.
+- Operations use a closed registered taxonomy; agents must not invent operation identities to make
+  routing succeed.
+- Multiple eligible capabilities may exist, but selection of a single execution candidate must be
+  performed by registered deterministic selection and conflict-resolution machinery.
+- Registered conflict policy, not prose similarity or agent preference, resolves supported routing
+  conflicts.
+- Canonical taxonomy may have a shared core and plane-owned extensions. An extension does not become
+  common-core semantics merely because similar names appear in multiple planes.
+- Resolver implementations may differ by plane, but agent-facing resolution must follow the common
+  resolver protocol and machine-selected contract graph.
+- Conditional contract branches, execution decisions, replanning boundaries, and implementation
+  bindings belong to machine contracts and compiled projections, not to this file.
+
+## Derived routing, state, and agent projections
+
+Derived artifacts exist to reduce repeated reasoning and repeated repository traversal. They do not
+create new authority.
+
+The intended flow is:
 
 ```text
-python -m agent_contracts.resolver <PTSIP-OP-ID> --json
+canonical capability / policy / state owners
+        ↓
+deterministic validation and compilation
+        ↓
+derived routing / selected contract / state projections
+        ↓
+agent execution image
+        ↓
+AGENTS.md and coding-agent consumption
 ```
 
-Current operation IDs are `PTSIP-OP-ADOPT-001`, `PTSIP-OP-VALIDATE-001`, `PTSIP-OP-CONFORM-001`, `PTSIP-OP-RECONCILE-AUTHORITY-001`, and `PTSIP-OP-MIGRATE-PROFILE-001`. Use only the returned exact rules, actions, conditions, gates, I/O schemas, vocabularies, and implementation bindings.
+A derived global registry may contain preselected routing, resolver, and conditional contract
+information, but it remains a reproducible non-authoritative projection of canonical sources.
 
-For current repository state, resolve one exact owner instead of reading repository history or status prose:
+Current-state caches are derived state only. They must not become the source of planning,
+specification, policy, release, or verification truth. A stale or unrecoverable derived state must
+be reconciled from canonical sources rather than interpreted by the agent.
+
+When present, `.agent/` is a generated, non-authoritative agent execution cache. It may contain
+operation-scoped compiled routing, contracts, state, and execution information for efficient agent
+consumption. It must not define policy, create authority, or become a fallback source when canonical
+resolution fails.
+
+## Generated projection discipline
+
+The target operating model is that `AGENTS.md` is generated from admitted canonical routing and
+agent-projection sources rather than maintained as a second policy database.
+
+Generation must preserve these boundaries:
 
 ```text
-python -m developer.automation.repository_state_resolver <domain> --json
+Canonical source
+    owns semantics and authority
+
+Derived registry / state / .agent
+    optimizes deterministic machine consumption
+
+AGENTS.md
+    projects coding-agent entry guidance
 ```
 
-Do not preload `adoption/`, `agents/AGENT-CONTRACT.md`, `STATUS.md`, `MEMORY.md`, `spec/*.md`, or `reference/*.md` as normative or default coding-agent context. Human-readable history/reference material is optional and cannot override the current machine contract or canonical state owner. Resolver failure is fail-closed.
-
-## Mandatory MPD identity lifecycle preflight
-
-Do not choose a new `MPD-####` ID or change an MPD lifecycle status by repository scan or conversational inference.
-
-For an existing ID, inspect it mechanically first:
-
-```text
-python -m developer.automation.policy_identity_lifecycle inspect <MPD-ID>
-```
-
-Before allocating a new ID, create an approved provenance record under `developer/policy/approvals/` and run:
-
-```text
-python -m developer.automation.policy_identity_lifecycle preflight --approval-ref developer/policy/approvals/<record>.yaml
-```
-
-After the policy file is materialized with the exact allocated ID and explicit approved status, register it through:
-
-```text
-python -m developer.automation.policy_identity_lifecycle register --approval-ref developer/policy/approvals/<record>.yaml --policy-file developer/policy/<MPD-ID>.yaml
-```
-
-For a new `PTSIP_DEVELOPER_POLICY` Root Family policy, do not use the unscoped `preflight/register` path. Resolve the class/family entry first, then use the analyzed Family lifecycle path:
-
-```text
-python -m developer.automation.root_family_policy_entry resolve --policy-class PTSIP_DEVELOPER_POLICY --family <ROOT>
-python -m developer.automation.policy_identity_lifecycle family-preflight --family <ROOT> --policy-class PTSIP_DEVELOPER_POLICY --approval-ref developer/policy/approvals/<record>.yaml --analysis-ref developer/policy/analysis/<analysis>.yaml --group-id <group>
-python -m developer.automation.policy_identity_lifecycle family-register --family <ROOT> --policy-class PTSIP_DEVELOPER_POLICY --approval-ref developer/policy/approvals/<record>.yaml --analysis-ref developer/policy/analysis/<analysis>.yaml --group-id <group> --policy-file developer/policy/<ROOT>/<MPD-ROOT-ID>.yaml
-```
-
-`SPEC | PLAN | WORK | VERI | MIGR | RELS` remain readable migration inputs but are not valid new `PTSIP_DEVELOPER_POLICY` allocation targets.
-
-For a lifecycle status change on an existing MPD, run `status-preflight` first. Temporary implementation approval does not imply `ACTIVE` or `DRAFT`; the approval provenance must state the target status explicitly. Any ID collision, index/file/subject-registry mismatch, missing approval provenance, or status mismatch is fail-closed.
-
-## Implementation Work Packet
-
-For implementation work with a registered task context, prepare a bounded developer-only work packet before editing:
-
-```text
-python -m developer.automation.implementation_work_packet prepare --scope <repository-path> --operation MODIFY --output <temporary-json-path> --json
-```
-
-Use the packet's exact edit targets, required tests, and verification stages. Run `check` before verification or commit. Branch, HEAD, context, or unlisted-path changes invalidate the packet and require regeneration.
-
-## Deterministic Test Mode verification
-
-Normal development verification uses automatic Test Mode resolution. The agent does not infer the affected Test Mode from prose, semantic similarity, confidence, or uncertainty.
-
-```text
-python .github/scripts/resolve_test_modes.py automatic --head HEAD
-```
-
-Rules:
-
-- Project Profile verification `analysis_inputs` and owned test `include` paths are the selection authority.
-- Run only the Test Modes returned by the resolver.
-- `all` is not an uncertainty fallback and is not a Test Mode.
-- Use `full` only for a release boundary, an explicit policy requirement, or an explicit maintainer request.
-- An unmapped changed path is fail-closed; do not replace it with full verification.
-- Manual mode selection is for an explicit targeted rerun or debugging request, not normal post-change verification.
-
-## Mandatory branch command plane
-
-Branch creation and remote branch inspection are governed by `MPD-0014` and must enter through the canonical command plane:
-
-```text
-python -m developer.automation.branch_control commands
-python -m developer.automation.branch_control list --repository Kinirin/PTSIP
-python -m developer.automation.branch_control inspect --repository Kinirin/PTSIP --branch <exact-branch-name>
-python -m developer.automation.branch_control create --repository Kinirin/PTSIP --branch <exact-branch-name> --approved-name <exact-user-approved-branch-name> --base-ref <exact-base-ref>
-python -m developer.automation.branch_control recreate --repository Kinirin/PTSIP --branch <exact-branch-name> --approved-name <exact-user-approved-branch-name> --base-ref <exact-base-ref>
-```
-
-The registered v1 command vocabulary is exactly `commands | list | inspect | create | recreate`. Unregistered branch operations fail closed. If an agent is about to create, query, rename, delete, or otherwise mutate a branch outside this command plane, treat that path as a management-intent deviation signal and stop rather than inventing another branch-management mechanism.
-
-`recreate` is a bounded delete-and-create operation. It is permitted only for an exact user-approved development branch, requires the existing branch to have no commits outside the selected base ref, refreshes the base SHA after deletion, verifies the recreated ref, and attempts to restore the original ref if recreation fails.
-
-## Mandatory branch creation preflight
-
-Branch creation is governed by `MPD-0014`. Coding agents must not invent a branch name from planning state, version context, a Project Profile change, a test need, or a temporary verification need.
-
-The canonical `create` and `recreate` commands apply the exact-name guard internally. Direct guard invocation is diagnostic/internal rather than the normal branch-management entry:
-
-```text
-python -m developer.automation.branch_creation_guard validate --candidate <exact-branch-name> --approved-name <exact-user-approved-branch-name> --authorization-source USER_EXPLICIT --request-kind DEVELOPMENT_VERSION_BRANCH --creation-mechanism GITHUB_CREATE_BRANCH_API
-```
-
-Rules:
-
-- Current v1 creation authority recognizes only development-version branches matching `^dev/[0-9]+\\.[0-9]+\\.[0-9]+$`.
-- The exact candidate branch name must equal the exact branch name supplied by the user request. Missing or inferred names fail closed.
-- Changes to `ptsip-public-profile-catalog/v1` or a `pp.[0-9].[0-9]{2}` identity do not authorize branch creation and do not require a development branch rename or version change.
-- Existing `tool-0.3.[0-9]-*` branches are grandfathered for retention only; that pattern is not new branch-creation authority.
-- The only authorized creation backend is the GitHub `create_branch` API semantics through the canonical command plane. Do not create branches with `git push`, `git switch -c`, `git checkout -b`, `git update-ref`, or the GitHub `update_ref` API.
-- Merge and retirement policy are separate from creation. Do not use merge eligibility or branch age as a substitute for creation authorization.
-
-## Mandatory branch-aware planning entry
-
-Before interpreting any version-specific planning document, `current_gate`, WU number, or branch name, resolve the planning entry mechanically:
-
-```text
-python -m developer.automation.planning.planning_entry_resolver
-```
-
-The resolver reads the current Git branch and performs an exact lookup against `developer/planning/index.yaml -> plans[].entry_routing.branch_entrypoints`. Treat its `entry_document` as the planning entry point for the current branch.
-
-Rules:
-
-- Exact mapping only. Do not infer a WU from branch prefixes, suffixes, naming similarity, `current_gate`, nearby files, or historical context.
-- A nonzero resolver result is fail-closed. When the root registry contains `plans: []`, `UNKNOWN_PLANNING_ENTRY` is the expected no-active-plan state; do not infer or resurrect a historical plan. A new plan must be materialized and registered before version-specific planning work continues.
-- Re-run the resolver after every branch switch before continuing version-specific work.
-- On `INDEPENDENT_LEAF`, the returned WU document is the branch entry point; do not substitute the integration plan's current gate.
-- On `INTEGRATION_CONTROL_PLANE`, enter through the returned version index and follow its machine-readable routing.
-- The resolver selects context only. It does not grant implementation authorization or expand the selected WU's scope.
-
-For branches covered by this resolver, this section supersedes any fixed historical version-specific planning paths elsewhere in this file. Historical `planning/0.3.6...` references remain relevant only to explicit 0.3.6 release-history or handoff work and must not override the resolved entry document.
-
-## Canonical Project Authority runtime
-
-For Project Authority work, use the canonical shipped Support Feature machine surface only:
-
-1. select current support policies through canonical `src/policy/index.yaml` when working from repository source, or the shipped `ptsip/support/policy/index.yaml` projection when installed;
-2. resolve authority contracts through the corresponding Support `registries/` boundary;
-3. resolve Authority Role effects through the corresponding Support `registries/` boundary;
-4. resolve repository/subject applicability through the corresponding Support `registries/` boundary;
-5. use `src/ptsip/governance/` for fresh eligibility, projection, and preauthorized transition evaluation.
-
-Design-time `planning/**` artifacts are not runtime authority and must not be used to infer missing machine semantics. Subject matching is exact first and may relax only through an explicitly registered machine relationship. AI confidence, prose similarity, and unregistered aliases cannot create authority.
-
-Completed generated review artifacts are retained through Git history rather than the active planning surface once their canonical result has been materialized and machine validation exists.
-
-## Context loading after policy resolution
-
-Do not unconditionally preload repository-wide natural-language context.
-
-Normal entry order:
-
-1. run the Policy Resolver for the exact task scope and operation;
-2. load only the returned canonical MPD rule sections;
-3. when the operation is planning/version-specific, run the branch-aware Planning Entry Resolver and enter through its exact returned document;
-4. load Specification, Project Profile, evidence, history, release notes, or other prose only when the resolved task actually requires them.
-
-Repository state and memory use the provider-neutral Context Plane under `.ptsip/context/`. The single semantic write target is `.ptsip/context/source/context.source.json`; `context.json`, `context.jsonl`, and `context.schema.json` are deterministic generated projections and are never independent authority.
-Choose `context.json` or `context.jsonl` according to the consuming agent's supported machine-input shape. `context.schema.json` is their shared machine contract. No projection format is privileged by provider. Do not edit generated projections directly.
-Use `ptsip context migrate . --input <source.json>` for a single semantic write, `ptsip context repair .` after an authorized source edit, and `ptsip context check .` to fail closed on source-binding, byte, schema, or semantic-equivalence drift. Historical memory is targeted context; do not replay the complete memory set unless an explicitly resolved operation requires full-history analysis.
-Planning documents and context memory records are operational or historical context. Normative claims come from the applicable bound Specification and canonical machine-readable contracts.
-
-## License Authority entry discipline
-
-`License-Authority/` is a closed License Authority Boundary and is not part of the default coding-agent read set. Default behavior is `DO_NOT_ENTER`.
-
-Entry is permitted only for `EXPLICIT_USER_REQUEST`, `LICENSE_AUTHORITY_PATH_CHANGED`, `LICENSE_PROJECTION_MISMATCH`, or `REPORTED_LICENSE_PROBLEM`.
-
-Normal Tool releases, normal Specification validation, Tool version changes, documentation mentions, keyword detection, and AI semantic guesses do not authorize License Authority entry.
-
-When entry is permitted:
-
-1. evaluate the trigger without reading License content;
-2. read only `License-Authority/license-authority.yaml`;
-3. resolve the requested operation from its closed operation map;
-4. read only documents declared for that operation;
-5. read external projections only when that operation declares them;
-6. fail closed on unknown operations, undeclared files, or paths outside `License-Authority/`.
-
-Files outside `License-Authority/` may mention or describe licensing, but those references are non-authoritative and are not incorporated into the License by reference. Do not scan the repository for license-like prose to determine License Authority.
-
-## Repository-state discipline
-
-- Re-read the remote target branch HEAD immediately before every GitHub write, merge, release preparation, or exact-SHA evidence claim.
-- Preserve maintainer commits and never force-update `main`.
-- Do not claim tests, builds, releases, tags, or publication succeeded without evidence for the exact relevant SHA.
-- Documentation descendants after a successful verification run record results; they do not replace the exact source verification authority.
-- Do not enter future Tool `0.3.6.1` implementation merely because its planning documents exist.
-- Historical release notes, ADRs, and completed WU evidence are not rewritten to make current-version wording uniform.
-
-## Tool 0.3.6 completion state
-
-Tool `0.3.6` development work is complete. Current ordered state:
-
-```text
-WU-00  0.3.6-draft normative baseline                     COMPLETE
-WU-01  lifecycle ontology/boundary rules                   COMPLETE
-WU-02  roles + typed relationships + associated artifacts  COMPLETE
-WU-03  canonical Responsibility Map v2 activation          COMPLETE
-WU-04  template/materialization/effective-map pipeline     COMPLETE / EXACT-SHA VERIFIED
-WU-05  repository dogfood / self-evaluation                COMPLETE / DOGFOOD REVIEWED
-WU-06  full regression/package/distribution verification   COMPLETE / EXACT-SHA VERIFIED
-WU-07  final Specification freeze/release preparation      COMPLETE / EXACT-SHA VERIFIED
-```
-
-WU-07 used **Strategy B — Release Contract Strengthening**.
-
-Exact WU-07 verification authority:
-
-```text
-source SHA:       452d0f8b0c78bdebb180ceb2b9994485f59eb43a
-workflow run/job: 32640319047 / 97196299107
-Python:           3.14.6
-pytest:           331 passed / 0 failed
-Specification:    0.3.6-draft @ d6995ed232e845b88d8235b851e80ab54b7804ea
-profile coverage: unassigned_count=0
-Product Artifact: PASS / exact snapshot binding
-PTSIP-PKG-001:    0 definite violations
-wheel/VPMS smoke: PASS
-commit status:    self-hosted/tooling-test = success
-```
-
-The exact WU-07 entry baseline remains:
-
-```text
-8b2c0819e10b58902a780a094a0f52c603c39fba
-```
-
-The completion/verification authority is the later exact candidate `452d0f8...`; closure/documentation commits after it do not replace that verification authority.
-
-The next release boundary is exact-main handoff:
-
-```text
-approved Tool 0.3.6 state -> main
-    -> fresh exact main SHA
-    -> tooling-test.yml on that exact SHA
-    -> require self-hosted/tooling-test success
-    -> release.yml from the same current main SHA
-    -> release contract PASS
-    -> draft GitHub Release targeting the same SHA
-    -> maintainer publication
-    -> tooling-release.yml publication build/verification
-    -> PyPI Trusted Publishing
-```
-
-Do not describe Tool `0.3.6` as published until that publication boundary actually succeeds.
-
-## Current Specification binding
-
-Tool `0.3.6` is bound to:
-
-```text
-Specification 0.3.6-draft
-SPEC_REVISION d6995ed232e845b88d8235b851e80ab54b7804ea
-```
-
-A new immutable Specification revision is required only for a genuine normative change. Workflow, test, planning, status, release-note, or other documentation-only changes do not move `SPEC_REVISION` by themselves.
-
-## Tool 0.3.6 lifecycle reasoning
-
-PTSIP classification answers:
-
-```text
-Who primarily owns this project responsibility across its lifecycle?
-```
-
-Canonical Tool `0.3.6` classifications are exactly:
-
-```text
-PRODUCT
-DEVELOPMENT_TOOLING
-DELIVERY
-OPERATIONS
-NEUTRAL_CONTRACT
-```
-
-`TOOLCHAIN` is historical Tool `0.3.5` migration input only. It must not be emitted or preserved as a canonical Tool `0.3.6` alias.
-
-Classification is determined from governing lifecycle obligation, not file type, path, framework, language, executable status, workflow provider, compilation behavior, test status, majority of files/jobs/steps, runtime duration, invocation frequency, or confidence score.
-
-Important boundaries:
-
-- Product-specific verification may be `PRODUCT`.
-- Reusable verification/test SDK/framework/harness infrastructure may be `DEVELOPMENT_TOOLING`.
-- Local/intermediate development build support is normally `DEVELOPMENT_TOOLING`.
-- Authoritative release-unit assembly/signing/packaging/publication/deployment-to-destination is normally `DELIVERY`.
-- `DELIVERY` ends at delivery handoff; ongoing health/recovery/reconciliation/maintenance is `OPERATIONS`.
-- `NEUTRAL_CONTRACT` requires non-executable, non-owning, lifecycle-independent contract responsibility.
-- Material mixed-lifecycle responsibilities should split when independently governable; do not choose a majority lifecycle.
-- Material unresolved ownership fails closed.
-
-## Responsibility Map v2 axes
-
-Keep these distinct:
-
-```text
-classification
-    = primary lifecycle ownership
-
-roles
-    = coarse responsibility characteristics
-
-relationships
-    = project-owned typed directed semantics
-
-source_mode / derived origin
-    = declaration/materialization provenance
-
-VPMS Verification Purpose
-    = what verification protects/verifies
-```
-
-Canonical roles:
-
-```text
-IMPLEMENTATION
-VERIFICATION
-AUTOMATION
-CONFIGURATION
-DOCUMENTATION
-GOVERNANCE
-```
-
-Canonical project-declared relationship types:
-
-```text
-IMPORTS
-LINKS
-LOADS
-INVOKES
-READS
-GENERATES
-BUILDS
-PACKAGES
-PUBLISHES
-DEPLOYS
-VERIFIES
-MANAGES
-DOCUMENTS
-SPECIFIES
-GOVERNS
-```
-
-Do not derive project-owned relationships automatically from observed evidence. Evidence can support a proposal; explicit project declaration remains authority.
-
-## Responsibility Map declaration modes
-
-Canonical source modes are:
-
-```text
-explicit
-template
-hybrid
-```
-
-Template selection is explicit and immutable-revision-bound. Never select a template from repository layout, language, framework, manifest presence, or confidence.
-
-Materialization is deterministic and non-authoritative. It must not infer lifecycle ownership, repair architecture, create project intent, or silently rewrite the Source Project Profile.
-
-All source modes resolve to a validated Canonical Effective Responsibility Map for downstream Tool behavior. Preserve source declaration and materialized provenance separately.
-
-## Adoption and migration discipline
-
-Canonical Tool `0.3.6` Project Profiles use `classification` as primary lifecycle ownership authority. A second canonical `lifecycle_owner` field must not compete with it.
-
-When explicit adoption/resolution records architecture facts, preserve applicable facts such as:
-
-```text
-classification
-roles
-purpose
-shipped
-runtime_required
-executable
-associated artifacts
-typed relationships
-explicit release/compatibility metadata
-```
-
-Legacy Tool `0.3.5` `TOOLCHAIN`, `lifecycle_owner`, old boundary roots, consumers, analysis inputs, or untyped policy edges are migration evidence only. Do not blindly convert them into Tool `0.3.6` authority.
-
-Evidence-backed Tool `0.3.5 -> 0.3.6` assisted migration is owned by Tool `0.3.6.1`. Tool `0.3.6` release closure does not authorize implementing that continuation.
-
-## Decision Authority / Project Profile / evidence
-
-Keep these responsibilities separate:
-
-```text
-Specification
-    -> normative rules
-
-Decision Authority
-    -> which explicit coordinated architecture answer won
-
-Project Profile / Responsibility Map
-    -> durable project-owned architecture declaration
-
-Observed evidence
-    -> what repository/artifacts actually do
-
-Conformance Evaluation
-    -> whether declaration + evidence satisfy applicable rules
-```
-
-A Decision Authority does not replace the selected Project Profile and does not prove conformance.
-
-For GitHub coordination, the Reference Tool uses:
-
-```text
-refs/heads/ptsip-policy
-```
-
-Preserve stable decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation, read-side authority freshness, deterministic reconciliation, fail-closed behavior, and global/local state separation.
-
-A complete local declaration is not sufficient reason to skip relevant distributed authority reads. Semantic equivalence is architecture meaning, not YAML formatting.
-
-## Read-only default and mutation safety
-
-Inspection and Pilot behavior are read-only by default. Read-only commands do not materialize repository-local state. External temporary caches and reports may remain outside the Consumer Repository, but when repository-local PTSIP runtime state is explicitly persisted, its canonical ownership namespace is `.ptsip/runtime/`; an external cache or working directory must not become a second repository control-plane authority.
-
-Prepared profile writes must reject stale repository/profile state. Do not combine evidence from different revisions into one stable claim.
-
-## Product Artifact boundary
-
-Artifact owner and producer are different concepts. Development Tooling or Delivery may build a Product Artifact, but Product distribution contents still have to satisfy the Product lifecycle boundary.
-
-Release verification must inspect actual built artifacts, not packaging configuration as proof. Preserve snapshot-bound Product Artifact evidence and fail closed on definite `PTSIP-PKG-001` violations.
-
-## VPMS boundary
-
-PTSIP asks who owns a responsibility across its lifecycle. VPMS asks why a Verification Case exists and what it protects.
-
-PTSIP classification and VPMS Verification Purpose remain independent. PTSIP core must not depend on VPMS. VPMS consumes only a narrow read-only projection of validated effective PTSIP metadata.
-
-Current VPMS compatibility vocabulary may retain `PRODUCT | TOOLCHAIN`; VPMS `TOOLCHAIN` is not a Tool `0.3.6` PTSIP classification.
-
-VPMS PASS != PTSIP CONFORMANT, and PTSIP CONFORMANT != functional verification PASS.
-
-## Conformance behavior
-
-Completed Consumer Repository outcomes are only:
-
-```text
-CONFORMANT
-NON_CONFORMANT
-INCOMPLETE
-```
-
-Do not equate zero findings with conformance. Blocking evidence gaps remain `INCOMPLETE` unless a definite mandatory violation already establishes `NON_CONFORMANT`.
-
-Do not let project-local policy weaken universal PTSIP requirements.
-
-## Release and CI resource policy
-
-Primary regression/release verification uses GitHub-hosted `ubuntu-latest` execution with Python 3.14 provisioned through `actions/setup-python`.
-
-Preserve the existing exact-SHA checkout/status model. Do not reintroduce self-hosted runner assumptions, Windows-only Python launcher requirements, or runner-specific status-context names.
-
-Do not create a parallel workflow where an existing release/test workflow can be narrowly maintained.
-
-## Instruction priority
-
-Use this order:
-
-1. bound canonical Specification and normative companion assets from the same immutable revision;
-2. relevant Decision Authority winner when distributed coordination applies;
-3. repository Project Profile / Responsibility Map;
-4. observed repository/dependency/artifact evidence;
-5. imported external evidence with provenance;
-6. project ADR/history;
-7. this repository-operational contract;
-8. informal examples.
-
-This priority does not make Decision Authority a conformance oracle. Authority governs which explicit answer won; observed evidence still governs what the repository actually does.
+A generated projection must not add, weaken, reinterpret, or silently repair canonical semantics.
+If a required machine relationship is not yet representable, keep it unresolved and route it
+through the bounded discovery/admission process instead of encoding a guessed rule in
+`AGENTS.md`.
