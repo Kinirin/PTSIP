@@ -315,19 +315,22 @@ def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -
         assert "repository_binding:" not in text
 
 
-def test_support_policy_index_has_exact_registered_targets_and_draft_successor() -> None:
+def test_support_policy_index_has_exact_targets_and_active_vpms_boundary() -> None:
     payload = _yaml(ROOT / "src" / "policy" / "index.yaml")
     assert [item["id"] for item in payload["policies"]] == [
         f"SFP-{number:04d}" for number in range(1, 24)
     ]
     assert payload["policies"][3]["status"] == "DRAFT"
     assert payload["policies"][22] == {
-        "id": "SFP-0023", "path": "SFP-0023.yaml", "status": "DRAFT",
+        "id": "SFP-0023", "path": "SFP-0023.yaml", "status": "ACTIVE",
+    }
+    assert payload["policies"][5] == {
+        "id": "SFP-0006", "path": "SFP-0006.yaml", "status": "RETIRED",
     }
     assert all(
         item["status"] == "ACTIVE"
         for index, item in enumerate(payload["policies"])
-        if index not in {3, 22}
+        if index not in {3, 5}
     )
 
 

@@ -6,9 +6,10 @@ import tomllib
 import vpms
 from vpms.domain.model import VerificationCase, VerificationPurpose
 from vpms.domain.registry import load_registry
-from vpms.domain.selector import SelectionScope, select_cases
+from vpms.domain.snapshot import load_registry_snapshot
+from vpms.selection import resolve_selection
+from vpms.execution.composition import run_cases
 from vpms.execution.adapters.command import CommandExecutor
-from vpms.execution.runner import run_selected_cases
 
 
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
@@ -26,18 +27,22 @@ _EXPECTED_PUBLIC_SURFACE = (
     "RegistryReferenceIndex",
     "RunnerExecution",
     "RunnerRef",
-    "SelectionScope",
+    "SelectionDiagnostic",
+    "SelectionResult",
+    "SnapshotLoadResult",
     "TargetRef",
     "VariablesRef",
+    "ValidatedRegistrySnapshot",
     "VerificationCase",
     "VerificationOutcome",
     "VerificationPurpose",
     "VerificationResult",
     "load_registry",
+    "load_registry_snapshot",
     "register_formulas",
     "run_case",
-    "run_selected_cases",
-    "select_cases",
+    "resolve_selection",
+    "run_cases",
 )
 
 
@@ -46,9 +51,10 @@ def test_package_root_exposes_only_proven_vpms_contracts() -> None:
     assert vpms.VerificationPurpose is VerificationPurpose
     assert vpms.VerificationCase is VerificationCase
     assert vpms.load_registry is load_registry
-    assert vpms.SelectionScope is SelectionScope
-    assert vpms.select_cases is select_cases
-    assert vpms.run_selected_cases is run_selected_cases
+    assert vpms.load_registry_snapshot is load_registry_snapshot
+    assert vpms.resolve_selection is resolve_selection
+    assert vpms.run_cases is run_cases
+    assert all(not hasattr(vpms, name) for name in ("SelectionScope", "select_cases", "run_selected_cases"))
     assert vpms.CommandExecutor is CommandExecutor
 
 

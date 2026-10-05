@@ -11,7 +11,7 @@
   ],
   "properties": {
     "capability": {
-      "const": "REGISTERED_NON_ACTIVE_ONLY"
+      "enum": ["REGISTERED_NON_ACTIVE_ONLY", "ACTIVE"]
     },
     "format": {
       "const": "vpms-product-contract-catalog/v1"

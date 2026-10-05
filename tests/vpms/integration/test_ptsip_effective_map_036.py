@@ -14,6 +14,7 @@ from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.profile_metadata import current_project_profile_ptsip_metadata
 from ptsip.validation.profile import validate_profile
+from ptsip.validation.handoff import load_validated_effective_map
 from ptsip.validation.templates import template_catalog
 from vpms.domain.model import (
     FormulaRef,
@@ -42,6 +43,11 @@ _POLICIES = {
     "nonproduct_in_product_package": "deny",
     "independent_build_resolution": "required",
 }
+
+
+def _project_payload(payload):
+    # Private projector unit coverage, not canonical validated handoff evidence.
+    return ptsip_bridge._metadata_from_payload(payload, source_label="unit effective map")
 
 
 class _PassExecutor:
@@ -141,7 +147,7 @@ def _resolved_snapshot(
     assert validation.valid, validation.errors
     assert validation.resolved_profile is not None
     resolved = validation.resolved_profile
-    return metadata_from_effective_map(resolved.effective_payload), resolved.source_mode
+    return metadata_from_effective_map(load_validated_effective_map(repo)), resolved.source_mode
 
 
 def test_explicit_effective_map_projects_vpms_target_metadata() -> None:
@@ -166,7 +172,7 @@ def test_explicit_effective_map_projects_vpms_target_metadata() -> None:
         "policies": {},
     }
 
-    snapshot = metadata_from_effective_map(effective_payload)
+    snapshot = _project_payload(effective_payload)
 
     assert snapshot.as_dict() == {
         "targets": [
@@ -179,7 +185,7 @@ def test_explicit_effective_map_projects_vpms_target_metadata() -> None:
     }
 
 
-def test_vpms_effective_map_bridge_does_not_import_ptsip_runtime() -> None:
+def test_vpms_effective_map_bridge_imports_only_the_exact_ptsip_read_boundary() -> None:
     bridge_path = _REPO_ROOT / "src" / "vpms" / "integration" / "ptsip_bridge.py"
     tree = ast.parse(bridge_path.read_text(encoding="utf-8"), filename=str(bridge_path))
     imports: list[str] = []
@@ -190,11 +196,13 @@ def test_vpms_effective_map_bridge_does_not_import_ptsip_runtime() -> None:
         elif isinstance(node, ast.ImportFrom) and node.module:
             imports.append(node.module)
 
-    assert not any(name == "ptsip" or name.startswith("ptsip.") for name in imports)
+    assert {name for name in imports if name == "ptsip" or name.startswith("ptsip.")} == {
+        "ptsip.governance", "ptsip.validation.handoff",
+    }
 
 
 def test_effective_map_projection_exposes_only_narrow_vpms_metadata_contract() -> None:
-    snapshot = metadata_from_effective_map(
+    snapshot = _project_payload(
         {
             "components": [
                 {
@@ -246,7 +254,7 @@ def test_ptsip_classification_does_not_determine_vpms_verification_purpose(
     classification: str,
     purpose: VerificationPurpose,
 ) -> None:
-    snapshot = metadata_from_effective_map(
+    snapshot = _project_payload(
         {
             "components": [
                 {
@@ -383,7 +391,7 @@ def test_invalid_profile_produces_no_vpms_metadata_snapshot(tmp_path: Path) -> N
     )
     with pytest.raises(
         PtsipMetadataError,
-        match="resolved effective Responsibility Map is required",
+        match="UNVALIDATED_EFFECTIVE_MAP",
     ):
         metadata_from_effective_map(effective_payload)
 
@@ -423,7 +431,7 @@ def test_vpms_metadata_projection_does_not_fallback_to_raw_profile(
 
     with pytest.raises(
         PtsipMetadataError,
-        match="does not fall back to a raw project profile",
+        match="UNVALIDATED_EFFECTIVE_MAP",
     ):
         ptsip_bridge.metadata_from_effective_map(None)
 
@@ -432,7 +440,7 @@ def test_vpms_metadata_projection_does_not_fallback_to_raw_profile(
 
 def test_invalid_effective_map_does_not_return_partial_target_list() -> None:
     with pytest.raises(PtsipMetadataError, match="component at index 1 must be a mapping"):
-        metadata_from_effective_map(
+        _project_payload(
             {
                 "components": [
                     {"id": "valid-product", "classification": "PRODUCT"},
@@ -467,7 +475,7 @@ def test_effective_metadata_consumption_does_not_mutate_ptsip_source(
     source_payload_before = copy.deepcopy(resolved.source_payload)
     effective_payload_before = copy.deepcopy(resolved.effective_payload)
 
-    snapshot = metadata_from_effective_map(resolved.effective_payload)
+    snapshot = metadata_from_effective_map(load_validated_effective_map(repo))
     target_before = resolve_target_metadata(TargetRef(component_id="package"), snapshot)
     assert target_before is not None
     classification_before = target_before.classification
@@ -499,7 +507,7 @@ def test_effective_metadata_consumption_does_not_mutate_ptsip_source(
 def test_effective_metadata_consumption_does_not_mutate_decision_authority(
     tmp_path: Path,
 ) -> None:
-    snapshot = metadata_from_effective_map(
+    snapshot = _project_payload(
         {
             "components": [
                 {
@@ -577,7 +585,7 @@ def test_canonical_036_path_does_not_repair_legacy_toolchain_profile(
 
     assert not validation.valid
     assert validation.resolved_profile is None
-    with pytest.raises(PtsipMetadataError, match="resolved effective Responsibility Map is required"):
+    with pytest.raises(PtsipMetadataError, match="UNVALIDATED_EFFECTIVE_MAP"):
         metadata_from_effective_map(None)
     assert profile.read_bytes() == before
 

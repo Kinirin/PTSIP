@@ -10,9 +10,7 @@ from vpms.selection import SelectionResult, resolve_selection
 
 
 @pytest.fixture
-def snapshot(monkeypatch):
-    # Not activation evidence: only the lifecycle guard is replaced in this fixture.
-    monkeypatch.setattr(contracts, "require_active_contract", contracts.load_registered_contract)
+def snapshot():
     refs = {"targets": ["t"], "formulas": ["f"], "variables": ["v"],
             "policies": ["p"], "runners": ["r"]}
     raw = [{"id": name, "purpose": purpose, "target": "t", "formula": "f",

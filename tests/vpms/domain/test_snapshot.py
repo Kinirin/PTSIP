@@ -8,9 +8,9 @@ from vpms.domain.snapshot import ValidatedRegistrySnapshot, _snapshot_data, load
 
 
 @pytest.fixture
-def candidate(monkeypatch):
-    # Candidate behavior only: actual shipped lifecycle remains APPROVED/inactive.
-    monkeypatch.setattr(contracts, "require_active_contract", contracts.load_registered_contract)
+def candidate():
+    # Exercise the actual activated product guard, without a lifecycle bypass.
+    assert contracts.require_active_contract("protocol")["runtime_enabled"]
 
 
 def definitions():

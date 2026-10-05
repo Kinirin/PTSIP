@@ -17,6 +17,8 @@ SCHEMA = "developer/policy/schemas/vpms-api-implementation.schema.json"
 
 
 def verify(root: Path = ROOT, *, check_worktree: bool = False):
+    from .vpms_runtime_activation import activation_record, verify_preserved
+    activation = activation_record(root)
     record = json.loads((root / RECORD).read_text(encoding="utf-8"))
     Draft202012Validator(json.loads((root / SCHEMA).read_text(encoding="utf-8"))).validate(record)
     prior_path = root / record["prior_materialization_ref"]
@@ -24,9 +26,7 @@ def verify(root: Path = ROOT, *, check_worktree: bool = False):
         raise ValueError("PRIOR_MATERIALIZATION_CHANGED")
     prior = json.loads(prior_path.read_text(encoding="utf-8"))
     verify_registration(root)
-    for item in record["preserved_files"]:
-        if not preserved_text_matches((root / item["path"]).read_bytes(), item):
-            raise ValueError("PRESERVED_SOURCE_CHANGED: " + item["path"])
+    verify_preserved(root, record["preserved_files"])
     # Keep the original scope as provenance, but honor only exact, approved
     # subsequent retirements. Missing live implementation targets still fail.
     retired = {item["path"] for item in record.get("subsequent_retirements", [])}
@@ -49,11 +49,13 @@ def verify(root: Path = ROOT, *, check_worktree: bool = False):
                     "execution_composition": "execution-composition.json"}[role]
         payload = json.loads((root / "src/vpms/contracts" / relative).read_text(encoding="utf-8"))
         found = [item for item in payload["planned_bindings"] if item["api"] == binding["api"]]
-        if len(found) != 1 or found[0]["source"] != binding["source"] or found[0]["availability"] != "IMPLEMENTED_INACTIVE":
+        if len(found) != 1 or found[0]["source"] != binding["source"] or found[0]["availability"] != ("IMPLEMENTED_ACTIVE" if activation else "IMPLEMENTED_INACTIVE"):
             raise ValueError("IMPLEMENTATION_BINDING_MISMATCH")
     expected = set(prior["materialization_targets"]) | set(record["mutation_targets"])
     expected |= {item["path"] for item in record["preserved_files"] if item["path"].startswith("developer/")}
     if check_worktree:
+        if activation:
+            raise ValueError("ORIGINAL_SCOPE_SUPERSEDED_BY_ACTIVATION")
         if retired:
             raise ValueError("ORIGINAL_WORKTREE_SCOPE_SUPERSEDED_BY_RETIREMENT")
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -63,7 +65,7 @@ def verify(root: Path = ROOT, *, check_worktree: bool = False):
         changed += subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard"], cwd=root, text=True).splitlines()
         if set(changed) != expected:
             raise ValueError("EXACT_CHANGE_SCOPE_MISMATCH: " + str(sorted(set(changed) ^ expected)))
-    return {"status": "IMPLEMENTED_INACTIVE", "runtime_activation": False,
+    return {"status": "IMPLEMENTED_ACTIVE" if activation else "IMPLEMENTED_INACTIVE", "runtime_activation": bool(activation),
             "commit_push_authorized": True, "implementation_target_count": len(record["mutation_targets"]),
             "combined_changed_path_count": len(expected), "preserved_file_count": len(record["preserved_files"]),
             "retired_target_count": len(retired)}

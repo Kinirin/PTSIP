@@ -29,7 +29,7 @@ def built_wheel(tmp_path_factory):
     return wheels[0], temporary
 
 
-def test_actual_wheel_contains_exact_vpms_contracts_and_draft_support(built_wheel):
+def test_actual_wheel_contains_exact_active_contracts_and_no_retired_selector(built_wheel):
     wheel, _ = built_wheel
     source = ROOT / "src/vpms/contracts"
     with zipfile.ZipFile(wheel) as archive:
@@ -40,6 +40,7 @@ def test_actual_wheel_contains_exact_vpms_contracts_and_draft_support(built_whee
             ROOT / "src/policy/SFP-0023.yaml"
         ).read_bytes()
         names = archive.namelist()
+        assert "vpms/domain/selector.py" not in names
         assert not any(name.startswith(("developer/", "docs/Support_policy/automation/")) for name in names)
         assert not any("/MPD-" in name for name in names)
 
@@ -80,32 +81,70 @@ for key, entry in catalog["contracts"].items():
     contract = read(entry["path"])
     Draft202012Validator(read("schemas/product-contract.schema.json"), registry=resources).validate(contract)
     assert contract["id"] == key
-    assert contract["status"] == entry["status"] == "APPROVED"
-    assert not contract["runtime_enabled"]
+    assert contract["status"] == entry["status"] == "ACTIVE"
+    assert contract["runtime_enabled"]
 support = AuthorityCatalog(pathlib.Path(sys.argv[1]) / "not-a-repository")
 support.validate_current_corpus()
 _, route, contract = support.load_current_record("SFP-0023")
 assert support.assets.source == "SHIPPED_PROJECTION"
-assert route["status"] == contract["policy"]["status"] == "DRAFT"
-assert not support.lifecycle_is_eligible(support.lifecycle_state(contract))
-assert hasattr(vpms, "select_cases") and hasattr(vpms, "run_selected_cases")
-assert not hasattr(vpms, "resolve_selection")
-from vpms.contract_runtime import ContractUnavailable
+assert route["status"] == contract["policy"]["status"] == "ACTIVE"
+assert support.lifecycle_is_eligible(support.lifecycle_state(contract))
+_, route, legacy = support.load_current_record("SFP-0006")
+assert route["status"] == legacy["policy"]["status"] == "RETIRED"
+assert not support.lifecycle_is_eligible(support.lifecycle_state(legacy))
+assert all(not hasattr(vpms, name) for name in ("SelectionScope", "select_cases", "run_selected_cases"))
 from vpms.domain.snapshot import load_registry_snapshot
 from vpms.selection import resolve_selection
 from vpms.execution.composition import run_cases
-for call in (
-    lambda: load_registry_snapshot([], references={}),
-    lambda: resolve_selection(True, {"kind": "CASE_IDS", "case_ids": ["a"]}),
-    lambda: run_cases(True, True, executors={}),
-):
-    try:
-        call()
-    except ContractUnavailable as error:
-        assert str(error) == "CONTRACT_NOT_ACTIVE"
-    else:
-        raise AssertionError("non-active product contracts granted execution")
-print(json.dumps({"installed_contracts": len(catalog["contracts"]), "support_status": "DRAFT", "developer_dependency": False, "legacy_api_preserved": True, "successor_apis_installed": True, "successor_runtime_blocked": True}))
+assert vpms.load_registry_snapshot is load_registry_snapshot
+assert vpms.resolve_selection is resolve_selection
+assert vpms.run_cases is run_cases
+references = {"targets": ["t"], "formulas": ["f"], "variables": ["v"], "policies": ["p"], "runners": ["r"]}
+raw = [{"id": "a", "purpose": "PRODUCT", "target": "t", "formula": "f", "variables": "v", "policy": "p", "runner": "r"}]
+loaded = load_registry_snapshot(raw, references=references)
+assert loaded.ok
+selection = resolve_selection(loaded.snapshot, {"kind": "CASE_IDS", "case_ids": ["a"]})
+assert selection.ok
+calls = []
+class Adapter:
+    def execute(self, case):
+        calls.append(case.id)
+        return vpms.RunnerExecution(vpms.VerificationOutcome.PASS)
+results = run_cases(loaded.snapshot, selection, executors={"r": Adapter()})
+assert calls == ["a"] and results[0].outcome == vpms.VerificationOutcome.PASS
+assert resolve_selection(loaded.snapshot, {"kind": "CASE_IDS", "case_ids": ["missing"]}).state == "REJECTED"
+from ptsip.validation.handoff import load_validated_effective_map
+assert callable(load_validated_effective_map)
+from vpms.integration.ptsip_bridge import metadata_from_effective_map, PtsipMetadataError
+import subprocess, yaml
+from ptsip.profile_metadata import current_project_profile_ptsip_metadata
+from ptsip.validation.templates import template_catalog
+consumer = pathlib.Path(sys.argv[1]).parent / "consumer"
+consumer.mkdir()
+for relative, content in {"src/package.py": "VALUE = 1\n", "tests/test_package.py": "def test_value(): pass\n"}.items():
+    path = consumer / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+for args in (["init"], ["config", "user.email", "test@example.invalid"], ["config", "user.name", "Test"], ["add", "."], ["commit", "-m", "fixture"]):
+    subprocess.run(["git", "-C", str(consumer), *args], check=True, capture_output=True)
+template = template_catalog()[0]
+payload = {"ptsip": current_project_profile_ptsip_metadata(),
+    "responsibility_map": {"mode": "template", "template": {"id": template.id, "revision": template.revision}},
+    "policies": {"product_to_nonproduct_runtime_dependency": "deny", "nonproduct_in_product_package": "deny", "independent_build_resolution": "required"}}
+profile = consumer / "ptsip.yaml"
+profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+before = profile.read_bytes()
+handoff = load_validated_effective_map(consumer)
+projection = metadata_from_effective_map(handoff)
+assert projection.get_target("package").classification == "PRODUCT"
+assert profile.read_bytes() == before
+try:
+    metadata_from_effective_map({"validated": True, "components": []})
+except PtsipMetadataError as error:
+    assert "UNVALIDATED_EFFECTIVE_MAP" in str(error)
+else:
+    raise AssertionError("boolean assertion bypassed installed provider")
+print(json.dumps({"installed_contracts": len(catalog["contracts"]), "support_status": "ACTIVE", "developer_dependency": False, "legacy_api_retired": True, "successor_apis_installed": True, "successor_runtime_executed": True}))
 '''
     smoke = subprocess.run([
         sys.executable, "-I", "-c", code, str(target),
@@ -114,7 +153,22 @@ print(json.dumps({"installed_contracts": len(catalog["contracts"]), "support_sta
     assert smoke.returncode == 0, smoke.stdout + smoke.stderr
     report = json.loads(smoke.stdout)
     assert report == {
-        "installed_contracts": 3, "support_status": "DRAFT",
-        "developer_dependency": False, "legacy_api_preserved": True,
-        "successor_apis_installed": True, "successor_runtime_blocked": True,
+        "installed_contracts": 3, "support_status": "ACTIVE",
+        "developer_dependency": False, "legacy_api_retired": True,
+        "successor_apis_installed": True, "successor_runtime_executed": True,
     }
+    independent = subprocess.run([sys.executable, "-I", "-c", r'''
+import importlib.abc, pathlib, sys
+sys.path.insert(0, sys.argv[1])
+class NoVPMS(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname == "vpms" or fullname.startswith("vpms."):
+            raise AssertionError("PTSIP core imported optional VPMS")
+sys.meta_path.insert(0, NoVPMS())
+from ptsip.validation.profile import validate_profile
+from ptsip.validation.handoff import load_validated_effective_map
+from ptsip.governance import AuthorityCatalog
+AuthorityCatalog(pathlib.Path(sys.argv[1]) / "not-a-repository").validate_current_corpus()
+print("PTSIP_CORE_INDEPENDENT")
+''', str(target)], cwd=temporary, capture_output=True, text=True)
+    assert independent.returncode == 0, independent.stdout + independent.stderr

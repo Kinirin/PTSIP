@@ -3,7 +3,7 @@ policy_class: PTSIP_SUPPORT_FEATURE
 policy:
   id: SFP-0023
   title: PTSIP VPMS Read Only Integration Boundary
-  status: DRAFT
+  status: ACTIVE
 feature_contract:
   shipped: true
   runtime_surface:
@@ -12,7 +12,7 @@ authority_contract:
   authority_type: PTSIP_VPMS_READ_ONLY_INTEGRATION
   schema_id: ptsip.governance/ptsip-vpms-read-only-integration
   schema_version: 1
-authority_semantics: {"responsibility":"PTSIP_VPMS_READ_ONLY_BOUNDARY","input":{"kind":"VALIDATED_EFFECTIVE_RESPONSIBILITY_MAP","validation_owner":"PTSIP","validation_handoff":"EXPLICIT_VALIDATED_PROVIDER_HANDOFF","boolean_assertion_is_validation_proof":false,"concrete_provider_binding":"IMPLEMENTATION_PENDING"},"projection":{"fields":["component_id","classification"],"ordering":"COMPONENT_ID_ASCENDING"},"target_lookup":{"match":"EXACT_COMPONENT_ID","unknown_target":"EXPLICIT_NOT_FOUND"},"mutation_allowed":false,"raw_profile_fallback_allowed":false,"classification_to_purpose_allowed":false,"classification_to_selection_allowed":false,"vpms_result_to_ptsip_conformance_allowed":false,"ptsip_core_requires_vpms":false,"developer_policy_runtime_dependency":false,"compatibility_raw_profile_reader":{"canonical_fallback":false,"retirement":"SEPARATE_OWNER_APPROVAL_REQUIRED"},"excluded_authorities":["VPMS_GLOBAL_IDENTITY","VPMS_CASE_PROTOCOL","VPMS_VERIFICATION_PURPOSE","VPMS_CASE_SELECTION","VPMS_EXECUTION_COMPOSITION"]}
+authority_semantics: {"responsibility":"PTSIP_VPMS_READ_ONLY_BOUNDARY","input":{"kind":"VALIDATED_EFFECTIVE_RESPONSIBILITY_MAP","validation_owner":"PTSIP","validation_handoff":"EXPLICIT_VALIDATED_PROVIDER_HANDOFF","boolean_assertion_is_validation_proof":false,"concrete_provider_binding":"ptsip.validation.handoff:load_validated_effective_map"},"projection":{"fields":["component_id","classification"],"ordering":"COMPONENT_ID_ASCENDING"},"target_lookup":{"match":"EXACT_COMPONENT_ID","unknown_target":"EXPLICIT_NOT_FOUND"},"mutation_allowed":false,"raw_profile_fallback_allowed":false,"classification_to_purpose_allowed":false,"classification_to_selection_allowed":false,"vpms_result_to_ptsip_conformance_allowed":false,"ptsip_core_requires_vpms":false,"developer_policy_runtime_dependency":false,"compatibility_raw_profile_reader":{"canonical_fallback":false,"retirement":"SEPARATE_OWNER_APPROVAL_REQUIRED"},"excluded_authorities":["VPMS_GLOBAL_IDENTITY","VPMS_CASE_PROTOCOL","VPMS_VERIFICATION_PURPOSE","VPMS_CASE_SELECTION","VPMS_EXECUTION_COMPOSITION"]}
 relations:
   supersedes: []
   amends: []

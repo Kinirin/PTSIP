@@ -310,7 +310,7 @@ Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLIN
 
 Tool `0.3.8a3` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
 
-## VPMS — Verification Purpose Management System
+## VPMS — Verification Protocol Management System
 
 PTSIP and VPMS answer different questions:
 
@@ -319,10 +319,30 @@ PTSIP
     Who owns this responsibility across its lifecycle?
 
 VPMS
-    Why does this Verification Case exist, and what does it protect?
+    How are explicit Verification Cases bound, executed, and reported?
 ```
 
-PTSIP classification and VPMS Verification Purpose remain separate axes. PTSIP core does not depend on VPMS. VPMS consumes only a narrow read-only projection of already-resolved PTSIP metadata.
+PTSIP classification and the historical VPMS Verification Purpose remain separate axes. The Case `purpose` field is compatibility-only: it does not decide selection, runner binding, or PTSIP classification. PTSIP core does not depend on VPMS.
+
+The repository's three product contracts are ACTIVE and separately own the Case/reference/runner protocol, explicit Case selection, and execution composition. The public API is:
+
+```python
+from vpms import load_registry_snapshot, resolve_selection, run_cases
+
+loaded = load_registry_snapshot(case_definitions, references=reference_registrations)
+if not loaded.ok:
+    raise ValueError(loaded.diagnostics)
+selection = resolve_selection(
+    loaded.snapshot, {"kind": "CASE_IDS", "case_ids": ["explicit.case.id"]}
+)
+if not selection.ok:
+    raise ValueError(selection.diagnostics)
+results = run_cases(loaded.snapshot, selection, executors=runner_adapters)
+```
+
+`case_definitions`, `reference_registrations`, and `runner_adapters` are explicit caller-owned inputs. Selection fails closed on invalid, duplicate, or unknown IDs. Execution accepts selection bound to the same validated snapshot and preflights every selected adapter before executing the first Case. `SelectionScope`, `select_cases`, and `run_selected_cases` are retired, not compatibility aliases.
+
+Optional PTSIP integration uses `ptsip.validation.handoff.load_validated_effective_map` followed by `vpms.integration.ptsip_bridge.metadata_from_effective_map`. ACTIVE `SFP-0023` owns only this read-only boundary: the projection exposes exact component ID and classification from a genuinely validated immutable effective map. A raw dict, a `validated=True` assertion, and the historical `load_ptsip_metadata` compatibility reader are not canonical validation proof or implicit fallbacks. `SFP-0006` is RETIRED with its historical meaning preserved; VPMS product protocol authority resides in the separate product contracts.
 
 The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.8a3` PTSIP classification.
 

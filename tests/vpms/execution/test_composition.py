@@ -12,8 +12,7 @@ from vpms.selection import SelectionResult, resolve_selection
 
 
 @pytest.fixture
-def candidate(monkeypatch):
-    monkeypatch.setattr(contracts, "require_active_contract", contracts.load_registered_contract)
+def candidate():
     refs = {"targets": ["t"], "formulas": ["f"], "variables": ["v"],
             "policies": ["p"], "runners": ["ra", "rb"]}
     raw = [{"id": name, "purpose": purpose, "target": "t", "formula": "f",
@@ -36,7 +35,8 @@ class Executor:
 def test_execution_preserves_order_identity_and_compatibility_without_reselection(candidate, monkeypatch):
     snapshot, selection, _ = candidate
     import vpms.execution.runner as legacy
-    monkeypatch.setattr(legacy, "select_cases", lambda *a, **k: pytest.fail("legacy selection was invoked"))
+    assert not hasattr(legacy, "select_cases")
+    assert not hasattr(legacy, "run_selected_cases")
     calls = []
     before = snapshot.as_dict()
     results = run_cases(snapshot, selection, executors={"ra": Executor(calls), "rb": Executor(calls)})

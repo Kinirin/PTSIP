@@ -118,7 +118,7 @@ def load_registered_contract(role: str):
 def require_active_contract(role: str):
     contract = load_registered_contract(role)
     catalog = _read("index.json")
-    if (catalog["capability"] == "REGISTERED_NON_ACTIVE_ONLY"
+    if (catalog["capability"] != "ACTIVE"
             or contract["status"] != "ACTIVE" or not contract["runtime_enabled"]):
         raise ContractUnavailable("CONTRACT_NOT_ACTIVE")
     return contract

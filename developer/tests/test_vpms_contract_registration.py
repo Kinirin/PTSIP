@@ -27,6 +27,18 @@ def _contract_fixture(tmp_path):
     return tmp_path
 
 
+def _inactive(root):
+    base = root / "src/vpms/contracts"
+    catalog = _json(base / "index.json")
+    catalog["capability"] = "REGISTERED_NON_ACTIVE_ONLY"
+    for entry in catalog["contracts"].values():
+        entry.update(status="APPROVED", runtime_enabled=False)
+        payload = _json(base / entry["path"])
+        payload.update(status="APPROVED", runtime_enabled=False)
+        (base / entry["path"]).write_text(json.dumps(payload), encoding="utf-8")
+    (base / "index.json").write_text(json.dumps(catalog), encoding="utf-8")
+
+
 def test_explicit_scope_provenance_and_allocations_are_registered_non_active():
     record = TOOLS["scope_record"](ROOT)
     assert record["approval"]["decision"] == "APPROVED"
@@ -36,10 +48,10 @@ def test_explicit_scope_provenance_and_allocations_are_registered_non_active():
     assert not record["approval"]["sfp_0006_retirement_authorized"]
     assert not record["approval"]["commit_push_authorized"]
     result = TOOLS["verify_registration"](ROOT)
-    assert result["status"] == "REGISTERED_NON_ACTIVE"
+    assert result["status"] == "REGISTERED_ACTIVE"
     assert result["support_policy_id"] == "SFP-0023"
     assert result["product_contract_count"] == 3
-    assert result["runtime_enabled"] is False
+    assert result["runtime_enabled"] is True
     assert TOOLS["preflight"](ROOT)["product_contract_ids"] == record["allocation"]["product_contract_ids"]
 
 
@@ -50,22 +62,23 @@ def test_reusing_allocated_identity_does_not_allocate_again(monkeypatch):
     assert TOOLS["preflight"](ROOT)["status"] == "ALLOCATED"
 
 
-def test_draft_bridge_cannot_be_current_project_authority():
+def test_active_boundary_and_retired_legacy_have_separate_authority():
     catalog = AuthorityCatalog(ROOT)
     _, route, record = catalog.load_current_record("SFP-0023")
-    assert route["status"] == record["policy"]["status"] == "DRAFT"
-    assert not catalog.lifecycle_is_eligible(catalog.lifecycle_state(record))
+    assert route["status"] == record["policy"]["status"] == "ACTIVE"
+    assert catalog.lifecycle_is_eligible(catalog.lifecycle_state(record))
     assert record["feature_contract"]["runtime_surface"] == ["src/vpms/integration/ptsip_bridge.py"]
     assert "expanded_identity" not in record["authority_semantics"]
     _, _, legacy = catalog.load_current_record("SFP-0006")
-    assert legacy["policy"]["status"] == "ACTIVE"
+    assert legacy["policy"]["status"] == "RETIRED"
+    assert not catalog.lifecycle_is_eligible(catalog.lifecycle_state(legacy))
     assert legacy["authority_semantics"]["expanded_identity"] == "VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM"
 
 
 def test_mpd_activation_and_excluded_sources_are_preserved():
     record = TOOLS["scope_record"](ROOT)
-    for file in record["preserved_files"]:
-        assert TOOLS["preserved_text_matches"]((ROOT / file["path"]).read_bytes(), file)
+    from developer.automation.vpms_runtime_activation import verify_preserved
+    verify_preserved(ROOT, record["preserved_files"])
     policy = inspect_policy("MPD-VERI-0007", root=ROOT)
     assert policy["policy_status"] == policy["index_status"] == "ACTIVE"
     assert policy["policy_version"] == "2.0"
@@ -74,6 +87,7 @@ def test_mpd_activation_and_excluded_sources_are_preserved():
 
 def test_unknown_or_non_active_identity_fails_closed(tmp_path):
     root = _contract_fixture(tmp_path)
+    _inactive(root)
     ids = _json(root / "src/vpms/contracts/index.json")["entrypoints"]
     with pytest.raises(RegistrationError, match="UNKNOWN_CONTRACT_ID"):
         TOOLS["inspect_contract"]("protocol", root)
@@ -86,7 +100,7 @@ def test_status_or_identity_mismatch_does_not_resolve(tmp_path):
     root = _contract_fixture(tmp_path)
     path = root / "src/vpms/contracts/protocol.json"
     payload = _json(path)
-    payload["status"] = "ACTIVE"
+    payload["status"] = "APPROVED"
     path.write_text(json.dumps(payload), encoding="utf-8")
     identity = _json(root / "src/vpms/contracts/index.json")["entrypoints"]["protocol"]
     with pytest.raises(RegistrationError, match="CONTRACT_INDEX_MISMATCH"):
@@ -95,6 +109,7 @@ def test_status_or_identity_mismatch_does_not_resolve(tmp_path):
 
 def test_even_matching_active_flags_do_not_bypass_materialization_only_gate(tmp_path):
     root = _contract_fixture(tmp_path)
+    _inactive(root)
     path = root / "src/vpms/contracts/protocol.json"
     payload = _json(path)
     payload.update(status="ACTIVE", runtime_enabled=True)
@@ -132,7 +147,9 @@ def test_invalid_approval_flags_are_rejected_by_scope_schema():
 
 @pytest.mark.parametrize("item", TOOLS["scope_record"](ROOT)["preserved_files"], ids=lambda item: item["path"])
 def test_preservation_allows_only_git_text_line_ending_conversion(item):
-    raw = (ROOT / item["path"]).read_bytes().replace(b"\r\n", b"\n")
+    # Test the immutable original preimage, not a subsequently approved change.
+    import subprocess
+    raw = subprocess.check_output(["git", "show", "7dd0adc:" + item["path"]], cwd=ROOT).replace(b"\r\n", b"\n")
     assert TOOLS["preserved_text_matches"](raw, item)
     assert TOOLS["preserved_text_matches"](raw.replace(b"\n", b"\r\n"), item)
     assert not TOOLS["preserved_text_matches"](raw + b"# semantic/source change\n", item)

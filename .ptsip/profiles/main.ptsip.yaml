@@ -270,12 +270,11 @@ components:
       - "src/vpms/domain/__init__.py"
       - "src/vpms/domain/model.py"
       - "src/vpms/domain/registry.py"
-      - "src/vpms/domain/selector.py"
       - "src/vpms/execution/__init__.py"
       - "src/vpms/execution/runner.py"
       - "src/vpms/execution/adapters/**"
       - "src/vpms/integration/**"
-    purpose: distributed_verification_purpose_management_library
+    purpose: distributed_verification_protocol_management_library
     shipped: true
     runtime_required: false
     executable: true
@@ -357,7 +356,7 @@ components:
       - GOVERNANCE
     include:
       - "src/vpms/contracts/protocol.json"
-    purpose: approved_product_case_reference_runner_and_result_protocol_contract
+    purpose: active_product_case_reference_runner_and_result_protocol_contract
     shipped: true
     runtime_required: false
     executable: false
@@ -370,7 +369,7 @@ components:
       - GOVERNANCE
     include:
       - "src/vpms/contracts/selection.json"
-    purpose: approved_explicit_case_selection_request_rule_result_and_diagnostic_contract
+    purpose: active_explicit_case_selection_request_rule_result_and_diagnostic_contract
     shipped: true
     runtime_required: false
     executable: false
@@ -383,7 +382,7 @@ components:
       - GOVERNANCE
     include:
       - "src/vpms/contracts/execution-composition.json"
-    purpose: approved_selection_to_execution_adapter_preflight_and_compatibility_contract
+    purpose: active_selection_to_execution_adapter_preflight_and_compatibility_contract
     shipped: true
     runtime_required: false
     executable: false
@@ -397,7 +396,7 @@ components:
       - IMPLEMENTATION
     include:
       - "developer/automation/support_contract_registration.py"
-    purpose: developer_only_approved_contract_identity_preflight_scope_and_non_active_registration_verification
+    purpose: developer_only_contract_identity_preflight_registration_and_explicit_lifecycle_verification
     shipped: false
     runtime_required: false
     executable: true
@@ -676,7 +675,7 @@ components:
       - VERIFICATION
     include:
       - "tests/vpms/contracts/**"
-    purpose: product_owned_vpms_contract_shape_registration_inactive_boundary_and_installed_resource_verification
+    purpose: product_owned_vpms_contract_shape_registration_lifecycle_boundary_and_installed_resource_verification
     shipped: false
     runtime_required: false
     executable: true
@@ -691,6 +690,9 @@ components:
       - "developer/policy/schemas/vpms-contract-materialization.schema.json"
       - "developer/policy/registries/vpms-api-implementation.json"
       - "developer/policy/schemas/vpms-api-implementation.schema.json"
+      - "developer/automation/vpms_runtime_activation.py"
+      - "developer/policy/registries/vpms-runtime-activation.json"
+      - "developer/policy/schemas/vpms-runtime-activation.schema.json"
       - "developer/profiles/ptsip-repository.yaml"
       - "pyproject.toml"
       - "setup.py"

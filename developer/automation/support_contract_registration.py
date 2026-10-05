@@ -133,7 +133,7 @@ def inspect_contract(identity: str, root: Path = ROOT, *, require_active: bool =
     if payload["contract_class"] != registry["contract_class"]:
         raise RegistrationError("CONTRACT_CLASS_MISMATCH")
     if require_active and (
-        catalog["capability"] == "REGISTERED_NON_ACTIVE_ONLY"
+        catalog["capability"] != "ACTIVE"
         or payload["status"] != "ACTIVE"
         or not payload["runtime_enabled"]
     ):
@@ -171,6 +171,8 @@ def validate_selection_document(kind: str, payload, root: Path = ROOT):
 
 
 def verify_registration(root: Path = ROOT, *, check_worktree: bool = False):
+    from developer.automation.vpms_runtime_activation import activation_record, verify_preserved
+    activation = activation_record(root)
     record = scope_record(root)
     allocation = record.get("allocation")
     if not allocation:
@@ -184,8 +186,8 @@ def verify_registration(root: Path = ROOT, *, check_worktree: bool = False):
     if identity["contract_class"] != record["approved_design"]["contract_class"]:
         raise RegistrationError("UNAPPROVED_CONTRACT_CLASS")
     for role, contract_id in expected.items():
-        payload = inspect_contract(contract_id, root)
-        if payload["status"] != "APPROVED" or payload["runtime_enabled"]:
+        payload = inspect_contract(contract_id, root, require_active=bool(activation))
+        if payload["status"] != ("ACTIVE" if activation else "APPROVED") or payload["runtime_enabled"] is not bool(activation):
             raise RegistrationError("UNAUTHORIZED_RUNTIME_ACTIVATION")
         if payload["owner_approval"] != "USER_EXPLICIT":
             raise RegistrationError("OWNER_APPROVAL_REQUIRED")
@@ -223,17 +225,18 @@ def verify_registration(root: Path = ROOT, *, check_worktree: bool = False):
     support = AuthorityCatalog(root)
     support.validate_current_corpus()
     _, route, sfp = support.load_current_record(allocation["support_policy_id"])
-    if route["status"] != "DRAFT" or sfp["policy"]["status"] != "DRAFT":
+    support_status = "ACTIVE" if activation else "DRAFT"
+    if route["status"] != support_status or sfp["policy"]["status"] != support_status:
         raise RegistrationError("UNAUTHORIZED_SUPPORT_ACTIVATION")
     if sfp["feature_contract"]["runtime_surface"] != ["src/vpms/integration/ptsip_bridge.py"]:
         raise RegistrationError("INTEGRATION_SCOPE_EXPANDED")
-    for preserved in record["preserved_files"]:
-        if not preserved_text_matches(_bounded(root, preserved["path"]).read_bytes(), preserved):
-            raise RegistrationError("PRESERVED_FILE_CHANGED: " + preserved["path"])
+    verify_preserved(root, record["preserved_files"])
     for relative in record["materialization_targets"]:
         if not _bounded(root, relative).is_file():
             raise RegistrationError("MISSING_SCOPE_TARGET: " + relative)
     if check_worktree:
+        if activation:
+            raise RegistrationError("ORIGINAL_SCOPE_SUPERSEDED_BY_ACTIVATION")
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
         if head != record["base_head"]:
             raise RegistrationError("BASE_HEAD_CHANGED")
@@ -250,9 +253,9 @@ def verify_registration(root: Path = ROOT, *, check_worktree: bool = False):
         if set(changed) != set(record["materialization_targets"]) | carried:
             raise RegistrationError("EXACT_CHANGE_SCOPE_MISMATCH")
     return {
-        "status": "REGISTERED_NON_ACTIVE", "support_policy_id": allocation["support_policy_id"],
-        "support_status": "DRAFT", "product_contract_count": 3,
-        "product_status": "APPROVED", "runtime_enabled": False,
+        "status": "REGISTERED_ACTIVE" if activation else "REGISTERED_NON_ACTIVE", "support_policy_id": allocation["support_policy_id"],
+        "support_status": support_status, "product_contract_count": 3,
+        "product_status": "ACTIVE" if activation else "APPROVED", "runtime_enabled": bool(activation),
         "scope_target_count": len(record["materialization_targets"]),
         "preserved_file_count": len(record["preserved_files"]),
     }

@@ -14,9 +14,8 @@ from vpms.domain.registry import (
     load_registry,
     register_formulas,
 )
-from vpms.domain.selector import SelectionScope
+from vpms import load_registry_snapshot, resolve_selection, run_cases
 from vpms.execution.adapters.command import CommandExecutor
-from vpms.execution.runner import run_selected_cases
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -108,6 +107,16 @@ def repository_executors() -> dict[str, CommandExecutor]:
     }
 
 
+def _execute(registry, *, case_ids, executors):
+    references = {name: getattr(registry.references, name)
+                  for name in ("targets", "formulas", "variables", "policies", "runners")}
+    loaded = load_registry_snapshot(_CASES, references=references)
+    assert loaded.ok, loaded.diagnostics
+    selection = resolve_selection(loaded.snapshot, {"kind": "CASE_IDS", "case_ids": case_ids})
+    assert selection.ok, selection.diagnostics
+    return run_cases(loaded.snapshot, selection, executors=executors)
+
+
 def _release_readiness_test_names() -> set[str]:
     path = REPO_ROOT / "tests" / "ptsip" / "test_release_readiness_030.py"
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
@@ -182,9 +191,9 @@ def test_product_scope_executes_only_real_product_cases(
 ) -> None:
     calls = _record_commands(monkeypatch)
 
-    results = run_selected_cases(
+    results = _execute(
         repository_registry(),
-        scope=SelectionScope.PRODUCT,
+        case_ids=["ptsip.product.canonical-contracts", "ptsip.product.package-contracts"],
         executors=repository_executors(),
     )
 
@@ -205,9 +214,9 @@ def test_toolchain_scope_executes_only_real_toolchain_cases(
 ) -> None:
     calls = _record_commands(monkeypatch)
 
-    results = run_selected_cases(
+    results = _execute(
         repository_registry(),
-        scope=SelectionScope.TOOLCHAIN,
+        case_ids=["ptsip.toolchain.release-workflow", "ptsip.toolchain.routine-ci"],
         executors=repository_executors(),
     )
 
@@ -228,9 +237,9 @@ def test_full_scope_executes_all_registered_cases_in_case_id_order(
 ) -> None:
     calls = _record_commands(monkeypatch)
 
-    results = run_selected_cases(
+    results = _execute(
         repository_registry(),
-        scope=SelectionScope.FULL,
+        case_ids=[case["id"] for case in _CASES],
         executors=repository_executors(),
     )
 

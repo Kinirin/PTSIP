@@ -15,9 +15,8 @@ from vpms.domain.model import (
     VerificationPurpose,
 )
 from vpms.domain.registry import Registry, RegistryReferenceIndex
-from vpms.domain.selector import SelectionScope
+from vpms import load_registry_snapshot, resolve_selection, run_cases
 from vpms.execution.adapters.command import CommandExecutor
-from vpms.execution.runner import run_selected_cases
 
 
 _SHARED_FORMULA = FormulaRef(ref="structure.required-fields")
@@ -79,6 +78,19 @@ def _executors() -> dict[str, CommandExecutor]:
     }
 
 
+def _execute(registry, *, case_ids, executors):
+    raw = [dict(id=case.id, purpose=case.purpose.value, target=case.target.component_id,
+                formula=case.formula.ref, variables=case.variables.ref,
+                policy=case.policy.ref, runner=case.runner.ref) for case in registry.cases]
+    references = {name: getattr(registry.references, name)
+                  for name in ("targets", "formulas", "variables", "policies", "runners")}
+    loaded = load_registry_snapshot(raw, references=references)
+    assert loaded.ok, loaded.diagnostics
+    selected = resolve_selection(loaded.snapshot, {"kind": "CASE_IDS", "case_ids": case_ids})
+    assert selected.ok, selected.diagnostics
+    return run_cases(loaded.snapshot, selected, executors=executors)
+
+
 def _patch_commands(
     monkeypatch: pytest.MonkeyPatch,
     *,
@@ -108,9 +120,9 @@ def test_product_selection_executes_only_product_case(
 ) -> None:
     calls = _patch_commands(monkeypatch)
 
-    results = run_selected_cases(
+    results = _execute(
         _registry(),
-        scope=SelectionScope.PRODUCT,
+        case_ids=["product.integration"],
         executors=_executors(),
     )
 
@@ -125,9 +137,9 @@ def test_toolchain_selection_executes_only_toolchain_case(
 ) -> None:
     calls = _patch_commands(monkeypatch)
 
-    results = run_selected_cases(
+    results = _execute(
         _registry(),
-        scope=SelectionScope.TOOLCHAIN,
+        case_ids=["toolchain.integration"],
         executors=_executors(),
     )
 
@@ -142,9 +154,9 @@ def test_full_selection_executes_both_in_deterministic_case_order(
 ) -> None:
     calls = _patch_commands(monkeypatch)
 
-    results = run_selected_cases(
+    results = _execute(
         _registry(),
-        scope=SelectionScope.FULL,
+        case_ids=["toolchain.integration", "product.integration"],
         executors=_executors(),
     )
 
@@ -169,15 +181,15 @@ def test_shared_formula_does_not_couple_scope_or_case_owned_state(
     assert product.policy != toolchain.policy
     assert product.target != toolchain.target
 
-    results = run_selected_cases(
+    results = _execute(
         registry,
-        scope=SelectionScope.PRODUCT,
+        case_ids=["product.integration"],
         executors={"command.product": _executors()["command.product"]},
     )
 
     assert [result.case_id for result in results] == ["product.integration"]
     assert results[0].purpose is product.purpose
-    assert results[0].target is product.target
+    assert results[0].target == product.target
     assert calls == [("product-command",)]
 
 
@@ -188,11 +200,11 @@ def test_missing_selected_runner_is_rejected_before_partial_execution(
 
     with pytest.raises(
         ValueError,
-        match=r"Missing executor registration for runner\(s\): command\.toolchain\.",
+        match=r"preflight rejected; missing=command\.toolchain",
     ):
-        run_selected_cases(
+        _execute(
             _registry(),
-            scope=SelectionScope.FULL,
+            case_ids=["toolchain.integration", "product.integration"],
             executors={"command.product": _executors()["command.product"]},
         )
 
@@ -207,9 +219,9 @@ def test_full_execution_preserves_independent_outcomes_and_identity(
         returncodes={"product-command": 0, "toolchain-command": 9},
     )
 
-    results = run_selected_cases(
+    results = _execute(
         _registry(),
-        scope=SelectionScope.FULL,
+        case_ids=["toolchain.integration", "product.integration"],
         executors=_executors(),
     )
 
@@ -229,9 +241,9 @@ def test_integrated_execution_does_not_mutate_registry_or_cases(
     registry = _registry()
     before = registry.as_dict()
 
-    run_selected_cases(
+    _execute(
         registry,
-        scope=SelectionScope.FULL,
+        case_ids=["toolchain.integration", "product.integration"],
         executors=_executors(),
     )
 

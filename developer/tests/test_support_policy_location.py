@@ -38,6 +38,7 @@ def test_unapproved_missing_implementation_target_still_fails(monkeypatch):
         return original(path, *args, **kwargs)
 
     monkeypatch.setattr(Path, "read_text", read_text)
+    # Removing the retired-path declaration must not waive a missing target.
     with pytest.raises(ValueError, match="MISSING_IMPLEMENTATION_TARGET"):
         verify(ROOT)
 

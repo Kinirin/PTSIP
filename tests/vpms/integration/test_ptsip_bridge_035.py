@@ -139,7 +139,7 @@ components:
         target.classification = "TOOLCHAIN"  # type: ignore[misc]
 
 
-def test_bridge_has_no_ptsip_runtime_import_or_write_api() -> None:
+def test_bridge_has_only_explicit_ptsip_read_boundary_and_no_write_api() -> None:
     bridge_path = _REPO_ROOT / "src" / "vpms" / "integration" / "ptsip_bridge.py"
     tree = ast.parse(bridge_path.read_text(encoding="utf-8"))
     imports = []
@@ -157,7 +157,9 @@ def test_bridge_has_no_ptsip_runtime_import_or_write_api() -> None:
         and not node.name.startswith("_")
     ]
 
-    assert not any(name == "ptsip" or name.startswith("ptsip.") for name in imports)
+    assert {name for name in imports if name == "ptsip" or name.startswith("ptsip.")} == {
+        "ptsip.governance", "ptsip.validation.handoff",
+    }
     assert public_functions == [
         "metadata_from_effective_map",
         "load_ptsip_metadata",

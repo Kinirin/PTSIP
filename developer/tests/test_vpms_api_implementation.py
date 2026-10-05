@@ -8,11 +8,11 @@ from developer.automation.vpms_api_implementation import verify
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_explicit_api_implementation_and_automatic_commit_push_do_not_activate_contracts():
+def test_successor_activation_does_not_rewrite_implementation_only_approval():
     result = verify(ROOT)
-    assert result["status"] == "IMPLEMENTED_INACTIVE"
+    assert result["status"] == "IMPLEMENTED_ACTIVE"
     assert result["commit_push_authorized"] is True
-    assert result["runtime_activation"] is False
+    assert result["runtime_activation"] is True
     record = json.loads((ROOT / "developer/policy/registries/vpms-api-implementation.json").read_text(encoding="utf-8"))
     assert record["approval"]["decision_source"] == "USER_EXPLICIT"
     assert record["approval"]["automatic_commit_push_authorized"]
