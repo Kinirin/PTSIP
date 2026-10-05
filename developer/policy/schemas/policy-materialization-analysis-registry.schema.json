@@ -33,7 +33,7 @@
           "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
           "policy_id": {
             "type": "string",
-            "pattern": "^MPD-(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+            "pattern": "^MPD-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
           },
           "analysis_ref": {
             "type": "string",
