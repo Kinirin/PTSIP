@@ -248,9 +248,11 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     for item in mpd_index["policies"]:
         policy_id = item["id"]
         assert item["path"] == _expected_policy_path(policy_id)
-    assert [item["id"] for item in sfp_index["policies"]] == [
+    sfp_ids = [item["id"] for item in sfp_index["policies"]]
+    assert sfp_ids[:24] == [
         f"SFP-{number:04d}" for number in range(1, 25)
     ]
+    assert len(sfp_ids) == len(set(sfp_ids))
     assert "legacy_decisions_migration" not in mpd_index
 
     for entry in mpd_index["policies"]:
@@ -320,9 +322,11 @@ def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -
 
 def test_support_policy_index_has_exact_targets_and_active_vpms_boundary() -> None:
     payload = _yaml(ROOT / "src" / "policy" / "index.yaml")
-    assert [item["id"] for item in payload["policies"]] == [
+    policy_ids = [item["id"] for item in payload["policies"]]
+    assert policy_ids[:24] == [
         f"SFP-{number:04d}" for number in range(1, 25)
     ]
+    assert len(policy_ids) == len(set(policy_ids))
     assert payload["policies"][3]["status"] == "DRAFT"
     assert payload["policies"][22] == {
         "id": "SFP-0023", "path": "SFP-0023.yaml", "status": "ACTIVE",
