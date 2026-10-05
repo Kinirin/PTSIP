@@ -67,6 +67,7 @@ class AuthorityCatalog:
     AUTHORITY_SUBJECT_REGISTRY = "ptsip-support-authority-subject-registry.yaml"
 
     SUPPORT_POLICY_SCHEMA = "ptsip-support-feature-policy.schema.json"
+    SUPPORT_ROOT_FAMILY_POLICY_SCHEMA = "ptsip-support-root-family-policy.schema.json"
     SUPPORT_INDEX_SCHEMA = "ptsip-support-feature-policy-index.schema.json"
     AUTHORITY_SEMANTICS_SCHEMA = "ptsip-support-authority-semantics.schema.json"
     AUTHORITY_ROLE_SCHEMA = "ptsip-support-authority-role.schema.json"
@@ -82,6 +83,7 @@ class AuthorityCatalog:
         self.role_registry = self._load_yaml("registries", self.AUTHORITY_ROLE_REGISTRY)
         self.subject_registry = self._load_yaml("registries", self.AUTHORITY_SUBJECT_REGISTRY)
         self.policy_schema = self._load_json("schemas", self.SUPPORT_POLICY_SCHEMA)
+        self.root_family_policy_schema = self._load_json("schemas", self.SUPPORT_ROOT_FAMILY_POLICY_SCHEMA)
         self.index_schema = self._load_json("schemas", self.SUPPORT_INDEX_SCHEMA)
         self.semantics_schema = self._load_json("schemas", self.AUTHORITY_SEMANTICS_SCHEMA)
         self.role_schema = self._load_json("schemas", self.AUTHORITY_ROLE_SCHEMA)
@@ -110,7 +112,7 @@ class AuthorityCatalog:
 
     def _validate_catalog_assets(self) -> None:
         for schema in (
-            self.policy_schema, self.index_schema, self.semantics_schema,
+            self.policy_schema, self.root_family_policy_schema, self.index_schema, self.semantics_schema,
             self.role_schema, self.subject_schema,
             self.project_authority_record_schema, self.eligibility_result_schema,
         ):
@@ -155,12 +157,25 @@ class AuthorityCatalog:
 
     def _validate_current_selection(self, policy_id: str, source_ref: str, route: Mapping[str, object], record: Mapping[str, object]) -> None:
         policy = _mapping(record.get("policy"), code="MALFORMED_AUTHORITY_RECORD", label="policy")
+        selected_path = source_ref.removeprefix("src/policy/")
         if (
             policy.get("id") != policy_id
             or route.get("id") != policy_id
-            or route.get("path") != Path(source_ref).name
+            or route.get("path") != selected_path
         ):
             raise GovernanceAuthorityError("CURRENT_SUPPORT_POLICY_SELECTION_MISMATCH", "support policy record does not exactly match support-policy-index.", {"policy_id":policy_id,"source_ref":source_ref})
+
+    def _policy_schema_for_record(self, record: Mapping[str, object]) -> Mapping[str, object]:
+        schema_version = record.get("schema_version")
+        if schema_version == "ptsip-support-root-family-policy/v1":
+            return self.root_family_policy_schema
+        if schema_version == "ptsip-support-feature-policy/v1":
+            return self.policy_schema
+        raise GovernanceAuthorityError(
+            "UNSUPPORTED_SUPPORT_POLICY_SCHEMA",
+            "support policy schema_version is not registered.",
+            schema_version,
+        )
 
     def _role_for_policy(self, policy_id: str) -> Mapping[str, object]:
         roles = self.role_registry.get("policy_roles", [])
@@ -245,7 +260,7 @@ class AuthorityCatalog:
         validated = []
         for policy_id, source_ref, route, record in self.iter_current_records():
             self._validate_current_selection(policy_id, source_ref, route, record)
-            Draft202012Validator(self.policy_schema).validate(record)
+            Draft202012Validator(self._policy_schema_for_record(record)).validate(record)
             self._validate_role(record)
             self._validate_contract_and_semantics(record)
             if policy_id not in self.subject_registry["subject_identity_schemes"]["SUPPORT_POLICY_ID"]["registered_values"]:
