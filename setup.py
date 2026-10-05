@@ -40,11 +40,14 @@ def _project_support_policy(build_lib: Path) -> None:
     policy_target.mkdir(parents=True, exist_ok=True)
     copy2(source / "index.yaml", policy_target / "index.yaml")
 
-    sfp_files = sorted(source.glob("SFP-*.yaml"))
+    sfp_files = sorted(source.rglob("SFP-*.yaml"))
     if not sfp_files:
         raise RuntimeError("canonical Support Policy source contains no SFP records")
     for path in sfp_files:
-        copy2(path, policy_target / path.name)
+        relative = path.relative_to(source)
+        destination = policy_target / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        copy2(path, destination)
 
     copytree(source / "schemas", target / "schemas")
     copytree(source / "registries", target / "registries")
