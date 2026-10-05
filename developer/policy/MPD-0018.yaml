@@ -1,0 +1,162 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0018
+  version: "2.0"
+  title: Root Responsibility Family Transition Bootstrap
+  status: ACTIVE
+
+rules:
+  root_responsibility_family_transition:
+    purpose: >-
+      Establish the Root Responsibility Family transition authority for
+      PTSIP_DEVELOPER_POLICY without treating the new Root families as a hierarchy
+      over the legacy SPEC, PLAN, WORK, VERI, MIGR, and RELS families.
+
+    root_family_vocabulary:
+      status: CANONICAL_COORDINATE_VOCABULARY
+      values:
+        - NORM
+        - GOV
+        - INTENT
+        - ARCH
+        - INFO
+        - CNTR
+        - RISK
+        - SUPPLY
+        - REAL
+        - ASSURE
+        - CTRL
+        - CHANGE
+        - OPS
+        - RECORD
+      vocabulary_identity_is_semantic_authority: false
+      family_token_alone_is_authority_identity: false
+
+    authority_identity:
+      canonical_key_fields:
+        - policy_class
+        - responsibility_family
+      same_family_token_across_policy_classes:
+        semantic_inheritance: FORBIDDEN
+        authority_equivalence: FORBIDDEN
+        fallback_resolution: FORBIDDEN
+      class_specific_semantics_required:
+        - authority_subject
+        - exclusive_kernel
+
+    minimum_kernel_model:
+      profile: CONSERVATIVE_MINIMUM_KERNEL
+      authority_subject_role: ROOT_AUTHORITY_SUBJECT_FOR_THIS_POLICY_CLASS
+      exclusive_kernel_role: MINIMUM_NON_SUBSTITUTABLE_AUTHORITY
+      complete_boundary_closure_required_now: false
+      extension_space: OPEN
+      unresolved_future_authority_assignment: ALLOWED_AT_DESIGN_TIME
+      unresolved_authority_may_authorize_execution: false
+
+    policy_class_root_slots:
+      policy_class: PTSIP_DEVELOPER_POLICY
+      recognized_root_families:
+        - NORM
+        - GOV
+        - INTENT
+        - ARCH
+        - INFO
+        - CNTR
+        - RISK
+        - SUPPLY
+        - REAL
+        - ASSURE
+        - CTRL
+        - CHANGE
+        - OPS
+        - RECORD
+      slot_states:
+        allowed:
+          - ACTIVE
+          - RESERVED
+      unmaterialized_slot_default: RESERVED
+      reserved_slot_has_implicit_authority_subject: false
+      reserved_slot_has_implicit_exclusive_kernel: false
+
+    legacy_developer_family_transition:
+      legacy_families:
+        - SPEC
+        - PLAN
+        - WORK
+        - VERI
+        - MIGR
+        - RELS
+      target_model: FOURTEEN_ROOT_RESPONSIBILITY_FAMILIES
+      legacy_family_is_parent_of_root_family: false
+      root_family_is_parent_of_legacy_family: false
+      one_to_one_mapping_assumption: FORBIDDEN
+      rename_as_migration: FORBIDDEN
+      semantic_decomposition_required: true
+      existing_policy_identity_preservation_required: true
+      legacy_family_policy_read_role: MIGRATION_SOURCE_ONLY
+      new_policy_materialization_into_legacy_family: FORBIDDEN_AFTER_TARGET_ROUTING_ACTIVATION
+
+    cross_policy_class_boundary:
+      shared_element: ROOT_FAMILY_TOKEN_VOCABULARY_ONLY
+      shared_authority_subject: false
+      shared_exclusive_kernel: false
+      implicit_cross_class_bridge: FORBIDDEN
+      explicit_bridge_required_for_cross_class_semantics: true
+
+    bootstrap_sequence:
+      - CREATE_CLASS_SCOPED_ROOT_FAMILY_POLICY
+      - CHANGE_REPOSITORY_POLICY_ENTRY
+      - MATERIALIZE_FAMILY_AWARE_SCHEMAS
+      - MATERIALIZE_FAMILY_AWARE_RESOLUTION
+      - DECOMPOSE_LEGACY_POLICIES
+      - RETIRE_LEGACY_FAMILY_CREATION_PATH
+      ordering_is_transition_safety_constraint: true
+
+    responsibility_boundary:
+      owns:
+        - PTSIP_DEVELOPER_POLICY_ROOT_FAMILY_TRANSITION_MODEL
+        - PTSIP_DEVELOPER_POLICY_FOURTEEN_ROOT_FAMILY_COORDINATE_SET
+        - CLASS_SCOPED_AUTHORITY_SUBJECT_AND_EXCLUSIVE_KERNEL_REQUIREMENT
+        - LEGACY_SIX_FAMILY_DECOMPOSITION_REQUIREMENT
+        - ROOT_FAMILY_TRANSITION_BOOTSTRAP_ORDER
+      does_not_own:
+        - PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_SEMANTICS
+        - INDIVIDUAL_ROOT_FAMILY_AUTHORITY_SUBJECT
+        - INDIVIDUAL_ROOT_FAMILY_EXCLUSIVE_KERNEL
+        - LEGACY_POLICY_DECOMPOSITION_RESULT
+        - FAMILY_AWARE_SCHEMA_IMPLEMENTATION
+        - FAMILY_AWARE_RESOLVER_IMPLEMENTATION
+
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+    - id: TR-001
+      type: EXPLICIT_OWNER_ROOT_FAMILY_BOOTSTRAP_APPROVAL
+      state: SATISFIED
+      refs:
+        - developer/policy/approvals/MPA-20261005-MPD-0018-ROOT-FAMILY-DRAFT.yaml
+        - developer/policy/approvals/MPA-20261005-MPD-0018-ROOT-FAMILY-APPROVED.yaml
+        - developer/policy/approvals/MPA-20261005-MPD-0018-ROOT-FAMILY-ACTIVE.yaml
+      next_action:
+        action: MATERIALIZE_ROOT_FAMILY_BOOTSTRAP_ENTRY
+        execution: SERIAL_REQUIRED
+        target_refs:
+          - developer/policy/MPD-0018.yaml
+          - developer/policy/index.yaml
+          - developer/policy/registries/authority-subject-registry.yaml
+          - AGENTS.md
+        after: []
+        completion_check: ROOT_FAMILY_BOOTSTRAP_ENTRY_PRESENT
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-BOUND-0001
+      scope: POLICY_CLASS_AND_RESPONSIBILITY_FAMILY_COMPOSITE_IDENTITY
+  depends_on:
+    - policy: MPD-BOUND-0001
+      scope: AUTHORITY_LOOKUP_ISOLATION
