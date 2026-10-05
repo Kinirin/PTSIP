@@ -37,9 +37,11 @@ def test_governance_runtime_schemas_are_valid_draft_2020_12() -> None:
 
 def test_current_governance_corpus_is_shipped_support_policy_corpus() -> None:
     catalog = AuthorityCatalog(ROOT)
-    assert catalog.validate_current_corpus() == tuple(
-        f"SFP-{index:04d}" for index in range(1, 25)
+    expected = tuple(
+        entry["id"]
+        for entry in _yaml("src/policy/index.yaml")["policies"]
     )
+    assert catalog.validate_current_corpus() == expected
 
 
 def test_support_registry_has_no_builtin_repository_binding_or_owner_grant() -> None:
