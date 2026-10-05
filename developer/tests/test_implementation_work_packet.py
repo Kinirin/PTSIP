@@ -79,7 +79,7 @@ def test_packet_builds_exact_mutation_acceptance_and_regression_plan(packet_cont
     mutation = packet["mutation_plan"]
     assert mutation["scope_expansion"] == "RE_RESOLVE_REQUIRED"
     assert mutation["allowed_test_paths"] == [
-        "tests/ptsip/control_plane/test_github_authority.py"
+        "src/tests/ptsip/control_plane/test_github_authority.py"
     ]
 
     edit_selectors = [item["selector"] for item in mutation["targets"]]
@@ -106,13 +106,13 @@ def test_packet_builds_exact_mutation_acceptance_and_regression_plan(packet_cont
         set(verification["required_new_pytest_nodes"])
     )
     assert verification["status"] in {"REQUIRES_NEW_TESTS", "READY"}
-    assert "tests/ptsip/control_plane" in verification["core_regression"]["pytest_targets"]
-    assert "tests/ptsip/test_proposed_component.py" in verification["core_regression"]["pytest_targets"]
+    assert "src/tests/ptsip/control_plane" in verification["core_regression"]["pytest_targets"]
+    assert "src/tests/ptsip/test_proposed_component.py" in verification["core_regression"]["pytest_targets"]
     combined = verification["combined_regression_pytest_targets"]
-    assert "tests/ptsip/control_plane" in combined
-    assert "tests/ptsip/control_plane/test_github_authority.py" not in combined
-    assert "tests/ptsip/control_plane/test_github_authority_reconciliation.py" not in combined
-    assert "tests/ptsip/test_proposed_component.py" in combined
+    assert "src/tests/ptsip/control_plane" in combined
+    assert "src/tests/ptsip/control_plane/test_github_authority.py" not in combined
+    assert "src/tests/ptsip/control_plane/test_github_authority_reconciliation.py" not in combined
+    assert "src/tests/ptsip/test_proposed_component.py" in combined
     assert verification["commands"]["regression"][0:3] == ["python", "-m", "pytest"]
 
     coverage = {item["id"]: item for item in packet["acceptance_coverage"]}
@@ -123,7 +123,7 @@ def test_packet_builds_exact_mutation_acceptance_and_regression_plan(packet_cont
         "LOCAL_RECEIPT_DOES_NOT_CHANGE_WINNER",
     }
     assert coverage["GITHUB_PROPOSAL_RESOLUTION"]["test_nodes"] == [
-        "tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt"
+        "src/tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt"
     ]
 
     assert packet["test_mode"]["component_ref"] == "ptsip-core-verification"
@@ -146,10 +146,10 @@ def test_core_regression_is_derived_from_canonical_component_profile() -> None:
         ROOT,
         "ptsip-core-verification",
     )
-    assert "tests/ptsip/control_plane" in targets
-    assert "tests/ptsip/identity" in targets
-    assert "tests/ptsip/test_proposed_component.py" in targets
-    assert all(target.startswith("tests/") for target in targets)
+    assert "src/tests/ptsip/control_plane" in targets
+    assert "src/tests/ptsip/identity" in targets
+    assert "src/tests/ptsip/test_proposed_component.py" in targets
+    assert all(target.startswith("src/tests/") for target in targets)
 
 
 def test_workflow_regression_sources_do_not_depend_on_retired_root_bridge() -> None:
@@ -193,7 +193,7 @@ def test_check_blocks_unlisted_changed_path(monkeypatch) -> None:
         "freshness": {"baseline_head": "abc", "context_files": [], "file_hashes": {}},
         "edit_budget": {
             "allowed_code_paths": ["src/ptsip/app/github_authority.py"],
-            "allowed_test_paths": ["tests/ptsip/control_plane/test_github_authority.py"],
+            "allowed_test_paths": ["src/tests/ptsip/control_plane/test_github_authority.py"],
         },
         "mutation_plan": {"targets": []},
         "verification": {"required_new_pytest_nodes": []},
