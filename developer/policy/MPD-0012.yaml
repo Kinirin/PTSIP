@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 
 policy:
   id: MPD-0012
-  version: "2.0"
+  version: "2.1"
   title: Agent Contract Semantic Verification and Feature Extension Decision Ledger
   status: ACTIVE
 
@@ -115,6 +115,184 @@ rules:
       external_model_orchestration_account_required_by_core: false
       future_optional_plugin_consideration: ALLOWED
       future_plugin_must_not_own_ptsip_normative_policy_semantics: true
+
+
+    compiled_agent_control_plane_architecture:
+      decision: APPROVED
+      decision_date: "2026-10-05"
+      design_state: SIXTH_STAGE_DECISIONS_COMPLETE
+      implementation_state: NOT_MATERIALIZED
+      runtime_activation_by_this_decision: false
+      purpose: >-
+        Define the machine-first coding-agent control-plane architecture so that
+        repeatable routing, policy resolution, state resolution, execution planning,
+        cache reuse, and agent context assembly are compiled or resolved
+        deterministically instead of repeatedly inferred by a coding agent.
+
+      authority_boundary:
+        agents_md_role: GENERATED_NON_AUTHORITY_PROJECTION
+        derived_global_registry_role: GENERATED_NON_AUTHORITY_PROJECTION
+        derived_state_cache_role: GENERATED_NON_AUTHORITY_PROJECTION
+        agent_cache_role: GENERATED_NON_AUTHORITY_EXECUTION_IMAGE
+        canonical_semantics_remain_with_owning_plane: true
+        support_feature_semantics_owner: src/policy
+        developer_policy_semantics_owner: developer/policy
+        repository_local_ptsip_entry_owner: .ptsip
+        this_record_creates_support_feature_semantics: false
+        unresolved_or_ambiguous_mutation: FAIL_CLOSED
+
+      first_stage:
+        canonical_source_model: PLANE_OWNED_SOURCES_WITH_DERIVED_GLOBAL_REGISTRY
+        plane_selection: CLOSED_OPERATION_TAXONOMY
+        resolver_architecture: COMMON_PROTOCOL_WITH_PLANE_SPECIFIC_IMPLEMENTATIONS
+        normative_projection_model: NORMATIVE_OWNER_TO_DETERMINISTIC_PROJECTION_TO_AGENT_CONTRACT
+        current_state_model: DERIVED_STATE_CACHE
+        agent_cache_model: DERIVED_AGENT_CACHE
+        agents_md_model: GENERATED_PROJECTION
+
+      second_stage:
+        routing_ownership_unit: CAPABILITY_SELF_OWNED_DECLARATION
+        operation_taxonomy_granularity: MEDIUM_GRAINED_WORK_INTENT
+        taxonomy_ownership: COMMON_CORE_PLUS_PLANE_EXTENSION
+        derived_global_registry_content:
+          - ROUTE
+          - RESOLVER
+          - SELECTED_CONTRACT
+        resolver_result_model: COMMON_CORE_RESULT_PLUS_PLANE_SPECIFIC_EXTENSION
+        agent_projection_depth: EXECUTION_OPTIMIZED
+        state_update_model: EVENT_DRIVEN
+        agent_cache_scope: COMPLETE_AGENT_EXECUTION_IMAGE
+
+      third_stage:
+        capability_admission_flow:
+          - DECLARE
+          - VALIDATE
+          - ADMIT
+        operation_candidate_model: MULTIPLE_CANDIDATES_SINGLE_SELECTION
+        routing_conflict_model: REGISTERED_CONFLICT_POLICY
+        cross_plane_model: INDEPENDENT_WORK_SEGMENTATION
+        taxonomy_commonization: PROMOTION_LIFECYCLE
+        taxonomy_versioning: CORE_AND_PLANE_INDEPENDENT_VERSIONS
+        selected_contract_model: CONDITIONAL_CONTRACT_GRAPH
+        registry_compilation: DEPENDENCY_INCREMENTAL_COMPILE
+        resolver_cooperation: RESOLVER_GRAPH
+        resolver_extensions: REGISTERED_EXTENSION_FAMILIES
+        execution_projection: PRECOMPILED_EXECUTION_PLAN
+        state_event_transport: EVENT_STREAM
+        state_consistency: SELF_HEALING_EVENTUAL
+        execution_image_scope: OPERATION_SCOPED
+        execution_image_structure: LAYERED
+        current_image_mutability: MUTABLE_CURRENT_IMAGE
+        unknown_capability_behavior: BOUNDED_READ_ONLY_DISCOVERY
+
+      fourth_stage:
+        admission_authority: MECHANICAL_ADMISSION_WITH_PROTECTED_CLASSES
+        capability_validation: STRUCTURAL_PLUS_SEMANTIC_COMPATIBILITY
+        candidate_selection: SELECTION_PIPELINE
+        conflict_scope: CONFLICT_FAMILY
+        work_segmentation: DEPENDENCY_ISOLATED_WORK_UNITS
+        segment_join: EXECUTION_PLAN_COMPILER_OWNS_JOIN_CONDITIONS
+        taxonomy_promotion_evidence: HYBRID_EVIDENCE
+        promoted_extension_retirement: EXPLICIT_MIGRATION_LIFECYCLE
+        compatibility_resolution: CAPABILITY_LEVEL
+        condition_evaluation: SPLIT_COMPILE_AND_RUNTIME
+        unselected_contract_branches: PRECOMPILED_ALTERNATE_BRANCH
+        incremental_compile_unit: CONTRACT_NODE
+        dependency_propagation: SEMANTIC_IMPACT_BOUNDARY
+        resolver_graph_execution: CACHED_GRAPH_EVALUATION
+        extension_family_model:
+          registry_extensible: true
+          nested_families_allowed: true
+        replan_model: BOUNDED_REPLAN
+        event_delivery: DURABLE_ORDERED_STREAM
+        self_healing_executor: EVENT_WORKER
+        image_materialization: BASE_PRECOMPILE_PLUS_OPERATION_FINALIZATION
+        layer_precedence: TYPE_SPECIFIC
+        image_concurrency: OPERATION_PLUS_EXECUTION_CONTEXT
+
+      fifth_stage:
+        protected_classification: CAPABILITY_IMPACT_DECLARATION_PLUS_PROTECTED_REGISTRY
+        semantic_compatibility_evidence:
+          - INVARIANT
+          - CONFORMANCE_VECTOR
+        selection_pipeline_shape: MANDATORY_CORE_PLUS_REGISTERED_EXTENSION_STAGE
+        unresolved_selection: UNRESOLVED_TO_READ_ONLY_DISCOVERY
+        conflict_family_shape: FAMILY_AND_SUBFAMILY_WITHOUT_DEFAULT_INHERITANCE
+        dependency_evidence:
+          authority: DECLARED_DEPENDENCY
+          observed_role: EVIDENCE
+        join_contract_ownership:
+          segment_output_contract_owner: SEGMENT
+          join_contract_builder: COMPILER
+        segment_requirement_model:
+          - REQUIRED
+          - OPTIONAL
+        promotion_semantic_evidence: SEMANTIC_EQUIVALENCE_VECTOR
+        migration_retirement_condition: USAGE_ZERO
+        version_compatibility:
+          - COMPATIBILITY_RANGE
+          - REQUIRED_FEATURES
+        condition_phase_owner: REGISTERED_CONDITION_FAMILIES
+        alternate_branch_materialization:
+          branch_control: PRECOMPILE_ALL
+          payload: SELECTED_BRANCH_CENTERED
+        semantic_impact_resolution: DEPENDENCY_GRAPH_PLUS_SEMANTIC_OUTPUT_FINGERPRINT
+        cache_identity: PROVENANCE_GRAPH_IDENTITY
+        nested_family_inheritance: EXPLICIT_COMMON_KERNEL_ONLY
+        replan_boundary: FAMILY_POLICY_PLUS_PLAN_NARROWING
+        ordered_stream_scope: EXECUTION_CONTEXT
+        repair_boundary:
+          derived_artifacts: AUTO_REPAIR
+          canonical_sources: REPAIR_PROPOSAL_ONLY
+        base_precompile_scope: PLANE
+        layer_composition: TYPE_SPECIFIC_MERGE_OPERATOR
+        execution_context_lifetime: MACHINE_WORK_UNIT_OR_EXECUTION_IDENTITY
+        discovery_promotion:
+          normal_capability: AUTO_ADMIT_AFTER_VALIDATION
+          protected_capability: PROTECTED_GATE
+
+      sixth_stage:
+        protected_registry_ownership: COMMON_PROTECTED_CORE_PLUS_PLANE_PROTECTED_EXTENSION
+        undeclared_impact_behavior: CANDIDATE_AMENDMENT
+        conformance_vector_minimum:
+          - SUCCESS
+          - FAILURE
+          - BOUNDARY
+        selection_extension_capability: TYPED_STAGE_CAPABILITY
+        unresolved_pipeline_behavior: CONTINUE_ONLY_EXECUTION_PLAN_PROVEN_INDEPENDENT_SEGMENTS
+        conflict_composition: REGISTERED_CONFLICT_COMPOSITION
+        observed_dependency_authority: WARNING_ONLY
+        missing_join_behavior: ADAPTER_DISCOVERY_CANDIDATE
+        join_outcome_model: OVERALL_OUTCOME_PLUS_SEGMENT_OUTCOMES
+        usage_zero_scope: ALL_KNOWN_HISTORICAL_USAGE
+        required_feature_identity:
+          - FEATURE_IDENTITY
+          - INTERFACE_GENERATION
+        condition_phase_evolution: PRIMARY_PHASE_PLUS_ALLOWED_PROMOTION
+        branch_runtime_transition: REPLACE_BRANCH_LAYER_ONLY
+        semantic_fingerprint: NORMALIZED_CONTRACT_FINGERPRINT
+        cross_context_cache_reuse: IMMUTABLE_PROVENANCE_NODES_ONLY
+        common_kernel_composition: REGISTERED_KERNEL_COMPOSITION_POLICY
+        replan_trigger: RELEVANT_STATE_CHANGE_EVENT
+        canonical_change_coordination: SHARED_CANONICAL_SOURCE_EPOCH
+        canonical_repair_application: EXISTING_ADMISSION_OR_MUTATION_POLICY
+        plane_base_refresh: OPERATION_START_WHEN_NEEDED
+        merge_operator_ownership: GLOBAL_OPERATOR_REGISTRY
+        execution_resume: BOUNDED_REPLAN_ALLOWED_ACROSS_SOURCE_CHANGE
+        post_admission_fault:
+          state: QUARANTINE
+          next: AUTOMATIC_REVALIDATION_CANDIDATE
+
+      implementation_boundary:
+        exact_schema_shapes_decided: false
+        exact_registry_paths_decided: false
+        exact_operation_vocabulary_decided: false
+        exact_event_envelope_decided: false
+        exact_execution_image_layout_decided: false
+        seventh_stage_design_may_refine_remaining_machine_contract_shapes: true
+        implementation_must_not_invent_unresolved_detail: true
+        existing_mpd_0010_agent_instruction_trial_is_not_automatically_deleted_by_this_decision: true
+        replacement_or_migration_of_existing_trial_requires_explicit_materialization_plan: true
 
   provisional_decisions:
     implementation_resolution:
