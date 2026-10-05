@@ -15,6 +15,8 @@ from jsonschema import Draft202012Validator
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
 from developer.automation.policy_responsibility_gate import (
     FAMILIES,
+    LEGACY_FAMILIES,
+    ROOT_FAMILIES,
     ResponsibilityGateError,
     validate_responsibility_analysis,
 )
@@ -24,11 +26,14 @@ INDEX = "developer/policy/index.yaml"
 SUBJECT_REGISTRY = "developer/policy/registries/authority-subject-registry.yaml"
 APPROVAL_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.json"
 MANAGEMENT_POLICY_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
+ROOT_FAMILY_POLICY_SCHEMA = "developer/policy/schemas/root-family-policy.schema.json"
 ANALYSIS_REGISTRY = "developer/policy/analysis/registry.yaml"
 ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
-_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+_ROOT_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$")
+_LEGACY_FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
 _BOUND_POLICY_ID_RE = re.compile(r"^MPD-BOUND-[0-9]{4}$")
 _POLICY_VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 POLICY_VERSION_CHANGE_CLASSES = (
@@ -308,11 +313,22 @@ def _next_policy_id(ids: Sequence[str]) -> str:
     return f"MPD-{number:04d}"
 
 
-def _next_family_policy_id(ids: Sequence[str], family: str) -> str:
-    if family not in FAMILIES:
+def _next_family_policy_id(
+    ids: Sequence[str],
+    family: str,
+    *,
+    policy_class: str,
+) -> str:
+    if policy_class == "PTSIP_DEVELOPER_POLICY":
+        allowed = ROOT_FAMILIES
+    elif policy_class == "VPMS_DEVELOPER_POLICY":
+        allowed = LEGACY_FAMILIES
+    else:
+        allowed = ()
+    if family not in allowed:
         raise PolicyIdentityLifecycleError(
             "INVALID_POLICY_FAMILY",
-            f"unknown Family: {family}",
+            f"{policy_class} cannot allocate new policy authority in Family {family}",
         )
     prefix = f"MPD-{family}-"
     numbers = [
@@ -392,7 +408,7 @@ def preflight_family_policy(
     root: str | Path | None = None,
 ) -> dict[str, object]:
     base = repository_root(root)
-    _require_family_class_materialization(policy_class, base)
+    _require_family_class_materialization(policy_class, family, base)
     state = _load_consistent_registered_corpus(base)
     _assert_no_unregistered_policy_file(base, state)
     approval = _load_approval(approval_ref, base=base)
@@ -409,7 +425,7 @@ def preflight_family_policy(
         group_id=group_id,
         base=base,
     )
-    allocated = _next_family_policy_id(state.ids, family)
+    allocated = _next_family_policy_id(state.ids, family, policy_class=policy_class)
     requested = approval.get("requested_policy_id")
     if requested is not None and requested != allocated:
         raise PolicyIdentityLifecycleError(
@@ -610,7 +626,12 @@ def register_policy(
         )
 
     payload = load_yaml(relative, root=base)
-    schema = load_json(MANAGEMENT_POLICY_SCHEMA, root=base)
+    schema_ref = (
+        ROOT_FAMILY_POLICY_SCHEMA
+        if policy_class == "PTSIP_DEVELOPER_POLICY" and family in ROOT_FAMILIES
+        else MANAGEMENT_POLICY_SCHEMA
+    )
+    schema = load_json(schema_ref, root=base)
     from developer.automation.policy_validator import developer_contract_validator
     errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
     if errors:
@@ -739,7 +760,12 @@ def register_family_policy(
         )
 
     payload = load_yaml(relative, root=base)
-    schema = load_json(MANAGEMENT_POLICY_SCHEMA, root=base)
+    schema_ref = (
+        ROOT_FAMILY_POLICY_SCHEMA
+        if policy_class == "PTSIP_DEVELOPER_POLICY" and family in ROOT_FAMILIES
+        else MANAGEMENT_POLICY_SCHEMA
+    )
+    schema = load_json(schema_ref, root=base)
     from developer.automation.policy_validator import developer_contract_validator
     errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
     if errors:
@@ -870,10 +896,20 @@ def register_family_policy(
     }
 
 
-def _require_family_class_materialization(policy_class: str, base: Path) -> None:
+def _require_family_class_materialization(policy_class: str, family: str, base: Path) -> None:
     contract = load_json("developer/policy/registries/developer-policy-catalog-contracts.json", root=base)
     if policy_class not in contract["$defs"]["developer_policy_class"]["enum"]:
         raise PolicyIdentityLifecycleError("UNKNOWN_POLICY_CLASS", "Family materialization requires an explicit registered developer policy class")
+    if policy_class == "PTSIP_DEVELOPER_POLICY" and family not in ROOT_FAMILIES:
+        raise PolicyIdentityLifecycleError(
+            "LEGACY_FAMILY_NEW_ALLOCATION_FORBIDDEN",
+            f"{family} is readable migration input only for PTSIP_DEVELOPER_POLICY",
+        )
+    if policy_class == "VPMS_DEVELOPER_POLICY" and family not in LEGACY_FAMILIES:
+        raise PolicyIdentityLifecycleError(
+            "VPMS_ROOT_FAMILY_NOT_AUTHORIZED",
+            "VPMS Root Family migration requires separate owner authorization",
+        )
     if policy_class == "VPMS_DEVELOPER_POLICY":
         execution = contract.get("application_execution", {})
         if not contract["application_gate"]["vpms_policy_materialization_authorized"] or not execution.get("vpms_class_materialization_enabled") or not execution.get("m1_m7_verified"):
