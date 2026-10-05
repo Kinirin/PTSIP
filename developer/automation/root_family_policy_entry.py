@@ -97,6 +97,46 @@ def _current_ids(root: Path, policy_class: str) -> tuple[str, ...]:
     return tuple(result)
 
 
+def _assert_root_corpus_consistent(root: Path, policy_class: str, route: Mapping[str, object], ids: Sequence[str]) -> None:
+    pattern = _ID_PATTERNS[policy_class]
+    indexed = {policy_id for policy_id in ids if pattern.fullmatch(policy_id)}
+    canonical_root = root / str(route["canonical_root"])
+    discovered = {
+        path.stem
+        for path in canonical_root.rglob("*.yaml")
+        if pattern.fullmatch(path.stem)
+    }
+    if discovered != indexed:
+        raise RootFamilyEntryError(
+            "ROOT_FAMILY_CORPUS_MISMATCH",
+            f"{policy_class} Root Family files and index membership differ: "
+            f"indexed={sorted(indexed)!r}, discovered={sorted(discovered)!r}",
+        )
+
+    payload = load_yaml(_index_path(policy_class), root=root)
+    entries = payload.get("policies", [])
+    if not isinstance(entries, list):
+        raise RootFamilyEntryError("INVALID_POLICY_INDEX", "policy index must contain policies")
+    for raw in entries:
+        if not isinstance(raw, Mapping):
+            continue
+        policy_id = raw.get("id")
+        if not isinstance(policy_id, str):
+            continue
+        match = pattern.fullmatch(policy_id)
+        if match is None:
+            continue
+        expected = f"{route['canonical_root']}/{match.group(1)}/{policy_id}.yaml"
+        indexed_path = raw.get("path")
+        if policy_class == "PTSIP_SUPPORT_FEATURE" and isinstance(indexed_path, str):
+            indexed_path = f"src/policy/{indexed_path}"
+        if indexed_path != expected:
+            raise RootFamilyEntryError(
+                "ROOT_FAMILY_INDEX_PATH_MISMATCH",
+                f"{policy_id} must route to {expected}, got {indexed_path!r}",
+            )
+
+
 def _next_id(ids: Sequence[str], *, policy_class: str, family: str) -> str:
     pattern = _ID_PATTERNS[policy_class]
     numbers = []
@@ -127,7 +167,9 @@ def canonical_path(policy_class: str, family: str, policy_id: str, *, root: str 
 def resolve_entry(policy_class: str, family: str, *, root: str | Path | None = None) -> dict[str, object]:
     base = repository_root(root)
     route = _route(base, policy_class, family)
-    allocated = _next_id(_current_ids(base, policy_class), policy_class=policy_class, family=family)
+    ids = _current_ids(base, policy_class)
+    _assert_root_corpus_consistent(base, policy_class, route, ids)
+    allocated = _next_id(ids, policy_class=policy_class, family=family)
     return {
         "status": "READY",
         "authority_identity": {
