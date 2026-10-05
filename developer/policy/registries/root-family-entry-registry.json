@@ -1,0 +1,75 @@
+{
+  "schema_version": "ptsip-root-family-entry-registry/v1",
+  "root_family_vocabulary": [
+    "NORM",
+    "GOV",
+    "INTENT",
+    "ARCH",
+    "INFO",
+    "CNTR",
+    "RISK",
+    "SUPPLY",
+    "REAL",
+    "ASSURE",
+    "CTRL",
+    "CHANGE",
+    "OPS",
+    "RECORD"
+  ],
+  "policy_classes": {
+    "PTSIP_DEVELOPER_POLICY": {
+      "id_prefix": "MPD",
+      "canonical_root": "developer/policy",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "recognized_root_families": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ],
+      "unmaterialized_slot_default": "RESERVED"
+    },
+    "PTSIP_SUPPORT_FEATURE": {
+      "id_prefix": "SFP",
+      "canonical_root": "src/policy",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "recognized_root_families": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ],
+      "unmaterialized_slot_default": "RESERVED"
+    }
+  },
+  "invariants": {
+    "authority_identity_key": [
+      "policy_class",
+      "responsibility_family"
+    ],
+    "family_token_semantic_inheritance": "FORBIDDEN",
+    "family_only_lookup": "FORBIDDEN",
+    "unregistered_family": "FAIL_CLOSED",
+    "legacy_family_new_allocation": "FORBIDDEN"
+  }
+}
