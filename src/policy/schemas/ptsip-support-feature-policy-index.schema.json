@@ -17,8 +17,7 @@
     },
     "policies": {
       "type": "array",
-      "minItems": 22,
-      "maxItems": 23,
+      "minItems": 24,
       "uniqueItems": true,
       "items": {
         "type": "object",
@@ -30,11 +29,11 @@
         "properties": {
           "id": {
             "type": "string",
-            "pattern": "^SFP-[0-9]{4}$"
+            "pattern": "^SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})$"
           },
           "path": {
             "type": "string",
-            "pattern": "^SFP-[0-9]{4}\\.yaml$"
+            "pattern": "^(?:SFP-[0-9]{4}\\\\.yaml|(?:NORM/SFP-NORM|GOV/SFP-GOV|INTENT/SFP-INTENT|ARCH/SFP-ARCH|INFO/SFP-INFO|CNTR/SFP-CNTR|RISK/SFP-RISK|SUPPLY/SFP-SUPPLY|REAL/SFP-REAL|ASSURE/SFP-ASSURE|CTRL/SFP-CTRL|CHANGE/SFP-CHANGE|OPS/SFP-OPS|RECORD/SFP-RECORD)-[0-9]{4}\\\\.yaml)$"
           },
           "status": {
             "enum": [
