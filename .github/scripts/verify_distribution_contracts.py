@@ -141,8 +141,19 @@ def _assert_wheel_bytes(
 
 def _support_contract_pairs() -> tuple[tuple[Path, str], ...]:
     source_root = ROOT / "src" / "policy"
-    policy_sources = (source_root / "index.yaml", *sorted(source_root.glob("SFP-*.yaml")))
-    pairs = [(source, f"ptsip/support/policy/{source.name}") for source in policy_sources]
+    policy_sources = (source_root / "index.yaml", *sorted(source_root.rglob("SFP-*.yaml")))
+    pairs = [
+        (
+            source,
+            "ptsip/support/policy/"
+            + (
+                "index.yaml"
+                if source == source_root / "index.yaml"
+                else source.relative_to(source_root).as_posix()
+            ),
+        )
+        for source in policy_sources
+    ]
     for category in ("schemas", "registries"):
         base = source_root / category
         sources = sorted((*base.rglob("*.json"), *base.rglob("*.yaml")))
