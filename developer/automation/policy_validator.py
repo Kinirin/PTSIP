@@ -971,6 +971,25 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     base = repository_root(root)
     errors: list[str] = []
 
+    root_family_registry = load_json(ROOT_FAMILY_ENTRY_REGISTRY, root=base)
+    root_family_registry_schema = load_json(ROOT_FAMILY_ENTRY_REGISTRY_SCHEMA, root=base)
+    Draft202012Validator.check_schema(root_family_registry_schema)
+    for error in Draft202012Validator(root_family_registry_schema).iter_errors(root_family_registry):
+        errors.append(f"{ROOT_FAMILY_ENTRY_REGISTRY}: {error.message}")
+    policy_classes = root_family_registry.get("policy_classes", {})
+    if isinstance(policy_classes, Mapping):
+        for policy_class, route in policy_classes.items():
+            if not isinstance(route, Mapping):
+                continue
+            schema_ref = route.get("schema_ref")
+            if not isinstance(schema_ref, str) or not (base / schema_ref).is_file():
+                errors.append(f"{ROOT_FAMILY_ENTRY_REGISTRY}: {policy_class} schema_ref is unresolved")
+                continue
+            try:
+                Draft202012Validator.check_schema(load_json(schema_ref, root=base))
+            except Exception as exc:
+                errors.append(f"{ROOT_FAMILY_ENTRY_REGISTRY}: {policy_class} schema is invalid: {exc}")
+
     index = load_yaml(INDEX, root=base)
     index_schema = load_json("developer/policy/schemas/developer-policy-catalog.schema.json", root=base)
     mpd_schema = load_json(MPD_SCHEMA, root=base)
