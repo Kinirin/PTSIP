@@ -177,16 +177,20 @@
     "subject_artifact_class": {"const": "DEVELOPER_POLICY_SUBJECT_CATALOG"},
     "subject_registry_role": {"const": "MANAGEMENT_POLICY_SUBJECT_CATALOG"},
     "forbidden_subject_match": {"const": "FORBIDDEN"},
-    "policy_id": {"type": "string", "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"},
-    "family_policy_id": {"type": "string", "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
+    "policy_id": {"type": "string", "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"},
+    "family_policy_id": {"type": "string", "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
+    "root_family_policy_id": {"type": "string", "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"},
+    "legacy_family_policy_id": {"type": "string", "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
     "boundary_policy_id": {"type": "string", "pattern": "^MPD-BOUND-[0-9]{4}$"},
     "developer_policy_class": {"enum": ["PTSIP_DEVELOPER_POLICY", "VPMS_DEVELOPER_POLICY"]},
     "nullable_developer_policy_class": {"anyOf": [{"$ref": "#/$defs/developer_policy_class"}, {"type": "null"}]},
-    "responsibility_family": {"enum": ["SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"]},
+    "responsibility_family": {"enum": ["NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD", "SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"]},
+    "root_responsibility_family": {"enum": ["NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"]},
+    "legacy_responsibility_family": {"enum": ["SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"]},
     "nullable_responsibility_family": {"anyOf": [{"$ref": "#/$defs/responsibility_family"}, {"type": "null"}]},
     "boundary_policy_class": {"const": "PTSIP_BOUND_POLICY"},
     "policy_class": {"anyOf": [{"$ref": "#/$defs/developer_policy_class"}, {"$ref": "#/$defs/boundary_policy_class"}]},
     "policy_status": {"enum": ["DRAFT", "APPROVED", "ACTIVE", "SUPERSEDED", "RETIRED"]},
-    "policy_path": {"type": "string", "pattern": "^developer/policy/(?:MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:SPEC/MPD-SPEC|PLAN/MPD-PLAN|WORK/MPD-WORK|VERI/MPD-VERI|MIGR/MPD-MIGR|RELS/MPD-RELS)-[0-9]{4})\\.yaml$"}
+    "policy_path": {"type": "string", "pattern": "^developer/policy/(?:MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)/MPD-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS))-[0-9]{4})\\.yaml$"}
   }
 }
