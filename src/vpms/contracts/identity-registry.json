@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json",
+  "format": "vpms-product-identity-registry/v1",
+  "contract_class": "VPMS_PRODUCT_CONTRACT",
+  "identity_model": "OPAQUE_IMMUTABLE_EXACT",
+  "schema_resources": [
+    "schemas/catalog.schema.json",
+    "schemas/product-contract.schema.json",
+    "schemas/selection-request.schema.json",
+    "schemas/selection-result.schema.json",
+    "schemas/selection-rule.schema.json"
+  ],
+  "$defs": {
+    "contract_id": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "contract_class": {
+      "const": "VPMS_PRODUCT_CONTRACT"
+    },
+    "lifecycle": {
+      "enum": [
+        "APPROVED",
+        "ACTIVE",
+        "RETIRED"
+      ]
+    },
+    "responsibility": {
+      "enum": [
+        "VPMS_PRODUCT_PROTOCOL",
+        "VPMS_CASE_SELECTION",
+        "VPMS_EXECUTION_COMPOSITION"
+      ]
+    },
+    "selection_kind": {
+      "enum": [
+        "CASE_IDS",
+        "RULE_REF"
+      ]
+    },
+    "selection_rule_kind": {
+      "const": "CASE_ID_SET"
+    },
+    "selection_state": {
+      "enum": [
+        "RESOLVED",
+        "REJECTED"
+      ]
+    },
+    "selection_diagnostic_code": {
+      "enum": [
+        "INVALID_REQUEST",
+        "DUPLICATE_CASE_ID",
+        "UNKNOWN_CASE",
+        "UNRESOLVED_SELECTION_RULE",
+        "UNSUPPORTED_SELECTION_RULE",
+        "UNVALIDATED_REGISTRY"
+      ]
+    }
+  },
+  "resolution": {
+    "lookup": "EXACT_BOUNDED",
+    "semantic_similarity": "FORBIDDEN",
+    "unregistered_alias": "FORBIDDEN",
+    "unknown_identity": "FAIL_CLOSED",
+    "active_status_required_for_runtime": true
+  }
+}

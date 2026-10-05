@@ -37,7 +37,7 @@ def test_governance_runtime_schemas_are_valid_draft_2020_12() -> None:
 def test_current_governance_corpus_is_shipped_support_policy_corpus() -> None:
     catalog = AuthorityCatalog(ROOT)
     assert catalog.validate_current_corpus() == tuple(
-        f"SFP-{index:04d}" for index in range(1, 23)
+        f"SFP-{index:04d}" for index in range(1, 24)
     )
 
 
@@ -68,7 +68,7 @@ def test_subject_registry_keeps_relaxed_matching_machine_registered_only() -> No
 def test_support_policy_canonical_layout_has_no_legacy_specdata_authority() -> None:
     canonical = ROOT / "src" / "policy"
     assert (canonical / "index.yaml").is_file()
-    assert len(list(canonical.glob("SFP-*.yaml"))) == 22
+    assert len(list(canonical.glob("SFP-*.yaml"))) == 23
     assert (canonical / "schemas").is_dir()
     assert (canonical / "registries").is_dir()
     assert not (ROOT / "docs" / "Support_policy" / "policy").exists()

@@ -247,7 +247,7 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
         policy_id = item["id"]
         assert item["path"] == _expected_policy_path(policy_id)
     assert [item["id"] for item in sfp_index["policies"]] == [
-        f"SFP-{number:04d}" for number in range(1, 23)
+        f"SFP-{number:04d}" for number in range(1, 24)
     ]
     assert "legacy_decisions_migration" not in mpd_index
 
@@ -315,16 +315,19 @@ def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -
         assert "repository_binding:" not in text
 
 
-def test_support_policy_index_has_exact_22_targets() -> None:
+def test_support_policy_index_has_exact_registered_targets_and_draft_successor() -> None:
     payload = _yaml(ROOT / "src" / "policy" / "index.yaml")
     assert [item["id"] for item in payload["policies"]] == [
-        f"SFP-{number:04d}" for number in range(1, 23)
+        f"SFP-{number:04d}" for number in range(1, 24)
     ]
     assert payload["policies"][3]["status"] == "DRAFT"
+    assert payload["policies"][22] == {
+        "id": "SFP-0023", "path": "SFP-0023.yaml", "status": "DRAFT",
+    }
     assert all(
         item["status"] == "ACTIVE"
         for index, item in enumerate(payload["policies"])
-        if index != 3
+        if index not in {3, 22}
     )
 
 

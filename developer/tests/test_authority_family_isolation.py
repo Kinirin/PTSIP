@@ -161,18 +161,25 @@ def _first_vpms_policy() -> dict[str, object]:
     return load_yaml(f"developer/policy/VERI/{policy_id}.yaml", root=ROOT)
 
 
-def test_first_vpms_policy_is_registered_approved_but_not_active() -> None:
+def test_first_vpms_policy_is_active_with_explicit_owner_approval() -> None:
     payload = _first_vpms_policy()
     inspected = inspect_policy(payload["policy"]["id"], root=ROOT)
     assert payload["schema_version"] == "developer-policy/v2"
     assert payload["policy_class"] == VPMS
-    assert inspected["policy_status"] == inspected["index_status"] == "APPROVED"
-    assert inspected["policy_version"] == "1.0"
+    assert inspected["policy_status"] == inspected["index_status"] == "ACTIVE"
+    assert inspected["policy_version"] == "2.0"
     assert inspected["subject_identity_registered"]
-    assert not inspected["operationally_resolvable"]
-    assert payload["transition"]["state"] == "PENDING"
-    assert payload["transition"]["requirements"][0]["next_action"]["execution"] == "OWNER_DECISION_REQUIRED"
-    assert _active_family_ids(ROOT, VPMS, "VERI") == ()
+    assert inspected["operationally_resolvable"]
+    assert payload["transition"]["state"] == "COMPLETE"
+    requirement = payload["transition"]["requirements"][0]
+    assert requirement["state"] == "SATISFIED"
+    approval_ref = "developer/policy/approvals/MPA-20261005-VPMS-VERI-ACTIVE.yaml"
+    assert approval_ref in requirement["refs"]
+    approval = load_yaml(approval_ref, root=ROOT)["approval"]
+    assert approval["decision_source"] == "USER_EXPLICIT"
+    assert approval["target_status"] == "ACTIVE"
+    assert approval["requested_policy_id"] == payload["policy"]["id"]
+    assert _active_family_ids(ROOT, VPMS, "VERI") == (payload["policy"]["id"],)
     assert _active_family_ids(ROOT, PTSIP, "VERI") == tuple(f"MPD-VERI-{number:04}" for number in range(2, 6))
 
 
@@ -210,10 +217,15 @@ def test_first_vpms_materialization_analysis_is_class_aware_and_registered() -> 
     policy_id = _first_vpms_policy()["policy"]["id"]
     binding = next(item for item in registry["bindings"] if item["policy_id"] == policy_id)
     assert (binding["policy_class"], binding["family"]) == (VPMS, "VERI")
-    result = validate_responsibility_analysis(binding["analysis_ref"], root=ROOT)
+    # This registered analysis is creation provenance, not a new current lookup.
+    result = validate_responsibility_analysis(binding["analysis_ref"], root=ROOT, enforce_current_lookup=False)
     assert result["status"] == "PASS"
     assert result["owned_authority_family_set"] == [{"policy_class": VPMS, "family": "VERI"}]
     assert result["materialization_groups"][0]["responsibility_ids"] == ["R01", "R02", "R03"]
+    # Activation changes the live lookup. Reusing the creation analysis must fail.
+    with pytest.raises(ResponsibilityGateError) as exc:
+        validate_responsibility_analysis(binding["analysis_ref"], root=ROOT)
+    assert exc.value.code == "RESPONSIBILITY_ANALYSIS_BLOCKED"
 
 
 def test_m8_opening_retains_pre_m8_verification_provenance() -> None:

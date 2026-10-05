@@ -63,7 +63,17 @@ modes:
     component_ref: vpms-verification
     execution:
       pytest:
-        - tests/vpms
+        - tests/vpms/domain
+        - tests/vpms/execution
+        - tests/vpms/integration
+        - tests/vpms/architecture
+        - tests/vpms/selection
+
+  - id: vpms-contract-plane
+    component_ref: vpms-contract-plane-verification
+    execution:
+      pytest:
+        - tests/vpms/contracts
 
   - id: ptsip-contract
     component_ref: ptsip-contract-verification

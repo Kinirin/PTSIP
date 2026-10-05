@@ -1,0 +1,51 @@
+{
+  "format": "vpms-product-contract/v1",
+  "id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+  "contract_class": "VPMS_PRODUCT_CONTRACT",
+  "status": "APPROVED",
+  "revision": 1,
+  "responsibility": "VPMS_EXECUTION_COMPOSITION",
+  "runtime_enabled": false,
+  "owner_approval": "USER_EXPLICIT",
+  "owns": [
+    "VALIDATED_SELECTION_TO_EXECUTION_HANDOFF",
+    "ALL_SELECTED_ADAPTER_PREFLIGHT",
+    "CASE_EXECUTION_COMPOSITION",
+    "EXECUTION_COMPATIBILITY"
+  ],
+  "excludes": [
+    "SELECTION_REQUEST_INTERPRETATION",
+    "SELECTION_POLICY_AUTHORITY",
+    "CASE_PROTOCOL_REDEFINITION",
+    "PTSIP_CONFORMANCE"
+  ],
+  "semantics": {
+    "input": "RESOLVED_SELECTION_BOUND_TO_SAME_VALIDATED_REGISTRY_SNAPSHOT",
+    "adapter_binding": "EXACT_RUNNER_REFERENCE",
+    "missing_adapter": "REJECT_BEFORE_FIRST_CASE_EXECUTION",
+    "adapter_registration_check": "ALL_SELECTED_CASES_BEFORE_EXECUTION",
+    "single_case_execution_contract": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+    "selection_contract": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+    "selected_identity_preserved": true,
+    "registry_and_cases_mutated": false,
+    "new_api_implementation": "IMPLEMENTED_INACTIVE",
+    "compatibility": {
+      "existing_api": "run_selected_cases",
+      "policy": "NEW_API_VERIFIED_THEN_COMPATIBILITY_ADAPTER_THEN_EXPLICIT_RETIREMENT_BOUNDARY",
+      "retirement_boundary": "SEPARATE_OWNER_APPROVAL_REQUIRED"
+    },
+    "developer_policy_runtime_dependency": false
+  },
+  "planned_bindings": [
+    {
+      "api": "run_cases",
+      "source": "src/vpms/execution/composition.py",
+      "availability": "IMPLEMENTED_INACTIVE"
+    },
+    {
+      "api": "run_selected_cases",
+      "source": "src/vpms/execution/runner.py",
+      "availability": "CURRENT_EVIDENCE"
+    }
+  ]
+}

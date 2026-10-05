@@ -266,13 +266,143 @@ components:
     roles:
       - IMPLEMENTATION
     include:
-      - "src/vpms/**"
+      - "src/vpms/__init__.py"
+      - "src/vpms/domain/__init__.py"
+      - "src/vpms/domain/model.py"
+      - "src/vpms/domain/registry.py"
+      - "src/vpms/domain/selector.py"
+      - "src/vpms/execution/__init__.py"
+      - "src/vpms/execution/runner.py"
+      - "src/vpms/execution/adapters/**"
+      - "src/vpms/integration/**"
     purpose: distributed_verification_purpose_management_library
     shipped: true
     runtime_required: false
     executable: true
     release_owner: tool
     compatibility_owner: tool
+
+  - id: vpms-contract-runtime
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/vpms/contract_runtime.py"
+    purpose: bounded_shipped_contract_validation_and_fail_closed_activation_entry
+    shipped: true
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-product-protocol-handoff
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/vpms/domain/snapshot.py"
+    purpose: factory_validated_immutable_case_and_reference_snapshot_handoff
+    shipped: true
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-case-selection
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/vpms/selection/**"
+    purpose: explicit_case_id_or_registered_rule_selection_without_execution
+    shipped: true
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-execution-composition
+    classification: PRODUCT
+    roles:
+      - IMPLEMENTATION
+    include:
+      - "src/vpms/execution/composition.py"
+    purpose: validated_selection_handoff_and_all_adapter_preflight_before_execution
+    shipped: true
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+
+
+  - id: vpms-contract-catalog
+    classification: NEUTRAL_CONTRACT
+    roles:
+      - CONFIGURATION
+    include:
+      - "src/vpms/contracts/identity-registry.json"
+      - "src/vpms/contracts/index.json"
+      - "src/vpms/contracts/invariants.json"
+      - "src/vpms/contracts/schemas/**"
+    purpose: non_executing_vpms_product_contract_identity_shape_and_resolution_catalog
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-product-protocol-contract
+    classification: PRODUCT
+    roles:
+      - GOVERNANCE
+    include:
+      - "src/vpms/contracts/protocol.json"
+    purpose: approved_product_case_reference_runner_and_result_protocol_contract
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-selection-contract
+    classification: PRODUCT
+    roles:
+      - GOVERNANCE
+    include:
+      - "src/vpms/contracts/selection.json"
+    purpose: approved_explicit_case_selection_request_rule_result_and_diagnostic_contract
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-execution-composition-contract
+    classification: PRODUCT
+    roles:
+      - GOVERNANCE
+    include:
+      - "src/vpms/contracts/execution-composition.json"
+    purpose: approved_selection_to_execution_adapter_preflight_and_compatibility_contract
+    shipped: true
+    runtime_required: false
+    executable: false
+    release_owner: tool
+    compatibility_owner: tool
+
+  - id: vpms-contract-registration-automation
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - AUTOMATION
+      - IMPLEMENTATION
+    include:
+      - "developer/automation/support_contract_registration.py"
+    purpose: developer_only_approved_contract_identity_preflight_scope_and_non_active_registration_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
 
   - id: ptsip-distribution
     classification: PRODUCT
@@ -518,7 +648,11 @@ components:
     roles:
       - VERIFICATION
     include:
-      - "tests/vpms/**"
+      - "tests/vpms/domain/**"
+      - "tests/vpms/execution/**"
+      - "tests/vpms/integration/**"
+      - "tests/vpms/architecture/**"
+      - "tests/vpms/selection/**"
     purpose: product_owned_vpms_behavior_architecture_and_ptsip_integration_verification
     shipped: false
     runtime_required: false
@@ -526,9 +660,40 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "src/vpms/**"
+      - "src/vpms/__init__.py"
+      - "src/vpms/domain/**"
+      - "src/vpms/execution/**"
+      - "src/vpms/integration/**"
+      - "src/vpms/selection/**"
+      - "src/vpms/contract_runtime.py"
+      - "src/vpms/contracts/**"
       - "src/ptsip/**"
       - "developer/profiles/ptsip-repository.yaml"
+
+  - id: vpms-contract-plane-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "tests/vpms/contracts/**"
+    purpose: product_owned_vpms_contract_shape_registration_inactive_boundary_and_installed_resource_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/vpms/contracts/**"
+      - "src/vpms/contract_runtime.py"
+      - "src/policy/SFP-0023.yaml"
+      - "developer/automation/support_contract_registration.py"
+      - "developer/policy/registries/vpms-contract-materialization.json"
+      - "developer/policy/schemas/vpms-contract-materialization.schema.json"
+      - "developer/policy/registries/vpms-api-implementation.json"
+      - "developer/policy/schemas/vpms-api-implementation.schema.json"
+      - "developer/profiles/ptsip-repository.yaml"
+      - "pyproject.toml"
+      - "setup.py"
 
   - id: ptsip-contract-verification
     classification: DEVELOPMENT_TOOLING
@@ -867,7 +1032,7 @@ associated_artifacts:
     include:
       - "reference/**"
       - "docs/Support_policy/README.md"
-      - "docs/Support_policy/automation/**"
+      - "docs/Support_policy/automation/README.md"
     purpose: specification_governance_adoption_agent_and_support_policy_operational_guidance
 
 relationships:
@@ -1129,6 +1294,51 @@ relationships:
   - id: vpms-verification-verifies-vpms
     from: vpms-verification
     to: vpms
+    type: VERIFIES
+
+  - id: vpms-contract-plane-verifies-catalog
+    from: vpms-contract-plane-verification
+    to: vpms-contract-catalog
+    type: VERIFIES
+
+  - id: vpms-runtime-verifies-contract-entry
+    from: vpms-verification
+    to: vpms-contract-runtime
+    type: VERIFIES
+
+  - id: vpms-runtime-verifies-protocol-handoff
+    from: vpms-verification
+    to: vpms-product-protocol-handoff
+    type: VERIFIES
+
+  - id: vpms-runtime-verifies-selection
+    from: vpms-verification
+    to: vpms-case-selection
+    type: VERIFIES
+
+  - id: vpms-runtime-verifies-composition
+    from: vpms-verification
+    to: vpms-execution-composition
+    type: VERIFIES
+
+  - id: vpms-contract-plane-verifies-runtime-entry
+    from: vpms-contract-plane-verification
+    to: vpms-contract-runtime
+    type: VERIFIES
+
+  - id: vpms-contract-plane-verifies-protocol
+    from: vpms-contract-plane-verification
+    to: vpms-product-protocol-contract
+    type: VERIFIES
+
+  - id: vpms-contract-plane-verifies-selection
+    from: vpms-contract-plane-verification
+    to: vpms-selection-contract
+    type: VERIFIES
+
+  - id: vpms-contract-plane-verifies-composition
+    from: vpms-contract-plane-verification
+    to: vpms-execution-composition-contract
     type: VERIFIES
 
   - id: ptsip-contract-verification-verifies-canonical-contracts

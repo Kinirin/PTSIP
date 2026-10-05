@@ -1,5 +1,5 @@
-# Support Policy Automation
+# Retired Support Policy Automation Location
 
-This directory is reserved for repository-side automation that validates or projects the canonical Support Feature Policy under `../../../src/policy/`.
+`docs/Support_policy/` is retired as an operational policy or automation location. Do not create new policies, generators, registrars, or runtime contracts here.
 
-It is not `developer/automation/`, does not contain Developer Policy, and does not create or infer Support Policy semantics. The canonical policy authority is `src/policy/`.
+New user-facing Support Feature Policies must be created under `src/policy/`, which remains their canonical repository authority. Repository-only registration and validation tooling lives under `developer/automation/`; that tooling does not grant Developer Policy runtime authority. Installed Support projections remain under `ptsip/support/`.

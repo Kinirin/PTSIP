@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261005-VPMS-VERI-ACTIVE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner instruction on 2026-10-05: "VPMS 정책의 ACTIVE 전환,
+    selector의 실제 폐기, SFP-0006 의미 재설계 작업을 진행하도록 하겠습니다".
+    This record binds only the explicitly authorized APPROVED-to-ACTIVE lifecycle
+    transition of MPD-VERI-0007, preserving its already approved normative rules.
+    Selector public-API replacement and the successor product contract's new
+    normative meaning and identity remain separate owner decisions; this lifecycle
+    record does not choose those semantics or expand the policy's ownership.
+    Project Owner subsequently instructed on 2026-10-05 to reapply ACTIVE 2.0
+    and resolve the policy/index mismatch, while continuing the explicitly chosen
+    responsibility separation and detailed design. This reapplication preserves
+    the same normative rules and does not authorize new contract semantics.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-VERI-0007
+  recorded_at: "2026-10-05T04:13:10+09:00"

@@ -21,6 +21,7 @@ EXPECTED_REPOSITORY_COMPONENT_REFS = {
     "ptsip-migration": "ptsip-migration-verification",
     "ptsip-remediation": "ptsip-remediation-verification",
     "vpms": "vpms-verification",
+    "vpms-contract-plane": "vpms-contract-plane-verification",
     "ptsip-contract": "ptsip-contract-verification",
     "agent-contract-candidate": "agent-contract-candidate-verification",
     "agent-contract-runtime": "agent-contract-runtime-verification",

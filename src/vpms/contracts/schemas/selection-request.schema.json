@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/schemas/selection-request.schema.json",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "kind",
+        "case_ids"
+      ],
+      "properties": {
+        "kind": {
+          "const": "CASE_IDS"
+        },
+        "case_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\s]+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "kind",
+        "rule_ref"
+      ],
+      "properties": {
+        "kind": {
+          "const": "RULE_REF"
+        },
+        "rule_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\s]+$"
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

@@ -146,9 +146,26 @@ def test_vpms_change_selects_only_vpms() -> None:
     selected = SELECT_AUTOMATIC(
         _registry(),
         _profile(),
-        ["src/vpms/model.py"],
+        ["src/vpms/domain/model.py"],
     )
     assert _ids(selected) == ["vpms"]
+
+def test_vpms_contract_change_selects_contract_plane_and_runtime_consumers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(), _profile(), ["src/vpms/contracts/selection.json"],
+    )
+    assert _ids(selected) == ["vpms", "vpms-contract-plane"]
+
+
+@pytest.mark.parametrize("path", ["src/vpms/domain/snapshot.py", "src/vpms/selection/resolver.py",
+                                  "src/vpms/execution/composition.py"])
+def test_successor_implementation_paths_select_runtime_behavior_owner(path: str) -> None:
+    assert _ids(SELECT_AUTOMATIC(_registry(), _profile(), [path])) == ["vpms"]
+
+
+def test_unregistered_vpms_root_path_does_not_inherit_runtime_ownership() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        SELECT_AUTOMATIC(_registry(), _profile(), ["src/vpms/model.py"])
 
 
 def test_test_change_selects_only_declared_verification_owner() -> None:

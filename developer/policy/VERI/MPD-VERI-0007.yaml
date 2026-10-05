@@ -2,9 +2,9 @@ schema_version: developer-policy/v2
 policy_class: VPMS_DEVELOPER_POLICY
 policy:
   id: MPD-VERI-0007
-  version: "1.0"
+  version: "2.0"
   title: VPMS Case Reference and Runner Verification Protocol
-  status: APPROVED
+  status: ACTIVE
 rules:
   verification_protocol_scope:
     responsibility: VPMS_VERIFICATION_PROTOCOL
@@ -136,12 +136,14 @@ rules:
       - PHYSICAL_SELECTOR_RETIREMENT
 transition:
   target_status: ACTIVE
-  state: PENDING
+  state: COMPLETE
   requirements:
     - id: TR-001
       type: EXPLICIT_OWNER_ACTIVATION_APPROVAL
-      state: OPEN
-      refs: [MPD-VERI-0007]
+      state: SATISFIED
+      refs:
+        - MPD-VERI-0007
+        - developer/policy/approvals/MPA-20261005-VPMS-VERI-ACTIVE.yaml
       next_action:
         action: OBTAIN_EXPLICIT_OWNER_ACTIVATION_APPROVAL
         execution: OWNER_DECISION_REQUIRED

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/schemas/selection-result.schema.json",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "state",
+        "case_ids",
+        "diagnostics"
+      ],
+      "properties": {
+        "state": {
+          "const": "RESOLVED"
+        },
+        "case_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\s]+$"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "state",
+        "case_ids",
+        "diagnostics"
+      ],
+      "properties": {
+        "state": {
+          "const": "REJECTED"
+        },
+        "case_ids": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "diagnostics": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "location"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/selection_diagnostic_code"
+              },
+              "location": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[^\\s]+$"
+              },
+              "reference": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[^\\s]+$"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

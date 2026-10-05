@@ -47,6 +47,10 @@ where = ["src"]
 include = ["ptsip*", "vpms*", "agent_contracts*"]
 
 [tool.setuptools.package-data]
+vpms = [
+  "contracts/*.json",
+  "contracts/schemas/*.json",
+]
 ptsip = [
   "specdata/*.json",
   "specdata/*.yaml",

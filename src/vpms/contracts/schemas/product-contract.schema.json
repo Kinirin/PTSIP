@@ -1,0 +1,570 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/schemas/product-contract.schema.json",
+  "type": "object",
+  "required": [
+    "format",
+    "id",
+    "contract_class",
+    "status",
+    "revision",
+    "responsibility",
+    "runtime_enabled",
+    "owner_approval",
+    "owns",
+    "excludes",
+    "semantics",
+    "planned_bindings"
+  ],
+  "properties": {
+    "format": {
+      "const": "vpms-product-contract/v1"
+    },
+    "id": {
+      "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_id"
+    },
+    "contract_class": {
+      "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_class"
+    },
+    "status": {
+      "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/lifecycle"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "responsibility": {
+      "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/responsibility"
+    },
+    "runtime_enabled": {
+      "type": "boolean"
+    },
+    "owner_approval": {
+      "const": "USER_EXPLICIT"
+    },
+    "owns": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[^\\s]+$"
+      }
+    },
+    "excludes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[^\\s]+$"
+      }
+    },
+    "semantics": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "planned_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "api",
+          "source",
+          "availability"
+        ],
+        "properties": {
+          "api": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\s]+$"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\s]+$"
+          },
+          "availability": {
+            "enum": [
+              "CURRENT_EVIDENCE",
+              "NOT_IMPLEMENTED",
+              "IMPLEMENTED_INACTIVE"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "responsibility": {
+            "const": "VPMS_PRODUCT_PROTOCOL"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "semantics": {
+            "type": "object",
+            "required": [
+              "identity",
+              "case",
+              "references",
+              "formula_reuse",
+              "registry_handoff",
+              "executor",
+              "result",
+              "developer_policy_runtime_dependency"
+            ],
+            "properties": {
+              "identity": {
+                "type": "object",
+                "required": [
+                  "canonical_name",
+                  "expanded_identity",
+                  "governing_question"
+                ],
+                "properties": {
+                  "canonical_name": {
+                    "type": "string"
+                  },
+                  "expanded_identity": {
+                    "type": "string"
+                  },
+                  "governing_question": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "case": {
+                "type": "object",
+                "required": [
+                  "canonical_fields",
+                  "compatibility_fields"
+                ],
+                "properties": {
+                  "canonical_fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "compatibility_fields": {
+                    "type": "object",
+                    "required": [
+                      "purpose"
+                    ],
+                    "properties": {
+                      "purpose": {
+                        "type": "object",
+                        "required": [
+                          "legacy_required",
+                          "values",
+                          "role",
+                          "source",
+                          "canonical_selection_authority",
+                          "removal_requires_separate_owner_approval"
+                        ],
+                        "properties": {
+                          "legacy_required": {
+                            "type": "boolean"
+                          },
+                          "values": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "role": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "canonical_selection_authority": {
+                            "type": "boolean"
+                          },
+                          "removal_requires_separate_owner_approval": {
+                            "type": "boolean"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              },
+              "references": {
+                "type": "object",
+                "required": [
+                  "kinds",
+                  "match",
+                  "unknown_missing_duplicate_unresolved"
+                ],
+                "properties": {
+                  "kinds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "match": {
+                    "type": "string"
+                  },
+                  "unknown_missing_duplicate_unresolved": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "formula_reuse": {
+                "type": "object",
+                "required": [
+                  "case_state_shared_implicitly",
+                  "policy_reuse_assumed"
+                ],
+                "properties": {
+                  "case_state_shared_implicitly": {
+                    "type": "boolean"
+                  },
+                  "policy_reuse_assumed": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "registry_handoff": {
+                "type": "object",
+                "required": [
+                  "producer",
+                  "direct_construction_is_validation_proof",
+                  "immutable_snapshot_required",
+                  "concrete_handoff_binding"
+                ],
+                "properties": {
+                  "producer": {
+                    "type": "string"
+                  },
+                  "direct_construction_is_validation_proof": {
+                    "type": "boolean"
+                  },
+                  "immutable_snapshot_required": {
+                    "type": "boolean"
+                  },
+                  "concrete_handoff_binding": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "executor": {
+                "type": "object",
+                "required": [
+                  "interface",
+                  "framework_neutral"
+                ],
+                "properties": {
+                  "interface": {
+                    "type": "string"
+                  },
+                  "framework_neutral": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "result": {
+                "type": "object",
+                "required": [
+                  "identity_preserved",
+                  "compatibility_preserved",
+                  "outcomes",
+                  "executor_exception",
+                  "invalid_result_type",
+                  "ptsip_conformance_authority"
+                ],
+                "properties": {
+                  "identity_preserved": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "compatibility_preserved": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "outcomes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "executor_exception": {
+                    "type": "string"
+                  },
+                  "invalid_result_type": {
+                    "type": "string"
+                  },
+                  "ptsip_conformance_authority": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "developer_policy_runtime_dependency": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "responsibility": {
+            "const": "VPMS_CASE_SELECTION"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "semantics": {
+            "type": "object",
+            "required": [
+              "request_kinds",
+              "diagnostic_order",
+              "rejected_usable_case_count",
+              "selected_case_mutation",
+              "rule_kind",
+              "ordering",
+              "invalid_request",
+              "failure_atomicity",
+              "execution_side_effects",
+              "registry_handoff",
+              "rule_lookup",
+              "case_lookup",
+              "case_policy_is_selection_rule",
+              "result_states",
+              "selection_inference_from",
+              "schema_bindings",
+              "compatibility",
+              "unsupported_extension",
+              "developer_policy_runtime_dependency"
+            ],
+            "properties": {
+              "request_kinds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "rule_kind": {
+                "type": "string"
+              },
+              "ordering": {
+                "type": "string"
+              },
+              "invalid_request": {
+                "type": "string"
+              },
+              "failure_atomicity": {
+                "type": "string"
+              },
+              "execution_side_effects": {
+                "type": "boolean"
+              },
+              "diagnostic_order": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "rejected_usable_case_count": {
+                "type": "integer"
+              },
+              "selected_case_mutation": {
+                "type": "boolean"
+              },
+              "registry_handoff": {
+                "type": "string"
+              },
+              "rule_lookup": {
+                "type": "string"
+              },
+              "case_lookup": {
+                "type": "string"
+              },
+              "case_policy_is_selection_rule": {
+                "type": "boolean"
+              },
+              "result_states": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "selection_inference_from": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "schema_bindings": {
+                "type": "object",
+                "required": [
+                  "request",
+                  "result",
+                  "rule"
+                ],
+                "properties": {
+                  "request": {
+                    "type": "string"
+                  },
+                  "result": {
+                    "type": "string"
+                  },
+                  "rule": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "compatibility": {
+                "type": "object",
+                "required": [
+                  "legacy_scopes",
+                  "source",
+                  "canonical_selection_authority",
+                  "classification_or_path_inference",
+                  "policy"
+                ],
+                "properties": {
+                  "legacy_scopes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "canonical_selection_authority": {
+                    "type": "boolean"
+                  },
+                  "classification_or_path_inference": {
+                    "type": "boolean"
+                  },
+                  "policy": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "unsupported_extension": {
+                "type": "string"
+              },
+              "developer_policy_runtime_dependency": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "responsibility": {
+            "const": "VPMS_EXECUTION_COMPOSITION"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "semantics": {
+            "type": "object",
+            "required": [
+              "input",
+              "adapter_binding",
+              "missing_adapter",
+              "adapter_registration_check",
+              "single_case_execution_contract",
+              "selection_contract",
+              "selected_identity_preserved",
+              "registry_and_cases_mutated",
+              "new_api_implementation",
+              "compatibility",
+              "developer_policy_runtime_dependency"
+            ],
+            "properties": {
+              "input": {
+                "type": "string"
+              },
+              "adapter_binding": {
+                "type": "string"
+              },
+              "missing_adapter": {
+                "type": "string"
+              },
+              "adapter_registration_check": {
+                "type": "string"
+              },
+              "single_case_execution_contract": {
+                "type": "string"
+              },
+              "selection_contract": {
+                "type": "string"
+              },
+              "selected_identity_preserved": {
+                "type": "boolean"
+              },
+              "registry_and_cases_mutated": {
+                "type": "boolean"
+              },
+              "new_api_implementation": {
+                "type": "string"
+              },
+              "compatibility": {
+                "type": "object",
+                "required": [
+                  "existing_api",
+                  "policy",
+                  "retirement_boundary"
+                ],
+                "properties": {
+                  "existing_api": {
+                    "type": "string"
+                  },
+                  "policy": {
+                    "type": "string"
+                  },
+                  "retirement_boundary": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "developer_policy_runtime_dependency": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ]
+}

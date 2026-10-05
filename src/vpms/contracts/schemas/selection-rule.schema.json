@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/schemas/selection-rule.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "case_ids"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^\\s]+$"
+    },
+    "kind": {
+      "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/selection_rule_kind"
+    },
+    "case_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[^\\s]+$"
+      }
+    }
+  },
+  "additionalProperties": false
+}

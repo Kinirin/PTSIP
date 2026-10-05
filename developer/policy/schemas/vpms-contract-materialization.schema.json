@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "artifact_class",
+    "normative_authority",
+    "base_head",
+    "approval",
+    "approved_design",
+    "materialization_targets",
+    "preserved_files",
+    "preservation_comparison",
+    "hash_role",
+    "deferred_ownership"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "vpms-contract-materialization/v1"
+    },
+    "artifact_class": {
+      "const": "DEVELOPER_MATERIALIZATION_SCOPE_RECORD"
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "base_head": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "decision",
+        "decision_source",
+        "source_reference",
+        "stage",
+        "runtime_activation_authorized",
+        "selector_retirement_authorized",
+        "sfp_0006_retirement_authorized",
+        "commit_push_authorized"
+      ],
+      "properties": {
+        "decision": {
+          "const": "APPROVED"
+        },
+        "decision_source": {
+          "const": "USER_EXPLICIT"
+        },
+        "source_reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stage": {
+          "const": "CONTRACT_MATERIALIZATION_ONLY"
+        },
+        "runtime_activation_authorized": {
+          "const": false
+        },
+        "selector_retirement_authorized": {
+          "const": false
+        },
+        "sfp_0006_retirement_authorized": {
+          "const": false
+        },
+        "commit_push_authorized": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "approved_design": {
+      "const": {
+        "contract_class": "VPMS_PRODUCT_CONTRACT",
+        "canonical_root": "src/vpms/contracts",
+        "installed_root": "vpms/contracts",
+        "product_registration_status": "APPROVED",
+        "support_registration_status": "DRAFT",
+        "selection_request_kinds": [
+          "CASE_IDS",
+          "RULE_REF"
+        ],
+        "selection_rule_kind": "CASE_ID_SET",
+        "ordering": "CASE_ID_ASCENDING",
+        "duplicate_unknown_empty": "REJECT_REQUEST",
+        "failure_atomicity": "ALL_OR_NOTHING",
+        "selection_execution_side_effects": false,
+        "compatibility": "NEW_API_VERIFIED_THEN_COMPATIBILITY_ADAPTER_THEN_EXPLICIT_RETIREMENT_BOUNDARY",
+        "expanded_identity": "VERIFICATION_PROTOCOL_MANAGEMENT_SYSTEM",
+        "governing_question": "HOW_EXPLICIT_VERIFICATION_CASES_ARE_BOUND_EXECUTED_AND_REPORTED",
+        "purpose": "COMPATIBILITY_FIELD_NOT_CANONICAL_SELECTION_AUTHORITY",
+        "execution_composition_owner": "SEPARATE_FROM_SELECTION_AND_MPD_VERI_0007"
+      }
+    },
+    "materialization_targets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9_./-]+$"
+      }
+    },
+    "preservation_comparison": {"const": "TEXT_BYTES_WITH_CRLF_LF_EQUIVALENCE_ONLY"},
+    "preserved_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256",
+          "lf_sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "lf_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "hash_role": {
+      "const": "LOCAL_WORKTREE_BYTE_AUDIT_NOT_NORMATIVE_SEMANTIC_DIGEST"
+    },
+    "deferred_ownership": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object"
+      }
+    },
+    "allocation": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

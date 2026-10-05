@@ -1,0 +1,30 @@
+{
+  "format": "vpms-product-contract-catalog/v1",
+  "contract_class": "VPMS_PRODUCT_CONTRACT",
+  "capability": "REGISTERED_NON_ACTIVE_ONLY",
+  "entrypoints": {
+    "execution_composition": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+    "protocol": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+    "selection": "urn:uuid:e6707543-f052-4035-bb86-166701e06362"
+  },
+  "contracts": {
+    "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b": {
+      "path": "protocol.json",
+      "status": "APPROVED",
+      "responsibility": "VPMS_PRODUCT_PROTOCOL",
+      "runtime_enabled": false
+    },
+    "urn:uuid:e6707543-f052-4035-bb86-166701e06362": {
+      "path": "selection.json",
+      "status": "APPROVED",
+      "responsibility": "VPMS_CASE_SELECTION",
+      "runtime_enabled": false
+    },
+    "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06": {
+      "path": "execution-composition.json",
+      "status": "APPROVED",
+      "responsibility": "VPMS_EXECUTION_COMPOSITION",
+      "runtime_enabled": false
+    }
+  }
+}

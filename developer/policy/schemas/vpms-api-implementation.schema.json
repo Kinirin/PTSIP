@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "format",
+    "artifact_class",
+    "normative_authority",
+    "base_head",
+    "approval",
+    "task_context_status",
+    "implementation_state",
+    "prior_materialization_ref",
+    "prior_materialization_sha256",
+    "mutation_targets",
+    "preserved_files",
+    "preservation_comparison",
+    "bindings",
+    "verification",
+    "support_policy_generation_root",
+    "removed_uncommitted_paths",
+    "hash_role"
+  ],
+  "properties": {
+    "format": {
+      "const": "vpms-api-implementation-scope/v1"
+    },
+    "artifact_class": {
+      "const": "DEVELOPER_IMPLEMENTATION_SCOPE_RECORD"
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "base_head": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "decision",
+        "decision_source",
+        "source_reference",
+        "implementation_authorized",
+        "commit_push_authorized",
+        "automatic_commit_push_authorized",
+        "runtime_activation_authorized",
+        "selector_retirement_authorized",
+        "sfp_0006_retirement_authorized"
+      ],
+      "properties": {
+        "decision": {
+          "const": "APPROVED"
+        },
+        "decision_source": {
+          "const": "USER_EXPLICIT"
+        },
+        "source_reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "implementation_authorized": {
+          "const": true
+        },
+        "commit_push_authorized": {
+          "const": true
+        },
+        "automatic_commit_push_authorized": {
+          "const": true
+        },
+        "runtime_activation_authorized": {
+          "const": false
+        },
+        "selector_retirement_authorized": {
+          "const": false
+        },
+        "sfp_0006_retirement_authorized": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "task_context_status": {
+      "const": "UNREGISTERED"
+    },
+    "implementation_state": {
+      "const": "IMPLEMENTED_INACTIVE"
+    },
+    "prior_materialization_ref": {
+      "const": "developer/policy/registries/vpms-contract-materialization.json"
+    },
+    "prior_materialization_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "mutation_targets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*\\.\\.)(?!.*\\\\)[^\\s]+$"
+      }
+    },
+    "preservation_comparison": {"const": "TEXT_BYTES_WITH_CRLF_LF_EQUIVALENCE_ONLY"},
+    "preserved_files": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256",
+          "lf_sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "lf_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "api",
+          "source",
+          "contract"
+        ],
+        "properties": {
+          "api": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "contract": {
+            "enum": [
+              "protocol",
+              "selection",
+              "execution_composition"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "automatic_test_mode_resolution",
+        "candidate_behavior_is_runtime_activation",
+        "baseline_failures_are_not_waived",
+        "baseline_core_failure_log"
+      ],
+      "properties": {
+        "automatic_test_mode_resolution": {
+          "const": true
+        },
+        "candidate_behavior_is_runtime_activation": {
+          "const": false
+        },
+        "baseline_failures_are_not_waived": {
+          "const": true
+        },
+        "baseline_core_failure_log": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "support_policy_generation_root": {"const": "src/policy"},
+    "removed_uncommitted_paths": {"type": "array", "items": {"type": "string"}},
+    "hash_role": {
+      "const": "LOCAL_BYTE_AUDIT_NOT_NORMATIVE_SEMANTIC_DIGEST"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1022,9 +1022,15 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
     if mpd_ids != tuple(sorted(mpd_ids)):
         errors.append("developer policy index MPD identities must be in canonical ascending order")
 
-    expected_sfp_ids = tuple(f"SFP-{number:04d}" for number in range(1, 23))
-    if sfp_ids != expected_sfp_ids:
-        errors.append("support policy index must contain SFP-0001 through SFP-0022 in order")
+    baseline_sfp_ids = tuple(f"SFP-{number:04d}" for number in range(1, 23))
+    if sfp_ids[:len(baseline_sfp_ids)] != baseline_sfp_ids:
+        errors.append("support policy index must preserve SFP-0001 through SFP-0022 in order")
+    if sfp_ids != tuple(sorted(set(sfp_ids))):
+        errors.append("support policy IDs must be unique and canonically ordered")
+    indexed_sfp_paths = {entry.get("path") for entry in sfp_entries if isinstance(entry, Mapping)}
+    discovered_sfp_paths = {path.name for path in (base / SUPPORT_POLICY_ROOT).glob("SFP-*.yaml")}
+    if indexed_sfp_paths != discovered_sfp_paths:
+        errors.append("support policy index must cover the current SFP corpus exactly")
 
     all_policy_ids = set(mpd_ids) | set(sfp_ids)
     if len(all_policy_ids) != len(mpd_ids) + len(sfp_ids):
