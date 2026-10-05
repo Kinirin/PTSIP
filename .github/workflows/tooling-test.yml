@@ -63,7 +63,7 @@ jobs:
         env:
           PYTHONPATH: ".:src"
         run: |
-          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py developer/tests/test_policy_transition_contract.py developer/tests/test_policy_plan_identity_contract.py developer/tests/test_policy_plan_binding_schema_v2.py tests/ptsip/governance/test_policy_plan_binding.py tests/ptsip/governance/test_policy_plan_resolver_tracker.py developer/tests/test_policy_plan_consistency_verifier.py developer/tests/test_policy_version_contract.py developer/tests/test_policy_plan_output_schema_identity.py developer/tests/test_tooling_workflow_routing.py
+          python -m pytest -q developer/src/tests/test_policy_identity_lifecycle.py developer/src/tests/test_policy_responsibility_gate.py developer/src/tests/test_policy_transition_contract.py developer/src/tests/test_policy_plan_identity_contract.py developer/src/tests/test_policy_plan_binding_schema_v2.py src/tests/ptsip/governance/test_policy_plan_binding.py src/tests/ptsip/governance/test_policy_plan_resolver_tracker.py developer/src/tests/test_policy_plan_consistency_verifier.py developer/src/tests/test_policy_version_contract.py developer/src/tests/test_policy_plan_output_schema_identity.py developer/src/tests/test_tooling_workflow_routing.py
           if ($LASTEXITCODE -ne 0) {
             throw "Policy identity lifecycle tests failed."
           }
@@ -158,10 +158,10 @@ jobs:
           }
 
           python -m pytest -q `
-            tests/agent_contracts/test_contract_plane.py `
-            tests/agent_contracts/test_resolver.py `
-            developer/tests/test_repository_state_resolver.py `
-            developer/tests/test_agent_context_migration.py 2>&1 |
+            src/tests/agent_contracts/test_contract_plane.py `
+            src/tests/agent_contracts/test_resolver.py `
+            developer/src/tests/test_repository_state_resolver.py `
+            developer/src/tests/test_agent_context_migration.py 2>&1 |
             Tee-Object -FilePath $log -Append
           if ($LASTEXITCODE -ne 0) {
             throw "Agent context migration focused tests failed."
@@ -206,7 +206,7 @@ jobs:
         if: ${{ github.event_name == 'push' || inputs.verification == 'markdown-cleanup-simulation' }}
         shell: pwsh
         run: |
-          python -m pytest -q developer/tests/test_markdown_cleanup.py
+          python -m pytest -q developer/src/tests/test_markdown_cleanup.py
           if ($LASTEXITCODE -ne 0) {
             throw "Markdown cleanup automation tests failed."
           }
@@ -504,14 +504,14 @@ jobs:
       - name: Set up Go for registered verification modules
         uses: actions/setup-go@v6
         with:
-          go-version-file: developer/tests/rootfamily/go.mod
-          cache-dependency-path: developer/tests/rootfamily/go.sum
+          go-version-file: developer/src/tests/rootfamily/go.mod
+          cache-dependency-path: developer/src/tests/rootfamily/go.sum
 
       - name: Verify Go contracts during full verification
         if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
-          go -C developer/tests/rootfamily test -count=1 -v ./...
+          go -C developer/src/tests/rootfamily test -count=1 -v ./...
           if ($LASTEXITCODE -ne 0) {
             throw "Root Family Go verification failed."
           }
@@ -619,23 +619,23 @@ jobs:
         if: ${{ env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
-          python -m pytest -q tests/ptsip/validation/test_local_profile_catalog.py
+          python -m pytest -q src/tests/ptsip/validation/test_local_profile_catalog.py
           if ($LASTEXITCODE -ne 0) {
             throw "Canonical .ptsip local profile catalog regression failed."
           }
-          python -m pytest -q tests/ptsip/repository/test_self_profile.py::test_repository_uses_canonical_ptsip_namespace_and_json_indexes
+          python -m pytest -q src/tests/ptsip/repository/test_self_profile.py::test_repository_uses_canonical_ptsip_namespace_and_json_indexes
           if ($LASTEXITCODE -ne 0) {
             throw "Canonical .ptsip repository namespace regression failed."
           }
-          python -m pytest -q tests/ptsip/identity/test_tool_identity.py tests/ptsip/cli/test_runtime_surface.py
+          python -m pytest -q src/tests/ptsip/identity/test_tool_identity.py src/tests/ptsip/cli/test_runtime_surface.py
           if ($LASTEXITCODE -ne 0) {
             throw "0.3.8a3 Tool/runtime identity regression failed."
           }
-          python -m pytest -q tests/ptsip/test_release_readiness_030.py
+          python -m pytest -q src/tests/ptsip/test_release_readiness_030.py
           if ($LASTEXITCODE -ne 0) {
             throw "0.3.8a3 release-readiness contract regression failed."
           }
-          python -m pytest -q tests/ptsip/test_context_plane.py
+          python -m pytest -q src/tests/ptsip/test_context_plane.py
           if ($LASTEXITCODE -ne 0) {
             throw "0.3.8a3 Context Plane migration regression failed."
           }
@@ -651,15 +651,15 @@ jobs:
         if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: |
-          python -m pytest -q tests/agent_contracts
+          python -m pytest -q src/tests/agent_contracts
           if ($LASTEXITCODE -ne 0) {
             throw "Agent contract test corpus failed."
           }
-          python -m pytest -q tests/ptsip
+          python -m pytest -q src/tests/ptsip
           if ($LASTEXITCODE -ne 0) {
             throw "PTSIP product and release test corpus failed."
           }
-          python -m pytest -q tests/vpms
+          python -m pytest -q src/tests/vpms
           if ($LASTEXITCODE -ne 0) {
             throw "VPMS test corpus failed."
           }

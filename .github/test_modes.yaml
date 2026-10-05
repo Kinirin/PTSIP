@@ -13,116 +13,116 @@ modes:
     component_ref: ptsip-core-verification
     execution:
       pytest:
-        - tests/ptsip/clarification
-        - tests/ptsip/cli
-        - tests/ptsip/conformance
-        - tests/ptsip/control_plane
-        - tests/ptsip/governance/test_authority_runtime.py
-        - tests/ptsip/governance/test_authorization_transition.py
-        - tests/ptsip/identity
-        - tests/ptsip/inspection
-        - tests/ptsip/integration
-        - tests/ptsip/pilot
-        - tests/ptsip/topology
-        - tests/ptsip/validation
-        - tests/ptsip/repository/test_profile_convergence_037.py
-        - tests/ptsip/repository/test_profile_transition_037.py
-        - tests/ptsip/repository/test_remote_discovery.py
-        - tests/ptsip/repository/test_snapshot_integrity.py
-        - tests/ptsip/test_adoption.py
-        - tests/ptsip/test_clarification.py
-        - tests/ptsip/test_merge_gate_followup_030.py
-        - tests/ptsip/test_proposed_component.py
-        - tests/ptsip/test_context_plane.py
+        - src/tests/ptsip/clarification
+        - src/tests/ptsip/cli
+        - src/tests/ptsip/conformance
+        - src/tests/ptsip/control_plane
+        - src/tests/ptsip/governance/test_authority_runtime.py
+        - src/tests/ptsip/governance/test_authorization_transition.py
+        - src/tests/ptsip/identity
+        - src/tests/ptsip/inspection
+        - src/tests/ptsip/integration
+        - src/tests/ptsip/pilot
+        - src/tests/ptsip/topology
+        - src/tests/ptsip/validation
+        - src/tests/ptsip/repository/test_profile_convergence_037.py
+        - src/tests/ptsip/repository/test_profile_transition_037.py
+        - src/tests/ptsip/repository/test_remote_discovery.py
+        - src/tests/ptsip/repository/test_snapshot_integrity.py
+        - src/tests/ptsip/test_adoption.py
+        - src/tests/ptsip/test_clarification.py
+        - src/tests/ptsip/test_merge_gate_followup_030.py
+        - src/tests/ptsip/test_proposed_component.py
+        - src/tests/ptsip/test_context_plane.py
 
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
     execution:
       pytest:
-        - tests/ptsip/evidence
+        - src/tests/ptsip/evidence
 
   - id: ptsip-source-compat
     component_ref: ptsip-source-compat-verification
     execution:
       pytest:
-        - tests/ptsip/source_compat
+        - src/tests/ptsip/source_compat
 
   - id: ptsip-migration
     component_ref: ptsip-migration-verification
     execution:
       pytest:
-        - tests/ptsip/migration
+        - src/tests/ptsip/migration
 
   - id: ptsip-remediation
     component_ref: ptsip-remediation-verification
     execution:
       pytest:
-        - tests/ptsip/remediation
+        - src/tests/ptsip/remediation
 
   - id: vpms
     component_ref: vpms-verification
     execution:
       pytest:
-        - tests/vpms/domain
-        - tests/vpms/execution
-        - tests/vpms/integration
-        - tests/vpms/architecture
-        - tests/vpms/selection
+        - src/tests/vpms/domain
+        - src/tests/vpms/execution
+        - src/tests/vpms/integration
+        - src/tests/vpms/architecture
+        - src/tests/vpms/selection
 
   - id: vpms-contract-plane
     component_ref: vpms-contract-plane-verification
     execution:
       pytest:
-        - tests/vpms/contracts
+        - src/tests/vpms/contracts
 
   - id: ptsip-contract
     component_ref: ptsip-contract-verification
     execution:
       pytest:
-        - tests/ptsip/contracts
-        - tests/ptsip/agent_contracts/test_contract_plane.py
-        - tests/ptsip/agent_contracts/test_operation_loading.py
-        - tests/ptsip/governance/test_contracts.py
+        - src/tests/ptsip/contracts
+        - src/tests/ptsip/agent_contracts/test_contract_plane.py
+        - src/tests/ptsip/agent_contracts/test_operation_loading.py
+        - src/tests/ptsip/governance/test_contracts.py
 
   - id: agent-contract-candidate
     component_ref: agent-contract-candidate-verification
     execution:
       pytest:
-        - tests/ptsip/agent_contracts/test_candidate_parity.py
-        - tests/ptsip/agent_contracts/test_projection_bindings.py
+        - src/tests/ptsip/agent_contracts/test_candidate_parity.py
+        - src/tests/ptsip/agent_contracts/test_projection_bindings.py
 
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:
       go:
-        - developer/tests/rootfamily
+        - developer/src/tests/rootfamily
       pytest:
-        - tests/ptsip/repository/test_self_profile.py
+        - src/tests/ptsip/repository/test_self_profile.py
         - developer/tests
-        - tests/ptsip/governance/test_policy_plan_binding.py
-        - tests/ptsip/governance/test_policy_plan_resolver_tracker.py
+        - src/tests/ptsip/governance/test_policy_plan_binding.py
+        - src/tests/ptsip/governance/test_policy_plan_resolver_tracker.py
 
   - id: agent-contract-runtime
     component_ref: agent-contract-runtime-verification
     execution:
       pytest:
-        - tests/agent_contracts/test_resolver.py
+        - src/tests/agent_contracts/test_resolver.py
 
   - id: agent-contract-plane
     component_ref: agent-contract-plane-verification
     execution:
       pytest:
-        - tests/agent_contracts/test_contract_plane.py
-        - tests/agent_contracts/test_promotion_contract.py
+        - src/tests/agent_contracts/test_contract_plane.py
+        - src/tests/agent_contracts/test_promotion_contract.py
 
   - id: repository-release
     component_ref: repository-release-verification
     execution:
       pytest:
-        - tests/ptsip/test_release_readiness_030.py
+        - src/tests/ptsip/test_release_readiness_030.py
 
   - id: test-mode-control-plane
     component_ref: repository-test-mode-control-plane
     execution:
       pytest:
-        - tests/ptsip/test_modes
+        - src/tests/ptsip/test_modes

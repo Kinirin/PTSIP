@@ -45,6 +45,7 @@ ptsip-app = "ptsip.app.server:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["ptsip*", "vpms*", "agent_contracts*"]
+exclude = ["tests*"]
 
 [tool.setuptools.package-data]
 vpms = [
