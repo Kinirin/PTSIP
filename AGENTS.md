@@ -8,6 +8,14 @@ The Root Responsibility Family transition introduced on `dev/0.3.8a4` has a dedi
 
 Before reading legacy family policy sets for that work:
 
+0. resolve the exact class-scoped Root Family entry mechanically:
+
+```text
+python -m developer.automation.root_family_policy_entry resolve --policy-class <PTSIP_DEVELOPER_POLICY|PTSIP_SUPPORT_FEATURE> --family <NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD>
+```
+
+Use the returned `allocated_policy_id`, `canonical_path`, and `schema_ref`. Do not construct a Root Family policy ID, path, or Schema choice from naming similarity. A legacy `SPEC|PLAN|WORK|VERI|MIGR|RELS` family passed to this entry is fail-closed for new allocation.
+
 1. read `developer/policy/MPD-0018.yaml` for `PTSIP_DEVELOPER_POLICY`;
 2. read `src/policy/SFP-0024.yaml` for `PTSIP_SUPPORT_FEATURE`;
 3. treat authority identity as the exact pair `(policy_class, responsibility_family)`;
