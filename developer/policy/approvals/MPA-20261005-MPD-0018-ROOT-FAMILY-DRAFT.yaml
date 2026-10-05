@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261005-MPD-0018-ROOT-FAMILY-DRAFT
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner approved creation of the 14 Root Responsibility Family transition
+    policy on dev/0.3.8a4. The shared family vocabulary is NORM, GOV, INTENT, ARCH,
+    INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, and RECORD.
+    Family semantics are not globally inherited: authority_subject and
+    exclusive_kernel are defined independently per policy class. Existing
+    SPEC, PLAN, WORK, VERI, MIGR, and RELS developer families are legacy
+    migration sources and are not the target authority model.
+  approval_scope: DRAFT_CREATION
+  target_status: DRAFT
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-0018
+  recorded_at: "2026-10-05T19:06:00+09:00"
