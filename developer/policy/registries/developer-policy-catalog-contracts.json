@@ -13,7 +13,11 @@
     "source_kind": "PROJECT_OWNER_DIRECT_INSTRUCTION",
     "source_reference": "두 stale fixture는 제안한 한 파일 범위와 최소 경계 검증 보강으로 수정하는 것을 승인합니다. C 모델은 위 계약표의 권고안으로 확정하며, neutral catalog의 정식 계약 materialization과 정확한 변경 범위 등록을 승인합니다.",
     "recorded_at": "2026-10-05T02:36:32+09:00",
-    "approved_scopes": ["STALE_FIXTURE_REMEDIATION", "NEUTRAL_CATALOG_CONTRACT_MATERIALIZATION", "EXACT_CHANGE_SCOPE_REGISTRATION"]
+    "approved_scopes": [
+      "STALE_FIXTURE_REMEDIATION",
+      "NEUTRAL_CATALOG_CONTRACT_MATERIALIZATION",
+      "EXACT_CHANGE_SCOPE_REGISTRATION"
+    ]
   },
   "entrypoints": {
     "index": "developer-policy-catalog/v1",
@@ -32,15 +36,31 @@
     }
   },
   "invariants": {
-    "catalog_authority": ["REGISTRATION_MEMBERSHIP", "CANONICAL_PATH_BINDINGS"],
-    "policy_file_authority": ["POLICY_CLASS", "LIFECYCLE_STATUS", "NORMATIVE_RULES"],
+    "catalog_authority": [
+      "REGISTRATION_MEMBERSHIP",
+      "CANONICAL_PATH_BINDINGS"
+    ],
+    "policy_file_authority": [
+      "POLICY_CLASS",
+      "LIFECYCLE_STATUS",
+      "NORMATIVE_RULES"
+    ],
     "index_policy_class_and_status": "VALIDATED_POLICY_FILE_PROJECTION",
     "subject_registered_policy_ids": "CATALOG_MEMBERSHIP_PROJECTION",
-    "preserved_subject_fields": ["registry_role", "language_neutral", "repository_identity_schemes", "current_repository_bindings", "matching"],
+    "preserved_subject_fields": [
+      "registry_role",
+      "language_neutral",
+      "repository_identity_schemes",
+      "current_repository_bindings",
+      "matching"
+    ],
     "policy_ids_globally_unique": true,
     "responsibility_family_sequence_shared_across_policy_classes": true,
     "boundary_is_responsibility_family": false,
-    "authority_lookup_key": ["policy_class", "responsibility_family"],
+    "authority_lookup_key": [
+      "policy_class",
+      "responsibility_family"
+    ],
     "family_only_authority_lookup": "FORBIDDEN",
     "unknown_or_mismatched_metadata": "FAIL_CLOSED",
     "projection_is_independent_authority": false,
@@ -69,7 +89,10 @@
       "stage": "M1_M7_CLASS_ISOLATION",
       "snapshot_kind": "WORKING_TREE_ON_BASE_HEAD",
       "base_head": "afdf5297a4ca7ca7e3cb17eba4dc4b19d13042f2",
-      "test_modes": ["repository-architecture", "ptsip-contract"],
+      "test_modes": [
+        "repository-architecture",
+        "ptsip-contract"
+      ],
       "return_code": 0,
       "passed": 518,
       "failed": 0,
@@ -139,58 +162,283 @@
       {
         "path": "developer/tests/test_developer_control_plane.py",
         "operation": "MODIFY",
-        "python_functions": ["_expected_policy_path", "test_current_policy_relations_preserve_materialized_relation_set", "test_current_policy_indexes_cover_self_contained_corpus", "test_policy_path_fixture_distinguishes_boundary_from_families", "test_policy_path_fixture_rejects_unregistered_family"],
-        "module_fields": ["import re"]
+        "python_functions": [
+          "_expected_policy_path",
+          "test_current_policy_relations_preserve_materialized_relation_set",
+          "test_current_policy_indexes_cover_self_contained_corpus",
+          "test_policy_path_fixture_distinguishes_boundary_from_families",
+          "test_policy_path_fixture_rejects_unregistered_family"
+        ],
+        "module_fields": [
+          "import re"
+        ]
       },
       {
         "path": "developer/automation/policy_validator.py",
         "operation": "MODIFY",
-        "python_functions": ["_neutral_catalog_resources", "resolve_neutral_catalog_contract", "validate_neutral_catalog_contract_registration", "validate_neutral_catalog_snapshot", "validate_developer_policy"],
-        "module_fields": ["from referencing import Registry, Resource", "NEUTRAL_CATALOG_CONTRACTS", "NEUTRAL_CATALOG_CONTRACTS_SCHEMA"]
+        "python_functions": [
+          "_neutral_catalog_resources",
+          "resolve_neutral_catalog_contract",
+          "validate_neutral_catalog_contract_registration",
+          "validate_neutral_catalog_snapshot",
+          "validate_developer_policy"
+        ],
+        "module_fields": [
+          "from referencing import Registry, Resource",
+          "NEUTRAL_CATALOG_CONTRACTS",
+          "NEUTRAL_CATALOG_CONTRACTS_SCHEMA"
+        ]
       },
-      {"path": "developer/policy/registries/developer-policy-catalog-contracts.json", "operation": "CREATE"},
-      {"path": "developer/policy/schemas/developer-policy-catalog-contracts.schema.json", "operation": "CREATE"},
-      {"path": "developer/policy/schemas/developer-policy-catalog.schema.json", "operation": "CREATE"},
-      {"path": "developer/policy/schemas/developer-policy-subject-catalog.schema.json", "operation": "CREATE"},
-      {"path": "developer/tests/test_neutral_policy_catalog_contract.py", "operation": "CREATE"}
+      {
+        "path": "developer/policy/registries/developer-policy-catalog-contracts.json",
+        "operation": "CREATE"
+      },
+      {
+        "path": "developer/policy/schemas/developer-policy-catalog-contracts.schema.json",
+        "operation": "CREATE"
+      },
+      {
+        "path": "developer/policy/schemas/developer-policy-catalog.schema.json",
+        "operation": "CREATE"
+      },
+      {
+        "path": "developer/policy/schemas/developer-policy-subject-catalog.schema.json",
+        "operation": "CREATE"
+      },
+      {
+        "path": "developer/tests/test_neutral_policy_catalog_contract.py",
+        "operation": "CREATE"
+      }
     ],
     "deferred_application_targets": [
-      {"path": "developer/policy/index.yaml", "fields": ["schema_version", "artifact_class", "policies[].policy_class", "policies[].status"], "execution_authorized": false},
-      {"path": "developer/policy/registries/authority-subject-registry.yaml", "fields": ["schema_version", "artifact_class", "subject_identity_schemes.MANAGEMENT_POLICY_ID.registered_values"], "execution_authorized": false},
-      {"path": "developer/automation/policy_validator.py", "python_functions": ["validate_developer_policy", "_validate_current_registry_planes"], "execution_authorized": false},
-      {"path": "developer/automation/policy_identity_lifecycle.py", "python_functions": ["_load_consistent_registered_corpus", "register_policy", "register_family_policy"], "execution_authorized": false},
-      {"path": "developer/automation/policy_resolver.py", "python_functions": ["_load_index"], "execution_authorized": false},
-      {"path": "developer/automation/verification/policy_plan_consistency.py", "python_functions": ["_known_policy_ids"], "execution_authorized": false},
-      {"path": "developer/automation/policy_plan_binding/reconciler.py", "python_functions": ["_policy_ids"], "execution_authorized": false}
+      {
+        "path": "developer/policy/index.yaml",
+        "fields": [
+          "schema_version",
+          "artifact_class",
+          "policies[].policy_class",
+          "policies[].status"
+        ],
+        "execution_authorized": false
+      },
+      {
+        "path": "developer/policy/registries/authority-subject-registry.yaml",
+        "fields": [
+          "schema_version",
+          "artifact_class",
+          "subject_identity_schemes.MANAGEMENT_POLICY_ID.registered_values"
+        ],
+        "execution_authorized": false
+      },
+      {
+        "path": "developer/automation/policy_validator.py",
+        "python_functions": [
+          "validate_developer_policy",
+          "_validate_current_registry_planes"
+        ],
+        "execution_authorized": false
+      },
+      {
+        "path": "developer/automation/policy_identity_lifecycle.py",
+        "python_functions": [
+          "_load_consistent_registered_corpus",
+          "register_policy",
+          "register_family_policy"
+        ],
+        "execution_authorized": false
+      },
+      {
+        "path": "developer/automation/policy_resolver.py",
+        "python_functions": [
+          "_load_index"
+        ],
+        "execution_authorized": false
+      },
+      {
+        "path": "developer/automation/verification/policy_plan_consistency.py",
+        "python_functions": [
+          "_known_policy_ids"
+        ],
+        "execution_authorized": false
+      },
+      {
+        "path": "developer/automation/policy_plan_binding/reconciler.py",
+        "python_functions": [
+          "_policy_ids"
+        ],
+        "execution_authorized": false
+      }
     ],
-    "separate_authority_family_work": ["developer/automation/policy_responsibility_gate.py", "developer/policy/analysis/", "developer/policy/schemas/policy-responsibility-analysis.schema.json", "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"],
-    "preserved_contracts": ["developer/policy/schemas/developer-policy-index.schema.json", "developer/policy/schemas/developer-governance-registry.schema.json", "developer/policy/schemas/management-policy.schema.json"],
-    "forbidden_write_roots": ["src/", "License-Authority/"],
-    "forbidden_actions": ["VPMS_POLICY_CREATION", "MPD_ID_RENAMING", "ADD_BOUND_TO_FAMILY_VOCABULARY", "GIT_COMMIT", "GIT_PUSH"],
+    "separate_authority_family_work": [
+      "developer/automation/policy_responsibility_gate.py",
+      "developer/policy/analysis/",
+      "developer/policy/schemas/policy-responsibility-analysis.schema.json",
+      "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
+    ],
+    "preserved_contracts": [
+      "developer/policy/schemas/developer-policy-index.schema.json",
+      "developer/policy/schemas/developer-governance-registry.schema.json",
+      "developer/policy/schemas/management-policy.schema.json"
+    ],
+    "forbidden_write_roots": [
+      "src/",
+      "License-Authority/"
+    ],
+    "forbidden_actions": [
+      "VPMS_POLICY_CREATION",
+      "MPD_ID_RENAMING",
+      "ADD_BOUND_TO_FAMILY_VOCABULARY",
+      "GIT_COMMIT",
+      "GIT_PUSH"
+    ],
     "verification_selection": "AUTOMATIC_TEST_MODE_RESOLUTION",
-    "verification_test_paths": ["developer/tests/test_developer_control_plane.py", "developer/tests/test_neutral_policy_catalog_contract.py"]
+    "verification_test_paths": [
+      "developer/tests/test_developer_control_plane.py",
+      "developer/tests/test_neutral_policy_catalog_contract.py"
+    ]
   },
   "$defs": {
-    "catalog_schema_version": {"const": "developer-policy-catalog/v1"},
-    "catalog_artifact_class": {"const": "DEVELOPER_POLICY_CATALOG"},
-    "subject_schema_version": {"const": "developer-policy-subject-catalog/v1"},
-    "subject_artifact_class": {"const": "DEVELOPER_POLICY_SUBJECT_CATALOG"},
-    "subject_registry_role": {"const": "MANAGEMENT_POLICY_SUBJECT_CATALOG"},
-    "forbidden_subject_match": {"const": "FORBIDDEN"},
-    "policy_id": {"type": "string", "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"},
-    "family_policy_id": {"type": "string", "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
-    "root_family_policy_id": {"type": "string", "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"},
-    "legacy_family_policy_id": {"type": "string", "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
-    "boundary_policy_id": {"type": "string", "pattern": "^MPD-BOUND-[0-9]{4}$"},
-    "developer_policy_class": {"enum": ["PTSIP_DEVELOPER_POLICY", "VPMS_DEVELOPER_POLICY"]},
-    "nullable_developer_policy_class": {"anyOf": [{"$ref": "#/$defs/developer_policy_class"}, {"type": "null"}]},
-    "responsibility_family": {"enum": ["NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD", "SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"]},
-    "root_responsibility_family": {"enum": ["NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"]},
-    "legacy_responsibility_family": {"enum": ["SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"]},
-    "nullable_responsibility_family": {"anyOf": [{"$ref": "#/$defs/responsibility_family"}, {"type": "null"}]},
-    "boundary_policy_class": {"const": "PTSIP_BOUND_POLICY"},
-    "policy_class": {"anyOf": [{"$ref": "#/$defs/developer_policy_class"}, {"$ref": "#/$defs/boundary_policy_class"}]},
-    "policy_status": {"enum": ["DRAFT", "APPROVED", "ACTIVE", "SUPERSEDED", "RETIRED"]},
-    "policy_path": {"type": "string", "pattern": "^developer/policy/(?:MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)/MPD-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS))-[0-9]{4})\\.yaml$"}
+    "catalog_schema_version": {
+      "const": "developer-policy-catalog/v1"
+    },
+    "catalog_artifact_class": {
+      "const": "DEVELOPER_POLICY_CATALOG"
+    },
+    "subject_schema_version": {
+      "const": "developer-policy-subject-catalog/v1"
+    },
+    "subject_artifact_class": {
+      "const": "DEVELOPER_POLICY_SUBJECT_CATALOG"
+    },
+    "subject_registry_role": {
+      "const": "MANAGEMENT_POLICY_SUBJECT_CATALOG"
+    },
+    "forbidden_subject_match": {
+      "const": "FORBIDDEN"
+    },
+    "policy_id": {
+      "type": "string",
+      "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+    },
+    "family_policy_id": {
+      "type": "string",
+      "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+    },
+    "root_family_policy_id": {
+      "type": "string",
+      "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
+    },
+    "legacy_family_policy_id": {
+      "type": "string",
+      "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+    },
+    "boundary_policy_id": {
+      "type": "string",
+      "pattern": "^MPD-BOUND-[0-9]{4}$"
+    },
+    "developer_policy_class": {
+      "enum": [
+        "PTSIP_DEVELOPER_POLICY",
+        "VPMS_DEVELOPER_POLICY"
+      ]
+    },
+    "nullable_developer_policy_class": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/developer_policy_class"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "responsibility_family": {
+      "enum": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD",
+        "SPEC",
+        "PLAN",
+        "WORK",
+        "VERI",
+        "MIGR",
+        "RELS"
+      ]
+    },
+    "root_responsibility_family": {
+      "enum": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ]
+    },
+    "legacy_responsibility_family": {
+      "enum": [
+        "SPEC",
+        "PLAN",
+        "WORK",
+        "VERI",
+        "MIGR",
+        "RELS"
+      ]
+    },
+    "nullable_responsibility_family": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/responsibility_family"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "boundary_policy_class": {
+      "const": "PTSIP_BOUND_POLICY"
+    },
+    "policy_class": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/developer_policy_class"
+        },
+        {
+          "$ref": "#/$defs/boundary_policy_class"
+        }
+      ]
+    },
+    "policy_status": {
+      "enum": [
+        "DRAFT",
+        "APPROVED",
+        "ACTIVE",
+        "SUPERSEDED",
+        "RETIRED"
+      ]
+    },
+    "policy_path": {
+      "type": "string",
+      "pattern": "^developer/policy/(?:MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:NORM/MPD-NORM|GOV/MPD-GOV|INTENT/MPD-INTENT|ARCH/MPD-ARCH|INFO/MPD-INFO|CNTR/MPD-CNTR|RISK/MPD-RISK|SUPPLY/MPD-SUPPLY|REAL/MPD-REAL|ASSURE/MPD-ASSURE|CTRL/MPD-CTRL|CHANGE/MPD-CHANGE|OPS/MPD-OPS|RECORD/MPD-RECORD|SPEC/MPD-SPEC|PLAN/MPD-PLAN|WORK/MPD-WORK|VERI/MPD-VERI|MIGR/MPD-MIGR|RELS/MPD-RELS)-[0-9]{4})\\.yaml$"
+    }
   }
 }
