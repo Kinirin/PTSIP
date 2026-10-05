@@ -137,6 +137,16 @@ After the policy file is materialized with the exact allocated ID and explicit a
 python -m developer.automation.policy_identity_lifecycle register --approval-ref developer/policy/approvals/<record>.yaml --policy-file developer/policy/<MPD-ID>.yaml
 ```
 
+For a new `PTSIP_DEVELOPER_POLICY` Root Family policy, do not use the unscoped `preflight/register` path. Resolve the class/family entry first, then use the analyzed Family lifecycle path:
+
+```text
+python -m developer.automation.root_family_policy_entry resolve --policy-class PTSIP_DEVELOPER_POLICY --family <ROOT>
+python -m developer.automation.policy_identity_lifecycle family-preflight --family <ROOT> --policy-class PTSIP_DEVELOPER_POLICY --approval-ref developer/policy/approvals/<record>.yaml --analysis-ref developer/policy/analysis/<analysis>.yaml --group-id <group>
+python -m developer.automation.policy_identity_lifecycle family-register --family <ROOT> --policy-class PTSIP_DEVELOPER_POLICY --approval-ref developer/policy/approvals/<record>.yaml --analysis-ref developer/policy/analysis/<analysis>.yaml --group-id <group> --policy-file developer/policy/<ROOT>/<MPD-ROOT-ID>.yaml
+```
+
+`SPEC | PLAN | WORK | VERI | MIGR | RELS` remain readable migration inputs but are not valid new `PTSIP_DEVELOPER_POLICY` allocation targets.
+
 For a lifecycle status change on an existing MPD, run `status-preflight` first. Temporary implementation approval does not imply `ACTIVE` or `DRAFT`; the approval provenance must state the target status explicitly. Any ID collision, index/file/subject-registry mismatch, missing approval provenance, or status mismatch is fail-closed.
 
 ## Implementation Work Packet
