@@ -7,6 +7,8 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator, ValidationError
 
+from developer.tests.policy_migration_helpers import source_file
+
 from developer.automation.vpms_runtime_activation import (
     RECORD, SCHEMA, activation_record, verify, verify_preserved,
 )
@@ -53,7 +55,7 @@ def test_retired_selector_cannot_be_reintroduced(monkeypatch):
 
 def test_sfp_0006_retirement_does_not_authorize_semantic_redefinition(monkeypatch):
     original = Path.read_bytes
-    legacy = ROOT / "src/policy/SFP-0006.yaml"
+    legacy = source_file(ROOT / "src/policy/SFP-0006.yaml")
     monkeypatch.setattr(Path, "read_bytes", lambda path: original(path) + b"# unauthorized\n" if path == legacy else original(path))
     with pytest.raises(ValueError, match="PRESERVED_SOURCE_CHANGED: src/policy/SFP-0006.yaml"):
         verify_preserved(ROOT, scope_record(ROOT)["preserved_files"])

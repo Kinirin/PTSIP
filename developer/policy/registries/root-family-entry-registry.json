@@ -37,7 +37,8 @@
         "OPS",
         "RECORD"
       ],
-      "unmaterialized_slot_default": "RESERVED"
+      "unmaterialized_slot_default": "RESERVED",
+      "migration_registry_ref": "developer/policy/registries/root-family-migration.json"
     },
     "PTSIP_SUPPORT_FEATURE": {
       "id_prefix": "SFP",
@@ -59,7 +60,8 @@
         "OPS",
         "RECORD"
       ],
-      "unmaterialized_slot_default": "RESERVED"
+      "unmaterialized_slot_default": "RESERVED",
+      "migration_registry_ref": "src/policy/registries/root-family-migration.json"
     }
   },
   "invariants": {

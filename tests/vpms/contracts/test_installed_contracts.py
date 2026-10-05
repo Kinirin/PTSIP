@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import zipfile
+import yaml
 
 import pytest
 
@@ -36,9 +37,12 @@ def test_actual_wheel_contains_exact_active_contracts_and_no_retired_selector(bu
         for path in source.rglob("*.json"):
             member = "vpms/contracts/" + path.relative_to(source).as_posix()
             assert archive.read(member) == path.read_bytes()
-        assert archive.read("ptsip/support/policy/SFP-0023.yaml") == (
-            ROOT / "src/policy/SFP-0023.yaml"
-        ).read_bytes()
+        index = yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))
+        for entry in index["policies"]:
+            assert archive.read("ptsip/support/policy/" + entry["path"]) == (ROOT / "src/policy" / entry["path"]).read_bytes()
+        assert archive.read("ptsip/support/registries/root-family-migration.json") == (ROOT / "src/policy/registries/root-family-migration.json").read_bytes()
+        assert archive.read("ptsip/support/registries/root-family-projection.module.json") == (ROOT / "src/policy/registries/root-family-projection.module.json").read_bytes()
+        assert archive.read("ptsip/support/schemas/root-family-projection-module.schema.json") == (ROOT / "src/policy/schemas/root-family-projection-module.schema.json").read_bytes()
         names = archive.namelist()
         assert "vpms/domain/selector.py" not in names
         assert not any(name.startswith(("developer/", "docs/Support_policy/automation/")) for name in names)

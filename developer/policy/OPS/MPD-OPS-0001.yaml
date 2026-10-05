@@ -1,0 +1,65 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: OPS
+policy:
+  id: MPD-OPS-0001
+  title: OPS authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_SERVICE_CONTINUITY_AND_RECOVERY
+  statement: 인계 이후 개발 자동화와 개발 환경 및 control plane의 지속 운영, 상태 유지, 장애 회복과 반복 실행의 안전성을
+    소유한다.
+exclusive_kernel:
+- DEV_OPERATIONAL_HEALTH_AND_RECOVERY
+- DEV_RETRY_RECONCILIATION_CONTINUITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_OPERATIONAL_HEALTH_AND_RECOVERY
+      statement: 이미 등록되고 사용 가능한 개발 capability의 상태 감시, 장애 분류 및 authority를 보존하는 회복 절차를
+        정한다.
+      non_substitutability: SUPPLY의 환경 공급이나 REAL의 일회성 구현만으로 지속 운영과 장애 회복 책임이 충족되지
+        않는다.
+    - id: DEV_RETRY_RECONCILIATION_CONTINUITY
+      statement: 승인된 operation identity와 revision을 보존하는 retry 및 reconciliation을 정하고
+        충돌을 은폐하지 않는다. RESERVED capability의 persistence나 실행 의미를 새로 만들지 않는다.
+      non_substitutability: CHANGE의 migration 계획이나 CTRL의 단일 실행 허용은 반복 실행의 동일성 및 운영
+        연속성을 대신 정의하지 않는다.
+    source_scope:
+    - MPD-0015
+    - MPD-WORK-0002
+  unit_mpd_0015_aecdc747228d:
+    work_execution_lifecycle_ref: MPD-WORK-0002
+    cycle:
+    - AUTOMATIC_PLAN
+    - EXECUTION
+    - STRUCTURED_RESULT
+    - OBSERVABLE_EVIDENCE
+    - MECHANICAL_VERIFICATION
+    - STATE_PROJECTION
+    - RERESOLUTION
+    verification_contract_ref: MPD-VERI-0005
+    state_boundary:
+      exact_runtime_persistence_path_fixed_by_this_policy: false
+      state_projection_is_normative_authority: false
+      state_may_propagate_existing_verified_facts_only: true
+  unit_mpd_work_0002_cb84e0d18581: EXECUTION_IS_NOT_A_TERMINAL_STAGE
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-OPS-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

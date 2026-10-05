@@ -1,4 +1,5 @@
 from __future__ import annotations
+from developer.tests.policy_migration_helpers import resolve_source_bindings as resolve_policies
 
 from pathlib import Path
 
@@ -9,7 +10,7 @@ from developer.automation.policy_identity_lifecycle import inspect_policy, statu
 from developer.automation.policy_loader import load_yaml
 from developer.automation.policy_plan_binding.reconciler import reconcile_registry
 from developer.automation.policy_plan_binding.resolver import resolve_bindings
-from developer.automation.policy_resolver import get_policy, resolve_policies
+from developer.automation.policy_resolver import get_policy
 from developer.automation.verification.policy_plan_consistency import verify_policy_plan_consistency
 
 

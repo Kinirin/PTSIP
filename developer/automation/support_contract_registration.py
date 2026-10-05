@@ -217,7 +217,8 @@ def verify_registration(root: Path = ROOT, *, check_worktree: bool = False):
     if invariants["activation_requires_explicit_owner_approval"] is not True:
         raise RegistrationError("ACTIVATION_GATE_MISSING")
     for path in base.rglob("*.json"):
-        raw = path.read_text(encoding="utf-8")
+        from developer.automation.policy_loader import registered_policy_file
+        raw = registered_policy_file(path, root=root).read_text(encoding="utf-8")
         if "MPD-" in raw or "developer/" in raw:
             raise RegistrationError("PRODUCT_DEVELOPER_POLICY_DEPENDENCY")
     from ptsip.governance import AuthorityCatalog

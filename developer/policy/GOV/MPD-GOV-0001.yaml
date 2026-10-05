@@ -1,0 +1,516 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: GOV
+policy:
+  id: MPD-GOV-0001
+  title: GOV authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_DECISION_LEGITIMACY
+  statement: 개발 정책, 개발 작업 및 개발 control plane에서 누가 어떤 subject에 대해 결정을 내리고 승인할 수 있는지와
+    그 결정의 정당성을 소유한다.
+exclusive_kernel:
+- DEV_DECISION_OWNER_AND_MANDATE
+- DEV_APPROVAL_AND_LIFECYCLE_LEGITIMACY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_DECISION_OWNER_AND_MANDATE
+      statement: 개발 결정의 정확한 authority subject, 소유자, 위임 범위와 승인 주체를 명시하고 무권한 결정을 배제한다.
+      non_substitutability: INTENT의 작업 목표나 ARCH의 기술 설계가 결정권자의 위임 범위를 대신 만들 수 없다.
+    - id: DEV_APPROVAL_AND_LIFECYCLE_LEGITIMACY
+      statement: 정책 등록, 정책 lifecycle 상태 및 개발 작업 승인의 출처와 대상 범위가 적법한지를 정한다.
+      non_substitutability: CTRL의 실행 가능 판정이나 테스트 PASS가 명시되지 않은 ACTIVE/DRAFT 상태 승인을
+        만들어 내지 못한다.
+    source_scope:
+    - MPD-0010
+    - MPD-0011
+    - MPD-0012
+    - MPD-0014
+    - MPD-0015
+    - MPD-MIGR-0003
+    - MPD-MIGR-0004
+    - MPD-MIGR-0005
+    - MPD-SPEC-0010
+    - MPD-SPEC-0023
+  unit_mpd_0010_e5b59f852d65: ELIMINATE_REPEATED_AGENT_INFERENCE_AND_PREVENT_POLICY_ID_OR_STATUS_COLLISIONS
+  unit_mpd_0010_8c571a585cc6: developer.automation.policy_identity_lifecycle
+  unit_mpd_0010_18235d5b0bd9: developer/policy/schemas/policy-approval-provenance.schema.json
+  unit_mpd_0010_b48aaaf365f4: developer/policy/approvals/
+  unit_mpd_0010_ba91d621dc0b:
+    infer_next_id_from_visual_or_semantic_guessing: FORBIDDEN
+    infer_policy_status_from_approval_wording: FORBIDDEN
+    infer_activation_from_implementation_authorization: FORBIDDEN
+    infer_approval_from_repository_state: FORBIDDEN
+    existing_id_collision: FAIL_CLOSED
+    corpus_mismatch: FAIL_CLOSED
+    missing_or_invalid_approval_provenance: FAIL_CLOSED
+  unit_mpd_0010_0d4f6ecbdaeb:
+    temporary_approval_may_authorize_implementation: true
+    temporary_approval_does_not_imply_active_or_draft_status: true
+    target_policy_status_must_be_explicit_in_approval_provenance: true
+    implementation_authorization_and_policy_lifecycle_status_are_independent_fields: true
+    policy_content_review_scope_must_be_recorded: true
+  unit_mpd_0010_b572084f5452:
+    subject_identity_registry_tracks_existing_policy_ids_regardless_of_active_or_draft_status: true
+    authority_schema_and_role_registries_do_not_gain_draft_operational_authority: true
+    registration_requires_exact_policy_file_index_status_match: true
+  unit_mpd_0010_a71704961691:
+    decision: APPROVED
+    authority_role: OPERATIONAL_RESOLUTION_NOT_POLICY_AUTHORITY
+    default_behavior:
+      provisional_resolution_enabled: false
+      explicit_user_authorization_required: true
+      user_silence_is_authorization: false
+      implementation_urgency_is_authorization: false
+      agent_convenience_is_authorization: false
+    unauthorized_case:
+      agent_may_create_provisional_resolution: false
+      unresolved_normative_decision_result: USER_DECISION_REQUIRED
+    authorized_case:
+      agent_may_create_provisional_resolution: true
+      implementation_may_proceed_when_not_blocked_by_official_policy: true
+      creates_official_policy_authority: false
+      automatic_promotion_to_official_authority: FORBIDDEN
+      test_success_promotes_to_official_authority: false
+      implementation_success_promotes_to_official_authority: false
+      future_user_review_required: true
+    authorization_scope:
+      default_inheritance: FORBIDDEN
+      must_be_bounded_to:
+      - TASK
+      - RESPONSIBILITY_SCOPE
+      - EXPLICITLY_DECLARED_OPERATION_SCOPE
+      authorization_outside_declared_scope: FORBIDDEN
+    required_record:
+    - DECISION_SOURCE
+    - AUTHORIZATION_SOURCE
+    - REASON
+    - RESPONSIBILITY_SCOPE
+    - AFFECTED_POLICY_REFS
+    - AFFECTED_PLAN_REFS
+    - UNRESOLVED_QUESTIONS
+    conflict_boundary:
+      official_policy_may_be_overridden_by_provisional_resolution: false
+      official_policy_conflict_result: CHANGE_IMPLEMENTATION_OR_BLOCK
+      provisional_resolution_must_remain_distinguishable_from_user_approved_policy: true
+    lifecycle_boundary:
+      physical_policy_status_mutation_from_provisional_resolution: FORBIDDEN
+      provisional_resolution_is_not_management_policy_status: true
+      provisional_resolution_is_not_plan_approval_status: true
+      explicit_user_approval_required_for_official_promotion: true
+  unit_mpd_0011_c3a0e5252ddf: MPD-MIGR-0003
+  unit_mpd_0012_8b9a13c6427c:
+    decision_record_state: ACTIVE_RECONCILED
+    decision_date: '2026-09-22'
+    activation_date: '2026-09-25'
+    scope: AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION
+    record_role: SESSION_POLICY_DECISION_LEDGER
+    runtime_authority: ACTIVATED
+    runtime_authority_scope: APPROVED_DECISIONS_ONLY
+    provisional_decisions_are_runtime_authority: false
+    deferred_decisions_are_runtime_authority: false
+    implementation_change_authorized_by_this_record: true
+    activation_requires_separate_reconciliation_and_approval: true
+    activation_approval_satisfied: true
+    existing_active_policy_reconciliation_required_before_activation: true
+    existing_active_policy_reconciliation_satisfied: true
+  unit_mpd_0012_e0cfe7d01329:
+    normative_document_boundary:
+      normative_and_operational_markdown_removal: APPROVED
+      new_human_readable_projection_generation_current_stage: FORBIDDEN
+    markdown_cleanup_preconditions:
+      decision: APPROVED
+      target_classification:
+        basis: SEMANTIC_ROLE_NOT_FILE_EXTENSION_OR_DIRECTORY_NAME
+        remove_when_markdown_owns_any_of:
+        - NORMATIVE_RULE
+        - CODING_AGENT_BEHAVIOR
+        - OPERATION_PROCEDURE
+        - VALIDATION_OR_CONFORMANCE_SEMANTICS
+        - GOVERNANCE_OR_AUTHORITY_SEMANTICS
+        - PROFILE_TRANSITION_SEMANTICS
+        - NORMATIVE_TERMINOLOGY
+        markdown_format_alone_is_removal_authority: false
+      replacement_requirement:
+        legacy_markdown_one_to_one_semantic_replacement_required: false
+        legacy_markdown_coverage_proof_required_before_removal: false
+        legacy_markdown_is_migration_authority: false
+        new_agent_contract_plane_must_be_independently_valid: true
+      residual_reference_policy:
+        active_normative_or_machine_dependency_on_removed_markdown: FORBIDDEN
+        runtime_validator_schema_workflow_dependency_on_removed_markdown: FORBIDDEN
+        historical_non_authoritative_mention: ALLOWED
+      authority_gap_policy:
+        legacy_markdown_fallback_after_removal: FORBIDDEN
+        missing_required_semantics_after_removal:
+        - UNRESOLVED
+        - UNKNOWN
+        - OWNER_DECISION_REQUIRED
+        missing_semantics_is_new_machine_contract_gap: true
+      removal_readiness:
+        required_conditions:
+        - AGENT_CONTRACT_PLANE_STRUCTURAL_VALIDATION_PASS
+        - NO_ACTIVE_MACHINE_DEPENDENCY_ON_REMOVAL_TARGETS
+        - SRC_AGENT_CONTRACTS_CONFIRMED_AS_NORMATIVE_SOURCE
+        - UNRESOLVED_SEMANTICS_CAN_BE_REPRESENTED_WITHOUT_LEGACY_FALLBACK
+        all_feature_system_work_complete_required: false
+        cf2_completion_required: false
+        feature_compiler_completion_required: false
+        implementation_body_detail_completion_required: false
+      execution_boundary:
+        this_policy_approval_performs_physical_markdown_deletion: false
+        next_cleanup_phase: FILE_CLASSIFICATION_REFERENCE_REMOVAL_AND_VALIDATION
+    missing_information_resolution:
+      primary: MACHINE_DEFINED_OUTCOME
+      fallback: BOUNDED_REASONABLE_DEFAULT
+      fallback_allowed_only_when_normative_authority_is_not_created_or_changed: true
+      machine_resolution_precedes_agent_reasoning: true
+      repeated_resolvable_inference_should_be_materialized_for_future_deterministic_resolution: true
+    mutation_authorization:
+      strategy: CONTRACT_DEFINED_CONDITIONAL_AUTHORIZATION
+      contract_may_authorize_mutation: true
+      required_condition_dimensions:
+      - SCOPE
+      - PRECONDITION
+      - FRESHNESS
+      - CONFLICT
+      unresolved_or_unknown_required_condition_authorizes_mutation: false
+      out_of_scope_mutation_authorizes_mutation: false
+    binding_discovery_and_promotion:
+      explicit_binding_preferred: true
+      missing_binding_allows_bounded_repository_discovery: true
+      discovered_binding_initial_state: CANDIDATE
+      verification_ref: MPD-VERI-0004
+      verified_or_user_approved_resolution_must_be_persisted: true
+      repeat_discovery_for_same_resolved_case: FORBIDDEN_WHEN_PERSISTED_RESOLUTION_IS_CURRENT
+      model_confidence_score_as_promotion_authority: FORBIDDEN
+    agent_contract_verification_ref: MPD-VERI-0004
+    atomic_feature_management:
+      general_user_direct_atomic_feature_management: NOT_REQUIRED
+      ptsip_internal_management_required: true
+      source_contract_to_atomic_feature_automation: REQUIRED_WHERE_DETERMINISTICALLY_AVAILABLE
+      atomic_feature_is_preferred_as_derived_projection_not_independent_user_managed_authority: true
+      truly_new_user_semantics_may_require_user_owned_extension_environment: true
+      user_owned_external_resolution_environment_is_ptsip_0_3_8_support_responsibility: false
+    external_orchestration_boundary:
+      langgraph_core_dependency_in_0_3_8: FORBIDDEN
+      langchain_core_dependency_in_0_3_8: FORBIDDEN
+      external_model_orchestration_account_required_by_core: false
+      future_optional_plugin_consideration: ALLOWED
+      future_plugin_must_not_own_ptsip_normative_policy_semantics: true
+    compiled_agent_control_plane_architecture:
+      decision: APPROVED
+      decision_date: '2026-10-05'
+      design_state: SIXTH_STAGE_DECISIONS_COMPLETE
+      implementation_state: NOT_MATERIALIZED
+      runtime_activation_by_this_decision: false
+      purpose: Define the machine-first coding-agent control-plane architecture so
+        that repeatable routing, policy resolution, state resolution, execution planning,
+        cache reuse, and agent context assembly are compiled or resolved deterministically
+        instead of repeatedly inferred by a coding agent.
+      authority_boundary:
+        agents_md_role: GENERATED_NON_AUTHORITY_PROJECTION
+        derived_global_registry_role: GENERATED_NON_AUTHORITY_PROJECTION
+        derived_state_cache_role: GENERATED_NON_AUTHORITY_PROJECTION
+        agent_cache_role: GENERATED_NON_AUTHORITY_EXECUTION_IMAGE
+        canonical_semantics_remain_with_owning_plane: true
+        support_feature_semantics_owner: src/policy
+        developer_policy_semantics_owner: developer/policy
+        repository_local_ptsip_entry_owner: .ptsip
+        this_record_creates_support_feature_semantics: false
+        unresolved_or_ambiguous_mutation: FAIL_CLOSED
+      first_stage:
+        canonical_source_model: PLANE_OWNED_SOURCES_WITH_DERIVED_GLOBAL_REGISTRY
+        plane_selection: CLOSED_OPERATION_TAXONOMY
+        resolver_architecture: COMMON_PROTOCOL_WITH_PLANE_SPECIFIC_IMPLEMENTATIONS
+        normative_projection_model: NORMATIVE_OWNER_TO_DETERMINISTIC_PROJECTION_TO_AGENT_CONTRACT
+        current_state_model: DERIVED_STATE_CACHE
+        agent_cache_model: DERIVED_AGENT_CACHE
+        agents_md_model: GENERATED_PROJECTION
+      second_stage:
+        routing_ownership_unit: CAPABILITY_SELF_OWNED_DECLARATION
+        operation_taxonomy_granularity: MEDIUM_GRAINED_WORK_INTENT
+        taxonomy_ownership: COMMON_CORE_PLUS_PLANE_EXTENSION
+        derived_global_registry_content:
+        - ROUTE
+        - RESOLVER
+        - SELECTED_CONTRACT
+        resolver_result_model: COMMON_CORE_RESULT_PLUS_PLANE_SPECIFIC_EXTENSION
+        agent_projection_depth: EXECUTION_OPTIMIZED
+        state_update_model: EVENT_DRIVEN
+        agent_cache_scope: COMPLETE_AGENT_EXECUTION_IMAGE
+      third_stage:
+        capability_admission_flow:
+        - DECLARE
+        - VALIDATE
+        - ADMIT
+        operation_candidate_model: MULTIPLE_CANDIDATES_SINGLE_SELECTION
+        routing_conflict_model: REGISTERED_CONFLICT_POLICY
+        cross_plane_model: INDEPENDENT_WORK_SEGMENTATION
+        taxonomy_commonization: PROMOTION_LIFECYCLE
+        taxonomy_versioning: CORE_AND_PLANE_INDEPENDENT_VERSIONS
+        selected_contract_model: CONDITIONAL_CONTRACT_GRAPH
+        registry_compilation: DEPENDENCY_INCREMENTAL_COMPILE
+        resolver_cooperation: RESOLVER_GRAPH
+        resolver_extensions: REGISTERED_EXTENSION_FAMILIES
+        execution_projection: PRECOMPILED_EXECUTION_PLAN
+        state_event_transport: EVENT_STREAM
+        state_consistency: SELF_HEALING_EVENTUAL
+        execution_image_scope: OPERATION_SCOPED
+        execution_image_structure: LAYERED
+        current_image_mutability: MUTABLE_CURRENT_IMAGE
+        unknown_capability_behavior: BOUNDED_READ_ONLY_DISCOVERY
+      fourth_stage:
+        admission_authority: MECHANICAL_ADMISSION_WITH_PROTECTED_CLASSES
+        capability_validation: STRUCTURAL_PLUS_SEMANTIC_COMPATIBILITY
+        candidate_selection: SELECTION_PIPELINE
+        conflict_scope: CONFLICT_FAMILY
+        work_segmentation: DEPENDENCY_ISOLATED_WORK_UNITS
+        segment_join: EXECUTION_PLAN_COMPILER_OWNS_JOIN_CONDITIONS
+        taxonomy_promotion_evidence: HYBRID_EVIDENCE
+        promoted_extension_retirement: EXPLICIT_MIGRATION_LIFECYCLE
+        compatibility_resolution: CAPABILITY_LEVEL
+        condition_evaluation: SPLIT_COMPILE_AND_RUNTIME
+        unselected_contract_branches: PRECOMPILED_ALTERNATE_BRANCH
+        incremental_compile_unit: CONTRACT_NODE
+        dependency_propagation: SEMANTIC_IMPACT_BOUNDARY
+        resolver_graph_execution: CACHED_GRAPH_EVALUATION
+        extension_family_model:
+          registry_extensible: true
+          nested_families_allowed: true
+        replan_model: BOUNDED_REPLAN
+        event_delivery: DURABLE_ORDERED_STREAM
+        self_healing_executor: EVENT_WORKER
+        image_materialization: BASE_PRECOMPILE_PLUS_OPERATION_FINALIZATION
+        layer_precedence: TYPE_SPECIFIC
+        image_concurrency: OPERATION_PLUS_EXECUTION_CONTEXT
+      fifth_stage:
+        protected_classification: CAPABILITY_IMPACT_DECLARATION_PLUS_PROTECTED_REGISTRY
+        semantic_compatibility_evidence:
+        - INVARIANT
+        - CONFORMANCE_VECTOR
+        selection_pipeline_shape: MANDATORY_CORE_PLUS_REGISTERED_EXTENSION_STAGE
+        unresolved_selection: UNRESOLVED_TO_READ_ONLY_DISCOVERY
+        conflict_family_shape: FAMILY_AND_SUBFAMILY_WITHOUT_DEFAULT_INHERITANCE
+        dependency_evidence:
+          authority: DECLARED_DEPENDENCY
+          observed_role: EVIDENCE
+        join_contract_ownership:
+          segment_output_contract_owner: SEGMENT
+          join_contract_builder: COMPILER
+        segment_requirement_model:
+        - REQUIRED
+        - OPTIONAL
+        promotion_semantic_evidence: SEMANTIC_EQUIVALENCE_VECTOR
+        migration_retirement_condition: USAGE_ZERO
+        version_compatibility:
+        - COMPATIBILITY_RANGE
+        - REQUIRED_FEATURES
+        condition_phase_owner: REGISTERED_CONDITION_FAMILIES
+        alternate_branch_materialization:
+          branch_control: PRECOMPILE_ALL
+          payload: SELECTED_BRANCH_CENTERED
+        semantic_impact_resolution: DEPENDENCY_GRAPH_PLUS_SEMANTIC_OUTPUT_FINGERPRINT
+        cache_identity: PROVENANCE_GRAPH_IDENTITY
+        nested_family_inheritance: EXPLICIT_COMMON_KERNEL_ONLY
+        replan_boundary: FAMILY_POLICY_PLUS_PLAN_NARROWING
+        ordered_stream_scope: EXECUTION_CONTEXT
+        repair_boundary:
+          derived_artifacts: AUTO_REPAIR
+          canonical_sources: REPAIR_PROPOSAL_ONLY
+        base_precompile_scope: PLANE
+        layer_composition: TYPE_SPECIFIC_MERGE_OPERATOR
+        execution_context_lifetime: MACHINE_WORK_UNIT_OR_EXECUTION_IDENTITY
+        discovery_promotion:
+          normal_capability: AUTO_ADMIT_AFTER_VALIDATION
+          protected_capability: PROTECTED_GATE
+      sixth_stage:
+        protected_registry_ownership: COMMON_PROTECTED_CORE_PLUS_PLANE_PROTECTED_EXTENSION
+        undeclared_impact_behavior: CANDIDATE_AMENDMENT
+        conformance_vector_minimum:
+        - SUCCESS
+        - FAILURE
+        - BOUNDARY
+        selection_extension_capability: TYPED_STAGE_CAPABILITY
+        unresolved_pipeline_behavior: CONTINUE_ONLY_EXECUTION_PLAN_PROVEN_INDEPENDENT_SEGMENTS
+        conflict_composition: REGISTERED_CONFLICT_COMPOSITION
+        observed_dependency_authority: WARNING_ONLY
+        missing_join_behavior: ADAPTER_DISCOVERY_CANDIDATE
+        join_outcome_model: OVERALL_OUTCOME_PLUS_SEGMENT_OUTCOMES
+        usage_zero_scope: ALL_KNOWN_HISTORICAL_USAGE
+        required_feature_identity:
+        - FEATURE_IDENTITY
+        - INTERFACE_GENERATION
+        condition_phase_evolution: PRIMARY_PHASE_PLUS_ALLOWED_PROMOTION
+        branch_runtime_transition: REPLACE_BRANCH_LAYER_ONLY
+        semantic_fingerprint: NORMALIZED_CONTRACT_FINGERPRINT
+        cross_context_cache_reuse: IMMUTABLE_PROVENANCE_NODES_ONLY
+        common_kernel_composition: REGISTERED_KERNEL_COMPOSITION_POLICY
+        replan_trigger: RELEVANT_STATE_CHANGE_EVENT
+        canonical_change_coordination: SHARED_CANONICAL_SOURCE_EPOCH
+        canonical_repair_application: EXISTING_ADMISSION_OR_MUTATION_POLICY
+        plane_base_refresh: OPERATION_START_WHEN_NEEDED
+        merge_operator_ownership: GLOBAL_OPERATOR_REGISTRY
+        execution_resume: BOUNDED_REPLAN_ALLOWED_ACROSS_SOURCE_CHANGE
+        post_admission_fault:
+          state: QUARANTINE
+          next: AUTOMATIC_REVALIDATION_CANDIDATE
+      implementation_boundary:
+        exact_schema_shapes_decided: false
+        exact_registry_paths_decided: false
+        exact_operation_vocabulary_decided: false
+        exact_event_envelope_decided: false
+        exact_execution_image_layout_decided: false
+        seventh_stage_design_may_refine_remaining_machine_contract_shapes: true
+        implementation_must_not_invent_unresolved_detail: true
+        existing_mpd_0010_agent_instruction_trial_is_not_automatically_deleted_by_this_decision: true
+        replacement_or_migration_of_existing_trial_requires_explicit_materialization_plan: true
+  unit_mpd_0012_ee8c0fa2d55c:
+    implementation_resolution:
+      state: APPROVED_FOR_CURRENT_DESIGN_EVOLVABLE
+      replaces_required_check: INTERFACE_MATCH
+      required_check: IMPLEMENTATION_RESOLUTION_VALID
+      current_resolution_modes:
+      - DIRECT
+      - DECLARATIVE_BINDING
+      - DETERMINISTIC_ADAPTER
+      - GENERATED_VERIFIED_ADAPTER
+      - USER_RESOLVED
+      generated_verified_adapter_resolution: AD4
+      current_mode_order_is_permanent: false
+      responsibility_boundary_may_be_revised_after_simulation: true
+    fine_grained_atomic_feature_model:
+      state: CURRENT_DIRECTION_NOT_FROZEN
+      model: CF2_FINE_GRAINED_ATOMIC_FEATURE
+      reason_for_non_frozen_state:
+      - FEATURE_COUNT_MANAGEMENT_COST_REMAINS_OPEN
+      - COMPILER_AND_MAPPING_BOUNDARIES_REQUIRE_FURTHER_DESIGN
+      - MIGRATION_BURDEN_REQUIRES_EVIDENCE
+      external_orchestration_is_not_the_0_3_8_solution: true
+  unit_mpd_0014_1558c57aa109: BRANCH_CREATION
+  unit_mpd_0014_b55c7fed6b36: FAIL_CLOSED
+  unit_mpd_0014_f261c3ba8099: USER_EXPLICIT
+  unit_mpd_0014_0e4f65febd08: false
+  unit_mpd_0014_a248b94fae2a: false
+  unit_mpd_0014_ffe821a61fc9: true
+  unit_mpd_0014_ef43e792365c: true
+  unit_mpd_0014_d04f6a56972a:
+    DEVELOPMENT_VERSION:
+      request_kind: DEVELOPMENT_VERSION_BRANCH
+      exact_name_pattern: ^dev/[0-9]+\.[0-9]+\.[0-9]+$
+      creation_trigger: USER_EXPLICIT_REQUEST
+  unit_mpd_0014_7e0709f8a82b: FORBIDDEN
+  unit_mpd_0015_c35e38d46280:
+    objective: TURN_VERIFIED_REPEATED_REASONING_INTO_REUSABLE_MACHINE_RESOLUTION
+    entry_conditions:
+    - DETERMINISTIC_RESOLUTION_UNAVAILABLE
+    - VERIFIED_EXECUTION_DEVIATION_REQUIRING_NEW_RESOLUTION
+    flow:
+    - BOUNDED_AI_REASONING
+    - CANDIDATE
+    - VALIDATION
+    - AUTHORITY_BOUNDARY
+    - REUSABLE_MACHINE_RESOLUTION
+    - DETERMINISTIC_RESOLVER_REUSE
+    candidate:
+      normative_authority: false
+      implementation_success_is_promotion_authority: false
+      test_success_is_promotion_authority: false
+      model_confidence_is_promotion_authority: false
+    promotion:
+      applicable_validation_required: true
+      applicable_authority_rules_required: true
+      reusable_targets:
+      - MACHINE_CONTRACT
+      - MACHINE_BINDING
+      promoted_resolution_must_preserve_source_and_authority_provenance: true
+    reuse:
+      current_promoted_resolution_should_precede_new_ai_reasoning: true
+      repeat_reasoning_for_same_current_resolved_case: FORBIDDEN
+      revalidation_may_reopen_resolution_when_contract_binding_capability_or_evidence_changes: true
+  unit_mpd_migr_0003_8b9a13c6427c:
+    project_profile_version_migration_authority_ref: MPD-0011
+    project_profile_version_migration_authorized_when: MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED
+    project_profile_version_migration_otherwise: FORBIDDEN
+  unit_mpd_migr_0004_0e0768e6b12e: MPD-MIGR-0003
+  unit_mpd_migr_0005_acf9363d3b0b:
+    policy_approval_authorizes_runtime_migration: false
+    policy_approval_authorizes_python_removal: false
+    separate_planning_and_user_authorization_required: true
+  unit_mpd_spec_0010_61ea7f414674:
+    decision: APPROVED
+    registry_ref: developer/policy/registries/governance-source-registry.yaml
+    approval_provenance_ref: developer/policy/approvals/MPA-20260924-GOVERNANCE-SOURCE-VOCABULARY.yaml
+    review_index_ref: developer/policy/source-application-review.yaml
+    source_is_first_class_governance_dimension: true
+    closed_vocabulary:
+    - USER_EXPLICIT
+    - AGENT_INFERRED
+    - AUTOMATION_DERIVED
+    semantic_roles:
+      decision_source:
+        meaning: ORIGIN_OF_THE_DECISION_OR_RESOLUTION
+      approval_source:
+        meaning: ORIGIN_OF_APPROVAL_AUTHORITY
+      authorization_source:
+        meaning: ORIGIN_OF_EXECUTION_AUTHORIZATION
+      transition_source:
+        meaning: ORIGIN_OF_A_DERIVED_STATE_TRANSITION
+    authority_rules:
+      USER_EXPLICIT:
+        may_create_official_authority: true
+      AGENT_INFERRED:
+        may_create_official_authority: false
+        provisional_resolution_only: true
+        requires_explicit_user_opt_in_for_provisional_resolution: true
+      AUTOMATION_DERIVED:
+        may_create_official_authority: false
+        may_propagate_existing_authority_only: true
+    source_field_boundary:
+      generic_source_field_is_governance_source: false
+      existing_file_data_revision_or_artifact_source_fields_must_not_be_reinterpreted: true
+      governance_source_fields_must_use_explicit_role_names: true
+      examples_not_governance_source:
+      - AGENTS_MD_FILE_SOURCE
+      - EXACT_SHA_VERIFICATION_SOURCE
+      - PROJECT_PROFILE_DATA_SOURCE
+    invariants:
+      user_silence_is_not_USER_EXPLICIT: true
+      test_success_is_not_USER_EXPLICIT: true
+      implementation_success_is_not_USER_EXPLICIT: true
+      repository_presence_is_not_USER_EXPLICIT: true
+      lower_authority_source_must_not_be_relabelled_as_higher_authority_source: true
+  unit_mpd_spec_0023_1a5323523839:
+    canonical_registry: developer/bindings/policy-plan-bindings.yaml
+    authority_role: POLICY_PLAN_RELATIONSHIP_AUTHORITY
+    binding_layer_owns:
+    - POLICY_TO_PLAN_RELATIONSHIP
+    - PLAN_EXISTENCE_STATE
+    - RELATIONSHIP_MAINTENANCE_AFTER_POLICY_CHANGE_OR_RETIREMENT
+    - PLAN_REFERENCE_MAINTENANCE_AFTER_PLAN_MOVE_OR_REPLACEMENT
+    binding_layer_does_not_own:
+    - PLAN_CONTENT
+    - PLAN_APPROVAL
+    - PLAN_IMPLEMENTATION_PROGRESS
+    - PLAN_IMPLEMENTATION_COMPLETION
+    - PLAN_VERIFICATION_RESULT
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-GOV-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

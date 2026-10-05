@@ -1,0 +1,3084 @@
+{
+  "schema_version": "ptsip-root-family-migration/v1",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "approval": {
+    "decision": "APPROVED",
+    "source_kind": "PROJECT_OWNER_DIRECT_INSTRUCTION",
+    "source_reference": "새 Root Family ID의 정책으로 책임을 분해·전환; 원본 책임의 상태 보존: ACTIVE는 승인 전이를 거쳐 ACTIVE, APPROVED·DRAFT는 해당 상태 유지",
+    "recorded_at": "2026-10-06T01:11:42+09:00"
+  },
+  "base_head": "22e736e2d1cc4e54ee85a8a653ed22a09c078b96",
+  "identity_semantic_inheritance": "FORBIDDEN",
+  "sources": [
+    {
+      "source_sha256": "86afbf9a88d70a4a1a2b367b75ca37e83f608431d04e495f2df940bbecff74dd",
+      "record_sha256": "c7fd689ebf4dab4af4dbe6f15cd1a373dc2146eb84ab550819797ba63a784a95",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0001",
+          "version": "2.0",
+          "title": "Developer and Support Feature Policy Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0001",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0001.yaml",
+      "archive_path": "legacy/MPD-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/profile_boundary",
+          "family": "ARCH",
+          "section": "unit_mpd_0001_bd42d96859af",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_automation",
+          "family": "ARCH",
+          "section": "unit_mpd_0001_9718874b8c69",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_migration_authority_ref",
+          "family": "CHANGE",
+          "section": "unit_mpd_0001_0a4061c5017f",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/automation",
+          "family": "CNTR",
+          "section": "unit_mpd_0001_394f16f8e8c8",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/migration",
+          "family": "CHANGE",
+          "section": "unit_mpd_0001_0547471e8a71",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0001_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "e394415426506a17726130c6ed1a99eb7bab13a5913ebfcd073926bf8c1269ca"
+    },
+    {
+      "source_sha256": "c32807f96214ad39ea606012b04f242f62345d6a1f6bfcf493405044fa3bfa2b",
+      "record_sha256": "33d7a3fdab08c8453053e025d34b68b69c2444631b142f4699a5696ce0d9f525",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0010",
+          "version": "2.0",
+          "title": "Canonical Semantic Contract Extension and Inference Cost Policy",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0010",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0010.yaml",
+      "archive_path": "legacy/MPD-0010.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/ptsip_design_priority",
+          "family": "INTENT",
+          "section": "unit_mpd_0010_497ac087b73f",
+          "policy_id": "MPD-INTENT-0001",
+          "policy_path": "INTENT/MPD-INTENT-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/decision",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_a352aeef1624",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/stage",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_d3321af4d08d",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/objective",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_6a8bfa4fc46a",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/distribution",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_951f7d0a9910",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/product_integration",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_84d3056c0f72",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/promotion_to_product_requires_separate_evidence_and_approval",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_e3648d889e5e",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/repository_management_surface",
+          "family": "ARCH",
+          "section": "unit_mpd_0010_cb51d9f40c3d",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/level_1_bootstrap",
+          "family": "REAL",
+          "section": "unit_mpd_0010_f66ade5f0624",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/managed_level_1_transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_e2c914d20bcd",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/baseline_mode_without_mcp",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_1a1ded8f6e50",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_optional",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_cf1cf677bb81",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_transport_when_available",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_8c4943001024",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/remote_ptsip_mcp_service_required",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_2f902a371ae6",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/daemon_required",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_2fc2f0184767",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/network_required",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_cd2d703ea855",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/user_approval_required",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_dcf4d9aa4edb",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/automatic_install_without_user_approval",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_b9dc8d1b0f13",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/current_implementation_state",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_e1b3d9d451a5",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/current_mcp_state",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_495d6dd54d4f",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/offer_to_user_now",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_1dd36e23033b",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/intended_install_command",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_bef56b8c5b40",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/readiness_gate",
+          "family": "CTRL",
+          "section": "unit_mpd_0010_47d939472d4e",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/local_cli",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_4af236e21b78",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mode_transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_2e1eb70ce19d",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_adapter_must_reuse_existing_resolver_semantics",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_643f3ad3e527",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_adapter_must_not_create_parallel_policy_semantics",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_166beaafa334",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/ordered_levels",
+          "family": "REAL",
+          "section": "unit_mpd_0010_6011f017b147",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/stage_contract",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_4fba394eb019",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/runtime_entry",
+          "family": "CTRL",
+          "section": "unit_mpd_0010_e7ec15d22134",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/partial_mechanization",
+          "family": "REAL",
+          "section": "unit_mpd_0010_c7ae23488653",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/unresolved_reassessment",
+          "family": "REAL",
+          "section": "unit_mpd_0010_91834657767d",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/taxonomy_evolution",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_8caf613c64d2",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/level_1_entry_resolution",
+          "family": "CTRL",
+          "section": "unit_mpd_0010_cdaf0c493ce7",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/level_1_vocabulary",
+          "family": "INFO",
+          "section": "unit_mpd_0010_f1b93fa1851f",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/level_1_rules",
+          "family": "INFO",
+          "section": "unit_mpd_0010_4f5a043050ea",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/level_2_vocabulary",
+          "family": "INFO",
+          "section": "unit_mpd_0010_a7750d894301",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/other_semantics",
+          "family": "INFO",
+          "section": "unit_mpd_0010_60f640b1360f",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/unresolved_is_namespace",
+          "family": "CNTR",
+          "section": "unit_mpd_0010_804417a00130",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/unresolved_behavior",
+          "family": "CTRL",
+          "section": "unit_mpd_0010_6b3df9826449",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_instruction_entry_taxonomy_trial/source_and_authority",
+          "family": "INFO",
+          "section": "unit_mpd_0010_9ce4ff69bff7",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/semantic_inference_cost",
+          "family": "INTENT",
+          "section": "unit_mpd_0010_55a1162781c1",
+          "policy_id": "MPD-INTENT-0001",
+          "policy_path": "INTENT/MPD-INTENT-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/evidence_driven_contract_refinement",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_cbabcbbb55d3",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/objective",
+          "family": "GOV",
+          "section": "unit_mpd_0010_e5b59f852d65",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/automation_module",
+          "family": "GOV",
+          "section": "unit_mpd_0010_8c571a585cc6",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/approval_provenance_schema",
+          "family": "GOV",
+          "section": "unit_mpd_0010_18235d5b0bd9",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/approval_provenance_root",
+          "family": "GOV",
+          "section": "unit_mpd_0010_b48aaaf365f4",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/mandatory_order",
+          "family": "CTRL",
+          "section": "unit_mpd_0010_3c286438d94d",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/inference_boundary",
+          "family": "GOV",
+          "section": "unit_mpd_0010_ba91d621dc0b",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/approval_semantics",
+          "family": "GOV",
+          "section": "unit_mpd_0010_0d4f6ecbdaeb",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/format",
+          "family": "INFO",
+          "section": "unit_mpd_0010_d4c43b1cd85b",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/pattern",
+          "family": "INFO",
+          "section": "unit_mpd_0010_8cff0d8ec14e",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/minor_digit_limit",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_2e2a5cf2092b",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/initial_version",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_073d2c96dd58",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/lifecycle_major_contract",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_41e3282f2074",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/status_version_cross_check",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_35419208fc3e",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/change_classes",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_4b56a1dae50f",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/deterministic_transitions",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_c5ad589396e1",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/unsupported_transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_c4d2cd9c17aa",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/compatibility_obligation_across_major",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_897dd3a69317",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/exact_snapshot_identity",
+          "family": "RECORD",
+          "section": "unit_mpd_0010_b72085fb0868",
+          "policy_id": "MPD-RECORD-0001",
+          "policy_path": "RECORD/MPD-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/contract_adoption_baseline",
+          "family": "CHANGE",
+          "section": "unit_mpd_0010_ef12227034c2",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_policy_identity_lifecycle_preflight/registry_semantics",
+          "family": "GOV",
+          "section": "unit_mpd_0010_b572084f5452",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/provisional_resolution_framework",
+          "family": "GOV",
+          "section": "unit_mpd_0010_a71704961691",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0010_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "9314a9836f2f9c32c030ee93ec49b39688c4b33ab6faca9ecc6145e40d65e08c"
+    },
+    {
+      "source_sha256": "5f44c6b03e89575e9afdd8d6ca23d131d9c999d2a4a1668cb043c24544a3f1f3",
+      "record_sha256": "45cc0cf728a08210dbe0b879a7cb3ad83b9727cd94715b5614b14e989ccf76a0",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0011",
+          "version": "2.0",
+          "title": "Commit-Atomic Full Project Profile Transition Automation",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0011",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0011.yaml",
+      "archive_path": "legacy/MPD-0011.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "CHANGE",
+          "section": "unit_mpd_0011_8b9a13c6427c",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/implementation_state",
+          "family": "RECORD",
+          "section": "unit_mpd_0011_b2d8b41a01e2",
+          "policy_id": "MPD-RECORD-0001",
+          "policy_path": "RECORD/MPD-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/migration_authorization_ref",
+          "family": "GOV",
+          "section": "unit_mpd_0011_c3a0e5252ddf",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/transition_mechanics_ref",
+          "family": "REAL",
+          "section": "unit_mpd_0011_01b456ebdf51",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/h3_hook_activation",
+          "family": "REAL",
+          "section": "unit_mpd_0011_69a06806f9f7",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/verification_layers_ref",
+          "family": "ASSURE",
+          "section": "unit_mpd_0011_1491da54b643",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/release_publication_gate_ref",
+          "family": "CTRL",
+          "section": "unit_mpd_0011_e200c6e6a1d5",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0011_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "fe68fbc6860fc1c36090f042f03ce40ca9e6751d90df1dc4d7712bed4f874d45"
+    },
+    {
+      "source_sha256": "6330ca4f4673a57a5c958461047efc81dcf77f4afbb2279c4dae36e06785100b",
+      "record_sha256": "3c48e8fa21ee94eca5ffe639e1d94c729a6fbc881b647b0dc69d82cc82b92652",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0012",
+          "version": "2.1",
+          "title": "Agent Contract Semantic Verification and Feature Extension Decision Ledger",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0012",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0012.yaml",
+      "archive_path": "legacy/MPD-0012.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "GOV",
+          "section": "unit_mpd_0012_8b9a13c6427c",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/approved_decisions",
+          "family": "GOV",
+          "section": "unit_mpd_0012_e0cfe7d01329",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/provisional_decisions",
+          "family": "GOV",
+          "section": "unit_mpd_0012_ee8c0fa2d55c",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/repository_materialization_snapshot",
+          "family": "RECORD",
+          "section": "unit_mpd_0012_7bc423f87b11",
+          "policy_id": "MPD-RECORD-0001",
+          "policy_path": "RECORD/MPD-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/validation_evidence",
+          "family": "ASSURE",
+          "section": "unit_mpd_0012_d42d2230d10e",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/activation_boundary",
+          "family": "CTRL",
+          "section": "unit_mpd_0012_02b6455c4f6d",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0012_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "57debdc3dd6f7665875116b4e265e49b8a29afcde7983f161abeca0d6c180b6d"
+    },
+    {
+      "source_sha256": "8fceb3b46de6590a8e6adf5581ecb267587b67b53d88f6f9733dfc4712eff5c6",
+      "record_sha256": "fa7abd5634972fb5c5d046105834da628c612c5b675c0a299ddf3ad8f66d9ddb",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0013",
+          "version": "2.1",
+          "title": "Developer Planning Authority and Policy-Plan Binding",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0013",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0013.yaml",
+      "archive_path": "legacy/MPD-0013.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/policy_plan_binding_automation",
+          "family": "REAL",
+          "section": "unit_mpd_0013_6a876b8f6996",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/deterministic_binding_management",
+          "family": "CTRL",
+          "section": "unit_mpd_0013_55660a13d7b1",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/plan_identity_and_file_identity",
+          "family": "INFO",
+          "section": "unit_mpd_0013_c3be306566ca",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/plan_movement_and_replacement",
+          "family": "CHANGE",
+          "section": "unit_mpd_0013_ca5439755018",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/plan_ref_tracking",
+          "family": "CTRL",
+          "section": "unit_mpd_0013_ece0f737d29d",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/relation_lifecycle_semantics_boundary",
+          "family": "INFO",
+          "section": "unit_mpd_0013_a9f56e3465ea",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_namespace_boundary",
+          "family": "ARCH",
+          "section": "unit_mpd_0013_98ec2a596e7d",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0013_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "85fe5f4b30d0d8a1db7ea1f5e6ed28b12154bff7a6c27d4739af515f5d0fb223"
+    },
+    {
+      "source_sha256": "a0f1f8991abc5883a8c256427ea936b493735eac5f85e9c3461aa1a768142ad5",
+      "record_sha256": "850933086ea49b0480601f629611b0809384e846f0ca13da8c7efd283bfb1950",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0014",
+          "version": "2.0",
+          "title": "Developer Branch Creation Authority and Naming",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0014",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0014.yaml",
+      "archive_path": "legacy/MPD-0014.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/branch_creation_authority/enforcement_scope",
+          "family": "GOV",
+          "section": "unit_mpd_0014_1558c57aa109",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/default",
+          "family": "GOV",
+          "section": "unit_mpd_0014_b55c7fed6b36",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/authorization_source",
+          "family": "GOV",
+          "section": "unit_mpd_0014_f261c3ba8099",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/agent_may_invent_branch_name",
+          "family": "GOV",
+          "section": "unit_mpd_0014_0e4f65febd08",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/agent_may_derive_branch_name_from_context",
+          "family": "GOV",
+          "section": "unit_mpd_0014_a248b94fae2a",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/exact_user_approved_name_required",
+          "family": "GOV",
+          "section": "unit_mpd_0014_ffe821a61fc9",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/exact_candidate_must_equal_user_approved_name",
+          "family": "GOV",
+          "section": "unit_mpd_0014_ef43e792365c",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/allowed_branch_classes",
+          "family": "GOV",
+          "section": "unit_mpd_0014_d04f6a56972a",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/unregistered_branch_class_creation",
+          "family": "GOV",
+          "section": "unit_mpd_0014_7e0709f8a82b",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/branch_creation_authority/creation_mechanism",
+          "family": "CNTR",
+          "section": "unit_mpd_0014_2636c6da29a8",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/project_profile_independence",
+          "family": "CHANGE",
+          "section": "unit_mpd_0014_103ee75460a0",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/merge_policy",
+          "family": "CTRL",
+          "section": "unit_mpd_0014_d67c22d688ac",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/retirement_policy",
+          "family": "CHANGE",
+          "section": "unit_mpd_0014_7193ad88d502",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/legacy_retention",
+          "family": "CHANGE",
+          "section": "unit_mpd_0014_5278c1ada455",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0014_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "2f58fe8fcb383887e46cb3d42611f6b8f0170830fbe086a20a752c5840ee2cec"
+    },
+    {
+      "source_sha256": "ecb7027f7b6f6a234f5c69cb6bc64543ab7a23eb21893553b347dac43ba49c68",
+      "record_sha256": "aee1ecd8dc64a1a207c801b43b179daf0a7aad944c58d9f9cec1fceeb062b336",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0015",
+          "version": "2.0",
+          "title": "Language-Neutral Normative Authority and Implementation Migration",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0015",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0015.yaml",
+      "archive_path": "legacy/MPD-0015.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/mechanized_resolution_cycle",
+          "family": "CNTR",
+          "section": "unit_mpd_0015_6f37556a3bbc",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/execution_feedback_cycle",
+          "family": "OPS",
+          "section": "unit_mpd_0015_aecdc747228d",
+          "policy_id": "MPD-OPS-0001",
+          "policy_path": "OPS/MPD-OPS-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/reasoning_promotion_cycle",
+          "family": "GOV",
+          "section": "unit_mpd_0015_c35e38d46280",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/developer_policy_resolution_binding_boundary",
+          "family": "CNTR",
+          "section": "unit_mpd_0015_8c9c31aedf17",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/implementation_language",
+          "family": "REAL",
+          "section": "unit_mpd_0015_0c9180c7ae16",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/canonical_runtime",
+          "family": "NORM",
+          "section": "unit_mpd_0015_181bf674e753",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/implementation_migration_ref",
+          "family": "CHANGE",
+          "section": "unit_mpd_0015_68161b3e5a1c",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0015_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "340e46ab456919d8899c5a16f7ed3776decb74929a12f50c4fa9c03e73b9ef22"
+    },
+    {
+      "source_sha256": "5de3d51350f4626d10388edba774c34fde6b1614db795af0a250151ca77a3c3b",
+      "record_sha256": "f2dc73120d22a73808746e7b3521054d831e07aa230b70e3dd084045f8176afd",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0016",
+          "version": "1.0",
+          "title": "README Translation Governance and Automation Boundary",
+          "status": "APPROVED"
+        }
+      },
+      "source_policy_id": "MPD-0016",
+      "source_status": "APPROVED",
+      "original_path": "MPD-0016.yaml",
+      "archive_path": "legacy/MPD-0016.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/readme_translation_governance",
+          "family": "GOV",
+          "section": "unit_mpd_0016_4194ac6b92bb",
+          "policy_id": "MPD-GOV-0002",
+          "policy_path": "GOV/MPD-GOV-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/translation_automation_boundary",
+          "family": "REAL",
+          "section": "unit_mpd_0016_1d96687b0567",
+          "policy_id": "MPD-REAL-0002",
+          "policy_path": "REAL/MPD-REAL-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/registry_contract",
+          "family": "INFO",
+          "section": "unit_mpd_0016_2e215a2a3abc",
+          "policy_id": "MPD-INFO-0002",
+          "policy_path": "INFO/MPD-INFO-0002.yaml"
+        },
+        {
+          "source_pointer": "/transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_0016_f036e3f8c407",
+          "policy_id": "MPD-CHANGE-0002",
+          "policy_path": "CHANGE/MPD-CHANGE-0002.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0016_40c664bc86a2",
+          "policy_id": "MPD-INFO-0002",
+          "policy_path": "INFO/MPD-INFO-0002.yaml"
+        }
+      ],
+      "source_worktree_sha256": "88318f2bbc5f85ffedc21698c36256664f55d7ae836b27b7d6392bb0af68ce33"
+    },
+    {
+      "source_sha256": "f3d7337074033e200799eea5932f2e1c3183b276fea128abe9dc420874f8bd1e",
+      "record_sha256": "bd5fb003ee913d9ed30469b6121fa056e3793f7d4b20db8cea7a014cab016d3e",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0017",
+          "version": "0.0",
+          "title": "Management Next-Action Identity and Execution Profile Control Plane",
+          "status": "DRAFT"
+        }
+      },
+      "source_policy_id": "MPD-0017",
+      "source_status": "DRAFT",
+      "original_path": "MPD-0017.yaml",
+      "archive_path": "legacy/MPD-0017.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/responsibility",
+          "family": "CNTR",
+          "section": "unit_mpd_0017_3c99571649b9",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/purpose",
+          "family": "CNTR",
+          "section": "unit_mpd_0017_2c215f21a05d",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/canonical_next_action",
+          "family": "INFO",
+          "section": "unit_mpd_0017_5368d20a03ba",
+          "policy_id": "MPD-INFO-0003",
+          "policy_path": "INFO/MPD-INFO-0003.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/registry_topology",
+          "family": "INFO",
+          "section": "unit_mpd_0017_b469152eec5f",
+          "policy_id": "MPD-INFO-0003",
+          "policy_path": "INFO/MPD-INFO-0003.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/exact_resolution",
+          "family": "CNTR",
+          "section": "unit_mpd_0017_c8a22f2d0c12",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/execution_profile_contract",
+          "family": "CNTR",
+          "section": "unit_mpd_0017_c454b3d75f70",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/management_next_action_control_plane/draft_scope",
+          "family": "CNTR",
+          "section": "unit_mpd_0017_de8df3f294fd",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/responsibility_boundary",
+          "family": "CNTR",
+          "section": "unit_mpd_0017_6a090d802720",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0017_40c664bc86a2",
+          "policy_id": "MPD-INFO-0003",
+          "policy_path": "INFO/MPD-INFO-0003.yaml"
+        }
+      ],
+      "source_worktree_sha256": "326089736f293c0dc21d4764f52dedf7aabf1394f3de8cce21ee5b844328f828"
+    },
+    {
+      "source_sha256": "43a1626118cff82210770799414ef3e6bacf2c6f8274026a9ff9e502d1dba14e",
+      "record_sha256": "2d64fd8b6dc0f152d3e654a42f0944bcc3ebc5697491c7277ff5c17c988f3193",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-0018",
+          "version": "2.0",
+          "title": "Root Responsibility Family Transition Bootstrap",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-0018",
+      "source_status": "ACTIVE",
+      "original_path": "MPD-0018.yaml",
+      "archive_path": "legacy/MPD-0018.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/root_responsibility_family_transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_0018_da3530289e9e",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_0018_f036e3f8c407",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_0018_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "15844770a89bea7433ff6209bd548525a7f416a17ceec7e1dad4bc3f07fe5cdf"
+    },
+    {
+      "source_sha256": "7592a8eb24d157b178af42c853f3d678293905b6ee28ac7e19be51ae12ed5eb1",
+      "record_sha256": "e651e4a574dc9120b07d2bb306a37c5b012f8aae4bc7b690d571b4d746a22720",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-MIGR-0001",
+          "version": "2.0",
+          "title": "Developer Repository Migration Boundaries",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-MIGR-0001",
+      "source_status": "ACTIVE",
+      "original_path": "MIGR/MPD-MIGR-0001.yaml",
+      "archive_path": "legacy/MPD-MIGR-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/profile_boundary_migration",
+          "family": "CHANGE",
+          "section": "unit_mpd_migr_0001_12f7161b4707",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_subsystem_migration",
+          "family": "CHANGE",
+          "section": "unit_mpd_migr_0001_95cf87dff9b4",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/retired_policy_corpus_migration",
+          "family": "CHANGE",
+          "section": "unit_mpd_migr_0001_3d15c42207ae",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_migr_0001_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "b9ee03dc9288e1b74988b3e7a9094a2d3773ca65b3321eb0cc418da2ecd44765"
+    },
+    {
+      "source_sha256": "dd95570c1370c94d713fe6e0e662b44ef92a66e7d690a83e7490119e3793f797",
+      "record_sha256": "204d29bbdb5dbe7bdcae70672da1e2b7e6a7ee3c134eb0146e22366c8762bb35",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-MIGR-0002",
+          "version": "0.0",
+          "title": "README Translation Layout Migration",
+          "status": "DRAFT"
+        }
+      },
+      "source_policy_id": "MPD-MIGR-0002",
+      "source_status": "DRAFT",
+      "original_path": "MIGR/MPD-MIGR-0002.yaml",
+      "archive_path": "legacy/MPD-MIGR-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/readme_translation_layout_migration",
+          "family": "CHANGE",
+          "section": "unit_mpd_migr_0002_fd0bec532c13",
+          "policy_id": "MPD-CHANGE-0003",
+          "policy_path": "CHANGE/MPD-CHANGE-0003.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_migr_0002_40c664bc86a2",
+          "policy_id": "MPD-INFO-0003",
+          "policy_path": "INFO/MPD-INFO-0003.yaml"
+        }
+      ],
+      "source_worktree_sha256": "91e605451b627b051425ff12f3fd643dabc8cf938c00f3cee4a03638db8d779e"
+    },
+    {
+      "source_sha256": "13bf6ad048e255cfe4e324b6247c66e03ccffd9316dc5ef88a6e7c51bee74045",
+      "record_sha256": "08b86f5f981355482caa3e7652eb590508eb1b48eb7e3426157dc1a229fe1e65",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-MIGR-0003",
+          "version": "2.0",
+          "title": "Project Profile Migration Authorization Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-MIGR-0003",
+      "source_status": "ACTIVE",
+      "original_path": "MIGR/MPD-MIGR-0003.yaml",
+      "archive_path": "legacy/MPD-MIGR-0003.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "GOV",
+          "section": "unit_mpd_migr_0003_8b9a13c6427c",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_migr_0003_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "e8a36c27051f3030400f776dae4f51b89eacfc471b2c5a8996a809a1c490a7b4"
+    },
+    {
+      "source_sha256": "169b3c584b3f0157be141bd2819d7d9bb9264590127770ce138ea69a23ca4764",
+      "record_sha256": "11f3a5484f53f817fe3bd644c7e60bd2d0283dcd5190b0006748af1de2f642e8",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-MIGR-0004",
+          "version": "2.0",
+          "title": "Project Profile Transition Mechanics",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-MIGR-0004",
+      "source_status": "ACTIVE",
+      "original_path": "MIGR/MPD-MIGR-0004.yaml",
+      "archive_path": "legacy/MPD-MIGR-0004.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authorization_ref",
+          "family": "GOV",
+          "section": "unit_mpd_migr_0004_0e0768e6b12e",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/commit_candidate_trigger",
+          "family": "CTRL",
+          "section": "unit_mpd_migr_0004_e634095a9e0f",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/transition_generation",
+          "family": "CHANGE",
+          "section": "unit_mpd_migr_0004_7aabef629d43",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/reconciliation_safety",
+          "family": "CTRL",
+          "section": "unit_mpd_migr_0004_c6d84e07b661",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_migr_0004_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "9baab094174e06af1c840dade332e8aea513042eb5dee15cff57e9a0805c8e74"
+    },
+    {
+      "source_sha256": "33b3af8749d92b656a4e0dfedbc4ab06bd03a327841e83f8015cda8f508798eb",
+      "record_sha256": "d380464ec378ec96c218c35f5454b62ceb5e7f5ff627b26a8f7cf1e650503d24",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-MIGR-0005",
+          "version": "2.0",
+          "title": "Implementation Migration Reference and Authorization Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-MIGR-0005",
+      "source_status": "ACTIVE",
+      "original_path": "MIGR/MPD-MIGR-0005.yaml",
+      "archive_path": "legacy/MPD-MIGR-0005.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/python_migration_reference",
+          "family": "CHANGE",
+          "section": "unit_mpd_migr_0005_ded771d9eb72",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/implementation_authorization",
+          "family": "GOV",
+          "section": "unit_mpd_migr_0005_acf9363d3b0b",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_migr_0005_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "e5f3c88c24d4a13ef9392b9e856300db94c393a1082f463fa16550a7d33c9b0a"
+    },
+    {
+      "source_sha256": "1788d8e49da26e710b436b96ce5c05f7dba4207a6a0442130f3b30a8dd65e3b6",
+      "record_sha256": "70992f3bf3c11b8e4c2684f821d3bff07606bb9a4d13243309d2698da0cc8dc5",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-PLAN-0001",
+          "version": "2.0",
+          "title": "Developer Planning Authority and Lifecycle Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-PLAN-0001",
+      "source_status": "ACTIVE",
+      "original_path": "PLAN/MPD-PLAN-0001.yaml",
+      "archive_path": "legacy/MPD-PLAN-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/planning_boundary/authority",
+          "family": "ARCH",
+          "section": "unit_mpd_plan_0001_50410dc74c9f",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_boundary/schema",
+          "family": "ARCH",
+          "section": "unit_mpd_plan_0001_7f56c7fed0e5",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_boundary/external_interfaces",
+          "family": "ARCH",
+          "section": "unit_mpd_plan_0001_dfacd421d3a0",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_boundary/subsystem_ownership",
+          "family": "ARCH",
+          "section": "unit_mpd_plan_0001_edc33d7514e8",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_boundary/work_unit",
+          "family": "INFO",
+          "section": "unit_mpd_plan_0001_2045fc60ef62",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_boundary/explanation",
+          "family": "ARCH",
+          "section": "unit_mpd_plan_0001_3297aa85e519",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_boundary/completion_transition",
+          "family": "CTRL",
+          "section": "unit_mpd_plan_0001_6560d943f53d",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_plan_0001_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "d21feb837e53437aae9740bd34c12821dd0999b60d2a7931b9e406a309055fa0"
+    },
+    {
+      "source_sha256": "98fde018d9f6fe0dc120a6dc262f5368e8b25877f1cccfe9b9c462352e47decd",
+      "record_sha256": "f3e1190114cf2a233e23ef958868cc246957bae1c57453782ef9e2eb03d3a3d4",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-PLAN-0002",
+          "version": "2.0",
+          "title": "Final Release Readiness Work Unit Assignment",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-PLAN-0002",
+      "source_status": "ACTIVE",
+      "original_path": "PLAN/MPD-PLAN-0002.yaml",
+      "archive_path": "legacy/MPD-PLAN-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/release_readiness_assignment",
+          "family": "INTENT",
+          "section": "unit_mpd_plan_0002_d909cd570b48",
+          "policy_id": "MPD-INTENT-0001",
+          "policy_path": "INTENT/MPD-INTENT-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_plan_0002_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "3db2c4f07b728bf3f4856bb3596b01812ebc832df1b0d7d6b1dcde974cb976bf"
+    },
+    {
+      "source_sha256": "075f26d0c77af54372c16d7b5a8ea73fb3632c23d56373dca7faa7d456467151",
+      "record_sha256": "1825be61269f7ca9ea0c8e6b556034ddcbc096b8e08d3f9f858af380dc5c1630",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-PLAN-0003",
+          "version": "2.0",
+          "title": "Project Profile Transition Work Unit Sequence",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-PLAN-0003",
+      "source_status": "ACTIVE",
+      "original_path": "PLAN/MPD-PLAN-0003.yaml",
+      "archive_path": "legacy/MPD-PLAN-0003.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/project_profile_transition_plan",
+          "family": "CHANGE",
+          "section": "unit_mpd_plan_0003_ed96f54b9558",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_plan_0003_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "39d97404c837de71b86fdba42aff0f1521daa140b9d2c1784f7d85c6855709c5"
+    },
+    {
+      "source_sha256": "18dc43ddbcf5b7d8624d500257d3b32888e6019597eea0df18d1285bf553b600",
+      "record_sha256": "993105fd41937e0c8742447358cd73926bebc6a8314653998d3ff3e70fa331b9",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-PLAN-0004",
+          "version": "2.0",
+          "title": "Agent Contract Deferred Work and Pending Materialization Plan",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-PLAN-0004",
+      "source_status": "ACTIVE",
+      "original_path": "PLAN/MPD-PLAN-0004.yaml",
+      "archive_path": "legacy/MPD-PLAN-0004.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/agent_contract_deferred_work_plan",
+          "family": "INTENT",
+          "section": "unit_mpd_plan_0004_acd66447ea97",
+          "policy_id": "MPD-INTENT-0001",
+          "policy_path": "INTENT/MPD-INTENT-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_plan_0004_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "d6674c81a70a4674e28993431d7e912d224a445a8d445ba3ce1563aab67c2135"
+    },
+    {
+      "source_sha256": "38f3092cf5d045da94a4addb349baf23ec2b1b351be6e4bcf93e7581311f7cf3",
+      "record_sha256": "b913217a3feaa7b9a3ad1b1caa53e08919b6f4baac1ca8c31578029517555211",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-RELS-0001",
+          "version": "2.0",
+          "title": "PTSIP Release Note Namespace Management",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-RELS-0001",
+      "source_status": "ACTIVE",
+      "original_path": "RELS/MPD-RELS-0001.yaml",
+      "archive_path": "legacy/MPD-RELS-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "RECORD",
+          "section": "unit_mpd_rels_0001_8b9a13c6427c",
+          "policy_id": "MPD-RECORD-0001",
+          "policy_path": "RECORD/MPD-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_rels_0001_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "dd381288c34ad5960ece0a8c0351a2ae57c44c33051d9fb99f31880e6017021c"
+    },
+    {
+      "source_sha256": "2e8702e805bf8128ea8957ae449e9e6d029a8bd90032eb493490d85f15613095",
+      "record_sha256": "ad05656b4bbe39f37287b3ca0dad29d96e4864477d83a8287b168649d3d1a815",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-RELS-0002",
+          "version": "2.0",
+          "title": "Project Profile Release Publication Gate",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-RELS-0002",
+      "source_status": "ACTIVE",
+      "original_path": "RELS/MPD-RELS-0002.yaml",
+      "archive_path": "legacy/MPD-RELS-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/release_publication_gate",
+          "family": "CTRL",
+          "section": "unit_mpd_rels_0002_e782809fbb27",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_rels_0002_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "9280a3fb0e769b0d6bb395c0f28d0f3f4fc9e47984288d5c5b85135c3e28a95b"
+    },
+    {
+      "source_sha256": "eba9b4838af913e7e9b2c1a16f66132a8b83c1b21ac4997426770fc548b7935d",
+      "record_sha256": "d5652aa74f361e33c028c389ce5fbde1333d700f8a7feef168b751c827ae0941",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0001",
+          "version": "2.0",
+          "title": "Developer and Support Policy Contract Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0001",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0001.yaml",
+      "archive_path": "legacy/MPD-SPEC-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/namespace",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0001_5630fc226d3b",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/profile_boundary",
+          "family": "ARCH",
+          "section": "unit_mpd_spec_0001_bd42d96859af",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/distribution_boundary",
+          "family": "ARCH",
+          "section": "unit_mpd_spec_0001_021ba43d3136",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "95f227e13786acb307d1c1ba7365cd9ae244fe8e81f64fd1446e5dd645f846fd"
+    },
+    {
+      "source_sha256": "87f90c04617469915fb45d76ae1975152eb51bc4e861c0c8302cbbaaf3278369",
+      "record_sha256": "4bdff30acf50767d3d9e0b8f571534f1b2d5c138eb3c06bbdbc5ce1799aed191",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0002",
+          "version": "2.0",
+          "title": "Specification 0.2.0 Pilot and Reference Tool Development Baseline",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0002",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0002.yaml",
+      "archive_path": "legacy/MPD-SPEC-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0002_8b9a13c6427c",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0002_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "9e4411a082a27297b8b239988a0dd5de488fb03e3f0cac0e3a9b4fc38f5d2144"
+    },
+    {
+      "source_sha256": "c6b417785774f0893dbfd725411b36e7f312f8845b9f805f9ce19a5f3832c2b4",
+      "record_sha256": "611fb9afbd1ef43e55ab86896b83112f322b6a69ef29bdec027a48ba78ef0b83",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0003",
+          "version": "2.0",
+          "title": "PTSIP Development Specification 0.3.4 Activation",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0003",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0003.yaml",
+      "archive_path": "legacy/MPD-SPEC-0003.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0003_8b9a13c6427c",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0003_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "9ce350f2d2d6fa9fa9186130828b11a25e98c93813b991cd3600f68fdb5d5896"
+    },
+    {
+      "source_sha256": "c3efd0c7fb62403d077d0d5320c700ea19713802f70cdfc72bec18236112965e",
+      "record_sha256": "2882cdf0ca24ed8dbe2aa5f67539029c720998f80e1b4c5b0ac61d5bf103e059",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0004",
+          "version": "2.0",
+          "title": "PTSIP Development Specification 0.3.7 Activation",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0004",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0004.yaml",
+      "archive_path": "legacy/MPD-SPEC-0004.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0004_8b9a13c6427c",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0004_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "f7d720843d3017d494261d7c9f9347b98793f0130aa10cdd4b1258d3432ae85b"
+    },
+    {
+      "source_sha256": "e81239572faacad5f2c9bf5e465e8dd271060b81c250a1106caaac6339a759ec",
+      "record_sha256": "fad44431985cd39e207261d83f0c410c067946f067978af120d3951730d1a9e1",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0005",
+          "version": "2.0",
+          "title": "Repository Component Architecture Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0005",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0005.yaml",
+      "archive_path": "legacy/MPD-SPEC-0005.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "ARCH",
+          "section": "unit_mpd_spec_0005_8b9a13c6427c",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0005_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "add27d13c0d222c79db5c0e208f5581fadbf0d00f01023e5223f165ae52e6482"
+    },
+    {
+      "source_sha256": "a5ea76dc532e22448a2bfab7c75a7e2d95d16ad385def0633d92a37b655689b0",
+      "record_sha256": "1fe479371c9bd392446a31407b4da44c9a5702ec927c630c4a2e91403ba5460d",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0006",
+          "version": "2.0",
+          "title": "Canonical Contract Architecture and Identity Resolution",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0006",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0006.yaml",
+      "archive_path": "legacy/MPD-SPEC-0006.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/normative_contract_architecture",
+          "family": "CNTR",
+          "section": "unit_mpd_spec_0006_debe705133cf",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/identity_and_resolution",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0006_d25095d9c02a",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/canonical_and_runtime_projection",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0006_d1ce0ab7249e",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0006_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "869e0243914beca558b93211da0124bf77c76bc6d48ee7af77ce31e6cec93dd5"
+    },
+    {
+      "source_sha256": "be3da7fd1a94784a43c0954c0474a117ca5f07652b15aa75422df5876a0476eb",
+      "record_sha256": "aabd449a05f2d998f35bf453bfc9610840d5540c8d2097034a4a1e7ddbcb4893",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0007",
+          "version": "2.0",
+          "title": "Extension Compatibility and Atomic Extension Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0007",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0007.yaml",
+      "archive_path": "legacy/MPD-SPEC-0007.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/extension_compatibility",
+          "family": "CNTR",
+          "section": "unit_mpd_spec_0007_45f1dabb480b",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/canonical_atomic_extension",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0007_2c36280b3f70",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0007_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "cbc4ca068a8f864da24b077536342b46cd488ad09c67f0db3dd6b45f20f14153"
+    },
+    {
+      "source_sha256": "1113967032974ce8b9dbc1ad9ff5a6d8348df0e53803039712d2824852c7cdf8",
+      "record_sha256": "9c5d56d03a7e69b7c06118401e4006d45138627b84f823e06de755905616332d",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0008",
+          "version": "2.0",
+          "title": "Evidence Kind Extension Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0008",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0008.yaml",
+      "archive_path": "legacy/MPD-SPEC-0008.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/evidence_kind_extension",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0008_378be38f1392",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0008_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "1ed18990ea36421c45498cc0e22e24ff8fda87e4ac671cd915612700215acc22"
+    },
+    {
+      "source_sha256": "93d7d1eaa1a1a16476601faf86a3c4f534b9cd1bf4222c9444842bf05f84dd72",
+      "record_sha256": "4efa248adb3d00e4415a175b17d486610bbfda6bcf0d3f305c937f4645487bb8",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0009",
+          "version": "2.0",
+          "title": "Deterministic External State Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0009",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0009.yaml",
+      "archive_path": "legacy/MPD-SPEC-0009.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/deterministic_external_state_boundary",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0009_7ecf79962e98",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0009_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "6707f89d877e1ea98640c8c59a155095717b0013620a539331e4ffd02fe6f499"
+    },
+    {
+      "source_sha256": "9cc39a63ad266c322841f03f422581711bb576b4ddf68a54f5d08248d7db30bc",
+      "record_sha256": "a4e34ce72145aba9ba8574c491c45509765e734b0fd36381833f3733701aa3dd",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0010",
+          "version": "2.0",
+          "title": "Governance Source Vocabulary Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0010",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0010.yaml",
+      "archive_path": "legacy/MPD-SPEC-0010.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/governance_source_vocabulary",
+          "family": "GOV",
+          "section": "unit_mpd_spec_0010_61ea7f414674",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0010_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "0445724f83e3fc1a74299a84e77e4657d55bb923518f190d1af0dde850a652e0"
+    },
+    {
+      "source_sha256": "d06b6c42dc5ed60c426129cd91133c2c13da728e31a1acf151052000a1273e0b",
+      "record_sha256": "0c008cf11f860e2e4862dc591628ccca5bdc18210b5ccc6bda65d007874b12fd",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0011",
+          "version": "2.0",
+          "title": "Repository Self-Adoption and Dogfood Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0011",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0011.yaml",
+      "archive_path": "legacy/MPD-SPEC-0011.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_semantics",
+          "family": "ASSURE",
+          "section": "unit_mpd_spec_0011_8b9a13c6427c",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0011_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "7e57c7dd87cfde98c5875e4dccaf716a69242ddb1c8d20916c9c043c88991f6b"
+    },
+    {
+      "source_sha256": "22a8a0b5f887cf1e0b4b958ca5cc6bdbbd2e10edea7862007c0ebaf4caee87de",
+      "record_sha256": "efd63d7db53abaff9b9f0e657ff0180e31a012e9ab8f4187a316dd4004b5c9c9",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0020",
+          "version": "2.0",
+          "title": "Specification Version Namespace and Revision Lifecycle",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0020",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0020.yaml",
+      "archive_path": "legacy/MPD-SPEC-0020.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/version_namespace",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0020_02f29600f04e",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/revision_lifecycle",
+          "family": "CHANGE",
+          "section": "unit_mpd_spec_0020_51f1aa67e63a",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0020_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "7428a35d7a2c14b350dbc67959fadefa2fdf6d23a7fb7695c0a7516906dcbd25"
+    },
+    {
+      "source_sha256": "4c6d339afb525228a6aa4bfd0b1faa02a25c445677310ae8e9089f1145d55408",
+      "record_sha256": "14251bdba9b6a788444a1727a30f70a7003b1dfe244d4ef2645d91a753e3c982",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0021",
+          "version": "2.0",
+          "title": "Language-Neutral Normative Authority and Machine Contract Ownership",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0021",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0021.yaml",
+      "archive_path": "legacy/MPD-SPEC-0021.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/normative_authority",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0021_ac00c052d412",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/machine_contract_ownership",
+          "family": "CNTR",
+          "section": "unit_mpd_spec_0021_6b01d5769413",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/implementation_role",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0021_26110959de43",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0021_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "c8f60177384935e3ebe0acd06130f4381c77b2d4b3d3d079843925df49b2b785"
+    },
+    {
+      "source_sha256": "e31b54985428acd889db52524ff5f840d096eb64fdd610ed4198675a6410b227",
+      "record_sha256": "cca92421598a39de163fce07a55d13d8c0cf07a6f1c83713c3427583f2386ab2",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0022",
+          "version": "2.2",
+          "title": "Canonical Contract Artifact Representation",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0022",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0022.yaml",
+      "archive_path": "legacy/MPD-SPEC-0022.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/contract_artifact_representation",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0022_9826b3cb2a95",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0022_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "a4678bb9b269590bbbd78aa8beec61599b8b5c7ebb20e1c34009dd426dc04884"
+    },
+    {
+      "source_sha256": "2a5723d201b27cc3c1083a365d91b9af1a8db929c2e96b124b68dbf3f8d1b875",
+      "record_sha256": "64516b2f797550247a22954939dbeffcd725c69c4fd43fe8d7ec591c44cbb79f",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0023",
+          "version": "2.0",
+          "title": "Policy-Plan Authority and Binding Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0023",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0023.yaml",
+      "archive_path": "legacy/MPD-SPEC-0023.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/authority_separation",
+          "family": "ARCH",
+          "section": "unit_mpd_spec_0023_7795cd9b8dbc",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_plan_binding_authority",
+          "family": "GOV",
+          "section": "unit_mpd_spec_0023_1a5323523839",
+          "policy_id": "MPD-GOV-0001",
+          "policy_path": "GOV/MPD-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/relationship_cardinality",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0023_87eece45f479",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/binding_identity",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0023_759e9dad168d",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/planning_existence_state",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0023_ba39fe03d76a",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0023_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "d3b8db5e138a3ec613d53ea31a4c6d8521b15d51da0f58c58097b650ae1eb1c4"
+    },
+    {
+      "source_sha256": "1efdca5bc4acc1692f053d73c77c01b72539f7e9bdf491478ceedb1c39d6a9b1",
+      "record_sha256": "c169845092d5431054403b2a85c3ad9720190bfa0eab833e93586c6535c9cf70",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0024",
+          "version": "2.0",
+          "title": "Agent Contract Normative Authority Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0024",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0024.yaml",
+      "archive_path": "legacy/MPD-SPEC-0024.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/normative_document_authority_boundary",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0024_ffdffc01d053",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/agent_contract_authority",
+          "family": "NORM",
+          "section": "unit_mpd_spec_0024_96089904dda7",
+          "policy_id": "MPD-NORM-0001",
+          "policy_path": "NORM/MPD-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0024_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "7ef58617c752645849095afc9921ee5b13cc5294da3c030a53a3f42f082fe113"
+    },
+    {
+      "source_sha256": "a739be79fca18d7265adf0f1ee1cf0057e10823d991907c9222e4a544d166cdb",
+      "record_sha256": "49083011f96abc2afb3d854782cbe62daeb1de53af8c762d6c9a6077bddef012",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0025",
+          "version": "2.0",
+          "title": "Source and Feature Contract Model",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0025",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0025.yaml",
+      "archive_path": "legacy/MPD-SPEC-0025.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/source_contract_model",
+          "family": "CNTR",
+          "section": "unit_mpd_spec_0025_60134fd764b9",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/feature_stable_core",
+          "family": "CNTR",
+          "section": "unit_mpd_spec_0025_38fd80009165",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/feature_implementation_body",
+          "family": "CNTR",
+          "section": "unit_mpd_spec_0025_9cd775906ea2",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0025_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "9e8b84c88f98e78f6091a3ba211eaccc84ded9e96f1c844c2c78db81160613a2"
+    },
+    {
+      "source_sha256": "139c3ea2933c779952f9ef1edb6058e554ed05a48ed468c7fbbba88841078be8",
+      "record_sha256": "8a8d155d798969c0ceaf5dc7562d89697c657672dfae632815907b7c7d5ad8b8",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0026",
+          "version": "2.0",
+          "title": "Project Profile T2 Authority Delta Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0026",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0026.yaml",
+      "archive_path": "legacy/MPD-SPEC-0026.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/t2_authority_delta",
+          "family": "CHANGE",
+          "section": "unit_mpd_spec_0026_dfdb5d808777",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0026_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "ef817e6706894af110ebe630ea4edbfa36f5ccf99026e0f4ff1bfbb90d026126"
+    },
+    {
+      "source_sha256": "0f3c1a99cf818be57957eea1b4b7e892dca2a611e0fd163e89a81a095b56ed87",
+      "record_sha256": "9c208e5cbd0cf7b7e5650ff39fd266917d4ca30ea7f9dce5951b4e8192740411",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-SPEC-0027",
+          "version": "2.0",
+          "title": "Project Profile User Revision Lineage Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-SPEC-0027",
+      "source_status": "ACTIVE",
+      "original_path": "SPEC/MPD-SPEC-0027.yaml",
+      "archive_path": "legacy/MPD-SPEC-0027.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/user_revision_lineage",
+          "family": "CHANGE",
+          "section": "unit_mpd_spec_0027_abaff24f68e4",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_spec_0027_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "4fb81ee0e152775ea64ad881058f4cc87c96ff876db042cdd94cf056810c136f"
+    },
+    {
+      "source_sha256": "f7e1ebd4c6b7c45c9ca701dc4c0f3f114defac24833c9ff362d1c36db9e44e34",
+      "record_sha256": "b0be1a882b1e4f374f0b565ef39bdfef152bbed70cf99b829b4dbf73a08ed1c1",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-VERI-0001",
+          "version": "1.0",
+          "title": "Developer Policy-Plan Consistency Verification",
+          "status": "APPROVED"
+        }
+      },
+      "source_policy_id": "MPD-VERI-0001",
+      "source_status": "APPROVED",
+      "original_path": "VERI/MPD-VERI-0001.yaml",
+      "archive_path": "legacy/MPD-VERI-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/policy_plan_consistency_verification",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0001_85b7db19eee4",
+          "policy_id": "MPD-ASSURE-0002",
+          "policy_path": "ASSURE/MPD-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/responsibility_boundary",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0001_6a090d802720",
+          "policy_id": "MPD-ASSURE-0002",
+          "policy_path": "ASSURE/MPD-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/transition",
+          "family": "CHANGE",
+          "section": "unit_mpd_veri_0001_f036e3f8c407",
+          "policy_id": "MPD-CHANGE-0002",
+          "policy_path": "CHANGE/MPD-CHANGE-0002.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0001_40c664bc86a2",
+          "policy_id": "MPD-INFO-0002",
+          "policy_path": "INFO/MPD-INFO-0002.yaml"
+        }
+      ],
+      "source_worktree_sha256": "af7a4b642e43741edfe4706cd2f6e19abbf1ad0f5c415b8f6c0f103e819fed7b"
+    },
+    {
+      "source_sha256": "566ab2b316a30f05297e78a98870da13cbd88cdda9f1506b511c5d50fc3827b7",
+      "record_sha256": "d0a035ce0134984af7e9174a8679e1d4ce5625f916c5ecc2e77c36941f42a1fe",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-VERI-0002",
+          "version": "2.0",
+          "title": "Repository Mutation-Promotion Verification Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-VERI-0002",
+      "source_status": "ACTIVE",
+      "original_path": "VERI/MPD-VERI-0002.yaml",
+      "archive_path": "legacy/MPD-VERI-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/mutation_promotion_verification",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0002_260ced325054",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0002_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "e15d04e098bf3af7f39eedaa5962a84f9a04876c934658072674ec4c9d6693e1"
+    },
+    {
+      "source_sha256": "6a6aa91ee85a5fe3b7b6562f7773ade052277ce5180c57b8b188552294a3630d",
+      "record_sha256": "f17648f6de367e43d400bcfe55e6cac66df735173a6e6daf1e345041a13b21ea",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-VERI-0003",
+          "version": "2.0",
+          "title": "Project Profile Transition Verification",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-VERI-0003",
+      "source_status": "ACTIVE",
+      "original_path": "VERI/MPD-VERI-0003.yaml",
+      "archive_path": "legacy/MPD-VERI-0003.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/verification_layers",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0003_c4b59fc85667",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0003_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "8e35658a95d2c23033b17285b114f4e6549e1c6d6cb3ca69c6d4abe414c6a4e6"
+    },
+    {
+      "source_sha256": "3d648eda93d721e3a9797c0fe3835026ab0756cc7ef04b00803f203a649119f5",
+      "record_sha256": "2e9c687f107f38aff5ddb9845d076bbfb3624b9ebcd688b11105857d2ab6c8cd",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-VERI-0004",
+          "version": "2.1",
+          "title": "Agent Contract Semantic Verification",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-VERI-0004",
+      "source_status": "ACTIVE",
+      "original_path": "VERI/MPD-VERI-0004.yaml",
+      "archive_path": "legacy/MPD-VERI-0004.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/binding_promotion_verification",
+          "family": "CTRL",
+          "section": "unit_mpd_veri_0004_8084d790e9d2",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/required_verification",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0004_f699ce5ccfa4",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/identity_match",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0004_c0781722ba1f",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/input_output_contract_match",
+          "family": "CNTR",
+          "section": "unit_mpd_veri_0004_09a448bf6930",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/effect_match",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0004_2f347420dfff",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/failure_contract_match",
+          "family": "CNTR",
+          "section": "unit_mpd_veri_0004_6f95b224e3ad",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/compatibility_match",
+          "family": "CNTR",
+          "section": "unit_mpd_veri_0004_c3c470f140f3",
+          "policy_id": "MPD-CNTR-0001",
+          "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0004_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "af7fe02964b2caf1b316aeb01d0fd764285362becca7db30a5825ac2d5c547cc"
+    },
+    {
+      "source_sha256": "1b73b92dc8264225d80b2761fd3f308c220728fa5f7d6f8185799bc758a33fec",
+      "record_sha256": "5d0cac6ad91296a6e1b4b36316ee220f096e9a5e9f64a0a9b9d9e8e2e2473be0",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-VERI-0005",
+          "version": "2.0",
+          "title": "Execution Evidence and Expected-vs-Observed Verification",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-VERI-0005",
+      "source_status": "ACTIVE",
+      "original_path": "VERI/MPD-VERI-0005.yaml",
+      "archive_path": "legacy/MPD-VERI-0005.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/execution_evidence_and_verification",
+          "family": "ASSURE",
+          "section": "unit_mpd_veri_0005_b5e5149c8490",
+          "policy_id": "MPD-ASSURE-0001",
+          "policy_path": "ASSURE/MPD-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0005_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "f18e33c745b2088cbfa2810b42d02df318ff062cb255b5bf50a84d99c5437617"
+    },
+    {
+      "source_sha256": "478cb2a2c86886e793f7be4de2a15fc278d0b4aa1f3aa6def851c6fe0158d6b0",
+      "record_sha256": "75448b8293620c5bb1ebf1de4998d1448b59895b3409bc82920b83932bb524e0",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-VERI-0006",
+          "version": "0.1",
+          "title": "Policy-Plan Consistency Verification Output Contract",
+          "status": "DRAFT"
+        }
+      },
+      "source_policy_id": "MPD-VERI-0006",
+      "source_status": "DRAFT",
+      "original_path": "VERI/MPD-VERI-0006.yaml",
+      "archive_path": "legacy/MPD-VERI-0006.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/policy_plan_consistency_verification_output_contract",
+          "family": "CNTR",
+          "section": "unit_mpd_veri_0006_6beb693dae2a",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/rules/responsibility_boundary",
+          "family": "CNTR",
+          "section": "unit_mpd_veri_0006_6a090d802720",
+          "policy_id": "MPD-CNTR-0002",
+          "policy_path": "CNTR/MPD-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_veri_0006_40c664bc86a2",
+          "policy_id": "MPD-INFO-0003",
+          "policy_path": "INFO/MPD-INFO-0003.yaml"
+        }
+      ],
+      "source_worktree_sha256": "43b86d1eb953fd0ce92ac24bcc2a5730b82e260a8bcc0bc6d8d4ace0a79293b3"
+    },
+    {
+      "source_sha256": "d594f6c83b98b8cd4d2e2788a6b74bf9118a051341aff5ff4f57552501bbba07",
+      "record_sha256": "cdfa43959238e8e765d05fbb57ccda4286ebaf6b101095e56e02c58aa58c0255",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-WORK-0001",
+          "version": "2.0",
+          "title": "Developer Work Unit Lifecycle Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-WORK-0001",
+      "source_status": "ACTIVE",
+      "original_path": "WORK/MPD-WORK-0001.yaml",
+      "archive_path": "legacy/MPD-WORK-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/work_unit_lifecycle",
+          "family": "CHANGE",
+          "section": "unit_mpd_work_0001_77bbd19107ec",
+          "policy_id": "MPD-CHANGE-0001",
+          "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_work_0001_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "3b5af148ddc40eceda9bf54e81d9046d0f9d710b1ada8f44b65ce409433077b9"
+    },
+    {
+      "source_sha256": "26dfbb6b3551552fa3e71d8ea3351fe95d386f979b0738777ff84ff839f64cfc",
+      "record_sha256": "97feb451a2719ed4a43c2e98d641144f05a50caa6d03df99c3e517d7826a0933",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-WORK-0002",
+          "version": "2.0",
+          "title": "Developer Execution Lifecycle and Result Handoff",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-WORK-0002",
+      "source_status": "ACTIVE",
+      "original_path": "WORK/MPD-WORK-0002.yaml",
+      "archive_path": "legacy/MPD-WORK-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/work_execution_lifecycle/principle",
+          "family": "OPS",
+          "section": "unit_mpd_work_0002_cb84e0d18581",
+          "policy_id": "MPD-OPS-0001",
+          "policy_path": "OPS/MPD-OPS-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/work_execution_lifecycle/execution_output",
+          "family": "RECORD",
+          "section": "unit_mpd_work_0002_a794e002b8bd",
+          "policy_id": "MPD-RECORD-0001",
+          "policy_path": "RECORD/MPD-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/work_execution_lifecycle/verified_pass_continuation",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0002_24cb7d076de1",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/work_execution_lifecycle/deviation",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0002_579cedbf03c6",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_work_0002_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "d64f6be227be39c6214e15c58d29da4c648983aec35c54250c0e98553d57e95a"
+    },
+    {
+      "source_sha256": "e06d2cf6e0295f73d2135d86ba8b2bc73f2b6225f8dd9eb5ba19f8bada0071ef",
+      "record_sha256": "a841a83cf0c73796afc202bd104e3031ed3ae2d70ac3bf4f63548de66508095a",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-WORK-0003",
+          "version": "2.0",
+          "title": "Policy Responsibility Decomposition and Authority Reconciliation Gate",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-WORK-0003",
+      "source_status": "ACTIVE",
+      "original_path": "WORK/MPD-WORK-0003.yaml",
+      "archive_path": "legacy/MPD-WORK-0003.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/classification_unit",
+          "family": "ARCH",
+          "section": "unit_mpd_work_0003_6c611ebb841f",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/policy_file_is_classification_unit",
+          "family": "ARCH",
+          "section": "unit_mpd_work_0003_409ccab39a04",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/required_reasoning_order",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0003_fc836a4c0e34",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/family_vocabulary",
+          "family": "ARCH",
+          "section": "unit_mpd_work_0003_742060fc39ee",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/authority_relation_vocabulary",
+          "family": "ARCH",
+          "section": "unit_mpd_work_0003_ecbccb9b85f5",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/responsibility_decomposition",
+          "family": "ARCH",
+          "section": "unit_mpd_work_0003_ba7539c50202",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/existing_authority_lookup",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0003_b59d60bb36a6",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/collision_classes",
+          "family": "INFO",
+          "section": "unit_mpd_work_0003_51d952085149",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/collision_resolution",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0003_2c868d400573",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/same_family_cohesion",
+          "family": "ARCH",
+          "section": "unit_mpd_work_0003_9dea768abc1a",
+          "policy_id": "MPD-ARCH-0001",
+          "policy_path": "ARCH/MPD-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/materialization",
+          "family": "REAL",
+          "section": "unit_mpd_work_0003_b742e02ef576",
+          "policy_id": "MPD-REAL-0001",
+          "policy_path": "REAL/MPD-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/rules/policy_responsibility_materialization/static_enforcement",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0003_7e804c26cf40",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_work_0003_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "6d3b44a1e1de8d8ced58057643c70146a467be9796b3c01246b85eadcf0a67ad"
+    },
+    {
+      "source_sha256": "f7096ae25256fad82a75eb392ac22bb8c16aba67ba2b178e6ec4e0855364731e",
+      "record_sha256": "b0726bd9c9416c9b75c646f2e65e0eb225c4ccf948da1a69f76a4702ba0cc86a",
+      "header": {
+        "schema_version": "ptsip-developer-policy/v1",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "policy": {
+          "id": "MPD-WORK-0004",
+          "version": "2.0",
+          "title": "Mutation Authorization Gate",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "MPD-WORK-0004",
+      "source_status": "ACTIVE",
+      "original_path": "WORK/MPD-WORK-0004.yaml",
+      "archive_path": "legacy/MPD-WORK-0004.yaml",
+      "units": [
+        {
+          "source_pointer": "/rules/mutation_authorization_gate",
+          "family": "CTRL",
+          "section": "unit_mpd_work_0004_b413e855fd78",
+          "policy_id": "MPD-CTRL-0001",
+          "policy_path": "CTRL/MPD-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_mpd_work_0004_40c664bc86a2",
+          "policy_id": "MPD-INFO-0001",
+          "policy_path": "INFO/MPD-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "f65e85b66da4bc99720928eea544c3a37495a3ebc13139821223c825fc5193fc"
+    }
+  ],
+  "materializations": [
+    {
+      "policy_id": "MPD-NORM-0001",
+      "family": "NORM",
+      "path": "NORM/MPD-NORM-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 8,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-GOV-0001",
+      "family": "GOV",
+      "path": "GOV/MPD-GOV-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 27,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-GOV-0002",
+      "family": "GOV",
+      "path": "GOV/MPD-GOV-0002.yaml",
+      "source_status": "APPROVED",
+      "unit_count": 1,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-INTENT-0001",
+      "family": "INTENT",
+      "path": "INTENT/MPD-INTENT-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 4,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-ARCH-0001",
+      "family": "ARCH",
+      "path": "ARCH/MPD-ARCH-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 19,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-INFO-0001",
+      "family": "INFO",
+      "path": "INFO/MPD-INFO-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 67,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-INFO-0002",
+      "family": "INFO",
+      "path": "INFO/MPD-INFO-0002.yaml",
+      "source_status": "APPROVED",
+      "unit_count": 3,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-INFO-0003",
+      "family": "INFO",
+      "path": "INFO/MPD-INFO-0003.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 5,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-CNTR-0001",
+      "family": "CNTR",
+      "path": "CNTR/MPD-CNTR-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 36,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-CNTR-0002",
+      "family": "CNTR",
+      "path": "CNTR/MPD-CNTR-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 8,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-RISK-0001",
+      "family": "RISK",
+      "path": "RISK/MPD-RISK-0001.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 0,
+      "definition_only": true
+    },
+    {
+      "policy_id": "MPD-SUPPLY-0001",
+      "family": "SUPPLY",
+      "path": "SUPPLY/MPD-SUPPLY-0001.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 0,
+      "definition_only": true
+    },
+    {
+      "policy_id": "MPD-REAL-0001",
+      "family": "REAL",
+      "path": "REAL/MPD-REAL-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 9,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-REAL-0002",
+      "family": "REAL",
+      "path": "REAL/MPD-REAL-0002.yaml",
+      "source_status": "APPROVED",
+      "unit_count": 1,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-ASSURE-0001",
+      "family": "ASSURE",
+      "path": "ASSURE/MPD-ASSURE-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 8,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-ASSURE-0002",
+      "family": "ASSURE",
+      "path": "ASSURE/MPD-ASSURE-0002.yaml",
+      "source_status": "APPROVED",
+      "unit_count": 2,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-CTRL-0001",
+      "family": "CTRL",
+      "path": "CTRL/MPD-CTRL-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 22,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-CHANGE-0001",
+      "family": "CHANGE",
+      "path": "CHANGE/MPD-CHANGE-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 33,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-CHANGE-0002",
+      "family": "CHANGE",
+      "path": "CHANGE/MPD-CHANGE-0002.yaml",
+      "source_status": "APPROVED",
+      "unit_count": 2,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-CHANGE-0003",
+      "family": "CHANGE",
+      "path": "CHANGE/MPD-CHANGE-0003.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 1,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-OPS-0001",
+      "family": "OPS",
+      "path": "OPS/MPD-OPS-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 2,
+      "definition_only": false
+    },
+    {
+      "policy_id": "MPD-RECORD-0001",
+      "family": "RECORD",
+      "path": "RECORD/MPD-RECORD-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 5,
+      "definition_only": false
+    }
+  ],
+  "source_digest_format": "UTF8_LF"
+}

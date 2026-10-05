@@ -1,0 +1,265 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: CNTR
+policy:
+  id: SFP-CNTR-0001
+  title: CNTR authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
+  statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition
+    및 호환 보장을 소유한다.
+exclusive_kernel:
+- SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+- SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+authority_contract:
+  authority_type: ROOT_FAMILY_CNTR
+  schema_id: ptsip.governance/root-family/cntr
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped
+        contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이
+        지원되는 계약을 만들 수 없다.
+    - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다.
+        미등록 alias나 capability는 실행 계약이 아니다.
+      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime
+        persistence를 활성 지원 계약으로 바꾸지 못한다.
+    source_scope:
+    - SFP-0001
+    - SFP-0002
+    - SFP-0003
+    - SFP-0005
+    - SFP-0007
+    - SFP-0008
+    - SFP-0009
+    - SFP-0010
+    - SFP-0011
+    - SFP-0012
+    - SFP-0013
+    - SFP-0014
+    - SFP-0015
+    - SFP-0016
+    - SFP-0017
+    - SFP-0018
+    - SFP-0019
+    - SFP-0020
+    - SFP-0021
+    - SFP-0022
+    - SFP-0023
+    - SFP-0024
+  unit_sfp_0001_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0001_afbfbdc1cc69:
+    authority_type: PTSIP_POLICY_IDENTITY
+    schema_id: ptsip.governance/ptsip-policy-identity
+    schema_version: 1
+  unit_sfp_0002_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0002_afbfbdc1cc69:
+    authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
+    schema_id: ptsip.governance/consumer-repository-non-intrusion
+    schema_version: 1
+  unit_sfp_0003_a97728e628f8: true
+  unit_sfp_0003_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0003_afbfbdc1cc69:
+    authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+    schema_id: ptsip.governance/specification-tool-version-independence
+    schema_version: 1
+  unit_sfp_0005_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0005_afbfbdc1cc69:
+    authority_type: DISTRIBUTED_DECISION_AUTHORITY
+    schema_id: ptsip.governance/distributed-decision-authority
+    schema_version: 1
+  unit_sfp_0007_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0007_afbfbdc1cc69:
+    authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
+    schema_id: ptsip.governance/primary-lifecycle-boundary-determination
+    schema_version: 1
+  unit_sfp_0008_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0008_afbfbdc1cc69:
+    authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
+    schema_id: ptsip.governance/responsibility-map-semantic-axes
+    schema_version: 1
+  unit_sfp_0009_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0009_afbfbdc1cc69:
+    authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
+    schema_id: ptsip.governance/responsibility-map-declaration-authority
+    schema_version: 1
+  unit_sfp_0010_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0010_afbfbdc1cc69:
+    authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
+    schema_id: ptsip.governance/versioned-draft-profile-transition
+    schema_version: 1
+  unit_sfp_0011_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0011_afbfbdc1cc69:
+    authority_type: SPECIFICATION_FAMILY_ACTIVATION
+    schema_id: ptsip.governance/specification-family-activation
+    schema_version: 1
+  unit_sfp_0012_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0012_afbfbdc1cc69:
+    authority_type: NORMALIZED_EVIDENCE_CONTRACT
+    schema_id: ptsip.governance/normalized-evidence-contract
+    schema_version: 1
+  unit_sfp_0013_0bba130c4825: READ_ONLY
+  unit_sfp_0013_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0013_afbfbdc1cc69:
+    authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
+    schema_id: ptsip.governance/source-profile-compatibility-model
+    schema_version: 1
+  unit_sfp_0014_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0014_afbfbdc1cc69:
+    authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
+    schema_id: ptsip.governance/staged-migration-analysis-pipeline
+    schema_version: 1
+  unit_sfp_0015_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0015_afbfbdc1cc69:
+    authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
+    schema_id: ptsip.governance/target-delta-reconciliation-planner
+    schema_version: 1
+  unit_sfp_0016_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0016_afbfbdc1cc69:
+    authority_type: MIGRATION_APPLY_STATE_MACHINE
+    schema_id: ptsip.governance/migration-apply-state-machine
+    schema_version: 1
+  unit_sfp_0017_40152ae8e3b4: true
+  unit_sfp_0017_c802549cdbdc: false
+  unit_sfp_0017_464033332049: true
+  unit_sfp_0017_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0017_afbfbdc1cc69:
+    authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+    schema_id: ptsip.governance/tool-profile-contract-independence
+    schema_version: 1
+  unit_sfp_0018_67ea0aee4c30:
+  - READ
+  - VALIDATE
+  - ANALYZE
+  - MIGRATE
+  - CREATE
+  unit_sfp_0018_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0018_afbfbdc1cc69:
+    authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
+    schema_id: ptsip.governance/project-profile-version-namespace
+    schema_version: 1
+  unit_sfp_0019_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0019_afbfbdc1cc69:
+    authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+    schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
+    schema_version: 1
+  unit_sfp_0020_858f80cda2f0: EXPLICIT_TOOL_PP_COMPATIBILITY
+  unit_sfp_0020_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0020_afbfbdc1cc69:
+    authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
+    schema_id: ptsip.governance/direct-latest-target-convergence
+    schema_version: 1
+  unit_sfp_0021_93c11c27e548:
+  - TOOL_TO_PROJECT_PROFILE
+  - TOOL_TO_SPECIFICATION
+  - HISTORICAL_MIGRATION_COMPATIBILITY
+  unit_sfp_0021_44ef2c187847: false
+  unit_sfp_0021_310194b317bc: false
+  unit_sfp_0021_5d36a46d6785: false
+  unit_sfp_0021_cc5d3a302136: MIGRATION_INTERPRETATION_ONLY
+  unit_sfp_0021_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0021_afbfbdc1cc69:
+    authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
+    schema_id: ptsip.governance/specification-binding-capability-registries
+    schema_version: 1
+  unit_sfp_0022_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/context_plane.py
+    - src/ptsip/cli.py
+  unit_sfp_0022_afbfbdc1cc69:
+    authority_type: CONTEXT_PLANE_MIGRATION_REPAIR
+    schema_id: ptsip.context/migration-repair
+    schema_version: 1
+  unit_sfp_0023_9c400c5ae297:
+    kind: VALIDATED_EFFECTIVE_RESPONSIBILITY_MAP
+    validation_owner: PTSIP
+    validation_handoff: EXPLICIT_VALIDATED_PROVIDER_HANDOFF
+    boolean_assertion_is_validation_proof: false
+    concrete_provider_binding: ptsip.validation.handoff:load_validated_effective_map
+  unit_sfp_0023_236ca4fff107:
+    match: EXACT_COMPONENT_ID
+    unknown_target: EXPLICIT_NOT_FOUND
+  unit_sfp_0023_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/vpms/integration/ptsip_bridge.py
+  unit_sfp_0023_afbfbdc1cc69:
+    authority_type: PTSIP_VPMS_READ_ONLY_INTEGRATION
+    schema_id: ptsip.governance/ptsip-vpms-read-only-integration
+    schema_version: 1
+  unit_sfp_0024_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/governance/support_assets.py
+  unit_sfp_0024_afbfbdc1cc69:
+    authority_type: SUPPORT_ROOT_RESPONSIBILITY_FAMILY_TRANSITION
+    schema_id: ptsip.governance/support-root-responsibility-family-transition
+    schema_version: 1
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

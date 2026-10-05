@@ -1,3 +1,4 @@
+from developer.tests.policy_migration_helpers import source_file
 from pathlib import Path
 
 import pytest
@@ -12,7 +13,7 @@ POLICY = ROOT / "developer" / "policy" / "MPD-0010.yaml"
 def _repo(tmp_path: Path) -> Path:
     policy = tmp_path / "developer" / "policy"
     policy.mkdir(parents=True)
-    (policy / "MPD-0010.yaml").write_text(POLICY.read_text(encoding="utf-8"), encoding="utf-8")
+    (policy / "MPD-0010.yaml").write_text(source_file(POLICY).read_text(encoding="utf-8"), encoding="utf-8")
     (tmp_path / "AGENTS.md").write_text(
         "# AGENTS\n\nBefore editing, read README.md.\n\nNever edit generated files directly.\n\n"
         "Validation evidence must include pytest status.\n\nArchitecture baseline: MVC plus EDA\n\n"

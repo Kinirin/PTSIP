@@ -322,6 +322,11 @@ def build_execution_plan(
                 "pytest": list(targets),
             }
         )
+        if "go" in execution:
+            go_targets = execution["go"]
+            if not isinstance(go_targets, list) or not go_targets or not all(isinstance(target, str) for target in go_targets):
+                raise TestModeSelectionError(f"mode {mode.get('id')!r} has invalid Go modules")
+            plan[-1]["go"] = list(go_targets)
     return plan
 
 

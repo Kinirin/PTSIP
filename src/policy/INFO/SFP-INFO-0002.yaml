@@ -1,0 +1,44 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0002
+  title: INFO authority (DRAFT source responsibilities)
+  status: DRAFT
+authority_subject:
+  id: SUP_PROFILE_CONTEXT_INFORMATION_SEMANTICS
+  statement: consumer profile, canonical effective metadata, Context Plane 및 관측 evidence의
+    정보 의미와 semantic source/projection 구분을 소유한다.
+exclusive_kernel:
+- SUP_CANONICAL_INFORMATION_MODEL
+- SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_CANONICAL_INFORMATION_MODEL
+      statement: profile의 classification, roles, relationships, source_mode 및 evidence
+        정보형을 서로 다른 의미 축으로 정의한다.
+      non_substitutability: ARCH의 특정 project 선언이나 ASSURE의 판정이 정보 축의 의미를 합치거나 새 canonical
+        alias를 만들 수 없다.
+    - id: SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+      statement: Source Profile 및 context semantic source와 결정론적 effective/projection
+        정보의 결합과 non-authoritative derivation 관계를 명시한다.
+      non_substitutability: REAL의 출력 파일 존재나 RECORD의 과거 snapshot은 현재 source 의미를 대신
+        소유하지 않는다.
+    source_scope:
+    - SFP-0004
+  unit_sfp_0004_d7cbad3c5e4c: true
+  unit_sfp_0004_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

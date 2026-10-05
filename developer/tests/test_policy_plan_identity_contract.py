@@ -1,6 +1,8 @@
 from __future__ import annotations
+from developer.tests.policy_migration_helpers import resolve_source_bindings as resolve_policies
 
 from pathlib import Path
+from developer.tests.policy_migration_helpers import source_file
 
 import yaml
 
@@ -9,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def _load(path: str) -> dict[str, object]:
-    payload = yaml.safe_load((ROOT / path).read_text(encoding="utf-8"))
+    payload = yaml.safe_load(source_file(ROOT / path).read_text(encoding="utf-8"))
     assert isinstance(payload, dict)
     return payload
 

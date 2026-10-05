@@ -143,7 +143,12 @@ def resolve_policy_version_transition(
     }
 
 
-def _canonical_policy_path(policy_id: str) -> str:
+def _canonical_policy_path(policy_id: str, base: Path | None = None) -> str:
+    if base is not None:
+        from ptsip.governance.authority import registered_source_path
+        expected = _canonical_policy_path(policy_id)
+        relative = registered_source_path(base / "developer/policy", "PTSIP_DEVELOPER_POLICY", policy_id, expected.removeprefix("developer/policy/"))
+        return f"developer/policy/{relative}"
     family = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
     if family is not None:
         return f"developer/policy/{family.group(1)}/{policy_id}.yaml"
@@ -246,7 +251,7 @@ def _load_consistent_registered_corpus(base: Path) -> CorpusState:
     if ids != tuple(sorted(ids)):
         raise PolicyIdentityLifecycleError("NONCANONICAL_POLICY_INDEX_ORDER", "developer policy index IDs are not ordered")
 
-    expected_paths = tuple(_canonical_policy_path(policy_id) for policy_id in ids)
+    expected_paths = tuple(_canonical_policy_path(policy_id, base) for policy_id in ids)
     if paths != expected_paths:
         raise PolicyIdentityLifecycleError(
             "POLICY_INDEX_PATH_MISMATCH",

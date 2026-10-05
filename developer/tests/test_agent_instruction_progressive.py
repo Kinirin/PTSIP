@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from developer.tests.policy_migration_helpers import source_file
 import hashlib
 import json
 from pathlib import Path
@@ -23,7 +24,7 @@ def _repo(tmp_path: Path) -> Path:
     target = tmp_path / "developer" / "policy"
     target.mkdir(parents=True)
     (target / "MPD-0010.yaml").write_text(
-        POLICY.read_text(encoding="utf-8"),
+        source_file(POLICY).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (tmp_path / "AGENTS.md").write_text(

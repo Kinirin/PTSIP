@@ -1,0 +1,50 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: NORM
+policy:
+  id: SFP-NORM-0001
+  title: NORM authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_CONSUMER_REQUIREMENT_MEANING
+  statement: shipped Support 계약에서 consumer에게 적용되는 PTSIP 요구의 효력과 해석 및 immutable bound
+    Specification에 대한 구속 관계를 소유한다.
+exclusive_kernel:
+- SUP_REQUIREMENT_FORCE_AND_BOUND_SPEC
+- SUP_CONFORMANCE_RULE_INTERPRETATION
+authority_contract:
+  authority_type: ROOT_FAMILY_NORM
+  schema_id: ptsip.governance/root-family/norm
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_REQUIREMENT_FORCE_AND_BOUND_SPEC
+      statement: consumer 요구의 MUST/MUST_NOT 의미와 bound Specification 우선순위를 명시한다. project-local
+        policy가 universal PTSIP 요구를 약화할 수 없다.
+      non_substitutability: GOV의 project decision이나 consumer가 원하는 INTENT만으로 universal
+        요구를 면제할 수 없다.
+    - id: SUP_CONFORMANCE_RULE_INTERPRETATION
+      statement: consumer 규범의 적용 조건과 해석 범위를 명시된 Specification revision과 shipped SFP
+        안에서 정한다.
+      non_substitutability: ASSURE의 zero findings나 관측된 관행이 누락된 규범 의미를 생성하거나 미지원 해석을
+        승인하지 않는다.
+    source_scope:
+    - SFP-0001
+    - SFP-0002
+    - SFP-0003
+    - SFP-0023
+  unit_sfp_0001_ba407fddada8: PTSIP
+  unit_sfp_0001_555df7fa00c4: PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY
+  unit_sfp_0001_9d24b2d72987: PURPOSE_BEFORE_REUSE
+  unit_sfp_0001_26f16d98b1bc: true
+  unit_sfp_0002_e45eff8c2dd7: true
+  unit_sfp_0003_ce3d0fb4b13c: IMMUTABLE_GIT_REVISION
+  unit_sfp_0003_f4c463515592: INDEPENDENT
+  unit_sfp_0023_7e275603ca7a: false
+  unit_sfp_0023_024f8944b27a: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from developer.tests.policy_migration_helpers import resolve_source_bindings as resolve_policies
 
 from pathlib import Path
 
@@ -14,7 +15,6 @@ from developer.automation.policy_resolver import (
     explain_policy,
     get_normative_rule,
     get_policy,
-    resolve_policies,
     validate_policy_resolver,
 )
 
@@ -43,11 +43,11 @@ def test_duplicate_policy_identity_remains_a_blocking_binding_error(monkeypatch)
     def duplicate(root, contract):
         bindings = deepcopy(original(root, contract))
         refs = bindings["scope_bindings"]["src/ptsip/migration"]["operations"]["PLAN"]
-        refs.append(deepcopy(next(item for item in refs if item["policy_id"] == "MPD-MIGR-0005")))
+        refs.append(deepcopy(next(item for item in refs if item["policy_id"] == "MPD-CHANGE-0001")))
         return bindings
 
     monkeypatch.setattr(policy_resolver_module, "_load_bindings", duplicate)
-    assert validate_policy_resolver(ROOT) == ("src/ptsip/migration:PLAN duplicates MPD-MIGR-0005",)
+    assert validate_policy_resolver(ROOT) == ("src/ptsip/migration:PLAN duplicates MPD-CHANGE-0001",)
 
 
 def test_policy_resolver_uses_exact_ancestor_scope_binding() -> None:
@@ -241,23 +241,24 @@ def test_rule_cli_projects_one_normative_section(capsys) -> None:
 
 
 def test_similar_github_authority_scope_does_not_receive_task_context() -> None:
-    result = resolve_policies(
+    result = policy_resolver_module.resolve_policies(
         ROOT,
         scope="src/ptsip/app/github_authority_extra.py",
         operation="MODIFY",
     )
-    assert result["binding_scope"] == "."
+    assert result["binding_scope"] == "src"
     assert "task_context" not in result
 
 
 def test_similar_scope_name_does_not_match_registered_scope() -> None:
-    result = resolve_policies(
+    result = policy_resolver_module.resolve_policies(
         ROOT,
         scope="src/ptsip-migrations/future_engine.py",
         operation="MODIFY",
     )
-    assert result["binding_scope"] == "."
-    assert [item["policy_id"] for item in result["policies"]] == ["MPD-0010", "MPD-SPEC-0006"]
+    assert result["binding_scope"] == "src"
+    assert [item["policy_id"] for item in result["policies"]] == ["MPD-NORM-0001", "MPD-REAL-0004", "MPD-CNTR-0003"]
+    assert "task_context" not in result
 
 
 def test_operation_override_is_exact() -> None:
@@ -281,7 +282,9 @@ def test_get_policy_can_return_only_one_rule_section() -> None:
         section="identity_and_resolution",
     )
     assert result["fragment"] == "rules.identity_and_resolution"
-    assert result["canonical_path"] == "developer/policy/SPEC/MPD-SPEC-0006.yaml"
+    assert result["canonical_path"] == "developer/policy/legacy/MPD-SPEC-0006.yaml"
+    assert result["canonical_owners"]
+    assert result["projection_authority"] is False
     assert isinstance(result["record"], dict)
     assert "registry_resolution_budget" in result["record"]
     assert "ptsip_design_priority" not in result["record"]

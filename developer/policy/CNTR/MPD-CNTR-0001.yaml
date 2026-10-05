@@ -1,0 +1,450 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CNTR
+policy:
+  id: MPD-CNTR-0001
+  title: CNTR authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+  statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를
+    소유한다.
+exclusive_kernel:
+- DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+- DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+      statement: 호출 가능한 command vocabulary, typed 입력과 출력, 오류 의미 및 precondition/postcondition
+        약속을 명시한다.
+      non_substitutability: INFO의 내부 데이터 모델만으로 외부 호출에 허용된 command와 결과 약속을 만들 수 없다.
+    - id: DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+      statement: 개발 자동화 인터페이스의 보장 범위와 호환성 약속을 정하고 미등록 command나 추측 fallback이 계약이 되는
+        것을 금지한다.
+      non_substitutability: CHANGE가 전환 일정을 정하거나 REAL이 편의 기능을 구현해도 계약상 지원 의무가 자동으로
+        생기지 않는다.
+    source_scope:
+    - MPD-0001
+    - MPD-0010
+    - MPD-0014
+    - MPD-0015
+    - MPD-SPEC-0006
+    - MPD-SPEC-0007
+    - MPD-SPEC-0021
+    - MPD-SPEC-0025
+    - MPD-VERI-0004
+  unit_mpd_0001_394f16f8e8c8:
+    loader: developer/automation/policy_loader.py
+    policy_validator: developer/automation/policy_validator.py
+    planning:
+      root: developer/automation/planning/
+      entry_resolver: developer/automation/planning/planning_entry_resolver.py
+      validator: developer/automation/planning/planning_validator.py
+      stage_finalizer: developer/automation/planning/planning_stage_finalizer.py
+      extension_finalizer: developer/automation/planning/planning_extension_finalizer.py
+      leaf_merge: developer/automation/planning/planning_leaf_merge.py
+      merge_reconciler: developer/automation/planning/planning_merge_reconciler.py
+    policy_plan_binding:
+      root: developer/automation/policy_plan_binding/
+    current_dependency_gate: developer/automation/current_dependency_gate.py
+    transition_evaluator: developer/automation/transition_evaluator.py
+  unit_mpd_0010_a352aeef1624: APPROVED
+  unit_mpd_0010_d3321af4d08d: REPOSITORY_TRIAL
+  unit_mpd_0010_6a8bfa4fc46a: REDUCE_CODING_AGENT_ENTRY_INFERENCE_WITH_LOW_DIFFICULTY_MACHINE_ROUTING
+  unit_mpd_0010_951f7d0a9910: FORBIDDEN
+  unit_mpd_0010_84d3056c0f72: NOT_AUTHORIZED
+  unit_mpd_0010_e3648d889e5e: true
+  unit_mpd_0010_1a1ded8f6e50: LOCAL_CLI_ONLY
+  unit_mpd_0010_cf1cf677bb81: true
+  unit_mpd_0010_8c4943001024: STDIO
+  unit_mpd_0010_2f902a371ae6: false
+  unit_mpd_0010_2fc2f0184767: false
+  unit_mpd_0010_cd2d703ea855: false
+  unit_mpd_0010_dcf4d9aa4edb: true
+  unit_mpd_0010_b9dc8d1b0f13: FORBIDDEN
+  unit_mpd_0010_e1b3d9d451a5: NOT_AVAILABLE
+  unit_mpd_0010_495d6dd54d4f: ABSENT
+  unit_mpd_0010_1dd36e23033b: false
+  unit_mpd_0010_bef56b8c5b40: python -m developer.automation.agent_integration install-mcp
+    --user-approved
+  unit_mpd_0010_4af236e21b78:
+    state: READY
+    resolver_command: python -m developer.automation.agent_instruction_entry_resolver
+      <READ|MODIFY|PLAN|VERIFY|RELEASE>
+  unit_mpd_0010_643f3ad3e527: true
+  unit_mpd_0010_166beaafa334: true
+  unit_mpd_0010_4fba394eb019:
+    next_level_input: CURRENT_LEVEL_PASS_SUBSET_ONLY
+    next_level_payload: PASS_HEADER_PLUS_MACHINE_FIELDS_PLUS_REMAINING_NATURAL_RESIDUAL
+    rerun_previous_passed_level: FORBIDDEN
+    machine_resolved_fragments_must_not_remain_in_next_natural_reasoning_input: true
+    unresolved_remains_natural_language_at_current_level: true
+    unresolved_is_direct_next_level_candidate: false
+    unresolved_may_transition_to_pass_when_current_level_becomes_exactly_classifiable: true
+    pass_transition_immediately_creates_next_level_candidate: true
+    unresolved_blocks_other_passed_atoms: false
+    current_level_unresolved_zero_required_for_next_level: false
+    next_level_candidate_set_is_dynamic: true
+  unit_mpd_0010_804417a00130: false
+  unit_mpd_0014_2636c6da29a8:
+    allowed: GITHUB_CREATE_BRANCH_API
+    direct_api_use_authorized: true
+    caller_must_run_branch_creation_guard_first: true
+    canonical_command_plane: developer/automation/branch_control.py
+    branch_operations_must_enter_through_command_plane: true
+    unregistered_command: FAIL_CLOSED
+    out_of_plane_branch_operation: MANAGEMENT_INTENT_DEVIATION_SIGNAL
+    registered_commands:
+    - COMMANDS
+    - LIST
+    - INSPECT
+    - CREATE
+    - RECREATE
+    recreate_semantics:
+      authorization_source: USER_EXPLICIT
+      exact_user_approved_name_required: true
+      require_existing_branch: true
+      require_existing_branch_fully_contained_in_base_ref: true
+      delete_existing_ref_before_creation: true
+      refresh_base_ref_before_creation: true
+      verify_recreated_ref_matches_base_ref: true
+      rollback_original_ref_on_creation_failure: true
+    forbidden:
+    - GIT_PUSH_BRANCH_CREATION
+    - GIT_SWITCH_CREATE
+    - GIT_CHECKOUT_CREATE
+    - GIT_UPDATE_REF
+    - GITHUB_UPDATE_REF_API
+    - WORKFLOW_REF_CREATION
+  unit_mpd_0015_6f37556a3bbc:
+    objective: REDUCE_REPEATED_AI_REASONING_BY_REUSING_VERIFIED_MACHINE_RESOLUTIONS
+    semantic_responsibility:
+      roles_must_be_distinguishable_when_present: true
+      roles_may_include:
+      - RULE
+      - CONDITION
+      - OPERATION
+      - FAILURE
+      - CAPABILITY
+      - CONFORMANCE
+      independent_file_per_role_required: false
+      independent_contract_per_role_required: false
+      domain_or_semantic_unit_grouping_allowed: true
+    explicit_binding:
+      previously_decided_reusable_relationships_should_be_machine_explicit: true
+      current_explicit_binding_must_precede_repeated_semantic_inference: true
+      repeated_ai_reinference_when_current_binding_resolves_exactly: FORBIDDEN
+    deterministic_resolver:
+      purpose: RESOLVE_EXISTING_DECISIONS
+      may_create_new_normative_meaning: false
+      resolution_basis:
+      - REGISTERED_IDENTITY
+      - EXPLICIT_MACHINE_BINDING
+      deterministic_resolution_precedes_ai_reasoning: true
+    unresolved_resolution:
+      bounded_ai_reasoning_allowed: true
+      ai_result_role: CANDIDATE
+      ai_candidate_is_normative_authority: false
+      candidate_may_become_reusable_only_after_applicable_validation_and_authority_rules: true
+      verified_or_approved_reusable_resolution_may_be_materialized_as:
+      - MACHINE_CONTRACT
+      - MACHINE_BINDING
+    automatic_plan:
+      preferred_inputs:
+      - RESOLVED_FACTS
+      - MACHINE_BINDINGS
+      - MACHINE_CONTRACTS
+      machine_derivation_preferred_when_inputs_are_sufficiently_resolved: true
+      analysis_uncertainty_allowed: true
+      unresolved_authority_may_be_invented: false
+      mutation_may_proceed_without_required_approved_semantics: false
+  unit_mpd_0015_8c9c31aedf17:
+    purpose: BOUND_MPD_0015_DEVELOPER_POLICY_APPLICATION_WITHOUT_SEMANTIC_SCOPE_GUESSING
+    registration:
+      initial_scope_or_file_registration_requires_explicit_human_decision: true
+      automatic_semantic_scope_discovery: FORBIDDEN
+      semantic_similarity_scope_mapping: FORBIDDEN
+      registered_binding_resolution_may_be_automatic: true
+      new_unregistered_scope_remains_unbound_until_explicitly_registered: true
+    inherited_directory_scopes:
+    - path: src/agent_contracts
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/agent_contracts
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/migration
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/repository
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/validation
+      operations:
+      - MODIFY
+      - VERIFY
+    - path: developer/automation/planning
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: developer/state
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: tests/ptsip/agent_contracts
+      operations:
+      - MODIFY
+      - VERIFY
+    - path: tests/ptsip/conformance
+      operations:
+      - MODIFY
+      - VERIFY
+    - path: tests/ptsip/migration
+      operations:
+      - MODIFY
+      - VERIFY
+    - path: tests/ptsip/repository
+      operations:
+      - MODIFY
+      - VERIFY
+    - path: tests/ptsip/validation
+      operations:
+      - MODIFY
+      - VERIFY
+    exact_file_scopes:
+    - path: developer/automation/policy_resolver.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: developer/automation/repository_state_resolver.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: developer/automation/implementation_work_packet.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: developer/automation/implementation_workflows.yaml
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: developer/automation/implementation_workflows.schema.json
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/conformance.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/conformance_engine.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/conformance_audit.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/validation_capture.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/artifact_evidence.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/lifecycle_evidence.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: src/ptsip/review_evidence.py
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: developer/policy/MPD-0015.yaml
+      operations:
+      - PLAN
+      - MODIFY
+      - VERIFY
+    - path: pyproject.toml
+      operations:
+      - MODIFY
+      - VERIFY
+    explicitly_not_inherited_roots:
+    - src/ptsip
+    - developer/automation
+    - tests/ptsip
+    - .github
+    - .ptsip
+    inheritance_boundary:
+      descendant_inheritance_applies_only_to_registered_directory_scopes: true
+      exact_file_scope_does_not_expand_to_siblings: true
+      parent_root_presence_does_not_imply_mpd_0015_applicability: true
+  unit_mpd_spec_0006_debe705133cf:
+    language_runtime_os_tool_neutral: true
+    canonical_layers:
+    - CANONICAL_IDENTITY_REGISTRY
+    - CANONICAL_SCHEMA
+    - CANONICAL_INVARIANTS
+    - GENERATED_BINDINGS
+    registry_does_not_define_object_shape: true
+    schema_does_not_duplicate_identity_grammar: true
+    invariants_do_not_duplicate_registry_or_schema_definitions: true
+    generated_bindings_must_not_add_change_or_remove_normative_semantics: true
+  unit_mpd_spec_0007_45f1dabb480b:
+    extension_freedom: ALLOWED
+    extension_freedom_does_not_imply_core_identity_reuse: true
+    extension_freedom_does_not_imply_backward_or_forward_compatibility_entitlement: true
+    official_core_semantics_immutable_within_bound_canonical_specification_revision: true
+    modified_official_core_behavior_requires_distinct_extension_identity: true
+    absent_explicit_compatibility_must_not_be_interpreted_as_compatibility: true
+    ptsip_may_provide_machine_readable_compatibility_revalidation_or_migration_assistance: true
+    extension_owner_responsibilities:
+    - SEMANTIC_DEFINITION
+    - IMPLEMENTATION_COST
+    - INFERENCE_COST
+    - MAINTENANCE
+    - CONFORMANCE
+    - REVALIDATION_AFTER_SPEC_OR_CAPABILITY_CHANGE
+    - MIGRATION_RESPONSE
+    - COMPATIBILITY_CONFIRMATION
+    official_promotion_of_community_or_custom_semantics_requires_new_official_identity: true
+    feedback_usage_or_popularity_is_refinement_evidence_not_normative_authority: true
+  unit_mpd_spec_0021_6b01d5769413:
+    principle: EXTERNALLY_OBSERVABLE_PTSIP_SEMANTICS_ARE_MACHINE_CONTRACT_AUTHORITY
+    owns:
+    - RULE_MEANING
+    - STATE_MEANING
+    - INPUT_STRUCTURE
+    - OUTPUT_STRUCTURE
+    - ALLOWED_STATE_TRANSITIONS
+    - PRECONDITIONS
+    - POSTCONDITION_GUARANTEES
+    - FAILURE_SEMANTICS
+    - STANDARD_ERROR_CODES
+    - IDENTITY_RULES
+    - CANONICAL_REPRESENTATION
+    - DIGEST_RULES
+    - CAPABILITY_DECLARATIONS
+    implementation_freedom:
+      principle: INTERNAL_MECHANISMS_ARE_FREE_WHEN_NORMATIVE_SEMANTICS_DO_NOT_CHANGE
+      may_choose:
+      - INTERNAL_DATA_STRUCTURES
+      - INTERNAL_FUNCTION_AND_TYPE_NAMES
+      - MODULE_OR_PACKAGE_DECOMPOSITION
+      - CACHING_STRATEGY
+      - CONCURRENCY_MECHANISM
+      - INTERNAL_HELPER_IMPLEMENTATION
+      must_not_change:
+      - EXTERNALLY_OBSERVABLE_MEANING
+      - CONTRACT_DEFINED_STATE_TRANSITIONS
+      - CONTRACT_DEFINED_FAILURE_RESULTS
+      - CONTRACT_DEFINED_IDENTITY
+      - CONTRACT_DEFINED_CANONICAL_REPRESENTATION
+      - CONTRACT_DEFINED_DIGEST_RESULTS
+      unresolved_semantic_boundary: FAIL_CLOSED
+  unit_mpd_spec_0025_60134fd764b9:
+    source_contract_type_count: 2
+    type_roles:
+    - STRICT_CANONICAL
+    - SEMANTIC_EXTENSION
+    permanent_type_identifiers: DEFERRED
+    extensibility_implies_lower_strictness: false
+    semantic_extension_model: E3_SEMANTIC_EXTENSION_CONTRACT
+  unit_mpd_spec_0025_38fd80009165:
+    required_immutable_fields:
+    - identity
+    - semantic_category
+    - value_contract
+    - comparison_semantics
+    - evolution_semantics
+    breaking_stable_semantic_change_requires_new_feature_identity: true
+    evolution_semantics_modes:
+    - IMMUTABLE
+    - COMPATIBLE_EXTENSION
+    - EXPLICIT
+    mandatory_global_fine_grained_change_classification_vocabulary: FORBIDDEN
+    explicit_mode_may_reference_machine_readable_evolution_rules: true
+  unit_mpd_spec_0025_9cd775906ea2:
+    minimum_required_fields:
+    - implementation_kind
+    - revision
+    - implementation_ref
+    additional_fields_required_by_core: false
+    implementation_detail_overconstraint: FORBIDDEN
+  unit_mpd_veri_0004_09a448bf6930:
+    strategy: IO4_GENERATED_AND_VERIFIED_IO_RESOLUTION
+    ordered_resolution:
+    - EXACT
+    - STRUCTURAL_COMPATIBLE
+    - DETERMINISTIC_TRANSFORM
+    - GENERATED_VERIFIED_MAPPING
+    generated_mapping_initial_state: CANDIDATE
+    generated_mapping_requires_machine_verification: true
+    machine_derived_new_normative_fact: FORBIDDEN
+    unknown_is_null: false
+    undeclared_default_invention: FORBIDDEN
+    silent_loss_of_required_outcome_or_failure_information: FORBIDDEN
+    lossy_semantic_mapping_auto_pass: FORBIDDEN
+  unit_mpd_veri_0004_6f95b224e3ad:
+    observation_and_semantic_failure_are_separate_contract_concerns: true
+    technical_exception_type_is_normative_failure_identity: false
+    failure_observation_role: EVIDENCE
+    failure_semantic_role: NORMATIVE_INTERPRETATION
+    observation_assembly:
+      strategy: FO4_SPLIT_EVIDENCE_RUNTIME_ASSEMBLED
+      evidence_sources:
+      - IMPLEMENTATION_TECHNICAL_FAILURE
+      - RUNTIME_EXECUTION_CONTEXT
+      - EFFECT_EVIDENCE
+      observation_builder_may_create_normative_failure_meaning: false
+      adapter_may_normalize_native_failure_representation: true
+      adapter_may_create_normative_failure_meaning: false
+      unproven_state: UNKNOWN
+    failure_resolution_is_separate_from_observation_assembly: true
+  unit_mpd_veri_0004_c3c470f140f3:
+    strategy: C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+    version_number_equality_is_sufficient: false
+    capability_name_equality_is_sufficient: false
+    required_semantics_must_be_compared_against_provided_semantics: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-CNTR-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

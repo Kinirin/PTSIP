@@ -1,4 +1,5 @@
 from __future__ import annotations
+from developer.tests.policy_migration_helpers import source_file
 
 import json
 from pathlib import Path
@@ -12,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_support_policy_namespace_has_no_retired_documentation_dependency():
-    policy = yaml.safe_load((ROOT / "developer/policy/SPEC/MPD-SPEC-0001.yaml").read_text(encoding="utf-8"))
+    policy = yaml.safe_load((source_file(ROOT / "developer/policy/SPEC/MPD-SPEC-0001.yaml")).read_text(encoding="utf-8"))
     namespace = policy["rules"]["namespace"]["support_feature"]
     assert namespace["machine_policy_path"] == "src/policy/"
     assert "human_documentation_path" not in namespace

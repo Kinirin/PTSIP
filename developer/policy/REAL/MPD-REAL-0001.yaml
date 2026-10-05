@@ -1,0 +1,123 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: REAL
+policy:
+  id: MPD-REAL-0001
+  title: REAL authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_APPROVED_ARTIFACT_REALIZATION
+  statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
+exclusive_kernel:
+- DEV_IMPLEMENTATION_AND_MATERIALIZATION
+- DEV_MUTATION_INTEGRITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
+      statement: 해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및
+        provenance를 보존한다.
+      non_substitutability: INTENT의 목표나 ARCH의 설계 선언만으로 실제 구현 절차와 생성 결과가 존재하게 되지 않는다.
+    - id: DEV_MUTATION_INTEGRITY
+      statement: 허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을
+        방지한다.
+      non_substitutability: CTRL이 변경을 허용했다는 판정은 실제 쓰기의 원자성과 실패 처리를 대신 보장하지 않는다.
+    source_scope:
+    - MPD-0010
+    - MPD-0011
+    - MPD-0013
+    - MPD-0015
+    - MPD-WORK-0003
+  unit_mpd_0010_f66ade5f0624:
+    source: AGENTS.md
+    existing_agent_surface_required: false
+    legacy_materialization_required: false
+    source_mutation_during_bootstrap: PASS_ATOMS_REMOVED_FROM_AGENTS
+    output_index: .agent/index.yaml
+    output_pass_stage: .agent/stages/level1.json
+    output_unresolved_stage: .agent/unresolved/level1.json
+    registry_required: false
+    provenance_markdown_required: false
+    source_change_after_bootstrap_marks_stage_stale: true
+    compact_agents_contract:
+      machine_entry_count: 1
+      machine_entry_schema: PTSIP_AGENT_ENTRY_V1
+      pass_atom_natural_language_in_agents: FORBIDDEN
+      pass_atom_route_lines_in_agents: FORBIDDEN
+      unresolved_natural_language_in_agents: PRESERVED
+      stage_shape: PASS_BY_ATOM
+      semantic_matching_after_entry: FORBIDDEN
+      integration_state_in_entry_required: true
+  unit_mpd_0010_6011f017b147:
+  - LEVEL_1
+  - LEVEL_2
+  - LEVEL_3
+  unit_mpd_0010_c7ae23488653:
+    allowed: true
+    full_mechanization_required: false
+    machine_constants_preferred_when_exact_semantics_are_available: true
+    natural_residual_allowed_only_for_semantics_not_yet_mechanized: true
+  unit_mpd_0010_91834657767d:
+    source: .agent/unresolved/level1.json
+    allowed_triggers:
+    - CLASSIFIER_CAPABILITY_EXPANSION
+    - TAXONOMY_EXTENSION
+    - EXACT_RESPONSIBILITY_BOUNDARY_BECOMES_RESOLVABLE
+    reassess_only_at_current_level: true
+    positive_result_transition: UNRESOLVED_TO_PASS
+    negative_result_behavior: KEEP_UNRESOLVED
+    forced_assignment_to_reduce_unresolved_count: FORBIDDEN
+  unit_mpd_0011_01b456ebdf51: MPD-MIGR-0004
+  unit_mpd_0011_69a06806f9f7:
+    strategy: H3_SHARED_INSTALLER
+    entrypoints:
+    - setup_dev.bat
+    - bootstrap_repo.ps1
+    - python -m developer.automation.dev_setup
+    shared_installer: REQUIRED
+    git_config_scope: LOCAL_REPOSITORY
+    core_hooks_path: .githooks
+    product_runtime_dependency: FORBIDDEN
+    developer_module_distribution: FORBIDDEN
+    consumer_repository_requirement: false
+  unit_mpd_0013_6a876b8f6996:
+    automation_root: developer/automation/policy_plan_binding/
+    automation_semantics:
+      invent_policy_authority: false
+      invent_planning_authority: false
+      infer_unregistered_relationships: false
+      exact_machine_resolution_required: true
+      ambiguous_binding_selection: FAIL_CLOSED
+  unit_mpd_0015_0c9180c7ae16:
+    allowed_language_set: OPEN
+    python_only: false
+    go_only: false
+    python_and_go_only: false
+  unit_mpd_work_0003_b742e02ef576:
+    analysis_required_before_family_policy_creation: true
+    create_before_collision_resolution: FORBIDDEN
+    blocked_collision_may_materialize: false
+    analysis_root: developer/policy/analysis/
+    analysis_schema: developer/policy/schemas/policy-responsibility-analysis.schema.json
+    analysis_registry: developer/policy/analysis/registry.yaml
+    family_preflight_module: developer.automation.policy_identity_lifecycle
+    responsibility_gate_module: developer.automation.policy_responsibility_gate
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-REAL-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

@@ -5,7 +5,8 @@ import json
 import re
 from copy import deepcopy
 from pathlib import Path
-from typing import Mapping
+from typing import Callable, Mapping
+from functools import lru_cache
 
 import yaml
 from jsonschema import Draft202012Validator, ValidationError
@@ -94,6 +95,13 @@ class AuthorityCatalog:
 
     def _load_yaml(self, category: str, relative: str) -> dict[str, object]:
         path = resolve_support_asset(self.assets, category, relative)
+        if category == "policy" and relative != self.INDEX:
+            try:
+                policy_root = resolve_support_asset(self.assets, "policy", self.INDEX).parent
+                registry = migration_registry(policy_root, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json", copy_result=False)
+                return read_policy(policy_root, relative, "PTSIP_SUPPORT_FEATURE", registry=registry, module_path=self.assets.registries / "root-family-projection.module.json")
+            except (OSError, ValueError, KeyError) as exc:
+                raise GovernanceAuthorityError("ROOT_FAMILY_PROJECTION_INVALID", str(exc), relative) from exc
         if not path.is_file():
             raise GovernanceAuthorityError("GOVERNANCE_ASSET_MISSING", f"missing support governance asset: {relative}", relative)
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -148,12 +156,36 @@ class AuthorityCatalog:
         source_ref = f"src/policy/{path}"
         return source_ref, route, record
 
+    def canonical_sources_for_policy(self, policy_id: str) -> list[dict[str, str]]:
+        registry = migration_registry(self.assets.policy, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json")
+        source = source_route(registry, policy_id=policy_id)
+        if source is None:
+            return []
+        return [{"policy_id": unit["policy_id"], "path": f"src/policy/{unit['policy_path']}", "section": unit["section"]} for unit in source["units"]]
+
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:
         items = []
         for policy_id in self.current_routes:
             path, route, record = self.load_current_record(policy_id)
             items.append((policy_id, path, route, record))
         return tuple(items)
+
+    def resolve_family(self, family: str) -> tuple[tuple[str, Mapping[str, object], Mapping[str, object]], ...]:
+        """Resolve only this shipped Support plane's explicitly materialized Family."""
+        policy_root = resolve_support_asset(self.assets, "policy", self.INDEX).parent
+        registry = migration_registry(policy_root, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json")
+        rows = [{"policy_id": r["id"]} for r in self.index["policies"] if r["id"].startswith(f"SFP-{family}-") and r["path"] == f"{family}/{r['id']}.yaml"]
+        if not rows:
+            raise GovernanceAuthorityError("SUPPORT_ROOT_FAMILY_UNRESOLVED", "no exact Support Family materialization is registered", family)
+        result = []
+        for row in rows:
+            source_ref, route, record = self.load_current_record(row["policy_id"])
+            self._validate_current_selection(row["policy_id"], source_ref, route, record)
+            if record.get("policy_class") != "PTSIP_SUPPORT_FEATURE" or record.get("responsibility_family") != family or record["policy"]["status"] != route["status"]:
+                raise GovernanceAuthorityError("SUPPORT_ROOT_FAMILY_METADATA_MISMATCH", "Support Family identity/status mismatch", row)
+            self._validate_contract_and_semantics(record)
+            result.append((source_ref, route, record))
+        return tuple(result)
 
     def _validate_current_selection(self, policy_id: str, source_ref: str, route: Mapping[str, object], record: Mapping[str, object]) -> None:
         policy = _mapping(record.get("policy"), code="MALFORMED_AUTHORITY_RECORD", label="policy")
@@ -257,6 +289,10 @@ class AuthorityCatalog:
             raise GovernanceAuthorityError("UNSUPPORTED_REPOSITORY_IDENTITY_SCHEME", "repository identity scheme is not supported.", repository.get("scheme"))
 
     def validate_current_corpus(self) -> tuple[str, ...]:
+        try:
+            validate_migration(resolve_support_asset(self.assets, "policy", self.INDEX).parent, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json", schema_path=self.assets.schemas / "root-family-migration.schema.json")
+        except (OSError, ValueError, KeyError, ValidationError) as exc:
+            raise GovernanceAuthorityError("ROOT_FAMILY_MIGRATION_INVALID", str(exc), self.INDEX) from exc
         validated = []
         for policy_id, source_ref, route, record in self.iter_current_records():
             self._validate_current_selection(policy_id, source_ref, route, record)
@@ -363,12 +399,16 @@ class ProjectAuthorityRuntime:
         source_ref, _, record = self.catalog.load_current_record(policy_id)
         role = self.catalog._validate_role(record)
         binding = self.catalog.binding_for_policy(policy_id, solve_subject)
+        provenance = {"source_type": "SUPPORT_FEATURE_POLICY", "source_ref": source_ref, "source_revision": source_revision, "source_digest": _stable_digest(record)}
+        canonical_sources = self.catalog.canonical_sources_for_policy(policy_id)
+        if canonical_sources:
+            provenance.update(source_role="REGISTERED_ROOT_FAMILY_PROJECTION", canonical_sources=canonical_sources)
         project_record = ProjectAuthorityRecord(
             authority_id=result.authority_id,
             authority_contract=deepcopy(record["authority_contract"]),
             authority_semantics=deepcopy(record["authority_semantics"]),
             authority_role=deepcopy(role),
-            authority_provenance={"source_type":"SUPPORT_FEATURE_POLICY","source_ref":source_ref,"source_revision":source_revision,"source_digest":_stable_digest(record)},
+            authority_provenance=provenance,
             subject_binding=deepcopy(binding),
         )
         schema=deepcopy(self.catalog.project_authority_record_schema)
@@ -384,3 +424,272 @@ class ProjectAuthorityRuntime:
             if projected is not None:
                 records.append(projected)
         return tuple(records)
+
+
+REGISTRY = "registries/root-family-migration.json"
+SAFE_LOADER = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+
+
+@lru_cache(maxsize=128)
+def _parse_yaml(data: bytes) -> dict:
+    value = yaml.load(data.decode("utf-8"), Loader=SAFE_LOADER)
+    if not isinstance(value, dict):
+        raise ValueError("ROOT_MIGRATION_RECORD_NOT_MAPPING")
+    return value
+
+
+def load_yaml_mapping(path: Path) -> dict:
+    # Cache parsing by exact bytes, never by path, timestamp, or inferred state.
+    # Every read observes current bytes, and callers receive an independent mapping.
+    return deepcopy(_parse_yaml(path.read_bytes()))
+
+
+@lru_cache(maxsize=32)
+def _parse_json(data: bytes) -> dict:
+    return json.loads(data.decode("utf-8"))
+
+
+def source_digest(data: bytes) -> str:
+    """Hash repository text independently of Git's checkout newline conversion."""
+    return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
+
+
+def record_digest(value: object) -> str:
+    data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(data.encode("utf-8")).hexdigest()
+
+
+def migration_registry(policy_root: Path, policy_class: str, *, registry_path: Path | None = None, copy_result: bool = True) -> dict:
+    path = registry_path if registry_path is not None else policy_root / REGISTRY
+    if not path.is_file():
+        index_path = policy_root / "index.yaml"
+        if index_path.is_file() and load_yaml_mapping(index_path).get("migration_registry_ref") == REGISTRY:
+            raise ValueError("ROOT_MIGRATION_ADMITTED_REGISTRY_MISSING")
+        return {}
+    index = load_yaml_mapping(policy_root / "index.yaml")
+    if index.get("migration_registry_ref") != REGISTRY:
+        raise ValueError("ROOT_MIGRATION_REGISTRY_NOT_ADMITTED")
+    value = _parse_json(path.read_bytes())
+    if value.get("schema_version") != "ptsip-root-family-migration/v1" or value.get("policy_class") != policy_class:
+        raise ValueError("ROOT_MIGRATION_CLASS_OR_VERSION_MISMATCH")
+    sources = value.get("sources")
+    if not isinstance(sources, list) or len({s["source_policy_id"] for s in sources}) != len(sources):
+        raise ValueError("ROOT_MIGRATION_DUPLICATE_OR_INVALID_SOURCE")
+    return deepcopy(value) if copy_result else value
+
+
+def registered_source_path(policy_root: Path, policy_class: str, policy_id: str, expected: str) -> str:
+    source = source_route(migration_registry(policy_root, policy_class, copy_result=False), policy_id=policy_id)
+    if source is None:
+        return expected
+    if source["original_path"] != expected:
+        raise ValueError("ROOT_MIGRATION_SOURCE_PATH_MISMATCH")
+    return source["archive_path"]
+
+
+def source_route(registry: dict, *, policy_id: str | None = None, path: str | None = None) -> dict | None:
+    matches = [s for s in registry.get("sources", []) if
+               (policy_id is not None and s["source_policy_id"] == policy_id) or
+               (path is not None and path in {s["original_path"], s["archive_path"]})]
+    if len(matches) > 1:
+        raise ValueError("ROOT_MIGRATION_AMBIGUOUS_SOURCE")
+    return matches[0] if matches else None
+
+
+def safe_policy_path(policy_root: Path, relative: str) -> Path:
+    if Path(relative).is_absolute():
+        raise ValueError("ROOT_MIGRATION_ABSOLUTE_PATH")
+    path = (policy_root / relative).resolve()
+    if not path.is_relative_to(policy_root.resolve()):
+        raise ValueError("ROOT_MIGRATION_PATH_ESCAPE")
+    return path
+
+
+
+MODULE = "registries/root-family-projection.module.json"
+
+@lru_cache(maxsize=16)
+def _checked_module(data: bytes, schema_data: bytes) -> dict:
+    value = _parse_json(data)
+    try:
+        Draft202012Validator(_parse_json(schema_data)).validate(value)
+    except ValidationError as exc:
+        raise ValueError("ROOT_MODULE_PROGRAM_SCHEMA_INVALID") from exc
+    return value
+
+
+def projection_module(policy_root: Path, policy_class: str, *, module_path: Path | None = None) -> dict:
+    """Load only the class-local, exact-owner-admitted neutral machine program."""
+    index = load_yaml_mapping(policy_root / "index.yaml")
+    if index.get("projection_module_ref") != MODULE:
+        raise ValueError("ROOT_MODULE_NOT_ADMITTED")
+    path = module_path if module_path is not None else policy_root / MODULE
+    if not path.is_file():
+        raise ValueError("ROOT_MODULE_ADMITTED_PROGRAM_MISSING")
+    schema_path = path.parent.parent / "schemas/root-family-projection-module.schema.json"
+    data = path.read_bytes()
+    module = _checked_module(data, schema_path.read_bytes())
+    if module["policy_class"] != policy_class:
+        raise ValueError("ROOT_MODULE_CLASS_MISMATCH")
+    rows = [r for r in index["policies"] if r["id"] == module["owner_policy_ref"]]
+    if len(rows) != 1 or rows[0]["status"] != "ACTIVE":
+        raise ValueError("ROOT_MODULE_OWNER_UNRESOLVED")
+    relative = rows[0]["path"].removeprefix("developer/policy/")
+    owner = load_yaml_mapping(safe_policy_path(policy_root, relative))
+    rule = owner.get(module["parameters"]["value_field"], {}).get(module["owner_section"], {})
+    expected = "developer/policy/" + MODULE if policy_class == "PTSIP_DEVELOPER_POLICY" else MODULE
+    if (owner.get("policy_class") != policy_class or owner.get("policy", {}).get("id") != module["owner_policy_ref"]
+        or owner["policy"].get("status") != "ACTIVE" or rule.get("module_ref") != expected
+        or rule.get("module_id") != module["module_id"] or rule.get("module_sha256") != source_digest(data)
+        or rule.get("module_digest_format") != module["module_digest_format"]
+        or rule.get("normative_program_language") != module["program_language"]):
+        raise ValueError("ROOT_MODULE_OWNER_BINDING_MISMATCH")
+    return deepcopy(module)
+
+
+def project_source(registry: dict, source: dict, read_record: Callable[[str], dict], *, module: dict) -> dict:
+    """Interpret the registered neutral program; no language-specific Family rules."""
+    env = {"registry": registry, "source": source, "parameters": module["parameters"]}
+    records: dict[str, dict] = {}
+
+    def expression(node: dict):
+        operator = node["op"]
+        if operator == "literal":
+            return deepcopy(node["value"])
+        if operator == "ref":
+            value = env
+            for token in node["path"][1:].split("/"):
+                value = value.get(token) if isinstance(value, dict) else None
+            return value
+        args = [expression(a) for a in node["args"]]
+        if operator == "eq": return record_digest(args[0]) == record_digest(args[1])
+        if operator == "all": return all(a is True for a in args)
+        if operator == "not": return args[0] is not True
+        if operator == "contains": return args[1] in args[0]
+        if operator == "get": return args[0].get(args[1]) if isinstance(args[0], dict) else None
+        if operator == "concat": return "".join(args)
+        if operator == "starts_with": return isinstance(args[0], str) and args[0].startswith(args[1])
+        if operator == "pluck": return [v.get(args[1]) for v in (args[0] or [])]
+        if operator == "has_key": return isinstance(args[0], dict) and args[1] in args[0]
+        if operator == "pointer_first": return args[0][1:].split("/")[0].replace("~1", "/").replace("~0", "~")
+        if operator == "pointer_nonoverlap":
+            pointer, seen = args
+            return isinstance(pointer, str) and pointer.startswith("/") and not any(pointer == p or pointer.startswith(p + "/") or p.startswith(pointer + "/") for p in seen)
+        if operator == "read_record":
+            if args[0] not in records: records[args[0]] = read_record(args[0])
+            return records[args[0]]
+        if operator == "record_digest": return record_digest(args[0])
+        raise ValueError("ROOT_MODULE_UNKNOWN_OPERATOR")
+
+    def execute(steps: list):
+        for step in steps:
+            operator = step["op"]
+            if operator == "let": env[step["name"]] = deepcopy(expression(step["value"]))
+            elif operator == "assert":
+                if not expression(step["predicate"]): raise ValueError(step["error"])
+            elif operator == "append": env[step["name"]].append(expression(step["value"]))
+            elif operator == "foreach":
+                for item in expression(step["items"]):
+                    env[step["name"]] = item
+                    execute(step["body"])
+            elif operator == "set_pointer":
+                tokens = [s.replace("~1", "/").replace("~0", "~") for s in expression(step["pointer"])[1:].split("/")]
+                target = env[step["name"]]
+                for token in tokens[:-1]: target = target.setdefault(token, {})
+                target[tokens[-1]] = deepcopy(expression(step["value"]))
+            elif operator == "return": return deepcopy(expression(step["value"]))
+            else: raise ValueError("ROOT_MODULE_UNKNOWN_INSTRUCTION")
+        return None
+
+    try:
+        result = execute(module["program"])
+    except (TypeError, KeyError, IndexError, AttributeError) as exc:
+        raise ValueError("ROOT_MODULE_PROGRAM_INVALID") from exc
+    if not isinstance(result, dict): raise ValueError("ROOT_MODULE_RESULT_INVALID")
+    return result
+
+def read_policy(policy_root: Path, relative: str, policy_class: str, *, registry: dict | None = None, module_path: Path | None = None) -> dict:
+    registry = migration_registry(policy_root, policy_class, copy_result=False) if registry is None else registry
+    if registry and registry.get("policy_class") != policy_class:
+        raise ValueError("ROOT_MIGRATION_CLASS_OR_VERSION_MISMATCH")
+    source = source_route(registry, path=relative)
+
+    def raw(path: str) -> dict:
+        return _parse_yaml(safe_policy_path(policy_root, path).read_bytes())
+
+    return project_source(registry, source, raw, module=projection_module(policy_root, policy_class, module_path=module_path)) if source else deepcopy(raw(relative))
+
+
+def validate_migration(policy_root: Path, policy_class: str, *, registry_path: Path | None = None, schema_path: Path | None = None) -> tuple[str, ...]:
+    """Verify admission, immutable sources, complete unit coverage and class isolation."""
+    from jsonschema import Draft202012Validator
+
+    registry = migration_registry(policy_root, policy_class, registry_path=registry_path)
+    if not registry:
+        return ()
+    module_path = registry_path.parent / "root-family-projection.module.json" if registry_path is not None else None
+    module = projection_module(policy_root, policy_class, module_path=module_path)
+    schema = json.loads((schema_path if schema_path is not None else policy_root / "schemas/root-family-migration.schema.json").read_text(encoding="utf-8"))
+    Draft202012Validator(schema).validate(registry)
+    index = load_yaml_mapping(policy_root / "index.yaml")
+    entries = {e["id"]: e for e in index["policies"]}
+    if len(entries) != len(index["policies"]):
+        raise ValueError("ROOT_MIGRATION_DUPLICATE_INDEX_ID")
+    used: set[tuple[str, str]] = set()
+    validated = []
+
+    def raw(relative: str) -> dict:
+        return _parse_yaml(safe_policy_path(policy_root, relative).read_bytes())
+
+    developer = policy_class == "PTSIP_DEVELOPER_POLICY"
+    field = "rules" if developer else "authority_semantics"
+    for source in registry["sources"]:
+        if safe_policy_path(policy_root, source["original_path"]).exists():
+            raise ValueError("ROOT_MIGRATION_SOURCE_REINTRODUCED")
+        entry = entries[source["source_policy_id"]]
+        indexed = entry["path"].removeprefix("developer/policy/") if developer else entry["path"]
+        if indexed != source["archive_path"] or entry.get("authority_role") != "MIGRATION_SOURCE" or entry["status"] != source["source_status"]:
+            raise ValueError("ROOT_MIGRATION_SOURCE_CATALOG_MISMATCH")
+        original = safe_policy_path(policy_root, source["archive_path"])
+        if source_digest(original.read_bytes()) != source["source_sha256"]:
+            raise ValueError("ROOT_MIGRATION_ARCHIVED_SOURCE_CHANGED")
+        if record_digest(raw(source["archive_path"])) != source["record_sha256"]:
+            raise ValueError("ROOT_MIGRATION_SOURCE_RECORD_CHANGED")
+        project_source(registry, source, raw, module=module)
+        for unit in source["units"]:
+            key = (unit["policy_id"], unit["section"])
+            if key in used:
+                raise ValueError("ROOT_MIGRATION_UNIT_MULTIPLE_OWNERS")
+            used.add(key)
+        validated.append(source["source_policy_id"])
+    families = set()
+    declared: set[tuple[str, str]] = set()
+    materialized_ids = [m["policy_id"] for m in registry["materializations"]]
+    if len(set(materialized_ids)) != len(materialized_ids):
+        raise ValueError("ROOT_MIGRATION_DUPLICATE_MATERIALIZATION")
+    source_ids = {s["source_policy_id"] for s in registry["sources"]}
+    selected_ids = {pid for pid, entry in entries.items() if entry.get("authority_role") in {"MIGRATION_SOURCE", "CANONICAL_AUTHORITY"}}
+    if selected_ids != source_ids | set(materialized_ids):
+        raise ValueError("ROOT_MIGRATION_CATALOG_COVERAGE_MISMATCH")
+    for materialization in registry["materializations"]:
+        pid = materialization["policy_id"]
+        entry = entries[pid]
+        indexed = entry["path"].removeprefix("developer/policy/") if developer else entry["path"]
+        record = raw(materialization["path"])
+        if indexed != materialization["path"] or entry.get("authority_role") != "CANONICAL_AUTHORITY" or entry["status"] != materialization["source_status"]:
+            raise ValueError("ROOT_MIGRATION_OWNER_CATALOG_MISMATCH")
+        if record["policy_class"] != policy_class or record["responsibility_family"] != materialization["family"] or record["policy"]["id"] != pid or record["policy"]["status"] != entry["status"]:
+            raise ValueError("ROOT_MIGRATION_MATERIALIZATION_IDENTITY_MISMATCH")
+        keys = {key for key in record[field] if key.startswith("unit_")}
+        if len(keys) != materialization["unit_count"]:
+            raise ValueError("ROOT_MIGRATION_UNIT_COUNT_MISMATCH")
+        if materialization["definition_only"] and (keys or entry["status"] != "DRAFT"):
+            raise ValueError("ROOT_MIGRATION_DEFINITION_ONLY_PROMOTED")
+        declared.update((pid, key) for key in keys)
+        families.add(materialization["family"])
+    if declared != used:
+        raise ValueError("ROOT_MIGRATION_UNIT_COVERAGE_MISMATCH")
+    expected_families = set(schema["properties"]["materializations"]["items"]["properties"]["family"]["enum"])
+    if families != expected_families:
+        raise ValueError("ROOT_MIGRATION_FAMILY_COVERAGE_MISMATCH")
+    return tuple(validated)

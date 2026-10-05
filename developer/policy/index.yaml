@@ -1,211 +1,389 @@
 schema_version: developer-policy-catalog/v1
 policies:
 - id: MPD-0001
-  path: developer/policy/MPD-0001.yaml
+  path: developer/policy/legacy/MPD-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0010
-  path: developer/policy/MPD-0010.yaml
+  path: developer/policy/legacy/MPD-0010.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0011
-  path: developer/policy/MPD-0011.yaml
+  path: developer/policy/legacy/MPD-0011.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0012
-  path: developer/policy/MPD-0012.yaml
+  path: developer/policy/legacy/MPD-0012.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0013
-  path: developer/policy/MPD-0013.yaml
+  path: developer/policy/legacy/MPD-0013.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0014
-  path: developer/policy/MPD-0014.yaml
+  path: developer/policy/legacy/MPD-0014.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0015
-  path: developer/policy/MPD-0015.yaml
+  path: developer/policy/legacy/MPD-0015.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0016
-  path: developer/policy/MPD-0016.yaml
+  path: developer/policy/legacy/MPD-0016.yaml
   status: APPROVED
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0017
-  path: developer/policy/MPD-0017.yaml
+  path: developer/policy/legacy/MPD-0017.yaml
   status: DRAFT
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-0018
-  path: developer/policy/MPD-0018.yaml
+  path: developer/policy/legacy/MPD-0018.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
+- id: MPD-ARCH-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/ARCH/MPD-ARCH-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-ASSURE-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/ASSURE/MPD-ASSURE-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-ASSURE-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/ASSURE/MPD-ASSURE-0002.yaml
+  status: APPROVED
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-ASSURE-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/ASSURE/MPD-ASSURE-0003.yaml
+  status: ACTIVE
 - id: MPD-BOUND-0001
   path: developer/policy/MPD-BOUND-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_BOUND_POLICY
+- id: MPD-CHANGE-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CHANGE/MPD-CHANGE-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-CHANGE-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CHANGE/MPD-CHANGE-0002.yaml
+  status: APPROVED
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-CHANGE-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CHANGE/MPD-CHANGE-0003.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-CNTR-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CNTR/MPD-CNTR-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-CNTR-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CNTR/MPD-CNTR-0002.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-CNTR-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CNTR/MPD-CNTR-0003.yaml
+  status: ACTIVE
+- id: MPD-CTRL-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/CTRL/MPD-CTRL-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-GOV-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/GOV/MPD-GOV-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-GOV-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/GOV/MPD-GOV-0002.yaml
+  status: APPROVED
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-INFO-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/INFO/MPD-INFO-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-INFO-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/INFO/MPD-INFO-0002.yaml
+  status: APPROVED
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-INFO-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/INFO/MPD-INFO-0003.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-INTENT-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/INTENT/MPD-INTENT-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
 - id: MPD-MIGR-0001
-  path: developer/policy/MIGR/MPD-MIGR-0001.yaml
+  path: developer/policy/legacy/MPD-MIGR-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-MIGR-0002
-  path: developer/policy/MIGR/MPD-MIGR-0002.yaml
+  path: developer/policy/legacy/MPD-MIGR-0002.yaml
   status: DRAFT
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-MIGR-0003
-  path: developer/policy/MIGR/MPD-MIGR-0003.yaml
+  path: developer/policy/legacy/MPD-MIGR-0003.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-MIGR-0004
-  path: developer/policy/MIGR/MPD-MIGR-0004.yaml
+  path: developer/policy/legacy/MPD-MIGR-0004.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-MIGR-0005
-  path: developer/policy/MIGR/MPD-MIGR-0005.yaml
+  path: developer/policy/legacy/MPD-MIGR-0005.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
+- id: MPD-NORM-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/NORM/MPD-NORM-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-OPS-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/OPS/MPD-OPS-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
 - id: MPD-PLAN-0001
-  path: developer/policy/PLAN/MPD-PLAN-0001.yaml
+  path: developer/policy/legacy/MPD-PLAN-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-PLAN-0002
-  path: developer/policy/PLAN/MPD-PLAN-0002.yaml
+  path: developer/policy/legacy/MPD-PLAN-0002.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-PLAN-0003
-  path: developer/policy/PLAN/MPD-PLAN-0003.yaml
+  path: developer/policy/legacy/MPD-PLAN-0003.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-PLAN-0004
-  path: developer/policy/PLAN/MPD-PLAN-0004.yaml
+  path: developer/policy/legacy/MPD-PLAN-0004.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
+- id: MPD-REAL-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/REAL/MPD-REAL-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-REAL-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/REAL/MPD-REAL-0002.yaml
+  status: APPROVED
+  authority_role: CANONICAL_AUTHORITY
+- id: MPD-REAL-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/REAL/MPD-REAL-0003.yaml
+  status: ACTIVE
+- id: MPD-REAL-0004
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/REAL/MPD-REAL-0004.yaml
+  status: ACTIVE
+- id: MPD-RECORD-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/RECORD/MPD-RECORD-0001.yaml
+  status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
 - id: MPD-RELS-0001
-  path: developer/policy/RELS/MPD-RELS-0001.yaml
+  path: developer/policy/legacy/MPD-RELS-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-RELS-0002
-  path: developer/policy/RELS/MPD-RELS-0002.yaml
+  path: developer/policy/legacy/MPD-RELS-0002.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
+- id: MPD-RISK-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/RISK/MPD-RISK-0001.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: MPD-SPEC-0001
-  path: developer/policy/SPEC/MPD-SPEC-0001.yaml
+  path: developer/policy/legacy/MPD-SPEC-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0002
-  path: developer/policy/SPEC/MPD-SPEC-0002.yaml
+  path: developer/policy/legacy/MPD-SPEC-0002.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0003
-  path: developer/policy/SPEC/MPD-SPEC-0003.yaml
+  path: developer/policy/legacy/MPD-SPEC-0003.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0004
-  path: developer/policy/SPEC/MPD-SPEC-0004.yaml
+  path: developer/policy/legacy/MPD-SPEC-0004.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0005
-  path: developer/policy/SPEC/MPD-SPEC-0005.yaml
+  path: developer/policy/legacy/MPD-SPEC-0005.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0006
-  path: developer/policy/SPEC/MPD-SPEC-0006.yaml
+  path: developer/policy/legacy/MPD-SPEC-0006.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0007
-  path: developer/policy/SPEC/MPD-SPEC-0007.yaml
+  path: developer/policy/legacy/MPD-SPEC-0007.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0008
-  path: developer/policy/SPEC/MPD-SPEC-0008.yaml
+  path: developer/policy/legacy/MPD-SPEC-0008.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0009
-  path: developer/policy/SPEC/MPD-SPEC-0009.yaml
+  path: developer/policy/legacy/MPD-SPEC-0009.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0010
-  path: developer/policy/SPEC/MPD-SPEC-0010.yaml
+  path: developer/policy/legacy/MPD-SPEC-0010.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0011
-  path: developer/policy/SPEC/MPD-SPEC-0011.yaml
+  path: developer/policy/legacy/MPD-SPEC-0011.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0020
-  path: developer/policy/SPEC/MPD-SPEC-0020.yaml
+  path: developer/policy/legacy/MPD-SPEC-0020.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0021
-  path: developer/policy/SPEC/MPD-SPEC-0021.yaml
+  path: developer/policy/legacy/MPD-SPEC-0021.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0022
-  path: developer/policy/SPEC/MPD-SPEC-0022.yaml
+  path: developer/policy/legacy/MPD-SPEC-0022.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0023
-  path: developer/policy/SPEC/MPD-SPEC-0023.yaml
+  path: developer/policy/legacy/MPD-SPEC-0023.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0024
-  path: developer/policy/SPEC/MPD-SPEC-0024.yaml
+  path: developer/policy/legacy/MPD-SPEC-0024.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0025
-  path: developer/policy/SPEC/MPD-SPEC-0025.yaml
+  path: developer/policy/legacy/MPD-SPEC-0025.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0026
-  path: developer/policy/SPEC/MPD-SPEC-0026.yaml
+  path: developer/policy/legacy/MPD-SPEC-0026.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-SPEC-0027
-  path: developer/policy/SPEC/MPD-SPEC-0027.yaml
+  path: developer/policy/legacy/MPD-SPEC-0027.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
+- id: MPD-SUPPLY-0001
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/SUPPLY/MPD-SUPPLY-0001.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: MPD-VERI-0001
-  path: developer/policy/VERI/MPD-VERI-0001.yaml
+  path: developer/policy/legacy/MPD-VERI-0001.yaml
   status: APPROVED
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-VERI-0002
-  path: developer/policy/VERI/MPD-VERI-0002.yaml
+  path: developer/policy/legacy/MPD-VERI-0002.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-VERI-0003
-  path: developer/policy/VERI/MPD-VERI-0003.yaml
+  path: developer/policy/legacy/MPD-VERI-0003.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-VERI-0004
-  path: developer/policy/VERI/MPD-VERI-0004.yaml
+  path: developer/policy/legacy/MPD-VERI-0004.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-VERI-0005
-  path: developer/policy/VERI/MPD-VERI-0005.yaml
+  path: developer/policy/legacy/MPD-VERI-0005.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-VERI-0006
-  path: developer/policy/VERI/MPD-VERI-0006.yaml
+  path: developer/policy/legacy/MPD-VERI-0006.yaml
   status: DRAFT
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-VERI-0007
   policy_class: VPMS_DEVELOPER_POLICY
   path: developer/policy/VERI/MPD-VERI-0007.yaml
   status: ACTIVE
 - id: MPD-WORK-0001
-  path: developer/policy/WORK/MPD-WORK-0001.yaml
+  path: developer/policy/legacy/MPD-WORK-0001.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-WORK-0002
-  path: developer/policy/WORK/MPD-WORK-0002.yaml
+  path: developer/policy/legacy/MPD-WORK-0002.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-WORK-0003
-  path: developer/policy/WORK/MPD-WORK-0003.yaml
+  path: developer/policy/legacy/MPD-WORK-0003.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 - id: MPD-WORK-0004
-  path: developer/policy/WORK/MPD-WORK-0004.yaml
+  path: developer/policy/legacy/MPD-WORK-0004.yaml
   status: ACTIVE
   policy_class: PTSIP_DEVELOPER_POLICY
+  authority_role: MIGRATION_SOURCE
 artifact_class: DEVELOPER_POLICY_CATALOG
+migration_registry_ref: registries/root-family-migration.json
+projection_module_ref: registries/root-family-projection.module.json

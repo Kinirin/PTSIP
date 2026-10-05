@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 from typing import Mapping
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, ValidationError
 from referencing import Registry, Resource
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
@@ -71,7 +71,12 @@ _SUPPORT_ROOT_FAMILY_POLICY_ID_RE = re.compile(
 _POLICY_VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 
 
-def _canonical_mpd_path(policy_id: str) -> str:
+def _canonical_mpd_path(policy_id: str, base: Path | None = None) -> str:
+    if base is not None:
+        from ptsip.governance.authority import registered_source_path
+        expected = _canonical_mpd_path(policy_id)
+        relative = registered_source_path(base / "developer/policy", "PTSIP_DEVELOPER_POLICY", policy_id, expected.removeprefix("developer/policy/"))
+        return f"developer/policy/{relative}"
     match = _FAMILY_POLICY_ID_RE.fullmatch(policy_id)
     if match is not None:
         return f"developer/policy/{match.group(1)}/{policy_id}.yaml"
@@ -394,7 +399,7 @@ def _validate_current_registry_planes(
         if not isinstance(policy_id, str) or not isinstance(definition, Mapping):
             errors.append(f"support authority schema registry entry is unresolved: {entry!r}")
             continue
-        policy = load_yaml(f"{SUPPORT_POLICY_ROOT}/{policy_id}.yaml", root=base)
+        policy = current_records[policy_id]
         semantics = policy.get("authority_semantics")
         for error in Draft202012Validator(definition).iter_errors(semantics):
             errors.append(f"{policy_id}: {error.message}")
@@ -813,7 +818,7 @@ def load_neutral_policy_index(base: Path) -> dict[str, object]:
         raise ValueError("INVALID_NEUTRAL_POLICY_INDEX: IDs must be globally unique and ordered")
     for entry in index["policies"]:
         policy_id = entry["id"]
-        if entry["path"] != _canonical_mpd_path(policy_id):
+        if entry["path"] != _canonical_mpd_path(policy_id, base):
             raise ValueError(f"INVALID_NEUTRAL_POLICY_INDEX: {policy_id} path mismatch")
         is_boundary = re.fullmatch(record["$defs"]["boundary_policy_id"]["pattern"], policy_id) is not None
         if is_boundary != (entry["policy_class"] == record["$defs"]["boundary_policy_class"]["const"]):
@@ -947,6 +952,8 @@ def validate_neutral_catalog_snapshot(
             f"developer/policy/{family.group(1)}/{policy_id}.yaml"
             if family else f"developer/policy/{policy_id}.yaml"
         )
+        if entry.get("authority_role") == "MIGRATION_SOURCE":
+            expected_path = _canonical_mpd_path(policy_id, base)
         if entry["path"] != expected_path or source_paths.get(policy_id) != entry["path"]:
             errors.append(f"{policy_id}: neutral catalog canonical path mismatch")
         boundary = re.fullmatch(definitions["boundary_policy_id"]["pattern"], policy_id)
@@ -1043,15 +1050,15 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         for entry in mpd_entries
         if isinstance(entry, Mapping)
     )
-    expected_mpd_paths = tuple(_canonical_mpd_path(policy_id) for policy_id in mpd_ids)
+    expected_mpd_paths = tuple(_canonical_mpd_path(policy_id, base) for policy_id in mpd_ids)
     if indexed_mpd_paths != expected_mpd_paths:
         errors.append(
             "developer policy index paths must match canonical family materialization"
         )
-    discovered_mpd_paths = tuple(
+    discovered_mpd_paths = tuple(sorted(
         path.relative_to(base).as_posix()
-        for path in sorted((base / "developer" / "policy").rglob("MPD-*.yaml"))
-    )
+        for path in (base / "developer" / "policy").rglob("MPD-*.yaml")
+    ))
     if tuple(sorted(indexed_mpd_paths)) != discovered_mpd_paths:
         errors.append(
             "developer policy index must cover the current MPD corpus exactly"
@@ -1213,6 +1220,12 @@ def validate_developer_policy(root: str | Path | None = None) -> tuple[str, ...]
         )
     )
 
+    from ptsip.governance.authority import validate_migration
+    for policy_root, policy_class in (("developer/policy", "PTSIP_DEVELOPER_POLICY"), ("src/policy", "PTSIP_SUPPORT_FEATURE")):
+        try:
+            validate_migration(base / policy_root, policy_class)
+        except (OSError, ValueError, KeyError, ValidationError) as exc:
+            errors.append(f"{policy_root}: Root Family migration validation failed: {exc}")
     errors.extend(validate_neutral_catalog_contract_registration(base))
     return tuple(errors)
 

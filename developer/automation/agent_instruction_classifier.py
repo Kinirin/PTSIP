@@ -87,7 +87,8 @@ def repository_root(start: Path) -> Path:
 
 
 def load_trial_policy(root: Path) -> Mapping[str, object]:
-    document = _mapping(yaml.safe_load((root / POLICY_PATH).read_text(encoding="utf-8")), str(POLICY_PATH))
+    from ptsip.governance.authority import read_policy
+    document = _mapping(read_policy(root / "developer/policy", "MPD-0010.yaml", "PTSIP_DEVELOPER_POLICY"), str(POLICY_PATH))
     rules = _mapping(document.get("rules"), "MPD-0010.rules")
     trial = _mapping(rules.get(POLICY_SECTION), f"MPD-0010.rules.{POLICY_SECTION}")
     if trial.get("level_1_vocabulary") != list(LEVEL1):

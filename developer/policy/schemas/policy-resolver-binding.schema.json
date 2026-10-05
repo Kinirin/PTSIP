@@ -46,7 +46,7 @@
       "properties": {
         "policy_id": {
           "type": "string",
-          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+          "pattern": "^MPD-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
         },
         "sections": {
           "type": "array",

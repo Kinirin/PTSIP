@@ -389,6 +389,9 @@ def validate_responsibility_analysis(
 
     analysis = payload.get("analysis")
     if isinstance(analysis, Mapping) and enforce_current_lookup:
+        # One validation observes one corpus; repeated units share this exact lookup.
+        # The cache is invocation-local so a later registration always re-reads state.
+        current_family_ids: dict[tuple[str, str], tuple[str, ...]] = {}
         responsibilities = analysis.get("responsibilities", [])
         if isinstance(responsibilities, list):
             for raw in responsibilities:
@@ -401,7 +404,10 @@ def validate_responsibility_analysis(
                 if family not in FAMILIES or not isinstance(policy_class, str) or not isinstance(lookup, Mapping):
                     continue
 
-                expected = list(_active_family_ids(base, policy_class, str(family)))
+                key = (policy_class, str(family))
+                if key not in current_family_ids:
+                    current_family_ids[key] = _active_family_ids(base, *key)
+                expected = list(current_family_ids[key])
                 searched = lookup.get("searched_policy_ids")
                 if searched != expected:
                     errors.append(

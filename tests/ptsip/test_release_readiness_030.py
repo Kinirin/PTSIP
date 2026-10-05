@@ -224,7 +224,10 @@ def test_distribution_projection_verifier_covers_relocated_policies_and_promotio
         if path.suffix in {".yaml", ".json"}
     }
     assert {source for source, _ in support} == expected
-    assert len(support) == 38
+    index = yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))
+    projected_policies = {target for _, target in support if target.startswith("ptsip/support/policy/") and target.endswith(".yaml") and not target.endswith("/index.yaml")}
+    assert projected_policies == {f"ptsip/support/policy/{entry['path']}" for entry in index["policies"]}
+    assert "ptsip/support/registries/root-family-migration.json" in {target for _, target in support}
     assert len({target for _, target in support}) == len(support)
     assert all(target.startswith("ptsip/support/") for _, target in support)
     assert {target for _, target in promotion} == {
@@ -275,11 +278,8 @@ def test_release_contract_requires_bound_machine_readable_snapshot() -> None:
     assert "PTSIP-RMAP-012" in rules
     assert "PTSIP-SPC-001" in rules
 
-    transition = yaml.safe_load(
-        (ROOT / "src" / "policy" / "SFP-0010.yaml").read_text(
-            encoding="utf-8"
-        )
-    )
+    from ptsip.governance.authority import read_policy
+    transition = read_policy(ROOT / "src/policy", "SFP-0010.yaml", "PTSIP_SUPPORT_FEATURE")
     assert transition["authority_semantics"]["version_and_revision_required_transition_inputs"] is True
     assert transition["authority_semantics"]["stale_or_conflicting_transition"] == "FAIL_CLOSED"
 

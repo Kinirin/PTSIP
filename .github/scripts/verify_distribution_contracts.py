@@ -244,9 +244,7 @@ def main() -> int:
     )
     support_required = (
         "ptsip/support/policy/index.yaml",
-        "ptsip/support/policy/SFP-0001.yaml",
-        "ptsip/support/policy/SFP-0021.yaml",
-        "ptsip/support/policy/SFP-0022.yaml",
+        *(f"ptsip/support/policy/{entry['path']}" for entry in yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))["policies"]),
         "ptsip/support/schemas/ptsip-support-feature-policy.schema.json",
         "ptsip/support/registries/ptsip-support-authority-schema-registry.yaml",
     )
@@ -288,9 +286,7 @@ def main() -> int:
             for source, _ in agent_contract_pairs
         ),
         "src/policy/index.yaml",
-        "src/policy/SFP-0001.yaml",
-        "src/policy/SFP-0021.yaml",
-        "src/policy/SFP-0022.yaml",
+        *(f"src/policy/{entry['path']}" for entry in yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))["policies"]),
         "src/policy/schemas/ptsip-support-feature-policy.schema.json",
         "src/policy/registries/ptsip-support-authority-schema-registry.yaml",
     )

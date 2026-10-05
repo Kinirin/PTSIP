@@ -1,0 +1,162 @@
+{
+  "schema_version": "ptsip-root-family-transition-verification/v1",
+  "contract_id": "urn:ptsip:developer:root-family-transition-verification:v1",
+  "authority_policy_id": "MPD-ASSURE-0003",
+  "implementation_policy_id": "MPD-REAL-0003",
+  "normative_authority": "LANGUAGE_NEUTRAL_MACHINE_CONTRACT",
+  "implementation_may_add_normative_semantics": false,
+  "root_family_vocabulary": [
+    "NORM",
+    "GOV",
+    "INTENT",
+    "ARCH",
+    "INFO",
+    "CNTR",
+    "RISK",
+    "SUPPLY",
+    "REAL",
+    "ASSURE",
+    "CTRL",
+    "CHANGE",
+    "OPS",
+    "RECORD"
+  ],
+  "source_text_digest": "SHA256_UTF8_LF",
+  "source_record_digest": "SHA256_UTF8_JSON_SORTED_KEYS_COMPACT_UNESCAPED",
+  "planes": [
+    {
+      "path": "developer/policy",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "prefix": "MPD",
+      "value_field": "rules",
+      "subject_prefix": "DEV_",
+      "source_count": 50
+    },
+    {
+      "path": "src/policy",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "prefix": "SFP",
+      "value_field": "authority_semantics",
+      "subject_prefix": "SUP_",
+      "source_count": 24
+    }
+  ],
+  "invariants": [
+    "EXPLICIT_INDEX_ADMISSION",
+    "EXACT_CLASS_FAMILY_ID_PATH",
+    "ARCHIVED_SOURCE_BYTES_AND_RECORD_DIGEST",
+    "COMPLETE_UNIQUE_UNIT_COVERAGE",
+    "SOURCE_POINTER_VALUE_PRESERVATION",
+    "SOURCE_LIFECYCLE_STATE_PRESERVATION",
+    "DEFINITION_ONLY_REMAINS_DRAFT",
+    "FOURTEEN_FAMILIES_PER_PLANE",
+    "DEVELOPER_RESOLVER_SELECTS_ROOT_AUTHORITY",
+    "SOURCE_INTERFACE_DECLARES_CANONICAL_OWNERS",
+    "SUPPORT_HAS_OWN_SUBJECTS_AND_CONTRACT_ROLES",
+    "PYTHON_IMPLEMENTATION_INTERPRETS_CONTRACT_ONLY",
+    "GO_EXECUTION_REGISTERED_WITH_EXISTING_REGRESSION"
+  ],
+  "fail_closed_cases": [
+    {
+      "id": "registry_missing",
+      "expected_error": "ROOT_MIGRATION_ADMITTED_REGISTRY_MISSING"
+    },
+    {
+      "id": "owner_missing",
+      "expected_error": "FileNotFoundError"
+    },
+    {
+      "id": "foreign_class",
+      "expected_error": "ROOT_MIGRATION_OWNER_IDENTITY_OR_STATE_MISMATCH"
+    },
+    {
+      "id": "source_state_changed",
+      "expected_error": "ROOT_MIGRATION_OWNER_IDENTITY_OR_STATE_MISMATCH"
+    },
+    {
+      "id": "unit_changed",
+      "expected_error": "ROOT_MIGRATION_FROZEN_INTERFACE_CHANGED"
+    },
+    {
+      "id": "duplicate_pointer",
+      "expected_error": "ROOT_MIGRATION_OVERLAPPING_POINTER"
+    },
+    {
+      "id": "path_escape",
+      "expected_error": "ROOT_MIGRATION_PATH_ESCAPE"
+    },
+    {
+      "id": "archive_changed",
+      "expected_error": "ROOT_MIGRATION_ARCHIVED_SOURCE_CHANGED"
+    }
+  ],
+  "go_execution_fail_closed_cases": [
+    {
+      "module_path": "../outside",
+      "expected_error": "must stay inside the repository"
+    },
+    {
+      "module_path": "src/ptsip",
+      "expected_error": "outside component_ref include authority"
+    },
+    {
+      "module_path": "developer/tests",
+      "expected_error": "requires a repository Go module"
+    }
+  ],
+  "execution": {
+    "module_path": "developer/tests/rootfamily",
+    "test_mode": "repository-architecture",
+    "language": "GO",
+    "command": [
+      "go",
+      "-C",
+      "developer/tests/rootfamily",
+      "test",
+      "-count=1",
+      "-v",
+      "./..."
+    ]
+  },
+  "result": {
+    "passing_focus_is_full_regression_pass": false,
+    "required_evidence": [
+      "source_head",
+      "working_tree_diff_digest",
+      "return_code",
+      "passed",
+      "failed",
+      "log_path"
+    ]
+  },
+  "neutral_module_verification": {
+    "program_language": "PTSIP_JSON_PROGRAM_V1",
+    "module_ref": "registries/root-family-projection.module.json",
+    "creation_policy_ref": "MPD-REAL-0004",
+    "acceptance_cases": [
+      {
+        "id": "missing_program",
+        "accepted": false
+      },
+      {
+        "id": "foreign_program",
+        "accepted": false
+      },
+      {
+        "id": "program_drift",
+        "accepted": false
+      },
+      {
+        "id": "owner_missing",
+        "accepted": false
+      },
+      {
+        "id": "checkout_crlf",
+        "accepted": true
+      }
+    ],
+    "semantic_authority": "EACH_PLANE_OWN_REGISTERED_MODULE_AND_SCHEMA",
+    "independent_interpreter": "GO",
+    "existing_adapter_interpreter": "PYTHON"
+  }
+}

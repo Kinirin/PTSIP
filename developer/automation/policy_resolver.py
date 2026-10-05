@@ -374,7 +374,10 @@ def _repository_file(
     except ValueError as exc:
         raise PolicyResolverError(f"{label} escapes repository root") from exc
     if not candidate.is_file():
-        raise PolicyResolverError(f"{label} does not exist: {path_text}")
+        from developer.automation.policy_loader import registered_policy_file
+        candidate = registered_policy_file(candidate, root=root)
+        if not candidate.is_file():
+            raise PolicyResolverError(f"{label} does not exist: {path_text}")
     return path_text, candidate
 
 
@@ -894,13 +897,21 @@ def get_policy(
             )
         value = rules[section]
         fragment = f"rules.{section}"
-    return {
+    result = {
         "schema_version": "ptsip-policy-get/v1",
         "policy_id": policy_id,
         "canonical_path": entry["path"],
         "fragment": fragment,
         "record": value,
     }
+    from ptsip.governance.authority import migration_registry, source_route
+    source = source_route(migration_registry(root / "developer/policy", "PTSIP_DEVELOPER_POLICY"), policy_id=policy_id)
+    if source is not None:
+        prefix = None if section is None else f"/rules/{section}"
+        result["projection_authority"] = False
+        result["source_role"] = "REGISTERED_MIGRATION_INTERFACE"
+        result["canonical_owners"] = [{"policy_id": unit["policy_id"], "canonical_path": f"developer/policy/{unit['policy_path']}", "section": unit["section"]} for unit in source["units"] if prefix is None or unit["source_pointer"] == prefix or unit["source_pointer"].startswith(prefix + "/")]
+    return result
 
 
 def explain_policy(

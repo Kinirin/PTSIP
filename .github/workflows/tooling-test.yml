@@ -501,6 +501,21 @@ jobs:
             throw "Failed to install the repository for verification."
           }
 
+      - name: Set up Go for registered verification modules
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/rootfamily/go.mod
+          cache-dependency-path: developer/tests/rootfamily/go.sum
+
+      - name: Verify Go contracts during full verification
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
+        shell: pwsh
+        run: |
+          go -C developer/tests/rootfamily test -count=1 -v ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Root Family Go verification failed."
+          }
+
       - name: Resolve and run deterministic change verification
         if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a3-prerelease' }}
         shell: pwsh
@@ -547,6 +562,13 @@ jobs:
           else {
             Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
             foreach ($mode in $plan) {
+              foreach ($module in @($mode.go)) {
+                if ([string]::IsNullOrWhiteSpace($module)) { continue }
+                & go -C $module test -count=1 -v ./...
+                if ($LASTEXITCODE -ne 0) {
+                  throw "Test Mode '$($mode.id)' Go verification failed."
+                }
+              }
               $targets = @($mode.pytest)
               if ($targets.Count -eq 0) {
                 throw "Test Mode '$($mode.id)' contains no pytest targets."

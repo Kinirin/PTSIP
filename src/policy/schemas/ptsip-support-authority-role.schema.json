@@ -10,7 +10,10 @@
   ],
   "properties": {
     "projection_role": {
-      "const": "PROJECT_ARCHITECTURE_AUTHORITY"
+      "enum": [
+        "PROJECT_ARCHITECTURE_AUTHORITY",
+        "ROOT_FAMILY_CONTRACT_AUTHORITY"
+      ]
     },
     "resolution_state": {
       "enum": [

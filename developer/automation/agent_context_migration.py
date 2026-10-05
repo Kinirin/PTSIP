@@ -77,13 +77,11 @@ class AgentContextMigrationError(RuntimeError):
 
 
 def _yaml(base: Path, relative: str) -> dict[str, object]:
-    path = base / relative
-    if not path.is_file():
-        raise AgentContextMigrationError(f"missing required file: {relative}")
-    value = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
-        raise AgentContextMigrationError(f"{relative} must contain a mapping")
-    return value
+    from developer.automation.policy_loader import load_yaml
+    try:
+        return load_yaml(base / relative, root=base)
+    except (OSError, ValueError) as exc:
+        raise AgentContextMigrationError(f"invalid required file: {relative}: {exc}") from exc
 
 
 def _indexed_rule_ids(base: Path) -> set[str]:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from developer.tests.policy_migration_helpers import source_file
 from pathlib import Path
 
 import json
@@ -17,7 +18,7 @@ def test_agent_instruction_management_surface_is_repository_root_agent() -> None
 
 def test_agent_instruction_policy_separates_tooling_from_management_surface() -> None:
     policy = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+        (source_file(ROOT / "developer" / "policy" / "MPD-0010.yaml")).read_text(encoding="utf-8")
     )
     surface = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
         "repository_management_surface"
@@ -48,7 +49,7 @@ def test_policy_binding_uses_root_agent_surface_only() -> None:
 
 def test_progressive_policy_allows_clean_level1_bootstrap() -> None:
     policy = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+        (source_file(ROOT / "developer" / "policy" / "MPD-0010.yaml")).read_text(encoding="utf-8")
     )
     bootstrap = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
         "level_1_bootstrap"
@@ -78,7 +79,7 @@ def test_progressive_policy_allows_clean_level1_bootstrap() -> None:
 
 def test_agent_integration_policy_uses_local_cli_baseline() -> None:
     policy = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+        (source_file(ROOT / "developer" / "policy" / "MPD-0010.yaml")).read_text(encoding="utf-8")
     )
     integration = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
         "agent_integration"
@@ -98,7 +99,7 @@ def test_agent_integration_policy_uses_local_cli_baseline() -> None:
 
 def test_mcp_ready_is_blocked_until_levels_1_through_3_complete() -> None:
     policy = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+        (source_file(ROOT / "developer" / "policy" / "MPD-0010.yaml")).read_text(encoding="utf-8")
     )
     installation = policy["rules"]["agent_instruction_entry_taxonomy_trial"][
         "agent_integration"
@@ -126,7 +127,7 @@ def test_mcp_ready_is_blocked_until_levels_1_through_3_complete() -> None:
 
 def test_progressive_policy_uses_per_atom_advancement_without_global_unresolved_gate() -> None:
     policy = yaml.safe_load(
-        (ROOT / "developer" / "policy" / "MPD-0010.yaml").read_text(encoding="utf-8")
+        (source_file(ROOT / "developer" / "policy" / "MPD-0010.yaml")).read_text(encoding="utf-8")
     )
     trial = policy["rules"]["agent_instruction_entry_taxonomy_trial"]
     stage = trial["progressive_reasoning_pipeline"]["stage_contract"]

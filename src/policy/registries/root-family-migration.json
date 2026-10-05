@@ -1,0 +1,3097 @@
+{
+  "schema_version": "ptsip-root-family-migration/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "approval": {
+    "decision": "APPROVED",
+    "source_kind": "PROJECT_OWNER_DIRECT_INSTRUCTION",
+    "source_reference": "새 Root Family ID의 정책으로 책임을 분해·전환; 원본 책임의 상태 보존: ACTIVE는 승인 전이를 거쳐 ACTIVE, APPROVED·DRAFT는 해당 상태 유지",
+    "recorded_at": "2026-10-06T01:11:42+09:00"
+  },
+  "base_head": "22e736e2d1cc4e54ee85a8a653ed22a09c078b96",
+  "identity_semantic_inheritance": "FORBIDDEN",
+  "sources": [
+    {
+      "source_sha256": "0ef9329f8a76c43f600c3ac692851f6758d7e093c51b0297b88c54070fe57452",
+      "record_sha256": "52cd40472c9c4cc21af8caab62ddd900f2b4b9a971e8d51765b2d914c4b54100",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0001",
+          "title": "PTSIP Policy Identity",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0001",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0001.yaml",
+      "archive_path": "legacy/SFP-0001.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/canonical_term",
+          "family": "NORM",
+          "section": "unit_sfp_0001_ba407fddada8",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/expanded_identity",
+          "family": "NORM",
+          "section": "unit_sfp_0001_555df7fa00c4",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/primary_principle",
+          "family": "NORM",
+          "section": "unit_sfp_0001_9d24b2d72987",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/classifies_by",
+          "family": "ARCH",
+          "section": "unit_sfp_0001_941be08af86f",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/requires_product_toolchain_boundary",
+          "family": "ARCH",
+          "section": "unit_sfp_0001_d111ae743dd5",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/versioned_specification",
+          "family": "NORM",
+          "section": "unit_sfp_0001_26f16d98b1bc",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0001_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0001_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0001_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "457f70506391c8130e0c5636ababec817c38078b132e88ac27c164b6333a7bf6"
+    },
+    {
+      "source_sha256": "bf08ee93a5d71ae1b88a7febebdaf49fc7308d4db13a2f154ff7060e7e4bf62b",
+      "record_sha256": "acc5be89c049d1d0dc8674ae66c042325242bea240c2c43347a71c2c2e9514a2",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0002",
+          "title": "Consumer Repository Non-Intrusion",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0002",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0002.yaml",
+      "archive_path": "legacy/SFP-0002.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/tooling_default_location",
+          "family": "ARCH",
+          "section": "unit_sfp_0002_7ac95637e40a",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/consumer_repository_topology_owner",
+          "family": "ARCH",
+          "section": "unit_sfp_0002_b846918d843e",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ptsip_specific_directory_hierarchy_required_for_tool_operation",
+          "family": "ARCH",
+          "section": "unit_sfp_0002_9d1261697280",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/inspection_default_mutation_mode",
+          "family": "REAL",
+          "section": "unit_sfp_0002_eb63277527b8",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/tool_owned_cache_default_scope",
+          "family": "OPS",
+          "section": "unit_sfp_0002_8e3ccfbcb110",
+          "policy_id": "SFP-OPS-0001",
+          "policy_path": "OPS/SFP-OPS-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/persistent_profile_location_owned_by_project",
+          "family": "ARCH",
+          "section": "unit_sfp_0002_3714b45fa56d",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/specification_binding_required_for_automated_conformance",
+          "family": "NORM",
+          "section": "unit_sfp_0002_e45eff8c2dd7",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/specification_release_lifecycle_independent_from_reference_tool",
+          "family": "CHANGE",
+          "section": "unit_sfp_0002_a917c21c1554",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0002_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0002_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0002_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "b0ebd1cf1b3396916a9e64582bcb956dc5af21a8e3092efa1050d290463727b0"
+    },
+    {
+      "source_sha256": "64bbcd373d2ab44c8c47be2ef96b790893c12d3768aa1e7798444d7fb76f1cc2",
+      "record_sha256": "5ea97b3d18fd753813276338b8c20ae89dcff48e9a4fdd8d7399d05af965f180",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0003",
+          "title": "Specification and Reference Tool Independence",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0003",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0003.yaml",
+      "archive_path": "legacy/SFP-0003.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/normative_snapshot_identity",
+          "family": "NORM",
+          "section": "unit_sfp_0003_ce3d0fb4b13c",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/reference_tool_versioning",
+          "family": "NORM",
+          "section": "unit_sfp_0003_f4c463515592",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/project_profile_is_intended_ownership_declaration",
+          "family": "ARCH",
+          "section": "unit_sfp_0003_aaf1b9c097ff",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/dependency_evidence_edges_typed",
+          "family": "INFO",
+          "section": "unit_sfp_0003_20dd73467bc1",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/agent_output_schema_constrained",
+          "family": "CNTR",
+          "section": "unit_sfp_0003_a97728e628f8",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/agent_decision_is_architecture_authority",
+          "family": "GOV",
+          "section": "unit_sfp_0003_db5fcfdfb9f1",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/snapshot_instability_invalidates_evidence_set",
+          "family": "ASSURE",
+          "section": "unit_sfp_0003_8290bf124ddf",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "ASSURE/SFP-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0003_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0003_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0003_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "13ce6f4769409ef4a2733ffd905aa5c746f657e78df1c81f7c27420a13212eb2"
+    },
+    {
+      "source_sha256": "8f111eb9b58b8022b946274294cbdde723e1731bf1f2d30ff38f4fdb4412b8ef",
+      "record_sha256": "9411fbbc9cafbabab66d44f16802ae6d60df08df9347196fdc655c3bc0745276",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0004",
+          "title": "Evidence Artifact and Conformance Semantics",
+          "status": "DRAFT"
+        }
+      },
+      "source_policy_id": "SFP-0004",
+      "source_status": "DRAFT",
+      "original_path": "SFP-0004.yaml",
+      "archive_path": "legacy/SFP-0004.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/architecture_classifications",
+          "family": "ARCH",
+          "section": "unit_sfp_0004_172882ba590d",
+          "policy_id": "SFP-ARCH-0002",
+          "policy_path": "ARCH/SFP-ARCH-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/coherent_component_boundary_required",
+          "family": "ARCH",
+          "section": "unit_sfp_0004_29f9a4a86959",
+          "policy_id": "SFP-ARCH-0002",
+          "policy_path": "ARCH/SFP-ARCH-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/dependency_evidence_required_fields",
+          "family": "SUPPLY",
+          "section": "unit_sfp_0004_7fb40359c718",
+          "policy_id": "SFP-SUPPLY-0001",
+          "policy_path": "SUPPLY/SFP-SUPPLY-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/evidence_provenance",
+          "family": "RECORD",
+          "section": "unit_sfp_0004_1fa18e5f82ed",
+          "policy_id": "SFP-RECORD-0002",
+          "policy_path": "RECORD/SFP-RECORD-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/evidence_sufficiency_scope",
+          "family": "ASSURE",
+          "section": "unit_sfp_0004_8921b01c66c3",
+          "policy_id": "SFP-ASSURE-0002",
+          "policy_path": "ASSURE/SFP-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/blocking_gap_without_definite_violation_outcome",
+          "family": "ASSURE",
+          "section": "unit_sfp_0004_a7198f04786e",
+          "policy_id": "SFP-ASSURE-0002",
+          "policy_path": "ASSURE/SFP-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/definite_mandatory_violation_outcome",
+          "family": "ASSURE",
+          "section": "unit_sfp_0004_98ef47cfc933",
+          "policy_id": "SFP-ASSURE-0002",
+          "policy_path": "ASSURE/SFP-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/product_artifact_owner_independent_from_producer",
+          "family": "ARCH",
+          "section": "unit_sfp_0004_1e2d788f8353",
+          "policy_id": "SFP-ARCH-0002",
+          "policy_path": "ARCH/SFP-ARCH-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/mandatory_rule_waiver_changes_conformance",
+          "family": "NORM",
+          "section": "unit_sfp_0004_e06350533781",
+          "policy_id": "SFP-NORM-0002",
+          "policy_path": "NORM/SFP-NORM-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/profile_validation_separate_from_conformance_evaluation",
+          "family": "ASSURE",
+          "section": "unit_sfp_0004_0ca99d0c39bf",
+          "policy_id": "SFP-ASSURE-0002",
+          "policy_path": "ASSURE/SFP-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/conformance_outcomes",
+          "family": "ASSURE",
+          "section": "unit_sfp_0004_fca4010748c5",
+          "policy_id": "SFP-ASSURE-0002",
+          "policy_path": "ASSURE/SFP-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ownership_declaration_modes_mutually_exclusive",
+          "family": "ARCH",
+          "section": "unit_sfp_0004_ae28033e5275",
+          "policy_id": "SFP-ARCH-0002",
+          "policy_path": "ARCH/SFP-ARCH-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/project_dependency_policy_may_be_stricter_than_universal_rules",
+          "family": "NORM",
+          "section": "unit_sfp_0004_8255ff686d55",
+          "policy_id": "SFP-NORM-0002",
+          "policy_path": "NORM/SFP-NORM-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/stable_diagnostic_rule_identity_required",
+          "family": "INFO",
+          "section": "unit_sfp_0004_d7cbad3c5e4c",
+          "policy_id": "SFP-INFO-0002",
+          "policy_path": "INFO/SFP-INFO-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/lifecycle_trigger_alone_proves_product_release_coupling",
+          "family": "ASSURE",
+          "section": "unit_sfp_0004_837a31635b80",
+          "policy_id": "SFP-ASSURE-0002",
+          "policy_path": "ASSURE/SFP-ASSURE-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/neutral_contract_consumer_count_determines_neutrality",
+          "family": "ARCH",
+          "section": "unit_sfp_0004_a034d14cc107",
+          "policy_id": "SFP-ARCH-0002",
+          "policy_path": "ARCH/SFP-ARCH-0002.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0004_571db38c09b9",
+          "policy_id": "SFP-CNTR-0002",
+          "policy_path": "CNTR/SFP-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0004_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0002",
+          "policy_path": "CNTR/SFP-CNTR-0002.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0004_40c664bc86a2",
+          "policy_id": "SFP-INFO-0002",
+          "policy_path": "INFO/SFP-INFO-0002.yaml"
+        }
+      ],
+      "source_worktree_sha256": "2095b32cbc01eb89c89379355c587208b3ae982a039728206dcc9dc9ac05041f"
+    },
+    {
+      "source_sha256": "dd774c2b48c4049bc04c5ef39167059f304f9ca7c588d6fb55734d00c0fa3453",
+      "record_sha256": "e9a4880e066a77453bad3f336dd3d16a892d1650af233de15ca2f40c33d7e30e",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0005",
+          "title": "Distributed Decision Authority",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0005",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0005.yaml",
+      "archive_path": "legacy/SFP-0005.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/decision_authority_separate_from_project_profile",
+          "family": "GOV",
+          "section": "unit_sfp_0005_a9e64b2f374b",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/distributed_decision_identity",
+          "family": "GOV",
+          "section": "unit_sfp_0005_497b5224a8b6",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/resolution_policy",
+          "family": "GOV",
+          "section": "unit_sfp_0005_544177a069c5",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/conditional_mutation_required",
+          "family": "CTRL",
+          "section": "unit_sfp_0005_1b31ec4b9d9d",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/architecture_sensitive_read_requires_current_authority_state",
+          "family": "CTRL",
+          "section": "unit_sfp_0005_29808ce8f6f9",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/absence_observation_may_fabricate_history",
+          "family": "GOV",
+          "section": "unit_sfp_0005_f4ecc779cdbf",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/authority_profile_conflict_silent_overwrite",
+          "family": "CTRL",
+          "section": "unit_sfp_0005_357e4badce21",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/distributed_coordination_failure_behavior",
+          "family": "CTRL",
+          "section": "unit_sfp_0005_237b87708626",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/local_fallback_when_distributed_coordination_required",
+          "family": "CTRL",
+          "section": "unit_sfp_0005_35ebd4c19a04",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/global_decision_state_separate_from_clone_local_projection",
+          "family": "GOV",
+          "section": "unit_sfp_0005_138d6488f191",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/synchronization_mode",
+          "family": "OPS",
+          "section": "unit_sfp_0005_61e22a21ee9a",
+          "policy_id": "SFP-OPS-0001",
+          "policy_path": "OPS/SFP-OPS-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/decision_authority_is_conformance_oracle",
+          "family": "ASSURE",
+          "section": "unit_sfp_0005_c4029c2d7fd7",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "ASSURE/SFP-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0005_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0005_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0005_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "79219773aba0aa4759a5d1b9998ed7f45ab8d35a07ab2fc3cafd9fd792d883b3"
+    },
+    {
+      "source_sha256": "f350fd6214d9ebdc749e02138f568d670dc07934f375f85595a19189090ed17b",
+      "record_sha256": "ac5334243e335fb353b079003a0ac0495dbbb3f3f3fa860a1835fc05718d0f62",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0006",
+          "title": "VPMS Verification Purpose Management",
+          "status": "RETIRED"
+        }
+      },
+      "source_policy_id": "SFP-0006",
+      "source_status": "RETIRED",
+      "original_path": "SFP-0006.yaml",
+      "archive_path": "legacy/SFP-0006.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/canonical_name",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_685ff401236d",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/expanded_identity",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_555df7fa00c4",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/retired_working_name",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_26fa3eccfe0d",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/governing_question",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_0e181f76b583",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/is_ptsip_classification_plane",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_9c53e126171c",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/verification_purposes",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_b53823dd6810",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/verification_implementation_classification_separate_from_verification_purpose",
+          "family": "ARCH",
+          "section": "unit_sfp_0006_df14e3ecb4a5",
+          "policy_id": "SFP-ARCH-0003",
+          "policy_path": "ARCH/SFP-ARCH-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/smallest_execution_unit",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_2033e5a8b1c6",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/case_bindings",
+          "family": "CNTR",
+          "section": "unit_sfp_0006_a541e1d8fdee",
+          "policy_id": "SFP-CNTR-0003",
+          "policy_path": "CNTR/SFP-CNTR-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/default_cross_purpose_reuse_boundary",
+          "family": "CNTR",
+          "section": "unit_sfp_0006_1999fcdb1003",
+          "policy_id": "SFP-CNTR-0003",
+          "policy_path": "CNTR/SFP-CNTR-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/cross_purpose_policy_reuse_assumed",
+          "family": "CNTR",
+          "section": "unit_sfp_0006_d71bbd17838d",
+          "policy_id": "SFP-CNTR-0003",
+          "policy_path": "CNTR/SFP-CNTR-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_subsystem",
+          "family": "ARCH",
+          "section": "unit_sfp_0006_7280fd0997ef",
+          "policy_id": "SFP-ARCH-0003",
+          "policy_path": "ARCH/SFP-ARCH-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ptsip_core_may_depend_on_vpms",
+          "family": "ARCH",
+          "section": "unit_sfp_0006_37886354ad54",
+          "policy_id": "SFP-ARCH-0003",
+          "policy_path": "ARCH/SFP-ARCH-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/vpms_may_consume_stable_ptsip_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0006_05d2c4c05b8e",
+          "policy_id": "SFP-CNTR-0003",
+          "policy_path": "CNTR/SFP-CNTR-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/vpms_pass_equals_ptsip_conformant",
+          "family": "ASSURE",
+          "section": "unit_sfp_0006_9f99753d89ca",
+          "policy_id": "SFP-ASSURE-0003",
+          "policy_path": "ASSURE/SFP-ASSURE-0003.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0006_571db38c09b9",
+          "policy_id": "SFP-CNTR-0003",
+          "policy_path": "CNTR/SFP-CNTR-0003.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0006_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0003",
+          "policy_path": "CNTR/SFP-CNTR-0003.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0006_40c664bc86a2",
+          "policy_id": "SFP-INFO-0003",
+          "policy_path": "INFO/SFP-INFO-0003.yaml"
+        }
+      ],
+      "source_worktree_sha256": "6e41a5809498c4d28a9328e71f98241ea09254a51643cf7eae854e1af370eb1f"
+    },
+    {
+      "source_sha256": "4ce8476237849a4d6f8b310a29ce3621fe9f17b6f987c272c0966f2b2fc50bdb",
+      "record_sha256": "98b677f91ddbc0fa15d365ca16edb514cda973596630aefac343748bcefd5d3c",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0007",
+          "title": "Primary Lifecycle Boundary Determination",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0007",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0007.yaml",
+      "archive_path": "legacy/SFP-0007.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/canonical_classifications",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_5cf908525c8d",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/primary_owner_basis",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_2554b65e2700",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ordered_determination",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_3d157e56d69e",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/forbidden_shortcuts",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_42bcd8df20e8",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/delivery_operations_boundary",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_3d9712772a48",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/neutral_contract_conditions",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_3ed216a63eab",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/material_mixed_lifecycle_requires_independently_governable_responsibilities",
+          "family": "ARCH",
+          "section": "unit_sfp_0007_caeb7b95594d",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/confidence_is_architecture_authority",
+          "family": "GOV",
+          "section": "unit_sfp_0007_335c13787166",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/unresolved_conflict_behavior",
+          "family": "CTRL",
+          "section": "unit_sfp_0007_eff445da227f",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0007_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0007_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0007_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "1158b35e5f2fc701028fb98556a6aeb4a67fcab068d7a6679727392ce68e93db"
+    },
+    {
+      "source_sha256": "c25ed5b41fd43d1ec5495bac6a093c4c5755ce4feab4bf77c2046f064721375b",
+      "record_sha256": "c1070eadd0774ac7dcb8041b0702808103f2466b72d5682250a53157d1e6d746",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0008",
+          "title": "Responsibility Roles Relationships and Associated Artifacts",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0008",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0008.yaml",
+      "archive_path": "legacy/SFP-0008.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/classification_axis",
+          "family": "INFO",
+          "section": "unit_sfp_0008_48fefffba96a",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/roles_axis",
+          "family": "INFO",
+          "section": "unit_sfp_0008_56ceefb8404a",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/relationships_axis",
+          "family": "INFO",
+          "section": "unit_sfp_0008_20c27966a4b6",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/verification_purpose_axis",
+          "family": "INFO",
+          "section": "unit_sfp_0008_80e4a4b01e34",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_roles",
+          "family": "INFO",
+          "section": "unit_sfp_0008_09ed9d132ac7",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/role_cardinality",
+          "family": "INFO",
+          "section": "unit_sfp_0008_d0a62eef1bd9",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/role_may_determine_classification",
+          "family": "ARCH",
+          "section": "unit_sfp_0008_52f9cb677627",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/role_may_infer_relationship",
+          "family": "ARCH",
+          "section": "unit_sfp_0008_782216c0653c",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/relationship_endpoint_kinds",
+          "family": "INFO",
+          "section": "unit_sfp_0008_e266a85cd062",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_relationships",
+          "family": "INFO",
+          "section": "unit_sfp_0008_ecd8590c8526",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/generic_escape_relationships_forbidden",
+          "family": "INFO",
+          "section": "unit_sfp_0008_f495929182f6",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/declared_relationship_is_evidence_edge",
+          "family": "ARCH",
+          "section": "unit_sfp_0008_598a1a795d37",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/typed_relationship_is_permission",
+          "family": "GOV",
+          "section": "unit_sfp_0008_f0fcd9e4583e",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/associated_artifact_has_classification",
+          "family": "INFO",
+          "section": "unit_sfp_0008_671700fee0d2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/associated_artifact_anchor_cardinality",
+          "family": "INFO",
+          "section": "unit_sfp_0008_69ea40e7c2b7",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/component_and_associated_artifact_ids_share_namespace",
+          "family": "INFO",
+          "section": "unit_sfp_0008_aa59a9e1befd",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/unresolved_endpoint_may_be_fabricated",
+          "family": "CTRL",
+          "section": "unit_sfp_0008_63de9cca0162",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0008_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0008_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0008_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "8764c57dae3d3bb422a3d3af4db3d6a4e0ee8fa50192906cc840bad07fe0ee51"
+    },
+    {
+      "source_sha256": "e0fdf97d3622c6f63cbef56e13d25f32c28278a3e391c519c74b450bd051b041",
+      "record_sha256": "497277db563f83c0a1b15b8fbdcb03c53221ed41b2853765b01bc93cbfc22973",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0009",
+          "title": "Responsibility Map Declaration Authority",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0009",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0009.yaml",
+      "archive_path": "legacy/SFP-0009.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/source_modes",
+          "family": "INFO",
+          "section": "unit_sfp_0009_e2e91fd58b03",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_mode_is_lifecycle_classification",
+          "family": "INFO",
+          "section": "unit_sfp_0009_06a1415f3dba",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/explicit_mode_authority",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_34ad0d5840f5",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/template_mode_authority",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_b12fa462c850",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/template_selection_inference",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_4194792f28ca",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/hybrid_project_authority",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_7907d3950fd9",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/hybrid_precedence",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_7c23900f7f5f",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/hybrid_override_granularity",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_7a39d51c0d83",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/field_level_patch_inheritance",
+          "family": "ARCH",
+          "section": "unit_sfp_0009_777675b0b75d",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/materializer_authority",
+          "family": "REAL",
+          "section": "unit_sfp_0009_73587b4e12a6",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/materializer_may_infer_missing_architecture",
+          "family": "REAL",
+          "section": "unit_sfp_0009_eb98fb99bd83",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/materializer_may_change_classification",
+          "family": "REAL",
+          "section": "unit_sfp_0009_4a7fe2226218",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/materializer_may_silently_repair_conflicts",
+          "family": "REAL",
+          "section": "unit_sfp_0009_1986452d2389",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/effective_map_collections",
+          "family": "INFO",
+          "section": "unit_sfp_0009_0b22b27a1a40",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/effective_map_digest",
+          "family": "INFO",
+          "section": "unit_sfp_0009_a9396e8f6a8e",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/invalid_effective_architecture",
+          "family": "CTRL",
+          "section": "unit_sfp_0009_f9fd791de3d8",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0009_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0009_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0009_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "ae84ff642bce55ab3e13f8c9b4988bda661fc35bca494921905a85c600187ccd"
+    },
+    {
+      "source_sha256": "78b4d3e43b71e7a363c7c8a4cf8eac9db79832cedafdb6e33eae8a8de68e8f72",
+      "record_sha256": "458a15645a99a569645bbac832499d47b97cbb0763e1bb8e42800e2a461c405e",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0010",
+          "title": "Versioned Draft Profile Transition",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0010",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0010.yaml",
+      "archive_path": "legacy/SFP-0010.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/canonical_profile_path",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_88d1b74c572f",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/temporary_profile_pattern",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_6d61a486d5cf",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/temporary_profile_internal_version_match_required",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_2d338a3f2a67",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/one_temporary_profile_per_target_semantic_version",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_c9513ecf3d06",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/migration_categories",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_63ae4c96373e",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/completion_basis",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_c077a0567524",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/removal_element_preservation_obligation",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_dedc8f14a80f",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/async_target_completion_credit",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_8fb014b64fb7",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_profile_replaced_before_source_completion",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_7f4315f52e68",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/final_point_selection",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_bd1065d22657",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/temporary_source_processing_order",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_da249435e4d0",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_source_processing_order",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_3b7c4c806d38",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/deleted_intermediate_may_be_migration_hop",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_97fa887327a5",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_category_inheritance",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_db01ca63c71a",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/final_point_is_cumulative_target_state",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_abf67434d919",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/version_and_revision_required_transition_inputs",
+          "family": "CHANGE",
+          "section": "unit_sfp_0010_18c059d95fc4",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/stale_or_conflicting_transition",
+          "family": "CTRL",
+          "section": "unit_sfp_0010_5096854498d0",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0010_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0010_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0010_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "ae95bb7307f92b3d11a0a7f7d74864b7716ff131e5e0290ec84cae0b0e21642f"
+    },
+    {
+      "source_sha256": "c961a0a6557700b379105f3e8f94505314bd09eb1ea5a0a654695f7d068fec03",
+      "record_sha256": "e6322a9953c1f49ad417c2425fe8209690379a3b3c6f79903abce2061f9bf916",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0011",
+          "title": "Profile Transition Support Set",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0011",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0011.yaml",
+      "archive_path": "legacy/SFP-0011.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/preserved_classifications",
+          "family": "CHANGE",
+          "section": "unit_sfp_0011_e6f02d5586a1",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/toolchain_is_current_ptsip_classification",
+          "family": "CHANGE",
+          "section": "unit_sfp_0011_06a40c5efc67",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/profile_transition_rules",
+          "family": "CHANGE",
+          "section": "unit_sfp_0011_1b4fdbc82719",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0011_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0011_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0011_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "4fb07229306e1c8252245e03efa6320ab6bf3ea96b466a64479b6e5e8d561bda"
+    },
+    {
+      "source_sha256": "c0d9f2092a80341dd327f96c09fc94e7bd2e1b8e5d9e9f89eed2a991d379d788",
+      "record_sha256": "9b2bb15923baff87119e1057db15f43f78e43c43a54d0285b6c9d48e09d41297",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0012",
+          "title": "Universal Normalized Evidence Contract",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0012",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0012.yaml",
+      "archive_path": "legacy/SFP-0012.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/contract",
+          "family": "INFO",
+          "section": "unit_sfp_0012_bec0382f5ada",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/producer_neutral",
+          "family": "INFO",
+          "section": "unit_sfp_0012_f3431be84088",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/authority",
+          "family": "INFO",
+          "section": "unit_sfp_0012_e42bb54782ad",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/semantic_identity_separate_from_evaluation_identity",
+          "family": "INFO",
+          "section": "unit_sfp_0012_11e59506ec82",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/equivalent_values_preserve_all_origins",
+          "family": "RECORD",
+          "section": "unit_sfp_0012_81a0ebb3712b",
+          "policy_id": "SFP-RECORD-0001",
+          "policy_path": "RECORD/SFP-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/conflict_policy",
+          "family": "CTRL",
+          "section": "unit_sfp_0012_d95752cca22f",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/analysis_states",
+          "family": "INFO",
+          "section": "unit_sfp_0012_0fc4aaadc4cc",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/absence_may_become_false_assertion",
+          "family": "INFO",
+          "section": "unit_sfp_0012_bced5302f7a1",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/boundary_evidence_provenance",
+          "family": "RECORD",
+          "section": "unit_sfp_0012_ebb600e2a407",
+          "policy_id": "SFP-RECORD-0001",
+          "policy_path": "RECORD/SFP-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/boundary_evidence_authority",
+          "family": "INFO",
+          "section": "unit_sfp_0012_510f2eefdd32",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/interchange_schema_paths",
+          "family": "INFO",
+          "section": "unit_sfp_0012_5c98cc640d27",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/producer_specific_interfaces_replaced",
+          "family": "INFO",
+          "section": "unit_sfp_0012_2213ab2d5906",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0012_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0012_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0012_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "98ba4be3b3aac50b28448e8b3e4b537c51920f58e7d0ee21d058fac5604211e8"
+    },
+    {
+      "source_sha256": "210e0a1c0966fe7662463d4b705c448351b2630f7b23f41397032319742ef170",
+      "record_sha256": "9b0a477b15b21e93a2613e27d3e4a6265633e95047a9a12e013bf1a7111d6c3a",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0013",
+          "title": "Source Profile Compatibility Model",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0013",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0013.yaml",
+      "archive_path": "legacy/SFP-0013.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/compatibility_boundary",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_4d07b4c07711",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/operation_mode",
+          "family": "CNTR",
+          "section": "unit_sfp_0013_0bba130c4825",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/common_source_model_is_current_canonical_model",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_649a7e4396a7",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_authority",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_43c1bea34a6a",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/family_semantics",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_803ad099c8f2",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/supported_source_bindings",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_0c6dc8442cd3",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/known_family_unknown_revision",
+          "family": "CTRL",
+          "section": "unit_sfp_0013_098540ae8ffa",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/unknown_family",
+          "family": "CTRL",
+          "section": "unit_sfp_0013_5ad4d8828fb3",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/historical_validation_uses_separate_schema_snapshots",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_30d3cbd93acd",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_validator_may_reinterpret_historical_source",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_b382624a5359",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/toolchain_to_development_tooling_translation_in_reader",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_cbfcf841e527",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/target_classification_assignment_in_reader",
+          "family": "CHANGE",
+          "section": "unit_sfp_0013_f2c91cfe073b",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0013_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0013_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0013_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "d0b0ef127faa08e9f07cc0035ed9e5a290dc4f6cbba94c69df78b0e9e252c7a0"
+    },
+    {
+      "source_sha256": "f80cc0ae131e7a33d2e92742e564205154fa7893743a984c58b6e93f16fe6f3d",
+      "record_sha256": "74ea29a5a108f570b4fd0024024ee7c3a1179394a64be9fbdf97bc72453aa894",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0014",
+          "title": "Staged Migration Analysis Pipeline",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0014",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0014.yaml",
+      "archive_path": "legacy/SFP-0014.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/pipeline",
+          "family": "CHANGE",
+          "section": "unit_sfp_0014_1eac40ba6659",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/stage_outputs",
+          "family": "INFO",
+          "section": "unit_sfp_0014_e0955d85701a",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/repository_resolution_types",
+          "family": "INFO",
+          "section": "unit_sfp_0014_7206663df430",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/taxonomy_map",
+          "family": "INFO",
+          "section": "unit_sfp_0014_c942680ac49d",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/lifecycle_compatibility_separate_from_obligation_category",
+          "family": "CHANGE",
+          "section": "unit_sfp_0014_f7eae46f125d",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/evidence_authority",
+          "family": "CHANGE",
+          "section": "unit_sfp_0014_8ef1ca842b10",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_and_repository_freshness",
+          "family": "CTRL",
+          "section": "unit_sfp_0014_68971aaac1fa",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/accepted_target_state_separate_typed_input",
+          "family": "CHANGE",
+          "section": "unit_sfp_0014_e5d54af8e34d",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/completion_equation",
+          "family": "ASSURE",
+          "section": "unit_sfp_0014_4ad81d598a7b",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "ASSURE/SFP-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/removal_or_async_compensates_required",
+          "family": "CHANGE",
+          "section": "unit_sfp_0014_6f0f47a8f932",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/deterministic_digest",
+          "family": "CHANGE",
+          "section": "unit_sfp_0014_c01914b8ab6c",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0014_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0014_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0014_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "104bc4f8f77eb93b966f718c63fedd15b79e15825a199dadd5982177998e06f7"
+    },
+    {
+      "source_sha256": "b67d9553f78c32c1abc764af039fcfe2fb6959b34fff241ddd6a2b1e265b2673",
+      "record_sha256": "211e11e1c444bfe0a12a013014b091d032d04e89e89ac9dee565d73e56307190",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0015",
+          "title": "Target Delta Reconciliation Planner",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0015",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0015.yaml",
+      "archive_path": "legacy/SFP-0015.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/selected_architecture",
+          "family": "CHANGE",
+          "section": "unit_sfp_0015_e1e1d0ee8de9",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/target_delta_change_kinds",
+          "family": "INFO",
+          "section": "unit_sfp_0015_0279b7637af0",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/compound_split_merge_representation",
+          "family": "INFO",
+          "section": "unit_sfp_0015_c2369c8ec3eb",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/semantic_identity",
+          "family": "INFO",
+          "section": "unit_sfp_0015_fcdd9e844b96",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/bundle_authority_types",
+          "family": "GOV",
+          "section": "unit_sfp_0015_e5e68017d47f",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/proposal_is_executable",
+          "family": "CTRL",
+          "section": "unit_sfp_0015_a6e3a720fddb",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/accepted_bundle_requires_project_decision_identity",
+          "family": "GOV",
+          "section": "unit_sfp_0015_729a3aad608d",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/proposal_purposes",
+          "family": "INTENT",
+          "section": "unit_sfp_0015_9440a49c632f",
+          "policy_id": "SFP-INTENT-0001",
+          "policy_path": "INTENT/SFP-INTENT-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/unresolved_required_work_auto_designed",
+          "family": "GOV",
+          "section": "unit_sfp_0015_1008b206be76",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/final_point_states",
+          "family": "CHANGE",
+          "section": "unit_sfp_0015_8945ec159362",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/reconciliation_statuses",
+          "family": "CHANGE",
+          "section": "unit_sfp_0015_dc689e7c3ea9",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/accepted_delta_requires_exact_before_state",
+          "family": "CTRL",
+          "section": "unit_sfp_0015_2800d5f71fc4",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/sequential_reconciliation_uses_in_memory_cumulative_target",
+          "family": "REAL",
+          "section": "unit_sfp_0015_a108e978a3d7",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/async_after_required",
+          "family": "CHANGE",
+          "section": "unit_sfp_0015_206396750604",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_deletion_is_wu06_permission",
+          "family": "CTRL",
+          "section": "unit_sfp_0015_af5c0ade5ce7",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0015_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0015_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0015_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "fd9584980346cdce86cde6f292584f5ad938f9e2071d044b70ac7526046ca54c"
+    },
+    {
+      "source_sha256": "afa02a4f576da75792e88c15591336782617377c121dda607211c35fff50bec9",
+      "record_sha256": "7d6ad1e2749f1ae0010536ef922d80686388e1339d4b949e1f0fd9cc76f86f58",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0016",
+          "title": "Migration Apply State Machine",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0016",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0016.yaml",
+      "archive_path": "legacy/SFP-0016.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/selected_architecture",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_e1e1d0ee8de9",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/states",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_39e444b2ea13",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/plan_binding",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_31962f4fde1c",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/execution_input_authority",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_236bb8e7c859",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/authorization_binds",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_85c17cf5faf3",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/controlled_repository_mutation_scope",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_bc3eec85743b",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/checkpoint_ledger",
+          "family": "RECORD",
+          "section": "unit_sfp_0016_d4d97d2d2932",
+          "policy_id": "SFP-RECORD-0001",
+          "policy_path": "RECORD/SFP-RECORD-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/per_source_final_point_write",
+          "family": "REAL",
+          "section": "unit_sfp_0016_1c3b027c20b5",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/planned_final_point_requires_explicit_seed",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_b25e38bb727b",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_deletion_requires_post_apply_completion_proof",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_cffdfbecbd0b",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/async_state_separate_from_completion",
+          "family": "INFO",
+          "section": "unit_sfp_0016_a722f6073c93",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_source_processed_last",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_c8e4e94c61e2",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/promotion_is_independent_state_boundary",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_a3771f256239",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/promotion_success_requires_rediscovery",
+          "family": "CTRL",
+          "section": "unit_sfp_0016_5e07ffde514f",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/recovery_guessing",
+          "family": "OPS",
+          "section": "unit_sfp_0016_76dff9bdc94a",
+          "policy_id": "SFP-OPS-0001",
+          "policy_path": "OPS/SFP-OPS-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0016_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0016_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0016_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "8b1a9001ce0426280210c58cba7c935a2c37828354b96c4374552a55fcbbb946"
+    },
+    {
+      "source_sha256": "5d78db5b5bbd9081151dbeea32851598e6e01ed16251fbda23e3d537f05f9bab",
+      "record_sha256": "eeeb53a776742ba34d1f274bc4d57b7ebd8d1b8c153e586c226ddd98c880061a",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0017",
+          "title": "Tool and Project Profile Contract Independence",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0017",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0017.yaml",
+      "archive_path": "legacy/SFP-0017.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/tool_version_independent_from_project_profile_version",
+          "family": "CNTR",
+          "section": "unit_sfp_0017_40152ae8e3b4",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/tool_release_implies_profile_migration",
+          "family": "CNTR",
+          "section": "unit_sfp_0017_c802549cdbdc",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/migration_engine_remains_implemented",
+          "family": "CNTR",
+          "section": "unit_sfp_0017_464033332049",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0017_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0017_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0017_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "ebdf4d262f82394173eca18115e4af41614f3902f6dd326303aceae0c8c1ac82"
+    },
+    {
+      "source_sha256": "62a144b42a53f04fe625fdc315e42b8af471d5943d1d68ebc3e955327cba1740",
+      "record_sha256": "746fa455f82c4e76a250e13d50136fab3897230d4b35947ec84682a4440cd7d5",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0018",
+          "title": "Project Profile Contract Versioning",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0018",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0018.yaml",
+      "archive_path": "legacy/SFP-0018.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/identity_axes",
+          "family": "INFO",
+          "section": "unit_sfp_0018_17c8e66508e7",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/project_profile_namespace",
+          "family": "INFO",
+          "section": "unit_sfp_0018_b6f217ca0175",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_minor_minimum_width",
+          "family": "INFO",
+          "section": "unit_sfp_0018_880967054a74",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/semantic_versioning",
+          "family": "INFO",
+          "section": "unit_sfp_0018_d7915f2b4f38",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/major_trigger",
+          "family": "CHANGE",
+          "section": "unit_sfp_0018_95e9883df12a",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/minor_trigger",
+          "family": "CHANGE",
+          "section": "unit_sfp_0018_60f19ff4759b",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/project_instance_change_bumps_contract_version",
+          "family": "CHANGE",
+          "section": "unit_sfp_0018_fb34cbfee3ca",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/legacy_generation_identity",
+          "family": "INFO",
+          "section": "unit_sfp_0018_2d725ae96cd4",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/current_generation_identity",
+          "family": "INFO",
+          "section": "unit_sfp_0018_9c74794189e9",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/fabricated_pp_1_00_history",
+          "family": "INFO",
+          "section": "unit_sfp_0018_6d42114553f2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/tool_compatibility_inferred_from_numeric_equality",
+          "family": "INFO",
+          "section": "unit_sfp_0018_af739c4cf94b",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/tool_operations_require_explicit_pp_capability",
+          "family": "CNTR",
+          "section": "unit_sfp_0018_67ea0aee4c30",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/acceptance_authorizes_immediate_profile_rewrite",
+          "family": "CTRL",
+          "section": "unit_sfp_0018_5f35b8c4cd63",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0018_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0018_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0018_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "d5cc3176bc7ca32c72e5ba268141ba4a1b0f2347eb3c4846655713656ddc7d64"
+    },
+    {
+      "source_sha256": "7390c34b506aceb8135c1441bc8d4e33cd063258eef41ce324167f4be793315c",
+      "record_sha256": "5dfef7b173e4dad085ad2102dcde557eb6225f672bafff4feab04dbecb1cecd4",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0019",
+          "title": "Project Profile Identity Bridge",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0019",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0019.yaml",
+      "archive_path": "legacy/SFP-0019.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/independent_history_axes",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_888faa0f428f",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/bridge_source",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_3e1fa8a4994f",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/bridge_target",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_b0ef0899e325",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/bridge_classification",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_c15a6e08d6f5",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/semantic_deltas",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_628a7210495b",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_pp_identity",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_3b3475448de9",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/temporary_filename_token",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_0a0c524a1df7",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/temporary_target_path",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_56ed0147687f",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/legacy_temporary_target_alias",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_c67ecb46da27",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/canonical_0_3_6_to_pp_1_01_requires_temporary_target",
+          "family": "CHANGE",
+          "section": "unit_sfp_0019_4a21a243e9ff",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/equivalent_target_collision",
+          "family": "CTRL",
+          "section": "unit_sfp_0019_d63dd8f5fdab",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0019_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0019_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0019_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "f07f84b769716af0ec5da877b6ffa15148a7c178ea0930841745643c7d263f71"
+    },
+    {
+      "source_sha256": "471d57995bab57735d4e5f362a59967186b976ece4dd521a90e137752ecc0100",
+      "record_sha256": "cd978193cc64cd94dad3c54cc1574d11e4c6428112fc4ac52778dd4ebe9cb2e8",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0020",
+          "title": "Project Profile Direct Latest Target Convergence",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0020",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0020.yaml",
+      "archive_path": "legacy/SFP-0020.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/migration_model",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_0eba39b83adc",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/mandatory_intermediate_version_traversal",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_812e5dc7f2d3",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/source_boundary",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_7686528227da",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/convergence_boundary",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_b1ec5c286800",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/target_selection_authority",
+          "family": "CNTR",
+          "section": "unit_sfp_0020_858f80cda2f0",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/direct_convergence_allows_unrestricted_inference",
+          "family": "GOV",
+          "section": "unit_sfp_0020_633f58c56305",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ambiguous_historical_semantics",
+          "family": "GOV",
+          "section": "unit_sfp_0020_7cba43b51776",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/transition_classes",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_efb69996f600",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/new_migration_creates_only_selected_canonical_target",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_f29712312f8c",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/existing_authorized_legacy_target_continuity_preserved",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_f678fbef7f57",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/universal_shortest_path_engine_required",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_4d0e204edd1d",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/n_by_m_handwritten_converter_matrix_required",
+          "family": "CHANGE",
+          "section": "unit_sfp_0020_0d1e1005d61e",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0020_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0020_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0020_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "f5f234e527cff529baf96f1f437c3eae1d2bdb9aa3387ddfb112e27067fa1e7d"
+    },
+    {
+      "source_sha256": "b437356dac9e7a6532f2696b146eebd90fe570fac2f9633b3a883e80bd8aa147",
+      "record_sha256": "fd4e5f972a3179759ec086f1d2e1fff92e1c65b808d6e5745f0285fde53e65c9",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0021",
+          "title": "Specification Binding and Capability Registries",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0021",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0021.yaml",
+      "archive_path": "legacy/SFP-0021.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/identity_axes",
+          "family": "INFO",
+          "section": "unit_sfp_0021_17c8e66508e7",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/specification_binding_fields",
+          "family": "INFO",
+          "section": "unit_sfp_0021_f66a672833fd",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/project_profile_version_is_implicit_specification_family",
+          "family": "INFO",
+          "section": "unit_sfp_0021_82af8cb56607",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/capability_authorities",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_93c11c27e548",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/cartesian_capability_registration_required",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_44ef2c187847",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/generic_validator_requires_profile_spec_revision_equal_global_tool_spec_revision",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_310194b317bc",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/generic_validator_may_use_historical_migration_bridge_as_spec_capability",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_5d36a46d6785",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/generic_validation_order",
+          "family": "ASSURE",
+          "section": "unit_sfp_0021_2e488eae6de8",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "ASSURE/SFP-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/historical_bridge_role",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_cc5d3a302136",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/unsupported_or_malformed_binding",
+          "family": "CTRL",
+          "section": "unit_sfp_0021_00ff091f8423",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0021_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0021_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "71d6d8e37542ce880dfbd2ef32d62d1b018938fee27d73330958149cbca4c3ab"
+    },
+    {
+      "source_sha256": "692e50796cade2ae6c1807c6eb3cd2ea9b58173a0ce1c429cc25b527faec15c9",
+      "record_sha256": "54e1bc24fbd71469d4c3e3fe54cf818d771543047871dc0ed3d7923a93493625",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0022",
+          "title": "Context Plane Migration and Deterministic Projection Repair",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0022",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0022.yaml",
+      "archive_path": "legacy/SFP-0022.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/canonical_semantic_source",
+          "family": "INFO",
+          "section": "unit_sfp_0022_782f389e9f00",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/generated_projections",
+          "family": "INFO",
+          "section": "unit_sfp_0022_900c3f8d471c",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/normal_direct_projection_edit",
+          "family": "INFO",
+          "section": "unit_sfp_0022_6359b28f9f8b",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/deterministic_projection_repair",
+          "family": "REAL",
+          "section": "unit_sfp_0022_de28528b9b4f",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/semantic_source_creation_from_legacy_memory",
+          "family": "CHANGE",
+          "section": "unit_sfp_0022_d2ee41455ab2",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/existing_semantic_source_replacement",
+          "family": "GOV",
+          "section": "unit_sfp_0022_e5a99b5ac3bd",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "GOV/SFP-GOV-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/legacy_memory_deletion",
+          "family": "CHANGE",
+          "section": "unit_sfp_0022_a498c7f0ff7e",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/emergency_direct_projection_repair",
+          "family": "CTRL",
+          "section": "unit_sfp_0022_18e0f3955df0",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/release_gate",
+          "family": "CTRL",
+          "section": "unit_sfp_0022_3e8fd3fe513f",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0022_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0022_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0022_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "e7fcc00aed7e9454987f3444db622b4eadfccf649b7680208df39e6629392f01"
+    },
+    {
+      "source_sha256": "ff078bfcf2ac3b747f18f7aff64e2ad45f649cf51a1179041b3cf9fbebfbbcf8",
+      "record_sha256": "8057f6a852c41d8f30d38bb712af2a4789c1a946c980e3f9b1114981a8cbe492",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0023",
+          "title": "PTSIP VPMS Read Only Integration Boundary",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0023",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0023.yaml",
+      "archive_path": "legacy/SFP-0023.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/responsibility",
+          "family": "ARCH",
+          "section": "unit_sfp_0023_96036f84abf9",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/input",
+          "family": "CNTR",
+          "section": "unit_sfp_0023_9c400c5ae297",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/projection",
+          "family": "INFO",
+          "section": "unit_sfp_0023_5f6791cc2261",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/target_lookup",
+          "family": "CNTR",
+          "section": "unit_sfp_0023_236ca4fff107",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/mutation_allowed",
+          "family": "REAL",
+          "section": "unit_sfp_0023_2e6408da3841",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "REAL/SFP-REAL-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/raw_profile_fallback_allowed",
+          "family": "ARCH",
+          "section": "unit_sfp_0023_0d125cde84c0",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/classification_to_purpose_allowed",
+          "family": "NORM",
+          "section": "unit_sfp_0023_7e275603ca7a",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/classification_to_selection_allowed",
+          "family": "NORM",
+          "section": "unit_sfp_0023_024f8944b27a",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "NORM/SFP-NORM-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/vpms_result_to_ptsip_conformance_allowed",
+          "family": "ASSURE",
+          "section": "unit_sfp_0023_eda0339d036f",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "ASSURE/SFP-ASSURE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ptsip_core_requires_vpms",
+          "family": "ARCH",
+          "section": "unit_sfp_0023_12e1aaea2bc8",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/developer_policy_runtime_dependency",
+          "family": "ARCH",
+          "section": "unit_sfp_0023_471bdba77329",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/compatibility_raw_profile_reader",
+          "family": "CHANGE",
+          "section": "unit_sfp_0023_da1751e6820f",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/excluded_authorities",
+          "family": "ARCH",
+          "section": "unit_sfp_0023_d2a2c2e5e77b",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "ARCH/SFP-ARCH-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0023_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0023_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0023_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "ff078bfcf2ac3b747f18f7aff64e2ad45f649cf51a1179041b3cf9fbebfbbcf8"
+    },
+    {
+      "source_sha256": "4ec42761439b09d0a333a2a63d8722830dd53b08ac0189a9b7bf90a5997c591e",
+      "record_sha256": "264cce5cdce1d822ccca645eba69f9daca36dc170cf5482841050253a732308a",
+      "header": {
+        "schema_version": "ptsip-support-feature-policy/v1",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "policy": {
+          "id": "SFP-0024",
+          "title": "Support Root Responsibility Family Transition Bootstrap",
+          "status": "ACTIVE"
+        }
+      },
+      "source_policy_id": "SFP-0024",
+      "source_status": "ACTIVE",
+      "original_path": "SFP-0024.yaml",
+      "archive_path": "legacy/SFP-0024.yaml",
+      "units": [
+        {
+          "source_pointer": "/authority_semantics/responsibility",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_96036f84abf9",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/purpose",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_d4e5c3d8137b",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/root_family_vocabulary",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_f8b550795058",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/authority_identity",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_d15858a2df3e",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/minimum_kernel_model",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_2a2643a897d6",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/policy_class_root_slots",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_0c99d4d62e27",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/cross_policy_class_boundary",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_2e8b6c771301",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/legacy_support_policy_transition",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_9b4ef2e22a47",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/bootstrap_sequence",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_c7032a35ea1d",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_semantics/ownership",
+          "family": "CHANGE",
+          "section": "unit_sfp_0024_452807860927",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
+        },
+        {
+          "source_pointer": "/feature_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0024_571db38c09b9",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/authority_contract",
+          "family": "CNTR",
+          "section": "unit_sfp_0024_afbfbdc1cc69",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
+        },
+        {
+          "source_pointer": "/relations",
+          "family": "INFO",
+          "section": "unit_sfp_0024_40c664bc86a2",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "INFO/SFP-INFO-0001.yaml"
+        }
+      ],
+      "source_worktree_sha256": "32ba19295199da088c788666b647200d10513b6b69b9bd4d771ee7f6949bb33e"
+    }
+  ],
+  "materializations": [
+    {
+      "policy_id": "SFP-NORM-0001",
+      "family": "NORM",
+      "path": "NORM/SFP-NORM-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 9,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-NORM-0002",
+      "family": "NORM",
+      "path": "NORM/SFP-NORM-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 2,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-GOV-0001",
+      "family": "GOV",
+      "path": "GOV/SFP-GOV-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 14,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-INTENT-0001",
+      "family": "INTENT",
+      "path": "INTENT/SFP-INTENT-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 1,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-ARCH-0001",
+      "family": "ARCH",
+      "path": "ARCH/SFP-ARCH-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 29,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-ARCH-0002",
+      "family": "ARCH",
+      "path": "ARCH/SFP-ARCH-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 5,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-ARCH-0003",
+      "family": "ARCH",
+      "path": "ARCH/SFP-ARCH-0003.yaml",
+      "source_status": "RETIRED",
+      "unit_count": 3,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-INFO-0001",
+      "family": "INFO",
+      "path": "INFO/SFP-INFO-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 70,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-INFO-0002",
+      "family": "INFO",
+      "path": "INFO/SFP-INFO-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 2,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-INFO-0003",
+      "family": "INFO",
+      "path": "INFO/SFP-INFO-0003.yaml",
+      "source_status": "RETIRED",
+      "unit_count": 1,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-CNTR-0001",
+      "family": "CNTR",
+      "path": "CNTR/SFP-CNTR-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 58,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-CNTR-0002",
+      "family": "CNTR",
+      "path": "CNTR/SFP-CNTR-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 2,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-CNTR-0003",
+      "family": "CNTR",
+      "path": "CNTR/SFP-CNTR-0003.yaml",
+      "source_status": "RETIRED",
+      "unit_count": 6,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-RISK-0001",
+      "family": "RISK",
+      "path": "RISK/SFP-RISK-0001.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 0,
+      "definition_only": true
+    },
+    {
+      "policy_id": "SFP-SUPPLY-0001",
+      "family": "SUPPLY",
+      "path": "SUPPLY/SFP-SUPPLY-0001.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 1,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-REAL-0001",
+      "family": "REAL",
+      "path": "REAL/SFP-REAL-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 9,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-ASSURE-0001",
+      "family": "ASSURE",
+      "path": "ASSURE/SFP-ASSURE-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 5,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-ASSURE-0002",
+      "family": "ASSURE",
+      "path": "ASSURE/SFP-ASSURE-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 6,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-ASSURE-0003",
+      "family": "ASSURE",
+      "path": "ASSURE/SFP-ASSURE-0003.yaml",
+      "source_status": "RETIRED",
+      "unit_count": 8,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-CTRL-0001",
+      "family": "CTRL",
+      "path": "CTRL/SFP-CTRL-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 32,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-CHANGE-0001",
+      "family": "CHANGE",
+      "path": "CHANGE/SFP-CHANGE-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 74,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-OPS-0001",
+      "family": "OPS",
+      "path": "OPS/SFP-OPS-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 3,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-RECORD-0001",
+      "family": "RECORD",
+      "path": "RECORD/SFP-RECORD-0001.yaml",
+      "source_status": "ACTIVE",
+      "unit_count": 3,
+      "definition_only": false
+    },
+    {
+      "policy_id": "SFP-RECORD-0002",
+      "family": "RECORD",
+      "path": "RECORD/SFP-RECORD-0002.yaml",
+      "source_status": "DRAFT",
+      "unit_count": 1,
+      "definition_only": false
+    }
+  ],
+  "source_digest_format": "UTF8_LF"
+}

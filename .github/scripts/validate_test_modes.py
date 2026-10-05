@@ -14,7 +14,7 @@ SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
 _MODE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 _ROOT_KEYS = {"version", "modes"}
 _MODE_KEYS = {"id", "component_ref", "execution"}
-_EXECUTION_KEYS = {"pytest"}
+_EXECUTION_KEYS = {"pytest", "go"}
 _ARCHITECTURE_KEYS = {
     "classification",
     "roles",
@@ -156,6 +156,7 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
     seen_ids: set[str] = set()
     seen_component_refs: set[str] = set()
     seen_pytest_targets: list[tuple[str, str]] = []
+    seen_go_targets: list[tuple[str, str]] = []
 
     for position, mode in enumerate(modes):
         prefix = f"mode[{position}]"
@@ -275,6 +276,26 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
             parts = PurePosixPath(target).parts
             if not repo_root.joinpath(*parts).exists():
                 errors.append(f"{label} does not exist in the repository: {target}")
+
+        if "go" in execution:
+            go_targets = execution["go"]
+            if not isinstance(go_targets, list) or not go_targets:
+                errors.append(f"{prefix}.execution.go must be a non-empty list")
+                continue
+            for target_position, target in enumerate(go_targets):
+                label = f"{prefix}.execution.go[{target_position}]"
+                path_errors = _validate_relative_posix_path(target, label=label, allow_glob=False)
+                errors.extend(path_errors)
+                if path_errors or not isinstance(target, str):
+                    continue
+                for existing_target, owner in seen_go_targets:
+                    if target == existing_target or _targets_overlap(target, existing_target, repo_root):
+                        errors.append(f"{label} duplicates or overlaps Go module {existing_target!r} owned by mode {owner!r}")
+                seen_go_targets.append((target, str(mode_id)))
+                if not _target_is_owned(target, include):
+                    errors.append(f"{label} is outside component_ref include authority: {target}")
+                if not (repo_root / target / "go.mod").is_file():
+                    errors.append(f"{label} requires a repository Go module: {target}")
 
     missing_components = sorted(required_components - seen_component_refs)
     extra_components = sorted(seen_component_refs - required_components)

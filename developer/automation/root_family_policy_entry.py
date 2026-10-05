@@ -170,6 +170,18 @@ def resolve_entry(policy_class: str, family: str, *, root: str | Path | None = N
     ids = _current_ids(base, policy_class)
     _assert_root_corpus_consistent(base, policy_class, route, ids)
     allocated = _next_id(ids, policy_class=policy_class, family=family)
+    selected = []
+    for entry in load_yaml(_index_path(policy_class), root=base)["policies"]:
+        match = _ID_PATTERNS[policy_class].fullmatch(entry["id"])
+        if match is None or match.group(1) != family:
+            continue
+        path = entry["path"] if policy_class == "PTSIP_DEVELOPER_POLICY" else f"src/policy/{entry['path']}"
+        record = load_yaml(path, root=base)
+        if record.get("policy_class") != policy_class or record.get("responsibility_family") != family or record["policy"]["id"] != entry["id"] or record["policy"]["status"] != entry["status"]:
+            raise RootFamilyEntryError("ROOT_FAMILY_METADATA_MISMATCH", f"{entry['id']}: canonical metadata does not match class/family/index")
+        selected.append({"policy_id": entry["id"], "canonical_path": path, "status": entry["status"]})
+    states = {entry["status"] for entry in selected}
+    current_state = next((state for state in ("ACTIVE", "APPROVED", "DRAFT", "DEPRECATED", "SUPERSEDED", "RETIRED") if state in states), route["unmaterialized_slot_default"])
     return {
         "status": "READY",
         "authority_identity": {
@@ -177,7 +189,8 @@ def resolve_entry(policy_class: str, family: str, *, root: str | Path | None = N
             "responsibility_family": family,
         },
         "semantic_inheritance": "FORBIDDEN",
-        "family_state_before_materialization": route["unmaterialized_slot_default"],
+        "family_state_before_materialization": current_state,
+        "registered_policies": selected,
         "allocated_policy_id": allocated,
         "canonical_path": canonical_path(policy_class, family, allocated, root=base),
         "schema_ref": route["schema_ref"],

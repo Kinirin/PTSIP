@@ -1,0 +1,101 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: INFO
+policy:
+  id: MPD-INFO-0003
+  title: INFO authority (DRAFT source responsibilities)
+  status: DRAFT
+  version: '0.0'
+authority_subject:
+  id: DEV_CONTROL_INFORMATION_MEANING
+  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic
+    source 및 projection의 구분을 소유한다.
+exclusive_kernel:
+- DEV_CANONICAL_INFORMATION_AND_IDENTITY
+- DEV_SOURCE_PROJECTION_SEMANTICS
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
+      statement: 개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은
+        GOV가 소유한다.
+      non_substitutability: GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다.
+    - id: DEV_SOURCE_PROJECTION_SEMANTICS
+      statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가
+        될 수 없는 조건을 정한다.
+      non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지
+        못한다.
+    source_scope:
+    - MPD-0017
+    - MPD-MIGR-0002
+    - MPD-VERI-0006
+  unit_mpd_0017_5368d20a03ba:
+    required_fields:
+    - action
+    - execution
+    - completion_check
+    additional_fields: FORBIDDEN
+    direct_id_reference_required: true
+    field_semantics:
+      action: FULLY_BOUND_OPERATION_IDENTITY
+      execution: CANONICAL_EXECUTION_PROFILE_IDENTITY
+      completion_check: COMPLETION_PREDICATE_IDENTITY
+    requirement_id_implies_execution_order: false
+    requirement_array_order_implies_execution_order: false
+    dependency_inference_from_identity_or_position: FORBIDDEN
+  unit_mpd_0017_b469152eec5f:
+    action:
+      planned_registry_path: developer/policy/registries/management/actions.yaml
+      planned_schema_path: developer/policy/schemas/management/action-registry.schema.json
+      minimum_record_fields:
+      - id
+      - authority_ref
+      - operation_ref
+      id_pattern: UNRESOLVED
+    execution:
+      planned_registry_path: developer/policy/registries/management/executions.yaml
+      planned_schema_path: developer/policy/schemas/management/execution-registry.schema.json
+      minimum_record_fields:
+      - id
+      - dimensions.executor_class
+      - dimensions.executor_ref
+      - dimensions.concurrency
+      id_pattern: ^MP-EXEC-(AUTO|GOV)-[0-9]{4}$
+    completion_check:
+      planned_registry_path: developer/policy/registries/management/completion-checks.yaml
+      planned_schema_path: developer/policy/schemas/management/completion-check-registry.schema.json
+      minimum_record_fields:
+      - id
+      - authority_ref
+      - predicate_ref
+      id_pattern: UNRESOLVED
+  unit_mpd_0017_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on:
+    - policy: MPD-0010
+      scope: EXACT_MACHINE_RESOLUTION_AND_INFERENCE_COST_BASELINE
+  unit_mpd_migr_0002_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on:
+    - policy: MPD-0016
+      scope: README_TRANSLATION_GOVERNANCE
+    - policy: MPD-MIGR-0001
+      scope: DEVELOPER_REPOSITORY_MIGRATION_BOUNDARY
+  unit_mpd_veri_0006_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on:
+    - policy: MPD-VERI-0001
+      scope: POLICY_PLAN_CONSISTENCY_VERIFICATION_SEMANTICS
+    - policy: MPD-0017
+      scope: MANAGEMENT_NEXT_ACTION_IDENTITY_AND_EXECUTION_CONTROL_PLANE
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

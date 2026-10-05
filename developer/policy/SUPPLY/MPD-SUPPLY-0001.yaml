@@ -1,0 +1,32 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: SUPPLY
+policy:
+  id: MPD-SUPPLY-0001
+  title: SUPPLY authority (DRAFT source responsibilities)
+  status: DRAFT
+  version: '0.0'
+authority_subject:
+  id: DEV_BUILD_VERIFICATION_INPUT_SUPPLY
+  statement: 개발, build, verification 및 delivery에 투입하거나 인계하는 dependency, resource와
+    Artifact의 공급 적합성 및 출처를 소유한다.
+exclusive_kernel:
+- DEV_INPUT_ADMISSION_AND_PROVENANCE
+- DEV_ARTIFACT_SUPPLY_HANDOFF
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_INPUT_ADMISSION_AND_PROVENANCE
+      statement: 개발 입력과 환경 dependency의 정확한 출처, revision, 필요 조건 및 허용된 공급 경로를 명시한다.
+      non_substitutability: REAL의 성공적인 build나 RISK의 잔여 위험 수락만으로 입력의 출처와 공급 자격을 확정할
+        수 없다.
+    - id: DEV_ARTIFACT_SUPPLY_HANDOFF
+      statement: 생산된 Artifact를 다음 개발·검증·delivery 단계에 공급하는 단위, provenance 및 인계 조건을
+        정한다. 생산자와 Artifact lifecycle 소유자는 구별한다.
+      non_substitutability: ARCH가 lifecycle 소유자를 정해도 실제 공급 단위와 출처 확인 의무를 대신 수행하지 않는다.
+    source_scope: []
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

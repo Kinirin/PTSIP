@@ -45,7 +45,10 @@ def test_exact_current_subject_projects_one_current_authority_record() -> None:
     assert record["authority_role"]["projection_role"] == "PROJECT_ARCHITECTURE_AUTHORITY"
     assert record["subject_binding"]["subject_identity"] == {"scheme":"SUPPORT_POLICY_ID","value":"SFP-0001"}
     assert record["authority_provenance"]["source_type"] == "SUPPORT_FEATURE_POLICY"
-    assert record["authority_provenance"]["source_ref"] == "src/policy/SFP-0001.yaml"
+    assert record["authority_provenance"]["source_ref"] == "src/policy/legacy/SFP-0001.yaml"
+    assert record["authority_provenance"]["source_role"] == "REGISTERED_ROOT_FAMILY_PROJECTION"
+    assert record["authority_provenance"]["canonical_sources"]
+    assert all(source["policy_id"].startswith("SFP-") and "/legacy/" not in source["path"] for source in record["authority_provenance"]["canonical_sources"])
     assert len(record["authority_provenance"]["source_digest"]) == 64
 
 

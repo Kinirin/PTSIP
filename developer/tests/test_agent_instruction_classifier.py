@@ -1,4 +1,5 @@
 from __future__ import annotations
+from developer.tests.policy_migration_helpers import resolve_source_bindings as resolve_policies
 
 from pathlib import Path
 
@@ -64,7 +65,8 @@ def test_repository_trial_policy_and_resolver_binding_are_wired() -> None:
         for item in binding_records
         if item["scope"] == "developer/automation/agent_instruction_classifier.py"
     )
-    refs = binding["default_refs"]
+    assert all(item["policy_id"].split("-")[1] in {"NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"} for item in binding["default_refs"])
+    refs = resolve_policies(ROOT, scope=binding["scope"], operation="READ")["policies"]
     mpd10 = next(item for item in refs if item["policy_id"] == "MPD-0010")
     assert "agent_instruction_entry_taxonomy_trial" in mpd10["sections"]
 

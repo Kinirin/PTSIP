@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explicit class-local Root Family migration graph",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "approval",
+    "base_head",
+    "identity_semantic_inheritance",
+    "sources",
+    "materializations",
+    "source_digest_format"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-root-family-migration/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "decision",
+        "source_kind",
+        "source_reference",
+        "recorded_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "decision": {
+          "const": "APPROVED"
+        },
+        "source_kind": {
+          "const": "PROJECT_OWNER_DIRECT_INSTRUCTION"
+        },
+        "source_reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recorded_at": {
+          "type": "string"
+        }
+      }
+    },
+    "base_head": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "identity_semantic_inheritance": {
+      "const": "FORBIDDEN"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_policy_id",
+          "source_status",
+          "original_path",
+          "archive_path",
+          "source_sha256",
+          "record_sha256",
+          "header",
+          "units"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "source_policy_id": {
+            "type": "string"
+          },
+          "source_status": {
+            "enum": [
+              "DRAFT",
+              "APPROVED",
+              "ACTIVE",
+              "RETIRED",
+              "DEPRECATED",
+              "SUPERSEDED"
+            ]
+          },
+          "original_path": {
+            "type": "string"
+          },
+          "archive_path": {
+            "type": "string",
+            "pattern": "^legacy/(MPD|SFP)-[A-Z0-9-]+\\.yaml$"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "record_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "header": {
+            "type": "object",
+            "required": [
+              "schema_version",
+              "policy_class",
+              "policy"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "type": "string"
+              },
+              "policy_class": {
+                "type": "string"
+              },
+              "policy": {
+                "type": "object"
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "source_pointer",
+                "family",
+                "section",
+                "policy_id",
+                "policy_path"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "source_pointer": {
+                  "type": "string",
+                  "pattern": "^/(rules|authority_semantics|relations|transition|automation|migration|authority_contract|feature_contract)(/.*)?$"
+                },
+                "family": {
+                  "enum": [
+                    "NORM",
+                    "GOV",
+                    "INTENT",
+                    "ARCH",
+                    "INFO",
+                    "CNTR",
+                    "RISK",
+                    "SUPPLY",
+                    "REAL",
+                    "ASSURE",
+                    "CTRL",
+                    "CHANGE",
+                    "OPS",
+                    "RECORD"
+                  ]
+                },
+                "section": {
+                  "type": "string",
+                  "pattern": "^unit_[a-z0-9_]+$"
+                },
+                "policy_id": {
+                  "type": "string"
+                },
+                "policy_path": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "source_worktree_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "materializations": {
+      "type": "array",
+      "minItems": 14,
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "family",
+          "path",
+          "source_status",
+          "unit_count",
+          "definition_only"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "family": {
+            "enum": [
+              "NORM",
+              "GOV",
+              "INTENT",
+              "ARCH",
+              "INFO",
+              "CNTR",
+              "RISK",
+              "SUPPLY",
+              "REAL",
+              "ASSURE",
+              "CTRL",
+              "CHANGE",
+              "OPS",
+              "RECORD"
+            ]
+          },
+          "path": {
+            "type": "string"
+          },
+          "source_status": {
+            "enum": [
+              "DRAFT",
+              "APPROVED",
+              "ACTIVE",
+              "RETIRED",
+              "DEPRECATED",
+              "SUPERSEDED"
+            ]
+          },
+          "unit_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "definition_only": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "source_digest_format": {
+      "const": "UTF8_LF"
+    }
+  },
+  "$id": "urn:ptsip:ptsip_developer_policy:root-family-migration:v1"
+}

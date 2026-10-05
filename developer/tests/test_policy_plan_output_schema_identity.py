@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from developer.tests.policy_migration_helpers import source_file
 import json
 from pathlib import Path
 
@@ -39,7 +40,7 @@ def test_output_schema_identity_is_exact_and_identity_only() -> None:
 
 
 def test_output_policy_owns_output_semantics_not_verification_semantics() -> None:
-    payload = yaml.safe_load(POLICY_PATH.read_text(encoding="utf-8"))
+    payload = yaml.safe_load(source_file(POLICY_PATH).read_text(encoding="utf-8"))
     policy = payload["policy"]
     rules = payload["rules"]["policy_plan_consistency_verification_output_contract"]
 

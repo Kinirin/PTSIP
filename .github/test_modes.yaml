@@ -94,6 +94,8 @@ modes:
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:
+      go:
+        - developer/tests/rootfamily
       pytest:
         - tests/ptsip/repository/test_self_profile.py
         - developer/tests

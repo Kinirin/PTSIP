@@ -1,4 +1,5 @@
 from __future__ import annotations
+from developer.tests.policy_migration_helpers import source_file
 
 import json
 import re
@@ -247,7 +248,7 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
     assert Counter(indexed_mpd_ids) == Counter(discovered_mpd_ids)
     for item in mpd_index["policies"]:
         policy_id = item["id"]
-        assert item["path"] == _expected_policy_path(policy_id)
+        assert item["path"] == source_file(ROOT / _expected_policy_path(policy_id)).relative_to(ROOT).as_posix()
     sfp_ids = [item["id"] for item in sfp_index["policies"]]
     assert sfp_ids[:24] == [
         f"SFP-{number:04d}" for number in range(1, 25)
@@ -295,7 +296,7 @@ def test_policy_path_fixture_rejects_unregistered_family() -> None:
 
 
 def test_mpd_0011_declares_incremental_implementation_state() -> None:
-    payload = _yaml(ROOT / "developer" / "policy" / "MPD-0011.yaml")
+    payload = _yaml(source_file(ROOT / "developer" / "policy" / "MPD-0011.yaml"))
     state = payload["rules"]["implementation_state"]
 
     assert state["operationalization_level"] == "L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_AND_RELEASE_VERIFY"
@@ -329,23 +330,23 @@ def test_support_policy_index_has_exact_targets_and_active_vpms_boundary() -> No
     assert len(policy_ids) == len(set(policy_ids))
     assert payload["policies"][3]["status"] == "DRAFT"
     assert payload["policies"][22] == {
-        "id": "SFP-0023", "path": "SFP-0023.yaml", "status": "ACTIVE",
+        "id": "SFP-0023", "path": "legacy/SFP-0023.yaml", "status": "ACTIVE", "authority_role": "MIGRATION_SOURCE",
     }
     assert payload["policies"][23] == {
-        "id": "SFP-0024", "path": "SFP-0024.yaml", "status": "ACTIVE",
+        "id": "SFP-0024", "path": "legacy/SFP-0024.yaml", "status": "ACTIVE", "authority_role": "MIGRATION_SOURCE",
     }
     assert payload["policies"][5] == {
-        "id": "SFP-0006", "path": "SFP-0006.yaml", "status": "RETIRED",
+        "id": "SFP-0006", "path": "legacy/SFP-0006.yaml", "status": "RETIRED", "authority_role": "MIGRATION_SOURCE",
     }
     assert all(
         item["status"] == "ACTIVE"
-        for index, item in enumerate(payload["policies"])
+        for index, item in enumerate(payload["policies"][:24])
         if index not in {3, 5}
     )
 
 
 def test_policy_namespace_distinguishes_canonical_source_and_installed_projection() -> None:
-    payload = _yaml(ROOT / "developer/policy/SPEC/MPD-SPEC-0001.yaml")
+    payload = _yaml(source_file(ROOT / "developer/policy/SPEC/MPD-SPEC-0001.yaml"))
     support = payload["rules"]["namespace"]["support_feature"]
     assert support["machine_policy_path"] == "src/policy/"
     assert support["machine_policy_index"] == "src/policy/index.yaml"

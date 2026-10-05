@@ -1,0 +1,42 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: RECORD
+policy:
+  id: SFP-RECORD-0001
+  title: RECORD authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_OBSERVATION_AND_OPERATION_PROVENANCE
+  statement: consumer repository observation, authority 참조 및 operation 결과의 source-bound
+    receipt와 감사 가능한 이력 보존을 소유한다.
+exclusive_kernel:
+- SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+- SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+authority_contract:
+  authority_type: ROOT_FAMILY_RECORD
+  schema_id: ptsip.governance/root-family/record
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+      statement: report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact
+        snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.
+      non_substitutability: ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source
+        provenance를 자동 보존하지 않는다.
+    - id: SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+      statement: operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운
+        global authority나 live canonical source가 되지 않는다.
+      non_substitutability: GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와
+        원본 receipt를 대체하지 못한다.
+    source_scope:
+    - SFP-0012
+    - SFP-0016
+  unit_sfp_0012_81a0ebb3712b: true
+  unit_sfp_0012_ebb600e2a407: INFERRED
+  unit_sfp_0016_d4d97d2d2932: APPEND_ONLY_DIGEST_CHAINED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

@@ -1,0 +1,138 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CHANGE
+policy:
+  id: MPD-CHANGE-0002
+  title: CHANGE authority (APPROVED source responsibilities)
+  status: APPROVED
+  version: '1.0'
+authority_subject:
+  id: DEV_VERSIONED_TRANSITION_SEMANTICS
+  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
+exclusive_kernel:
+- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+- DEV_MIGRATION_ORDER_AND_CONTINUITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
+        문자열이나 Family 이름을 치환하지 않는다.
+      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
+        않는다.
+    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
+      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
+        정한다.
+      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
+        조건을 정당화할 수 없다.
+    source_scope:
+    - MPD-0016
+    - MPD-VERI-0001
+  unit_mpd_0016_f036e3f8c407:
+    target_status: ACTIVE
+    state: PENDING
+    requirements:
+    - id: TR-001
+      type: VERIFICATION
+      state: OPEN
+      refs:
+      - docs/translated/index.yaml
+      - .github/workflows/readme-translation.yml
+      next_action:
+        action: VALIDATE_README_TRANSLATION_GOVERNANCE
+        execution: PARALLEL_ALLOWED
+        target_refs:
+        - developer/policy/MPD-0016.yaml
+        - docs/translated/index.yaml
+        - .github/workflows/readme-translation.yml
+        completion_check: README_TRANSLATION_GOVERNANCE_VALID
+  unit_mpd_veri_0001_f036e3f8c407:
+    target_status: ACTIVE
+    state: PENDING
+    requirements:
+    - id: TR-001
+      type: STRUCTURAL_COMPATIBILITY
+      state: SATISFIED
+      refs:
+      - MPD-SPEC-0023
+      - MPD-0013
+      next_action:
+        action: ALIGN_POLICY_PLAN_IDENTITY_CONTRACT
+        execution: PARALLEL_ALLOWED
+        target_refs:
+        - developer/policy/SPEC/MPD-SPEC-0023.yaml
+        - developer/policy/MPD-0013.yaml
+        completion_check: POLICY_PLAN_IDENTITY_CONTRACT_ALIGNED
+    - id: TR-002
+      type: SCHEMA_MIGRATION
+      state: SATISFIED
+      refs:
+      - developer/bindings/schemas/policy-plan-bindings.schema.json
+      next_action:
+        action: MIGRATE_POLICY_PLAN_BINDING_SCHEMA
+        execution: SERIAL_REQUIRED
+        target_refs:
+        - developer/bindings/schemas/policy-plan-bindings.schema.json
+        after:
+        - TR-001
+        completion_check: POLICY_PLAN_BINDING_SCHEMA_VALID
+    - id: TR-003
+      type: AUTOMATION_INTEGRATION
+      state: SATISFIED
+      refs:
+      - developer/automation/policy_plan_binding/
+      next_action:
+        action: IMPLEMENT_PLAN_IDENTITY_AND_REF_TRACKING
+        execution: SERIAL_REQUIRED
+        target_refs:
+        - developer/automation/policy_plan_binding/
+        after:
+        - TR-002
+        completion_check: PLAN_IDENTITY_AND_REF_TRACKING_VALID
+    - id: TR-004
+      type: VERIFICATION
+      state: SATISFIED
+      refs:
+      - developer/automation/
+      - .github/workflows/tooling-test.yml
+      next_action:
+        action: IMPLEMENT_POLICY_PLAN_CONSISTENCY_VERIFICATION
+        execution: SERIAL_REQUIRED
+        target_refs:
+        - developer/automation/
+        - .github/workflows/tooling-test.yml
+        after:
+        - TR-002
+        - TR-003
+        completion_check: POLICY_PLAN_CONSISTENCY_VERIFICATION_PASS
+    - id: TR-005
+      type: OUTPUT_CONTRACT
+      state: OPEN
+      refs:
+      - MPD-VERI-0006
+      - developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
+      next_action:
+        action: COMPLETE_VERIFICATION_OUTPUT_CONTRACT
+        execution: PARALLEL_ALLOWED
+        target_refs:
+        - developer/policy/VERI/MPD-VERI-0006.yaml
+        - developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
+        completion_check: VERIFICATION_OUTPUT_CONTRACT_COMPLETE
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: OPEN
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0002-APPROVED.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

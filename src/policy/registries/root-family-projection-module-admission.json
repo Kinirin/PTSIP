@@ -1,0 +1,23 @@
+{
+  "schema_version": "ptsip-support-module-admission/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "policy_id": "SFP-CNTR-0004",
+  "module_ref": "registries/root-family-projection.module.json",
+  "approval": {
+    "decision": "APPROVED",
+    "source_kind": "PROJECT_OWNER_DIRECT_INSTRUCTION",
+    "source_reference": "테스트 뿐만아니라 앞으로 기본root에 /src 의 모듈 생성은 중립 코딩언어 생성으로 해야합니다. 지금 파이썬 언어로 src/ptsip/policy_projection.py 을 생성한건 중립언어의 생성이 아닙니다",
+    "recorded_at": "2026-10-06T01:50:44+09:00"
+  },
+  "lifecycle": [
+    {
+      "from": "UNREGISTERED",
+      "to": "DRAFT"
+    },
+    {
+      "from": "DRAFT",
+      "to": "ACTIVE"
+    }
+  ],
+  "developer_approval_inherited": false
+}

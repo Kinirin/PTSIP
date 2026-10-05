@@ -58,7 +58,8 @@ def verify_preserved(root: Path, preserved):
     for item in preserved:
         relative = item["path"]
         operation = changes.get(relative)
-        path = root / relative
+        from developer.automation.policy_loader import registered_policy_file
+        path = registered_policy_file(relative, root=root)
         if operation == "DELETE":
             if path.exists():
                 raise ValueError("RETIRED_SOURCE_PRESENT: " + relative)
