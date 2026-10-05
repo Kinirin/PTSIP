@@ -35,7 +35,7 @@ def _yaml(path: Path) -> dict[str, object]:
 
 def _expected_policy_path(policy_id: str) -> str:
     family_match = re.fullmatch(
-        r"MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}", policy_id
+        rf"MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{{4}}", policy_id
     )
     if family_match is not None:
         return f"developer/policy/{family_match.group(1)}/{policy_id}.yaml"
@@ -189,6 +189,8 @@ def test_current_policy_relations_preserve_materialized_relation_set() -> None:
         ("MPD-0015", "depends_on", "MPD-SPEC-0022", "CONTRACT_ARTIFACT_REPRESENTATION"),
         ("MPD-0015", "depends_on", "MPD-WORK-0002", "EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF"),
         ("MPD-0017", "depends_on", "MPD-0010", "EXACT_MACHINE_RESOLUTION_AND_INFERENCE_COST_BASELINE"),
+        ("MPD-0018", "extends", "MPD-BOUND-0001", "POLICY_CLASS_AND_RESPONSIBILITY_FAMILY_COMPOSITE_IDENTITY"),
+        ("MPD-0018", "depends_on", "MPD-BOUND-0001", "AUTHORITY_LOOKUP_ISOLATION"),
         ("MPD-BOUND-0001", "depends_on", "MPD-WORK-0003", "RESPONSIBILITY_FAMILY_DECOMPOSITION_AND_AUTHORITY_RECONCILIATION_BASELINE"),
         ("MPD-MIGR-0001", "depends_on", "MPD-PLAN-0001", "PLANNING_TARGET_AUTHORITY"),
         ("MPD-MIGR-0002", "depends_on", "MPD-0016", "README_TRANSLATION_GOVERNANCE"),
@@ -247,7 +249,7 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
         policy_id = item["id"]
         assert item["path"] == _expected_policy_path(policy_id)
     assert [item["id"] for item in sfp_index["policies"]] == [
-        f"SFP-{number:04d}" for number in range(1, 24)
+        f"SFP-{number:04d}" for number in range(1, 25)
     ]
     assert "legacy_decisions_migration" not in mpd_index
 
@@ -272,6 +274,7 @@ def test_current_policy_indexes_cover_self_contained_corpus() -> None:
         ("MPD-VERI-0001", "developer/policy/VERI/MPD-VERI-0001.yaml"),
         ("MPD-MIGR-0001", "developer/policy/MIGR/MPD-MIGR-0001.yaml"),
         ("MPD-RELS-0001", "developer/policy/RELS/MPD-RELS-0001.yaml"),
+        ("MPD-ARCH-0001", "developer/policy/ARCH/MPD-ARCH-0001.yaml"),
     ],
 )
 def test_policy_path_fixture_distinguishes_boundary_from_families(
@@ -318,11 +321,14 @@ def test_support_feature_corpus_has_no_repository_specific_authority_wrapper() -
 def test_support_policy_index_has_exact_targets_and_active_vpms_boundary() -> None:
     payload = _yaml(ROOT / "src" / "policy" / "index.yaml")
     assert [item["id"] for item in payload["policies"]] == [
-        f"SFP-{number:04d}" for number in range(1, 24)
+        f"SFP-{number:04d}" for number in range(1, 25)
     ]
     assert payload["policies"][3]["status"] == "DRAFT"
     assert payload["policies"][22] == {
         "id": "SFP-0023", "path": "SFP-0023.yaml", "status": "ACTIVE",
+    }
+    assert payload["policies"][23] == {
+        "id": "SFP-0024", "path": "SFP-0024.yaml", "status": "ACTIVE",
     }
     assert payload["policies"][5] == {
         "id": "SFP-0006", "path": "SFP-0006.yaml", "status": "RETIRED",
