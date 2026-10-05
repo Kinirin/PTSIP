@@ -389,7 +389,8 @@ policy_roles:
       - separate_classification_from_verification_purpose
       - deny_unauthorized_semantic_inference
       - separate_authority_from_conformance
-      - fail_closed_on_invalid_state  - policy_id: SFP-0024
+      - fail_closed_on_invalid_state
+  - policy_id: SFP-0024
     projection_role: PROJECT_ARCHITECTURE_AUTHORITY
     resolution_state: DECLARED
     effects:
