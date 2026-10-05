@@ -9,8 +9,12 @@ from referencing import Registry, Resource
 
 from developer.automation.policy_loader import load_json, load_yaml, repository_root
 from developer.automation.policy_responsibility_gate import (
-    FAMILIES,
     validate_analysis_semantics,
+)
+from developer.automation.root_family_policy_entry import (
+    LEGACY_DEVELOPER_FAMILIES,
+    REGISTRY as ROOT_FAMILY_ENTRY_REGISTRY,
+    REGISTRY_SCHEMA as ROOT_FAMILY_ENTRY_REGISTRY_SCHEMA,
 )
 
 
@@ -596,13 +600,13 @@ def _validate_policy_responsibility_analysis_plane(
         if static_enforcement is None
         else _mapping(static_enforcement.get("grandfathered_family_maximums"))
     )
-    if baselines is None or set(baselines) != set(FAMILIES):
+    if baselines is None or set(baselines) != set(LEGACY_DEVELOPER_FAMILIES):
         errors.append(
-            "MPD-WORK-0003: grandfathered_family_maximums must define all Family vocabulary"
+            "MPD-WORK-0003: grandfathered_family_maximums must define exactly the legacy Family vocabulary"
         )
         return errors
 
-    for family in FAMILIES:
+    for family in LEGACY_DEVELOPER_FAMILIES:
         value = baselines.get(family)
         if not isinstance(value, int) or value < 0 or value > 9999:
             errors.append(

@@ -133,8 +133,12 @@ def test_generic_allocator_ignores_boundary_and_family_ids() -> None:
     assert _next_policy_id(("MPD-0001", "MPD-BOUND-9999", "MPD-VERI-9999")) == "MPD-0002"
 
 
-def test_family_allocator_keeps_one_shared_cross_class_sequence() -> None:
-    assert _next_family_policy_id(("MPD-VERI-0001", "MPD-VERI-0002", "MPD-BOUND-9999"), "VERI") == "MPD-VERI-0003"
+def test_vpms_legacy_family_allocator_keeps_shared_existing_sequence() -> None:
+    assert _next_family_policy_id(
+        ("MPD-VERI-0001", "MPD-VERI-0002", "MPD-BOUND-9999"),
+        "VERI",
+        policy_class=VPMS,
+    ) == "MPD-VERI-0003"
 
 
 def test_vpms_opening_requires_completed_isolation_verification(domains: Path) -> None:
@@ -143,7 +147,7 @@ def test_vpms_opening_requires_completed_isolation_verification(domains: Path) -
     record["application_execution"]["m1_m7_verified"] = False
     path.write_text(json.dumps(record), encoding="utf-8")
     with pytest.raises(PolicyIdentityLifecycleError) as exc:
-        _require_family_class_materialization(VPMS, domains)
+        _require_family_class_materialization(VPMS, "VERI", domains)
     assert exc.value.code == "VPMS_CLASS_MATERIALIZATION_NOT_ENABLED"
 
 

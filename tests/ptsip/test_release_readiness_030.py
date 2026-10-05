@@ -224,7 +224,7 @@ def test_distribution_projection_verifier_covers_relocated_policies_and_promotio
         if path.suffix in {".yaml", ".json"}
     }
     assert {source for source, _ in support} == expected
-    assert len(support) == 36
+    assert len(support) == 38
     assert len({target for _, target in support}) == len(support)
     assert all(target.startswith("ptsip/support/") for _, target in support)
     assert {target for _, target in promotion} == {

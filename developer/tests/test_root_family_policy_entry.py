@@ -3,6 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from jsonschema import Draft202012Validator
+
+from developer.automation.policy_loader import load_json, load_yaml
 
 from developer.automation.root_family_policy_entry import (
     ROOT_FAMILIES,
@@ -100,3 +103,32 @@ def test_unregistered_family_does_not_fall_back() -> None:
         resolve_entry("PTSIP_DEVELOPER_POLICY", "UNKNOWN", root=ROOT)
 
     assert exc.value.code == "UNKNOWN_ROOT_FAMILY"
+
+
+@pytest.mark.parametrize("family", ROOT_FAMILIES)
+def test_support_index_accepts_exact_family_paths_and_rejects_misrouting(family: str) -> None:
+    schema = load_json(
+        "src/policy/schemas/ptsip-support-feature-policy-index.schema.json", root=ROOT
+    )
+    validator = Draft202012Validator(schema)
+    index = load_yaml("src/policy/index.yaml", root=ROOT)
+    # The legacy corpus must remain readable before any Root policy exists.
+    validator.validate(index)
+    entry = resolve_entry("PTSIP_SUPPORT_FEATURE", family, root=ROOT)
+    route = {
+        "id": entry["allocated_policy_id"],
+        "path": str(entry["canonical_path"]).removeprefix("src/policy/"),
+        "status": "DRAFT",
+    }
+    index["policies"].append(route)
+    validator.validate(index)
+
+    valid_path = str(route["path"])
+    other_family = next(value for value in ROOT_FAMILIES if value != family)
+    for invalid_path in (
+        valid_path.removesuffix(".yaml") + "Xyaml",
+        "../" + valid_path,
+        other_family + "/" + valid_path.split("/", 1)[1],
+    ):
+        route["path"] = invalid_path
+        assert tuple(validator.iter_errors(index)), invalid_path
