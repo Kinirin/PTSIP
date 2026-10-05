@@ -389,7 +389,17 @@ policy_roles:
       - separate_classification_from_verification_purpose
       - deny_unauthorized_semantic_inference
       - separate_authority_from_conformance
+      - fail_closed_on_invalid_state  - policy_id: SFP-0024
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+      - govern_normative_family_lifecycle
+      - separate_cross_contract_identity_axes
+      - deny_unauthorized_semantic_inference
       - fail_closed_on_invalid_state
+
 invariants:
   registered_effect_token_is_project_authority_by_itself: false
   projection_role_is_current_eligibility_result_by_itself: false
