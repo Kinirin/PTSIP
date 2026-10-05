@@ -15,9 +15,11 @@ INDEX = "developer/policy/index.yaml"
 ANALYSIS_ROOT = Path("developer/policy/analysis")
 ANALYSIS_SCHEMA = "developer/policy/schemas/policy-responsibility-analysis.schema.json"
 
-FAMILIES = ("SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS")
+ROOT_FAMILIES = ("NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD")
+LEGACY_FAMILIES = ("SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS")
+FAMILIES = ROOT_FAMILIES + LEGACY_FAMILIES
 AUTHORITY_RELATIONS = ("OWN", "REFERENCE", "CONSUME", "VERIFY", "TRANSFORM", "EXECUTE")
-_FAMILY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
+_FAMILY_ID_RE = re.compile(r"^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
 
 COLLISION_RESOLUTION = {
     "EXACT_DUPLICATE": {"REFERENCE_EXISTING"},
@@ -81,7 +83,7 @@ def _active_family_ids(base: Path, policy_class: str, family: str) -> tuple[str,
 
     classes = load_json("developer/policy/registries/developer-policy-catalog-contracts.json", root=base)["$defs"]["developer_policy_class"]["enum"]
     if policy_class not in classes or family not in FAMILIES:
-        raise ResponsibilityGateError("INVALID_AUTHORITY_FAMILY_KEY", "explicit registered policy_class and Family are required")
+        raise ResponsibilityGateError("INVALID_AUTHORITY_FAMILY_KEY", "explicit registered policy_class and readable Family are required")
     try:
         index = load_neutral_policy_index(base)
     except (OSError, ValueError) as exc:
