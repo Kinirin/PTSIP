@@ -772,6 +772,12 @@ def register_family_policy(
     policy = _mapping(payload.get("policy"), label=f"{allocated}.policy")
     if payload.get("policy_class") != policy_class:
         raise PolicyIdentityLifecycleError("POLICY_CLASS_MISMATCH", "new policy file must match requested and analyzed policy_class")
+    if policy_class == "PTSIP_DEVELOPER_POLICY" and family in ROOT_FAMILIES:
+        if payload.get("responsibility_family") != family:
+            raise PolicyIdentityLifecycleError(
+                "RESPONSIBILITY_FAMILY_MISMATCH",
+                "new Root Family policy file must match requested and analyzed responsibility_family",
+            )
     if policy.get("id") != allocated:
         raise PolicyIdentityLifecycleError(
             "POLICY_FILE_ID_MISMATCH",
