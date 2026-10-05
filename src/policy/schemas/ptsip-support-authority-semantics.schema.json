@@ -666,6 +666,122 @@
           "VPMS_EXECUTION_COMPOSITION"
         ]
       }
+    },
+    "SFP_0024_V1": {
+      "const": {
+        "responsibility": "PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_TRANSITION",
+        "purpose": "Establish the Root Responsibility Family transition authority for PTSIP_SUPPORT_FEATURE while preserving policy-class-specific authority semantics and avoiding implicit inheritance from developer policy.",
+        "root_family_vocabulary": {
+          "status": "CANONICAL_COORDINATE_VOCABULARY",
+          "values": [
+            "NORM",
+            "GOV",
+            "INTENT",
+            "ARCH",
+            "INFO",
+            "CNTR",
+            "RISK",
+            "SUPPLY",
+            "REAL",
+            "ASSURE",
+            "CTRL",
+            "CHANGE",
+            "OPS",
+            "RECORD"
+          ],
+          "vocabulary_identity_is_semantic_authority": false,
+          "family_token_alone_is_authority_identity": false
+        },
+        "authority_identity": {
+          "canonical_key_fields": [
+            "policy_class",
+            "responsibility_family"
+          ],
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "same_family_token_across_policy_classes": {
+            "semantic_inheritance": "FORBIDDEN",
+            "authority_equivalence": "FORBIDDEN",
+            "fallback_resolution": "FORBIDDEN"
+          },
+          "class_specific_semantics_required": [
+            "authority_subject",
+            "exclusive_kernel"
+          ]
+        },
+        "minimum_kernel_model": {
+          "profile": "CONSERVATIVE_MINIMUM_KERNEL",
+          "authority_subject_role": "ROOT_AUTHORITY_SUBJECT_FOR_THIS_POLICY_CLASS",
+          "exclusive_kernel_role": "MINIMUM_NON_SUBSTITUTABLE_AUTHORITY",
+          "complete_boundary_closure_required_now": false,
+          "extension_space": "OPEN",
+          "unresolved_future_authority_assignment": "ALLOWED_AT_DESIGN_TIME",
+          "unresolved_authority_may_authorize_execution": false
+        },
+        "policy_class_root_slots": {
+          "recognized_root_families": [
+            "NORM",
+            "GOV",
+            "INTENT",
+            "ARCH",
+            "INFO",
+            "CNTR",
+            "RISK",
+            "SUPPLY",
+            "REAL",
+            "ASSURE",
+            "CTRL",
+            "CHANGE",
+            "OPS",
+            "RECORD"
+          ],
+          "slot_states": {
+            "allowed": [
+              "ACTIVE",
+              "RESERVED"
+            ]
+          },
+          "unmaterialized_slot_default": "RESERVED",
+          "reserved_slot_has_implicit_authority_subject": false,
+          "reserved_slot_has_implicit_exclusive_kernel": false
+        },
+        "cross_policy_class_boundary": {
+          "shared_element": "ROOT_FAMILY_TOKEN_VOCABULARY_ONLY",
+          "shared_authority_subject": false,
+          "shared_exclusive_kernel": false,
+          "implicit_cross_class_bridge": "FORBIDDEN",
+          "explicit_bridge_required_for_cross_class_semantics": true
+        },
+        "legacy_support_policy_transition": {
+          "existing_sfp_identity_preservation_required": true,
+          "existing_sfp_policy_is_automatic_root_family_assignment": false,
+          "one_to_one_mapping_assumption": "FORBIDDEN",
+          "rename_as_migration": "FORBIDDEN",
+          "semantic_decomposition_required": true,
+          "family_aware_policy_identity_requires_new_schema_and_resolver_support": true
+        },
+        "bootstrap_sequence": [
+          "CREATE_CLASS_SCOPED_ROOT_FAMILY_POLICY",
+          "CHANGE_REPOSITORY_POLICY_ENTRY",
+          "MATERIALIZE_FAMILY_AWARE_SCHEMAS",
+          "MATERIALIZE_FAMILY_AWARE_RESOLUTION",
+          "DECOMPOSE_LEGACY_POLICIES"
+        ],
+        "ownership": {
+          "owns": [
+            "PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_TRANSITION_MODEL",
+            "PTSIP_SUPPORT_FEATURE_FOURTEEN_ROOT_FAMILY_COORDINATE_SET",
+            "SUPPORT_CLASS_SCOPED_AUTHORITY_SUBJECT_AND_EXCLUSIVE_KERNEL_REQUIREMENT"
+          ],
+          "does_not_own": [
+            "PTSIP_DEVELOPER_POLICY_ROOT_FAMILY_SEMANTICS",
+            "INDIVIDUAL_ROOT_FAMILY_AUTHORITY_SUBJECT",
+            "INDIVIDUAL_ROOT_FAMILY_EXCLUSIVE_KERNEL",
+            "LEGACY_SFP_DECOMPOSITION_RESULT",
+            "FAMILY_AWARE_SCHEMA_IMPLEMENTATION",
+            "FAMILY_AWARE_RESOLVER_IMPLEMENTATION"
+          ]
+        }
+      }
     }
   }
 }
