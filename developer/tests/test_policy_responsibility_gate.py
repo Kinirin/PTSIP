@@ -204,6 +204,7 @@ def repo(tmp_path: Path) -> Path:
     schemas.mkdir(parents=True)
     for name in (
         "management-policy.schema.json",
+        "root-family-policy.schema.json",
         "policy-approval-provenance.schema.json",
         "policy-responsibility-analysis.schema.json",
         "policy-materialization-analysis-registry.schema.json",
@@ -304,7 +305,7 @@ def _approval(repo: Path) -> Path:
                 "target_status": "DRAFT",
                 "implementation_authorized": True,
                 "policy_content_review_scope": "FULL",
-                "requested_policy_id": "MPD-SPEC-0002",
+                "requested_policy_id": "MPD-ARCH-0001",
                 "recorded_at": "2026-09-29",
             },
         },
@@ -312,35 +313,35 @@ def _approval(repo: Path) -> Path:
     return path
 
 
-def _family_analysis(repo: Path, searched_policy_ids: list[str]) -> Path:
+def _family_analysis(repo: Path, searched_policy_ids: list[str] | None = None) -> Path:
     path = repo / "developer/policy/analysis/PRA-test-family.yaml"
     responsibility = _responsibility(
         "R01",
-        "SPEC",
+        "ARCH",
         "G01",
-        searched_policy_ids=searched_policy_ids,
+        searched_policy_ids=searched_policy_ids or [],
     )
     payload = _analysis_payload(
         [responsibility],
         [
             {
                 "group_id": "G01",
-                "family": "SPEC",
-                "cohesion_key": "SPEC_COHESION",
+                "family": "ARCH",
+                "cohesion_key": "ARCH_COHESION",
                 "responsibility_ids": ["R01"],
-                "cohesion_rationale": "One new SPEC authority subject.",
+                "cohesion_rationale": "One new ARCH authority subject.",
             }
         ],
-        owned_family_set=["SPEC"],
+        owned_family_set=["ARCH"],
         split_required=False,
     )
     _write_yaml(path, payload)
     return path
 
 
-def test_family_preflight_requires_complete_existing_authority_lookup(repo: Path) -> None:
+def test_legacy_family_new_allocation_is_forbidden(repo: Path) -> None:
     approval = _approval(repo)
-    analysis = _family_analysis(repo, [])
+    analysis = _family_analysis(repo)
 
     with pytest.raises(PolicyIdentityLifecycleError) as exc:
         preflight_family_policy(
@@ -351,41 +352,53 @@ def test_family_preflight_requires_complete_existing_authority_lookup(repo: Path
             root=repo,
             policy_class="PTSIP_DEVELOPER_POLICY",
         )
-    assert exc.value.code == "RESPONSIBILITY_ANALYSIS_BLOCKED"
+    assert exc.value.code == "LEGACY_FAMILY_NEW_ALLOCATION_FORBIDDEN"
 
 
-def test_family_register_binds_analysis_atomically(repo: Path) -> None:
+def test_root_family_register_binds_analysis_atomically(repo: Path) -> None:
     approval = _approval(repo)
-    analysis = _family_analysis(repo, ["MPD-SPEC-0001"])
+    analysis = _family_analysis(repo)
 
     preflight = preflight_family_policy(
-        "SPEC",
+        "ARCH",
         approval,
         analysis,
         "G01",
         root=repo,
         policy_class="PTSIP_DEVELOPER_POLICY",
     )
-    assert preflight["allocated_policy_id"] == "MPD-SPEC-0002"
+    assert preflight["allocated_policy_id"] == "MPD-ARCH-0001"
 
-    policy_path = repo / "developer/policy/SPEC/MPD-SPEC-0002.yaml"
+    policy_path = repo / "developer/policy/ARCH/MPD-ARCH-0001.yaml"
     _write_yaml(
         policy_path,
         {
-            "schema_version": "ptsip-developer-policy/v1",
+            "schema_version": "ptsip-developer-root-family-policy/v1",
             "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH",
             "policy": {
-                "id": "MPD-SPEC-0002",
+                "id": "MPD-ARCH-0001",
                 "version": "0.0",
-                "title": "New SPEC",
+                "title": "New ARCH",
                 "status": "DRAFT",
             },
-            "rules": {"new_spec": {"enabled": True}},
+            "authority_subject": {
+                "id": "TEST_ARCH_AUTHORITY",
+                "statement": "Test developer architecture authority.",
+            },
+            "exclusive_kernel": ["TEST_ARCH_KERNEL"],
+            "rules": {"new_arch": {"enabled": True}},
+            "relations": {
+                "supersedes": [],
+                "amends": [],
+                "extends": [],
+                "depends_on": [],
+            },
         },
     )
 
     result = register_family_policy(
-        "SPEC",
+        "ARCH",
         approval,
         analysis,
         "G01",
@@ -401,9 +414,9 @@ def test_family_register_binds_analysis_atomically(repo: Path) -> None:
     )
     assert registry["bindings"] == [
         {
-            "policy_id": "MPD-SPEC-0002",
+            "policy_id": "MPD-ARCH-0001",
             "policy_class": "PTSIP_DEVELOPER_POLICY",
-            "family": "SPEC",
+            "family": "ARCH",
             "analysis_ref": "developer/policy/analysis/PRA-test-family.yaml",
             "analysis_id": "PRA-test",
             "group_id": "G01",
