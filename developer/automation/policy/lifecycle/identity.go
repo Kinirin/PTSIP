@@ -1,8 +1,8 @@
-package machine
+package lifecycle
 
 import "fmt"
 
-func (r *Repository) InspectFamilyID(id string) (Object, error) {
+func InspectFamilyID(r Repository, id string) (Object, error) {
 	match := familyPolicyID.FindStringSubmatch(id)
 	if match == nil {
 		return nil, fmt.Errorf("not an exact Root Family policy identity: %s", id)

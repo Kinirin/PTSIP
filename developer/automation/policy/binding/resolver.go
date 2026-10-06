@@ -1,4 +1,4 @@
-package machine
+package binding
 
 import (
 	"bufio"
@@ -18,14 +18,14 @@ var rootID = regexp.MustCompile(`^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPL
 var operations = []string{"MODIFY", "PLAN", "READ", "RELEASE", "VERIFY"}
 
 type Resolver struct {
-	Repo     *Repository
+	Repo     Repository
 	Contract Object
 	Index    map[string]Object
 	Bindings map[string]Object
 	ID       string
 }
 
-func NewResolver(repo *Repository) (*Resolver, error) {
+func NewResolver(repo Repository) (*Resolver, error) {
 	contract, err := repo.Read(ResolverContract)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-package machine
+package lifecycle
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 
 var familyPolicyID = regexp.MustCompile(`^(MPD|SFP)-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-([0-9]{4})$`)
 
-func (r *Repository) FamilyEntry(policyClass, family string) (Object, error) {
+func FamilyEntry(r Repository, policyClass, family string) (Object, error) {
 	registry, err := r.Read("developer/policy/registries/root-family-entry-registry.json")
 	if err != nil {
 		return nil, err

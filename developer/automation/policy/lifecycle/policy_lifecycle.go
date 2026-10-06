@@ -1,4 +1,4 @@
-package machine
+package lifecycle
 
 import (
 	"fmt"
@@ -95,7 +95,7 @@ type PolicyCorpus struct {
 	Records      map[string]Object
 }
 
-func (r *Repository) LoadConsistentPolicyCorpus() (*PolicyCorpus, error) {
+func LoadConsistentPolicyCorpus(r Repository) (*PolicyCorpus, error) {
 	index, err := r.LoadNeutralPolicyIndex()
 	if err != nil {
 		return nil, policyFailure("INVALID_POLICY_INDEX", err.Error())
@@ -145,7 +145,7 @@ func (r *Repository) LoadConsistentPolicyCorpus() (*PolicyCorpus, error) {
 	}
 	return state, nil
 }
-func (r *Repository) policyDiscoveredIDs() ([]string, error) {
+func policyDiscoveredIDs(r Repository) ([]string, error) {
 	root, err := r.Path("developer/policy")
 	if err != nil {
 		return nil, err
@@ -169,8 +169,8 @@ func (r *Repository) policyDiscoveredIDs() ([]string, error) {
 	sort.Strings(ids)
 	return ids, err
 }
-func (r *Repository) policyCheckDiscovery(state *PolicyCorpus, extra string) error {
-	discovered, err := r.policyDiscoveredIDs()
+func policyCheckDiscovery(r Repository, state *PolicyCorpus, extra string) error {
+	discovered, err := policyDiscoveredIDs(r)
 	if err != nil {
 		return err
 	}
@@ -184,7 +184,7 @@ func (r *Repository) policyCheckDiscovery(state *PolicyCorpus, extra string) err
 	}
 	return nil
 }
-func (r *Repository) policyApproval(reference string) (Object, error) {
+func policyApproval(r Repository, reference string) (Object, error) {
 	relative, err := r.Scope(reference)
 	if err != nil {
 		return nil, policyFailure("APPROVAL_PROVENANCE_OUTSIDE_REPOSITORY", err.Error())
@@ -205,7 +205,7 @@ func (r *Repository) policyApproval(reference string) (Object, error) {
 	}
 	return approval, nil
 }
-func (r *Repository) policyRequireFamilyClass(class, family string) error {
+func policyRequireFamilyClass(r Repository, class, family string) error {
 	contract, err := r.Read("developer/policy/registries/developer-policy-catalog-contracts.json")
 	if err != nil {
 		return err
@@ -243,8 +243,8 @@ func policyNextFamilyID(ids []string, family string) (string, error) {
 	}
 	return fmt.Sprintf("MPD-%s-%04d", family, maximum+1), nil
 }
-func (r *Repository) policyAnalysisGroup(class, family, reference, groupID string) (Object, Object, error) {
-	result, err := r.ValidateResponsibilityAnalysis(reference, true)
+func policyAnalysisGroup(r Repository, class, family, reference, groupID string) (Object, Object, error) {
+	result, err := ValidateResponsibilityAnalysis(r, reference, true)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -271,25 +271,25 @@ func (r *Repository) policyAnalysisGroup(class, family, reference, groupID strin
 	}
 	return result, selected, nil
 }
-func (r *Repository) PreflightFamilyPolicy(class, family, approvalRef, analysisID, groupID string) (Object, error) {
-	if err := r.policyRequireFamilyClass(class, family); err != nil {
+func PreflightFamilyPolicy(r Repository, class, family, approvalRef, analysisID, groupID string) (Object, error) {
+	if err := policyRequireFamilyClass(r, class, family); err != nil {
 		return nil, err
 	}
-	state, err := r.LoadConsistentPolicyCorpus()
+	state, err := LoadConsistentPolicyCorpus(r)
 	if err != nil {
 		return nil, err
 	}
-	if err := r.policyCheckDiscovery(state, ""); err != nil {
+	if err := policyCheckDiscovery(r, state, ""); err != nil {
 		return nil, err
 	}
-	approval, err := r.policyApproval(approvalRef)
+	approval, err := policyApproval(r, approvalRef)
 	if err != nil {
 		return nil, err
 	}
 	if approval["target_status"] != "DRAFT" {
 		return nil, policyFailure("NEW_POLICY_MUST_START_DRAFT", "new policy must start at DRAFT 0.0")
 	}
-	analysis, group, err := r.policyAnalysisGroup(class, family, analysisID, groupID)
+	analysis, group, err := policyAnalysisGroup(r, class, family, analysisID, groupID)
 	if err != nil {
 		return nil, err
 	}
@@ -302,12 +302,12 @@ func (r *Repository) PreflightFamilyPolicy(class, family, approvalRef, analysisI
 	}
 	return Object{"status": "READY", "allocated_policy_id": id, "family": family, "policy_class": class, "group_id": groupID, "analysis_id": analysis["analysis_id"], "analysis_ref": analysis["analysis_ref"], "split_required": analysis["split_required"], "target_status": approval["target_status"], "approval_id": approval["approval_id"], "approval_scope": approval["approval_scope"], "implementation_authorized": approval["implementation_authorized"], "policy_content_review_scope": approval["policy_content_review_scope"], "cohesion_key": group["cohesion_key"], "registry_mutation_required": true, "analysis_registry_mutation_required": true}, nil
 }
-func (r *Repository) InspectPolicy(id string) (Object, error) {
-	state, err := r.LoadConsistentPolicyCorpus()
+func InspectPolicy(r Repository, id string) (Object, error) {
+	state, err := LoadConsistentPolicyCorpus(r)
 	if err != nil {
 		return nil, err
 	}
-	if err := r.policyCheckDiscovery(state, ""); err != nil {
+	if err := policyCheckDiscovery(r, state, ""); err != nil {
 		return nil, err
 	}
 	payload, found := state.Records[id]
@@ -323,15 +323,15 @@ func (r *Repository) InspectPolicy(id string) (Object, error) {
 	identity := Map(payload["policy"])
 	return Object{"status": "FOUND", "policy_id": id, "title": identity["title"], "policy_status": identity["status"], "policy_version": identity["version"], "index_status": entry["status"], "subject_identity_registered": true, "operationally_resolvable": identity["status"] == "ACTIVE", "declared_runtime_authority": Map(Map(payload["rules"])["authority_semantics"])["runtime_authority"], "transition": payload["transition"], "path": entry["path"]}, nil
 }
-func (r *Repository) StatusPreflight(id, approvalRef string) (Object, error) {
-	approval, err := r.policyApproval(approvalRef)
+func StatusPreflight(r Repository, id, approvalRef string) (Object, error) {
+	approval, err := policyApproval(r, approvalRef)
 	if err != nil {
 		return nil, err
 	}
 	if approval["requested_policy_id"] != id {
 		return nil, policyFailure("APPROVAL_POLICY_ID_MISMATCH", id)
 	}
-	inspected, err := r.InspectPolicy(id)
+	inspected, err := InspectPolicy(r, id)
 	if err != nil {
 		return nil, err
 	}
@@ -343,8 +343,8 @@ func (r *Repository) StatusPreflight(id, approvalRef string) (Object, error) {
 
 // The unqualified entry point now delegates through the exact requested Root
 // identity and the same responsibility gate as explicit Family registration.
-func (r *Repository) PreflightNewPolicy(approvalRef, analysisID, groupID string) (Object, error) {
-	approval, err := r.policyApproval(approvalRef)
+func PreflightNewPolicy(r Repository, approvalRef, analysisID, groupID string) (Object, error) {
+	approval, err := policyApproval(r, approvalRef)
 	if err != nil {
 		return nil, err
 	}
@@ -353,10 +353,10 @@ func (r *Repository) PreflightNewPolicy(approvalRef, analysisID, groupID string)
 	if match == nil {
 		return nil, policyFailure("ROOT_FAMILY_ID_REQUIRED", "new Developer authority requires an exact requested Root Family identity")
 	}
-	return r.PreflightFamilyPolicy(DeveloperClass, match[1], approvalRef, analysisID, groupID)
+	return PreflightFamilyPolicy(r, DeveloperClass, match[1], approvalRef, analysisID, groupID)
 }
-func (r *Repository) RegisterPolicy(approvalRef, analysisID, groupID, policyFile string) (Object, error) {
-	approval, err := r.policyApproval(approvalRef)
+func RegisterPolicy(r Repository, approvalRef, analysisID, groupID, policyFile string) (Object, error) {
+	approval, err := policyApproval(r, approvalRef)
 	if err != nil {
 		return nil, err
 	}
@@ -365,12 +365,12 @@ func (r *Repository) RegisterPolicy(approvalRef, analysisID, groupID, policyFile
 	if match == nil {
 		return nil, policyFailure("ROOT_FAMILY_ID_REQUIRED", "new Developer authority requires an exact requested Root Family identity")
 	}
-	return r.RegisterFamilyPolicy(DeveloperClass, match[1], approvalRef, analysisID, groupID, policyFile)
+	return RegisterFamilyPolicy(r, DeveloperClass, match[1], approvalRef, analysisID, groupID, policyFile)
 }
 
 // policyWriteTransaction validates each target with repository path and CAS checks,
 // and restores exact previous bytes on an interrupted multi-record write.
-func (r *Repository) policyWriteTransaction(updates map[string]Object) error {
+func policyWriteTransaction(r Repository, updates map[string]Object) error {
 	paths := []string{}
 	original := map[string][]byte{}
 	digests := map[string]string{}
@@ -407,22 +407,22 @@ func (r *Repository) policyWriteTransaction(updates map[string]Object) error {
 	}
 	return nil
 }
-func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisID, groupID, policyFile string) (Object, error) {
-	if err := r.policyRequireFamilyClass(class, family); err != nil {
+func RegisterFamilyPolicy(r Repository, class, family, approvalRef, analysisID, groupID, policyFile string) (Object, error) {
+	if err := policyRequireFamilyClass(r, class, family); err != nil {
 		return nil, err
 	}
-	state, err := r.LoadConsistentPolicyCorpus()
+	state, err := LoadConsistentPolicyCorpus(r)
 	if err != nil {
 		return nil, err
 	}
-	approval, err := r.policyApproval(approvalRef)
+	approval, err := policyApproval(r, approvalRef)
 	if err != nil {
 		return nil, err
 	}
 	if approval["target_status"] != "DRAFT" {
 		return nil, policyFailure("NEW_POLICY_MUST_START_DRAFT", "DRAFT 0.0 required")
 	}
-	analysis, _, err := r.policyAnalysisGroup(class, family, analysisID, groupID)
+	analysis, _, err := policyAnalysisGroup(r, class, family, analysisID, groupID)
 	if err != nil {
 		return nil, err
 	}
@@ -444,7 +444,7 @@ func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisID
 	if relative != expected {
 		return nil, policyFailure("POLICY_FILE_PATH_MISMATCH", expected)
 	}
-	if err := r.policyCheckDiscovery(state, id); err != nil {
+	if err := policyCheckDiscovery(r, state, id); err != nil {
 		return nil, err
 	}
 	payload, err := r.Read(expected)
@@ -506,7 +506,7 @@ func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisID
 			return nil, err
 		}
 	}
-	if err := r.policyWriteTransaction(map[string]Object{policyIndex: index, policySubjectRegistry: subject, policyAnalysisRegistry: registry}); err != nil {
+	if err := policyWriteTransaction(r, map[string]Object{policyIndex: index, policySubjectRegistry: subject, policyAnalysisRegistry: registry}); err != nil {
 		return nil, err
 	}
 	return Object{"status": "REGISTERED", "policy_id": id, "family": family, "policy_class": class, "group_id": groupID, "analysis_id": analysis["analysis_id"], "policy_status": approval["target_status"], "approval_id": approval["approval_id"], "index": policyIndex, "subject_registry": policySubjectRegistry, "analysis_registry": policyAnalysisRegistry}, nil

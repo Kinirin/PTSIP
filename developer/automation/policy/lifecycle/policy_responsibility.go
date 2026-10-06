@@ -1,6 +1,7 @@
-package machine
+package lifecycle
 
 import (
+	binding "github.com/Kinirin/PTSIP/developer/automation/policy/binding"
 	"fmt"
 	"reflect"
 	"regexp"
@@ -77,15 +78,15 @@ func policyCloneValue(value any) any {
 		return value
 	}
 }
-func (r *Repository) policyClasses() ([]string, error) {
+func policyClasses(r Repository) ([]string, error) {
 	contract, err := r.Read("developer/policy/registries/developer-policy-catalog-contracts.json")
 	if err != nil {
 		return nil, err
 	}
 	return policyStrings(Map(Map(contract["$defs"])["developer_policy_class"])["enum"]), nil
 }
-func (r *Repository) ActiveFamilyIDs(class, family string) ([]string, error) {
-	classes, err := r.policyClasses()
+func ActiveFamilyIDs(r Repository, class, family string) ([]string, error) {
+	classes, err := policyClasses(r)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +94,7 @@ func (r *Repository) ActiveFamilyIDs(class, family string) ([]string, error) {
 	if !policyContains(classes, class) || !policyContains(families, family) {
 		return nil, policyFailure("INVALID_AUTHORITY_FAMILY_KEY", "registered class and Family are required")
 	}
-	resolver, err := NewResolver(r)
+	resolver, err := binding.NewResolver(r)
 	if err != nil {
 		return nil, err
 	}
@@ -120,8 +121,8 @@ func (r *Repository) ActiveFamilyIDs(class, family string) ([]string, error) {
 
 // ValidateAnalysisSemantics checks the responsibility accounting, collision decisions,
 // class boundaries and materialization grouping. It does not admit new authority.
-func (r *Repository) ValidateAnalysisSemantics(payload Object) []string {
-	classes, err := r.policyClasses()
+func ValidateAnalysisSemantics(r Repository, payload Object) []string {
+	classes, err := policyClasses(r)
 	if err != nil {
 		return []string{err.Error()}
 	}
@@ -367,7 +368,7 @@ func (r *Repository) ValidateAnalysisSemantics(payload Object) []string {
 	return errors
 }
 
-func (r *Repository) analysisRecords() ([]Object, error) {
+func analysisRecords(r Repository) ([]Object, error) {
 	registry, err := r.Read(policyAnalysisRegistry)
 	if err != nil {
 		return nil, policyFailure("INVALID_ANALYSIS_REGISTRY", err.Error())
@@ -386,8 +387,8 @@ func (r *Repository) analysisRecords() ([]Object, error) {
 	return records, nil
 }
 
-func (r *Repository) ResolveAnalysisRecord(analysisID, subjectType, subjectID, analysisKind string) (Object, error) {
-	records, err := r.analysisRecords()
+func ResolveAnalysisRecord(r Repository, analysisID, subjectType, subjectID, analysisKind string) (Object, error) {
+	records, err := analysisRecords(r)
 	if err != nil {
 		return nil, err
 	}
@@ -433,8 +434,8 @@ func (r *Repository) ResolveAnalysisRecord(analysisID, subjectType, subjectID, a
 	return record, nil
 }
 
-func (r *Repository) ValidateResponsibilityAnalysis(analysisID string, currentLookup bool) (Object, error) {
-	record, err := r.ResolveAnalysisRecord(analysisID, "", "", "")
+func ValidateResponsibilityAnalysis(r Repository, analysisID string, currentLookup bool) (Object, error) {
+	record, err := ResolveAnalysisRecord(r, analysisID, "", "", "")
 	if err != nil {
 		return nil, err
 	}
@@ -447,13 +448,13 @@ func (r *Repository) ValidateResponsibilityAnalysis(analysisID string, currentLo
 	if Text(analysis["analysis_id"]) != analysisID {
 		return nil, policyFailure("ANALYSIS_ID_MISMATCH", relative)
 	}
-	errors := r.ValidateAnalysisSemantics(payload)
+	errors := ValidateAnalysisSemantics(r, payload)
 	if err := r.Validate(policyAnalysisSchema, payload); err != nil {
 		errors = append(errors, err.Error())
 	}
 	if currentLookup {
 		cache := map[string][]string{}
-		resolver, err := NewResolver(r)
+		resolver, err := binding.NewResolver(r)
 		if err != nil {
 			return nil, err
 		}
@@ -471,7 +472,7 @@ func (r *Repository) ValidateResponsibilityAnalysis(analysisID string, currentLo
 			key := class + ":" + family
 			expected, ok := cache[key]
 			if !ok {
-				expected, err = r.ActiveFamilyIDs(class, family)
+				expected, err = ActiveFamilyIDs(r, class, family)
 				if err != nil {
 					errors = append(errors, err.Error())
 					continue
