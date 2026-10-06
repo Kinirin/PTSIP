@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-POLICY-HIERARCHY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "POLICY_PLAN_BINDING은 pass하고 BRANCH_CONTROL도 다른 작업에서 진행한다. Policy를 상위 Responsibility Domain으로 두고 그 안에 Binding과 Lifecycle 하위 Responsibility Domain을 둔다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-ARCH-0002
+  recorded_at: '2026-10-06'

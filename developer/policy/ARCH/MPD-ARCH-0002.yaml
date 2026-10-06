@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.1'
+  version: '2.2'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -28,6 +28,19 @@ rules:
     existing_declared_boundaries:
       preserve_existing_explicit_domain_roots: true
       planning_automation_root: developer/automation/planning/
+    approved_domain_inventory:
+      POLICY:
+        root: developer/automation/policy/
+        responsibility: POLICY_AUTOMATION
+        subdomains:
+          BINDING:
+            root: developer/automation/policy/binding/
+            responsibility: POLICY_RESOLUTION_AND_BINDING
+          LIFECYCLE:
+            root: developer/automation/policy/lifecycle/
+            responsibility: POLICY_IDENTITY_VERSION_STATUS_AND_MATERIALIZATION_LIFECYCLE
+        cross_subdomain_semantic_ownership: FORBIDDEN
+        parent_domain_may_host_only_cross_subdomain_coordination: true
     inventory_admission:
       mixed_responsibility_file_must_be_split_before_domain_inventory_assignment: true
       inventory_assignment_before_responsibility_split: FORBIDDEN
@@ -88,3 +101,12 @@ transition:
       action: APPLY_SPLIT_BEFORE_INVENTORY_ADMISSION
       execution: SERIAL_REQUIRED
       completion_check: NO_MIXED_RESPONSIBILITY_UNIT_IS_ASSIGNED_TO_DOMAIN_INVENTORY
+  - id: TR-003
+    type: PROJECT_OWNER_POLICY_DOMAIN_HIERARCHY_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-POLICY-HIERARCHY.yaml
+    next_action:
+      action: MATERIALIZE_POLICY_BINDING_AND_LIFECYCLE_PACKAGES
+      execution: AUTHORIZED
+      completion_check: POLICY_BINDING_AND_LIFECYCLE_IMPLEMENTATION_MATCH_APPROVED_DOMAIN_ROOTS
