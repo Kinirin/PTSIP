@@ -233,7 +233,7 @@ jobs:
         if: ${{ github.event_name == 'push' || inputs.verification == 'markdown-cleanup-simulation' }}
         shell: pwsh
         run: |
-          python -m pytest -q developer/tests/test_markdown_cleanup.py
+          go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 -run '^TestCleanup' ./internal/machine
           if ($LASTEXITCODE -ne 0) {
             throw "Markdown cleanup automation tests failed."
           }
