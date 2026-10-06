@@ -1,12 +1,12 @@
-package machine
+package planning
 
 import (
 	"fmt"
 	"strings"
 )
 
-func (r *Repository) MergePlanningLeaf(branch, message string) (Object, error) {
-	activeRaw, err := ppGit(r.Root, "branch", "--show-current")
+func MergePlanningLeaf(r Repository, branch, message string) (Object, error) {
+	activeRaw, err := ppGit(r.RootDir(), "branch", "--show-current")
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (r *Repository) MergePlanningLeaf(branch, message string) (Object, error) {
 	if wu == "" {
 		return nil, fmt.Errorf("LEAF_WORK_UNIT_MISSING")
 	}
-	status, err := ppGit(r.Root, "status", "--porcelain")
+	status, err := ppGit(r.RootDir(), "status", "--porcelain")
 	if err != nil {
 		return nil, err
 	}
@@ -48,19 +48,19 @@ func (r *Repository) MergePlanningLeaf(branch, message string) (Object, error) {
 		return nil, fmt.Errorf("DIRTY_INTEGRATION_WORKTREE")
 	}
 	source := ""
-	if _, err = ppGit(r.Root, "show-ref", "--verify", "--quiet", "refs/heads/"+branch); err == nil {
+	if _, err = ppGit(r.RootDir(), "show-ref", "--verify", "--quiet", "refs/heads/"+branch); err == nil {
 		source = branch
-	} else if _, err = ppGit(r.Root, "show-ref", "--verify", "--quiet", "refs/remotes/origin/"+branch); err == nil {
+	} else if _, err = ppGit(r.RootDir(), "show-ref", "--verify", "--quiet", "refs/remotes/origin/"+branch); err == nil {
 		source = "origin/" + branch
 	}
 	if source == "" {
 		return nil, fmt.Errorf("LEAF_BRANCH_NOT_FOUND")
 	}
-	base, err := ppGit(r.Root, "merge-base", "HEAD", source)
+	base, err := ppGit(r.RootDir(), "merge-base", "HEAD", source)
 	if err != nil {
 		return nil, err
 	}
-	diff, err := ppGit(r.Root, "diff", "--name-only", strings.TrimSpace(string(base))+".."+source)
+	diff, err := ppGit(r.RootDir(), "diff", "--name-only", strings.TrimSpace(string(base))+".."+source)
 	if err != nil {
 		return nil, err
 	}
@@ -70,34 +70,34 @@ func (r *Repository) MergePlanningLeaf(branch, message string) (Object, error) {
 		}
 	}
 	abort := func() {
-		if _, err := ppGit(r.Root, "rev-parse", "-q", "--verify", "MERGE_HEAD"); err == nil {
-			ppGit(r.Root, "merge", "--abort")
+		if _, err := ppGit(r.RootDir(), "rev-parse", "-q", "--verify", "MERGE_HEAD"); err == nil {
+			ppGit(r.RootDir(), "merge", "--abort")
 		}
 	}
-	if _, err = ppGit(r.Root, "merge", "--no-ff", "--no-commit", source); err != nil {
+	if _, err = ppGit(r.RootDir(), "merge", "--no-ff", "--no-commit", source); err != nil {
 		abort()
 		return nil, err
 	}
-	if _, err = ppGit(r.Root, "rev-parse", "-q", "--verify", "MERGE_HEAD"); err != nil {
+	if _, err = ppGit(r.RootDir(), "rev-parse", "-q", "--verify", "MERGE_HEAD"); err != nil {
 		return nil, fmt.Errorf("LEAF_ALREADY_INTEGRATED")
 	}
-	reconciliation, err := r.ReconcilePlanning(active, branch, true)
+	reconciliation, err := ReconcilePlanning(r, active, branch, true)
 	if err != nil {
 		abort()
 		return nil, err
 	}
-	if _, err = ppGit(r.Root, "add", "--", PlanningRootIndex, Text(plan["path"])); err != nil {
+	if _, err = ppGit(r.RootDir(), "add", "--", PlanningRootIndex, Text(plan["path"])); err != nil {
 		abort()
 		return nil, err
 	}
 	if message == "" {
 		message = "merge: integrate " + branch + " with planning reconciliation"
 	}
-	if _, err = ppGit(r.Root, "commit", "-m", message); err != nil {
+	if _, err = ppGit(r.RootDir(), "commit", "-m", message); err != nil {
 		abort()
 		return nil, err
 	}
-	head, err := ppGit(r.Root, "rev-parse", "HEAD")
+	head, err := ppGit(r.RootDir(), "rev-parse", "HEAD")
 	if err != nil {
 		return nil, err
 	}

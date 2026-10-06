@@ -1,4 +1,4 @@
-package machine
+package planning
 
 import (
 	"fmt"
@@ -102,7 +102,7 @@ func ExtensionParentConsistency(parent, extension Object, id, ref string) []stri
 	}
 	return errors
 }
-func (r *Repository) extensionContext(payload Object, ref string) (string, string, string, error) {
+func extensionContext(r Repository, payload Object, ref string) (string, string, string, error) {
 	extension := Map(payload["extension"])
 	id, parent, version := Text(extension["id"]), Text(extension["parent"]), Text(payload["plan_version"])
 	if id == "" || parent == "" || version == "" {
@@ -152,7 +152,7 @@ func (r *Repository) extensionContext(payload Object, ref string) (string, strin
 	}
 	return parentRef, versionRef, branch, nil
 }
-func (r *Repository) FinalizeExtension(ref string) (Object, error) {
+func FinalizeExtension(r Repository, ref string) (Object, error) {
 	payload, err := r.Read(ref)
 	if err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ func (r *Repository) FinalizeExtension(ref string) (Object, error) {
 		return out, nil
 	}
 	out["eligible"] = true
-	parentRef, versionRef, branch, err := r.extensionContext(payload, ref)
+	parentRef, versionRef, branch, err := extensionContext(r, payload, ref)
 	if err != nil {
 		out["failures"] = []string{err.Error()}
 		return out, nil
@@ -246,12 +246,12 @@ func (r *Repository) FinalizeExtension(ref string) (Object, error) {
 		out["failures"] = []string{err.Error()}
 		return out, nil
 	}
-	reconciliation, err := r.ReconcilePlanning(branch, "", true)
+	reconciliation, err := ReconcilePlanning(r, branch, "", true)
 	if err == nil && reconciliation["current_gate_before"] == id && reconciliation["current_gate_after"] != extension["parent"] {
 		err = fmt.Errorf("EXTENSION_GATE_NOT_RELEASED")
 	}
 	if err == nil {
-		if failures := r.ValidatePlanning(); len(failures) > 0 {
+		if failures := ValidatePlanning(r); len(failures) > 0 {
 			err = fmt.Errorf("%s", strings.Join(failures, "; "))
 		}
 	}
@@ -340,11 +340,11 @@ func planningPromotePayload(payload Object, id string, automatic Object) error {
 	}
 	return nil
 }
-func (r *Repository) RunPlanningRegression(targets []any, goTargets []any) []string {
+func RunPlanningRegression(r Repository, targets []any, goTargets []any) []string {
 	failures := []string{}
 	if len(targets) > 0 {
 		python := "python"
-		candidate := filepath.Join(r.Root, ".venv", "Scripts", "python.exe")
+		candidate := filepath.Join(r.RootDir(), ".venv", "Scripts", "python.exe")
 		if _, err := os.Stat(candidate); err == nil {
 			python = candidate
 		}
@@ -362,7 +362,7 @@ func (r *Repository) RunPlanningRegression(targets []any, goTargets []any) []str
 		}
 		args = append(args, "-q")
 		command := exec.Command(python, args...)
-		command.Dir = r.Root
+		command.Dir = r.RootDir()
 		output, err := command.CombinedOutput()
 		if err != nil {
 			failures = append(failures, "pytest validation failed: "+string(output))
@@ -376,7 +376,7 @@ func (r *Repository) RunPlanningRegression(targets []any, goTargets []any) []str
 			continue
 		}
 		command := exec.Command("go", "-C", target, "test", "-count=1", "./...")
-		command.Dir = r.Root
+		command.Dir = r.RootDir()
 		output, err := command.CombinedOutput()
 		if err != nil {
 			failures = append(failures, "Go validation failed: "+string(output))
@@ -384,10 +384,10 @@ func (r *Repository) RunPlanningRegression(targets []any, goTargets []any) []str
 	}
 	return failures
 }
-func (r *Repository) planningRegisteredCheck(check string) []string {
+func planningRegisteredCheck(r Repository, check string) []string {
 	switch check {
 	case "PLANNING_VALIDATION":
-		return r.ValidatePlanning()
+		return ValidatePlanning(r)
 	case "POLICY_VALIDATION":
 		result, err := r.DispatchOperation("policy-validator", "validate", map[string]string{}, nil)
 		if err != nil {
@@ -412,7 +412,7 @@ func (r *Repository) planningRegisteredCheck(check string) []string {
 		return []string{"unknown automatic completion check: " + check}
 	}
 }
-func (r *Repository) FinalizePlanningStage(ref, id string) (Object, error) {
+func FinalizePlanningStage(r Repository, ref, id string) (Object, error) {
 	payload, err := r.Read(ref)
 	if err != nil {
 		return nil, err
@@ -424,7 +424,7 @@ func (r *Repository) FinalizePlanningStage(ref, id string) (Object, error) {
 		return out, nil
 	}
 	if stage["status"] == "COMPLETE" {
-		extension, err := r.FinalizeExtension(ref)
+		extension, err := FinalizeExtension(r, ref)
 		if err != nil {
 			return nil, err
 		}
@@ -441,13 +441,13 @@ func (r *Repository) FinalizePlanningStage(ref, id string) (Object, error) {
 		out["failures"] = []string{"automatic completion transition contract invalid"}
 		return out, nil
 	}
-	failures := r.RunPlanningRegression(List(automatic["pytest_targets"]), List(automatic["go_targets"]))
+	failures := RunPlanningRegression(r, List(automatic["pytest_targets"]), List(automatic["go_targets"]))
 	checks := List(automatic["required_checks"])
 	if len(checks) == 0 {
 		failures = append(failures, "automatic completion required_checks must not be empty")
 	}
 	for _, raw := range checks {
-		failures = append(failures, r.planningRegisteredCheck(Text(raw))...)
+		failures = append(failures, planningRegisteredCheck(r, Text(raw))...)
 	}
 	if len(failures) > 0 {
 		out["failures"] = failures
@@ -480,7 +480,7 @@ func (r *Repository) FinalizePlanningStage(ref, id string) (Object, error) {
 	if err = r.AtomicWrite(ref, rendered, &digest); err != nil {
 		return nil, err
 	}
-	extension, err := r.FinalizeExtension(ref)
+	extension, err := FinalizeExtension(r, ref)
 	if err != nil {
 		planningAtomicWrite(path, original)
 		return nil, err
@@ -491,7 +491,7 @@ func (r *Repository) FinalizePlanningStage(ref, id string) (Object, error) {
 		return out, nil
 	}
 	if extension["finalized"] != true {
-		if failures = r.ValidatePlanning(); len(failures) > 0 {
+		if failures = ValidatePlanning(r); len(failures) > 0 {
 			planningAtomicWrite(path, original)
 			out["failures"] = failures
 			return out, nil

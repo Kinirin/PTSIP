@@ -1,4 +1,4 @@
-package machine
+package planning
 
 import (
 	"encoding/json"
@@ -53,7 +53,7 @@ func planningIndexed(index Object) (map[string]Object, error) {
 	}
 	return out, nil
 }
-func (r *Repository) planningDocuments(index Object) (map[string]Object, error) {
+func planningDocuments(r Repository, index Object) (map[string]Object, error) {
 	rows, err := planningIndexed(index)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func planningCopyState(index Object, docs map[string]Object) error {
 	}
 	return nil
 }
-func (r *Repository) ResolvePlanningGate(gate string, index Object, docs map[string]Object) (string, string, error) {
+func ResolvePlanningGate(r Repository, gate string, index Object, docs map[string]Object) (string, string, error) {
 	rows, err := planningIndexed(index)
 	if err != nil {
 		return "", "", err
@@ -154,12 +154,12 @@ func (r *Repository) ResolvePlanningGate(gate string, index Object, docs map[str
 	}
 	return status, ref, nil
 }
-func (r *Repository) SelectPlanningGate(index, rootPlan Object, docs map[string]Object, mergedWU string) (string, string, error) {
+func SelectPlanningGate(r Repository, index, rootPlan Object, docs map[string]Object, mergedWU string) (string, string, error) {
 	gate := Text(Map(index["plan"])["current_gate"])
 	if gate == "" {
 		return "", "", fmt.Errorf("INVALID_CURRENT_GATE")
 	}
-	status, path, err := r.ResolvePlanningGate(gate, index, docs)
+	status, path, err := ResolvePlanningGate(r, gate, index, docs)
 	if err != nil {
 		return "", "", err
 	}
@@ -237,9 +237,9 @@ func planningLeaf(rootPlan Object, branch string) (Object, error) {
 	}
 	return matches[0], nil
 }
-func (r *Repository) BuildPlanningMaterializedState(rootPlan, index Object, docs map[string]Object) (Object, error) {
+func BuildPlanningMaterializedState(r Repository, rootPlan, index Object, docs map[string]Object) (Object, error) {
 	gate := Text(Map(index["plan"])["current_gate"])
-	_, document, err := r.ResolvePlanningGate(gate, index, docs)
+	_, document, err := ResolvePlanningGate(r, gate, index, docs)
 	if err != nil {
 		return nil, err
 	}
@@ -290,9 +290,9 @@ func (r *Repository) BuildPlanningMaterializedState(rootPlan, index Object, docs
 	}
 	return Object{"mode": "DERIVED_CACHE", "source": rootPlan["path"], "generated_by": "developer.automation.planning.planning_merge_reconciler", "current_gate": gate, "current_gate_document": document, "work_units": records}, nil
 }
-func (r *Repository) ReconcilePlanning(currentBranch, mergedBranch string, apply bool) (Object, error) {
+func ReconcilePlanning(r Repository, currentBranch, mergedBranch string, apply bool) (Object, error) {
 	if currentBranch == "" {
-		raw, err := ppGit(r.Root, "branch", "--show-current")
+		raw, err := ppGit(r.RootDir(), "branch", "--show-current")
 		if err != nil {
 			return nil, err
 		}
@@ -336,7 +336,7 @@ func (r *Repository) ReconcilePlanning(currentBranch, mergedBranch string, apply
 		return nil, err
 	}
 	before := planningClone(index)
-	docs, err := r.planningDocuments(index)
+	docs, err := planningDocuments(r, index)
 	if err != nil {
 		return nil, err
 	}
@@ -359,12 +359,12 @@ func (r *Repository) ReconcilePlanning(currentBranch, mergedBranch string, apply
 		entry["state"] = "MERGED"
 		entry["merged_into"] = rootPlan["integration_branch"]
 	}
-	gate, path, err := r.SelectPlanningGate(index, rootPlan, docs, mergedWU)
+	gate, path, err := SelectPlanningGate(r, index, rootPlan, docs, mergedWU)
 	if err != nil {
 		return nil, err
 	}
 	Map(index["plan"])["current_gate"] = gate
-	materialized, err := r.BuildPlanningMaterializedState(rootPlan, index, docs)
+	materialized, err := BuildPlanningMaterializedState(r, rootPlan, index, docs)
 	if err != nil {
 		return nil, err
 	}
@@ -381,7 +381,7 @@ func (r *Repository) ReconcilePlanning(currentBranch, mergedBranch string, apply
 		Map(index["plan"])["revision"] = next
 	}
 	if changed && apply {
-		if err = r.planningWriteTransaction(map[string]Object{PlanningRootIndex: rootIndex, ref: index}, func() []string { return r.ValidatePlanning() }, map[string]string{PlanningRootIndex: SHA256(rootSnapshot), ref: SHA256(versionSnapshot)}); err != nil {
+		if err = planningWriteTransaction(r, map[string]Object{PlanningRootIndex: rootIndex, ref: index}, func() []string { return ValidatePlanning(r) }, map[string]string{PlanningRootIndex: SHA256(rootSnapshot), ref: SHA256(versionSnapshot)}); err != nil {
 			return nil, err
 		}
 	}
@@ -391,7 +391,7 @@ func (r *Repository) ReconcilePlanning(currentBranch, mergedBranch string, apply
 	}
 	return Object{"status": status, "integration_branch": rootPlan["integration_branch"], "merged_branch": ppOptional(mergedBranch), "merged_work_unit": ppOptional(mergedWU), "current_gate_before": Map(before["plan"])["current_gate"], "current_gate_after": gate, "current_gate_document": path, "version_index_revision_before": revision, "version_index_revision_after": next, "changed": changed}, nil
 }
-func (r *Repository) planningWriteTransaction(documents map[string]Object, validate func() []string, expectedSnapshots ...map[string]string) error {
+func planningWriteTransaction(r Repository, documents map[string]Object, validate func() []string, expectedSnapshots ...map[string]string) error {
 	lockPath, err := r.Path("developer/planning/.mutation.lock")
 	if err != nil {
 		return err

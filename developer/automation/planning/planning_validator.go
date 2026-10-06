@@ -1,4 +1,4 @@
-package machine
+package planning
 
 import (
 	"fmt"
@@ -55,7 +55,7 @@ func planningGovernanceErrors(payload any, registry Object, label string) []stri
 	visit(payload, "")
 	return errors
 }
-func (r *Repository) ValidatePlanning() []string {
+func ValidatePlanning(r Repository) []string {
 	errors := []string{}
 	root, err := r.Read(PlanningRootIndex)
 	if err != nil {
@@ -145,7 +145,7 @@ func (r *Repository) ValidatePlanning() []string {
 					errors = append(errors, path+": plan_identity."+key+" missing")
 				}
 			}
-			if err := r.validatePlanningFormalIdentity(Map(plan["plan_identity"])); err != nil {
+			if err := validatePlanningFormalIdentity(r, Map(plan["plan_identity"])); err != nil {
 				errors = append(errors, path+": "+err.Error())
 			}
 		} else if routing != nil {
@@ -268,7 +268,7 @@ func (r *Repository) ValidatePlanning() []string {
 		if prerelease {
 			errors = append(errors, planningPrereleaseDependencies(plan, docs)...)
 		} else if Map(routing["merge_reconciliation"]) != nil {
-			state, err := r.BuildPlanningMaterializedState(entry, plan, docs)
+			state, err := BuildPlanningMaterializedState(r, entry, plan, docs)
 			if err != nil {
 				errors = append(errors, err.Error())
 			} else if !planningEqual(entry["materialized_state"], state) {
@@ -292,7 +292,7 @@ func planningLeafTuples(routing Object) []string {
 	sort.Strings(out)
 	return out
 }
-func (r *Repository) validatePlanningFormalIdentity(identity Object) error {
+func validatePlanningFormalIdentity(r Repository, identity Object) error {
 	key := "urn:ptsip:go:formal-plan-identity:v2"
 	compiler, err := r.Compiler()
 	if err != nil {
