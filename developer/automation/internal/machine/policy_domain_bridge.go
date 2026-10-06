@@ -2,6 +2,7 @@ package machine
 
 import (
 	"fmt"
+	"os"
 	domainpolicy "github.com/Kinirin/PTSIP/developer/automation/policy"
 	policybinding "github.com/Kinirin/PTSIP/developer/automation/policy/binding"
 	policylifecycle "github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
@@ -52,6 +53,9 @@ func (r *Repository) RootSection(id, section string) (any, error) {
 }
 
 func (r *Repository) CurrentBranch() (string, error) {
+	if explicit := strings.TrimSpace(os.Getenv("PTSIP_EXECUTION_BRANCH")); explicit != "" {
+		return explicit, nil
+	}
 	output, err := ppGit(r.Root, "branch", "--show-current")
 	if err != nil {
 		return "", err
