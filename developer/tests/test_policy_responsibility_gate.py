@@ -12,6 +12,7 @@ from developer.automation.policy_identity_lifecycle import (
     register_family_policy,
 )
 from developer.automation.policy_responsibility_gate import (
+    resolve_analysis_record,
     validate_analysis_semantics,
 )
 from developer.tests.policy_contract_fixtures import neutralize_fixture_catalog
@@ -69,10 +70,10 @@ def _analysis_payload(
     for group in groups:
         group.setdefault("policy_class", "PTSIP_DEVELOPER_POLICY")
     return {
-        "schema_version": "developer-policy-responsibility-analysis/v2",
+        "schema_version": "developer-policy-responsibility-analysis/v3",
         "artifact_class": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS",
         "analysis": {
-            "analysis_id": "PRA-test",
+            "analysis_id": "PRA-9999",
             "source_ref": "test",
             "responsibilities": responsibilities,
             "decision": {
@@ -206,13 +207,20 @@ def repo(tmp_path: Path) -> Path:
         "management-policy.schema.json",
         "root-family-policy.schema.json",
         "policy-approval-provenance.schema.json",
+    ):
+        shutil.copy(SOURCE_ROOT / "developer/policy/schemas" / name, schemas / name)
+
+    analysis_schemas = tmp_path / "developer/policy/analysis/schemas"
+    analysis_schemas.mkdir(parents=True)
+    for name in (
         "policy-responsibility-analysis.schema.json",
         "policy-materialization-analysis-registry.schema.json",
     ):
         shutil.copy(
-            SOURCE_ROOT / "developer/policy/schemas" / name,
-            schemas / name,
+            SOURCE_ROOT / "developer/policy/analysis/schemas" / name,
+            analysis_schemas / name,
         )
+
 
     policies = [
         ("MPD-0012", "ACTIVE", "Legacy active"),
@@ -279,8 +287,9 @@ def repo(tmp_path: Path) -> Path:
     _write_yaml(
         tmp_path / "developer/policy/analysis/registry.yaml",
         {
-            "schema_version": "developer-policy-materialization-analysis-registry/v2",
+            "schema_version": "developer-policy-materialization-analysis-registry/v3",
             "artifact_class": "PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY",
+            "records": [],
             "bindings": [],
         },
     )
@@ -313,8 +322,9 @@ def _approval(repo: Path) -> Path:
     return path
 
 
-def _family_analysis(repo: Path, searched_policy_ids: list[str] | None = None) -> Path:
-    path = repo / "developer/policy/analysis/PRA-test-family.yaml"
+def _family_analysis(repo: Path, searched_policy_ids: list[str] | None = None) -> str:
+    analysis_id = "PRA-9999"
+    analysis_ref = "developer/policy/analysis/records/PRA-9999.yaml"
     responsibility = _responsibility(
         "R01",
         "ARCH",
@@ -335,8 +345,33 @@ def _family_analysis(repo: Path, searched_policy_ids: list[str] | None = None) -
         owned_family_set=["ARCH"],
         split_required=False,
     )
-    _write_yaml(path, payload)
-    return path
+    _write_yaml(repo / analysis_ref, payload)
+    registry_path = repo / "developer/policy/analysis/registry.yaml"
+    registry = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    registry["records"] = [
+        {
+            "analysis_id": analysis_id,
+            "analysis_ref": analysis_ref,
+            "subject_type": "POLICY",
+            "subject_id": "MPD-ARCH-0001",
+            "analysis_kind": "TEST_ROOT_MATERIALIZATION",
+            "recorded_at": "2026-10-06",
+        }
+    ]
+    _write_yaml(registry_path, registry)
+    return analysis_id
+
+
+def test_registry_resolves_subject_key_without_filename_inference(repo: Path) -> None:
+    _family_analysis(repo)
+    record = resolve_analysis_record(
+        subject_type="POLICY",
+        subject_id="MPD-ARCH-0001",
+        analysis_kind="TEST_ROOT_MATERIALIZATION",
+        root=repo,
+    )
+    assert record["analysis_id"] == "PRA-9999"
+    assert record["analysis_ref"] == "developer/policy/analysis/records/PRA-9999.yaml"
 
 
 def test_legacy_family_new_allocation_is_forbidden(repo: Path) -> None:
@@ -407,7 +442,7 @@ def test_root_family_register_binds_analysis_atomically(repo: Path) -> None:
         policy_class="PTSIP_DEVELOPER_POLICY",
     )
     assert result["status"] == "REGISTERED"
-    assert result["analysis_id"] == "PRA-test"
+    assert result["analysis_id"] == "PRA-9999"
 
     registry = yaml.safe_load(
         (repo / "developer/policy/analysis/registry.yaml").read_text(encoding="utf-8")
@@ -417,8 +452,7 @@ def test_root_family_register_binds_analysis_atomically(repo: Path) -> None:
             "policy_id": "MPD-ARCH-0001",
             "policy_class": "PTSIP_DEVELOPER_POLICY",
             "family": "ARCH",
-            "analysis_ref": "developer/policy/analysis/PRA-test-family.yaml",
-            "analysis_id": "PRA-test",
+            "analysis_id": "PRA-9999",
             "group_id": "G01",
         }
     ]
