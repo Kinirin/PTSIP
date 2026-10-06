@@ -123,11 +123,17 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
+      - name: Set up Go Developer automation
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+
       - name: Verify exact-SHA Project Profile release snapshot
         shell: pwsh
         env:
           SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
-        run: python -m developer.automation.pp.pp_release_verify --sha $env:SOURCE_SHA
+        run: go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev pp release --sha $env:SOURCE_SHA
 
       - name: Verify required Specification release contract
         shell: pwsh

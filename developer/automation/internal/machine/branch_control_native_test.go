@@ -1,7 +1,9 @@
-package machine
+package machine_test
 
 import (
 	"encoding/json"
+	branchcontrol "github.com/Kinirin/PTSIP/developer/automation/branch"
+	machine "github.com/Kinirin/PTSIP/developer/automation/internal/machine"
 	"io"
 	"net/http"
 	"strings"
@@ -44,12 +46,12 @@ func (s *branchHTTPState) transport(t *testing.T) http.RoundTripper {
 			ref := strings.TrimPrefix(request.URL.Path, repositoryPrefix+"/git/ref/heads/")
 			sha, ok := s.refs[ref]
 			if !ok {
-				return branchHTTPResponse(http.StatusNotFound, Object{"message": "not found"}), nil
+				return branchHTTPResponse(http.StatusNotFound, machine.Object{"message": "not found"}), nil
 			}
-			return branchHTTPResponse(http.StatusOK, Object{"object": Object{"sha": sha}}), nil
+			return branchHTTPResponse(http.StatusOK, machine.Object{"object": machine.Object{"sha": sha}}), nil
 
 		case request.Method == http.MethodGet && strings.HasPrefix(request.URL.Path, repositoryPrefix+"/compare/"):
-			return branchHTTPResponse(http.StatusOK, Object{"behind_by": s.behindBy, "ahead_by": float64(0)}), nil
+			return branchHTTPResponse(http.StatusOK, machine.Object{"behind_by": s.behindBy, "ahead_by": float64(0)}), nil
 
 		case request.Method == http.MethodDelete && strings.HasPrefix(request.URL.Path, repositoryPrefix+"/git/refs/heads/"):
 			ref := strings.TrimPrefix(request.URL.Path, repositoryPrefix+"/git/refs/heads/")
@@ -61,19 +63,19 @@ func (s *branchHTTPState) transport(t *testing.T) http.RoundTripper {
 			if request.Header.Get("Authorization") == "" {
 				t.Fatal("authenticated branch mutation omitted Authorization header")
 			}
-			var payload Object
+			var payload machine.Object
 			if err := json.NewDecoder(request.Body).Decode(&payload); err != nil {
 				t.Fatalf("decode create-ref payload: %v", err)
 			}
 			s.createCalls++
 			if s.failNextCreate {
 				s.failNextCreate = false
-				return branchHTTPResponse(http.StatusInternalServerError, Object{"message": "simulated failure"}), nil
+				return branchHTTPResponse(http.StatusInternalServerError, machine.Object{"message": "simulated failure"}), nil
 			}
-			ref := strings.TrimPrefix(Text(payload["ref"]), "refs/heads/")
-			sha := Text(payload["sha"])
+			ref := strings.TrimPrefix(machine.Text(payload["ref"]), "refs/heads/")
+			sha := machine.Text(payload["sha"])
 			s.refs[ref] = sha
-			return branchHTTPResponse(http.StatusCreated, Object{"ref": "refs/heads/" + ref, "object": Object{"sha": sha}}), nil
+			return branchHTTPResponse(http.StatusCreated, machine.Object{"ref": "refs/heads/" + ref, "object": machine.Object{"sha": sha}}), nil
 		default:
 			t.Fatalf("unexpected GitHub request: %s %s", request.Method, request.URL.String())
 			return nil, nil
@@ -81,9 +83,9 @@ func (s *branchHTTPState) transport(t *testing.T) http.RoundTripper {
 	})
 }
 
-func branchControlTestClient(t *testing.T, state *branchHTTPState) *BranchClient {
+func branchControlTestClient(t *testing.T, state *branchHTTPState) *branchcontrol.Client {
 	t.Helper()
-	client, err := NewBranchClient("Kinirin/PTSIP", "test-token", "https://example.invalid")
+	client, err := branchcontrol.NewClient("Kinirin/PTSIP", "test-token", "https://example.invalid")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,27 +95,27 @@ func branchControlTestClient(t *testing.T, state *branchHTTPState) *BranchClient
 
 func TestBranchControlRegisteredCommandsArePolicyBound(t *testing.T) {
 	repo := branchGuardTestRepo(t)
-	raw, err := repo.BranchControl("commands", map[string]string{})
+	raw, err := branchcontrol.Control(repo, "commands", map[string]string{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	result := Map(raw)
-	commands := Strings(result["commands"])
+	result := machine.Map(raw)
+	commands := machine.Strings(result["commands"])
 	for _, required := range []string{"COMMANDS", "LIST", "INSPECT", "CREATE", "RECREATE"} {
-		if !Has(commands, required) {
+		if !machine.Has(commands, required) {
 			t.Fatalf("registered branch command %s missing from %#v", required, commands)
 		}
 	}
 	if result["unregistered_operation"] != "FAIL_CLOSED" {
 		t.Fatalf("unexpected command fallback: %#v", result)
 	}
-	if _, err := repo.BranchControl("invented", map[string]string{}); branchGuardErrorCode(t, err) != "UNREGISTERED_BRANCH_COMMAND" {
+	if _, err := branchcontrol.Control(repo, "invented", map[string]string{}); branchGuardErrorCode(t, err) != "UNREGISTERED_BRANCH_COMMAND" {
 		t.Fatalf("unregistered command admitted: %v", err)
 	}
 }
 
 func TestBranchControlClientRepositoryShapeFailsClosed(t *testing.T) {
-	if _, err := NewBranchClient("not-a-repository", "token", ""); branchGuardErrorCode(t, err) != "INVALID_REPOSITORY" {
+	if _, err := branchcontrol.NewClient("not-a-repository", "token", ""); branchGuardErrorCode(t, err) != "INVALID_REPOSITORY" {
 		t.Fatalf("invalid repository shape admitted: %v", err)
 	}
 }
@@ -124,7 +126,7 @@ func TestBranchControlCreateUsesExactApprovedNameAndBaseSHA(t *testing.T) {
 	state := &branchHTTPState{refs: map[string]string{"main": baseSHA}}
 	client := branchControlTestClient(t, state)
 
-	result, err := repo.CreateBranch(client, "dev/0.10.0", "dev/0.10.0", "main")
+	result, err := branchcontrol.Create(repo, client, "dev/0.10.0", "dev/0.10.0", "main")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -138,7 +140,7 @@ func TestBranchControlCreateUsesExactApprovedNameAndBaseSHA(t *testing.T) {
 		t.Fatalf("branch was not created at exact base SHA: %#v", state)
 	}
 
-	if _, err := repo.CreateBranch(client, "dev/0.10.1", "dev/0.10.0", "main"); branchGuardErrorCode(t, err) != "BRANCH_NAME_NOT_EXACTLY_APPROVED" {
+	if _, err := branchcontrol.Create(repo, client, "dev/0.10.1", "dev/0.10.0", "main"); branchGuardErrorCode(t, err) != "BRANCH_NAME_NOT_EXACTLY_APPROVED" {
 		t.Fatalf("unapproved branch name reached mutation path: %v", err)
 	}
 	if state.createCalls != 1 {
@@ -157,7 +159,7 @@ func TestBranchControlRecreateRequiresFullContainment(t *testing.T) {
 	}
 	client := branchControlTestClient(t, state)
 
-	_, err := repo.RecreateBranch(client, "dev/0.3.8", "dev/0.3.8", "main")
+	_, err := branchcontrol.Recreate(repo, client, "dev/0.3.8", "dev/0.3.8", "main")
 	if branchGuardErrorCode(t, err) != "BRANCH_HAS_UNMERGED_COMMITS" {
 		t.Fatalf("non-contained branch produced wrong failure: %v", err)
 	}
@@ -179,7 +181,7 @@ func TestBranchControlRecreateMovesExactRefToCurrentBase(t *testing.T) {
 	}
 	client := branchControlTestClient(t, state)
 
-	result, err := repo.RecreateBranch(client, "dev/0.3.8", "dev/0.3.8", "main")
+	result, err := branchcontrol.Recreate(repo, client, "dev/0.3.8", "dev/0.3.8", "main")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -208,7 +210,7 @@ func TestBranchControlRecreateRollsBackOriginalRef(t *testing.T) {
 	}
 	client := branchControlTestClient(t, state)
 
-	_, err := repo.RecreateBranch(client, "dev/0.3.8", "dev/0.3.8", "main")
+	_, err := branchcontrol.Recreate(repo, client, "dev/0.3.8", "dev/0.3.8", "main")
 	if branchGuardErrorCode(t, err) != "RECREATE_FAILED_ROLLED_BACK" {
 		t.Fatalf("unexpected rollback failure: %v", err)
 	}
@@ -222,7 +224,7 @@ func TestBranchControlRecreateRejectsSameBaseBeforeMutation(t *testing.T) {
 	state := &branchHTTPState{refs: map[string]string{"dev/0.3.8": strings.Repeat("a", 40)}}
 	client := branchControlTestClient(t, state)
 
-	_, err := repo.RecreateBranch(client, "dev/0.3.8", "dev/0.3.8", "dev/0.3.8")
+	_, err := branchcontrol.Recreate(repo, client, "dev/0.3.8", "dev/0.3.8", "dev/0.3.8")
 	if branchGuardErrorCode(t, err) != "RECREATE_BASE_EQUALS_BRANCH" {
 		t.Fatalf("same branch/base produced wrong failure: %v", err)
 	}

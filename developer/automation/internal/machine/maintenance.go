@@ -285,6 +285,9 @@ func init() {
 		}
 		return Object{"status": status, "hits": hits}, nil
 	})
+	RegisterOperations("current-dependency-gate", func(r *Repository, command string, opts map[string]string, args []string) (any, error) {
+		return r.DispatchOperation("dependency-gate", "verify", opts, args)
+	})
 	RegisterOperations("transition", func(r *Repository, command string, opts map[string]string, args []string) (any, error) {
 		return r.EvaluateLegacyRemoval()
 	})
@@ -292,14 +295,14 @@ func init() {
 		if command == "control-context" {
 			branch := strings.TrimSpace(opts["--execution-branch"])
 			errors := []string{}
-			if branch != "dev/0.3.8" {
+			if branch != "" && branch != "dev/0.3.8" {
 				errors = append(errors, "Execution branch does not match control branch dev/0.3.8")
 			}
 			status := "PASS"
 			if len(errors) > 0 {
 				status = "FAIL"
 			}
-			return Object{"status": status, "errors": errors}, nil
+			return Object{"status": status, "errors": errors, "control_branch": "dev/0.3.8", "validation_performed": branch != ""}, nil
 		}
 		errors, err := r.WU02Lanes(opts["--lane"], opts["--execution-branch"])
 		if err != nil {

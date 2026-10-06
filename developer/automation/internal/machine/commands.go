@@ -1,49 +1,117 @@
 package machine
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
 
-// AdmitCommand uses the owner-selected closed machine vocabulary before dispatch.
-func (r *Repository) AdmitCommand(positional []string, options map[string]string) error {
+func (r *Repository) registeredCommand(positional []string) (Object, error) {
 	if len(positional) < 2 {
-		return fmt.Errorf("registered command and subcommand are required")
+		return nil, fmt.Errorf("registered command and subcommand are required")
 	}
 	contract, err := r.Read("developer/policy/contracts/go-automation-cutover.v1.json")
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if contract["schema_version"] != "ptsip-go-automation-cutover/v1" || contract["policy_class"] != DeveloperClass {
-		return fmt.Errorf("unregistered automation contract")
+		return nil, fmt.Errorf("unregistered automation contract")
 	}
 	resolver, err := NewResolver(r)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	owner, err := resolver.Policy("MPD-CNTR-0004")
 	if err != nil {
-		return err
+		return nil, err
 	}
 	obligation := Map(Map(owner["rules"])["direct_root_automation_contract"])
 	if Map(owner["policy"])["status"] != "ACTIVE" || obligation["contract_ref"] != "developer/policy/contracts/go-automation-cutover.v1.json" {
-		return fmt.Errorf("automation command contract has no exact active owner")
+		return nil, fmt.Errorf("automation command contract has no exact active owner")
 	}
 	matches := []Object{}
 	for _, raw := range List(contract["runtime_commands"]) {
 		record := Map(raw)
 		prefix := List(record["command"])
 		if len(prefix) != 2 {
-			return fmt.Errorf("invalid command registration")
+			return nil, fmt.Errorf("invalid command registration")
 		}
 		if prefix[0] == positional[0] && prefix[1] == positional[1] {
 			matches = append(matches, record)
 		}
 	}
 	if len(matches) != 1 {
-		return fmt.Errorf("unregistered or ambiguous command %s %s", positional[0], positional[1])
+		return nil, fmt.Errorf("unregistered or ambiguous command %s %s", positional[0], positional[1])
 	}
-	command := matches[0]
+	return matches[0], nil
+}
+
+func (r *Repository) CommandStatusExitCode(positional []string, status string) (int, error) {
+	command, err := r.registeredCommand(positional)
+	if err != nil {
+		return 2, err
+	}
+	for _, value := range List(command["nonfatal_statuses"]) {
+		if Text(value) == status {
+			return 0, nil
+		}
+	}
+	switch status {
+	case "FAIL", "BLOCKED", "UNRESOLVED":
+		return 2, nil
+	default:
+		return 0, nil
+	}
+}
+
+// NormalizeCommandOptions admits repetition only through the selected contract.
+func (r *Repository) NormalizeCommandOptions(positional []string, options map[string]string, repetitions map[string][]string) error {
+	command, err := r.registeredCommand(positional)
+	if err != nil {
+		return err
+	}
+	allowed := map[string]bool{}
+	for _, raw := range List(command["repeatable_options"]) {
+		name := "--" + strings.ReplaceAll(Text(raw), "_", "-")
+		if name == "--" {
+			return fmt.Errorf("invalid registered repeatable option")
+		}
+		allowed[name] = true
+	}
+	for name := range repetitions {
+		if !allowed[name] {
+			return fmt.Errorf("duplicate option %s", name)
+		}
+	}
+	for name := range allowed {
+		value, present := options[name]
+		if !present {
+			continue
+		}
+		values := repetitions[name]
+		if len(values) == 0 {
+			values = []string{value}
+		}
+		for _, value := range values {
+			if value == "" {
+				return fmt.Errorf("option %s requires a value", name)
+			}
+		}
+		encoded, err := json.Marshal(values)
+		if err != nil {
+			return err
+		}
+		options[name] = string(encoded)
+	}
+	return nil
+}
+
+// AdmitCommand uses the owner-selected closed machine vocabulary before dispatch.
+func (r *Repository) AdmitCommand(positional []string, options map[string]string) error {
+	command, err := r.registeredCommand(positional)
+	if err != nil {
+		return err
+	}
 	for _, raw := range List(command["boolean_options"]) {
 		option := "--" + strings.ReplaceAll(Text(raw), "_", "-")
 		if value, present := options[option]; present {

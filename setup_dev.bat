@@ -30,7 +30,7 @@ python -m pip install -e ".[dev]"
 if %errorlevel% neq 0 exit /b 1
 
 echo [INFO] PTSIP Git hook 활성화 중...
-python -m developer.automation.dev_setup
+go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev developer-setup install-hooks
 if %errorlevel% neq 0 (
     echo [ERROR] PTSIP developer hook 설정에 실패했습니다.
     exit /b 1

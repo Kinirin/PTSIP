@@ -509,7 +509,7 @@ func TestGoExecutionIsAdmittedAlongsidePythonRegression(t *testing.T) {
 		t.Fatal("unexpected execution selection")
 	}
 	mode := mapping(t, plan[0])
-	if !reflect.DeepEqual(mode["go"], []any{"developer/tests/rootfamily"}) || len(sequence(t, mode["pytest"])) == 0 {
+	if !reflect.DeepEqual(mode["go"], []any{"developer/tests"}) || len(sequence(t, mode["pytest"])) == 0 {
 		t.Fatal("Go execution missing or existing regression removed")
 	}
 	bindings := python(t, "-m", "developer.automation.policy_resolver", "resolve", "--scope", "developer/tests/rootfamily", "--operation", "VERIFY", "--json")

@@ -375,6 +375,10 @@ func TestPPGitAtomicTransitionAndRollbackProtection(t *testing.T) {
 	if before.Classification != "NO_T2_AUTHORITY_DELTA" {
 		t.Fatal(before)
 	}
+	unchanged, err := r.VerifyPPPreCommit()
+	if err != nil || unchanged["status"] != "PASS" || unchanged["reconciliation"] != "NO_CHANGE" || unchanged["classification"] != "NO_T2_AUTHORITY_DELTA" {
+		t.Fatalf("unchanged staged pre-commit: %#v, error=%v", unchanged, err)
+	}
 	profile := bytes.ReplaceAll(files["profiles/sample.ptsip.yaml"], []byte("original"), []byte("new"))
 	if err := r.AtomicWrite("profiles/sample.ptsip.yaml", profile, nil); err != nil {
 		t.Fatal(err)

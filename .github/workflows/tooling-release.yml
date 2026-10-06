@@ -34,6 +34,12 @@ jobs:
         shell: pwsh
         run: python -m pip install --upgrade pip build twine "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
 
+      - name: Set up Go Developer automation
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+
       - name: Verify release tag matches package version and Specification contract
         shell: pwsh
         env:
@@ -56,7 +62,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Published source Context Plane is not release-ready."
           }
-          python -m developer.automation.pp.pp_release_verify --sha HEAD
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev pp release --sha HEAD
 
       - name: Build distributions
         shell: pwsh

@@ -324,19 +324,32 @@ func (r *Repository) VerifyPPRelease(expected string) (Object, error) {
 	if failures, err := r.ProfileRegistryErrors(); err != nil || len(failures) > 0 {
 		return nil, fmt.Errorf("PP_RELEASE_REGISTRY_INVALID: %v %s", err, strings.Join(failures, "; "))
 	}
-	immutable := PPGitSnapshot{Root: r.Root, Revision: sha}
 	for _, path := range []string{PPRegistry, PPEmbeddedRegistry, PPCatalog, state.Contracts[state.Current], "src/ptsip/specdata/" + filepath.Base(state.Contracts[state.Current])} {
-		left, err := snapshot.ReadBytes(path)
+		matches, err := r.ppAssetMatchesCommit(path, sha)
 		if err != nil {
 			return nil, err
 		}
-		right, err := immutable.ReadBytes(path)
-		if err != nil {
-			return nil, err
-		}
-		if !bytes.Equal(left, right) {
+		if !matches {
 			return nil, fmt.Errorf("RELEASE_EXACT_ASSET_MISMATCH: %s", path)
 		}
 	}
 	return Object{"status": "PASS", "source_sha": sha, "project_profile": state.Current, "schema": state.Contracts[state.Current], "commit_classification": commit["classification"], "transition_triggered": commit["triggered"]}, nil
+}
+
+// Compare committed blob identities using Git's configured clean conversion.
+// Windows CRLF checkout bytes can differ from the exact LF commit without a
+// source change; semantic edits still produce a different committed blob.
+func (r *Repository) ppAssetMatchesCommit(path, sha string) (bool, error) {
+	if _, err := r.Path(path); err != nil {
+		return false, err
+	}
+	working, err := ppGit(r.Root, "hash-object", "--path="+path, path)
+	if err != nil {
+		return false, err
+	}
+	committed, err := ppGit(r.Root, "rev-parse", sha+":"+path)
+	if err != nil {
+		return false, err
+	}
+	return strings.TrimSpace(string(working)) == strings.TrimSpace(string(committed)), nil
 }

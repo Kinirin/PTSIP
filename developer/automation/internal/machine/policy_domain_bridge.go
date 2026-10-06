@@ -1,33 +1,35 @@
 package machine
 
 import (
+	"fmt"
 	domainpolicy "github.com/Kinirin/PTSIP/developer/automation/policy"
 	policybinding "github.com/Kinirin/PTSIP/developer/automation/policy/binding"
 	policylifecycle "github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
+	"strings"
 )
 
 const DeveloperClass = domainpolicy.DeveloperClass
 const ResolverContract = policybinding.ResolverContract
 
 var (
-	rootID = domainpolicy.RootID
-	policyVersionPattern = policylifecycle.PolicyVersionPattern
-	policyReadableFamilyID = policylifecycle.PolicyReadableFamilyID
-	policyBoundaryID = policylifecycle.PolicyBoundaryID
-	policyAnalysisID = policylifecycle.AnalysisIDPattern
-	policyRootFamilies = policylifecycle.RootFamilies
-	policyLegacyFamilies = policylifecycle.LegacyFamilies
+	rootID                     = domainpolicy.RootID
+	policyVersionPattern       = policylifecycle.PolicyVersionPattern
+	policyReadableFamilyID     = policylifecycle.PolicyReadableFamilyID
+	policyBoundaryID           = policylifecycle.PolicyBoundaryID
+	policyAnalysisID           = policylifecycle.AnalysisIDPattern
+	policyRootFamilies         = policylifecycle.RootFamilies
+	policyLegacyFamilies       = policylifecycle.LegacyFamilies
 	policyCollisionResolutions = policylifecycle.CollisionResolutions
 )
 
 const (
-	policyIndex = policylifecycle.PolicyIndex
-	policySubjectRegistry = policylifecycle.PolicySubjectRegistry
-	policyApprovalSchema = policylifecycle.PolicyApprovalSchema
-	policyAnalysisRoot = policylifecycle.PolicyAnalysisRoot
-	policyAnalysisRecordRoot = policylifecycle.PolicyAnalysisRecordRoot
-	policyAnalysisRegistry = policylifecycle.PolicyAnalysisRegistry
-	policyAnalysisSchema = policylifecycle.PolicyAnalysisSchema
+	policyIndex                  = policylifecycle.PolicyIndex
+	policySubjectRegistry        = policylifecycle.PolicySubjectRegistry
+	policyApprovalSchema         = policylifecycle.PolicyApprovalSchema
+	policyAnalysisRoot           = policylifecycle.PolicyAnalysisRoot
+	policyAnalysisRecordRoot     = policylifecycle.PolicyAnalysisRecordRoot
+	policyAnalysisRegistry       = policylifecycle.PolicyAnalysisRegistry
+	policyAnalysisSchema         = policylifecycle.PolicyAnalysisSchema
 	policyAnalysisRegistrySchema = policylifecycle.PolicyAnalysisRegistrySchema
 )
 
@@ -37,15 +39,49 @@ type PolicyCorpus = policylifecycle.PolicyCorpus
 
 func NewResolver(repo *Repository) (*Resolver, error) { return policybinding.NewResolver(repo) }
 
+func (r *Repository) RootSection(id, section string) (any, error) {
+	resolver, err := NewResolver(r)
+	if err != nil {
+		return nil, err
+	}
+	result, err := resolver.Get(id, section)
+	if err != nil {
+		return nil, err
+	}
+	return result["record"], nil
+}
+
+func (r *Repository) CurrentBranch() (string, error) {
+	output, err := ppGit(r.Root, "branch", "--show-current")
+	if err != nil {
+		return "", err
+	}
+	branch := strings.TrimSpace(string(output))
+	if branch == "" {
+		return "", fmt.Errorf("detached HEAD: task context branch resolution fails closed")
+	}
+	return branch, nil
+}
+
+func (r *Repository) ValidateImplementationReference(reference Object) (Object, error) {
+	return ValidateImplementationRef(r, reference)
+}
+
 func policyFailure(code, detail string) error { return policylifecycle.Failure(code, detail) }
-func policyContains(values []string, needle string) bool { return policylifecycle.Contains(values, needle) }
-func policyStrings(value any) []string { return policylifecycle.Strings(value) }
-func policyUnique(values []string) bool { return policylifecycle.Unique(values) }
+func policyContains(values []string, needle string) bool {
+	return policylifecycle.Contains(values, needle)
+}
+func policyStrings(value any) []string          { return policylifecycle.Strings(value) }
+func policyUnique(values []string) bool         { return policylifecycle.Unique(values) }
 func policySetsEqual(a, b map[string]bool) bool { return policylifecycle.SetsEqual(a, b) }
-func policyClone[T any](value T) T { return policylifecycle.Clone(value) }
-func policyParseVersion(version string) (int, int, error) { return policylifecycle.ParseVersion(version) }
+func policyClone[T any](value T) T              { return policylifecycle.Clone(value) }
+func policyParseVersion(version string) (int, int, error) {
+	return policylifecycle.ParseVersion(version)
+}
 func policyCanonicalPath(id string) (string, error) { return policylifecycle.CanonicalPath(id) }
-func policyNextFamilyID(ids []string, family string) (string, error) { return policylifecycle.NextFamilyID(ids, family) }
+func policyNextFamilyID(ids []string, family string) (string, error) {
+	return policylifecycle.NextFamilyID(ids, family)
+}
 
 func InitialPolicyVersion() string { return policylifecycle.InitialPolicyVersion() }
 func ResolvePolicyVersionTransition(version, status, changeClass, target string) (Object, error) {
@@ -70,7 +106,9 @@ func (r *Repository) policyAnalysisGroup(class, family, reference, groupID strin
 func (r *Repository) PreflightFamilyPolicy(class, family, approvalRef, analysisID, groupID string) (Object, error) {
 	return policylifecycle.PreflightFamilyPolicy(r, class, family, approvalRef, analysisID, groupID)
 }
-func (r *Repository) InspectPolicy(id string) (Object, error) { return policylifecycle.InspectPolicy(r, id) }
+func (r *Repository) InspectPolicy(id string) (Object, error) {
+	return policylifecycle.InspectPolicy(r, id)
+}
 func (r *Repository) StatusPreflight(id, approvalRef string) (Object, error) {
 	return policylifecycle.StatusPreflight(r, id, approvalRef)
 }

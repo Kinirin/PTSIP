@@ -997,10 +997,10 @@
         "wu02",
         "control-context"
       ],
-      "required_options": [
+      "required_options": [],
+      "optional_options": [
         "execution_branch"
       ],
-      "optional_options": [],
       "boolean_options": [],
       "required_arguments": []
     },
@@ -1160,6 +1160,85 @@
       "optional_options": [],
       "boolean_options": [],
       "required_arguments": []
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "inspect"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "plan"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "verify"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "simulate"
+      ],
+      "nonfatal_statuses": ["BLOCKED"],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "apply"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "plan"
+      ],
+      "optional_options": [
+        "output"
+      ],
+      "boolean_options": []
     }
   ],
   "normative_semantics_owner": "LANGUAGE_NEUTRAL_MACHINE_CONTRACT",

@@ -1,13 +1,15 @@
-package machine
+package machine_test
 
 import (
 	"errors"
+	branchcontrol "github.com/Kinirin/PTSIP/developer/automation/branch"
+	machine "github.com/Kinirin/PTSIP/developer/automation/internal/machine"
 	"testing"
 )
 
-func branchGuardTestRepo(t *testing.T) *Repository {
+func branchGuardTestRepo(t *testing.T) *machine.Repository {
 	t.Helper()
-	repo, err := Open(".")
+	repo, err := machine.Open(".")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,9 +21,9 @@ func branchGuardErrorCode(t *testing.T, err error) string {
 	if err == nil {
 		t.Fatal("expected branch guard error")
 	}
-	var operation *OperationError
+	var operation *machine.OperationError
 	if !errors.As(err, &operation) {
-		t.Fatalf("expected OperationError, got %T: %v", err, err)
+		t.Fatalf("expected machine.OperationError, got %T: %v", err, err)
 	}
 	return operation.Code
 }
@@ -29,7 +31,7 @@ func branchGuardErrorCode(t *testing.T, err error) string {
 func TestBranchGuardExactApprovedDevelopmentBranch(t *testing.T) {
 	repo := branchGuardTestRepo(t)
 	for _, branch := range []string{"dev/0.4.0", "dev/0.10.0", "dev/12.3.45", "dev/123.456.789"} {
-		result, err := repo.ValidateBranchCreation(
+		result, err := branchcontrol.ValidateCreation(repo,
 			branch,
 			branch,
 			"USER_EXPLICIT",
@@ -66,7 +68,7 @@ func TestBranchGuardFailsClosedForUnauthorizedInputs(t *testing.T) {
 	}
 	for _, test := range cases {
 		t.Run(test.name, func(t *testing.T) {
-			_, err := repo.ValidateBranchCreation(
+			_, err := branchcontrol.ValidateCreation(repo,
 				test.candidate,
 				test.approved,
 				test.authorization,
@@ -88,7 +90,7 @@ func TestBranchGuardFailsClosedForUnauthorizedInputs(t *testing.T) {
 		"WORKFLOW_REF_CREATION",
 	} {
 		t.Run("mechanism/"+mechanism, func(t *testing.T) {
-			_, err := repo.ValidateBranchCreation(
+			_, err := branchcontrol.ValidateCreation(repo,
 				"dev/0.4.1",
 				"dev/0.4.1",
 				"USER_EXPLICIT",
@@ -104,7 +106,7 @@ func TestBranchGuardFailsClosedForUnauthorizedInputs(t *testing.T) {
 
 func TestBranchGuardProjectProfileTransitionKeepsBranchIdentity(t *testing.T) {
 	repo := branchGuardTestRepo(t)
-	result, err := repo.BranchProfileTransition("dev/0.4.0", "pp.1.01", "pp.1.02")
+	result, err := branchcontrol.ProfileTransition(repo, "dev/0.4.0", "pp.1.01", "pp.1.02")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -115,10 +117,10 @@ func TestBranchGuardProjectProfileTransitionKeepsBranchIdentity(t *testing.T) {
 		t.Fatalf("unexpected transition result: %#v", result)
 	}
 
-	if _, err := repo.BranchProfileTransition("feature/example", "pp.1.01", "pp.1.02"); branchGuardErrorCode(t, err) != "INVALID_DEVELOPMENT_BRANCH" {
+	if _, err := branchcontrol.ProfileTransition(repo, "feature/example", "pp.1.01", "pp.1.02"); branchGuardErrorCode(t, err) != "INVALID_DEVELOPMENT_BRANCH" {
 		t.Fatalf("unexpected invalid branch error: %v", err)
 	}
-	if _, err := repo.BranchProfileTransition("dev/0.4.0", "invalid", "pp.1.02"); branchGuardErrorCode(t, err) != "INVALID_PROJECT_PROFILE_IDENTITY" {
+	if _, err := branchcontrol.ProfileTransition(repo, "dev/0.4.0", "invalid", "pp.1.02"); branchGuardErrorCode(t, err) != "INVALID_PROJECT_PROFILE_IDENTITY" {
 		t.Fatalf("unexpected invalid profile error: %v", err)
 	}
 }
@@ -131,7 +133,7 @@ func TestBranchGuardClassifiesExistingBranches(t *testing.T) {
 		"feature/unregistered-branch-shape": "UNREGISTERED_SHAPE",
 	}
 	for branch, expected := range cases {
-		result, err := repo.ClassifyBranch(branch)
+		result, err := branchcontrol.ClassifyExisting(repo, branch)
 		if err != nil {
 			t.Fatalf("%s: %v", branch, err)
 		}
@@ -140,7 +142,7 @@ func TestBranchGuardClassifiesExistingBranches(t *testing.T) {
 		}
 	}
 
-	if _, err := repo.ValidateBranchCreation(
+	if _, err := branchcontrol.ValidateCreation(repo,
 		"tool-0.3.4-authority-consistency",
 		"tool-0.3.4-authority-consistency",
 		"USER_EXPLICIT",

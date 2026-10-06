@@ -212,8 +212,33 @@ func TestGoCutoverReportsRemainingWorkWithoutClaimingCompletion(t *testing.T) {
 	if got["status"] != "IN_PROGRESS" || got["implementation_complete"] != false || got["legacy_removal_ready"] != false {
 		t.Fatal("partial implementation claimed complete")
 	}
-	if len(sequence(t, got["remaining_python_files"])) != 54 || len(sequence(t, got["go_implemented_modules"])) < 3 {
-		t.Fatal("automation inventory lost current Python implementations or Go bindings")
+	root := repository(t)
+	raw, readErr := os.ReadFile(filepath.Join(root, "developer/policy/registries/go-automation-migration.json"))
+	if readErr != nil {
+		t.Fatal(readErr)
+	}
+	var inventory map[string]any
+	if err := json.Unmarshal(raw, &inventory); err != nil {
+		t.Fatal(err)
+	}
+	expected := map[string]bool{}
+	for _, rawModule := range sequence(t, inventory["modules"]) {
+		module := rawModule.(map[string]any)
+		path := module["python_path"].(string)
+		if info, err := os.Stat(filepath.Join(root, filepath.FromSlash(path))); err == nil && info.Mode().IsRegular() {
+			expected[path] = true
+		} else if err != nil && !os.IsNotExist(err) {
+			t.Fatal(err)
+		}
+	}
+	remaining := sequence(t, got["remaining_python_files"])
+	if len(remaining) != len(expected) || len(sequence(t, got["go_implemented_modules"])) == 0 {
+		t.Fatal("cutover projection differs from registered physical sources")
+	}
+	for _, rawPath := range remaining {
+		if !expected[rawPath.(string)] {
+			t.Fatalf("unregistered or retired Python source reported: %s", rawPath)
+		}
 	}
 }
 

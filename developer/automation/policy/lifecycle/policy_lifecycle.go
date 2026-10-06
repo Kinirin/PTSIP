@@ -20,6 +20,24 @@ var policyReadableFamilyID = regexp.MustCompile(`^MPD-(NORM|GOV|INTENT|ARCH|INFO
 var policyBoundaryID = regexp.MustCompile(`^MPD-BOUND-[0-9]{4}$`)
 
 func InitialPolicyVersion() string { return "0.0" }
+
+func ValidatePolicyVersionSemantics(id string, payload Object) []string {
+	identity := Map(payload["policy"])
+	if identity == nil {
+		return []string{}
+	}
+	version := Text(identity["version"])
+	major, _, err := policyParseVersion(version)
+	if err != nil {
+		return []string{id + ": " + err.Error()}
+	}
+	status := Text(identity["status"])
+	valid := status == "DRAFT" && major == 0 || status == "APPROVED" && major == 1 || policyContains([]string{"ACTIVE", "SUPERSEDED", "RETIRED"}, status) && major >= 2
+	if !valid {
+		return []string{id + ": POLICY_VERSION_STATUS_MISMATCH version=" + version + " status=" + status}
+	}
+	return []string{}
+}
 func policyParseVersion(version string) (int, int, error) {
 	match := policyVersionPattern.FindStringSubmatch(version)
 	if match == nil {

@@ -1,6 +1,7 @@
 package machine
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
@@ -353,6 +354,17 @@ func (r *Repository) MarkdownPlan(scopes []string) (Object, error) {
 	return Object{"schema_version": "ptsip-markdown-cleanup-plan/v1", "policy_ref": inspected["policy_ref"], "repository_head": inspected["repository_head"], "state": state, "apply_authorized": ready["apply_authorized"], "remove": remove, "blocked": blocked, "unresolved": unresolved, "target_hashes": hashes, "inspection": inspected, "readiness": ready}, nil
 }
 func (r *Repository) ApplyMarkdownPlan(plan Object) (Object, error) {
+	resolver, err := NewResolver(r)
+	if err != nil {
+		return nil, err
+	}
+	policy, err := resolver.Policy(cleanupRootPolicy)
+	if err != nil {
+		return nil, err
+	}
+	if Map(policy["policy"])["status"] != "ACTIVE" {
+		return nil, Fail("CLEANUP_POLICY_NOT_ACTIVE", "Root cleanup policy is not ACTIVE")
+	}
 	if plan["schema_version"] != "ptsip-markdown-cleanup-plan/v1" || plan["state"] != "READY" || plan["apply_authorized"] != true {
 		return nil, Fail("CLEANUP_PLAN_NOT_AUTHORIZED", "plan must be admitted and ready")
 	}
@@ -425,7 +437,9 @@ func init() {
 	RegisterOperations("markdown-cleanup", func(r *Repository, command string, opts map[string]string, args []string) (any, error) {
 		scopes := []string{}
 		if opts["--scope"] != "" {
-			scopes = append(scopes, opts["--scope"])
+			if err := json.Unmarshal([]byte(opts["--scope"]), &scopes); err != nil {
+				scopes = []string{opts["--scope"]}
+			}
 		}
 		var result any
 		var err error
@@ -433,7 +447,11 @@ func init() {
 		case "inspect":
 			result, err = r.InspectMarkdown(scopes)
 		case "verify":
-			result, err = r.MarkdownReadiness(nil)
+			var inspection Object
+			inspection, err = r.InspectMarkdown(scopes)
+			if err == nil {
+				result, err = r.MarkdownReadiness(inspection)
+			}
 		case "plan":
 			result, err = r.MarkdownPlan(scopes)
 		case "simulate":

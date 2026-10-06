@@ -100,7 +100,7 @@
       "expected_error": "outside component_ref include authority"
     },
     {
-      "module_path": "developer/tests",
+      "module_path": "developer/verification",
       "expected_error": "requires a repository Go module"
     }
   ],
@@ -163,8 +163,14 @@
     {
       "id": "MARKDOWN_CLEANUP_REGISTERED_SOURCE_INTERFACE",
       "command": [
-        "-m",
-        "developer.automation.markdown_cleanup",
+        "go",
+        "-C",
+        "developer/automation",
+        "run",
+        "-tags",
+        "grammar_subset,grammar_subset_python",
+        "./cmd/ptsip-dev",
+        "markdown-cleanup",
         "simulate"
       ],
       "expected_mutation": false

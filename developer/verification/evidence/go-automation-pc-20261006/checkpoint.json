@@ -1,0 +1,117 @@
+{
+  "projection_authority": false,
+  "checkpoint_date": "2026-10-06",
+  "timezone": "Asia/Seoul",
+  "branch": "dev/0.3.8a4",
+  "tested_base_head": "6a1e814b82f8f3cc4ad4d8de25b330dfcbb3ce2e",
+  "tested_snapshot_kind": "WORKING_TREE_AND_INDEX_ON_BASE_HEAD",
+  "tested_source_manifest": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip#final-source-manifest.json",
+  "tested_source_manifest_sha256": "3e82280e771c6c0b4034a90b168c2a8f5551a41a929b57ce5a56855cbdddcd64",
+  "commit_identity_resolution": "Use the commit containing HANDOFF-GO-AUTOMATION-20261006-PC.md; this checkpoint does not claim its own commit hash.",
+  "go_tests": [
+    {
+      "module": "automation",
+      "passed_tests": 67,
+      "passed_subtests": 78,
+      "failed_tests": 0,
+      "skipped_tests": 0
+    },
+    {
+      "module": "developer-tests",
+      "passed_tests": 50,
+      "passed_subtests": 156,
+      "failed_tests": 0,
+      "skipped_tests": 0
+    }
+  ],
+  "checks": {
+    "automation_vet_exit": 0,
+    "developer_tests_vet_exit": 0,
+    "policy_validator_exit": 0,
+    "resolver_validator_exit": 0,
+    "test_mode_registry": "PASS: 15 modes",
+    "workflow_yaml": "PASS",
+    "native_pre_commit": "PASS: NO_T2_AUTHORITY_DELTA / NO_CHANGE"
+  },
+  "remaining_python_tests": {
+    "passed": 408,
+    "failed": 34,
+    "skipped": 2,
+    "baseline_failed": 34,
+    "failure_id_delta": [],
+    "baseline_head": "6a1e814b82f8f3cc4ad4d8de25b330dfcbb3ce2e"
+  },
+  "migration": {
+    "status": "IN_PROGRESS",
+    "implementation_complete": false,
+    "legacy_removal_ready": false,
+    "remaining_python_automation_files": 51,
+    "registered_go_implemented_modules": 8,
+    "registered_pending_modules": 46,
+    "remaining_python_test_files": 38
+  },
+  "execution_constraints": {
+    "approved_domain_roots": [
+      "developer/automation/policy/binding",
+      "developer/automation/policy/lifecycle",
+      "developer/automation/planning"
+    ],
+    "user_authorized_temporary_root_for_unresolved_domains": "developer/automation/internal/machine",
+    "canonical_planning_entry_for_branch": "UNRESOLVED: do not infer a work unit",
+    "developer_legacy_removal_ready": false,
+    "support_plane_retirement_authorized": false,
+    "full_migration_complete": false,
+    "exact_checkpoint_sha_ci_verified": false
+  },
+  "evidence": [
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "eba147b49d4016522105cea608037aa4a876bdc8afa841372613e879121b4ca6",
+      "bytes": 146501,
+      "archive_entry": "automation-accepted.jsonl"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "b0d99535fa3489d2a03a5fa396c14500ec4b81b2f191201e1fb96a010d7b7e97",
+      "bytes": 219520,
+      "archive_entry": "developer-tests-accepted.jsonl"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "9be0803513843f4763681c498ed98a8bd31bbba263d84715a97a70936eafe05d",
+      "bytes": 78731,
+      "archive_entry": "remaining-developer-pytest-final.log"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "b5cb2154c331bc3cebbfb99dc840cca33051a8e7ded61d19b7e871b1ef51aceb",
+      "bytes": 147409,
+      "archive_entry": "remaining-developer-pytest-final.xml"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "dfc28bad5fc94fe3f98eafb9c7e47771092b59982acccc372425d0a1b608f385",
+      "bytes": 79095,
+      "archive_entry": "baseline-failure-recheck.log"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "452a22bee5ea1b68d0fdb69bc2930d69d10f32549952ee98a06c01a7b56b9e7f",
+      "bytes": 84098,
+      "archive_entry": "baseline-failure-recheck.xml"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "3e82280e771c6c0b4034a90b168c2a8f5551a41a929b57ce5a56855cbdddcd64",
+      "bytes": 10600,
+      "archive_entry": "final-source-manifest.json"
+    },
+    {
+      "path": "developer/verification/evidence/go-automation-pc-20261006/execution-evidence.zip",
+      "sha256": "6f5a8a381f874649392845a55c8a653513d4785d6541cc7d7a23aafac7528371",
+      "bytes": 3868,
+      "archive_entry": "implementation-verification-summary.json"
+    }
+  ],
+  "evidence_archive_sha256": "1ece93ec0057390313555875f35e0df5dd9e17e4f1a68195e1dc88541f6c9713"
+}

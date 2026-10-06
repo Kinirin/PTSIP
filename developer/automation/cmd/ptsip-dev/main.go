@@ -10,8 +10,16 @@ import (
 	"github.com/Kinirin/PTSIP/developer/automation/internal/machine"
 )
 
-func run(arguments []string) (any, error) {
+type commandMetadata struct {
+	repo       *machine.Repository
+	positional []string
+}
+
+func run(arguments []string) (any, error) { return runCommand(arguments, nil) }
+
+func runCommand(arguments []string, metadata *commandMetadata) (any, error) {
 	options := map[string]string{}
+	repetitions := map[string][]string{}
 	positional := []string{}
 	for i := 0; i < len(arguments); i++ {
 		argument := arguments[i]
@@ -19,14 +27,18 @@ func run(arguments []string) (any, error) {
 			continue
 		}
 		if strings.HasPrefix(argument, "--") {
-			if _, exists := options[argument]; exists {
-				return nil, fmt.Errorf("duplicate option %s", argument)
-			}
+			previous, exists := options[argument]
 			if i+1 == len(arguments) || strings.HasPrefix(arguments[i+1], "--") {
 				options[argument] = ""
 			} else {
 				i++
 				options[argument] = arguments[i]
+			}
+			if exists {
+				if len(repetitions[argument]) == 0 {
+					repetitions[argument] = []string{previous}
+				}
+				repetitions[argument] = append(repetitions[argument], options[argument])
 			}
 		} else {
 			positional = append(positional, argument)
@@ -43,8 +55,14 @@ func run(arguments []string) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := repo.NormalizeCommandOptions(positional, options, repetitions); err != nil {
+		return nil, err
+	}
 	if err := repo.AdmitCommand(positional, options); err != nil {
 		return nil, err
+	}
+	if metadata != nil {
+		metadata.repo, metadata.positional = repo, positional
 	}
 	if len(positional) == 0 {
 		return nil, fmt.Errorf("command required: policy-resolver, root-family-entry, automation-migration")
@@ -103,7 +121,8 @@ func run(arguments []string) (any, error) {
 }
 
 func main() {
-	result, err := run(os.Args[1:])
+	metadata := &commandMetadata{}
+	result, err := runCommand(os.Args[1:], metadata)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)
@@ -116,9 +135,14 @@ func main() {
 		os.Exit(2)
 	}
 	if object, ok := result.(map[string]any); ok {
-		switch object["status"] {
-		case "FAIL", "BLOCKED", "UNRESOLVED":
+		status, _ := object["status"].(string)
+		code, err := metadata.repo.CommandStatusExitCode(metadata.positional, status)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
 			os.Exit(2)
+		}
+		if code != 0 {
+			os.Exit(code)
 		}
 	}
 }

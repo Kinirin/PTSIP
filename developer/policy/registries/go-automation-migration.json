@@ -242,8 +242,10 @@
     },
     {
       "python_path": "developer/automation/markdown_cleanup.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/markdown_cleanup.go"
+      ],
       "python_line_count": 678,
       "public_definitions": [
         "MarkdownCleanupError",
@@ -257,8 +259,9 @@
         "simulate_cleanup",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_REGISTERED_CLI_VERIFIED",
+      "verification_ref": "developer/automation/internal/machine/markdown_cleanup_native_test.go"
     },
     {
       "python_path": "developer/automation/planning/__init__.py",

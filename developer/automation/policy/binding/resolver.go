@@ -49,8 +49,8 @@ func NewResolver(repo Repository) (*Resolver, error) {
 	if authority["canonical_policy_records_remain_authority"] != true || authority["resolver_projection_is_authority"] != false || authority["resolver_may_create_or_rank_policy_semantics"] != false || authority["product_runtime_dependency"] != "FORBIDDEN" {
 		return nil, fmt.Errorf("invalid resolver authority boundary")
 	}
-	if config["task_context_ref"] != nil {
-		return nil, fmt.Errorf("unregistered Go task context adapter; fail closed")
+	if ref := config["task_context_ref"]; ref != nil && Text(ref) == "" {
+		return nil, fmt.Errorf("task_context_ref must be null or a non-empty repository reference")
 	}
 	if config["policy_index_ref"] != "developer/policy/index.yaml" {
 		return nil, fmt.Errorf("noncanonical developer catalog")
@@ -248,9 +248,17 @@ func (r *Resolver) Resolve(scope, operation string) (Object, error) {
 				seen[id] = true
 				resolved = append(resolved, value)
 			}
-			return Object{"schema_version": "ptsip-policy-resolution/v1", "resolver_id": r.ID,
+			result := Object{"schema_version": "ptsip-policy-resolution/v1", "resolver_id": r.ID,
 				"scope": normalized, "operation": operation, "binding_scope": current, "policies": resolved,
-				"authority": "CANONICAL_POLICY_RECORDS", "projection_authority": false}, nil
+				"authority": "CANONICAL_POLICY_RECORDS", "projection_authority": false}
+			context, err := r.taskContext(normalized, operation, true)
+			if err != nil {
+				return nil, err
+			}
+			if context != nil {
+				result["task_context"] = context
+			}
+			return result, nil
 		}
 		if current == "." {
 			return nil, fmt.Errorf("no eligible policy binding for %q", normalized)
@@ -312,7 +320,7 @@ func (r *Resolver) ValidateBindings() error {
 			}
 		}
 	}
-	return nil
+	return r.validateTaskBindings()
 }
 
 func (r *Resolver) Rule(id string) (Object, error) {
