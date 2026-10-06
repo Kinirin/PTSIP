@@ -1,0 +1,57 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0010
+  source_ref: developer/policy/approvals/MPA-20261006-MPD-SPEC-0028-POLICY-ANALYSIS-REGISTRY-DISCOVERY.yaml
+  responsibilities:
+  - responsibility_id: R01
+    statement: Policy Analysis record identity, registry-only discovery, and Analysis-owned schema location form one stable specification responsibility.
+    authority_relation: OWN
+    authority_subject: POLICY_ANALYSIS_REGISTRY_FIRST_DISCOVERY_CONTRACT
+    lifecycle_scope: POLICY_ANALYSIS_ARTIFACT_DISCOVERY_AND_CONTRACT_OWNERSHIP
+    cohesion_key: POLICY_ANALYSIS_REGISTRY_FIRST_DISCOVERY
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: SPEC
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: SPEC
+      searched_policy_ids:
+      - MPD-SPEC-0001
+      - MPD-SPEC-0002
+      - MPD-SPEC-0003
+      - MPD-SPEC-0004
+      - MPD-SPEC-0005
+      - MPD-SPEC-0006
+      - MPD-SPEC-0007
+      - MPD-SPEC-0008
+      - MPD-SPEC-0009
+      - MPD-SPEC-0010
+      - MPD-SPEC-0011
+      - MPD-SPEC-0020
+      - MPD-SPEC-0021
+      - MPD-SPEC-0022
+      - MPD-SPEC-0023
+      - MPD-SPEC-0024
+      - MPD-SPEC-0025
+      - MPD-SPEC-0026
+      - MPD-SPEC-0027
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  decision:
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: SPEC
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: SPEC
+      cohesion_key: POLICY_ANALYSIS_REGISTRY_FIRST_DISCOVERY
+      responsibility_ids:
+      - R01
+      cohesion_rationale: Registry-first discovery and Analysis-owned schema location are one contract boundary.

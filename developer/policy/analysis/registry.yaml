@@ -1,63 +1,119 @@
-schema_version: developer-policy-materialization-analysis-registry/v2
+schema_version: developer-policy-materialization-analysis-registry/v3
 artifact_class: PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY
+records:
+- analysis_id: PRA-0001
+  analysis_ref: developer/policy/analysis/records/PRA-0001.yaml
+  subject_type: POLICY
+  subject_id: MPD-WORK-0003
+  analysis_kind: POLICY_RESPONSIBILITY_GATES
+  recorded_at: "2026-09-29"
+- analysis_id: PRA-0002
+  analysis_ref: developer/policy/analysis/records/PRA-0002.yaml
+  subject_type: FAMILY
+  subject_id: RELS
+  analysis_kind: FAMILY_MATERIALIZATION
+  recorded_at: "2026-09-29"
+- analysis_id: PRA-0003
+  analysis_ref: developer/policy/analysis/records/PRA-0003.yaml
+  subject_type: POLICY
+  subject_id: MPD-0005
+  analysis_kind: SPEC_MATERIALIZATION
+  recorded_at: "2026-10-02"
+- analysis_id: PRA-0004
+  analysis_ref: developer/policy/analysis/records/PRA-0004.yaml
+  subject_type: FAMILY
+  subject_id: VERI
+  analysis_kind: FAMILY_MATERIALIZATION
+  recorded_at: "2026-10-02"
+- analysis_id: PRA-0005
+  analysis_ref: developer/policy/analysis/records/PRA-0005.yaml
+  subject_type: POLICY
+  subject_id: MPD-0012
+  analysis_kind: RESPONSIBILITY_RECONCILIATION
+  recorded_at: "2026-10-03"
+- analysis_id: PRA-0006
+  analysis_ref: developer/policy/analysis/records/PRA-0006.yaml
+  subject_type: POLICY
+  subject_id: MPD-VERI-0006
+  analysis_kind: OUTPUT_CONTRACT
+  recorded_at: "2026-10-03"
+- analysis_id: PRA-0007
+  analysis_ref: developer/policy/analysis/records/PRA-0007.yaml
+  subject_type: POLICY
+  subject_id: MPD-WORK-0004
+  analysis_kind: MUTATION_AUTHORIZATION_GATE
+  recorded_at: "2026-10-04"
+- analysis_id: PRA-0008
+  analysis_ref: developer/policy/analysis/records/PRA-0008.yaml
+  subject_type: WORK_UNIT
+  subject_id: WU-08
+  analysis_kind: VERIFICATION_ENTRY
+  recorded_at: "2026-10-04"
+- analysis_id: PRA-0009
+  analysis_ref: developer/policy/analysis/records/PRA-0009.yaml
+  subject_type: POLICY
+  subject_id: MPD-VERI-0007
+  analysis_kind: VERIFICATION_PROTOCOL
+  recorded_at: "2026-10-05"
+- analysis_id: PRA-0010
+  analysis_ref: developer/policy/analysis/records/PRA-0010.yaml
+  subject_type: POLICY
+  subject_id: MPD-SPEC-0028
+  analysis_kind: REGISTRY_DISCOVERY_CONTRACT
+  recorded_at: "2026-10-06"
 bindings:
 - policy_id: MPD-RELS-0001
-  analysis_ref: developer/policy/analysis/PRA-20260929-RELS-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20260929-RELS-FAMILY-MATERIALIZATION
-  group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RELS
+  analysis_id: PRA-0002
+  group_id: G01
 - policy_id: MPD-RELS-0002
-  analysis_ref: developer/policy/analysis/PRA-20260929-RELS-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20260929-RELS-FAMILY-MATERIALIZATION
-  group_id: G02
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RELS
-- policy_id: MPD-VERI-0002
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
-  group_id: G01
-  policy_class: PTSIP_DEVELOPER_POLICY
-  family: VERI
-- policy_id: MPD-VERI-0003
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0002
   group_id: G02
+- policy_id: MPD-SPEC-0028
   policy_class: PTSIP_DEVELOPER_POLICY
-  family: VERI
-- policy_id: MPD-VERI-0004
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
-  group_id: G03
-  policy_class: PTSIP_DEVELOPER_POLICY
-  family: VERI
-- policy_id: MPD-VERI-0005
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
-  group_id: G04
-  policy_class: PTSIP_DEVELOPER_POLICY
-  family: VERI
-- policy_id: MPD-VERI-0006
-  analysis_ref: developer/policy/analysis/PRA-20261003-MPD-VERI-0006-OUTPUT-CONTRACT.yaml
-  analysis_id: PRA-20261003-MPD-VERI-0006-OUTPUT-CONTRACT
+  family: SPEC
+  analysis_id: PRA-0010
   group_id: G01
+- policy_id: MPD-VERI-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: VERI
+  analysis_id: PRA-0004
+  group_id: G01
+- policy_id: MPD-VERI-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: VERI
+  analysis_id: PRA-0004
+  group_id: G02
+- policy_id: MPD-VERI-0004
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: VERI
+  analysis_id: PRA-0004
+  group_id: G03
+- policy_id: MPD-VERI-0005
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: VERI
+  analysis_id: PRA-0004
+  group_id: G04
+- policy_id: MPD-VERI-0006
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: VERI
+  analysis_id: PRA-0006
+  group_id: G01
 - policy_id: MPD-VERI-0007
   policy_class: VPMS_DEVELOPER_POLICY
   family: VERI
-  analysis_ref: developer/policy/analysis/PRA-20261005-VPMS-VERIFICATION-PROTOCOL.yaml
-  analysis_id: PRA-20261005-VPMS-VERIFICATION-PROTOCOL
+  analysis_id: PRA-0009
   group_id: G01
 - policy_id: MPD-WORK-0003
-  analysis_ref: developer/policy/analysis/PRA-20260929-POLICY-RESPONSIBILITY-GATES.yaml
-  analysis_id: PRA-20260929-POLICY-RESPONSIBILITY-GATES
-  group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: WORK
+  analysis_id: PRA-0001
+  group_id: G01
 - policy_id: MPD-WORK-0004
-  analysis_ref: developer/policy/analysis/PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE.yaml
-  analysis_id: PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE
-  group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: WORK
+  analysis_id: PRA-0007
+  group_id: G01

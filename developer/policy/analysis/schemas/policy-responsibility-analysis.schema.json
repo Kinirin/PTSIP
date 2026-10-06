@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:developer-policy:policy-responsibility-analysis:v2",
-  "title": "Class-aware Policy Responsibility Analysis v2",
+  "$id": "urn:developer-policy:policy-responsibility-analysis:v3",
+  "title": "Class-aware Policy Responsibility Analysis v3",
   "type": "object",
   "required": [
     "schema_version",
@@ -10,7 +10,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "developer-policy-responsibility-analysis/v2"
+      "const": "developer-policy-responsibility-analysis/v3"
     },
     "artifact_class": {
       "const": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS"
@@ -26,7 +26,7 @@
       "properties": {
         "analysis_id": {
           "type": "string",
-          "pattern": "^PRA-[A-Za-z0-9._-]+$"
+          "pattern": "^PRA-[0-9]{4}$"
         },
         "source_ref": {
           "type": [
