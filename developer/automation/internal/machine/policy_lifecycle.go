@@ -13,7 +13,6 @@ import (
 
 const policyIndex = "developer/policy/index.yaml"
 const policySubjectRegistry = "developer/policy/registries/authority-subject-registry.yaml"
-const policyAnalysisRegistry = "developer/policy/analysis/registry.yaml"
 const policyApprovalSchema = "developer/policy/schemas/policy-approval-provenance.schema.json"
 
 var policyVersionPattern = regexp.MustCompile(`^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$`)
@@ -272,7 +271,7 @@ func (r *Repository) policyAnalysisGroup(class, family, reference, groupID strin
 	}
 	return result, selected, nil
 }
-func (r *Repository) PreflightFamilyPolicy(class, family, approvalRef, analysisRef, groupID string) (Object, error) {
+func (r *Repository) PreflightFamilyPolicy(class, family, approvalRef, analysisID, groupID string) (Object, error) {
 	if err := r.policyRequireFamilyClass(class, family); err != nil {
 		return nil, err
 	}
@@ -290,7 +289,7 @@ func (r *Repository) PreflightFamilyPolicy(class, family, approvalRef, analysisR
 	if approval["target_status"] != "DRAFT" {
 		return nil, policyFailure("NEW_POLICY_MUST_START_DRAFT", "new policy must start at DRAFT 0.0")
 	}
-	analysis, group, err := r.policyAnalysisGroup(class, family, analysisRef, groupID)
+	analysis, group, err := r.policyAnalysisGroup(class, family, analysisID, groupID)
 	if err != nil {
 		return nil, err
 	}
@@ -344,7 +343,7 @@ func (r *Repository) StatusPreflight(id, approvalRef string) (Object, error) {
 
 // The unqualified entry point now delegates through the exact requested Root
 // identity and the same responsibility gate as explicit Family registration.
-func (r *Repository) PreflightNewPolicy(approvalRef, analysisRef, groupID string) (Object, error) {
+func (r *Repository) PreflightNewPolicy(approvalRef, analysisID, groupID string) (Object, error) {
 	approval, err := r.policyApproval(approvalRef)
 	if err != nil {
 		return nil, err
@@ -354,9 +353,9 @@ func (r *Repository) PreflightNewPolicy(approvalRef, analysisRef, groupID string
 	if match == nil {
 		return nil, policyFailure("ROOT_FAMILY_ID_REQUIRED", "new Developer authority requires an exact requested Root Family identity")
 	}
-	return r.PreflightFamilyPolicy(DeveloperClass, match[1], approvalRef, analysisRef, groupID)
+	return r.PreflightFamilyPolicy(DeveloperClass, match[1], approvalRef, analysisID, groupID)
 }
-func (r *Repository) RegisterPolicy(approvalRef, analysisRef, groupID, policyFile string) (Object, error) {
+func (r *Repository) RegisterPolicy(approvalRef, analysisID, groupID, policyFile string) (Object, error) {
 	approval, err := r.policyApproval(approvalRef)
 	if err != nil {
 		return nil, err
@@ -366,7 +365,7 @@ func (r *Repository) RegisterPolicy(approvalRef, analysisRef, groupID, policyFil
 	if match == nil {
 		return nil, policyFailure("ROOT_FAMILY_ID_REQUIRED", "new Developer authority requires an exact requested Root Family identity")
 	}
-	return r.RegisterFamilyPolicy(DeveloperClass, match[1], approvalRef, analysisRef, groupID, policyFile)
+	return r.RegisterFamilyPolicy(DeveloperClass, match[1], approvalRef, analysisID, groupID, policyFile)
 }
 
 // policyWriteTransaction validates each target with repository path and CAS checks,
@@ -408,7 +407,7 @@ func (r *Repository) policyWriteTransaction(updates map[string]Object) error {
 	}
 	return nil
 }
-func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisRef, groupID, policyFile string) (Object, error) {
+func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisID, groupID, policyFile string) (Object, error) {
 	if err := r.policyRequireFamilyClass(class, family); err != nil {
 		return nil, err
 	}
@@ -423,7 +422,7 @@ func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisRe
 	if approval["target_status"] != "DRAFT" {
 		return nil, policyFailure("NEW_POLICY_MUST_START_DRAFT", "DRAFT 0.0 required")
 	}
-	analysis, _, err := r.policyAnalysisGroup(class, family, analysisRef, groupID)
+	analysis, _, err := r.policyAnalysisGroup(class, family, analysisID, groupID)
 	if err != nil {
 		return nil, err
 	}
@@ -479,7 +478,7 @@ func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisRe
 	if err != nil {
 		return nil, err
 	}
-	if err := r.Validate("developer/policy/schemas/policy-materialization-analysis-registry.schema.json", registry); err != nil {
+	if err := r.Validate(policyAnalysisRegistrySchema, registry); err != nil {
 		return nil, policyFailure("INVALID_ANALYSIS_REGISTRY", err.Error())
 	}
 	for _, raw := range List(registry["bindings"]) {
@@ -499,10 +498,10 @@ func (r *Repository) RegisterFamilyPolicy(class, family, approvalRef, analysisRe
 		anyValues = append(anyValues, value)
 	}
 	Map(Map(subject["subject_identity_schemes"])["MANAGEMENT_POLICY_ID"])["registered_values"] = anyValues
-	bindings := append(List(registry["bindings"]), Object{"policy_id": id, "policy_class": class, "family": family, "analysis_ref": analysis["analysis_ref"], "analysis_id": analysis["analysis_id"], "group_id": groupID})
+	bindings := append(List(registry["bindings"]), Object{"policy_id": id, "policy_class": class, "family": family, "analysis_id": analysis["analysis_id"], "group_id": groupID})
 	sort.Slice(bindings, func(i, j int) bool { return Text(Map(bindings[i])["policy_id"]) < Text(Map(bindings[j])["policy_id"]) })
 	registry["bindings"] = bindings
-	for path, value := range map[string]Object{"developer/policy/schemas/developer-policy-catalog.schema.json": index, "developer/policy/schemas/developer-policy-subject-catalog.schema.json": subject, "developer/policy/schemas/policy-materialization-analysis-registry.schema.json": registry} {
+	for path, value := range map[string]Object{"developer/policy/schemas/developer-policy-catalog.schema.json": index, "developer/policy/schemas/developer-policy-subject-catalog.schema.json": subject, policyAnalysisRegistrySchema: registry} {
 		if err := r.Validate(path, value); err != nil {
 			return nil, err
 		}

@@ -1,17 +1,204 @@
 [
- {"command":["policy-lifecycle","inspect"],"required_arguments":["policy_id"],"required_options":[],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","preflight"],"required_arguments":[],"required_options":["approval_ref","analysis_ref","group_id"],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","register"],"required_arguments":[],"required_options":["approval_ref","analysis_ref","group_id","policy_file"],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","family-preflight"],"required_arguments":[],"required_options":["policy_class","family","approval_ref","analysis_ref","group_id"],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","family-register"],"required_arguments":[],"required_options":["policy_class","family","approval_ref","analysis_ref","group_id","policy_file"],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","status-preflight"],"required_arguments":["policy_id"],"required_options":["approval_ref"],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","version-initial"],"required_arguments":[],"required_options":[],"optional_options":[],"boolean_options":[]},
- {"command":["policy-lifecycle","version-transition"],"required_arguments":[],"required_options":["current_version","current_status","change_class"],"optional_options":["target_status"],"boolean_options":[]},
- {"command":["policy-responsibility","validate"],"required_arguments":[],"required_options":["analysis_ref"],"optional_options":["current_authority_lookup"],"boolean_options":["current_authority_lookup"]},
- {"command":["policy-validator","validate"],"required_arguments":[],"required_options":[],"optional_options":[],"boolean_options":[]},
- {"command":["policy-validator","contract"],"required_arguments":["contract_id"],"required_options":[],"optional_options":[],"boolean_options":[]},
- {"command":["policy-validator","catalog-contracts"],"required_arguments":[],"required_options":[],"optional_options":[],"boolean_options":[]},
- {"command":["authority-family-migration","migrate"],"required_arguments":[],"required_options":[],"optional_options":["apply"],"boolean_options":["apply"]},
- {"command":["policy-plan-consistency","verify"],"required_arguments":[],"required_options":[],"optional_options":[],"boolean_options":[]}
- ,{"command":["pp-seed","pp-102"],"required_arguments":[],"required_options":[],"optional_options":["apply"],"boolean_options":["apply"]}
+ {
+  "command": [
+   "policy-lifecycle",
+   "inspect"
+  ],
+  "required_arguments": [
+   "policy_id"
+  ],
+  "required_options": [],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "preflight"
+  ],
+  "required_arguments": [],
+  "required_options": [
+   "approval_ref",
+   "analysis_id",
+   "group_id"
+  ],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "register"
+  ],
+  "required_arguments": [],
+  "required_options": [
+   "approval_ref",
+   "analysis_id",
+   "group_id",
+   "policy_file"
+  ],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "family-preflight"
+  ],
+  "required_arguments": [],
+  "required_options": [
+   "policy_class",
+   "family",
+   "approval_ref",
+   "analysis_id",
+   "group_id"
+  ],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "family-register"
+  ],
+  "required_arguments": [],
+  "required_options": [
+   "policy_class",
+   "family",
+   "approval_ref",
+   "analysis_id",
+   "group_id",
+   "policy_file"
+  ],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "status-preflight"
+  ],
+  "required_arguments": [
+   "policy_id"
+  ],
+  "required_options": [
+   "approval_ref"
+  ],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "version-initial"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-lifecycle",
+   "version-transition"
+  ],
+  "required_arguments": [],
+  "required_options": [
+   "current_version",
+   "current_status",
+   "change_class"
+  ],
+  "optional_options": [
+   "target_status"
+  ],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-responsibility",
+   "validate"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [
+   "analysis_id",
+   "subject_type",
+   "subject_id",
+   "analysis_kind",
+   "current_authority_lookup"
+  ],
+  "boolean_options": [
+   "current_authority_lookup"
+  ]
+ },
+ {
+  "command": [
+   "policy-validator",
+   "validate"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-validator",
+   "contract"
+  ],
+  "required_arguments": [
+   "contract_id"
+  ],
+  "required_options": [],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "policy-validator",
+   "catalog-contracts"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "authority-family-migration",
+   "migrate"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [
+   "apply"
+  ],
+  "boolean_options": [
+   "apply"
+  ]
+ },
+ {
+  "command": [
+   "policy-plan-consistency",
+   "verify"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [],
+  "boolean_options": []
+ },
+ {
+  "command": [
+   "pp-seed",
+   "pp-102"
+  ],
+  "required_arguments": [],
+  "required_options": [],
+  "optional_options": [
+   "apply"
+  ],
+  "boolean_options": [
+   "apply"
+  ]
+ }
 ]

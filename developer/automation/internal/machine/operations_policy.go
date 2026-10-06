@@ -14,13 +14,13 @@ func init() {
 		case "inspect":
 			return r.InspectPolicy(args[0])
 		case "preflight":
-			return r.PreflightNewPolicy(options["--approval-ref"], options["--analysis-ref"], options["--group-id"])
+			return r.PreflightNewPolicy(options["--approval-ref"], options["--analysis-id"], options["--group-id"])
 		case "register":
-			return r.RegisterPolicy(options["--approval-ref"], options["--analysis-ref"], options["--group-id"], options["--policy-file"])
+			return r.RegisterPolicy(options["--approval-ref"], options["--analysis-id"], options["--group-id"], options["--policy-file"])
 		case "family-preflight":
-			return r.PreflightFamilyPolicy(options["--policy-class"], options["--family"], options["--approval-ref"], options["--analysis-ref"], options["--group-id"])
+			return r.PreflightFamilyPolicy(options["--policy-class"], options["--family"], options["--approval-ref"], options["--analysis-id"], options["--group-id"])
 		case "family-register":
-			return r.RegisterFamilyPolicy(options["--policy-class"], options["--family"], options["--approval-ref"], options["--analysis-ref"], options["--group-id"], options["--policy-file"])
+			return r.RegisterFamilyPolicy(options["--policy-class"], options["--family"], options["--approval-ref"], options["--analysis-id"], options["--group-id"], options["--policy-file"])
 		case "status-preflight":
 			return r.StatusPreflight(args[0], options["--approval-ref"])
 		case "version-initial":
@@ -34,7 +34,16 @@ func init() {
 		if command != "validate" {
 			return nil, fmt.Errorf("unregistered responsibility command: %s", command)
 		}
-		return r.ValidateResponsibilityAnalysis(options["--analysis-ref"], BoolOption(options, "current-authority-lookup"))
+		record, err := r.ResolveAnalysisRecord(
+			options["--analysis-id"],
+			options["--subject-type"],
+			options["--subject-id"],
+			options["--analysis-kind"],
+		)
+		if err != nil {
+			return nil, err
+		}
+		return r.ValidateResponsibilityAnalysis(Text(record["analysis_id"]), BoolOption(options, "current-authority-lookup"))
 	})
 	RegisterOperations("policy-validator", func(r *Repository, command string, options map[string]string, args []string) (any, error) {
 		switch command {
