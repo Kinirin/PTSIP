@@ -422,6 +422,9 @@ jobs:
   pra-registry-validation:
     if: ${{ (github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch' && inputs.verification == 'policy-responsibility-analysis') }}
     runs-on: ubuntu-latest
+    env:
+      PTSIP_EXECUTION_BRANCH: ${{ github.ref_name }}
+      PTSIP_EXECUTION_SHA: ${{ github.sha }}
     steps:
       - name: Checkout exact PRA registry source
         uses: actions/checkout@v4
