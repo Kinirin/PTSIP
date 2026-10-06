@@ -860,8 +860,8 @@ components:
     include:
       - "src/tests/ptsip/repository/test_self_profile.py"
       - "developer/tests/**"
-      - "src/tests/ptsip/governance/test_policy_plan_binding.py"
-      - "src/tests/ptsip/governance/test_policy_plan_resolver_tracker.py"
+      - "developer/tests/policy/binding/mutation_test.go"
+      - "developer/tests/policy/binding/tracking_test.go"
     purpose: repository_profile_and_active_planning_surface_verification
     shipped: false
     runtime_required: false

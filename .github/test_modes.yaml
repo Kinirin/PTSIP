@@ -105,8 +105,6 @@ modes:
       pytest:
         - src/tests/ptsip/repository/test_self_profile.py
         - developer/tests
-        - src/tests/ptsip/governance/test_policy_plan_binding.py
-        - src/tests/ptsip/governance/test_policy_plan_resolver_tracker.py
 
   - id: agent-contract-runtime
     component_ref: agent-contract-runtime-verification

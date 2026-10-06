@@ -75,7 +75,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Native Go policy and planning regression failed."
           }
-          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py developer/tests/test_policy_transition_contract.py developer/tests/test_policy_plan_identity_contract.py src/tests/ptsip/governance/test_policy_plan_binding.py src/tests/ptsip/governance/test_policy_plan_resolver_tracker.py developer/tests/test_policy_plan_consistency_verifier.py developer/tests/test_policy_plan_output_schema_identity.py
+          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py developer/tests/test_policy_transition_contract.py developer/tests/test_policy_plan_identity_contract.py developer/tests/test_policy_plan_output_schema_identity.py
           if ($LASTEXITCODE -ne 0) {
             throw "Policy identity lifecycle tests failed."
           }

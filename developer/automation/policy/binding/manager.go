@@ -20,7 +20,8 @@ func (r *Store) checkPlanIdentity(values Object) error {
 	}
 	for _, key := range []string{"resolved_plan_id", "plan_file_id", "version", "revision"} {
 		if value := Text(values[key]); value != "" && identity[key] != value {
-			return fmt.Errorf("PLAN_IDENTITY_MISMATCH: %s", key)
+			code := map[string]string{"resolved_plan_id": "RESOLVED_PLAN_ID_MISMATCH", "plan_file_id": "PLAN_FILE_ID_MISMATCH", "version": "PLAN_VERSION_MISMATCH", "revision": "PLAN_REVISION_MISMATCH"}[key]
+			return fmt.Errorf("%s: %s expected %s, got %v", code, key, value, identity[key])
 		}
 	}
 	return nil
@@ -69,7 +70,13 @@ func (r *Store) LinkPlan(values Object) (Object, error) {
 		}
 	}
 	if len(matches) != 1 {
-		return nil, fmt.Errorf("BINDING_LINK_TARGET_AMBIGUOUS_OR_MISSING")
+		if Text(values["binding_id"]) != "" {
+			return nil, fmt.Errorf("BINDING_NOT_FOUND")
+		}
+		if len(matches) == 0 {
+			return nil, fmt.Errorf("UNCREATED_BINDING_NOT_FOUND")
+		}
+		return nil, fmt.Errorf("AMBIGUOUS_UNCREATED_BINDING")
 	}
 	target := matches[0]
 	fields := []string{"resolved_plan_id", "plan_file_id", "version", "revision", "plan_ref"}
