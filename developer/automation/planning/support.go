@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/santhosh-tekuri/jsonschema/v6"
 	"go.yaml.in/yaml/v3"
 )
 
@@ -24,7 +23,6 @@ type Repository interface {
 	Path(string) (string, error)
 	Scope(string) (string, error)
 	Validate(string, any) error
-	Compiler() (*jsonschema.Compiler, error)
 	AtomicWrite(string, []byte, *string) error
 	DispatchOperation(string, string, map[string]string, []string) (any, error)
 	RootDir() string

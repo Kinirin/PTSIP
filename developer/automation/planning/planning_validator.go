@@ -3,6 +3,8 @@ package planning
 import (
 	"fmt"
 	"io/fs"
+
+	"github.com/santhosh-tekuri/jsonschema/v6"
 	"path/filepath"
 	"reflect"
 	"sort"
@@ -293,32 +295,34 @@ func planningLeafTuples(routing Object) []string {
 	return out
 }
 func validatePlanningFormalIdentity(r Repository, identity Object) error {
-	key := "urn:ptsip:go:formal-plan-identity:v2"
-	compiler, err := r.Compiler()
+	const key = "urn:ptsip:go:formal-plan-identity:v2"
+	const bindingSchemaPath = "developer/bindings/schemas/policy-plan-bindings.schema.json"
+
+	binding, err := r.Read(bindingSchemaPath)
 	if err != nil {
 		return err
 	}
-	compiled := r.schemas[key]
-	if compiled == nil {
-		binding, err := r.Read(BindingSchemaPath)
-		if err != nil {
-			return err
-		}
-		bindingProperties := Map(Map(Map(binding["$defs"])["binding"])["properties"])
-		properties := Object{}
-		fields := []any{"resolved_plan_id", "plan_file_id", "version", "revision"}
-		for _, field := range fields {
-			properties[Text(field)] = bindingProperties[Text(field)]
-		}
-		schema := Object{"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": key, "type": "object", "required": fields, "properties": properties, "additionalProperties": false}
-		if err = compiler.AddResource(key, schema); err != nil {
-			return err
-		}
-		compiled, err = compiler.Compile(key)
-		if err != nil {
-			return err
-		}
-		r.schemas[key] = compiled
+	bindingProperties := Map(Map(Map(binding["$defs"])["binding"])["properties"])
+	properties := Object{}
+	fields := []any{"resolved_plan_id", "plan_file_id", "version", "revision"}
+	for _, field := range fields {
+		properties[Text(field)] = bindingProperties[Text(field)]
+	}
+	schema := Object{
+		"$schema": "https://json-schema.org/draft/2020-12/schema",
+		"$id": key,
+		"type": "object",
+		"required": fields,
+		"properties": properties,
+		"additionalProperties": false,
+	}
+	compiler := jsonschema.NewCompiler()
+	if err = compiler.AddResource(key, schema); err != nil {
+		return err
+	}
+	compiled, err := compiler.Compile(key)
+	if err != nil {
+		return err
 	}
 	return compiled.Validate(identity)
 }
