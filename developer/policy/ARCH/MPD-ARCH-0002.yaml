@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.0'
+  version: '2.1'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -28,6 +28,30 @@ rules:
     existing_declared_boundaries:
       preserve_existing_explicit_domain_roots: true
       planning_automation_root: developer/automation/planning/
+    inventory_admission:
+      mixed_responsibility_file_must_be_split_before_domain_inventory_assignment: true
+      inventory_assignment_before_responsibility_split: FORBIDDEN
+      each_split_unit_requires_single_responsibility_meaning: true
+      automatic_assignment_requires_semantic_preservation: true
+      automatic_new_domain_inventory_creation: FORBIDDEN
+    existing_domain_resolution:
+      prefer_existing_domain_when_exact_responsibility_boundary_matches: true
+      approximate_or_convenience_match: FORBIDDEN
+      semantic_meaning_transformation_to_fit_existing_domain: FORBIDDEN
+      unresolved_existing_domain_match: FAIL_CLOSED
+    new_domain_candidate_escalation:
+      allowed_when:
+      - NO_EXISTING_DOMAIN_OWNS_RESPONSIBILITY
+      - EXISTING_DOMAIN_ASSIGNMENT_RISKS_RESPONSIBILITY_SEMANTIC_DISTORTION
+      automatic_adoption: FORBIDDEN
+      user_decision_required: true
+      proposal_must_include:
+      - CANDIDATE_RESPONSIBILITY_STATEMENT
+      - SEMANTIC_DISTORTION_RISK_EVIDENCE
+      - NEAREST_EXISTING_DOMAIN_COMPARISON
+      - EXPLICIT_BOUNDARY_DIFFERENCE
+      - OVERLAP_AND_NON_OWNERSHIP_EXPLANATION
+      proposal_boundary_requirement: CLEAR_NON_OVERLAPPING_RESPONSIBILITY_BOUNDARY
     planning_boundary:
       concrete_domain_inventory: PLAN_OWNED
       file_move_mapping: PLAN_OWNED
@@ -55,3 +79,12 @@ transition:
       action: DERIVE_DOMAIN_SEPARATION_PLAN
       execution: OWNER_DECISION_REQUIRED
       completion_check: PLAN_PRESERVES_EXACT_RESPONSIBILITY_DOMAIN_BOUNDARY
+  - id: TR-002
+    type: PROJECT_OWNER_MIXED_RESPONSIBILITY_DECOMPOSITION_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-MIXED-RESPONSIBILITY-UPDATE.yaml
+    next_action:
+      action: APPLY_SPLIT_BEFORE_INVENTORY_ADMISSION
+      execution: SERIAL_REQUIRED
+      completion_check: NO_MIXED_RESPONSIBILITY_UNIT_IS_ASSIGNED_TO_DOMAIN_INVENTORY
