@@ -13,7 +13,11 @@ from developer.automation.policy_loader import load_json, load_yaml, repository_
 
 INDEX = "developer/policy/index.yaml"
 ANALYSIS_ROOT = Path("developer/policy/analysis")
-ANALYSIS_SCHEMA = "developer/policy/schemas/policy-responsibility-analysis.schema.json"
+ANALYSIS_RECORD_ROOT = ANALYSIS_ROOT / "records"
+ANALYSIS_REGISTRY = ANALYSIS_ROOT / "registry.yaml"
+ANALYSIS_SCHEMA = "developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json"
+ANALYSIS_REGISTRY_SCHEMA = "developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json"
+_ANALYSIS_ID_RE = re.compile(r"^PRA-[0-9]{4}$")
 
 ROOT_FAMILIES = ("NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD")
 LEGACY_FAMILIES = ("SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS")
@@ -49,29 +53,93 @@ def _mapping(value: object, *, label: str) -> Mapping[str, object]:
     return value
 
 
-def _analysis_path(analysis_ref: str | Path, *, base: Path) -> tuple[Path, str]:
-    path = Path(analysis_ref)
-    if not path.is_absolute():
-        path = base / path
-    try:
-        relative = path.resolve().relative_to(base.resolve())
-    except ValueError as exc:
-        raise ResponsibilityGateError(
-            "RESPONSIBILITY_ANALYSIS_OUTSIDE_REPOSITORY",
-            f"analysis must be inside the repository: {path}",
-        ) from exc
-    if ANALYSIS_ROOT not in (relative, *relative.parents):
-        raise ResponsibilityGateError(
-            "RESPONSIBILITY_ANALYSIS_OUTSIDE_CANONICAL_ROOT",
-            f"analysis must be under {ANALYSIS_ROOT.as_posix()}/",
-        )
-    if relative.name == "registry.yaml":
-        raise ResponsibilityGateError(
-            "RESPONSIBILITY_ANALYSIS_REF_IS_REGISTRY",
-            "analysis_ref must name an analysis artifact, not the registry",
-        )
-    return path, relative.as_posix()
+def _load_analysis_records(base: Path) -> tuple[Mapping[str, object], ...]:
+    registry = load_yaml(ANALYSIS_REGISTRY.as_posix(), root=base)
+    schema = load_json(ANALYSIS_REGISTRY_SCHEMA, root=base)
+    from developer.automation.policy_validator import developer_contract_validator
 
+    errors = tuple(developer_contract_validator(schema, base).iter_errors(registry))
+    if errors:
+        raise ResponsibilityGateError(
+            "INVALID_ANALYSIS_REGISTRY",
+            "; ".join(error.message for error in errors),
+        )
+    records = registry.get("records")
+    if not isinstance(records, list):
+        raise ResponsibilityGateError(
+            "INVALID_ANALYSIS_REGISTRY",
+            "analysis registry records must be a list",
+        )
+    return tuple(_mapping(item, label="analysis registry record") for item in records)
+
+
+def resolve_analysis_record(
+    analysis_id: str | None = None,
+    *,
+    subject_type: str | None = None,
+    subject_id: str | None = None,
+    analysis_kind: str | None = None,
+    root: str | Path | None = None,
+) -> dict[str, object]:
+    base = repository_root(root)
+    records = _load_analysis_records(base)
+    subject_key_supplied = any(
+        value is not None for value in (subject_type, subject_id, analysis_kind)
+    )
+
+    if analysis_id is not None:
+        if subject_key_supplied:
+            raise ResponsibilityGateError(
+                "ANALYSIS_LOOKUP_KEY_CONFLICT",
+                "analysis_id and subject lookup keys are mutually exclusive",
+            )
+        if _ANALYSIS_ID_RE.fullmatch(analysis_id) is None:
+            raise ResponsibilityGateError("INVALID_ANALYSIS_ID", analysis_id)
+        matches = [item for item in records if item.get("analysis_id") == analysis_id]
+    else:
+        if not all(
+            isinstance(value, str) and value
+            for value in (subject_type, subject_id, analysis_kind)
+        ):
+            raise ResponsibilityGateError(
+                "ANALYSIS_LOOKUP_KEY_REQUIRED",
+                "use analysis_id or subject_type + subject_id + analysis_kind",
+            )
+        matches = [
+            item for item in records
+            if item.get("subject_type") == subject_type
+            and item.get("subject_id") == subject_id
+            and item.get("analysis_kind") == analysis_kind
+        ]
+
+    if not matches:
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_NOT_FOUND",
+            "analysis registry has no exact matching record",
+        )
+    if len(matches) != 1:
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_AMBIGUOUS",
+            "analysis registry lookup must resolve exactly one record",
+        )
+
+    record = dict(matches[0])
+    resolved_id = record.get("analysis_id")
+    analysis_ref = record.get("analysis_ref")
+    if not isinstance(resolved_id, str) or not isinstance(analysis_ref, str):
+        raise ResponsibilityGateError("INVALID_ANALYSIS_REGISTRY", "record identity/ref missing")
+    expected = (ANALYSIS_RECORD_ROOT / f"{resolved_id}.yaml").as_posix()
+    if analysis_ref != expected:
+        raise ResponsibilityGateError(
+            "NONCANONICAL_ANALYSIS_REF",
+            f"{resolved_id}: expected {expected}, got {analysis_ref}",
+        )
+    if not (base / analysis_ref).is_file():
+        raise ResponsibilityGateError(
+            "RESPONSIBILITY_ANALYSIS_NOT_FOUND",
+            f"registered analysis does not exist: {analysis_ref}",
+        )
+    return record
 
 def _family_from_policy_id(policy_id: str) -> str | None:
     match = _FAMILY_ID_RE.fullmatch(policy_id)
@@ -367,20 +435,21 @@ def validate_analysis_semantics(payload: Mapping[str, object], *, root: str | Pa
 
 
 def validate_responsibility_analysis(
-    analysis_ref: str | Path,
+    analysis_id: str,
     *,
     root: str | Path | None = None,
     enforce_current_lookup: bool = True,
 ) -> dict[str, object]:
     base = repository_root(root)
-    path, relative = _analysis_path(analysis_ref, base=base)
-    if not path.is_file():
-        raise ResponsibilityGateError(
-            "RESPONSIBILITY_ANALYSIS_NOT_FOUND",
-            f"analysis does not exist: {relative}",
-        )
-
+    record = resolve_analysis_record(analysis_id=analysis_id, root=base)
+    relative = str(record["analysis_ref"])
     payload = load_yaml(relative, root=base)
+    payload_analysis = payload.get("analysis")
+    if not isinstance(payload_analysis, Mapping) or payload_analysis.get("analysis_id") != analysis_id:
+        raise ResponsibilityGateError(
+            "ANALYSIS_ID_MISMATCH",
+            f"{relative}: payload analysis_id must equal registry identity {analysis_id}",
+        )
     schema = load_json(ANALYSIS_SCHEMA, root=base)
     from developer.automation.policy_validator import developer_contract_validator
     schema_errors = tuple(developer_contract_validator(schema, base).iter_errors(payload))
@@ -472,33 +541,36 @@ def validate_responsibility_analysis(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Validate responsibility decomposition and authority reconciliation."
+        description="Validate Policy Analysis through the canonical registry."
     )
     parser.add_argument("--root")
-    parser.add_argument("--analysis-ref", required=True)
-    parser.add_argument(
-        "--current-authority-lookup",
-        action="store_true",
-        help="Require searched_policy_ids to match the current ACTIVE target-Family corpus.",
-    )
+    parser.add_argument("--analysis-id")
+    parser.add_argument("--subject-type")
+    parser.add_argument("--subject-id")
+    parser.add_argument("--analysis-kind")
+    parser.add_argument("--current-authority-lookup", action="store_true")
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
+        if args.analysis_id is not None:
+            record = resolve_analysis_record(analysis_id=args.analysis_id, root=args.root)
+        else:
+            record = resolve_analysis_record(
+                subject_type=args.subject_type,
+                subject_id=args.subject_id,
+                analysis_kind=args.analysis_kind,
+                root=args.root,
+            )
         result = validate_responsibility_analysis(
-            args.analysis_ref,
+            str(record["analysis_id"]),
             root=args.root,
             enforce_current_lookup=args.current_authority_lookup,
         )
     except ResponsibilityGateError as exc:
-        print(
-            json.dumps(
-                {"status": "BLOCKED", "code": exc.code, "message": str(exc)},
-                sort_keys=True,
-            )
-        )
+        print(json.dumps({"status": "BLOCKED", "code": exc.code, "message": str(exc)}, sort_keys=True))
         return 2
     print(json.dumps(result, sort_keys=True))
     return 0
