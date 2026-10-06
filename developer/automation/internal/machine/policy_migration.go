@@ -154,62 +154,18 @@ func (r *Repository) MigrateAuthorityFamilyCatalog(apply bool) (Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	migratedRegistry := policyClone(registry)
-	migratedRegistry["schema_version"] = "developer-policy-materialization-analysis-registry/v2"
-	updates := map[string]Object{policyIndex: catalog, policySubjectRegistry: migratedSubject}
-	digests := Object{}
-	references := []string{}
-	for _, raw := range List(registry["bindings"]) {
-		binding := Map(raw)
-		id := Text(binding["policy_id"])
-		record := records[id]
-		if record == nil || record["policy_class"] != DeveloperClass {
-			return nil, policyFailure("IMPLICIT_ANALYSIS_OWNER_NOT_EXACT", id)
-		}
-		references = append(references, Text(binding["analysis_ref"]))
+	if registry["schema_version"] != "developer-policy-materialization-analysis-registry/v3" {
+		return nil, policyFailure(
+			"LEGACY_ANALYSIS_REGISTRY_REQUIRES_EXPLICIT_PRA_MIGRATION",
+			"catalog migration must not infer PRA identity or path from a legacy analysis registry",
+		)
 	}
-	references = UniqueStrings(references)
-	sort.Strings(references)
-	for _, reference := range references {
-		original, err := r.Read(reference)
-		if err != nil {
-			return nil, err
-		}
-		updated, err := BackfillLegacyAnalysis(original)
-		if err != nil {
-			return nil, err
-		}
-		if err := r.Validate(policyAnalysisSchema, updated); err != nil {
-			return nil, err
-		}
-		updates[reference] = updated
-		digest, err := PolicySemanticDigest(original)
-		if err != nil {
-			return nil, err
-		}
-		digests[reference] = digest
-	}
-	for _, raw := range List(migratedRegistry["bindings"]) {
-		binding := Map(raw)
-		record := records[Text(binding["policy_id"])]
-		analysis := Map(updates[Text(binding["analysis_ref"])]["analysis"])
-		var selected Object
-		for _, rawGroup := range List(Map(analysis["decision"])["materialization_groups"]) {
-			group := Map(rawGroup)
-			if group["group_id"] == binding["group_id"] {
-				selected = group
-			}
-		}
-		if selected == nil || selected["policy_class"] != record["policy_class"] {
-			return nil, policyFailure("ANALYSIS_GROUP_CLASS_MISMATCH", Text(binding["policy_id"]))
-		}
-		binding["policy_class"] = record["policy_class"]
-		binding["family"] = selected["family"]
-	}
-	updates[policyAnalysisRegistry] = migratedRegistry
-	if err := r.Validate("developer/policy/schemas/policy-materialization-analysis-registry.schema.json", migratedRegistry); err != nil {
+	if err := r.Validate(policyAnalysisRegistrySchema, registry); err != nil {
 		return nil, err
 	}
+	updates := map[string]Object{policyIndex: catalog, policySubjectRegistry: migratedSubject}
+	digests := Object{}
+
 	allowed := policyStrings(Map(contract["application_execution"])["targets"])
 	paths := []string{}
 	for path := range updates {
