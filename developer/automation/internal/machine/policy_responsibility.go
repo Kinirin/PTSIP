@@ -2,14 +2,29 @@ package machine
 
 import (
 	"fmt"
-	"path/filepath"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 )
 
 const policyAnalysisRoot = "developer/policy/analysis/"
-const policyAnalysisSchema = "developer/policy/schemas/policy-responsibility-analysis.schema.json"
+const policyAnalysisRecordRoot = "developer/policy/analysis/records/"
+const policyAnalysisRegistry = "developer/policy/analysis/registry.yaml"
+const policyAnalysisSchema = "developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json"
+const policyAnalysisRegistrySchema = "developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json"
+
+var policyAnalysisID = regexp.MustCompile(`^PRA-[0-9]{4}package machine
+
+import (
+	"fmt"
+	"reflect"
+	"regexp"
+	"sort"
+	"strings"
+)
+
+)
 
 var policyRootFamilies = []string{"NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"}
 var policyLegacyFamilies = []string{"SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"}
@@ -362,26 +377,90 @@ func (r *Repository) ValidateAnalysisSemantics(payload Object) []string {
 	return errors
 }
 
-func (r *Repository) ValidateResponsibilityAnalysis(reference string, currentLookup bool) (Object, error) {
-	relative, err := r.Scope(reference)
+func (r *Repository) analysisRecords() ([]Object, error) {
+	registry, err := r.Read(policyAnalysisRegistry)
 	if err != nil {
-		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_OUTSIDE_REPOSITORY", err.Error())
+		return nil, policyFailure("INVALID_ANALYSIS_REGISTRY", err.Error())
 	}
-	if !strings.HasPrefix(relative, policyAnalysisRoot) {
-		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_OUTSIDE_CANONICAL_ROOT", relative)
+	if err := r.Validate(policyAnalysisRegistrySchema, registry); err != nil {
+		return nil, policyFailure("INVALID_ANALYSIS_REGISTRY", err.Error())
 	}
-	if filepath.Base(relative) == "registry.yaml" {
-		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_REF_IS_REGISTRY", relative)
+	records := []Object{}
+	for _, raw := range List(registry["records"]) {
+		record := Map(raw)
+		if record == nil {
+			return nil, policyFailure("INVALID_ANALYSIS_REGISTRY", "record must be a mapping")
+		}
+		records = append(records, record)
 	}
+	return records, nil
+}
+
+func (r *Repository) ResolveAnalysisRecord(analysisID, subjectType, subjectID, analysisKind string) (Object, error) {
+	records, err := r.analysisRecords()
+	if err != nil {
+		return nil, err
+	}
+	subjectMode := subjectType != "" || subjectID != "" || analysisKind != ""
+	if analysisID != "" && subjectMode {
+		return nil, policyFailure("ANALYSIS_LOOKUP_KEY_CONFLICT", "analysis_id and subject lookup keys are mutually exclusive")
+	}
+	matches := []Object{}
+	if analysisID != "" {
+		if !policyAnalysisID.MatchString(analysisID) {
+			return nil, policyFailure("INVALID_ANALYSIS_ID", analysisID)
+		}
+		for _, record := range records {
+			if record["analysis_id"] == analysisID {
+				matches = append(matches, record)
+			}
+		}
+	} else {
+		if subjectType == "" || subjectID == "" || analysisKind == "" {
+			return nil, policyFailure("ANALYSIS_LOOKUP_KEY_REQUIRED", "use analysis_id or subject_type + subject_id + analysis_kind")
+		}
+		for _, record := range records {
+			if record["subject_type"] == subjectType && record["subject_id"] == subjectID && record["analysis_kind"] == analysisKind {
+				matches = append(matches, record)
+			}
+		}
+	}
+	if len(matches) == 0 {
+		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_NOT_FOUND", "analysis registry has no exact matching record")
+	}
+	if len(matches) != 1 {
+		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_AMBIGUOUS", "analysis registry lookup must resolve exactly one record")
+	}
+	record := matches[0]
+	id, reference := Text(record["analysis_id"]), Text(record["analysis_ref"])
+	expected := policyAnalysisRecordRoot + id + ".yaml"
+	if reference != expected {
+		return nil, policyFailure("NONCANONICAL_ANALYSIS_REF", id+": expected "+expected+", got "+reference)
+	}
+	if _, err := r.Read(reference); err != nil {
+		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_NOT_FOUND", reference)
+	}
+	return record, nil
+}
+
+func (r *Repository) ValidateResponsibilityAnalysis(analysisID string, currentLookup bool) (Object, error) {
+	record, err := r.ResolveAnalysisRecord(analysisID, "", "", "")
+	if err != nil {
+		return nil, err
+	}
+	relative := Text(record["analysis_ref"])
 	payload, err := r.Read(relative)
 	if err != nil {
 		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_NOT_FOUND", err.Error())
+	}
+	analysis := Map(payload["analysis"])
+	if Text(analysis["analysis_id"]) != analysisID {
+		return nil, policyFailure("ANALYSIS_ID_MISMATCH", relative)
 	}
 	errors := r.ValidateAnalysisSemantics(payload)
 	if err := r.Validate(policyAnalysisSchema, payload); err != nil {
 		errors = append(errors, err.Error())
 	}
-	analysis := Map(payload["analysis"])
 	if currentLookup {
 		cache := map[string][]string{}
 		resolver, err := NewResolver(r)
@@ -419,13 +498,13 @@ func (r *Repository) ValidateResponsibilityAnalysis(reference string, currentLoo
 					errors = append(errors, id+": comparison target is not current ACTIVE authority: "+target)
 					continue
 				}
-				record, err := resolver.Policy(target)
+				targetRecord, err := resolver.Policy(target)
 				if err != nil {
 					errors = append(errors, err.Error())
 					continue
 				}
 				if section, ok := comparison["section"].(string); ok {
-					if _, exists := Map(record["rules"])[section]; !exists {
+					if _, exists := Map(targetRecord["rules"])[section]; !exists {
 						errors = append(errors, id+": compared section missing: "+target+":"+section)
 					}
 				}
@@ -436,5 +515,5 @@ func (r *Repository) ValidateResponsibilityAnalysis(reference string, currentLoo
 		return nil, policyFailure("RESPONSIBILITY_ANALYSIS_BLOCKED", strings.Join(errors, "; "))
 	}
 	decision := Map(analysis["decision"])
-	return Object{"status": "PASS", "analysis_id": analysis["analysis_id"], "analysis_ref": relative, "owned_authority_family_set": decision["owned_authority_family_set"], "split_required": decision["split_required"], "materialization_allowed": decision["materialization_allowed"], "materialization_groups": decision["materialization_groups"]}, nil
+	return Object{"status": "PASS", "analysis_id": analysisID, "analysis_ref": relative, "owned_authority_family_set": decision["owned_authority_family_set"], "split_required": decision["split_required"], "materialization_allowed": decision["materialization_allowed"], "materialization_groups": decision["materialization_groups"]}, nil
 }
