@@ -152,7 +152,9 @@
       "python_path": "developer/automation/branch_control.py",
       "state": "GO_IMPLEMENTED",
       "go_paths": [
-        "developer/automation/internal/machine/branch.go"
+        "developer/automation/branch/client.go",
+        "developer/automation/branch/control.go",
+        "developer/automation/branch/operations.go"
       ],
       "python_line_count": 383,
       "public_definitions": [
@@ -171,7 +173,7 @@
       "python_path": "developer/automation/branch_creation_guard.py",
       "state": "GO_IMPLEMENTED",
       "go_paths": [
-        "developer/automation/internal/machine/branch.go"
+        "developer/automation/branch/guard.go"
       ],
       "python_line_count": 176,
       "public_definitions": [

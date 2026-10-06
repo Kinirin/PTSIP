@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.2'
+  version: '2.3'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -29,6 +29,9 @@ rules:
       preserve_existing_explicit_domain_roots: true
       planning_automation_root: developer/automation/planning/
     approved_domain_inventory:
+      BRANCH:
+        root: developer/automation/branch/
+        responsibility: BRANCH_CONTROL
       POLICY:
         root: developer/automation/policy/
         responsibility: POLICY_AUTOMATION
@@ -110,3 +113,12 @@ transition:
       action: MATERIALIZE_POLICY_BINDING_AND_LIFECYCLE_PACKAGES
       execution: SERIAL_REQUIRED
       completion_check: POLICY_BINDING_AND_LIFECYCLE_IMPLEMENTATION_MATCH_APPROVED_DOMAIN_ROOTS
+  - id: TR-004
+    type: PROJECT_OWNER_BRANCH_CONTROL_DOMAIN_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-BRANCH-CONTROL.yaml
+    next_action:
+      action: MATERIALIZE_BRANCH_CONTROL_PACKAGE
+      execution: SERIAL_REQUIRED
+      completion_check: BRANCH_CONTROL_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT
