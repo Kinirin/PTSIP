@@ -61,8 +61,8 @@ func policyTestWrite(t *testing.T, r *Repository, path string, value Object) {
 	}
 }
 func policyTestAnalysis(family string) Object {
-	return Object{"schema_version": "developer-policy-responsibility-analysis/v2", "artifact_class": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS",
-		"analysis": Object{"analysis_id": "PRA-GO-NATIVE-TEST", "source_ref": "test-fixture",
+	return Object{"schema_version": "developer-policy-responsibility-analysis/v3", "artifact_class": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS",
+		"analysis": Object{"analysis_id": "PRA-9999", "source_ref": "test-fixture",
 			"responsibilities": []any{Object{"responsibility_id": "R01", "statement": "Fixture scoped authority", "authority_relation": "OWN", "authority_subject": "FIXTURE_SUBJECT", "lifecycle_scope": "FIXTURE_LIFECYCLE", "cohesion_key": "FIXTURE", "policy_class": DeveloperClass, "family": family, "referenced_policy_class": nil, "referenced_family": nil,
 				"existing_authority_lookup": Object{"searched_policy_class": DeveloperClass, "searched_family": family, "searched_policy_ids": []any{}, "lookup_outcome": "NO_MATCH", "candidate_comparisons": []any{}}, "materialization_action": "CREATE_NEW_POLICY", "target_group_id": "G01"}},
 			"decision": Object{"owned_authority_family_set": []any{Object{"policy_class": DeveloperClass, "family": family}}, "split_required": false, "materialization_allowed": true,
@@ -99,9 +99,23 @@ func policyTestMaterialization(t *testing.T, r *Repository) (string, string, str
 		lookup["candidate_comparisons"] = comparisons
 		lookup["lookup_outcome"] = "MATCHES_FOUND"
 	}
-	analysisRef := "developer/policy/analysis/PRA-GO-NATIVE-TEST.yaml"
+	analysisID := "PRA-9999"
+	analysisRef := policyAnalysisRecordRoot + analysisID + ".yaml"
 	approvalRef := "developer/policy/approvals/MPA-GO-NATIVE-TEST.yaml"
 	policyTestWrite(t, r, analysisRef, analysis)
+	registry, err := r.Read(policyAnalysisRegistry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	registry["records"] = append(List(registry["records"]), Object{
+		"analysis_id": analysisID,
+		"analysis_ref": analysisRef,
+		"subject_type": "POLICY",
+		"subject_id": id,
+		"analysis_kind": "TEST_NATIVE_MATERIALIZATION",
+		"recorded_at": "2026-10-06",
+	})
+	policyTestWrite(t, r, policyAnalysisRegistry, registry)
 	policyTestWrite(t, r, approvalRef, policyTestApproval(id))
 	template, err := r.Read("developer/policy/" + family + "/MPD-" + family + "-0001.yaml")
 	if err != nil {
@@ -115,7 +129,7 @@ func policyTestMaterialization(t *testing.T, r *Repository) (string, string, str
 	template["rules"] = Object{"family_definition": Map(template["rules"])["family_definition"]}
 	template["relations"] = Object{"supersedes": []any{}, "amends": []any{}, "extends": []any{}, "depends_on": []any{}}
 	delete(template, "transition")
-	return id, approvalRef, analysisRef, template
+	return id, approvalRef, analysisID, template
 }
 
 func TestPolicyVersionNativeTransitions(t *testing.T) {
@@ -190,14 +204,14 @@ func TestPolicyNativeRegistrationWithoutLegacy(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(r.Root, "developer/policy/legacy")); !os.IsNotExist(err) {
 		t.Fatal("fixture accidentally contains legacy policy files")
 	}
-	id, approval, analysis, record := policyTestMaterialization(t, r)
-	ready, err := r.PreflightNewPolicy(approval, analysis, "G01")
+	id, approval, analysisID, record := policyTestMaterialization(t, r)
+	ready, err := r.PreflightNewPolicy(approval, analysisID, "G01")
 	if err != nil || ready["allocated_policy_id"] != id {
 		t.Fatalf("preflight=%v err=%v", ready, err)
 	}
 	path, _ := policyCanonicalPath(id)
 	policyTestWrite(t, r, path, record)
-	registered, err := r.RegisterPolicy(approval, analysis, "G01", path)
+	registered, err := r.RegisterPolicy(approval, analysisID, "G01", path)
 	if err != nil || registered["status"] != "REGISTERED" {
 		t.Fatalf("registered=%v err=%v", registered, err)
 	}
@@ -224,14 +238,14 @@ func TestPolicyNativeRegistrationWithoutLegacy(t *testing.T) {
 }
 func TestPolicyRegistrationRejectsExtraCandidateAndPreservesIndex(t *testing.T) {
 	r := policyTestRepo(t)
-	id, approval, analysis, record := policyTestMaterialization(t, r)
+	id, approval, analysisID, record := policyTestMaterialization(t, r)
 	path, _ := policyCanonicalPath(id)
 	policyTestWrite(t, r, path, record)
 	extra := policyClone(record)
 	Map(extra["policy"])["id"] = "MPD-SUPPLY-9999"
 	policyTestWrite(t, r, "developer/policy/SUPPLY/MPD-SUPPLY-9999.yaml", extra)
 	original, _ := os.ReadFile(filepath.Join(r.Root, filepath.FromSlash(policyIndex)))
-	if _, err := r.RegisterPolicy(approval, analysis, "G01", path); err == nil {
+	if _, err := r.RegisterPolicy(approval, analysisID, "G01", path); err == nil {
 		t.Fatal("multiple unregistered candidates admitted")
 	}
 	after, _ := os.ReadFile(filepath.Join(r.Root, filepath.FromSlash(policyIndex)))
@@ -241,20 +255,20 @@ func TestPolicyRegistrationRejectsExtraCandidateAndPreservesIndex(t *testing.T) 
 }
 func TestPolicyAnalysisFreshnessAndApprovalBoundaries(t *testing.T) {
 	r := policyTestRepo(t)
-	id, approvalRef, analysisRef, _ := policyTestMaterialization(t, r)
+	id, approvalRef, analysisID, _ := policyTestMaterialization(t, r)
 	approval, err := r.Read(approvalRef)
 	if err != nil {
 		t.Fatal(err)
 	}
 	Map(approval["approval"])["target_status"] = "ACTIVE"
 	policyTestWrite(t, r, approvalRef, approval)
-	if _, err := r.PreflightNewPolicy(approvalRef, analysisRef, "G01"); err == nil {
+	if _, err := r.PreflightNewPolicy(approvalRef, analysisID, "G01"); err == nil {
 		t.Fatal("ACTIVE initial policy admitted")
 	}
 	Map(approval["approval"])["target_status"] = "DRAFT"
 	Map(approval["approval"])["requested_policy_id"] = "MPD-0051"
 	policyTestWrite(t, r, approvalRef, approval)
-	if _, err := r.PreflightNewPolicy(approvalRef, analysisRef, "G01"); err == nil {
+	if _, err := r.PreflightNewPolicy(approvalRef, analysisID, "G01"); err == nil {
 		t.Fatal("legacy identity allocation revived")
 	}
 	if _, err := r.policyApproval("../approval.yaml"); err == nil {
@@ -263,13 +277,14 @@ func TestPolicyAnalysisFreshnessAndApprovalBoundaries(t *testing.T) {
 	if _, err := r.ValidateResponsibilityAnalysis(policyAnalysisRegistry, true); err == nil {
 		t.Fatal("analysis registry admitted as analysis")
 	}
+	analysisRef := policyAnalysisRecordRoot + analysisID + ".yaml"
 	payload, err := r.Read(analysisRef)
 	if err != nil {
 		t.Fatal(err)
 	}
 	Map(Map(List(Map(payload["analysis"])["responsibilities"])[0])["existing_authority_lookup"])["searched_policy_ids"] = []any{id}
 	policyTestWrite(t, r, analysisRef, payload)
-	if _, err := r.ValidateResponsibilityAnalysis(analysisRef, true); err == nil {
+	if _, err := r.ValidateResponsibilityAnalysis(analysisID, true); err == nil {
 		t.Fatal("stale/non-active lookup admitted")
 	}
 }
