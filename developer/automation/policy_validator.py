@@ -344,24 +344,20 @@ def _validate_current_registry_planes(
         for item in developer_schema_entries
         if isinstance(item, Mapping)
     ]
-    expected_developer_registry_ids = list(developer_authority_ids)
-    if developer_registry_ids != expected_developer_registry_ids:
-        errors.append(
-            "developer authority schema registry must cover current migrated MPD policies exactly"
-        )
 
     developer_role_registry = developer_payloads[1]
     developer_role_entries = developer_role_registry.get("policy_roles", [])
     if not isinstance(developer_role_entries, list):
         errors.append("developer authority role registry policy_roles must be a list")
         developer_role_entries = []
-    if [
-        item.get("policy_id")
+    developer_role_ids = [
+        str(item.get("policy_id"))
         for item in developer_role_entries
         if isinstance(item, Mapping)
-    ] != expected_developer_registry_ids:
+    ]
+    if developer_registry_ids != developer_role_ids:
         errors.append(
-            "developer authority role registry must cover current migrated MPD policies exactly"
+            "developer authority schema and role registries must cover identical exact owner identities"
         )
 
     developer_effect_vocabulary = _mapping(developer_role_registry.get("effect_vocabulary"))
@@ -419,7 +415,14 @@ def _validate_current_registry_planes(
             errors.append(f"developer authority schema registry policy is unresolved: {policy_id}")
             continue
         rules = _mapping(policy.get("rules"))
-        semantics = None if rules is None else rules.get("authority_semantics")
+        section = entry.get("section")
+        semantics = (
+            None
+            if rules is None
+            else rules.get(section)
+            if isinstance(section, str) and section
+            else rules.get("authority_semantics")
+        )
         for error in Draft202012Validator(definition).iter_errors(semantics):
             errors.append(f"{policy_id}: {error.message}")
 
