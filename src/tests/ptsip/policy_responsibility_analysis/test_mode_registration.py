@@ -41,13 +41,14 @@ def test_pra_verification_component_watches_canonical_sources() -> None:
     analysis_inputs = set(component["analysis_inputs"])
 
     assert "developer/policy/analysis/**" in analysis_inputs
-    assert "developer/policy/schemas/policy-responsibility-analysis*.json" in analysis_inputs
+    assert "developer/policy/analysis/schemas/policy-responsibility-analysis*.json" in analysis_inputs
+    assert "developer/policy/analysis/schemas/policy-materialization-analysis-registry*.json" in analysis_inputs
     assert "developer/policy/contracts/policy-responsibility-analysis-generation.v1.yaml" in analysis_inputs
     assert "developer/automation/internal/machine/policy_responsibility*.go" in analysis_inputs
 
     schema = json.loads(
-        (REPO_ROOT / "developer/policy/schemas/policy-responsibility-analysis.schema.json").read_text(
+        (REPO_ROOT / "developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json").read_text(
             encoding="utf-8"
         )
     )
-    assert schema["$id"] == "urn:developer-policy:policy-responsibility-analysis:v2"
+    assert schema["$id"] == "urn:developer-policy:policy-responsibility-analysis:v3"
