@@ -104,43 +104,100 @@ func (r *Repository) policyValidateGovernanceSources(records map[string]Object) 
 
 func (r *Repository) policyValidateAnalysisPlane(records map[string]Object) []string {
 	errors := []string{}
-	root, err := r.Path(strings.TrimSuffix(policyAnalysisRoot, "/"))
-	if err != nil {
-		return []string{err.Error()}
-	}
-	paths, err := filepath.Glob(filepath.Join(root, "*.yaml"))
-	if err != nil {
-		return []string{err.Error()}
-	}
-	seen := map[string]bool{}
-	for _, path := range paths {
-		if filepath.Base(path) == "registry.yaml" {
-			continue
-		}
-		payload, err := r.Read(path)
-		if err != nil {
-			errors = append(errors, err.Error())
-			continue
-		}
-		if err := r.Validate(policyAnalysisSchema, payload); err != nil {
-			errors = append(errors, path+": "+err.Error())
-		}
-		for _, message := range r.ValidateAnalysisSemantics(payload) {
-			errors = append(errors, path+": "+message)
-		}
-		id := Text(Map(payload["analysis"])["analysis_id"])
-		if seen[id] {
-			errors = append(errors, path+": duplicate analysis_id "+id)
-		}
-		seen[id] = true
-	}
 	registry, err := r.Read(policyAnalysisRegistry)
 	if err != nil {
 		return append(errors, err.Error())
 	}
-	if err := r.Validate("developer/policy/schemas/policy-materialization-analysis-registry.schema.json", registry); err != nil {
+	if err := r.Validate(policyAnalysisRegistrySchema, registry); err != nil {
 		errors = append(errors, err.Error())
 	}
+
+	recordIDs := []string{}
+	recordRefs := []string{}
+	recordByID := map[string]Object{}
+	discoveryKeys := map[string]bool{}
+	for _, raw := range List(registry["records"]) {
+		record := Map(raw)
+		id, reference := Text(record["analysis_id"]), Text(record["analysis_ref"])
+		recordIDs = append(recordIDs, id)
+		recordRefs = append(recordRefs, reference)
+		if _, found := recordByID[id]; found {
+			errors = append(errors, "analysis registry duplicate analysis_id "+id)
+		}
+		recordByID[id] = record
+		expected := policyAnalysisRecordRoot + id + ".yaml"
+		if reference != expected {
+			errors = append(errors, id+": noncanonical analysis_ref "+reference)
+		}
+		key := Text(record["subject_type"]) + "|" + Text(record["subject_id"]) + "|" + Text(record["analysis_kind"])
+		if discoveryKeys[key] {
+			errors = append(errors, "analysis registry duplicate discovery key "+key)
+		}
+		discoveryKeys[key] = true
+	}
+	sortedIDs := append([]string{}, recordIDs...)
+	sort.Strings(sortedIDs)
+	if !reflect.DeepEqual(recordIDs, sortedIDs) {
+		errors = append(errors, "analysis registry records must be in analysis ID order")
+	}
+	if !policyUnique(recordIDs) || !policyUnique(recordRefs) {
+		errors = append(errors, "analysis registry record IDs and refs must be unique")
+	}
+
+	root, err := r.Path(strings.TrimSuffix(policyAnalysisRoot, "/"))
+	if err != nil {
+		return append(errors, err.Error())
+	}
+	legacy, err := filepath.Glob(filepath.Join(root, "PRA-*.yaml"))
+	if err != nil {
+		return append(errors, err.Error())
+	}
+	if len(legacy) > 0 {
+		errors = append(errors, "root-level PRA files are forbidden; use registered records/PRA-NNNN.yaml")
+	}
+	recordRoot, err := r.Path(strings.TrimSuffix(policyAnalysisRecordRoot, "/"))
+	if err != nil {
+		return append(errors, err.Error())
+	}
+	paths, err := filepath.Glob(filepath.Join(recordRoot, "PRA-*.yaml"))
+	if err != nil {
+		return append(errors, err.Error())
+	}
+	discovered := []string{}
+	for _, path := range paths {
+		relative, err := r.Scope(path)
+		if err != nil {
+			errors = append(errors, err.Error())
+			continue
+		}
+		discovered = append(discovered, relative)
+	}
+	sort.Strings(discovered)
+	expectedRefs := append([]string{}, recordRefs...)
+	sort.Strings(expectedRefs)
+	if !reflect.DeepEqual(discovered, expectedRefs) {
+		errors = append(errors, "analysis registry records must exactly cover canonical PRA files")
+	}
+
+	for _, id := range recordIDs {
+		record := recordByID[id]
+		reference := Text(record["analysis_ref"])
+		payload, err := r.Read(reference)
+		if err != nil {
+			errors = append(errors, reference+": "+err.Error())
+			continue
+		}
+		if err := r.Validate(policyAnalysisSchema, payload); err != nil {
+			errors = append(errors, reference+": "+err.Error())
+		}
+		for _, message := range r.ValidateAnalysisSemantics(payload) {
+			errors = append(errors, reference+": "+message)
+		}
+		if Text(Map(payload["analysis"])["analysis_id"]) != id {
+			errors = append(errors, reference+": payload analysis_id mismatch")
+		}
+	}
+
 	bound := []string{}
 	expected := []string{}
 	for id, record := range records {
@@ -153,7 +210,6 @@ func (r *Repository) policyValidateAnalysisPlane(records map[string]Object) []st
 		binding := Map(raw)
 		id := Text(binding["policy_id"])
 		record := records[id]
-		// Historical analysis bindings are review artifacts, not execution authority.
 		if record == nil {
 			if rootID.MatchString(id) {
 				errors = append(errors, "analysis registry unknown Root policy: "+id)
@@ -163,7 +219,12 @@ func (r *Repository) policyValidateAnalysisPlane(records map[string]Object) []st
 		if record["policy_class"] == DeveloperClass {
 			bound = append(bound, id)
 		}
-		result, err := r.ValidateResponsibilityAnalysis(Text(binding["analysis_ref"]), false)
+		analysisID := Text(binding["analysis_id"])
+		if _, found := recordByID[analysisID]; !found {
+			errors = append(errors, id+": unknown analysis_id "+analysisID)
+			continue
+		}
+		result, err := r.ValidateResponsibilityAnalysis(analysisID, false)
 		if err != nil {
 			errors = append(errors, err.Error())
 			continue
