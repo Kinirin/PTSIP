@@ -848,7 +848,8 @@ components:
     compatibility_owner: development_tooling
     analysis_inputs:
       - "developer/policy/analysis/**"
-      - "developer/policy/schemas/policy-responsibility-analysis*.json"
+      - "developer/policy/analysis/schemas/policy-responsibility-analysis*.json"
+      - "developer/policy/analysis/schemas/policy-materialization-analysis-registry*.json"
       - "developer/policy/contracts/policy-responsibility-analysis-generation.v1.yaml"
       - "developer/automation/internal/machine/policy_responsibility*.go"
 

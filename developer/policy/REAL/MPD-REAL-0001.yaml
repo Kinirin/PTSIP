@@ -5,7 +5,7 @@ policy:
   id: MPD-REAL-0001
   title: REAL authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.0'
+  version: '2.1'
 authority_subject:
   id: DEV_APPROVED_ARTIFACT_REALIZATION
   statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
@@ -98,16 +98,22 @@ rules:
     analysis_required_before_family_policy_creation: true
     create_before_collision_resolution: FORBIDDEN
     blocked_collision_may_materialize: false
-    analysis_root: developer/policy/analysis/
-    analysis_schema: developer/policy/schemas/policy-responsibility-analysis.schema.json
+    analysis_root: developer/policy/analysis/records/
+    analysis_schema: developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json
     analysis_registry: developer/policy/analysis/registry.yaml
+    analysis_registry_schema: developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json
+    analysis_discovery: REGISTRY_ONLY
     family_preflight_module: developer.automation.policy_identity_lifecycle
     responsibility_gate_module: developer.automation.policy_responsibility_gate
 relations:
   supersedes: []
   amends: []
   extends: []
-  depends_on: []
+  depends_on:
+  - policy: MPD-INFO-0004
+    scope: POLICY_ANALYSIS_INFORMATION_CONTRACT
+  - policy: MPD-CNTR-0005
+    scope: POLICY_ANALYSIS_DISCOVERY_INTERFACE
 transition:
   target_status: ACTIVE
   state: COMPLETE

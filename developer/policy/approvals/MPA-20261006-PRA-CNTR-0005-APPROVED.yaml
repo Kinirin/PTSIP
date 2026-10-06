@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261006-PRA-CNTR-0005-APPROVED
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "PRA Registry를 유일한 진입점으로 사용하고 PRA-NNNN opaque stable identity를 사용한다. Policy Analysis schema는 developer/policy/analysis/schemas가 소유하며 이 결정을 다른 subsystem에 자동 일반화하지 않는다."
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-CNTR-0005
+  recorded_at: '2026-10-06'
