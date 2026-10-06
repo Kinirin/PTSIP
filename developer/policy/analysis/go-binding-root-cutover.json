@@ -1,0 +1,96 @@
+{
+  "schema_version": "ptsip-root-binding-cutover-evidence/v1",
+  "projection_authority": false,
+  "source_registry": "developer/bindings/policy-plan-bindings.yaml",
+  "bindings": [
+    {
+      "historical_binding": {
+        "binding_id": "PPB-0001",
+        "policy_ref": "MPD-0012",
+        "planning_state": "CREATED",
+        "resolved_plan_id": "PLN.POLI.BNDR.MPD0012A",
+        "plan_file_id": "PLANFILE.MAIN.MPD0012RESP1",
+        "version": "1.0",
+        "revision": "Rev.0001",
+        "plan_ref": "developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml"
+      },
+      "current_binding_ids": [
+        "PPB-0006",
+        "PPB-0007",
+        "PPB-0008",
+        "PPB-0009",
+        "PPB-0010"
+      ]
+    },
+    {
+      "historical_binding": {
+        "binding_id": "PPB-0002",
+        "policy_ref": "MPD-0015",
+        "planning_state": "CREATED",
+        "resolved_plan_id": "PLN.POLI.PLAN.cb6d761c",
+        "plan_file_id": "PLANFILE.MAIN.2c4c961377dd",
+        "version": "1.0",
+        "revision": "Rev.0001",
+        "plan_ref": "developer/planning/0.3.8/0.3.8a3/index.yaml"
+      },
+      "current_binding_ids": [
+        "PPB-0011",
+        "PPB-0012",
+        "PPB-0013",
+        "PPB-0014",
+        "PPB-0015",
+        "PPB-0016",
+        "PPB-0017"
+      ]
+    },
+    {
+      "historical_binding": {
+        "binding_id": "PPB-0003",
+        "policy_ref": "MPD-SPEC-0022",
+        "planning_state": "CREATED",
+        "resolved_plan_id": "PLN.POLI.PLAN.cb6d761c",
+        "plan_file_id": "PLANFILE.MAIN.2c4c961377dd",
+        "version": "1.0",
+        "revision": "Rev.0001",
+        "plan_ref": "developer/planning/0.3.8/0.3.8a3/index.yaml"
+      },
+      "current_binding_ids": [
+        "PPB-0018"
+      ]
+    },
+    {
+      "historical_binding": {
+        "binding_id": "PPB-0004",
+        "policy_ref": "MPD-VERI-0004",
+        "planning_state": "CREATED",
+        "resolved_plan_id": "PLN.POLI.PLAN.cb6d761c",
+        "plan_file_id": "PLANFILE.MAIN.2c4c961377dd",
+        "version": "1.0",
+        "revision": "Rev.0001",
+        "plan_ref": "developer/planning/0.3.8/0.3.8a3/index.yaml"
+      },
+      "current_binding_ids": [
+        "PPB-0019",
+        "PPB-0020",
+        "PPB-0021",
+        "PPB-0022"
+      ]
+    },
+    {
+      "historical_binding": {
+        "binding_id": "PPB-0005",
+        "policy_ref": "MPD-WORK-0004",
+        "planning_state": "CREATED",
+        "resolved_plan_id": "PLN.POLI.PLAN.cb6d761c",
+        "plan_file_id": "PLANFILE.MAIN.2c4c961377dd",
+        "version": "1.0",
+        "revision": "Rev.0001",
+        "plan_ref": "developer/planning/0.3.8/0.3.8a3/index.yaml"
+      },
+      "current_binding_ids": [
+        "PPB-0023",
+        "PPB-0024"
+      ]
+    }
+  ]
+}

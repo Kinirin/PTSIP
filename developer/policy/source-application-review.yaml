@@ -2,146 +2,228 @@ schema_version: ptsip-source-application-review/v1
 artifact_class: PTSIP_DEVELOPER_POLICY_SOURCE_REVIEW
 authority: false
 canonical_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
-
 policy_query_list:
-  - policy_id: MPD-WORK-0003
-    expected_status: ACTIVE
-    sections:
-      - policy_responsibility_materialization
-    reason: Requires responsibility decomposition and existing-authority reconciliation before Family policy materialization.
-
-  - policy_id: MPD-PLAN-0001
-    expected_status: ACTIVE
-    sections:
-      - planning_boundary
-    reason: Canonical owner of developer planning authority, planning structure, Work Unit identity, and planning lifecycle boundaries.
-
-  - policy_id: MPD-0010
-    expected_status: ACTIVE
-    sections:
-      - management_policy_identity_lifecycle_preflight
-      - provisional_resolution_framework
-    reason: Owns developer policy lifecycle preflight and provisional operational resolution.
-
-  - policy_id: MPD-SPEC-0006
-    expected_status: ACTIVE
-    sections:
-      - identity_and_resolution
-    reason: Canonical owner of identity and exact resolution semantics.
-
-  - policy_id: MPD-SPEC-0010
-    expected_status: ACTIVE
-    sections:
-      - governance_source_vocabulary
-    reason: Canonical owner of governance source vocabulary and source authority semantics.
-
-  - policy_id: MPD-PLAN-0004
-    expected_status: ACTIVE
-    sections:
-      - agent_contract_deferred_work_plan
-    reason: Canonical owner of deferred Agent Contract work and pending materialization planning state.
-
-  - policy_id: MPD-0011
-    expected_status: ACTIVE
-    sections:
-      - authority_semantics
-    reason: Contains the explicit project-owner decision baseline for Project Profile transition automation.
-
-  - policy_id: MPD-MIGR-0004
-    expected_status: ACTIVE
-    sections:
-      - transition_generation
-      - reconciliation_safety
-    reason: Canonical owner of Project Profile transition generation and reconciliation mechanics.
-
-  - policy_id: MPD-0012
-    expected_status: ACTIVE
-    sections:
-      - authority_semantics
-      - approved_decisions
-      - provisional_decisions
-    reason: Approved decisions are operational authority; provisional and deferred decisions remain explicitly non-authoritative.
-
-  - policy_id: MPD-SPEC-0023
-    expected_status: ACTIVE
-    sections:
-      - authority_separation
-      - policy_plan_binding_authority
-      - relationship_cardinality
-      - binding_identity
-      - planning_existence_state
-    reason: Canonical owner of Policy-Plan authority separation, identity, cardinality, and existence-state contracts.
-
-  - policy_id: MPD-0013
-    expected_status: ACTIVE
-    sections:
-      - policy_plan_binding_automation
-      - relation_lifecycle_semantics_boundary
-    reason: Owns operational binding automation and the explicit boundary that additional relation lifecycle states are not modeled by the current policy.
-
-  - policy_id: MPD-SPEC-0024
-    expected_status: ACTIVE
-    sections:
-      - normative_document_authority_boundary
-      - agent_contract_authority
-    reason: Canonical owner of agent-contract normative authority boundaries.
-
-  - policy_id: MPD-SPEC-0025
-    expected_status: ACTIVE
-    sections:
-      - source_contract_model
-      - feature_stable_core
-      - feature_implementation_body
-    reason: Canonical owner of source and feature contract model semantics.
-
+- policy_id: MPD-ARCH-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_work_0003_6c611ebb841f
+  - unit_mpd_work_0003_409ccab39a04
+  - unit_mpd_work_0003_742060fc39ee
+  - unit_mpd_work_0003_ecbccb9b85f5
+  - unit_mpd_work_0003_ba7539c50202
+  - unit_mpd_work_0003_9dea768abc1a
+  reason: Requires responsibility decomposition and existing-authority reconciliation
+    before Family policy materialization.
+- policy_id: MPD-CTRL-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_work_0003_fc836a4c0e34
+  - unit_mpd_work_0003_b59d60bb36a6
+  - unit_mpd_work_0003_2c868d400573
+  - unit_mpd_work_0003_7e804c26cf40
+  reason: Requires responsibility decomposition and existing-authority reconciliation
+    before Family policy materialization.
+- policy_id: MPD-INFO-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_work_0003_51d952085149
+  reason: Requires responsibility decomposition and existing-authority reconciliation
+    before Family policy materialization.
+- policy_id: MPD-REAL-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_work_0003_b742e02ef576
+  reason: Requires responsibility decomposition and existing-authority reconciliation
+    before Family policy materialization.
+- policy_id: MPD-ARCH-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_plan_0001_50410dc74c9f
+  - unit_mpd_plan_0001_7f56c7fed0e5
+  - unit_mpd_plan_0001_dfacd421d3a0
+  - unit_mpd_plan_0001_edc33d7514e8
+  - unit_mpd_plan_0001_3297aa85e519
+  reason: Canonical owner of developer planning authority, planning structure, Work
+    Unit identity, and planning lifecycle boundaries.
+- policy_id: MPD-INFO-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_plan_0001_2045fc60ef62
+  reason: Canonical owner of developer planning authority, planning structure, Work
+    Unit identity, and planning lifecycle boundaries.
+- policy_id: MPD-CTRL-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_plan_0001_6560d943f53d
+  reason: Canonical owner of developer planning authority, planning structure, Work
+    Unit identity, and planning lifecycle boundaries.
+- policy_id: MPD-GOV-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0010_e5b59f852d65
+  - unit_mpd_0010_8c571a585cc6
+  - unit_mpd_0010_18235d5b0bd9
+  - unit_mpd_0010_b48aaaf365f4
+  - unit_mpd_0010_ba91d621dc0b
+  - unit_mpd_0010_0d4f6ecbdaeb
+  - unit_mpd_0010_b572084f5452
+  - unit_mpd_0010_a71704961691
+  reason: Owns developer policy lifecycle preflight and provisional operational resolution.
+- policy_id: MPD-CTRL-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0010_3c286438d94d
+  reason: Owns developer policy lifecycle preflight and provisional operational resolution.
+- policy_id: MPD-INFO-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0010_d4c43b1cd85b
+  - unit_mpd_0010_8cff0d8ec14e
+  reason: Owns developer policy lifecycle preflight and provisional operational resolution.
+- policy_id: MPD-CHANGE-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0010_2e2a5cf2092b
+  - unit_mpd_0010_073d2c96dd58
+  - unit_mpd_0010_41e3282f2074
+  - unit_mpd_0010_35419208fc3e
+  - unit_mpd_0010_4b56a1dae50f
+  - unit_mpd_0010_c5ad589396e1
+  - unit_mpd_0010_c4d2cd9c17aa
+  - unit_mpd_0010_897dd3a69317
+  - unit_mpd_0010_ef12227034c2
+  reason: Owns developer policy lifecycle preflight and provisional operational resolution.
+- policy_id: MPD-RECORD-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0010_b72085fb0868
+  reason: Owns developer policy lifecycle preflight and provisional operational resolution.
+- policy_id: MPD-INFO-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0006_d25095d9c02a
+  reason: Canonical owner of identity and exact resolution semantics.
+- policy_id: MPD-GOV-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0010_61ea7f414674
+  reason: Canonical owner of governance source vocabulary and source authority semantics.
+- policy_id: MPD-INTENT-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_plan_0004_acd66447ea97
+  reason: Canonical owner of deferred Agent Contract work and pending materialization
+    planning state.
+- policy_id: MPD-CHANGE-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0011_8b9a13c6427c
+  reason: Contains the explicit project-owner decision baseline for Project Profile
+    transition automation.
+- policy_id: MPD-CHANGE-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_migr_0004_7aabef629d43
+  reason: Canonical owner of Project Profile transition generation and reconciliation
+    mechanics.
+- policy_id: MPD-CTRL-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_migr_0004_c6d84e07b661
+  reason: Canonical owner of Project Profile transition generation and reconciliation
+    mechanics.
+- policy_id: MPD-GOV-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0012_8b9a13c6427c
+  - unit_mpd_0012_e0cfe7d01329
+  - unit_mpd_0012_ee8c0fa2d55c
+  reason: Approved decisions are operational authority; provisional and deferred decisions
+    remain explicitly non-authoritative.
+- policy_id: MPD-ARCH-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0023_7795cd9b8dbc
+  reason: Canonical owner of Policy-Plan authority separation, identity, cardinality,
+    and existence-state contracts.
+- policy_id: MPD-GOV-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0023_1a5323523839
+  reason: Canonical owner of Policy-Plan authority separation, identity, cardinality,
+    and existence-state contracts.
+- policy_id: MPD-INFO-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0023_87eece45f479
+  - unit_mpd_spec_0023_759e9dad168d
+  - unit_mpd_spec_0023_ba39fe03d76a
+  reason: Canonical owner of Policy-Plan authority separation, identity, cardinality,
+    and existence-state contracts.
+- policy_id: MPD-REAL-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0013_6a876b8f6996
+  reason: Owns operational binding automation and the explicit boundary that additional
+    relation lifecycle states are not modeled by the current policy.
+- policy_id: MPD-INFO-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_0013_a9f56e3465ea
+  reason: Owns operational binding automation and the explicit boundary that additional
+    relation lifecycle states are not modeled by the current policy.
+- policy_id: MPD-NORM-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0024_ffdffc01d053
+  - unit_mpd_spec_0024_96089904dda7
+  reason: Canonical owner of agent-contract normative authority boundaries.
+- policy_id: MPD-CNTR-0001
+  expected_status: ACTIVE
+  sections:
+  - unit_mpd_spec_0025_60134fd764b9
+  - unit_mpd_spec_0025_38fd80009165
+  - unit_mpd_spec_0025_9cd775906ea2
+  reason: Canonical owner of source and feature contract model semantics.
 artifact_review_list:
-  - path: developer/policy/schemas/policy-approval-provenance.schema.json
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: DECISION_SOURCE
-
-  - path: developer/policy/approvals/
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: DECISION_SOURCE
-
-  - path: developer/policy/registries/authorization-transition-registry.yaml
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: AUTHORIZATION_SOURCE_AND_TRANSITION_SOURCE
-
-  - path: developer/planning/schemas/work-unit.schema.json
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
-
-  - path: developer/planning/schemas/plan-extension.schema.json
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
-
-  - path: developer/planning/schemas/planning-index.schema.json
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
-
-  - path: developer/planning/migrations/MPD-0001-planning-subsystem-migration.yaml
-    classification: GOVERNANCE_SOURCE_ADOPTED
-    target_role: AUTHORIZATION_SOURCE
-
-  - path: developer/automation/implementation_workflows.schema.json
-    classification: SOURCE_KEY_HAS_NON_GOVERNANCE_MEANING
-    target_role: NONE
-
+- path: developer/policy/schemas/policy-approval-provenance.schema.json
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: DECISION_SOURCE
+- path: developer/policy/approvals/
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: DECISION_SOURCE
+- path: developer/policy/registries/authorization-transition-registry.yaml
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: AUTHORIZATION_SOURCE_AND_TRANSITION_SOURCE
+- path: developer/planning/schemas/work-unit.schema.json
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+- path: developer/planning/schemas/plan-extension.schema.json
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+- path: developer/planning/schemas/planning-index.schema.json
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: APPROVAL_SOURCE_AND_AUTHORIZATION_SOURCE
+- path: developer/planning/migrations/MPD-0001-planning-subsystem-migration.yaml
+  classification: GOVERNANCE_SOURCE_ADOPTED
+  target_role: AUTHORIZATION_SOURCE
+- path: developer/automation/implementation_workflows.schema.json
+  classification: SOURCE_KEY_HAS_NON_GOVERNANCE_MEANING
+  target_role: NONE
 excluded_existing_source_semantics:
-  - location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.level_1_bootstrap.source
-    meaning: FILE_SOURCE
-  - location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.unresolved_reassessment.source
-    meaning: FILE_SOURCE
-  - location: developer/policy/MIGR/MPD-MIGR-0004.yaml#rules.commit_candidate_trigger.release.source
-    meaning: VERIFICATION_REVISION_SOURCE
-  - location: developer/automation/implementation_workflows.yaml#tasks.*.watch_inputs.*.source
-    meaning: DATA_SOURCE
-
+- location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.level_1_bootstrap.source
+  meaning: FILE_SOURCE
+- location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.unresolved_reassessment.source
+  meaning: FILE_SOURCE
+- location: developer/policy/MIGR/MPD-MIGR-0004.yaml#rules.commit_candidate_trigger.release.source
+  meaning: VERIFICATION_REVISION_SOURCE
+- location: developer/automation/implementation_workflows.yaml#tasks.*.watch_inputs.*.source
+  meaning: DATA_SOURCE
 migration_order:
-  - ESTABLISH_SOURCE_REGISTRY
-  - VALIDATE_POLICY_QUERY_LIST
-  - DECISION_SOURCE_TO_POLICY_APPROVAL_PROVENANCE_ADOPTED
-  - AUTHORIZATION_TRANSITION_SOURCE_ADOPTED
-  - PLANNING_APPROVAL_AND_AUTHORIZATION_SOURCE_ADOPTED
-  - LEGACY_PLANNING_GOVERNANCE_SOURCE_NORMALIZED
-  - ADD_DERIVED_PROJECTIONS_ONLY_AFTER_CANONICAL_FIELDS_EXIST
+- ESTABLISH_SOURCE_REGISTRY
+- VALIDATE_POLICY_QUERY_LIST
+- DECISION_SOURCE_TO_POLICY_APPROVAL_PROVENANCE_ADOPTED
+- AUTHORIZATION_TRANSITION_SOURCE_ADOPTED
+- PLANNING_APPROVAL_AND_AUTHORIZATION_SOURCE_ADOPTED
+- LEGACY_PLANNING_GOVERNANCE_SOURCE_NORMALIZED
+- ADD_DERIVED_PROJECTIONS_ONLY_AFTER_CANONICAL_FIELDS_EXIST

@@ -1,0 +1,39 @@
+{
+  "schema_version": "ptsip-go-support-audit-refs/v1",
+  "support_authority_inheritance": false,
+  "fields": {
+    "integration_runtime_surface": {
+      "policy_id": "SFP-CNTR-0001",
+      "policy_path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+      "section": "unit_sfp_0023_571db38c09b9",
+      "value_path": [
+        "runtime_surface"
+      ]
+    },
+    "provider_binding": {
+      "policy_id": "SFP-CNTR-0001",
+      "policy_path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+      "section": "unit_sfp_0023_9c400c5ae297",
+      "value_path": [
+        "concrete_provider_binding"
+      ]
+    }
+  },
+  "state_groups": {
+    "retired_selector": [
+      "SFP-ASSURE-0003",
+      "SFP-ARCH-0003",
+      "SFP-CNTR-0003",
+      "SFP-INFO-0003"
+    ],
+    "integration": [
+      "SFP-ARCH-0001",
+      "SFP-CNTR-0001",
+      "SFP-INFO-0001",
+      "SFP-REAL-0001",
+      "SFP-NORM-0001",
+      "SFP-ASSURE-0001",
+      "SFP-CHANGE-0001"
+    ]
+  }
+}

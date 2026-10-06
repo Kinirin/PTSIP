@@ -44,11 +44,21 @@ func (r *Repository) AdmitCommand(positional []string, options map[string]string
 		return fmt.Errorf("unregistered or ambiguous command %s %s", positional[0], positional[1])
 	}
 	command := matches[0]
+	for _, raw := range List(command["boolean_options"]) {
+		option := "--" + strings.ReplaceAll(Text(raw), "_", "-")
+		if value, present := options[option]; present {
+			if value == "" {
+				options[option] = "true"
+			} else if value != "true" && value != "false" {
+				return fmt.Errorf("option %s requires boolean", option)
+			}
+		}
+	}
 	if len(positional) != 2+len(List(command["required_arguments"])) {
 		return fmt.Errorf("registered command positional argument count mismatch")
 	}
 	allowed := map[string]bool{"--repository": true, "--root": true}
-	for _, key := range []string{"required_options", "optional_options"} {
+	for _, key := range []string{"required_options", "optional_options", "boolean_options"} {
 		for _, raw := range List(command[key]) {
 			option := "--" + strings.ReplaceAll(Text(raw), "_", "-")
 			if option == "--" {
@@ -63,6 +73,9 @@ func (r *Repository) AdmitCommand(positional []string, options map[string]string
 	for option := range options {
 		if !allowed[option] {
 			return fmt.Errorf("option %s is not registered for this command", option)
+		}
+		if options[option] == "" {
+			return fmt.Errorf("option %s requires a value", option)
 		}
 	}
 	return nil

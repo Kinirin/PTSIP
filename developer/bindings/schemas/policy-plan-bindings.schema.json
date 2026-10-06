@@ -42,7 +42,7 @@
         },
         "policy_ref": {
           "type": "string",
-          "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+          "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
         },
         "planning_state": {
           "enum": [
@@ -69,6 +69,15 @@
         "plan_ref": {
           "type": "string",
           "pattern": "^developer/planning/.+\\.ya?ml$"
+        },
+        "policy_sections": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_]+$"
+          }
         }
       },
       "allOf": [

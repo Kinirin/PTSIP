@@ -18,15 +18,15 @@ func run(arguments []string) (any, error) {
 			continue
 		}
 		if strings.HasPrefix(argument, "--") {
-			allowed := map[string]bool{"--repository": true, "--root": true, "--scope": true, "--operation": true, "--section": true, "--policy-class": true, "--family": true, "--domain": true, "--branch": true}
-			if !allowed[argument] || i+1 == len(arguments) {
-				return nil, fmt.Errorf("unknown or incomplete argument %s", argument)
-			}
 			if _, exists := options[argument]; exists {
 				return nil, fmt.Errorf("duplicate option %s", argument)
 			}
-			i++
-			options[argument] = arguments[i]
+			if i+1 == len(arguments) || strings.HasPrefix(arguments[i+1], "--") {
+				options[argument] = ""
+			} else {
+				i++
+				options[argument] = arguments[i]
+			}
 		} else {
 			positional = append(positional, argument)
 		}
@@ -64,7 +64,7 @@ func run(arguments []string) (any, error) {
 		return repo.InspectFamilyID(positional[2])
 	}
 	if positional[0] != "policy-resolver" || len(positional) < 2 {
-		return nil, fmt.Errorf("unregistered command")
+		return repo.DispatchOperation(positional[0], positional[1], options, positional[2:])
 	}
 	resolver, err := machine.NewResolver(repo)
 	if err != nil {
@@ -113,5 +113,11 @@ func main() {
 	if err := encoder.Encode(result); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)
+	}
+	if object, ok := result.(map[string]any); ok {
+		switch object["status"] {
+		case "FAIL", "BLOCKED", "UNRESOLVED":
+			os.Exit(2)
+		}
 	}
 }
