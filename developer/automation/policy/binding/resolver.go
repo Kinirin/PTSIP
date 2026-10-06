@@ -6,15 +6,12 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"regexp"
 	"sort"
 	"strings"
 )
 
-const DeveloperClass = "PTSIP_DEVELOPER_POLICY"
 const ResolverContract = "developer/policy/contracts/go-policy-resolver.v1.yaml"
 
-var rootID = regexp.MustCompile(`^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$`)
 var operations = []string{"MODIFY", "PLAN", "READ", "RELEASE", "VERIFY"}
 
 type Resolver struct {

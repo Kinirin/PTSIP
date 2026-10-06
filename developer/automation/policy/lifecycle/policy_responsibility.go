@@ -29,7 +29,7 @@ var policyCollisionResolutions = map[string][]string{
 
 type PolicyError = OperationError
 
-func policyFailure(code, detail string) error { return &PolicyError{code, detail} }
+func policyFailure(code, detail string) error { return &PolicyError{Code: code, Message: detail} }
 func policyContains(values []string, needle string) bool {
 	for _, value := range values {
 		if value == needle {
