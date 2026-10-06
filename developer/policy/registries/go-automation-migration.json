@@ -150,8 +150,10 @@
     },
     {
       "python_path": "developer/automation/branch_control.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/branch.go"
+      ],
       "python_line_count": 383,
       "public_definitions": [
         "BranchControlError",
@@ -161,13 +163,16 @@
         "recreate_authorized_branch",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
       "python_path": "developer/automation/branch_creation_guard.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/branch.go"
+      ],
       "python_line_count": 176,
       "public_definitions": [
         "BranchCreationPolicyError",
@@ -177,8 +182,9 @@
         "classify_existing",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
       "python_path": "developer/automation/context_projection.py",
