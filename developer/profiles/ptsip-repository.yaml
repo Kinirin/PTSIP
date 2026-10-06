@@ -834,6 +834,24 @@ components:
       - "src/ptsip/migration/**"
       - "src/ptsip/specdata/project-profile-contracts.yaml"
 
+  - id: policy-responsibility-analysis-verification
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
+    include:
+      - "src/tests/ptsip/policy_responsibility_analysis/**"
+    purpose: policy_responsibility_analysis_generation_coverage_current_authority_lookup_and_deterministic_regeneration_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+    analysis_inputs:
+      - "developer/policy/analysis/**"
+      - "developer/policy/schemas/policy-responsibility-analysis*.json"
+      - "developer/policy/contracts/policy-responsibility-analysis-generation.v1.yaml"
+      - "developer/automation/internal/machine/policy_responsibility*.go"
+
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
     roles:
