@@ -420,6 +420,80 @@ jobs:
             -Body $body
 
 
+  pra-registry-validation:
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch' && inputs.verification == 'policy-responsibility-analysis') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PRA registry source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.14 for PRA registry verification
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
+
+      - name: Install PRA registry verifier dependencies
+        shell: pwsh
+        run: |
+          python -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install PRA registry verification environment."
+          }
+
+      - name: Verify registry-first PRA Python plane
+        shell: pwsh
+        env:
+          PYTHONPATH: ".:src"
+        run: |
+          python -m pytest -q developer/tests/test_policy_responsibility_gate.py src/tests/ptsip/policy_responsibility_analysis/test_mode_registration.py
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA registry Python tests failed."
+          }
+          python -m developer.automation.policy_responsibility_gate --analysis-id PRA-0014
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA analysis-id resolution failed."
+          }
+          python -m developer.automation.policy_responsibility_gate --subject-type POLICY_ANALYSIS --subject-id POLICY_ANALYSIS --analysis-kind REGISTRY_FIRST_DISCOVERY
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA subject-key resolution failed."
+          }
+          python -m developer.automation.policy_validator
+          if ($LASTEXITCODE -ne 0) {
+            throw "Developer policy validation failed after PRA registry migration."
+          }
+
+      - name: Set up Go Developer automation for PRA registry verification
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+
+      - name: Verify registry-first PRA Go plane
+        shell: pwsh
+        run: |
+          go -C developer/automation vet ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA registry vet failed."
+          }
+          go -C developer/automation test ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA registry tests failed."
+          }
+          go -C developer/automation run ./cmd/ptsip-dev policy-responsibility validate --analysis-id PRA-0014
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA analysis-id resolution failed."
+          }
+          go -C developer/automation run ./cmd/ptsip-dev policy-responsibility validate --subject-type POLICY_ANALYSIS --subject-id POLICY_ANALYSIS --analysis-kind REGISTRY_FIRST_DISCOVERY
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA subject-key resolution failed."
+          }
+
+
   test-build:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.verification != 'policy-lifecycle' && inputs.verification != 'agent-context-migration' && inputs.verification != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && startsWith(github.event.head_commit.message, 'release:')) }}
     runs-on: ubuntu-latest
