@@ -132,6 +132,47 @@ func policyTestMaterialization(t *testing.T, r *Repository) (string, string, str
 	return id, approvalRef, analysisID, template
 }
 
+
+func TestPolicyAnalysisCommandAdmissionUsesRegistryIdentity(t *testing.T) {
+	r := policyTestRepo(t)
+	if err := r.AdmitCommand(
+		[]string{"policy-responsibility", "validate"},
+		map[string]string{"--analysis-id": "PRA-0014"},
+	); err != nil {
+		t.Fatalf("registered PRA identity rejected: %v", err)
+	}
+	if err := r.AdmitCommand(
+		[]string{"policy-responsibility", "validate"},
+		map[string]string{"--analysis-ref": "developer/policy/analysis/records/PRA-0014.yaml"},
+	); err == nil {
+		t.Fatal("direct PRA path input was admitted")
+	}
+
+	contract, err := r.Read("developer/policy/contracts/go-automation-cutover.v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, raw := range List(contract["runtime_commands"]) {
+		command := Map(raw)
+		prefix := Strings(command["command"])
+		if len(prefix) != 2 || (prefix[0] != "policy-lifecycle" && prefix[0] != "policy-responsibility") {
+			continue
+		}
+		for _, field := range []string{"required_options", "optional_options"} {
+			for _, option := range Strings(command[field]) {
+				if option == "analysis_ref" {
+					t.Fatalf("%s %s still registers analysis_ref", prefix[0], prefix[1])
+				}
+			}
+		}
+		if prefix[0] == "policy-lifecycle" && (prefix[1] == "preflight" || prefix[1] == "register" || prefix[1] == "family-preflight" || prefix[1] == "family-register") {
+			if !Has(Strings(command["required_options"]), "analysis_id") {
+				t.Fatalf("%s %s does not require analysis_id", prefix[0], prefix[1])
+			}
+		}
+	}
+}
+
 func TestPolicyVersionNativeTransitions(t *testing.T) {
 	cases := []struct {
 		version, status, change, target, next string

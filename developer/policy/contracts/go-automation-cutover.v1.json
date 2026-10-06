@@ -142,7 +142,7 @@
       "required_arguments": [],
       "required_options": [
         "approval_ref",
-        "analysis_ref",
+        "analysis_id",
         "group_id"
       ],
       "optional_options": [],
@@ -156,7 +156,7 @@
       "required_arguments": [],
       "required_options": [
         "approval_ref",
-        "analysis_ref",
+        "analysis_id",
         "group_id",
         "policy_file"
       ],
@@ -173,7 +173,7 @@
         "policy_class",
         "family",
         "approval_ref",
-        "analysis_ref",
+        "analysis_id",
         "group_id"
       ],
       "optional_options": [],
@@ -189,7 +189,7 @@
         "policy_class",
         "family",
         "approval_ref",
-        "analysis_ref",
+        "analysis_id",
         "group_id",
         "policy_file"
       ],
@@ -242,10 +242,12 @@
         "validate"
       ],
       "required_arguments": [],
-      "required_options": [
-        "analysis_ref"
-      ],
+      "required_options": [],
       "optional_options": [
+        "analysis_id",
+        "subject_type",
+        "subject_id",
+        "analysis_kind",
         "current_authority_lookup"
       ],
       "boolean_options": [
