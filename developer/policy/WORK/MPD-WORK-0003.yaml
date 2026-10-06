@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 
 policy:
   id: MPD-WORK-0003
-  version: "2.0"
+  version: "2.1"
   title: Policy Responsibility Decomposition and Authority Reconciliation Gate
   status: ACTIVE
 
@@ -95,9 +95,11 @@ rules:
       analysis_required_before_family_policy_creation: true
       create_before_collision_resolution: FORBIDDEN
       blocked_collision_may_materialize: false
-      analysis_root: developer/policy/analysis/
-      analysis_schema: developer/policy/schemas/policy-responsibility-analysis.schema.json
+      analysis_root: developer/policy/analysis/records/
+      analysis_schema: developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json
       analysis_registry: developer/policy/analysis/registry.yaml
+      analysis_registry_schema: developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json
+      analysis_discovery: REGISTRY_ONLY
       family_preflight_module: developer.automation.policy_identity_lifecycle
       responsibility_gate_module: developer.automation.policy_responsibility_gate
 
@@ -120,3 +122,5 @@ relations:
       scope: WORK_UNIT_LIFECYCLE
     - policy: MPD-WORK-0002
       scope: EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF
+    - policy: MPD-SPEC-0028
+      scope: POLICY_ANALYSIS_REGISTRY_DISCOVERY_CONTRACT
