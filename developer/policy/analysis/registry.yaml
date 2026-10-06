@@ -85,12 +85,23 @@ records:
   subject_id: POLICY_ANALYSIS
   analysis_kind: REGISTRY_FIRST_DISCOVERY
   recorded_at: "2026-10-06"
+- analysis_id: PRA-0015
+  analysis_ref: developer/policy/analysis/records/PRA-0015.yaml
+  subject_type: AUTOMATION
+  subject_id: DEVELOPER_AUTOMATION
+  analysis_kind: RESPONSIBILITY_DOMAIN_SEPARATION
+  recorded_at: "2026-10-06"
 bindings:
 - policy_id: MPD-ARCH-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: ARCH
   analysis_id: PRA-0013
   group_id: G05
+- policy_id: MPD-ARCH-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: ARCH
+  analysis_id: PRA-0015
+  group_id: G01
 - policy_id: MPD-ASSURE-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: ASSURE

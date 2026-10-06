@@ -1,0 +1,44 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0015
+  source_ref: PROJECT_OWNER_DIRECT_INSTRUCTION:2026-10-06:RESPONSIBILITY_DOMAIN_COMPLETE_SEPARATION
+  responsibilities:
+  - responsibility_id: R01
+    statement: Developer Automation implementation must be separated into responsibility-domain packages so each implementation unit has exactly one machine-identifiable responsibility owner and multi-domain catch-all packages are forbidden.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_RESPONSIBILITY_DOMAIN_STRUCTURE
+    lifecycle_scope: DEVELOPER_AUTOMATION_PACKAGE_AND_DOMAIN_BOUNDARY
+    cohesion_key: DEVELOPER_AUTOMATION_RESPONSIBILITY_DOMAIN_SEPARATION
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids:
+      - MPD-ARCH-0001
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-ARCH-0001
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  decision:
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: ARCH
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: ARCH
+      cohesion_key: DEVELOPER_AUTOMATION_RESPONSIBILITY_DOMAIN_SEPARATION
+      responsibility_ids:
+      - R01
+      cohesion_rationale: Package decomposition and responsibility ownership are one Developer Automation architecture boundary.
