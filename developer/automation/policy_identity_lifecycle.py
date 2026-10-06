@@ -25,7 +25,7 @@ SUBJECT_REGISTRY = "developer/policy/registries/authority-subject-registry.yaml"
 APPROVAL_SCHEMA = "developer/policy/schemas/policy-approval-provenance.schema.json"
 MANAGEMENT_POLICY_SCHEMA = "developer/policy/schemas/management-policy.schema.json"
 ANALYSIS_REGISTRY = "developer/policy/analysis/registry.yaml"
-ANALYSIS_REGISTRY_SCHEMA = "developer/policy/schemas/policy-materialization-analysis-registry.schema.json"
+ANALYSIS_REGISTRY_SCHEMA = "developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json"
 APPROVAL_ROOT = Path("developer/policy/approvals")
 _POLICY_ID_RE = re.compile(r"^MPD-([0-9]{4})$")
 _FAMILY_POLICY_ID_RE = re.compile(r"^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$")
@@ -333,13 +333,13 @@ def _validated_analysis_group(
     *,
     policy_class: str,
     family: str,
-    analysis_ref: str | Path,
+    analysis_id: str,
     group_id: str,
     base: Path,
 ) -> tuple[dict[str, object], Mapping[str, object]]:
     try:
         analysis = validate_responsibility_analysis(
-            analysis_ref,
+            analysis_id,
             root=base,
             enforce_current_lookup=True,
         )
@@ -385,7 +385,7 @@ def _validated_analysis_group(
 def preflight_family_policy(
     family: str,
     approval_ref: str | Path,
-    analysis_ref: str | Path,
+    analysis_id: str,
     group_id: str,
     *,
     policy_class: str,
@@ -405,7 +405,7 @@ def preflight_family_policy(
     analysis, group = _validated_analysis_group(
         policy_class=policy_class,
         family=family,
-        analysis_ref=analysis_ref,
+        analysis_id=analysis_id,
         group_id=group_id,
         base=base,
     )
@@ -673,7 +673,7 @@ def register_policy(
 def register_family_policy(
     family: str,
     approval_ref: str | Path,
-    analysis_ref: str | Path,
+    analysis_id: str,
     group_id: str,
     policy_file: str | Path,
     *,
@@ -693,7 +693,7 @@ def register_family_policy(
     analysis, _ = _validated_analysis_group(
         policy_class=policy_class,
         family=family,
-        analysis_ref=analysis_ref,
+        analysis_id=analysis_id,
         group_id=group_id,
         base=base,
     )
@@ -834,7 +834,6 @@ def register_family_policy(
             "policy_id": allocated,
             "policy_class": policy_class,
             "family": family,
-            "analysis_ref": analysis["analysis_ref"],
             "analysis_id": analysis["analysis_id"],
             "group_id": group_id,
         }
@@ -895,7 +894,7 @@ def _parser() -> argparse.ArgumentParser:
     family_preflight_cmd.add_argument("--family", choices=FAMILIES, required=True)
     family_preflight_cmd.add_argument("--policy-class", required=True)
     family_preflight_cmd.add_argument("--approval-ref", required=True)
-    family_preflight_cmd.add_argument("--analysis-ref", required=True)
+    family_preflight_cmd.add_argument("--analysis-id", required=True)
     family_preflight_cmd.add_argument("--group-id", required=True)
 
     register_cmd = sub.add_parser("register")
@@ -906,7 +905,7 @@ def _parser() -> argparse.ArgumentParser:
     family_register_cmd.add_argument("--family", choices=FAMILIES, required=True)
     family_register_cmd.add_argument("--policy-class", required=True)
     family_register_cmd.add_argument("--approval-ref", required=True)
-    family_register_cmd.add_argument("--analysis-ref", required=True)
+    family_register_cmd.add_argument("--analysis-id", required=True)
     family_register_cmd.add_argument("--group-id", required=True)
     family_register_cmd.add_argument("--policy-file", required=True)
 
@@ -935,7 +934,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = preflight_family_policy(
                 args.family,
                 args.approval_ref,
-                args.analysis_ref,
+                args.analysis_id,
                 args.group_id,
                 policy_class=args.policy_class,
                 root=args.root,
@@ -946,7 +945,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = register_family_policy(
                 args.family,
                 args.approval_ref,
-                args.analysis_ref,
+                args.analysis_id,
                 args.group_id,
                 args.policy_file,
                 policy_class=args.policy_class,
