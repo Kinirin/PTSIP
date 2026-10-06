@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:policy-materialization-analysis-registry:v3",
+  "title": "Registry-first Policy Analysis Registry v3",
+  "type": "object",
+  "required": ["schema_version", "artifact_class", "records", "bindings"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "developer-policy-materialization-analysis-registry/v3"},
+    "artifact_class": {"const": "PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY"},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["analysis_id", "analysis_ref", "subject_type", "subject_id", "analysis_kind", "recorded_at"],
+        "additionalProperties": false,
+        "properties": {
+          "analysis_id": {"type": "string", "pattern": "^PRA-[0-9]{4}$"},
+          "analysis_ref": {"type": "string", "pattern": "^developer/policy/analysis/records/PRA-[0-9]{4}\\.yaml$"},
+          "subject_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "subject_id": {"type": "string", "minLength": 1},
+          "analysis_kind": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "recorded_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["policy_id", "policy_class", "family", "analysis_id", "group_id"],
+        "additionalProperties": false,
+        "properties": {
+          "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+          "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
+          "policy_id": {"type": "string", "pattern": "^MPD-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
+          "analysis_id": {"type": "string", "pattern": "^PRA-[0-9]{4}$"},
+          "group_id": {"type": "string", "pattern": "^G[0-9]{2,}$"}
+        }
+      }
+    }
+  }
+}

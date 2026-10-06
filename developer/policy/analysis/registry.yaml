@@ -1,237 +1,293 @@
-schema_version: developer-policy-materialization-analysis-registry/v2
+schema_version: developer-policy-materialization-analysis-registry/v3
 artifact_class: PTSIP_POLICY_MATERIALIZATION_ANALYSIS_REGISTRY
+records:
+- analysis_id: PRA-0001
+  analysis_ref: developer/policy/analysis/records/PRA-0001.yaml
+  subject_type: POLICY
+  subject_id: MPD-WORK-0003
+  analysis_kind: POLICY_RESPONSIBILITY_GATES
+  recorded_at: "2026-09-29"
+- analysis_id: PRA-0002
+  analysis_ref: developer/policy/analysis/records/PRA-0002.yaml
+  subject_type: FAMILY
+  subject_id: RELS
+  analysis_kind: FAMILY_MATERIALIZATION
+  recorded_at: "2026-09-29"
+- analysis_id: PRA-0003
+  analysis_ref: developer/policy/analysis/records/PRA-0003.yaml
+  subject_type: POLICY
+  subject_id: MPD-0005
+  analysis_kind: SPEC_MATERIALIZATION
+  recorded_at: "2026-10-02"
+- analysis_id: PRA-0004
+  analysis_ref: developer/policy/analysis/records/PRA-0004.yaml
+  subject_type: FAMILY
+  subject_id: VERI
+  analysis_kind: FAMILY_MATERIALIZATION
+  recorded_at: "2026-10-02"
+- analysis_id: PRA-0005
+  analysis_ref: developer/policy/analysis/records/PRA-0005.yaml
+  subject_type: POLICY
+  subject_id: MPD-0012
+  analysis_kind: RESPONSIBILITY_RECONCILIATION
+  recorded_at: "2026-10-03"
+- analysis_id: PRA-0006
+  analysis_ref: developer/policy/analysis/records/PRA-0006.yaml
+  subject_type: POLICY
+  subject_id: MPD-VERI-0006
+  analysis_kind: OUTPUT_CONTRACT
+  recorded_at: "2026-10-03"
+- analysis_id: PRA-0007
+  analysis_ref: developer/policy/analysis/records/PRA-0007.yaml
+  subject_type: POLICY
+  subject_id: MPD-WORK-0004
+  analysis_kind: MUTATION_AUTHORIZATION_GATE
+  recorded_at: "2026-10-04"
+- analysis_id: PRA-0008
+  analysis_ref: developer/policy/analysis/records/PRA-0008.yaml
+  subject_type: WORK_UNIT
+  subject_id: WU-08
+  analysis_kind: VERIFICATION_ENTRY
+  recorded_at: "2026-10-04"
+- analysis_id: PRA-0009
+  analysis_ref: developer/policy/analysis/records/PRA-0009.yaml
+  subject_type: POLICY
+  subject_id: MPD-VERI-0007
+  analysis_kind: VERIFICATION_PROTOCOL
+  recorded_at: "2026-10-05"
+- analysis_id: PRA-0010
+  analysis_ref: developer/policy/analysis/records/PRA-0010.yaml
+  subject_type: AUTOMATION
+  subject_id: DEVELOPER_AUTOMATION
+  analysis_kind: GO_AUTOMATION_CUTOVER
+  recorded_at: "2026-10-06"
+- analysis_id: PRA-0011
+  analysis_ref: developer/policy/analysis/records/PRA-0011.yaml
+  subject_type: MODULE
+  subject_id: ROOT_FAMILY_PROJECTION
+  analysis_kind: NEUTRAL_MODULE_CREATION
+  recorded_at: "2026-10-06"
+- analysis_id: PRA-0012
+  analysis_ref: developer/policy/analysis/records/PRA-0012.yaml
+  subject_type: VERIFICATION
+  subject_id: ROOT_FAMILY
+  analysis_kind: GO_VERIFICATION
+  recorded_at: "2026-10-06"
+- analysis_id: PRA-0013
+  analysis_ref: developer/policy/analysis/records/PRA-0013.yaml
+  subject_type: TRANSITION
+  subject_id: ROOT_FAMILY
+  analysis_kind: ROOT_FAMILY_TRANSITION
+  recorded_at: "2026-10-06"
+- analysis_id: PRA-0014
+  analysis_ref: developer/policy/analysis/records/PRA-0014.yaml
+  subject_type: POLICY_ANALYSIS
+  subject_id: POLICY_ANALYSIS
+  analysis_kind: REGISTRY_FIRST_DISCOVERY
+  recorded_at: "2026-10-06"
 bindings:
 - policy_id: MPD-ARCH-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: ARCH
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G05
 - policy_id: MPD-ASSURE-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: ASSURE
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G15
 - policy_id: MPD-ASSURE-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: ASSURE
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G16
 - policy_id: MPD-ASSURE-0003
   policy_class: PTSIP_DEVELOPER_POLICY
   family: ASSURE
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-GO-VERIFICATION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-GO-VERIFICATION
+  analysis_id: PRA-0012
   group_id: G01
 - policy_id: MPD-CHANGE-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CHANGE
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G18
 - policy_id: MPD-CHANGE-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CHANGE
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G19
 - policy_id: MPD-CHANGE-0003
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CHANGE
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G20
 - policy_id: MPD-CHANGE-0004
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CHANGE
-  analysis_ref: developer/policy/analysis/PRA-20261006-GO-AUTOMATION-CUTOVER.yaml
-  analysis_id: PRA-20261006-GO-AUTOMATION-CUTOVER
+  analysis_id: PRA-0010
   group_id: G03
 - policy_id: MPD-CNTR-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CNTR
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G09
 - policy_id: MPD-CNTR-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CNTR
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G10
 - policy_id: MPD-CNTR-0003
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CNTR
-  analysis_ref: developer/policy/analysis/PRA-20261006-NEUTRAL-MODULE-CREATION.yaml
-  analysis_id: PRA-20261006-NEUTRAL-MODULE-CREATION
+  analysis_id: PRA-0011
   group_id: G01
 - policy_id: MPD-CNTR-0004
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CNTR
-  analysis_ref: developer/policy/analysis/PRA-20261006-GO-AUTOMATION-CUTOVER.yaml
-  analysis_id: PRA-20261006-GO-AUTOMATION-CUTOVER
+  analysis_id: PRA-0010
   group_id: G01
+- policy_id: MPD-CNTR-0005
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: CNTR
+  analysis_id: PRA-0014
+  group_id: G02
 - policy_id: MPD-CTRL-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CTRL
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G17
 - policy_id: MPD-GOV-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: GOV
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G02
 - policy_id: MPD-GOV-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: GOV
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G03
 - policy_id: MPD-INFO-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: INFO
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G06
 - policy_id: MPD-INFO-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: INFO
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G07
 - policy_id: MPD-INFO-0003
   policy_class: PTSIP_DEVELOPER_POLICY
   family: INFO
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G08
+- policy_id: MPD-INFO-0004
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: INFO
+  analysis_id: PRA-0014
+  group_id: G01
 - policy_id: MPD-INTENT-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: INTENT
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G04
 - policy_id: MPD-NORM-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: NORM
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G01
 - policy_id: MPD-OPS-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: OPS
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G21
 - policy_id: MPD-REAL-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: REAL
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G13
 - policy_id: MPD-REAL-0002
   policy_class: PTSIP_DEVELOPER_POLICY
   family: REAL
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G14
 - policy_id: MPD-REAL-0003
   policy_class: PTSIP_DEVELOPER_POLICY
   family: REAL
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-GO-VERIFICATION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-GO-VERIFICATION
+  analysis_id: PRA-0012
   group_id: G02
 - policy_id: MPD-REAL-0004
   policy_class: PTSIP_DEVELOPER_POLICY
   family: REAL
-  analysis_ref: developer/policy/analysis/PRA-20261006-NEUTRAL-MODULE-CREATION.yaml
-  analysis_id: PRA-20261006-NEUTRAL-MODULE-CREATION
+  analysis_id: PRA-0011
   group_id: G02
 - policy_id: MPD-REAL-0005
   policy_class: PTSIP_DEVELOPER_POLICY
   family: REAL
-  analysis_ref: developer/policy/analysis/PRA-20261006-GO-AUTOMATION-CUTOVER.yaml
-  analysis_id: PRA-20261006-GO-AUTOMATION-CUTOVER
+  analysis_id: PRA-0010
   group_id: G02
 - policy_id: MPD-RECORD-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RECORD
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G22
 - policy_id: MPD-RELS-0001
-  analysis_ref: developer/policy/analysis/PRA-20260929-RELS-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20260929-RELS-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0002
   group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RELS
 - policy_id: MPD-RELS-0002
-  analysis_ref: developer/policy/analysis/PRA-20260929-RELS-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20260929-RELS-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0002
   group_id: G02
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RELS
 - policy_id: MPD-RISK-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RISK
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G11
 - policy_id: MPD-SUPPLY-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: SUPPLY
-  analysis_ref: developer/policy/analysis/PRA-20261006-ROOT-FAMILY-TRANSITION.yaml
-  analysis_id: PRA-20261006-ROOT-FAMILY-TRANSITION
+  analysis_id: PRA-0013
   group_id: G12
 - policy_id: MPD-VERI-0002
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0004
   group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: VERI
 - policy_id: MPD-VERI-0003
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0004
   group_id: G02
   policy_class: PTSIP_DEVELOPER_POLICY
   family: VERI
 - policy_id: MPD-VERI-0004
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0004
   group_id: G03
   policy_class: PTSIP_DEVELOPER_POLICY
   family: VERI
 - policy_id: MPD-VERI-0005
-  analysis_ref: developer/policy/analysis/PRA-20261002-VERI-FAMILY-MATERIALIZATION.yaml
-  analysis_id: PRA-20261002-VERI-FAMILY-MATERIALIZATION
+  analysis_id: PRA-0004
   group_id: G04
   policy_class: PTSIP_DEVELOPER_POLICY
   family: VERI
 - policy_id: MPD-VERI-0006
-  analysis_ref: developer/policy/analysis/PRA-20261003-MPD-VERI-0006-OUTPUT-CONTRACT.yaml
-  analysis_id: PRA-20261003-MPD-VERI-0006-OUTPUT-CONTRACT
+  analysis_id: PRA-0006
   group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: VERI
 - policy_id: MPD-VERI-0007
   policy_class: VPMS_DEVELOPER_POLICY
   family: VERI
-  analysis_ref: developer/policy/analysis/PRA-20261005-VPMS-VERIFICATION-PROTOCOL.yaml
-  analysis_id: PRA-20261005-VPMS-VERIFICATION-PROTOCOL
+  analysis_id: PRA-0009
   group_id: G01
 - policy_id: MPD-WORK-0003
-  analysis_ref: developer/policy/analysis/PRA-20260929-POLICY-RESPONSIBILITY-GATES.yaml
-  analysis_id: PRA-20260929-POLICY-RESPONSIBILITY-GATES
+  analysis_id: PRA-0001
   group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: WORK
 - policy_id: MPD-WORK-0004
-  analysis_ref: developer/policy/analysis/PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE.yaml
-  analysis_id: PRA-20261004-WORK-MUTATION-AUTHORIZATION-GATE
+  analysis_id: PRA-0007
   group_id: G01
   policy_class: PTSIP_DEVELOPER_POLICY
   family: WORK
