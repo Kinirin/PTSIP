@@ -14,17 +14,7 @@ const policyAnalysisRegistry = "developer/policy/analysis/registry.yaml"
 const policyAnalysisSchema = "developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json"
 const policyAnalysisRegistrySchema = "developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json"
 
-var policyAnalysisID = regexp.MustCompile(`^PRA-[0-9]{4}package machine
-
-import (
-	"fmt"
-	"reflect"
-	"regexp"
-	"sort"
-	"strings"
-)
-
-)
+var policyAnalysisID = regexp.MustCompile("^PRA-[0-9]{4}$")
 
 var policyRootFamilies = []string{"NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK", "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"}
 var policyLegacyFamilies = []string{"SPEC", "PLAN", "WORK", "VERI", "MIGR", "RELS"}
