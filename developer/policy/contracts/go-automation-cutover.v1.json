@@ -1214,7 +1214,9 @@
         "markdown-cleanup",
         "simulate"
       ],
-      "nonfatal_statuses": ["BLOCKED"],
+      "nonfatal_statuses": [
+        "BLOCKED"
+      ],
       "required_arguments": [],
       "required_options": [],
       "optional_options": [
@@ -1238,6 +1240,96 @@
       "optional_options": [
         "output"
       ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "prepare"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "dispatched_sha",
+        "dispatched_ref"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "gate"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "source_sha",
+        "github_repository"
+      ],
+      "optional_options": [
+        "github_api_url"
+      ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "reconfirm"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "source_sha"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "draft"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "source_sha",
+        "version",
+        "tag",
+        "note",
+        "github_repository"
+      ],
+      "optional_options": [
+        "github_api_url"
+      ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "tag-verify"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "release_tag"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "build"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "metadata-check"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
       "boolean_options": []
     }
   ],

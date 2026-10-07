@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.3'
+  version: '2.4'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -32,6 +32,18 @@ rules:
       BRANCH:
         root: developer/automation/branch/
         responsibility: BRANCH_CONTROL
+      RELEASE:
+        root: developer/automation/release/
+        responsibility: REPOSITORY_RELEASE_AUTOMATION
+        responsibility_scope:
+        - RELEASE_IDENTITY_CONSUMPTION
+        - RELEASE_PREPARATION
+        - BUILD_ORCHESTRATION
+        - DISTRIBUTION_ASSEMBLY_ORCHESTRATION
+        - TAG_AND_RELEASE_PREPARATION
+        - PUBLICATION_EXECUTION
+        - RELEASE_GATE_INVOCATION
+        scope_extension: PROJECT_OWNER_APPROVAL_REQUIRED
       POLICY:
         root: developer/automation/policy/
         responsibility: POLICY_AUTOMATION
@@ -122,3 +134,12 @@ transition:
       action: MATERIALIZE_BRANCH_CONTROL_PACKAGE
       execution: SERIAL_REQUIRED
       completion_check: BRANCH_CONTROL_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT
+  - id: TR-005
+    type: PROJECT_OWNER_REPOSITORY_RELEASE_AUTOMATION_DOMAIN_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261007-AUTOMATION-DOMAIN-ARCH-0002-REPOSITORY-RELEASE-AUTOMATION.yaml
+    next_action:
+      action: MATERIALIZE_REPOSITORY_RELEASE_AUTOMATION_PACKAGE
+      execution: SERIAL_REQUIRED
+      completion_check: RELEASE_AUTOMATION_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT_AND_SCOPE

@@ -955,12 +955,10 @@ components:
     classification: DELIVERY
     roles:
       - AUTOMATION
-      - VERIFICATION
     include:
+      - "developer/automation/release/**"
       - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
-      - ".github/scripts/verify_release_contract.py"
-      - ".github/scripts/verify_distribution_contracts.py"
     purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false
     runtime_required: false

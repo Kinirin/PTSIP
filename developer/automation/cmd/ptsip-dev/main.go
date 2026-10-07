@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	_ "github.com/Kinirin/PTSIP/developer/automation/branch"
+	_ "github.com/Kinirin/PTSIP/developer/automation/release"
 	"github.com/Kinirin/PTSIP/developer/automation/internal/machine"
 )
 

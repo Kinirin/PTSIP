@@ -46,17 +46,10 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
           PYTHONPATH: ".:src"
         run: |
-          $packageVersion = (python -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version']); f.close()").Trim()
-          $expectedTag = "tool-v$packageVersion"
-          if ($env:RELEASE_TAG -ne $expectedTag) {
-            throw "Release tag $env:RELEASE_TAG does not match package version $packageVersion. Expected $expectedTag."
+          go -C developer/automation run ./cmd/ptsip-dev release tag-verify --release-tag "$env:RELEASE_TAG"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Native release tag verification failed."
           }
-
-          $headTag = (git tag --points-at HEAD | Where-Object { $_ -eq $env:RELEASE_TAG } | Select-Object -First 1)
-          if (-not $headTag) {
-            throw "Checked out commit is not pointed to by release tag $env:RELEASE_TAG."
-          }
-
           python .github/scripts/verify_release_contract.py
           python -m ptsip context check . --json
           if ($LASTEXITCODE -ne 0) {
@@ -66,7 +59,7 @@ jobs:
 
       - name: Build distributions
         shell: pwsh
-        run: python -m build
+        run: go -C developer/automation run ./cmd/ptsip-dev release build
 
       - name: Verify publication Product Artifact evidence and exact snapshot binding
         shell: pwsh
@@ -397,12 +390,7 @@ jobs:
 
       - name: Verify distribution metadata
         shell: pwsh
-        run: |
-          $distFiles = Get-ChildItem -Path dist -File | ForEach-Object { $_.FullName }
-          if (-not $distFiles) {
-            throw "No distributions were produced under dist/."
-          }
-          python -m twine check $distFiles
+        run: go -C developer/automation run ./cmd/ptsip-dev release metadata-check
 
       - name: Upload verified distributions
         uses: actions/upload-artifact@v4
