@@ -72,7 +72,7 @@ def _current_pp_authority() -> tuple[str, tuple[str, ...]]:
         contract = row.get("contract")
         if not isinstance(resource, str) or contract != current:
             raise RuntimeError("Public Profile catalog binding is stale.")
-        resources.append(f"profiles/{resource}")
+        resources.append(f"src/ptsip/profiles/{resource}")
     return current, tuple(resources)
 
 
