@@ -32,7 +32,7 @@ func TestToolingReleaseIsSingleCanonicalReleaseWorkflow(t *testing.T) {
 		"workflow_dispatch:",
 		"release:\n    types: [published]",
 		"prepare:",
-		"if: \${{ github.event_name == 'workflow_dispatch' }}",
+		"if: ${{ github.event_name == 'workflow_dispatch' }}",
 		"build:",
 		"publish:",
 	} {

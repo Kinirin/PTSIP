@@ -46,12 +46,8 @@ func TestReleaseDistributionPublicProfileCatalogExactlyCoversAssets(t *testing.T
 	}
 	sort.Strings(discovered)
 
-	if strings.Join(registered, "
-") != strings.Join(discovered, "
-") {
-		t.Fatalf("public profile catalog mismatch
-registered=%v
-discovered=%v", registered, discovered)
+	if strings.Join(registered, "\\n") != strings.Join(discovered, "\\n") {
+		t.Fatalf("public profile catalog mismatch\\nregistered=%v\\ndiscovered=%v", registered, discovered)
 	}
 }
 
