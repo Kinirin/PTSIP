@@ -619,7 +619,7 @@ jobs:
         if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
-          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -v ./...
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -p=1 -v ./...
           if ($LASTEXITCODE -ne 0) {
             throw "Root Family Go verification failed."
           }
