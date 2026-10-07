@@ -1,0 +1,160 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: INFO
+policy:
+  id: MPD-INFO-0003
+  title: Canonical management next-action information contract
+  status: APPROVED
+  version: '1.0'
+authority_subject:
+  id: DEV_CONTROL_INFORMATION_MEANING
+  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다.
+exclusive_kernel:
+- DEV_CANONICAL_INFORMATION_AND_IDENTITY
+- DEV_SOURCE_PROJECTION_SEMANTICS
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
+      statement: 개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은 GOV가 소유한다.
+      non_substitutability: GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다.
+    - id: DEV_SOURCE_PROJECTION_SEMANTICS
+      statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가 될 수 없는 조건을 정한다.
+      non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지 못한다.
+    source_scope: []
+
+  management_next_action_information_contract:
+    canonical_shape:
+      required_fields:
+      - action
+      - execution
+      - completion_check
+      additional_fields: FORBIDDEN
+      direct_id_reference_required: true
+      field_semantics:
+        action: FULLY_BOUND_OPERATION_IDENTITY
+        execution: CANONICAL_EXECUTION_PROFILE_IDENTITY
+        completion_check: COMPLETION_PREDICATE_IDENTITY
+      requirement_id_implies_execution_order: false
+      requirement_array_order_implies_execution_order: false
+      dependency_inference_from_identity_or_position: FORBIDDEN
+
+    exact_resolution:
+      unresolved_identity: FAIL_CLOSED
+      duplicate_identity: FAIL_CLOSED
+      semantic_similarity_resolution: FORBIDDEN
+      cross_domain_fallback: FORBIDDEN
+
+    action_identity:
+      id_pattern: ^MP-ACT-[0-9]{4}$
+      numeric_suffix_role: OPAQUE_ALLOCATION_IDENTITY
+      numeric_suffix_implies_priority: false
+      numeric_suffix_implies_order: false
+      numeric_suffix_implies_version: false
+      numeric_suffix_implies_compatibility: false
+      required_record_fields:
+      - id
+      - authority_ref
+      - operation_ref
+      authority_ref:
+        interface: CANONICAL_AUTHORITY_INTERFACE
+        resolution: EXACT
+      operation_ref:
+        interface: CANONICAL_OPERATION_INTERFACE
+        resolution: EXACT
+
+    execution_identity:
+      id_pattern: ^MP-EXEC-(AUTO|GOV)-[0-9]{4}$
+      numeric_suffix_role: OPAQUE_ALLOCATION_IDENTITY
+      numeric_suffix_implies_priority: false
+      numeric_suffix_implies_order: false
+      numeric_suffix_implies_version: false
+      numeric_suffix_implies_compatibility: false
+      required_record_fields:
+      - id
+      - executor_class
+      - executor_ref
+      - concurrency
+      executor_class:
+        vocabulary:
+        - AUTOMATION
+        - GOVERNANCE
+      concurrency:
+        vocabulary:
+        - PARALLEL
+        - SERIAL
+        - NOT_APPLICABLE
+      automation_executor:
+        executor_kind_required: true
+        executor_kind_vocabulary: REGISTERED_CLOSED_VOCABULARY
+        resolver_domain_binding: EXACT_BY_EXECUTOR_KIND
+        executor_ref_resolution: EXACT_IN_BOUND_DOMAIN
+        unknown_executor_kind: FAIL_CLOSED
+        unresolved_executor_ref: FAIL_CLOSED
+        cross_domain_fallback: FORBIDDEN
+        semantic_guessing: FORBIDDEN
+      governance_executor:
+        executor_ref_model: EXISTING_GOVERNANCE_AUTHORITY_IDENTITY
+        resolution: EXACT
+        wrapper_identity_required: false
+        synthetic_management_governance_identity: FORBIDDEN
+
+    completion_check_identity:
+      id_pattern: ^MP-CHECK-[0-9]{4}$
+      numeric_suffix_role: OPAQUE_ALLOCATION_IDENTITY
+      numeric_suffix_implies_priority: false
+      numeric_suffix_implies_order: false
+      numeric_suffix_implies_version: false
+      numeric_suffix_implies_compatibility: false
+      required_record_fields:
+      - id
+      - authority_ref
+      - predicate_ref
+      authority_ref:
+        interface: CANONICAL_AUTHORITY_INTERFACE
+        resolution: EXACT
+        required_capability: COMPLETION_CHECK_AUTHORITY
+        missing_capability: FAIL_CLOSED
+      predicate_ref:
+        interface: CANONICAL_COMPLETION_PREDICATE_INTERFACE
+        resolution: EXACT
+        result_vocabulary_owner: PREDICATE
+        result_vocabulary_must_be_explicit: true
+        canonical_completion_classification_required: true
+        canonical_completion_classification:
+          vocabulary:
+          - SATISFIED
+          - UNSATISFIED
+          - INDETERMINATE
+          every_predicate_result_requires_exactly_one_classification: true
+          unmapped_result: FAIL_CLOSED
+          indeterminate_implies_completion: false
+          semantic_result_guessing: FORBIDDEN
+
+    legacy_consumer_transition:
+      generalized_automatic_mapping: FORBIDDEN
+      semantic_similarity_mapping: FORBIDDEN
+      migration_unit: CONSUMING_POLICY
+      migration_mode: MANUAL_EXPLICIT_REVIEW_AND_MODIFICATION
+      each_consuming_policy_modified_individually: true
+      info_family_owns_legacy_mapping: false
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+  - id: TR-001
+    type: CANONICAL_NEXT_ACTION_CONSUMER_CUTOVER
+    state: OPEN
+    refs:
+    - developer/policy/approvals/MPA-20261007-ROOT-INFO-0003-APPROVED.yaml
+    next_action:
+      action: MIGRATE_NEXT_ACTION_CONSUMERS_MANUALLY
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: CANONICAL_NEXT_ACTION_CONSUMERS_ALIGNED

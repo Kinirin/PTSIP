@@ -44,7 +44,7 @@ from .doctor import doctor
 from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
-from .local_profile_catalog import canonical_new_profile_path
+from .profiles.catalog import canonical_new_profile_path
 from .pilot.runner import run_pilot
 from .proposed_component import ProposedComponentError, build_proposed_component_candidate
 from .repository.discover import RepositoryInfo, discover_repository

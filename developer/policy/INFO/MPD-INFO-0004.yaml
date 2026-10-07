@@ -1,0 +1,60 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: INFO
+policy:
+  id: MPD-INFO-0004
+  version: '2.0'
+  title: Policy Analysis registry-first information identity
+  status: ACTIVE
+authority_subject:
+  id: DEV_CONTROL_INFORMATION_MEANING
+  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다.
+exclusive_kernel:
+- DEV_CANONICAL_INFORMATION_AND_IDENTITY
+- DEV_SOURCE_PROJECTION_SEMANTICS
+rules:
+  policy_analysis_information_contract:
+    scope:
+      owner: POLICY_ANALYSIS
+      canonical_root: developer/policy/analysis
+      automatic_generalization_to_other_policy_subsystems: FORBIDDEN
+    schema_ownership:
+      schema_root: developer/policy/analysis/schemas
+      responsibility_analysis_schema: developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json
+      materialization_analysis_registry_schema: developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json
+    record_identity:
+      model: OPAQUE_STABLE_ID
+      pattern: ^PRA-[0-9]{4}$
+      canonical_filename_rule: ANALYSIS_ID_WITH_YAML_SUFFIX
+      record_root: developer/policy/analysis/records
+      date_in_identity: FORBIDDEN
+      descriptive_filename_semantics: FORBIDDEN
+    registry_information:
+      canonical_registry: developer/policy/analysis/registry.yaml
+      registry_owns_analysis_ref: true
+      policy_binding_references_analysis_id_only: true
+      binding_duplicates_analysis_ref: false
+    provenance:
+      recorded_at_allowed: true
+      recorded_at_is_identity: false
+      recorded_at_is_discovery_key: false
+relations:
+  supersedes:
+  - policy: MPD-WORK-0003
+    scope: POLICY_ANALYSIS_INFORMATION_IDENTITY_AND_SCHEMA_LOCATION
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: PROJECT_OWNER_POLICY_ANALYSIS_INFORMATION_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-PRA-INFO-0004-ACTIVE.yaml
+    next_action:
+      action: VERIFY_REGISTRY_FIRST_INFORMATION_CONTRACT
+      execution: SERIAL_REQUIRED
+      completion_check: ANALYSIS_ID_SCHEMA_LOCATION_AND_REGISTRY_METADATA_MATCH

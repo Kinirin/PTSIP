@@ -1,0 +1,51 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: ASSURE
+policy:
+  id: SFP-ASSURE-0001
+  title: ASSURE authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT
+  statement: consumer declaration과 실제 evidence가 적용 규범을 충족하는지, evidence가 충분한지 및 snapshot-bound
+    Artifact conformance를 소유한다.
+exclusive_kernel:
+- SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION
+- SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING
+authority_contract:
+  authority_type: ROOT_FAMILY_ASSURE
+  schema_id: ptsip.governance/root-family/assure
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION
+      statement: mandatory 위반과 blocking evidence gap을 구별하여 완료 결과를 CONFORMANT, NON_CONFORMANT
+        또는 INCOMPLETE로 판정한다. zero findings는 자동 conformance가 아니다.
+      non_substitutability: GOV의 coordinated winner나 완전한 ARCH 선언만으로 관측 evidence까지
+        규범에 적합하다고 판정할 수 없다.
+    - id: SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING
+      statement: coverage와 admissibility 및 실제 built Artifact/source snapshot 결합을 평가하고
+        functional/VPMS PASS와 PTSIP conformance를 독립적으로 유지한다.
+      non_substitutability: RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한
+        검사와 conformance 판단이 완료되지 않는다.
+    source_scope:
+    - SFP-0003
+    - SFP-0005
+    - SFP-0014
+    - SFP-0021
+    - SFP-0023
+  unit_sfp_0003_8290bf124ddf: true
+  unit_sfp_0005_c4029c2d7fd7: false
+  unit_sfp_0014_4ad81d598a7b: REQUIRED_UNRESOLVED_EQUALS_ZERO
+  unit_sfp_0021_2e488eae6de8:
+  - VALIDATE_PP_CAPABILITY
+  - VALIDATE_SPECIFICATION_CAPABILITY
+  - VALIDATE_SCHEMA_AND_RESPONSIBILITY_MAP
+  - APPLY_EXPLICIT_CROSS_CONTRACT_CONSTRAINTS
+  unit_sfp_0023_eda0339d036f: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

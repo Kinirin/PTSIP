@@ -1,0 +1,45 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: SUPPLY
+policy:
+  id: SFP-SUPPLY-0001
+  title: SUPPLY authority (DRAFT source responsibilities)
+  status: DRAFT
+authority_subject:
+  id: SUP_PROJECT_DEPENDENCY_AND_ARTIFACT_SUPPLY
+  statement: consumer project의 dependency, 외부 evidence 및 distribution Artifact 공급
+    관계의 명시적 입력 자격과 출처를 소유한다.
+exclusive_kernel:
+- SUP_DEPENDENCY_SOURCE_AND_ADMISSION
+- SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
+authority_contract:
+  authority_type: ROOT_FAMILY_SUPPLY
+  schema_id: ptsip.governance/root-family/supply
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_DEPENDENCY_SOURCE_AND_ADMISSION
+      statement: consumer가 선언하거나 정확하게 등록한 dependency/source identity, 출처 및 공급 요구를
+        해석한다. unregistered alias나 관측 import에서 프로젝트 요구를 추론하지 않는다.
+      non_substitutability: ARCH의 lifecycle ownership이나 observed dependency 목록만으로
+        dependency 공급 요구와 허용된 source 관계가 결정되지 않는다.
+    - id: SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
+      statement: imported evidence와 소비하는 Artifact 단위의 provenance 및 공급 인계 관계를 명시하고
+        생산자와 consumer-side artifact owner를 구별한다.
+      non_substitutability: ASSURE가 Artifact를 검사했다는 사실만으로 출처와 공급 관계가 선언되거나 architecture
+        owner가 결정되지 않는다.
+    source_scope:
+    - SFP-0004
+  unit_sfp_0004_7fb40359c718:
+  - RELATIONSHIP_TYPE
+  - LIFECYCLE_PHASE
+  - RESOLUTION_STATE
+  - PROVENANCE
+  - SOURCE_TARGET_IDENTITY_WHEN_RESOLVABLE
+  - UNCERTAINTY
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

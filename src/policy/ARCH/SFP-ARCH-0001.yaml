@@ -1,0 +1,121 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: ARCH
+policy:
+  id: SFP-ARCH-0001
+  title: ARCH authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
+  statement: consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할
+    및 명시적 typed 관계를 소유한다.
+exclusive_kernel:
+- SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+- SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+authority_contract:
+  authority_type: ROOT_FAMILY_ARCH
+  schema_id: ptsip.governance/root-family/arch
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로
+        선언하고 material mixed 책임 및 unresolved 소유를 구분한다.
+      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle
+        ownership을 자동 결정하지 않는다.
+    - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의
+        명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.
+      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트
+        소유 architecture 의도를 만들어 내지 못한다.
+    source_scope:
+    - SFP-0001
+    - SFP-0002
+    - SFP-0003
+    - SFP-0007
+    - SFP-0008
+    - SFP-0009
+    - SFP-0023
+  unit_sfp_0001_941be08af86f:
+  - PURPOSE
+  - LIFECYCLE_OWNERSHIP
+  unit_sfp_0001_d111ae743dd5: true
+  unit_sfp_0002_7ac95637e40a: EXTERNAL_TO_CONSUMER_REPOSITORY
+  unit_sfp_0002_b846918d843e: CONSUMER_PROJECT
+  unit_sfp_0002_9d1261697280: false
+  unit_sfp_0002_3714b45fa56d: true
+  unit_sfp_0003_aaf1b9c097ff: true
+  unit_sfp_0007_5cf908525c8d:
+  - PRODUCT
+  - DEVELOPMENT_TOOLING
+  - DELIVERY
+  - OPERATIONS
+  - NEUTRAL_CONTRACT
+  unit_sfp_0007_2554b65e2700: GOVERNING_LIFECYCLE_OBLIGATION
+  unit_sfp_0007_3d157e56d69e:
+  - ESTABLISH_PROJECT_OWNED_SCOPE
+  - IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
+  - COLLECT_LIFECYCLE_EVIDENCE
+  - TEST_NEUTRAL_CONTRACT_QUALIFICATION
+  - DETERMINE_GOVERNING_OWNING_LIFECYCLE
+  - TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY
+  - KEEP_SPLIT_OR_UNRESOLVED
+  - PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
+  unit_sfp_0007_42bcd8df20e8:
+  - PATH_NAME
+  - TECHNOLOGY_NAME
+  - EXECUTABLE_STATUS
+  - LINE_COUNT
+  - JOB_COUNT
+  - INVOCATION_FREQUENCY
+  - CONFIDENCE_SCORE
+  unit_sfp_0007_3d9712772a48: DELIVERY_HANDOFF
+  unit_sfp_0007_3ed216a63eab:
+  - NON_EXECUTABLE_ROLE
+  - NON_OWNING_IMPLEMENTATION
+  - LIFECYCLE_COMPATIBILITY_INDEPENDENT
+  unit_sfp_0007_caeb7b95594d: true
+  unit_sfp_0008_52f9cb677627: false
+  unit_sfp_0008_782216c0653c: false
+  unit_sfp_0008_598a1a795d37: false
+  unit_sfp_0009_34ad0d5840f5: PROJECT_COMPLETE_DECLARATION
+  unit_sfp_0009_b12fa462c850: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
+  unit_sfp_0009_4194792f28ca: FORBIDDEN
+  unit_sfp_0009_7907d3950fd9:
+  - TEMPLATE_SELECTION
+  - STABLE_ID_REPLACEMENTS
+  - STABLE_ID_EXTENSIONS
+  - STABLE_ID_REMOVALS
+  unit_sfp_0009_7c23900f7f5f:
+  - PROJECT_OVERRIDE_EXTENSION_REMOVAL
+  - SELECTED_IMMUTABLE_TEMPLATE_DECLARATION
+  unit_sfp_0009_7a39d51c0d83: WHOLE_ENTITY_BY_STABLE_ID
+  unit_sfp_0009_777675b0b75d: NOT_INTRODUCED
+  unit_sfp_0023_96036f84abf9: PTSIP_VPMS_READ_ONLY_BOUNDARY
+  unit_sfp_0023_0d125cde84c0: false
+  unit_sfp_0023_12e1aaea2bc8: false
+  unit_sfp_0023_471bdba77329: false
+  unit_sfp_0023_d2a2c2e5e77b:
+  - VPMS_GLOBAL_IDENTITY
+  - VPMS_CASE_PROTOCOL
+  - VPMS_VERIFICATION_PURPOSE
+  - VPMS_CASE_SELECTION
+  - VPMS_EXECUTION_COMPOSITION
+  engine_plane_boundary:
+    repository_local_root: .ptsip/engine/
+    repository_local_state: .ptsip/engine/state.json
+    semantic_role_binding_source: .ptsip/index.json
+    physical_path_name_is_semantic_role_authority: false
+    executable_implementation_owner: INSTALLED_PTSIP_PACKAGE
+    executable_source_copy_into_repository_engine_root: FORBIDDEN
+    shipped_repository_module: src/ptsip/repository/namespace.py
+    shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
+    state_contract: DEFERRED
+    schema_contract: DEFERRED
+    runtime_activation: DEFERRED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

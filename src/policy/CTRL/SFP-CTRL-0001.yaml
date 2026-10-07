@@ -1,0 +1,110 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: CTRL
+policy:
+  id: SFP-CTRL-0001
+  title: CTRL authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY
+  statement: consumer repository/profile/authority의 fresh state를 기준으로 특정 prepared
+    mutation이나 transition의 현재 실행 허용 여부를 소유한다.
+exclusive_kernel:
+- SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+- SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+authority_contract:
+  authority_type: ROOT_FAMILY_CTRL
+  schema_id: ptsip.governance/root-family/ctrl
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+      statement: 실행 직전 repository/profile revision과 관련 distributed authority를 확인한다.
+        완전한 local declaration만으로 필요한 remote authority 읽기를 생략하지 않는다.
+      non_substitutability: GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority
+        freshness를 대신 보장하지 않는다.
+    - id: SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+      statement: expected revision, operation identity와 등록된 transition 조건으로 stale
+        writer 및 무권한 mutation을 차단한다. unresolved 관계는 fail-closed한다.
+      non_substitutability: REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들
+        수 없다.
+    source_scope:
+    - SFP-0005
+    - SFP-0007
+    - SFP-0008
+    - SFP-0009
+    - SFP-0010
+    - SFP-0012
+    - SFP-0013
+    - SFP-0014
+    - SFP-0015
+    - SFP-0016
+    - SFP-0018
+    - SFP-0019
+    - SFP-0021
+    - SFP-0022
+  unit_sfp_0005_1b31ec4b9d9d: true
+  unit_sfp_0005_29808ce8f6f9: true
+  unit_sfp_0005_357e4badce21: false
+  unit_sfp_0005_237b87708626: FAIL_CLOSED
+  unit_sfp_0005_35ebd4c19a04: false
+  unit_sfp_0007_eff445da227f: FAIL_CLOSED
+  unit_sfp_0008_63de9cca0162: false
+  unit_sfp_0009_f9fd791de3d8: FAIL_CLOSED
+  unit_sfp_0010_5096854498d0: FAIL_CLOSED
+  unit_sfp_0012_d95752cca22f: EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS
+  unit_sfp_0013_098540ae8ffa: UNSUPPORTED_SOURCE_REVISION
+  unit_sfp_0013_5ad4d8828fb3: UNSUPPORTED_SOURCE_FAMILY
+  unit_sfp_0014_68971aaac1fa: FAIL_CLOSED
+  unit_sfp_0015_a6e3a720fddb: false
+  unit_sfp_0015_2800d5f71fc4: true
+  unit_sfp_0015_af5c0ade5ce7: false
+  unit_sfp_0016_e1e1d0ee8de9: STRONGLY_TYPED_MIGRATION_STATE_MACHINE_APPEND_ONLY_CHECKPOINT_LEDGER
+  unit_sfp_0016_39e444b2ea13:
+  - PLAN_BOUND
+  - AUTHORIZED
+  - PRECONDITIONS_VERIFIED
+  - FINAL_POINT_APPLIED
+  - SOURCE_REANALYZED
+  - SOURCE_COMPLETE
+  - ASYNC_APPLIED
+  - SOURCE_REMOVED
+  - CANONICAL_SOURCE_COMPLETE
+  - GLOBAL_VALIDATION
+  - PROMOTION_READY
+  - PROMOTED
+  - POST_PROMOTION_VERIFIED
+  - RECOVERY_REQUIRED
+  unit_sfp_0016_31962f4fde1c: EXACT_WU06_PLAN_DIGEST
+  unit_sfp_0016_236bb8e7c859: ACCEPTED_DELTA_BUNDLE_ONLY
+  unit_sfp_0016_85c17cf5faf3:
+  - WU06_PLAN_DIGEST
+  - PROJECT_DECISION_IDS
+  - AUTHORITY_REVISION
+  unit_sfp_0016_bc3eec85743b: PARTICIPATING_PROFILE_PATHS_ONLY
+  unit_sfp_0016_b25e38bb727b: true
+  unit_sfp_0016_cffdfbecbd0b: true
+  unit_sfp_0016_c8e4e94c61e2: true
+  unit_sfp_0016_a3771f256239: true
+  unit_sfp_0016_5e07ffde514f: true
+  unit_sfp_0018_5f35b8c4cd63: false
+  unit_sfp_0019_d63dd8f5fdab: DUPLICATE_EQUIVALENT_TARGET
+  unit_sfp_0021_00ff091f8423: FAIL_CLOSED
+  unit_sfp_0022_18e0f3955df0:
+    authorization: USER_EXPLICIT
+    status: TEMPORARY_ONLY
+    release_while_active: FORBIDDEN
+    required_reconciliation:
+    - REGENERATE_FROM_CANONICAL_SOURCE
+    - CONTEXT_CHECK_PASS
+  unit_sfp_0022_3e8fd3fe513f:
+    context_check: REQUIRED
+    missing_projection: FAIL_CLOSED
+    projection_drift: FAIL_CLOSED
+    semantic_equivalence_failure: FAIL_CLOSED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

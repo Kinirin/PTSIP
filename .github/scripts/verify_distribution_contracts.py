@@ -29,9 +29,9 @@ def _single_distribution(pattern: str) -> Path:
 
 
 def _catalog_resources() -> tuple[str, ...]:
-    catalog = _load_yaml(ROOT / "profiles" / "index.yaml")
-    if catalog.get("root") != "profiles":
-        raise SystemExit("Public Profile catalog root must be 'profiles'.")
+    catalog = _load_yaml(ROOT / "src" / "ptsip" / "profiles" / "index.yaml")
+    if catalog.get("root") != "src/ptsip/profiles":
+        raise SystemExit("Public Profile catalog root must be 'src/ptsip/profiles'.")
 
     rows = catalog.get("profiles")
     if not isinstance(rows, list) or not rows:
@@ -56,11 +56,11 @@ def _catalog_resources() -> tuple[str, ...]:
         raise SystemExit("Public Profile catalog resource identities must be unique.")
 
     discovered = sorted(
-        path.name for path in (ROOT / "profiles").glob("*.ptsip.yaml")
+        path.name for path in (ROOT / "src" / "ptsip" / "profiles").glob("*.ptsip.yaml")
     )
     if sorted(resources) != discovered:
         raise SystemExit(
-            "Public Profile catalog does not exactly cover profiles/*.ptsip.yaml."
+            "Public Profile catalog does not exactly cover src/ptsip/profiles/*.ptsip.yaml."
         )
     return tuple(resources)
 
@@ -99,7 +99,7 @@ def _baseline_pairs(
             continue
         if not isinstance(version, str) or not isinstance(baseline, str):
             raise SystemExit("Project Profile baseline binding is invalid.")
-        expected = f"profiles/history/{version}"
+        expected = f"src/ptsip/profiles/history/{version}"
         if baseline != expected:
             raise SystemExit(
                 f"Project Profile baseline {baseline!r} must equal {expected!r}."
@@ -141,8 +141,19 @@ def _assert_wheel_bytes(
 
 def _support_contract_pairs() -> tuple[tuple[Path, str], ...]:
     source_root = ROOT / "src" / "policy"
-    policy_sources = (source_root / "index.yaml", *sorted(source_root.glob("SFP-*.yaml")))
-    pairs = [(source, f"ptsip/support/policy/{source.name}") for source in policy_sources]
+    policy_sources = (source_root / "index.yaml", *sorted(source_root.rglob("SFP-*.yaml")))
+    pairs = [
+        (
+            source,
+            "ptsip/support/policy/"
+            + (
+                "index.yaml"
+                if source == source_root / "index.yaml"
+                else source.relative_to(source_root).as_posix()
+            ),
+        )
+        for source in policy_sources
+    ]
     for category in ("schemas", "registries"):
         base = source_root / category
         sources = sorted((*base.rglob("*.json"), *base.rglob("*.yaml")))
@@ -176,7 +187,7 @@ def main() -> int:
         raise SystemExit(f"Current Project Profile schema is missing: {schema}")
 
     public_pairs = tuple(
-        (ROOT / "profiles" / resource, f"ptsip/profiles/{resource}")
+        (ROOT / "src" / "ptsip" / "profiles" / resource, f"ptsip/profiles/{resource}")
         for resource in resources
     )
     baseline_pairs = _baseline_pairs(contracts)
@@ -201,7 +212,7 @@ def main() -> int:
     support_pairs = _support_contract_pairs()
     promotion_pairs = _promotion_candidate_pairs()
     canonical_pairs = (
-        (ROOT / "profiles" / "index.yaml", "ptsip/profiles/index.yaml"),
+        (ROOT / "src" / "ptsip" / "profiles" / "index.yaml", "ptsip/profiles/index.yaml"),
         (
             ROOT / "registry" / "project-profile-contracts.yaml",
             "ptsip/specdata/project-profile-contracts.yaml",
@@ -211,7 +222,6 @@ def main() -> int:
             f"ptsip/specdata/{schema_source.name}",
         ),
         *public_pairs,
-        *baseline_pairs,
         *agent_contract_pairs,
         *support_pairs,
         *promotion_pairs,
@@ -219,6 +229,7 @@ def main() -> int:
 
     required = (
         "ptsip/context_plane.py",
+        *(f"ptsip/profiles/{module}.py" for module in ("__init__", "identity", "metadata", "compatibility", "catalog", "contracts")),
         "ptsip/specdata/ptsip-profile.schema.json",
         f"ptsip/specdata/{schema_source.name}",
         "ptsip/specdata/project-profile-contracts.yaml",
@@ -226,16 +237,13 @@ def main() -> int:
         "ptsip/specdata/ptsip-registry.yaml",
         "ptsip/profiles/index.yaml",
         *(target for _, target in public_pairs),
-        *(target for _, target in baseline_pairs),
         *(target for _, target in agent_contract_pairs),
         *(target for _, target in support_pairs),
         *(target for _, target in promotion_pairs),
     )
     support_required = (
         "ptsip/support/policy/index.yaml",
-        "ptsip/support/policy/SFP-0001.yaml",
-        "ptsip/support/policy/SFP-0021.yaml",
-        "ptsip/support/policy/SFP-0022.yaml",
+        *(f"ptsip/support/policy/{entry['path']}" for entry in yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))["policies"]),
         "ptsip/support/schemas/ptsip-support-feature-policy.schema.json",
         "ptsip/support/registries/ptsip-support-authority-schema-registry.yaml",
     )
@@ -243,6 +251,12 @@ def main() -> int:
     wheel = _single_distribution("*.whl")
     with zipfile.ZipFile(wheel) as archive:
         wheel_names = set(archive.namelist())
+        history_members = sorted(name for name in wheel_names if "profiles/history/" in name)
+        if history_members:
+            raise SystemExit(f"wheel must not contain source-only PP history: {history_members}")
+        retired = {f"ptsip/{name}.py" for name in ("profile_identity", "profile_metadata", "profile_compatibility", "local_profile_catalog", "project_profile_contracts")}
+        if wheel_names & retired:
+            raise SystemExit(f"wheel contains retired profile modules: {sorted(wheel_names & retired)}")
         _require_members(
             wheel_names,
             (*required, *support_required),
@@ -253,7 +267,7 @@ def main() -> int:
     sdist = _single_distribution("*.tar.gz")
     with tarfile.open(sdist, "r:gz") as archive:
         sdist_names = {member.name for member in archive.getmembers()}
-        for source, _ in (*support_pairs, *promotion_pairs):
+        for source, _ in (*support_pairs, *promotion_pairs, *baseline_pairs):
             relative = source.relative_to(ROOT).as_posix()
             matches = [name for name in sdist_names if name.endswith(f"/{relative}")]
             if len(matches) != 1:
@@ -264,10 +278,10 @@ def main() -> int:
 
     sdist_required = (
         "src/ptsip/context_plane.py",
-        "profiles/index.yaml",
+        "src/ptsip/profiles/index.yaml",
         "registry/project-profile-contracts.yaml",
         "src/ptsip/specdata/project-profile-contracts.yaml",
-        *(f"profiles/{resource}" for resource in resources),
+        *(f"src/ptsip/profiles/{resource}" for resource in resources),
         *(
             source.relative_to(ROOT).as_posix()
             for source, _ in baseline_pairs
@@ -277,9 +291,7 @@ def main() -> int:
             for source, _ in agent_contract_pairs
         ),
         "src/policy/index.yaml",
-        "src/policy/SFP-0001.yaml",
-        "src/policy/SFP-0021.yaml",
-        "src/policy/SFP-0022.yaml",
+        *(f"src/policy/{entry['path']}" for entry in yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))["policies"]),
         "src/policy/schemas/ptsip-support-feature-policy.schema.json",
         "src/policy/registries/ptsip-support-authority-schema-registry.yaml",
     )
@@ -294,7 +306,7 @@ def main() -> int:
     print("PTSIP distribution contract verification: PASS")
     print(f"Project Profile: {current}")
     print(f"Public Profiles: {len(resources)}")
-    print(f"Historical baseline assets: {len(baseline_pairs)}")
+    print(f"Source-only historical baseline assets: {len(baseline_pairs)}")
     print(f"Agent Contract machine assets: {len(agent_contract_pairs)}")
     print(f"Support Policy machine assets: {len(support_pairs)}")
     print(f"Promotion candidate assets (non-authoritative): {len(promotion_pairs)}")

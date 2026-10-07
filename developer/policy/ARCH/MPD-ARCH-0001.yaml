@@ -1,0 +1,240 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: ARCH
+policy:
+  id: MPD-ARCH-0001
+  title: ARCH authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+  statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
+exclusive_kernel:
+- DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
+- DEV_EXPLICIT_COMPONENT_RELATIONSHIPS
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
+      statement: Product, Development Tooling, Delivery, Operations 및 Neutral Contract
+        책임을 governing lifecycle obligation에 따라 분리한다.
+      non_substitutability: SUPPLY의 생산자, 파일 형식 또는 실행 환경이 Artifact의 lifecycle 소유자를
+        결정하지 않는다.
+    - id: DEV_EXPLICIT_COMPONENT_RELATIONSHIPS
+      statement: 독립적으로 통제할 수 있는 책임 단위의 분할, 경계와 프로젝트가 선언한 typed directed 관계를 정한다.
+      non_substitutability: INFO의 schema나 관측 import 목록만으로 프로젝트의 책임 분할과 관계 의도를 확정할
+        수 없다.
+    source_scope:
+    - MPD-0001
+    - MPD-0010
+    - MPD-0013
+    - MPD-PLAN-0001
+    - MPD-SPEC-0001
+    - MPD-SPEC-0005
+    - MPD-SPEC-0023
+    - MPD-WORK-0003
+  unit_mpd_0001_bd42d96859af:
+    compatibility_state: TEMPORARY_UNTIL_DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_IS_VERIFIED
+    support_profile_subsystem:
+      decision: APPROVED
+    migration_authority_ref: MPD-MIGR-0001
+  unit_mpd_0001_9718874b8c69:
+    root: developer/automation/planning/
+    ownership: PLANNING_AUTOMATION
+    owns:
+    - PLANNING_RESOLUTION
+    - PLANNING_VALIDATION
+    - PLAN_EXTENSION_LIFECYCLE
+    - PLANNING_RECONCILIATION
+    - PLANNING_COMPLETION_TRANSITION
+    does_not_own:
+    - POLICY_LIFECYCLE
+    - POLICY_PLAN_RELATIONSHIP
+    - BINDING_IDENTITY
+    - BINDING_LIFECYCLE
+    authoritative_mutation_scope:
+    - developer/planning/
+    external_authority_direct_mutation: FORBIDDEN
+  unit_mpd_0010_cb51d9f40c3d:
+    canonical_root: .agent/
+    purpose: REPOSITORY_LOCAL_AGENT_INSTRUCTION_MANAGEMENT
+    developer_tool_implementation_root: developer/automation/
+    developer_tool_root_is_management_surface: false
+    product_distribution: FORBIDDEN
+  unit_mpd_0013_98ec2a596e7d:
+    target_namespace: developer/planning/
+    canonical_root_transition_owned_by_this_policy: false
+    current_repository_migration_authorized_by_this_policy: false
+    note: MPD-PLAN-0001_OWNS_PLANNING_BOUNDARY
+  unit_mpd_plan_0001_50410dc74c9f:
+    root: developer/planning/
+    control_plane_entry: developer/planning/index.yaml
+    ownership: PLANNING_AUTHORITY
+  unit_mpd_plan_0001_7f56c7fed0e5:
+    root: developer/planning/schemas/
+    ownership: PLANNING_AUTHORITY
+    canonical_schema_files:
+    - planning-root-index.schema.json
+    - planning-index.schema.json
+    - work-unit.schema.json
+    - plan-extension.schema.json
+  unit_mpd_plan_0001_dfacd421d3a0:
+    policy_plan_binding:
+      authority_ref: developer/bindings/policy-plan-bindings.yaml
+      automation_ref: developer/automation/policy_plan_binding/
+      ownership: EXTERNAL_TO_PLANNING
+      authority_owner: POLICY_PLAN_BINDING
+      planning_may_directly_mutate_binding_authority: false
+      mutation_interface_required: true
+  unit_mpd_plan_0001_edc33d7514e8:
+    planning_authority:
+      owns:
+      - PLAN_CONTENT
+      - PLAN_STRUCTURE
+      - PLAN_LIFECYCLE
+      - PLAN_APPROVAL_STATE
+      - PLAN_IMPLEMENTATION_PROGRESS
+      - PLAN_COMPLETION_STATE
+      - PLAN_VERIFICATION_EVIDENCE
+    policy_plan_binding:
+      external_to_planning: true
+      owns:
+      - POLICY_PLAN_RELATIONSHIP
+      - BINDING_IDENTITY
+      - PLAN_EXISTENCE_RELATION_STATE
+      - PLAN_ID_AND_PLAN_REF_BINDING
+  unit_mpd_plan_0001_3297aa85e519:
+    suffix: -explanation.yaml
+    machine_authority: false
+    allowed_for_ambiguous_or_unsupported_definition: true
+  unit_mpd_spec_0001_bd42d96859af:
+    developer_repository_profile: developer/profiles/ptsip-repository.yaml
+    compatibility_root_profile: ptsip.yaml
+    support_profile_subsystem:
+      target_root: src/ptsip/profiles/
+      schema_root: src/ptsip/profiles/schema/
+      builtin_root: src/ptsip/profiles/builtin/
+      ownership: PTSIP_SUPPORT_FEATURE
+      distribution: REQUIRED
+    current_profile_schema_location: src/ptsip/specdata/
+    current_profile_schema_files:
+    - ptsip-profile.schema.json
+    - ptsip-profile-pp-1.01.schema.json
+    builtin_profile_instance_policy: CREATE_DIRECTORY_OR_INSTANCE_ONLY_WHEN_A_RUNTIME_SHIPPED_BUILTIN_PROFILE_EXISTS
+  unit_mpd_spec_0001_021ba43d3136:
+    developer_policy_must_ship: false
+    support_feature_policy_must_ship: true
+    developer_policy_must_not_define_consumer_project_requirement: true
+    support_feature_must_not_depend_on_developer_policy_at_runtime: true
+  unit_mpd_spec_0005_8b9a13c6427c:
+    components:
+    - id: ptsip-evidence
+      classification: PRODUCT
+      role: IMPLEMENTATION
+      selector: src/ptsip/evidence/**
+    - id: ptsip-source-compat
+      classification: PRODUCT
+      role: IMPLEMENTATION
+      selector: src/ptsip/source_compat/**
+    - id: ptsip-migration
+      classification: PRODUCT
+      role: IMPLEMENTATION
+      selector: src/ptsip/migration/**
+    common_properties:
+      shipped: true
+      runtime_required: false
+      executable: false
+      release_owner: tool
+      compatibility_owner: tool
+    ptsip_core_selector_broadened_to_recursive_src_ptsip: false
+    relationships:
+    - ptsip-evidence:IMPORTS:ptsip-core
+    - ptsip-source-compat:IMPORTS:ptsip-core
+    - ptsip-source-compat:READS:ptsip-embedded-contracts
+    - ptsip-migration:IMPORTS:ptsip-core
+    - ptsip-migration:IMPORTS:ptsip-evidence
+    - ptsip-migration:IMPORTS:ptsip-source-compat
+  unit_mpd_spec_0023_7795cd9b8dbc:
+    policy_planning_implementation_are_separate_authority_layers: true
+    policy_authority:
+      owns:
+      - POLICY_SEMANTICS
+      - POLICY_LIFECYCLE
+      - POLICY_APPROVAL
+      does_not_own:
+      - PLAN_CONTENT
+      - PLAN_APPROVAL
+      - PLAN_IMPLEMENTATION_PROGRESS
+      - PLAN_COMPLETION_STATE
+      - IMPLEMENTATION_ARTIFACT_STATE
+    planning_authority:
+      owns:
+      - PLAN_CONTENT
+      - PLAN_DESIGN
+      - PLAN_OPTIONS
+      - PLAN_APPROVAL
+      - PLAN_IMPLEMENTATION_PROGRESS
+      - PLAN_IMPLEMENTATION_COMPLETION
+      - PLAN_COMPLETION_AND_VERIFICATION_EVIDENCE
+      superior_policy_reference_required: true
+    implementation_artifacts:
+      role: IMPLEMENTATION_OUTPUT
+      own_authoritative_plan_completion_state: false
+    approval_boundary:
+      policy_approval_implies_plan_approval: false
+      plan_requires_separate_approval: true
+      multiple_valid_planning_options_may_exist_for_same_policy: true
+    source_boundary:
+      governance_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
+      approval_source_role: ORIGIN_OF_PLAN_APPROVAL_AUTHORITY
+      authorization_source_role: ORIGIN_OF_IMPLEMENTATION_EXECUTION_AUTHORIZATION
+      official_plan_approval_source: USER_EXPLICIT
+      official_implementation_authorization_source: USER_EXPLICIT
+      automation_derived_may_create_plan_approval: false
+      automation_derived_may_create_implementation_authorization: false
+      automation_derived_may_propagate_or_transition_existing_authority: true
+      approval_source_and_authorization_source_are_independent: true
+      lifecycle_or_completion_transition_does_not_create_new_authority: true
+  unit_mpd_work_0003_6c611ebb841f: RESPONSIBILITY_UNIT
+  unit_mpd_work_0003_409ccab39a04: false
+  unit_mpd_work_0003_742060fc39ee:
+  - SPEC
+  - PLAN
+  - WORK
+  - VERI
+  - MIGR
+  - RELS
+  unit_mpd_work_0003_ecbccb9b85f5:
+  - OWN
+  - REFERENCE
+  - CONSUME
+  - VERIFY
+  - TRANSFORM
+  - EXECUTE
+  unit_mpd_work_0003_ba7539c50202:
+    every_normative_responsibility_must_be_classified_independently: true
+    multiple_owned_families_require_split: true
+    referenced_family_does_not_determine_owner_family: true
+    unresolved_responsibility_boundary: FAIL_CLOSED
+  unit_mpd_work_0003_9dea768abc1a:
+    same_family_does_not_imply_same_policy_identity: true
+    merge_requires_same_cohesion_key: true
+    cohesion_rationale_required: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-ARCH-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

@@ -1,0 +1,16 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261006-ROOT-INTENT-0001-DRAFT
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: '새 Root Family ID의 정책으로 책임을 분해·전환; 원본 책임의 상태 보존: ACTIVE는 승인 전이를
+    거쳐 ACTIVE, APPROVED·DRAFT는 해당 상태 유지; 상태별 분리는 원본 책임의 상태를 승격하지 않기 위한 materialization
+    범위이다.'
+  approval_scope: DRAFT_CREATION
+  target_status: DRAFT
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-INTENT-0001
+  recorded_at: '2026-10-06T01:11:42+09:00'

@@ -1,0 +1,500 @@
+from __future__ import annotations
+
+import runpy
+import subprocess
+from pathlib import Path
+
+import pytest
+import yaml
+
+
+REPO_ROOT = Path(__file__).resolve().parents[4]
+REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
+PROFILE_PATH = REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
+RESOLVER_PATH = REPO_ROOT / ".github" / "scripts" / "resolve_test_modes.py"
+RESOLVER = runpy.run_path(str(RESOLVER_PATH))
+
+MATCHES_PATTERN = RESOLVER["matches_pattern"]
+NORMALIZE_REPO_PATH = RESOLVER["normalize_repo_path"]
+SELECT_AUTOMATIC = RESOLVER["select_automatic_modes"]
+RESOLVE_AUTOMATIC = RESOLVER["resolve_automatic_selection"]
+SELECT_MANUAL = RESOLVER["select_manual_modes"]
+BUILD_PLAN = RESOLVER["build_execution_plan"]
+CHANGED_FILES_FROM_GIT = RESOLVER["changed_files_from_git"]
+RESOLVE_WITH_DELETIONS = RESOLVER["resolve_automatic_with_deletions"]
+DELETION_PREIMAGE = RESOLVER["deletion_preimage_from_git"]
+SELECTION_ERROR = RESOLVER["TestModeSelectionError"]
+
+EXPECTED_MODE_IDS = [
+    "ptsip-core",
+    "ptsip-evidence",
+    "ptsip-source-compat",
+    "ptsip-migration",
+    "ptsip-remediation",
+    "vpms",
+    "ptsip-contract",
+    "agent-contract-candidate",
+    "repository-architecture",
+    "repository-release",
+    "test-mode-control-plane",
+]
+
+
+def _yaml(path: Path) -> dict[str, object]:
+    payload = yaml.safe_load(path.read_text(encoding="utf-8-sig"))
+    assert isinstance(payload, dict)
+    return payload
+
+
+def _registry() -> dict[str, object]:
+    return _yaml(REGISTRY_PATH)
+
+
+def _profile() -> dict[str, object]:
+    return _yaml(PROFILE_PATH)
+
+
+def _ids(selected: list[dict[str, object]]) -> list[str]:
+    return [str(mode["id"]) for mode in selected]
+
+
+def test_repo_path_normalization_accepts_windows_separators() -> None:
+    assert (
+        NORMALIZE_REPO_PATH(r"src\ptsip\evidence\contract.py")
+        == "src/ptsip/evidence/contract.py"
+    )
+
+
+def test_profile_pattern_matching_respects_recursive_repository_globs() -> None:
+    assert MATCHES_PATTERN(
+        "src/ptsip/evidence/contract.py",
+        "src/ptsip/evidence/**",
+    )
+    assert not MATCHES_PATTERN(
+        "src/ptsip/migration/model.py",
+        "src/ptsip/evidence/**",
+    )
+
+
+def test_evidence_change_selects_declared_dependents() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/evidence/contract.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-evidence",
+        "ptsip-migration",
+        "ptsip-remediation",
+        "vpms",
+        "repository-architecture",
+    ]
+
+
+def test_source_compat_change_selects_declared_dependents() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/source_compat/reader.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-source-compat",
+        "ptsip-migration",
+        "vpms",
+        "repository-architecture",
+    ]
+
+
+def test_migration_change_selects_migration_and_contract_reference_verifiers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/migration/analysis/analyzer.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-migration", "vpms", "repository-architecture", "agent-contract-plane",
+    ]
+
+
+def test_support_policy_change_selects_all_declared_support_verifiers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/policy/index.yaml"],
+    )
+    assert _ids(selected) == [
+        "ptsip-core",
+        "ptsip-contract",
+        "repository-architecture",
+        "repository-release",
+    ]
+
+
+def test_governance_change_selects_declared_cross_boundary_verifiers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/governance/authority.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-core",
+        "vpms",
+        "ptsip-contract",
+        "repository-architecture",
+    ]
+
+
+def test_vpms_change_selects_only_vpms() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/vpms/domain/model.py"],
+    )
+    assert _ids(selected) == ["vpms"]
+
+def test_vpms_contract_change_selects_contract_plane_and_runtime_consumers() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(), _profile(), ["src/vpms/contracts/selection.json"],
+    )
+    assert _ids(selected) == ["vpms", "vpms-contract-plane"]
+
+
+@pytest.mark.parametrize("path", ["src/vpms/domain/snapshot.py", "src/vpms/selection/resolver.py",
+                                  "src/vpms/execution/composition.py"])
+def test_successor_implementation_paths_select_runtime_behavior_owner(path: str) -> None:
+    assert _ids(SELECT_AUTOMATIC(_registry(), _profile(), [path])) == ["vpms"]
+
+
+def test_unregistered_vpms_root_path_does_not_inherit_runtime_ownership() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        SELECT_AUTOMATIC(_registry(), _profile(), ["src/vpms/model.py"])
+
+
+def test_test_change_selects_only_declared_verification_owner() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/tests/ptsip/evidence/test_normalization_037.py"],
+    )
+    assert _ids(selected) == ["ptsip-evidence"]
+
+
+def test_agent_contract_source_change_selects_contract_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/agent_contracts/operations/conform.yaml"],
+    )
+    assert _ids(selected) == [
+        "vpms", "ptsip-contract", "repository-architecture", "repository-release",
+    ]
+
+
+def test_agent_contract_test_change_selects_contract_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/tests/ptsip/agent_contracts/test_operation_loading.py"],
+    )
+    assert _ids(selected) == ["ptsip-contract"]
+
+
+def test_pre_commit_hook_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".githooks/pre-commit"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
+def test_context_plane_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".ptsip/context/context.json"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
+def test_context_projection_generator_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["developer/automation/context_projection.py"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
+def test_context_line_ending_policy_change_selects_architecture_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".gitattributes"],
+    )
+    assert _ids(selected) == ["repository-architecture"]
+
+
+def test_distribution_contract_validator_change_selects_release_verification() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".github/scripts/verify_distribution_contracts.py"],
+    )
+    assert _ids(selected) == ["repository-release"]
+
+
+def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/tests/ptsip/conftest.py"],
+    )
+    assert _ids(selected) == [
+        "ptsip-core",
+        "ptsip-evidence",
+        "ptsip-source-compat",
+        "ptsip-migration",
+        "ptsip-remediation",
+        "ptsip-contract",
+        "agent-contract-candidate",
+        "repository-architecture",
+        "test-mode-control-plane",
+    ]
+
+
+def test_test_mode_control_plane_change_does_not_expand_to_all_modes() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".github/scripts/resolve_test_modes.py"],
+    )
+    assert _ids(selected) == ["test-mode-control-plane"]
+
+
+def test_tooling_workflow_change_selects_release_and_control_plane() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        [".github/workflows/tooling-test.yml"],
+    )
+    assert _ids(selected) == [
+        "repository-release",
+        "test-mode-control-plane",
+    ]
+
+
+def test_declared_documentation_change_can_require_no_test_mode() -> None:
+    selected, no_verification = RESOLVE_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["README.md"],
+    )
+    assert _ids(selected) == []
+    assert no_verification == ["README.md"]
+
+
+def test_unmapped_change_fails_closed() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_AUTOMATIC(
+            _registry(),
+            _profile(),
+            ["unregistered-area/file.txt"],
+        )
+
+
+def test_broad_dependent_analysis_input_cannot_create_ownership() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_AUTOMATIC(
+            _registry(),
+            _profile(),
+            ["src/ptsip/unregistered_subsystem/new_file.py"],
+        )
+
+
+def test_manual_specific_mode_selects_only_requested_mode() -> None:
+    selected = SELECT_MANUAL(_registry(), "ptsip-evidence")
+    assert _ids(selected) == ["ptsip-evidence"]
+
+
+def test_manual_all_is_not_a_special_escape_hatch() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unknown requested Test Mode"):
+        SELECT_MANUAL(_registry(), "all")
+
+
+def test_manual_unknown_mode_fails_closed() -> None:
+    with pytest.raises(SELECTION_ERROR, match="unknown requested Test Mode"):
+        SELECT_MANUAL(_registry(), "missing-mode")
+
+
+def test_execution_plan_contains_execution_identity_not_architecture_authority() -> None:
+    selected = SELECT_AUTOMATIC(
+        _registry(),
+        _profile(),
+        ["src/ptsip/evidence/contract.py"],
+    )
+    plan = BUILD_PLAN(selected)
+
+    assert [item["id"] for item in plan] == [
+        "ptsip-evidence",
+        "ptsip-migration",
+        "ptsip-remediation",
+        "vpms",
+        "repository-architecture",
+    ]
+    assert all("classification" not in item for item in plan)
+    assert all("roles" not in item for item in plan)
+    assert all("purpose" not in item for item in plan)
+
+
+
+def _git(repo_root: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", *args],
+        cwd=repo_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def test_automatic_git_diff_defaults_to_immediate_parent(tmp_path: Path) -> None:
+    _git(tmp_path, "init")
+    _git(tmp_path, "checkout", "-b", "main")
+    _git(tmp_path, "config", "user.email", "tests@example.invalid")
+    _git(tmp_path, "config", "user.name", "PTSIP Tests")
+
+    (tmp_path / "base.txt").write_text("base\n", encoding="utf-8")
+    _git(tmp_path, "add", "base.txt")
+    _git(tmp_path, "commit", "-m", "base")
+
+    _git(tmp_path, "checkout", "-b", "feature")
+    (tmp_path / "first.txt").write_text("first\n", encoding="utf-8")
+    _git(tmp_path, "add", "first.txt")
+    _git(tmp_path, "commit", "-m", "first")
+    (tmp_path / "second.txt").write_text("second\n", encoding="utf-8")
+    _git(tmp_path, "add", "second.txt")
+    _git(tmp_path, "commit", "-m", "second")
+
+    assert CHANGED_FILES_FROM_GIT(tmp_path, "", "HEAD") == ["second.txt"]
+
+
+def test_automatic_git_diff_honors_explicit_verified_base(tmp_path: Path) -> None:
+    _git(tmp_path, "init")
+    _git(tmp_path, "checkout", "-b", "main")
+    _git(tmp_path, "config", "user.email", "tests@example.invalid")
+    _git(tmp_path, "config", "user.name", "PTSIP Tests")
+
+    (tmp_path / "base.txt").write_text("base\n", encoding="utf-8")
+    _git(tmp_path, "add", "base.txt")
+    _git(tmp_path, "commit", "-m", "base")
+    base_sha = _git(tmp_path, "rev-parse", "HEAD")
+
+    (tmp_path / "first.txt").write_text("first\n", encoding="utf-8")
+    _git(tmp_path, "add", "first.txt")
+    _git(tmp_path, "commit", "-m", "first")
+    (tmp_path / "second.txt").write_text("second\n", encoding="utf-8")
+    _git(tmp_path, "add", "second.txt")
+    _git(tmp_path, "commit", "-m", "second")
+
+    assert CHANGED_FILES_FROM_GIT(tmp_path, base_sha, "HEAD") == [
+        "first.txt",
+        "second.txt",
+    ]
+
+
+def _deletion_profiles():
+    registry = {"modes": [{"id": "contracts", "component_ref": "verify",
+                            "execution": {"pytest": ["src/tests/contracts"]}}]}
+    previous = {"components": [
+        {"id": "docs", "include": ["old/README.md"]},
+        {"id": "verify", "include": ["src/tests/contracts/**"], "analysis_inputs": ["old/README.md"]},
+    ]}
+    current = {"components": [{"id": "verify", "include": ["src/tests/contracts/**"]}]}
+    return registry, previous, current
+
+
+def test_deleted_path_uses_preimage_owner_without_retaining_obsolete_selector():
+    registry, previous, current = _deletion_profiles()
+    selected, no_test = RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], ["old/README.md"], previous)
+    assert _ids(selected) == ["contracts"]
+    assert no_test == []
+    assert current["components"][0].get("analysis_inputs") is None
+
+
+def test_removed_declaration_does_not_authorize_an_added_or_modified_path():
+    registry, previous, current = _deletion_profiles()
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], [], previous)
+
+
+def test_deleted_path_without_exact_preimage_owner_fails_closed():
+    registry, previous, current = _deletion_profiles()
+    with pytest.raises(SELECTION_ERROR, match="unmapped changed paths"):
+        RESOLVE_WITH_DELETIONS(registry, current, ["old/unknown.md"], ["old/unknown.md"], previous)
+
+
+def test_deletion_outside_changed_scope_fails_closed():
+    registry, previous, current = _deletion_profiles()
+    with pytest.raises(SELECTION_ERROR, match="outside the change scope"):
+        RESOLVE_WITH_DELETIONS(registry, current, ["src/tests/contracts/test_a.py"], ["old/README.md"], previous)
+
+
+def test_deletion_preserves_preimage_and_current_verification_obligations():
+    registry, previous, current = _deletion_profiles()
+    registry["modes"].append({"id": "runtime", "component_ref": "runtime-tests"})
+    previous["components"].append({"id": "runtime-tests", "include": ["src/tests/runtime/**"]})
+    current["components"] += [
+        {"id": "docs", "include": ["old/README.md"]},
+        {"id": "runtime-tests", "include": ["src/tests/runtime/**"], "analysis_inputs": ["old/README.md"]},
+    ]
+    selected, no_test = RESOLVE_WITH_DELETIONS(registry, current, ["old/README.md"], ["old/README.md"], previous)
+    assert _ids(selected) == ["contracts", "runtime"]
+    assert no_test == []
+
+
+@pytest.mark.parametrize("committed", [False, True])
+def test_git_confirms_deletion_and_binds_exact_preimage(tmp_path: Path, committed: bool):
+    _git(tmp_path, "init")
+    _git(tmp_path, "config", "user.email", "tests@example.invalid")
+    _git(tmp_path, "config", "user.name", "PTSIP Tests")
+    _, previous, current = _deletion_profiles()
+    profile = tmp_path / "profile.yaml"
+    profile.write_text(yaml.safe_dump(previous), encoding="utf-8")
+    old = tmp_path / "old/README.md"
+    old.parent.mkdir()
+    old.write_text("old guidance\n", encoding="utf-8")
+    _git(tmp_path, "add", ".")
+    _git(tmp_path, "commit", "-m", "base")
+    base = _git(tmp_path, "rev-parse", "HEAD")
+    old.unlink()
+    profile.write_text(yaml.safe_dump(current), encoding="utf-8")
+    if committed:
+        _git(tmp_path, "add", "-u")
+        _git(tmp_path, "commit", "-m", "retire guidance")
+    deleted, preimage, revision = DELETION_PREIMAGE(
+        tmp_path, profile, ["old/README.md", "profile.yaml", "old/untracked.md"],
+        base if committed else "", "HEAD", worktree=not committed,
+    )
+    assert deleted == ["old/README.md"]
+    assert preimage == previous
+    assert revision == base
+
+
+def test_execution_plan_accepts_go_only_verification_mode() -> None:
+    selected = [
+        {
+            "id": "repository-release",
+            "component_ref": "repository-release-verification",
+            "execution": {"go": ["developer/tests/release"]},
+        }
+    ]
+    assert BUILD_PLAN(selected) == [
+        {
+            "id": "repository-release",
+            "component_ref": "repository-release-verification",
+            "pytest": [],
+            "go": ["developer/tests/release"],
+        }
+    ]

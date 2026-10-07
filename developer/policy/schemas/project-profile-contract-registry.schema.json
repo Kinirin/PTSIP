@@ -70,7 +70,7 @@
               "string",
               "null"
             ],
-            "pattern": "^profiles/history/pp\\.[0-9]+\\.[0-9]+$"
+            "pattern": "^(?:src/ptsip/)?profiles/history/pp\\.[0-9]+\\.[0-9]+$"
           }
         },
         "additionalProperties": false
@@ -103,6 +103,30 @@
         },
         "additionalProperties": false
       }
+    },
+    "profile_source": {
+      "type": "object",
+      "required": [
+        "root",
+        "catalog",
+        "history_root",
+        "history_distribution"
+      ],
+      "properties": {
+        "root": {
+          "const": "src/ptsip/profiles"
+        },
+        "catalog": {
+          "const": "src/ptsip/profiles/index.yaml"
+        },
+        "history_root": {
+          "const": "src/ptsip/profiles/history"
+        },
+        "history_distribution": {
+          "const": "SOURCE_ONLY"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

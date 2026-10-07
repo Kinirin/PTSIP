@@ -1,0 +1,74 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CHANGE
+policy:
+  id: MPD-CHANGE-0003
+  title: CHANGE authority (APPROVED source responsibilities)
+  status: APPROVED
+  version: '1.0'
+authority_subject:
+  id: DEV_VERSIONED_TRANSITION_SEMANTICS
+  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
+exclusive_kernel:
+- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+- DEV_MIGRATION_ORDER_AND_CONTINUITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
+        문자열이나 Family 이름을 치환하지 않는다.
+      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
+        않는다.
+    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
+      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
+        정한다.
+      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
+        조건을 정당화할 수 없다.
+    source_scope:
+    - MPD-MIGR-0002
+  unit_mpd_migr_0002_fd0bec532c13:
+    governing_policy_ref: MPD-0016
+    source_state:
+      canonical_readme: README.md
+      existing_translation:
+        language: ko
+        path: README.ko.md
+      translation_workflow: .github/workflows/readme-translation.yml
+    target_state:
+      canonical_readme: README.md
+      translation_registry: docs/translated/index.yaml
+      translations:
+      - language: ko
+        path: docs/translated/README.ko.md
+    required_transition:
+    - CREATE_TRANSLATION_REGISTRY
+    - MOVE_KOREAN_README_TO_REGISTERED_PATH
+    - UPDATE_CANONICAL_README_LANGUAGE_NAVIGATION
+    - UPDATE_TRANSLATION_INTERNAL_CANONICAL_LINKS
+    - UPDATE_README_TRANSLATION_WORKFLOW_TARGET_PATH
+    - UPDATE_WORKFLOW_GIT_ADD_PATH
+    - VERIFY_NO_ACTIVE_ROOT_README_KO_PATH_REFERENCE
+    preservation:
+      canonical_readme_content_authority_unchanged: true
+      korean_translation_history_should_be_preserved_when_git_operation_allows: true
+      translation_generation_model_unchanged_by_layout_migration: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+  - id: TR-001
+    type: ACTIVE_TRANSITION_DECISION
+    state: OPEN
+    refs:
+    - developer/policy/approvals/MPA-20261007-ROOT-CHANGE-0003-APPROVED.yaml
+    next_action:
+      action: DECIDE_ACTIVE_TRANSITION
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: ACTIVE_TRANSITION_AUTHORIZED

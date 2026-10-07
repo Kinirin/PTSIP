@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:root-family-entry-registry-schema:v1",
+  "title": "PTSIP Root Family Entry Registry v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root_family_vocabulary",
+    "policy_classes",
+    "invariants"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-root-family-entry-registry/v1"
+    },
+    "root_family_vocabulary": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "NORM",
+          "GOV",
+          "INTENT",
+          "ARCH",
+          "INFO",
+          "CNTR",
+          "RISK",
+          "SUPPLY",
+          "REAL",
+          "ASSURE",
+          "CTRL",
+          "CHANGE",
+          "OPS",
+          "RECORD"
+        ]
+      }
+    },
+    "policy_classes": {
+      "type": "object",
+      "required": [
+        "PTSIP_DEVELOPER_POLICY",
+        "PTSIP_SUPPORT_FEATURE"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "PTSIP_DEVELOPER_POLICY": {
+          "$ref": "#/$defs/route"
+        },
+        "PTSIP_SUPPORT_FEATURE": {
+          "$ref": "#/$defs/route"
+        }
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "required": [
+        "authority_identity_key",
+        "family_token_semantic_inheritance",
+        "family_only_lookup",
+        "unregistered_family",
+        "legacy_family_new_allocation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "authority_identity_key": {
+          "const": [
+            "policy_class",
+            "responsibility_family"
+          ]
+        },
+        "family_token_semantic_inheritance": {
+          "const": "FORBIDDEN"
+        },
+        "family_only_lookup": {
+          "const": "FORBIDDEN"
+        },
+        "unregistered_family": {
+          "const": "FAIL_CLOSED"
+        },
+        "legacy_family_new_allocation": {
+          "const": "FORBIDDEN"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "route": {
+      "type": "object",
+      "required": [
+        "id_prefix",
+        "canonical_root",
+        "schema_ref",
+        "recognized_root_families",
+        "unmaterialized_slot_default"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id_prefix": {
+          "enum": [
+            "MPD",
+            "SFP"
+          ]
+        },
+        "canonical_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./-]+\\.schema\\.json$"
+        },
+        "recognized_root_families": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "NORM",
+              "GOV",
+              "INTENT",
+              "ARCH",
+              "INFO",
+              "CNTR",
+              "RISK",
+              "SUPPLY",
+              "REAL",
+              "ASSURE",
+              "CTRL",
+              "CHANGE",
+              "OPS",
+              "RECORD"
+            ]
+          }
+        },
+        "unmaterialized_slot_default": {
+          "const": "RESERVED"
+        },
+        "migration_registry_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -2,43 +2,201 @@ schema_version: ptsip-policy-plan-bindings/v2
 registry_role: POLICY_PLAN_BINDING
 schema_ref: developer/bindings/schemas/policy-plan-bindings.schema.json
 bindings:
-- binding_id: PPB-0001
-  policy_ref: MPD-0012
+- binding_id: PPB-0006
+  policy_ref: MPD-GOV-0001
   planning_state: CREATED
   resolved_plan_id: PLN.POLI.BNDR.MPD0012A
   plan_file_id: PLANFILE.MAIN.MPD0012RESP1
   version: '1.0'
   revision: Rev.0001
   plan_ref: developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml
-- binding_id: PPB-0002
-  policy_ref: MPD-0015
+  policy_sections:
+  - unit_mpd_0012_8b9a13c6427c
+  - unit_mpd_0012_e0cfe7d01329
+  - unit_mpd_0012_ee8c0fa2d55c
+- binding_id: PPB-0007
+  policy_ref: MPD-RECORD-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.BNDR.MPD0012A
+  plan_file_id: PLANFILE.MAIN.MPD0012RESP1
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml
+  policy_sections:
+  - unit_mpd_0012_7bc423f87b11
+- binding_id: PPB-0008
+  policy_ref: MPD-ASSURE-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.BNDR.MPD0012A
+  plan_file_id: PLANFILE.MAIN.MPD0012RESP1
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml
+  policy_sections:
+  - unit_mpd_0012_d42d2230d10e
+- binding_id: PPB-0009
+  policy_ref: MPD-CTRL-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.BNDR.MPD0012A
+  plan_file_id: PLANFILE.MAIN.MPD0012RESP1
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml
+  policy_sections:
+  - unit_mpd_0012_02b6455c4f6d
+- binding_id: PPB-0010
+  policy_ref: MPD-INFO-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.BNDR.MPD0012A
+  plan_file_id: PLANFILE.MAIN.MPD0012RESP1
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/migrations/MPD-0012-decision-approval-ledger-responsibility-reconciliation.yaml
+  policy_sections:
+  - unit_mpd_0012_40c664bc86a2
+- binding_id: PPB-0011
+  policy_ref: MPD-CNTR-0001
   planning_state: CREATED
   resolved_plan_id: PLN.POLI.PLAN.cb6d761c
   plan_file_id: PLANFILE.MAIN.2c4c961377dd
   version: '1.0'
   revision: Rev.0001
   plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
-- binding_id: PPB-0003
-  policy_ref: MPD-SPEC-0022
+  policy_sections:
+  - unit_mpd_0015_6f37556a3bbc
+  - unit_mpd_0015_8c9c31aedf17
+- binding_id: PPB-0012
+  policy_ref: MPD-OPS-0001
   planning_state: CREATED
   resolved_plan_id: PLN.POLI.PLAN.cb6d761c
   plan_file_id: PLANFILE.MAIN.2c4c961377dd
   version: '1.0'
   revision: Rev.0001
   plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
-- binding_id: PPB-0004
-  policy_ref: MPD-VERI-0004
+  policy_sections:
+  - unit_mpd_0015_aecdc747228d
+- binding_id: PPB-0013
+  policy_ref: MPD-GOV-0001
   planning_state: CREATED
   resolved_plan_id: PLN.POLI.PLAN.cb6d761c
   plan_file_id: PLANFILE.MAIN.2c4c961377dd
   version: '1.0'
   revision: Rev.0001
   plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
-- binding_id: PPB-0005
-  policy_ref: MPD-WORK-0004
+  policy_sections:
+  - unit_mpd_0015_c35e38d46280
+- binding_id: PPB-0014
+  policy_ref: MPD-REAL-0001
   planning_state: CREATED
   resolved_plan_id: PLN.POLI.PLAN.cb6d761c
   plan_file_id: PLANFILE.MAIN.2c4c961377dd
   version: '1.0'
   revision: Rev.0001
   plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_0015_0c9180c7ae16
+- binding_id: PPB-0015
+  policy_ref: MPD-NORM-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_0015_181bf674e753
+- binding_id: PPB-0016
+  policy_ref: MPD-CHANGE-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_0015_68161b3e5a1c
+- binding_id: PPB-0017
+  policy_ref: MPD-INFO-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_0015_40c664bc86a2
+- binding_id: PPB-0018
+  policy_ref: MPD-INFO-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_spec_0022_9826b3cb2a95
+  - unit_mpd_spec_0022_40c664bc86a2
+- binding_id: PPB-0019
+  policy_ref: MPD-CTRL-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_veri_0004_8084d790e9d2
+- binding_id: PPB-0020
+  policy_ref: MPD-ASSURE-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_veri_0004_f699ce5ccfa4
+  - unit_mpd_veri_0004_2f347420dfff
+- binding_id: PPB-0021
+  policy_ref: MPD-INFO-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_veri_0004_c0781722ba1f
+  - unit_mpd_veri_0004_40c664bc86a2
+- binding_id: PPB-0022
+  policy_ref: MPD-CNTR-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_veri_0004_09a448bf6930
+  - unit_mpd_veri_0004_6f95b224e3ad
+  - unit_mpd_veri_0004_c3c470f140f3
+- binding_id: PPB-0023
+  policy_ref: MPD-CTRL-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_work_0004_b413e855fd78
+- binding_id: PPB-0024
+  policy_ref: MPD-INFO-0001
+  planning_state: CREATED
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: '1.0'
+  revision: Rev.0001
+  plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  policy_sections:
+  - unit_mpd_work_0004_40c664bc86a2

@@ -1,0 +1,115 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: INTENT
+policy:
+  id: MPD-INTENT-0001
+  title: INTENT authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_WORK_OUTCOME_INTENT
+  statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
+exclusive_kernel:
+- DEV_OUTCOME_SCOPE_AND_NON_GOALS
+- DEV_ACCEPTANCE_PURPOSE
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_OUTCOME_SCOPE_AND_NON_GOALS
+      statement: 개발 요청을 명시적인 달성 결과, 포함 범위와 비목표로 한정하고 범위 확장의 필요를 식별한다.
+      non_substitutability: REAL의 구현 편의나 SUPPLY의 사용 가능한 도구가 승인된 작업 범위를 확대할 수 없다.
+    - id: DEV_ACCEPTANCE_PURPOSE
+      statement: 작업 결과를 수락하려는 목적과 성공 조건의 의미를 정하되 실제 충족 여부는 ASSURE에 맡긴다.
+      non_substitutability: ASSURE가 테스트를 통과시켰다는 사실만으로 요청하지 않은 제품 목표가 수락 목적이 되지 않는다.
+    source_scope:
+    - MPD-0010
+    - MPD-PLAN-0002
+    - MPD-PLAN-0004
+  unit_mpd_0010_497ac087b73f:
+    precedence_order:
+    - CODING_AGENT_INFERENCE_COST_MINIMIZATION
+    - INDEPENDENT_EXTENSION_WITHOUT_UNRELATED_DEVELOPER_DISRUPTION
+    - USER_MACHINE_READABLE_POLICY_AUTOMATION
+    coding_agent_inference_cost_minimization:
+      objective: MINIMIZE_REPEATED_REASONING_CONTEXT_LOOKUP_AND_CREDIT_COST_FOR_CODING_AGENTS
+      rules:
+      - PREFER_MACHINE_EXPLICIT_DIRECTLY_RESOLVABLE_CONTRACTS_WHEN_THEY_REDUCE_REPEATED_INFERENCE
+      - ALLOW_BOUNDED_REFERENCE_DUPLICATION_WHEN_IT_REDUCES_AGENT_CONTEXT_OR_LOOKUP_COST
+      - DO_NOT_REDUCE_MACHINE_CLARITY_MERELY_TO_MINIMIZE_FIELD_COUNT
+    independent_extension_without_unrelated_developer_disruption:
+      objective: ALLOW_INDEPENDENT_EXTENSION_WHEN_PTSIP_CORE_DOES_NOT_NATIVELY_SUPPORT_REQUIRED_SEMANTICS
+      rules:
+      - EXTENSION_MUST_USE_DISTINCT_IDENTITY_AND_MUST_NOT_IMPERSONATE_OFFICIAL_CORE_SEMANTICS
+      - EXTENSION_UNSUPPORTED_BY_A_CONSUMER_MUST_BE_REPORTED_EXPLICITLY_WITHOUT_SILENT_CORE_MAPPING
+      - UNSUPPORTED_EXTENSION_CAPABILITY_MUST_BE_SCOPED_TO_DEPENDENT_OPERATIONS_OR_VALIDATION
+      - UNSUPPORTED_EXTENSION_CAPABILITY_MUST_NOT_BLOCK_UNRELATED_DEVELOPMENT
+      - EXTENSION_OWNER_RETAINS_SEMANTIC_CONFORMANCE_MAINTENANCE_REVALIDATION_MIGRATION_AND_COMPATIBILITY_RESPONSIBILITY
+    user_machine_readable_policy_automation:
+      objective: ENABLE_USERS_TO_EXPRESS_PROJECT_OR_PERSONAL_POLICY_AS_MACHINE_READABLE_CONTRACTS_AND_BUILD_LOCAL_AUTOMATED_REASONING
+      rules:
+      - PREFER_DECLARATIVE_MACHINE_READABLE_CONTRACT_SURFACES_OVER_REQUIRED_CUSTOM_CORE_CODE
+      - USER_DEFINED_POLICY_MAY_USE_REGISTERED_EXTENSION_IDENTITIES_AND_INTERFACES
+      - USER_POLICY_AUTOMATION_MUST_NOT_SILENTLY_GAIN_PROJECT_OR_CORE_AUTHORITY
+      - USER_POLICY_INTERPRETATION_MUST_REMAIN_EXACT_BOUNDED_AND_FAIL_CLOSED_WHEN_REQUIRED_SEMANTICS_CANNOT_BE_RESOLVED
+  unit_mpd_0010_55a1162781c1:
+    objective: REDUCE_REPEATED_SEMANTIC_INFERENCE_AND_AMBIGUITY_BEFORE_MINIMIZING_IMPLEMENTATION_TIME
+    absolute_zero_inference_required: false
+    machine_explicit_reference_duplication_allowed_when_it_reduces_semantic_inference_cost: true
+    machine_explicit_duplication_does_not_create_authority_confidence_priority_or_ranking: true
+  unit_mpd_plan_0002_d909cd570b48:
+    final_release_readiness_work_unit: WU-12
+  unit_mpd_plan_0004_acd66447ea97:
+    deferred_decisions:
+      feature_implementation_body_details:
+        implementation_kind_allowed_values_and_semantics: DEFERRED
+        revision_format_and_compatibility_rules: DEFERRED
+        implementation_ref_target_kinds: DEFERRED
+        optional_extension_fields: DEFERRED
+      compatibility_feature_compiler:
+        exact_compiler_contract_shape: DEFERRED
+        exact_atomic_feature_projection_format: DEFERRED
+        registry_topology: DEFERRED
+        feature_mapping_algorithm: DEFERRED
+        migration_mechanics: DEFERRED
+      generated_resolution:
+        automatic_semantic_transformation_upper_bound: DEFERRED
+        user_review_threshold_beyond_required_unknown_rule: DEFERRED
+      plugin_integration:
+        langgraph_plugin_contract: DEFERRED_BEYOND_0_3_8
+        langchain_plugin_contract: DEFERRED_BEYOND_0_3_8
+        local_model_integration_contract: DEFERRED_BEYOND_0_3_8
+        remote_user_resolver_contract: DEFERRED_BEYOND_0_3_8
+      human_projection:
+        future_human_readable_projection_format: DEFERRED
+    pending_materialization:
+    - R2_REQUIRED_VERIFICATION_MODEL
+    - IMPLEMENTATION_RESOLUTION_VALID
+    - IO4_GENERATED_VERIFIED_IO_RESOLUTION
+    - E3_EFFECT_MATCH_VERIFICATION
+    - FAILURE_OBSERVATION_AND_FAILURE_SEMANTIC_SPLIT
+    - FO4_RUNTIME_ASSEMBLED_FAILURE_OBSERVATION
+    - C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+    - CF2_FINE_GRAINED_ATOMIC_FEATURE_SYSTEM
+    - FEATURE_STABLE_CORE
+    - SEMANTIC_EXTENSION_CONTRACT
+    - FEATURE_IMPLEMENTATION_BODY_MINIMUM
+    source_policy_ref: MPD-0012
+    source_snapshot_ref: MPD-0012#rules.repository_materialization_snapshot
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-INTENT-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

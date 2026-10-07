@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   static-validation:
-    if: ${{ (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8') || (github.event_name == 'workflow_dispatch' && (inputs.verification == 'policy-lifecycle' || inputs.verification == 'agent-context-migration' || inputs.verification == 'markdown-cleanup-simulation')) }}
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch' && (inputs.verification == 'policy-lifecycle' || inputs.verification == 'agent-context-migration' || inputs.verification == 'markdown-cleanup-simulation')) }}
     runs-on: ubuntu-latest
     env:
       PTSIP_EXECUTION_BRANCH: ${{ github.ref_name }}
@@ -57,32 +57,54 @@ jobs:
             throw "Failed to install shared static validation environment."
           }
 
+      - name: Set up Go Developer automation
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/go.sum
+
       - name: Verify policy lifecycle automation
         if: ${{ github.event_name == 'push' || inputs.verification == 'policy-lifecycle' }}
         shell: pwsh
         env:
           PYTHONPATH: ".:src"
         run: |
-          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py developer/tests/test_policy_transition_contract.py developer/tests/test_policy_plan_identity_contract.py developer/tests/test_policy_plan_binding_schema_v2.py tests/ptsip/governance/test_policy_plan_binding.py tests/ptsip/governance/test_policy_plan_resolver_tracker.py developer/tests/test_policy_plan_consistency_verifier.py developer/tests/test_policy_version_contract.py developer/tests/test_policy_plan_output_schema_identity.py
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -v ./policy/... ./planning/... ./repository/... ./workflows/...
           if ($LASTEXITCODE -ne 0) {
-            throw "Policy identity lifecycle tests failed."
+            throw "Native Go policy and planning regression failed."
           }
-          python -m developer.automation.policy_validator
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-validator validate
           if ($LASTEXITCODE -ne 0) {
             throw "Developer policy validation failed."
           }
 
-          python -m developer.automation.verification.policy_plan_consistency
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-plan-consistency verify
           if ($LASTEXITCODE -ne 0) {
             throw "Policy-Plan consistency verification failed."
           }
 
-          $activationApproval = "developer/policy/approvals/MPA-20260925-MPD-0012-AGENT-CONTEXT-ACTIVATION.yaml"
-          if (Test-Path -LiteralPath $activationApproval) {
-            python -m developer.automation.policy_identity_lifecycle status-preflight MPD-0012 --approval-ref $activationApproval
-            if ($LASTEXITCODE -ne 0) {
-              throw "MPD-0012 activation status preflight failed."
-            }
+          $rootPolicy = (& go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-lifecycle inspect MPD-GOV-0001) | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or -not $rootPolicy.operationally_resolvable) {
+            throw "Canonical Root governance policy is not operationally resolvable."
+          }
+
+      - name: Verify direct Root policy Go automation
+        if: ${{ github.event_name == 'push' || inputs.verification == 'policy-lifecycle' }}
+        shell: pwsh
+        run: |
+          go -C developer/automation vet -tags grammar_subset,grammar_subset_python ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go Developer automation vet failed."
+          }
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-resolver validate
+          if ($LASTEXITCODE -ne 0) {
+            throw "Direct Root policy Go resolver validation failed."
+          }
+          go -C developer/tests/rootfamily test -count=1 -v -run '^TestGo(DirectRootResolver|ResolverNeeds|ResolverRejects|CutoverReports|StateAndPlanning|RootIdentityInspection)' ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go automation boundary verification failed."
           }
 
       - name: Verify README translation registry layout
@@ -119,11 +141,26 @@ jobs:
             throw "Localized README does not link back to the canonical root README."
           }
 
-      - name: Validate WU-02 control branch from explicit workflow context
+      - name: Resolve WU-02 lane validation applicability
+        id: wu02-route
         if: ${{ github.event_name == 'push' }}
         shell: pwsh
         run: |
-          python -m developer.automation.wu02_lane_validator --execution-branch "$env:PTSIP_EXECUTION_BRANCH"
+          $controlContext = (& go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev wu02 control-context) | ConvertFrom-Json
+          $controlBranch = $controlContext.control_branch
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($controlBranch)) {
+            throw "Unable to resolve the canonical WU-02 control branch."
+          }
+
+          $required = ($env:PTSIP_EXECUTION_BRANCH -eq $controlBranch).ToString().ToLowerInvariant()
+          "required=$required" >> $env:GITHUB_OUTPUT
+          Write-Host "WU-02 lane validation required: $required (execution=$env:PTSIP_EXECUTION_BRANCH control=$controlBranch)"
+
+      - name: Validate WU-02 control branch from explicit workflow context
+        if: ${{ github.event_name == 'push' && steps.wu02-route.outputs.required == 'true' }}
+        shell: pwsh
+        run: |
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev wu02 validate --execution-branch "$env:PTSIP_EXECUTION_BRANCH"
           if ($LASTEXITCODE -ne 0) {
             throw "WU-02 control branch validation failed."
           }
@@ -137,20 +174,25 @@ jobs:
           New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
           $log = ".artifacts/agent-context-migration-verification.log"
 
-          python -m developer.automation.agent_context_migration verify --stage AUTO 2>&1 |
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev agent-context-migration verify --stage AUTO 2>&1 |
             Tee-Object -FilePath $log
           if ($LASTEXITCODE -ne 0) {
             throw "Agent context migration M5 verification failed."
           }
 
           python -m pytest -q `
-            tests/agent_contracts/test_contract_plane.py `
-            tests/agent_contracts/test_resolver.py `
-            developer/tests/test_repository_state_resolver.py `
-            developer/tests/test_agent_context_migration.py 2>&1 |
+            src/tests/agent_contracts/test_contract_plane.py `
+            src/tests/agent_contracts/test_resolver.py `
+            src/tests/ptsip/test_modes/test_agent_context_routing.py 2>&1 |
             Tee-Object -FilePath $log -Append
           if ($LASTEXITCODE -ne 0) {
             throw "Agent context migration focused tests failed."
+          }
+
+          go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 -run '^TestAgent(Profile|OperationReferences|ContextNative)' ./internal/machine 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            throw "Native Agent context migration regression failed."
           }
 
       - name: Upload agent context migration verification log
@@ -192,7 +234,7 @@ jobs:
         if: ${{ github.event_name == 'push' || inputs.verification == 'markdown-cleanup-simulation' }}
         shell: pwsh
         run: |
-          python -m pytest -q developer/tests/test_markdown_cleanup.py
+          go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 -run '^TestCleanup' ./internal/machine
           if ($LASTEXITCODE -ne 0) {
             throw "Markdown cleanup automation tests failed."
           }
@@ -207,7 +249,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null
           $outputPath = ".artifacts/markdown-cleanup-simulation.json"
 
-          python -m developer.automation.markdown_cleanup simulate --output $outputPath
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev markdown-cleanup simulate --output $outputPath
           if ($LASTEXITCODE -ne 0) {
             throw "Markdown cleanup simulation execution failed."
           }
@@ -294,14 +336,11 @@ jobs:
           cache: "pip"
           cache-dependency-path: pyproject.toml
 
-      - name: Install PP transition verifier dependencies
-        shell: pwsh
-        run: |
-          python -m pip install "PyYAML>=6.0,<7" "jsonschema>=4.23,<5"
-          if ($LASTEXITCODE -ne 0) {
-            throw "Failed to install PP transition verifier dependency."
-          }
-          "PP_VERIFY_PYTHON=python" >> $env:GITHUB_ENV
+      - name: Set up Go PP transition verification
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
 
       - name: Resolve introduced commit baseline
         id: pp-base
@@ -350,7 +389,7 @@ jobs:
           PP_HEAD: ${{ github.sha }}
           PYTHONPATH: ".:src"
         run: |
-          & $env:PP_VERIFY_PYTHON -m developer.automation.pp.pp_remote_verify range --base $env:PP_BASE --head $env:PP_HEAD
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev pp range --base $env:PP_BASE --head $env:PP_HEAD
           if ($LASTEXITCODE -ne 0) {
             throw "Remote PP transition verification failed."
           }
@@ -381,8 +420,89 @@ jobs:
             -Body $body
 
 
+  pra-registry-validation:
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch' && inputs.verification == 'policy-responsibility-analysis') }}
+    runs-on: ubuntu-latest
+    env:
+      PTSIP_EXECUTION_BRANCH: ${{ github.ref_name }}
+      PTSIP_EXECUTION_SHA: ${{ github.sha }}
+    steps:
+      - name: Checkout exact PRA registry source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.14 for PRA registry verification
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
+
+      - name: Install PRA registry verifier dependencies
+        shell: pwsh
+        run: |
+          python -m pip install -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install PRA registry verification environment."
+          }
+
+      - name: Set up Go Developer automation for PRA registry verification
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+
+      - name: Verify registry-first PRA lifecycle plane
+        shell: pwsh
+        env:
+          PYTHONPATH: ".:src"
+        run: |
+          go -C developer/tests test ./policy/lifecycle
+          if ($LASTEXITCODE -ne 0) {
+            throw "Native Go policy responsibility lifecycle tests failed."
+          }
+          python -m pytest -q src/tests/ptsip/policy_responsibility_analysis/test_mode_registration.py
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA Test Mode registration regression failed."
+          }
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-responsibility validate --analysis-id PRA-0014
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA analysis-id resolution failed."
+          }
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-responsibility validate --subject-type POLICY_ANALYSIS --subject-id POLICY_ANALYSIS --analysis-kind REGISTRY_FIRST_DISCOVERY
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA subject-key resolution failed."
+          }
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-validator validate
+          if ($LASTEXITCODE -ne 0) {
+            throw "Developer policy validation failed after PRA registry migration."
+          }
+
+      - name: Verify registry-first PRA Go plane
+        shell: pwsh
+        run: |
+          go -C developer/automation vet -tags grammar_subset,grammar_subset_python ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA registry vet failed."
+          }
+          go -C developer/automation test -tags grammar_subset,grammar_subset_python ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA registry tests failed."
+          }
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-responsibility validate --analysis-id PRA-0014
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA analysis-id resolution failed."
+          }
+          go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-responsibility validate --subject-type POLICY_ANALYSIS --subject-id POLICY_ANALYSIS --analysis-kind REGISTRY_FIRST_DISCOVERY
+          if ($LASTEXITCODE -ne 0) {
+            throw "Go PRA subject-key resolution failed."
+          }
+
+
   test-build:
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.verification != 'policy-lifecycle' && inputs.verification != 'agent-context-migration' && inputs.verification != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && github.ref_name == 'dev/0.3.8' && startsWith(github.event.head_commit.message, 'release:')) }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.verification != 'policy-lifecycle' && inputs.verification != 'agent-context-migration' && inputs.verification != 'markdown-cleanup-simulation') || (github.event_name == 'push' && github.event.deleted == false && startsWith(github.event.head_commit.message, 'release:')) }}
     runs-on: ubuntu-latest
     env:
       VERIFICATION_MODE: ${{ github.event_name == 'push' && 'a3-prerelease' || inputs.verification }}
@@ -487,6 +607,21 @@ jobs:
             throw "Failed to install the repository for verification."
           }
 
+      - name: Set up Go for registered verification modules
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+          cache-dependency-path: developer/tests/go.sum
+
+      - name: Verify Go contracts during full verification
+        if: ${{ env.VERIFICATION_MODE == 'full' || env.VERIFICATION_MODE == 'a3-prerelease' }}
+        shell: pwsh
+        run: |
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -v ./...
+          if ($LASTEXITCODE -ne 0) {
+            throw "Root Family Go verification failed."
+          }
+
       - name: Resolve and run deterministic change verification
         if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a3-prerelease' }}
         shell: pwsh
@@ -533,17 +668,28 @@ jobs:
           else {
             Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
             foreach ($mode in $plan) {
+              $goTargets = @($mode.go)
+              foreach ($module in $goTargets) {
+                if ([string]::IsNullOrWhiteSpace($module)) { continue }
+                & go -C $module test -count=1 -v ./...
+                if ($LASTEXITCODE -ne 0) {
+                  throw "Test Mode '$($mode.id)' Go verification failed."
+                }
+              }
+
               $targets = @($mode.pytest)
-              if ($targets.Count -eq 0) {
-                throw "Test Mode '$($mode.id)' contains no pytest targets."
+              if ($goTargets.Count -eq 0 -and $targets.Count -eq 0) {
+                throw "Test Mode '$($mode.id)' contains no execution targets."
               }
 
               Write-Host "=== Test Mode: $($mode.id) ==="
               Write-Host "Verification component: $($mode.component_ref)"
-              Write-Host "pytest targets: $($targets -join ', ')"
-              & python -m pytest -q @targets
-              if ($LASTEXITCODE -ne 0) {
-                throw "Test Mode '$($mode.id)' failed."
+              if ($targets.Count -gt 0) {
+                Write-Host "pytest targets: $($targets -join ', ')"
+                & python -m pytest -q @targets
+                if ($LASTEXITCODE -ne 0) {
+                  throw "Test Mode '$($mode.id)' pytest verification failed."
+                }
               }
             }
           }
@@ -583,23 +729,23 @@ jobs:
         if: ${{ env.VERIFICATION_MODE == 'a3-prerelease' }}
         shell: pwsh
         run: |
-          python -m pytest -q tests/ptsip/validation/test_local_profile_catalog.py
+          python -m pytest -q src/tests/ptsip/validation/test_local_profile_catalog.py
           if ($LASTEXITCODE -ne 0) {
             throw "Canonical .ptsip local profile catalog regression failed."
           }
-          python -m pytest -q tests/ptsip/repository/test_self_profile.py::test_repository_uses_canonical_ptsip_namespace_and_json_indexes
+          python -m pytest -q src/tests/ptsip/repository/test_self_profile.py::test_repository_uses_canonical_ptsip_namespace_and_json_indexes
           if ($LASTEXITCODE -ne 0) {
             throw "Canonical .ptsip repository namespace regression failed."
           }
-          python -m pytest -q tests/ptsip/identity/test_tool_identity.py tests/ptsip/cli/test_runtime_surface.py
+          python -m pytest -q src/tests/ptsip/identity/test_tool_identity.py src/tests/ptsip/cli/test_runtime_surface.py
           if ($LASTEXITCODE -ne 0) {
             throw "0.3.8a3 Tool/runtime identity regression failed."
           }
-          python -m pytest -q tests/ptsip/test_release_readiness_030.py
+          python -m pytest -q src/tests/ptsip/test_release_readiness_030.py
           if ($LASTEXITCODE -ne 0) {
             throw "0.3.8a3 release-readiness contract regression failed."
           }
-          python -m pytest -q tests/ptsip/test_context_plane.py
+          python -m pytest -q src/tests/ptsip/test_context_plane.py
           if ($LASTEXITCODE -ne 0) {
             throw "0.3.8a3 Context Plane migration regression failed."
           }
@@ -615,15 +761,15 @@ jobs:
         if: ${{ env.VERIFICATION_MODE == 'full' }}
         shell: pwsh
         run: |
-          python -m pytest -q tests/agent_contracts
+          python -m pytest -q src/tests/agent_contracts
           if ($LASTEXITCODE -ne 0) {
             throw "Agent contract test corpus failed."
           }
-          python -m pytest -q tests/ptsip
+          python -m pytest -q src/tests/ptsip
           if ($LASTEXITCODE -ne 0) {
             throw "PTSIP product and release test corpus failed."
           }
-          python -m pytest -q tests/vpms
+          python -m pytest -q src/tests/vpms
           if ($LASTEXITCODE -ne 0) {
             throw "VPMS test corpus failed."
           }
@@ -634,9 +780,9 @@ jobs:
         run: |
           ptsip --version
           ptsip spec
-          ptsip validate . --profile developer/profiles/ptsip-repository.yaml --json
-          ptsip clarify . --profile developer/profiles/ptsip-repository.yaml --json
-          ptsip gate . --profile developer/profiles/ptsip-repository.yaml --coordination local --json
+          ptsip validate . --profile .ptsip/profiles/main.ptsip.yaml --json
+          ptsip clarify . --profile .ptsip/profiles/main.ptsip.yaml --json
+          ptsip gate . --profile .ptsip/profiles/main.ptsip.yaml --coordination local --json
           ptsip conform --help
 
       - name: Build and verify distributions
@@ -905,7 +1051,7 @@ jobs:
           }
           $binding | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $bindingPath -Encoding UTF8
 
-          $conformOutput = & ptsip conform . --profile developer/profiles/ptsip-repository.yaml --artifact-evidence $evidencePath --json
+          $conformOutput = & ptsip conform . --profile .ptsip/profiles/main.ptsip.yaml --artifact-evidence $evidencePath --json
           $conformExit = $LASTEXITCODE
           if ($conformExit -notin @(0, 6)) {
             throw "Artifact-aware conformance failed with unexpected exit code $conformExit."

@@ -50,7 +50,7 @@
         },
         "value": {
           "type": "string",
-          "pattern": "^SFP-[0-9]{4}$"
+          "pattern": "^SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})$"
         }
       },
       "additionalProperties": false

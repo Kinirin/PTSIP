@@ -1,0 +1,219 @@
+.github/test_modes.yaml:16:        - tests/ptsip/clarification
+.github/test_modes.yaml:17:        - tests/ptsip/cli
+.github/test_modes.yaml:18:        - tests/ptsip/conformance
+.github/test_modes.yaml:19:        - tests/ptsip/control_plane
+.github/test_modes.yaml:20:        - tests/ptsip/governance/test_authority_runtime.py
+.github/test_modes.yaml:21:        - tests/ptsip/governance/test_authorization_transition.py
+.github/test_modes.yaml:22:        - tests/ptsip/identity
+.github/test_modes.yaml:23:        - tests/ptsip/inspection
+.github/test_modes.yaml:24:        - tests/ptsip/integration
+.github/test_modes.yaml:25:        - tests/ptsip/pilot
+.github/test_modes.yaml:26:        - tests/ptsip/topology
+.github/test_modes.yaml:27:        - tests/ptsip/validation
+.github/test_modes.yaml:28:        - tests/ptsip/repository/test_profile_convergence_037.py
+.github/test_modes.yaml:29:        - tests/ptsip/repository/test_profile_transition_037.py
+.github/test_modes.yaml:30:        - tests/ptsip/repository/test_remote_discovery.py
+.github/test_modes.yaml:31:        - tests/ptsip/repository/test_snapshot_integrity.py
+.github/test_modes.yaml:32:        - tests/ptsip/test_adoption.py
+.github/test_modes.yaml:33:        - tests/ptsip/test_clarification.py
+.github/test_modes.yaml:34:        - tests/ptsip/test_merge_gate_followup_030.py
+.github/test_modes.yaml:35:        - tests/ptsip/test_proposed_component.py
+.github/test_modes.yaml:36:        - tests/ptsip/test_context_plane.py
+.github/test_modes.yaml:42:        - tests/ptsip/evidence
+.github/test_modes.yaml:48:        - tests/ptsip/source_compat
+.github/test_modes.yaml:54:        - tests/ptsip/migration
+.github/test_modes.yaml:60:        - tests/ptsip/remediation
+.github/test_modes.yaml:66:        - tests/vpms/domain
+.github/test_modes.yaml:67:        - tests/vpms/execution
+.github/test_modes.yaml:68:        - tests/vpms/integration
+.github/test_modes.yaml:69:        - tests/vpms/architecture
+.github/test_modes.yaml:70:        - tests/vpms/selection
+.github/test_modes.yaml:76:        - tests/vpms/contracts
+.github/test_modes.yaml:82:        - tests/ptsip/contracts
+.github/test_modes.yaml:83:        - tests/ptsip/agent_contracts/test_contract_plane.py
+.github/test_modes.yaml:84:        - tests/ptsip/agent_contracts/test_operation_loading.py
+.github/test_modes.yaml:85:        - tests/ptsip/governance/test_contracts.py
+.github/test_modes.yaml:91:        - tests/ptsip/agent_contracts/test_candidate_parity.py
+.github/test_modes.yaml:92:        - tests/ptsip/agent_contracts/test_projection_bindings.py
+.github/test_modes.yaml:98:        - developer/tests/rootfamily
+.github/test_modes.yaml:100:        - tests/ptsip/repository/test_self_profile.py
+.github/test_modes.yaml:102:        - tests/ptsip/governance/test_policy_plan_binding.py
+.github/test_modes.yaml:103:        - tests/ptsip/governance/test_policy_plan_resolver_tracker.py
+.github/test_modes.yaml:109:        - tests/agent_contracts/test_resolver.py
+.github/test_modes.yaml:115:        - tests/agent_contracts/test_contract_plane.py
+.github/test_modes.yaml:116:        - tests/agent_contracts/test_promotion_contract.py
+.github/test_modes.yaml:122:        - tests/ptsip/test_release_readiness_030.py
+.github/test_modes.yaml:128:        - tests/ptsip/test_modes
+.github/workflows/tooling-test.yml:66:          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py developer/tests/test_policy_transition_contract.py developer/tests/test_policy_plan_identity_contract.py developer/tests/test_policy_plan_binding_schema_v2.py tests/ptsip/governance/test_policy_plan_binding.py tests/ptsip/governance/test_policy_plan_resolver_tracker.py developer/tests/test_policy_plan_consistency_verifier.py developer/tests/test_policy_version_contract.py developer/tests/test_policy_plan_output_schema_identity.py developer/tests/test_tooling_workflow_routing.py
+.github/workflows/tooling-test.yml:161:            tests/agent_contracts/test_contract_plane.py `
+.github/workflows/tooling-test.yml:162:            tests/agent_contracts/test_resolver.py `
+.github/workflows/tooling-test.yml:163:            developer/tests/test_repository_state_resolver.py `
+.github/workflows/tooling-test.yml:164:            developer/tests/test_agent_context_migration.py 2>&1 |
+.github/workflows/tooling-test.yml:209:          python -m pytest -q developer/tests/test_markdown_cleanup.py
+.github/workflows/tooling-test.yml:507:          go-version-file: developer/tests/rootfamily/go.mod
+.github/workflows/tooling-test.yml:508:          cache-dependency-path: developer/tests/rootfamily/go.sum
+.github/workflows/tooling-test.yml:514:          go -C developer/tests/rootfamily test -count=1 -v ./...
+.github/workflows/tooling-test.yml:622:          python -m pytest -q tests/ptsip/validation/test_local_profile_catalog.py
+.github/workflows/tooling-test.yml:626:          python -m pytest -q tests/ptsip/repository/test_self_profile.py::test_repository_uses_canonical_ptsip_namespace_and_json_indexes
+.github/workflows/tooling-test.yml:630:          python -m pytest -q tests/ptsip/identity/test_tool_identity.py tests/ptsip/cli/test_runtime_surface.py
+.github/workflows/tooling-test.yml:634:          python -m pytest -q tests/ptsip/test_release_readiness_030.py
+.github/workflows/tooling-test.yml:638:          python -m pytest -q tests/ptsip/test_context_plane.py
+.github/workflows/tooling-test.yml:654:          python -m pytest -q tests/agent_contracts
+.github/workflows/tooling-test.yml:658:          python -m pytest -q tests/ptsip
+.github/workflows/tooling-test.yml:662:          python -m pytest -q tests/vpms
+.ptsip/profiles/main.ptsip.yaml:523:      - "tests/ptsip/clarification/**"
+.ptsip/profiles/main.ptsip.yaml:524:      - "tests/ptsip/cli/**"
+.ptsip/profiles/main.ptsip.yaml:525:      - "tests/ptsip/conformance/**"
+.ptsip/profiles/main.ptsip.yaml:526:      - "tests/ptsip/control_plane/**"
+.ptsip/profiles/main.ptsip.yaml:527:      - "tests/ptsip/governance/test_authority_runtime.py"
+.ptsip/profiles/main.ptsip.yaml:528:      - "tests/ptsip/governance/test_authorization_transition.py"
+.ptsip/profiles/main.ptsip.yaml:529:      - "tests/ptsip/identity/**"
+.ptsip/profiles/main.ptsip.yaml:530:      - "tests/ptsip/inspection/**"
+.ptsip/profiles/main.ptsip.yaml:531:      - "tests/ptsip/integration/**"
+.ptsip/profiles/main.ptsip.yaml:532:      - "tests/ptsip/pilot/**"
+.ptsip/profiles/main.ptsip.yaml:533:      - "tests/ptsip/topology/**"
+.ptsip/profiles/main.ptsip.yaml:534:      - "tests/ptsip/validation/**"
+.ptsip/profiles/main.ptsip.yaml:535:      - "tests/ptsip/repository/test_profile_convergence_037.py"
+.ptsip/profiles/main.ptsip.yaml:536:      - "tests/ptsip/repository/test_profile_transition_037.py"
+.ptsip/profiles/main.ptsip.yaml:537:      - "tests/ptsip/repository/test_remote_discovery.py"
+.ptsip/profiles/main.ptsip.yaml:538:      - "tests/ptsip/repository/test_snapshot_integrity.py"
+.ptsip/profiles/main.ptsip.yaml:539:      - "tests/ptsip/test_adoption.py"
+.ptsip/profiles/main.ptsip.yaml:540:      - "tests/ptsip/test_clarification.py"
+.ptsip/profiles/main.ptsip.yaml:541:      - "tests/ptsip/test_merge_gate_followup_030.py"
+.ptsip/profiles/main.ptsip.yaml:542:      - "tests/ptsip/test_proposed_component.py"
+.ptsip/profiles/main.ptsip.yaml:543:      - "tests/ptsip/test_context_plane.py"
+.ptsip/profiles/main.ptsip.yaml:551:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:552:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:574:      - "tests/ptsip/evidence/**"
+.ptsip/profiles/main.ptsip.yaml:582:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:583:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:592:      - "tests/ptsip/source_compat/**"
+.ptsip/profiles/main.ptsip.yaml:600:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:601:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:611:      - "tests/ptsip/migration/**"
+.ptsip/profiles/main.ptsip.yaml:619:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:620:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:630:      - "tests/ptsip/remediation/**"
+.ptsip/profiles/main.ptsip.yaml:638:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:639:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:650:      - "tests/vpms/domain/**"
+.ptsip/profiles/main.ptsip.yaml:651:      - "tests/vpms/execution/**"
+.ptsip/profiles/main.ptsip.yaml:652:      - "tests/vpms/integration/**"
+.ptsip/profiles/main.ptsip.yaml:653:      - "tests/vpms/architecture/**"
+.ptsip/profiles/main.ptsip.yaml:654:      - "tests/vpms/selection/**"
+.ptsip/profiles/main.ptsip.yaml:677:      - "tests/vpms/contracts/**"
+.ptsip/profiles/main.ptsip.yaml:705:      - "tests/ptsip/contracts/**"
+.ptsip/profiles/main.ptsip.yaml:706:      - "tests/ptsip/agent_contracts/test_contract_plane.py"
+.ptsip/profiles/main.ptsip.yaml:707:      - "tests/ptsip/agent_contracts/test_operation_loading.py"
+.ptsip/profiles/main.ptsip.yaml:708:      - "tests/ptsip/governance/test_contracts.py"
+.ptsip/profiles/main.ptsip.yaml:716:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:717:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:732:      - "tests/ptsip/agent_contracts/test_candidate_parity.py"
+.ptsip/profiles/main.ptsip.yaml:733:      - "tests/ptsip/agent_contracts/test_projection_bindings.py"
+.ptsip/profiles/main.ptsip.yaml:769:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:770:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:777:      - "tests/agent_contracts/test_resolver.py"
+.ptsip/profiles/main.ptsip.yaml:804:      - "tests/agent_contracts/test_contract_plane.py"
+.ptsip/profiles/main.ptsip.yaml:805:      - "tests/agent_contracts/test_promotion_contract.py"
+.ptsip/profiles/main.ptsip.yaml:842:      - "tests/ptsip/repository/test_self_profile.py"
+.ptsip/profiles/main.ptsip.yaml:843:      - "developer/tests/**"
+.ptsip/profiles/main.ptsip.yaml:844:      - "tests/ptsip/governance/test_policy_plan_binding.py"
+.ptsip/profiles/main.ptsip.yaml:845:      - "tests/ptsip/governance/test_policy_plan_resolver_tracker.py"
+.ptsip/profiles/main.ptsip.yaml:853:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:854:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:873:      - "tests/ptsip/test_release_readiness_030.py"
+.ptsip/profiles/main.ptsip.yaml:881:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:882:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:904:      - "tests/ptsip/_test_support.py"
+.ptsip/profiles/main.ptsip.yaml:905:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:923:      - "tests/ptsip/test_modes/**"
+.ptsip/profiles/main.ptsip.yaml:933:      - "tests/ptsip/conftest.py"
+.ptsip/profiles/main.ptsip.yaml:981:      - "tests/**"
+developer/automation/implementation_workflows.yaml:27:        - tests/ptsip/control_plane/test_github_authority.py
+developer/automation/implementation_workflows.yaml:47:          - tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt
+developer/automation/implementation_workflows.yaml:62:          - tests/ptsip/control_plane/test_github_authority.py::test_repeated_github_proposal_is_terminal_without_reapplication
+developer/automation/implementation_workflows.yaml:73:          - tests/ptsip/control_plane/test_github_authority.py::test_normal_github_resolution_still_requires_local_application
+developer/automation/implementation_workflows.yaml:86:          - tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt
+developer/automation/implementation_workflows.yaml:89:        - tests/ptsip/test_proposed_component.py::test_cli_registers_and_approves_nonexistent_component_without_active_profile_projection
+developer/automation/implementation_workflows.yaml:90:        - tests/ptsip/control_plane/test_github_authority.py::test_github_authority_uses_component_scope_not_local_clarification_id
+developer/automation/implementation_workflows.yaml:91:        - tests/ptsip/control_plane/test_github_authority_reconciliation.py::test_application_receipt_is_explicitly_local_projection
+developer/automation/implementation_workflows.yaml:93:        - node: tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt
+developer/automation/implementation_workflows.yaml:98:        - node: tests/ptsip/control_plane/test_github_authority.py::test_repeated_github_proposal_is_terminal_without_reapplication
+developer/automation/implementation_workflows.yaml:102:        - node: tests/ptsip/control_plane/test_github_authority.py::test_normal_github_resolution_still_requires_local_application
+developer/automation/implementation_workflows.yaml:107:        - tests/ptsip/test_proposed_component.py
+developer/automation/implementation_workflows.yaml:108:        - tests/ptsip/control_plane/test_github_authority.py
+developer/automation/implementation_workflows.yaml:109:        - tests/ptsip/control_plane/test_github_authority_reconciliation.py
+developer/policy/policy-resolver-bindings/bindings.jsonl:56:{"scope":"tests/ptsip/agent_contracts","inherit_to_descendants":true,"default_refs":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]}],"operations":{"PLAN":[{"policy_id":"MPD-ARCH-0001","sections":["unit_mpd_plan_0001_50410dc74c9f","unit_mpd_plan_0001_7f56c7fed0e5","unit_mpd_plan_0001_dfacd421d3a0","unit_mpd_plan_0001_edc33d7514e8","unit_mpd_plan_0001_3297aa85e519"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_plan_0001_2045fc60ef62","unit_mpd_spec_0006_d25095d9c02a"]},{"policy_id":"MPD-CTRL-0001","sections":["unit_mpd_plan_0001_6560d943f53d"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]}],"RELEASE":[{"policy_id":"MPD-RECORD-0001","sections":["unit_mpd_rels_0001_8b9a13c6427c"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_plan_0002_d909cd570b48"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a"]}],"MODIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e","unit_mpd_spec_0022_9826b3cb2a95"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413","unit_mpd_0015_6f37556a3bbc"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}],"VERIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e","unit_mpd_spec_0022_9826b3cb2a95"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413","unit_mpd_0015_6f37556a3bbc"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}]}}
+developer/policy/policy-resolver-bindings/bindings.jsonl:57:{"scope":"tests/ptsip/conformance","inherit_to_descendants":true,"default_refs":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]}],"operations":{"PLAN":[{"policy_id":"MPD-ARCH-0001","sections":["unit_mpd_plan_0001_50410dc74c9f","unit_mpd_plan_0001_7f56c7fed0e5","unit_mpd_plan_0001_dfacd421d3a0","unit_mpd_plan_0001_edc33d7514e8","unit_mpd_plan_0001_3297aa85e519"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_plan_0001_2045fc60ef62","unit_mpd_spec_0006_d25095d9c02a"]},{"policy_id":"MPD-CTRL-0001","sections":["unit_mpd_plan_0001_6560d943f53d"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]}],"RELEASE":[{"policy_id":"MPD-RECORD-0001","sections":["unit_mpd_rels_0001_8b9a13c6427c"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_plan_0002_d909cd570b48"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a"]}],"MODIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}],"VERIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}]}}
+developer/policy/policy-resolver-bindings/bindings.jsonl:58:{"scope":"tests/ptsip/migration","inherit_to_descendants":true,"default_refs":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]}],"operations":{"PLAN":[{"policy_id":"MPD-ARCH-0001","sections":["unit_mpd_plan_0001_50410dc74c9f","unit_mpd_plan_0001_7f56c7fed0e5","unit_mpd_plan_0001_dfacd421d3a0","unit_mpd_plan_0001_edc33d7514e8","unit_mpd_plan_0001_3297aa85e519"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_plan_0001_2045fc60ef62","unit_mpd_spec_0006_d25095d9c02a"]},{"policy_id":"MPD-CTRL-0001","sections":["unit_mpd_plan_0001_6560d943f53d"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]}],"RELEASE":[{"policy_id":"MPD-RECORD-0001","sections":["unit_mpd_rels_0001_8b9a13c6427c"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_plan_0002_d909cd570b48"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a"]}],"MODIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_0015_6f37556a3bbc"]},{"policy_id":"MPD-OPS-0001","sections":["unit_mpd_0015_aecdc747228d"]},{"policy_id":"MPD-GOV-0001","sections":["unit_mpd_0015_c35e38d46280"]},{"policy_id":"MPD-ASSURE-0001","sections":["unit_mpd_veri_0005_b5e5149c8490"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}],"VERIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_0015_6f37556a3bbc"]},{"policy_id":"MPD-OPS-0001","sections":["unit_mpd_0015_aecdc747228d"]},{"policy_id":"MPD-GOV-0001","sections":["unit_mpd_0015_c35e38d46280"]},{"policy_id":"MPD-ASSURE-0001","sections":["unit_mpd_veri_0005_b5e5149c8490"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}]}}
+developer/policy/policy-resolver-bindings/bindings.jsonl:59:{"scope":"tests/ptsip/repository","inherit_to_descendants":true,"default_refs":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]}],"operations":{"PLAN":[{"policy_id":"MPD-ARCH-0001","sections":["unit_mpd_plan_0001_50410dc74c9f","unit_mpd_plan_0001_7f56c7fed0e5","unit_mpd_plan_0001_dfacd421d3a0","unit_mpd_plan_0001_edc33d7514e8","unit_mpd_plan_0001_3297aa85e519"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_plan_0001_2045fc60ef62","unit_mpd_spec_0006_d25095d9c02a"]},{"policy_id":"MPD-CTRL-0001","sections":["unit_mpd_plan_0001_6560d943f53d"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]}],"RELEASE":[{"policy_id":"MPD-RECORD-0001","sections":["unit_mpd_rels_0001_8b9a13c6427c"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_plan_0002_d909cd570b48"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a"]}],"MODIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413"]},{"policy_id":"MPD-OPS-0001","sections":["unit_mpd_0015_aecdc747228d"]},{"policy_id":"MPD-ASSURE-0001","sections":["unit_mpd_veri_0005_b5e5149c8490"]}],"VERIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413"]},{"policy_id":"MPD-OPS-0001","sections":["unit_mpd_0015_aecdc747228d"]},{"policy_id":"MPD-ASSURE-0001","sections":["unit_mpd_veri_0005_b5e5149c8490"]}]}}
+developer/policy/policy-resolver-bindings/bindings.jsonl:60:{"scope":"tests/ptsip/validation","inherit_to_descendants":true,"default_refs":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]}],"operations":{"PLAN":[{"policy_id":"MPD-ARCH-0001","sections":["unit_mpd_plan_0001_50410dc74c9f","unit_mpd_plan_0001_7f56c7fed0e5","unit_mpd_plan_0001_dfacd421d3a0","unit_mpd_plan_0001_edc33d7514e8","unit_mpd_plan_0001_3297aa85e519"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_plan_0001_2045fc60ef62","unit_mpd_spec_0006_d25095d9c02a"]},{"policy_id":"MPD-CTRL-0001","sections":["unit_mpd_plan_0001_6560d943f53d"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]}],"RELEASE":[{"policy_id":"MPD-RECORD-0001","sections":["unit_mpd_rels_0001_8b9a13c6427c"]},{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_plan_0002_d909cd570b48"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a"]}],"MODIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}],"VERIFY":[{"policy_id":"MPD-INTENT-0001","sections":["unit_mpd_0010_497ac087b73f"]},{"policy_id":"MPD-INFO-0001","sections":["unit_mpd_spec_0006_d25095d9c02a","unit_mpd_spec_0006_d1ce0ab7249e"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412","unit_mpd_spec_0021_26110959de43"]},{"policy_id":"MPD-CNTR-0001","sections":["unit_mpd_spec_0021_6b01d5769413"]},{"policy_id":"MPD-CHANGE-0001","sections":["unit_mpd_migr_0005_ded771d9eb72"]}]}}
+developer/policy/policy-resolver-bindings/bindings.jsonl:78:{"scope":"developer/tests/rootfamily","inherit_to_descendants":true,"default_refs":[{"policy_id":"MPD-ASSURE-0003","sections":["root_family_transition_verification"]},{"policy_id":"MPD-REAL-0003","sections":["root_family_test_implementation"]},{"policy_id":"MPD-NORM-0001","sections":["unit_mpd_spec_0021_ac00c052d412"]}]}
+developer/profiles/ptsip-repository.yaml:523:      - "tests/ptsip/clarification/**"
+developer/profiles/ptsip-repository.yaml:524:      - "tests/ptsip/cli/**"
+developer/profiles/ptsip-repository.yaml:525:      - "tests/ptsip/conformance/**"
+developer/profiles/ptsip-repository.yaml:526:      - "tests/ptsip/control_plane/**"
+developer/profiles/ptsip-repository.yaml:527:      - "tests/ptsip/governance/test_authority_runtime.py"
+developer/profiles/ptsip-repository.yaml:528:      - "tests/ptsip/governance/test_authorization_transition.py"
+developer/profiles/ptsip-repository.yaml:529:      - "tests/ptsip/identity/**"
+developer/profiles/ptsip-repository.yaml:530:      - "tests/ptsip/inspection/**"
+developer/profiles/ptsip-repository.yaml:531:      - "tests/ptsip/integration/**"
+developer/profiles/ptsip-repository.yaml:532:      - "tests/ptsip/pilot/**"
+developer/profiles/ptsip-repository.yaml:533:      - "tests/ptsip/topology/**"
+developer/profiles/ptsip-repository.yaml:534:      - "tests/ptsip/validation/**"
+developer/profiles/ptsip-repository.yaml:535:      - "tests/ptsip/repository/test_profile_convergence_037.py"
+developer/profiles/ptsip-repository.yaml:536:      - "tests/ptsip/repository/test_profile_transition_037.py"
+developer/profiles/ptsip-repository.yaml:537:      - "tests/ptsip/repository/test_remote_discovery.py"
+developer/profiles/ptsip-repository.yaml:538:      - "tests/ptsip/repository/test_snapshot_integrity.py"
+developer/profiles/ptsip-repository.yaml:539:      - "tests/ptsip/test_adoption.py"
+developer/profiles/ptsip-repository.yaml:540:      - "tests/ptsip/test_clarification.py"
+developer/profiles/ptsip-repository.yaml:541:      - "tests/ptsip/test_merge_gate_followup_030.py"
+developer/profiles/ptsip-repository.yaml:542:      - "tests/ptsip/test_proposed_component.py"
+developer/profiles/ptsip-repository.yaml:543:      - "tests/ptsip/test_context_plane.py"
+developer/profiles/ptsip-repository.yaml:551:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:552:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:574:      - "tests/ptsip/evidence/**"
+developer/profiles/ptsip-repository.yaml:582:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:583:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:592:      - "tests/ptsip/source_compat/**"
+developer/profiles/ptsip-repository.yaml:600:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:601:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:611:      - "tests/ptsip/migration/**"
+developer/profiles/ptsip-repository.yaml:619:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:620:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:630:      - "tests/ptsip/remediation/**"
+developer/profiles/ptsip-repository.yaml:638:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:639:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:650:      - "tests/vpms/domain/**"
+developer/profiles/ptsip-repository.yaml:651:      - "tests/vpms/execution/**"
+developer/profiles/ptsip-repository.yaml:652:      - "tests/vpms/integration/**"
+developer/profiles/ptsip-repository.yaml:653:      - "tests/vpms/architecture/**"
+developer/profiles/ptsip-repository.yaml:654:      - "tests/vpms/selection/**"
+developer/profiles/ptsip-repository.yaml:677:      - "tests/vpms/contracts/**"
+developer/profiles/ptsip-repository.yaml:705:      - "tests/ptsip/contracts/**"
+developer/profiles/ptsip-repository.yaml:706:      - "tests/ptsip/agent_contracts/test_contract_plane.py"
+developer/profiles/ptsip-repository.yaml:707:      - "tests/ptsip/agent_contracts/test_operation_loading.py"
+developer/profiles/ptsip-repository.yaml:708:      - "tests/ptsip/governance/test_contracts.py"
+developer/profiles/ptsip-repository.yaml:716:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:717:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:732:      - "tests/ptsip/agent_contracts/test_candidate_parity.py"
+developer/profiles/ptsip-repository.yaml:733:      - "tests/ptsip/agent_contracts/test_projection_bindings.py"
+developer/profiles/ptsip-repository.yaml:769:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:770:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:777:      - "tests/agent_contracts/test_resolver.py"
+developer/profiles/ptsip-repository.yaml:804:      - "tests/agent_contracts/test_contract_plane.py"
+developer/profiles/ptsip-repository.yaml:805:      - "tests/agent_contracts/test_promotion_contract.py"
+developer/profiles/ptsip-repository.yaml:842:      - "tests/ptsip/repository/test_self_profile.py"
+developer/profiles/ptsip-repository.yaml:843:      - "developer/tests/**"
+developer/profiles/ptsip-repository.yaml:844:      - "tests/ptsip/governance/test_policy_plan_binding.py"
+developer/profiles/ptsip-repository.yaml:845:      - "tests/ptsip/governance/test_policy_plan_resolver_tracker.py"
+developer/profiles/ptsip-repository.yaml:853:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:854:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:873:      - "tests/ptsip/test_release_readiness_030.py"
+developer/profiles/ptsip-repository.yaml:881:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:882:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:904:      - "tests/ptsip/_test_support.py"
+developer/profiles/ptsip-repository.yaml:905:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:923:      - "tests/ptsip/test_modes/**"
+developer/profiles/ptsip-repository.yaml:933:      - "tests/ptsip/conftest.py"
+developer/profiles/ptsip-repository.yaml:981:      - "tests/**"

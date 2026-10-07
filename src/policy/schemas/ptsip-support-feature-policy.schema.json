@@ -95,7 +95,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -117,7 +117,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -139,7 +139,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -161,7 +161,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [

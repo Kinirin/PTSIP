@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from ptsip.model import Classification, ResponsibilityRelationshipType
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
 
 @dataclass(frozen=True)
 class TargetSemantics:

@@ -1,0 +1,77 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0014
+  source_ref: PROJECT_OWNER_DIRECT_INSTRUCTION:2026-10-06:REGISTRY_FIRST_PRA_DISCOVERY
+  responsibilities:
+  - responsibility_id: R01
+    statement: Policy Analysis owns opaque stable PRA identity, canonical registry metadata, Analysis-local schema placement, and date-only provenance.
+    authority_relation: OWN
+    authority_subject: POLICY_ANALYSIS_INFORMATION_IDENTITY
+    lifecycle_scope: POLICY_ANALYSIS_ARTIFACT_IDENTITY_AND_SCHEMA_OWNERSHIP
+    cohesion_key: POLICY_ANALYSIS_REGISTRY_FIRST_INFORMATION
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids:
+      - MPD-INFO-0001
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-INFO-0001
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R02
+    statement: Policy Analysis discovery is registry-only and callers resolve records by registered identity or registered subject-kind key, never by direct path or filename inference.
+    authority_relation: OWN
+    authority_subject: POLICY_ANALYSIS_DISCOVERY_INTERFACE
+    lifecycle_scope: POLICY_ANALYSIS_LOOKUP_AND_CALLER_CONTRACT
+    cohesion_key: POLICY_ANALYSIS_REGISTRY_FIRST_INTERFACE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids:
+      - MPD-CNTR-0001
+      - MPD-CNTR-0003
+      - MPD-CNTR-0004
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-CNTR-0004
+        section: direct_root_automation_contract
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  decision:
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: INFO
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+    split_required: true
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: INFO
+      cohesion_key: POLICY_ANALYSIS_REGISTRY_FIRST_INFORMATION
+      responsibility_ids: [R01]
+      cohesion_rationale: Identity, registry metadata and Analysis-local schema placement are one information contract.
+    - group_id: G02
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+      cohesion_key: POLICY_ANALYSIS_REGISTRY_FIRST_INTERFACE
+      responsibility_ids: [R02]
+      cohesion_rationale: Registry-only caller lookup and fail-closed resolution are one automation interface contract.

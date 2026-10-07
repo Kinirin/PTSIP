@@ -1,0 +1,146 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: ASSURE
+policy:
+  id: MPD-ASSURE-0001
+  title: ASSURE authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+  statement: 개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에
+    구속된 검증 판정을 소유한다.
+exclusive_kernel:
+- DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+- DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+      statement: 기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를
+        평가한다.
+      non_substitutability: CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이
+        충족되지 않는다.
+    - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+      statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와
+        PTSIP conformance 및 VPMS purpose를 구별한다.
+      non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도
+        미검증 SHA를 PASS로 만들 수 없다.
+    source_scope:
+    - MPD-0011
+    - MPD-0012
+    - MPD-SPEC-0011
+    - MPD-VERI-0002
+    - MPD-VERI-0003
+    - MPD-VERI-0004
+    - MPD-VERI-0005
+  unit_mpd_0011_1491da54b643: MPD-VERI-0003
+  unit_mpd_0012_d42d2230d10e:
+    user_reported_local_validation:
+      pytest_result: 1 passed in 2.32s
+      validator_counts:
+        specs: 8
+        operations: 5
+        actions: 18
+        conditions: 23
+        gates: 3
+        io_schemas: 15
+        vocabularies: 4
+        rules: 48
+        bindings: 1
+      evidence_scope: PRE_MPD_0012_EXISTING_AGENT_CONTRACT_PLANE
+      assistant_independent_execution: false
+    markdown_cleanup_automation:
+      implementation_state: MATERIALIZED
+      local_test_execution: NOT_RUN_BY_ASSISTANT
+      simulation_execution: READY_VERIFIED_36034253999
+    agent_context_migration_m5:
+      source_sha: 48c44448cdbb19fa5c666ad680e85ee4aa72e828
+      workflow_run_id: 36031848090
+      workflow_job_id: 107743172276
+      result: PASS
+      machine_contract_specs: 15
+      machine_contract_rules: 156
+      machine_contract_vocabularies: 5
+  unit_mpd_spec_0011_8b9a13c6427c:
+    tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
+    existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
+    repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
+    spec_0_3_7_draft_remains_tool_development_normative_family: true
+    superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+  unit_mpd_veri_0002_260ced325054:
+    scope: ISOLATED_FIXTURE_REPOSITORIES
+  unit_mpd_veri_0003_c4b59fc85667:
+    local_pre_commit: AUTO_RECONCILE_AND_VERIFY
+    remote: VERIFY_ONLY
+    remote_must_detect_local_hook_bypass: true
+    remote_must_validate_every_introduced_commit: true
+    release: EXACT_SHA_VERIFY_ONLY
+    pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
+  unit_mpd_veri_0004_f699ce5ccfa4:
+    model: R2_BEHAVIOR_SEMANTIC_REQUIRED
+    repository_entry:
+      scope: AGENT_CONTRACT_REQUIRED_SEMANTIC_CHECKS
+      source_ownership_authority: DECLARED_PROJECT_PROFILE_COMPONENTS_AND_ASSOCIATED_ARTIFACTS
+      verification_relationship_authority: DECLARED_PROJECT_PROFILE_TYPED_RELATIONSHIPS
+      selection_authority: VERIFICATION_COMPONENT_ANALYSIS_INPUTS_AND_OWNED_TEST_INCLUDE
+      execution_authority: REPOSITORY_TEST_MODE_REGISTRY
+      source_ownership_required_before_mode_selection: true
+      test_ownership_must_be_explicit_and_non_overlapping: true
+      test_mode_component_ref_must_resolve_test_owning_verification_component: true
+      execution_targets_must_be_within_component_test_ownership: true
+      required_changed_contract_path_must_select_applicable_verification: true
+      undeclared_source_owner: FAIL_CLOSED
+      missing_required_verification_entry: FAIL_CLOSED
+      registry_may_define_alternative_watch_paths: false
+      agent_may_infer_source_classification_or_verification_relationship: false
+      adding_analysis_inputs_alone_creates_source_ownership: false
+      unmapped_path_may_use_full_verification_fallback: false
+      targeted_debug_pass_replaces_required_automatic_verification: false
+    required_checks:
+    - IDENTITY_MATCH
+    - IMPLEMENTATION_RESOLUTION_VALID
+    - INPUT_CONTRACT_MATCH
+    - OUTPUT_CONTRACT_MATCH
+    - EFFECT_MATCH
+    - FAILURE_CONTRACT_MATCH
+    - COMPATIBILITY_MATCH
+    result_domain:
+    - PASS
+    - FAIL
+    - UNKNOWN
+    aggregate:
+      all_pass: AUTO_PROMOTE
+      any_fail: REJECT
+      unknown_without_fail: USER_REVIEW_REQUIRED
+    optional_verification:
+      promotion_blocking: false
+      exact_optional_set: DEFERRED
+  unit_mpd_veri_0004_2f347420dfff:
+    strategy: E3_DECLARATION_PLUS_MACHINE_VERIFICATION
+    declaration_only_is_sufficient: false
+    declaration_and_machine_evidence_agree: PASS
+    declaration_and_machine_evidence_conflict: FAIL
+    insufficient_evidence: UNKNOWN
+  unit_mpd_veri_0005_b5e5149c8490:
+    observable_evidence_required: true
+    expected_vs_observed_required: true
+    verification_result_must_be_machine_readable: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

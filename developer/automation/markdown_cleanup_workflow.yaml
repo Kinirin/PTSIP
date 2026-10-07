@@ -1,7 +1,7 @@
 schema_version: ptsip-markdown-cleanup-workflow/v1
 artifact_class: DEVELOPER_EXECUTION_PROJECTION
 projection_authority: false
-policy_ref: MPD-0012#rules.approved_decisions.markdown_cleanup_preconditions
+policy_ref: MPD-GOV-0001#rules.unit_mpd_0012_e0cfe7d01329.markdown_cleanup_preconditions
 
 stages:
   - INSPECT
@@ -17,11 +17,12 @@ default_scopes:
 
 reference_scan_exclusions:
   - developer/automation/markdown_cleanup_workflow.yaml
-  - developer/policy/MPD-0012.yaml
-  - developer/tests/test_markdown_cleanup.py
+  - developer/policy/GOV/MPD-GOV-0001.yaml
+  - developer/automation/internal/machine/markdown_cleanup_native_test.go
   - developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml
   - developer/planning/migrations/MPD-0012-agent-context-coverage.yaml
   - developer/automation/agent_context_migration.py
+  - developer/automation/internal/machine/agent_context_migration.go
 
 apply_requires_policy_status: ACTIVE
 

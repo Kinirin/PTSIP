@@ -1,0 +1,505 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CHANGE
+policy:
+  id: MPD-CHANGE-0001
+  title: CHANGE authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_VERSIONED_TRANSITION_SEMANTICS
+  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
+exclusive_kernel:
+- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+- DEV_MIGRATION_ORDER_AND_CONTINUITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
+        문자열이나 Family 이름을 치환하지 않는다.
+      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
+        않는다.
+    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
+      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
+        정한다.
+      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
+        조건을 정당화할 수 없다.
+    source_scope:
+    - MPD-0001
+    - MPD-0010
+    - MPD-0011
+    - MPD-0013
+    - MPD-0014
+    - MPD-0015
+    - MPD-0018
+    - MPD-MIGR-0001
+    - MPD-MIGR-0004
+    - MPD-MIGR-0005
+    - MPD-PLAN-0003
+    - MPD-SPEC-0020
+    - MPD-SPEC-0026
+    - MPD-SPEC-0027
+    - MPD-WORK-0001
+  unit_mpd_0001_0a4061c5017f: MPD-MIGR-0001
+  unit_mpd_0001_0547471e8a71:
+    authority_ref: MPD-MIGR-0001
+  unit_mpd_0010_e2c914d20bcd:
+    activation: EXPLICIT
+    activation_precondition: CURRENT_LEVEL_1_STAGE
+    level_1_pass_destination: .agent/stages/level1.json
+    level_1_unresolved_destination: .agent/unresolved/level1.json
+    registry_role_after_activation: IDENTITY_AND_ROUTING_METADATA_ONLY
+    natural_language_payload_in_registry_after_activation: FORBIDDEN
+    provenance_markdown_as_reasoning_input: FORBIDDEN
+    unresolved_state_after_activation: UNRESOLVED
+    unresolved_must_remain_unclassified: true
+    root_agents_role_after_activation: MACHINE_ENTRY_PLUS_UNRESOLVED_ONLY
+    level_2_during_transition: FORBIDDEN
+  unit_mpd_0010_2e1eb70ce19d:
+    LOCAL_CLI_ONLY_to_MCP_STDIO_READY_requires:
+    - MCP_IMPLEMENTATION_READY
+    - EXPLICIT_USER_APPROVAL
+    - SUCCESSFUL_LOCAL_CONFIGURATION
+    - SUCCESSFUL_CONNECTION_CHECK
+    failed_or_unavailable_mcp_install_preserves_mode: LOCAL_CLI_ONLY
+  unit_mpd_0010_8caf613c64d2:
+    unresolved_may_persist_without_forced_classification: true
+    new_level_1_category_may_be_added_when_distinct_semantics_are_evidenced: true
+    taxonomy_extension_may_re_evaluate_unresolved_atoms_only: true
+    newly_passed_unresolved_atom_becomes_next_level_candidate: true
+    adding_category_does_not_force_existing_pass_reclassification: true
+    existing_category_semantic_change_requires_explicit_revalidation: true
+  unit_mpd_0010_cbabcbbb55d3:
+    strategy: EVIDENCE_DRIVEN_CONTRACT_REFINEMENT
+    refinement_signals:
+    - REPEATED_SEMANTIC_INFERENCE
+    - REPEATED_HUMAN_INTERVENTION
+    - RECURRING_CUSTOM_WORKAROUNDS
+    - REPEATED_EXTENSION_PATTERNS
+    - ACCUMULATED_USER_FEEDBACK_OR_OPERATIONAL_DATA
+    refinement_is_not_an_end_in_itself: true
+    practical_stop_allowed_when_further_subdivision_has_no_worthwhile_efficiency_or_clarity_benefit: true
+    stop_is_permanent_closure: false
+    refinement_may_reopen_when_new_evidence_appears: true
+  unit_mpd_0010_2e2a5cf2092b: UNBOUNDED
+  unit_mpd_0010_073d2c96dd58: '0.0'
+  unit_mpd_0010_41e3282f2074:
+    DRAFT: 0
+    APPROVED: 1
+    ACTIVE_MINIMUM: 2
+    SUPERSEDED_PRESERVE_VERSION: true
+    RETIRED_PRESERVE_VERSION: true
+  unit_mpd_0010_35419208fc3e:
+    status_inference_from_version: FORBIDDEN
+    version_inference_from_status: FORBIDDEN
+    mismatch: FAIL_CLOSED
+  unit_mpd_0010_4b56a1dae50f:
+  - NON_NORMATIVE
+  - DRAFT_NORMATIVE
+  - COMPATIBLE_NORMATIVE
+  - INCOMPATIBLE_NORMATIVE
+  - LIFECYCLE_TRANSITION
+  unit_mpd_0010_c5ad589396e1:
+    NEW_POLICY: '0.0'
+    NON_NORMATIVE: KEEP
+    DRAFT_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR_0
+    DRAFT_TO_APPROVED: PRESERVE_MINOR_SET_MAJOR_1
+    APPROVED_TO_ACTIVE: PRESERVE_MINOR_SET_MAJOR_2
+    ACTIVE_COMPATIBLE_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR
+    ACTIVE_INCOMPATIBLE_NORMATIVE: INCREMENT_MAJOR_RESET_MINOR_0
+    ACTIVE_TO_SUPERSEDED: KEEP
+    ACTIVE_TO_RETIRED: KEEP
+  unit_mpd_0010_c4d2cd9c17aa: FAIL_CLOSED
+  unit_mpd_0010_897dd3a69317: NOT_REQUIRED
+  unit_mpd_0010_ef12227034c2:
+    DRAFT: '0.0'
+    APPROVED: '1.0'
+    ACTIVE: '2.0'
+    SUPERSEDED: '2.0'
+    RETIRED: '2.0'
+  unit_mpd_0011_8b9a13c6427c:
+    decision: APPROVED
+    approval_date: '2026-09-19'
+    scope: PTSIP_REPOSITORY_DEVELOPER_CONTROL_PLANE
+    distribution: FORBIDDEN
+    consumer_project_requirement: false
+    purpose: AUTOMATE_DEVELOPER_OWNED_PROJECT_PROFILE_CONTRACT_TRANSITIONS_WITHOUT_REQUIRING_MANUAL_VERSION_MAINTENANCE
+    applies_to_git_refs: ALL
+    trigger_is_branch_independent: true
+    branch_name_is_transition_authority: false
+    pull_request_presence_is_transition_authority: false
+    merge_event_is_transition_authority: false
+    implementation_infrastructure_change_without_t2_delta_changes_pp_version: false
+  unit_mpd_0013_ca5439755018:
+    same_plan_path_move:
+      classification:
+        resolved_plan_id: SAME
+        plan_file_id: SAME
+        plan_ref: DIFFERENT
+        outcome: MOVE
+      preserve_resolved_plan_id: true
+      preserve_plan_file_id: true
+      update_plan_ref_automatically: true
+      create_new_plan_identity: false
+      create_new_plan_file_identity: false
+    plan_file_replacement:
+      classification:
+        resolved_plan_id: SAME
+        plan_file_id: DIFFERENT
+        outcome: FILE_REPLACEMENT
+      replacement_is_same_as_path_move: false
+      automatic_move_reclassification: FORBIDDEN
+      replacement_requires_distinct_plan_file_id: true
+      resolved_plan_id_may_be_preserved_for_same_logical_plan: true
+    plan_file_identity_conflict:
+      classification:
+        resolved_plan_id: DIFFERENT
+        plan_file_id: SAME
+        outcome: PLAN_FILE_ID_CONFLICT
+      behavior: FAIL_CLOSED
+    different_plan:
+      classification:
+        resolved_plan_id: DIFFERENT
+        plan_file_id: DIFFERENT
+        outcome: DIFFERENT_PLAN
+      automatic_move_reclassification: FORBIDDEN
+    same_plan_content_revision:
+      preserve_binding_relationship: true
+      preserve_resolved_plan_id: true
+      preserve_plan_file_id: true
+      version_and_revision_may_change: true
+    historical_reference:
+      purpose:
+      - PROVENANCE
+      - TRACEABILITY
+      - OPTIONAL_REFERENCE
+      mandatory_agent_traversal: false
+  unit_mpd_0014_103ee75460a0:
+    catalog_schema: ptsip-public-profile-catalog/v1
+    project_profile_identity_pattern: ^pp\.[0-9]\.[0-9]{2}$
+    project_profile_change_authorizes_branch_creation: false
+    project_profile_change_requires_dev_branch_change: false
+    project_profile_change_requires_dev_version_change: false
+  unit_mpd_0014_7193ad88d502:
+    stale_branch_age_guidance_days: 90
+    age_is_hard_gate: false
+    explicit_user_removal_allowed: true
+    age_does_not_authorize_branch_creation: true
+  unit_mpd_0014_5278c1ada455:
+    grandfathered_patterns:
+    - ^tool-0\.3\.[0-9]-.*$
+    retention_only: true
+    new_creation_authority: false
+  unit_mpd_0015_68161b3e5a1c: MPD-MIGR-0005
+  unit_mpd_0018_da3530289e9e:
+    purpose: Establish the Root Responsibility Family transition authority for PTSIP_DEVELOPER_POLICY
+      without treating the new Root families as a hierarchy over the legacy SPEC,
+      PLAN, WORK, VERI, MIGR, and RELS families.
+    root_family_vocabulary:
+      status: CANONICAL_COORDINATE_VOCABULARY
+      values:
+      - NORM
+      - GOV
+      - INTENT
+      - ARCH
+      - INFO
+      - CNTR
+      - RISK
+      - SUPPLY
+      - REAL
+      - ASSURE
+      - CTRL
+      - CHANGE
+      - OPS
+      - RECORD
+      vocabulary_identity_is_semantic_authority: false
+      family_token_alone_is_authority_identity: false
+    authority_identity:
+      canonical_key_fields:
+      - policy_class
+      - responsibility_family
+      same_family_token_across_policy_classes:
+        semantic_inheritance: FORBIDDEN
+        authority_equivalence: FORBIDDEN
+        fallback_resolution: FORBIDDEN
+      class_specific_semantics_required:
+      - authority_subject
+      - exclusive_kernel
+    minimum_kernel_model:
+      profile: CONSERVATIVE_MINIMUM_KERNEL
+      authority_subject_role: ROOT_AUTHORITY_SUBJECT_FOR_THIS_POLICY_CLASS
+      exclusive_kernel_role: MINIMUM_NON_SUBSTITUTABLE_AUTHORITY
+      complete_boundary_closure_required_now: false
+      extension_space: OPEN
+      unresolved_future_authority_assignment: ALLOWED_AT_DESIGN_TIME
+      unresolved_authority_may_authorize_execution: false
+    policy_class_root_slots:
+      policy_class: PTSIP_DEVELOPER_POLICY
+      recognized_root_families:
+      - NORM
+      - GOV
+      - INTENT
+      - ARCH
+      - INFO
+      - CNTR
+      - RISK
+      - SUPPLY
+      - REAL
+      - ASSURE
+      - CTRL
+      - CHANGE
+      - OPS
+      - RECORD
+      slot_states:
+        allowed:
+        - ACTIVE
+        - RESERVED
+      unmaterialized_slot_default: RESERVED
+      reserved_slot_has_implicit_authority_subject: false
+      reserved_slot_has_implicit_exclusive_kernel: false
+    legacy_developer_family_transition:
+      legacy_families:
+      - SPEC
+      - PLAN
+      - WORK
+      - VERI
+      - MIGR
+      - RELS
+      target_model: FOURTEEN_ROOT_RESPONSIBILITY_FAMILIES
+      legacy_family_is_parent_of_root_family: false
+      root_family_is_parent_of_legacy_family: false
+      one_to_one_mapping_assumption: FORBIDDEN
+      rename_as_migration: FORBIDDEN
+      semantic_decomposition_required: true
+      existing_policy_identity_preservation_required: true
+      legacy_family_policy_read_role: MIGRATION_SOURCE_ONLY
+      new_policy_materialization_into_legacy_family: FORBIDDEN_AFTER_TARGET_ROUTING_ACTIVATION
+    cross_policy_class_boundary:
+      shared_element: ROOT_FAMILY_TOKEN_VOCABULARY_ONLY
+      shared_authority_subject: false
+      shared_exclusive_kernel: false
+      implicit_cross_class_bridge: FORBIDDEN
+      explicit_bridge_required_for_cross_class_semantics: true
+    bootstrap_sequence:
+    - CREATE_CLASS_SCOPED_ROOT_FAMILY_POLICY
+    - CHANGE_REPOSITORY_POLICY_ENTRY
+    - MATERIALIZE_FAMILY_AWARE_SCHEMAS
+    - MATERIALIZE_FAMILY_AWARE_RESOLUTION
+    - DECOMPOSE_LEGACY_POLICIES
+    - RETIRE_LEGACY_FAMILY_CREATION_PATH
+    ordering_is_transition_safety_constraint: true
+    responsibility_boundary:
+      owns:
+      - PTSIP_DEVELOPER_POLICY_ROOT_FAMILY_TRANSITION_MODEL
+      - PTSIP_DEVELOPER_POLICY_FOURTEEN_ROOT_FAMILY_COORDINATE_SET
+      - CLASS_SCOPED_AUTHORITY_SUBJECT_AND_EXCLUSIVE_KERNEL_REQUIREMENT
+      - LEGACY_SIX_FAMILY_DECOMPOSITION_REQUIREMENT
+      - ROOT_FAMILY_TRANSITION_BOOTSTRAP_ORDER
+      does_not_own:
+      - PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_SEMANTICS
+      - INDIVIDUAL_ROOT_FAMILY_AUTHORITY_SUBJECT
+      - INDIVIDUAL_ROOT_FAMILY_EXCLUSIVE_KERNEL
+      - LEGACY_POLICY_DECOMPOSITION_RESULT
+      - FAMILY_AWARE_SCHEMA_IMPLEMENTATION
+      - FAMILY_AWARE_RESOLVER_IMPLEMENTATION
+  unit_mpd_0018_f036e3f8c407:
+    target_status: ACTIVE
+    state: COMPLETE
+    requirements:
+    - id: TR-001
+      type: EXPLICIT_OWNER_ROOT_FAMILY_BOOTSTRAP_APPROVAL
+      state: SATISFIED
+      refs:
+      - developer/policy/approvals/MPA-20261005-MPD-0018-ROOT-FAMILY-DRAFT.yaml
+      - developer/policy/approvals/MPA-20261005-MPD-0018-ROOT-FAMILY-APPROVED.yaml
+      - developer/policy/approvals/MPA-20261005-MPD-0018-ROOT-FAMILY-ACTIVE.yaml
+      next_action:
+        action: MATERIALIZE_ROOT_FAMILY_BOOTSTRAP_ENTRY
+        execution: SERIAL_REQUIRED
+        target_refs:
+        - developer/policy/MPD-0018.yaml
+        - developer/policy/index.yaml
+        - developer/policy/registries/authority-subject-registry.yaml
+        - AGENTS.md
+        after: []
+        completion_check: ROOT_FAMILY_BOOTSTRAP_ENTRY_PRESENT
+  unit_mpd_migr_0001_12f7161b4707:
+    execution_stage: SFP_MPD_INVENTORY_AND_POLICY_MATERIALIZATION
+    move_now: false
+    required_before_move:
+    - LEGACY_POLICY_CORPUS_CLASSIFIED
+    - PROFILE_SUPPORT_FEATURE_BOUNDARY_MATERIALIZED
+    - PACKAGE_RESOURCE_LOOKUP_UPDATE_PLANNED
+    - PACKAGE_DATA_UPDATE_PLANNED
+    - PROFILE_SCHEMA_REFERENCE_UPDATE_PLANNED
+    required_with_move:
+    - MOVE_PROFILE_SCHEMAS_TO_SRC_PTSIP_PROFILES_SCHEMA
+    - UPDATE_IMPORTLIB_RESOURCE_LOOKUP
+    - UPDATE_PACKAGE_DATA
+    - UPDATE_PROFILE_SCHEMA_RESOURCE_REFERENCES
+    - UPDATE_CONSISTENCY_TESTS
+    - VERIFY_NO_STALE_SPECDATA_PROFILE_SCHEMA_REFERENCE
+  unit_mpd_migr_0001_95cf87dff9b4:
+    legacy_authority_root: docs/planning/
+    legacy_control_plane_entry: docs/planning/index.yaml
+    target_authority_root: developer/planning/
+    target_control_plane_entry: developer/planning/index.yaml
+    target_schema_root: developer/planning/schemas/
+    target_automation_root: developer/automation/planning/
+    migration_authorized: true
+    planning_schema_migration:
+      from: developer/policy/schemas/
+      to: developer/planning/schemas/
+      files:
+      - planning-root-index.schema.json
+      - planning-index.schema.json
+      - work-unit.schema.json
+      - plan-extension.schema.json
+    planning_automation_migration:
+      from: developer/automation/
+      to: developer/automation/planning/
+      currently_identified_modules:
+      - planning_entry_resolver.py
+      - planning_extension_finalizer.py
+      - planning_leaf_merge.py
+      - planning_merge_reconciler.py
+      - planning_stage_finalizer.py
+      - planning_validator.py
+    policy_plan_binding_automation_migration: NOT_REQUIRED
+    policy_plan_binding_automation_root_preserved: developer/automation/policy_plan_binding/
+    migration_requirements:
+    - PRESERVE_EXISTING_PLANNING_MACHINE_STATE
+    - PRESERVE_WORK_UNIT_IDENTITIES
+    - PRESERVE_PLAN_EXTENSION_IDENTITIES
+    - UPDATE_PLANNING_INTERNAL_REFERENCES
+    - UPDATE_SCHEMA_REFERENCES
+    - UPDATE_AUTOMATION_IMPORTS_AND_PATH_CONSTANTS
+    - UPDATE_VALIDATION_TARGETS
+    - UPDATE_TEST_REFERENCES
+    - UPDATE_WORKFLOW_REFERENCES
+    - VERIFY_NO_ACTIVE_DOCS_PLANNING_AUTHORITY_REFERENCE
+    - VERIFY_NO_PLANNING_SCHEMA_REMAINS_OWNED_BY_POLICY_NAMESPACE
+    - VERIFY_POLICY_PLAN_BINDING_AUTHORITY_REMAINS_SEPARATE
+    migration_completion_condition:
+      canonical_planning_root_resolves: developer/planning/index.yaml
+      planning_schema_root_resolves: developer/planning/schemas/
+      planning_automation_root_resolves: developer/automation/planning/
+      binding_automation_root_resolves: developer/automation/policy_plan_binding/
+      stale_authoritative_legacy_reference_count: 0
+  unit_mpd_migr_0001_3d15c42207ae:
+    state: MIGRATION_SOURCE_RETIRED_PENDING_PREAUTHORIZED_TREE_REMOVAL
+    automatic_removal_when_gate_passes: true
+    user_confirmation_after_gate_passes: false
+  unit_mpd_migr_0004_7aabef629d43:
+    developer_owned_public_profile_or_pp_contract_semantic_change_requires_new_pp_identity: true
+    normal_automatic_version_step: NEXT_MINOR
+    automatic_major_version_step: FORBIDDEN
+    major_transition_requires: EXPLICIT_PROJECT_OWNER_DECISION
+    current_pp_identity_source: CANONICAL_PP_CONTRACT_REGISTRY
+    canonical_public_profiles_rebind_to_new_pp: REQUIRED
+    canonical_and_embedded_schema_pair_for_new_pp: REQUIRED
+    pp_transition_registry_record: REQUIRED
+    default_transition_kind_for_t2_delta: SEMANTIC_MIGRATION
+    identity_only_transition_requires_explicit_registered_evidence: true
+    transition_commit_atomicity: REQUIRED
+    split_invalid_transition_across_commits: FORBIDDEN
+    retry_behavior: VERIFY_EXISTING_EXPECTED_TRANSITION_WITHOUT_SECOND_VERSION_BUMP
+  unit_mpd_migr_0005_ded771d9eb72:
+    applies_to_behavior_not_yet_extracted_to_machine_contract: true
+    role: MIGRATION_REFERENCE
+    permanent_normative_authority: false
+  unit_mpd_plan_0003_ed96f54b9558:
+    ordered_work_units:
+    - WU-08
+    - WU-09
+    - WU-10
+    - WU-11
+    responsibilities:
+      WU-08: REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE
+      WU-09: INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE
+      WU-10: PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION
+      WU-11: FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS
+    maintainability_rules:
+    - TYPED_BOUNDARIES
+    - STABLE_OWNERSHIP
+    - INDEPENDENT_VERIFICATION
+    - FAIL_CLOSED_COMPATIBILITY
+    - EXTENSIBLE_REGISTRIES
+    - NO_TOOL_PP_COUPLING
+    - NO_PREMATURE_ADOPTION
+    architecture_acceptance_separate_from_identity_implementation: true
+    identity_implementation_separate_from_migration_capability: true
+    migration_capability_separate_from_repository_adoption: true
+    repository_adoption_separate_from_release_readiness: true
+  unit_mpd_spec_0020_51f1aa67e63a:
+    revision_sensitive_paths:
+    - versions.*
+    on_revision_sensitive_change:
+      action: INCREMENT_SPECIFICATION_REVISION_BY_ONE
+      semantic_classification_required: false
+      normative_change_classification_required: false
+      breaking_change_classification_required: false
+    on_specification_version_change:
+      action: RESET_SPECIFICATION_REVISION
+      value: Rev.0001
+    invariant:
+      versions_change_does_not_automatically_change_specification_version: true
+      specification_version_requires_separate_normative_version_decision: true
+  unit_mpd_spec_0026_dfdb5d808777:
+    model: T2_AUTHORITY_DELTA
+    trigger_sources:
+    - REGISTERED_CANONICAL_PUBLIC_PROFILE_CONTENT
+    - PUBLIC_PROFILE_CATALOG_MEMBERSHIP
+    - PUBLIC_PROFILE_CATALOG_RESOURCE_IDENTITY
+    - CURRENT_PP_CANONICAL_SCHEMA_CONTENT
+    canonical_public_profile_catalog_ref: profiles/index.yaml
+    canonical_public_profile_root: profiles/
+    canonical_pp_contract_registry_ref: registry/project-profile-contracts.yaml
+    canonical_current_schema_pattern: schemas/ptsip-profile-pp-<current>.schema.json
+    non_trigger_sources:
+    - GIT_BRANCH_NAME
+    - PULL_REQUEST_STATE
+    - MERGE_EVENT_AS_SUCH
+    - EMBEDDED_SCHEMA_PROJECTION
+    - RUNTIME_CURRENT_PP_PROJECTION
+    - PROJECT_PROFILE_RELEASE_NOTE
+    - PUBLIC_PROFILE_HISTORY_BASELINE
+    - VERIFICATION_TESTS
+    - PTSIP_REPOSITORY_PROJECT_PROFILE_INSTANCE
+    - DEVELOPER_REPOSITORY_SELF_PROFILE
+    - TRANSITION_AUTOMATION_IMPLEMENTATION
+    derived_surface_change_must_not_retrigger_transition: true
+    manual_current_pp_pointer_change_without_t2_authority_delta: FAIL_CLOSED
+  unit_mpd_spec_0027_abaff24f68e4:
+    owner: USER
+    developer_distributed_baseline_revision: 1
+    developer_pp_generation_change_revision: RESET_TO_1
+    user_authoritative_mutation_within_same_pp: INCREMENT_EXACTLY_ONE_AFTER_SUCCESSFUL_ATOMIC_APPLY
+    read_only_or_derived_operations_increment_revision: false
+    developer_must_not_use_user_revision_as_pp_version_bump_substitute: true
+    content_digest_is_user_revision: false
+    content_digest_purpose:
+    - INTEGRITY
+    - EXACT_CONTENT_IDENTITY
+    - STALE_PLAN_DETECTION
+  unit_mpd_work_0001_77bbd19107ec:
+    ownership: WORK_UNIT_LIFECYCLE
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

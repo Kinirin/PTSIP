@@ -1,0 +1,2287 @@
+{
+  "projection_authority": false,
+  "fixture_role": "FROZEN_PRE_RETIREMENT_PROTOCOL_EQUIVALENCE",
+  "source_commit": "db8dfda5a99734c0d02ee480e7226d39ec30d1e9",
+  "resolver": {
+    "cases": {
+      ".|READ": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".",
+        "operation": "READ",
+        "binding_scope": ".",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".|MODIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".",
+        "operation": "MODIFY",
+        "binding_scope": ".",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0004",
+            "path": "developer/policy/REAL/MPD-REAL-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "neutral_module_creation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0003",
+            "path": "developer/policy/CNTR/MPD-CNTR-0003.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "root_family_projection_module"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".|PLAN": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".",
+        "operation": "PLAN",
+        "binding_scope": ".",
+        "policies": [
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0001_50410dc74c9f",
+              "unit_mpd_plan_0001_7f56c7fed0e5",
+              "unit_mpd_plan_0001_dfacd421d3a0",
+              "unit_mpd_plan_0001_edc33d7514e8",
+              "unit_mpd_plan_0001_3297aa85e519"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0001_2045fc60ef62",
+              "unit_mpd_spec_0006_d25095d9c02a"
+            ]
+          },
+          {
+            "policy_id": "MPD-CTRL-0001",
+            "path": "developer/policy/CTRL/MPD-CTRL-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0001_6560d943f53d"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".|VERIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".",
+        "operation": "VERIFY",
+        "binding_scope": ".",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".|RELEASE": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".",
+        "operation": "RELEASE",
+        "binding_scope": ".",
+        "policies": [
+          {
+            "policy_id": "MPD-RECORD-0001",
+            "path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_rels_0001_8b9a13c6427c"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0002_d909cd570b48"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation|READ": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation",
+        "operation": "READ",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation|MODIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation",
+        "operation": "MODIFY",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation|PLAN": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation",
+        "operation": "PLAN",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation|VERIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation",
+        "operation": "VERIFY",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation|RELEASE": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation",
+        "operation": "RELEASE",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation/new/submodule.go|READ": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation/new/submodule.go",
+        "operation": "READ",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation/new/submodule.go|MODIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation/new/submodule.go",
+        "operation": "MODIFY",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation/new/submodule.go|PLAN": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation/new/submodule.go",
+        "operation": "PLAN",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation/new/submodule.go|VERIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation/new/submodule.go",
+        "operation": "VERIFY",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "developer/automation/new/submodule.go|RELEASE": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "developer/automation/new/submodule.go",
+        "operation": "RELEASE",
+        "binding_scope": "developer/automation",
+        "policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_5630fc226d3b",
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0001_021ba43d3136"
+            ]
+          },
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_0010_497ac087b73f"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "go_automation_implementation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "direct_root_automation_contract"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_legacy_retirement"
+            ]
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "developer_automation_responsibility_domain_boundary"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "src/ptsip/governance/authority.py|READ": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "src/ptsip/governance/authority.py",
+        "operation": "READ",
+        "binding_scope": "src",
+        "policies": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0021_ac00c052d412"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "src/ptsip/governance/authority.py|MODIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "src/ptsip/governance/authority.py",
+        "operation": "MODIFY",
+        "binding_scope": "src",
+        "policies": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0021_ac00c052d412"
+            ]
+          },
+          {
+            "policy_id": "MPD-REAL-0004",
+            "path": "developer/policy/REAL/MPD-REAL-0004.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "neutral_module_creation"
+            ]
+          },
+          {
+            "policy_id": "MPD-CNTR-0003",
+            "path": "developer/policy/CNTR/MPD-CNTR-0003.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "root_family_projection_module"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "src/ptsip/governance/authority.py|PLAN": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "src/ptsip/governance/authority.py",
+        "operation": "PLAN",
+        "binding_scope": "src",
+        "policies": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0021_ac00c052d412"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "src/ptsip/governance/authority.py|VERIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "src/ptsip/governance/authority.py",
+        "operation": "VERIFY",
+        "binding_scope": "src",
+        "policies": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0021_ac00c052d412"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      "src/ptsip/governance/authority.py|RELEASE": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": "src/ptsip/governance/authority.py",
+        "operation": "RELEASE",
+        "binding_scope": "src",
+        "policies": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0021_ac00c052d412"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".github/workflows/tooling-test.yml|READ": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".github/workflows/tooling-test.yml",
+        "operation": "READ",
+        "binding_scope": ".github/workflows/tooling-test.yml",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0002_d909cd570b48"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_veri_0003_c4b59fc85667"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_migr_0004_7aabef629d43"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".github/workflows/tooling-test.yml|MODIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".github/workflows/tooling-test.yml",
+        "operation": "MODIFY",
+        "binding_scope": ".github/workflows/tooling-test.yml",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0002_d909cd570b48"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_veri_0003_c4b59fc85667"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_migr_0004_7aabef629d43"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".github/workflows/tooling-test.yml|PLAN": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".github/workflows/tooling-test.yml",
+        "operation": "PLAN",
+        "binding_scope": ".github/workflows/tooling-test.yml",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0002_d909cd570b48"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_veri_0003_c4b59fc85667"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_migr_0004_7aabef629d43"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".github/workflows/tooling-test.yml|VERIFY": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".github/workflows/tooling-test.yml",
+        "operation": "VERIFY",
+        "binding_scope": ".github/workflows/tooling-test.yml",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0002_d909cd570b48"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_veri_0003_c4b59fc85667"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_migr_0004_7aabef629d43"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      },
+      ".github/workflows/tooling-test.yml|RELEASE": {
+        "schema_version": "ptsip-policy-resolution/v1",
+        "resolver_id": "POLICY_RESOLVER_V1",
+        "scope": ".github/workflows/tooling-test.yml",
+        "operation": "RELEASE",
+        "binding_scope": ".github/workflows/tooling-test.yml",
+        "policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_plan_0002_d909cd570b48"
+            ]
+          },
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_spec_0006_d25095d9c02a",
+              "unit_mpd_spec_0006_d1ce0ab7249e"
+            ]
+          },
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_veri_0003_c4b59fc85667"
+            ]
+          },
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "status": "ACTIVE",
+            "sections": [
+              "unit_mpd_migr_0004_7aabef629d43"
+            ]
+          }
+        ],
+        "authority": "CANONICAL_POLICY_RECORDS",
+        "projection_authority": false
+      }
+    },
+    "families": {
+      "PTSIP_DEVELOPER_POLICY|NORM": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "NORM"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "canonical_path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-NORM-0002",
+        "canonical_path": "developer/policy/NORM/MPD-NORM-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|GOV": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "GOV"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-GOV-0001",
+            "canonical_path": "developer/policy/GOV/MPD-GOV-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-GOV-0002",
+            "canonical_path": "developer/policy/GOV/MPD-GOV-0002.yaml",
+            "status": "APPROVED"
+          }
+        ],
+        "allocated_policy_id": "MPD-GOV-0003",
+        "canonical_path": "developer/policy/GOV/MPD-GOV-0003.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|INTENT": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "INTENT"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "canonical_path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-INTENT-0002",
+        "canonical_path": "developer/policy/INTENT/MPD-INTENT-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|ARCH": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "ARCH"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "canonical_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "canonical_path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-ARCH-0003",
+            "canonical_path": "developer/policy/ARCH/MPD-ARCH-0003.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "MPD-ARCH-0004",
+        "canonical_path": "developer/policy/ARCH/MPD-ARCH-0004.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|INFO": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "INFO"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "canonical_path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-INFO-0002",
+            "canonical_path": "developer/policy/INFO/MPD-INFO-0002.yaml",
+            "status": "APPROVED"
+          },
+          {
+            "policy_id": "MPD-INFO-0003",
+            "canonical_path": "developer/policy/INFO/MPD-INFO-0003.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "MPD-INFO-0004",
+            "canonical_path": "developer/policy/INFO/MPD-INFO-0004.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-INFO-0005",
+        "canonical_path": "developer/policy/INFO/MPD-INFO-0005.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|CNTR": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "CNTR"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-CNTR-0001",
+            "canonical_path": "developer/policy/CNTR/MPD-CNTR-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-CNTR-0002",
+            "canonical_path": "developer/policy/CNTR/MPD-CNTR-0002.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "MPD-CNTR-0003",
+            "canonical_path": "developer/policy/CNTR/MPD-CNTR-0003.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "canonical_path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-CNTR-0005",
+            "canonical_path": "developer/policy/CNTR/MPD-CNTR-0005.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-CNTR-0006",
+        "canonical_path": "developer/policy/CNTR/MPD-CNTR-0006.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|RISK": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "RISK"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "DRAFT",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-RISK-0001",
+            "canonical_path": "developer/policy/RISK/MPD-RISK-0001.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "MPD-RISK-0002",
+        "canonical_path": "developer/policy/RISK/MPD-RISK-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|SUPPLY": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "SUPPLY"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "DRAFT",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-SUPPLY-0001",
+            "canonical_path": "developer/policy/SUPPLY/MPD-SUPPLY-0001.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "MPD-SUPPLY-0002",
+        "canonical_path": "developer/policy/SUPPLY/MPD-SUPPLY-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|REAL": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "REAL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-REAL-0001",
+            "canonical_path": "developer/policy/REAL/MPD-REAL-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-REAL-0002",
+            "canonical_path": "developer/policy/REAL/MPD-REAL-0002.yaml",
+            "status": "APPROVED"
+          },
+          {
+            "policy_id": "MPD-REAL-0003",
+            "canonical_path": "developer/policy/REAL/MPD-REAL-0003.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-REAL-0004",
+            "canonical_path": "developer/policy/REAL/MPD-REAL-0004.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "canonical_path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-REAL-0006",
+        "canonical_path": "developer/policy/REAL/MPD-REAL-0006.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|ASSURE": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "ASSURE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "canonical_path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-ASSURE-0002",
+            "canonical_path": "developer/policy/ASSURE/MPD-ASSURE-0002.yaml",
+            "status": "APPROVED"
+          },
+          {
+            "policy_id": "MPD-ASSURE-0003",
+            "canonical_path": "developer/policy/ASSURE/MPD-ASSURE-0003.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-ASSURE-0004",
+        "canonical_path": "developer/policy/ASSURE/MPD-ASSURE-0004.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|CTRL": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "CTRL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-CTRL-0001",
+            "canonical_path": "developer/policy/CTRL/MPD-CTRL-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-CTRL-0002",
+        "canonical_path": "developer/policy/CTRL/MPD-CTRL-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|CHANGE": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "CHANGE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0002",
+            "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-0002.yaml",
+            "status": "APPROVED"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0003",
+            "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-0003.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0004",
+            "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-0004.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-CHANGE-0005",
+        "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-0005.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|OPS": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "OPS"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-OPS-0001",
+            "canonical_path": "developer/policy/OPS/MPD-OPS-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-OPS-0002",
+        "canonical_path": "developer/policy/OPS/MPD-OPS-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_DEVELOPER_POLICY|RECORD": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "RECORD"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "MPD-RECORD-0001",
+            "canonical_path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "MPD-RECORD-0002",
+        "canonical_path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|NORM": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "NORM"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-NORM-0001",
+            "canonical_path": "src/policy/NORM/SFP-NORM-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "SFP-NORM-0002",
+            "canonical_path": "src/policy/NORM/SFP-NORM-0002.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "SFP-NORM-0003",
+        "canonical_path": "src/policy/NORM/SFP-NORM-0003.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|GOV": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "GOV"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-GOV-0001",
+            "canonical_path": "src/policy/GOV/SFP-GOV-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-GOV-0002",
+        "canonical_path": "src/policy/GOV/SFP-GOV-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|INTENT": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "INTENT"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-INTENT-0001",
+            "canonical_path": "src/policy/INTENT/SFP-INTENT-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-INTENT-0002",
+        "canonical_path": "src/policy/INTENT/SFP-INTENT-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|ARCH": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "ARCH"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-ARCH-0001",
+            "canonical_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "SFP-ARCH-0002",
+            "canonical_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "SFP-ARCH-0003",
+            "canonical_path": "src/policy/ARCH/SFP-ARCH-0003.yaml",
+            "status": "RETIRED"
+          }
+        ],
+        "allocated_policy_id": "SFP-ARCH-0004",
+        "canonical_path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|INFO": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "INFO"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-INFO-0001",
+            "canonical_path": "src/policy/INFO/SFP-INFO-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "SFP-INFO-0002",
+            "canonical_path": "src/policy/INFO/SFP-INFO-0002.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "SFP-INFO-0003",
+            "canonical_path": "src/policy/INFO/SFP-INFO-0003.yaml",
+            "status": "RETIRED"
+          }
+        ],
+        "allocated_policy_id": "SFP-INFO-0004",
+        "canonical_path": "src/policy/INFO/SFP-INFO-0004.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|CNTR": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "CNTR"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-CNTR-0001",
+            "canonical_path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "SFP-CNTR-0002",
+            "canonical_path": "src/policy/CNTR/SFP-CNTR-0002.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "SFP-CNTR-0003",
+            "canonical_path": "src/policy/CNTR/SFP-CNTR-0003.yaml",
+            "status": "RETIRED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0004",
+            "canonical_path": "src/policy/CNTR/SFP-CNTR-0004.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-CNTR-0005",
+        "canonical_path": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|RISK": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "RISK"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "DRAFT",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-RISK-0001",
+            "canonical_path": "src/policy/RISK/SFP-RISK-0001.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "SFP-RISK-0002",
+        "canonical_path": "src/policy/RISK/SFP-RISK-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|SUPPLY": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "SUPPLY"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "DRAFT",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-SUPPLY-0001",
+            "canonical_path": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "SFP-SUPPLY-0002",
+        "canonical_path": "src/policy/SUPPLY/SFP-SUPPLY-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|REAL": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "REAL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-REAL-0001",
+            "canonical_path": "src/policy/REAL/SFP-REAL-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-REAL-0002",
+        "canonical_path": "src/policy/REAL/SFP-REAL-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|ASSURE": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "ASSURE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-ASSURE-0001",
+            "canonical_path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "SFP-ASSURE-0002",
+            "canonical_path": "src/policy/ASSURE/SFP-ASSURE-0002.yaml",
+            "status": "DRAFT"
+          },
+          {
+            "policy_id": "SFP-ASSURE-0003",
+            "canonical_path": "src/policy/ASSURE/SFP-ASSURE-0003.yaml",
+            "status": "RETIRED"
+          }
+        ],
+        "allocated_policy_id": "SFP-ASSURE-0004",
+        "canonical_path": "src/policy/ASSURE/SFP-ASSURE-0004.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|CTRL": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "CTRL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-CTRL-0001",
+            "canonical_path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-CTRL-0002",
+        "canonical_path": "src/policy/CTRL/SFP-CTRL-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|CHANGE": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "CHANGE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-CHANGE-0001",
+            "canonical_path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-CHANGE-0002",
+        "canonical_path": "src/policy/CHANGE/SFP-CHANGE-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|OPS": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "OPS"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-OPS-0001",
+            "canonical_path": "src/policy/OPS/SFP-OPS-0001.yaml",
+            "status": "ACTIVE"
+          }
+        ],
+        "allocated_policy_id": "SFP-OPS-0002",
+        "canonical_path": "src/policy/OPS/SFP-OPS-0002.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      },
+      "PTSIP_SUPPORT_FEATURE|RECORD": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "RECORD"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "ACTIVE",
+        "registered_policies": [
+          {
+            "policy_id": "SFP-RECORD-0001",
+            "canonical_path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+            "status": "ACTIVE"
+          },
+          {
+            "policy_id": "SFP-RECORD-0002",
+            "canonical_path": "src/policy/RECORD/SFP-RECORD-0002.yaml",
+            "status": "DRAFT"
+          }
+        ],
+        "allocated_policy_id": "SFP-RECORD-0003",
+        "canonical_path": "src/policy/RECORD/SFP-RECORD-0003.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    "get": {
+      "schema_version": "ptsip-policy-get/v1",
+      "policy_id": "MPD-REAL-0005",
+      "canonical_path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+      "fragment": "rules.go_automation_implementation",
+      "record": {
+        "scope_root": "developer/automation",
+        "inherit_to_descendants": true,
+        "implementation_language": "GO",
+        "existing_implementations": "MIGRATE_ALL_TO_GO",
+        "new_or_modified_python_automation": "FORBIDDEN",
+        "python_automation_entrypoints": "REMOVE_AFTER_EQUIVALENCE_VERIFICATION",
+        "go_wrapper_delegating_to_python_automation": "FORBIDDEN",
+        "embedded_python_implementation": "FORBIDDEN",
+        "language_neutral_contracts_remain_authority": true,
+        "root_and_src_neutral_module_policy_ref": "MPD-REAL-0004",
+        "existing_python_regression_coverage": "PRESERVE_SEMANTIC_COVERAGE",
+        "migration_contract_ref": "developer/policy/contracts/go-automation-cutover.v1.json"
+      }
+    },
+    "rule": {
+      "schema_version": "ptsip-normative-rule-projection/v2",
+      "rule_id": "PTSIP-CLS-001",
+      "canonical_source": "registry/ptsip-registry.yaml",
+      "registry_record": {
+        "id": "PTSIP-CLS-001",
+        "title": "Mandatory classification",
+        "severity": "error",
+        "applies_to": "consumer_repository"
+      },
+      "projection_authority": false
+    }
+  },
+  "entry": {
+    "states": {
+      "developer_policy": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "developer_policy",
+          "ref": "developer/policy/index.yaml",
+          "role": "CANONICAL_DEVELOPER_POLICY_INDEX",
+          "authority": false
+        }
+      },
+      "developer_planning": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "developer_planning",
+          "ref": "developer/planning/index.yaml",
+          "role": "CANONICAL_DEVELOPER_PLANNING_INDEX",
+          "authority": false
+        }
+      },
+      "project_profile": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "project_profile",
+          "ref": "developer/profiles/ptsip-repository.yaml",
+          "role": "CANONICAL_REPOSITORY_PROFILE",
+          "authority": false
+        }
+      },
+      "policy_plan_binding": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "policy_plan_binding",
+          "ref": "developer/bindings/policy-plan-bindings.yaml",
+          "role": "CANONICAL_POLICY_PLAN_RELATIONSHIP_REGISTRY",
+          "authority": false
+        }
+      },
+      "agent_contract": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "agent_contract",
+          "ref": "src/agent_contracts/bindings/current.yaml",
+          "role": "AGENT_CONTRACT_BINDING",
+          "authority": false
+        }
+      },
+      "governance_source": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "governance_source",
+          "ref": "developer/policy/registries/governance-source-registry.yaml",
+          "role": "GOVERNANCE_SOURCE_VOCABULARY",
+          "authority": false
+        }
+      },
+      "context_migration": {
+        "accepted": true,
+        "record": {
+          "schema_version": "ptsip-repository-state-resolution/v1",
+          "domain": "context_migration",
+          "ref": "developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml",
+          "role": "AGENT_CONTEXT_MIGRATION_STATE",
+          "authority": false
+        }
+      },
+      "unregistered-domain": {
+        "accepted": false
+      }
+    },
+    "planning": {
+      "dev/0.3.8": {
+        "accepted": true,
+        "record": {
+          "status": "RESOLVED",
+          "branch": "dev/0.3.8",
+          "plan_version": "0.3.8a3",
+          "entry_document": "developer/planning/0.3.8/0.3.8a3/index.yaml",
+          "role": "INTEGRATION_CONTROL_PLANE",
+          "work_unit": null
+        }
+      },
+      "dev/0.3.8a3": {
+        "accepted": true,
+        "record": {
+          "status": "RESOLVED",
+          "branch": "dev/0.3.8a3",
+          "plan_version": "0.3.8a3",
+          "entry_document": "developer/planning/0.3.8/0.3.8a3/index.yaml",
+          "role": "INTEGRATION_CONTROL_PLANE",
+          "work_unit": null
+        }
+      },
+      "unregistered-branch": {
+        "accepted": false
+      }
+    }
+  },
+  "inspection": {
+    "MPD-NORM-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-NORM-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "NORM",
+      "canonical_path": "developer/policy/NORM/MPD-NORM-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-GOV-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-GOV-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "GOV",
+      "canonical_path": "developer/policy/GOV/MPD-GOV-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-INTENT-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-INTENT-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "INTENT",
+      "canonical_path": "developer/policy/INTENT/MPD-INTENT-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-ARCH-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-ARCH-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "ARCH",
+      "canonical_path": "developer/policy/ARCH/MPD-ARCH-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-INFO-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-INFO-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "INFO",
+      "canonical_path": "developer/policy/INFO/MPD-INFO-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-CNTR-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-CNTR-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "CNTR",
+      "canonical_path": "developer/policy/CNTR/MPD-CNTR-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-RISK-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-RISK-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "RISK",
+      "canonical_path": "developer/policy/RISK/MPD-RISK-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-SUPPLY-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-SUPPLY-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "SUPPLY",
+      "canonical_path": "developer/policy/SUPPLY/MPD-SUPPLY-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-REAL-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-REAL-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "REAL",
+      "canonical_path": "developer/policy/REAL/MPD-REAL-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-ASSURE-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-ASSURE-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "ASSURE",
+      "canonical_path": "developer/policy/ASSURE/MPD-ASSURE-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-CTRL-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-CTRL-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "CTRL",
+      "canonical_path": "developer/policy/CTRL/MPD-CTRL-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-CHANGE-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-CHANGE-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "CHANGE",
+      "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-OPS-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-OPS-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "OPS",
+      "canonical_path": "developer/policy/OPS/MPD-OPS-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "MPD-RECORD-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "MPD-RECORD-9999",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "RECORD",
+      "canonical_path": "developer/policy/RECORD/MPD-RECORD-9999.yaml",
+      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-NORM-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-NORM-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "NORM",
+      "canonical_path": "src/policy/NORM/SFP-NORM-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-GOV-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-GOV-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "GOV",
+      "canonical_path": "src/policy/GOV/SFP-GOV-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-INTENT-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-INTENT-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "INTENT",
+      "canonical_path": "src/policy/INTENT/SFP-INTENT-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-ARCH-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-ARCH-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "ARCH",
+      "canonical_path": "src/policy/ARCH/SFP-ARCH-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-INFO-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-INFO-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "INFO",
+      "canonical_path": "src/policy/INFO/SFP-INFO-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-CNTR-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-CNTR-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "CNTR",
+      "canonical_path": "src/policy/CNTR/SFP-CNTR-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-RISK-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-RISK-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "RISK",
+      "canonical_path": "src/policy/RISK/SFP-RISK-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-SUPPLY-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-SUPPLY-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "SUPPLY",
+      "canonical_path": "src/policy/SUPPLY/SFP-SUPPLY-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-REAL-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-REAL-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "REAL",
+      "canonical_path": "src/policy/REAL/SFP-REAL-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-ASSURE-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-ASSURE-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "ASSURE",
+      "canonical_path": "src/policy/ASSURE/SFP-ASSURE-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-CTRL-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-CTRL-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "CTRL",
+      "canonical_path": "src/policy/CTRL/SFP-CTRL-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-CHANGE-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-CHANGE-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "CHANGE",
+      "canonical_path": "src/policy/CHANGE/SFP-CHANGE-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-OPS-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-OPS-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "OPS",
+      "canonical_path": "src/policy/OPS/SFP-OPS-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    },
+    "SFP-RECORD-9999": {
+      "status": "ROOT_FAMILY_ID",
+      "policy_id": "SFP-RECORD-9999",
+      "policy_class": "PTSIP_SUPPORT_FEATURE",
+      "responsibility_family": "RECORD",
+      "canonical_path": "src/policy/RECORD/SFP-RECORD-9999.yaml",
+      "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "semantic_inheritance": "FORBIDDEN"
+    }
+  }
+}

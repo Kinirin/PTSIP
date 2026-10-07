@@ -1,0 +1,1361 @@
+{
+  "schema_version": "ptsip-go-automation-cutover/v1",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "authority_owners": {
+    "interface": "MPD-CNTR-0004#direct_root_automation_contract",
+    "implementation": "MPD-REAL-0005#go_automation_implementation",
+    "retirement": "MPD-CHANGE-0004#developer_legacy_retirement"
+  },
+  "inventory_ref": "developer/policy/registries/go-automation-migration.json",
+  "target": {
+    "automation_language": "GO",
+    "automation_scope_root": "developer/automation",
+    "policy_reference_model": "EXACT_ROOT_POLICY_ID_AND_SECTION",
+    "removed_paths": [
+      "developer/policy/legacy"
+    ],
+    "remove_python_automation_entrypoints": true,
+    "python_automation_delegation": "FORBIDDEN",
+    "support_plane_inheritance": "FORBIDDEN"
+  },
+  "completion_requirements": [
+    "EVERY_INVENTORIED_IMPLEMENTATION_HAS_VERIFIED_GO_EQUIVALENCE",
+    "NO_PYTHON_IMPLEMENTATION_OR_ENTRYPOINT_UNDER_DEVELOPER_AUTOMATION",
+    "NO_GO_DELEGATION_TO_PYTHON_AUTOMATION",
+    "ALL_OPERATIONAL_CALLERS_CI_AND_HOOKS_USE_GO",
+    "ALL_DEVELOPER_RESPONSIBILITIES_HAVE_EXACT_ROOT_POLICY_AND_SECTION_OWNERS",
+    "ORIGINAL_RESPONSIBILITY_LIFECYCLE_PRESERVED",
+    "ALL_OPERATIONAL_DEVELOPER_POLICY_REFERENCES_ARE_DIRECT_ROOT_REFERENCES",
+    "NO_DEVELOPER_LEGACY_POLICY_FILES_OR_RUNTIME_PROJECTIONS",
+    "GO_VERIFICATION_AND_PRESERVED_REGRESSION_COVERAGE_PASS"
+  ],
+  "partial_port_is_complete": false,
+  "policy_admission_is_implementation_completion": false,
+  "delete_legacy_before_consumer_cutover": "FORBIDDEN",
+  "runtime_commands": [
+    {
+      "command": [
+        "policy-resolver",
+        "resolve"
+      ],
+      "required_options": [
+        "scope",
+        "operation"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "get"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ],
+      "optional_options": [
+        "section"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "explain"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "rule"
+      ],
+      "required_arguments": [
+        "rule_id"
+      ]
+    },
+    {
+      "command": [
+        "policy-resolver",
+        "validate"
+      ]
+    },
+    {
+      "command": [
+        "root-family-entry",
+        "resolve"
+      ],
+      "required_options": [
+        "policy_class",
+        "family"
+      ]
+    },
+    {
+      "command": [
+        "automation-migration",
+        "inspect"
+      ]
+    },
+    {
+      "command": [
+        "repository-state",
+        "resolve"
+      ],
+      "required_options": [
+        "domain"
+      ]
+    },
+    {
+      "command": [
+        "planning-entry",
+        "resolve"
+      ],
+      "optional_options": [
+        "branch"
+      ]
+    },
+    {
+      "command": [
+        "root-family-entry",
+        "inspect"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ]
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "inspect"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "preflight"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "approval_ref",
+        "analysis_id",
+        "group_id"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "register"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "approval_ref",
+        "analysis_id",
+        "group_id",
+        "policy_file"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "family-preflight"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "policy_class",
+        "family",
+        "approval_ref",
+        "analysis_id",
+        "group_id"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "family-register"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "policy_class",
+        "family",
+        "approval_ref",
+        "analysis_id",
+        "group_id",
+        "policy_file"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "status-preflight"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ],
+      "required_options": [
+        "approval_ref"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "version-initial"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-lifecycle",
+        "version-transition"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "current_version",
+        "current_status",
+        "change_class"
+      ],
+      "optional_options": [
+        "target_status"
+      ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-responsibility",
+        "validate"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "analysis_id",
+        "subject_type",
+        "subject_id",
+        "analysis_kind",
+        "current_authority_lookup"
+      ],
+      "boolean_options": [
+        "current_authority_lookup"
+      ]
+    },
+    {
+      "command": [
+        "policy-validator",
+        "validate"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-validator",
+        "contract"
+      ],
+      "required_arguments": [
+        "contract_id"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-validator",
+        "catalog-contracts"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "authority-family-migration",
+        "migrate"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "apply"
+      ],
+      "boolean_options": [
+        "apply"
+      ]
+    },
+    {
+      "command": [
+        "policy-plan-consistency",
+        "verify"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "pp-seed",
+        "pp-102"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "apply"
+      ],
+      "boolean_options": [
+        "apply"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "binding_id",
+        "policy",
+        "resolved_plan_id",
+        "plan_file_id",
+        "plan"
+      ],
+      "boolean_options": [],
+      "command": [
+        "policy-plan-binding",
+        "resolve"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "policy"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "policy-plan-binding",
+        "create"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "policy",
+        "resolved_plan_id",
+        "plan_file_id",
+        "version",
+        "revision",
+        "plan_ref"
+      ],
+      "optional_options": [
+        "binding_id"
+      ],
+      "boolean_options": [],
+      "command": [
+        "policy-plan-binding",
+        "link"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "binding_id",
+        "policy",
+        "resolved_plan_id",
+        "plan_file_id",
+        "from_plan_ref",
+        "to_plan_ref"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "policy-plan-binding",
+        "move"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "apply"
+      ],
+      "boolean_options": [
+        "apply"
+      ],
+      "command": [
+        "policy-plan-binding",
+        "reconcile"
+      ]
+    },
+    {
+      "required_arguments": [
+        "binding_id"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "apply"
+      ],
+      "boolean_options": [
+        "apply"
+      ],
+      "command": [
+        "policy-plan-binding",
+        "track"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "policy-plan-binding",
+        "validate"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "planning",
+        "validate"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "current_branch",
+        "merged_branch",
+        "apply"
+      ],
+      "boolean_options": [
+        "apply"
+      ],
+      "command": [
+        "planning",
+        "reconcile"
+      ]
+    },
+    {
+      "required_arguments": [
+        "branch"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "message"
+      ],
+      "boolean_options": [],
+      "command": [
+        "planning",
+        "merge-leaf"
+      ]
+    },
+    {
+      "required_arguments": [
+        "planning_path",
+        "stage_id"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "planning",
+        "finalize-stage"
+      ]
+    },
+    {
+      "required_arguments": [
+        "planning_path"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "planning",
+        "finalize-extension"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "base"
+      ],
+      "optional_options": [
+        "candidate",
+        "staged"
+      ],
+      "boolean_options": [
+        "staged"
+      ],
+      "command": [
+        "pp",
+        "delta"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "apply"
+      ],
+      "boolean_options": [
+        "apply"
+      ],
+      "command": [
+        "pp",
+        "reconcile"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "pp",
+        "pre-commit"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "commit"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "pp",
+        "commit"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "base",
+        "head"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "pp",
+        "range"
+      ]
+    },
+    {
+      "required_arguments": [],
+      "required_options": [
+        "sha"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "command": [
+        "pp",
+        "release"
+      ]
+    },
+    {
+      "command": [
+        "agent-instruction-classifier",
+        "classify"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "source"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-materializer",
+        "status"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "source",
+        "output"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-materializer",
+        "materialize"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "source",
+        "output"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-materializer",
+        "check"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "source",
+        "output"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-entry",
+        "resolve"
+      ],
+      "required_options": [
+        "operation"
+      ],
+      "optional_options": [
+        "include",
+        "agent_root"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-progressive",
+        "bootstrap-level1"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-progressive",
+        "migrate-level1"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-progressive",
+        "check"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-activation",
+        "activate"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-instruction-activation",
+        "check"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-integration",
+        "status"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "agent-integration",
+        "install-mcp"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "user_approved"
+      ],
+      "required_arguments": [],
+      "boolean_options": [
+        "user_approved"
+      ]
+    },
+    {
+      "command": [
+        "agent-context-migration",
+        "verify"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "stage"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "context-projection",
+        "sync"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "context-projection",
+        "check"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "context-projection",
+        "write"
+      ],
+      "required_options": [
+        "input"
+      ],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "implementation-work-packet",
+        "prepare"
+      ],
+      "required_options": [
+        "scope",
+        "operation"
+      ],
+      "optional_options": [
+        "output",
+        "brief_output",
+        "agent_brief"
+      ],
+      "required_arguments": [],
+      "boolean_options": [
+        "agent_brief"
+      ]
+    },
+    {
+      "command": [
+        "implementation-work-packet",
+        "brief"
+      ],
+      "required_options": [
+        "packet"
+      ],
+      "optional_options": [
+        "output"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "implementation-work-packet",
+        "context"
+      ],
+      "required_options": [
+        "packet",
+        "role"
+      ],
+      "optional_options": [
+        "output",
+        "context_id"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "implementation-work-packet",
+        "check"
+      ],
+      "required_options": [
+        "packet"
+      ],
+      "optional_options": [],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "implementation-work-packet",
+        "verify"
+      ],
+      "required_options": [
+        "stage",
+        "packet"
+      ],
+      "optional_options": [
+        "log",
+        "failure_state"
+      ],
+      "required_arguments": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "branch-guard",
+        "validate"
+      ],
+      "required_options": [
+        "candidate",
+        "approved_name",
+        "authorization_source",
+        "request_kind",
+        "creation_mechanism"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-guard",
+        "profile-transition"
+      ],
+      "required_options": [
+        "branch",
+        "from_profile",
+        "to_profile"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-guard",
+        "classify-existing"
+      ],
+      "required_options": [
+        "branch"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-control",
+        "commands"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-control",
+        "list"
+      ],
+      "required_options": [
+        "github_repository"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-control",
+        "inspect"
+      ],
+      "required_options": [
+        "github_repository",
+        "branch"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-control",
+        "create"
+      ],
+      "required_options": [
+        "github_repository",
+        "branch",
+        "approved_name",
+        "base_ref"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "branch-control",
+        "recreate"
+      ],
+      "required_options": [
+        "github_repository",
+        "branch",
+        "approved_name",
+        "base_ref"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "developer-setup",
+        "install-hooks"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "dependency-gate",
+        "verify"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "current-dependency-gate",
+        "validate"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "transition",
+        "legacy-removal"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "wu02",
+        "validate"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "lane",
+        "execution_branch"
+      ],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "wu02",
+        "control-context"
+      ],
+      "required_options": [],
+      "optional_options": [
+        "execution_branch"
+      ],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "profile-registry",
+        "current"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "profile-registry",
+        "catalog"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "profile-registry",
+        "contracts"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "profile-registry",
+        "validate"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "support-contract",
+        "preflight"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "support-contract",
+        "verify"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [
+        "check_worktree"
+      ],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "support-contract",
+        "inspect"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [
+        "require_active"
+      ],
+      "required_arguments": [
+        "identity"
+      ]
+    },
+    {
+      "command": [
+        "support-contract",
+        "validate-selection"
+      ],
+      "required_options": [
+        "input",
+        "kind"
+      ],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "vpms-api",
+        "verify"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [
+        "check_worktree"
+      ],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "vpms-activation",
+        "preflight"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "vpms-activation",
+        "verify"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [
+        "check_worktree"
+      ],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "authorization-transition",
+        "readiness"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "authorization-transition",
+        "evaluate"
+      ],
+      "required_options": [
+        "scope"
+      ],
+      "optional_options": [
+        "input"
+      ],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "authorization-transition",
+        "current"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": [],
+      "required_arguments": []
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "inspect"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "plan"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "verify"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "simulate"
+      ],
+      "nonfatal_statuses": [
+        "BLOCKED"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [
+        "scope",
+        "output"
+      ],
+      "boolean_options": [],
+      "repeatable_options": [
+        "scope"
+      ]
+    },
+    {
+      "command": [
+        "markdown-cleanup",
+        "apply"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "plan"
+      ],
+      "optional_options": [
+        "output"
+      ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "prepare"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "dispatched_sha",
+        "dispatched_ref"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "gate"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "source_sha",
+        "github_repository"
+      ],
+      "optional_options": [
+        "github_api_url"
+      ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "reconfirm"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "source_sha"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "draft"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "source_sha",
+        "version",
+        "tag",
+        "note",
+        "github_repository"
+      ],
+      "optional_options": [
+        "github_api_url"
+      ],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "tag-verify"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "release_tag"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "build"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "release",
+        "metadata-check"
+      ],
+      "required_arguments": [],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "root-family-entry",
+        "validate"
+      ],
+      "required_arguments": [],
+      "required_options": [
+        "policy_class"
+      ],
+      "optional_options": [],
+      "boolean_options": []
+    }
+  ],
+  "normative_semantics_owner": "LANGUAGE_NEUTRAL_MACHINE_CONTRACT",
+  "go_runtime_is_implementation_binding": true,
+  "native_parser_binding": {
+    "module": "github.com/odvcencio/gotreesitter",
+    "version": "v0.55.1",
+    "python_grammar": "TREE_SITTER_PYTHON",
+    "mode": "STRICT_COMPLETE_TREE_NO_ERROR_OR_MISSING",
+    "build_tags": [
+      "grammar_subset",
+      "grammar_subset_python"
+    ],
+    "python_runtime_delegation": false
+  }
+}

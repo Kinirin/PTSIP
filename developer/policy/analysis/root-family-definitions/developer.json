@@ -1,0 +1,1045 @@
+{
+  "schema_version": "ptsip-root-family-definition-set/v1",
+  "artifact_role": "DEVELOPER_ONLY_SEMANTIC_DESIGN",
+  "definition_state": "GENERATED",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "provenance": {
+    "authorization_source": "USER_EXPLICIT_DELEGATION",
+    "request": "Family별 authority_subject와 exclusive_kernel 정의를 위임하니 이를 정의를 생성해 주세요",
+    "base_branch": "dev/0.3.8a4",
+    "base_head": "18d7ee83ab5d18b2113fcbf5e2855af386b75dde",
+    "working_tree": "LOCAL_UNCOMMITTED_ENTRY_REPAIRS_AND_GENERATED_DEFINITIONS",
+    "bootstrap_ref": {
+      "path": "developer/policy/MPD-0018.yaml",
+      "sha256": "15844770a89bea7433ff6209bd548525a7f416a17ceec7e1dad4bc3f07fe5cdf"
+    },
+    "routing_authority": "developer/policy/registries/root-family-entry-registry.json"
+  },
+  "semantics": {
+    "profile": "CONSERVATIVE_MINIMUM_KERNEL",
+    "identity_fields": [
+      "policy_class",
+      "responsibility_family"
+    ],
+    "semantic_inheritance": "FORBIDDEN",
+    "boundary_closure": "MINIMUM_NOT_COMPLETE",
+    "extension_space": "OPEN",
+    "unresolved_assignment": "FAIL_CLOSED_FOR_EXECUTION",
+    "runtime_authority": false,
+    "policy_materialized": false,
+    "policy_lifecycle_status": null,
+    "prospective_ids_are_not_registration": true,
+    "legacy_to_root_mapping": "REQUIRES_EXPLICIT_RESPONSIBILITY_DECOMPOSITION",
+    "cross_class_relations": "NONE_DECLARED"
+  },
+  "definitions": [
+    {
+      "responsibility_family": "NORM",
+      "authority_subject": {
+        "id": "DEV_RULE_NORMATIVITY",
+        "statement": "PTSIP 개발에 적용되는 규칙의 규범적 효력, 해석 및 명시적으로 선택된 immutable Specification과의 구속 관계를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_RULE_FORCE_AND_PRECEDENCE",
+        "DEV_NORMATIVE_INTERPRETATION"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_RULE_FORCE_AND_PRECEDENCE",
+          "statement": "개발 규칙의 MUST/MUST_NOT 의미, 적용 범위 및 명시적 규범 우선순위를 정한다. bound Specification의 상위 요구를 완화할 수 없다.",
+          "non_substitutability": "GOV의 적법한 승인만으로 규칙의 의무 강도나 상위 Specification 구속력을 바꿀 수 없다."
+        },
+        {
+          "id": "DEV_NORMATIVE_INTERPRETATION",
+          "statement": "규칙 간 충돌과 해석 가능한 범위를 선택된 규범 revision 안에서 정하고, 새 규범 의미가 필요한 변경을 식별한다.",
+          "non_substitutability": "ASSURE는 정해진 규칙으로 판정하며 새로운 규범 의미를 검증 결과에서 만들어 낼 수 없다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "정당한 규칙 제정 주체와 명시적인 승인"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "선택된 규범 revision 및 변경 근거의 출처"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "누가 규칙을 제정하거나 승인할 수 있는지"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "규칙 레코드의 저장 구조와 projection 형태"
+        }
+      ],
+      "decision_example": "개발 규칙의 SHOULD를 MUST로 바꾸는 의미 변경은 NORM이 소유하고 승인 적법성은 GOV에서 소비한다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "NORM"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "NORM"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-NORM-0001",
+        "canonical_path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "GOV",
+      "authority_subject": {
+        "id": "DEV_DECISION_LEGITIMACY",
+        "statement": "개발 정책, 개발 작업 및 개발 control plane에서 누가 어떤 subject에 대해 결정을 내리고 승인할 수 있는지와 그 결정의 정당성을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_DECISION_OWNER_AND_MANDATE",
+        "DEV_APPROVAL_AND_LIFECYCLE_LEGITIMACY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_DECISION_OWNER_AND_MANDATE",
+          "statement": "개발 결정의 정확한 authority subject, 소유자, 위임 범위와 승인 주체를 명시하고 무권한 결정을 배제한다.",
+          "non_substitutability": "INTENT의 작업 목표나 ARCH의 기술 설계가 결정권자의 위임 범위를 대신 만들 수 없다."
+        },
+        {
+          "id": "DEV_APPROVAL_AND_LIFECYCLE_LEGITIMACY",
+          "statement": "정책 등록, 정책 lifecycle 상태 및 개발 작업 승인의 출처와 대상 범위가 적법한지를 정한다.",
+          "non_substitutability": "CTRL의 실행 가능 판정이나 테스트 PASS가 명시되지 않은 ACTIVE/DRAFT 상태 승인을 만들어 내지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "개발 승인과 권한에 적용되는 상위 규칙"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "승인 출처와 결정 이력"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "실행 직전 HEAD와 상태를 확인하여 허용 여부를 판정하는 gate"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "승인된 설계의 책임 구조 자체"
+        }
+      ],
+      "decision_example": "새 MPD의 lifecycle 상태를 승인하는 권한은 GOV이며, 등록 직전 상태 일치 검사는 CTRL이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "GOV"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "GOV"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-GOV-0001",
+        "canonical_path": "developer/policy/GOV/MPD-GOV-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "INTENT",
+      "authority_subject": {
+        "id": "DEV_WORK_OUTCOME_INTENT",
+        "statement": "Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_OUTCOME_SCOPE_AND_NON_GOALS",
+        "DEV_ACCEPTANCE_PURPOSE"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_OUTCOME_SCOPE_AND_NON_GOALS",
+          "statement": "개발 요청을 명시적인 달성 결과, 포함 범위와 비목표로 한정하고 범위 확장의 필요를 식별한다.",
+          "non_substitutability": "REAL의 구현 편의나 SUPPLY의 사용 가능한 도구가 승인된 작업 범위를 확대할 수 없다."
+        },
+        {
+          "id": "DEV_ACCEPTANCE_PURPOSE",
+          "statement": "작업 결과를 수락하려는 목적과 성공 조건의 의미를 정하되 실제 충족 여부는 ASSURE에 맡긴다.",
+          "non_substitutability": "ASSURE가 테스트를 통과시켰다는 사실만으로 요청하지 않은 제품 목표가 수락 목적이 되지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "작업 목표와 범위를 정할 권한 및 위임"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "목표가 따라야 하는 개발 규범"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "결과를 실현하는 책임 분할과 연결 구조"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CHANGE"
+          },
+          "responsibility": "현재 상태에서 목표 상태로 가는 전환 순서"
+        }
+      ],
+      "decision_example": "이번 작업의 완료 목표를 28개 Family 정의 생성으로 한정하는 것은 INTENT이며 정책 활성화 승인을 포함하지 않는다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "INTENT"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "INTENT"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-INTENT-0001",
+        "canonical_path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "ARCH",
+      "authority_subject": {
+        "id": "DEV_TOOL_RESPONSIBILITY_STRUCTURE",
+        "statement": "Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES",
+        "DEV_EXPLICIT_COMPONENT_RELATIONSHIPS"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES",
+          "statement": "Product, Development Tooling, Delivery, Operations 및 Neutral Contract 책임을 governing lifecycle obligation에 따라 분리한다.",
+          "non_substitutability": "SUPPLY의 생산자, 파일 형식 또는 실행 환경이 Artifact의 lifecycle 소유자를 결정하지 않는다."
+        },
+        {
+          "id": "DEV_EXPLICIT_COMPONENT_RELATIONSHIPS",
+          "statement": "독립적으로 통제할 수 있는 책임 단위의 분할, 경계와 프로젝트가 선언한 typed directed 관계를 정한다.",
+          "non_substitutability": "INFO의 schema나 관측 import 목록만으로 프로젝트의 책임 분할과 관계 의도를 확정할 수 없다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "INTENT"
+          },
+          "responsibility": "제품과 개발 체계의 목표 및 제한"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "책임 분류와 경계에 적용되는 규범"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "선언을 표현하는 필드와 정보 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "설계대로 코드와 Artifact를 구현하는 행위"
+        }
+      ],
+      "decision_example": "MPD 자동화가 consumer runtime에 포함되지 않도록 책임 경계를 정하는 것은 ARCH이고 실제 패키지 위반 판정은 ASSURE이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "ARCH"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "ARCH"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-ARCH-0001",
+        "canonical_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "INFO",
+      "authority_subject": {
+        "id": "DEV_CONTROL_INFORMATION_MEANING",
+        "statement": "개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_CANONICAL_INFORMATION_AND_IDENTITY",
+        "DEV_SOURCE_PROJECTION_SEMANTICS"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_CANONICAL_INFORMATION_AND_IDENTITY",
+          "statement": "개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은 GOV가 소유한다.",
+          "non_substitutability": "GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다."
+        },
+        {
+          "id": "DEV_SOURCE_PROJECTION_SEMANTICS",
+          "statement": "semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가 될 수 없는 조건을 정한다.",
+          "non_substitutability": "REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "정보를 소유하는 개발 책임 경계"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "canonical 정보 및 identity에 적용되는 규범"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "resolver 호출자에게 약속하는 입력과 출력 계약"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "과거 사건의 provenance와 보존 책임"
+        }
+      ],
+      "decision_example": "context.source.json이 의미 원본이고 context.json/jsonl이 projection임을 정의하는 것은 INFO이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "INFO"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "INFO"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-INFO-0001",
+        "canonical_path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "CNTR",
+      "authority_subject": {
+        "id": "DEV_AUTOMATION_INTERFACE_OBLIGATIONS",
+        "statement": "개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_AUTOMATION_REQUEST_RESULT_CONTRACT",
+        "DEV_INTERFACE_COMPATIBILITY_COMMITMENT"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_AUTOMATION_REQUEST_RESULT_CONTRACT",
+          "statement": "호출 가능한 command vocabulary, typed 입력과 출력, 오류 의미 및 precondition/postcondition 약속을 명시한다.",
+          "non_substitutability": "INFO의 내부 데이터 모델만으로 외부 호출에 허용된 command와 결과 약속을 만들 수 없다."
+        },
+        {
+          "id": "DEV_INTERFACE_COMPATIBILITY_COMMITMENT",
+          "statement": "개발 자동화 인터페이스의 보장 범위와 호환성 약속을 정하고 미등록 command나 추측 fallback이 계약이 되는 것을 금지한다.",
+          "non_substitutability": "CHANGE가 전환 일정을 정하거나 REAL이 편의 기능을 구현해도 계약상 지원 의무가 자동으로 생기지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "입출력 정보형 및 identity 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "인터페이스에 적용되는 개발 규범"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "특정 요청이 현재 상태에서 실제 실행 가능한지"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CHANGE"
+          },
+          "responsibility": "호환성 변경의 영향과 전환 계획"
+        }
+      ],
+      "decision_example": "branch_control의 등록된 command vocabulary를 정하는 것은 CNTR이고 특정 branch 생성의 허용 판정은 CTRL이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "CNTR"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "CNTR"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-CNTR-0001",
+        "canonical_path": "developer/policy/CNTR/MPD-CNTR-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "RISK",
+      "authority_subject": {
+        "id": "DEV_CHANGE_RISK_DISPOSITION",
+        "statement": "Tool 구현, 개발 변경 및 개발 공급망의 위험 식별, 처리 의무와 위임 범위 안의 잔여 위험 수락을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_RISK_IDENTIFICATION_AND_TREATMENT",
+        "DEV_RESIDUAL_RISK_ACCEPTANCE_LIMIT"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_RISK_IDENTIFICATION_AND_TREATMENT",
+          "statement": "개발 변경의 손실 가능성, 영향 범위 및 예방·완화·회복 조치의 필요를 명시한다.",
+          "non_substitutability": "ASSURE의 테스트 결과만으로 검사하지 않은 실패 가능성과 처리 의무가 사라지지 않는다."
+        },
+        {
+          "id": "DEV_RESIDUAL_RISK_ACCEPTANCE_LIMIT",
+          "statement": "잔여 위험의 수락 조건과 수락 권한 요구를 정한다. MUST 위반 면제, 닫힌 License Authority 진입 또는 무권한 실행을 위험 수락으로 승인할 수 없다.",
+          "non_substitutability": "GOV의 위임이 있어도 RISK 밖의 상위 규범과 별도 authority boundary를 대체하지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "잔여 위험을 수락할 주체와 위임 한계"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "검증된 위험 감소 효과 및 증거 공백"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "규칙 충족과 검증 증거의 적합성 판정"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "현재 작업의 실행 gate"
+        }
+      ],
+      "decision_example": "migration 검증 공백을 위험으로 기록하고 추가 검증을 요구하는 것은 RISK이며 공백 상태를 PASS로 바꾸지는 않는다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "RISK"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "RISK"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-RISK-0001",
+        "canonical_path": "developer/policy/RISK/MPD-RISK-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "SUPPLY",
+      "authority_subject": {
+        "id": "DEV_BUILD_VERIFICATION_INPUT_SUPPLY",
+        "statement": "개발, build, verification 및 delivery에 투입하거나 인계하는 dependency, resource와 Artifact의 공급 적합성 및 출처를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_INPUT_ADMISSION_AND_PROVENANCE",
+        "DEV_ARTIFACT_SUPPLY_HANDOFF"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_INPUT_ADMISSION_AND_PROVENANCE",
+          "statement": "개발 입력과 환경 dependency의 정확한 출처, revision, 필요 조건 및 허용된 공급 경로를 명시한다.",
+          "non_substitutability": "REAL의 성공적인 build나 RISK의 잔여 위험 수락만으로 입력의 출처와 공급 자격을 확정할 수 없다."
+        },
+        {
+          "id": "DEV_ARTIFACT_SUPPLY_HANDOFF",
+          "statement": "생산된 Artifact를 다음 개발·검증·delivery 단계에 공급하는 단위, provenance 및 인계 조건을 정한다. 생산자와 Artifact lifecycle 소유자는 구별한다.",
+          "non_substitutability": "ARCH가 lifecycle 소유자를 정해도 실제 공급 단위와 출처 확인 의무를 대신 수행하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "입력과 Artifact의 책임 소유 경계"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "공급 단계가 약속한 형태와 호환 요구"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "코드 구현 및 Artifact의 조립·생성 절차"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CHANGE"
+          },
+          "responsibility": "dependency/version 변경의 전환 순서"
+        }
+      ],
+      "decision_example": "검증에 사용할 Python과 dependency revision의 공급 조건은 SUPPLY이고 그 환경에서의 검증 판정은 ASSURE이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "SUPPLY"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "SUPPLY"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-SUPPLY-0001",
+        "canonical_path": "developer/policy/SUPPLY/MPD-SUPPLY-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "REAL",
+      "authority_subject": {
+        "id": "DEV_APPROVED_ARTIFACT_REALIZATION",
+        "statement": "선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_IMPLEMENTATION_AND_MATERIALIZATION",
+        "DEV_MUTATION_INTEGRITY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_IMPLEMENTATION_AND_MATERIALIZATION",
+          "statement": "해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및 provenance를 보존한다.",
+          "non_substitutability": "INTENT의 목표나 ARCH의 설계 선언만으로 실제 구현 절차와 생성 결과가 존재하게 되지 않는다."
+        },
+        {
+          "id": "DEV_MUTATION_INTEGRITY",
+          "statement": "허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을 방지한다.",
+          "non_substitutability": "CTRL이 변경을 허용했다는 판정은 실제 쓰기의 원자성과 실패 처리를 대신 보장하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "실현할 설계 및 책임 경계"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "실행 가능한 정확한 대상과 현재 precondition"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "정책 lifecycle 상태와 구현 범위의 승인 적법성"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "구현 결과의 검증 및 conformance 판정"
+        }
+      ],
+      "decision_example": "승인된 semantic source에서 projection을 생성하고 실패 시 원본을 보존하는 행위는 REAL이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "REAL"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "REAL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-REAL-0001",
+        "canonical_path": "developer/policy/REAL/MPD-REAL-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "ASSURE",
+      "authority_subject": {
+        "id": "DEV_VERIFICATION_EVIDENCE_JUDGMENT",
+        "statement": "개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에 구속된 검증 판정을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY",
+        "DEV_EXACT_SOURCE_VERIFICATION_OUTCOME"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY",
+          "statement": "기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를 평가한다.",
+          "non_substitutability": "CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이 충족되지 않는다."
+        },
+        {
+          "id": "DEV_EXACT_SOURCE_VERIFICATION_OUTCOME",
+          "statement": "검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와 PTSIP conformance 및 VPMS purpose를 구별한다.",
+          "non_substitutability": "RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도 미검증 SHA를 PASS로 만들 수 없다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "판정에 적용되는 규범 요구"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "INTENT"
+          },
+          "responsibility": "작업 수락 목적과 성공 조건"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "검증 결과를 소비하여 release나 실행을 허용하는 gate"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "로그와 판정 출처의 보존"
+        }
+      ],
+      "decision_example": "ci/pp-transition success를 전체 pytest PASS로 확대하지 않고 실행 corpus와 SHA를 구분하는 판정은 ASSURE이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "ASSURE"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "ASSURE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-ASSURE-0001",
+        "canonical_path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "CTRL",
+      "authority_subject": {
+        "id": "DEV_ACTION_TIME_EXECUTION_ELIGIBILITY",
+        "statement": "개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서 허용되는지를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_FRESH_PRECONDITION_AND_SCOPE_GATE",
+        "DEV_TRANSITION_GATE_COMPOSITION"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_FRESH_PRECONDITION_AND_SCOPE_GATE",
+          "statement": "branch, HEAD, task context, selector와 승인 범위를 실행 직전에 확인하고 stale하거나 unlisted인 요청을 fail-closed한다.",
+          "non_substitutability": "GOV의 적법한 과거 승인이나 INFO의 유효한 레코드만으로 현재 HEAD와 대상이 일치함을 보장할 수 없다."
+        },
+        {
+          "id": "DEV_TRANSITION_GATE_COMPOSITION",
+          "statement": "정책 및 계약이 정한 gate들을 fresh evidence와 결합해 특정 실행의 허용·차단을 판정한다. 무권한 상태 변화나 새로운 정책 의미를 생성하지 않는다.",
+          "non_substitutability": "ASSURE의 PASS가 실행 권한, 정확한 대상 및 모든 transition precondition을 대신 충족하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "정당한 실행 승인과 exact scope"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "정확한 snapshot에 대한 필요한 검증 결과"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "허용된 mutation의 실제 적용과 실패 처리"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "gate가 따르는 규범의 의미"
+        }
+      ],
+      "decision_example": "commit 직전에 IWP의 HEAD와 target 일치를 확인하는 것은 CTRL이고 파일을 실제 쓰는 것은 REAL이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "CTRL"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "CTRL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-CTRL-0001",
+        "canonical_path": "developer/policy/CTRL/MPD-CTRL-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "CHANGE",
+      "authority_subject": {
+        "id": "DEV_VERSIONED_TRANSITION_SEMANTICS",
+        "statement": "개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_CHANGE_IMPACT_AND_COMPATIBILITY",
+        "DEV_MIGRATION_ORDER_AND_CONTINUITY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_CHANGE_IMPACT_AND_COMPATIBILITY",
+          "statement": "변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version 문자열이나 Family 이름을 치환하지 않는다.",
+          "non_substitutability": "INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지 않는다."
+        },
+        {
+          "id": "DEV_MIGRATION_ORDER_AND_CONTINUITY",
+          "statement": "승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을 정한다.",
+          "non_substitutability": "REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기 조건을 정당화할 수 없다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "변경 전후의 호환 의무"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "영향 받는 책임 단위와 경계"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "변경과 lifecycle 상태 승인의 정당성"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "변환과 쓰기의 실행 mechanics"
+        }
+      ],
+      "decision_example": "legacy 6 Family를 14 Root Family로 의미 단위 분해하는 전환 관계는 CHANGE이며 일대일 token 치환을 허용하지 않는다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "CHANGE"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "CHANGE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-CHANGE-0001",
+        "canonical_path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "OPS",
+      "authority_subject": {
+        "id": "DEV_SERVICE_CONTINUITY_AND_RECOVERY",
+        "statement": "인계 이후 개발 자동화와 개발 환경 및 control plane의 지속 운영, 상태 유지, 장애 회복과 반복 실행의 안전성을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_OPERATIONAL_HEALTH_AND_RECOVERY",
+        "DEV_RETRY_RECONCILIATION_CONTINUITY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_OPERATIONAL_HEALTH_AND_RECOVERY",
+          "statement": "이미 등록되고 사용 가능한 개발 capability의 상태 감시, 장애 분류 및 authority를 보존하는 회복 절차를 정한다.",
+          "non_substitutability": "SUPPLY의 환경 공급이나 REAL의 일회성 구현만으로 지속 운영과 장애 회복 책임이 충족되지 않는다."
+        },
+        {
+          "id": "DEV_RETRY_RECONCILIATION_CONTINUITY",
+          "statement": "승인된 operation identity와 revision을 보존하는 retry 및 reconciliation을 정하고 충돌을 은폐하지 않는다. RESERVED capability의 persistence나 실행 의미를 새로 만들지 않는다.",
+          "non_substitutability": "CHANGE의 migration 계획이나 CTRL의 단일 실행 허용은 반복 실행의 동일성 및 운영 연속성을 대신 정의하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "운영 capability와 오류 및 재시도 계약"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "각 회복 실행의 현재 eligibility"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "SUPPLY"
+          },
+          "responsibility": "초기 환경·dependency 공급 및 Artifact 인계"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "CHANGE"
+          },
+          "responsibility": "새 capability 활성화와 버전 전환 의미"
+        }
+      ],
+      "decision_example": "개발 자동화가 중단된 뒤 기존 operation identity로 안전하게 재시도하는 운영 절차는 OPS이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "OPS"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "OPS"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-OPS-0001",
+        "canonical_path": "developer/policy/OPS/MPD-OPS-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "RECORD",
+      "authority_subject": {
+        "id": "DEV_DECISION_AND_EXECUTION_PROVENANCE",
+        "statement": "개발 결정, 승인, 작업 실행 및 검증 사건의 출처와 exact revision 결합, 감사 가능성과 역사적 보존을 소유한다."
+      },
+      "exclusive_kernel": [
+        "DEV_EVENT_PROVENANCE_AND_SOURCE_BINDING",
+        "DEV_HISTORY_RETENTION_AND_TRACEABILITY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "DEV_EVENT_PROVENANCE_AND_SOURCE_BINDING",
+          "statement": "개발 기록에 subject, 수행 주체, 승인 근거, source SHA, 시점과 결과 출처를 결합하고 다른 revision의 증거를 혼합하지 않는다.",
+          "non_substitutability": "ASSURE의 판정이나 GOV의 결정만으로 그 사건의 재확인 가능한 provenance가 보존되지 않는다."
+        },
+        {
+          "id": "DEV_HISTORY_RETENTION_AND_TRACEABILITY",
+          "statement": "원본 검증 로그, receipt와 완료 산출물의 보존·조회 및 이력 연결을 정한다. 과거 기록을 현재 권한이나 현재 PASS로 승격하지 않는다.",
+          "non_substitutability": "INFO의 현재 canonical 레코드나 OPS의 회복 상태가 역사적 사건의 원본 출처와 보존을 대체하지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "기록 정보형과 identity 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "보존해야 할 정당한 승인과 결정 식별"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "현재 유효한 결정권과 승인 정당성 판정"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "기록된 증거로 규범 충족 여부를 판정하는 책임"
+        }
+      ],
+      "decision_example": "원본 SHA의 pytest 결과와 로컬 patch 검증 결과를 별도 receipt로 보존하는 것은 RECORD이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "responsibility_family": "RECORD"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_DEVELOPER_POLICY",
+          "responsibility_family": "RECORD"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "MPD-RECORD-0001",
+        "canonical_path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        "schema_ref": "developer/policy/schemas/root-family-policy.schema.json"
+      }
+    }
+  ]
+}

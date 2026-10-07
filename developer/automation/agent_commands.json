@@ -1,0 +1,23 @@
+[
+ {"command":["agent-instruction-classifier","classify"],"required_options":[],"optional_options":["source"],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-materializer","status"],"required_options":[],"optional_options":["source","output"],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-materializer","materialize"],"required_options":[],"optional_options":["source","output"],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-materializer","check"],"required_options":[],"optional_options":["source","output"],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-entry","resolve"],"required_options":["operation"],"optional_options":["include","agent_root"],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-progressive","bootstrap-level1"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-progressive","migrate-level1"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-progressive","check"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-activation","activate"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-instruction-activation","check"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-integration","status"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["agent-integration","install-mcp"],"required_options":[],"optional_options":["user_approved"],"required_arguments":[],"boolean_options":["user_approved"]},
+ {"command":["agent-context-migration","verify"],"required_options":[],"optional_options":["stage"],"required_arguments":[],"boolean_options":[]},
+ {"command":["context-projection","sync"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["context-projection","check"],"required_options":[],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["context-projection","write"],"required_options":["input"],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["implementation-work-packet","prepare"],"required_options":["scope","operation"],"optional_options":["output","brief_output","agent_brief"],"required_arguments":[],"boolean_options":["agent_brief"]},
+ {"command":["implementation-work-packet","brief"],"required_options":["packet"],"optional_options":["output"],"required_arguments":[],"boolean_options":[]},
+ {"command":["implementation-work-packet","context"],"required_options":["packet","role"],"optional_options":["output","context_id"],"required_arguments":[],"boolean_options":[]},
+ {"command":["implementation-work-packet","check"],"required_options":["packet"],"optional_options":[],"required_arguments":[],"boolean_options":[]},
+ {"command":["implementation-work-packet","verify"],"required_options":["stage","packet"],"optional_options":["log","failure_state"],"required_arguments":[],"boolean_options":[]}
+]

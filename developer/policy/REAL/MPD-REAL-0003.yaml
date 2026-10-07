@@ -1,0 +1,62 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: REAL
+policy:
+  id: MPD-REAL-0003
+  version: '2.0'
+  title: Root Family transition Go test implementation
+  status: ACTIVE
+authority_subject:
+  id: DEV_APPROVED_ARTIFACT_REALIZATION
+  statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
+exclusive_kernel:
+- DEV_IMPLEMENTATION_AND_MATERIALIZATION
+- DEV_MUTATION_INTEGRITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
+      statement: 해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및
+        provenance를 보존한다.
+      non_substitutability: INTENT의 목표나 ARCH의 설계 선언만으로 실제 구현 절차와 생성 결과가 존재하게 되지 않는다.
+    - id: DEV_MUTATION_INTEGRITY
+      statement: 허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을
+        방지한다.
+      non_substitutability: CTRL이 변경을 허용했다는 판정은 실제 쓰기의 원자성과 실패 처리를 대신 보장하지 않는다.
+    source_scope: []
+  root_family_test_implementation:
+    scope: ROOT_FAMILY_TRANSITION_VERIFICATION
+    implementation_language: GO
+    implementation_owns_normative_authority: false
+    existing_python_tests: PRESERVE_EXISTING_SEMANTIC_COVERAGE
+    repository_wide_test_language_migration: NOT_SELECTED
+    module_path: developer/tests/rootfamily
+    command:
+    - go
+    - -C
+    - developer/tests/rootfamily
+    - test
+    - -count=1
+    - -v
+    - ./...
+    execution_registry_ref: .github/test_modes.yaml
+    execution_mode_id: repository-architecture
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: GO_ROOT_FAMILY_VERIFICATION_SELECTION
+    state: SATISFIED
+    refs:
+    - developer/policy/contracts/root-family-transition-verification.v1.json
+    - .github/test_modes.yaml
+    next_action:
+      action: EXECUTE_REGISTERED_GO_AND_PYTHON_VERIFICATION
+      execution: SERIAL_REQUIRED
+      completion_check: GO_SELECTION_ADMITTED_AND_EXISTING_REGRESSION_PRESERVED

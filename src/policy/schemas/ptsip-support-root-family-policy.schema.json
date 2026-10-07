@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:support-root-family-policy:v1",
+  "title": "PTSIP Support Root Family Policy v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "responsibility_family",
+    "policy",
+    "authority_subject",
+    "exclusive_kernel",
+    "authority_contract",
+    "authority_semantics",
+    "relations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-support-root-family-policy/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_SUPPORT_FEATURE"
+    },
+    "responsibility_family": {
+      "enum": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ]
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SFP-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "DEPRECATED",
+            "RETIRED"
+          ]
+        }
+      }
+    },
+    "authority_subject": {
+      "type": "object",
+      "required": [
+        "id",
+        "statement"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "exclusive_kernel": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]*$"
+      }
+    },
+    "authority_contract": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "authority_semantics": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "relations": {
+      "type": "object",
+      "required": [
+        "supersedes",
+        "amends",
+        "extends",
+        "depends_on"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "amends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "extends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "policy"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "policy": {
+                "type": "string",
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

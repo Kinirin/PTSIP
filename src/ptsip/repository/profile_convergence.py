@@ -7,12 +7,12 @@ from pathlib import Path
 
 import yaml
 
-from ..profile_compatibility import (
+from ..profiles.compatibility import (
     HistoricalProjectProfileBridge,
     current_project_profile_target,
     historical_project_profile_bridge,
 )
-from ..profile_identity import (
+from ..profiles.identity import (
     PP_COMPATIBILITY_TARGET_TOOL_VERSION,
     ProjectProfileIdentityError,
     ProjectProfileOperation,

@@ -1,0 +1,54 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: REAL
+policy:
+  id: SFP-REAL-0001
+  title: REAL authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_DETERMINISTIC_CONSUMER_STATE_REALIZATION
+  statement: consumer가 선택한 source 선언을 deterministic effective metadata와 허용된 repository
+    변경으로 실현하는 의미 보존 실행 절차를 소유한다.
+exclusive_kernel:
+- SUP_DECLARATION_PRESERVING_MATERIALIZATION
+- SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
+authority_contract:
+  authority_type: ROOT_FAMILY_REAL
+  schema_id: ptsip.governance/root-family/real
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_DECLARATION_PRESERVING_MATERIALIZATION
+      statement: 명시적으로 선택된 immutable template/source에서 effective map과 projection을
+        결정론적으로 materialize하고 source facts 및 derived provenance를 보존한다.
+      non_substitutability: ARCH의 설계 의도나 INFO의 schema가 실제 materialization 결과를 생성하지
+        않으며 생성 과정도 새 architecture 의도를 추론할 수 없다.
+    - id: SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
+      statement: 허용된 prepared write의 적용 단위, 원자성과 실패 보존을 정한다. read-only operation은
+        repository-local state를 materialize하지 않는다.
+      non_substitutability: CTRL의 fresh eligibility나 GOV의 승인은 쓰기 중 partial mutation과
+        실패 보존의 실행 mechanics를 대신 보장하지 않는다.
+    source_scope:
+    - SFP-0002
+    - SFP-0009
+    - SFP-0015
+    - SFP-0016
+    - SFP-0022
+    - SFP-0023
+  unit_sfp_0002_eb63277527b8: READ_ONLY
+  unit_sfp_0009_73587b4e12a6: NON_AUTHORITATIVE
+  unit_sfp_0009_eb98fb99bd83: false
+  unit_sfp_0009_4a7fe2226218: false
+  unit_sfp_0009_1986452d2389: false
+  unit_sfp_0015_a108e978a3d7: true
+  unit_sfp_0016_1c3b027c20b5: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
+  unit_sfp_0022_de28528b9b4f:
+    coding_agent_authorization: PREAUTHORIZED
+    user_decision_required: false
+  unit_sfp_0023_2e6408da3841: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

@@ -4,6 +4,7 @@ registry_role: SUPPORT_AUTHORITY_ROLE_CATALOG_NOT_PROJECT_AUTHORITY
 language_neutral: true
 projection_roles:
   - PROJECT_ARCHITECTURE_AUTHORITY
+  - ROOT_FAMILY_CONTRACT_AUTHORITY
 resolution_states:
   - DECLARED
   - DETERMINISTICALLY_DERIVED
@@ -390,6 +391,141 @@ policy_roles:
       - deny_unauthorized_semantic_inference
       - separate_authority_from_conformance
       - fail_closed_on_invalid_state
+  - policy_id: SFP-0024
+    projection_role: PROJECT_ARCHITECTURE_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - declare_canonical_identity
+      - define_deterministic_semantic_identity
+      - govern_normative_family_lifecycle
+      - separate_cross_contract_identity_axes
+      - deny_unauthorized_semantic_inference
+      - fail_closed_on_invalid_state
+  - policy_id: SFP-ARCH-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-ARCH-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-ARCH-0003
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-ASSURE-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-ASSURE-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-ASSURE-0003
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CHANGE-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CNTR-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CNTR-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CNTR-0003
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CNTR-0004
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CTRL-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-GOV-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-INFO-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-INFO-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-INFO-0003
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-INTENT-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-NORM-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-NORM-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-OPS-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-REAL-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-RECORD-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-RECORD-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-RISK-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-SUPPLY-0001
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
 invariants:
   registered_effect_token_is_project_authority_by_itself: false
   projection_role_is_current_eligibility_result_by_itself: false

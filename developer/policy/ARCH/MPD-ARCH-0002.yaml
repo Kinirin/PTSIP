@@ -1,0 +1,172 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: ARCH
+policy:
+  id: MPD-ARCH-0002
+  version: '2.5'
+  title: Developer Automation responsibility-domain package boundary
+  status: ACTIVE
+authority_subject:
+  id: DEV_AUTOMATION_RESPONSIBILITY_DOMAIN_STRUCTURE
+  statement: Developer Automation 구현을 독립적인 responsibility domain 경계로 분리하고 각 구현 단위의 소유 책임이 package 경로에서 기계적으로 식별되도록 한다.
+exclusive_kernel:
+- DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
+- DEV_EXPLICIT_COMPONENT_RELATIONSHIPS
+rules:
+  developer_automation_responsibility_domain_boundary:
+    scope_root: developer/automation
+    decomposition_model: RESPONSIBILITY_DOMAIN_COMPLETE_SEPARATION
+    ownership:
+      every_implementation_unit_requires_exactly_one_responsibility_domain: true
+      domain_owner_must_be_machine_identifiable_from_package_path: true
+      multi_domain_catch_all_package: FORBIDDEN
+      unowned_shared_implementation: FORBIDDEN
+    semantic_boundary:
+      domain_specific_semantics_outside_owning_domain: FORBIDDEN
+      cross_domain_dependency_does_not_transfer_authority: true
+      package_co_location_does_not_merge_responsibility_domains: true
+    existing_declared_boundaries:
+      preserve_existing_explicit_domain_roots: true
+      planning_automation_root: developer/automation/planning/
+    approved_domain_inventory:
+      BRANCH:
+        root: developer/automation/branch/
+        responsibility: BRANCH_CONTROL
+      RELEASE:
+        root: developer/automation/release/
+        responsibility: REPOSITORY_RELEASE_AUTOMATION
+        responsibility_scope:
+        - RELEASE_IDENTITY_CONSUMPTION
+        - RELEASE_PREPARATION
+        - BUILD_ORCHESTRATION
+        - DISTRIBUTION_ASSEMBLY_ORCHESTRATION
+        - TAG_AND_RELEASE_PREPARATION
+        - PUBLICATION_EXECUTION
+        - RELEASE_GATE_INVOCATION
+        scope_extension: PROJECT_OWNER_APPROVAL_REQUIRED
+      TEST_MODE:
+        root: developer/automation/testmode/
+        responsibility: REPOSITORY_TEST_MODE_CONTROL_PLANE
+        responsibility_scope:
+        - TEST_MODE_REGISTRY_VALIDATION
+        - AUTOMATIC_MODE_RESOLUTION
+        - MANUAL_MODE_RESOLUTION
+        - CHANGED_FILE_MATCHING
+        - DELETION_PREIMAGE_RESOLUTION
+        - EXECUTION_PLAN_CONSTRUCTION
+        consumed_authority:
+          registry: .github/test_modes.yaml
+          component_ownership: .ptsip/profiles/main.ptsip.yaml
+        prohibited:
+        - REDEFINE_SOURCE_OWNERSHIP
+        - REDEFINE_VERIFICATION_RELATIONSHIPS
+        - CREATE_VERIFICATION_REQUIREMENTS
+        - OVERRIDE_TEST_MODE_REGISTRY_AUTHORITY
+      POLICY:
+        root: developer/automation/policy/
+        responsibility: POLICY_AUTOMATION
+        subdomains:
+          BINDING:
+            root: developer/automation/policy/binding/
+            responsibility: POLICY_RESOLUTION_AND_BINDING
+          LIFECYCLE:
+            root: developer/automation/policy/lifecycle/
+            responsibility: POLICY_IDENTITY_VERSION_STATUS_AND_MATERIALIZATION_LIFECYCLE
+        cross_subdomain_semantic_ownership: FORBIDDEN
+        parent_domain_may_host_only_cross_subdomain_coordination: true
+    inventory_admission:
+      mixed_responsibility_file_must_be_split_before_domain_inventory_assignment: true
+      inventory_assignment_before_responsibility_split: FORBIDDEN
+      each_split_unit_requires_single_responsibility_meaning: true
+      automatic_assignment_requires_semantic_preservation: true
+      automatic_new_domain_inventory_creation: FORBIDDEN
+    existing_domain_resolution:
+      prefer_existing_domain_when_exact_responsibility_boundary_matches: true
+      approximate_or_convenience_match: FORBIDDEN
+      semantic_meaning_transformation_to_fit_existing_domain: FORBIDDEN
+      unresolved_existing_domain_match: FAIL_CLOSED
+    new_domain_candidate_escalation:
+      allowed_when:
+      - NO_EXISTING_DOMAIN_OWNS_RESPONSIBILITY
+      - EXISTING_DOMAIN_ASSIGNMENT_RISKS_RESPONSIBILITY_SEMANTIC_DISTORTION
+      automatic_adoption: FORBIDDEN
+      user_decision_required: true
+      proposal_must_include:
+      - CANDIDATE_RESPONSIBILITY_STATEMENT
+      - SEMANTIC_DISTORTION_RISK_EVIDENCE
+      - NEAREST_EXISTING_DOMAIN_COMPARISON
+      - EXPLICIT_BOUNDARY_DIFFERENCE
+      - OVERLAP_AND_NON_OWNERSHIP_EXPLANATION
+      proposal_boundary_requirement: CLEAR_NON_OVERLAPPING_RESPONSIBILITY_BOUNDARY
+    planning_boundary:
+      concrete_domain_inventory: PLAN_OWNED
+      file_move_mapping: PLAN_OWNED
+      package_dependency_graph: PLAN_OWNED
+      migration_sequence: PLAN_OWNED
+relations:
+  supersedes: []
+  amends: []
+  extends:
+  - policy: MPD-ARCH-0001
+    scope: DEVELOPER_AUTOMATION_RESPONSIBILITY_DOMAIN_BOUNDARY
+  depends_on:
+  - policy: MPD-REAL-0005
+    scope: GO_AUTOMATION_IMPLEMENTATION_LANGUAGE
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: PROJECT_OWNER_DEVELOPER_AUTOMATION_DOMAIN_SEPARATION_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-ACTIVE.yaml
+    next_action:
+      action: DERIVE_DOMAIN_SEPARATION_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: PLAN_PRESERVES_EXACT_RESPONSIBILITY_DOMAIN_BOUNDARY
+  - id: TR-002
+    type: PROJECT_OWNER_MIXED_RESPONSIBILITY_DECOMPOSITION_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-MIXED-RESPONSIBILITY-UPDATE.yaml
+    next_action:
+      action: APPLY_SPLIT_BEFORE_INVENTORY_ADMISSION
+      execution: SERIAL_REQUIRED
+      completion_check: NO_MIXED_RESPONSIBILITY_UNIT_IS_ASSIGNED_TO_DOMAIN_INVENTORY
+  - id: TR-003
+    type: PROJECT_OWNER_POLICY_DOMAIN_HIERARCHY_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-POLICY-HIERARCHY.yaml
+    next_action:
+      action: MATERIALIZE_POLICY_BINDING_AND_LIFECYCLE_PACKAGES
+      execution: SERIAL_REQUIRED
+      completion_check: POLICY_BINDING_AND_LIFECYCLE_IMPLEMENTATION_MATCH_APPROVED_DOMAIN_ROOTS
+  - id: TR-004
+    type: PROJECT_OWNER_BRANCH_CONTROL_DOMAIN_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-AUTOMATION-DOMAIN-ARCH-0002-BRANCH-CONTROL.yaml
+    next_action:
+      action: MATERIALIZE_BRANCH_CONTROL_PACKAGE
+      execution: SERIAL_REQUIRED
+      completion_check: BRANCH_CONTROL_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT
+  - id: TR-005
+    type: PROJECT_OWNER_REPOSITORY_RELEASE_AUTOMATION_DOMAIN_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261007-AUTOMATION-DOMAIN-ARCH-0002-REPOSITORY-RELEASE-AUTOMATION.yaml
+    next_action:
+      action: MATERIALIZE_REPOSITORY_RELEASE_AUTOMATION_PACKAGE
+      execution: SERIAL_REQUIRED
+      completion_check: RELEASE_AUTOMATION_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT_AND_SCOPE
+  - id: TR-006
+    type: PROJECT_OWNER_REPOSITORY_TEST_MODE_CONTROL_PLANE_DOMAIN_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261007-AUTOMATION-DOMAIN-ARCH-0002-REPOSITORY-TEST-MODE-CONTROL-PLANE.yaml
+    next_action:
+      action: MATERIALIZE_REPOSITORY_TEST_MODE_CONTROL_PLANE_PACKAGE
+      execution: SERIAL_REQUIRED
+      completion_check: TEST_MODE_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT_SCOPE_AND_AUTHORITY_BOUNDARY

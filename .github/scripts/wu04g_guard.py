@@ -13,31 +13,31 @@ PLAN = ROOT / "planning/0.3.6/WU-04G-clarification-adoption-effective-map.md"
 EXPECTED_BRANCH = "tool-0.3.6-lifecycle-ownership"
 
 G_SCOPE_TESTS = {
-    "tests/ptsip/test_clarification.py",
-    "tests/ptsip/test_adoption_033.py",
-    "tests/ptsip/test_decision_control_plane.py",
-    "tests/ptsip/test_local_control_plane_033.py",
-    "tests/ptsip/test_github_authority_033.py",
-    "tests/ptsip/test_github_authority_034.py",
-    "tests/ptsip/test_repository_self_profile_035.py",
-    "tests/ptsip/test_topology_032.py",
-    "tests/ptsip/test_clarification_adoption_effective_map_036.py",
-    "tests/ptsip/_wu04g_support.py",
+    "src/tests/ptsip/test_clarification.py",
+    "src/tests/ptsip/test_adoption_033.py",
+    "src/tests/ptsip/test_decision_control_plane.py",
+    "src/tests/ptsip/test_local_control_plane_033.py",
+    "src/tests/ptsip/test_github_authority_033.py",
+    "src/tests/ptsip/test_github_authority_034.py",
+    "src/tests/ptsip/test_repository_self_profile_035.py",
+    "src/tests/ptsip/test_topology_032.py",
+    "src/tests/ptsip/test_clarification_adoption_effective_map_036.py",
+    "src/tests/ptsip/_wu04g_support.py",
 }
 
 EXCLUDED_TESTS = {
-    "tests/ptsip/test_conformance_030.py",
-    "tests/ptsip/test_conformance_effective_map_036.py",
-    "tests/ptsip/test_conformance_engine_030.py",
-    "tests/ptsip/test_evidence_correctness_023.py",
-    "tests/ptsip/test_merge_gate_followup_030.py",
-    "tests/ptsip/test_merge_gate_remediation_030.py",
-    "tests/ptsip/test_profile_validation_036.py",
-    "tests/ptsip/test_remaining_030.py",
+    "src/tests/ptsip/test_conformance_030.py",
+    "src/tests/ptsip/test_conformance_effective_map_036.py",
+    "src/tests/ptsip/test_conformance_engine_030.py",
+    "src/tests/ptsip/test_evidence_correctness_023.py",
+    "src/tests/ptsip/test_merge_gate_followup_030.py",
+    "src/tests/ptsip/test_merge_gate_remediation_030.py",
+    "src/tests/ptsip/test_profile_validation_036.py",
+    "src/tests/ptsip/test_remaining_030.py",
 }
 
-AUTHORIZED_G036_TEST = "tests/ptsip/test_clarification_adoption_effective_map_036.py"
-AUTHORIZED_SUPPORT = "tests/ptsip/_wu04g_support.py"
+AUTHORIZED_G036_TEST = "src/tests/ptsip/test_clarification_adoption_effective_map_036.py"
+AUTHORIZED_SUPPORT = "src/tests/ptsip/_wu04g_support.py"
 
 
 def _git(*args: str) -> subprocess.CompletedProcess[str]:
@@ -124,7 +124,7 @@ def precheck() -> int:
             "WU-04H  LOCKED",
             "WU-04I  LOCKED",
             "D9-B",
-            "tests/ptsip/test_clarification.py",
+            "src/tests/ptsip/test_clarification.py",
         )
         for marker in required_markers:
             if marker not in text:
@@ -153,28 +153,28 @@ def scope(base: str) -> int:
         return 1
 
     violations: list[str] = []
-    changed_tests = [path for path in changed if path.startswith("tests/")]
+    changed_tests = [path for path in changed if path.startswith("src/tests/")]
 
     for path in changed_tests:
-        if path.startswith("tests/vpms/"):
+        if path.startswith("src/tests/vpms/"):
             violations.append(f"locked H/VPMS test changed: {path}")
             continue
         if path in EXCLUDED_TESTS:
             violations.append(f"completed/deferred test family changed: {path}")
             continue
-        if path.startswith("tests/ptsip/") and path not in G_SCOPE_TESTS:
+        if path.startswith("src/tests/ptsip/") and path not in G_SCOPE_TESTS:
             violations.append(f"test file outside authoritative WU-04G set changed: {path}")
 
     for path in changed:
         if path.startswith(".github/workflows/"):
             violations.append(f"workflow change is outside D9-B: {path}")
         if (
-            path.startswith("tests/ptsip/test_")
+            path.startswith("src/tests/ptsip/test_")
             and "_036.py" in path
             and path != AUTHORIZED_G036_TEST
         ):
             violations.append(f"unauthorized new/changed WU-04G 0.3.6 test file: {path}")
-        if path.startswith("tests/ptsip/_wu04g") and path != AUTHORIZED_SUPPORT:
+        if path.startswith("src/tests/ptsip/_wu04g") and path != AUTHORIZED_SUPPORT:
             violations.append(f"unauthorized WU-04G support module: {path}")
 
     print(f"Scope base: {base}")

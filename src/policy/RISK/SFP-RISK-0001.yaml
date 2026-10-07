@@ -1,0 +1,35 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: RISK
+policy:
+  id: SFP-RISK-0001
+  title: RISK authority (DRAFT source responsibilities)
+  status: DRAFT
+authority_subject:
+  id: SUP_AUTOMATION_UNCERTAINTY_AND_CONFLICT_RISK
+  statement: consumer 지원 동작의 증거 공백, 불확실성 및 authority/mutation 충돌 위험과 그 처리 한계를 소유한다.
+exclusive_kernel:
+- SUP_UNCERTAINTY_AND_CONFLICT_TREATMENT
+- SUP_RISK_ACCEPTANCE_WITHOUT_AUTHORITY_SUBSTITUTION
+authority_contract:
+  authority_type: ROOT_FAMILY_RISK
+  schema_id: ptsip.governance/root-family/risk
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_UNCERTAINTY_AND_CONFLICT_TREATMENT
+      statement: 누락 evidence, unresolved subject와 conflict가 유발하는 위험 및 추가 사실 확보 또는
+        사용자 판단이 필요한 조건을 명시한다.
+      non_substitutability: ASSURE의 finding 개수나 REAL의 변환 성공률만으로 관측하지 못한 위험이 제거되지 않는다.
+    - id: SUP_RISK_ACCEPTANCE_WITHOUT_AUTHORITY_SUBSTITUTION
+      statement: 명시적 위임 안에서만 잔여 위험 처리 조건을 정한다. AI confidence, 위험 수락 또는 편의상 alias가
+        normative conformance, authority winner나 무권한 쓰기를 대신 승인하지 않는다.
+      non_substitutability: GOV의 범위 제한된 승인이나 INTENT의 목표가 universal MUST 위반과 unresolved
+        authority를 허용하지 않는다.
+    source_scope: []
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

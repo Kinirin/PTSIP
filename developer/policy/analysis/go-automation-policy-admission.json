@@ -1,0 +1,123 @@
+{
+  "schema_version": "ptsip-go-automation-policy-admission/v1",
+  "projection_authority": false,
+  "transitions": [
+    {
+      "policy_id": "MPD-CNTR-0004",
+      "resumed_registered_status": {
+        "id": "MPD-CNTR-0004",
+        "version": "2.0",
+        "title": "Direct Root policy Go automation interface",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0005",
+      "registration": {
+        "status": "REGISTERED",
+        "policy_id": "MPD-REAL-0005",
+        "family": "REAL",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "group_id": "G02",
+        "analysis_id": "PRA-20261006-GO-AUTOMATION-CUTOVER",
+        "policy_status": "DRAFT",
+        "approval_id": "MPA-20261006-GO-REAL-0005-DRAFT",
+        "index": "developer/policy/index.yaml",
+        "subject_registry": "developer/policy/registries/authority-subject-registry.yaml",
+        "analysis_registry": "developer/policy/analysis/registry.yaml"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0005",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0005",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-GO-REAL-0005-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0005",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0005",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-GO-REAL-0005-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CHANGE-0004",
+      "registration": {
+        "status": "REGISTERED",
+        "policy_id": "MPD-CHANGE-0004",
+        "family": "CHANGE",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "group_id": "G03",
+        "analysis_id": "PRA-20261006-GO-AUTOMATION-CUTOVER",
+        "policy_status": "DRAFT",
+        "approval_id": "MPA-20261006-GO-CHANGE-0004-DRAFT",
+        "index": "developer/policy/index.yaml",
+        "subject_registry": "developer/policy/registries/authority-subject-registry.yaml",
+        "analysis_registry": "developer/policy/analysis/registry.yaml"
+      }
+    },
+    {
+      "policy_id": "MPD-CHANGE-0004",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CHANGE-0004",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-GO-CHANGE-0004-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CHANGE-0004",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CHANGE-0004",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-GO-CHANGE-0004-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    }
+  ]
+}

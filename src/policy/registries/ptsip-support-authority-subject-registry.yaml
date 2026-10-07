@@ -3,46 +3,72 @@ policy_class: PTSIP_SUPPORT_FEATURE
 registry_role: SUPPORT_POLICY_SUBJECT_APPLICABILITY_CATALOG
 language_neutral: true
 authority_domains:
-  - PROJECT_GOVERNANCE
+- PROJECT_GOVERNANCE
 subject_types:
-  - GOVERNANCE_TOPIC
+- GOVERNANCE_TOPIC
 subject_identity_schemes:
   SUPPORT_POLICY_ID:
     source_field: policy.id
     registered_values:
-      - SFP-0001
-      - SFP-0002
-      - SFP-0003
-      - SFP-0004
-      - SFP-0005
-      - SFP-0006
-      - SFP-0007
-      - SFP-0008
-      - SFP-0009
-      - SFP-0010
-      - SFP-0011
-      - SFP-0012
-      - SFP-0013
-      - SFP-0014
-      - SFP-0015
-      - SFP-0016
-      - SFP-0017
-      - SFP-0018
-      - SFP-0019
-      - SFP-0020
-      - SFP-0021
-      - SFP-0022
-      - SFP-0023
+    - SFP-0001
+    - SFP-0002
+    - SFP-0003
+    - SFP-0004
+    - SFP-0005
+    - SFP-0006
+    - SFP-0007
+    - SFP-0008
+    - SFP-0009
+    - SFP-0010
+    - SFP-0011
+    - SFP-0012
+    - SFP-0013
+    - SFP-0014
+    - SFP-0015
+    - SFP-0016
+    - SFP-0017
+    - SFP-0018
+    - SFP-0019
+    - SFP-0020
+    - SFP-0021
+    - SFP-0022
+    - SFP-0023
+    - SFP-0024
+    - SFP-ARCH-0001
+    - SFP-ARCH-0002
+    - SFP-ARCH-0003
+    - SFP-ASSURE-0001
+    - SFP-ASSURE-0002
+    - SFP-ASSURE-0003
+    - SFP-CHANGE-0001
+    - SFP-CNTR-0001
+    - SFP-CNTR-0002
+    - SFP-CNTR-0003
+    - SFP-CNTR-0004
+    - SFP-CTRL-0001
+    - SFP-GOV-0001
+    - SFP-INFO-0001
+    - SFP-INFO-0002
+    - SFP-INFO-0003
+    - SFP-INTENT-0001
+    - SFP-NORM-0001
+    - SFP-NORM-0002
+    - SFP-OPS-0001
+    - SFP-REAL-0001
+    - SFP-RECORD-0001
+    - SFP-RECORD-0002
+    - SFP-RISK-0001
+    - SFP-SUPPLY-0001
 repository_identity_schemes:
   GITHUB_REPOSITORY_ID:
     host_required: true
-    repository_id_pattern: "^[1-9][0-9]*$"
+    repository_id_pattern: ^[1-9][0-9]*$
 repository_binding_policy: SOLVE_SUBJECT_PROVIDED_NO_BUILTIN_CURRENT_REPOSITORY
 matching:
   order:
-    - EXACT
-    - REGISTERED_MACHINE_RELATIONSHIP
-    - NO_MATCH
+  - EXACT
+  - REGISTERED_MACHINE_RELATIONSHIP
+  - NO_MATCH
   registered_machine_relationships: []
   relationship_must_be_registered_before_relaxed_match: true
   fuzzy_match: FORBIDDEN
