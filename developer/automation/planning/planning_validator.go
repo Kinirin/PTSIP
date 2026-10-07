@@ -44,7 +44,7 @@ func planningGovernanceErrors(payload any, registry Object, label string) []stri
 						errors = append(errors, label+": "+childPath+" must resolve a governance source allowed for "+role)
 					}
 				} else if key == "source" && (child == "DIRECT_PROJECT_OWNER_INSTRUCTION" || child == "DIRECT_PROJECT_OWNER_TEMPORARY_APPROVAL") {
-					errors = append(errors, label+": legacy governance source requires explicit role")
+					errors = append(errors, label+": "+childPath+" source uses legacy governance source and requires explicit role")
 				}
 				visit(child, childPath)
 			}
@@ -309,11 +309,11 @@ func validatePlanningFormalIdentity(r Repository, identity Object) error {
 		properties[Text(field)] = bindingProperties[Text(field)]
 	}
 	schema := Object{
-		"$schema": "https://json-schema.org/draft/2020-12/schema",
-		"$id": key,
-		"type": "object",
-		"required": fields,
-		"properties": properties,
+		"$schema":              "https://json-schema.org/draft/2020-12/schema",
+		"$id":                  key,
+		"type":                 "object",
+		"required":             fields,
+		"properties":           properties,
 		"additionalProperties": false,
 	}
 	compiler := jsonschema.NewCompiler()

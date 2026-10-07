@@ -84,7 +84,7 @@ func (r *Repository) LegacyDependencyHits() ([]DependencyHit, error) {
 			if relative == "src/ptsip/app/github_authority.py" {
 				return nil
 			}
-			if strings.HasSuffix(relative, ".py") || strings.HasSuffix(relative, ".go") || strings.HasSuffix(relative, ".yaml") || strings.HasSuffix(relative, ".json") {
+			if legacyDependencyCurrentSurface(relative) {
 				files[relative] = true
 			}
 			return nil
@@ -111,6 +111,26 @@ func (r *Repository) LegacyDependencyHits() ([]DependencyHit, error) {
 		}
 	}
 	return result, nil
+}
+
+// Match the original current-surface contract while including native Go
+// implementation packages. Frozen PP schemas and test/audit inputs do not become
+// operational dependencies merely because the implementation is now recursive.
+func legacyDependencyCurrentSurface(ref string) bool {
+	name := filepath.Base(ref)
+	switch {
+	case strings.HasPrefix(ref, "developer/automation/"):
+		return !strings.Contains(ref, "/testdata/") && !strings.HasSuffix(ref, "_test.go") && (strings.HasSuffix(ref, ".py") || strings.HasSuffix(ref, ".go"))
+	case strings.HasPrefix(ref, "developer/policy/"):
+		return strings.HasPrefix(name, "MPD-") && strings.HasSuffix(name, ".yaml") || strings.HasPrefix(ref, "developer/policy/registries/") && strings.HasSuffix(name, ".yaml") || strings.HasPrefix(ref, "developer/policy/schemas/") && strings.HasSuffix(name, ".json")
+	case strings.HasPrefix(ref, "developer/planning/schemas/"):
+		return strings.HasSuffix(name, ".json")
+	case strings.HasPrefix(ref, "src/ptsip/"):
+		return strings.HasSuffix(name, ".py") || strings.HasPrefix(ref, "src/ptsip/specdata/") && (strings.HasPrefix(name, "SFP-") && strings.HasSuffix(name, ".yaml") || strings.HasPrefix(name, "ptsip-support-") && (strings.HasSuffix(name, ".yaml") || strings.HasSuffix(name, ".json")))
+	case strings.HasPrefix(ref, "schemas/"):
+		return strings.HasPrefix(name, "ptsip-support-") && strings.HasSuffix(name, ".json")
+	}
+	return false
 }
 func (r *Repository) EvaluateLegacyRemoval() (Object, error) {
 	plan, err := r.Read("developer/planning/0.4.0/WU-02/WU-02-P01.yaml")

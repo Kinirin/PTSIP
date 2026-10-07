@@ -152,6 +152,17 @@ func TestRootMigrationPreservesExactMaterializedRelationSetAndClassBoundary(t *t
 		for _, raw := range List(graph["sources"]) {
 			source := Map(raw)
 			id := Text(source["source_policy_id"])
+			// Sparse canonical sources may omit empty relation structures. Do not
+			// turn an absent optional relation into an unregistered unit lookup.
+			hasRelations := false
+			for _, raw := range List(source["units"]) {
+				if Map(raw)["source_pointer"] == "/relations" {
+					hasRelations = true
+				}
+			}
+			if !hasRelations {
+				continue
+			}
 			relations := Map(migratedSourceValue(t, r, id, "/relations"))
 			for _, kind := range []string{"supersedes", "amends", "extends", "depends_on"} {
 				for _, raw := range List(relations[kind]) {
@@ -165,16 +176,26 @@ func TestRootMigrationPreservesExactMaterializedRelationSetAndClassBoundary(t *t
 			}
 		}
 	}
-	// VPMS is an independently admitted current class, outside the Developer Root
-	// migration graph; its relation remains part of the preserved relation set.
-	policy, err := r.Read("developer/policy/VERI/MPD-VERI-0007.yaml")
+	// Boundary and VPMS records belong to independent current classes outside
+	// the Developer Root migration graph. Include their registered relations too.
+	index, err := r.Read(policyIndex)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for kind, raw := range Map(policy["relations"]) {
-		for _, raw := range List(raw) {
-			edge := Map(raw)
-			actual = append(actual, fmt.Sprintf("MPD-VERI-0007|%s|%s|%v", kind, Text(edge["policy"]), edge["scope"]))
+	for _, raw := range List(index["policies"]) {
+		entry := Map(raw)
+		if entry["authority_role"] == "MIGRATION_SOURCE" || entry["policy_class"] == DeveloperClass {
+			continue
+		}
+		policy, err := r.Read(Text(entry["path"]))
+		if err != nil {
+			t.Fatal(err)
+		}
+		for kind, raw := range Map(policy["relations"]) {
+			for _, raw := range List(raw) {
+				edge := Map(raw)
+				actual = append(actual, fmt.Sprintf("%s|%s|%s|%v", Text(entry["id"]), kind, Text(edge["policy"]), edge["scope"]))
+			}
 		}
 	}
 	sort.Strings(expected)

@@ -94,9 +94,27 @@ func (r *Repository) AuthorizationReadiness() (Object, error) {
 	case float64:
 		countValid = value == float64(count)
 	}
+	catalogIDs, schemaIDs, roleIDs := []string{}, []string{}, []string{}
+	for _, raw := range List(index["policies"]) {
+		catalogIDs = append(catalogIDs, Text(Map(raw)["id"]))
+	}
+	for _, raw := range List(schema["entries"]) {
+		schemaIDs = append(schemaIDs, Text(Map(raw)["policy_id"]))
+	}
+	for _, raw := range List(role["policy_roles"]) {
+		roleIDs = append(roleIDs, Text(Map(raw)["policy_id"]))
+	}
+	schemaValid := len(schemaIDs) > 0 && reflect.DeepEqual(schemaIDs, catalogIDs)
+	roleValid := len(roleIDs) > 0 && reflect.DeepEqual(roleIDs, catalogIDs)
+	if err := r.Validate("src/policy/schemas/ptsip-support-governance-registry.schema.json", schema); err != nil {
+		schemaValid = false
+	}
+	if err := r.Validate("src/policy/schemas/ptsip-support-governance-registry.schema.json", role); err != nil {
+		roleValid = false
+	}
 	return Object{
-		"AUTHORITY_SCHEMA_REGISTRY_VALID":               len(List(schema["entries"])) > 0,
-		"AUTHORITY_ROLE_REGISTRY_VALID":                 len(Map(role["policy_roles"])) > 0,
+		"AUTHORITY_SCHEMA_REGISTRY_VALID":               schemaValid,
+		"AUTHORITY_ROLE_REGISTRY_VALID":                 roleValid,
 		"AUTHORITY_SUBJECT_REGISTRY_VALID":              supportIDPresent,
 		"CURRENT_SUPPORT_POLICY_CORPUS_VALID":           valid && len(List(index["policies"])) > 0,
 		"ROLE_EFFECT_VOCABULARY_VALID":                  countValid,
