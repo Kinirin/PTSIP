@@ -112,7 +112,8 @@ func (r *Repository) Read(input string) (Object, error) {
 	if strings.HasSuffix(path, ".json") {
 		decoder := json.NewDecoder(bytes.NewReader(content))
 		decoder.UseNumber()
-		if err := decoder.Decode(&value); err != nil {
+		value, err = decodeJSONValue(decoder)
+		if err != nil {
 			return nil, fmt.Errorf("%s: %w", input, err)
 		}
 		var extra any
@@ -187,6 +188,7 @@ func (r *Repository) Compiler() (*jsonschema.Compiler, error) {
 		return r.compiler, nil
 	}
 	compiler := jsonschema.NewCompiler()
+	compiler.UseRegexpEngine(compileSchemaRegexp)
 	compiler.UseLoader(closedLoader{})
 	contracts, err := r.Read("developer/policy/registries/developer-policy-catalog-contracts.json")
 	if err != nil {
@@ -236,6 +238,11 @@ func (r *Repository) Validate(schemaPath string, value any) error {
 		return err
 	}
 	identity := Text(schema["$id"])
+	if identity == "" {
+		// Registered schemas without $id need distinct compiler bases. The derived
+		// label remains an implementation detail and does not alter source identity.
+		identity = "urn:ptsip:registered-schema-path:" + SHA256([]byte(schemaPath))
+	}
 	// The shared catalog schemas were already admitted by Compiler.
 	if schemaPath != "developer/policy/schemas/developer-policy-catalog.schema.json" && schemaPath != "developer/policy/schemas/developer-policy-subject-catalog.schema.json" {
 		if err := compiler.AddResource(identity, schema); err != nil {

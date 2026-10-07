@@ -256,7 +256,7 @@ func RenderCompactAgent(unresolved Object) (string, error) {
 	return strings.TrimRight(strings.Join(lines, "\n"), "\n \t") + "\n", nil
 }
 func agentProgressiveIndex(stage Object, text string) Object {
-	return Object{"schema_version": "ptsip-agent-progressive-index/v1", "management_mode": "PROGRESSIVE_LEVEL_1", "progressive_reasoning": Object{"highest_materialized_level": 1, "per_atom_advancement": true, "level_1_ref": agentStageRef, "level_1_unresolved_ref": agentUnresolvedRef, "previous_level_rerun_forbidden": true, "provenance_is_reasoning_input": false, "current_next_level_candidate_count": stage["pass_count"], "next_level_candidate_set_is_dynamic": true, "unresolved_reassessment_source": agentUnresolvedRef, "unresolved_blocks_next_level_candidates": false, "source_state": agentCompactState}, "authority_refs": Object{"level_1_pass": agentStageRef, "level_1_unresolved": agentUnresolvedRef}, "entry_contract": Object{"syntax": "PTSIP_AGENT_ENTRY_V1", "entry_directive": agentDirective, "index_ref": ".agent/index.yaml", "pass_atoms_in_agents": false, "unresolved_natural_language_in_agents": true}, "integration": AgentIntegrationContract(), "source": Object{"path": "AGENTS.md", "sha256": agentHash(text)}}
+	return Object{"schema_version": "ptsip-agent-progressive-index/v1", "management_mode": "PROGRESSIVE_LEVEL_1", "progressive_reasoning": Object{"highest_materialized_level": 1, "per_atom_advancement": true, "level_1_ref": agentStageRef, "level_1_unresolved_ref": agentUnresolvedRef, "previous_level_rerun_forbidden": true, "provenance_is_reasoning_input": false, "current_next_level_candidate_count": agentInt(stage["pass_count"]), "next_level_candidate_set_is_dynamic": true, "unresolved_reassessment_source": agentUnresolvedRef, "unresolved_blocks_next_level_candidates": false, "source_state": agentCompactState}, "authority_refs": Object{"level_1_pass": agentStageRef, "level_1_unresolved": agentUnresolvedRef}, "entry_contract": Object{"syntax": "PTSIP_AGENT_ENTRY_V1", "entry_directive": agentDirective, "index_ref": ".agent/index.yaml", "pass_atoms_in_agents": false, "unresolved_natural_language_in_agents": true}, "integration": AgentIntegrationContract(), "source": Object{"path": "AGENTS.md", "sha256": agentHash(text)}}
 }
 
 func MigrateAgentLevel1(r *Repository) (Object, error) {
@@ -364,7 +364,7 @@ func MigrateAgentLevel1(r *Repository) (Object, error) {
 			return nil, err
 		}
 	}
-	return Object{"mode": mode, "level": 1, "pass_count": stage["pass_count"], "unresolved_count": unresolved["count"], "current_next_level_candidate_count": stage["pass_count"], "next_level_candidate_set_is_dynamic": true, "unresolved_reassessment_source": agentUnresolvedRef, "unresolved_blocks_next_level_candidates": false, "integration": "LOCAL_CLI_ONLY"}, nil
+	return Object{"mode": mode, "level": 1, "pass_count": stage["pass_count"], "unresolved_count": unresolved["count"], "current_next_level_candidate_count": agentInt(stage["pass_count"]), "next_level_candidate_set_is_dynamic": true, "unresolved_reassessment_source": agentUnresolvedRef, "unresolved_blocks_next_level_candidates": false, "integration": "LOCAL_CLI_ONLY"}, nil
 }
 
 func loadAgentStages(r *Repository, agentRoot string, index Object) (Object, Object, error) {

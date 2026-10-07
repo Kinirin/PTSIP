@@ -3,7 +3,10 @@ package machine
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"reflect"
 	"sort"
+	"strings"
 )
 
 func (r *Repository) AuthorizationReadiness() (Object, error) {
@@ -28,11 +31,22 @@ func (r *Repository) AuthorizationReadiness() (Object, error) {
 		return nil, err
 	}
 	valid := index["policy_class"] == "PTSIP_SUPPORT_FEATURE"
+	if err := r.Validate("src/policy/schemas/ptsip-support-feature-policy-index.schema.json", index); err != nil {
+		valid = false
+	}
+	seen := map[string]bool{}
+	canonical := map[string]bool{}
 	for _, raw := range List(index["policies"]) {
 		entry := Map(raw)
+		id := Text(entry["id"])
+		if seen[id] {
+			valid = false
+		}
+		seen[id] = true
 		if entry["authority_role"] == "MIGRATION_SOURCE" {
 			continue
 		}
+		canonical[id] = true
 		record, err := r.Read("src/policy/" + Text(entry["path"]))
 		if err != nil {
 			return nil, err
@@ -43,6 +57,31 @@ func (r *Repository) AuthorizationReadiness() (Object, error) {
 		if err := r.Validate("src/policy/schemas/ptsip-support-root-family-policy.schema.json", record); err != nil {
 			valid = false
 		}
+	}
+	root, err := r.Path("src/policy")
+	if err != nil {
+		return nil, err
+	}
+	discovered := map[string]bool{}
+	if err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() {
+			if entry.Name() == "legacy" {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if strings.HasPrefix(entry.Name(), "SFP-") && strings.HasSuffix(entry.Name(), ".yaml") {
+			discovered[strings.TrimSuffix(entry.Name(), ".yaml")] = true
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	if !reflect.DeepEqual(canonical, discovered) {
+		valid = false
 	}
 	vocabulary := Map(role["effect_vocabulary"])
 	_, supportIDPresent := Map(subject["subject_identity_schemes"])["SUPPORT_POLICY_ID"]

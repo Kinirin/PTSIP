@@ -71,13 +71,9 @@ jobs:
         env:
           PYTHONPATH: ".:src"
         run: |
-          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -v ./policy/... ./planning/... ./workflows/...
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -v ./policy/... ./planning/... ./repository/... ./workflows/...
           if ($LASTEXITCODE -ne 0) {
             throw "Native Go policy and planning regression failed."
-          }
-          python -m pytest -q developer/tests/test_policy_identity_lifecycle.py developer/tests/test_policy_responsibility_gate.py developer/tests/test_policy_transition_contract.py developer/tests/test_policy_plan_identity_contract.py developer/tests/test_policy_plan_output_schema_identity.py
-          if ($LASTEXITCODE -ne 0) {
-            throw "Policy identity lifecycle tests failed."
           }
           go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-validator validate
           if ($LASTEXITCODE -ne 0) {
@@ -187,7 +183,6 @@ jobs:
           python -m pytest -q `
             src/tests/agent_contracts/test_contract_plane.py `
             src/tests/agent_contracts/test_resolver.py `
-            developer/tests/test_repository_state_resolver.py `
             developer/tests/test_agent_context_migration.py 2>&1 |
             Tee-Object -FilePath $log -Append
           if ($LASTEXITCODE -ne 0) {

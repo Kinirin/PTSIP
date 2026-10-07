@@ -123,6 +123,7 @@ func RenderContextProjections(source Object) (map[string][]byte, error) {
 	}
 	schema := ContextProjectionSchema()
 	compiler := jsonschema.NewCompiler()
+	compiler.UseRegexpEngine(compileSchemaRegexp)
 	compiler.UseLoader(closedLoader{})
 	if err := compiler.AddResource(Text(schema["$id"]), agentJSON(schema)); err != nil {
 		return nil, err

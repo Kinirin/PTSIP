@@ -1,8 +1,8 @@
 package lifecycle
 
 import (
-	binding "github.com/Kinirin/PTSIP/developer/automation/policy/binding"
 	"fmt"
+	binding "github.com/Kinirin/PTSIP/developer/automation/policy/binding"
 	"reflect"
 	"regexp"
 	"sort"
@@ -103,15 +103,17 @@ func ActiveFamilyIDs(r Repository, class, family string) ([]string, error) {
 		if entry["authority_role"] == "MIGRATION_SOURCE" {
 			continue
 		}
+		// Validate catalog projection before filtering; a changed class or status
+		// must not silently hide a registered authority from the lookup domain.
+		if _, err := resolver.Policy(id); err != nil {
+			return nil, policyFailure("AUTHORITY_METADATA_MISMATCH", err.Error())
+		}
 		if entry["policy_class"] != class || entry["status"] != "ACTIVE" {
 			continue
 		}
 		parts := strings.Split(id, "-")
 		if len(parts) != 3 || parts[1] != family {
 			continue
-		}
-		if _, err := resolver.Policy(id); err != nil {
-			return nil, policyFailure("AUTHORITY_METADATA_MISMATCH", err.Error())
 		}
 		ids = append(ids, id)
 	}

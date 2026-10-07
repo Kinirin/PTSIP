@@ -20,6 +20,7 @@ const implementationScopeRecord = "developer/policy/registries/vpms-api-implemen
 
 func (r *Repository) ValidateResourceSet(schemaPath string, value any, resources []string) error {
 	compiler := jsonschema.NewCompiler()
+	compiler.UseRegexpEngine(compileSchemaRegexp)
 	compiler.UseLoader(closedLoader{})
 	for _, path := range UniqueStrings(append(resources, schemaPath)) {
 		document, err := r.Read(path)

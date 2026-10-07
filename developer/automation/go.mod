@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/dlclark/regexp2 v1.11.0 // indirect
 	github.com/odvcencio/gotreesitter v0.55.1 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )
