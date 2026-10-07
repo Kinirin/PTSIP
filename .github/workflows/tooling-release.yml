@@ -279,7 +279,7 @@ jobs:
             }
             if ($path -like 'ptsip/profiles/*') {
               $relativeProfilePath = $path.Substring('ptsip/profiles/'.Length)
-              $sourcePaths += "profiles/$relativeProfilePath"
+              $sourcePaths += "src/ptsip/profiles/$relativeProfilePath"
               $components += 'ptsip-public-profiles'
               continue
             }
