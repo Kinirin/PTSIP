@@ -11,6 +11,25 @@ import (
 	"testing"
 )
 
+// These independent vectors were captured from the Python implementation before
+// retirement. They are protocol regression data and never policy authority.
+func frozenAutomationVectors(t *testing.T, key string) map[string]any {
+	t.Helper()
+	path := filepath.Join(repository(t), "developer/tests/rootfamily/testdata/go_automation_protocol_vectors.json")
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture map[string]any
+	if err := json.Unmarshal(raw, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	if fixture["projection_authority"] != false || fixture["fixture_role"] != "FROZEN_PRE_RETIREMENT_PROTOCOL_EQUIVALENCE" {
+		t.Fatal("equivalence vectors must remain non-authoritative")
+	}
+	return mapping(t, fixture[key])
+}
+
 func buildAutomation(t *testing.T) string {
 	t.Helper()
 	name := filepath.Join(t.TempDir(), "ptsip-dev")
@@ -85,18 +104,7 @@ func copyDeveloperWithoutLegacy(t *testing.T) string {
 func TestGoDirectRootResolverParityAndNoPythonDependency(t *testing.T) {
 	binary := buildAutomation(t)
 	root := repository(t)
-	expected := python(t, "-c", `
-import json
-from developer.automation.policy_resolver import resolve_policies, get_policy, get_normative_rule
-from developer.automation.root_family_policy_entry import resolve_entry
-cases={}
-for scope in ['.','developer/automation','developer/automation/new/submodule.go','src/ptsip/governance/authority.py','.github/workflows/tooling-test.yml']:
-    for operation in ['READ','MODIFY','PLAN','VERIFY','RELEASE']:
-        cases[scope+'|'+operation]=resolve_policies('.',scope=scope,operation=operation)
-families=['NORM','GOV','INTENT','ARCH','INFO','CNTR','RISK','SUPPLY','REAL','ASSURE','CTRL','CHANGE','OPS','RECORD']
-entries={c+'|'+f:resolve_entry(c,f,root='.') for c in ['PTSIP_DEVELOPER_POLICY','PTSIP_SUPPORT_FEATURE'] for f in families}
-print(json.dumps({'cases':cases,'families':entries,'get':get_policy('.',policy_id='MPD-REAL-0005',section='go_automation_implementation'),'rule':get_normative_rule('.',rule_id='PTSIP-CLS-001')}))
-`)
+	expected := frozenAutomationVectors(t, "resolver")
 	for key, want := range mapping(t, expected["cases"]) {
 		t.Run(key, func(t *testing.T) {
 			parts := strings.Split(key, "|")
@@ -209,7 +217,7 @@ func TestGoCutoverReportsRemainingWorkWithoutClaimingCompletion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("%v\n%s", err, output)
 	}
-	if got["status"] != "IN_PROGRESS" || got["implementation_complete"] != false || got["legacy_removal_ready"] != false {
+	if got["implementation_complete"] != false || got["legacy_removal_ready"] != false {
 		t.Fatal("partial implementation claimed complete")
 	}
 	root := repository(t)
@@ -232,6 +240,13 @@ func TestGoCutoverReportsRemainingWorkWithoutClaimingCompletion(t *testing.T) {
 		}
 	}
 	remaining := sequence(t, got["remaining_python_files"])
+	expectedStatus := "IN_PROGRESS"
+	if len(expected) == 0 && len(sequence(t, got["pending_modules"])) == 0 {
+		expectedStatus = "GO_SOURCE_CUTOVER_READY_FOR_FINAL_VERIFICATION"
+	}
+	if got["status"] != expectedStatus {
+		t.Fatal("source readiness does not reflect the registered remaining work", got)
+	}
 	if len(remaining) != len(expected) || len(sequence(t, got["go_implemented_modules"])) == 0 {
 		t.Fatal("cutover projection differs from registered physical sources")
 	}
@@ -244,18 +259,7 @@ func TestGoCutoverReportsRemainingWorkWithoutClaimingCompletion(t *testing.T) {
 
 func TestGoStateAndPlanningExactEntryParity(t *testing.T) {
 	binary := buildAutomation(t)
-	expected := python(t, "-c", `
-import json
-from developer.automation.policy_loader import load_yaml
-from developer.automation.repository_state_resolver import resolve_state
-from developer.automation.planning.planning_entry_resolver import resolve_planning_entry
-def result(fn):
-    try: return {'accepted':True,'record':fn()}
-    except Exception: return {'accepted':False}
-domains=list(load_yaml('developer/state/index.yaml')['domains'])+['unregistered-domain']
-branches=sorted({entry['branch'] for plan in load_yaml('developer/planning/index.yaml')['plans'] for entry in plan.get('entry_routing',{}).get('branch_entrypoints',[]) if entry.get('state','ACTIVE')=='ACTIVE'})+['unregistered-branch']
-print(json.dumps({'states':{d:result(lambda:resolve_state(d)) for d in domains},'planning':{b:result(lambda:resolve_planning_entry(b).to_payload()) for b in branches}}))
-`)
+	expected := frozenAutomationVectors(t, "entry")
 	for category, values := range expected {
 		for identity, raw := range mapping(t, values) {
 			t.Run(category+"/"+identity, func(t *testing.T) {
@@ -278,12 +282,7 @@ print(json.dumps({'states':{d:result(lambda:resolve_state(d)) for d in domains},
 
 func TestGoRootIdentityInspectionAndUnregisteredAllocationGuard(t *testing.T) {
 	binary := buildAutomation(t)
-	expected := python(t, "-c", `
-import json
-from developer.automation.root_family_policy_entry import inspect_id
-families=['NORM','GOV','INTENT','ARCH','INFO','CNTR','RISK','SUPPLY','REAL','ASSURE','CTRL','CHANGE','OPS','RECORD']
-print(json.dumps({p+'-'+f+'-9999':inspect_id(p+'-'+f+'-9999') for p in ['MPD','SFP'] for f in families}))
-`)
+	expected := frozenAutomationVectors(t, "inspection")
 	for id, want := range expected {
 		got, err, output := automation(t, binary, repository(t), "root-family-entry", "inspect", id)
 		if err != nil || !reflect.DeepEqual(got, want) {

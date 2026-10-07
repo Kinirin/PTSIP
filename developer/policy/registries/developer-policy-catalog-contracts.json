@@ -440,5 +440,145 @@
       "type": "string",
       "pattern": "^developer/policy/(?:legacy/MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:NORM/MPD-NORM|GOV/MPD-GOV|INTENT/MPD-INTENT|ARCH/MPD-ARCH|INFO/MPD-INFO|CNTR/MPD-CNTR|RISK/MPD-RISK|SUPPLY/MPD-SUPPLY|REAL/MPD-REAL|ASSURE/MPD-ASSURE|CTRL/MPD-CTRL|CHANGE/MPD-CHANGE|OPS/MPD-OPS|RECORD/MPD-RECORD|SPEC/MPD-SPEC|PLAN/MPD-PLAN|WORK/MPD-WORK|VERI/MPD-VERI|MIGR/MPD-MIGR|RELS/MPD-RELS)-[0-9]{4})\\.yaml$"
     }
-  }
+  },
+  "go_implementation_bindings": [
+    {
+      "source_path": "developer/tests/test_developer_control_plane.py",
+      "source_functions": [
+        "_expected_policy_path",
+        "test_current_policy_indexes_cover_self_contained_corpus",
+        "test_current_policy_relations_preserve_materialized_relation_set",
+        "test_policy_path_fixture_distinguishes_boundary_from_families",
+        "test_policy_path_fixture_rejects_unregistered_family"
+      ],
+      "targets": [
+        {
+          "path": "developer/automation/policy/lifecycle/exports.go",
+          "go_functions": [
+            "CanonicalPath"
+          ]
+        },
+        {
+          "path": "developer/automation/internal/machine/control_plane_regression_test.go",
+          "go_functions": [
+            "TestRootMigrationPreservesExactMaterializedRelationSetAndClassBoundary",
+            "TestCurrentPolicyIndexesCoverCanonicalCorpusAndKeepHistoricalSourcesAuditOnly",
+            "TestCanonicalPolicyPathsDistinguishBoundaryAndRejectUnregisteredFamilies"
+          ]
+        }
+      ]
+    },
+    {
+      "source_path": "developer/automation/policy_validator.py",
+      "source_functions": [
+        "_neutral_catalog_resources",
+        "_validate_current_registry_planes",
+        "resolve_neutral_catalog_contract",
+        "validate_developer_policy",
+        "validate_neutral_catalog_contract_registration",
+        "validate_neutral_catalog_snapshot"
+      ],
+      "targets": [
+        {
+          "path": "developer/automation/internal/machine/repository.go",
+          "go_functions": [
+            "Compiler"
+          ]
+        },
+        {
+          "path": "developer/automation/internal/machine/policy_validator.go",
+          "go_functions": [
+            "ResolveNeutralCatalogContract",
+            "ValidateNeutralCatalogContractRegistration",
+            "ValidateNeutralCatalogSnapshot",
+            "ValidateDeveloperPolicy"
+          ]
+        },
+        {
+          "path": "developer/automation/internal/machine/policy_planes.go",
+          "go_functions": [
+            "policyValidateRegistryPlanes"
+          ]
+        }
+      ]
+    },
+    {
+      "source_path": "developer/tests/test_neutral_policy_catalog_contract.py",
+      "source_functions": [],
+      "targets": [
+        {
+          "path": "developer/automation/internal/machine/catalog_regression_test.go",
+          "go_functions": [
+            "TestNeutralCatalogRegistrationAndExactContractResolution",
+            "TestNeutralCatalogSnapshotPreservesExactRegisteredCorpus",
+            "TestNeutralCatalogRejectsMissingUnknownAndDriftedMetadata",
+            "TestNeutralCatalogRejectsDuplicateIdentitiesAcrossClassesAndNormativeFields",
+            "TestNeutralSubjectRejectsMembershipAndSemanticProjectionDrift",
+            "TestNeutralClassRecognitionDoesNotBypassMaterializationSchema",
+            "TestNeutralCatalogPreservedContractsStayIndependentFromGoSelectors"
+          ]
+        }
+      ]
+    },
+    {
+      "source_path": "developer/automation/policy_identity_lifecycle.py",
+      "source_functions": [
+        "_load_consistent_registered_corpus",
+        "register_family_policy",
+        "register_policy"
+      ],
+      "targets": [
+        {
+          "path": "developer/automation/policy/lifecycle/policy_lifecycle.go",
+          "go_functions": [
+            "LoadConsistentPolicyCorpus",
+            "RegisterPolicy",
+            "RegisterFamilyPolicy"
+          ]
+        }
+      ]
+    },
+    {
+      "source_path": "developer/automation/policy_resolver.py",
+      "source_functions": [
+        "_load_index"
+      ],
+      "targets": [
+        {
+          "path": "developer/automation/policy/binding/resolver.go",
+          "go_functions": [
+            "NewResolver"
+          ]
+        }
+      ]
+    },
+    {
+      "source_path": "developer/automation/verification/policy_plan_consistency.py",
+      "source_functions": [
+        "_known_policy_ids"
+      ],
+      "targets": [
+        {
+          "path": "developer/automation/policy/binding/consistency.go",
+          "go_functions": [
+            "VerifyConsistency"
+          ]
+        }
+      ]
+    },
+    {
+      "source_path": "developer/automation/policy_plan_binding/reconciler.py",
+      "source_functions": [
+        "_policy_ids"
+      ],
+      "targets": [
+        {
+          "path": "developer/automation/policy/binding/registry.go",
+          "go_functions": [
+            "ReconcileBindings"
+          ]
+        }
+      ]
+    }
+  ]
 }

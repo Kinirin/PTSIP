@@ -189,8 +189,12 @@ func TestNeutralModuleExecutesInGoForBothPlanes(t *testing.T) {
 			}
 		})
 	}
+	binary := buildAutomation(t)
 	for _, scope := range []string{"src/new_module.json", "new_module.json"} {
-		result := python(t, "-m", "developer.automation.policy_resolver", "resolve", "--scope", scope, "--operation", "MODIFY", "--json")
+		result, err, output := automation(t, binary, repository(t), "policy-resolver", "resolve", "--scope", scope, "--operation", "MODIFY")
+		if err != nil {
+			t.Fatalf("native module creation routing failed: %v\n%s", err, output)
+		}
 		found := false
 		for _, raw := range sequence(t, result["policies"]) {
 			if mapping(t, raw)["policy_id"] == acceptance.CreationPolicyRef {

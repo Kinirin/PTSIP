@@ -6,17 +6,22 @@
   "modules": [
     {
       "python_path": "developer/automation/__init__.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/cmd/ptsip-dev/main.go"
+      ],
       "python_line_count": 1,
       "public_definitions": [],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_context_migration.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_context_migration.go",
+        "developer/automation/internal/machine/agent_contract_graph.go"
+      ],
       "python_line_count": 496,
       "public_definitions": [
         "AgentContextMigrationError",
@@ -25,13 +30,16 @@
         "verify",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_instruction_activation.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_progressive.go",
+        "developer/automation/internal/machine/operations_agent.go"
+      ],
       "python_line_count": 68,
       "public_definitions": [
         "AgentInstructionActivationError",
@@ -39,13 +47,15 @@
         "check_activation",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_instruction_classifier.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_classifier.go"
+      ],
       "python_line_count": 334,
       "public_definitions": [
         "AgentInstructionClassifierError",
@@ -59,26 +69,30 @@
         "classify_file",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_instruction_entry_resolver.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_materializer.go"
+      ],
       "python_line_count": 335,
       "public_definitions": [
         "AgentInstructionEntryResolverError",
         "resolve_entry",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_instruction_materializer.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_materializer.go"
+      ],
       "python_line_count": 314,
       "public_definitions": [
         "AgentInstructionMaterializerError",
@@ -88,13 +102,15 @@
         "check_materialization",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_instruction_progressive.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_progressive.go"
+      ],
       "python_line_count": 773,
       "public_definitions": [
         "ProgressiveReasoningError",
@@ -104,13 +120,16 @@
         "check",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/agent_integration.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_progressive.go",
+        "developer/automation/internal/machine/operations_agent.go"
+      ],
       "python_line_count": 168,
       "public_definitions": [
         "AgentIntegrationError",
@@ -120,13 +139,15 @@
         "install_mcp",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/authority_family_migration.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/policy_migration.go"
+      ],
       "python_line_count": 133,
       "public_definitions": [
         "legacy_analysis_projection",
@@ -134,19 +155,21 @@
         "backfill_legacy_analysis",
         "migrate"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/authorization_transition.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/authorization.go"
+      ],
       "python_line_count": 67,
       "public_definitions": [
         "DeveloperAuthorizationTransitionEvaluator"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/branch_control.py",
@@ -190,43 +213,54 @@
     },
     {
       "python_path": "developer/automation/context_projection.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/agent_context_projection.go"
+      ],
       "python_line_count": 36,
       "public_definitions": [],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/current_dependency_gate.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/maintenance.go"
+      ],
       "python_line_count": 106,
       "public_definitions": [
         "CurrentDependencyHit",
         "scan_current_legacy_dependencies",
         "validate_current_legacy_dependency_gate"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/dev_setup.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/maintenance.go"
+      ],
       "python_line_count": 76,
       "public_definitions": [
         "DeveloperSetupError",
         "install_developer_hooks",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/implementation_work_packet.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/iwp_packet.go",
+        "developer/automation/internal/machine/iwp_check.go",
+        "developer/automation/internal/machine/iwp_selectors.go",
+        "developer/automation/internal/machine/iwp_projection.go"
+      ],
       "python_line_count": 1232,
       "public_definitions": [
         "WorkPacketError",
@@ -237,8 +271,8 @@
         "build_source_context",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/markdown_cleanup.py",
@@ -265,18 +299,20 @@
     },
     {
       "python_path": "developer/automation/planning/__init__.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/planning/entry.go"
+      ],
       "python_line_count": 4,
       "public_definitions": [],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/planning/planning_entry_resolver.py",
       "state": "GO_IMPLEMENTED",
       "go_paths": [
-        "developer/automation/internal/machine/state.go"
+        "developer/automation/planning/entry.go"
       ],
       "python_line_count": 214,
       "public_definitions": [
@@ -286,14 +322,16 @@
         "resolve_planning_entry",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED",
       "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
       "python_path": "developer/automation/planning/planning_extension_finalizer.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/planning/planning_finalizers.go"
+      ],
       "python_line_count": 409,
       "public_definitions": [
         "ExtensionFinalizationResult",
@@ -301,13 +339,15 @@
         "extension_parent_consistency_errors",
         "finalize_extension_if_ready"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/planning/planning_leaf_merge.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/planning/planning_leaf.go"
+      ],
       "python_line_count": 320,
       "public_definitions": [
         "PlanningLeafMergeError",
@@ -315,13 +355,15 @@
         "merge_leaf_branch",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/planning/planning_merge_reconciler.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/planning/planning_reconcile.go"
+      ],
       "python_line_count": 759,
       "public_definitions": [
         "PlanningStateReconciliationError",
@@ -334,37 +376,44 @@
         "reconcile_planning_state",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/planning/planning_stage_finalizer.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/planning/planning_finalizers.go"
+      ],
       "python_line_count": 384,
       "public_definitions": [
         "FinalizationResult",
         "promote_stage_text",
         "finalize_stage"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/planning/planning_validator.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/planning/planning_validator.go"
+      ],
       "python_line_count": 558,
       "public_definitions": [
         "validate_planning"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_identity_lifecycle.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/lifecycle/policy_lifecycle.go",
+        "developer/automation/policy/lifecycle/transition.go"
+      ],
       "python_line_count": 1016,
       "public_definitions": [
         "PolicyIdentityLifecycleError",
@@ -379,14 +428,15 @@
         "register_family_policy",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_loader.py",
       "state": "GO_IMPLEMENTED",
       "go_paths": [
-        "developer/automation/internal/machine/repository.go"
+        "developer/automation/internal/machine/repository.go",
+        "developer/automation/internal/machine/json_reader.go"
       ],
       "python_line_count": 65,
       "public_definitions": [
@@ -395,34 +445,41 @@
         "load_yaml",
         "load_json"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED",
       "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/__init__.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/store.go"
+      ],
       "python_line_count": 55,
       "public_definitions": [],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/errors.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/registry.go",
+        "developer/automation/policy/binding/consistency.go"
+      ],
       "python_line_count": 9,
       "public_definitions": [
         "PolicyPlanBindingError"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/manager.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/manager.go"
+      ],
       "python_line_count": 425,
       "public_definitions": [
         "PolicyPlanBindingMutation",
@@ -431,13 +488,15 @@
         "move_plan_ref",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/reconciler.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/registry.go"
+      ],
       "python_line_count": 226,
       "public_definitions": [
         "PolicyPlanBindingReconciliation",
@@ -445,26 +504,30 @@
         "reconcile_registry",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/ref_tracker.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/manager.go"
+      ],
       "python_line_count": 248,
       "public_definitions": [
         "PlanRefTrackingResult",
         "track_plan_ref",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/registry.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/registry.go"
+      ],
       "python_line_count": 97,
       "public_definitions": [
         "BindingRegistrySnapshot",
@@ -472,13 +535,15 @@
         "validate_registry_schema",
         "load_registry"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/resolver.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/registry.go"
+      ],
       "python_line_count": 140,
       "public_definitions": [
         "PolicyPlanBindingResolution",
@@ -486,19 +551,21 @@
         "resolve_bindings",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_plan_binding/store.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/store.go"
+      ],
       "python_line_count": 78,
       "public_definitions": [
         "replace_registry"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_resolver.py",
@@ -516,14 +583,16 @@
         "explain_policy",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED",
       "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
       "python_path": "developer/automation/policy_responsibility_gate.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/lifecycle/policy_responsibility.go"
+      ],
       "python_line_count": 508,
       "public_definitions": [
         "ResponsibilityGateError",
@@ -531,13 +600,16 @@
         "validate_responsibility_analysis",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/policy_validator.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/policy_validator.go",
+        "developer/automation/internal/machine/policy_planes.go"
+      ],
       "python_line_count": 1237,
       "public_definitions": [
         "developer_contract_validator",
@@ -547,48 +619,57 @@
         "validate_neutral_catalog_snapshot",
         "validate_developer_policy"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/pp/__init__.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/pp_delta.go"
+      ],
       "python_line_count": 1,
       "public_definitions": [],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/pp/pp_pre_commit.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/pp_reconcile.go",
+        "developer/automation/internal/machine/pp_verify.go"
+      ],
       "python_line_count": 79,
       "public_definitions": [
         "PPPreCommitError",
         "verify_staged_pp_transition",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/pp/pp_release_verify.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/pp_verify.go"
+      ],
       "python_line_count": 200,
       "public_definitions": [
         "PPReleaseVerifyError",
         "verify_exact_release_snapshot",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/pp/pp_remote_verify.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/pp_verify.go"
+      ],
       "python_line_count": 510,
       "public_definitions": [
         "PPRemoteVerifyError",
@@ -603,13 +684,15 @@
         "verify_range",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/pp/pp_transition_delta.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/pp_delta.go"
+      ],
       "python_line_count": 557,
       "public_definitions": [
         "PPTransitionDeltaError",
@@ -624,13 +707,15 @@
         "compare_git_snapshots",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/pp/pp_transition_reconciler.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/pp_reconcile.go"
+      ],
       "python_line_count": 782,
       "public_definitions": [
         "PPTransitionReconcileError",
@@ -640,13 +725,15 @@
         "reconcile_staged_transition",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/project_profile_registry.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/profile_registry.go"
+      ],
       "python_line_count": 228,
       "public_definitions": [
         "load_public_profile_catalog",
@@ -654,14 +741,15 @@
         "current_project_profile_contract",
         "validate_project_profile_registry_plane"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/repository_state_resolver.py",
       "state": "GO_IMPLEMENTED",
       "go_paths": [
-        "developer/automation/internal/machine/state.go"
+        "developer/automation/internal/machine/state.go",
+        "developer/automation/planning/entry.go"
       ],
       "python_line_count": 66,
       "public_definitions": [
@@ -669,8 +757,8 @@
         "resolve_state",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED",
       "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
@@ -688,27 +776,36 @@
         "inspect_id",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "REGISTERED_DIRECT_ROOT_ENTRY_PROTOCOL_VERIFIED",
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED",
       "verification_ref": "developer/policy/analysis/go-automation-verification.json"
     },
     {
       "python_path": "developer/automation/seed_pp_102_transition.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/policy_seed.go"
+      ],
       "python_line_count": 577,
       "public_definitions": [
         "SeedError",
         "seed",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/support_contract_registration.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/support_registration.go",
+        "developer/automation/internal/machine/support_catalog.go",
+        "developer/automation/internal/machine/selection_document.go",
+        "developer/automation/internal/machine/schema_resources.go",
+        "developer/automation/internal/machine/audit_preservation.go",
+        "developer/automation/internal/machine/audit_implementation_targets.go"
+      ],
       "python_line_count": 290,
       "public_definitions": [
         "RegistrationError",
@@ -720,34 +817,40 @@
         "verify_registration",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/transition_evaluator.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/maintenance.go"
+      ],
       "python_line_count": 77,
       "public_definitions": [
         "TransitionDecision",
         "evaluate_legacy_decisions_removal"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/verification/__init__.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/consistency.go"
+      ],
       "python_line_count": 13,
       "public_definitions": [],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/verification/policy_plan_consistency.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/policy/binding/consistency.go"
+      ],
       "python_line_count": 444,
       "public_definitions": [
         "PolicyPlanConsistencyFailure",
@@ -755,25 +858,31 @@
         "verify_policy_plan_consistency",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/vpms_api_implementation.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/vpms_api_implementation.go",
+        "developer/automation/internal/machine/audit_preservation.go",
+        "developer/automation/internal/machine/audit_implementation_targets.go"
+      ],
       "python_line_count": 82,
       "public_definitions": [
         "verify",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/vpms_runtime_activation.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/vpms_activation.go"
+      ],
       "python_line_count": 129,
       "public_definitions": [
         "activation_record",
@@ -782,13 +891,15 @@
         "verify",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     },
     {
       "python_path": "developer/automation/wu02_lane_validator.py",
-      "state": "PENDING",
-      "go_paths": [],
+      "state": "GO_IMPLEMENTED",
+      "go_paths": [
+        "developer/automation/internal/machine/maintenance.go"
+      ],
       "python_line_count": 285,
       "public_definitions": [
         "validate_control_branch_context",
@@ -796,8 +907,8 @@
         "validate_current_lane",
         "main"
       ],
-      "python_entrypoint_removed": false,
-      "equivalence_verification": "PENDING"
+      "python_entrypoint_removed": true,
+      "equivalence_verification": "NATIVE_GO_REGRESSION_AND_COMMAND_SURFACE_VERIFIED"
     }
   ]
 }

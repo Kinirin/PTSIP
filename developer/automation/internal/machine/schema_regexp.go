@@ -20,6 +20,9 @@ func compileSchemaRegexp(pattern string) (jsonschema.Regexp, error) {
 	if err != nil {
 		return nil, err
 	}
-	expression.MatchTimeout = 500 * time.Millisecond
+	// Parallel schema verification can suspend a valid match for more than
+	// 500 ms. Keep a bounded timeout without treating scheduling delays as
+	// invalid canonical policy identities.
+	expression.MatchTimeout = 5 * time.Second
 	return &schemaRegexp{expression: expression}, nil
 }

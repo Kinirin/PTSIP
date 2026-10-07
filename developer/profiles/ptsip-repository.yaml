@@ -395,7 +395,10 @@ components:
       - AUTOMATION
       - IMPLEMENTATION
     include:
-      - "developer/automation/support_contract_registration.py"
+      - "developer/automation/internal/machine/support_registration.go"
+      - "developer/automation/internal/machine/support_catalog.go"
+      - "developer/automation/internal/machine/selection_document.go"
+      - "developer/automation/internal/machine/schema_resources.go"
     purpose: developer_only_contract_identity_preflight_registration_and_explicit_lifecycle_verification
     shipped: false
     runtime_required: false

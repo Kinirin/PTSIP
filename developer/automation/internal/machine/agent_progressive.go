@@ -271,6 +271,9 @@ func MigrateAgentLevel1(r *Repository) (Object, error) {
 	if registryErr != nil && iwpPathExists(r, ".agent/registry.yaml") {
 		return nil, registryErr
 	}
+	if indexErr == nil && Text(Map(index["progressive_reasoning"])["source_state"]) == agentCompactState {
+		return nil, fmt.Errorf("Level 1 compact entry is already active; use check instead")
+	}
 	if indexErr == nil && registryErr != nil && Map(index["progressive_reasoning"]) == nil {
 		return nil, fmt.Errorf("partial .agent surface exists and cannot be routed safely")
 	}
@@ -278,9 +281,6 @@ func MigrateAgentLevel1(r *Repository) (Object, error) {
 	mode := "COMPACTED_FROM_AGENTS"
 	if indexErr == nil && registryErr != nil && Map(index["progressive_reasoning"]) != nil {
 		state := Text(Map(index["progressive_reasoning"])["source_state"])
-		if state == agentCompactState {
-			return nil, fmt.Errorf("Level 1 compact entry is already active; use check instead")
-		}
 		if state == "ROUTED_LEVEL_1" {
 			var err error
 			stage, unresolved, err = loadAgentStages(r, ".agent", index)

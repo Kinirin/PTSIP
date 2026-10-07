@@ -143,7 +143,9 @@ func (r *Repository) ValidateNeutralCatalogContractRegistration() []string {
 	if !policyUnique(paths) {
 		errors = append(errors, "neutral catalog materialization targets must be unique")
 	}
-	for _, raw := range append(append([]any{}, targets...), List(scope["deferred_application_targets"])...) {
+	implementationTargets, bindingErrors := policylifecycle.CatalogImplementationTargets(record)
+	errors = append(errors, bindingErrors...)
+	for _, raw := range implementationTargets {
 		target := Map(raw)
 		reference := Text(target["path"])
 		absolute, err := r.Path(reference)

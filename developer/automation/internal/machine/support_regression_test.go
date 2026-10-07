@@ -79,6 +79,12 @@ func syntheticAuditFixture(t *testing.T) *Repository {
 		if retired[ref] {
 			continue
 		}
+		if strings.HasPrefix(ref, "developer/automation/") && strings.HasSuffix(ref, ".py") {
+			if err := r.VerifyAuditImplementationTarget(ref); err != nil {
+				t.Fatal("synthetic scope requires an admitted native implementation", err)
+			}
+			continue
+		}
 		if iwpPathExists(r, ref) {
 			continue
 		}

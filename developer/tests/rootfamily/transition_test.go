@@ -359,7 +359,11 @@ func TestSourceResponsibilityAndLifecyclePreservation(t *testing.T) {
 
 func TestResolverAndSupportAuthorityBoundaries(t *testing.T) {
 	c := contract(t)
-	result := python(t, "-m", "developer.automation.policy_resolver", "resolve", "--scope", "developer/policy", "--operation", "MODIFY", "--json")
+	binary := buildAutomation(t)
+	result, err, output := automation(t, binary, repository(t), "policy-resolver", "resolve", "--scope", "developer/policy", "--operation", "MODIFY")
+	if err != nil {
+		t.Fatalf("native developer boundary failed: %v\n%s", err, output)
+	}
 	for _, raw := range sequence(t, result["policies"]) {
 		row := mapping(t, raw)
 		pid := row["policy_id"].(string)
@@ -373,13 +377,11 @@ func TestResolverAndSupportAuthorityBoundaries(t *testing.T) {
 			t.Fatal("developer resolver selected legacy authority")
 		}
 	}
-	legacy := python(t, "-m", "developer.automation.policy_resolver", "get", "MPD-SPEC-0006", "--section", "identity_and_resolution", "--json")
-	if legacy["projection_authority"] != false || len(sequence(t, legacy["canonical_owners"])) == 0 {
-		t.Fatal("legacy projection claims authority or lacks exact owners")
+	if _, err, output := automation(t, binary, repository(t), "policy-resolver", "get", "MPD-SPEC-0006", "--section", "identity_and_resolution"); err == nil || !strings.Contains(output, "audit-only") {
+		t.Fatalf("legacy identity must remain audit-only: %v\n%s", err, output)
 	}
 	data := python(t, "-c", `import json
 from pathlib import Path
-from developer.automation.root_family_policy_entry import resolve_entry
 from ptsip.governance.authority import AuthorityCatalog
 root=Path.cwd(); catalog=AuthorityCatalog(root)
 families=json.loads(Path('developer/policy/contracts/root-family-transition-verification.v1.json').read_text(encoding='utf-8'))['root_family_vocabulary']
@@ -387,18 +389,19 @@ rows=[]
 for family in families:
  for _,route,record in catalog.resolve_family(family):
   rows.append({'family':family,'id':route['id'],'class':record['policy_class'],'subject':record['authority_subject']['id'],'role':catalog._validate_role(record)['projection_role']})
-entries=[resolve_entry(cls,family,root=root) for cls in ['PTSIP_DEVELOPER_POLICY','PTSIP_SUPPORT_FEATURE'] for family in families]
-print(json.dumps({'support':rows,'entries':entries}))`)
+print(json.dumps({'support':rows}))`)
 	for _, raw := range sequence(t, data["support"]) {
 		row := mapping(t, raw)
 		if row["class"] != "PTSIP_SUPPORT_FEATURE" || !strings.HasPrefix(row["subject"].(string), "SUP_") || row["role"] != "ROOT_FAMILY_CONTRACT_AUTHORITY" {
 			t.Fatal("support inherited foreign/project authority")
 		}
 	}
-	for _, raw := range sequence(t, data["entries"]) {
-		row := mapping(t, raw)
-		if row["family_state_before_materialization"] == "RESERVED" || len(sequence(t, row["registered_policies"])) == 0 {
-			t.Fatal("family-aware entry remains unresolved")
+	for _, class := range []string{"PTSIP_DEVELOPER_POLICY", "PTSIP_SUPPORT_FEATURE"} {
+		for _, family := range c.Families {
+			row, err, output := automation(t, binary, repository(t), "root-family-entry", "resolve", "--policy-class", class, "--family", family)
+			if err != nil || row["family_state_before_materialization"] == "RESERVED" || len(sequence(t, row["registered_policies"])) == 0 {
+				t.Fatalf("native family-aware entry remains unresolved: %v\n%s", err, output)
+			}
 		}
 	}
 }
@@ -512,7 +515,10 @@ func TestGoExecutionIsAdmittedAlongsidePythonRegression(t *testing.T) {
 	if !reflect.DeepEqual(mode["go"], []any{"developer/tests"}) || len(sequence(t, mode["pytest"])) == 0 {
 		t.Fatal("Go execution missing or existing regression removed")
 	}
-	bindings := python(t, "-m", "developer.automation.policy_resolver", "resolve", "--scope", "developer/tests/rootfamily", "--operation", "VERIFY", "--json")
+	bindings, err, output := automation(t, buildAutomation(t), repository(t), "policy-resolver", "resolve", "--scope", "developer/tests/rootfamily", "--operation", "VERIFY")
+	if err != nil {
+		t.Fatalf("native verification owner routing failed: %v\n%s", err, output)
+	}
 	owners := map[string]bool{}
 	for _, raw := range sequence(t, bindings["policies"]) {
 		owners[mapping(t, raw)["policy_id"].(string)] = true

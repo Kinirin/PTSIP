@@ -73,6 +73,30 @@ func TestDuplicateBranchRegistrationIsAmbiguous(t *testing.T) {
 	}
 }
 
+func TestPlanningEntryCLIProvidesExactDocumentAndRejectsMissingOrUnknownEntries(t *testing.T) {
+	binary := testrepo.BuildCLI(t)
+	repo := prereleaseFixture(t)
+	testrepo.CopyTree(t, repo.Repository, "developer/policy")
+	testrepo.CopyFiles(t, repo.Repository, "pyproject.toml")
+	result, err, output := testrepo.CLI(t, binary, repo.Root, "planning-entry", "resolve", "--branch", "dev/0.3.8a3")
+	if err != nil || result["entry_document"] != prereleasePlan || result["branch"] != "dev/0.3.8a3" {
+		t.Fatalf("machine entry path must be exact: %v\n%s", err, output)
+	}
+	if _, err, _ := testrepo.CLI(t, binary, repo.Root, "planning-entry", "resolve", "--branch", "dev/0.3.8a30"); err == nil {
+		t.Fatal("similar unknown branch accepted by native CLI")
+	}
+	path, err := repo.Path(prereleasePlan)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(path); err != nil {
+		t.Fatal(err)
+	}
+	if _, err, output := testrepo.CLI(t, binary, repo.Root, "planning-entry", "resolve", "--branch", "dev/0.3.8a3"); err == nil || !strings.Contains(output, prereleasePlan) {
+		t.Fatalf("missing registered entry document must fail closed: %v\n%s", err, output)
+	}
+}
+
 func TestInvalidRegisteredWorkUnitBlocksPlanningValidation(t *testing.T) {
 	for _, tamper := range []string{"missing", "identity", "dependencies", "completion"} {
 		t.Run(tamper, func(t *testing.T) {
