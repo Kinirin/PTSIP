@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+
+	policylifecycle "github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
 )
 
 func (r *Repository) policyValidateGovernanceSources(records map[string]Object) []string {
@@ -442,6 +444,11 @@ func (r *Repository) policyValidateMigrationUnits(root, class string, records ma
 		return []string{root + ": migration evidence class mismatch"}
 	}
 	errors := []string{}
+	if root == "developer/policy" {
+		if err := policylifecycle.CheckMigrationSourceCatalog(index, graph); err != nil {
+			errors = append(errors, err.Error())
+		}
+	}
 	units := map[string]bool{}
 	sourceIDs := map[string]bool{}
 	counts := map[string]int{}

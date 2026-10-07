@@ -118,6 +118,9 @@ func LoadConsistentPolicyCorpus(r Repository) (*PolicyCorpus, error) {
 	if err != nil {
 		return nil, policyFailure("INVALID_POLICY_INDEX", err.Error())
 	}
+	if err := checkRegisteredMigrationSources(r, index); err != nil {
+		return nil, err
+	}
 	subject, err := r.Read(policySubjectRegistry)
 	if err != nil {
 		return nil, err
