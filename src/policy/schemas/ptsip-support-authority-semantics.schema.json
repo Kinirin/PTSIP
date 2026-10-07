@@ -821,7 +821,7 @@
       "minProperties": 1,
       "required": [
         "family_definition",
-        "engine_plane_minimum_boundary"
+        "engine_plane_boundary"
       ],
       "properties": {
         "family_definition": {
@@ -844,7 +844,7 @@
           },
           "additionalProperties": false
         },
-        "engine_plane_minimum_boundary": {
+        "engine_plane_boundary": {
           "type": "object",
           "required": [
             "repository_local_root",
