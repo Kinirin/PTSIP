@@ -37,6 +37,9 @@ outcomes:
   - UNSUPPORTED_SOURCE
   - STALE_STATE
 implementation_refs:
-  - src/ptsip/migration/analyzer.py
-  - src/ptsip/migration/direct_planner.py
-  - src/ptsip/migration/direct_execution.py
+  - src/ptsip/migration/analysis/analyzer.py
+  - src/ptsip/migration/planning/direct/builder.py
+  - src/ptsip/migration/execution/direct/identity_plan.py
+  - src/ptsip/migration/execution/direct/identity_rewrite.py
+  - src/ptsip/migration/execution/direct/promotion.py
+  - src/ptsip/migration/execution/direct/verification.py

@@ -1,0 +1,63 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: GOV
+policy:
+  id: SFP-GOV-0001
+  title: GOV authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_PROJECT_AUTHORITY_LEGITIMACY
+  statement: consumer Project Authority에서 정확한 subject에 대해 누가 결정할 수 있는지, Authority
+    Role의 효력 및 정당한 coordinated winner를 소유한다.
+exclusive_kernel:
+- SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
+- SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
+authority_contract:
+  authority_type: ROOT_FAMILY_GOV
+  schema_id: ptsip.governance/root-family/gov
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
+      statement: subject applicability, 결정 주체 및 Authority Role의 효력을 shipped registry의
+        정확한 identity와 명시적 relationship으로만 해석한다.
+      non_substitutability: ARCH의 완전한 local profile이나 AI의 의미 유사성이 Project Authority와
+        역할 권한을 만들어 내지 못한다.
+    - id: SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
+      statement: first-valid-resolution-wins와 global authority/local projection 구분에
+        따라 어느 적법한 결정이 해당 subject의 winner인지 정한다.
+      non_substitutability: CTRL의 fresh read 성공이나 RECORD의 가장 최근 기록이라는 사실만으로 authority
+        winner가 바뀌지 않는다.
+    source_scope:
+    - SFP-0003
+    - SFP-0005
+    - SFP-0007
+    - SFP-0008
+    - SFP-0015
+    - SFP-0020
+    - SFP-0022
+  unit_sfp_0003_db5fcfdfb9f1: false
+  unit_sfp_0005_a9e64b2f374b: true
+  unit_sfp_0005_497b5224a8b6: STABLE
+  unit_sfp_0005_544177a069c5: FIRST_VALID_RESOLUTION_WINS
+  unit_sfp_0005_f4ecc779cdbf: false
+  unit_sfp_0005_138d6488f191: true
+  unit_sfp_0007_335c13787166: false
+  unit_sfp_0008_f0fcd9e4583e: false
+  unit_sfp_0015_e5e68017d47f:
+  - PROPOSAL_BUNDLE
+  - ACCEPTED_DELTA_BUNDLE
+  - UNRESOLVED_BUNDLE
+  unit_sfp_0015_729a3aad608d: true
+  unit_sfp_0015_1008b206be76: false
+  unit_sfp_0020_633f58c56305: false
+  unit_sfp_0020_7cba43b51776: OWNER_DECISION_REQUIRED
+  unit_sfp_0022_e5a99b5ac3bd:
+    authorization: USER_EXPLICIT
+    silent_agent_selection: FORBIDDEN
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

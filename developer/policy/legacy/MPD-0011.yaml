@@ -1,0 +1,82 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0011
+  version: "2.0"
+  title: Commit-Atomic Full Project Profile Transition Automation
+  status: ACTIVE
+
+rules:
+  authority_semantics:
+    decision: APPROVED
+    approval_date: "2026-09-19"
+    scope: PTSIP_REPOSITORY_DEVELOPER_CONTROL_PLANE
+    distribution: FORBIDDEN
+    consumer_project_requirement: false
+    purpose: AUTOMATE_DEVELOPER_OWNED_PROJECT_PROFILE_CONTRACT_TRANSITIONS_WITHOUT_REQUIRING_MANUAL_VERSION_MAINTENANCE
+    applies_to_git_refs: ALL
+    trigger_is_branch_independent: true
+    branch_name_is_transition_authority: false
+    pull_request_presence_is_transition_authority: false
+    merge_event_is_transition_authority: false
+    implementation_infrastructure_change_without_t2_delta_changes_pp_version: false
+
+
+  implementation_state:
+    policy_record: MATERIALIZED
+    policy_index_registration: MATERIALIZED
+    policy_resolver_routing: MATERIALIZED
+    authority_plane_registration: MATERIALIZED
+    operationalization_level: L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_AND_RELEASE_VERIFY
+    public_profile_catalog: MATERIALIZED
+    canonical_pp_contract_registry: MATERIALIZED
+    t2_delta_resolver: MATERIALIZED
+    transition_reconciler: MATERIALIZED_AND_HOOK_INVOKED
+    h3_hook_activation: MATERIALIZED_SHARED_INSTALLER
+    remote_commit_verifier: MATERIALIZED_PUSH_VERIFY_ONLY
+    release_transition_verifier: MATERIALIZED_EXACT_SHA_VERIFY_ONLY
+    runtime_current_pp_registry_resolution: MATERIALIZED
+    packaging_registry_projection: MATERIALIZED
+    distribution_contract_verifier: MATERIALIZED
+    claim: LOCAL_REMOTE_RELEASE_PP_AUTOMATION_ACTIVE
+
+  migration_authorization_ref: MPD-MIGR-0003
+  transition_mechanics_ref: MPD-MIGR-0004
+
+  h3_hook_activation:
+    strategy: H3_SHARED_INSTALLER
+    entrypoints:
+      - setup_dev.bat
+      - bootstrap_repo.ps1
+      - python -m developer.automation.dev_setup
+    shared_installer: REQUIRED
+    git_config_scope: LOCAL_REPOSITORY
+    core_hooks_path: .githooks
+    product_runtime_dependency: FORBIDDEN
+    developer_module_distribution: FORBIDDEN
+    consumer_repository_requirement: false
+
+  verification_layers_ref: MPD-VERI-0003
+
+  release_publication_gate_ref: MPD-RELS-0002
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-SPEC-0006
+      scope: identity_and_resolution
+  depends_on:
+    - policy: MPD-VERI-0003
+      scope: PROJECT_PROFILE_TRANSITION_VERIFICATION
+    - policy: MPD-MIGR-0003
+      scope: PROJECT_PROFILE_VERSION_MIGRATION_AUTHORIZATION
+    - policy: MPD-MIGR-0004
+      scope: PROJECT_PROFILE_TRANSITION_MECHANICS
+    - policy: MPD-SPEC-0001
+      scope: developer_distribution_boundary
+    - policy: MPD-SPEC-0026
+      scope: T2_AUTHORITY_DELTA
+    - policy: MPD-SPEC-0027
+      scope: USER_REVISION_LINEAGE

@@ -1,4 +1,4 @@
-schema_version: ptsip-policy-resolver-contract/v1
+schema_version: ptsip-policy-resolver-contract/v2
 policy_class: PTSIP_DEVELOPER_POLICY
 
 resolver:
@@ -6,13 +6,17 @@ resolver:
   owner_policy_ref: MPD-0010
   runtime_classification: DEVELOPER_CONTROL_PLANE_ONLY
   policy_index_ref: developer/policy/index.yaml
-  binding_registry_ref: developer/policy/policy-resolver-bindings.yaml
-  binding_schema_ref: developer/policy/schemas/policy-resolver-bindings.schema.json
+  binding_registry_ref: developer/policy/policy-resolver-bindings/registry.yaml
   task_context_ref: null
   normative_rule_registry_ref: registry/ptsip-registry.yaml
 
 lookup:
   scope_resolution: EXACT_ANCESTOR_PATH
+  descendant_inheritance: EXPLICIT_SCOPE_CONTROL
+  exact_scope_binding: ALWAYS_ELIGIBLE
+  ancestor_binding_requirement: INHERIT_TO_DESCENDANTS_TRUE
+  non_inheritable_ancestor: SKIP_AND_CONTINUE
+  no_eligible_binding: FAIL_CLOSED
   operation_resolution: EXACT_CLOSED_VOCABULARY
   semantic_similarity: FORBIDDEN
   repository_document_scan: FORBIDDEN

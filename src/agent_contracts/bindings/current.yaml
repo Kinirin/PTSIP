@@ -113,10 +113,10 @@ action_bindings:
   - {action_id: PTSIP-ACT-COMPARE-PROFILE-AUTHORITY-001, python_callable: ptsip.app.github_reconciliation:run_github_gate}
   - {action_id: PTSIP-ACT-RESOLVE-RECONCILIATION-STATE-001, python_callable: ptsip.app.github_reconciliation:run_github_gate}
   - {action_id: PTSIP-ACT-PROJECT-AUTHORITY-WINNER-001, python_callable: ptsip.app.github_reconciliation:run_github_gate}
-  - {action_id: PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001, python_callable: ptsip.migration.analyzer:analyze_source_migration}
-  - {action_id: PTSIP-ACT-MAP-PROFILE-TARGET-001, python_callable: ptsip.migration.direct_planner:build_direct_final_point_convergence_plan}
-  - {action_id: PTSIP-ACT-BUILD-TRANSITION-PLAN-001, python_callable: ptsip.migration.direct_planner:build_direct_final_point_convergence_plan}
-  - {action_id: PTSIP-ACT-APPLY-PROFILE-TRANSITION-001, python_callable: ptsip.migration.execution_promotion:promote_canonical}
+  - {action_id: PTSIP-ACT-ANALYZE-SOURCE-PROFILE-001, python_callable: ptsip.migration.analysis:analyze_source_migration}
+  - {action_id: PTSIP-ACT-MAP-PROFILE-TARGET-001, python_callable: ptsip.migration.planning.direct:build_direct_final_point_convergence_plan}
+  - {action_id: PTSIP-ACT-BUILD-TRANSITION-PLAN-001, python_callable: ptsip.migration.planning.direct:build_direct_final_point_convergence_plan}
+  - {action_id: PTSIP-ACT-APPLY-PROFILE-TRANSITION-001, python_callable: ptsip.migration.execution.promotion:promote_canonical}
 condition_evaluator_bindings: []
 operation_entrypoints:
   - {operation_id: PTSIP-OP-ADOPT-001, cli_command: ptsip adopt}

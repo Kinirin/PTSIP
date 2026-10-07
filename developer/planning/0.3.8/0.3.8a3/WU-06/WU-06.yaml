@@ -1,0 +1,87 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-06
+  title: Execution feedback and state re-resolution loop
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-05]
+
+  objective: >-
+    Make execution produce structured result, evidence and resulting state,
+    mechanically verify expected versus observed behavior, and feed verified state
+    back into resolution without repeated human confirmation for normal PASS transitions.
+
+  preferred_reuse_candidates:
+    - src/ptsip/migration/execution_apply.py
+    - src/ptsip/migration/execution_ledger.py
+    - src/ptsip/migration/execution_model.py
+    - src/ptsip/repository/snapshot.py
+    - developer/automation/repository_state_resolver.py
+    - src/ptsip/conformance.py
+    - src/ptsip/conformance_engine.py
+    - src/ptsip/validation_capture.py
+
+  cycle:
+    - AUTOMATIC_PLAN
+    - EXECUTION
+    - STRUCTURED_RESULT
+    - OBSERVABLE_EVIDENCE
+    - MECHANICAL_VERIFICATION
+    - STATE_PROJECTION
+    - RERESOLUTION
+
+  boundaries:
+    final_ptsip_runtime_persistence_path_selected_here: false
+    .ptsip_runtime_activation_by_this_work_unit: false
+    verified_state_creates_new_authority: false
+    valid_existing_authorization_may_continue_after_pass: true
+    deviation_requires_reresolution_or_escalation: true
+
+  reasoning_boundary:
+    fixed:
+      - EXECUTION_IS_NOT_TERMINAL
+      - STRUCTURED_RESULT_IS_REQUIRED
+      - OBSERVABLE_EVIDENCE_IS_REQUIRED
+      - RESULTING_STATE_IS_REQUIRED
+      - EXPECTED_VS_OBSERVED_VERIFICATION_IS_REQUIRED
+      - DEVIATION_MUST_NOT_BE_COERCED_TO_PASS
+      - VERIFIED_STATE_DOES_NOT_CREATE_NEW_AUTHORITY
+      - FINAL_.PTSIP_RUNTIME_PERSISTENCE_PATH_IS_NOT_SELECTED_HERE
+    bounded_reasoning:
+      - STRUCTURED_RESULT_INTERNAL_SHAPE
+      - EXECUTION_LEDGER_AND_STATE_PROJECTION_INTEGRATION
+      - SNAPSHOT_REUSE_METHOD
+      - CHECKPOINT_AND_RECOVERY_INTERNAL_STRUCTURE
+      - VERIFICATION_SCHEDULING
+    candidate_only:
+      - NEW_STATE_PROJECTION_OPTIMIZATION
+      - NEW_EXECUTION_EVIDENCE_ASSEMBLY_PATTERN
+      - NEW_RECOVERY_MECHANISM_WITHIN_EXISTING_SEMANTICS
+    escalation_required:
+      - SELECTING_FINAL_CANONICAL_RUNTIME_PERSISTENCE_PATH
+      - ACTIVATING_.PTSIP_RUNTIME
+      - DEVIATION_REQUIRING_NEW_NORMATIVE_SEMANTICS
+      - CONTINUING_MUTATION_AFTER_REQUIRED_AUTHORITY_BECOMES_INVALID
+
+  acceptance:
+    - PASS updates derived state and can return to resolver
+    - DEVIATION cannot be silently coerced to PASS
+    - partial execution remains distinguishable from complete execution
+    - verification output is machine-readable
+
+completion_evidence:
+  - '10 focused execution-feedback tests PASS: observed effects, ledger/proof binding, existing authority revalidation,
+    partial execution, changed state, missing evidence and unresolved re-resolution.'
+  - 'Reuses existing execution, checkpoint, reconciliation and snapshot components. PASS returns observed state to
+    exact resolution; no new authorization or canonical persistence path is created.'
+  - 'Automatic ptsip-migration mode: 68 passed / 15 pre-existing failures. Failure nodes and signatures match WU-05,
+    where all 15 were reproduced at 3914cba74ea4438e76e6593237f94ababb5685ba. VPMS: 114 passed / 2 known failures.
+    No observed new test regression; no waiver.'
+  - 'Source-checkout acceptance is verified. Distribution packaging and full-operation conformance remain WU-08
+    gates; this completion does not claim JSON authority cutover or release readiness.'
+  - 'WORK_PACKET_NOT_AVAILABLE: task_context must be a mapping; no task context invented. Planning validation PASS.'

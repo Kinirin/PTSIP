@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/docs/Support_policy/policy/schemas/ptsip-support-project-authority-record.schema.json",
+  "title": "PTSIP Support Project Authority Record v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authority_id",
+    "authority_contract",
+    "authority_semantics",
+    "authority_role",
+    "authority_provenance",
+    "subject_binding"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-project-authority-record/v1"
+    },
+    "authority_id": {
+      "type": "string",
+      "pattern": "^SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})$"
+    },
+    "authority_contract": {
+      "type": "object",
+      "required": [
+        "authority_type",
+        "schema_id",
+        "schema_version"
+      ],
+      "properties": {
+        "authority_type": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "schema_id": {
+          "type": "string",
+          "pattern": "^ptsip\\.governance/(?:[a-z0-9]+(?:-[a-z0-9]+)*|root-family/(?:norm|gov|intent|arch|info|cntr|risk|supply|real|assure|ctrl|change|ops|record))$"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "authority_semantics": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "authority_role": {
+      "type": "object"
+    },
+    "authority_provenance": {
+      "type": "object",
+      "required": [
+        "source_type",
+        "source_ref",
+        "source_revision",
+        "source_digest"
+      ],
+      "properties": {
+        "source_type": {
+          "const": "SUPPORT_FEATURE_POLICY"
+        },
+        "source_ref": {
+          "type": "string",
+          "pattern": "^src/policy/(?:legacy/SFP-[0-9]{4}\\.yaml|SFP-[0-9]{4}\\.yaml|(?:NORM/SFP-NORM|GOV/SFP-GOV|INTENT/SFP-INTENT|ARCH/SFP-ARCH|INFO/SFP-INFO|CNTR/SFP-CNTR|RISK/SFP-RISK|SUPPLY/SFP-SUPPLY|REAL/SFP-REAL|ASSURE/SFP-ASSURE|CTRL/SFP-CTRL|CHANGE/SFP-CHANGE|OPS/SFP-OPS|RECORD/SFP-RECORD)-[0-9]{4}\\.yaml)$"
+        },
+        "source_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_role": {
+          "const": "REGISTERED_ROOT_FAMILY_PROJECTION"
+        },
+        "canonical_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "policy_id",
+              "path",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "policy_id": {
+                "type": "string",
+                "pattern": "^SFP-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^src/policy/(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)/SFP-[A-Z]+-[0-9]{4}\\.yaml$"
+              },
+              "section": {
+                "type": "string",
+                "pattern": "^unit_[a-z0-9_]+$"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_ref": {
+                "pattern": "^src/policy/legacy/"
+              }
+            },
+            "required": [
+              "source_ref"
+            ]
+          },
+          "then": {
+            "required": [
+              "source_role",
+              "canonical_sources"
+            ]
+          }
+        }
+      ]
+    },
+    "subject_binding": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

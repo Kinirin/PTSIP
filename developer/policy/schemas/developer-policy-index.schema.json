@@ -29,15 +29,16 @@
         "properties": {
           "id": {
             "type": "string",
-            "pattern": "^MPD-[0-9]{4}$"
+            "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
           },
           "path": {
             "type": "string",
-            "pattern": "^developer/policy/MPD-[0-9]{4}\\.yaml$"
+            "pattern": "^developer/policy/(?:MPD-(?:[0-9]{4}|BOUND-[0-9]{4})|(?:SPEC/MPD-SPEC|PLAN/MPD-PLAN|WORK/MPD-WORK|VERI/MPD-VERI|MIGR/MPD-MIGR|RELS/MPD-RELS)-[0-9]{4})\\.yaml$"
           },
           "status": {
             "enum": [
               "DRAFT",
+              "APPROVED",
               "ACTIVE",
               "SUPERSEDED",
               "RETIRED"

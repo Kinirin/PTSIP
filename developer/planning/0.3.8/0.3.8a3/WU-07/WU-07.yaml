@@ -1,0 +1,86 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-07
+  title: Verified reasoning promotion and deterministic reuse
+  classification: CORE
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-05]
+
+  objective: >-
+    Convert bounded AI resolution candidates into reusable machine resolutions
+    only through existing validation and authority boundaries, then prefer the
+    persisted current resolution over repeated reasoning.
+
+  governing_reuse_sources:
+    - MPD-0012.binding_discovery_and_promotion
+    - MPD-0012.required_verification
+    - MPD-0010.provisional_resolution_framework
+    - src/ptsip/migration/execution_promotion.py
+
+  flow:
+    - DETERMINISTIC_RESOLUTION_UNAVAILABLE
+    - BOUNDED_AI_REASONING
+    - CANDIDATE
+    - REQUIRED_VALIDATION
+    - AUTHORITY_BOUNDARY
+    - REUSABLE_MACHINE_RESOLUTION
+    - DETERMINISTIC_REUSE
+
+  promotion_rules:
+    model_confidence_is_authority: false
+    test_success_alone_is_authority: false
+    implementation_success_alone_is_authority: false
+    official_normative_promotion_without_required_user_authority: FORBIDDEN
+    verified_operational_binding_may_persist_when_existing_policy_allows: true
+    source_and_authority_provenance_required: true
+    changed_contract_binding_capability_or_evidence_requires_revalidation: true
+
+  reasoning_boundary:
+    fixed:
+      - AI_REASONING_RESULT_IS_CANDIDATE_NOT_AUTHORITY
+      - MODEL_CONFIDENCE_IS_NOT_PROMOTION_AUTHORITY
+      - TEST_SUCCESS_ALONE_IS_NOT_PROMOTION_AUTHORITY
+      - IMPLEMENTATION_SUCCESS_ALONE_IS_NOT_PROMOTION_AUTHORITY
+      - CURRENT_VALID_PERSISTED_RESOLUTION_PRECEDES_REPEAT_REASONING
+      - REQUIRED_SOURCE_AND_AUTHORITY_PROVENANCE_MUST_BE_PRESERVED
+    bounded_reasoning:
+      - CANDIDATE_GENERATION_FOR_UNRESOLVED_OPERATIONAL_CASE
+      - CANDIDATE_COMPARISON_AGAINST_EXISTING_CONTRACTS
+      - VALIDATION_EVIDENCE_ASSEMBLY
+      - REVALIDATION_TRIGGER_IMPLEMENTATION
+    candidate_only:
+      - NEW_MACHINE_BINDING
+      - NEW_OPERATIONAL_RESOLUTION
+      - NEW_CONTRACT_OR_REFERENCE_INTERFACE_PROPOSAL
+      - NEW_REUSABLE_MAPPING
+    escalation_required:
+      - OFFICIAL_NORMATIVE_PROMOTION_REQUIRING_USER_AUTHORITY
+      - CONFLICT_WITH_EXISTING_OFFICIAL_POLICY
+      - UNKNOWN_REQUIRED_VERIFICATION_WITH_NO_POLICY_DEFINED_AUTO_RESOLUTION
+      - CANDIDATE_REQUIRING_SCOPE_OR_AUTHORITY_EXPANSION
+
+  acceptance:
+    - current persisted resolution suppresses repeat discovery for the same case
+    - rejected candidate cannot become an active binding
+    - UNKNOWN routes to the policy-defined review boundary
+    - promotion never silently upgrades operational resolution into official policy authority
+
+completion_evidence:
+  - '46 focused tests PASS: exact persisted reuse, all seven required verification boundaries, FAIL rejection,
+    UNKNOWN review, source/authority/contract/binding/capability/evidence drift, explicit case authorization,
+    malformed records, concurrent writes and atomic replacement failure preservation.'
+  - 'The separate non-authoritative JSON extraction matches MPD-0012 rules.approved_decisions exactly.
+    Consumer runtime does not import developer policy. Operational reuse creates neither normative nor mutation authority.'
+  - 'Automatic modes: ptsip-contract 142 passed / 1 known failure; VPMS 114 passed / 2 known failures;
+    repository-release 14 passed / 2 known failures. Failure nodes and signatures match the earlier verified
+    pre-entry debt observations. No observed new test regression; no waiver.'
+  - 'Caller-supplied trusted machine verifiers, exact authorized cases and declared external dependencies are
+    required. Tests verify promotion control and evidence freshness, not arbitrary candidate semantic validity.
+    Storage is caller-selected; no .ptsip/runtime activation or physical crash durability claim.'
+  - 'Source-checkout acceptance is verified. Packaging and full-operation conformance remain WU-08 gates.'
+  - 'WORK_PACKET_NOT_AVAILABLE: no registered task_context invented. Planning validation PASS.'

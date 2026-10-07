@@ -1,0 +1,209 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0003
+  source_ref: developer/policy/MPD-0005.yaml
+  responsibilities:
+  - responsibility_id: R01
+    statement: Tool-driven repository self-adoption must not create a ptsip 0.3.7
+      profile automatically.
+    authority_relation: OWN
+    authority_subject: SELF_ADOPTION_PROFILE_CREATION_BOUNDARY
+    lifecycle_scope: REPOSITORY_SELF_ADOPTION
+    cohesion_key: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+    family: SPEC
+    referenced_family: null
+    existing_authority_lookup:
+      searched_family: SPEC
+      searched_policy_ids:
+      - MPD-SPEC-0001
+      - MPD-SPEC-0002
+      - MPD-SPEC-0003
+      - MPD-SPEC-0004
+      - MPD-SPEC-0005
+      - MPD-SPEC-0006
+      - MPD-SPEC-0007
+      - MPD-SPEC-0008
+      - MPD-SPEC-0009
+      - MPD-SPEC-0010
+      - MPD-SPEC-0020
+      - MPD-SPEC-0021
+      - MPD-SPEC-0022
+      - MPD-SPEC-0023
+      - MPD-SPEC-0024
+      - MPD-SPEC-0025
+      - MPD-SPEC-0026
+      - MPD-SPEC-0027
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+    policy_class: PTSIP_DEVELOPER_POLICY
+    referenced_policy_class: null
+  - responsibility_id: R02
+    statement: Existing profile examples remain on the 0.3.6 draft contract unless
+      their contract changes.
+    authority_relation: OWN
+    authority_subject: PROFILE_EXAMPLE_CONTRACT_STABILITY
+    lifecycle_scope: REPOSITORY_SELF_ADOPTION
+    cohesion_key: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+    family: SPEC
+    referenced_family: null
+    existing_authority_lookup:
+      searched_family: SPEC
+      searched_policy_ids:
+      - MPD-SPEC-0001
+      - MPD-SPEC-0002
+      - MPD-SPEC-0003
+      - MPD-SPEC-0004
+      - MPD-SPEC-0005
+      - MPD-SPEC-0006
+      - MPD-SPEC-0007
+      - MPD-SPEC-0008
+      - MPD-SPEC-0009
+      - MPD-SPEC-0010
+      - MPD-SPEC-0020
+      - MPD-SPEC-0021
+      - MPD-SPEC-0022
+      - MPD-SPEC-0023
+      - MPD-SPEC-0024
+      - MPD-SPEC-0025
+      - MPD-SPEC-0026
+      - MPD-SPEC-0027
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+    policy_class: PTSIP_DEVELOPER_POLICY
+    referenced_policy_class: null
+  - responsibility_id: R03
+    statement: Repository dogfood is limited to controlled self-analysis.
+    authority_relation: OWN
+    authority_subject: REPOSITORY_DOGFOOD_MODE
+    lifecycle_scope: REPOSITORY_SELF_ADOPTION
+    cohesion_key: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+    family: SPEC
+    referenced_family: null
+    existing_authority_lookup:
+      searched_family: SPEC
+      searched_policy_ids:
+      - MPD-SPEC-0001
+      - MPD-SPEC-0002
+      - MPD-SPEC-0003
+      - MPD-SPEC-0004
+      - MPD-SPEC-0005
+      - MPD-SPEC-0006
+      - MPD-SPEC-0007
+      - MPD-SPEC-0008
+      - MPD-SPEC-0009
+      - MPD-SPEC-0010
+      - MPD-SPEC-0020
+      - MPD-SPEC-0021
+      - MPD-SPEC-0022
+      - MPD-SPEC-0023
+      - MPD-SPEC-0024
+      - MPD-SPEC-0025
+      - MPD-SPEC-0026
+      - MPD-SPEC-0027
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+    policy_class: PTSIP_DEVELOPER_POLICY
+    referenced_policy_class: null
+  - responsibility_id: R04
+    statement: The 0.3.7 draft specification family remains the tool-development normative
+      family.
+    authority_relation: OWN
+    authority_subject: TOOL_DEVELOPMENT_NORMATIVE_FAMILY
+    lifecycle_scope: REPOSITORY_SELF_ADOPTION
+    cohesion_key: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+    family: SPEC
+    referenced_family: null
+    existing_authority_lookup:
+      searched_family: SPEC
+      searched_policy_ids:
+      - MPD-SPEC-0001
+      - MPD-SPEC-0002
+      - MPD-SPEC-0003
+      - MPD-SPEC-0004
+      - MPD-SPEC-0005
+      - MPD-SPEC-0006
+      - MPD-SPEC-0007
+      - MPD-SPEC-0008
+      - MPD-SPEC-0009
+      - MPD-SPEC-0010
+      - MPD-SPEC-0020
+      - MPD-SPEC-0021
+      - MPD-SPEC-0022
+      - MPD-SPEC-0023
+      - MPD-SPEC-0024
+      - MPD-SPEC-0025
+      - MPD-SPEC-0026
+      - MPD-SPEC-0027
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+    policy_class: PTSIP_DEVELOPER_POLICY
+    referenced_policy_class: null
+  - responsibility_id: R05
+    statement: Supersession is scoped only to the repository self-adoption assumption.
+    authority_relation: OWN
+    authority_subject: SELF_ADOPTION_SUPERSESSION_SCOPE
+    lifecycle_scope: REPOSITORY_SELF_ADOPTION
+    cohesion_key: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+    family: SPEC
+    referenced_family: null
+    existing_authority_lookup:
+      searched_family: SPEC
+      searched_policy_ids:
+      - MPD-SPEC-0001
+      - MPD-SPEC-0002
+      - MPD-SPEC-0003
+      - MPD-SPEC-0004
+      - MPD-SPEC-0005
+      - MPD-SPEC-0006
+      - MPD-SPEC-0007
+      - MPD-SPEC-0008
+      - MPD-SPEC-0009
+      - MPD-SPEC-0010
+      - MPD-SPEC-0020
+      - MPD-SPEC-0021
+      - MPD-SPEC-0022
+      - MPD-SPEC-0023
+      - MPD-SPEC-0024
+      - MPD-SPEC-0025
+      - MPD-SPEC-0026
+      - MPD-SPEC-0027
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+    policy_class: PTSIP_DEVELOPER_POLICY
+    referenced_policy_class: null
+  decision:
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      family: SPEC
+      cohesion_key: REPOSITORY_SELF_ADOPTION_AND_DOGFOOD_CONTRACT
+      responsibility_ids:
+      - R01
+      - R02
+      - R03
+      - R04
+      - R05
+      cohesion_rationale: The five responsibilities jointly define repository self-adoption,
+        dogfood, profile-contract stability, normative-family continuity, and the
+        scope of the self-adoption supersession boundary.
+      policy_class: PTSIP_DEVELOPER_POLICY
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: SPEC

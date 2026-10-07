@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261007-AUTOMATION-DOMAIN-ARCH-0002-REPOSITORY-TEST-MODE-CONTROL-PLANE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "developer/automation/testmode/ root와 REPOSITORY_TEST_MODE_CONTROL_PLANE responsibility를 승인한다. 허용 scope는 TEST_MODE_REGISTRY_VALIDATION, AUTOMATIC_MODE_RESOLUTION, MANUAL_MODE_RESOLUTION, CHANGED_FILE_MATCHING, DELETION_PREIMAGE_RESOLUTION, EXECUTION_PLAN_CONSTRUCTION이며 .github/test_modes.yaml과 developer/profiles/ptsip-repository.yaml의 authority를 소비하고 재정의하지 않는다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-ARCH-0002
+  recorded_at: '2026-10-07'

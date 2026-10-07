@@ -1,0 +1,238 @@
+schema_version: ptsip-developer-prerelease-planning-index/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+artifact_class: PTSIP_DEVELOPER_PLANNING
+
+plan_identity:
+  resolved_plan_id: PLN.POLI.PLAN.cb6d761c
+  plan_file_id: PLANFILE.MAIN.2c4c961377dd
+  version: "1.0"
+  revision: "Rev.0001"
+
+plan:
+  id: PLAN-0.3.8A3-MPD-0015
+  development_line: "0.3.8"
+  prerelease: "0.3.8a3"
+  integration_branch: dev/0.3.8a3
+  classification: CORE/RELEASE-BLOCKING
+  status: ACTIVE
+
+  approval:
+    status: APPROVED
+    authority: PROJECT_OWNER
+    approval_source: USER_EXPLICIT
+
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
+
+  canonical_location: developer/planning/0.3.8/0.3.8a3/index.yaml
+  root_planning_directory_role: LEGACY_NON_CANONICAL
+  root_planning_directory_new_plan_creation: FORBIDDEN
+
+  objective: >-
+    Materialize MPD-0015 as a language-neutral Machine Contract foundation with
+    explicit developer-policy binding, deterministic resolution, automatic plan
+    projection, execution feedback, state re-resolution, and verified reasoning
+    promotion while treating Python as an evolvable migration reference and compatibility implementation constrained by the approved semantic baseline.
+
+  governing_policy_refs:
+    - policy_id: MPD-0015
+      role: MECHANIZED_RESOLUTION_BASELINE
+    - policy_id: MPD-0010
+      role: INFERENCE_COST_AND_EXACT_RESOLUTION_BASELINE
+    - policy_id: MPD-0012
+      role: CANDIDATE_VERIFICATION_AND_PROMOTION_BASELINE
+    - policy_id: MPD-0013
+      role: POLICY_PLANNING_IMPLEMENTATION_AUTHORITY_SEPARATION
+    - policy_id: MPD-SPEC-0022
+      role: CANONICAL_REPRESENTATION_AND_DIGEST_CONTRACT
+    - policy_id: MPD-VERI-0004
+      role: AGENT_CONTRACT_REQUIRED_SEMANTIC_VERIFICATION
+    - policy_id: MPD-WORK-0004
+      role: CONDITIONAL_PRE_EXECUTION_MUTATION_AUTHORIZATION
+
+  formal_identity_materialization:
+    approval_source: USER_EXPLICIT
+    contract_ref: MPD-SPEC-0023#rules.binding_identity
+    allocation: MACHINE_GENERATED_OPAQUE_TOKENS
+    label_retained: PLAN-0.3.8A3-MPD-0015
+    label_is_formal_policy_plan_binding_identity: false
+    path_or_branch_defines_formal_identity: false
+    identity_reallocated_by_version_revision_or_path_change: false
+
+  bootstrap_compatibility:
+    current_planning_v1_supports_nested_prerelease_path: true
+    current_planning_v1_supports_prerelease_branch_identity: true
+    current_root_index_registration: REGISTERED
+    first_work_unit: WU-01
+    bootstrap_document_is_implementation_authority: false
+
+  entry_registration:
+    status: REGISTERED
+    registry_ref: developer/planning/index.yaml
+    approval_source: USER_EXPLICIT
+    canonical_integration_branch: dev/0.3.8a3
+    approved_continuation_branch: dev/0.3.8
+    entry_document: developer/planning/0.3.8/0.3.8a3/index.yaml
+    branch_creation_authorized: false
+
+  reasoning_boundary_model:
+    purpose: REDUCE_AGENT_INFERENCE_WITHOUT_PREMATURELY_FREEZING_IMPLEMENTATION_DETAIL
+    levels:
+      FIXED:
+        meaning: ALREADY_DECIDED_DO_NOT_REINTERPRET
+        agent_action: COMPLY_AND_EXECUTE
+      BOUNDED_REASONING:
+        meaning: IMPLEMENTATION_CHOICE_ALLOWED_WITHIN_FIXED_INVARIANTS
+        agent_action: ANALYZE_SELECT_IMPLEMENT_VERIFY
+      CANDIDATE_ONLY:
+        meaning: NEW_SOLUTION_MAY_BE_PROPOSED_BUT_IS_NOT_AUTHORITY
+        agent_action: PROPOSE_VALIDATE_AND_AWAIT_APPLICABLE_PROMOTION
+      ESCALATION_REQUIRED:
+        meaning: AGENT_MUST_NOT_DECIDE_OR_MUTATE_WITHOUT_REQUIRED_AUTHORITY
+        agent_action: STOP_AT_DECISION_BOUNDARY_AND_SURFACE_THE_UNRESOLVED_POINT
+    promotion_direction:
+      - REPEATED_BOUNDED_REASONING_MAY_BECOME_MACHINE_RESOLUTION_AFTER_VALIDATION
+      - CURRENT_MACHINE_RESOLUTION_SHOULD_REPLACE_REPEAT_REASONING
+    authority_boundary:
+      reasoning_level_does_not_create_normative_authority: true
+      implementation_success_does_not_upgrade_reasoning_level: true
+
+  python_evolution_boundary:
+    role:
+      - MIGRATION_REFERENCE
+      - COMPATIBILITY_IMPLEMENTATION
+    implementation_may_evolve_during_migration: true
+    implementation_change_is_policy_violation_by_itself: false
+    required_constraint: CONFORMANCE_TO_CURRENT_APPROVED_SEMANTIC_BASELINE
+    python_change_may_create_normative_authority: false
+    silent_semantic_drift: FORBIDDEN
+    normative_semantic_change_requires_applicable_candidate_validation_and_authority: true
+    parallel_go_work_may_proceed_under_separate_authorization: true
+    parallel_go_work_changes_this_plan_authority: false
+
+  approved_test_scope:
+    inherited_directories:
+      - tests/ptsip/agent_contracts
+      - tests/ptsip/conformance
+      - tests/ptsip/migration
+      - tests/ptsip/repository
+      - tests/ptsip/validation
+    conformance_scope_role:
+      - VERIFICATION
+      - MECHANICAL_REFERENCE_REMEDIATION
+    conformance_scope_may_change_normative_semantics: false
+
+  continuation_authorization:
+    applies_to_work_units: [WU-01, WU-02, WU-03, WU-04, WU-05, WU-06, WU-07, WU-08]
+    inter_work_unit_reapproval_required: false
+    advance_when_dependencies_complete_and_acceptance_verification_passes: true
+    dependency_order_must_be_respected: true
+    escalation_required_only_when:
+      - WORK_UNIT_REASONING_BOUNDARY_ESCALATION_REQUIRED
+      - REQUIRED_AUTHORITY_BECOMES_INVALID
+      - SCOPE_EXPANSION_OUTSIDE_APPROVED_PLAN
+      - NEW_NORMATIVE_SEMANTICS_REQUIRED
+    approval_does_not_authorize:
+      - GO_CANONICAL_RUNTIME_ACTIVATION
+      - PYTHON_REMOVAL
+      - FINAL_.PTSIP_RUNTIME_PERSISTENCE_SEMANTICS
+      - UNDECLARED_SCOPE_EXPANSION
+
+  approved_mechanical_scope_extension:
+    approval_source: USER_EXPLICIT
+    authorization_source: USER_EXPLICIT
+    purpose: COMPLETE_PREVIOUSLY_PROPOSED_MECHANICAL_REMEDIATION
+    materialized_exact_file_scopes:
+      - path: pyproject.toml
+        operations: [MODIFY, VERIFY]
+        change: INCLUDE_EXISTING_MACHINE_CONTRACT_JSON_ASSETS_IN_DISTRIBUTIONS
+    associated_verification: developer/tests/test_policy_resolver.py
+    normative_semantic_change_authorized: false
+    failure_waiver_authorized: false
+
+  invariants:
+    - NO_IMPLEMENTATION_BEFORE_EXPLICIT_PLAN_APPROVAL_AND_AUTHORIZATION
+    - MACHINE_CONTRACT_NOT_IMPLEMENTATION_LANGUAGE_OWNS_NORMATIVE_MEANING
+    - PYTHON_REMAINS_AN_EVOLVABLE_MIGRATION_REFERENCE_AND_COMPATIBILITY_IMPLEMENTATION
+    - PYTHON_CHANGES_MUST_NOT_SILENTLY_CREATE_NORMATIVE_AUTHORITY
+    - PYTHON_IMPLEMENTATION_MUST_REMAIN_CONFORMANT_TO_THE_CURRENT_APPROVED_SEMANTIC_BASELINE
+    - NO_AUTOMATIC_SEMANTIC_SCOPE_DISCOVERY_FOR_MPD_0015_BINDING
+    - NO_NEW_CANONICAL_RUNTIME_PERSISTENCE_PATH_WITHOUT_SEPARATE_POLICY_AUTHORITY
+    - CONFORMANCE_MAY_VERIFY_BUT_MUST_NOT_CREATE_NORMATIVE_SEMANTICS
+    - ROOT_LEVEL_PLANNING_DIRECTORY_IS_NOT_A_NEW_PLAN_TARGET
+
+work_units:
+  - id: WU-01
+    path: developer/planning/0.3.8/0.3.8a3/WU-01/WU-01.yaml
+    title: Prerelease planning topology bootstrap
+    depends_on: []
+  - id: WU-02
+    path: developer/planning/0.3.8/0.3.8a3/WU-02/WU-02.yaml
+    title: MPD-0015 developer policy binding materialization
+    depends_on: [WU-01]
+  - id: WU-03
+    path: developer/planning/0.3.8/0.3.8a3/WU-03/WU-03.yaml
+    title: Language-neutral canonical Machine Contract foundation
+    depends_on: [WU-02]
+  - id: WU-04
+    path: developer/planning/0.3.8/0.3.8a3/WU-04/WU-04.yaml
+    title: Non-normative implementation binding separation
+    depends_on: [WU-03]
+  - id: WU-05
+    path: developer/planning/0.3.8/0.3.8a3/WU-05/WU-05.yaml
+    title: Deterministic resolver and automatic plan projection
+    depends_on: [WU-03, WU-04]
+  - id: WU-06
+    path: developer/planning/0.3.8/0.3.8a3/WU-06/WU-06.yaml
+    title: Execution feedback and state re-resolution loop
+    depends_on: [WU-05]
+  - id: WU-07
+    path: developer/planning/0.3.8/0.3.8a3/WU-07/WU-07.yaml
+    title: Verified reasoning promotion and deterministic reuse
+    depends_on: [WU-05]
+  - id: WU-08
+    path: developer/planning/0.3.8/0.3.8a3/WU-08/WU-08.yaml
+    title: Conformance cutover and 0.3.8a3 readiness gate
+    depends_on: [WU-06, WU-07]
+
+execution_model:
+  dependency_order:
+    - [WU-01]
+    - [WU-02]
+    - [WU-03]
+    - [WU-04]
+    - [WU-05]
+    - [WU-06, WU-07]
+    - [WU-08]
+  parallel_groups:
+    - [WU-06, WU-07]
+  current_gate: WU-08
+
+pre_existing_regression_debt:
+  classification: PRE_EXISTING_REGRESSION_DEBT
+  exact_pre_wu01_baseline_sha: f55fcfa97f362520e642ed60f1f4f9fcd585e9a8
+  comparison_head_sha: c695c7e7071a39532778327bbc6179c4db7e4795
+  compared_failure_nodes: 23
+  counts:
+    pre_existing_regression_debt: 23
+    wu01_introduced_regression: 0
+    changed_failure: 0
+    unresolved: 0
+  wu01_completion_blocking: false
+  failure_waiver_created: false
+  remain_visible_until_plan_level_resolution: true
+  final_cutover_requires_applicable_regression_gate_pass: true
+
+completion_gate:
+  required:
+    - ALL_REQUIRED_WORK_UNITS_COMPLETE
+    - MACHINE_VALIDATION_PASS
+    - FOCUSED_AND_REGRESSION_TESTS_PASS
+    - PYTHON_CONFORMANCE_TO_APPROVED_SEMANTIC_BASELINE_CONFIRMED
+    - NO_UNAPPROVED_NORMATIVE_SEMANTIC_CREATION
+    - MPD_0015_BINDING_BOUNDARY_VERIFIED
+  go_runtime_candidate:
+    status: READINESS_ONLY
+    implementation_required_for_plan_completion: false
+    separate_plan_extension_or_explicit_authorization_required: true

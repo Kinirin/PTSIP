@@ -3,7 +3,67 @@
   "$id": "urn:ptsip:developer-authority-semantics:v1",
   "title": "PTSIP Developer Authority Semantics v1",
   "$defs": {
-    "MPD_0002_V1": {
+    "MPD_SPEC_0011_V1": {
+      "const": {
+        "tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption": false,
+        "existing_profile_examples_remain_0_3_6_draft_without_contract_change": true,
+        "repository_dogfood_mode": "CONTROLLED_SELF_ANALYSIS",
+        "spec_0_3_7_draft_remains_tool_development_normative_family": true,
+        "superseded_scope": "REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY"
+      }
+    },
+    "MPD_MIGR_0003_V1": {
+      "const": {
+        "project_profile_version_migration_authority_ref": "MPD-0011",
+        "project_profile_version_migration_authorized_when": "MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED",
+        "project_profile_version_migration_otherwise": "FORBIDDEN"
+      }
+    },
+    "MPD_RELS_0001_V1": {
+      "const": {
+        "release_note_namespaces": [
+          "tool",
+          "project-profile",
+          "specification"
+        ],
+        "historical_flat_release_notes_bulk_moved": false
+      }
+    },
+    "MPD_0011_V1": {
+      "const": {
+        "decision": "APPROVED",
+        "approval_date": "2026-09-19",
+        "scope": "PTSIP_REPOSITORY_DEVELOPER_CONTROL_PLANE",
+        "distribution": "FORBIDDEN",
+        "consumer_project_requirement": false,
+        "purpose": "AUTOMATE_DEVELOPER_OWNED_PROJECT_PROFILE_CONTRACT_TRANSITIONS_WITHOUT_REQUIRING_MANUAL_VERSION_MAINTENANCE",
+        "applies_to_git_refs": "ALL",
+        "trigger_is_branch_independent": true,
+        "branch_name_is_transition_authority": false,
+        "pull_request_presence_is_transition_authority": false,
+        "merge_event_is_transition_authority": false,
+        "implementation_infrastructure_change_without_t2_delta_changes_pp_version": false
+      }
+    },
+    "MPD_0012_V1": {
+      "const": {
+        "decision_record_state": "ACTIVE_RECONCILED",
+        "decision_date": "2026-09-22",
+        "activation_date": "2026-09-25",
+        "scope": "AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION",
+        "record_role": "SESSION_POLICY_DECISION_LEDGER",
+        "runtime_authority": "ACTIVATED",
+        "runtime_authority_scope": "APPROVED_DECISIONS_ONLY",
+        "provisional_decisions_are_runtime_authority": false,
+        "deferred_decisions_are_runtime_authority": false,
+        "implementation_change_authorized_by_this_record": true,
+        "activation_requires_separate_reconciliation_and_approval": true,
+        "activation_approval_satisfied": true,
+        "existing_active_policy_reconciliation_required_before_activation": true,
+        "existing_active_policy_reconciliation_satisfied": true
+      }
+    },
+    "MPD_SPEC_0002_V1": {
       "const": {
         "specification_family": "0.2.0-draft",
         "reference_tool_target": "0.2.0",
@@ -20,12 +80,12 @@
         ]
       }
     },
-    "MPD_0003_V1": {
+    "MPD_SPEC_0003_V1": {
       "const": {
         "activated_specification_family": "0.3.4-draft"
       }
     },
-    "MPD_0004_V1": {
+    "MPD_SPEC_0004_V1": {
       "const": {
         "activated_family": "0.3.7-draft",
         "immutable_normative_snapshot": "b648d9e026f502b14481ba2d0606d9acc88a31fc",
@@ -34,17 +94,7 @@
         "tool_runtime_claims_full_implementation_by_activation": false
       }
     },
-    "MPD_0005_V1": {
-      "const": {
-        "tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption": false,
-        "existing_profile_examples_remain_0_3_6_draft_without_contract_change": true,
-        "repository_dogfood_mode": "CONTROLLED_SELF_ANALYSIS",
-        "mutation_promotion_verification_scope": "ISOLATED_FIXTURE_REPOSITORIES",
-        "spec_0_3_7_draft_remains_tool_development_normative_family": true,
-        "superseded_scope": "REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY"
-      }
-    },
-    "MPD_0008_V1": {
+    "MPD_SPEC_0005_V1": {
       "const": {
         "components": [
           {
@@ -81,88 +131,7 @@
           "ptsip-migration:IMPORTS:ptsip-core",
           "ptsip-migration:IMPORTS:ptsip-evidence",
           "ptsip-migration:IMPORTS:ptsip-source-compat"
-        ],
-        "project_profile_version_migration_authority_ref": "MPD-0011",
-        "project_profile_version_migration_authorized_when": "MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED",
-        "project_profile_version_migration_otherwise": "FORBIDDEN"
-      }
-    },
-    "MPD_0009_V1": {
-      "const": {
-        "ordered_work_units": [
-          "WU-08",
-          "WU-09",
-          "WU-10",
-          "WU-11"
-        ],
-        "responsibilities": {
-          "WU-08": "REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE",
-          "WU-09": "INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE",
-          "WU-10": "PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION",
-          "WU-11": "FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS"
-        },
-        "maintainability_rules": [
-          "TYPED_BOUNDARIES",
-          "STABLE_OWNERSHIP",
-          "INDEPENDENT_VERIFICATION",
-          "FAIL_CLOSED_COMPATIBILITY",
-          "EXTENSIBLE_REGISTRIES",
-          "NO_TOOL_PP_COUPLING",
-          "NO_PREMATURE_ADOPTION"
-        ],
-        "architecture_acceptance_separate_from_identity_implementation": true,
-        "identity_implementation_separate_from_migration_capability": true,
-        "migration_capability_separate_from_repository_adoption": true,
-        "repository_adoption_separate_from_release_readiness": true
-      }
-    },
-    "MPD_0006_V1": {
-      "const": {
-        "release_note_namespaces": [
-          "tool",
-          "project-profile",
-          "specification"
-        ],
-        "historical_flat_release_notes_bulk_moved": false
-      }
-    },
-    "MPD_0007_V1": {
-      "const": {
-        "final_release_readiness_work_unit": "WU-12"
-      }
-    },
-    "MPD_0011_V1": {
-      "const": {
-        "decision": "APPROVED",
-        "approval_date": "2026-09-19",
-        "scope": "PTSIP_REPOSITORY_DEVELOPER_CONTROL_PLANE",
-        "distribution": "FORBIDDEN",
-        "consumer_project_requirement": false,
-        "purpose": "AUTOMATE_DEVELOPER_OWNED_PROJECT_PROFILE_CONTRACT_TRANSITIONS_WITHOUT_REQUIRING_MANUAL_VERSION_MAINTENANCE",
-        "applies_to_git_refs": "ALL",
-        "trigger_is_branch_independent": true,
-        "branch_name_is_transition_authority": false,
-        "pull_request_presence_is_transition_authority": false,
-        "merge_event_is_transition_authority": false,
-        "implementation_infrastructure_change_without_t2_delta_changes_pp_version": false
-      }
-    },
-    "MPD_0012_V1": {
-      "const": {
-        "decision_record_state": "ACTIVE_RECONCILED",
-        "decision_date": "2026-09-22",
-        "activation_date": "2026-09-25",
-        "scope": "AGENT_CONTRACT_SEMANTIC_VERIFICATION_AND_FEATURE_EXTENSION",
-        "record_role": "SESSION_POLICY_DECISION_LEDGER",
-        "runtime_authority": "ACTIVATED",
-        "runtime_authority_scope": "APPROVED_DECISIONS_ONLY",
-        "provisional_decisions_are_runtime_authority": false,
-        "deferred_decisions_are_runtime_authority": false,
-        "implementation_change_authorized_by_this_record": true,
-        "activation_requires_separate_reconciliation_and_approval": true,
-        "activation_approval_satisfied": true,
-        "existing_active_policy_reconciliation_required_before_activation": true,
-        "existing_active_policy_reconciliation_satisfied": true
+        ]
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:developer-policy:v1",
-  "title": "PTSIP Management Policy for Developers v1",
+  "$id": "urn:developer-policy:management-policy:v2",
+  "title": "Class-aware Developer Management Policy v2",
   "type": "object",
   "required": [
     "schema_version",
@@ -11,22 +11,23 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-developer-policy/v1"
+      "enum": ["ptsip-developer-policy/v1", "developer-policy/v2"]
     },
     "policy_class": {
-      "const": "PTSIP_DEVELOPER_POLICY"
+      "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_class"
     },
     "policy": {
       "type": "object",
       "required": [
         "id",
+        "version",
         "title",
         "status"
       ],
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^MPD-[0-9]{4}$"
+          "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
         },
         "title": {
           "type": "string",
@@ -35,10 +36,15 @@
         "status": {
           "enum": [
             "DRAFT",
+            "APPROVED",
             "ACTIVE",
             "SUPERSEDED",
             "RETIRED"
           ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
         }
       },
       "additionalProperties": false
@@ -72,7 +78,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -94,7 +100,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -116,7 +122,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -138,7 +144,7 @@
             "properties": {
               "policy": {
                 "type": "string",
-                "pattern": "^(?:SFP|MPD)-[0-9]{4}$"
+                "pattern": "^(?:SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})|MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}))$"
               },
               "scope": {
                 "type": [
@@ -152,7 +158,406 @@
         }
       },
       "additionalProperties": false
+    },
+    "transition": {
+      "$ref": "#/$defs/transition"
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "transition": {
+      "type": "object",
+      "required": [
+        "target_status",
+        "state",
+        "requirements"
+      ],
+      "properties": {
+        "target_status": {
+          "const": "ACTIVE"
+        },
+        "state": {
+          "enum": [
+            "PENDING",
+            "READY",
+            "COMPLETE"
+          ]
+        },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/transition_requirement"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "transition_requirement": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "state",
+        "next_action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^TR-[0-9]{3,}$"
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "state": {
+          "enum": [
+            "OPEN",
+            "IN_PROGRESS",
+            "SATISFIED",
+            "FAILED"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "next_action": {
+          "$ref": "#/$defs/transition_next_action"
+        }
+      },
+      "additionalProperties": false
+    },
+    "transition_next_action": {
+      "type": "object",
+      "required": [
+        "action",
+        "execution",
+        "completion_check"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "execution": {
+          "enum": [
+            "PARALLEL_ALLOWED",
+            "SERIAL_REQUIRED",
+            "OWNER_DECISION_REQUIRED"
+          ]
+        },
+        "target_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "after": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^TR-[0-9]{3,}$"
+          }
+        },
+        "completion_check": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "policy"
+        ],
+        "properties": {
+          "policy": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "APPROVED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "transition"
+        ],
+        "properties": {
+          "transition": {
+            "properties": {
+              "target_status": {
+                "const": "ACTIVE"
+              },
+              "state": {
+                "enum": [
+                  "PENDING",
+                  "READY"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "policy",
+          "transition"
+        ],
+        "properties": {
+          "policy": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "ACTIVE"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "transition": {
+            "properties": {
+              "target_status": {
+                "const": "ACTIVE"
+              },
+              "state": {
+                "const": "COMPLETE"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "policy"
+        ],
+        "properties": {
+          "policy": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "DRAFT",
+                  "SUPERSEDED",
+                  "RETIRED"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "transition"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "const": "DRAFT"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^0\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "const": "APPROVED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^1\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "const": "ACTIVE"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^(?:[2-9]|[1-9][0-9]+)\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "SUPERSEDED",
+                  "RETIRED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "version": {
+                "pattern": "^(?:[2-9]|[1-9][0-9]+)\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "ptsip-developer-policy/v1"}}, "required": ["schema_version"]},
+      "then": {"properties": {"policy_class": {"enum": ["PTSIP_DEVELOPER_POLICY", "PTSIP_BOUND_POLICY"]}}}
+    },
+    {
+      "if": {"properties": {"policy_class": {"const": "VPMS_DEVELOPER_POLICY"}}, "required": ["policy_class"]},
+      "then": {"properties": {
+        "schema_version": {"const": "developer-policy/v2"},
+        "policy": {"properties": {"id": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/family_policy_id"}}}
+      }}
+    },
+    {
+      "if": {
+        "properties": {
+          "policy_class": {
+            "const": "PTSIP_BOUND_POLICY"
+          }
+        },
+        "required": [
+          "policy_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "id": {
+                "pattern": "^MPD-BOUND-[0-9]{4}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "policy_class": {
+            "const": "PTSIP_DEVELOPER_POLICY"
+          }
+        },
+        "required": [
+          "policy_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "id": {
+                "pattern": "^MPD-(?:[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

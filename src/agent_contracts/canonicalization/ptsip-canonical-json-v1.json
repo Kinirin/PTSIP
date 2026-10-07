@@ -1,0 +1,81 @@
+{
+  "format": "ptsip-canonical-json/v1",
+  "id": "PTSIP-CANONICAL-JSON-V1",
+  "status": "CANDIDATE",
+  "normative_authority": false,
+  "activation": "REQUIRES_VERIFIED_CUTOVER",
+  "encoding": {
+    "charset": "UTF-8",
+    "bom": "FORBIDDEN"
+  },
+  "structural_rules": {
+    "duplicate_object_keys": "FORBIDDEN",
+    "object_member_order": "DETERMINISTIC",
+    "array_element_order": "PRESERVE_DECLARED_ORDER",
+    "insignificant_whitespace_in_canonical_output": "FORBIDDEN",
+    "ambiguous_or_unsupported_input": "FAIL_CLOSED"
+  },
+  "number": {
+    "option": "N2",
+    "semantic_model": "EXACT_DECIMAL_VALUE",
+    "binary_floating_point_conversion_for_canonicalization": "FORBIDDEN",
+    "negative_zero": "NORMALIZE_TO_ZERO",
+    "nan": "FORBIDDEN",
+    "infinity": "FORBIDDEN",
+    "leading_plus": "FORBIDDEN",
+    "ambiguous_or_unrepresentable_value": "FAIL_CLOSED",
+    "canonical_decimal_lexical_form": {
+      "option": "L2",
+      "model": "NORMALIZED_EXACT_SCIENTIFIC",
+      "zero": "0",
+      "nonzero_coefficient": {
+        "exactly_one_nonzero_digit_before_decimal_point": true,
+        "leading_zeroes": "FORBIDDEN",
+        "trailing_fractional_zeroes": "FORBIDDEN",
+        "decimal_point_when_fraction_absent": "FORBIDDEN"
+      },
+      "exponent": {
+        "marker": "e",
+        "positive_plus_sign": "FORBIDDEN",
+        "leading_zeroes": "FORBIDDEN",
+        "zero_exponent_for_nonzero_value": "ALLOWED"
+      },
+      "rounding": "FORBIDDEN"
+    }
+  },
+  "unicode": {
+    "option": "U2",
+    "normalization": "NFC",
+    "applies_to": [
+      "OBJECT_MEMBER_NAMES",
+      "STRING_VALUES"
+    ],
+    "compatibility_normalization": "FORBIDDEN",
+    "invalid_unicode": "FAIL_CLOSED",
+    "post_normalization_object_key_collision": "FAIL_CLOSED"
+  },
+  "string_escape": {
+    "option": "E1",
+    "model": "MINIMAL_UTF8_ESCAPE",
+    "quote": "ESCAPE",
+    "reverse_solidus": "ESCAPE",
+    "short_control_escapes": {
+      "backspace": "\\b",
+      "tab": "\\t",
+      "line_feed": "\\n",
+      "form_feed": "\\f",
+      "carriage_return": "\\r"
+    },
+    "other_u0000_to_u001f": {
+      "form": "\\u00xx",
+      "hex_case": "lowercase"
+    },
+    "non_control_unicode": "EMIT_UTF8",
+    "solidus_escape": "FORBIDDEN",
+    "unnecessary_unicode_escape": "FORBIDDEN",
+    "lone_surrogate": "FAIL_CLOSED"
+  },
+  "unresolved": [
+    "CANONICAL_DIGEST"
+  ]
+}

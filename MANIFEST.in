@@ -1,5 +1,5 @@
-prune tests
-recursive-include docs/Support_policy/policy *.yaml *.json
-recursive-include profiles *.ptsip.yaml
-include profiles/index.yaml
+prune src/tests
+recursive-include src/policy *.yaml *.json
+recursive-include src/ptsip/profiles *.ptsip.yaml
+include src/ptsip/profiles/index.yaml
 include registry/project-profile-contracts.yaml

@@ -27,7 +27,7 @@ elseif ($LASTEXITCODE -ne 0) {
     throw 'Unable to inspect staged git changes.'
 }
 
-python -m developer.automation.dev_setup
+go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev developer-setup install-hooks
 if ($LASTEXITCODE -ne 0) {
     throw 'PTSIP developer hook activation failed.'
 }

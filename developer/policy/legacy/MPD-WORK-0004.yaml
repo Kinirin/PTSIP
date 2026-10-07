@@ -1,0 +1,85 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-WORK-0004
+  version: "2.0"
+  title: Mutation Authorization Gate
+  status: ACTIVE
+
+rules:
+  mutation_authorization_gate:
+    ownership: PRE_EXECUTION_MUTATION_AUTHORIZATION
+    objective: AUTHORIZE_MUTATION_ONLY_WHEN_ALL_CONTRACT_DEFINED_REQUIRED_CONDITIONS_ARE_EXPLICITLY_SATISFIED
+
+    strategy: CONTRACT_DEFINED_CONDITIONAL_AUTHORIZATION
+
+    decision_contract:
+      result_vocabulary:
+        - AUTHORIZED
+        - NOT_AUTHORIZED
+      authorized_requires_all_required_dimensions_satisfied: true
+      partial_satisfaction_authorizes_mutation: false
+      contract_defined_conditions_may_authorize_mutation: true
+
+    required_condition_dimensions:
+      - SCOPE
+      - PRECONDITION
+      - FRESHNESS
+      - CONFLICT
+
+    dimension_boundary:
+      scope:
+        gate_responsibility: REQUIRE_TARGET_MUTATION_WITHIN_EXPLICIT_AUTHORIZED_SCOPE
+        gate_may_invent_scope: false
+      precondition:
+        gate_responsibility: REQUIRE_ALL_DECLARED_PRECONDITIONS_SATISFIED
+        gate_may_invent_precondition: false
+      freshness:
+        gate_responsibility: REQUIRE_AUTHORIZATION_INPUTS_CURRENT_FOR_TARGET_MUTATION
+        exact_freshness_identity_fixed_by_this_policy: false
+      conflict:
+        gate_responsibility: REQUIRE_NO_DECLARED_BLOCKING_CONFLICT
+        gate_may_invent_conflict_semantics: false
+
+    fail_closed:
+      unresolved_required_condition: NOT_AUTHORIZED
+      unknown_required_condition: NOT_AUTHORIZED
+      out_of_scope_mutation: NOT_AUTHORIZED
+      failed_precondition: NOT_AUTHORIZED
+      stale_authorization_input: NOT_AUTHORIZED
+      blocking_conflict: NOT_AUTHORIZED
+      missing_required_dimension: NOT_AUTHORIZED
+
+    authority_boundary:
+      authorization_result_may_be_consumed_by_execution_layer: true
+      authorization_result_executes_mutation: false
+      authorization_result_is_safe_apply: false
+      authorization_result_is_verification: false
+      authorization_result_is_rollback: false
+      authorization_result_creates_new_policy_or_project_authority: false
+      missing_condition_may_be_inferred_by_agent: false
+      model_confidence_may_authorize_mutation: false
+      implementation_urgency_may_authorize_mutation: false
+      execution_convenience_may_authorize_mutation: false
+
+    responsibility_boundary:
+      owns:
+        - MUTATION_AUTHORIZATION_DECISION
+        - REQUIRED_DIMENSION_AGGREGATION
+        - FAIL_CLOSED_AUTHORIZATION_RESULT
+      does_not_own:
+        - WORK_EXECUTION_LIFECYCLE
+        - REPOSITORY_MUTATION_EXECUTION
+        - SAFE_APPLY
+        - POSTCONDITION_VERIFICATION
+        - ROLLBACK
+        - DOMAIN_SPECIFIC_SCOPE_DEFINITION
+        - DOMAIN_SPECIFIC_PRECONDITION_SEMANTICS
+        - DOMAIN_SPECIFIC_CONFLICT_SEMANTICS
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

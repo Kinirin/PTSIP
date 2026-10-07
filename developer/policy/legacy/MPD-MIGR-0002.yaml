@@ -1,0 +1,62 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-MIGR-0002
+  version: "0.0"
+  title: README Translation Layout Migration
+  status: DRAFT
+
+rules:
+  readme_translation_layout_migration:
+    governing_policy_ref: MPD-0016
+
+    source_state:
+      canonical_readme: README.md
+      existing_translation:
+        language: ko
+        path: README.ko.md
+      translation_workflow: .github/workflows/readme-translation.yml
+
+    target_state:
+      canonical_readme: README.md
+      translation_registry: docs/translated/index.yaml
+      translations:
+        - language: ko
+          path: docs/translated/README.ko.md
+      not_created:
+        - docs/translated/README.ja.md
+        - docs/translated/README.zh-CN.md
+
+    required_transition:
+      - CREATE_TRANSLATION_REGISTRY
+      - MOVE_KOREAN_README_TO_REGISTERED_PATH
+      - UPDATE_CANONICAL_README_LANGUAGE_NAVIGATION
+      - UPDATE_TRANSLATION_INTERNAL_CANONICAL_LINKS
+      - UPDATE_README_TRANSLATION_WORKFLOW_TARGET_PATH
+      - UPDATE_WORKFLOW_GIT_ADD_PATH
+      - VERIFY_NO_ACTIVE_ROOT_README_KO_PATH_REFERENCE
+
+    preservation:
+      canonical_readme_content_authority_unchanged: true
+      korean_translation_history_should_be_preserved_when_git_operation_allows: true
+      translation_generation_model_unchanged_by_layout_migration: true
+
+    completion_conditions:
+      source_translation_path_absent: README.ko.md
+      target_translation_path_present: docs/translated/README.ko.md
+      registry_contains_exact_active_language_set:
+        - ko
+      workflow_targets_registry_declared_translation: true
+      ja_translation_absent: true
+      zh_cn_translation_absent: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-0016
+      scope: README_TRANSLATION_GOVERNANCE
+    - policy: MPD-MIGR-0001
+      scope: DEVELOPER_REPOSITORY_MIGRATION_BOUNDARY

@@ -1,0 +1,27 @@
+{
+  "format": "vpms-product-contract-invariants/v1",
+  "identity_source": "identity-registry.json",
+  "activation_requires_explicit_owner_approval": true,
+  "same_identity_same_semantics": true,
+  "semantic_change_requires_new_identity": true,
+  "index_and_contract_must_match": [
+    "id",
+    "status",
+    "responsibility",
+    "runtime_enabled"
+  ],
+  "schema_is_shape_authority": true,
+  "registry_is_identity_authority": true,
+  "contracts_are_normative_semantic_authority": true,
+  "developer_policy_is_runtime_authority": false,
+  "implementation_binding_adds_normative_semantics": false,
+  "runtime_requires": [
+    "ACTIVE_CONTRACT",
+    "IMPLEMENTED_VALIDATED_API",
+    "EXPLICIT_OWNER_ACTIVATION_APPROVAL"
+  ],
+  "non_active_registry_may_be_inspected": true,
+  "non_active_registry_may_execute": false,
+  "canonical_semantic_digest_authority": "NOT_ACTIVATED",
+  "byte_hash_is_semantic_authority": false
+}

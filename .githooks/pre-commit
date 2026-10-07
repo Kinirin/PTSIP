@@ -1,12 +1,4 @@
 #!/bin/sh
 set -eu
 
-if [ -x ".venv/Scripts/python.exe" ]; then
-  PYTHON=".venv/Scripts/python.exe"
-elif [ -x ".venv/bin/python" ]; then
-  PYTHON=".venv/bin/python"
-else
-  PYTHON="python"
-fi
-
-exec "$PYTHON" -m developer.automation.pp.pp_pre_commit --repository .
+exec go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev pp pre-commit --repository ../..

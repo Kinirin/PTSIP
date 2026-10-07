@@ -1,0 +1,78 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-MIGR-0004
+  version: "2.0"
+  title: Project Profile Transition Mechanics
+  status: ACTIVE
+
+rules:
+  authorization_ref: MPD-MIGR-0003
+
+  commit_candidate_trigger:
+    unit: GIT_COMMIT_CANDIDATE
+    local:
+      base: HEAD
+      candidate: STAGED_GIT_INDEX
+      comparison: HEAD_TO_STAGED_COMMIT_CANDIDATE
+      behavior: AUTO_RECONCILE_THEN_VERIFY
+    remote:
+      unit: INTRODUCED_COMMIT
+      comparison: PARENT_STATE_TO_COMMIT_STATE
+      behavior: VERIFY_ONLY
+      mutation: FORBIDDEN
+      every_introduced_commit_must_be_checked: true
+    release:
+      source: EXACT_SHA
+      behavior: VERIFY_ONLY
+      mutation: FORBIDDEN
+    merge_commit_with_authority_delta: SAME_RULE_AS_ANY_OTHER_COMMIT
+
+  transition_generation:
+    developer_owned_public_profile_or_pp_contract_semantic_change_requires_new_pp_identity: true
+    normal_automatic_version_step: NEXT_MINOR
+    automatic_major_version_step: FORBIDDEN
+    major_transition_requires: EXPLICIT_PROJECT_OWNER_DECISION
+    current_pp_identity_source: CANONICAL_PP_CONTRACT_REGISTRY
+    canonical_public_profiles_rebind_to_new_pp: REQUIRED
+    canonical_and_embedded_schema_pair_for_new_pp: REQUIRED
+    pp_transition_registry_record: REQUIRED
+    default_transition_kind_for_t2_delta: SEMANTIC_MIGRATION
+    identity_only_transition_requires_explicit_registered_evidence: true
+    transition_commit_atomicity: REQUIRED
+    split_invalid_transition_across_commits: FORBIDDEN
+    retry_behavior: VERIFY_EXISTING_EXPECTED_TRANSITION_WITHOUT_SECOND_VERSION_BUMP
+
+  reconciliation_safety:
+    historical_developer_baseline: IMMUTABLE
+    reconciliation_model: THREE_WAY_USER_AUTHORITY_PRESERVING
+    reconciliation_inputs:
+      - DISTRIBUTED_BASELINE
+      - USER_CURRENT_AUTHORITATIVE_PROFILE
+      - NEW_DISTRIBUTED_BASELINE
+    user_change_when_developer_semantic_field_is_unchanged: PRESERVE
+    same_semantic_field_changed_by_user_and_developer: DECISION_REQUIRED
+    non_conflicting_developer_addition: SAFE_CANDIDATE
+    modified_profile_without_provable_origin: UNKNOWN_ORIGIN_FAIL_CLOSED
+    missing_or_changed_required_template_revision: FAIL_CLOSED
+    materialization_may_mutate_source_project_profile: false
+    automation_staging: EXACT_AUTOMATION_OWNED_OUTPUTS_ONLY
+    git_add_all: FORBIDDEN
+    unstaged_user_change_on_automation_owned_output: AUTOMATION_WRITE_CONFLICT
+    post_write_validation: REQUIRED
+    partial_authoritative_state_after_failure: FORBIDDEN
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-MIGR-0003
+      scope: PROJECT_PROFILE_VERSION_MIGRATION_AUTHORIZATION
+    - policy: MPD-SPEC-0006
+      scope: IDENTITY_AND_RESOLUTION
+    - policy: MPD-SPEC-0026
+      scope: T2_AUTHORITY_DELTA
+    - policy: MPD-SPEC-0027
+      scope: USER_REVISION_LINEAGE

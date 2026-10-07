@@ -1,3 +1,22 @@
 schema_version: ptsip-developer-planning-root/v1
 policy_class: PTSIP_DEVELOPER_POLICY
-plans: []
+plans:
+  - schema_version: ptsip-prerelease-plan-entry/v1alpha1
+    plan_version: "0.3.8a3"
+    path: developer/planning/0.3.8/0.3.8a3/index.yaml
+    status: ACTIVE
+    integration_branch: dev/0.3.8a3
+    approval:
+      status: APPROVED
+      approval_source: USER_EXPLICIT
+    entry_routing:
+      model: PRERELEASE_SINGLE_CONTROL_PLANE
+      branch_entrypoints:
+        - branch: dev/0.3.8a3
+          entry_document: developer/planning/0.3.8/0.3.8a3/index.yaml
+          role: INTEGRATION_CONTROL_PLANE
+          state: ACTIVE
+        - branch: dev/0.3.8
+          entry_document: developer/planning/0.3.8/0.3.8a3/index.yaml
+          role: INTEGRATION_CONTROL_PLANE
+          state: ACTIVE

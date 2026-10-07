@@ -1,0 +1,142 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0010
+  source_ref: project-owner-direct-instruction:developer/automation 의 경우 GO 언어를 의무화로
+    정책을 변경했습니다. 따라서 변경 작업을 수행해 주세요. 기존 구현 전체를 Go로 전환. 차후 developer/policy/legacy 내부
+    정책 파일들은 14 Root Family 분할된 정책으로 분리되어 새로 생성하고 legacy 내부 정책 파일들은 제거해야 합니다.
+  responsibilities:
+  - responsibility_id: R01
+    statement: Direct Root policy Go automation interface
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: GO_AUTOMATION_AND_DIRECT_ROOT_CUTOVER
+    cohesion_key: CNTR_GO_CUTOVER
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids:
+      - MPD-CNTR-0001
+      - MPD-CNTR-0003
+      - MPD-CNTR-0004
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-CNTR-0001
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+      - policy_id: MPD-CNTR-0003
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+      - policy_id: MPD-CNTR-0004
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R02
+    statement: Mandatory Go implementation for all Developer automation
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: GO_AUTOMATION_AND_DIRECT_ROOT_CUTOVER
+    cohesion_key: REAL_GO_CUTOVER
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids:
+      - MPD-REAL-0001
+      - MPD-REAL-0003
+      - MPD-REAL-0004
+      - MPD-REAL-0005
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-REAL-0001
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+      - policy_id: MPD-REAL-0003
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+      - policy_id: MPD-REAL-0004
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+      - policy_id: MPD-REAL-0005
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R03
+    statement: Developer legacy policy and Python automation retirement
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: GO_AUTOMATION_AND_DIRECT_ROOT_CUTOVER
+    cohesion_key: CHANGE_GO_CUTOVER
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids:
+      - MPD-CHANGE-0001
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-CHANGE-0001
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G03
+  decision:
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: CHANGE
+    split_required: true
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+      cohesion_key: CNTR_GO_CUTOVER
+      responsibility_ids:
+      - R01
+      cohesion_rationale: Direct Root policy Go automation interface
+    - group_id: G02
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+      cohesion_key: REAL_GO_CUTOVER
+      responsibility_ids:
+      - R02
+      cohesion_rationale: Mandatory Go implementation for all Developer automation
+    - group_id: G03
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CHANGE
+      cohesion_key: CHANGE_GO_CUTOVER
+      responsibility_ids:
+      - R03
+      cohesion_rationale: Developer legacy policy and Python automation retirement

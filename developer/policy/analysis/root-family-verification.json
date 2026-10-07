@@ -1,0 +1,234 @@
+{
+  "schema_version": "ptsip-root-family-verification-evidence/v1",
+  "artifact_role": "NON_AUTHORITATIVE_VERIFICATION_REPORT",
+  "recorded_at": "2026-10-06T02:15:16+09:00",
+  "source_head": "22e736e2d1cc4e54ee85a8a653ed22a09c078b96",
+  "candidate_source_tree_sha": "67954b77bb2f20aa61b3afdead96962d5837c571",
+  "candidate_tree_excludes": [
+    "developer/policy/analysis/root-family-verification.json"
+  ],
+  "working_tree_diff_digest": "f6e06129aec69d0d057250118bab7069de5f322811c18438efdb21a201c54572",
+  "diff_digest_format": "GIT_STAGED_BINARY_DIFF_EXCLUDING_THIS_REPORT",
+  "uncommitted_changes_excluded_from_candidate": [
+    "pyproject.toml"
+  ],
+  "authority_transition": {
+    "developer_root_families": 14,
+    "support_root_families": 14,
+    "developer_migration_owners": 22,
+    "support_migration_owners": 24,
+    "new_developer_root_policies_total": 26,
+    "new_support_root_policies_total": 25,
+    "immutable_source_blobs": 74,
+    "developer_responsibility_units": 263,
+    "support_responsibility_units": 344,
+    "source_states_preserved": true,
+    "new_src_or_root_handwritten_python_modules": 0
+  },
+  "verification_stages": [
+    {
+      "verification_stage": "FULL_PYTHON_BEFORE_NEUTRAL_MODULE_CORRECTION",
+      "return_code": 1,
+      "status": "FAIL",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\full-all.log",
+      "passed": 1376,
+      "failed": 62,
+      "errors": 0,
+      "skipped": 2,
+      "command": "pytest tests developer/tests -q --tb=short --import-mode=importlib",
+      "scope_limit": "Working tree before latest neutral-module correction; not an exact final-SHA full PASS."
+    },
+    {
+      "verification_stage": "BASE_HEAD_REPRODUCTION_OF_REMAINING_FAILURES",
+      "return_code": 1,
+      "status": "FAIL",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\baseline-full-failures-2.log",
+      "passed": 0,
+      "failed": 60,
+      "errors": 0,
+      "skipped": 0,
+      "exact_source_head": "22e736e2d1cc4e54ee85a8a653ed22a09c078b96"
+    },
+    {
+      "verification_stage": "FINAL_NEUTRAL_AND_MIGRATION_PYTHON_FOCUS",
+      "return_code": 0,
+      "status": "PASS",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\neutral-final.log",
+      "passed": 217,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "deselected": 3,
+      "deselection_reason": "These 3 VPMS approval-hash failures were reproduced at the exact base source SHA and remain in the full-regression failure set."
+    },
+    {
+      "verification_stage": "FINAL_CANDIDATE_GO_MODULE",
+      "return_code": 0,
+      "status": "PASS",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\candidate-go-final.jsonl",
+      "passed": 7,
+      "subtests_passed": 20,
+      "failed": 0,
+      "exact_source_tree": "67954b77bb2f20aa61b3afdead96962d5837c571"
+    },
+    {
+      "verification_stage": "CANDIDATE_POLICY_VALIDATION",
+      "return_code": 0,
+      "status": "PASS",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\candidate-policy.log",
+      "exact_source_tree": "182141b4a97aaaaf3f9414bb085e3a6ce2a65305"
+    },
+    {
+      "verification_stage": "CANDIDATE_INSTALLED_WHEEL_ISOLATION",
+      "return_code": 0,
+      "status": "PASS",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\candidate-wheel.log",
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exact_source_tree": "182141b4a97aaaaf3f9414bb085e3a6ce2a65305",
+      "difference_from_final_candidate": "Only the Go CRLF conversion test fixture changed; production, policy and packaging source files are identical."
+    },
+    {
+      "verification_stage": "CANONICAL_PP_PRECOMMIT",
+      "return_code": 0,
+      "status": "PASS",
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\precommit-review.log",
+      "classification": "NO_T2_AUTHORITY_DELTA",
+      "reconciliation": "NO_CHANGE"
+    },
+    {
+      "verification_stage": "FINAL_STABLE_SELF_PROFILE_AND_SOURCE_TAMPER_REJECTION",
+      "return_code": 0,
+      "status": "PASS",
+      "passed": 20,
+      "failed": 0,
+      "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\neutral-stable-valid.log"
+    }
+  ],
+  "failure_reconciliation": {
+    "raw_full_failures": 62,
+    "later_closed_failures": [
+      {
+        "test_id": "developer/tests/test_vpms_runtime_activation.py::test_sfp_0006_retirement_does_not_authorize_semantic_redefinition",
+        "resolution": "Tamper injection targets the registered immutable archive path; final neutral-stable-valid.log stage passed."
+      },
+      {
+        "test_id": "developer/tests/test_self_profile_bridge_removal.py::test_repository_self_profile_is_explicit_and_root_bridge_is_absent",
+        "resolution": "Final stable snapshot recheck passed after source mutations stopped; the original full run overlapped tree mutations."
+      }
+    ],
+    "remaining_base_reproduced_count": 60,
+    "remaining_base_reproduced_test_ids": [
+      "src/tests/ptsip/conformance/test_dependency_actionability.py::test_machine_buckets_preserve_declaration_provenance_and_bound_review",
+      "src/tests/ptsip/conformance/test_dependency_actionability.py::test_dynamic_function_alias_context_and_platform_provenance",
+      "src/tests/ptsip/conformance/test_dependency_actionability.py::test_declared_distribution_with_unresolved_alias_is_resolver_queue[yaml-PyYAML]",
+      "src/tests/ptsip/conformance/test_dependency_actionability.py::test_declared_distribution_with_unresolved_alias_is_resolver_queue[PIL-Pillow]",
+      "src/tests/ptsip/conformance/test_dependency_actionability.py::test_owned_declaration_outside_reconciliation_scope_is_not_missing",
+      "src/tests/ptsip/conformance/test_dependency_actionability.py::test_manifest_read_issue_does_not_hide_dynamic_or_guarded_review",
+      "src/tests/ptsip/conformance/test_dependency_local_resolution.py::test_relative_imports_use_physical_tracked_context_and_preserve_multiple_targets",
+      "src/tests/ptsip/conformance/test_dependency_local_resolution.py::test_builtin_import_relative_or_opaque_level_is_not_absolute_authority",
+      "src/tests/ptsip/conformance/test_dependency_reconciliation.py::test_product_runtime_manifest_reconciles_cross_component_python_dependency",
+      "src/tests/ptsip/conformance/test_dependency_reconciliation.py::test_import_distribution_alias_is_reconciled_explicitly",
+      "src/tests/ptsip/conformance/test_dependency_reconciliation.py::test_unlisted_product_dependency_remains_blocking",
+      "src/tests/ptsip/conformance/test_dependency_reconciliation.py::test_engine_preserves_runtime_reconciliation_and_unresolved_blockers",
+      "src/tests/ptsip/conformance/test_dependency_validation.py::test_validation_plan_follows_declared_verifies_and_batches_tests",
+      "src/tests/ptsip/conformance/test_dependency_validation.py::test_validation_plan_does_not_invent_verification_or_ownership",
+      "src/tests/ptsip/conformance/test_dependency_validation.py::test_validation_plan_requires_evidence_for_the_proposed_runner[project = \"invalid\"]",
+      "src/tests/ptsip/conformance/test_dependency_validation.py::test_validation_plan_requires_evidence_for_the_proposed_runner[[project]\\ndependencies = [\"pytest-unrelated\"]]",
+      "src/tests/ptsip/control_plane/test_github_authority.py::test_github_proposal_resolution_returns_terminal_local_receipt",
+      "src/tests/ptsip/control_plane/test_github_authority.py::test_github_adoption_winner_reconciles_into_stale_clone",
+      "src/tests/ptsip/control_plane/test_local_control_plane.py::test_gate_and_resolve_use_local_control_plane_without_server_or_github_origin",
+      "src/tests/ptsip/control_plane/test_local_control_plane.py::test_local_first_valid_resolution_cannot_be_replaced",
+      "src/tests/ptsip/identity/test_project_profile_compatibility.py::test_current_target_is_pp_identity_not_tool_draft_identity",
+      "src/tests/ptsip/identity/test_spec_identity_runtime.py::test_spec_identity",
+      "src/tests/ptsip/identity/test_specification_binding.py::test_pp_and_specification_capabilities_are_independent_authorities",
+      "src/tests/ptsip/integration/test_adoption_clarification_control_plane.py::test_repeated_gate_does_not_reopen_applied_architecture",
+      "src/tests/ptsip/integration/test_clarification_adoption_effective_map_integration.py::TestG5RecoveryAndIntegration::test_repeated_gate_does_not_reopen_effectively_declared_architecture",
+      "src/tests/ptsip/migration/test_analyzer_037.py::test_default_target_semantics_use_current_pp_contract_not_spec_family",
+      "src/tests/ptsip/migration/test_direct_convergence_037.py::test_identity_only_bridge_does_not_invoke_semantic_migration",
+      "src/tests/ptsip/migration/test_direct_convergence_037.py::test_semantic_direct_convergence_requires_normalized_evidence",
+      "src/tests/ptsip/migration/test_direct_convergence_037.py::test_semantic_direct_convergence_binds_pp_target_not_tool_draft",
+      "src/tests/ptsip/migration/test_direct_convergence_037.py::test_legacy_target_alias_is_projected_as_logical_pp_target_for_analysis",
+      "src/tests/ptsip/migration/test_direct_convergence_037.py::test_toolchain_ambiguity_survives_direct_convergence",
+      "src/tests/ptsip/migration/test_direct_execution_037.py::test_legacy_alias_runs_direct_pp_execution_and_atomic_promotion",
+      "src/tests/ptsip/migration/test_direct_planner_037.py::test_planned_direct_final_point_skips_all_intermediate_versions",
+      "src/tests/ptsip/migration/test_direct_planner_037.py::test_existing_legacy_target_is_one_logical_pp_final_point",
+      "src/tests/ptsip/migration/test_direct_planner_037.py::test_identity_only_bridge_is_rejected_by_semantic_direct_planner",
+      "src/tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_changes_only_contract_identity_and_validates",
+      "src/tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_requires_exact_authorized_plan",
+      "src/tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_fails_closed_if_repository_changes_after_plan",
+      "src/tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_rolls_back_original_bytes_on_post_validation_failure",
+      "src/tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_authority_revision_must_be_explicit",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_036_canonical_converges_in_place_as_identity_only",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_034_source_targets_pp101_directly_without_historical_hops",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_existing_legacy_036_target_is_reused_for_pp101",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_equivalent_legacy_and_pp_targets_fail_closed",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_synthetic_intermediate_tool_target_is_not_replayed",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_current_pp101_profile_is_already_converged",
+      "src/tests/ptsip/repository/test_profile_convergence_037.py::test_direct_convergence_snapshot_detects_target_change",
+      "src/tests/ptsip/test_release_readiness_030.py::test_historical_036_operational_context_remains_exact",
+      "src/tests/ptsip/validation/test_profile_correctness.py::test_explicit_profile_revision_must_match_tool_binding",
+      "src/tests/ptsip/validation/test_specification_binding_validation.py::test_current_profile_validation_uses_explicit_specification_capability",
+      "src/tests/ptsip/validation/test_specification_binding_validation.py::test_current_profile_unknown_exact_revision_fails_capability_closed",
+      "src/tests/ptsip/validation/test_specification_binding_validation.py::test_current_pp_schema_requires_explicit_family",
+      "developer/tests/test_support_policy_location.py::test_unapproved_missing_implementation_target_still_fails",
+      "developer/tests/test_support_policy_location.py::test_approved_retirement_rejects_a_reintroduced_file",
+      "developer/tests/test_support_policy_location.py::test_retirement_does_not_waive_a_missing_live_implementation",
+      "developer/tests/test_vpms_api_implementation.py::test_successor_activation_does_not_rewrite_implementation_only_approval",
+      "developer/tests/test_vpms_api_implementation.py::test_new_user_policy_writes_use_source_policy_not_retired_docs_tree",
+      "developer/tests/test_vpms_contract_registration.py::test_explicit_scope_provenance_and_allocations_are_registered_non_active",
+      "developer/tests/test_vpms_contract_registration.py::test_mpd_activation_and_excluded_sources_are_preserved",
+      "developer/tests/test_vpms_runtime_activation.py::test_activation_is_an_explicit_successor_not_a_historical_approval_rewrite"
+    ],
+    "approval_hashes_rewritten_to_force_pass": false
+  },
+  "full_repository_pass_confirmed": false,
+  "release_readiness": "NOT_ESTABLISHED_BY_THIS_REPORT",
+  "required_next_evidence": "Resolve the remaining full-regression failures under their canonical owners and obtain a complete final-SHA PASS; focused passes and CI contexts do not substitute for it.",
+  "ci_consumer_followup": {
+    "source_head": "3877e1ca1e514a306f6de3cbf0d8b0ce80379e37",
+    "recorded_at": "2026-10-06T02:31:12+09:00",
+    "working_tree_diff_digest": "44b594d8784bf37760c42c718d0ee492010801f5f728561d45f3b95acb725c38",
+    "reported_ci_failure": {
+      "source_sha": "3877e1ca1e514a306f6de3cbf0d8b0ce80379e37",
+      "run_url": "https://github.com/Kinirin/PTSIP/actions/runs/37347506179",
+      "job": "static-validation",
+      "cause": "Markdown cleanup read the unregistered original physical path developer/policy/MPD-0012.yaml after migration."
+    },
+    "correction": "Existing cleanup adapter uses canonical policy loader; exact Root GOV unit binding is registered; the actual CI simulation is admitted as a Go smoke case.",
+    "verification_stages": [
+      {
+        "verification_stage": "GO_WITH_CI_CONSUMER_SMOKE",
+        "return_code": 0,
+        "passed": 8,
+        "subtests_passed": 21,
+        "failed": 0,
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\go-ci-followup.jsonl"
+      },
+      {
+        "verification_stage": "MARKDOWN_AND_RESOLVER_PYTHON_REGRESSION",
+        "return_code": 0,
+        "passed": 63,
+        "failed": 0,
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\ci-entry.log"
+      },
+      {
+        "verification_stage": "EXACT_CI_CLEANUP_SIMULATION",
+        "return_code": 0,
+        "simulation_status": "READY",
+        "mutation_performed": false,
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\cleanup-ci-followup.log"
+      },
+      {
+        "verification_stage": "POLICY_VALIDATION",
+        "return_code": 0,
+        "status": "PASS",
+        "log_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-root-family-transition-20261005\\policy-ci-followup.log"
+      }
+    ],
+    "local_runtime_refresh": "Repository virtualenv refreshed from installed PTSIP 0.3.8a2 to current repository editable PTSIP 0.3.8a3. No pyproject change was included. Canonical resolver works without PYTHONPATH override.",
+    "full_repository_pass_confirmed": false
+  }
+}

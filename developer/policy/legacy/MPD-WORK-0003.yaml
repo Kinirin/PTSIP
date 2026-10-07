@@ -1,0 +1,122 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-WORK-0003
+  version: "2.0"
+  title: Policy Responsibility Decomposition and Authority Reconciliation Gate
+  status: ACTIVE
+
+rules:
+  policy_responsibility_materialization:
+    classification_unit: RESPONSIBILITY_UNIT
+    policy_file_is_classification_unit: false
+
+    required_reasoning_order:
+      - EXTRACT_NORMATIVE_STATEMENTS
+      - DECOMPOSE_RESPONSIBILITIES
+      - CLASSIFY_AUTHORITY_RELATION
+      - CLASSIFY_OWNED_FAMILY
+      - DISCOVER_EXISTING_FAMILY_AUTHORITY
+      - NORMALIZE_AUTHORITY_SCOPE
+      - CLASSIFY_AUTHORITY_COLLISION
+      - RESOLVE_COLLISION
+      - GROUP_NEW_AUTHORITY_BY_COHESION
+      - MATERIALIZE_POLICY
+
+    family_vocabulary:
+      - SPEC
+      - PLAN
+      - WORK
+      - VERI
+      - MIGR
+      - RELS
+
+    authority_relation_vocabulary:
+      - OWN
+      - REFERENCE
+      - CONSUME
+      - VERIFY
+      - TRANSFORM
+      - EXECUTE
+
+    responsibility_decomposition:
+      every_normative_responsibility_must_be_classified_independently: true
+      multiple_owned_families_require_split: true
+      referenced_family_does_not_determine_owner_family: true
+      unresolved_responsibility_boundary: FAIL_CLOSED
+
+    existing_authority_lookup:
+      required_before_new_policy_materialization: true
+      search_scope: ALL_ACTIVE_POLICIES_IN_SELECTED_FAMILY
+      comparison_dimensions:
+        - FAMILY
+        - AUTHORITY_SUBJECT
+        - LIFECYCLE_SCOPE
+        - NORMATIVE_SCOPE
+        - SEMANTIC_MEANING
+      unresolved_lookup: FAIL_CLOSED
+
+    collision_classes:
+      - NO_MATCH
+      - EXACT_DUPLICATE
+      - SEMANTIC_EQUIVALENT
+      - EXISTING_SUBSUMES_CANDIDATE
+      - CANDIDATE_EXTENDS_EXISTING
+      - PARTIAL_OVERLAP
+      - DISTINCT_SCOPED_AUTHORITY
+      - CONFLICT
+
+    collision_resolution:
+      NO_MATCH:
+        - NEW_AUTHORITY_CANDIDATE
+      EXACT_DUPLICATE:
+        - REFERENCE_EXISTING
+      SEMANTIC_EQUIVALENT:
+        - REFERENCE_EXISTING
+      EXISTING_SUBSUMES_CANDIDATE:
+        - DROP_REDUNDANT_CANDIDATE
+      CANDIDATE_EXTENDS_EXISTING:
+        - MERGE_INTO_EXISTING
+        - CREATE_NEW_SIBLING_POLICY
+      PARTIAL_OVERLAP:
+        - SPLIT_RESPONSIBILITY_REQUIRED
+      DISTINCT_SCOPED_AUTHORITY:
+        - COEXIST_SCOPED
+      CONFLICT:
+        - FAIL_CLOSED_OWNER_DECISION_REQUIRED
+
+    same_family_cohesion:
+      same_family_does_not_imply_same_policy_identity: true
+      merge_requires_same_cohesion_key: true
+      cohesion_rationale_required: true
+
+    materialization:
+      analysis_required_before_family_policy_creation: true
+      create_before_collision_resolution: FORBIDDEN
+      blocked_collision_may_materialize: false
+      analysis_root: developer/policy/analysis/
+      analysis_schema: developer/policy/schemas/policy-responsibility-analysis.schema.json
+      analysis_registry: developer/policy/analysis/registry.yaml
+      family_preflight_module: developer.automation.policy_identity_lifecycle
+      responsibility_gate_module: developer.automation.policy_responsibility_gate
+
+    static_enforcement:
+      grandfathered_family_maximums:
+        SPEC: 27
+        PLAN: 4
+        WORK: 2
+        VERI: 1
+        MIGR: 5
+        RELS: 0
+      policies_above_grandfathered_maximum_require_analysis_binding: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-WORK-0001
+      scope: WORK_UNIT_LIFECYCLE
+    - policy: MPD-WORK-0002
+      scope: EXECUTION_LIFECYCLE_AND_RESULT_HANDOFF

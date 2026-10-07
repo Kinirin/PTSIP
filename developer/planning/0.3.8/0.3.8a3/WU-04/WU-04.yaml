@@ -1,0 +1,80 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-04
+  title: Non-normative implementation binding separation
+  classification: CORE
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-03]
+
+  objective: >-
+    Remove Python callable and CLI-specific execution identity from normative
+    contract authority and place it in explicit non-normative implementation bindings.
+
+  implementation_binding_guidance:
+    binding_format: JSON
+    normative_authority: false
+    preferred_python_binding_root: src/ptsip/agent_contracts/bindings/
+    preferred_root_is_authority: false
+    alternate_location_allowed_when:
+      - WITHIN_APPROVED_MPD_0015_SCOPE
+      - NORMATIVE_AND_IMPLEMENTATION_BINDING_PLANES_REMAIN_SEPARATE
+      - EXACT_CONTRACT_TO_IMPLEMENTATION_RESOLUTION_IS_PRESERVED
+
+  required_changes:
+    - MAP_CANONICAL_CONTRACT_IDENTITIES_TO_PYTHON_IMPLEMENTATION_TARGETS
+    - PRESERVE_CONFORMANCE_TO_CURRENT_APPROVED_SEMANTIC_BASELINE
+    - ALLOW_PYTHON_IMPLEMENTATION_EVOLUTION_WHEN_CONFORMANCE_IS_PRESERVED
+    - KEEP_IMPLEMENTATION_BINDING_SEPARATE_FROM_NORMATIVE_CONTRACT
+    - ALLOW_FUTURE_LANGUAGE_BINDINGS_WITHOUT_CHANGING_CONTRACT_IDENTITY
+    - REMOVE_NEED_FOR_NORMATIVE_CONTRACT_TO_NAME_PYTHON_CALLABLES
+    - KEEP_CLI_ENTRYPOINTS_AS_ADAPTER_METADATA_NOT_RULE_MEANING
+
+  reasoning_boundary:
+    fixed:
+      - IMPLEMENTATION_BINDING_FORMAT_IS_JSON
+      - IMPLEMENTATION_BINDING_IS_NON_NORMATIVE
+      - PYTHON_CALLABLE_IS_NOT_NORMATIVE_AUTHORITY
+      - CLI_ENTRYPOINT_IS_NOT_NORMATIVE_AUTHORITY
+      - CANONICAL_CONTRACT_IDENTITY_MUST_SURVIVE_FUTURE_LANGUAGE_BINDINGS
+      - PYTHON_IMPLEMENTATION_MAY_EVOLVE_DURING_THIS_MIGRATION
+      - PYTHON_IMPLEMENTATION_MUST_REMAIN_CONFORMANT_TO_CURRENT_APPROVED_SEMANTIC_BASELINE
+      - PYTHON_IMPLEMENTATION_CHANGE_IS_NOT_A_POLICY_VIOLATION_BY_ITSELF
+    bounded_reasoning:
+      - IMPLEMENTATION_BINDING_OBJECT_SHAPE
+      - PYTHON_BINDING_FILE_GRANULARITY
+      - ADAPTER_METADATA_LAYOUT
+      - EXACT_INTERNAL_RESOLUTION_MECHANISM
+      - IMPLEMENTATION_BINDING_PHYSICAL_LOCATION_WITHIN_APPROVED_SCOPE
+    candidate_only:
+      - NEW_IMPLEMENTATION_BINDING_EXTENSION_FIELD
+      - NEW_LANGUAGE_BINDING_LAYOUT_PATTERN
+    escalation_required:
+      - MAKING_IMPLEMENTATION_METADATA_NORMATIVE
+      - CHANGING_CANONICAL_CONTRACT_IDENTITY_TO_FIT_PYTHON
+      - REMOVING_REQUIRED_PYTHON_COMPATIBILITY_BEFORE_APPLICABLE_AUTHORIZATION
+      - PYTHON_CHANGE_REQUIRING_NEW_NORMATIVE_SEMANTICS
+      - ADDING_NEW_NORMATIVE_MEANING_TO_AN_ADAPTER
+
+  acceptance:
+    - canonical contract resolves without importing Python-specific metadata as authority
+    - Python binding resolves each required current implementation target exactly
+    - unsupported implementation mapping fails explicitly
+    - Python changes remain allowed when approved semantic conformance is preserved
+    - Python removal is not performed by this work unit
+
+completion_evidence:
+- 'JSON adapter metadata and exact Python resolver: 18 actions, 0 bound evaluators, 4 CLI entrypoints; 10 focused
+  positive/negative tests pass. No Python compatibility removal or canonical identity change.'
+- 'Automatic ptsip-contract: 89 passed / 1 known failure; vpms: 114 passed / 2 known failures; repository-release:
+  14 passed / 2 failures reproduced with same cause at baseline 3914cba74ea4438e76e6593237f94ababb5685ba. No waiver;
+  no observed new regression.'
+- 'Newly observed pre-entry release failures: tests/ptsip/test_release_readiness_030.py::test_historical_036_operational_context_remains_exact
+  (old WU-07 AGENTS text expected); ::test_release_contract_accepts_current_exact_bound_assets (14 bound paths expected,
+  current 7). Preserve for WU-08 evaluation.'
+- WORK_PACKET_NOT_AVAILABLE. Planning validation PASS. JSON candidates remain inactive; adapter target resolution
+  alone does not prove I/O or semantic conformance.

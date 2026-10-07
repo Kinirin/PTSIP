@@ -1,0 +1,159 @@
+schema_version: ptsip-isolated-implementation-plan/v1alpha1
+artifact_class: PTSIP_DEVELOPER_PLANNING
+
+plan:
+  id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+  development_line: "0.3.8"
+  branch: dev/0.3.8m1
+  parent_branch: dev/0.3.8
+  parent_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+  status: COMPLETED
+  approval:
+    status: APPROVED
+    approval_source: USER_EXPLICIT
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
+  canonical_location: developer/planning/0.3.8/0.3.8m1/index.yaml
+
+  planning_mode: ISOLATED_BRANCH_LOCAL
+  existing_planning_schema_compatibility: UNSUPPORTED_BY_CURRENT_A_B_RC_ONLY_SCHEMA
+
+  isolation:
+    policy_generation: SKIPPED_BY_USER_DIRECTION
+    create_new_policy_artifacts: FORBIDDEN
+    modify_existing_policy_artifacts: FORBIDDEN
+    modify_policy_registries: FORBIDDEN
+    modify_developer_planning_root_index: FORBIDDEN
+    register_0_3_8m1_in_existing_prerelease_schema: FORBIDDEN
+    reason: AVOID_CONFLICT_WITH_CONCURRENT_POLICY_AND_PLANNING_WORK
+    merge_strategy: UNIQUE_PLAN_PATH_AND_MIGRATION_CODE_ONLY
+
+  objective: >-
+    Decompose src/ptsip/migration into explicit responsibility-owned modules and
+    subdirectories so that future modular/extension migration can identify ownership
+    mechanically without re-reading mixed-responsibility legacy modules.
+
+  scope:
+    primary:
+      - src/ptsip/migration/**
+      - tests/ptsip/migration/**
+    conditional_import_remediation:
+      - tests/ptsip/**
+      - src/ptsip/**
+    conditional_rule: >-
+      Files outside src/ptsip/migration may change only when an exact import path,
+      re-export, or test reference must be updated because of the migration package
+      structural move.
+    planning:
+      - developer/planning/0.3.8/0.3.8m1/**
+    forbidden:
+      - developer/policy/**
+      - developer/planning/index.yaml
+      - developer/planning/schemas/**
+      - specification policy or semantic changes
+      - source file extension changes
+      - unrelated src/ptsip subsystem restructuring
+
+  invariants:
+    - NO_NEW_POLICY_AUTHORITY
+    - NO_NORMATIVE_SEMANTIC_CHANGE
+    - NO_INTENTIONAL_RUNTIME_BEHAVIOR_CHANGE
+    - NO_SOURCE_EXTENSION_CHANGE
+    - MIGRATION_ONLY_RESTRUCTURE
+    - DIRECTORY_EXISTS_ONLY_FOR_STABLE_MULTI_MODULE_RESPONSIBILITY_GROUP
+    - FINAL_MODULE_HAS_ONE_PRIMARY_CHANGE_REASON
+    - NO_GENERIC_UTILS_COMMON_HELPERS_BUCKET
+    - MUTATION_AND_VERIFICATION_RESPONSIBILITIES_REMAIN_SEPARATE
+    - NO_PERMANENT_OLD_PRIVATE_MODULE_PATH_COMPATIBILITY_SHIMS
+    - CANONICAL_PUBLIC_MIGRATION_API_MUST_REMAIN_RESOLVABLE
+    - ALL_OLD_FLAT_MIGRATION_IMPLEMENTATION_MODULES_REMOVED_AT_FINAL_GATE
+
+  responsibility_map: developer/planning/0.3.8/0.3.8m1/responsibility-map.yaml
+
+work_units:
+  - id: WU-01
+    path: developer/planning/0.3.8/0.3.8m1/WU-01/WU-01.yaml
+    title: Freeze migration surface and relocation baseline
+    depends_on: []
+  - id: WU-02
+    path: developer/planning/0.3.8/0.3.8m1/WU-02/WU-02.yaml
+    title: Decompose analysis and proposal responsibilities
+    depends_on: [WU-01]
+  - id: WU-03
+    path: developer/planning/0.3.8/0.3.8m1/WU-03/WU-03.yaml
+    title: Decompose planning responsibilities
+    depends_on: [WU-01, WU-02]
+  - id: WU-04
+    path: developer/planning/0.3.8/0.3.8m1/WU-04/WU-04.yaml
+    title: Decompose execution state guard authorization and ledger
+    depends_on: [WU-01, WU-02, WU-03]
+  - id: WU-05
+    path: developer/planning/0.3.8/0.3.8m1/WU-05/WU-05.yaml
+    title: Decompose execution mutation promotion and direct flow
+    depends_on: [WU-04]
+  - id: WU-06
+    path: developer/planning/0.3.8/0.3.8m1/WU-06/WU-06.yaml
+    title: Remove flat implementation paths and verify migration package
+    depends_on: [WU-02, WU-03, WU-04, WU-05]
+
+execution_model:
+  dependency_order:
+    - [WU-01]
+    - [WU-02]
+    - [WU-03]
+    - [WU-04]
+    - [WU-05]
+    - [WU-06]
+  current_gate: COMPLETE
+  implementation_starts_only_after_plan_approval: true
+
+completion_gate:
+  required:
+    - RESPONSIBILITY_MAP_MATCHES_IMPLEMENTED_LAYOUT
+    - NO_OLD_FLAT_MIGRATION_IMPLEMENTATION_MODULES_REMAIN
+    - NO_PERMANENT_PRIVATE_PATH_COMPATIBILITY_SHIMS
+    - CANONICAL_PUBLIC_MIGRATION_IMPORTS_RESOLVE
+    - FOCUSED_MIGRATION_TESTS_HAVE_NO_NEW_FAILURES_VS_PINNED_PARENT
+    - IMPACTED_PTSIP_REGRESSION_TESTS_HAVE_NO_NEW_FAILURES_VS_PINNED_PARENT
+    - NO_POLICY_OR_PLANNING_SCHEMA_FILE_CHANGED
+    - NO_INTENTIONAL_SEMANTIC_DELTA
+
+verification:
+  status: VERIFIED
+  post_merge_remediation_ref: developer/planning/0.3.8/0.3.8m1/reference-remediation.yaml
+  baseline:
+    ref: dev/0.3.8
+    sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+  validation_run:
+    workflow: migration-m1-validation
+    run_id: 37203492036
+    conclusion: SUCCESS
+    temporary_workflow_removed_after_verification: true
+  import_surface:
+    canonical_public_exports_resolved: 105
+  focused_migration:
+    baseline_failures: 15
+    current_failures: 15
+    inherited_failures: 15
+    new_failures: 0
+  impacted_subsystems:
+    scopes:
+      - tests/ptsip/repository
+      - tests/ptsip/evidence
+      - tests/ptsip/conformance
+    baseline_failures: 26
+    current_failures: 26
+    inherited_failures: 26
+    new_failures: 0
+  known_preexisting_debt:
+    - id: PP_CURRENT_TARGET_TRANSITION_DEBT
+      summary: >-
+        The pinned parent already declares pp.1.02 as the current Project Profile
+        contract while historical direct-convergence bridges and related tests still
+        target pp.1.01. This semantic transition debt predates 0.3.8m1 and is outside
+        the migration-package responsibility decomposition scope.
+    - id: EXISTING_REPOSITORY_AND_CONFORMANCE_TEST_DEBT
+      summary: >-
+        The pinned parent already contains impacted repository/conformance failures.
+        0.3.8m1 introduces no additional failures in the compared scopes.

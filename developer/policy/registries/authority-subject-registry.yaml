@@ -1,41 +1,112 @@
-schema_version: ptsip-developer-authority-subject-registry/v1
-policy_class: PTSIP_DEVELOPER_POLICY
+schema_version: developer-policy-subject-catalog/v1
 registry_role: MANAGEMENT_POLICY_SUBJECT_CATALOG
 language_neutral: true
 subject_identity_schemes:
   MANAGEMENT_POLICY_ID:
     source_field: policy.id
     registered_values:
-      - MPD-0001
-      - MPD-0002
-      - MPD-0003
-      - MPD-0004
-      - MPD-0005
-      - MPD-0006
-      - MPD-0007
-      - MPD-0008
-      - MPD-0009
-      - MPD-0010
-      - MPD-0011
-      - MPD-0012
-      - MPD-0013
-      - MPD-0014
+    - MPD-0001
+    - MPD-0010
+    - MPD-0011
+    - MPD-0012
+    - MPD-0013
+    - MPD-0014
+    - MPD-0015
+    - MPD-0016
+    - MPD-0017
+    - MPD-0018
+    - MPD-ARCH-0001
+    - MPD-ARCH-0002
+    - MPD-ARCH-0003
+    - MPD-ASSURE-0001
+    - MPD-ASSURE-0002
+    - MPD-ASSURE-0003
+    - MPD-BOUND-0001
+    - MPD-CHANGE-0001
+    - MPD-CHANGE-0002
+    - MPD-CHANGE-0003
+    - MPD-CHANGE-0004
+    - MPD-CNTR-0001
+    - MPD-CNTR-0002
+    - MPD-CNTR-0003
+    - MPD-CNTR-0004
+    - MPD-CNTR-0005
+    - MPD-CTRL-0001
+    - MPD-GOV-0001
+    - MPD-GOV-0002
+    - MPD-INFO-0001
+    - MPD-INFO-0002
+    - MPD-INFO-0003
+    - MPD-INFO-0004
+    - MPD-INTENT-0001
+    - MPD-MIGR-0001
+    - MPD-MIGR-0002
+    - MPD-MIGR-0003
+    - MPD-MIGR-0004
+    - MPD-MIGR-0005
+    - MPD-NORM-0001
+    - MPD-OPS-0001
+    - MPD-PLAN-0001
+    - MPD-PLAN-0002
+    - MPD-PLAN-0003
+    - MPD-PLAN-0004
+    - MPD-REAL-0001
+    - MPD-REAL-0002
+    - MPD-REAL-0003
+    - MPD-REAL-0004
+    - MPD-REAL-0005
+    - MPD-RECORD-0001
+    - MPD-RELS-0001
+    - MPD-RELS-0002
+    - MPD-RISK-0001
+    - MPD-SPEC-0001
+    - MPD-SPEC-0002
+    - MPD-SPEC-0003
+    - MPD-SPEC-0004
+    - MPD-SPEC-0005
+    - MPD-SPEC-0006
+    - MPD-SPEC-0007
+    - MPD-SPEC-0008
+    - MPD-SPEC-0009
+    - MPD-SPEC-0010
+    - MPD-SPEC-0011
+    - MPD-SPEC-0020
+    - MPD-SPEC-0021
+    - MPD-SPEC-0022
+    - MPD-SPEC-0023
+    - MPD-SPEC-0024
+    - MPD-SPEC-0025
+    - MPD-SPEC-0026
+    - MPD-SPEC-0027
+    - MPD-SUPPLY-0001
+    - MPD-VERI-0001
+    - MPD-VERI-0002
+    - MPD-VERI-0003
+    - MPD-VERI-0004
+    - MPD-VERI-0005
+    - MPD-VERI-0006
+    - MPD-VERI-0007
+    - MPD-WORK-0001
+    - MPD-WORK-0002
+    - MPD-WORK-0003
+    - MPD-WORK-0004
 repository_identity_schemes:
   GITHUB_REPOSITORY_ID:
     host_required: true
-    repository_id_pattern: "^[1-9][0-9]*$"
+    repository_id_pattern: ^[1-9][0-9]*$
 current_repository_bindings:
-  - scheme: GITHUB_REPOSITORY_ID
-    host: github.com
-    repository_id: 1327447827
-    observed_slug: Kinirin/PTSIP
-    slug_is_identity: false
+- scheme: GITHUB_REPOSITORY_ID
+  host: github.com
+  repository_id: 1327447827
+  observed_slug: Kinirin/PTSIP
+  slug_is_identity: false
 matching:
   order:
-    - EXACT
-    - REGISTERED_MACHINE_RELATIONSHIP
-    - NO_MATCH
+  - EXACT
+  - REGISTERED_MACHINE_RELATIONSHIP
+  - NO_MATCH
   registered_machine_relationships: []
   relationship_must_be_registered_before_relaxed_match: true
   fuzzy_match: FORBIDDEN
   ai_semantic_match: FORBIDDEN
+artifact_class: DEVELOPER_POLICY_SUBJECT_CATALOG

@@ -27,6 +27,7 @@ releasenote/tool/0.3.7.md
 releasenote/tool/0.3.8a1.md
 releasenote/tool/0.3.8a2.md
 releasenote/tool/0.3.8a3.md
+releasenote/tool/0.3.8a4.md
 releasenote/project-profile/pp.1.01.md
 releasenote/project-profile/pp.1.02.md
 releasenote/specification/0.3.7-draft.md
@@ -65,7 +66,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.8a3` | Emergency Context Plane migration-semantics prerelease candidate | [`tool/0.3.8a3.md`](tool/0.3.8a3.md) |
+| Tool | `0.3.8a4` | Go-native developer automation and release-verification consolidation prerelease candidate | [`tool/0.3.8a4.md`](tool/0.3.8a4.md) |
 | Project Profile | `pp.1.02` | Current contract / repository adopted | [`project-profile/pp.1.02.md`](project-profile/pp.1.02.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 
@@ -90,6 +91,7 @@ All retained Tool notes now live under `releasenote/tool/`.
 | `0.3.8a1` | Published emergency prerelease | [`tool/0.3.8a1.md`](tool/0.3.8a1.md) |
 | `0.3.8a2` | Published namespace-stabilization release | [`tool/0.3.8a2.md`](tool/0.3.8a2.md) |
 | `0.3.8a3` | Emergency Context Plane migration-semantics prerelease candidate | [`tool/0.3.8a3.md`](tool/0.3.8a3.md) |
+| `0.3.8a4` | Go-native developer automation and release-verification consolidation prerelease candidate | [`tool/0.3.8a4.md`](tool/0.3.8a4.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 
@@ -161,7 +163,7 @@ Draft family labels are not immutable normative identity by themselves. Exact no
 
 ## Tool release policy
 
-- use `.github/workflows/release.yml` only for explicit release preparation, never on ordinary pushes;
+- use `.github/workflows/tooling-release.yml` as the canonical release surface; PREPARE is explicit `workflow_dispatch` and publication is driven by the published Tool release;
 - require the requested version to match `pyproject.toml`;
 - run the Tool test/CLI smoke gate before creating a release draft;
 - store Tool release records under `releasenote/tool/<version>.md`;

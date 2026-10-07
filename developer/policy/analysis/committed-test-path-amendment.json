@@ -1,0 +1,91 @@
+{
+  "schema_version": "ptsip-migration-source-amendment-evidence/v1",
+  "projection_authority": false,
+  "cause_commit": "43ce79ae14c03ea55c807600f9526c3f9de6de03",
+  "observed_head": "76b1aac5deec3e81940e34e5282d8af5b2304a30",
+  "cause": "Committed tests-to-src/tests path relocation updated both source interface and Root policy units.",
+  "original_frozen_source": {
+    "source_sha256": "ecb7027f7b6f6a234f5c69cb6bc64543ab7a23eb21893553b347dac43ba49c68",
+    "record_sha256": "aee1ecd8dc64a1a207c801b43b179daf0a7aad944c58d9f9cec1fceeb062b336",
+    "header": {
+      "schema_version": "ptsip-developer-policy/v1",
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "policy": {
+        "id": "MPD-0015",
+        "version": "2.0",
+        "title": "Language-Neutral Normative Authority and Implementation Migration",
+        "status": "ACTIVE"
+      }
+    },
+    "source_policy_id": "MPD-0015",
+    "source_status": "ACTIVE",
+    "original_path": "MPD-0015.yaml",
+    "archive_path": "legacy/MPD-0015.yaml",
+    "units": [
+      {
+        "source_pointer": "/rules/mechanized_resolution_cycle",
+        "family": "CNTR",
+        "section": "unit_mpd_0015_6f37556a3bbc",
+        "policy_id": "MPD-CNTR-0001",
+        "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+      },
+      {
+        "source_pointer": "/rules/execution_feedback_cycle",
+        "family": "OPS",
+        "section": "unit_mpd_0015_aecdc747228d",
+        "policy_id": "MPD-OPS-0001",
+        "policy_path": "OPS/MPD-OPS-0001.yaml"
+      },
+      {
+        "source_pointer": "/rules/reasoning_promotion_cycle",
+        "family": "GOV",
+        "section": "unit_mpd_0015_c35e38d46280",
+        "policy_id": "MPD-GOV-0001",
+        "policy_path": "GOV/MPD-GOV-0001.yaml"
+      },
+      {
+        "source_pointer": "/rules/developer_policy_resolution_binding_boundary",
+        "family": "CNTR",
+        "section": "unit_mpd_0015_8c9c31aedf17",
+        "policy_id": "MPD-CNTR-0001",
+        "policy_path": "CNTR/MPD-CNTR-0001.yaml"
+      },
+      {
+        "source_pointer": "/rules/implementation_language",
+        "family": "REAL",
+        "section": "unit_mpd_0015_0c9180c7ae16",
+        "policy_id": "MPD-REAL-0001",
+        "policy_path": "REAL/MPD-REAL-0001.yaml"
+      },
+      {
+        "source_pointer": "/rules/canonical_runtime",
+        "family": "NORM",
+        "section": "unit_mpd_0015_181bf674e753",
+        "policy_id": "MPD-NORM-0001",
+        "policy_path": "NORM/MPD-NORM-0001.yaml"
+      },
+      {
+        "source_pointer": "/rules/implementation_migration_ref",
+        "family": "CHANGE",
+        "section": "unit_mpd_0015_68161b3e5a1c",
+        "policy_id": "MPD-CHANGE-0001",
+        "policy_path": "CHANGE/MPD-CHANGE-0001.yaml"
+      },
+      {
+        "source_pointer": "/relations",
+        "family": "INFO",
+        "section": "unit_mpd_0015_40c664bc86a2",
+        "policy_id": "MPD-INFO-0001",
+        "policy_path": "INFO/MPD-INFO-0001.yaml"
+      }
+    ],
+    "source_worktree_sha256": "340e46ab456919d8899c5a16f7ed3776decb74929a12f50c4fa9c03e73b9ef22"
+  },
+  "current_fingerprints": {
+    "record_sha256": "56739b183db5c7b2643ce9d6624bbfabe127bef831c0a1dab2e060f4e9ca3b90",
+    "source_sha256": "bb60d84d7f937aedbf20041f9bd924c4b86bfccf19cea3a62374229a21240dcb",
+    "source_worktree_sha256": "c3222c974033133447703aef5f8863b05dabfacb936316e33c52e4f353551cee"
+  },
+  "current_root_units_equal_archive": true,
+  "policy_lifecycle_unchanged": true
+}

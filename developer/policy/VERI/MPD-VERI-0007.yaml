@@ -1,0 +1,158 @@
+schema_version: developer-policy/v2
+policy_class: VPMS_DEVELOPER_POLICY
+policy:
+  id: MPD-VERI-0007
+  version: "2.0"
+  title: VPMS Case Reference and Runner Verification Protocol
+  status: ACTIVE
+rules:
+  verification_protocol_scope:
+    responsibility: VPMS_VERIFICATION_PROTOCOL
+    authority_domain:
+      policy_class: VPMS_DEVELOPER_POLICY
+      family: VERI
+    applicability: DEVELOPER_POLICY_ONLY
+    consumer_runtime_policy_dependency: FORBIDDEN
+    source_role_approval: PROJECT_OWNER_EXPLICIT
+    source_evidence_is_independent_normative_authority: false
+    unresolved_semantics_inference: FORBIDDEN
+
+  case_and_outcome_protocol:
+    responsibility: VPMS_CASE_AND_OUTCOME_PROTOCOL
+    case_fields: [id, purpose, target, formula, variables, policy, runner]
+    distinct_reference_fields:
+      target:
+        type: TargetRef
+        identity_field: component_id
+      formula:
+        type: FormulaRef
+        identity_field: ref
+      variables:
+        type: VariablesRef
+        identity_field: ref
+      policy:
+        type: PolicyRef
+        identity_field: ref
+      runner:
+        type: RunnerRef
+        identity_field: ref
+    reference_responsibilities_are_interchangeable: false
+    purpose_field_role: EXISTING_COMPATIBILITY_DATA_PRESERVED_WITHOUT_SEMANTIC_REDEFINITION
+    purpose_vocabulary_owned: false
+    outcome_values: [PASS, FAIL, ERROR, SKIPPED]
+    result_fields: [case_id, purpose, target, outcome, diagnostics, failure_detail]
+    result_preserves_case_fields:
+      case_id: id
+      purpose: purpose
+      target: target
+
+  explicit_reference_binding:
+    responsibility: VPMS_EXPLICIT_REFERENCE_BINDING
+    reference_registration: EXPLICIT_REGISTERED_IDENTITY_ONLY
+    required_reference_domains: [target, formula, variables, policy, runner]
+    unregistered_reference_repair_or_inference: FORBIDDEN
+    unresolved_reference_result: DIAGNOSTIC_AND_NO_USABLE_REGISTRY
+    duplicate_case_identity: DIAGNOSTIC_AND_NO_USABLE_REGISTRY
+    unknown_or_missing_case_fields: DIAGNOSTIC_AND_NO_USABLE_REGISTRY
+    formula_reuse:
+      identity: EXPLICIT_FORMULA_ID
+      duplicate_formula_identity: REJECT
+      formula_owns_case_state: false
+      purpose_neutral_registration: true
+    deterministic_ordering:
+      cases: CASE_ID
+      diagnostics: SORTED_UNIQUE
+
+  runner_execution_and_normalization:
+    responsibility: VPMS_RUNNER_EXECUTION_AND_NORMALIZATION
+    adapter_contract:
+      protocol: CaseExecutor
+      operation: execute
+      input: VerificationCase
+      output: RunnerExecution
+      framework_specific_contract_required: false
+    execution_entry: run_case
+    runner_execution_fields: [outcome, diagnostics, failure_detail]
+    normalization:
+      result: VerificationResult
+      identity: PRESERVE_CASE_ID_PURPOSE_AND_TARGET
+      executor_exception:
+        outcome: ERROR
+        diagnostic: VPMS-RUN-EXECUTION-ERROR
+      invalid_execution_result_type:
+        outcome: ERROR
+        diagnostic: VPMS-RUN-CONTRACT-ERROR
+    selection_and_orchestration_owned: false
+
+  source_bindings:
+    own_sources:
+      - path: src/vpms/domain/model.py
+        responsibility: VPMS_CASE_AND_OUTCOME_PROTOCOL
+        symbols: [TargetRef, FormulaRef, VariablesRef, PolicyRef, RunnerRef, VerificationCase, VerificationOutcome, VerificationResult]
+        excluded_responsibilities: [VERIFICATION_PURPOSE_SEMANTICS]
+      - path: src/vpms/domain/registry.py
+        responsibility: VPMS_EXPLICIT_REFERENCE_BINDING
+        symbols: [RegisteredFormula, FormulaRegistry, RegistryReferenceIndex, Registry, load_registry]
+        excluded_responsibilities: [VERIFICATION_PURPOSE_SEMANTICS, CASE_SELECTION]
+      - path: src/vpms/execution/runner.py
+        responsibility: VPMS_RUNNER_EXECUTION_AND_NORMALIZATION
+        symbols: [RunnerExecution, CaseExecutor, run_case]
+        excluded_symbols: [run_selected_cases]
+    implementation_evidence:
+      - path: src/vpms/execution/adapters/command.py
+        symbol: CommandExecutor
+        role: FRAMEWORK_NEUTRAL_COMMAND_ADAPTER_EVIDENCE
+        normative_ownership_created_by_evidence: false
+    legacy_boundary_references:
+      - path: src/policy/SFP-0006.yaml
+        policy_id: SFP-0006
+        role: LEGACY_VPMS_SUBSYSTEM_AND_PTSIP_DEPENDENCY_BOUNDARY_REFERENCE
+        normative_semantics_changed: false
+        consumer_policy_authority_replaced: false
+    retirement_evidence:
+      - path: src/vpms/domain/selector.py
+        role: RETIRE_TARGET_EVIDENCE
+        responsibility: CASE_SELECTION
+        owned_by_this_policy: false
+        physical_retirement_authorized: false
+        current_runtime_dependency_present: true
+
+  responsibility_boundary:
+    owns:
+      - VPMS_CASE_AND_OUTCOME_PROTOCOL
+      - VPMS_EXPLICIT_REFERENCE_BINDING
+      - VPMS_RUNNER_EXECUTION_AND_NORMALIZATION
+    does_not_own:
+      - VERIFICATION_PURPOSE_SEMANTICS
+      - CASE_SELECTION
+      - SELECTION_SCOPE
+      - TEST_MODE_SELECTION
+      - RUN_SELECTED_CASES_ORCHESTRATION
+      - PTSIP_CLASSIFICATION
+      - PTSIP_CONFORMANCE
+      - SFP_0006_SEMANTIC_RECONCILIATION
+      - PRODUCT_RUNTIME_POLICY_AUTHORITY
+      - IMPLEMENTATION_AUTHORIZATION
+      - PHYSICAL_SELECTOR_RETIREMENT
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+    - id: TR-001
+      type: EXPLICIT_OWNER_ACTIVATION_APPROVAL
+      state: SATISFIED
+      refs:
+        - MPD-VERI-0007
+        - developer/policy/approvals/MPA-20261005-VPMS-VERI-ACTIVE.yaml
+      next_action:
+        action: OBTAIN_EXPLICIT_OWNER_ACTIVATION_APPROVAL
+        execution: OWNER_DECISION_REQUIRED
+        target_refs: [MPD-VERI-0007]
+        completion_check: EXPLICIT_ACTIVE_APPROVAL_PROVENANCE_VALIDATED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-BOUND-0001
+      scope: SHARED_DEVELOPER_POLICY_CLASS_AND_RESPONSIBILITY_FAMILY_ISOLATION

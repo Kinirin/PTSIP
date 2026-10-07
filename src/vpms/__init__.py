@@ -1,7 +1,7 @@
-"""Public Python surface for VPMS — Verification Purpose Management System.
+"""Public Python surface for VPMS — Verification Protocol Management System.
 
-Tool 0.3.5 exposes the proven VPMS model, Registry, selection, runner, and
-generic command-adapter contracts from this package root. PTSIP-specific
+The active product protocol exposes factory-validated Registry snapshots,
+explicit selection and separately owned execution composition. PTSIP-specific
 integration remains explicit under ``vpms.integration`` and is intentionally
 not imported here, preserving the sibling subsystem dependency boundary.
 """
@@ -30,9 +30,11 @@ from .domain.registry import (
     load_registry,
     register_formulas,
 )
-from .domain.selector import SelectionScope, select_cases
+from .domain.snapshot import SnapshotLoadResult, ValidatedRegistrySnapshot, load_registry_snapshot
+from .selection import SelectionDiagnostic, SelectionResult, resolve_selection
 from .execution.adapters.command import CommandExecutor
-from .execution.runner import CaseExecutor, RunnerExecution, run_case, run_selected_cases
+from .execution.runner import CaseExecutor, RunnerExecution, run_case
+from .execution.composition import run_cases
 
 
 __all__ = (
@@ -49,16 +51,20 @@ __all__ = (
     "RegistryReferenceIndex",
     "RunnerExecution",
     "RunnerRef",
-    "SelectionScope",
+    "SelectionDiagnostic",
+    "SelectionResult",
+    "SnapshotLoadResult",
     "TargetRef",
     "VariablesRef",
+    "ValidatedRegistrySnapshot",
     "VerificationCase",
     "VerificationOutcome",
     "VerificationPurpose",
     "VerificationResult",
     "load_registry",
+    "load_registry_snapshot",
     "register_formulas",
     "run_case",
-    "run_selected_cases",
-    "select_cases",
+    "resolve_selection",
+    "run_cases",
 )

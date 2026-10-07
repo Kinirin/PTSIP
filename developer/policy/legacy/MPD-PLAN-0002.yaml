@@ -1,0 +1,20 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-PLAN-0002
+  version: "2.0"
+  title: Final Release Readiness Work Unit Assignment
+  status: ACTIVE
+
+rules:
+  release_readiness_assignment:
+    final_release_readiness_work_unit: WU-12
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-PLAN-0001
+      scope: PLANNING_AUTHORITY_AND_LIFECYCLE

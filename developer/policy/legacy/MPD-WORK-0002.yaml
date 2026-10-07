@@ -1,0 +1,34 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-WORK-0002
+  version: "2.0"
+  title: Developer Execution Lifecycle and Result Handoff
+  status: ACTIVE
+
+rules:
+  work_execution_lifecycle:
+    principle: EXECUTION_IS_NOT_A_TERMINAL_STAGE
+
+    execution_output:
+      structured_result_required: true
+      resulting_state_required: true
+
+    verified_pass_continuation:
+      verified_state_may_feed_next_resolution: true
+      may_continue_without_new_human_confirmation_when_existing_authorization_remains_valid: true
+      may_create_new_approval_or_authorization: false
+
+    deviation:
+      must_return_to_resolution_or_escalation: true
+      silent_success_coercion: FORBIDDEN
+      deviation_may_create_normative_authority: false
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-WORK-0001
+      scope: WORK_UNIT_LIFECYCLE

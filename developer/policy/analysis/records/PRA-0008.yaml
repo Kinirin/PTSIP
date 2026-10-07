@@ -1,0 +1,41 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0008
+  source_ref: developer/policy/approvals/MPA-20261004-WU08-VERIFICATION-ENTRY.yaml
+  responsibilities:
+  - responsibility_id: R01
+    statement: Require registered source ownership and a declared verification execution
+      entry before agent-contract required semantic checks can be reported as covered.
+    authority_relation: OWN
+    authority_subject: AGENT_CONTRACT_REQUIRED_SEMANTIC_VERIFICATION_ENTRY
+    lifecycle_scope: BEFORE_REQUIRED_AGENT_CONTRACT_VERIFICATION
+    cohesion_key: AGENT_CONTRACT_REQUIRED_SEMANTIC_VERIFICATION
+    family: VERI
+    referenced_family: null
+    existing_authority_lookup:
+      searched_family: VERI
+      searched_policy_ids:
+      - MPD-VERI-0002
+      - MPD-VERI-0003
+      - MPD-VERI-0004
+      - MPD-VERI-0005
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-VERI-0004
+        section: required_verification
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: MERGE_INTO_EXISTING
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+    materialization_action: USE_EXISTING_AUTHORITY
+    target_group_id: null
+    policy_class: PTSIP_DEVELOPER_POLICY
+    referenced_policy_class: null
+  decision:
+    split_required: false
+    materialization_allowed: true
+    materialization_groups: []
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: VERI

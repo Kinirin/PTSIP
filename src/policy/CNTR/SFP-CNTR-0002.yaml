@@ -1,0 +1,46 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: CNTR
+policy:
+  id: SFP-CNTR-0002
+  title: CNTR authority (DRAFT source responsibilities)
+  status: DRAFT
+authority_subject:
+  id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
+  statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition
+    및 호환 보장을 소유한다.
+exclusive_kernel:
+- SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+- SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+authority_contract:
+  authority_type: ROOT_FAMILY_CNTR
+  schema_id: ptsip.governance/root-family/cntr
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped
+        contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이
+        지원되는 계약을 만들 수 없다.
+    - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다.
+        미등록 alias나 capability는 실행 계약이 아니다.
+      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime
+        persistence를 활성 지원 계약으로 바꾸지 못한다.
+    source_scope:
+    - SFP-0004
+  unit_sfp_0004_571db38c09b9:
+    shipped: true
+    runtime_surface:
+    - src/ptsip/**
+  unit_sfp_0004_afbfbdc1cc69:
+    authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
+    schema_id: ptsip.governance/evidence-artifact-conformance-model
+    schema_version: 1
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

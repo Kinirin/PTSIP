@@ -1,0 +1,37 @@
+schema_version: ptsip-isolated-work-unit/v1alpha1
+plan_id: PLAN-0.3.8M1-MIGRATION-RESPONSIBILITY-DECOMPOSITION
+work_unit:
+  id: WU-05
+  title: Decompose execution mutation promotion and direct flow
+  lifecycle: {status: COMPLETED}
+  approval: {status: APPROVED, approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: AUTHORIZED, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-04]
+  objective: >-
+    Separate target delta mutation, source lifecycle mutation, asynchronous mutation,
+    finalization, canonical promotion preparation/mutation/verification, and direct
+    identity/promotion flow.
+  target_paths:
+    - src/ptsip/migration/execution/mutation/**
+    - src/ptsip/migration/execution/promotion/**
+    - src/ptsip/migration/execution/direct/**
+  source_modules:
+    - src/ptsip/migration/execution_apply.py
+    - src/ptsip/migration/execution_promotion.py
+    - src/ptsip/migration/direct_execution.py
+    - src/ptsip/migration/identity_rewrite.py
+  invariants:
+    - mutation and post-mutation verification are separate modules
+    - promotion preparation mutation and verification are separate modules
+    - direct identity rewrite stays under direct execution ownership
+    - no execution module creates new policy semantics
+  acceptance:
+    - execution and promotion tests introduce no new failures versus the pinned parent baseline
+    - mutation paths are distinguishable from verification paths by directory ownership
+    - direct execution responsibilities no longer require flat direct_ modules
+
+  completion:
+    status: VERIFIED
+    validation_run_id: 37203492036
+    baseline_sha: 698c1a79aee06fcc0705663f8eecf9462a6d46c0
+    regression_rule: NO_NEW_FAILURES_VS_PINNED_PARENT

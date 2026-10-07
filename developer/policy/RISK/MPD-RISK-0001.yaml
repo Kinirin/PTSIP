@@ -1,0 +1,31 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: RISK
+policy:
+  id: MPD-RISK-0001
+  title: RISK authority (DRAFT source responsibilities)
+  status: DRAFT
+  version: '0.0'
+authority_subject:
+  id: DEV_CHANGE_RISK_DISPOSITION
+  statement: Tool 구현, 개발 변경 및 개발 공급망의 위험 식별, 처리 의무와 위임 범위 안의 잔여 위험 수락을 소유한다.
+exclusive_kernel:
+- DEV_RISK_IDENTIFICATION_AND_TREATMENT
+- DEV_RESIDUAL_RISK_ACCEPTANCE_LIMIT
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_RISK_IDENTIFICATION_AND_TREATMENT
+      statement: 개발 변경의 손실 가능성, 영향 범위 및 예방·완화·회복 조치의 필요를 명시한다.
+      non_substitutability: ASSURE의 테스트 결과만으로 검사하지 않은 실패 가능성과 처리 의무가 사라지지 않는다.
+    - id: DEV_RESIDUAL_RISK_ACCEPTANCE_LIMIT
+      statement: 잔여 위험의 수락 조건과 수락 권한 요구를 정한다. MUST 위반 면제, 닫힌 License Authority 진입
+        또는 무권한 실행을 위험 수락으로 승인할 수 없다.
+      non_substitutability: GOV의 위임이 있어도 RISK 밖의 상위 규범과 별도 authority boundary를 대체하지
+        못한다.
+    source_scope: []
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

@@ -1,0 +1,20 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261005-BOUND-0001-ACTIVE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner instruction on 2026-10-05: "MPD-BOUND-0001을 ACTIVE 해주세요.
+    C- Neutral developer-policy catalog artifact 방식으로 저는 하겠습니다".
+    The exact lifecycle target is ACTIVE. The catalog ownership decision is
+    option C, Neutral developer-policy catalog artifact, not PTSIP-owned or
+    Boundary-owned. This record does not materialize the neutral catalog,
+    authorize M2-M8 implementation, or authorize VPMS policy creation.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-BOUND-0001
+  recorded_at: "2026-10-05T01:43:22+09:00"

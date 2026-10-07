@@ -1,0 +1,53 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0006
+  version: "2.0"
+  title: Canonical Contract Architecture and Identity Resolution
+  status: ACTIVE
+
+rules:
+  normative_contract_architecture:
+      language_runtime_os_tool_neutral: true
+      canonical_layers:
+        - CANONICAL_IDENTITY_REGISTRY
+        - CANONICAL_SCHEMA
+        - CANONICAL_INVARIANTS
+        - GENERATED_BINDINGS
+      registry_does_not_define_object_shape: true
+      schema_does_not_duplicate_identity_grammar: true
+      invariants_do_not_duplicate_registry_or_schema_definitions: true
+      generated_bindings_must_not_add_change_or_remove_normative_semantics: true
+  
+
+  identity_and_resolution:
+      canonical_identity_default: OPAQUE_IMMUTABLE_EXACTLY_RESOLVABLE
+      same_identity_same_normative_semantics: true
+      semantic_change_requires_new_identity: true
+      registry_resolution_budget:
+        runtime_lookup: EXACT_BOUNDED
+        full_registry_scan: FORBIDDEN
+        semantic_similarity_search: FORBIDDEN
+        history_or_git_traversal_for_runtime_semantics: FORBIDDEN
+        documentation_lookup_for_runtime_semantics: FORBIDDEN
+        interpretive_fallback_candidate_selection: FORBIDDEN
+      unresolved_unsupported_or_interface_mismatch: FAIL_CLOSED
+  
+
+  canonical_and_runtime_projection:
+      principle: SPARSE_CANONICAL_DENSE_RUNTIME
+      canonical_source_should_omit_semantically_redundant_empty_optional_structures: true
+      canonical_source_should_have_one_representation_for_one_semantic_state_where_practical: true
+      load_or_compile_may_normalize_missing_optional_structures_to_dense_empty_runtime_forms: true
+      generated_or_compiled_runtime_projection_is_not_authority: true
+      runtime_should_not_repeat_registry_traversal_when_a_reproducible_generated_projection_can_be_used: true
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: MPD-SPEC-0001
+      scope: DEVELOPER_CANONICAL_SEMANTIC_CONTRACT_AND_EXTENSION_BOUNDARY
+  depends_on: []

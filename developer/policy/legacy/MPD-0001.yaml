@@ -1,0 +1,66 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-0001
+  version: "2.0"
+  title: Developer and Support Feature Policy Boundary
+  status: ACTIVE
+
+rules:
+  profile_boundary:
+    compatibility_state: TEMPORARY_UNTIL_DEVELOPER_AUTOMATION_EXPLICIT_PROFILE_SELECTION_IS_VERIFIED
+    support_profile_subsystem:
+      decision: APPROVED
+    migration_authority_ref: MPD-MIGR-0001
+
+  planning_automation:
+    root: developer/automation/planning/
+    ownership: PLANNING_AUTOMATION
+    owns:
+      - PLANNING_RESOLUTION
+      - PLANNING_VALIDATION
+      - PLAN_EXTENSION_LIFECYCLE
+      - PLANNING_RECONCILIATION
+      - PLANNING_COMPLETION_TRANSITION
+    does_not_own:
+      - POLICY_LIFECYCLE
+      - POLICY_PLAN_RELATIONSHIP
+      - BINDING_IDENTITY
+      - BINDING_LIFECYCLE
+    authoritative_mutation_scope:
+      - developer/planning/
+    external_authority_direct_mutation: FORBIDDEN
+
+  planning_migration_authority_ref: MPD-MIGR-0001
+
+automation:
+  loader: developer/automation/policy_loader.py
+  policy_validator: developer/automation/policy_validator.py
+  planning:
+    root: developer/automation/planning/
+    entry_resolver: developer/automation/planning/planning_entry_resolver.py
+    validator: developer/automation/planning/planning_validator.py
+    stage_finalizer: developer/automation/planning/planning_stage_finalizer.py
+    extension_finalizer: developer/automation/planning/planning_extension_finalizer.py
+    leaf_merge: developer/automation/planning/planning_leaf_merge.py
+    merge_reconciler: developer/automation/planning/planning_merge_reconciler.py
+  policy_plan_binding:
+    root: developer/automation/policy_plan_binding/
+  current_dependency_gate: developer/automation/current_dependency_gate.py
+  transition_evaluator: developer/automation/transition_evaluator.py
+
+migration:
+  authority_ref: MPD-MIGR-0001
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-MIGR-0001
+      scope: PROFILE_PLANNING_AND_RETIRED_POLICY_CORPUS_MIGRATION
+    - policy: MPD-PLAN-0001
+      scope: PLANNING_AUTHORITY_AND_LIFECYCLE
+    - policy: MPD-WORK-0001
+      scope: WORK_UNIT_LIFECYCLE

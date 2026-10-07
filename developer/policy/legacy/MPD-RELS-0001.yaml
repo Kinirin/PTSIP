@@ -1,0 +1,22 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-RELS-0001
+  version: "2.0"
+  title: PTSIP Release Note Namespace Management
+  status: ACTIVE
+
+rules:
+  authority_semantics:
+    release_note_namespaces:
+      - tool
+      - project-profile
+      - specification
+    historical_flat_release_notes_bulk_moved: false
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

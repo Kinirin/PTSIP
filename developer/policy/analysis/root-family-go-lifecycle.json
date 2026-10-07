@@ -1,0 +1,155 @@
+{
+  "schema_version": "ptsip-root-family-transition-evidence/v1",
+  "authorization_source": "Family 전환 검증부터 Go로 작성하고 기존 Python 테스트는 보존",
+  "recorded_at": "2026-10-06T01:04:47+09:00",
+  "transitions": [
+    {
+      "policy_id": "MPD-ASSURE-0003",
+      "preflight": {
+        "status": "READY",
+        "allocated_policy_id": "MPD-ASSURE-0003",
+        "family": "ASSURE",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "group_id": "G01",
+        "analysis_id": "PRA-20261006-ROOT-FAMILY-GO-VERIFICATION",
+        "analysis_ref": "developer/policy/analysis/PRA-20261006-ROOT-FAMILY-GO-VERIFICATION.yaml",
+        "split_required": true,
+        "target_status": "DRAFT",
+        "approval_id": "MPA-20261006-GO-ASSURE-0003-DRAFT",
+        "approval_scope": "DRAFT_CREATION",
+        "implementation_authorized": true,
+        "policy_content_review_scope": "FULL",
+        "cohesion_key": "ASSURE_ROOT_FAMILY_GO",
+        "registry_mutation_required": true,
+        "analysis_registry_mutation_required": true
+      },
+      "registration": {
+        "status": "REGISTERED",
+        "policy_id": "MPD-ASSURE-0003",
+        "family": "ASSURE",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "group_id": "G01",
+        "analysis_id": "PRA-20261006-ROOT-FAMILY-GO-VERIFICATION",
+        "policy_status": "DRAFT",
+        "approval_id": "MPA-20261006-GO-ASSURE-0003-DRAFT",
+        "index": "developer/policy/index.yaml",
+        "subject_registry": "developer/policy/registries/authority-subject-registry.yaml",
+        "analysis_registry": "developer/policy/analysis/registry.yaml"
+      }
+    },
+    {
+      "policy_id": "MPD-ASSURE-0003",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-GO-ASSURE-0003-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ASSURE-0003",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-GO-ASSURE-0003-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0003",
+      "preflight": {
+        "status": "READY",
+        "allocated_policy_id": "MPD-REAL-0003",
+        "family": "REAL",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "group_id": "G02",
+        "analysis_id": "PRA-20261006-ROOT-FAMILY-GO-VERIFICATION",
+        "analysis_ref": "developer/policy/analysis/PRA-20261006-ROOT-FAMILY-GO-VERIFICATION.yaml",
+        "split_required": true,
+        "target_status": "DRAFT",
+        "approval_id": "MPA-20261006-GO-REAL-0003-DRAFT",
+        "approval_scope": "DRAFT_CREATION",
+        "implementation_authorized": true,
+        "policy_content_review_scope": "FULL",
+        "cohesion_key": "REAL_ROOT_FAMILY_GO",
+        "registry_mutation_required": true,
+        "analysis_registry_mutation_required": true
+      },
+      "registration": {
+        "status": "REGISTERED",
+        "policy_id": "MPD-REAL-0003",
+        "family": "REAL",
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "group_id": "G02",
+        "analysis_id": "PRA-20261006-ROOT-FAMILY-GO-VERIFICATION",
+        "policy_status": "DRAFT",
+        "approval_id": "MPA-20261006-GO-REAL-0003-DRAFT",
+        "index": "developer/policy/index.yaml",
+        "subject_registry": "developer/policy/registries/authority-subject-registry.yaml",
+        "analysis_registry": "developer/policy/analysis/registry.yaml"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0003",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-GO-REAL-0003-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0003",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-GO-REAL-0003-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-ASSURE-0003",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-GO-ASSURE-0003-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ASSURE-0003",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-GO-ASSURE-0003-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0003",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-GO-REAL-0003-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0003",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-GO-REAL-0003-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    }
+  ]
+}

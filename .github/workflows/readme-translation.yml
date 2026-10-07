@@ -7,6 +7,7 @@ on:
       - README.md
       - .github/workflows/readme-translation.yml
       - .github/scripts/sync_readme_argos.py
+      - docs/translated/index.yaml
   workflow_dispatch:
 
 permissions:
@@ -38,8 +39,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip for Argos runtime." }
-          python -m pip install --upgrade "argostranslate==1.11.0"
-          if ($LASTEXITCODE -ne 0) { throw "Failed to install argostranslate==1.11.0." }
+          python -m pip install --upgrade "argostranslate==1.11.0" "PyYAML>=6.0,<7"
+          if ($LASTEXITCODE -ne 0) { throw "Failed to install Argos Translate and PyYAML runtime dependencies." }
 
           python -c "import argostranslate, importlib.metadata; print('Argos Translate ' + importlib.metadata.version('argostranslate'))"
           if ($LASTEXITCODE -ne 0) { throw "Argos runtime verification failed." }
@@ -56,7 +57,7 @@ jobs:
       - name: Generate localized README files
         shell: pwsh
         run: |
-          & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --source README.md --target "ko:README.ko.md"
+          & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --registry docs/translated/index.yaml
           if ($LASTEXITCODE -ne 0) {
             throw "README translation or validation failed."
           }
@@ -69,7 +70,19 @@ jobs:
             throw "Generated translation contains whitespace errors."
           }
 
-          git add README.ko.md
+          $targets = & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --registry docs/translated/index.yaml --list-targets
+          if ($LASTEXITCODE -ne 0) {
+            throw "Unable to resolve registered translation targets."
+          }
+          if (-not $targets) {
+            throw "Translation registry contains no active targets."
+          }
+          foreach ($target in $targets) {
+            git add -- $target
+            if ($LASTEXITCODE -ne 0) {
+              throw "Unable to stage registered translation target: $target"
+            }
+          }
           git diff --cached --quiet
           if ($LASTEXITCODE -eq 0) {
             Write-Host "Localized README files are already synchronized."

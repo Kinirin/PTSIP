@@ -1,0 +1,314 @@
+{
+  "developer/planning/0.4.0/WU-02/WU-02-P01.yaml": {
+    "extension": {
+      "id": "WU-02-P01",
+      "lifecycle": {
+        "status": "ACTIVE"
+      }
+    }
+  },
+  "developer/planning/0.4.0/WU-02/WU-02.yaml": {
+    "extensions": [
+      {
+        "id": "WU-02-P01",
+        "path": "developer/planning/0.4.0/WU-02/WU-02-P01.yaml",
+        "status": "ACTIVE"
+      }
+    ],
+    "plan_version": "0.4.0",
+    "planning_contract": "ptsip-planning/v1",
+    "policy_class": "PTSIP_DEVELOPER_POLICY",
+    "schema_version": "ptsip-work-unit/v1",
+    "work_unit": {
+      "approval": {
+        "approval_source": "USER_EXPLICIT",
+        "inherited_from": [],
+        "status": "APPROVED"
+      },
+      "classification": "CORE",
+      "depends_on": [
+        "WU-01"
+      ],
+      "id": "WU-02",
+      "implementation_authorization": {
+        "authorization_source": "USER_EXPLICIT",
+        "status": "AUTHORIZED"
+      },
+      "integration_branch": "dev/0.4.0",
+      "kind": "WORK_UNIT",
+      "lifecycle": {
+        "status": "ACTIVE"
+      },
+      "title": "WU-02"
+    }
+  },
+  "developer/planning/0.4.0/WU-03/WU-03.yaml": {
+    "plan_version": "0.4.0",
+    "planning_contract": "ptsip-planning/v1",
+    "policy_class": "PTSIP_DEVELOPER_POLICY",
+    "schema_version": "ptsip-work-unit/v1",
+    "work_unit": {
+      "approval": {
+        "approval_source": "USER_EXPLICIT",
+        "inherited_from": [],
+        "status": "APPROVED"
+      },
+      "classification": "CORE",
+      "depends_on": [
+        "WU-02"
+      ],
+      "id": "WU-03",
+      "implementation_authorization": {
+        "authorization_source": "USER_EXPLICIT",
+        "status": "AUTHORIZED"
+      },
+      "integration_branch": "dev/0.4.0",
+      "kind": "WORK_UNIT",
+      "lifecycle": {
+        "status": "ACTIVE"
+      },
+      "title": "WU-03"
+    }
+  },
+  "developer/planning/0.4.0/WU-04/WU-04.yaml": {
+    "plan_version": "0.4.0",
+    "planning_contract": "ptsip-planning/v1",
+    "policy_class": "PTSIP_DEVELOPER_POLICY",
+    "schema_version": "ptsip-work-unit/v1",
+    "work_unit": {
+      "approval": {
+        "approval_source": "USER_EXPLICIT",
+        "inherited_from": [],
+        "status": "APPROVED"
+      },
+      "classification": "CORE",
+      "depends_on": [],
+      "id": "WU-04",
+      "implementation_authorization": {
+        "authorization_source": "USER_EXPLICIT",
+        "status": "AUTHORIZED"
+      },
+      "integration_branch": "dev/0.4.0",
+      "kind": "WORK_UNIT",
+      "lifecycle": {
+        "status": "ACTIVE"
+      },
+      "title": "WU-04"
+    }
+  },
+  "developer/planning/0.4.0/WU-05/WU-05.yaml": {
+    "plan_version": "0.4.0",
+    "planning_contract": "ptsip-planning/v1",
+    "policy_class": "PTSIP_DEVELOPER_POLICY",
+    "schema_version": "ptsip-work-unit/v1",
+    "work_unit": {
+      "approval": {
+        "approval_source": "USER_EXPLICIT",
+        "inherited_from": [],
+        "status": "APPROVED"
+      },
+      "classification": "CORE",
+      "depends_on": [],
+      "id": "WU-05",
+      "implementation_authorization": {
+        "authorization_source": "USER_EXPLICIT",
+        "status": "AUTHORIZED"
+      },
+      "integration_branch": "dev/0.4.0",
+      "kind": "WORK_UNIT",
+      "lifecycle": {
+        "status": "ACTIVE"
+      },
+      "title": "WU-05"
+    }
+  },
+  "developer/planning/0.4.0/index.yaml": {
+    "plan": {
+      "classification": "CORE",
+      "control_plane": "developer/planning/0.4.0/index.yaml",
+      "current_gate": "WU-02-P01",
+      "integration_branch": "dev/0.4.0",
+      "plan_version": "0.4.0",
+      "revision": "04",
+      "status": "ACTIVE"
+    },
+    "policy_class": "PTSIP_DEVELOPER_POLICY",
+    "schema_version": "ptsip-developer-planning-index/v1",
+    "work_units": [
+      {
+        "approval": {
+          "inherited_from": [],
+          "status": "NOT_REQUIRED"
+        },
+        "completion_evidence": [
+          {
+            "id": "wu01",
+            "result": "PASS",
+            "type": "MACHINE_VALIDATION"
+          }
+        ],
+        "depends_on": [],
+        "id": "WU-01",
+        "implementation_authorization": {
+          "status": "COMPLETE"
+        },
+        "lifecycle": {
+          "status": "COMPLETE"
+        }
+      },
+      {
+        "approval": {
+          "approval_source": "USER_EXPLICIT",
+          "inherited_from": [],
+          "status": "APPROVED"
+        },
+        "depends_on": [
+          "WU-01"
+        ],
+        "id": "WU-02",
+        "implementation_authorization": {
+          "authorization_source": "USER_EXPLICIT",
+          "status": "AUTHORIZED"
+        },
+        "lifecycle": {
+          "status": "ACTIVE"
+        },
+        "path": "developer/planning/0.4.0/WU-02/WU-02.yaml"
+      },
+      {
+        "approval": {
+          "approval_source": "USER_EXPLICIT",
+          "inherited_from": [],
+          "status": "APPROVED"
+        },
+        "depends_on": [
+          "WU-02"
+        ],
+        "id": "WU-03",
+        "implementation_authorization": {
+          "authorization_source": "USER_EXPLICIT",
+          "status": "AUTHORIZED"
+        },
+        "lifecycle": {
+          "status": "ACTIVE"
+        },
+        "path": "developer/planning/0.4.0/WU-03/WU-03.yaml"
+      },
+      {
+        "approval": {
+          "approval_source": "USER_EXPLICIT",
+          "inherited_from": [],
+          "status": "APPROVED"
+        },
+        "depends_on": [],
+        "id": "WU-04",
+        "implementation_authorization": {
+          "authorization_source": "USER_EXPLICIT",
+          "status": "AUTHORIZED"
+        },
+        "lifecycle": {
+          "status": "ACTIVE"
+        },
+        "path": "developer/planning/0.4.0/WU-04/WU-04.yaml"
+      },
+      {
+        "approval": {
+          "approval_source": "USER_EXPLICIT",
+          "inherited_from": [],
+          "status": "APPROVED"
+        },
+        "depends_on": [],
+        "id": "WU-05",
+        "implementation_authorization": {
+          "authorization_source": "USER_EXPLICIT",
+          "status": "AUTHORIZED"
+        },
+        "lifecycle": {
+          "status": "ACTIVE"
+        },
+        "path": "developer/planning/0.4.0/WU-05/WU-05.yaml"
+      }
+    ]
+  },
+  "developer/planning/index.yaml": {
+    "plans": [
+      {
+        "entry_routing": {
+          "branch_creation_parent": "dev/0.4.0",
+          "branch_entrypoints": [
+            {
+              "branch": "dev/0.4.0",
+              "entry_document": "developer/planning/0.4.0/index.yaml",
+              "role": "INTEGRATION_CONTROL_PLANE",
+              "state": "ACTIVE"
+            },
+            {
+              "branch": "dev/0.4.0-WU-04",
+              "entry_document": "developer/planning/0.4.0/WU-04/WU-04.yaml",
+              "role": "INDEPENDENT_LEAF",
+              "state": "ACTIVE",
+              "work_unit": "WU-04"
+            },
+            {
+              "branch": "dev/0.4.0-WU-05",
+              "entry_document": "developer/planning/0.4.0/WU-05/WU-05.yaml",
+              "role": "INDEPENDENT_LEAF",
+              "state": "ACTIVE",
+              "work_unit": "WU-05"
+            }
+          ],
+          "canonical_plan": "planning/0.4.0.md",
+          "dependency_bearing_convergence": {
+            "id": "WU-03",
+            "responsibility": "INTEGRATION"
+          },
+          "independent_leaf_work_units": [
+            {
+              "branch": "dev/0.4.0-WU-04",
+              "id": "WU-04",
+              "responsibility": "EXECUTION"
+            },
+            {
+              "branch": "dev/0.4.0-WU-05",
+              "id": "WU-05",
+              "responsibility": "VERIFICATION"
+            }
+          ],
+          "merge_reconciliation": {
+            "gate_policy": {
+              "fallback": "FIRST_DEPENDENCY_SATISFIED_NONTERMINAL_WU",
+              "integrated_unfinished_leaf_before_unmerged_leaf": true,
+              "merged_unfinished_leaf_after_gate_closure": true,
+              "preserve_nonterminal_current_gate": true,
+              "unmerged_leaf_order": "DECLARATION_ORDER"
+            },
+            "leaf_shared_index_mutation": "FORBIDDEN",
+            "merge_command": "go -C developer/automation run ./cmd/ptsip-dev planning merge-leaf",
+            "merged_leaf_entrypoint_state": "MERGED",
+            "module": "developer/automation/planning",
+            "reconcile_command": "go -C developer/automation run ./cmd/ptsip-dev planning reconcile",
+            "state_source": "WORK_UNIT_DOCUMENTS",
+            "target_branch": "dev/0.4.0",
+            "unfinished_merged_leaf_continuation": "INTEGRATION_BRANCH"
+          },
+          "model": "PARALLEL_DEPENDENCY_EXTRACTION",
+          "resolver": {
+            "ambiguous_behavior": "FAIL_CLOSED",
+            "branch_source": "GIT_CURRENT_BRANCH",
+            "command": "go -C developer/automation run ./cmd/ptsip-dev planning-entry resolve",
+            "match_mode": "EXACT_BRANCH",
+            "module": "developer/automation/planning",
+            "unmatched_behavior": "FAIL_CLOSED"
+          },
+          "responsibility_control_plane": "developer/planning/0.4.0/index.yaml"
+        },
+        "integration_branch": "dev/0.4.0",
+        "path": "developer/planning/0.4.0/index.yaml",
+        "plan_version": "0.4.0",
+        "status": "ACTIVE"
+      }
+    ],
+    "policy_class": "PTSIP_DEVELOPER_POLICY",
+    "schema_version": "ptsip-developer-planning-root/v1"
+  }
+}

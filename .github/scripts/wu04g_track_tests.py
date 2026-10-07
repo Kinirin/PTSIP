@@ -9,73 +9,73 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "src"
-FOCUSED = "tests/ptsip/test_clarification_adoption_effective_map_036.py"
+FOCUSED = "src/tests/ptsip/test_clarification_adoption_effective_map_036.py"
 
 EXISTING_G_SCOPE = (
-    "tests/ptsip/test_clarification.py",
-    "tests/ptsip/test_adoption_033.py",
-    "tests/ptsip/test_decision_control_plane.py",
-    "tests/ptsip/test_local_control_plane_033.py",
-    "tests/ptsip/test_github_authority_033.py",
-    "tests/ptsip/test_github_authority_034.py",
-    "tests/ptsip/test_repository_self_profile_035.py",
-    "tests/ptsip/test_topology_032.py",
+    "src/tests/ptsip/test_clarification.py",
+    "src/tests/ptsip/test_adoption_033.py",
+    "src/tests/ptsip/test_decision_control_plane.py",
+    "src/tests/ptsip/test_local_control_plane_033.py",
+    "src/tests/ptsip/test_github_authority_033.py",
+    "src/tests/ptsip/test_github_authority_034.py",
+    "src/tests/ptsip/test_repository_self_profile_035.py",
+    "src/tests/ptsip/test_topology_032.py",
 )
 
 G5_FILE_SCOPE = (
-    "tests/ptsip/test_clarification.py",
-    "tests/ptsip/test_adoption_033.py",
-    "tests/ptsip/test_decision_control_plane.py",
-    "tests/ptsip/test_local_control_plane_033.py",
-    "tests/ptsip/test_github_authority_033.py",
-    "tests/ptsip/test_github_authority_034.py",
-    "tests/ptsip/test_repository_self_profile_035.py",
+    "src/tests/ptsip/test_clarification.py",
+    "src/tests/ptsip/test_adoption_033.py",
+    "src/tests/ptsip/test_decision_control_plane.py",
+    "src/tests/ptsip/test_local_control_plane_033.py",
+    "src/tests/ptsip/test_github_authority_033.py",
+    "src/tests/ptsip/test_github_authority_034.py",
+    "src/tests/ptsip/test_repository_self_profile_035.py",
     # test_topology_032.py is mixed historical/G-owned scope. The legacy
     # boundaries/TOOLCHAIN migration contract is deliberately frozen and remains
     # visible only to the final complete-repository regression. G5 files-mode
     # re-runs the G-owned explicit profile-path projection contract instead of
     # mutating or xfail-ing the historical contract to make this stage green.
-    "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
+    "src/tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
 )
 
 FILE_TRACKS = {
     "G1": (
-        "tests/ptsip/test_clarification.py",
-        "tests/ptsip/test_adoption_033.py",
-        "tests/ptsip/test_repository_self_profile_035.py",
+        "src/tests/ptsip/test_clarification.py",
+        "src/tests/ptsip/test_adoption_033.py",
+        "src/tests/ptsip/test_repository_self_profile_035.py",
     ),
     "G2": (
-        "tests/ptsip/test_clarification.py",
-        "tests/ptsip/test_decision_control_plane.py",
-        "tests/ptsip/test_local_control_plane_033.py",
-        "tests/ptsip/test_github_authority_033.py",
-        "tests/ptsip/test_github_authority_034.py",
+        "src/tests/ptsip/test_clarification.py",
+        "src/tests/ptsip/test_decision_control_plane.py",
+        "src/tests/ptsip/test_local_control_plane_033.py",
+        "src/tests/ptsip/test_github_authority_033.py",
+        "src/tests/ptsip/test_github_authority_034.py",
         # test_topology_032.py is a mixed historical file. G2 changed only
         # the canonical DecisionAnswer/projection contract below. The legacy
         # 0.3.4 boundaries/TOOLCHAIN topology test is a known non-G semantic
         # contract and must remain frozen rather than being repaired or xfailed
         # merely to make the G2 decision-protocol gate green.
-        "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
+        "src/tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
     "G3": (
-        "tests/ptsip/test_adoption_033.py",
-        "tests/ptsip/test_decision_control_plane.py",
+        "src/tests/ptsip/test_adoption_033.py",
+        "src/tests/ptsip/test_decision_control_plane.py",
         # G3 owns projection/safe-apply behavior but not historical topology
         # migration semantics. Keep the explicit projection helper contract in
         # this track while the known legacy boundaries/TOOLCHAIN test remains
         # available to later all-G/full regression review.
-        "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
+        "src/tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
     "G4": (
-        "tests/ptsip/test_adoption_033.py",
-        "tests/ptsip/test_decision_control_plane.py",
-        "tests/ptsip/test_local_control_plane_033.py",
-        "tests/ptsip/test_github_authority_033.py",
-        "tests/ptsip/test_github_authority_034.py",
+        "src/tests/ptsip/test_adoption_033.py",
+        "src/tests/ptsip/test_decision_control_plane.py",
+        "src/tests/ptsip/test_local_control_plane_033.py",
+        "src/tests/ptsip/test_github_authority_033.py",
+        "src/tests/ptsip/test_github_authority_034.py",
         # G4 owns the exact selected profile-path/projection contract in this
         # mixed file. Historical topology migration semantics remain frozen and
         # stay visible to later all-G/full-regression review.
-        "tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
+        "src/tests/ptsip/test_topology_032.py::test_resolution_projection_respects_explicit_profile_path",
     ),
     "G5": G5_FILE_SCOPE,
 }

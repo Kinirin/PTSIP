@@ -1,0 +1,44 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0026
+  version: "2.0"
+  title: Project Profile T2 Authority Delta Contract
+  status: ACTIVE
+
+rules:
+  t2_authority_delta:
+      model: T2_AUTHORITY_DELTA
+      trigger_sources:
+        - REGISTERED_CANONICAL_PUBLIC_PROFILE_CONTENT
+        - PUBLIC_PROFILE_CATALOG_MEMBERSHIP
+        - PUBLIC_PROFILE_CATALOG_RESOURCE_IDENTITY
+        - CURRENT_PP_CANONICAL_SCHEMA_CONTENT
+      canonical_public_profile_catalog_ref: profiles/index.yaml
+      canonical_public_profile_root: profiles/
+      canonical_pp_contract_registry_ref: registry/project-profile-contracts.yaml
+      canonical_current_schema_pattern: schemas/ptsip-profile-pp-<current>.schema.json
+      non_trigger_sources:
+        - GIT_BRANCH_NAME
+        - PULL_REQUEST_STATE
+        - MERGE_EVENT_AS_SUCH
+        - EMBEDDED_SCHEMA_PROJECTION
+        - RUNTIME_CURRENT_PP_PROJECTION
+        - PROJECT_PROFILE_RELEASE_NOTE
+        - PUBLIC_PROFILE_HISTORY_BASELINE
+        - VERIFICATION_TESTS
+        - PTSIP_REPOSITORY_PROJECT_PROFILE_INSTANCE
+        - DEVELOPER_REPOSITORY_SELF_PROFILE
+        - TRANSITION_AUTOMATION_IMPLEMENTATION
+      derived_surface_change_must_not_retrigger_transition: true
+      manual_current_pp_pointer_change_without_t2_authority_delta: FAIL_CLOSED
+  
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-SPEC-0006
+      scope: identity_and_resolution

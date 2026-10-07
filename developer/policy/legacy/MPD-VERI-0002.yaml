@@ -1,0 +1,18 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-VERI-0002
+  version: "2.0"
+  title: Repository Mutation-Promotion Verification Boundary
+  status: ACTIVE
+
+rules:
+  mutation_promotion_verification:
+    scope: ISOLATED_FIXTURE_REPOSITORIES
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

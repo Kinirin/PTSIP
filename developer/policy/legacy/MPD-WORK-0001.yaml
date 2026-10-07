@@ -1,0 +1,18 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-WORK-0001
+  version: "2.0"
+  title: Developer Work Unit Lifecycle Boundary
+  status: ACTIVE
+
+rules:
+  work_unit_lifecycle:
+    ownership: WORK_UNIT_LIFECYCLE
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

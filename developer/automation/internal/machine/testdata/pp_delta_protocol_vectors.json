@@ -1,0 +1,678 @@
+{
+  "projection_authority": false,
+  "fixture_role": "FROZEN_PRE_RETIREMENT_PROTOCOL_EQUIVALENCE",
+  "source_commit": "db8dfda5a99734c0d02ee480e7226d39ec30d1e9",
+  "vectors": [
+    {
+      "name": "test_no_t2_delta_keeps_current_identity",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "NO_T2_AUTHORITY_DELTA",
+        "triggered": false,
+        "valid": true,
+        "reasons": [],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.01",
+        "expected_next": null,
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_public_profile_semantic_content_change_triggers_adjacent_minor",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{\"changed\":true},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "T2_AUTHORITY_DELTA",
+        "triggered": true,
+        "valid": true,
+        "reasons": [
+          "REGISTERED_CANONICAL_PUBLIC_PROFILE_CONTENT"
+        ],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.01",
+        "expected_next": "pp.1.02",
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_catalog_membership_change_is_t2_authority_delta",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          },
+          "second": {
+            "profile_id": "second",
+            "resource": "second.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml",
+          "second.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ==",
+          "second.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}",
+          "second.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01",
+          "second.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "T2_AUTHORITY_DELTA",
+        "triggered": true,
+        "valid": true,
+        "reasons": [
+          "PUBLIC_PROFILE_CATALOG_MEMBERSHIP"
+        ],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.01",
+        "expected_next": "pp.1.02",
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_catalog_resource_identity_change_is_t2_authority_delta",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "renamed.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "renamed.ptsip.yaml"
+        ],
+        "Raw": {
+          "renamed.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "renamed.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "renamed.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "T2_AUTHORITY_DELTA",
+        "triggered": true,
+        "valid": true,
+        "reasons": [
+          "PUBLIC_PROFILE_CATALOG_RESOURCE_IDENTITY"
+        ],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.01",
+        "expected_next": "pp.1.02",
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_current_canonical_schema_change_is_t2_authority_delta",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYy",
+        "SchemaSemantic": "schema-v2"
+      },
+      "old_schema": "c2NoZW1hLXYy",
+      "expected": {
+        "classification": "T2_AUTHORITY_DELTA",
+        "triggered": true,
+        "valid": true,
+        "reasons": [
+          "CURRENT_PP_CANONICAL_SCHEMA_CONTENT"
+        ],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.01",
+        "expected_next": "pp.1.02",
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_manual_current_pointer_change_without_authority_delta_fails_closed",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.02",
+        "Contracts": {
+          "pp.1.02": "schemas/ptsip-profile-pp-1.02.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYy",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "MANUAL_PP_TRANSITION_WITHOUT_AUTHORITY",
+        "triggered": false,
+        "valid": false,
+        "reasons": [],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.02",
+        "expected_next": null,
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_already_reconciled_candidate_does_not_request_second_bump",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.02",
+        "Contracts": {
+          "pp.1.02": "schemas/ptsip-profile-pp-1.02.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{\"changed\":true},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYy",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "T2_AUTHORITY_DELTA",
+        "triggered": true,
+        "valid": true,
+        "reasons": [
+          "REGISTERED_CANONICAL_PUBLIC_PROFILE_CONTENT"
+        ],
+        "base_current": "pp.1.01",
+        "candidate_current": "pp.1.02",
+        "expected_next": "pp.1.02",
+        "candidate_already_reconciled": true
+      }
+    },
+    {
+      "name": "test_initial_catalog_and_registry_materialization_is_not_semantic_delta",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": false,
+        "RegistryPresent": false,
+        "Current": null,
+        "Contracts": {},
+        "Entries": {},
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": null,
+        "SchemaSemantic": "schema-v1"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYx",
+        "SchemaSemantic": "schema-v1"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "BASELINE_MATERIALIZATION_EXISTING_DISTRIBUTION",
+        "triggered": false,
+        "valid": true,
+        "reasons": [],
+        "base_current": null,
+        "candidate_current": "pp.1.01",
+        "expected_next": null,
+        "candidate_already_reconciled": false
+      }
+    },
+    {
+      "name": "test_baseline_materialization_rejects_schema_drift",
+      "base": {
+        "Label": "base",
+        "CatalogPresent": false,
+        "RegistryPresent": false,
+        "Current": null,
+        "Contracts": {},
+        "Entries": {},
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": null,
+        "SchemaSemantic": "schema-v2"
+      },
+      "candidate": {
+        "Label": "candidate",
+        "CatalogPresent": true,
+        "RegistryPresent": true,
+        "Current": "pp.1.01",
+        "Contracts": {
+          "pp.1.01": "schemas/ptsip-profile-pp-1.01.schema.json"
+        },
+        "Entries": {
+          "example": {
+            "profile_id": "example",
+            "resource": "example.ptsip.yaml",
+            "contract": "pp.1.01"
+          }
+        },
+        "Resources": [
+          "example.ptsip.yaml"
+        ],
+        "Raw": {
+          "example.ptsip.yaml": "cHJvZmlsZQ=="
+        },
+        "Semantic": {
+          "example.ptsip.yaml": "{\"policies\":{},\"ptsip\":{\"specification\":{\"family\":\"x\"}},\"responsibility_map\":{\"mode\":\"explicit\"}}"
+        },
+        "Declared": {
+          "example.ptsip.yaml": "pp.1.01"
+        },
+        "Schema": "c2NoZW1hLXYy",
+        "SchemaSemantic": "schema-v2"
+      },
+      "old_schema": "c2NoZW1hLXYx",
+      "expected": {
+        "classification": "INVALID_BASELINE_MATERIALIZATION",
+        "triggered": false,
+        "valid": false,
+        "reasons": [
+          "CURRENT_PP_CANONICAL_SCHEMA_CONTENT"
+        ],
+        "base_current": null,
+        "candidate_current": "pp.1.01",
+        "expected_next": null,
+        "candidate_already_reconciled": false
+      }
+    }
+  ]
+}

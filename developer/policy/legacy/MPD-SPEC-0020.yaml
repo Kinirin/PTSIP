@@ -1,0 +1,70 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0020
+  version: "2.0"
+  title: Specification Version Namespace and Revision Lifecycle
+  status: ACTIVE
+
+rules:
+  version_namespace:
+    canonical_structure:
+      specification:
+        version: specification.version
+        revision: specification.revision
+        source_revision: specification.source_revision
+      version_domains: versions.*
+
+    specification_version:
+      role: NORMATIVE_SPECIFICATION_IDENTITY
+      automatic_increment_from_version_domain_change: false
+
+    specification_revision:
+      role: SPECIFICATION_MANIFEST_REVISION
+      format: '^Rev\.[0-9]{4}$'
+      initial_value: Rev.0001
+      scoped_to_specification_version: true
+
+    source_revision:
+      role: EXACT_SOURCE_REVISION_IDENTITY
+      independent_from_specification_revision: true
+
+    version_domains:
+      namespace: versions
+      extensible: true
+      canonical_domain_identity_required: true
+      root_level_domain_version_fields_forbidden: true
+      initial_domains:
+        - ptsip_tool
+        - project_profile_contract
+        - vpms
+        - tvfm
+        - authority_contract
+        - remediation_contract
+      independent_lifecycle: true
+      equal_version_value_does_not_imply_shared_identity_or_lifecycle: true
+
+  revision_lifecycle:
+    revision_sensitive_paths:
+      - versions.*
+
+    on_revision_sensitive_change:
+      action: INCREMENT_SPECIFICATION_REVISION_BY_ONE
+      semantic_classification_required: false
+      normative_change_classification_required: false
+      breaking_change_classification_required: false
+
+    on_specification_version_change:
+      action: RESET_SPECIFICATION_REVISION
+      value: Rev.0001
+
+    invariant:
+      versions_change_does_not_automatically_change_specification_version: true
+      specification_version_requires_separate_normative_version_decision: true
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

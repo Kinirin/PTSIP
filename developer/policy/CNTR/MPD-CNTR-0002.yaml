@@ -1,0 +1,220 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CNTR
+policy:
+  id: MPD-CNTR-0002
+  title: CNTR authority (DRAFT source responsibilities)
+  status: DRAFT
+  version: '0.0'
+authority_subject:
+  id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+  statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를
+    소유한다.
+exclusive_kernel:
+- DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+- DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+      statement: 호출 가능한 command vocabulary, typed 입력과 출력, 오류 의미 및 precondition/postcondition
+        약속을 명시한다.
+      non_substitutability: INFO의 내부 데이터 모델만으로 외부 호출에 허용된 command와 결과 약속을 만들 수 없다.
+    - id: DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+      statement: 개발 자동화 인터페이스의 보장 범위와 호환성 약속을 정하고 미등록 command나 추측 fallback이 계약이 되는
+        것을 금지한다.
+      non_substitutability: CHANGE가 전환 일정을 정하거나 REAL이 편의 기능을 구현해도 계약상 지원 의무가 자동으로
+        생기지 않는다.
+    source_scope:
+    - MPD-0017
+    - MPD-VERI-0006
+  unit_mpd_0017_3c99571649b9: MANAGEMENT_NEXT_ACTION_IDENTITY_AND_EXECUTION_CONTROL_PLANE
+  unit_mpd_0017_2c215f21a05d: Replace free-form Management Policy next-action execution
+    semantics with exact machine-resolvable Action, Execution Profile, and Completion
+    Check identities while keeping their responsibilities separate.
+  unit_mpd_0017_c8a22f2d0c12:
+    unregistered_action_id: FAIL_CLOSED
+    unregistered_execution_id: FAIL_CLOSED
+    unregistered_completion_check_id: FAIL_CLOSED
+    duplicate_identity: FAIL_CLOSED
+    semantic_similarity_resolution: FORBIDDEN
+  unit_mpd_0017_c454b3d75f70:
+    identity_semantics:
+      namespace: MP_EXEC
+      pattern: ^MP-EXEC-(AUTO|GOV)-[0-9]{4}$
+      numeric_suffix_role: OPAQUE_ALLOCATION_IDENTITY
+      numeric_suffix_implies_priority: false
+      numeric_suffix_implies_order: false
+      numeric_suffix_implies_version: false
+      numeric_suffix_implies_compatibility: false
+    category_semantics:
+      AUTO:
+        normative_scope: PARTIAL
+        required_executor_class: AUTOMATION
+      GOV:
+        normative_scope: PARTIAL
+        required_executor_class: GOVERNANCE
+      category_does_not_define_complete_execution_semantics: true
+    dimensions:
+      executor_class:
+        vocabulary:
+        - AUTOMATION
+        - GOVERNANCE
+      executor_ref:
+        semantics: CLASS_SCOPED_EXACT_REFERENCE
+        resolution_domains:
+          AUTOMATION: AUTOMATION_RUNTIME_PLANE
+          GOVERNANCE: GOVERNANCE_AUTHORITY_PLANE
+        cross_domain_fallback: FORBIDDEN
+        unresolved_reference: FAIL_CLOSED
+      concurrency:
+        vocabulary:
+        - PARALLEL
+        - SERIAL
+        - NOT_APPLICABLE
+    resolution_routing:
+      AUTOMATION:
+        required_domain: AUTOMATION_RUNTIME_PLANE
+        exact_domain_binding: UNRESOLVED
+      GOVERNANCE:
+        required_domain: GOVERNANCE_AUTHORITY_PLANE
+        exact_domain_binding: UNRESOLVED
+      class_name_guessing: FORBIDDEN
+      executor_name_guessing: FORBIDDEN
+  unit_mpd_0017_de8df3f294fd:
+    approved_decisions:
+    - CANONICAL_NEXT_ACTION_DIRECT_ID_TRIPLE
+    - ACTION_ID_AS_FULLY_BOUND_OPERATION_IDENTITY
+    - EXECUTION_ID_AS_CANONICAL_EXECUTION_PROFILE_IDENTITY
+    - COMPLETION_CHECK_ID_AS_COMPLETION_PREDICATE_IDENTITY
+    - MANAGEMENT_ACTION_EXECUTION_COMPLETION_REGISTRY_TOPOLOGY
+    - EXECUTION_PROFILE_ID_PATTERN
+    - EXECUTION_PROFILE_PARTIAL_NORMATIVE_CATEGORY
+    - EXECUTOR_CLASS_CANONICAL_REFERENCE_MODEL
+    - CONCURRENCY_CLOSED_VOCABULARY
+    - AUTOMATION_GOVERNANCE_RESOLUTION_DOMAIN_SEPARATION
+    - REQUIREMENT_ID_AND_ARRAY_ORDER_NON_NORMATIVE
+    - NEXT_ACTION_AFTER_DEPENDENCY_REMOVAL
+    - NEXT_ACTION_TARGET_REFS_REMOVAL
+    unresolved_decisions:
+    - ACTION_ID_PATTERN
+    - ACTION_AUTHORITY_REF_RESOLUTION_DOMAIN
+    - OPERATION_REF_EXACT_CONTRACT
+    - COMPLETION_CHECK_ID_PATTERN
+    - COMPLETION_CHECK_AUTHORITY_REF_RESOLUTION_DOMAIN
+    - PREDICATE_REF_EXACT_CONTRACT
+    - AUTOMATION_RUNTIME_PLANE_EXACT_IDENTITY_CONTRACT
+    - GOVERNANCE_AUTHORITY_PLANE_EXACT_REUSE_BINDING
+    - LEGACY_NEXT_ACTION_VALUE_MIGRATION_MAPPING
+    implementation_authorized_by_this_draft: false
+    registry_schema_validator_workflow_materialization: NOT_AUTHORIZED
+  unit_mpd_0017_6a090d802720:
+    owns:
+    - MANAGEMENT_NEXT_ACTION_REFERENCE_CONTRACT
+    - MANAGEMENT_ACTION_IDENTITY_ROUTING
+    - MANAGEMENT_EXECUTION_PROFILE_IDENTITY
+    - MANAGEMENT_COMPLETION_CHECK_IDENTITY_ROUTING
+    - CLASS_SCOPED_EXECUTOR_RESOLUTION
+    does_not_own:
+    - REFERENCED_OPERATION_SEMANTICS
+    - GOVERNANCE_AUTHORITY_SEMANTICS
+    - AUTOMATION_RUNTIME_IMPLEMENTATION
+    - COMPLETION_PREDICATE_SEMANTICS
+    - MANAGEMENT_POLICY_LIFECYCLE_STATUS_SEMANTICS
+    - IMPLEMENTATION_AUTHORIZATION
+  unit_mpd_veri_0006_6beb693dae2a:
+    responsibility: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+    verification_semantics_ref: MPD-VERI-0001
+    management_next_action_control_plane_ref: MPD-0017
+    schema_artifact:
+      path: developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
+      instance_schema_version: ptsip-management-verification-policy-plan-consistency-report/v1
+      schema_document_id: urn:ptsip:management-verification:policy-plan-consistency-report:v1
+      schema_document_is_management_policy: false
+      schema_artifact_role: MACHINE_ENFORCEMENT_ARTIFACT
+      physical_path_defines_semantic_identity: false
+      schema_generation_is_policy_version: false
+    output_structure:
+      canonical_top_level_fields:
+      - schema_version
+      - policy
+      - verification
+      - failures
+      namespace_semantics:
+        schema_version: REPORT_SCHEMA_IDENTITY
+        policy: POLICY_AUTHORITY_ENVELOPE
+        verification: AGGREGATE_VERIFICATION_RESULT
+        failures: DETAILED_FAILURE_DIAGNOSTICS
+      policy_authority_envelope:
+        verification_authority:
+          identity_fields:
+          - id
+          - version
+          lifecycle_fields:
+          - status
+          - next_action
+        output_authority:
+          identity_fields:
+          - id
+          - version
+          lifecycle_fields:
+          - status
+          - next_action
+      lifecycle_next_action_projection:
+        source_semantics: EXPLICIT_AUTHORITY_DOCUMENT_DECLARATION_ONLY
+        derive_from_status: FORBIDDEN
+        infer_when_source_absent: FORBIDDEN
+        canonical_shape:
+          required_fields:
+          - action
+          - execution
+          - completion_check
+          field_contract_owner: MPD-0017
+    authority_boundary:
+      verification_semantics_owner: MPD-VERI-0001
+      verification_output_semantics_owner: MPD-VERI-0006
+      schema_artifact_has_independent_policy_authority: false
+    draft_scope:
+      approved_decisions:
+      - OUTPUT_SCHEMA_POLICY_OWNER
+      - OUTPUT_SCHEMA_PHYSICAL_PATH
+      - OUTPUT_SCHEMA_INSTANCE_IDENTITY
+      - OUTPUT_SCHEMA_DOCUMENT_IDENTITY
+      - VERIFICATION_SEMANTICS_OUTPUT_SEMANTICS_RESPONSIBILITY_SPLIT
+      - TOP_LEVEL_OUTPUT_NAMESPACE_SPLIT
+      - POLICY_AUTHORITY_ENVELOPE
+      - POLICY_IDENTITY_LIFECYCLE_SPLIT
+      - LIFECYCLE_NEXT_ACTION_PROJECTION
+      - NEXT_ACTION_DIRECT_ID_REFERENCE_TRIPLE
+      - MANAGEMENT_NEXT_ACTION_CONTROL_PLANE_REFERENCE
+      unresolved_output_structure_must_not_be_inferred: true
+      unresolved_contract_areas:
+      - VERIFICATION_RESULT_INTERNAL_STRUCTURE
+      - VERDICT_VOCABULARY
+      - ZERO_BINDING_SEMANTICS
+      - COUNT_FIELD_CONTRACT
+      - FAILURE_ITEM_STRUCTURE
+      - FAILURE_CODE_VOCABULARY
+      - FAILURE_MESSAGE_SEMANTICS
+      - FAILURE_REF_SEMANTICS
+      - FAILURE_ORDERING_AND_DEDUPLICATION
+      - REMEDIATION_OUTPUT_BOUNDARY
+      - REPOSITORY_SNAPSHOT_METADATA
+      - CLI_EXIT_CODE_CONTRACT
+      - SERIALIZATION_CONTRACT
+      - FORWARD_COMPATIBILITY
+  unit_mpd_veri_0006_6a090d802720:
+    owns:
+    - POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+    does_not_own:
+    - POLICY_PLAN_CONSISTENCY_VERIFICATION_SEMANTICS
+    - POLICY_SEMANTICS
+    - PLAN_CONTENT
+    - PLAN_APPROVAL
+    - POLICY_PLAN_BINDING_AUTHORITY
+    - IMPLEMENTATION_AUTHORIZATION
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

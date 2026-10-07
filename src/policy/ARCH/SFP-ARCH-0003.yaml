@@ -1,0 +1,41 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: ARCH
+policy:
+  id: SFP-ARCH-0003
+  title: ARCH authority (RETIRED source responsibilities)
+  status: RETIRED
+authority_subject:
+  id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
+  statement: consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할
+    및 명시적 typed 관계를 소유한다.
+exclusive_kernel:
+- SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+- SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+authority_contract:
+  authority_type: ROOT_FAMILY_ARCH
+  schema_id: ptsip.governance/root-family/arch
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로
+        선언하고 material mixed 책임 및 unresolved 소유를 구분한다.
+      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle
+        ownership을 자동 결정하지 않는다.
+    - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의
+        명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.
+      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트
+        소유 architecture 의도를 만들어 내지 못한다.
+    source_scope:
+    - SFP-0006
+  unit_sfp_0006_df14e3ecb4a5: true
+  unit_sfp_0006_7280fd0997ef: src/vpms
+  unit_sfp_0006_37886354ad54: false
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

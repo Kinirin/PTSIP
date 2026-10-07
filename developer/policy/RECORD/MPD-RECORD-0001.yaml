@@ -1,0 +1,101 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: RECORD
+policy:
+  id: MPD-RECORD-0001
+  title: RECORD authority (ACTIVE source responsibilities)
+  status: ACTIVE
+  version: '2.0'
+authority_subject:
+  id: DEV_DECISION_AND_EXECUTION_PROVENANCE
+  statement: 개발 결정, 승인, 작업 실행 및 검증 사건의 출처와 exact revision 결합, 감사 가능성과 역사적 보존을 소유한다.
+exclusive_kernel:
+- DEV_EVENT_PROVENANCE_AND_SOURCE_BINDING
+- DEV_HISTORY_RETENTION_AND_TRACEABILITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_EVENT_PROVENANCE_AND_SOURCE_BINDING
+      statement: 개발 기록에 subject, 수행 주체, 승인 근거, source SHA, 시점과 결과 출처를 결합하고 다른 revision의
+        증거를 혼합하지 않는다.
+      non_substitutability: ASSURE의 판정이나 GOV의 결정만으로 그 사건의 재확인 가능한 provenance가 보존되지
+        않는다.
+    - id: DEV_HISTORY_RETENTION_AND_TRACEABILITY
+      statement: 원본 검증 로그, receipt와 완료 산출물의 보존·조회 및 이력 연결을 정한다. 과거 기록을 현재 권한이나 현재
+        PASS로 승격하지 않는다.
+      non_substitutability: INFO의 현재 canonical 레코드나 OPS의 회복 상태가 역사적 사건의 원본 출처와 보존을
+        대체하지 못한다.
+    source_scope:
+    - MPD-0010
+    - MPD-0011
+    - MPD-0012
+    - MPD-RELS-0001
+    - MPD-WORK-0002
+  unit_mpd_0010_b72085fb0868: GIT_REVISION
+  unit_mpd_0011_b2d8b41a01e2:
+    policy_record: MATERIALIZED
+    policy_index_registration: MATERIALIZED
+    policy_resolver_routing: MATERIALIZED
+    authority_plane_registration: MATERIALIZED
+    operationalization_level: L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_AND_RELEASE_VERIFY
+    public_profile_catalog: MATERIALIZED
+    canonical_pp_contract_registry: MATERIALIZED
+    t2_delta_resolver: MATERIALIZED
+    transition_reconciler: MATERIALIZED_AND_HOOK_INVOKED
+    h3_hook_activation: MATERIALIZED_SHARED_INSTALLER
+    remote_commit_verifier: MATERIALIZED_PUSH_VERIFY_ONLY
+    release_transition_verifier: MATERIALIZED_EXACT_SHA_VERIFY_ONLY
+    runtime_current_pp_registry_resolution: MATERIALIZED
+    packaging_registry_projection: MATERIALIZED
+    distribution_contract_verifier: MATERIALIZED
+    claim: LOCAL_REMOTE_RELEASE_PP_AUTOMATION_ACTIVE
+  unit_mpd_0012_7bc423f87b11:
+    observed_branch: dev/0.3.8
+    observed_head_before_this_record: df018272ef31ef84c3cc158d00235af946862c09
+    currently_materialized:
+      agent_contract_root: src/agent_contracts
+      contract_set_status: CURRENT
+      authority_scope: CODING_AGENT_BEHAVIOR
+      markdown_normative_dependency: FORBIDDEN
+      external_machine_contracts: EXPLICIT_BINDING_ONLY
+      typed_contract_kinds:
+      - SPEC
+      - OPERATION
+      - ACTION
+      - CONDITION
+      - MUTATION_GATE
+      - IO_SCHEMA
+      - VOCABULARY
+      - BINDING
+      markdown_cleanup_automation: MATERIALIZED_SIMULATION_AND_GUARDED_APPLY
+    completed_materialization:
+    - NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL
+    current_legacy_markdown_physical_presence: ABSENT
+    implementation_work_from_this_ledger: AGENT_CONTRACT_MACHINE_PLANE_M0_M5_VERIFIED
+  unit_mpd_rels_0001_8b9a13c6427c:
+    release_note_namespaces:
+    - tool
+    - project-profile
+    - specification
+    historical_flat_release_notes_bulk_moved: false
+  unit_mpd_work_0002_a794e002b8bd:
+    structured_result_required: true
+    resulting_state_required: true
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-ROOT-RECORD-0001-ACTIVE.yaml
+    next_action:
+      action: VERIFY_SOURCE_PROJECTION
+      execution: SERIAL_REQUIRED
+      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH

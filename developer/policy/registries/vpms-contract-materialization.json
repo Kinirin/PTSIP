@@ -1,0 +1,192 @@
+{
+  "schema_version": "vpms-contract-materialization/v1",
+  "artifact_class": "DEVELOPER_MATERIALIZATION_SCOPE_RECORD",
+  "normative_authority": false,
+  "base_head": "f34def7fa594bf0e74d8a4f552ca6cd9c0d54323",
+  "approval": {
+    "decision": "APPROVED",
+    "decision_source": "USER_EXPLICIT",
+    "source_reference": "Project Owner approved all recommended detailed values and formal contract materialization plus exact change-scope registration on 2026-10-05: 모두 승인하겠습니다.",
+    "stage": "CONTRACT_MATERIALIZATION_ONLY",
+    "runtime_activation_authorized": false,
+    "selector_retirement_authorized": false,
+    "sfp_0006_retirement_authorized": false,
+    "commit_push_authorized": false
+  },
+  "approved_design": {
+    "contract_class": "VPMS_PRODUCT_CONTRACT",
+    "canonical_root": "src/vpms/contracts",
+    "installed_root": "vpms/contracts",
+    "product_registration_status": "APPROVED",
+    "support_registration_status": "DRAFT",
+    "selection_request_kinds": [
+      "CASE_IDS",
+      "RULE_REF"
+    ],
+    "selection_rule_kind": "CASE_ID_SET",
+    "ordering": "CASE_ID_ASCENDING",
+    "duplicate_unknown_empty": "REJECT_REQUEST",
+    "failure_atomicity": "ALL_OR_NOTHING",
+    "selection_execution_side_effects": false,
+    "compatibility": "NEW_API_VERIFIED_THEN_COMPATIBILITY_ADAPTER_THEN_EXPLICIT_RETIREMENT_BOUNDARY",
+    "expanded_identity": "VERIFICATION_PROTOCOL_MANAGEMENT_SYSTEM",
+    "governing_question": "HOW_EXPLICIT_VERIFICATION_CASES_ARE_BOUND_EXECUTED_AND_REPORTED",
+    "purpose": "COMPATIBILITY_FIELD_NOT_CANONICAL_SELECTION_AUTHORITY",
+    "execution_composition_owner": "SEPARATE_FROM_SELECTION_AND_MPD_VERI_0007"
+  },
+  "materialization_targets": [
+    "developer/automation/support_contract_registration.py",
+    "developer/policy/schemas/vpms-contract-materialization.schema.json",
+    "developer/policy/registries/vpms-contract-materialization.json",
+    "src/vpms/contracts/identity-registry.json",
+    "src/vpms/contracts/index.json",
+    "src/vpms/contracts/invariants.json",
+    "src/vpms/contracts/protocol.json",
+    "src/vpms/contracts/selection.json",
+    "src/vpms/contracts/execution-composition.json",
+    "src/vpms/contracts/schemas/catalog.schema.json",
+    "src/vpms/contracts/schemas/product-contract.schema.json",
+    "src/vpms/contracts/schemas/selection-request.schema.json",
+    "src/vpms/contracts/schemas/selection-result.schema.json",
+    "src/vpms/contracts/schemas/selection-rule.schema.json",
+    "src/policy/index.yaml",
+    "src/policy/registries/ptsip-support-authority-schema-registry.yaml",
+    "src/policy/registries/ptsip-support-authority-role-registry.yaml",
+    "src/policy/registries/ptsip-support-authority-subject-registry.yaml",
+    "src/policy/schemas/ptsip-support-authority-semantics.schema.json",
+    "developer/automation/policy_validator.py",
+    "developer/profiles/ptsip-repository.yaml",
+    ".github/test_modes.yaml",
+    "pyproject.toml",
+    "src/tests/vpms/contracts/test_product_contracts.py",
+    "src/tests/vpms/contracts/test_selection_schemas.py",
+    "src/tests/vpms/contracts/test_installed_contracts.py",
+    "developer/tests/test_vpms_contract_registration.py",
+    "src/tests/ptsip/governance/test_contracts.py",
+    "src/policy/SFP-0023.yaml",
+    "src/policy/schemas/ptsip-support-feature-policy-index.schema.json",
+    ".ptsip/profiles/main.ptsip.yaml",
+    "developer/tests/test_developer_control_plane.py",
+    "src/tests/ptsip/test_modes/test_registry_validator.py",
+    "src/tests/ptsip/test_modes/test_selection_resolver.py",
+    "src/tests/ptsip/test_release_readiness_030.py"
+  ],
+  "preservation_comparison": "TEXT_BYTES_WITH_CRLF_LF_EQUIVALENCE_ONLY",
+  "preserved_files": [
+    {
+      "path": "src/policy/SFP-0006.yaml",
+      "sha256": "81fe4c5a92be0bb274c73b7ab610f135f9731bc6b94830d00504867ac37a603d",
+      "lf_sha256": "1fdfff8c980d2fd7f4a94cb63c0398a587444c9443d62a95262e0cdc680afb3e"
+    },
+    {
+      "path": "src/vpms/__init__.py",
+      "sha256": "faf1cd1c36a43fd92991e881beb789868817fcafe2afc4eccb7eaf5128c6296f",
+      "lf_sha256": "8f20b4681b768c779b8f2797ade75e0affe067358fae45ab961051caa5b45cdc"
+    },
+    {
+      "path": "src/vpms/domain/model.py",
+      "sha256": "a8969d463086ab0c27ac5ed7a746b852b8d887ae29054df14c5a1d3efdbe15df",
+      "lf_sha256": "211534583900c49d97a8cbe8ac79b6f2c1183f59a1f08b8e48f1730526e5e52a"
+    },
+    {
+      "path": "src/vpms/domain/registry.py",
+      "sha256": "399a640333a0f1f86a70a92c0dac23cadedfc20c6d217e8cd98a92f04ebd39d2",
+      "lf_sha256": "23786df93c97e3696c9912fe8dcd772bce38d717f289612dd053bc7fa4882b30"
+    },
+    {
+      "path": "src/vpms/domain/selector.py",
+      "sha256": "56310d28c756a24b082c6d606338c90f20467b6006315e9986d3af98fd855365",
+      "lf_sha256": "0c43a1de8b9e0943a070820d58a65b495f3885703a253fe5a0f7e7e787a6d32c"
+    },
+    {
+      "path": "src/vpms/execution/runner.py",
+      "sha256": "fbf3f26d811aa43eb7d408a78988b0a3df0459f50578b2063d76d91eea056359",
+      "lf_sha256": "3a56262dcc69a9760b4bf3f71fc00eaf623f7a46f3c16088578c39ebf2e3ba01"
+    },
+    {
+      "path": "src/vpms/execution/adapters/command.py",
+      "sha256": "8439fe862bb78d5c33980fde9d2e86d5eb32b600b195b4abe33d6b364bcfa72c",
+      "lf_sha256": "7dde586df6750c8b5d5e1e584b00aa5e4a6a30e04ef5ae146465132f320d8f0c"
+    },
+    {
+      "path": "src/vpms/integration/ptsip_bridge.py",
+      "sha256": "b9b31e278b2b637dcdee2410d0b8a8a8737f6a0a9b5840bfcd971eaf34051819",
+      "lf_sha256": "06fcef27d07d9968d415ddedb35e5ed6c1fb667bba3af56394b88f9d92809843"
+    },
+    {
+      "path": "developer/policy/VERI/MPD-VERI-0007.yaml",
+      "sha256": "e5557fda8564db439e81c6295f3452354f5cc2ae4e632ab8dcb8d061b27914f4",
+      "lf_sha256": "e5557fda8564db439e81c6295f3452354f5cc2ae4e632ab8dcb8d061b27914f4"
+    },
+    {
+      "path": "developer/policy/index.yaml",
+      "sha256": "5ed5d9484e59dac6419bb0c55b7715c52447d0831368bec7339981be39b18a83",
+      "lf_sha256": "5ed5d9484e59dac6419bb0c55b7715c52447d0831368bec7339981be39b18a83"
+    },
+    {
+      "path": "developer/tests/test_authority_family_isolation.py",
+      "sha256": "30fc2120b6614d93cf5116955aa0c0f85ac65537c883f6b2157d04b27390fd0d",
+      "lf_sha256": "30fc2120b6614d93cf5116955aa0c0f85ac65537c883f6b2157d04b27390fd0d"
+    },
+    {
+      "path": "developer/policy/approvals/MPA-20261005-VPMS-VERI-ACTIVE.yaml",
+      "sha256": "b74145c5079c7ac7dac44a848eb65f821290cd19ee80c966058cb495b6d19555",
+      "lf_sha256": "b74145c5079c7ac7dac44a848eb65f821290cd19ee80c966058cb495b6d19555"
+    }
+  ],
+  "hash_role": "LOCAL_WORKTREE_BYTE_AUDIT_NOT_NORMATIVE_SEMANTIC_DIGEST",
+  "deferred_ownership": [
+    {
+      "responsibility": "PTSIP_VPMS_READ_ONLY_BOUNDARY",
+      "source": "src/vpms/integration/ptsip_bridge.py",
+      "symbols": [
+        "metadata_from_effective_map",
+        "resolve_target_metadata"
+      ],
+      "binding_state": "REGISTERED_NOT_ACTIVATED"
+    },
+    {
+      "responsibility": "VPMS_PRODUCT_PROTOCOL",
+      "sources": [
+        "src/vpms/domain/model.py",
+        "src/vpms/domain/registry.py",
+        "src/vpms/execution/runner.py"
+      ],
+      "symbols": [
+        "VerificationCase",
+        "Registry",
+        "load_registry",
+        "RunnerExecution",
+        "CaseExecutor",
+        "run_case"
+      ],
+      "binding_state": "REGISTERED_NOT_ACTIVATED"
+    },
+    {
+      "responsibility": "VPMS_CASE_SELECTION",
+      "retirement_evidence": "src/vpms/domain/selector.py",
+      "successor_api": "resolve_selection",
+      "binding_state": "REGISTERED_NOT_IMPLEMENTED"
+    },
+    {
+      "responsibility": "VPMS_EXECUTION_COMPOSITION",
+      "source": "src/vpms/execution/runner.py",
+      "symbols": [
+        "run_selected_cases"
+      ],
+      "successor_api": "run_cases",
+      "binding_state": "REGISTERED_NOT_IMPLEMENTED"
+    }
+  ],
+  "allocation": {
+    "identity_allocation": "UUID_V4_OPAQUE_EXACT",
+    "product_contract_ids": {
+      "execution_composition": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+      "protocol": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+      "selection": "urn:uuid:e6707543-f052-4035-bb86-166701e06362"
+    },
+    "support_policy_id": "SFP-0023",
+    "support_policy_path": "src/policy/SFP-0023.yaml",
+    "support_source_index_sha256": "14980f98cd1d845333ad925c68ba3968cb6082627e4368c07ca60e8efb436531"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:catalog-contract-registry-schema:v1",
+  "type": "object",
+  "required": ["$schema", "$id", "schema_version", "artifact_class", "model", "contract_status", "catalog_application_status", "maintenance_authority", "approval", "entrypoints", "contracts", "invariants", "application_gate", "change_scope", "$defs"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"const": "https://json-schema.org/draft/2020-12/schema"},
+    "$id": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "developer-policy-catalog-contract-registry/v1"},
+    "artifact_class": {"const": "DEVELOPER_POLICY_CATALOG_CONTRACT_REGISTRY"},
+    "model": {"const": "NEUTRAL_DEVELOPER_POLICY_CATALOG_ARTIFACT"},
+    "contract_status": {"const": "REGISTERED"},
+    "catalog_application_status": {"enum": ["NOT_APPLIED", "APPLIED"]},
+    "maintenance_authority": {"const": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG"},
+    "go_implementation_bindings": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["source_path", "source_functions", "targets"], "additionalProperties": false,
+        "properties": {
+          "source_path": {"type": "string", "pattern": "^developer/(automation|tests)/.+\\.py$"},
+          "source_functions": {"$ref": "#/$defs/paths"},
+          "targets": {
+            "type": "array", "minItems": 1,
+            "items": {
+              "type": "object", "required": ["path", "go_functions"], "additionalProperties": false,
+              "properties": {
+                "path": {"type": "string", "pattern": "^developer/(automation|tests)/.+\\.go$"},
+                "go_functions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"}}
+              }
+            }
+          }
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "required": ["decision", "decision_source", "source_kind", "source_reference", "recorded_at", "approved_scopes"],
+      "additionalProperties": false,
+      "properties": {
+        "decision": {"const": "APPROVED"},
+        "decision_source": {"const": "USER_EXPLICIT"},
+        "source_kind": {"const": "PROJECT_OWNER_DIRECT_INSTRUCTION"},
+        "source_reference": {"type": "string", "minLength": 1},
+        "recorded_at": {"type": "string", "minLength": 1},
+        "approved_scopes": {"const": ["STALE_FIXTURE_REMEDIATION", "NEUTRAL_CATALOG_CONTRACT_MATERIALIZATION", "EXACT_CHANGE_SCOPE_REGISTRATION"]}
+      }
+    },
+    "entrypoints": {
+      "type": "object", "required": ["index", "subject"], "additionalProperties": false,
+      "properties": {"index": {"type": "string", "minLength": 1}, "subject": {"type": "string", "minLength": 1}}
+    },
+    "contracts": {
+      "type": "object", "minProperties": 2, "maxProperties": 2,
+      "additionalProperties": {
+        "type": "object", "required": ["artifact_class", "schema_ref", "canonical_path"], "additionalProperties": false,
+        "properties": {
+          "artifact_class": {"type": "string", "minLength": 1},
+          "schema_ref": {"type": "string", "pattern": "^developer/policy/schemas/[^/]+\\.schema\\.json$"},
+          "canonical_path": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "required": ["catalog_authority", "policy_file_authority", "index_policy_class_and_status", "subject_registered_policy_ids", "preserved_subject_fields", "policy_ids_globally_unique", "responsibility_family_sequence_shared_across_policy_classes", "boundary_is_responsibility_family", "authority_lookup_key", "family_only_authority_lookup", "unknown_or_mismatched_metadata", "projection_is_independent_authority", "catalog_owns_policy_normative_meaning", "consumer_runtime_dependency_on_developer_policies"],
+      "additionalProperties": false,
+      "properties": {
+        "catalog_authority": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "policy_file_authority": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "index_policy_class_and_status": {"type": "string"},
+        "subject_registered_policy_ids": {"type": "string"},
+        "preserved_subject_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "policy_ids_globally_unique": {"type": "boolean"},
+        "responsibility_family_sequence_shared_across_policy_classes": {"type": "boolean"},
+        "boundary_is_responsibility_family": {"type": "boolean"},
+        "authority_lookup_key": {"type": "array", "items": {"type": "string"}},
+        "family_only_authority_lookup": {"type": "string"},
+        "unknown_or_mismatched_metadata": {"type": "string"},
+        "projection_is_independent_authority": {"type": "boolean"},
+        "catalog_owns_policy_normative_meaning": {"type": "boolean"},
+        "consumer_runtime_dependency_on_developer_policies": {"type": "string"}
+      }
+    },
+    "application_gate": {
+      "type": "object",
+      "required": ["catalog_payload_migration_authorized", "m2_m8_implementation_authorized", "vpms_policy_materialization_authorized", "existing_policy_materialization_schema_ref", "neutral_type_recognition_does_not_authorize_policy_materialization"],
+      "additionalProperties": false,
+      "properties": {
+        "catalog_payload_migration_authorized": {"type": "boolean"},
+        "m2_m8_implementation_authorized": {"type": "boolean"},
+        "vpms_policy_materialization_authorized": {"type": "boolean"},
+        "existing_policy_materialization_schema_ref": {"type": "string", "minLength": 1},
+        "neutral_type_recognition_does_not_authorize_policy_materialization": {"const": true}
+      }
+    },
+    "application_execution": {
+      "type": "object",
+      "required": ["decision", "decision_source", "source_reference", "base_head", "status", "vpms_target_status", "vpms_content_status", "vpms_class_materialization_enabled", "m1_m7_verified", "targets"],
+      "additionalProperties": false,
+      "properties": {
+        "decision": {"const": "APPROVED"},
+        "decision_source": {"const": "USER_EXPLICIT"},
+        "source_reference": {"type": "string", "minLength": 1},
+        "base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "status": {"enum": ["IN_PROGRESS", "MIGRATION_COMPLETE_POLICY_CONTENT_PENDING", "COMPLETE"]},
+        "vpms_target_status": {"const": "APPROVED"},
+        "vpms_content_status": {"enum": ["OWNER_CONTENT_REQUIRED", "SOURCE_DECLARATIONS_APPROVED", "REGISTERED"]},
+        "vpms_class_materialization_enabled": {"type": "boolean"},
+        "m1_m7_verified": {"type": "boolean"},
+        "m1_m7_verification": {
+          "type": "object",
+          "required": ["stage", "snapshot_kind", "base_head", "test_modes", "return_code", "passed", "failed", "skipped", "log_path"],
+          "additionalProperties": false,
+          "properties": {
+            "stage": {"const": "M1_M7_CLASS_ISOLATION"},
+            "snapshot_kind": {"const": "WORKING_TREE_ON_BASE_HEAD"},
+            "base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+            "test_modes": {"$ref": "#/$defs/paths"},
+            "return_code": {"const": 0},
+            "passed": {"type": "integer", "minimum": 1},
+            "failed": {"const": 0},
+            "skipped": {"type": "integer", "minimum": 0},
+            "log_path": {"type": "string", "minLength": 1}
+          }
+        },
+        "registered_vpms_policy_id": {"type": "string", "pattern": "^MPD-(SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"},
+        "targets": {"$ref": "#/$defs/paths"},
+        "preserved_analysis_semantic_digests": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+      }
+    },
+    "change_scope": {
+      "type": "object",
+      "required": ["base_head", "pre_existing_changes", "materialization_targets", "deferred_application_targets", "separate_authority_family_work", "preserved_contracts", "forbidden_write_roots", "forbidden_actions", "verification_selection", "verification_test_paths"],
+      "additionalProperties": false,
+      "properties": {
+        "base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "pre_existing_changes": {"$ref": "#/$defs/paths"},
+        "materialization_targets": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/materialization_target"}},
+        "deferred_application_targets": {"type": "array", "items": {"$ref": "#/$defs/deferred_target"}},
+        "separate_authority_family_work": {"$ref": "#/$defs/paths"},
+        "preserved_contracts": {"$ref": "#/$defs/paths"},
+        "forbidden_write_roots": {"$ref": "#/$defs/paths"},
+        "forbidden_actions": {"$ref": "#/$defs/paths"},
+        "verification_selection": {"const": "AUTOMATIC_TEST_MODE_RESOLUTION"},
+        "verification_test_paths": {"$ref": "#/$defs/paths"}
+      }
+    },
+    "$defs": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "object"}}
+  },
+  "$defs": {
+    "paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "materialization_target": {
+      "type": "object", "required": ["path", "operation"], "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "operation": {"enum": ["CREATE", "MODIFY"]},
+        "python_functions": {"$ref": "#/$defs/paths"},
+        "module_fields": {"$ref": "#/$defs/paths"}
+      }
+    },
+    "deferred_target": {
+      "type": "object", "required": ["path", "execution_authorized"], "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "fields": {"$ref": "#/$defs/paths"},
+        "python_functions": {"$ref": "#/$defs/paths"},
+        "execution_authorized": {"const": false}
+      }
+    }
+  }
+}

@@ -1,0 +1,586 @@
+{
+  "schema_version": "ptsip-root-family-transition-evidence/v1",
+  "authorization_source": "새 Root Family ID의 정책으로 책임을 분해·전환; 원본 책임의 상태 보존: ACTIVE는 승인 전이를 거쳐 ACTIVE, APPROVED·DRAFT는 해당 상태 유지",
+  "transitions": [
+    {
+      "policy_id": "MPD-NORM-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-NORM-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-NORM-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-NORM-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-NORM-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-NORM-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-NORM-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-NORM-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-GOV-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-GOV-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-GOV-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-GOV-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-GOV-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-GOV-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-GOV-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-GOV-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-GOV-0002",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-GOV-0002-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-GOV-0002",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-GOV-0002-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-INTENT-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-INTENT-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-INTENT-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-INTENT-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-INTENT-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-INTENT-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-INTENT-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-INTENT-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-ARCH-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-ARCH-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ARCH-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-ARCH-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-ARCH-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-ARCH-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ARCH-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-ARCH-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-INFO-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-INFO-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-INFO-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-INFO-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-INFO-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-INFO-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-INFO-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-INFO-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-INFO-0002",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-INFO-0002-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-INFO-0002",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-INFO-0002-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CNTR-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CNTR-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CNTR-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-CNTR-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CNTR-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CNTR-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CNTR-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-CNTR-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-REAL-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-REAL-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-REAL-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-REAL-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-REAL-0002",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-REAL-0002-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-REAL-0002",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-REAL-0002-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-ASSURE-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ASSURE-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-ASSURE-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-ASSURE-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ASSURE-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-ASSURE-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-ASSURE-0002",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0002-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-ASSURE-0002",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-ASSURE-0002-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CTRL-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CTRL-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CTRL-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-CTRL-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CTRL-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CTRL-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CTRL-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-CTRL-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CHANGE-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CHANGE-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-CHANGE-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CHANGE-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CHANGE-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-CHANGE-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-CHANGE-0002",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0002-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-CHANGE-0002",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-CHANGE-0002-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-OPS-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-OPS-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-OPS-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-OPS-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-OPS-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-OPS-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-OPS-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-OPS-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    },
+    {
+      "policy_id": "MPD-RECORD-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-RECORD-0001-APPROVED.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-RECORD-0001",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "approval_id": "MPA-20261006-ROOT-RECORD-0001-APPROVED",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "DRAFT",
+        "target_status": "APPROVED",
+        "current_version": "0.0",
+        "next_version": "1.0"
+      }
+    },
+    {
+      "policy_id": "MPD-RECORD-0001",
+      "approval_ref": "developer/policy/approvals/MPA-20261006-ROOT-RECORD-0001-ACTIVE.yaml",
+      "preflight": {
+        "status": "READY",
+        "policy_id": "MPD-RECORD-0001",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "approval_id": "MPA-20261006-ROOT-RECORD-0001-ACTIVE",
+        "implementation_authorized": true
+      },
+      "version_transition": {
+        "status": "READY",
+        "change_class": "LIFECYCLE_TRANSITION",
+        "current_status": "APPROVED",
+        "target_status": "ACTIVE",
+        "current_version": "1.0",
+        "next_version": "2.0"
+      }
+    }
+  ]
+}

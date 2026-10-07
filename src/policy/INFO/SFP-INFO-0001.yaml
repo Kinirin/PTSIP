@@ -1,0 +1,294 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0001
+  title: INFO authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_PROFILE_CONTEXT_INFORMATION_SEMANTICS
+  statement: consumer profile, canonical effective metadata, Context Plane 및 관측 evidence의
+    정보 의미와 semantic source/projection 구분을 소유한다.
+exclusive_kernel:
+- SUP_CANONICAL_INFORMATION_MODEL
+- SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_CANONICAL_INFORMATION_MODEL
+      statement: profile의 classification, roles, relationships, source_mode 및 evidence
+        정보형을 서로 다른 의미 축으로 정의한다.
+      non_substitutability: ARCH의 특정 project 선언이나 ASSURE의 판정이 정보 축의 의미를 합치거나 새 canonical
+        alias를 만들 수 없다.
+    - id: SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+      statement: Source Profile 및 context semantic source와 결정론적 effective/projection
+        정보의 결합과 non-authoritative derivation 관계를 명시한다.
+      non_substitutability: REAL의 출력 파일 존재나 RECORD의 과거 snapshot은 현재 source 의미를 대신
+        소유하지 않는다.
+    source_scope:
+    - SFP-0001
+    - SFP-0002
+    - SFP-0003
+    - SFP-0005
+    - SFP-0007
+    - SFP-0008
+    - SFP-0009
+    - SFP-0010
+    - SFP-0011
+    - SFP-0012
+    - SFP-0013
+    - SFP-0014
+    - SFP-0015
+    - SFP-0016
+    - SFP-0017
+    - SFP-0018
+    - SFP-0019
+    - SFP-0020
+    - SFP-0021
+    - SFP-0022
+    - SFP-0023
+    - SFP-0024
+  unit_sfp_0001_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0002_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0003_20dd73467bc1: true
+  unit_sfp_0003_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0005_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0007_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0008_48fefffba96a: PRIMARY_LIFECYCLE_OWNERSHIP
+  unit_sfp_0008_56ceefb8404a: COARSE_RESPONSIBILITY_CHARACTERISTICS
+  unit_sfp_0008_20c27966a4b6: TYPED_DIRECTED_SEMANTICS
+  unit_sfp_0008_80e4a4b01e34: VPMS
+  unit_sfp_0008_09ed9d132ac7:
+  - IMPLEMENTATION
+  - VERIFICATION
+  - AUTOMATION
+  - CONFIGURATION
+  - DOCUMENTATION
+  - GOVERNANCE
+  unit_sfp_0008_d0a62eef1bd9: ZERO_OR_MORE
+  unit_sfp_0008_e266a85cd062:
+  - COMPONENT
+  - ASSOCIATED_ARTIFACT
+  unit_sfp_0008_ecd8590c8526:
+  - IMPORTS
+  - LINKS
+  - LOADS
+  - INVOKES
+  - READS
+  - GENERATES
+  - BUILDS
+  - PACKAGES
+  - PUBLISHES
+  - DEPLOYS
+  - VERIFIES
+  - MANAGES
+  - DOCUMENTS
+  - SPECIFIES
+  - GOVERNS
+  unit_sfp_0008_f495929182f6:
+  - PRODUCES
+  - SUPPORTS
+  - USES
+  - DEPENDS_ON
+  unit_sfp_0008_671700fee0d2: false
+  unit_sfp_0008_69ea40e7c2b7: EXACTLY_ONE
+  unit_sfp_0008_aa59a9e1befd: true
+  unit_sfp_0008_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on:
+    - policy: SFP-0007
+      scope: PRIMARY_LIFECYCLE_ONTOLOGY
+  unit_sfp_0009_e2e91fd58b03:
+  - EXPLICIT
+  - TEMPLATE
+  - HYBRID
+  unit_sfp_0009_06a1415f3dba: false
+  unit_sfp_0009_0b22b27a1a40:
+  - COMPONENTS
+  - ASSOCIATED_ARTIFACTS
+  - TYPED_RELATIONSHIPS
+  - COMPONENT_DEPENDENCY_POLICY
+  - PROJECT_POLICIES
+  unit_sfp_0009_a9396e8f6a8e: SHA256_CANONICAL_SEMANTIC_REPRESENTATION
+  unit_sfp_0009_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on:
+    - policy: SFP-0007
+      scope: PRIMARY_LIFECYCLE_ONTOLOGY
+    - policy: SFP-0008
+      scope: RESPONSIBILITY_MAP_SEMANTIC_AXES
+  unit_sfp_0010_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0011_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on:
+    - policy: SFP-0010
+      scope: PROFILE_TRANSITION_SEMANTICS
+  unit_sfp_0012_bec0382f5ada: ptsip-normalized-evidence/v1
+  unit_sfp_0012_f3431be84088: true
+  unit_sfp_0012_e42bb54782ad: EVIDENCE_ONLY
+  unit_sfp_0012_11e59506ec82: true
+  unit_sfp_0012_0fc4aaadc4cc:
+  - EXPLICIT_ASSERTION
+  - NO_MATCH
+  - NOT_ANALYZED
+  - FAILED
+  unit_sfp_0012_bced5302f7a1: false
+  unit_sfp_0012_510f2eefdd32: EVIDENCE_ONLY
+  unit_sfp_0012_5c98cc640d27:
+  - schemas/ptsip-normalized-evidence.schema.json
+  - src/ptsip/specdata/ptsip-normalized-evidence.schema.json
+  unit_sfp_0012_2213ab2d5906: false
+  unit_sfp_0012_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0013_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0014_e0955d85701a: IMMUTABLE_TYPED
+  unit_sfp_0014_7206663df430:
+  - EXISTING_SOURCE_ELEMENT
+  - REMOVED_SOURCE_ELEMENT
+  - UNCOVERED_REPOSITORY_ELEMENT
+  - AMBIGUOUS_SOURCE_ELEMENT
+  unit_sfp_0014_c942680ac49d:
+    EXISTING_SOURCE_ELEMENT: REQUIRED_WORK_ELEMENT
+    REMOVED_SOURCE_ELEMENT: REMOVAL_MIGRATION_ELEMENT
+    UNCOVERED_REPOSITORY_ELEMENT: ASYNCHRONOUS_WORK_TARGET
+    AMBIGUOUS_SOURCE_ELEMENT: NO_OBLIGATION_CATEGORY
+  unit_sfp_0014_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0015_0279b7637af0:
+  - ADD
+  - REMOVE
+  - REPLACE
+  unit_sfp_0015_c2369c8ec3eb: BUNDLE_OF_ATOMIC_DELTAS
+  unit_sfp_0015_fcdd9e844b96: DETERMINISTIC_CANONICAL_CONTENT_PLUS_SOURCE_REFERENCES
+  unit_sfp_0015_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0016_a722f6073c93: true
+  unit_sfp_0016_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0017_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0018_17c8e66508e7:
+  - TOOL_VERSION
+  - PROJECT_PROFILE_CONTRACT_VERSION
+  - PROJECT_PROFILE_INSTANCE_REVISION
+  unit_sfp_0018_b6f217ca0175: pp.<major>.<minor>
+  unit_sfp_0018_880967054a74: 2
+  unit_sfp_0018_d7915f2b4f38: false
+  unit_sfp_0018_2d725ae96cd4: pp.0.00
+  unit_sfp_0018_9c74794189e9: pp.1.01
+  unit_sfp_0018_6d42114553f2: false
+  unit_sfp_0018_af739c4cf94b: false
+  unit_sfp_0018_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0019_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0020_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0021_17c8e66508e7:
+  - TOOL_VERSION
+  - PROJECT_PROFILE_CONTRACT_VERSION
+  - SPECIFICATION_BINDING
+  - PROJECT_PROFILE_INSTANCE_REVISION
+  unit_sfp_0021_f66a672833fd:
+  - family
+  - source
+  - revision
+  unit_sfp_0021_82af8cb56607: false
+  unit_sfp_0021_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0022_782f389e9f00: .ptsip/context/source/context.source.json
+  unit_sfp_0022_900c3f8d471c:
+  - .ptsip/context/context.json
+  - .ptsip/context/context.jsonl
+  - .ptsip/context/context.schema.json
+  unit_sfp_0022_6359b28f9f8b: FORBIDDEN
+  unit_sfp_0022_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0023_5f6791cc2261:
+    fields:
+    - component_id
+    - classification
+    ordering: COMPONENT_ID_ASCENDING
+  unit_sfp_0023_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+  unit_sfp_0024_40c664bc86a2:
+    supersedes: []
+    amends: []
+    extends: []
+    depends_on: []
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

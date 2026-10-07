@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261005-VPMS-VERI-DRAFT
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner approved VPMS policy creation with final target APPROVED in
+    the VERI Family. The subsequent explicit source-role declaration assigns
+    model.py, registry.py and runner.py as OWN sources; command.py as implementation
+    evidence; SFP-0006 as legacy boundary/reference; selector.py as RETIRE-target
+    evidence outside the new policy's ownership. DRAFT version 0.0 is only the
+    mandatory registration prerequisite for that explicitly approved final target.
+    Allocate the ID through class-aware family-preflight, not the suggested filename.
+  approval_scope: DRAFT_CREATION
+  target_status: DRAFT
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-VERI-0007
+  recorded_at: "2026-10-05T03:45:28+09:00"

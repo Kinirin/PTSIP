@@ -1,0 +1,201 @@
+{
+  "schema_version": "ptsip-neutral-machine-module/v1",
+  "module_id": "urn:ptsip:developer:root-family-projection:v1",
+  "version": "2.0",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "owner_policy_ref": "MPD-CNTR-0003",
+  "owner_section": "root_family_projection_module",
+  "language_neutral": true,
+  "program_language": "PTSIP_JSON_PROGRAM_V1",
+  "parameters": {
+    "policy_prefix": "MPD",
+    "value_field": "rules",
+    "owner_schema_version": "ptsip-developer-root-family-policy/v1"
+  },
+  "protocol": {
+    "inputs": [
+      "registry",
+      "source",
+      "read_record"
+    ],
+    "output": "HISTORICAL_SOURCE_RECORD",
+    "record_digest": "SHA256_SORTED_COMPACT_UTF8_JSON_UNESCAPED",
+    "identity_semantic_inheritance": "FORBIDDEN",
+    "archive_runtime_fallback": "FORBIDDEN",
+    "usage": "MIGRATION_HISTORY_AUDIT_ONLY",
+    "current_root_dependency": "FORBIDDEN"
+  },
+  "adapter_binding": {
+    "path": "src/ptsip/governance/authority.py",
+    "entrypoint": "project_source",
+    "role": "INTERPRETER_ONLY"
+  },
+  "program": [
+    {
+      "op": "let",
+      "name": "result",
+      "value": {
+        "op": "read_record",
+        "args": [
+          {
+            "op": "ref",
+            "path": "/source/archive_path"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "predicate": {
+        "op": "all",
+        "args": [
+          {
+            "op": "eq",
+            "args": [
+              {
+                "op": "ref",
+                "path": "/result/policy_class"
+              },
+              {
+                "op": "ref",
+                "path": "/registry/policy_class"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "op": "ref",
+                "path": "/result/policy/id"
+              },
+              {
+                "op": "ref",
+                "path": "/source/source_policy_id"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "op": "ref",
+                "path": "/result/policy/status"
+              },
+              {
+                "op": "ref",
+                "path": "/source/source_status"
+              }
+            ]
+          }
+        ]
+      },
+      "error": "ROOT_MIGRATION_SOURCE_IDENTITY_MISMATCH"
+    },
+    {
+      "op": "assert",
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "op": "record_digest",
+            "args": [
+              {
+                "op": "ref",
+                "path": "/result"
+              }
+            ]
+          },
+          {
+            "op": "ref",
+            "path": "/source/record_sha256"
+          }
+        ]
+      },
+      "error": "ROOT_MIGRATION_SOURCE_RECORD_CHANGED"
+    },
+    {
+      "op": "return",
+      "value": {
+        "op": "ref",
+        "path": "/result"
+      }
+    }
+  ],
+  "language_contract": {
+    "expression_operators": {
+      "ref": {
+        "arity": 0,
+        "semantics": "ENV_JSON_POINTER_LOOKUP_MISSING_NULL"
+      },
+      "literal": {
+        "arity": 0,
+        "semantics": "JSON_VALUE_DEEP_COPY"
+      },
+      "eq": {
+        "arity": 2,
+        "semantics": "CANONICAL_JSON_VALUE_EQUALITY"
+      },
+      "all": {
+        "arity": "VARIADIC",
+        "semantics": "ALL_OPERANDS_ARE_JSON_TRUE"
+      },
+      "not": {
+        "arity": 1,
+        "semantics": "OPERAND_IS_NOT_JSON_TRUE"
+      },
+      "contains": {
+        "arity": 2,
+        "semantics": "JSON_ARRAY_CONTAINS_JSON_VALUE"
+      },
+      "get": {
+        "arity": 2,
+        "semantics": "OBJECT_KEY_LOOKUP_MISSING_NULL"
+      },
+      "concat": {
+        "arity": "VARIADIC",
+        "semantics": "STRING_CONCATENATION"
+      },
+      "starts_with": {
+        "arity": 2,
+        "semantics": "STRING_PREFIX_MATCH"
+      },
+      "pluck": {
+        "arity": 2,
+        "semantics": "ARRAY_OF_OBJECT_KEY_VALUES_NULL_INPUT_EMPTY_ARRAY"
+      },
+      "has_key": {
+        "arity": 2,
+        "semantics": "OBJECT_KEY_PRESENCE"
+      },
+      "pointer_nonoverlap": {
+        "arity": 2,
+        "semantics": "ABSOLUTE_JSON_POINTER_NO_EQUAL_ANCESTOR_DESCENDANT_IN_SEEN"
+      },
+      "pointer_first": {
+        "arity": 1,
+        "semantics": "FIRST_DECODED_RFC6901_POINTER_TOKEN"
+      },
+      "read_record": {
+        "arity": 1,
+        "semantics": "EXACT_CLASS_LOCAL_RELATIVE_POLICY_RECORD_NO_PATH_ESCAPE"
+      },
+      "record_digest": {
+        "arity": 1,
+        "semantics": "SHA256_SORTED_COMPACT_UTF8_JSON_UNESCAPED"
+      }
+    },
+    "instruction_semantics": {
+      "let": "DEEP_COPY_VALUE_TO_NAMED_ENVIRONMENT_SLOT",
+      "assert": "FAIL_WITH_DECLARED_ERROR_UNLESS_PREDICATE_JSON_TRUE",
+      "append": "APPEND_VALUE_TO_NAMED_ARRAY",
+      "foreach": "EXECUTE_BODY_SERIAL_IN_ARRAY_ORDER_BINDING_NAMED_ITEM",
+      "set_pointer": "SET_DEEP_COPY_VALUE_AT_DECODED_RFC6901_OBJECT_POINTER",
+      "return": "RETURN_DEEP_COPY_VALUE"
+    },
+    "execution_order": "SERIAL",
+    "unknown_operator": "FAIL_CLOSED",
+    "embedded_implementation_language_source": "FORBIDDEN"
+  },
+  "module_digest_format": "SHA256_UTF8_LF"
+}

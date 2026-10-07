@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:policy-responsibility-analysis:v3",
+  "title": "Class-aware Policy Responsibility Analysis v3",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "artifact_class",
+    "analysis"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "developer-policy-responsibility-analysis/v3"
+    },
+    "artifact_class": {
+      "const": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS"
+    },
+    "analysis": {
+      "type": "object",
+      "required": [
+        "analysis_id",
+        "source_ref",
+        "responsibilities",
+        "decision"
+      ],
+      "properties": {
+        "analysis_id": {
+          "type": "string",
+          "pattern": "^PRA-[0-9]{4}$"
+        },
+        "source_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "responsibilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "responsibility_id",
+              "statement",
+              "authority_relation",
+              "authority_subject",
+              "lifecycle_scope",
+              "cohesion_key",
+              "policy_class",
+              "family",
+              "referenced_policy_class",
+              "referenced_family",
+              "existing_authority_lookup",
+              "materialization_action",
+              "target_group_id"
+            ],
+            "properties": {
+              "responsibility_id": {
+                "type": "string",
+                "pattern": "^R[0-9]{2,}$"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "authority_relation": {
+                "enum": [
+                  "OWN",
+                  "REFERENCE",
+                  "CONSUME",
+                  "VERIFY",
+                  "TRANSFORM",
+                  "EXECUTE"
+                ]
+              },
+              "authority_subject": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lifecycle_scope": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cohesion_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_developer_policy_class"},
+              "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_responsibility_family"},
+              "referenced_policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_developer_policy_class"},
+              "referenced_family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/nullable_responsibility_family"},
+              "existing_authority_lookup": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "searched_policy_class",
+                      "searched_family",
+                      "searched_policy_ids",
+                      "lookup_outcome",
+                      "candidate_comparisons"
+                    ],
+                    "properties": {
+                      "searched_policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+                      "searched_family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
+                      "searched_policy_ids": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "pattern": "^MPD-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+                        }
+                      },
+                      "lookup_outcome": {
+                        "enum": [
+                          "NO_MATCH",
+                          "MATCHES_FOUND"
+                        ]
+                      },
+                      "candidate_comparisons": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "policy_id",
+                            "section",
+                            "scope_relation",
+                            "collision_class",
+                            "resolution_action"
+                          ],
+                          "properties": {
+                            "policy_id": {
+                              "type": "string",
+                              "pattern": "^MPD-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD|SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4}$"
+                            },
+                            "section": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "scope_relation": {
+                              "enum": [
+                                "SAME_SCOPE",
+                                "DISTINCT_SCOPE",
+                                "NOT_APPLICABLE"
+                              ]
+                            },
+                            "collision_class": {
+                              "enum": [
+                                "EXACT_DUPLICATE",
+                                "SEMANTIC_EQUIVALENT",
+                                "EXISTING_SUBSUMES_CANDIDATE",
+                                "CANDIDATE_EXTENDS_EXISTING",
+                                "PARTIAL_OVERLAP",
+                                "DISTINCT_SCOPED_AUTHORITY",
+                                "CONFLICT"
+                              ]
+                            },
+                            "resolution_action": {
+                              "enum": [
+                                "REFERENCE_EXISTING",
+                                "DROP_REDUNDANT_CANDIDATE",
+                                "MERGE_INTO_EXISTING",
+                                "CREATE_NEW_SIBLING_POLICY",
+                                "SPLIT_RESPONSIBILITY_REQUIRED",
+                                "COEXIST_SCOPED",
+                                "FAIL_CLOSED_OWNER_DECISION_REQUIRED"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "materialization_action": {
+                "enum": [
+                  "CREATE_NEW_POLICY",
+                  "USE_EXISTING_AUTHORITY",
+                  "BLOCKED"
+                ]
+              },
+              "target_group_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "decision": {
+          "type": "object",
+          "required": [
+            "owned_authority_family_set",
+            "split_required",
+            "materialization_allowed",
+            "materialization_groups"
+          ],
+          "properties": {
+            "owned_authority_family_set": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "required": ["policy_class", "family"],
+                "additionalProperties": false,
+                "properties": {
+                  "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+                  "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"}
+                }
+              }
+            },
+            "split_required": {
+              "type": "boolean"
+            },
+            "materialization_allowed": {
+              "type": "boolean"
+            },
+            "materialization_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "group_id",
+                  "policy_class",
+                  "family",
+                  "cohesion_key",
+                  "responsibility_ids",
+                  "cohesion_rationale"
+                ],
+                "properties": {
+                  "group_id": {
+                    "type": "string",
+                    "pattern": "^G[0-9]{2,}$"
+                  },
+                  "policy_class": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/developer_policy_class"},
+                  "family": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/responsibility_family"},
+                  "cohesion_key": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "responsibility_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^R[0-9]{2,}$"
+                    }
+                  },
+                  "cohesion_rationale": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

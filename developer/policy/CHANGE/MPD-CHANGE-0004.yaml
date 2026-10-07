@@ -1,0 +1,71 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CHANGE
+policy:
+  id: MPD-CHANGE-0004
+  version: '2.0'
+  title: Developer legacy policy and Python automation retirement
+  status: ACTIVE
+authority_subject:
+  id: DEV_VERSIONED_TRANSITION_SEMANTICS
+  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
+exclusive_kernel:
+- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+- DEV_MIGRATION_ORDER_AND_CONTINUITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
+        문자열이나 Family 이름을 치환하지 않는다.
+      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
+        않는다.
+    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
+      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
+        정한다.
+      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
+        조건을 정당화할 수 없다.
+    source_scope: []
+  developer_legacy_retirement:
+    scope: DEVELOPER_CONTROL_PLANE
+    support_plane_inheritance: FORBIDDEN
+    target_policy_families:
+    - NORM
+    - GOV
+    - INTENT
+    - ARCH
+    - INFO
+    - CNTR
+    - RISK
+    - SUPPLY
+    - REAL
+    - ASSURE
+    - CTRL
+    - CHANGE
+    - OPS
+    - RECORD
+    target_policy_reference_model: EXACT_ROOT_POLICY_ID_AND_SECTION
+    target_removed_path: developer/policy/legacy
+    original_responsibility_lifecycle: PRESERVE
+    delete_before_complete_coverage_and_consumer_cutover: FORBIDDEN
+    historical_provenance: AUDIT_ONLY_NO_RUNTIME_AUTHORITY
+    runtime_legacy_policy_projection: REMOVE
+    completion_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: PROJECT_OWNER_GO_AUTOMATION_POLICY_ADMISSION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-GO-CHANGE-0004-ACTIVE.yaml
+    next_action:
+      action: VERIFY_GO_AUTOMATION_CUTOVER
+      execution: SERIAL_REQUIRED
+      completion_check: POLICY_ADMISSION_DOES_NOT_IMPLY_IMPLEMENTATION_COMPLETION

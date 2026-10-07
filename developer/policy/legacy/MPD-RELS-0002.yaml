@@ -1,0 +1,21 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-RELS-0002
+  version: "2.0"
+  title: Project Profile Release Publication Gate
+  status: ACTIVE
+
+rules:
+  release_publication_gate:
+    release_publication_with_invalid_pp_transition: FORBIDDEN
+    project_profile_transition_verification_ref: MPD-VERI-0003
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-VERI-0003
+      scope: PROJECT_PROFILE_TRANSITION_VERIFICATION

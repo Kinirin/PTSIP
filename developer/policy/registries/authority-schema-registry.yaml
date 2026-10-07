@@ -4,33 +4,39 @@ registry_role: MANAGEMENT_POLICY_SEMANTIC_CATALOG
 language_neutral: true
 semantic_schema_document: developer/policy/schemas/developer-authority-semantics.schema.json
 entries:
-  - policy_id: MPD-0002
-    source_authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
-    schema_definition: MPD_0002_V1
-  - policy_id: MPD-0003
-    source_authority_type: DISTRIBUTED_DECISION_AUTHORITY
-    schema_definition: MPD_0003_V1
-  - policy_id: MPD-0004
-    source_authority_type: SPECIFICATION_FAMILY_ACTIVATION
-    schema_definition: MPD_0004_V1
-  - policy_id: MPD-0005
-    source_authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
-    schema_definition: MPD_0005_V1
-  - policy_id: MPD-0006
-    source_authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
-    schema_definition: MPD_0006_V1
-  - policy_id: MPD-0007
-    source_authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
-    schema_definition: MPD_0007_V1
-  - policy_id: MPD-0008
-    source_authority_type: MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP
-    schema_definition: MPD_0008_V1
-  - policy_id: MPD-0009
-    source_authority_type: PROJECT_PROFILE_TRANSITION_WU_SEQUENCE
-    schema_definition: MPD_0009_V1
-  - policy_id: MPD-0011
-    source_authority_type: COMMIT_ATOMIC_FULL_PROJECT_PROFILE_TRANSITION_AUTOMATION
-    schema_definition: MPD_0011_V1
-  - policy_id: MPD-0012
-    source_authority_type: AGENT_CONTRACT_MACHINE_AUTHORITY
-    schema_definition: MPD_0012_V1
+- policy_id: MPD-CHANGE-0001
+  source_authority_type: COMMIT_ATOMIC_FULL_PROJECT_PROFILE_TRANSITION_AUTOMATION
+  schema_definition: MPD_0011_V1
+  section: unit_mpd_0011_8b9a13c6427c
+- policy_id: MPD-GOV-0001
+  source_authority_type: AGENT_CONTRACT_DECISION_LEDGER_RUNTIME_AUTHORITY
+  schema_definition: MPD_0012_V1
+  section: unit_mpd_0012_8b9a13c6427c
+- policy_id: MPD-GOV-0001
+  source_authority_type: PROJECT_PROFILE_VERSION_MIGRATION_AUTHORIZATION
+  schema_definition: MPD_MIGR_0003_V1
+  section: unit_mpd_migr_0003_8b9a13c6427c
+- policy_id: MPD-RECORD-0001
+  source_authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+  schema_definition: MPD_RELS_0001_V1
+  section: unit_mpd_rels_0001_8b9a13c6427c
+- policy_id: MPD-NORM-0001
+  source_authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+  schema_definition: MPD_SPEC_0002_V1
+  section: unit_mpd_spec_0002_8b9a13c6427c
+- policy_id: MPD-NORM-0001
+  source_authority_type: DISTRIBUTED_DECISION_AUTHORITY
+  schema_definition: MPD_SPEC_0003_V1
+  section: unit_mpd_spec_0003_8b9a13c6427c
+- policy_id: MPD-NORM-0001
+  source_authority_type: SPECIFICATION_FAMILY_ACTIVATION
+  schema_definition: MPD_SPEC_0004_V1
+  section: unit_mpd_spec_0004_8b9a13c6427c
+- policy_id: MPD-ARCH-0001
+  source_authority_type: MIGRATION_SUBSYSTEM_COMPONENT_OWNERSHIP
+  schema_definition: MPD_SPEC_0005_V1
+  section: unit_mpd_spec_0005_8b9a13c6427c
+- policy_id: MPD-ASSURE-0001
+  source_authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+  schema_definition: MPD_SPEC_0011_V1
+  section: unit_mpd_spec_0011_8b9a13c6427c

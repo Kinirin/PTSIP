@@ -1,0 +1,59 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: ASSURE
+policy:
+  id: MPD-ASSURE-0003
+  version: '3.0'
+  title: Root Family transition verification contract
+  status: ACTIVE
+authority_subject:
+  id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+  statement: 개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에 구속된 검증 판정을 소유한다.
+exclusive_kernel:
+- DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+- DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+      statement: 기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를 평가한다.
+      non_substitutability: CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이 충족되지 않는다.
+    - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+      statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와 PTSIP conformance
+        및 VPMS purpose를 구별한다.
+      non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도 미검증 SHA를 PASS로 만들
+        수 없다.
+    source_scope: []
+  root_family_transition_verification:
+    contract_ref: developer/policy/contracts/root-family-transition-verification.v1.json
+    contract_id: urn:ptsip:developer:root-family-transition-verification:v1
+    contract_owns_acceptance_semantics: true
+    test_implementation_owns_normative_semantics: false
+    scope:
+    - developer/policy
+    - src/policy
+    cross_plane_join: INDEPENDENT_CLASS_LOCAL_VERIFICATION_RESULTS_ONLY
+    existing_python_regression_required: true
+    go_verification_required: true
+    focused_pass_is_full_regression_pass: false
+    current_root_reconstruction_required: false
+    historical_migration_role: AUDIT_ONLY
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: GO_ROOT_FAMILY_VERIFICATION_SELECTION
+    state: SATISFIED
+    refs:
+    - developer/policy/contracts/root-family-transition-verification.v1.json
+    - .github/test_modes.yaml
+    next_action:
+      action: EXECUTE_REGISTERED_GO_AND_PYTHON_VERIFICATION
+      execution: SERIAL_REQUIRED
+      completion_check: GO_SELECTION_ADMITTED_AND_EXISTING_REGRESSION_PRESERVED

@@ -1,0 +1,1045 @@
+{
+  "schema_version": "ptsip-root-family-definition-set/v1",
+  "artifact_role": "DEVELOPER_ONLY_SEMANTIC_DESIGN",
+  "definition_state": "GENERATED",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "provenance": {
+    "authorization_source": "USER_EXPLICIT_DELEGATION",
+    "request": "Family별 authority_subject와 exclusive_kernel 정의를 위임하니 이를 정의를 생성해 주세요",
+    "base_branch": "dev/0.3.8a4",
+    "base_head": "18d7ee83ab5d18b2113fcbf5e2855af386b75dde",
+    "working_tree": "LOCAL_UNCOMMITTED_ENTRY_REPAIRS_AND_GENERATED_DEFINITIONS",
+    "bootstrap_ref": {
+      "path": "src/policy/SFP-0024.yaml",
+      "sha256": "32ba19295199da088c788666b647200d10513b6b69b9bd4d771ee7f6949bb33e"
+    },
+    "routing_authority": "developer/policy/registries/root-family-entry-registry.json"
+  },
+  "semantics": {
+    "profile": "CONSERVATIVE_MINIMUM_KERNEL",
+    "identity_fields": [
+      "policy_class",
+      "responsibility_family"
+    ],
+    "semantic_inheritance": "FORBIDDEN",
+    "boundary_closure": "MINIMUM_NOT_COMPLETE",
+    "extension_space": "OPEN",
+    "unresolved_assignment": "FAIL_CLOSED_FOR_EXECUTION",
+    "runtime_authority": false,
+    "policy_materialized": false,
+    "policy_lifecycle_status": null,
+    "prospective_ids_are_not_registration": true,
+    "legacy_to_root_mapping": "REQUIRES_EXPLICIT_RESPONSIBILITY_DECOMPOSITION",
+    "cross_class_relations": "NONE_DECLARED"
+  },
+  "definitions": [
+    {
+      "responsibility_family": "NORM",
+      "authority_subject": {
+        "id": "SUP_CONSUMER_REQUIREMENT_MEANING",
+        "statement": "shipped Support 계약에서 consumer에게 적용되는 PTSIP 요구의 효력과 해석 및 immutable bound Specification에 대한 구속 관계를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_REQUIREMENT_FORCE_AND_BOUND_SPEC",
+        "SUP_CONFORMANCE_RULE_INTERPRETATION"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_REQUIREMENT_FORCE_AND_BOUND_SPEC",
+          "statement": "consumer 요구의 MUST/MUST_NOT 의미와 bound Specification 우선순위를 명시한다. project-local policy가 universal PTSIP 요구를 약화할 수 없다.",
+          "non_substitutability": "GOV의 project decision이나 consumer가 원하는 INTENT만으로 universal 요구를 면제할 수 없다."
+        },
+        {
+          "id": "SUP_CONFORMANCE_RULE_INTERPRETATION",
+          "statement": "consumer 규범의 적용 조건과 해석 범위를 명시된 Specification revision과 shipped SFP 안에서 정한다.",
+          "non_substitutability": "ASSURE의 zero findings나 관측된 관행이 누락된 규범 의미를 생성하거나 미지원 해석을 승인하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "명시적으로 선택된 Specification binding의 정보형"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "binding과 규범 출처 provenance"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "Project Authority의 결정권과 적법한 winner"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "consumer operation 호출 인터페이스와 입출력 약속"
+        }
+      ],
+      "decision_example": "local 정책으로 PTSIP의 mandatory lifecycle 경계를 완화할 수 없다는 소비자 규칙은 Support NORM이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "NORM"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "NORM"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-NORM-0001",
+        "canonical_path": "src/policy/NORM/SFP-NORM-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "GOV",
+      "authority_subject": {
+        "id": "SUP_PROJECT_AUTHORITY_LEGITIMACY",
+        "statement": "consumer Project Authority에서 정확한 subject에 대해 누가 결정할 수 있는지, Authority Role의 효력 및 정당한 coordinated winner를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
+        "SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
+          "statement": "subject applicability, 결정 주체 및 Authority Role의 효력을 shipped registry의 정확한 identity와 명시적 relationship으로만 해석한다.",
+          "non_substitutability": "ARCH의 완전한 local profile이나 AI의 의미 유사성이 Project Authority와 역할 권한을 만들어 내지 못한다."
+        },
+        {
+          "id": "SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE",
+          "statement": "first-valid-resolution-wins와 global authority/local projection 구분에 따라 어느 적법한 결정이 해당 subject의 winner인지 정한다.",
+          "non_substitutability": "CTRL의 fresh read 성공이나 RECORD의 가장 최근 기록이라는 사실만으로 authority winner가 바뀌지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "decision legitimacy에 적용되는 shipped 규범"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "authority coordination의 등록된 계약"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "winner를 반영한 프로젝트 책임 선언의 내용"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "특정 mutation 직전 authority freshness와 stale-writer 방지"
+        }
+      ],
+      "decision_example": "동일 subject의 첫 유효 결정이 winner인지를 정하는 것은 Support GOV이고 freshness 검사는 CTRL이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "GOV"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "GOV"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-GOV-0001",
+        "canonical_path": "src/policy/GOV/SFP-GOV-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "INTENT",
+      "authority_subject": {
+        "id": "SUP_DECLARED_OPERATION_AND_PROJECT_INTENT",
+        "statement": "consumer가 명시적으로 요청한 지원 operation의 목적과 project가 선언한 목표, scope 및 비목표를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_EXPLICIT_OPERATION_PURPOSE_AND_SCOPE",
+        "SUP_PROJECT_GOAL_DECLARATION"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_EXPLICIT_OPERATION_PURPOSE_AND_SCOPE",
+          "statement": "consumer 요청을 지원 operation의 명시적 목적과 변경 범위로 한정하고 요청하지 않은 adoption이나 mutation을 추론하지 않는다.",
+          "non_substitutability": "REAL의 자동 변환 가능성이나 OPS의 회복 편의가 사용자 요청 범위를 확대할 수 없다."
+        },
+        {
+          "id": "SUP_PROJECT_GOAL_DECLARATION",
+          "statement": "프로젝트가 명시한 결과 목표와 설계 제약을 유지하며 관측된 파일, framework 또는 confidence를 프로젝트 의도로 승격하지 않는다.",
+          "non_substitutability": "ARCH의 책임 분류나 ASSURE의 관측 결과는 프로젝트가 무엇을 달성하려는지 대신 선언할 수 없다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "프로젝트 목표와 operation 요청의 정당한 주체"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "실제로 지원되는 operation 범위"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "목표를 구현하는 durable architecture declaration"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "선언과 증거에 대한 규범 충족 판정"
+        }
+      ],
+      "decision_example": "inspect만 요청한 consumer의 operation 목적을 read-only로 유지하는 것은 Support INTENT이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "INTENT"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "INTENT"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-INTENT-0001",
+        "canonical_path": "src/policy/INTENT/SFP-INTENT-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "ARCH",
+      "authority_subject": {
+        "id": "SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION",
+        "statement": "consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할 및 명시적 typed 관계를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
+        "SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
+          "statement": "classification을 governing lifecycle obligation에 따른 primary ownership으로 선언하고 material mixed 책임 및 unresolved 소유를 구분한다.",
+          "non_substitutability": "SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle ownership을 자동 결정하지 않는다."
+        },
+        {
+          "id": "SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS",
+          "statement": "roles, associated artifacts 및 typed directed relationships를 프로젝트의 명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.",
+          "non_substitutability": "INFO의 필드 schema나 REAL의 template materialization이 프로젝트 소유 architecture 의도를 만들어 내지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INTENT"
+          },
+          "responsibility": "명시적인 프로젝트 목표와 제약"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "distributed coordination이 적용될 때 정당한 architecture winner"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "Source/Effective Map 및 필드의 정보 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "declaration과 실제 evidence의 conformance 평가"
+        }
+      ],
+      "decision_example": "Product-specific verification의 lifecycle owner를 명시적 obligation에 따라 선언하는 것은 Support ARCH이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "ARCH"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "ARCH"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-ARCH-0001",
+        "canonical_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "INFO",
+      "authority_subject": {
+        "id": "SUP_PROFILE_CONTEXT_INFORMATION_SEMANTICS",
+        "statement": "consumer profile, canonical effective metadata, Context Plane 및 관측 evidence의 정보 의미와 semantic source/projection 구분을 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_CANONICAL_INFORMATION_MODEL",
+        "SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_CANONICAL_INFORMATION_MODEL",
+          "statement": "profile의 classification, roles, relationships, source_mode 및 evidence 정보형을 서로 다른 의미 축으로 정의한다.",
+          "non_substitutability": "ARCH의 특정 project 선언이나 ASSURE의 판정이 정보 축의 의미를 합치거나 새 canonical alias를 만들 수 없다."
+        },
+        {
+          "id": "SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING",
+          "statement": "Source Profile 및 context semantic source와 결정론적 effective/projection 정보의 결합과 non-authoritative derivation 관계를 명시한다.",
+          "non_substitutability": "REAL의 출력 파일 존재나 RECORD의 과거 snapshot은 현재 source 의미를 대신 소유하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "canonical 정보에 적용되는 shipped 규범"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "project가 명시적으로 소유한 architecture 사실"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "operation request/result의 외부 약속"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "과거 observation과 실행 사건의 기록 보존"
+        }
+      ],
+      "decision_example": "source_mode와 derived origin을 lifecycle classification과 별도 정보 축으로 유지하는 것은 Support INFO이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "INFO"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "INFO"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-INFO-0001",
+        "canonical_path": "src/policy/INFO/SFP-INFO-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "CNTR",
+      "authority_subject": {
+        "id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+        "statement": "설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition 및 호환 보장을 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+        "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+          "statement": "지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.",
+          "non_substitutability": "INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다."
+        },
+        {
+          "id": "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY",
+          "statement": "지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.",
+          "non_substitutability": "OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "입출력 schema와 vocabulary의 정보 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "operation이 준수해야 하는 consumer 규범"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "현재 repository/authority 상태에서 호출을 실행해도 되는지"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "materialization 및 prepared write의 구현 절차"
+        }
+      ],
+      "decision_example": "PTSIP-OP-CONFORM-001의 결과 schema와 side effect 약속은 Support CNTR이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "CNTR"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "CNTR"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-CNTR-0001",
+        "canonical_path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "RISK",
+      "authority_subject": {
+        "id": "SUP_AUTOMATION_UNCERTAINTY_AND_CONFLICT_RISK",
+        "statement": "consumer 지원 동작의 증거 공백, 불확실성 및 authority/mutation 충돌 위험과 그 처리 한계를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_UNCERTAINTY_AND_CONFLICT_TREATMENT",
+        "SUP_RISK_ACCEPTANCE_WITHOUT_AUTHORITY_SUBSTITUTION"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_UNCERTAINTY_AND_CONFLICT_TREATMENT",
+          "statement": "누락 evidence, unresolved subject와 conflict가 유발하는 위험 및 추가 사실 확보 또는 사용자 판단이 필요한 조건을 명시한다.",
+          "non_substitutability": "ASSURE의 finding 개수나 REAL의 변환 성공률만으로 관측하지 못한 위험이 제거되지 않는다."
+        },
+        {
+          "id": "SUP_RISK_ACCEPTANCE_WITHOUT_AUTHORITY_SUBSTITUTION",
+          "statement": "명시적 위임 안에서만 잔여 위험 처리 조건을 정한다. AI confidence, 위험 수락 또는 편의상 alias가 normative conformance, authority winner나 무권한 쓰기를 대신 승인하지 않는다.",
+          "non_substitutability": "GOV의 범위 제한된 승인이나 INTENT의 목표가 universal MUST 위반과 unresolved authority를 허용하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "검증 evidence의 확정 결과와 공백"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "위험 처리 결정 주체의 명시적인 권한"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "CONFORMANT/NON_CONFORMANT/INCOMPLETE의 규범 판정"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "불확실성 존재 시 특정 mutation의 실행 허용 여부"
+        }
+      ],
+      "decision_example": "관측 evidence가 없어 automation 오판 위험을 식별하는 것은 Support RISK이고 INCOMPLETE 판정은 ASSURE이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "RISK"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "RISK"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-RISK-0001",
+        "canonical_path": "src/policy/RISK/SFP-RISK-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "SUPPLY",
+      "authority_subject": {
+        "id": "SUP_PROJECT_DEPENDENCY_AND_ARTIFACT_SUPPLY",
+        "statement": "consumer project의 dependency, 외부 evidence 및 distribution Artifact 공급 관계의 명시적 입력 자격과 출처를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_DEPENDENCY_SOURCE_AND_ADMISSION",
+        "SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_DEPENDENCY_SOURCE_AND_ADMISSION",
+          "statement": "consumer가 선언하거나 정확하게 등록한 dependency/source identity, 출처 및 공급 요구를 해석한다. unregistered alias나 관측 import에서 프로젝트 요구를 추론하지 않는다.",
+          "non_substitutability": "ARCH의 lifecycle ownership이나 observed dependency 목록만으로 dependency 공급 요구와 허용된 source 관계가 결정되지 않는다."
+        },
+        {
+          "id": "SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF",
+          "statement": "imported evidence와 소비하는 Artifact 단위의 provenance 및 공급 인계 관계를 명시하고 생산자와 consumer-side artifact owner를 구별한다.",
+          "non_substitutability": "ASSURE가 Artifact를 검사했다는 사실만으로 출처와 공급 관계가 선언되거나 architecture owner가 결정되지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "project-declared dependency와 Artifact 책임 경계"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "공급 interface와 호환 입력 조건"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "Product/Delivery 등 primary lifecycle ownership"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "built Artifact의 PTSIP-PKG-001 conformance 검사"
+        }
+      ],
+      "decision_example": "외부 dependency evidence의 exact source provenance와 허용된 명시적 alias 관계는 Support SUPPLY이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "SUPPLY"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "SUPPLY"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-SUPPLY-0001",
+        "canonical_path": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "REAL",
+      "authority_subject": {
+        "id": "SUP_DETERMINISTIC_CONSUMER_STATE_REALIZATION",
+        "statement": "consumer가 선택한 source 선언을 deterministic effective metadata와 허용된 repository 변경으로 실현하는 의미 보존 실행 절차를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_DECLARATION_PRESERVING_MATERIALIZATION",
+        "SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_DECLARATION_PRESERVING_MATERIALIZATION",
+          "statement": "명시적으로 선택된 immutable template/source에서 effective map과 projection을 결정론적으로 materialize하고 source facts 및 derived provenance를 보존한다.",
+          "non_substitutability": "ARCH의 설계 의도나 INFO의 schema가 실제 materialization 결과를 생성하지 않으며 생성 과정도 새 architecture 의도를 추론할 수 없다."
+        },
+        {
+          "id": "SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY",
+          "statement": "허용된 prepared write의 적용 단위, 원자성과 실패 보존을 정한다. read-only operation은 repository-local state를 materialize하지 않는다.",
+          "non_substitutability": "CTRL의 fresh eligibility나 GOV의 승인은 쓰기 중 partial mutation과 실패 보존의 실행 mechanics를 대신 보장하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "선택된 semantic source 및 projection 정보 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "쓰기 직전 검증된 exact target과 precondition"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "project가 선택한 architecture 선언"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CHANGE"
+          },
+          "responsibility": "legacy 의미에서 새 선언 의미로 대응시키는 migration 결정"
+        }
+      ],
+      "decision_example": "명시적 template revision에서 Effective Responsibility Map을 생성하는 행위는 Support REAL이며 ownership 추론은 허용되지 않는다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "REAL"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "REAL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-REAL-0001",
+        "canonical_path": "src/policy/REAL/SFP-REAL-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "ASSURE",
+      "authority_subject": {
+        "id": "SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT",
+        "statement": "consumer declaration과 실제 evidence가 적용 규범을 충족하는지, evidence가 충분한지 및 snapshot-bound Artifact conformance를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
+        "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
+          "statement": "mandatory 위반과 blocking evidence gap을 구별하여 완료 결과를 CONFORMANT, NON_CONFORMANT 또는 INCOMPLETE로 판정한다. zero findings는 자동 conformance가 아니다.",
+          "non_substitutability": "GOV의 coordinated winner나 완전한 ARCH 선언만으로 관측 evidence까지 규범에 적합하다고 판정할 수 없다."
+        },
+        {
+          "id": "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING",
+          "statement": "coverage와 admissibility 및 실제 built Artifact/source snapshot 결합을 평가하고 functional/VPMS PASS와 PTSIP conformance를 독립적으로 유지한다.",
+          "non_substitutability": "RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한 검사와 conformance 판단이 완료되지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "NORM"
+          },
+          "responsibility": "선택된 bound Specification 및 applicable SFP 규칙"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ARCH"
+          },
+          "responsibility": "평가할 명시적 project architecture declaration"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "conformance 결과를 소비하는 실행 gate"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "관측 결과와 판정 receipt의 보존"
+        }
+      ],
+      "decision_example": "profile이 완전해도 실제 Artifact evidence가 누락되면 INCOMPLETE로 판정하는 것은 Support ASSURE이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "ASSURE"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "ASSURE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-ASSURE-0001",
+        "canonical_path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "CTRL",
+      "authority_subject": {
+        "id": "SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY",
+        "statement": "consumer repository/profile/authority의 fresh state를 기준으로 특정 prepared mutation이나 transition의 현재 실행 허용 여부를 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+        "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+          "statement": "실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority 읽기를 생략하지 않는다.",
+          "non_substitutability": "GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다."
+        },
+        {
+          "id": "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE",
+          "statement": "expected revision, operation identity와 등록된 transition 조건으로 stale writer 및 무권한 mutation을 차단한다. unresolved 관계는 fail-closed한다.",
+          "non_substitutability": "REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들 수 없다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "정당한 authority winner 및 mutation 위임"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "등록된 action과 transition의 precondition"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "누가 결정할 수 있는지와 first-valid winner 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "허용된 mutation의 적용 mechanics"
+        }
+      ],
+      "decision_example": "prepared profile 이후 source revision이 바뀌었으면 쓰기를 거부하는 것은 Support CTRL이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "CTRL"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "CTRL"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-CTRL-0001",
+        "canonical_path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "CHANGE",
+      "authority_subject": {
+        "id": "SUP_EXPLICIT_PROFILE_AUTHORITY_MIGRATION",
+        "statement": "consumer의 기존 profile, context 및 authority 상태에서 명시된 target 의미로 이동하는 변경 대응과 compatibility 및 staged migration을 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_SOURCE_TARGET_SEMANTIC_MAPPING",
+        "SUP_COMPATIBILITY_ORDER_AND_RETIREMENT"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_SOURCE_TARGET_SEMANTIC_MAPPING",
+          "statement": "지원된 source와 target의 의미 대응, 보존할 사실과 unresolved 선택을 명시한다. legacy TOOLCHAIN, lifecycle_owner 또는 version 문자열을 canonical 의미로 기계 치환하지 않는다.",
+          "non_substitutability": "INFO의 새 schema 유효성이나 REAL의 parser 성공만으로 역사적 상태의 의미가 target과 동등해지지 않는다."
+        },
+        {
+          "id": "SUP_COMPATIBILITY_ORDER_AND_RETIREMENT",
+          "statement": "명시적으로 등록된 migration 경로, 호환 입력의 범위, 선행 validation 및 legacy retirement 조건을 정한다. 문서나 인접 version에서 누락된 hop을 추론하지 않는다.",
+          "non_substitutability": "CNTR의 호환 약속이나 OPS의 회복 절차만으로 semantic replacement와 legacy deletion이 허용되지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "지원된 migration operation과 호환 입력 계약"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "source 및 target의 정보 의미"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "semantic replacement에 필요한 사용자 승인과 정당성"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "REAL"
+          },
+          "responsibility": "변환 결과의 실제 생성과 적용"
+        }
+      ],
+      "decision_example": "0.3.5 관측 사실을 보존하면서 0.3.6 declaration으로 해석할 명시적 대응을 정하는 것은 Support CHANGE이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "CHANGE"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "CHANGE"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-CHANGE-0001",
+        "canonical_path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "OPS",
+      "authority_subject": {
+        "id": "SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY",
+        "statement": "설치된 Tool과 consumer repository에 이미 제공된 capability의 지속 운영, 장애 회복 및 authority를 보존하는 반복 reconciliation을 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION",
+        "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION",
+          "statement": "지원된 operation의 실패 분류, 회복과 canonical namespace 유지 조건을 정한다. 충돌 source, stale lock 또는 모호한 journal을 임의 폐기하지 않는다.",
+          "non_substitutability": "REAL의 단일 성공 write나 SUPPLY의 환경 공급이 장애 이후 authority 보존과 운영 회복 책임을 대체하지 못한다."
+        },
+        {
+          "id": "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION",
+          "statement": "계약에 정의된 operation ID와 expected revision을 보존해 재시도하고 conflict를 검토 가능하게 유지한다. RESERVED .ptsip/tasks 또는 .ptsip/runtime의 미정 persistence 의미를 새로 정의하지 않는다.",
+          "non_substitutability": "CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및 운영 연속성을 대신 정의하지 않는다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "실제로 사용 가능한 capability의 오류와 recovery 계약"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CTRL"
+          },
+          "responsibility": "각 retry/recovery의 현재 action eligibility"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CHANGE"
+          },
+          "responsibility": "capability 활성화 및 semantic source 교체의 전환 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "RECORD"
+          },
+          "responsibility": "operation receipt와 recovery 이력의 보존"
+        }
+      ],
+      "decision_example": "기존 operation ID와 expected revision을 유지하며 충돌을 숨기지 않고 재시도하는 것은 Support OPS이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "OPS"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "OPS"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-OPS-0001",
+        "canonical_path": "src/policy/OPS/SFP-OPS-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    },
+    {
+      "responsibility_family": "RECORD",
+      "authority_subject": {
+        "id": "SUP_OBSERVATION_AND_OPERATION_PROVENANCE",
+        "statement": "consumer repository observation, authority 참조 및 operation 결과의 source-bound receipt와 감사 가능한 이력 보존을 소유한다."
+      },
+      "exclusive_kernel": [
+        "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
+        "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL"
+      ],
+      "kernel_definitions": [
+        {
+          "id": "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
+          "statement": "report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.",
+          "non_substitutability": "ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source provenance를 자동 보존하지 않는다."
+        },
+        {
+          "id": "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL",
+          "statement": "operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운 global authority나 live canonical source가 되지 않는다.",
+          "non_substitutability": "GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와 원본 receipt를 대체하지 못한다."
+        }
+      ],
+      "consumes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "INFO"
+          },
+          "responsibility": "report 및 receipt의 정보형과 identity 의미"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "CNTR"
+          },
+          "responsibility": "operation 결과로 약속된 receipt와 출처 필드"
+        }
+      ],
+      "excludes": [
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "GOV"
+          },
+          "responsibility": "project decision winner와 현재 권한의 결정"
+        },
+        {
+          "authority_identity": {
+            "policy_class": "PTSIP_SUPPORT_FEATURE",
+            "responsibility_family": "ASSURE"
+          },
+          "responsibility": "보존된 evidence의 conformance 적합성 판정"
+        }
+      ],
+      "decision_example": "read-only conformance report를 검사한 snapshot과 함께 보존하는 것은 Support RECORD이다.",
+      "authority_identity": {
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "responsibility_family": "RECORD"
+      },
+      "routing_snapshot": {
+        "status": "READY",
+        "authority_identity": {
+          "policy_class": "PTSIP_SUPPORT_FEATURE",
+          "responsibility_family": "RECORD"
+        },
+        "semantic_inheritance": "FORBIDDEN",
+        "family_state_before_materialization": "RESERVED",
+        "allocated_policy_id": "SFP-RECORD-0001",
+        "canonical_path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+        "schema_ref": "src/policy/schemas/ptsip-support-root-family-policy.schema.json"
+      }
+    }
+  ]
+}

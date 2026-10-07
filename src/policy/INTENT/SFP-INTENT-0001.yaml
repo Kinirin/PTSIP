@@ -1,0 +1,41 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INTENT
+policy:
+  id: SFP-INTENT-0001
+  title: INTENT authority (ACTIVE source responsibilities)
+  status: ACTIVE
+authority_subject:
+  id: SUP_DECLARED_OPERATION_AND_PROJECT_INTENT
+  statement: consumer가 명시적으로 요청한 지원 operation의 목적과 project가 선언한 목표, scope 및 비목표를 소유한다.
+exclusive_kernel:
+- SUP_EXPLICIT_OPERATION_PURPOSE_AND_SCOPE
+- SUP_PROJECT_GOAL_DECLARATION
+authority_contract:
+  authority_type: ROOT_FAMILY_INTENT
+  schema_id: ptsip.governance/root-family/intent
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_EXPLICIT_OPERATION_PURPOSE_AND_SCOPE
+      statement: consumer 요청을 지원 operation의 명시적 목적과 변경 범위로 한정하고 요청하지 않은 adoption이나
+        mutation을 추론하지 않는다.
+      non_substitutability: REAL의 자동 변환 가능성이나 OPS의 회복 편의가 사용자 요청 범위를 확대할 수 없다.
+    - id: SUP_PROJECT_GOAL_DECLARATION
+      statement: 프로젝트가 명시한 결과 목표와 설계 제약을 유지하며 관측된 파일, framework 또는 confidence를 프로젝트
+        의도로 승격하지 않는다.
+      non_substitutability: ARCH의 책임 분류나 ASSURE의 관측 결과는 프로젝트가 무엇을 달성하려는지 대신 선언할 수
+        없다.
+    source_scope:
+    - SFP-0015
+  unit_sfp_0015_9440a49c632f:
+  - REQUIRED_MIGRATION
+  - TARGET_VALIDITY
+  - ASYNC_OPTIONAL
+  - ADVISORY
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

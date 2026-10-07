@@ -1,0 +1,5414 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0013
+  source_ref: project-conversation:2026-10-06:root-family-transition;developer/policy/registries/root-family-migration.json
+  responsibilities:
+  - responsibility_id: R001
+    statement: MPD-0015/rules/canonical_runtime 의 원본 책임을 동일 값과 상태로 NORM 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R002
+    statement: MPD-SPEC-0002/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 NORM 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R003
+    statement: MPD-SPEC-0003/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 NORM 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R004
+    statement: MPD-SPEC-0004/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 NORM 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R005
+    statement: MPD-SPEC-0021/rules/normative_authority 의 원본 책임을 동일 값과 상태로 NORM 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R006
+    statement: MPD-SPEC-0021/rules/implementation_role 의 원본 책임을 동일 값과 상태로 NORM 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R007
+    statement: MPD-SPEC-0024/rules/normative_document_authority_boundary 의 원본 책임을
+      동일 값과 상태로 NORM 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R008
+    statement: MPD-SPEC-0024/rules/agent_contract_authority 의 원본 책임을 동일 값과 상태로 NORM
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_RULE_NORMATIVITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: NORM_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: NORM
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: NORM
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  - responsibility_id: R009
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/objective
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R010
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/automation_module
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R011
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/approval_provenance_schema
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R012
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/approval_provenance_root
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R013
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/inference_boundary
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R014
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/approval_semantics
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R015
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/registry_semantics
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R016
+    statement: MPD-0010/rules/provisional_resolution_framework 의 원본 책임을 동일 값과 상태로
+      GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R017
+    statement: MPD-0011/rules/migration_authorization_ref 의 원본 책임을 동일 값과 상태로 GOV 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R018
+    statement: MPD-0012/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R019
+    statement: MPD-0012/rules/approved_decisions 의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R020
+    statement: MPD-0012/rules/provisional_decisions 의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R021
+    statement: MPD-0014/rules/branch_creation_authority/enforcement_scope 의 원본 책임을
+      동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R022
+    statement: MPD-0014/rules/branch_creation_authority/default 의 원본 책임을 동일 값과 상태로
+      GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R023
+    statement: MPD-0014/rules/branch_creation_authority/authorization_source 의 원본
+      책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R024
+    statement: MPD-0014/rules/branch_creation_authority/agent_may_invent_branch_name
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R025
+    statement: MPD-0014/rules/branch_creation_authority/agent_may_derive_branch_name_from_context
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R026
+    statement: MPD-0014/rules/branch_creation_authority/exact_user_approved_name_required
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R027
+    statement: MPD-0014/rules/branch_creation_authority/exact_candidate_must_equal_user_approved_name
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R028
+    statement: MPD-0014/rules/branch_creation_authority/allowed_branch_classes 의 원본
+      책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R029
+    statement: MPD-0014/rules/branch_creation_authority/unregistered_branch_class_creation
+      의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R030
+    statement: MPD-0015/rules/reasoning_promotion_cycle 의 원본 책임을 동일 값과 상태로 GOV 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R031
+    statement: MPD-MIGR-0003/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 GOV 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R032
+    statement: MPD-MIGR-0004/rules/authorization_ref 의 원본 책임을 동일 값과 상태로 GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R033
+    statement: MPD-MIGR-0005/rules/implementation_authorization 의 원본 책임을 동일 값과 상태로
+      GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R034
+    statement: MPD-SPEC-0010/rules/governance_source_vocabulary 의 원본 책임을 동일 값과 상태로
+      GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R035
+    statement: MPD-SPEC-0023/rules/policy_plan_binding_authority 의 원본 책임을 동일 값과 상태로
+      GOV 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: GOV_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G02
+  - responsibility_id: R036
+    statement: MPD-0016/rules/readme_translation_governance 의 원본 책임을 동일 값과 상태로 GOV
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_LEGITIMACY
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: GOV_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: GOV
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: GOV
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G03
+  - responsibility_id: R037
+    statement: MPD-0010/rules/ptsip_design_priority 의 원본 책임을 동일 값과 상태로 INTENT 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_WORK_OUTCOME_INTENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INTENT_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INTENT
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INTENT
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G04
+  - responsibility_id: R038
+    statement: MPD-0010/rules/semantic_inference_cost 의 원본 책임을 동일 값과 상태로 INTENT 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_WORK_OUTCOME_INTENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INTENT_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INTENT
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INTENT
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G04
+  - responsibility_id: R039
+    statement: MPD-PLAN-0002/rules/release_readiness_assignment 의 원본 책임을 동일 값과 상태로
+      INTENT 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_WORK_OUTCOME_INTENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INTENT_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INTENT
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INTENT
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G04
+  - responsibility_id: R040
+    statement: MPD-PLAN-0004/rules/agent_contract_deferred_work_plan 의 원본 책임을 동일 값과
+      상태로 INTENT 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_WORK_OUTCOME_INTENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INTENT_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INTENT
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INTENT
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G04
+  - responsibility_id: R041
+    statement: MPD-0001/rules/profile_boundary 의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R042
+    statement: MPD-0001/rules/planning_automation 의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R043
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/repository_management_surface
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R044
+    statement: MPD-0013/rules/planning_namespace_boundary 의 원본 책임을 동일 값과 상태로 ARCH
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R045
+    statement: MPD-PLAN-0001/rules/planning_boundary/authority 의 원본 책임을 동일 값과 상태로
+      ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R046
+    statement: MPD-PLAN-0001/rules/planning_boundary/schema 의 원본 책임을 동일 값과 상태로 ARCH
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R047
+    statement: MPD-PLAN-0001/rules/planning_boundary/external_interfaces 의 원본 책임을
+      동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R048
+    statement: MPD-PLAN-0001/rules/planning_boundary/subsystem_ownership 의 원본 책임을
+      동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R049
+    statement: MPD-PLAN-0001/rules/planning_boundary/explanation 의 원본 책임을 동일 값과 상태로
+      ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R050
+    statement: MPD-SPEC-0001/rules/profile_boundary 의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R051
+    statement: MPD-SPEC-0001/rules/distribution_boundary 의 원본 책임을 동일 값과 상태로 ARCH 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R052
+    statement: MPD-SPEC-0005/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 ARCH 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R053
+    statement: MPD-SPEC-0023/rules/authority_separation 의 원본 책임을 동일 값과 상태로 ARCH 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R054
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/classification_unit
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R055
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/policy_file_is_classification_unit
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R056
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/family_vocabulary
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R057
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/authority_relation_vocabulary
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R058
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/responsibility_decomposition
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R059
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/same_family_cohesion
+      의 원본 책임을 동일 값과 상태로 ARCH 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_TOOL_RESPONSIBILITY_STRUCTURE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ARCH_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ARCH
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ARCH
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G05
+  - responsibility_id: R060
+    statement: MPD-0001/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R061
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/level_1_vocabulary
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R062
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/level_1_rules
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R063
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/level_2_vocabulary
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R064
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/other_semantics
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R065
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/source_and_authority
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R066
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/format
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R067
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/pattern
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R068
+    statement: MPD-0010/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R069
+    statement: MPD-0011/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R070
+    statement: MPD-0012/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R071
+    statement: MPD-0013/rules/plan_identity_and_file_identity 의 원본 책임을 동일 값과 상태로 INFO
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R072
+    statement: MPD-0013/rules/relation_lifecycle_semantics_boundary 의 원본 책임을 동일 값과
+      상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R073
+    statement: MPD-0013/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R074
+    statement: MPD-0014/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R075
+    statement: MPD-0015/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R076
+    statement: MPD-0018/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R077
+    statement: MPD-MIGR-0001/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R078
+    statement: MPD-MIGR-0003/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R079
+    statement: MPD-MIGR-0004/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R080
+    statement: MPD-MIGR-0005/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R081
+    statement: MPD-PLAN-0001/rules/planning_boundary/work_unit 의 원본 책임을 동일 값과 상태로
+      INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R082
+    statement: MPD-PLAN-0001/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R083
+    statement: MPD-PLAN-0002/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R084
+    statement: MPD-PLAN-0003/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R085
+    statement: MPD-PLAN-0004/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R086
+    statement: MPD-RELS-0001/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R087
+    statement: MPD-RELS-0002/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R088
+    statement: MPD-SPEC-0001/rules/namespace 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R089
+    statement: MPD-SPEC-0002/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R090
+    statement: MPD-SPEC-0003/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R091
+    statement: MPD-SPEC-0004/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R092
+    statement: MPD-SPEC-0005/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R093
+    statement: MPD-SPEC-0006/rules/identity_and_resolution 의 원본 책임을 동일 값과 상태로 INFO
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R094
+    statement: MPD-SPEC-0006/rules/canonical_and_runtime_projection 의 원본 책임을 동일 값과
+      상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R095
+    statement: MPD-SPEC-0006/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R096
+    statement: MPD-SPEC-0007/rules/canonical_atomic_extension 의 원본 책임을 동일 값과 상태로 INFO
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R097
+    statement: MPD-SPEC-0007/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R098
+    statement: MPD-SPEC-0008/rules/evidence_kind_extension 의 원본 책임을 동일 값과 상태로 INFO
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R099
+    statement: MPD-SPEC-0008/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R100
+    statement: MPD-SPEC-0009/rules/deterministic_external_state_boundary 의 원본 책임을
+      동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R101
+    statement: MPD-SPEC-0009/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R102
+    statement: MPD-SPEC-0010/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R103
+    statement: MPD-SPEC-0011/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R104
+    statement: MPD-SPEC-0020/rules/version_namespace 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R105
+    statement: MPD-SPEC-0020/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R106
+    statement: MPD-SPEC-0021/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R107
+    statement: MPD-SPEC-0022/rules/contract_artifact_representation 의 원본 책임을 동일 값과
+      상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R108
+    statement: MPD-SPEC-0022/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R109
+    statement: MPD-SPEC-0023/rules/relationship_cardinality 의 원본 책임을 동일 값과 상태로 INFO
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R110
+    statement: MPD-SPEC-0023/rules/binding_identity 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R111
+    statement: MPD-SPEC-0023/rules/planning_existence_state 의 원본 책임을 동일 값과 상태로 INFO
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R112
+    statement: MPD-SPEC-0023/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R113
+    statement: MPD-SPEC-0024/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R114
+    statement: MPD-SPEC-0025/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R115
+    statement: MPD-SPEC-0026/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R116
+    statement: MPD-SPEC-0027/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R117
+    statement: MPD-VERI-0002/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R118
+    statement: MPD-VERI-0003/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R119
+    statement: MPD-VERI-0004/rules/identity_match 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R120
+    statement: MPD-VERI-0004/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R121
+    statement: MPD-VERI-0005/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R122
+    statement: MPD-WORK-0001/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R123
+    statement: MPD-WORK-0002/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R124
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/collision_classes
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R125
+    statement: MPD-WORK-0003/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R126
+    statement: MPD-WORK-0004/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: INFO_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G06
+  - responsibility_id: R127
+    statement: MPD-0016/rules/registry_contract 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: INFO_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G07
+  - responsibility_id: R128
+    statement: MPD-0016/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: INFO_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G07
+  - responsibility_id: R129
+    statement: MPD-VERI-0001/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: INFO_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G07
+  - responsibility_id: R130
+    statement: MPD-0017/rules/management_next_action_control_plane/canonical_next_action
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: INFO_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G08
+  - responsibility_id: R131
+    statement: MPD-0017/rules/management_next_action_control_plane/registry_topology
+      의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: INFO_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G08
+  - responsibility_id: R132
+    statement: MPD-0017/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: INFO_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G08
+  - responsibility_id: R133
+    statement: MPD-MIGR-0002/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: INFO_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G08
+  - responsibility_id: R134
+    statement: MPD-VERI-0006/relations 의 원본 책임을 동일 값과 상태로 INFO 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_CONTROL_INFORMATION_MEANING
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: INFO_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: INFO
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: INFO
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G08
+  - responsibility_id: R135
+    statement: MPD-0001/automation 의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R136
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/decision 의 원본
+      책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R137
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/stage 의 원본 책임을
+      동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R138
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/objective 의 원본
+      책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R139
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/distribution
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R140
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/product_integration
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R141
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/promotion_to_product_requires_separate_evidence_and_approval
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R142
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/baseline_mode_without_mcp
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R143
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_optional
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R144
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_transport_when_available
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R145
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/remote_ptsip_mcp_service_required
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R146
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/daemon_required
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R147
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/network_required
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R148
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/user_approval_required
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R149
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/automatic_install_without_user_approval
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R150
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/current_implementation_state
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R151
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/current_mcp_state
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R152
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/offer_to_user_now
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R153
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/intended_install_command
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R154
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/local_cli
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R155
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_adapter_must_reuse_existing_resolver_semantics
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R156
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_adapter_must_not_create_parallel_policy_semantics
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R157
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/stage_contract
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R158
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/unresolved_is_namespace
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R159
+    statement: MPD-0014/rules/branch_creation_authority/creation_mechanism 의 원본 책임을
+      동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R160
+    statement: MPD-0015/rules/mechanized_resolution_cycle 의 원본 책임을 동일 값과 상태로 CNTR
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R161
+    statement: MPD-0015/rules/developer_policy_resolution_binding_boundary 의 원본 책임을
+      동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R162
+    statement: MPD-SPEC-0006/rules/normative_contract_architecture 의 원본 책임을 동일 값과
+      상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R163
+    statement: MPD-SPEC-0007/rules/extension_compatibility 의 원본 책임을 동일 값과 상태로 CNTR
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R164
+    statement: MPD-SPEC-0021/rules/machine_contract_ownership 의 원본 책임을 동일 값과 상태로 CNTR
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R165
+    statement: MPD-SPEC-0025/rules/source_contract_model 의 원본 책임을 동일 값과 상태로 CNTR 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R166
+    statement: MPD-SPEC-0025/rules/feature_stable_core 의 원본 책임을 동일 값과 상태로 CNTR 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R167
+    statement: MPD-SPEC-0025/rules/feature_implementation_body 의 원본 책임을 동일 값과 상태로
+      CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R168
+    statement: MPD-VERI-0004/rules/input_output_contract_match 의 원본 책임을 동일 값과 상태로
+      CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R169
+    statement: MPD-VERI-0004/rules/failure_contract_match 의 원본 책임을 동일 값과 상태로 CNTR
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R170
+    statement: MPD-VERI-0004/rules/compatibility_match 의 원본 책임을 동일 값과 상태로 CNTR 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CNTR_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G09
+  - responsibility_id: R171
+    statement: MPD-0017/rules/management_next_action_control_plane/responsibility
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R172
+    statement: MPD-0017/rules/management_next_action_control_plane/purpose 의 원본 책임을
+      동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R173
+    statement: MPD-0017/rules/management_next_action_control_plane/exact_resolution
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R174
+    statement: MPD-0017/rules/management_next_action_control_plane/execution_profile_contract
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R175
+    statement: MPD-0017/rules/management_next_action_control_plane/draft_scope 의 원본
+      책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R176
+    statement: MPD-0017/rules/responsibility_boundary 의 원본 책임을 동일 값과 상태로 CNTR 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R177
+    statement: MPD-VERI-0006/rules/policy_plan_consistency_verification_output_contract
+      의 원본 책임을 동일 값과 상태로 CNTR 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R178
+    statement: MPD-VERI-0006/rules/responsibility_boundary 의 원본 책임을 동일 값과 상태로 CNTR
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CNTR_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CNTR
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CNTR
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G10
+  - responsibility_id: R179
+    statement: RISK 최소 authority_subject와 exclusive_kernel 정의를 DRAFT로 materialize한다.
+    authority_relation: OWN
+    authority_subject: DEV_CHANGE_RISK_DISPOSITION
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: RISK_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: RISK
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: RISK
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G11
+  - responsibility_id: R180
+    statement: SUPPLY 최소 authority_subject와 exclusive_kernel 정의를 DRAFT로 materialize한다.
+    authority_relation: OWN
+    authority_subject: DEV_BUILD_VERIFICATION_INPUT_SUPPLY
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: SUPPLY_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: SUPPLY
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: SUPPLY
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G12
+  - responsibility_id: R181
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/level_1_bootstrap
+      의 원본 책임을 동일 값과 상태로 REAL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R182
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/ordered_levels
+      의 원본 책임을 동일 값과 상태로 REAL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R183
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/partial_mechanization
+      의 원본 책임을 동일 값과 상태로 REAL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R184
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/unresolved_reassessment
+      의 원본 책임을 동일 값과 상태로 REAL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R185
+    statement: MPD-0011/rules/transition_mechanics_ref 의 원본 책임을 동일 값과 상태로 REAL 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R186
+    statement: MPD-0011/rules/h3_hook_activation 의 원본 책임을 동일 값과 상태로 REAL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R187
+    statement: MPD-0013/rules/policy_plan_binding_automation 의 원본 책임을 동일 값과 상태로 REAL
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R188
+    statement: MPD-0015/rules/implementation_language 의 원본 책임을 동일 값과 상태로 REAL 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R189
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/materialization
+      의 원본 책임을 동일 값과 상태로 REAL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: REAL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G13
+  - responsibility_id: R190
+    statement: MPD-0016/rules/translation_automation_boundary 의 원본 책임을 동일 값과 상태로 REAL
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: REAL_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G14
+  - responsibility_id: R191
+    statement: MPD-0011/rules/verification_layers_ref 의 원본 책임을 동일 값과 상태로 ASSURE 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R192
+    statement: MPD-0012/rules/validation_evidence 의 원본 책임을 동일 값과 상태로 ASSURE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R193
+    statement: MPD-SPEC-0011/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 ASSURE 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R194
+    statement: MPD-VERI-0002/rules/mutation_promotion_verification 의 원본 책임을 동일 값과
+      상태로 ASSURE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R195
+    statement: MPD-VERI-0003/rules/verification_layers 의 원본 책임을 동일 값과 상태로 ASSURE 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R196
+    statement: MPD-VERI-0004/rules/required_verification 의 원본 책임을 동일 값과 상태로 ASSURE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R197
+    statement: MPD-VERI-0004/rules/effect_match 의 원본 책임을 동일 값과 상태로 ASSURE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R198
+    statement: MPD-VERI-0005/rules/execution_evidence_and_verification 의 원본 책임을 동일
+      값과 상태로 ASSURE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: ASSURE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G15
+  - responsibility_id: R199
+    statement: MPD-VERI-0001/rules/policy_plan_consistency_verification 의 원본 책임을 동일
+      값과 상태로 ASSURE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: ASSURE_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G16
+  - responsibility_id: R200
+    statement: MPD-VERI-0001/rules/responsibility_boundary 의 원본 책임을 동일 값과 상태로 ASSURE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: ASSURE_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: ASSURE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: ASSURE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G16
+  - responsibility_id: R201
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mcp_installation/readiness_gate
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R202
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/runtime_entry
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R203
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/level_1_entry_resolution
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R204
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/unresolved_behavior
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R205
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/mandatory_order
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R206
+    statement: MPD-0011/rules/release_publication_gate_ref 의 원본 책임을 동일 값과 상태로 CTRL
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R207
+    statement: MPD-0012/rules/activation_boundary 의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R208
+    statement: MPD-0013/rules/deterministic_binding_management 의 원본 책임을 동일 값과 상태로
+      CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R209
+    statement: MPD-0013/rules/plan_ref_tracking 의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R210
+    statement: MPD-0014/rules/merge_policy 의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R211
+    statement: MPD-MIGR-0004/rules/commit_candidate_trigger 의 원본 책임을 동일 값과 상태로 CTRL
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R212
+    statement: MPD-MIGR-0004/rules/reconciliation_safety 의 원본 책임을 동일 값과 상태로 CTRL 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R213
+    statement: MPD-PLAN-0001/rules/planning_boundary/completion_transition 의 원본 책임을
+      동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R214
+    statement: MPD-RELS-0002/rules/release_publication_gate 의 원본 책임을 동일 값과 상태로 CTRL
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R215
+    statement: MPD-VERI-0004/rules/binding_promotion_verification 의 원본 책임을 동일 값과 상태로
+      CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R216
+    statement: MPD-WORK-0002/rules/work_execution_lifecycle/verified_pass_continuation
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R217
+    statement: MPD-WORK-0002/rules/work_execution_lifecycle/deviation 의 원본 책임을 동일
+      값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R218
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/required_reasoning_order
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R219
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/existing_authority_lookup
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R220
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/collision_resolution
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R221
+    statement: MPD-WORK-0003/rules/policy_responsibility_materialization/static_enforcement
+      의 원본 책임을 동일 값과 상태로 CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R222
+    statement: MPD-WORK-0004/rules/mutation_authorization_gate 의 원본 책임을 동일 값과 상태로
+      CTRL 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CTRL_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CTRL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CTRL
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G17
+  - responsibility_id: R223
+    statement: MPD-0001/rules/planning_migration_authority_ref 의 원본 책임을 동일 값과 상태로
+      CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R224
+    statement: MPD-0001/migration 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R225
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/managed_level_1_transition
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R226
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/agent_integration/mode_transition
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R227
+    statement: MPD-0010/rules/agent_instruction_entry_taxonomy_trial/progressive_reasoning_pipeline/taxonomy_evolution
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R228
+    statement: MPD-0010/rules/evidence_driven_contract_refinement 의 원본 책임을 동일 값과 상태로
+      CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R229
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/minor_digit_limit
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R230
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/initial_version
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R231
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/lifecycle_major_contract
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R232
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/status_version_cross_check
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R233
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/change_classes
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R234
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/deterministic_transitions
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R235
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/unsupported_transition
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R236
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/compatibility_obligation_across_major
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R237
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/contract_adoption_baseline
+      의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R238
+    statement: MPD-0011/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R239
+    statement: MPD-0013/rules/plan_movement_and_replacement 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R240
+    statement: MPD-0014/rules/project_profile_independence 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R241
+    statement: MPD-0014/rules/retirement_policy 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R242
+    statement: MPD-0014/rules/legacy_retention 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R243
+    statement: MPD-0015/rules/implementation_migration_ref 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R244
+    statement: MPD-0018/rules/root_responsibility_family_transition 의 원본 책임을 동일 값과
+      상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R245
+    statement: MPD-0018/transition 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R246
+    statement: MPD-MIGR-0001/rules/profile_boundary_migration 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R247
+    statement: MPD-MIGR-0001/rules/planning_subsystem_migration 의 원본 책임을 동일 값과 상태로
+      CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R248
+    statement: MPD-MIGR-0001/rules/retired_policy_corpus_migration 의 원본 책임을 동일 값과
+      상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R249
+    statement: MPD-MIGR-0004/rules/transition_generation 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R250
+    statement: MPD-MIGR-0005/rules/python_migration_reference 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R251
+    statement: MPD-PLAN-0003/rules/project_profile_transition_plan 의 원본 책임을 동일 값과
+      상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R252
+    statement: MPD-SPEC-0020/rules/revision_lifecycle 의 원본 책임을 동일 값과 상태로 CHANGE 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R253
+    statement: MPD-SPEC-0026/rules/t2_authority_delta 의 원본 책임을 동일 값과 상태로 CHANGE 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R254
+    statement: MPD-SPEC-0027/rules/user_revision_lineage 의 원본 책임을 동일 값과 상태로 CHANGE
+      권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R255
+    statement: MPD-WORK-0001/rules/work_unit_lifecycle 의 원본 책임을 동일 값과 상태로 CHANGE 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: CHANGE_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G18
+  - responsibility_id: R256
+    statement: MPD-0016/transition 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: CHANGE_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G19
+  - responsibility_id: R257
+    statement: MPD-VERI-0001/transition 의 원본 책임을 동일 값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_APPROVED
+    cohesion_key: CHANGE_APPROVED
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G19
+  - responsibility_id: R258
+    statement: MPD-MIGR-0002/rules/readme_translation_layout_migration 의 원본 책임을 동일
+      값과 상태로 CHANGE 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_VERSIONED_TRANSITION_SEMANTICS
+    lifecycle_scope: ROOT_SOURCE_DRAFT
+    cohesion_key: CHANGE_DRAFT
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: CHANGE
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: CHANGE
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G20
+  - responsibility_id: R259
+    statement: MPD-0015/rules/execution_feedback_cycle 의 원본 책임을 동일 값과 상태로 OPS 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_SERVICE_CONTINUITY_AND_RECOVERY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: OPS_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: OPS
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: OPS
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G21
+  - responsibility_id: R260
+    statement: MPD-WORK-0002/rules/work_execution_lifecycle/principle 의 원본 책임을 동일
+      값과 상태로 OPS 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_SERVICE_CONTINUITY_AND_RECOVERY
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: OPS_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: OPS
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: OPS
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G21
+  - responsibility_id: R261
+    statement: MPD-0010/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/exact_snapshot_identity
+      의 원본 책임을 동일 값과 상태로 RECORD 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_AND_EXECUTION_PROVENANCE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: RECORD_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: RECORD
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: RECORD
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G22
+  - responsibility_id: R262
+    statement: MPD-0011/rules/implementation_state 의 원본 책임을 동일 값과 상태로 RECORD 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_AND_EXECUTION_PROVENANCE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: RECORD_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: RECORD
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: RECORD
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G22
+  - responsibility_id: R263
+    statement: MPD-0012/rules/repository_materialization_snapshot 의 원본 책임을 동일 값과 상태로
+      RECORD 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_AND_EXECUTION_PROVENANCE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: RECORD_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: RECORD
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: RECORD
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G22
+  - responsibility_id: R264
+    statement: MPD-RELS-0001/rules/authority_semantics 의 원본 책임을 동일 값과 상태로 RECORD 권위로
+      분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_AND_EXECUTION_PROVENANCE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: RECORD_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: RECORD
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: RECORD
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G22
+  - responsibility_id: R265
+    statement: MPD-WORK-0002/rules/work_execution_lifecycle/execution_output 의 원본
+      책임을 동일 값과 상태로 RECORD 권위로 분해한다.
+    authority_relation: OWN
+    authority_subject: DEV_DECISION_AND_EXECUTION_PROVENANCE
+    lifecycle_scope: ROOT_SOURCE_ACTIVE
+    cohesion_key: RECORD_ACTIVE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: RECORD
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: RECORD
+      searched_policy_ids: []
+      lookup_outcome: NO_MATCH
+      candidate_comparisons: []
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G22
+  decision:
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: NORM
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: GOV
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: INTENT
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: ARCH
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: INFO
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: RISK
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: SUPPLY
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: ASSURE
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: CTRL
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: CHANGE
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: OPS
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: RECORD
+    split_required: true
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: NORM
+      cohesion_key: NORM_ACTIVE
+      responsibility_ids:
+      - R001
+      - R002
+      - R003
+      - R004
+      - R005
+      - R006
+      - R007
+      - R008
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G02
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: GOV
+      cohesion_key: GOV_ACTIVE
+      responsibility_ids:
+      - R009
+      - R010
+      - R011
+      - R012
+      - R013
+      - R014
+      - R015
+      - R016
+      - R017
+      - R018
+      - R019
+      - R020
+      - R021
+      - R022
+      - R023
+      - R024
+      - R025
+      - R026
+      - R027
+      - R028
+      - R029
+      - R030
+      - R031
+      - R032
+      - R033
+      - R034
+      - R035
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G03
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: GOV
+      cohesion_key: GOV_APPROVED
+      responsibility_ids:
+      - R036
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle APPROVED
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G04
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: INTENT
+      cohesion_key: INTENT_ACTIVE
+      responsibility_ids:
+      - R037
+      - R038
+      - R039
+      - R040
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G05
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: ARCH
+      cohesion_key: ARCH_ACTIVE
+      responsibility_ids:
+      - R041
+      - R042
+      - R043
+      - R044
+      - R045
+      - R046
+      - R047
+      - R048
+      - R049
+      - R050
+      - R051
+      - R052
+      - R053
+      - R054
+      - R055
+      - R056
+      - R057
+      - R058
+      - R059
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G06
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: INFO
+      cohesion_key: INFO_ACTIVE
+      responsibility_ids:
+      - R060
+      - R061
+      - R062
+      - R063
+      - R064
+      - R065
+      - R066
+      - R067
+      - R068
+      - R069
+      - R070
+      - R071
+      - R072
+      - R073
+      - R074
+      - R075
+      - R076
+      - R077
+      - R078
+      - R079
+      - R080
+      - R081
+      - R082
+      - R083
+      - R084
+      - R085
+      - R086
+      - R087
+      - R088
+      - R089
+      - R090
+      - R091
+      - R092
+      - R093
+      - R094
+      - R095
+      - R096
+      - R097
+      - R098
+      - R099
+      - R100
+      - R101
+      - R102
+      - R103
+      - R104
+      - R105
+      - R106
+      - R107
+      - R108
+      - R109
+      - R110
+      - R111
+      - R112
+      - R113
+      - R114
+      - R115
+      - R116
+      - R117
+      - R118
+      - R119
+      - R120
+      - R121
+      - R122
+      - R123
+      - R124
+      - R125
+      - R126
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G07
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: INFO
+      cohesion_key: INFO_APPROVED
+      responsibility_ids:
+      - R127
+      - R128
+      - R129
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle APPROVED
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G08
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: INFO
+      cohesion_key: INFO_DRAFT
+      responsibility_ids:
+      - R130
+      - R131
+      - R132
+      - R133
+      - R134
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle DRAFT 책임만
+        결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G09
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+      cohesion_key: CNTR_ACTIVE
+      responsibility_ids:
+      - R135
+      - R136
+      - R137
+      - R138
+      - R139
+      - R140
+      - R141
+      - R142
+      - R143
+      - R144
+      - R145
+      - R146
+      - R147
+      - R148
+      - R149
+      - R150
+      - R151
+      - R152
+      - R153
+      - R154
+      - R155
+      - R156
+      - R157
+      - R158
+      - R159
+      - R160
+      - R161
+      - R162
+      - R163
+      - R164
+      - R165
+      - R166
+      - R167
+      - R168
+      - R169
+      - R170
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G10
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CNTR
+      cohesion_key: CNTR_DRAFT
+      responsibility_ids:
+      - R171
+      - R172
+      - R173
+      - R174
+      - R175
+      - R176
+      - R177
+      - R178
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle DRAFT 책임만
+        결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G11
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: RISK
+      cohesion_key: RISK_DRAFT
+      responsibility_ids:
+      - R179
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle DRAFT 책임만
+        결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G12
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: SUPPLY
+      cohesion_key: SUPPLY_DRAFT
+      responsibility_ids:
+      - R180
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle DRAFT 책임만
+        결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G13
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+      cohesion_key: REAL_ACTIVE
+      responsibility_ids:
+      - R181
+      - R182
+      - R183
+      - R184
+      - R185
+      - R186
+      - R187
+      - R188
+      - R189
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G14
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+      cohesion_key: REAL_APPROVED
+      responsibility_ids:
+      - R190
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle APPROVED
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G15
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: ASSURE
+      cohesion_key: ASSURE_ACTIVE
+      responsibility_ids:
+      - R191
+      - R192
+      - R193
+      - R194
+      - R195
+      - R196
+      - R197
+      - R198
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G16
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: ASSURE
+      cohesion_key: ASSURE_APPROVED
+      responsibility_ids:
+      - R199
+      - R200
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle APPROVED
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G17
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CTRL
+      cohesion_key: CTRL_ACTIVE
+      responsibility_ids:
+      - R201
+      - R202
+      - R203
+      - R204
+      - R205
+      - R206
+      - R207
+      - R208
+      - R209
+      - R210
+      - R211
+      - R212
+      - R213
+      - R214
+      - R215
+      - R216
+      - R217
+      - R218
+      - R219
+      - R220
+      - R221
+      - R222
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G18
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CHANGE
+      cohesion_key: CHANGE_ACTIVE
+      responsibility_ids:
+      - R223
+      - R224
+      - R225
+      - R226
+      - R227
+      - R228
+      - R229
+      - R230
+      - R231
+      - R232
+      - R233
+      - R234
+      - R235
+      - R236
+      - R237
+      - R238
+      - R239
+      - R240
+      - R241
+      - R242
+      - R243
+      - R244
+      - R245
+      - R246
+      - R247
+      - R248
+      - R249
+      - R250
+      - R251
+      - R252
+      - R253
+      - R254
+      - R255
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G19
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CHANGE
+      cohesion_key: CHANGE_APPROVED
+      responsibility_ids:
+      - R256
+      - R257
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle APPROVED
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G20
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: CHANGE
+      cohesion_key: CHANGE_DRAFT
+      responsibility_ids:
+      - R258
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle DRAFT 책임만
+        결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G21
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: OPS
+      cohesion_key: OPS_ACTIVE
+      responsibility_ids:
+      - R259
+      - R260
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.
+    - group_id: G22
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: RECORD
+      cohesion_key: RECORD_ACTIVE
+      responsibility_ids:
+      - R261
+      - R262
+      - R263
+      - R264
+      - R265
+      cohesion_rationale: 같은 class/Root authority_subject 안에서 원본 lifecycle ACTIVE
+        책임만 결합한다. 원본 pointer별 독립 범위를 보존하며 다른 상태와 합치지 않는다.

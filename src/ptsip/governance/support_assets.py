@@ -37,7 +37,7 @@ def resolve_support_asset_layout(repository_root: str | Path) -> SupportAssetLay
         return shipped
 
     repository = Path(repository_root).resolve()
-    canonical_root = repository / "docs" / "Support_policy" / "policy"
+    canonical_root = repository / "src" / "policy"
     canonical = SupportAssetLayout(
         policy=canonical_root,
         schemas=canonical_root / "schemas",
@@ -49,7 +49,7 @@ def resolve_support_asset_layout(repository_root: str | Path) -> SupportAssetLay
 
     raise GovernanceAuthorityError(
         "SUPPORT_ASSET_LAYOUT_MISSING",
-        "neither shipped ptsip/support assets nor canonical docs/Support_policy/policy assets are available.",
+        "neither shipped ptsip/support assets nor canonical src/policy assets are available.",
         {"shipped": str(shipped_root), "canonical": str(canonical_root)},
     )
 

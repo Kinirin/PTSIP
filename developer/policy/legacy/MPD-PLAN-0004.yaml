@@ -1,0 +1,56 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-PLAN-0004
+  version: "2.0"
+  title: Agent Contract Deferred Work and Pending Materialization Plan
+  status: ACTIVE
+
+rules:
+  agent_contract_deferred_work_plan:
+    deferred_decisions:
+      feature_implementation_body_details:
+        implementation_kind_allowed_values_and_semantics: DEFERRED
+        revision_format_and_compatibility_rules: DEFERRED
+        implementation_ref_target_kinds: DEFERRED
+        optional_extension_fields: DEFERRED
+      compatibility_feature_compiler:
+        exact_compiler_contract_shape: DEFERRED
+        exact_atomic_feature_projection_format: DEFERRED
+        registry_topology: DEFERRED
+        feature_mapping_algorithm: DEFERRED
+        migration_mechanics: DEFERRED
+      generated_resolution:
+        automatic_semantic_transformation_upper_bound: DEFERRED
+        user_review_threshold_beyond_required_unknown_rule: DEFERRED
+      plugin_integration:
+        langgraph_plugin_contract: DEFERRED_BEYOND_0_3_8
+        langchain_plugin_contract: DEFERRED_BEYOND_0_3_8
+        local_model_integration_contract: DEFERRED_BEYOND_0_3_8
+        remote_user_resolver_contract: DEFERRED_BEYOND_0_3_8
+      human_projection:
+        future_human_readable_projection_format: DEFERRED
+      
+    pending_materialization:
+      - R2_REQUIRED_VERIFICATION_MODEL
+      - IMPLEMENTATION_RESOLUTION_VALID
+      - IO4_GENERATED_VERIFIED_IO_RESOLUTION
+      - E3_EFFECT_MATCH_VERIFICATION
+      - FAILURE_OBSERVATION_AND_FAILURE_SEMANTIC_SPLIT
+      - FO4_RUNTIME_ASSEMBLED_FAILURE_OBSERVATION
+      - C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+      - CF2_FINE_GRAINED_ATOMIC_FEATURE_SYSTEM
+      - FEATURE_STABLE_CORE
+      - SEMANTIC_EXTENSION_CONTRACT
+      - FEATURE_IMPLEMENTATION_BODY_MINIMUM
+    source_policy_ref: MPD-0012
+    source_snapshot_ref: MPD-0012#rules.repository_materialization_snapshot
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-PLAN-0001
+      scope: PLANNING_AUTHORITY_AND_LIFECYCLE

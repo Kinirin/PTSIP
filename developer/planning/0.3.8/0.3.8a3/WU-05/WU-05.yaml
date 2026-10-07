@@ -1,0 +1,102 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-05
+  title: Deterministic resolver and automatic plan projection
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-03, WU-04]
+
+  objective: >-
+    Resolve already-decided identities and bindings mechanically and derive
+    execution plans from resolved facts, contracts, bindings, state and valid authorization.
+
+  preferred_reuse_candidates:
+    - src/agent_contracts/resolver.py
+    - src/ptsip/agent_contracts/runtime.py
+    - src/ptsip/migration/planner.py
+    - src/ptsip/migration/direct_planner.py
+    - developer/automation/implementation_work_packet.py
+    - developer/automation/implementation_workflows.yaml
+
+  resolver_rules:
+    semantic_similarity_selection: FORBIDDEN
+    new_normative_meaning_creation: FORBIDDEN
+    exact_identity_and_explicit_binding_first: true
+    unresolved_result_is_typed: true
+    ai_reasoning_may_follow_only_when_machine_resolution_is_unavailable: true
+
+  automatic_plan_inputs:
+    - RESOLVED_FACTS
+    - MACHINE_CONTRACTS
+    - MACHINE_BINDINGS
+    - CURRENT_STATE
+    - VERIFIED_EVIDENCE
+    - AUTHORIZATION
+
+  mutation_boundary:
+    unresolved_required_authority_allows_mutation: false
+    plan_projection_is_new_authority: false
+
+  reasoning_boundary:
+    fixed:
+      - EXACT_IDENTITY_AND_EXPLICIT_BINDING_PRECEDE_AI_REASONING
+      - SEMANTIC_SIMILARITY_SELECTION_IS_FORBIDDEN
+      - RESOLVER_MAY_NOT_CREATE_NORMATIVE_MEANING
+      - UNRESOLVED_REQUIRED_AUTHORITY_DOES_NOT_AUTHORIZE_MUTATION
+      - PLAN_PROJECTION_IS_NOT_NEW_AUTHORITY
+    bounded_reasoning:
+      - RESOLVER_PIPELINE_DECOMPOSITION
+      - LOOKUP_DATA_STRUCTURE
+      - CACHE_STRATEGY
+      - INTERNAL_PLAN_INTERMEDIATE_REPRESENTATION
+      - REUSE_SELECTION_AMONG_EXISTING_COMPATIBLE_COMPONENTS
+    candidate_only:
+      - NEW_RESOLUTION_ADAPTER_FOR_A_CURRENTLY_UNRESOLVED_CASE
+      - NEW_PLAN_PROJECTION_OPTIMIZATION
+      - NEW_MACHINE_BINDING_CANDIDATE
+    escalation_required:
+      - AMBIGUOUS_MULTIPLE_AUTHORITATIVE_RESOLUTIONS
+      - NEW_NORMATIVE_OPERATION_MEANING
+      - MISSING_REQUIRED_AUTHORIZATION
+      - SCOPE_EXPANSION_OUTSIDE_APPROVED_MPD_0015_BOUNDARY
+
+  acceptance:
+    - same resolved inputs produce the same semantic plan
+    - exact current binding prevents repeated AI routing
+    - missing binding produces bounded unresolved state rather than guessed selection
+    - existing migration/planning semantics are reused rather than replaced by a parallel DSL
+
+completion_evidence:
+- '9 focused tests PASS: exact current graph parity, no similarity routing, dependency freshness, deterministic
+  existing direct-planner reuse, missing binding UNRESOLVED, no mutation authorization.'
+- 'Automatic modes: ptsip-contract 96 passed / 1 known failure; ptsip-migration 58 passed / 15 failures; vpms 114
+  passed / 2 known failures. All 15 migration failures reproduce with identical failure signatures at 3914cba74ea4438e76e6593237f94ababb5685ba;
+  no observed new regression, no waiver.'
+- Rule identity lookup is materialized during compilation; query routing is exact. JSON contracts remain unactivated.
+  Existing mutation authorization and ledger mechanisms remain separate.
+- WORK_PACKET_NOT_AVAILABLE. Planning validation PASS.
+regression_observations:
+  baseline_sha: 3914cba74ea4438e76e6593237f94ababb5685ba
+  failed_nodes:
+  - tests/ptsip/migration/test_analyzer_037.py::test_default_target_semantics_use_current_pp_contract_not_spec_family
+  - tests/ptsip/migration/test_direct_convergence_037.py::test_identity_only_bridge_does_not_invoke_semantic_migration
+  - tests/ptsip/migration/test_direct_convergence_037.py::test_semantic_direct_convergence_requires_normalized_evidence
+  - tests/ptsip/migration/test_direct_convergence_037.py::test_semantic_direct_convergence_binds_pp_target_not_tool_draft
+  - tests/ptsip/migration/test_direct_convergence_037.py::test_legacy_target_alias_is_projected_as_logical_pp_target_for_analysis
+  - tests/ptsip/migration/test_direct_convergence_037.py::test_toolchain_ambiguity_survives_direct_convergence
+  - tests/ptsip/migration/test_direct_execution_037.py::test_legacy_alias_runs_direct_pp_execution_and_atomic_promotion
+  - tests/ptsip/migration/test_direct_planner_037.py::test_planned_direct_final_point_skips_all_intermediate_versions
+  - tests/ptsip/migration/test_direct_planner_037.py::test_existing_legacy_target_is_one_logical_pp_final_point
+  - tests/ptsip/migration/test_direct_planner_037.py::test_identity_only_bridge_is_rejected_by_semantic_direct_planner
+  - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_changes_only_contract_identity_and_validates
+  - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_requires_exact_authorized_plan
+  - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_fails_closed_if_repository_changes_after_plan
+  - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_rolls_back_original_bytes_on_post_validation_failure
+  - tests/ptsip/migration/test_identity_rewrite_037.py::test_identity_rewrite_authority_revision_must_be_explicit
+  failure_waiver_created: false
+  final_gate_owner: WU-08

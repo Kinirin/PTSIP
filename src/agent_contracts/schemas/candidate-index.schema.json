@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "normative_authority",
+    "contract_set_id",
+    "activation",
+    "canonical_serialization",
+    "canonical_serialization_status",
+    "canonical_digest",
+    "canonical_digest_policy_ref",
+    "selected_digest_output_encoding",
+    "selected_hash_algorithm",
+    "normative_semantic_projection_ref",
+    "canonical_digest_management",
+    "canonicalization_ref",
+    "schemas",
+    "migration_sources",
+    "capabilities",
+    "primitives",
+    "contract_ref",
+    "conformance_ref",
+    "rule_index"
+  ],
+  "properties": {
+    "format": {
+      "const": "ptsip-machine-contract-candidate-index/v1"
+    },
+    "status": {
+      "const": "CANDIDATE"
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "contract_set_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "activation": {
+      "const": "REQUIRES_VERIFIED_CUTOVER"
+    },
+    "canonical_serialization": {
+      "const": "PTSIP_CANONICAL_JSON_V1"
+    },
+    "canonical_digest": {
+      "const": "UNRESOLVED"
+    },
+    "schemas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "specs",
+        "operations",
+        "actions",
+        "conditions",
+        "gates",
+        "io_schemas",
+        "vocabularies"
+      ],
+      "properties": {
+        "specs": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operations": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gates": {
+          "type": "string",
+          "minLength": 1
+        },
+        "io_schemas": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vocabularies": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "migration_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "specs",
+        "operations",
+        "actions",
+        "conditions",
+        "gates",
+        "io_schemas",
+        "vocabularies"
+      ],
+      "properties": {
+        "specs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "operations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "actions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "gates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "io_schemas": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "vocabularies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "primitives": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "primitive_id",
+          "input_schema_ref",
+          "output_schema_ref",
+          "operation_semantics_ref",
+          "failure_semantics_ref",
+          "conformance_vectors_ref"
+        ],
+        "properties": {
+          "primitive_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_schema_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "output_schema_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operation_semantics_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "failure_semantics_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "conformance_vectors_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "contract_ref": {
+      "const": "contracts/current.json"
+    },
+    "conformance_ref": {
+      "const": "conformance/current.json"
+    },
+    "rule_index": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^/payloads/specs/"
+      }
+    },
+    "canonicalization_ref": {
+      "const": "canonicalization/ptsip-canonical-json-v1.json"
+    },
+    "canonical_serialization_status": {
+      "const": "COMPLETE"
+    },
+    "canonical_digest_management": {
+      "const": "SINGLE_ACTIVE_WITH_ALGORITHM_AGILITY"
+    },
+    "canonical_digest_policy_ref": {
+      "const": "digests/policy-v1.json"
+    },
+    "normative_semantic_projection_ref": {
+      "const": "digests/projection-v1.json"
+    },
+    "selected_hash_algorithm": {
+      "const": "SHA-256"
+    },
+    "selected_digest_output_encoding": {
+      "const": "LOWERCASE_HEXADECIMAL"
+    }
+  }
+}

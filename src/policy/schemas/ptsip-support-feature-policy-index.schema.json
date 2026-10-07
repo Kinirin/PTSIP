@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/docs/Support_policy/policy/schemas/ptsip-support-feature-policy-index.schema.json",
+  "title": "PTSIP Support Feature Policy Index v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "policies"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-support-feature-policy-index/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_SUPPORT_FEATURE"
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 24,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?:legacy/SFP-[0-9]{4}\\.yaml|SFP-[0-9]{4}\\.yaml|(?:NORM/SFP-NORM|GOV/SFP-GOV|INTENT/SFP-INTENT|ARCH/SFP-ARCH|INFO/SFP-INFO|CNTR/SFP-CNTR|RISK/SFP-RISK|SUPPLY/SFP-SUPPLY|REAL/SFP-REAL|ASSURE/SFP-ASSURE|CTRL/SFP-CTRL|CHANGE/SFP-CHANGE|OPS/SFP-OPS|RECORD/SFP-RECORD)-[0-9]{4}\\.yaml)$"
+          },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "DEPRECATED",
+              "RETIRED"
+            ]
+          },
+          "authority_role": {
+            "enum": [
+              "CANONICAL_AUTHORITY",
+              "MIGRATION_SOURCE"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "migration_registry_ref": {
+      "const": "registries/root-family-migration.json"
+    },
+    "projection_module_ref": {
+      "const": "registries/root-family-projection.module.json"
+    }
+  },
+  "additionalProperties": false
+}

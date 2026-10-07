@@ -1,0 +1,49 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CNTR
+policy:
+  id: MPD-CNTR-0005
+  version: '2.0'
+  title: Policy Analysis registry-only discovery interface
+  status: ACTIVE
+authority_subject:
+  id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+  statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를 소유한다.
+exclusive_kernel:
+- DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+- DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+rules:
+  policy_analysis_discovery_interface:
+    canonical_registry: developer/policy/analysis/registry.yaml
+    accepted_resolution_keys:
+    - ANALYSIS_ID
+    - SUBJECT_TYPE_SUBJECT_ID_ANALYSIS_KIND
+    direct_analysis_ref_input: FORBIDDEN
+    direct_record_path_as_discovery_input: FORBIDDEN
+    filename_semantic_inference: FORBIDDEN
+    date_based_discovery: FORBIDDEN
+    unresolved_resolution: FAIL_CLOSED
+    ambiguous_resolution: FAIL_CLOSED
+    materialization_binding_input: ANALYSIS_ID
+relations:
+  supersedes:
+  - policy: MPD-WORK-0003
+    scope: POLICY_ANALYSIS_DISCOVERY_INTERFACE
+  amends: []
+  extends: []
+  depends_on:
+  - policy: MPD-INFO-0004
+    scope: POLICY_ANALYSIS_INFORMATION_IDENTITY
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: PROJECT_OWNER_POLICY_ANALYSIS_DISCOVERY_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-PRA-CNTR-0005-ACTIVE.yaml
+    next_action:
+      action: VERIFY_REGISTRY_ONLY_DISCOVERY_INTERFACE
+      execution: SERIAL_REQUIRED
+      completion_check: DIRECT_PATH_DISCOVERY_IS_REJECTED

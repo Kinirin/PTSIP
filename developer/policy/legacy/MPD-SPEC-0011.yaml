@@ -1,0 +1,24 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-SPEC-0011
+  version: "2.0"
+  title: Repository Self-Adoption and Dogfood Contract
+  status: ACTIVE
+
+rules:
+  authority_semantics:
+    tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
+    existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
+    repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
+    spec_0_3_7_draft_remains_tool_development_normative_family: true
+    superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+
+relations:
+  supersedes: []
+  amends:
+    - policy: MPD-SPEC-0004
+      scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION
+  extends: []
+  depends_on: []

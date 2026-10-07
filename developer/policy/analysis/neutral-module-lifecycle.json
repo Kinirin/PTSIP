@@ -1,0 +1,38 @@
+{
+  "schema_version": "ptsip-root-family-transition-evidence/v1",
+  "authorization_source": "테스트 뿐만아니라 앞으로 기본root에 /src 의 모듈 생성은 중립 코딩언어 생성으로 해야합니다. 지금 파이썬 언어로 src/ptsip/policy_projection.py 을 생성한건 중립언어의 생성이 아닙니다",
+  "recorded_at": "2026-10-06T01:50:44+09:00",
+  "observed_previous_transitions": {
+    "MPD-CNTR-0003": [
+      "UNREGISTERED",
+      "DRAFT",
+      "APPROVED",
+      "ACTIVE"
+    ],
+    "MPD-REAL-0004": [
+      "UNREGISTERED",
+      "DRAFT",
+      "APPROVED"
+    ]
+  },
+  "resumed_transition": {
+    "policy_id": "MPD-REAL-0004",
+    "preflight": {
+      "status": "READY",
+      "policy_id": "MPD-REAL-0004",
+      "current_status": "APPROVED",
+      "target_status": "ACTIVE",
+      "approval_id": "MPA-20261006-NEUTRAL-REAL-0004-ACTIVE",
+      "implementation_authorized": true
+    },
+    "version_transition": {
+      "status": "READY",
+      "change_class": "LIFECYCLE_TRANSITION",
+      "current_status": "APPROVED",
+      "target_status": "ACTIVE",
+      "current_version": "1.0",
+      "next_version": "2.0"
+    },
+    "approval_ref": "developer/policy/approvals/MPA-20261006-NEUTRAL-REAL-0004-ACTIVE.yaml"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["format", "artifact_class", "normative_authority", "base_head", "approval", "prior_records", "hash_role", "provider_binding", "product_target", "support_targets", "authorized_preservation_changes", "mutation_targets"],
+  "properties": {
+    "format": {"const": "vpms-runtime-activation-scope/v1"},
+    "artifact_class": {"const": "DEVELOPER_ACTIVATION_PROVENANCE"},
+    "normative_authority": {"const": false},
+    "base_head": {"const": "7dd0adc39aa33f67fcc20a6db52a488bae0060a1"},
+    "approval": {
+      "type": "object",
+      "required": ["decision", "decision_source", "source_reference", "runtime_activation_authorized", "selector_retirement_authorized", "run_selected_cases_retirement_authorized", "sfp_0006_retirement_authorized", "sfp_0023_activation_authorized", "public_api_transition_authorized", "automatic_commit_push_authorized", "purpose_field_removal_authorized", "raw_profile_reader_retirement_authorized", "agent_contract_digest_activation_authorized"],
+      "properties": {
+        "decision": {"const": "APPROVED"}, "decision_source": {"const": "USER_EXPLICIT"},
+        "source_reference": {"type": "string", "minLength": 1},
+        "runtime_activation_authorized": {"const": true}, "selector_retirement_authorized": {"const": true},
+        "run_selected_cases_retirement_authorized": {"const": true}, "sfp_0006_retirement_authorized": {"const": true},
+        "sfp_0023_activation_authorized": {"const": true}, "public_api_transition_authorized": {"const": true},
+        "automatic_commit_push_authorized": {"const": true}, "purpose_field_removal_authorized": {"const": false},
+        "raw_profile_reader_retirement_authorized": {"const": false}, "agent_contract_digest_activation_authorized": {"const": false}
+      }, "additionalProperties": false
+    },
+    "prior_records": {
+      "const": {
+        "developer/policy/registries/vpms-contract-materialization.json": "3a4b0f8aeb575252b33564dac63c622ade8a74e2aea2d5464541fbf5ba698e23",
+        "developer/policy/registries/vpms-api-implementation.json": "0010e88fe095dd85147ebab35ef6f2a88f9e9aebc9f17f5cedab9de104d9297d"
+      }
+    },
+    "hash_role": {"const": "LOCAL_LF_BYTE_AUDIT_NOT_NORMATIVE_SEMANTIC_DIGEST"},
+    "provider_binding": {"const": "ptsip.validation.handoff:load_validated_effective_map"},
+    "product_target": {"const": {"status": "ACTIVE", "runtime_enabled": true, "capability": "ACTIVE"}},
+    "support_targets": {"const": {"SFP-0006": "RETIRED", "SFP-0023": "ACTIVE"}},
+    "authorized_preservation_changes": {
+      "const": {
+        "src/policy/SFP-0006.yaml": "MODIFY_LIFECYCLE_ONLY", "src/vpms/__init__.py": "MODIFY",
+        "src/vpms/domain/selector.py": "DELETE", "src/vpms/execution/runner.py": "MODIFY",
+        "src/vpms/integration/ptsip_bridge.py": "MODIFY"
+      }
+    },
+    "mutation_targets": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.)(?!.*\\\\)[^\\s]+$"}}
+  },
+  "additionalProperties": false
+}

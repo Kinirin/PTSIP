@@ -1,0 +1,41 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+policy:
+  id: MPD-SPEC-0005
+  version: "2.0"
+  title: Repository Component Architecture Contract
+  status: ACTIVE
+rules:
+  authority_semantics:
+    components:
+      - id: ptsip-evidence
+        classification: PRODUCT
+        role: IMPLEMENTATION
+        selector: src/ptsip/evidence/**
+      - id: ptsip-source-compat
+        classification: PRODUCT
+        role: IMPLEMENTATION
+        selector: src/ptsip/source_compat/**
+      - id: ptsip-migration
+        classification: PRODUCT
+        role: IMPLEMENTATION
+        selector: src/ptsip/migration/**
+    common_properties:
+      shipped: true
+      runtime_required: false
+      executable: false
+      release_owner: tool
+      compatibility_owner: tool
+    ptsip_core_selector_broadened_to_recursive_src_ptsip: false
+    relationships:
+      - ptsip-evidence:IMPORTS:ptsip-core
+      - ptsip-source-compat:IMPORTS:ptsip-core
+      - ptsip-source-compat:READS:ptsip-embedded-contracts
+      - ptsip-migration:IMPORTS:ptsip-core
+      - ptsip-migration:IMPORTS:ptsip-evidence
+      - ptsip-migration:IMPORTS:ptsip-source-compat
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

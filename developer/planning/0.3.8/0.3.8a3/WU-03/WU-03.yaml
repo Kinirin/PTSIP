@@ -1,0 +1,123 @@
+schema_version: ptsip-prerelease-work-unit/v1alpha1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_id: PLAN-0.3.8A3-MPD-0015
+
+work_unit:
+  id: WU-03
+  title: Language-neutral canonical Machine Contract foundation
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle: {status: COMPLETE}
+  approval: {status: APPROVED, inherited_from: [PLAN-0.3.8A3-MPD-0015], approval_source: USER_EXPLICIT}
+  implementation_authorization: {status: COMPLETE, authorization_source: USER_EXPLICIT}
+  depends_on: [WU-02]
+
+  objective: >-
+    Extract externally observable PTSIP semantics from language-specific
+    implementation dependence into versioned JSON Machine Contract candidates
+    while preserving the current approved semantic baseline as migration evidence and allowing the Python implementation to evolve when conformance is maintained.
+
+  design_constraints:
+    canonical_contract_format: JSON
+    structure_validation: JSON_SCHEMA
+    conformance_vector_format: JSON
+    semantic_role_file_separation_required: false
+    implementation_language_reference_in_normative_contract: FORBIDDEN
+    existing_yaml_immediate_deletion: FORBIDDEN
+
+  materialization_guidance:
+    existing_contract_plane_to_reuse_first: src/agent_contracts
+    preferred_candidates:
+      canonical_index: src/agent_contracts/index.json
+      grouped_contract_root: src/agent_contracts/contracts/
+      conformance_root: src/agent_contracts/conformance/
+      schema_root: src/agent_contracts/schemas/
+    preferred_candidates_are_authority: false
+    alternate_layout_allowed_when:
+      - WITHIN_APPROVED_MPD_0015_SCOPE
+      - NORMATIVE_RESPONSIBILITY_BOUNDARIES_ARE_PRESERVED
+      - LOOKUP_AND_INFERENCE_COST_DO_NOT_INCREASE_WITHOUT_JUSTIFICATION
+      - VALIDATION_AND_MIGRATION_REMAIN_DETERMINISTIC
+
+  required_semantic_coverage:
+    - INPUT_STRUCTURE
+    - OUTPUT_STRUCTURE
+    - OPERATION_SEMANTICS
+    - PRECONDITIONS
+    - POSTCONDITION_GUARANTEES
+    - FAILURE_SEMANTICS
+    - STATE_TRANSITIONS
+    - CAPABILITY_DECLARATIONS
+    - IDENTITY_AND_REFERENCE_RULES
+    - CONFORMANCE_REFERENCES
+
+  canonical_access_primitive_compatibility:
+    preserve_responsibilities:
+      - primitive_id
+      - input_schema_ref
+      - output_schema_ref
+      - operation_semantics_ref
+      - failure_semantics_ref
+      - conformance_vectors_ref
+    four_field_execution_contract_collapse: FORBIDDEN
+
+  semantic_baseline:
+    authority_source_order:
+      - APPROVED_MACHINE_CONTRACT_SEMANTICS_WHERE_ALREADY_DEFINED
+      - APPROVED_GOVERNANCE_POLICY
+      - VALIDATED_MIGRATION_REFERENCE_WHERE_SEMANTICS_ARE_NOT_YET_EXTRACTED
+    python_implementation_is_the_semantic_baseline_by_identity: false
+    python_changes_allowed_when_conformant: true
+    silent_python_semantic_drift: FORBIDDEN
+
+  migration_boundary:
+    current_yaml_role_until_cutover: MIGRATION_REFERENCE_AND_CURRENT_COMPATIBILITY_SOURCE
+    dual_normative_authority: FORBIDDEN
+    json_activation_requires_verified_cutover: true
+    unresolved_canonical_serialization_or_digest_semantics: BLOCK_ACTIVATION_NOT_INVENT_MEANING
+
+  reasoning_boundary:
+    fixed:
+      - NORMATIVE_MACHINE_CONTRACT_FORMAT_IS_JSON
+      - INPUT_OUTPUT_STRUCTURE_VALIDATION_USES_JSON_SCHEMA
+      - CONFORMANCE_VECTOR_FORMAT_IS_JSON
+      - IMPLEMENTATION_LANGUAGE_IS_NOT_NORMATIVE_AUTHORITY
+      - SEMANTIC_ROLE_PHYSICAL_FILE_SEPARATION_IS_NOT_REQUIRED
+      - CANONICAL_ACCESS_PRIMITIVE_SIX_RESPONSIBILITIES_ARE_PRESERVED
+      - CONFORMANCE_DOES_NOT_CREATE_NORMATIVE_SEMANTICS
+      - DUAL_NORMATIVE_AUTHORITY_IS_FORBIDDEN
+    bounded_reasoning:
+      - CONTRACT_PHYSICAL_GROUPING
+      - CONTRACT_FILE_GRANULARITY
+      - EXISTING_AGENT_CONTRACT_REUSE_STRATEGY
+      - CANONICAL_INDEX_INTERNAL_STRUCTURE
+      - SCHEMA_REUSE_OR_REORGANIZATION_WITHIN_APPROVED_SCOPE
+    candidate_only:
+      - NEW_CONTRACT_ROLE
+      - NEW_REFERENCE_INTERFACE
+      - NEW_DOMAIN_OR_SEMANTIC_GROUPING
+      - ALTERNATE_MACHINE_CONTRACT_PHYSICAL_LAYOUT
+    escalation_required:
+      - NEW_NORMATIVE_SEMANTICS_NOT_DERIVABLE_FROM_APPROVED_POLICY
+      - CHANGE_TO_APPROVED_AUTHORITY_BOUNDARY
+      - CHANGE_TO_CANONICAL_ACCESS_PRIMITIVE_RESPONSIBILITY_SET
+      - UNRESOLVED_CANONICAL_SERIALIZATION_OR_DIGEST_SEMANTICS_REQUIRED_FOR_ACTIVATION
+
+  acceptance:
+    - candidate JSON contracts validate structurally
+    - every migrated identity maps to the approved semantic baseline without silent semantic addition
+    - semantic roles may be grouped when that reduces lookup cost
+    - no Python callable or CLI command becomes normative meaning
+
+completion_evidence:
+- 'Candidate structural/parity/negative tests: 9 passed. Source plane: 15 specs, 156 rules, 5 operations, 18 actions,
+  23 conditions, 3 gates, 15 I/O schemas and 5 vocabularies validate.'
+- USER_EXPLICIT continuation approval resolves the repository-profile mapping scope boundary. developer/profiles/ptsip-repository.yaml
+  registers existing package executable ownership, neutral contract data ownership and contract verification inputs;
+  MPD-0015 applicability unchanged.
+- 'Automatic modes: ptsip-core 320 passed / the same 23 inherited failures; ptsip-remediation 55 passed; test-mode-control-plane
+  38 passed; ptsip-contract 79 passed / 1 pre-existing failure; repository-architecture 2 pre-existing collection
+  errors; vpms 114 passed / 2 failures reproduced at 3914cba74ea4438e76e6593237f94ababb5685ba.'
+- Planning validation PASS. WORK_PACKET_NOT_AVAILABLE; no task_context invented. No failure waiver; WU-08 must evaluate
+  required regression gates.
+- JSON remains CANDIDATE with no normative authority. Serialization/digest activation semantics remain unresolved;
+  formatting does not define them.

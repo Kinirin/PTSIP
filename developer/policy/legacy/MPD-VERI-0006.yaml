@@ -1,0 +1,118 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-VERI-0006
+  version: "0.1"
+  title: Policy-Plan Consistency Verification Output Contract
+  status: DRAFT
+
+rules:
+  policy_plan_consistency_verification_output_contract:
+    responsibility: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+    verification_semantics_ref: MPD-VERI-0001
+    management_next_action_control_plane_ref: MPD-0017
+
+    schema_artifact:
+      path: developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
+      instance_schema_version: ptsip-management-verification-policy-plan-consistency-report/v1
+      schema_document_id: urn:ptsip:management-verification:policy-plan-consistency-report:v1
+      schema_document_is_management_policy: false
+      schema_artifact_role: MACHINE_ENFORCEMENT_ARTIFACT
+      physical_path_defines_semantic_identity: false
+      schema_generation_is_policy_version: false
+
+    output_structure:
+      canonical_top_level_fields:
+        - schema_version
+        - policy
+        - verification
+        - failures
+      namespace_semantics:
+        schema_version: REPORT_SCHEMA_IDENTITY
+        policy: POLICY_AUTHORITY_ENVELOPE
+        verification: AGGREGATE_VERIFICATION_RESULT
+        failures: DETAILED_FAILURE_DIAGNOSTICS
+
+      policy_authority_envelope:
+        verification_authority:
+          identity_fields:
+            - id
+            - version
+          lifecycle_fields:
+            - status
+            - next_action
+        output_authority:
+          identity_fields:
+            - id
+            - version
+          lifecycle_fields:
+            - status
+            - next_action
+
+      lifecycle_next_action_projection:
+        source_semantics: EXPLICIT_AUTHORITY_DOCUMENT_DECLARATION_ONLY
+        derive_from_status: FORBIDDEN
+        infer_when_source_absent: FORBIDDEN
+        canonical_shape:
+          required_fields:
+            - action
+            - execution
+            - completion_check
+          field_contract_owner: MPD-0017
+
+    authority_boundary:
+      verification_semantics_owner: MPD-VERI-0001
+      verification_output_semantics_owner: MPD-VERI-0006
+      schema_artifact_has_independent_policy_authority: false
+
+    draft_scope:
+      approved_decisions:
+        - OUTPUT_SCHEMA_POLICY_OWNER
+        - OUTPUT_SCHEMA_PHYSICAL_PATH
+        - OUTPUT_SCHEMA_INSTANCE_IDENTITY
+        - OUTPUT_SCHEMA_DOCUMENT_IDENTITY
+        - VERIFICATION_SEMANTICS_OUTPUT_SEMANTICS_RESPONSIBILITY_SPLIT
+        - TOP_LEVEL_OUTPUT_NAMESPACE_SPLIT
+        - POLICY_AUTHORITY_ENVELOPE
+        - POLICY_IDENTITY_LIFECYCLE_SPLIT
+        - LIFECYCLE_NEXT_ACTION_PROJECTION
+        - NEXT_ACTION_DIRECT_ID_REFERENCE_TRIPLE
+        - MANAGEMENT_NEXT_ACTION_CONTROL_PLANE_REFERENCE
+      unresolved_output_structure_must_not_be_inferred: true
+      unresolved_contract_areas:
+        - VERIFICATION_RESULT_INTERNAL_STRUCTURE
+        - VERDICT_VOCABULARY
+        - ZERO_BINDING_SEMANTICS
+        - COUNT_FIELD_CONTRACT
+        - FAILURE_ITEM_STRUCTURE
+        - FAILURE_CODE_VOCABULARY
+        - FAILURE_MESSAGE_SEMANTICS
+        - FAILURE_REF_SEMANTICS
+        - FAILURE_ORDERING_AND_DEDUPLICATION
+        - REMEDIATION_OUTPUT_BOUNDARY
+        - REPOSITORY_SNAPSHOT_METADATA
+        - CLI_EXIT_CODE_CONTRACT
+        - SERIALIZATION_CONTRACT
+        - FORWARD_COMPATIBILITY
+
+  responsibility_boundary:
+    owns:
+      - POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
+    does_not_own:
+      - POLICY_PLAN_CONSISTENCY_VERIFICATION_SEMANTICS
+      - POLICY_SEMANTICS
+      - PLAN_CONTENT
+      - PLAN_APPROVAL
+      - POLICY_PLAN_BINDING_AUTHORITY
+      - IMPLEMENTATION_AUTHORIZATION
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-VERI-0001
+      scope: POLICY_PLAN_CONSISTENCY_VERIFICATION_SEMANTICS
+    - policy: MPD-0017
+      scope: MANAGEMENT_NEXT_ACTION_IDENTITY_AND_EXECUTION_CONTROL_PLANE

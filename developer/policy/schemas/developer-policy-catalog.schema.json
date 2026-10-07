@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:catalog-schema:v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "artifact_class",
+    "policies"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/catalog_schema_version"
+    },
+    "artifact_class": {
+      "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/catalog_artifact_class"
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "policy_class",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_id"
+          },
+          "path": {
+            "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_path"
+          },
+          "policy_class": {
+            "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_class"
+          },
+          "status": {
+            "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_status"
+          },
+          "authority_role": {
+            "enum": [
+              "CANONICAL_AUTHORITY",
+              "MIGRATION_SOURCE"
+            ]
+          }
+        }
+      }
+    },
+    "migration_registry_ref": {
+      "const": "registries/root-family-migration.json"
+    },
+    "projection_module_ref": {
+      "const": "registries/root-family-projection.module.json"
+    }
+  }
+}

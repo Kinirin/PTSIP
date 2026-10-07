@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/schemas/catalog.schema.json",
+  "type": "object",
+  "required": [
+    "format",
+    "contract_class",
+    "capability",
+    "entrypoints",
+    "contracts"
+  ],
+  "properties": {
+    "capability": {
+      "enum": ["REGISTERED_NON_ACTIVE_ONLY", "ACTIVE"]
+    },
+    "format": {
+      "const": "vpms-product-contract-catalog/v1"
+    },
+    "contract_class": {
+      "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_class"
+    },
+    "entrypoints": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "selection",
+        "execution_composition"
+      ],
+      "properties": {
+        "protocol": {
+          "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_id"
+        },
+        "selection": {
+          "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_id"
+        },
+        "execution_composition": {
+          "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_id"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contracts": {
+      "type": "object",
+      "minProperties": 3,
+      "maxProperties": 3,
+      "propertyNames": {
+        "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/contract_id"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "path",
+          "status",
+          "responsibility",
+          "runtime_enabled"
+        ],
+        "properties": {
+          "path": {
+            "enum": [
+              "protocol.json",
+              "selection.json",
+              "execution-composition.json"
+            ]
+          },
+          "status": {
+            "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/lifecycle"
+          },
+          "responsibility": {
+            "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/src/vpms/contracts/identity-registry.json#/$defs/responsibility"
+          },
+          "runtime_enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

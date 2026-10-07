@@ -14,7 +14,7 @@ import yaml
 
 VALIDATOR_PATH = Path(__file__).with_name("validate_test_modes.py")
 VALIDATE_REGISTRY = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
-SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
+SELF_PROFILE_PATH = ".ptsip/profiles/main.ptsip.yaml"
 
 
 class TestModeSelectionError(ValueError):
@@ -248,6 +248,38 @@ def select_automatic_modes(
     return selected
 
 
+def resolve_automatic_with_deletions(
+    registry: dict[str, Any],
+    profile: dict[str, Any],
+    changed_files: Iterable[str],
+    deleted_files: Iterable[str],
+    previous_profile: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Use exact preimage ownership for Git-confirmed deletions only.
+
+    Current ownership remains mandatory for added/modified paths. A deleted
+    owner or Test Mode cannot be silently replaced by a semantic guess.
+    """
+    changed = normalize_changed_files(changed_files)
+    deleted = set(normalize_changed_files(deleted_files))
+    if not deleted <= set(changed):
+        raise TestModeSelectionError("deleted paths are outside the change scope")
+    selected: list[dict[str, Any]] = []
+    no_verification: list[str] = []
+    for path in changed:
+        authority = previous_profile if path in deleted else profile
+        matches, no_test = resolve_automatic_selection(registry, authority, [path])
+        if path in deleted and _path_has_declared_owner(profile, path):
+            current, _ = resolve_automatic_selection(registry, profile, [path])
+            matches += current
+        for mode in matches:
+            if mode not in selected:
+                selected.append(mode)
+        if not matches:
+            no_verification += no_test
+    return selected, no_verification
+
+
 def select_manual_modes(
     registry: dict[str, Any],
     requested_mode: str,
@@ -276,20 +308,37 @@ def build_execution_plan(
             raise TestModeSelectionError(
                 f"mode {mode.get('id')!r} has invalid execution declaration"
             )
-        targets = execution.get("pytest")
-        if not isinstance(targets, list) or not all(
-            isinstance(target, str) for target in targets
+        pytest_targets = execution.get("pytest", [])
+        go_targets = execution.get("go", [])
+        if "pytest" in execution and (
+            not isinstance(pytest_targets, list)
+            or not pytest_targets
+            or not all(isinstance(target, str) for target in pytest_targets)
         ):
             raise TestModeSelectionError(
                 f"mode {mode.get('id')!r} has invalid pytest targets"
             )
-        plan.append(
-            {
-                "id": mode["id"],
-                "component_ref": mode["component_ref"],
-                "pytest": list(targets),
-            }
-        )
+        if "go" in execution and (
+            not isinstance(go_targets, list)
+            or not go_targets
+            or not all(isinstance(target, str) for target in go_targets)
+        ):
+            raise TestModeSelectionError(
+                f"mode {mode.get('id')!r} has invalid Go targets"
+            )
+        if not pytest_targets and not go_targets:
+            raise TestModeSelectionError(
+                f"mode {mode.get('id')!r} has no execution targets"
+            )
+
+        item = {
+            "id": mode["id"],
+            "component_ref": mode["component_ref"],
+            "pytest": list(pytest_targets),
+        }
+        if go_targets:
+            item["go"] = list(go_targets)
+        plan.append(item)
     return plan
 
 
@@ -351,6 +400,37 @@ def changed_files_from_git(
     )
 
 
+def deletion_preimage_from_git(
+    repo_root: Path,
+    profile_path: Path,
+    changed_files: Iterable[str],
+    base: str,
+    head: str,
+    *,
+    worktree: bool,
+) -> tuple[list[str], dict[str, Any] | None, str]:
+    """Read one exact Git preimage, never search history for an owner."""
+    revision = head if worktree else (base or _default_change_base(repo_root, head))
+    if not revision:
+        return [], None, ""
+    command = ["git", "diff", "--no-renames", "--diff-filter=D", "--name-only", revision]
+    if not worktree:
+        command.append(head)
+    command.append("--")
+    result = subprocess.run(command, cwd=repo_root, check=True, capture_output=True, text=True)
+    deleted = sorted(set(result.stdout.splitlines()) & set(normalize_changed_files(changed_files)))
+    if not deleted:
+        return [], None, ""
+    relative = profile_path.resolve().relative_to(repo_root.resolve()).as_posix()
+    source = subprocess.run(["git", "show", f"{revision}:{relative}"], cwd=repo_root,
+                            check=True, capture_output=True, text=True)
+    previous = yaml.safe_load(source.stdout)
+    if not isinstance(previous, dict):
+        raise TestModeSelectionError("deletion preimage Project Profile must be a mapping")
+    exact_revision = subprocess.check_output(["git", "rev-parse", revision], cwd=repo_root, text=True).strip()
+    return deleted, previous, exact_revision
+
+
 def _result_payload(
     selected: list[dict[str, Any]],
     changed_files: list[str],
@@ -398,6 +478,8 @@ def main(argv: list[str] | None = None) -> int:
     profile_path = repo_root / args.profile
 
     try:
+        deleted: list[str] = []
+        deletion_revision = ""
         registry, profile = load_valid_registry(
             registry_path, profile_path, repo_root
         )
@@ -407,26 +489,26 @@ def main(argv: list[str] | None = None) -> int:
                 if args.changed_file
                 else changed_files_from_git(repo_root, args.base, args.head)
             )
-            selected, no_verification_required = (
-                resolve_automatic_selection(
-                    registry, profile, changed
-                )
+            deleted, previous, deletion_revision = deletion_preimage_from_git(
+                repo_root, profile_path, changed, args.base, args.head,
+                worktree=bool(args.changed_file),
             )
+            if deleted:
+                selected, no_verification_required = resolve_automatic_with_deletions(
+                    registry, profile, changed, deleted, previous,
+                )
+            else:
+                selected, no_verification_required = resolve_automatic_selection(registry, profile, changed)
         else:
             changed = []
             no_verification_required = []
             selected = select_manual_modes(registry, args.mode)
 
-        print(
-            json.dumps(
-                _result_payload(
-                    selected,
-                    changed,
-                    no_verification_required,
-                ),
-                separators=(",", ":"),
-            )
-        )
+        payload = _result_payload(selected, changed, no_verification_required)
+        if deleted:
+            payload["deleted_files"] = deleted
+            payload["deletion_profile_revision"] = deletion_revision
+        print(json.dumps(payload, separators=(",", ":")))
         return 0
     except (
         OSError,

@@ -1,0 +1,56 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: CNTR
+policy:
+  id: MPD-CNTR-0003
+  version: '3.0'
+  title: Language-neutral Root Family projection module
+  status: ACTIVE
+authority_subject:
+  id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+  statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를 소유한다.
+exclusive_kernel:
+- DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+- DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+      statement: 호출 가능한 command vocabulary, typed 입력과 출력, 오류 의미 및 precondition/postcondition 약속을 명시한다.
+      non_substitutability: INFO의 내부 데이터 모델만으로 외부 호출에 허용된 command와 결과 약속을 만들 수 없다.
+    - id: DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+      statement: 개발 자동화 인터페이스의 보장 범위와 호환성 약속을 정하고 미등록 command나 추측 fallback이 계약이 되는 것을 금지한다.
+      non_substitutability: CHANGE가 전환 일정을 정하거나 REAL이 편의 기능을 구현해도 계약상 지원 의무가 자동으로 생기지 않는다.
+    source_scope: []
+  root_family_projection_module:
+    module_id: urn:ptsip:developer:root-family-projection:v1
+    module_ref: developer/policy/registries/root-family-projection.module.json
+    language_neutral: true
+    versioned: true
+    machine_readable: true
+    semantics_must_be_explicit: true
+    normative_program_language: PTSIP_JSON_PROGRAM_V1
+    implementation_source_is_module_authority: false
+    support_module_authority_inheritance: FORBIDDEN
+    module_sha256: d86038c17ea13d64adbadc9fc7153dac0887d2542f2576d675101b5104976b15
+    module_digest_format: SHA256_UTF8_LF
+    current_root_reconstruction: FORBIDDEN
+    usage: MIGRATION_HISTORY_AUDIT_ONLY
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
+transition:
+  target_status: ACTIVE
+  state: COMPLETE
+  requirements:
+  - id: TR-001
+    type: NEUTRAL_MODULE_EXPLICIT_OWNER_ADMISSION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261006-NEUTRAL-CNTR-0003-ACTIVE.yaml
+    next_action:
+      action: VERIFY_REGISTERED_NEUTRAL_MODULE_BINDING
+      execution: SERIAL_REQUIRED
+      completion_check: OWNER_AND_BINDING_EXACTLY_REGISTERED

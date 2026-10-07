@@ -1,0 +1,22 @@
+schema_version: ptsip-developer-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+policy:
+  id: MPD-MIGR-0003
+  version: "2.0"
+  title: Project Profile Migration Authorization Boundary
+  status: ACTIVE
+
+rules:
+  authority_semantics:
+    project_profile_version_migration_authority_ref: MPD-0011
+    project_profile_version_migration_authorized_when: MPD_0011_TRIGGER_AND_PRECONDITIONS_SATISFIED
+    project_profile_version_migration_otherwise: FORBIDDEN
+
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: MPD-0011
+      scope: PROJECT_PROFILE_TRANSITION_APPROVAL_BASELINE

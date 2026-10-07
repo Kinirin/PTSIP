@@ -1,0 +1,259 @@
+schema_version: ptsip-support-authority-schema-registry/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+registry_role: SUPPORT_AUTHORITY_CAPABILITY_CATALOG_NOT_PROJECT_AUTHORITY
+language_neutral: true
+semantic_schema_document: schemas/ptsip-support-authority-semantics.schema.json
+lifecycle_policy:
+  policy_status_mapping:
+    ACTIVE: ACTIVE
+    DRAFT: DRAFT
+    DEPRECATED: DEPRECATED
+    RETIRED: RETIRED
+  project_authority_eligible_states:
+    - ACTIVE
+entries:
+  - policy_id: SFP-0001
+    authority_type: PTSIP_POLICY_IDENTITY
+    schema_id: ptsip.governance/ptsip-policy-identity
+    schema_version: 1
+    schema_definition: SFP_0001_V1
+  - policy_id: SFP-0002
+    authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
+    schema_id: ptsip.governance/consumer-repository-non-intrusion
+    schema_version: 1
+    schema_definition: SFP_0002_V1
+  - policy_id: SFP-0003
+    authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+    schema_id: ptsip.governance/specification-tool-version-independence
+    schema_version: 1
+    schema_definition: SFP_0003_V1
+  - policy_id: SFP-0004
+    authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
+    schema_id: ptsip.governance/evidence-artifact-conformance-model
+    schema_version: 1
+    schema_definition: SFP_0004_V1
+  - policy_id: SFP-0005
+    authority_type: DISTRIBUTED_DECISION_AUTHORITY
+    schema_id: ptsip.governance/distributed-decision-authority
+    schema_version: 1
+    schema_definition: SFP_0005_V1
+  - policy_id: SFP-0006
+    authority_type: VPMS_VERIFICATION_PURPOSE_MANAGEMENT
+    schema_id: ptsip.governance/vpms-verification-purpose-management
+    schema_version: 1
+    schema_definition: SFP_0006_V1
+  - policy_id: SFP-0007
+    authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
+    schema_id: ptsip.governance/primary-lifecycle-boundary-determination
+    schema_version: 1
+    schema_definition: SFP_0007_V1
+  - policy_id: SFP-0008
+    authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
+    schema_id: ptsip.governance/responsibility-map-semantic-axes
+    schema_version: 1
+    schema_definition: SFP_0008_V1
+  - policy_id: SFP-0009
+    authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
+    schema_id: ptsip.governance/responsibility-map-declaration-authority
+    schema_version: 1
+    schema_definition: SFP_0009_V1
+  - policy_id: SFP-0010
+    authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
+    schema_id: ptsip.governance/versioned-draft-profile-transition
+    schema_version: 1
+    schema_definition: SFP_0010_V1
+  - policy_id: SFP-0011
+    authority_type: SPECIFICATION_FAMILY_ACTIVATION
+    schema_id: ptsip.governance/specification-family-activation
+    schema_version: 1
+    schema_definition: SFP_0011_V1
+  - policy_id: SFP-0012
+    authority_type: NORMALIZED_EVIDENCE_CONTRACT
+    schema_id: ptsip.governance/normalized-evidence-contract
+    schema_version: 1
+    schema_definition: SFP_0012_V1
+  - policy_id: SFP-0013
+    authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
+    schema_id: ptsip.governance/source-profile-compatibility-model
+    schema_version: 1
+    schema_definition: SFP_0013_V1
+  - policy_id: SFP-0014
+    authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
+    schema_id: ptsip.governance/staged-migration-analysis-pipeline
+    schema_version: 1
+    schema_definition: SFP_0014_V1
+  - policy_id: SFP-0015
+    authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
+    schema_id: ptsip.governance/target-delta-reconciliation-planner
+    schema_version: 1
+    schema_definition: SFP_0015_V1
+  - policy_id: SFP-0016
+    authority_type: MIGRATION_APPLY_STATE_MACHINE
+    schema_id: ptsip.governance/migration-apply-state-machine
+    schema_version: 1
+    schema_definition: SFP_0016_V1
+  - policy_id: SFP-0017
+    authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+    schema_id: ptsip.governance/tool-profile-contract-independence
+    schema_version: 1
+    schema_definition: SFP_0017_V1
+  - policy_id: SFP-0018
+    authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
+    schema_id: ptsip.governance/project-profile-version-namespace
+    schema_version: 1
+    schema_definition: SFP_0018_V1
+  - policy_id: SFP-0019
+    authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+    schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
+    schema_version: 1
+    schema_definition: SFP_0019_V1
+  - policy_id: SFP-0020
+    authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
+    schema_id: ptsip.governance/direct-latest-target-convergence
+    schema_version: 1
+    schema_definition: SFP_0020_V1
+  - policy_id: SFP-0021
+    authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
+    schema_id: ptsip.governance/specification-binding-capability-registries
+    schema_version: 1
+    schema_definition: SFP_0021_V1
+  - policy_id: SFP-0022
+    authority_type: CONTEXT_PLANE_MIGRATION_REPAIR
+    schema_id: ptsip.context/migration-repair
+    schema_version: 1
+    schema_definition: SFP_0022_V1
+  - policy_id: SFP-0023
+    authority_type: PTSIP_VPMS_READ_ONLY_INTEGRATION
+    schema_id: ptsip.governance/ptsip-vpms-read-only-integration
+    schema_version: 1
+    schema_definition: SFP_0023_V1
+  - policy_id: SFP-0024
+    authority_type: SUPPORT_ROOT_RESPONSIBILITY_FAMILY_TRANSITION
+    schema_id: ptsip.governance/support-root-responsibility-family-transition
+    schema_version: 1
+    schema_definition: SFP_0024_V1
+  - policy_id: SFP-ARCH-0001
+    authority_type: ROOT_FAMILY_ARCH
+    schema_id: ptsip.governance/root-family/arch
+    schema_version: 1
+    schema_definition: SFP_ARCH_0001_V1
+  - policy_id: SFP-ARCH-0002
+    authority_type: ROOT_FAMILY_ARCH
+    schema_id: ptsip.governance/root-family/arch
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-ARCH-0003
+    authority_type: ROOT_FAMILY_ARCH
+    schema_id: ptsip.governance/root-family/arch
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-ASSURE-0001
+    authority_type: ROOT_FAMILY_ASSURE
+    schema_id: ptsip.governance/root-family/assure
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-ASSURE-0002
+    authority_type: ROOT_FAMILY_ASSURE
+    schema_id: ptsip.governance/root-family/assure
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-ASSURE-0003
+    authority_type: ROOT_FAMILY_ASSURE
+    schema_id: ptsip.governance/root-family/assure
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-CHANGE-0001
+    authority_type: ROOT_FAMILY_CHANGE
+    schema_id: ptsip.governance/root-family/change
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-CNTR-0001
+    authority_type: ROOT_FAMILY_CNTR
+    schema_id: ptsip.governance/root-family/cntr
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-CNTR-0002
+    authority_type: ROOT_FAMILY_CNTR
+    schema_id: ptsip.governance/root-family/cntr
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-CNTR-0003
+    authority_type: ROOT_FAMILY_CNTR
+    schema_id: ptsip.governance/root-family/cntr
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-CNTR-0004
+    authority_type: ROOT_FAMILY_CNTR
+    schema_id: ptsip.governance/root-family/cntr
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-CTRL-0001
+    authority_type: ROOT_FAMILY_CTRL
+    schema_id: ptsip.governance/root-family/ctrl
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-GOV-0001
+    authority_type: ROOT_FAMILY_GOV
+    schema_id: ptsip.governance/root-family/gov
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-INFO-0001
+    authority_type: ROOT_FAMILY_INFO
+    schema_id: ptsip.governance/root-family/info
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-INFO-0002
+    authority_type: ROOT_FAMILY_INFO
+    schema_id: ptsip.governance/root-family/info
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-INFO-0003
+    authority_type: ROOT_FAMILY_INFO
+    schema_id: ptsip.governance/root-family/info
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-INTENT-0001
+    authority_type: ROOT_FAMILY_INTENT
+    schema_id: ptsip.governance/root-family/intent
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-NORM-0001
+    authority_type: ROOT_FAMILY_NORM
+    schema_id: ptsip.governance/root-family/norm
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-NORM-0002
+    authority_type: ROOT_FAMILY_NORM
+    schema_id: ptsip.governance/root-family/norm
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-OPS-0001
+    authority_type: ROOT_FAMILY_OPS
+    schema_id: ptsip.governance/root-family/ops
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-REAL-0001
+    authority_type: ROOT_FAMILY_REAL
+    schema_id: ptsip.governance/root-family/real
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-RECORD-0001
+    authority_type: ROOT_FAMILY_RECORD
+    schema_id: ptsip.governance/root-family/record
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-RECORD-0002
+    authority_type: ROOT_FAMILY_RECORD
+    schema_id: ptsip.governance/root-family/record
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-RISK-0001
+    authority_type: ROOT_FAMILY_RISK
+    schema_id: ptsip.governance/root-family/risk
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1
+  - policy_id: SFP-SUPPLY-0001
+    authority_type: ROOT_FAMILY_SUPPLY
+    schema_id: ptsip.governance/root-family/supply
+    schema_version: 1
+    schema_definition: ROOT_FAMILY_V1

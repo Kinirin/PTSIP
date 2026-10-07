@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer-prerelease-work-unit:v1alpha1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "plan_id",
+    "work_unit"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-prerelease-work-unit/v1alpha1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "completion_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "work_unit": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "lifecycle",
+        "approval",
+        "implementation_authorization",
+        "depends_on"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^WU-[0-9]{2}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycle": {
+          "type": "object",
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "DRAFT",
+                "ACTIVE",
+                "BLOCKED",
+                "IMPLEMENTED_VALIDATION_PENDING",
+                "COMPLETE",
+                "SUPERSEDED",
+                "CANCELLED"
+              ]
+            }
+          }
+        },
+        "approval": {
+          "type": "object",
+          "required": [
+            "status",
+            "approval_source"
+          ],
+          "properties": {
+            "status": {
+              "const": "APPROVED"
+            },
+            "approval_source": {
+              "const": "USER_EXPLICIT"
+            }
+          }
+        },
+        "implementation_authorization": {
+          "type": "object",
+          "required": [
+            "status",
+            "authorization_source"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "AUTHORIZED",
+                "COMPLETE"
+              ]
+            },
+            "authorization_source": {
+              "const": "USER_EXPLICIT"
+            }
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "pattern": "^WU-[0-9]{2}$"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
