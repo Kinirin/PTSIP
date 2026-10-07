@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
-from ...local_profile_catalog import (
+from ...profiles.catalog import (
     LOCAL_PROFILE_CATALOG,
     canonical_new_profile_path,
     default_catalog_text,
@@ -18,7 +18,7 @@ from ...repository.namespace import (
     default_repository_index_text,
     load_repository_index,
 )
-from ...profile_metadata import current_project_profile_ptsip_metadata
+from ...profiles.metadata import current_project_profile_ptsip_metadata
 from ...validation.profile import _schema, find_profile, validate_profile
 from ...validation.templates import materialize_profile
 from .model import DecisionAnswer

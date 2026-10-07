@@ -6,8 +6,8 @@ import subprocess
 from pathlib import Path
 
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
-from ptsip.profile_metadata import current_project_profile_header_yaml
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.metadata import current_project_profile_header_yaml
 from ptsip.repository.snapshot import capture_snapshot
 
 

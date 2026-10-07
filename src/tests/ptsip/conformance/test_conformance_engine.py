@@ -8,8 +8,8 @@ from pathlib import Path
 from ptsip.build_resolution import evaluate_independent_build_resolution
 from ptsip.conformance_engine import evaluate_conformance
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
-from ptsip.profile_metadata import current_project_profile_header_yaml
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.metadata import current_project_profile_header_yaml
 from ptsip.inspection.dependencies_030 import scan_dependency_edges
 from ptsip.lifecycle_evidence import evaluate_lifecycle_evidence
 from ptsip.repository.snapshot import capture_snapshot

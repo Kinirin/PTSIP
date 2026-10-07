@@ -10,7 +10,7 @@ from setuptools.command.build_py import build_py as _build_py
 
 ROOT = Path(__file__).resolve().parent
 CANONICAL_SUPPORT_POLICY = ROOT / "src" / "policy"
-CANONICAL_PUBLIC_PROFILES = ROOT / "profiles"
+CANONICAL_PUBLIC_PROFILES = ROOT / "src" / "ptsip" / "profiles"
 CANONICAL_PUBLIC_PROFILE_CATALOG = CANONICAL_PUBLIC_PROFILES / "index.yaml"
 CANONICAL_PP_CONTRACT_REGISTRY = ROOT / "registry" / "project-profile-contracts.yaml"
 EMBEDDED_PP_CONTRACT_REGISTRY = (
@@ -55,8 +55,8 @@ def _project_support_policy(build_lib: Path) -> None:
 
 def _registered_public_profile_resources() -> tuple[str, ...]:
     catalog = _load_yaml(CANONICAL_PUBLIC_PROFILE_CATALOG)
-    if catalog.get("root") != "profiles":
-        raise RuntimeError("public Profile catalog root must be 'profiles'")
+    if catalog.get("root") != "src/ptsip/profiles":
+        raise RuntimeError("public Profile catalog root must be 'src/ptsip/profiles'")
 
     profiles = catalog.get("profiles")
     if not isinstance(profiles, list) or not profiles:
@@ -118,7 +118,7 @@ def _registered_profile_baselines() -> tuple[tuple[str, Path], ...]:
             continue
         if not isinstance(version, str) or not isinstance(baseline, str):
             raise RuntimeError("Project Profile baseline binding is invalid")
-        expected = f"profiles/history/{version}"
+        expected = f"src/ptsip/profiles/history/{version}"
         if baseline != expected:
             raise RuntimeError(
                 f"Project Profile baseline {baseline!r} must equal {expected!r}"
@@ -126,37 +126,47 @@ def _registered_profile_baselines() -> tuple[tuple[str, Path], ...]:
         source = ROOT / baseline
         if not source.is_dir():
             raise RuntimeError(f"registered Project Profile baseline is missing: {baseline}")
+        if not any(source.glob("*.ptsip.yaml")):
+            raise RuntimeError(f"registered Project Profile baseline is empty: {baseline}")
         baselines.append((version, source))
 
     current_baseline = current_matches[0].get("baseline")
-    if current_baseline != f"profiles/history/{current}":
+    if current_baseline != f"src/ptsip/profiles/history/{current}":
         raise RuntimeError("current Project Profile contract must bind its generation baseline")
     return tuple(baselines)
 
 
 def _project_public_profiles(build_lib: Path) -> None:
     resources = _registered_public_profile_resources()
-    baselines = _registered_profile_baselines()
+    _registered_profile_baselines()
 
     target = build_lib / "ptsip" / "profiles"
-    if target.exists():
-        rmtree(target)
     target.mkdir(parents=True, exist_ok=True)
+    # Preserve modules copied by build_py. History is source-only, including
+    # stale output left by an earlier build that shipped historical baselines.
+    history_target = target / "history"
+    if history_target.exists():
+        if not history_target.resolve().is_relative_to(build_lib.resolve()):
+            raise RuntimeError("historical build output escapes build directory")
+        rmtree(history_target)
+    for name in (
+        "profile_identity", "profile_metadata", "profile_compatibility",
+        "local_profile_catalog", "project_profile_contracts",
+    ):
+        retired = target.parent / f"{name}.py"
+        if retired.exists():
+            if not retired.resolve().is_relative_to(build_lib.resolve()):
+                raise RuntimeError("retired profile output escapes build directory")
+            retired.unlink()
+    for stale in target.glob("*.ptsip.yaml"):
+        if stale.name not in resources:
+            if not stale.resolve().is_relative_to(build_lib.resolve()):
+                raise RuntimeError("stale profile output escapes build directory")
+            stale.unlink()
 
     copy2(CANONICAL_PUBLIC_PROFILE_CATALOG, target / "index.yaml")
     for resource in resources:
         copy2(CANONICAL_PUBLIC_PROFILES / resource, target / resource)
-
-    for version, source in baselines:
-        history_target = target / "history" / version
-        history_target.mkdir(parents=True, exist_ok=True)
-        baseline_resources = sorted(source.glob("*.ptsip.yaml"))
-        if not baseline_resources:
-            raise RuntimeError(
-                f"registered Project Profile baseline contains no profiles: {source}"
-            )
-        for path in baseline_resources:
-            copy2(path, history_target / path.name)
 
     specdata_target = build_lib / "ptsip" / "specdata"
     specdata_target.mkdir(parents=True, exist_ok=True)

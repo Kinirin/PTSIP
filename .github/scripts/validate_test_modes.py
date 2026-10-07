@@ -10,7 +10,7 @@ import yaml
 
 
 REGISTRY_VERSION = 2
-SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
+SELF_PROFILE_PATH = ".ptsip/profiles/main.ptsip.yaml"
 _MODE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 _ROOT_KEYS = {"version", "modes"}
 _MODE_KEYS = {"id", "component_ref", "execution"}
@@ -341,7 +341,7 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
                 )
             if not _has_go_module(target, repo_root):
                 errors.append(
-                    f"{label} requires a Go module at or above the target: {target}"
+                    f"{label} requires a repository Go module at or above the target: {target}"
                 )
 
     missing_components = sorted(required_components - seen_component_refs)

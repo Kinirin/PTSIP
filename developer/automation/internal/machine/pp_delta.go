@@ -74,33 +74,21 @@ func ppSafeAsset(path string) bool {
 	return path != "" && !strings.Contains(path, "\\") && !filepath.IsAbs(path) && !strings.HasPrefix(path, "/") && !strings.Contains(path, ":") && filepath.ToSlash(filepath.Clean(path)) == path && path != ".." && !strings.HasPrefix(path, "../")
 }
 func (s PPGitSnapshot) Resources() ([]string, error) {
-	var raw []byte
-	var err error
-	if s.Worktree {
-		items, e := os.ReadDir(filepath.Join(s.Root, "profiles"))
-		if e != nil {
-			return nil, e
-		}
-		for _, item := range items {
-			if !item.IsDir() {
-				raw = append(raw, []byte("profiles/"+item.Name()+"\n")...)
-			}
-		}
-	} else if s.Staged {
-		raw, err = ppGit(s.Root, "ls-files", "--cached", "--", "profiles")
-	} else {
-		raw, err = ppGit(s.Root, "ls-tree", "-r", "--name-only", s.Revision, "--", "profiles")
+	storage, err := ppSnapshotStorage(s)
+	if err != nil {
+		return nil, err
 	}
+	paths, err := s.files(storage.Root)
 	if err != nil {
 		return nil, err
 	}
 	values := map[string]bool{}
-	for _, line := range strings.Split(string(raw), "\n") {
+	for _, line := range paths {
 		line = strings.TrimSpace(line)
-		if !strings.HasPrefix(line, "profiles/") {
+		if !strings.HasPrefix(line, storage.Root+"/") {
 			continue
 		}
-		rel := strings.TrimPrefix(line, "profiles/")
+		rel := strings.TrimPrefix(line, storage.Root+"/")
 		if !strings.Contains(rel, "/") && strings.HasSuffix(rel, ".ptsip.yaml") {
 			values[rel] = true
 		}
@@ -174,21 +162,28 @@ type PPAuthorityState struct {
 }
 
 func LoadPPAuthority(source PPSnapshot) (*PPAuthorityState, error) {
-	catalogRaw, err := source.ReadBytes(PPCatalog)
-	if err != nil {
-		return nil, err
-	}
 	registryRaw, err := source.ReadBytes(PPRegistry)
-	if err != nil {
-		return nil, err
-	}
-	catalog, err := ppYAML(catalogRaw, source.Label()+":"+PPCatalog, false)
 	if err != nil {
 		return nil, err
 	}
 	registry, err := ppYAML(registryRaw, source.Label()+":"+PPRegistry, false)
 	if err != nil {
 		return nil, err
+	}
+	storage, err := ppStorageForRegistry(registry)
+	if err != nil {
+		return nil, err
+	}
+	catalogRaw, err := source.ReadBytes(storage.Catalog)
+	if err != nil {
+		return nil, err
+	}
+	catalog, err := ppYAML(catalogRaw, source.Label()+":"+storage.Catalog, false)
+	if err != nil {
+		return nil, err
+	}
+	if catalog != nil && Text(catalog["root"]) != storage.Root {
+		return nil, fmt.Errorf("PP_CATALOG_STORAGE_MISMATCH")
 	}
 	state := &PPAuthorityState{Label: source.Label(), CatalogPresent: catalog != nil, RegistryPresent: registry != nil, Contracts: map[string]string{}, Entries: map[string]Object{}, Raw: map[string][]byte{}, Semantic: map[string]string{}, Declared: map[string]string{}}
 	if catalog != nil {
@@ -201,7 +196,7 @@ func LoadPPAuthority(source PPSnapshot) (*PPAuthorityState, error) {
 			if id == "" || res == "" || contract == "" || state.Entries[id] != nil {
 				return nil, fmt.Errorf("PUBLIC_PROFILE_CATALOG_INVALID")
 			}
-			if !ppSafeAsset("profiles/"+res) || strings.Contains(res, "/") {
+			if !ppSafeAsset(storage.Root+"/"+res) || strings.Contains(res, "/") {
 				return nil, fmt.Errorf("PUBLIC_PROFILE_CATALOG_RESOURCE_ESCAPE")
 			}
 			state.Entries[id] = row
@@ -224,7 +219,7 @@ func LoadPPAuthority(source PPSnapshot) (*PPAuthorityState, error) {
 		return nil, err
 	}
 	for _, res := range state.Resources {
-		raw, e := source.ReadBytes("profiles/" + res)
+		raw, e := source.ReadBytes(storage.Root + "/" + res)
 		if e != nil {
 			return nil, e
 		}

@@ -13,7 +13,7 @@ import (
 
 func TestReleaseDistributionPublicProfileCatalogExactlyCoversAssets(t *testing.T) {
 	root := testrepo.Root(t)
-	raw, err := os.ReadFile(filepath.Join(root, "profiles", "index.yaml"))
+	raw, err := os.ReadFile(filepath.Join(root, "src", "ptsip", "profiles", "index.yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +26,7 @@ func TestReleaseDistributionPublicProfileCatalogExactlyCoversAssets(t *testing.T
 	if err := yaml.Unmarshal(raw, &catalog); err != nil {
 		t.Fatal(err)
 	}
-	if catalog.Root != "profiles" || len(catalog.Profiles) == 0 {
+	if catalog.Root != "src/ptsip/profiles" || len(catalog.Profiles) == 0 {
 		t.Fatalf("invalid public profile catalog: %#v", catalog)
 	}
 
@@ -36,7 +36,7 @@ func TestReleaseDistributionPublicProfileCatalogExactlyCoversAssets(t *testing.T
 	}
 	sort.Strings(registered)
 
-	matches, err := filepath.Glob(filepath.Join(root, "profiles", "*.ptsip.yaml"))
+	matches, err := filepath.Glob(filepath.Join(root, "src", "ptsip", "profiles", "*.ptsip.yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,8 +93,8 @@ func TestReleaseDistributionUsesCurrentProjectProfileSchemaAndManifestBindings(t
 	}
 	text := string(manifest)
 	for _, required := range []string{
-		"recursive-include profiles *.ptsip.yaml",
-		"include profiles/index.yaml",
+		"recursive-include src/ptsip/profiles *.ptsip.yaml",
+		"include src/ptsip/profiles/index.yaml",
 		"include registry/project-profile-contracts.yaml",
 	} {
 		if !strings.Contains(text, required) {

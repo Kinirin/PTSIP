@@ -180,7 +180,7 @@ func TestIWPCoreRegressionComesFromCanonicalProfile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	targets, err := iwpComponentTargets(r, "ptsip-core-verification", "developer/profiles/ptsip-repository.yaml")
+	targets, err := iwpComponentTargets(r, "ptsip-core-verification", ".ptsip/profiles/main.ptsip.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -204,7 +204,7 @@ func TestIWPWorkflowProfilesHaveNoRetiredRootBridgeDependency(t *testing.T) {
 	if iwpPathExists(r, "ptsip.yaml") {
 		t.Fatal("retired root bridge reintroduced")
 	}
-	if !iwpPathExists(r, "developer/profiles/ptsip-repository.yaml") {
+	if !iwpPathExists(r, ".ptsip/profiles/main.ptsip.yaml") {
 		t.Fatal("self-profile missing")
 	}
 	registry, err := iwpRegistry(r)
@@ -212,7 +212,7 @@ func TestIWPWorkflowProfilesHaveNoRetiredRootBridgeDependency(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, raw := range List(registry["tasks"]) {
-		if Map(Map(Map(raw)["verification"])["core_regression"])["source"] != "developer/profiles/ptsip-repository.yaml" {
+		if Map(Map(Map(raw)["verification"])["core_regression"])["source"] != ".ptsip/profiles/main.ptsip.yaml" {
 			t.Fatal(raw)
 		}
 	}

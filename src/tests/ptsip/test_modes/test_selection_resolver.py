@@ -10,7 +10,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
-PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
+PROFILE_PATH = REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 RESOLVER_PATH = REPO_ROOT / ".github" / "scripts" / "resolve_test_modes.py"
 RESOLVER = runpy.run_path(str(RESOLVER_PATH))
 
@@ -259,7 +259,6 @@ def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
         "ptsip-contract",
         "agent-contract-candidate",
         "repository-architecture",
-        "repository-release",
         "test-mode-control-plane",
     ]
 

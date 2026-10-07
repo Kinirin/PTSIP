@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from ptsip.profile_identity import (
+from ptsip.profiles.identity import (
     PP_1_01,
     ProjectProfileOperation,
     require_current_project_profile_support,

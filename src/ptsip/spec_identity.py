@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 
 from .constants import SPEC_ACRONYM, SPEC_NAME, SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
-from .profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from .profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
 
 
 @dataclass(frozen=True)

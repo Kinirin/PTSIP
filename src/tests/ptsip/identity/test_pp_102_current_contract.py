@@ -5,7 +5,7 @@ from pathlib import Path
 
 import yaml
 
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import find_profile, validate_profile
 
 
@@ -37,7 +37,7 @@ def test_pp_102_is_current_and_declares_user_revision_semantics() -> None:
 
 def test_distributed_profiles_are_non_authoritative_materialization_sources() -> None:
     catalog = yaml.safe_load(
-        (ROOT / "profiles" / "index.yaml").read_text(encoding="utf-8")
+        (ROOT / "src" / "ptsip" / "profiles" / "index.yaml").read_text(encoding="utf-8")
     )
     assert catalog["profiles"]
 
@@ -47,7 +47,7 @@ def test_distributed_profiles_are_non_authoritative_materialization_sources() ->
         assert row["materialization"] == "PROJECT_PATH_RESOLUTION_REQUIRED"
 
         profile = yaml.safe_load(
-            (ROOT / "profiles" / row["resource"]).read_text(encoding="utf-8")
+            (ROOT / "src" / "ptsip" / "profiles" / row["resource"]).read_text(encoding="utf-8")
         )
         ptsip = profile["ptsip"]
         assert ptsip["version"] == "pp.1.02"
@@ -68,7 +68,7 @@ def test_repository_default_profile_resolves_through_local_catalog() -> None:
 
     payload = yaml.safe_load(selected.read_text(encoding="utf-8"))
     canonical = yaml.safe_load(
-        (ROOT / "developer/profiles/ptsip-repository.yaml").read_text(encoding="utf-8")
+        (ROOT / ".ptsip/profiles/main.ptsip.yaml").read_text(encoding="utf-8")
     )
     assert payload["ptsip"]["version"] == "pp.1.02"
     assert payload["ptsip"] == canonical["ptsip"]

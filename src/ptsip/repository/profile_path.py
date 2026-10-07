@@ -53,7 +53,7 @@ def selected_profile_path(
     if explicit is None:
         # Import lazily so the generic path-normalization helpers remain usable
         # without creating a module initialization cycle.
-        from ..local_profile_catalog import (
+        from ..profiles.catalog import (
             canonical_new_profile_path,
             load_local_profile_selection,
         )

@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Mapping
 
-from ptsip.profile_compatibility import require_direct_historical_transition
+from ptsip.profiles.compatibility import require_direct_historical_transition
 from ptsip.repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState, discover_direct_profile_convergence
 from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, profile_path_on_disk
 from ptsip.migration.execution.authorization.preconditions import _guard_matches

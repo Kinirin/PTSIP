@@ -36,7 +36,7 @@ CANONICAL_EMBEDDED_PAIRS = tuple(
     zip(CANONICAL_MACHINE_READABLE_PATHS, EMBEDDED_MACHINE_READABLE_PATHS)
 )
 PP_CONTRACT_REGISTRY = "registry/project-profile-contracts.yaml"
-PUBLIC_PROFILE_CATALOG = "profiles/index.yaml"
+PUBLIC_PROFILE_CATALOG = "src/ptsip/profiles/index.yaml"
 
 
 def _load_mapping(relative_path: str) -> dict[str, object]:
@@ -107,7 +107,7 @@ def main() -> int:
 
     from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
     from ptsip.context_plane import ContextProjectionError, check_context
-    from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+    from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
     from ptsip.spec_identity import current_spec_identity
     from ptsip.specification_binding import current_target_specification_binding
     from ptsip.validation.profile import find_profile

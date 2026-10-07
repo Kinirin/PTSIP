@@ -16,7 +16,7 @@ from ptsip.migration.analysis.direct import (
     analyze_direct_profile_convergence,
     current_pp_target_semantics,
 )
-from ptsip.profile_compatibility import V034_REVISION, V036_REVISION
+from ptsip.profiles.compatibility import V034_REVISION, V036_REVISION
 from ptsip.repository.profile_convergence import discover_direct_profile_convergence
 from ptsip.repository.snapshot import capture_snapshot
 

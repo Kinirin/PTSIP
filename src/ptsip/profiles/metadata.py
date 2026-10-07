@@ -4,8 +4,8 @@ from copy import deepcopy
 
 import yaml
 
-from .constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from .profile_identity import (
+from ..constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
+from .identity import (
     CURRENT_PROJECT_PROFILE_VERSION,
     DEVELOPER_BASELINE_USER_REVISION,
     ProjectProfileVersion,

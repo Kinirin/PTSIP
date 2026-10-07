@@ -30,7 +30,6 @@ func ppSchemaPath(version string) string {
 func ppEmbeddedSchemaPath(version string) string {
 	return "src/ptsip/specdata/" + filepath.Base(ppSchemaPath(version))
 }
-func ppHistory(version string) string { return "profiles/history/" + version }
 
 var ppVersionLine = regexp.MustCompile(`^(\s+version:\s*)("[^"]*"|'[^']*'|[^#\s]+)(\s*(?:#.*)?)$`)
 
@@ -126,7 +125,11 @@ func ppBuildRegistry(registry Object, source, target string) ([]byte, error) {
 		return nil, fmt.Errorf("PP_SOURCE_OPERATIONS_INVALID")
 	}
 	matches[0]["lifecycle"] = "SUPERSEDED"
-	registry["contracts"] = append(contracts, Object{"version": target, "lifecycle": "CURRENT", "operations": operations, "schema": ppSchemaPath(target), "baseline": ppHistory(target)})
+	storage, err := ppStorageForRegistry(registry)
+	if err != nil {
+		return nil, err
+	}
+	registry["contracts"] = append(contracts, Object{"version": target, "lifecycle": "CURRENT", "operations": operations, "schema": ppSchemaPath(target), "baseline": storage.History(target)})
 	registry["transitions"] = append(transitions, Object{"from": source, "to": target, "kind": "SEMANTIC_MIGRATION"})
 	registry["current"] = target
 	return yaml.Marshal(registry)
@@ -146,12 +149,8 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 		if delta.Classification != "NO_T2_AUTHORITY_DELTA" {
 			return nil, fmt.Errorf("%s", delta.Classification)
 		}
-		changedHistory, err := ppGit(r.Root, "diff", "--cached", "--name-only", baseRevision, "--", "profiles/history")
-		if err != nil {
+		if err := ppVerifyHistory(base, candidate, ""); err != nil {
 			return nil, err
-		}
-		if len(bytes.TrimSpace(changedHistory)) > 0 {
-			return nil, fmt.Errorf("HISTORICAL_BASELINE_MUTATION")
 		}
 		plan.Status = "NO_CHANGE"
 		return plan, nil
@@ -164,12 +163,12 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 		plan.Status = "ALREADY_RECONCILED"
 		return plan, nil
 	}
-	historyDiff, err := ppGit(r.Root, "diff", "--cached", "--name-only", baseRevision, "--", "profiles/history")
-	if err != nil {
+	if err := ppVerifyHistory(base, candidate, ""); err != nil {
 		return nil, err
 	}
-	if len(bytes.TrimSpace(historyDiff)) > 0 {
-		return nil, fmt.Errorf("HISTORICAL_BASELINE_MUTATION")
+	storage, err := ppSnapshotStorage(candidate)
+	if err != nil {
+		return nil, err
 	}
 	baseRegistryRaw, err := base.ReadBytes(PPRegistry)
 	if err != nil {
@@ -195,7 +194,7 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 		return nil, err
 	}
 	for _, res := range baseState.Resources {
-		history, err := base.ReadBytes(ppHistory(plan.BaseCurrent) + "/" + res)
+		history, err := base.ReadBytes(storage.History(plan.BaseCurrent) + "/" + res)
 		if err != nil {
 			return nil, err
 		}
@@ -203,11 +202,11 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 			return nil, fmt.Errorf("HISTORICAL_BASELINE_INVALID")
 		}
 	}
-	catalogRaw, err := candidate.ReadBytes(PPCatalog)
+	catalogRaw, err := candidate.ReadBytes(storage.Catalog)
 	if err != nil {
 		return nil, err
 	}
-	catalog, err := ppYAML(catalogRaw, PPCatalog, true)
+	catalog, err := ppYAML(catalogRaw, storage.Catalog, true)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +219,7 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 		if res == "" || strings.Contains(res, "/") {
 			return nil, fmt.Errorf("PUBLIC_PROFILE_CATALOG_INVALID")
 		}
-		profile, err := candidate.ReadBytes("profiles/" + res)
+		profile, err := candidate.ReadBytes(storage.Root + "/" + res)
 		if err != nil {
 			return nil, err
 		}
@@ -231,8 +230,8 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 		if err != nil {
 			return nil, err
 		}
-		plan.Outputs["profiles/"+res] = rebound
-		plan.Outputs[ppHistory(plan.Target)+"/"+res] = rebound
+		plan.Outputs[storage.Root+"/"+res] = rebound
+		plan.Outputs[storage.History(plan.Target)+"/"+res] = rebound
 		row["contract"] = plan.Target
 	}
 	oldPath := baseState.Contracts[plan.BaseCurrent]
@@ -260,7 +259,7 @@ func (r *Repository) BuildPPTransition(baseRevision string) (*PPTransitionPlan, 
 	}
 	plan.Outputs[ppSchemaPath(plan.Target)] = schema
 	plan.Outputs[ppEmbeddedSchemaPath(plan.Target)] = schema
-	plan.Outputs[PPCatalog], err = yaml.Marshal(catalog)
+	plan.Outputs[storage.Catalog], err = yaml.Marshal(catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -288,10 +287,6 @@ func (r *Repository) VerifyPPReconciled(baseRevision, source, target string) err
 		return err
 	}
 	base := PPGitSnapshot{Root: r.Root, Revision: baseRevision}
-	left, err := LoadPPAuthority(base)
-	if err != nil {
-		return err
-	}
 	right, err := LoadPPAuthority(candidate)
 	if err != nil {
 		return err
@@ -299,31 +294,8 @@ func (r *Repository) VerifyPPReconciled(baseRevision, source, target string) err
 	if right.Current != target {
 		return fmt.Errorf("RECONCILED_CURRENT_MISMATCH")
 	}
-	for _, res := range left.Resources {
-		old, err := base.ReadBytes(ppHistory(source) + "/" + res)
-		if err != nil {
-			return err
-		}
-		new, err := candidate.ReadBytes(ppHistory(source) + "/" + res)
-		if err != nil {
-			return err
-		}
-		if !bytes.Equal(old, new) {
-			return fmt.Errorf("HISTORICAL_BASELINE_MUTATION")
-		}
-	}
-	history, err := ppGit(r.Root, "diff", "--cached", "--name-status", baseRevision, "--", "profiles/history")
-	if err != nil {
+	if err := ppVerifyHistory(base, candidate, target); err != nil {
 		return err
-	}
-	for _, line := range strings.Split(strings.TrimSpace(string(history)), "\n") {
-		if line == "" {
-			continue
-		}
-		parts := strings.Split(line, "\t")
-		if len(parts) < 2 || parts[0] != "A" || !strings.HasPrefix(parts[len(parts)-1], ppHistory(target)+"/") {
-			return fmt.Errorf("HISTORICAL_BASELINE_MUTATION")
-		}
 	}
 	raw, _ := candidate.ReadBytes(PPRegistry)
 	registry, err := ppYAML(raw, PPRegistry, true)

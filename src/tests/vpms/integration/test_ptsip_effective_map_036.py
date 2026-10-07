@@ -11,8 +11,8 @@ import yaml
 
 from ptsip.app.store import DecisionStore
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
-from ptsip.profile_metadata import current_project_profile_ptsip_metadata
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.metadata import current_project_profile_ptsip_metadata
 from ptsip.validation.profile import validate_profile
 from ptsip.validation.handoff import load_validated_effective_map
 from ptsip.validation.templates import template_catalog

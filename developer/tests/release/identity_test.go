@@ -74,6 +74,7 @@ func newReleaseFixture(t *testing.T, version string) (string, string, string) {
 
 	writeReleaseFile(t, root, "pyproject.toml", "[project]\nname = \"fixture\"\nversion = \""+version+"\"\n")
 	writeReleaseFile(t, root, "releasenote/tool/"+version+".md", "# Fixture\n\n## Changes\n\n- release fixture\n")
+	testrepo.CopyTree(t, testrepo.Open(root), "developer/policy")
 	releaseGit(t, root, "add", ".")
 	releaseGit(t, root, "commit", "-m", "fixture")
 	releaseGit(t, root, "remote", "add", "origin", remote)

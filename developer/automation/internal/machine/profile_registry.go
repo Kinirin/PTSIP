@@ -8,7 +8,13 @@ import (
 	"sort"
 )
 
-func (r *Repository) PublicProfileCatalog() (Object, error) { return r.Read("profiles/index.yaml") }
+func (r *Repository) PublicProfileCatalog() (Object, error) {
+	storage, err := ppSnapshotStorage(PPGitSnapshot{Root: r.Root, Worktree: true})
+	if err != nil {
+		return nil, err
+	}
+	return r.Read(storage.Catalog)
+}
 func (r *Repository) ProfileContracts() (Object, error) {
 	return r.Read("registry/project-profile-contracts.yaml")
 }

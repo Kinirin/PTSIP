@@ -43,7 +43,7 @@ func TestSupportNamespaceHasNoRetiredDocumentationDependency(t *testing.T) {
 
 func TestCurrentProfilesExcludeRetiredSupportPolicySelectors(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
-	for _, ref := range []string{"developer/profiles/ptsip-repository.yaml", ".ptsip/profiles/main.ptsip.yaml"} {
+	for _, ref := range []string{".ptsip/profiles/main.ptsip.yaml", ".ptsip/profiles/main.ptsip.yaml"} {
 		t.Run(ref, func(t *testing.T) {
 			profile, err := repo.Read(ref)
 			if err != nil {

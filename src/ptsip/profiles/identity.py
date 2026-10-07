@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass
 from enum import Enum
 
-from .project_profile_contracts import (
+from .contracts import (
     ProjectProfileContractRegistryError,
     current_runtime_project_profile_contract,
     current_runtime_project_profile_version,

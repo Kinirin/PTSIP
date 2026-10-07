@@ -17,7 +17,7 @@ func releaseWorkflowText(t *testing.T) string {
 	if err != nil {
 		t.Fatal(err)
 	}
-	return string(raw)
+	return strings.ReplaceAll(string(raw), "\r\n", "\n")
 }
 
 func TestToolingReleaseIsSingleCanonicalReleaseWorkflow(t *testing.T) {

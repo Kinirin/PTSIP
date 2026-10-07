@@ -24,7 +24,7 @@ func agentSelectorRetirementFixture(t *testing.T) *Repository {
 		}
 	}
 	profile := Object{"components": []any{Object{"id": "current", "include": []any{"src/agent_contracts/**"}}}}
-	policyTestWrite(t, r, "developer/profiles/ptsip-repository.yaml", profile)
+	policyTestWrite(t, r, ".ptsip/profiles/main.ptsip.yaml", profile)
 	policyTestWrite(t, r, ".ptsip/profiles/main.ptsip.yaml", profile)
 	return r
 }
@@ -51,7 +51,7 @@ func TestAgentProfileSelectorsPreserveRetirementAndNormalizationWithoutPython(t 
 				} else {
 					Map(List(profile["components"])[0])[field] = []any{selector}
 				}
-				policyTestWrite(t, r, "developer/profiles/ptsip-repository.yaml", profile)
+				policyTestWrite(t, r, ".ptsip/profiles/main.ptsip.yaml", profile)
 				result := VerifyCurrentAgentProfileSelectors(r)
 				violations := List(Map(result["detail"])["retired_selectors"])
 				if result["status"] != "FAIL" || len(violations) != 1 || Map(violations[0])["selector"] != selector || Map(violations[0])["retired_root"] != retired {
@@ -72,7 +72,7 @@ func TestAgentProfileSelectorsPreserveRetirementAndNormalizationWithoutPython(t 
 }
 
 func TestAgentProfileContractsFailClosedAndNonDefaultProfilesAreRevalidated(t *testing.T) {
-	for _, ref := range []string{"developer/profiles/ptsip-repository.yaml", ".ptsip/index.json", ".ptsip/profiles/index.json", ".ptsip/profiles/main.ptsip.yaml"} {
+	for _, ref := range []string{".ptsip/profiles/main.ptsip.yaml", ".ptsip/index.json", ".ptsip/profiles/index.json", ".ptsip/profiles/main.ptsip.yaml"} {
 		t.Run(ref, func(t *testing.T) {
 			r := agentSelectorRetirementFixture(t)
 			path, _ := r.Path(ref)
@@ -113,7 +113,7 @@ func TestAgentProfileContractsFailClosedAndNonDefaultProfilesAreRevalidated(t *t
 				catalog["profiles"] = append(List(catalog["profiles"]), Object{"id": "outside", "resource": "../outside.ptsip.yaml"})
 				policyTestWrite(t, r, ".ptsip/profiles/index.json", catalog)
 			case "history_is_prose":
-				policyTestWrite(t, r, "developer/profiles/ptsip-repository.yaml", Object{"components": []any{Object{"id": "current", "include": []any{"src/agent_contracts/**"}, "purpose": "Replaces spec/** and MEMORY.md.", "analysis_inputs": []any{"developer/planning/**", ".ptsip/context/**"}}}})
+				policyTestWrite(t, r, ".ptsip/profiles/main.ptsip.yaml", Object{"components": []any{Object{"id": "current", "include": []any{"src/agent_contracts/**"}, "purpose": "Replaces spec/** and MEMORY.md.", "analysis_inputs": []any{"developer/planning/**", ".ptsip/context/**"}}}})
 			}
 			result := VerifyCurrentAgentProfileSelectors(r)
 			want := "FAIL"
@@ -209,7 +209,7 @@ func agentContextRetirementFixture(t *testing.T) *Repository {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, ref := range []string{"src", "developer/state", "developer/profiles", ".ptsip"} {
+	for _, ref := range []string{"src", "developer/state", ".ptsip/profiles", ".ptsip"} {
 		root, err := source.Path(ref)
 		if err != nil {
 			t.Fatal(err)
@@ -256,7 +256,7 @@ func TestAgentContextNativeVerificationRevalidatesProfileAndImplementationInputs
 			r := agentContextRetirementFixture(t)
 			checkID := "CURRENT_PROJECT_PROFILE_SELECTORS_REVALIDATED"
 			if defect == "retired_profile_selector" {
-				ref := "developer/profiles/ptsip-repository.yaml"
+				ref := ".ptsip/profiles/main.ptsip.yaml"
 				profile, err := r.Read(ref)
 				if err != nil {
 					t.Fatal(err)

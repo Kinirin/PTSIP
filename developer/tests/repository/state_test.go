@@ -10,7 +10,7 @@ import (
 
 func TestRepositoryStateResolvesExactMachineOwners(t *testing.T) {
 	binary := testrepo.BuildCLI(t)
-	for domain, ref := range map[string]string{"developer_policy": "developer/policy/index.yaml", "developer_planning": "developer/planning/index.yaml", "project_profile": "developer/profiles/ptsip-repository.yaml", "policy_plan_binding": "developer/bindings/policy-plan-bindings.yaml", "agent_contract": "src/agent_contracts/bindings/current.yaml", "governance_source": "developer/policy/registries/governance-source-registry.yaml", "context_migration": "developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml"} {
+	for domain, ref := range map[string]string{"developer_policy": "developer/policy/index.yaml", "developer_planning": "developer/planning/index.yaml", "project_profile": ".ptsip/profiles/main.ptsip.yaml", "policy_plan_binding": "developer/bindings/policy-plan-bindings.yaml", "agent_contract": "src/agent_contracts/bindings/current.yaml", "governance_source": "developer/policy/registries/governance-source-registry.yaml", "context_migration": "developer/planning/migrations/MPD-0012-agent-context-machine-migration.yaml"} {
 		t.Run(domain, func(t *testing.T) {
 			result, err, output := testrepo.CLI(t, binary, testrepo.Root(t), "repository-state", "resolve", "--domain", domain)
 			if err != nil || result["ref"] != ref || result["authority"] != false {

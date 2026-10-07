@@ -6,7 +6,7 @@ from pathlib import Path
 from ptsip.conformance import evaluate_conformance
 from ptsip.conformance_engine import evaluate_conformance as evaluate_engine_conformance
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
 
 
 def _git(repo: Path, *args: str) -> None:

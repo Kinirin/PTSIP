@@ -505,15 +505,16 @@ except (ValueError,OSError) as exc:
 	}
 }
 
-func TestGoExecutionIsAdmittedAlongsidePythonRegression(t *testing.T) {
+func TestGoExecutionUsesOwnedDomainsAndConsumerSDKRegression(t *testing.T) {
 	result := python(t, ".github/scripts/resolve_test_modes.py", "manual", "--mode", "repository-architecture")
 	plan := sequence(t, result["plan"])
 	if len(plan) != 1 {
 		t.Fatal("unexpected execution selection")
 	}
 	mode := mapping(t, plan[0])
-	if !reflect.DeepEqual(mode["go"], []any{"developer/tests"}) || len(sequence(t, mode["pytest"])) == 0 {
-		t.Fatal("Go execution missing or existing regression removed")
+	expectedGo := []any{"developer/tests/planning", "developer/tests/policy", "developer/tests/pp", "developer/tests/repository", "developer/tests/rootfamily", "developer/tests/workflows"}
+	if !reflect.DeepEqual(mode["go"], expectedGo) || !reflect.DeepEqual(mode["pytest"], []any{"src/tests/ptsip/repository/test_self_profile.py"}) {
+		t.Fatal("owned Go domains or consumer SDK regression missing", mode)
 	}
 	bindings, err, output := automation(t, buildAutomation(t), repository(t), "policy-resolver", "resolve", "--scope", "developer/tests/rootfamily", "--operation", "VERIFY")
 	if err != nil {
@@ -545,7 +546,7 @@ func TestGoExecutionRejectsUnownedOrEscapingModules(t *testing.T) {
 			result := python(t, "-c", `import json,runpy,sys
 from pathlib import Path
 validator=runpy.run_path('.github/scripts/validate_test_modes.py')['validate_registry']
-print(json.dumps({'errors':validator(Path(sys.argv[1]),Path('developer/profiles/ptsip-repository.yaml'),Path.cwd())}))`, path)
+print(json.dumps({'errors':validator(Path(sys.argv[1]),Path('.ptsip/profiles/main.ptsip.yaml'),Path.cwd())}))`, path)
 			if !strings.Contains(string(canonicalJSON(t, result["errors"])), failure.Error) {
 				t.Fatalf("expected %s, got %v", failure.Error, result)
 			}

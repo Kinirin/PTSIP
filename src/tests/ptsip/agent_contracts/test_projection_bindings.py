@@ -188,7 +188,7 @@ def test_binding_completion_does_not_authorize_an_active_digest_scheme(contract_
 
 
 def test_four_approved_paths_have_exact_owners_and_select_only_the_new_mode() -> None:
-    profile = yaml.safe_load((ROOT / "developer/profiles/ptsip-repository.yaml").read_text(encoding="utf-8"))
+    profile = yaml.safe_load((ROOT / ".ptsip/profiles/main.ptsip.yaml").read_text(encoding="utf-8"))
     registry = yaml.safe_load((ROOT / ".github/test_modes.yaml").read_text(encoding="utf-8"))
     resolver = runpy.run_path(str(ROOT / ".github/scripts/resolve_test_modes.py"))
     components = {c["id"]: c for c in profile["components"]}

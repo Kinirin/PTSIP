@@ -27,6 +27,19 @@ func rootResolver(t *testing.T) *binding.Resolver {
 func expectedMigratedRefs(t *testing.T, scope, operation string) []any {
 	t.Helper()
 	repo := testrepo.Open(testrepo.Root(t))
+	// Physical moves preserve the independently captured pre-move responsibility.
+	legacyScopes := map[string]string{
+		"src/ptsip/profiles":                  "profiles",
+		"src/ptsip/profiles/identity.py":      "src/ptsip/profile_identity.py",
+		"src/ptsip/profiles/metadata.py":      "src/ptsip/profile_metadata.py",
+		"src/ptsip/profiles/compatibility.py": "src/ptsip/profile_compatibility.py",
+		"src/ptsip/profiles/contracts.py":     "src/ptsip/project_profile_contracts.py",
+		"src/ptsip/profiles/catalog.py":       "src/ptsip/local_profile_catalog.py",
+	}
+	auditScope := scope
+	if prior, ok := legacyScopes[scope]; ok {
+		auditScope = prior
+	}
 	graph, err := repo.Read("developer/policy/registries/root-family-migration.json")
 	if err != nil {
 		t.Fatal(err)
@@ -53,7 +66,7 @@ func expectedMigratedRefs(t *testing.T, scope, operation string) []any {
 		if err := json.Unmarshal(scanner.Bytes(), &record); err != nil {
 			t.Fatal(err)
 		}
-		if record["scope"] == scope {
+		if record["scope"] == auditScope {
 			if selected != nil {
 				t.Fatal("duplicate audit binding", scope)
 			}
@@ -178,7 +191,7 @@ func TestResolverRoutingPreservesEveryRegisteredSourceResponsibility(t *testing.
 		{"exact_ancestor", "src/ptsip/migration/future_engine.py", "src/ptsip/migration", "READ"},
 		{"github_authority", "src/ptsip/app/github_authority.py", "src/ptsip/app/github_authority.py", "MODIFY"},
 		{"release_override", "README.md", ".", "RELEASE"},
-		{"public_profile", "profiles/example.ptsip.yaml", "profiles", "MODIFY"},
+		{"public_profile", "src/ptsip/profiles/example.ptsip.yaml", "src/ptsip/profiles", "MODIFY"},
 		{"current_schema", "schemas/ptsip-profile-pp-1.01.schema.json", "schemas", "MODIFY"},
 		{"future_registry", "registry/project-profile-contracts.yaml", "registry/project-profile-contracts.yaml", "MODIFY"},
 		{"unrelated_modify", "README.md", ".", "MODIFY"},
@@ -196,11 +209,11 @@ func TestResolverRoutingPreservesEveryRegisteredSourceResponsibility(t *testing.
 		scopes          []string
 	}{
 		{"pp_automation", "MODIFY", []string{"developer/automation/project_profile_registry.py", "developer/automation/pp/pp_transition_delta.py", "developer/automation/pp/pp_transition_reconciler.py"}},
-		{"runtime_registry", "MODIFY", []string{"src/ptsip/project_profile_contracts.py", "src/ptsip/profile_identity.py", "src/ptsip/profile_compatibility.py", "src/ptsip/specdata/project-profile-contracts.yaml"}},
+		{"runtime_registry", "MODIFY", []string{"src/ptsip/profiles/contracts.py", "src/ptsip/profiles/identity.py", "src/ptsip/profiles/compatibility.py", "src/ptsip/specdata/project-profile-contracts.yaml"}},
 		{"distribution", "MODIFY", []string{"setup.py", "MANIFEST.in", ".github/scripts/verify_distribution_contracts.py"}},
 		{"h3_hooks", "MODIFY", []string{"developer/automation/dev_setup.py", "developer/automation/pp/pp_pre_commit.py", ".githooks/pre-commit", "setup_dev.bat", "bootstrap_repo.ps1"}},
 		{"release_surface", "RELEASE", []string{".github/workflows/release.yml", ".github/scripts/verify_release_contract.py"}},
-		{"local_profile", "MODIFY", []string{"src/ptsip/local_profile_catalog.py", "src/ptsip/profile_metadata.py"}},
+		{"local_profile", "MODIFY", []string{"src/ptsip/profiles/catalog.py", "src/ptsip/profiles/metadata.py"}},
 	} {
 		for _, scope := range group.scopes {
 			cases = append(cases, struct{ name, scope, bindingScope, operation string }{group.name + "/" + scope, scope, scope, group.operation})

@@ -7,7 +7,7 @@ from ptsip.migration.analysis.direct import DirectConvergenceAnalysis
 from ptsip.migration.planning.direct import build_direct_final_point_convergence_plan
 from ptsip.migration.analysis import MigrationAnalysis, SourceMigrationCompletion
 from ptsip.migration.proposal import SourceProposalSet
-from ptsip.profile_identity import ProjectProfileTransitionKind, ProjectProfileVersion
+from ptsip.profiles.identity import ProjectProfileTransitionKind, ProjectProfileVersion
 from ptsip.repository.profile_convergence import (
     ConvergenceProfileBinding,
     DirectConvergenceMode,

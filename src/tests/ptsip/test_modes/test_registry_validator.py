@@ -9,7 +9,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[4]
 REGISTRY_PATH = REPO_ROOT / ".github" / "test_modes.yaml"
 SELF_PROFILE_PATH = (
-    REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
+    REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 )
 VALIDATOR_PATH = REPO_ROOT / ".github" / "scripts" / "validate_test_modes.py"
 VALIDATOR = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
@@ -26,6 +26,7 @@ EXPECTED_REPOSITORY_COMPONENT_REFS = {
     "agent-contract-candidate": "agent-contract-candidate-verification",
     "agent-contract-runtime": "agent-contract-runtime-verification",
     "agent-contract-plane": "agent-contract-plane-verification",
+    "policy-responsibility-analysis": "policy-responsibility-analysis-verification",
     "repository-architecture": "repository-architecture-verification",
     "repository-release": "repository-release-verification",
     "test-mode-control-plane": "repository-test-mode-control-plane",
@@ -71,7 +72,7 @@ def _write_profile(root: Path) -> None:
             },
         ],
     }
-    path = root / "developer" / "profiles" / "ptsip-repository.yaml"
+    path = root / ".ptsip" / "profiles" / "main.ptsip.yaml"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         yaml.safe_dump(payload, sort_keys=False),
@@ -99,7 +100,7 @@ def _valid_mode() -> dict[str, object]:
 def _validate(root: Path) -> list[str]:
     return VALIDATOR(
         root / ".github" / "test_modes.yaml",
-        root / "developer" / "profiles" / "ptsip-repository.yaml",
+        root / ".ptsip" / "profiles" / "main.ptsip.yaml",
         root,
     )
 
@@ -268,7 +269,7 @@ def test_nested_pytest_targets_are_rejected_as_overlapping_execution(tmp_path: P
 def test_go_only_mode_may_use_package_below_parent_module(tmp_path: Path) -> None:
     _write_profile(tmp_path)
     profile_path = (
-        tmp_path / "developer" / "profiles" / "ptsip-repository.yaml"
+        tmp_path / ".ptsip" / "profiles" / "main.ptsip.yaml"
     )
     profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
     component = profile["components"][0]

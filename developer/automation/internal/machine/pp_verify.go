@@ -80,11 +80,15 @@ func ValidatePPSnapshot(source PPSnapshot) (*PPAuthorityState, error) {
 	if schema == nil || !bytes.Equal(schema, embeddedSchema) {
 		return nil, fmt.Errorf("PP_SCHEMA_PROJECTION_MISMATCH")
 	}
-	catalogRaw, err := source.ReadBytes(PPCatalog)
+	storage, err := ppStorageForRegistry(registry)
 	if err != nil {
 		return nil, err
 	}
-	catalog, err := ppYAML(catalogRaw, PPCatalog, true)
+	catalogRaw, err := source.ReadBytes(storage.Catalog)
+	if err != nil {
+		return nil, err
+	}
+	catalog, err := ppYAML(catalogRaw, storage.Catalog, true)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +104,7 @@ func ValidatePPSnapshot(source PPSnapshot) (*PPAuthorityState, error) {
 			return nil, fmt.Errorf("PUBLIC_PROFILE_CATALOG_INVALID")
 		}
 		registered = append(registered, res)
-		profile, err := source.ReadBytes("profiles/" + res)
+		profile, err := source.ReadBytes(storage.Root + "/" + res)
 		if err != nil {
 			return nil, err
 		}
@@ -188,20 +192,10 @@ func (r *Repository) verifyPPTransitionShape(parent, commit string, delta PPDelt
 	if !found {
 		return fmt.Errorf("PP_TRANSITION_RECORD_MISSING")
 	}
-	changed, err := ppGit(r.Root, "diff", "--name-status", parent, commit, "--", "profiles/history")
-	if err != nil {
+	base := PPGitSnapshot{Root: r.Root, Revision: parent}
+	if err := ppVerifyHistory(base, candidate, target); err != nil {
 		return err
 	}
-	for _, line := range strings.Split(strings.TrimSpace(string(changed)), "\n") {
-		if line == "" {
-			continue
-		}
-		parts := strings.Split(line, "\t")
-		if len(parts) < 2 || !strings.HasPrefix(parts[0], "A") || !strings.HasPrefix(parts[len(parts)-1], "profiles/history/"+target+"/") {
-			return fmt.Errorf("HISTORICAL_BASELINE_MUTATION: %s", line)
-		}
-	}
-	base := PPGitSnapshot{Root: r.Root, Revision: parent}
 	state, err := LoadPPAuthority(base)
 	if err != nil {
 		return err
@@ -272,12 +266,8 @@ func (r *Repository) VerifyPPCommit(commit string) (Object, error) {
 		return nil, fmt.Errorf("UNCLASSIFIED_PP_AUTHORITY_CHANGE")
 	}
 	if !delta.Triggered && delta.Classification == "NO_T2_AUTHORITY_DELTA" {
-		history, err := ppGit(r.Root, "diff", "--name-only", parents[0], commit, "--", "profiles/history")
-		if err != nil {
+		if err := ppVerifyHistory(PPGitSnapshot{Root: r.Root, Revision: parents[0]}, candidate, ""); err != nil {
 			return nil, err
-		}
-		if len(bytes.TrimSpace(history)) > 0 {
-			return nil, fmt.Errorf("HISTORICAL_BASELINE_MUTATION")
 		}
 	}
 	out["classification"] = delta.Classification
@@ -324,7 +314,11 @@ func (r *Repository) VerifyPPRelease(expected string) (Object, error) {
 	if failures, err := r.ProfileRegistryErrors(); err != nil || len(failures) > 0 {
 		return nil, fmt.Errorf("PP_RELEASE_REGISTRY_INVALID: %v %s", err, strings.Join(failures, "; "))
 	}
-	for _, path := range []string{PPRegistry, PPEmbeddedRegistry, PPCatalog, state.Contracts[state.Current], "src/ptsip/specdata/" + filepath.Base(state.Contracts[state.Current])} {
+	storage, err := ppSnapshotStorage(snapshot)
+	if err != nil {
+		return nil, err
+	}
+	for _, path := range []string{PPRegistry, PPEmbeddedRegistry, storage.Catalog, state.Contracts[state.Current], "src/ptsip/specdata/" + filepath.Base(state.Contracts[state.Current])} {
 		matches, err := r.ppAssetMatchesCommit(path, sha)
 		if err != nil {
 			return nil, err

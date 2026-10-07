@@ -19,7 +19,7 @@ from ptsip.migration.planning import (
     derive_source_proposals,
     final_point_state_from_mapping,
 )
-from ptsip.profile_compatibility import V034_REVISION, V036_REVISION
+from ptsip.profiles.compatibility import V034_REVISION, V036_REVISION
 from ptsip.repository.profile_convergence import discover_direct_profile_convergence
 from ptsip.repository.snapshot import capture_snapshot
 

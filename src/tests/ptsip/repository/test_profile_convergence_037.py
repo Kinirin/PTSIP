@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from ptsip.profile_compatibility import V034_REVISION, V036_REVISION
+from ptsip.profiles.compatibility import V034_REVISION, V036_REVISION
 from ptsip.repository.profile_convergence import (
     DirectConvergenceMode,
     discover_direct_profile_convergence,

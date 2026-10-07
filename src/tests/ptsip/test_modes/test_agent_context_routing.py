@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[4]
 
 def test_operation_implementations_and_contract_edits_select_repository_validation():
     resolver = runpy.run_path(str(ROOT / ".github/scripts/resolve_test_modes.py"))
-    profile = yaml.safe_load((ROOT / "developer/profiles/ptsip-repository.yaml").read_text(encoding="utf-8"))
+    profile = yaml.safe_load((ROOT / ".ptsip/profiles/main.ptsip.yaml").read_text(encoding="utf-8"))
     registry = yaml.safe_load((ROOT / ".github/test_modes.yaml").read_text(encoding="utf-8"))
     contract_root = ROOT / "src/ptsip/agent_contracts"
     index = yaml.safe_load((contract_root / "index.yaml").read_text(encoding="utf-8"))
@@ -27,7 +27,7 @@ def test_operation_implementations_and_contract_edits_select_repository_validati
 
 def test_migration_sources_select_binding_and_repository_validation():
     resolver = runpy.run_path(str(ROOT / ".github/scripts/resolve_test_modes.py"))
-    profile = yaml.safe_load((ROOT / "developer/profiles/ptsip-repository.yaml").read_text(encoding="utf-8"))
+    profile = yaml.safe_load((ROOT / ".ptsip/profiles/main.ptsip.yaml").read_text(encoding="utf-8"))
     registry = yaml.safe_load((ROOT / ".github/test_modes.yaml").read_text(encoding="utf-8"))
     sources = sorted((ROOT / "src/ptsip/migration").rglob("*.py"))
     assert sources

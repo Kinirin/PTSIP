@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from ptsip.profile_compatibility import (
+from ptsip.profiles.compatibility import (
     V034_REVISION,
     V036_REVISION,
     current_project_profile_target,
@@ -11,7 +11,7 @@ from ptsip.profile_compatibility import (
     require_direct_historical_transition,
     require_historical_project_profile_bridge,
 )
-from ptsip.profile_identity import (
+from ptsip.profiles.identity import (
     CURRENT_PROJECT_PROFILE_VERSION,
     PP_0_00,
     PP_1_01,

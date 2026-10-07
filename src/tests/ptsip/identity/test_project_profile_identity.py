@@ -9,8 +9,8 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from ptsip.constants import SPEC_VERSION, TOOL_VERSION
-from ptsip.project_profile_contracts import current_runtime_project_profile_contract
-from ptsip.profile_identity import (
+from ptsip.profiles.contracts import current_runtime_project_profile_contract
+from ptsip.profiles.identity import (
     CURRENT_PROJECT_PROFILE_VERSION,
     PP_0_00,
     PP_1_01,
@@ -181,7 +181,7 @@ def test_pp_1_01_historical_baseline_remains_valid_and_immutable() -> None:
         "template-python-package.ptsip.yaml",
     ):
         profile = yaml.safe_load(
-            (ROOT / "profiles" / "history" / "pp.1.01" / resource).read_text(
+            (ROOT / "src" / "ptsip" / "profiles" / "history" / "pp.1.01" / resource).read_text(
                 encoding="utf-8"
             )
         )

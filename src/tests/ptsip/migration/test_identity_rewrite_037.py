@@ -13,7 +13,7 @@ from ptsip.migration.execution.direct import (
     build_identity_rewrite_plan,
     execute_identity_rewrite,
 )
-from ptsip.profile_compatibility import V036_REVISION
+from ptsip.profiles.compatibility import V036_REVISION
 from ptsip.repository.profile_convergence import discover_direct_profile_convergence
 from ptsip.validation.profile import validate_profile
 

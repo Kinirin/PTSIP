@@ -20,7 +20,7 @@ def _yaml(relative: str) -> dict:
 
 def test_pra_test_mode_has_exact_verification_owner() -> None:
     registry = _yaml(".github/test_modes.yaml")
-    profile = _yaml("developer/profiles/ptsip-repository.yaml")
+    profile = _yaml(".ptsip/profiles/main.ptsip.yaml")
 
     modes = [item for item in registry["modes"] if item.get("id") == MODE_ID]
     assert len(modes) == 1
@@ -36,7 +36,7 @@ def test_pra_test_mode_has_exact_verification_owner() -> None:
 
 
 def test_pra_verification_component_watches_canonical_sources() -> None:
-    profile = _yaml("developer/profiles/ptsip-repository.yaml")
+    profile = _yaml(".ptsip/profiles/main.ptsip.yaml")
     component = next(item for item in profile["components"] if item.get("id") == COMPONENT_ID)
     analysis_inputs = set(component["analysis_inputs"])
 

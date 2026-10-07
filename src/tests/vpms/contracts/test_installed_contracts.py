@@ -121,7 +121,7 @@ from ptsip.validation.handoff import load_validated_effective_map
 assert callable(load_validated_effective_map)
 from vpms.integration.ptsip_bridge import metadata_from_effective_map, PtsipMetadataError
 import subprocess, yaml
-from ptsip.profile_metadata import current_project_profile_ptsip_metadata
+from ptsip.profiles.metadata import current_project_profile_ptsip_metadata
 from ptsip.validation.templates import template_catalog
 consumer = pathlib.Path(sys.argv[1]).parent / "consumer"
 consumer.mkdir()

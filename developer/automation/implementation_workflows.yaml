@@ -109,7 +109,7 @@ tasks:
         - src/tests/ptsip/control_plane/test_github_authority_reconciliation.py
       core_regression:
         component_ref: ptsip-core-verification
-        source: developer/profiles/ptsip-repository.yaml
+        source: .ptsip/profiles/main.ptsip.yaml
         selection: COMPONENT_INCLUDE
       full_command:
         - python

@@ -13,7 +13,7 @@ import (
 
 const policySeedAcceptancePath = "developer/tests/rootfamily/seeded_pp_102_acceptance_test.go"
 const policySeedProfileNote = "# Project Profile %s\n\nState: Current Project Profile contract\nTransition: pp.1.01 -> %s / SEMANTIC_MIGRATION\nSpecification binding: 0.3.7-draft @ %s\n\n## Purpose\n\nThis contract separates developer-owned Project Profile generation from\nuser-owned profile lineage and removes path-shaped examples that could be\nmisread as repository architecture authority.\n\n## Contract changes\n\n- ptsip.revision is now required and uses canonical Rev.#### form.\n- Developer-distributed baselines begin at Rev.0001.\n- ptsip.specification.family is no longer serialized in current Project\n  Profiles. Specification identity remains exact through source plus the\n  immutable Git revision.\n- ptsip.profile_role distinguishes repository authority (PROJECT) from\n  distributed examples (DISTRIBUTED_EXAMPLE).\n- Distributed examples require project-path materialization and must not be\n  treated as canonical repository layout.\n- New repository-local profile storage uses .ptsip/profiles/index.yaml with\n  an explicit default_profile and one or more *.ptsip.yaml resources.\n- New adoption defaults to .ptsip/profiles/main.ptsip.yaml.\n- Repository-root ptsip.yaml remains a compatibility/migration input rather\n  than the default target for new profile creation.\n\n## Example-path safety\n\nPublic examples use unresolved project-owned selector placeholders instead of\nprescribing paths such as product/app/** or a developer's private tooling\nlayout. A project or agent must resolve those selectors against repository\nevidence and explicit project authority before materializing a PROJECT profile.\n\n## Authority boundaries\n\nThis Project Profile transition does not change the frozen Specification\nfamily or its immutable revision. It also does not rewrite historical Tool\nrelease notes. Tool SemVer, Project Profile contract identity,\nptsip.revision, and Specification revision remain separate axes.\n"
-const policySeedAcceptance = "package rootfamily\n\nimport (\n \"encoding/json\"\n \"os\"\n \"path/filepath\"\n \"testing\"\n \"go.yaml.in/yaml/v3\"\n)\n\nfunc seededPP102Read(t *testing.T, path string) map[string]any {\n t.Helper(); root, err := filepath.Abs(\"../../..\"); if err != nil {t.Fatal(err)}\n content, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path))); if err != nil {t.Fatal(err)}\n var value map[string]any; if filepath.Ext(path)==\".json\" {err=json.Unmarshal(content,&value)} else {err=yaml.Unmarshal(content,&value)}\n if err!=nil {t.Fatal(err)};return value\n}\nfunc TestSeededPP102SemanticAcceptance(t *testing.T){\n registry:=seededPP102Read(t,\"registry/project-profile-contracts.yaml\");if registry[\"current\"]!=\"pp.1.02\"{t.Fatal(\"pp.1.02 transition output is not current\")}\n rows:=registry[\"contracts\"].([]any); var schemaPath string;for _,raw:=range rows{row:=raw.(map[string]any);if row[\"version\"]==\"pp.1.02\"{schemaPath=row[\"schema\"].(string)}}\n schema:=seededPP102Read(t,schemaPath);header:=schema[\"properties\"].(map[string]any)[\"ptsip\"].(map[string]any);properties:=header[\"properties\"].(map[string]any)\n revision:=properties[\"revision\"].(map[string]any);if revision[\"pattern\"]!=\"^Rev\\\\.[0-9]{4}$\"{t.Fatal(\"user revision contract missing\")}\n specification:=properties[\"specification\"].(map[string]any)[\"properties\"].(map[string]any);if _,present:=specification[\"family\"];present{t.Fatal(\"serialized specification family retained\")}\n catalog:=seededPP102Read(t,\"profiles/index.yaml\");for _,raw:=range catalog[\"profiles\"].([]any){row:=raw.(map[string]any);if row[\"contract\"]!=\"pp.1.02\"||row[\"profile_role\"]!=\"DISTRIBUTED_EXAMPLE\"||row[\"materialization\"]!=\"PROJECT_PATH_RESOLUTION_REQUIRED\"{t.Fatal(\"public example authority boundary invalid\")};profile:=seededPP102Read(t,\"profiles/\"+row[\"resource\"].(string));ptsip:=profile[\"ptsip\"].(map[string]any);if ptsip[\"version\"]!=\"pp.1.02\"||ptsip[\"revision\"]!=\"Rev.0001\"||ptsip[\"profile_role\"]!=\"DISTRIBUTED_EXAMPLE\"{t.Fatal(\"distributed profile header invalid\")}}\n local:=seededPP102Read(t,\".ptsip/profiles/index.yaml\");if local[\"schema_version\"]!=\"ptsip-local-profile-catalog/v1\"||local[\"default_profile\"]!=\"main\"{t.Fatal(\"local catalog contract invalid\")};profile:=seededPP102Read(t,\".ptsip/profiles/main.ptsip.yaml\");header=profile[\"ptsip\"].(map[string]any);if header[\"profile_role\"]!=\"PROJECT\"||header[\"version\"]!=\"pp.1.02\"||header[\"revision\"]!=\"Rev.0001\"{t.Fatal(\"project identity boundary invalid\")}\n}\n"
+const policySeedAcceptance = "package rootfamily\n\nimport (\n \"encoding/json\"\n \"os\"\n \"path/filepath\"\n \"testing\"\n \"go.yaml.in/yaml/v3\"\n)\n\nfunc seededPP102Read(t *testing.T, path string) map[string]any {\n t.Helper(); root, err := filepath.Abs(\"../../..\"); if err != nil {t.Fatal(err)}\n content, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path))); if err != nil {t.Fatal(err)}\n var value map[string]any; if filepath.Ext(path)==\".json\" {err=json.Unmarshal(content,&value)} else {err=yaml.Unmarshal(content,&value)}\n if err!=nil {t.Fatal(err)};return value\n}\nfunc TestSeededPP102SemanticAcceptance(t *testing.T){\n registry:=seededPP102Read(t,\"registry/project-profile-contracts.yaml\");if registry[\"current\"]!=\"pp.1.02\"{t.Fatal(\"pp.1.02 transition output is not current\")}\n rows:=registry[\"contracts\"].([]any); var schemaPath string;for _,raw:=range rows{row:=raw.(map[string]any);if row[\"version\"]==\"pp.1.02\"{schemaPath=row[\"schema\"].(string)}}\n schema:=seededPP102Read(t,schemaPath);header:=schema[\"properties\"].(map[string]any)[\"ptsip\"].(map[string]any);properties:=header[\"properties\"].(map[string]any)\n revision:=properties[\"revision\"].(map[string]any);if revision[\"pattern\"]!=\"^Rev\\\\.[0-9]{4}$\"{t.Fatal(\"user revision contract missing\")}\n specification:=properties[\"specification\"].(map[string]any)[\"properties\"].(map[string]any);if _,present:=specification[\"family\"];present{t.Fatal(\"serialized specification family retained\")}\n catalog:=seededPP102Read(t,\"src/ptsip/profiles/index.yaml\");for _,raw:=range catalog[\"profiles\"].([]any){row:=raw.(map[string]any);if row[\"contract\"]!=\"pp.1.02\"||row[\"profile_role\"]!=\"DISTRIBUTED_EXAMPLE\"||row[\"materialization\"]!=\"PROJECT_PATH_RESOLUTION_REQUIRED\"{t.Fatal(\"public example authority boundary invalid\")};profile:=seededPP102Read(t,\"src/ptsip/profiles/\"+row[\"resource\"].(string));ptsip:=profile[\"ptsip\"].(map[string]any);if ptsip[\"version\"]!=\"pp.1.02\"||ptsip[\"revision\"]!=\"Rev.0001\"||ptsip[\"profile_role\"]!=\"DISTRIBUTED_EXAMPLE\"{t.Fatal(\"distributed profile header invalid\")}}\n local:=seededPP102Read(t,\".ptsip/profiles/index.yaml\");if local[\"schema_version\"]!=\"ptsip-local-profile-catalog/v1\"||local[\"default_profile\"]!=\"main\"{t.Fatal(\"local catalog contract invalid\")};profile:=seededPP102Read(t,\".ptsip/profiles/main.ptsip.yaml\");header=profile[\"ptsip\"].(map[string]any);if header[\"profile_role\"]!=\"PROJECT\"||header[\"version\"]!=\"pp.1.02\"||header[\"revision\"]!=\"Rev.0001\"{t.Fatal(\"project identity boundary invalid\")}\n}\n"
 
 var policySeedMarkers = [][3]string{
 	{"releasenote/project-profile/README.md", "Current intended contract:\n\n```text\npp.1.01\n```\n\nSee [`pp.1.01.md`](pp.1.01.md) for the identity-only compatibility notice covering historical `0.3.6-draft` profiles.\n", "Current intended contract:\n\n```text\npp.1.02\n```\n\nSee [`pp.1.02.md`](pp.1.02.md) for the current semantic-migration contract.\nThe historical [`pp.1.01.md`](pp.1.01.md) identity-only bridge remains preserved.\n"},
@@ -128,7 +128,11 @@ func (r *Repository) SeedPP102Transition(apply bool) (Object, error) {
 	if registry["current"] != "pp.1.01" {
 		return nil, policyFailure("SEED_REPLAY_FORBIDDEN", fmt.Sprintf("seed requires current pp.1.01, found %v", registry["current"]))
 	}
-	catalog, err := r.Read("profiles/index.yaml")
+	storage, err := ppStorageForRegistry(registry)
+	if err != nil {
+		return nil, err
+	}
+	catalog, err := r.Read(storage.Catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -164,8 +168,8 @@ func (r *Repository) SeedPP102Transition(apply bool) (Object, error) {
 			return nil, policyFailure("SEED_CATALOG_INVALID", "profile catalog entry must be mapping")
 		}
 		resource := Text(row["resource"])
-		relative, err := r.Scope("profiles/" + resource)
-		if resource == "" || err != nil || !strings.HasPrefix(relative, "profiles/") || seenResources[relative] {
+		relative, err := r.Scope(storage.Root + "/" + resource)
+		if resource == "" || err != nil || !strings.HasPrefix(relative, storage.Root+"/") || seenResources[relative] {
 			return nil, policyFailure("SEED_RESOURCE_INVALID", "public profile resource must be unique and stay inside profiles/")
 		}
 		seenResources[relative] = true
@@ -187,7 +191,7 @@ func (r *Repository) SeedPP102Transition(apply bool) (Object, error) {
 		row["profile_role"] = "DISTRIBUTED_EXAMPLE"
 		row["materialization"] = "PROJECT_PATH_RESOLUTION_REQUIRED"
 	}
-	if err := yamlUpdate("profiles/index.yaml", catalog); err != nil {
+	if err := yamlUpdate(storage.Catalog, catalog); err != nil {
 		return nil, err
 	}
 	rootProfile, err := r.Read("ptsip.yaml")
@@ -206,7 +210,7 @@ func (r *Repository) SeedPP102Transition(apply bool) (Object, error) {
 		return nil, err
 	}
 	updates[".ptsip/profiles/index.yaml"] = data
-	developerProfile, err := r.Read("developer/profiles/ptsip-repository.yaml")
+	developerProfile, err := r.Read(".ptsip/profiles/main.ptsip.yaml")
 	if err != nil {
 		return nil, err
 	}
@@ -214,7 +218,7 @@ func (r *Repository) SeedPP102Transition(apply bool) (Object, error) {
 		return nil, err
 	}
 	policySeedControlRoot(developerProfile)
-	if err := yamlUpdate("developer/profiles/ptsip-repository.yaml", developerProfile); err != nil {
+	if err := yamlUpdate(".ptsip/profiles/main.ptsip.yaml", developerProfile); err != nil {
 		return nil, err
 	}
 	revision := Text(Map(Map(rootProfile["ptsip"])["specification"])["revision"])
@@ -246,7 +250,7 @@ func (r *Repository) SeedPP102Transition(apply bool) (Object, error) {
 		return nil, err
 	}
 	updates[policySeedAcceptancePath] = accepted
-	forbidden := []string{"registry/project-profile-contracts.yaml", "src/ptsip/specdata/project-profile-contracts.yaml", "profiles/history/", "schemas/ptsip-profile-pp-1.02.schema.json", "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"}
+	forbidden := []string{"registry/project-profile-contracts.yaml", "src/ptsip/specdata/project-profile-contracts.yaml", "profiles/history/", "src/ptsip/profiles/history/", "schemas/ptsip-profile-pp-1.02.schema.json", "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"}
 	paths := []string{}
 	original := map[string][]byte{}
 	exists := map[string]bool{}

@@ -12,7 +12,7 @@ from ptsip.clarification.resolution.profile_projection import (
     prepare_local_profile,
     write_prepared_local_profile,
 )
-from ptsip.local_profile_catalog import LocalProfileCatalogError
+from ptsip.profiles.catalog import LocalProfileCatalogError
 from ptsip.repository.namespace import default_repository_index_text
 from ptsip.validation.profile import find_profile, validate_profile
 

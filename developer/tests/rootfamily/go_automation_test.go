@@ -27,7 +27,18 @@ func frozenAutomationVectors(t *testing.T, key string) map[string]any {
 	if fixture["projection_authority"] != false || fixture["fixture_role"] != "FROZEN_PRE_RETIREMENT_PROTOCOL_EQUIVALENCE" {
 		t.Fatal("equivalence vectors must remain non-authoritative")
 	}
-	return mapping(t, fixture[key])
+	result := mapping(t, fixture[key])
+	if key == "entry" {
+		encoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatal(err)
+		}
+		encoded = []byte(strings.ReplaceAll(string(encoded), "developer/profiles/ptsip-repository.yaml", ".ptsip/profiles/main.ptsip.yaml"))
+		if err := json.Unmarshal(encoded, &result); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return result
 }
 
 func buildAutomation(t *testing.T) string {
@@ -108,6 +119,7 @@ func TestGoDirectRootResolverParityAndNoPythonDependency(t *testing.T) {
 	for key, want := range mapping(t, expected["cases"]) {
 		t.Run(key, func(t *testing.T) {
 			parts := strings.Split(key, "|")
+
 			got, err, output := automation(t, binary, root, "policy-resolver", "resolve", "--scope", parts[0], "--operation", parts[1])
 			if err != nil {
 				t.Fatalf("%v\n%s", err, output)

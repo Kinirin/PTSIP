@@ -15,7 +15,7 @@ func TestCurrentProjectProfileContractHasImmutableBaseline(t *testing.T) {
 		t.Fatalf("profile-registry current: %v\n%s", err, output)
 	}
 	baseline, ok := current["baseline"].(string)
-	if !ok || baseline != "profiles/history/pp.1.02" {
+	if !ok || baseline != "src/ptsip/profiles/history/pp.1.02" {
 		t.Fatalf("current baseline = %#v", current["baseline"])
 	}
 
@@ -31,7 +31,7 @@ func TestCurrentProjectProfileContractHasImmutableBaseline(t *testing.T) {
 		if err != nil {
 			t.Fatalf("read baseline %s: %v", resource, err)
 		}
-		currentBytes, err := os.ReadFile(filepath.Join(root, "profiles", resource))
+		currentBytes, err := os.ReadFile(filepath.Join(root, "src", "ptsip", "profiles", resource))
 		if err != nil {
 			t.Fatalf("read current profile %s: %v", resource, err)
 		}

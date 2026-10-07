@@ -49,7 +49,7 @@ type DependencyHit struct {
 
 func (r *Repository) LegacyDependencyHits() ([]DependencyHit, error) {
 	// Current surface selectors are explicit. Audit evidence is deliberately outside them.
-	exact := []string{"AGENTS.md", "developer/profiles/ptsip-repository.yaml", "developer/planning/0.4.0/WU-02/WU-02.yaml", "developer/planning/0.4.0/WU-02/WU-02-P01.yaml", "releasenote/project-profile/pp.1.01.md", "developer/policy/index.yaml", "src/ptsip/specdata/support-policy-index.yaml", "schemas/ptsip-authorization-transition.schema.json"}
+	exact := []string{"AGENTS.md", ".ptsip/profiles/main.ptsip.yaml", "developer/planning/0.4.0/WU-02/WU-02.yaml", "developer/planning/0.4.0/WU-02/WU-02-P01.yaml", "releasenote/project-profile/pp.1.01.md", "developer/policy/index.yaml", "src/ptsip/specdata/support-policy-index.yaml", "schemas/ptsip-authorization-transition.schema.json"}
 	roots := []string{"developer/automation", "developer/policy", "developer/planning/schemas", "src/ptsip", "schemas"}
 	files := map[string]bool{}
 	for _, relative := range exact {

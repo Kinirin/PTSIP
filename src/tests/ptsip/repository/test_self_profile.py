@@ -8,15 +8,15 @@ import yaml
 
 from ptsip.clarification.generator import analyze_clarifications
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
-from ptsip.profile_metadata import current_project_profile_ptsip_metadata
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.metadata import current_project_profile_ptsip_metadata
 from ptsip.repository.namespace import load_repository_index
 from ptsip.validation.profile import validate_profile
 from vpms.integration.ptsip_bridge import load_ptsip_metadata
 
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-PROFILE_PATH = REPO_ROOT / "developer" / "profiles" / "ptsip-repository.yaml"
+PROFILE_PATH = REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 LOCAL_PROFILE_PATH = REPO_ROOT / ".ptsip" / "profiles" / "main.ptsip.yaml"
 
 
@@ -54,7 +54,7 @@ def test_repository_self_profile_is_valid_complete_and_revision_pinned(profile_p
     assert isinstance(ptsip, dict)
     expected = current_project_profile_ptsip_metadata()
     # Repository-owned revisions do not change the Tool's new-profile baseline.
-    expected["revision"] = "Rev.0002"
+    expected["revision"] = "Rev.0003"
     assert ptsip == expected
     assert payload["responsibility_map"] == {"mode": "explicit"}
 
@@ -116,12 +116,12 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
         for item in payload.get("components", [])
         if isinstance(item, dict) and item.get("id")
     }
-    assert components["ptsip-public-profiles"]["include"] == ["profiles/**"]
+    assert components["ptsip-public-profiles"]["include"] == ["src/ptsip/profiles/index.yaml", "src/ptsip/profiles/*.ptsip.yaml"]
     assert components["ptsip-public-profiles"]["shipped"] is True
     assert components["ptsip-public-profiles"]["runtime_required"] is True
     assert components["ptsip-public-profiles"]["executable"] is False
     assert components["repository-architecture"]["include"] == [
-        "developer/profiles/ptsip-repository.yaml",
+        ".ptsip/profiles/main.ptsip.yaml",
         ".ptsip/**",
     ]
     assert components["repository-license-authority"]["include"] == ["License-Authority/**"]
@@ -135,7 +135,7 @@ def test_repository_self_profile_declares_expected_responsibility_axes() -> None
     assert ".gitattributes" in components["repository-architecture-verification"]["analysis_inputs"]
     assert (
         ".github/scripts/verify_distribution_contracts.py"
-        in components["repository-release-automation"]["include"]
+        in components["repository-release-verification"]["include"]
     )
     assert "src/ptsip/agent_contracts/*.py" in components["ptsip-core"]["include"]
     assert (
@@ -307,8 +307,8 @@ def test_provider_neutral_context_plane_replaces_legacy_repository_state() -> No
     assert projection["memory"] == source["memory"]
     assert projection["state"]["project_profile"] == {
         "version": "pp.1.02",
-        "revision": "Rev.0001",
-        "path": "developer/profiles/ptsip-repository.yaml",
+        "revision": "Rev.0003",
+        "path": ".ptsip/profiles/main.ptsip.yaml",
     }
     assert projection["state"]["specification"]["revision"] == SPEC_REVISION
     assert projection["state"]["context_plane"]["projection_authority"] == "NON_AUTHORITATIVE"

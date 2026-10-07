@@ -6,7 +6,7 @@ import yaml
 
 import ptsip.migration as migration
 from ptsip.migration import default_target_semantics
-from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
 from ptsip.validation.profile import find_profile
 
 

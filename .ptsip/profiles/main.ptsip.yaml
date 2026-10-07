@@ -1,6 +1,6 @@
 ptsip:
   version: "pp.1.02"
-  revision: "Rev.0002"
+  revision: "Rev.0003"
   profile_role: "PROJECT"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
@@ -16,6 +16,7 @@ components:
       - IMPLEMENTATION
     include:
       - "src/ptsip/*.py"
+      - "src/ptsip/profiles/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
       - "src/ptsip/governance/**"
@@ -395,7 +396,10 @@ components:
       - AUTOMATION
       - IMPLEMENTATION
     include:
-      - "developer/automation/support_contract_registration.py"
+      - "developer/automation/internal/machine/support_registration.go"
+      - "developer/automation/internal/machine/support_catalog.go"
+      - "developer/automation/internal/machine/selection_document.go"
+      - "developer/automation/internal/machine/schema_resources.go"
     purpose: developer_only_contract_identity_preflight_registration_and_explicit_lifecycle_verification
     shipped: false
     runtime_required: false
@@ -462,12 +466,26 @@ components:
     roles:
       - CONFIGURATION
     include:
-      - "profiles/**"
+      - "src/ptsip/profiles/index.yaml"
+      - "src/ptsip/profiles/*.ptsip.yaml"
     purpose: canonical_public_project_profile_templates_distributed_with_ptsip_tool
     shipped: true
     runtime_required: true
     executable: false
     release_owner: tool
+    compatibility_owner: specification
+
+  - id: repository-profile-history
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - CONFIGURATION
+    include:
+      - "src/ptsip/profiles/history/**"
+    purpose: immutable_project_profile_generation_baselines_for_source_verification
+    shipped: false
+    runtime_required: false
+    executable: false
+    release_owner: architecture
     compatibility_owner: specification
 
   - id: repository-architecture
@@ -476,7 +494,7 @@ components:
       - CONFIGURATION
       - GOVERNANCE
     include:
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - ".ptsip/**"
     purpose: repository_development_architecture_declaration
     shipped: false
@@ -551,6 +569,7 @@ components:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
       - "src/ptsip/*.py"
+      - "src/ptsip/profiles/*.py"
       - "src/ptsip/app/**"
       - "src/ptsip/clarification/**"
       - "src/ptsip/governance/**"
@@ -559,8 +578,8 @@ components:
       - "src/ptsip/repository/**"
       - "src/ptsip/storage/**"
       - "src/ptsip/validation/**"
-      - "developer/profiles/ptsip-repository.yaml"
-      - "profiles/**"
+      - ".ptsip/profiles/main.ptsip.yaml"
+      - "src/ptsip/profiles/**"
       - "src/policy/**"
       - "schemas/ptsip-project-authority-record.schema.json"
       - "schemas/ptsip-authority-eligibility-result.schema.json"
@@ -640,7 +659,7 @@ components:
       - "src/ptsip/remediation/**"
       - "src/ptsip/evidence/**"
       - "src/ptsip/specification_binding.py"
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
 
   - id: vpms-verification
     classification: PRODUCT
@@ -667,7 +686,7 @@ components:
       - "src/vpms/contract_runtime.py"
       - "src/vpms/contracts/**"
       - "src/ptsip/**"
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
 
   - id: vpms-contract-plane-verification
     classification: PRODUCT
@@ -693,7 +712,7 @@ components:
       - "developer/automation/vpms_runtime_activation.py"
       - "developer/policy/registries/vpms-runtime-activation.json"
       - "developer/policy/schemas/vpms-runtime-activation.schema.json"
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - "pyproject.toml"
       - "setup.py"
 
@@ -722,7 +741,7 @@ components:
       - "src/ptsip/specdata/**"
       - "src/ptsip/agent_contracts/**"
       - "src/policy/**"
-      - "profiles/**"
+      - "src/ptsip/profiles/**"
 
   - id: agent-contract-candidate-verification
     classification: DEVELOPMENT_TOOLING
@@ -765,7 +784,7 @@ components:
       - "src/agent_contracts/schemas/io/**"
       - "src/agent_contracts/vocabulary/**"
       - "src/agent_contracts/bindings/current.yaml"
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
 
@@ -782,7 +801,7 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - "src/agent_contracts/__init__.py"
       - "src/agent_contracts/resolver.py"
       - "src/agent_contracts/validator.py"
@@ -810,7 +829,7 @@ components:
     release_owner: tool
     compatibility_owner: tool
     analysis_inputs:
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - "src/agent_contracts/__init__.py"
       - "src/agent_contracts/validator.py"
       - "src/agent_contracts/schemas/contracts/**"
@@ -834,15 +853,40 @@ components:
       - "src/ptsip/migration/**"
       - "src/ptsip/specdata/project-profile-contracts.yaml"
 
+  - id: policy-responsibility-analysis-verification
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
+    include:
+      - "src/tests/ptsip/policy_responsibility_analysis/**"
+    purpose: policy_responsibility_analysis_generation_coverage_current_authority_lookup_and_deterministic_regeneration_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+    analysis_inputs:
+      - "developer/policy/analysis/**"
+      - "developer/policy/analysis/schemas/policy-responsibility-analysis*.json"
+      - "developer/policy/analysis/schemas/policy-materialization-analysis-registry*.json"
+      - "developer/policy/contracts/policy-responsibility-analysis-generation.v1.yaml"
+      - "developer/automation/internal/machine/policy_responsibility*.go"
+
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
     roles:
       - VERIFICATION
     include:
       - "src/tests/ptsip/repository/test_self_profile.py"
-      - "developer/tests/**"
-      - "developer/tests/policy/binding/mutation_test.go"
-      - "developer/tests/policy/binding/tracking_test.go"
+      - "developer/tests/go.mod"
+      - "developer/tests/go.sum"
+      - "developer/tests/internal/**"
+      - "developer/tests/planning/**"
+      - "developer/tests/policy/**"
+      - "developer/tests/pp/**"
+      - "developer/tests/repository/**"
+      - "developer/tests/rootfamily/**"
+      - "developer/tests/workflows/**"
     purpose: repository_profile_and_active_planning_surface_verification
     shipped: false
     runtime_required: false
@@ -852,7 +896,7 @@ components:
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - "src/policy/**"
       - "src/ptsip/specdata/**"
       - "reference/**"
@@ -870,7 +914,9 @@ components:
     roles:
       - VERIFICATION
     include:
-      - "src/tests/ptsip/test_release_readiness_030.py"
+      - "developer/tests/release/*.go"
+      - ".github/scripts/verify_release_contract.py"
+      - ".github/scripts/verify_distribution_contracts.py"
     purpose: release_identity_workflow_contract_and_distribution_readiness_verification
     shipped: false
     runtime_required: false
@@ -878,16 +924,14 @@ components:
     release_owner: delivery
     compatibility_owner: delivery
     analysis_inputs:
-      - "src/tests/ptsip/conftest.py"
-      - "src/tests/ptsip/_test_support.py"
       - "pyproject.toml"
       - "MANIFEST.in"
       - "setup.py"
-      - "profiles/**"
+      - "src/ptsip/profiles/**"
       - "src/policy/**"
       - ".github/workflows/tooling-test.yml"
-      - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
+      - "developer/automation/release/**"
       - ".github/scripts/verify_release_contract.py"
       - "src/ptsip/specdata/**"
       - "src/ptsip/agent_contracts/**"
@@ -928,7 +972,7 @@ components:
     release_owner: development_tooling
     compatibility_owner: development_tooling
     analysis_inputs:
-      - "developer/profiles/ptsip-repository.yaml"
+      - ".ptsip/profiles/main.ptsip.yaml"
       - ".github/workflows/tooling-test.yml"
       - "src/tests/ptsip/conftest.py"
 
@@ -936,12 +980,9 @@ components:
     classification: DELIVERY
     roles:
       - AUTOMATION
-      - VERIFICATION
     include:
-      - ".github/workflows/release.yml"
+      - "developer/automation/release/**"
       - ".github/workflows/tooling-release.yml"
-      - ".github/scripts/verify_release_contract.py"
-      - ".github/scripts/verify_distribution_contracts.py"
     purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false
     runtime_required: false
@@ -950,7 +991,7 @@ components:
     compatibility_owner: delivery
     analysis_inputs:
       - "pyproject.toml"
-      - "profiles/**"
+      - "src/ptsip/profiles/**"
       - "src/ptsip/**"
       - "src/vpms/**"
       - "src/policy/**"

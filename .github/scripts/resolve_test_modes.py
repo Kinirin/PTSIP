@@ -14,7 +14,7 @@ import yaml
 
 VALIDATOR_PATH = Path(__file__).with_name("validate_test_modes.py")
 VALIDATE_REGISTRY = runpy.run_path(str(VALIDATOR_PATH))["validate_registry"]
-SELF_PROFILE_PATH = "developer/profiles/ptsip-repository.yaml"
+SELF_PROFILE_PATH = ".ptsip/profiles/main.ptsip.yaml"
 
 
 class TestModeSelectionError(ValueError):

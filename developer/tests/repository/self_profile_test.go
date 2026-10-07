@@ -31,7 +31,7 @@ func TestRepositorySelfProfileIsExplicitAndHasNoRootBridge(t *testing.T) {
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		t.Fatal("retired root bridge exists", err)
 	}
-	validation := testrepo.ConsumerCLI(t, "validate", ".", "--profile", "developer/profiles/ptsip-repository.yaml", "--json")
+	validation := testrepo.ConsumerCLI(t, "validate", ".", "--profile", ".ptsip/profiles/main.ptsip.yaml", "--json")
 	if validation["valid"] != true {
 		t.Fatal(validation)
 	}
@@ -40,7 +40,7 @@ func TestRepositorySelfProfileIsExplicitAndHasNoRootBridge(t *testing.T) {
 			t.Fatal(validation)
 		}
 	}
-	clarification := testrepo.ConsumerCLI(t, "clarify", ".", "--profile", "developer/profiles/ptsip-repository.yaml", "--json")
+	clarification := testrepo.ConsumerCLI(t, "clarify", ".", "--profile", ".ptsip/profiles/main.ptsip.yaml", "--json")
 	if clarification["status"] != "NO_CLARIFICATION_REQUIRED" || len(clarification["requests"].([]any)) != 0 {
 		t.Fatal(clarification)
 	}
@@ -49,16 +49,16 @@ func TestRepositorySelfProfileIsExplicitAndHasNoRootBridge(t *testing.T) {
 func TestRepositoryTestModeDefaultsAndProfileHaveNoRootBridgeDependency(t *testing.T) {
 	for _, ref := range []string{".github/scripts/validate_test_modes.py", ".github/scripts/resolve_test_modes.py"} {
 		source := repositoryText(t, ref)
-		if !strings.Contains(source, "developer/profiles/ptsip-repository.yaml") {
+		if !strings.Contains(source, ".ptsip/profiles/main.ptsip.yaml") {
 			t.Fatal("explicit self-profile default missing", ref)
 		}
 	}
-	text := repositoryText(t, "developer/profiles/ptsip-repository.yaml")
-	if strings.Contains(text, `"ptsip.yaml"`) || !strings.Contains(text, "developer/profiles/ptsip-repository.yaml") {
+	text := repositoryText(t, ".ptsip/profiles/main.ptsip.yaml")
+	if strings.Contains(text, `"ptsip.yaml"`) || !strings.Contains(text, ".ptsip/profiles/main.ptsip.yaml") {
 		t.Fatal("self-profile root bridge dependency")
 	}
 	repo := testrepo.Open(testrepo.Root(t))
-	profile, err := repo.Read("developer/profiles/ptsip-repository.yaml")
+	profile, err := repo.Read(".ptsip/profiles/main.ptsip.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -124,7 +124,7 @@ func TestLocalCatalogDeclarationsUseExplicitDeveloperProfile(t *testing.T) {
 						if path == "ptsip.yaml" {
 							t.Fatal("local profile root bridge dependency")
 						}
-						if component["id"] == "repository-architecture" && path == "developer/profiles/ptsip-repository.yaml" {
+						if component["id"] == "repository-architecture" && path == ".ptsip/profiles/main.ptsip.yaml" {
 							architecture = true
 						}
 					}
@@ -150,7 +150,7 @@ func TestConsumerDefaultProfilePathRemainsRootPtsipYAML(t *testing.T) {
 
 func TestFullCISelfManagementCommandsSelectDeveloperProfile(t *testing.T) {
 	source := repositoryText(t, ".github/workflows/tooling-test.yml")
-	for _, command := range []string{"ptsip validate . --profile developer/profiles/ptsip-repository.yaml --json", "ptsip clarify . --profile developer/profiles/ptsip-repository.yaml --json", "ptsip gate . --profile developer/profiles/ptsip-repository.yaml --coordination local --json", "ptsip conform . --profile developer/profiles/ptsip-repository.yaml --artifact-evidence $evidencePath --json"} {
+	for _, command := range []string{"ptsip validate . --profile .ptsip/profiles/main.ptsip.yaml --json", "ptsip clarify . --profile .ptsip/profiles/main.ptsip.yaml --json", "ptsip gate . --profile .ptsip/profiles/main.ptsip.yaml --coordination local --json", "ptsip conform . --profile .ptsip/profiles/main.ptsip.yaml --artifact-evidence $evidencePath --json"} {
 		if !strings.Contains(source, command) {
 			t.Fatal("explicit self-profile CI command missing", command)
 		}

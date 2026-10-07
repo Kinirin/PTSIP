@@ -229,6 +229,15 @@ ptsip context check . --json
 
 New project-owned profiles are selected through `.ptsip/profiles/index.json`; the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. Repository-root `ptsip.yaml` remains a compatibility/migration input, and an explicit `--profile` path still takes precedence.
 
+PTSIP developers use that same local catalog and `.ptsip/profiles/main.ptsip.yaml`.
+Profile implementation modules and distributed examples live in
+`src/ptsip/profiles/`. The public catalog is `src/ptsip/profiles/index.yaml`;
+`registry/project-profile-contracts.yaml` explicitly binds this source layout.
+Historical PP baselines under `src/ptsip/profiles/history/` are preserved in
+source distributions for verification and are excluded from wheels. Moving
+storage preserves PP identity and historical bytes; public profile or schema
+semantic changes still require the native Go PP transition gates.
+
 ## Adoption and decision authority
 
 Repository evidence is not architecture authority. Candidate discovery, path names, templates, heuristics, and agent confidence can support review but cannot manufacture project intent.

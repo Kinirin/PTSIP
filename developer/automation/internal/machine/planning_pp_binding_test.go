@@ -255,6 +255,10 @@ func (s ppMemorySnapshot) Resources() ([]string, error) {
 	sort.Strings(out)
 	return out, nil
 }
+
+// Pre-move v1 fixture paths are retained to verify historical Git snapshots.
+func ppHistory(version string) string { return "profiles/history/" + version }
+
 func ppTestFiles(t *testing.T) map[string][]byte {
 	t.Helper()
 	profile := []byte("# retain comment\nptsip:\n  version: 'pp.1.02' # identity\nresponsibility_map:\n  mode: explicit\ncontract:\n  value: original\n")
@@ -480,7 +484,7 @@ func TestPPCanonicalRuntimeProductParity(t *testing.T) {
 	if _, err = os.Stat(python); err != nil {
 		python = "python"
 	}
-	script := "import json; from ptsip.project_profile_contracts import current_runtime_project_profile_contract; from ptsip.profile_identity import CURRENT_PROJECT_PROFILE_VERSION; from ptsip.profile_compatibility import current_project_profile_target; r=current_runtime_project_profile_contract(); t=current_project_profile_target(); print(json.dumps(dict(current=CURRENT_PROJECT_PROFILE_VERSION,runtime=r.version,schema=r.schema_resource,operations=sorted(r.operations),target=t.contract.canonical,target_schema=t.schema_resource)))"
+	script := "import json; from ptsip.profiles.contracts import current_runtime_project_profile_contract; from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION; from ptsip.profiles.compatibility import current_project_profile_target; r=current_runtime_project_profile_contract(); t=current_project_profile_target(); print(json.dumps(dict(current=CURRENT_PROJECT_PROFILE_VERSION,runtime=r.version,schema=r.schema_resource,operations=sorted(r.operations),target=t.contract.canonical,target_schema=t.schema_resource)))"
 	cmd := exec.Command(python, "-c", script)
 	cmd.Dir = r.Root
 	cmd.Env = append(os.Environ(), "PYTHONPATH="+filepath.Join(r.Root, "src"))

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .profile_identity import (
+from .identity import (
     PP_0_00,
     CURRENT_PROJECT_PROFILE_VERSION,
     PP_1_01,

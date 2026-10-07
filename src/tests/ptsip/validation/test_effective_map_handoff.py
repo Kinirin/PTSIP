@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_real_validation_produces_an_immutable_owned_snapshot():
-    value = load_validated_effective_map(ROOT, ROOT / "developer/profiles/ptsip-repository.yaml")
+    value = load_validated_effective_map(ROOT, ROOT / ".ptsip/profiles/main.ptsip.yaml")
     assert value.source_mode == "explicit"
     assert isinstance(value.effective_payload["components"], tuple)
     with pytest.raises(TypeError):

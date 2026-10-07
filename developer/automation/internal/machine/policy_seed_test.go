@@ -29,7 +29,7 @@ func policySeedFixture(t *testing.T) *Repository {
 	hybrid["responsibility_map"] = Object{"overrides": Object{"components": []any{Object{"id": "package", "include": []any{"pkg/**"}}, Object{"id": "package-tests", "include": []any{"tests/**"}}}}}
 	write("profiles/hybrid.ptsip.yaml", hybrid)
 	write("ptsip.yaml", policyClone(header))
-	write("developer/profiles/ptsip-repository.yaml", policyClone(header))
+	write(".ptsip/profiles/main.ptsip.yaml", policyClone(header))
 	write("schemas/ptsip-profile-pp-1.01.schema.json", Object{"properties": Object{"ptsip": Object{"required": []any{"version", "specification"}, "properties": Object{"version": Object{"const": "pp.1.01"}, "specification": Object{"required": []any{"source", "revision", "family"}, "properties": Object{"source": Object{"type": "string"}, "revision": Object{"type": "string"}, "family": Object{"type": "string"}}}}}}})
 	docs := map[string][]string{}
 	for _, marker := range policySeedMarkers {
@@ -153,6 +153,11 @@ func TestPolicySeedGuardsPreserveSource(t *testing.T) {
 				policyTestWrite(t, r, "profiles/index.yaml", catalog)
 				policySeedCommit(t, r)
 			}
+			profilePath := filepath.Join(r.Root, ".ptsip/profiles/main.ptsip.yaml")
+			profileBefore, err := os.ReadFile(profilePath)
+			if err != nil {
+				t.Fatal(err)
+			}
 			before, err := r.GitOutput("status", "--porcelain")
 			if err != nil {
 				t.Fatal(err)
@@ -164,8 +169,9 @@ func TestPolicySeedGuardsPreserveSource(t *testing.T) {
 			if err != nil || before != after {
 				t.Fatal("failed seed changed source state")
 			}
-			if _, err := os.Stat(filepath.Join(r.Root, ".ptsip/profiles/main.ptsip.yaml")); !os.IsNotExist(err) {
-				t.Fatal("failed seed wrote a partial project profile")
+			profileAfter, err := os.ReadFile(profilePath)
+			if err != nil || !reflect.DeepEqual(profileBefore, profileAfter) {
+				t.Fatal("failed seed changed existing local profile", err)
 			}
 		})
 	}

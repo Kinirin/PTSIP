@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_active_boundary_projects_real_validated_ptsip_metadata_without_mutation():
-    source = ROOT / "developer/profiles/ptsip-repository.yaml"
+    source = ROOT / ".ptsip/profiles/main.ptsip.yaml"
     before = source.read_bytes()
     handoff = load_validated_effective_map(ROOT, source)
     snapshot = metadata_from_effective_map(handoff)

@@ -7,7 +7,7 @@ from typing import Mapping
 
 import yaml
 
-from .repository.namespace import (
+from ..repository.namespace import (
     REPOSITORY_INDEX,
     RepositoryNamespaceError,
     load_repository_index,

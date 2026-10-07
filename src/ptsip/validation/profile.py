@@ -8,12 +8,12 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
-from ..local_profile_catalog import (
+from ..profiles.catalog import (
     LEGACY_ROOT_PROFILE,
     LocalProfileCatalogError,
     load_local_profile_selection,
 )
-from ..profile_identity import (
+from ..profiles.identity import (
     ProjectProfileIdentityError,
     ProjectProfileOperation,
     ProjectProfileVersion,

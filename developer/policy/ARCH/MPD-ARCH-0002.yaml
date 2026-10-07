@@ -56,7 +56,7 @@ rules:
         - EXECUTION_PLAN_CONSTRUCTION
         consumed_authority:
           registry: .github/test_modes.yaml
-          component_ownership: developer/profiles/ptsip-repository.yaml
+          component_ownership: .ptsip/profiles/main.ptsip.yaml
         prohibited:
         - REDEFINE_SOURCE_OWNERSHIP
         - REDEFINE_VERIFICATION_RELATIONSHIPS

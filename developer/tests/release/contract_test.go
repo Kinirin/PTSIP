@@ -43,7 +43,7 @@ func TestReleaseContractAssetsRemainBoundToSpecificationRevision(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	match := regexp.MustCompile("(?m)^SPEC_REVISION = \"([0-9a-f]{40})\"$").FindSubmatch(constants)
+	match := regexp.MustCompile("(?m)^SPEC_REVISION = \"([0-9a-f]{40})\"\r?$").FindSubmatch(constants)
 	if len(match) != 2 {
 		t.Fatal("SPEC_REVISION is not an exact 40-character lowercase SHA")
 	}
