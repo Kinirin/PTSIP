@@ -41,7 +41,7 @@ func TestWU02RoutingConsumesNativeControlContextAndExplicitExecutionBranch(t *te
 }
 
 func TestGoToolchainPrecedesEveryDeveloperAutomationConsumer(t *testing.T) {
-	for _, file := range []string{"tooling-test.yml", "release.yml", "tooling-release.yml"} {
+	for _, file := range []string{"tooling-test.yml", "tooling-release.yml"} {
 		t.Run(file, func(t *testing.T) {
 			text := workflow(t, file)
 			if strings.Contains(text, "python -m developer.automation") || strings.Contains(text, "from developer.automation") {

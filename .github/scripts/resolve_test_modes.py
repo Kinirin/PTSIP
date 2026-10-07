@@ -308,25 +308,37 @@ def build_execution_plan(
             raise TestModeSelectionError(
                 f"mode {mode.get('id')!r} has invalid execution declaration"
             )
-        targets = execution.get("pytest")
-        if not isinstance(targets, list) or not all(
-            isinstance(target, str) for target in targets
+        pytest_targets = execution.get("pytest", [])
+        go_targets = execution.get("go", [])
+        if "pytest" in execution and (
+            not isinstance(pytest_targets, list)
+            or not pytest_targets
+            or not all(isinstance(target, str) for target in pytest_targets)
         ):
             raise TestModeSelectionError(
                 f"mode {mode.get('id')!r} has invalid pytest targets"
             )
-        plan.append(
-            {
-                "id": mode["id"],
-                "component_ref": mode["component_ref"],
-                "pytest": list(targets),
-            }
-        )
-        if "go" in execution:
-            go_targets = execution["go"]
-            if not isinstance(go_targets, list) or not go_targets or not all(isinstance(target, str) for target in go_targets):
-                raise TestModeSelectionError(f"mode {mode.get('id')!r} has invalid Go modules")
-            plan[-1]["go"] = list(go_targets)
+        if "go" in execution and (
+            not isinstance(go_targets, list)
+            or not go_targets
+            or not all(isinstance(target, str) for target in go_targets)
+        ):
+            raise TestModeSelectionError(
+                f"mode {mode.get('id')!r} has invalid Go targets"
+            )
+        if not pytest_targets and not go_targets:
+            raise TestModeSelectionError(
+                f"mode {mode.get('id')!r} has no execution targets"
+            )
+
+        item = {
+            "id": mode["id"],
+            "component_ref": mode["component_ref"],
+            "pytest": list(pytest_targets),
+        }
+        if go_targets:
+            item["go"] = list(go_targets)
+        plan.append(item)
     return plan
 
 

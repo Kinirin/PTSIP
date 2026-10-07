@@ -101,7 +101,12 @@ modes:
     component_ref: repository-architecture-verification
     execution:
       go:
-        - developer/tests
+        - developer/tests/planning
+        - developer/tests/policy
+        - developer/tests/pp
+        - developer/tests/repository
+        - developer/tests/rootfamily
+        - developer/tests/workflows
       pytest:
         - src/tests/ptsip/repository/test_self_profile.py
 
@@ -121,8 +126,8 @@ modes:
   - id: repository-release
     component_ref: repository-release-verification
     execution:
-      pytest:
-        - src/tests/ptsip/test_release_readiness_030.py
+      go:
+        - developer/tests/release
 
   - id: test-mode-control-plane
     component_ref: repository-test-mode-control-plane

@@ -668,24 +668,28 @@ jobs:
           else {
             Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
             foreach ($mode in $plan) {
-              foreach ($module in @($mode.go)) {
+              $goTargets = @($mode.go)
+              foreach ($module in $goTargets) {
                 if ([string]::IsNullOrWhiteSpace($module)) { continue }
                 & go -C $module test -count=1 -v ./...
                 if ($LASTEXITCODE -ne 0) {
                   throw "Test Mode '$($mode.id)' Go verification failed."
                 }
               }
+
               $targets = @($mode.pytest)
-              if ($targets.Count -eq 0) {
-                throw "Test Mode '$($mode.id)' contains no pytest targets."
+              if ($goTargets.Count -eq 0 -and $targets.Count -eq 0) {
+                throw "Test Mode '$($mode.id)' contains no execution targets."
               }
 
               Write-Host "=== Test Mode: $($mode.id) ==="
               Write-Host "Verification component: $($mode.component_ref)"
-              Write-Host "pytest targets: $($targets -join ', ')"
-              & python -m pytest -q @targets
-              if ($LASTEXITCODE -ne 0) {
-                throw "Test Mode '$($mode.id)' failed."
+              if ($targets.Count -gt 0) {
+                Write-Host "pytest targets: $($targets -join ', ')"
+                & python -m pytest -q @targets
+                if ($LASTEXITCODE -ne 0) {
+                  throw "Test Mode '$($mode.id)' pytest verification failed."
+                }
               }
             }
           }

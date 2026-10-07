@@ -862,9 +862,15 @@ components:
       - VERIFICATION
     include:
       - "src/tests/ptsip/repository/test_self_profile.py"
-      - "developer/tests/**"
-      - "developer/tests/policy/binding/mutation_test.go"
-      - "developer/tests/policy/binding/tracking_test.go"
+      - "developer/tests/go.mod"
+      - "developer/tests/go.sum"
+      - "developer/tests/internal/**"
+      - "developer/tests/planning/**"
+      - "developer/tests/policy/**"
+      - "developer/tests/pp/**"
+      - "developer/tests/repository/**"
+      - "developer/tests/rootfamily/**"
+      - "developer/tests/workflows/**"
     purpose: repository_profile_and_active_planning_surface_verification
     shipped: false
     runtime_required: false
@@ -892,7 +898,7 @@ components:
     roles:
       - VERIFICATION
     include:
-      - "src/tests/ptsip/test_release_readiness_030.py"
+      - "developer/tests/release/*.go"
       - ".github/scripts/verify_release_contract.py"
       - ".github/scripts/verify_distribution_contracts.py"
     purpose: release_identity_workflow_contract_and_distribution_readiness_verification
@@ -902,16 +908,14 @@ components:
     release_owner: delivery
     compatibility_owner: delivery
     analysis_inputs:
-      - "src/tests/ptsip/conftest.py"
-      - "src/tests/ptsip/_test_support.py"
       - "pyproject.toml"
       - "MANIFEST.in"
       - "setup.py"
       - "profiles/**"
       - "src/policy/**"
       - ".github/workflows/tooling-test.yml"
-      - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
+      - "developer/automation/release/**"
       - ".github/scripts/verify_release_contract.py"
       - "src/ptsip/specdata/**"
       - "src/ptsip/agent_contracts/**"
@@ -962,7 +966,6 @@ components:
       - AUTOMATION
     include:
       - "developer/automation/release/**"
-      - ".github/workflows/release.yml"
       - ".github/workflows/tooling-release.yml"
     purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false

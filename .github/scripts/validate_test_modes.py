@@ -115,6 +115,33 @@ def _target_is_owned(target: str, include: list[object]) -> bool:
     return False
 
 
+def _go_target_is_owned(target: str, include: list[object]) -> bool:
+    if _target_is_owned(target, include):
+        return True
+    prefix = target.rstrip("/") + "/"
+    return any(
+        isinstance(pattern, str)
+        and pattern.startswith(prefix)
+        and (pattern.endswith(".go") or pattern.endswith("/**"))
+        for pattern in include
+    )
+
+
+def _has_go_module(target: str, repo_root: Path) -> bool:
+    path = repo_root.joinpath(*PurePosixPath(target).parts)
+    if not path.is_dir():
+        return False
+    current = path
+    while True:
+        if (current / "go.mod").is_file():
+            return True
+        if current == repo_root:
+            return False
+        if repo_root not in current.parents:
+            return False
+        current = current.parent
+
+
 def _targets_overlap(first: str, second: str, repo_root: Path) -> bool:
     first_path = repo_root.joinpath(*PurePosixPath(first).parts)
     second_path = repo_root.joinpath(*PurePosixPath(second).parts)
@@ -234,9 +261,23 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
                 f"{prefix}.execution contains unsupported fields: {unknown_execution}"
             )
 
-        pytest_targets = execution.get("pytest")
-        if not isinstance(pytest_targets, list) or not pytest_targets:
+        pytest_targets = execution.get("pytest", [])
+        go_targets = execution.get("go", [])
+
+        if "pytest" in execution and (
+            not isinstance(pytest_targets, list) or not pytest_targets
+        ):
             errors.append(f"{prefix}.execution.pytest must be a non-empty list")
+            pytest_targets = []
+        if "go" in execution and (
+            not isinstance(go_targets, list) or not go_targets
+        ):
+            errors.append(f"{prefix}.execution.go must be a non-empty list")
+            go_targets = []
+        if not pytest_targets and not go_targets:
+            errors.append(
+                f"{prefix}.execution must declare at least one pytest or Go target"
+            )
             continue
 
         include = component.get("include", []) if isinstance(component, dict) else []
@@ -277,25 +318,31 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
             if not repo_root.joinpath(*parts).exists():
                 errors.append(f"{label} does not exist in the repository: {target}")
 
-        if "go" in execution:
-            go_targets = execution["go"]
-            if not isinstance(go_targets, list) or not go_targets:
-                errors.append(f"{prefix}.execution.go must be a non-empty list")
+        for target_position, target in enumerate(go_targets):
+            label = f"{prefix}.execution.go[{target_position}]"
+            path_errors = _validate_relative_posix_path(
+                target, label=label, allow_glob=False
+            )
+            errors.extend(path_errors)
+            if path_errors or not isinstance(target, str):
                 continue
-            for target_position, target in enumerate(go_targets):
-                label = f"{prefix}.execution.go[{target_position}]"
-                path_errors = _validate_relative_posix_path(target, label=label, allow_glob=False)
-                errors.extend(path_errors)
-                if path_errors or not isinstance(target, str):
-                    continue
-                for existing_target, owner in seen_go_targets:
-                    if target == existing_target or _targets_overlap(target, existing_target, repo_root):
-                        errors.append(f"{label} duplicates or overlaps Go module {existing_target!r} owned by mode {owner!r}")
-                seen_go_targets.append((target, str(mode_id)))
-                if not _target_is_owned(target, include):
-                    errors.append(f"{label} is outside component_ref include authority: {target}")
-                if not (repo_root / target / "go.mod").is_file():
-                    errors.append(f"{label} requires a repository Go module: {target}")
+            for existing_target, owner in seen_go_targets:
+                if target == existing_target or _targets_overlap(
+                    target, existing_target, repo_root
+                ):
+                    errors.append(
+                        f"{label} duplicates or overlaps Go target "
+                        f"{existing_target!r} owned by mode {owner!r}"
+                    )
+            seen_go_targets.append((target, str(mode_id)))
+            if not _go_target_is_owned(target, include):
+                errors.append(
+                    f"{label} is outside component_ref include authority: {target}"
+                )
+            if not _has_go_module(target, repo_root):
+                errors.append(
+                    f"{label} requires a Go module at or above the target: {target}"
+                )
 
     missing_components = sorted(required_components - seen_component_refs)
     extra_components = sorted(seen_component_refs - required_components)

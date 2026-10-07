@@ -481,3 +481,21 @@ def test_git_confirms_deletion_and_binds_exact_preimage(tmp_path: Path, committe
     assert deleted == ["old/README.md"]
     assert preimage == previous
     assert revision == base
+
+
+def test_execution_plan_accepts_go_only_verification_mode() -> None:
+    selected = [
+        {
+            "id": "repository-release",
+            "component_ref": "repository-release-verification",
+            "execution": {"go": ["developer/tests/release"]},
+        }
+    ]
+    assert BUILD_PLAN(selected) == [
+        {
+            "id": "repository-release",
+            "component_ref": "repository-release-verification",
+            "pytest": [],
+            "go": ["developer/tests/release"],
+        }
+    ]

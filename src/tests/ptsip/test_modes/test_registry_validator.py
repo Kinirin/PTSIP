@@ -137,20 +137,29 @@ def test_repository_test_mode_registry_covers_test_owning_verification_component
     } == EXPECTED_REPOSITORY_COMPONENT_REFS
 
     pytest_targets: list[str] = []
+    go_targets: list[str] = []
     for mode in modes_by_id.values():
         assert set(mode) == REPOSITORY_MODE_KEYS
         assert "watch" not in mode
 
         execution = mode.get("execution")
         assert isinstance(execution, dict)
-        targets = execution.get("pytest")
-        assert isinstance(targets, list) and targets
+        targets = execution.get("pytest", [])
+        modules = execution.get("go", [])
+        assert isinstance(targets, list)
+        assert isinstance(modules, list)
+        assert targets or modules
         assert all(
             isinstance(target, str) and target for target in targets
         )
+        assert all(
+            isinstance(target, str) and target for target in modules
+        )
         pytest_targets.extend(targets)
+        go_targets.extend(modules)
 
     assert len(pytest_targets) == len(set(pytest_targets))
+    assert len(go_targets) == len(set(go_targets))
 
 
 def test_valid_mode_resolves_declared_verification_component(tmp_path: Path) -> None:
@@ -254,3 +263,42 @@ def test_nested_pytest_targets_are_rejected_as_overlapping_execution(tmp_path: P
 
     errors = _validate(tmp_path)
     assert any("overlaps pytest target" in error for error in errors)
+
+
+def test_go_only_mode_may_use_package_below_parent_module(tmp_path: Path) -> None:
+    _write_profile(tmp_path)
+    profile_path = (
+        tmp_path / "developer" / "profiles" / "ptsip-repository.yaml"
+    )
+    profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+    component = profile["components"][0]
+    component["include"] = ["developer/tests/release/*.go"]
+    component["analysis_inputs"] = [".github/workflows/tooling-release.yml"]
+    profile_path.write_text(
+        yaml.safe_dump(profile, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    module_root = tmp_path / "developer" / "tests"
+    release_root = module_root / "release"
+    release_root.mkdir(parents=True)
+    (module_root / "go.mod").write_text(
+        "module example.invalid/developer/tests\n\ngo 1.26\n",
+        encoding="utf-8",
+    )
+    (release_root / "workflow_test.go").write_text(
+        "package release_test\n",
+        encoding="utf-8",
+    )
+    _write_registry(
+        tmp_path,
+        [
+            {
+                "id": "product",
+                "component_ref": "product-verification",
+                "execution": {"go": ["developer/tests/release"]},
+            }
+        ],
+    )
+
+    assert _validate(tmp_path) == []
