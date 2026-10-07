@@ -117,7 +117,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Native draft release creation failed."
           }
-build:
+  build:
     if: ${{ github.event_name == 'release' && startsWith(github.event.release.tag_name, 'tool-v') }}
     runs-on: ubuntu-latest
     steps:
