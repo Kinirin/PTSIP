@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.4'
+  version: '2.5'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -44,6 +44,24 @@ rules:
         - PUBLICATION_EXECUTION
         - RELEASE_GATE_INVOCATION
         scope_extension: PROJECT_OWNER_APPROVAL_REQUIRED
+      TEST_MODE:
+        root: developer/automation/testmode/
+        responsibility: REPOSITORY_TEST_MODE_CONTROL_PLANE
+        responsibility_scope:
+        - TEST_MODE_REGISTRY_VALIDATION
+        - AUTOMATIC_MODE_RESOLUTION
+        - MANUAL_MODE_RESOLUTION
+        - CHANGED_FILE_MATCHING
+        - DELETION_PREIMAGE_RESOLUTION
+        - EXECUTION_PLAN_CONSTRUCTION
+        consumed_authority:
+          registry: .github/test_modes.yaml
+          component_ownership: developer/profiles/ptsip-repository.yaml
+        prohibited:
+        - REDEFINE_SOURCE_OWNERSHIP
+        - REDEFINE_VERIFICATION_RELATIONSHIPS
+        - CREATE_VERIFICATION_REQUIREMENTS
+        - OVERRIDE_TEST_MODE_REGISTRY_AUTHORITY
       POLICY:
         root: developer/automation/policy/
         responsibility: POLICY_AUTOMATION
@@ -143,3 +161,12 @@ transition:
       action: MATERIALIZE_REPOSITORY_RELEASE_AUTOMATION_PACKAGE
       execution: SERIAL_REQUIRED
       completion_check: RELEASE_AUTOMATION_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT_AND_SCOPE
+  - id: TR-006
+    type: PROJECT_OWNER_REPOSITORY_TEST_MODE_CONTROL_PLANE_DOMAIN_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261007-AUTOMATION-DOMAIN-ARCH-0002-REPOSITORY-TEST-MODE-CONTROL-PLANE.yaml
+    next_action:
+      action: MATERIALIZE_REPOSITORY_TEST_MODE_CONTROL_PLANE_PACKAGE
+      execution: SERIAL_REQUIRED
+      completion_check: TEST_MODE_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT_SCOPE_AND_AUTHORITY_BOUNDARY
