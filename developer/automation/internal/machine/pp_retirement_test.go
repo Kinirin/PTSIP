@@ -173,8 +173,15 @@ func TestPPRemoteAndReleaseVerificationUseExactHeadWithoutMutation(t *testing.T)
 	}
 	parent := strings.TrimSpace(string(parentRaw))
 	rangeResult, err := r.VerifyPPRange(parent, head)
-	if err != nil || len(List(rangeResult["commits"])) != 1 || Map(List(rangeResult["commits"])[0])["commit"] != head {
+	introduced, gitErr := ppGit(r.Root, "rev-list", "--reverse", "--topo-order", parent+".."+head)
+	expectedCommits := strings.Fields(string(introduced))
+	if err != nil || gitErr != nil || len(List(rangeResult["commits"])) != len(expectedCommits) {
 		t.Fatal(rangeResult, err)
+	}
+	for i, raw := range List(rangeResult["commits"]) {
+		if Map(raw)["commit"] != expectedCommits[i] {
+			t.Fatal("introduced commit verification omitted or reordered", rangeResult)
+		}
 	}
 	release, err := r.VerifyPPRelease("HEAD")
 	if err != nil || release["status"] != "PASS" || release["source_sha"] != head {

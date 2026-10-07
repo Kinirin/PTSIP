@@ -117,8 +117,8 @@ func TestPPCommitAndRangeNormalizeExactCommit(t *testing.T) {
 		t.Fatalf("symbolic HEAD was not normalized to exact SHA: %#v", record["commit"])
 	}
 	allowed := map[string]bool{
-		"NO_T2_AUTHORITY_DELTA":       true,
-		"T2_AUTHORITY_DELTA":          true,
+		"NO_T2_AUTHORITY_DELTA":        true,
+		"T2_AUTHORITY_DELTA":           true,
 		"MERGE_INHERITED_PP_AUTHORITY": true,
 	}
 	if !allowed[record["classification"].(string)] {
@@ -129,7 +129,13 @@ func TestPPCommitAndRangeNormalizeExactCommit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("pp range HEAD^..HEAD: %v\n%s", err, output)
 	}
-	if rangeResult["status"] != "PASS" || rangeResult["verified_commit_count"] != float64(1) {
-		t.Fatalf("single-commit range did not verify exactly one commit: %#v", rangeResult)
+	expectedCommits := strings.Fields(ppGit(t, "rev-list", "--reverse", "--topo-order", parent+".."+head))
+	if rangeResult["status"] != "PASS" || rangeResult["verified_commit_count"] != float64(len(expectedCommits)) {
+		t.Fatalf("range did not verify every introduced commit: %#v", rangeResult)
+	}
+	for i, raw := range rangeResult["commits"].([]any) {
+		if raw.(map[string]any)["commit"] != expectedCommits[i] {
+			t.Fatalf("introduced commit verification omitted or reordered: %#v", rangeResult)
+		}
 	}
 }
