@@ -102,6 +102,18 @@ authority_semantics:
   - VPMS_VERIFICATION_PURPOSE
   - VPMS_CASE_SELECTION
   - VPMS_EXECUTION_COMPOSITION
+  engine_plane_minimum_boundary:
+    repository_local_root: .ptsip/engine/
+    repository_local_state: .ptsip/engine/state.json
+    semantic_role_binding_source: .ptsip/index.json
+    physical_path_name_is_semantic_role_authority: false
+    executable_implementation_owner: INSTALLED_PTSIP_PACKAGE
+    executable_source_copy_into_repository_engine_root: FORBIDDEN
+    shipped_repository_module: src/ptsip/repository/namespace.py
+    shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
+    state_contract: DEFERRED
+    schema_contract: DEFERRED
+    runtime_activation: DEFERRED
 relations:
   supersedes: []
   amends: []
