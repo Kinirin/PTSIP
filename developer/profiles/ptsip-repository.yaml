@@ -890,6 +890,8 @@ components:
       - VERIFICATION
     include:
       - "src/tests/ptsip/test_release_readiness_030.py"
+      - ".github/scripts/verify_release_contract.py"
+      - ".github/scripts/verify_distribution_contracts.py"
     purpose: release_identity_workflow_contract_and_distribution_readiness_verification
     shipped: false
     runtime_required: false
