@@ -89,13 +89,17 @@ for key, entry in catalog["contracts"].items():
     assert contract["runtime_enabled"]
 support = AuthorityCatalog(pathlib.Path(sys.argv[1]) / "not-a-repository")
 support.validate_current_corpus()
-_, route, contract = support.load_current_record("SFP-0023")
+_, route, contract = support.load_current_record("SFP-CNTR-0001")
 assert support.assets.source == "SHIPPED_PROJECTION"
 assert route["status"] == contract["policy"]["status"] == "ACTIVE"
 assert support.lifecycle_is_eligible(support.lifecycle_state(contract))
-_, route, legacy = support.load_current_record("SFP-0006")
-assert route["status"] == legacy["policy"]["status"] == "RETIRED"
-assert not support.lifecycle_is_eligible(support.lifecycle_state(legacy))
+from ptsip.governance.model import GovernanceAuthorityError
+try:
+    support.load_current_record("SFP-0006")
+except GovernanceAuthorityError as error:
+    assert error.code == "CURRENT_SUPPORT_POLICY_NOT_SELECTED"
+else:
+    raise AssertionError("retired migration source became current Support authority")
 assert all(not hasattr(vpms, name) for name in ("SelectionScope", "select_cases", "run_selected_cases"))
 from vpms.domain.snapshot import load_registry_snapshot
 from vpms.selection import resolve_selection

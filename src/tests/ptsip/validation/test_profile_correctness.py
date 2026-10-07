@@ -58,7 +58,7 @@ def test_explicit_profile_revision_must_match_tool_binding(tmp_path: Path) -> No
     (repo / "ptsip.yaml").write_text(_profile("895e12d27230af2bb99ad17a96e8df8ef41bc3e0"), encoding="utf-8")
     result = validate_profile(repo)
     assert not result.valid
-    assert any("[SPEC_BINDING_UNSUPPORTED]" in item for item in result.errors)
+    assert any("[SPEC_REFERENCE_UNRESOLVED]" in item for item in result.errors)
 
 
 def test_component_dependency_policy_references_declared_components(tmp_path: Path) -> None:

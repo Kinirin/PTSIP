@@ -280,7 +280,12 @@ jobs:
             if ($path -like 'ptsip/profiles/*') {
               $relativeProfilePath = $path.Substring('ptsip/profiles/'.Length)
               $sourcePaths += "src/ptsip/profiles/$relativeProfilePath"
-              $components += 'ptsip-public-profiles'
+              if ($path -like '*.py') {
+                $components += 'ptsip-core'
+              }
+              else {
+                $components += 'ptsip-public-profiles'
+              }
               continue
             }
             if ($path -like 'ptsip/evidence/*') {

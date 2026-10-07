@@ -133,7 +133,7 @@ def _v036(
 
 
 def test_default_target_semantics_use_current_pp_contract_not_spec_family() -> None:
-    assert default_target_semantics().draft_version == CURRENT_PP_TARGET
+    assert default_target_semantics().draft_version == "pp.1.02"
 
 
 def test_obligation_taxonomy_separates_required_removal_and_async(tmp_path: Path) -> None:

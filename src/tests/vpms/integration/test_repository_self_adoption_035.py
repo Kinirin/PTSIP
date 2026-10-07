@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import ast
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -20,7 +20,7 @@ from vpms.execution.adapters.command import CommandExecutor
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 SHARED_FORMULA_ID = "command.exit-zero"
-FULL_REPOSITORY_PYTEST_ARGV = (sys.executable, "-m", "pytest", "-q", "tests")
+FULL_REPOSITORY_PYTEST_ARGV = (sys.executable, "-m", "pytest", "-q", "src/tests/ptsip")
 
 _CASES = [
     {
@@ -30,7 +30,7 @@ _CASES = [
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.product.canonical-contracts",
         "policy": "distribution.contract-integrity",
-        "runner": "pytest.product.canonical-contracts",
+        "runner": "go.product.canonical-contracts",
     },
     {
         "id": "ptsip.product.package-contracts",
@@ -39,7 +39,7 @@ _CASES = [
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.product.package-contracts",
         "policy": "distribution.package-integrity",
-        "runner": "pytest.product.package-contracts",
+        "runner": "go.product.package-contracts",
     },
     {
         "id": "ptsip.toolchain.release-workflow",
@@ -48,7 +48,7 @@ _CASES = [
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.toolchain.release-workflow",
         "policy": "release.workflow-integrity",
-        "runner": "pytest.toolchain.release-workflow",
+        "runner": "go.toolchain.release-workflow",
     },
     {
         "id": "ptsip.toolchain.routine-ci",
@@ -57,28 +57,21 @@ _CASES = [
         "formula": SHARED_FORMULA_ID,
         "variables": "nodeid.toolchain.routine-ci",
         "policy": "ci.verification-boundary",
-        "runner": "pytest.toolchain.routine-ci",
+        "runner": "go.toolchain.routine-ci",
     },
 ]
 
 RUNNER_NODEIDS = {
-    "pytest.product.canonical-contracts": (
-        "tests/ptsip/test_release_readiness_030.py::"
-        "test_canonical_and_embedded_machine_readable_contracts_are_identical"
-    ),
-    "pytest.product.package-contracts": (
-        "tests/ptsip/test_release_readiness_030.py::"
-        "test_release_package_contains_bound_machine_readable_contracts"
-    ),
-    "pytest.toolchain.release-workflow": (
-        "tests/ptsip/test_release_readiness_030.py::"
-        "test_release_workflow_derives_tool_tag_from_package_version"
-    ),
-    "pytest.toolchain.routine-ci": (
-        "tests/ptsip/test_release_readiness_030.py::"
-        "test_routine_ci_supports_selective_modes_and_preserves_full_exact_sha"
-    ),
+    "go.product.canonical-contracts": "TestReleaseContractCanonicalAndEmbeddedAssetsAreIdentical",
+    "go.product.package-contracts": "TestReleaseDistributionUsesCurrentProjectProfileSchemaAndManifestBindings",
+    "go.toolchain.release-workflow": "TestReleaseIdentityDerivesVersionTagNoteAndExactSource",
+    "go.toolchain.routine-ci": "TestStaticAndReleaseVerificationAreNotPinnedToOneVersionBranch",
 }
+RUNNER_PACKAGES = {
+    runner: "./workflows" if runner == "go.toolchain.routine-ci" else "./release"
+    for runner in RUNNER_NODEIDS
+}
+
 
 
 def repository_registry() -> Registry:
@@ -100,7 +93,7 @@ def repository_registry() -> Registry:
 def repository_executors() -> dict[str, CommandExecutor]:
     return {
         runner_ref: CommandExecutor(
-            argv=(sys.executable, "-m", "pytest", "-q", nodeid),
+            argv=("go", "-C", "developer/tests", "test", "-tags", "grammar_subset,grammar_subset_python", "-count=1", "-run", f"^{nodeid}$", RUNNER_PACKAGES[runner_ref]),
             cwd=str(REPO_ROOT),
         )
         for runner_ref, nodeid in RUNNER_NODEIDS.items()
@@ -118,13 +111,11 @@ def _execute(registry, *, case_ids, executors):
 
 
 def _release_readiness_test_names() -> set[str]:
-    path = REPO_ROOT / "src" / "tests" / "ptsip" / "test_release_readiness_030.py"
-    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    roots = [REPO_ROOT / "developer/tests/release", REPO_ROOT / "developer/tests/workflows"]
+    assert all(root.is_dir() for root in roots)
     return {
-        node.name
-        for node in tree.body
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-        and node.name.startswith("test_")
+        name for root in roots for path in root.glob("*_test.go")
+        for name in re.findall(r"(?m)^func (Test\w+)\(", path.read_text(encoding="utf-8"))
     }
 
 
@@ -146,7 +137,7 @@ def _record_commands(monkeypatch: pytest.MonkeyPatch) -> list[tuple[str, ...]]:
 
 
 def _nodeids_from_calls(calls: list[tuple[str, ...]]) -> list[str]:
-    return [argv[-1] for argv in calls]
+    return [argv[argv.index("-run") + 1].strip("^$") for argv in calls]
 
 
 def test_repository_registry_registers_real_mixed_module_cases_by_purpose() -> None:
@@ -174,14 +165,12 @@ def test_repository_registry_registers_real_mixed_module_cases_by_purpose() -> N
         and "pytest" not in case.policy.ref
         for case in registry.cases
     )
-    assert {nodeid.split("::", 1)[0] for nodeid in RUNNER_NODEIDS.values()} == {
-        "tests/ptsip/test_release_readiness_030.py"
-    }
+    assert set(RUNNER_PACKAGES.values()) == {"./release", "./workflows"}
 
 
-def test_registered_pytest_nodeids_exist_in_real_repository_module() -> None:
+def test_registered_go_test_names_exist_in_owned_repository_packages() -> None:
     available = _release_readiness_test_names()
-    registered = {nodeid.split("::", 1)[1] for nodeid in RUNNER_NODEIDS.values()}
+    registered = set(RUNNER_NODEIDS.values())
 
     assert registered <= available
 
@@ -204,8 +193,8 @@ def test_product_scope_executes_only_real_product_cases(
     assert all(result.purpose is VerificationPurpose.PRODUCT for result in results)
     assert all(result.outcome is VerificationOutcome.PASS for result in results)
     assert _nodeids_from_calls(calls) == [
-        RUNNER_NODEIDS["pytest.product.canonical-contracts"],
-        RUNNER_NODEIDS["pytest.product.package-contracts"],
+        RUNNER_NODEIDS["go.product.canonical-contracts"],
+        RUNNER_NODEIDS["go.product.package-contracts"],
     ]
 
 
@@ -227,8 +216,8 @@ def test_toolchain_scope_executes_only_real_toolchain_cases(
     assert all(result.purpose is VerificationPurpose.TOOLCHAIN for result in results)
     assert all(result.outcome is VerificationOutcome.PASS for result in results)
     assert _nodeids_from_calls(calls) == [
-        RUNNER_NODEIDS["pytest.toolchain.release-workflow"],
-        RUNNER_NODEIDS["pytest.toolchain.routine-ci"],
+        RUNNER_NODEIDS["go.toolchain.release-workflow"],
+        RUNNER_NODEIDS["go.toolchain.routine-ci"],
     ]
 
 
@@ -250,13 +239,13 @@ def test_full_scope_executes_all_registered_cases_in_case_id_order(
         "ptsip.toolchain.routine-ci",
     ]
     assert _nodeids_from_calls(calls) == [
-        RUNNER_NODEIDS["pytest.product.canonical-contracts"],
-        RUNNER_NODEIDS["pytest.product.package-contracts"],
-        RUNNER_NODEIDS["pytest.toolchain.release-workflow"],
-        RUNNER_NODEIDS["pytest.toolchain.routine-ci"],
+        RUNNER_NODEIDS["go.product.canonical-contracts"],
+        RUNNER_NODEIDS["go.product.package-contracts"],
+        RUNNER_NODEIDS["go.toolchain.release-workflow"],
+        RUNNER_NODEIDS["go.toolchain.routine-ci"],
     ]
 
 
 def test_full_repository_regression_path_remains_explicit_and_separate() -> None:
-    assert FULL_REPOSITORY_PYTEST_ARGV[-2:] == ("-q", "tests")
-    assert all(nodeid != "tests" for nodeid in RUNNER_NODEIDS.values())
+    assert FULL_REPOSITORY_PYTEST_ARGV[-2:] == ("-q", "src/tests/ptsip")
+    assert all(nodeid != "src/tests/ptsip" for nodeid in RUNNER_NODEIDS.values())

@@ -294,7 +294,7 @@ def test_github_proposal_resolution_returns_terminal_local_receipt(
         "scope": "LOCAL_PROJECTION",
         "status": "PROPOSAL_APPROVED",
         "decision_id": decision_id,
-        "profile_path": "ptsip.yaml",
+        "profile_path": ".ptsip/profiles/main.ptsip.yaml",
         "applied_revision": _git(repo, "rev-parse", "HEAD").stdout.strip(),
     }
     assert "application_status" not in resolved["decision"]

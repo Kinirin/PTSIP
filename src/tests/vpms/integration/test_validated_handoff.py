@@ -46,10 +46,10 @@ def test_runtime_boundary_requires_active_registered_support_provider(monkeypatc
     def changed(self, identity):
         path, route, policy = original(self, identity)
         route, policy = copy.deepcopy(route), copy.deepcopy(policy)
-        if identity == "SFP-0023":
+        if identity == "SFP-CNTR-0001":
             if bad == "inactive_index": route["status"] = "DRAFT"
             if bad == "inactive_policy": policy["policy"]["status"] = "DRAFT"
-            if bad == "unregistered_provider": policy["authority_semantics"]["input"]["concrete_provider_binding"] = "unregistered:provider"
+            if bad == "unregistered_provider": policy["authority_semantics"]["unit_sfp_0023_9c400c5ae297"]["concrete_provider_binding"] = "unregistered:provider"
         return path, route, policy
     monkeypatch.setattr(AuthorityCatalog, "load_current_record", changed)
     with pytest.raises(PtsipMetadataError, match="not active|Unsupported PTSIP provider"):

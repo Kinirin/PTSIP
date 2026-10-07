@@ -18,6 +18,8 @@ from ptsip.repository.profile_convergence import discover_direct_profile_converg
 from ptsip.validation.profile import validate_profile
 
 
+pytestmark = pytest.mark.usefixtures("historical_pp101_runtime")
+
 def _payload() -> dict[str, object]:
     return {
         "ptsip": {

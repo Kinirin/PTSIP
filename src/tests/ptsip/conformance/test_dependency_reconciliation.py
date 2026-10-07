@@ -7,6 +7,7 @@ from ptsip.conformance import evaluate_conformance
 from ptsip.conformance_engine import evaluate_conformance as evaluate_engine_conformance
 from ptsip.constants import SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION
 from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.profiles.metadata import current_project_profile_header_yaml
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -27,13 +28,7 @@ def _fixture(repo: Path, import_line: str, requirement: str) -> None:
         encoding="utf-8",
     )
     (repo / "ptsip.yaml").write_text(
-        f"""ptsip:
-  version: "{CURRENT_PROJECT_PROFILE_VERSION}"
-  specification:
-    family: "{SPEC_VERSION}"
-    source: "{SPEC_SOURCE}"
-    revision: "{SPEC_REVISION}"
-responsibility_map:
+        f"""{current_project_profile_header_yaml()}responsibility_map:
   mode: explicit
 components:
   - id: product-app

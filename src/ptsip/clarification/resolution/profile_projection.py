@@ -277,7 +277,7 @@ def load_profile_text(text: str | None) -> dict[str, object] | None:
 def _local_profile_path(repository_root: Path, explicit: str | Path | None) -> Path:
     if explicit is not None:
         profile = Path(explicit).expanduser().resolve()
-        if not profile.parent.is_dir():
+        if not profile.parent.is_dir() and profile != canonical_new_profile_path(repository_root):
             raise FileNotFoundError(
                 f"PTSIP profile parent directory does not exist: {profile.parent}"
             )
@@ -327,14 +327,14 @@ def prepare_local_profile(
     repository_index_path: Path | None = None
     repository_index_content: str | None = None
     expected_repository_index_source: str | None = None
-    if profile_path is None and profile == canonical_new_profile_path(root):
+    if profile == canonical_new_profile_path(root):
         catalog_path = root / LOCAL_PROFILE_CATALOG.as_posix()
         expected_catalog_source = (
             catalog_path.read_text(encoding="utf-8-sig")
             if catalog_path.is_file()
             else None
         )
-        catalog_content = default_catalog_text()
+        catalog_content = expected_catalog_source or default_catalog_text()
 
         repository_index_path = root / REPOSITORY_INDEX.as_posix()
         expected_repository_index_source = (

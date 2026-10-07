@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 import yaml
 
 from ptsip.profiles.compatibility import V034_REVISION, V036_REVISION
@@ -11,6 +13,8 @@ from ptsip.repository.profile_convergence import (
     validate_direct_convergence_snapshot,
 )
 
+
+pytestmark = pytest.mark.usefixtures("historical_pp101_runtime")
 
 def _write_profile(
     root: Path,

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 import yaml
 
 from ptsip.evidence.contract import (
@@ -23,6 +25,8 @@ from ptsip.profiles.compatibility import V034_REVISION, V036_REVISION
 from ptsip.repository.profile_convergence import discover_direct_profile_convergence
 from ptsip.repository.snapshot import capture_snapshot
 
+
+pytestmark = pytest.mark.usefixtures("historical_pp101_runtime")
 
 def _profile_034() -> dict[str, object]:
     return {

@@ -98,10 +98,10 @@ def metadata_from_effective_map(handoff: object) -> PtsipMetadataSnapshot:
     from ptsip.validation.handoff import EffectiveMapValidationError, _effective_map_data
 
     support = AuthorityCatalog(Path(__file__).resolve().parents[3])
-    _, route, policy = support.load_current_record("SFP-0023")
+    _, route, policy = support.load_current_record("SFP-CNTR-0001")
     if route["status"] != "ACTIVE" or policy["policy"]["status"] != "ACTIVE":
         raise PtsipMetadataError("Read-only PTSIP integration contract is not active.")
-    if policy["authority_semantics"]["input"]["concrete_provider_binding"] != "ptsip.validation.handoff:load_validated_effective_map":
+    if policy["authority_semantics"]["unit_sfp_0023_9c400c5ae297"]["concrete_provider_binding"] != "ptsip.validation.handoff:load_validated_effective_map":
         raise PtsipMetadataError("Unsupported PTSIP provider binding.")
     try:
         payload = _effective_map_data(handoff).payload

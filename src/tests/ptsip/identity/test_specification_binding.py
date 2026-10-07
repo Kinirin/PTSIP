@@ -5,6 +5,7 @@ import pytest
 from ptsip.profiles.identity import (
     PP_1_01,
     ProjectProfileOperation,
+    ProjectProfileVersion,
     require_current_project_profile_support,
 )
 from ptsip.specification_binding import (
@@ -124,7 +125,7 @@ def test_unknown_revision_fails_closed_without_historical_migration_lookup() -> 
 
 def test_pp_and_specification_capabilities_are_independent_authorities() -> None:
     pp_support = require_current_project_profile_support(
-        PP_1_01,
+        ProjectProfileVersion(1, 2),
         ProjectProfileOperation.VALIDATE,
     )
     specification_support = require_current_specification_support(
@@ -132,7 +133,7 @@ def test_pp_and_specification_capabilities_are_independent_authorities() -> None
         SpecificationOperation.VALIDATE,
     )
 
-    assert pp_support.contract == PP_1_01
+    assert pp_support.contract == ProjectProfileVersion(1, 2)
     assert specification_support.binding == SPECIFICATION_037
     assert current_target_specification_binding() == SPECIFICATION_037
 

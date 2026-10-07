@@ -5,6 +5,8 @@ from pathlib import Path
 
 import yaml
 
+from ptsip.profiles.metadata import current_project_profile_ptsip_metadata
+
 from ptsip.specification_binding import (
     SPECIFICATION_036_FAMILY,
     SPECIFICATION_036_REVISION,
@@ -25,14 +27,7 @@ def _write_current_profile(root: Path, *, revision: str = SPECIFICATION_037.revi
     (root / "src").mkdir(exist_ok=True)
     (root / "src" / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
     profile = {
-        "ptsip": {
-            "version": "pp.1.01",
-            "specification": {
-                "family": SPECIFICATION_037.family,
-                "source": SPECIFICATION_037.source,
-                "revision": revision,
-            },
-        },
+        "ptsip": current_project_profile_ptsip_metadata(),
         "responsibility_map": {"mode": "explicit"},
         "components": [
             {
@@ -51,6 +46,7 @@ def _write_current_profile(root: Path, *, revision: str = SPECIFICATION_037.revi
             "independent_build_resolution": "required",
         },
     }
+    profile["ptsip"]["specification"]["revision"] = revision
     path = root / "ptsip.yaml"
     path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8")
     subprocess.run(["git", "add", "src/app.py", "ptsip.yaml"], cwd=root, check=True)
@@ -82,20 +78,20 @@ def test_current_profile_unknown_exact_revision_fails_capability_closed(tmp_path
     result = validate_profile(tmp_path, profile)
 
     assert result.valid is False
-    assert any("[SPEC_BINDING_UNSUPPORTED]" in error for error in result.errors)
+    assert any("[SPEC_REFERENCE_UNRESOLVED]" in error for error in result.errors)
 
 
-def test_current_pp_schema_requires_explicit_family(tmp_path: Path) -> None:
+def test_current_pp_schema_rejects_serialized_family(tmp_path: Path) -> None:
     _initialize_repository(tmp_path)
     profile = _write_current_profile(tmp_path)
     payload = yaml.safe_load(profile.read_text(encoding="utf-8"))
-    del payload["ptsip"]["specification"]["family"]
+    payload["ptsip"]["specification"]["family"] = SPECIFICATION_037.family
     profile.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
 
     result = validate_profile(tmp_path, profile)
 
     assert result.valid is False
-    assert any("'family' is a required property" in error for error in result.errors)
+    assert any("Additional properties are not allowed" in error for error in result.errors)
 
 
 def test_historical_specification_validation_does_not_require_migration_bridge() -> None:

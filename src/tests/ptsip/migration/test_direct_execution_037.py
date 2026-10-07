@@ -3,6 +3,8 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
+import pytest
+
 import yaml
 
 from ptsip.evidence.contract import (
@@ -45,6 +47,8 @@ from ptsip.repository.snapshot import capture_snapshot
 
 SPEC_SOURCE = "https://github.com/Kinirin/PTSIP"
 
+
+pytestmark = pytest.mark.usefixtures("historical_pp101_runtime")
 
 def _git(root: Path, *args: str) -> None:
     subprocess.run(

@@ -58,8 +58,8 @@ def test_current_target_is_pp_identity_not_tool_draft_identity() -> None:
         CURRENT_PROJECT_PROFILE_VERSION,
         require_canonical=True,
     )
-    assert target.temporary_filename == "ptsip_pp1.01.yaml"
-    assert target.schema_resource == "ptsip-profile-pp-1.01.schema.json"
+    assert target.temporary_filename == "ptsip_pp1.02.yaml"
+    assert target.schema_resource == "ptsip-profile-pp-1.02.schema.json"
 
 
 def test_unregistered_old_source_fails_closed_instead_of_inferring_a_route() -> None:

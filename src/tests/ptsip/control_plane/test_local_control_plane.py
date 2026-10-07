@@ -121,8 +121,10 @@ def test_gate_and_resolve_use_local_control_plane_without_server_or_github_origi
     assert stored_answer["classification"] == "DEVELOPMENT_TOOLING"
     assert "lifecycle_owner" not in stored_answer
 
-    profile = repo / "ptsip.yaml"
+    profile = repo / ".ptsip" / "profiles" / "main.ptsip.yaml"
     assert profile.is_file()
+    assert (repo / ".ptsip" / "index.json").is_file()
+    assert (repo / ".ptsip" / "profiles" / "index.json").is_file()
     document = yaml.safe_load(profile.read_text(encoding="utf-8"))
     assert document["responsibility_map"] == {"mode": "explicit"}
     component = next(item for item in document["components"] if item["id"] == "tools")
