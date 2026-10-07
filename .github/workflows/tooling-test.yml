@@ -448,14 +448,18 @@ jobs:
           go-version-file: developer/automation/go.mod
           cache-dependency-path: developer/automation/go.sum
 
-      - name: Verify registry-first PRA Python plane
+      - name: Verify registry-first PRA lifecycle plane
         shell: pwsh
         env:
           PYTHONPATH: ".:src"
         run: |
-          python -m pytest -q developer/tests/test_policy_responsibility_gate.py src/tests/ptsip/policy_responsibility_analysis/test_mode_registration.py
+          go -C developer/tests test ./policy/lifecycle
           if ($LASTEXITCODE -ne 0) {
-            throw "PRA registry Python tests failed."
+            throw "Native Go policy responsibility lifecycle tests failed."
+          }
+          python -m pytest -q src/tests/ptsip/policy_responsibility_analysis/test_mode_registration.py
+          if ($LASTEXITCODE -ne 0) {
+            throw "PRA Test Mode registration regression failed."
           }
           go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-responsibility validate --analysis-id PRA-0014
           if ($LASTEXITCODE -ne 0) {

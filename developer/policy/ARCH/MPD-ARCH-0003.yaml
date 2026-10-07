@@ -3,9 +3,9 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0003
-  version: '2.0'
+  version: '0.0'
   title: Developer Verification responsibility-domain package boundary
-  status: ACTIVE
+  status: DRAFT
 authority_subject:
   id: DEV_VERIFICATION_RESPONSIBILITY_DOMAIN_STRUCTURE
   statement: Developer Verification 구현을 독립적인 responsibility domain 경계로 분리하고 각 검증 구현 단위의 소유 책임이 package 경로에서 기계적으로 식별되도록 한다.
@@ -71,16 +71,3 @@ relations:
   depends_on:
   - policy: MPD-ASSURE-0001
     scope: VERIFICATION_COVERAGE_AND_ADMISSIBILITY
-transition:
-  target_status: ACTIVE
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: PROJECT_OWNER_DEVELOPER_VERIFICATION_DOMAIN_SEPARATION_TEMPORARY_APPROVAL
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261007-VERIFICATION-DOMAIN-ARCH-0003-TEMPORARY.yaml
-    next_action:
-      action: RESOLVE_SUBORDINATE_VERIFICATION_DOMAIN_INVENTORY
-      execution: OWNER_DECISION_REQUIRED
-      completion_check: NO_VERIFICATION_DOMAIN_INVENTORY_IS_CREATED_WITHOUT_EXPLICIT_OWNER_DECISION
