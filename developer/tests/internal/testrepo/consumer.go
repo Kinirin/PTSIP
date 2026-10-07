@@ -34,7 +34,7 @@ func ConsumerCLI(t *testing.T, args ...string) Object {
 			command.Env = append(command.Env, value)
 		}
 	}
-	command.Env = append(command.Env, "PYTHONPATH="+root+string(os.PathListSeparator)+filepath.Join(root, "src"), "PYTHONUTF8=1")
+	command.Env = append(command.Env, "PYTHONPATH="+root+string(os.PathListSeparator)+filepath.Join(root, "src"), "PYTHONUTF8=1", "PYTHONDONTWRITEBYTECODE=1")
 	output, err := command.CombinedOutput()
 	if err != nil {
 		t.Fatalf("consumer CLI: %v\n%s", err, output)

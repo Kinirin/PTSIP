@@ -152,9 +152,11 @@ jobs:
             throw "Unable to resolve the canonical WU-02 control branch."
           }
 
-          $required = ($env:PTSIP_EXECUTION_BRANCH -eq $controlBranch).ToString().ToLowerInvariant()
+          $laneRoot = "developer/planning/0.4.0/WU-02"
+          $laneMaterialized = Test-Path -LiteralPath $laneRoot
+          $required = (($env:PTSIP_EXECUTION_BRANCH -eq $controlBranch) -and $laneMaterialized).ToString().ToLowerInvariant()
           "required=$required" >> $env:GITHUB_OUTPUT
-          Write-Host "WU-02 lane validation required: $required (execution=$env:PTSIP_EXECUTION_BRANCH control=$controlBranch)"
+          Write-Host "WU-02 lane validation required: $required (execution=$env:PTSIP_EXECUTION_BRANCH control=$controlBranch materialized=$laneMaterialized)"
 
       - name: Validate WU-02 control branch from explicit workflow context
         if: ${{ github.event_name == 'push' && steps.wu02-route.outputs.required == 'true' }}
