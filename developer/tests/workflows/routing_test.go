@@ -91,3 +91,28 @@ func TestRepositoryEntryPointsShareNativeInstallerAndDoNotStageUserFiles(t *test
 		t.Fatal("pre-commit wrapper changed its native delegation or staging boundary")
 	}
 }
+
+func TestContextMigrationAndDeveloperTestModeUseRetiredGoTestSurface(t *testing.T) {
+	text := workflow(t, "tooling-test.yml")
+	if strings.Contains(text, "developer/tests/test_agent_context_migration.py") || !strings.Contains(text, "-run '^TestAgent(Profile|OperationReferences|ContextNative)' ./internal/machine") || !strings.Contains(text, "src/tests/ptsip/test_modes/test_agent_context_routing.py") {
+		t.Fatal("bounded context migration does not invoke the preserved native and routing regressions")
+	}
+	raw, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/test_modes.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var registry map[string]any
+	if err := yaml.Unmarshal(raw, &registry); err != nil {
+		t.Fatal(err)
+	}
+	for _, raw := range registry["modes"].([]any) {
+		mode := raw.(map[string]any)
+		execution := mode["execution"].(map[string]any)
+		targets, _ := execution["pytest"].([]any)
+		for _, target := range targets {
+			if strings.HasPrefix(target.(string), "developer/tests") {
+				t.Fatal("a Go-only Developer test module was selected as pytest input", mode["id"], target)
+			}
+		}
+	}
+}

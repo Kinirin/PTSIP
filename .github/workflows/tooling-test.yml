@@ -183,10 +183,16 @@ jobs:
           python -m pytest -q `
             src/tests/agent_contracts/test_contract_plane.py `
             src/tests/agent_contracts/test_resolver.py `
-            developer/tests/test_agent_context_migration.py 2>&1 |
+            src/tests/ptsip/test_modes/test_agent_context_routing.py 2>&1 |
             Tee-Object -FilePath $log -Append
           if ($LASTEXITCODE -ne 0) {
             throw "Agent context migration focused tests failed."
+          }
+
+          go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 -run '^TestAgent(Profile|OperationReferences|ContextNative)' ./internal/machine 2>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            throw "Native Agent context migration regression failed."
           }
 
       - name: Upload agent context migration verification log
