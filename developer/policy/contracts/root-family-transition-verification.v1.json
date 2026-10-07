@@ -46,36 +46,19 @@
     "EXACT_CLASS_FAMILY_ID_PATH",
     "ARCHIVED_SOURCE_BYTES_AND_RECORD_DIGEST",
     "COMPLETE_UNIQUE_UNIT_COVERAGE",
-    "SOURCE_POINTER_VALUE_PRESERVATION",
-    "SOURCE_LIFECYCLE_STATE_PRESERVATION",
-    "DEFINITION_ONLY_REMAINS_DRAFT",
     "FOURTEEN_FAMILIES_PER_PLANE",
     "DEVELOPER_RESOLVER_SELECTS_ROOT_AUTHORITY",
     "SOURCE_INTERFACE_DECLARES_CANONICAL_OWNERS",
     "SUPPORT_HAS_OWN_SUBJECTS_AND_CONTRACT_ROLES",
     "PYTHON_IMPLEMENTATION_INTERPRETS_CONTRACT_ONLY",
-    "GO_EXECUTION_REGISTERED_WITH_EXISTING_REGRESSION"
+    "GO_EXECUTION_REGISTERED_WITH_EXISTING_REGRESSION",
+    "CURRENT_ROOT_SCHEMA_LIFECYCLE_AND_KERNEL_VALID",
+    "HISTORICAL_ARCHIVE_AND_CURRENT_AUTHORITY_INDEPENDENT"
   ],
   "fail_closed_cases": [
     {
       "id": "registry_missing",
       "expected_error": "ROOT_MIGRATION_ADMITTED_REGISTRY_MISSING"
-    },
-    {
-      "id": "owner_missing",
-      "expected_error": "FileNotFoundError"
-    },
-    {
-      "id": "foreign_class",
-      "expected_error": "ROOT_MIGRATION_OWNER_IDENTITY_OR_STATE_MISMATCH"
-    },
-    {
-      "id": "source_state_changed",
-      "expected_error": "ROOT_MIGRATION_OWNER_IDENTITY_OR_STATE_MISMATCH"
-    },
-    {
-      "id": "unit_changed",
-      "expected_error": "ROOT_MIGRATION_FROZEN_INTERFACE_CHANGED"
     },
     {
       "id": "duplicate_pointer",
@@ -175,5 +158,21 @@
       ],
       "expected_mutation": false
     }
+  ],
+  "verification_model": {
+    "current_root_authority": "CANONICAL_CLASS_LOCAL_CATALOG_SCHEMA_AND_LIFECYCLE",
+    "migration_registry_role": "HISTORICAL_MATERIALIZATION_AUDIT_ONLY",
+    "current_root_reconstruction_required": false,
+    "historical_source_status_constrains_current_status": false,
+    "historical_unit_presence_constrains_current_rules": false,
+    "completed_transition_history": "HISTORICAL_EVIDENCE_NOT_CURRENT_RECONSTRUCTION_OBLIGATION"
+  },
+  "current_root_fail_closed_cases": [
+    "MISSING_CANONICAL_OWNER",
+    "INDEX_STATUS_MISMATCH",
+    "FOREIGN_POLICY_CLASS",
+    "INVALID_CURRENT_SCHEMA",
+    "INVALID_LIFECYCLE_VERSION",
+    "KERNEL_MISMATCH"
   ]
 }

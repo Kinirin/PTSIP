@@ -56,7 +56,7 @@ func TestDiscoveryPreservesReleaseSourceAsAuditOnlyWithoutArchivedBodies(t *test
 	}
 }
 
-func TestDiscoveryRejectsMigrationSourceMembershipAndMetadataDrift(t *testing.T) {
+func TestHistoricalDiscoveryIsIndependentFromCurrentRootCorpus(t *testing.T) {
 	for _, defect := range []string{"missing_source", "changed_status", "changed_path", "unknown_source", "missing_registry_ref", "unregistered_source", "inconsistent_header"} {
 		t.Run(defect, func(t *testing.T) {
 			repo := discoveryFixture(t)
@@ -121,7 +121,21 @@ func TestDiscoveryRejectsMigrationSourceMembershipAndMetadataDrift(t *testing.T)
 			}
 			testrepo.Write(t, repo, lifecycle.PolicyIndex, index)
 			_, err = lifecycle.LoadConsistentPolicyCorpus(repo)
-			lifecycleCode(t, err, "MIGRATION_SOURCE_CATALOG_MISMATCH")
+			switch defect {
+			case "missing_source", "unknown_source":
+				lifecycleCode(t, err, "SUBJECT_REGISTRY_MISMATCH")
+			case "changed_path":
+				lifecycleCode(t, err, "MIGRATION_SOURCE_CATALOG_MISMATCH")
+			default:
+				if err != nil {
+					t.Fatal("historical evidence constrained current Root corpus", err)
+				}
+			}
+			graph, err := repo.Read("developer/policy/registries/root-family-migration.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			lifecycleCode(t, lifecycle.CheckMigrationSourceCatalog(index, graph), "MIGRATION_SOURCE_CATALOG_MISMATCH")
 		})
 	}
 }

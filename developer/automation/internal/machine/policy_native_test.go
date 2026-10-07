@@ -108,12 +108,12 @@ func policyTestMaterialization(t *testing.T, r *Repository) (string, string, str
 		t.Fatal(err)
 	}
 	registry["records"] = append(List(registry["records"]), Object{
-		"analysis_id": analysisID,
-		"analysis_ref": analysisRef,
-		"subject_type": "POLICY",
-		"subject_id": id,
+		"analysis_id":   analysisID,
+		"analysis_ref":  analysisRef,
+		"subject_type":  "POLICY",
+		"subject_id":    id,
 		"analysis_kind": "TEST_NATIVE_MATERIALIZATION",
-		"recorded_at": "2026-10-06",
+		"recorded_at":   "2026-10-06",
 	})
 	policyTestWrite(t, r, policyAnalysisRegistry, registry)
 	policyTestWrite(t, r, approvalRef, policyTestApproval(id))
@@ -131,7 +131,6 @@ func policyTestMaterialization(t *testing.T, r *Repository) (string, string, str
 	delete(template, "transition")
 	return id, approvalRef, analysisID, template
 }
-
 
 func TestPolicyAnalysisCommandAdmissionUsesRegistryIdentity(t *testing.T) {
 	r := policyTestRepo(t)
@@ -383,28 +382,25 @@ func TestPolicyTransitionDependencyValidation(t *testing.T) {
 		})
 	}
 }
-func TestPolicyMigrationDirectOwnershipAccounting(t *testing.T) {
+func TestCurrentPolicyValidationDoesNotRequireHistoricalUnitAccounting(t *testing.T) {
 	r := policyTestRepo(t)
-	state, err := r.LoadConsistentPolicyCorpus()
+	if _, err := r.ValidateCurrentRootContracts(DeveloperClass); err != nil {
+		t.Fatal(err)
+	}
+	current, err := r.Read("developer/policy/INFO/MPD-INFO-0003.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if errors := r.policyValidateMigrationUnits("developer/policy", DeveloperClass, state.Records); len(errors) > 0 {
-		t.Fatal(errors)
+	if Map(current["policy"])["status"] != "APPROVED" {
+		t.Fatal("source DRAFT still constrains current approval")
 	}
-	graph, err := r.Read("developer/policy/registries/root-family-migration.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	first := Map(List(Map(List(graph["sources"])[0])["units"])[0])
-	id, section := Text(first["policy_id"]), Text(first["section"])
-	tampered := policyClone(state.Records[id])
-	delete(Map(tampered["rules"]), section)
-	state.Records[id] = tampered
-	if errors := r.policyValidateMigrationUnits("developer/policy", DeveloperClass, state.Records); len(errors) == 0 {
-		t.Fatal("missing migrated responsibility admitted")
+	delete(current, "authority_subject")
+	policyTestWrite(t, r, "developer/policy/INFO/MPD-INFO-0003.yaml", current)
+	if _, err := r.ValidateCurrentRootContracts(DeveloperClass); err == nil {
+		t.Fatal("invalid current schema admitted")
 	}
 }
+
 func TestPolicyPlanConsistencyNativeRegistry(t *testing.T) {
 	r := policyTestRepo(t)
 	payload, err := r.Read(BindingRegistryPath)

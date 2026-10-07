@@ -8,8 +8,8 @@ policy:
   version: '1.0'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
-  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic
-    source 및 projection의 구분을 소유한다.
+  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의
+    구분을 소유한다.
 exclusive_kernel:
 - DEV_CANONICAL_INFORMATION_AND_IDENTITY
 - DEV_SOURCE_PROJECTION_SEMANTICS
@@ -17,14 +17,11 @@ rules:
   family_definition:
     kernel_definitions:
     - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
-      statement: 개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은
-        GOV가 소유한다.
+      statement: 개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은 GOV가 소유한다.
       non_substitutability: GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다.
     - id: DEV_SOURCE_PROJECTION_SEMANTICS
-      statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가
-        될 수 없는 조건을 정한다.
-      non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지
-        못한다.
+      statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가 될 수 없는 조건을 정한다.
+      non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지 못한다.
     source_scope:
     - MPD-0016
     - MPD-VERI-0001
@@ -57,11 +54,11 @@ transition:
   state: PENDING
   requirements:
   - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    type: CURRENT_ROOT_CONTRACT_VERIFICATION
     state: OPEN
     refs:
     - developer/policy/approvals/MPA-20261006-ROOT-INFO-0002-APPROVED.yaml
     next_action:
-      action: VERIFY_SOURCE_PROJECTION
+      action: VERIFY_CURRENT_ROOT_CONTRACT
       execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID

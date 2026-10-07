@@ -20,15 +20,13 @@ authority_semantics:
   family_definition:
     kernel_definitions:
     - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped
-        contract로 명시한다.
-      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이
-        지원되는 계약을 만들 수 없다.
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다.
     - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
-      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다.
-        미등록 alias나 capability는 실행 계약이 아니다.
-      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime
-        persistence를 활성 지원 계약으로 바꾸지 못한다.
+      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는
+        실행 계약이 아니다.
+      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원
+        계약으로 바꾸지 못한다.
     source_scope: []
   unit_root_family_projection_module:
     module_ref: registries/root-family-projection.module.json
@@ -39,8 +37,10 @@ authority_semantics:
     semantics_must_be_explicit: true
     normative_program_language: PTSIP_JSON_PROGRAM_V1
     developer_authority_inheritance: FORBIDDEN
-    module_sha256: c2b573ca4a4120796d6ed7d9e262727b0193ccb6b998fc7a590817e359234403
+    module_sha256: 77ddfc1ab6ebc3b66e1864fe81f3dc389382fd7caa553bf971baee793d5d9f2c
     module_digest_format: SHA256_UTF8_LF
+    current_root_reconstruction: FORBIDDEN
+    usage: MIGRATION_HISTORY_AUDIT_ONLY
 relations:
   supersedes: []
   amends: []

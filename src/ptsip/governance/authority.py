@@ -95,13 +95,6 @@ class AuthorityCatalog:
 
     def _load_yaml(self, category: str, relative: str) -> dict[str, object]:
         path = resolve_support_asset(self.assets, category, relative)
-        if category == "policy" and relative != self.INDEX:
-            try:
-                policy_root = resolve_support_asset(self.assets, "policy", self.INDEX).parent
-                registry = migration_registry(policy_root, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json", copy_result=False)
-                return read_policy(policy_root, relative, "PTSIP_SUPPORT_FEATURE", registry=registry, module_path=self.assets.registries / "root-family-projection.module.json")
-            except (OSError, ValueError, KeyError) as exc:
-                raise GovernanceAuthorityError("ROOT_FAMILY_PROJECTION_INVALID", str(exc), relative) from exc
         if not path.is_file():
             raise GovernanceAuthorityError("GOVERNANCE_ASSET_MISSING", f"missing support governance asset: {relative}", relative)
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -139,11 +132,18 @@ class AuthorityCatalog:
         if not isinstance(policies, list):
             raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy index policies must be a list.", policies)
         routes: dict[str, object] = {}
+        seen: set[str] = set()
         for item in policies:
             route = _mapping(item, code="SUPPORT_POLICY_INDEX_INVALID", label="support policy route")
             policy_id = route.get("id")
-            if not isinstance(policy_id, str) or policy_id in routes:
+            if not isinstance(policy_id, str) or policy_id in seen:
                 raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy ids must be unique strings.", policy_id)
+            seen.add(policy_id)
+            if route.get("authority_role") == "MIGRATION_SOURCE":
+                continue
+            pattern = self.root_family_policy_schema["properties"]["policy"]["properties"]["id"]["pattern"]
+            if re.fullmatch(pattern, policy_id) is None or route.get("path") != f"{policy_id.split('-')[1]}/{policy_id}.yaml":
+                raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "current authority must be an exactly registered Root policy.", route)
             routes[policy_id] = route
         return routes
 
@@ -154,14 +154,21 @@ class AuthorityCatalog:
             raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy route requires a path.", route)
         record = self._load_yaml("policy", path)
         source_ref = f"src/policy/{path}"
+        self._validate_current_selection(policy_id, source_ref, route, record)
+        Draft202012Validator(self.root_family_policy_schema).validate(record)
+        if record.get("responsibility_family") != policy_id.split("-")[1]:
+            raise GovernanceAuthorityError("SUPPORT_ROOT_FAMILY_METADATA_MISMATCH", "current Root family differs from its admitted identity.", policy_id)
+        definition = record["authority_semantics"].get("family_definition", {})
+        kernels = [item.get("id") for item in definition.get("kernel_definitions", [])]
+        if kernels != record["exclusive_kernel"]:
+            raise GovernanceAuthorityError("SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH", "current Root kernel declaration differs from its definition.", policy_id)
         return source_ref, route, record
 
     def canonical_sources_for_policy(self, policy_id: str) -> list[dict[str, str]]:
-        registry = migration_registry(self.assets.policy, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json")
-        source = source_route(registry, policy_id=policy_id)
-        if source is None:
-            return []
-        return [{"policy_id": unit["policy_id"], "path": f"src/policy/{unit['policy_path']}", "section": unit["section"]} for unit in source["units"]]
+        # Current Root records are their own canonical sources. Migration
+        # provenance is available only through the explicit history audit.
+        self.load_current_record(policy_id)
+        return []
 
     def iter_current_records(self) -> tuple[tuple[str, str, Mapping[str, object], Mapping[str, object]], ...]:
         items = []
@@ -172,9 +179,7 @@ class AuthorityCatalog:
 
     def resolve_family(self, family: str) -> tuple[tuple[str, Mapping[str, object], Mapping[str, object]], ...]:
         """Resolve only this shipped Support plane's explicitly materialized Family."""
-        policy_root = resolve_support_asset(self.assets, "policy", self.INDEX).parent
-        registry = migration_registry(policy_root, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json")
-        rows = [{"policy_id": r["id"]} for r in self.index["policies"] if r["id"].startswith(f"SFP-{family}-") and r["path"] == f"{family}/{r['id']}.yaml"]
+        rows = [{"policy_id": r["id"]} for r in self.current_routes.values() if r["id"].startswith(f"SFP-{family}-") and r["path"] == f"{family}/{r['id']}.yaml"]
         if not rows:
             raise GovernanceAuthorityError("SUPPORT_ROOT_FAMILY_UNRESOLVED", "no exact Support Family materialization is registered", family)
         result = []
@@ -289,10 +294,6 @@ class AuthorityCatalog:
             raise GovernanceAuthorityError("UNSUPPORTED_REPOSITORY_IDENTITY_SCHEME", "repository identity scheme is not supported.", repository.get("scheme"))
 
     def validate_current_corpus(self) -> tuple[str, ...]:
-        try:
-            validate_migration(resolve_support_asset(self.assets, "policy", self.INDEX).parent, "PTSIP_SUPPORT_FEATURE", registry_path=self.assets.registries / "root-family-migration.json", schema_path=self.assets.schemas / "root-family-migration.schema.json")
-        except (OSError, ValueError, KeyError, ValidationError) as exc:
-            raise GovernanceAuthorityError("ROOT_FAMILY_MIGRATION_INVALID", str(exc), self.INDEX) from exc
         validated = []
         for policy_id, source_ref, route, record in self.iter_current_records():
             self._validate_current_selection(policy_id, source_ref, route, record)
@@ -548,7 +549,7 @@ def projection_module(policy_root: Path, policy_class: str, *, module_path: Path
 
 
 def project_source(registry: dict, source: dict, read_record: Callable[[str], dict], *, module: dict) -> dict:
-    """Interpret the registered neutral program; no language-specific Family rules."""
+    """Interpret the class-local historical audit program; no current Root reads."""
     env = {"registry": registry, "source": source, "parameters": module["parameters"]}
     records: dict[str, dict] = {}
 
@@ -609,19 +610,21 @@ def project_source(registry: dict, source: dict, read_record: Callable[[str], di
     return result
 
 def read_policy(policy_root: Path, relative: str, policy_class: str, *, registry: dict | None = None, module_path: Path | None = None) -> dict:
-    registry = migration_registry(policy_root, policy_class, copy_result=False) if registry is None else registry
-    if registry and registry.get("policy_class") != policy_class:
-        raise ValueError("ROOT_MIGRATION_CLASS_OR_VERSION_MISMATCH")
-    source = source_route(registry, path=relative)
+    index = load_yaml_mapping(policy_root / "index.yaml")
+    route_path = relative.removeprefix("developer/policy/")
+    matches = [row for row in index["policies"] if row["path"].removeprefix("developer/policy/") == route_path]
+    if len(matches) != 1 or matches[0].get("authority_role") == "MIGRATION_SOURCE":
+        raise ValueError("ROOT_CURRENT_POLICY_NOT_ADMITTED")
+    record = _parse_yaml(safe_policy_path(policy_root, route_path).read_bytes())
+    route = matches[0]
+    if record.get("policy_class") != policy_class or record.get("policy", {}).get("id") != route["id"] or record["policy"].get("status") != route["status"]:
+        raise ValueError("ROOT_CURRENT_METADATA_MISMATCH")
+    return deepcopy(record)
 
-    def raw(path: str) -> dict:
-        return _parse_yaml(safe_policy_path(policy_root, path).read_bytes())
-
-    return project_source(registry, source, raw, module=projection_module(policy_root, policy_class, module_path=module_path)) if source else deepcopy(raw(relative))
 
 
 def validate_migration(policy_root: Path, policy_class: str, *, registry_path: Path | None = None, schema_path: Path | None = None) -> tuple[str, ...]:
-    """Verify admission, immutable sources, complete unit coverage and class isolation."""
+    """Audit immutable archived sources and historical routing coverage only."""
     from jsonschema import Draft202012Validator
 
     registry = migration_registry(policy_root, policy_class, registry_path=registry_path)
@@ -655,12 +658,35 @@ def validate_migration(policy_root: Path, policy_class: str, *, registry_path: P
             raise ValueError("ROOT_MIGRATION_ARCHIVED_SOURCE_CHANGED")
         if record_digest(raw(source["archive_path"])) != source["record_sha256"]:
             raise ValueError("ROOT_MIGRATION_SOURCE_RECORD_CHANGED")
-        project_source(registry, source, raw, module=module)
+        archived = project_source(registry, source, raw, module=module)
+        reconstructed = deepcopy(source["header"])
+        pointers: list[str] = []
         for unit in source["units"]:
+            relative = unit["policy_path"]
+            safe_policy_path(policy_root, relative)
+            if relative != f"{unit['family']}/{unit['policy_id']}.yaml":
+                raise ValueError("ROOT_MIGRATION_OWNER_ROUTE_MISMATCH")
+            pointer = unit["source_pointer"]
+            if any(pointer == previous or pointer.startswith(previous + "/") or previous.startswith(pointer + "/") for previous in pointers):
+                raise ValueError("ROOT_MIGRATION_OVERLAPPING_POINTER")
+            pointers.append(pointer)
+            tokens = [token.replace("~1", "/").replace("~0", "~") for token in pointer[1:].split("/")]
+            value = archived
+            try:
+                for token in tokens:
+                    value = value[token]
+            except (KeyError, TypeError) as exc:
+                raise ValueError("ROOT_MIGRATION_ARCHIVED_POINTER_MISSING") from exc
+            target = reconstructed
+            for token in tokens[:-1]:
+                target = target.setdefault(token, {})
+            target[tokens[-1]] = deepcopy(value)
             key = (unit["policy_id"], unit["section"])
             if key in used:
                 raise ValueError("ROOT_MIGRATION_UNIT_MULTIPLE_OWNERS")
             used.add(key)
+        if record_digest(reconstructed) != source["record_sha256"]:
+            raise ValueError("ROOT_MIGRATION_HISTORICAL_COVERAGE_MISMATCH")
         validated.append(source["source_policy_id"])
     families = set()
     declared: set[tuple[str, str]] = set()
@@ -668,23 +694,15 @@ def validate_migration(policy_root: Path, policy_class: str, *, registry_path: P
     if len(set(materialized_ids)) != len(materialized_ids):
         raise ValueError("ROOT_MIGRATION_DUPLICATE_MATERIALIZATION")
     source_ids = {s["source_policy_id"] for s in registry["sources"]}
-    selected_ids = {pid for pid, entry in entries.items() if entry.get("authority_role") in {"MIGRATION_SOURCE", "CANONICAL_AUTHORITY"}}
-    if selected_ids != source_ids | set(materialized_ids):
-        raise ValueError("ROOT_MIGRATION_CATALOG_COVERAGE_MISMATCH")
     for materialization in registry["materializations"]:
         pid = materialization["policy_id"]
-        entry = entries[pid]
-        indexed = entry["path"].removeprefix("developer/policy/") if developer else entry["path"]
-        record = raw(materialization["path"])
-        if indexed != materialization["path"] or entry.get("authority_role") != "CANONICAL_AUTHORITY" or entry["status"] != materialization["source_status"]:
-            raise ValueError("ROOT_MIGRATION_OWNER_CATALOG_MISMATCH")
-        if record["policy_class"] != policy_class or record["responsibility_family"] != materialization["family"] or record["policy"]["id"] != pid or record["policy"]["status"] != entry["status"]:
-            raise ValueError("ROOT_MIGRATION_MATERIALIZATION_IDENTITY_MISMATCH")
-        keys = {key for key in record[field] if key.startswith("unit_")}
+        if materialization["path"] != f"{materialization['family']}/{pid}.yaml":
+            raise ValueError("ROOT_MIGRATION_OWNER_ROUTE_MISMATCH")
+        keys = {section for owner, section in used if owner == pid}
         if len(keys) != materialization["unit_count"]:
             raise ValueError("ROOT_MIGRATION_UNIT_COUNT_MISMATCH")
-        if materialization["definition_only"] and (keys or entry["status"] != "DRAFT"):
-            raise ValueError("ROOT_MIGRATION_DEFINITION_ONLY_PROMOTED")
+        if materialization["definition_only"] and (keys or materialization["source_status"] != "DRAFT"):
+            raise ValueError("ROOT_MIGRATION_HISTORICAL_DEFINITION_INVALID")
         declared.update((pid, key) for key in keys)
         families.add(materialization["family"])
     if declared != used:

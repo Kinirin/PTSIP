@@ -118,9 +118,6 @@ func LoadConsistentPolicyCorpus(r Repository) (*PolicyCorpus, error) {
 	if err != nil {
 		return nil, policyFailure("INVALID_POLICY_INDEX", err.Error())
 	}
-	if err := checkRegisteredMigrationSources(r, index); err != nil {
-		return nil, err
-	}
 	subject, err := r.Read(policySubjectRegistry)
 	if err != nil {
 		return nil, err
@@ -134,6 +131,9 @@ func LoadConsistentPolicyCorpus(r Repository) (*PolicyCorpus, error) {
 		id := Text(entry["id"])
 		state.IDs = append(state.IDs, id)
 		if entry["authority_role"] == "MIGRATION_SOURCE" {
+			if rootID.MatchString(id) || entry["path"] != "developer/policy/legacy/"+id+".yaml" || entry["policy_class"] != DeveloperClass {
+				return nil, policyFailure("MIGRATION_SOURCE_CATALOG_MISMATCH", "historical source must remain isolated from current Root authority")
+			}
 			continue
 		}
 		expected, err := policyCanonicalPath(id)

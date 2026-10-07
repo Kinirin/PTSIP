@@ -12,12 +12,13 @@ import (
 	"github.com/Kinirin/PTSIP/developer/automation/planning"
 )
 
-func migratedSourceValue(t *testing.T, r *Repository, sourceID, pointer string) any {
+// Historical protocol evidence reads only its immutable archive. Current Root
+// records are validated independently and may change their rules or lifecycle.
+func historicalSourceValue(t *testing.T, r *Repository, sourceID, pointer string) any {
 	t.Helper()
 	plane := "developer/policy"
-	field := "rules"
 	if strings.HasPrefix(sourceID, "SFP-") {
-		plane, field = "src/policy", "authority_semantics"
+		plane = "src/policy"
 	}
 	graph, err := r.Read(plane + "/registries/root-family-migration.json")
 	if err != nil {
@@ -28,23 +29,17 @@ func migratedSourceValue(t *testing.T, r *Repository, sourceID, pointer string) 
 		if source["source_policy_id"] != sourceID {
 			continue
 		}
-		for _, raw := range List(source["units"]) {
-			unit := Map(raw)
-			if unit["source_pointer"] != pointer {
-				continue
-			}
-			policy, err := r.Read(plane + "/" + Text(unit["policy_path"]))
-			if err != nil {
-				t.Fatal(err)
-			}
-			value, exists := Map(policy[field])[Text(unit["section"])]
-			if !exists {
-				t.Fatal("Root source unit missing", unit)
-			}
-			return value
+		original, err := r.Read(plane + "/" + Text(source["archive_path"]))
+		if err != nil {
+			t.Fatal(err)
 		}
+		var value any = original
+		for _, token := range strings.Split(strings.TrimPrefix(pointer, "/"), "/") {
+			value = Map(value)[strings.ReplaceAll(strings.ReplaceAll(token, "~1", "/"), "~0", "~")]
+		}
+		return value
 	}
-	t.Fatal("unregistered source responsibility", sourceID, pointer)
+	t.Fatal("unregistered historical responsibility", sourceID, pointer)
 	return nil
 }
 
@@ -130,7 +125,7 @@ func TestMigrationOnlyToolingAndEvidenceRemainRetired(t *testing.T) {
 	}
 }
 
-func TestRootMigrationPreservesExactMaterializedRelationSetAndClassBoundary(t *testing.T) {
+func TestHistoricalMigrationPreservesRelationEvidenceAndClassBoundary(t *testing.T) {
 	r, err := Open(".")
 	if err != nil {
 		t.Fatal(err)
@@ -163,7 +158,7 @@ func TestRootMigrationPreservesExactMaterializedRelationSetAndClassBoundary(t *t
 			if !hasRelations {
 				continue
 			}
-			relations := Map(migratedSourceValue(t, r, id, "/relations"))
+			relations := Map(historicalSourceValue(t, r, id, "/relations"))
 			for _, kind := range []string{"supersedes", "amends", "extends", "depends_on"} {
 				for _, raw := range List(relations[kind]) {
 					edge := Map(raw)
@@ -306,9 +301,9 @@ func TestPPImplementationStateAndSupportNamespaceRemainExplicit(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	state := Map(migratedSourceValue(t, r, "MPD-0011", "/rules/implementation_state"))
+	state := Map(historicalSourceValue(t, r, "MPD-0011", "/rules/implementation_state"))
 	requireAgentFields(t, state, Object{"operationalization_level": "L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_AND_RELEASE_VERIFY", "policy_record": "MATERIALIZED", "policy_index_registration": "MATERIALIZED", "policy_resolver_routing": "MATERIALIZED", "authority_plane_registration": "MATERIALIZED", "transition_reconciler": "MATERIALIZED_AND_HOOK_INVOKED", "h3_hook_activation": "MATERIALIZED_SHARED_INSTALLER", "remote_commit_verifier": "MATERIALIZED_PUSH_VERIFY_ONLY", "release_transition_verifier": "MATERIALIZED_EXACT_SHA_VERIFY_ONLY", "claim": "LOCAL_REMOTE_RELEASE_PP_AUTOMATION_ACTIVE"})
-	namespace := Map(Map(migratedSourceValue(t, r, "MPD-SPEC-0001", "/rules/namespace"))["support_feature"])
+	namespace := Map(Map(historicalSourceValue(t, r, "MPD-SPEC-0001", "/rules/namespace"))["support_feature"])
 	requireAgentFields(t, namespace, Object{"machine_policy_path": "src/policy/", "machine_policy_index": "src/policy/index.yaml", "machine_policy_pattern": "src/policy/SFP-*.yaml", "canonical_schema_path": "src/policy/schemas/ptsip-support-feature-policy.schema.json", "embedded_schema_path": "ptsip/support/schemas/ptsip-support-feature-policy.schema.json", "embedded_schema_path_role": "INSTALLED_DISTRIBUTION_PROJECTION", "distribution": "REQUIRED"})
 	if !iwpPathExists(r, Text(namespace["canonical_schema_path"])) {
 		t.Fatal("canonical Support schema missing")

@@ -16,15 +16,12 @@ rules:
   family_definition:
     kernel_definitions:
     - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
-        문자열이나 Family 이름을 치환하지 않는다.
-      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
+      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version 문자열이나 Family 이름을 치환하지
         않는다.
+      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지 않는다.
     - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
-      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
-        정한다.
-      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
-        조건을 정당화할 수 없다.
+      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을 정한다.
+      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기 조건을 정당화할 수 없다.
     source_scope:
     - MPD-0016
     - MPD-VERI-0001
@@ -128,11 +125,11 @@ transition:
   state: PENDING
   requirements:
   - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    type: CURRENT_ROOT_CONTRACT_VERIFICATION
     state: OPEN
     refs:
     - developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0002-APPROVED.yaml
     next_action:
-      action: VERIFY_SOURCE_PROJECTION
+      action: VERIFY_CURRENT_ROOT_CONTRACT
       execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID

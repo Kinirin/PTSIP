@@ -387,7 +387,9 @@ func (r *Repository) ValidateDeveloperPolicy() []string {
 	errors = append(errors, r.policyValidateAnalysisPlane(records)...)
 	errors = append(errors, r.policyValidateRegistryPlanes(records)...)
 	errors = append(errors, r.policyValidateSupportPlane()...)
-	errors = append(errors, r.policyValidateMigrationUnits("developer/policy", DeveloperClass, records)...)
+	if _, err := r.ValidateCurrentRootContracts(DeveloperClass); err != nil {
+		errors = append(errors, err.Error())
+	}
 	errors = append(errors, r.ValidateNeutralCatalogContractRegistration()...)
 	resolver, err := NewResolver(r)
 	if err == nil {

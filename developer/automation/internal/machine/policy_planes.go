@@ -7,8 +7,6 @@ import (
 	"reflect"
 	"sort"
 	"strings"
-
-	policylifecycle "github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
 )
 
 func (r *Repository) policyValidateGovernanceSources(records map[string]Object) []string {
@@ -418,115 +416,8 @@ func (r *Repository) policyValidateSupportPlane() []string {
 			}
 		}
 	}
-	errors = append(errors, r.policyValidateMigrationUnits("src/policy", "PTSIP_SUPPORT_FEATURE", records)...)
-	return errors
-}
-
-// Migration validation verifies direct Root ownership and complete accounting.
-// Frozen source identities and paths are evidence, never runtime record inputs.
-func (r *Repository) policyValidateMigrationUnits(root, class string, records map[string]Object) []string {
-	index, err := r.Read(root + "/index.yaml")
-	if err != nil {
-		return []string{err.Error()}
-	}
-	reference := Text(index["migration_registry_ref"])
-	if reference == "" {
-		return []string{root + ": migration evidence registry is not admitted"}
-	}
-	graph, err := r.Read(root + "/" + reference)
-	if err != nil {
-		return []string{err.Error()}
-	}
-	if err := r.Validate(root+"/schemas/root-family-migration.schema.json", graph); err != nil {
-		return []string{err.Error()}
-	}
-	if graph["policy_class"] != class {
-		return []string{root + ": migration evidence class mismatch"}
-	}
-	errors := []string{}
-	if root == "developer/policy" {
-		if err := policylifecycle.CheckMigrationSourceCatalog(index, graph); err != nil {
-			errors = append(errors, err.Error())
-		}
-	}
-	units := map[string]bool{}
-	sourceIDs := map[string]bool{}
-	counts := map[string]int{}
-	for _, raw := range List(graph["sources"]) {
-		source := Map(raw)
-		sourceID := Text(source["source_policy_id"])
-		if sourceIDs[sourceID] {
-			errors = append(errors, root+": duplicate evidence source identity")
-		}
-		sourceIDs[sourceID] = true
-		pointers := []string{}
-		for _, rawUnit := range List(source["units"]) {
-			unit := Map(rawUnit)
-			id, section := Text(unit["policy_id"]), Text(unit["section"])
-			record := records[id]
-			key := id + ":" + section
-			if units[key] {
-				errors = append(errors, root+": duplicate canonical unit owner "+key)
-			}
-			units[key] = true
-			counts[id]++
-			if record == nil {
-				errors = append(errors, root+": missing canonical Root owner "+id)
-				continue
-			}
-			if record["policy_class"] != class || record["responsibility_family"] != unit["family"] || Map(record["policy"])["status"] != source["source_status"] {
-				errors = append(errors, key+": migrated class/family/state mismatch")
-			}
-			field := "rules"
-			if class == "PTSIP_SUPPORT_FEATURE" {
-				field = "authority_semantics"
-			}
-			if _, found := Map(record[field])[section]; !found {
-				errors = append(errors, key+": migrated responsibility section missing")
-			}
-			pointer := Text(unit["source_pointer"])
-			for _, prior := range pointers {
-				if pointer == prior || strings.HasPrefix(pointer, prior+"/") || strings.HasPrefix(prior, pointer+"/") {
-					errors = append(errors, sourceID+": overlapping evidence responsibility pointers")
-				}
-			}
-			pointers = append(pointers, pointer)
-		}
-	}
-	for _, raw := range List(graph["materializations"]) {
-		owner := Map(raw)
-		id := Text(owner["policy_id"])
-		record := records[id]
-		if record == nil {
-			errors = append(errors, root+": owner missing "+id)
-			continue
-		}
-		if fmt.Sprint(owner["unit_count"]) != fmt.Sprint(counts[id]) {
-			errors = append(errors, id+": materialization count mismatch")
-		}
-		if owner["definition_only"] == true && (counts[id] != 0 || Map(record["policy"])["status"] != "DRAFT") {
-			errors = append(errors, id+": definition-only owner must remain DRAFT")
-		}
-		field := "rules"
-		if class == "PTSIP_SUPPORT_FEATURE" {
-			field = "authority_semantics"
-		}
-		for section := range Map(record[field]) {
-			if strings.HasPrefix(section, "unit_") && !units[id+":"+section] {
-				errors = append(errors, id+":"+section+": unit not covered by evidence")
-			}
-		}
-	}
-	for _, family := range policyRootFamilies {
-		found := false
-		for _, record := range records {
-			if record["responsibility_family"] == family {
-				found = true
-			}
-		}
-		if !found {
-			errors = append(errors, root+": Root Family missing "+family)
-		}
+	if _, err := r.ValidateCurrentRootContracts("PTSIP_SUPPORT_FEATURE"); err != nil {
+		errors = append(errors, err.Error())
 	}
 	return errors
 }

@@ -16,12 +16,10 @@ rules:
   family_definition:
     kernel_definitions:
     - id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
-      statement: 해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및
-        provenance를 보존한다.
+      statement: 해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및 provenance를 보존한다.
       non_substitutability: INTENT의 목표나 ARCH의 설계 선언만으로 실제 구현 절차와 생성 결과가 존재하게 되지 않는다.
     - id: DEV_MUTATION_INTEGRITY
-      statement: 허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을
-        방지한다.
+      statement: 허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을 방지한다.
       non_substitutability: CTRL이 변경을 허용했다는 판정은 실제 쓰기의 원자성과 실패 처리를 대신 보장하지 않는다.
     source_scope:
     - MPD-0016
@@ -43,11 +41,11 @@ transition:
   state: PENDING
   requirements:
   - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+    type: CURRENT_ROOT_CONTRACT_VERIFICATION
     state: OPEN
     refs:
     - developer/policy/approvals/MPA-20261006-ROOT-REAL-0002-APPROVED.yaml
     next_action:
-      action: VERIFY_SOURCE_PROJECTION
+      action: VERIFY_CURRENT_ROOT_CONTRACT
       execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID

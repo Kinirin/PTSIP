@@ -26,7 +26,7 @@
       "const": "urn:ptsip:developer:root-family-projection:v1"
     },
     "version": {
-      "const": "1.0"
+      "const": "2.0"
     },
     "policy_class": {
       "const": "PTSIP_DEVELOPER_POLICY"
@@ -57,10 +57,12 @@
           "source",
           "read_record"
         ],
-        "output": "FROZEN_SOURCE_INTERFACE",
+        "output": "HISTORICAL_SOURCE_RECORD",
         "record_digest": "SHA256_SORTED_COMPACT_UTF8_JSON_UNESCAPED",
         "identity_semantic_inheritance": "FORBIDDEN",
-        "archive_runtime_fallback": "FORBIDDEN"
+        "archive_runtime_fallback": "FORBIDDEN",
+        "usage": "MIGRATION_HISTORY_AUDIT_ONLY",
+        "current_root_dependency": "FORBIDDEN"
       }
     },
     "adapter_binding": {

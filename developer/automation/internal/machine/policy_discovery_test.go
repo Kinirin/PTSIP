@@ -1,6 +1,7 @@
 package machine
 
 import (
+	"github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
 	"strings"
 	"testing"
 )
@@ -40,9 +41,23 @@ func TestPolicyDiscoveryRejectsCatalogAndSubjectOmissions(t *testing.T) {
 			Map(Map(subject["subject_identity_schemes"])["MANAGEMENT_POLICY_ID"])["registered_values"] = values
 			policyTestWrite(t, r, policySubjectRegistry, subject)
 
-			// Matching projections must not hide a missing canonical record or
-			// a source still registered in the admitted migration evidence graph.
+			// Current authority omission fails closed. Historical omission is
+			// reported only by the explicit migration evidence audit.
 			errors := r.ValidateDeveloperPolicy()
+			if id == "MPD-RELS-0002" {
+				if len(errors) != 0 {
+					t.Fatal("history constrained current authority", errors)
+				}
+				graph, err := r.Read("developer/policy/registries/root-family-migration.json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = lifecycle.CheckMigrationSourceCatalog(index, graph)
+				if err == nil || !strings.Contains(err.Error(), id) {
+					t.Fatal("historical omission was not detected", err)
+				}
+				return
+			}
 			if len(errors) == 0 {
 				t.Fatal("policy-validator accepted omitted catalog membership", id)
 			}

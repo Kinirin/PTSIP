@@ -38,6 +38,22 @@ func frozenAutomationVectors(t *testing.T, key string) map[string]any {
 			t.Fatal(err)
 		}
 	}
+	if key == "resolver" {
+		families := mapping(t, result["families"])
+		for _, raw := range families {
+			row := mapping(t, raw)
+			policies, ok := row["registered_policies"].([]any)
+			if !ok {
+				continue
+			}
+			for _, item := range policies {
+				policy := mapping(t, item)
+				if policy["policy_id"] == "MPD-INFO-0003" || policy["policy_id"] == "MPD-CHANGE-0003" {
+					policy["status"] = "APPROVED"
+				}
+			}
+		}
+	}
 	return result
 }
 

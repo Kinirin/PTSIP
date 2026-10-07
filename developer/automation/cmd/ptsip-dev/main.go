@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	_ "github.com/Kinirin/PTSIP/developer/automation/branch"
-	_ "github.com/Kinirin/PTSIP/developer/automation/release"
 	"github.com/Kinirin/PTSIP/developer/automation/internal/machine"
+	_ "github.com/Kinirin/PTSIP/developer/automation/release"
 )
 
 type commandMetadata struct {
@@ -79,6 +79,9 @@ func runCommand(arguments []string, metadata *commandMetadata) (any, error) {
 	}
 	if positional[0] == "root-family-entry" && len(positional) == 2 && positional[1] == "resolve" {
 		return repo.FamilyEntry(options["--policy-class"], options["--family"])
+	}
+	if positional[0] == "root-family-entry" && len(positional) == 2 && positional[1] == "validate" {
+		return repo.ValidateCurrentRootContracts(options["--policy-class"])
 	}
 	if positional[0] == "root-family-entry" && len(positional) == 3 && positional[1] == "inspect" {
 		return repo.InspectFamilyID(positional[2])

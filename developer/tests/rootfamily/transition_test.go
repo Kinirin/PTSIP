@@ -205,7 +205,7 @@ func python(t *testing.T, args ...string) map[string]any {
 	return result
 }
 
-func TestSourceResponsibilityAndLifecyclePreservation(t *testing.T) {
+func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 	c := contract(t)
 	for _, p := range c.Planes {
 		t.Run(p.PolicyClass, func(t *testing.T) {
@@ -273,15 +273,8 @@ func TestSourceResponsibilityAndLifecyclePreservation(t *testing.T) {
 					if unit["policy_path"] != family+"/"+pid+".yaml" || !strings.HasPrefix(pid, p.Prefix+"-"+family+"-") {
 						t.Fatal("owner routing changed")
 					}
-					owner := read(t, filepath.Join(root, unit["policy_path"].(string)))
-					policy := mapping(t, owner["policy"])
-					if owner["policy_class"] != p.PolicyClass || owner["responsibility_family"] != family || policy["id"] != pid || policy["status"] != source["source_status"] {
-						t.Fatal("owner identity or source lifecycle changed")
-					}
-					value, exists := mapping(t, owner[p.ValueField])[section]
-					if !exists || !bytes.Equal(canonicalJSON(t, value), canonicalJSON(t, pointer(t, original, path))) {
-						t.Fatalf("source responsibility value changed: %s%s", id, path)
-					}
+					// Historical coverage comes from the archived source, never current Root rules.
+					value := pointer(t, original, path)
 					key := pid + "/" + section
 					if used[key] {
 						t.Fatal("unit assigned more than once")
@@ -310,34 +303,21 @@ func TestSourceResponsibilityAndLifecyclePreservation(t *testing.T) {
 			for _, raw := range sequence(t, graph["materializations"]) {
 				row := mapping(t, raw)
 				pid := row["policy_id"].(string)
-				owner := read(t, filepath.Join(root, row["path"].(string)))
-				if mapping(t, owner["policy"])["status"] != row["source_status"] || entries[pid]["authority_role"] != "CANONICAL_AUTHORITY" {
-					t.Fatal("materialization state/authority mismatch")
-				}
-				if !strings.HasPrefix(mapping(t, owner["authority_subject"])["id"].(string), p.SubjectPrefix) {
-					t.Fatal("cross-plane subject authority")
-				}
-				values := mapping(t, owner[p.ValueField])
-				kernels := sequence(t, mapping(t, values["family_definition"])["kernel_definitions"])
-				ids := []any{}
-				for _, k := range kernels {
-					ids = append(ids, mapping(t, k)["id"])
-				}
-				if !reflect.DeepEqual(ids, owner["exclusive_kernel"]) {
-					t.Fatal("kernel declaration mismatch")
+				if row["path"] != row["family"].(string)+"/"+pid+".yaml" {
+					t.Fatal("historical owner path mismatch")
 				}
 				count := 0
-				for section := range values {
-					if strings.HasPrefix(section, "unit_") {
-						declared[pid+"/"+section] = true
+				for key := range used {
+					if strings.HasPrefix(key, pid+"/") {
+						declared[key] = true
 						count++
 					}
 				}
 				if float64(count) != row["unit_count"] {
-					t.Fatal("declared unit count mismatch")
+					t.Fatal("historical unit count mismatch")
 				}
 				if row["definition_only"] == true && (count != 0 || row["source_status"] != "DRAFT") {
-					t.Fatal("definition-only family promoted")
+					t.Fatal("historical definition-only metadata changed")
 				}
 				families[row["family"].(string)] = true
 			}
@@ -354,6 +334,25 @@ func TestSourceResponsibilityAndLifecyclePreservation(t *testing.T) {
 			}
 			t.Logf("%d frozen policies, %d exact responsibility units, %d families", p.SourceCount, len(used), len(families))
 		})
+	}
+}
+
+func TestCurrentRootContractsHaveIndependentCanonicalState(t *testing.T) {
+	binary := buildAutomation(t)
+	for _, plane := range contract(t).Planes {
+		result, err, output := automation(t, binary, repository(t), "root-family-entry", "validate", "--policy-class", plane.PolicyClass)
+		if err != nil || result["status"] != "PASS" || result["historical_reconstruction_required"] != false {
+			t.Fatal(result, err, output)
+		}
+	}
+	info := read(t, filepath.Join(repository(t), "developer/policy/INFO/MPD-INFO-0003.yaml"))
+	if mapping(t, info["policy"])["status"] != "APPROVED" {
+		t.Fatal("current INFO approval was pinned to historical DRAFT")
+	}
+	for key := range mapping(t, info["rules"]) {
+		if strings.HasPrefix(key, "unit_mpd_0017_") {
+			t.Fatal("retired Management semantics reintroduced")
+		}
 	}
 }
 

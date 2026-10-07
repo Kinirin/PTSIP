@@ -24,6 +24,9 @@ func CheckMigrationSourceCatalog(index, graph Object) error {
 		}
 		return nil
 	}
+	if index["migration_registry_ref"] != "registries/root-family-migration.json" {
+		return policyFailure("MIGRATION_SOURCE_CATALOG_MISMATCH", "historical graph is not explicitly admitted")
+	}
 	if graph["policy_class"] != DeveloperClass {
 		return policyFailure("MIGRATION_SOURCE_CATALOG_MISMATCH", "migration registry class mismatch")
 	}

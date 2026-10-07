@@ -3,9 +3,9 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0003
-  title: CHANGE authority (DRAFT source responsibilities)
-  status: DRAFT
-  version: '0.0'
+  title: CHANGE authority (APPROVED source responsibilities)
+  status: APPROVED
+  version: '1.0'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -41,9 +41,6 @@ rules:
       translations:
       - language: ko
         path: docs/translated/README.ko.md
-      not_created:
-      - docs/translated/README.ja.md
-      - docs/translated/README.zh-CN.md
     required_transition:
     - CREATE_TRANSLATION_REGISTRY
     - MOVE_KOREAN_README_TO_REGISTERED_PATH
@@ -56,16 +53,22 @@ rules:
       canonical_readme_content_authority_unchanged: true
       korean_translation_history_should_be_preserved_when_git_operation_allows: true
       translation_generation_model_unchanged_by_layout_migration: true
-    completion_conditions:
-      source_translation_path_absent: README.ko.md
-      target_translation_path_present: docs/translated/README.ko.md
-      registry_contains_exact_active_language_set:
-      - ko
-      workflow_targets_registry_declared_translation: true
-      ja_translation_absent: true
-      zh_cn_translation_absent: true
 relations:
   supersedes: []
   amends: []
   extends: []
   depends_on: []
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+  - id: TR-001
+    type: ACTIVE_TRANSITION_DECISION
+    state: OPEN
+    refs:
+    - developer/policy/approvals/MPA-20261007-ROOT-CHANGE-0003-APPROVED.yaml
+    next_action:
+      action: DECIDE_ACTIVE_TRANSITION
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: ACTIVE_TRANSITION_AUTHORIZED

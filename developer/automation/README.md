@@ -7,6 +7,8 @@ go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/
 go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-validator validate
 go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-plan-consistency verify
 go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev context-projection check
+go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev root-family-entry validate --policy-class PTSIP_DEVELOPER_POLICY
+go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev root-family-entry validate --policy-class PTSIP_SUPPORT_FEATURE
 go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev agent-instruction-materializer status
 go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev agent-context-migration verify --stage AUTO
 go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev automation-migration inspect

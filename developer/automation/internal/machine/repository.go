@@ -257,6 +257,46 @@ func (r *Repository) Validate(schemaPath string, value any) error {
 	return compiled.Validate(value)
 }
 
+// ValidateDefinition selects only the exact definition named by a canonical
+// schema registry. It never derives a schema from a policy's implementation.
+func (r *Repository) ValidateDefinition(schemaPath, definition string, value any) error {
+	schema, err := r.Read(schemaPath)
+	if err != nil {
+		return err
+	}
+	if Map(Map(schema["$defs"])[definition]) == nil {
+		return fmt.Errorf("REGISTERED_SCHEMA_DEFINITION_MISSING: %s", definition)
+	}
+	compiler, err := r.Compiler()
+	if err != nil {
+		return err
+	}
+	identity := Text(schema["$id"])
+	if identity == "" {
+		identity = "urn:ptsip:registered-schema-path:" + SHA256([]byte(schemaPath))
+	}
+	key := schemaPath + "#/$defs/" + definition
+	if compiled := r.schemas[key]; compiled != nil {
+		return compiled.Validate(value)
+	}
+	if r.schemas[schemaPath] == nil {
+		if err := compiler.AddResource(identity, schema); err != nil {
+			return err
+		}
+		base, err := compiler.Compile(identity)
+		if err != nil {
+			return err
+		}
+		r.schemas[schemaPath] = base
+	}
+	compiled, err := compiler.Compile(identity + "#/$defs/" + definition)
+	if err != nil {
+		return err
+	}
+	r.schemas[key] = compiled
+	return compiled.Validate(value)
+}
+
 func Map(value any) Object  { object, _ := value.(map[string]any); return object }
 func Text(value any) string { text, _ := value.(string); return text }
 func List(value any) []any  { list, _ := value.([]any); return list }

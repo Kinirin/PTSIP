@@ -40,6 +40,7 @@ def test_current_governance_corpus_is_shipped_support_policy_corpus() -> None:
     expected = tuple(
         entry["id"]
         for entry in _yaml("src/policy/index.yaml")["policies"]
+        if entry.get("authority_role") != "MIGRATION_SOURCE"
     )
     assert catalog.validate_current_corpus() == expected
 
