@@ -58,3 +58,17 @@ relations:
   amends: []
   extends: []
   depends_on: []
+
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+  - id: TR-001
+    type: ACTIVE_TRANSITION_DECISION
+    state: OPEN
+    refs:
+    - developer/policy/approvals/MPA-20261007-ROOT-CHANGE-0003-APPROVED.yaml
+    next_action:
+      action: DECIDE_ACTIVE_TRANSITION
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: ACTIVE_TRANSITION_AUTHORIZED
