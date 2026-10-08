@@ -27,6 +27,7 @@ authority_semantics:
     component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
     component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
     component_grouping_authority: AUTOMATED_GROUPING_WITH_PROJECT_OVERRIDE
+    automatic_grouping_primary_objective: MANAGEABILITY_FIRST
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
