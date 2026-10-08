@@ -67,7 +67,8 @@
         "candidate_conflict_resolution": "VALIDATED_SIMULATION_EVIDENCE_BASED",
         "environment_selection": "CURRENT_HOST_RESOURCES_AND_WORKLOAD_CONSTRAIN_SELECTION",
         "multi_objective_ranking": "PARETO_DOMINANCE_THEN_APPROVED_PREFERENCES",
-        "in_flight_switching": "NOT_AUTHORIZED_BY_SELECTION_POLICY"
+        "in_flight_switching": "NOT_AUTHORIZED_BY_SELECTION_POLICY",
+        "resource_exhaustion_result_semantics": "ATTEMPT_FAILURE_WITH_SEPARATE_WORK_EFFECT_ASSESSMENT"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -77,7 +78,10 @@
         "runtime_replacement_preserves_normative_and_verification_obligations": true,
         "optimization_cannot_override_mandatory_constraints": true,
         "incomplete_competing_candidate_selection": "UNRESOLVED_FAIL_CLOSED",
-        "no_automatic_in_flight_engine_transition": true
+        "no_automatic_in_flight_engine_transition": true,
+        "engine_result_contract_distinguishes_attempt_outcome_from_effect_observation": true,
+        "failed_attempt_does_not_establish_effect_absence": true,
+        "unknown_effect_cannot_be_reported_as_confirmed_success": true
       },
       "unresolved_decisions": [
         {
@@ -107,6 +111,11 @@
         },
         {
           "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         }

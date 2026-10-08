@@ -50,7 +50,8 @@
         "engine_activation_does_not_grant_isolation_exception": true,
         "engine_selection_does_not_grant_write_permission": true,
         "isolation_guarantee_scope": "EXECUTION_AND_PERMISSION_BOUNDARY",
-        "resource_containment_policy": "PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET"
+        "resource_containment_policy": "PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET",
+        "resource_exhaustion_failure_direction": "EXECUTION_ATTEMPT_FAILURE_SEPARATE_FROM_WORK_EFFECT_STATE"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -69,7 +70,12 @@
         "resource_budget_enforcement_required_before_execution": true,
         "missing_or_unenforceable_required_budget": "FAIL_CLOSED",
         "model_may_invent_default_resource_budget": false,
-        "resource_budget_grants_additional_access_authority": false
+        "resource_budget_grants_additional_access_authority": false,
+        "resource_exhaustion_attempt_outcome": "FAILED",
+        "work_effect_state_is_independently_assessed": true,
+        "resource_exhaustion_attempt_failure_does_not_prove_rollback": true,
+        "unresolved_work_effects_cannot_be_inferred_as_success": true,
+        "recovery_or_retry_require_independent_preexisting_authority": true
       },
       "unresolved_decisions": [
         {
@@ -84,9 +90,10 @@
           "source_unresolved_id": "ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS"
         },
         {
-          "id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR",
+          "id": "RESOURCE_FAILURE_AND_WORK_EFFECT_CONTRACT_SHAPE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "source_unresolved_id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR"
         },
         {
           "id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY",
@@ -124,6 +131,14 @@
           "numeric_limits": "NOT_DECIDED",
           "implementation_mechanism": "NOT_DECIDED",
           "resource_exhaustion_failure_semantics": "NOT_DECIDED"
+        },
+        {
+          "id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR",
+          "selected_option": "C_ATTEMPT_FAILURE_AND_WORK_EFFECT_SEPARATION",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_FAILURE_MEANING_ONLY",
+          "work_effect_taxonomy": "NOT_DECIDED",
+          "recovery_transition_protocol": "NOT_DECIDED"
         }
       ]
     }

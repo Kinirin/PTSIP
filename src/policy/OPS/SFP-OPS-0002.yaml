@@ -44,17 +44,27 @@
         "combined_operation_outcome_owner": "INDEPENDENT_COMPOSITION_COORDINATOR",
         "coordinator_new_policy_authority": false,
         "recovery_must_preserve_operation_identity": true,
-        "irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates": true
+        "irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates": true,
+        "resource_failure_recovery_boundary": "EFFECT_STATE_AWARE_AUTHORIZED_RECOVERY"
       },
       "invariants": {
         "no_success_from_partial_failed_composition": true,
         "no_recovery_path_can_synthesize_authorization": true,
         "retries_must_respect_original_operation_and_expected_revision": true,
-        "composition_result_requires_member_outcome_provenance": true
+        "composition_result_requires_member_outcome_provenance": true,
+        "resource_failure_requires_independent_effect_state_handling": true,
+        "no_implicit_rollback_from_engine_termination": true,
+        "unknown_effect_blocks_unverified_reuse_or_recovery_success": true,
+        "retry_remains_subject_to_existing_ctrl_and_ops_authority": true
       },
       "unresolved_decisions": [
         {
           "id": "COMPOSITION_RECOVERY_AND_FAILURE_PROPAGATION_INTERFACE",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "RESOURCE_FAILURE_RECOVERY_HANDOFF_CONTRACT",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         }
