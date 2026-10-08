@@ -34,6 +34,7 @@ authority_semantics:
     relationship_declaration_ownership: ATOMIC_RELATIONSHIP_OWNERSHIP
     source_assembly_consistency: COMPLETE_ASSEMBLY_ONLY
     missing_source_diagnostics: MANDATORY_MISSING_SOURCE_DIAGNOSIS_AND_DISCOVERY
+    missing_source_recovery_authorization: AUTHORIZED_AUTOMATED_RECOVERY
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
@@ -67,9 +68,14 @@ authority_semantics:
       unverified_cause_must_remain_unresolved: true
       discovered_candidate_confers_source_authority: false
       recovery_requires_separate_authorization: true
+    missing_source_recovery:
+      preapproved_recovery_authority_required: true
+      machine_verifiable_recovery_conditions_required: true
+      qualified_recovery_without_per_case_approval_allowed: true
+      unqualified_or_ambiguous_recovery: ESCALATE_WITHOUT_MUTATION
+      recovered_sources_require_complete_revalidation: true
   unresolved_decisions:
     - AUTOMATED_GROUPING_STRATEGY
-    - MISSING_SOURCE_RECOVERY_AUTHORIZATION
     - SOURCE_CHANGE_ATOMICITY
   implementation_detail_authority: PLAN
 relations:
