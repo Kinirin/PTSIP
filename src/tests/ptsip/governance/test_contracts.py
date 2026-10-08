@@ -83,3 +83,16 @@ def test_support_policy_canonical_layout_has_no_legacy_specdata_authority() -> N
     assert not (ROOT / "docs" / "Support_policy" / "policy").exists()
     assert not (ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml").exists()
     assert not list((ROOT / "src" / "ptsip" / "specdata").glob("SFP-*.yaml"))
+
+def test_support_legacy_policy_catalog_preserves_history_but_retires_active_sources() -> None:
+    index = _yaml("src/policy/index.yaml")
+    registry = _json("src/policy/registries/root-family-migration.json")
+    entries = {entry["id"]: entry for entry in index["policies"]}
+    for source in registry["sources"]:
+        entry = entries[source["source_policy_id"]]
+        assert entry["authority_role"] == "MIGRATION_SOURCE"
+        assert entry["status"] == (
+            "RETIRED" if source["source_status"] == "ACTIVE" else source["source_status"]
+        )
+    schema = _json("src/policy/schemas/ptsip-support-feature-policy-index.schema.json")
+    Draft202012Validator(schema).validate(index)
