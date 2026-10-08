@@ -23,12 +23,16 @@ authority_semantics:
   approved_decisions:
     policy_direction: INDEPENDENT_SOURCE_COMPOSITION
     logical_profile_model: SINGLE_LOGICAL_PROFILE
+    source_membership_authority: REGISTERED_MEMBERSHIP
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
     fragment_count_creates_independent_profile_authority: false
+    source_membership:
+      authoritative_only_if_explicitly_registered: true
+      filesystem_discovery_confers_authority: false
+      automated_registration_requires_authorized_operation: true
   unresolved_decisions:
-    - SOURCE_MEMBERSHIP_AUTHORITY
     - COMPONENT_FRAGMENT_OWNERSHIP
     - RELATIONSHIP_FRAGMENT_OWNERSHIP
     - SOURCE_CHANGE_AND_ASSEMBLY_CONSISTENCY
