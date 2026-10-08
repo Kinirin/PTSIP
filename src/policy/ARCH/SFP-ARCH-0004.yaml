@@ -1,0 +1,132 @@
+{
+  "schema_version": "ptsip-support-root-family-policy/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "responsibility_family": "ARCH",
+  "policy": {
+    "id": "SFP-ARCH-0004",
+    "title": "Engine structural ownership and physical responsibility boundary (DRAFT)",
+    "status": "DRAFT"
+  },
+  "authority_subject": {
+    "id": "SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION",
+    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
+  },
+  "exclusive_kernel": [
+    "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
+    "SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS"
+  ],
+  "authority_contract": {
+    "authority_type": "ROOT_FAMILY_ARCH",
+    "schema_id": "ptsip.governance/root-family/arch",
+    "schema_version": 1
+  },
+  "authority_semantics": {
+    "domain": "PTSIP_ENGINE",
+    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+    "approved_decisions": {
+      "engine_ownership": "OFFICIAL_PACKAGE_OWNED_AND_CONSUMER_USER_ENGINE_OWNED",
+      "official_implementations": "SHIPPED_PTSIP_INSTALLATION",
+      "consumer_user_implementations": "CONSUMER_REPOSITORY_OWNED_OR_EXPLICITLY_REGISTERED_EXTERNAL_INSTALLATION",
+      "official_engine_kinds": [
+        "CONTEXT",
+        "STORAGE",
+        "VALIDATION",
+        "DISCOVERY",
+        "PLANNING",
+        "EXECUTION",
+        "PROJECTION"
+      ],
+      "integration_engine_priority": "DEFERRED_LOWER_PRIORITY",
+      "engine_structure_P1": "EXPLICIT_SINGLE_OWNER_MIXED_IMPLEMENTATION",
+      "directory_policy_P2": "RESPONSIBILITY_BOUNDARY_STRUCTURED",
+      "physical_organization_P3": "SINGLE_UPPER_ENGINE_AREA",
+      "common_management_P4": "FUNCTION_BY_FUNCTION_INDEPENDENT_RESPONSIBILITY",
+      "implementation_sharing_P5": "EXPLICIT_SINGLE_OWNER_SHARING",
+      "capability_implementation_P6": "INDEPENDENT_CONTRACT_FLEXIBLE_IMPLEMENTATION",
+      "user_external_isolation_P7": "MANDATORY_ISOLATION",
+      "common_management_function_examples": [
+        "CONTRACT",
+        "REGISTRY",
+        "RESOLVER",
+        "ACTIVATION",
+        "EVALUATION",
+        "COMPOSITION",
+        "TRANSPORT",
+        "LIFECYCLE"
+      ]
+    },
+    "invariants": {
+      "physical_parent_co_location_does_not_merge_semantic_owners": true,
+      "directory_name_is_not_semantic_authority": true,
+      "every_owned_implementation_requires_explicit_responsibility_mapping": true,
+      "shared_implementation_has_exactly_one_semantic_owner": true,
+      "using_an_implementation_does_not_transfer_ownership": true,
+      "common_management_functions_have_independent_responsibility": true,
+      "capability_contract_boundary_survives_implementation_sharing": true,
+      "existing_architecture_and_public_contracts_must_not_be_silently_reassigned": true,
+      "user_source_never_mistaken_for_official_source": true,
+      "exact_directory_names_approved": false
+    },
+    "unresolved_decisions": [
+      {
+        "id": "ENGINE_UPPER_DIRECTORY_NAME",
+        "kind": "USER_DECISION",
+        "status": "UNRESOLVED"
+      },
+      {
+        "id": "COMMON_MANAGEMENT_SUBDIRECTORY_NAMES",
+        "kind": "USER_DECISION",
+        "status": "UNRESOLVED"
+      },
+      {
+        "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
+        "kind": "USER_DECISION",
+        "status": "UNRESOLVED"
+      },
+      {
+        "id": "INTERNAL_HIERARCHY_AND_PHYSICAL_PACKAGE_LAYOUT",
+        "kind": "USER_DECISION",
+        "status": "UNRESOLVED"
+      },
+      {
+        "id": "EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING",
+        "kind": "RESPONSIBILITY_ANALYSIS",
+        "status": "UNRESOLVED"
+      },
+      {
+        "id": "COMMON_IMPLEMENTATION_OWNER_MAPPING",
+        "kind": "RESPONSIBILITY_ANALYSIS",
+        "status": "UNRESOLVED"
+      },
+      {
+        "id": "CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION",
+        "kind": "RESPONSIBILITY_ANALYSIS",
+        "status": "UNRESOLVED"
+      }
+    ],
+    "activation_requirements": {
+      "owner_decisions_all_resolved": true,
+      "responsibility_mapping_verified": true,
+      "conflicts_with_existing_active_policies_resolved": true,
+      "machine_contract_and_registry_validation_passed": true,
+      "explicit_separate_user_active_approval_required": true
+    },
+    "out_of_scope": [
+      "IMMEDIATE_RUNTIME_ACTIVATION",
+      "EXISTING_ACTIVE_POLICY_MUTATION",
+      "UNAPPROVED_DIRECTORY_NAMES",
+      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+    ]
+  },
+  "relations": {
+    "supersedes": [],
+    "amends": [],
+    "extends": [],
+    "depends_on": [
+      {
+        "policy": "SFP-ARCH-0001",
+        "scope": "ENGINE_DRAFT_COMPATIBILITY"
+      }
+    ]
+  }
+}

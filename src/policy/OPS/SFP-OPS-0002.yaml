@@ -1,0 +1,71 @@
+{
+  "schema_version": "ptsip-support-root-family-policy/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "responsibility_family": "OPS",
+  "policy": {
+    "id": "SFP-OPS-0002",
+    "title": "Engine composition outcome and recovery responsibility (DRAFT)",
+    "status": "DRAFT"
+  },
+  "authority_subject": {
+    "id": "SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY",
+    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
+  },
+  "exclusive_kernel": [
+    "SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION",
+    "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION"
+  ],
+  "authority_contract": {
+    "authority_type": "ROOT_FAMILY_OPS",
+    "schema_id": "ptsip.governance/root-family/ops",
+    "schema_version": 1
+  },
+  "authority_semantics": {
+    "domain": "PTSIP_ENGINE",
+    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+    "approved_decisions": {
+      "per_engine_outcome_owner": "EXECUTING_ENGINE",
+      "combined_operation_outcome_owner": "INDEPENDENT_COMPOSITION_COORDINATOR",
+      "coordinator_new_policy_authority": false,
+      "recovery_must_preserve_operation_identity": true,
+      "irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates": true
+    },
+    "invariants": {
+      "no_success_from_partial_failed_composition": true,
+      "no_recovery_path_can_synthesize_authorization": true,
+      "retries_must_respect_original_operation_and_expected_revision": true,
+      "composition_result_requires_member_outcome_provenance": true
+    },
+    "unresolved_decisions": [
+      {
+        "id": "COMPOSITION_RECOVERY_AND_FAILURE_PROPAGATION_INTERFACE",
+        "kind": "CONTRACT_DESIGN",
+        "status": "UNRESOLVED"
+      }
+    ],
+    "activation_requirements": {
+      "owner_decisions_all_resolved": true,
+      "responsibility_mapping_verified": true,
+      "conflicts_with_existing_active_policies_resolved": true,
+      "machine_contract_and_registry_validation_passed": true,
+      "explicit_separate_user_active_approval_required": true
+    },
+    "out_of_scope": [
+      "IMMEDIATE_RUNTIME_ACTIVATION",
+      "EXISTING_ACTIVE_POLICY_MUTATION",
+      "UNAPPROVED_DIRECTORY_NAMES",
+      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+    ]
+  },
+  "relations": {
+    "supersedes": [],
+    "amends": [],
+    "extends": [],
+    "depends_on": [
+      {
+        "policy": "SFP-OPS-0001",
+        "scope": "ENGINE_DRAFT_COMPATIBILITY"
+      }
+    ]
+  }
+}
