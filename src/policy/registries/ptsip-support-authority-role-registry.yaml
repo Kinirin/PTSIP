@@ -441,6 +441,11 @@ policy_roles:
     resolution_state: DECLARED
     effects:
       - define_responsibility_role_contract
+  - policy_id: SFP-ASSURE-0005
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
   - policy_id: SFP-CHANGE-0001
     projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
     resolution_state: DECLARED
@@ -471,12 +476,22 @@ policy_roles:
     resolution_state: DECLARED
     effects:
       - define_responsibility_role_contract
+  - policy_id: SFP-CNTR-0006
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
   - policy_id: SFP-CTRL-0001
     projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
     resolution_state: DECLARED
     effects:
       - define_responsibility_role_contract
   - policy_id: SFP-CTRL-0002
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-CTRL-0003
     projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
     resolution_state: DECLARED
     effects:
@@ -562,6 +577,11 @@ policy_roles:
     effects:
       - define_responsibility_role_contract
   - policy_id: SFP-RECORD-0003
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
+  - policy_id: SFP-RECORD-0004
     projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
     resolution_state: DECLARED
     effects:
