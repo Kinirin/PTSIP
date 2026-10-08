@@ -83,3 +83,39 @@ def test_support_policy_canonical_layout_has_no_legacy_specdata_authority() -> N
     assert not (ROOT / "docs" / "Support_policy" / "policy").exists()
     assert not (ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml").exists()
     assert not list((ROOT / "src" / "ptsip" / "specdata").glob("SFP-*.yaml"))
+
+def test_support_legacy_policy_catalog_preserves_history_and_retires_all_sources() -> None:
+    index = _yaml("src/policy/index.yaml")
+    registry = _json("src/policy/registries/root-family-migration.json")
+    entries = {entry["id"]: entry for entry in index["policies"]}
+    for source in registry["sources"]:
+        entry = entries[source["source_policy_id"]]
+        assert entry["authority_role"] == "MIGRATION_SOURCE"
+        assert entry["status"] == "RETIRED"
+    schema = _json("src/policy/schemas/ptsip-support-feature-policy-index.schema.json")
+    Draft202012Validator(schema).validate(index)
+
+    # Neither the historical ACTIVE nor DRAFT lifecycle is a current authority.
+    for forbidden_status in ("ACTIVE", "DRAFT"):
+        altered = json.loads(json.dumps(index))
+        next(item for item in altered["policies"] if item["id"] == "SFP-0004")["status"] = forbidden_status
+        assert not Draft202012Validator(schema).is_valid(altered)
+
+def test_consumer_analysis_draft_records_only_approved_registry_and_id_direction() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    assert policy["responsibility_family"] == "INFO"
+    approved = policy["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert approved["repository_root"] == ".ptsip/analysis/"
+    assert approved["registry_ref"] == ".ptsip/analysis/registry.yaml"
+    assert approved["schema_root"] == ".ptsip/analysis/schemas/"
+    assert approved["record_root"] == ".ptsip/analysis/records/"
+    assert approved["record_identity"] == "OPAQUE_STABLE_ID"
+    assert approved["resolution"] == "EXACT_ID_TO_REGISTERED_RECORD_REF"
+    invariants = policy["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert invariants["record_identity"]["id_to_path_derivation"] == "FORBIDDEN"
+    pending = policy["authority_semantics"]["unit_consumer_analysis_unresolved_decisions"]
+    assert "RECORD_ID_NAMESPACE_AND_ALLOCATION" in pending
+    assert "RECORD_SERIALIZATION_FORMAT" in pending
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)

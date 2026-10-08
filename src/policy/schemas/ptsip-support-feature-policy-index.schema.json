@@ -50,7 +50,28 @@
             ]
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "authority_role": {
+                  "const": "MIGRATION_SOURCE"
+                }
+              },
+              "required": [
+                "authority_role"
+              ]
+            },
+            "then": {
+              "properties": {
+                "status": {
+                  "const": "RETIRED"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "migration_registry_ref": {

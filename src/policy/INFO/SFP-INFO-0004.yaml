@@ -1,0 +1,94 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0004
+  title: Project Profile Source Composition
+  status: DRAFT
+authority_subject:
+  id: SUP_PROJECT_PROFILE_SOURCE_COMPOSITION
+  statement: Consumer Project Profile의 source 구성원과 논리적 구성 단위를 관리한다. Responsibility Map 의미 권위는 소유하지 않는다.
+exclusive_kernel:
+  - SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  domain: PROJECT_PROFILE_SOURCE_COMPOSITION
+  target: CONSUMER_PROJECT_PROFILE
+  independence:
+    responsibility_map_semantic_authority: EXCLUDED
+    legacy_policy_implicit_inheritance: FORBIDDEN
+  approved_decisions:
+    policy_direction: INDEPENDENT_SOURCE_COMPOSITION
+    logical_profile_model: SINGLE_LOGICAL_PROFILE
+    source_membership_authority: REGISTERED_MEMBERSHIP
+    component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
+    component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
+    component_grouping_authority: AUTOMATED_GROUPING_WITH_PROJECT_OVERRIDE
+    automatic_grouping_primary_objective: MANAGEABILITY_FIRST
+    grouping_stability: GLOBAL_REOPTIMIZATION
+    relationship_source_ownership: PROFILE_LEVEL_RELATIONSHIP_OWNERSHIP
+    relationship_source_partitioning: MULTI_RELATIONSHIP_SOURCE_ALLOWED
+    relationship_declaration_ownership: ATOMIC_RELATIONSHIP_OWNERSHIP
+    source_assembly_consistency: COMPLETE_ASSEMBLY_ONLY
+    missing_source_diagnostics: MANDATORY_MISSING_SOURCE_DIAGNOSIS_AND_DISCOVERY
+    missing_source_recovery_authorization: AUTHORIZED_AUTOMATED_RECOVERY
+    source_change_atomicity: LOGICAL_AUTHORITY_ATOMICITY
+    automatic_grouping_determinism: DETERMINISTIC_GROUPING
+  invariants:
+    logical_profile_identity: SINGLE
+    physical_source_artifacts: ONE_OR_MORE
+    fragment_count_creates_independent_profile_authority: false
+    component_declaration:
+      exact_source_owner_per_component: ONE
+      field_level_fragmentation: FORBIDDEN
+    component_source:
+      multiple_components_may_share_source: true
+    component_grouping:
+      automated_grouping_requires_approved_rule: true
+      explicit_project_override_allowed: true
+      grouping_changes_responsibility_map_semantics: false
+      same_authoritative_profile_rules_and_overrides_yield_same_grouping: true
+      global_reoptimization_must_be_deterministic: true
+    relationship_source:
+      ownership_scope: LOGICAL_PROFILE
+      component_source_ownership: FORBIDDEN
+      multiple_sources_allowed: true
+    relationship_declaration:
+      exact_source_owner_per_declaration: ONE
+      field_level_fragmentation: FORBIDDEN
+    source_membership:
+      authoritative_only_if_explicitly_registered: true
+      filesystem_discovery_confers_authority: false
+      automated_registration_requires_authorized_operation: true
+    source_assembly:
+      valid_only_if_registered_sources_complete_and_consistent: true
+      partial_assembly_confers_profile_authority: false
+    missing_source_diagnostics:
+      cause_analysis_required: true
+      candidate_discovery_required: true
+      unverified_cause_must_remain_unresolved: true
+      discovered_candidate_confers_source_authority: false
+      recovery_requires_separate_authorization: true
+    missing_source_recovery:
+      preapproved_recovery_authority_required: true
+      machine_verifiable_recovery_conditions_required: true
+      qualified_recovery_without_per_case_approval_allowed: true
+      unqualified_or_ambiguous_recovery: ESCALATE_WITHOUT_MUTATION
+      recovered_sources_require_complete_revalidation: true
+    source_change:
+      authority_transition: ATOMIC
+      publication_requires_complete_validated_source_set: true
+      intermediate_storage_state_confers_authority: false
+      failed_or_partial_change_can_activate_new_profile: false
+      intermediate_physical_storage_state_permitted: true
+  unresolved_decisions:
+    - AUTOMATED_GROUPING_STRATEGY
+  implementation_detail_authority: PLAN
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

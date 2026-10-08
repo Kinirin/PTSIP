@@ -651,7 +651,10 @@ def validate_migration(policy_root: Path, policy_class: str, *, registry_path: P
             raise ValueError("ROOT_MIGRATION_SOURCE_REINTRODUCED")
         entry = entries[source["source_policy_id"]]
         indexed = entry["path"].removeprefix("developer/policy/") if developer else entry["path"]
-        if indexed != source["archive_path"] or entry.get("authority_role") != "MIGRATION_SOURCE" or entry["status"] != source["source_status"]:
+        # The migration registry preserves the original lifecycle status;
+        # the Support index represents all archived sources as retired.
+        expected_index_status = "RETIRED" if not developer else source["source_status"]
+        if indexed != source["archive_path"] or entry.get("authority_role") != "MIGRATION_SOURCE" or entry["status"] != expected_index_status:
             raise ValueError("ROOT_MIGRATION_SOURCE_CATALOG_MISMATCH")
         original = safe_policy_path(policy_root, source["archive_path"])
         if source_digest(original.read_bytes()) != source["source_sha256"]:
