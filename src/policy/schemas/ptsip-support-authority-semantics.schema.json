@@ -901,6 +901,49 @@
         "^unit_[a-z0-9_]+$": {}
       },
       "additionalProperties": false
+    },
+    "SFP_INFO_0004_V1": {
+      "type": "object",
+      "required": [
+        "domain",
+        "target",
+        "independence",
+        "approved_decisions",
+        "invariants",
+        "unresolved_decisions",
+        "implementation_detail_authority"
+      ],
+      "properties": {
+        "domain": {
+          "const": "PROJECT_PROFILE_SOURCE_COMPOSITION"
+        },
+        "target": {
+          "const": "CONSUMER_PROJECT_PROFILE"
+        },
+        "independence": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "approved_decisions": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "invariants": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "unresolved_decisions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "implementation_detail_authority": {
+          "const": "PLAN"
+        }
+      },
+      "additionalProperties": false
     }
   }
 }
