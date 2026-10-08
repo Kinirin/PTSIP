@@ -109,6 +109,10 @@ policies:
   path: ARCH/SFP-ARCH-0003.yaml
   status: RETIRED
   authority_role: CANONICAL_AUTHORITY
+- id: SFP-ARCH-0004
+  path: ARCH/SFP-ARCH-0004.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: SFP-ASSURE-0001
   path: ASSURE/SFP-ASSURE-0001.yaml
   status: ACTIVE
@@ -120,6 +124,10 @@ policies:
 - id: SFP-ASSURE-0003
   path: ASSURE/SFP-ASSURE-0003.yaml
   status: RETIRED
+  authority_role: CANONICAL_AUTHORITY
+- id: SFP-ASSURE-0004
+  path: ASSURE/SFP-ASSURE-0004.yaml
+  status: DRAFT
   authority_role: CANONICAL_AUTHORITY
 - id: SFP-CHANGE-0001
   path: CHANGE/SFP-CHANGE-0001.yaml
@@ -140,13 +148,25 @@ policies:
 - id: SFP-CNTR-0004
   path: CNTR/SFP-CNTR-0004.yaml
   status: ACTIVE
+- id: SFP-CNTR-0005
+  path: CNTR/SFP-CNTR-0005.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: SFP-CTRL-0001
   path: CTRL/SFP-CTRL-0001.yaml
   status: ACTIVE
   authority_role: CANONICAL_AUTHORITY
+- id: SFP-CTRL-0002
+  path: CTRL/SFP-CTRL-0002.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: SFP-GOV-0001
   path: GOV/SFP-GOV-0001.yaml
   status: ACTIVE
+  authority_role: CANONICAL_AUTHORITY
+- id: SFP-GOV-0002
+  path: GOV/SFP-GOV-0002.yaml
+  status: DRAFT
   authority_role: CANONICAL_AUTHORITY
 - id: SFP-INFO-0001
   path: INFO/SFP-INFO-0001.yaml
@@ -188,6 +208,10 @@ policies:
   path: OPS/SFP-OPS-0001.yaml
   status: ACTIVE
   authority_role: CANONICAL_AUTHORITY
+- id: SFP-OPS-0002
+  path: OPS/SFP-OPS-0002.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: SFP-REAL-0001
   path: REAL/SFP-REAL-0001.yaml
   status: ACTIVE
@@ -200,40 +224,16 @@ policies:
   path: RECORD/SFP-RECORD-0002.yaml
   status: DRAFT
   authority_role: CANONICAL_AUTHORITY
+- id: SFP-RECORD-0003
+  path: RECORD/SFP-RECORD-0003.yaml
+  status: DRAFT
+  authority_role: CANONICAL_AUTHORITY
 - id: SFP-RISK-0001
   path: RISK/SFP-RISK-0001.yaml
   status: DRAFT
   authority_role: CANONICAL_AUTHORITY
 - id: SFP-SUPPLY-0001
   path: SUPPLY/SFP-SUPPLY-0001.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-ARCH-0004
-  path: ARCH/SFP-ARCH-0004.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-CNTR-0005
-  path: CNTR/SFP-CNTR-0005.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-CTRL-0002
-  path: CTRL/SFP-CTRL-0002.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-ASSURE-0004
-  path: ASSURE/SFP-ASSURE-0004.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-RECORD-0003
-  path: RECORD/SFP-RECORD-0003.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-GOV-0002
-  path: GOV/SFP-GOV-0002.yaml
-  status: DRAFT
-  authority_role: CANONICAL_AUTHORITY
-- id: SFP-OPS-0002
-  path: OPS/SFP-OPS-0002.yaml
   status: DRAFT
   authority_role: CANONICAL_AUTHORITY
 migration_registry_ref: registries/root-family-migration.json
