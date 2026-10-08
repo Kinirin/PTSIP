@@ -1,0 +1,84 @@
+{
+  "schema_version": "ptsip-support-root-family-policy/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "responsibility_family": "ASSURE",
+  "policy": {
+    "id": "SFP-ASSURE-0005",
+    "title": "Consumer Analysis Reusable Qualification and Validity (DRAFT)",
+    "status": "DRAFT"
+  },
+  "authority_subject": {
+    "id": "SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT",
+    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
+  },
+  "exclusive_kernel": [
+    "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
+    "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING"
+  ],
+  "authority_contract": {
+    "authority_type": "ROOT_FAMILY_ASSURE",
+    "schema_id": "ptsip.governance/root-family/assure",
+    "schema_version": 1
+  },
+  "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
+          "statement": "mandatory 위반과 blocking evidence gap을 구별하여 완료 결과를 CONFORMANT, NON_CONFORMANT 또는 INCOMPLETE로 판정한다. zero findings는 자동 conformance가 아니다.",
+          "non_substitutability": "GOV의 coordinated winner나 완전한 ARCH 선언만으로 관측 evidence까지 규범에 적합하다고 판정할 수 없다."
+        },
+        {
+          "id": "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING",
+          "statement": "coverage와 admissibility 및 실제 built Artifact/source snapshot 결합을 평가하고 functional/VPMS PASS와 PTSIP conformance를 독립적으로 유지한다.",
+          "non_substitutability": "RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한 검사와 conformance 판단이 완료되지 않는다."
+        }
+      ],
+      "source_scope": []
+    },
+    "unit_consumer_analysis_approved_decisions": {
+      "promotion_gate": "EVIDENCE_VERIFIED_QUALIFICATION",
+      "reuse_validity": "REGISTERED_DEPENDENCY_VALIDITY",
+      "dependency_capture": "PTSIP_MACHINE_COLLECTION_WITH_VERIFIED_CONSUMER_SUPPLEMENT",
+      "dependency_completeness": "CONTRACT_BASED_DEPENDENCY_CLOSURE",
+      "dependency_contract_authority": "PTSIP_BASE_WITH_CONSUMER_EXTENSION",
+      "changed_contract_impact": "MACHINE_VERIFIED_CHANGE_IMPACT",
+      "contract_relation_authority": "PTSIP_SEMANTICS_WITH_CONSUMER_DECLARATION",
+      "relation_completeness": "CONTRACT_BOUNDARY_RELATION_CLOSURE",
+      "relation_proof_validity": "PROVEN_CHANGE_IMPACT_INHERITANCE",
+      "equivalence_verification": "PTSIP_COMMON_WITH_CONSUMER_TYPE_EXTENSION",
+      "transitive_equivalence": "REGISTERED_CONTRACT_PROOF_ONLY"
+    },
+    "unit_consumer_analysis_invariants": {
+      "promotion_requires_validated_provenance_and_scope": true,
+      "missing_dependency_or_insufficient_evidence": "FAIL_CLOSED",
+      "dependency_completeness_requires_validated_declared_boundary": true,
+      "consumer_extension_cannot_weaken_ptsip_base": true,
+      "irrelevant_change_does_not_automatically_invalidate": true,
+      "proved_no_change_impact_can_preserve_validation_effect": true,
+      "unknown_or_affecting_change_blocks_automatic_reuse": true,
+      "relation_absence_is_not_proof_of_no_impact": true,
+      "proof_bound_to_original_contract_revision": true,
+      "historical_proof_not_mutated_to_new_revision": true,
+      "equivalence_requires_compatible_result_scope_and_evidence": true,
+      "ai_can_infer_missing_dependency_or_relation": false
+    },
+    "unit_consumer_analysis_unresolved_decisions": [
+      "DEPENDENCY_AND_RELATION_EVIDENCE_PROOF_INTERFACE",
+      "CONTRACT_CHANGE_IMPACT_PROOF_INTERFACE",
+      "EQUIVALENCE_TYPE_EXTENSION_VERIFICATION_INTERFACE"
+    ],
+    "implementation_detail_authority": "PLAN"
+  },
+  "relations": {
+    "supersedes": [],
+    "amends": [],
+    "extends": [],
+    "depends_on": [
+      {
+        "policy": "SFP-INFO-0005",
+        "scope": "CONSUMER_ANALYSIS_POLICY_BOUNDARY"
+      }
+    ]
+  }
+}
