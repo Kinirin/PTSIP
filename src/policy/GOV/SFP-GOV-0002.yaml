@@ -36,47 +36,49 @@
       ],
       "source_scope": []
     },
-    "domain": "PTSIP_ENGINE",
-    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-    "approved_decisions": {
-      "evaluation_objective_source": "USER_INTENT_WITH_EXISTING_APPROVED_PROJECT_RULES",
-      "explicit_engine_choice_priority": "RESPECT_WITHIN_APPLICABLE_POLICY_LIMITS",
-      "resolver_may_invent_objective": false,
-      "no_valid_selection_preference": "PRESERVE_UNRESOLVED_CANDIDATE_SET",
-      "unresolved_authority_conflict": "ESCALATE_TO_AUTHORIZED_DECISION_OWNER",
-      "selected_engine_may_modify_normative_policy": false
-    },
-    "invariants": {
-      "source_of_objective_must_be_machine_resolvable": true,
-      "benchmark_evidence_does_not_create_selection_authority": true,
-      "unresolved_multiobjective_tradeoff_is_not_randomly_tiebroken": true,
-      "selecting_or_activating_engine_is_not_global_policy_approval": true
-    },
-    "unresolved_decisions": [
-      {
-        "id": "EVALUATION_OBJECTIVE_BINDING_PRIORITY_AND_CONFLICT_RULES",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
+    "unit_ptsip_engine_draft": {
+      "domain": "PTSIP_ENGINE",
+      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+      "approved_decisions": {
+        "evaluation_objective_source": "USER_INTENT_WITH_EXISTING_APPROVED_PROJECT_RULES",
+        "explicit_engine_choice_priority": "RESPECT_WITHIN_APPLICABLE_POLICY_LIMITS",
+        "resolver_may_invent_objective": false,
+        "no_valid_selection_preference": "PRESERVE_UNRESOLVED_CANDIDATE_SET",
+        "unresolved_authority_conflict": "ESCALATE_TO_AUTHORIZED_DECISION_OWNER",
+        "selected_engine_may_modify_normative_policy": false
       },
-      {
-        "id": "UNRANKED_MULTI_OPTIMAL_SET_PRESENTATION_TIMING",
-        "kind": "PLAN",
-        "status": "UNRESOLVED"
-      }
-    ],
-    "activation_requirements": {
-      "owner_decisions_all_resolved": true,
-      "responsibility_mapping_verified": true,
-      "conflicts_with_existing_active_policies_resolved": true,
-      "machine_contract_and_registry_validation_passed": true,
-      "explicit_separate_user_active_approval_required": true
-    },
-    "out_of_scope": [
-      "IMMEDIATE_RUNTIME_ACTIVATION",
-      "EXISTING_ACTIVE_POLICY_MUTATION",
-      "UNAPPROVED_DIRECTORY_NAMES",
-      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-    ]
+      "invariants": {
+        "source_of_objective_must_be_machine_resolvable": true,
+        "benchmark_evidence_does_not_create_selection_authority": true,
+        "unresolved_multiobjective_tradeoff_is_not_randomly_tiebroken": true,
+        "selecting_or_activating_engine_is_not_global_policy_approval": true
+      },
+      "unresolved_decisions": [
+        {
+          "id": "EVALUATION_OBJECTIVE_BINDING_PRIORITY_AND_CONFLICT_RULES",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "UNRANKED_MULTI_OPTIMAL_SET_PRESENTATION_TIMING",
+          "kind": "PLAN",
+          "status": "UNRESOLVED"
+        }
+      ],
+      "activation_requirements": {
+        "owner_decisions_all_resolved": true,
+        "responsibility_mapping_verified": true,
+        "conflicts_with_existing_active_policies_resolved": true,
+        "machine_contract_and_registry_validation_passed": true,
+        "explicit_separate_user_active_approval_required": true
+      },
+      "out_of_scope": [
+        "IMMEDIATE_RUNTIME_ACTIVATION",
+        "EXISTING_ACTIVE_POLICY_MUTATION",
+        "UNAPPROVED_DIRECTORY_NAMES",
+        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ]
+    }
   },
   "relations": {
     "supersedes": [],

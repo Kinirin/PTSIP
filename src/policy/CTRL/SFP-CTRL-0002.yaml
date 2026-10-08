@@ -36,67 +36,69 @@
       ],
       "source_scope": []
     },
-    "domain": "PTSIP_ENGINE",
-    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-    "approved_decisions": {
-      "registration_is_authorization": false,
-      "technical_conformance_is_authorization": false,
-      "activation_policy": "PREDELEGATED_SCOPE_ONLY",
-      "eligible_execution": "REQUIRES_FRESH_AUTHORIZATION_AT_EXECUTION",
-      "user_engine_default_execution": "ISOLATED",
-      "third_party_engine_default_execution": "ISOLATED",
-      "user_external_engine_nonisolated_exception": "FORBIDDEN",
-      "engine_activation_does_not_grant_isolation_exception": true,
-      "engine_selection_does_not_grant_write_permission": true
-    },
-    "invariants": {
-      "unknown_delegation": "FAIL_CLOSED",
-      "authority_revision_staleness": "FAIL_CLOSED",
-      "isolation_gate_missing": "FAIL_CLOSED",
-      "unregistered_implementation": "NOT_EXECUTABLE",
-      "same_approval_does_not_authorize_other_capabilities": true,
-      "P7_scope": "USER_AND_EXTERNAL_ENGINES_NOT_AUTOMATICALLY_OFFICIAL"
-    },
-    "unresolved_decisions": [
-      {
-        "id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
+    "unit_ptsip_engine_draft": {
+      "domain": "PTSIP_ENGINE",
+      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+      "approved_decisions": {
+        "registration_is_authorization": false,
+        "technical_conformance_is_authorization": false,
+        "activation_policy": "PREDELEGATED_SCOPE_ONLY",
+        "eligible_execution": "REQUIRES_FRESH_AUTHORIZATION_AT_EXECUTION",
+        "user_engine_default_execution": "ISOLATED",
+        "third_party_engine_default_execution": "ISOLATED",
+        "user_external_engine_nonisolated_exception": "FORBIDDEN",
+        "engine_activation_does_not_grant_isolation_exception": true,
+        "engine_selection_does_not_grant_write_permission": true
       },
-      {
-        "id": "ISOLATION_GUARANTEE_SCOPE",
-        "kind": "USER_DECISION",
-        "status": "UNRESOLVED"
+      "invariants": {
+        "unknown_delegation": "FAIL_CLOSED",
+        "authority_revision_staleness": "FAIL_CLOSED",
+        "isolation_gate_missing": "FAIL_CLOSED",
+        "unregistered_implementation": "NOT_EXECUTABLE",
+        "same_approval_does_not_authorize_other_capabilities": true,
+        "P7_scope": "USER_AND_EXTERNAL_ENGINES_NOT_AUTOMATICALLY_OFFICIAL"
       },
-      {
-        "id": "ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS",
-        "kind": "PLAN",
-        "status": "UNRESOLVED"
+      "unresolved_decisions": [
+        {
+          "id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ISOLATION_GUARANTEE_SCOPE",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS",
+          "kind": "PLAN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY",
+          "kind": "NOT_DECIDED_OUTSIDE_P7",
+          "status": "UNRESOLVED"
+        }
+      ],
+      "activation_requirements": {
+        "owner_decisions_all_resolved": true,
+        "responsibility_mapping_verified": true,
+        "conflicts_with_existing_active_policies_resolved": true,
+        "machine_contract_and_registry_validation_passed": true,
+        "explicit_separate_user_active_approval_required": true
       },
-      {
-        "id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY",
-        "kind": "NOT_DECIDED_OUTSIDE_P7",
-        "status": "UNRESOLVED"
-      }
-    ],
-    "activation_requirements": {
-      "owner_decisions_all_resolved": true,
-      "responsibility_mapping_verified": true,
-      "conflicts_with_existing_active_policies_resolved": true,
-      "machine_contract_and_registry_validation_passed": true,
-      "explicit_separate_user_active_approval_required": true
-    },
-    "out_of_scope": [
-      "IMMEDIATE_RUNTIME_ACTIVATION",
-      "EXISTING_ACTIVE_POLICY_MUTATION",
-      "UNAPPROVED_DIRECTORY_NAMES",
-      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-    ]
+      "out_of_scope": [
+        "IMMEDIATE_RUNTIME_ACTIVATION",
+        "EXISTING_ACTIVE_POLICY_MUTATION",
+        "UNAPPROVED_DIRECTORY_NAMES",
+        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ]
+    }
   },
   "relations": {
     "supersedes": [],

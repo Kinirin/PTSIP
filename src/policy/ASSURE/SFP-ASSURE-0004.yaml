@@ -36,67 +36,69 @@
       ],
       "source_scope": []
     },
-    "domain": "PTSIP_ENGINE",
-    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-    "approved_decisions": {
-      "metric_model": "COMMON_PLUS_CAPABILITY_SPECIFIC",
-      "evidence_classes": [
-        "ISOLATED_SIMULATION",
-        "OPERATIONAL_OBSERVATION"
+    "unit_ptsip_engine_draft": {
+      "domain": "PTSIP_ENGINE",
+      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+      "approved_decisions": {
+        "metric_model": "COMMON_PLUS_CAPABILITY_SPECIFIC",
+        "evidence_classes": [
+          "ISOLATED_SIMULATION",
+          "OPERATIONAL_OBSERVATION"
+        ],
+        "evidence_classes_have_distinct_provenance": true,
+        "evaluation_order": "MANDATORY_CONTRACT_CONFORMANCE_BEFORE_PERFORMANCE_RANKING",
+        "measured_performance_cannot_compensate_policy_failure": true,
+        "evaluation_objective": "POLICY_AND_USER_AUTHORIZED",
+        "ranking_model": "MULTI_OBJECTIVE_PARETO_WITH_AUTHORIZED_FURTHER_PREFERENCE",
+        "evidence_reuse": "CONDITION_AND_APPLICABILITY_VERIFIED",
+        "evidence_missing": "CONTROLLED_AUTHORIZED_AUTOMATIC_REEVALUATION",
+        "evidence_sufficient_but_unranked": "DO_NOT_INVENT_NEW_PREFERENCE",
+        "environment_sensitive_measurement": true
+      },
+      "invariants": {
+        "operational_evidence_is_not_simulation_evidence": true,
+        "snapshot_version_environment_and_workload_binding_required": true,
+        "evidence_without_coverage_not_conformance": true,
+        "benchmark_requires_fair_comparability": true,
+        "unknown_safety_or_contract_state_not_eligible_for_ranking": true,
+        "simulation_must_observe_authorized_side_effect_bounds": true
+      },
+      "unresolved_decisions": [
+        {
+          "id": "METRIC_COMMON_AND_CAPABILITY_CATALOG",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENVIRONMENT_COMPARABILITY_AND_APPLICABILITY_CRITERIA",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "EVALUATION_REEXECUTION_BUDGET_AND_CASES",
+          "kind": "PLAN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "CURRENT_PC_TELEMETRY_COLLECTION_LIMITS",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        }
       ],
-      "evidence_classes_have_distinct_provenance": true,
-      "evaluation_order": "MANDATORY_CONTRACT_CONFORMANCE_BEFORE_PERFORMANCE_RANKING",
-      "measured_performance_cannot_compensate_policy_failure": true,
-      "evaluation_objective": "POLICY_AND_USER_AUTHORIZED",
-      "ranking_model": "MULTI_OBJECTIVE_PARETO_WITH_AUTHORIZED_FURTHER_PREFERENCE",
-      "evidence_reuse": "CONDITION_AND_APPLICABILITY_VERIFIED",
-      "evidence_missing": "CONTROLLED_AUTHORIZED_AUTOMATIC_REEVALUATION",
-      "evidence_sufficient_but_unranked": "DO_NOT_INVENT_NEW_PREFERENCE",
-      "environment_sensitive_measurement": true
-    },
-    "invariants": {
-      "operational_evidence_is_not_simulation_evidence": true,
-      "snapshot_version_environment_and_workload_binding_required": true,
-      "evidence_without_coverage_not_conformance": true,
-      "benchmark_requires_fair_comparability": true,
-      "unknown_safety_or_contract_state_not_eligible_for_ranking": true,
-      "simulation_must_observe_authorized_side_effect_bounds": true
-    },
-    "unresolved_decisions": [
-      {
-        "id": "METRIC_COMMON_AND_CAPABILITY_CATALOG",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
+      "activation_requirements": {
+        "owner_decisions_all_resolved": true,
+        "responsibility_mapping_verified": true,
+        "conflicts_with_existing_active_policies_resolved": true,
+        "machine_contract_and_registry_validation_passed": true,
+        "explicit_separate_user_active_approval_required": true
       },
-      {
-        "id": "ENVIRONMENT_COMPARABILITY_AND_APPLICABILITY_CRITERIA",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "EVALUATION_REEXECUTION_BUDGET_AND_CASES",
-        "kind": "PLAN",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "CURRENT_PC_TELEMETRY_COLLECTION_LIMITS",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      }
-    ],
-    "activation_requirements": {
-      "owner_decisions_all_resolved": true,
-      "responsibility_mapping_verified": true,
-      "conflicts_with_existing_active_policies_resolved": true,
-      "machine_contract_and_registry_validation_passed": true,
-      "explicit_separate_user_active_approval_required": true
-    },
-    "out_of_scope": [
-      "IMMEDIATE_RUNTIME_ACTIVATION",
-      "EXISTING_ACTIVE_POLICY_MUTATION",
-      "UNAPPROVED_DIRECTORY_NAMES",
-      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-    ]
+      "out_of_scope": [
+        "IMMEDIATE_RUNTIME_ACTIVATION",
+        "EXISTING_ACTIVE_POLICY_MUTATION",
+        "UNAPPROVED_DIRECTORY_NAMES",
+        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ]
+    }
   },
   "relations": {
     "supersedes": [],

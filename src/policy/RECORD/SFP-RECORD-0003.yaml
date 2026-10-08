@@ -36,49 +36,51 @@
       ],
       "source_scope": []
     },
-    "domain": "PTSIP_ENGINE",
-    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-    "approved_decisions": {
-      "evidence_tracks": [
-        "ISOLATED_SIMULATION",
-        "OPERATIONAL_OBSERVATION"
-      ],
-      "reuse_requires_current_conditions_applicability": true,
-      "outcome_provenance": "ENGINE_VERSION_CONTRACT_SOURCE_ENVIRONMENT_WORKLOAD_EVALUATION_OBJECTIVE",
-      "cached_record_is_not_new_authority": true,
-      "recording_a_success_is_not_conformance": true
-    },
-    "invariants": {
-      "every_record_keeps_origin_and_observation_context": true,
-      "unlike_conditions_must_not_be_silently_merged": true,
-      "provenance_identity_must_remain_queryable": true,
-      "selection_winner_not_defined_by_most_recent_receipt": true
-    },
-    "unresolved_decisions": [
-      {
-        "id": "EVIDENCE_RECORD_AND_CACHE_DATA_MODEL",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
+    "unit_ptsip_engine_draft": {
+      "domain": "PTSIP_ENGINE",
+      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+      "approved_decisions": {
+        "evidence_tracks": [
+          "ISOLATED_SIMULATION",
+          "OPERATIONAL_OBSERVATION"
+        ],
+        "reuse_requires_current_conditions_applicability": true,
+        "outcome_provenance": "ENGINE_VERSION_CONTRACT_SOURCE_ENVIRONMENT_WORKLOAD_EVALUATION_OBJECTIVE",
+        "cached_record_is_not_new_authority": true,
+        "recording_a_success_is_not_conformance": true
       },
-      {
-        "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      }
-    ],
-    "activation_requirements": {
-      "owner_decisions_all_resolved": true,
-      "responsibility_mapping_verified": true,
-      "conflicts_with_existing_active_policies_resolved": true,
-      "machine_contract_and_registry_validation_passed": true,
-      "explicit_separate_user_active_approval_required": true
-    },
-    "out_of_scope": [
-      "IMMEDIATE_RUNTIME_ACTIVATION",
-      "EXISTING_ACTIVE_POLICY_MUTATION",
-      "UNAPPROVED_DIRECTORY_NAMES",
-      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-    ]
+      "invariants": {
+        "every_record_keeps_origin_and_observation_context": true,
+        "unlike_conditions_must_not_be_silently_merged": true,
+        "provenance_identity_must_remain_queryable": true,
+        "selection_winner_not_defined_by_most_recent_receipt": true
+      },
+      "unresolved_decisions": [
+        {
+          "id": "EVIDENCE_RECORD_AND_CACHE_DATA_MODEL",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        }
+      ],
+      "activation_requirements": {
+        "owner_decisions_all_resolved": true,
+        "responsibility_mapping_verified": true,
+        "conflicts_with_existing_active_policies_resolved": true,
+        "machine_contract_and_registry_validation_passed": true,
+        "explicit_separate_user_active_approval_required": true
+      },
+      "out_of_scope": [
+        "IMMEDIATE_RUNTIME_ACTIVATION",
+        "EXISTING_ACTIVE_POLICY_MUTATION",
+        "UNAPPROVED_DIRECTORY_NAMES",
+        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ]
+    }
   },
   "relations": {
     "supersedes": [],

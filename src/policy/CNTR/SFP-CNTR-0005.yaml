@@ -36,93 +36,95 @@
       ],
       "source_scope": []
     },
-    "domain": "PTSIP_ENGINE",
-    "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-    "approved_decisions": {
-      "engine_contract_model": "LANGUAGE_NEUTRAL_AND_AUTHORITY_AWARE",
-      "supported_languages": "NOT_PYTHON_EXCLUSIVE",
-      "required_contract_dimensions": [
-        "ENGINE_IDENTITY",
-        "CAPABILITIES",
-        "TYPED_INPUT_OUTPUT",
-        "PRECONDITIONS",
-        "POSTCONDITIONS",
-        "SIDE_EFFECTS",
-        "DECLARED_PERMISSION_REQUIREMENTS",
-        "FAILURE_SEMANTICS",
-        "VERIFICATION_EVIDENCE",
-        "COMPATIBILITY"
+    "unit_ptsip_engine_draft": {
+      "domain": "PTSIP_ENGINE",
+      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+      "approved_decisions": {
+        "engine_contract_model": "LANGUAGE_NEUTRAL_AND_AUTHORITY_AWARE",
+        "supported_languages": "NOT_PYTHON_EXCLUSIVE",
+        "required_contract_dimensions": [
+          "ENGINE_IDENTITY",
+          "CAPABILITIES",
+          "TYPED_INPUT_OUTPUT",
+          "PRECONDITIONS",
+          "POSTCONDITIONS",
+          "SIDE_EFFECTS",
+          "DECLARED_PERMISSION_REQUIREMENTS",
+          "FAILURE_SEMANTICS",
+          "VERIFICATION_EVIDENCE",
+          "COMPATIBILITY"
+        ],
+        "contract_permission_declaration_is_grant": false,
+        "engine_version_independence": "PER_ENGINE_FROM_PTSIP_TOOL_AND_SCHEMA_VERSION",
+        "official_distribution": "HYBRID_BUNDLED_OR_AUTO_INSTALLED_SEPARATE_PACKAGES",
+        "mandatory_official_engine_availability": "ALL_SEVEN_BY_DEFAULT",
+        "registry_topology": "FEDERATED_OFFICIAL_CONSUMER_EXTERNAL_OWNERSHIP_PRESERVED",
+        "resolver_selection": "HONOR_EXPLICIT_CHOICE_OR_MACHINE_RESOLVE_WITH_APPROVED_CONTRACTS",
+        "engine_override": "CONTROLLED_CAPABILITY_LEVEL_SUBSTITUTION",
+        "engine_composition": "CONTRACT_CHECKED_DYNAMIC_COMPOSITION",
+        "overall_composition_outcome_owner": "INDEPENDENT_COORDINATION_RESPONSIBILITY",
+        "outcome_owner_cannot_grant_write_authority": true,
+        "candidate_conflict_resolution": "VALIDATED_SIMULATION_EVIDENCE_BASED",
+        "environment_selection": "CURRENT_HOST_RESOURCES_AND_WORKLOAD_CONSTRAIN_SELECTION",
+        "multi_objective_ranking": "PARETO_DOMINANCE_THEN_APPROVED_PREFERENCES",
+        "in_flight_switching": "NOT_AUTHORIZED_BY_SELECTION_POLICY"
+      },
+      "invariants": {
+        "operations_require_explicit_supported_identity": true,
+        "unavailable_or_unregistered_capability_cannot_execute": true,
+        "arbitrary_cross_language_transport_is_not_implicit_authority": true,
+        "runtime_selection_cannot_override_consumer_explicit_binding": true,
+        "runtime_replacement_preserves_normative_and_verification_obligations": true,
+        "optimization_cannot_override_mandatory_constraints": true,
+        "incomplete_competing_candidate_selection": "UNRESOLVED_FAIL_CLOSED",
+        "no_automatic_in_flight_engine_transition": true
+      },
+      "unresolved_decisions": [
+        {
+          "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
+          "kind": "PLAN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
+          "kind": "RESPONSIBILITY_ANALYSIS",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        }
       ],
-      "contract_permission_declaration_is_grant": false,
-      "engine_version_independence": "PER_ENGINE_FROM_PTSIP_TOOL_AND_SCHEMA_VERSION",
-      "official_distribution": "HYBRID_BUNDLED_OR_AUTO_INSTALLED_SEPARATE_PACKAGES",
-      "mandatory_official_engine_availability": "ALL_SEVEN_BY_DEFAULT",
-      "registry_topology": "FEDERATED_OFFICIAL_CONSUMER_EXTERNAL_OWNERSHIP_PRESERVED",
-      "resolver_selection": "HONOR_EXPLICIT_CHOICE_OR_MACHINE_RESOLVE_WITH_APPROVED_CONTRACTS",
-      "engine_override": "CONTROLLED_CAPABILITY_LEVEL_SUBSTITUTION",
-      "engine_composition": "CONTRACT_CHECKED_DYNAMIC_COMPOSITION",
-      "overall_composition_outcome_owner": "INDEPENDENT_COORDINATION_RESPONSIBILITY",
-      "outcome_owner_cannot_grant_write_authority": true,
-      "candidate_conflict_resolution": "VALIDATED_SIMULATION_EVIDENCE_BASED",
-      "environment_selection": "CURRENT_HOST_RESOURCES_AND_WORKLOAD_CONSTRAIN_SELECTION",
-      "multi_objective_ranking": "PARETO_DOMINANCE_THEN_APPROVED_PREFERENCES",
-      "in_flight_switching": "NOT_AUTHORIZED_BY_SELECTION_POLICY"
-    },
-    "invariants": {
-      "operations_require_explicit_supported_identity": true,
-      "unavailable_or_unregistered_capability_cannot_execute": true,
-      "arbitrary_cross_language_transport_is_not_implicit_authority": true,
-      "runtime_selection_cannot_override_consumer_explicit_binding": true,
-      "runtime_replacement_preserves_normative_and_verification_obligations": true,
-      "optimization_cannot_override_mandatory_constraints": true,
-      "incomplete_competing_candidate_selection": "UNRESOLVED_FAIL_CLOSED",
-      "no_automatic_in_flight_engine_transition": true
-    },
-    "unresolved_decisions": [
-      {
-        "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
+      "activation_requirements": {
+        "owner_decisions_all_resolved": true,
+        "responsibility_mapping_verified": true,
+        "conflicts_with_existing_active_policies_resolved": true,
+        "machine_contract_and_registry_validation_passed": true,
+        "explicit_separate_user_active_approval_required": true
       },
-      {
-        "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
-        "kind": "PLAN",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
-        "kind": "RESPONSIBILITY_ANALYSIS",
-        "status": "UNRESOLVED"
-      },
-      {
-        "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
-        "kind": "CONTRACT_DESIGN",
-        "status": "UNRESOLVED"
-      }
-    ],
-    "activation_requirements": {
-      "owner_decisions_all_resolved": true,
-      "responsibility_mapping_verified": true,
-      "conflicts_with_existing_active_policies_resolved": true,
-      "machine_contract_and_registry_validation_passed": true,
-      "explicit_separate_user_active_approval_required": true
-    },
-    "out_of_scope": [
-      "IMMEDIATE_RUNTIME_ACTIVATION",
-      "EXISTING_ACTIVE_POLICY_MUTATION",
-      "UNAPPROVED_DIRECTORY_NAMES",
-      "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-    ]
+      "out_of_scope": [
+        "IMMEDIATE_RUNTIME_ACTIVATION",
+        "EXISTING_ACTIVE_POLICY_MUTATION",
+        "UNAPPROVED_DIRECTORY_NAMES",
+        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ]
+    }
   },
   "relations": {
     "supersedes": [],
