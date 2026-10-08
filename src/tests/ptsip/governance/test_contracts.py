@@ -120,7 +120,34 @@ def test_consumer_analysis_draft_records_only_approved_registry_and_id_direction
     assert invariants["record_identity"]["independent_ai_id_issuance"] == "FORBIDDEN"
     assert invariants["record_serialization"]["record_payload_format"] == "JSON_ONLY"
     pending = policy["authority_semantics"]["unit_consumer_analysis_unresolved_decisions"]
-    assert "RECORD_ID_NAMESPACE_AND_ALLOCATION" in pending
+    assert "RECORD_ID_PHYSICAL_FORMAT_AND_COLLISION_CHECK_CONTRACT" in pending
+    assert approved["record_id_uniqueness_scope"] == "CONSUMER_REPOSITORY"
     assert "RECORD_SERIALIZATION_FORMAT" not in pending
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
+
+
+def test_consumer_analysis_cleanup_delegation_is_operation_specific_and_nonactivating() -> None:
+    policy = _json("src/policy/CTRL/SFP-CTRL-0003.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    assert policy["responsibility_family"] == "CTRL"
+    semantics = policy["authority_semantics"]
+    approved = semantics["unit_consumer_analysis_approved_decisions"]
+    invariants = semantics["unit_consumer_analysis_invariants"]
+    assert approved["working_cleanup_execution_authority"] == "CONSUMER_PROJECT_DELEGATED_AUTOMATION"
+    assert approved["cleanup_operation_kind"] == "CONSUMER_DELEGATED_PER_OPERATION_KIND"
+    assert approved["physical_deletion_authority"] == "EXPLICIT_OPERATION_SPECIFIC_DELEGATION_REQUIRED"
+    assert approved["general_cleanup_delegation_grants_physical_deletion"] is False
+    assert approved["mandatory_record_retention"] == "PROTECTED"
+    assert invariants["cleanup_requires_operation_kind_specific_delegation"] is True
+    assert invariants["delegation_scope_must_cover_requested_operation_kind"] is True
+    assert invariants["generic_cleanup_delegation_grants_physical_deletion"] is False
+    assert invariants["physical_deletion_requires_explicit_kind_and_scope"] is True
+    assert invariants["operation_delegation_cannot_override_record_retention"] is True
+    assert invariants["unknown_or_undelegated_operation_kind"] == "FAIL_CLOSED"
+    assert invariants["cleanup_execution_requires_fresh_valid_delegation"] is True
+    assert "AUTHORIZED_CLEANUP_OPERATION_CLASSES" in semantics["unit_consumer_analysis_unresolved_decisions"]
+    record = _json("src/policy/RECORD/SFP-RECORD-0004.yaml")
+    assert record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["mandatory_record_retention"] == "PRESERVED_WITH_PRECEDENCE"
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
