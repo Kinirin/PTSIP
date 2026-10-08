@@ -26,15 +26,30 @@ authority_semantics:
     authority_split: INFO_IDENTITY_AND_REGISTRY_CNTR_LOOKUP_AND_FAILURE
     applicability: PROVIDER_BINDING_SECTION
     legacy_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
+    section_id_issuance_authority: PTSIP_AUTOMATED_ISSUANCE
+    section_id_reuse: AUTHORIZED_ID_RECLAIM
+    section_registration_mutation_authorization: AUTHORIZED_VERIFIED_MUTATION
   unit_provider_section_invariants:
     registration:
       membership_authority: INFO
       authoritative_only_if_explicitly_registered: true
       inferred_membership_confers_authority: false
+      mutation_requires_preapproved_authority: true
+      mutation_requires_machine_verifiable_conditions: true
+      qualified_mutation_without_per_case_approval_allowed: true
+      unauthorized_or_unverified_mutation: REJECT_WITHOUT_MUTATION
     identity:
       legacy_policy_id_derived_current_identity: FORBIDDEN
       legacy_unit_section_as_current_identity: FORBIDDEN
       semantic_name_or_source_pointer_inference: FORBIDDEN
+      issuance:
+        issuer: PTSIP
+        automated_issuance_allowed: true
+        issuance_alone_confers_membership: false
+      reclaim:
+        explicit_reclaim_authority_required: true
+        active_reference_absence_required: true
+        reclaimed_identity_must_not_rewrite_history: true
     authority_boundary:
       info_owns_identity_and_registry_membership: true
       cntr_owns_registered_lookup_and_failure_contract: true
@@ -45,9 +60,7 @@ authority_semantics:
     INFO: OPAQUE_SECTION_IDENTITY_AND_EXPLICIT_REGISTRY_MEMBERSHIP
     CNTR: REGISTERED_SECTION_LOOKUP_RESULT_AND_FAILURE_CONTRACT
     PLAN: REGISTRATION_STORAGE_RESOLUTION_AND_MIGRATION_MECHANICS
-  unit_provider_section_unresolved_decisions:
-    - SECTION_ID_ISSUANCE_AND_REUSE
-    - SECTION_REGISTRATION_MUTATION_AUTHORIZATION
+  unit_provider_section_unresolved_decisions: []
 relations:
   supersedes: []
   amends: []
