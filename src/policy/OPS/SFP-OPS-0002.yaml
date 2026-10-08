@@ -21,6 +21,21 @@
     "schema_version": 1
   },
   "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION",
+          "statement": "지원된 operation의 실패 분류, 회복과 canonical namespace 유지 조건을 정한다. 충돌 source, stale lock 또는 모호한 journal을 임의 폐기하지 않는다.",
+          "non_substitutability": "REAL의 단일 성공 write나 SUPPLY의 환경 공급이 장애 이후 authority 보존과 운영 회복 책임을 대체하지 못한다."
+        },
+        {
+          "id": "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION",
+          "statement": "계약에 정의된 operation ID와 expected revision을 보존해 재시도하고 conflict를 검토 가능하게 유지한다. RESERVED .ptsip/tasks 또는 .ptsip/runtime의 미정 persistence 의미를 새로 정의하지 않는다.",
+          "non_substitutability": "CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및 운영 연속성을 대신 정의하지 않는다."
+        }
+      ],
+      "source_scope": []
+    },
     "domain": "PTSIP_ENGINE",
     "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
     "approved_decisions": {

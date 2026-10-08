@@ -21,6 +21,21 @@
     "schema_version": 1
   },
   "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
+          "statement": "report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.",
+          "non_substitutability": "ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source provenance를 자동 보존하지 않는다."
+        },
+        {
+          "id": "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL",
+          "statement": "operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운 global authority나 live canonical source가 되지 않는다.",
+          "non_substitutability": "GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와 원본 receipt를 대체하지 못한다."
+        }
+      ],
+      "source_scope": []
+    },
     "domain": "PTSIP_ENGINE",
     "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
     "approved_decisions": {
