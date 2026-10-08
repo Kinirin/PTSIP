@@ -21,6 +21,21 @@
     "schema_version": 1
   },
   "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+          "statement": "실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority 읽기를 생략하지 않는다.",
+          "non_substitutability": "GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다."
+        },
+        {
+          "id": "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE",
+          "statement": "expected revision, operation identity와 등록된 transition 조건으로 stale writer 및 무권한 mutation을 차단한다. unresolved 관계는 fail-closed한다.",
+          "non_substitutability": "REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들 수 없다."
+        }
+      ],
+      "source_scope": []
+    },
     "domain": "PTSIP_ENGINE",
     "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
     "approved_decisions": {
