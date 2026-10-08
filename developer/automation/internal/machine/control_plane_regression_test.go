@@ -254,14 +254,8 @@ func TestCurrentPolicyIndexesCoverCanonicalCorpusAndKeepHistoricalSourcesAuditOn
 			if id != fmt.Sprintf("SFP-%04d", i+1) || entry["authority_role"] != "MIGRATION_SOURCE" {
 				t.Fatal(entry)
 			}
-			status := "ACTIVE"
-			if i == 3 {
-				status = "DRAFT"
-			}
-			if i == 5 {
-				status = "RETIRED"
-			}
-			if entry["status"] != status {
+			// Migration-source entries are archival evidence, never current policy authority.
+			if entry["status"] != "RETIRED" || entry["path"] != fmt.Sprintf("legacy/SFP-%04d.yaml", i+1) {
 				t.Fatal(entry)
 			}
 			continue
