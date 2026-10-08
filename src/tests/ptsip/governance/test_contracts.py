@@ -111,11 +111,16 @@ def test_consumer_analysis_draft_records_only_approved_registry_and_id_direction
     assert approved["schema_root"] == ".ptsip/analysis/schemas/"
     assert approved["record_root"] == ".ptsip/analysis/records/"
     assert approved["record_identity"] == "OPAQUE_STABLE_ID"
+    assert approved["record_id_issuance_authority"] == "PTSIP_AUTOMATED"
+    assert approved["record_serialization_format"] == "JSON_ONLY"
     assert approved["resolution"] == "EXACT_ID_TO_REGISTERED_RECORD_REF"
     invariants = policy["authority_semantics"]["unit_consumer_analysis_invariants"]
     assert invariants["record_identity"]["id_to_path_derivation"] == "FORBIDDEN"
+    assert invariants["record_identity"]["issuer"] == "PTSIP"
+    assert invariants["record_identity"]["independent_ai_id_issuance"] == "FORBIDDEN"
+    assert invariants["record_serialization"]["record_payload_format"] == "JSON_ONLY"
     pending = policy["authority_semantics"]["unit_consumer_analysis_unresolved_decisions"]
     assert "RECORD_ID_NAMESPACE_AND_ALLOCATION" in pending
-    assert "RECORD_SERIALIZATION_FORMAT" in pending
+    assert "RECORD_SERIALIZATION_FORMAT" not in pending
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)

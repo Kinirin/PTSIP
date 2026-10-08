@@ -32,6 +32,8 @@ authority_semantics:
     schema_root: .ptsip/analysis/schemas/
     record_root: .ptsip/analysis/records/
     record_identity: OPAQUE_STABLE_ID
+    record_id_issuance_authority: PTSIP_AUTOMATED
+    record_serialization_format: JSON_ONLY
     record_membership: EXPLICIT_REGISTRY_ONLY
     record_reference: REGISTERED_EXPLICIT_PATH
     resolution: EXACT_ID_TO_REGISTERED_RECORD_REF
@@ -41,11 +43,15 @@ authority_semantics:
       path_authority: EXPLICIT_RECORD_REF
       filesystem_discovery_confers_authority: false
     record_identity:
+      issuer: PTSIP
+      independent_ai_id_issuance: FORBIDDEN
       descriptive_semantic_inference: FORBIDDEN
       timestamp_semantic_inference: FORBIDDEN
       filename_to_id_inference: FORBIDDEN
       id_to_filename_inference: FORBIDDEN
       id_to_path_derivation: FORBIDDEN
+    record_serialization:
+      record_payload_format: JSON_ONLY
     lookup:
       unregistered_identity: FAIL_CLOSED
       ambiguous_identity: FAIL_CLOSED
@@ -62,7 +68,6 @@ authority_semantics:
     PLAN: SERIALIZATION_EXECUTION_AND_FILE_WRITE_MECHANICS
   unit_consumer_analysis_unresolved_decisions:
     - RECORD_ID_NAMESPACE_AND_ALLOCATION
-    - RECORD_SERIALIZATION_FORMAT
     - RECORD_DATA_MODEL_AND_SCHEMA
     - RECORD_CREATION_AND_REGISTRATION_ATOMICITY
     - RECORD_RETENTION_SCOPE
