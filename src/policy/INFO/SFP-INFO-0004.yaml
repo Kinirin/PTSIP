@@ -28,6 +28,7 @@ authority_semantics:
     component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
     component_grouping_authority: AUTOMATED_GROUPING_WITH_PROJECT_OVERRIDE
     automatic_grouping_primary_objective: MANAGEABILITY_FIRST
+    grouping_stability: GLOBAL_REOPTIMIZATION
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
