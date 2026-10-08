@@ -25,6 +25,7 @@ authority_semantics:
     logical_profile_model: SINGLE_LOGICAL_PROFILE
     source_membership_authority: REGISTERED_MEMBERSHIP
     component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
+    component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
@@ -32,6 +33,8 @@ authority_semantics:
     component_declaration:
       exact_source_owner_per_component: ONE
       field_level_fragmentation: FORBIDDEN
+    component_source:
+      multiple_components_may_share_source: true
     source_membership:
       authoritative_only_if_explicitly_registered: true
       filesystem_discovery_confers_authority: false
