@@ -69,7 +69,8 @@
           "COMPOSITION",
           "TRANSPORT",
           "LIFECYCLE"
-        ]
+        ],
+        "internal_hierarchy_model": "DECLARATION_BASED_VARIABLE_HIERARCHY"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -81,7 +82,11 @@
         "capability_contract_boundary_survives_implementation_sharing": true,
         "existing_architecture_and_public_contracts_must_not_be_silently_reassigned": true,
         "user_source_never_mistaken_for_official_source": true,
-        "exact_directory_names_approved": false
+        "exact_directory_names_approved": false,
+        "hierarchy_depth_may_vary_by_declared_responsibility": true,
+        "fixed_intermediate_role_grouping_is_mandatory": false,
+        "flat_only_hierarchy_is_mandatory": false,
+        "concrete_hierarchy_requires_explicit_responsibility_map": true
       },
       "unresolved_decisions": [
         {
@@ -100,7 +105,7 @@
           "status": "UNRESOLVED"
         },
         {
-          "id": "INTERNAL_HIERARCHY_AND_PHYSICAL_PACKAGE_LAYOUT",
+          "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
           "kind": "USER_DECISION",
           "status": "UNRESOLVED"
         },
@@ -132,6 +137,16 @@
         "EXISTING_ACTIVE_POLICY_MUTATION",
         "UNAPPROVED_DIRECTORY_NAMES",
         "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ],
+      "resolved_decisions": [
+        {
+          "id": "INTERNAL_HIERARCHY_PRINCIPLE",
+          "source_unresolved_id": "INTERNAL_HIERARCHY_AND_PHYSICAL_PACKAGE_LAYOUT",
+          "selected_option": "C_DECLARATION_BASED_VARIABLE_HIERARCHY",
+          "resolution_scope": "HIERARCHY_PRINCIPLE_ONLY",
+          "remaining_unresolved_id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
+          "approval_source": "USER_EXPLICIT"
+        }
       ]
     }
   },
