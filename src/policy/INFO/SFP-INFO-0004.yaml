@@ -1,0 +1,40 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0004
+  title: Project Profile Source Composition
+  status: DRAFT
+authority_subject:
+  id: SUP_PROJECT_PROFILE_SOURCE_COMPOSITION
+  statement: Consumer Project Profile의 source 구성원과 논리적 구성 단위를 관리한다. Responsibility Map 의미 권위는 소유하지 않는다.
+exclusive_kernel:
+  - SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  domain: PROJECT_PROFILE_SOURCE_COMPOSITION
+  target: CONSUMER_PROJECT_PROFILE
+  independence:
+    responsibility_map_semantic_authority: EXCLUDED
+    legacy_policy_implicit_inheritance: FORBIDDEN
+  approved_decisions:
+    policy_direction: INDEPENDENT_SOURCE_COMPOSITION
+    logical_profile_model: SINGLE_LOGICAL_PROFILE
+  invariants:
+    logical_profile_identity: SINGLE
+    physical_source_artifacts: ONE_OR_MORE
+    fragment_count_creates_independent_profile_authority: false
+  unresolved_decisions:
+    - SOURCE_MEMBERSHIP_AUTHORITY
+    - COMPONENT_FRAGMENT_OWNERSHIP
+    - RELATIONSHIP_FRAGMENT_OWNERSHIP
+    - SOURCE_CHANGE_AND_ASSEMBLY_CONSISTENCY
+  implementation_detail_authority: PLAN
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
