@@ -48,7 +48,8 @@
         "third_party_engine_default_execution": "ISOLATED",
         "user_external_engine_nonisolated_exception": "FORBIDDEN",
         "engine_activation_does_not_grant_isolation_exception": true,
-        "engine_selection_does_not_grant_write_permission": true
+        "engine_selection_does_not_grant_write_permission": true,
+        "isolation_guarantee_scope": "EXECUTION_AND_PERMISSION_BOUNDARY"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -56,17 +57,17 @@
         "isolation_gate_missing": "FAIL_CLOSED",
         "unregistered_implementation": "NOT_EXECUTABLE",
         "same_approval_does_not_authorize_other_capabilities": true,
-        "P7_scope": "USER_AND_EXTERNAL_ENGINES_NOT_AUTOMATICALLY_OFFICIAL"
+        "P7_scope": "USER_AND_EXTERNAL_ENGINES_NOT_AUTOMATICALLY_OFFICIAL",
+        "user_external_engine_execution_environment_separation_required": true,
+        "out_of_scope_host_access_must_be_restricted_at_isolation_boundary": true,
+        "activation_or_registration_does_not_expand_granted_access": true,
+        "unenforceable_required_boundary_cannot_qualify_for_execution": true,
+        "isolation_guarantee_is_not_universal_security_sandbox_claim": true
       },
       "unresolved_decisions": [
         {
           "id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "ISOLATION_GUARANTEE_SCOPE",
-          "kind": "USER_DECISION",
           "status": "UNRESOLVED"
         },
         {
@@ -97,6 +98,16 @@
         "EXISTING_ACTIVE_POLICY_MUTATION",
         "UNAPPROVED_DIRECTORY_NAMES",
         "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ],
+      "resolved_decisions": [
+        {
+          "id": "ISOLATION_GUARANTEE_SCOPE",
+          "selected_option": "B_EXECUTION_AND_PERMISSION_BOUNDARY",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "BOUNDARY_OBLIGATION_ONLY",
+          "implementation_mechanism": "NOT_DECIDED",
+          "resource_exhaustion_semantics": "NOT_DECIDED"
+        }
       ]
     }
   },
