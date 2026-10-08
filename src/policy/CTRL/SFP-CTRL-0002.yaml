@@ -49,7 +49,8 @@
         "user_external_engine_nonisolated_exception": "FORBIDDEN",
         "engine_activation_does_not_grant_isolation_exception": true,
         "engine_selection_does_not_grant_write_permission": true,
-        "isolation_guarantee_scope": "EXECUTION_AND_PERMISSION_BOUNDARY"
+        "isolation_guarantee_scope": "EXECUTION_AND_PERMISSION_BOUNDARY",
+        "resource_containment_policy": "PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -62,7 +63,13 @@
         "out_of_scope_host_access_must_be_restricted_at_isolation_boundary": true,
         "activation_or_registration_does_not_expand_granted_access": true,
         "unenforceable_required_boundary_cannot_qualify_for_execution": true,
-        "isolation_guarantee_is_not_universal_security_sandbox_claim": true
+        "isolation_guarantee_is_not_universal_security_sandbox_claim": true,
+        "resource_budget_scope": "USER_AND_EXTERNAL_ENGINES",
+        "resource_budget_selection_basis": "AUTHORIZED_CAPABILITY_AND_TASK_CONTRACT",
+        "resource_budget_enforcement_required_before_execution": true,
+        "missing_or_unenforceable_required_budget": "FAIL_CLOSED",
+        "model_may_invent_default_resource_budget": false,
+        "resource_budget_grants_additional_access_authority": false
       },
       "unresolved_decisions": [
         {
@@ -71,9 +78,10 @@
           "status": "UNRESOLVED"
         },
         {
-          "id": "ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS",
+          "id": "ISOLATION_MECHANISM_AND_BUDGET_ENFORCEMENT_PLAN",
           "kind": "PLAN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "source_unresolved_id": "ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS"
         },
         {
           "id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR",
@@ -107,6 +115,15 @@
           "resolution_scope": "BOUNDARY_OBLIGATION_ONLY",
           "implementation_mechanism": "NOT_DECIDED",
           "resource_exhaustion_semantics": "NOT_DECIDED"
+        },
+        {
+          "id": "RESOURCE_CONTAINMENT_DIRECTION",
+          "selected_option": "B_PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_RESOURCE_BUDGET_POLICY_ONLY",
+          "numeric_limits": "NOT_DECIDED",
+          "implementation_mechanism": "NOT_DECIDED",
+          "resource_exhaustion_failure_semantics": "NOT_DECIDED"
         }
       ]
     }
