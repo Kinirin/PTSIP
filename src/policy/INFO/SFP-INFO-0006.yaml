@@ -1,0 +1,55 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0006
+  title: Registered Provider Section Identity Ownership
+  status: DRAFT
+authority_subject:
+  id: SUP_PROVIDER_SECTION_IDENTITY_MEMBERSHIP
+  statement: 현재 Support provider_binding.section의 불투명 식별자와 명시적 Registry 구성원 권위를 소유한다. CNTR의 조회 및 실패 계약을 소유하지 않는다.
+exclusive_kernel:
+  - SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+      - id: SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
+        statement: provider_binding.section의 현행 식별자는 불투명한 명시적 Registry 구성원으로 결정된다. 과거 정책 ID와 이로부터 유래한 섹션 이름은 현재 식별자 권위를 부여하지 않는다.
+        non_substitutability: CNTR의 조회 성공, Legacy migration 기록 또는 구현의 이름 유추는 INFO의 식별자 등록 권위를 대신하지 않는다.
+    source_scope: []
+  unit_provider_section_approved_decisions:
+    identity_model: OPAQUE_REGISTERED_IDENTIFIER
+    authority_split: INFO_IDENTITY_AND_REGISTRY_CNTR_LOOKUP_AND_FAILURE
+    applicability: PROVIDER_BINDING_SECTION
+    legacy_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
+  unit_provider_section_invariants:
+    registration:
+      membership_authority: INFO
+      authoritative_only_if_explicitly_registered: true
+      inferred_membership_confers_authority: false
+    identity:
+      legacy_policy_id_derived_current_identity: FORBIDDEN
+      legacy_unit_section_as_current_identity: FORBIDDEN
+      semantic_name_or_source_pointer_inference: FORBIDDEN
+    authority_boundary:
+      info_owns_identity_and_registry_membership: true
+      cntr_owns_registered_lookup_and_failure_contract: true
+      cntr_may_create_identity_authority: false
+      history_audit_may_confer_current_authority: false
+      existing_active_cntr_contract_implicitly_redefined: false
+  unit_provider_section_separate_responsibilities:
+    INFO: OPAQUE_SECTION_IDENTITY_AND_EXPLICIT_REGISTRY_MEMBERSHIP
+    CNTR: REGISTERED_SECTION_LOOKUP_RESULT_AND_FAILURE_CONTRACT
+    PLAN: REGISTRATION_STORAGE_RESOLUTION_AND_MIGRATION_MECHANICS
+  unit_provider_section_unresolved_decisions:
+    - SECTION_ID_ISSUANCE_AND_REUSE
+    - SECTION_REGISTRATION_MUTATION_AUTHORIZATION
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
