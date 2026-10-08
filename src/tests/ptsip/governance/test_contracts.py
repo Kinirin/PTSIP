@@ -84,15 +84,19 @@ def test_support_policy_canonical_layout_has_no_legacy_specdata_authority() -> N
     assert not (ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml").exists()
     assert not list((ROOT / "src" / "ptsip" / "specdata").glob("SFP-*.yaml"))
 
-def test_support_legacy_policy_catalog_preserves_history_but_retires_active_sources() -> None:
+def test_support_legacy_policy_catalog_preserves_history_and_retires_all_sources() -> None:
     index = _yaml("src/policy/index.yaml")
     registry = _json("src/policy/registries/root-family-migration.json")
     entries = {entry["id"]: entry for entry in index["policies"]}
     for source in registry["sources"]:
         entry = entries[source["source_policy_id"]]
         assert entry["authority_role"] == "MIGRATION_SOURCE"
-        assert entry["status"] == (
-            "RETIRED" if source["source_status"] == "ACTIVE" else source["source_status"]
-        )
+        assert entry["status"] == "RETIRED"
     schema = _json("src/policy/schemas/ptsip-support-feature-policy-index.schema.json")
     Draft202012Validator(schema).validate(index)
+
+    # Neither the historical ACTIVE nor DRAFT lifecycle is a current authority.
+    for forbidden_status in ("ACTIVE", "DRAFT"):
+        altered = json.loads(json.dumps(index))
+        next(item for item in altered["policies"] if item["id"] == "SFP-0004")["status"] = forbidden_status
+        assert not Draft202012Validator(schema).is_valid(altered)
