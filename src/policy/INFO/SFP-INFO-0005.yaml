@@ -33,8 +33,16 @@ authority_semantics:
     record_root: .ptsip/analysis/records/
     record_identity: OPAQUE_STABLE_ID
     record_id_issuance_authority: PTSIP_AUTOMATED
+    record_id_uniqueness_scope: CONSUMER_REPOSITORY
+    record_id_generation_strategy: INDEPENDENT_COLLISION_RESISTANT_OPAQUE
     record_serialization_format: JSON_ONLY
+    record_schema_model: COMMON_STRUCTURE_PLUS_ANALYSIS_TYPE_SCHEMAS
+    record_tiers: WORKING_AND_REUSABLE
+    reusable_qualification: EVIDENCE_VERIFIED
+    record_registration_atomicity: LOGICAL_AUTHORITY_ATOMICITY
     record_membership: EXPLICIT_REGISTRY_ONLY
+    working_registration_does_not_grant_reuse: true
+    reusable_registration_requires_completed_qualification: true
     record_reference: REGISTERED_EXPLICIT_PATH
     resolution: EXACT_ID_TO_REGISTERED_RECORD_REF
   unit_consumer_analysis_invariants:
@@ -44,6 +52,8 @@ authority_semantics:
       filesystem_discovery_confers_authority: false
     record_identity:
       issuer: PTSIP
+      uniqueness_scope: CONSUMER_REPOSITORY
+      independent_collision_resistant_generation: REQUIRED
       independent_ai_id_issuance: FORBIDDEN
       descriptive_semantic_inference: FORBIDDEN
       timestamp_semantic_inference: FORBIDDEN
@@ -52,6 +62,14 @@ authority_semantics:
       id_to_path_derivation: FORBIDDEN
     record_serialization:
       record_payload_format: JSON_ONLY
+      common_and_type_specific_schema_required: true
+    registration:
+      logical_authority_atomicity: REQUIRED
+      incomplete_record_or_registry_mutation_confers_reuse_authority: false
+      incomplete_registration: FAIL_CLOSED
+    tiers:
+      working_reuse_authority: false
+      reusable_requires_evidence_verified_qualification: true
     lookup:
       unregistered_identity: FAIL_CLOSED
       ambiguous_identity: FAIL_CLOSED
@@ -66,11 +84,15 @@ authority_semantics:
     CNTR: TYPED_RESOLVER_OPERATION_AND_FAILURE_INTERFACE
     GOV: NO_UNAUTHORIZED_PROMOTION_TO_PROJECT_AUTHORITY
     PLAN: SERIALIZATION_EXECUTION_AND_FILE_WRITE_MECHANICS
+  unit_consumer_analysis_policy_family_refs:
+    RECORD: SFP-RECORD-0004
+    CNTR: SFP-CNTR-0006
+    ASSURE: SFP-ASSURE-0005
+    CTRL: SFP-CTRL-0003
   unit_consumer_analysis_unresolved_decisions:
-    - RECORD_ID_NAMESPACE_AND_ALLOCATION
-    - RECORD_DATA_MODEL_AND_SCHEMA
-    - RECORD_CREATION_AND_REGISTRATION_ATOMICITY
-    - RECORD_RETENTION_SCOPE
+    - RECORD_ID_PHYSICAL_FORMAT_AND_COLLISION_CHECK_CONTRACT
+    - COMMON_AND_TYPE_SPECIFIC_SCHEMA_FIELD_CONTRACT
+    - REUSABLE_RETENTION_SCOPE
     - CONTEXT_ANALYSIS_REFERENCE_SEMANTICS
 relations:
   supersedes: []
