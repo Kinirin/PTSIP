@@ -1,0 +1,82 @@
+{
+  "schema_version": "ptsip-support-root-family-policy/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "responsibility_family": "CNTR",
+  "policy": {
+    "id": "SFP-CNTR-0006",
+    "title": "Consumer Analysis Reusable Resolver and Candidate Selection (DRAFT)",
+    "status": "DRAFT"
+  },
+  "authority_subject": {
+    "id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
+  },
+  "exclusive_kernel": [
+    "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+    "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY"
+  ],
+  "authority_contract": {
+    "authority_type": "ROOT_FAMILY_CNTR",
+    "schema_id": "ptsip.governance/root-family/cntr",
+    "schema_version": 1
+  },
+  "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+          "statement": "지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.",
+          "non_substitutability": "INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다."
+        },
+        {
+          "id": "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY",
+          "statement": "지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.",
+          "non_substitutability": "OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다."
+        }
+      ],
+      "source_scope": []
+    },
+    "unit_consumer_analysis_approved_decisions": {
+      "discovery": "EXACT_LOOKUP_PLUS_REGISTERED_RELATION_EXPANSION",
+      "selection": "CONTRACT_BASED_DETERMINISTIC_SELECTION",
+      "candidate_scope": "CONTRACT_DERIVED_CANDIDATE_CLOSURE",
+      "equivalent_candidates": "VERIFIED_LOGICAL_EQUIVALENCE",
+      "equivalence_definition_authority": "PTSIP_COMMON_SEMANTICS_WITH_CONSUMER_TYPE_EXTENSION",
+      "equivalence_transitivity": "CONTRACT_VERIFIED_EQUIVALENCE_TRANSITIVITY",
+      "relation_semantics_owner": "PTSIP",
+      "actual_relation_declaration_owner": "CONSUMER_PROJECT",
+      "project_selection_contract": "REGISTERED",
+      "manual_candidate_scope_list": "NOT_REQUIRED",
+      "per_record_equivalence_links": "NOT_REQUIRED"
+    },
+    "unit_consumer_analysis_invariants": {
+      "filename_or_ai_semantic_discovery": "FORBIDDEN",
+      "relations_must_be_registered": true,
+      "no_relation_found_is_no_impact_proof": false,
+      "selection_requires_complete_derived_candidate_set": true,
+      "selection_requires_unique_verified_logical_result": true,
+      "multiple_non_equivalent_or_unresolvable_candidates": "FAIL_CLOSED",
+      "physical_record_id_must_remain_distinct": true,
+      "transitivity_requires_validated_contract_scope_and_compatibility": true,
+      "unproved_equivalence_or_transitivity": "FAIL_CLOSED",
+      "no_manual_duplicate_reference_management": true
+    },
+    "unit_consumer_analysis_unresolved_decisions": [
+      "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
+      "SELECTION_CONTRACT_COMPARISON_DIMENSIONS",
+      "EQUIVALENCE_PROOF_INTERFACE"
+    ],
+    "implementation_detail_authority": "PLAN"
+  },
+  "relations": {
+    "supersedes": [],
+    "amends": [],
+    "extends": [],
+    "depends_on": [
+      {
+        "policy": "SFP-INFO-0005",
+        "scope": "CONSUMER_ANALYSIS_POLICY_BOUNDARY"
+      }
+    ]
+  }
+}
