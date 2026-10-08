@@ -42,7 +42,9 @@
       "mandatory_record_retention": "PROTECTED",
       "per_record_approval_with_valid_delegation": "NOT_REQUIRED",
       "automatic_cleanup_without_delegation": "FORBIDDEN",
-      "cleanup_operation_kind": "UNRESOLVED"
+      "cleanup_operation_kind": "CONSUMER_DELEGATED_PER_OPERATION_KIND",
+      "physical_deletion_authority": "EXPLICIT_OPERATION_SPECIFIC_DELEGATION_REQUIRED",
+      "general_cleanup_delegation_grants_physical_deletion": false
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -53,7 +55,13 @@
       "missing_ambiguous_or_revoked_delegation": "FAIL_CLOSED",
       "unapproved_cleanup_operation": "FORBIDDEN",
       "ai_may_invent_delegated_scope": false,
-      "ptsip_policy_does_not_itself_grant_consumer_cleanup_permission": true
+      "ptsip_policy_does_not_itself_grant_consumer_cleanup_permission": true,
+      "cleanup_requires_operation_kind_specific_delegation": true,
+      "delegation_scope_must_cover_requested_operation_kind": true,
+      "unknown_or_undelegated_operation_kind": "FAIL_CLOSED",
+      "generic_cleanup_delegation_grants_physical_deletion": false,
+      "physical_deletion_requires_explicit_kind_and_scope": true,
+      "operation_delegation_cannot_override_record_retention": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
