@@ -26,6 +26,7 @@ authority_semantics:
     source_membership_authority: REGISTERED_MEMBERSHIP
     component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
     component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
+    component_grouping_authority: AUTOMATED_GROUPING_WITH_PROJECT_OVERRIDE
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
@@ -35,11 +36,16 @@ authority_semantics:
       field_level_fragmentation: FORBIDDEN
     component_source:
       multiple_components_may_share_source: true
+    component_grouping:
+      automated_grouping_requires_approved_rule: true
+      explicit_project_override_allowed: true
+      grouping_changes_responsibility_map_semantics: false
     source_membership:
       authoritative_only_if_explicitly_registered: true
       filesystem_discovery_confers_authority: false
       automated_registration_requires_authorized_operation: true
   unresolved_decisions:
+    - AUTOMATED_GROUPING_STRATEGY
     - RELATIONSHIP_FRAGMENT_OWNERSHIP
     - SOURCE_CHANGE_AND_ASSEMBLY_CONSISTENCY
   implementation_detail_authority: PLAN
