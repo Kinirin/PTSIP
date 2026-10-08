@@ -30,6 +30,7 @@ authority_semantics:
     automatic_grouping_primary_objective: MANAGEABILITY_FIRST
     grouping_stability: GLOBAL_REOPTIMIZATION
     relationship_source_ownership: PROFILE_LEVEL_RELATIONSHIP_OWNERSHIP
+    relationship_source_partitioning: MULTI_RELATIONSHIP_SOURCE_ALLOWED
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
@@ -46,13 +47,14 @@ authority_semantics:
     relationship_source:
       ownership_scope: LOGICAL_PROFILE
       component_source_ownership: FORBIDDEN
+      multiple_sources_allowed: true
     source_membership:
       authoritative_only_if_explicitly_registered: true
       filesystem_discovery_confers_authority: false
       automated_registration_requires_authorized_operation: true
   unresolved_decisions:
     - AUTOMATED_GROUPING_STRATEGY
-    - RELATIONSHIP_SOURCE_PARTITIONING
+    - RELATIONSHIP_DECLARATION_OWNERSHIP
     - SOURCE_CHANGE_AND_ASSEMBLY_CONSISTENCY
   implementation_detail_authority: PLAN
 relations:
