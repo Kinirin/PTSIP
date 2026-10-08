@@ -51,7 +51,12 @@
         "engine_selection_does_not_grant_write_permission": true,
         "isolation_guarantee_scope": "EXECUTION_AND_PERMISSION_BOUNDARY",
         "resource_containment_policy": "PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET",
-        "resource_exhaustion_failure_direction": "EXECUTION_ATTEMPT_FAILURE_SEPARATE_FROM_WORK_EFFECT_STATE"
+        "resource_exhaustion_failure_direction": "EXECUTION_ATTEMPT_FAILURE_SEPARATE_FROM_WORK_EFFECT_STATE",
+        "official_engine_isolation_policy": "CAPABILITY_CONTRACT_DECLARED_EXECUTION_BOUNDARY",
+        "official_engine_allowed_isolation_modes": [
+          "IN_PROCESS",
+          "ISOLATED"
+        ]
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -75,7 +80,14 @@
         "work_effect_state_is_independently_assessed": true,
         "resource_exhaustion_attempt_failure_does_not_prove_rollback": true,
         "unresolved_work_effects_cannot_be_inferred_as_success": true,
-        "recovery_or_retry_require_independent_preexisting_authority": true
+        "recovery_or_retry_require_independent_preexisting_authority": true,
+        "official_capability_isolation_mode_must_be_explicitly_declared": true,
+        "missing_invalid_or_ambiguous_official_isolation_declaration": "FAIL_CLOSED",
+        "official_status_must_be_verified_by_identity_and_provenance": true,
+        "package_installation_path_alone_proves_official_status": false,
+        "resolver_cannot_infer_or_override_official_isolation_mode": true,
+        "consumer_external_engine_isolation_mandate_unaffected": true,
+        "user_external_engine_in_process_override_permitted": false
       },
       "unresolved_decisions": [
         {
@@ -96,9 +108,16 @@
           "source_unresolved_id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR"
         },
         {
-          "id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY",
-          "kind": "NOT_DECIDED_OUTSIDE_P7",
-          "status": "UNRESOLVED"
+          "id": "OFFICIAL_CAPABILITY_ISOLATION_MODE_DECLARATION_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED",
+          "source_unresolved_id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY"
+        },
+        {
+          "id": "OFFICIAL_CAPABILITY_ISOLATION_MODE_MAPPING",
+          "kind": "RESPONSIBILITY_ANALYSIS",
+          "status": "UNRESOLVED",
+          "source_unresolved_id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY"
         }
       ],
       "activation_requirements": {
@@ -139,6 +158,15 @@
           "resolution_scope": "HIGH_LEVEL_FAILURE_MEANING_ONLY",
           "work_effect_taxonomy": "NOT_DECIDED",
           "recovery_transition_protocol": "NOT_DECIDED"
+        },
+        {
+          "id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY",
+          "selected_option": "C_CAPABILITY_CONTRACT_DECLARED_ISOLATION",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "OFFICIAL_ENGINE_HIGH_LEVEL_DIRECTION_ONLY",
+          "actual_capability_modes": "NOT_DECIDED",
+          "contract_shape": "NOT_DECIDED",
+          "concrete_execution_technology": "NOT_DECIDED"
         }
       ]
     }
