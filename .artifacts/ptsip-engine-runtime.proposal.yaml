@@ -1,0 +1,94 @@
+proposal:
+  kind: PTSIP_ENGINE_RUNTIME_IMPLEMENTATION_AND_PORTABILITY
+  status: DRAFT
+  authority: false
+  canonical_policy_id: MPD-REAL-0006
+  canonical_admission: LANGUAGE_SELECTION_REGISTERED_AS_APPROVED
+  runtime_activation_authorized: false
+  implementation_location: NOT_ALLOCATED
+  canonical_policy_ref: developer/policy/REAL/MPD-REAL-0006.yaml
+  canonical_plan_ref: developer/planning/0.3.8/0.3.8a3/WU-08/WU-08-P01.yaml
+  policy_plan_binding_id: PPB-0025
+
+confirmed_user_scope:
+  operating_systems: [WINDOWS, LINUX, MACOS]
+  execution_environments: [LOCAL_CLI, CI, SERVER]
+
+current_registered_basis:
+  language_neutral_semantics:
+    policy: MPD-NORM-0001
+    section: rules.unit_mpd_spec_0021_ac00c052d412
+    meaning: LANGUAGE_NEUTRAL_MACHINE_CONTRACT_OWNS_NORMATIVE_RULES
+  engine_boundary:
+    policy: SFP-ARCH-0001
+    section: authority_semantics.engine_plane_boundary
+    installed_implementation_owner: INSTALLED_PTSIP_PACKAGE
+    repository_local_root: .ptsip/engine/
+    executable_source_copy_into_local_root: FORBIDDEN
+    current_state_contract: DEFERRED
+    current_schema_contract: DEFERRED
+    current_runtime_activation: DEFERRED
+  approved_planning_entry:
+    branch: dev/0.3.8
+    document: developer/planning/0.3.8/0.3.8a3/index.yaml
+    existing_authorization_excludes: GO_CANONICAL_RUNTIME_ACTIVATION
+
+proposed_implementation_binding:
+  primary_language: GO
+  selection_status: APPROVED_BY_USER_EXPLICIT
+  ownership: PRODUCT_ENGINE
+  product_import_of_developer_automation: FORBIDDEN
+  developer_internal_machine_is_product_engine: false
+  core:
+    - CONSUME_REGISTERED_CURRENT_MACHINE_CONTRACTS
+    - VALIDATE_TYPED_REQUESTS
+    - EXECUTE_DETERMINISTIC_RESOLUTION_AND_EVALUATION
+    - RETURN_VERSIONED_STRUCTURED_RESULTS_AND_DIAGNOSTICS
+  adapters:
+    - FILESYSTEM
+    - GIT_AND_REMOTE_REPOSITORY
+    - CLI
+    - PYTHON_PACKAGE
+    - CI
+  core_creates_policy_authority: false
+  unregistered_capability_behavior: FAIL_CLOSED
+
+proposed_distribution:
+  model: PREBUILT_PLATFORM_SPECIFIC_EXECUTABLES
+  target_pairs:
+    - {goos: windows, goarch: amd64}
+    - {goos: windows, goarch: arm64}
+    - {goos: linux, goarch: amd64}
+    - {goos: linux, goarch: arm64}
+    - {goos: darwin, goarch: amd64}
+    - {goos: darwin, goarch: arm64}
+  cgo_enabled: false
+  user_go_toolchain_required: false
+  native_engine_requires_python: false
+  python_adapter_requires_python: true
+  minimum_os_versions: BIND_TO_APPROVED_PINNED_COMPILER_AND_NATIVE_TEST_MATRIX
+  unsupported_platform_behavior: EXPLICIT_UNAVAILABLE
+  all_operating_system_versions_supported: false
+  binary_digest_and_contract_binding: REQUIRED
+
+proposed_migration:
+  python_reference: PTSIP_0_3_8A4
+  reference_role: COMPATIBILITY_AND_DIFFERENTIAL_VERIFICATION
+  current_root_source_reconstruction: FORBIDDEN
+  historical_audit_preservation: REQUIRED
+  current_python_engine_removed_by_this_proposal: false
+  repository_engine_persistence_activated_by_this_proposal: false
+  public_cli_or_python_api_changed_by_this_proposal: false
+  published_0_3_8a4_artifacts_changed_by_this_proposal: false
+
+proposed_activation_evidence:
+  - EXACT_CONTRACT_AND_CURRENT_ROOT_POLICY_BINDING
+  - CROSS_LANGUAGE_SEMANTIC_EQUIVALENCE_AGAINST_APPROVED_FIXTURES
+  - NATIVE_WINDOWS_LINUX_MACOS_EXECUTION
+  - AMD64_AND_ARM64_TARGET_VERIFICATION
+  - DISTRIBUTION_INSTALL_AND_IDENTITY_VERIFICATION
+
+official_reference_urls:
+  - https://go.dev/doc/install/source
+  - https://go.dev/wiki/MinimumRequirements
+  - https://pkg.go.dev/cmd/cgo

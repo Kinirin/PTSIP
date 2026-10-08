@@ -2,11 +2,14 @@ package rootfamily
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"sort"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -128,6 +131,90 @@ func copyDeveloperWithoutLegacy(t *testing.T) string {
 	return target
 }
 
+// Family identity vectors describe a historical catalog input. New current
+// policies must be verified against the current catalog, not added to that oracle.
+func frozenFamilyCatalog(t *testing.T, families map[string]any) string {
+	t.Helper()
+	root := copyDeveloperWithoutLegacy(t)
+	wanted := map[string]map[string]any{}
+	for _, raw := range families {
+		for _, item := range sequence(t, mapping(t, raw)["registered_policies"]) {
+			policy := mapping(t, item)
+			wanted[policy["policy_id"].(string)] = policy
+		}
+	}
+	removed := map[string]bool{}
+	for _, plane := range []string{"developer/policy", "src/policy"} {
+		indexPath := filepath.Join(root, plane, "index.yaml")
+		index := read(t, indexPath)
+		entries := []any{}
+		for _, raw := range sequence(t, index["policies"]) {
+			entry := mapping(t, raw)
+			id := entry["id"].(string)
+			parts := strings.Split(id, "-")
+			class, _ := entry["policy_class"].(string)
+			if class == "" {
+				class, _ = index["policy_class"].(string)
+			}
+			if entry["authority_role"] == "MIGRATION_SOURCE" || len(parts) != 3 {
+				entries = append(entries, entry)
+				continue
+			}
+			if _, captured := families[class+"|"+parts[1]]; !captured {
+				entries = append(entries, entry)
+				continue
+			}
+			expected, exists := wanted[id]
+			ref := entry["path"].(string)
+			if plane == "src/policy" {
+				ref = filepath.Join(plane, ref)
+			}
+			path := filepath.Join(root, ref)
+			relative, err := filepath.Rel(root, path)
+			if err != nil || relative == ".." || strings.HasPrefix(relative, ".."+string(os.PathSeparator)) {
+				t.Fatalf("historical catalog path leaves the temporary repository: %s", ref)
+			}
+			if !exists {
+				removed[id] = true
+				if err := os.Remove(path); err != nil {
+					t.Fatal(err)
+				}
+				continue
+			}
+			entry["status"] = expected["status"]
+			policy := read(t, path)
+			identity := mapping(t, policy["policy"])
+			identity["status"] = expected["status"]
+			if _, exists := identity["version"]; exists {
+				identity["version"] = map[string]string{"DRAFT": "0.0", "APPROVED": "1.0", "ACTIVE": "2.0", "RETIRED": "2.0", "SUPERSEDED": "2.0"}[expected["status"].(string)]
+			}
+			if transition, ok := policy["transition"].(map[string]any); ok {
+				if expected["status"] == "APPROVED" {
+					transition["state"] = "PENDING"
+				} else if expected["status"] == "ACTIVE" {
+					transition["state"] = "COMPLETE"
+				}
+			}
+			write(t, path, policy)
+			entries = append(entries, entry)
+		}
+		index["policies"] = entries
+		write(t, indexPath, index)
+	}
+	subjectPath := filepath.Join(root, "developer/policy/registries/authority-subject-registry.yaml")
+	subject := read(t, subjectPath)
+	scheme := mapping(t, mapping(t, subject["subject_identity_schemes"])["MANAGEMENT_POLICY_ID"])
+	values := []any{}
+	for _, raw := range sequence(t, scheme["registered_values"]) {
+		if !removed[raw.(string)] {
+			values = append(values, raw)
+		}
+	}
+	scheme["registered_values"] = values
+	write(t, subjectPath, subject)
+	return root
+}
+
 func TestGoDirectRootResolverParityAndNoPythonDependency(t *testing.T) {
 	binary := buildAutomation(t)
 	root := repository(t)
@@ -145,10 +232,12 @@ func TestGoDirectRootResolverParityAndNoPythonDependency(t *testing.T) {
 			}
 		})
 	}
-	for key, want := range mapping(t, expected["families"]) {
+	families := mapping(t, expected["families"])
+	familyRoot := frozenFamilyCatalog(t, families)
+	for key, want := range families {
 		t.Run(key, func(t *testing.T) {
 			parts := strings.Split(key, "|")
-			got, err, output := automation(t, binary, root, "root-family-entry", "resolve", "--policy-class", parts[0], "--family", parts[1])
+			got, err, output := automation(t, binary, familyRoot, "root-family-entry", "resolve", "--policy-class", parts[0], "--family", parts[1])
 			if err != nil {
 				t.Fatalf("%v\n%s", err, output)
 			}
@@ -171,6 +260,39 @@ func TestGoDirectRootResolverParityAndNoPythonDependency(t *testing.T) {
 		if !reflect.DeepEqual(got, expected[test.Name]) {
 			t.Fatalf("%s protocol parity mismatch", test.Name)
 		}
+	}
+}
+
+func TestGoFamilyAllocationUsesCurrentCatalog(t *testing.T) {
+	root := repository(t)
+	binary := buildAutomation(t)
+	index := read(t, filepath.Join(root, "developer/policy/index.yaml"))
+	policies := []any{}
+	max := 0
+	for _, raw := range sequence(t, index["policies"]) {
+		entry := mapping(t, raw)
+		id := entry["id"].(string)
+		if entry["policy_class"] != "PTSIP_DEVELOPER_POLICY" || entry["authority_role"] == "MIGRATION_SOURCE" || !strings.HasPrefix(id, "MPD-REAL-") {
+			continue
+		}
+		ordinal, err := strconv.Atoi(strings.TrimPrefix(id, "MPD-REAL-"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if ordinal > max {
+			max = ordinal
+		}
+		policies = append(policies, map[string]any{"policy_id": id, "canonical_path": entry["path"], "status": entry["status"]})
+	}
+	sort.Slice(policies, func(i, j int) bool {
+		return mapping(t, policies[i])["policy_id"].(string) < mapping(t, policies[j])["policy_id"].(string)
+	})
+	got, err, output := automation(t, binary, root, "root-family-entry", "resolve", "--policy-class", "PTSIP_DEVELOPER_POLICY", "--family", "REAL")
+	if err != nil {
+		t.Fatalf("current Family allocation: %v\n%s", err, output)
+	}
+	if !reflect.DeepEqual(got["registered_policies"], policies) || got["allocated_policy_id"] != fmt.Sprintf("MPD-REAL-%04d", max+1) {
+		t.Fatalf("current catalog membership/allocation mismatch: %#v", got)
 	}
 }
 

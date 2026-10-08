@@ -1,0 +1,61 @@
+schema_version: developer-policy-responsibility-analysis/v3
+artifact_class: PTSIP_POLICY_RESPONSIBILITY_ANALYSIS
+analysis:
+  analysis_id: PRA-0017
+  source_ref: 'project-owner-direct-instruction:구현 언어를 Go로 확정하겟습니다.'
+  responsibilities:
+  - responsibility_id: R01
+    statement: Select Go as the implementation language of the PTSIP product engine runtime binding, independently of Developer automation and language-neutral normative contracts.
+    authority_relation: OWN
+    authority_subject: DEV_APPROVED_ARTIFACT_REALIZATION
+    lifecycle_scope: PTSIP_PRODUCT_ENGINE_IMPLEMENTATION_LANGUAGE_SELECTION
+    cohesion_key: REAL_PTSIP_ENGINE_GO_LANGUAGE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family: REAL
+    referenced_policy_class: null
+    referenced_family: null
+    existing_authority_lookup:
+      searched_policy_class: PTSIP_DEVELOPER_POLICY
+      searched_family: REAL
+      searched_policy_ids:
+      - MPD-REAL-0001
+      - MPD-REAL-0003
+      - MPD-REAL-0004
+      - MPD-REAL-0005
+      lookup_outcome: MATCHES_FOUND
+      candidate_comparisons:
+      - policy_id: MPD-REAL-0001
+        section: family_definition
+        scope_relation: SAME_SCOPE
+        collision_class: CANDIDATE_EXTENDS_EXISTING
+        resolution_action: CREATE_NEW_SIBLING_POLICY
+      - policy_id: MPD-REAL-0003
+        section: root_family_test_implementation
+        scope_relation: DISTINCT_SCOPE
+        collision_class: DISTINCT_SCOPED_AUTHORITY
+        resolution_action: COEXIST_SCOPED
+      - policy_id: MPD-REAL-0004
+        section: neutral_module_creation
+        scope_relation: DISTINCT_SCOPE
+        collision_class: DISTINCT_SCOPED_AUTHORITY
+        resolution_action: COEXIST_SCOPED
+      - policy_id: MPD-REAL-0005
+        section: go_automation_implementation
+        scope_relation: DISTINCT_SCOPE
+        collision_class: DISTINCT_SCOPED_AUTHORITY
+        resolution_action: COEXIST_SCOPED
+    materialization_action: CREATE_NEW_POLICY
+    target_group_id: G01
+  decision:
+    owned_authority_family_set:
+    - policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+    split_required: false
+    materialization_allowed: true
+    materialization_groups:
+    - group_id: G01
+      policy_class: PTSIP_DEVELOPER_POLICY
+      family: REAL
+      cohesion_key: REAL_PTSIP_ENGINE_GO_LANGUAGE
+      responsibility_ids: [R01]
+      cohesion_rationale: Product engine runtime implementation language is one scoped realization decision; consumer runtime contracts and implementation authorization remain with their existing owners.

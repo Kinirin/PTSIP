@@ -1,0 +1,91 @@
+schema_version: ptsip-developer-root-family-policy/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: REAL
+policy:
+  id: MPD-REAL-0006
+  version: '1.0'
+  title: PTSIP product engine Go implementation language selection
+  status: APPROVED
+authority_subject:
+  id: DEV_APPROVED_ARTIFACT_REALIZATION
+  statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
+exclusive_kernel:
+- DEV_IMPLEMENTATION_AND_MATERIALIZATION
+- DEV_MUTATION_INTEGRITY
+rules:
+  family_definition:
+    kernel_definitions:
+    - id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
+      statement: 해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및 provenance를 보존한다.
+      non_substitutability: INTENT의 목표나 ARCH의 설계 선언만으로 실제 구현 절차와 생성 결과가 존재하게 되지 않는다.
+    - id: DEV_MUTATION_INTEGRITY
+      statement: 허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을 방지한다.
+      non_substitutability: CTRL이 변경을 허용했다는 판정은 실제 쓰기의 원자성과 실패 처리를 대신 보장하지 않는다.
+    source_scope: []
+  engine_implementation_language:
+    scope: PTSIP_PRODUCT_ENGINE_RUNTIME_BINDING
+    implementation_language: GO
+    language_selection: APPROVED
+    decision_source: USER_EXPLICIT
+    approval_ref: developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+    confirmed_environment_scope:
+      operating_systems: [WINDOWS, LINUX, MACOS]
+      execution_environments: [LOCAL_CLI, CI, SERVER]
+    semantic_authority:
+      owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+      implementation_may_create_normative_semantics: false
+      neutral_module_declaration_authority_ref: MPD-REAL-0004
+    developer_automation_boundary:
+      developer_automation_language_policy_ref: MPD-REAL-0005
+      developer_automation_scope_inherited_by_product_engine: false
+      product_engine_is_developer_automation_internal_machine: false
+    consumer_engine_boundary:
+      policy_ref: SFP-ARCH-0001
+      section: authority_semantics.engine_plane_boundary
+      consumer_feature_authority_created_by_this_developer_policy: false
+      installed_implementation_owner: INSTALLED_PTSIP_PACKAGE
+      repository_engine_root: .ptsip/engine/
+      repository_engine_source_copy: FORBIDDEN
+    approval_boundary:
+      language_selection_implies_plan_approval: false
+      language_selection_implies_implementation_authorization: false
+      language_selection_implies_runtime_activation: false
+      language_selection_implies_python_engine_retirement: false
+      module_location_selected_by_this_policy: false
+      architecture_distribution_and_activation_design: PLAN_OWNED
+relations:
+  supersedes: []
+  amends: []
+  extends:
+  - policy: MPD-REAL-0001
+    scope: PTSIP_PRODUCT_ENGINE_IMPLEMENTATION_LANGUAGE_SELECTION
+  depends_on:
+  - policy: MPD-NORM-0001
+    scope: LANGUAGE_NEUTRAL_MACHINE_CONTRACT_AUTHORITY
+  - policy: MPD-REAL-0004
+    scope: NEUTRAL_MODULE_AND_LANGUAGE_BINDING_BOUNDARY
+  - policy: SFP-ARCH-0001
+    scope: CONSUMER_ENGINE_PLANE_BOUNDARY
+transition:
+  target_status: ACTIVE
+  state: PENDING
+  requirements:
+  - id: TR-001
+    type: CURRENT_ROOT_CONTRACT_VERIFICATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+    - developer/policy/analysis/records/PRA-0017.yaml
+    next_action:
+      action: VERIFY_CURRENT_ROOT_CONTRACT
+      execution: SERIAL_REQUIRED
+      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID
+  - id: TR-002
+    type: PROJECT_OWNER_FULL_POLICY_CONTENT_AND_ACTIVE_STATUS_APPROVAL
+    state: OPEN
+    refs:
+    - developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+    next_action:
+      action: CONFIRM_POLICY_ACTIVE_STATUS
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: EXACT_FULL_POLICY_CONTENT_AND_ACTIVE_STATUS_APPROVAL_RECORDED

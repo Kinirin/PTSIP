@@ -97,6 +97,12 @@ records:
   subject_id: DEVELOPER_VERIFICATION
   analysis_kind: RESPONSIBILITY_DOMAIN_SEPARATION
   recorded_at: "2026-10-07"
+- analysis_id: PRA-0017
+  analysis_ref: developer/policy/analysis/records/PRA-0017.yaml
+  subject_type: RUNTIME_BINDING
+  subject_id: PTSIP_PRODUCT_ENGINE
+  analysis_kind: ENGINE_IMPLEMENTATION_LANGUAGE_SELECTION
+  recorded_at: "2026-10-08"
 bindings:
 - policy_id: MPD-ARCH-0001
   policy_class: PTSIP_DEVELOPER_POLICY
@@ -248,6 +254,11 @@ bindings:
   family: REAL
   analysis_id: PRA-0010
   group_id: G02
+- policy_id: MPD-REAL-0006
+  policy_class: PTSIP_DEVELOPER_POLICY
+  family: REAL
+  analysis_id: PRA-0017
+  group_id: G01
 - policy_id: MPD-RECORD-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: RECORD

@@ -1,0 +1,107 @@
+schema_version: ptsip-plan-extension/v1
+schema_ref: developer/planning/schemas/plan-extension.schema.json
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: '0.3.8'
+plan_identity:
+  resolved_plan_id: PLN.POLI.PLAN.92973fb1
+  plan_file_id: PLANFILE.MAIN.068497d5fc27
+  version: '1.0'
+  revision: Rev.0001
+extension:
+  id: WU-08-P01
+  parent: WU-08
+  title: PTSIP product engine Go runtime transition candidate
+  classification: DEVELOPMENT
+  lifecycle: {status: DRAFT}
+approval:
+  status: PENDING
+implementation_authorization:
+  status: NOT_AUTHORIZED
+depends_on: []
+
+language_decision:
+  status: APPROVED
+  implementation_language: GO
+  decision_source: USER_EXPLICIT
+  policy_ref: MPD-REAL-0006
+  policy_section: engine_implementation_language
+  approval_ref: developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+  confirmed_operating_systems: [WINDOWS, LINUX, MACOS]
+  confirmed_execution_environments: [LOCAL_CLI, CI, SERVER]
+
+planning_boundary:
+  current_control_plane: developer/planning/0.3.8/0.3.8a3/index.yaml
+  current_branch: dev/0.3.8
+  parent_work_unit_ref: developer/planning/0.3.8/0.3.8a3/WU-08/WU-08.yaml
+  parent_execution_topology_extension: NOT_ADMITTED
+  parent_approval_inherited: false
+  parent_implementation_authorization_inherited: false
+  current_gate_changed: false
+  normative_authority: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+  product_engine_source_location: UNRESOLVED
+  developer_internal_machine_as_product_engine: FORBIDDEN
+  published_0_3_8a4_distribution_changed: false
+
+proposed_design:
+  core:
+    - CONSUME_EXACT_REGISTERED_CURRENT_MACHINE_CONTRACTS
+    - VALIDATE_TYPED_INPUT
+    - EXECUTE_DETERMINISTIC_RESOLUTION_AND_EVALUATION
+    - RETURN_STRUCTURED_RESULTS_AND_DIAGNOSTICS
+  adapters: [FILESYSTEM, GIT_AND_REMOTE_REPOSITORY, CLI, PYTHON_PACKAGE, CI]
+  distribution:
+    design_status: CANDIDATE
+    model: PREBUILT_PLATFORM_SPECIFIC_EXECUTABLES
+    cgo_enabled: false
+    native_engine_requires_python: false
+    end_user_go_toolchain_required: false
+    target_pairs:
+    - {goos: windows, goarch: amd64}
+    - {goos: windows, goarch: arm64}
+    - {goos: linux, goarch: amd64}
+    - {goos: linux, goarch: arm64}
+    - {goos: darwin, goarch: amd64}
+    - {goos: darwin, goarch: arm64}
+    minimum_os_and_compiler_binding: UNRESOLVED
+
+proposed_sequence:
+  - id: DESIGN
+    state: PENDING
+    deliverables:
+    - EXACT_PRODUCT_RUNTIME_BINDING_OWNER_AND_SOURCE_LOCATION
+    - VERSIONED_ENGINE_REQUEST_RESULT_AND_ERROR_CONTRACT
+    - DECLARED_IO_STATE_FRESHNESS_AND_MUTATION_BOUNDARY
+    - PINNED_COMPILER_OS_ARCHITECTURE_AND_DISTRIBUTION_MATRIX
+  - id: REFERENCE
+    state: PENDING
+    after: [DESIGN]
+    deliverables:
+    - APPROVED_PYTHON_0_3_8A4_COMPATIBILITY_FIXTURE_SET
+    - CURRENT_ROOT_POLICY_AND_CONTRACT_DIGEST_BINDINGS
+  - id: IMPLEMENTATION
+    state: NOT_AUTHORIZED
+    after: [DESIGN, REFERENCE]
+    deliverables:
+    - GO_RUNTIME_BINDING_OF_LANGUAGE_NEUTRAL_CONTRACTS
+    - PRODUCT_HOST_ADAPTERS
+  - id: VERIFICATION
+    state: PENDING
+    after: [IMPLEMENTATION]
+    deliverables:
+    - CROSS_LANGUAGE_SEMANTIC_EQUIVALENCE
+    - NATIVE_WINDOWS_LINUX_MACOS_AND_ARCHITECTURE_EXECUTION
+    - INSTALLATION_IDENTITY_AND_ARTIFACT_DIGEST_VERIFICATION
+  - id: ACTIVATION
+    state: NOT_AUTHORIZED
+    after: [VERIFICATION]
+    deliverables:
+    - EXACT_SUPPORT_FEATURE_RUNTIME_CAPABILITY_AND_BINDING_ADMISSION
+    - EXPLICIT_IMPLEMENTATION_AND_ACTIVATION_AUTHORIZATION
+
+preserved_current_runtime:
+  python_engine: RETAINED
+  repository_engine_state_contract: DEFERRED
+  repository_engine_schema_contract: DEFERRED
+  repository_engine_runtime_activation: DEFERRED
+  current_root_source_reconstruction: FORBIDDEN
+  historical_audit: PRESERVED
