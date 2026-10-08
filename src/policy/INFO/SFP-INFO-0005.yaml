@@ -1,0 +1,74 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0005
+  title: Consumer Analysis Record Information Ownership
+  status: DRAFT
+authority_subject:
+  id: SUP_CONSUMER_ANALYSIS_RECORD_INFORMATION
+  statement: Consumer Repository의 .ptsip/analysis 정보 소유권, 불투명한 기록 식별자, 명시적으로 등록된 기록 경로를 소유한다.
+exclusive_kernel:
+  - SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
+  - SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+      - id: SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
+        statement: Consumer Analysis 기록은 의미를 인코딩하지 않는 안정적 식별자로 구분하며 이름으로 분석 종류 또는 시점을 추론하지 않는다.
+        non_substitutability: RECORD의 이력 보존 및 CNTR의 Resolver 구현은 기록 식별자의 정보 의미를 독자적으로 정의하지 않는다.
+      - id: SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
+        statement: Consumer Analysis의 기록 구성원과 정확한 record_ref는 명시적 Registry에서 결정하며 파일 시스템 발견은 등록 권위를 만들지 않는다.
+        non_substitutability: 파일명 규칙, AI 추측 또는 저장된 분석 결과는 Registry의 명시적 경로 결정을 대체하지 않는다.
+    source_scope: []
+  unit_consumer_analysis_approved_decisions:
+    policy_direction: CONSUMER_REPOSITORY_LOCAL_ANALYSIS_OWNERSHIP
+    repository_root: .ptsip/analysis/
+    registry_ref: .ptsip/analysis/registry.yaml
+    schema_root: .ptsip/analysis/schemas/
+    record_root: .ptsip/analysis/records/
+    record_identity: OPAQUE_STABLE_ID
+    record_membership: EXPLICIT_REGISTRY_ONLY
+    record_reference: REGISTERED_EXPLICIT_PATH
+    resolution: EXACT_ID_TO_REGISTERED_RECORD_REF
+  unit_consumer_analysis_invariants:
+    registry:
+      membership_required: true
+      path_authority: EXPLICIT_RECORD_REF
+      filesystem_discovery_confers_authority: false
+    record_identity:
+      descriptive_semantic_inference: FORBIDDEN
+      timestamp_semantic_inference: FORBIDDEN
+      filename_to_id_inference: FORBIDDEN
+      id_to_filename_inference: FORBIDDEN
+      id_to_path_derivation: FORBIDDEN
+    lookup:
+      unregistered_identity: FAIL_CLOSED
+      ambiguous_identity: FAIL_CLOSED
+      direct_filename_or_directory_search_as_authority: FORBIDDEN
+    authority_boundary:
+      analysis_record_creates_project_architecture_authority: false
+      legacy_source_implicit_inheritance: FORBIDDEN
+      developer_policy_analysis_scope_reuse: FORBIDDEN
+  unit_consumer_analysis_separate_responsibilities:
+    INFO: RECORD_IDENTITY_AND_REGISTRY_INFORMATION_BINDING
+    RECORD: SOURCE_BOUND_PROVENANCE_AND_RETRIEVABLE_HISTORY
+    CNTR: TYPED_RESOLVER_OPERATION_AND_FAILURE_INTERFACE
+    GOV: NO_UNAUTHORIZED_PROMOTION_TO_PROJECT_AUTHORITY
+    PLAN: SERIALIZATION_EXECUTION_AND_FILE_WRITE_MECHANICS
+  unit_consumer_analysis_unresolved_decisions:
+    - RECORD_ID_NAMESPACE_AND_ALLOCATION
+    - RECORD_SERIALIZATION_FORMAT
+    - RECORD_DATA_MODEL_AND_SCHEMA
+    - RECORD_CREATION_AND_REGISTRATION_ATOMICITY
+    - RECORD_RETENTION_SCOPE
+    - CONTEXT_ANALYSIS_REFERENCE_SEMANTICS
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []
