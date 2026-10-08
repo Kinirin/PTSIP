@@ -15,7 +15,7 @@ func policyTestRepo(t *testing.T) *Repository {
 		t.Fatal(err)
 	}
 	destination := t.TempDir()
-	for _, relative := range []string{"developer/policy", "developer/planning", "developer/bindings", "src/policy", "developer/automation", "developer/tests", ".github", "releasenote"} {
+	for _, relative := range []string{"developer/policy", "developer/planning", "developer/bindings", "src/policy", "developer/automation", "developer/tests", ".github", "docs/releasenote"} {
 		root := filepath.Join(source.Root, filepath.FromSlash(relative))
 		err := filepath.WalkDir(root, func(path string, entry os.DirEntry, walkErr error) error {
 			if walkErr != nil {

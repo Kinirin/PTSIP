@@ -8,6 +8,8 @@ Project Profile Contract
 PTSIP Specification family / immutable revision
 ```
 
+Its canonical root is `docs/releasenote/`, relocated from repository-root `releasenote/`. The authority namespaces and the contents of versioned release notes are preserved.
+
 Root-level `CHANGELOG.md` and `TOOLING-CHANGELOG.md` are no longer maintained. Version history is separated by authority so Tool, Project Profile, and Specification identities are not collapsed into one sequence.
 
 ## Namespace policy
@@ -15,25 +17,25 @@ Root-level `CHANGELOG.md` and `TOOLING-CHANGELOG.md` are no longer maintained. V
 The release-note directory is normalized by authority:
 
 ```text
-releasenote/tool/<tool-version>.md
-releasenote/project-profile/<pp-contract-version>.md
-releasenote/specification/<spec-note>.md
+docs/releasenote/tool/<tool-version>.md
+docs/releasenote/project-profile/<pp-contract-version>.md
+docs/releasenote/specification/<spec-note>.md
 ```
 
 Historical flat Tool and Specification release-note files have been relocated into these authority namespaces. This is a repository-organization change only; it does not rewrite the historical Tool/Specification identity or publication state recorded inside each note.
 
 ```text
-releasenote/tool/0.3.7.md
-releasenote/tool/0.3.8a1.md
-releasenote/tool/0.3.8a2.md
-releasenote/tool/0.3.8a3.md
-releasenote/tool/0.3.8a4.md
-releasenote/project-profile/pp.1.01.md
-releasenote/project-profile/pp.1.02.md
-releasenote/specification/0.3.7-draft.md
+docs/releasenote/tool/0.3.7.md
+docs/releasenote/tool/0.3.8a1.md
+docs/releasenote/tool/0.3.8a2.md
+docs/releasenote/tool/0.3.8a3.md
+docs/releasenote/tool/0.3.8a4.md
+docs/releasenote/project-profile/pp.1.01.md
+docs/releasenote/project-profile/pp.1.02.md
+docs/releasenote/specification/0.3.7-draft.md
 ```
 
-Published or historical flat files already stored directly under `releasenote/` remain in place. They are not bulk-moved merely to make the directory visually uniform or to rewrite old identity conventions.
+Published or historical flat files already stored directly under `docs/releasenote/` remain in place. They are not bulk-moved merely to make the directory visually uniform or to rewrite old identity conventions.
 
 Namespace indexes:
 
@@ -72,7 +74,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 ## Historical Reference Tool history
 
-All retained Tool notes now live under `releasenote/tool/`.
+All retained Tool notes now live under `docs/releasenote/tool/`.
 
 | Version | State | Document |
 | --- | --- | --- |
@@ -166,19 +168,19 @@ Draft family labels are not immutable normative identity by themselves. Exact no
 - use `.github/workflows/tooling-release.yml` as the canonical release surface; PREPARE is explicit `workflow_dispatch` and publication is driven by the published Tool release;
 - require the requested version to match `pyproject.toml`;
 - run the Tool test/CLI smoke gate before creating a release draft;
-- store Tool release records under `releasenote/tool/<version>.md`;
+- store Tool release records under `docs/releasenote/tool/<version>.md`;
 - allow a source/unreleased version document to exist before release so important migration history is not hidden in a monolithic changelog;
 - use `git-cliff` only as a starting point when useful; generated commit lists do not replace architectural/user-visible explanation;
 - review the release note before publication;
 - commit the final Tool release note to `main` before the release tag is published;
 - use the same reviewed Markdown as the GitHub Release body at publication;
 - treat a tagged version document as immutable after publication;
-- record post-publication operational corrections in `releasenote/README.md` and `.ptsip/context/context.json`;
+- record post-publication operational corrections in `docs/releasenote/README.md` and `.ptsip/context/context.json`;
 - publish the prepared GitHub draft manually so `tooling-release.yml` can perform PyPI Trusted Publishing.
 
 ## Project Profile note policy
 
-Project Profile contract notes use `releasenote/project-profile/<pp-version>.md`.
+Project Profile contract notes use `docs/releasenote/project-profile/<pp-version>.md`.
 
 A PP note must distinguish:
 
@@ -192,7 +194,7 @@ A Tool package version bump does not authorize PP migration by itself.
 
 ## Specification note policy
 
-Specification notes live under `releasenote/specification/`.
+Specification notes live under `docs/releasenote/specification/`.
 
 Historical relocated records preserve their `spec-<family>.md` basename. Current/new-generation family records use the canonical namespace naming selected for that family and bind normative claims to immutable revisions.
 

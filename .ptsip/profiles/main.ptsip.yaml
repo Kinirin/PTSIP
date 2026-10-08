@@ -525,7 +525,7 @@ components:
       - "README.md"
       - "docs/translated/**"
       - "Pages/**"
-      - "releasenote/**"
+      - "docs/releasenote/**"
     purpose: product_distribution_documentation_and_release_history
     shipped: true
     runtime_required: false
@@ -938,7 +938,7 @@ components:
       - ".github/scripts/verify_distribution_contracts.py"
       - "schemas/**"
       - "registry/**"
-      - "releasenote/**"
+      - "docs/releasenote/**"
 
   - id: repository-verification-support
     classification: DEVELOPMENT_TOOLING
@@ -997,7 +997,7 @@ components:
       - "src/policy/**"
       - "schemas/**"
       - "registry/**"
-      - "releasenote/**"
+      - "docs/releasenote/**"
 
   - id: repository-ci
     classification: DEVELOPMENT_TOOLING

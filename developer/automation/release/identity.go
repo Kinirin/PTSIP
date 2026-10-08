@@ -99,7 +99,7 @@ func Prepare(repo *machine.Repository, dispatchedSHA, dispatchedRef string) (mac
 		return nil, err
 	}
 	tag := "tool-v" + version
-	note := "releasenote/tool/" + version + ".md"
+	note := "docs/releasenote/tool/" + version + ".md"
 	_, code, err := run(repo, "git", "show-ref", "--verify", "--quiet", "refs/tags/"+tag)
 	if err != nil {
 		return nil, err
@@ -133,10 +133,10 @@ func Prepare(repo *machine.Repository, dispatchedSHA, dispatchedRef string) (mac
 		return nil, machine.Fail("RELEASE_NOTE_UNCATEGORIZED", note)
 	}
 	return machine.Object{
-		"status": "PASS",
-		"version": version,
-		"tag": tag,
-		"note": filepath.ToSlash(note),
+		"status":     "PASS",
+		"version":    version,
+		"tag":        tag,
+		"note":       filepath.ToSlash(note),
 		"source_sha": sourceSHA,
 	}, nil
 }

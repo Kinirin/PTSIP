@@ -5,10 +5,10 @@ This namespace contains historical and current PTSIP Specification family/revisi
 Specification identity is independent from both PTSIP Tool SemVer and Project Profile contract versioning.
 
 ```text
-releasenote/specification/<spec-note>.md
+docs/releasenote/specification/<spec-note>.md
 ```
 
-Historical Specification notes that previously lived directly under `releasenote/` have been relocated here while retaining their original `spec-<family>.md` basename. This preserves their historical naming and avoids collision with the canonical new-generation `0.3.7-draft.md` WU-12 final-freeze record.
+Historical Specification notes that previously lived directly under `docs/releasenote/` have been relocated here while retaining their original `spec-<family>.md` basename. This preserves their historical naming and avoids collision with the canonical new-generation `0.3.7-draft.md` WU-12 final-freeze record.
 
 | Family | State | Document |
 | --- | --- | --- |

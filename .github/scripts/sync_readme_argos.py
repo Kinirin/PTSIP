@@ -48,10 +48,10 @@ REVIEWED_TRANSLATIONS = {
             "이전 workflow evidence는 해당 SHA에 대한 역사적 증거로만 유지되며 이후 source state를 "
             "검증하지 않습니다."
         ),
-        "PTSIP remains experimental. Tool `0.3.7` is an unpublished release candidate until the current exact-main completion gate succeeds. Historical Tool releases and Specification notes are preserved under [`releasenote/`](releasenote/).": (
+        "PTSIP remains experimental. Tool `0.3.7` is an unpublished release candidate until the current exact-main completion gate succeeds. Historical Tool releases and Specification notes are preserved under [`docs/releasenote/`](docs/releasenote/).": (
             "PTSIP는 여전히 experimental 단계입니다. 현재 exact-main completion gate가 성공하기 전까지 "
             "Tool `0.3.7`은 공개되지 않은 release candidate입니다. 과거 Tool release와 Specification "
-            "기록은 [`releasenote/`](releasenote/) 아래에 보존됩니다."
+            "기록은 [`docs/releasenote/`](docs/releasenote/) 아래에 보존됩니다."
         ),
     },
 }

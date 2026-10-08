@@ -73,7 +73,7 @@ func newReleaseFixture(t *testing.T, version string) (string, string, string) {
 	releaseGit(t, root, "config", "user.name", "PTSIP Release Test")
 
 	writeReleaseFile(t, root, "pyproject.toml", "[project]\nname = \"fixture\"\nversion = \""+version+"\"\n")
-	writeReleaseFile(t, root, "releasenote/tool/"+version+".md", "# Fixture\n\n## Changes\n\n- release fixture\n")
+	writeReleaseFile(t, root, "docs/releasenote/tool/"+version+".md", "# Fixture\n\n## Changes\n\n- release fixture\n")
 	testrepo.CopyTree(t, testrepo.Open(root), "developer/policy")
 	releaseGit(t, root, "add", ".")
 	releaseGit(t, root, "commit", "-m", "fixture")
@@ -101,7 +101,7 @@ func TestReleaseIdentityDerivesVersionTagNoteAndExactSource(t *testing.T) {
 	if result["status"] != "PASS" ||
 		result["version"] != "1.2.3a1" ||
 		result["tag"] != "tool-v1.2.3a1" ||
-		result["note"] != "releasenote/tool/1.2.3a1.md" ||
+		result["note"] != "docs/releasenote/tool/1.2.3a1.md" ||
 		result["source_sha"] != head {
 		t.Fatalf("unexpected release identity: %#v", result)
 	}
@@ -124,7 +124,7 @@ func TestReleaseIdentityRejectsNonMainDispatchAndUncategorizedNote(t *testing.T)
 		t.Fatalf("non-main dispatch was not rejected: %v\n%s", err, output)
 	}
 
-	writeReleaseFile(t, root, "releasenote/tool/1.2.3a1.md", "# Fixture\n\nuncategorized\n")
+	writeReleaseFile(t, root, "docs/releasenote/tool/1.2.3a1.md", "# Fixture\n\nuncategorized\n")
 	_, err, output = runReleaseCommand(
 		t,
 		binary,

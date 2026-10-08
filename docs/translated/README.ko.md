@@ -379,7 +379,7 @@ Release scope:    explicit proposed candidate bridge
 
 그것은 명시적 제안 된 후보자로서의 not-yet-existing 구성 요소를 나타내는 지원을 추가하고 활성 구성 요소로 분리하지 않고 제안을 해결합니다. 그것은 더 넓은의 완료를 주장하지 않습니다 Tool `0.4.0` 기능 회복 건축.
 
-릴리스 범위 및 검증 내역은 기록됩니다. [`releasenote/tool/0.3.8a1.md`](../../releasenote/tool/0.3.8a1.md). 방출 문은 정의됩니다 [`developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml`](../../developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml).
+릴리스 범위 및 검증 내역은 기록됩니다. [`docs/releasenote/tool/0.3.8a1.md`](../releasenote/tool/0.3.8a1.md). 방출 문은 정의됩니다 [`developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml`](../../developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml).
 
 ## 인증 기관
 
@@ -396,4 +396,4 @@ PTSIP는 Consumer Repository가 Tool 사용만을 위해 PTSIP 전용 `.ptsip/`,
 
 ## 프로젝트 상태
 
-PTSIP 실험을 한다. Tool `0.3.8a1` 출판물 경계가 추적되는 비상 prerelease [`releasenote/tool/0.3.8a1.md`](../../releasenote/tool/0.3.8a1.md). 역사 Tool 출시 및 Specification 주의사항 [`releasenote/`](../../releasenote/).
+PTSIP 실험을 한다. Tool `0.3.8a1` 출판물 경계가 추적되는 비상 prerelease [`docs/releasenote/tool/0.3.8a1.md`](../releasenote/tool/0.3.8a1.md). 역사 Tool 출시 및 Specification 주의사항 [`docs/releasenote/`](../releasenote/).

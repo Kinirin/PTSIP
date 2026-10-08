@@ -190,7 +190,7 @@ def test_pp_1_01_historical_baseline_remains_valid_and_immutable() -> None:
 
 
 def test_pp_1_01_release_note_discloses_identity_only_bridge() -> None:
-    note = (ROOT / "releasenote" / "project-profile" / "pp.1.01.md").read_text(encoding="utf-8")
+    note = (ROOT / "docs" / "releasenote" / "project-profile" / "pp.1.01.md").read_text(encoding="utf-8")
 
     assert "0.3.6-draft" in note
     assert "pp.1.01" in note

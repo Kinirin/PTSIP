@@ -5,10 +5,10 @@ This namespace contains PTSIP Reference Tool release records across historical a
 Tool package SemVer is independent from Project Profile contract versions and Specification family/revision identity.
 
 ```text
-releasenote/tool/<tool-version>.md
+docs/releasenote/tool/<tool-version>.md
 ```
 
-Historical Tool notes that previously lived directly under `releasenote/` have been relocated here without rewriting their historical contents or publication meaning.
+Historical Tool notes that previously lived directly under `docs/releasenote/` have been relocated here without rewriting their historical contents or publication meaning.
 
 | Version | State | Document |
 | --- | --- | --- |

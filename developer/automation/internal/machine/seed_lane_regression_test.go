@@ -37,7 +37,7 @@ func TestPP102SeedImplementationPreservesTransitionAndToolHistoryBoundaries(t *t
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{"pp.1.01", "pp.1.02", "Rev.0001", "DISTRIBUTED_EXAMPLE", "PROJECT_PATH_RESOLUTION_REQUIRED", "profiles/history/", "schemas/ptsip-profile-pp-1.02.schema.json", "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json", "releasenote/project-profile", "README.md", "STATUS.md", policySeedAcceptancePath} {
+	for _, required := range []string{"pp.1.01", "pp.1.02", "Rev.0001", "DISTRIBUTED_EXAMPLE", "PROJECT_PATH_RESOLUTION_REQUIRED", "profiles/history/", "schemas/ptsip-profile-pp-1.02.schema.json", "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json", "docs/releasenote/project-profile", "README.md", "STATUS.md", policySeedAcceptancePath} {
 		if !strings.Contains(source, required) {
 			t.Fatal("native seed source contract missing", required)
 		}
@@ -47,7 +47,7 @@ func TestPP102SeedImplementationPreservesTransitionAndToolHistoryBoundaries(t *t
 			t.Fatal("distributed placeholder missing", placeholder)
 		}
 	}
-	if strings.Contains(source, "releasenote/tool/0.3.8a1.md") {
+	if strings.Contains(source, "docs/releasenote/tool/0.3.8a1.md") {
 		t.Fatal("seed rewrites Tool history")
 	}
 }

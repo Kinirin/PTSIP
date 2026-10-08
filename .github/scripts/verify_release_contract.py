@@ -195,7 +195,7 @@ def main() -> int:
         if stale:
             errors.append(f"Maintained profile {relative_path!r} has a stale release binding.")
 
-    spec_note = ROOT / "releasenote" / "specification" / f"{spec_version}.md"
+    spec_note = ROOT / "docs" / "releasenote" / "specification" / f"{spec_version}.md"
     spec_note_text = ""
     if not spec_note.is_file():
         errors.append(f"Missing Specification release note: {spec_note.relative_to(ROOT)}")
@@ -208,7 +208,7 @@ def main() -> int:
                 "Specification release note does not record the exact bound SPEC_REVISION."
             )
 
-    tool_note = ROOT / "releasenote" / "tool" / f"{package_version}.md"
+    tool_note = ROOT / "docs" / "releasenote" / "tool" / f"{package_version}.md"
     tool_note_text = ""
     if not tool_note.is_file():
         errors.append(f"Missing Tool release note: {tool_note.relative_to(ROOT)}")
@@ -231,7 +231,7 @@ def main() -> int:
                     "Tool release note does not record the exact Tool/Specification binding."
                 )
 
-    pp_note = ROOT / "releasenote" / "project-profile" / f"{pp_version}.md"
+    pp_note = ROOT / "docs" / "releasenote" / "project-profile" / f"{pp_version}.md"
     if not pp_note.is_file():
         errors.append(f"Missing Project Profile release note: {pp_note.relative_to(ROOT)}")
     else:
@@ -239,9 +239,9 @@ def main() -> int:
         if pp_version not in pp_note_text or spec_revision not in pp_note_text:
             errors.append("Project Profile release note does not record the current binding.")
 
-    release_index = ROOT / "releasenote" / "README.md"
+    release_index = ROOT / "docs" / "releasenote" / "README.md"
     if not release_index.is_file():
-        errors.append("Missing release-note index: releasenote/README.md")
+        errors.append("Missing release-note index: docs/releasenote/README.md")
     else:
         release_index_text = release_index.read_text(encoding="utf-8")
         tool_index_marker = f"tool/{package_version}.md"
@@ -314,9 +314,9 @@ def main() -> int:
     print(f"Project Profile: {pp_version}")
     print(f"Specification family: {spec_version}")
     print(f"Specification revision: {spec_revision}")
-    print(f"Tool note: releasenote/tool/{package_version}.md")
-    print(f"Project Profile note: releasenote/project-profile/{pp_version}.md")
-    print(f"Specification note: releasenote/specification/{spec_version}.md")
+    print(f"Tool note: docs/releasenote/tool/{package_version}.md")
+    print(f"Project Profile note: docs/releasenote/project-profile/{pp_version}.md")
+    print(f"Specification note: docs/releasenote/specification/{spec_version}.md")
     print(f"Release-bound Specification assets: {len(RELEASE_BOUND_SPEC_PATHS)}")
     return 0
 

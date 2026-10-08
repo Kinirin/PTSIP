@@ -468,7 +468,7 @@ This Tool release does not introduce a new Specification family or Project Profi
 
 `.ptsip/tasks/` and `.ptsip/runtime/` are reserved namespaces in this release. Reservation does not claim a complete generic Repository Task Engine or finalized runtime persistence semantics, and the absence of those capabilities does not authorize a coding agent to establish another PTSIP control-plane root under `tools/`, `scripts/`, or another repository path.
 
-Release scope is recorded in [`releasenote/tool/0.3.8a2.md`](releasenote/tool/0.3.8a2.md).
+Release scope is recorded in [`docs/releasenote/tool/0.3.8a2.md`](docs/releasenote/tool/0.3.8a2.md).
 
 ## Tool 0.3.8a1 release identity
 
@@ -486,7 +486,7 @@ This Tool release does not introduce a new Specification family or Project Profi
 
 It adds support for representing a not-yet-existing component as an explicit proposed candidate and resolving that proposal without silently materializing it as an active component. It does not claim completion of the broader Tool `0.4.0` capability-recovery architecture.
 
-Release scope and verification history are recorded in [`releasenote/tool/0.3.8a1.md`](releasenote/tool/0.3.8a1.md). The release gate is defined by [`developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml`](developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml).
+Release scope and verification history are recorded in [`docs/releasenote/tool/0.3.8a1.md`](docs/releasenote/tool/0.3.8a1.md). The release gate is defined by [`developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml`](developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml).
 
 ## License authority
 
@@ -507,4 +507,4 @@ Canonical machine indexes under `.ptsip/` use JSON. Tool `0.3.8a4` uses `.ptsip/
 
 ## Project status
 
-PTSIP remains experimental. Tool `0.3.8a4` is the current Go-native developer automation and release-verification consolidation prerelease candidate; its publication boundary is tracked in [`releasenote/tool/0.3.8a4.md`](releasenote/tool/0.3.8a4.md). Historical Tool releases, including `0.3.8a1`, and Specification notes are preserved under [`releasenote/`](releasenote/).
+PTSIP remains experimental. Tool `0.3.8a4` is the current Go-native developer automation and release-verification consolidation prerelease candidate; its publication boundary is tracked in [`docs/releasenote/tool/0.3.8a4.md`](docs/releasenote/tool/0.3.8a4.md). Historical Tool releases, including `0.3.8a1`, and Specification notes are preserved under [`docs/releasenote/`](docs/releasenote/).
