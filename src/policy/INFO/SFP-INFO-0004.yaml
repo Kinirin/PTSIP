@@ -36,6 +36,7 @@ authority_semantics:
     missing_source_diagnostics: MANDATORY_MISSING_SOURCE_DIAGNOSIS_AND_DISCOVERY
     missing_source_recovery_authorization: AUTHORIZED_AUTOMATED_RECOVERY
     source_change_atomicity: LOGICAL_AUTHORITY_ATOMICITY
+    automatic_grouping_determinism: DETERMINISTIC_GROUPING
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
@@ -49,6 +50,8 @@ authority_semantics:
       automated_grouping_requires_approved_rule: true
       explicit_project_override_allowed: true
       grouping_changes_responsibility_map_semantics: false
+      same_authoritative_profile_rules_and_overrides_yield_same_grouping: true
+      global_reoptimization_must_be_deterministic: true
     relationship_source:
       ownership_scope: LOGICAL_PROFILE
       component_source_ownership: FORBIDDEN
