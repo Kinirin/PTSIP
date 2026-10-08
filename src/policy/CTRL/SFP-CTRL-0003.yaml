@@ -1,0 +1,76 @@
+{
+  "schema_version": "ptsip-support-root-family-policy/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "responsibility_family": "CTRL",
+  "policy": {
+    "id": "SFP-CTRL-0003",
+    "title": "Consumer Analysis Working Cleanup Delegation Authority (DRAFT)",
+    "status": "DRAFT"
+  },
+  "authority_subject": {
+    "id": "SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY",
+    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
+  },
+  "exclusive_kernel": [
+    "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+    "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE"
+  ],
+  "authority_contract": {
+    "authority_type": "ROOT_FAMILY_CTRL",
+    "schema_id": "ptsip.governance/root-family/ctrl",
+    "schema_version": 1
+  },
+  "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+          "statement": "실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority 읽기를 생략하지 않는다.",
+          "non_substitutability": "GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다."
+        },
+        {
+          "id": "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE",
+          "statement": "expected revision, operation identity와 등록된 transition 조건으로 stale writer 및 무권한 mutation을 차단한다. unresolved 관계는 fail-closed한다.",
+          "non_substitutability": "REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들 수 없다."
+        }
+      ],
+      "source_scope": []
+    },
+    "unit_consumer_analysis_approved_decisions": {
+      "working_cleanup_execution_authority": "CONSUMER_PROJECT_DELEGATED_AUTOMATION",
+      "cleanup_eligibility_source": "CONTRACT_PROVEN_RETENTION_RELEASE",
+      "mandatory_record_retention": "PROTECTED",
+      "per_record_approval_with_valid_delegation": "NOT_REQUIRED",
+      "automatic_cleanup_without_delegation": "FORBIDDEN",
+      "cleanup_operation_kind": "UNRESOLVED"
+    },
+    "unit_consumer_analysis_invariants": {
+      "project_must_explicitly_delegate_cleanup_scope": true,
+      "ptisp_policy_does_not_itself_grant_consumer_cleanup_permission": true,
+      "cleanup_execution_requires_fresh_valid_delegation": true,
+      "release_eligibility_alone_is_not_execution_authorization": true,
+      "protected_record_receipts_and_history_cannot_be_mutated_by_cleanup": true,
+      "outside_delegated_scope": "FAIL_CLOSED",
+      "missing_ambiguous_or_revoked_delegation": "FAIL_CLOSED",
+      "unapproved_cleanup_operation": "FORBIDDEN",
+      "ai_may_invent_delegated_scope": false
+    },
+    "unit_consumer_analysis_unresolved_decisions": [
+      "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
+      "DELEGATION_SCOPE_AND_REVOCATION_CONTRACT",
+      "CLEANUP_EXECUTION_AND_FAILURE_PLAN"
+    ],
+    "implementation_detail_authority": "PLAN"
+  },
+  "relations": {
+    "supersedes": [],
+    "amends": [],
+    "extends": [],
+    "depends_on": [
+      {
+        "policy": "SFP-INFO-0005",
+        "scope": "CONSUMER_ANALYSIS_POLICY_BOUNDARY"
+      }
+    ]
+  }
+}
