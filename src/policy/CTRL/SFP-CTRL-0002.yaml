@@ -56,7 +56,8 @@
         "official_engine_allowed_isolation_modes": [
           "IN_PROCESS",
           "ISOLATED"
-        ]
+        ],
+        "in_flight_revocation_policy": "AUTHORITY_BOUNDARY_SAFE_STOP"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -87,13 +88,22 @@
         "package_installation_path_alone_proves_official_status": false,
         "resolver_cannot_infer_or_override_official_isolation_mode": true,
         "consumer_external_engine_isolation_mandate_unaffected": true,
-        "user_external_engine_in_process_override_permitted": false
+        "user_external_engine_in_process_override_permitted": false,
+        "revocation_blocks_new_execution_and_new_privileged_actions": true,
+        "recheck_revocation_at_relevant_authority_boundaries": true,
+        "revocation_cannot_create_or_extend_execution_authority": true,
+        "in_flight_non_interruptible_segment_completion_requires_preexisting_authorization_and_atomicity_contract": true,
+        "in_flight_continuation_cannot_start_new_mutation_after_revocation": true,
+        "revocation_safe_stop_respects_existing_ctrl_real_ops_authority": true,
+        "unverified_effects_at_stop_cannot_be_asserted_rolled_back_or_successful": true,
+        "revocation_does_not_implicitly_authorize_compensation_or_retry": true
       },
       "unresolved_decisions": [
         {
-          "id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT",
+          "id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_INTERFACE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "source_unresolved_id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT"
         },
         {
           "id": "ISOLATION_MECHANISM_AND_BUDGET_ENFORCEMENT_PLAN",
@@ -167,6 +177,16 @@
           "actual_capability_modes": "NOT_DECIDED",
           "contract_shape": "NOT_DECIDED",
           "concrete_execution_technology": "NOT_DECIDED"
+        },
+        {
+          "id": "IN_FLIGHT_DELEGATION_REVOCATION_POLICY",
+          "selected_option": "B_AUTHORITY_BOUNDARY_SAFE_STOP",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_REVOCATION_BEHAVIOR",
+          "stop_protocol": "NOT_DECIDED",
+          "revocation_signal_transport": "NOT_DECIDED",
+          "atomic_segment_catalog": "NOT_DECIDED",
+          "timeout_parameters": "NOT_DECIDED"
         }
       ]
     }

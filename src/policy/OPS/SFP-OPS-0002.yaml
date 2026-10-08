@@ -45,7 +45,8 @@
         "coordinator_new_policy_authority": false,
         "recovery_must_preserve_operation_identity": true,
         "irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates": true,
-        "resource_failure_recovery_boundary": "EFFECT_STATE_AWARE_AUTHORIZED_RECOVERY"
+        "resource_failure_recovery_boundary": "EFFECT_STATE_AWARE_AUTHORIZED_RECOVERY",
+        "in_flight_revocation_recovery_boundary": "AUTHORIZED_SAFE_STOP_WITH_INDEPENDENT_EFFECT_ASSESSMENT"
       },
       "invariants": {
         "no_success_from_partial_failed_composition": true,
@@ -55,7 +56,11 @@
         "resource_failure_requires_independent_effect_state_handling": true,
         "no_implicit_rollback_from_engine_termination": true,
         "unknown_effect_blocks_unverified_reuse_or_recovery_success": true,
-        "retry_remains_subject_to_existing_ctrl_and_ops_authority": true
+        "retry_remains_subject_to_existing_ctrl_and_ops_authority": true,
+        "revocation_stop_outcome_requires_work_effect_evaluation": true,
+        "revocation_stop_does_not_prove_rollback": true,
+        "safe_stop_does_not_create_retry_or_compensation_authority": true,
+        "incomplete_or_unknown_effect_state_requires_existing_recovery_gate": true
       },
       "unresolved_decisions": [
         {
@@ -65,6 +70,11 @@
         },
         {
           "id": "RESOURCE_FAILURE_RECOVERY_HANDOFF_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "REVOCATION_SAFE_STOP_RECOVERY_HANDOFF_CONTRACT",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         }
