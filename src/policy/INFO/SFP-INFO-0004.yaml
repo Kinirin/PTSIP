@@ -20,8 +20,13 @@ authority_semantics:
   independence:
     responsibility_map_semantic_authority: EXCLUDED
     legacy_policy_implicit_inheritance: FORBIDDEN
+    legacy_policy_ids_as_current_composition_authority: FORBIDDEN
+    legacy_derived_section_ids_as_current_composition_lookup_authority: FORBIDDEN
+    historical_migration_source_as_current_composition_authority: FORBIDDEN
+    historical_provenance_may_remain_in_non_authoritative_migration_audit: true
   approved_decisions:
     policy_direction: INDEPENDENT_SOURCE_COMPOSITION
+    current_composition_legacy_authority_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
     logical_profile_model: SINGLE_LOGICAL_PROFILE
     source_membership_authority: REGISTERED_MEMBERSHIP
     component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
