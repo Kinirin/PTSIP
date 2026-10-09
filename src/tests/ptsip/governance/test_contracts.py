@@ -610,3 +610,64 @@ def test_optional_fork_audit_lineage_is_machine_derived_without_new_registration
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     for policy in (info, resolver, assure):
         Draft202012Validator(schema).validate(policy)
+
+
+def test_fork_audit_derivation_runs_only_on_explicit_audit_information_request() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    d = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert d["fork_audit_derivation_trigger"] == "EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY"
+    assert d["fork_audit_derivation_execution"] == "ON_DEMAND_READ_ONLY"
+    assert d["fork_audit_lineage_derivation"] == "EXISTING_MACHINE_VERIFIED_LOCAL_RECORDS_ONLY"
+    assert d["fork_audit_lineage_result"] == "OPTIONAL_NON_AUTHORITATIVE_DERIVED_PROJECTION"
+    assert d["fork_lineage_registration"] == "NOT_REQUIRED"
+    assert d["fork_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT"
+    fork = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["fork_lineage"]
+    assert fork["audit_derivation_must_require_explicit_audit_request"] is True
+    assert fork["audit_derivation_not_triggered_by_record_creation"] is True
+    assert fork["audit_derivation_not_triggered_by_normal_context_collection"] is True
+    assert fork["audit_derivation_not_triggered_by_analysis_generation_or_validation"] is True
+    assert fork["audit_derivation_not_triggered_by_default_candidate_lookup"] is True
+    assert fork["audit_derivation_background_precomputation_required"] is False
+    assert fork["missing_audit_request_does_not_initiate_derivation"] is True
+    assert fork["origin_repository_external_lookup_required"] is False
+    assert fork["audit_derivation_must_not_expand_record_retention_obligation"] is True
+    assert fork["derivation_must_not_mutate_original_record_or_receipt"] is True
+    assert fork["missing_audit_proof_does_not_block_new_analysis"] is True
+
+    resolver = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
+    assert resolver["policy"]["status"] == "DRAFT"
+    rd = resolver["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    ri = resolver["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert rd["fork_audit_execution_trigger"] == "EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY"
+    assert rd["fork_audit_execution_role"] == "ON_DEMAND_READ_ONLY_DERIVED_PROJECTION"
+    assert rd["fork_audit_source_resolution"] == "EXISTING_LOCAL_VERIFIED_RECORDS_ONLY"
+    assert rd["fork_analysis_candidate_scope"] == "FORK_LOCAL_CONTEXT_ONLY"
+    assert rd["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
+    assert rd["reference_source_authority"] == "ANALYSIS_OWNED"
+    assert ri["fork_audit_request_required_to_compute_projection"] is True
+    assert ri["fork_audit_derivation_on_record_creation"] == "FORBIDDEN"
+    assert ri["fork_audit_derivation_on_normal_analysis_execution"] == "FORBIDDEN"
+    assert ri["fork_audit_derivation_on_context_collection_or_regular_lookup"] == "FORBIDDEN"
+    assert ri["fork_audit_automatic_precompute_or_background_run_required"] is False
+    assert ri["fork_audit_result_does_not_change_analysis_candidate_or_execution_status"] is True
+    assert ri["fork_audit_request_uses_existing_local_verified_records_only"] is True
+
+    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
+    assert assure["policy"]["status"] == "DRAFT"
+    ad = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    ai = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert ad["fork_lineage_reuse"] == "FORBIDDEN_OPTIONAL_AUDIT_ONLY"
+    assert ai["fork_audit_proof_evaluation_only_when_requested"] is True
+    assert ai["fork_audit_proof_evaluation_not_required_for_normal_analysis"] is True
+    assert ai["fork_audit_missing_proof_only_invalidates_requested_audit_claim"] is True
+    assert ai["fork_audit_precomputation_does_not_grant_qualification"] is True
+    assert ai["fork_audit_claim_without_verifiable_existing_evidence"] == "FAIL_CLOSED_AUDIT_CLAIM_ONLY"
+    assert ai["fork_analysis_requires_fresh_current_evidence_and_dependency_validity"] is True
+
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    assert d["common_reference_identity_uniqueness_scope"] == "CONSUMER_REPOSITORY"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for policy in (info, resolver, assure):
+        Draft202012Validator(schema).validate(policy)
