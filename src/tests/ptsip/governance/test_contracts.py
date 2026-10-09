@@ -151,3 +151,21 @@ def test_consumer_analysis_cleanup_delegation_is_operation_specific_and_nonactiv
     assert record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["mandatory_record_retention"] == "PRESERVED_WITH_PRECEDENCE"
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
+
+
+def test_consumer_analysis_context_evidence_references_and_cleanup_boundaries() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
+    decisions = info["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert decisions["context_analysis_reference_granularity"] == "INDIVIDUAL_OBSERVATION_AND_EVIDENCE"
+    assert decisions["context_first_analysis_discovery"] == "AUTOMATIC_DERIVED_REVERSE_INDEX"
+    assert info["authority_semantics"]["unit_consumer_analysis_invariants"]["context_analysis_references"]["whole_context_snapshot_as_substitute"] == "FORBIDDEN"
+    cntr = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
+    assert cntr["authority_semantics"]["unit_consumer_analysis_invariants"]["reverse_index_is_non_authoritative_projection"] is True
+    record = _json("src/policy/RECORD/SFP-RECORD-0004.yaml")
+    assert record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["reusable_long_term_retention_scope"] == "CONSUMER_DELEGATED_LONG_TERM_RETENTION"
+    ctrl = _json("src/policy/CTRL/SFP-CTRL-0003.yaml")
+    assert ctrl["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["cleanup_completion_consistency"] == "CONTRACT_PROVEN_LOGICAL_COMPLETION"
+    assert ctrl["authority_semantics"]["unit_consumer_analysis_invariants"]["cleanup_execution_precondition_recheck_required"] is True
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for policy in (info, cntr, record, ctrl):
+        Draft202012Validator(schema).validate(policy)
