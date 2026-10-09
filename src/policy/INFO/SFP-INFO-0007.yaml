@@ -32,8 +32,10 @@ authority_semantics:
     common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
     common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
     cross_repository_identity_interpretation: EXPLICIT_REPOSITORY_SCOPE_REQUIRED
-    repository_fork_lineage_policy: CONTRACT_VERIFIED_FORK_LINEAGE
-    fork_lineage_reuse_role: ELIGIBILITY_INPUT_NOT_REUSE_GRANT
+    repository_fork_lineage_policy: OPTIONAL_VERIFIED_AUDIT_LINEAGE
+    fork_lineage_reuse_role: AUDIT_ONLY_NO_ANALYSIS_REUSE
+    fork_analysis_execution: INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT
+    fork_lineage_registration: OPTIONAL_VERIFIABLE_AUDIT_METADATA
     pre_fork_source_identity: ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED
     post_fork_observation_identity: FORK_LOCAL_INDEPENDENT_ID
     repository_name_location_change_policy: RESET_IDENTITY_SCOPE
@@ -77,7 +79,7 @@ authority_semantics:
       unqualified_id_does_not_identify_cross_repository_event: true
       foreign_repository_id_string_equality_proves_same_event: false
       cross_repository_reference_requires_explicit_verified_repository_scope: true
-      repository_fork_semantics: CONTRACT_VERIFIED_LINEAGE
+      repository_fork_semantics: OPTIONAL_VERIFIED_AUDIT_LINEAGE
       repository_relocation_semantics: RESET_IDENTITY_SCOPE
     repository_relocation:
       name_or_location_change_requires_identity_scope_reset: true
@@ -104,17 +106,23 @@ authority_semantics:
       existing_analysis_to_evidence_reference_ownership_preserved: true
       current_context_to_analysis_reverse_lookup_remains_local: true
       reobservation_event_identity_proof_still_required: true
-      fork_lineage_policy_is_independently_unresolved: true
+      fork_lineage_policy_reconciled_as_independent_analysis_with_optional_audit: true
     fork_lineage:
       distinct_consumer_repositories_keep_independent_identity_authority: true
-      verified_registered_origin_relationship_required: true
+      registered_audit_lineage_requires_verified_origin_relationship: true
+      audit_lineage_recording_is_optional: true
+      unavailable_audit_lineage_does_not_block_independent_analysis: true
+      origin_repository_lookup_is_not_required_for_current_analysis: true
+      fork_analysis_uses_current_consumer_context_and_evidence: true
+      origin_analysis_is_not_reuse_candidate: true
+      origin_analysis_discovery_is_not_required: true
       provenance_of_inherited_observations_preserved: true
       copied_pre_fork_observation_ids_keep_origin_repository_scope: true
       newly_observed_fork_events_use_fork_repository_scoped_ids: true
       lineage_alone_does_not_prove_same_event: true
       lineage_alone_does_not_authorize_reuse: true
-      current_dependency_and_change_impact_validation_required: true
-      unverified_or_ambiguous_lineage: FAIL_CLOSED
+      current_analysis_qualification_requires_local_evidence_and_dependencies: true
+      unverified_or_ambiguous_audit_lineage: FAIL_CLOSED_FOR_AUDIT_ASSERTION_ONLY
       ai_inferred_or_fuzzy_lineage: FORBIDDEN
       manual_per_record_lineage_mapping_required: false
     registration:
@@ -173,7 +181,7 @@ authority_semantics:
       existing_record_retention_overridden: false
   unit_context_evidence_identity_unresolved_decisions:
     - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
-    - CONTEXT_FORK_LINEAGE_PROOF_INTERFACE
+    - CONTEXT_OPTIONAL_FORK_AUDIT_LINEAGE_PROOF_INTERFACE
     - CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
