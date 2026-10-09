@@ -59,7 +59,9 @@
       "fork_origin_analysis_candidate_discovery": "DISABLED",
       "fork_lineage_lookup": "OPTIONAL_DERIVED_VERIFIED_LOCAL_RECORD_AUDIT_ONLY",
       "fork_audit_source_resolution": "EXISTING_LOCAL_VERIFIED_RECORDS_ONLY",
-      "fork_audit_result_role": "NON_AUTHORITATIVE_READ_ONLY_PROJECTION"
+      "fork_audit_result_role": "NON_AUTHORITATIVE_READ_ONLY_PROJECTION",
+      "fork_audit_execution_trigger": "EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY",
+      "fork_audit_execution_role": "ON_DEMAND_READ_ONLY_DERIVED_PROJECTION"
     },
     "unit_consumer_analysis_invariants": {
       "filename_or_ai_semantic_discovery": "FORBIDDEN",
@@ -100,7 +102,14 @@
       "fork_audit_lookup_must_be_read_only": true,
       "fork_audit_missing_proof_returns_no_verified_lineage": true,
       "fork_audit_no_proof_does_not_block_fork_analysis": true,
-      "fork_audit_verified_source_binding_required": true
+      "fork_audit_verified_source_binding_required": true,
+      "fork_audit_request_required_to_compute_projection": true,
+      "fork_audit_derivation_on_record_creation": "FORBIDDEN",
+      "fork_audit_derivation_on_normal_analysis_execution": "FORBIDDEN",
+      "fork_audit_derivation_on_context_collection_or_regular_lookup": "FORBIDDEN",
+      "fork_audit_automatic_precompute_or_background_run_required": false,
+      "fork_audit_result_does_not_change_analysis_candidate_or_execution_status": true,
+      "fork_audit_request_uses_existing_local_verified_records_only": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
