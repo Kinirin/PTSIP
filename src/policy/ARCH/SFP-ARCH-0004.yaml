@@ -70,7 +70,8 @@
           "TRANSPORT",
           "LIFECYCLE"
         ],
-        "internal_hierarchy_model": "DECLARATION_BASED_VARIABLE_HIERARCHY"
+        "internal_hierarchy_model": "DECLARATION_BASED_VARIABLE_HIERARCHY",
+        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -86,7 +87,11 @@
         "hierarchy_depth_may_vary_by_declared_responsibility": true,
         "fixed_intermediate_role_grouping_is_mandatory": false,
         "flat_only_hierarchy_is_mandatory": false,
-        "concrete_hierarchy_requires_explicit_responsibility_map": true
+        "concrete_hierarchy_requires_explicit_responsibility_map": true,
+        "storage_engine_owns_capability_contract_not_all_provider_implementations": true,
+        "storage_provider_and_data_policy_ownership_remain_explicit_and_independent": true,
+        "existing_storage_ownership_transfer_requires_separate_authorized_decision": true,
+        "physical_colocation_or_capability_consumption_does_not_transfer_storage_data_ownership": true
       },
       "unresolved_decisions": [
         {
@@ -146,6 +151,15 @@
           "resolution_scope": "HIERARCHY_PRINCIPLE_ONLY",
           "remaining_unresolved_id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
           "approval_source": "USER_EXPLICIT"
+        },
+        {
+          "id": "STORAGE_ENGINE_SEMANTIC_RESPONSIBILITY_DIRECTION",
+          "selected_option": "C_STORAGE_CONTRACT_MEDIATOR",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_CAPABILITY_OWNERSHIP_DIRECTION",
+          "physical_directory_names": "NOT_DECIDED",
+          "existing_module_transfer": "NOT_DECIDED",
+          "concrete_provider_mapping": "NOT_DECIDED"
         }
       ]
     }

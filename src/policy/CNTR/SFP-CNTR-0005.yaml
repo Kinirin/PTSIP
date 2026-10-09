@@ -69,7 +69,8 @@
         "multi_objective_ranking": "PARETO_DOMINANCE_THEN_APPROVED_PREFERENCES",
         "in_flight_switching": "NOT_AUTHORIZED_BY_SELECTION_POLICY",
         "resource_exhaustion_result_semantics": "ATTEMPT_FAILURE_WITH_SEPARATE_WORK_EFFECT_ASSESSMENT",
-        "revocation_result_contract_boundary": "STOP_CAUSE_AND_ATTEMPT_STATUS_SEPARATE_FROM_WORK_EFFECT"
+        "revocation_result_contract_boundary": "STOP_CAUSE_AND_ATTEMPT_STATUS_SEPARATE_FROM_WORK_EFFECT",
+        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -85,7 +86,13 @@
         "unknown_effect_cannot_be_reported_as_confirmed_success": true,
         "revocation_cause_exposed_separately_from_observed_side_effects": true,
         "successful_stop_is_not_successful_original_operation": true,
-        "unknown_work_effects_must_remain_explicit": true
+        "unknown_work_effects_must_remain_explicit": true,
+        "storage_capability_exposes_contract_without_automatically_owning_all_storage_data": true,
+        "storage_existing_provider_implementation_may_be_reused_without_implicit_ownership_transfer": true,
+        "storage_contract_broker_may_have_explicitly_owned_implementation": true,
+        "storage_provider_selection_must_preserve_contract_compatibility_and_authority": true,
+        "storage_broker_is_not_mandatory_global_interception_of_all_file_io": true,
+        "storage_contract_grants_no_additional_read_write_permission": true
       },
       "unresolved_decisions": [
         {
@@ -127,6 +134,11 @@
           "id": "REVOCATION_STOP_RESULT_INTERFACE",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
         }
       ],
       "activation_requirements": {
@@ -141,6 +153,16 @@
         "EXISTING_ACTIVE_POLICY_MUTATION",
         "UNAPPROVED_DIRECTORY_NAMES",
         "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ],
+      "resolved_decisions": [
+        {
+          "id": "STORAGE_ENGINE_SEMANTIC_RESPONSIBILITY_DIRECTION",
+          "selected_option": "C_STORAGE_CONTRACT_MEDIATOR",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_CAPABILITY_CONTRACT_DIRECTION",
+          "provider_identity_and_io_shape": "NOT_DECIDED",
+          "implementation_mapping": "NOT_DECIDED"
+        }
       ]
     }
   },
