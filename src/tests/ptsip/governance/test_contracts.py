@@ -396,8 +396,8 @@ def test_repository_relocation_resets_context_identity_scope_without_history_rew
     assert relocation["new_observations_use_new_repository_scoped_identity"] is True
     assert relocation["location_change_alone_grants_same_event_identity"] is False
     assert relocation["location_change_alone_grants_analysis_reuse"] is False
-    assert relocation["registered_verified_cross_scope_reference_required"] is True
-    assert relocation["unverified_cross_scope_reference"] == "FAIL_CLOSED"
+    assert relocation["cross_scope_relation_not_required_for_new_analysis"] is True
+    assert relocation["old_repository_access_not_required_for_new_analysis"] is True
     assert relocation["fork_lineage_rules_remain_independent"] is True
     assert approved["analysis_reference_owner"] == "ANALYSIS"
     assert approved["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
@@ -411,100 +411,100 @@ def test_repository_relocation_resets_context_identity_scope_without_history_rew
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
 
-
-def test_relocation_historical_analysis_candidates_require_proven_scope_and_current_validity() -> None:
+def test_relocation_requires_new_local_analysis_not_historical_candidate_discovery() -> None:
     info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
     assert info["policy"]["status"] == "DRAFT"
-    decisions = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
-    assert decisions["repository_name_location_change_policy"] == "RESET_IDENTITY_SCOPE"
-    assert decisions["relocation_historical_analysis_access"] == "VERIFIED_CROSS_SCOPE_RELATION_CANDIDATE_ONLY"
-    assert decisions["relocation_historical_reference_authority"] == "REGISTERED_VERIFIED_SCOPE_RELATION"
-    scope = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["relocation_historical_analysis"]
-    assert scope["original_repository_scope_and_analysis_ids_preserved"] is True
-    assert scope["candidate_discovery_requires_registered_verified_scope_relation"] is True
-    assert scope["cross_scope_relation_does_not_rebind_original_ids"] is True
-    assert scope["relocation_alone_does_not_create_candidate_authority"] is True
-    assert scope["candidate_discovery_does_not_authorize_reuse"] is True
-    assert scope["historical_provenance_and_receipts_preserved"] is True
-    assert scope["unverified_or_ambiguous_scope_relation"] == "FAIL_CLOSED"
-    assert scope["ai_inferred_scope_relationship"] == "FORBIDDEN"
-    assert "RELOCATION_CROSS_SCOPE_RELATION_PROOF_INTERFACE" in info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
-
-    cntr = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
-    assert cntr["policy"]["status"] == "DRAFT"
-    selected = cntr["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
-    assert selected["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
-    assert selected["reference_source_authority"] == "ANALYSIS_OWNED"
-    assert selected["relocation_historical_candidate_discovery"] == "REGISTERED_VERIFIED_CROSS_SCOPE_RELATION_EXPANSION"
-    lookup = cntr["authority_semantics"]["unit_consumer_analysis_invariants"]
-    assert lookup["relocation_cross_scope_expansion_requires_verified_relation"] is True
-    assert lookup["relocation_candidates_must_respect_original_repository_scoped_identities"] is True
-    assert lookup["relocation_cross_scope_lookup_is_candidate_discovery_only"] is True
-    assert lookup["relocation_without_proof_not_candidate"] is True
-    assert lookup["relocation_candidate_lookup_requires_complete_registered_closure"] is True
-    assert lookup["relocation_cross_scope_unverified_or_ambiguous"] == "FAIL_CLOSED"
-    assert lookup["relocation_cross_scope_ai_candidate_inference"] == "FORBIDDEN"
-
-    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
-    assert assure["policy"]["status"] == "DRAFT"
-    approved = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
-    assert approved["relocation_historical_analysis_reuse"] == "VERIFIED_SCOPE_LINK_FOR_CANDIDACY_WITH_CURRENT_ASSURE_VALIDITY_GATE"
-    validity = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
-    assert validity["relocation_verified_scope_link_alone_does_not_grant_reuse"] is True
-    assert validity["relocation_analysis_must_pass_current_evidence_dependency_change_impact_validation"] is True
-    assert validity["relocation_scope_link_does_not_prove_same_observation_event"] is True
-    assert validity["relocation_reuse_cannot_promote_historical_analysis_authority"] is True
-    assert validity["relocation_invalid_or_incomplete_current_validity"] == "FAIL_CLOSED"
-    assert validity["relocation_reuse_preserves_original_record_history"] is True
-
-    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
-    assert record["policy"]["status"] == "ACTIVE"
-    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
-    for policy in (info, cntr, assure):
-        Draft202012Validator(schema).validate(policy)
-
-
-def test_current_consumer_owns_verified_cross_scope_relation_registration() -> None:
-    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
-    assert info["policy"]["status"] == "DRAFT"
-    decisions = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
-    assert decisions["cross_scope_reference_registration_owner"] == "REFERENCING_CURRENT_CONSUMER_REPOSITORY"
-    assert decisions["cross_scope_reference_registration_authority"] == "CURRENT_CONSUMER_DECLARATION_WITH_MACHINE_VERIFIED_ORIGIN"
-    boundaries = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["cross_scope_registration"]
-    assert boundaries["referencing_current_consumer_owns_relation_declaration"] is True
-    assert boundaries["original_repository_must_not_be_mutated_for_new_relation"] is True
-    assert boundaries["original_repository_and_analysis_identity_authority_preserved"] is True
-    assert boundaries["original_record_provenance_history_preserved"] is True
-    assert boundaries["declared_relation_requires_registered_machine_verified_origin_evidence"] is True
-    assert boundaries["declaration_alone_proves_relation"] is False
-    assert boundaries["relation_registration_does_not_rebind_original_identity"] is True
-    assert boundaries["relation_registration_does_not_grant_event_equivalence"] is True
-    assert boundaries["relation_registration_does_not_grant_analysis_reuse"] is True
-    assert boundaries["unverified_or_ambiguous_registered_relation"] == "FAIL_CLOSED"
-    assert boundaries["ai_guessed_or_filename_derived_relation"] == "FORBIDDEN"
+    d = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert d["relocation_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_NEW_CONSUMER_CONTEXT"
+    assert d["relocation_historical_analysis_reuse"] == "FORBIDDEN"
+    assert d["relocation_old_analysis_candidate_discovery"] == "NOT_REQUIRED"
+    assert d["relocation_cross_scope_relation_registration_for_analysis"] == "NOT_REQUIRED"
+    assert d["relocation_prior_reuse_policy"] == "SUPERSEDED_KEEP_LATEST_INDEPENDENT_REANALYSIS"
+    r = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["relocation_independent_analysis"]
+    assert r["current_consumer_scope_is_sole_new_analysis_identity_authority"] is True
+    assert r["current_context_and_individual_evidence_drive_new_analysis"] is True
+    assert r["previous_repository_analysis_is_not_candidate_for_automatic_reuse"] is True
+    assert r["old_repository_lookup_is_not_required"] is True
+    assert r["old_repository_relation_discovery_is_not_required"] is True
+    assert r["cross_scope_registration_cannot_block_current_analysis"] is True
+    assert r["previous_analysis_validation_is_not_inherited"] is True
+    assert r["historical_source_and_record_identity_preserved"] is True
+    assert r["historical_receipts_are_not_rewritten_or_deleted"] is True
+    assert r["existing_analysis_to_evidence_reference_ownership_preserved"] is True
+    assert r["current_context_to_analysis_reverse_lookup_remains_local"] is True
+    assert r["reobservation_event_identity_proof_still_required"] is True
+    assert r["fork_lineage_policy_is_independently_unresolved"] is True
 
     resolver = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
-    assert resolver["policy"]["status"] == "DRAFT"
-    cntr = resolver["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
-    assert cntr["cross_scope_relation_registration_owner"] == "REFERENCING_CURRENT_CONSUMER_REPOSITORY"
-    assert cntr["cross_scope_relation_semantics_authority"] == "PTSIP"
-    assert cntr["cross_scope_registration_discovery"] == "REGISTERED_VERIFIED_RELATION_ONLY"
-    assert cntr["reference_source_authority"] == "ANALYSIS_OWNED"
-    assert cntr["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
-    checks = resolver["authority_semantics"]["unit_consumer_analysis_invariants"]
-    assert checks["current_consumer_declaration_cannot_override_original_source_authority"] is True
-    assert checks["cross_scope_reference_registration_requires_verified_registered_origin_relation"] is True
-    assert checks["cross_scope_declared_relation_is_not_reuse_authorization"] is True
-    assert checks["unverified_cross_scope_registration_cannot_expand_candidate_set"] is True
-    assert checks["cross_scope_registration_does_not_require_origin_repository_mutation"] is True
-    assert checks["cross_scope_registration_ambiguity"] == "FAIL_CLOSED"
-    assert checks["cross_scope_reference_owner_independent_of_analysis_evidence_reference_owner"] is True
+    selected = resolver["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert selected["relocation_analysis_candidate_scope"] == "CURRENT_CONSUMER_CONTEXT_ONLY"
+    assert selected["relocation_analysis_operation"] == "NEW_LOCAL_ANALYSIS_NOT_CROSS_SCOPE_REUSE"
+    assert selected["relocation_previous_analysis_lookup"] == "DISABLED"
+    assert selected["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
+    assert selected["reference_source_authority"] == "ANALYSIS_OWNED"
+    ci = resolver["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert ci["relocation_old_repository_analysis_candidate_expansion"] == "FORBIDDEN"
+    assert ci["relocation_old_repository_lookup_required"] is False
+    assert ci["relocation_cross_scope_reference_registration_required"] is False
+    assert ci["relocation_current_context_to_analysis_reverse_index_preserved"] is True
+    assert ci["relocation_analysis_uses_current_repository_local_evidence"] is True
+    assert ci["relocation_missing_old_repository_does_not_block_new_analysis"] is True
+    assert ci["relocation_earlier_analysis_result_not_implicitly_reused"] is True
+    assert ci["relocation_fork_lineage_scope_not_changed"] is True
 
     assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
-    assert assure["authority_semantics"]["unit_consumer_analysis_invariants"]["relocation_analysis_must_pass_current_evidence_dependency_change_impact_validation"] is True
+    a = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert a["relocation_historical_analysis_reuse"] == "FORBIDDEN"
+    assert a["relocation_analysis_qualification"] == "FRESH_CURRENT_CONSUMER_CONTEXT_EVIDENCE"
+    assert a["relocation_reuse_policy_resolution"] == "KEEP_LATEST_NEW_REPOSITORY_INDEPENDENT_ANALYSIS"
+    ai = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert ai["relocation_new_analysis_must_be_verified_from_current_context_and_evidence"] is True
+    assert ai["relocation_prior_analysis_validation_cannot_be_inherited"] is True
+    assert ai["relocation_prior_analysis_is_not_a_reuse_candidate"] is True
+    assert ai["relocation_evaluation_does_not_require_old_repository_or_record_discovery"] is True
+    assert ai["relocation_record_preservation_does_not_grant_reuse_authority"] is True
+    assert ai["relocation_fork_lineage_reuse_semantics_unchanged"] is True
+    assert ai["relocation_unknown_current_evidence_or_dependencies"] == "FAIL_CLOSED"
     record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
     assert record["policy"]["status"] == "ACTIVE"
-    assert "CROSS_SCOPE_REGISTRATION_SOURCE_PROOF_INTERFACE" in info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
-    for policy in (info, resolver):
-        Draft202012Validator(schema).validate(policy)
+    for item in (info, resolver, assure):
+        Draft202012Validator(schema).validate(item)
+
+def test_relocation_does_not_create_cross_scope_reuse_or_registration_dependency() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    d = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    inv = info["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    assert "cross_scope_reference_registration_owner" not in d
+    assert "cross_scope_reference_registration_authority" not in d
+    assert "relocation_historical_analysis_access" not in d
+    assert "relocation_historical_reference_authority" not in d
+    assert "cross_scope_registration" not in inv
+    assert "relocation_historical_analysis" not in inv
+    unresolved = info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "RELOCATION_CROSS_SCOPE_RELATION_PROOF_INTERFACE" not in unresolved
+    assert "CROSS_SCOPE_REGISTRATION_SOURCE_PROOF_INTERFACE" not in unresolved
+
+    resolver = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
+    rd = resolver["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    ri = resolver["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert "relocation_historical_candidate_discovery" not in rd
+    assert "cross_scope_relation_registration_owner" not in rd
+    assert "cross_scope_registration_discovery" not in rd
+    assert "relocation_cross_scope_expansion_requires_verified_relation" not in ri
+    assert "cross_scope_reference_registration_requires_verified_registered_origin_relation" not in ri
+    assert rd["reference_source_authority"] == "ANALYSIS_OWNED"
+
+    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
+    ad = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    ai = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert ad["fork_lineage_reuse"] == "VERIFIED_LINEAGE_PLUS_CURRENT_DEPENDENCY_AND_EVIDENCE_VALIDITY"
+    assert ai["verified_fork_lineage_may_provide_reuse_candidate"] is True
+    assert "relocation_verified_scope_link_alone_does_not_grant_reuse" not in ai
+    assert "relocation_analysis_must_pass_current_evidence_dependency_change_impact_validation" not in ai
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for item in (info, resolver, assure):
+        Draft202012Validator(schema).validate(item)
+
