@@ -53,7 +53,8 @@
       "relocation_analysis_qualification": "FRESH_CURRENT_CONSUMER_CONTEXT_EVIDENCE",
       "relocation_reuse_policy_resolution": "KEEP_LATEST_NEW_REPOSITORY_INDEPENDENT_ANALYSIS",
       "fork_analysis_qualification": "FRESH_FORK_LOCAL_CONTEXT_EVIDENCE_AND_DEPENDENCIES",
-      "fork_reuse_policy_resolution": "RECONCILE_INDEPENDENT_REANALYSIS_WITH_OPTIONAL_AUDIT_LINEAGE"
+      "fork_reuse_policy_resolution": "RECONCILE_INDEPENDENT_REANALYSIS_WITH_OPTIONAL_AUDIT_LINEAGE",
+      "fork_audit_lineage_verification": "EXISTING_RECORD_SOURCE_PROOF_WITHOUT_NEW_ANALYSIS_AUTHORITY"
     },
     "unit_consumer_analysis_invariants": {
       "promotion_requires_validated_provenance_and_scope": true,
@@ -83,7 +84,12 @@
       "fork_invalid_audit_claim_cannot_be_treated_as_verified_history": true,
       "fork_audit_does_not_prove_observation_event_equivalence": true,
       "fork_unknown_current_evidence_or_dependencies": "FAIL_CLOSED",
-      "fork_original_record_history_and_provenance_preserved": true
+      "fork_original_record_history_and_provenance_preserved": true,
+      "fork_audit_derived_lineage_requires_verifiable_record_provenance": true,
+      "fork_audit_claim_without_verifiable_existing_evidence": "FAIL_CLOSED_AUDIT_CLAIM_ONLY",
+      "fork_audit_source_proof_cannot_be_substituted_for_current_analysis_validity": true,
+      "fork_audit_does_not_require_external_origin_access": true,
+      "fork_audit_missing_evidence_does_not_invalidate_local_analysis": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "DEPENDENCY_AND_RELATION_EVIDENCE_PROOF_INTERFACE",
