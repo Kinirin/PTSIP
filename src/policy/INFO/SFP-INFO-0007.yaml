@@ -29,6 +29,9 @@ authority_semantics:
     policy_direction: PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING
     common_reference_identity_issuer: PTSIP_AUTOMATED
     common_reference_identity_kind: STABLE_INDIVIDUAL_OBSERVATION_AND_EVIDENCE_ID
+    common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
+    common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
+    cross_repository_identity_interpretation: EXPLICIT_REPOSITORY_SCOPE_REQUIRED
     original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
     missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
     provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
@@ -52,6 +55,16 @@ authority_semantics:
       analysis_owns_registered_evidence_references: true
       provider_id_alone_confers_ptsip_reference_authority: false
       issued_id_alone_proves_observation_or_evidence: false
+    identity_uniqueness:
+      consumer_repository_scoped_uniqueness_required: true
+      no_global_issuer_or_central_id_registry_required: true
+      independent_ptsip_issuance_required: true
+      newly_issued_id_must_not_collide_with_registered_local_identity: true
+      ambiguous_or_colliding_local_identity: FAIL_CLOSED
+      unqualified_id_does_not_identify_cross_repository_event: true
+      foreign_repository_id_string_equality_proves_same_event: false
+      cross_repository_reference_requires_explicit_verified_repository_scope: true
+      repository_copy_fork_and_relocation_semantics: UNRESOLVED
     registration:
       verified_provider_source_binding_required: true
       missing_provider_event_id_alone_forbids_registration: false
@@ -107,7 +120,8 @@ authority_semantics:
       existing_active_context_information_authority_overridden: false
       existing_record_retention_overridden: false
   unit_context_evidence_identity_unresolved_decisions:
-    - CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT
+    - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
+    - CONTEXT_REPOSITORY_COPY_FORK_AND_RELOCATION_IDENTITY_CONTRACT
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
 relations:
