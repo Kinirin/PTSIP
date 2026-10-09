@@ -319,7 +319,7 @@ def test_context_evidence_ids_are_consumer_repository_scoped() -> None:
     assert scope["foreign_repository_id_string_equality_proves_same_event"] is False
     assert scope["cross_repository_reference_requires_explicit_verified_repository_scope"] is True
     assert scope["repository_fork_semantics"] == "CONTRACT_VERIFIED_LINEAGE"
-    assert scope["repository_relocation_semantics"] == "UNRESOLVED"
+    assert scope["repository_relocation_semantics"] == "RESET_IDENTITY_SCOPE"
     assert decisions["reobservation_identity_policy"] == "CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE"
     assert decisions["analysis_reference_owner"] == "ANALYSIS"
     assert decisions["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
@@ -328,7 +328,7 @@ def test_context_evidence_ids_are_consumer_repository_scoped() -> None:
     unresolved = policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
     assert "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT" in unresolved
     assert "CONTEXT_FORK_LINEAGE_PROOF_INTERFACE" in unresolved
-    assert "CONTEXT_REPOSITORY_RELOCATION_IDENTITY_CONTINUITY" in unresolved
+    assert "CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE" in unresolved
     assert "CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT" not in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
@@ -374,3 +374,39 @@ def test_verified_fork_lineage_preserves_identity_and_requires_current_reuse_val
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     for policy in (info, assure):
         Draft202012Validator(schema).validate(policy)
+
+
+def test_repository_relocation_resets_context_identity_scope_without_history_rewrite() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    approved = policy["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert approved["repository_name_location_change_policy"] == "RESET_IDENTITY_SCOPE"
+    assert approved["relocation_historical_identity"] == "PRESERVE_ORIGINAL_REPOSITORY_SCOPE_AND_ID"
+    assert approved["relocation_new_observation_identity"] == "NEW_REPOSITORY_SCOPE_LOCAL_ID"
+    assert approved["relocation_id_continuity"] == "NO_AUTOMATIC_SCOPE_INHERITANCE"
+    scope = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]["identity_uniqueness"]
+    assert scope["repository_fork_semantics"] == "CONTRACT_VERIFIED_LINEAGE"
+    assert scope["repository_relocation_semantics"] == "RESET_IDENTITY_SCOPE"
+    relocation = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]["repository_relocation"]
+    assert relocation["name_or_location_change_requires_identity_scope_reset"] is True
+    assert relocation["prior_observation_ids_keep_original_repository_scope"] is True
+    assert relocation["existing_historical_source_receipts_must_be_preserved"] is True
+    assert relocation["historical_identity_or_provenance_rewrite"] == "FORBIDDEN"
+    assert relocation["prior_ids_are_not_automatically_rebound_to_new_scope"] is True
+    assert relocation["new_observations_use_new_repository_scoped_identity"] is True
+    assert relocation["location_change_alone_grants_same_event_identity"] is False
+    assert relocation["location_change_alone_grants_analysis_reuse"] is False
+    assert relocation["registered_verified_cross_scope_reference_required"] is True
+    assert relocation["unverified_cross_scope_reference"] == "FAIL_CLOSED"
+    assert relocation["fork_lineage_rules_remain_independent"] is True
+    assert approved["analysis_reference_owner"] == "ANALYSIS"
+    assert approved["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert approved["reobservation_identity_policy"] == "CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE"
+    assert policy["authority_semantics"]["unit_context_evidence_identity_invariants"]["ownership"]["existing_record_retention_overridden"] is False
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    unresolved = policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE" in unresolved
+    assert "CONTEXT_REPOSITORY_RELOCATION_IDENTITY_CONTINUITY" not in unresolved
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
