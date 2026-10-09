@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.5'
+  version: '2.6'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -103,6 +103,35 @@ rules:
       file_move_mapping: PLAN_OWNED
       package_dependency_graph: PLAN_OWNED
       migration_sequence: PLAN_OWNED
+  tooling_test_registry_driven_executor_boundary:
+    policy_scope: DEVELOPER_REPOSITORY_TEST_MODE_ORCHESTRATION
+    workflow_ref: .github/workflows/tooling-test.yml
+    registry_ref: .github/test_modes.yaml
+    verification_responsibility_ref: .ptsip/profiles/main.ptsip.yaml
+    authority:
+      verification_responsibility: DECLARED_PROJECT_PROFILE
+      registered_modes_and_mode_specific_execution: TEST_MODE_REGISTRY
+      workflow: GENERIC_EXECUTION_ORCHESTRATOR_AND_RESULT_REPORTER
+    invariants:
+      mode_addition_requires_workflow_change: false
+      mode_removal_requires_workflow_change: false
+      registered_verification_addition_requires_workflow_change: false
+      registered_verification_change_requires_workflow_change: false
+      workflow_hardcodes_mode_ids_or_mode_specific_steps: false
+      workflow_redefines_project_profile_verification_ownership: false
+      unregistered_mode_execution: REJECT
+      unsupported_execution_contract: REJECT
+      required_verification_omission: REJECT
+      success_without_executed_required_evidence: FORBIDDEN
+    existing_authority_preservation:
+      developer_assure_evidence_and_coverage_judgment: PRESERVED
+      repository_release_requirements_and_gates: PRESERVED
+      existing_mandatory_verification: PRESERVED
+    plan_boundary:
+      workflow_dispatch_input_mechanism: PLAN
+      registry_execution_contract_shape: PLAN_SUBORDINATE_TO_POLICY
+      runner_and_adapter_design: PLAN
+      migration_and_equivalence_verification: PLAN
 relations:
   supersedes: []
   amends: []
