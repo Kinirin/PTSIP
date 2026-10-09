@@ -53,7 +53,8 @@
         "evidence_reuse": "CONDITION_AND_APPLICABILITY_VERIFIED",
         "evidence_missing": "CONTROLLED_AUTHORIZED_AUTOMATIC_REEVALUATION",
         "evidence_sufficient_but_unranked": "DO_NOT_INVENT_NEW_PREFERENCE",
-        "environment_sensitive_measurement": true
+        "environment_sensitive_measurement": true,
+        "engine_impact_verification_direction": "DEPENDENCY_GRAPH_COVERAGE_AND_CONTRACT_COMPATIBILITY_EVIDENCE"
       },
       "invariants": {
         "operational_evidence_is_not_simulation_evidence": true,
@@ -61,7 +62,11 @@
         "evidence_without_coverage_not_conformance": true,
         "benchmark_requires_fair_comparability": true,
         "unknown_safety_or_contract_state_not_eligible_for_ranking": true,
-        "simulation_must_observe_authorized_side_effect_bounds": true
+        "simulation_must_observe_authorized_side_effect_bounds": true,
+        "impact_verification_requires_dependency_coverage_evidence": true,
+        "compatibility_verdict_requires_applicable_version_bound_evidence": true,
+        "unverified_change_impact_must_not_be_reported_as_no_effect": true,
+        "impact_assessment_does_not_override_existing_assure_normative_conformance_authority": true
       },
       "unresolved_decisions": [
         {
@@ -83,6 +88,11 @@
           "id": "CURRENT_PC_TELEMETRY_COLLECTION_LIMITS",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_IMPACT_GRAPH_COVERAGE_AND_COMPATIBILITY_EVIDENCE_GATE",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
         }
       ],
       "activation_requirements": {
@@ -97,6 +107,15 @@
         "EXISTING_ACTIVE_POLICY_MUTATION",
         "UNAPPROVED_DIRECTORY_NAMES",
         "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
+      ],
+      "resolved_decisions": [
+        {
+          "id": "ENGINE_CHANGE_IMPACT_EVIDENCE_DIRECTION",
+          "selected_option": "C_DECLARED_GRAPH_AND_CONTRACT_COMPATIBILITY",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "EVIDENCE_ELIGIBILITY_DIRECTION_ONLY",
+          "coverage_threshold_and_result_shape": "NOT_DECIDED"
+        }
       ]
     }
   },

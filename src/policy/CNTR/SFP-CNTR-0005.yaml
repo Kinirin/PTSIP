@@ -76,7 +76,11 @@
         "validation_generic_contract_scope": "SCHEMA_IO_PRECONDITIONS_AND_VERIFICATION_CASES",
         "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT",
         "engine_local_management_contract_boundary": "ENGINE_OWNED_LOCAL_MANAGEMENT",
-        "engine_independent_delivery_boundary": "PER_ENGINE_VERSION_DEPENDENCY_BUILD_DISTRIBUTION_PATCH"
+        "engine_independent_delivery_boundary": "PER_ENGINE_VERSION_DEPENDENCY_BUILD_DISTRIBUTION_PATCH",
+        "engine_management_entry_resolution": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NO_DIRECTORY_NAME_INFERENCE",
+        "engine_management_responsibility_model": "MINIMUM_COMMON_REQUIRED_WITH_OPTIONAL_ENGINE_EXTENSIONS",
+        "engine_version_dependency_contract": "COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS",
+        "engine_interface_change_impact": "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -122,7 +126,19 @@
         "engine_distributions_can_bundle_without_merging_version_and_patch_identities": true,
         "engine_environment_isolation_does_not_implicitly_override_ctrl_isolation_mode": true,
         "existing_active_common_management_owner_map_preserved_until_explicit_transition": true,
-        "independent_engine_local_management_applies_only_with_valid_effective_authority": true
+        "independent_engine_local_management_applies_only_with_valid_effective_authority": true,
+        "management_entrypoint_resolution_must_not_guess_directory_name": true,
+        "missing_ambiguous_or_unregistered_management_entrypoint": "FAIL_CLOSED",
+        "management_discovery_never_grants_execution_or_write_authority": true,
+        "per_engine_contract_extensions_cannot_redefine_common_identity_or_other_engine_contracts": true,
+        "engine_implementation_version_dependency_and_contract_compatibility_remain_distinct": true,
+        "new_engine_contract_registration_requires_proven_identity_and_binding": true,
+        "change_impact_uses_declared_direct_and_transitive_dependency_relations": true,
+        "contract_compatibility_requires_explicit_verifiable_evidence": true,
+        "unknown_dependency_or_compatibility_is_not_proven_unaffected": true,
+        "compatible_interface_change_does_not_automatically_require_unrelated_engine_rebuild": true,
+        "impact_analysis_cannot_reduce_mandatory_verification_or_override_authority": true,
+        "versioned_independent_engine_artifacts_preserve_dependency_and_patch_isolation": true
       },
       "unresolved_decisions": [
         {
@@ -192,7 +208,17 @@
           "status": "UNRESOLVED"
         },
         {
-          "id": "ENGINE_VERSION_DEPENDENCY_BUILD_AND_PATCH_MANIFEST_CONTRACT",
+          "id": "ENGINE_MANAGEMENT_ENTRYPOINT_REGISTRATION_AND_MINIMUM_INTERFACE_SHAPE",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         }
@@ -253,6 +279,21 @@
           "scope": "ENGINE_SCOPED_CAPABILITY_INTERFACES",
           "shared_common_management_runtime": "NOT_MANDATORY",
           "runtime_version_manifest": "NOT_DECIDED"
+        },
+        {
+          "id": "ENGINE_MANAGEMENT_MANIFEST_AND_CHANGE_IMPACT_POLICY",
+          "selected_options": {
+            "management_entry": "C_MACHINE_RESOLVED_NO_FIXED_NAME",
+            "management_features": "B_MINIMUM_COMMON_PLUS_OPTIONAL",
+            "engine_manifest": "C_COMMON_IDENTITY_AND_ENGINE_EXTENSIONS",
+            "change_impact": "C_DEPENDENCY_GRAPH_PLUS_CONTRACT_COMPATIBILITY"
+          },
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_MACHINE_CONTRACT_DIRECTION_ONLY",
+          "specific_entry_schema": "NOT_DECIDED",
+          "specific_manifest_fields": "NOT_DECIDED",
+          "graph_compatibility_algorithm": "NOT_DECIDED",
+          "physical_directory_names": "NOT_DECIDED"
         }
       ],
       "dependent_plans": [

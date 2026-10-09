@@ -82,7 +82,9 @@
         "independent_engine_module_layout": "D_SELF_CONTAINED_ENGINE_MODULES",
         "per_engine_management_ownership": "INDEPENDENT_SEMANTICS_AND_IMPLEMENTATION",
         "per_engine_change_boundary": "VERSION_DEPENDENCIES_BUILD_DEPLOYMENT_PATCH",
-        "per_engine_environment_boundary": "VERSIONED_DEPENDENCY_ENVIRONMENT_PER_ENGINE"
+        "per_engine_environment_boundary": "VERSIONED_DEPENDENCY_ENVIRONMENT_PER_ENGINE",
+        "engine_local_management_entry_resolution": "MACHINE_DECLARED_IDENTITY_BOUND_ENTRYPOINT_WITH_NAME_AGNOSTIC_DIRECTORY",
+        "engine_local_management_function_model": "MINIMUM_COMMON_RESPONSIBILITY_WITH_OPTIONAL_ENGINE_OWNED_EXTENSIONS"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -139,7 +141,14 @@
         "engine_local_management_cannot_assume_active_external_authority": true,
         "new_engine_registration_does_not_expand_mandatory_official_set": true,
         "internal_layout_variable_depth_per_engine": true,
-        "management_and_module_names_still_unapproved": true
+        "management_and_module_names_still_unapproved": true,
+        "engine_local_management_directory_name_is_not_lookup_authority": true,
+        "engine_management_entrypoint_must_be_machine_resolvable_from_registered_engine_identity": true,
+        "management_internal_name_and_depth_are_engine_owned_and_non_normative": true,
+        "engine_minimum_common_management_obligations_required": true,
+        "engine_optional_management_functions_not_globally_mandatory": true,
+        "management_directory_rename_does_not_change_engine_identity_or_normative_contract": true,
+        "engine_module_and_management_ownership_remain_independent_of_file_names": true
       },
       "unresolved_decisions": [
         {
@@ -179,13 +188,18 @@
           "status": "UNRESOLVED"
         },
         {
-          "id": "ENGINE_LOCAL_MANAGEMENT_SUBDIRECTORY_NAMES",
-          "kind": "USER_DECISION",
+          "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
+          "kind": "RESPONSIBILITY_ANALYSIS",
           "status": "UNRESOLVED"
         },
         {
-          "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
-          "kind": "RESPONSIBILITY_ANALYSIS",
+          "id": "ENGINE_LOCAL_MANAGEMENT_ENTRYPOINT_DECLARATION_BINDING",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_MINIMUM_COMMON_MANAGEMENT_OBLIGATION_BOUNDARY",
+          "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         }
       ],
@@ -282,6 +296,20 @@
           "source_root": "src/ptsip/engines/",
           "scope": "ARCHITECTURAL_DIRECTION_ONLY",
           "physical_creation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_LOCAL_MANAGEMENT_NAMING_AND_FUNCTION_MODEL",
+          "selected_options": [
+            "C_MACHINE_DISCOVERABLE_UNRESTRICTED_ENGINE_LOCAL_NAMES",
+            "B_MINIMUM_COMMON_RESPONSIBILITIES_OPTIONAL_EXTENSIONS"
+          ],
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "ENGINE_LOCAL_MANAGEMENT_DIRECTION_ONLY",
+          "fixed_management_directory_name": "NOT_REQUIRED",
+          "entrypoint_resolution": "ENGINE_IDENTITY_TO_DECLARED_MANAGEMENT_ENTRYPOINT",
+          "minimum_responsibilities_exact_set": "UNRESOLVED_CONTRACT_DESIGN",
+          "actual_directory_creation": "NOT_AUTHORIZED",
+          "activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [

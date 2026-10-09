@@ -30,9 +30,14 @@
     "user_project_non_intrusion": true,
     "approved_official_engine_source_root": "src/ptsip/engines/",
     "approved_source_root_authority_ref": "src/policy/ARCH/SFP-ARCH-0004.yaml#ENGINE_UPPER_DIRECTORY_NAME",
-    "management_capability_and_nested_directory_names_unresolved": true,
+    "management_capability_and_nested_directory_names_unresolved": false,
     "approved_independent_engine_module_layout": "D_SELF_CONTAINED_ENGINE_MODULES",
-    "engine_scoped_management_and_delivery": "REQUIRED"
+    "engine_scoped_management_and_delivery": "REQUIRED",
+    "management_directory_names": "ENGINE_OWNED_NOT_STANDARDIZED",
+    "management_entry_access": "MACHINE_DECLARED_ENTRYPOINT_FROM_ENGINE_IDENTITY",
+    "management_feature_scope": "MINIMUM_COMMON_AND_ENGINE_OPTIONAL",
+    "engine_manifest_direction": "COMMON_IDENTITY_CONTRACT_WITH_ENGINE_EXTENSIONS",
+    "change_impact_direction": "DEPENDENCY_GRAPH_PLUS_CONTRACT_COMPATIBILITY"
   },
   "current_baseline": {
     "project_profile_ref": ".ptsip/profiles/main.ptsip.yaml",
@@ -245,7 +250,8 @@
         "ENUMERATE_PUBLIC_API_SIGNATURES_AND_DOWNSTREAM_CALLERS",
         "CAPTURE_PROJECT_PROFILE_COMPONENT_RELATIONS",
         "CAPTURE_TEST_MODE_CURRENT_ROUTING_AND_TEST_EXPECTATIONS",
-        "CAPTURE_DISTRIBUTION_AND_INSTALLED_RESOURCE_CONTRACTS"
+        "CAPTURE_DISTRIBUTION_AND_INSTALLED_RESOURCE_CONTRACTS",
+        "CAPTURE_DECLARED_ENGINE_MANAGEMENT_ENTRYPOINTS_WITHOUT_DIRECTORY_NAME_INFERENCE"
       ],
       "exit_checks": [
         "BASELINE_INVENTORY_MACHINE_READABLE",
@@ -265,7 +271,10 @@
         "MAP_VPMS_PROTOCOL_AND_SELECTION_AND_COMPOSITION_TO_VALIDATION_DOMAIN",
         "SEPARATELY_RESOLVE_COMMON_P4_REGISTRY_RESOLVER_COMPOSITION_EXECUTION_FUNCTIONAL_OWNERS",
         "DEFINE_COMPATIBILITY_ID_AND_VERSION_BINDING_WITHOUT_MUTATING_ACTIVE_CONTRACTS",
-        "CONFIRM_NO_OVERLAP_WITH_ASSURE_CONFORMANCE_JUDGMENT"
+        "CONFIRM_NO_OVERLAP_WITH_ASSURE_CONFORMANCE_JUDGMENT",
+        "MAP_MINIMUM_COMMON_AND_OPTIONAL_ENGINE_MANAGEMENT_RESPONSIBILITIES",
+        "DEFINE_COMMON_ENGINE_IDENTITY_AND_PER_ENGINE_VERSION_DEPENDENCY_EXTENSIONS",
+        "DEFINE_DECLARED_DEPENDENCY_GRAPH_AND_COMPATIBILITY_EVIDENCE_BOUNDARY"
       ],
       "exit_checks": [
         "EVERY_OPERATION_HAS_ONE_CANONICAL_SEMANTIC_OWNER",
@@ -407,13 +416,28 @@
       "status": "UNRESOLVED"
     },
     {
-      "id": "ENGINE_LOCAL_MANAGEMENT_AND_INDIVIDUAL_ENGINE_DIRECTORY_NAMES",
+      "id": "INDIVIDUAL_ENGINE_MODULE_DIRECTORY_NAMES",
       "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
       "status": "UNRESOLVED",
-      "source_unresolved_id": "CONCRETE_ENGINE_SOURCE_LAYOUT_AND_DIRECTORY_NAMES"
+      "source_unresolved_id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES"
     },
     {
-      "id": "ENGINE_LOCAL_BUILD_DEPENDENCY_AND_PATCH_MANIFEST",
+      "id": "ENGINE_MANAGEMENT_DECLARED_ENTRYPOINT_INTERFACE",
+      "owner": "CONTRACT_DESIGN",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "ENGINE_COMMON_IDENTITY_AND_ENGINE_EXTENSION_MANIFEST_SHAPE",
+      "owner": "CONTRACT_DESIGN",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "ENGINE_IMPACT_GRAPH_AND_COMPATIBILITY_VERIFICATION_SHAPE",
+      "owner": "CONTRACT_DESIGN",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "ENGINE_MINIMUM_COMMON_MANAGEMENT_FEATURE_SET",
       "owner": "CONTRACT_DESIGN",
       "status": "UNRESOLVED"
     }
