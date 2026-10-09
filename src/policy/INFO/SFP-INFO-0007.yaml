@@ -42,6 +42,8 @@ authority_semantics:
     relocation_id_continuity: NO_AUTOMATIC_SCOPE_INHERITANCE
     relocation_historical_analysis_access: VERIFIED_CROSS_SCOPE_RELATION_CANDIDATE_ONLY
     relocation_historical_reference_authority: REGISTERED_VERIFIED_SCOPE_RELATION
+    cross_scope_reference_registration_owner: REFERENCING_CURRENT_CONSUMER_REPOSITORY
+    cross_scope_reference_registration_authority: CURRENT_CONSUMER_DECLARATION_WITH_MACHINE_VERIFIED_ORIGIN
     original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
     missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
     provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
@@ -98,6 +100,18 @@ authority_semantics:
       unverified_or_ambiguous_scope_relation: FAIL_CLOSED
       ai_inferred_scope_relationship: FORBIDDEN
       independent_context_analysis_reference_ownership_preserved: true
+    cross_scope_registration:
+      referencing_current_consumer_owns_relation_declaration: true
+      original_repository_must_not_be_mutated_for_new_relation: true
+      original_repository_and_analysis_identity_authority_preserved: true
+      original_record_provenance_history_preserved: true
+      declared_relation_requires_registered_machine_verified_origin_evidence: true
+      declaration_alone_proves_relation: false
+      relation_registration_does_not_rebind_original_identity: true
+      relation_registration_does_not_grant_event_equivalence: true
+      relation_registration_does_not_grant_analysis_reuse: true
+      unverified_or_ambiguous_registered_relation: FAIL_CLOSED
+      ai_guessed_or_filename_derived_relation: FORBIDDEN
     fork_lineage:
       distinct_consumer_repositories_keep_independent_identity_authority: true
       verified_registered_origin_relationship_required: true
@@ -169,6 +183,7 @@ authority_semantics:
     - CONTEXT_FORK_LINEAGE_PROOF_INTERFACE
     - CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE
     - RELOCATION_CROSS_SCOPE_RELATION_PROOF_INTERFACE
+    - CROSS_SCOPE_REGISTRATION_SOURCE_PROOF_INTERFACE
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
 relations:
