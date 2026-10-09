@@ -70,7 +70,8 @@
         "in_flight_switching": "NOT_AUTHORIZED_BY_SELECTION_POLICY",
         "resource_exhaustion_result_semantics": "ATTEMPT_FAILURE_WITH_SEPARATE_WORK_EFFECT_ASSESSMENT",
         "revocation_result_contract_boundary": "STOP_CAUSE_AND_ATTEMPT_STATUS_SEPARATE_FROM_WORK_EFFECT",
-        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP"
+        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP",
+        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -92,7 +93,13 @@
         "storage_contract_broker_may_have_explicitly_owned_implementation": true,
         "storage_provider_selection_must_preserve_contract_compatibility_and_authority": true,
         "storage_broker_is_not_mandatory_global_interception_of_all_file_io": true,
-        "storage_contract_grants_no_additional_read_write_permission": true
+        "storage_contract_grants_no_additional_read_write_permission": true,
+        "context_source_meaning_and_constraints_remain_owned_by_context": true,
+        "context_inclusive_output_schema_and_transformation_contracts_owned_by_projection": true,
+        "projection_output_must_conform_to_context_semantic_source_contract": true,
+        "projection_cannot_invent_or_change_context_source_semantics": true,
+        "projection_validation_of_format_is_not_conformance_or_source_truth_authority": true,
+        "existing_active_context_projection_contract_unchanged_until_separately_authorized_transition": true
       },
       "unresolved_decisions": [
         {
@@ -139,6 +146,12 @@
           "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED",
+          "reason": "PRESERVE_EXISTING_CONTEXT_FORMAT_COMPATIBILITY_AND_SOURCE_SEMANTICS"
         }
       ],
       "activation_requirements": {
@@ -161,6 +174,15 @@
           "approval_source": "USER_EXPLICIT",
           "resolution_scope": "HIGH_LEVEL_CAPABILITY_CONTRACT_DIRECTION",
           "provider_identity_and_io_shape": "NOT_DECIDED",
+          "implementation_mapping": "NOT_DECIDED"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_SEMANTIC_RESPONSIBILITY_DIRECTION",
+          "selected_option": "B_PROJECTION_INDEPENDENT_OWNER",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_CAPABILITY_CONTRACT_OWNERSHIP_DIRECTION",
+          "existing_format_contract_migration": "PENDING_RECONCILIATION",
+          "output_schema_details": "NOT_DECIDED",
           "implementation_mapping": "NOT_DECIDED"
         }
       ]

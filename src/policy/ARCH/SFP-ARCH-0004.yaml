@@ -71,7 +71,8 @@
           "LIFECYCLE"
         ],
         "internal_hierarchy_model": "DECLARATION_BASED_VARIABLE_HIERARCHY",
-        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP"
+        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP",
+        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -91,7 +92,14 @@
         "storage_engine_owns_capability_contract_not_all_provider_implementations": true,
         "storage_provider_and_data_policy_ownership_remain_explicit_and_independent": true,
         "existing_storage_ownership_transfer_requires_separate_authorized_decision": true,
-        "physical_colocation_or_capability_consumption_does_not_transfer_storage_data_ownership": true
+        "physical_colocation_or_capability_consumption_does_not_transfer_storage_data_ownership": true,
+        "context_engine_retains_source_content_and_semantic_authority": true,
+        "projection_engine_owns_context_inclusive_output_format_specification_and_transformation_rule_authority": true,
+        "projection_ownership_does_not_transfer_context_source_semantic_authority": true,
+        "output_schema_and_transformation_normative_owner_must_be_unique": true,
+        "existing_active_context_projection_authority_not_silently_reassigned": true,
+        "implementation_co_location_does_not_merge_context_and_projection_responsibility": true,
+        "actual_owner_handoff_requires_effective_policy_reconciliation": true
       },
       "unresolved_decisions": [
         {
@@ -128,6 +136,12 @@
           "id": "CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION",
           "kind": "RESPONSIBILITY_ANALYSIS",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
+          "kind": "RESPONSIBILITY_ANALYSIS",
+          "status": "UNRESOLVED",
+          "reason": "EXISTING_CONTEXT_PROJECTION_CONTRACT_AND_COMPONENT_BOUNDARIES_REQUIRE_EXPLICIT_RECONCILIATION_BEFORE_ACTIVE"
         }
       ],
       "activation_requirements": {
@@ -160,6 +174,17 @@
           "physical_directory_names": "NOT_DECIDED",
           "existing_module_transfer": "NOT_DECIDED",
           "concrete_provider_mapping": "NOT_DECIDED"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_SEMANTIC_RESPONSIBILITY_DIRECTION",
+          "selected_option": "B_PROJECTION_INDEPENDENT_OWNER",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_CONTEXT_AND_PROJECTION_RESPONSIBILITY_DIRECTION",
+          "context_source_semantics_owner": "CONTEXT",
+          "output_formats_and_transformation_rules_owner": "PROJECTION",
+          "current_active_policy_reconciliation": "PENDING",
+          "physical_implementation_move": "NOT_DECIDED",
+          "directory_names": "NOT_DECIDED"
         }
       ]
     }
