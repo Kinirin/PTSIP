@@ -29,6 +29,9 @@ authority_semantics:
     policy_direction: PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING
     common_reference_identity_issuer: PTSIP_AUTOMATED
     common_reference_identity_kind: STABLE_INDIVIDUAL_OBSERVATION_AND_EVIDENCE_ID
+    common_reference_identity_semantics: OPAQUE_NON_SEMANTIC
+    common_reference_identity_interpretation: EXACT_MATCH_ONLY
+    observation_evidence_semantic_metadata_authority: VERIFIED_SEPARATE_CONTEXT_EVIDENCE_METADATA
     common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
     common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
     issued_identity_reassignment: PERMANENTLY_FORBIDDEN_FOR_DISTINCT_OBSERVATION_OR_EVIDENCE
@@ -88,6 +91,22 @@ authority_semantics:
       cross_repository_reference_requires_explicit_verified_repository_scope: true
       repository_fork_semantics: OPTIONAL_VERIFIED_AUDIT_LINEAGE
       repository_relocation_semantics: RESET_IDENTITY_SCOPE
+    identity_opacity:
+      opaque_identity_required: true
+      id_value_must_not_encode_observation_timestamp: true
+      id_value_must_not_encode_source_or_provider: true
+      id_value_must_not_encode_feature_or_classification: true
+      id_value_must_not_encode_observation_or_evidence_type: true
+      id_value_must_not_encode_mutable_semantic_attributes: true
+      source_time_type_and_classification_retrieved_from_verified_metadata: true
+      no_semantic_inference_from_id_text: true
+      no_semantic_or_temporal_ordering_from_id_text: true
+      id_assignment_and_reuse_must_not_depend_on_descriptive_meaning: true
+      metadata_change_must_not_rewrite_issued_id: true
+      exact_registered_identity_resolution_required: true
+      physical_id_encoding_and_generation_mechanism: PLAN_AND_MACHINE_CONTRACT
+      no_change_to_provider_native_identity_format_required: true
+      original_record_provenance_authority_unaffected: true
     identity_non_reassignment:
       within_consumer_repository_scope: REQUIRED
       ever_issued_id_must_not_identify_distinct_observation_or_evidence: true
