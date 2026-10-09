@@ -45,6 +45,9 @@ authority_semantics:
     reusable_registration_requires_completed_qualification: true
     record_reference: REGISTERED_EXPLICIT_PATH
     resolution: EXACT_ID_TO_REGISTERED_RECORD_REF
+    context_analysis_reference_authority: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCES
+    context_analysis_reference_granularity: INDIVIDUAL_OBSERVATION_AND_EVIDENCE
+    context_first_analysis_discovery: AUTOMATIC_DERIVED_REVERSE_INDEX
   unit_consumer_analysis_invariants:
     registry:
       membership_required: true
@@ -70,6 +73,14 @@ authority_semantics:
     tiers:
       working_reuse_authority: false
       reusable_requires_evidence_verified_qualification: true
+    context_analysis_references:
+      authoritative_direction: ANALYSIS_TO_CONTEXT_EVIDENCE
+      discovery_direction: CONTEXT_TO_ANALYSIS
+      individual_observation_and_evidence_identity_required: true
+      whole_context_snapshot_as_substitute: FORBIDDEN
+      absent_evidence_identity_or_unverified_scope: FAIL_CLOSED
+      reverse_index_is_non_authoritative_projection: true
+      independent_context_manual_analysis_list: NOT_REQUIRED
     lookup:
       unregistered_identity: FAIL_CLOSED
       ambiguous_identity: FAIL_CLOSED
@@ -93,7 +104,7 @@ authority_semantics:
     - RECORD_ID_PHYSICAL_FORMAT_AND_COLLISION_CHECK_CONTRACT
     - COMMON_AND_TYPE_SPECIFIC_SCHEMA_FIELD_CONTRACT
     - REUSABLE_RETENTION_SCOPE
-    - CONTEXT_ANALYSIS_REFERENCE_SEMANTICS
+    - CONTEXT_OBSERVATION_EVIDENCE_REFERENCE_INTERFACE
 relations:
   supersedes: []
   amends: []
