@@ -89,7 +89,11 @@
       "fork_audit_claim_without_verifiable_existing_evidence": "FAIL_CLOSED_AUDIT_CLAIM_ONLY",
       "fork_audit_source_proof_cannot_be_substituted_for_current_analysis_validity": true,
       "fork_audit_does_not_require_external_origin_access": true,
-      "fork_audit_missing_evidence_does_not_invalidate_local_analysis": true
+      "fork_audit_missing_evidence_does_not_invalidate_local_analysis": true,
+      "fork_audit_proof_evaluation_only_when_requested": true,
+      "fork_audit_proof_evaluation_not_required_for_normal_analysis": true,
+      "fork_audit_missing_proof_only_invalidates_requested_audit_claim": true,
+      "fork_audit_precomputation_does_not_grant_qualification": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "DEPENDENCY_AND_RELATION_EVIDENCE_PROOF_INTERFACE",
