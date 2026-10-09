@@ -9,10 +9,10 @@ from typing import Any
 import yaml
 
 
-REGISTRY_VERSION = 2
+REGISTRY_VERSION = '3.0'
 SELF_PROFILE_PATH = ".ptsip/profiles/main.ptsip.yaml"
 _MODE_ID = re.compile(r"^[a-z0-9][a-z0-9-]*$")
-_ROOT_KEYS = {"version", "modes"}
+_ROOT_KEYS = {"version", "groups", "modes"}
 _MODE_KEYS = {"id", "component_ref", "execution"}
 _EXECUTION_KEYS = {"pytest", "go"}
 _ARCHITECTURE_KEYS = {
@@ -176,9 +176,40 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
         errors.append("Test Mode Registry modes must be a list")
         return errors
 
+    groups = registry.get("groups")
+    if not isinstance(groups, dict) or set(groups) != {"SUPPLY", "DEVELOPER"}:
+        errors.append("Test Mode Registry groups must contain SUPPLY and DEVELOPER")
+        groups = {}
+    declared = []
+    for group in ("SUPPLY", "DEVELOPER"):
+        members = groups.get(group, [])
+        if not isinstance(members, list) or not all(isinstance(x, str) for x in members):
+            errors.append(f"Test Mode Registry group {group} must be a list of IDs")
+            continue
+        if members != sorted(members):
+            errors.append(f"Test Mode Registry group {group} must be name-sorted")
+        declared.extend(members)
+    actual_ids = [m.get("id") for m in modes if isinstance(m, dict)]
+    if len(declared) != len(set(declared)) or sorted(declared) != sorted(actual_ids):
+        errors.append("Test Mode Registry groups must partition all registered mode IDs exactly once")
+    component_by_mode = {
+        m.get("id"): m.get("component_ref")
+        for m in modes if isinstance(m, dict)
+    }
+
     components, component_errors = _component_index(profile)
     errors.extend(component_errors)
     required_components = _testable_verification_components(components)
+    for group in ("SUPPLY", "DEVELOPER"):
+        for mode_id in groups.get(group, []) if isinstance(groups.get(group), list) else []:
+            component = components.get(component_by_mode.get(mode_id))
+            if component is None:
+                continue
+            classification = component.get("classification")
+            expected = "SUPPLY" if classification == "PRODUCT" else "DEVELOPER" if classification in ("DEVELOPMENT_TOOLING", "DELIVERY") else None
+            if expected != group:
+                errors.append(f"mode {mode_id!r} group {group} conflicts with Project Profile classification {classification!r}")
+
 
     seen_ids: set[str] = set()
     seen_component_refs: set[str] = set()
@@ -362,7 +393,7 @@ def validate_registry(registry_path: Path, profile_path: Path, repo_root: Path) 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Validate the repository Test Mode Registry v2"
+        description="Validate the repository Test Mode Registry v3.0"
     )
     parser.add_argument("--registry", default=".github/test_modes.yaml")
     parser.add_argument("--profile", default=SELF_PROFILE_PATH)

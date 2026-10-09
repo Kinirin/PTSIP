@@ -33,6 +33,8 @@ authority_semantics:
       - SUPPLY
       - DEVELOPER
     group_order: EXPLICIT_GROUP_BOUNDARY_WITH_NAME_SORT_WITHIN_GROUP
+    group_semantics: SUPPLY_PRODUCT_SIDE_DEVELOPER_TOOLING_SIDE
+    workflow_dispatch_selection: ONE_BOOLEAN_CHECKBOX_PER_REGISTERED_MODE
     github_scripts_language_rule: GO_REQUIRED_WHERE_REASONABLY_APPLICABLE
   unit_reusable_test_verification_invariants:
     mode_group_cannot_create_component_ownership: true
@@ -49,9 +51,7 @@ authority_semantics:
     CNTR: RESOLVER_AND_EXECUTION_INTERFACE
     ARCH: SOURCE_COMPONENT_VERIFICATION_OWNERSHIP
     PLAN: RUNNER_IMPLEMENTATION_WORKFLOW_ADAPTER_AND_MIGRATION
-  unit_reusable_test_verification_unresolved_decisions:
-    - MODE_GROUP_SUPPLY_VS_DEVELOPER_AUTHORITY_MAPPING
-    - MULTI_SELECT_GITHUB_DISPATCH_REPRESENTATION
+  unit_reusable_test_verification_unresolved_decisions: []
 relations:
   supersedes: []
   amends: []

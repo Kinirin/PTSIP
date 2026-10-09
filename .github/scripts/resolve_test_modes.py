@@ -284,18 +284,16 @@ def select_manual_modes(
     registry: dict[str, Any],
     requested_mode: str,
 ) -> list[dict[str, Any]]:
-    requested = (requested_mode or "").strip()
-    if not requested:
-        raise TestModeSelectionError("requested Test Mode must not be empty")
-
-    selected = [
-        mode for mode in _modes(registry) if mode.get("id") == requested
-    ]
-    if not selected:
-        raise TestModeSelectionError(
-            f"unknown requested Test Mode: {requested}"
-        )
-    return selected
+    requested = [item.strip() for item in (requested_mode or "").split(",")]
+    if not requested or not all(requested):
+        raise TestModeSelectionError("requested Test Modes must not be empty")
+    if len(requested) != len(set(requested)):
+        raise TestModeSelectionError("duplicate requested Test Mode")
+    available = {mode["id"]: mode for mode in _modes(registry)}
+    unknown = [value for value in requested if value not in available]
+    if unknown:
+        raise TestModeSelectionError(f"unknown requested Test Mode(s): {unknown}")
+    return [available[value] for value in requested]
 
 
 def build_execution_plan(

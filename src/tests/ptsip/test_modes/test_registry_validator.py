@@ -84,7 +84,10 @@ def _write_registry(root: Path, modes: list[dict[str, object]]) -> None:
     registry_dir = root / ".github"
     registry_dir.mkdir(parents=True, exist_ok=True)
     (registry_dir / "test_modes.yaml").write_text(
-        yaml.safe_dump({"version": 2, "modes": modes}, sort_keys=False),
+        yaml.safe_dump({"version": "3.0", "groups": {
+            "SUPPLY": [m["id"] for m in modes],
+            "DEVELOPER": []
+        }, "modes": modes}, sort_keys=False),
         encoding="utf-8",
     )
 
@@ -124,7 +127,7 @@ def test_repository_test_mode_registry_v2_is_valid() -> None:
 
 def test_repository_test_mode_registry_covers_test_owning_verification_components() -> None:
     registry = _repository_registry()
-    assert registry.get("version") == 2
+    assert registry.get("version") == "3.0"
 
     modes = registry.get("modes")
     assert isinstance(modes, list)
