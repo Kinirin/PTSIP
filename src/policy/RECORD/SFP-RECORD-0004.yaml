@@ -43,7 +43,9 @@
       "mandatory_record_retention": "PRESERVED_WITH_PRECEDENCE",
       "original_records_for_equivalence": "PRESERVE_ID_PROVENANCE_AND_VERIFICATION_HISTORY",
       "retention_inputs": "EXISTING_TASK_REFERENCE_VERIFICATION_AND_RECORD_CONTRACTS",
-      "per_record_manual_retention_list": "NOT_REQUIRED"
+      "per_record_manual_retention_list": "NOT_REQUIRED",
+      "reusable_long_term_retention_scope": "CONSUMER_DELEGATED_LONG_TERM_RETENTION",
+      "reusable_required_original_identity_and_provenance": "PRESERVED"
     },
     "unit_consumer_analysis_invariants": {
       "working_retention_needs_machine_proven_reference_scope": true,
@@ -52,11 +54,14 @@
       "unresolved_reference_or_retention_obligation": "FAIL_CLOSED_KEEP",
       "cleanup_eligible_does_not_authorize_deletion": true,
       "reusable_logical_merge_does_not_merge_or_delete_source_records": true,
-      "records_confer_new_project_authority": false
+      "records_confer_new_project_authority": false,
+      "consumer_retention_scope_cannot_override_mandatory_record_retention": true,
+      "reusable_retention_policy_is_not_cleanup_execution_permission": true,
+      "unregistered_or_ambiguous_retention_delegation_cannot_authorize_cleanup": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
-      "REUSABLE_RECORD_RETENTION_AND_RELEASE_SCOPE",
-      "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF"
+      "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
+      "REUSABLE_RETENTION_DELEGATION_CONTRACT_SHAPE"
     ],
     "unit_consumer_analysis_implementation_detail_authority": "PLAN"
   },
