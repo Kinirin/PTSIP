@@ -1,0 +1,76 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0007
+  title: Context Observation and Evidence Identity Binding
+  status: DRAFT
+authority_subject:
+  id: SUP_CONTEXT_OBSERVATION_EVIDENCE_IDENTITY_BINDING
+  statement: Context의 개별 관측 및 Evidence에 대한 PTSIP 공통 참조 식별자와 원본 제공자 식별자의 검증된 연결을 소유한다.
+exclusive_kernel:
+  - SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
+  - SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+      - id: SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
+        statement: PTSIP가 개별 관측 및 Evidence의 기계적 참조를 위한 공통 안정 식별자를 부여한다.
+        non_substitutability: 원본 제공자의 독자적인 ID, AI의 의미 추측 또는 Analysis의 기록 ID가 Context 관측의 공통 ID 권위를 대신하지 않는다.
+      - id: SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
+        statement: PTSIP 공통 ID와 원본 제공자 ID 및 출처 간 연결은 검증된 등록 관계로만 인정한다.
+        non_substitutability: 공통 참조 ID의 발급은 RECORD가 소유하는 원본 출처와 이력 보존을 대체하거나 신규 관측 사실을 창설하지 않는다.
+    source_scope: []
+  unit_context_evidence_identity_approved_decisions:
+    policy_direction: PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING
+    common_reference_identity_issuer: PTSIP_AUTOMATED
+    common_reference_identity_kind: STABLE_INDIVIDUAL_OBSERVATION_AND_EVIDENCE_ID
+    original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
+    analysis_reference_identity: PTSIP_COMMON_CONTEXT_EVIDENCE_ID
+    analysis_reference_owner: ANALYSIS
+    analysis_discovery_direction: CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX
+    mandatory_record_provenance: PRESERVED
+  unit_context_evidence_identity_invariants:
+    authority:
+      info_owns_identity_and_binding_semantics: true
+      record_owns_source_bound_provenance_and_history: true
+      analysis_owns_registered_evidence_references: true
+      provider_id_alone_confers_ptsip_reference_authority: false
+      issued_id_alone_proves_observation_or_evidence: false
+    registration:
+      verified_provider_source_binding_required: true
+      unverified_or_ambiguous_binding: FAIL_CLOSED
+      automatic_unverified_alias_or_equivalence_inference: FORBIDDEN
+      provider_identity_collision_may_not_merge_observations: true
+      evidence_source_and_observed_revision_must_remain_traceable: true
+    reference:
+      individual_observation_or_evidence_granularity: REQUIRED
+      whole_context_snapshot_as_implicit_reference: FORBIDDEN
+      analysis_uses_registered_common_identity: true
+      reverse_lookup_is_non_authoritative_projection: true
+      ambiguous_or_incomplete_reverse_lookup: FAIL_CLOSED
+    ownership:
+      independent_ai_identity_creation: FORBIDDEN
+      common_id_creates_project_policy_authority: false
+      existing_active_context_information_authority_overridden: false
+      existing_record_retention_overridden: false
+  unit_context_evidence_identity_unresolved_decisions:
+    - CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT
+    - PROVIDER_ID_BINDING_INTERFACE_AND_MISSING_PROVIDER_ID_HANDLING
+    - REOBSERVATION_IDENTITY_AND_EVENT_EQUIVALENCE
+  implementation_detail_authority: PLAN
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on:
+    - policy: SFP-INFO-0001
+      scope: EXISTING_CONTEXT_AND_EVIDENCE_INFORMATION_SEMANTICS
+    - policy: SFP-INFO-0005
+      scope: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCE_BOUNDARY
+    - policy: SFP-RECORD-0001
+      scope: SOURCE_BOUND_PROVENANCE_AND_RETENTION
