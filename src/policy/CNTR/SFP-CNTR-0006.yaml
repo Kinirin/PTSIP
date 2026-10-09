@@ -53,7 +53,11 @@
       "reference_granularity": "INDIVIDUAL_OBSERVATION_AND_EVIDENCE",
       "relocation_analysis_candidate_scope": "CURRENT_CONSUMER_CONTEXT_ONLY",
       "relocation_analysis_operation": "NEW_LOCAL_ANALYSIS_NOT_CROSS_SCOPE_REUSE",
-      "relocation_previous_analysis_lookup": "DISABLED"
+      "relocation_previous_analysis_lookup": "DISABLED",
+      "fork_analysis_operation": "CURRENT_FORK_CONTEXT_INDEPENDENT_ANALYSIS",
+      "fork_analysis_candidate_scope": "FORK_LOCAL_CONTEXT_ONLY",
+      "fork_origin_analysis_candidate_discovery": "DISABLED",
+      "fork_lineage_lookup": "OPTIONAL_VERIFIED_AUDIT_ONLY"
     },
     "unit_consumer_analysis_invariants": {
       "filename_or_ai_semantic_discovery": "FORBIDDEN",
@@ -77,7 +81,17 @@
       "relocation_analysis_uses_current_repository_local_evidence": true,
       "relocation_missing_old_repository_does_not_block_new_analysis": true,
       "relocation_earlier_analysis_result_not_implicitly_reused": true,
-      "relocation_fork_lineage_scope_not_changed": true
+      "relocation_fork_lineage_scope_not_changed": true,
+      "fork_lineage_not_a_prerequisite_for_new_analysis": true,
+      "fork_origin_repository_access_not_required": true,
+      "fork_origin_analysis_not_discovered_as_reuse_candidate": true,
+      "fork_optional_audit_relation_cannot_expand_candidate_scope": true,
+      "fork_audit_missing_or_unverified_cannot_block_local_analysis": true,
+      "fork_audit_assertion_requires_verified_registered_relation": true,
+      "fork_current_context_first_reverse_index_preserved": true,
+      "fork_analysis_uses_current_repository_evidence_only": true,
+      "fork_origin_record_ids_remain_origin_scoped": true,
+      "fork_audit_must_not_establish_event_equivalence": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
