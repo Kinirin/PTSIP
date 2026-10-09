@@ -299,3 +299,34 @@ def test_context_missing_provider_event_id_uses_verified_source_observation() ->
     assert "PROVIDER_ID_BINDING_INTERFACE_AND_MISSING_PROVIDER_ID_HANDLING" not in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
+
+
+def test_context_evidence_ids_are_consumer_repository_scoped() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    decisions = policy["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert decisions["common_reference_identity_uniqueness_scope"] == "CONSUMER_REPOSITORY"
+    assert decisions["common_reference_identity_independence"] == "REPOSITORY_LOCAL_AUTOMATED_ISSUANCE"
+    assert decisions["cross_repository_identity_interpretation"] == "EXPLICIT_REPOSITORY_SCOPE_REQUIRED"
+    invariants = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    scope = invariants["identity_uniqueness"]
+    assert scope["consumer_repository_scoped_uniqueness_required"] is True
+    assert scope["no_global_issuer_or_central_id_registry_required"] is True
+    assert scope["independent_ptsip_issuance_required"] is True
+    assert scope["newly_issued_id_must_not_collide_with_registered_local_identity"] is True
+    assert scope["ambiguous_or_colliding_local_identity"] == "FAIL_CLOSED"
+    assert scope["unqualified_id_does_not_identify_cross_repository_event"] is True
+    assert scope["foreign_repository_id_string_equality_proves_same_event"] is False
+    assert scope["cross_repository_reference_requires_explicit_verified_repository_scope"] is True
+    assert scope["repository_copy_fork_and_relocation_semantics"] == "UNRESOLVED"
+    assert decisions["reobservation_identity_policy"] == "CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE"
+    assert decisions["analysis_reference_owner"] == "ANALYSIS"
+    assert decisions["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert decisions["mandatory_record_provenance"] == "PRESERVED"
+    assert invariants["ownership"]["existing_record_retention_overridden"] is False
+    unresolved = policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT" in unresolved
+    assert "CONTEXT_REPOSITORY_COPY_FORK_AND_RELOCATION_IDENTITY_CONTRACT" in unresolved
+    assert "CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT" not in unresolved
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
