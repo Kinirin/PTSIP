@@ -110,7 +110,6 @@
         "ptsip_assure_conformance_verdict_not_equivalent_to_vpms_case_outcome": true,
         "current_vpms_active_contract_identities_retained_pending_authorized_migration": true,
         "validation_contract_execution_does_not_create_ctrl_write_authority": true,
-        "existing_common_engine_management_responsibility_map_remains_authoritative": true,
         "active_vpms_contract_identity_and_runtime_status_remain_unchanged_before_authorized_handoff": true,
         "new_validation_capability_must_pass_conformance_and_behavior_parity_before_compatibility_adapter_handoff": true,
         "public_api_compatibility_must_be_verified_before_callsite_switch": true,
@@ -121,7 +120,9 @@
         "engine_management_api_interoperability_requires_explicit_contract": true,
         "engine_local_management_is_not_global_authority": true,
         "engine_distributions_can_bundle_without_merging_version_and_patch_identities": true,
-        "engine_environment_isolation_does_not_implicitly_override_ctrl_isolation_mode": true
+        "engine_environment_isolation_does_not_implicitly_override_ctrl_isolation_mode": true,
+        "existing_active_common_management_owner_map_preserved_until_explicit_transition": true,
+        "independent_engine_local_management_applies_only_with_valid_effective_authority": true
       },
       "unresolved_decisions": [
         {
