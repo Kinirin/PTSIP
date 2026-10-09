@@ -724,3 +724,55 @@ def test_context_evidence_issued_ids_are_never_reassigned_to_distinct_observatio
     assert "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT" in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(info)
+
+
+def test_context_evidence_ids_are_opaque_and_not_semantically_interpretable() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    approved = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert approved["common_reference_identity_semantics"] == "OPAQUE_NON_SEMANTIC"
+    assert approved["common_reference_identity_interpretation"] == "EXACT_MATCH_ONLY"
+    assert approved["observation_evidence_semantic_metadata_authority"] == "VERIFIED_SEPARATE_CONTEXT_EVIDENCE_METADATA"
+    assert approved["common_reference_identity_uniqueness_scope"] == "CONSUMER_REPOSITORY"
+    assert approved["issued_identity_reassignment"] == "PERMANENTLY_FORBIDDEN_FOR_DISTINCT_OBSERVATION_OR_EVIDENCE"
+    assert approved["verified_same_event"] == "REUSE_EXISTING_COMMON_ID"
+    assert approved["verified_distinct_event"] == "ISSUE_NEW_COMMON_ID"
+    assert approved["event_identity_proof_authority"] == "PTSIP_COMMON_PROOF_WITH_PROVIDER_TYPE_EXTENSION"
+
+    opacity = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["identity_opacity"]
+    assert opacity["opaque_identity_required"] is True
+    assert opacity["id_value_must_not_encode_observation_timestamp"] is True
+    assert opacity["id_value_must_not_encode_source_or_provider"] is True
+    assert opacity["id_value_must_not_encode_feature_or_classification"] is True
+    assert opacity["id_value_must_not_encode_observation_or_evidence_type"] is True
+    assert opacity["id_value_must_not_encode_mutable_semantic_attributes"] is True
+    assert opacity["source_time_type_and_classification_retrieved_from_verified_metadata"] is True
+    assert opacity["no_semantic_inference_from_id_text"] is True
+    assert opacity["no_semantic_or_temporal_ordering_from_id_text"] is True
+    assert opacity["id_assignment_and_reuse_must_not_depend_on_descriptive_meaning"] is True
+    assert opacity["metadata_change_must_not_rewrite_issued_id"] is True
+    assert opacity["exact_registered_identity_resolution_required"] is True
+    assert opacity["physical_id_encoding_and_generation_mechanism"] == "PLAN_AND_MACHINE_CONTRACT"
+    assert opacity["no_change_to_provider_native_identity_format_required"] is True
+    assert opacity["original_record_provenance_authority_unaffected"] is True
+
+    invariants = info["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    assert invariants["identity_non_reassignment"]["ever_issued_id_must_not_identify_distinct_observation_or_evidence"] is True
+    assert invariants["identity_non_reassignment"]["same_event_verified_reobservation_may_reference_existing_id"] is True
+    assert invariants["identity_uniqueness"]["consumer_repository_scoped_uniqueness_required"] is True
+    assert invariants["authority"]["record_owns_source_bound_provenance_and_history"] is True
+    assert invariants["authority"]["analysis_owns_registered_evidence_references"] is True
+    assert approved["analysis_reference_owner"] == "ANALYSIS"
+    assert approved["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert approved["fork_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT"
+    assert approved["relocation_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_NEW_CONSUMER_CONTEXT"
+
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    analysis = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
+    assert analysis["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["context_first_analysis_discovery"] == "AUTOMATIC_DERIVED_REVERSE_INDEX"
+    unresolved = info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT" in unresolved
+    assert "CONTEXT_ISSUED_ID_HISTORY_PROOF_AND_NON_REASSIGNMENT_INTERFACE" in unresolved
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(info)
