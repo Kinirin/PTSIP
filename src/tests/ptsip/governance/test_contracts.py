@@ -410,3 +410,55 @@ def test_repository_relocation_resets_context_identity_scope_without_history_rew
     assert "CONTEXT_REPOSITORY_RELOCATION_IDENTITY_CONTINUITY" not in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
+
+
+def test_relocation_historical_analysis_candidates_require_proven_scope_and_current_validity() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    decisions = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert decisions["repository_name_location_change_policy"] == "RESET_IDENTITY_SCOPE"
+    assert decisions["relocation_historical_analysis_access"] == "VERIFIED_CROSS_SCOPE_RELATION_CANDIDATE_ONLY"
+    assert decisions["relocation_historical_reference_authority"] == "REGISTERED_VERIFIED_SCOPE_RELATION"
+    scope = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["relocation_historical_analysis"]
+    assert scope["original_repository_scope_and_analysis_ids_preserved"] is True
+    assert scope["candidate_discovery_requires_registered_verified_scope_relation"] is True
+    assert scope["cross_scope_relation_does_not_rebind_original_ids"] is True
+    assert scope["relocation_alone_does_not_create_candidate_authority"] is True
+    assert scope["candidate_discovery_does_not_authorize_reuse"] is True
+    assert scope["historical_provenance_and_receipts_preserved"] is True
+    assert scope["unverified_or_ambiguous_scope_relation"] == "FAIL_CLOSED"
+    assert scope["ai_inferred_scope_relationship"] == "FORBIDDEN"
+    assert "RELOCATION_CROSS_SCOPE_RELATION_PROOF_INTERFACE" in info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+
+    cntr = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
+    assert cntr["policy"]["status"] == "DRAFT"
+    selected = cntr["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert selected["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
+    assert selected["reference_source_authority"] == "ANALYSIS_OWNED"
+    assert selected["relocation_historical_candidate_discovery"] == "REGISTERED_VERIFIED_CROSS_SCOPE_RELATION_EXPANSION"
+    lookup = cntr["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert lookup["relocation_cross_scope_expansion_requires_verified_relation"] is True
+    assert lookup["relocation_candidates_must_respect_original_repository_scoped_identities"] is True
+    assert lookup["relocation_cross_scope_lookup_is_candidate_discovery_only"] is True
+    assert lookup["relocation_without_proof_not_candidate"] is True
+    assert lookup["relocation_candidate_lookup_requires_complete_registered_closure"] is True
+    assert lookup["relocation_cross_scope_unverified_or_ambiguous"] == "FAIL_CLOSED"
+    assert lookup["relocation_cross_scope_ai_candidate_inference"] == "FORBIDDEN"
+
+    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
+    assert assure["policy"]["status"] == "DRAFT"
+    approved = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert approved["relocation_historical_analysis_reuse"] == "VERIFIED_SCOPE_LINK_FOR_CANDIDACY_WITH_CURRENT_ASSURE_VALIDITY_GATE"
+    validity = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert validity["relocation_verified_scope_link_alone_does_not_grant_reuse"] is True
+    assert validity["relocation_analysis_must_pass_current_evidence_dependency_change_impact_validation"] is True
+    assert validity["relocation_scope_link_does_not_prove_same_observation_event"] is True
+    assert validity["relocation_reuse_cannot_promote_historical_analysis_authority"] is True
+    assert validity["relocation_invalid_or_incomplete_current_validity"] == "FAIL_CLOSED"
+    assert validity["relocation_reuse_preserves_original_record_history"] is True
+
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for policy in (info, cntr, assure):
+        Draft202012Validator(schema).validate(policy)
