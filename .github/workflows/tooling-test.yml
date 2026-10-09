@@ -148,6 +148,12 @@ jobs:
             developer/automation/go.sum
             developer/tests/go.sum
 
+      - name: Validate v3 Test Mode registry through Go
+        shell: pwsh
+        run: |
+          go -C developer/automation run ./cmd/test-modes
+          if ($LASTEXITCODE -ne 0) { throw 'Go Test Mode Registry v3 validation failed.' }
+
       - name: Verify policy lifecycle automation
         if: ${{ github.event_name == 'push' || inputs.verification == 'policy-lifecycle' }}
         shell: pwsh

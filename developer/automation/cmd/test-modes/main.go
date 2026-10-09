@@ -70,6 +70,7 @@ func owns(pattern, target string) bool {
   prefix:=strings.TrimSuffix(pattern,"/**")
   if target==prefix || strings.HasPrefix(target,prefix+"/"){return true}
  }
+ if strings.HasSuffix(pattern,"/*.go") && strings.TrimSuffix(pattern,"/*.go")==target {return true}
  if strings.HasSuffix(pattern,"/*") {
   prefix:=strings.TrimSuffix(pattern,"/*")+"/"
   if strings.HasPrefix(target,prefix)&&!strings.Contains(strings.TrimPrefix(target,prefix),"/"){return true}
