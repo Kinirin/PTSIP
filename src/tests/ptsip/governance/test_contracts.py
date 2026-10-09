@@ -169,3 +169,36 @@ def test_consumer_analysis_context_evidence_references_and_cleanup_boundaries() 
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     for policy in (info, cntr, record, ctrl):
         Draft202012Validator(schema).validate(policy)
+
+
+def test_context_observation_evidence_identity_binding_draft() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    assert policy["responsibility_family"] == "INFO"
+    assert policy["policy"]["id"] == "SFP-INFO-0007"
+    decisions = policy["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert decisions["policy_direction"] == "PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING"
+    assert decisions["common_reference_identity_issuer"] == "PTSIP_AUTOMATED"
+    assert decisions["analysis_reference_identity"] == "PTSIP_COMMON_CONTEXT_EVIDENCE_ID"
+    assert decisions["analysis_reference_owner"] == "ANALYSIS"
+    assert decisions["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    invariants = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    assert invariants["registration"]["unverified_or_ambiguous_binding"] == "FAIL_CLOSED"
+    assert invariants["registration"]["provider_identity_collision_may_not_merge_observations"] is True
+    assert invariants["authority"]["provider_id_alone_confers_ptsip_reference_authority"] is False
+    assert invariants["authority"]["record_owns_source_bound_provenance_and_history"] is True
+    assert invariants["reference"]["reverse_lookup_is_non_authoritative_projection"] is True
+    assert invariants["ownership"]["independent_ai_identity_creation"] == "FORBIDDEN"
+    assert invariants["ownership"]["existing_record_retention_overridden"] is False
+    assert "REOBSERVATION_IDENTITY_AND_EVENT_EQUIVALENCE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    index = _yaml("src/policy/index.yaml")
+    assert any(
+        item["id"] == "SFP-INFO-0007"
+        and item["path"] == "INFO/SFP-INFO-0007.yaml"
+        and item["status"] == "DRAFT"
+        for item in index["policies"]
+    )
+    analysis = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
+    assert analysis["authority_semantics"]["unit_consumer_analysis_policy_family_refs"]["INFO_CONTEXT_EVIDENCE_IDENTITY"] == "SFP-INFO-0007"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
