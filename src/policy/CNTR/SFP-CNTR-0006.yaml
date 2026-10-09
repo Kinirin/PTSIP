@@ -57,7 +57,9 @@
       "fork_analysis_operation": "CURRENT_FORK_CONTEXT_INDEPENDENT_ANALYSIS",
       "fork_analysis_candidate_scope": "FORK_LOCAL_CONTEXT_ONLY",
       "fork_origin_analysis_candidate_discovery": "DISABLED",
-      "fork_lineage_lookup": "OPTIONAL_VERIFIED_AUDIT_ONLY"
+      "fork_lineage_lookup": "OPTIONAL_DERIVED_VERIFIED_LOCAL_RECORD_AUDIT_ONLY",
+      "fork_audit_source_resolution": "EXISTING_LOCAL_VERIFIED_RECORDS_ONLY",
+      "fork_audit_result_role": "NON_AUTHORITATIVE_READ_ONLY_PROJECTION"
     },
     "unit_consumer_analysis_invariants": {
       "filename_or_ai_semantic_discovery": "FORBIDDEN",
@@ -91,7 +93,14 @@
       "fork_current_context_first_reverse_index_preserved": true,
       "fork_analysis_uses_current_repository_evidence_only": true,
       "fork_origin_record_ids_remain_origin_scoped": true,
-      "fork_audit_must_not_establish_event_equivalence": true
+      "fork_audit_must_not_establish_event_equivalence": true,
+      "fork_audit_lookup_does_not_require_extra_registry": true,
+      "fork_audit_resolution_does_not_search_external_origin_repository": true,
+      "fork_audit_lookup_cannot_expand_candidate_set": true,
+      "fork_audit_lookup_must_be_read_only": true,
+      "fork_audit_missing_proof_returns_no_verified_lineage": true,
+      "fork_audit_no_proof_does_not_block_fork_analysis": true,
+      "fork_audit_verified_source_binding_required": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
