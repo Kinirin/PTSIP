@@ -671,3 +671,56 @@ def test_fork_audit_derivation_runs_only_on_explicit_audit_information_request()
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     for policy in (info, resolver, assure):
         Draft202012Validator(schema).validate(policy)
+
+
+def test_context_evidence_issued_ids_are_never_reassigned_to_distinct_observations() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    d = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert d["common_reference_identity_uniqueness_scope"] == "CONSUMER_REPOSITORY"
+    assert d["common_reference_identity_independence"] == "REPOSITORY_LOCAL_AUTOMATED_ISSUANCE"
+    assert d["issued_identity_reassignment"] == "PERMANENTLY_FORBIDDEN_FOR_DISTINCT_OBSERVATION_OR_EVIDENCE"
+    assert d["issued_identity_retirement_effect"] == "NO_NEW_ASSIGNMENT_ELIGIBILITY"
+    assert d["issued_identity_history_authority"] == "IDENTITY_NON_REASSIGNMENT_INDEPENDENT_OF_RECORD_RETENTION"
+    assert d["verified_same_event"] == "REUSE_EXISTING_COMMON_ID"
+    assert d["verified_distinct_event"] == "ISSUE_NEW_COMMON_ID"
+    assert d["reobservation_identity_policy"] == "CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE"
+
+    rules = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["identity_non_reassignment"]
+    assert rules["within_consumer_repository_scope"] == "REQUIRED"
+    assert rules["ever_issued_id_must_not_identify_distinct_observation_or_evidence"] is True
+    assert rules["expiry_retirement_invalidation_or_unregistration_does_not_release_id"] is True
+    assert rules["record_cleanup_or_retention_release_does_not_release_id"] is True
+    assert rules["no_current_registry_entry_is_not_proof_of_never_issued"] is True
+    assert rules["new_issuance_requires_proven_never_assigned_in_scope"] is True
+    assert rules["issued_id_identity_meaning_must_remain_stable"] is True
+    assert rules["same_event_verified_reobservation_may_reference_existing_id"] is True
+    assert rules["same_event_reobservation_is_not_new_assignment"] is True
+    assert rules["event_equivalence_still_requires_registered_machine_proof"] is True
+    assert rules["unknown_prior_issuance_or_identity_history"] == "FAIL_CLOSED_NO_NEW_ASSIGNMENT"
+    assert rules["no_new_record_retention_authority_created"] is True
+    assert rules["historical_receipts_not_modified_or_deleted_by_identity_policy"] is True
+
+    invariants = info["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    assert invariants["identity_uniqueness"]["consumer_repository_scoped_uniqueness_required"] is True
+    assert invariants["reobservation"]["same_event_proven"] == "REUSE_EXISTING_COMMON_ID"
+    assert invariants["reobservation"]["distinct_event_proven"] == "ISSUE_NEW_COMMON_ID"
+    assert invariants["reobservation"]["identity_unresolved"] == "FAIL_CLOSED_NO_MERGE_OR_REUSE"
+    assert invariants["authority"]["record_owns_source_bound_provenance_and_history"] is True
+    assert invariants["authority"]["analysis_owns_registered_evidence_references"] is True
+    assert d["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert d["fork_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT"
+    assert d["relocation_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_NEW_CONSUMER_CONTEXT"
+
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    working_record = _json("src/policy/RECORD/SFP-RECORD-0004.yaml")
+    assert working_record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["mandatory_record_retention"] == "PRESERVED_WITH_PRECEDENCE"
+    analysis = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
+    assert analysis["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["context_first_analysis_discovery"] == "AUTOMATIC_DERIVED_REVERSE_INDEX"
+
+    unresolved = info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "CONTEXT_ISSUED_ID_HISTORY_PROOF_AND_NON_REASSIGNMENT_INTERFACE" in unresolved
+    assert "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT" in unresolved
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(info)
