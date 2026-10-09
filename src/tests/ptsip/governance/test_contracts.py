@@ -190,7 +190,7 @@ def test_context_observation_evidence_identity_binding_draft() -> None:
     assert invariants["reference"]["reverse_lookup_is_non_authoritative_projection"] is True
     assert invariants["ownership"]["independent_ai_identity_creation"] == "FORBIDDEN"
     assert invariants["ownership"]["existing_record_retention_overridden"] is False
-    assert "REOBSERVATION_IDENTITY_AND_EVENT_EQUIVALENCE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
     index = _yaml("src/policy/index.yaml")
     assert any(
         item["id"] == "SFP-INFO-0007"
@@ -200,5 +200,37 @@ def test_context_observation_evidence_identity_binding_draft() -> None:
     )
     analysis = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
     assert analysis["authority_semantics"]["unit_consumer_analysis_policy_family_refs"]["INFO_CONTEXT_EVIDENCE_IDENTITY"] == "SFP-INFO-0007"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
+
+
+def test_context_reobservation_reuses_id_only_for_proven_same_event() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    approved = policy["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert approved["reobservation_identity_policy"] == "CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE"
+    assert approved["verified_same_event"] == "REUSE_EXISTING_COMMON_ID"
+    assert approved["verified_distinct_event"] == "ISSUE_NEW_COMMON_ID"
+    assert approved["unresolved_event_identity"] == "NO_AUTOMATIC_MERGE_OR_REUSE"
+
+    invariants = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    assert invariants["registration"]["identical_payload_alone_proves_same_event"] is False
+    assert invariants["registration"]["identical_provider_id_alone_proves_same_event"] is False
+    event = invariants["reobservation"]
+    assert event["event_identity_requires_registered_machine_verifiable_proof"] is True
+    assert event["same_event_proven"] == "REUSE_EXISTING_COMMON_ID"
+    assert event["distinct_event_proven"] == "ISSUE_NEW_COMMON_ID"
+    assert event["identity_unresolved"] == "FAIL_CLOSED_NO_MERGE_OR_REUSE"
+    assert event["provider_identity_only_as_equivalence_proof"] == "FORBIDDEN"
+    assert event["payload_similarity_as_equivalence_proof"] == "FORBIDDEN"
+    assert event["previous_common_identity_must_remain_stable"] is True
+    assert event["reobservation_must_not_rewrite_original_source_receipts"] is True
+    assert event["subsequent_collection_provenance_must_remain_traceable"] is True
+
+    assert approved["analysis_reference_owner"] == "ANALYSIS"
+    assert approved["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert invariants["ownership"]["existing_record_retention_overridden"] is False
+    assert "REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
