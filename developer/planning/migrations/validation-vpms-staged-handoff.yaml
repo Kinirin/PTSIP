@@ -1,0 +1,411 @@
+{
+  "schema_version": "ptsip-policy-change-plan/v1",
+  "artifact_class": "DEVELOPER_PLANNING_MIGRATION",
+  "authority": false,
+  "identity": {
+    "plan_id": "VALIDATION_VPMS_STAGED_HANDOFF",
+    "title": "VPMS legacy interfaces to canonical Validation Engine staged responsibility handoff",
+    "status": "DRAFT",
+    "integration_branch": "dev/0.3.8",
+    "governing_policy_refs": [
+      "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "src/policy/CNTR/SFP-CNTR-0005.yaml"
+    ],
+    "policy_decision": "C_STAGED_MIGRATION",
+    "policy_decision_approval": "USER_EXPLICIT",
+    "plan_approval": {
+      "status": "PENDING"
+    },
+    "implementation_authorization": {
+      "status": "HOLD_NOT_AUTHORIZED"
+    },
+    "source_baseline_sha": "3cc2e717d645836016e68c417dfdbd0854f9a1d5"
+  },
+  "objective": {
+    "canonical_validation_owner": "OFFICIAL_VALIDATION_ENGINE",
+    "vpms_distinct_engine_owner": false,
+    "migration_method": "NEW_CAPABILITY_VERIFIED_THEN_COMPATIBILITY_BRIDGE_THEN_EXPLICIT_RETIREMENT",
+    "active_policy_mutation": "FORBIDDEN_WITHOUT_SEPARATE_AUTHORIZATION",
+    "no_approved_engine_directory_names": true,
+    "user_project_non_intrusion": true
+  },
+  "current_baseline": {
+    "project_profile_ref": ".ptsip/profiles/main.ptsip.yaml",
+    "test_mode_registry_ref": ".github/test_modes.yaml",
+    "automatic_resolver_ref": ".github/scripts/resolve_test_modes.py",
+    "test_mode_validator_ref": ".github/scripts/validate_test_modes.py",
+    "package_manifest_ref": "pyproject.toml",
+    "existing_package_discovery_include": [
+      "ptsip*",
+      "vpms*"
+    ],
+    "vpms_contract_registry_ref": "src/vpms/contracts/index.json",
+    "vpms_contract_invariants_ref": "src/vpms/contracts/invariants.json",
+    "vpms_active_contracts": [
+      {
+        "id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+        "responsibility": "VPMS_PRODUCT_PROTOCOL",
+        "source": "src/vpms/contracts/protocol.json",
+        "legacy_api": [
+          "VerificationCase",
+          "VerificationResult",
+          "load_registry",
+          "load_registry_snapshot",
+          "run_case"
+        ],
+        "future_validation_domain": "CASE_PROTOCOL",
+        "specific_internal_owner": "PENDING_P4_MAPPING"
+      },
+      {
+        "id": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+        "responsibility": "VPMS_CASE_SELECTION",
+        "source": "src/vpms/contracts/selection.json",
+        "legacy_api": [
+          "resolve_selection"
+        ],
+        "future_validation_domain": "VERIFICATION_CASE_SELECTION",
+        "specific_internal_owner": "PENDING_P4_RESOLVER_BOUNDARY"
+      },
+      {
+        "id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+        "responsibility": "VPMS_EXECUTION_COMPOSITION",
+        "source": "src/vpms/contracts/execution-composition.json",
+        "legacy_api": [
+          "run_cases"
+        ],
+        "future_validation_domain": "VERIFICATION_CASE_COMPOSITION",
+        "specific_internal_owner": "PENDING_P4_COMPOSITION_AND_EXECUTION_BOUNDARY"
+      }
+    ],
+    "active_contract_count": 3,
+    "existing_public_api_ref": "src/vpms/__init__.py",
+    "existing_public_api_exports": [
+      "CaseExecutor",
+      "CommandExecutor",
+      "FormulaRef",
+      "FormulaRegistry",
+      "PolicyRef",
+      "RegisteredFormula",
+      "Registry",
+      "RegistryDiagnostic",
+      "RegistryDiagnosticCode",
+      "RegistryLoadResult",
+      "RegistryReferenceIndex",
+      "RunnerExecution",
+      "RunnerRef",
+      "SelectionDiagnostic",
+      "SelectionResult",
+      "SnapshotLoadResult",
+      "TargetRef",
+      "VariablesRef",
+      "ValidatedRegistrySnapshot",
+      "VerificationCase",
+      "VerificationOutcome",
+      "VerificationPurpose",
+      "VerificationResult",
+      "load_registry",
+      "load_registry_snapshot",
+      "register_formulas",
+      "run_case",
+      "resolve_selection",
+      "run_cases"
+    ],
+    "existing_legacy_run_selected_cases_status": "RETIRED",
+    "verification_components": [
+      {
+        "id": "vpms",
+        "component_ref": "vpms-verification",
+        "targets": [
+          "src/tests/vpms/domain",
+          "src/tests/vpms/execution",
+          "src/tests/vpms/integration",
+          "src/tests/vpms/architecture",
+          "src/tests/vpms/selection"
+        ]
+      },
+      {
+        "id": "vpms-contract-plane",
+        "component_ref": "vpms-contract-plane-verification",
+        "targets": [
+          "src/tests/vpms/contracts"
+        ]
+      },
+      {
+        "id": "ptsip-core",
+        "component_ref": "ptsip-core-verification",
+        "targets": [
+          "src/tests/ptsip/validation",
+          "src/tests/ptsip/conformance"
+        ]
+      },
+      {
+        "id": "ptsip-contract",
+        "component_ref": "ptsip-contract-verification",
+        "targets": [
+          "src/tests/ptsip/contracts"
+        ]
+      },
+      {
+        "id": "test-mode-control-plane",
+        "component_ref": "repository-test-mode-control-plane",
+        "targets": [
+          "src/tests/ptsip/test_modes"
+        ]
+      }
+    ],
+    "responsibility_candidates": [
+      {
+        "id": "vpms",
+        "source": "src/vpms/__init__.py",
+        "role": "LEGACY_PUBLIC_COMPATIBILITY_SURFACE",
+        "disposition": "KEEP_UNTIL_VERIFIED_HANDOFF"
+      },
+      {
+        "id": "vpms-contract-runtime",
+        "source": "src/vpms/contract_runtime.py",
+        "role": "REGISTERED_CONTRACT_VALIDATION_AND_ACTIVATION_ENTRY",
+        "disposition": "BRIDGE_TO_VALIDATION_CONTRACT_SUBJECT_TO_P4_ROLE_MAPPING"
+      },
+      {
+        "id": "vpms-product-protocol-handoff",
+        "source": "src/vpms/domain/snapshot.py",
+        "role": "VALIDATED_IMMUTABLE_VERIFICATION_CASE_HANDOFF",
+        "disposition": "REUSE_OR_ADAPT_AFTER_PROVEN_PARITY"
+      },
+      {
+        "id": "vpms-case-selection",
+        "source": "src/vpms/selection/**",
+        "role": "VERIFICATION_CASE_SELECTION",
+        "disposition": "RECONCILE_WITH_INDEPENDENT_RESOLVER_RESPONSIBILITY"
+      },
+      {
+        "id": "vpms-execution-composition",
+        "source": "src/vpms/execution/composition.py",
+        "role": "VERIFICATION_CASE_EXECUTION_COMPOSITION",
+        "disposition": "RECONCILE_WITH_INDEPENDENT_COMPOSITION_EXECUTION_RESPONSIBILITIES"
+      },
+      {
+        "id": "vpms-contract-catalog",
+        "source": "src/vpms/contracts/**",
+        "role": "CURRENT_ACTIVE_IDENTITY_SCHEMA_AND_SEMANTICS",
+        "disposition": "KEEP_NORMATIVE_UNTIL_AUTHORIZED_TRANSITION"
+      },
+      {
+        "id": "ptsip-core",
+        "source": "src/ptsip/validation/**",
+        "role": "EXISTING_GENERIC_AND_PROFILE_VALIDATION",
+        "disposition": "RECONCILE_BEFORE_UNIQUE_IMPLEMENTATION_OWNER_ASSIGNMENT"
+      },
+      {
+        "id": "ptsip-core-conformance",
+        "source": "src/ptsip/conformance_engine.py",
+        "role": "ASSURE_GOVERNED_CONFORMANCE_COORDINATION",
+        "disposition": "REUSE_ONLY_WITH_ASSURE_AUTHORITY_PRESERVED"
+      }
+    ]
+  },
+  "authority_and_scope": {
+    "policy_priority": [
+      "EXISTING_ACTIVE_POLICY",
+      "APPROVED_DRAFT_DIRECTION",
+      "THIS_PLAN",
+      "IMPLEMENTATION"
+    ],
+    "active_authority": [
+      "SFP-ASSURE-0001",
+      "SFP-CTRL-0001",
+      "SFP-ARCH-0001",
+      "VPMS_ACTIVE_PRODUCT_PROTOCOL",
+      "VPMS_ACTIVE_CASE_SELECTION",
+      "VPMS_ACTIVE_EXECUTION_COMPOSITION"
+    ],
+    "guards": [
+      "ACTIVE_VPMS_CONTRACT_IDENTITY_AND_RUNTIME_ENABLED_STATE_PRESERVED_UNTIL_AUTHORIZED_HANDOFF",
+      "ASSURE_OWNS_NORMATIVE_CONFORMANCE_JUDGMENT",
+      "CTRL_RETAINS_EXECUTION_PERMISSION",
+      "P4_COMMON_REGISTRY_RESOLVER_COMPOSITION_TRANSPORT_LIFECYCLE_BOUNDS_NOT_OWNED_BY_VALIDATION_BY_IMPLICATION",
+      "SINGLE_SEMANTIC_VALIDATION_ENGINE_DOMAIN_BUT_EXPLICIT_SUBRESPONSIBILITY_MAP",
+      "EXACT_LEGACY_API_SEMANTICS_PRESERVED_DURING_BRIDGE",
+      "NO_IMPLICIT_CONTRACT_RETIREMENT_OR_AUTOMATIC_PROFILE_REWRITE",
+      "NO_TEST_MODE_INFERENCE_FROM_UNDECLARED_SOURCE_PATHS"
+    ]
+  },
+  "stages": [
+    {
+      "id": "S0_BASELINE_AND_DEPENDENCY_CAPTURE",
+      "status": "NOT_STARTED",
+      "depends_on": [],
+      "tasks": [
+        "CAPTURE_ACTIVE_VPMS_CONTRACT_IDS_AND_SEMANTICS",
+        "ENUMERATE_PUBLIC_API_SIGNATURES_AND_DOWNSTREAM_CALLERS",
+        "CAPTURE_PROJECT_PROFILE_COMPONENT_RELATIONS",
+        "CAPTURE_TEST_MODE_CURRENT_ROUTING_AND_TEST_EXPECTATIONS",
+        "CAPTURE_DISTRIBUTION_AND_INSTALLED_RESOURCE_CONTRACTS"
+      ],
+      "exit_checks": [
+        "BASELINE_INVENTORY_MACHINE_READABLE",
+        "ACTIVE_CONTRACT_COUNT_EQUALS_THREE",
+        "ALL_PUBLIC_EXPORTS_CLASSIFIED",
+        "CALLER_AND_MODE_REFERENCE_INVENTORY_COMPLETE"
+      ]
+    },
+    {
+      "id": "S1_CAPABILITY_CONTRACT_AND_ROLE_MAP",
+      "status": "NOT_STARTED",
+      "depends_on": [
+        "S0_BASELINE_AND_DEPENDENCY_CAPTURE"
+      ],
+      "tasks": [
+        "DEFINE_LANGUAGE_NEUTRAL_VALIDATION_SCHEMA_IO_PRECONDITION_OPERATION_CONTRACT",
+        "MAP_VPMS_PROTOCOL_AND_SELECTION_AND_COMPOSITION_TO_VALIDATION_DOMAIN",
+        "SEPARATELY_RESOLVE_COMMON_P4_REGISTRY_RESOLVER_COMPOSITION_EXECUTION_FUNCTIONAL_OWNERS",
+        "DEFINE_COMPATIBILITY_ID_AND_VERSION_BINDING_WITHOUT_MUTATING_ACTIVE_CONTRACTS",
+        "CONFIRM_NO_OVERLAP_WITH_ASSURE_CONFORMANCE_JUDGMENT"
+      ],
+      "exit_checks": [
+        "EVERY_OPERATION_HAS_ONE_CANONICAL_SEMANTIC_OWNER",
+        "ACTIVE_CONTRACT_COMPATIBILITY_COVERAGE_COMPLETE",
+        "NEW_VALIDATION_CONTRACT_SCHEMA_CONFORMANCE_PASS",
+        "NO_UNRESOLVED_P4_AUTHORITY_COLLISION"
+      ]
+    },
+    {
+      "id": "S2_VERIFIED_VALIDATION_CAPABILITY",
+      "status": "NOT_STARTED",
+      "depends_on": [
+        "S1_CAPABILITY_CONTRACT_AND_ROLE_MAP"
+      ],
+      "tasks": [
+        "IMPLEMENT_VERIFIABLE_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_CASE_VALIDATION",
+        "PROVE_VPMS_CASE_REGISTRY_SELECTION_EXECUTION_OUTCOME_PARITY",
+        "VERIFY_CONTRACT_FAIL_CLOSED_BEHAVIOR_AND_SOURCE_REVISION_BINDING",
+        "PRESERVE_VERIFICATION_CASE_PASS_VS_ASSURE_CONFORMANT_SEPARATION"
+      ],
+      "exit_checks": [
+        "SCHEMA_IO_PRECONDITION_SUCCESS_AND_FAILURE_VECTORS_PASS",
+        "VPMS_LEGACY_BEHAVIOR_PARITY_PASS",
+        "NO_UNAUTHORIZED_MUTATION_OR_NEW_AUTHORITY"
+      ]
+    },
+    {
+      "id": "S3_PUBLIC_COMPATIBILITY_BRIDGE",
+      "status": "NOT_STARTED",
+      "depends_on": [
+        "S2_VERIFIED_VALIDATION_CAPABILITY"
+      ],
+      "tasks": [
+        "CREATE_COMPATIBILITY_HANDOFF_WITH_EXACT_EXISTING_VPMS_IMPORTS_AND_PUBLIC_EXPORTS",
+        "DEMONSTRATE_STABLE_CASE_RESULT_ERROR_AND_SELECTION_SEMANTICS",
+        "PRESERVE_EXISTING_ACTIVE_IDS_WITHOUT_REWRITING_CONTRACTS",
+        "VALIDATE_DOWNSTREAM_IMPORTERS_AND_PACKAGING"
+      ],
+      "exit_checks": [
+        "ALL_EXPORTED_PUBLIC_SYMBOLS_BOUND_OR_EXPLICITLY_RESOLVED",
+        "LEGACY_CALLER_REGRESSION_PASS",
+        "INSTALLED_VPMS_CONTRACT_RESOURCES_REMAIN_AVAILABLE",
+        "COMPOSITION_PREFLIGHT_ATOMICITY_PRESERVED"
+      ]
+    },
+    {
+      "id": "S4_PROFILE_TEST_MODE_AND_RESOLVER_HANDOFF",
+      "status": "NOT_STARTED",
+      "depends_on": [
+        "S3_PUBLIC_COMPATIBILITY_BRIDGE"
+      ],
+      "tasks": [
+        "PREPARE_ATOMIC_PROJECT_PROFILE_RESPONSIBILITY_RECONCILIATION",
+        "KEEP_TEST_MODES_BOUND_TO_CANONICAL_VERIFICATION_COMPONENTS",
+        "VERIFY_AUTOMATIC_MODE_SELECTION_FOR_VPMS_AND_NEW_VALIDATION_CHANGED_PATHS",
+        "PRESERVE_DIRECT_AND_TRANSITIVE_TEST_RESPONSIBILITY_COVERAGE",
+        "VALIDATE_CANONICAL_SCHEMA_REGISTRIES_PROFILE_AND_TEST_MODES"
+      ],
+      "exit_checks": [
+        "ONE_OWNER_PER_IMPLEMENTATION_SEMANTIC_RESPONSIBILITY",
+        "VALIDATE_TEST_MODES_PASS",
+        "AUTOMATIC_RESOLVER_REGRESSION_PASS",
+        "NO_UNMAPPED_PATH_OR_UNJUSTIFIED_ALL_FALLBACK",
+        "NO_OWNER_DRIFT_OR_NEW_TEST_RESPONSIBILITY_GAPS"
+      ]
+    },
+    {
+      "id": "S5_CUTOVER_AND_RETIREMENT_GATE",
+      "status": "NOT_STARTED",
+      "depends_on": [
+        "S4_PROFILE_TEST_MODE_AND_RESOLVER_HANDOFF"
+      ],
+      "tasks": [
+        "PRODUCE_DIFFERENTIAL_REGRESSION_AND_COMPATIBILITY_EVIDENCE",
+        "VERIFY_NO_REMAINING_LEGACY_CALLERS_OR_DOCUMENT_EXCEPTIONS",
+        "PREPARE_EXPLICIT_POLICY_AND_OWNER_APPROVAL_REQUEST_FOR_ANY_ACTIVE_CONTRACT_CHANGE_OR_RETIREMENT",
+        "RETAIN_COMPATIBILITY_SURFACE_UNTIL_SEPARATE_APPROVAL_AND_VERIFIED_MIGRATION"
+      ],
+      "exit_checks": [
+        "RELEASE_AND_CONTRACT_VALIDATION_PASS",
+        "COMPATIBILITY_REMOVAL_NOT_PERFORMED_WITHOUT_SEPARATE_EXPLICIT_APPROVAL",
+        "ACTIVE_POLICY_STATUS_UNCHANGED_UNTIL_AUTHORIZED"
+      ]
+    }
+  ],
+  "verification": {
+    "machine_sources": [
+      ".github/test_modes.yaml",
+      ".github/scripts/validate_test_modes.py",
+      ".github/scripts/resolve_test_modes.py",
+      "src/tests/ptsip/test_modes",
+      "src/tests/vpms",
+      "src/tests/ptsip/validation",
+      "src/tests/ptsip/conformance",
+      "src/vpms/contracts",
+      ".ptsip/profiles/main.ptsip.yaml",
+      "developer/policy/registries/vpms-contract-materialization.json",
+      "developer/policy/registries/vpms-runtime-activation.json"
+    ],
+    "required_checks": [
+      "DEVELOPER_POLICY_AND_SUPPORT_REGISTRY_VALIDATION",
+      "PROJECT_PROFILE_OWNERSHIP_VALIDATION",
+      "VPMS_ACTIVE_CONTRACT_SHAPE_IDENTITY_AND_RUNTIME_LIFECYCLE_VALIDATION",
+      "EXACT_PUBLIC_API_REGRESSION",
+      "GENERIC_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_VECTOR_VALIDATION",
+      "VPMS_RUNTIME_CASE_SELECTION_COMPOSITION_AND_ERROR_PARITY",
+      "AUTOMATIC_TEST_MODE_RESOLVER_V2_VALIDATION",
+      "INSTALLED_PACKAGE_RESOURCE_COMPATIBILITY",
+      "ASSURE_VPMS_RESULT_AUTHORITY_SEPARATION",
+      "GITHUB_ACTIONS_VERIFICATION_AFTER_REMOTE_PUSH"
+    ],
+    "success": "ALL_REQUIRED_GATES_PASS_WITH_BOUND_EVIDENCE",
+    "failure": "HOLD_AT_CURRENT_VALIDATED_COMPATIBILITY_STAGE"
+  },
+  "open_decisions": [
+    {
+      "id": "VALIDATION_CAPABILITY_CONTRACT_SCHEMA",
+      "owner": "CONTRACT_DESIGN",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "P4_SUBRESPONSIBILITY_OWNER_MAPPING",
+      "owner": "RESPONSIBILITY_ANALYSIS",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "EXACT_EXISTING_VPMS_API_CALLER_AND_COMPATIBILITY_MAPPING",
+      "owner": "RESPONSIBILITY_ANALYSIS",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "CANONICAL_PROJECT_PROFILE_AND_TEST_MODE_TARGET_COMPONENT_IDENTITIES",
+      "owner": "RESPONSIBILITY_ANALYSIS",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "LEGACY_ACTIVE_CONTRACT_RETIREMENT",
+      "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "CONCRETE_ENGINE_SOURCE_LAYOUT_AND_DIRECTORY_NAMES",
+      "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
+      "status": "UNRESOLVED"
+    }
+  ],
+  "implementation_status": "NOT_STARTED"
+}

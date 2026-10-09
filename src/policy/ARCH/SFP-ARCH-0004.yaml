@@ -75,7 +75,8 @@
         "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER",
         "validation_vpms_responsibility_direction": "SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE",
         "vpms_independent_semantic_engine_owner": false,
-        "validation_engine_scope": "GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION"
+        "validation_engine_scope": "GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION",
+        "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -109,7 +110,13 @@
         "validation_execution_capability_is_not_normative_ptsip_conformance_authority": true,
         "existing_assure_conformance_judgment_authority_unaffected": true,
         "common_engine_registry_resolver_composition_and_execution_authorities_not_implicitly_transferred": true,
-        "current_project_profile_ownership_not_automatically_rewritten": true
+        "current_project_profile_ownership_not_automatically_rewritten": true,
+        "vpms_legacy_interfaces_are_transitional_access_paths_not_independent_engine_owners": true,
+        "legacy_vpms_contracts_and_profile_owners_remain_effective_until_verified_handoff": true,
+        "semantic_validation_owner_transition_requires_machine_verified_responsibility_reconciliation": true,
+        "new_engine_physical_paths_not_authorized_by_interface_migration_policy": true,
+        "legacy_vpms_retirement_requires_separate_explicit_user_authorization": true,
+        "validation_migration_must_respect_independent_common_management_responsibilities": true
       },
       "unresolved_decisions": [
         {
@@ -214,6 +221,23 @@
           "actual_code_or_profile_reassignment": "NOT_DECIDED",
           "legacy_public_interface_retirement": "NOT_DECIDED",
           "existing_active_contract_transition": "NOT_DECIDED"
+        },
+        {
+          "id": "VALIDATION_VPMS_PUBLIC_INTERFACE_MIGRATION_DIRECTION",
+          "selected_option": "C_STAGED_MIGRATION",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_TRANSITION_DIRECTION_ONLY",
+          "new_engine_api_or_directory": "NOT_DECIDED",
+          "old_contract_retirement": "SEPARATE_APPROVAL_REQUIRED",
+          "transition_plan_ref": "developer/planning/migrations/validation-vpms-staged-handoff.yaml"
+        }
+      ],
+      "dependent_plans": [
+        {
+          "id": "VALIDATION_VPMS_STAGED_HANDOFF",
+          "path": "developer/planning/migrations/validation-vpms-staged-handoff.yaml",
+          "status": "DRAFT",
+          "authority": "PLAN_NOT_POLICY"
         }
       ]
     }
