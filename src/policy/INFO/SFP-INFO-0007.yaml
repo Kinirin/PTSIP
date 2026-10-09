@@ -34,6 +34,10 @@ authority_semantics:
     analysis_reference_owner: ANALYSIS
     analysis_discovery_direction: CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX
     mandatory_record_provenance: PRESERVED
+    reobservation_identity_policy: CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE
+    verified_same_event: REUSE_EXISTING_COMMON_ID
+    verified_distinct_event: ISSUE_NEW_COMMON_ID
+    unresolved_event_identity: NO_AUTOMATIC_MERGE_OR_REUSE
   unit_context_evidence_identity_invariants:
     authority:
       info_owns_identity_and_binding_semantics: true
@@ -46,7 +50,20 @@ authority_semantics:
       unverified_or_ambiguous_binding: FAIL_CLOSED
       automatic_unverified_alias_or_equivalence_inference: FORBIDDEN
       provider_identity_collision_may_not_merge_observations: true
+      identical_payload_alone_proves_same_event: false
+      identical_provider_id_alone_proves_same_event: false
+      provider_replay_and_new_event_must_remain_distinguishable: true
       evidence_source_and_observed_revision_must_remain_traceable: true
+    reobservation:
+      event_identity_requires_registered_machine_verifiable_proof: true
+      same_event_proven: REUSE_EXISTING_COMMON_ID
+      distinct_event_proven: ISSUE_NEW_COMMON_ID
+      identity_unresolved: FAIL_CLOSED_NO_MERGE_OR_REUSE
+      provider_identity_only_as_equivalence_proof: FORBIDDEN
+      payload_similarity_as_equivalence_proof: FORBIDDEN
+      previous_common_identity_must_remain_stable: true
+      reobservation_must_not_rewrite_original_source_receipts: true
+      subsequent_collection_provenance_must_remain_traceable: true
     reference:
       individual_observation_or_evidence_granularity: REQUIRED
       whole_context_snapshot_as_implicit_reference: FORBIDDEN
@@ -61,7 +78,7 @@ authority_semantics:
   unit_context_evidence_identity_unresolved_decisions:
     - CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT
     - PROVIDER_ID_BINDING_INTERFACE_AND_MISSING_PROVIDER_ID_HANDLING
-    - REOBSERVATION_IDENTITY_AND_EVENT_EQUIVALENCE
+    - REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE
   implementation_detail_authority: PLAN
 relations:
   supersedes: []
