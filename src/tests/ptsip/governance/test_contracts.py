@@ -341,7 +341,9 @@ def test_fork_analysis_is_independent_and_lineage_optional_audit_only() -> None:
     assert approved["repository_fork_lineage_policy"] == "OPTIONAL_VERIFIED_AUDIT_LINEAGE"
     assert approved["fork_lineage_reuse_role"] == "AUDIT_ONLY_NO_ANALYSIS_REUSE"
     assert approved["fork_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT"
-    assert approved["fork_lineage_registration"] == "OPTIONAL_VERIFIABLE_AUDIT_METADATA"
+    assert approved["fork_lineage_registration"] == "NOT_REQUIRED"
+    assert approved["fork_audit_lineage_derivation"] == "EXISTING_MACHINE_VERIFIED_LOCAL_RECORDS_ONLY"
+    assert approved["fork_audit_lineage_result"] == "OPTIONAL_NON_AUTHORITATIVE_DERIVED_PROJECTION"
     assert approved["pre_fork_source_identity"] == "ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED"
     assert approved["post_fork_observation_identity"] == "FORK_LOCAL_INDEPENDENT_ID"
     assert approved["common_reference_identity_uniqueness_scope"] == "CONSUMER_REPOSITORY"
@@ -373,7 +375,9 @@ def test_fork_analysis_is_independent_and_lineage_optional_audit_only() -> None:
     assert rd["fork_analysis_operation"] == "CURRENT_FORK_CONTEXT_INDEPENDENT_ANALYSIS"
     assert rd["fork_analysis_candidate_scope"] == "FORK_LOCAL_CONTEXT_ONLY"
     assert rd["fork_origin_analysis_candidate_discovery"] == "DISABLED"
-    assert rd["fork_lineage_lookup"] == "OPTIONAL_VERIFIED_AUDIT_ONLY"
+    assert rd["fork_lineage_lookup"] == "OPTIONAL_DERIVED_VERIFIED_LOCAL_RECORD_AUDIT_ONLY"
+    assert rd["fork_audit_source_resolution"] == "EXISTING_LOCAL_VERIFIED_RECORDS_ONLY"
+    assert rd["fork_audit_result_role"] == "NON_AUTHORITATIVE_READ_ONLY_PROJECTION"
     assert rd["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
     assert rd["reference_source_authority"] == "ANALYSIS_OWNED"
     assert ri["fork_lineage_not_a_prerequisite_for_new_analysis"] is True
@@ -544,3 +548,65 @@ def test_relocation_does_not_create_cross_scope_reuse_or_registration_dependency
     for item in (info, resolver, assure):
         Draft202012Validator(schema).validate(item)
 
+
+
+def test_optional_fork_audit_lineage_is_machine_derived_without_new_registration_or_origin_lookup() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    d = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert d["fork_analysis_execution"] == "INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT"
+    assert d["fork_lineage_reuse_role"] == "AUDIT_ONLY_NO_ANALYSIS_REUSE"
+    assert d["fork_lineage_registration"] == "NOT_REQUIRED"
+    assert d["fork_audit_lineage_derivation"] == "EXISTING_MACHINE_VERIFIED_LOCAL_RECORDS_ONLY"
+    assert d["fork_audit_lineage_result"] == "OPTIONAL_NON_AUTHORITATIVE_DERIVED_PROJECTION"
+    fork = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["fork_lineage"]
+    assert fork["separate_audit_lineage_registry_required"] is False
+    assert fork["derived_audit_source_must_be_existing_verified_record"] is True
+    assert fork["derived_audit_origin_relation_requires_machine_verified_proof"] is True
+    assert fork["audit_lineage_must_not_be_inferred_from_git_similarity_or_paths"] is True
+    assert fork["origin_repository_external_lookup_required"] is False
+    assert fork["audit_derivation_must_not_expand_record_retention_obligation"] is True
+    assert fork["derivation_must_not_mutate_original_record_or_receipt"] is True
+    assert fork["derived_audit_is_non_authoritative_projection"] is True
+    assert fork["missing_or_incomplete_record_proof_yields_no_audit_assertion"] is True
+    assert fork["missing_audit_proof_does_not_block_new_analysis"] is True
+    assert fork["optional_audit_derivation_cannot_grant_analysis_reuse"] is True
+    assert "CONTEXT_EXISTING_VERIFIED_RECORD_FORK_AUDIT_DERIVATION_PROOF_INTERFACE" in info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "CONTEXT_OPTIONAL_FORK_AUDIT_LINEAGE_PROOF_INTERFACE" not in info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+
+    resolver = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
+    assert resolver["policy"]["status"] == "DRAFT"
+    rd = resolver["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    ri = resolver["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert rd["fork_lineage_lookup"] == "OPTIONAL_DERIVED_VERIFIED_LOCAL_RECORD_AUDIT_ONLY"
+    assert rd["fork_audit_source_resolution"] == "EXISTING_LOCAL_VERIFIED_RECORDS_ONLY"
+    assert rd["fork_audit_result_role"] == "NON_AUTHORITATIVE_READ_ONLY_PROJECTION"
+    assert rd["fork_origin_analysis_candidate_discovery"] == "DISABLED"
+    assert rd["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
+    assert rd["reference_source_authority"] == "ANALYSIS_OWNED"
+    assert ri["fork_audit_lookup_does_not_require_extra_registry"] is True
+    assert ri["fork_audit_resolution_does_not_search_external_origin_repository"] is True
+    assert ri["fork_audit_lookup_cannot_expand_candidate_set"] is True
+    assert ri["fork_audit_lookup_must_be_read_only"] is True
+    assert ri["fork_audit_missing_proof_returns_no_verified_lineage"] is True
+    assert ri["fork_audit_no_proof_does_not_block_fork_analysis"] is True
+    assert ri["fork_audit_verified_source_binding_required"] is True
+
+    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
+    assert assure["policy"]["status"] == "DRAFT"
+    ad = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    ai = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert ad["fork_lineage_reuse"] == "FORBIDDEN_OPTIONAL_AUDIT_ONLY"
+    assert ad["fork_audit_lineage_verification"] == "EXISTING_RECORD_SOURCE_PROOF_WITHOUT_NEW_ANALYSIS_AUTHORITY"
+    assert ai["fork_audit_derived_lineage_requires_verifiable_record_provenance"] is True
+    assert ai["fork_audit_claim_without_verifiable_existing_evidence"] == "FAIL_CLOSED_AUDIT_CLAIM_ONLY"
+    assert ai["fork_audit_source_proof_cannot_be_substituted_for_current_analysis_validity"] is True
+    assert ai["fork_audit_does_not_require_external_origin_access"] is True
+    assert ai["fork_audit_missing_evidence_does_not_invalidate_local_analysis"] is True
+
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    assert d["common_reference_identity_uniqueness_scope"] == "CONSUMER_REPOSITORY"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for policy in (info, resolver, assure):
+        Draft202012Validator(schema).validate(policy)
