@@ -36,6 +36,10 @@ authority_semantics:
     fork_lineage_reuse_role: ELIGIBILITY_INPUT_NOT_REUSE_GRANT
     pre_fork_source_identity: ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED
     post_fork_observation_identity: FORK_LOCAL_INDEPENDENT_ID
+    repository_name_location_change_policy: RESET_IDENTITY_SCOPE
+    relocation_historical_identity: PRESERVE_ORIGINAL_REPOSITORY_SCOPE_AND_ID
+    relocation_new_observation_identity: NEW_REPOSITORY_SCOPE_LOCAL_ID
+    relocation_id_continuity: NO_AUTOMATIC_SCOPE_INHERITANCE
     original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
     missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
     provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
@@ -69,7 +73,19 @@ authority_semantics:
       foreign_repository_id_string_equality_proves_same_event: false
       cross_repository_reference_requires_explicit_verified_repository_scope: true
       repository_fork_semantics: CONTRACT_VERIFIED_LINEAGE
-      repository_relocation_semantics: UNRESOLVED
+      repository_relocation_semantics: RESET_IDENTITY_SCOPE
+    repository_relocation:
+      name_or_location_change_requires_identity_scope_reset: true
+      prior_observation_ids_keep_original_repository_scope: true
+      existing_historical_source_receipts_must_be_preserved: true
+      historical_identity_or_provenance_rewrite: FORBIDDEN
+      prior_ids_are_not_automatically_rebound_to_new_scope: true
+      new_observations_use_new_repository_scoped_identity: true
+      location_change_alone_grants_same_event_identity: false
+      location_change_alone_grants_analysis_reuse: false
+      registered_verified_cross_scope_reference_required: true
+      unverified_cross_scope_reference: FAIL_CLOSED
+      fork_lineage_rules_remain_independent: true
     fork_lineage:
       distinct_consumer_repositories_keep_independent_identity_authority: true
       verified_registered_origin_relationship_required: true
@@ -139,7 +155,7 @@ authority_semantics:
   unit_context_evidence_identity_unresolved_decisions:
     - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
     - CONTEXT_FORK_LINEAGE_PROOF_INTERFACE
-    - CONTEXT_REPOSITORY_RELOCATION_IDENTITY_CONTINUITY
+    - CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
 relations:
