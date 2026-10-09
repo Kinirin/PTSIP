@@ -318,7 +318,8 @@ def test_context_evidence_ids_are_consumer_repository_scoped() -> None:
     assert scope["unqualified_id_does_not_identify_cross_repository_event"] is True
     assert scope["foreign_repository_id_string_equality_proves_same_event"] is False
     assert scope["cross_repository_reference_requires_explicit_verified_repository_scope"] is True
-    assert scope["repository_copy_fork_and_relocation_semantics"] == "UNRESOLVED"
+    assert scope["repository_fork_semantics"] == "CONTRACT_VERIFIED_LINEAGE"
+    assert scope["repository_relocation_semantics"] == "UNRESOLVED"
     assert decisions["reobservation_identity_policy"] == "CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE"
     assert decisions["analysis_reference_owner"] == "ANALYSIS"
     assert decisions["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
@@ -326,7 +327,50 @@ def test_context_evidence_ids_are_consumer_repository_scoped() -> None:
     assert invariants["ownership"]["existing_record_retention_overridden"] is False
     unresolved = policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
     assert "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT" in unresolved
-    assert "CONTEXT_REPOSITORY_COPY_FORK_AND_RELOCATION_IDENTITY_CONTRACT" in unresolved
+    assert "CONTEXT_FORK_LINEAGE_PROOF_INTERFACE" in unresolved
+    assert "CONTEXT_REPOSITORY_RELOCATION_IDENTITY_CONTINUITY" in unresolved
     assert "CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT" not in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
+
+
+def test_verified_fork_lineage_preserves_identity_and_requires_current_reuse_validity() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    approved = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert approved["repository_fork_lineage_policy"] == "CONTRACT_VERIFIED_FORK_LINEAGE"
+    assert approved["fork_lineage_reuse_role"] == "ELIGIBILITY_INPUT_NOT_REUSE_GRANT"
+    assert approved["pre_fork_source_identity"] == "ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED"
+    assert approved["post_fork_observation_identity"] == "FORK_LOCAL_INDEPENDENT_ID"
+    fork = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["fork_lineage"]
+    assert fork["distinct_consumer_repositories_keep_independent_identity_authority"] is True
+    assert fork["verified_registered_origin_relationship_required"] is True
+    assert fork["provenance_of_inherited_observations_preserved"] is True
+    assert fork["copied_pre_fork_observation_ids_keep_origin_repository_scope"] is True
+    assert fork["newly_observed_fork_events_use_fork_repository_scoped_ids"] is True
+    assert fork["lineage_alone_does_not_prove_same_event"] is True
+    assert fork["lineage_alone_does_not_authorize_reuse"] is True
+    assert fork["current_dependency_and_change_impact_validation_required"] is True
+    assert fork["unverified_or_ambiguous_lineage"] == "FAIL_CLOSED"
+    assert fork["ai_inferred_or_fuzzy_lineage"] == "FORBIDDEN"
+    assert fork["manual_per_record_lineage_mapping_required"] is False
+
+    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
+    assert assure["policy"]["status"] == "DRAFT"
+    decisions = assure["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert decisions["fork_lineage_reuse"] == "VERIFIED_LINEAGE_PLUS_CURRENT_DEPENDENCY_AND_EVIDENCE_VALIDITY"
+    ai = assure["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert ai["verified_fork_lineage_may_provide_reuse_candidate"] is True
+    assert ai["lineage_alone_cannot_prove_current_reuse_validity"] is True
+    assert ai["lineage_alone_cannot_prove_observation_event_equivalence"] is True
+    assert ai["fork_change_impact_must_be_machine_verified"] is True
+    assert ai["unverified_fork_lineage_or_current_validity"] == "FAIL_CLOSED"
+    assert ai["fork_lineage_cannot_override_record_provenance_retention"] is True
+
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    analysis = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
+    assert analysis["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["context_first_analysis_discovery"] == "AUTOMATIC_DERIVED_REVERSE_INDEX"
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for policy in (info, assure):
+        Draft202012Validator(schema).validate(policy)
