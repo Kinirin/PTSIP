@@ -51,10 +51,9 @@
       "context_first_lookup": "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX",
       "reference_source_authority": "ANALYSIS_OWNED",
       "reference_granularity": "INDIVIDUAL_OBSERVATION_AND_EVIDENCE",
-      "relocation_historical_candidate_discovery": "REGISTERED_VERIFIED_CROSS_SCOPE_RELATION_EXPANSION",
-      "cross_scope_relation_registration_owner": "REFERENCING_CURRENT_CONSUMER_REPOSITORY",
-      "cross_scope_relation_semantics_authority": "PTSIP",
-      "cross_scope_registration_discovery": "REGISTERED_VERIFIED_RELATION_ONLY"
+      "relocation_analysis_candidate_scope": "CURRENT_CONSUMER_CONTEXT_ONLY",
+      "relocation_analysis_operation": "NEW_LOCAL_ANALYSIS_NOT_CROSS_SCOPE_REUSE",
+      "relocation_previous_analysis_lookup": "DISABLED"
     },
     "unit_consumer_analysis_invariants": {
       "filename_or_ai_semantic_discovery": "FORBIDDEN",
@@ -71,20 +70,14 @@
       "reverse_index_requires_complete_registered_relationships": true,
       "unverified_candidate_closure": "FAIL_CLOSED",
       "context_first_entry_does_not_require_ai_candidate_inference": true,
-      "relocation_cross_scope_expansion_requires_verified_relation": true,
-      "relocation_candidates_must_respect_original_repository_scoped_identities": true,
-      "relocation_cross_scope_lookup_is_candidate_discovery_only": true,
-      "relocation_without_proof_not_candidate": true,
-      "relocation_candidate_lookup_requires_complete_registered_closure": true,
-      "relocation_cross_scope_unverified_or_ambiguous": "FAIL_CLOSED",
-      "relocation_cross_scope_ai_candidate_inference": "FORBIDDEN",
-      "current_consumer_declaration_cannot_override_original_source_authority": true,
-      "cross_scope_reference_registration_requires_verified_registered_origin_relation": true,
-      "cross_scope_declared_relation_is_not_reuse_authorization": true,
-      "unverified_cross_scope_registration_cannot_expand_candidate_set": true,
-      "cross_scope_registration_does_not_require_origin_repository_mutation": true,
-      "cross_scope_registration_ambiguity": "FAIL_CLOSED",
-      "cross_scope_reference_owner_independent_of_analysis_evidence_reference_owner": true
+      "relocation_old_repository_analysis_candidate_expansion": "FORBIDDEN",
+      "relocation_old_repository_lookup_required": false,
+      "relocation_cross_scope_reference_registration_required": false,
+      "relocation_current_context_to_analysis_reverse_index_preserved": true,
+      "relocation_analysis_uses_current_repository_local_evidence": true,
+      "relocation_missing_old_repository_does_not_block_new_analysis": true,
+      "relocation_earlier_analysis_result_not_implicitly_reused": true,
+      "relocation_fork_lineage_scope_not_changed": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
