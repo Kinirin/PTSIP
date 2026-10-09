@@ -31,6 +31,9 @@ authority_semantics:
     common_reference_identity_kind: STABLE_INDIVIDUAL_OBSERVATION_AND_EVIDENCE_ID
     common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
     common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
+    issued_identity_reassignment: PERMANENTLY_FORBIDDEN_FOR_DISTINCT_OBSERVATION_OR_EVIDENCE
+    issued_identity_retirement_effect: NO_NEW_ASSIGNMENT_ELIGIBILITY
+    issued_identity_history_authority: IDENTITY_NON_REASSIGNMENT_INDEPENDENT_OF_RECORD_RETENTION
     cross_repository_identity_interpretation: EXPLICIT_REPOSITORY_SCOPE_REQUIRED
     repository_fork_lineage_policy: OPTIONAL_VERIFIED_AUDIT_LINEAGE
     fork_lineage_reuse_role: AUDIT_ONLY_NO_ANALYSIS_REUSE
@@ -85,6 +88,20 @@ authority_semantics:
       cross_repository_reference_requires_explicit_verified_repository_scope: true
       repository_fork_semantics: OPTIONAL_VERIFIED_AUDIT_LINEAGE
       repository_relocation_semantics: RESET_IDENTITY_SCOPE
+    identity_non_reassignment:
+      within_consumer_repository_scope: REQUIRED
+      ever_issued_id_must_not_identify_distinct_observation_or_evidence: true
+      expiry_retirement_invalidation_or_unregistration_does_not_release_id: true
+      record_cleanup_or_retention_release_does_not_release_id: true
+      no_current_registry_entry_is_not_proof_of_never_issued: true
+      new_issuance_requires_proven_never_assigned_in_scope: true
+      issued_id_identity_meaning_must_remain_stable: true
+      same_event_verified_reobservation_may_reference_existing_id: true
+      same_event_reobservation_is_not_new_assignment: true
+      event_equivalence_still_requires_registered_machine_proof: true
+      unknown_prior_issuance_or_identity_history: FAIL_CLOSED_NO_NEW_ASSIGNMENT
+      no_new_record_retention_authority_created: true
+      historical_receipts_not_modified_or_deleted_by_identity_policy: true
     repository_relocation:
       name_or_location_change_requires_identity_scope_reset: true
       prior_observation_ids_keep_original_repository_scope: true
@@ -203,6 +220,7 @@ authority_semantics:
       existing_record_retention_overridden: false
   unit_context_evidence_identity_unresolved_decisions:
     - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
+    - CONTEXT_ISSUED_ID_HISTORY_PROOF_AND_NON_REASSIGNMENT_INTERFACE
     - CONTEXT_EXISTING_VERIFIED_RECORD_FORK_AUDIT_DERIVATION_PROOF_INTERFACE
     - CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
