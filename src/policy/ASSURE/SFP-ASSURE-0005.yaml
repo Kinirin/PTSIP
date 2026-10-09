@@ -49,7 +49,9 @@
       "equivalence_verification": "PTSIP_COMMON_WITH_CONSUMER_TYPE_EXTENSION",
       "transitive_equivalence": "REGISTERED_CONTRACT_PROOF_ONLY",
       "fork_lineage_reuse": "VERIFIED_LINEAGE_PLUS_CURRENT_DEPENDENCY_AND_EVIDENCE_VALIDITY",
-      "relocation_historical_analysis_reuse": "VERIFIED_SCOPE_LINK_FOR_CANDIDACY_WITH_CURRENT_ASSURE_VALIDITY_GATE"
+      "relocation_historical_analysis_reuse": "FORBIDDEN",
+      "relocation_analysis_qualification": "FRESH_CURRENT_CONSUMER_CONTEXT_EVIDENCE",
+      "relocation_reuse_policy_resolution": "KEEP_LATEST_NEW_REPOSITORY_INDEPENDENT_ANALYSIS"
     },
     "unit_consumer_analysis_invariants": {
       "promotion_requires_validated_provenance_and_scope": true,
@@ -70,12 +72,13 @@
       "fork_change_impact_must_be_machine_verified": true,
       "unverified_fork_lineage_or_current_validity": "FAIL_CLOSED",
       "fork_lineage_cannot_override_record_provenance_retention": true,
-      "relocation_verified_scope_link_alone_does_not_grant_reuse": true,
-      "relocation_analysis_must_pass_current_evidence_dependency_change_impact_validation": true,
-      "relocation_scope_link_does_not_prove_same_observation_event": true,
-      "relocation_reuse_cannot_promote_historical_analysis_authority": true,
-      "relocation_invalid_or_incomplete_current_validity": "FAIL_CLOSED",
-      "relocation_reuse_preserves_original_record_history": true
+      "relocation_new_analysis_must_be_verified_from_current_context_and_evidence": true,
+      "relocation_prior_analysis_validation_cannot_be_inherited": true,
+      "relocation_prior_analysis_is_not_a_reuse_candidate": true,
+      "relocation_evaluation_does_not_require_old_repository_or_record_discovery": true,
+      "relocation_record_preservation_does_not_grant_reuse_authority": true,
+      "relocation_fork_lineage_reuse_semantics_unchanged": true,
+      "relocation_unknown_current_evidence_or_dependencies": "FAIL_CLOSED"
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "DEPENDENCY_AND_RELATION_EVIDENCE_PROOF_INTERFACE",
