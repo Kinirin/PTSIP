@@ -40,6 +40,8 @@ authority_semantics:
     relocation_historical_identity: PRESERVE_ORIGINAL_REPOSITORY_SCOPE_AND_ID
     relocation_new_observation_identity: NEW_REPOSITORY_SCOPE_LOCAL_ID
     relocation_id_continuity: NO_AUTOMATIC_SCOPE_INHERITANCE
+    relocation_historical_analysis_access: VERIFIED_CROSS_SCOPE_RELATION_CANDIDATE_ONLY
+    relocation_historical_reference_authority: REGISTERED_VERIFIED_SCOPE_RELATION
     original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
     missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
     provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
@@ -86,6 +88,16 @@ authority_semantics:
       registered_verified_cross_scope_reference_required: true
       unverified_cross_scope_reference: FAIL_CLOSED
       fork_lineage_rules_remain_independent: true
+    relocation_historical_analysis:
+      original_repository_scope_and_analysis_ids_preserved: true
+      candidate_discovery_requires_registered_verified_scope_relation: true
+      cross_scope_relation_does_not_rebind_original_ids: true
+      relocation_alone_does_not_create_candidate_authority: true
+      candidate_discovery_does_not_authorize_reuse: true
+      historical_provenance_and_receipts_preserved: true
+      unverified_or_ambiguous_scope_relation: FAIL_CLOSED
+      ai_inferred_scope_relationship: FORBIDDEN
+      independent_context_analysis_reference_ownership_preserved: true
     fork_lineage:
       distinct_consumer_repositories_keep_independent_identity_authority: true
       verified_registered_origin_relationship_required: true
@@ -156,6 +168,7 @@ authority_semantics:
     - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
     - CONTEXT_FORK_LINEAGE_PROOF_INTERFACE
     - CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE
+    - RELOCATION_CROSS_SCOPE_RELATION_PROOF_INTERFACE
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
 relations:
