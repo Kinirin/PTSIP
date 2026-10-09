@@ -30,14 +30,16 @@
     "user_project_non_intrusion": true,
     "approved_official_engine_source_root": "src/ptsip/engines/",
     "approved_source_root_authority_ref": "src/policy/ARCH/SFP-ARCH-0004.yaml#ENGINE_UPPER_DIRECTORY_NAME",
-    "management_capability_and_nested_directory_names_unresolved": false,
+    "management_capability_and_nested_directory_names_unresolved": true,
     "approved_independent_engine_module_layout": "D_SELF_CONTAINED_ENGINE_MODULES",
     "engine_scoped_management_and_delivery": "REQUIRED",
     "management_directory_names": "ENGINE_OWNED_NOT_STANDARDIZED",
     "management_entry_access": "MACHINE_DECLARED_ENTRYPOINT_FROM_ENGINE_IDENTITY",
     "management_feature_scope": "MINIMUM_COMMON_AND_ENGINE_OPTIONAL",
     "engine_manifest_direction": "COMMON_IDENTITY_CONTRACT_WITH_ENGINE_EXTENSIONS",
-    "change_impact_direction": "DEPENDENCY_GRAPH_PLUS_CONTRACT_COMPATIBILITY"
+    "change_impact_direction": "DEPENDENCY_GRAPH_PLUS_CONTRACT_COMPATIBILITY",
+    "management_subdirectory_name_rule": "ENGINE_OWNED_FREE_NAME_MACHINE_ENTRY_RESOLVED",
+    "individual_engine_module_directory_names_unresolved": true
   },
   "current_baseline": {
     "project_profile_ref": ".ptsip/profiles/main.ptsip.yaml",
