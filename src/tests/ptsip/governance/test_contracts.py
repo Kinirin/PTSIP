@@ -462,3 +462,49 @@ def test_relocation_historical_analysis_candidates_require_proven_scope_and_curr
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     for policy in (info, cntr, assure):
         Draft202012Validator(schema).validate(policy)
+
+
+def test_current_consumer_owns_verified_cross_scope_relation_registration() -> None:
+    info = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert info["policy"]["status"] == "DRAFT"
+    decisions = info["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert decisions["cross_scope_reference_registration_owner"] == "REFERENCING_CURRENT_CONSUMER_REPOSITORY"
+    assert decisions["cross_scope_reference_registration_authority"] == "CURRENT_CONSUMER_DECLARATION_WITH_MACHINE_VERIFIED_ORIGIN"
+    boundaries = info["authority_semantics"]["unit_context_evidence_identity_invariants"]["cross_scope_registration"]
+    assert boundaries["referencing_current_consumer_owns_relation_declaration"] is True
+    assert boundaries["original_repository_must_not_be_mutated_for_new_relation"] is True
+    assert boundaries["original_repository_and_analysis_identity_authority_preserved"] is True
+    assert boundaries["original_record_provenance_history_preserved"] is True
+    assert boundaries["declared_relation_requires_registered_machine_verified_origin_evidence"] is True
+    assert boundaries["declaration_alone_proves_relation"] is False
+    assert boundaries["relation_registration_does_not_rebind_original_identity"] is True
+    assert boundaries["relation_registration_does_not_grant_event_equivalence"] is True
+    assert boundaries["relation_registration_does_not_grant_analysis_reuse"] is True
+    assert boundaries["unverified_or_ambiguous_registered_relation"] == "FAIL_CLOSED"
+    assert boundaries["ai_guessed_or_filename_derived_relation"] == "FORBIDDEN"
+
+    resolver = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
+    assert resolver["policy"]["status"] == "DRAFT"
+    cntr = resolver["authority_semantics"]["unit_consumer_analysis_approved_decisions"]
+    assert cntr["cross_scope_relation_registration_owner"] == "REFERENCING_CURRENT_CONSUMER_REPOSITORY"
+    assert cntr["cross_scope_relation_semantics_authority"] == "PTSIP"
+    assert cntr["cross_scope_registration_discovery"] == "REGISTERED_VERIFIED_RELATION_ONLY"
+    assert cntr["reference_source_authority"] == "ANALYSIS_OWNED"
+    assert cntr["context_first_lookup"] == "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX"
+    checks = resolver["authority_semantics"]["unit_consumer_analysis_invariants"]
+    assert checks["current_consumer_declaration_cannot_override_original_source_authority"] is True
+    assert checks["cross_scope_reference_registration_requires_verified_registered_origin_relation"] is True
+    assert checks["cross_scope_declared_relation_is_not_reuse_authorization"] is True
+    assert checks["unverified_cross_scope_registration_cannot_expand_candidate_set"] is True
+    assert checks["cross_scope_registration_does_not_require_origin_repository_mutation"] is True
+    assert checks["cross_scope_registration_ambiguity"] == "FAIL_CLOSED"
+    assert checks["cross_scope_reference_owner_independent_of_analysis_evidence_reference_owner"] is True
+
+    assure = _json("src/policy/ASSURE/SFP-ASSURE-0005.yaml")
+    assert assure["authority_semantics"]["unit_consumer_analysis_invariants"]["relocation_analysis_must_pass_current_evidence_dependency_change_impact_validation"] is True
+    record = _yaml("src/policy/RECORD/SFP-RECORD-0001.yaml")
+    assert record["policy"]["status"] == "ACTIVE"
+    assert "CROSS_SCOPE_REGISTRATION_SOURCE_PROOF_INTERFACE" in info["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    for policy in (info, resolver):
+        Draft202012Validator(schema).validate(policy)
