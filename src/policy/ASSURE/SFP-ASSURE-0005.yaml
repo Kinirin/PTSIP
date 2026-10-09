@@ -47,7 +47,8 @@
       "relation_completeness": "CONTRACT_BOUNDARY_RELATION_CLOSURE",
       "relation_proof_validity": "PROVEN_CHANGE_IMPACT_INHERITANCE",
       "equivalence_verification": "PTSIP_COMMON_WITH_CONSUMER_TYPE_EXTENSION",
-      "transitive_equivalence": "REGISTERED_CONTRACT_PROOF_ONLY"
+      "transitive_equivalence": "REGISTERED_CONTRACT_PROOF_ONLY",
+      "fork_lineage_reuse": "VERIFIED_LINEAGE_PLUS_CURRENT_DEPENDENCY_AND_EVIDENCE_VALIDITY"
     },
     "unit_consumer_analysis_invariants": {
       "promotion_requires_validated_provenance_and_scope": true,
@@ -61,7 +62,13 @@
       "proof_bound_to_original_contract_revision": true,
       "historical_proof_not_mutated_to_new_revision": true,
       "equivalence_requires_compatible_result_scope_and_evidence": true,
-      "ai_can_infer_missing_dependency_or_relation": false
+      "ai_can_infer_missing_dependency_or_relation": false,
+      "verified_fork_lineage_may_provide_reuse_candidate": true,
+      "lineage_alone_cannot_prove_current_reuse_validity": true,
+      "lineage_alone_cannot_prove_observation_event_equivalence": true,
+      "fork_change_impact_must_be_machine_verified": true,
+      "unverified_fork_lineage_or_current_validity": "FAIL_CLOSED",
+      "fork_lineage_cannot_override_record_provenance_retention": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "DEPENDENCY_AND_RELATION_EVIDENCE_PROOF_INTERFACE",
