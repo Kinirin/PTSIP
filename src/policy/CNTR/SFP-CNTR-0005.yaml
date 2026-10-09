@@ -71,7 +71,9 @@
         "resource_exhaustion_result_semantics": "ATTEMPT_FAILURE_WITH_SEPARATE_WORK_EFFECT_ASSESSMENT",
         "revocation_result_contract_boundary": "STOP_CAUSE_AND_ATTEMPT_STATUS_SEPARATE_FROM_WORK_EFFECT",
         "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP",
-        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER"
+        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER",
+        "validation_vpms_responsibility_direction": "SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE",
+        "validation_generic_contract_scope": "SCHEMA_IO_PRECONDITIONS_AND_VERIFICATION_CASES"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -99,7 +101,13 @@
         "projection_output_must_conform_to_context_semantic_source_contract": true,
         "projection_cannot_invent_or_change_context_source_semantics": true,
         "projection_validation_of_format_is_not_conformance_or_source_truth_authority": true,
-        "existing_active_context_projection_contract_unchanged_until_separately_authorized_transition": true
+        "existing_active_context_projection_contract_unchanged_until_separately_authorized_transition": true,
+        "vpms_case_protocol_selection_and_execution_contracts_are_integration_candidates_not_separate_validation_engine_authority": true,
+        "generic_validation_contract_coverage_must_not_be_inferred_from_existing_vpms_case_execution": true,
+        "ptsip_assure_conformance_verdict_not_equivalent_to_vpms_case_outcome": true,
+        "current_vpms_active_contract_identities_retained_pending_authorized_migration": true,
+        "validation_contract_execution_does_not_create_ctrl_write_authority": true,
+        "existing_common_engine_management_responsibility_map_remains_authoritative": true
       },
       "unresolved_decisions": [
         {
@@ -152,6 +160,21 @@
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED",
           "reason": "PRESERVE_EXISTING_CONTEXT_FORMAT_COMPATIBILITY_AND_SOURCE_SEMANTICS"
+        },
+        {
+          "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
+          "kind": "PLAN",
+          "status": "UNRESOLVED"
         }
       ],
       "activation_requirements": {
@@ -184,6 +207,15 @@
           "existing_format_contract_migration": "PENDING_RECONCILIATION",
           "output_schema_details": "NOT_DECIDED",
           "implementation_mapping": "NOT_DECIDED"
+        },
+        {
+          "id": "VALIDATION_ENGINE_AND_VPMS_SEMANTIC_CONVERGENCE",
+          "selected_option": "SINGLE_VALIDATION_ENGINE_RESPONSIBILITY_VPMS_SUBSUMED",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_CAPABILITY_CONTRACT_DIRECTION_ONLY",
+          "vpms_current_case_protocol_mapping": "NOT_DECIDED",
+          "generic_schema_io_shape": "NOT_DECIDED",
+          "legacy_compatibility": "NOT_DECIDED"
         }
       ]
     }

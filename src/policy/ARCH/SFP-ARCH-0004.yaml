@@ -72,7 +72,10 @@
         ],
         "internal_hierarchy_model": "DECLARATION_BASED_VARIABLE_HIERARCHY",
         "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP",
-        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER"
+        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER",
+        "validation_vpms_responsibility_direction": "SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE",
+        "vpms_independent_semantic_engine_owner": false,
+        "validation_engine_scope": "GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -99,7 +102,14 @@
         "output_schema_and_transformation_normative_owner_must_be_unique": true,
         "existing_active_context_projection_authority_not_silently_reassigned": true,
         "implementation_co_location_does_not_merge_context_and_projection_responsibility": true,
-        "actual_owner_handoff_requires_effective_policy_reconciliation": true
+        "actual_owner_handoff_requires_effective_policy_reconciliation": true,
+        "vpms_and_official_validation_engine_must_not_have_competing_semantic_owners": true,
+        "existing_vpms_product_contracts_remain_effective_until_separately_authorized_transition": true,
+        "vpms_implementation_can_be_reused_without_immediate_physical_move": true,
+        "validation_execution_capability_is_not_normative_ptsip_conformance_authority": true,
+        "existing_assure_conformance_judgment_authority_unaffected": true,
+        "common_engine_registry_resolver_composition_and_execution_authorities_not_implicitly_transferred": true,
+        "current_project_profile_ownership_not_automatically_rewritten": true
       },
       "unresolved_decisions": [
         {
@@ -142,6 +152,16 @@
           "kind": "RESPONSIBILITY_ANALYSIS",
           "status": "UNRESOLVED",
           "reason": "EXISTING_CONTEXT_PROJECTION_CONTRACT_AND_COMPONENT_BOUNDARIES_REQUIRE_EXPLICIT_RECONCILIATION_BEFORE_ACTIVE"
+        },
+        {
+          "id": "VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
+          "kind": "RESPONSIBILITY_ANALYSIS",
+          "status": "UNRESOLVED"
         }
       ],
       "activation_requirements": {
@@ -185,6 +205,15 @@
           "current_active_policy_reconciliation": "PENDING",
           "physical_implementation_move": "NOT_DECIDED",
           "directory_names": "NOT_DECIDED"
+        },
+        {
+          "id": "VALIDATION_ENGINE_AND_VPMS_SEMANTIC_CONVERGENCE",
+          "selected_option": "SINGLE_VALIDATION_ENGINE_RESPONSIBILITY_VPMS_SUBSUMED",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_SEMANTIC_RESPONSIBILITY_DIRECTION_ONLY",
+          "actual_code_or_profile_reassignment": "NOT_DECIDED",
+          "legacy_public_interface_retirement": "NOT_DECIDED",
+          "existing_active_contract_transition": "NOT_DECIDED"
         }
       ]
     }
