@@ -74,7 +74,9 @@
         "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER",
         "validation_vpms_responsibility_direction": "SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE",
         "validation_generic_contract_scope": "SCHEMA_IO_PRECONDITIONS_AND_VERIFICATION_CASES",
-        "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT"
+        "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT",
+        "engine_local_management_contract_boundary": "ENGINE_OWNED_LOCAL_MANAGEMENT",
+        "engine_independent_delivery_boundary": "PER_ENGINE_VERSION_DEPENDENCY_BUILD_DISTRIBUTION_PATCH"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -115,7 +117,11 @@
         "test_mode_registry_must_stay_bound_to_canonical_profile_verification_ownership": true,
         "automatic_mode_resolution_must_remain_fail_closed_for_unmapped_sources": true,
         "vpms_case_pass_must_not_be_promoted_to_ptsip_assure_conformance": true,
-        "legacy_contract_retirement_requires_separate_explicit_owner_approval": true
+        "legacy_contract_retirement_requires_separate_explicit_owner_approval": true,
+        "engine_management_api_interoperability_requires_explicit_contract": true,
+        "engine_local_management_is_not_global_authority": true,
+        "engine_distributions_can_bundle_without_merging_version_and_patch_identities": true,
+        "engine_environment_isolation_does_not_implicitly_override_ctrl_isolation_mode": true
       },
       "unresolved_decisions": [
         {
@@ -183,6 +189,11 @@
           "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
           "kind": "PLAN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_VERSION_DEPENDENCY_BUILD_AND_PATCH_MANIFEST_CONTRACT",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
         }
       ],
       "activation_requirements": {
@@ -233,6 +244,14 @@
           "new_engine_api_or_directory": "NOT_DECIDED",
           "old_contract_retirement": "SEPARATE_APPROVAL_REQUIRED",
           "transition_plan_ref": "developer/planning/migrations/validation-vpms-staged-handoff.yaml"
+        },
+        {
+          "id": "ENGINE_LOCAL_MANAGEMENT_CONFLICT_RESOLUTION",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "scope": "ENGINE_SCOPED_CAPABILITY_INTERFACES",
+          "shared_common_management_runtime": "NOT_MANDATORY",
+          "runtime_version_manifest": "NOT_DECIDED"
         }
       ],
       "dependent_plans": [

@@ -56,7 +56,7 @@
         "engine_structure_P1": "EXPLICIT_SINGLE_OWNER_MIXED_IMPLEMENTATION",
         "directory_policy_P2": "RESPONSIBILITY_BOUNDARY_STRUCTURED",
         "physical_organization_P3": "SINGLE_UPPER_ENGINE_AREA",
-        "common_management_P4": "FUNCTION_BY_FUNCTION_INDEPENDENT_RESPONSIBILITY",
+        "common_management_P4": "PER_ENGINE_SELF_OWNED_FUNCTION_BY_FUNCTION_MANAGEMENT",
         "implementation_sharing_P5": "EXPLICIT_SINGLE_OWNER_SHARING",
         "capability_implementation_P6": "INDEPENDENT_CONTRACT_FLEXIBLE_IMPLEMENTATION",
         "user_external_isolation_P7": "MANDATORY_ISOLATION",
@@ -78,7 +78,11 @@
         "validation_engine_scope": "GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION",
         "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT",
         "official_engine_source_root": "src/ptsip/engines/",
-        "official_engine_source_root_selection": "B_PTSIP_ENGINES_PACKAGE_ROOT"
+        "official_engine_source_root_selection": "B_PTSIP_ENGINES_PACKAGE_ROOT",
+        "independent_engine_module_layout": "D_SELF_CONTAINED_ENGINE_MODULES",
+        "per_engine_management_ownership": "INDEPENDENT_SEMANTICS_AND_IMPLEMENTATION",
+        "per_engine_change_boundary": "VERSION_DEPENDENCIES_BUILD_DEPLOYMENT_PATCH",
+        "per_engine_environment_boundary": "VERSIONED_DEPENDENCY_ENVIRONMENT_PER_ENGINE"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -125,14 +129,19 @@
         "concrete_nested_package_layout_approved": false,
         "existing_modules_cannot_be_relocated_from_path_choice_alone": true,
         "source_root_approval_does_not_activate_engine_draft": true,
-        "consumer_engine_state_root_remains_separate_from_executable_source": true
+        "consumer_engine_state_root_remains_separate_from_executable_source": true,
+        "no_mandatory_parent_shared_management_runtime": true,
+        "engine_local_management_does_not_create_separate_engine_identity": true,
+        "each_engine_local_management_has_explicit_owner": true,
+        "each_engine_has_independent_versioned_dependency_and_build_patch_boundary": true,
+        "shared_implementation_requires_one_explicit_owner_and_declared_dependency": true,
+        "shared_code_reuse_cannot_force_joint_engine_update_without_contract_impact": true,
+        "engine_local_management_cannot_assume_active_external_authority": true,
+        "new_engine_registration_does_not_expand_mandatory_official_set": true,
+        "internal_layout_variable_depth_per_engine": true,
+        "management_and_module_names_still_unapproved": true
       },
       "unresolved_decisions": [
-        {
-          "id": "COMMON_MANAGEMENT_SUBDIRECTORY_NAMES",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
           "kind": "USER_DECISION",
@@ -145,11 +154,6 @@
         },
         {
           "id": "EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "COMMON_IMPLEMENTATION_OWNER_MAPPING",
           "kind": "RESPONSIBILITY_ANALYSIS",
           "status": "UNRESOLVED"
         },
@@ -171,6 +175,16 @@
         },
         {
           "id": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
+          "kind": "RESPONSIBILITY_ANALYSIS",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_LOCAL_MANAGEMENT_SUBDIRECTORY_NAMES",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
           "kind": "RESPONSIBILITY_ANALYSIS",
           "status": "UNRESOLVED"
         }
@@ -247,6 +261,27 @@
           "physical_directory_creation": "NOT_AUTHORIZED",
           "existing_module_migration": "NOT_AUTHORIZED",
           "activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_LOCAL_MANAGEMENT_CONFLICT_RESOLUTION",
+          "selection": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "conflicting_prior_at_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "prior_rule": "P4_COMMON_MANAGEMENT_FUNCTION_OWNER",
+          "replacement": "EACH_ENGINE_OWNS_LOCAL_MANAGEMENT_AND_RULES",
+          "P5": "PRESERVE_SINGLE_OWNER_FOR_ACTUALLY_SHARED_IMPLEMENTATION",
+          "P6": "RETAIN_CONTRACT_INDEPENDENCE_WITH_PER_ENGINE_BUILD_DEPLOY_PATCH",
+          "P8": "RETAIN_DECLARATION_BASED_VARIABLE_DEPTH",
+          "exact_directory_names": "NOT_DECIDED",
+          "activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "INDEPENDENT_ENGINE_MODULE_LAYOUT_DIRECTION",
+          "selected_option": "D_INDEPENDENT_ENGINE_MODULES_WITH_INTERNAL_MANAGEMENT",
+          "approval_source": "USER_EXPLICIT",
+          "source_root": "src/ptsip/engines/",
+          "scope": "ARCHITECTURAL_DIRECTION_ONLY",
+          "physical_creation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [

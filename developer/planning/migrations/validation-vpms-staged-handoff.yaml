@@ -30,7 +30,9 @@
     "user_project_non_intrusion": true,
     "approved_official_engine_source_root": "src/ptsip/engines/",
     "approved_source_root_authority_ref": "src/policy/ARCH/SFP-ARCH-0004.yaml#ENGINE_UPPER_DIRECTORY_NAME",
-    "management_capability_and_nested_directory_names_unresolved": true
+    "management_capability_and_nested_directory_names_unresolved": true,
+    "approved_independent_engine_module_layout": "D_SELF_CONTAINED_ENGINE_MODULES",
+    "engine_scoped_management_and_delivery": "REQUIRED"
   },
   "current_baseline": {
     "project_profile_ref": ".ptsip/profiles/main.ptsip.yaml",
@@ -405,10 +407,15 @@
       "status": "UNRESOLVED"
     },
     {
-      "id": "ENGINE_MANAGEMENT_CAPABILITY_AND_NESTED_DIRECTORY_NAMES",
+      "id": "ENGINE_LOCAL_MANAGEMENT_AND_INDIVIDUAL_ENGINE_DIRECTORY_NAMES",
       "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
       "status": "UNRESOLVED",
       "source_unresolved_id": "CONCRETE_ENGINE_SOURCE_LAYOUT_AND_DIRECTORY_NAMES"
+    },
+    {
+      "id": "ENGINE_LOCAL_BUILD_DEPENDENCY_AND_PATCH_MANIFEST",
+      "owner": "CONTRACT_DESIGN",
+      "status": "UNRESOLVED"
     }
   ],
   "implementation_status": "NOT_STARTED"
