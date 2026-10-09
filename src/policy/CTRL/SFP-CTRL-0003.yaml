@@ -44,7 +44,10 @@
       "automatic_cleanup_without_delegation": "FORBIDDEN",
       "cleanup_operation_kind": "CONSUMER_DELEGATED_PER_OPERATION_KIND",
       "physical_deletion_authority": "EXPLICIT_OPERATION_SPECIFIC_DELEGATION_REQUIRED",
-      "general_cleanup_delegation_grants_physical_deletion": false
+      "general_cleanup_delegation_grants_physical_deletion": false,
+      "cleanup_execution_trigger": "MACHINE_VERIFIED_EXECUTION_OPPORTUNITY",
+      "cleanup_failure_recovery": "CONTRACT_VERIFIED_AUTOMATED_RECOVERY",
+      "cleanup_completion_consistency": "CONTRACT_PROVEN_LOGICAL_COMPLETION"
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -61,7 +64,13 @@
       "unknown_or_undelegated_operation_kind": "FAIL_CLOSED",
       "generic_cleanup_delegation_grants_physical_deletion": false,
       "physical_deletion_requires_explicit_kind_and_scope": true,
-      "operation_delegation_cannot_override_record_retention": true
+      "operation_delegation_cannot_override_record_retention": true,
+      "cleanup_execution_precondition_recheck_required": true,
+      "cleanup_recovery_requires_existing_delegation_and_proven_safe_retry": true,
+      "cleanup_unknown_recovery_capability": "FAIL_CLOSED",
+      "cleanup_partial_success_cannot_confer_full_completion": true,
+      "cleanup_completion_requires_registry_record_and_retention_consistency": true,
+      "cleanup_execution_result_alone_is_not_completion_proof": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
