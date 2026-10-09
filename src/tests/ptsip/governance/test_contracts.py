@@ -190,7 +190,7 @@ def test_context_observation_evidence_identity_binding_draft() -> None:
     assert invariants["reference"]["reverse_lookup_is_non_authoritative_projection"] is True
     assert invariants["ownership"]["independent_ai_identity_creation"] == "FORBIDDEN"
     assert invariants["ownership"]["existing_record_retention_overridden"] is False
-    assert "REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
     index = _yaml("src/policy/index.yaml")
     assert any(
         item["id"] == "SFP-INFO-0007"
@@ -230,7 +230,38 @@ def test_context_reobservation_reuses_id_only_for_proven_same_event() -> None:
     assert approved["analysis_reference_owner"] == "ANALYSIS"
     assert approved["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
     assert invariants["ownership"]["existing_record_retention_overridden"] is False
-    assert "REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE" in policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
 
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
+
+
+def test_context_event_identity_proof_common_plus_provider_type_extension() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    decisions = policy["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert decisions["event_identity_proof_authority"] == "PTSIP_COMMON_PROOF_WITH_PROVIDER_TYPE_EXTENSION"
+    assert decisions["common_proof_obligations_owner"] == "PTSIP"
+    assert decisions["provider_type_proof_extension"] == "REGISTERED_MACHINE_VERIFIABLE_CONTRACT"
+    assert decisions["duplicate_event_manual_mapping"] == "NOT_REQUIRED"
+    proof = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]["proof_authority"]
+    assert proof["ptsip_common_proof_obligations_required"] is True
+    assert proof["common_proof_obligations_cannot_be_weakened_by_provider_type"] is True
+    assert proof["provider_type_specific_rules_must_be_registered"] is True
+    assert proof["provider_type_specific_proof_must_be_machine_verifiable"] is True
+    assert proof["provider_type_extension_alone_confers_identity_authority"] is False
+    assert proof["source_and_observation_context_binding_required"] is True
+    assert proof["unregistered_or_ambiguous_proof_contract"] == "FAIL_CLOSED"
+    assert proof["proof_scope_or_source_revision_unverified"] == "FAIL_CLOSED"
+    assert proof["ai_ad_hoc_event_equivalence_inference"] == "FORBIDDEN"
+    assert proof["manual_duplicate_event_linkage_required"] is False
+    assert decisions["verified_same_event"] == "REUSE_EXISTING_COMMON_ID"
+    assert decisions["verified_distinct_event"] == "ISSUE_NEW_COMMON_ID"
+    assert decisions["analysis_reference_owner"] == "ANALYSIS"
+    assert decisions["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert policy["authority_semantics"]["unit_context_evidence_identity_invariants"]["ownership"]["existing_record_retention_overridden"] is False
+    unresolved = policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE" in unresolved
+    assert "REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE" not in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
