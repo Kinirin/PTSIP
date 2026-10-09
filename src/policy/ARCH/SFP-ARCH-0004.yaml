@@ -76,7 +76,9 @@
         "validation_vpms_responsibility_direction": "SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE",
         "vpms_independent_semantic_engine_owner": false,
         "validation_engine_scope": "GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION",
-        "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT"
+        "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT",
+        "official_engine_source_root": "src/ptsip/engines/",
+        "official_engine_source_root_selection": "B_PTSIP_ENGINES_PACKAGE_ROOT"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -88,7 +90,6 @@
         "capability_contract_boundary_survives_implementation_sharing": true,
         "existing_architecture_and_public_contracts_must_not_be_silently_reassigned": true,
         "user_source_never_mistaken_for_official_source": true,
-        "exact_directory_names_approved": false,
         "hierarchy_depth_may_vary_by_declared_responsibility": true,
         "fixed_intermediate_role_grouping_is_mandatory": false,
         "flat_only_hierarchy_is_mandatory": false,
@@ -116,14 +117,17 @@
         "semantic_validation_owner_transition_requires_machine_verified_responsibility_reconciliation": true,
         "new_engine_physical_paths_not_authorized_by_interface_migration_policy": true,
         "legacy_vpms_retirement_requires_separate_explicit_user_authorization": true,
-        "validation_migration_must_respect_independent_common_management_responsibilities": true
+        "validation_migration_must_respect_independent_common_management_responsibilities": true,
+        "official_engine_source_root_is_explicitly_approved": true,
+        "approved_source_root_name_does_not_define_semantic_authority": true,
+        "management_subdirectory_names_approved": false,
+        "seven_capability_subdirectory_names_approved": false,
+        "concrete_nested_package_layout_approved": false,
+        "existing_modules_cannot_be_relocated_from_path_choice_alone": true,
+        "source_root_approval_does_not_activate_engine_draft": true,
+        "consumer_engine_state_root_remains_separate_from_executable_source": true
       },
       "unresolved_decisions": [
-        {
-          "id": "ENGINE_UPPER_DIRECTORY_NAME",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "COMMON_MANAGEMENT_SUBDIRECTORY_NAMES",
           "kind": "USER_DECISION",
@@ -230,6 +234,19 @@
           "new_engine_api_or_directory": "NOT_DECIDED",
           "old_contract_retirement": "SEPARATE_APPROVAL_REQUIRED",
           "transition_plan_ref": "developer/planning/migrations/validation-vpms-staged-handoff.yaml"
+        },
+        {
+          "id": "ENGINE_UPPER_DIRECTORY_NAME",
+          "selected_option": "B_SRC_PTSIP_ENGINES",
+          "approved_path": "src/ptsip/engines/",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "OFFICIAL_ENGINE_TOP_LEVEL_SOURCE_DIRECTORY_ONLY",
+          "management_subdirectories": "NOT_DECIDED",
+          "seven_capability_subdirectories": "NOT_DECIDED",
+          "nested_layout": "NOT_DECIDED",
+          "physical_directory_creation": "NOT_AUTHORIZED",
+          "existing_module_migration": "NOT_AUTHORIZED",
+          "activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
