@@ -265,3 +265,37 @@ def test_context_event_identity_proof_common_plus_provider_type_extension() -> N
     assert "REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE" not in unresolved
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
     Draft202012Validator(schema).validate(policy)
+
+def test_context_missing_provider_event_id_uses_verified_source_observation() -> None:
+    policy = _yaml("src/policy/INFO/SFP-INFO-0007.yaml")
+    assert policy["policy"]["status"] == "DRAFT"
+    approved = policy["authority_semantics"]["unit_context_evidence_identity_approved_decisions"]
+    assert approved["missing_provider_event_id_registration"] == "CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION"
+    assert approved["provider_event_id_requirement"] == "OPTIONAL_WITH_VERIFIED_ALTERNATIVE"
+    assert approved["missing_provider_event_id_reuse"] == "SEPARATE_SAME_EVENT_PROOF_REQUIRED"
+
+    invariants = policy["authority_semantics"]["unit_context_evidence_identity_invariants"]
+    assert invariants["registration"]["missing_provider_event_id_alone_forbids_registration"] is False
+    assert invariants["registration"]["missing_event_id_cannot_waive_provider_and_source_verification"] is True
+    alternative = invariants["missing_provider_event_id"]
+    assert alternative["provider_identity_and_source_must_remain_verifiable"] is True
+    assert alternative["individual_observation_must_be_machine_verified"] is True
+    assert alternative["registered_source_and_observation_contract_required"] is True
+    assert alternative["verified_alternative_may_authorize_new_common_id"] is True
+    assert alternative["provider_event_id_may_not_be_fabricated"] is True
+    assert alternative["common_id_issuance_does_not_prove_event_equivalence"] is True
+    assert alternative["same_event_id_reuse_requires_separate_contract_proof"] is True
+    assert alternative["ambiguous_observation_or_source"] == "FAIL_CLOSED"
+    assert alternative["unproven_identity_collision"] == "FAIL_CLOSED_NO_MERGE_OR_REUSE"
+    assert alternative["mandatory_record_provenance_unaffected"] is True
+
+    assert approved["verified_same_event"] == "REUSE_EXISTING_COMMON_ID"
+    assert approved["verified_distinct_event"] == "ISSUE_NEW_COMMON_ID"
+    assert approved["analysis_reference_owner"] == "ANALYSIS"
+    assert approved["analysis_discovery_direction"] == "CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX"
+    assert invariants["ownership"]["existing_record_retention_overridden"] is False
+    unresolved = policy["authority_semantics"]["unit_context_evidence_identity_unresolved_decisions"]
+    assert "MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE" in unresolved
+    assert "PROVIDER_ID_BINDING_INTERFACE_AND_MISSING_PROVIDER_ID_HANDLING" not in unresolved
+    schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
+    Draft202012Validator(schema).validate(policy)
