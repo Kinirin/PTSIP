@@ -47,7 +47,10 @@
       "actual_relation_declaration_owner": "CONSUMER_PROJECT",
       "project_selection_contract": "REGISTERED",
       "manual_candidate_scope_list": "NOT_REQUIRED",
-      "per_record_equivalence_links": "NOT_REQUIRED"
+      "per_record_equivalence_links": "NOT_REQUIRED",
+      "context_first_lookup": "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX",
+      "reference_source_authority": "ANALYSIS_OWNED",
+      "reference_granularity": "INDIVIDUAL_OBSERVATION_AND_EVIDENCE"
     },
     "unit_consumer_analysis_invariants": {
       "filename_or_ai_semantic_discovery": "FORBIDDEN",
@@ -59,7 +62,11 @@
       "physical_record_id_must_remain_distinct": true,
       "transitivity_requires_validated_contract_scope_and_compatibility": true,
       "unproved_equivalence_or_transitivity": "FAIL_CLOSED",
-      "no_manual_duplicate_reference_management": true
+      "no_manual_duplicate_reference_management": true,
+      "reverse_index_is_non_authoritative_projection": true,
+      "reverse_index_requires_complete_registered_relationships": true,
+      "unverified_candidate_closure": "FAIL_CLOSED",
+      "context_first_entry_does_not_require_ai_candidate_inference": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
