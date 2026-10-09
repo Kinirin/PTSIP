@@ -5,7 +5,7 @@ policy:
   id: MPD-INTENT-0001
   title: INTENT authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.0'
+  version: '2.1'
 authority_subject:
   id: DEV_WORK_OUTCOME_INTENT
   statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
@@ -51,6 +51,33 @@ rules:
       - USER_DEFINED_POLICY_MAY_USE_REGISTERED_EXTENSION_IDENTITIES_AND_INTERFACES
       - USER_POLICY_AUTOMATION_MUST_NOT_SILENTLY_GAIN_PROJECT_OR_CORE_AUTHORITY
       - USER_POLICY_INTERPRETATION_MUST_REMAIN_EXACT_BOUNDED_AND_FAIL_CLOSED_WHEN_REQUIRED_SEMANTICS_CANNOT_BE_RESOLVED
+  unit_ptsip_turnkey_policy_governance_product_criterion:
+    approval: USER_EXPLICIT
+    objective: CONSUMER_ADOPTION_WITHOUT_CUSTOM_POLICY_MANAGEMENT_TOOL
+    evaluation_scope:
+    - PRODUCT_DESIGN
+    - IMPLEMENTATION_PLAN
+    required_ptsip_capabilities:
+      governance_policy_plan_implementation_boundary: PTSIP_PROVIDED
+      policy_registry_and_lifecycle: PTSIP_PROVIDED
+      policy_validation_and_closure: PTSIP_PROVIDED
+      policy_derived_plan_and_verification_resolution: PTSIP_PROVIDED
+      machine_readable_agent_contracts: PTSIP_PROVIDED
+    adoption_constraints:
+      custom_policy_management_tool_required: FORBIDDEN
+      custom_ptsip_specific_registry_resolver_validator_required: FORBIDDEN
+      repeated_project_specific_governance_system_design_required: FORBIDDEN
+      project_specific_policy_decisions: PRESERVED_WHEN_REQUIRED
+      existing_project_tooling_choice: PRESERVED
+      voluntary_extension: ALLOWED_WITH_EXPLICIT_AUTHORITY
+      project_structure_imposed_for_ptsip_convenience: FORBIDDEN
+    evaluation:
+      consumer_governance_tool_construction_as_prerequisite: FAIL
+      implementation_plan_delegates_ptsip_core_tooling_to_consumer: FAIL
+      reusable_ptsip_core_governance_capability: REQUIRED
+      planned_but_unshipped_capability_must_not_be_claimed_delivered: true
+      domain_specific_policy_gap: ESCALATE_TO_USER
+    implementation_detail_authority: PLAN
   unit_mpd_0010_55a1162781c1:
     objective: REDUCE_REPEATED_SEMANTIC_INFERENCE_AND_AMBIGUITY_BEFORE_MINIMIZING_IMPLEMENTATION_TIME
     absolute_zero_inference_required: false
