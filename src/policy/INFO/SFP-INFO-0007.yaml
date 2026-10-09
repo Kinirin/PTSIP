@@ -32,6 +32,10 @@ authority_semantics:
     common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
     common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
     cross_repository_identity_interpretation: EXPLICIT_REPOSITORY_SCOPE_REQUIRED
+    repository_fork_lineage_policy: CONTRACT_VERIFIED_FORK_LINEAGE
+    fork_lineage_reuse_role: ELIGIBILITY_INPUT_NOT_REUSE_GRANT
+    pre_fork_source_identity: ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED
+    post_fork_observation_identity: FORK_LOCAL_INDEPENDENT_ID
     original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
     missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
     provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
@@ -64,7 +68,20 @@ authority_semantics:
       unqualified_id_does_not_identify_cross_repository_event: true
       foreign_repository_id_string_equality_proves_same_event: false
       cross_repository_reference_requires_explicit_verified_repository_scope: true
-      repository_copy_fork_and_relocation_semantics: UNRESOLVED
+      repository_fork_semantics: CONTRACT_VERIFIED_LINEAGE
+      repository_relocation_semantics: UNRESOLVED
+    fork_lineage:
+      distinct_consumer_repositories_keep_independent_identity_authority: true
+      verified_registered_origin_relationship_required: true
+      provenance_of_inherited_observations_preserved: true
+      copied_pre_fork_observation_ids_keep_origin_repository_scope: true
+      newly_observed_fork_events_use_fork_repository_scoped_ids: true
+      lineage_alone_does_not_prove_same_event: true
+      lineage_alone_does_not_authorize_reuse: true
+      current_dependency_and_change_impact_validation_required: true
+      unverified_or_ambiguous_lineage: FAIL_CLOSED
+      ai_inferred_or_fuzzy_lineage: FORBIDDEN
+      manual_per_record_lineage_mapping_required: false
     registration:
       verified_provider_source_binding_required: true
       missing_provider_event_id_alone_forbids_registration: false
@@ -121,7 +138,8 @@ authority_semantics:
       existing_record_retention_overridden: false
   unit_context_evidence_identity_unresolved_decisions:
     - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
-    - CONTEXT_REPOSITORY_COPY_FORK_AND_RELOCATION_IDENTITY_CONTRACT
+    - CONTEXT_FORK_LINEAGE_PROOF_INTERFACE
+    - CONTEXT_REPOSITORY_RELOCATION_IDENTITY_CONTINUITY
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
 relations:
