@@ -167,8 +167,7 @@ func resolve(r registry, csv string, planFile string) (selection,error) {
 }
 func execute(root string, plan selection) error {
  for _,m:=range plan.Plan {
-  fmt.Fprintf(os.Stderr,"=== Registered Test Mode: %s / %s ===
-",m.ID,m.ComponentRef)
+  fmt.Fprintf(os.Stderr,"=== Registered Test Mode: %s / %s ===\n",m.ID,m.ComponentRef)
   for _,dir:=range m.Go {
    args:=[]string{"-C",filepath.Join(root,filepath.FromSlash(dir)),"test","-count=1","-v","./..."}
    cmd:=exec.Command("go",args...)
@@ -195,8 +194,7 @@ func main(){
  if err==nil{err=validate(abs,reg,prof)}
  if err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(2)}
  if *modeIDs==""&&*planFile=="" {
-  fmt.Printf("{"status":"PASS","registry_version":"3.0","mode_count":%d}
-",len(reg.Modes));return
+  fmt.Printf("%d registered Test Modes validated (v3.0)\n",len(reg.Modes));return
  }
  selection,err:=resolve(reg,*modeIDs,*planFile)
  if err==nil&&*runTests{err=execute(abs,selection)}
