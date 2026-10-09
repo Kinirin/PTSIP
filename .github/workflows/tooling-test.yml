@@ -1,3 +1,4 @@
+# Workflow executor version: 2.0
 name: tooling-test
 
 on:
@@ -5,10 +6,92 @@ on:
   workflow_dispatch:
     inputs:
       verification:
-        description: auto, full, policy-lifecycle, agent-context-migration, markdown-cleanup-simulation, or a registered Test Mode id
+        description: 'SUPPLY: agent-contract-plane, agent-contract-runtime, ptsip-core, ptsip-evidence, ptsip-migration, ptsip-remediation, ptsip-source-compat, vpms, vpms-contract-plane; DEVELOPER: agent-contract-candidate, policy-responsibility-analysis, ptsip-contract, repository-architecture, repository-release, test-mode-control-plane'
         required: true
         default: auto
-        type: string
+        type: choice
+        options:
+          - auto
+          - full
+          - a3-prerelease
+          - policy-lifecycle
+          - agent-context-migration
+          - markdown-cleanup-simulation
+      supply_agent-contract-plane:
+        description: 'SUPPLY: agent-contract-plane'
+        type: boolean
+        required: false
+        default: false
+      supply_agent-contract-runtime:
+        description: 'SUPPLY: agent-contract-runtime'
+        type: boolean
+        required: false
+        default: false
+      supply_ptsip-core:
+        description: 'SUPPLY: ptsip-core'
+        type: boolean
+        required: false
+        default: false
+      supply_ptsip-evidence:
+        description: 'SUPPLY: ptsip-evidence'
+        type: boolean
+        required: false
+        default: false
+      supply_ptsip-migration:
+        description: 'SUPPLY: ptsip-migration'
+        type: boolean
+        required: false
+        default: false
+      supply_ptsip-remediation:
+        description: 'SUPPLY: ptsip-remediation'
+        type: boolean
+        required: false
+        default: false
+      supply_ptsip-source-compat:
+        description: 'SUPPLY: ptsip-source-compat'
+        type: boolean
+        required: false
+        default: false
+      supply_vpms:
+        description: 'SUPPLY: vpms'
+        type: boolean
+        required: false
+        default: false
+      supply_vpms-contract-plane:
+        description: 'SUPPLY: vpms-contract-plane'
+        type: boolean
+        required: false
+        default: false
+      developer_agent-contract-candidate:
+        description: 'DEVELOPER: agent-contract-candidate'
+        type: boolean
+        required: false
+        default: false
+      developer_policy-responsibility-analysis:
+        description: 'DEVELOPER: policy-responsibility-analysis'
+        type: boolean
+        required: false
+        default: false
+      developer_ptsip-contract:
+        description: 'DEVELOPER: ptsip-contract'
+        type: boolean
+        required: false
+        default: false
+      developer_repository-architecture:
+        description: 'DEVELOPER: repository-architecture'
+        type: boolean
+        required: false
+        default: false
+      developer_repository-release:
+        description: 'DEVELOPER: repository-release'
+        type: boolean
+        required: false
+        default: false
+      developer_test-mode-control-plane:
+        description: 'DEVELOPER: test-mode-control-plane'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -423,7 +506,7 @@ jobs:
 
 
   pra-registry-validation:
-    if: ${{ (github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch' && inputs.verification == 'policy-responsibility-analysis') }}
+    if: ${{ (github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch' && inputs['developer_policy-responsibility-analysis']) }}
     runs-on: ubuntu-latest
     env:
       PTSIP_EXECUTION_BRANCH: ${{ github.ref_name }}
@@ -624,77 +707,36 @@ jobs:
             throw "Root Family Go verification failed."
           }
 
-      - name: Resolve and run deterministic change verification
+      - name: Validate and execute registered Test Modes (Go v3 adapter)
         if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a3-prerelease' }}
         shell: pwsh
         env:
           VERIFICATION_MODE: ${{ env.VERIFICATION_MODE }}
+          PTSIP_DISPATCH_INPUTS: ${{ toJSON(inputs) }}
         run: |
-          if ($env:VERIFICATION_MODE -eq 'auto') {
+          $inputMap = $env:PTSIP_DISPATCH_INPUTS | ConvertFrom-Json -AsHashtable
+          $chosen = @($inputMap.Keys | Where-Object {
+            ($_ -like 'supply_*' -or $_ -like 'developer_*') -and $inputMap[$_] -eq $true
+          } | ForEach-Object { ($_ -split '_', 2)[1] })
+          if ($chosen.Count -gt 0) {
+            if ($env:VERIFICATION_MODE -ne 'auto') {
+              throw 'Checkbox mode selection cannot be combined with a different verification preset.'
+            }
+            $requested = ($chosen | Sort-Object -Unique) -join ','
+            & go -C developer/automation run ./cmd/test-modes --mode $requested --execute
+          }
+          elseif ($env:VERIFICATION_MODE -eq 'auto') {
             $autoBase = "${{ steps.auto-base.outputs.base }}"
-            if (-not $autoBase) {
-              throw "Automatic verification baseline was not resolved."
-            }
-            $json = & python .github/scripts/resolve_test_modes.py automatic --base $autoBase --head HEAD
-            $requestLabel = "auto:$autoBase"
+            if (-not $autoBase) { throw 'Automatic verification baseline was not resolved.' }
+            New-Item -ItemType Directory -Force -Path .artifacts | Out-Null
+            & python .github/scripts/resolve_test_modes.py automatic --base $autoBase --head HEAD | Set-Content .artifacts/automatic-test-modes.json -Encoding utf8
+            if ($LASTEXITCODE -ne 0) { throw 'Automatic Test Mode resolution failed.' }
+            & go -C developer/automation run ./cmd/test-modes --plan ../../.artifacts/automatic-test-modes.json --execute
           }
           else {
-            $json = & python .github/scripts/resolve_test_modes.py manual --mode $env:VERIFICATION_MODE
-            $requestLabel = $env:VERIFICATION_MODE
+            throw "No registered checkbox Test Mode selected for preset '$env:VERIFICATION_MODE'."
           }
-
-          if ($LASTEXITCODE -ne 0) {
-            throw "Test Mode resolution failed for '$requestLabel'."
-          }
-          if (-not $json) {
-            throw "Test Mode resolver returned no execution plan."
-          }
-
-          $result = (($json -join "`n") | ConvertFrom-Json)
-          $plan = @($result.plan)
-
-          Write-Host "Verification resolution: $($result.resolution)"
-          if (@($result.changed_files).Count -gt 0) {
-            Write-Host "Changed files: $($result.changed_files -join ', ')"
-          }
-          if (@($result.no_verification_required).Count -gt 0) {
-            Write-Host "Declared no-Test-Mode paths: $($result.no_verification_required -join ', ')"
-          }
-
-          if ($plan.Count -eq 0) {
-            if ($result.resolution -ne 'NO_TEST_MODE_REQUIRED') {
-              throw "Resolver returned an empty plan without an explicit no-verification result."
-            }
-            Write-Host "No Test Mode is required by the current Project Profile."
-          }
-          else {
-            Write-Host "Selected Test Modes: $($result.selected_ids -join ', ')"
-            foreach ($mode in $plan) {
-              $goTargets = @($mode.go)
-              foreach ($module in $goTargets) {
-                if ([string]::IsNullOrWhiteSpace($module)) { continue }
-                & go -C $module test -count=1 -v ./...
-                if ($LASTEXITCODE -ne 0) {
-                  throw "Test Mode '$($mode.id)' Go verification failed."
-                }
-              }
-
-              $targets = @($mode.pytest)
-              if ($goTargets.Count -eq 0 -and $targets.Count -eq 0) {
-                throw "Test Mode '$($mode.id)' contains no execution targets."
-              }
-
-              Write-Host "=== Test Mode: $($mode.id) ==="
-              Write-Host "Verification component: $($mode.component_ref)"
-              if ($targets.Count -gt 0) {
-                Write-Host "pytest targets: $($targets -join ', ')"
-                & python -m pytest -q @targets
-                if ($LASTEXITCODE -ne 0) {
-                  throw "Test Mode '$($mode.id)' pytest verification failed."
-                }
-              }
-            }
-          }
+          if ($LASTEXITCODE -ne 0) { throw 'Registered Test Mode execution failed.' }
 
       - name: Record successful exact-SHA change verification
         if: ${{ env.VERIFICATION_MODE != 'full' && env.VERIFICATION_MODE != 'a3-prerelease' }}
