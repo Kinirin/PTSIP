@@ -38,6 +38,10 @@ authority_semantics:
     verified_same_event: REUSE_EXISTING_COMMON_ID
     verified_distinct_event: ISSUE_NEW_COMMON_ID
     unresolved_event_identity: NO_AUTOMATIC_MERGE_OR_REUSE
+    event_identity_proof_authority: PTSIP_COMMON_PROOF_WITH_PROVIDER_TYPE_EXTENSION
+    common_proof_obligations_owner: PTSIP
+    provider_type_proof_extension: REGISTERED_MACHINE_VERIFIABLE_CONTRACT
+    duplicate_event_manual_mapping: NOT_REQUIRED
   unit_context_evidence_identity_invariants:
     authority:
       info_owns_identity_and_binding_semantics: true
@@ -54,6 +58,17 @@ authority_semantics:
       identical_provider_id_alone_proves_same_event: false
       provider_replay_and_new_event_must_remain_distinguishable: true
       evidence_source_and_observed_revision_must_remain_traceable: true
+    proof_authority:
+      ptsip_common_proof_obligations_required: true
+      common_proof_obligations_cannot_be_weakened_by_provider_type: true
+      provider_type_specific_rules_must_be_registered: true
+      provider_type_specific_proof_must_be_machine_verifiable: true
+      provider_type_extension_alone_confers_identity_authority: false
+      source_and_observation_context_binding_required: true
+      unregistered_or_ambiguous_proof_contract: FAIL_CLOSED
+      proof_scope_or_source_revision_unverified: FAIL_CLOSED
+      ai_ad_hoc_event_equivalence_inference: FORBIDDEN
+      manual_duplicate_event_linkage_required: false
     reobservation:
       event_identity_requires_registered_machine_verifiable_proof: true
       same_event_proven: REUSE_EXISTING_COMMON_ID
@@ -78,7 +93,7 @@ authority_semantics:
   unit_context_evidence_identity_unresolved_decisions:
     - CONTEXT_COMMON_ID_FORMAT_NAMESPACE_AND_ALLOCATION_CONTRACT
     - PROVIDER_ID_BINDING_INTERFACE_AND_MISSING_PROVIDER_ID_HANDLING
-    - REOBSERVATION_EVENT_IDENTITY_PROOF_AUTHORITY_AND_SCOPE
+    - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
   implementation_detail_authority: PLAN
 relations:
   supersedes: []
