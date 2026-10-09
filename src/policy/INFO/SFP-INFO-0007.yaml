@@ -37,6 +37,8 @@ authority_semantics:
     fork_analysis_execution: INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT
     fork_lineage_registration: NOT_REQUIRED
     fork_audit_lineage_derivation: EXISTING_MACHINE_VERIFIED_LOCAL_RECORDS_ONLY
+    fork_audit_derivation_trigger: EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY
+    fork_audit_derivation_execution: ON_DEMAND_READ_ONLY
     fork_audit_lineage_result: OPTIONAL_NON_AUTHORITATIVE_DERIVED_PROJECTION
     pre_fork_source_identity: ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED
     post_fork_observation_identity: FORK_LOCAL_INDEPENDENT_ID
@@ -113,6 +115,13 @@ authority_semantics:
       distinct_consumer_repositories_keep_independent_identity_authority: true
       registered_audit_lineage_requires_verified_origin_relationship: true
       audit_lineage_recording_is_optional: true
+      audit_derivation_must_require_explicit_audit_request: true
+      audit_derivation_not_triggered_by_record_creation: true
+      audit_derivation_not_triggered_by_normal_context_collection: true
+      audit_derivation_not_triggered_by_analysis_generation_or_validation: true
+      audit_derivation_not_triggered_by_default_candidate_lookup: true
+      audit_derivation_background_precomputation_required: false
+      missing_audit_request_does_not_initiate_derivation: true
       separate_audit_lineage_registry_required: false
       derived_audit_source_must_be_existing_verified_record: true
       derived_audit_origin_relation_requires_machine_verified_proof: true
