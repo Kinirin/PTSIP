@@ -82,7 +82,8 @@
         "engine_version_dependency_contract": "COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS",
         "engine_interface_change_impact": "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS",
         "engine_minimum_external_interoperability": "CONTRACT_DRIVEN_ENGINE_IDENTITY_ENTRY_BINDING_VERSION_DEPENDENCY_AND_COMPATIBILITY",
-        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING"
+        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING",
+        "engine_interoperability_compatibility_evidence_responsibility": "B_PROVIDER_CONSUMER_ENGINE_SHARED_EVIDENCE_PRODUCTION_AND_LINKAGE"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -159,7 +160,15 @@
         "binding_declaration_does_not_grant_activation_execution_write_or_isolation_exception": true,
         "external_interoperability_contract_does_not_reassign_active_assure_or_vpms_authority": true,
         "independent_engine_versioned_dependencies_build_distribution_patch_remain_separate": true,
-        "contract_graph_impact_and_compatibility_evidence_gates_unchanged": true
+        "contract_graph_impact_and_compatibility_evidence_gates_unchanged": true,
+        "provider_engine_owns_published_capability_contract_version_change_declaration_and_applicable_supporting_evidence": true,
+        "consumer_engine_owns_declared_dependency_consumption_environment_and_applicable_interoperability_verification_evidence": true,
+        "provider_and_consumer_evidence_must_be_machine_linkable_to_applicable_identity_contract_version_and_dependency_context": true,
+        "provider_evidence_alone_does_not_assert_consumer_environment_compatibility": true,
+        "consumer_verification_does_not_redefine_provider_normative_capability_contract": true,
+        "evidence_production_and_linkage_do_not_confer_normative_assure_conformance_authority": true,
+        "missing_or_inapplicable_compatibility_evidence_cannot_be_interpreted_as_confirmed_compatibility": true,
+        "provider_consumer_evidence_responsibility_does_not_require_shared_compiled_runtime_or_management_implementation": true
       },
       "unresolved_decisions": [
         {
@@ -250,11 +259,6 @@
         },
         {
           "id": "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "ENGINE_INTEROPERABILITY_COMPATIBILITY_AND_EVIDENCE_RESPONSIBILITY_BOUNDARY",
           "kind": "USER_DECISION",
           "status": "UNRESOLVED"
         }
@@ -360,6 +364,24 @@
           "management_common_implementation": "NOT_REQUIRED",
           "effective_execution_authority": "UNCHANGED",
           "engine_independent_build_patch": "PRESERVED"
+        },
+        {
+          "id": "ENGINE_INTEROPERABILITY_COMPATIBILITY_AND_EVIDENCE_RESPONSIBILITY_BOUNDARY",
+          "selected_option": "B_PROVIDER_CONSUMER_ENGINE_SPLIT",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_COMPATIBILITY_AND_EVIDENCE_PRODUCTION_AND_LINKAGE_RESPONSIBILITY_ONLY",
+          "provider_engine_responsibility": "PUBLISHED_CAPABILITY_CONTRACT_VERSION_CHANGE_DECLARATION_AND_SUPPORTING_EVIDENCE",
+          "consumer_engine_responsibility": "DECLARED_DEPENDENCIES_CONSUMPTION_ENVIRONMENT_AND_COMPATIBILITY_VERIFICATION_EVIDENCE",
+          "linkage_direction": "MACHINE_VERIFIABLE_PROVIDER_CONSUMER_CONTRACT_DEPENDENCY_VERSION_AND_APPLICABILITY_RELATIONS",
+          "normative_conformance_verdict_authority": "EXISTING_ASSURE_UNCHANGED",
+          "unresolved_adjacent_decisions": [
+            "ENGINE_STATIC_INTEROPERABILITY_MANDATORY_INFORMATION_BOUNDARY",
+            "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY"
+          ],
+          "exact_schema": "NOT_DECIDED",
+          "evidence_fields": "NOT_DECIDED",
+          "implementation": "NOT_AUTHORIZED",
+          "activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [

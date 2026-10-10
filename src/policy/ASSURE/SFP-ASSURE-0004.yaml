@@ -54,7 +54,8 @@
         "evidence_missing": "CONTROLLED_AUTHORIZED_AUTOMATIC_REEVALUATION",
         "evidence_sufficient_but_unranked": "DO_NOT_INVENT_NEW_PREFERENCE",
         "environment_sensitive_measurement": true,
-        "engine_impact_verification_direction": "DEPENDENCY_GRAPH_COVERAGE_AND_CONTRACT_COMPATIBILITY_EVIDENCE"
+        "engine_impact_verification_direction": "DEPENDENCY_GRAPH_COVERAGE_AND_CONTRACT_COMPATIBILITY_EVIDENCE",
+        "engine_interoperability_evidence_production_linkage": "PROVIDER_CONSUMER_ENGINE_SPLIT_WITH_ASSURE_NORMATIVE_AUTHORITY_PRESERVED"
       },
       "invariants": {
         "operational_evidence_is_not_simulation_evidence": true,
@@ -66,7 +67,12 @@
         "impact_verification_requires_dependency_coverage_evidence": true,
         "compatibility_verdict_requires_applicable_version_bound_evidence": true,
         "unverified_change_impact_must_not_be_reported_as_no_effect": true,
-        "impact_assessment_does_not_override_existing_assure_normative_conformance_authority": true
+        "impact_assessment_does_not_override_existing_assure_normative_conformance_authority": true,
+        "provider_and_consumer_evidence_roles_do_not_reassign_assure_conformance_verdict": true,
+        "provider_evidence_and_consumer_evidence_retain_distinct_provenance_and_applicability_context": true,
+        "evidence_linkage_or_engine_level_compatibility_claim_is_not_automatic_ptsip_conformance": true,
+        "assure_retains_normative_conformance_judgment_and_evidence_sufficiency_authority": true,
+        "assure_evidence_assessment_cannot_infer_compatibility_from_unbound_or_inapplicable_evidence": true
       },
       "unresolved_decisions": [
         {
@@ -115,6 +121,16 @@
           "approval_source": "USER_EXPLICIT",
           "resolution_scope": "EVIDENCE_ELIGIBILITY_DIRECTION_ONLY",
           "coverage_threshold_and_result_shape": "NOT_DECIDED"
+        },
+        {
+          "id": "ENGINE_PROVIDER_CONSUMER_INTEROPERABILITY_EVIDENCE_RESPONSIBILITY",
+          "selected_option": "B_PROVIDER_CONSUMER_ENGINE_SPLIT",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "EVIDENCE_PRODUCER_LINKAGE_ROLES_ONLY",
+          "provider_evidence": "PROVIDER_CAPABILITY_CONTRACT_AND_CHANGE_SUPPORT",
+          "consumer_evidence": "CONSUMER_DEPENDENCY_ENVIRONMENT_AND_COMPATIBILITY_VERIFICATION",
+          "normative_judgment_owner": "EXISTING_ASSURE_UNCHANGED",
+          "exact_schema": "NOT_DECIDED"
         }
       ]
     }
