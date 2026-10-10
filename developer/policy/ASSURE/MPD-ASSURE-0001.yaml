@@ -5,11 +5,11 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.0'
+  version: '3.0'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
-  statement: 개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에
-    구속된 검증 판정을 소유한다.
+  statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
+    검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
 exclusive_kernel:
 - DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
 - DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
@@ -34,6 +34,49 @@ rules:
     - MPD-VERI-0003
     - MPD-VERI-0004
     - MPD-VERI-0005
+  developer_test_verification_boundary:
+    decision: KEEP_LATEST
+    scope: REPOSITORY_DEVELOPER_TEST_COVERAGE_AND_EVIDENCE_JUDGMENT
+    test_source:
+      repository_test_root: src/tests
+      selected_by: DECLARED_PROJECT_PROFILE_VERIFICATION_RESPONSIBILITY
+      class_or_path_alone_confers_normative_ownership: false
+      test_implementation_may_create_normative_semantics: false
+    owns:
+    - REQUIRED_TEST_COVERAGE_ADMISSIBILITY
+    - REQUIRED_VS_EXECUTED_VERIFICATION_EVIDENCE_JUDGMENT
+    - EXPECTED_VS_OBSERVED_VERIFICATION_JUDGMENT
+    - EXACT_SOURCE_SNAPSHOT_VERIFICATION_OUTCOME
+    does_not_own:
+    - TEST_MODE_REGISTRY_SHAPE_AND_MODE_MEMBERSHIP
+    - TEST_MODE_EXECUTION_TARGET_DECLARATION
+    - TEST_MODE_RESOLVER_AND_RUNNER_IMPLEMENTATION
+    - GITHUB_ACTIONS_WORKFLOW_TOPOLOGY
+    - WORKFLOW_DISPATCH_SELECTION_UI
+    - RELEASE_PUBLICATION_AUTHORIZATION
+    adjacent_authorities:
+      verification_component_ownership: DECLARED_PROJECT_PROFILE
+      mode_execution_declarations: REPOSITORY_TEST_MODE_REGISTRY
+      workflow_executor_boundary: MPD-ARCH-0002
+      release_and_transition_gate_eligibility: MPD-CTRL-0001
+    preserved_existing_required_verification:
+      source_units:
+      - unit_mpd_veri_0002_260ced325054
+      - unit_mpd_veri_0003_c4b59fc85667
+      - unit_mpd_veri_0004_f699ce5ccfa4
+      - unit_mpd_veri_0004_2f347420dfff
+      - unit_mpd_veri_0005_b5e5149c8490
+      - unit_mpd_0011_1491da54b643
+      coverage_and_required_checks_remain_binding: true
+      local_remote_release_verification_remains_binding: true
+      source_sha_evidence_and_result_semantics_remain_binding: true
+      ownership_transfer_state: NOT_AUTHORIZED
+      reassignment_requires_explicit_owner_and_policy_transition: true
+      deletion_or_weakening_before_verified_transfer: FORBIDDEN
+      historical_evidence_records_remain_unchanged: true
+    plan_authority:
+      execution_adapter_and_migration_details: PLAN
+      plan_may_redefine_required_verification_or_authority: false
   unit_mpd_0011_1491da54b643: MPD-VERI-0003
   unit_mpd_0012_d42d2230d10e:
     user_reported_local_validation:

@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261010-ASSURE-0001-DEVELOPER-TEST-SCOPE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "MPD-ASSURE-0001 정책 수정 방향으로 KEEP_LATEST을 승인합니다. dev/0.3.8 최신 HEAD에서 기존 정책과 충돌을 검토하고 승인 범위 내 정책을 수정하되 기존 필수 검증을 무단 삭제하지 마세요."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-ASSURE-0001
+  recorded_at: '2026-10-10'
