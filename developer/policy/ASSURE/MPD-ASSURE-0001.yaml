@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.4'
+  version: '3.5'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -153,6 +153,25 @@ rules:
           option: B
           decomposition_basis: VERIFICATION_LIFECYCLE_STAGE
           exact_subjects: UNRESOLVED
+          lifecycle_structure:
+            decision: B_POLICY_SPECIFIC_INDEPENDENT_VERIFICATION_LIFECYCLES
+            applies_to:
+            - MPD-VERI-0002
+            - MPD-VERI-0003
+            - MPD-VERI-0004
+            - MPD-VERI-0005
+            shared_normative_stage_model: NOT_REQUIRED
+            each_policy_lifecycle_independently_resolved: true
+            common_stage_identity_inferred_from_name: false
+            cross_policy_stage_authority_transfer_by_similarity: FORBIDDEN
+            stage_inventory: UNRESOLVED
+            exact_stage_semantics: UNRESOLVED
+            exact_exclusive_responsibility_subject: UNRESOLVED
+            concrete_new_policy_ids: UNRESOLVED
+            final_obligation_group_mapping: UNRESOLVED
+            actual_policy_state_transitions: UNRESOLVED
+            policy_creation_or_source_unit_transfer_authorized: false
+            existing_required_verification_remains_binding: true
           existing_family_kernel_overlap_requires_explicit_resolution: true
         obligation_mapping:
           option: B

@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261010-ASSURE-0001-POLICY-SPECIFIC-VERIFICATION-LIFECYCLE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "검증 생명주기 구조 방향 B 정책별 독립 생명주기 체계를 승인한다. dev/0.3.8 최신 HEAD에 방향만 반영하며 실제 단계별 독점적 권위, 신규 정책 ID, 이전 매핑, ACTIVE 전환은 확정하지 않고 기존 필수 검증을 보존한다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-ASSURE-0001
+  recorded_at: '2026-10-10'
