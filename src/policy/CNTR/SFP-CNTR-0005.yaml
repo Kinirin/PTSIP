@@ -78,9 +78,10 @@
         "engine_local_management_contract_boundary": "ENGINE_OWNED_LOCAL_MANAGEMENT",
         "engine_independent_delivery_boundary": "PER_ENGINE_VERSION_DEPENDENCY_BUILD_DISTRIBUTION_PATCH",
         "engine_management_entry_resolution": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NO_DIRECTORY_NAME_INFERENCE",
-        "engine_management_responsibility_model": "MINIMUM_COMMON_REQUIRED_WITH_OPTIONAL_ENGINE_EXTENSIONS",
+        "engine_management_responsibility_model": "NO_MANDATORY_INTERNAL_MANAGEMENT_SET_EXTERNAL_INTEROPERABILITY_ONLY",
         "engine_version_dependency_contract": "COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS",
-        "engine_interface_change_impact": "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS"
+        "engine_interface_change_impact": "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS",
+        "engine_minimum_external_interoperability": "CONTRACT_DRIVEN_ENGINE_IDENTITY_ENTRY_BINDING_VERSION_DEPENDENCY_AND_COMPATIBILITY"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -138,7 +139,15 @@
         "unknown_dependency_or_compatibility_is_not_proven_unaffected": true,
         "compatible_interface_change_does_not_automatically_require_unrelated_engine_rebuild": true,
         "impact_analysis_cannot_reduce_mandatory_verification_or_override_authority": true,
-        "versioned_independent_engine_artifacts_preserve_dependency_and_patch_isolation": true
+        "versioned_independent_engine_artifacts_preserve_dependency_and_patch_isolation": true,
+        "no_common_management_runtime_api_or_implementation_required_for_engine_eligibility": true,
+        "internal_management_features_are_engine_optional_and_not_global_contract_obligations": true,
+        "external_interoperability_contract_is_distinct_from_compiled_management_dependency": true,
+        "external_engine_entrypoint_discovery_requires_declared_binding_not_directory_name_guessing": true,
+        "management_entrypoint_absence_is_allowed_when_no_management_operation_is_declared": true,
+        "missing_or_ambiguous_declared_required_interoperability_binding": "FAIL_CLOSED",
+        "external_contract_is_not_automatic_activation_or_permission_grant": true,
+        "per_engine_build_deploy_patch_isolation_and_contract_based_impact_analysis_remain_required": true
       },
       "unresolved_decisions": [
         {
@@ -208,17 +217,17 @@
           "status": "UNRESOLVED"
         },
         {
-          "id": "ENGINE_MANAGEMENT_ENTRYPOINT_REGISTRATION_AND_MINIMUM_INTERFACE_SHAPE",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
           "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         },
         {
           "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
+          "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
         }
@@ -294,6 +303,21 @@
           "specific_manifest_fields": "NOT_DECIDED",
           "graph_compatibility_algorithm": "NOT_DECIDED",
           "physical_directory_names": "NOT_DECIDED"
+        },
+        {
+          "id": "ENGINE_COMMON_MANAGEMENT_MINIMUM_REQUIREMENT_REPLACEMENT",
+          "selected_option": "B_NO_MANDATORY_INTERNAL_MANAGEMENT_EXTERNAL_INTEROPERABILITY_ONLY",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "INTERNAL_MANAGEMENT_CONTRACT_BOUNDARY_ONLY",
+          "conflicting_prior_decision_id": "ENGINE_MANAGEMENT_MANIFEST_AND_CHANGE_IMPACT_POLICY",
+          "conflicting_prior_selection": "B_MINIMUM_COMMON_PLUS_OPTIONAL",
+          "preserved": [
+            "MANAGEMENT_ENTRY_MACHINE_RESOLUTION",
+            "COMMON_IDENTITY_WITH_ENGINE_EXTENSIONS",
+            "DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY"
+          ],
+          "exact_external_contract_schema": "NOT_DECIDED",
+          "engine_implementation_changes": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
