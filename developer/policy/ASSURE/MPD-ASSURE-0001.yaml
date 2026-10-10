@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.2'
+  version: '3.3'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -141,6 +141,45 @@ rules:
       final_transfer_requires_exact_destination_and_conformance_verification: true
       plan_or_implementation_may_finalize_unresolved_policy: false
   independent_policy_responsibility_review:
+    approved_subordinate_granularity:
+      decision_authority: PROJECT_OWNER_EXPLICIT
+      independent_responsibility_directions:
+        MPD-VERI-0002:
+          mode: A_MINIMAL_INDEPENDENT_RESPONSIBILITY
+          exact_policy_count: UNRESOLVED
+          exclusive_authority_subject: UNRESOLVED
+          exact_source_unit_mapping: UNRESOLVED
+          proposed_policy_ids: UNRESOLVED
+          target_status: UNRESOLVED
+        MPD-VERI-0003:
+          mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
+          exact_policy_count: UNRESOLVED
+          exclusive_authority_subject: UNRESOLVED
+          exact_source_unit_mapping: UNRESOLVED
+          proposed_policy_ids: UNRESOLVED
+          target_status: UNRESOLVED
+        MPD-VERI-0004:
+          mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
+          exact_policy_count: UNRESOLVED
+          exclusive_authority_subject: UNRESOLVED
+          exact_source_unit_mapping: UNRESOLVED
+          proposed_policy_ids: UNRESOLVED
+          target_status: UNRESOLVED
+        MPD-VERI-0005:
+          mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
+          exact_policy_count: UNRESOLVED
+          exclusive_authority_subject: UNRESOLVED
+          exact_source_unit_mapping: UNRESOLVED
+          proposed_policy_ids: UNRESOLVED
+          target_status: UNRESOLVED
+      invariants:
+        direction_does_not_assign_exclusive_owner: true
+        direction_does_not_reserve_or_allocate_policy_id: true
+        direction_does_not_authorize_policy_creation: true
+        direction_does_not_authorize_source_unit_transfer: true
+        direction_does_not_change_existing_required_verification: true
+        existing_active_source_units_remain_binding: true
+        subsequent_decisions_are_independent: true
     direction: REVIEW_INDEPENDENT_POLICY_RESPONSIBILITIES
     decision_authority: PROJECT_OWNER_EXPLICIT
     source_policies:
