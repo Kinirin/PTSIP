@@ -83,7 +83,16 @@
         "engine_interface_change_impact": "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS",
         "engine_minimum_external_interoperability": "CONTRACT_DRIVEN_ENGINE_IDENTITY_ENTRY_BINDING_VERSION_DEPENDENCY_AND_COMPATIBILITY",
         "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING",
-        "engine_interoperability_compatibility_evidence_responsibility": "B_PROVIDER_CONSUMER_ENGINE_SHARED_EVIDENCE_PRODUCTION_AND_LINKAGE"
+        "engine_interoperability_compatibility_evidence_responsibility": "B_PROVIDER_CONSUMER_ENGINE_SHARED_EVIDENCE_PRODUCTION_AND_LINKAGE",
+        "engine_static_interoperability_information_scope": "B_CORE_INTEROPERABILITY_INFORMATION_WITH_EXTERNAL_DETAIL_REFERENCES",
+        "engine_static_interoperability_required_core_dimensions": [
+          "ENGINE_IDENTITY_AND_ORIGIN",
+          "ENGINE_IMPLEMENTATION_VERSION",
+          "DECLARED_CAPABILITY_IDENTITIES",
+          "DECLARED_DEPENDENCY_RELATIONS",
+          "CAPABILITY_CONTRACT_AND_COMPATIBILITY_REFERENCES"
+        ],
+        "engine_static_interoperability_detail_placement": "DETAILED_CAPABILITY_SEMANTICS_IMPLEMENTATION_BUILD_ENVIRONMENT_AND_EVIDENCE_BY_SEPARATE_CONTRACT_REFERENCE"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -168,7 +177,20 @@
         "consumer_verification_does_not_redefine_provider_normative_capability_contract": true,
         "evidence_production_and_linkage_do_not_confer_normative_assure_conformance_authority": true,
         "missing_or_inapplicable_compatibility_evidence_cannot_be_interpreted_as_confirmed_compatibility": true,
-        "provider_consumer_evidence_responsibility_does_not_require_shared_compiled_runtime_or_management_implementation": true
+        "provider_consumer_evidence_responsibility_does_not_require_shared_compiled_runtime_or_management_implementation": true,
+        "static_engine_declaration_exposes_core_identity_origin_version_capability_dependencies_and_compatibility_refs": true,
+        "static_information_core_must_be_machine_readable_and_resolvable_without_engine_runtime": true,
+        "static_details_may_be_referenced_without_removing_existing_required_contract_dimensions": true,
+        "static_contract_references_must_be_identity_and_version_bound_and_machine_verifiable": true,
+        "required_unresolved_or_invalid_static_contract_reference": "FAIL_CLOSED",
+        "engine_implementation_version_and_capability_contract_compatibility_must_remain_distinct": true,
+        "static_declared_dependency_edges_support_change_impact_graph_analysis": true,
+        "static_manifest_does_not_force_compiled_shared_management_implementation": true,
+        "language_runtime_build_and_evidence_details_not_mandated_inline_in_core_static_declaration": true,
+        "static_contract_registration_does_not_grant_activation_execution_or_write_authority": true,
+        "static_contract_information_scope_does_not_change_conditional_execution_binding_policy": true,
+        "static_contract_information_scope_does_not_reassign_assure_normative_conformance_authority": true,
+        "static_contract_information_scope_preserves_provider_consumer_evidence_responsibility": true
       },
       "unresolved_decisions": [
         {
@@ -250,11 +272,6 @@
         {
           "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "ENGINE_STATIC_INTEROPERABILITY_MANDATORY_INFORMATION_BOUNDARY",
-          "kind": "USER_DECISION",
           "status": "UNRESOLVED"
         },
         {
@@ -382,6 +399,28 @@
           "evidence_fields": "NOT_DECIDED",
           "implementation": "NOT_AUTHORIZED",
           "activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_STATIC_INTEROPERABILITY_MANDATORY_INFORMATION_BOUNDARY",
+          "selected_option": "B_CORE_INTEROPERABILITY_INFORMATION_WITH_EXTERNAL_DETAIL_REFERENCES",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_MANDATORY_STATIC_INFORMATION_BOUNDARY_ONLY",
+          "required_core_dimensions": [
+            "ENGINE_IDENTITY_AND_ORIGIN",
+            "ENGINE_IMPLEMENTATION_VERSION",
+            "DECLARED_CAPABILITY_IDENTITIES",
+            "DECLARED_DEPENDENCY_RELATIONS",
+            "CAPABILITY_CONTRACT_AND_COMPATIBILITY_REFERENCES"
+          ],
+          "detailed_semantics_and_verification_evidence": "SEPARATE_MACHINE_RESOLVABLE_CONTRACT_REFERENCES",
+          "per_engine_language_build_environment_information": "ENGINE_SPECIFIC_EXTENSION_OR_REFERENCED_CONTRACT",
+          "preserve_existing_capability_contract_dimensions": true,
+          "preserve_provider_consumer_evidence_split": true,
+          "preserve_assure_normative_judgment": true,
+          "conditional_binding_applicability": "UNRESOLVED",
+          "exact_schema": "NOT_DECIDED",
+          "physical_implementation": "NOT_AUTHORIZED",
+          "active_transition": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
