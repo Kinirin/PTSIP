@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-ASSURE-0001-POLICY-SPECIFIC-STAGE-CONFIGURATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "검증 생명주기 단계 구성 방향을 정책별로 승인한다: MPD-VERI-0002 A(적용 범위 확인 독립 단계), MPD-VERI-0003 A(로컬·원격·릴리스 별도 단계), MPD-VERI-0004 B(필수 검사 7종 세부 단계), MPD-VERI-0005 A(증거 확보·비교·결과 생성 단계). 실제 단계 목록, 독점 권위, 신규 정책 ID, 최종 이전 매핑, ACTIVE 전환은 확정하지 않고 기존 필수 검증을 보존한다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-ASSURE-0001
+  recorded_at: '2026-10-11'

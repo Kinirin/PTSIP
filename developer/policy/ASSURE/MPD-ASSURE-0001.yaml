@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.6'
+  version: '3.7'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -188,6 +188,39 @@ rules:
                 MPD-VERI-0003: REQUIRED
                 MPD-VERI-0004: REQUIRED
                 MPD-VERI-0005: REQUIRED
+              approved_stage_configuration_directions:
+                decision_authority: PROJECT_OWNER_EXPLICIT
+                nature: STRUCTURAL_DIRECTION_ONLY
+                source_basis: C_SOURCE_RULE_AND_POLICY_PURPOSE_CROSS_VALIDATION
+                policy_specific:
+                  MPD-VERI-0002:
+                    option: A
+                    pattern: FIXTURE_SCOPE_VALIDATION_AS_INDEPENDENT_STAGE
+                    normative_stage_inventory: UNRESOLVED
+                    mutation_promotion_permission: UNRESOLVED
+                  MPD-VERI-0003:
+                    option: A
+                    pattern: LOCAL_REMOTE_RELEASE_AS_SEPARATE_STAGES
+                    shared_transition_verification_semantics: PRESERVE
+                    normative_stage_inventory: UNRESOLVED
+                  MPD-VERI-0004:
+                    option: B
+                    pattern: SEVEN_REQUIRED_SEMANTIC_CHECKS_AS_DETAILED_STAGES
+                    all_original_required_checks: PRESERVE
+                    aggregate_promotion_semantics: PRESERVE
+                    normative_stage_inventory: UNRESOLVED
+                  MPD-VERI-0005:
+                    option: A
+                    pattern: EVIDENCE_OBSERVATION_COMPARISON_AND_RESULT_AS_SEPARATE_STAGES
+                    existing_three_required_obligations: PRESERVE
+                    normative_stage_inventory: UNRESOLVED
+                guardrails:
+                  patterns_do_not_finalize_concrete_stages: true
+                  no_exclusive_stage_authority_assigned: true
+                  no_new_policy_id_allocated: true
+                  no_final_obligation_transfer_mapping: true
+                  no_policy_activation_or_source_unit_transfer: true
+                  preserve_existing_active_verification: true
             stage_inventory: UNRESOLVED
             exact_stage_semantics: UNRESOLVED
             exact_exclusive_responsibility_subject: UNRESOLVED
