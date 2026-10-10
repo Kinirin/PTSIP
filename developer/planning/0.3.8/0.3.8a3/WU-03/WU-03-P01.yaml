@@ -395,3 +395,14 @@ completion_evidence:
 - type: MACHINE_VALIDATION
   id: PLANNING_POLICY_BINDING_AND_SUPPORT_ROOT_VALIDATION
   result: PASS
+
+ci_automatic_plan_admission_repair:
+  observed_run: 38065486464
+  observed_failure: NIL_AND_EMPTY_TARGET_LIST_REPRESENTATION_MISMATCH
+  adapter_ref: developer/automation/cmd/test-modes/main.go
+  exact_ordered_target_comparison: SLICES_EQUAL
+  absent_and_empty_target_lists_equivalent: true
+  added_missing_reordered_or_unregistered_targets_rejected: true
+  native_regression_ref: developer/automation/cmd/test-modes/main_test.go
+  native_regression_result: PASS
+  full_automatic_plan_admission: PASS
