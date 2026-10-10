@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.0'
+  version: '3.1'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -77,6 +77,69 @@ rules:
     plan_authority:
       execution_adapter_and_migration_details: PLAN
       plan_may_redefine_required_verification_or_authority: false
+  approved_required_verification_responsibility_split:
+    decision: C_RESPONSIBILITY_BY_RESPONSIBILITY_SPLIT
+    decision_authority: PROJECT_OWNER_EXPLICIT
+    source_policy_scope:
+    - MPD-VERI-0002
+    - MPD-VERI-0003
+    - MPD-VERI-0004
+    - MPD-VERI-0005
+    transition_state: APPROVED_DIRECTION_TARGET_MAPPING_UNRESOLVED
+    entries:
+      MPD-VERI-0002:
+        retain_in_assure:
+        - ISOLATED_FIXTURE_VERIFICATION_ADMISSIBILITY
+        split_topics:
+        - ISOLATED_FIXTURE_SCOPE_VS_MUTATION_PROMOTION_ELIGIBILITY
+        unresolved_authority_decisions:
+        - MUTATION_PROMOTION_ELIGIBILITY_SEMANTIC_OWNER
+      MPD-VERI-0003:
+        retain_in_assure:
+        - PROJECT_PROFILE_TRANSITION_VERIFICATION_COVERAGE_AND_RESULT
+        split_topics:
+        - LOCAL_REMOTE_RELEASE_EXECUTION_ELIGIBILITY
+        - PROJECT_PROFILE_TRANSITION_MECHANICS
+        unresolved_authority_decisions:
+        - EXACT_SOURCE_UNIT_DESTINATION_BINDING
+      MPD-VERI-0004:
+        retain_in_assure:
+        - AGENT_CONTRACT_SEMANTIC_REQUIRED_CHECK_COVERAGE_AND_JUDGMENT
+        split_topics:
+        - VERIFICATION_COMPONENT_OWNERSHIP
+        - REGISTERED_MODE_SELECTION_AND_EXECUTION
+        - BINDING_PROMOTION_ELIGIBILITY
+        unresolved_authority_decisions:
+        - BINDING_PROMOTION_ELIGIBILITY_SEMANTIC_OWNER
+        - EXACT_SOURCE_UNIT_DESTINATION_BINDING
+      MPD-VERI-0005:
+        retain_in_assure:
+        - EXPECTED_VS_OBSERVED_JUDGMENT
+        - VERIFICATION_RESULT_ADMISSIBILITY
+        split_topics:
+        - EXECUTION_EVIDENCE_PROVENANCE_AND_RETENTION
+        - MACHINE_READABLE_EXECUTION_RESULT_INTERFACE
+        unresolved_authority_decisions:
+        - OBSERVATION_ASSEMBLY_VS_RECORD_PROVENANCE_BOUNDARY
+        - EXACT_SOURCE_UNIT_DESTINATION_BINDING
+    existing_policy_boundary_references:
+      verification_evidence_and_judgment: MPD-ASSURE-0001
+      execution_eligibility_gates: MPD-CTRL-0001
+      project_profile_change_continuity: MPD-CHANGE-0001
+      component_and_test_mode_structure: MPD-ARCH-0002
+      execution_provenance_and_history: MPD-RECORD-0001
+      automation_result_interfaces: MPD-CNTR-0001
+    boundary_reference_is_source_unit_transfer_authority: false
+    invariants:
+      all_four_approved_decisions_are_independent: true
+      unresolved_transfer_may_be_implicitly_inferred: false
+      source_units_remain_binding_until_verified_transfer: true
+      required_checks_cannot_be_omitted: true
+      existing_fail_closed_semantics_preserved: true
+      original_test_evidence_and_exact_sha_requirements_preserved: true
+      no_new_policy_identity_or_owner_assignment_without_user_decision: true
+      final_transfer_requires_exact_destination_and_conformance_verification: true
+      plan_or_implementation_may_finalize_unresolved_policy: false
   unit_mpd_0011_1491da54b643: MPD-VERI-0003
   unit_mpd_0012_d42d2230d10e:
     user_reported_local_validation:
