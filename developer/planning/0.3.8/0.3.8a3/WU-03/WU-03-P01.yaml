@@ -1,5 +1,11 @@
 schema_version: ptsip-plan-extension/v1
+schema_ref: developer/planning/schemas/plan-extension.schema.json
 policy_class: PTSIP_DEVELOPER_POLICY
+plan_identity:
+  resolved_plan_id: PLN.POLI.PLAN.ff2c6556
+  plan_file_id: PLANFILE.MAIN.c2fac79069f6
+  version: '1.0'
+  revision: Rev.0001
 plan_version: "0.3.8"
 extension:
   id: WU-03-P01
@@ -7,14 +13,17 @@ extension:
   title: Context and Evidence ID machine contracts and P0-P1 execution plan
   classification: CORE
   lifecycle:
-    status: DRAFT
+    status: COMPLETE
 approval:
-  status: PENDING
+  status: APPROVED
+  authority: PROJECT_OWNER
+  approval_source: USER_EXPLICIT
 implementation_authorization:
-  status: HOLD_NOT_AUTHORIZED
+  status: COMPLETE
+  authorization_source: USER_EXPLICIT
 depends_on: [WU-03, WU-05]
 
-proposal:
+proposal_at_creation:
   authority: false
   status: UNREGISTERED_DRAFT
   document_role: PLAN_ONLY_NO_IMPLEMENTATION
@@ -46,7 +55,8 @@ objective:
     Design a policy-derived, language-neutral candidate machine-contract and
     execution plan for consumer-repository-local opaque Context/Evidence IDs,
     permanent non-reassignment, proof-bound reuse, and automated conformance.
-    No implementation is authorized by this draft.
+    Explicit implementation approval authorizes only P0/P1 candidate assets and
+    read-only conformance/projection adapters; runtime activation remains forbidden.
 
 authority_boundary:
   order: [EFFECTIVE_POLICY, APPROVED_PLAN, IMPLEMENTATION]
@@ -194,7 +204,8 @@ execution_sequence:
     - [P1-02]
     - [P1-03]
     - [P1-04]
-  expected_execution_only_after_separate_approval: true
+  expected_execution_only_after_separate_approval: false
+  implementation_approval_received: USER_EXPLICIT
   parallelism_follows_dependency_graph: true
 
 unresolved_contract_handoff:
@@ -213,13 +224,14 @@ approval_and_activation_gates:
     permitted: true
     implementation_authorized: false
   plan_approval:
-    current_status: PENDING
-    requirement: EXPLICIT_USER_AUDIT_AND_APPROVAL
+    current_status: APPROVED
+    approval_source: USER_EXPLICIT
   implementation:
-    current_status: HOLD_NOT_AUTHORIZED
-    requires: SEPARATE_EXPLICIT_IMPLEMENTATION_DIRECTION
+    current_status: COMPLETE
+    authorization_source: USER_EXPLICIT
+    scope: P0_P1_CANDIDATE_CONTRACTS_AND_READ_ONLY_VERIFICATION
   machine_contract_activation:
-    current_status: FORBIDDEN_BY_THIS_DRAFT
+    current_status: FORBIDDEN_BY_THIS_PLAN
     requires: EXISTING_APPROVED_CUTOVER_AND_POLICY_COMPATIBILITY_GATES
   failure_escalation:
     - NEW_NORMATIVE_DOMAIN_OR_CHANGED_AUTHORITY
@@ -230,9 +242,156 @@ approval_and_activation_gates:
   final_quality_gate:
     - VALID_MACHINE_READABLE_PLAN_EXTENSION_SCHEMA
     - PLAN_TRACES_TO_EXACT_POLICY_BOUNDARIES
-    - NO_POLICY_OR_EXISTING_PLAN_MUTATION
-    - NO_RUNTIME_OR_WORKFLOW_MUTATION
+    - ONLY_EXPLICITLY_APPROVED_POLICY_STRUCTURE_REPAIR_AND_EXACT_PARENT_EXTENSION_REGISTRATION
+    - NO_RUNTIME_ACTIVATION_OR_WORKFLOW_MUTATION
     - NO_UNAUTHORIZED_BRANCH_CREATION
     - ALL_UNRESOLVED_ITEMS_RETAIN_EXPLICIT_OWNER_AND_DISPOSITION
     - NEGATIVE_AND_FAIL_CLOSED_CONFORMANCE_DEFINED
-    - EXECUTION_HOLD_REMAINS_EFFECTIVE
+    - RUNTIME_ACTIVATION_HOLD_REMAINS_EFFECTIVE
+
+implementation_approval:
+  approval_source: USER_EXPLICIT
+  authorization_source: USER_EXPLICIT
+  scope: P0_P1_CANDIDATE_CONTRACTS_AND_READ_ONLY_VERIFICATION
+  instruction_date: 2026-10-10
+  parent_extension_registration_authorized: true
+  policy_promotion_authorized: false
+  runtime_activation_authorized: false
+  future_phases_authorized: false
+
+implementation_results:
+  status: COMPLETE
+  candidate_ref: src/agent_contracts/contracts/context-evidence-identity.json
+  schema_ref: src/agent_contracts/schemas/candidate-context-evidence.schema.json
+  vectors_ref: src/agent_contracts/conformance/context-evidence-identity.json
+  adapter_ref: developer/automation/internal/machine/agent_contract_graph.go
+  adapter_entrypoint: VerifyContextEvidenceCandidate
+  verification_command: agent-context-migration verify --stage CONTEXT_EVIDENCE_CANDIDATE
+  src_language_specific_implementation: FORBIDDEN
+  candidate_projection_authority: false
+  candidate_proof_facts_are_runtime_proof: false
+  runtime_activation: BLOCKED_DRAFT_POLICY_AND_UNRESOLVED_P2_PROOF
+  work_packet_preflight:
+    status: WORK_PACKET_NOT_AVAILABLE
+    observed_error: task_context must be a mapping
+    task_context_invented: false
+
+additional_scope_approval:
+  approval_source: USER_EXPLICIT
+  authorization_source: USER_EXPLICIT
+  instruction_date: 2026-10-11
+  exact_target: src/policy/INFO/SFP-INFO-0004.yaml
+  authorized_change: ADD_MISSING_FAMILY_KERNEL_DEFINITION_FROM_EXISTING_AUTHORITY_SUBJECT
+  existing_kernel_identity_preserved: true
+  draft_status_preserved: true
+  source_composition_semantics_preserved: true
+  src_python_implementation_authorized: false
+  baseline_failure_revision: a56629d8abf3ec1e26ddca06cc850b24139c6980
+  baseline_failure_code: SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH
+
+policy_structure_repair_schema_binding:
+  schema_ref: src/policy/schemas/ptsip-support-authority-semantics.schema.json
+  exact_definition: SFP_INFO_0004_V1
+  reused_definition: ROOT_FAMILY_V1/properties/family_definition
+  unrelated_schema_definitions_changed: false
+  existing_required_fields_preserved: true
+  isolated_definition_consumption: EXACT_COMMON_SHAPE_COPY_WITH_NATIVE_PARITY_CHECK
+
+legacy_verification_successor:
+  removed_python_node: src/tests/ptsip/governance/test_contracts.py::test_context_evidence_ids_are_consumer_repository_scoped
+  neutral_expectations_ref: src/agent_contracts/contracts/context-evidence-identity.json#/policy_bindings
+  native_successor: developer/tests/repository/context_evidence_candidate_test.go::TestContextEvidenceRepositoryScopePolicyConformance
+  replacement_before_retirement: PASS
+  exact_policy_expectation_count: 20
+  obsolete_proof_name_restored: false
+  unrelated_required_legacy_tests_retained: true
+
+test_mode_criteria_verification_successors:
+  native_ref: developer/tests/workflows/test_mode_selection_test.go
+  neutral_vectors_ref: developer/tests/workflows/test_mode_selection_vectors.json
+  replaced_legacy_python_nodes: 3
+  selection_membership_preserved: true
+  ordering_source: .github/test_modes.yaml
+  replacement_before_retirement: PASS
+  compatibility_resolver_ref: .github/scripts/resolve_test_modes.py
+  compatibility_resolver_rewritten_by_this_plan: false
+
+candidate_execution_plan:
+  execution_order:
+  - id: P0-01
+    status: COMPLETE
+    validation:
+      status: PASS
+  - id: P0-02
+    status: COMPLETE
+    validation:
+      status: PASS
+  - id: P0-03
+    status: COMPLETE
+    validation:
+      status: PASS
+  - id: P1-01
+    status: COMPLETE
+    validation:
+      status: PASS
+  - id: P1-02
+    status: COMPLETE
+    validation:
+      status: PASS
+  - id: P1-03
+    status: COMPLETE
+    validation:
+      status: PASS
+  - id: P1-04
+    status: COMPLETE
+    validation:
+      status: PASS
+current_known_blockers: []
+candidate_readiness:
+  status: COMPLETE
+  candidate_contract_authority: false
+  policy_revision_map_ref: src/agent_contracts/contracts/context-evidence-identity.json#/inventory
+  policy_binding_count: 41
+  synthetic_conformance_vectors: 30
+  blocked_vectors: 25
+  allowed_candidate_vectors: 5
+  runtime_activation: FORBIDDEN
+  remaining_runtime_handoff:
+  - DRAFT_SUPPORT_POLICY_PROMOTION
+  - P2_SOURCE_OBSERVATION_AND_PROVIDER_EVENT_PROOF
+  - APPROVED_CANONICAL_RUNTIME_CUTOVER
+  record_storage_or_retention_authority_created: false
+verification_results:
+  selection_source: .github/test_modes.yaml AND EFFECTIVE_PROJECT_PROFILE
+  selected_ids:
+  - agent-contract-plane
+  - agent-contract-runtime
+  - ptsip-core
+  - ptsip-remediation
+  - vpms
+  - vpms-contract-plane
+  - agent-contract-candidate
+  - repository-architecture
+  - test-mode-control-plane
+  - ptsip-contract
+  - repository-release
+  required_selection_verified: true
+  ptsip_core_passed: 344
+  ptsip_contract_passed: 49
+  vpms_passed: 176
+  vpms_contract_passed: 24
+  test_mode_control_plane_legacy_passed: 51
+  required_go_successor_cases_passed: true
+  all_selected_go_packages_passed: true
+  support_current_roots_verified: 40
+  policy_and_planning_checks: PASS
+  go_vet: PASS
+  pp_delta: NO_T2_AUTHORITY_DELTA
+  failure_waiver_created: false
+completion_evidence:
+- type: TEST
+  id: P0_P1_NATIVE_NEUTRAL_CONTRACT_CONFORMANCE_AND_REGISTERED_MODES
+  result: PASS
+- type: MACHINE_VALIDATION
+  id: PLANNING_POLICY_BINDING_AND_SUPPORT_ROOT_VALIDATION
+  result: PASS

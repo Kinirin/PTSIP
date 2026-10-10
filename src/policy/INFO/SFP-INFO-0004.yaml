@@ -15,6 +15,12 @@ authority_contract:
   schema_id: ptsip.governance/root-family/info
   schema_version: 1
 authority_semantics:
+  family_definition:
+    kernel_definitions:
+    - id: SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
+      statement: Consumer Project Profile의 source 구성원과 논리적 구성 단위를 관리한다.
+      non_substitutability: Responsibility Map 의미 권위는 소유하지 않는다.
+    source_scope: []
   domain: PROJECT_PROFILE_SOURCE_COMPOSITION
   target: CONSUMER_PROJECT_PROFILE
   independence:

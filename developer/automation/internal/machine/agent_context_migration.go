@@ -231,6 +231,9 @@ func VerifyAgentOperationImplementationRefs(r *Repository) Object {
 
 func VerifyAgentContextMigration(r *Repository, stage string) (Object, error) {
 	stage = strings.ToUpper(stage)
+	if stage == "CONTEXT_EVIDENCE_CANDIDATE" {
+		return VerifyContextEvidenceCandidate(r)
+	}
 	if stage == "" {
 		stage = "AUTO"
 	}

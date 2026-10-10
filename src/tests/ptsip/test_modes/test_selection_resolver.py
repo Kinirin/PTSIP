@@ -91,29 +91,8 @@ def test_evidence_change_selects_declared_dependents() -> None:
     ]
 
 
-def test_source_compat_change_selects_declared_dependents() -> None:
-    selected = SELECT_AUTOMATIC(
-        _registry(),
-        _profile(),
-        ["src/ptsip/source_compat/reader.py"],
-    )
-    assert _ids(selected) == [
-        "ptsip-source-compat",
-        "ptsip-migration",
-        "vpms",
-        "repository-architecture",
-    ]
 
 
-def test_migration_change_selects_migration_and_contract_reference_verifiers() -> None:
-    selected = SELECT_AUTOMATIC(
-        _registry(),
-        _profile(),
-        ["src/ptsip/migration/analysis/analyzer.py"],
-    )
-    assert _ids(selected) == [
-        "ptsip-migration", "vpms", "repository-architecture", "agent-contract-plane",
-    ]
 
 
 def test_support_policy_change_selects_all_declared_support_verifiers() -> None:
@@ -244,23 +223,6 @@ def test_distribution_contract_validator_change_selects_release_verification() -
     assert _ids(selected) == ["repository-release"]
 
 
-def test_shared_ptsip_conftest_change_fans_out_to_ptsip_test_modes() -> None:
-    selected = SELECT_AUTOMATIC(
-        _registry(),
-        _profile(),
-        ["src/tests/ptsip/conftest.py"],
-    )
-    assert _ids(selected) == [
-        "ptsip-core",
-        "ptsip-evidence",
-        "ptsip-source-compat",
-        "ptsip-migration",
-        "ptsip-remediation",
-        "ptsip-contract",
-        "agent-contract-candidate",
-        "repository-architecture",
-        "test-mode-control-plane",
-    ]
 
 
 def test_test_mode_control_plane_change_does_not_expand_to_all_modes() -> None:

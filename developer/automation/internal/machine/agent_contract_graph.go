@@ -6,10 +6,272 @@ import (
 	"reflect"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/santhosh-tekuri/jsonschema/v6"
 )
+
+// candidateValue resolves JSON pointers only; labels and source text never select semantics.
+func candidateValue(document any, pointer string) (any, error) {
+	if pointer == "" {
+		return document, nil
+	}
+	if !strings.HasPrefix(pointer, "/") {
+		return nil, fmt.Errorf("invalid candidate pointer %q", pointer)
+	}
+	for _, raw := range strings.Split(pointer[1:], "/") {
+		key := strings.ReplaceAll(strings.ReplaceAll(raw, "~1", "/"), "~0", "~")
+		if object := Map(document); object != nil {
+			var ok bool
+			document, ok = object[key]
+			if !ok {
+				return nil, fmt.Errorf("unresolved candidate pointer %q", pointer)
+			}
+		} else if array := List(document); array != nil {
+			index, err := strconv.Atoi(key)
+			if err != nil || index < 0 || index >= len(array) {
+				return nil, fmt.Errorf("unresolved candidate array pointer %q", pointer)
+			}
+			document = array[index]
+		} else {
+			return nil, fmt.Errorf("unresolved candidate pointer %q", pointer)
+		}
+	}
+	return document, nil
+}
+
+func candidateSchema(value Object, identity string) (*jsonschema.Schema, error) {
+	compiler := jsonschema.NewCompiler()
+	compiler.UseLoader(closedLoader{})
+	if err := compiler.AddResource(identity, value); err != nil {
+		return nil, err
+	}
+	return compiler.Compile(identity)
+}
+
+// VerifyContextEvidenceCandidate interprets the approved neutral P0/P1 candidate.
+// JSON Schema owns gates and output shape. Synthetic proof facts never become
+// runtime proof, policy activation, record retention duties, or an ID assignment.
+func VerifyContextEvidenceCandidate(r *Repository) (Object, error) {
+	result, err := verifyContextEvidenceCandidate(r)
+	if err != nil {
+		return Object{"status": "UNRESOLVED", "stage": "CONTEXT_EVIDENCE_CANDIDATE", "reason_code": "CANDIDATE_REQUIRED_CONTRACT_UNRESOLVED", "detail": err.Error(), "normative_authority": false, "mutation_authorized": false, "assignment_performed": false}, nil
+	}
+	return result, nil
+}
+
+func verifyContextEvidenceCandidate(r *Repository) (Object, error) {
+	const base = "src/agent_contracts/"
+	module, err := r.Read(base + "contracts/context-evidence-identity.json")
+	if err != nil {
+		return nil, err
+	}
+	definition, err := r.Read(base + "schemas/candidate-context-evidence.schema.json")
+	if err != nil {
+		return nil, err
+	}
+	schema, err := candidateSchema(definition, "urn:ptsip:candidate:module")
+	if err != nil {
+		return nil, err
+	}
+	if err = schema.Validate(module); err != nil {
+		return nil, err
+	}
+	planRef := Text(module["plan_ref"])
+	plan, err := r.Read(planRef)
+	if err != nil {
+		return nil, err
+	}
+	if Map(plan["approval"])["status"] != "APPROVED" || (Map(plan["implementation_authorization"])["status"] != "AUTHORIZED" && Map(plan["implementation_authorization"])["status"] != "COMPLETE") {
+		return nil, fmt.Errorf("candidate plan implementation is not authorized")
+	}
+	parent, err := r.Read("developer/planning/0.3.8/0.3.8a3/WU-03/WU-03.yaml")
+	if err != nil {
+		return nil, err
+	}
+	if failures := ExtensionParentConsistency(parent, plan, Text(Map(plan["extension"])["id"]), planRef); len(failures) > 0 {
+		return nil, fmt.Errorf("candidate plan registration: %v", failures)
+	}
+	bindings, err := r.ResolveBindings(Object{"plan_ref": planRef})
+	if err != nil {
+		return nil, err
+	}
+	if bindings["status"] != "BOUND" {
+		return nil, fmt.Errorf("candidate plan has no exact external binding")
+	}
+	boundRows := List(bindings["bindings"])
+	if len(boundRows) != 1 {
+		return nil, fmt.Errorf("ambiguous candidate plan binding")
+	}
+	for _, field := range []string{"resolved_plan_id", "plan_file_id", "version", "revision"} {
+		if Map(boundRows[0])[field] != Map(plan["plan_identity"])[field] {
+			return nil, fmt.Errorf("candidate plan binding identity drift: %s", field)
+		}
+	}
+	inventory := Map(module["inventory"])
+	index, err := r.Read(Text(inventory["policy_index_ref"]))
+	if err != nil {
+		return nil, err
+	}
+	registered := map[string]Object{}
+	for _, raw := range List(index["policies"]) {
+		row := Map(raw)
+		if registered[Text(row["id"])] != nil {
+			return nil, fmt.Errorf("ambiguous Support policy registration: %s", row["id"])
+		}
+		registered[Text(row["id"])] = row
+	}
+	sources := map[string]Object{}
+	for identity, raw := range Map(inventory["policy_revisions"]) {
+		revision, row := Map(raw), registered[identity]
+		if row == nil || "src/policy/"+Text(row["path"]) != revision["path"] || row["status"] != revision["status"] || row["authority_role"] != "CANONICAL_AUTHORITY" {
+			return nil, fmt.Errorf("unresolved exact candidate policy registration: %s", identity)
+		}
+		value, err := r.Read(Text(revision["path"]))
+		if err != nil {
+			return nil, err
+		}
+		bytes, err := CanonicalJSON(value)
+		if err != nil {
+			return nil, err
+		}
+		if Map(value["policy"])["id"] != identity || Map(value["policy"])["status"] != revision["status"] || SHA256(bytes) != revision["validation_fingerprint"] {
+			return nil, fmt.Errorf("policy revalidation required: %s", identity)
+		}
+		sources[identity] = value
+	}
+	for _, raw := range Map(module["policy_bindings"]) {
+		binding := Map(raw)
+		value, err := candidateValue(sources[Text(binding["policy_id"])], Text(binding["json_pointer"]))
+		if err != nil {
+			return nil, err
+		}
+		if !reflect.DeepEqual(value, binding["expected"]) {
+			return nil, fmt.Errorf("candidate policy binding drift: %s", binding["json_pointer"])
+		}
+	}
+	vectorRef := Text(module["conformance_ref"])
+	if !agentSafeRef(vectorRef) {
+		return nil, fmt.Errorf("unsafe candidate vector reference")
+	}
+	vectors, err := r.Read(base + vectorRef)
+	if err != nil {
+		return nil, err
+	}
+	vectorSchema, err := candidateSchema(Map(Map(definition["$defs"])["conformance"]), "urn:ptsip:candidate:vectors")
+	if err != nil {
+		return nil, err
+	}
+	if err = vectorSchema.Validate(vectors); err != nil {
+		return nil, err
+	}
+	inputSchema, err := candidateSchema(Map(module["input_schema"]), "urn:ptsip:candidate:input")
+	if err != nil {
+		return nil, err
+	}
+	outputSchema, err := candidateSchema(Map(module["output_schema"]), "urn:ptsip:candidate:output")
+	if err != nil {
+		return nil, err
+	}
+	gateSchemas := map[string]*jsonschema.Schema{}
+	for identity, raw := range Map(module["gates"]) {
+		gate := Map(raw)
+		gateSchemas[identity], err = candidateSchema(Map(gate["input_constraint"]), "urn:ptsip:candidate:gate:"+identity)
+		if err != nil {
+			return nil, err
+		}
+		if _, err = candidateValue(module, strings.TrimPrefix(Text(gate["failure_semantics_ref"]), "#")); err != nil {
+			return nil, err
+		}
+		for _, binding := range Strings(gate["policy_binding_refs"]) {
+			if Map(module["policy_bindings"])[binding] == nil {
+				return nil, fmt.Errorf("unresolved gate policy binding")
+			}
+		}
+	}
+	primitives, operations, cases := Map(module["primitives"]), Map(module["operations"]), Map(vectors["operations"])
+	if len(primitives) != len(operations) || len(cases) != len(primitives) {
+		return nil, fmt.Errorf("candidate primitive/vector coverage mismatch")
+	}
+	identities := []string{}
+	for identity := range primitives {
+		identities = append(identities, identity)
+	}
+	sort.Strings(identities)
+	results, projections := []any{}, []any{}
+	for _, identity := range identities {
+		primitive, operation := Map(primitives[identity]), Map(operations[identity])
+		if operation == nil || len(List(cases[identity])) == 0 || primitive["primitive_id"] != identity {
+			return nil, fmt.Errorf("unresolved exact candidate identity: %s", identity)
+		}
+		for _, role := range []string{"input_schema_ref", "output_schema_ref", "operation_semantics_ref", "failure_semantics_ref", "conformance_vectors_ref"} {
+			parts := strings.SplitN(Text(primitive[role]), "#", 2)
+			if len(parts) != 2 || (parts[0] != "" && parts[0] != vectorRef) {
+				return nil, fmt.Errorf("unregistered primitive reference")
+			}
+			var document any = module
+			if parts[0] == vectorRef {
+				document = vectors
+			}
+			if _, err = candidateValue(document, parts[1]); err != nil {
+				return nil, err
+			}
+		}
+		seen := map[string]bool{}
+		for _, raw := range List(cases[identity]) {
+			vector := Map(raw)
+			name := Text(vector["id"])
+			if name == "" || seen[name] {
+				return nil, fmt.Errorf("invalid or duplicate candidate vector")
+			}
+			seen[name] = true
+			for _, binding := range Strings(vector["policy_binding_refs"]) {
+				if Map(module["policy_bindings"])[binding] == nil {
+					return nil, fmt.Errorf("unresolved vector policy binding %s", binding)
+				}
+			}
+			request := Map(vector["input"])
+			if err = inputSchema.Validate(request); err != nil {
+				return nil, err
+			}
+			failed := []string{}
+			for _, gate := range Strings(operation["gate_refs"]) {
+				checker := gateSchemas[gate]
+				if checker == nil {
+					return nil, fmt.Errorf("unresolved candidate gate %s", gate)
+				}
+				if checker.Validate(request) != nil {
+					failed = append(failed, gate)
+				}
+			}
+			sort.Strings(failed)
+			failedValues := []any{}
+			for _, gate := range failed {
+				failedValues = append(failedValues, gate)
+			}
+			action, reference := operation["projected_action"], request[Text(operation["reference_id_field"])]
+			if len(failed) > 0 {
+				failure := Map(Map(Map(module["operation_failures"])[identity])["on_gate_failure"])
+				action, reference = failure["projected_action"], failure["reference_id"]
+			}
+			result := Object{"status": "CANDIDATE_EVALUATED", "projected_action": action, "reference_id": reference, "failed_gates": failedValues, "normative_authority": false, "mutation_authorized": false, "assignment_performed": false}
+			result[Text(operation["scope_output_field"])] = request[Text(operation["scope_input_field"])]
+			if err = outputSchema.Validate(result); err != nil {
+				return nil, err
+			}
+			expected := Object{"projected_action": action, "reference_id": reference, "failed_gates": failed, Text(operation["scope_output_field"]): request[Text(operation["scope_input_field"])]}
+			left, _ := CanonicalJSON(expected)
+			right, _ := CanonicalJSON(vector["expected"])
+			if string(left) != string(right) {
+				return nil, fmt.Errorf("candidate conformance failed: %s", name)
+			}
+			results = append(results, Object{"primitive_id": identity, "vector_id": name, "result": result})
+		}
+		projections = append(projections, Object{"primitive": primitive, "operation": operation, "input_schema": module["input_schema"], "output_schema": module["output_schema"], "failure_semantics": Map(module["operation_failures"])[identity]})
+	}
+	return Object{"status": "PASS", "stage": module["verification_stage"], "module_id": module["module_id"], "policy_revisions": inventory["policy_revisions"], "projections": projections, "results": results, "vectors_checked": len(results), "activation_blockers": module["activation_blockers"], "normative_authority": false, "mutation_authorized": false, "assignment_performed": false}, nil
+}
 
 type agentContractGraph struct {
 	repo           *Repository

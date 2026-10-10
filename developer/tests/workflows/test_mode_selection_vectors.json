@@ -1,0 +1,10 @@
+{
+  "format": "ptsip-test-mode-selection-conformance/v1",
+  "normative_authority": false,
+  "ordering": "REGISTERED_MODE_DECLARATION_ORDER",
+  "cases": [
+    {"id": "source-compat-dependents", "changed_file": "src/ptsip/source_compat/reader.py", "expected_members": ["ptsip-source-compat", "ptsip-migration", "vpms", "repository-architecture"]},
+    {"id": "migration-contract-dependents", "changed_file": "src/ptsip/migration/analysis/analyzer.py", "expected_members": ["ptsip-migration", "vpms", "repository-architecture", "agent-contract-plane"]},
+    {"id": "shared-ptsip-fixture", "changed_file": "src/tests/ptsip/conftest.py", "expected_members": ["ptsip-core", "ptsip-evidence", "ptsip-source-compat", "ptsip-migration", "ptsip-remediation", "ptsip-contract", "agent-contract-candidate", "repository-architecture", "test-mode-control-plane"]}
+  ]
+}

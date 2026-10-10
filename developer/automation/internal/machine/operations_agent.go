@@ -113,6 +113,9 @@ func init() {
 		if err != nil {
 			return nil, err
 		}
+		if result["stage"] == "CONTEXT_EVIDENCE_CANDIDATE" && result["status"] == "UNRESOLVED" {
+			return result, nil // The registered status protocol emits JSON and exits nonzero.
+		}
 		if result["status"] != "PASS" {
 			return result, Fail("AGENT_MIGRATION_VERIFICATION_FAILED", "agent context migration checks failed")
 		}

@@ -81,6 +81,8 @@ components:
       - "src/agent_contracts/digests/projection-v1.json"
       - "src/agent_contracts/canonicalization/**"
       - "src/agent_contracts/schemas/candidate-*.json"
+      - "src/agent_contracts/contracts/context-evidence-identity.json"
+      - "src/agent_contracts/conformance/context-evidence-identity.json"
     purpose: language_neutral_candidate_serialization_digest_projection_and_asset_format_contracts
     shipped: true
     runtime_required: false
@@ -763,6 +765,8 @@ components:
       - "src/agent_contracts/digests/projection-v1.json"
       - "src/agent_contracts/canonicalization/**"
       - "src/agent_contracts/schemas/candidate-*.json"
+      - "src/agent_contracts/contracts/context-evidence-identity.json"
+      - "src/agent_contracts/conformance/context-evidence-identity.json"
       - "src/agent_contracts/index.json"
       - "src/agent_contracts/contracts/current.json"
       - "src/agent_contracts/conformance/current.json"
@@ -894,6 +898,9 @@ components:
     release_owner: architecture
     compatibility_owner: architecture
     analysis_inputs:
+      - "src/agent_contracts/contracts/context-evidence-identity.json"
+      - "src/agent_contracts/conformance/context-evidence-identity.json"
+      - "src/agent_contracts/schemas/candidate-context-evidence.schema.json"
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
       - ".ptsip/profiles/main.ptsip.yaml"

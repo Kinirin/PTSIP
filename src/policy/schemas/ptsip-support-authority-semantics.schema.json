@@ -911,7 +911,8 @@
         "approved_decisions",
         "invariants",
         "unresolved_decisions",
-        "implementation_detail_authority"
+        "implementation_detail_authority",
+        "family_definition"
       ],
       "properties": {
         "domain": {
@@ -941,6 +942,26 @@
         },
         "implementation_detail_authority": {
           "const": "PLAN"
+        },
+        "family_definition": {
+          "type": "object",
+          "required": [
+            "kernel_definitions",
+            "source_scope"
+          ],
+          "properties": {
+            "kernel_definitions": {
+              "type": "array",
+              "minItems": 1
+            },
+            "source_scope": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

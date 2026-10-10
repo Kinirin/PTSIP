@@ -1,0 +1,1206 @@
+{
+  "format": "ptsip-context-evidence-id-vectors/v1",
+  "module_id": "urn:ptsip:candidate:c21b0f68-55b4-47c8-a57f-66619d64fb99:v1",
+  "status": "CANDIDATE",
+  "normative_authority": false,
+  "purpose": "SYNTHETIC_PROOF_GATE_CONFORMANCE_NOT_RUNTIME_ADMISSION",
+  "operations": {
+    "urn:ptsip:candidate:2e1727cf-a4fa-435f-bf8b-2297e189ddea:v1": [
+      {
+        "id": "verified-new-local-id",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "ISSUE_NEW",
+          "reference_id": "11111111111111111111111111111111",
+          "failed_gates": [],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "different-repository-independent-local-id",
+        "input": {
+          "repository_scope": "scope-b",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "ISSUE_NEW",
+          "reference_id": "11111111111111111111111111111111",
+          "failed_gates": [],
+          "repository_scope": "scope-b"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "provider-format-unchanged",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "legacy-provider:42/time/type",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "ISSUE_NEW",
+          "reference_id": "11111111111111111111111111111111",
+          "failed_gates": [],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "history-unknown",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": false,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "history_complete"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "missing-registry-row-not-never-issued",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": false,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "never_assigned"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "retired-id-not-reassignable",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": false,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "never_assigned"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "cleaned-record-id-not-reassignable",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": false,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "never_assigned"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "check-commit-race",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": false,
+            "never_assigned": true,
+            "reservation_exclusive": false,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "history_fresh",
+            "reservation_exclusive"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "local-collision",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": false,
+            "reservation_exclusive": false,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "never_assigned",
+            "reservation_exclusive"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "distinct-event-unproven",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "UNKNOWN"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "distinct_event"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "same-event-is-reference-not-new-assignment",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": false,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "distinct_event",
+            "never_assigned"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-scope_verified",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": false,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "scope_verified"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-source_observation_verified",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": false,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "source_observation_verified"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-proof_contract_registered",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": false,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_contract_registered"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-proof_scope_bound",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": false,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_scope_bound"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-proof_revision_current",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": false,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_revision_current"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "changed-source-revision-invalidates-old-proof",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-b",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": false,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_revision_current"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      }
+    ],
+    "urn:ptsip:candidate:deb14ec0-050e-437a-bd83-2b870cd2f0a8:v1": [
+      {
+        "id": "verified-same-event",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "REFERENCE_EXISTING",
+          "reference_id": "22222222222222222222222222222222",
+          "failed_gates": [],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "metadata-change-keeps-issued-id",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "changed-descriptive-metadata",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "REFERENCE_EXISTING",
+          "reference_id": "22222222222222222222222222222222",
+          "failed_gates": [],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "provider-id-only",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "UNKNOWN"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "same_event"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "identical-payload-only",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "UNKNOWN"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "same_event"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "verified-distinct-event-not-reuse",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "DISTINCT"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "same_event"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unresolved-previous-id",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": false,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "existing_identity_resolved"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "missing-previous-id",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": null,
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "existing_id_present"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-scope_verified",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": false,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "scope_verified"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-source_observation_verified",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": false,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "source_observation_verified"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-proof_contract_registered",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": false,
+            "proof_scope_bound": true,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_contract_registered"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-proof_scope_bound",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": false,
+            "proof_revision_current": true,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_scope_bound"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "unverified-proof_revision_current",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-a",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": false,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_revision_current"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      },
+      {
+        "id": "changed-source-revision-invalidates-old-proof",
+        "input": {
+          "repository_scope": "scope-a",
+          "observation_ref": "observation-a",
+          "source_revision": "revision-b",
+          "candidate_id": "11111111111111111111111111111111",
+          "existing_id": "22222222222222222222222222222222",
+          "provider_native_id": "native:id:any-format",
+          "facts": {
+            "scope_verified": true,
+            "source_observation_verified": true,
+            "proof_contract_registered": true,
+            "proof_scope_bound": true,
+            "proof_revision_current": false,
+            "history_complete": true,
+            "history_fresh": true,
+            "never_assigned": true,
+            "reservation_exclusive": true,
+            "existing_identity_resolved": true,
+            "event_identity": "SAME"
+          }
+        },
+        "expected": {
+          "projected_action": "BLOCK",
+          "reference_id": null,
+          "failed_gates": [
+            "proof_revision_current"
+          ],
+          "repository_scope": "scope-a"
+        },
+        "policy_binding_refs": [
+          "scope",
+          "opacity",
+          "history",
+          "never_reassign",
+          "same_event",
+          "retention"
+        ]
+      }
+    ]
+  }
+}
