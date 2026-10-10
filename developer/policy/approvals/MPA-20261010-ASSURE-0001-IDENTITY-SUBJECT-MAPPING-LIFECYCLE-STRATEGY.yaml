@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261010-ASSURE-0001-IDENTITY-SUBJECT-MAPPING-LIFECYCLE-STRATEGY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "네 기존 독립 검증 정책의 A/B/B/B 책임 분리 구성은 유지한다. 신규 정책 ID는 A(책임 주제 확정 후 할당), 독점적 Authority Subject는 B(검증 생명주기 단계 중심), 규칙 이전 매핑은 B(검증 의무 묶음별 매핑), 정책 상태는 A(경계 확정 후 DRAFT 생성) 방향을 승인한다. 정확한 신규 ID, 독점적 책임 내용, 최종 규칙 매핑, ACTIVE 전환은 확정하지 않으며 기존 필수 검증은 보존한다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-ASSURE-0001
+  recorded_at: '2026-10-10'

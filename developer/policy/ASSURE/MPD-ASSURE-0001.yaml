@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.3'
+  version: '3.4'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -143,6 +143,44 @@ rules:
   independent_policy_responsibility_review:
     approved_subordinate_granularity:
       decision_authority: PROJECT_OWNER_EXPLICIT
+      approved_definition_strategy:
+        identity:
+          option: A
+          rule: ALLOCATE_AFTER_EXCLUSIVE_RESPONSIBILITY_SUBJECT_IS_RESOLVED
+          preallocation: FORBIDDEN
+          concrete_policy_ids: UNRESOLVED
+        exclusive_authority_subject:
+          option: B
+          decomposition_basis: VERIFICATION_LIFECYCLE_STAGE
+          exact_subjects: UNRESOLVED
+          existing_family_kernel_overlap_requires_explicit_resolution: true
+        obligation_mapping:
+          option: B
+          mapping_unit: RELATED_REQUIRED_VERIFICATION_OBLIGATION_SET
+          exact_source_to_target_mapping: UNRESOLVED
+          required_coverage_loss: FORBIDDEN
+          source_unit_traceability_required: true
+          equivalence_verification_required_before_transfer: true
+        creation_status:
+          option: A
+          rule: CREATE_DRAFT_ONLY_AFTER_RESPONSIBILITY_BOUNDARY_IS_RESOLVED
+          candidate_status: DRAFT
+          immediate_policy_creation_authorized: false
+          concrete_policy_identity_and_state_transition: UNRESOLVED
+        decision_scope:
+          direction_only: true
+          applies_to:
+          - MPD-VERI-0002
+          - MPD-VERI-0003
+          - MPD-VERI-0004
+          - MPD-VERI-0005
+          original_granularity_decisions_preserved: true
+          new_policy_id_allocation_authorized: false
+          exclusive_authority_assignment_authorized: false
+          final_mapping_authorized: false
+          active_transition_authorized: false
+          original_required_verification_preserved: true
+          previous_unresolved_decisions_remain_unresolved: true
       independent_responsibility_directions:
         MPD-VERI-0002:
           mode: A_MINIMAL_INDEPENDENT_RESPONSIBILITY
