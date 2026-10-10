@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.1'
+  version: '3.2'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -140,6 +140,37 @@ rules:
       no_new_policy_identity_or_owner_assignment_without_user_decision: true
       final_transfer_requires_exact_destination_and_conformance_verification: true
       plan_or_implementation_may_finalize_unresolved_policy: false
+  independent_policy_responsibility_review:
+    direction: REVIEW_INDEPENDENT_POLICY_RESPONSIBILITIES
+    decision_authority: PROJECT_OWNER_EXPLICIT
+    source_policies:
+      MPD-VERI-0002:
+        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+        exact_responsibility_subject: UNRESOLVED
+        proposed_policy_identity: UNRESOLVED
+        destination_authority: UNRESOLVED
+      MPD-VERI-0003:
+        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+        exact_responsibility_subject: UNRESOLVED
+        proposed_policy_identity: UNRESOLVED
+        destination_authority: UNRESOLVED
+      MPD-VERI-0004:
+        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+        exact_responsibility_subject: UNRESOLVED
+        proposed_policy_identity: UNRESOLVED
+        destination_authority: UNRESOLVED
+      MPD-VERI-0005:
+        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+        exact_responsibility_subject: UNRESOLVED
+        proposed_policy_identity: UNRESOLVED
+        destination_authority: UNRESOLVED
+    independent_decisions_required: true
+    new_policy_creation_authorized: false
+    ownership_transfer_authorized: false
+    existing_required_verifications_remain_binding: true
+    exact_source_units_may_be_deleted_before_verified_transfer: false
+    predecessor_responsibility_decisions_remain_effective: true
+    review_may_create_normative_authority: false
   unit_mpd_0011_1491da54b643: MPD-VERI-0003
   unit_mpd_0012_d42d2230d10e:
     user_reported_local_validation:
