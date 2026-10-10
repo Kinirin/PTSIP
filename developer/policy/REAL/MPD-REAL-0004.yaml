@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: REAL
 policy:
   id: MPD-REAL-0004
-  version: '2.0'
+  version: '2.1'
   title: Language-neutral root and src module creation
   status: ACTIVE
 authority_subject:
@@ -29,6 +29,15 @@ rules:
       repository_root_direct_modules: true
       src_descendant_modules: true
       other_directory_inheritance: false
+    role_based_exclusion_from_neutral_module_creation:
+      role: EXECUTABLE_VERIFICATION_TEST_IMPLEMENTATION
+      scope_root: src/tests/
+      language_policy_ref: MPD-REAL-0003
+      implementation_language: GO
+      does_not_exclude_machine_contracts_schemas_or_conformance_vectors: true
+      neutral_module_semantic_authority_preserved: true
+      exact_declared_artifact_role_required: true
+      ambiguous_artifact_role: FAIL_CLOSED
     new_module_definition_language: LANGUAGE_NEUTRAL_MACHINE_MODULE
     canonical_representations:
     - JSON_MACHINE_PROGRAM
@@ -45,6 +54,7 @@ rules:
     language_binding_must_preserve_neutral_module_identity_and_semantics: true
     root_family_test_language_policy_ref: MPD-REAL-0003
     neutral_module_contract_ref: MPD-CNTR-0003
+    executable_test_exception_never_grants_normative_authority: true
 relations:
   supersedes: []
   amends: []
@@ -63,3 +73,13 @@ transition:
       action: VERIFY_REGISTERED_NEUTRAL_MODULE_BINDING
       execution: SERIAL_REQUIRED
       completion_check: OWNER_AND_BINDING_EXACTLY_REGISTERED
+  - id: TR-002
+    type: SRC_TESTS_GO_IMPLEMENTATION_AND_NEUTRAL_CONTRACT_ROLE_RECONCILIATION
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261011-SRC-TESTS-GO-RECONCILE.yaml
+    - developer/policy/REAL/MPD-REAL-0003.yaml
+    next_action:
+      action: VERIFY_ROLE_BASED_SCOPING_IN_SUBSEQUENT_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: GO_TEST_IMPLEMENTATIONS_DO_NOT_REPLACE_LANGUAGE_NEUTRAL_CONTRACT_AUTHORITY
