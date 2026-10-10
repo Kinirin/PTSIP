@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: REAL
 policy:
   id: MPD-REAL-0003
-  version: '2.0'
+  version: '2.1'
   title: Root Family transition Go test implementation
   status: ACTIVE
 authority_subject:
@@ -41,6 +41,35 @@ rules:
     - ./...
     execution_registry_ref: .github/test_modes.yaml
     execution_mode_id: repository-architecture
+  src_tests_go_implementation:
+    conflict_resolution: RECONCILE
+    user_approved_direction: IMMEDIATE_GO_IMPLEMENTATION_REQUIREMENT
+    scope_root: src/tests/
+    inherit_to_descendants: true
+    scope_role: EXECUTABLE_TEST_IMPLEMENTATION_ONLY
+    implementation_language: GO
+    all_existing_non_go_test_implementations: MIGRATE_TO_GO
+    new_non_go_test_implementations: FORBIDDEN
+    existing_non_go_test_maintenance: ONLY_TO_PRESERVE_MANDATORY_VERIFICATION_DURING_MIGRATION
+    transition_completion: NOT_CLAIMED_BY_POLICY_APPROVAL
+    test_implementation_creates_normative_semantics: false
+    machine_contracts_schemas_and_conformance_vectors: PRESERVE_LANGUAGE_NEUTRAL_AUTHORITY
+    neutral_module_policy_ref: MPD-REAL-0004
+    verification_policy_ref: MPD-ASSURE-0001
+    verification_guards:
+      all_existing_required_checks_and_coverage: PRESERVED
+      legacy_required_test_execution: KEEP_UNTIL_MACHINE_VERIFIED_GO_PARITY
+      legacy_test_removal_before_verified_parity: FORBIDDEN
+      required_test_omission_or_weakening: FORBIDDEN
+      existing_fail_closed_and_negative_verification: PRESERVED
+      original_evidence_exact_source_sha_semantics: PRESERVED
+      conformance_and_functional_result_not_interchangeable: true
+      project_profile_verification_responsibility: UNCHANGED
+      test_mode_registry_and_workflow_selection_authority: UNCHANGED
+      no_unverified_go_success_substitution: true
+    planned_execution_details: PLAN
+    policy_change_authorizes_test_conversion: false
+    policy_change_authorizes_workflow_mutation: false
 relations:
   supersedes: []
   amends: []
@@ -60,3 +89,12 @@ transition:
       action: EXECUTE_REGISTERED_GO_AND_PYTHON_VERIFICATION
       execution: SERIAL_REQUIRED
       completion_check: GO_SELECTION_ADMITTED_AND_EXISTING_REGRESSION_PRESERVED
+  - id: TR-002
+    type: SRC_TESTS_GO_RECONCILIATION_SCOPE_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261011-SRC-TESTS-GO-RECONCILE.yaml
+    next_action:
+      action: DERIVE_VERIFIED_GO_MIGRATION_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: REQUIRED_COVERAGE_PRESERVED_AND_SEPARATE_IMPLEMENTATION_AUTHORIZATION_OBTAINED
