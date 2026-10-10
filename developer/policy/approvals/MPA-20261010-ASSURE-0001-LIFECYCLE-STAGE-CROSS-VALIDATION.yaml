@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261010-ASSURE-0001-LIFECYCLE-STAGE-CROSS-VALIDATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "검증 생명주기 단계 도출 방향 C(원본 규칙과 정책 목적의 교차 검증)를 네 정책에 각각 독립 적용한다. 새 정책 ID, 단계별 독점 권위, 최종 규칙 이전 매핑, ACTIVE 전환은 확정하지 않으며 기존 필수 검증은 보존한다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-ASSURE-0001
+  recorded_at: '2026-10-10'

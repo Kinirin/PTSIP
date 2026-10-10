@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.5'
+  version: '3.6'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -164,6 +164,30 @@ rules:
             each_policy_lifecycle_independently_resolved: true
             common_stage_identity_inferred_from_name: false
             cross_policy_stage_authority_transfer_by_similarity: FORBIDDEN
+            stage_derivation_strategy:
+              decision: C_SOURCE_RULE_AND_POLICY_PURPOSE_CROSS_VALIDATION
+              evaluation_independence: PER_SOURCE_POLICY
+              sources:
+                original_required_verification_rules: REQUIRED
+                applicable_policy_purpose_and_responsibility: REQUIRED
+              admission:
+                candidate_requires_both_evidence_classes: true
+                semantic_gap_or_conflict: UNRESOLVED_USER_DECISION
+                unsupported_new_normative_stage: FORBIDDEN
+                cross_policy_stage_reuse_without_authority: FORBIDDEN
+                original_required_check_loss: FORBIDDEN
+              candidates:
+                non_normative_until_approved: true
+                exact_stage_inventory: UNRESOLVED
+                exclusive_stage_owners: UNRESOLVED
+                policy_ids: UNRESOLVED
+                obligation_transfer_mapping: UNRESOLVED
+                active_transition: NOT_AUTHORIZED
+              independent_source_policy_reviews:
+                MPD-VERI-0002: REQUIRED
+                MPD-VERI-0003: REQUIRED
+                MPD-VERI-0004: REQUIRED
+                MPD-VERI-0005: REQUIRED
             stage_inventory: UNRESOLVED
             exact_stage_semantics: UNRESOLVED
             exact_exclusive_responsibility_subject: UNRESOLVED
