@@ -86,7 +86,8 @@
         "engine_local_management_entry_resolution": "MACHINE_DECLARED_IDENTITY_BOUND_ENTRYPOINT_WITH_NAME_AGNOSTIC_DIRECTORY",
         "engine_local_management_function_model": "NO_MANDATORY_COMMON_MANAGEMENT_FUNCTIONS_EXTERNAL_INTEROPERABILITY_ONLY",
         "engine_local_management_mandate": "OPTIONAL_ENGINE_OWNED_INTERNAL_FUNCTIONS",
-        "engine_minimum_external_interoperability": "MACHINE_READABLE_CONTRACT_REQUIRED"
+        "engine_minimum_external_interoperability": "MACHINE_READABLE_CONTRACT_REQUIRED",
+        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_WITH_CONDITIONAL_EXECUTION_BINDING"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -154,7 +155,13 @@
         "engine_internal_management_functions_and_directory_names_are_engine_owned": true,
         "engine_local_management_absence_does_not_invalidate_external_contract_when_no_management_operation_declared": true,
         "declared_management_entrypoint_resolves_from_engine_identity_without_path_inference": true,
-        "engine_local_management_retains_independent_version_build_and_patch_boundaries": true
+        "engine_local_management_retains_independent_version_build_and_patch_boundaries": true,
+        "external_engine_static_contract_does_not_force_common_management_runtime": true,
+        "execution_entry_bindings_are_conditional_on_declared_externally_invocable_capabilities": true,
+        "engine_without_externally_invocable_capability_needs_no_execution_entry_binding": true,
+        "engine_independent_compile_build_distribution_and_patch_boundaries_remain_normative": true,
+        "engine_management_internal_entrypoints_not_inferred_from_directory_names": true,
+        "physical_paths_do_not_grant_external_invocation_authority": true
       },
       "unresolved_decisions": [
         {
@@ -334,6 +341,21 @@
           "exact_interoperability_shape": "NOT_DECIDED",
           "physical_directory_creation": "NOT_AUTHORIZED",
           "activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_EXTERNAL_INTEROPERABILITY_UPPER_SCOPE",
+          "selected_option": "B_STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_INTEROPERABILITY_BOUNDARY_ONLY",
+          "required_static_declaration": "MACHINE_READABLE_EXTERNAL_INTEROPERABILITY",
+          "conditional_runtime_binding": "ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED",
+          "no_forced_global_engine_execution_interface": true,
+          "no_common_management_implementation_required": true,
+          "engine_source_path": "src/ptsip/engines/",
+          "exact_schema": "NOT_DECIDED",
+          "actual_binding_mechanism": "NOT_DECIDED",
+          "active_transition": "NOT_AUTHORIZED",
+          "physical_implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [

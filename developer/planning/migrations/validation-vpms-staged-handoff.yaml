@@ -41,7 +41,11 @@
     "management_subdirectory_name_rule": "ENGINE_OWNED_FREE_NAME_MACHINE_ENTRY_RESOLVED",
     "individual_engine_module_directory_names_unresolved": true,
     "minimum_common_management_obligation": "NOT_REQUIRED",
-    "minimum_external_interoperability_contract": "REQUIRED_EXACT_SHAPE_PENDING"
+    "minimum_external_interoperability_contract": "REQUIRED_EXACT_SHAPE_PENDING",
+    "external_interoperability_upper_scope": "B_STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING",
+    "external_execution_binding_applicability": "ONLY_FOR_EXTERNALLY_INVOCABLE_CAPABILITIES",
+    "external_interoperability_exact_schema": "UNRESOLVED",
+    "engine_build_deploy_patch_boundaries": "PRESERVED"
   },
   "current_baseline": {
     "project_profile_ref": ".ptsip/profiles/main.ptsip.yaml",
@@ -278,7 +282,8 @@
         "CONFIRM_NO_OVERLAP_WITH_ASSURE_CONFORMANCE_JUDGMENT",
         "MAP_OPTIONAL_ENGINE_LOCAL_MANAGEMENT_AND_REQUIRED_EXTERNAL_INTEROPERABILITY_BOUNDARY",
         "DEFINE_COMMON_ENGINE_IDENTITY_AND_PER_ENGINE_VERSION_DEPENDENCY_EXTENSIONS",
-        "DEFINE_DECLARED_DEPENDENCY_GRAPH_AND_COMPATIBILITY_EVIDENCE_BOUNDARY"
+        "DEFINE_DECLARED_DEPENDENCY_GRAPH_AND_COMPATIBILITY_EVIDENCE_BOUNDARY",
+        "DISTINGUISH_STATIC_EXTERNAL_DECLARATION_FROM_CONDITIONAL_RUNTIME_INVOCATION_BINDING"
       ],
       "exit_checks": [
         "EVERY_OPERATION_HAS_ONE_CANONICAL_SEMANTIC_OWNER",
@@ -443,6 +448,21 @@
     {
       "id": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
       "owner": "CONTRACT_DESIGN",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "ENGINE_STATIC_INTEROPERABILITY_MANDATORY_INFORMATION_BOUNDARY",
+      "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY",
+      "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "ENGINE_INTEROPERABILITY_COMPATIBILITY_AND_EVIDENCE_RESPONSIBILITY_BOUNDARY",
+      "owner": "USER_EXPLICIT_SEPARATE_APPROVAL",
       "status": "UNRESOLVED"
     }
   ],

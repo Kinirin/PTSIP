@@ -81,7 +81,8 @@
         "engine_management_responsibility_model": "NO_MANDATORY_INTERNAL_MANAGEMENT_SET_EXTERNAL_INTEROPERABILITY_ONLY",
         "engine_version_dependency_contract": "COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS",
         "engine_interface_change_impact": "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS",
-        "engine_minimum_external_interoperability": "CONTRACT_DRIVEN_ENGINE_IDENTITY_ENTRY_BINDING_VERSION_DEPENDENCY_AND_COMPATIBILITY"
+        "engine_minimum_external_interoperability": "CONTRACT_DRIVEN_ENGINE_IDENTITY_ENTRY_BINDING_VERSION_DEPENDENCY_AND_COMPATIBILITY",
+        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -147,7 +148,18 @@
         "management_entrypoint_absence_is_allowed_when_no_management_operation_is_declared": true,
         "missing_or_ambiguous_declared_required_interoperability_binding": "FAIL_CLOSED",
         "external_contract_is_not_automatic_activation_or_permission_grant": true,
-        "per_engine_build_deploy_patch_isolation_and_contract_based_impact_analysis_remain_required": true
+        "per_engine_build_deploy_patch_isolation_and_contract_based_impact_analysis_remain_required": true,
+        "static_external_interoperability_declaration_required_for_engine_discovery": true,
+        "runtime_invocation_binding_required_only_for_declared_externally_invocable_capability": true,
+        "missing_or_ambiguous_required_runtime_binding": "FAIL_CLOSED",
+        "no_runtime_binding_required_when_no_external_invocation_declared": true,
+        "no_mandatory_global_management_runtime_api_or_common_execution_abi": true,
+        "runtime_binding_must_resolve_without_engine_directory_name_inference": true,
+        "external_invocation_requires_separate_effective_ctrl_execution_authority": true,
+        "binding_declaration_does_not_grant_activation_execution_write_or_isolation_exception": true,
+        "external_interoperability_contract_does_not_reassign_active_assure_or_vpms_authority": true,
+        "independent_engine_versioned_dependencies_build_distribution_patch_remain_separate": true,
+        "contract_graph_impact_and_compatibility_evidence_gates_unchanged": true
       },
       "unresolved_decisions": [
         {
@@ -229,6 +241,21 @@
         {
           "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_STATIC_INTEROPERABILITY_MANDATORY_INFORMATION_BOUNDARY",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_INTEROPERABILITY_COMPATIBILITY_AND_EVIDENCE_RESPONSIBILITY_BOUNDARY",
+          "kind": "USER_DECISION",
           "status": "UNRESOLVED"
         }
       ],
@@ -318,6 +345,21 @@
           ],
           "exact_external_contract_schema": "NOT_DECIDED",
           "engine_implementation_changes": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_EXTERNAL_INTEROPERABILITY_UPPER_SCOPE",
+          "selected_option": "B_STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING",
+          "approval_source": "USER_EXPLICIT",
+          "resolution_scope": "HIGH_LEVEL_EXTERNAL_CONTRACT_SCOPE_ONLY",
+          "static_declaration": "REQUIRED",
+          "execution_binding": "CONDITIONAL_ON_EXTERNALLY_INVOCABLE_CAPABILITY",
+          "runtime_invocation_mechanism": "NOT_DECIDED",
+          "minimal_static_contract_information": "NOT_DECIDED",
+          "conditional_binding_trigger_detail": "NOT_DECIDED",
+          "compatibility_and_evidence_responsibility_split": "NOT_DECIDED",
+          "management_common_implementation": "NOT_REQUIRED",
+          "effective_execution_authority": "UNCHANGED",
+          "engine_independent_build_patch": "PRESERVED"
         }
       ],
       "dependent_plans": [
