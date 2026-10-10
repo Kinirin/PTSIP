@@ -1,0 +1,237 @@
+schema_version: ptsip-plan-extension/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: "0.3.8"
+extension:
+  id: WU-03-P01
+  parent: WU-03
+  title: Context and Evidence ID machine contracts and P0-P1 execution plan
+  classification: CORE
+  lifecycle:
+    status: DRAFT
+approval:
+  status: PENDING
+implementation_authorization:
+  status: HOLD_NOT_AUTHORIZED
+depends_on: [WU-03, WU-05]
+
+proposal:
+  authority: false
+  status: UNREGISTERED_DRAFT
+  document_role: PLAN_ONLY_NO_IMPLEMENTATION
+  canonical_candidate_path: developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml
+  current_branch: dev/0.3.8
+  source_policy_review_sha: 02983ce69a66f0275a8a4e2e03139905e61fb3a8
+  formal_identity_binding: NOT_ALLOCATED_BY_THIS_DRAFT
+  plan_entrypoint_registration: PENDING_SEPARATE_APPROVAL
+  approved_parent_plan_ref: developer/planning/0.3.8/0.3.8a3/index.yaml
+  existing_responsibility_refs:
+    - developer/planning/0.3.8/0.3.8a3/WU-03/WU-03.yaml
+    - developer/planning/0.3.8/0.3.8a3/WU-05/WU-05.yaml
+  execution_permission_inherited_from_parent: false
+  modification_scope_this_commit: [THIS_PLAN_FILE_ONLY]
+  change_control:
+    policy_mutation: FORBIDDEN
+    code_and_test_mutation: FORBIDDEN
+    workflow_mutation: FORBIDDEN
+    registry_index_mutation: FORBIDDEN
+    branch_creation: FORBIDDEN
+    runtime_activation: FORBIDDEN
+
+objective:
+  first_vertical_slice: POLICY_BINDING_AND_CONTEXT_EVIDENCE_ID_ISSUANCE
+  phases: [P0_POLICY_TO_CONTRACT_BINDING, P1_CONTEXT_EVIDENCE_ID_CONTRACT]
+  future_phases: [P2_PROVIDER_AND_EVENT_PROOF, P3_ANALYSIS_REFERENCES, P4_RELOCATION_FORK_AUDIT, P5_INTEGRATION_AND_COST_MEASUREMENT]
+  future_phases_authorized_by_this_plan: false
+  result: >-
+    Design a policy-derived, language-neutral candidate machine-contract and
+    execution plan for consumer-repository-local opaque Context/Evidence IDs,
+    permanent non-reassignment, proof-bound reuse, and automated conformance.
+    No implementation is authorized by this draft.
+
+authority_boundary:
+  order: [EFFECTIVE_POLICY, APPROVED_PLAN, IMPLEMENTATION]
+  active_policy_must_not_be_overridden: true
+  draft_policy_may_not_be_activated_by_plan: true
+  contract_may_not_invent_normative_semantics: true
+  no_dual_normative_contract_authority: true
+  exact_registered_bindings_before_agent_inference: true
+  uncertain_new_policy_or_required_proof: ESCALATE_WITHOUT_MUTATION
+  policy_refs:
+    - {id: SFP-INFO-0007, path: src/policy/INFO/SFP-INFO-0007.yaml, status_at_review: DRAFT, responsibility: CONTEXT_EVIDENCE_COMMON_IDENTITY_AND_PROOF_BOUNDARY}
+    - {id: SFP-INFO-0005, path: src/policy/INFO/SFP-INFO-0005.yaml, status_at_review: DRAFT, responsibility: ANALYSIS_OWNED_REGISTERED_EVIDENCE_REFERENCES}
+    - {id: SFP-CNTR-0006, path: src/policy/CNTR/SFP-CNTR-0006.yaml, status_at_review: DRAFT, responsibility: TYPED_RESOLUTION_AND_CONTEXT_FIRST_LOOKUP}
+    - {id: SFP-ASSURE-0005, path: src/policy/ASSURE/SFP-ASSURE-0005.yaml, status_at_review: DRAFT, responsibility: EVIDENCE_VALIDITY_AND_CONFORMANCE}
+    - {id: SFP-RECORD-0001, path: src/policy/RECORD/SFP-RECORD-0001.yaml, status_at_review: ACTIVE, responsibility: ORIGINAL_PROVENANCE_AND_RETENTION}
+    - {id: SFP-RECORD-0004, path: src/policy/RECORD/SFP-RECORD-0004.yaml, status_at_review: DRAFT, responsibility: ANALYSIS_WORKING_RETENTION_BOUNDARY}
+  protected_invariants:
+    - CONSUMER_REPOSITORY_LOCAL_ID_UNIQUENESS
+    - OPAQUE_NON_SEMANTIC_ID_AND_EXACT_MATCH_ONLY
+    - DIFFERENT_EVENT_ID_REASSIGNMENT_PERMANENTLY_FORBIDDEN
+    - VERIFIED_SAME_EVENT_MAY_REFERENCE_EXISTING_ID
+    - UNKNOWN_EVENT_EQUIVALENCE_NEVER_AUTOMATICALLY_MERGED
+    - RECORD_ACTIVE_SOURCE_AND_RETENTION_AUTHORITY_PRESERVED
+    - NON_REASSIGNMENT_DOES_NOT_REQUIRE_UNAUTHORIZED_NEW_RECORD_RETENTION_DUTY
+    - ANALYSIS_OWNS_EVIDENCE_REFERENCES
+    - CONTEXT_FIRST_DERIVED_REVERSE_INDEX_IS_NON_AUTHORITATIVE
+    - FORK_AND_RELOCATION_CREATE_INDEPENDENT_ANALYSIS
+    - FORK_AUDIT_REQUEST_ONLY_EXISTING_VERIFIED_LOCAL_RECORDS
+    - NO_CROSS_REPOSITORY_ORIGIN_LOOKUP_PREREQUISITE
+
+reuse_before_creation:
+  developer_machine_contract_baseline:
+    plan_ref: developer/planning/0.3.8/0.3.8a3/WU-03/WU-03.yaml
+    candidate_root: src/agent_contracts/
+    normative_activation_status: VERIFY_AT_EXECUTION_PREFLIGHT
+    candidate_format: JSON
+    structure_validation: JSON_SCHEMA
+    conformance_vectors: JSON
+    required_primitive_roles: [primitive_id, input_schema_ref, output_schema_ref, operation_semantics_ref, failure_semantics_ref, conformance_vectors_ref]
+    four_field_collapse: FORBIDDEN
+  resolver_and_plan_projection:
+    plan_ref: developer/planning/0.3.8/0.3.8a3/WU-05/WU-05.yaml
+    reuse_existing_resolver_before_building_new_one: true
+    exact_identity_binding: REQUIRED
+    guess_semantic_equivalence: FORBIDDEN
+  verification:
+    registry: .github/test_modes.yaml
+    automatic_mode_resolution_required: true
+    likely_components: [ptsip-contract, ptsip-evidence, ptsip-core, repository-architecture, test-mode-control-plane]
+    listed_components_are_not_forced_all_test_modes: true
+    final_selection: EFFECTIVE_PROFILE_RESOLVER
+    required_failures_cannot_be_waived: true
+
+planned_work_packages:
+  - id: P0-01
+    title: Effective authority and existing contract coverage inventory
+    depends_on: []
+    outputs: [EXACT_POLICY_REVISION_MAP, EXISTING_CONTRACT_COVERAGE_MATRIX, CONFLICT_AND_GAP_LEDGER]
+    requirements:
+      - DISTINGUISH_ACTIVE_AUTHORITY_FROM_DRAFT_DIRECTION
+      - REUSE_EXISTING_MACHINE_CONTRACT_AND_RESOLVER
+      - CHECK_CURRENT_BRANCH_HEAD_AND_EFFECTIVE_PROFILE
+    acceptance:
+      - ALL_RELEVANT_AUTHORITIES_RESOLVED_OR_EXPLICITLY_UNRESOLVED
+      - NO_DUPLICATE_NORMATIVE_CONTRACT_OWNER
+  - id: P0-02
+    title: Policy-derived machine contract interface specification
+    depends_on: [P0-01]
+    outputs: [VERSIONED_CANDIDATE_CONTRACT_SPEC, POLICY_TO_CONTRACT_BINDINGS, FAILURE_AND_PROOF_OBLIGATION_MATRIX]
+    requirements:
+      - PRESERVE_SIX_CANONICAL_ACCESS_PRIMITIVE_RESPONSIBILITIES
+      - TYPED_INPUT_OUTPUT_OPERATION_AND_FAILURE_SEMANTICS
+      - FAILURE_CANNOT_GRANT_IDENTITY_OR_REUSE_AUTHORITY
+      - NO_LANGUAGE_SPECIFIC_NORMATIVE_SEMANTICS
+      - NO_UNAPPROVED_CANONICAL_ACTIVATION
+    acceptance:
+      - EVERY_CONTRACT_SEMANTIC_HAS_EXACT_POLICY_OR_APPROVED_CONTRACT_SOURCE
+      - UNRESOLVED_SEMANTIC_REQUIRES_ESCALATION_NOT_DEFAULT_SELECTION
+  - id: P0-03
+    title: Deterministic plan projection and verification responsibility mapping
+    depends_on: [P0-02]
+    outputs: [CONTRACT_TO_PLAN_WORK_PACKET_MAPPING, AUTOMATIC_TEST_MODE_RESOLUTION_CRITERIA]
+    requirements:
+      - EXISTING_WU_05_RESOLVER_FIRST
+      - PLAN_PROJECTION_CONVEYS_NO_NEW_AUTHORITY
+      - NO_DEFAULT_ALL_TEST_MODES_WITHOUT_REQUIREMENT
+    acceptance:
+      - EXACT_MATCH_ROUTING_AND_FAIL_CLOSED_UNRESOLVED_RESULT
+      - IMPLEMENTATION_REMAINS_UNAUTHORIZED
+  - id: P1-01
+    title: Opaque repository-scoped issuance contract
+    depends_on: [P0-02]
+    outputs: [OPAQUE_ID_ISSUANCE_OPERATION_CANDIDATE, SOURCE_AND_METADATA_SEPARATION_RULES]
+    requirements:
+      - ID_VALUE_HAS_NO_TIME_SOURCE_TYPE_FEATURE_OR_CLASSIFICATION_MEANING
+      - PROVIDER_NATIVE_ID_FORMAT_NOT_REDEFINED
+      - CONSUMER_REPOSITORY_LOCAL_UNIQUENESS
+      - ISSUANCE_USES_PROVEN_UNASSIGNED_ID_IN_SCOPE
+    acceptance:
+      - NO_ID_STRING_MEANING_OR_FILENAME_BASED_RESOLUTION
+      - COLLISION_AND_AMBIGUITY_HAVE_EXPLICIT_FAILURE_SEMANTICS
+  - id: P1-02
+    title: Issued-ID history and irreversible non-reassignment proof
+    depends_on: [P1-01]
+    outputs: [EVER_ISSUED_PROOF_INTERFACE_CANDIDATE, RETIREMENT_AND_CLEANUP_NEGATIVE_VECTORS]
+    requirements:
+      - RETIREMENT_OR_CLEANUP_NEVER_RELEASES_ID_FOR_DISTINCT_OBSERVATION
+      - MISSING_REGISTRY_ENTRY_IS_NOT_PROOF_OF_NEVER_ASSIGNED
+      - UNKNOWN_PRIOR_ISSUANCE_FAIL_CLOSED
+      - NEVER_CREATE_NEW_GLOBAL_REGISTRY_OR_RECORD_RETENTION_AUTHORITY_SILENTLY
+    acceptance:
+      - DISTINCT_OBSERVATION_CANNOT_REUSE_HISTORICALLY_ISSUED_ID
+      - RECORD_RETENTION_RULES_ARE_INDEPENDENT_FROM_ID_NON_REASSIGNMENT
+  - id: P1-03
+    title: Same-event reuse preservation and conformance vectors
+    depends_on: [P1-01, P1-02, P0-03]
+    outputs: [SUCCESS_FAILURE_NEGATIVE_CONFORMANCE_VECTOR_PLAN, VERIFICATION_GATE_MATRIX]
+    requirements:
+      - VERIFIED_SAME_EVENT_REUSE_OF_EXISTING_ID_REMAINS_ALLOWED
+      - PROVIDER_ID_OR_PAYLOAD_SIMILARITY_ALONE_IS_NOT_SAME_EVENT_PROOF
+      - UNRESOLVED_SAME_EVENT_PROOF_BLOCKS_MERGE_OR_REUSE
+      - RACE_COLLISION_RETIREMENT_SOURCE_REVISION_AND_METADATA_CHANGE_TEST_CASES
+      - REQUIRE_MACHINE_CONTRACT_PROOF_FOR_EACH_EXPECTED_OUTCOME
+    acceptance:
+      - EXAMPLES_COVER_NEW_ISSUE_VERIFIED_REOBSERVATION_DISTINCT_EVENT_AND_UNKNOWN_PROOF
+      - NEGATIVE_CASES_CANNOT_LEAK_FALSE_AUTHORITY
+      - RESPONSIBILITY_SELECTED_TEST_MODES_AND_BASELINE_REGRESSIONS_DEFINED
+  - id: P1-04
+    title: Contract plan approval package
+    depends_on: [P1-03]
+    outputs: [POLICY_COVERAGE_REPORT, OPEN_AUTHORITY_DECISIONS, EXECUTION_READINESS_CHECKLIST, APPROVAL_HANDOFF]
+    requirements:
+      - NO_CODE_OR_RUNTIME_IMPLEMENTATION_IN_THIS_PROPOSAL
+      - NO_ACTIVATION_WITH_OPEN_REQUIRED_POLICY_OR_PROOF_GAP
+      - REQUIRE_SEPARATE_APPROVAL_BEFORE_IMPLEMENTATION
+    acceptance:
+      - ALL_P0_P1_ACCEPTANCE_GATES_ARE_EXPLICIT_AND_MACHINE_TESTABLE
+      - APPROVAL_IS_PENDING_AND_IMPLEMENTATION_AUTHORIZATION_IS_HOLD
+
+execution_sequence:
+  dependency_order:
+    - [P0-01]
+    - [P0-02]
+    - [P0-03, P1-01]
+    - [P1-02]
+    - [P1-03]
+    - [P1-04]
+  expected_execution_only_after_separate_approval: true
+  parallelism_follows_dependency_graph: true
+
+unresolved_contract_handoff:
+  - {id: CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT, owner_work_package: P1-01, disposition: PLAN_AND_MACHINE_CONTRACT_CANDIDATE}
+  - {id: CONTEXT_ISSUED_ID_HISTORY_PROOF_AND_NON_REASSIGNMENT_INTERFACE, owner_work_package: P1-02, disposition: PLAN_AND_MACHINE_CONTRACT_CANDIDATE}
+  - {id: CONTEXT_EXISTING_VERIFIED_RECORD_FORK_AUDIT_DERIVATION_PROOF_INTERFACE, owner_work_package: P4_FUTURE, disposition: DEFERRED_EXISTING_RECORD_PROOF}
+  - {id: CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE, owner_work_package: P4_FUTURE, disposition: DEFERRED_SCOPE_RESET_INTERFACE}
+  - {id: MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE, owner_work_package: P2_FUTURE, disposition: DEFERRED_SOURCE_OBSERVATION_PROOF}
+  - {id: PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE, owner_work_package: P2_FUTURE, disposition: DEFERRED_PROVIDER_EXTENSION_PROOF}
+  future_handoff_is_policy_resolution: false
+  unresolved_policy_list_modified_by_this_plan: false
+
+approval_and_activation_gates:
+  plan_document_creation:
+    permitted: true
+    implementation_authorized: false
+  plan_approval:
+    current_status: PENDING
+    requirement: EXPLICIT_USER_AUDIT_AND_APPROVAL
+  implementation:
+    current_status: HOLD_NOT_AUTHORIZED
+    requires: SEPARATE_EXPLICIT_IMPLEMENTATION_DIRECTION
+  machine_contract_activation:
+    current_status: FORBIDDEN_BY_THIS_DRAFT
+    requires: EXISTING_APPROVED_CUTOVER_AND_POLICY_COMPATIBILITY_GATES
+  failure_escalation:
+    - NEW_NORMATIVE_DOMAIN_OR_CHANGED_AUTHORITY
+    - NEW_MANDATORY_RECORD_RETENTION_OR_GLOBAL_REGISTRY
+    - UNRESOLVED_PROOF_MEANING_OR_UNSUPPORTED_PROVIDER
+    - PLAN_SCOPE_EXPANSION_BEYOND_APPROVED_AUTHORITY
+    - CANONICAL_CONTRACT_ACTIVATION_WITHOUT_EFFECTIVE_APPROVAL
+  final_quality_gate:
+    - VALID_MACHINE_READABLE_PLAN_EXTENSION_SCHEMA
+    - PLAN_TRACES_TO_EXACT_POLICY_BOUNDARIES
+    - NO_POLICY_OR_EXISTING_PLAN_MUTATION
+    - NO_RUNTIME_OR_WORKFLOW_MUTATION
+    - NO_UNAUTHORIZED_BRANCH_CREATION
+    - ALL_UNRESOLVED_ITEMS_RETAIN_EXPLICIT_OWNER_AND_DISPOSITION
+    - NEGATIVE_AND_FAIL_CLOSED_CONFORMANCE_DEFINED
+    - EXECUTION_HOLD_REMAINS_EFFECTIVE
