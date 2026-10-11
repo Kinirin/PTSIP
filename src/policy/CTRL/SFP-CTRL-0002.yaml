@@ -57,7 +57,16 @@
           "IN_PROCESS",
           "ISOLATED"
         ],
-        "in_flight_revocation_policy": "AUTHORITY_BOUNDARY_SAFE_STOP"
+        "in_flight_revocation_policy": "AUTHORITY_BOUNDARY_SAFE_STOP",
+        "eligible_activation_mode": "AUTOMATIC_AFTER_MACHINE_VERIFIED_CONTRACT_AND_ENVIRONMENT_ELIGIBILITY",
+        "automatic_activation_consent": "PREDELEGATED_SCOPE_NO_PER_ACTIVATION_USER_PROMPT",
+        "automatic_activation_contract_gate": "CURRENT_REGISTERED_ENGINE_AND_CAPABILITY_CONTRACT_VERIFIED",
+        "automatic_activation_environment_gate": "CURRENT_HOST_COMPATIBILITY_DEPENDENCY_AND_REQUIRED_ISOLATION_VERIFIED",
+        "automatic_activation_authority_gate": "EXISTING_PREDELEGATED_SCOPE_AND_FRESH_CTRL_AUTHORITY_REQUIRED",
+        "automatic_activation_failure": "INELIGIBLE_NOT_AUTOMATICALLY_ACTIVATED",
+        "automatic_activation_is_runtime_execution_authorization": false,
+        "activation_mode_owner_selection": "USER_EXPLICIT_OPTION_B",
+        "activation_mode_direction_recorded_at": "2026-10-11"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -96,7 +105,16 @@
         "in_flight_continuation_cannot_start_new_mutation_after_revocation": true,
         "revocation_safe_stop_respects_existing_ctrl_real_ops_authority": true,
         "unverified_effects_at_stop_cannot_be_asserted_rolled_back_or_successful": true,
-        "revocation_does_not_implicitly_authorize_compensation_or_retry": true
+        "revocation_does_not_implicitly_authorize_compensation_or_retry": true,
+        "automatic_activation_requires_all_applicable_contract_environment_and_authority_gates": true,
+        "registration_or_contract_compatibility_alone_cannot_grant_activation": true,
+        "failed_unknown_or_ambiguous_activation_predicate": "FAIL_CLOSED",
+        "activation_does_not_override_explicit_consumer_engine_binding": true,
+        "activation_does_not_bypass_required_fresh_execution_authorization": true,
+        "activation_does_not_expand_execute_write_host_or_isolation_rights": true,
+        "activation_does_not_authorize_automatic_in_flight_engine_switch": true,
+        "activation_direction_recording_does_not_activate_draft_runtime": true,
+        "activation_not_enabled_until_active_policy_and_shipped_contract_ready": true
       },
       "unresolved_decisions": [
         {
@@ -188,7 +206,24 @@
           "atomic_segment_catalog": "NOT_DECIDED",
           "timeout_parameters": "NOT_DECIDED"
         }
-      ]
+      ],
+      "automatic_activation_direction_boundary": {
+        "scope": "ENGINE_RUNTIME_ELIGIBILITY_AND_ACTIVATION_MODE",
+        "activation_mode": "AUTOMATIC_ONLY_WITHIN_EXISTING_PREDELEGATED_SCOPE",
+        "machine_verified_predicates": [
+          "REGISTERED_ENGINE_IDENTITY_AND_CURRENT_CAPABILITY_CONTRACT",
+          "CURRENT_HOST_ENVIRONMENT_AND_DEPENDENCY_COMPATIBILITY",
+          "REQUIRED_ISOLATION_AND_RESOURCE_BOUNDARY_ENFORCEABILITY",
+          "CURRENT_PREDELEGATED_ELIGIBILITY_WITHOUT_REVOKED_AUTHORITY"
+        ],
+        "when_eligible": "AUTOMATIC_ACTIVATION_WITHOUT_REPEATED_MANUAL_APPROVAL",
+        "when_ineligible_or_unverified": "NO_ACTIVATION_FAIL_CLOSED",
+        "activation_does_not_imply_operation_execution_permission": true,
+        "runtime_and_concrete_interface_details": "PLAN_AND_MACHINE_CONTRACT",
+        "current_effect": "DRAFT_DECISION_ONLY_NO_RUNTIME_ACTIVATION",
+        "existing_active_arch_engine_runtime_activation": "DEFERRED_UNTIL_SEPARATE_LIFECYCLE_APPROVAL",
+        "current_release_engine_state_reuse_scope": "UNCHANGED_EXACT_MATCH_ONLY"
+      }
     }
   },
   "relations": {
