@@ -1032,6 +1032,29 @@
           "implementation_execution": false,
           "workflow_dispatch_for_mutation": false,
           "compatibility_result_status": "NOT_YET_MACHINE_VERIFIED_FOR_WU_03_P02_STAGES"
+        },
+        "read_only_static_assessment": {
+          "classification": "PRELIMINARY_SOURCE_CONTRACT_COMPARISON_NOT_RUNTIME_OR_TEST_PASS",
+          "evidence_snapshot_sha": "5a6fdd10316efa1e6c6b8c1abe319a58fe007139",
+          "source_ref": "developer/automation/planning/planning_finalizers.go",
+          "source_blob_sha": "4017021fd9b37655da1c426723e37abfe227069d",
+          "plan_ref": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P02.yaml",
+          "verified_static_observations": [
+            "FINALIZER_STATUS_RECORD_DISCOVERY_REQUIRES_MIGRATION_STAGES_OR_SUFFIX_EXECUTION_PLAN",
+            "FINALIZER_DOES_NOT_DISCOVER_WORK_PACKAGES_DIRECTLY",
+            "GENERIC_STAGE_LOOKUP_REQUIRES_ID_AND_STATUS_IN_SAME_OBJECT",
+            "WU03_P02_WORK_PACKAGES_DEFINE_ID_AND_DEPENDS_ON_BUT_NOT_STATUS_OR_REGISTERED_AUTOMATIC_COMPLETION"
+          ],
+          "exact_gap": "WU03_P02_LOCAL_WORK_PACKAGE_STAGE_RESULT_TO_EXISTING_FINALIZER_INTERFACE_ADAPTER_NOT_ESTABLISHED",
+          "affected_checks": [
+            "EXACT_REGISTERED_STAGE_ID_AND_DEPENDENCY_INPUT_SUPPORTED",
+            "WU06_STAGE_RESULT_AND_RERESOLUTION_INTERFACE_COMPATIBLE"
+          ],
+          "remaining_verification": "REQUIRES_REGISTERED_MACHINE_INTEGRATION_AND_SEPARATELY_AUTHORIZED_ENVIRONMENT",
+          "code_or_workflow_modified": false,
+          "stage_execution_performed": false,
+          "approval_or_implementation_authorization_mutated": false,
+          "unsafe_assumption_that_wu05_complete_implies_compatible": false
         }
       },
       "stage_selection": {
