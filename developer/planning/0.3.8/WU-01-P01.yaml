@@ -162,7 +162,7 @@
     "parent_work_unit_registered": false,
     "plan_admission": "REVIEW_ONLY_UNTIL_USER_APPROVAL_AND_VALID_PARENT_REGISTRATION",
     "current_plan_lookup": "CURRENT_RELEASE_PLAN_CONTENT_ONLY",
-    "historical_plan_lookup": "NOT_REQUIRED_FOR_THIS_REVALIDATION",
+    "historical_plan_lookup": "FORBIDDEN_THIS_PLAN_NO_CROSS_VERSION_LOOKUP",
     "release_plan_registration": "NOT_REGISTERED",
     "work_units_registration_requires_user_approved_work_unit": true,
     "plan_schema_mutation": "NOT_REQUIRED_BY_THIS_PLAN_CORRECTION"
@@ -248,13 +248,15 @@
         "id": "RV-04",
         "responsibility": "CANDIDATE_PLAN_REFERENCE_AUTHORITY_SEPARATION",
         "state": "UNRESOLVED_LEGACY_BINDING",
-        "action": "Independently verify the candidate plan_ref authority and its schema exact binding; any replacement with current-release authority requires a matching explicitly approved current-release plan and legitimate binding mutation, not a path substitution",
+        "action": "Check only whether the current candidate and its schema still bind a cross-release plan_ref; do not fetch the prerelease plan. Replace the binding only after explicit current-release approval and registered binding authority, preserving candidate-only execution.",
         "evidence": {
-          "candidate_plan_ref_at_review": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
-          "candidate_schema_plan_ref_at_review": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+          "candidate_binding_location": "src/agent_contracts/contracts/context-evidence-identity.json#/plan_ref",
+          "candidate_schema_binding_location": "src/agent_contracts/schemas/candidate-context-evidence.schema.json#/properties/plan_ref/const",
+          "observed_binding_category": "LEGACY_PRERELEASE_PATH_NOT_CURRENT_RELEASE_AUTHORITY",
+          "historical_plan_document_lookup": "FORBIDDEN",
           "current_release_plan_ref": "developer/planning/0.3.8/WU-01-P01.yaml"
         },
-        "pass_condition": "NO_UNAPPROVED_PRERELEASE_APPROVAL_INHERITANCE_AND_ANY_REBIND_APPROVED_AND_MACHINE_VERIFIED",
+        "pass_condition": "CURRENT_RELEASE_PLAN_REF_REBOUND_ONLY_AFTER_EXPLICIT_APPROVAL_AND_MACHINE_VERIFIED_BINDING_AUTHORITY_NO_HISTORICAL_PLAN_LOOKUP",
         "failure": "KEEP_ORIGINAL_CANDIDATE_PROTECTED_BLOCK_RELEASE_AUTHORITY_CLAIM"
       },
       {
