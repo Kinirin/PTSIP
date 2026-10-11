@@ -48,6 +48,9 @@ authority_semantics:
     context_analysis_reference_authority: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCES
     context_analysis_reference_granularity: INDIVIDUAL_OBSERVATION_AND_EVIDENCE
     context_first_analysis_discovery: AUTOMATIC_DERIVED_REVERSE_INDEX
+    reusable_long_term_retention_granularity: CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE
+    reusable_long_term_retention_missing_type_delegation: NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+    reusable_long_term_retention_scope_policy_owner: SFP-RECORD-0004
   unit_consumer_analysis_invariants:
     registry:
       membership_required: true
@@ -73,6 +76,14 @@ authority_semantics:
     tiers:
       working_reuse_authority: false
       reusable_requires_evidence_verified_qualification: true
+    reusable_long_term_retention:
+      analysis_type_membership: EXPLICIT_REGISTERED_TYPE_IDENTITY
+      delegation_authority: CONSUMER_PROJECT_EXPLICIT_PER_ANALYSIS_TYPE
+      project_wide_default_as_type_delegation: FORBIDDEN
+      missing_ambiguous_stale_or_unverified_type_delegation: FAIL_CLOSED_NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+      evidence_verified_reusable_qualification_still_required: true
+      retention_eligibility_does_not_create_record_reuse_or_cleanup_execution_authority: true
+      mandatory_record_retention_and_source_provenance_override_delegated_scope: true
     context_analysis_references:
       authoritative_direction: ANALYSIS_TO_CONTEXT_EVIDENCE
       discovery_direction: CONTEXT_TO_ANALYSIS
@@ -104,8 +115,20 @@ authority_semantics:
   unit_consumer_analysis_unresolved_decisions:
     - RECORD_ID_PHYSICAL_FORMAT_AND_COLLISION_CHECK_CONTRACT
     - COMMON_AND_TYPE_SPECIFIC_SCHEMA_FIELD_CONTRACT
-    - REUSABLE_RETENTION_SCOPE
     - CONTEXT_OBSERVATION_EVIDENCE_REFERENCE_INTERFACE
+  unit_consumer_analysis_resolved_decisions:
+    - id: REUSABLE_RETENTION_SCOPE
+      selected_option: B_CONSUMER_DELEGATED_PER_ANALYSIS_TYPE
+      approval_source: USER_EXPLICIT
+      decision_date: '2026-10-11'
+      resolution_scope: LONG_TERM_REUSABLE_RETENTION_DELEGATION_GRANULARITY_ONLY
+      owner_policy: SFP-RECORD-0004
+      missing_valid_type_delegation: NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+      existing_reusable_evidence_qualification: PRESERVED
+      mandatory_record_and_provenance_retention: PRESERVED
+      independent_cleanup_write_authority: UNCHANGED
+      physical_implementation: NOT_AUTHORIZED
+      active_transition: NOT_AUTHORIZED
 relations:
   supersedes: []
   amends: []

@@ -44,8 +44,15 @@
       "original_records_for_equivalence": "PRESERVE_ID_PROVENANCE_AND_VERIFICATION_HISTORY",
       "retention_inputs": "EXISTING_TASK_REFERENCE_VERIFICATION_AND_RECORD_CONTRACTS",
       "per_record_manual_retention_list": "NOT_REQUIRED",
-      "reusable_long_term_retention_scope": "CONSUMER_DELEGATED_LONG_TERM_RETENTION",
-      "reusable_required_original_identity_and_provenance": "PRESERVED"
+      "reusable_long_term_retention_scope": "CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE_LONG_TERM_RETENTION",
+      "reusable_required_original_identity_and_provenance": "PRESERVED",
+      "reusable_long_term_retention_scope_choice": "B_USER_EXPLICIT",
+      "reusable_long_term_retention_scope_decided_at": "2026-10-11",
+      "reusable_long_term_retention_delegation_granularity": "INDEPENDENT_EXPLICIT_CONSUMER_DELEGATION_FOR_EACH_REGISTERED_ANALYSIS_TYPE",
+      "reusable_long_term_retention_missing_valid_type_delegation": "NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY",
+      "reusable_long_term_retention_type_binding_owner": "SFP-INFO-0005",
+      "reusable_long_term_retention_contract_shape": "PLAN_AND_MACHINE_CONTRACT_UNRESOLVED",
+      "reusable_long_term_retention_policy_is_cleanup_or_write_permission": false
     },
     "unit_consumer_analysis_invariants": {
       "working_retention_needs_machine_proven_reference_scope": true,
@@ -57,13 +64,58 @@
       "records_confer_new_project_authority": false,
       "consumer_retention_scope_cannot_override_mandatory_record_retention": true,
       "reusable_retention_policy_is_not_cleanup_execution_permission": true,
-      "unregistered_or_ambiguous_retention_delegation_cannot_authorize_cleanup": true
+      "unregistered_or_ambiguous_retention_delegation_cannot_authorize_cleanup": true,
+      "reusable_retention_scope_requires_explicit_type_bound_consumer_delegation": true,
+      "reusable_retention_scope_cannot_be_inferred_from_global_project_default": true,
+      "missing_expired_revoked_ambiguous_or_unverifiable_type_delegation": "FAIL_CLOSED_NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY",
+      "independent_analysis_type_delegations_do_not_implicitly_cross_authorize": true,
+      "evidence_verified_reusable_qualification_remains_independent_and_mandatory": true,
+      "reusable_long_term_retention_scope_does_not_override_mandatory_record_or_original_provenance": true,
+      "failure_to_delegate_long_term_retention_is_not_permission_to_delete_existing_records": true,
+      "retention_scope_eligibility_does_not_authorize_cleanup_physical_deletion_or_write": true,
+      "registration_or_retention_mutation_still_requires_separate_current_ctrl_and_real_authority": true,
+      "type_delegation_proof_and_resolution_are_machine_verifiable": true,
+      "type_specific_retention_direction_does_not_activate_draft_policy": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
       "REUSABLE_RETENTION_DELEGATION_CONTRACT_SHAPE"
     ],
-    "unit_consumer_analysis_implementation_detail_authority": "PLAN"
+    "unit_consumer_analysis_implementation_detail_authority": "PLAN",
+    "unit_consumer_analysis_reusable_retention_type_delegation_policy": {
+      "subject": "REUSABLE_ANALYSIS_LONG_TERM_RETENTION_SCOPE",
+      "selected_option": "B_INDEPENDENT_CONSUMER_DELEGATION_PER_ANALYSIS_TYPE",
+      "decision_source": "USER_EXPLICIT",
+      "decision_date": "2026-10-11",
+      "applicability": "REGISTERED_ANALYSIS_TYPE_IDENTITY_VIA_SFP_INFO_0005",
+      "authority": "CONSUMER_PROJECT_EXPLICIT_DELEGATION_PER_ANALYSIS_TYPE",
+      "no_valid_matching_type_delegation": "DO_NOT_AUTOMATICALLY_GRANT_LONG_TERM_REUSABLE_RETENTION_ELIGIBILITY",
+      "otherwise_required": "EVIDENCE_VERIFIED_REUSABLE_QUALIFICATION_AND_ALL_MANDATORY_RECORD_CONTRACTS",
+      "mandatory_record_receipt_history_and_original_provenance": "PRESERVE_INDEPENDENT_OF_CONSUMER_TYPE_DELEGATION",
+      "no_implicit_project_wide_type_delegation": true,
+      "no_cleanup_execution_permission_from_retention_eligibility": true,
+      "no_write_permission_from_retention_eligibility": true,
+      "delegation_contract_format_and_verification": "UNRESOLVED_PLAN_AND_CONTRACT_DESIGN",
+      "physical_implementation": "NOT_AUTHORIZED",
+      "runtime_activation": "NOT_AUTHORIZED"
+    },
+    "unit_consumer_analysis_resolved_decisions": [
+      {
+        "id": "REUSABLE_RETENTION_SCOPE",
+        "selected_option": "B_CONSUMER_DELEGATED_PER_ANALYSIS_TYPE",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "resolution_scope": "LONG_TERM_RETENTION_DELEGATION_GRANULARITY_ONLY",
+        "record_policy_owner": "SFP-RECORD-0004",
+        "analysis_type_binding_owner": "SFP-INFO-0005",
+        "long_term_eligibility_without_type_delegation": "NOT_AUTOMATICALLY_GRANTED",
+        "mandatory_record_retention": "PRESERVED",
+        "evidence_qualification": "UNCHANGED",
+        "cleanup_write_authority": "UNCHANGED",
+        "implementation": "NOT_AUTHORIZED",
+        "activation": "NOT_AUTHORIZED"
+      }
+    ]
   },
   "relations": {
     "supersedes": [],
