@@ -87,7 +87,15 @@
         "engine_local_management_function_model": "NO_MANDATORY_COMMON_MANAGEMENT_FUNCTIONS_EXTERNAL_INTEROPERABILITY_ONLY",
         "engine_local_management_mandate": "OPTIONAL_ENGINE_OWNED_INTERNAL_FUNCTIONS",
         "engine_minimum_external_interoperability": "MACHINE_READABLE_CONTRACT_REQUIRED",
-        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_WITH_CONDITIONAL_EXECUTION_BINDING"
+        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_WITH_CONDITIONAL_EXECUTION_BINDING",
+        "seven_official_engine_subdirectory_name_authority_choice": "B_USER_EXPLICIT",
+        "seven_official_engine_subdirectory_name_authority_decided_at": "2026-10-11",
+        "seven_official_engine_subdirectory_name_authority": "PROJECT_OWNER_APPROVED_POLICY",
+        "seven_official_engine_subdirectory_exact_names": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
+        "seven_official_engine_subdirectory_name_determination_by_plan": "FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL",
+        "seven_official_engine_subdirectory_unapproved_name_materialization": "FORBIDDEN",
+        "official_source_root_and_seven_engine_identities": "UNCHANGED",
+        "directory_name_runtime_identity_or_entrypoint_authority": "NONE"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -161,13 +169,25 @@
         "engine_without_externally_invocable_capability_needs_no_execution_entry_binding": true,
         "engine_independent_compile_build_distribution_and_patch_boundaries_remain_normative": true,
         "engine_management_internal_entrypoints_not_inferred_from_directory_names": true,
-        "physical_paths_do_not_grant_external_invocation_authority": true
+        "physical_paths_do_not_grant_external_invocation_authority": true,
+        "seven_official_engine_subdirectory_names_require_explicit_project_owner_policy_approval": true,
+        "seven_official_engine_subdirectory_name_values_not_automatically_derived_from_engine_kinds": true,
+        "seven_official_engine_subdirectory_name_values_remain_unapproved_until_separate_decision": true,
+        "implementation_and_plan_must_not_silently_choose_official_engine_subdirectory_names": true,
+        "official_engine_names_approval_does_not_imply_actual_directory_creation_or_module_migration": true,
+        "official_engine_directory_names_are_physical_labels_not_registered_engine_identity": true,
+        "engine_execution_entrypoint_resolution_remains_registered_contract_bound": true,
+        "common_engine_source_root_and_exact_official_engine_set_must_remain_unchanged": true,
+        "policy_approved_physical_names_must_not_force_user_external_engine_package_layout": true,
+        "naming_authority_decision_does_not_activate_draft_engine_runtime": true
       },
       "unresolved_decisions": [
         {
           "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
           "kind": "USER_DECISION",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "reason": "EXACT_SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAME_VALUES_REQUIRE_SEPARATE_USER_POLICY_APPROVAL",
+          "scope": "NAME_VALUES_ONLY_AUTHORITY_RESOLVED_BY_SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMING_AUTHORITY"
         },
         {
           "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
@@ -356,6 +376,29 @@
           "actual_binding_mechanism": "NOT_DECIDED",
           "active_transition": "NOT_AUTHORIZED",
           "physical_implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMING_AUTHORITY",
+          "selected_option": "B_POLICY_LEVEL_PROJECT_OWNER_APPROVAL",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "APPROVAL_AUTHORITY_ONLY_NOT_NAME_VALUES",
+          "affected_official_engine_kinds": [
+            "CONTEXT",
+            "STORAGE",
+            "VALIDATION",
+            "DISCOVERY",
+            "PLANNING",
+            "EXECUTION",
+            "PROJECTION"
+          ],
+          "approved_common_source_root": "src/ptsip/engines/",
+          "exact_seven_subdirectory_names": "PENDING_SEPARATE_PROJECT_OWNER_DECISION",
+          "unresolved_name_values_ref": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
+          "generic_plan_implementation_name_selection": "NOT_AUTHORIZED",
+          "registered_identity_and_declared_entrypoint_binding": "PRESERVED_PATH_NAME_AGNOSTIC",
+          "physical_creation_and_existing_module_migration": "NOT_AUTHORIZED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
