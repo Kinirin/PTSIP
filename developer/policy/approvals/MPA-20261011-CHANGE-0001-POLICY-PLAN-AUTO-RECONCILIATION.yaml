@@ -1,0 +1,14 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-CHANGE-0001-POLICY-PLAN-AUTO-RECONCILIATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "RECONCILE approved: detect effective policy semantic changes, deterministically rederive and verify affected plans with exact bindings; preserve existing policy/plan/implementation authority boundaries, mandatory verification and legitimate prior approvals; escalate expanded or unresolved authority."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-CHANGE-0001
+  recorded_at: '2026-10-11'
