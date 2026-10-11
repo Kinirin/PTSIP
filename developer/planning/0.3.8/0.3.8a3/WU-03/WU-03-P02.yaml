@@ -983,7 +983,133 @@
     ],
     "no_automatic_go_runtime_activation": true,
     "request_only_audit_not_triggered_by_stage_progress": true,
-    "implementation_plan_contains_spec_but_implementation_is_not_performed": true
+    "implementation_plan_contains_spec_but_implementation_is_not_performed": true,
+    "wu05_reuse_stage_continuation": {
+      "option": "B_REUSE_EXISTING_WU05_WITH_WU06_FEEDBACK",
+      "design_status": "PLAN_ONLY_NOT_IMPLEMENTED",
+      "reuse_references": {
+        "resolver": "developer/planning/0.3.8/0.3.8a3/WU-05/WU-05.yaml",
+        "feedback": "developer/planning/0.3.8/0.3.8a3/WU-06/WU-06.yaml",
+        "validated_reuse": "developer/planning/0.3.8/0.3.8a3/WU-07/WU-07.yaml"
+      },
+      "responsibilities": {
+        "WU_05": "DETERMINISTIC_EXACT_ID_BINDING_AND_PLAN_PROJECTION",
+        "WU_06": "STRUCTURED_RESULT_VERIFICATION_STATE_FEEDBACK_AND_RERESOLUTION",
+        "WU_07": "VERIFIED_RESOLUTION_REUSE_WHEN_APPLICABLE",
+        "MPD_PLAN_0001": "REGISTERED_CHECKS_ALL_PASS_BEFORE_AUTO_COMPLETION",
+        "MPD_WORK_0004": "CURRENT_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_AUTHORIZATION",
+        "MPD_ASSURE_0001": "ORIGINAL_REQUIRED_TEST_COVERAGE_AND_SOURCE_SHA_EVIDENCE"
+      },
+      "compatibility_preflight": {
+        "status": "NOT_YET_MACHINE_VERIFIED_FOR_WU_03_P02_STAGES",
+        "check": [
+          "EXACT_REGISTERED_STAGE_ID_AND_DEPENDENCY_INPUT_SUPPORTED",
+          "WU05_MACHINE_BINDING_AND_PLAN_PROJECTION_INTERFACE_COMPATIBLE",
+          "WU06_STAGE_RESULT_AND_RERESOLUTION_INTERFACE_COMPATIBLE",
+          "PROJECT_PROFILE_REQUIRED_TEST_MODE_MAPPING_COMPLETE",
+          "CURRENT_REGISTERED_PLAN_BINDING_AND_SEPARATE_EXECUTION_AUTHORIZATION_VALID"
+        ],
+        "unknown_or_missing": "BLOCK_AND_REPORT_EXACT_ADAPTER_GAP",
+        "completed_WU05_does_not_prove_P02_stage_compatibility": true,
+        "unregistered_stage_or_binding": "FAIL_CLOSED",
+        "new_adapter_requires_separate_implementation_authorization": true
+      },
+      "stage_selection": {
+        "graph_source": "work_packages[].id_AND_depends_on",
+        "graph": [
+          {
+            "id": "P0-REVIEW",
+            "depends_on": []
+          },
+          {
+            "id": "P2-01",
+            "depends_on": [
+              "P0-REVIEW"
+            ]
+          },
+          {
+            "id": "P2-02",
+            "depends_on": [
+              "P2-01"
+            ]
+          },
+          {
+            "id": "P3-01",
+            "depends_on": [
+              "P2-02"
+            ]
+          },
+          {
+            "id": "P3-02",
+            "depends_on": [
+              "P3-01"
+            ]
+          },
+          {
+            "id": "P4-01",
+            "depends_on": [
+              "P3-02"
+            ]
+          },
+          {
+            "id": "P4-02",
+            "depends_on": [
+              "P4-01"
+            ]
+          },
+          {
+            "id": "P5-01",
+            "depends_on": [
+              "P2-02",
+              "P3-02",
+              "P4-02"
+            ]
+          },
+          {
+            "id": "P5-02",
+            "depends_on": [
+              "P5-01"
+            ]
+          }
+        ],
+        "eligible_stage": "ALL_DECLARED_DEPENDENCIES_VERIFIED_COMPLETE_AND_NO_BLOCKING_GATE",
+        "unregistered_or_ambiguous_stage": "FAIL_CLOSED",
+        "inference_from_stage_name_or_list_position": "FORBIDDEN",
+        "no_verified_dependency_skipping": true,
+        "p4_02_stage_transition_does_not_trigger_optional_fork_audit": true
+      },
+      "automatic_cycle": [
+        "RECHECK_REGISTERED_POLICY_PLAN_BINDINGS_AND_CURRENT_SOURCE",
+        "VERIFY_WU05_WU06_STAGE_COMPATIBILITY",
+        "RESOLVE_DECLARED_ELIGIBLE_STAGE_AND_EXISTING_STAGE_SCOPE_AUTHORIZATION",
+        "WU05_EXACT_MACHINE_RESOLUTION_AND_PLAN_PROJECTION",
+        "AUTHORIZED_STAGE_EXECUTION_ONLY_AFTER_PRECONDITION_GATE",
+        "WU06_STRUCTURED_RESULT_EVIDENCE_AND_EXPECTED_OBSERVED_VERIFICATION",
+        "EXECUTE_ALL_REQUIRED_PROFILE_SELECTED_TEST_MODES_WITH_EXACT_SOURCE_SHA",
+        "AUTO_COMPLETE_CURRENT_STAGE_ONLY_ON_ALL_REGISTERED_REQUIRED_CHECKS_PASS",
+        "REVALIDATE_PLAN_AND_RETURN_VERIFIED_STATE_TO_RESOLVER_FOR_NEXT_STAGE"
+      ],
+      "continuation": {
+        "all_required_pass_and_valid_authorization": "AUTO_COMPLETE_AND_RESOLVE_NEXT",
+        "any_required_fail": "BLOCK_AND_PRESERVE_FAILURE_EVIDENCE",
+        "unknown": "BLOCK_FOR_POLICY_DEFINED_REVIEW",
+        "stale": "BLOCK_AND_REVALIDATE_SOURCE_AND_AUTHORIZATION",
+        "missing_binding_or_scope": "FAIL_CLOSED_NO_MUTATION",
+        "new_or_expanded_policy_semantics": "ESCALATE_NO_AUTOMATIC_APPROVAL",
+        "no_further_declared_stage": "CANDIDATE_READINESS_ONLY_NOT_WU08_CUTOVER",
+        "optional_cost_evidence": "NON_NORMATIVE_CANNOT_REPLACE_REQUIRED_CONFORMANCE"
+      },
+      "authority_boundary": {
+        "prior_approval_and_implementation_status": "UNCHANGED",
+        "P02_current_approval": "PENDING",
+        "P02_current_implementation_authorization": "HOLD_NOT_AUTHORIZED",
+        "auto_stage_continuation_only_within_valid_existing_authorization": true,
+        "resolver_does_not_create_new_policy_plan_or_mutation_authority": true,
+        "no_parallel_normative_resolver": true,
+        "no_runtime_activation": true,
+        "code_tests_workflows_registry_unchanged": true
+      }
+    }
   },
   "planning_validation_gates": {
     "required": [
@@ -997,7 +1123,11 @@
       "NO_POLICY_PLAN_IMPLEMENTATION_AUTHORITY_COLLAPSE",
       "NO_VERIFICATION_WAIVER_OR_COVERAGE_REDUCTION",
       "NO_CHANGE_TO_BRANCH_POLICY_CODE_TEST_WORKFLOW_OR_REGISTRY",
-      "P5_NON_NORMATIVE_LIGHTWEIGHT_COST_EVIDENCE_AND_NO_REQUIRED_CHECK_WEAKENING"
+      "P5_NON_NORMATIVE_LIGHTWEIGHT_COST_EVIDENCE_AND_NO_REQUIRED_CHECK_WEAKENING",
+      "WU05_WU06_STAGE_COMPATIBILITY_REQUIRED_BEFORE_EXECUTION",
+      "WU05_AND_WU06_RESPONSIBILITY_SEPARATION_VERIFIED",
+      "AUTOMATIC_ENTRY_REQUIRES_ALL_MANDATORY_CHECKS_AND_FRESH_AUTHORIZATION",
+      "UNKNOWN_FAIL_STALE_SCOPE_EXPANSION_FAIL_CLOSED_WITHOUT_APPROVAL_RESET"
     ],
     "approval_current": "PENDING",
     "implementation_current": "HOLD_NOT_AUTHORIZED",
