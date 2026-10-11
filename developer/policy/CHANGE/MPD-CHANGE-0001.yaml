@@ -5,7 +5,7 @@ policy:
   id: MPD-CHANGE-0001
   title: CHANGE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.1'
+  version: '2.2'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -42,7 +42,8 @@ rules:
       historical_approval_and_execution_evidence_mutation: FORBIDDEN
     authorization_boundary:
       policy_approval_is_new_plan_approval: false
-      prior_plan_approval_may_be_preserved_only_if_scope_and_semantic_equivalence_proven: true
+      prior_plan_approval_effective_for_revised_scope_only_if_scope_and_semantic_equivalence_proven: true
+      recorded_prior_plan_approval_status_is_not_automatically_revoked_by_review: true
       new_or_expanded_plan_approval_by_automation: FORBIDDEN
       new_or_expanded_implementation_authorization_by_automation: FORBIDDEN
       existing_approval_ambiguity_or_scope_expansion: BLOCK_AND_REQUIRE_USER_DECISION
@@ -56,6 +57,35 @@ rules:
     execution_boundary:
       plan_workflow_and_adapters: PLAN_THEN_IMPLEMENTATION
       implementation_may_redefine_policy_or_binding_authority: false
+  user_plan_review_impact_reconciliation:
+    decision: RECONCILE
+    approval_ref: developer/policy/approvals/MPA-20261011-PLAN-REVIEW-RECONCILE.yaml
+    applies_to: EXISTING_POLICY_DERIVED_PLAN_USER_REVIEW_AND_LOCALIZED_REVISION
+    scope_owner: MPD-PLAN-0001
+    impact_owner: MPD-CHANGE-0001
+    exact_changed_sections_only: true
+    dependent_impact_requires_machine_proof: true
+    no_impact_sections_must_remain_unchanged: true
+    source_policy_and_binding_freshness_required: true
+    recorded_plan_approval_status_auto_reset: FORBIDDEN
+    recorded_plan_implementation_authorization_status_auto_reset: FORBIDDEN
+    existing_approval_source_record_mutation: FORBIDDEN
+    approved_scope_semantic_equivalence_required_for_reuse: true
+    changed_scope_execution_eligibility_requires_current_authority: true
+    missing_equivalence_or_expanded_scope: BLOCK_EXECUTION_AND_ESCALATE_WITHOUT_APPROVAL_STATUS_MUTATION
+    registered_required_coverage_and_machine_checks: PRESERVE
+    result_states:
+      NO_SEMANTIC_CHANGE: PRESERVE_APPROVAL_AND_EXISTING_EXECUTION_ELIGIBILITY
+      VERIFIED_WITHIN_APPROVED_SCOPE: PRESERVE_APPROVAL_AND_REVERIFY_AFFECTED_CHECKS
+      NEW_OR_EXPANDED_SCOPE: PRESERVE_RECORDED_APPROVAL_BUT_REQUIRE_SEPARATE_AUTHORIZATION_FOR_NEW_SCOPE
+      UNRESOLVED_OR_UNKNOWN_IMPACT: PRESERVE_RECORDED_APPROVAL_BUT_BLOCK_EXECUTION
+    applies_to_pending_plan:
+      review_does_not_grant_approval: true
+      existing_pending_status_preserved: true
+    continuation:
+      existing_authorization_remains_valid_and_required_checks_pass: AUTOMATED_RESOLUTION_MAY_CONTINUE
+      fresh_approval_from_automation: FORBIDDEN
+      required_verification_waiver_from_review: FORBIDDEN
   family_definition:
     kernel_definitions:
     - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
