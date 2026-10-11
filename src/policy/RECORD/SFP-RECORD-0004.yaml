@@ -52,7 +52,14 @@
       "reusable_long_term_retention_missing_valid_type_delegation": "NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY",
       "reusable_long_term_retention_type_binding_owner": "SFP-INFO-0005",
       "reusable_long_term_retention_contract_shape": "PLAN_AND_MACHINE_CONTRACT_UNRESOLVED",
-      "reusable_long_term_retention_policy_is_cleanup_or_write_permission": false
+      "reusable_long_term_retention_policy_is_cleanup_or_write_permission": false,
+      "working_retention_historical_record_handoff_policy_choice": "A_USER_EXPLICIT",
+      "working_retention_historical_record_handoff_decided_at": "2026-10-11",
+      "working_retention_release_historical_record_boundary": "VERIFY_INDEPENDENT_RECORD_PRESERVATION_NO_SEPARATE_HANDOFF_TRANSITION_REQUIRED",
+      "working_retention_release_proof": "MACHINE_VERIFIED_CURRENT_RETENTION_RELEASE_AND_PRESERVED_MANDATORY_RECORD_PROVENANCE_HISTORY",
+      "working_retention_release_unproven_record_or_release": "FAIL_CLOSED_KEEP",
+      "working_retention_handoff_is_cleanup_execution_permission": false,
+      "working_retention_proof_interface": "PLAN_AND_MACHINE_CONTRACT_PENDING"
     },
     "unit_consumer_analysis_invariants": {
       "working_retention_needs_machine_proven_reference_scope": true,
@@ -75,10 +82,23 @@
       "retention_scope_eligibility_does_not_authorize_cleanup_physical_deletion_or_write": true,
       "registration_or_retention_mutation_still_requires_separate_current_ctrl_and_real_authority": true,
       "type_delegation_proof_and_resolution_are_machine_verifiable": true,
-      "type_specific_retention_direction_does_not_activate_draft_policy": true
+      "type_specific_retention_direction_does_not_activate_draft_policy": true,
+      "working_release_requires_machine_proven_independent_mandatory_record_preservation": true,
+      "working_release_requires_original_record_identity_provenance_and_verification_history_preservation": true,
+      "working_release_does_not_require_separate_historical_record_handoff_state_transition": true,
+      "working_release_requires_prior_release_contract_and_reference_scope_verification": true,
+      "working_release_cannot_rely_on_lifecycle_end_or_absence_of_found_references": true,
+      "working_release_missing_ambiguous_stale_or_unprovable_record_protection": "FAIL_CLOSED_KEEP",
+      "working_release_missing_ambiguous_stale_or_unprovable_release_eligibility": "FAIL_CLOSED_KEEP",
+      "independent_record_history_cannot_be_replaced_by_working_record_retention_release": true,
+      "independent_record_retention_precedence_over_working_release": true,
+      "working_release_cannot_grant_record_deletion_cleanup_execution_or_mutating_authority": true,
+      "working_release_does_not_change_registered_analysis_source_identity_or_canonical_record_authority": true,
+      "working_release_proof_interface_details_delegated_to_plan_and_machine_contract": true,
+      "working_release_policy_direction_does_not_activate_draft_or_implement_cleanup": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
-      "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
+      "WORKING_RETENTION_RELEASE_AND_RECORD_PRESERVATION_PROOF_CONTRACT_PLAN",
       "REUSABLE_RETENTION_DELEGATION_CONTRACT_SHAPE"
     ],
     "unit_consumer_analysis_implementation_detail_authority": "PLAN",
@@ -114,8 +134,43 @@
         "cleanup_write_authority": "UNCHANGED",
         "implementation": "NOT_AUTHORIZED",
         "activation": "NOT_AUTHORIZED"
+      },
+      {
+        "id": "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
+        "selected_option": "A_NO_SEPARATE_HANDOFF_REQUIRE_MACHINE_PROVEN_INDEPENDENT_RECORD_PRESERVATION",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "resolution_scope": "WORKING_RETENTION_RELEASE_TO_MANDATORY_RECORD_PRESERVATION_BOUNDARY_ONLY",
+        "separate_handoff_transition": "NOT_REQUIRED",
+        "required_proofs": [
+          "CURRENT_WORKING_RELEASE_ELIGIBILITY",
+          "INDEPENDENT_MANDATORY_RECORD_PRESERVATION",
+          "ORIGINAL_ID_PROVENANCE_VERIFICATION_HISTORY"
+        ],
+        "missing_or_ambiguous_proof": "FAIL_CLOSED_KEEP",
+        "record_retention_priority": "PRESERVED",
+        "release_is_cleanup_deletion_or_write_permission": false,
+        "implementation": "NOT_AUTHORIZED",
+        "active_transition": "NOT_AUTHORIZED"
       }
-    ]
+    ],
+    "unit_consumer_analysis_working_historical_handoff_direction": {
+      "policy_subject": "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
+      "selected_option": "A_INDEPENDENT_RECORD_PRESERVATION_NO_SEPARATE_HANDOFF",
+      "approval_source": "USER_EXPLICIT",
+      "decision_date": "2026-10-11",
+      "working_release_condition": "CONTRACT_PROVEN_RELEASE_PLUS_MACHINE_PROVEN_RECORD_INDEPENDENT_RETENTION",
+      "historical_handoff_state_transition": "NOT_MANDATORY",
+      "protected_record_scope": "MANDATORY_ORIGINAL_RECORD_IDENTITY_PROVENANCE_VERIFICATION_AND_AUDIT_HISTORY",
+      "record_independence": "CONTINUES_UNDER_EXISTING_RECORD_AUTHORITY",
+      "release_proof_unverifiable": "FAIL_CLOSED_KEEP",
+      "record_preservation_proof_unverifiable": "FAIL_CLOSED_KEEP",
+      "no_new_consumer_cleanup_delegation_or_execution_permission": true,
+      "no_new_ctrl_real_write_or_physical_deletion_authority": true,
+      "proof_schema_reference_resolution_and_validation": "PLAN_AND_MACHINE_CONTRACT",
+      "implementation": "NOT_AUTHORIZED",
+      "active_transition": "NOT_AUTHORIZED"
+    }
   },
   "relations": {
     "supersedes": [],
