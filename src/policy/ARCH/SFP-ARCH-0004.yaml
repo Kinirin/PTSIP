@@ -184,6 +184,28 @@
           "unrelated_rust_sharing_policy": "UNCHANGED_SEPARATE_POLICY_DECISION",
           "new_engine_implementation_authorization": "NOT_GRANTED",
           "draft_runtime_activation": "NOT_AUTHORIZED"
+        },
+        "current_declared_component_boundary_reconciliation": {
+          "decision": "KEEP_LATEST",
+          "decision_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_authority": "SFP-ARCH-0001",
+          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "current_active_authority_scope": "CONSUMER_PROJECT_LIFECYCLE_COMPONENT_OWNERSHIP_AND_TYPED_RELATIONSHIPS",
+          "conflicting_old_boundary": "EXISTING_PTSIP_SHIPPED_COMPONENT_FUNCTIONAL_OWNER_REMAINS_CANONICAL_ON_ENGINE_CAPABILITY_OVERLAP",
+          "replacement_boundary": "OFFICIAL_RUST_ENGINE_CANONICAL_FUNCTIONAL_RESPONSIBILITY_FOR_VERIFIED_OVERLAPPING_PTSIP_SHIPPED_CAPABILITIES",
+          "replacement_scope": "PTSIP_OFFICIAL_PRODUCT_INTERNAL_OVERLAPPING_ENGINE_CAPABILITY_RESPONSIBILITIES_ONLY",
+          "old_functional_boundary_handling": "REPLACE_WHEN_EXPLICIT_ENGINE_CAPABILITY_OWNER_MAP_AND_COMPATIBILITY_HANDOFF_VERIFIED",
+          "canonical_owner_selection": "DECLARED_ENGINE_CAPABILITY_ID_AND_EXPLICIT_RESPONSIBILITY_MAP_NOT_DIRECTORY_OR_LANGUAGE_HEURISTIC",
+          "consumer_project_lifecycle_ownership": "PRESERVE_PROJECT_OWNER_DECLARED_RESPONSIBILITY_MAP",
+          "nonoverlapping_active_component_obligations": "PRESERVED",
+          "existing_shipped_public_capability_contracts": "PRESERVED_UNTIL_VERIFIED_AUTHORIZED_TRANSITION",
+          "active_context_projection_vpms_assure_storage_authorities": "NO_IMPLICIT_TRANSFER_SEPARATE_RECONCILIATION_REQUIRED",
+          "required_ownership_map": "PENDING_MACHINE_VERIFIED_ENGINE_TO_EXISTING_FUNCTIONAL_COMPONENT_RESPONSIBILITY_RECONCILIATION",
+          "rust_engine_legacy_python_dependency": "FORBIDDEN_AS_ALREADY_APPROVED",
+          "immediate_active_policy_override": "FORBIDDEN_BEFORE_ARCH_0004_ACTIVE_PROMOTION",
+          "runtime_activation": "NOT_AUTHORIZED",
+          "physical_implementation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -329,14 +351,13 @@
         "official_rust_engines_must_not_relocate_copy_translate_reuse_or_share_existing_ptsip_python_implementations": true,
         "official_rust_engines_must_not_depend_on_legacy_ptsip_python_runtime_or_wrappers": true,
         "language_neutral_contract_reuse_does_not_allow_reuse_of_legacy_python_implementation": true,
-        "previous_active_public_interface_and_vpms_migration_boundaries_remain_in_force": true
+        "previous_active_public_interface_and_vpms_migration_boundaries_remain_in_force": true,
+        "product_internal_overlap_rust_engine_functional_owner_is_canonical_after_verified_handoff": true,
+        "consumer_project_component_lifecycle_ownership_not_reassigned_by_engine_functional_owner": true,
+        "existing_active_public_capability_contracts_remain_until_authorized_verified_transition": true,
+        "unverified_component_to_engine_mapping_cannot_activate_owner_transfer": true
       },
       "unresolved_decisions": [
-        {
-          "id": "CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
           "kind": "RESPONSIBILITY_ANALYSIS",
@@ -741,6 +762,22 @@
           "active_policy": "UNCHANGED",
           "policy_status": "DRAFT_UNCHANGED",
           "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_authority_policy": "SFP-ARCH-0001",
+          "prior_authority_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "active_policy_head_unchanged": true,
+          "new_rule_ref": "authority_semantics.unit_ptsip_engine_draft.approved_decisions.current_declared_component_boundary_reconciliation",
+          "implementation_mapping_proof": "PENDING",
+          "affected_engine_capability_handoff": "BLOCKED_UNTIL_VERIFIED_AND_AUTHORIZED",
+          "existing_active_context_projection_vpms_and_public_contracts": "UNAFFECTED_PENDING_SEPARATE_ITEMS",
+          "original_activation_gate": "KEEP_PRIOR_PRESERVED"
         }
       ],
       "dependent_plans": [
