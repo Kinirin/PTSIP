@@ -1,0 +1,133 @@
+{
+  "schema_version": "ptsip-support-root-family-policy/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "responsibility_family": "CNTR",
+  "policy": {
+    "id": "SFP-CNTR-0007",
+    "title": "Registered CLI Extension Capability Activation Boundary (DRAFT)",
+    "status": "DRAFT"
+  },
+  "authority_subject": {
+    "id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+    "statement": "Owns only declared consumer-visible capability and invocation contracts; external engine semantic ownership and effective execution permission remain separate."
+  },
+  "exclusive_kernel": [
+    "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+    "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY"
+  ],
+  "authority_contract": {
+    "authority_type": "ROOT_FAMILY_CNTR",
+    "schema_id": "ptsip.governance/root-family/cntr",
+    "schema_version": 1
+  },
+  "authority_semantics": {
+    "family_definition": {
+      "kernel_definitions": [
+        {
+          "id": "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+          "statement": "지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.",
+          "non_substitutability": "INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다."
+        },
+        {
+          "id": "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY",
+          "statement": "지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.",
+          "non_substitutability": "OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다."
+        }
+      ],
+      "source_scope": []
+    },
+    "unit_registered_cli_extension_activation": {
+      "decision": "RECONCILE_USER_APPROVED_2026_10_11",
+      "release_target": "0.3.8",
+      "lifecycle": "DRAFT_NO_RUNTIME_OR_ACTIVATION_AUTHORITY",
+      "reconciliation": {
+        "original_developer_policy": "MPD-0012",
+        "prior_external_resolution_environment_scope": "NOT_PTSIP_0_3_8_SUPPORT_RESPONSIBILITY",
+        "prior_scope_preserved": true,
+        "limited_addition": "REGISTERED_EXTERNAL_CLI_INVOCATION_ADAPTER_ONLY",
+        "external_engine_resolution_and_runtime_owner": "USER_OR_EXTERNAL_PROVIDER",
+        "official_core_semantics_impersonation": "FORBIDDEN"
+      },
+      "built_in_capabilities": {
+        "basis": "ALREADY_SHIPPED_PTSIP_CORE_CAPABILITIES",
+        "selectively_activatable_where_declared": true,
+        "separate_installation_required": false,
+        "optional_disable_cannot_disable_required_core_invariants": true
+      },
+      "extension_capabilities": {
+        "third_party_and_user_defined": "ALLOWED",
+        "separate_extension_identity": "REQUIRED",
+        "registered_capability_identity": "REQUIRED",
+        "registered_machine_resolvable_entrypoint": "REQUIRED_IF_INVOCABLE",
+        "unregistered_or_ambiguous_capability": "FAIL_CLOSED",
+        "registration_is_activation": false,
+        "registration_is_compatibility_guarantee": false
+      },
+      "activation": {
+        "phases": [
+          "REGISTER",
+          "VALIDATE",
+          "AUTHORIZE",
+          "ACTIVATE"
+        ],
+        "implicit_installation_or_activation": "FORBIDDEN",
+        "compatibility_evidence": "REQUIRED_FOR_APPLICABLE_SCOPE",
+        "declaration_is_permission_grant": false,
+        "permission_authority": "EXISTING_GOV_AND_CTRL",
+        "verification_judgment": "EXISTING_ASSURE",
+        "execution_integrity": "EXISTING_REAL",
+        "unsupported_extension_must_not_block_unrelated_operations": true
+      },
+      "initial_execution": {
+        "mechanism": "REGISTERED_COMMAND_INVOCATION",
+        "only_explicitly_exposed_capability": true,
+        "arbitrary_unregistered_shell": "FORBIDDEN",
+        "input_output_failure_side_effects": "EXPLICIT_CONTRACT_REQUIRED",
+        "invocation_respects_effective_permissions": true,
+        "command_discovery_must_not_guess_paths_or_names": true,
+        "missing_binding": "FAIL_CLOSED",
+        "runtime_orchestration_owned_by_ptsip": false,
+        "execution_must_not_infer_new_normative_authority": true
+      },
+      "future_interoperability": {
+        "direction": "REGISTERED_COMMON_EXTENSION_ENGINE_INTERFACE",
+        "cli_remains_one_possible_adapter": true,
+        "preserve_stable_semantic_identity_when_meaning_unchanged": true,
+        "changed_semantics_require_distinct_identity_or_authorized_migration": true,
+        "implicit_backward_forward_compatibility": "FORBIDDEN",
+        "generalized_transport_in_0_3_8": "OUT_OF_SCOPE"
+      },
+      "explicit_exclusions": [
+        "GUI_OR_INSTALLER_IMPLEMENTATION",
+        "GENERAL_EXTERNAL_ENGINE_LIFECYCLE_MANAGEMENT",
+        "USER_OWNED_SEMANTIC_RESOLUTION_ENVIRONMENT",
+        "LANGGRAPH_OR_LANGCHAIN_CORE_DEPENDENCY",
+        "AUTOMATIC_EXTERNAL_PROGRAM_INSTALLATION",
+        "UNREGISTERED_COMMAND_EXECUTION",
+        "SFP_CNTR_0005_ACTIVATION_OR_REWRITE",
+        "RUNTIME_IMPLEMENTATION_AUTHORIZATION"
+      ],
+      "responsibility_boundary": {
+        "contract": "CNTR",
+        "source_and_dependency": "SUPPLY",
+        "permission": "GOV_AND_CTRL",
+        "verification": "ASSURE",
+        "execution": "REAL",
+        "transition": "CHANGE",
+        "external_semantics": "EXTENSION_OWNER",
+        "long_term_engine_design": "SFP-CNTR-0005_DRAFT_INDEPENDENT"
+      }
+    }
+  },
+  "relations": {
+    "supersedes": [],
+    "amends": [],
+    "extends": [],
+    "depends_on": [
+      {
+        "policy": "SFP-CNTR-0001",
+        "scope": "ACTIVE_SHIPPED_OPERATION_INTERFACE_BOUNDARY"
+      }
+    ]
+  }
+}

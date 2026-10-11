@@ -481,6 +481,11 @@ policy_roles:
     resolution_state: DECLARED
     effects:
       - define_responsibility_role_contract
+  - policy_id: SFP-CNTR-0007
+    projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
+    resolution_state: DECLARED
+    effects:
+      - define_responsibility_role_contract
   - policy_id: SFP-CTRL-0001
     projection_role: ROOT_FAMILY_CONTRACT_AUTHORITY
     resolution_state: DECLARED
