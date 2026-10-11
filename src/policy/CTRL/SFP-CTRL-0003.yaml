@@ -93,11 +93,18 @@
       "cleanup_target_scope_applicability": "MACHINE_VERIFIED_CURRENT_REGISTRATION_AND_APPLICABLE_CONTRACT",
       "cleanup_target_scope_missing_unknown_ambiguous_or_stale": "FAIL_CLOSED_DENY_AFFECTED_TARGET",
       "cleanup_target_scope_operation_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_ONLY",
-      "cleanup_target_scope_future_membership_inclusion": "UNRESOLVED_SEPARATE_POLICY_DECISION",
+      "cleanup_target_scope_future_membership_inclusion": "AUTOMATIC_IF_WITHIN_PREEXISTING_EXPLICIT_CONSUMER_DECLARED_SCOPE_AND_MACHINE_VERIFIED_CURRENT_REGISTRATION",
       "cleanup_target_scope_revocation_proof_and_transition": "UNRESOLVED_SEPARATE_CONTRACT",
       "cleanup_target_scope_registry_is_authority_source_not_MUTATION_TARGET": true,
       "cleanup_target_scope_declaration_not_permission_grant": true,
-      "cleanup_target_scope_match_contract": "PLAN_AND_MACHINE_CONTRACT"
+      "cleanup_target_scope_match_contract": "PLAN_AND_MACHINE_CONTRACT",
+      "cleanup_target_scope_future_membership_choice": "A_USER_EXPLICIT",
+      "cleanup_target_scope_future_membership_decided_at": "2026-10-11",
+      "cleanup_target_scope_future_membership_registration_only_does_not_expand_delegation": true,
+      "cleanup_target_scope_future_membership_missing_or_unverifiable": "FAIL_CLOSED_DENY_NEW_TARGET",
+      "cleanup_target_scope_future_membership_matches_effective_current_delegation": true,
+      "cleanup_target_scope_future_membership_never_grants_execution_write_or_mutation_permission": true,
+      "cleanup_target_scope_future_membership_verification_mechanics": "PLAN_AND_MACHINE_CONTRACT"
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -186,14 +193,26 @@
       "cleanup_target_scope_revoked_or_missing_effective_authority": "FAIL_CLOSED_NO_CLEANUP",
       "cleanup_target_scope_requires_fresh_ctrl_real_verification_before_every_mutating_execution": true,
       "cleanup_target_scope_cannot_modify_authoritative_registry_original_record_mandatory_evidence_or_provenance": true,
-      "cleanup_target_scope_does_not_assign_automatic_new_target_inclusion_policy": true,
       "cleanup_target_scope_does_not_grant_registry_mutation_or_cleanup_execution_rights": true,
       "cleanup_target_scope_declaration_format_and_resolver_belong_to_plan": true,
-      "cleanup_target_scope_direction_does_not_activate_draft_runtime": true
+      "cleanup_target_scope_direction_does_not_activate_draft_runtime": true,
+      "newly_registered_derived_index_may_inherit_existing_consumer_scope_only_if_explicit_declared_conditions_match": true,
+      "newly_registered_target_must_be_machine_verified_against_current_registered_identity_contract_and_revision": true,
+      "newly_registered_target_must_be_machine_verified_against_current_effective_non_revoked_consumer_delegation": true,
+      "future_target_inclusion_cannot_extend_or_implicitly_rewrite_existing_consumer_delegated_scope": true,
+      "future_target_inclusion_cannot_infer_authority_from_registration_alone": true,
+      "future_target_inclusion_must_preserve_registered_target_non_authoritative_projection_only": true,
+      "newly_registered_out_of_scope_target": "FAIL_CLOSED_NO_CLEANUP",
+      "newly_registered_missing_ambiguous_stale_or_incompatible_target_proof": "FAIL_CLOSED_NO_CLEANUP",
+      "newly_registered_target_without_current_consumer_delegation": "FAIL_CLOSED_NO_CLEANUP",
+      "future_target_membership_does_not_automatically_execute_or_authorize_mutations": true,
+      "future_target_membership_requires_separate_latest_ctrl_real_eligibility_at_each_execution": true,
+      "future_target_membership_does_not_infer_new_cleanup_semantic_class_authority": true,
+      "newly_included_target_must_not_mutate_registry_original_record_mandatory_evidence_or_provenance": true,
+      "newly_registered_target_policy_resolution_does_not_activate_draft_runtime": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "CLEANUP_OPERATION_EXACT_ID_SCHEMA_AND_REGISTRATION_PLAN",
-      "DELEGATED_SCOPE_NEW_TARGET_MEMBERSHIP_APPLICABILITY",
       "DELEGATION_REVOCATION_EVIDENCE_AND_TRANSITION_CONTRACT",
       "CLEANUP_EXECUTION_AND_FAILURE_PLAN"
     ],
@@ -304,6 +323,23 @@
         "consumer_delegation_ctrl_real_record_and_provenance": "PRESERVED",
         "implementation": "NOT_AUTHORIZED",
         "active_transition": "NOT_AUTHORIZED"
+      },
+      {
+        "id": "DELEGATED_SCOPE_NEW_TARGET_MEMBERSHIP_APPLICABILITY",
+        "selected_option": "A_FUTURE_REGISTERED_TARGET_CONDITIONALLY_INCLUDED",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "resolution_scope": "NEW_TARGET_MEMBERSHIP_IN_EXISTING_CONSUMER_SCOPE_ONLY",
+        "inclusion": "WHEN_CURRENT_REGISTERED_IDENTITY_CONTRACT_AND_EXISTING_CONSUMER_SCOPE_MATCH_VERIFIED",
+        "unverified_or_out_of_scope": "FAIL_CLOSED",
+        "no_implicit_scope_expansion": true,
+        "sole_approved_semantic_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_ONLY",
+        "plan_derived_id_policy": "UNCHANGED",
+        "revocation_and_fresh_ctrl_real": "UNCHANGED_REQUIRED",
+        "original_registry_evidence_retention": "UNCHANGED",
+        "exact_proof_and_detection": "PLAN",
+        "implementation": "NOT_AUTHORIZED",
+        "active_transition": "NOT_AUTHORIZED"
       }
     ],
     "unit_consumer_analysis_cleanup_initial_class_scope_direction": {
@@ -399,9 +435,36 @@
       "execution_authority": "EXISTING_FRESH_CTRL_REAL_GATES_SEPARATE",
       "revocation": "EXISTING_RECHECK_AND_FAIL_CLOSED_POLICY_PRESERVED",
       "original_registry_evidence_and_provenance": "PROTECTED_UNCHANGED",
-      "newly_registered_target_inclusion": "UNRESOLVED_SEPARATE_POLICY_CHOICE",
+      "newly_registered_target_inclusion": "A_MACHINE_VERIFIED_INCLUSION_WITHIN_PREEXISTING_EFFECTIVE_EXPLICIT_CONSUMER_SCOPE",
       "revocation_evidence_and_transition_details": "UNRESOLVED_SEPARATE_CONTRACT",
       "declaration_schema_and_applicability_resolver": "PLAN_AND_MACHINE_CONTRACT",
+      "implementation": "NOT_AUTHORIZED",
+      "active_transition": "NOT_AUTHORIZED",
+      "new_target_inclusion_not_execution_or_permission_grant": true
+    },
+    "unit_consumer_analysis_cleanup_future_membership_direction": {
+      "policy_subject": "DELEGATED_SCOPE_NEW_TARGET_MEMBERSHIP_APPLICABILITY",
+      "selected_option": "A_AUTOMATIC_FOR_MACHINE_VERIFIED_CURRENT_SCOPE_MATCH",
+      "approval_source": "USER_EXPLICIT",
+      "decision_date": "2026-10-11",
+      "applies_to": "NEWLY_REGISTERED_NON_AUTHORITATIVE_DERIVED_INDEX_TARGET",
+      "requires": [
+        "CURRENT_EXPLICIT_CONSUMER_DECLARATIVE_DELEGATION_AND_OPERATION_CLASS_SCOPE",
+        "CURRENT_REGISTERED_TARGET_IDENTITY",
+        "CURRENT_TARGET_CONTRACT_AND_REVISION",
+        "MACHINE_VERIFIED_DECLARED_SCOPE_CONDITION_MATCH",
+        "CURRENT_EFFECTIVE_UNREVOKED_AUTHORITY"
+      ],
+      "condition": "ALL_PROVEN_AND_WITHIN_PREEXISTING_EXPLICIT_SCOPE",
+      "consequence": "TARGET_ELIGIBILITY_WITHIN_EXISTING_DELEGATION_SCOPE_ONLY",
+      "no_new_scope": "MUST_NOT_BROADEN_CONSUMER_DECLARED_SCOPE",
+      "out_of_scope_missing_stale_ambiguous_or_unverified": "FAIL_CLOSED_NO_CLEANUP",
+      "approved_semantic_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_ONLY",
+      "machine_operation_id": "POLICY_CONSTRAINED_PLAN_VERIFICATION_REQUIRED",
+      "operation_execution_and_write": "SEPARATE_FRESH_CTRL_REAL_AUTHORITY_REQUIRED",
+      "revocation": "REVALIDATE_FRESH_EFFECTIVE_AUTHORITY_BEFORE_ANY_ACTION",
+      "protected_data": "NO_CANONICAL_REGISTRY_OR_ORIGINAL_RECORD_OR_MANDATORY_EVIDENCE_MUTATION",
+      "proof_interface": "PLAN_AND_MACHINE_CONTRACT",
       "implementation": "NOT_AUTHORIZED",
       "active_transition": "NOT_AUTHORIZED"
     }
