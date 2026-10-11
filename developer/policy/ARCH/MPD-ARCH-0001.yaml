@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.2'
+  version: '2.3'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -206,6 +206,16 @@ rules:
       policy_approval_implies_plan_approval: false
       plan_requires_separate_approval: true
       multiple_valid_planning_options_may_exist_for_same_policy: true
+    work_unit_priority_boundary:
+      priority_owner: PLANNING_WORK_UNIT
+      execution_order_owner: PLANNING_WORK_UNIT
+      work_unit_dependencies_owner: PLANNING_WORK_UNIT
+      normative_policy_may_assign_priority: false
+      normative_policy_may_assign_work_unit_execution_order: false
+      normative_policy_may_assign_work_unit_dependencies: false
+      policy_prerequisites_and_conformance_guards: PRESERVE
+      unresolved_work_unit_priority: PLAN_UNASSIGNED
+      approved_policy_correction_ref: developer/policy/approvals/MPA-20261011-WU-PRIORITY-PLAN-BOUNDARY.yaml
     source_boundary:
       governance_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
       approval_source_role: ORIGIN_OF_PLAN_APPROVAL_AUTHORITY

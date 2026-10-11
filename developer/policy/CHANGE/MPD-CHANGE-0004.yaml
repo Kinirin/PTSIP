@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0004
-  version: '2.2'
+  version: '2.3'
   title: Developer legacy policy and Python automation retirement
   status: ACTIVE
 authority_subject:
@@ -63,14 +63,18 @@ rules:
     installed_product_engine_source_copy: FORBIDDEN
     engine_root_reconciliation_approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
     common_engine_plan: PRESERVE_EXISTING_SEPARATE_PLAN
-    ordering:
-    - KEEP_CURRENT_DEVELOPER_GO_TOOL_OPERATIONAL
-    - COMPLETE_AND_VERIFY_COMMON_NEUTRAL_ENGINE_INDEPENDENTLY
-    - APPROVE_SEPARATE_DEVELOPER_GO_INTEGRATION_PLAN
-    - INTEGRATE_GO_ADAPTER_AGAINST_STABLE_COMMON_ENGINE_CONTRACT
-    - VERIFY_RESPONSIBILITY_AND_CONFORMANCE_EQUIVALENCE
-    - REBIND_ACTIVE_CALLERS_CI_AND_HOOKS
-    - RETIRE_PRIOR_IMPLEMENTATION_ROOT_AFTER_VERIFIED_CUTOVER
+    work_unit_planning_boundary:
+      priority_owner: APPROVED_WU_PLAN
+      execution_order_owner: APPROVED_WU_PLAN
+      dependency_owner: APPROVED_WU_PLAN
+      policy_defined_work_priority: FORBIDDEN
+      policy_defined_work_sequence: FORBIDDEN
+      policy_defined_work_unit_dependencies: FORBIDDEN
+      plan_binding_creation_by_policy_sync: FORBIDDEN
+      approval_ref: developer/policy/approvals/MPA-20261011-WU-PRIORITY-PLAN-BOUNDARY.yaml
+    retirement_guard:
+      required: VERIFIED_SEMANTIC_EQUIVALENCE_AND_OPERATIONAL_CALLER_CUTOVER
+      existing_go_entrypoints_preserved_until_cutover: true
     existing_go_automation_cutover_contract: REMAINS_EFFECTIVE_UNTIL_AUTHORIZED_REPLACEMENT
     no_early_path_move_or_implicit_activation: true
     existing_dot_ptsip_engine_data: PRESERVE

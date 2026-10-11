@@ -1,0 +1,22 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-WU-PRIORITY-PLAN-BOUNDARY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "정책은 생성해도 계획서는 WU-*입니다. 즉 우선순위 생성은 정책에서 표기하면 안되며 계획에서 표기할 내용입니다"
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  policy_content_review_scope: DIRECTION
+  correction: REMOVE_POLICY_EXECUTION_ORDER_AND_DEFER_PRIORITY_TO_WU_PLAN
+  policy_may_define_durable_safety_preconditions: true
+  implementation_authorized: false
+  work_unit_creation_authorized: false
+  work_unit_priority_assignment_authorized: false
+  existing_common_engine_plan_mutation_authorized: false
+  branch_creation_authorized: false
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  - MPD-CHANGE-0004
+  recorded_at: '2026-10-11'
