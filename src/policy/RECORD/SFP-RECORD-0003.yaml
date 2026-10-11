@@ -85,7 +85,22 @@
         "startup_incomplete_diagnostic_separate_history_required_for_current_release": false,
         "existing_mandatory_record_retention_policy_ref": "SFP-RECORD-0001",
         "current_release_diagnostic_reporting_not_conditional_on_separate_history_persistence": true,
-        "separate_diagnostic_history_future_requirement": "NOT_APPROVED_REQUIRES_SEPARATE_POLICY_DECISION"
+        "separate_diagnostic_history_future_requirement": "NOT_APPROVED_REQUIRES_SEPARATE_POLICY_DECISION",
+        "evidence_cache_invalidation_judgment_choice": "B_USER_EXPLICIT",
+        "evidence_cache_invalidation_judgment_recorded_at": "2026-10-11",
+        "evidence_cache_invalidation_judgment_timing": "AT_EACH_REUSE_REQUEST",
+        "evidence_cache_reuse_required_validation": [
+          "CURRENT_APPLICABLE_NORMATIVE_CONTRACT",
+          "CURRENT_VERIFIED_SOURCE_AND_RELEVANT_DEPENDENCIES",
+          "CURRENT_APPLICABILITY_CONDITIONS"
+        ],
+        "evidence_cache_reuse_eligibility": "ONLY_IF_ALL_CURRENT_REUSE_OBLIGATIONS_MACHINE_VERIFIED",
+        "cache_verification_missing_unknown_invalid_or_mismatch": "NOT_REUSABLE",
+        "invalid_evidence_cache_outcome": "REUSE_ELIGIBILITY_REJECTED_NOT_SOURCE_RECORD_DELETION",
+        "eager_change_triggered_cache_invalidation": "DEFERRED_NOT_CURRENT_RELEASE_REQUIRED",
+        "eager_change_triggered_cache_invalidation_future_authorization": "SEPARATE_USER_POLICY_APPROVAL_REQUIRED",
+        "cache_reuse_verdict_authority": "SFP-ASSURE-0004",
+        "mandatory_evidence_provenance_retention": "UNCHANGED_SFP_RECORD_0001"
       },
       "invariants": {
         "every_record_keeps_origin_and_observation_context": true,
@@ -132,7 +147,21 @@
         "retention_scope_choice_does_not_authorize_record_deletion": true,
         "retention_scope_choice_does_not_authorize_new_writes": true,
         "future_separate_history_requirement_needs_separate_user_policy_authorization": true,
-        "retention_scope_decision_does_not_activate_engine_runtime": true
+        "retention_scope_decision_does_not_activate_engine_runtime": true,
+        "evidence_cache_reuse_must_revalidate_at_each_reuse_request": true,
+        "past_cache_validity_or_success_cannot_substitute_current_verification": true,
+        "reuse_requires_current_registered_contract_source_and_applicability_checks": true,
+        "missing_unknown_or_mismatched_required_validation_blocks_reuse": true,
+        "cache_record_presence_does_not_grant_reuse_conformance_or_execution_authority": true,
+        "evidence_source_and_mandatory_receipts_must_survive_cache_reuse_rejection": true,
+        "cache_ineligibility_is_not_automatic_source_record_deletion": true,
+        "validation_authority_remains_assure_and_is_not_created_by_record": true,
+        "eager_invalidating_change_watch_is_not_current_release_obligation": true,
+        "deferred_eager_watch_not_automatically_authorized": true,
+        "prior_approved_engine_state_exact_match_policy_scope_unchanged": true,
+        "missing_evidence_reuse_does_not_authorize_unverified_automatic_recomputation": true,
+        "cached_evidence_plan_contract_methods_not_resolved_by_policy_choice": true,
+        "cache_reuse_timing_direction_does_not_activate_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -223,7 +252,36 @@
         "optional_future_history_policy": "SEPARATE_USER_APPROVAL_REQUIRED",
         "retention_execution_and_serialization": "PLAN_SUBJECT_TO_ACTIVE_RECORD_AND_REAL_AUTHORITY",
         "implementation_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
-      }
+      },
+      "evidence_cache_reuse_eligibility_direction": {
+        "policy_subject": "EVIDENCE_CACHE_REUSE_ELIGIBILITY_DECISION_TIME",
+        "selected_option": "B_VALIDATE_ON_REUSE",
+        "current_release_reuse_decision_trigger": "EACH_CACHE_REUSE_REQUEST",
+        "mandatory_current_verification": [
+          "CURRENT_APPLICABLE_NORMATIVE_CONTRACT",
+          "VERIFIED_CURRENT_SOURCE_AND_DEPENDENCIES",
+          "REGISTERED_APPLICABILITY_CONDITIONS"
+        ],
+        "verification_verdict_owner": "ASSURE",
+        "record_provenance_and_history_owner": "RECORD",
+        "unverified_missing_ambiguous_incompatible": "DENY_REUSE_FAIL_CLOSED",
+        "valid_on_request": "ELIGIBLE_ONLY_SUBJECT_TO_OTHER_EXISTING_ASSURE_AND_CTRL_GATES",
+        "original_evidence_and_mandatory_record_preservation": "REQUIRED",
+        "cache_not_reusable_means_source_deletion": false,
+        "eager_change_detection": {
+          "status": "DEFERRED",
+          "current_release_requirement": false,
+          "automatically_authorized": false,
+          "separate_user_policy_decision_required": true
+        },
+        "implementation_and_binding_contract": "PLAN_AND_MACHINE_CONTRACT",
+        "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
+      },
+      "evidence_cache_remaining_contract_design": [
+        "REUSE_CHECK_IDENTITY_AND_DEPENDENCY_SNAPSHOT_BINDING",
+        "REUSE_VALIDATION_EVIDENCE_AND_ASSURE_HANDOFF",
+        "RECORD_RETENTION_AND_CACHE_INVALIDATION_STATUS_HANDOFF"
+      ]
     }
   },
   "relations": {
