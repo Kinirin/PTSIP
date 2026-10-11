@@ -1,5 +1,5 @@
 {
-  "schema_version": "ptsip-developer-work-unit/v1",
+  "schema_version": "ptsip-work-unit/v1",
   "policy_class": "PTSIP_DEVELOPER_POLICY",
   "plan_version": "0.3.8",
   "planning_contract": "ptsip-planning/v1",
@@ -20,35 +20,38 @@
     "integration_branch": "dev/0.3.8",
     "entry_baseline": "2573cb2498b2b86d74003af7cd803cc9cdef7c93",
     "implementation_authorization": {
-      "status": "NOT_AUTHORIZED"
+      "status": "AUTHORIZED",
+      "authorization_source": "USER_EXPLICIT"
     },
     "depends_on": [],
-    "objective": "Register WU-01 as the current release parent for verifying the existing Context/Evidence P0/P1 read-only candidate against current authoritative policy. Registration must not approve any unreviewed extension or enable execution.",
+    "objective": "Verify the current-release Context/Evidence P0/P1 read-only candidate against current authoritative policy, preserving fail-closed and mandatory tests. User-approved plan scope authorizes only verification remediation; outstanding checks block completion and no runtime or normative authority is granted.",
     "responsibilities": [
       "CURRENT_REGISTERED_POLICY_SOURCE_AND_FINGERPRINT_CONFORMANCE",
       "CANDIDATE_SCHEMA_AND_NATIVE_READ_ONLY_VERIFICATION",
       "KEEP_REQUIRED_FAIL_CLOSED_AND_NO_MUTATION_PROOFS",
       "MAINTAIN_CURRENT_RELEASE_APPROVAL_AND_IMPLEMENTATION_BOUNDARIES"
     ],
-    "review_only_unregistered_extension": {
-      "identity": "WU-01-P01",
-      "path": "developer/planning/0.3.8/WU-01/WU-01-P01.yaml",
-      "approval": "PENDING_SEPARATE_USER_REVIEW",
-      "implementation_authorization": "NOT_AUTHORIZED",
-      "formal_extension_registration": "REGISTERED_REVIEW_ONLY"
-    },
     "acceptance": [
       "CURRENT_POLICY_AND_CANDIDATE_CONFORMANCE_PROVEN_BY_REQUIRED_TESTS",
-      "REGISTRATION_AND_APPROVAL_DO_NOT_GRANT_IMPLEMENTATION_OR_RUNTIME_AUTHORITY",
+      "PLAN_APPROVAL_AUTHORIZES_ONLY_POLICY_COMPLIANT_VERIFICATION_NOT_NORMATIVE_OR_RUNTIME_AUTHORITY",
       "NO_PRERELEASE_PLAN_REF_LOOKUP_REQUIRED",
-      "UNAPPROVED_EXTENSION_MAY_BE_REGISTERED_FOR_REVIEW_ONLY_NOT_EXECUTION"
-    ]
+      "APPROVED_EXTENSION_REMAINS_BLOCKED_UNTIL_REQUIRED_VALIDATION_PASSES"
+    ],
+    "approved_extension": {
+      "identity": "WU-01-P01",
+      "path": "developer/planning/0.3.8/WU-01/WU-01-P01.yaml",
+      "approval": "APPROVED_USER_EXPLICIT_2026_10_11",
+      "lifecycle": "BLOCKED_PENDING_REQUIRED_VERIFICATION",
+      "implementation_scope": "APPROVED_POLICY_BOUND_VERIFICATION_REMEDIATION_ONLY",
+      "runtime_activation": "FORBIDDEN",
+      "completion": "NOT_CLAIMED"
+    }
   },
   "extensions": [
     {
       "id": "WU-01-P01",
       "path": "developer/planning/0.3.8/WU-01/WU-01-P01.yaml",
-      "status": "DRAFT"
+      "status": "BLOCKED"
     }
   ]
 }
