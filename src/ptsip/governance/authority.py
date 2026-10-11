@@ -139,8 +139,6 @@ class AuthorityCatalog:
             if not isinstance(policy_id, str) or policy_id in seen:
                 raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "support policy ids must be unique strings.", policy_id)
             seen.add(policy_id)
-            if route.get("authority_role") == "MIGRATION_SOURCE":
-                continue
             pattern = self.root_family_policy_schema["properties"]["policy"]["properties"]["id"]["pattern"]
             if re.fullmatch(pattern, policy_id) is None or route.get("path") != f"{policy_id.split('-')[1]}/{policy_id}.yaml":
                 raise GovernanceAuthorityError("SUPPORT_POLICY_INDEX_INVALID", "current authority must be an exactly registered Root policy.", route)
@@ -464,11 +462,11 @@ def migration_registry(policy_root: Path, policy_class: str, *, registry_path: P
     path = registry_path if registry_path is not None else policy_root / REGISTRY
     if not path.is_file():
         index_path = policy_root / "index.yaml"
-        if index_path.is_file() and load_yaml_mapping(index_path).get("migration_registry_ref") == REGISTRY:
+        if policy_class == "PTSIP_SUPPORT_FEATURE" or (index_path.is_file() and load_yaml_mapping(index_path).get("migration_registry_ref") == REGISTRY):
             raise ValueError("ROOT_MIGRATION_ADMITTED_REGISTRY_MISSING")
         return {}
     index = load_yaml_mapping(policy_root / "index.yaml")
-    if index.get("migration_registry_ref") != REGISTRY:
+    if policy_class != "PTSIP_SUPPORT_FEATURE" and index.get("migration_registry_ref") != REGISTRY:
         raise ValueError("ROOT_MIGRATION_REGISTRY_NOT_ADMITTED")
     value = _parse_json(path.read_bytes())
     if value.get("schema_version") != "ptsip-root-family-migration/v1" or value.get("policy_class") != policy_class:
@@ -522,7 +520,7 @@ def _checked_module(data: bytes, schema_data: bytes) -> dict:
 def projection_module(policy_root: Path, policy_class: str, *, module_path: Path | None = None) -> dict:
     """Load only the class-local, exact-owner-admitted neutral machine program."""
     index = load_yaml_mapping(policy_root / "index.yaml")
-    if index.get("projection_module_ref") != MODULE:
+    if policy_class != "PTSIP_SUPPORT_FEATURE" and index.get("projection_module_ref") != MODULE:
         raise ValueError("ROOT_MODULE_NOT_ADMITTED")
     path = module_path if module_path is not None else policy_root / MODULE
     if not path.is_file():
@@ -649,13 +647,13 @@ def validate_migration(policy_root: Path, policy_class: str, *, registry_path: P
     for source in registry["sources"]:
         if safe_policy_path(policy_root, source["original_path"]).exists():
             raise ValueError("ROOT_MIGRATION_SOURCE_REINTRODUCED")
-        entry = entries[source["source_policy_id"]]
-        indexed = entry["path"].removeprefix("developer/policy/") if developer else entry["path"]
-        # The migration registry preserves the original lifecycle status;
-        # the Support index represents all archived sources as retired.
-        expected_index_status = "RETIRED" if not developer else source["source_status"]
-        if indexed != source["archive_path"] or entry.get("authority_role") != "MIGRATION_SOURCE" or entry["status"] != expected_index_status:
-            raise ValueError("ROOT_MIGRATION_SOURCE_CATALOG_MISMATCH")
+        if developer:
+            entry = entries[source["source_policy_id"]]
+            indexed = entry["path"].removeprefix("developer/policy/")
+            if indexed != source["archive_path"] or entry.get("authority_role") != "MIGRATION_SOURCE" or entry["status"] != source["source_status"]:
+                raise ValueError("ROOT_MIGRATION_SOURCE_CATALOG_MISMATCH")
+        elif source["source_policy_id"] in entries:
+            raise ValueError("ROOT_MIGRATION_SOURCE_REINTRODUCED")
         original = safe_policy_path(policy_root, source["archive_path"])
         if source_digest(original.read_bytes()) != source["source_sha256"]:
             raise ValueError("ROOT_MIGRATION_ARCHIVED_SOURCE_CHANGED")

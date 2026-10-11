@@ -76,6 +76,7 @@ def test_support_policy_canonical_layout_has_no_legacy_specdata_authority() -> N
     discovered = sorted(
         path.relative_to(canonical).as_posix()
         for path in canonical.rglob("SFP-*.yaml")
+        if "legacy" not in path.relative_to(canonical).parts
     )
     assert discovered == sorted(item["path"] for item in index["policies"])
     assert (canonical / "schemas").is_dir()
@@ -84,22 +85,20 @@ def test_support_policy_canonical_layout_has_no_legacy_specdata_authority() -> N
     assert not (ROOT / "src" / "ptsip" / "specdata" / "support-policy-index.yaml").exists()
     assert not list((ROOT / "src" / "ptsip" / "specdata").glob("SFP-*.yaml"))
 
-def test_support_legacy_policy_catalog_preserves_history_and_retires_all_sources() -> None:
+def test_support_current_catalog_has_no_legacy_policy_identity() -> None:
     index = _yaml("src/policy/index.yaml")
     registry = _json("src/policy/registries/root-family-migration.json")
-    entries = {entry["id"]: entry for entry in index["policies"]}
-    for source in registry["sources"]:
-        entry = entries[source["source_policy_id"]]
-        assert entry["authority_role"] == "MIGRATION_SOURCE"
-        assert entry["status"] == "RETIRED"
+    current_ids = {entry["id"] for entry in index["policies"]}
+    historical_ids = {source["source_policy_id"] for source in registry["sources"]}
+    assert current_ids.isdisjoint(historical_ids)
+    assert all(entry["authority_role"] == "CANONICAL_AUTHORITY" for entry in index["policies"])
+    assert "migration_registry_ref" not in index
+    assert "projection_module_ref" not in index
     schema = _json("src/policy/schemas/ptsip-support-feature-policy-index.schema.json")
     Draft202012Validator(schema).validate(index)
-
-    # Neither the historical ACTIVE nor DRAFT lifecycle is a current authority.
-    for forbidden_status in ("ACTIVE", "DRAFT"):
-        altered = json.loads(json.dumps(index))
-        next(item for item in altered["policies"] if item["id"] == "SFP-0004")["status"] = forbidden_status
-        assert not Draft202012Validator(schema).is_valid(altered)
+    altered = json.loads(json.dumps(index))
+    altered["policies"].append({"id": "SFP-0004", "path": "legacy/SFP-0004.yaml", "status": "RETIRED", "authority_role": "MIGRATION_SOURCE"})
+    assert not Draft202012Validator(schema).is_valid(altered)
 
 def test_consumer_analysis_draft_records_only_approved_registry_and_id_direction() -> None:
     policy = _yaml("src/policy/INFO/SFP-INFO-0005.yaml")
