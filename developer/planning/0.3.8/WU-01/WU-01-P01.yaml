@@ -149,7 +149,7 @@
     "workflow_mutation": "FORBIDDEN",
     "new_implementation_permission_from_this_draft_plan": false,
     "existing_p0_p1_candidate_runtime_state": "CANDIDATE_ONLY_NO_MUTATION",
-    "last_result": "CURRENT_TEST_BUILD_FAILURE_REPAIR_LOCAL_PASS_PENDING_REMOTE_KEEP_BLOCKED_NO_RUNTIME_AUTHORITY",
+    "last_result": "CURRENT_SOURCE_REQUIRED_PUSH_AND_IMPACT_TEST_BUILD_PASS_BLOCKED_RUNTIME_BOUNDARY_RETAINED",
     "plan_index_mutation": "NO_TOP_LEVEL_CHANGE_NEEDED_FOR_CHILD_REVIEW_REGISTRATION",
     "plan_schema_mutation": "NOT_REQUIRED",
     "prerelease_plan_mutation": "FORBIDDEN",
@@ -176,7 +176,7 @@
     "review_registration_is_approval": true,
     "approval_source": "USER_EXPLICIT",
     "implementation_scope": "APPROVED_P0_P1_CANDIDATE_VERIFICATION_ONLY",
-    "implementation_remains_blocked_by_required_validation": true,
+    "implementation_remains_blocked_by_required_validation": false,
     "release_entrypoint_status_source": "developer/planning/0.3.8/index.yaml#plan.status",
     "runtime_remains_blocked_by_policy_boundary": true,
     "verification_permission": "AUTHORIZED_POLICY_BOUND_READ_ONLY_SCOPE_ONLY"
@@ -229,7 +229,7 @@
     }
   },
   "remaining_validation": {
-    "status": "CURRENT_REQUIRED_TEST_BUILD_FAILED_LOCAL_ARCHIVE_REPAIR_AWAITING_EXACT_SOURCE_CI",
+    "status": "ALL_REQUIRED_CURRENT_RELEASE_VERIFICATION_RESPONSIBILITIES_SATISFIED_AT_SOURCE_SHA_BLOCKED_RUNTIME_BOUNDARY_RETAINED",
     "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
     "completed_reference_update_must_not_be_repeated": true,
     "tasks": [
@@ -325,7 +325,7 @@
       {
         "id": "RV-05",
         "responsibility": "MANDATORY_TESTS_AND_RECORD_PROTECTION",
-        "state": "FAIL_CURRENT_SOURCE_TEST_BUILD_REMEDIATION_PENDING",
+        "state": "PASS_APPLICABLE_REQUIRED_CI_AT_SOURCE_SHA",
         "action": "Run repository-required native Go Context/Evidence positive and fail-closed negative vectors, planning/index validity, policy schema/registry checks, and required GitHub Actions without skipping or weakening verification",
         "pass_condition": "ALL_APPLICABLE_REQUIRED_CHECKS_PASS_WITH_SOURCE_BOUND_EVIDENCE",
         "failure": "NO_COMPLETE_OR_RUNTIME_PROMOTION",
@@ -347,19 +347,29 @@
           "no_completion_promotion": true
         },
         "latest_execution_evidence": {
-          "source_sha": "60733928c84924b503adfa34da58229422ee4a29",
-          "run": "https://github.com/Kinirin/PTSIP/actions/runs/38133615829",
-          "result": "FAILURE",
-          "cause": "REGISTERED_FROZEN_MPD_PLAN_0001_ARCHIVE_CHANGED",
-          "expected_digest_not_changed": true,
-          "native_archive_and_negative_guard_recheck": "PASS",
-          "remote_recheck_required": true
+          "source_sha": "fc1c12326a1542c1d91908c926fc9e4049c926e1",
+          "push_run": "https://github.com/Kinirin/PTSIP/actions/runs/38135587052",
+          "push_result": "SUCCESS",
+          "test_build_run": "https://github.com/Kinirin/PTSIP/actions/runs/38135587266",
+          "test_build_result": "SUCCESS",
+          "selected_modes": [
+            "repository-architecture",
+            "ptsip-contract",
+            "agent-contract-candidate",
+            "ptsip-core",
+            "repository-release"
+          ],
+          "registered_frozen_archive_restored": true,
+          "required_legacy_test_functions_and_negative_coverage_preserved": true,
+          "registered_trust_hashes_changed": false,
+          "runtime_activation": "FORBIDDEN",
+          "lifecycle_promotion": "NOT_PERFORMED"
         }
       }
     ],
     "required_release_approval_and_implementation_remain_separate": true,
-    "last_verified_source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
-    "last_verified_run": "https://github.com/Kinirin/PTSIP/actions/runs/38131146170"
+    "last_verified_source_sha": "fc1c12326a1542c1d91908c926fc9e4049c926e1",
+    "last_verified_run": "https://github.com/Kinirin/PTSIP/actions/runs/38135587266"
   },
   "approval_evidence": {
     "decision": "USER_EXPLICIT_FULL_PLAN_APPROVAL",
@@ -437,7 +447,7 @@
       "native_targeted_integrity_and_tamper_checks": "PASS",
       "native_full_root_family_regression": "PASS"
     },
-    "required_test_remediation": "FROZEN_ARCHIVE_RESTORED_AND_EXISTING_REQUIRED_TEST_EXPECTATIONS_MAINTAINED_REMOTE_PENDING",
+    "required_test_remediation": "PASS_FROZEN_ARCHIVE_INTEGRITY_AND_REQUIRED_TEST_MAINTENANCE_ON_EXACT_REMOTE_SHA",
     "impact_scope_selected_modes": [
       "repository-architecture",
       "ptsip-contract",
@@ -485,6 +495,21 @@
       "result": "FAILURE_STALE_REQUIRED_TEST_EXPECTATIONS",
       "historical_integrity_failures_resolved": true,
       "required_contract_tests_preserved": true
+    },
+    "final_required_ci": {
+      "source_sha": "fc1c12326a1542c1d91908c926fc9e4049c926e1",
+      "push_run": "https://github.com/Kinirin/PTSIP/actions/runs/38135587052",
+      "push_result": "SUCCESS",
+      "required_push_jobs": [
+        "static-validation",
+        "pra-registry-validation",
+        "pp-transition"
+      ],
+      "test_build_run": "https://github.com/Kinirin/PTSIP/actions/runs/38135587266",
+      "test_build_result": "SUCCESS",
+      "test_build_was_executed": true,
+      "scope": "FIVE_EFFECTIVE_PROFILE_SELECTED_IMPACT_MODES",
+      "branch": "dev/0.3.8"
     }
   }
 }
