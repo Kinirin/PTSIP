@@ -53,13 +53,20 @@ def registry():
     items = inventory["required_execution_steps"]
     if len(mapped) != len(set(mapped)) or set(mapped) != set(items):
         raise ValueError("WEC-09/10/11 legacy obligations missing or duplicated")
-    for mode in modes["modes"]:
-        for kind in ("pytest", "go"):
-            for number, target in enumerate(mode["execution"].get(kind, []), 1):
-                check_id = "%s--%s-%d" % (mode["id"], kind, number)
-                if check_id in results:
-                    raise ValueError("Check identifier collision")
-                results[check_id] = dict(id=check_id, mode=mode["id"], kind=kind, target=target)
+    expected = {(m["id"], kind, target, m["component_ref"]) for m in modes["modes"]
+                for kind in ("pytest", "go") for target in m["execution"].get(kind, [])}
+    declared = set()
+    for item in check_registry.get("mode_checks", []):
+        check_id = item["id"]
+        key = (item["mode"], item["kind"], item["target"], item["component_ref"])
+        if check_id in results or key in declared:
+            raise ValueError("duplicate/overlapping registered Check: " + check_id)
+        if not item.get("required") or not item.get("evidence_claim"):
+            raise ValueError("Check missing evidence claim or required coverage: " + check_id)
+        declared.add(key)
+        results[check_id] = dict(item)
+    if declared != expected:
+        raise ValueError("WEC-10/11 Mode-to-Check-to-target mapping incomplete")
     return check_registry, mode_map, results
 
 def csv(text):

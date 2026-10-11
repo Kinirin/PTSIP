@@ -224,5 +224,458 @@
       ],
       "status_context": null
     }
+  ],
+  "version": "1.1",
+  "mode_checks": [
+    {
+      "id": "agent-contract-plane--pytest--agent-contracts-test-contract-plane",
+      "mode": "agent-contract-plane",
+      "component_ref": "agent-contract-plane-verification",
+      "kind": "pytest",
+      "target": "src/tests/agent_contracts/test_contract_plane.py",
+      "evidence_claim": "agent-contract-plane.pytest.agent-contracts-test-contract-plane",
+      "required": true
+    },
+    {
+      "id": "agent-contract-plane--pytest--agent-contracts-test-promotion-contract",
+      "mode": "agent-contract-plane",
+      "component_ref": "agent-contract-plane-verification",
+      "kind": "pytest",
+      "target": "src/tests/agent_contracts/test_promotion_contract.py",
+      "evidence_claim": "agent-contract-plane.pytest.agent-contracts-test-promotion-contract",
+      "required": true
+    },
+    {
+      "id": "agent-contract-runtime--pytest--agent-contracts-test-resolver",
+      "mode": "agent-contract-runtime",
+      "component_ref": "agent-contract-runtime-verification",
+      "kind": "pytest",
+      "target": "src/tests/agent_contracts/test_resolver.py",
+      "evidence_claim": "agent-contract-runtime.pytest.agent-contracts-test-resolver",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-clarification",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/clarification",
+      "evidence_claim": "ptsip-core.pytest.ptsip-clarification",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-cli",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/cli",
+      "evidence_claim": "ptsip-core.pytest.ptsip-cli",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-conformance",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/conformance",
+      "evidence_claim": "ptsip-core.pytest.ptsip-conformance",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-control-plane",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/control_plane",
+      "evidence_claim": "ptsip-core.pytest.ptsip-control-plane",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-governance-test-authority-runtime",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/governance/test_authority_runtime.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-governance-test-authority-runtime",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-governance-test-authorization-transition",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/governance/test_authorization_transition.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-governance-test-authorization-transition",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-identity",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/identity",
+      "evidence_claim": "ptsip-core.pytest.ptsip-identity",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-inspection",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/inspection",
+      "evidence_claim": "ptsip-core.pytest.ptsip-inspection",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-integration",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/integration",
+      "evidence_claim": "ptsip-core.pytest.ptsip-integration",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-pilot",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/pilot",
+      "evidence_claim": "ptsip-core.pytest.ptsip-pilot",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-topology",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/topology",
+      "evidence_claim": "ptsip-core.pytest.ptsip-topology",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-validation",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/validation",
+      "evidence_claim": "ptsip-core.pytest.ptsip-validation",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-repository-test-profile-convergence-037",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/repository/test_profile_convergence_037.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-repository-test-profile-convergence-037",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-repository-test-profile-transition-037",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/repository/test_profile_transition_037.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-repository-test-profile-transition-037",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-repository-test-remote-discovery",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/repository/test_remote_discovery.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-repository-test-remote-discovery",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-repository-test-snapshot-integrity",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/repository/test_snapshot_integrity.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-repository-test-snapshot-integrity",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-test-adoption",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/test_adoption.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-test-adoption",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-test-clarification",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/test_clarification.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-test-clarification",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-test-merge-gate-followup-030",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/test_merge_gate_followup_030.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-test-merge-gate-followup-030",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-test-proposed-component",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/test_proposed_component.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-test-proposed-component",
+      "required": true
+    },
+    {
+      "id": "ptsip-core--pytest--ptsip-test-context-plane",
+      "mode": "ptsip-core",
+      "component_ref": "ptsip-core-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/test_context_plane.py",
+      "evidence_claim": "ptsip-core.pytest.ptsip-test-context-plane",
+      "required": true
+    },
+    {
+      "id": "ptsip-evidence--pytest--ptsip-evidence",
+      "mode": "ptsip-evidence",
+      "component_ref": "ptsip-evidence-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/evidence",
+      "evidence_claim": "ptsip-evidence.pytest.ptsip-evidence",
+      "required": true
+    },
+    {
+      "id": "ptsip-migration--pytest--ptsip-migration",
+      "mode": "ptsip-migration",
+      "component_ref": "ptsip-migration-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/migration",
+      "evidence_claim": "ptsip-migration.pytest.ptsip-migration",
+      "required": true
+    },
+    {
+      "id": "ptsip-remediation--pytest--ptsip-remediation",
+      "mode": "ptsip-remediation",
+      "component_ref": "ptsip-remediation-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/remediation",
+      "evidence_claim": "ptsip-remediation.pytest.ptsip-remediation",
+      "required": true
+    },
+    {
+      "id": "ptsip-source-compat--pytest--ptsip-source-compat",
+      "mode": "ptsip-source-compat",
+      "component_ref": "ptsip-source-compat-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/source_compat",
+      "evidence_claim": "ptsip-source-compat.pytest.ptsip-source-compat",
+      "required": true
+    },
+    {
+      "id": "vpms--pytest--vpms-domain",
+      "mode": "vpms",
+      "component_ref": "vpms-verification",
+      "kind": "pytest",
+      "target": "src/tests/vpms/domain",
+      "evidence_claim": "vpms.pytest.vpms-domain",
+      "required": true
+    },
+    {
+      "id": "vpms--pytest--vpms-execution",
+      "mode": "vpms",
+      "component_ref": "vpms-verification",
+      "kind": "pytest",
+      "target": "src/tests/vpms/execution",
+      "evidence_claim": "vpms.pytest.vpms-execution",
+      "required": true
+    },
+    {
+      "id": "vpms--pytest--vpms-integration",
+      "mode": "vpms",
+      "component_ref": "vpms-verification",
+      "kind": "pytest",
+      "target": "src/tests/vpms/integration",
+      "evidence_claim": "vpms.pytest.vpms-integration",
+      "required": true
+    },
+    {
+      "id": "vpms--pytest--vpms-architecture",
+      "mode": "vpms",
+      "component_ref": "vpms-verification",
+      "kind": "pytest",
+      "target": "src/tests/vpms/architecture",
+      "evidence_claim": "vpms.pytest.vpms-architecture",
+      "required": true
+    },
+    {
+      "id": "vpms--pytest--vpms-selection",
+      "mode": "vpms",
+      "component_ref": "vpms-verification",
+      "kind": "pytest",
+      "target": "src/tests/vpms/selection",
+      "evidence_claim": "vpms.pytest.vpms-selection",
+      "required": true
+    },
+    {
+      "id": "vpms-contract-plane--pytest--vpms-contracts",
+      "mode": "vpms-contract-plane",
+      "component_ref": "vpms-contract-plane-verification",
+      "kind": "pytest",
+      "target": "src/tests/vpms/contracts",
+      "evidence_claim": "vpms-contract-plane.pytest.vpms-contracts",
+      "required": true
+    },
+    {
+      "id": "agent-contract-candidate--pytest--ptsip-agent-contracts-test-candidate-parity",
+      "mode": "agent-contract-candidate",
+      "component_ref": "agent-contract-candidate-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/agent_contracts/test_candidate_parity.py",
+      "evidence_claim": "agent-contract-candidate.pytest.ptsip-agent-contracts-test-candidate-parity",
+      "required": true
+    },
+    {
+      "id": "agent-contract-candidate--pytest--ptsip-agent-contracts-test-projection-bindings",
+      "mode": "agent-contract-candidate",
+      "component_ref": "agent-contract-candidate-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/agent_contracts/test_projection_bindings.py",
+      "evidence_claim": "agent-contract-candidate.pytest.ptsip-agent-contracts-test-projection-bindings",
+      "required": true
+    },
+    {
+      "id": "policy-responsibility-analysis--pytest--ptsip-policy-responsibility-analysis",
+      "mode": "policy-responsibility-analysis",
+      "component_ref": "policy-responsibility-analysis-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/policy_responsibility_analysis",
+      "evidence_claim": "policy-responsibility-analysis.pytest.ptsip-policy-responsibility-analysis",
+      "required": true
+    },
+    {
+      "id": "ptsip-contract--pytest--ptsip-contracts",
+      "mode": "ptsip-contract",
+      "component_ref": "ptsip-contract-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/contracts",
+      "evidence_claim": "ptsip-contract.pytest.ptsip-contracts",
+      "required": true
+    },
+    {
+      "id": "ptsip-contract--pytest--ptsip-agent-contracts-test-contract-plane",
+      "mode": "ptsip-contract",
+      "component_ref": "ptsip-contract-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/agent_contracts/test_contract_plane.py",
+      "evidence_claim": "ptsip-contract.pytest.ptsip-agent-contracts-test-contract-plane",
+      "required": true
+    },
+    {
+      "id": "ptsip-contract--pytest--ptsip-agent-contracts-test-operation-loading",
+      "mode": "ptsip-contract",
+      "component_ref": "ptsip-contract-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/agent_contracts/test_operation_loading.py",
+      "evidence_claim": "ptsip-contract.pytest.ptsip-agent-contracts-test-operation-loading",
+      "required": true
+    },
+    {
+      "id": "ptsip-contract--pytest--ptsip-governance-test-contracts",
+      "mode": "ptsip-contract",
+      "component_ref": "ptsip-contract-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/governance/test_contracts.py",
+      "evidence_claim": "ptsip-contract.pytest.ptsip-governance-test-contracts",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--go--planning",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/planning",
+      "evidence_claim": "repository-architecture.go.planning",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--go--policy",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/policy",
+      "evidence_claim": "repository-architecture.go.policy",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--go--pp",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/pp",
+      "evidence_claim": "repository-architecture.go.pp",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--go--repository",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/repository",
+      "evidence_claim": "repository-architecture.go.repository",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--go--rootfamily",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/rootfamily",
+      "evidence_claim": "repository-architecture.go.rootfamily",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--go--workflows",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/workflows",
+      "evidence_claim": "repository-architecture.go.workflows",
+      "required": true
+    },
+    {
+      "id": "repository-architecture--pytest--ptsip-repository-test-self-profile",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/repository/test_self_profile.py",
+      "evidence_claim": "repository-architecture.pytest.ptsip-repository-test-self-profile",
+      "required": true
+    },
+    {
+      "id": "repository-release--go--release",
+      "mode": "repository-release",
+      "component_ref": "repository-release-verification",
+      "kind": "go",
+      "target": "developer/tests/release",
+      "evidence_claim": "repository-release.go.release",
+      "required": true
+    },
+    {
+      "id": "test-mode-control-plane--pytest--ptsip-test-modes",
+      "mode": "test-mode-control-plane",
+      "component_ref": "repository-test-mode-control-plane",
+      "kind": "pytest",
+      "target": "src/tests/ptsip/test_modes",
+      "evidence_claim": "test-mode-control-plane.pytest.ptsip-test-modes",
+      "required": true
+    }
   ]
 }
