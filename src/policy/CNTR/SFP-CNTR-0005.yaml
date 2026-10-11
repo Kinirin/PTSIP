@@ -113,7 +113,15 @@
         "runtime_binding_and_ctrl_authority_check": "UNCHANGED_FRESH_REQUIRED",
         "registered_binding_change_detection_evidence_contract": "PLAN_AND_MACHINE_CONTRACT",
         "registered_binding_change_detection_mechanism": "PLAN_AND_MACHINE_CONTRACT",
-        "registered_binding_change_reevaluation_scope_of_propagation": "UNRESOLVED_SEPARATE_USER_POLICY"
+        "registered_binding_change_reevaluation_scope_of_propagation": "MACHINE_VERIFIED_AFFECTED_CAPABILITY_AND_DEPENDENCY_CLOSURE",
+        "registered_binding_change_failure_scope_choice": "A_USER_EXPLICIT",
+        "registered_binding_change_failure_scope_decided_at": "2026-10-11",
+        "failed_binding_or_contract_reevaluation": "FAIL_CLOSED_BLOCK_VERIFIED_AFFECTED_AND_POTENTIALLY_AFFECTED_WHEN_UNCERTAIN",
+        "independent_capability_continuation": "ONLY_MACHINE_VERIFIED_UNAFFECTED_AND_CURRENTLY_ELIGIBLE_WITH_EXISTING_AUTHORITY",
+        "unknown_dependency_or_registration_boundary": "FAIL_CLOSED_POTENTIALLY_AFFECTED_OPERATIONS",
+        "post_registration_scoped_failure_is_not_initial_registration_exception": true,
+        "no_whole_engine_block_without_affected_dependency_or_indivisibility_proof": true,
+        "no_new_activation_execution_write_or_registration_authority_from_scope_choice": true
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -238,7 +246,22 @@
         "nonexternally_invocable_capability_does_not_gain_runtime_binding_requirement": true,
         "engine_binding_change_reevaluation_does_not_reassign_active_authority": true,
         "binding_change_event_type_evidence_transport_and_debounce_are_plan_level_contracts": true,
-        "binding_change_detection_does_not_automatically_authorize_active_runtime_or_mutation": true
+        "binding_change_detection_does_not_automatically_authorize_active_runtime_or_mutation": true,
+        "post_registration_binding_failure_isolates_verified_affected_capabilities_and_dependents": true,
+        "unaffected_capability_continuation_requires_machine_verified_independence": true,
+        "unaffected_capability_continuation_requires_current_registration_binding_and_applicable_contract_eligibility": true,
+        "affected_or_potentially_affected_capability_selection_and_execution_blocked_while_unknown_or_failed": true,
+        "unknown_dependency_relation_is_not_proof_of_independence": true,
+        "transitive_dependency_uncertainty_blocks_potentially_affected_scope": true,
+        "independent_capabilities_may_continue_only_under_existing_ctrl_and_contract_gates": true,
+        "failure_scope_containment_does_not_automatically_block_proven_independent_capabilities": true,
+        "failure_scope_containment_does_not_silently_requalify_failed_capabilities": true,
+        "initial_externally_invocable_registration_requires_verified_binding_unchanged": true,
+        "if_scoped_registration_is_unrepresentable_registration_eligibility_fails_closed_at_actual_enforcement_scope": true,
+        "affected_scope_may_expand_to_whole_engine_only_when_dependency_or_indivisible_contract_proof_requires_it": true,
+        "failure_scope_reevaluation_grants_no_activation_execution_or_write_rights": true,
+        "failure_scope_reevaluation_preserves_registered_identity_and_contract_based_entrypoint_discovery": true,
+        "failure_scope_selection_does_not_activate_draft_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -321,12 +344,6 @@
           "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
-        },
-        {
-          "id": "ENGINE_REGISTERED_BINDING_CHANGE_REEVALUATION_FAILURE_SCOPE",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED",
-          "reason": "DETERMINE_WHOLE_ENGINE_VS_VERIFIED_AFFECTED_CAPABILITY_REGISTRATION_SCOPE_AFTER_CHANGE_REEVALUATION_FAILURE"
         }
       ],
       "activation_requirements": {
@@ -507,6 +524,24 @@
           "failure_impact_scope": "UNRESOLVED_SEPARATE_USER_POLICY",
           "implementation": "NOT_AUTHORIZED_BY_THIS_DECISION",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_REGISTERED_BINDING_CHANGE_REEVALUATION_FAILURE_SCOPE",
+          "selected_option": "A_VERIFIED_AFFECTED_SCOPE_ONLY_WITH_UNKNOWN_FAIL_CLOSED",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "POST_REGISTRATION_REEVALUATION_FAILURE_IMPACT_ONLY",
+          "block": "FAILED_CAPABILITIES_PROVEN_AFFECTED_DEPENDENTS_AND_POTENTIALLY_AFFECTED_WHEN_UNVERIFIED",
+          "permit": "INDEPENDENT_CURRENTLY_ELIGIBLE_CAPABILITIES_WITH_EXISTING_AUTHORITY",
+          "no_blind_engine_wide_stop": true,
+          "if_machine_proof_cannot_separate_scopes": "FAIL_CLOSED_WIDEN_TO_REQUIRED_ENFORCEABLE_SCOPE",
+          "initial_registration_binding_gate": "UNCHANGED",
+          "immediate_change_detection_reevaluation": "UNCHANGED",
+          "final_execution_ctrl_check": "UNCHANGED",
+          "registered_contract_identity_and_directory_independence": "UNCHANGED",
+          "detailed_contract_and_schema": "PLAN",
+          "implementation": "NOT_AUTHORIZED_BY_THIS_DECISION",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
@@ -563,9 +598,29 @@
         "directory_name_is_binding_authority": false,
         "static_interoperability_core": "PRESERVED",
         "registration_or_reevaluation_is_execution_permission": false,
-        "failure_impact_scope_owner_decision": "UNRESOLVED_SEPARATE_USER_POLICY",
+        "failure_impact_scope_owner_decision": "A_USER_APPROVED_VERIFIED_AFFECTED_SCOPE",
         "detection_source_watcher_frequency_revalidation_proof_schema": "PLAN_AND_MACHINE_CONTRACT",
-        "effect": "DRAFT_ONLY_NO_ENGINE_RUNTIME_ACTIVATION_OR_REAL_IMPLEMENTATION"
+        "effect": "DRAFT_ONLY_NO_ENGINE_RUNTIME_ACTIVATION_OR_REAL_IMPLEMENTATION",
+        "failure_scope_policy_subject": "ENGINE_REGISTERED_BINDING_CHANGE_REEVALUATION_FAILURE_SCOPE"
+      },
+      "registered_binding_change_failure_scope_direction": {
+        "policy_subject": "ENGINE_REGISTERED_BINDING_CHANGE_REEVALUATION_FAILURE_SCOPE",
+        "selected_option": "A_VERIFIED_AFFECTED_CAPABILITY_AND_DEPENDENCY_ISOLATION",
+        "applicable_context": "POST_REGISTRATION_CHANGE_REEVALUATION_FAILURE",
+        "failure_target": "FAILED_CAPABILITY_AND_MACHINE_VERIFIED_AFFECTED_TRANSITIVE_DEPENDENTS",
+        "unknown_or_unverified_impact": "FAIL_CLOSED_FOR_ALL_POTENTIALLY_AFFECTED_CAPABILITIES",
+        "unaffected_continuation": "ONLY_WITH_MACHINE_VERIFIED_INDEPENDENCE_CURRENT_ELIGIBILITY_AND_EXISTING_AUTHORITY",
+        "never_infer_independence_from": "DIFFERENT_CAPABILITY_OR_ENGINE_LABEL_ALONE",
+        "if_registration_capability_scope_cannot_be_safely_represented": "FAIL_CLOSED_AT_NECESSARY_LARGER_ENFORCEMENT_SCOPE",
+        "initial_registration_gate": "UNCHANGED_REQUIRED_BINDING_FOR_EXTERNALLY_INVOCABLE_CAPABILITY",
+        "post_registration_change_timing": "IMMEDIATE_REEVALUATION_ON_MACHINE_VERIFIED_CHANGE",
+        "execution_gate": "CURRENT_REGISTERED_BINDING_APPLICABLE_CONTRACT_AND_FRESH_CTRL_AUTHORITY",
+        "source_declaration": "UNCHANGED_STATIC_INTEROPERABILITY_CORE",
+        "engine_identity_entrypoint_resolution": "REGISTERED_CONTRACT_WITHOUT_DIRECTORY_NAME_INFERENCE",
+        "eligibility_is_not_permission": true,
+        "dependency_closure_proof_and_status_model": "PLAN_AND_MACHINE_CONTRACT",
+        "no_new_runtime_rights_or_active_transition": true,
+        "current_effect": "DRAFT_ONLY_NO_IMPLEMENTATION"
       }
     }
   },
