@@ -832,7 +832,9 @@
         "GO_EXECUTABLE_TEST_COVERAGE_PLAN",
         "JSON_YAML_NEUTRAL_CONFORMANCE_VECTORS",
         "VERIFICATION_MODE_SELECTION_AND_SOURCE_SHA_EVIDENCE",
-        "NEGATIVE_AND_FAILURE_VECTOR_REPORT"
+        "NEGATIVE_AND_FAILURE_VECTOR_REPORT",
+        "LIGHTWEIGHT_COST_EVIDENCE_CAPTURE_SPEC",
+        "MEASURED_BASELINE_COMPARABILITY_AND_PROVENANCE_MATRIX"
       ],
       "required_machine_checks": [
         "EXISTING_REQUIRED_VERIFICATION_UNDIMINISHED",
@@ -840,7 +842,10 @@
         "NO_UNMAPPED_CHANGED_PATH_AND_NO_FULL_FALLBACK",
         "NO_LEGACY_REQUIRED_TEST_REMOVAL_BEFORE_VERIFIED_GO_PARITY",
         "ALL_REQUIRED_CHECKS_PASS_NO_WAIVER",
-        "NO_NEW_NORMATIVE_SEMANTICS_FROM_TESTS"
+        "NO_NEW_NORMATIVE_SEMANTICS_FROM_TESTS",
+        "COST_OBSERVATION_HAS_EXACT_WORKLOAD_SOURCE_SHA_AND_VERIFICATION_EVIDENCE_LINK",
+        "MISSING_TELEMETRY_IS_EXPLICITLY_UNOBSERVED_NOT_ZERO",
+        "COST_TELEMETRY_IS_NON_NORMATIVE_AND_CANNOT_SUBSTITUTE_REQUIRED_VERIFICATION"
       ],
       "blocked_by": [
         "FAIL_OR_UNKNOWN_IN_REQUIRED_CHECKS"
@@ -864,14 +869,19 @@
         "REGISTERED_STAGE_GATE_AND_TRANSITION_SPEC",
         "SOURCE_FRESHNESS_AND_RESULT_EVIDENCE_SNAPSHOT",
         "POLICY_COVERAGE_DIFFERENCE_REPORT",
-        "NEXT_APPROVED_ACTION_RESOLUTION"
+        "NEXT_APPROVED_ACTION_RESOLUTION",
+        "MACHINE_READABLE_NON_NORMATIVE_COST_AND_EFFICIENCY_REPORT",
+        "COMPARABLE_OBSERVED_BASELINE_AND_CANDIDATE_DELTA_OR_NOT_COMPARABLE"
       ],
       "required_machine_checks": [
         "COMPLETE_ONLY_ON_REGISTERED_MACHINE_CHECK_ALL_PASS",
         "REVALIDATE_PLANNING_AFTER_AUTOMATIC_PROMOTION",
         "ADVANCE_ONLY_WITH_UNEXPIRED_SCOPE_SPECIFIC_AUTHORIZATION",
         "NEW_POLICY_APPROVAL_RUNTIME_ACTIVATION_AND_PLAN_EXPANSION_NEVER_AUTO_GRANTED",
-        "PARENT_WU08_BLOCKERS_REMAIN_INDEPENDENT"
+        "PARENT_WU08_BLOCKERS_REMAIN_INDEPENDENT",
+        "COST_REPORT_ONLY_COMPARES_MACHINE_VERIFIED_MATCHED_OBSERVATIONS",
+        "COST_METRIC_VALUE_OR_PERFORMANCE_THRESHOLD_NEVER_GRANTS_APPROVAL_OR_CUTOVER",
+        "COST_EVIDENCE_FAILURE_NEVER_WAIVES_REQUIRED_TEST_FAILURE"
       ],
       "blocked_by": [
         "ABSENT_EXACT_POLICY_PLAN_BINDING",
@@ -986,10 +996,150 @@
       "AUTO_CONTINUATION_PRESERVES_EXISTING_APPROVAL_AND_STOP_RULES",
       "NO_POLICY_PLAN_IMPLEMENTATION_AUTHORITY_COLLAPSE",
       "NO_VERIFICATION_WAIVER_OR_COVERAGE_REDUCTION",
-      "NO_CHANGE_TO_BRANCH_POLICY_CODE_TEST_WORKFLOW_OR_REGISTRY"
+      "NO_CHANGE_TO_BRANCH_POLICY_CODE_TEST_WORKFLOW_OR_REGISTRY",
+      "P5_NON_NORMATIVE_LIGHTWEIGHT_COST_EVIDENCE_AND_NO_REQUIRED_CHECK_WEAKENING"
     ],
     "approval_current": "PENDING",
     "implementation_current": "HOLD_NOT_AUTHORIZED",
     "plan_registration_current": "NOT_REGISTERED"
+  },
+  "p5_lightweight_cost_evidence": {
+    "approved_choice": "B_LIGHTWEIGHT_P5_INTEGRATED_COST_EVIDENCE",
+    "approval_basis": "USER_EXPLICIT_PLAN_SCOPE_DIRECTION_2026-10-11",
+    "scope": [
+      "P5-01_MEASUREMENT_SOURCE_AND_CAPTURE_CONTRACT",
+      "P5-02_NON_NORMATIVE_MACHINE_REPORT_AND_COMPARABLE_DELTA"
+    ],
+    "authority_class": "NON_NORMATIVE_OBSERVABLE_EXECUTION_EVIDENCE",
+    "machine_first_principles": {
+      "source": "REGISTERED_EXECUTION_AND_VERIFICATION_RESULT_EVENTS",
+      "repeated_semantic_inference_not_required_if_machine_evidence_available": true,
+      "source_policy_and_plan_authority_unchanged": true,
+      "input_events_are_existing_authorized_observations_only": true,
+      "instrumentation_must_not_mutate_or_expand_consumer_project_scope": true,
+      "observational_output_cannot_define_or_override_normative_semantics": true
+    },
+    "measurement_contract": {
+      "minimum_provenance_fields": [
+        "observation_id",
+        "work_package_id",
+        "workload_fingerprint",
+        "repository_source_sha",
+        "policy_snapshot_ref",
+        "measurement_origin",
+        "measurement_time",
+        "observation_status",
+        "verification_result_ref"
+      ],
+      "value_domain": [
+        "OBSERVED",
+        "UNOBSERVED",
+        "NOT_COMPARABLE"
+      ],
+      "zero_implies_actual_measured_zero_only": true,
+      "unavailable_value_is_zero": false,
+      "estimated_value_must_be_labeled_and_excluded_from_verified_comparison": true,
+      "capture_windows_bound_to_registered_stage_execution": true,
+      "avoid_raw_sensitive_prompts_or_unapproved_customer_data": true,
+      "instrumentation_scope": "PLAN_ONLY_NO_CODE_OR_WORKFLOW_CHANGE",
+      "metrics": [
+        {
+          "id": "ELAPSED_TIME_MS",
+          "unit": "MILLISECONDS",
+          "evidence": "ACTUAL_MEASURED_START_END_OR_REGISTERED_EXECUTION_DURATION",
+          "availability": "OBSERVED_IF_INSTRUMENTED_ELSE_UNOBSERVED",
+          "normative_threshold": "NONE"
+        },
+        {
+          "id": "BOUNDED_AI_REASONING_INVOCATIONS",
+          "unit": "COUNT",
+          "evidence": "REGISTERED_RESOLVER_OR_AGENT_EXECUTION_EVENTS_ONLY",
+          "availability": "OBSERVED_IF_INSTRUMENTED_ELSE_UNOBSERVED",
+          "normative_threshold": "NONE"
+        },
+        {
+          "id": "DETERMINISTIC_RESOLUTION_REUSE",
+          "unit": "COUNT_AND_RATIO",
+          "evidence": "REGISTERED_ELIGIBLE_RESOLUTION_EVENTS_AND_MACHINE_REUSE_OUTCOMES",
+          "definition": "VERIFIED_REUSE_COUNT_DIVIDED_BY_VERIFIED_ELIGIBLE_RESOLUTION_COUNT",
+          "zero_denominator": "NOT_COMPARABLE",
+          "availability": "OBSERVED_IF_DENOMINATOR_AND_REUSE_ARE_PROVEN_ELSE_UNOBSERVED",
+          "normative_threshold": "NONE"
+        },
+        {
+          "id": "REQUIRED_VERIFICATION_FAILURES",
+          "unit": "COUNT",
+          "evidence": "REGISTERED_REQUIRED_TEST_MODE_CHECK_OUTCOMES",
+          "availability": "OBSERVED_IF_CHECK_SET_AND_RESULTS_ARE_COMPLETE_ELSE_UNOBSERVED",
+          "normative_threshold": "NONE"
+        },
+        {
+          "id": "VERIFIED_EXECUTION_RETRIES",
+          "unit": "COUNT",
+          "evidence": "EXACT_OPERATION_AND_ATTEMPT_IDS_FROM_REGISTERED_RESULT_LOG",
+          "availability": "OBSERVED_IF_ATTEMPT_CHAIN_PROVEN_ELSE_UNOBSERVED",
+          "normative_threshold": "NONE"
+        },
+        {
+          "id": "MODEL_TOKEN_USAGE",
+          "unit": "INPUT_OUTPUT_REASONING_TOKENS",
+          "evidence": "TRUSTED_PROVIDER_OR_EXECUTION_TELEMETRY_ONLY",
+          "availability": "OPTIONAL_OBSERVED_ONLY_IF_PROVIDER_REPORTS_ELSE_UNOBSERVED",
+          "normative_threshold": "NONE"
+        }
+      ],
+      "monetary_cost": {
+        "required": false,
+        "recording": "OPTIONAL_ONLY_IF_ACTUAL_BILLING_AND_CURRENCY_AND_PRICE_REVISION_ARE_VERIFIABLE",
+        "unverified_vendor_price_estimate": "FORBIDDEN_AS_VERIFIED_RESULT",
+        "unknown_charge": "UNOBSERVED"
+      }
+    },
+    "comparable_evaluation": {
+      "required_match_keys": [
+        "SAME_TASK_SEMANTICS",
+        "EQUIVALENT_WORKLOAD",
+        "DECLARED_SOURCE_AND_POLICY_REVISION_RELATION",
+        "EQUIVALENT_VERIFICATION_COVERAGE",
+        "MEASUREMENT_METHOD_COMPATIBILITY"
+      ],
+      "baseline_source": "ACTUAL_RECORDED_BASELINE_NOT_SYNTHETIC_OR_AI_ESTIMATE",
+      "candidate_source": "CURRENT_REGISTERED_STAGE_OBSERVATIONS",
+      "computation": "DELTA_ONLY_WHEN_BOTH_OBSERVED_AND_MATCH_KEYS_MACHINE_VERIFIED",
+      "incomparable_or_missing_baseline": "EMIT_NOT_COMPARABLE_WITH_EXACT_CAUSE",
+      "compare_across_models_only_when": "NORMALIZATION_AND_WORKLOAD_MATCH_PROVEN",
+      "claimed_savings_without_evidence": "FORBIDDEN",
+      "inference_reduction_without_registered_count_evidence": "UNOBSERVED"
+    },
+    "verification_boundary": {
+      "cost_metrics_are_separate_from_required_conformance": true,
+      "all_existing_profile_test_modes_and_original_required_checks": "UNCHANGED",
+      "no_legacy_go_test_retirement_without_verified_parity": true,
+      "observational_completeness_requires_each_metric_observed_or_explicitly_unobserved": true,
+      "optional_instrumentation_missing_does_not_turn_required_conformance_pass_into_fail": true,
+      "required_functional_failure_cannot_be_waived_by_cost_or_speed": true,
+      "measured_efficiency_cannot_grant_approval_authorization_runtime_activation_or_policy_promotion": true,
+      "cost_gate_minimum": "VALIDATE_EVIDENCE_SHAPE_SOURCE_AND_AVAILABILITY_NOT_PERFORMANCE_THRESHOLD",
+      "missing_critical_provenance_for_any_claimed_observed_measurement": "INVALID_OBSERVATION_EXCLUDE_FROM_COMPARISON"
+    },
+    "outputs": [
+      {
+        "stage": "P5-01",
+        "artifact_role": "NON_NORMATIVE_COST_MEASUREMENT_EVIDENCE_PLAN",
+        "format": "MACHINE_READABLE_JSON_CANDIDATE"
+      },
+      {
+        "stage": "P5-02",
+        "artifact_role": "COMPARABLE_METRIC_DELTA_AND_UNOBSERVED_REASONS_REPORT",
+        "format": "MACHINE_READABLE_JSON_CANDIDATE"
+      }
+    ],
+    "separate_future_policy_scope": [
+      "NORMATIVE_REQUIRED_MAX_COST_OR_SPEED_THRESHOLD",
+      "MONETARY_BUDGET_ENFORCEMENT",
+      "UNAUTHORIZED_CROSS_MODEL_MEASUREMENT_COLLECTION",
+      "INDEPENDENT_LONG_RUNNING_COST_BENCHMARK_PROGRAM"
+    ],
+    "implementation_authorization_by_this_review": false
   }
 }
