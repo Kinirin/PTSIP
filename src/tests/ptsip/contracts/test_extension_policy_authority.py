@@ -38,7 +38,8 @@ def test_extension_contract_uses_only_current_support_authority() -> None:
         if entry["authority_role"] == "MIGRATION_SOURCE"
     }
     policy = json.loads((ROOT / POLICY).read_text(encoding="utf-8"))
-    assert policy["policy"]["status"] == "DRAFT"
+    assert policy["policy"]["status"] == "ACTIVE"
+    assert current["SFP-CNTR-0007"]["status"] == "ACTIVE"
     unit = policy["authority_semantics"]["unit_registered_cli_extension_activation"]
     reconciliation = unit["reconciliation"]
 
@@ -58,7 +59,8 @@ def test_extension_contract_uses_only_current_support_authority() -> None:
     assert {entry["policy"] for entry in policy["relations"]["depends_on"]} == set(refs)
     assert reconciliation["external_resolution_environment_in_ptsip_support_scope"] is False
     assert unit["initial_execution"]["mechanism"] == "REGISTERED_COMMAND_INVOCATION"
-    assert unit["lifecycle"] == "DRAFT_NO_RUNTIME_OR_ACTIVATION_AUTHORITY"
+    assert unit["lifecycle"] == "ACTIVE_NORMATIVE_CONTRACT_ONLY_RUNTIME_IMPLEMENTATION_NOT_AUTHORIZED"
+    assert "RUNTIME_IMPLEMENTATION_AUTHORIZATION" in unit["explicit_exclusions"]
 
 
 def test_live_reference_gate_rejects_historical_policy_identity() -> None:
