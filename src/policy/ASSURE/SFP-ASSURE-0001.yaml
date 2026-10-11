@@ -29,21 +29,15 @@ authority_semantics:
         functional/VPMS PASS와 PTSIP conformance를 독립적으로 유지한다.
       non_substitutability: RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한
         검사와 conformance 판단이 완료되지 않는다.
-    source_scope:
-    - SFP-0003
-    - SFP-0005
-    - SFP-0014
-    - SFP-0021
-    - SFP-0023
-  unit_sfp_0003_8290bf124ddf: true
-  unit_sfp_0005_c4029c2d7fd7: false
-  unit_sfp_0014_4ad81d598a7b: REQUIRED_UNRESOLVED_EQUALS_ZERO
-  unit_sfp_0021_2e488eae6de8:
+  semantic_unit_8290bf124ddf: true
+  semantic_unit_c4029c2d7fd7: false
+  semantic_unit_4ad81d598a7b: REQUIRED_UNRESOLVED_EQUALS_ZERO
+  semantic_unit_2e488eae6de8:
   - VALIDATE_PP_CAPABILITY
   - VALIDATE_SPECIFICATION_CAPABILITY
   - VALIDATE_SCHEMA_AND_RESPONSIBILITY_MAP
   - APPLY_EXPLICIT_CROSS_CONTRACT_CONSTRAINTS
-  unit_sfp_0023_eda0339d036f: false
+  semantic_unit_eda0339d036f: false
 relations:
   supersedes: []
   amends: []

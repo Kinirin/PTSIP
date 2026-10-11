@@ -29,31 +29,23 @@ authority_semantics:
         명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.
       non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트
         소유 architecture 의도를 만들어 내지 못한다.
-    source_scope:
-    - SFP-0001
-    - SFP-0002
-    - SFP-0003
-    - SFP-0007
-    - SFP-0008
-    - SFP-0009
-    - SFP-0023
-  unit_sfp_0001_941be08af86f:
+  semantic_unit_941be08af86f:
   - PURPOSE
   - LIFECYCLE_OWNERSHIP
-  unit_sfp_0001_d111ae743dd5: true
-  unit_sfp_0002_7ac95637e40a: EXTERNAL_TO_CONSUMER_REPOSITORY
-  unit_sfp_0002_b846918d843e: CONSUMER_PROJECT
-  unit_sfp_0002_9d1261697280: false
-  unit_sfp_0002_3714b45fa56d: true
-  unit_sfp_0003_aaf1b9c097ff: true
-  unit_sfp_0007_5cf908525c8d:
+  semantic_unit_d111ae743dd5: true
+  semantic_unit_7ac95637e40a: EXTERNAL_TO_CONSUMER_REPOSITORY
+  semantic_unit_b846918d843e: CONSUMER_PROJECT
+  semantic_unit_9d1261697280: false
+  semantic_unit_3714b45fa56d: true
+  semantic_unit_aaf1b9c097ff: true
+  semantic_unit_5cf908525c8d:
   - PRODUCT
   - DEVELOPMENT_TOOLING
   - DELIVERY
   - OPERATIONS
   - NEUTRAL_CONTRACT
-  unit_sfp_0007_2554b65e2700: GOVERNING_LIFECYCLE_OBLIGATION
-  unit_sfp_0007_3d157e56d69e:
+  semantic_unit_2554b65e2700: GOVERNING_LIFECYCLE_OBLIGATION
+  semantic_unit_3d157e56d69e:
   - ESTABLISH_PROJECT_OWNED_SCOPE
   - IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
   - COLLECT_LIFECYCLE_EVIDENCE
@@ -62,7 +54,7 @@ authority_semantics:
   - TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY
   - KEEP_SPLIT_OR_UNRESOLVED
   - PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
-  unit_sfp_0007_42bcd8df20e8:
+  semantic_unit_42bcd8df20e8:
   - PATH_NAME
   - TECHNOLOGY_NAME
   - EXECUTABLE_STATUS
@@ -70,33 +62,33 @@ authority_semantics:
   - JOB_COUNT
   - INVOCATION_FREQUENCY
   - CONFIDENCE_SCORE
-  unit_sfp_0007_3d9712772a48: DELIVERY_HANDOFF
-  unit_sfp_0007_3ed216a63eab:
+  semantic_unit_3d9712772a48: DELIVERY_HANDOFF
+  semantic_unit_3ed216a63eab:
   - NON_EXECUTABLE_ROLE
   - NON_OWNING_IMPLEMENTATION
   - LIFECYCLE_COMPATIBILITY_INDEPENDENT
-  unit_sfp_0007_caeb7b95594d: true
-  unit_sfp_0008_52f9cb677627: false
-  unit_sfp_0008_782216c0653c: false
-  unit_sfp_0008_598a1a795d37: false
-  unit_sfp_0009_34ad0d5840f5: PROJECT_COMPLETE_DECLARATION
-  unit_sfp_0009_b12fa462c850: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
-  unit_sfp_0009_4194792f28ca: FORBIDDEN
-  unit_sfp_0009_7907d3950fd9:
+  semantic_unit_caeb7b95594d: true
+  semantic_unit_52f9cb677627: false
+  semantic_unit_782216c0653c: false
+  semantic_unit_598a1a795d37: false
+  semantic_unit_34ad0d5840f5: PROJECT_COMPLETE_DECLARATION
+  semantic_unit_b12fa462c850: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
+  semantic_unit_4194792f28ca: FORBIDDEN
+  semantic_unit_7907d3950fd9:
   - TEMPLATE_SELECTION
   - STABLE_ID_REPLACEMENTS
   - STABLE_ID_EXTENSIONS
   - STABLE_ID_REMOVALS
-  unit_sfp_0009_7c23900f7f5f:
+  semantic_unit_7c23900f7f5f:
   - PROJECT_OVERRIDE_EXTENSION_REMOVAL
   - SELECTED_IMMUTABLE_TEMPLATE_DECLARATION
-  unit_sfp_0009_7a39d51c0d83: WHOLE_ENTITY_BY_STABLE_ID
-  unit_sfp_0009_777675b0b75d: NOT_INTRODUCED
-  unit_sfp_0023_96036f84abf9: PTSIP_VPMS_READ_ONLY_BOUNDARY
-  unit_sfp_0023_0d125cde84c0: false
-  unit_sfp_0023_12e1aaea2bc8: false
-  unit_sfp_0023_471bdba77329: false
-  unit_sfp_0023_d2a2c2e5e77b:
+  semantic_unit_7a39d51c0d83: WHOLE_ENTITY_BY_STABLE_ID
+  semantic_unit_777675b0b75d: NOT_INTRODUCED
+  semantic_unit_96036f84abf9: PTSIP_VPMS_READ_ONLY_BOUNDARY
+  semantic_unit_0d125cde84c0: false
+  semantic_unit_12e1aaea2bc8: false
+  semantic_unit_471bdba77329: false
+  semantic_unit_d2a2c2e5e77b:
   - VPMS_GLOBAL_IDENTITY
   - VPMS_CASE_PROTOCOL
   - VPMS_VERIFICATION_PURPOSE

@@ -29,18 +29,16 @@ authority_semantics:
         functional/VPMS PASS와 PTSIP conformance를 독립적으로 유지한다.
       non_substitutability: RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한
         검사와 conformance 판단이 완료되지 않는다.
-    source_scope:
-    - SFP-0006
-  unit_sfp_0006_685ff401236d: VPMS
-  unit_sfp_0006_555df7fa00c4: VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM
-  unit_sfp_0006_26fa3eccfe0d: TVFM
-  unit_sfp_0006_0e181f76b583: WHY_VERIFICATION_EXISTS
-  unit_sfp_0006_9c53e126171c: false
-  unit_sfp_0006_b53823dd6810:
+  semantic_unit_685ff401236d: VPMS
+  semantic_unit_555df7fa00c4: VERIFICATION_PURPOSE_MANAGEMENT_SYSTEM
+  semantic_unit_26fa3eccfe0d: TVFM
+  semantic_unit_0e181f76b583: WHY_VERIFICATION_EXISTS
+  semantic_unit_9c53e126171c: false
+  semantic_unit_b53823dd6810:
   - PRODUCT
   - TOOLCHAIN
-  unit_sfp_0006_2033e5a8b1c6: VERIFICATION_CASE
-  unit_sfp_0006_9f99753d89ca: false
+  semantic_unit_2033e5a8b1c6: VERIFICATION_CASE
+  semantic_unit_9f99753d89ca: false
 relations:
   supersedes: []
   amends: []
