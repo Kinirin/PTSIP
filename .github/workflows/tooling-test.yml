@@ -115,8 +115,10 @@ jobs:
         if: ${{ always() && matrix.check != '__no_check__' }}
         uses: actions/upload-artifact@v4
         with:
-          name: ptsip-check-extra-${{ matrix.check }}
-          path: .artifacts/*.log
+          name: ptsip-supplement-${{ matrix.check }}
+          path: |
+            .artifacts/*.log
+            .artifacts/markdown-cleanup-simulation.json
           if-no-files-found: ignore
           retention-days: 14
   coverage:
