@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 
 policy:
   id: MPD-PLAN-0001
-  version: "2.0"
+  version: "2.1"
   title: Developer Planning Authority and Lifecycle Boundary
   status: ACTIVE
 
@@ -63,6 +63,40 @@ rules:
       suffix: '-explanation.yaml'
       machine_authority: false
       allowed_for_ambiguous_or_unsupported_definition: true
+
+    user_review_and_targeted_revision:
+      decision: RECONCILE
+      approval_ref: developer/policy/approvals/MPA-20261011-PLAN-REVIEW-RECONCILE.yaml
+      scope: POLICY_DERIVED_PLAN_HUMAN_REVIEW_AND_TARGETED_CORRECTION
+      user_review_required_before_each_stage: false
+      user_review_is_approval_transition: false
+      user_review_may_identify_intent_mismatch: true
+      approval_state_on_review_only: PRESERVE_EXISTING_VALUE
+      approval_state_on_targeted_revision: PRESERVE_EXISTING_VALUE
+      implementation_authorization_state_on_review_or_revision: PRESERVE_EXISTING_VALUE
+      pending_plan_does_not_become_approved_by_review: true
+      completed_work_evidence_is_not_retroactively_rewritten: true
+      exact_edit_scope: USER_IDENTIFIED_ISSUE_AND_PROVEN_DEPENDENT_IMPACT_ONLY
+      unrelated_plan_content_status_and_evidence: PRESERVE
+      changed_part_requires_policy_binding_coverage_and_registered_machine_revalidation: true
+      affected_dependent_checks_only_when_MACHINE_PROVEN_COMPLETE_IMPACT_SCOPE: true
+      unknown_change_impact: FAIL_CLOSED_REVALIDATE_OR_ESCALATE
+      approval_effectiveness_for_revised_scope:
+        scope_and_semantic_equivalence_proof_required: true
+        new_or_expanded_scope_receives_automatic_authority: false
+        incompatible_edit_executes_before_user_decision: false
+        ineligible_execution_does_not_revoke_recorded_approval: true
+      approval_provenance_mutation: FORBIDDEN
+      new_approval_or_authorization_from_review: FORBIDDEN
+      next_stage_auto_continuation:
+        existing_authorization_and_binding_required: true
+        registered_required_checks_all_pass_required: true
+        no_new_user_review_required_if_unchanged_authorized_scope: true
+        failed_unknown_or_stale_required_proof: BLOCK
+      review_display_projection:
+        human_readable_explanation_may_be_derived: true
+        explanation_is_not_authoritative_plan_semantics: true
+        machine_plan_source_remains_authoritative: true
 
     completion_transition:
       pending_status: IMPLEMENTED_VALIDATION_PENDING
