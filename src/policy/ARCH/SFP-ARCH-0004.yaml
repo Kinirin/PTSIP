@@ -37,7 +37,7 @@
     },
     "unit_ptsip_engine_draft": {
       "domain": "PTSIP_ENGINE",
-      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
+      "draft_activation": "BLOCKED_PENDING_REQUIRED_CONFORMANCE_AND_SEPARATE_ACTIVE_APPROVAL",
       "approved_decisions": {
         "engine_ownership": "OFFICIAL_PACKAGE_OWNED_AND_CONSUMER_USER_ENGINE_OWNED",
         "official_implementations": "SHIPPED_PTSIP_INSTALLATION",
@@ -350,6 +350,31 @@
           "policy_status": "DRAFT_UNCHANGED",
           "physical_implementation": "NOT_AUTHORIZED",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        "engine_external_interoperability_authority_split": {
+          "decision": "C_ARCH_SCOPE_CNTR_MACHINE_CONTRACT_AUTHORITY_SPLIT",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "required_participation_boundary": "ALL_DISCOVERABLE_REGISTERABLE_PTSIP_ENGINES_OFFICIAL_CONSUMER_AND_EXTERNAL",
+          "arch_normative_owner": "EXTERNAL_INTEROPERABILITY_OBLIGATION_APPLICABILITY_PARTICIPATION_AND_INDEPENDENT_IMPLEMENTATION_BOUNDARY",
+          "cntr_normative_owner": "MACHINE_CONTRACT_REQUIRED_DIMENSIONS_VERSIONED_IDENTITY_CAPABILITY_DEPENDENCY_COMPATIBILITY_REFERENCES_AND_CONDITIONAL_ENTRYPOINT_BINDING",
+          "cntr_policy": "SFP-CNTR-0005",
+          "cntr_active_precedence": "SFP-CNTR-0001",
+          "static_declaration": "REQUIRED_FOR_ENGINE_DISCOVERY_WITHOUT_ENGINE_RUNTIME",
+          "conditional_execution_binding": "REQUIRED_ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED",
+          "no_externally_invocable_capability": "NO_EXECUTION_ENTRYPOINT_REQUIRED",
+          "internal_management": "ENGINE_OPTIONAL_NO_MANDATORY_SHARED_RUNTIME",
+          "seven_official_rust_engine_code_isolation": "PRESERVED_NO_CROSS_ENGINE_IMPLEMENTATION_SHARING",
+          "consumer_or_external_engine_internal_language_or_implementation": "NOT_RESTRICTED_BY_OFFICIAL_RUST_RULES",
+          "declared_dependency_relation": "CONTRACT_LEVEL_INTEROPERABILITY_NOT_SHARED_COMPILED_CODE",
+          "missing_invalid_or_unverifiable_required_contract": "FAIL_CLOSED_AFFECTED_REGISTRATION_OR_OPERATION",
+          "registry_or_binding_declaration": "NO_ACTIVATION_EXECUTION_WRITE_OR_NORMATIVE_CONFORMANCE_AUTHORITY",
+          "contract_shape_schema_reference_binding_implementation": "UNRESOLVED_IN_SFP_CNTR_0005_AND_POLICY_COMPLIANT_PLAN",
+          "existing_active_contracts": "UNCHANGED_UNTIL_VERIFIED_SEPARATELY_AUTHORIZED_TRANSITION",
+          "active_promotion": "SEPARATE_EXPLICIT_USER_APPROVAL_AFTER_VERIFIED_GATES",
+          "policy_status": "DRAFT_UNCHANGED",
+          "physical_implementation": "NOT_AUTHORIZED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -524,15 +549,15 @@
         "engine_without_declared_external_management_operations_requires_no_management_entrypoint": true,
         "unknown_or_ambiguous_required_management_capability_binding_is_fail_closed": true,
         "management_binding_does_not_grant_execution_activation_or_write_authority": true,
-        "management_entrypoint_layout_does_not_allow_cross_engine_rust_implementation_sharing": true
+        "management_entrypoint_layout_does_not_allow_cross_engine_rust_implementation_sharing": true,
+        "engine_interoperability_obligation_applies_independent_of_engine_origin_or_implementation_language": true,
+        "arch_scope_does_not_redefine_cntr_contract_semantics_or_static_required_dimensions": true,
+        "cntr_contract_shape_and_binding_obligations_are_resolved_through_explicit_policy_ref": true,
+        "external_interoperability_never_requires_cross_official_rust_implementation_sharing": true,
+        "static_contract_registration_never_grants_runtime_or_write_authority": true,
+        "no_externally_invocable_capability_needs_no_runtime_entrypoint": true
       },
-      "unresolved_decisions": [
-        {
-          "id": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        }
-      ],
+      "unresolved_decisions": [],
       "activation_requirements": {
         "owner_decisions_all_resolved": true,
         "responsibility_mapping_verified": true,
@@ -1019,6 +1044,25 @@
           "remaining_arch_item": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
           "keep_prior_activation_gate": "PRESERVED",
           "implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "C_ARCH_APPLICATION_CNTR_CONTRACT_SEMANTICS",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_arch": "SFP-ARCH-0001",
+          "prior_active_cntr": "SFP-CNTR-0001",
+          "comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "split_rule_ref": "authority_semantics.unit_ptsip_engine_draft.approved_decisions.engine_external_interoperability_authority_split",
+          "cntr_contract_policy": "SFP-CNTR-0005",
+          "cntr_exact_machine_contract_shape": "REMAINS_UNRESOLVED",
+          "verified_responsibility_mapping": "REQUIRED_BEFORE_ACTIVE",
+          "schema_registry_machine_validation": "REQUIRED_BEFORE_ACTIVE",
+          "independent_user_active_approval": "REQUIRED",
+          "active_policy_mutation": "NOT_AUTHORIZED",
+          "engine_implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
@@ -1097,6 +1141,10 @@
       {
         "policy": "SFP-ARCH-0001",
         "scope": "ENGINE_DRAFT_COMPATIBILITY"
+      },
+      {
+        "policy": "SFP-CNTR-0005",
+        "scope": "ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY"
       }
     ]
   }
