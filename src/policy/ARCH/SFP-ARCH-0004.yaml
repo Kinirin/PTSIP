@@ -206,6 +206,29 @@
           "immediate_active_policy_override": "FORBIDDEN_BEFORE_ARCH_0004_ACTIVE_PROMOTION",
           "runtime_activation": "NOT_AUTHORIZED",
           "physical_implementation": "NOT_AUTHORIZED"
+        },
+        "context_projection_active_authority_reconciliation": {
+          "decision": "KEEP_LATEST",
+          "decision_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "OFFICIAL_RUST_CONTEXT_AND_PROJECTION_ENGINE_NORMATIVE_OUTPUT_RESPONSIBILITY",
+          "prior_active_contract": "SFP-CNTR-0001#CONTEXT_PLANE_MIGRATION_REPAIR",
+          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "current_active_contract_status": "ACTIVE_UNCHANGED_UNTIL_CONCRETE_AUTHORIZED_VERSIONED_TRANSITION",
+          "conflicting_old_rule": "LEGACY_CONTEXT_PUBLIC_OUTPUT_CONTRACT_PRIORITIZED_OVER_NEW_PROJECTION_OUTPUT_AUTHORITY",
+          "replacement_rule": "RUST_PROJECTION_ENGINE_CANONICAL_OUTPUT_SCHEMA_FORMAT_AND_TRANSFORMATION_NORMATIVE_OWNER",
+          "context_owner": "SOURCE_CONTENT_SEMANTICS_AND_CONSTRAINTS",
+          "projection_owner": "OUTPUT_SCHEMA_FORMAT_AND_TRANSFORMATION_RULES",
+          "legacy_format_parity_requirement_after_authorized_cutover": "NOT_AUTOMATICALLY_MANDATORY",
+          "legacy_public_api_contract_change": "ELIGIBLE_ONLY_BY_SEPARATELY_AUTHORIZED_VERSIONED_CONTRACT_TRANSITION_AND_MACHINE_VERIFIED_CUTOVER",
+          "previous_active_public_api_before_cutover": "PRESERVED",
+          "independent_engines": "RUST_NEW_IMPLEMENTATION_NO_LEGACY_PYTHON_REUSE",
+          "consumer_project_lifecycle_authority": "UNCHANGED",
+          "assure_conformance_and_ctrl_execution_authorities": "UNCHANGED",
+          "remaining_contract_handoff": "SFP-CNTR-0005#CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
+          "active_promotion": "BLOCKED_UNTIL_ALL_EXISTING_GATES_VERIFIED",
+          "physical_implementation": "NOT_AUTHORIZED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -355,15 +378,13 @@
         "product_internal_overlap_rust_engine_functional_owner_is_canonical_after_verified_handoff": true,
         "consumer_project_component_lifecycle_ownership_not_reassigned_by_engine_functional_owner": true,
         "existing_active_public_capability_contracts_remain_until_authorized_verified_transition": true,
-        "unverified_component_to_engine_mapping_cannot_activate_owner_transfer": true
+        "unverified_component_to_engine_mapping_cannot_activate_owner_transfer": true,
+        "projection_is_canonical_new_output_normative_owner_when_effective": true,
+        "legacy_context_output_format_parity_not_inherited_by_new_projection_after_authorized_versioned_transition": true,
+        "existing_context_public_api_remains_effective_until_separately_authorized_verified_transition": true,
+        "projection_authority_does_not_transfer_context_source_or_assure_conformance_authority": true
       },
       "unresolved_decisions": [
-        {
-          "id": "CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED",
-          "reason": "EXISTING_CONTEXT_PROJECTION_CONTRACT_AND_COMPONENT_BOUNDARIES_REQUIRE_EXPLICIT_RECONCILIATION_BEFORE_ACTIVE"
-        },
         {
           "id": "VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION",
           "kind": "CONTRACT_DESIGN",
@@ -778,6 +799,22 @@
           "affected_engine_capability_handoff": "BLOCKED_UNTIL_VERIFIED_AND_AUTHORIZED",
           "existing_active_context_projection_vpms_and_public_contracts": "UNAFFECTED_PENDING_SEPARATE_ITEMS",
           "original_activation_gate": "KEEP_PRIOR_PRESERVED"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "existing_active_conflict_policy": "SFP-CNTR-0001",
+          "existing_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "existing_active_scope": "CONTEXT_PLANE_MIGRATION_REPAIR_PUBLIC_CONTRACT",
+          "replacement": "PROJECTION_NORMATIVE_OUTPUT_SCHEMA_FORMAT_TRANSFORMATION_OWNERSHIP",
+          "legacy_public_api_contract": "UNCHANGED_PENDING_VERSIONED_AUTHORIZED_HANDOFF",
+          "exact_contract_handoff": "REMAINS_UNRESOLVED_IN_SFP_CNTR_0005",
+          "separate_new_engine_runtime_activation": "NOT_AUTHORIZED",
+          "original_KEEP_PRIOR_gate": "PRESERVED"
         }
       ],
       "dependent_plans": [
