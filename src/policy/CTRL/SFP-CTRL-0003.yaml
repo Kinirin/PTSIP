@@ -47,7 +47,16 @@
       "general_cleanup_delegation_grants_physical_deletion": false,
       "cleanup_execution_trigger": "MACHINE_VERIFIED_EXECUTION_OPPORTUNITY",
       "cleanup_failure_recovery": "CONTRACT_VERIFIED_AUTOMATED_RECOVERY",
-      "cleanup_completion_consistency": "CONTRACT_PROVEN_LOGICAL_COMPLETION"
+      "cleanup_completion_consistency": "CONTRACT_PROVEN_LOGICAL_COMPLETION",
+      "authorized_cleanup_operation_classes_policy_choice": "A_USER_EXPLICIT",
+      "authorized_cleanup_operation_classes_decided_at": "2026-10-11",
+      "authorized_cleanup_operation_class_authority": "PTSIP_OWNER_APPROVED_POLICY_CLASS_SET_ONLY",
+      "authorized_cleanup_operation_class_consumer_delegation": "ONLY_FOR_CURRENT_EXPLICITLY_POLICY_APPROVED_OPERATION_CLASSES",
+      "authorized_cleanup_operation_class_consumer_extension": "NOT_AUTHORIZED_WITHOUT_SEPARATE_PTSIP_OWNER_POLICY_APPROVAL",
+      "authorized_cleanup_operation_class_set": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
+      "unauthorized_unapproved_or_unknown_operation_class": "FAIL_CLOSED",
+      "approved_operation_class_does_not_grant_cleanup_execution_or_write_authority": true,
+      "physical_deletion_still_requires_specific_separate_consumer_delegation": true
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -70,14 +79,64 @@
       "cleanup_unknown_recovery_capability": "FAIL_CLOSED",
       "cleanup_partial_success_cannot_confer_full_completion": true,
       "cleanup_completion_requires_registry_record_and_retention_consistency": true,
-      "cleanup_execution_result_alone_is_not_completion_proof": true
+      "cleanup_execution_result_alone_is_not_completion_proof": true,
+      "only_ptsip_owner_policy_approved_cleanup_operation_classes_can_be_consumer_delegated": true,
+      "no_consumer_specific_operation_class_extension_without_separate_ptsip_owner_policy_change": true,
+      "registered_or_declared_cleanup_class_without_policy_approval_is_not_eligible": true,
+      "class_policy_approval_is_distinct_from_fresh_consumer_operation_kind_delegation": true,
+      "unknown_or_unapproved_operation_class": "FAIL_CLOSED_NO_CLEANUP",
+      "missing_valid_operation_class_set": "FAIL_CLOSED_NO_NEW_AUTOMATED_CLEANUP",
+      "ai_cannot_infer_authorized_cleanup_classes_from_operation_names_or_existing_implementation": true,
+      "class_set_unresolved_must_not_be_silently_filled_by_plan_or_implementation": true,
+      "project_specific_cleanup_class_declaration_does_not_create_ptsip_policy_authority": true,
+      "class_selection_must_preserve_protected_mandatory_records_receipts_and_history": true,
+      "physical_deletion_remains_separately_delegated_per_operation_kind_and_scope": true,
+      "approved_operation_class_does_not_grant_cleanup_execution_retry_write_or_physical_deletion": true,
+      "existing_ctrl_real_fresh_operation_authority_and_record_retention_still_gate_cleanup": true,
+      "class_authority_policy_does_not_activate_draft_runtime": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
-      "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
+      "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET",
       "DELEGATION_SCOPE_AND_REVOCATION_CONTRACT",
       "CLEANUP_EXECUTION_AND_FAILURE_PLAN"
     ],
-    "unit_consumer_analysis_implementation_detail_authority": "PLAN"
+    "unit_consumer_analysis_implementation_detail_authority": "PLAN",
+    "unit_consumer_analysis_cleanup_operation_class_direction": {
+      "policy_subject": "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
+      "selected_option": "A_PTSIP_POLICY_APPROVED_CLASSES_ONLY",
+      "authority_owner": "PTSIP_PROJECT_OWNER_POLICY",
+      "current_allowed_class_set": "UNRESOLVED_USER_POLICY_APPROVAL_REQUIRED",
+      "consumer_delegation": "EXPLICIT_PER_POLICY_APPROVED_OPERATION_CLASS",
+      "consumer_extension_of_class_set": "FORBIDDEN_WITHOUT_NEW_EXPLICIT_PTSIP_POLICY_APPROVAL",
+      "unknown_unapproved_or_ambiguous_class": "FAIL_CLOSED",
+      "when_class_set_has_no_proven_approved_member": "NO_AUTOMATED_CLEANUP_CLASS_ELIGIBILITY",
+      "class_eligibility_is_execution_permission": false,
+      "consumer_operation_kind_and_scope_delegation": "REQUIRED_SEPARATELY_AND_FRESH",
+      "physical_deletion": "REQUIRES_SEPARATE_EXPLICIT_OPERATION_SPECIFIC_CONSUMER_DELEGATION",
+      "mandatory_record_retention": "UNMODIFIED_PRECEDENCE",
+      "cleanup_execution_recovery_and_authority": "CURRENT_EFFECTIVE_CTRL_REAL_AND_RECORD_CONTRACTS",
+      "machine_registry_and_schema": "PLAN_ONLY_AFTER_POLICY_CLASS_APPROVAL",
+      "implementation": "NOT_AUTHORIZED",
+      "active_transition": "NOT_AUTHORIZED"
+    },
+    "unit_consumer_analysis_resolved_decisions": [
+      {
+        "id": "AUTHORIZED_CLEANUP_OPERATION_CLASSES_AUTHORITY",
+        "source_unresolved_id": "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
+        "selected_option": "A_ONLY_PTSIP_POLICY_APPROVED_OPERATION_CLASSES",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "resolution_scope": "APPROVAL_AUTHORITY_AND_ELIGIBILITY_BOUNDARY_ONLY_NOT_OPERATION_CLASS_VALUES",
+        "operation_class_set": "UNRESOLVED_SEPARATE_OWNER_POLICY_DECISION",
+        "consumer_delegation": "PER_APPROVED_CLASS_AND_EXPLICIT_CONSUMER_SCOPE",
+        "new_class_introduction": "SEPARATE_PTSIP_PROJECT_OWNER_POLICY_APPROVAL_REQUIRED",
+        "mandatory_record_retention": "UNCHANGED",
+        "physical_deletion": "EXPLICIT_SEPARATE_DELEGATION_STILL_REQUIRED",
+        "registered_class_not_execution_write_or_deletion_authority": true,
+        "implementation": "NOT_AUTHORIZED",
+        "active_transition": "NOT_AUTHORIZED"
+      }
+    ]
   },
   "relations": {
     "supersedes": [],
