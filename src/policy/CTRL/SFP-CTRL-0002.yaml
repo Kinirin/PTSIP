@@ -66,7 +66,16 @@
         "automatic_activation_failure": "INELIGIBLE_NOT_AUTOMATICALLY_ACTIVATED",
         "automatic_activation_is_runtime_execution_authorization": false,
         "activation_mode_owner_selection": "USER_EXPLICIT_OPTION_B",
-        "activation_mode_direction_recorded_at": "2026-10-11"
+        "activation_mode_direction_recorded_at": "2026-10-11",
+        "automatic_activation_target_scope": "OFFICIAL_CONSUMER_USER_AND_REGISTERED_EXTERNAL_ENGINES",
+        "automatic_activation_target_selection": "OPTION_B_PROJECT_OWNER_EXPLICIT",
+        "automatic_activation_target_scope_recorded_at": "2026-10-11",
+        "official_engine_activation_isolation": "MACHINE_VERIFIED_DECLARED_CAPABILITY_EXECUTION_BOUNDARY",
+        "user_engine_activation_isolation": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
+        "external_engine_activation_isolation": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
+        "activation_fresh_permission_requirement": "EXISTING_PREDELEGATED_SCOPE_AND_FRESH_EXECUTION_GATE",
+        "target_engine_unverified_or_incompatible": "NOT_ELIGIBLE_FOR_AUTOMATIC_ACTIVATION",
+        "activation_target_scope_no_new_authority": true
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -114,7 +123,19 @@
         "activation_does_not_expand_execute_write_host_or_isolation_rights": true,
         "activation_does_not_authorize_automatic_in_flight_engine_switch": true,
         "activation_direction_recording_does_not_activate_draft_runtime": true,
-        "activation_not_enabled_until_active_policy_and_shipped_contract_ready": true
+        "activation_not_enabled_until_active_policy_and_shipped_contract_ready": true,
+        "official_user_and_external_engine_targets_subject_to_same_contract_and_environment_verification": true,
+        "user_engine_auto_activation_requires_verified_isolation_and_permission_boundary": true,
+        "external_engine_auto_activation_requires_verified_isolation_and_permission_boundary": true,
+        "official_engine_auto_activation_requires_verified_capability_declared_isolation_mode": true,
+        "user_or_external_engine_identity_must_not_be_misclassified_as_official": true,
+        "per_engine_origin_or_installation_does_not_confer_activation_authority": true,
+        "activation_requires_registered_identity_and_required_contract_compatibility": true,
+        "scope_approval_does_not_override_explicit_consumer_engine_selection": true,
+        "auto_activation_without_predelegation_or_fresh_eligibility": "FAIL_CLOSED",
+        "isolation_or_resource_enforcement_unverifiable": "FAIL_CLOSED",
+        "target_scope_selection_does_not_activate_engine_draft_runtime": true,
+        "active_engine_plane_runtime_activation_deferred_unchanged": true
       },
       "unresolved_decisions": [
         {
@@ -222,7 +243,20 @@
         "runtime_and_concrete_interface_details": "PLAN_AND_MACHINE_CONTRACT",
         "current_effect": "DRAFT_DECISION_ONLY_NO_RUNTIME_ACTIVATION",
         "existing_active_arch_engine_runtime_activation": "DEFERRED_UNTIL_SEPARATE_LIFECYCLE_APPROVAL",
-        "current_release_engine_state_reuse_scope": "UNCHANGED_EXACT_MATCH_ONLY"
+        "current_release_engine_state_reuse_scope": "UNCHANGED_EXACT_MATCH_ONLY",
+        "eligible_engine_origins": [
+          "OFFICIAL_PTSIP_ENGINE",
+          "CONSUMER_USER_ENGINE",
+          "REGISTERED_EXTERNAL_ENGINE"
+        ],
+        "origin_specific_required_isolation": {
+          "OFFICIAL_PTSIP_ENGINE": "CONTRACT_DECLARED_MODE_MUST_BE_VERIFIED_AND_ENFORCEABLE",
+          "CONSUMER_USER_ENGINE": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
+          "REGISTERED_EXTERNAL_ENGINE": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY"
+        },
+        "common_eligibility": "ALL_REGISTERED_CONTRACT_ENVIRONMENT_PREDELEGATED_SCOPE_AND_APPLICABLE_ISOLATION_GATES",
+        "no_implicit_nonisolated_exception_for_user_external_engines": true,
+        "engine_origin_alone_never_grants_execution_write_or_activation_authority": true
       }
     }
   },
